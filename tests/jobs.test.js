@@ -26,10 +26,10 @@ test('a hand sees two jobs, the same two all visit, and works one a visit', asyn
     out.n = jobBoard().ids.length; out.stable = a === b; out.html = /Jobs on the station/.test(jobsHtml());
     Mods.act('takeJob', jobBoard().ids[0]); out.opened = !!G.dialog; G.dialog = null; G.nextEvent = null;
     Mods.act('takeJob', jobBoard().ids[1]); out.second = !!G.dialog;
-    st.day += 3; out.next = jobBoard().done === false;
+    st.day += 1; out.next = jobBoard().done === false;  // another day in port (a night of a stay, stay.js) is another board: the days ashore are the hand's
     return out;
   });
-  assert.equal(r.n, 2); assert.ok(r.stable); assert.ok(r.html); assert.ok(r.opened); assert.equal(r.second, false, 'one a visit'); assert.ok(r.next, 'a new board another day');
+  assert.equal(r.n, 2); assert.ok(r.stable); assert.ok(r.html); assert.ok(r.opened); assert.equal(r.second, false, 'one a day'); assert.ok(r.next, 'a new board another day');
   await done();
 });
 
@@ -71,14 +71,19 @@ test('the checks follow your post and level and a crew member\'s help, and a los
     const noCrew = st.crew.slice(); st.crew = [];
     const h = hired(); h.skill = {}; out.low = jobOdds({ post: 'engineer' }); h.skill.engineer = 200; out.high = jobOdds({ post: 'engineer' }); out.other = jobOdds({ post: 'comms' });
     st.crew = noCrew; const base = jobOdds({ post: 'engineer' });
-    out.words = [0.3, 0.55, 0.8].map(jobOddsWord);
     // a lost danger roll hurts you
     st.crew = []; st.injured = {}; h.hurtUntil = 0; const lock = JOBS.find(j => j.id === 'lock'), e = jobStage(lock, 0); G.dialog = { event: e, choices: e.choices };
-    rolls([0.99]); const text = chooseEvent(e.choices.findIndex(c => /Cut the manual release/.test(c.label)));
-    out.hurt = handHurt(); out.text = text; out.label = e.choices[0].label;
+    rolls([0.99, 0, 0, 0]); const text = chooseEvent(e.choices.findIndex(c => /Cut the manual release/.test(c.label)));  // the check lost; the death roll, were it made, would come up
+    out.hurt = handHurt(); out.alive = !h.died && !(G.nextEvent && /Last Run/.test(G.nextEvent.title)); out.text = text; out.label = e.choices[0].label; out.labels = e.choices.map(c => c.label);
+    out.message = jobStage(JOBS.find(j => j.id === 'message'), 0).choices.map(c => c.label);
     return out;
   });
-  assert.ok(r.high > r.low); assert.ok(r.high > r.other); assert.deepEqual(r.words, ['long odds', 'even odds', 'good odds']);
-  assert.ok(r.hurt); assert.match(r.text, /You are hurt/); assert.match(r.label, /\[Engineer, (good|even|long) odds\]/);
+  assert.ok(r.high > r.low); assert.ok(r.high > r.other);
+  assert.ok(r.hurt); assert.match(r.text, /You are hurt/); assert.ok(r.alive, 'a hurt ashore is the clinic and the days, never the death roll (boarders.js)');
+  // the note: the post the check is on, the odds the roll uses, and what the lost roll declares
+  assert.match(r.label, new RegExp(`\\[Engineer, ${Math.round(r.high * 100)}%; if it fails: you may be hurt\\]$`), r.label);
+  assert.match(r.labels[1], /\[Comms, \d+%; if it fails: the captain marks it\]$/, r.labels[1]);
+  assert.ok(!r.labels[3].includes('['), `a sure choice carries no note: ${r.labels[3]}`);
+  assert.match(r.message[0], /\[Comms, \d+%; if it fails: 60 cr of your own, your standing here\]$/, r.message[0]);
   await done();
 });

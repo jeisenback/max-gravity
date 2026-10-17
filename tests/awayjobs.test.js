@@ -44,6 +44,7 @@ test('putting it to the captain: their character decides, a yes sets the run, a 
     cap.traits = ['greedy', 'secretive']; out.greedyPay = pitchOdds(pay, a); out.greedyRight = pitchOdds(right, a);
     cap.traits = ['kind', 'pious']; out.kindPay = pitchOdds(pay, a); out.kindRight = pitchOdds(right, a);
     const owed = pitchScene(a).choices.find(c => /owes you/.test(c.label)); out.owedGated = !!owed && owed.opinion.min === OPINION.FRIEND;  // shown shut below it, by openEvent (captains.test.js)
+    cap.traits = ['greedy', 'secretive']; out.labels = pitchScene(a).choices.map(c => c.label);  // each argument says its odds, and one she hates says it costs her regard
     // a no
     let e = pitchScene(a); G.dialog = { event: e, choices: e.choices }; rolls([0.999]); const no = chooseEvent(0); G.dialog = null;
     out.no = { text: no, booked: a.booked, run: currentPlan() && currentPlan().planet !== a.planet, once: pitchedNow(a), html: /disabled/.test(awayHtml()) };
@@ -54,6 +55,8 @@ test('putting it to the captain: their character decides, a yes sets the run, a 
   });
   assert.ok(r.greedyPay > r.greedyRight, 'a greedy captain hears the money'); assert.ok(r.kindRight > r.kindPay, 'a kind one hears what is right');
   assert.ok(r.owedGated, 'the friendly argument is always listed, and needs the captain\'s friendship');
+  assert.ok(r.labels.slice(0, 4).every(l => /\[\d+%/.test(l)), r.labels.join(' | ')); assert.match(r.labels[2], /\[\d+%; if it fails: the captain marks it\]$/, r.labels[2]); assert.ok(!r.labels[0].includes('if it fails'), r.labels[0]);
+  assert.ok(!r.labels[4].includes('['), `never: no roll, no note: ${r.labels[4]}`);
   assert.equal(r.no.booked, false); assert.ok(r.no.run); assert.ok(r.no.once); assert.ok(r.no.html); assert.match(r.no.text, /Not this run/);
   assert.ok(r.yes.booked && r.yes.planet && r.yes.sid && r.yes.shown); assert.match(r.yes.text, /The run is set for/);
   await done();

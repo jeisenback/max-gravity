@@ -9,7 +9,6 @@
 
 const JOB_DAYS = 1, JOB_BOARD = 2;
 const jobOdds = ck => { const h = hired(), own = h.post === ck.post; return Math.min(0.9, 0.35 + (own ? 0.12 : 0.03) * skillLevel(h.post) + (roleSkill(POSTS[ck.post].role) ? 0.1 : 0) + (ck.bonus || 0)); };
-const jobOddsWord = p => (p >= 0.7 ? 'good odds' : p >= 0.5 ? 'even odds' : 'long odds');
 
 const JOBS = [
   { id: 'lock', title: 'A Jammed Freight Lock', blurb: 'A cargo lock has stuck half open with a loader crew behind it. The dockmaster will pay for hands that know a lock.',
@@ -94,7 +93,8 @@ const JOBS = [
 ];
 
 // ---------- the board ----------
-// Two jobs a landing, the same two for a given port and day (so the tab does not change under you), and one worked a visit.
+// Two jobs a day, the same two for the port and the day (so the tab does not change under you), and one worked a day: a night in port (stay.js) brings a new board,
+// since the days ashore are the hand's (docs/superpowers/specs/2026-10-17-contracts-design.md).
 const jobBoard = () => {
   const h = hired(), st = G.state, key = `${st.planet}@${st.day}`;
   if (!h.board || h.board.key !== key) {
@@ -113,7 +113,7 @@ function applyJob(o, scale = 1) {
   if (o.xp) gainSkill(o.xp, 2);
   if (o.rep) changeRep(localGov(), o.rep);
   if (o.opinion) like(cap, o.opinion, o.opinion > 0 ? 'You did good work ashore.' : 'You made a mess ashore.');
-  const hurt = o.hurt ? hurtHand({}) : '';
+  const hurt = o.hurt ? hurtHand({ ashore: true }) : '';  // the clinic and the days, never the death roll (boarders.js)
   return `${o.text}${bits.length ? ` (${bits.join(', ')})` : ''}${hurt ? ` ${hurt}` : ''}`;
 }
 // The editor's words for a job (#457): the job itself, `job:lock` or `away:package`, has its title and its blurb on the board (the override's `title` and `text`); each stage,
@@ -126,7 +126,8 @@ function jobStage(job, i, ctx = {}) {
   const so = sceneOverride(`${jobId(job)}:${i}`), co = k => (so.choices || {})[k] || {};
   return { title: fill(so.title || jobTitle(job)), text: fill(so.text ? esc(so.text) : stage.text), personal: true, via: 'station', owner: 'you',
     choices: stage.choices.map((c, k) => ({ c, k })).filter(({ c }) => !c.when || h.post === c.when.post).map(({ c, k }) => {
-      const odds = c.check ? jobOdds(c.check) : 1, tag = c.check ? ` [${POSTS[c.check.post].name}, ${jobOddsWord(odds)}]` : '';
+      const odds = c.check ? jobOdds(c.check) : 1, lose = c.lose || {};  // the post the check is on, its odds, and what a lost one costs (costNote, engagements.js)
+      const tag = c.check ? costNote({ who: POSTS[c.check.post].name, hand: !!lose.hurt, cost: lose.cost || 0, rep: lose.rep < 0, marks: lose.opinion < 0 }, odds) : '';
       return { label: fill(`${co(k).label || c.label}${tag}`), run() {
         const won = !c.check || Math.random() < odds, base = won ? c.win : (c.lose || c.win), mine = won || !c.lose ? co(k).win : co(k).lose, o = mine ? { ...base, text: esc(mine) } : base;
         const text = fill(applyJob(o, ctx.scale || 1));
@@ -142,7 +143,7 @@ function jobsHtml() {
   return `<div class="post"><div class="eyebrow">Jobs on the station &middot; for your own savings</div>
     ${board.ids.map(id => { const j = JOBS.find(x => x.id === id); return `<div class="row"><span><b>${esc(jobTitle(j))}</b> <span class="hint">${esc(jobBlurb(j))}</span></span>
       <button data-action="takeJob" data-arg="${id}" ${board.done ? 'disabled' : ''}>Take it</button></div>`; }).join('')}
-    <p class="hint">${board.done ? 'You have worked a job here already this visit.' : 'One job a visit. It takes the day, and the pay is yours.'}</p></div>`;
+    <p class="hint">${board.done ? 'You have worked a job here today.' : 'One job a day. It takes the day, and the pay is yours.'}</p></div>`;
 }
 
 const jobsMissionsView = UI.views.missions;

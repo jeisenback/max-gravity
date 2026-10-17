@@ -183,12 +183,13 @@ function handDies(s, how) {
   s.handDied = true; h.died = { day: st.day, how };
   G.nextEvent = handDeathScene(how);
 }
+// `s.ashore`: a hurt on a job ashore (jobs.js), which costs the clinic and the days but never the hand's life: that is the fights' own.
 function hurtHand(s) {
   const st = G.state, h = hired(), again = s.youHurt || handHurt();
   h.hurtUntil = st.day + (again ? 18 : 12);
   s.youHurt = true;
   captainFlag('hurt');  // kept for the goodbye (captains.js)
-  if (Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return again ? 'You\'re hurt again, and you stay down.' : 'You\'re hit.'; }
+  if (!s.ashore && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return again ? 'You\'re hurt again, and you stay down.' : 'You\'re hit.'; }
   const bill = roleHolder('medic') ? 0 : Math.min(st.credits, HAND_CLINIC);
   st.credits -= bill;
   const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';

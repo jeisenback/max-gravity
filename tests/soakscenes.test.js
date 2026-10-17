@@ -51,7 +51,7 @@ test('with the landings and the hand counted the report gives the plays by kind,
   assert.match(out.at(-1), /^played but not listed in the index: 3 /, 'the new lines come before the last one');
   const lines = [], log = console.log; console.log = x => lines.push(x);
   try { report(night.map(r => ({ ...r, losses: [] }))); } finally { console.log = log; }
-  assert.match(lines.at(-1), /; the hand was hurt 3 times \(1 while still hurt\) and died in 0$/);
+  assert.match(lines.at(-1), /; the hand was hurt 3 times \(1 while still hurt\) and died in 0; nights in port \d+(\.\d)? a chapter$/);
 });
 
 test('the message report gives the lines and notes a chapter writes, and the lines that come most often', () => {

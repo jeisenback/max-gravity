@@ -201,7 +201,11 @@ test('the Suggest buttons line up at 1280px and stack at 390px', async () => {
     const { ev, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     const r = await ev(() => {
-      start({ captainKey: 'hester' }); UI.tab = 'port'; UI.render();
+      start({ captainKey: 'hester' });
+      // a board of three, so there are alternatives to suggest whatever the day's draw (contracts.js)
+      const st = G.state, here = currentPlanet(), reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== st.systemId && inRange(st.systemId, sid)), lanes = freightLanes(here, st.systemId, reach).slice(0, 3);
+      hired().freight = { key: `${here.name}@${st.day}`, list: lanes.map((l, i) => ({ shipper: 'a broker', good: l.cid, tons: 40, from: here.name, sid: l.sid, planet: l.pl.name, yard: false, days: 4, pay: 5000 - i * 500, due: st.day + 20, hazard: false, rumor: false })) }; hired().plan = null;
+      UI.tab = 'port'; UI.render();
       const rows = [...document.querySelectorAll('.suggest-row')];
       return { n: rows.length, lefts: rows.map(row => row.querySelector('button').getBoundingClientRect().left), widths: rows.map(row => [row.querySelector('button').getBoundingClientRect().width, row.getBoundingClientRect().width]),
         below: rows.map(row => row.querySelector('button').getBoundingClientRect().top >= row.querySelector('.hint').getBoundingClientRect().bottom - 1) };

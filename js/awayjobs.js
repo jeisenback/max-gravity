@@ -119,10 +119,10 @@ function bookRun(a) {
 function pitchScene(a) {
   const h = hired(), st = G.state, cap = hiredCaptain(), job = awayJob(a), say = (key, vars) => sceneSay('scene:pitch', key, { last: cap.last, first: cap.first, ...vars });
   const choices = PITCH.map(p => {
-    const odds = pitchOdds(p, a);
-    return { label: `${say(`${p.id}.label`)} [${jobOddsWord(odds)}]`, opinion: p.opinion, run() {
+    const odds = pitchOdds(p, a), r = barReact(cap, p.loves, p.hates);  // an argument they hate costs their regard when it fails
+    return { label: `${say(`${p.id}.label`)}${costNote({ marks: r.n < 0 }, odds)}`, opinion: p.opinion, run() {
       a.pitched = `${st.day}@${st.planet}`;
-      const r = barReact(cap, p.loves, p.hates), ok = Math.random() < odds;
+      const ok = Math.random() < odds;
       if (ok) {
         bookRun(a); a.booked = true;
         return say('win', { react: r.n === 2 ? say(`${p.id}.yes`) : say('win.weighs'), line: r.line, system: SYSTEMS[a.sid].name, planet: a.planet }).replace(/\s+/g, ' ');

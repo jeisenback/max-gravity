@@ -2,12 +2,17 @@
 
 // Sails the hired hand's captain for N runs with random answers and reports runs, days and pay: the tuning tool for the
 // chapter's economy (HIRED_FUND, HIRED_WAGE, HIRED_SHARE, HIRED_TARGET in js/hired.js).
-//   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester] [--real-draw] [--post engineer] [--frames] [--engineer favor-drive] [--scenes] [--messages]
+//   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester] [--real-draw] [--post engineer] [--frames] [--engineer favor-drive] [--scenes] [--messages] [--jobs]
+// --jobs works the Missions page at every landing: a station job where the board has one (jobs.js), and every job elsewhere put to the captain once a stop (awayjobs.js),
+// answered at random like any scene. It reports the jobs worked and offered, what they paid the hand's own savings (the clinic bill of a hurt counted against it), and the
+// hurts they cost, so the pay of jobs can be read against the chapter's price. Without it no job is taken, as before.
 // --scenes adds a report of which scenes played over the seeds (#512): each scene of the editor's index that the narrow build keeps, with its plays and the seeds it
 // played in; the ones that never played; and the titles with the largest share of all plays. A scene is matched to a play by its title, so scenes that share a title
 // share a count. It reports and sets no threshold. It also counts the storylet plays by kind (landing, port, road, and the road scenes of the ship's night) and how many
 // scenes each landing opened or queued. Each draw of a burn's events is made at the second of the burn it would fall on, so the ship's night is in the sample.
 // The totals line also gives how often the hand was hurt, and hurt again while still hurt.
+// The bar is played at every landing as before (one patron, one choice at random), and every run reports what it gave and cost: the talks by topic, the credits
+// spent or won, the points learned at the post, how much the people there came to think of the hand, and the rumors heard.
 // --frames plays each burn's seconds (the drive's speed, the reactor's heat and the reaction mass, engineering.js) and the burn's contact, which the
 // per-frame loop raises in play, and reports raids, scrams, hull lost and extra reaction mass; without it a burn is one jump, as before. It also plays 20 seconds of the
 // live flight loop in each system on arrival (update(), as the frame does), with the autopilot docking her, so what that loop says is in the message report (#656).
@@ -17,14 +22,15 @@
 // is played in each system too, so the traffic's sensors, kills and hails are).
 // With no captain named, the narrow build's captain (Hester, with Cato) sails every seed, as a gunner.
 // Each chapter also reports who was lost or left, when (days since sign-on) and why, and how it ended if it ended early (#357):
-// the hand's death (The Last Run) or the captain's loss (Without a Captain). The totals follow the last seed. Not part of `npm test`.
+// the hand's death (The Last Run), the captain's loss (Without a Captain) or the hand put ashore (Put Ashore). Each starts a new game, so the chapter is over
+// and the soak stops there. The totals follow the last seed. Not part of `npm test`.
 
 const { open, closeBrowser } = require('../tests/helpers');
 
 // realDraw: the two main characters come from the pool as in the game; tests start from the pair they knew (tests/helpers.js).
-async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null } = {}) {
+async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null, jobs = false } = {}) {
   const { ev, errors, ctx } = await open({ scope, seed, debt: true });  // the chapter's economy includes the hiring hall's bond
-  const r = await ev(([maxLegs, key, real, postKey, play, order]) => {
+  const r = await ev(([maxLegs, key, real, postKey, play, order, takeJobs]) => {
     if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [], losses = [], ending = { v: null };
     // Every ship message (the flight log, msg) and port note (UI.notes) the chapter writes, by its text with the numbers and the names taken out.
@@ -41,6 +47,21 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     { const rh = window.hurtHand; window.hurtHand = function (s) { hand.hurt++; if ((s && s.youHurt) || handHurt()) hand.again++; return rh.apply(this, arguments); };
       const oe = window.openEvent; window.openEvent = function (e) { if (landed.on) landed.opened++; return oe.apply(this, arguments); };
       const em = Mods.emit; Mods.emit = function (name) { if (name !== 'landed') return em.apply(this, arguments); const had = !!G.nextEvent; landed.on = true; landed.opened = 0; try { return em.apply(this, arguments); } finally { landed.on = false; const n = landed.opened + (G.nextEvent && !had ? 1 : 0); landed.mix[n] = (landed.mix[n] || 0) + 1; } }; }
+    // The jobs (--jobs): how many were worked at the station and played at the far end of a job elsewhere, what each kind paid the hand (applyJob moves the credits, and a
+    // hurt's clinic bill comes out inside it), the hurts, and the jobs elsewhere offered, put to the captain and agreed to.
+    const work = { station: 0, away: 0, pay: { station: 0, away: 0 }, hurt: 0, offered: 0, pitched: 0, booked: 0, current: 'station' };
+    // The freight (contracts.js): boards drawn, how many were empty, contracts offered, and from the ledger how many runs were contracts, delivered late, or lost the load.
+    const freight = { boards: 0, empty: 0, offered: 0, taken: 0, late: 0, lost: 0 };
+    { const rd = window.drawContracts; window.drawContracts = function () { const list = rd.apply(this, arguments); freight.boards++; if (!list.length) freight.empty++; freight.offered += list.length; return list; }; }
+    { const rj = window.jobStage; window.jobStage = function (job, i) { work.current = AWAY.includes(job) ? 'away' : 'station'; if (i === 0) work[work.current]++; return rj.apply(this, arguments); };
+      const ra = window.applyJob; window.applyJob = function () { const c0 = G.state.credits, h0 = hand.hurt; const out = ra.apply(this, arguments); work.pay[work.current] += G.state.credits - c0; work.hurt += hand.hurt - h0; return out; };
+      const ro = window.awayOffer; window.awayOffer = function () { const o = ro.apply(this, arguments); if (o) work.offered++; return o; }; }
+    // The bar: each choice made in a talk at a table (a topic by its id, a follow-up scene's choice, or leaving them), and what the talks moved: credits, points at the post,
+    // the sum of what the people in the registry think of the hand, and rumors heard. A main character's bar scene is its own scene, counted apart.
+    const bar = { talks: 0, cast: 0, topics: {}, credits: 0, xp: 0, opinion: 0, rumors: 0, in: false };
+    for (const t of BAR_TOPICS) { const m = t.make; t.make = function () { const o = m.apply(this, arguments); o.soakId = t.id; return o; }; }
+    { const rr = window.addRumor; window.addRumor = function () { if (bar.in) bar.rumors++; return rr.apply(this, arguments); }; }
+    const opinions = () => Object.values(G.state.people).reduce((t, p) => t + (p.opinion || 0), 0);
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: key });
     const st = G.state;
     const LIVE_SECONDS = 20, LIVE_STEP = 0.05;  // the live flight played in each system with --frames (#656): the frame step is the game's own cap
@@ -50,12 +71,19 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     const answer = () => {
       for (let k = 0; k < 8 && G.dialog; k++) {
         const d = G.dialog;
-        if (/^(The Last Run|Without a Captain)$/.test(d.event.title)) { ending.v = { day: G.state.day - hired().since, title: d.event.title, how: (hired().died || hired().captainLost || {}).how }; G.dialog = null; return; }  // the endings start a new game: the chapter is over
+        if (/^(The Last Run|Without a Captain|Put Ashore)$/.test(d.event.title)) { ending.v = { day: G.state.day - hired().since, title: d.event.title, how: (hired().died || hired().captainLost || {}).how }; G.dialog = null; return; }  // the endings start a new game: the chapter is over
         scenes[d.event.title] = (scenes[d.event.title] || 0) + 1;
         if (d.event.soakId) byId[d.event.soakId] = (byId[d.event.soakId] || 0) + 1; else byTitle[d.event.title] = (byTitle[d.event.title] || 0) + 1;
         if (odd(d.event.title + d.event.text)) bad.push('text: ' + d.event.title);
         const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
-        if (ok.length) { const res = chooseEvent(pick(ok)); if (odd(res)) bad.push('result: ' + String(res).slice(0, 80)); }
+        if (ok.length) {
+          const i = pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
+          const c0 = G.state.credits, x0 = skillXp(postKey), o0 = atBar ? opinions() : 0;
+          bar.in = atBar;
+          const res = chooseEvent(i); if (odd(res)) bad.push('result: ' + String(res).slice(0, 80));
+          bar.in = false;
+          if (atBar) { const id = c.soakId || (/^Leave/.test(c.label) ? 'leave' : 'follow-up'); bar.talks++; bar.topics[id] = (bar.topics[id] || 0) + 1; bar.credits += G.state.credits - c0; bar.xp += skillXp(postKey) - x0; bar.opinion += opinions() - o0; }
+        }
         finishEvent();
       }
       while (G.dialog) finishEvent();
@@ -74,16 +102,21 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
       if (marks > marksSeen) losses.push({ day, who: `${marks - marksSeen} named`, what: 'marked', why: 'a skill point lost' });
       marksSeen = marks;
     };
-    let runs = 0, stuck = 0, reached = null, offerDay = null;
+    let runs = 0, stuck = 0, reached = null, offerDay = null, nights = 0;
+    const plans = [];  // what the captain's plan at each landing pays the ship a day (0 for a light run; an ice run is marked), for tuning the wait for the market (stay.js)
     const beatDays = [], xoDays = [], waits = [], burns = [], dueBurns = {}, introRun = {};  // introRun: the run in which each main character's first scene played  // waits: days from a captain scene becoming due to its playing; burns: burns sailed with it due, the playing one included  // the day each of the captain's scenes played, and when the used ship was offered
     while (runs < maxLegs && stuck < 5 && !reached && !ending.v) {
       try {
         UI.tab = 'bar'; UI.render();
-        if (G.patrons && G.patrons.length) { openEvent(talkEvent(pick(G.patrons))); answer(); }
+        const talk = () => { if (G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); answer(); } };
+        talk();
+        while (stayOf(hired()) && !ending.v) { if (!passNight()) break; nights++; answer(); talk(); }  // a stay in port (the yard, a wait for the market): each night, the bar again and what the dock brings
         if (order) Object.assign(power(), POWER_PRESETS[order].to);  // the order, before every sail
         const armor0 = st.armor;
         if (!sail()) { stuck++; st.day += 1; continue; }
         const to = hired().run.sid, runPlanet = hired().run.planet, creditsBefore = st.credits;
+        const dayOut = st.day;  // the burn's days as sailed are the days from here to the arrival
+        plans.push({ perDay: Math.round(hired().run.profit / Math.max(1, hired().run.days)), expected: hired().run.profit, days: hired().run.days, ice: !!hired().run.ice, light: !!hired().run.ballast });
         answer();
         G.player.x = BURN_DIST + 40; G.player.y = 0;  // clear of local traffic, as the autopilot leaves her (autopilot.js)
         tryBurn(); enterTransit(); const drawAt = G.transit.times.slice(), draws = drawAt.length; G.transit.times = [];  // as many draws as the burn would make
@@ -101,7 +134,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         for (const c of castAboard()) if ((castRec(c.cast).arc || 0) >= 1 && !(c.cast in introRun)) introRun[c.cast] = runs + 1;
         while (beatDays.length < (hired().beats || 0)) {  // read on the day she left, before the burn's days pass
           const name = CAPTAIN_BEATS[beatDays.length];
-          beatDays.push(st.day - hired().since); waits.push(st.day - hired().since - CAPTAIN_BEAT_DAYS[name]); burns.push(dueBurns[name]);
+          beatDays.push(st.day - hired().since); waits.push(st.day - hired().since - CAPTAIN_BEAT_DAYS[name]); burns.push(dueBurns[name] || 1);  // due and played in the same burn: one burn
         }
         const acts = Object.values(ACTIVITIES).filter(a => a.can());
         if (acts.length) pick(acts).run();
@@ -122,9 +155,16 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
           land(system().planets.find(p => p.name === runPlanet) || pick(system().planets));
         }
         answer();
+        if (takeJobs) {  // the Missions page: one station job where the board has one, and each job elsewhere put to the captain once a stop
+          if (currentPlanet().services.includes('missions') && !jobBoard().done) { Mods.act('takeJob', pick(jobBoard().ids)); answer(); }
+          (hired().away || []).forEach((a, i) => { if (a.booked || pitchedNow(a)) return; work.pitched++; Mods.act('pitchJob', i); answer(); if (a.booked) work.booked++; });
+        }
+        if (G.state !== st) { ending.v = ending.v || { day: st.day - st.hired.since, title: 'a new game' }; break; }  // the chapter ended in a scene the titles above do not name: never read the new game as the old
         tally();
         runs++;
         paid.push(st.credits - creditsBefore);
+        { const led = hired().ledger[0]; if (led && plans.length && led.day === st.day) { plans[plans.length - 1].realized = led.profit; if (led.shipper) { freight.taken++; if (led.late) freight.late++; if (!led.tons) freight.lost++; } } }  // what the run cleared against what she planned on
+        if (plans.length) plans[plans.length - 1].sailed = st.day - dayOut;  // the burn's days as sailed, against the days planned (shorter with a hot drive, --frames)
         if (hired().deal && offerDay === null) offerDay = hired().deal.day - hired().since;
         const xoKey = CAPTAINS[hired().captainKey] && CAPTAINS[hired().captainKey].xo;
         while (xoKey && xoDays.length < (castRec(xoKey).arc || 0)) xoDays.push(st.day - hired().since);
@@ -135,9 +175,10 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     }
     const avg = (a, n) => Math.round(a / Math.max(1, n));
     if (!ending.v) tally();
-    return { messages, frames: fr, hand, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
+    delete work.current; delete bar.in;
+    return { messages, frames: fr, hand, work, bar, nights, plans, freight, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
-  }, [legs, captainKey, realDraw, post, frames, engineer]);
+  }, [legs, captainKey, realDraw, post, frames, engineer, jobs]);
   await ctx.close();
   return { seed, ...r, errors };
 }
@@ -160,6 +201,39 @@ function framesReport(runs, label = '') {
     `pay/run ${Math.round(mean(whole, r => r.avgPayPerRun))}, pay/day ${one(mean(whole, r => r.credits / r.days))}, days to the price ${one(mean(reached, r => r.reached.days))} ` +
     `| per chapter: raids ${one(mean(runs, r => r.frames.raids))}, scrams ${one(mean(runs, r => r.frames.scrams))}, hull lost ${one(mean(runs, r => r.frames.hull))}, ` +
     `extra reaction mass ${one(mean(runs, r => r.frames.fuel))}, contacts seen ${one(mean(runs, r => r.frames.seen))} of ${one(mean(runs, r => r.frames.planned))}`);
+}
+
+// The jobs a chapter worked (--jobs), the means across the seeds: how many at the station and at the far end of a job elsewhere, what each paid, the share of the
+// chapter's credits that was job pay, the hurts, and how the jobs elsewhere went from offer to the captain's yes.
+function jobsReport(runs) {
+  const n = Math.max(1, runs.length), one = x => Math.round(x * 10) / 10, mean = f => one(runs.reduce((t, r) => t + f(r.work), 0) / n);
+  const pay = runs.reduce((t, r) => t + r.work.pay.station + r.work.pay.away, 0), credits = runs.reduce((t, r) => t + r.credits, 0);
+  return `jobs, a chapter's mean over ${runs.length} seeds: station ${mean(w => w.station)} worked for ${mean(w => w.pay.station)} cr, elsewhere ${mean(w => w.away)} played for ${mean(w => w.pay.away)} cr ` +
+    `(offered ${mean(w => w.offered)}, put to the captain ${mean(w => w.pitched)}, agreed ${mean(w => w.booked)}); job pay ${Math.round(100 * pay / Math.max(1, credits))} percent of the credits in hand at the end; hurt by a job ${mean(w => w.hurt)} times`;
+}
+
+// The freight over the chapters, the means across the seeds: boards drawn and empty, contracts offered, taken, late and lost.
+function freightReport(runs) {
+  const n = Math.max(1, runs.length), one = x => Math.round(x * 10) / 10, mean = f => one(runs.reduce((t, r) => t + f(r.freight || {}), 0) / n);
+  return `freight, a chapter's mean over ${runs.length} seeds: ${mean(f => f.boards)} boards drawn, ${mean(f => f.empty)} empty, ${mean(f => f.offered)} contracts offered, ${mean(f => f.taken)} delivered, ${mean(f => f.late)} late, ${mean(f => f.lost)} lost`;
+}
+
+// The captain's runs over the chapters: what she planned on and what they cleared (the plans of each soak result), for tuning what she sails for (WORTH_THE_FUEL, stay.js).
+function plansReport(runs) {
+  const all = runs.flatMap(r => r.plans || []), trade = all.filter(p => !p.ice && !p.light && p.realized !== undefined), one = x => Math.round(x);
+  const mean = f => (trade.length ? trade.reduce((t, p) => t + f(p), 0) / trade.length : 0), pct = f => Math.round(100 * trade.filter(f).length / Math.max(1, trade.length));
+  const perDay = all.filter(p => !p.ice && !p.light).map(p => p.perDay).sort((a, b) => a - b), q = f => perDay[Math.floor(f * Math.max(0, perDay.length - 1))] || 0;
+  return `runs over ${runs.length} seeds: ${all.length} planned (${all.filter(p => p.ice).length} ice, ${all.filter(p => p.light).length} light); a trade run planned on ${one(mean(p => p.perDay))} cr a day ` +
+    `(p10 ${q(0.1)}, median ${q(0.5)}) and cleared ${one(mean(p => p.realized / Math.max(1, p.days || 1)))} a day; ${pct(p => p.realized < p.expected)} percent cleared less than planned, ${pct(p => p.realized < 0)} percent lost money`;
+}
+
+// The bar over the chapters, the means across the seeds: the talks and what they moved, and the choices by topic, most often first.
+function barReport(runs) {
+  const n = Math.max(1, runs.length), one = x => Math.round(x * 10) / 10, mean = f => one(runs.reduce((t, r) => t + f(r.bar), 0) / n), topics = {};
+  for (const r of runs) for (const [k, c] of Object.entries(r.bar.topics)) topics[k] = (topics[k] || 0) + c;
+  return `bar, a chapter's mean over ${runs.length} seeds: ${mean(b => b.talks)} choices at a table and ${mean(b => b.cast)} scenes with a main character; the talks moved ${mean(b => b.credits)} cr, ` +
+    `${mean(b => b.xp)} points at the post, ${mean(b => b.opinion)} of opinion over everyone known, ${mean(b => b.rumors)} rumors heard; by topic: ` +
+    Object.entries(topics).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).map(([k, c]) => `${k} ${one(c / n)}`).join(', ');
 }
 
 // The ship messages and port notes a chapter writes (the `messages` of each soak result): the means across the seeds, then the lines that come most often, as lines to print.
@@ -185,7 +259,8 @@ function report(runs) {
     if (r.ending) total[r.ending.title] = (total[r.ending.title] || 0) + 1;
   }
   const hurt = runs.reduce((n, r) => n + (r.hand ? r.hand.hurt : 0), 0), again = runs.reduce((n, r) => n + (r.hand ? r.hand.again : 0), 0), died = runs.filter(r => r.ending && r.ending.title === 'The Last Run').length;
-  console.log(`${runs.length} chapters, chapters with: ${Object.entries(total).sort().map(([k, v]) => `${k} ${v}`).join(', ') || 'no losses'}${runs.some(r => r.hand) ? `; the hand was hurt ${hurt} times (${again} while still hurt) and died in ${died}` : ''}`);
+  const nights = runs.reduce((n, r) => n + (r.nights || 0), 0);
+  console.log(`${runs.length} chapters, chapters with: ${Object.entries(total).sort().map(([k, v]) => `${k} ${v}`).join(', ') || 'no losses'}${runs.some(r => r.hand) ? `; the hand was hurt ${hurt} times (${again} while still hurt) and died in ${died}` : ''}; nights in port ${Math.round(10 * nights / Math.max(1, runs.length)) / 10} a chapter`);
 }
 
 // The scene index the editor shows (editor.html), as { id, title, off, storylet } for each scene with a title; off is a scene the narrow build leaves out, storylet one that is data outside the hired chapter's registry.
@@ -228,19 +303,23 @@ function scenesReport(runs, rows, legs, top = 10) {
   return out;
 }
 
-module.exports = { soak, soaks, report, framesReport, messagesReport, sceneRows, scenesReport };
+module.exports = { soak, soaks, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport, barReport, plansReport, freightReport };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
-  const seeds = (arg('seeds') || '1').split(',').map(Number), legs = Number(arg('legs') || 40), captainKey = arg('captain'), realDraw = process.argv.includes('--real-draw'), post = arg('post') || 'gunner', frames = process.argv.includes('--frames'), engineer = arg('engineer');
+  const seeds = (arg('seeds') || '1').split(',').map(Number), legs = Number(arg('legs') || 40), captainKey = arg('captain'), realDraw = process.argv.includes('--real-draw'), post = arg('post') || 'gunner', frames = process.argv.includes('--frames'), engineer = arg('engineer'), jobs = process.argv.includes('--jobs');
   (async () => {
     const all = [];
     for (const seed of seeds) {
-      const r = await soak({ seed, legs, captainKey, realDraw, post, frames, engineer });
+      const r = await soak({ seed, legs, captainKey, realDraw, post, frames, engineer, jobs });
       all.push(r);
-      console.log(`seed ${seed} runs ${r.runs} days ${r.days} credits ${r.credits} reached ${JSON.stringify(r.reached)} pay/run ${r.avgPayPerRun} days/run ${r.avgDaysPerRun} stuck ${r.stuck} trouble ${r.beatDays[0] ?? '-'} secret ${r.beatDays[1] ?? '-'} (due ${r.waits.join(',') || '-'} days, ${r.burns.join(',') || '-'} burns) offer ${r.offerDay ?? '-'} intros ${Object.entries(r.introRun).map(([k, v]) => `${k}:${v}`).join(',') || '-'} xo [${r.xoDays.join(',')}] (days since sign-on) bad ${r.bad.length} errors ${r.errors.length}`);
+      console.log(`seed ${seed} runs ${r.runs} days ${r.days} credits ${r.credits} reached ${JSON.stringify(r.reached)} pay/run ${r.avgPayPerRun} days/run ${r.avgDaysPerRun} stuck ${r.stuck} trouble ${r.beatDays[0] ?? '-'} secret ${r.beatDays[1] ?? '-'} (due ${r.waits.join(',') || '-'} days, ${r.burns.join(',') || '-'} burns) offer ${r.offerDay ?? '-'} intros ${Object.entries(r.introRun).map(([k, v]) => `${k}:${v}`).join(',') || '-'} xo [${r.xoDays.join(',')}] (days since sign-on)${jobs ? ` jobs station ${r.work.station} (${r.work.pay.station} cr) away ${r.work.away} (${r.work.pay.away} cr) hurt ${r.work.hurt}` : ''} bad ${r.bad.length} errors ${r.errors.length}`);
     }
     report(all);
+    console.log(barReport(all));
+    console.log(plansReport(all));
+    console.log(freightReport(all));
+    if (jobs) console.log(jobsReport(all));
     if (frames) framesReport(all, engineer ? `${post} with ${engineer}: ` : `${post}: `);
     if (process.argv.includes('--messages')) console.log(messagesReport(all).join('\n'));
     if (process.argv.includes('--scenes')) console.log(scenesReport(all, await sceneRows(), legs).join('\n'));
