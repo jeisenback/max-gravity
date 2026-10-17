@@ -11,10 +11,14 @@ const ARC_STANDING = 1;  // the regard a shipper must have for the ship before i
 const MISSION_ARCS = {
   league: { shipper: 'the League Freight Hall', at: ['Ceres Station'], sid: 'pallas', dest: 'The Hollows', first: 'league-crate',
     title: 'A Crate for {dest}', blurb: '{who} has a sealed crate for the Hollows that the Hall will not put on a bill of lading. It has no weight to speak of, and a day on it.' },
+  concord: { shipper: 'the Concord Freight Office', at: ['Mars'], sid: 'eros', dest: 'Eros Old Town', first: 'concord-auditor',
+    title: 'A Passenger for {dest}', blurb: '{who} has a Fleet auditor who needs a berth to Old Town and does not want her name on the manifest. She travels light and pays on arrival.' },
 };
 const ARC_PEOPLE = {
   wen: { first: 'Wen', last: 'Haraldsen', job: 'delegate of the Hollows', at: 'The Hollows' },
   marit: { first: 'Marit', last: 'Okafor', job: 'guild clerk', at: 'Pallas Refinery' },
+  odile: { first: 'Odile', last: 'Marchetti', job: 'Fleet auditor', at: 'Mars' },
+  hob: { first: 'Hob', last: 'Strand', job: 'air steward', at: 'Eros Old Town' },
 };
 
 // An offer in the shape the Missions page and the pitch read (awayjobs.js): no stages, only a title and a blurb; the far end is the arc's first scene.
