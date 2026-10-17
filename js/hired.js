@@ -273,8 +273,12 @@ function settleRun(planet) {
   like(st.people[h.captain], profit > 0 ? 1 : -1, sceneSay('scene:screens', profit > 0 ? 'run.good.memory' : 'run.bad.memory'));
   const name = run.good ? COMMODITIES.find(c => c.id === run.good).name : null;
   if (settling) return;
-  return (`${name ? (`The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} ` +
-      `cr). `) : 'A run with no cargo. '}Your ` +
+  // The figures are the captain's log's (readouts.js); the note says what was off, then the pay.
+  const off = [];
+  if (run.contract && sold < run.tons) off.push(sold ? `Short: ${run.tons - sold}t of the ${name.toLowerCase()} did not arrive, and ${run.shipper} paid for what did.` : `The load for ${run.shipper} was lost on the way, and there is no pay.`);
+  if (run.contract && st.day > run.due) off.push(`${st.day - run.due} day${st.day - run.due === 1 ? '' : 's'} late, and the pay docked.`);
+  if (profit < 0) off.push(`The run lost ${fmt(-profit)} cr.`);
+  return (`${off.length ? `${off.join(' ')} ` : ''}Your ` +
       `pay: ${fmt(wage)} cr ` +
       `wage${share ? ` and ${fmt(share)} cr share` : ''}.${owed ? ` The yard bill took ${fmt(owed)} cr of the profit first.` : ''}${toHall ? ` The hall took ${fmt(toHall)} cr of your pay. ${h.debt ? `${fmt(h.debt)} cr still owed.` : 'The bond is paid.'}` : ''}`);
 }
@@ -544,7 +548,7 @@ const runHtml = () => {
       : plan.contract ? h`The captain has a contract from ${plan.shipper}: ${plan.tons}t of ${name(plan.good)} to ${plan.planet}, ${SYSTEMS[plan.sid].name}, due by ${dateOf(plan.due)}: ${runTerms(plan)}.${plan.hazard ? ' The lane has raids on it.' : ''}`
       : h`The captain will take the ${plan.tons}t of ${name(plan.good)} aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${runTerms(plan)}.`}</p>
     ${raw(swayHtml())}
-    ${led.length ? h`<div class="eyebrow">Recent runs</div>${listHtml(led, l => h`<div class="hint">${dateOf(l.day)}: ${l.from} to ${l.to}${l.shipper && !l.tons ? `, the load for ${l.shipper} lost, no pay` : l.good ? `, ${l.tons}t ${name(l.good)}${l.shipper ? ` for ${l.shipper}` : ''}, ${l.shipper ? 'paid' : 'profit'} ${fmt(l.shipper ? l.revenue : l.profit)} cr${l.short ? ', part of the load lost' : ''}${l.late ? `, ${l.late} day${l.late === 1 ? '' : 's'} late` : ''}` : ', light'}. You earned ${fmt(l.wage + l.share)} cr.</div>`)}` : ''}
+    ${led.length ? h`<div class="eyebrow">Captain's log</div>${raw(logRowsHtml(led, 5))}` : ''}
   </div>`);
 };
 

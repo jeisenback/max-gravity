@@ -52,6 +52,7 @@ const G = {
   tutThrust: 0,       // seconds of thrust the tutorial has seen, see tutorial.js
   cutHits: [], cutRooms: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js
   burnBoxes: null,    // where each block of the burn view was drawn, for the tests, see transit.js
+  hudStrip: null,     // where the HUD drew the hand's readouts (the strip, readouts.js), for the tests
   commsBox: null,     // where the comms log was drawn, for the tests, see transit.js
   lifeY: null,        // the line below the ship cutaway where the downtime buttons sit, see transit.js
 };
@@ -975,7 +976,8 @@ function drawHudCompact(W) {
   ctx.fillStyle = '#cfe3ff';
   const from = G.transit ? G.transit.to : st.systemId;
   const burn = st.dest ? ` · Burn ${SYSTEMS[st.dest].name} ${travelDays(from, st.dest)}d/${burnFuel(from, st.dest)}rm` : '';
-  ctx.fillText(wrapText(`Cargo ${cargoUsed()}/${s.cargo}t${s.launcher ? ` · Torp ${st.torpedoes || 0}` : ''}${burn}`, w)[0], x, 72);
+  if (hired()) { ctx.fillText(wrapText(stripText(['Hull', 'Savings']), w)[0], x, 72); G.hudStrip = { x, y: 62, w, h: 14 }; }  // the hull and the savings are the bar and the figure above (readouts.js)
+  else ctx.fillText(wrapText(`Cargo ${cargoUsed()}/${s.cargo}t${s.launcher ? ` · Torp ${st.torpedoes || 0}` : ''}${burn}`, w)[0], x, 72);
   if (G.target && p && !inTransit) {
     ctx.fillStyle = npcColor(G.target);
     ctx.fillText(wrapText(`Target: ${G.target.name}, ${Math.round(dist(G.target, p))} out`, W - 24)[0], x, h + 16);
@@ -1027,6 +1029,11 @@ function drawHud(W, H) {
   ctx.fillText(`Credits: ${fmt(st.credits)}`, x, y);
   ctx.fillText(`Cargo:   ${cargoUsed()}/${s.cargo}t`, x, y += 18);
   if (s.launcher) ctx.fillText(`Torps:   ${st.torpedoes || 0}/${TORP_MAX} (F)`, x, y += 18);
+  if (hired()) {  // the hand's readouts (readouts.js): the hull is the bar above
+    const y0 = y + 6;
+    for (const [k, v] of stripNow().filter(([k]) => k !== 'Hull')) for (const l of wrapText(`${k}: ${v}`, w)) ctx.fillText(l, x, y += 18);
+    G.hudStrip = { x, y: y0, w, h: y + 6 - y0 };
+  }
 
   y += 28;
   hudLabel('Nav', x, y);

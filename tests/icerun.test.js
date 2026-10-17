@@ -95,7 +95,7 @@ test('a burn that skips the scenes comes home with a thin hold, and still pays',
     let text; try { text = settleRun(planet); } finally { window.price = realPrice; }
     return { paid: st.credits - credits, text, ledger: h.ledger[0] };
   });
-  assert.ok(r.paid > 0); assert.equal(r.ledger.tons, 20, 'two-fifths of a hold'); assert.match(r.text, /sold 20t of Water/);
+  assert.ok(r.paid > 0); assert.equal(r.ledger.tons, 20, 'two-fifths of a hold'); assert.match(r.text, /^Your pay:/, 'the sale is the captain\'s log\'s line (readouts.js); the note is the pay');
   await done();
 });
 

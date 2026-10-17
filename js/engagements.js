@@ -215,7 +215,7 @@ function raidScene(s) {
   choices.push({ label: `[${POSTS[post].name}] ${raidWords(`post.${kind}.${post}.label`, spec.label)}${raidCostNote(own, s, post)}`, run: () => raidStep(s, own, post) });
   return {
     title: closing ? 'The Closing' : s.beat === 1 ? 'First Pass' : 'Second Pass', personal: true, via: 'crew', owner: 'you',  // yours to decide, not the captain's (hired.js hiredCall)
-    text: `${text}</p><p>${raidRead(s)} Position: ${raidPosition(s)}. Armor ${st.armor}/${ship().armor}.`,
+    text: `${text}</p><p>${raidRead(s)} Armor ${st.armor}/${ship().armor}. ${positionGauge(s.edge, raidPosition(s))}`,  // the position as a gauge (readouts.js) in the last paragraph, until the sensor board (#680)
     choices,
   };
 }

@@ -10,6 +10,7 @@ UI.views.journal = function () {
     .filter((c, i, all) => all.findIndex(d => d.text === c.text) === i && !conditions(st.systemId).some(d => d.text === c.text));
   return String(h`
         ${raw(journalHtml(20))}
+        ${hired() ? h`<h3>Captain's log</h3>${hired().ledger.length ? raw(logRowsHtml(hired().ledger, 20)) : h`<p class="hint">No runs yet. Each run settled is a line here.</p>`}` : ''}
         <h3>Standing</h3>
         <div class="standing">${listHtml(FACTIONS, g => h`<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`)}</div>
         <h3>On the feeds</h3>
