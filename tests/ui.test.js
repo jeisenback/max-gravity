@@ -489,7 +489,7 @@ test('a hired hand docked or on a burn gets no radar, targeting or flight keys i
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     const out = { errors: [] }, W = innerWidth, H = innerHeight, at = m => { G.mode = m; try { drawHud(W, H); } catch (e) { out.errors.push(`${m}:${e.message}`); } return hudCalm(); };
     out.landed = at('landed');
-    G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null;
+    G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null; G.auto = null;  // the autopilot lets go before it calls the burn (autopilot.js)
     out.transit = at('transit'); out.flight = at('flight');
     return out;
   });
@@ -626,4 +626,48 @@ test('day one: the journal keeps the feeds to a line, the bonds legend is swatch
   assert.equal(r.rows, 1, 'a crew member with a view is listed'); assert.ok(!r.noneAfter);
   assert.match(r.eyebrow, /^Captain .+'s run$/, 'the funds and the savings are the strip\'s');
   await done();
+});
+
+// #692: while the crewed pilot flies her out, a hand is shown no flight controls and a key does not strand the ship.
+test('a hand whose pilot flies her out sees no autopilot banner, key list or touch controls, and a key does not take the stick', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.tutorial = null;
+    sail(); while (G.dialog) finishEvent();
+    const out = { mode: G.mode, auto: G.auto && G.auto.kind, calm: hudCalm() };
+    let stop = drawnText(); drawHud(G.W, G.H); Mods.emit('drawOverlay', G.W); out.text = stop();
+    G.keys.left = true; G.keys.thrust = true; update(1 / 30); G.keys.left = G.keys.thrust = false;
+    out.afterKey = { auto: G.auto && G.auto.kind, mode: G.mode };
+    Touch.on = true; Touch.shown = null; Touch.sync(); out.touchHidden = document.getElementById('touch').hidden;
+    return out;
+  });
+  assert.equal(r.mode, 'flight'); assert.equal(r.auto, 'out'); assert.ok(r.calm, 'the sidebar is the calm one');
+  assert.ok(!r.text.some(t => /AUTOPILOT|FLIGHT KEY/.test(t)), `no banner: ${r.text.join('|')}`);
+  assert.ok(!r.text.some(t => /^Arrows\/WASD|^Space\s+fire/.test(t)), 'no key list');
+  assert.deepEqual(r.afterKey, { auto: 'out', mode: 'flight' }, 'a key does not take the stick from the pilot');
+  assert.ok(r.touchHidden, 'no stick or fire button');
+  await done();
+});
+
+test('a hand who is the pilot flies her out by hand, with the controls, and an owner still takes the stick from the autopilot', async () => {
+  const hand = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  const r = await hand.ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.tutorial = null;
+    sail(); while (G.dialog) finishEvent();
+    return { mode: G.mode, auto: G.auto, calm: hudCalm() };
+  });
+  assert.equal(r.mode, 'flight'); assert.equal(r.auto, null, 'no autopilot for the pilot'); assert.ok(!r.calm, 'the pilot keeps the flight sidebar');
+  await hand.done();
+  const owner = await open({ scope: 'full' });
+  const o = await owner.ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent(); G.state.tutorial = null;
+    G.state.dest = Object.keys(SYSTEMS).find(id => id !== G.state.systemId && inRange(G.state.systemId, id)); G.state.fuel = ship().fuel;
+    ORDERS.pilot.find(x => x.id === 'depart').run();
+    const out = { auto: G.auto && G.auto.kind, calm: hudCalm() };
+    G.keys.left = true; update(1 / 30); G.keys.left = false; out.after = G.auto;
+    return out;
+  });
+  assert.equal(o.auto, 'out'); assert.ok(!o.calm, 'an owner keeps the flight sidebar'); assert.equal(o.after, null, 'a key takes the stick from the autopilot');
+  await owner.done();
 });

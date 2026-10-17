@@ -985,8 +985,8 @@ function drawHudCompact(W) {
 }
 
 // A hired hand who is docked or on a burn does not fly or target anything: the radar, the Nav and Target blocks and the key
-// legend stay for flight (a pilot-post hand takes the ship out by hand).
-const hudCalm = () => hired() && (G.mode === 'landed' || G.mode === 'transit');
+// legend stay for flight (a pilot-post hand takes the ship out by hand). The same while the crewed pilot flies her out (G.auto, autopilot.js, #692).
+const hudCalm = () => hired() && (G.mode === 'landed' || G.mode === 'transit' || (G.mode === 'flight' && !!G.auto));
 
 function drawHud(W, H) {
   if (!G.hudW) return drawHudCompact(W);
