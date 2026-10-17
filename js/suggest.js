@@ -12,9 +12,12 @@ function suggestRun(i) {
   if (cap.opinion < captainHears()) return `Captain ${cap.last} does not take suggestions from a hand they do not know yet.`;
   h.sway = { day: G.state.day, at: G.state.planet };
   if (!d.sway.ok(alt, plan)) return d.sway.no;
-  h.plan.run = { ...alt, ballast: false };
+  h.plan.run = { ...alt, ballast: !!alt.ballast };  // the room's port may be a light run
   return d.sway.yes;
 }
+
+// What a run on offer is, in a line: a contract, or the room's port (room.js), which may be a light run.
+const altWord = (o, name) => (o.room ? `Back to your room at ${o.planet}, ${SYSTEMS[o.sid].name} (${o.good ? `${o.tons}t ${name(o.good)}` : 'no cargo'})` : `${o.tons}t ${name(o.good)} to ${o.planet}, ${SYSTEMS[o.sid].name}`);
 
 function swayHtml() {
   const hd = hired(), d = captainEntry(), plan = currentPlan();
@@ -22,7 +25,7 @@ function swayHtml() {
   const name = id => COMMODITIES.find(c => c.id === id).name;
   const cap = hiredCaptain(), deaf = cap.opinion < captainHears();  // shut, with the reason beside it, until the captain listens
   return String(h`<div class="eyebrow">Suggest another run</div>${deaf ? h`<p class="hint">Captain ${cap.last} does not take suggestions from a hand they do not know yet.</p>` : ''}${swayAsked() ? raw('<p class="hint">You have put a run to the captain already at this stop.</p>') : listHtml(hd.plan.alts, (o, i) =>
-    h`<div class="row suggest-row"><span class="hint">${o.tons}t ${name(o.good)} to ${o.planet}, ${SYSTEMS[o.sid].name}: ${runTerms(o)}.</span> <button data-action="suggestRun" data-arg="${i}" ${deaf ? 'disabled' : ''}>Suggest</button></div>`)}`);
+    h`<div class="row suggest-row"><span class="hint">${altWord(o, name)}: ${runTerms(o)}.</span> <button data-action="suggestRun" data-arg="${i}" ${deaf ? 'disabled' : ''}>Suggest</button></div>`)}`);
 }
 
 Mods.register({
