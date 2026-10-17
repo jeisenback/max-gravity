@@ -7,7 +7,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const NAMES = ['SYSTEMS', 'PRICE_MULT', 'CONTRACT_RATE', 'CONTRACT_FEE', 'haulRate', 'LONG_HAUL', 'LONG_HAUL_FLOOR', 'RUMOR_PREMIUM', 'HAZARD_PREMIUM', 'HAZARD_AT', 'LATE_DOCK', 'LATE_FLOOR', 'SHIPPERS', 'shipperOf', 'freightLanes', 'drawContracts', 'contractBoard', 'pickContract', 'latePay', 'travelDays', 'inRange'];
+const NAMES = ['SYSTEMS', 'PRICE_MULT', 'CONTRACT_RATE', 'CONTRACT_FEE', 'haulRate', 'LONG_HAUL', 'LONG_HAUL_FLOOR', 'RUMOR_PREMIUM', 'HAZARD_PREMIUM', 'HAZARD_AT', 'LATE_DOCK', 'LATE_FLOOR', 'SHIPPERS', 'shipperOf', 'freightLanes', 'drawContracts', 'contractBoard', 'pickContract', 'latePay', 'travelDays', 'inRange', 'BOARD_ODDS', 'STANDING_MAX', 'STANDING_GOOD', 'STANDING_BAD', 'TRUSTED_PAY', 'standingOf', 'standingDelta', 'nextStanding', 'shipperWord', 'deliveryOff'];
 
 // A game state at Earth on day 10. `danger` is the world's unrest by system; `dice` gives the rolls in order, then 0.5.
 const dice = (rolls = []) => { const seq = [...rolls]; return () => (seq.length ? seq.shift() : 0.5); };
@@ -108,4 +108,41 @@ test('a late delivery is docked a tenth a day and never below half', () => {
   const { latePay } = setup();
   assert.equal(latePay(1000, 20, 18), 1000); assert.equal(latePay(1000, 20, 20), 1000);
   assert.equal(latePay(1000, 20, 21), 900); assert.equal(latePay(1000, 20, 24), 600); assert.equal(latePay(1000, 20, 30), 500); assert.equal(latePay(1000, 20, 99), 500);
+});
+
+test('a shipper\'s regard: a delivery on the day and whole raises it, each fault lowers it, it stays within three either way, and older saves have none', () => {
+  const { standingDelta, nextStanding, standingOf, STANDING_MAX } = setup();
+  const run = { tons: 90, due: 20 };
+  assert.equal(standingDelta(run, 90, 20), 1, 'whole and on the day'); assert.equal(standingDelta(run, 90, 18), 1, 'early is on the day');
+  assert.equal(standingDelta(run, 90, 21), -1, 'a day late'); assert.equal(standingDelta(run, 60, 20), -1, 'short'); assert.equal(standingDelta(run, 0, 20), -2, 'lost');
+  assert.equal(standingDelta(run, 60, 25), -2, 'short and late'); assert.equal(standingDelta(run, 0, 25), -3, 'lost and late');
+  assert.equal(nextStanding(STANDING_MAX, 1), STANDING_MAX); assert.equal(nextStanding(-STANDING_MAX, -2), -STANDING_MAX); assert.equal(nextStanding(1, -2), -1);
+  assert.equal(standingOf({}, 'the Rook'), 0, 'a save from before has none'); assert.equal(standingOf({ standing: { 'the Rook': 2 } }, 'the Rook'), 2);
+});
+
+test('the word for a shipper\'s regard takes no verb, so it follows any shipper\'s name, and says nothing of a stranger', () => {
+  const { shipperWord } = setup();
+  assert.equal(shipperWord(0), ''); assert.equal(shipperWord(1), 'a shipper that knows the ship'); assert.equal(shipperWord(2), 'a shipper that trusts the ship'); assert.equal(shipperWord(3), 'a shipper that trusts the ship');
+  assert.equal(shipperWord(-1), 'a shipper that is wary of the ship'); assert.match(shipperWord(-2), /wary/);
+});
+
+test('a shipper that trusts the ship offers more and pays a tenth better; one that has lost faith in it offers nothing', () => {
+  const { st, earth, reach, drawContracts, BOARD_ODDS, TRUSTED_PAY, STANDING_GOOD, STANDING_BAD } = setup();
+  const draw = standing => drawContracts(st, earth, 'earth', reach, 120, st.day, dice([0.12, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]), standing);
+  assert.ok(BOARD_ODDS.trusted[0] < BOARD_ODDS.small[0] && BOARD_ODDS.trusted[0] < BOARD_ODDS.big[0], 'fewer empty days');
+  assert.equal(draw(0).length, 0, 'a roll of 0.12 is an empty day for a stranger (the chance of none is 0.15 at a big port)');
+  assert.ok(draw(STANDING_GOOD).length >= 1, 'and a day with freight for one that trusts the ship (the chance of none is 0.1)');
+  assert.equal(draw(STANDING_BAD).length, 0, 'nothing from a shipper at its limit'); assert.equal(draw(-3).length, 0);
+  const plain = drawContracts(st, earth, 'earth', reach, 120, st.day, dice([0.9, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]), 1)[0], trusted = drawContracts(st, earth, 'earth', reach, 120, st.day, dice([0.9, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5]), STANDING_GOOD)[0];
+  assert.deepEqual([plain.good, plain.planet, plain.tons, plain.due], [trusted.good, trusted.planet, trusted.tons, trusted.due], 'the same lane and load');
+  assert.ok(Math.abs(trusted.pay / plain.pay - (1 + TRUSTED_PAY + (plain.rumor ? 0.5 : 0) + (plain.hazard ? 0.3 : 0)) / (1 + (plain.rumor ? 0.5 : 0) + (plain.hazard ? 0.3 : 0))) < 0.01, 'a tenth on the premium');
+});
+
+test('what was off with a delivery: the worst of it, with the figures the agent at the far end reads', () => {
+  const { deliveryOff } = setup();
+  const run = { shipper: 'the Rook', good: 'water', tons: 90, due: 20 };
+  assert.equal(deliveryOff(run, 90, 20), null); assert.equal(deliveryOff(run, 90, 15), null);
+  assert.deepEqual({ ...deliveryOff(run, 90, 22) }, { kind: 'late', shipper: 'the Rook', good: 'water', tons: 90, got: 90, late: 2, due: 20 });
+  assert.equal(deliveryOff(run, 60, 20).kind, 'short'); assert.equal(deliveryOff(run, 60, 25).kind, 'short', 'short and late is short');
+  assert.equal(deliveryOff(run, 0, 25).kind, 'lost'); assert.equal(deliveryOff(run, 0, 25).late, 5, 'and still says how late');
 });

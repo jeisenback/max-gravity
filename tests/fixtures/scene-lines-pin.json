@@ -48,6 +48,240 @@
   ]
  },
  {
+  "id": "scene:freight-agent:late",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You say it was the ship's, and not the lane's or the dock's. Agent Singh writes it as you say it. \"That's a short note,\" Agent Singh says. \"Most of them run longer.\"",
+    "mem": [
+     "9 Jul 2214: You owned the delivery to me at the lock."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "You say it was the ship's, and not the lane's or the dock's. Agent Singh writes it as you say it. \"That's a short note,\" Agent Singh says. \"Most of them run longer.\"",
+    "mem": [
+     "9 Jul 2214: You owned the delivery to me at the lock."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You give Agent Singh the burn as it went, the day and the hour and what came aboard and what didn't. Agent Singh checks it against the notices on the slate, one line at a time, and each line holds. \"That I can send,\" Agent Singh says.",
+    "mem": [
+     "9 Jul 2214: You gave me the facts and they checked out."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "x": {
+     "the Compact Freight Office": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Agent Singh listens to all of it and writes down the part with a number on it, which is about half. \"I can't send the rest,\" Agent Singh says. \"Nobody can check it.\"",
+    "mem": [
+     "9 Jul 2214: You gave me a long story and I could use half of it."
+    ],
+    "fx": {
+     "p10": -1
+    },
+    "x": {
+     "the Compact Freight Office": -1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You say nothing. Agent Singh waits through it, then writes the figures down as they stand.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You say nothing. Agent Singh waits through it, then writes the figures down as they stand.",
+    "next": null
+   }
+  ],
+  "title": "Late at the Lock",
+  "text": "Agent Singh has been at the foot of the ramp since the day on the paper, with a slate and a folding stool. The paper said 7 Jul 2214. The ship is 2 days past it. \"I sign for the day it comes in,\" Agent Singh says. \"the Compact Freight Office docks a tenth of the pay for every day, and I don't set the tenth. I read it out.\"",
+  "labels": [
+   "Own it",
+   "Make the case [40%; if it fails: the shipper's regard]",
+   "Say nothing"
+  ]
+ },
+ {
+  "id": "scene:freight-agent:short",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You say it was the ship's, and not the lane's or the dock's. Agent Singh writes it as you say it. \"That's a short note,\" Agent Singh says. \"Most of them run longer.\"",
+    "mem": [
+     "9 Jul 2214: You owned the delivery to me at the lock."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "You say it was the ship's, and not the lane's or the dock's. Agent Singh writes it as you say it. \"That's a short note,\" Agent Singh says. \"Most of them run longer.\"",
+    "mem": [
+     "9 Jul 2214: You owned the delivery to me at the lock."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You give Agent Singh the burn as it went, the day and the hour and what came aboard and what didn't. Agent Singh checks it against the notices on the slate, one line at a time, and each line holds. \"That I can send,\" Agent Singh says.",
+    "mem": [
+     "9 Jul 2214: You gave me the facts and they checked out."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "x": {
+     "the Compact Freight Office": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Agent Singh listens to all of it and writes down the part with a number on it, which is about half. \"I can't send the rest,\" Agent Singh says. \"Nobody can check it.\"",
+    "mem": [
+     "9 Jul 2214: You gave me a long story and I could use half of it."
+    ],
+    "fx": {
+     "p10": -1
+    },
+    "x": {
+     "the Compact Freight Office": -1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You say nothing. Agent Singh waits through it, then writes the figures down as they stand.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You say nothing. Agent Singh waits through it, then writes the figures down as they stand.",
+    "next": null
+   }
+  ],
+  "title": "Short at the Lock",
+  "text": "Agent Singh counts the lock twice, a stroke on the slate for every ten tons. The paper says 90t of water. Agent Singh makes it 60t. \"I sign for what I count,\" Agent Singh says. \"the Compact Freight Office pays for 60. If the rest is in a hold somewhere, tell me where, and I'll write that instead.\"",
+  "labels": [
+   "Own it",
+   "Make the case [40%; if it fails: the shipper's regard]",
+   "Say nothing"
+  ]
+ },
+ {
+  "id": "scene:freight-agent:lost",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You say it was the ship's, and not the lane's or the dock's. Agent Singh writes it as you say it. \"That's a short note,\" Agent Singh says. \"Most of them run longer.\"",
+    "mem": [
+     "9 Jul 2214: You owned the delivery to me at the lock."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "You say it was the ship's, and not the lane's or the dock's. Agent Singh writes it as you say it. \"That's a short note,\" Agent Singh says. \"Most of them run longer.\"",
+    "mem": [
+     "9 Jul 2214: You owned the delivery to me at the lock."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You give Agent Singh the burn as it went, the day and the hour and what came aboard and what didn't. Agent Singh checks it against the notices on the slate, one line at a time, and each line holds. \"That I can send,\" Agent Singh says.",
+    "mem": [
+     "9 Jul 2214: You gave me the facts and they checked out."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "x": {
+     "the Compact Freight Office": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Agent Singh listens to all of it and writes down the part with a number on it, which is about half. \"I can't send the rest,\" Agent Singh says. \"Nobody can check it.\"",
+    "mem": [
+     "9 Jul 2214: You gave me a long story and I could use half of it."
+    ],
+    "fx": {
+     "p10": -1
+    },
+    "x": {
+     "the Compact Freight Office": -1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You say nothing. Agent Singh waits through it, then writes the figures down as they stand.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You say nothing. Agent Singh waits through it, then writes the figures down as they stand.",
+    "next": null
+   }
+  ],
+  "title": "Nothing to Sign For",
+  "text": "Agent Singh walks the lock from the outer door to the inner and comes back to the ramp with nothing on the slate. The paper says 90t of water for the Compact Freight Office. The hold is empty. \"Nothing to sign for,\" Agent Singh says. \"I send that as it stands, and they ask me where it went. I'd like to have an answer.\"",
+  "labels": [
+   "Own it",
+   "Make the case [40%; if it fails: the shipper's regard]",
+   "Say nothing"
+  ]
+ },
+ {
   "id": "scene:put-ashore:plain",
   "plays": [],
   "title": "Put Ashore",

@@ -53,6 +53,11 @@ const playScenes = () => {
 
   // ---------- the stakes ----------
   run('scene:warning', {}, () => warningScene());
+  // The freight agent at the far end (shippers.js): late, short and lost, each choice with the case held and not held; the shipper's regard is what the extra records.
+  for (const [kind, o] of [['late', { tons: 90, got: 90, late: 2 }], ['short', { tons: 90, got: 60, late: 0 }], ['lost', { tons: 90, got: 0, late: 3 }]]) {
+    run(`scene:freight-agent:${kind}`, {}, () => agentScene({ kind, shipper: 'the Compact Freight Office', good: 'water', due: G.state.day - o.late, ...o }, freightAgent(currentPlanet())),
+      { rolls: [0, 0.99], extra: () => hired().standing });
+  }
   run('scene:put-ashore:plain', {}, () => putAshoreScene(), { skip: [0] });
   run('scene:put-ashore:facts', {}, () => { hired().flags = { iceBad: true, hurt: true, raided: true }; return putAshoreScene(); }, { skip: [0] });
   run('scene:hand-death:hurt', {}, () => handDeathScene('hurt'), { skip: [0] });

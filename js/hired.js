@@ -115,6 +115,8 @@ function setupHired(o) {
     [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1])
   },
     sheet: newSheet(st.background, post),  // the hand's stats (sheet.js)
+    standing: {},  // each shipper's regard for the ship, by name (shippers.js)
+    off: null,  // a delivery that was late, short or lost, for the agent at the dock to meet (shippers.js)
     asked: 0,
     raidTold: false,
     debt: o.debt !== undefined ? o.debt : HIRED_DEBT
@@ -245,6 +247,7 @@ function settleRun(planet) {
     sold = have; revenue = latePay(Math.round(run.pay * have / run.tons), run.due, st.day);
     if (have < run.tons) captainFlag(have ? 'contractShort' : 'contractLost');
     if (st.day > run.due) captainFlag('late');
+    shipperSettled(run, have, st.day);  // the shipper's regard, and a word with the agent if it was off (shippers.js)
     if (have - run.tons > 0) st.cargo[run.good] = have - run.tons; else { delete st.cargo[run.good]; delete st.paid[run.good]; }
     h.fund += revenue;
   } else if (run.good && st.cargo[run.good] && price(planet, run.good) !== null) {
@@ -544,8 +547,8 @@ const runHtml = () => {
   const hd = G.state.hired, plan = currentPlan(), led = hd.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
   return String(h`<div class="post"><div class="eyebrow">${hiredCaptain() ? h`<span class="nowrap">Captain ${raw(personLink(hiredCaptain()))}'s</span> run` : 'The captain\'s run'} &middot; ship's funds ${fmt(hd.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
     <p class="desc">${plan && plan.yard && wantsYard() ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'Nothing on the board, and nowhere in reach to look. The captain is waiting for a shipper.'
-      : plan.ballast ? h`Nothing on the board here. The captain will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
-      : plan.contract ? h`The captain has a contract from ${plan.shipper}: ${plan.tons}t of ${name(plan.good)} to ${plan.planet}, ${SYSTEMS[plan.sid].name}, due by ${dateOf(plan.due)}: ${runTerms(plan)}.${plan.hazard ? ' The lane has raids on it.' : ''}`
+      : plan.ballast ? h`Nothing on the board here.${closedHere() ? ' The shipper here has closed its board to the ship.' : ''} The captain will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
+      : plan.contract ? h`The captain has a contract from ${plan.shipper}${shipperWord(standingOf(hd, plan.shipper)) ? `, ${shipperWord(standingOf(hd, plan.shipper))}` : ''}: ${plan.tons}t of ${name(plan.good)} to ${plan.planet}, ${SYSTEMS[plan.sid].name}, due by ${dateOf(plan.due)}: ${runTerms(plan)}.${plan.hazard ? ' The lane has raids on it.' : ''}`
       : h`The captain will take the ${plan.tons}t of ${name(plan.good)} aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${runTerms(plan)}.`}</p>
     ${raw(swayHtml())}
     ${led.length ? h`<div class="eyebrow">Captain's log</div>${raw(logRowsHtml(led, 5))}` : ''}
