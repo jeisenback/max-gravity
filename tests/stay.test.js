@@ -12,7 +12,7 @@ after(closeBrowser);
 const helpers = () => {
   window.setup = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
-    const st = G.state; st.story.next = 1e9; st.day += 30; st.tutorial = null; G.mode = 'landed'; hired().fund = 50000; hired().iceAt = st.day;
+    const st = G.state; st.story.next = 1e9; st.day += 30; st.tutorial = null; G.mode = 'landed'; hired().fund = 50000; hired().iceAt = st.day; hired().runsDone = 1;  // past the port she signed on at: the market wait is on
     G.dialog = null; G.nextEvent = null;
     return st;
   };

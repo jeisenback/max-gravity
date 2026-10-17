@@ -184,7 +184,8 @@ const hiredMay = (id, a) => a.hiredOnly ? !!hired() : !hired() || (!['drills', '
 
 // ---------- the captain's runs ----------
 
-// Every port outside this system that buys something we can carry, scored by profit per day.
+// Every port outside this system that buys something we can carry, scored by profit per day. The far end's price is what she knows of it
+// (knownPrice, known.js): a rumor, her own last sighting, or the usual price; the sale there is at the real price (settleRun).
 let planAlts = [];  // the runs that came next, for the hand to suggest (suggest.js)
 function planRun() {
   planAlts = [];
@@ -198,13 +199,13 @@ function planRun() {
     const days = Math.max(1, travelDays(from, sid));
     for (const pl of sys.planets.filter(x => x.services.includes('trade'))) {
       if (held) {  // already loaded (a run that ended somewhere else): sell what we have
-        const sell = price(pl, held.id);
+        const sell = knownPrice(st, pl, held.id, false);
         if (sell !== null) options.push({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), good: held.id, tons: st.cargo[held.id], cost: Math.round(st.paid[held.id] || 0), loaded: true, profit: Math.round(sell * st.cargo[held.id] - (st.paid[held.id] || 0)), days });
         continue;
       }
       if (!here.services.includes('trade')) continue;
       for (const c of COMMODITIES) {
-        const buy = price(here, c.id), sell = price(pl, c.id);
+        const buy = price(here, c.id), sell = knownPrice(st, pl, c.id, false);
         if (buy === null || sell === null || sell <= buy) continue;
         let tons = Math.min(free, Math.floor(h.fund / buy));
         while (tons > 0 && tradeTotal(here, c.id, tons, 1) > h.fund) tons--;
@@ -249,6 +250,7 @@ function sail() {
     st.paid[plan.good] = (st.paid[plan.good] || 0) + cost;
     h.fund -= cost;
   }
+  recordPrices(h, here, st.day);  // what she saw here, her own buying in it, is what she plans on next time (known.js)
   h.run = { ...plan, cost, day: st.day, from: st.planet };
   if (plan.ice) { h.run.ice = { edge: 0 }; h.iceAt = st.day; h.iceRuns = (h.iceRuns || 0) + 1; }  // the ice is cut on the way, not bought
   h.plan = null;
@@ -556,11 +558,12 @@ const runTerms = r => `${r.days} days, about ${fmt(r.profit)} cr profit, so abou
 
 const runHtml = () => {
   const hd = G.state.hired, plan = currentPlan(), led = hd.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
+  const far = plan && plan.good && !plan.ice && SYSTEMS[plan.sid].planets.find(p => p.name === plan.planet), basis = far ? basisText(priceBasis(G.state, far, plan.good, false), plan.planet) : '';
   return String(h`<div class="post"><div class="eyebrow">${hiredCaptain() ? h`<span class="nowrap">Captain ${raw(personLink(hiredCaptain()))}'s</span> run` : 'The captain\'s run'} &middot; ship's funds ${fmt(hd.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
     <p class="desc">${plan && plan.yard && wantsYard() ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'The captain is waiting for a market worth the fuel.'
       : plan.ballast ? h`The captain has no cargo worth carrying and will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
       : plan.loaded ? h`The captain will take the ${plan.tons}t of ${name(plan.good)} already aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${plan.days} days.`
-      : h`The captain will buy ${plan.tons}t of ${name(plan.good)} here for ${fmt(plan.cost)} cr and take it to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${runTerms(plan)}.`}</p>
+      : h`The captain will buy ${plan.tons}t of ${name(plan.good)} here for ${fmt(plan.cost)} cr and take it to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${runTerms(plan)}.`}${basis ? h` She plans on ${basis}.` : ''}</p>
     ${raw(swayHtml())}
     ${led.length ? h`<div class="eyebrow">Recent runs</div>${listHtml(led, l => h`<div class="hint">${dateOf(l.day)}: ${l.from} to ${l.to}${l.good ? `, ${l.tons}t ${name(l.good)}, profit ${fmt(l.profit)} cr` : ', light'}. You earned ${fmt(l.wage + l.share)} cr.</div>`)}` : ''}
   </div>`);

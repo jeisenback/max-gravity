@@ -31,7 +31,7 @@ test('with --jobs the soak works the station jobs and puts the jobs elsewhere to
   assert.ok(w.pitched >= w.booked && w.offered >= w.pitched / 4, `offered ${w.offered}, pitched ${w.pitched}, booked ${w.booked}`);
   assert.match(jobsReport([r]), /^jobs, a chapter's mean over 1 seeds: station \d+ worked for -?\d+ cr, elsewhere \d+ played for -?\d+ cr \(offered \d+, put to the captain \d+, agreed \d+\); job pay -?\d+ percent/);
   const plain = await soak({ seed: 1, legs: 10 });
-  assert.equal(plain.work.station + plain.work.away, 0, 'without the flag no job is taken');
+  assert.equal(plain.work.station, 0, 'without the flag no station job is taken (a job elsewhere can still play when the captain happens to land there)');
 });
 
 test('for every captain the trouble, then the secret, then the used-ship offer', async () => {

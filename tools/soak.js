@@ -112,7 +112,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         const armor0 = st.armor;
         if (!sail()) { stuck++; st.day += 1; continue; }
         const to = hired().run.sid, runPlanet = hired().run.planet, creditsBefore = st.credits;
-        plans.push({ perDay: Math.round(hired().run.profit / Math.max(1, hired().run.days)), ice: !!hired().run.ice, light: !!hired().run.ballast });
+        plans.push({ perDay: Math.round(hired().run.profit / Math.max(1, hired().run.days)), expected: hired().run.profit, days: hired().run.days, ice: !!hired().run.ice, light: !!hired().run.ballast });
         answer();
         G.player.x = BURN_DIST + 40; G.player.y = 0;  // clear of local traffic, as the autopilot leaves her (autopilot.js)
         tryBurn(); enterTransit(); const drawAt = G.transit.times.slice(), draws = drawAt.length; G.transit.times = [];  // as many draws as the burn would make
@@ -159,6 +159,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         tally();
         runs++;
         paid.push(st.credits - creditsBefore);
+        { const led = hired().ledger[0]; if (led && plans.length && led.day === st.day) plans[plans.length - 1].realized = led.profit; }  // what the run cleared against what she planned on
         if (hired().deal && offerDay === null) offerDay = hired().deal.day - hired().since;
         const xoKey = CAPTAINS[hired().captainKey] && CAPTAINS[hired().captainKey].xo;
         while (xoKey && xoDays.length < (castRec(xoKey).arc || 0)) xoDays.push(st.day - hired().since);
@@ -204,6 +205,15 @@ function jobsReport(runs) {
   const pay = runs.reduce((t, r) => t + r.work.pay.station + r.work.pay.away, 0), credits = runs.reduce((t, r) => t + r.credits, 0);
   return `jobs, a chapter's mean over ${runs.length} seeds: station ${mean(w => w.station)} worked for ${mean(w => w.pay.station)} cr, elsewhere ${mean(w => w.away)} played for ${mean(w => w.pay.away)} cr ` +
     `(offered ${mean(w => w.offered)}, put to the captain ${mean(w => w.pitched)}, agreed ${mean(w => w.booked)}); job pay ${Math.round(100 * pay / Math.max(1, credits))} percent of the credits in hand at the end; hurt by a job ${mean(w => w.hurt)} times`;
+}
+
+// The captain's runs over the chapters: what she planned on and what they cleared (the plans of each soak result), for tuning what she sails for (WORTH_THE_FUEL, stay.js).
+function plansReport(runs) {
+  const all = runs.flatMap(r => r.plans || []), trade = all.filter(p => !p.ice && !p.light && p.realized !== undefined), one = x => Math.round(x);
+  const mean = f => (trade.length ? trade.reduce((t, p) => t + f(p), 0) / trade.length : 0), pct = f => Math.round(100 * trade.filter(f).length / Math.max(1, trade.length));
+  const perDay = all.filter(p => !p.ice && !p.light).map(p => p.perDay).sort((a, b) => a - b), q = f => perDay[Math.floor(f * Math.max(0, perDay.length - 1))] || 0;
+  return `runs over ${runs.length} seeds: ${all.length} planned (${all.filter(p => p.ice).length} ice, ${all.filter(p => p.light).length} light); a trade run planned on ${one(mean(p => p.perDay))} cr a day ` +
+    `(p10 ${q(0.1)}, median ${q(0.5)}) and cleared ${one(mean(p => p.realized / Math.max(1, p.days || 1)))} a day; ${pct(p => p.realized < p.expected)} percent cleared less than planned, ${pct(p => p.realized < 0)} percent lost money`;
 }
 
 // The bar over the chapters, the means across the seeds: the talks and what they moved, and the choices by topic, most often first.
@@ -282,7 +292,7 @@ function scenesReport(runs, rows, legs, top = 10) {
   return out;
 }
 
-module.exports = { soak, soaks, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport, barReport };
+module.exports = { soak, soaks, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport, barReport, plansReport };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
@@ -296,6 +306,7 @@ if (require.main === module) {
     }
     report(all);
     console.log(barReport(all));
+    console.log(plansReport(all));
     if (jobs) console.log(jobsReport(all));
     if (frames) framesReport(all, engineer ? `${post} with ${engineer}: ` : `${post}: `);
     if (process.argv.includes('--messages')) console.log(messagesReport(all).join('\n'));
