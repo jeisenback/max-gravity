@@ -3,10 +3,10 @@
 // Jobs somewhere else: a contact at a port offers work at another one, and the hand has to get the captain to fly them there. The
 // captain picks the run, so you put it to them (once a stop per job) with an argument: the pay, what they owe you, that it is right,
 // or a dare. How it lands is the captain's own character (barReact on their traits against what each argument loves and hates), then
-// how far they trust you and what you know, and a roll. If they agree the run is set to that port (a light run if nothing there pays);
+// how far they trust you and your wit, and a roll. If they agree the run is set to that port (a light run if nothing there pays);
 // if not, the job waits. At the far end the job plays like a station job (jobs.js): checks, danger, and your own pay. Loaded after jobs.js.
 
-const AWAY_MAX = 2, AWAY_CHANCE = 0.5, PITCH_BASE = 0.35, AWAY_NEAR_DAYS = 6;  // work is offered at ports a few days out, when there are any
+const AWAY_MAX = 2, AWAY_CHANCE = 0.5, AWAY_NEAR_DAYS = 6;  // work is offered at ports a few days out, when there are any
 
 const AWAY = [
   { id: 'package', title: 'A Package for {dest}', blurb: '{who} has a sealed package for a contact on {dest}, and doesn\'t trust the post.',
@@ -103,8 +103,8 @@ const PITCH = [  // the four ways of putting it; their words (the button, and wh
 ];
 function pitchOdds(arg, a) {
   const h = hired(), cap = hiredCaptain(), r = barReact(cap, arg.loves, arg.hates), plan = currentPlan();
-  const fit = plan && plan.sid === a.sid ? 0.1 : 0, trust = 0.06 * Math.max(-3, Math.min(4, cap.opinion)), know = 0.04 * skillLevel(h.post);
-  return Math.max(0.05, Math.min(0.9, PITCH_BASE + 0.2 * (r.n - 1) + trust + know + fit));
+  const fit = plan && plan.sid === a.sid ? 0.1 : 0, trust = 0.06 * Math.max(-3, Math.min(4, cap.opinion));
+  return check(handStat('wit'), 0, DIFFICULTY.word, 0.2 * (r.n - 1) + trust + fit);  // a word, not the post's work: the hand's wit and the captain's trust
 }
 // The run to the job's port: the one already planned, one of the runners-up, or a light run if nothing there pays.
 function bookRun(a) {

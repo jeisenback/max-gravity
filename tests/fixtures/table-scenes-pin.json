@@ -5,7 +5,7 @@
   "text": "The nav plot and the stars disagree by a hair, and the hair is growing. Somewhere in the gyro stack a reading has gone stale, and the ship is sliding further off her line every hour.",
   "labels": [
    "Re-fix the plot against three stars",
-   "Nudge the trim until it looks right [55%; if it fails: you learn less, and the captain marks it]"
+   "Nudge the trim until it looks right [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -28,7 +28,7 @@
   "text": "A string of haulers has bunched up on the lane ahead, all at the same speed with the same idea. The nearest transponder is closing, and nobody on the band is giving way.",
   "labels": [
    "Shave your burn and let them clear",
-   "Cut through the gap between two of them [55%; if it fails: you learn less, and the captain marks it]"
+   "Cut through the gap between two of them [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -51,7 +51,7 @@
   "text": "The captain has left the approach for the next port on the sim, and said nothing about it. It's a hard one: a tight berth, a crosswind of station spin, and a score at the bottom of the screen with someone else's initials.",
   "labels": [
    "Fly it slowly, until it's clean",
-   "Fly it at speed and see what happens [55%; if it fails: you learn less, and the captain marks it]"
+   "Fly it at speed and see what happens [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -74,7 +74,7 @@
   "text": "The captain's burn sheet puts the flip at the halfway mark. Your own numbers say the ship is carrying more speed than the sheet assumes, and the flip is ninety seconds early. Ninety seconds is a lot of reaction mass at the far end of a brake.",
   "labels": [
    "Recompute the flip from the live numbers",
-   "Flip where the sheet says and correct on the brake [55%; if it fails: you learn less, and the captain marks it]"
+   "Flip where the sheet says and correct on the brake [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -97,7 +97,7 @@
   "text": "A faint return has been showing on the plot for an hour, small and slow, two degrees to port of the line. It could be a rock. It could be a ship running dark. Nobody else has mentioned it.",
   "labels": [
    "Track it for another hour before you say anything",
-   "Call it a rock and let the plot go [55%; if it fails: you learn less, and the captain marks it]"
+   "Call it a rock and let the plot go [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -120,7 +120,7 @@
   "text": "The ready rack has jammed, a round half in and half out, and the fire-control board is showing a fault in a color you haven't seen. It'll have to be cleared before anyone needs to shoot.",
   "labels": [
    "Strip the feed and clear it by the book",
-   "Clear it with the manual override [55%; if it fails: you learn less, and the captain marks it]"
+   "Clear it with the manual override [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -143,7 +143,7 @@
   "text": "The turret has been slewing a hair to the left for a week, and tonight you proved it on the range sim. Every shot lands wide by the same small amount.",
   "labels": [
    "Boresight it against a fixed star",
-   "Apply a correction in the fire control [55%; if it fails: you learn less, and the captain marks it]"
+   "Apply a correction in the fire control [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -166,7 +166,7 @@
   "text": "The captain wants the guns run through their paces before the next port, and has left the range sim set to something unkind: fast targets, a lot of them, and a clock.",
   "labels": [
    "Work the targets one at a time",
-   "Race the clock and take them as they come [55%; if it fails: you learn less, and the captain marks it]"
+   "Race the clock and take them as they come [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -189,7 +189,7 @@
   "text": "The magazine count on the board says four hundred rounds. The count you made by hand says three hundred and ninety. Someone has been in the rack, or the sensor has been lying, and either way the captain signs for the number on the board.",
   "labels": [
    "Count the rack by hand, twice",
-   "Trust your count and correct the board [55%; if it fails: you learn less, and the captain marks it]"
+   "Trust your count and correct the board [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -212,7 +212,7 @@
   "text": "The captain has launched a target drone, a battered orange canister, the only thing on the range worth shooting. It has been hit before. It's not meant to be hit twice in a burn. You have twenty minutes of range time.",
   "labels": [
    "Take three shots and score each",
-   "Burst it and see what's left [55%; if it fails: you learn less, and the captain marks it]"
+   "Burst it and see what's left [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -235,7 +235,7 @@
   "text": "There's a new sound in the drive room, a low, regular shudder at the edge of hearing that you feel in your back teeth. It comes and goes with the burn. Something's out of balance, and you're the one with the tools.",
   "labels": [
    "Trace it through the mounts, one by one",
-   "Tighten what looks loose and listen [55%; if it fails: you learn less, and the captain marks it]"
+   "Tighten what looks loose and listen [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -258,7 +258,7 @@
   "text": "The air recycler has started to smell of hot dust, and its read-out has been stuck on one number for an hour. Nobody has said anything, but you've seen a few people breathing through their sleeves.",
   "labels": [
    "Pull the cartridges and clean the whole stack",
-   "Swap in the spare cartridge [55%; if it fails: you learn less, and the captain marks it]"
+   "Swap in the spare cartridge [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -281,7 +281,7 @@
   "text": "The coolant loop is running a few degrees warm. It's nowhere near a limit, but the trend is wrong, and a trend like that's a leak, or a pump, or a thing nobody has thought of yet.",
   "labels": [
    "Chase it from the pump to the radiator",
-   "Bleed the loop and hope [55%; if it fails: you learn less, and the captain marks it]"
+   "Bleed the loop and hope [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -304,7 +304,7 @@
   "text": "There's a dark bead at the foot of the number two hatch seal, and a damp ring on the deck under it. It's coolant, or water, or something worse, and it wasn't there at the last port.",
   "labels": [
    "Pull the seal and check the gasket",
-   "Wipe it and watch it [55%; if it fails: you learn less, and the captain marks it]"
+   "Wipe it and watch it [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -327,7 +327,7 @@
   "text": "The breaker on the galley circuit has tripped three times since the flip. Each time it resets, and each time someone says it must be the kettle. It's not the kettle.",
   "labels": [
    "Walk the circuit and test each load",
-   "Swap the breaker and see [55%; if it fails: you learn less, and the captain marks it]"
+   "Swap the breaker and see [60%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -350,7 +350,7 @@
   "text": "There's a hiss on the band that wasn't there at the last port, rising and falling as the ship turns. It's stealing your range, and, if it's the antenna, it'll only get worse.",
   "labels": [
    "Walk the antenna run and check every join",
-   "Re-tune the filters and see [55%; if it fails: you learn less, and the captain marks it]"
+   "Re-tune the filters and see [65%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -373,7 +373,7 @@
   "text": "A hail comes in, at the very edge of range, stuttering and thick with static. A name, a transponder number and what could be a warning, or could be a tender asking for a berth. The captain would like to know which.",
   "labels": [
    "Clean it up and read it properly",
-   "Guess at the gaps and answer [55%; if it fails: you learn less, and the captain marks it]"
+   "Guess at the gaps and answer [65%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -396,7 +396,7 @@
   "text": "The log has built up: forty unread messages, six unanswered hails, and a list of stations that have, since the last port, changed their transponder codes without telling anyone.",
   "labels": [
    "Go through it all, in order",
-   "Answer the urgent ones and skim the rest [55%; if it fails: you learn less, and the captain marks it]"
+   "Answer the urgent ones and skim the rest [65%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -419,7 +419,7 @@
   "text": "The station you're calling stamps its messages with a time that disagrees with the ship's clock by eleven minutes. One of them is wrong, and the log is full of messages stamped with whichever it is.",
   "labels": [
    "Sync to three beacons and see which is wrong",
-   "Trust the station and adjust the offset [55%; if it fails: you learn less, and the captain marks it]"
+   "Trust the station and adjust the offset [65%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -442,7 +442,7 @@
   "text": "A relay buoy wants your transponder, your registry and your captain's name before it'll pass your traffic. It's the right procedure. It's also more than the last three buoys asked.",
   "labels": [
    "Ask the captain before you answer",
-   "Send what the last buoy got [55%; if it fails: you learn less, and the captain marks it]"
+   "Send what the last buoy got [65%; if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -471,7 +471,7 @@
    "Match the roll and go in slow [60%; if it fails: hull damage, a crew casualty]",
    "Go in fast, and brake hard [40%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Send a line across first [70%]",
-   "[Pilot] Fly the approach by hand [60%; if it fails: hull damage, a crew casualty]"
+   "[Pilot] Fly the approach by hand [65%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -536,7 +536,7 @@
    "Match the roll and go in slow [60%; if it fails: hull damage, a crew casualty]",
    "Go in fast, and brake hard [40%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Send a line across first [70%]",
-   "[Engineer] Set the anchors yourself [60%; if it fails: hull damage, a crew casualty]"
+   "[Engineer] Set the anchors yourself [65%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -565,7 +565,7 @@
    "Match the roll and go in slow [60%; if it fails: hull damage, a crew casualty]",
    "Go in fast, and brake hard [40%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Send a line across first [70%]",
-   "[Gunner] Blast a ledge to land on [60%; if it fails: hull damage, a crew casualty]"
+   "[Gunner] Blast a ledge to land on [65%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -594,7 +594,7 @@
    "Match the roll and go in slow [60%; if it fails: hull damage, a crew casualty]",
    "Go in fast, and brake hard [40%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Send a line across first [70%]",
-   "[Comms] Scan for the stable face [60%; if it fails: hull damage, a crew casualty]"
+   "[Comms] Scan for the stable face [70%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -623,7 +623,7 @@
    "Cut small, and carry every block [75%]",
    "Cut big, and use the lift [55%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Work in pairs, and rotate every hour [65%]",
-   "[Pilot] Hold the ship steady over the seam [60%; if it fails: hull damage, a crew casualty]"
+   "[Pilot] Hold the ship steady over the seam [65%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -688,7 +688,7 @@
    "Cut small, and carry every block [75%]",
    "Cut big, and use the lift [55%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Work in pairs, and rotate every hour [65%]",
-   "[Engineer] Run the heaters off the drive [60%; if it fails: hull damage, a crew casualty]"
+   "[Engineer] Run the heaters off the drive [65%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -717,7 +717,7 @@
    "Cut small, and carry every block [75%]",
    "Cut big, and use the lift [55%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Work in pairs, and rotate every hour [65%]",
-   "[Gunner] Use the guns to split the big slabs [60%; if it fails: hull damage, a crew casualty]"
+   "[Gunner] Use the guns to split the big slabs [65%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -746,7 +746,7 @@
    "Cut small, and carry every block [75%]",
    "Cut big, and use the lift [55%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Work in pairs, and rotate every hour [65%]",
-   "[Comms] Keep the shifts on a schedule [60%; if it fails: hull damage, a crew casualty]"
+   "[Comms] Keep the shifts on a schedule [70%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -775,7 +775,7 @@
    "Keep the burn gentle and the hold cold [80%]",
    "Burn hard, and trust the insulation [58%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Stand watches on the hold [70%]",
-   "[Pilot] Fly the long way round, away from the lanes [60%; if it fails: hull damage, a crew casualty]"
+   "[Pilot] Fly the long way round, away from the lanes [65%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -840,7 +840,7 @@
    "Keep the burn gentle and the hold cold [80%]",
    "Burn hard, and trust the insulation [58%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Stand watches on the hold [70%]",
-   "[Engineer] Recycle the melt into the tanks [60%; if it fails: hull damage, a crew casualty]"
+   "[Engineer] Recycle the melt into the tanks [65%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -869,7 +869,7 @@
    "Keep the burn gentle and the hold cold [80%]",
    "Burn hard, and trust the insulation [58%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Stand watches on the hold [70%]",
-   "[Gunner] Keep the guns warm and watch the dark [60%; if it fails: hull damage, a crew casualty]"
+   "[Gunner] Keep the guns warm and watch the dark [65%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {
@@ -898,7 +898,7 @@
    "Keep the burn gentle and the hold cold [80%]",
    "Burn hard, and trust the insulation [58%; if it fails: hull damage, a crew casualty, and the captain marks it]",
    "Stand watches on the hold [70%]",
-   "[Comms] Sell the water ahead on the long link [60%; if it fails: hull damage, a crew casualty]"
+   "[Comms] Sell the water ahead on the long link [70%; if it fails: hull damage, a crew casualty]"
   ],
   "plays": [
    {

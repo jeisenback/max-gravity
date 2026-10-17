@@ -56,10 +56,12 @@ function levelNote(post, level) {
   UI.notes.push(text);
   if (!G.dialog) UI.render();
 }
+// A stat of the hand's sheet (sheet.js): the base for an owner, and for a hand from before the sheet was kept.
+const handStat = stat => { const h = hired(); return h && h.sheet ? h.sheet[stat] : STAT_BASE; };
 // Doing a job yourself: the odds are worse than a crew member's, and get better as you learn the post.
-const soloOdds = post => 0.45 + 0.1 * skillLevel(post);
-// The job of your own post in a fight, an ice run or a contact: half a chance, a tenth better for each level, never above 0.85.
-const postOdds = post => Math.min(0.85, 0.5 + 0.1 * skillLevel(post));
+const soloOdds = post => check(handStat(POST_STAT[post]), skillLevel(post), DIFFICULTY.solo);
+// The job of your own post in a fight, an ice run or a contact: half a chance at the base, a tenth better for each level.
+const postOdds = post => check(handStat(POST_STAT[post]), skillLevel(post), DIFFICULTY.post);
 // What stays the captain's to do: the cargo, the contracts, the ship itself, the company.
 const OWNER_TABS = ['trade', 'company'];  // contracts are the captain's too, but the board still has errands
 const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'buyship', 'cbuy', 'refuel', 'repair', 'overhaul', 'buyout', 'sellout', 'torpbuy', 'hire', 'interviewHire', 'dismiss'];
@@ -112,6 +114,7 @@ function setupHired(o) {
     ...(o.skill || {}),
     [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1])
   },
+    sheet: newSheet(st.background, post),  // the hand's stats (sheet.js)
     asked: 0,
     raidTold: false,
     debt: o.debt !== undefined ? o.debt : HIRED_DEBT
@@ -303,10 +306,10 @@ function errandsFor(planet) {
 
 // ---------- swapping posts ----------
 
-// How likely the captain is to say yes: how far they trust you, and what you know of the post.
+// How likely the captain is to say yes: a word with them, on how far they trust you and what you know of the post.
 function swapOdds(post) {
   const boss = bossFor('swap');
-  return Math.max(0.1, Math.min(0.95, 0.35 + 0.1 * boss.opinion + 0.1 * skillLevel(post)));
+  return check(handStat('wit'), skillLevel(post), DIFFICULTY.word, 0.1 * boss.opinion);
 }
 
 function askSwap(post) {
@@ -488,7 +491,7 @@ function chapterRecap() {
   const list = names => names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
   const t = runTotals(h), days = st.day - h.since;
   const runs = lookSay(t.runs === 1 ? 'runs.one' : 'runs.many', { n: t.runs }), post = POSTS[h.post].name.toLowerCase(), level = skillLevel(h.post);
-  const work = lookSay('work', { days, ship: esc(shipTitle()), runs, captain: cap.last, earned: fmt(t.earned), post, level });
+  const work = lookSay('work', { days, ship: esc(shipTitle()), runs, captain: cap.last, earned: fmt(t.earned), post, level }), sheet = h.sheet ? lookSay('sheet', h.sheet) : '';
   const why = { money: lookSay('why.money', { savings: fmt(HIRED_SAVINGS), credits: fmt(st.credits) }), learn: lookSay('why.learn', { post, level, runs }),
     away: lookSay('why.away', { days, runs }) }[h.reason] || '';
   const near = [...(cap && cap.memories ? [{ c: cap, name: lookSay('near.captain', { last: cap.last }) }] : []), ...crew.map(c => ({ c, name: c.first }))]
@@ -503,7 +506,7 @@ function chapterRecap() {
   const ties = webTies(folk()).slice(0, 2).map(x => lookSay('ties', { a: x.a.p.first, b: x.b.p.first, word: bondWord(x.n) })).join(' ');
   const marks = [cap, ...crew].flatMap(c => (c ? marksOf(c) : [])).sort((a, b) => b.day - a.day).slice(0, 3).map(m => `${dateOf(m.day)}: ${m.text}`).join(' ');
   return {
-    title: lookSay('title'), personal: true, text: [work, why, lived, people, kept, lost, ties, marks].filter(Boolean).join('</p><p>'),
+    title: lookSay('title'), personal: true, text: [work, sheet, why, lived, people, kept, lost, ties, marks].filter(Boolean).join('</p><p>'),
     choices: [{ label: lookSay('label'), run: () => lookSay('result') }],
   };
 }

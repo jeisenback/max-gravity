@@ -138,11 +138,11 @@ function deadInSpaceScene(s) {
   };
 }
 
-// The Gunner's own move in a raid: half a chance, a tenth better for each level, and a tenth more once the guns are boresighted (the
-// Gunner's order below), until the next port. Never above 0.85.
+// The hand's own move in a raid: the post's stat and its level (check, sheet.js), and a tenth more once the guns are boresighted (the
+// Gunner's order below), until the next port.
 const BORESIGHT = 0.1;
 const boresighted = () => !!postState('gunner').sighted;
-const raidPostOdds = level => Math.min(0.85, 0.5 + 0.1 * level + (boresighted() ? BORESIGHT : 0));
+const raidPostOdds = level => check(handStat(POST_STAT[hired().post]), level, DIFFICULTY.post, boresighted() ? BORESIGHT : 0);
 
 // The Gunner's orders, for a hired Gunner (the other posts have theirs in stations.js, comms.js): a drill that teaches, and a
 // stance that pays in the next raid. Each uses up the day, like the others (giveOrder, stations.js).
