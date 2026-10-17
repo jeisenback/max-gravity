@@ -30,7 +30,7 @@ test('a pirate contact for a hired hand opens the raid, not the card duel, and t
   const r = await ev(() => {
     const st = raid('pilot'); const text = startDuel({ kind: 'pirate' }, false);
     begin();
-    return { text: /Battle stations/.test(text), title: G.dialog.event.title, duel: !!G.duel, decided: !!G.dialog.event.decided, labels: G.dialog.choices.map(c => c.label), pos: /Position: (even|ahead|behind)/.test(G.dialog.event.text) };
+    return { text: /Battle stations/.test(text), title: G.dialog.event.title, duel: !!G.duel, decided: !!G.dialog.event.decided, labels: G.dialog.choices.map(c => c.label), pos: /Position: (even|ahead|behind)/.test(G.dialog.event.board) };
   });
   assert.ok(r.text); assert.equal(r.title, 'The Closing'); assert.equal(r.duel, false); assert.ok(!r.decided, 'the captain does not take this call');
   assert.equal(r.labels.length, 4); assert.ok(r.labels.some(l => l.startsWith('[Pilot] Put the sun behind us'))); assert.ok(r.pos);
@@ -46,7 +46,7 @@ test('winning the beats makes her break off, and costs nothing but a log line an
     rolls([0.01, 0.01]);  // the screen and the burn both work: +1 each, ahead by two at the close, so she breaks off
     choose('Hold course'); finishEvent();
     choose('Fire the point defense'); finishEvent();
-    const mid = /Position: ahead|Position: even/.test(G.dialog.event.text);
+    const mid = /Position: ahead|Position: even/.test(G.dialog.event.board);
     const c = choose('Burn evasive');
     return { mid, off: /breaks off/.test(c), opinion: cap.opinion - op, xp: skillXp('gunner') - xp, armor: st.armor === armor, next: !!G.nextEvent };
   });
@@ -103,7 +103,7 @@ test('burning hard can get clear before there is a fight, and failing costs hull
   const r = await ev(() => {
     const st = raid('pilot'), armor = st.armor, out = {};
     rolls([0.01]); out.clear = startDuel({ kind: 'pirate' }, true); out.none = !G.nextEvent;
-    rolls([0.99]); out.text = startDuel({ kind: 'pirate' }, true); out.next = G.nextEvent && G.nextEvent.title; out.hull = st.armor < armor; out.behind = /Position: even/.test(G.nextEvent.text) === false;
+    rolls([0.99]); out.text = startDuel({ kind: 'pirate' }, true); out.next = G.nextEvent && G.nextEvent.title; out.hull = st.armor < armor; out.behind = /Position: even/.test(G.nextEvent.board) === false;
     return out;
   });
   assert.match(r.clear, /opens the range/); assert.ok(r.none);
@@ -201,7 +201,7 @@ test('answering a trap blind springs it, and you start the raid two behind', asy
     const e = ambushScene(); G.dialog = { event: e, choices: e.choices };
     const labels = e.choices.map(c => c.label);
     const t = chooseEvent(e.choices.findIndex(c => c.label === 'Go to her'));
-    return { title: e.title, labels, sprung: /lights a drive/.test(t), next: G.nextEvent && G.nextEvent.title, behind: G.nextEvent && /Position: behind/.test(G.nextEvent.text), waiting: G.nextEvent && /waiting on the far side/.test(G.nextEvent.text) };
+    return { title: e.title, labels, sprung: /lights a drive/.test(t), next: G.nextEvent && G.nextEvent.title, behind: G.nextEvent && /Position: behind/.test(G.nextEvent.board), waiting: G.nextEvent && /waiting on the far side/.test(G.nextEvent.text) };
   });
   assert.equal(r.title, 'A Freighter in Trouble'); assert.deepEqual(r.labels, ['Go to her', 'Leave it', '[Pilot] Match her tumble']);
   assert.ok(r.sprung); assert.equal(r.next, 'The Closing'); assert.ok(r.behind && r.waiting);
@@ -219,7 +219,7 @@ test('a good read shows you the trap, and you can hit them first or turn away', 
     out.read = /gun housing/.test(t); finishEvent();
     out.labels = G.dialog.event.choices.map(c => c.label);
     const hit = chooseEvent(out.labels.indexOf("Hit them before they're ready")); out.hit = /not ready/.test(hit); finishEvent();
-    out.ahead = /Position: ahead/.test(G.dialog.event.text);
+    out.ahead = /Position: ahead/.test(G.dialog.event.board);
     return out;
   });
   assert.ok(r.read); assert.deepEqual(r.labels, ["Hit them before they're ready", 'Turn away and leave it']); assert.ok(r.hit && r.ahead);
@@ -406,6 +406,25 @@ test('a hired Gunner has two orders: a drill that teaches, and boresighting that
   await done();
 });
 
+test('the raid carries its sensor board: a plot on the scene each beat, drawn from the last beat when the sensors fail (#680)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    raid('gunner'); const out = {}, orig = raidScene; window.raidScene = x => { window.grabbed = x; return orig(x); };  // the raid's state, as the beats harness takes it
+    startDuel({ kind: 'pirate' }, false); G.nextEvent = null; const s = window.grabbed;
+    const e0 = raidScene(s); out.first = { board: /^<svg class="board"/.test(e0.board), range: s.board.range, bearing: s.board.bearing, text: /Position:/.test(e0.text) };
+    s.beat = 1; s.edge = 2; const e1 = raidScene(s); out.second = { range: s.board.range, bearing: s.board.bearing, closer: /RANGE 2 km/.test(e1.board), stale: /STALE/.test(e1.board) };
+    condition().sensors = 30; s.beat = 2; const e2 = raidScene(s); out.failing = { stale: /STALE/.test(e2.board), head: /RANGE 1 km/.test(e2.board) };
+    openEvent(raidScene(s)); out.drawn = !!document.querySelector('#panel .event-body svg.board');
+    return out;
+  });
+  assert.deepEqual(r.first, { board: true, range: 40, bearing: 90, text: false }, 'the closing at forty kilometers, abeam, and no position word in the text');
+  assert.deepEqual(r.second, { range: 2, bearing: 40, closer: true, stale: false }, 'the first pass at two kilometers, ahead, so she is forward of the beam');
+  assert.deepEqual(r.failing, { stale: true, head: true }, 'failing sensors show her where she was last beat, and say so');
+  assert.equal(r.drawn, true, 'the dialog draws it above the text');
+  await done();
+});
+
 test('an owner does not get the Gunner\'s orders', async () => {
   const { ev, done } = await open({ scope: 'full' });
   const r = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'owner' }); return postOrders('gunner').map(o => o.id); });
@@ -432,7 +451,7 @@ test('each hand makes the call in a pirate contact, rolled on their own skill, a
       const st = raid(post); hired().skill[post] = SKILL_STEPS[level]; G.dialog = null; openEvent(contactEvent({ kind: 'pirate' }));
       const i = G.dialog.choices.findIndex(c => c.label.startsWith(`[${POSTS[post].name}]`)), armor = st.armor;
       G.nextEvent = null; rolls([roll]); const text = chooseEvent(i), scene = G.nextEvent;
-      return { text, position: scene && /Position: (\w+)/.exec(scene.text)[1], hit: armor - st.armor, title: scene && scene.title };
+      return { text, position: scene && /Position: (\w+)/.exec(scene.board)[1], hit: armor - st.armor, title: scene && scene.title };
     };
     for (const post of ['pilot', 'gunner', 'engineer']) out[`${post}Level1`] = { low: move(post, 1, 0.7), high: move(post, 3, 0.7), win: move(post, 3, 0.01) };
     return out;

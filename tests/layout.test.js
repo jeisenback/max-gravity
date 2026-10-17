@@ -70,6 +70,23 @@ test('the hand\'s readouts show on the landed screen, under the header and above
   });
 });
 
+test('the sensor board fits a raid\'s dialog at the three sizes (#680)', async () => {
+  await atWidths(async ({ ev, size }) => {
+    const r = await ev(() => {
+      uatBurn('Earth', 'mars'); G.transit.times = []; G.transit.event = null; G.dialog = null; hired().raidTold = true;
+      startRaid({ kind: 'pirate' }, false); openEvent(G.nextEvent); G.nextEvent = null;
+      const svg = document.querySelector('#panel .event-body svg.board'), panel = document.getElementById('panel');
+      const b = svg && svg.getBoundingClientRect(), pb = panel.getBoundingClientRect();
+      return { has: !!svg, left: b && b.left, right: b && b.right, width: b && b.width, panelLeft: pb.left, panelRight: pb.right, scrollW: document.documentElement.scrollWidth, innerW: innerWidth };
+    });
+    const at = `${size.name} raid`;
+    assert.ok(r.has, `${at}: the board is drawn`);
+    assert.ok(r.left >= r.panelLeft - 1 && r.right <= r.panelRight + 1, `${at}: the board is inside the dialog (${r.left} to ${r.right} in ${r.panelLeft} to ${r.panelRight})`);
+    assert.ok(r.width >= 200, `${at}: the board is readable (${r.width}px wide)`);
+    assert.ok(r.scrollW <= r.innerW, `${at}: no sideways scroll (${r.scrollW} > ${r.innerW})`);
+  });
+});
+
 test('the HUD sidebar and the panel do not overlap, and the panel clears the compact strip', async () => {
   const g = await open({ scope: 'earth-hired', viewport: { width: 768, height: 1024 }, mobile: true });
   await g.ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent(); });

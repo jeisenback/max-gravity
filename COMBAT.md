@@ -259,6 +259,14 @@ berth, and of two at each other's throats (the bond at which a split is on the c
 stand in the same section, so the line is a person shorter each time. A friend takes the first hit meant for you, once a
 fight (so does someone who owes you one, from a watch you covered for them). The same goes for the repel fight and for boarding a crippled raider.
 Bounties, hunters and an owner's fights are still the card duel above.
+The raid happens somewhere now (`js/board.js`, #680): each beat carries a sensor board above its text, a lidar plot in the flight view's
+style with range rings every ten kilometers to forty, your ship at the center, her return at its bearing and range, the closing rate,
+the point defense arc to fifteen kilometers, the sun's side, and a torpedo on its way on a corsair's passes. The position model is the
+beats' own: the range by beat and style (a raider closes from forty kilometers to passes at two and one, a patrol opens at thirty, a corsair
+stands off at twelve and eight), the bearing by the running position (ahead, she is forward of the beam where the guns bear; behind, on
+the quarter), the closing rate from the two ships' speeds. The beats' choices, lines and odds are unchanged; the board is the picture of
+them. Worn sensors (condition under 60) throw a second return; failing ones (under 40) show her where she was last beat, marked stale.
+The owner's duel folds onto the same board later, and the card deck retires then.
 
 ### Measured: `npm run fights`
 

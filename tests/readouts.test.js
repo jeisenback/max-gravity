@@ -1,7 +1,6 @@
 'use strict';
 
-// Readouts (js/readouts.js, #686): the strip of the hand's figures, the contract as a paper in the hold, the captain's log as rows, the
-// raid's position as a gauge, and the settlement as a note of what was off and the pay.
+// Readouts (js/readouts.js, #686): the strip of the hand's figures, the contract as a paper in the hold, the captain's log as rows, and the settlement as a note of what was off and the pay.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -83,14 +82,5 @@ test('the captain\'s log: each settled run is a row with the shipper, the load, 
   assert.match(r.rows, /paid [\d,]+ cr, 3 days late<\/div>/); assert.match(r.rows, /60t Water for the Compact Freight Office, paid [\d,]+ cr, short<\/div>/); assert.match(r.rows, /the load for the Compact Freight Office lost, no pay<\/div>/);
   assert.match(r.journal, /<h3>Captain's log<\/h3>/); assert.equal((r.journal.match(/<div class="con-read">/g) || []).length, 4, 'the Journal page holds the log');
   assert.match(r.port, /class="eyebrow">Captain's log</); assert.ok(r.captain.includes('Recent runs') && r.captain.includes('paid 22,002 cr'), 'the captain\'s page shows the same rows');
-  await done();
-});
-
-test('the raid\'s position is a gauge: the mark where the count stands, the word for a reader', async () => {
-  const { ev, done } = await open();
-  const r = await ev(() => ({ ahead: positionGauge(2, 'ahead'), even: positionGauge(0, 'even'), far: positionGauge(-9, 'behind') }));
-  assert.match(r.ahead, /^<svg class="position" .*aria-label="Position: ahead".*<circle cx="152" cy="10" r="6" fill="#5fd35f"/);
-  assert.match(r.even, /<circle cx="100" cy="10" r="6" fill="#d4e4f5"/);
-  assert.match(r.far, /<circle cx="22" cy="10" r="6" fill="#ff6a4a"/, 'the mark stops at the end');
   await done();
 });
