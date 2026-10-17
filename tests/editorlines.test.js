@@ -174,7 +174,7 @@ test('the talk scenes are rows with a field for every line, and each plays in a 
     const rows = SceneIndex.rows.filter(x => x.id.startsWith('family:'));
     return { ids: rows.map(x => x.id), shape: rows.every(x => x.kind === 'data' && x.noTitle && x.where === 'transit' && x.file === 'js/family.js') };
   });
-  assert.equal(r.ids.length, 25, 'the talk scenes, the talk going on, the visit home, the errand, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
+  assert.equal(r.ids.length, 27, 'the talk scenes, the talk going on, the visit home, the room that is theirs (its offer and its return), the errand, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
   assert.ok(r.shape, 'each is lines, in a burn, in js/family.js');
   for (const id of r.ids) {
     await select(id);
