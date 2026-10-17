@@ -56,12 +56,12 @@ test('the sheet as rows: each stat with the posts on it, and the kit with what e
 
 
 test('the career a hand takes into the next chapter is a copy of their sheet, kit and shippers\' regard, and an old save with none gives none', () => {
-  const h = { sheet: { hands: 4, eye: 3, nerve: 3, wit: 5 }, kit: ['valve-keys'], standing: { 'the League Freight Hall': 2 }, post: 'gunner', fund: 900, since: 3, captain: 'p7' };
+  const h = { sheet: { hands: 4, eye: 3, nerve: 3, wit: 5 }, kit: ['valve-keys'], standing: { 'the League Freight Hall': 2 }, post: 'gunner', skill: { gunner: 40 }, fund: 900, since: 3, captain: 'p7' };
   const c = api.careerOf(h);
   assert.deepEqual({ ...c.sheet }, h.sheet); assert.deepEqual([...c.kit], ['valve-keys']); assert.deepEqual({ ...c.standing }, h.standing);
-  assert.deepEqual(Object.keys(c).sort(), ['captain', 'kit', 'sheet', 'since', 'standing'], 'only the sheet, the kit and the regard go on, with the day and the captain that seed the board'); assert.deepEqual([c.since, c.captain], [3, 'p7']);
-  c.kit.push('audit-seal'); c.standing['the League Freight Hall'] = 3; c.sheet.hands = 5;
-  assert.deepEqual([...h.kit], ['valve-keys']); assert.equal(h.standing['the League Freight Hall'], 2); assert.equal(h.sheet.hands, 4);
+  assert.deepEqual(Object.keys(c).sort(), ['captain', 'kit', 'post', 'sheet', 'since', 'skill', 'standing'], 'only the sheet, the kit and the regard go on, with the day and the captain that seed the board'); assert.deepEqual([c.since, c.captain, c.post], [3, 'p7', 'gunner']); assert.deepEqual({ ...c.skill }, { gunner: 40 });
+  c.kit.push('audit-seal'); c.standing['the League Freight Hall'] = 3; c.sheet.hands = 5; c.skill.gunner = 99;
+  assert.deepEqual([...h.kit], ['valve-keys']); assert.equal(h.standing['the League Freight Hall'], 2); assert.equal(h.sheet.hands, 4); assert.equal(h.skill.gunner, 40);
   const old = api.careerOf({});
   assert.equal(old.sheet, null); assert.deepEqual([...old.kit], []); assert.deepEqual({ ...old.standing }, {});
 });

@@ -152,3 +152,22 @@ test('the sheet, the kit and the shippers\' regard outlive the buy as the career
   assert.deepEqual(r.kit2, ['valve-keys', 'audit-seal']); assert.deepEqual(r.cover, [0, 1, 0]); assert.equal(r.copy, true, 'the sheet, the kit and the regard are copied, so the old record cannot change them');
   await done();
 });
+
+test('the post the player works and what they have learned at it outlive the buy, and go on counting after it (#685)', async () => {
+  const { ev, done } = await hauler();
+  const r = await ev(() => {
+    const st = start(), h = hired(), out = {};
+    h.skill = { gunner: 40, pilot: 5 }; out.before = [skillLevel('gunner'), skillLevel('pilot')];
+    st.credits = 100000; buyIn('courier'); const c = st.career;
+    out.career = { post: c.post, skill: { ...c.skill } }; out.hired = hired(); out.level = [skillLevel('gunner'), skillLevel('pilot'), skillXp('gunner')];
+    G.mode = 'landed'; UI.notes.length = 0; G.dialog = null;
+    gainSkill('gunner', 3); out.quiet = UI.notes.join(' '); gainSkill('gunner', 3); out.xp = c.skill.gunner; out.levelUp = UI.notes.join(' ');
+    out.copy = c.skill !== h.skill;
+    return out;
+  });
+  assert.deepEqual(r.before, [1, 0]); assert.deepEqual(r.career, { post: 'gunner', skill: { gunner: 40, pilot: 5 } }); assert.equal(r.hired, null);
+  assert.deepEqual(r.level, [1, 0, 40], 'the same levels after the buy'); assert.equal(r.xp, 46); assert.equal(r.quiet, '', 'no note until a level is reached');
+  assert.match(r.levelUp, /Your work at the gunner post is level 2 now\. When you take it yourself it works a tenth more often\./);
+  assert.ok(!/raid/.test(r.levelUp), 'an owner\'s note does not speak of the hand\'s raid move'); assert.equal(r.copy, true);
+  await done();
+});
