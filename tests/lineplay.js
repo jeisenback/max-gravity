@@ -103,6 +103,19 @@ const playLines = () => {
     Mods.filter = (key, list) => { if (key !== 'chatter') return filter.call(Mods, key, list); if (list.length === CHATTER.length) lines.push(list[k]); return [list[k % list.length]]; };
     const rnd = Math.random; try { for (k = 0; k < CHATTER.length; k++) { G.transit.chatter = 0; G.transit.chattered = 0; Math.random = () => 0.99; updateTransit(0.01); Math.random = rnd; } } finally { Mods.filter = filter; Math.random = rnd; }  // 0.99: the pool of the band, not what the crew say
     note('comms-chatter', lines.join(' | ')); }
+  // the regulars' lives: every beat of every arc, as a regular's news reads it
+  for (const key of Object.keys(ARCS)) note(`regular-arc:${key}`, regularArc(key).join(' | '));
+  // returning to a port: each fact the line can state, from two snapshots, and the framing with facts and without
+  { const name = id => ({ r1: 'Ana', r2: 'Ben' })[id];
+    const calm = { eco: null, war: null, lanes: false, regs: ['r1', 'r2'] };
+    const cases = { 'war.on': { ...calm, war: ['Dome Concord', 'Mars Republic'] }, 'eco.boom': { ...calm, eco: 'boom' }, 'eco.bust': { ...calm, eco: 'bust' }, 'lanes.bad': { ...calm, lanes: true }, gone: { ...calm, regs: ['r2', 'r3'] } };
+    for (const [k, now] of Object.entries(cases)) note(`revisit:${k}`, revisitFacts(calm, now, name).join(' | '));
+    note('revisit:war.off', revisitFacts(cases['war.on'], calm, name).join(' | ')); note('revisit:eco.settled', revisitFacts(cases['eco.boom'], calm, name).join(' | '));
+    note('revisit:eco.lifted', revisitFacts(cases['eco.bust'], calm, name).join(' | ')); note('revisit:lanes.quiet', revisitFacts(cases['lanes.bad'], calm, name).join(' | '));
+    note('revisit:three', revisitFacts(calm, { eco: 'boom', war: ['Dome Concord', 'Mars Republic'], lanes: true, regs: ['r2'] }, name).join(' | '));  // four changes, three said
+    const st = G.state, planet = currentPlanet();
+    st.visited = { [planet.name]: { day: st.day - 12, snap: revisitSnap(st, planet) } }; note('revisit:quiet', revisitLine(st, planet));
+    st.visited[planet.name].snap.regs = ['none']; st.people.none = { first: 'Pia' }; note('revisit:frame', revisitLine(st, planet)); delete st.people.none; st.visited = {}; }
   return out;
 };
 

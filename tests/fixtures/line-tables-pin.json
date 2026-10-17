@@ -3914,5 +3914,77 @@
  {
   "key": "comms-chatter",
   "text": "Nav: trajectory nominal, drift within tolerance. | Ice hauler \"Mule's Promise\" to all ships: anyone got a spare coolant pump? | Compact Navy picket: routine sweep, no contacts. | Somebody's broadcasting polka on the emergency band again. | Crash couch: anti-g drip reservoir at 80 percent. | \"...and that's why you never play cards with a Pallas refinery crew.\" [laughter] | Automated beacon: Ceres Station reports all docking bays open. Water ration unchanged. | Courier \"Swift Dispatch\": running a hard burn, clear the approach please. | Life support: CO2 scrubbers cycling. | Unknown ship: \"Anyone else see that drive plume? No transponder? Just me?\" | Dome Concord Navy: all vessels, maintain transponders in Martian space. | Belt pirate radio: static, then a laugh, then static again. | Reactor: output steady. Drive plume stable. | Freighter \"Second Wind\" to nobody in particular: \"Forty days out and I've run out of things to say to the cat.\" | An old recorded voice, on an old beacon: \"This lane is maintained by the Ceres Water Authority. Please burn responsibly.\" | Hauler \"Long Odds\": \"Anybody running to Titan? I've got a spare berth and a very bad sense of direction.\" | Compact traffic control: reminder that lane fees are due on the first, and that \"I forgot\" isn't a payment method. | A child, on an open band: \"This is Captain Pip of the good ship Blanket Fort. Do you copy?\" | Ceres Water Authority relay: \"Reminder to all vessels, water isn't a right, but it's a courtesy. Thank you for your understanding.\" | Belt trader on the band: \"Fresh onions! Real onions! Meet me at the flip, and bring your own bags!\" | Tug \"Old Bess\": \"Anybody know a good doctor on Ganymede? Asking for a friend. The friend is my knee.\" | Static, then faintly someone singing an old work song, and the tail of a chorus. | Mars traffic: \"All ships in the Phobos approach corridor, welcome, and please note that, yes, the coffee really is that good.\" | Someone on the emergency band, in a small voice: \"Testing. Testing. Is this thing on? Mom, it's on.\" | Drive plume harmonics: a low, steady, contented hum. All quiet. | A distant hauler broadcasts a recipe for fried dough. In the middle it apologizes and carries on. | Luna control: \"Please remember that the Copernicus Lounge isn't, in fact, an official navigation aid.\" | Ring-ball commentary, faint and crackling, from a ship somewhere in the dark: \"...and he SHOOTS, and he SCORES...\" | Nav: micrometeoroid flux low. Hull integrity nominal. Optimism, unofficially, high. | A salvager on the band, cheerfully: \"Anybody lose a left boot? Somebody lost a left boot. I have a hundred of them.\" | Enceladus relay: \"All ships, geyser activity is up today. Please enjoy responsibly, and don't fly through the plume.\" | A young voice, on an open channel, awed: \"I can see the whole ring from here. Is it always like this?\" | The ship's hull creaks, once, softly, as it cools in the long shadow. Nothing follows. | A hauler crew, in unison, on the open band, singing \"Happy Birthday\" to a captain who is, from the sound of it, deeply embarrassed. | Eros beacon: \"Welcome to the Old Town. Half of us are still here, and the other half will be, shortly.\" | Crew mess: somebody's arguing that soup counts as a beverage. The argument has been going for ninety minutes. | Static, followed by a woman's voice, low and warm, reading the names of every ship that has ever left Ceres, one by one."
+ },
+ {
+  "key": "regular-arc:berth",
+  "text": "is asking every captain who comes in whether they have a berth, and keeps a bag packed under the stool. | has a berth promised on a hauler that keeps not arriving, and reads the arrivals board between drinks. | has the hauler's name on a slip of paper and a date under it, and buys the round. \"Tuesday,\" they say. \"Ask anyone.\""
+ },
+ {
+  "key": "regular-arc:flat",
+  "text": "is behind on the rent, and says so to the glass and not to you. | is sleeping in the back room here, by arrangement with the owner, and has the key out on the bar to prove it. | has a flat on the lower ring, two rooms and a plant, and the plant is doing well. You hear about the plant."
+ },
+ {
+  "key": "regular-arc:sister",
+  "text": "has a sister visiting, who sits at the far end and does not drink and watches the door. | is arguing with the sister in the low voice people use for an argument they have had before. | has paid the tab in full, for the first time anyone here remembers, and is leaving with the sister on the morning boat."
+ },
+ {
+  "key": "regular-arc:cough",
+  "text": "has the cough half the port has, and a bottle of something for it that does not work. | has been to the clinic at last, and come back with a paper and a worse cough. | is over it, and thinner, and eats two bowls of the bar's noodles a night now, on the owner's orders."
+ },
+ {
+  "key": "regular-arc:fiddle",
+  "text": "is learning the fiddle, and has been asked twice to practice elsewhere. | has been asked a third time, and practices in the stairwell now, where the whole port can hear. | plays on match nights, badly, and the room has decided it likes it."
+ },
+ {
+  "key": "regular-arc:debt",
+  "text": "owes money to a man who comes in on Fridays, and leaves before he does. | has stopped leaving on Fridays, and sits with their back to the door. | paid the man in front of everyone, counted out, and is on the first drink bought with their own money in a year, and reading the ships on the board."
+ },
+ {
+  "key": "revisit:war.on",
+  "text": "Dome Concord and Mars Republic have gone to war"
+ },
+ {
+  "key": "revisit:eco.boom",
+  "text": "the money has come in, and the dock is full"
+ },
+ {
+  "key": "revisit:eco.bust",
+  "text": "the money has gone out of the place"
+ },
+ {
+  "key": "revisit:lanes.bad",
+  "text": "the lanes have gone bad and the dock has hired guards"
+ },
+ {
+  "key": "revisit:gone",
+  "text": "Ana is gone from the bar"
+ },
+ {
+  "key": "revisit:war.off",
+  "text": "the war between Dome Concord and Mars Republic is over"
+ },
+ {
+  "key": "revisit:eco.settled",
+  "text": "the boom is over and the prices have settled"
+ },
+ {
+  "key": "revisit:eco.lifted",
+  "text": "the slump has lifted"
+ },
+ {
+  "key": "revisit:lanes.quiet",
+  "text": "the lanes are quiet again"
+ },
+ {
+  "key": "revisit:three",
+  "text": "Dome Concord and Mars Republic have gone to war | the money has come in, and the dock is full | the lanes have gone bad and the dock has hired guards"
+ },
+ {
+  "key": "revisit:quiet",
+  "text": "Last here 12 days ago. Nothing here has moved: the same faces at the bar, the same numbers on the board."
+ },
+ {
+  "key": "revisit:frame",
+  "text": "Last here 12 days ago. Since then, Pia is gone from the bar."
  }
 ]
