@@ -1,6 +1,6 @@
 # The next chapters: a sheet, a board, people with stakes, and a game you look at
 
-Status: proposed, 2026-10-17, from the owner's statement of the vision and a review of the code as it stands after contracts (PR #676). The issues are #679 to #687; each names its own done-when. This is the design they share, the order, and what is deliberately not built.
+Status: agreed 2026-10-17 (the open questions at the end are settled), from the owner's statement of the vision and a review of the code as it stands after contracts (PR #676). The issues are #679 to #687; each names its own done-when. This is the design they share, the order, and what is deliberately not built.
 
 ## The vision, in the owner's terms
 
@@ -78,8 +78,10 @@ Each is its own branch and PR, each leaves the suite green and the chapter playa
 - A grid for hand to hand; the sections are the grid.
 - The full build's five storylines (#469) and the parked owner systems beyond the role's core.
 
-## Open questions for the owner
+## Open questions, settled by the owner (2026-10-17)
 
-1. The four stats as named, or fewer? Three (hands, eye, nerve) would fold the word into nerve.
-2. The arcs' three subjects, or others from the world bible?
-3. Chapter two's spine: the ship's debt, or the crew who came along?
+1. **Four stats**, as named: each post then sits on a stat of its own, where three would make the pilot and the comms hand share nerve. The word nerve is also a captain's stat (trade, nerve, thrift, 1 to 5, `js/captains.js`), read when a bold call lands on her opinion; #679 decides at implementation whether the hand's stat keeps the name on the same scale or takes another.
+2. **The three arc subjects** as written: a League water dispute, a Concord audit, a Compact license.
+3. **Chapter two's spine is the crew who came along**, since the first chapter's endings already read who came.
+
+Also settled from the review: the kit lands with the first arc that gives an item (#683), not with the sheet (#679), so the sheet is stats and skills until something fills it.
