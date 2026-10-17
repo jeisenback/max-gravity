@@ -142,6 +142,15 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
   return { seed, ...r, errors };
 }
 
+// The games of a distribution test, `width` at a time: each has its own browser context and its own seeded dice, so the numbers are the ones
+// the seeds play one after another, and a four-core box plays them in about half the time. The results come back in the order of `seeds`.
+async function soaks(seeds, opts = {}, width = 4) {
+  const out = [], queue = seeds.map((seed, i) => [i, seed]);
+  const worker = async () => { for (let next = queue.shift(); next; next = queue.shift()) out[next[0]] = await soak({ ...opts, seed: next[1] }); };
+  await Promise.all(Array.from({ length: Math.min(width, queue.length) }, worker));
+  return out;
+}
+
 // The means across the seeds of the numbers the order is judged by (#292). A chapter that ended early (the hand's death or the captain's loss)
 // is left out of the days and pay, which would read short; reached is how many got to the ship's price.
 function framesReport(runs, label = '') {
@@ -219,7 +228,7 @@ function scenesReport(runs, rows, legs, top = 10) {
   return out;
 }
 
-module.exports = { soak, report, framesReport, messagesReport, sceneRows, scenesReport };
+module.exports = { soak, soaks, report, framesReport, messagesReport, sceneRows, scenesReport };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };

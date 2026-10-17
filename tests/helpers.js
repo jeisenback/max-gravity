@@ -19,7 +19,7 @@ let coverageN = 0;
 const ROOT = path.resolve(__dirname, '..');
 const INDEX = path.join(ROOT, 'index.html');
 const URL = 'file://' + INDEX;
-let browser = null;
+let browser = null, launching = null;  // launching: the one launch in flight, so pages opened at once (tools/soak.js soaks) share a browser instead of each starting one
 
 // The page loads about 100 scripts one by one, which takes about 510 ms to open; served as one script it takes about 240 ms (#402).
 // The tests serve the bundle (tools/bundle.js, which also writes it to dist/ for the hosted copy, #577) at the same address: the document and one script are answered by a route, and every other file is read as
@@ -52,7 +52,7 @@ function seedScript(seed) {
 //   debt: true to start a hired hand owing the hiring hall's bond (js/hired.js, #280). It is off in tests, so the many that buy a ship or
 //         count a hand's pay start as they did before the bond; the soak and the tests of the bond turn it on.
 async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'earth-hired', debt = false, bundle = true } = {}) {
-  browser = browser || await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
+  if (!browser) { launching = launching || chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined }); browser = await launching; launching = null; }
   const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile });
   await ctx.addInitScript(seedScript, seed);
   if (title) await ctx.addInitScript(() => Object.defineProperty(navigator, 'webdriver', { get: () => false }));

@@ -5,7 +5,7 @@
 // the hand is hurt and dies (js/boarders.js, the first-hurt roll), how many scenes a landing opens (#635), and that the ship's night comes into
 // the sample so the night scenes can play (tools/soak.js draws each event at its second of the burn). The exact rolls are pinned in tests/boarders.test.js.
 //
-// Sample:    the narrow build's captain with a gunner, seeds 11 to 40, up to 40 runs each, the two main characters drawn from the pool (about a minute).
+// Sample:    the narrow build's captain with a gunner, seeds 11 to 40, up to 40 runs each, four at a time, the two main characters drawn from the pool.
 // Tolerance: every game runs with no page errors and no broken text; the hand is hurt between 0.2 and 0.8 times a chapter (measured 0.40);
 //            at most 6 chapters of 30 end in the hand's death (measured 1; about 1 in 30 is the aim; a floor would fail one run in three at that rate, so there is none);
 //            of the landings, 45 to 70 percent open at least one scene (measured 56: 281 with none, 273 with one, 79 with two or more of 633) and 5 to 20 percent open two or more (measured 12);
@@ -18,9 +18,8 @@ const { closeBrowser } = require('../helpers');
 after(closeBrowser);
 
 test('the hand is hurt about as often as tuned and rarely dies, a landing opens a scene about half the time, and the ship\'s night plays its scenes', async () => {
-  const { soak } = require('../../tools/soak');
-  const runs = [];
-  for (let seed = 11; seed <= 40; seed++) runs.push(await soak({ seed, legs: 40, realDraw: true }));
+  const { soaks } = require('../../tools/soak');
+  const runs = await soaks(Array.from({ length: 30 }, (_, i) => i + 11), { legs: 40, realDraw: true });
   for (const r of runs) { assert.deepEqual(r.bad, [], `seed ${r.seed}`); assert.deepEqual(r.errors, [], `seed ${r.seed}`); }
   const hurts = runs.reduce((n, r) => n + r.hand.hurt, 0) / runs.length;
   assert.ok(hurts >= 0.2 && hurts <= 0.8, `the hand was hurt ${hurts.toFixed(2)} times a chapter`);
