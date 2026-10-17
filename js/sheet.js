@@ -34,5 +34,6 @@ const check = (stat, skill, difficulty, edge = 0) => Math.max(CHECK_MIN, Math.mi
 const KIT_ITEMS = {
   'valve-keys': { name: 'a roll of valve keys', adds: { job: 0.05 } },  // the Hollows' pump crew, from the water dispute (stories/arc-league.js)
   'audit-seal': { name: 'a Fleet audit seal', adds: { word: 0.05 } },  // the auditor's, from the air audit (stories/arc-concord.js)
+  'carrier-license': { name: 'a Compact carrier license', adds: { solo: 0.05 } },  // the licensing officer's, from the license inspection (stories/arc-compact.js)
 };
 const kitEdge = (kit, kind) => (kit || []).reduce((n, id) => n + (((KIT_ITEMS[id] || {}).adds || {})[kind] || 0), 0);

@@ -185,3 +185,68 @@ test('the vents lie costs the auditor\'s regard but does not stand the audit', a
   });
   assert.match(r.lie, /All fourteen/); assert.equal(r.q.concordSide, 1); assert.equal(r.coda, 'The Steward\'s Fee'); assert.notEqual(r.mars, 'The Air Levy Meeting'); assert.ok(r.odile < 3, `Odile cooler (${r.odile})`);
 });
+
+test('the Compact office offers its notice at Earth to a ship it knows, and the rigger takes it at Luna', async () => {
+  const r = await run(() => {
+    const st = start(), h = hired(), out = {};
+    h.away = []; goTo('earth', 'Earth'); Mods.emit('landed', currentPlanet()); out.stranger = h.away.filter(a => a.arc).length;
+    h.standing = { 'the Compact Freight Office': 1 }; goTo('earth', 'Earth'); Mods.emit('landed', currentPlanet());
+    out.offer = h.away.filter(a => a.arc).map(a => ({ arc: a.arc, planet: a.planet, sid: a.sid, days: a.days })); out.title = arcJob(h.away.find(a => a.arc)).title.replace('{dest}', 'Luna');
+    h.away = []; goTo('earth', 'Luna'); Mods.emit('landed', currentPlanet()); out.elsewhere = h.away.filter(a => a.arc).length;
+    h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }];
+    const first = land('earth', 'Luna'); out.first = first && { title: first.title, text: first.text, labels: first.choices.map(c => c.label) };
+    return out;
+  });
+  assert.equal(r.stranger, 0); assert.deepEqual(r.offer.map(o => [o.arc, o.planet, o.sid]), [['compact', 'Luna', 'earth']]); assert.equal(r.title, 'A Notice for Luna'); assert.equal(r.elsewhere, 0);
+  assert.equal(r.first.title, 'A Notice for Bay Nine'); assert.match(r.first.text, /Dag Ibarra comes out from under the hull/); assert.deepEqual(r.first.labels, ['Stay for the inspection', 'Leave him the page and go']);
+});
+
+test('the license inspection, told: the carrier license at Earth joins the kit and sharpens a bold call', async () => {
+  const r = await run(() => {
+    const st = start(), h = hired(), out = {};
+    h.standing = { 'the Compact Freight Office': 1 }; h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }];
+    const w = pick1(land('earth', 'Luna'), 'Stay for the inspection'); out.nextTitle = w.next.title; G.nextEvent = w.next;
+    out.bay = w.next.choices.map(c => c.label); const s = pick1(w.next, 'Say what you saw'); out.said = s.text; out.q = { ...G.state.qualities }; days(5);
+    out.dag = (land('earth', 'Luna') || {}).title;
+    out.before = kitEdge(h.kit, 'solo'); const coda = land('earth', 'Earth'); out.coda = { title: coda.title, labels: coda.choices.map(c => c.label) };
+    const k = pick1(coda, 'Take the license'); out.license = k.text; out.kit = [...h.kit]; out.after = kitEdge(h.kit, 'solo'); out.office = h.standing['the Compact Freight Office']; out.again = (land('earth', 'Earth') || {}).title;
+    const petra = Object.values(G.state.people).find(p => p.arcPerson === 'petra'), dag = Object.values(G.state.people).find(p => p.arcPerson === 'dag');
+    out.petra = petra && { name: `${petra.first} ${petra.last}`, opinion: petra.opinion, at: petra.location }; out.dagOpinion = dag && dag.opinion; out.log = (G.state.journal || []).map(j => j.text);
+    return out;
+  });
+  assert.equal(r.nextTitle, 'The Inspection'); assert.deepEqual(r.bay, ['Say what you saw', 'Say the bay was idle', 'Say you only carried the page']);
+  assert.match(r.said, /That is very clear/); assert.equal(r.q.compact, 1); assert.equal(r.q.compactSide, 2); assert.ok(r.q['due:compact-end'] > 0);
+  assert.notEqual(r.dag, 'The Riggers\' Collection', 'the riggers have nothing for a ship that told');
+  assert.equal(r.coda.title, 'The Carrier License'); assert.deepEqual(r.coda.labels, ['Take the license', 'Say the license belongs to the Office']);
+  assert.match(r.license, /Do keep it dry/); assert.match(r.license, /You carry a Compact carrier license now\./); assert.deepEqual(r.kit, ['carrier-license']);
+  assert.ok(Math.abs(r.after - r.before - 0.05) < 1e-9, 'the license adds five points to a bold call'); assert.equal(r.office, 2); assert.notEqual(r.again, 'The Carrier License', 'it plays once');
+  assert.deepEqual([r.petra.name, r.petra.at], ['Petra Lindqvist', 'Earth']); assert.ok(r.petra.opinion >= 2, `Petra thinks well of the ship (${r.petra.opinion})`); assert.ok(r.dagOpinion < 0);
+  assert.ok(r.log.some(l => /Told the Compact's licensing officer what the rigger's bay had worked on/.test(l)) && r.log.some(l => /carrier license/.test(l)));
+});
+
+test('the license inspection, the other ways: leaving, the lie about the bay and the riggers\' collection at Luna', async () => {
+  const r = await run(() => {
+    const st = start(), h = hired(), out = {}, arc = () => { h.standing = { 'the Compact Freight Office': 1 }; h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }]; };
+    arc(); const w = pick1(land('earth', 'Luna'), 'Leave him the page and go'); out.leave = { text: w.text, next: !!w.next, q: { ...G.state.qualities } }; days(5);
+    const coda = land('earth', 'Luna'); out.coda = { title: coda.title, labels: coda.choices.map(c => c.label) };
+    const c0 = G.state.credits, k = pick1(coda, 'Take the roll'); out.fee = k.text; out.credits = G.state.credits - c0; out.kit = [...(h.kit || [])];
+    out.dag = Object.values(G.state.people).find(p => p.arcPerson === 'dag').opinion; out.earth = (land('earth', 'Earth') || {}).title;
+    return out;
+  });
+  assert.equal(r.leave.next, false); assert.match(r.leave.text, /Delivered, then/); assert.equal(r.leave.q.compact, 1); assert.equal(r.leave.q.compactSide || 0, 0);
+  assert.equal(r.coda.title, 'The Riggers\' Collection'); assert.deepEqual(r.coda.labels, ['Take the roll (350 cr)', 'Give it back to the row']);
+  assert.equal(r.credits, 350); assert.match(r.fee, /hull still has opinions/); assert.deepEqual(r.kit, []);
+  assert.ok(r.dag >= 1, `Dag warmer for the fee (${r.dag})`); assert.notEqual(r.earth, 'The Carrier License', 'the Office has nothing for a ship that did not speak');
+});
+
+test('the bay lie costs the inspector\'s regard but does not issue the license', async () => {
+  const r = await run(() => {
+    const st = start(), h = hired(), out = {};
+    h.standing = { 'the Compact Freight Office': 1 }; h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }];
+    const w = pick1(land('earth', 'Luna'), 'Stay for the inspection'); G.nextEvent = w.next; const s = pick1(w.next, 'Say the bay was idle'); out.lie = s.text; out.q = { ...G.state.qualities }; days(5);
+    out.coda = (land('earth', 'Luna') || {}).title; out.earth = (land('earth', 'Earth') || {}).title;
+    out.petra = Object.values(G.state.people).find(p => p.arcPerson === 'petra').opinion;
+    return out;
+  });
+  assert.match(r.lie, /Idle/); assert.equal(r.q.compactSide, 1); assert.equal(r.coda, 'The Riggers\' Collection'); assert.notEqual(r.earth, 'The Carrier License'); assert.ok(r.petra < 3, `Petra cooler (${r.petra})`);
+});

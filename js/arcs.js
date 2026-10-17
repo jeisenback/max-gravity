@@ -13,12 +13,16 @@ const MISSION_ARCS = {
     title: 'A Crate for {dest}', blurb: '{who} has a sealed crate for the Hollows that the Hall will not put on a bill of lading. It has no weight to speak of, and a day on it.' },
   concord: { shipper: 'the Concord Freight Office', at: ['Mars'], sid: 'eros', dest: 'Eros Old Town', first: 'concord-auditor',
     title: 'A Passenger for {dest}', blurb: '{who} has a Fleet auditor who needs a berth to Old Town and does not want her name on the manifest. She travels light and pays on arrival.' },
+  compact: { shipper: 'the Compact Freight Office', at: ['Earth'], sid: 'earth', dest: 'Luna', first: 'compact-notice',
+    title: 'A Notice for {dest}', blurb: '{who} has a notice of inspection for a rigger on Luna that the Office would rather not send by the relay. It is one page, and wants a signature.' },
 };
 const ARC_PEOPLE = {
   wen: { first: 'Wen', last: 'Haraldsen', job: 'delegate of the Hollows', at: 'The Hollows' },
   marit: { first: 'Marit', last: 'Okafor', job: 'guild clerk', at: 'Pallas Refinery' },
   odile: { first: 'Odile', last: 'Marchetti', job: 'Fleet auditor', at: 'Mars' },
   hob: { first: 'Hob', last: 'Strand', job: 'air steward', at: 'Eros Old Town' },
+  petra: { first: 'Petra', last: 'Lindqvist', job: 'licensing officer', at: 'Earth' },
+  dag: { first: 'Dag', last: 'Ibarra', job: 'master rigger', at: 'Luna' },
 };
 
 // An offer in the shape the Missions page and the pitch read (awayjobs.js): no stages, only a title and a blurb; the far end is the arc's first scene.
