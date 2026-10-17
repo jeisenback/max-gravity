@@ -40,6 +40,20 @@ function roomReturn(p) {
 FAMILY_SCENES['room-offer'] = p => roomOffer(p);  // with the family scenes, for the editor and the lines tests
 FAMILY_SCENES['room-return'] = p => { G.state.room = G.state.room || { planet: p.home, pid: p.id, since: G.state.day - 30, last: G.state.day - 30, visits: 1 }; return roomReturn(p); };
 
+// The room's port as a run the hand can put to the captain: a contract there if the board has one, else a light run. None when the ship is in that system, or the plan is already bound for it.
+function roomRun(room, { sid, from, ranked, run, days, yard }) {
+  if (!room || sid === from || (run && run.sid === sid && run.planet === room.planet)) return null;
+  const k = ranked.find(c => c.sid === sid && c.planet === room.planet);
+  return { ...(k ? asRun(k) : { sid, planet: room.planet, yard, good: null, tons: 0, cost: 0, profit: 0, days, ballast: true }), room: true };
+}
+// The same for the game in hand: the run to the room if its port is in reach (the list the planner offers, hired.js currentPlan).
+function roomAlts(run) {
+  const st = G.state, room = st.room, from = st.systemId, sid = room && Object.keys(SYSTEMS).find(s => SYSTEMS[s].planets.some(p => p.name === room.planet));
+  if (!sid || !inRange(from, sid)) return [];
+  const r = roomRun(room, { sid, from, ranked: planRanked, run, days: Math.max(1, travelDays(from, sid)), yard: SYSTEMS[sid].planets.find(p => p.name === room.planet).services.includes('shipyard') });
+  return r ? [r] : [];
+}
+
 // The Port page's card at the room's port.
 function roomCardHtml() {
   const st = G.state, room = st.room;
