@@ -96,24 +96,22 @@ test('hired: a save keeps it, and an owner game is unchanged', async () => {
 // Installed in the page: a hired game at Earth, on a given post, with nothing in the way.
 const hiredHelpers = () => { window.startHired = (post = 'gunner') => { startGame({ slot: 1, background: 'earth', captain: 'Ines Okafor', mode: 'hired', post }); while (G.dialog) finishEvent(); G.state.flags.classicCombat = true; G.state.story.next = 1e9; }; };
 
-test('the captain plans a run: the best cargo within reach, paid for from the ship\'s funds', async () => {
+test('the captain plans a run: a contract from the board her hold can fill, and a light run when the board is empty', async () => {
   const { page, ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired(); const st = G.state, h = st.hired;
-    const plan = planRun(), here = currentPlanet();
-    const sell = plan && price(Object.values(SYSTEMS).find((_, i) => Object.keys(SYSTEMS)[i] === plan.sid).planets.find(p => p.name === plan.planet), plan.good);
-    // With no money there is no cargo; she runs light.
-    h.fund = 0; h.plan = null; const broke = planRun();
-    return { plan, fits: plan.tons <= ship().cargo && plan.cost <= HIRED_FUND, buy: plan.good && price(here, plan.good), sell, broke, days: plan.days, here: st.systemId };
+    const plan = planRun(), here = currentPlanet(), board = contractBoard(st, here);
+    // An empty board: she runs light to look for work.
+    h.freight = { key: `${here.name}@${st.day}`, list: [] }; h.plan = null; const empty = planRun();
+    return { plan, onBoard: !!plan && board.some(c => c.planet === plan.planet && c.good === plan.good && c.pay === plan.pay), fits: !!plan && plan.tons <= ship().cargo && plan.cost === 0, empty, here: st.systemId };
   });
-  assert.ok(r.plan.profit > 0 && !r.plan.ballast, 'a profitable cargo');
-  assert.ok(r.fits, 'that fits the hold and the purse');
-  assert.ok(r.sell > r.buy, 'and sells for more than it cost');
+  assert.ok(r.plan && r.plan.contract && r.plan.profit > 0 && !r.plan.ballast, 'a contract, its pay the profit');
+  assert.ok(r.onBoard, 'from the board'); assert.ok(r.fits, 'that fits the hold, and costs the ship nothing');
   assert.notEqual(r.plan.sid, r.here);
-  assert.equal(r.broke.ballast, true, 'no money, no cargo: she runs light');
+  assert.equal(r.empty.ballast, true, 'nothing on the board: she runs light');
   await ev(() => { startHired(); UI.render(); });
-  assert.match(await page.innerText('#panel'), /The captain will buy \d+t of .* here for/);
+  assert.match(await page.innerText('#panel'), /The captain has a contract from .*: \d+t of .* to .*, due by/);
   assert.match(await page.innerText('.dock'), /Sail with the captain/);
   assert.equal(await page.$('[data-action=takeoff]'), null, 'she sails when the captain says');
   await done();
@@ -160,16 +158,16 @@ test('the captain sails again from where she landed, and a manual pilot flies he
     const plan = currentPlan(); out.manual = postMode('pilot');
     sail();  // you are the pilot: she takes off, and you fly
     out.flight = { mode: G.mode, auto: G.auto, dest: st.dest === plan.sid };
-    // A run that ends somewhere else leaves cargo aboard; the next plan sells it.
+    // A run that ends somewhere else: she plans again from there, a contract or a light run, and nothing is bought.
     G.mode = 'landed'; st.systemId = 'mars'; st.planet = 'Mars'; h.run = null; h.plan = null;
     landAt(currentPlanet(), []); while (G.dialog) finishEvent();
     const again = planRun();
-    out.again = { loaded: again.loaded, tons: again.tons, good: again.good === plan.good };
+    out.again = { planned: !!again && (!!again.contract || !!again.ballast), cost: again && again.cost };
     return out;
   });
   assert.equal(r.manual, 'manual');
   assert.deepEqual(r.flight, { mode: 'flight', auto: null, dest: true });
-  assert.ok(r.again.loaded && r.again.tons > 0 && r.again.good, 'cargo still aboard is sold before any new one is bought');
+  assert.ok(r.again.planned && !r.again.cost, 'she plans again from where she landed, and buys nothing');
   await done();
 });
 
@@ -346,7 +344,7 @@ test('buying in: nobody comes if nobody likes you, and it needs the money and a 
   await done();
 });
 
-test('a second run buys new cargo: a plan made before the last cargo was sold is not reused', async () => {
+test('a second run loads a new contract: a plan made before the last cargo was delivered is not reused', async () => {
   const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
@@ -357,15 +355,16 @@ test('a second run buys new cargo: a plan made before the last cargo was sold is
     // The port screen drew while the cargo was still aboard: the plan it made must not survive the sale.
     out.stale = !!h.plan; out.cargo = Object.keys(st.cargo).length;
     const plan = currentPlan(); out.loaded = !!plan.loaded;
-    G.offers = []; const fund0 = h.fund; sail(); out.bought = plan.ballast || (Object.values(st.cargo)[0] || 0) > 0;
-    out.paid = plan.ballast || fund0 - h.fund === h.run.cost;
+    const skip = plan.ballast || !!plan.ice;  // a light run loads nothing, and an ice run cuts its water on the way (icerun.js)
+    G.offers = []; const fund0 = h.fund; delete h.stay; sail(); out.bought = skip || (Object.values(st.cargo)[0] || 0) > 0;  // the wait in port is stay.js's own test
+    out.paid = skip || fund0 - h.fund === h.run.cost;
     fly(); out.second = h.ledger[0];
-    out.honest = plan.ballast || out.second.cost > 0;
+    out.honest = skip || (out.second.cost === 0 && out.second.revenue > 0);
     return out;
   });
   assert.equal(r.cargo, 0); assert.equal(r.loaded, false);
-  assert.ok(r.bought && r.paid, 'the cargo was bought and paid for');
-  assert.ok(r.honest && r.second.revenue > 0, 'and sold, so the run is not a loss of cargo nobody carried');
+  assert.ok(r.bought && r.paid, 'the shipper\'s cargo was loaded, at no cost to the ship');
+  assert.ok(r.honest && r.second.revenue > 0, 'and delivered, so the shipper paid');
   await done();
 });
 

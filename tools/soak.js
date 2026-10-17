@@ -112,6 +112,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         const armor0 = st.armor;
         if (!sail()) { stuck++; st.day += 1; continue; }
         const to = hired().run.sid, runPlanet = hired().run.planet, creditsBefore = st.credits;
+        const dayOut = st.day;  // the burn's days as sailed are the days from here to the arrival
         plans.push({ perDay: Math.round(hired().run.profit / Math.max(1, hired().run.days)), expected: hired().run.profit, days: hired().run.days, ice: !!hired().run.ice, light: !!hired().run.ballast });
         answer();
         G.player.x = BURN_DIST + 40; G.player.y = 0;  // clear of local traffic, as the autopilot leaves her (autopilot.js)
@@ -130,7 +131,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         for (const c of castAboard()) if ((castRec(c.cast).arc || 0) >= 1 && !(c.cast in introRun)) introRun[c.cast] = runs + 1;
         while (beatDays.length < (hired().beats || 0)) {  // read on the day she left, before the burn's days pass
           const name = CAPTAIN_BEATS[beatDays.length];
-          beatDays.push(st.day - hired().since); waits.push(st.day - hired().since - CAPTAIN_BEAT_DAYS[name]); burns.push(dueBurns[name]);
+          beatDays.push(st.day - hired().since); waits.push(st.day - hired().since - CAPTAIN_BEAT_DAYS[name]); burns.push(dueBurns[name] || 1);  // due and played in the same burn: one burn
         }
         const acts = Object.values(ACTIVITIES).filter(a => a.can());
         if (acts.length) pick(acts).run();
@@ -160,6 +161,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         runs++;
         paid.push(st.credits - creditsBefore);
         { const led = hired().ledger[0]; if (led && plans.length && led.day === st.day) plans[plans.length - 1].realized = led.profit; }  // what the run cleared against what she planned on
+        if (plans.length) plans[plans.length - 1].sailed = st.day - dayOut;  // the burn's days as sailed, against the days planned (shorter with a hot drive, --frames)
         if (hired().deal && offerDay === null) offerDay = hired().deal.day - hired().since;
         const xoKey = CAPTAINS[hired().captainKey] && CAPTAINS[hired().captainKey].xo;
         while (xoKey && xoDays.length < (castRec(xoKey).arc || 0)) xoDays.push(st.day - hired().since);

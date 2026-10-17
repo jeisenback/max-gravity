@@ -104,12 +104,12 @@ test('after the buy-in the old captain\'s ship is an Ice Hauler', async () => {
   await done();
 });
 
-test('the fund is big enough for the hold', async () => {
+test('the fund starts whole, the hold empty, and the first contract costs the ship nothing', async () => {
   const { ev, done } = await hauler();
-  const r = await ev(() => { const st = start(); const plan = currentPlan(); return { fund: HIRED_FUND, have: st.hired.fund, cost: plan && plan.cost, free: cargoFree(), hold: SHIPS.freighter.cargo }; });
-  assert.ok(r.fund >= 12000); assert.equal(r.have, r.fund);
+  const r = await ev(() => { const st = start(); const plan = currentPlan(); return { fund: HIRED_FUND, have: st.hired.fund, cost: plan && plan.cost, contract: !!(plan && (plan.contract || plan.ballast || plan.ice)), free: cargoFree(), hold: SHIPS.freighter.cargo }; });
+  assert.ok(r.fund >= 12000); assert.equal(r.have, r.fund, 'the fund is for the yard and the ship\'s bills, not cargo (contracts.js)');
   assert.equal(r.free, r.hold, 'the hold starts empty');
-  assert.ok(r.cost > 5000 && r.cost <= r.have, `the first run spends ${r.cost}, more than the old 5,000 fund allowed`);
+  assert.ok(r.contract && r.cost === 0, 'the cargo is the shipper\'s');
   await done();
 });
 

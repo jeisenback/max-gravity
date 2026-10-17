@@ -48,10 +48,10 @@ test('when nothing here is worth the fuel the captain waits three days for the m
   await ev(helpers);
   const r = await ev(() => {
     const st = setup(), h = hired(), out = {};
-    h.fund = 0; h.plan = null;  // she cannot buy a cargo: nothing worth carrying, so a light run
+    h.freight = { key: `${st.planet}@${st.day}`, list: [] }; h.plan = null;  // nothing on the board: a light run
     out.ballast = !!(currentPlan() && currentPlan().ballast);
     UI.notes.length = 0; landHere();
-    out.wait = h.stay ? { ...h.stay } : null; out.note = UI.notes.find(n => /waiting 3 days for the market/.test(n)) || '';
+    out.wait = h.stay ? { ...h.stay } : null; out.note = UI.notes.find(n => /waiting 3 days for a shipper/.test(n)) || '';
     out.visit = h.visit && h.visit.planet === st.planet && h.visit.day === st.day;
     while (stayOf(h)) { passNight(); G.dialog = null; G.nextEvent = null; }
     out.planned = !!currentPlan();
@@ -77,7 +77,7 @@ test('a night can bring something to the dock, and the T key passes the night wh
   await ev(helpers);
   const r = await ev(() => {
     const st = setup(), h = hired(), out = {};
-    landHere(); beginStay(h, 2, 'yard');
+    landHere(); delete h.stay; beginStay(h, 2, 'yard');
     const real = pickHappening; window.pickHappening = (where, planet) => (where === 'port' && planet.name === st.planet ? { title: 'Night Test', text: 'x', choices: [{ label: 'ok', run: () => 'y' }] } : null);
     const day0 = st.day;
     G.paused = false; window.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyT' }));

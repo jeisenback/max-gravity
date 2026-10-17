@@ -184,44 +184,21 @@ const hiredMay = (id, a) => a.hiredOnly ? !!hired() : !hired() || (!['drills', '
 
 // ---------- the captain's runs ----------
 
-// Every port outside this system that buys something we can carry, scored by profit per day. The far end's price is what she knows of it
-// (knownPrice, known.js): a rumor, her own last sighting, or the usual price; the sale there is at the real price (settleRun).
-let planAlts = [];  // the runs that came next, for the hand to suggest (suggest.js)
+// The captain's run: the ice run when it is due (icerun.js), else the contract on the board she picks (contracts.js), else a light run to the
+// nearest port that trades, to look for work there. A contract's profit is its pay: nothing is bought, the cargo is the shipper's.
+let planAlts = [];  // the contracts that came next, for the hand to suggest (suggest.js)
 function planRun() {
   planAlts = [];
-  const st = G.state, h = st.hired, here = currentPlanet(), free = cargoFree(), from = st.systemId;
+  const st = G.state, here = currentPlanet(), free = cargoFree(), from = st.systemId;
   const reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid));
-  const held = COMMODITIES.filter(c => (st.cargo[c.id] || 0) > 0).sort((a, b) => st.cargo[b.id] - st.cargo[a.id])[0];
-  const options = [];
-  // Once your savings would buy the chapter's ship, she heads for a port with a yard when she can.
-  const wantYard = wantsYard();
-  for (const [sid, sys] of reach) {
-    const days = Math.max(1, travelDays(from, sid));
-    for (const pl of sys.planets.filter(x => x.services.includes('trade'))) {
-      if (held) {  // already loaded (a run that ended somewhere else): sell what we have
-        const sell = knownPrice(st, pl, held.id, false);
-        if (sell !== null) options.push({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), good: held.id, tons: st.cargo[held.id], cost: Math.round(st.paid[held.id] || 0), loaded: true, profit: Math.round(sell * st.cargo[held.id] - (st.paid[held.id] || 0)), days });
-        continue;
-      }
-      if (!here.services.includes('trade')) continue;
-      for (const c of COMMODITIES) {
-        const buy = price(here, c.id), sell = knownPrice(st, pl, c.id, false);
-        if (buy === null || sell === null || sell <= buy) continue;
-        let tons = Math.min(free, Math.floor(h.fund / buy));
-        while (tons > 0 && tradeTotal(here, c.id, tons, 1) > h.fund) tons--;
-        if (tons > 0) options.push({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), good: c.id, tons, cost: Math.round(tradeTotal(here, c.id, tons, 1)), profit: Math.round((sell - buy) * tons), days });
-      }
-    }
-  }
-  const ice = !held ? iceOption(here, from, reach, free) : null;  // the long run, when it is due (icerun.js)
+  const wantYard = wantsYard();  // once your savings would buy the chapter's ship, she heads for a port with a yard when she can
+  const ice = iceOption(here, from, reach, free);
   if (ice) return ice;
-  const score = o => (o.profit / o.days) * (wantYard && o.yard ? 4 : 1) * laneRisk(o.sid);
-  const ranked = options.sort((a, b) => score(b) - score(a)).filter(o => o.profit > 0);
+  const { best, ranked } = pickContract(here.services.includes('trade') ? contractBoard(st, here) : [], { free, wantYard, risk: laneRisk, picks: captainEntry() ? TRADE_PICKS[captainEntry().captain.trade] : 1 });
   planAlts = ranked.slice(0, 4);
-  const top = ranked.slice(0, captainEntry() ? TRADE_PICKS[captainEntry().captain.trade] : 1);
-  const best = top.length > 1 ? pick(top) : top[0];
-  if (best) return { ...best, ballast: false };
-  // Nothing worth carrying: run light to the nearest port that trades, and look for work there.
+  const take = wantYard ? ranked.find(c => c.yard) || null : best;  // with your money in hand, a contract to a yard if the board has one, else light to the nearest yard (below)
+  if (take) return { ...take, cost: 0, profit: take.pay, contract: true, ballast: false };
+  // Nothing on the board (or nothing to a yard when she wants one): run light to the nearest port that trades, and look for work there.
   const dest = reach.flatMap(([sid, sys]) => sys.planets.filter(x => x.services.includes('trade')).map(pl => ({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), days: Math.max(1, travelDays(from, sid)) })))
     .sort((a, b) => (wantYard ? (b.yard - a.yard) : 0) || a.days - b.days)[0];
   return dest ? { ...dest, good: null, tons: 0, cost: 0, profit: 0, ballast: true } : null;
@@ -242,15 +219,8 @@ const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const r
 function sail() {
   const st = G.state, h = st.hired, plan = currentPlan(), here = currentPlanet();
   if (!plan || G.mode !== 'landed' || G.dialog || stayOf(h)) return false;  // a stay in port passes as nights first (stay.js)
-  let cost = plan.cost;
-  if (plan.good && !plan.loaded && !plan.ice) {
-    cost = Math.round(tradeTotal(here, plan.good, plan.tons, 1));
-    recordTrade(here, plan.good, plan.tons, 1);
-    st.cargo[plan.good] = (st.cargo[plan.good] || 0) + plan.tons;
-    st.paid[plan.good] = (st.paid[plan.good] || 0) + cost;
-    h.fund -= cost;
-  }
-  recordPrices(h, here, st.day);  // what she saw here, her own buying in it, is what she plans on next time (known.js)
+  const cost = 0;
+  if (plan.contract) st.cargo[plan.good] = (st.cargo[plan.good] || 0) + plan.tons;  // the shipper's cargo, loaded at no cost (contracts.js)
   h.run = { ...plan, cost, day: st.day, from: st.planet };
   if (plan.ice) { h.run.ice = { edge: 0 }; h.iceAt = st.day; h.iceRuns = (h.iceRuns || 0) + 1; }  // the ice is cut on the way, not bought
   h.plan = null;
@@ -267,7 +237,13 @@ function settleRun(planet) {
   if (!run || planet.name !== run.planet || st.systemId !== run.sid) return;
   if (run.ice) iceFinish();  // a burn that skipped the scenes comes home thin
   let revenue = 0, sold = 0;
-  if (run.good && st.cargo[run.good] && price(planet, run.good) !== null) {
+  if (run.contract) {  // the shipper pays on delivery, docked for lateness; short of the load there is no pay (contracts.js)
+    const have = st.cargo[run.good] || 0;
+    if (have >= run.tons) { sold = run.tons; revenue = latePay(run.pay, run.due, st.day); } else captainFlag('contractLost');
+    if (st.day > run.due) captainFlag('late');
+    if (have - run.tons > 0) st.cargo[run.good] = have - run.tons; else { delete st.cargo[run.good]; delete st.paid[run.good]; }
+    h.fund += revenue;
+  } else if (run.good && st.cargo[run.good] && price(planet, run.good) !== null) {
     sold = st.cargo[run.good];
     revenue = Math.round(tradeTotal(planet, run.good, sold, -1) * (run.ice ? ICE_PREMIUM : 1));  // an ice run is sold on a contract (icerun.js)
     recordTrade(planet, run.good, sold, -1);
@@ -282,7 +258,7 @@ function settleRun(planet) {
   st.credits += wage + share - toHall;
   const total = runTotals(h);
   h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter
-  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, hall: toHall, days, ice: !!run.ice });
+  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, hall: toHall, days, ice: !!run.ice, shipper: run.shipper, late: run.contract ? Math.max(0, st.day - run.due) : 0 });
   h.ledger.length = Math.min(h.ledger.length, 20);
   // The first officer settles up on the first arrival (captains.js): keep the figures, and leave the one-line note for later arrivals.
   const settling = total.runs === 0 && arrivalWanted();
@@ -554,16 +530,15 @@ function buyInHtml() {
 }
 
 // A run in the hand's terms: the days, the ship's profit, and what that is to you. The captain's run and each suggested run say it alike.
-const runTerms = r => `${r.days} days, about ${fmt(r.profit)} cr profit, so about ${fmt(r.profit * G.state.hired.share)} cr to you, plus ${fmt(G.state.hired.wage * r.days)} cr wage`;
+const runTerms = r => `${r.days} days, ${fmt(r.pay !== undefined ? r.pay : r.profit)} cr ${r.pay !== undefined ? 'on delivery' : 'profit'}, so about ${fmt((r.pay !== undefined ? r.pay : r.profit) * G.state.hired.share)} cr to you, plus ${fmt(G.state.hired.wage * r.days)} cr wage`;
 
 const runHtml = () => {
   const hd = G.state.hired, plan = currentPlan(), led = hd.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
-  const far = plan && plan.good && !plan.ice && SYSTEMS[plan.sid].planets.find(p => p.name === plan.planet), basis = far ? basisText(priceBasis(G.state, far, plan.good, false), plan.planet) : '';
   return String(h`<div class="post"><div class="eyebrow">${hiredCaptain() ? h`<span class="nowrap">Captain ${raw(personLink(hiredCaptain()))}'s</span> run` : 'The captain\'s run'} &middot; ship's funds ${fmt(hd.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
-    <p class="desc">${plan && plan.yard && wantsYard() ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'The captain is waiting for a market worth the fuel.'
-      : plan.ballast ? h`The captain has no cargo worth carrying and will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
-      : plan.loaded ? h`The captain will take the ${plan.tons}t of ${name(plan.good)} already aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${plan.days} days.`
-      : h`The captain will buy ${plan.tons}t of ${name(plan.good)} here for ${fmt(plan.cost)} cr and take it to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${runTerms(plan)}.`}${basis ? h` She plans on ${basis}.` : ''}</p>
+    <p class="desc">${plan && plan.yard && wantsYard() ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'Nothing on the board, and nowhere in reach to look. The captain is waiting for a shipper.'
+      : plan.ballast ? h`Nothing on the board here. The captain will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
+      : plan.contract ? h`The captain has a contract from ${plan.shipper}: ${plan.tons}t of ${name(plan.good)} to ${plan.planet}, ${SYSTEMS[plan.sid].name}, due by ${dateOf(plan.due)}: ${runTerms(plan)}.${plan.hazard ? ' The lane has raids on it.' : ''}`
+      : h`The captain will take the ${plan.tons}t of ${name(plan.good)} aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${runTerms(plan)}.`}</p>
     ${raw(swayHtml())}
     ${led.length ? h`<div class="eyebrow">Recent runs</div>${listHtml(led, l => h`<div class="hint">${dateOf(l.day)}: ${l.from} to ${l.to}${l.good ? `, ${l.tons}t ${name(l.good)}, profit ${fmt(l.profit)} cr` : ', light'}. You earned ${fmt(l.wage + l.share)} cr.</div>`)}` : ''}
   </div>`);

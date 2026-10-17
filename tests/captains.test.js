@@ -10,9 +10,10 @@ const { open, closeBrowser } = require('./helpers');
 after(closeBrowser);
 
 const helpers = () => {
-  window.underway = () => { if (!sail()) throw new Error('no plan'); for (let k = 0; k < 8 && G.dialog; k++) { const d = G.dialog, ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can()); if (ok.length) chooseEvent(ok[0]); finishEvent(); } while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; };
+  window.underway = () => { delete hired().stay; if (!sail()) throw new Error('no plan'); for (let k = 0; k < 8 && G.dialog; k++) { const d = G.dialog, ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can()); if (ok.length) chooseEvent(ok[0]); finishEvent(); } while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; };
   window.arriveFirst = (mutate) => {
     const st = G.state, h = hired();
+    delete h.stay;  // these are about the runs, not the waits in port (stay.js)
     if (!sail()) throw new Error('no plan');
     while (G.dialog) finishEvent();
     const run = h.run;
@@ -90,7 +91,10 @@ test('wage and share come from the entry, and "for the money" adds two points to
 
 test('trade sets how close to the best run the captain plans', async () => {
   const r = await run(() => {
-    const st = start(), out = {};
+    const st = start(), out = {}, here = currentPlanet(), from = st.systemId;
+    // a board of five, each on a lane of its own, the pay falling: the pick is among them by her trade stat (contracts.js)
+    const reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid)), lanes = freightLanes(here, from, reach).slice(0, 5);
+    st.hired.freight = { key: `${here.name}@${st.day}`, list: lanes.map((l, i) => ({ shipper: 'a broker', good: l.cid, tons: 40, from: here.name, sid: l.sid, planet: l.pl.name, yard: false, days: 4, pay: 5000 - i * 500, due: st.day + 20, hazard: false, rumor: false })) };
     const plans = new Set();
     for (const trade of [5, 1]) {
       captainEntry().captain.trade = trade; plans.clear();
