@@ -7,13 +7,13 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const NAMES = ['SYSTEMS', 'PRICE_MULT', 'CONTRACT_RATE', 'CONTRACT_FEE', 'haulRate', 'LONG_HAUL', 'LONG_HAUL_FLOOR', 'RUMOR_PREMIUM', 'HAZARD_PREMIUM', 'HAZARD_AT', 'LATE_DOCK', 'LATE_FLOOR', 'SHIPPERS', 'shipperOf', 'freightLanes', 'drawContracts', 'contractBoard', 'pickContract', 'latePay', 'travelDays', 'inRange', 'BOARD_ODDS', 'STANDING_MAX', 'STANDING_GOOD', 'STANDING_BAD', 'TRUSTED_PAY', 'standingOf', 'standingDelta', 'nextStanding', 'shipperWord', 'deliveryOff', 'officeOf', 'SKIMMER', 'SKIM_CHANCE', 'SKIM_CUT', 'skimOf'];
+const NAMES = ['SYSTEMS', 'PRICE_MULT', 'CONTRACT_RATE', 'CONTRACT_FEE', 'haulRate', 'LONG_HAUL', 'LONG_HAUL_FLOOR', 'RUMOR_PREMIUM', 'HAZARD_PREMIUM', 'HAZARD_AT', 'LATE_DOCK', 'LATE_FLOOR', 'SHIPPERS', 'shipperOf', 'freightLanes', 'drawContracts', 'contractBoard', 'pickContract', 'latePay', 'travelDays', 'inRange', 'BOARD_ODDS', 'STANDING_MAX', 'STANDING_GOOD', 'STANDING_BAD', 'TRUSTED_PAY', 'standingOf', 'standingDelta', 'nextStanding', 'shipperWord', 'deliveryOff', 'officeOf', 'SKIMMER', 'SKIM_CHANCE', 'SKIM_CUT', 'skimOf', 'boardStanding'];
 
 // A game state at Earth on day 10. `danger` is the world's unrest by system; `dice` gives the rolls in order, then 0.5.
 const dice = (rolls = []) => { const seq = [...rolls]; return () => (seq.length ? seq.shift() : 0.5); };
 function setup({ day = 10, rumors = [], danger = {}, rolls = [], hold = 120 } = {}) {
   const G = { state: { day, flags: {}, systemId: 'earth', planet: 'Earth', market: {}, rumors, missions: [], cargo: {}, hired: { since: 1, captain: 'cap1' } } };
-  const api = load(['js/data.js', 'js/util.js', 'js/orbits.js', 'js/market.js', 'js/contracts.js'],
+  const api = load(['js/data.js', 'js/util.js', 'js/sheet.js', 'js/orbits.js', 'js/market.js', 'js/contracts.js'],
     { G, Mods: { filter: (n, v) => v, emit() {} }, career: () => G.state.hired, roleSkill: () => 0, ship: () => ({ fuel: 450, cargo: hold }), danger: sid => danger[sid] || 0, pick: l => l[Math.floor(Math.random() * l.length)] }, NAMES);
   const earth = api.SYSTEMS.earth.planets.find(p => p.name === 'Earth');
   const reach = Object.entries(api.SYSTEMS).filter(([sid]) => sid !== 'earth' && api.inRange('earth', sid));
@@ -172,4 +172,17 @@ test('a pay cut is the worst of a delivery after a lost or short load, and the r
   assert.deepEqual({ ...skim }, { kind: 'skim', shipper: 'a dock broker', good: 'water', tons: 90, got: 90, late: 0, due: 20, cut: 900, owed: 6000 });
   assert.equal(deliveryOff(run, 90, 25, 900, 6000).kind, 'skim', 'a pay cut before a late delivery'); assert.equal(deliveryOff(run, 60, 20, 900, 6000).kind, 'short'); assert.equal(deliveryOff(run, 0, 20, 900, 6000).kind, 'lost');
   assert.equal(deliveryOff(run, 90, 20, 0, 6000), null, 'no cut, whole and on the day');
+});
+
+test('the Compact\'s carrier license makes its freight office draw the board for a ship it knows as for one it trusts, and no other shipper reads it (#685)', () => {
+  const { boardStanding, STANDING_GOOD, SHIPPERS, contractBoard, st, earth } = setup();
+  const office = SHIPPERS.gov['Arcology Compact'], league = SHIPPERS.gov['Charter League'];
+  assert.equal(boardStanding(1, office, ['carrier-license']), STANDING_GOOD, 'known, with the license: trusted');
+  assert.equal(boardStanding(0, office, ['carrier-license']), 0, 'a stranger gets nothing from a license');
+  assert.equal(boardStanding(1, office, []), 1, 'known, without it: as before'); assert.equal(boardStanding(1, office, undefined), 1);
+  assert.equal(boardStanding(1, league, ['carrier-license']), 1, 'another shipper does not read it'); assert.equal(boardStanding(1, office, ['valve-keys', 'audit-seal']), 1, 'nor do the other items');
+  assert.equal(boardStanding(3, office, ['carrier-license']), 3, 'a higher regard is left as it is');
+  const draw = (kit, standing) => { st.hired = { since: 1, captain: 'cap1', kit, standing: { [office]: standing } }; delete st.hired.freight; return contractBoard(st, earth).reduce((n, c) => n + c.pay, 0); };
+  let plain = 0, licensed = 0; for (let day = 1; day <= 60; day++) { st.day = day; plain += draw([], 1); licensed += draw(['carrier-license'], 1); }
+  assert.ok(licensed > plain, `the licensed board pays more over sixty days (${licensed} against ${plain})`);
 });

@@ -28,10 +28,10 @@ Step 3 is two pieces, each its own PR. **3a, the board** (`js/ownerboard.js`): i
 
 ### 4. Two arc items change the ship and the board
 
-- **The valve keys** open a pump retrofit: the ship can take the Hollows' pump-crew coolant bypass, an outfit that is not on any plain list and is offered only to a ship that holds the keys. What it does: a lower heat or fuel burn (to be set against the soak when built). This is the "an item from an arc changes the ship" line.
-- **The carrier license** opens a Compact tier on the board: a contract or two from the Compact Freight Office that the board does not draw for a ship without the license, paying better and asking a standing of one.
+- **The valve keys** open the Pump-crew coolant bypass in the outfitter: +60 reaction mass for no cargo space, 1,500 cr, listed only for a ship that holds the keys (`OUTFITS.pump` names the kit item in `kit`). A small, visible change to the ship that is on no plain list.
+- **The carrier license** is read by the Compact Freight Office (`board` on the item): for a ship it already knows (regard 1), its board is drawn as for one it trusts, which is more contracts a day and a tenth more pay (`boardStanding`, `contracts.js`).
 
-Both are data on `KIT_ITEMS` (`js/sheet.js`, as `cover` is for the lock fight) read by the code that builds the ship's stats and the board.
+Both are data on the item or the outfit, read where the ship's stats and the board are built. (Done, #685 step 4.)
 
 ### 5. The spine and the opening
 
@@ -41,8 +41,8 @@ No new scene. The closing scene already reads who came (`CHAPTER_ENDINGS`). Chap
 
 1. The role object, and `OWNER_TABS`, `OWNER_ACTIONS` and `hiredCall` moved onto it. No change in what plays. (Done, #706.)
 2. The career record: the sheet, kit and standing carried across the buy. (Done, #708.)
-3a. The board the player picks from, pay to credits. 3b. The player's post carried across the buy.
-4. The two arc items: the retrofit and the Compact tier.
+3a. The board the player picks from, pay to credits. (Done, #709.) 3b. The player's post carried across the buy. (Done, #712.)
+4. The two arc items: the retrofit and the Compact tier. (Done.)
 
 Each is measured: the soak (`npm run soak`) for chapter two's pay against chapter one's, the fights tool for the retrofit if it touches combat, pins written again with the reason in the commit.
 

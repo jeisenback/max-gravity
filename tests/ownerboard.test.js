@@ -90,3 +90,16 @@ test('a shipper\'s freight in the hold is not for sale at the Exchange: the owne
   assert.equal(r.hold, 30, 'ten of their own and twenty of the shipper\'s'); assert.equal(r.afterAll, 20, 'only their own ten were sold'); assert.equal(r.sold, true);
   assert.equal(r.afterMore, 20, 'the freight stays'); assert.equal(r.noMore, true); assert.match(r.page, /\+20t freight/); assert.deepEqual(r.sellShut, [true], 'nothing of their own left to sell');
 });
+
+test('the pump-crew coolant bypass is in the outfitter only for a ship that holds the valve keys, and adds reaction mass for no cargo space (#685)', async () => {
+  const r = await run(() => {
+    const st = owner(), out = {}; st.credits = 50000; const text = () => { UI.tab = 'shipyard'; UI.render(); return document.querySelector('.shell .body').textContent.replace(/\s+/g, ' '); };
+    out.with = /Pump-crew coolant bypass/.test(text()); career().kit = []; out.without = /Pump-crew coolant bypass/.test(text());
+    career().kit = ['valve-keys']; out.again = /Pump-crew coolant bypass/.test(text());
+    const fuel0 = ship().fuel, cargo0 = ship().cargo, c0 = st.credits; UI.act('buyout', 'pump');
+    out.fuel = ship().fuel - fuel0; out.cargo = ship().cargo - cargo0; out.paid = c0 - st.credits; out.fitted = st.outfits.pump;
+    return out;
+  });
+  assert.equal(r.with, true); assert.equal(r.without, false, 'a ship without the keys is not offered it'); assert.equal(r.again, true);
+  assert.equal(r.fuel, 60); assert.equal(r.cargo, 0); assert.equal(r.paid, 1500); assert.equal(r.fitted, 1);
+});
