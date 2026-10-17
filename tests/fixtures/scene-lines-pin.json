@@ -85,7 +85,10 @@
      "p10": 1
     },
     "x": {
-     "the Compact Freight Office": 1
+     "standing": {
+      "the Compact Freight Office": 1
+     },
+     "fund": 12000
     },
     "next": null
    },
@@ -100,7 +103,10 @@
      "p10": -1
     },
     "x": {
-     "the Compact Freight Office": -1
+     "standing": {
+      "the Compact Freight Office": -1
+     },
+     "fund": 12000
     },
     "next": null
    },
@@ -163,7 +169,10 @@
      "p10": 1
     },
     "x": {
-     "the Compact Freight Office": 1
+     "standing": {
+      "the Compact Freight Office": 1
+     },
+     "fund": 12000
     },
     "next": null
    },
@@ -178,7 +187,10 @@
      "p10": -1
     },
     "x": {
-     "the Compact Freight Office": -1
+     "standing": {
+      "the Compact Freight Office": -1
+     },
+     "fund": 12000
     },
     "next": null
    },
@@ -241,7 +253,10 @@
      "p10": 1
     },
     "x": {
-     "the Compact Freight Office": 1
+     "standing": {
+      "the Compact Freight Office": 1
+     },
+     "fund": 12000
     },
     "next": null
    },
@@ -256,7 +271,10 @@
      "p10": -1
     },
     "x": {
-     "the Compact Freight Office": -1
+     "standing": {
+      "the Compact Freight Office": -1
+     },
+     "fund": 12000
     },
     "next": null
    },
@@ -279,6 +297,66 @@
    "Own it",
    "Make the case [40%; if it fails: the shipper's regard]",
    "Say nothing"
+  ]
+ },
+ {
+  "id": "scene:freight-agent:skim",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You lay the paper beside the chit and go down it line by line: the tons, the day, the lane, the rate. Nothing in it says handling. Agent Singh reads the print on the back against the rule it came from, and the rule is for the other kind of contract. \"That's not ours,\" Agent Singh says. \"I'll put it back on the account.\"",
+    "mem": [
+     "9 Jul 2214: You read the paper against the chit and the chit lost."
+    ],
+    "fx": {
+     "credits": 180,
+     "p10": 1
+    },
+    "x": {
+     "standing": {
+      "the Compact Freight Office": 1
+     },
+     "fund": 15000
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "You go down the paper and Agent Singh goes down the chit, and the small print covers it, in a clause you hadn't read. \"Handling,\" Agent Singh says. \"It's there. You can ask the broker. I can't strike it.\"",
+    "mem": [
+     "9 Jul 2214: You argued the handling and the print was on my side."
+    ],
+    "fx": {
+     "p10": -1
+    },
+    "x": {
+     "standing": {
+      "the Compact Freight Office": -1
+     },
+     "fund": 12000
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You take the chit and fold it into the log. Agent Singh initials the margin, where the broker left room.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You take the chit and fold it into the log. Agent Singh initials the margin, where the broker left room.",
+    "next": null
+   }
+  ],
+  "title": "Short on the Paper",
+  "text": "Agent Singh sets the chit on the lock rail with the paper beside it, and the figures do not match. The paper says 20,000 cr. the Compact Freight Office has paid 17,000. \"Handling,\" Agent Singh says, and turns the chit over to a line of small print. \"It's on the back. I didn't write it. I'm telling you so you've heard it from somebody.\"",
+  "labels": [
+   "Speak up [40%; if it fails: the shipper's regard]",
+   "Let it go"
   ]
  },
  {
@@ -20661,6 +20739,174 @@
    "Take it modestly",
    "Ask if it's worth a bonus",
    "[Gunner 3] Ask for the bonus, with the week's figures"
+  ]
+ },
+ {
+  "id": "scene:freight-side",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put your papers on the rail and say Mateo is crew on your word. Agent Singh copies the number off them, slowly, and takes the name off the list. \"Yours goes on it instead,\" Agent Singh says.",
+    "mem": [
+     "9 Jul 2214: You put your papers up for me at the loading."
+    ],
+    "fx": {
+     "p2": 2
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "You put your papers on the rail and say Mateo is crew on your word. Agent Singh copies the number off them, slowly, and takes the name off the list. \"Yours goes on it instead,\" Agent Singh says.",
+    "mem": [
+     "9 Jul 2214: You put your papers up for me at the loading."
+    ],
+    "fx": {
+     "p2": 2
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "The fee is a line on the paper that was not there a minute ago. Agent Singh stamps it, and the name comes off the list.",
+    "mem": [
+     "9 Jul 2214: The ship paid four hundred to keep a name off a manifest."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "x": {
+     "board": 1,
+     "crew": 9,
+     "standing": {},
+     "fund": 11600
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The fee is a line on the paper that was not there a minute ago. Agent Singh stamps it, and the name comes off the list.",
+    "mem": [
+     "9 Jul 2214: The ship paid four hundred to keep a name off a manifest."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "x": {
+     "board": 1,
+     "crew": 9,
+     "standing": {},
+     "fund": 11600
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "Agent Singh waits for you to say something. You don't, and Mateo is nowhere on the lock. The stylus lifts. \"Then it's the list I was given,\" Agent Singh says, and starts the loaders.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "The loading stops at the second crate. Agent Singh walks the length of the lock and counts the names against the faces, and finds the one that has no face on the list. The paper is torn across, with the ship's name still on it. \"No cargo for this ship,\" Agent Singh says. \"Not today.\"",
+    "mem": [
+     "9 Jul 2214: A name on the crew list cost us the paper.",
+     "9 Jul 2214: You kept me below, and it didn't hold."
+    ],
+    "fx": {
+     "p1": -1,
+     "p2": -1
+    },
+    "x": {
+     "board": 0,
+     "crew": 9,
+     "standing": {
+      "the Compact Freight Office": -1
+     },
+     "fund": 12000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "Mateo takes the bag from under the bunk and goes down the ramp without looking at the slate. Agent Singh strikes the name and starts the loaders. Sofia signs on for the berth.",
+    "mem": [
+     "9 Jul 2214: You put me ashore to clear a manifest.",
+     "9 Jul 2214: You put Mateo ashore for a freight paper."
+    ],
+    "fx": {
+     "p2": -3,
+     "c:cato": -1,
+     "p11": 0
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "Mateo takes the bag from under the bunk and goes down the ramp without looking at the slate. Agent Singh strikes the name and starts the loaders. Ama signs on for the berth.",
+    "mem": [
+     "9 Jul 2214: You put me ashore to clear a manifest.",
+     "9 Jul 2214: You put Mateo ashore for a freight paper."
+    ],
+    "fx": {
+     "p2": -3,
+     "c:cato": -1,
+     "p11": 0
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You tell Agent Singh the ship isn't carrying for the Compact Freight Office today. Agent Singh tears the corner off the paper and writes the day on the stub. \"I'll say it was the ship's call,\" Agent Singh says.",
+    "mem": [
+     "9 Jul 2214: You turned down a paper rather than put my name on it."
+    ],
+    "fx": {
+     "p2": 2
+    },
+    "x": {
+     "board": 0,
+     "crew": 9,
+     "standing": {},
+     "fund": 12000
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.99,
+    "text": "You tell Agent Singh the ship isn't carrying for the Compact Freight Office today. Agent Singh tears the corner off the paper and writes the day on the stub. \"I'll say it was the ship's call,\" Agent Singh says.",
+    "mem": [
+     "9 Jul 2214: You turned down a paper rather than put my name on it."
+    ],
+    "fx": {
+     "p2": 2
+    },
+    "x": {
+     "board": 0,
+     "crew": 9,
+     "standing": {},
+     "fund": 12000
+    },
+    "next": null
+   }
+  ],
+  "title": "On the Manifest",
+  "text": "Agent Singh lays the crew list beside the paper, because the Compact Freight Office puts the names of everyone aboard on its manifest. The stylus stops at Mateo Castillo and stays there. \"the Compact wants this one,\" Agent Singh says. \"I can load you without the name on the list. I can't load you with it and write nothing.\"",
+  "labels": [
+   "[Arcology Compact papers] Vouch for Mateo as a member",
+   "Pay the office's fee (400 cr from the ship's fund)",
+   "Say nothing and keep Mateo below",
+   "Put Mateo ashore",
+   "Turn the contract down"
   ]
  }
 ]

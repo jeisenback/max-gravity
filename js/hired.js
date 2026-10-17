@@ -241,13 +241,14 @@ function settleRun(planet) {
   const st = G.state, h = st.hired, run = h.run;
   if (!run || planet.name !== run.planet || st.systemId !== run.sid) return;
   if (run.ice) iceFinish();  // a burn that skipped the scenes comes home thin
-  let revenue = 0, sold = 0;
+  let revenue = 0, sold = 0, paper = 0, cut = 0;  // paper: the pay the contract gave; cut: what the shipper held back
   if (run.contract) {  // the shipper pays on delivery for what arrives, docked for lateness; a load lost on the way is pay lost (contracts.js)
     const have = Math.min(run.tons, st.cargo[run.good] || 0);
     sold = have; revenue = latePay(Math.round(run.pay * have / run.tons), run.due, st.day);
+    paper = revenue; cut = skimOf(run, revenue, standingOf(h, run.shipper)); revenue -= cut;  // a shipper that skims pays less than the paper (contracts.js)
     if (have < run.tons) captainFlag(have ? 'contractShort' : 'contractLost');
     if (st.day > run.due) captainFlag('late');
-    shipperSettled(run, have, st.day);  // the shipper's regard, and a word with the agent if it was off (shippers.js)
+    shipperSettled(run, have, st.day, cut, paper);  // the shipper's regard, and a word with the agent if it was off (shippers.js)
     if (have - run.tons > 0) st.cargo[run.good] = have - run.tons; else { delete st.cargo[run.good]; delete st.paid[run.good]; }
     h.fund += revenue;
   } else if (run.good && st.cargo[run.good] && price(planet, run.good) !== null) {
@@ -265,7 +266,7 @@ function settleRun(planet) {
   st.credits += wage + share - toHall;
   const total = runTotals(h);
   h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter
-  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, hall: toHall, days, ice: !!run.ice, shipper: run.shipper, late: run.contract ? Math.max(0, st.day - run.due) : 0, short: !!run.contract && sold < run.tons });
+  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, hall: toHall, days, ice: !!run.ice, shipper: run.shipper, late: run.contract ? Math.max(0, st.day - run.due) : 0, short: !!run.contract && sold < run.tons, skim: cut });
   h.ledger.length = Math.min(h.ledger.length, 20);
   // The first officer settles up on the first arrival (captains.js): keep the figures, and leave the one-line note for later arrivals.
   const settling = total.runs === 0 && arrivalWanted();
@@ -592,7 +593,7 @@ Mods.register({
     M.on('landed', planet => { hullNote(); dealCheck(planet); });
     M.on('landed', planet => { if (hired()) G.offers = errandsFor(planet); });  // the board has errands, not contracts
     M_NOTE = text => M.note(text);
-    M.action('sail', () => { if (hired()) sail(); });
+    M.action('sail', () => { if (hired() && !sideBeforeSail()) sail(); });  // a side on the paper is a scene at the lock first (shippers.js)
     M.action('swapPost', post => askSwap(post));
     M.action('buyInAsk', id => {
       if (!hired() || !canBuyIn(id, currentPlanet())) return;

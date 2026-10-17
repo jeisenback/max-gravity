@@ -7,7 +7,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const NAMES = ['SYSTEMS', 'PRICE_MULT', 'CONTRACT_RATE', 'CONTRACT_FEE', 'haulRate', 'LONG_HAUL', 'LONG_HAUL_FLOOR', 'RUMOR_PREMIUM', 'HAZARD_PREMIUM', 'HAZARD_AT', 'LATE_DOCK', 'LATE_FLOOR', 'SHIPPERS', 'shipperOf', 'freightLanes', 'drawContracts', 'contractBoard', 'pickContract', 'latePay', 'travelDays', 'inRange', 'BOARD_ODDS', 'STANDING_MAX', 'STANDING_GOOD', 'STANDING_BAD', 'TRUSTED_PAY', 'standingOf', 'standingDelta', 'nextStanding', 'shipperWord', 'deliveryOff'];
+const NAMES = ['SYSTEMS', 'PRICE_MULT', 'CONTRACT_RATE', 'CONTRACT_FEE', 'haulRate', 'LONG_HAUL', 'LONG_HAUL_FLOOR', 'RUMOR_PREMIUM', 'HAZARD_PREMIUM', 'HAZARD_AT', 'LATE_DOCK', 'LATE_FLOOR', 'SHIPPERS', 'shipperOf', 'freightLanes', 'drawContracts', 'contractBoard', 'pickContract', 'latePay', 'travelDays', 'inRange', 'BOARD_ODDS', 'STANDING_MAX', 'STANDING_GOOD', 'STANDING_BAD', 'TRUSTED_PAY', 'standingOf', 'standingDelta', 'nextStanding', 'shipperWord', 'deliveryOff', 'officeOf', 'SKIMMER', 'SKIM_CHANCE', 'SKIM_CUT', 'skimOf'];
 
 // A game state at Earth on day 10. `danger` is the world's unrest by system; `dice` gives the rolls in order, then 0.5.
 const dice = (rolls = []) => { const seq = [...rolls]; return () => (seq.length ? seq.shift() : 0.5); };
@@ -142,7 +142,34 @@ test('what was off with a delivery: the worst of it, with the figures the agent 
   const { deliveryOff } = setup();
   const run = { shipper: 'the Rook', good: 'water', tons: 90, due: 20 };
   assert.equal(deliveryOff(run, 90, 20), null); assert.equal(deliveryOff(run, 90, 15), null);
-  assert.deepEqual({ ...deliveryOff(run, 90, 22) }, { kind: 'late', shipper: 'the Rook', good: 'water', tons: 90, got: 90, late: 2, due: 20 });
+  assert.deepEqual({ ...deliveryOff(run, 90, 22) }, { kind: 'late', shipper: 'the Rook', good: 'water', tons: 90, got: 90, late: 2, due: 20, cut: 0, owed: 0 });
   assert.equal(deliveryOff(run, 60, 20).kind, 'short'); assert.equal(deliveryOff(run, 60, 25).kind, 'short', 'short and late is short');
   assert.equal(deliveryOff(run, 0, 25).kind, 'lost'); assert.equal(deliveryOff(run, 0, 25).late, 5, 'and still says how late');
+});
+
+test('the dock broker sometimes pays less than the paper: a share of the pay, in a quarter of deliveries to a stranger, half as often to one that knows the ship, never to one that trusts it', () => {
+  const { skimOf, SKIMMER, SKIM_CHANCE, SKIM_CUT, SHIPPERS } = setup();
+  assert.equal(SKIMMER, SHIPPERS.other);
+  const days = Array.from({ length: 400 }, (_, i) => i + 1), count = standing => days.filter(day => skimOf({ shipper: SKIMMER, planet: 'Ganymede', day }, 10000, standing) > 0).length;
+  const rate = n => n / days.length;
+  assert.ok(Math.abs(rate(count(0)) - SKIM_CHANCE) < 0.06, `a stranger: ${rate(count(0))}`); assert.ok(Math.abs(rate(count(1)) - SKIM_CHANCE / 2) < 0.06, `one that knows the ship: ${rate(count(1))}`);
+  assert.equal(count(2), 0); assert.equal(count(3), 0); assert.equal(count(-3), count(0), 'a shipper with a grudge skims no more than a stranger');
+  const hit = days.find(day => skimOf({ shipper: SKIMMER, planet: 'Ganymede', day }, 10000, 0) > 0);
+  assert.equal(skimOf({ shipper: SKIMMER, planet: 'Ganymede', day: hit }, 10000, 0), Math.round(10000 * SKIM_CUT), 'a share of the pay');
+  assert.equal(skimOf({ shipper: SKIMMER, planet: 'Ganymede', day: hit }, 10000, 0), skimOf({ shipper: SKIMMER, planet: 'Ganymede', day: hit }, 10000, 0), 'the same delivery skims the same');
+  assert.equal(skimOf({ shipper: SHIPPERS.gov['Arcology Compact'], planet: 'Earth', day: hit }, 10000, 0), 0, 'no other shipper does');
+});
+
+test('a freight office is a state\'s: the three states\' offices have one, a port\'s own shipper and the Rook have none', () => {
+  const { officeOf, SHIPPERS } = setup();
+  assert.equal(officeOf(SHIPPERS.gov['Arcology Compact']), 'Arcology Compact'); assert.equal(officeOf(SHIPPERS.gov['Dome Concord']), 'Dome Concord'); assert.equal(officeOf(SHIPPERS.gov['Charter League']), 'Charter League');
+  assert.equal(officeOf('the Rook'), null); assert.equal(officeOf('a dock broker'), null); assert.equal(officeOf('Aquilon'), null);
+});
+
+test('a pay cut is the worst of a delivery after a lost or short load, and the record carries the figures', () => {
+  const { deliveryOff } = setup(), run = { shipper: 'a dock broker', good: 'water', tons: 90, due: 20 };
+  const skim = deliveryOff(run, 90, 20, 900, 6000);
+  assert.deepEqual({ ...skim }, { kind: 'skim', shipper: 'a dock broker', good: 'water', tons: 90, got: 90, late: 0, due: 20, cut: 900, owed: 6000 });
+  assert.equal(deliveryOff(run, 90, 25, 900, 6000).kind, 'skim', 'a pay cut before a late delivery'); assert.equal(deliveryOff(run, 60, 20, 900, 6000).kind, 'short'); assert.equal(deliveryOff(run, 0, 20, 900, 6000).kind, 'lost');
+  assert.equal(deliveryOff(run, 90, 20, 0, 6000), null, 'no cut, whole and on the day');
 });

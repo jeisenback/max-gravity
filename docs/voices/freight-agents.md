@@ -1,10 +1,10 @@
 # The freight agents
 
-The person at a delivery port who signs for the cargo (#682). One card for all of them, because an agent is a role: each port has one, made from the port's name, with a name and a face of their own and the same every time the ship comes in. They meet the ship at the ramp only when a delivery was late, short or lost.
+The person at a delivery port who signs for the cargo (#682). One card for all of them, because an agent is a role: each port has one, made from the port's name, with a name and a face of their own and the same every time the ship comes in. They meet the ship at the ramp only when a delivery was late, short or lost, or the dock broker held money back; and at the lock before she sails, when a state's freight office puts the crew on its manifest.
 
 ## Source
 
-`js/hiredscenes.js`, `scene:freight-agent`: the three openings (`text.late`, `text.short`, `text.lost`) and what the hand says. The rules the figures come from are in `js/contracts.js` (a tenth of the pay a day late, pay for what arrives).
+`js/hiredscenes.js`, `scene:freight-agent`: the openings (`text.late`, `text.short`, `text.lost`, `text.skim`) and what the hand says, and `scene:freight-side` (the crew list at the lock). The rules the figures come from are in `js/contracts.js` (a tenth of the pay a day late, pay for what arrives).
 
 ## The agent
 
@@ -28,6 +28,10 @@ The slate: the tons counted, the day on the paper, the notices that can be check
 - "I don't set the tenth. I read it out."
 - "That's a short note. Most of them run longer."
 - "Nobody can check it."
+
+## At the lock
+
+At the origin port the agent is the office's: they read the crew list against a faction's register because the manifest asks for it, not because they have a quarrel with anyone. They name the faction, never the charge. They offer no way out; the ways out are the hand's. "I can load you without the name on the list. I can't load you with it and write nothing." Like the receiving agent they end on a thing done: a name struck, a corner torn off the paper, the loaders started.
 
 ## Dialogue risks
 

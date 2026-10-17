@@ -152,6 +152,7 @@
  "ice:2",
  "ice:3",
  "scene:freight-agent",
+ "scene:freight-side",
  "scene:sign-on",
  "scene:warning",
  "scene:pitch",

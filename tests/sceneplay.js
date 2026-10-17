@@ -54,9 +54,9 @@ const playScenes = () => {
   // ---------- the stakes ----------
   run('scene:warning', {}, () => warningScene());
   // The freight agent at the far end (shippers.js): late, short and lost, each choice with the case held and not held; the shipper's regard is what the extra records.
-  for (const [kind, o] of [['late', { tons: 90, got: 90, late: 2 }], ['short', { tons: 90, got: 60, late: 0 }], ['lost', { tons: 90, got: 0, late: 3 }]]) {
-    run(`scene:freight-agent:${kind}`, {}, () => agentScene({ kind, shipper: 'the Compact Freight Office', good: 'water', due: G.state.day - o.late, ...o }, freightAgent(currentPlanet())),
-      { rolls: [0, 0.99], extra: () => hired().standing });
+  for (const [kind, o] of [['late', { tons: 90, got: 90, late: 2 }], ['short', { tons: 90, got: 60, late: 0 }], ['lost', { tons: 90, got: 0, late: 3 }], ['skim', { tons: 90, got: 90, late: 0, cut: 3000, owed: 20000 }]]) {
+    run(`scene:freight-agent:${kind}`, {}, () => agentScene({ kind, shipper: 'the Compact Freight Office', good: 'water', due: G.state.day - o.late, cut: 0, owed: 0, ...o }, freightAgent(currentPlanet())),
+      { rolls: [0, 0.99], extra: () => ({ standing: hired().standing, fund: hired().fund }) });
   }
   run('scene:put-ashore:plain', {}, () => putAshoreScene(), { skip: [0] });
   run('scene:put-ashore:facts', {}, () => { hired().flags = { iceBad: true, hurt: true, raided: true }; return putAshoreScene(); }, { skip: [0] });
@@ -285,6 +285,19 @@ const playScenes = () => {
     run(`hired:${id}:low`, {}, () => { const c = handContext(); c.cap.opinion = -3; return d.make(c); }, { rolls: [0, 0.999], extra: () => (G.state.journal || []).map(j => j.text) });
   }
   Math.random = real;
+  // The freight office's side on the paper (shippers.js): a crew member the Compact wants, and the Earth hand's own papers, so every way out is there. Last, because putting
+  // the crew member ashore signs a replacement on, whose name takes one from the names the cases after it would draw.
+  {
+    const gov = 'Arcology Compact', realTies = tiesOf;
+    run('scene:freight-side', {}, () => {
+      const st = G.state, h = hired(), here = currentPlanet(), target = st.crew.map(person).find(p => !p.cast);
+      window.tiesOf = p => (p.id === target.id ? { ...realTies(p), status: { ...realTies(p).status, [gov]: 'wanted' } } : realTies(p)); h.runsDone = 1;  // the first run is guided and has no side
+      const run0 = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 9000, days: 4, due: st.day + 8, cost: 0, yard: false };
+      h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: run0, alts: [] }; h.freight = { key: `${here.name}@${st.day}`, list: [run0] }; st.customs = {};
+      return sideScene(run0, sideDue(run0), freightAgent(here));
+    }, { rolls: [0, 0.99], extra: () => ({ board: hired().freight.list.length, crew: G.state.crew.length, standing: hired().standing, fund: hired().fund }) });
+    window.tiesOf = realTies;
+  }
   return out;
 };
 
