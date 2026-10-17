@@ -493,6 +493,15 @@ function drawRoute(cx, y, barW, progress) {
   ctx.fillText('FLIP', cx, y + 20);
   dot(bx, G.state.systemId);
   dot(bx + barW, t.to);
+  // The contract's due date (#686): said under the far end, in the warn color once the arrival is past it, with a tick on the bar where it falls inside the trip.
+  const run = hired() && heldContract(hired()), due = run ? run.due : null;
+  if (due !== null) {
+    const late = transitEta(t) > due, at = (due - (run.day !== undefined ? run.day : G.state.day)) / t.days;
+    ctx.fillStyle = late ? '#ff9a3c' : '#9ab';
+    if (at > 0 && at < 1) ctx.fillRect(bx + barW * at - 1, y - 8, 2, 16);
+    ctx.textAlign = 'right';
+    ctx.fillText(`due ${dateOf(due)}`, bx + barW, y + 20);
+  }
   // Our ship: a chevron pointing the way the drive faces.
   const sx = bx + barW * progress, dir = t.flipped ? -1 : 1;
   ctx.fillStyle = '#fff';
@@ -629,8 +638,11 @@ function drawTransit(W, H) {
   for (const m of st.missions) log.push(`${m.title} (due ${dateOf(m.deadline)})`);
   if (!st.missions.length && !hired()) log.push('No active missions.');
   if (st.crew.length && !hired()) log.push(`Crew: ${crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`).join(', ')}`);
-  const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
-  log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
+  const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`), carried = hired() && heldContract(hired());
+  if (carried) {  // the captain's log line (#686): the load, the shipper, the due date, and whether the ship is on time for it
+    const lateBy = transitEta(t) - carried.due;
+    log.push(`${carried.tons}t ${goodName(carried.good)} for ${carried.shipper}, due ${dateOf(carried.due)}, ${lateBy > 0 ? `late by ${dayWord(lateBy)}` : 'on time'}`);
+  } else log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
   const logW = narrow ? viewW - 170 : Math.min(460, viewW - 56);  // clear the Map button on phones
   const logLines = log.flatMap(l => wrapText(l, logW));
   y = H - BRIDGE_KEYS_H - 30 - logLines.length * 16;  // above the bridge key bar
