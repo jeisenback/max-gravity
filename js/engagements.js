@@ -207,6 +207,8 @@ function raidCostNote(c, s, post) {
 
 function raidScene(s) {
   const st = G.state, h = hired(), post = h.post, level = skillLevel(post);
+  const prev = s.board || null;  // last beat's picture, for sensors that show her late (board.js)
+  s.board = raidBoard({ beat: s.beat, edge: s.edge, style: s.style, me: SHIPS[st.shipId], foe: SHIPS[s.foe.shipId] });
   const closing = s.beat === 0, kind = closing ? 'closing' : 'exchange';
   const general = closing ? RAID_CLOSING : RAID_EXCHANGE, spec = RAID_POST[kind][post];
   const text = closing ? s.open || raidWords(`open.${s.style}.${s.round % 2}`, RAID_OPEN[s.style][s.round % 2]) : raidWords(`pass.${s.style}.${s.beat - 1}`, RAID_PASS[s.style][s.beat - 1]);
@@ -215,7 +217,8 @@ function raidScene(s) {
   choices.push({ label: `[${POSTS[post].name}] ${raidWords(`post.${kind}.${post}.label`, spec.label)}${raidCostNote(own, s, post)}`, run: () => raidStep(s, own, post) });
   return {
     title: closing ? 'The Closing' : s.beat === 1 ? 'First Pass' : 'Second Pass', personal: true, via: 'crew', owner: 'you',  // yours to decide, not the captain's (hired.js hiredCall)
-    text: `${text}</p><p>${raidRead(s)} Armor ${st.armor}/${ship().armor}. ${positionGauge(s.edge, raidPosition(s))}`,  // the position as a gauge (readouts.js) in the last paragraph, until the sensor board (#680)
+    text: `${text}</p><p>${raidRead(s)} Armor ${st.armor}/${ship().armor}.`,
+    board: boardSvg(s.board, { style: s.style, beat: s.beat, sensors: condition().sensors, sunAngle: sunLight().angle, prev, pack: s.pack, word: raidPosition(s) }),  // the sensor board (board.js), drawn above the text (ui.js)
     choices,
   };
 }

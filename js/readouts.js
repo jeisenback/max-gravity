@@ -3,7 +3,7 @@
 // Readouts (#686): the figures of the hand's game shown as figures, not paragraphs. The strip on every landed screen (the contract and
 // its days, the hull, the ship's fund, your savings, and your hurt if any; in a burn the HUD draws the same, game.js), the contract as a
 // paper in the hold (the Operations console, bridge.js), the captain's log (the ledger as rows: the Journal page, the Port page and the
-// captain's page) and the raid's position as a gauge (engagements.js). stripItems and logRowsHtml take the state they read; the
+// captain's page). stripItems and logRowsHtml take the state they read; the
 // HTML helpers draw with the view helpers (views.js, console.js). Loaded after hired.js; only calls into the game at runtime.
 
 const goodName = id => (COMMODITIES.find(c => c.id === id) || {}).name || id || 'cargo';
@@ -39,11 +39,3 @@ function contractPaperHtml(c, day) {
 // The captain's log: the ledger's runs as rows, the pay to you on the right and the run's own figures under it.
 const logRowsHtml = (ledger, n) => String(listHtml(ledger.slice(0, n), l => h`<div class="con-read"><span>${l.from} to ${l.to}</span><b>+${fmt(l.wage + l.share)} cr</b></div><div class="hint">${dateOf(l.day)}, ${l.shipper && !l.tons ? `the load for ${l.shipper} lost, no pay`
   : l.good ? `${l.tons}t ${goodName(l.good)}${l.shipper ? ` for ${l.shipper}, paid ${fmt(l.revenue)} cr` : `, profit ${fmt(l.profit)} cr`}` : 'no cargo'}${l.late ? `, ${dayWord(l.late)} late` : ''}${l.short && l.tons ? ', short' : ''}</div>`));
-
-// The position in a raid as a gauge: from three behind to three ahead, the mark where the count stands, the word for a reader.
-function positionGauge(edge, word) {
-  const x = 100 + 26 * Math.max(-3, Math.min(3, edge)), color = edge >= 1 ? '#5fd35f' : edge <= -1 ? '#ff6a4a' : '#d4e4f5';
-  return `<svg class="position" viewBox="0 0 200 26" role="img" aria-label="Position: ${word}"><line x1="22" y1="10" x2="178" y2="10" stroke="#34506e" stroke-width="4"/>` +
-    `<line x1="100" y1="4" x2="100" y2="16" stroke="#56687a" stroke-width="2"/><circle cx="${x}" cy="10" r="6" fill="${color}"/>` +
-    '<text x="22" y="25" fill="#7d93aa" font-size="8">BEHIND</text><text x="178" y="25" fill="#7d93aa" font-size="8" text-anchor="end">AHEAD</text></svg>';
-}
