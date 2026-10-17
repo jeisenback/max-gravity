@@ -19,8 +19,8 @@ const RAIL = [
   { id: 'port', label: 'Port', group: 'ashore', tab: 'port', ready: p => tabReady(p, 'port') || 'Not available here' },
   { id: 'missions', label: 'Missions', group: 'ashore', tab: 'missions', ready: p => tabReady(p, 'missions') || 'No work board here' },
   { id: 'bar', label: 'Bar', group: 'ashore', tab: 'bar', ready: p => tabReady(p, 'bar') || 'No bar here' },
-  { id: 'exchange', label: 'Exchange', group: 'ashore', tab: 'trade', shown: () => !hired(), ready: p => tabReady(p, 'trade') || 'No exchange at this port' },
-  { id: 'company', label: 'Company', group: 'ashore', tab: 'company', shown: () => !hired() && !scopeOff('owner'), ready: p => tabReady(p, 'company') || 'Not available here' },
+  { id: 'exchange', label: 'Exchange', group: 'ashore', tab: 'trade', shown: () => role().mayTab('trade'), ready: p => tabReady(p, 'trade') || 'No exchange at this port' },
+  { id: 'company', label: 'Company', group: 'ashore', tab: 'company', shown: () => role().mayTab('company') && !scopeOff('owner'), ready: p => tabReady(p, 'company') || 'Not available here' },
 ];
 const railEntries = p => RAIL.filter(e => !e.shown || e.shown(p));
 const RAIL_GROUPS = [['ship', 'Ship'], ['ashore', 'Ashore']];

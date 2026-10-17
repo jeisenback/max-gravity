@@ -19,7 +19,7 @@ const ROOM_SHEETS = { bridge: 'nav', gunnery: 'weapons', engine: 'eng', berths: 
 const roomSheet = id => ROOM_SHEETS[id];
 const BRIDGE_KEYS_H = 52;  // the key bar's height in a burn; the transit view leaves room for it
 
-const tabReady = (p, id) => ((hired() && OWNER_TABS.includes(id)) || (scopeOff('owner') && id === 'company')) ? false : id === 'trade' ? p.services.includes('trade')
+const tabReady = (p, id) => (!role().mayTab(id) || (scopeOff('owner') && id === 'company')) ? false : id === 'trade' ? p.services.includes('trade')
   : id === 'missions' ? p.services.includes('missions')
   : id === 'shipyard' ? p.services.includes('shipyard') || p.services.includes('outfitter')
   : true;

@@ -64,10 +64,6 @@ const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, 
 const soloOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'solo');
 // The job of your own post in a fight, an ice run or a contact: half a chance at the base, a tenth better for each level.
 const postOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'post');
-// What stays the captain's to do: the cargo, the contracts, the ship itself, the company.
-const OWNER_TABS = ['trade', 'company'];  // contracts are the captain's too, but the board still has errands
-const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'buyship', 'cbuy', 'refuel', 'repair', 'overhaul', 'buyout', 'sellout', 'torpbuy', 'hire', 'interviewHire', 'dismiss'];
-
 function setupHired(o) {
   const st = G.state, post = HIRED_POSTS.includes(o.post) ? o.post : scopeOff('posts') ? 'gunner' : 'pilot';
   st.shipId = 'freighter';
@@ -135,9 +131,8 @@ function setupHired(o) {
 
 // A hired hand's burn events spend and earn the ship's funds, not their savings.
 function hiredFunds(fn) {
-  const h = hired();
-  if (!h || !G.transit) return fn();
-  const st = G.state, mine = st.credits;
+  if (!G.transit || role().paysFrom('burn') !== 'fund') return fn();
+  const h = hired(), st = G.state, mine = st.credits;
   st.credits = h.fund;
   try { return fn(); } finally { h.fund = st.credits; st.credits = mine; }
 }
@@ -172,9 +167,8 @@ function captainPick(choices) {
 // leak); the rest (the crew, your own affairs) are yours. Not yours: the first officer takes a post's call (the crew side), the captain takes the rest.
 function hiredCall(ev) {
   const h = hired();
-  if (!h || !G.transit || ev.decided || !ev.choices) return ev;
+  if (!G.transit || ev.decided || !ev.choices || role().decides(ev, h && h.post)) return ev;
   const owner = ev.owner || (ev.via === 'ship' ? 'captain' : 'you');
-  if (owner === 'you' || owner === h.post) return ev;
   const cap = ev.via === 'ship' || owner === 'captain' ? hiredCaptain() : bossFor('crew');
   const usable = ev.choices.filter(c => hiredFunds(() => !c.can || c.can()) && (!c.role || roleSkill(c.role)) && !c.self);
   if (!usable.length) return ev;

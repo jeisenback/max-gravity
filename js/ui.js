@@ -180,7 +180,7 @@ const UI = {
         <h3>Active missions</h3>
         ${raw(this.missionList(st.missions, 'abort', 'Abandon'))}
         ${story().stage !== 0 ? h`<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>${story().stage === 'end' ? raw('<div class="row"><button data-action="epilogue">Read the epilogue</button></div>') : ''}` : ''}
-        ${hired() || scopeOff('owner') ? '' : raw(stakeOffer())}
+        ${!role().canTrade || scopeOff('owner') ? '' : raw(stakeOffer())}
         <h3>Local conditions</h3>
         ${raw(this.conditionList(conditions(st.systemId), 'Nothing unusual. Trade is flowing normally.'))}
         ${scopeOff('community') ? '' : raw(communityHtml())}
@@ -339,7 +339,7 @@ const UI = {
   },
 
   act(action, arg) {
-    if (hired() && OWNER_ACTIONS.includes(action)) return;  // not yours to do on the captain's ship
+    if (!role().mayAct(action)) return;  // not yours to do on the captain's ship
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
