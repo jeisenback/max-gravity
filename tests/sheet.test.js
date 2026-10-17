@@ -7,7 +7,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/sheet.js'], {}, ['STATS', 'POST_STAT', 'DIFFICULTY', 'STAT_BASE', 'STAT_STEP', 'SKILL_STEP', 'CHECK_MIN', 'CHECK_MAX', 'newSheet', 'check', 'KIT_ITEMS', 'kitEdge', 'sheetRows']);
+const api = load(['js/sheet.js'], {}, ['STATS', 'POST_STAT', 'DIFFICULTY', 'STAT_BASE', 'STAT_STEP', 'SKILL_STEP', 'CHECK_MIN', 'CHECK_MAX', 'newSheet', 'check', 'KIT_ITEMS', 'kitEdge', 'sheetRows', 'careerOf']);
 const { STATS, POST_STAT, DIFFICULTY, STAT_BASE, STAT_STEP, SKILL_STEP, CHECK_MIN, CHECK_MAX, newSheet, check, KIT_ITEMS, kitEdge, sheetRows } = api;
 const near = (a, b) => Math.abs(a - b) < 1e-9, sheet = (bg, post) => ({ ...newSheet(bg, post) });  // spread: the vm context has its own Object
 
@@ -54,3 +54,14 @@ test('the sheet as rows: each stat with the posts on it, and the kit with what e
   assert.deepEqual(old.stats.map(r => r.value), [3, 3, 3, 3], 'a hand from before the sheet has every stat at the base'); assert.deepEqual(old.kit, []);
 });
 
+
+test('the career a hand takes into the next chapter is a copy of their sheet, kit and shippers\' regard, and an old save with none gives none', () => {
+  const h = { sheet: { hands: 4, eye: 3, nerve: 3, wit: 5 }, kit: ['valve-keys'], standing: { 'the League Freight Hall': 2 }, post: 'gunner', fund: 900 };
+  const c = api.careerOf(h);
+  assert.deepEqual({ ...c.sheet }, h.sheet); assert.deepEqual([...c.kit], ['valve-keys']); assert.deepEqual({ ...c.standing }, h.standing);
+  assert.deepEqual(Object.keys(c).sort(), ['kit', 'sheet', 'standing'], 'only the sheet, the kit and the regard go on');
+  c.kit.push('audit-seal'); c.standing['the League Freight Hall'] = 3; c.sheet.hands = 5;
+  assert.deepEqual([...h.kit], ['valve-keys']); assert.equal(h.standing['the League Freight Hall'], 2); assert.equal(h.sheet.hands, 4);
+  const old = api.careerOf({});
+  assert.equal(old.sheet, null); assert.deepEqual([...old.kit], []); assert.deepEqual({ ...old.standing }, {});
+});

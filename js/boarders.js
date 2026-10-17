@@ -130,7 +130,7 @@ function repelScene(s) {
 // The odds of an ability: the post's stat and skill on the sheet, with the kit's edge (handCheck), easier for the steady one (handtohand.js).
 const abilityOdds = (post, kind) => handCheck(POST_STAT[post], skillLevel(post), 'post', ABILITY_EDGE[kind]);
 // The cover of each section as the fight stands: the ship's, the kit's, and what the cover ability has made.
-const repelCover = s => fightCover({ size: SHIPS[G.state.shipId].size, kit: hired().kit, extra: s.extra });
+const repelCover = s => fightCover({ size: SHIPS[G.state.shipId].size, kit: career().kit, extra: s.extra });
 
 // What a tactic does against theirs: the triangle, or the numbers when both chose the same.
 function tacticResult(s, set, kind, theirs) {

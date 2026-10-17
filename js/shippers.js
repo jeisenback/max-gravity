@@ -9,9 +9,9 @@
 
 const freightAgent = planet => portPerson(planet, 'agents', 'agent', 'agent', 'freight agent', 'Agent');
 // The shipper's regard moves by `d`, kept in range.
-function moveStanding(shipper, d) { const h = hired(); if (!h) return; h.standing = h.standing || {}; h.standing[shipper] = nextStanding(standingOf(h, shipper), d); }
+function moveStanding(shipper, d) { const c = career(); if (!c) return; c.standing = c.standing || {}; c.standing[shipper] = nextStanding(standingOf(c, shipper), d); }
 // The shipper of the port the ship is docked at has shut its board to her.
-const closedHere = () => standingOf(hired(), shipperOf(currentPlanet(), system().gov)) <= STANDING_BAD;
+const closedHere = () => standingOf(career() || {}, shipperOf(currentPlanet(), system().gov)) <= STANDING_BAD;
 
 // A contract settled (settleRun, hired.js): the shipper's regard moves with how it came in, and a delivery that was late, short or lost is kept for the agent.
 function shipperSettled(run, sold, day, cut = 0, owed = 0) {
