@@ -23,6 +23,12 @@ const RAID_PASS = {
   torpedo: ['A torpedo leaves her bay, a bright dot on the board that grows.', 'She has a second one in the tube. On the sensors the loader arm is moving.'],
 };
 
+// The passes when she is still coming (the range was opened past RANGE_NEAR, range.js): the same beat, from farther off. A corsair's passes are already at a standoff.
+const RAID_PASS_FAR = {
+  gun: ['She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.', 'She comes round again from far out, the guns hot and the range still too wide for a good burst.'],
+  grapple: ['She is still half a lane off, her grapple arms folded, hauling in at the best her drive will give. You bought the minute.', 'She makes a second approach from well out, the grapple arms stowed until she is close enough to use them.'],
+};
+
 // A line of the raid, read through the editor's words (lineWords, storylets.js); the name is where the line sits in the tables below (hiredscenes.js lists them).
 const raidWords = (key, shipped) => lineWords('beats:raid', key, shipped);
 
@@ -108,6 +114,7 @@ const RAID_CLOSE = {
   crippled: { gun: ('Your last burst takes her drive, and the cutter yaws and goes quiet. She\'ll have a tow in a day. A beacon on her hull is ' +
       'already calling for it.'), grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out.' },
   standoff: 'She breaks off at long range and throws one last burst as she goes. It clips the hull aft.',
+  lost: { gun: 'She loses you. The cutter\'s plume dwindles on the board and her hail goes unanswered, and then the board has nothing to show for her at all.', grapple: 'She loses you. The raider hauls on for a range she will never close, and drops off the board a long way astern.', torpedo: 'She loses you. Her last torpedo burns out well short, and the corsair turns away with nothing to aim at.' },
   boarded: { gun: ('She\'s alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They\'re coming aboard, ' +
       'by the book.'), grapple: 'She\'s alongside. The grapples bang on the hull in four places and the lock alarm goes. They\'re coming aboard.', torpedo: 'A torpedo takes your drive housing and she closes while you\'re slow. The grapples bang on the hull, and the lock alarm goes.' },
 };
@@ -166,6 +173,7 @@ const raidPosition = s => (s.edge >= 1 ? 'ahead' : s.edge <= -1 ? 'behind' : 'ev
 function startRaid(spec, flee, o = {}) {
   const st = G.state, foe = makeEnemy(spec), style = RAID_STYLE[foe.shipId] || 'grapple';
   const s = { spec, foe, style, edge: o.edge || 0, open: o.open, beat: 0, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0 };
+  s.range = s.base = o.range !== undefined ? o.range : rangeAtContact(style);  // km, kept and moved by the choices (range.js), and what it would be if none had moved it; an ambush starts nearer
   if (spec.kind === 'patrol' && !flee) changeRep(spec.gov, -8);  // firing on a navy ship is not forgotten
   let text = o.text || `Battle stations. ${theShip(foe)} made the intercept.`;
   if (flee) {
@@ -186,7 +194,7 @@ function startRaid(spec, flee, o = {}) {
 // `odds` is the chance it goes your way, the same number the roll uses (a post's choice improves with your level), shown as a percentage; a sure
 // choice (1 or more) shows none. `hull`: a lost roll costs hull, and with it a crew casualty; `casualty`: a lost exchange can cost one without hull;
 // `hand`: you may be hurt; `cost`: a lost roll costs this many credits of your own; `rep`: your standing here; `xp`: you learn less; `marks`: the captain
-// marks the call (a bold or risky one); `who`: the post the roll is on, named before the odds where a choice is not simply yours (a job ashore). A sure
+// marks the call (a bold or risky one); `who`: the post the roll is on, named before the odds where a choice is not simply yours (a job ashore); `range`: a word for what it does to a raid's range ("opens the range"). A sure
 // choice with nothing at stake carries no note. The raids, the boarding scenes, the ice run, the work events, the jobs ashore and the bar say it through this.
 // Plain text: a label is escaped where the button is drawn (views.js).
 const oddsWord = odds => `${Math.round(odds * 100)}%`;
@@ -194,7 +202,7 @@ function costNote(c, odds) {
   const costs = [...(c.hull || c.casualty ? [...(c.hull ? ['hull damage'] : []), 'a crew casualty'] : []), ...(c.hand ? ['you may be hurt'] : []), ...(c.cost ? [`${fmt(c.cost)} cr of your own`] : []),
     ...(c.rep ? ['your standing here'] : []), ...(c.standing ? ["the shipper's regard"] : []), ...(c.xp ? ['you learn less'] : [])];
   const text = c.marks ? [...(costs.length ? [`${costs.join(', ')}, and`] : []), 'the captain marks it'].join(' ') : costs.join(', ');
-  const parts = [...(odds !== undefined && odds < 1 ? [`${c.who ? `${c.who}, ` : ''}${oddsWord(odds)}`] : []), ...(text ? [`if it fails: ${text}`] : [])];
+  const parts = [...(odds !== undefined && odds < 1 ? [`${c.who ? `${c.who}, ` : ''}${oddsWord(odds)}`] : []), ...(c.range ? [c.range] : []), ...(text ? [`if it fails: ${text}`] : [])];
   return parts.length ? ` [${parts.join('; ')}]` : '';
 }
 // A raid choice's note carries the odds the beat will roll (shipOdds: the ships, her crew's grade, and for a post's move your level).
@@ -202,16 +210,17 @@ function raidCostNote(c, s, post) {
   const odds = shipOdds(s, c.id, post, c.odds(s.style));
   if (odds >= 1) return '';
   const lose = c.lose || c.win, line = Array.isArray(lose) ? lose : (lose[s.style] || lose.grapple), risk = HAND_RISK[c.id] || 0;
-  return costNote({ hull: line[1] > 0, hand: risk > 0, marks: risk >= 0.35 }, odds);
+  const shift = rangeShiftOf(post ? `post.${s.beat === 0 ? 'closing' : 'exchange'}.${post}` : c.id, true);
+  return costNote({ hull: line[1] > 0, hand: risk > 0, marks: risk >= 0.35, range: shift > 0 ? 'opens the range' : shift < 0 ? 'closes the range' : '' }, odds);
 }
 
 function raidScene(s) {
   const st = G.state, h = hired(), post = h.post, level = skillLevel(post);
   const prev = s.board || null;  // last beat's picture, for sensors that show her late (board.js)
-  s.board = raidBoard({ beat: s.beat, edge: s.edge, style: s.style, me: SHIPS[st.shipId], foe: SHIPS[s.foe.shipId] });
+  s.board = raidBoard({ beat: s.beat, edge: s.edge, style: s.style, me: SHIPS[st.shipId], foe: SHIPS[s.foe.shipId], range: s.range });
   const closing = s.beat === 0, kind = closing ? 'closing' : 'exchange';
   const general = closing ? RAID_CLOSING : RAID_EXCHANGE, spec = RAID_POST[kind][post];
-  const text = closing ? s.open || raidWords(`open.${s.style}.${s.round % 2}`, RAID_OPEN[s.style][s.round % 2]) : raidWords(`pass.${s.style}.${s.beat - 1}`, RAID_PASS[s.style][s.beat - 1]);
+  const text = closing ? s.open || raidWords(`open.${s.style}.${s.round % 2}`, RAID_OPEN[s.style][s.round % 2]) : (RAID_PASS_FAR[s.style] && s.range > RANGE_NEAR ? raidWords(`passfar.${s.style}.${s.beat - 1}`, RAID_PASS_FAR[s.style][s.beat - 1]) : raidWords(`pass.${s.style}.${s.beat - 1}`, RAID_PASS[s.style][s.beat - 1]));  // she is still coming if you opened the range
   const choices = general.map(c => ({ label: `${raidWords(`${kind}.${c.id}.label`, c.label)}${raidCostNote(c, s, null)}`, run: () => raidStep(s, c, null) }));
   const own = { id: 'post', odds: () => raidPostOdds(level), win: spec.win, lose: spec.lose };
   choices.push({ label: `[${POSTS[post].name}] ${raidWords(`post.${kind}.${post}.label`, spec.label)}${raidCostNote(own, s, post)}`, run: () => raidStep(s, own, post) });
@@ -240,10 +249,21 @@ function raidStep(s, c, post) {
   }
   if (hull) { const pts = Math.round(ship().armor * hull * foePunch(s)); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < CASUALTY_ODDS * (1 + 0.15 * s.grade + (s.pack ? 0.25 : 0))) out += ` ${repelCasualty(s)}`; }
   if (s.handDied) return out;  // the hand is dead: the ending is queued, and the raid does not go on
+  const closing = s.board ? s.board.closing : 1, shift = rangeShiftOf(post ? `post.${s.beat === 0 ? 'closing' : 'exchange'}.${post}` : c.id, won), ends = s.beat + 1 >= 3 || s.edge >= 3 || s.edge <= -3;
+  s.range = ends ? rangeLeft(s.range, shift) : rangeAfter(s.range, { style: s.style, closing, shift });  // your choice moves it; if the raid goes on she closes before the next beat, and if it ends here she has not had the time (range.js)
+  s.base = rangeAfter(s.base, { style: s.style, closing, shift: 0 });
   s.beat++;
+  if (contactLost(s.range)) return `${out} ${raidLost(s)}`;
   if (s.beat >= 3 || s.edge >= 3 || s.edge <= -3) return `${out} ${raidClose(s)}`;
   G.nextEvent = raidScene(s);
   return out;
+}
+
+// She is left too far behind to follow: the contact is lost, and the hand who opened the range learns a little from it.
+function raidLost(s) {
+  const h = hired();
+  gainSkill(h.post, 2);
+  return `${raidWords(`close.lost.${s.style}`, RAID_CLOSE.lost[s.style])} (+2 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`;
 }
 
 // The close: broke off, stood off, or alongside.
@@ -260,6 +280,11 @@ function raidClose(s) {
     return `${raidWords(`close.off.${s.style}`, RAID_CLOSE.off[s.style])} Captain ${cap.last} writes it in the log and nothing else. (+3 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`;
   }
   if (s.edge > -2 && !weak) {
+    const pts = Math.round(ship().armor * 0.05);
+    st.armor = Math.max(1, st.armor - pts);
+    return `${raidWords('close.standoff', RAID_CLOSE.standoff)} Armor -${pts}.`;
+  }
+  if (!canBoard(s.range, s.style)) {  // you kept the range open: she cannot come alongside, and stands off
     const pts = Math.round(ship().armor * 0.05);
     st.armor = Math.max(1, st.armor - pts);
     return `${raidWords('close.standoff', RAID_CLOSE.standoff)} Armor -${pts}.`;

@@ -7,14 +7,14 @@
 // what to draw it with, so it runs in plain Node (tests/board.test.js). Loaded after sheet.js; only called into at runtime.
 
 const BOARD_RANGES = { grapple: [40, 2, 1], gun: [30, 2, 1.5], torpedo: [40, 12, 8] };  // km at the closing, the first pass and the second, as the beats' lines have them
-const BOARD_MAX = 40, BOARD_RING = 10, BOARD_PD = 15;  // the plot's reach and its rings, and how far the point defense tracks her (the closing's "hold" line)
+const BOARD_MAX = 80, BOARD_RING = 20, BOARD_PD = 15;  // the plot's reach and its rings, and how far the point defense tracks her (the closing's "hold" line)
 const CLOSING_PER = 33, BEARING_STEP = 25;  // km a minute per unit of the ships' speed difference; degrees of bearing a point of position
 const SENSOR_GHOST = 60, SENSOR_STALE = 40;  // sensor condition under which the plot throws a second return, and under which it shows her late
 
 // The position model for a beat: the range by beat and style, the bearing off the bow by the position (ahead, she is forward of the beam, where
 // the guns bear; behind, she is on the quarter), the closing rate from the two ships' speeds, and her aspect.
-function raidBoard({ beat, edge, style, me, foe }) {
-  const ranges = BOARD_RANGES[style] || BOARD_RANGES.grapple, range = ranges[Math.min(beat, ranges.length - 1)];
+function raidBoard({ beat, edge, style, me, foe, range: kept }) {
+  const ranges = BOARD_RANGES[style] || BOARD_RANGES.grapple, range = kept !== undefined ? kept : ranges[Math.min(beat, ranges.length - 1)];  // the raid keeps the range (range.js); a board with none reads the table
   const bearing = 90 - BEARING_STEP * Math.max(-3, Math.min(3, edge || 0));
   const closing = Math.max(1, Math.round((foe.maxSpeed - me.maxSpeed) / CLOSING_PER));
   const aspect = beat === 0 ? 'closing' : style === 'torpedo' ? 'standing off' : 'crossing';

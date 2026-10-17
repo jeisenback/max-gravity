@@ -413,13 +413,13 @@ test('the raid carries its sensor board: a plot on the scene each beat, drawn fr
     raid('gunner'); const out = {}, orig = raidScene; window.raidScene = x => { window.grabbed = x; return orig(x); };  // the raid's state, as the beats harness takes it
     startDuel({ kind: 'pirate' }, false); G.nextEvent = null; const s = window.grabbed;
     const e0 = raidScene(s); out.first = { board: /^<svg class="board"/.test(e0.board), range: s.board.range, bearing: s.board.bearing, text: /Position:/.test(e0.text) };
-    s.beat = 1; s.edge = 2; const e1 = raidScene(s); out.second = { range: s.board.range, bearing: s.board.bearing, closer: /RANGE 2 km/.test(e1.board), stale: /STALE/.test(e1.board) };
-    condition().sensors = 30; s.beat = 2; const e2 = raidScene(s); out.failing = { stale: /STALE/.test(e2.board), head: /RANGE 1 km/.test(e2.board) };
+    s.beat = 1; s.edge = 2; s.range = rangeAfter(s.range, { style: s.style, closing: s.board.closing }); const e1 = raidScene(s); out.second = { range: s.board.range, bearing: s.board.bearing, closer: /RANGE 1.5 km/.test(e1.board), stale: /STALE/.test(e1.board) };  // she has closed to her range by the pass
+    condition().sensors = 30; s.beat = 2; const e2 = raidScene(s); out.failing = { stale: /STALE/.test(e2.board), head: /RANGE 1.5 km/.test(e2.board) };
     openEvent(raidScene(s)); out.drawn = !!document.querySelector('#panel .event-body svg.board');
     return out;
   });
   assert.deepEqual(r.first, { board: true, range: 40, bearing: 90, text: false }, 'the closing at forty kilometers, abeam, and no position word in the text');
-  assert.deepEqual(r.second, { range: 2, bearing: 40, closer: true, stale: false }, 'the first pass at two kilometers, ahead, so she is forward of the beam');
+  assert.deepEqual(r.second, { range: 1.5, bearing: 40, closer: true, stale: false }, 'the first pass at a kilometer and a half, ahead, so she is forward of the beam');
   assert.deepEqual(r.failing, { stale: true, head: true }, 'failing sensors show her where she was last beat, and say so');
   assert.equal(r.drawn, true, 'the dialog draws it above the text');
   await done();
@@ -500,7 +500,7 @@ test('each raid option says its odds and what it can cost, from what it declares
     assert.equal(/you may be hurt/.test(x.note), x.risk > 0, `${name}: hurt`); assert.equal(/the captain marks it/.test(x.note), x.risk >= 0.35, `${name}: the captain`);
     assert.equal(/if it fails/.test(x.note), !!(x.hull || x.risk), `${name}: nothing at stake, no cost`);
   }
-  const turn = r.find(x => x.id === 'turn'); assert.match(turn.note, /^\[\d+%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it\]$/);
+  const turn = r.find(x => x.id === 'turn'); assert.match(turn.note, /^\[\d+%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it\]$/, 'turning into her closes the range, and says so (range.js)');
   assert.match(r.find(x => x.id === 'fire').note, /^\[\d+%; if it fails: you may be hurt, and the captain marks it\]$/);
   assert.equal(r.find(x => x.id === 'hold').note, '');
   await done();
@@ -516,7 +516,7 @@ test('the note is part of the option in the scene, and the Gunner\'s own move ca
     return { low, high };
   });
   assert.ok(r.low[0].startsWith('Hold course') && !r.low[0].includes('['), 'hold course has none');
-  assert.ok(r.low.slice(1).every(l => /\[\d+%; if it fails:/.test(l)), 'every other option has its odds and its cost');
+  assert.ok(r.low.slice(1).every(l => /\[\d+%; (opens the range; |closes the range; )?if it fails:/.test(l)), 'every other option has its odds and its cost, and says what it does to the range when it moves it');
   const own = labels => labels.find(l => l.startsWith('[Gunner] Get a lock on her drive')), pct = l => +l.match(/\[(\d+)%/)[1];
   assert.ok(own(r.low) && own(r.low).includes('you may be hurt, and the captain marks it'));
   assert.ok(pct(own(r.high)) > pct(own(r.low)), `the odds rise with the level: ${own(r.low)} / ${own(r.high)}`);
@@ -577,5 +577,58 @@ test('the cost note shows on the rendered button as text, with no markup, in a r
     assert.ok(labels.some(l => /\[\d+%; if it fails:/.test(l)), `${name}: a button carries the note`);
     for (const l of labels) assert.doesNotMatch(l, /[<>]|class=/, `${name}: ${l}`);
   }
+  await done();
+});
+
+// #710: the raid keeps a range that the choices move (js/range.js).
+test('a choice that opens the range at the closing keeps her off for the first pass, told from far, and a raid nobody moves has her alongside by it', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {}, orig = raidScene; window.raidScene = x => { window.grabbed = x; return orig(x); };
+    raid('engineer'); startDuel({ kind: 'pirate' }, false); begin(); const s0 = window.grabbed;
+    out.start = { range: s0.range, base: s0.base, style: s0.style };
+    rolls([0.01]); choose('Run the drive hot'); const s = window.grabbed;
+    out.opened = { range: s.range, base: s.base, far: /still half a lane off|still coming/.test(G.nextEvent.text), board: /RANGE 25 km/.test(G.nextEvent.board) };
+    raid('engineer'); startDuel({ kind: 'pirate' }, false); begin(); choose('Hold course'); const h = window.grabbed;
+    out.held = { range: h.range, far: /still half a lane off|still coming/.test(G.nextEvent.text), board: /RANGE 1.5 km/.test(G.nextEvent.board) };
+    return out;
+  });
+  assert.equal(r.start.range, 40); assert.equal(r.start.base, 40);
+  assert.deepEqual(r.opened, { range: 25, base: 1.5, far: true, board: true }, 'forty and twenty-five opened, less ten minutes of her closing at four a minute; the unmoved range is her own');
+  assert.deepEqual(r.held, { range: 1.5, far: false, board: true }, 'held, she is at her range by the pass and the pass is told as it always was');
+  await done();
+});
+
+test('the odds are what they were while nobody moves the range, and move a band at a time when it is moved', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const orig = raidScene; window.raidScene = x => { window.grabbed = x; return orig(x); };
+    raid('gunner'); startDuel({ kind: 'pirate' }, false); begin(); const s = window.grabbed; s.beat = 1; s.range = s.base = 1.5;
+    const plain = shipOdds(s, 'fire', null, 0.45);
+    s.range = 25; const far = shipOdds(s, 'fire', null, 0.45), burnFar = shipOdds(s, 'burn', null, 0.7);
+    s.range = 1.5; const burnNear = shipOdds(s, 'burn', null, 0.7);
+    return { plain, far, burnFar, burnNear };
+  });
+  assert.ok(Math.abs(r.far - (r.plain - 0.1)) < 1e-9, `return fire loses two bands of reach: ${r.plain} then ${r.far}`);
+  assert.ok(Math.abs(r.burnFar - (r.burnNear + 0.1)) < 1e-9, 'an evasive burn gains the room');
+  await done();
+});
+
+test('a choice at the last beat that leaves her far off means she cannot board, and one that leaves her far enough means the contact is lost', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const orig = raidScene; window.raidScene = x => { window.grabbed = x; return orig(x); }, out = {};
+    const last = (range, label, roll) => { raid('gunner'); startDuel({ kind: 'pirate' }, false); begin(); const s = window.grabbed; s.beat = 2; s.edge = -3; s.range = s.base = range; while (G.dialog) finishEvent(); openEvent(raidScene(s)); rolls([roll]); const text = choose(label); return { text, title: G.nextEvent && G.nextEvent.title, range: s.range }; };
+    out.alongside = last(1.5, 'Fire the point defense', 0.01);  // she wins the exchange to -2, alongside: the lock fight
+    out.opened = last(1.5, 'Burn evasive', 0.01);  // the same, but the burn leaves her twenty kilometers off
+    out.lost = last(45, 'Burn evasive', 0.01);
+    return out;
+  });
+  assert.ok(r.alongside.title, 'alongside she boards: the lock fight opens');
+  assert.ok(r.opened.text.includes('breaks off at long range') && r.opened.range === 21.5 && !r.opened.title, `she cannot come alongside: ${r.opened.text}`);
+  assert.ok(/She loses you/.test(r.lost.text) && /\+2 experience/.test(r.lost.text) && !r.lost.title, `left at 65 she is gone: ${r.lost.text}`);
   await done();
 });

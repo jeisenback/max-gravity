@@ -36,13 +36,14 @@ const playBeats = () => {
         const st = fresh(post, shipId), full = ship().armor;
         startDuel({ kind: 'pirate' }, false); G.nextEvent = null;
         const s = grabbed, rec = { id: `raid:${shipId}:${post}`, scenes: [], plays: [], closes: [] };
+        const at = beat => { s.range = s.base = beat === 0 ? rangeAtContact(s.style) : RANGE_WANT[s.style]; };  // where the table has her, so the record is the one the words always had (the range moves with each play)
         for (const [beat, round] of [[0, 0], [0, 1], [1, 0], [2, 0]]) {
-          s.beat = beat; s.round = round; s.edge = 0;
+          s.beat = beat; s.round = round; s.edge = 0; at(beat);
           const ev = raidScene(s);
           rec.scenes.push({ beat, round, text: ev.text, labels: labelsOf(ev) });
           for (let i = 0; i < ev.choices.length; i++) {
             for (const roll of [0, 0.999]) {
-              s.beat = beat; s.round = round; s.edge = 0; s.hurt = new Set(); s.dead = []; s.marked = []; s.youHurt = false; s.handDied = false; st.armor = full;
+              s.beat = beat; s.round = round; s.edge = 0; at(beat); s.hurt = new Set(); s.dead = []; s.marked = []; s.youHurt = false; s.handDied = false; st.armor = full;
               seq([roll]); const b0 = stand();
               const text = ev.choices[i].run();
               rec.plays.push({ beat, round, i, roll, text: String(text), ...left(b0) });
@@ -51,10 +52,18 @@ const playBeats = () => {
           }
         }
         for (const edge of [4, 2, 0, -2]) {
-          s.beat = 3; s.edge = edge; s.hurt = new Set(); st.armor = full; seq([]); const b0 = stand();
+          s.beat = 3; s.edge = edge; s.range = s.base = RANGE_WANT[s.style]; s.hurt = new Set(); st.armor = full; seq([]); const b0 = stand();
           rec.closes.push({ edge, text: String(raidClose(s)), ...left(b0) });
           G.nextEvent = null;
         }
+        // the range opened (#710): the passes told from far, the close where she cannot board, and the contact lost
+        rec.far = [1, 2].map(beat => { s.beat = beat; s.edge = 0; s.range = s.base = 25; return raidScene(s).text; });
+        s.beat = 3; s.edge = -2; s.range = s.base = 25; s.hurt = new Set(); st.armor = full; seq([]); const b1 = stand();
+        rec.closes.push({ edge: -2, far: true, text: String(raidClose(s)), ...left(b1) });
+        G.nextEvent = null;
+        s.beat = 2; s.edge = -3; s.range = s.base = 55; s.hurt = new Set(); st.armor = full; seq([0]); const b2 = stand();
+        rec.lost = { text: String(raidStep(s, RAID_EXCHANGE.find(c => c.id === 'burn'), null)), ...left(b2) };
+        G.nextEvent = null;
         out.push(rec);
       }
     }
