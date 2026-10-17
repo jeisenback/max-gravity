@@ -69,7 +69,7 @@
   "id": "scene:hand-death:hurt",
   "plays": [],
   "title": "The Last Run",
-  "text": "The first hurt isn't mended when the second one comes. It hits the same side, and you go down on the deck plating with a bolt head under your shoulder blade. The crew are saying your name. Captain Vance says it from the hatch, takes the med kit off its rack with both hands, and you're dead before the latches are undone.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
+  "text": "The first hurt isn't mended when the second one comes. It hits the same side, and you go down on the deck plating with a bolt head under your shoulder blade. The crew are saying your name. Captain Vance says it from the hatch, takes the med kit off its rack with both hands, and you're dead before the latches are undone.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Begin again"
   ]
@@ -78,7 +78,7 @@
   "id": "scene:hand-death:first",
   "plays": [],
   "title": "The Last Run",
-  "text": "You don't see what hits you. It comes from the side, and then you're sitting against the closer with one hand pressed to your ribs and the hand coming away wet. Captain Vance is at the hatch saying your name. The crew are on you before the lock has cycled, and somebody who knows how works on you while the lights go from amber to white. Nobody speaks. The captain takes your other hand off the deck and holds it, and you're dead before the lights are done.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
+  "text": "You don't see what hits you. It comes from the side, and then you're sitting against the closer with one hand pressed to your ribs and the hand coming away wet. Captain Vance is at the hatch saying your name. The crew are on you before the lock has cycled, and somebody who knows how works on you while the lights go from amber to white. Nobody speaks. The captain takes your other hand off the deck and holds it, and you're dead before the lights are done.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Begin again"
   ]
@@ -87,7 +87,7 @@
   "id": "scene:hand-death:bridge",
   "plays": [],
   "title": "The Last Run",
-  "text": "You're laid up against the corridor wall, where the first hit left you, when they come through the last hatch. You try to stand once, and you're dead before the lock cycles. Captain Vance gives them the code to the strongbox, and the crew carry you below.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
+  "text": "You're laid up against the corridor wall, where the first hit left you, when they come through the last hatch. You try to stand once, and you're dead before the lock cycles. Captain Vance gives them the code to the strongbox, and the crew carry you below.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Begin again"
   ]
@@ -518,10 +518,10 @@
   "title": "Putting It to the Captain",
   "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and doesn't trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
   "labels": [
-   "Put the fee in front of them (it pays about 900 cr, all told) [59%]",
+   "Put the fee in front of them (it pays about 900 cr, all told) [60%]",
    "Call in what the captain owes you [5%; if it fails: the captain marks it]",
    "Say it's the right thing to do [5%; if it fails: the captain marks it]",
-   "Dare them to take it [39%]",
+   "Dare them to take it [40%]",
    "Never mind"
   ]
  },
@@ -611,8 +611,8 @@
   "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and doesn't trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
   "labels": [
    "Put the fee in front of them (it pays about 900 cr, all told) [5%; if it fails: the captain marks it]",
-   "Call in what the captain owes you [39%]",
-   "Say it's the right thing to do [59%]",
+   "Call in what the captain owes you [40%]",
+   "Say it's the right thing to do [60%]",
    "Dare them to take it [5%; if it fails: the captain marks it]",
    "Never mind"
   ]
@@ -696,10 +696,10 @@
   "title": "Putting It to the Captain",
   "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and doesn't trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
   "labels": [
-   "Put the fee in front of them (it pays about 900 cr, all told) [39%]",
-   "Call in what the captain owes you [59%]",
-   "Say it's the right thing to do [59%]",
-   "Dare them to take it [59%]",
+   "Put the fee in front of them (it pays about 900 cr, all told) [40%]",
+   "Call in what the captain owes you [60%]",
+   "Say it's the right thing to do [60%]",
+   "Dare them to take it [60%]",
    "Never mind"
   ]
  },
@@ -786,9 +786,9 @@
   "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and doesn't trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
   "labels": [
    "Put the fee in front of them (it pays about 900 cr, all told) [5%; if it fails: the captain marks it]",
-   "Call in what the captain owes you [59%]",
-   "Say it's the right thing to do [39%]",
-   "Dare them to take it [39%]",
+   "Call in what the captain owes you [60%]",
+   "Say it's the right thing to do [40%]",
+   "Dare them to take it [40%]",
    "Never mind"
   ]
  },
@@ -877,10 +877,10 @@
   "title": "Putting It to the Captain",
   "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and doesn't trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
   "labels": [
-   "Put the fee in front of them (it pays about 900 cr, all told) [39%]",
+   "Put the fee in front of them (it pays about 900 cr, all told) [40%]",
    "Call in what the captain owes you [5%; if it fails: the captain marks it]",
    "Say it's the right thing to do [5%; if it fails: the captain marks it]",
-   "Dare them to take it [39%]",
+   "Dare them to take it [40%]",
    "Never mind"
   ]
  },
@@ -966,9 +966,9 @@
   "title": "Putting It to the Captain",
   "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and doesn't trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
   "labels": [
-   "Put the fee in front of them (it pays about 900 cr, all told) [39%]",
-   "Call in what the captain owes you [39%]",
-   "Say it's the right thing to do [39%]",
+   "Put the fee in front of them (it pays about 900 cr, all told) [40%]",
+   "Call in what the captain owes you [40%]",
+   "Say it's the right thing to do [40%]",
    "Dare them to take it [5%; if it fails: the captain marks it]",
    "Never mind"
   ]
@@ -1052,10 +1052,10 @@
   "title": "Putting It to the Captain",
   "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and doesn't trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
   "labels": [
-   "Put the fee in front of them (it pays about 900 cr, all told) [39%]",
-   "Call in what the captain owes you [59%]",
-   "Say it's the right thing to do [59%]",
-   "Dare them to take it [39%]",
+   "Put the fee in front of them (it pays about 900 cr, all told) [40%]",
+   "Call in what the captain owes you [60%]",
+   "Say it's the right thing to do [60%]",
+   "Dare them to take it [40%]",
    "Never mind"
   ]
  },
@@ -1418,7 +1418,7 @@
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
    "Say nothing and keep Sam below",
-   "[Gunner 2] Lock fire control on her and ask what this is [65%; if it fails: a fine, and the patrol takes them]",
+   "[Gunner 2] Lock fire control on her and ask what this is [70%; if it fails: a fine, and the patrol takes them]",
    "Hand Sam over to the cutter"
   ]
  },
@@ -1586,7 +1586,7 @@
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
    "Say nothing and keep Sam below",
-   "[Gunner 2] Lock fire control on her and ask what this is [65%; if it fails: a fine, and the patrol takes them]",
+   "[Gunner 2] Lock fire control on her and ask what this is [70%; if it fails: a fine, and the patrol takes them]",
    "Hand Sam over to the cutter"
   ]
  },
@@ -1885,7 +1885,7 @@
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
    "Say nothing and keep Sam below",
-   "[Gunner 2] Lock fire control on her and ask what this is [65%; if it fails: a fine]"
+   "[Gunner 2] Lock fire control on her and ask what this is [70%; if it fails: a fine]"
   ]
  },
  {
@@ -2304,7 +2304,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -2723,7 +2723,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -3142,7 +3142,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -3561,7 +3561,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -3980,7 +3980,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -4314,7 +4314,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -4648,7 +4648,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -4982,7 +4982,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -5316,7 +5316,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -5650,7 +5650,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -5984,7 +5984,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -6318,7 +6318,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -6652,7 +6652,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -6986,7 +6986,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -7320,7 +7320,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -10710,7 +10710,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Go on"
   ]
@@ -10726,7 +10726,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 1 run with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>You signed on for the money. You came with 300 cr and have 5,000 cr now.</p><p>Nobody aboard was a friend yet.",
+  "text": "30 days aboard the Iron Anvil. 1 run with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>You signed on for the money. You came with 300 cr and have 5,000 cr now.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Go on"
   ]
@@ -10742,7 +10742,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 3 runs with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>You signed on for the money. You came with 300 cr and have 5,000 cr now.</p><p>Nobody aboard was a friend yet.",
+  "text": "30 days aboard the Iron Anvil. 3 runs with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>You signed on for the money. You came with 300 cr and have 5,000 cr now.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Go on"
   ]
@@ -10758,7 +10758,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 1 run with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>You signed on to learn the work. The gunner post is at level 1, 1 run in.</p><p>Nobody aboard was a friend yet.",
+  "text": "30 days aboard the Iron Anvil. 1 run with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>You signed on to learn the work. The gunner post is at level 1, 1 run in.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Go on"
   ]
@@ -10774,7 +10774,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 3 runs with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>You signed on to learn the work. The gunner post is at level 1, 3 runs in.</p><p>Nobody aboard was a friend yet.",
+  "text": "30 days aboard the Iron Anvil. 3 runs with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>You signed on to learn the work. The gunner post is at level 1, 3 runs in.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Go on"
   ]
@@ -10790,7 +10790,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 1 run with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>You signed on to be somewhere else. It is 30 days and 1 run from the dock you left.</p><p>Nobody aboard was a friend yet.",
+  "text": "30 days aboard the Iron Anvil. 1 run with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>You signed on to be somewhere else. It is 30 days and 1 run from the dock you left.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Go on"
   ]
@@ -10806,7 +10806,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 3 runs with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>You signed on to be somewhere else. It is 30 days and 3 runs from the dock you left.</p><p>Nobody aboard was a friend yet.",
+  "text": "30 days aboard the Iron Anvil. 3 runs with Captain Vance, and 1,234 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>You signed on to be somewhere else. It is 30 days and 3 runs from the dock you left.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Go on"
   ]
@@ -10822,7 +10822,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Closest to you: Mateo (friendly).",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Closest to you: Mateo (friendly).",
   "labels": [
    "Go on"
   ]
@@ -10838,7 +10838,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Closest to you: Mateo (friendly).</p><p>Mateo kept this: \"You brought the ice in.\"",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Closest to you: Mateo (friendly).</p><p>Mateo kept this: \"You brought the ice in.\"",
   "labels": [
    "Go on"
   ]
@@ -10854,7 +10854,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Closest to you: Mateo (devoted), Captain Vance (friendly), Hana (friendly).",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Closest to you: Mateo (devoted), Captain Vance (friendly), Hana (friendly).",
   "labels": [
    "Go on"
   ]
@@ -10870,7 +10870,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet. Told you what they want: Mateo.",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet. Told you what they want: Mateo.",
   "labels": [
    "Go on"
   ]
@@ -10886,7 +10886,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet. Told you what they want: Mateo and Hana. You took on a favor for Mateo.",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet. Told you what they want: Mateo and Hana. You took on a favor for Mateo.",
   "labels": [
    "Go on"
   ]
@@ -10902,7 +10902,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet. Loyal to the ship: Mateo and Hana.",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet. Loyal to the ship: Mateo and Hana.",
   "labels": [
    "Go on"
   ]
@@ -10918,7 +10918,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet. Let you do their work: Ines.",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet. Let you do their work: Ines.",
   "labels": [
    "Go on"
   ]
@@ -10934,7 +10934,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.</p><p>Lost on the way: Mara Quill.",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.</p><p>Lost on the way: Mara Quill.",
   "labels": [
    "Go on"
   ]
@@ -10950,7 +10950,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.</p><p>Lost on the way: Mara Quill, Joss Ode and Teo Ruiz.",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.</p><p>Lost on the way: Mara Quill, Joss Ode and Teo Ruiz.",
   "labels": [
    "Go on"
   ]
@@ -10966,7 +10966,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.</p><p>Mateo and Hana: close.",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.</p><p>Mateo and Hana: close.",
   "labels": [
    "Go on"
   ]
@@ -10982,7 +10982,7 @@
    }
   ],
   "title": "Looking Back",
-  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.</p><p>9 Jul 2214: Marked once. 9 Jul 2214: Marked once.",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.</p><p>9 Jul 2214: Marked once. 9 Jul 2214: Marked once.",
   "labels": [
    "Go on"
   ]

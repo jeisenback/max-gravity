@@ -8541,13 +8541,13 @@
   "key": "odds",
   "v": {
    "pilot:true": 0.45,
-   "pilot:false": 0.48,
-   "gunner:true": 0.47,
-   "gunner:false": 0.47,
+   "pilot:false": 0.45,
+   "gunner:true": 0.5,
+   "gunner:false": 0.5,
    "engineer:true": 0.45,
-   "engineer:false": 0.48,
-   "comms:true": 0.45,
-   "comms:false": 0.48
+   "engineer:false": 0.45,
+   "comms:true": 0.5,
+   "comms:false": 0.5
   }
  },
  {
@@ -8556,9 +8556,9 @@
    "title": "A Jammed Freight Lock",
    "text": "A crowd has gathered at Lock Six, and a woman in a dockmaster's vest is shouting into a handset. The outer door has jammed half open, the inner door won't cycle, and somewhere in the gap four loaders are sealed in with an hour of air in their suits. \"Anyone,\" the dockmaster says, to the crowd and to you. \"Anyone who knows a lock.\"",
    "labels": [
-    "Cut the manual release [Engineer, 48%; if it fails: you may be hurt]",
-    "Talk the controller into an override [Comms, 48%; if it fails: the captain marks it]",
-    "Put your shoulder to the wheel [Gunner, 42%; if it fails: you may be hurt]",
+    "Cut the manual release [Engineer, 45%; if it fails: you may be hurt]",
+    "Talk the controller into an override [Comms, 50%; if it fails: the captain marks it]",
+    "Put your shoulder to the wheel [Gunner, 45%; if it fails: you may be hurt]",
     "Fetch the dockmaster the crew chief and stay out of it"
    ]
   }
@@ -8727,8 +8727,8 @@
    "title": "A Message That Has to Go Quietly",
    "text": "The clerk finds you at the back of the comms office, twisting a ring on a finger. \"It's not illegal,\" she says. \"It's just that if it goes through the port's relay, it'll be read by somebody who has a reason not to like it.\" She slides a chip across the counter. \"I need it on the long bands to a ship that's six days out, and I need nobody to know I asked.\"",
    "labels": [
-    "Put it on a ship's relay under a cargo header [Comms, 48%; if it fails: 60 cr of your own, your standing here]",
-    "Carry it to a ship that's about to sail [Pilot, 53%; if it fails: 20 cr of your own]",
+    "Put it on a ship's relay under a cargo header [Comms, 50%; if it fails: 60 cr of your own, your standing here]",
+    "Carry it to a ship that's about to sail [Pilot, 50%; if it fails: 20 cr of your own]",
     "Refuse, politely"
    ]
   }
@@ -8807,8 +8807,8 @@
    "title": "Escort on the Lower Decks",
    "text": "The courier is a thin man in a good coat who keeps both hands on a case. \"It's not far,\" he says. \"Three decks down, a lock, and a door with a lamp over it. There are people who'd like what's in this case, and I'd like them not to have it.\" He looks at your boots. \"I pay for people who walk quietly.\"",
    "labels": [
-    "Walk the lower decks ahead of him [Gunner, 47%; if it fails: you may be hurt]",
-    "Take him down a service route [Pilot, 48%; if it fails: your standing here]",
+    "Walk the lower decks ahead of him [Gunner, 50%; if it fails: you may be hurt]",
+    "Take him down a service route [Pilot, 45%; if it fails: your standing here]",
     "Tell him you won't go down there tonight"
    ]
   }
@@ -8948,8 +8948,8 @@
    "title": "Trouble in the Ration Line",
    "text": "The line for the day's water runs around the corner and back, and at the head of it two families are shouting at the clerk, and at each other, over a ration chit that was issued twice. The warden catches your sleeve. \"You're not from here,\" she says, \"which is what I need. Somebody they both won't mind listening to.\"",
    "labels": [
-    "Talk them down [Comms, 48%; if it fails: you may be hurt]",
-    "Step between them [Gunner, 42%; if it fails: you may be hurt]",
+    "Talk them down [Comms, 50%; if it fails: you may be hurt]",
+    "Step between them [Gunner, 45%; if it fails: you may be hurt]",
     "Get the warden and let her handle it"
    ]
   }
@@ -9030,8 +9030,8 @@
    "title": "A Package for Ironheart",
    "text": "The contact is waiting at the dock gate on Ironheart, a man in a long coat who looks at your ship before he looks at you. He's not the one Mrs. Adeyemi described. He's too easy, too well dressed, and he knows your name. \"I'll take that off your hands,\" he says, and holds out both of them.",
    "labels": [
-    "Ask him what Mrs. Adeyemi said to say [Comms, 48%; if it fails: your standing here]",
-    "Walk him to a crowded place before you hand it over [Gunner, 47%; if it fails: you may be hurt]",
+    "Ask him what Mrs. Adeyemi said to say [Comms, 50%; if it fails: your standing here]",
+    "Walk him to a crowded place before you hand it over [Gunner, 50%; if it fails: you may be hurt]",
     "Hand it over and take the fee"
    ],
    "blurb": "{who} has a sealed package for a contact on {dest}, and doesn't trust the post."
@@ -9176,8 +9176,8 @@
    "title": "A Hauler Down on Ironheart",
    "text": "The hauler sits at the far end of the apron on Ironheart, listing a degree to port, with her drive housing open to the sky and a man underneath it who hasn't slept in a day. He climbs out when you hail. \"Mrs. Adeyemi sent you,\" he says. \"I've been telling the yard it's the injector, and the yard has been telling me it's three thousand credits.\"",
    "labels": [
-    "Rebuild the injector [Engineer, 48%; if it fails: you may be hurt]",
-    "Tow her to the yard and argue the price down [Pilot, 48%; if it fails: 60 cr of your own]",
+    "Rebuild the injector [Engineer, 45%; if it fails: you may be hurt]",
+    "Tow her to the yard and argue the price down [Pilot, 45%; if it fails: 60 cr of your own]",
     "Give him what you can spare and wish him luck (50 cr)"
    ],
    "blurb": "{who}'s brother is stuck on {dest} with a failed drive and no money for the yard. {who} can't go. You could."
@@ -9320,8 +9320,8 @@
    "title": "A Witness on Ironheart",
    "text": "The dockworker is waiting in the back room of a noodle stall on Ironheart, a small woman with her coat buttoned to the neck and her hands flat on the table. \"Mrs. Adeyemi said you'd come,\" she says. \"The office is four streets away. I've been told, twice, that I wouldn't make it there.\" She looks at you. \"I'd like to make it there.\"",
    "labels": [
-    "Walk her through the streets [Gunner, 47%; if it fails: you may be hurt]",
-    "Arrange a quiet meeting by relay instead [Comms, 48%; if it fails: your standing here]",
+    "Walk her through the streets [Gunner, 50%; if it fails: you may be hurt]",
+    "Arrange a quiet meeting by relay instead [Comms, 50%; if it fails: your standing here]",
     "Tell her you can't do this"
    ],
    "blurb": "{who} knows a dockworker on {dest} who saw something and needs an escort to give a statement. Nobody there'll do it."

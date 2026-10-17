@@ -1,0 +1,30 @@
+'use strict';
+
+// The hired hand's sheet, and the one rule every roll of theirs goes through. Four stats, each 1 to 5, set at the sign-on from the
+// start background and the post and moved only by scenes, never bought: hands (the work, the fight), eye (the shot, the read, the
+// watch), nerve (the bold call, the standoff) and wit (the word, the relay, the sum). The posts are the skills, each on a stat, with
+// their points and levels as before (skillLevel, hired.js). Pure: it reads nothing of the game, so it runs in plain Node
+// (tests/sheet.test.js); the callers pass the stat and the level in. Loaded after util.js.
+//
+// The rule: check(stat, skill, difficulty, edge) is the odds a roll goes the hand's way, from even odds at the base stat with no
+// skill: a twentieth for each point of stat above or below the base, a tenth for each level of the skill, less the scene's
+// difficulty, plus whatever edge the scene gives (a crew member's help, the captain's trust, the boresighted guns), clamped so no
+// roll is hopeless or sure. The difficulties are set so a roll at the base stat lands where its own formula did before the sheet
+// (#679): the post's own move even, the solo roll a twentieth under, a job and a word with the captain three twentieths under.
+
+const STATS = ['hands', 'eye', 'nerve', 'wit'];
+const POST_STAT = { gunner: 'eye', pilot: 'nerve', engineer: 'hands', comms: 'wit' };
+const BACKGROUND_STAT = { earth: 'wit', mars: 'nerve', belt: 'hands' };
+const STAT_BASE = 3, STAT_MAX = 5, STAT_STEP = 0.05, SKILL_STEP = 0.1, CHECK_MIN = 0.05, CHECK_MAX = 0.9;
+// What a kind of roll takes off even odds: the post's own move in a fight or a contact, the job of a post done alone (a bold call, an
+// order given yourself), a job ashore, a word put to the captain (the pitch, a post asked for), and a bar fight with nobody at your back.
+const DIFFICULTY = { post: 0, solo: 0.05, job: 0.15, word: 0.15, brawl: 0.1 };
+
+// The sheet at the sign-on: every stat at the base, the post's stat a point up, and the background's a point up.
+function newSheet(background, post) {
+  const sheet = Object.fromEntries(STATS.map(s => [s, STAT_BASE]));
+  for (const s of [POST_STAT[post], BACKGROUND_STAT[background]]) if (s) sheet[s] = Math.min(STAT_MAX, sheet[s] + 1);
+  return sheet;
+}
+
+const check = (stat, skill, difficulty, edge = 0) => Math.max(CHECK_MIN, Math.min(CHECK_MAX, 0.5 + STAT_STEP * (stat - STAT_BASE) + SKILL_STEP * skill - difficulty + edge));

@@ -389,7 +389,7 @@ test('a hired Gunner has two orders: a drill that teaches, and boresighting that
     postState('gunner').busy = false;
     Math.random = () => 0.01; const hit = giveOrder('gunner', 'boresight'); Math.random = real;
     out.hit = { text: hit, odds: raidPostOdds(lvl) };
-    out.cap = raidPostOdds(10);
+    out.cap = raidPostOdds(10); out.max = CHECK_MAX;
     postState('gunner').busy = false;
     Math.random = () => 0.01; const drill = giveOrder('gunner', 'drill'); Math.random = real;
     out.drill = { text: drill, xp: skillXp('gunner') - xp };
@@ -401,7 +401,7 @@ test('a hired Gunner has two orders: a drill that teaches, and boresighting that
   assert.match(r.missed.text, /the third drifts a finger/i); assert.equal(r.missed.odds, r.base, 'a failed boresight changes nothing'); assert.equal(r.missed.busy, true); assert.equal(r.missed.xp, 1, 'your own work teaches');
   assert.equal(r.again, null, 'one order a day');
   assert.match(r.hit.text, /target plate at four hundred meters/); assert.ok(Math.abs(r.hit.odds - Math.min(0.85, r.base + 0.1)) < 1e-9, 'ten points better');
-  assert.equal(r.cap, 0.85, 'never above 0.85'); assert.match(r.drill.text, /three times in four/); assert.equal(r.drill.xp, 3, 'a miss, a hit and a drill each taught one');
+  assert.equal(r.cap, r.max, 'never above the rule\'s cap (sheet.js)'); assert.match(r.drill.text, /three times in four/); assert.equal(r.drill.xp, 3, 'a miss, a hit and a drill each taught one');
   assert.equal(r.landed, r.base, 'the next port clears it');
   await done();
 });

@@ -242,8 +242,8 @@ test('posts: your own work teaches you, it is kept, and it improves your odds', 
     out.owner = { odds: orderOdds('engineer'), skill: skillLevel('engineer') };
     return out;
   });
-  assert.deepEqual(r.start, { level: 1, xp: r.steps[1], other: -1 + 1, odds: 0.55, otherOdds: 0.45 });
-  assert.deepEqual(r.after, { level: 2, odds: 0.65 });
+  assert.deepEqual(r.start, { level: 1, xp: r.steps[1], other: -1 + 1, odds: 0.6, otherOdds: 0.45 }, 'the sheet: an engineer\'s hands are a point up, a twentieth on the roll (sheet.js)');
+  assert.deepEqual(r.after, { level: 2, odds: 0.7 });
   assert.equal(r.order, 1, 'your own order teaches you a little');
   assert.equal(r.run.xp, 2, 'a burn worked teaches you more'); assert.equal(r.run.opinion, -1, 'a run that made nothing costs you the captain\'s regard');
   assert.deepEqual(r.owner, { odds: 0.45, skill: -1 + 1 }, 'an owner\'s solo odds are the old ones');
@@ -604,5 +604,24 @@ test('a hand cannot buy a ship while owing, the panel says what is left, and a h
   assert.equal(r.owing, false); assert.match(r.panelOwing, /You owe the hiring hall [\d,]+ cr\. You cannot buy a ship until it is paid\./); assert.equal(r.clear, true);
   assert.equal(r.carried, 1234); assert.equal(r.ashore, 777, 'a hand put ashore keeps what is left');
   assert.ok(r.older.guard); assert.doesNotMatch(r.older.note, /The hall/);
+  await done();
+});
+
+test('the hand has a sheet: set at the sign-on from the background and the post, read by a job on any post, shown in the look back', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); const st = G.state, h = st.hired, out = {};
+    out.sheet = { ...h.sheet };
+    st.crew = [];  // nobody to help
+    out.comms = jobOdds({ post: 'comms' }); h.sheet.wit = 5; out.commsSharper = jobOdds({ post: 'comms' });
+    out.recap = chapterRecap().text;
+    h.sheet = null; out.old = { stat: handStat('eye'), recap: /Hands \d/.test(chapterRecap().text) };  // a save from before the sheet
+    return out;
+  });
+  assert.deepEqual(r.sheet, { hands: 3, eye: 4, nerve: 3, wit: 4 }, 'an Earth gunner: the eye and the wit a point up');
+  assert.ok(Math.abs(r.commsSharper - r.comms - 0.05) < 1e-9, 'a job on another post reads that post\'s stat');
+  assert.match(r.recap, /Hands 3, eye 4, nerve 3, wit 5\./);
+  assert.deepEqual(r.old, { stat: 3, recap: false }, 'without a sheet every stat is the base, and the look back says nothing of it');
   await done();
 });
