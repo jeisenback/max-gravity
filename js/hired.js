@@ -13,7 +13,7 @@ const HIRED_POSTS = ['pilot', 'gunner', 'engineer', 'comms'];  // the posts you 
 const HIRED_SAVINGS = 300;
 // The rest of the crew, beside the four posts: a first officer, a quartermaster, a medic, a cook and two ice hands.
 const CHAPTER_CREW = [{ role: 'xo', skill: 2 }, { role: 'quartermaster', skill: 2 }, { role: 'medic', skill: 2 }, { role: 'cook', skill: 2 }, { role: 'icehand', skill: 1 }, { role: 'icehand', skill: 1 }];
-const HIRED_FUND = 12000;  // the ship's money, which buys the cargo for the 120 t hold
+const HIRED_FUND = 12000;  // the ship's money: repairs and fuel, since the cargo is the shipper's (contracts.js)
 const HIRED_WAGE = 40, HIRED_SHARE = 0.06;  // a day's wage and a share of each run's profit, tuned with tools/soak.js so about 20 runs reach the target
 const HAND_RAID = { base: 0.08, per: 1.4 };  // a hand's chance of a pirate contact on a run: this and the lane's danger (engage.js), in place of 0.05 and 0.6
 const HAND_LANE_WEIGHT = 8;  // and how much a dangerous lane weights the ship's own incidents (happenings.js)

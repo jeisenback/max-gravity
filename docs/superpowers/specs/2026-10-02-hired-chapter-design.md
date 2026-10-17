@@ -1,6 +1,6 @@
 # The hired-hand chapter
 
-Status: draft for review. Branch `ccr-56b9a0c9-x4nelr`.
+Status: built (the build order below, #140 to #151). Since then the build was narrowed to Hester and Cato (#289), so the economy is tuned for one captain, not four; the speculative economy was replaced by contracts (`2026-10-17-contracts-design.md`), so the fund buys no cargo; and the chapter is about 120 days by the owner's choice, not 100. The figures below are the record of what was settled at the time.
 
 ## Context
 
