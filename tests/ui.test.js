@@ -706,3 +706,38 @@ test('the hand\'s sheet shows the four stats with the posts on them and the kit,
   assert.match(r.said, /valve keys/); assert.deepEqual(r.kit1, ['a roll of valve keysjobs ashore +5%, +1 cover in the corridor']); assert.ok(r.crewHasNone, 'a crew member has skills and traits, not stats: their sheet is as it was');
   await done();
 });
+
+// #686 (the pieces main's readouts did not carry): the due date on the burn's bar, the log line, the booked load in the hold.
+test('on a burn with a contract the bar says the due date and the log says the load, the shipper and whether the ship is on time', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null;
+    const run = hired().run, out = { contract: !!run.contract, due: dateOf(run.due) };
+    let stop = drawnText(); drawTransit(G.W, G.H); out.onTime = stop();
+    run.due = G.state.day - 2; stop = drawnText(); drawTransit(G.W, G.H); out.late = stop();
+    return out;
+  });
+  assert.ok(r.contract);
+  assert.ok(r.onTime.includes(`due ${r.due}`), `the due date under the bar: ${r.onTime.join('|')}`);
+  assert.match(r.onTime.join(' '), / for .*, due .*, on time/, 'the log line (wrapped to the box)');
+  assert.ok(!r.onTime.some(t => /^Cargo:/.test(t)), 'the contract line says what is aboard');
+  assert.match(r.late.join(' '), / for .*, due .*, late by \d+ days/, 'late');
+  await done();
+});
+
+test('the hold draws a contract\'s load as booked cells before sailing, and as cargo after', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const plan = currentPlan(), d = document.createElement('div'), count = (html, attr) => { d.innerHTML = html; return d.querySelectorAll(`[${attr}]`).length; };
+    const before = operationsPanel(), out = { tons: plan.tons, booked: count(before, 'data-booked'), bay: count(before, 'data-bay'), says: /booked/.test(before) && before.includes(`for ${plan.shipper}`) };
+    G.state.tutorial = null; sail(); while (G.dialog) finishEvent();
+    const after = operationsPanel(); out.bookedAfter = count(after, 'data-booked'); out.bayAfter = count(after, 'data-bay'); out.saysAfter = /booked/.test(after);
+    return out;
+  });
+  assert.equal(r.booked, r.tons); assert.equal(r.bay, 0); assert.ok(r.says, 'the manifest says the load is booked and for whom');
+  assert.equal(r.bookedAfter, 0); assert.equal(r.bayAfter, r.tons); assert.ok(!r.saysAfter);
+  await done();
+});

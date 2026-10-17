@@ -190,12 +190,15 @@ UI.views.crew = function () { return interiorPanel() + crewViewBase.call(this); 
 
 // The cargo bay: a cell for each ton the hold takes, filled in a color for each commodity aboard, in the order of the manifest.
 const CARGO_COLORS = ['#6fb0ff', '#5fd35f', '#ff9a3c', '#b08fff', '#e8d17a', '#9fb4c2', '#ff6a8a'];
-function bayGrid() {
+// `booked`: a contract's load not yet aboard ({ id, tons }, #686), drawn as dashed cells in its color after what is held.
+function bayGrid(booked = null) {
   const st = G.state, cap = ship().cargo, cols = cap > 60 ? 20 : 10, rows = Math.ceil(cap / cols), cell = Math.min(34, Math.floor(580 / cols) - 3);  // the last column ends inside the 640-wide plan
   const fill = COMMODITIES.flatMap((c, i) => Array(Math.max(0, Math.round(st.cargo[c.id] || 0))).fill(i));
+  const dashed = booked ? Array(Math.max(0, Math.round(booked.tons))).fill(COMMODITIES.findIndex(c => c.id === booked.id)) : [];
   const cells = Array.from({ length: cap }, (_, i) => {
-    const x = 40 + (i % cols) * (cell + 3), y = 50 + Math.floor(i / cols) * (cell + 3), c = fill[i];
-    return c === undefined ? `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="3" fill="none" stroke="#22384f"/>`
+    const x = 40 + (i % cols) * (cell + 3), y = 50 + Math.floor(i / cols) * (cell + 3), c = fill[i], b = dashed[i - fill.length];
+    return c === undefined ? (b === undefined ? `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="3" fill="none" stroke="#22384f"/>`
+      : `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="3" fill="none" stroke="${CARGO_COLORS[b % CARGO_COLORS.length]}" stroke-dasharray="3 2" data-booked="${booked.id}"/>`)
       : `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="3" fill="${CARGO_COLORS[c % CARGO_COLORS.length]}" opacity=".85" data-bay="${COMMODITIES[c].id}"/>`;
   }).join('');
   return { svg: `<svg class="con-plant" viewBox="0 0 640 ${Math.max(150, 62 + rows * (cell + 3))}" role="img" aria-label="Cargo bay"><text x="40" y="30" fill="#7f95ab" font-size="11" letter-spacing="2">CARGO BAY</text>${cells}</svg>`, fill };
@@ -203,13 +206,16 @@ function bayGrid() {
 
 // The Operations station as a console: the cargo bay on the display, the manifest and the contracts beside it.
 function operationsPanel() {
-  const st = G.state, s = ship(), bay = bayGrid();
+  const st = G.state, s = ship(), held = hired() && heldContract(hired());
+  const booked = held && !hired().run && !(st.cargo[held.good] > 0) ? { id: held.good, tons: held.tons, shipper: held.shipper } : null;  // the contract at the dock: its load goes aboard at sailing (hired.js sail)
+  const bay = bayGrid(booked);
+  const bookedRow = booked ? String(h`<div class="con-read"><span><i class="con-swatch booked" style="border-color:${CARGO_COLORS[COMMODITIES.findIndex(c => c.id === booked.id) % CARGO_COLORS.length]}"></i>${goodName(booked.id)}</span><b>${booked.tons}t booked</b></div><p class="hint">Loads at sailing, for ${booked.shipper}.</p>`) : '';
   const manifest = String(listHtml(COMMODITIES.filter(c => st.cargo[c.id] > 0), c => h`<div class="con-read"><span><i class="con-swatch" style="background:${CARGO_COLORS[COMMODITIES.indexOf(c) % CARGO_COLORS.length]}"></i>${c.name}</span><b>${st.cargo[c.id]}t</b></div>`));
   const jobs = String(listHtml(st.missions, m => h`<div class="hint">${m.title} (due ${dateOf(m.deadline)})</div>`));
   return consoleHtml({
     title: 'Operations', status: hired() ? String(h`The captain's hold: ${cargoUsed()}/${s.cargo}t, Capt. ${hiredCaptain().first} ${hiredCaptain().last}`) : `Hold ${cargoUsed()}/${s.cargo}t`,
     screen: bay.svg,
-    side: (hired() && heldContract(hired()) ? contractPaperHtml(heldContract(hired()), st.day) : '') + conCard('Manifest', manifest || '<p class="hint">The hold is empty.</p>') + (jobs || !hired() ? conCard('Contracts', jobs || '<p class="hint">No active contracts.</p>') : ''),  // the paper (readouts.js); a hand with no errand has no contracts to show
+    side: (hired() && heldContract(hired()) ? contractPaperHtml(heldContract(hired()), st.day) : '') + conCard('Manifest', manifest + bookedRow || '<p class="hint">The hold is empty.</p>') + (jobs || !hired() ? conCard('Contracts', jobs || '<p class="hint">No active contracts.</p>') : ''),  // the paper (readouts.js); a hand with no errand has no contracts to show
     controls: G.transit ? '<p class="hint">Trade, contracts, and the bar open when you dock.</p>' : '',
   });
 }
