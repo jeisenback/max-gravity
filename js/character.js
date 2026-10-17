@@ -34,11 +34,12 @@ function youPerson() {
 }
 
 // How the crew see you: the captain and everyone aboard, by what they think of you.
+// Only those with a view of you are listed (#691): nine "neutral" on day one says nothing, and one line says nobody has formed one yet.
 function crewOpinionsCard() {
-  const rows = [], h = hired(), cap = h && person(h.captain);
-  if (cap && cap.memories) rows.push(conRead(raw(personLink(cap)), opinionWord(cap.opinion)));
-  for (const id of G.state.crew) { const c = person(id); if (c && c.memories) rows.push(conRead(raw(personLink(c)), opinionWord(c.opinion))); }
-  return rows.length ? conCard('How they see you', rows.join('')) : '';
+  const h = hired(), cap = h && person(h.captain), all = [cap, ...G.state.crew.map(id => person(id))].filter(c => c && c.memories);
+  if (!all.length) return '';
+  const rows = all.filter(c => c.opinion !== 0 || c.memories.length).map(c => conRead(raw(personLink(c)), opinionWord(c.opinion)));
+  return conCard('How they see you', rows.length ? rows.join('') : '<p class="hint">Nobody aboard has formed a view of you yet.</p>');
 }
 
 // A hired hand's place on the ship: whose, which post, how long, what it pays.

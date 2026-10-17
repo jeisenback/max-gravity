@@ -44,8 +44,8 @@ UI.views.web = function () {
     title: 'Bonds',
     status: `${list.length} aboard`,
     screen: webSvg(list),
-    side: conCard('Strongest ties', strongest) + conCard('Reading the web', (`<div class="hint"><span style="color:${WEB_COLORS.good}">Green</span> ` +
-        `lines join friends, <span style="color:${WEB_COLORS.bad}">orange</span> lines join rivals; thicker is stronger. An orange ring is someone ` +
-        `having a hard time. Click a name to open them.</div>`)),
+    side: conCard('Strongest ties', strongest) + conCard('Reading the web', (`<div class="legend"><span class="swatch" style="background:${WEB_COLORS.good}"></span> friends</div>` +
+        `<div class="legend"><span class="swatch" style="background:${WEB_COLORS.bad}"></span> rivals</div>` +
+        `<div class="legend"><span class="swatch ring" style="border-color:${WEB_COLORS.bad}"></span> having a hard time</div>`)),
   });
 };

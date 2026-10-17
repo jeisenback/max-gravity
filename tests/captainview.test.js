@@ -25,8 +25,10 @@ test('a hired hand sees the captain on Interior, the header, Operations and Navi
   assert.equal(await page.$$eval('#panel .con-plant circle.person', n => n.length), await ev(() => crewMembers().length + 2), 'everyone aboard, the captain, and you, each in a room');
   await goTo(page, 'port');
   assert.match(await page.innerText('#panel .con-head'), new RegExp(`captain's hold.*Capt\\. ${cap.name}`, 'i'));
-  await goTo(page, 'nav');
+  await goTo(page, 'port');
   assert.ok(await page.$(`#panel .eyebrow [data-action=person][data-arg="${cap.id}"]`), 'the run is the captain\'s, named and linked');
+  await goTo(page, 'nav');
+  assert.ok(!/ run\b/.test(await page.innerText('#panel .con-ctl .eyebrow')) && !await page.$('#panel [data-action=person]'), 'the bridge shows the course, not the run: that is on Port');
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
   await done();
 });

@@ -602,3 +602,28 @@ test('clicking a save code selects it, with no inline handler (data-select)', as
   assert.equal(picked, 'abc def');
   await done();
 });
+
+// #691: the landed pages say less on day one.
+test('day one: the journal keeps the feeds to a line, the bonds legend is swatches, the person page lists only those with a view, the run eyebrow is the captain\'s name', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const d = document.createElement('div'), view = tab => { d.innerHTML = UI.views[tab].call(UI); return d; };
+    const out = {};
+    const j = view('journal'); out.feeds = j.querySelectorAll('details.feeds').length; out.feedLines = j.querySelectorAll('details.feeds .hint').length; out.more = (j.querySelector('details.feeds .more') || {}).textContent;
+    out.signposts = /Listen to the comms|What the port offers/.test(j.textContent);
+    const w = view('web'); out.swatches = w.querySelectorAll('.legend .swatch').length; out.legendText = [...w.querySelectorAll('.legend')].map(l => l.textContent.trim()).join('|'); out.oldLegend = /Green\s+lines join friends/.test(w.textContent);
+    G.viewPerson = 'you'; const p0 = view('person'); out.rows0 = [...p0.querySelectorAll('.con-card')].find(c => /How they see you/.test(c.textContent)).querySelectorAll('.con-read').length; out.none = /Nobody aboard has formed a view of you yet/.test(p0.textContent);
+    const mate = person(G.state.crew[0]); mate.opinion = 4; mate.memories.push('9 Jun 2214: You covered the watch.');
+    const p1 = view('person'); out.rows = [...p1.querySelectorAll('.con-card')].find(c => /How they see you/.test(c.textContent)).querySelectorAll('.con-read').length; out.noneAfter = /formed a view/.test(p1.textContent);
+    G.state.tutorial = null;
+    d.innerHTML = runHtml(); out.eyebrow = d.querySelector('.eyebrow').textContent;
+    return out;
+  });
+  assert.equal(r.feeds, 1, 'the feeds are one collapsed block'); assert.ok(r.feedLines >= 1); assert.match(r.more, /^and \d+ more$/); assert.ok(!r.signposts, 'the two signposts are gone');
+  assert.equal(r.swatches, 3); assert.equal(r.legendText, 'friends|rivals|having a hard time'); assert.ok(!r.oldLegend);
+  assert.equal(r.rows0, 0, 'no list of neutral names on day one'); assert.ok(r.none, 'one line says nobody has a view yet');
+  assert.equal(r.rows, 1, 'a crew member with a view is listed'); assert.ok(!r.noneAfter);
+  assert.match(r.eyebrow, /^Captain .+'s run$/, 'the funds and the savings are the strip\'s');
+  await done();
+});

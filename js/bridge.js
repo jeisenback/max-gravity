@@ -65,7 +65,7 @@ function navigationPanel() {
     title: 'Navigation', status: helm,
     screen: `<svg class="con-plant" viewBox="0 0 640 300" role="img" aria-label="Route plot">${routeSvg(st.systemId, to, progress, t && t.flipped)}</svg>`,
     side: conCard('Course', course),
-    controls: hired() ? `${runHtml()}${t ? '' : '<p class="hint">The captain picks where she goes, and sails when you are ready.</p>'}${postHtml('pilot')}`
+    controls: hired() ? `${t ? '' : '<p class="hint">The captain picks where she goes, and sails when you are ready.</p>'}${postHtml('pilot')}`
       : `${t ? '' : `<div class="row"><button data-action="map">System map</button></div><p class="hint">${to ? '' : 'Open the system map and pick a destination. '}Take off from the bar below, fly clear of the planet, and start the burn.</p>`}${routeHtml()}${postHtml('pilot')}`,
   });
 }
