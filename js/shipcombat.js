@@ -41,7 +41,8 @@ const edgeOf = ratio => Math.max(-SHIP_EDGE_MAX, Math.min(SHIP_EDGE_MAX, SHIP_ED
 function shipOdds(s, id, post, odds) {
   if (odds >= 1) return odds;
   const kind = post ? POST_EDGE[post] : CHOICE_EDGE[id], p = raidProfile(s);
-  return Math.max(0.05, Math.min(0.95, odds + (kind ? edgeOf(p[kind]) : 0) - GRADE_ODDS * (s.grade || 0)));
+  const reach = s.range !== undefined && !post ? rangeEdge(id, s.range, s.base) : 0;  // the range the raid keeps against the one the beat would have had (range.js)
+  return Math.max(0.05, Math.min(0.95, odds + (kind ? edgeOf(p[kind]) : 0) + reach - GRADE_ODDS * (s.grade || 0)));
 }
 // What a lost beat costs the hull: more from a gun-heavy ship, a veteran crew and a pair.
 const foePunch = s => (0.8 + 0.2 * SHIPS[s.foe.shipId].guns) * (1 + GRADE_PUNCH * (s.grade || 0)) * (s.pack ? PACK_PUNCH : 1);

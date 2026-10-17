@@ -51,7 +51,7 @@ const HIRED_FUNCTION_SCENES = [
 // Odds, damage and the roll are in code too. tests/beatlines.test.js plays every beat and checks that each name here is read.
 function raidLines() {
   const out = {}, text = (key, line) => { out[key] = Array.isArray(line) ? line[2] : line; };
-  for (const [name, table] of [['open', RAID_OPEN], ['pass', RAID_PASS]]) for (const [style, list] of Object.entries(table)) list.forEach((t, i) => text(`${name}.${style}.${i}`, t));
+  for (const [name, table] of [['open', RAID_OPEN], ['pass', RAID_PASS], ['passfar', RAID_PASS_FAR]]) for (const [style, list] of Object.entries(table)) list.forEach((t, i) => text(`${name}.${style}.${i}`, t));
   const sides = (base, c) => { for (const o of ['win', 'lose']) if (c[o]) { if (Array.isArray(c[o])) text(`${base}.${o}`, c[o]); else for (const [style, line] of Object.entries(c[o])) text(`${base}.${o}.${style}`, line); } };
   for (const [kind, list] of [['closing', RAID_CLOSING], ['exchange', RAID_EXCHANGE]]) for (const c of list) { text(`${kind}.${c.id}.label`, c.label); sides(`${kind}.${c.id}`, c); }
   for (const [kind, posts] of Object.entries(RAID_POST)) for (const [post, c] of Object.entries(posts)) { text(`post.${kind}.${post}.label`, c.label); sides(`post.${kind}.${post}`, c); }

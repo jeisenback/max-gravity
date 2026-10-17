@@ -54,7 +54,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
 
     // The raid, from the first beat to the close and the lock fights that follow it.
     for (const policy of ['random', 'post', 'first']) {
-      const t = out.raid[policy] = { n: 0, off: 0, standoff: 0, crippled: 0, boarded: 0, boardedWon: 0, assaultWon: 0, hull: 0, hurt: 0, dead: 0, hand: 0, anyHurt: 0 };
+      const t = out.raid[policy] = { n: 0, off: 0, standoff: 0, lost: 0, crippled: 0, boarded: 0, boardedWon: 0, assaultWon: 0, hull: 0, hurt: 0, dead: 0, hand: 0, anyHurt: 0 };
       for (let i = 0; i < trials; i++) {
         const st = restore(null, null), armor0 = st.armor, titles = [];
         startDuel({ kind: 'pirate' }, false);
@@ -64,6 +64,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
         if (titles.includes('Dead in Space')) { t.crippled++; if (/strongbox/.test(last)) t.assaultWon++; }
         else if (titles.some(x => /^The (Lock|Corridor|Bridge)$/.test(x))) { t.boarded++; if (/last of them go back/.test(last)) t.boardedWon++; }
         else if (last.includes(RAID_CLOSE.standoff)) t.standoff++;
+        else if (Object.values(RAID_CLOSE.lost).some(l => last.includes(l))) t.lost++;  // she was left too far behind to follow (range.js)
         else t.off++;
         t.hull += (armor0 - G.state.armor) / maxArmor; t.hurt += c.hurt; t.dead += c.dead; t.hand += c.hand; if (c.hurt || c.dead || c.hand) t.anyHurt++;
         void assault;
@@ -117,7 +118,7 @@ const per = (a, b) => (a / Math.max(1, b)).toFixed(2);
 function report(runs) {
   console.log(`Raids (${runs.length} seeds, ${runs[0].crewAboard} crew aboard, a gunner)`);
   for (const [policy, t] of Object.entries(sum(runs, 'raid'))) {
-    console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  off ${pct(t.off, t.n)}  standoff ${pct(t.standoff, t.n)}  crippled ${pct(t.crippled, t.n)} (boarded ${pct(t.assaultWon, t.crippled)})  to the lock ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}`);
+    console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  off ${pct(t.off, t.n)}  standoff ${pct(t.standoff, t.n)}  lost ${pct(t.lost, t.n)}  crippled ${pct(t.crippled, t.n)} (boarded ${pct(t.assaultWon, t.crippled)})  to the lock ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}`);
   }
   for (const kind of ['repel', 'assault']) {
     console.log(`${kind === 'repel' ? 'Repel fight (they board you)' : 'Assault fight (you board her)'}`);
