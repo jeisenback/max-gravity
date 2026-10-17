@@ -120,6 +120,17 @@ const playBeats = () => {
     out.push({ id: `settle:${assault ? 'assault' : 'repel'}:${post}:${won ? 'won' : 'lost'}:${round}`, text: String(text), ...left(b0) });
     G.nextEvent = null; G.duel = null;
   }
+  // the orders to named crew (#711): each post's two abilities as the crew member does it, worked and missed (a miss lands on the one sent)
+  for (const assault of [false, true]) for (const role of ['gunner', 'pilot', 'engineer', 'slicer']) for (const kind of ['cover', 'steady']) for (const worked of [true, false]) {
+    fresh('gunner', 'raider');
+    const p = makePerson('earth'); Object.assign(p, { first: 'Dana', role, skill: 2, traits: [], opinion: 30 }); registerPerson(p); G.state.crew.push(p.id);
+    const foe = makeEnemy({ kind: 'pirate' }), s = assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full');
+    s.pos = 1; s.boarders = 4; s.fight = [p.id]; s.used.cover = kind === 'steady'; const label = repelScene(s).choices.filter(c => c.order).map(c => c.label); seq(worked ? [0.01] : [0.99, 0.01]); const b0 = stand();  // the one crew member offered, with the cover made or not, so the label of this kind is the one shown
+    s.used.cover = false;
+    const text = repelStep(s, kind, { id: p.id, first: p.first, sheet: crewSheet(p) });
+    out.push({ id: `order:${assault ? 'assault' : 'repel'}:${role}:${kind}:${worked ? 'worked' : 'missed'}`, label, text: String(text), ...left(b0) });
+    G.nextEvent = null; G.duel = null;
+  }
   for (const assault of [false, true]) {
     for (const post of POSTS_ALL) {
       fresh(post, 'raider');
