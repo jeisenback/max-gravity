@@ -50,9 +50,13 @@ const playTalk = () => {
   play('idle:two', p => { p.traits = ['pious', 'curious']; }, p => ordinaryTalk(p), 6);
   // the talk going on, by subject: the next port, the ship, their last ship, their post (crew) and the captain (a hand's ship, played as one here)
   for (const k of ['port', 'ship', 'last', 'work']) play(`goeson:${k}`, () => {}, p => goesOn(p, k));
-  { const realHired = window.hired, realCap = window.hiredCaptain; window.hired = () => ({ captain: 'cap' }); window.hiredCaptain = () => ({ last: 'Vance' });
-    play('goeson:captain', () => {}, p => goesOn(p, 'captain')); window.hired = realHired; window.hiredCaptain = realCap; }
+  play('goeson:captain', (p, s) => { const c = mk('Vance'); s.hired = { captain: c.id, post: 'gunner', since: s.day }; }, p => goesOn(p, 'captain'));  // a hand's subject: the captain is a person aboard, whose regard the offer costs
   play('goeson:drawn', p => { p.turn = 'ship'; }, p => goesOn(p), 6);  // drawn: never the subject of the last sitting
+  // the offer before the flip: its label, and the downtime after the flip spent; after the flip (no burn here) the watch is owed and stood when the next burn begins
+  { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; const rec = {};
+    for (const k of ['port', 'ship', 'last', 'work']) { G.transit = { to: 'pallas', flipped: false, lifeUsed: {} }; __seed(9); const e = goesOn(p, k); e.choices[0].run(); rec[k] = [String(e.choices[0].label), G.transit.lifeUsed]; }
+    G.transit = null; st.watchOwed = { n: 'Sam' }; const t = { lifeUsed: {} }; rec.stood = [standOwedWatch(st, t), t.lifeUsed, st.watchOwed, standOwedWatch(st, t)];
+    out.push({ key: 'goeson:offer', text: JSON.stringify(rec) }); }
   { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; p.traits = []; __seed(5); const e = sitBeat(p, true); G.nextEvent = null; e.choices[0].run(); out.push({ key: 'leadon', text: JSON.stringify([G.nextEvent && G.nextEvent.title, G.nextEvent && G.nextEvent.choices.length, p.turn]) }); G.nextEvent = null; }
   // the story: the pressing topic first (once), the polite sitting, the three sittings, and the favor
   play('sit:pressed', (p, s) => { p.mood = { kind: 'low', until: s.day + 40, text: 'the rent is due' }; }, p => sitBeat(p, true));
