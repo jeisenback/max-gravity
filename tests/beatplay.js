@@ -56,6 +56,7 @@ const playBeats = () => {
           rec.closes.push({ edge, text: String(raidClose(s)), ...left(b0) });
           G.nextEvent = null;
         }
+        rec.moved = [10, -10].map(d => { s.beat = 0; s.round = 0; s.edge = 0; s.base = rangeAtContact(s.style); s.range = s.base + d; return raidScene(s).text; });  // the contact's move has opened the range or closed it (engage.js)
         // the range opened (#710): the passes told from far, the close where she cannot board, and the contact lost
         rec.far = [1, 2].map(beat => { s.beat = beat; s.edge = 0; s.range = s.base = 25; return raidScene(s).text; });
         s.beat = 3; s.edge = -2; s.range = s.base = 25; s.hurt = new Set(); st.armor = full; seq([]); const b1 = stand();

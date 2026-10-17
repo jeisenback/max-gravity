@@ -458,6 +458,10 @@
     "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    }
   ],
+  "moved": [
+   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+  ],
   "far": [
    "She is still half a lane off, her grapple arms folded, hauling in at the best her drive will give. You bought the minute.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
    "She makes a second approach from well out, the grapple arms stowed until she is close enough to use them.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
@@ -924,6 +928,10 @@
     "far": true,
     "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    }
+  ],
+  "moved": [
+   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 260/260.",
+   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 260/260."
   ],
   "far": [
    "She is still half a lane off, her grapple arms folded, hauling in at the best her drive will give. You bought the minute.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 260/260.",
@@ -1392,6 +1400,10 @@
     "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    }
   ],
+  "moved": [
+   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+  ],
   "far": [
    "She is still half a lane off, her grapple arms folded, hauling in at the best her drive will give. You bought the minute.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
    "She makes a second approach from well out, the grapple arms stowed until she is close enough to use them.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
@@ -1858,6 +1870,10 @@
     "far": true,
     "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    }
+  ],
+  "moved": [
+   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
   ],
   "far": [
    "She is still half a lane off, her grapple arms folded, hauling in at the best her drive will give. You bought the minute.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
@@ -2326,6 +2342,10 @@
     "text": "A torpedo takes your drive housing and she closes while you're slow. The grapples bang on the hull, and the lock alarm goes."
    }
   ],
+  "moved": [
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+  ],
   "far": [
    "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
    "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
@@ -2792,6 +2812,10 @@
     "far": true,
     "text": "A torpedo takes your drive housing and she closes while you're slow. The grapples bang on the hull, and the lock alarm goes."
    }
+  ],
+  "moved": [
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "far": [
    "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
@@ -3260,6 +3284,10 @@
     "text": "A torpedo takes your drive housing and she closes while you're slow. The grapples bang on the hull, and the lock alarm goes."
    }
   ],
+  "moved": [
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+  ],
   "far": [
    "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
    "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
@@ -3726,6 +3754,10 @@
     "far": true,
     "text": "A torpedo takes your drive housing and she closes while you're slow. The grapples bang on the hull, and the lock alarm goes."
    }
+  ],
+  "moved": [
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
   ],
   "far": [
    "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
@@ -4194,6 +4226,10 @@
     "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    }
   ],
+  "moved": [
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move bought you room. She is at 40 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move cost you room. She is at 20 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+  ],
   "far": [
    "She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
    "She comes round again from far out, the guns hot and the range still too wide for a good burst.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
@@ -4660,6 +4696,10 @@
     "far": true,
     "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    }
+  ],
+  "moved": [
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move bought you room. She is at 40 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move cost you room. She is at 20 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "far": [
    "She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
@@ -5128,6 +5168,10 @@
     "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    }
   ],
+  "moved": [
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move bought you room. She is at 40 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move cost you room. She is at 20 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+  ],
   "far": [
    "She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
    "She comes round again from far out, the guns hot and the range still too wide for a good burst.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
@@ -5594,6 +5638,10 @@
     "far": true,
     "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    }
+  ],
+  "moved": [
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move bought you room. She is at 40 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move cost you room. She is at 20 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
   ],
   "far": [
    "She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",

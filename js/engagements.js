@@ -17,6 +17,8 @@ const RAID_OPEN = {
   torpedo: ['She\'s a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn\'t hurry.',
     'A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.'],
 };
+// After the opening, when the move that began the raid has moved the range from the one the opening line gives (engage.js): the number is the code's.
+const RAID_OPEN_MOVED = { far: 'The move bought you room.', near: 'The move cost you room.' };
 const RAID_PASS = {
   gun: ['She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.', 'She comes round for a second pass, and this time she doesn\'t bother with the transponder challenge. Her turret is already laid.'],
   grapple: ['She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.', 'She makes a second pass, closer than the first, and the grapple arms are open.'],
@@ -173,7 +175,8 @@ const raidPosition = s => (s.edge >= 1 ? 'ahead' : s.edge <= -1 ? 'behind' : 'ev
 function startRaid(spec, flee, o = {}) {
   const st = G.state, foe = makeEnemy(spec), style = RAID_STYLE[foe.shipId] || 'grapple';
   const s = { spec, foe, style, edge: o.edge || 0, open: o.open, beat: 0, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0 };
-  s.range = s.base = o.range !== undefined ? o.range : rangeAtContact(style);  // km, kept and moved by the choices (range.js), and what it would be if none had moved it; an ambush starts nearer
+  s.base = o.range !== undefined ? o.range : rangeAtContact(style);  // km: what the range would be if no choice had moved it (range.js); an ambush starts nearer
+  s.range = s.base + (o.shift || 0);  // and what it is: the contact's move (engage.js) has opened it or closed it already
   if (spec.kind === 'patrol' && !flee) changeRep(spec.gov, -8);  // firing on a navy ship is not forgotten
   let text = o.text || `Battle stations. ${theShip(foe)} made the intercept.`;
   if (flee) {
@@ -221,12 +224,13 @@ function raidScene(s) {
   const closing = s.beat === 0, kind = closing ? 'closing' : 'exchange';
   const general = closing ? RAID_CLOSING : RAID_EXCHANGE, spec = RAID_POST[kind][post];
   const text = closing ? s.open || raidWords(`open.${s.style}.${s.round % 2}`, RAID_OPEN[s.style][s.round % 2]) : (RAID_PASS_FAR[s.style] && s.range > RANGE_NEAR ? raidWords(`passfar.${s.style}.${s.beat - 1}`, RAID_PASS_FAR[s.style][s.beat - 1]) : raidWords(`pass.${s.style}.${s.beat - 1}`, RAID_PASS[s.style][s.beat - 1]));  // she is still coming if you opened the range
+  const moved = closing && !s.open && s.range !== s.base ? ` ${raidWords(`open.moved.${s.range > s.base ? 'far' : 'near'}`, RAID_OPEN_MOVED[s.range > s.base ? 'far' : 'near'])} She is at ${s.range} kilometers.` : '';
   const choices = general.map(c => ({ label: `${raidWords(`${kind}.${c.id}.label`, c.label)}${raidCostNote(c, s, null)}`, run: () => raidStep(s, c, null) }));
   const own = { id: 'post', odds: () => raidPostOdds(level), win: spec.win, lose: spec.lose };
   choices.push({ label: `[${POSTS[post].name}] ${raidWords(`post.${kind}.${post}.label`, spec.label)}${raidCostNote(own, s, post)}`, run: () => raidStep(s, own, post) });
   return {
     title: closing ? 'The Closing' : s.beat === 1 ? 'First Pass' : 'Second Pass', personal: true, via: 'crew', owner: 'you',  // yours to decide, not the captain's (hired.js hiredCall)
-    text: `${text}</p><p>${raidRead(s)} Armor ${st.armor}/${ship().armor}.`,
+    text: `${text}${moved}</p><p>${raidRead(s)} Armor ${st.armor}/${ship().armor}.`,
     board: boardSvg(s.board, { style: s.style, beat: s.beat, sensors: condition().sensors, sunAngle: sunLight().angle, prev, pack: s.pack, word: raidPosition(s) }),  // the sensor board (board.js), drawn above the text (ui.js)
     choices,
   };
