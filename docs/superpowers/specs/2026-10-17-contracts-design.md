@@ -1,6 +1,6 @@
 # Contracts: the captain's runs as freight
 
-Status: agreed 2026-10-17 (the owner: yes to all three questions, with a longer chapter). Design for replacing the hired chapter's speculative planner (`planRun`, `js/hired.js`) with contracts: the captain carries other people's cargo, for a shipper with a name, by a day. Nothing here is built. The owner decides the open questions at the end before it is.
+Status: agreed 2026-10-17 (the owner: yes to all three questions, with a longer chapter). Design for replacing the hired chapter's speculative planner (`planRun`, `js/hired.js`) with contracts: the captain carries other people's cargo, for a shipper with a name, by a day. Steps 1 to 5 are built and tuned (2026-10-17, the figures in ROADMAP.md); the open questions at the end were answered yes, yes and longer. Step 6, the shippers as people, is #682.
 
 ## Why
 
