@@ -92,7 +92,7 @@ function awayOffer() {
   const days = Math.max(1, travelDays(st.systemId, sid));
   return { tpl: tpl.id, ctx: { dest: dest.name, from: st.planet, who: pick(WHO), system: SYSTEMS[sid].name, scale: Math.max(0.8, Math.min(1.6, days / 4)) }, sid, planet: dest.name, days, until: st.day + days * 2 + 14, pitched: null, booked: false };
 }
-const awayJob = a => AWAY.find(t => t.id === a.tpl);
+const awayJob = a => AWAY.find(t => t.id === a.tpl) || arcJob(a);  // an arc's offer (arcs.js) has no stages of its own
 
 // ---------- putting it to the captain ----------
 const PITCH = [  // the four ways of putting it; their words (the button, and what the captain does when it lands well or badly) are the lines of scene:pitch (hiredscenes.js)
@@ -104,7 +104,7 @@ const PITCH = [  // the four ways of putting it; their words (the button, and wh
 function pitchOdds(arg, a) {
   const h = hired(), cap = hiredCaptain(), r = barReact(cap, arg.loves, arg.hates), plan = currentPlan();
   const fit = plan && plan.sid === a.sid ? 0.1 : 0, trust = 0.06 * Math.max(-3, Math.min(4, cap.opinion));
-  return check(handStat('wit'), 0, DIFFICULTY.word, 0.2 * (r.n - 1) + trust + fit);  // a word, not the post's work: the hand's wit and the captain's trust
+  return handCheck('wit', 0, 'word', 0.2 * (r.n - 1) + trust + fit);  // a word, not the post's work: the hand's wit and the captain's trust
 }
 // The run to the job's port: the one already planned, one of the runners-up, or a light run if nothing there pays.
 function bookRun(a) {
@@ -165,7 +165,7 @@ Mods.register({
       const here = h.away.findIndex(a => a.planet === planet.name && a.sid === st.systemId);
       if (here >= 0) {
         if (G.dialog && G.nextEvent) return;  // nowhere to put it yet: it waits, and the offer keeps until its day
-        const a = h.away.splice(here, 1)[0], ev = jobStage(awayJob(a), 0, a.ctx);
+        const a = h.away.splice(here, 1)[0], ev = a.arc ? arcBeginning(a) : jobStage(awayJob(a), 0, a.ctx);  // an arc begins with its own first scene (arcs.js)
         if (G.dialog) G.nextEvent = ev; else openEvent(ev);
         return;
       }

@@ -191,7 +191,7 @@ const BAR_TOPICS = [
     ...gated(notYet(() => pat.blessed, say('gate'))),
     run() { pat.blessed = true; met(pat); like(p, 1, say('memory')); return barSays(pick(barLines('bless')), p); }
   }); } },
-  { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c), odds = roleSkill('gunner') ? 1 : check(handStat('hands'), 0, DIFFICULTY.brawl); return ({ label: `${say('label')}${costNote({ cost: 150 }, odds)}`, ...gated(notYet(() => pat.fought, say('gate'))), run() {
+  { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c), odds = roleSkill('gunner') ? 1 : handCheck('hands', 0, 'brawl'); return ({ label: `${say('label')}${costNote({ cost: 150 }, odds)}`, ...gated(notYet(() => pat.fought, say('gate'))), run() {
     pat.fought = true; met(pat); like(p, -2, say('memory'));
     if (odds >= 1 || Math.random() < odds) return say('win', { step: roleSkill('gunner') ? `${say('win.step', { gunner: roleName('gunner') })} ` : '' });
     c.st.credits = Math.max(0, c.st.credits - 150);

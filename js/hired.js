@@ -59,9 +59,11 @@ function levelNote(post, level) {
 // A stat of the hand's sheet (sheet.js): the base for an owner, and for a hand from before the sheet was kept.
 const handStat = stat => { const h = hired(); return h && h.sheet ? h.sheet[stat] : STAT_BASE; };
 // Doing a job yourself: the odds are worse than a crew member's, and get better as you learn the post.
-const soloOdds = post => check(handStat(POST_STAT[post]), skillLevel(post), DIFFICULTY.solo);
+// A roll of the hand's: the sheet's rule (sheet.js) with the stat named, the level, the kind of roll (DIFFICULTY's keys) and an edge, and what the kit adds to that kind.
+const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, DIFFICULTY[kind], edge + kitEdge(hired() && hired().kit, kind));
+const soloOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'solo');
 // The job of your own post in a fight, an ice run or a contact: half a chance at the base, a tenth better for each level.
-const postOdds = post => check(handStat(POST_STAT[post]), skillLevel(post), DIFFICULTY.post);
+const postOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'post');
 // What stays the captain's to do: the cargo, the contracts, the ship itself, the company.
 const OWNER_TABS = ['trade', 'company'];  // contracts are the captain's too, but the board still has errands
 const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'buyship', 'cbuy', 'refuel', 'repair', 'overhaul', 'buyout', 'sellout', 'torpbuy', 'hire', 'interviewHire', 'dismiss'];
@@ -116,6 +118,7 @@ function setupHired(o) {
   },
     sheet: newSheet(st.background, post),  // the hand's stats (sheet.js)
     standing: {},  // each shipper's regard for the ship, by name (shippers.js)
+    kit: [],  // what the hand carries, by id (KIT_ITEMS, sheet.js)
     off: null,  // a delivery that was late, short or lost, for the agent at the dock to meet (shippers.js)
     asked: 0,
     raidTold: false,
@@ -317,7 +320,7 @@ function errandsFor(planet) {
 // How likely the captain is to say yes: a word with them, on how far they trust you and what you know of the post.
 function swapOdds(post) {
   const boss = bossFor('swap');
-  return check(handStat('wit'), skillLevel(post), DIFFICULTY.word, 0.1 * boss.opinion);
+  return handCheck('wit', skillLevel(post), 'word', 0.1 * boss.opinion);
 }
 
 function askSwap(post) {
@@ -499,7 +502,7 @@ function chapterRecap() {
   const list = names => names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
   const t = runTotals(h), days = st.day - h.since;
   const runs = lookSay(t.runs === 1 ? 'runs.one' : 'runs.many', { n: t.runs }), post = POSTS[h.post].name.toLowerCase(), level = skillLevel(h.post);
-  const work = lookSay('work', { days, ship: esc(shipTitle()), runs, captain: cap.last, earned: fmt(t.earned), post, level }), sheet = h.sheet ? lookSay('sheet', h.sheet) : '';
+  const work = lookSay('work', { days, ship: esc(shipTitle()), runs, captain: cap.last, earned: fmt(t.earned), post, level }), sheet = h.sheet ? [lookSay('sheet', h.sheet), ...((h.kit || []).length ? [lookSay('kit', { list: h.kit.map(id => (KIT_ITEMS[id] || { name: id }).name).join(', ') })] : [])].join(' ') : '';
   const why = { money: lookSay('why.money', { savings: fmt(HIRED_SAVINGS), credits: fmt(st.credits) }), learn: lookSay('why.learn', { post, level, runs }),
     away: lookSay('why.away', { days, runs }) }[h.reason] || '';
   const near = [...(cap && cap.memories ? [{ c: cap, name: lookSay('near.captain', { last: cap.last }) }] : []), ...crew.map(c => ({ c, name: c.first }))]

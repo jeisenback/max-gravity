@@ -300,7 +300,7 @@ const SCENE_LINES = {
     'title': 'Looking Back', 'label': 'Go on', 'result': 'You close the ledger.',
     'runs.one': '{n} run', 'runs.many': '{n} runs',
     'work': '{days} days aboard {ship}. {runs} with Captain {captain}, and {earned} cr earned in wage and share. You worked the {post} and reached level {level}.',
-    'sheet': 'Hands {hands}, eye {eye}, nerve {nerve}, wit {wit}.',
+    'sheet': 'Hands {hands}, eye {eye}, nerve {nerve}, wit {wit}.', 'kit': 'You carry {list}.',
     'why.money': 'You signed on for the money. You came with {savings} cr and have {credits} cr now.',
     'why.learn': 'You signed on to learn the work. The {post} post is at level {level}, {runs} in.',
     'why.away': 'You signed on to be somewhere else. It is {days} days and {runs} from the dock you left.',

@@ -11220,6 +11220,22 @@
   ]
  },
  {
+  "id": "recap:kit",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You close the ledger.",
+    "next": null
+   }
+  ],
+  "title": "Looking Back",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4. You carry a roll of valve keys.</p><p>Nobody aboard was a friend yet.",
+  "labels": [
+   "Go on"
+  ]
+ },
+ {
   "id": "recap:trusted",
   "plays": [
    {

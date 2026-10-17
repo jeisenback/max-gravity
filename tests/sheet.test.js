@@ -7,8 +7,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/sheet.js'], {}, ['STATS', 'POST_STAT', 'DIFFICULTY', 'STAT_BASE', 'STAT_STEP', 'SKILL_STEP', 'CHECK_MIN', 'CHECK_MAX', 'newSheet', 'check']);
-const { STATS, POST_STAT, DIFFICULTY, STAT_BASE, STAT_STEP, SKILL_STEP, CHECK_MIN, CHECK_MAX, newSheet, check } = api;
+const api = load(['js/sheet.js'], {}, ['STATS', 'POST_STAT', 'DIFFICULTY', 'STAT_BASE', 'STAT_STEP', 'SKILL_STEP', 'CHECK_MIN', 'CHECK_MAX', 'newSheet', 'check', 'KIT_ITEMS', 'kitEdge']);
+const { STATS, POST_STAT, DIFFICULTY, STAT_BASE, STAT_STEP, SKILL_STEP, CHECK_MIN, CHECK_MAX, newSheet, check, KIT_ITEMS, kitEdge } = api;
 const near = (a, b) => Math.abs(a - b) < 1e-9, sheet = (bg, post) => ({ ...newSheet(bg, post) });  // spread: the vm context has its own Object
 
 test('the sheet: four stats at the base, one up for the post and one for the background, never above five', () => {
@@ -34,4 +34,12 @@ test('the rule: a stat, a skill, a difficulty and an edge, with one step each an
   assert.ok(near(check(STAT_BASE, 0, DIFFICULTY.job), 0.35), 'a job at level 0 is what it was');
   assert.ok(near(check(STAT_BASE, 0, DIFFICULTY.brawl), 0.4), 'the bar fight is what it was');
   for (const d of Object.values(DIFFICULTY)) assert.ok(d >= 0 && d < 0.5, 'a difficulty is what comes off even odds');
+});
+
+test('the kit: each item adds to a kind of check, the edge is the sum for that kind, and an unknown id or an old save with no kit adds nothing', () => {
+  assert.ok(near(kitEdge(['valve-keys'], 'job'), 0.05), 'valve keys help a job'); assert.equal(kitEdge(['valve-keys'], 'word'), 0, 'and nothing else');
+  assert.equal(kitEdge([], 'job'), 0); assert.equal(kitEdge(undefined, 'job'), 0, 'a save from before the kit'); assert.equal(kitEdge(['nothing-like-it'], 'job'), 0);
+  assert.ok(near(kitEdge(['valve-keys', 'valve-keys'], 'job'), 0.1), 'the sum');
+  for (const [id, item] of Object.entries(KIT_ITEMS)) { assert.ok(item.name && !/^[A-Z]/.test(item.name), `${id} is named for a sentence ("You carry ${item.name}")`); for (const kind of Object.keys(item.adds)) assert.ok(kind in DIFFICULTY, `${id} adds to a kind of roll that exists (${kind})`); }
+  assert.ok(near(check(STAT_BASE, 0, DIFFICULTY.job, kitEdge(['valve-keys'], 'job')), 0.35 + 0.05 - 0.0), 'the edge goes into the rule');
 });
