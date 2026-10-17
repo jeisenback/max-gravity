@@ -233,6 +233,12 @@ const playScenes = () => {
       });
     }
   }
+  // ---------- the close of chapter two, for each ending and each count of the crew who came along ----------
+  { const rec = (aboard, left, dead) => ({ came: aboard.length + left.length + dead.length, aboard, left, dead });
+    const cases = { 'together:one': rec(['Ana'], [], []), 'together:two': rec(['Ana', 'Ben'], [], []), 'left:some': rec(['Ana'], ['Ben'], []), 'left:all': rec([], ['Ana', 'Ben'], []),
+      'losses:one': rec([], [], ['Ana']), 'losses:two': rec([], [], ['Ana', 'Ben']), 'losses:one-and-one': rec(['Cy'], [], ['Ana']), 'losses:one-and-two': rec(['Cy', 'Di'], [], ['Ana']), alone: rec([], [], []) };
+    for (const [name, r] of Object.entries(cases)) run(`chaptertwo:${name}`, { mode: undefined }, () => { G.state.career = { bought: G.state.day - 90 }; return chapterTwoEnd(r); });
+  }
   // ---------- the look back at the chapter: the work, why you signed on, who you got close to, the loss, the ties and the marks ----------
   { const grave = (name, i) => ({ key: `x${i}`, name, day: 5 + i, place: 'Ceres', cause: 'Lost on the way.' });
     const recap = (label, setup) => run(`recap:${label}`, {}, () => { const st = G.state; setup(st, hired(), folk().filter(f => f.crew && !f.p.cast).map(f => f.p)); return chapterRecap(); });

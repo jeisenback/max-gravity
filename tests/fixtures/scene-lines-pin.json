@@ -11012,6 +11012,150 @@
   ]
  },
  {
+  "id": "chaptertwo:together:one",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You walk up the ramp and shut the hatch behind you.",
+    "next": null
+   }
+  ],
+  "title": "Everyone Who Came",
+  "text": "It has been 90 days since you took the ramp at the yard. The Dust Skiff is at Earth, with her hold empty and the contract papers filed. Ana came aboard with you on the first day, and has drawn wages at every port since. Every one of those days was a day to go ashore with a bag, and each time the bag stayed where it was. The contracts, the yard and the crew are yours. This is where the second chapter ends.",
+  "labels": [
+   "Keep flying"
+  ]
+ },
+ {
+  "id": "chaptertwo:together:two",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You walk up the ramp and shut the hatch behind you.",
+    "next": null
+   }
+  ],
+  "title": "Everyone Who Came",
+  "text": "It has been 90 days since you took the ramp at the yard. The Dust Skiff is at Earth, with her hold empty and the contract papers filed. Ana and Ben came aboard with you on the first day, and have drawn wages at every port since. Every one of those days was a day to go ashore with a bag, and each time the bags stayed where they were. The contracts, the yard and the crew are yours. This is where the second chapter ends.",
+  "labels": [
+   "Keep flying"
+  ]
+ },
+ {
+  "id": "chaptertwo:left:some",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You walk up the ramp and shut the hatch behind you.",
+    "next": null
+   }
+  ],
+  "title": "The Berth Left Open",
+  "text": "It has been 90 days since you took the ramp at the yard. The Dust Skiff is at Earth, with her hold empty and the contract papers filed. Ana and Ben came aboard with you on the first day. Ana is still here. Ben is not: there is a bunk made up and nobody in it, and nobody has asked you to fill it. The contracts, the yard and the crew are yours. This is where the second chapter ends.",
+  "labels": [
+   "Keep flying"
+  ]
+ },
+ {
+  "id": "chaptertwo:left:all",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You walk up the ramp and shut the hatch behind you.",
+    "next": null
+   }
+  ],
+  "title": "The Berth Left Open",
+  "text": "It has been 90 days since you took the ramp at the yard. The Dust Skiff is at Earth, with her hold empty and the contract papers filed. Ana and Ben came aboard with you on the first day. By now every one of them has put a bag on a dock somewhere, and the berths are made up and empty. You walk the passage once. The contracts, the yard and the crew are yours. This is where the second chapter ends.",
+  "labels": [
+   "Keep flying"
+  ]
+ },
+ {
+  "id": "chaptertwo:losses:one",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You walk up the ramp and shut the hatch behind you.",
+    "next": null
+   }
+  ],
+  "title": "The Names on the Tape",
+  "text": "It has been 90 days since you took the ramp at the yard. The Dust Skiff is at Earth, with her hold empty and the contract papers filed. Ana came aboard with you on the first day and did not see the end of it. By the hatch there is a strip of tape with the name on it, in marker. The contracts, the yard and the crew are yours. This is where the second chapter ends.",
+  "labels": [
+   "Keep flying"
+  ]
+ },
+ {
+  "id": "chaptertwo:losses:two",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You walk up the ramp and shut the hatch behind you.",
+    "next": null
+   }
+  ],
+  "title": "The Names on the Tape",
+  "text": "It has been 90 days since you took the ramp at the yard. The Dust Skiff is at Earth, with her hold empty and the contract papers filed. Ana and Ben came aboard with you on the first day and did not see the end of it. By the hatch there is a strip of tape with the names on it, one under another, in marker. The contracts, the yard and the crew are yours. This is where the second chapter ends.",
+  "labels": [
+   "Keep flying"
+  ]
+ },
+ {
+  "id": "chaptertwo:losses:one-and-one",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You walk up the ramp and shut the hatch behind you.",
+    "next": null
+   }
+  ],
+  "title": "The Names on the Tape",
+  "text": "It has been 90 days since you took the ramp at the yard. The Dust Skiff is at Earth, with her hold empty and the contract papers filed. Ana came aboard with you on the first day and did not see the end of it. By the hatch there is a strip of tape with the name on it, in marker. Cy reads the tape on the way past, and does not say anything, and goes up the ramp. The contracts, the yard and the crew are yours. This is where the second chapter ends.",
+  "labels": [
+   "Keep flying"
+  ]
+ },
+ {
+  "id": "chaptertwo:losses:one-and-two",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You walk up the ramp and shut the hatch behind you.",
+    "next": null
+   }
+  ],
+  "title": "The Names on the Tape",
+  "text": "It has been 90 days since you took the ramp at the yard. The Dust Skiff is at Earth, with her hold empty and the contract papers filed. Ana came aboard with you on the first day and did not see the end of it. By the hatch there is a strip of tape with the name on it, in marker. Cy and Di read the tape on the way past, and do not say anything, and go up the ramp. The contracts, the yard and the crew are yours. This is where the second chapter ends.",
+  "labels": [
+   "Keep flying"
+  ]
+ },
+ {
+  "id": "chaptertwo:alone",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You walk up the ramp and shut the hatch behind you.",
+    "next": null
+   }
+  ],
+  "title": "The Ship You Fly",
+  "text": "It has been 90 days since you took the ramp at the yard. The Dust Skiff is at Earth, with her hold empty and the contract papers filed. Nobody came aboard with you at the yard. The berths have been open for 90 days, and the lock is still the quietest part of the ship. The contracts, the yard and the crew are yours. This is where the second chapter ends.",
+  "labels": [
+   "Keep flying"
+  ]
+ },
+ {
   "id": "recap:fresh",
   "plays": [
    {
