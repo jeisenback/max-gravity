@@ -28,3 +28,10 @@ function newSheet(background, post) {
 }
 
 const check = (stat, skill, difficulty, edge = 0) => Math.max(CHECK_MIN, Math.min(CHECK_MAX, 0.5 + STAT_STEP * (stat - STAT_BASE) + SKILL_STEP * skill - difficulty + edge));
+
+// The kit (#683): things the hand carries, each adding to a kind of check (the keys of DIFFICULTY). They come from arcs and scenes (arcs.js), never from a shop; the
+// hand's save keeps their ids (st.hired.kit) and this table says what each is and does. kitEdge is the edge the kit gives a kind of roll, for check's last argument.
+const KIT_ITEMS = {
+  'valve-keys': { name: 'a roll of valve keys', adds: { job: 0.05 } },  // the Hollows' pump crew, from the water dispute (stories/arc-league.js)
+};
+const kitEdge = (kit, kind) => (kit || []).reduce((n, id) => n + (((KIT_ITEMS[id] || {}).adds || {})[kind] || 0), 0);

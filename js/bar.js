@@ -332,7 +332,7 @@ function barOf(planet) {
 function fillBar(planet) {
   const st = G.state, sid = st.systemId, aboard = new Set(paxAboard().map(m => m.pid));
   const regulars = barRegulars(planet).filter(x => !aboard.has(x.p.id) && !st.crew.includes(x.p.id));
-  const known = Object.values(st.people).filter(p => p.location === planet.name && !p.regular && !p.official && !p.agent && !st.crew.includes(p.id) && !aboard.has(p.id) && !p.ship)  // the dock's official is at the dock (official.js)
+  const known = Object.values(st.people).filter(p => p.location === planet.name && !p.regular && !p.official && !p.agent && !p.arcPerson && !st.crew.includes(p.id) && !aboard.has(p.id) && !p.ship)  // the dock's official is at the dock (official.js)
     .sort((a, b) => Math.abs(b.opinion) - Math.abs(a.opinion)).slice(0, 2);
   G.patrons = [
     ...castPatrons(),  // the main characters with a scene due (castbar.js)

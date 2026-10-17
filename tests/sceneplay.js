@@ -244,6 +244,7 @@ const playScenes = () => {
     recap('told:one', (st, h, [a]) => { a.story = { ...(a.story || {}), beat: 3 }; });
     recap('told:two', (st, h, [a, b]) => { a.story = { ...(a.story || {}), beat: 4 }; b.story = { ...(b.story || {}), beat: 3 }; });
     recap('loyal:two', (st, h, [a, b]) => { a.loyal = true; b.loyal = true; });
+    recap('kit', (st, h) => { h.kit = ['valve-keys']; });
     recap('trusted', st => { castPerson('ines'); st.cast = { ...(st.cast || {}), ines: { ...((st.cast || {}).ines || {}), flags: { trusted: true } } }; });
     recap('lost:one', st => { st.memorial = [grave('Mara Quill', 0)]; });
     recap('lost:three', st => { st.memorial = [grave('Mara Quill', 0), grave('Joss Ode', 1), grave('Teo Ruiz', 2)]; });

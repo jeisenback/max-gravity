@@ -142,7 +142,7 @@ function deadInSpaceScene(s) {
 // Gunner's order below), until the next port.
 const BORESIGHT = 0.1;
 const boresighted = () => !!postState('gunner').sighted;
-const raidPostOdds = level => check(handStat(POST_STAT[hired().post]), level, DIFFICULTY.post, boresighted() ? BORESIGHT : 0);
+const raidPostOdds = level => handCheck(POST_STAT[hired().post], level, 'post', boresighted() ? BORESIGHT : 0);
 
 // The Gunner's orders, for a hired Gunner (the other posts have theirs in stations.js, comms.js): a drill that teaches, and a
 // stance that pays in the next raid. Each uses up the day, like the others (giveOrder, stations.js).

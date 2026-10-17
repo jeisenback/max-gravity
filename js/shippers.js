@@ -9,7 +9,7 @@
 
 const freightAgent = planet => portPerson(planet, 'agents', 'agent', 'agent', 'freight agent', 'Agent');
 // The shipper's regard moves by `d`, kept in range.
-function moveStanding(shipper, d) { const h = hired(); h.standing = h.standing || {}; h.standing[shipper] = nextStanding(standingOf(h, shipper), d); }
+function moveStanding(shipper, d) { const h = hired(); if (!h) return; h.standing = h.standing || {}; h.standing[shipper] = nextStanding(standingOf(h, shipper), d); }
 // The shipper of the port the ship is docked at has shut its board to her.
 const closedHere = () => standingOf(hired(), shipperOf(currentPlanet(), system().gov)) <= STANDING_BAD;
 
@@ -29,7 +29,7 @@ function restoreSkim(off) {
 // the shipper's regard comes back up, if not it goes down again), or say nothing.
 function agentScene(off, agent) {
   const say = (key, vars) => sceneSay('scene:freight-agent', key, { agent: `${agent.title} ${agent.last}`, shipper: off.shipper, good: goodName(off.good).toLowerCase(), tons: off.tons, got: off.got, late: dayWord(off.late), due: dateOf(off.due), pay: fmt(off.owed), paid: fmt(off.owed - off.cut), ...vars });
-  const odds = check(handStat('wit'), 0, DIFFICULTY.word, 0.05 * Math.max(-2, Math.min(2, agent.opinion)));
+  const odds = handCheck('wit', 0, 'word', 0.05 * Math.max(-2, Math.min(2, agent.opinion)));
   return {
     title: say(`title.${off.kind}`), personal: true, people: [agent.id],
     text: say(`text.${off.kind}`),

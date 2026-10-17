@@ -9,7 +9,7 @@
 
 const JOB_DAYS = 1, JOB_BOARD = 2;
 // The check's post gives the stat; the hand's level counts on their own post only; a crew member who works the post helps.
-const jobOdds = ck => { const h = hired(); return check(handStat(POST_STAT[ck.post]), h.post === ck.post ? skillLevel(h.post) : 0, DIFFICULTY.job, (roleSkill(POSTS[ck.post].role) ? 0.1 : 0) + (ck.bonus || 0)); };
+const jobOdds = ck => { const h = hired(); return handCheck(POST_STAT[ck.post], h.post === ck.post ? skillLevel(h.post) : 0, 'job', (roleSkill(POSTS[ck.post].role) ? 0.1 : 0) + (ck.bonus || 0)); };
 
 const JOBS = [
   { id: 'lock', title: 'A Jammed Freight Lock', blurb: 'A cargo lock has stuck half open with a loader crew behind it. The dockmaster will pay for hands that know a lock.',
