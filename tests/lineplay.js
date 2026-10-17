@@ -103,6 +103,8 @@ const playLines = () => {
     Mods.filter = (key, list) => { if (key !== 'chatter') return filter.call(Mods, key, list); if (list.length === CHATTER.length) lines.push(list[k]); return [list[k % list.length]]; };
     const rnd = Math.random; try { for (k = 0; k < CHATTER.length; k++) { G.transit.chatter = 0; G.transit.chattered = 0; Math.random = () => 0.99; updateTransit(0.01); Math.random = rnd; } } finally { Mods.filter = filter; Math.random = rnd; }  // 0.99: the pool of the band, not what the crew say
     note('comms-chatter', lines.join(' | ')); }
+  // the crew ashore: each trait's lines, as the burn's first comms line reads them
+  for (const t of Object.keys(ASHORE_LINES)) note(`ashore:${t}`, ashoreLines()[t].join(' | '));
   // the regulars' lives: every beat of every arc, as a regular's news reads it
   for (const key of Object.keys(ARCS)) note(`regular-arc:${key}`, regularArc(key).join(' | '));
   // returning to a port: each fact the line can state, from two snapshots, and the framing with facts and without
