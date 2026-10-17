@@ -26,7 +26,7 @@ const ARCS = {  // lines:regular-arcs
   cough: { end: 'stays', beats: [
     'has the cough half the port has, and a bottle of something for it that does not work.',
     'has been to the clinic at last, and come back with a paper and a worse cough.',
-    'is over it, and thinner, and eats the bar\'s noodles now as if under orders.'] },
+    'is over it, and thinner, and eats two bowls of the bar\'s noodles a night now, on the owner\'s orders.'] },
   fiddle: { end: 'stays', beats: [
     'is learning the fiddle, and has been asked twice to practice elsewhere.',
     'has been asked a third time, and practices in the stairwell now, where the whole port can hear.',
