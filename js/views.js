@@ -25,9 +25,19 @@ const personCardHtml = (person, { sub, actions, ring } = {}) => h`<div class="mi
         </div>`;
 
 // A choice's button; shut, it says why as text (gates.js). The label and the reason are text, so they are escaped.
+// A label that ends in a cost note (costNote, js/engagements.js: " [Pilot, 53%; if it fails: ...]") is two lines: the label, then the note as a
+// readout under it, its odds toned by the condition thresholds (condColor, js/console.js). A prefix in brackets ("[Gunner] ...") is part of the
+// label. The button's text is the whole label either way (#689).
+const choiceTone = pct => (pct >= 70 ? 'good' : pct >= 40 ? 'warn' : 'bad');
+const choiceLabelHtml = label => {
+  const m = /^(.*\S)(\s*)(\[[^\[\]]*\])$/s.exec(label);
+  if (!m) return label;
+  const [, pick, gap, note] = m, odds = /^(.*?)(\d+)%(.*)$/s.exec(note);
+  return h`<span class="pick">${pick}${gap}</span><span class="odds">${odds ? h`${odds[1]}<b class="${choiceTone(+odds[2])}">${odds[2]}%</b>${odds[3]}` : note}</span>`;
+};
 const choiceButtonHtml = (c, i) => {
   const shut = c.can && !c.can(), why = shut && (typeof c.why === 'function' ? c.why() : c.why);
-  return h`<button data-action="choose" data-arg="${i}" ${shut ? 'disabled' : ''}>${c.label}</button>${why ? h`<div class="hint why">${why}</div>` : ''}`;
+  return h`<button data-action="choose" data-arg="${i}" ${shut ? 'disabled' : ''}>${choiceLabelHtml(c.label)}</button>${why ? h`<div class="hint why">${why}</div>` : ''}`;
 };
 // A scene's choices, as the dialog draws them.
 const choiceBlockHtml = choices => h`<div class="choices">${choices.map((c, i) => choiceButtonHtml(c, i))}</div>`;

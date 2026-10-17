@@ -193,3 +193,15 @@ test('Sound is still a setting', async () => {
   assert.notEqual(r.after, r.before, 'toggling it changes Sfx.on');
   await g.done();
 });
+
+test('a choice with a cost note is two lines at the three screen sizes, the readout under the label (#689)', async () => {
+  await atWidths(async ({ page, ev, size }) => {
+    await ev(() => openEvent({ title: 'A Test', text: 'Text.', choices: [{ label: 'Carry it to a ship that is about to sail [Pilot, 53%; if it fails: 20 cr of your own]', run: () => 0 }, { label: 'Refuse', run: () => 0 }] }));
+    const r = await page.evaluate(() => {
+      const box = e => e.getBoundingClientRect(), pick = document.querySelector('#panel .choices .pick'), odds = document.querySelector('#panel .choices .odds');
+      return { pick: box(pick), odds: box(odds), button: box(pick.closest('button')), inner: innerWidth };
+    });
+    assert.ok(r.odds.top >= r.pick.bottom - 1, `${size.name}: the readout is under the label (${r.odds.top} vs ${r.pick.bottom})`);
+    assert.ok(r.button.right <= r.inner, `${size.name}: the button fits`);
+  });
+});
