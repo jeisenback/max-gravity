@@ -175,6 +175,7 @@ const SHIP_LINES = {
   loyal: '{first} {last} will follow {ship} anywhere now.',
   rename: 'Named the ship {ship}.',
   returned: 'The captain took me home to see my {rel}.',
+  visitLetter: 'their {rel} {who} writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back',
   // the port page (family.js homeHtml): what is said of a shipmate, the traditions and the cat
   'page.loyal': 'loyal',
   'page.low': 'having a hard time',

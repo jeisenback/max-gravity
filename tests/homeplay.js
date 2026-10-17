@@ -63,6 +63,9 @@ const playHome = () => {
   { reset(); const el = document.createElement('input'); el.id = 'shipName'; el.value = 'the Nimbus'; document.body.appendChild(el); Mods.actions.renameShip.fn(); el.remove(); note('rename', [home().name, home().log.map(l => l.text)]); }
   // a letter, what it says to the player in the note and in the log of the port
   { const p = reset(); const s = G.state; storyOf(p); s.crew = [p.id]; s.letterAt = undefined; p.letterDay = undefined; seq([0.1, 0.1, 0.5]); note('letter:note', letters(currentPlanet())); Math.random = real; }
+  // the family you ate with writes, once (family.js letters), and then the letters go on as before
+  { const p = reset(); const s = G.state; storyOf(p); s.crew = [p.id]; s.letterAt = undefined; p.visitedAt = s.day - 20; const first = letters(currentPlanet()); s.letterAt = undefined; seq([0.9]); const second = letters(currentPlanet()); Math.random = real;
+    note('letter:visit', [first, p.news, p.mood && p.mood.kind, p.visitLetter, second]); }
   // a birthday with nothing in the hold to give: the reason the gift is shut
   { const p = reset(); G.state.cargo.luxury = 0; const ev = occasionEvent({ kind: 'birthday', id: p.id, day: G.state.day + 3 }); note('birthday:gate', [ev.choices[1].can(), ev.choices[1].why()]); }
   // the touches a crew member adds to the ship in a burn, with the line it makes on the comms

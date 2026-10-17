@@ -154,6 +154,31 @@ const standOwedWatch = (st, t) => {
 // The first exchange of a sitting leads on to the second: each choice queues it (G.nextEvent, read when the result closes).
 const leadOn = (p, ev) => ({ ...ev, choices: ev.choices.map(c => ({ ...c, run() { const r = c.run(); G.nextEvent = goesOn(p); return r; } })) });
 
+// ---------- a visit home ----------
+// Landing at a crew member's home when they think well of you (OPINION.TRUSTED), or when a promise to take them home is kept there (st.favorKept,
+// set by missionDone): they ask you up to meet the one they miss (storyOf: rel and name), and the meal is at their family's table. One a landing, and
+// not the same person again inside VISIT_GAP days (p.visitedAt, set when the scene is queued). visitDue says who, from the state; visitEvent is the lock
+// (the invitation; going up leads straight into visitHome), visitHome the place by culture and the one choice, what you tell the family, which gives
+// regard and a memory in their words. The family writes afterward (letters, familyLines('ship').visitLetter, once: p.visitLetter).
+const VISIT_GAP = 60;
+const visitDue = (st, planet, favorPid) => {
+  const f = procedural().find(x => x.p.home === planet && st.day - (x.p.visitedAt || -VISIT_GAP) >= VISIT_GAP && (x.id === favorPid || x.p.opinion >= OPINION.TRUSTED));
+  return f ? f.p : null;
+};
+const visitVars = p => { const s = storyOf(p); return { n: p.first, rel: s.rel, who: s.name, home: p.home, left: s.left, hope: s.hope, ship: shipTitle() }; };
+const visitEvent = p => {
+  const say = familySay('visit'), v = visitVars(p);
+  return { title: say('title', v), text: say(`text.${pick([0, 1])}`, v), choices: [
+    { label: say('c0.label', v), run() { G.nextEvent = visitHome(p); return null; } },  // the place opens at once
+    { label: say('c1.label', v), run: () => say('c1.result', v) },
+  ] };
+};
+const visitHome = p => {
+  const say = familySay('visit-home'), v = visitVars(p);
+  const told = (key, by) => ({ label: say(`${key}.label`, v), run() { like(p, by, say(`${key}.memory`, v)); return `${say(`${key}.result.${pick([0, 1])}`, v)} ${say(`parting.${pick([0, 1])}`, v)}`; } });
+  return { title: say('title', v), text: say(`text.${cultureOfPerson(p)}`, v), choices: [told('kind', 1), told('true', 2)] };
+};
+
 // The sittings of a story. `result` is what happens after: a line, or a list to pick from.
 const storyTalk = (p, s) => (label, likeBy, result, extra) => ({ label, run() {
   like(p, likeBy, null); s.beat++; if (extra) extra();
@@ -258,6 +283,8 @@ const FAMILY_SCENES = {
   'story-picture': p => pictureScene(p, storyOf(p)),
   'story-hope': p => hopeScene(p, storyOf(p)),
   'favor-visit': p => visitFavor(p, Object.assign(storyOf(p), { favor: 'visit' })),
+  visit: p => visitEvent(p),
+  'visit-home': p => visitHome(p),
   'favor-debt': p => debtFavor(p, Object.assign(storyOf(p), { favor: 'debt', debt: 1500 })),
   picker: () => sitPicker(),
   birthday: p => occasionEvent({ kind: 'birthday', id: p.id, day: G.state.day + 3 }),
@@ -325,6 +352,13 @@ const LETTER_GAP = 18;
 function letters(planet) {
   const st = G.state, notes = [];
   if (st.day - (st.letterAt === undefined ? -99 : st.letterAt) < LETTER_GAP) return notes;
+  const v = procedural().find(f => f.p.visitedAt && !f.p.visitLetter && st.day - f.p.visitedAt >= 10);  // the family you ate with writes, once
+  if (v) {
+    const p = v.p, s = storyOf(p), text = fillLine(familyLines('ship').visitLetter, { rel: s.rel, who: s.name });
+    p.visitLetter = true; p.letterDay = st.day; st.letterAt = st.day;
+    p.mood = { kind: 'high', until: st.day + 10, text }; p.news = { good: true, text };
+    return [noteFor(fillLine(familyLines('ship').letter, { n: p.first, planet: planet.name, text }), p.id)];
+  }
   for (const f of procedural()) {
     const p = f.p;
     if (Math.random() > 0.2 || (p.letterDay || -99) > st.day - 30) continue;
@@ -543,10 +577,19 @@ Mods.register({
         const f = st.people[m.favorPid];
         becomeLoyal(f, fillLine(familyLines('ship').returned, { rel: storyOf(f).rel }));
         msg(fillLine(familyLines('ship').ashore, { n: f.first, missed: missed(f) }));
+        st.favorKept = f.id;  // the visit is due at this landing (below)
       }
       if (p && m.type === 'passenger' && p.opinion >= OPINION.WELCOME && !st.crew.includes(p.id) && Math.random() < 0.6) G.joinOffer = p;
     });
-    M.on('landed', planet => { for (const n of letters(planet)) M.note(n); });
+    M.on('landed', planet => {
+      for (const n of letters(planet)) M.note(n);
+      const st = G.state, p = visitDue(st, planet.name, st.favorKept);
+      st.favorKept = null;
+      if (!p || (G.dialog && G.nextEvent)) return;  // nowhere to put a scene: it can come at the next landing here
+      p.visitedAt = st.day;
+      const ev = visitEvent(p);
+      if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+    });
     M.action('renameShip', () => {
       if (hired()) return;  // her name is the captain's
       // An in-page field: browser prompt() dialogs are blocked in some embeds.
