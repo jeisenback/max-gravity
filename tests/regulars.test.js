@@ -70,3 +70,25 @@ test('a regular who joins the crew does not have their bar gossip taken for a le
   assert.equal(r.gossip, 'string', 'the bar gossip is kept');
   await done();
 });
+
+test('a regular\'s life moves a beat a visit when you are back a week or more later, and one that ends in leaving leaves the bar to someone new', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); const st = G.state, out = {}, planet = currentPlanet();
+    const a = regs(); const [p, q] = a.map(x => x.p); out.arcs = a.map(x => x.p.arc && x.p.arc.key);
+    p.arc = { key: 'berth', beat: 0 }; q.arc = { key: 'flat', beat: 0 };  // one who leaves, one who stays
+    st.day += 5; regs(); out.soon = [p.arc.beat, q.arc.beat, p.gossip === regularArc('berth')[0]];  // news after four days, no beat before seven
+    st.day += 7; regs(); out.beat1 = [p.arc.beat, p.gossip, q.gossip];
+    st.day += 7; regs(); st.day += 7; regs(); out.beat3 = [p.arc.beat, p.gossip];
+    st.day += 7; const b = regs(); out.after = { ids: b.map(x => x.p.id), gone: !st.bars[planet.name].ids.includes(p.id), left: p.regular === null && p.location === null, stayed: st.bars[planet.name].ids.includes(q.id), qDone: !!q.arc.done, qNews: typeof q.gossip === 'string' && !regularArc('flat').includes(q.gossip), newArc: b.find(x => x.p.id !== q.id).p.arc.key };
+    return { ...out, berth: regularArc('berth'), flat: regularArc('flat') };
+  });
+  assert.ok(r.arcs.every(k => typeof k === 'string'), 'new regulars are given a life');
+  assert.deepEqual(r.soon, [0, 0, false]);
+  assert.deepEqual(r.beat1, [1, r.berth[0], r.flat[0]]);
+  assert.deepEqual(r.beat3, [3, r.berth[2]]);
+  assert.equal(r.after.ids.length, 2); assert.ok(r.after.gone && r.after.left, 'the one whose life ended in leaving is gone'); assert.ok(r.after.stayed && r.after.qDone && r.after.qNews, 'the one who stays is back on the news');
+  assert.ok(typeof r.after.newArc === 'string', 'the new regular has a life of their own');
+  await done();
+});
