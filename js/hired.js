@@ -446,7 +446,7 @@ function buyIn(id) {
   for (const k of ['condition', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
   if (id === USED_ID) st.condition = { ...USED_CONDITION };  // but the used Ore Runner comes as she is
   home().name = shipName(false);
-  st.career = careerOf(h);  // the sheet, the kit and the shippers' regard go on into the next chapter
+  st.career = { ...careerOf(h), came: friends.map(c => c.id), bought: st.day };  // the sheet, the kit and the shippers' regard go on into the next chapter, with who came along and the day (chaptertwo.js)
   st.hired = null;
   G.offers = generateMissions(planet);
   return sceneSay('scene:screens', 'buyin.result', { ship: bought.name, price: fmt(price), old: oldName, first: cap.first, last: cap.last, company: ` ${friends.length ? sceneSay('scene:screens', 'buyin.with', { names: namesOf(friends) }) : sceneSay('scene:screens', 'buyin.alone')}` });

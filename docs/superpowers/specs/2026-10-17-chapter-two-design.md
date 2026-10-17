@@ -48,5 +48,5 @@ Each is measured: the soak (`npm run soak`) for chapter two's pay against chapte
 
 ## Open
 
-1. **What ends chapter two.** Chapter one ends when the ship is bought (a number: 19000). The spine is the crew who came along, so the end is about them. A proposal: it ends at the day the last of them has been paid a full share and stayed (a fixed number of days, with a share set from the crew's regard), and it reads the record the way chapter one's ending does. Or by a credit target as before. Needs a decision, and can wait: PRs 1 to 3 do not depend on it.
+1. ~~What ends chapter two?~~ Settled by the owner (2026-10-17): the crew who came along. It ends 90 days after the buy, on the first landing, with a scene that reads whether they are still aboard (`js/chaptertwo.js`). The wages the owner pays keep them; no new economy. Done.
 2. ~~Does the player keep a post?~~ Settled by the owner (2026-10-17): yes. The player's post is the one they may work in a fight or on a job ashore (the hand's moves stay), and the crew fill the rest. Built in 3b.
