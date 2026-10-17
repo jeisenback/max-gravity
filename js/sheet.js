@@ -37,3 +37,14 @@ const KIT_ITEMS = {
   'carrier-license': { name: 'a Compact carrier license', adds: { solo: 0.05 } },  // the licensing officer's, from the license inspection (stories/arc-compact.js)
 };
 const kitEdge = (kit, kind) => (kit || []).reduce((n, id) => n + (((KIT_ITEMS[id] || {}).adds || {})[kind] || 0), 0);
+
+// The sheet as rows for the sheet console (#687): each stat with its value, and the posts that sit on it; the kit with what each item adds, in
+// words. Pure: the caller passes the hand's sheet and kit. A hand from before the sheet was kept has every stat at the base.
+const KIND_WORDS = { post: 'your own move in a fight', solo: 'a bold call of your own', job: 'jobs ashore', word: 'a word with the captain', brawl: 'a bar fight' };
+function sheetRows(sheet, kit) {
+  return {
+    stats: STATS.map(stat => ({ stat, value: sheet && sheet[stat] !== undefined ? sheet[stat] : STAT_BASE, posts: Object.keys(POST_STAT).filter(p => POST_STAT[p] === stat) })),
+    kit: (kit || []).filter(id => KIT_ITEMS[id]).map(id => ({ id, name: KIT_ITEMS[id].name, adds: Object.entries(KIT_ITEMS[id].adds).map(([kind, n]) => `${KIND_WORDS[kind] || kind} +${Math.round(n * 100)}%`).join(', ') })),
+  };
+}
+

@@ -550,6 +550,12 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .con-read { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin: 2px 0; }
 .con-read b { color: var(--text); font-weight: 500; }
 .con-read.contact { gap: 8px; }
+/* The bar as a room (barroom.js, #687): a patron's token is a button. */
+.bar-room .room-patron { cursor: pointer; }
+.bar-room .room-patron:focus { outline: none; }
+.bar-room .room-patron:focus-visible circle { stroke: #fff; stroke-width: 4; }
+.bar-room .room-patron:hover circle { fill: #1a2c42; }
+.char-on { margin: -2px 0 4px; }
 /* The bonds legend (web.js): a swatch and a word. */
 .legend { font-size: 12px; color: var(--muted); margin: 3px 0; display: flex; align-items: center; gap: 8px; }
 .swatch { display: inline-block; width: 18px; height: 3px; }

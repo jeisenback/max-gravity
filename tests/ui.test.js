@@ -674,3 +674,35 @@ test('a hand who is the pilot flies her out by hand, with the controls, and an o
   assert.equal(o.auto, 'out'); assert.ok(!o.calm, 'an owner keeps the flight sidebar'); assert.equal(o.after, null, 'a key takes the stick from the autopilot');
   await owner.done();
 });
+
+// #687: the bar is a room with its patrons in it, tapped or keyed to talk to, and the hand's sheet carries the stats and the kit.
+test('the bar draws its patrons in a room: a token each, tapped to talk, open to the keyboard, with the list kept under it', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.tutorial = null; UI.tab = 'bar'; UI.render(); });
+  const r = await ev(() => ({ patrons: G.patrons.length, tokens: document.querySelectorAll('.bar-room .room-patron').length, talk: document.querySelectorAll('.body button[data-action=barTalk]').length, label: document.querySelector('.bar-room .room-patron').getAttribute('aria-label'), first: `${G.patrons[0].p.first} ${G.patrons[0].p.last}` }));
+  assert.ok(r.patrons >= 2); assert.equal(r.tokens, r.patrons, 'a token for every patron'); assert.equal(r.talk, r.patrons, 'the list and its Talk buttons are kept: the way in for a phone and a reader');
+  assert.equal(r.label, `Talk to ${r.first}`);
+  await page.click('.bar-room .room-patron >> nth=0');
+  assert.equal(await ev(() => !!G.dialog && /^The .*: /.test(G.dialog.event.title)), true, 'a tap opens the talk'); assert.match(await ev(() => G.dialog.event.title), new RegExp(r.first));
+  await ev(() => { while (G.dialog) finishEvent(); UI.tab = 'bar'; UI.render(); });
+  await page.focus('.bar-room .room-patron >> nth=1'); await page.keyboard.press('Enter');
+  assert.ok(await ev(() => !!G.dialog), 'Enter on a focused token opens the talk too');
+  await done();
+});
+
+test('the hand\'s sheet shows the four stats with the posts on them and the kit, empty at first and carrying what an arc left', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    G.viewPerson = 'you'; const d = document.createElement('div'), view = () => { d.innerHTML = UI.views.person.call(UI); return d; };
+    const card = t => [...view().querySelectorAll('.con-card')].find(c => c.querySelector('.eyebrow').textContent === t);
+    const out = { stats: [...card('Stats').querySelectorAll('.char-cap')].map(r => r.textContent.replace(/\s+/g, ' ').trim()), posts: [...card('Stats').querySelectorAll('.char-on')].map(e => e.textContent), kit0: card('Kit').textContent };
+    out.said = addKit('valve-keys'); out.kit1 = [...card('Kit').querySelectorAll('.con-read')].map(r => r.textContent);
+    out.crewHasNone = (() => { G.viewPerson = G.state.crew[0]; return !card('Stats'); })();
+    return out;
+  });
+  assert.deepEqual(r.stats, ['Hands3 / 5', 'Eye4 / 5', 'Nerve3 / 5', 'Wit4 / 5'], 'the earth gunner: eye for the post, wit for the background');
+  assert.deepEqual(r.posts, ['Engineer', 'Gunner', 'Pilot', 'Comms']); assert.match(r.kit0, /Nothing yet/);
+  assert.match(r.said, /valve keys/); assert.deepEqual(r.kit1, ['a roll of valve keysjobs ashore +5%']); assert.ok(r.crewHasNone, 'a crew member has skills and traits, not stats: their sheet is as it was');
+  await done();
+});
