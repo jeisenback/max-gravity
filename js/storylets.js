@@ -53,6 +53,8 @@ const CONDITIONS = {
   captainFlag: name => !!(hired() && (hired().flags || {})[name]),
   // Someone's regard for the hand (#460): { who: 'captain' | 'xo' | a main character's key, min: a cutoff from OPINION }. With nobody in that place it does not hold.
   opinion: v => { const p = isPlain(v) ? opinionOf(v.who) : null; return !!p && p.opinion >= v.min; },
+  // The port's official thinks this well of you (official.js): a cutoff from OPINION. Only at a port.
+  official: v => G.mode === 'landed' && dockOfficial(currentPlanet()).opinion >= v,
   // A follow-up that an earlier choice set going with `later`: holds once its days have passed.
   due: v => [].concat(v).every(n => quality(`due:${n}`) > 0 && G.state.day >= quality(`due:${n}`)),
 };
@@ -181,7 +183,7 @@ const threads = () => (G.state.threads = G.state.threads || {});
 const remember = (key, p) => { threads()[key] = p.id; };
 const threadPerson = key => (threads()[key] ? G.state.people[threads()[key]] : null);
 
-// {planet}, {system}, {crew:role} (the crew member in that role), {captain} and {thread:key} in any text.
+// {planet}, {system}, {crew:role} (the crew member in that role), {captain}, {thread:key} and {official} (the port's official) in any text.
 // Text can also be a list of parts, each a string or { when, text, else }: parts
 // whose conditions fail show their `else` (or nothing). Parts are joined by spaces.
 function fill(text = '') {
@@ -191,12 +193,13 @@ function fill(text = '') {
   return text.replace(/\{planet\}/g, G.state.planet).replace(/\{system\}/g, SYSTEMS[sidNow()].name)
     .replace(/\{crew:(\w+)\}/g, (_, role) => roleName(role))
     .replace(/\{captain\}/g, () => { const c = hired() && person(hired().captain); return c ? `Captain ${c.last}` : 'the captain'; })
-    .replace(/\{thread:(\w+)\}/g, (_, key) => { const p = threadPerson(key); return p ? p.first : 'a shipmate'; });
+    .replace(/\{thread:(\w+)\}/g, (_, key) => { const p = threadPerson(key); return p ? p.first : 'a shipmate'; })
+    .replace(/\{official\}/g, () => officialName(currentPlanet()));  // the port's own official (official.js)
 }
 
 // ---------- the scene editor's changes (js/overrides.js, #336) ----------
 // {planet}, {system}, {captain}, {crew}, {crew:role} and {thread:key}: what fill() and the dialog replace. Any other {word} is left as typed.
-const PLACEHOLDER = /^\{(?:planet|system|captain|crew|mate|names|crew:(\w+)|thread:\w+)\}$/;  // {mate} is filled by a hired event written as data (hiredevents.js), for the shipmate it is about; {names} by a captain's goodbye (captains.js), for who goes with you
+const PLACEHOLDER = /^\{(?:planet|system|captain|crew|mate|names|official|crew:(\w+)|thread:\w+)\}$/;  // {mate} is filled by a hired event written as data (hiredevents.js), for the shipmate it is about; {names} by a captain's goodbye (captains.js), for who goes with you
 const unknownPlaceholders = text => (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = PLACEHOLDER.exec(t); return !m || !!(m[1] && !ROLE_NAMES[m[1]]); });
 
 // The scene as the file changes it: its conditions, and each choice's conditions, effects and `next` link, where the file names them. The

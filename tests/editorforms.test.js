@@ -112,7 +112,7 @@ test('a value that does not fit is flagged beside its field and left out until i
   await page.fill(rule('c1.effects', 'rep'), 'Dome Concord=2');
   assert.equal(await warn('c1.effects', 'rep'), '');
   assert.equal(await page.textContent('#problems'), '');
-  assert.deepEqual((await changes())['land-customs'].choices[1].effects, { credits: -300, rep: { 'Dome Concord': 2 } });
+  assert.deepEqual((await changes())['land-customs'].choices[1].effects, { credits: -300, do: ['official', 1, 'You paid the processing fee and said nothing about it.'], rep: { 'Dome Concord': 2 } });
   // The kinds check what they should.
   const k = await page.evaluate(() => {
     const p = (spec, d) => SceneIndex.kindOf(spec).parse(d);
