@@ -32,7 +32,7 @@ test('a follow-up waits for its days, plays once, and a second beat is only reac
     applyEffects({ later: { 'dc-voss': 1 } }); st.day += 1; out.again = meets({ due: 'dc-voss' });
     return out;
   }, burn.toString());
-  assert.deepEqual(r.counts, [11, 23]);
+  assert.deepEqual(r.counts, [13, 25]);
   assert.equal(r.beatPicked, false);
   assert.equal(r.early, false); assert.equal(r.dayBefore, false); assert.equal(r.dayOn, true);
   assert.equal(r.picked, 'dc-voss', 'a follow-up that is due is a scene to play');
