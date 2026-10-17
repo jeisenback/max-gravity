@@ -240,6 +240,10 @@
   "text": "[\"A message for Sam at Ceres Station: their sister Tariq won a little money on the ring-ball pool, and is buying everyone a round.\"]"
  },
  {
+  "key": "letter:visit",
+  "text": "[[\"A message for Sam at Ceres Station: their daughter Ingrid writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back.\"],{\"good\":true,\"text\":\"their daughter Ingrid writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back\"},\"high\",true,[]]"
+ },
+ {
   "key": "birthday:gate",
   "text": "[false,\"There's no luxury cargo in the hold.\"]"
  },

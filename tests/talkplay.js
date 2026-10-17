@@ -68,6 +68,15 @@ const playTalk = () => {
   play('sit:3:crew:visit', p => { const s = storyOf(p); s.beat = 3; s.favor = 'visit'; p.opinion = 3; }, p => sitBeat(p, true));
   play('sit:3:crew:debt', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 1500; p.opinion = 3; }, p => sitBeat(p, true));
   play('sit:3:passenger', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 1500; p.opinion = 3; }, p => sitBeat(p, false), 6);
+  // the visit home: the lock, then the table, by culture (the first choice of the lock leads straight on: no line)
+  play('visit', p => { storyOf(p); }, p => visitEvent(p));
+  for (const c of ['belt', 'mars', 'earth']) play(`visit-home:${c}`, p => { p.culture = c; storyOf(p); }, p => visitHome(p));
+  // who the visit is due for: the home, the regard, the gap, and a promise kept
+  { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; const rec = {};
+    rec.away = visitDue(st, 'Ceres Station', null) && 'yes'; p.opinion = OPINION.TRUSTED; rec.cold = visitDue(st, 'Ceres Station', null) && 'yes'; rec.home = visitDue(st, 'Mars', null) === p;
+    p.visitedAt = st.day - 10; rec.soon = visitDue(st, 'Mars', null) && 'yes'; p.visitedAt = st.day - 60; rec.again = visitDue(st, 'Mars', null) === p;
+    p.opinion = 0; p.visitedAt = undefined; rec.favor = visitDue(st, 'Mars', p.id) === p;
+    out.push({ key: 'visit:due', text: JSON.stringify(rec) }); }
   // the picker: who is aboard, how they are
   play('picker', (p, s) => { const o = mk('Ana', { role: 'pilot' }); s.crew.push(o.id); s.injured = { [o.id]: true }; p.mood = { kind: 'low', until: s.day + 40, text: 'x' }; }, p => sitPicker(), 1);
   play('picker:pax', (p, s) => { const o = mk('Pia'); s.missions.push({ type: 'passenger', id: s.nextId++, pid: o.id, who: 'Pia Vale', pax: 1, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', title: 'Carry', pay: 100, deadline: s.day + 99 }); }, p => sitPicker(), 1);
