@@ -4,7 +4,7 @@
 // random games, so it moves whenever any new random draw shifts the stream, and the bands below have been widened for that more
 // than once. It guards against a captain who pays far more or less than the rest, or a chapter that does not reach its target.
 //
-// Sample:    4 captains x 5 seeds = 20 games of up to 40 runs each (tools/soak.js), played one after another (about 35 s).
+// Sample:    4 captains x 5 seeds = 20 games of up to 40 runs each (tools/soak.js), a captain's five seeds at a time.
 // Tolerance: every game reaches the target in 6 to 40 runs and on day 30 to 260, never with the planner stuck, no page errors
 //            and no broken text; per captain, the median of the five seeds is 10 to 30 runs and day 60 to 190, and the mean pay
 //            per run is 800 to 2,000 cr; across captains the pay per day differs by at most 1.7 times (over 20 seeds it is
@@ -21,11 +21,10 @@ after(closeBrowser);
 // The tuning aim is about 15 percent between captains; the test only guards against a captain who pays far more or less.
 // The day bound is wide because an unlucky seed can run to the 170s (the random stream shifts with whatever draws before it).
 test('about twenty runs reach the target with every captain, and the planner is never stuck', async () => {
-  const { soak } = require('../../tools/soak');
+  const { soaks } = require('../../tools/soak');
   const perDay = {};
   for (const captainKey of ['hester', 'dov', 'imre', 'zoya']) {
-    const all = [];
-    for (const seed of [1, 2, 3, 4, 5]) all.push(await soak({ seed, legs: 40, captainKey }));
+    const all = await soaks([1, 2, 3, 4, 5], { legs: 40, captainKey }, 5);
     for (const r of all) { assert.equal(r.stuck, 0, `${captainKey} seed ${r.seed}: the captain had no plan`); assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []); }
     // A seed can end the chapter early (a hand who dies, js/boarders.js: stakes.test.js holds how often) or be ruined by one bad pick of the random answers (400 cr of a small fund
     // paid at a patrol stop), so most seeds must reach the target and the pace is read from those that do.
