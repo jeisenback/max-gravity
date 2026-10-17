@@ -21,26 +21,37 @@ Mods.register({
 
     scene({
       id: 'land-customs', when: { gov: ['Arcology Compact', 'Dome Concord'], cargo: { luxury: 1 } },
-      title: 'Random Inspection', text: 'Two customs officers are waiting at your cargo lock with a scanner and a clipboard. One of them is young and eager, the other old and tired, and the old one keeps glancing at your hold. "Routine," he says, before you\'ve said a word. "Won\'t take long."',
+      title: 'Random Inspection', text: ('Two customs officers are waiting at your cargo lock with a scanner and a clipboard. The young one is new and eager. The other is ' +
+          '{official}, who has worked this lock for years, and who keeps glancing at your hold. "Routine," {official} says, before you\'ve asked.'),
       choices: [
         {
           label: 'Let them inspect',
           effects: { cargo: { luxury: -3 } },
           result: ('The young officer runs the scanner over every crate. After a long silence he finds a "labeling irregularity" and confiscates ' +
-              'three tons of luxury goods. For evidence. The old officer signs the form, and they carry the crates out on a sled.')
+              'three tons of luxury goods. For evidence. {official} signs the form, and they carry the crates out on a sled.')
         },
         {
           label: 'Offer a "processing fee" (300 cr)',
           when: { credits: 300 },
-          effects: { credits: -300 },
-          result: ('The old officer looks at the chit, and at you, and taps his scanner against his palm. "Would you look at that," he says. "A ' +
+          effects: { credits: -300, do: ['official', 1, 'You paid the processing fee and said nothing about it.'] },
+          result: ('{official} looks at the chit, and at you, and taps the scanner against a palm. "Would you look at that," {official} says. "A ' +
               'fault." The young one starts to speak and is stepped on. They wish you a pleasant stay and leave. The whole ' +
               'thing takes less than a minute.')
         },
         {
           label: '[{crew}] Have {crew} fix the manifest first',
           when: { crew: 'slicer' },
-          result: 'By the time the officers plug in, {crew} has been through the manifest twice. It\'s spotless, and boring, with the dull, plausible detail no smuggler would invent. The old officer reads it slowly, twice, and looks up. He can\'t find a reason. They leave.'
+          effects: { do: ['official', -1, 'Your manifest was too clean to be true, and I remember that.'] },
+          result: ('By the time the officers plug in, {crew} has been through the manifest twice. It\'s spotless, and boring, with the dull, plausible ' +
+              'detail no smuggler would invent. {official} reads it slowly, twice, and looks up, and can\'t find a reason to open a single crate, and ' +
+              'writes the time on the clipboard anyway.')
+        },
+        {
+          label: 'Nod to {official}',
+          when: { official: 2 },
+          effects: { do: ['official', 1, 'You came through my lock like a regular, and I waved you on.'] },
+          result: ('{official} looks at the hold, and at you, and at the clipboard, and writes the time. "You again," {official} says. "Nothing in ' +
+              'there I need to see." The young one opens his mouth and is handed the clipboard. You are through in two minutes, which is a record for this lock.')
         },
       ],
     });
@@ -274,30 +285,37 @@ Mods.register({
     scene({
       id: 'land-surcharge', when: { bust: 'Charter League', gov: 'Charter League' },
       title: 'Slump Surcharge',
-      text: ('The dockmaster has a new form on official pink paper, three pages long: a "temporary economic stabilization surcharge" of 200 cr on ' +
-          'every visiting ship. He slides it across the counter without meeting your eye. Behind him a hand-lettered sign has been taped over the old ' +
+      text: ('{official} has a new form on official pink paper, three pages long: a "temporary economic stabilization surcharge" of 200 cr on ' +
+          'every visiting ship, and slides it across the counter without meeting your eye. Behind the counter a hand-lettered sign has been taped over the old ' +
           'rate card: PRICES SUBJECT TO CHANGE. Somebody has added, in pencil, "DAILY."'),
       choices: [
         {
           label: 'Pay it (200 cr)',
           when: { credits: 200 },
-          effects: { credits: -200 },
-          result: ('The dockmaster stamps your form without looking up, and files it, and doesn\'t say thank you. His stamp is worn nearly to a ' +
-              'smooth blob, and each press leaves a smeared, purple ring. As you turn to go, you see him look at the pencilled "DAILY," and then ' +
+          effects: { credits: -200, do: ['official', 1, 'You paid the surcharge and did not argue.'] },
+          result: ('{official} stamps your form without looking up, and files it, and doesn\'t say thank you. The stamp is worn nearly to a ' +
+              'smooth blob, and each press leaves a smeared, purple ring. As you turn to go, you see {official} look at the pencilled "DAILY," and then ' +
               'at the next ship in the line.')
         },
         {
           label: 'Argue',
-          effects: { rep: { 'Charter League': -1 } },
-          result: ('You argue, at length, with citations, and a rising voice. The dockmaster gives in at last and stamps the form PAID. You win. Behind ' +
-              'you the line of tired captains hasn\'t moved, and the dockmaster is writing your ship\'s name on the back of the form.')
+          effects: { rep: { 'Charter League': -1 }, do: ['official', -1, 'You argued the surcharge in front of the whole line.'] },
+          result: ('You argue, at length, with citations, and a rising voice. {official} gives in at last and stamps the form PAID. You win. Behind ' +
+              'you the line of tired captains hasn\'t moved, and {official} is writing your ship\'s name on the back of the form.')
         },
         {
           label: '[{crew}] Let {crew} talk to them',
           when: { crew: 'quartermaster' },
           result: ('{crew} reads the form once, slowly, the way an old miner reads a cave wall, and finds a clause on the third page that exempts ' +
-              'ships carrying essential goods, and a way to make yours one, with a single stamped line in your manifest. The dockmaster reads it ' +
-              'twice, opens his mouth, closes it, and waives the fee. "Nobody reads the fine print anymore," he says.')
+              'ships carrying essential goods, and a way to make yours one, with a single stamped line in your manifest. {official} reads it ' +
+              'twice, opens and closes a mouth, and waives the fee. "Nobody reads the fine print anymore," {official} says.')
+        },
+        {
+          label: 'Ask {official} whether that applies to you',
+          when: { official: 2 },
+          effects: { do: ['official', 1, 'I let you off the surcharge, and you did not make a thing of it.'] },
+          result: ('{official} looks at the form, and at the line behind you, and turns the form face down. "Regulars pay on the way out," {official} ' +
+              'says, which is not on any form, and stamps your docket. You do not pay on the way out either.')
         },
       ],
     }, 0.05);
@@ -392,31 +410,38 @@ Mods.register({
     scene({
       id: 'land-dock-tax', when: { planet: 'The Rook', standingBelow: { Pirate: 15 } },
       title: 'Dock Tax',
-      text: ('A woman with a pistol on each hip and a clipboard steps out from behind a stack of crates as you leave the airlock, blocking the ' +
-          'corridor, one boot against the door frame. She has a shaved head, a scar through one eyebrow, and a friendly smile. "Welcome to the Rook," ' +
-          'she says. "Ten minutes, and a short list of rules. First: the Rook charges a dock tax, payable to me, now." She taps the clipboard with a ' +
-          'pen. "It\'s a fair tax."'),
+      text: ('{official} steps out from behind a stack of crates as you leave the airlock, a pistol on each hip and a clipboard in hand, blocking the ' +
+          'corridor with one boot against the door frame, and a friendly smile. "Welcome to the Rook," {official} says. "Ten minutes, and a short list ' +
+          'of rules. First: the Rook charges a dock tax, payable to me, now." The pen taps the clipboard. "It\'s a fair tax."'),
       choices: [
         {
           label: 'Pay (300 cr)',
           when: { credits: 300 },
-          effects: { credits: -300 },
-          result: ('She writes you a receipt in a looping hand, tears it off the pad, and gives it to you with a flourish. It\'s a real receipt, ' +
-              'stamped and numbered, with a black tower embossed at the top. "Keep it," she says. "If anyone stops you, show them. It\'ll save ' +
-              'you trouble." She steps aside to let you pass.')
+          effects: { credits: -300, do: ['official', 1, 'You paid the Rook\'s tax and kept the receipt.'] },
+          result: ('{official} writes you a receipt in a looping hand, tears it off the pad, and gives it to you with a flourish. It\'s a real receipt, ' +
+              'stamped and numbered, with a black tower embossed at the top. "Keep it," {official} says. "If anyone stops you, show them. It\'ll save ' +
+              'you trouble." A step aside, and you pass.')
         },
         {
           label: 'Refuse',
-          effects: { rep: { Pirate: -2 } },
-          result: 'She shrugs and makes a note on the clipboard without looking up. "Suit yourself," she says. She doesn\'t threaten you, and she doesn\'t follow. For the rest of your stay, in the bars and along the corridors, the same two people are always a little behind you.'
+          effects: { rep: { Pirate: -2 }, do: ['official', -2, 'You refused my tax at the lock, in front of the crates.'] },
+          result: ('{official} shrugs and makes a note on the clipboard without looking up. "Suit yourself." No threat, and nobody follows you. For the rest of ' +
+              'your stay, in the bars and along the corridors, the same two people are always a table away, drinking slowly, and watching.')
         },
         {
           label: '[{crew}] {crew} steps forward',
           when: { crew: 'gunner' },
-          effects: { rep: { Pirate: 1 } },
-          result: ('{crew} steps forward, hands loose at their sides, and looks at her. The corridor goes quiet. ' +
-              'Then the woman with the pistols throws back her head and laughs, and lowers her clipboard. "Fair enough. First one\'s free." She claps ' +
-              '{crew} on the shoulder, hard, and steps aside. You don\'t get a receipt, but you get a wave from the whole bar.')
+          effects: { rep: { Pirate: 1 }, do: ['official', 1, 'Your gunner looked me in the eye at the lock, and I liked it.'] },
+          result: ('{crew} steps forward, hands loose at their sides, and looks at {official}. The corridor goes quiet. ' +
+              'Then {official} throws back a head and laughs, and lowers the clipboard. "Fair enough. First one\'s free." A clap on ' +
+              '{crew}\'s shoulder, hard, and a step aside. You don\'t get a receipt, but you get a wave from the whole bar.')
+        },
+        {
+          label: 'Hold out your old receipt',
+          when: { official: 2 },
+          effects: { do: ['official', 1, 'You showed me the old receipt, and I let it stand.'] },
+          result: ('{official} reads the receipt, and the number on it, and the date, and writes nothing. "Paid up," {official} says, and puts a line ' +
+              'through a name on the clipboard, which is yours. "Don\'t lose that. Nobody else here will honor it." A step aside, and you pass.')
         },
       ],
     }, 0.085);

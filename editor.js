@@ -19,7 +19,7 @@
   'js/character.js', 'js/interview.js', 'js/cast.js', 'js/captains.js', 'js/stakes.js', 'js/boarders.js', 'js/engagements.js',
   'js/shipcombat.js', 'js/yardoffice.js', 'js/icerun.js', 'js/ties.js', 'js/captains/hester.js', 'js/captains/cato.js',
   'js/captains/dov.js', 'js/captains/ilsa.js', 'js/captains/imre.js', 'js/captains/pilar.js', 'js/captains/zoya.js',
-  'js/captains/ansel.js', 'js/hiredscenes.js', 'js/linetables.js', 'js/fate.js', 'js/signon.js', 'js/castbar.js', 'js/regulars.js', 'js/revisit.js', 'js/ashore.js', 'js/barwork.js', 'js/overrides.js', 'js/storylets.js',
+  'js/captains/ansel.js', 'js/hiredscenes.js', 'js/linetables.js', 'js/fate.js', 'js/signon.js', 'js/castbar.js', 'js/regulars.js', 'js/revisit.js', 'js/ashore.js', 'js/official.js', 'js/barwork.js', 'js/overrides.js', 'js/storylets.js',
   'js/happenings.js', 'js/stories/ice-strike.js', 'js/stories/mars-navy.js', 'js/stories/rook-crown.js',
   'js/stories/tethys.js', 'js/stories/cold-water.js', 'js/stories/landings.js', 'js/stories/ports.js',
   'js/stories/on-the-road.js', 'js/stories/aftermath.js', 'js/stories/hired-aftermath.js', 'js/community.js', 'js/uat.js',
@@ -521,7 +521,7 @@
     day: 'number', before: 'number', at: 'list:systems', planet: 'list:planets', gov: 'list:govs', standing: 'map:govs', standingBelow: 'map:govs',
     credits: 'number', space: 'number', fleet: 'number', stake: 'map:planets', cargo: 'map:goods', crew: 'text', q: 'map', qBelow: 'map', war: 'flagOr:govs',
     peace: 'flagOr:govs', boom: 'one:govs', bust: 'one:govs', raid: 'flagOr:systems', berths: 'number', story: 'json', storyDay: 'map', aboard: 'text',
-    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', night: 'flag', due: 'list', opinion: 'shape:opinion', captainFlag: 'text',
+    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', night: 'flag', due: 'list', opinion: 'shape:opinion', captainFlag: 'text', official: 'number',
   };
   const EFFECT_SPEC = {
     credits: 'number', story: 'json', storyLog: 'text', storyAdd: 'map', storyDays: 'map', delay: 'number', passenger: 'json', do: 'action', rep: 'map:govs',
