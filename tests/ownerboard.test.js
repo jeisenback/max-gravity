@@ -54,14 +54,14 @@ test('the landing at the contract\'s port pays the player\'s credits and moves t
   const r = await run(() => {
     const st = owner(), out = {}, hall = 'the Compact Freight Office', land = (o, have, late) => {
       board([contract(o)]); takeContract(0); st.cargo.water = have; st.day += late ? 20 : 3; st.systemId = 'mars'; st.planet = 'Mars'; const c0 = st.credits, s0 = standingOf(career(), hall);
-      const text = settleContract(currentPlanet()); st.systemId = 'earth'; st.planet = 'Earth';
-      return { text, pay: st.credits - c0, standing: standingOf(career(), hall) - s0, run: career().run, water: st.cargo.water };
+      const x0 = skillXp(career().post), text = settleContract(currentPlanet()); st.systemId = 'earth'; st.planet = 'Earth';
+      return { text, pay: st.credits - c0, standing: standingOf(career(), hall) - s0, run: career().run, water: st.cargo.water, xp: skillXp(career().post) - x0 };
     };
     out.whole = land({}, 30, false); out.short = land({}, 18, false); out.late = land({}, 30, true); out.lost = land({}, 0, false);
     out.elsewhere = (() => { board([contract()]); takeContract(0); const t = settleContract({ name: 'Luna' }); return [t, !!career().run]; })();
     return out;
   });
-  assert.equal(r.whole.pay, 1200); assert.equal(r.whole.standing, 1); assert.equal(r.whole.run, null); assert.equal(r.whole.water, undefined, 'the cargo is delivered'); assert.match(r.whole.text, /pays 1,200 cr for 30t of water\.$/);
+  assert.equal(r.whole.pay, 1200); assert.equal(r.whole.xp, 2, 'a run worked teaches the player\'s post'); assert.equal(r.whole.standing, 1); assert.equal(r.whole.run, null); assert.equal(r.whole.water, undefined, 'the cargo is delivered'); assert.match(r.whole.text, /pays 1,200 cr for 30t of water\.$/);
   assert.equal(r.short.pay, 720); assert.equal(r.short.standing, -1); assert.match(r.short.text, /^Short: 12t did not arrive/);
   assert.ok(r.late.pay < 1200 && r.late.pay >= 600); assert.equal(r.late.standing, -1); assert.match(r.late.text, /days late, and the pay docked\./);
   assert.equal(r.lost.pay, 0); assert.equal(r.lost.standing, -2); assert.match(r.lost.text, /was lost on the way, and there is no pay\./);

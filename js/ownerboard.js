@@ -47,6 +47,7 @@ function settleContract(planet) {
   if (st.cargo[run.good] > have) st.cargo[run.good] -= have; else { delete st.cargo[run.good]; delete st.paid[run.good]; }
   st.credits += pay;
   c.run = null;
+  gainSkill(c.post, 2);  // a run worked teaches the player's own post, as a burn does the hand's (hired.js settleRun)
   const late = Math.max(0, st.day - run.due), off = [];
   if (have < run.tons) off.push(have ? `Short: ${run.tons - have}t did not arrive, and ${run.shipper} paid for what did.` : `The load for ${run.shipper} was lost on the way, and there is no pay.`);
   if (late) off.push(`${dayWord(late)} late, and the pay docked.`);
