@@ -87,3 +87,24 @@ test('the checks follow your post and level and a crew member\'s help, and a los
   assert.match(r.message[0], /\[Comms, \d+%; if it fails: 60 cr of your own, your standing here\]$/, r.message[0]);
   await done();
 });
+
+// #690: the board posts the terms under each job: the posts its stages roll on, in the posts' order, and the most a run through it can pay.
+test('each card on the board says the posts a job tests and the most it pays, read from its stages', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    setup();
+    const lock = JOBS.find(j => j.id === 'lock'), message = JOBS.find(j => j.id === 'message');
+    const best = (job, i) => Math.max(...job.stages[i].choices.map(c => (c.win.pay || 0) + (c.win.next !== undefined && job.stages[c.win.next] ? best(job, c.win.next) : 0)));
+    UI.tab = 'missions'; UI.render();
+    const cards = [...document.querySelectorAll('.post .row')].map(row => ({ title: row.querySelector('b').textContent, terms: row.querySelector('.terms') && row.querySelector('.terms').textContent }));
+    return { lock: jobTerms(lock), lockBest: best(lock, 0), message: jobTerms(message), messageBest: best(message, 0), cards, board: jobBoard().ids.map(id => JOBS.find(j => j.id === id)).map(j => ({ title: jobTitle(j), terms: jobTermsLine(j) })) };
+  });
+  assert.deepEqual(r.lock, { posts: ['Gunner', 'Engineer', 'Comms'], pay: r.lockBest }, 'the lock: three posts in the posts\' order, the first stage\'s best win plus the second\'s');
+  assert.equal(r.lock.pay, 450);
+  assert.deepEqual(r.message, { posts: ['Pilot', 'Comms'], pay: r.messageBest });
+  assert.equal(jobLine(r.lock), 'Gunner, Engineer or Comms · up to 450 cr');
+  for (const b of r.board) assert.ok(r.cards.some(c => c.title === b.title && c.terms === b.terms), `${b.title}: the card carries "${b.terms}"`);
+  function jobLine(t) { return `${t.posts.slice(0, -1).join(', ')}${t.posts.length > 1 ? ' or ' : ''}${t.posts[t.posts.length - 1]} · up to ${t.pay} cr`; }
+  await done();
+});
