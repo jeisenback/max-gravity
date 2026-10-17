@@ -3916,6 +3916,54 @@
   "text": "Nav: trajectory nominal, drift within tolerance. | Ice hauler \"Mule's Promise\" to all ships: anyone got a spare coolant pump? | Compact Navy picket: routine sweep, no contacts. | Somebody's broadcasting polka on the emergency band again. | Crash couch: anti-g drip reservoir at 80 percent. | \"...and that's why you never play cards with a Pallas refinery crew.\" [laughter] | Automated beacon: Ceres Station reports all docking bays open. Water ration unchanged. | Courier \"Swift Dispatch\": running a hard burn, clear the approach please. | Life support: CO2 scrubbers cycling. | Unknown ship: \"Anyone else see that drive plume? No transponder? Just me?\" | Dome Concord Navy: all vessels, maintain transponders in Martian space. | Belt pirate radio: static, then a laugh, then static again. | Reactor: output steady. Drive plume stable. | Freighter \"Second Wind\" to nobody in particular: \"Forty days out and I've run out of things to say to the cat.\" | An old recorded voice, on an old beacon: \"This lane is maintained by the Ceres Water Authority. Please burn responsibly.\" | Hauler \"Long Odds\": \"Anybody running to Titan? I've got a spare berth and a very bad sense of direction.\" | Compact traffic control: reminder that lane fees are due on the first, and that \"I forgot\" isn't a payment method. | A child, on an open band: \"This is Captain Pip of the good ship Blanket Fort. Do you copy?\" | Ceres Water Authority relay: \"Reminder to all vessels, water isn't a right, but it's a courtesy. Thank you for your understanding.\" | Belt trader on the band: \"Fresh onions! Real onions! Meet me at the flip, and bring your own bags!\" | Tug \"Old Bess\": \"Anybody know a good doctor on Ganymede? Asking for a friend. The friend is my knee.\" | Static, then faintly someone singing an old work song, and the tail of a chorus. | Mars traffic: \"All ships in the Phobos approach corridor, welcome, and please note that, yes, the coffee really is that good.\" | Someone on the emergency band, in a small voice: \"Testing. Testing. Is this thing on? Mom, it's on.\" | Drive plume harmonics: a low, steady, contented hum. All quiet. | A distant hauler broadcasts a recipe for fried dough. In the middle it apologizes and carries on. | Luna control: \"Please remember that the Copernicus Lounge isn't, in fact, an official navigation aid.\" | Ring-ball commentary, faint and crackling, from a ship somewhere in the dark: \"...and he SHOOTS, and he SCORES...\" | Nav: micrometeoroid flux low. Hull integrity nominal. Optimism, unofficially, high. | A salvager on the band, cheerfully: \"Anybody lose a left boot? Somebody lost a left boot. I have a hundred of them.\" | Enceladus relay: \"All ships, geyser activity is up today. Please enjoy responsibly, and don't fly through the plume.\" | A young voice, on an open channel, awed: \"I can see the whole ring from here. Is it always like this?\" | The ship's hull creaks, once, softly, as it cools in the long shadow. Nothing follows. | A hauler crew, in unison, on the open band, singing \"Happy Birthday\" to a captain who is, from the sound of it, deeply embarrassed. | Eros beacon: \"Welcome to the Old Town. Half of us are still here, and the other half will be, shortly.\" | Crew mess: somebody's arguing that soup counts as a beverage. The argument has been going for ninety minutes. | Static, followed by a woman's voice, low and warm, reading the names of every ship that has ever left Ceres, one by one."
  },
  {
+  "key": "ashore:talkative",
+  "text": "{n} came back from {port} with three new stories and told all of them before the ramp was up. | {n} found the one bar on {port} where nobody knew them, and fixed that."
+ },
+ {
+  "key": "ashore:nervous",
+  "text": "{n} went no further than the end of the dock at {port}, and counted the hatches back. | {n} came back from {port} early and checked the seals on the lock twice."
+ },
+ {
+  "key": "ashore:generous",
+  "text": "{n} came back from {port} with a bag of fruit for the galley and no change. | {n} spent the stop at {port} buying rounds for a table of strangers, and came back broke and pleased."
+ },
+ {
+  "key": "ashore:greedy",
+  "text": "{n} came back from {port} with a price list and a plan. | {n} walked the whole market at {port} and bought nothing, and can tell you what everything cost."
+ },
+ {
+  "key": "ashore:pious",
+  "text": "{n} found the chapel hour at {port} and kept it. | {n} came back from {port} quiet, and said the station has a good bell."
+ },
+ {
+  "key": "ashore:rude",
+  "text": "{n} has a list of what is wrong with {port}, and it is long, and you will hear it. | {n} came back from {port} with a complaint about the dock master, lodged in person."
+ },
+ {
+  "key": "ashore:curious",
+  "text": "{n} got as far down into {port} as the pump rooms before someone asked for a pass. | {n} spent the stop at {port} reading the station's notices, all of them."
+ },
+ {
+  "key": "ashore:drunk",
+  "text": "{n} came back from {port} late, singing, and sober enough to be sorry about the singing. | {n} knows the bar at {port} by its first name now."
+ },
+ {
+  "key": "ashore:secretive",
+  "text": "{n} went into {port} alone and came back alone and said it was fine. | {n} was seen at {port} talking to someone, and will not say who."
+ },
+ {
+  "key": "ashore:kind",
+  "text": "{n} came back from {port} with a cheap tube for the galley light that hums. | {n} spent the stop at {port} walking a stranger to the clinic, and said nothing about it."
+ },
+ {
+  "key": "ashore:brave",
+  "text": "{n} came back from {port} with a bruise and a story that is a ten-minute job to tell. | {n} went out on the hull at {port} to look at the plate, because nobody else would."
+ },
+ {
+  "key": "ashore:homesick",
+  "text": "{n} sent a message home from {port} and waited an hour by the booth for the answer. | {n} bought bread at {port} that is almost the bread from home, and said so, twice."
+ },
+ {
   "key": "regular-arc:berth",
   "text": "is asking every captain who comes in whether they have a berth, and keeps a bag packed under the stool. | has a berth promised on a hauler that keeps not arriving, and reads the arrivals board between drinks. | has the hauler's name on a slip of paper and a date under it, and buys the round. \"Tuesday,\" they say. \"Ask anyone.\""
  },

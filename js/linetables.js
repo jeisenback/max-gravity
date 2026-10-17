@@ -47,6 +47,7 @@ const LINE_TABLES = [
   { id: 'lines:trait-chatter', title: 'Crew chatter, by trait', file: 'js/peopletext.js', plain: true, where: 'transit', table: () => Object.fromEntries(Object.entries(TRAITS).map(([t, d]) => [t, d.chatter])) },
   { id: 'lines:regular-arcs', title: 'Bar: the regulars\' lives, a beat a visit', file: 'js/regulars.js', plain: true, where: 'port', table: () => Object.fromEntries(Object.entries(ARCS).map(([k, a]) => [k, a.beats])) },
   { id: 'lines:port-return', title: 'Returning to a port: what changed since you were here', file: 'js/revisit.js', plain: true, where: 'port', table: () => REVISIT_LINES },
+  { id: 'lines:ashore', title: 'The crew ashore: where one of them went at the port just left, by trait', file: 'js/ashore.js', plain: true, where: 'transit', table: () => ASHORE_LINES },
 ];
 const lineTable = id => LINE_TABLES.find(t => t.id === id);
 

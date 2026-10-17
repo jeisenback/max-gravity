@@ -71,6 +71,9 @@ const playTalk = () => {
   // the visit home: the lock, then the table, by culture (the first choice of the lock leads straight on: no line)
   play('visit', p => { storyOf(p); }, p => visitEvent(p));
   for (const c of ['belt', 'mars', 'earth']) play(`visit-home:${c}`, p => { p.culture = c; storyOf(p); }, p => visitHome(p));
+  // an errand ashore, by culture and the clinic when hurt
+  for (const c of ['belt', 'mars', 'earth']) play(`errand:${c}`, p => { p.culture = c; }, p => errandEvent(p));
+  play('errand:clinic', (p, s) => { s.injured = { [p.id]: true }; }, p => errandEvent(p));
   // who the visit is due for: the home, the regard, the gap, and a promise kept
   { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; const rec = {};
     rec.away = visitDue(st, 'Ceres Station', null) && 'yes'; p.opinion = OPINION.TRUSTED; rec.cold = visitDue(st, 'Ceres Station', null) && 'yes'; rec.home = visitDue(st, 'Mars', null) === p;

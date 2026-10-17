@@ -79,7 +79,7 @@ test('the line tables of the generated people are rows with a field for every li
       plan: SceneIndex.planImport({ overrides: { 'lines:bar-leave': { title: 'No', parts: { 1: 'Ok.', 7: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
   });
-  assert.equal(r.tables.length, 41);  // the 18 of the bar and the chatter, the two of the ship's rooms and lights, the four of the world's news, rumors and errands, the causes and the critics of js/social.js, the 11 of js/familytext.js, the regulars' lives and the port's return line
+  assert.equal(r.tables.length, 42);  // the 18 of the bar and the chatter, the two of the ship's rooms and lights, the four of the world's news, rumors and errands, the causes and the critics of js/social.js, the 11 of js/familytext.js, the regulars' lives, the port's return line and the crew ashore
   assert.ok(r.tables.every(([, kind, noTitle]) => kind === 'data' && noTitle), 'each is lines and no title');
   assert.deepEqual(r.tables.find(t => t[0] === 'lines:trait-chatter'), ['lines:trait-chatter', 'data', true, 'transit', 'js/peopletext.js']);
   assert.deepEqual(r.out, { parts: { 1: 'A new goodbye, {n}.' } }, 'only what differs');
@@ -174,7 +174,7 @@ test('the talk scenes are rows with a field for every line, and each plays in a 
     const rows = SceneIndex.rows.filter(x => x.id.startsWith('family:'));
     return { ids: rows.map(x => x.id), shape: rows.every(x => x.kind === 'data' && x.noTitle && x.where === 'transit' && x.file === 'js/family.js') };
   });
-  assert.equal(r.ids.length, 24, 'the talk scenes, the talk going on, the visit home, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
+  assert.equal(r.ids.length, 25, 'the talk scenes, the talk going on, the visit home, the errand, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
   assert.ok(r.shape, 'each is lines, in a burn, in js/family.js');
   for (const id of r.ids) {
     await select(id);
