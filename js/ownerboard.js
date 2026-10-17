@@ -8,6 +8,9 @@
 
 const ownerHasBoard = () => !hired() && !!career() && currentPlanet().services.includes('trade');
 
+// Tons of a good in the hold that are a shipper's, on their way to its port: not the owner's to sell at the Exchange (ui.js), whatever the market pays.
+const freightHeld = good => { const run = !hired() && career() && career().run; return run && run.good === good ? run.tons : 0; };
+
 // The Port page's section: the run under way, or the day's contracts, each with its pay and when it is due.
 function ownerBoardHtml() {
   if (!ownerHasBoard()) return '';

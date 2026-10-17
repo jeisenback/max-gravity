@@ -76,3 +76,17 @@ test('the board is the same one the hand\'s captain sees, drawn once a day and k
   });
   assert.equal(r.same, true); assert.equal(r.redrawn, true); assert.match(r.key, /^Earth@\d+$/); assert.equal(r.hired, null); assert.equal(r.settle, '');
 });
+
+test('a shipper\'s freight in the hold is not for sale at the Exchange: the owner can sell their own stock of the good and not the contract\'s load (review of #709)', async () => {
+  const r = await run(() => {
+    const st = owner(), out = {}; st.cargo.water = 10; st.paid.water = 500; board([contract({ tons: 20 })]); takeContract(0); out.hold = st.cargo.water;
+    UI.tab = 'trade'; UI.render(); out.held = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ').match(/Water[^]*?Held (\d+)[^]*?(\+\d+t freight)?/);
+    const c0 = st.credits; UI.act('sellall', 'water'); out.afterAll = st.cargo.water; out.sold = st.credits > c0;
+    const c1 = st.credits; UI.act('sell', 'water'); UI.act('sellall', 'water'); out.afterMore = st.cargo.water; out.noMore = st.credits === c1;
+    UI.render(); out.page = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ');
+    out.sellShut = [...document.querySelectorAll('button[data-action="sellall"][data-arg="water"]')].map(b => b.disabled);
+    return out;
+  });
+  assert.equal(r.hold, 30, 'ten of their own and twenty of the shipper\'s'); assert.equal(r.afterAll, 20, 'only their own ten were sold'); assert.equal(r.sold, true);
+  assert.equal(r.afterMore, 20, 'the freight stays'); assert.equal(r.noMore, true); assert.match(r.page, /\+20t freight/); assert.deepEqual(r.sellShut, [true], 'nothing of their own left to sell');
+});

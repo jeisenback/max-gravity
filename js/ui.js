@@ -190,7 +190,7 @@ const UI = {
     trade() {
       const st = G.state, p = this.planet;
       const rows = COMMODITIES.map(c => {
-        const pr = price(p, c.id), held = st.cargo[c.id] || 0;
+        const freight = freightHeld(c.id), pr = price(p, c.id), held = Math.max(0, (st.cargo[c.id] || 0) - freight);  // a shipper's freight in the hold is not for sale (ownerboard.js)
         const tag = { L: 'low', M: 'med', H: 'high' }[p.prices[c.id]] || '';
         const best = bestSale(p, c.id);
         const avg = held ? Math.round((st.paid[c.id] || 0) / held) : 0;
@@ -200,7 +200,7 @@ const UI = {
         return `<div class="trow">
           <div class="tname">${c.name}</div>
           <div class="tprice">${pr === null ? '--' : `${fmt(pr)}<span class="mlabel"> cr/t</span>`} <span class="tag ${tag}">${tag}</span>${moved}</div>
-          <div class="theld"><span class="mlabel">Held </span>${held}${held ? ` <span class="hint">@${fmt(avg)}</span>` : ''}</div>
+          <div class="theld"><span class="mlabel">Held </span>${held}${held ? ` <span class="hint">@${fmt(avg)}</span>` : ''}${freight ? ` <span class="hint">+${freight}t freight</span>` : ''}</div>
           <div class="tbest">${best ? `<span class="mlabel">Sell at </span>${best.planet.name} <span class="tag low">+${fmt(best.profit)}/t</span> <span class="hint">${best.days ? `${best.days}d` : 'local'}</span>` : '<span class="hint">--</span>'}</div>
           <div class="tact">
             <button data-action="buy" data-arg="${c.id}" ${off}>Buy 1</button>
@@ -380,7 +380,7 @@ const UI = {
       }
       case 'sell':
       case 'sellall': {
-        const held = st.cargo[arg] || 0, qty = action === 'sell' ? 1 : held;
+        const held = Math.max(0, (st.cargo[arg] || 0) - freightHeld(arg)), qty = action === 'sell' ? 1 : held;  // a shipper's freight in the hold is not for sale (ownerboard.js)
         if (!held || price(p, arg) === null) break;  // a double tap after the last ton went
         const income = tradeTotal(p, arg, qty, -1), cost = (st.paid[arg] || 0) * qty / held;
         recordTrade(p, arg, qty, -1);
