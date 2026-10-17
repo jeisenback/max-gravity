@@ -71,6 +71,9 @@ const playTalk = () => {
   // the visit home: the lock, then the table, by culture (the first choice of the lock leads straight on: no line)
   play('visit', p => { storyOf(p); }, p => visitEvent(p));
   for (const c of ['belt', 'mars', 'earth']) play(`visit-home:${c}`, p => { p.culture = c; storyOf(p); }, p => visitHome(p));
+  // the room that is theirs: the offer at the end of the visit, and the return by the gap and the count of stays
+  play('room-offer', p => { storyOf(p); }, p => roomOffer(p), 2);
+  for (const [name, gap, visits] of [['few', 5, 0], ['month', 40, 1], ['long', 200, 3]]) play(`room-return:${name}`, (p, s) => { storyOf(p); s.room = { planet: p.home, pid: p.id, since: s.day - gap - 10, last: s.day - gap, visits }; }, p => roomReturn(p), 2);
   // an errand ashore, by culture and the clinic when hurt
   for (const c of ['belt', 'mars', 'earth']) play(`errand:${c}`, p => { p.culture = c; }, p => errandEvent(p));
   play('errand:clinic', (p, s) => { s.injured = { [p.id]: true }; }, p => errandEvent(p));
