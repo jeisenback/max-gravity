@@ -175,8 +175,12 @@ const visitEvent = p => {
 };
 const visitHome = p => {
   const say = familySay('visit-home'), v = visitVars(p);
-  const told = (key, by) => ({ label: say(`${key}.label`, v), run() { like(p, by, say(`${key}.memory`, v)); return `${say(`${key}.result.${pick([0, 1])}`, v)} ${say(`parting.${pick([0, 1])}`, v)}`; } });
-  return { title: say('title', v), text: say(`text.${cultureOfPerson(p)}`, v), choices: [told('kind', 1), told('true', 2)] };
+  const told = (key, by, offers) => ({ label: say(`${key}.label`, v), run() {
+    like(p, by, say(`${key}.memory`, v));
+    if (offers && roomOfferDue(G.state.room, p)) { p.roomOffered = true; G.nextEvent = roomOffer(p); }  // the true thing earns the offer of a room (room.js), once a family
+    return `${say(`${key}.result.${pick([0, 1])}`, v)} ${say(`parting.${pick([0, 1])}`, v)}`;
+  } });
+  return { title: say('title', v), text: say(`text.${cultureOfPerson(p)}`, v), choices: [told('kind', 1), told('true', 2, true)] };
 };
 
 // The sittings of a story. `result` is what happens after: a line, or a list to pick from.
