@@ -7,7 +7,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/sheet.js'], {}, ['STATS', 'POST_STAT', 'DIFFICULTY', 'STAT_BASE', 'STAT_STEP', 'SKILL_STEP', 'CHECK_MIN', 'CHECK_MAX', 'newSheet', 'check', 'KIT_ITEMS', 'kitEdge', 'sheetRows', 'careerOf']);
+const api = load(['js/sheet.js'], {}, ['STATS', 'POST_STAT', 'DIFFICULTY', 'STAT_BASE', 'STAT_STEP', 'SKILL_STEP', 'CHECK_MIN', 'CHECK_MAX', 'newSheet', 'check', 'KIT_ITEMS', 'kitEdge', 'sheetRows', 'careerOf', 'kitBoards']);
 const { STATS, POST_STAT, DIFFICULTY, STAT_BASE, STAT_STEP, SKILL_STEP, CHECK_MIN, CHECK_MAX, newSheet, check, KIT_ITEMS, kitEdge, sheetRows } = api;
 const near = (a, b) => Math.abs(a - b) < 1e-9, sheet = (bg, post) => ({ ...newSheet(bg, post) });  // spread: the vm context has its own Object
 
@@ -64,4 +64,10 @@ test('the career a hand takes into the next chapter is a copy of their sheet, ki
   assert.deepEqual([...h.kit], ['valve-keys']); assert.equal(h.standing['the League Freight Hall'], 2); assert.equal(h.sheet.hands, 4); assert.equal(h.skill.gunner, 40);
   const old = api.careerOf({});
   assert.equal(old.sheet, null); assert.deepEqual([...old.kit], []); assert.deepEqual({ ...old.standing }, {});
+});
+
+test('an item in the kit can be read by a shipper: the carrier license by the Compact Freight Office, and no other item or shipper', () => {
+  const office = 'the Compact Freight Office';
+  assert.equal(api.kitBoards(['carrier-license'], office), true); assert.equal(api.kitBoards(['carrier-license'], 'the League Freight Hall'), false);
+  assert.equal(api.kitBoards(['valve-keys', 'audit-seal'], office), false); assert.equal(api.kitBoards([], office), false); assert.equal(api.kitBoards(undefined, office), false);
 });

@@ -300,7 +300,7 @@ const UI = {
           <p class="hint">Fly it: your ${SHIPS[st.shipId].name} is worth ${fmt(tradeIn)} cr as a trade-in, and your outfits move to the new ship. For company: the ship comes with a captain and runs a trade route for you (Company page). Hull stats shown without outfits.</p>`;
       }
       if (p.services.includes('outfitter')) {
-        const items = Object.entries(OUTFITS).filter(([, o]) => !o.pirate || gov === 'Pirate').map(([id, o]) => {
+        const items = Object.entries(OUTFITS).filter(([, o]) => (!o.pirate || gov === 'Pirate') && (!o.kit || ((career() || {}).kit || []).includes(o.kit))).map(([id, o]) => {
           const have = st.outfits[id] || 0, locked = o.req && standing < o.req;
           const ok = !locked && have < o.max && st.credits >= o.price && cargoFree() >= o.space;
           return `<div class="mission">
