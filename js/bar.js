@@ -418,6 +418,7 @@ function barHtml() {
     </div>`);
   return String(h`
     <h3>${raw(b.name)}</h3>
+    ${raw(barRoomHtml(G.patrons, b.name))}
     <p class="desc">${raw(b.vibe)}</p>
     ${matchNight() ? h`<div class="hint">${raw(matchNight().text)}</div>` : ''}
     ${(G.barState.lines = G.barState.lines || roomLines(planet)).map(l => h`<div class="hint">${raw(l)}</div>`)}

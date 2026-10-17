@@ -426,3 +426,29 @@ test('the Bar page escapes a hostile patron name, memory and job', async () => {
   assert.equal(r.img, 0); assert.equal(r.attrs, 0); assert.ok(r.shown >= 3, `the name shows as text: ${r.shown}`);
   await done();
 });
+
+// #689: a label ending in a cost note (costNote, js/engagements.js) is drawn as two lines, the label and then the note as a readout, with the
+// odds toned by the console's condition thresholds. The text of the button is the label, unchanged, so what reads it reads the same.
+test('a choice with a trailing bracket is two lines, the label then the readout with the odds toned', async () => {
+  const { ev, done } = await open({});
+  const r = await ev(() => {
+    const draw = label => { const d = document.createElement('div'); d.innerHTML = String(choiceButtonHtml({ label }, 0)); return d.querySelector('button'); };
+    const read = b => ({ text: b.textContent, lines: [...b.querySelectorAll('span')].map(s => s.className), odds: b.querySelector('.odds b') && b.querySelector('.odds b').className, pct: b.querySelector('.odds b') && b.querySelector('.odds b').textContent });
+    return {
+      job: read(draw('Carry it to a ship [Pilot, 53%; if it fails: 20 cr of your own]')),
+      good: read(draw('Fire [78%; if it fails: hull damage, and the captain marks it]')),
+      bad: read(draw('Rush them [35%]')),
+      sure: read(draw('Refuse, politely')),
+      post: read(draw('[Gunner] Hold the lock')),
+      noOdds: read(draw('Go [if it fails: the captain marks it]')),
+    };
+  });
+  assert.equal(r.job.text, 'Carry it to a ship [Pilot, 53%; if it fails: 20 cr of your own]', 'the text is the label');
+  assert.deepEqual(r.job.lines, ['pick', 'odds'], 'the label, then the readout');
+  assert.equal(r.job.odds, 'warn'); assert.equal(r.job.pct, '53%');
+  assert.equal(r.good.odds, 'good'); assert.equal(r.bad.odds, 'bad');
+  assert.deepEqual(r.sure.lines, [], 'no bracket: the button is as it was'); assert.equal(r.sure.text, 'Refuse, politely');
+  assert.deepEqual(r.post.lines, [], 'a post prefix is not a readout'); assert.equal(r.post.text, '[Gunner] Hold the lock');
+  assert.deepEqual(r.noOdds.lines, ['pick', 'odds']); assert.equal(r.noOdds.odds, null, 'a note without odds has no tone');
+  await done();
+});

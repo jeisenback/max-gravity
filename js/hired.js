@@ -549,7 +549,7 @@ const runTerms = r => `${r.days} days, ${fmt(r.pay !== undefined ? r.pay : r.pro
 
 const runHtml = () => {
   const hd = G.state.hired, plan = currentPlan(), led = hd.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
-  return String(h`<div class="post"><div class="eyebrow">${hiredCaptain() ? h`<span class="nowrap">Captain ${raw(personLink(hiredCaptain()))}'s</span> run` : 'The captain\'s run'} &middot; ship's funds ${fmt(hd.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
+  return String(h`<div class="post"><div class="eyebrow">${hiredCaptain() ? h`<span class="nowrap">Captain ${raw(personLink(hiredCaptain()))}'s</span> run` : 'The captain\'s run'}</div>
     <p class="desc">${plan && plan.yard && wantsYard() ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'Nothing on the board, and nowhere in reach to look. The captain is waiting for a shipper.'
       : plan.ballast ? h`Nothing on the board here.${closedHere() ? ' The shipper here has closed its board to the ship.' : ''} The captain will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
       : plan.contract ? h`The captain has a contract from ${plan.shipper}${shipperWord(standingOf(hd, plan.shipper)) ? `, ${shipperWord(standingOf(hd, plan.shipper))}` : ''}: ${plan.tons}t of ${name(plan.good)} to ${plan.planet}, ${SYSTEMS[plan.sid].name}, due by ${dateOf(plan.due)}: ${runTerms(plan)}.${plan.hazard ? ' The lane has raids on it.' : ''}`

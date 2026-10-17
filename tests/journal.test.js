@@ -14,12 +14,12 @@ const helpers = () => { window.hand = () => { startGame({ slot: 1, background: '
 test('the rail has Crew and Journal, and the Journal holds the journal, standing, feeds and news', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
-  await ev(() => { hand(); const st = G.state; st.journal = [{ day: st.day, text: 'You covered the watch.' }, { day: st.day - 3, text: 'The captain made the window.' }]; UI.tab = 'crew'; UI.render(); });
+  await ev(() => { hand(); const st = G.state; st.journal = [{ day: st.day, text: 'You covered the watch.' }, { day: st.day - 3, text: 'The captain made the window.' }]; st.news = [{ day: st.day, text: 'A strike at Ceres.' }]; UI.tab = 'crew'; UI.render(); });
   const tabs = await page.$$eval('.rail button', b => b.map(x => x.textContent).filter(n => ['Crew', 'Bonds', 'Journal'].includes(n)));
   assert.deepEqual(tabs, ['Crew', 'Bonds', 'Journal']);
   await goTo(page, 'journal');
   const text = await page.innerText('#panel .body');
-  for (const part of [/Journal/i, /You covered the watch/, /The captain made the window/, /Standing/i, /On the feeds/i, /News/i]) assert.match(text, part);  // headings are upper-cased by the page
+  for (const part of [/Journal/i, /You covered the watch/, /The captain made the window/, /Standing/i, /On the feeds/i, /News/i, /A strike at Ceres/]) assert.match(text, part);  // headings are upper-cased by the page
   assert.equal(await ev(() => UI.tab), 'journal');
   assert.equal(await page.innerText('.rail button.active'), 'Journal', 'the rail lights Journal');
   await goTo(page, 'crew');

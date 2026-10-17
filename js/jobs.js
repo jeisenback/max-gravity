@@ -139,10 +139,19 @@ function jobStage(job, i, ctx = {}) {
     }) };
 }
 
+// A job's terms for the board (#690), read from its stages: the posts its choices roll on, in the posts' order, and the most a run through it
+// can pay (the best win at each stage, and the stage it leads to). The floor is nothing, since a lost roll pays nothing, so it is not said.
+function jobTerms(job) {
+  const posts = Object.keys(POSTS).filter(p => job.stages.some(s => s.choices.some(c => c.check && c.check.post === p))).map(p => POSTS[p].name);
+  const best = i => Math.max(...job.stages[i].choices.map(c => (c.win.pay || 0) + (c.win.next !== undefined && c.win.next > i && job.stages[c.win.next] ? best(c.win.next) : 0)));
+  return { posts, pay: best(0) };
+}
+const jobTermsLine = job => { const t = jobTerms(job), who = t.posts.length > 1 ? `${t.posts.slice(0, -1).join(', ')} or ${t.posts[t.posts.length - 1]}` : t.posts[0]; return `${who ? `${who} \u00b7 ` : ''}up to ${fmt(t.pay)} cr`; };
+
 function jobsHtml() {
   const h = hired(), board = jobBoard();
   return `<div class="post"><div class="eyebrow">Jobs on the station &middot; for your own savings</div>
-    ${board.ids.map(id => { const j = JOBS.find(x => x.id === id); return `<div class="row"><span><b>${esc(jobTitle(j))}</b> <span class="hint">${esc(jobBlurb(j))}</span></span>
+    ${board.ids.map(id => { const j = JOBS.find(x => x.id === id); return `<div class="row"><span><b>${esc(jobTitle(j))}</b> <span class="hint">${esc(jobBlurb(j))}</span><br><span class="hint terms">${esc(jobTermsLine(j))}</span></span>
       <button data-action="takeJob" data-arg="${id}" ${board.done ? 'disabled' : ''}>Take it</button></div>`; }).join('')}
     <p class="hint">${board.done ? 'You have worked a job here today.' : 'One job a day. It takes the day, and the pay is yours.'}</p></div>`;
 }
