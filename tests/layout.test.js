@@ -53,6 +53,23 @@ test('every rail page fits at the three screen sizes', async () => {
   });
 });
 
+test('the hand\'s readouts show on the landed screen, under the header and above the page, and in a burn, at the three sizes (#686)', async () => {
+  await atWidths(async ({ page, ev, size }) => {
+    const r = await ev(() => {
+      const box = sel => { const e = document.querySelector(sel); if (!e) return null; const b = e.getBoundingClientRect(); return { left: b.left, top: b.top, right: b.right, bottom: b.bottom }; };
+      return { strip: box('.strip'), hdr: box('.hdr'), body: box('.shell .body'), innerW: innerWidth, text: document.querySelector('.strip').textContent };
+    });
+    const at = `${size.name} landed`;
+    assert.ok(r.strip, `${at}: the strip is there`); assert.match(r.text, /Contract/);
+    assert.ok(r.strip.top >= r.hdr.bottom - 1 && r.strip.bottom <= r.body.top + 1, `${at}: the strip sits between the header and the page`);
+    assert.ok(r.strip.left >= 0 && r.strip.right <= r.innerW, `${at}: the strip fits the width`);
+    await ev(() => { uatBurn('Earth', 'mars'); G.transit.times = []; G.transit.event = null; G.dialog = null; G.hudStrip = null; });
+    await page.waitForFunction(() => G.hudStrip);
+    const b = await ev(() => ({ s: G.hudStrip, W: innerWidth, H: innerHeight }));
+    assert.ok(b.s.x >= 0 && b.s.x + b.s.w <= b.W && b.s.y >= 0 && b.s.y + b.s.h <= b.H, `${size.name} burn: the HUD's readouts are on screen (${JSON.stringify(b.s)})`);
+  });
+});
+
 test('the HUD sidebar and the panel do not overlap, and the panel clears the compact strip', async () => {
   const g = await open({ scope: 'earth-hired', viewport: { width: 768, height: 1024 }, mobile: true });
   await g.ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent(); });

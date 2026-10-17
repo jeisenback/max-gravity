@@ -65,11 +65,7 @@ function whereIs(c) {
 function captainRunsHtml() {
   const ledger = (hired() && hired().ledger) || [];
   if (!ledger.length) return conCard('Recent runs', '<p class="hint">No runs together yet. You are paid on arrival.</p>');
-  const rows = ledger.slice(0, 5).map(l => {
-    const good = (COMMODITIES.find(c => c.id === l.good) || {}).name || l.good || 'cargo';
-    return `<div class="con-read"><span>${esc(l.from)} to ${esc(l.to)}</span><b>+${fmt(l.wage + l.share)} cr</b></div><div class="hint">${dateOf(l.day)}, ${l.tons}t ${esc(good)}, profit ${fmt(l.profit)} cr</div>`;
-  }).join('');
-  return conCard('Recent runs', rows);
+  return conCard('Recent runs', logRowsHtml(ledger, 5));  // the captain's log's rows (readouts.js)
 }
 
 // What they have told you, a beat at a time, from the talks in family.js. Nothing is shown that has not been said.

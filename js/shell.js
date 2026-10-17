@@ -56,7 +56,7 @@ function railHtml(p, tab) {
 // The whole landed screen: the header, the rail beside the page, and the dock.
 function shellHtml(ui, p) {
   ui.tab = shellTab(ui.tab);
-  return `${ui.headerHtml(p)}
+  return `${ui.headerHtml(p)}${stripHtml()}
     <canvas id="vs" class="vs" aria-hidden="true"></canvas>
     ${Mods.filter('portBanner', '')}
     <div class="shell">${railHtml(p, ui.tab)}<div class="body" tabindex="-1" role="region" aria-label="${esc(shellRoom(ui.tab))}">${ui.views[ui.tab].call(ui)}</div></div>${ui.dockHtml()}`;

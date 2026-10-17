@@ -209,7 +209,7 @@ function operationsPanel() {
   return consoleHtml({
     title: 'Operations', status: hired() ? String(h`The captain's hold: ${cargoUsed()}/${s.cargo}t, Capt. ${hiredCaptain().first} ${hiredCaptain().last}`) : `Hold ${cargoUsed()}/${s.cargo}t`,
     screen: bay.svg,
-    side: conCard('Manifest', manifest || '<p class="hint">The hold is empty.</p>') + (jobs || !hired() ? conCard('Contracts', jobs || '<p class="hint">No active contracts.</p>') : ''),  // a hand with no errand has no contracts to show
+    side: (hired() && heldContract(hired()) ? contractPaperHtml(heldContract(hired()), st.day) : '') + conCard('Manifest', manifest || '<p class="hint">The hold is empty.</p>') + (jobs || !hired() ? conCard('Contracts', jobs || '<p class="hint">No active contracts.</p>') : ''),  // the paper (readouts.js); a hand with no errand has no contracts to show
     controls: G.transit ? '<p class="hint">Trade, contracts, and the bar open when you dock.</p>' : '',
   });
 }

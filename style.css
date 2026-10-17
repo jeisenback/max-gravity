@@ -634,3 +634,10 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .suggest-row { display: grid; gap: 6px; padding: 6px 0; }
 .suggest-row button { width: 100%; }
 @media (min-width: 700px) { .suggest-row { grid-template-columns: 1fr 96px; align-items: center; gap: 12px; } }
+
+/* The hand's readouts (js/readouts.js): the strip under the header, and the raid's position gauge in a scene. */
+.strip { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 6px 16px; border-bottom: 1px solid var(--line); font-size: 12px; line-height: 1.5; color: var(--muted); font-variant-numeric: tabular-nums; }
+.strip .k { font-family: var(--font-label); letter-spacing: 0.06em; text-transform: uppercase; }  /* 12px like the rest: no text on a shell page is smaller (tests/shell.test.js) */
+.strip b { color: var(--text); font-weight: 500; }
+@media (min-width: 700px) { .strip { padding: 6px 18px; } }
+svg.position { display: block; width: 200px; max-width: 100%; height: 26px; margin: 6px 0 2px; }
