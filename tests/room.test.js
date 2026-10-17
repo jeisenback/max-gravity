@@ -10,7 +10,7 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { roomBand, roomDue, roomOfferDue, ROOM_FEW, ROOM_MONTH } = load(['js/room.js'], { FAMILY_SCENES: {}, Mods: { register() {} } }, ['roomBand', 'roomDue', 'roomOfferDue', 'ROOM_FEW', 'ROOM_MONTH']);
+const { roomBand, roomDue, roomOfferDue, roomRun, ROOM_FEW, ROOM_MONTH } = load(['js/room.js'], { FAMILY_SCENES: {}, Mods: { register() {} }, asRun: c => ({ ...c, contract: true, profit: c.pay }) }, ['roomBand', 'roomDue', 'roomOfferDue', 'roomRun', 'ROOM_FEW', 'ROOM_MONTH']);
 
 test('the gap is a few days, a month or half a year, by band; the offer is once a family and one room only; the return is due at the room\'s port a day after the last stay', () => {
   assert.deepEqual([roomBand(0), roomBand(ROOM_FEW - 1), roomBand(ROOM_FEW), roomBand(ROOM_MONTH - 1), roomBand(ROOM_MONTH), roomBand(400)], ['few', 'few', 'month', 'month', 'long', 'long']);
@@ -20,10 +20,23 @@ test('the gap is a few days, a month or half a year, by band; the offer is once 
   assert.equal(roomDue(room, 'Mars', 11), true); assert.equal(roomDue(room, 'Mars', 10), false, 'not the day of a stay'); assert.equal(roomDue(room, 'Ceres Station', 99), false, 'only at its port'); assert.equal(roomDue(undefined, 'Mars', 99), false);
 });
 
+test('the room\'s port is a run to put to the captain: the contract there if the board has one, else a light run; none from its own system or when the plan is bound for it', () => {
+  const room = { planet: 'Mars' }, base = { sid: 'mars', from: 'earth', ranked: [], run: null, days: 6, yard: true };
+  const light = JSON.parse(JSON.stringify(roomRun(room, base)));
+  assert.deepEqual(light, { sid: 'mars', planet: 'Mars', yard: true, good: null, tons: 0, cost: 0, profit: 0, days: 6, ballast: true, room: true });
+  const k = { sid: 'mars', planet: 'Mars', good: 'water', tons: 40, pay: 3000, days: 5 };
+  const paid = JSON.parse(JSON.stringify(roomRun(room, { ...base, ranked: [{ sid: 'ceres', planet: 'Ceres Station', pay: 9 }, k] })));
+  assert.equal(paid.contract, true); assert.equal(paid.profit, 3000); assert.equal(paid.room, true); assert.equal(paid.good, 'water');
+  assert.equal(roomRun(room, { ...base, from: 'mars' }), null, 'not from its own system');
+  assert.equal(roomRun(room, { ...base, run: { sid: 'mars', planet: 'Mars' } }), null, 'the plan is already bound for it');
+  assert.ok(roomRun(room, { ...base, run: { sid: 'mars', planet: 'Phobos' } }), 'another port of that system is not');
+  assert.equal(roomRun(undefined, base), null);
+});
+
 const helpers = () => {
   // A hired game with a shipmate whose family is on Mars, who thinks well of the hand, and the visit's table.
-  window.setup = () => {
-    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+  window.setup = (key = 'hester') => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: key }); while (G.dialog) finishEvent();
     const st = G.state; st.story.next = 1e9; st.tutorial = null; const p = makePerson('mars'); Object.assign(p, { first: 'Sam', last: 'Vale', home: 'Mars', opinion: 4, role: 'engineer', skill: 1 }); delete p.story; registerPerson(p); st.crew.push(p.id); storyOf(p);
     return { st, p };
   };
@@ -81,4 +94,21 @@ test('the person a room is kept by is not forgotten when the registry is full', 
     return !!st.people[p.id];
   });
   assert.equal(r, true);
+});
+
+test('a hand with a room sees its port among the runs to suggest, and the captain who takes it sails there; a contract put to the captain carries its cargo', async () => {
+  const r = await run(() => {
+    const { st, p } = setup('dov'), out = {}; st.day += 30; st.room = { planet: 'Mars', pid: p.id, since: st.day - 300, last: st.day - 5, visits: 0 };
+    hired().plan = null; currentPlan(); out.first = hired().plan.alts[0] || null;
+    out.here = hired().plan.run && hired().plan.run.sid;
+    hired().plan.alts = [{ ...roomAlts(null)[0] }]; const alt = hired().plan.alts[0];
+    const dock = document.createElement('div'); dock.innerHTML = swayHtml(); out.row = (dock.querySelector('.suggest-row .hint') || {}).textContent;
+    person(hired().captain).opinion = 3; hired().fund = 20000; out.res = suggestRun(0); out.run = hired().plan.run; out.alt = alt;
+    st.room = null; hired().plan = null; currentPlan(); out.none = hired().plan.alts.some(a => a.room);
+    return out;
+  });
+  assert.ok(r.alt && r.alt.room && r.alt.planet === 'Mars'); assert.match(r.row, /^Back to your room at Mars, /);
+  assert.match(r.res, /delighted/); assert.equal(r.run.room, true); assert.equal(r.run.planet, 'Mars'); assert.equal(r.run.ballast, true, 'a light run stays light');
+  assert.equal(r.none, false, 'no room, no row');
+  assert.equal(r.first.room, true, 'the room\'s port comes first'); assert.notEqual(r.here, 'mars');
 });

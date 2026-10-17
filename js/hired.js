@@ -192,18 +192,20 @@ const hiredMay = (id, a) => a.hiredOnly ? !!hired() : !hired() || (!['drills', '
 
 // The captain's run: the ice run when it is due (icerun.js), else the contract on the board she picks (contracts.js), else a light run to the
 // nearest port that trades, to look for work there. A contract's profit is its pay: nothing is bought, the cargo is the shipper's.
-let planAlts = [];  // the contracts that came next, for the hand to suggest (suggest.js)
+let planAlts = [], planRanked = [];  // the contracts that came next, for the hand to suggest (suggest.js), and the whole ranking, for the room's port (room.js)
+// A contract on the board as a run, the shape the captain's pick takes and a suggested one must too: the shipper's cargo, no cost, the pay as the profit.
+const asRun = c => ({ ...c, cost: 0, profit: c.pay, contract: true, ballast: false });
 function planRun() {
-  planAlts = [];
+  planAlts = []; planRanked = [];
   const st = G.state, here = currentPlanet(), free = cargoFree(), from = st.systemId;
   const reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid));
   const wantYard = wantsYard();  // once your savings would buy the chapter's ship, she heads for a port with a yard when she can
   const ice = iceOption(here, from, reach, free);
   if (ice) return ice;
   const { best, ranked } = pickContract(here.services.includes('trade') ? contractBoard(st, here) : [], { free, wantYard, risk: laneRisk, picks: captainEntry() ? TRADE_PICKS[captainEntry().captain.trade] : 1 });
-  planAlts = ranked.slice(0, 4);
+  planAlts = ranked.slice(0, 4).map(asRun); planRanked = ranked;
   const take = wantYard ? ranked.find(c => c.yard) || null : best;  // with your money in hand, a contract to a yard if the board has one, else light to the nearest yard (below)
-  if (take) return { ...take, cost: 0, profit: take.pay, contract: true, ballast: false };
+  if (take) return asRun(take);
   // Nothing on the board (or nothing to a yard when she wants one): run light to the nearest port that trades, and look for work there.
   const dest = reach.flatMap(([sid, sys]) => sys.planets.filter(x => x.services.includes('trade')).map(pl => ({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), days: Math.max(1, travelDays(from, sid)) })))
     .sort((a, b) => (wantYard ? (b.yard - a.yard) : 0) || a.days - b.days)[0];
@@ -218,7 +220,7 @@ const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const r
   at: G.state.planet,
   cargo: JSON.stringify(G.state.cargo),
   run,
-  alts: planAlts.filter(o => !run || o.sid !== run.sid || o.planet !== run.planet || o.good !== run.good).slice(0, 3)
+  alts: [...roomAlts(run), ...planAlts.filter(o => !run || o.sid !== run.sid || o.planet !== run.planet || o.good !== run.good)].slice(0, 3)  // the room's port first (room.js)
 }; } return h.plan.run; };
 
 // Buys the cargo, sets the course, and sails: a crewed pilot flies her out, otherwise the pilot is you.
