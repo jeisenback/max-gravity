@@ -155,6 +155,13 @@ const playBeats = () => {
           }
         }
       }
+      for (const [name, pos, boarders, began] of [['last', 1, 1, 4], ['broke', 0, 2, 6]]) {  // the pick-off that ends the fight: the last of them, or so few left, pushed back to the lock, that the rest break
+        const s = start(); s.pos = pos; s.round = 0; s.boarders = boarders; s.began = began;
+        seq([0.01]); const b0 = stand();
+        const text = repelStep(s, 'steady');
+        rec.steps.push({ kind: `end:${name}`, roll: 0.01, delta: 0, text: String(text), ...left(b0) });
+        G.nextEvent = null;
+      }
       out.push(rec);
     }
   }

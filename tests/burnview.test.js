@@ -85,6 +85,29 @@ test('the burn view draws for every ship and every turn of the hull without an e
   await done();
 });
 
+test('crew who die on a burn leave the cutaway, and are not drawn again after the flip', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, st = G.state, W = innerWidth, H = innerHeight;
+    t.left = t.total * 0.8; drawTransit(W, H);
+    const drawn = () => { drawTransit(W, H); return G.cutHits.map(h => h.id); };
+    const before = drawn(), lost = st.crew.slice(0, 3);
+    for (const id of lost) loseCrew(person(id), 'Killed repelling boarders.');
+    const after = drawn();
+    t.left = t.total * 0.49; for (let i = 0; i < 30; i++) updateTransit(0.1);
+    const flipped = drawn();
+    return { lost, before, after, flipped, crew: [...st.crew], isFlipped: t.flipped };
+  });
+  assert.ok(r.isFlipped, 'the burn is past the flip');
+  for (const id of r.lost) assert.ok(r.before.includes(id), `${id} was drawn while alive`);
+  for (const [when, ids] of [['straight after', r.after], ['after the flip', r.flipped]]) {
+    for (const id of r.lost) assert.ok(!ids.includes(id), `${id} is dead and not drawn ${when}`);
+    for (const id of r.crew) assert.ok(ids.includes(id), `${id} is still aboard and drawn ${when}`);
+  }
+  await done();
+});
+
 // The burn view's canvas blocks, at the three screen sizes (#262): none overlaps another, and each is inside the view.
 const BURN_SIZES = [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true]];
 

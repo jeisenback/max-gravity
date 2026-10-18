@@ -76,6 +76,7 @@ function repelLines(assault) {
   set.openings.forEach((list, pos) => list.forEach((t, i) => { out[`open.${pos}.${i}`] = t; }));
   for (const [k, t] of Object.entries(set.tactics)) for (const f of ['label', 'win', 'lose']) out[`tactic.${k}.${f}`] = t[f];
   if (!assault) out.tie = REPEL_TIE;
+  for (const [k, t] of Object.entries(FIGHT_END[assault ? 'assault' : 'repel'])) out[`end.${k}`] = t;
   for (const [post, t] of Object.entries(set.post)) for (const f of ['label', 'win', 'lose']) out[`post.${post}.${f}`] = t[f];
   for (const [post, kinds] of Object.entries(CREW_ABILITY)) for (const [k, t] of Object.entries(kinds)) for (const f of ['label', 'win', 'lose']) out[`crew.${post}.${k}.${f}`] = t[f];
   for (const [post, kinds] of Object.entries(FIGHT_ABILITY)) for (const [k, t] of Object.entries(kinds)) for (const f of ['label', 'win', 'lose']) out[`ability.${post}.${k}.${f}`] = t[f];

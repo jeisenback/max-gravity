@@ -7,7 +7,7 @@
 // ship's own is a fifth off the chance of a casualty, and a point under it a fifth on; the triangle, the head count and the casualty rules are as they were. fightStrip draws
 // the three sections with who holds each hatch. Pure: it reads nothing of the game, so it runs in plain Node (tests/handtohand.test.js). Loaded before boarders.js.
 
-const ABILITY_EDGE = { steady: 0.1, cover: 0.05 };  // what the check gains over the post's own move: both are easier gambles, for smaller prizes, and the steady one the easier
+const ABILITY_EDGE = { steady: -0.1, cover: 0.05 };  // what the check gains over the post's own move: the cover one is an easier gamble for a smaller prize; the steady one a harder one, since the last of them going down, or the few left breaking, wins the fight
 const COVER_BASE = 1, COVER_MAX = 3, COVER_STEP = 0.2, COVER_FLOOR = 0.4, COVER_MADE = 2;  // a worked cover ability makes two points where the fight is
 const ABILITY_NOTE = { steady: 'one fewer of them, no ground', cover: 'cover here, once' };  // what the label says an ability wins (the odds and what a miss costs come after, costNote)
 
@@ -81,7 +81,7 @@ const hurtScale = cover => Math.max(COVER_FLOOR, 1 - COVER_STEP * (cover - COVER
 // they press, the new count of them and the new cover made.
 function abilityStep(kind, worked, { pos, boarders, extra }) {
   if (!worked) return { result: 'tie', press: true, boarders, extra };
-  if (kind === 'steady') return { result: 'tie', press: false, boarders: Math.max(1, boarders - 1), extra };
+  if (kind === 'steady') return { result: 'tie', press: false, boarders: Math.max(0, boarders - 1), extra };
   return { result: 'tie', press: false, boarders, extra: extra.map((n, i) => (i === pos ? n + COVER_MADE : n)) };
 }
 

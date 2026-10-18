@@ -16,7 +16,7 @@ test('every post has a steady ability and a cover ability, each with a label and
     assert.deepEqual(Object.keys(FIGHT_ABILITY[post]), Object.keys(ABILITY_EDGE), `${post} has one ability of each kind`);
     for (const t of Object.values(FIGHT_ABILITY[post])) for (const f of ['label', 'win', 'lose']) assert.ok(t[f] && !/[^\x20-\x7e]/.test(t[f]), `${post} ${f} is plain text`);
   }
-  assert.ok(ABILITY_EDGE.steady > ABILITY_EDGE.cover && ABILITY_EDGE.cover > 0, 'both are easier gambles than the post\'s move, the steady one the easier');
+  assert.ok(ABILITY_EDGE.steady < 0 && ABILITY_EDGE.cover > 0, 'the cover one is an easier gamble than the post\'s move, the steady one a harder one: it is the one that can end the fight');
 });
 
 test('cover by section: the ship\'s length sets the corridor\'s, the kit and the fight add to it, and it stops at three', () => {
@@ -38,7 +38,8 @@ test('an ability that works thins them or makes cover and the exchange stands; o
   const s = { pos: 1, boarders: 4, extra: [0, 0, 0] };
   assert.deepEqual({ ...abilityStep('steady', true, s) }, { result: 'tie', press: false, boarders: 3, extra: s.extra });
   const miss = abilityStep('steady', false, s); assert.deepEqual([miss.result, miss.press, miss.boarders], ['tie', true, 4]);
-  assert.equal(abilityStep('steady', true, { ...s, boarders: 1 }).boarders, 1, 'never fewer than one');
+  assert.equal(abilityStep('steady', true, { ...s, boarders: 1 }).boarders, 0, 'the last of them can be picked off');
+  assert.equal(abilityStep('steady', true, { ...s, boarders: 0 }).boarders, 0, 'and there are never fewer than none');
   const made = abilityStep('cover', true, s); assert.deepEqual([made.result, made.press, [...made.extra]], ['tie', false, [0, COVER_MADE, 0]]); assert.deepEqual([...s.extra], [0, 0, 0], 'the fight\'s own list is not changed in place');
   const coverMiss = abilityStep('cover', false, s); assert.deepEqual([coverMiss.result, coverMiss.press, [...coverMiss.extra]], ['tie', true, [0, 0, 0]]);
 });
