@@ -454,43 +454,20 @@ function buyIn(id) {
   return sceneSay('scene:screens', 'buyin.result', { ship: bought.name, price: fmt(price), old: oldName, first: cap.first, last: cap.last, company: ` ${friends.length ? sceneSay('scene:screens', 'buyin.with', { names: namesOf(friends) }) : sceneSay('scene:screens', 'buyin.alone')}` });
 }
 
-// The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp. It is read before
-// buyIn takes the captain and the crew apart, and it reads the record (#132): the first ending in CHAPTER_ENDINGS whose `when` holds
-// gives the scene its title and its middle; if none does, it is the ordinary "Your Own Ship".
-function chapterRecord(id) {
-  const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, days = st.day - h.since;
-  const kept = key => ((st.cast || {})[key] || {}), untouched = !(st.memorial || []).length && Object.keys(st.cast || {}).every(k => !(kept(k).marks || []).length && !(kept(k).flags || {}).benched);
-  return {
-    id, friends, oldName, days, cap, dead: (st.memorial || []).map(m => memorialName(m)), credits: st.credits,
-    berths: buyShip(id).berths, left: st.credits - buyInPrice(id), untouched,  // no mark, no loss and no one benched on the way
-    promised: friends.filter(c => c.cast && (kept(c.cast).flags || {}).promised).map(c => c.first),  // who coming with you was promised something
-  };
-}
-// The endings the chapter can close on, in priority order: loss first, then the crew, then the quiet ones. Each has a `group`, a `title`,
-// a `when(record)` and a `text(record)` for the middle of the scene; the foot of the ramp before it and the line after it are shared.
+// The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp, read before buyIn takes the
+// captain and the crew apart. It closes the chapter, not the game: the game's own endings (docs/endings-parked.md, #132) wait for the end of the last
+// chapter, and the losses and who came are told here in a line and in the recap that follows (chapterRecap).
 const endSay = (key, vars) => sceneSay('scene:chapter-end', key, vars);  // the words of the closing scene are the lines of scene:chapter-end (hiredscenes.js)
-const endVars = r => ({ old: r.oldName, days: r.days, savings: fmt(HIRED_SAVINGS), berths: r.berths, left: fmt(r.left), memorial: memorialNote() });
 const endMany = (list, key, vars) => endSay(`${key}.${list.length > 1 ? 'many' : 'one'}`, vars);  // a line for one and a line for more, for the verb that follows
-const CHAPTER_ENDINGS = [
-  { id: 'memorial-wall', group: 'Loss', get title() { return endSay('memorial-wall.title'); }, when: r => r.dead.length >= 2,
-    text: r => endSay('memorial-wall.text', { ...endVars(r), dead: chapterList(r.dead), waiting: r.friends.length ? endMany(r.friends, 'memorial-wall.wait', { names: namesOf(r.friends) }) : endSay('memorial-wall.alone') }) },
-  { id: 'empty-berths', group: 'Loss', get title() { return endSay('empty-berths.title'); }, when: r => !r.friends.length,
-    text: r => endSay('empty-berths.text', endVars(r)) },
-  { id: 'ten-years', group: 'Crew', get title() { return endSay('ten-years.title'); }, when: r => r.promised.length > 0,
-    text: r => `${endMany(r.friends, 'ten-years.go', { names: namesOf(r.friends) })} ${endMany(r.promised, 'ten-years.wait', { ...endVars(r), promised: chapterList(r.promised) })} ${endSay('ten-years.count', endVars(r))}` },
-  { id: 'quiet-fortune', group: 'Quiet', get title() { return endSay('quiet-fortune.title'); }, when: r => r.untouched && r.left >= QUIET_FORTUNE,
-    text: r => endSay('quiet-fortune.text', { ...endVars(r), aboard: r.friends.length ? `${endMany(r.friends, 'quiet-fortune.aboard', { names: namesOf(r.friends) })} ` : '' }) },
-];
-const QUIET_FORTUNE = 10000;  // credits left after the ship is paid for, at which a clean chapter closes quietly rich (to be reviewed)
-const chapterList = names => (names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0]);
 function chapterEnd(id) {
   if (!scopeNarrow()) return null;
-  const r = chapterRecord(id), e = CHAPTER_ENDINGS.find(x => x.when(r));
+  const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions();
   const foot = endSay('foot', { ship: buyShip(id).name, planet: currentPlanet().name });
-  const plain = endSay('plain', { ...endVars(r), captain: captainEntry() ? '' : `${endSay('plain.captain', { last: r.cap.last })} `, company: r.friends.length ? endMany(r.friends, 'plain.aboard', { names: namesOf(r.friends) }) : 'Nobody came with you.' });  // (with no one aboard the Empty Berths ending comes first, so the last words are not reached)
+  const plain = endSay('plain', { old: home().name, days: st.day - h.since, savings: fmt(HIRED_SAVINGS), memorial: memorialNote(),
+    captain: captainEntry() ? '' : `${endSay('plain.captain', { last: cap.last })} `, company: friends.length ? endMany(friends, 'plain.aboard', { names: namesOf(friends) }) : endSay('plain.alone') });
   return {
-    title: e ? e.title : endSay('plain.title'), personal: true,
-    text: [foot, e ? e.text(r) : plain, endSay('close')].join(' '),
+    title: endSay('plain.title'), personal: true,
+    text: [foot, plain, endSay('close')].join(' '),
     choices: [{ label: endSay('keep.label'), run: () => endSay('keep.result') }],
   };
 }

@@ -35,7 +35,7 @@ Both are data on the item or the outfit, read where the ship's stats and the boa
 
 ### 5. The spine and the opening
 
-No new scene. The closing scene already reads who came (`CHAPTER_ENDINGS`). Chapter two's first screen is the board, with the crew who came along on the ship and, as the one question, the record of them: who is paid, who is owed, who wants out. The crew are the stakes; the board is the means.
+No new scene. The closing scene already tells who came (`chapterEnd`, `js/hired.js`), and the career keeps them (`st.career.came`). Chapter two's first screen is the board, with the crew who came along on the ship and, as the one question, the record of them: who is paid, who is owed, who wants out. The crew are the stakes; the board is the means.
 
 ## Order, one PR each
 

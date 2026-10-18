@@ -214,22 +214,15 @@ const playScenes = () => {
       return { ...ev, choices: [ev.choices[i]] };
     }, { prep() { castPerson(who); } });
   }
-  // ---------- the closing scene of the hired chapter, for each ending and each count of who comes with you ----------
+  // ---------- the closing scene of the hired chapter, for each count of who comes with you and of who was lost (one scene, #449) ----------
   { const mates = n => Array.from({ length: n }, (_, i) => ({ first: ['Ana', 'Ben', 'Cy'][i], last: 'Vale' })), grave = (name, i) => ({ key: `x${i}`, name, day: 5 + i, place: 'Ceres', cause: 'Lost on the way.' });
-    const record = o => ({ id: 'courier', friends: mates(0), oldName: 'Iron Anvil', days: 77, cap: { last: 'Vance' }, dead: [], credits: 60000, berths: 6, left: 3000, untouched: false, promised: [], ...o });
-    const cases = {
-      'wall:alone': record({ dead: ['Mara Quill', 'Joss Ode'] }), 'wall:one': record({ dead: ['Mara Quill', 'Joss Ode'], friends: mates(1) }), 'wall:two': record({ dead: ['Mara Quill', 'Joss Ode', 'Teo Ruiz'], friends: mates(2) }),
-      'berths:plain': record({}), 'berths:memorial': record({ memorial: 1 }), 'berths:memorial2': record({ memorial: 2 }),
-      'ten:one': record({ friends: mates(1), promised: ['Ana'] }), 'ten:two': record({ friends: mates(2), promised: ['Ana', 'Ben'] }), 'ten:three': record({ friends: mates(3), promised: ['Ana', 'Ben', 'Cy'], memorial: 1 }),
-      'quiet:alone': record({ untouched: true, left: 20000 }), 'quiet:one': record({ untouched: true, left: 20000, friends: mates(1) }), 'quiet:two': record({ untouched: true, left: 20000, friends: mates(2) }),
-      'plain:one': record({ friends: mates(1) }), 'plain:two': record({ friends: mates(2), memorial: 1 }), 'plain:alone': record({ left: 20000 }),
-    };
-    for (const captainKey of ['hester', null]) for (const [name, r] of Object.entries(cases)) {
+    const cases = { alone: [0, 0], 'alone:lost': [0, 2], one: [1, 0], 'one:lost': [1, 1], two: [2, 0], 'two:lost': [2, 2], three: [3, 0] };
+    for (const captainKey of ['hester', null]) for (const [name, [came, lost]] of Object.entries(cases)) {
       run(`chapterend:${captainKey ? 'entry' : 'bare'}:${name}`, {}, () => {
-        const realRecord = window.chapterRecord, scope = BUILD.scope;
-        G.state.memorial = Array.from({ length: r.memorial || 0 }, (_, i) => grave(['Mara Quill', 'Joss Ode'][i], i)); hired().captainKey = captainKey;
-        window.chapterRecord = () => r; BUILD.scope = 'earth-hired';
-        try { return chapterEnd('courier'); } finally { window.chapterRecord = realRecord; BUILD.scope = scope; }
+        const realCompanions = window.buyInCompanions, scope = BUILD.scope;
+        G.state.memorial = Array.from({ length: lost }, (_, i) => grave(['Mara Quill', 'Joss Ode'][i], i)); hired().captainKey = captainKey;
+        window.buyInCompanions = () => mates(came); BUILD.scope = 'earth-hired';
+        try { return chapterEnd('courier'); } finally { window.buyInCompanions = realCompanions; BUILD.scope = scope; }
       });
     }
   }

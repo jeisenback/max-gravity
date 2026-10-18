@@ -929,74 +929,30 @@ test('the chapter\'s closing scene remembers who did not make it', async () => {
   await done();
 });
 
-test('the chapter\'s closing scene reads the record: two losses close on The Memorial Wall, fewer on Your Own Ship (#132)', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
-  await ev(helpers);
-  const r = await ev(() => {
-    start({ mode: 'hired', post: 'gunner' }); person('c:ines').opinion = OPINION.CLOSE;  // someone comes with you, so it's not the empty ship
-    const none = chapterEnd('shuttle'), grave = (key, day) => ({ key, day, place: 'Ceres', cause: 'Lost on the way.' });
-    G.state.memorial = [grave('ines', 5)]; const one = chapterEnd('shuttle');
-    G.state.memorial = [grave('ines', 5), grave('tomas', 9)]; const two = chapterEnd('shuttle');
-    return { none: { title: none.title, text: none.text }, one: { title: one.title, text: one.text }, two: { title: two.title, text: two.text, labels: two.choices.map(c => c.label) }, endings: CHAPTER_ENDINGS.map(e => e.id), firstTwo: CHAPTER_ENDINGS[0].when({ dead: ['a', 'b'] }), firstOne: CHAPTER_ENDINGS[0].when({ dead: ['a'] }) };
-  });
-  assert.equal(r.none.title, 'Your Own Ship'); assert.equal(r.one.title, 'Your Own Ship'); assert.match(r.one.text, /Ines Ferreira is not here to see it/, 'one loss is a line in the ordinary scene');
-  assert.equal(r.two.title, 'The Memorial Wall'); assert.match(r.two.text, /Ines Ferreira and Tomas Achebe/); assert.match(r.two.text, /the tape is what you have to remember them by/);
-  for (const k of ['none', 'one', 'two']) { assert.match(r[k].text, /is on the apron at /, `${k}: the foot of the ramp is shared`); assert.match(r[k].text, /This is where the hired-hand chapter ends\.$/, `${k}: the closing line is shared`); }
-  assert.deepEqual(r.two.labels, ['Keep flying']);
-  assert.equal(r.endings[0], 'memorial-wall'); assert.equal(r.firstTwo, true); assert.equal(r.firstOne, false);
-  await done();
-});
-
-test('the chapter\'s other endings read the record: nobody aboard, a promise kept, and a clean chapter that ends rich (#132)', async () => {
+test('the chapter\'s closing scene is one scene whatever the record: who came and who was lost are a line each, and none is a game ending (#449)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const fresh = () => { start({ mode: 'hired', post: 'gunner' }); postsOnly(); const st = G.state; st.memorial = []; for (const k of Object.keys(st.cast || {})) { delete st.cast[k].marks; st.cast[k].flags = {}; } for (const id of st.crew) person(id).opinion = 0; st.credits = 19000; return st; };
-    const out = {};
-    let st = fresh(); out.alone = chapterEnd('shuttle');
-    st = fresh(); person('c:ines').opinion = OPINION.CLOSE; out.plain = chapterEnd('shuttle');
-    st = fresh(); person('c:ines').opinion = OPINION.CLOSE; castRec('ines').flags.promised = true; out.promised = chapterEnd('shuttle');
-    st = fresh(); person('c:ines').opinion = OPINION.CLOSE; st.credits = 19000 + SHIPS.shuttle.price + 15000; out.rich = chapterEnd('shuttle');
-    st = fresh(); person('c:ines').opinion = OPINION.CLOSE; st.credits = 19000 + SHIPS.shuttle.price + 15000; castRec('ines').marks = [{ text: 'x', day: 1 }]; out.richMarked = chapterEnd('shuttle');
-    st = fresh(); person('c:ines').opinion = OPINION.CLOSE; castRec('ines').flags.promised = true; st.credits = 19000 + SHIPS.shuttle.price + 15000; out.both = chapterEnd('shuttle');
-    st = fresh(); st.memorial = [{ key: 'ines', day: 1, place: 'x', cause: 'y' }, { key: 'tomas', day: 2, place: 'x', cause: 'y' }]; out.lossBeatsAlone = chapterEnd('shuttle');
-    out.order = CHAPTER_ENDINGS.map(e => e.id); out.berths = SHIPS.shuttle.berths;
-    return JSON.parse(JSON.stringify({ ...out, alone: { t: out.alone.title, x: out.alone.text }, plain: { t: out.plain.title }, promised: { t: out.promised.title, x: out.promised.text }, rich: { t: out.rich.title, x: out.rich.text }, richMarked: { t: out.richMarked.title }, both: { t: out.both.title }, lossBeatsAlone: { t: out.lossBeatsAlone.title } }));
-  });
-  assert.deepEqual(r.order, ['memorial-wall', 'empty-berths', 'ten-years', 'quiet-fortune'], 'loss first, then the crew, then the quiet one');
-  assert.equal(r.alone.t, 'The Empty Berths'); assert.ok(r.alone.x.includes(`${r.berths} berths`)); assert.match(r.alone.x, /Nobody comes up the ramp/);
-  assert.equal(r.plain.t, 'Your Own Ship', 'someone comes, nothing else to read');
-  assert.equal(r.promised.t, 'Ten Years, One Ship'); assert.match(r.promised.x, /Ines/);
-  assert.equal(r.rich.t, 'The Quiet Fortune'); assert.match(r.rich.x, /still in the account/);
-  assert.equal(r.richMarked.t, 'Your Own Ship', 'a mark on anyone spoils a quiet fortune');
-  assert.equal(r.both.t, 'Ten Years, One Ship', 'the crew beats the quiet one');
-  assert.equal(r.lossBeatsAlone.t, 'The Memorial Wall', 'loss beats an empty ship');
-  await done();
-});
-
-test('the chapter endings agree with how many came: one friend, two friends, and a wall with nobody at the ramp (#398)', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
-  await ev(helpers);
-  const r = await ev(() => {
-    const fresh = () => { start({ mode: 'hired', post: 'gunner' }); postsOnly(); const st = G.state; st.memorial = []; for (const k of Object.keys(st.cast || {})) { delete st.cast[k].marks; st.cast[k].flags = {}; } for (const id of st.crew) person(id).opinion = 0; st.credits = 19000; return st; };
-    const grave = key => ({ key, day: 1, place: 'x', cause: 'y' }), rich = 19000 + SHIPS.shuttle.price + 15000, out = {};
-    fresh(); person('c:ines').opinion = OPINION.CLOSE; castRec('ines').flags.promised = true; out.promisedOne = chapterEnd('shuttle').text;
-    fresh(); for (const k of ['ines', 'tomas']) { person('c:' + k).opinion = CAST_GOOD; castRec(k).flags.promised = true; } out.promisedTwo = chapterEnd('shuttle').text;
-    let st = fresh(); st.credits = rich; for (const k of ['ines', 'tomas']) person('c:' + k).opinion = CAST_GOOD; out.richTwo = chapterEnd('shuttle').text;
-    st = fresh(); st.credits = rich; person('c:ines').opinion = OPINION.CLOSE; out.richOne = chapterEnd('shuttle').text;
-    st = fresh(); st.memorial = [grave('ines'), grave('tomas')]; out.wallNobody = chapterEnd('shuttle').text;
-    st = fresh(); st.memorial = [grave('ines'), grave('tomas')]; person('c:tomas').opinion = OPINION.CLOSE; out.wallOne = chapterEnd('shuttle').text;
-    st = fresh(); st.memorial = [grave('ines')]; out.berthsLoss = chapterEnd('shuttle').text;
-    st = fresh(); out.berthsPlain = chapterEnd('shuttle').text;
+    const grave = key => ({ key, day: 1, place: 'Ceres', cause: 'Lost on the way.' }), rich = 19000 + SHIPS.shuttle.price + 15000, out = {};
+    const read = name => { const e = chapterEnd('shuttle'); out[name] = { title: e.title, text: e.text, labels: e.choices.map(c => c.label) }; };
+    fresh(); read('alone');
+    fresh(); person('c:ines').opinion = OPINION.CLOSE; read('one');
+    fresh(); for (const k of ['ines', 'tomas']) person('c:' + k).opinion = CAST_GOOD; read('two');
+    let st = fresh(); st.memorial = [grave('ines'), grave('tomas')]; read('lost');
+    st = fresh(); person('c:ines').opinion = OPINION.CLOSE; castRec('ines').flags.promised = true; st.credits = rich; read('promisedAndRich');
     return out;
   });
-  assert.match(r.promisedOne, /Ines Ferreira goes up the ramp ahead of you with a bag/); assert.match(r.promisedOne, /Ines stops at the hatch and waits for you/);
-  assert.match(r.promisedTwo, /Ines Ferreira and Tomas Achebe go up the ramp ahead of you with their bags/); assert.match(r.promisedTwo, /Ines and Tomas stop at the hatch and wait for you/);
-  assert.match(r.richOne, /Ines Ferreira is already aboard/); assert.match(r.richTwo, /Ines Ferreira and Tomas Achebe are already aboard/);
-  assert.match(r.wallNobody, /Nobody's waiting at the foot of the ramp/);
-  assert.match(r.wallOne, /Tomas Achebe waits at the foot of the ramp until you've finished/);
-  assert.match(r.berthsLoss, /Ines Ferreira is not here/, 'a loss shows in the empty berths');
-  assert.doesNotMatch(r.berthsPlain, /is not here/, 'and no loss, no line');
+  for (const k of Object.keys(r)) {
+    assert.equal(r[k].title, 'Your Own Ship', `${k}: no record turns the chapter's close into a game ending`);
+    assert.match(r[k].text, /is on the apron at /, `${k}: the foot of the ramp`); assert.match(r[k].text, /This is where the hired-hand chapter ends\.$/, `${k}: the closing line`);
+    assert.deepEqual(r[k].labels, ['Keep flying']);
+  }
+  assert.match(r.alone.text, /Nobody came with you\./);
+  assert.match(r.one.text, /Ines Ferreira is already aboard/); assert.match(r.two.text, /Ines Ferreira and Tomas Achebe are already aboard/);
+  assert.match(r.lost.text, /Ines Ferreira and Tomas Achebe are not here to see it/, 'two losses are a line, not a wall');
+  assert.doesNotMatch(r.one.text, /is not here/, 'no loss, no line');
+  assert.doesNotMatch(r.promisedAndRich.text, /Ten Years|promised a place|still in the account/, 'a promise or a fortune does not change the scene');
   await done();
 });
 
