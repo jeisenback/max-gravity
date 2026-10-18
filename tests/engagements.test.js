@@ -4,7 +4,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, frames } = require('./helpers');
 
 after(closeBrowser);
 
@@ -664,7 +664,7 @@ test('a raid beat shows its read line above the pinned choices without scrolling
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     await ev(() => { raid('gunner'); startDuel({ kind: 'pirate' }, false); begin(); });
-    await page.waitForTimeout(300);
+    await frames(page);
     const r = await ev(() => {
       const el = document.querySelector('#panel.event'), read = el.querySelector('p.read'), panel = el.getBoundingClientRect();
       const box = read && read.getBoundingClientRect(), choices = el.querySelector('.choices').getBoundingClientRect();

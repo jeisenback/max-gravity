@@ -4,7 +4,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, frames } = require('./helpers');
 
 after(closeBrowser);
 
@@ -100,13 +100,13 @@ test('clicking someone in the burn view opens their page', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
   await ev(() => { setup(); UI.hide(); });
-  await page.waitForTimeout(400);
+  await frames(page);
   const target = await ev(() => { const h = G.cutHits.find(h => h.id !== 'you'); return h && { x: h.x, y: h.y, id: h.id }; });
   assert.ok(target, 'the cutaway knows where people are');
   await page.mouse.click(target.x, target.y);
   const r = await ev(() => ({ open: G.bridgeOpen, who: G.viewPerson }));
   assert.deepEqual(r, { open: 'person', who: target.id });
-  await page.waitForTimeout(300);
+  await frames(page);
   assert.ok(await page.$(`#bsheet .con`), 'their page is on the bridge sheet');
   await ev(() => { G.bridgeOpen = null; G.viewPerson = null; });
   await page.mouse.click(30, 300);  // empty space does nothing

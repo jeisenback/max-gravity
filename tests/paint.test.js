@@ -5,7 +5,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, frames } = require('./helpers');
 
 after(closeBrowser);
 
@@ -92,7 +92,7 @@ test('a port with no art entry of its own (a founded outpost) paints from its co
 
 test('the title paints Earth\'s limb with no save state, and lights the menu from the sun\'s side', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired', title: true });
-  await page.waitForTimeout(200);
+  await frames(page);
   const r = await ev(() => {
     const d = devicePixelRatio || 1, W = innerWidth, H = innerHeight;
     const px = (x, y) => [...ctx.getImageData(Math.round(x * d), Math.round(y * d), 1, 1).data].slice(0, 3);
@@ -157,12 +157,12 @@ test('a scene is glass lit from the sun\'s side, and its markup is unchanged', a
 
 test('resizing the window does not grow the sprite cache: the vista and the title each keep one large Earth', async () => {
   const landed = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
-  for (const width of [900, 700, 600, 500]) { await landed.page.setViewportSize({ width, height: 800 }); await landed.page.waitForTimeout(120); }
+  for (const width of [900, 700, 600, 500]) { await landed.page.setViewportSize({ width, height: 800 }); await frames(landed.page); }
   const vista = await landed.ev(() => { drawViewscreen(0); return Object.keys(BODY_CACHE).filter(k => /^Earth@\d+~$/.test(k)); });
   assert.deepEqual(vista, ['Earth@360~'], 'one vista sprite at the cap radius, drawn scaled');
   await landed.done();
   const title = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 }, title: true });
-  for (const width of [900, 800, 700, 600]) { await title.page.setViewportSize({ width, height: 800 }); await title.page.waitForTimeout(120); }
+  for (const width of [900, 800, 700, 600]) { await title.page.setViewportSize({ width, height: 800 }); await frames(title.page); }
   const keys = await title.ev(() => Object.keys(BODY_CACHE).filter(k => /^Earth@\d+~$/.test(k)));
   assert.deepEqual(keys, ['Earth@720~'], 'one title sprite at the cap radius, drawn scaled');
   await title.done();

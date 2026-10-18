@@ -22,7 +22,7 @@ const G = {
   offers: [],         // mission offers at the current planet
   bar: [],            // procedural crew looking for work at the current planet
   revenge: null,      // someone who hates you has hired a gun, see people.js
-  mode: 'landed',     // landed | flight | departing | transit | hail | map | dead
+  mode: 'landed',     // title | landed | flight | departing | transit | hail | map | dead
   dialog: null,       // open choice dialog (transit event or hail), see transit.js
   mapReturn: null, mapZoom: 0,
   keys: {},

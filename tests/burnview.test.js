@@ -5,7 +5,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, frames } = require('./helpers');
 
 after(closeBrowser);
 
@@ -45,7 +45,7 @@ test('with an event open, the Comms box stays clear of the dialog on a wide scre
       for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
       openEvent({ title: 'Distress Call', text: 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she is not answering. The captain says it is your call.', choices: [{ label: 'See how it goes', run: () => 'Done.' }] });
     });
-    await page.waitForTimeout(400);
+    await frames(page);
     const r = await ev(() => {
       const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), box = G.commsBox;
       return { box, dialog: { x: d.left - c.left, y: d.top - c.top } };
@@ -55,7 +55,7 @@ test('with an event open, the Comms box stays clear of the dialog on a wide scre
     else assert.ok(r.box.y + r.box.h <= r.dialog.y - 4, `phone: the box ends at ${r.box.y + r.box.h}, the dialog starts at ${r.dialog.y}`);
     // The tutorial's prompt, when it shows, keeps clear of the dialog too (#735).
     await ev(() => { G.state.tutorial = 1; });
-    await page.waitForTimeout(400);
+    await frames(page);
     const t = await ev(() => { const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(); return { box: G.burnBoxes.tutorial, dialog: { x: d.left - c.left, y: d.top - c.top } }; });
     if (t.box && name === 'wide') assert.ok(t.box.x + t.box.w <= t.dialog.x - 8, `wide: the tutorial ends at ${t.box.x + t.box.w}, the dialog starts at ${t.dialog.x}`);
     else if (t.box) assert.ok(t.box.y + t.box.h <= t.dialog.y - 4, `phone: the tutorial ends at ${t.box.y + t.box.h}, the dialog starts at ${t.dialog.y}`);
@@ -119,7 +119,7 @@ test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)',
       burn(); G.transit.left = G.transit.total * 0.5; G.state.tutorial = 1;  // the first run's prompt shows (#735)
       for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
     });
-    await page.waitForTimeout(300);
+    await frames(page);
     const r = await ev(() => ({ boxes: G.burnBoxes, viewW: innerWidth - G.hudW, H: innerHeight }));
     assert.ok(r.boxes.tutorial, `${name}: the tutorial box is drawn`);
     const names = Object.keys(r.boxes);
@@ -214,7 +214,7 @@ test('a tap on a room opens its console as a sheet, and a second tap on the room
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
-  await page.waitForTimeout(300);
+  await frames(page);
   // The point in a room's box that is farthest from everyone in it, so a tap there is a room's and not a person's.
   const pick = id => ev(id => {
     const b = G.cutRooms.find(r => r.id === id); let best = null;
@@ -226,16 +226,16 @@ test('a tap on a room opens its console as a sheet, and a second tap on the room
   }, id);
   for (const id of ['bridge', 'gunnery', 'engine', 'berths', 'galley', 'hold', 'medbay']) {
     await ev(() => { G.bridgeOpen = null; });
-    await page.waitForTimeout(120);
+    await frames(page);
     const p = await pick(id);
     assert.ok(p.d > 14, `${id}: a point clear of people (${Math.round(p.d)}px)`);
     await page.mouse.click(p.x, p.y);
-    await page.waitForTimeout(150);
+    await frames(page);
     assert.equal(await ev(() => G.bridgeOpen), await ev(id => roomSheet(id), id), `${id}: its sheet is open`);
     assert.equal(await ev(() => document.getElementById('bsheet').hidden), false, `${id}: the sheet is shown`);
     if (await ev(([x, y]) => document.elementFromPoint(x, y) === canvas, [p.x, p.y])) {  // a sheet can cover the room it came from; the key closes it then
       await page.mouse.click(p.x, p.y);
-      await page.waitForTimeout(150);
+      await frames(page);
       assert.equal(await ev(() => G.bridgeOpen), null, `${id}: a second tap closes it`);
     }
   }
@@ -246,15 +246,15 @@ test('a tap on a person opens the person, not the room under them; and a tap doe
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
-  await page.waitForTimeout(300);
+  await frames(page);
   const hit = await ev(() => G.cutHits[0]);
   await page.mouse.click(hit.x, hit.y);
-  await page.waitForTimeout(150);
+  await frames(page);
   assert.equal(await ev(() => G.bridgeOpen), 'person', 'the person came first');
   await ev(() => { G.bridgeOpen = null; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); });
   const b = await ev(() => G.cutRooms.find(r => r.id === 'bridge'));
   await page.mouse.click(b.x + 2, b.y + 2);
-  await page.waitForTimeout(150);
+  await frames(page);
   assert.equal(await ev(() => G.bridgeOpen), null, 'no sheet opens under a scene');
   await done();
 });

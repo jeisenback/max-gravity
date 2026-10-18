@@ -5,7 +5,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, frames } = require('./helpers');
 
 after(closeBrowser);
 
@@ -473,7 +473,7 @@ test('the orders have a heading of their own, a cue says more choices follow bel
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     await ev(() => { fight(); openEvent(repelScene(repelStart(G.duel, 'full'))); });
-    await page.waitForTimeout(300);
+    await frames(page);
     const look = () => ev(() => {
       const ch = document.querySelector('#panel.event .choices'), box = ch.getBoundingClientRect(), group = [...ch.querySelectorAll('.group')];
       return { headings: group.map(g => g.textContent), headingTop: group[0] && group[0].getBoundingClientRect().top, headingBottom: group[0] && group[0].getBoundingClientRect().bottom, boxTop: box.top, boxBottom: box.bottom, rest: ch.classList.contains('rest'),

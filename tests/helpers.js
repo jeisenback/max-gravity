@@ -133,4 +133,8 @@ async function goTo(page, tab) {
   await entry.click();
 }
 
-module.exports = { open, watch, closeBrowser, URL, goTo };
+// Waits until the page has drawn n animation frames, so what the game works out while drawing (G.cutHits, G.burnBoxes, the bridge sheet) has caught up with a
+// change. A fixed sleep guessed at that and cost its whole length every time (#758).
+const frames = (page, n = 2) => page.evaluate(n => new Promise(done => { const step = k => (k ? requestAnimationFrame(() => step(k - 1)) : done()); step(n); }), n);
+
+module.exports = { open, watch, closeBrowser, URL, goTo , frames };
