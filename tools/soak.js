@@ -29,7 +29,7 @@ const { open, closeBrowser } = require('../tests/helpers');
 
 // realDraw: the two main characters come from the pool as in the game; tests start from the pair they knew (tests/helpers.js).
 async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null, jobs = false } = {}) {
-  const { ev, errors, ctx } = await open({ scope, seed, debt: true });  // the chapter's economy includes the hiring hall's bond
+  const { ev, errors, ctx } = await open({ scope, seed, debt: true, stall: 0 });  // the chapter's economy includes the hiring hall's bond
   const r = await ev(([maxLegs, key, real, postKey, play, order, takeJobs]) => {
     if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [], losses = [], ending = { v: null };
@@ -271,7 +271,7 @@ function report(runs) {
 
 // The scene index the editor shows (editor.html), as { id, title, off, storylet } for each scene with a title; off is a scene the narrow build leaves out, storylet one that is data outside the hired chapter's registry.
 async function sceneRows() {
-  const { ctx, url } = await open({ scope: 'full' });
+  const { ctx, url } = await open({ scope: 'full', stall: 0 });
   const page = await ctx.newPage();
   await page.goto(url.replace(/index\.html$/, 'editor.html'));
   await page.waitForFunction(() => window.SceneIndex && SceneIndex.rows, null, { timeout: 60000 });

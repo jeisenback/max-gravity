@@ -15,7 +15,7 @@ const { open, closeBrowser } = require('../helpers');
 after(closeBrowser);
 
 test('a higher weight makes a color scene come up more often in the draw, and weight 0 never', async () => {
-  const { ev, done } = await open({ scope: 'full' });
+  const { ev, done } = await open({ scope: 'full', stall: 900000 });
   const r = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' }); while (G.dialog) finishEvent();
     G.state.day = 30;
