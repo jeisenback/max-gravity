@@ -28,13 +28,16 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
     const foeOf = () => Object.assign(makeEnemy({ kind: 'pirate' }), { shipId });
     // The policies: which choice to make in a scene. In a lock fight the choices are the three tactics, the post's own move (index 3), and the post's other abilities (4 and 5, the
     // second shut once used); the raid's last choice is the post's own move. 'random' draws from the choices the fights had before the abilities, so its figures read as they did.
+    // The lock fight's orders to named crew (#711) come after these on the list (`order`), so the policies read the choices without them, and the figures read as they did; the 'order' policy has the crew make the cover first, then plays 'count'.
+    const own = d => d.choices.filter(c => !c.order);
     const POLICY = {
-      random: d => Math.floor(Math.random() * (d.choices.length === 6 ? 4 : d.choices.length)),
-      post: d => (d.choices.length === 6 ? 3 : d.choices.length - 1),
-      steady: d => (d.choices.length === 6 ? 4 : d.choices.length - 1),
-      cover: d => (d.choices.length === 6 ? (d.choices[5].can && !d.choices[5].can() ? 3 : 5) : d.choices.length - 1),
-      count: d => (d.choices.length === 6 && window.__fight && repelStanding(window.__fight) < window.__fight.boarders ? 4 : d.choices.length === 6 ? 3 : d.choices.length - 1),
-      all: d => { const open = d.choices.map((c, i) => i).filter(i => !(d.choices[i].can && !d.choices[i].can())); return open[Math.floor(Math.random() * open.length)]; },
+      random: d => Math.floor(Math.random() * (own(d).length === 6 ? 4 : own(d).length)),
+      post: d => (own(d).length === 6 ? 3 : own(d).length - 1),
+      steady: d => (own(d).length === 6 ? 4 : own(d).length - 1),
+      cover: d => (own(d).length === 6 ? (d.choices[5].can && !d.choices[5].can() ? 3 : 5) : own(d).length - 1),
+      count: d => (own(d).length === 6 && window.__fight && repelStanding(window.__fight) < window.__fight.boarders ? 4 : own(d).length === 6 ? 3 : own(d).length - 1),
+      all: d => { const open = own(d).map((c, i) => i).filter(i => !(d.choices[i].can && !d.choices[i].can())); return open[Math.floor(Math.random() * open.length)]; },
+      order: d => { const i = d.choices.findIndex(c => c.order && /cover here/.test(c.label)); return i >= 0 ? i : POLICY.count(d); },  // send the crew to make the cover while it is there to make, then the 'count' play
       first: () => 0,
       hold: () => 0, rush: () => 1, flank: () => 2,
     };
@@ -90,8 +93,8 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
     const cells = [
       ['crew', [1, 3, 5].map(c => [c, 2, 'random', 0])],
       ['level', [1, 2, 3].map(l => [5, l, 'post', 0])],
-      ['tactic', ['random', 'hold', 'rush', 'flank', 'post', 'steady', 'cover', 'count', 'all'].map(p => [5, 2, p, 0])],
-      ['small crew', ['post', 'cover', 'count'].map(p => [2, 2, p, 0])],
+      ['tactic', ['random', 'hold', 'rush', 'flank', 'post', 'steady', 'cover', 'count', 'all', 'order'].map(p => [5, 2, p, 0])],
+      ['small crew', ['post', 'cover', 'count', 'order'].map(p => [2, 2, p, 0])],
       ['grade', [0, 1, 2].map(g => [5, 2, 'random', g])],
     ];
     for (const kind of ['repel', 'assault']) {

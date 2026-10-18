@@ -98,7 +98,7 @@ function repelCrew() {
 // The fight: where they are (0 the lock, 1 the corridor, 2 the bridge), how many they are, who is hurt and who has fallen.
 function repelStart(d, outcome) {
   const crew = FOE_CREW[d.foe.shipId] || 3, w = repelCrew();
-  return { d, pos: outcome === 'full' ? 1 : 0, boarders: boardersFor(d.foe, outcome, d), grade: d.grade || 0, base: Math.min(6, w.fight.length + 1), held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [], extra: [0, 0, 0], used: {} };
+  return { d, pos: outcome === 'full' ? 1 : 0, boarders: boardersFor(d.foe, outcome, d), grade: d.grade || 0, base: Math.min(6, w.fight.length + 1), fight: w.fight, held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [], extra: [0, 0, 0], used: {} };
 }
 const repelStanding = s => Math.max(1, s.base - s.hurt.size - s.dead.length);
 
@@ -108,7 +108,7 @@ function repelEvent(d, outcome) { return repelScene(repelStart(d, outcome)); }
 function assaultStart(foe, rate = {}) {
   const w = repelCrew();
   captainFlag('raided');  // kept for the goodbye (captains.js)
-  return { d: { foe, foeHp: 0 }, assault: true, pos: 1, boarders: boardersFor(foe, 'full', rate), grade: rate.grade || 0, base: Math.min(6, w.fight.length + 1), held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [], extra: [0, 0, 0], used: {} };
+  return { d: { foe, foeHp: 0 }, assault: true, pos: 1, boarders: boardersFor(foe, 'full', rate), grade: rate.grade || 0, base: Math.min(6, w.fight.length + 1), fight: w.fight, held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [], extra: [0, 0, 0], used: {} };
 }
 
 function repelScene(s) {
@@ -120,6 +120,10 @@ function repelScene(s) {
     const shut = kind === 'cover' && s.used.cover;
     choices.push({ label: `[${POSTS[post].name}] ${repelWords(s, `ability.${post}.${kind}.label`, FIGHT_ABILITY[post][kind].label)} (${ABILITY_NOTE[kind]})${costNote(stake, abilityOdds(post, kind))}`, run: () => repelStep(s, kind), can: () => !shut, why: 'Once a fight.' });
   }
+  for (const o of repelOrders(s)) {  // and orders to the crew who have a post, by name (handtohand.js): their ability, at their skill, and a miss lands on the one sent
+    const post = o.sheet.post;
+    choices.push({ order: true, label: `${o.first} ${repelWords(s, `crew.${post}.${o.kind}.label`, CREW_ABILITY[post][o.kind].label)} (${ABILITY_NOTE[o.kind]})${costNote({ casualty: true }, crewOrderOdds(o.sheet, o.kind, s.hurt.has(o.id)))}`, run: () => repelStep(s, o.kind, o) });
+  }
   return {
     title: repelWords(s, `title.${s.pos}`, set.titles[s.pos]), personal: true, via: 'crew', board: fightStrip({ titles: set.titles, pos: s.pos, boarders: s.boarders, cover: repelCover(s) }),
     text: `${repelWords(s, `open.${s.pos}.${s.round % 2}`, set.openings[s.pos][s.round % 2])}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''} ${layoutHint()}`.trim(),
@@ -127,6 +131,9 @@ function repelScene(s) {
   };
 }
 
+// Who can be sent: the crew who are on their feet and have a post, with their sheets (handtohand.js crewSheet), the most skilled first.
+const repelOrders = s => crewOrders((s.fight || []).filter(id => !s.dead.some(c => c.id === id) && !s.marked.some(c => c.id === id)).map(person).filter(Boolean)
+  .map(c => ({ id: c.id, first: c.first, sheet: crewSheet({ role: c.role, skill: c.skill, traits: c.traits, low: moodLow(c) }) })), s.used.cover);
 // The odds of an ability: the post's stat and skill on the sheet, with the kit's edge (handCheck), easier for the steady one (handtohand.js).
 const abilityOdds = (post, kind) => handCheck(POST_STAT[post], skillLevel(post), 'post', ABILITY_EDGE[kind]);
 // The cover of each section as the fight stands: the ship's, the kit's, and what the cover ability has made.
@@ -149,17 +156,18 @@ function tacticOdds(s, kind) {
 }
 
 // One exchange. Returns what happened; sets the next scene, or settles the fight and goes back to the duel.
-function repelStep(s, kind) {
+function repelStep(s, kind, who) {  // `who`: the crew member sent, when an ability is an order to them (repelScene)
   const h = hired(), post = h.post, set = repelSet(s), theirs = kind === 'post' || kind in ABILITY_EDGE ? null : (CUNNING * (s.grade || 0) > 0 && Math.random() < CUNNING * s.grade ? counterOf(set.tactics, kind) : pickWeighted(foeLean(s)));
   let result, text, press = false;  // 'win', 'lose' or 'tie'; `press`: an ability that missed, which gives them a shot at someone without costing the ground
   if (kind === 'post') {
     result = Math.random() < postOdds(post) ? 'win' : 'lose';
     text = repelWords(s, `post.${post}.${result}`, set.post[post][result]);
   } else if (kind in ABILITY_EDGE) {
-    const worked = Math.random() < abilityOdds(post, kind), step = abilityStep(kind, worked, s);
+    const worked = Math.random() < (who ? crewOrderOdds(who.sheet, kind, s.hurt.has(who.id)) : abilityOdds(post, kind)), step = abilityStep(kind, worked, s);
     result = step.result; press = step.press; s.boarders = step.boarders; s.extra = step.extra;
     if (kind === 'cover') s.used.cover = true;
-    text = repelWords(s, `ability.${post}.${kind}.${worked ? 'win' : 'lose'}`, FIGHT_ABILITY[post][kind][worked ? 'win' : 'lose']);
+    const side = worked ? 'win' : 'lose';
+    text = who ? `${who.first} ${repelWords(s, `crew.${who.sheet.post}.${kind}.${side}`, CREW_ABILITY[who.sheet.post][kind][side])}` : repelWords(s, `ability.${post}.${kind}.${side}`, FIGHT_ABILITY[post][kind][side]);
   } else {
     result = tacticResult(s, set, kind, theirs);
     text = result === 'tie' ? repelWords(s, 'tie', REPEL_TIE) : repelWords(s, `tactic.${kind}.${result}`, set.tactics[kind][result]);
@@ -173,7 +181,7 @@ function repelStep(s, kind) {
   if (result === 'win') { s.pos--; if (kind === 'post' && post === 'gunner') s.boarders = Math.max(1, s.boarders - 1); }
   if (result === 'lose') s.pos++;
   s.round++;
-  if ((result !== 'tie' || press) && Math.random() < REPEL_HURT[press ? 'lose' : result] * (1 + 0.15 * (s.grade || 0)) * hurtScale(repelCover(s)[here])) text += ` ${repelCasualty(s)}`;
+  if ((result !== 'tie' || press) && Math.random() < REPEL_HURT[press ? 'lose' : result] * (1 + 0.15 * (s.grade || 0)) * hurtScale(repelCover(s)[here])) text += ` ${repelCasualty(s, press && who ? who.id : undefined)}`;  // a miss on an order lands on the one sent
   if (s.handDied) return text;  // the hand is dead: the ending is queued, and the fight does not go on
   if (s.pos < 0 || s.pos > 2) return `${text} ${repelSettle(s)}`;
   G.nextEvent = repelScene(s);
@@ -213,9 +221,9 @@ function hurtHand(s) {
 
 // Someone goes down. The hand can be hurt but not killed. A crew member hurt twice in one fight is dead, and so is a named person marked before; where a floor of main
 // characters holds (the full build, fate.js) they are marked instead.
-function repelCasualty(s) {
+function repelCasualty(s, only) {  // `only`: the one it falls on, when the exchange was an order to them
   const st = G.state, pool = [...st.crew.filter(id => !(st.injured || {})[id] || s.hurt.has(id)), 'you'];
-  let who = pick(pool), cover = '';
+  let who = only || pick(pool), cover = '';
   if (who === 'you' && !s.covered) {  // a friend takes it for you, once in a fight
     const friend = st.crew.map(person).find(c => c && (c.opinion >= OPINION.FRIEND || c.owes) && !(st.injured || {})[c.id] && !s.hurt.has(c.id) && !(s.held || []).some(l => l.startsWith(c.first)));
     if (friend) { who = friend.id; s.covered = true; cover = `${friend.first} pulls you down behind the closer and takes it${friend.owes ? ` ("We are even," ${friend.first} says later)` : ''}. `; delete friend.owes; }

@@ -302,6 +302,12 @@ a point under puts a fifth on, to two fifths at the lowest. The triangle, the he
 Over 3 seeds of 100 (level 2, five standing with you, grade 0): the post's move won 90% (89 before), unchanged within noise; the post's move after a cover ability won 90% with 0.27 hurt against 0.31 and someone hurt in 43% of fights against 49%; a hand who thins them
 when outnumbered and otherwise uses the post's move won 90%, with 0.26 hurt; an ability used every round never wins (the steady one costs a shot each time it misses: 0.9 hurt a fight). Random tactics and the raid are as they were.
 
+### Orders to the crew in the lock fight (`js/handtohand.js`, `js/boarders.js`, #711)
+
+Each exchange also offers up to three orders to named crew who are on their feet and have a post (the gunner, the pilot, the engineer, and the slicer as Comms; the cook, the medic and the first officer fight as a head count and no more). An order is that person's cover or steady ability, so the buttons read "Bo cuts the lights (cover here, once)" and "Ana picks off a runner (one fewer of them, no ground)". A crew member's sheet comes from what they already are, with no new field: the post's stat a point over the base (as the hand's is at the sign-on), a point more for a brave one and a point less for a nervous or drunk one, their skill as it stands (a level less while bad news from home weighs on them), then the same rule (`check`) and the same edges as the hand's abilities. Someone already hurt in the fight takes a tenth off. The most skilled are offered first, the first with the cover while the fight still has it to make (once a fight, the hand's own counts).
+An order costs the exchange and wins no ground, as the hand's abilities do. A miss holds the ground and gives them a shot, and the shot is at the one sent: the casualty is rolled at the lost-exchange rate and falls on them (hurt, or dead if already hurt in the fight). The hand's own move, the triangle, the head count and the casualty rules are as they were.
+Over 3 seeds of 100 (level 2, grade 0): a hand who has the crew make the cover and then plays by the numbers won 89% with five standing (rounds 4.3, 0.27 dead) against 90% (3.3 rounds, 0.26 dead) for the numbers alone, and 87% with two standing against 85%: the orders are a choice with a cost, not a better play. The hand's own policies read as they did within noise.
+
 ## Open questions
 
 None right now.
