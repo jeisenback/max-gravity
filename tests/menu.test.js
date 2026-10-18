@@ -138,3 +138,16 @@ test('Reduce motion starts on when the system asks for it, and a choice made in 
   assert.equal(await plain.ev(() => Settings.reduceMotion), false, 'no system request: off');
   await plain.done();
 });
+
+test('the name field asks a hired hand for the name on their papers, and an owner for the captain\'s name (#736)', async () => {
+  const hand = await open({ title: true });
+  await hand.page.click('[data-action=menuView][data-arg=new]');
+  assert.equal(await hand.page.getAttribute('#ngCaptain', 'placeholder'), 'The name on your papers');
+  await hand.done();
+  const owner = await open({ title: true, scope: 'full' });
+  await owner.page.click('[data-action=menuView][data-arg=new]');
+  assert.equal(await owner.page.getAttribute('#ngCaptain', 'placeholder'), 'Captain\'s name', 'the owner start is the default there');
+  await owner.page.click('[data-action=menuMode][data-arg=hired]');
+  assert.equal(await owner.page.getAttribute('#ngCaptain', 'placeholder'), 'The name on your papers', 'and a hand there is asked as a hand');
+  await owner.done();
+});

@@ -190,7 +190,7 @@ const Menu = {
       if (!f.slot) f.slot = empty || Saves.current;
       return `<h2>New game</h2>
         <div class="menu-form">
-          <label>Your name <input type="text" id="ngCaptain" maxlength="30" placeholder="Captain's name" value="${esc(f.captain || '')}"></label>
+          <label>Your name <input type="text" id="ngCaptain" maxlength="30" placeholder="${f.mode === 'hired' ? 'The name on your papers' : 'Captain\'s name'}" value="${esc(f.captain || '')}"></label>
           <h3>${narrow ? 'Your post' : 'How you start'}</h3>
           ${narrow ? '' : `<div class="row">${[['owner', 'Owner'], ['hired', 'Hired hand']].map(([id, l]) => `<button class="${(f.mode || 'owner') === id ? 'on' : ''}" data-action="menuMode" data-arg="${id}">${l}</button>`).join('')}</div>`}
           ${f.mode === 'hired' ? `<p class="hint">You sign on to a captain's ship and work ${scopeOff('posts') ? 'the guns' : 'one post'}. The captain picks where she goes; you save toward a ship of your own.</p>
