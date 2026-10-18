@@ -227,7 +227,7 @@ function faceImage(p) {
 // ---------- the people aboard ----------
 function shipPeople() {
   const t = G.transit;
-  if (t.aboard) return t.aboard;
+  if (t.aboard) return (t.aboard = t.aboard.filter(p => p.role === 'you' || p.role === 'cat' || p.role === 'passenger' || G.state.crew.includes(p.id)));  // the burn keeps its people's places, but someone lost on the way is no longer aboard
   const people = [{ name: 'You', role: 'you', id: 'you' }];
   for (const c of crewMembers()) people.push({ name: c.first, role: c.role, id: c.id });
   for (const m of paxAboard().slice(0, 4)) {
