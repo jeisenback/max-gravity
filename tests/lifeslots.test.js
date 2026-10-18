@@ -10,7 +10,7 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { lifeSlotCount, lifeSlotKeys, lifeSlotOf } = load(['js/shiplife.js'], { Mods: { register() {} } }, ['lifeSlotCount', 'lifeSlotKeys', 'lifeSlotOf']);
+const { lifeSlotCount, lifeSlotKeys, lifeSlotOf, lifeFree, spendLife } = load(['js/shiplife.js'], { Mods: { register() {} } }, ['lifeSlotCount', 'lifeSlotKeys', 'lifeSlotOf', 'lifeFree', 'spendLife']);
 const at = (slots, p, used = {}, flipped = p >= 0.5) => lifeSlotOf({ slots, total: 100, left: 100 * (1 - p), flipped, lifeUsed: used });
 
 test('a leg of a few days has two slots and a long one five, and the keys run before, the middle ones, after', () => {
@@ -25,6 +25,14 @@ test('a slot opens when the burn reaches its share, and a slot not taken is gone
   assert.equal(at(5, 0.5), 'm2', 'the flip opens the middle one of five, and after is still to come');
   assert.equal(lifeSlotOf({ flipped: true, lifeUsed: {} }), 'after', 'a bare transit has two slots, and the flip opens the second');
   assert.equal(lifeSlotOf({ lifeUsed: {} }), 'before');
+});
+
+test('a slot is free until it is spent, and a sitting can spend the first or the last ahead of the burn', () => {
+  const t = { slots: 4, total: 100, left: 70 };  // a third in: the second slot
+  assert.equal(lifeFree(t), true); spendLife(t); assert.deepEqual({ ...t.lifeUsed }, { m1: true }); assert.equal(lifeFree(t), false);
+  t.left = 40; assert.equal(lifeFree(t), true, 'the next slot is open');
+  spendLife(t, 'after'); spendLife(t, 'before'); assert.deepEqual({ ...t.lifeUsed }, { m1: true, after: true, before: true });
+  t.left = 5; assert.equal(lifeFree(t), false, 'the last was spent ahead');
 });
 
 test('a long burn runs longer and has a pick for each slot, one opening as the burn reaches it', async () => {

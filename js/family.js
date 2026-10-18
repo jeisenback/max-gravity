@@ -138,7 +138,7 @@ const goesOn = (p, key) => {
   p.turn = k;
   const cap = hiredCaptain(), vars = { n, port: t ? SYSTEMS[t.to].name : st.planet, cap: cap ? cap.last : '', ship: shipTitle(), post: (ROLE_NAMES[p.role] || '').toLowerCase() };
   const owed = !t || t.flipped, offer = say(`${k}.c0.label${k !== 'captain' && owed ? '.owed' : ''}`, vars);
-  const spend = () => { if (k === 'captain') like(cap, -1, null); else if (owed) st.watchOwed = { n }; else (t.lifeUsed = t.lifeUsed || {}).after = true; };
+  const spend = () => { if (k === 'captain') like(cap, -1, null); else if (owed) st.watchOwed = { n }; else spendLife(t, 'after'); };
   const result = c => () => say(`${k}.${c}.result.${pick([0, 1])}`, vars);
   return { title: say('title', { n }), text: say(`${k}.${pick([0, 1])}`, vars),
     choices: [{ label: offer, run() { spend(); like(p, 2, say(`${k}.c0.memory`, vars)); return result('c0')(); } }, { label: say(`${k}.c1.label`, vars), run: result('c1') }] };
@@ -148,7 +148,7 @@ const standOwedWatch = (st, t) => {
   const owed = st.watchOwed;
   if (!owed) return null;
   st.watchOwed = null;
-  (t.lifeUsed = t.lifeUsed || {}).before = true;
+  spendLife(t, 'before');
   return familySay('goeson')('owed.stood', { n: owed.n });
 };
 // The first exchange of a sitting leads on to the second: each choice queues it (G.nextEvent, read when the result closes).

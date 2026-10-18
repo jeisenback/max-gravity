@@ -594,25 +594,33 @@ function lifeSlotOf(t) {
   return lifeSlotKeys(n)[Math.min(n - 1, Math.floor(p * n))];
 }
 const lifeSlot = () => lifeSlotOf(G.transit);
+// Whether the slot the burn is in is still to take, and taking it (`key` for one the sitting chats and the owed watch spend ahead: before, after).
+const lifeFree = t => !(t.lifeUsed || {})[lifeSlotOf(t)];
+const spendLife = (t, key = lifeSlotOf(t)) => { (t.lifeUsed = t.lifeUsed || {})[key] = true; };
 
 const activityLabel = a => (typeof a.label === 'function' ? a.label() : a.label);
 
 // Downtime is a menu: one activity a slot of the burn. There are many to choose from, so it shows five at a
 // time, mixed from the three kinds (the ship's own, a hand's, and what is on now) and turned on each time, so everything
 // comes round. The same five stay while that slot of the burn is open.
-const DOWNTIME_SHOWN = 5;
+const MENU_SHOWN = 5;
+// Five of the lanes' entries, one from each lane in turn, each lane started at the turn's place in it, so everything comes round (the downtime menu's turn is its count, the day ashore's is the day: dayashore.js).
+// Fewer than five are all shown. Takes the lanes and the turn, so it runs in plain Node.
+function menuFive(lanes, turn) {
+  const spun = lanes.map(l => (l.length ? l.slice(turn % l.length).concat(l.slice(0, turn % l.length)) : l)), out = [];
+  for (let i = 0; out.length < MENU_SHOWN && spun.some(l => l.length > i); i++) for (const l of spun) if (l[i] && out.length < MENU_SHOWN) out.push(l[i]);
+  return out;
+}
 const baseActivities = () => Object.entries(ACTIVITIES).filter(([id, a]) => hiredMay(id, a)).map(([, a]) => a);
 function downtimeFive() {
   const t = G.transit, st = G.state, half = lifeSlot(), ok = a => !a.can || a.can();
   const lanes = [baseActivities().filter(ok), handDowntime().filter(ok), onNow().filter(ok)], every = lanes.flat();
-  if (every.length <= DOWNTIME_SHOWN) return every;
+  if (every.length <= MENU_SHOWN) return every;
   t.lifeShown = t.lifeShown || {};
   const kept = (t.lifeShown[half] || []).map(l => every.find(a => activityLabel(a) === l)).filter(Boolean);
   if (kept.length) return kept;
   const turn = st.lifeTurn = (st.lifeTurn || 0) + 1;
-  const spun = lanes.map(l => (l.length ? l.slice(turn % l.length).concat(l.slice(0, turn % l.length)) : l));
-  const out = [];
-  for (let i = 0; out.length < DOWNTIME_SHOWN && spun.some(l => l.length > i); i++) for (const l of spun) if (l[i] && out.length < DOWNTIME_SHOWN) out.push(l[i]);
+  const out = menuFive(lanes, turn);
   t.lifeShown[half] = out.map(activityLabel);
   return out;
 }
@@ -627,8 +635,7 @@ function downtimeEvent(all) {
       ...(all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive()).map(a => ({
         label: activityLabel(a), can: a.can,
         run() {
-          t.lifeUsed = t.lifeUsed || {};
-          t.lifeUsed[lifeSlot()] = true;
+          spendLife(t);
           if (hired()) hired().did = { ...hired().did, downtime: true };  // the first run's steps (tutorial.js)
           const text = a.run();
           if (text) comm(`[Ship] ${text}`);  // one that leads straight into a scene (Sit with someone) has nothing to say yet
@@ -648,7 +655,7 @@ function syncLifeButtons() {
   if (!show) return;
   el.style.top = `${G.lifeY}px`;
   el.style.left = `${(G.W - G.hudW) / 2}px`;
-  const used = (t.lifeUsed || {})[lifeSlot()], more = lifeSlotKeys(t.slots || 2).slice(-1)[0] !== lifeSlot();
+  const used = !lifeFree(t), more = lifeSlotKeys(t.slots || 2).slice(-1)[0] !== lifeSlot();
   el.querySelector('button').disabled = !!used;
   el.dataset.note = used ? (more ? 'Next in a day or two' : 'Done for this burn') : 'Downtime';
 }

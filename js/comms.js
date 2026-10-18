@@ -56,7 +56,7 @@ const COMMS_FILTERS = [['all', 'All'], ['station', 'Stations'], ['ship', 'Ships'
 // Who you can open from here: yourself, the captain and first officer on the captain's ship, and everyone else aboard.
 // A chat is the "sit with someone" scene, so it takes the same once-a-half-burn downtime, and only with people who have a story to tell
 // (the crew and passengers the game makes; the authored crew have their own scenes).
-const chatFree = () => { const t = G.transit; return !!t && G.mode === 'transit' && !t.event && phase() === 'move' && !(t.lifeUsed || {})[lifeSlot()]; };
+const chatFree = () => { const t = G.transit; return !!t && G.mode === 'transit' && !t.event && phase() === 'move' && lifeFree(t); };
 const chatAble = id => procedural().some(f => f.id === id) || paxAboard().some(m => m.pid === id);
 
 function quietHtml() {
@@ -112,7 +112,7 @@ Mods.register({
     M.action('chatWith', id => {
       const t = G.transit, p = G.state.people[id];
       if (!p || !chatFree() || !chatAble(id)) return;
-      t.lifeUsed = t.lifeUsed || {}; t.lifeUsed[lifeSlot()] = true;
+      spendLife(t);
       if (hired()) hired().did = { ...hired().did, chat: true };  // the first run's steps (tutorial.js)
       G.bridgeOpen = null;
       openEvent(sitBeat(p, G.state.crew.includes(id)));
