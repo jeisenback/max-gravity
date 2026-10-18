@@ -113,3 +113,16 @@ test('clicking someone in the burn view opens their page', async () => {
   assert.equal(await ev(() => G.bridgeOpen), null);
   await done();
 });
+
+// The Comms log shows eight lines, and a downtime result runs to twelve on a phone, so only its end showed (#767). Comms gets one line, what was done and what it
+// taught; the full text is the dialog's.
+test('a downtime pick posts one line to Comms, with what it taught, and the dialog keeps the whole result', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => { setup(); G.state.crew.push(castPerson('ines').id); castRec('ines').since = G.state.day;
+    const c = downtimeEvent(true).choices.find(x => x.label === 'Fly a sim with Ines'); G.transit.comms = [];
+    const text = c.run(); return { text, comms: G.transit.comms.slice() }; });
+  assert.ok(r.text.length > 300, 'the dialog has the scene');
+  assert.deepEqual(r.comms, ['[Ship] Downtime: Fly a sim with Ines. (+3 experience at the pilot post.)']);
+  await done();
+});

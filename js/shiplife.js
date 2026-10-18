@@ -638,7 +638,10 @@ function downtimeEvent(all) {
           spendLife(t);
           if (hired()) hired().did = { ...hired().did, downtime: true };  // the first run's steps (tutorial.js)
           const text = a.run();
-          if (text) comm(`[Ship] ${text}`);  // one that leads straight into a scene (Sit with someone) has nothing to say yet
+          // Comms gets one line, what was done and what it taught: it shows eight lines, and the result runs to twelve on a phone (#767). One that leads
+          // straight into a scene (Sit with someone) has nothing to say yet.
+          const taught = text && (text.match(/\([^()]*\)$/) || [''])[0];
+          if (text) comm(`[Ship] ${lifeSay('log', { what: activityLabel(a) })}${taught ? ` ${taught}` : ''}`);
           return text;
         },
       })),
