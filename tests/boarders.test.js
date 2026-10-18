@@ -386,7 +386,7 @@ test('the lock fight offers the post\'s abilities after its own move, with the o
   assert.match(r.gunner[1], /^\[Gunner\] Pick off a runner \(one fewer of them, no ground\) \[\d+%; if it fails: a crew casualty, you may be hurt\]$/);
   assert.match(r.gunner[2], /^\[Gunner\] Covering burst \(cover here, once\) \[\d+%; if it fails: a crew casualty, you may be hurt\]$/);
   assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]].map(l => l.replace(/ \[.*$/, '')), ['[Pilot] Cycle a hatch on them (one fewer of them, no ground)', '[Engineer] Drop the pressure door (cover here, once)', '[Comms] A false order on their band (one fewer of them, no ground)']);
-  assert.ok(+r.gunner[1].match(/\[(\d+)%/)[1] > +r.gunner[2].match(/\[(\d+)%/)[1], 'the steady ability is the easier gamble');
+  assert.ok(+r.gunner[1].match(/\[(\d+)%/)[1] < +r.gunner[2].match(/\[(\d+)%/)[1], 'the pick-off is the harder gamble: it is the one that can end the fight');
   assert.deepEqual(r.shut0, [false, false, false, false, false, false]); assert.deepEqual(r.shut1, [false, false, false, false, false, true]); assert.equal(r.why, 'Once a fight.');
   assert.match(r.board, /aria-label="The ship in three sections\. The Lock: theirs, cover 1\. The Corridor: the front, \d+ of them, cover 2\. The Bridge: yours, cover 1\./); assert.equal(r.assault, 6, 'the assault has them too');
   await done();
@@ -563,5 +563,40 @@ test('an owner who kept a post fights boarders at the lock with the same moves: 
   assert.match(r.hurt, /You are hurt/); assert.ok(r.hurtUntil >= 12); assert.equal(r.died, false, 'an owner is laid up and lives'); assert.equal(r.level, true);
   assert.match(r.won, /goes into your credits\. You have the cutter cast off/); assert.ok(r.take); assert.equal(r.xp, 5);
   assert.equal(r.never, null, 'an owner who never was a hand has no post to fight at');
+  await done();
+});
+
+test('the last of them going down wins the fight, and so few left, pushed back to the lock, that the rest break; in both fights', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const assault of [false, true]) {
+      const kind = assault ? 'assault' : 'repel';
+      const play = (pos, boarders, began, roll) => {
+        __seed(7); fight(); const s = assault ? assaultStart(G.duel.foe) : repelStart(G.duel, 'full');  // (a constant random hangs the generators, so each play starts from the seeded one)
+        Object.assign(s, { pos, boarders, began }); rolls([roll]);
+        const text = repelStep(s, 'steady');
+        G.nextEvent = null; G.duel = null;
+        return { won: s.pos < 0, boarders: s.boarders, pos: s.pos, last: text.includes(FIGHT_END[kind].last), broke: text.includes(FIGHT_END[kind].broke) };
+      };
+      out[kind] = {
+        last: play(1, 1, 4, 0.01),         // the last of four, picked off in the corridor
+        broke: play(0, 2, 6, 0.01),        // two of six left, at the lock: one more down and the rest break
+        notPushedBack: play(1, 2, 6, 0.01),  // as few, but still in the corridor: the fight goes on
+        tooMany: play(0, 4, 6, 0.01),      // pushed back, but three of six are still standing
+        missed: play(1, 1, 4, 0.99),       // a miss leaves the last of them standing
+      };
+    }
+    return out;
+  });
+  for (const kind of ['repel', 'assault']) {
+    const x = r[kind];
+    assert.deepEqual([x.last.won, x.last.boarders, x.last.last, x.last.broke], [true, 0, true, false], `${kind}: the last of them down wins the fight`);
+    assert.deepEqual([x.broke.won, x.broke.boarders, x.broke.broke, x.broke.last], [true, 1, true, false], `${kind}: pushed back and down to a third, the rest break`);
+    assert.deepEqual([x.notPushedBack.won, x.notPushedBack.broke], [false, false], `${kind}: not pushed back, they hold`);
+    assert.deepEqual([x.tooMany.won, x.tooMany.boarders], [false, 3], `${kind}: too many left, they hold`);
+    assert.deepEqual([x.missed.won, x.missed.boarders], [false, 1], `${kind}: a miss ends nothing`);
+  }
   await done();
 });
