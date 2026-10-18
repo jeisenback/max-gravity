@@ -122,3 +122,15 @@ test('each answer to Signing On is in the stored game, so quitting before the fi
   assert.ok(r.money.stored.share > r.money.live.share); assert.ok(r.learn.stored.xp > r.learn.live.xp); assert.ok(r.away.stored.cap > r.away.live.cap);
   await done();
 });
+
+test('signing on for the money says the share went up, with the figure the hand now has (#736)', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
+    const h = G.state.hired, base = Math.round(h.share * 100), text = chooseEvent(0);
+    return { base, now: Math.round(h.share * 100), text: String(text) };
+  });
+  assert.equal(r.now, r.base + 2, 'the share is two points up');
+  assert.ok(r.text.includes(`${r.now} percent of every run now, 2 points up on what you were offered`), r.text);
+  await done();
+});
