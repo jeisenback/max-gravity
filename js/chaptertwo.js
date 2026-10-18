@@ -6,7 +6,7 @@
 // came. The wages the owner pays at every burn (crew.js payCrew) are what keeps them: the ones who are not paid quit. crewRecord and the two pure rules take what they read as parameters, so they
 // run in plain Node (tests/chaptertwo.test.js). Loaded after ownerboard.js; only called into at runtime.
 
-const CHAPTER_TWO_DAYS = 90;  // the days from the buy to the close (to be set against the soak)
+const CHAPTER_TWO_DAYS = 90;  // the days from the buy to the close; measured with tools/chaptertwo-soak.js (ROADMAP.md): nothing erodes the crew inside 240 days, so the length does not change who is aboard
 
 // Who of those who came is still aboard, who has left (quit, put ashore, gone to another berth) and who has died.
 function crewRecord({ came, crew, people }) {
