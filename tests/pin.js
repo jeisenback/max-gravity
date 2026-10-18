@@ -29,15 +29,14 @@ function withoutWords(v, words) {
 }
 
 function pinTests({ name, fixture, play, min = 1, broken = /undefined|\[object|NaN/, words, check, label }) {
-  after(closeBrowser);
+  let played, page;  // the one page both plays run on: the repeatable test plays again on it, so a pin costs one page and two plays (#753)
+  after(async () => { try { if (page) await page.done(); } finally { await closeBrowser(); } });
   const file = path.join(__dirname, 'fixtures', fixture);
   const text = r => (typeof r.text === 'string' ? r.text : JSON.stringify(r));
   const idOf = (r, n) => (label ? label(r) : r.key || r.id || `record ${n}`);
-  let played;
   const playOnce = () => played || (played = (async () => {
-    const g = await open({ scope: 'full' });
-    const got = await g.ev(play);
-    await g.done();
+    page = await open({ scope: 'full' });
+    const got = await page.ev(play);
     assert.ok(got.length >= min, `${got.length} cases`);
     assert.deepEqual(got.filter(r => broken.test(text(r))).map(idOf), [], 'no broken record');
     if (check) check(got);
@@ -66,10 +65,8 @@ function pinTests({ name, fixture, play, min = 1, broken = /undefined|\[object|N
   }
 
   test(`the pin of ${name} is repeatable: playing them twice gives the same record`, async () => {
-    const g = await open({ scope: 'full' });
-    const a = await g.ev(play), b = await g.ev(play);
-    await g.done();
-    assert.deepEqual(a, b);
+    const { got } = await playOnce();
+    assert.deepEqual(await page.ev(play), got);
   });
 }
 
