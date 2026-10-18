@@ -305,6 +305,22 @@ const playScenes = () => {
     }, { rolls: [0, 0.99], extra: () => ({ board: hired().freight.list.length, crew: G.state.crew.length, standing: hired().standing, fund: hired().fund }) });
     window.tiesOf = realTies;
   }
+  // ---------- a day ashore: the menu with every entry, at a port of each kind and on the days that have a broadcast, a show and a match ----------
+  { const ashore = (name, setup) => run(`dayashore:${name}`, {}, () => { G.mode = 'landed'; setup(G.state); return dayAshoreEvent(true); });
+    const portLike = (st, pick) => { const sys = Object.entries(SYSTEMS).find(([, s]) => s.planets.some(pick)); st.systemId = sys[0]; st.planet = sys[1].planets.find(pick).name; fillBar(currentPlanet()); };
+    ashore('walk:market', st => { portLike(st, p => p.services.includes('trade') && !p.services.includes('shipyard')); st.rumors = []; });
+    ashore('walk:yard', st => { portLike(st, p => p.services.includes('shipyard')); st.rumors = []; });
+    ashore('walk:rumor', st => { portLike(st, p => p.services.includes('trade')); st.rumors = [{ planet: st.planet, cid: 'water', until: st.day + 5, mult: 1.5 }]; });
+    ashore('table', st => { portLike(st, p => p.services.includes('trade')); G.patrons = [{ p: makePerson('earth'), known: true, regular: true }]; registerPerson(G.patrons[0].p); G.barState.planet = st.planet; });
+    ashore('errand', st => { portLike(st, p => p.services.includes('trade')); const p = Object.values(st.people).find(x => st.crew.includes(x.id)); p.opinion = OPINION.FRIEND; delete p.errandAt; while ((st.day + Math.abs(hash(p.id))) % ERRAND_EVERY !== 0) st.day++; });
+    ashore('room', st => { portLike(st, p => p.services.includes('trade')); const p = Object.values(st.people).find(x => st.crew.includes(x.id)); p.home = st.planet; storyOf(p); st.room = { planet: st.planet, pid: p.id, since: st.day - 100, last: st.day - 20, visits: 1 }; });
+    ashore('broadcast', st => { portLike(st, p => p.services.includes('trade')); while (!broadcastsOn(st.day).length) st.day++; });
+    ashore('show', st => { portLike(st, p => p.services.includes('trade')); while (!airing(st.day).length || airing(st.day)[0].premiere || airing(st.day)[0].finale) st.day++; });
+    ashore('show:premiere', st => { portLike(st, p => p.services.includes('trade')); while (!airing(st.day).some(s => s.premiere) || airing(st.day)[0].finale || !airing(st.day)[0].premiere) st.day++; });
+    ashore('show:finale', st => { portLike(st, p => p.services.includes('trade')); while (!airing(st.day).length || !airing(st.day)[0].finale) st.day++; });
+    ashore('match', st => { portLike(st, p => p.services.includes('trade')); const l = LEAGUES[0]; while (!['regular', 'playoffs', 'final'].includes(leaguePhase(l, st.day))) st.day++; const m = playMatch(l, l.teams[0], l.teams[1]); m.day = st.day; });
+  }
+  { const say = daySay; run('dayashore:button', {}, () => ({ title: 'x', text: [say('button'), say('hint.open'), say('hint.spent')].join(' | '), choices: [] })); }  // the Port page's button and its hint, played as words
   return out;
 };
 
