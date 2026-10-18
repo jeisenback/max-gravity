@@ -609,8 +609,10 @@ function drawTransit(W, H) {
   // Comms log, top-left
   let colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = transitCommsLines(narrow, top, shipY, L * k);
   const commsY = top + (narrow ? 132 : 116), dlg = transitDialogBox(W);
+  if (dlg && !narrow) colW = Math.max(120, Math.min(colW, dlg.x - 56));  // its right edge (colW + 40) stays 16 left of the dialog
+  const tut = tutorialPrompt(colW + 24);  // the tutorial's box goes under Comms, which gives up the lines it takes (#735)
+  if (tut) maxLines = Math.max(maxLines - Math.ceil((tut.h + 8) / 16), narrow ? 2 : 4);
   if (dlg && narrow) maxLines = Math.min(maxLines, Math.floor((dlg.y - 8 - commsY - 30) / 16));  // ends above the dialog
-  else if (dlg) colW = Math.max(120, Math.min(colW, dlg.x - 56));  // its right edge (colW + 40) stays 16 left of the dialog
   const room = maxLines >= 1;
   ctx.font = '12px "IBM Plex Mono", monospace';
   // Show whole messages, newest last, as many as fit.
@@ -631,6 +633,10 @@ function drawTransit(W, H) {
       ctx.fillStyle = market ? '#ffcf7f' : recent ? '#cfe3ff' : '#7d93aa';
       ctx.fillText(l, 28, y += 16);
     }
+  }
+  if (tut) {  // drawn by the tutorial (tutorial.js), left out when an open dialog on a phone leaves no room under Comms
+    const tutY = G.commsBox ? G.commsBox.y + G.commsBox.h + 8 : commsY;
+    if (!(dlg && narrow && tutY + tut.h > dlg.y - 4)) G.burnBoxes.tutorial = { x: 16, y: tutY, w: colW + 24, h: tut.h };
   }
 
   // Ship's log, bottom-left
