@@ -5,7 +5,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser, goTo } = require('./helpers');
+const { open, closeBrowser, goTo, frames } = require('./helpers');
 
 after(closeBrowser);
 
@@ -108,7 +108,7 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
     const { page, done } = await open({ title: true, viewport: { width: w, height: h }, mobile: w < 700 || h < 500 });
     for (const [id, fn] of Object.entries(screens)) {
       await page.evaluate(`(${fn.toString()})()`);
-      await page.waitForTimeout(100);
+      await frames(page);
       const bad = await page.evaluate(W => {
         const out = [];
         if (document.documentElement.scrollWidth > W + 1) out.push(`page ${document.documentElement.scrollWidth}px wide`);
@@ -373,7 +373,7 @@ test('the landed panel uses a tall window, and keeps its old size in a short one
 test('on a phone, the choices of a long scene stay in view and the dialog clears the HUD', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' }); });
-  await page.waitForTimeout(250);
+  await frames(page);
   const r = await page.evaluate(() => {
     const p = document.querySelector('#panel').getBoundingClientRect(), btns = [...document.querySelectorAll('#panel .choices button')].map(b => b.getBoundingClientRect());
     return { top: p.top, bottom: p.bottom, h: innerHeight, long: document.querySelector('#panel').scrollHeight > document.querySelector('#panel').clientHeight, choices: btns.map(b => [b.top, b.bottom]) };
@@ -397,7 +397,7 @@ test('the cue that a scene continues shows on a long scene and a long result, an
     out.result = cue();
     return out;
   }, [longText, shortResult ? 'A short result.' : longText]);
-  await page.waitForTimeout(200);
+  await frames(page);
   const short = await show(true);
   await ev(() => { while (G.dialog) finishEvent(); });
   const long = await show(false);
@@ -445,7 +445,7 @@ test('the port scene banner is 150px on desktop and 92px on a phone, and still d
   for (const [name, viewport, mobile] of [['desktop', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
     const { ev, page, done } = await open({ viewport, mobile });
     await ev(() => { while (G.dialog) finishEvent(); UI.render(); });
-    await page.waitForTimeout(200);
+    await frames(page);
     out[name] = await page.evaluate(() => { const c = document.getElementById('vs'), g = c.getContext('2d'), d = g.getImageData(0, 0, c.width, c.height).data; let lit = 0; for (let i = 0; i < d.length; i += 4) if (d[i] + d[i + 1] + d[i + 2] > 60) lit++; return { h: c.getBoundingClientRect().height, lit }; });
     await done();
   }

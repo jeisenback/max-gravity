@@ -14,6 +14,7 @@
     "js/shell.js",
     "js/views.js",
     "js/ui.js",
+    "js/game.js",
     "js/icerun.js",
     "js/jobs.js",
     "js/suggest.js",
@@ -33,6 +34,7 @@
     "js/cast.js": 97,
     "js/engagements.js": 97,
     "js/fate.js": 98,
+    "js/game.js": 94,
     "js/hired.js": 97,
     "js/hiredevents.js": 98,
     "js/hiredeventstext.js": 98,
@@ -43,7 +45,7 @@
     "js/signon.js": 98,
     "js/stakes.js": 98,
     "js/suggest.js": 98,
-    "js/ui.js": 90,
+    "js/ui.js": 94,
     "js/views.js": 98
   }
 }
