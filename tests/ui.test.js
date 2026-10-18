@@ -385,6 +385,28 @@ test('on a phone, the choices of a long scene stay in view and the dialog clears
   await done();
 });
 
+test('the cue that a scene continues shows on a long scene and a long result, and not on a short result that follows a long scene (#732)', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' }); while (G.dialog) finishEvent(); });
+  const longText = Array.from({ length: 14 }, (_, i) => `<p>Paragraph ${i}: the lock cycles, the deck rings, and somebody says something that takes a line or two to say.</p>`).join('');
+  const show = (shortResult) => page.evaluate(([text, res]) => {
+    openEvent({ title: 'A Long Scene', text, choices: [{ label: 'Go on', run: () => res }] });
+    const cue = () => document.getElementById('panel').classList.contains('more');
+    const out = { scene: cue() };
+    document.querySelector('#panel .choices button').click();
+    out.result = cue();
+    return out;
+  }, [longText, shortResult ? 'A short result.' : longText]);
+  await page.waitForTimeout(200);
+  const short = await show(true);
+  await ev(() => { while (G.dialog) finishEvent(); });
+  const long = await show(false);
+  assert.equal(short.scene, true, 'a long scene says it continues');
+  assert.equal(short.result, false, 'a short result after it does not');
+  assert.equal(long.scene, true); assert.equal(long.result, true, 'a long result does');
+  await done();
+});
+
 test('the transit Comms box leaves room for the ship on a short phone', async () => {
   const { ev, done } = await open();
   const r = await ev(() => ({

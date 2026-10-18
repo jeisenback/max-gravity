@@ -99,6 +99,8 @@ const UI = {
         ${raw(shiftLines(shifts || []))}
         <div class="choices"><button data-action="continue" class="primary" aria-describedby="event-result">Continue</button></div>
       </div>`);
+    this.el.scrollTop = 0;
+    this.moreCue();  // the scene before it may have been long, and its cue must not stay on a short result
     this.el.querySelector('[data-action="continue"]').focus();
   },
 

@@ -296,14 +296,14 @@
     "round": 0,
     "i": 0,
     "roll": 0,
-    "text": "The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -317,7 +317,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -33. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -33. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -356,7 +356,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -402,7 +402,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You walk it wrong. The burst goes ahead of her. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You walk it wrong. The burst goes ahead of her. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -446,7 +446,7 @@
    },
    {
     "edge": 0,
-    "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "edge": -2,
@@ -767,14 +767,14 @@
     "round": 0,
     "i": 0,
     "roll": 0,
-    "text": "The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -41. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -41. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -788,7 +788,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -34. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -34. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -827,7 +827,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -873,7 +873,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -34. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -34. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -917,7 +917,7 @@
    },
    {
     "edge": 0,
-    "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "edge": -2,
@@ -1238,14 +1238,14 @@
     "round": 0,
     "i": 0,
     "roll": 0,
-    "text": "The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -1259,7 +1259,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -33. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -33. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -1298,7 +1298,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -1344,7 +1344,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -33. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -33. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -1388,7 +1388,7 @@
    },
    {
     "edge": 0,
-    "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "edge": -2,
@@ -1709,14 +1709,14 @@
     "round": 0,
     "i": 0,
     "roll": 0,
-    "text": "The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -1730,7 +1730,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -33. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -33. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -1769,7 +1769,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -1815,7 +1815,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You find the wrong band. The jammer works on nothing. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You find the wrong band. The jammer works on nothing. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -1859,7 +1859,7 @@
    },
    {
     "edge": 0,
-    "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "edge": -2,
@@ -2201,7 +2201,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -2672,7 +2672,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -41. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -41. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -3143,7 +3143,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -3614,7 +3614,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -4064,14 +4064,14 @@
     "round": 0,
     "i": 0,
     "roll": 0,
-    "text": "The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -4085,7 +4085,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -4124,7 +4124,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -4170,7 +4170,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You walk it wrong. The burst goes ahead of her. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You walk it wrong. The burst goes ahead of her. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -4214,7 +4214,7 @@
    },
    {
     "edge": 0,
-    "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "edge": -2,
@@ -4535,14 +4535,14 @@
     "round": 0,
     "i": 0,
     "roll": 0,
-    "text": "The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -49. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -49. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -4556,7 +4556,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -41. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -41. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -4595,7 +4595,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -4641,7 +4641,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -4685,7 +4685,7 @@
    },
    {
     "edge": 0,
-    "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "edge": -2,
@@ -5006,14 +5006,14 @@
     "round": 0,
     "i": 0,
     "roll": 0,
-    "text": "The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -5027,7 +5027,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -5066,7 +5066,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -5112,7 +5112,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -5156,7 +5156,7 @@
    },
    {
     "edge": 0,
-    "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "edge": -2,
@@ -5477,14 +5477,14 @@
     "round": 0,
     "i": 0,
     "roll": 0,
-    "text": "The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -5498,7 +5498,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -5537,7 +5537,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -5583,7 +5583,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You find the wrong band. The jammer works on nothing. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You find the wrong band. The jammer works on nothing. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -5627,7 +5627,7 @@
    },
    {
     "edge": 0,
-    "text": "She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "edge": -2,

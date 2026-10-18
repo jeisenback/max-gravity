@@ -116,6 +116,7 @@ const RAID_CLOSE = {
   crippled: { gun: ('Your last burst takes her drive, and the cutter yaws and goes quiet. She\'ll have a tow in a day. A beacon on her hull is ' +
       'already calling for it.'), grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out.' },
   standoff: 'She breaks off at long range and throws one last burst as she goes. It clips the hull aft.',
+  standoffNear: 'She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft.',  // the same close, when the board has her inside the guns' reach (#733)
   lost: { gun: 'She loses you. The cutter\'s plume dwindles on the board and her hail goes unanswered, and then the board has nothing to show for her at all.', grapple: 'She loses you. The raider hauls on for a range she will never close, and drops off the board a long way astern.', torpedo: 'She loses you. Her last torpedo burns out well short, and the corsair turns away with nothing to aim at.' },
   boarded: { gun: ('She\'s alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They\'re coming aboard, ' +
       'by the book.'), grapple: 'She\'s alongside. The grapples bang on the hull in four places and the lock alarm goes. They\'re coming aboard.', torpedo: 'A torpedo takes your drive housing and she closes while you\'re slow. The grapples bang on the hull, and the lock alarm goes.' },
@@ -270,6 +271,9 @@ function raidLost(s) {
   return `${raidWords(`close.lost.${s.style}`, RAID_CLOSE.lost[s.style])} (+2 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`;
 }
 
+// The standoff's line, by where the board has her: at long range if she is past the close pass's range, else close in (the line must agree with the picture, #733).
+const raidStandoff = s => (s.range > RANGE_NEAR ? raidWords('close.standoff', RAID_CLOSE.standoff) : raidWords('close.standoffNear', RAID_CLOSE.standoffNear));
+
 // The close: broke off, stood off, or alongside.
 function raidClose(s) {
   const st = G.state, h = hired(), cap = person(h.captain), weak = st.armor <= ship().armor * 0.25;
@@ -286,12 +290,12 @@ function raidClose(s) {
   if (s.edge > -2 && !weak) {
     const pts = Math.round(ship().armor * 0.05);
     st.armor = Math.max(1, st.armor - pts);
-    return `${raidWords('close.standoff', RAID_CLOSE.standoff)} Armor -${pts}.`;
+    return `${raidStandoff(s)} Armor -${pts}.`;
   }
   if (!canBoard(s.range, s.style)) {  // you kept the range open: she cannot come alongside, and stands off
     const pts = Math.round(ship().armor * 0.05);
     st.armor = Math.max(1, st.armor - pts);
-    return `${raidWords('close.standoff', RAID_CLOSE.standoff)} Armor -${pts}.`;
+    return `${raidStandoff(s)} Armor -${pts}.`;
   }
   const d = { foe: s.foe, foeHp: 0, init: 'foe', grade: s.grade, pack: s.pack };
   G.nextEvent = repelScene(repelStart(d, s.style === 'grapple' ? 'full' : 'half'));
