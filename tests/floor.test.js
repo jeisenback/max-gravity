@@ -9,7 +9,7 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
-const { checkFloor, describe, globToRegExp } = require('../tools/floor');
+const { checkFloor, describe, globToRegExp, touchesFloor } = require('../tools/floor');
 
 const root = path.resolve(__dirname, '..');
 const row = (file, code, hit) => ({ file, code, hit, pct: (100 * hit) / code, missed: Array.from({ length: code - hit }, (_, i) => i + 1) });
@@ -68,4 +68,14 @@ test('the command exits non-zero and names the file when page coverage is under 
     assert.match(r.stdout, /Coverage floor: \d+ of \d+ files under\./);
     assert.match(r.stdout, /js\/hired\.js: 0\.0 percent, floor 97; about \d+ more lines to test/);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('a pull request runs the coverage pass when it changes a file the floor names, or the coverage tools (#754)', () => {
+  assert.equal(touchesFloor(['js/hiredevents.js'], floor), true, 'a glob');
+  assert.equal(touchesFloor(['README.md', 'js/captains/hester.js'], floor), true);
+  assert.equal(touchesFloor(['tools/coverage-floor.json'], floor), true, 'the floor itself');
+  assert.equal(touchesFloor(['tests/helpers.js'], floor), true, 'what writes the coverage');
+  assert.equal(touchesFloor(['.github/workflows/test.yml'], floor), true, 'the jobs that run it');
+  assert.equal(touchesFloor(['js/game.js', 'README.md', 'tests/ui.test.js'], floor), false, 'nothing the floor names');
+  assert.equal(touchesFloor([], floor), false);
 });
