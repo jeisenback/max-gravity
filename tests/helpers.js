@@ -65,6 +65,10 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
     await ctx.route(u => u.protocol === 'file:' && u.pathname.endsWith('/' + b.src), route => route.fulfill({ status: 200, contentType: 'text/javascript', body: b.js }));
   }
   const page = await ctx.newPage();
+  // A page now and then blocks for good in Chromium's own font lookup (the renderer's main thread waits in font_service::FontServiceThread::MatchFamilyName with the browser idle, and a
+  // page evaluate that is waiting then never returns: one file in thirty with four browsers on four cores, 15 pages in 100 with eight). It is not the game: the stack is Chromium's, and a
+  // debugger attached to the page before it loads has never shown it (about 900 pages tried, against 15 in 100 without), so one is: Debugger.enable, with nothing paused.
+  await (await ctx.newCDPSession(page)).send('Debugger.enable');
   const errors = [];
   watch(page, errors);
   if (COVERAGE_DIR) await page.coverage.startJSCoverage({ resetOnNavigation: false });  // tools/coverage.js
