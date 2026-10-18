@@ -9,5 +9,10 @@
   "rumors": "none",
   "cargo": 7,
   "story": "begun",
-  "market": null
+  "market": null,
+  "captain": "Jo",
+  "captains": "x",
+  "memorial": 5,
+  "home": "Hulk",
+  "outpost": 3
 }
