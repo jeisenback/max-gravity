@@ -1,11 +1,15 @@
 'use strict';
 
-// Authored engagements for a hired hand, in place of the card duel (duel.js) when pirates or a hostile patrol make contact: a raid, in beats (and, when it goes all your way, boarding her).
+// Authored engagements for a hired hand, and for an owner who kept a post (#721), in place of the card duel (duel.js) when pirates or a hostile patrol make contact: a raid, in beats (and, when it goes all your way, boarding her).
 // The closing, two passes, and the close. At each beat you choose how to meet her, or do the job of your own post. Every
 // choice is a chance of going your way (+1 or +2) or hers (-1 or -2) on one running count, the position, and a lost one can
 // cost hull or hurt someone. How the position stands at the close decides it: she breaks off, she stands off and throws a
 // last round, or she is alongside and the fight goes to the lock (boarders.js). A corsair fights with torpedoes and a raider
-// with grapples, and the beats read differently for each. Loaded after boarders.js; only called into at runtime.
+// with grapples, and the beats read differently for each. An owner has no captain: what goes to the captain's regard (and the lines that name her) is the hand's, and the owner's is the log and their own post.
+// Loaded after boarders.js; only called into at runtime.
+
+// The captain whose regard a call moves: the hand's. An owner has none.
+const raidCap = () => { const h = hired(); return h ? person(h.captain) : null; };
 
 const RAID_STYLE = { raider: 'grapple', corsair: 'torpedo', cutter: 'gun', destroyer: 'gun' };  // a patrol fights with guns
 
@@ -136,14 +140,14 @@ const deadWords = (key, vars = {}) => lineWords('beats:dead-in-space', key, DEAD
 
 // A crippled raider drifts beside you. Boarding her is the repel fight run the other way (boarders.js).
 function deadInSpaceScene(s) {
-  const h = hired(), cap = person(h.captain), assault = assaultStart(s.foe);
-  const say = key => deadWords(key, { ship: theShip(s.foe), cap: cap.last, ours: repelStanding(assault) - 1, theirs: assault.boarders, post: POSTS[h.post].name.toLowerCase() });
+  const post = lockPost(), cap = raidCap(), assault = assaultStart(s.foe), ours = repelStanding(assault) - 1;
+  const say = key => deadWords(key, { ship: theShip(s.foe), cap: cap ? cap.last : '', ours, theirs: assault.boarders, post: POSTS[post].name.toLowerCase() });
   return {
     title: say('title'), personal: true, via: 'crew', owner: 'you',
-    text: say('text'),
+    text: cap ? say('text') : `${theShip(s.foe)} is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. You hold the ship forty meters off and ask the crew what they want to do. Her crew are armed. A boarding would be ${ours} of yours against ${assault.boarders} of hers.`,
     choices: [
       { label: say('board.label'), run() { G.nextEvent = repelScene(assaultStart(s.foe, s)); return say('board.result'); } },
-      { label: say('drift.label'), run() { like(cap, 1, raidWords('memory.stood', RAID_MEMORY.stood)); changeRep('Pirate', -3); gainSkill(h.post, 3); return say('drift.result'); } },
+      { label: say('drift.label'), run() { if (cap) like(cap, 1, raidWords('memory.stood', RAID_MEMORY.stood)); changeRep('Pirate', -3); gainSkill(post, 3); return cap ? say('drift.result') : `You leave her turning in the dark and write it in the log, and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`; } },
     ],
   };
 }
@@ -152,7 +156,7 @@ function deadInSpaceScene(s) {
 // Gunner's order below), until the next port.
 const BORESIGHT = 0.1;
 const boresighted = () => !!postState('gunner').sighted;
-const raidPostOdds = level => handCheck(POST_STAT[hired().post], level, 'post', boresighted() ? BORESIGHT : 0);
+const raidPostOdds = level => handCheck(POST_STAT[lockPost()], level, 'post', boresighted() ? BORESIGHT : 0);
 
 // The Gunner's orders, for a hired Gunner (the other posts have theirs in stations.js, comms.js): a drill that teaches, and a
 // stance that pays in the next raid. Each uses up the day, like the others (giveOrder, stations.js).
@@ -219,7 +223,7 @@ function raidCostNote(c, s, post) {
 }
 
 function raidScene(s) {
-  const st = G.state, h = hired(), post = h.post, level = skillLevel(post);
+  const st = G.state, post = lockPost(), level = skillLevel(post);
   const prev = s.board || null;  // last beat's picture, for sensors that show her late (board.js)
   s.board = raidBoard({ beat: s.beat, edge: s.edge, style: s.style, me: SHIPS[st.shipId], foe: SHIPS[s.foe.shipId], range: s.range });
   const closing = s.beat === 0, kind = closing ? 'closing' : 'exchange';
@@ -246,10 +250,10 @@ function raidStep(s, c, post) {
   const text = raidWords(Array.isArray(line) ? `${base}.${side}` : `${base}.${side}.${line[s.style] ? s.style : 'grapple'}`, shipped);
   s.edge += edge;
   let out = text;
-  const risk = HAND_RISK[c.id] || 0, cap = person(hired().captain);
+  const risk = HAND_RISK[c.id] || 0, cap = raidCap();
   if (!won && risk && Math.random() < risk) out += ` ${hurtHand(s)}`;  // your own call, and it went wrong on you
   if (c.bold) boldWithCaptain(won);  // the captain's nerve (captains.js)
-  if (risk >= 0.35) {
+  if (risk >= 0.35 && cap) {
     if (!won) like(cap, -1, raidWords('memory.wrong', RAID_MEMORY.wrong));
     else if (edge >= 2) like(cap, 1, raidWords('memory.turned', RAID_MEMORY.turned));
   }
@@ -267,9 +271,9 @@ function raidStep(s, c, post) {
 
 // She is left too far behind to follow: the contact is lost, and the hand who opened the range learns a little from it.
 function raidLost(s) {
-  const h = hired();
-  gainSkill(h.post, 2);
-  return `${raidWords(`close.lost.${s.style}`, RAID_CLOSE.lost[s.style])} (+2 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`;
+  const post = lockPost();
+  gainSkill(post, 2);
+  return `${raidWords(`close.lost.${s.style}`, RAID_CLOSE.lost[s.style])} (+2 experience at the ${POSTS[post].name.toLowerCase()} post.)`;
 }
 
 // The standoff's line, by where the board has her: at long range if she is past the close pass's range, else close in (the line must agree with the picture, #733).
@@ -277,16 +281,16 @@ const raidStandoff = s => (s.range > RANGE_NEAR ? raidWords('close.standoff', RA
 
 // The close: broke off, stood off, or alongside.
 function raidClose(s) {
-  const st = G.state, h = hired(), cap = person(h.captain), weak = st.armor <= ship().armor * 0.25;
+  const st = G.state, post = lockPost(), cap = raidCap(), weak = st.armor <= ship().armor * 0.25;
   if (s.edge >= 4 && !weak && s.spec.kind !== 'patrol') {  // a clear win: her drive is gone and she drifts, and you can board her
     G.nextEvent = deadInSpaceScene(s);
     return raidWords(`close.crippled.${s.style}`, RAID_CLOSE.crippled[s.style]);
   }
   if (s.edge >= 2 && !weak) {
-    like(cap, 1, raidWords('memory.stood', RAID_MEMORY.stood));
+    if (cap) like(cap, 1, raidWords('memory.stood', RAID_MEMORY.stood));
     if (s.spec.kind !== 'patrol') changeRep('Pirate', -3);
-    gainSkill(h.post, 3);
-    return `${raidWords(`close.off.${s.style}`, RAID_CLOSE.off[s.style])} Captain ${cap.last} writes it in the log and nothing else. (+3 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`;
+    gainSkill(post, 3);
+    return `${raidWords(`close.off.${s.style}`, RAID_CLOSE.off[s.style])} ${cap ? `Captain ${cap.last} writes` : 'You write'} it in the log and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`;
   }
   if (s.edge > -2 && !weak) {
     const pts = Math.round(ship().armor * 0.05);

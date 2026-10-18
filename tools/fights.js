@@ -3,7 +3,8 @@
 // The fights, over many seeded trials: the raid in beats (js/engagements.js), the repel fight and the assault fight (js/boarders.js).
 // The tuning tool for COMBAT.md's numbers (CASUALTY_ODDS in js/losses.js, REPEL_HURT and REPEL_LEAN in js/boarders.js, the odds in
 // js/engagements.js). Each trial answers the scenes from a stated policy, then the game state is put back.
-//   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider]
+//   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider] [--owner]
+// `--owner` plays them as an owner who kept the post (the same ship and crew, bought with a hand's savings), to put beside the hand's (#721).
 //   npm run fights
 // Report: for the raid, how it closes and what it costs; for each lock fight, how often you win and who is hurt, by crew, by the
 // post's skill level, by tactic and by the foe's grade. Not part of `npm test`.
@@ -11,16 +12,17 @@
 const { open, closeBrowser } = require('../tests/helpers');
 
 // One seed's trials. Returns raw tallies, so the seeds can be summed.
-async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = {}) {
+async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false } = {}) {
   const { ev, errors, ctx } = await open({ scope: 'earth-hired', seed, debt: true, stall: 0 });
-  const r = await ev(([trials, postKey, shipId]) => {
+  const r = await ev(([trials, postKey, shipId, asOwner]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st0 = G.state; st0.story.next = 1e9; st0.day += 30; hired().raidTold = true;  // the first raid is explained once; these are the raids after it
+    if (asOwner) { const crew0 = [...st0.crew]; st0.credits = 100000; hired().debt = 0; buyIn(st0.shipId); while (G.dialog) finishEvent(); st0.crew = crew0; st0.armor = ship().armor; if (hired()) throw new Error('the buy did not make an owner'); }  // the same ship and crew: the buy took a friend, and the rest stay
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     const snap = JSON.stringify(G.state), crewAll = [...G.state.crew], maxArmor = ship().armor;
     const restore = (crewN, level) => {
       G.state = JSON.parse(snap); G.dialog = null; G.nextEvent = null; G.duel = null;
-      const st = G.state, h = hired();
+      const st = G.state, h = career();
       if (crewN !== null) st.crew = crewAll.slice(0, crewN);
       if (level !== null) h.skill[postKey] = SKILL_STEPS[level];
       return st;
@@ -52,7 +54,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
       }
       return last;
     };
-    const lost = st => ({ hurt: Object.keys(st.injured || {}).length, dead: (st.fallen || []).length, marked: (st.castMarked || []).length, hand: hired().hurtUntil > st.day ? 1 : 0 });
+    const lost = st => ({ hurt: Object.keys(st.injured || {}).length, dead: (st.fallen || []).length, marked: (st.castMarked || []).length, hand: career().hurtUntil > st.day ? 1 : 0 });
     const out = { raid: {}, repel: {}, assault: {} };
 
     // The raid, from the first beat to the close and the lock fights that follow it.
@@ -104,9 +106,9 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
     }
     out.crewAboard = crewAll.length;
     return out;
-  }, [n, post, ship]);
+  }, [n, post, ship, owner]);
   await ctx.close();
-  return { seed, ...r, errors };
+  return { seed, owner, post, ...r, errors };
 }
 
 // Sums the tallies of several seeds.
@@ -119,7 +121,7 @@ const pct = (a, b) => `${String(Math.round((100 * a) / Math.max(1, b))).padStart
 const per = (a, b) => (a / Math.max(1, b)).toFixed(2);
 
 function report(runs) {
-  console.log(`Raids (${runs.length} seeds, ${runs[0].crewAboard} crew aboard, a gunner)`);
+  console.log(`Raids (${runs.length} seeds, ${runs[0].crewAboard} crew aboard, ${runs[0].owner ? 'an owner at' : 'a hand at'} the ${runs[0].post} post)`);
   for (const [policy, t] of Object.entries(sum(runs, 'raid'))) {
     console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  off ${pct(t.off, t.n)}  standoff ${pct(t.standoff, t.n)}  lost ${pct(t.lost, t.n)}  crippled ${pct(t.crippled, t.n)} (boarded ${pct(t.assaultWon, t.crippled)})  to the lock ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}`);
   }
@@ -135,11 +137,11 @@ module.exports = { fights, report };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
-  const seeds = (arg('seeds') || '1,2,3').split(',').map(Number), n = Number(arg('n') || 100), post = arg('post') || 'gunner', ship = arg('ship') || 'raider';
+  const seeds = (arg('seeds') || '1,2,3').split(',').map(Number), n = Number(arg('n') || 100), post = arg('post') || 'gunner', ship = arg('ship') || 'raider', owner = process.argv.includes('--owner');
   (async () => {
     const runs = [];
     for (const seed of seeds) {
-      const r = await fights({ seed, n, post, ship });
+      const r = await fights({ seed, n, post, ship, owner });
       if (r.errors.length) console.log(`seed ${seed}: ${r.errors.length} page errors, first: ${r.errors[0]}`);
       runs.push(r);
     }
