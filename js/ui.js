@@ -177,7 +177,7 @@ const UI = {
           <button data-action="refuel" ${fuelNeed > 0 ? '' : 'disabled'}>Refill reaction mass (${fmt(fuelNeed * FUEL_PRICE)} cr)</button>
           <button data-action="repair" ${armorNeed > 0 ? '' : 'disabled'}>Repair hull (${fmt(armorNeed * REPAIR_PRICE)} cr)</button>
         </div>` : ''}
-        ${raw(ownerBoardHtml())}${raw(chapterTwoHtml())}${raw(roomCardHtml())}<h3>Active missions</h3>
+        ${raw(ownerBoardHtml())}${raw(chapterTwoHtml())}${raw(roomCardHtml())}${raw(dayAshoreHtml())}<h3>Active missions</h3>
         ${raw(this.missionList(st.missions, 'abort', 'Abandon'))}
         ${story().stage !== 0 ? h`<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>${story().stage === 'end' ? raw('<div class="row"><button data-action="epilogue">Read the epilogue</button></div>') : ''}` : ''}
         ${!role().canTrade || scopeOff('owner') ? '' : raw(stakeOffer())}
