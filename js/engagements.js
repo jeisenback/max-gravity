@@ -231,7 +231,8 @@ function raidScene(s) {
   choices.push({ label: `[${POSTS[post].name}] ${raidWords(`post.${kind}.${post}.label`, spec.label)}${raidCostNote(own, s, post)}`, run: () => raidStep(s, own, post) });
   return {
     title: closing ? 'The Closing' : s.beat === 1 ? 'First Pass' : 'Second Pass', personal: true, via: 'crew', owner: 'you',  // yours to decide, not the captain's (hired.js hiredCall)
-    text: `${text}${moved}</p><p>${raidRead(s)} Armor ${st.armor}/${ship().armor}.`,
+    read: `${raidRead(s)} Armor ${st.armor}/${ship().armor}.`,  // drawn above the board (ui.js), so the odds below are never read before it (#734)
+    text: `${text}${moved}`,
     board: boardSvg(s.board, { style: s.style, beat: s.beat, sensors: condition().sensors, sunAngle: sunLight().angle, prev, pack: s.pack, word: raidPosition(s) }),  // the sensor board (board.js), drawn above the text (ui.js)
     choices,
   };

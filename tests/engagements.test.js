@@ -659,6 +659,23 @@ test('on the page, the board\'s header, its reach label and its sun marker do no
   await done();
 });
 
+test('a raid beat shows its read line above the pinned choices without scrolling, at the three screen sizes (#734)', async () => {
+  for (const [name, viewport, mobile] of [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+    const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    await ev(() => { raid('gunner'); startDuel({ kind: 'pirate' }, false); begin(); });
+    await page.waitForTimeout(300);
+    const r = await ev(() => {
+      const el = document.querySelector('#panel.event'), read = el.querySelector('p.read'), panel = el.getBoundingClientRect();
+      const box = read && read.getBoundingClientRect(), choices = el.querySelector('.choices').getBoundingClientRect();
+      return { read: read && read.textContent, readTop: box && box.top, readBottom: box && box.bottom, panelTop: panel.top, choicesTop: choices.top };
+    });
+    assert.match(r.read, /Armor \d+\/\d+\.$/, `${name}: the read line is drawn`);
+    assert.ok(r.readTop >= r.panelTop && r.readBottom <= r.choicesTop, `${name}: the read line (${r.readTop} to ${r.readBottom}) is in view above the choices, which start at ${r.choicesTop}`);
+    await done();
+  }
+});
+
 test('the standoff line agrees with the board: close in when she is inside the close pass\'s range, at long range when she is past it (#733)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);

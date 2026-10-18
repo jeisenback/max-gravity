@@ -71,6 +71,7 @@ const UI = {
         <div class="eyebrow">${ev.via ? raw(`${VIA_LABELS[ev.via]} &middot; `) : ''}${where}</div>
         ${raw(sceneFacesHtml(ev))}
         <h1>${ev.title}</h1>
+        ${ev.read ? h`<p class="read">${raw(ev.read)}</p>` : ''}
         ${ev.board ? raw(ev.board) : ''}
         <p>${raw(ev.text)}</p>
         ${choiceBlockHtml(choices)}
