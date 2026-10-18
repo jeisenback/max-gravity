@@ -26,7 +26,7 @@ const BUILDINGS = {
   dock: { name: 'Dock and trading post', cr: 10000, mat: { metal: 30, industrial: 10 }, cap: 100, services: ['missions', 'outfitter'], text: 'Opens a mission board and an outfitter, and brings in more trade: a bigger share for you.' },
   ring2: { name: 'Second ring', cr: 20000, mat: { metal: 40, industrial: 20 }, cap: 200, after: 'dock', text: 'Room for two hundred more.' },
 };
-const cname = cid => COMMODITIES.find(c => c.id === cid).name;
+const cname = cid => goodName(cid);  // goodName is in readouts.js, which loads later
 const outpost = () => G.state.outpost;
 const outpostName = o => cleanName((o || outpost()).name);  // safe as text or markup: the characters that make markup are gone
 const hasBuilt = b => outpost().built.includes(b);

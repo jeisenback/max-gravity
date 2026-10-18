@@ -345,7 +345,7 @@ function sellCompanyShip(i) {
 function companyView() {
   const st = G.state, ships = fleet();
   const status = (s) => {
-    const load = Object.entries(s.cargo).map(([cid, q]) => `${q}t ${COMMODITIES.find(c => c.id === cid).name}`).join(', ');
+    const load = Object.entries(s.cargo).map(([cid, q]) => `${q}t ${goodName(cid)}`).join(', ');
     if (s.escort) return `Flying escort with you (hull ${s.armor === undefined ? SHIPS[s.shipId].armor : s.armor}/${SHIPS[s.shipId].armor}).`;
     if (s.dest) return `En route ${s.at} to ${s.dest}, ${s.daysLeft} day${s.daysLeft > 1 ? 's' : ''} out${load ? `, carrying ${load}` : ', empty'}.`;
     return `Docked at ${s.at}${s.route ? '' : ', parked'}.`;

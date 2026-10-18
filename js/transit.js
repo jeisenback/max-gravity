@@ -101,7 +101,7 @@ function loseCargo(frac) {
   const held = st.cargo[cid], qty = Math.ceil(held * frac);
   st.paid[cid] -= st.paid[cid] * qty / held;
   st.cargo[cid] -= qty;
-  return `You jettison ${qty}t of ${COMMODITIES.find(c => c.id === cid).name}.`;
+  return `You jettison ${qty}t of ${goodName(cid)}.`;
 }
 
 function delay(seconds) {
@@ -124,7 +124,7 @@ function addRumor() {
     up = Math.random() < 0.6;
     text = pickFresh(linedText('lines:market-rumors', RUMORS)[up ? 'up' : 'down'])
       .replace('{p}', p.name)
-      .replace('{c}', COMMODITIES.find(c => c.id === cid).name);
+      .replace('{c}', goodName(cid));
   }
   st.rumors = st.rumors.filter(r => !(r.planet === p.name && r.cid === cid));
   const system = SYSTEMS[sid].name, tipSay = (key, vars) => sceneSay('scene:market-news', key, { text, system, ...vars });  // the words around a rumor are in the text layer too

@@ -22,7 +22,7 @@ const altWord = (o, name) => (o.room ? `Back to your room at ${o.planet}, ${SYST
 function swayHtml() {
   const hd = hired(), d = captainEntry(), plan = currentPlan();
   if (!d || !d.sway || !plan || !hd.plan.alts.length) return '';
-  const name = id => COMMODITIES.find(c => c.id === id).name;
+  const name = goodName;
   const cap = hiredCaptain(), deaf = cap.opinion < captainHears();  // shut, with the reason beside it, until the captain listens
   return String(h`<div class="eyebrow">Suggest another run</div>${deaf ? h`<p class="hint">Captain ${cap.last} does not take suggestions from a hand they do not know yet.</p>` : ''}${swayAsked() ? raw('<p class="hint">You have put a run to the captain already at this stop.</p>') : listHtml(hd.plan.alts, (o, i) =>
     h`<div class="row suggest-row"><span class="hint">${altWord(o, name)}: ${runTerms(o)}.</span> <button data-action="suggestRun" data-arg="${i}" ${deaf ? 'disabled' : ''}>Suggest</button></div>`)}`);
