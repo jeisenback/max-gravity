@@ -35,9 +35,28 @@ jobs:
     timeout-minutes: 5
     steps:
       - run: test "${{ needs.shard.result }}" = success
+  # Whether this run measures coverage (#754): always on main, and on a pull request only when it changes a file the floor names or the coverage tools
+  # (tools/floor.js touchesFloor). Skipped, the coverage jobs below count as passed for a rule that requires `coverage`.
+  changes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      floor: ${{ steps.floor.outputs.floor }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: floor
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ -z "$BASE" ]; then echo floor=true >> "$GITHUB_OUTPUT"; exit 0; fi
+          git fetch --depth=1 origin "$BASE"
+          git diff --name-only "$BASE" HEAD > changed.txt
+          node -e "const c = require('fs').readFileSync('changed.txt', 'utf8').split('\n').filter(Boolean); console.log('floor=' + require('./tools/floor').touchesFloor(c, require('./tools/coverage-floor.json')))" | tee -a "$GITHUB_OUTPUT"
   # The coverage floor (tools/coverage-floor.json): the suite again under the browser's coverage, in the same four parts, and then one job merges what the parts saw and
   # checks the floor. The merge job keeps the name `coverage`. Its own result is the floor, not the tests (the bundle test cannot pass in a coverage run).
   coverage-shard:
+    needs: changes
+    if: needs.changes.outputs.floor == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:

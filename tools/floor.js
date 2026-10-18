@@ -30,4 +30,12 @@ function describe({ checked, failures }) {
     : `  ${f.file}: ${f.pct.toFixed(1)} percent, floor ${f.min}; about ${f.short} more lines to test, uncovered ${f.missed.slice(0, 12).join(', ')}${f.missed.length > 12 ? ', ...' : ''}`)).join('\n');
 }
 
-module.exports = { checkFloor, describe, globToRegExp };
+// Whether a pull request that changes these files (repo-relative) runs the coverage pass in CI (#754): a file the floor names, or what measures and checks it.
+// A change elsewhere that lowers a floor file's coverage (a test taken out) is caught by the run on main after the merge.
+const COVERAGE_TOOLS = ['tools/coverage.js', 'tools/floor.js', 'tools/coverage-floor.json', 'tests/helpers.js', '.github/workflows/test.yml'];
+const touchesFloor = (changed, floor) => {
+  const res = (floor.globs || []).map(globToRegExp), named = Object.keys(floor.files || {});
+  return changed.some(f => COVERAGE_TOOLS.includes(f) || named.includes(f) || res.some(re => re.test(f)));
+};
+
+module.exports = { checkFloor, describe, globToRegExp, touchesFloor };
