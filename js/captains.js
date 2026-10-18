@@ -24,7 +24,7 @@ function captainPerson(key) {
 // ---------- what a captain does and says ----------
 let leavingCaptain = null;  // the captain a goodbye is with: the hired game is over by the time its choice is made
 const captainLike = (n, memory) => like(leavingCaptain || hiredCaptain(), n, memory);
-const captainFlag = name => { const h = hired(); (h.flags = h.flags || {})[name] = true; };
+const captainFlag = name => { const h = hired(); if (h) (h.flags = h.flags || {})[name] = true; };  // (an owner has no captain to remember)
 const hiredPostName = () => POSTS[hired().post].name.toLowerCase();
 
 // A captain's own wording for a shared event (hiredevents.js): events[id][part], or the generic text when they have none.
