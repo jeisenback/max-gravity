@@ -10,7 +10,7 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { roomBand, roomDue, roomOfferDue, roomRun, ROOM_FEW, ROOM_MONTH } = load(['js/room.js'], { FAMILY_SCENES: {}, Mods: { register() {} }, asRun: c => ({ ...c, contract: true, profit: c.pay }) }, ['roomBand', 'roomDue', 'roomOfferDue', 'roomRun', 'ROOM_FEW', 'ROOM_MONTH']);
+const { roomBand, roomDue, roomOfferDue, roomRun, roomThings, roomLetter, ROOM_FEW, ROOM_MONTH } = load(['js/room.js'], { FAMILY_SCENES: {}, Mods: { register() {} }, asRun: c => ({ ...c, contract: true, profit: c.pay }) }, ['roomBand', 'roomDue', 'roomOfferDue', 'roomRun', 'roomThings', 'roomLetter', 'ROOM_FEW', 'ROOM_MONTH']);
 
 test('the gap is a few days, a month or half a year, by band; the offer is once a family and one room only; the return is due at the room\'s port a day after the last stay', () => {
   assert.deepEqual([roomBand(0), roomBand(ROOM_FEW - 1), roomBand(ROOM_FEW), roomBand(ROOM_MONTH - 1), roomBand(ROOM_MONTH), roomBand(400)], ['few', 'few', 'month', 'month', 'long', 'long']);
@@ -31,6 +31,11 @@ test('the room\'s port is a run to put to the captain: the contract there if the
   assert.equal(roomRun(room, { ...base, run: { sid: 'mars', planet: 'Mars' } }), null, 'the plan is already bound for it');
   assert.ok(roomRun(room, { ...base, run: { sid: 'mars', planet: 'Phobos' } }), 'another port of that system is not');
   assert.equal(roomRun(undefined, base), null);
+});
+
+test('a stay leaves one more thing in the room, three at most; a letter waits once the ship has been away a fortnight', () => {
+  assert.deepEqual([0, 1, 2, 3, 9].map(n => [...roomThings(n)]), [[], ['bag'], ['bag', 'jar'], ['bag', 'jar', 'book'], ['bag', 'jar', 'book']]);
+  assert.equal(roomLetter({ last: 100 }, 100 + ROOM_FEW - 1), false); assert.equal(roomLetter({ last: 100 }, 100 + ROOM_FEW), true);
 });
 
 const helpers = () => {
@@ -75,16 +80,16 @@ test('landing at the room\'s port opens the return by the gap and the count, onc
     UI.tab = 'port'; UI.render(); out.card = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ');
     out.stay = few.choices[0].run(); out.room = { ...st.room }; out.day = st.day; out.same = (landOn('mars', 'Mars') || {}).title;
     p.visitedAt = st.day + 1000; st.day += 40; const month = landOn('mars', 'Mars'); out.month = month.text; month.choices[1].run(); out.afterLook = { ...st.room, day: st.day };
-    st.day += 200; const long = landOn('mars', 'Mars'); out.long = long.text;
+    st.day += 200; const long = landOn('mars', 'Mars'); out.long = long.text; G.dialog = null; UI.render(); out.card3 = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ');
     goTo('ceres', 'Ceres Station'); UI.render(); out.cardAway = document.querySelector('.shell .body').textContent;
     return out;
   });
   assert.notEqual(r.elsewhere, 'The Room in Mars'); assert.equal(r.few.title, 'The Room in Mars'); assert.match(r.few.text, /^The door sticks the way it did, and \S+ has not moved a thing in 5 days\./); assert.match(r.few.text, /It is the first time you have slept in it\.$/);
   assert.deepEqual(r.few.labels, ['Stay the night', 'Look in, and go back to the ship']); assert.match(r.card, /Your room\s*\S+'s, at Mars\. 5 days since you last slept here\./);
-  assert.match(r.stay, /sleep through the watch change/); assert.equal(r.room.visits, 1); assert.equal(r.room.last, r.day); assert.notEqual(r.same, 'The Room in Mars', 'not the day of a stay');
-  assert.match(r.month, /^It has been 40 days\./); assert.match(r.month, /You have slept in it once before\.$/);
+  assert.match(r.stay, /sleep through the watch change/); assert.match(r.stay, /bag of galley tea on the hook/); assert.ok(!/letter/i.test(r.few.text) && !/Left here|letter/.test(r.card), 'nothing left and no letter yet'); assert.equal(r.room.visits, 1); assert.equal(r.room.last, r.day); assert.notEqual(r.same, 'The Room in Mars', 'not the day of a stay');
+  assert.match(r.month, /^It has been 40 days\./); assert.match(r.month, /You have slept in it once before\.$/); assert.match(r.month, /There is a letter on the table with your name on it/); assert.match(r.month, /The bag of galley tea you left is on the hook/);
   assert.equal(r.afterLook.visits, 1, 'looking in is not a stay'); assert.equal(r.afterLook.last, r.afterLook.day, 'but it is the last time you were there');
-  assert.match(r.long, /^It has been 200 days, and/); assert.ok(!/Your room/.test(r.cardAway));
+  assert.match(r.long, /^It has been 200 days, and/); assert.match(r.card3, /Left here: a bag of galley tea\.\s*A letter is waiting\./); assert.match(r.long, /moved to wipe under/); assert.match(r.long, /The bag of galley tea you left/); assert.ok(!/Your room/.test(r.cardAway));
 });
 
 test('the person a room is kept by is not forgotten when the registry is full', async () => {

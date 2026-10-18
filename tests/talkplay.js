@@ -73,7 +73,9 @@ const playTalk = () => {
   for (const c of ['belt', 'mars', 'earth']) play(`visit-home:${c}`, p => { p.culture = c; storyOf(p); }, p => visitHome(p));
   // the room that is theirs: the offer at the end of the visit, and the return by the gap and the count of stays
   play('room-offer', p => { storyOf(p); }, p => roomOffer(p), 2);
-  for (const [name, gap, visits] of [['few', 5, 0], ['month', 40, 1], ['long', 200, 3]]) play(`room-return:${name}`, (p, s) => { storyOf(p); s.room = { planet: p.home, pid: p.id, since: s.day - gap - 10, last: s.day - gap, visits }; }, p => roomReturn(p), 2);
+  for (const [name, gap, visits] of [['few', 5, 0], ['few:one', 5, 1], ['few:two', 5, 2], ['month', 40, 1], ['month:two', 40, 2], ['long', 200, 3]]) play(`room-return:${name}`, (p, s) => { storyOf(p); s.room = { planet: p.home, pid: p.id, since: s.day - gap - 10, last: s.day - gap, visits }; }, p => roomReturn(p), 2);
+  // the Port page's card at the room reads the names of what is left and the letter (room.js roomCardHtml): played here as its words, since the card needs a hired game
+  play('room-card', p => { storyOf(p); }, p => { const say = familySay('room-return'), v = visitVars(p); return { title: 'Your room', text: [...ROOM_THINGS.map(k => say(`thing.${k}.name`, v)), say('letter.card', v)].join(' | '), choices: [] }; }, 1);
   // an errand ashore, by culture and the clinic when hurt
   for (const c of ['belt', 'mars', 'earth']) play(`errand:${c}`, p => { p.culture = c; }, p => errandEvent(p));
   play('errand:clinic', (p, s) => { s.injured = { [p.id]: true }; }, p => errandEvent(p));
