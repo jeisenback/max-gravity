@@ -167,7 +167,7 @@ const CAST = {
         },
         choices: [
           { label: 'Let her fly it', run: () => coldThrusters(false) },
-          { label: 'Put a second hand at the cutoff', ...gated(needCrew(2)), run: () => coldThrusters(true) },
+          { label: 'Put a second hand at the cutoff (the second is hurt for it)', ...gated(needCrew(2)), run: () => coldThrusters(true) },
           { label: 'Order her to ditch', memory: 'You ordered me to ditch the ship, as the tower did.', run() {
             castLike('ines', -3, this.memory);
             return 'You order the ditch. She does it by the book. Afterward she writes the ditch in the logbook, the time, the order and who gave it, and turns the page.';
@@ -329,7 +329,7 @@ const CAST = {
         },
         choices: [
           { label: 'Let him go in', run: () => thePlant(false) },
-          { label: 'Send a second person in with him', ...gated(needCrew(2)), run: () => thePlant(true) },
+          { label: 'Send a second person in with him (the second is hurt for it)', ...gated(needCrew(2)), run: () => thePlant(true) },
           { label: 'Tell him to vent the plant', memory: 'You told me to vent the plant.', run() {
             castLike('tomas', -3, this.memory);
             return 'You tell him to vent her. He stands at the door with the rag in his hand. Then he opens the valve, and the whine runs down and stops. He doesn\'t look at you. He goes below.';
@@ -462,7 +462,7 @@ const CAST = {
         },
         choices: [
           { label: 'Let her lead', run: () => overTheHull(false) },
-          { label: 'Send her with a second person', ...gated(needCrew(2)), run: () => overTheHull(true) },
+          { label: 'Send her with a second person (the second is hurt for it)', ...gated(needCrew(2)), run: () => overTheHull(true) },
           { label: 'Call it off', memory: 'You called off the boarding and put me on the bench.', run() {
             castFlag('yelena', 'benched'); castLike('yelena', -3, this.memory);
             return ('You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch with her ' +
@@ -598,7 +598,7 @@ const CAST = {
         },
         choices: [
           { label: 'Let him go out to the mast', run: () => theMast(false) },
-          { label: 'Send a second person out with him', ...gated(needCrew(2)), run: () => theMast(true) },
+          { label: 'Send a second person out with him (the second is hurt for it)', ...gated(needCrew(2)), run: () => theMast(true) },
           { label: 'Tell him to hold the band from the console', memory: 'You kept me off the mast.', run() {
             castFlag('ruben', 'benched'); castLike('ruben', -3, this.memory);
             return 'You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. "It\'s your ship," he says quietly. "I\'ll keep the band open anyway. Somebody should be listening."';
@@ -739,7 +739,7 @@ const CAST = {
         },
         choices: [
           { label: 'Let her go out on the line', run: () => theTow(false) },
-          { label: 'Send a second hand out with her', ...gated(needCrew(2)), run: () => theTow(true) },
+          { label: 'Send a second hand out with her (the second is hurt for it)', ...gated(needCrew(2)), run: () => theTow(true) },
           { label: 'Cut the line and let the hulk go', memory: 'You cut the tow on me.', run() {
             castFlag('bexa', 'benched'); castLike('bexa', -3, this.memory);
             return 'You tell her to cut the line, and she does, with her own hand on the release. The hulk goes on turning, slowly, its beacon calling every four seconds until it\'s too faint to hear. Bexa sits at the stick for a long while with the tag in her fist. "It\'s your call," she says at last. "I\'ll put her on the list as lost."';
@@ -881,7 +881,7 @@ const CAST = {
         },
         choices: [
           { label: 'Let Pax clear it alone', run: () => theCoupling(false) },
-          { label: 'Put a second hand at the rack beside Pax', ...gated(needCrew(2)), run: () => theCoupling(true) },
+          { label: 'Put a second hand at the rack beside Pax (the second is hurt for it)', ...gated(needCrew(2)), run: () => theCoupling(true) },
           { label: 'Tell Pax to cut the power and let the mount drop', memory: 'You told me to cut the power on the mount.', run() {
             castFlag('pax', 'benched'); castLike('pax', -3, this.memory);
             return 'You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it\'s unhurt. Pax stands at the controls with the wrench held out in front of them like something hot. "I could have held it," Pax says. "I think I could have." The coupling is the only thing in the bay that doesn\'t move.';
@@ -1039,6 +1039,14 @@ function castLateAtBuyIn() {
   return null;
 }
 
+// The cost of the second person a pivot lets you send (#135): they go, and come back hurt, and are off their post until the next port (the injury of boarding.js, treated by a medic or the
+// clinic on docking). One of the crew on their feet other than the one the pivot is about; the line says who. With nobody to send there is no cost (the gate, needCrew, makes that rare).
+function castBackupCost(key) {
+  const st = G.state, self = castPerson(key).id, id = st.crew.find(i => i !== self && !(st.injured || {})[i]), c = id && person(id);
+  if (!c) return '';
+  (st.injured = st.injured || {})[id] = true;
+  return `${c.first} comes back hurt, and is off duty until the next port. `;
+}
 // Yelena's pivot (fate.js decides who lives): a point each for a medic who is not hurt, a hull above 60 percent, her gunner
 // skill at 3 or more, and a second person with her. Three or more she lives, two she is marked, fewer she dies.
 const castHullPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0)
@@ -1046,7 +1054,7 @@ const castHullPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor 
 function overTheHull(backup) {
   const points = castHullPoints(backup), promised = castRec('yelena').flags.promised;
   const outcome = castFate('yelena', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Went over the hull first near ${system().name}.`, 'Left hand never closes properly.', 'gunner');
-  const lead = backup ? 'You send a second hand over with her. ' : '';
+  const lead = backup ? 'You send a second hand over with her. ' + castBackupCost('yelena') : '';
   if (outcome === 'die') {
     return lead + ('She goes over first, as she said she would. The channel carries the first shot, and then something that\'s not a voice, and then ' +
         'the party, shouting her name. You bring the ship alongside, and you\'re too late, and everyone knows it. When the others come back across the ' +
@@ -1076,7 +1084,7 @@ const castPoints = n => (n >= 3 ? 'live' : n === 2 ? 'mark' : 'die');
 function coldThrusters(backup) {
   const rec = castRec('ines'), practiced = !!rec.flags.practiced, promised = !!rec.flags.promised;
   const outcome = castFate('ines', castPoints(castRiskPoints() + (practiced ? 1 : 0) + (backup ? 1 : 0)), `Flew the ship in dead stick near ${system().name}.`, 'Her left hand shakes on the stick.', 'pilot');
-  const lead = backup ? 'You put a second hand at the cutoff. ' : '';
+  const lead = backup ? 'You put a second hand at the cutoff. ' + castBackupCost('ines') : '';
   if (outcome === 'die') {
     return lead + 'The flip is a half second late. The hull meets the pad before the thrusters have finished the turn. When the crew reach the helm the logbook is open on the chair, and the last entry is half written.'
       + (promised ? ' The ship you promised her is on the last page of the logbook, the word someday and no date.' : '');
@@ -1093,7 +1101,7 @@ function coldThrusters(backup) {
 function thePlant(backup) {
   const rec = castRec('tomas'), plan = !!rec.flags.plan, promised = !!rec.flags.promised;
   const outcome = castFate('tomas', castPoints(castRiskPoints() + (plan ? 1 : 0) + (backup ? 1 : 0)), `Went into the plant to close the valves near ${system().name}.`, 'His hands ache in the cold.', 'engineer');
-  const lead = backup ? 'You send a second person in after him. ' : '';
+  const lead = backup ? 'You send a second person in after him. ' + castBackupCost('tomas') : '';
   if (outcome === 'die') {
     return lead + 'The whine drops. The plant holds. Nobody comes out. When the compartment has cooled you open the hatch, and he\'s at the last valve with the wrench in his hand and the rag still over his face. He had closed them all. The plant runs perfectly for the rest of the burn.'
       + (promised ? ' He asked you once whether you\'d try to keep the crew together, and you said you\'d try.' : '');
@@ -1109,7 +1117,7 @@ function thePlant(backup) {
 function theCoupling(backup) {
   const rec = castRec('pax'), promised = !!rec.flags.promised, read = !!rec.flags.foreman;
   const outcome = castFate('pax', castPoints(castRiskPoints() + (read ? 1 : 0) + (backup ? 1 : 0)), `Held the gun mount at the coupling near ${system().name}.`, 'Their right hand is stiff, and they flinch again at a clank.', 'gunner');
-  const lead = backup ? 'You put a second hand at the rack beside Pax. ' : '';
+  const lead = backup ? 'You put a second hand at the rack beside Pax. ' + castBackupCost('pax') : '';
   if (outcome === 'die') {
     return lead + 'Pax gets the wrench onto the coupling and the mount drops anyway, and Pax is between it and the rack, which is where Pax put themself. The hand at the rack is untouched. The mount comes to rest on the deck with the wrench still turning in the coupling, a quarter turn, and another.'
       + (promised ? ' You remember the ship you promised them, and that nobody will ask for it now.' : '');
@@ -1126,7 +1134,7 @@ function theCoupling(backup) {
 function theMast(backup) {
   const rec = castRec('ruben'), promised = !!rec.flags.promised, named = !!rec.flags.councillor;
   const outcome = castFate('ruben', castPoints(castRiskPoints() + (named ? 1 : 0) + (backup ? 1 : 0)), `Went out to the north mast to hold the band open near ${system().name}.`, 'He hears the quiet band in one ear only.', 'slicer');
-  const lead = backup ? 'You send a second person out to the mast with him. ' : '';
+  const lead = backup ? 'You send a second person out to the mast with him. ' + castBackupCost('ruben') : '';
   if (outcome === 'die') {
     return lead + 'He goes out the lock with the tool roll on his belt and the dish tilting above him, and for eleven minutes the open band is his voice, calling the bolts as he turns them, one, two, three, and a dome somewhere answering each. The flare arrives on the fourth. The band fills with noise, and then with a number, which is the last thing he says, and then with the dome, saying it back.'
       + (promised ? ' You remember the room for a relay you told him there\'d be.' : '');
@@ -1143,7 +1151,7 @@ function theMast(backup) {
 function theTow(backup) {
   const rec = castRec('bexa'), promised = !!rec.flags.promised, mass = G.state.fuel > ship().fuel * 0.5;
   const outcome = castFate('bexa', castPoints(castRiskPoints() + (mass ? 1 : 0) + (backup ? 1 : 0)), `Went out on the tow line near ${system().name}.`, 'Her left hand is numb from the cold, and she flies with the right.', 'pilot');
-  const lead = backup ? 'You send a second hand out on the line with her. ' : '';
+  const lead = backup ? 'You send a second hand out on the line with her. ' + castBackupCost('bexa') : '';
   if (outcome === 'die') {
     return lead + 'She goes out hand over hand along the line, and the hulk\'s roll slows, and slows, and then the line lets go. It doesn\'t part with a bang. It goes all at once, like a breath, and the tug jumps forward a hundred meters before anyone has a hand on the stick. Her suit beacon comes up on the board beside the hulk\'s, and the two of them call in turn, four seconds apart, until the second one stops.'
       + (promised ? ' You remember the ship you promised her, and that nobody will ask for it now.' : '');

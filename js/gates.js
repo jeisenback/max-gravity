@@ -16,5 +16,5 @@ const needFunds = cost => [() => hired().fund >= cost, () => `The ship's funds h
 const needBerth = [() => berthsFree() > 0, () => 'There is no free berth aboard.'];
 const needRoom = [() => cargoFree() > 0, () => 'There is no room in the hold.'];
 const needGoods = [() => hasTradeCargo(), () => 'There is no cargo in the hold to trade.'];
-const needCrew = n => [() => G.state.crew.length >= n, () => `Needs at least ${n} crew aboard.`];
+const needCrew = n => [() => G.state.crew.filter(id => !(G.state.injured || {})[id]).length >= n, () => `Needs at least ${n} crew on their feet.`];  // one who is hurt cannot be sent
 const notYet = (done, text = 'You have done that already.') => [() => !done(), () => text];
