@@ -125,10 +125,10 @@ function repelScene(s) {
     const shut = kind === 'cover' && s.used.cover;
     choices.push({ label: `[${POSTS[post].name}] ${repelWords(s, `ability.${post}.${kind}.label`, FIGHT_ABILITY[post][kind].label)} (${ABILITY_NOTE[kind]})${costNote(stake, abilityOdds(post, kind))}`, run: () => repelStep(s, kind), can: () => !shut, why: 'Once a fight.' });
   }
-  for (const o of repelOrders(s)) {  // and orders to the crew who have a post, by name (handtohand.js): their ability, at their skill, and a miss lands on the one sent
+  repelOrders(s).forEach((o, n) => {  // and orders to the crew who have a post, by name (handtohand.js): their ability, at their skill, and a miss lands on the one sent
     const post = o.sheet.post;
-    choices.push({ order: true, label: `${o.first} ${repelWords(s, `crew.${post}.${o.kind}.label`, CREW_ABILITY[post][o.kind].label)} (${ABILITY_NOTE[o.kind]})${costNote({ casualty: true }, crewOrderOdds(o.sheet, o.kind, s.hurt.has(o.id)))}`, run: () => repelStep(s, o.kind, o) });
-  }
+    choices.push({ order: true, group: n === 0 ? 'Orders to the crew' : undefined, label: `${o.first} ${repelWords(s, `crew.${post}.${o.kind}.label`, CREW_ABILITY[post][o.kind].label)} (${ABILITY_NOTE[o.kind]})${costNote({ sent: `${o.first} may be ${s.hurt.has(o.id) ? 'lost' : 'hurt'}` }, crewOrderOdds(o.sheet, o.kind, s.hurt.has(o.id)))}`, run: () => repelStep(s, o.kind, o) });
+  });
   return {
     title: repelWords(s, `title.${s.pos}`, set.titles[s.pos]), personal: true, via: 'crew', board: fightStrip({ titles: set.titles, pos: s.pos, boarders: s.boarders, cover: repelCover(s) }),
     text: `${repelWords(s, `open.${s.pos}.${s.round % 2}`, set.openings[s.pos][s.round % 2])}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''} ${layoutHint()}`.trim(),

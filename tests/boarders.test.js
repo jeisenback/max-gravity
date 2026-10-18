@@ -461,11 +461,34 @@ test('the lock fight offers orders to named crew who have a post, best first, ea
   });
   assert.equal(r.base, 6, 'the tactics, the post\'s move and its two abilities are as they were');
   assert.equal(r.orders.length, 3, 'up to three orders');
-  assert.match(r.orders[0], /^Bo cuts the lights \(cover here, once\) \[\d+%; if it fails: a crew casualty\]$/, 'the best pilot, given the cover');
-  assert.match(r.orders[1], /^Di vents a coolant line \(one fewer of them, no ground\) \[\d+%; if it fails: a crew casualty\]$/);
+  assert.match(r.orders[0], /^Bo cuts the lights \(cover here, once\) \[\d+%; if it fails: Bo may be hurt\]$/, 'the best pilot, given the cover');
+  assert.match(r.orders[1], /^Di vents a coolant line \(one fewer of them, no ground\) \[\d+%; if it fails: Di may be hurt\]$/);
   assert.match(r.orders[2], /^Ana picks off a runner \(one fewer of them, no ground\) \[\d+%/);
   assert.ok(!r.orders.some(l => /^Cy|^Ed/.test(l)), 'a cook has no post, and the least skilled is left out');
   await done();
+});
+
+test('the orders have a heading of their own, a cue says more choices follow below the pinned block, and no button is cut short, at the three screen sizes (#737)', async () => {
+  for (const [name, viewport, mobile] of [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+    const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    await ev(() => { fight(); openEvent(repelScene(repelStart(G.duel, 'full'))); });
+    await page.waitForTimeout(300);
+    const look = () => ev(() => {
+      const ch = document.querySelector('#panel.event .choices'), box = ch.getBoundingClientRect(), group = [...ch.querySelectorAll('.group')];
+      return { headings: group.map(g => g.textContent), headingTop: group[0] && group[0].getBoundingClientRect().top, headingBottom: group[0] && group[0].getBoundingClientRect().bottom, boxTop: box.top, boxBottom: box.bottom, rest: ch.classList.contains('rest'),
+        cut: [...ch.querySelectorAll('button')].filter(b => b.scrollHeight > b.clientHeight + 1).map(b => b.textContent.slice(0, 30)) };
+    });
+    const before = await look();
+    assert.deepEqual(before.headings, ['Orders to the crew'], `${name}: one heading, over the orders`);
+    assert.deepEqual(before.cut, [], `${name}: no button is cut short`);
+    assert.ok(before.headingBottom <= before.boxBottom || before.rest, `${name}: the heading is in view, or the cue says more follows`);
+    await ev(() => { const ch = document.querySelector('#panel.event .choices'); ch.scrollTop = ch.scrollHeight; ch.dispatchEvent(new Event('scroll')); });
+    const after = await look();
+    assert.ok(after.headingTop >= after.boxTop && after.headingBottom <= after.boxBottom, `${name}: scrolled to the end, the heading is in view`);
+    assert.equal(after.rest, false, `${name}: and the cue is gone`);
+    await done();
+  }
 });
 
 test('an order works as the crew member\'s own ability: it thins them or makes cover, and a miss lands on the one sent', async () => {

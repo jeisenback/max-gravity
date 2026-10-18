@@ -560,7 +560,7 @@ test('the ice run, the work events and the lock fights say what an option can co
   for (const labels of r.lock) {
     assert.ok(labels.length >= 6 && labels.length <= 9, 'six choices of the hand\'s own, and up to three orders to the crew (#711)');
     for (const l of labels.slice(0, 6)) assert.match(l, /\[\d+%; if it fails: a crew casualty, you may be hurt\]$/, l);
-    for (const l of labels.slice(6)) assert.match(l, /\[\d+%; if it fails: a crew casualty\]$/, `${l}: a miss costs the one sent, not the hand`);
+    for (const l of labels.slice(6)) assert.match(l, /\[\d+%; if it fails: \w+ may be hurt\]$/, `${l}: a miss costs the one sent, by name, not the hand`);
   }
   await done();
 });
