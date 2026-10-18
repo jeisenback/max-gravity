@@ -18,6 +18,7 @@ const playBeats = () => {
     return st;
   };
   const labelsOf = ev => ev.choices.map(c => c.label);
+  const sceneText = ev => (ev.read ? `${ev.text}</p><p>${ev.read}` : ev.text);  // a raid beat's read is drawn above its board (#734); the record keeps the words in the order they were always held in
   const stand = () => ({ credits: G.state.credits, fund: hired().fund, opinion: Object.fromEntries(Object.values(G.state.people).map(p => [p.id, p.opinion])), mem: Object.fromEntries(Object.values(G.state.people).map(p => [p.id, (p.memories || []).length])) });
   // what a step left behind: the memories gained and what moved (the money, the ship's fund, each person's regard); nothing, if nothing did
   const left = (b) => {
@@ -41,7 +42,7 @@ const playBeats = () => {
         for (const [beat, round] of [[0, 0], [0, 1], [1, 0], [2, 0]]) {
           s.beat = beat; s.round = round; s.edge = 0; at(beat);
           const ev = raidScene(s);
-          rec.scenes.push({ beat, round, text: ev.text, labels: labelsOf(ev) });
+          rec.scenes.push({ beat, round, text: sceneText(ev), labels: labelsOf(ev) });
           for (let i = 0; i < ev.choices.length; i++) {
             for (const roll of [0, 0.999]) {
               s.beat = beat; s.round = round; s.edge = 0; at(beat); s.hurt = new Set(); s.dead = []; s.marked = []; s.youHurt = false; s.handDied = false; st.armor = full;
@@ -57,9 +58,9 @@ const playBeats = () => {
           rec.closes.push({ edge, text: String(raidClose(s)), ...left(b0) });
           G.nextEvent = null;
         }
-        rec.moved = [10, -10].map(d => { s.beat = 0; s.round = 0; s.edge = 0; s.base = rangeAtContact(s.style); s.range = s.base + d; return raidScene(s).text; });  // the contact's move has opened the range or closed it (engage.js)
+        rec.moved = [10, -10].map(d => { s.beat = 0; s.round = 0; s.edge = 0; s.base = rangeAtContact(s.style); s.range = s.base + d; return sceneText(raidScene(s)); });  // the contact's move has opened the range or closed it (engage.js)
         // the range opened (#710): the passes told from far, the close where she cannot board, and the contact lost
-        rec.far = [1, 2].map(beat => { s.beat = beat; s.edge = 0; s.range = s.base = 25; return raidScene(s).text; });
+        rec.far = [1, 2].map(beat => { s.beat = beat; s.edge = 0; s.range = s.base = 25; return sceneText(raidScene(s)); });
         s.beat = 3; s.edge = -2; s.range = s.base = 25; s.hurt = new Set(); st.armor = full; seq([]); const b1 = stand();
         rec.closes.push({ edge: -2, far: true, text: String(raidClose(s)), ...left(b1) });
         G.nextEvent = null;
@@ -93,7 +94,7 @@ const playBeats = () => {
       const h2 = hired(), cap2 = person(h2.captain), e2 = ambushChoice({ trap, read: known, tried: known, known }, cap2, h2, post, AMBUSH_READ[post]);
       seq([roll]); const b0 = stand(); const m0 = (cap2.memories || []).length; G.nextEvent = null;
       const text = e2.choices[i].run();
-      rec.plays.push({ i, roll, text: String(text), next: G.nextEvent ? [G.nextEvent.title, String(G.nextEvent.text)] : null, mem: (cap2.memories || []).slice(m0), ...left(b0) });
+      rec.plays.push({ i, roll, text: String(text), next: G.nextEvent ? [G.nextEvent.title, String(sceneText(G.nextEvent))] : null, mem: (cap2.memories || []).slice(m0), ...left(b0) });
       G.nextEvent = null; G.duel = null;
     }
     out.push(rec);
@@ -107,7 +108,7 @@ const playBeats = () => {
       const f2 = makeEnemy({ kind: 'pirate' }), e2 = deadInSpaceScene({ foe: f2 });
       seq([0]); const b0 = stand(); G.nextEvent = null;
       const text = e2.choices[i].run();
-      rec.plays.push({ i, text: String(text), next: G.nextEvent ? [G.nextEvent.title, String(G.nextEvent.text)] : null, ...left(b0) });
+      rec.plays.push({ i, text: String(text), next: G.nextEvent ? [G.nextEvent.title, String(sceneText(G.nextEvent))] : null, ...left(b0) });
       G.nextEvent = null; G.duel = null;
     }
     out.push(rec);
