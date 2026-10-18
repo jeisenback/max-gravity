@@ -53,6 +53,12 @@ test('with an event open, the Comms box stays clear of the dialog on a wide scre
     assert.ok(r.box, `${name}: the Comms box is drawn`);
     if (name === 'wide') assert.ok(r.box.x + r.box.w <= r.dialog.x - 8, `wide: the box ends at ${r.box.x + r.box.w}, the dialog starts at ${r.dialog.x}`);
     else assert.ok(r.box.y + r.box.h <= r.dialog.y - 4, `phone: the box ends at ${r.box.y + r.box.h}, the dialog starts at ${r.dialog.y}`);
+    // The tutorial's prompt, when it shows, keeps clear of the dialog too (#735).
+    await ev(() => { G.state.tutorial = 1; });
+    await page.waitForTimeout(400);
+    const t = await ev(() => { const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(); return { box: G.burnBoxes.tutorial, dialog: { x: d.left - c.left, y: d.top - c.top } }; });
+    if (t.box && name === 'wide') assert.ok(t.box.x + t.box.w <= t.dialog.x - 8, `wide: the tutorial ends at ${t.box.x + t.box.w}, the dialog starts at ${t.dialog.x}`);
+    else if (t.box) assert.ok(t.box.y + t.box.h <= t.dialog.y - 4, `phone: the tutorial ends at ${t.box.y + t.box.h}, the dialog starts at ${t.dialog.y}`);
     await done();
   }
 });
@@ -87,11 +93,12 @@ test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)',
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     await ev(() => {
-      burn(); G.transit.left = G.transit.total * 0.5;
+      burn(); G.transit.left = G.transit.total * 0.5; G.state.tutorial = 1;  // the first run's prompt shows (#735)
       for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
     });
     await page.waitForTimeout(300);
     const r = await ev(() => ({ boxes: G.burnBoxes, viewW: innerWidth - G.hudW, H: innerHeight }));
+    assert.ok(r.boxes.tutorial, `${name}: the tutorial box is drawn`);
     const names = Object.keys(r.boxes);
     for (const n of names) {
       const b = r.boxes[n];

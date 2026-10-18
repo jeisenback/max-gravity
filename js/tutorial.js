@@ -86,17 +86,28 @@ function tutorialHtml() {
     </div>`;
 }
 
-// The same prompt over the flight view, transit, and the map.
+// The prompt's lines in a box w wide, and the box's height; null when there is no prompt to show.
+function tutorialPrompt(w) {
+  if (!tutorialOn()) return null;
+  const step = tutorialSteps()[G.state.tutorial];
+  if (step.last) return null;
+  ctx.font = '13px "IBM Plex Mono", monospace';
+  const lines = wrapText(step.text(), w - 28);
+  return { lines, h: 34 + lines.length * 17 };
+}
+
+// The same prompt over the flight view, transit, and the map. In transit the burn view lays it out (drawTransit, #735).
 function drawTutorial(viewW) {
   if (!tutorialOn() || !['flight', 'departing', 'transit', 'map'].includes(G.mode)) return;
-  const i = G.state.tutorial, steps = tutorialSteps(), step = steps[i];
-  if (step.last) return;
-  const w = Math.min(viewW - 24, 440);
-  const x = G.mode === 'map' && G.hudW ? viewW - w - 16 : (viewW - w) / 2;  // desktop map: clear of the orbits
-  ctx.font = '13px "IBM Plex Mono", monospace';
-  const lines = wrapText(step.text(), w - 28), h = 34 + lines.length * 17;
-  // Clear of the map legend, the transit title, and the compact phone HUD.
-  const y = G.mode === 'map' ? G.H - 150 : G.mode === 'transit' ? G.H - h - 80 : G.hudW ? 16 : 104;
+  const i = G.state.tutorial, steps = tutorialSteps(), placed = G.mode === 'transit' && G.burnBoxes && G.burnBoxes.tutorial;
+  if (G.mode === 'transit' && !placed) return;
+  const w = placed ? placed.w : Math.min(viewW - 24, 440);
+  const p = tutorialPrompt(w);
+  if (!p) return;
+  const { lines, h } = p;
+  const x = placed ? placed.x : G.mode === 'map' && G.hudW ? viewW - w - 16 : (viewW - w) / 2;  // desktop map: clear of the orbits
+  // Clear of the map legend and the compact phone HUD.
+  const y = placed ? placed.y : G.mode === 'map' ? G.H - 150 : G.hudW ? 16 : 104;
   ctx.fillStyle = 'rgba(8,16,24,0.9)';
   ctx.fillRect(x, y, w, h);
   ctx.fillStyle = '#6fb0ff';
