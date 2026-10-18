@@ -203,7 +203,7 @@ function duelExchange(mine, theirs) {
   const d = G.duel, st = G.state, max = ship().armor, foe = theShip(d.foe), attacker = d.init;
   const threat = attacker === 'me' ? mine : theirs, answer = attacker === 'me' ? theirs : mine;
   let out = DUEL_OUTCOME[threat][answer], pts = hitPoints(threat, out);
-  const boarded = !!hired() && attacker === 'foe' && threat === 'board' && out !== 'stop';  // boarders across: a hired hand fights them (boarders.js)
+  const boarded = !!lockPost() && attacker === 'foe' && threat === 'board' && out !== 'stop';  // boarders across: a hired hand fights them (boarders.js)
   if (boarded) pts = 0;
   const before = st.armor;
   let soaked = false;

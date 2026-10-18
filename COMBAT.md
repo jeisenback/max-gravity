@@ -258,7 +258,7 @@ Who stands with you depends on the crew. One who cannot stand you (their opinion
 berth, and of two at each other's throats (the bond at which a split is on the cards) the one who thinks less of you will not
 stand in the same section, so the line is a person shorter each time. A friend takes the first hit meant for you, once a
 fight (so does someone who owes you one, from a watch you covered for them). The same goes for the repel fight and for boarding a crippled raider.
-Bounties, hunters and an owner's fights are still the card duel above.
+Bounties, hunters and an owner's fights are still the card duel above. The lock fight is not the hand's alone (#685): an owner who kept a post through the buy (`career().post`) who is boarded in the card duel, or boards a crippled ship, plays the same lock fight with the player's post moves and crew orders. The money is the player's credits (a bridge taken costs a third of them; a prize pays into them), a hurt lays the player up and never kills them, and there is no captain to remember it or to lose (`role().canDie`, `role().paysFrom()`). An owner who was never a hand keeps the card duel, and the raid beats stay the hand's (#721).
 The raid happens somewhere now (`js/board.js`, #680): each beat carries a sensor board above its text, a lidar plot in the flight view's
 style with range rings every ten kilometers to forty, your ship at the center, her return at its bearing and range, the closing rate,
 the point defense arc to fifteen kilometers, the sun's side, and a torpedo on its way on a corsair's passes. The position model is the

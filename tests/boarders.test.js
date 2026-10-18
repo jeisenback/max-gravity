@@ -510,3 +510,35 @@ test('an order is easier for the skilled and harder for one already hurt in the 
   assert.deepEqual(r.afterDeath, ['Ana', 'Cy'], 'the dead are not offered');
   await done();
 });
+
+test('an owner who kept a post fights boarders at the lock with the same moves: the bridge costs credits, the hurt lays them up and never kills, boarding a crippled ship pays credits; an owner who was never a hand keeps the card duel', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.credits = 100000; buyIn('courier'); while (G.dialog) finishEvent();
+    st.day += 30; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    out.owner = !hired() && lockPost() === 'gunner';
+    startDuel(DUEL_SPEC, false); G.nextEvent = null; const before = st.armor; G.duel.init = 'foe'; duelExchange('burn', 'board');
+    out.title = G.nextEvent.title; out.armor = st.armor === before;
+    const scene = G.nextEvent; out.post = scene.choices.some(c => c.label.startsWith('[Gunner]')); G.nextEvent = null;
+    const mk = pos => { const s = repelStart(G.duel, 'full'); s.pos = pos; s.hurt = new Set(); return s; }, real = Math.random;
+    rolls([0.99, 0.99]); st.credits = 10000; const lost = repelStep(mk(2), 'post'); Math.random = real; out.lost = lost; out.credits = st.credits; out.duelGone = G.duel === null;
+    startDuel(DUEL_SPEC, false); G.nextEvent = null;  // (a foe is made before the dice are set: people are drawn until they differ)
+    const sh = mk(0); rolls([0.01, 0.99]); out.held = repelStep(sh, 'post'); Math.random = real; out.heldNext = G.duel && G.duel.init;
+    const s = mk(1); Math.random = () => 0; const hurt = hurtHand(s); Math.random = real;
+    out.hurt = hurt; out.hurtUntil = career().hurtUntil - st.day; out.died = !!s.handDied; out.level = handHurt();
+    const foe = makeEnemy({ kind: 'pirate' }), a = assaultStart(foe), xp = skillXp('gunner'); st.credits = 1000;
+    out.won = assaultSettle({ ...a, hurt: new Set(), d: { foe } }, true, ''); out.take = st.credits > 1000; out.xp = skillXp('gunner') - xp;
+    G.state.career = undefined; out.never = lockPost();  // (the shipped build starts every game as a hand: take away the career the buy left, and there is no post)
+    return out;
+  });
+  assert.ok(r.owner); assert.equal(r.title, 'The Corridor'); assert.ok(r.armor); assert.ok(r.post, 'the post\'s own move is offered');
+  assert.match(r.lost, /You give them the code to the strongbox/); assert.equal(r.credits, 7000, 'a third of the player\'s credits, not a fund'); assert.ok(r.duelGone);
+  assert.match(r.held, /The last of them go back through the lock/); assert.equal(r.heldNext, 'me');
+  assert.match(r.hurt, /You are hurt/); assert.ok(r.hurtUntil >= 12); assert.equal(r.died, false, 'an owner is laid up and lives'); assert.equal(r.level, true);
+  assert.match(r.won, /goes into your credits\. You have the cutter cast off/); assert.ok(r.take); assert.equal(r.xp, 5);
+  assert.equal(r.never, null, 'an owner who never was a hand has no post to fight at');
+  await done();
+});

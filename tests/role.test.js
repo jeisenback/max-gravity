@@ -36,4 +36,5 @@ test('a hand decides their own affairs and their post\'s calls; the ship\'s and 
 
 test('a hand\'s road events spend the ship\'s fund and an owner\'s spend their own credits', () => {
   assert.equal(hand.paysFrom('burn'), 'fund'); assert.equal(owner.paysFrom('burn'), 'credits');
+  assert.equal(hand.canDie, true); assert.equal(owner.canDie, false, 'an owner is laid up by a hurt and the game goes on');
 });

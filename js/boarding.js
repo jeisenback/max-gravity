@@ -91,8 +91,8 @@ function boardingEvent(n) {
   }
   const st = G.state, loot = lootFor(n), prize = SHIPS[n.shipId], prizeFee = 30 * 60;
   const resists = n.kind !== 'trader';
-  // A hired hand boards a ship that resists as the authored assault (boarders.js), not a roll: a win carries her bridge.
-  if (hired() && resists) {
+  // A hired hand, or an owner who keeps a post, boards a ship that resists as the authored assault (boarders.js), not a roll: a win carries her bridge.
+  if (lockPost() && resists) {
     const a = assaultStart(n);
     return {
       title, personal: true, via: 'crew',
