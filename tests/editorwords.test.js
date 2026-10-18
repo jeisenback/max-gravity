@@ -146,7 +146,7 @@ test('the main characters\' talks at a port bar are rows of the editor, with a f
 test('the close of the hired chapter has its lines in the form, a line for one and a line for more where a verb follows, and plays in the preview (#508)', async () => {
   await reload(); await select('scene:chapter-end');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['part.foot', 'part.close', 'part.keep.label', 'part.memorial-wall.wait.one', 'part.memorial-wall.wait.many', 'part.ten-years.go.many', 'part.quiet-fortune.title', 'part.plain.aboard.one']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  for (const k of ['part.foot', 'part.close', 'part.keep.label', 'part.plain.aboard.one', 'part.plain.aboard.many', 'part.plain.alone']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
   await page.fill('textarea[data-path="part.keep.label"]', 'Fly on');
   await page.fill('textarea[data-path="part.close"]', 'The chapter closes here.');
   const f = await play();

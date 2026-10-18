@@ -90,7 +90,7 @@ test('the bought ship starts worn, and the chapter still closes', async () => {
     Mods.act('buyInGo', USED_ID);
     const goodbye = G.dialog ? G.dialog.event.title : null; chooseEvent(0); finishEvent();  // the captain's goodbye comes first, then the look back
     chooseEvent(0); finishEvent();
-    return { ship: st.shipId, price, left: before - st.credits, condition: { ...st.condition }, hired: !!st.hired, goodbye, scene: G.dialog ? G.dialog.event.title : null, closes: !!G.dialog && ['Your Own Ship', ...CHAPTER_ENDINGS.map(e => e.title)].includes(G.dialog.event.title), chapter: !!st.flags.chapterOne };
+    return { ship: st.shipId, price, left: before - st.credits, condition: { ...st.condition }, hired: !!st.hired, goodbye, scene: G.dialog ? G.dialog.event.title : null, closes: !!G.dialog && G.dialog.event.title === 'Your Own Ship', chapter: !!st.flags.chapterOne };
   }, { scope: 'earth-hired' });
   assert.equal(r.ship, 'lightfreighter'); assert.equal(r.left, r.price);
   assert.deepEqual(r.condition, { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 });
