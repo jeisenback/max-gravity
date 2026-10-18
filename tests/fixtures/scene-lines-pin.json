@@ -7897,7 +7897,7 @@
    {
     "i": 0,
     "roll": 0.1,
-    "text": "You find Captain Vance in the galley with a cup gone cold, and ask what the captain would do in your place. The answer starts with a bad call at a bad hour, years back: a cargo lost, and a senior hand who said nothing until the paperwork was in. Then comes the list of what to do instead, four lines with a figure on each. \"Write it down,\" the captain says. \"Not now. After.\" (+2 experience at the gunner post.)",
+    "text": "Captain Vance is in the galley with the notebook open and a cup that went cold an hour ago, and turns to a clean page when you sit down. \"Eleven thousand,\" the captain says. \"That's what my first bad call cost, and I was older than you.\" Then the rest of it: a night watch, a hold of reactor shielding that shifted on a burn, and a senior hand who saw it go and said nothing until the paperwork was in. The captain writes while talking, four lines with a figure on each, then tears the page out and pushes it across the table. \"Keep it. I've got the original.\" (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You asked me for advice."
     ],
@@ -7912,7 +7912,7 @@
    {
     "i": 0,
     "roll": 0.9,
-    "text": "You find Captain Vance in the galley with a cup gone cold, and ask what the captain would do in your place. The answer starts with a bad call at a bad hour, years back: a cargo lost, and a senior hand who said nothing until the paperwork was in. Then comes the list of what to do instead, four lines with a figure on each. \"Write it down,\" the captain says. \"Not now. After.\" (+2 experience at the gunner post.)",
+    "text": "Captain Vance is in the galley with the notebook open and a cup that went cold an hour ago, and turns to a clean page when you sit down. \"Eleven thousand,\" the captain says. \"That's what my first bad call cost, and I was older than you.\" Then the rest of it: a night watch, a hold of reactor shielding that shifted on a burn, and a senior hand who saw it go and said nothing until the paperwork was in. The captain writes while talking, four lines with a figure on each, then tears the page out and pushes it across the table. \"Keep it. I've got the original.\" (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You asked me for advice."
     ],
@@ -7927,7 +7927,7 @@
    {
     "i": 1,
     "roll": 0.1,
-    "text": "You spend a watch at Mate0's elbow at the engineer, asking what a beginner asks. Mate0 answers every question, and says \"I don't know\" to the two that have no good answer. For the first hour you aren't allowed to touch anything. In the second you may touch one control, and Mate0 watches your hand the whole way to it. \"That one. Not the one beside it.\" (+3 experience at the engineer post.)",
+    "text": "Mate0 lets you sit in at the engineer for a watch on the condition that you touch nothing, and for the first hour you touch nothing. Mate0 works and talks at the same time, mostly to the board: \"No. No. There you are.\" Twice Mate0 reaches across you without asking. In the second hour Mate0 pulls the stool closer and puts one control under your hand. \"That one. Not the one beside it.\" You get the one beside it. Mate0 resets it without a word, and at the end of the watch logs you as \"observer (useful)\". (+3 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You spent a watch at my post to learn it."
     ],
@@ -7943,7 +7943,7 @@
    {
     "i": 1,
     "roll": 0.9,
-    "text": "You spend a watch at Mate3's elbow at the comms, asking what a beginner asks. Mate3 answers every question, and says \"I don't know\" to the two that have no good answer. For the first hour you aren't allowed to touch anything. In the second you may touch one control, and Mate3 watches your hand the whole way to it. \"That one. Not the one beside it.\" (+3 experience at the comms post.)",
+    "text": "Mate3 lets you sit in at the comms for a watch on the condition that you touch nothing, and for the first hour you touch nothing. Mate3 works and talks at the same time, mostly to the board: \"No. No. There you are.\" Twice Mate3 reaches across you without asking. In the second hour Mate3 pulls the stool closer and puts one control under your hand. \"That one. Not the one beside it.\" You get the one beside it. Mate3 resets it without a word, and at the end of the watch logs you as \"observer (useful)\". (+3 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You spent a watch at my post to learn it."
     ],
@@ -7959,7 +7959,7 @@
    {
     "i": 2,
     "roll": 0.1,
-    "text": "You re-seat Mate0's suit seals and re-solder a handlamp with a bad lead, at the galley table, with the parts on a towel so the air handler can't take them. Mate0 checks the seals twice, once with a finger and once with the gauge, and pays you 50 cr, about what a dock shop charges. \"Best job anyone's done on this ship,\" Mate0 says, and pockets the handlamp. \"Don't tell the others what I paid.\"",
+    "text": "Mate0 tips a suit glove, two seal rings and a handlamp with a bad lead onto the galley table, on a towel so the air handler can't take the small parts, and stays to watch. \"The left ring's been hissing since Ceres. I've been holding my breath on the hatch side.\" You re-seat the rings and re-solder the lead. Mate0 checks the seals twice, once with a finger and once with the gauge, and sends you 50 cr from a hand terminal, about what a dock shop charges. \"Don't tell the others what I paid. They'll all want their gloves to hiss.\"",
     "mem": [
      "9 Jul 2214: You mended my gear and wouldn't take too much."
     ],
@@ -7972,7 +7972,7 @@
    {
     "i": 2,
     "roll": 0.9,
-    "text": "You re-seat Mate3's suit seals and re-solder a handlamp with a bad lead, at the galley table, with the parts on a towel so the air handler can't take them. Mate3 checks the seals twice, once with a finger and once with the gauge, and pays you 50 cr, about what a dock shop charges. \"Best job anyone's done on this ship,\" Mate3 says, and pockets the handlamp. \"Don't tell the others what I paid.\"",
+    "text": "Mate3 tips a suit glove, two seal rings and a handlamp with a bad lead onto the galley table, on a towel so the air handler can't take the small parts, and stays to watch. \"The left ring's been hissing since Ceres. I've been holding my breath on the hatch side.\" You re-seat the rings and re-solder the lead. Mate3 checks the seals twice, once with a finger and once with the gauge, and sends you 50 cr from a hand terminal, about what a dock shop charges. \"Don't tell the others what I paid. They'll all want their gloves to hiss.\"",
     "mem": [
      "9 Jul 2214: You mended my gear and wouldn't take too much."
     ],
@@ -7985,7 +7985,7 @@
    {
     "i": 3,
     "roll": 0.1,
-    "text": "You stand the captain's watch at the board, with the ship quiet around you, and log it the way the captain does: times, headings, nothing else. Nothing happens. 40 cr comes into your account at the next ledger sync, with no note. On your way aft the captain's door is open, and the captain is asleep with the reading light on. (+1 experience at the gunner post.)",
+    "text": "The captain's watch is yours tonight. You stand it at the board under the lights at a third, and log it the way the captain does: times, headings, nothing else. At oh-three-ten a nav buoy pings the hull, eleven seconds late on its schedule, and you log that too. In the morning the captain reads the page standing up, with a coffee, and stops at the buoy. \"Eleven seconds.\" The captain initials the line and turns the page. 40 cr comes into your account at the next ledger sync, with no note attached. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You stood a spare watch for me."
     ],
@@ -8001,7 +8001,7 @@
    {
     "i": 3,
     "roll": 0.9,
-    "text": "You stand the captain's watch at the board, with the ship quiet around you, and log it the way the captain does: times, headings, nothing else. Nothing happens. 40 cr comes into your account at the next ledger sync, with no note. On your way aft the captain's door is open, and the captain is asleep with the reading light on. (+1 experience at the gunner post.)",
+    "text": "The captain's watch is yours tonight. You stand it at the board under the lights at a third, and log it the way the captain does: times, headings, nothing else. At oh-three-ten a nav buoy pings the hull, eleven seconds late on its schedule, and you log that too. In the morning the captain reads the page standing up, with a coffee, and stops at the buoy. \"Eleven seconds.\" The captain initials the line and turns the page. 40 cr comes into your account at the next ledger sync, with no note attached. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You stood a spare watch for me."
     ],
@@ -8047,7 +8047,7 @@
    {
     "i": 5,
     "roll": 0.1,
-    "text": "You sit in the galley until the small hours, with the table light down and the air handler cycling, and everyone has a story. Yours gets told twice, once by you and once, better, by someone who wasn't there. Somebody has one about a dock inspector at Ceres, and somebody else has a worse one about the same inspector. By the end of the watch the hot water ration is gone, and nobody is told off for it.",
+    "text": "Somebody starts it after the second watch, with the table light down and the air handler cycling, and by the small hours everybody off watch is in the galley. \"The inspector at Ceres,\" someone says. \"The one with the gloves.\" \"Two pairs of gloves.\" \"One on top of the other, because the first pair had touched our manifest.\" Somebody tells the one about your first docking, which you were there for and they weren't, and their version gets the laugh. By the end of the watch the hot water ration is gone, and nobody is told off for it, though the cook writes it down.",
     "mem": [
      "9 Jul 2214: We swapped stories in the galley.",
      "9 Jul 2214: We swapped stories in the galley.",
@@ -8065,7 +8065,7 @@
    {
     "i": 5,
     "roll": 0.9,
-    "text": "You sit in the galley until the small hours, with the table light down and the air handler cycling, and everyone has a story. Yours gets told twice, once by you and once, better, by someone who wasn't there. Somebody has one about a dock inspector at Ceres, and somebody else has a worse one about the same inspector. By the end of the watch the hot water ration is gone, and nobody is told off for it.",
+    "text": "Somebody starts it after the second watch, with the table light down and the air handler cycling, and by the small hours everybody off watch is in the galley. \"The inspector at Ceres,\" someone says. \"The one with the gloves.\" \"Two pairs of gloves.\" \"One on top of the other, because the first pair had touched our manifest.\" Somebody tells the one about your first docking, which you were there for and they weren't, and their version gets the laugh. By the end of the watch the hot water ration is gone, and nobody is told off for it, though the cook writes it down.",
     "mem": [
      "9 Jul 2214: We swapped stories in the galley.",
      "9 Jul 2214: We swapped stories in the galley.",
@@ -8448,7 +8448,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook something real for once, out of the good stores: garlic, rice done in the pressure pot, and a block of butter that has been missing a corner since the Ceres leg. Everyone off watch fits into the galley, which seats five, and the rest eat standing, with bowls passed over shoulders. Somebody finds a bottle in a place a bottle isn't allowed. Somebody tells the story about the docking fee, which takes nine minutes and ends differently from last time. The pot goes into the recycler scraped clean.",
+    "text": "You cook something real for once, out of the good stores: garlic, rice in the pressure pot, and the block of butter that has been missing a corner since the Ceres leg. \"Who had the butter?\" \"Nobody had the butter.\" \"The butter has a bite out of it.\" Everyone off watch fits into the galley, which seats five, and the rest eat standing, with bowls passed over shoulders. Somebody finds a bottle in a place a bottle isn't allowed, and nobody asks where. The docking-fee story comes round again, nine minutes this time, with a new ending. \"That's not how it ended.\" \"It is now.\" The pot goes into the recycler scraped clean.",
     "mem": [
      "9 Jul 2214: The captain shared a meal with us."
     ],
@@ -8497,7 +8497,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook something real for once, out of the good stores: garlic, rice done in the pressure pot, and a block of butter that has been missing a corner since the Ceres leg. Everyone off watch fits into the galley, which seats five, and the rest eat standing, with bowls passed over shoulders. Somebody finds a bottle in a place a bottle isn't allowed. Somebody tells the story about the docking fee, which takes nine minutes and ends differently from last time. The pot goes into the recycler scraped clean.",
+    "text": "You cook something real for once, out of the good stores: garlic, rice in the pressure pot, and the block of butter that has been missing a corner since the Ceres leg. \"Who had the butter?\" \"Nobody had the butter.\" \"The butter has a bite out of it.\" Everyone off watch fits into the galley, which seats five, and the rest eat standing, with bowls passed over shoulders. Somebody finds a bottle in a place a bottle isn't allowed, and nobody asks where. The docking-fee story comes round again, nine minutes this time, with a new ending. \"That's not how it ended.\" \"It is now.\" The pot goes into the recycler scraped clean.",
     "mem": [
      "9 Jul 2214: The captain shared a meal with us.",
      "9 Jul 2214: We shared a meal on a long burn."
@@ -8548,7 +8548,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook, badly, and it works. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. There's a second toast, and a song nobody agreed to.",
+    "text": "You cook, badly. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. \"Is it meant to be that color?\" \"Eat it.\" Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. \"To the recycler.\" \"Don't. You'll jinx it.\" There's a second toast anyway, and a song nobody agreed to, which stops when the recycler coughs.",
     "mem": [
      "9 Jul 2214: The captain shared a meal with us."
     ],
@@ -8597,7 +8597,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook, badly, and it works. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. There's a second toast, and a song nobody agreed to.",
+    "text": "You cook, badly. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. \"Is it meant to be that color?\" \"Eat it.\" Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. \"To the recycler.\" \"Don't. You'll jinx it.\" There's a second toast anyway, and a song nobody agreed to, which stops when the recycler coughs.",
     "mem": [
      "9 Jul 2214: The captain shared a meal with us.",
      "9 Jul 2214: We shared a meal on a long burn."
@@ -8648,7 +8648,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook, badly, and it works. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. There's a second toast, and a song nobody agreed to. | [Ship] Downtime: Share a meal.",
+    "text": "You cook, badly. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. \"Is it meant to be that color?\" \"Eat it.\" Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. \"To the recycler.\" \"Don't. You'll jinx it.\" There's a second toast anyway, and a song nobody agreed to, which stops when the recycler coughs. | [Ship] Downtime: Share a meal.",
     "mem": [
      "9 Jul 2214: We shared a meal on a long burn.",
      "9 Jul 2214: We shared a meal on a long burn.",
@@ -8695,7 +8695,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook, badly, and it works. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. There's a second toast, and a song nobody agreed to. | [Ship] Downtime: Share a meal.",
+    "text": "You cook, badly. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. \"Is it meant to be that color?\" \"Eat it.\" Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. \"To the recycler.\" \"Don't. You'll jinx it.\" There's a second toast anyway, and a song nobody agreed to, which stops when the recycler coughs. | [Ship] Downtime: Share a meal.",
     "mem": [
      "9 Jul 2214: We shared a meal on a long burn.",
      "9 Jul 2214: We shared a meal on a long burn.",
@@ -8742,7 +8742,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook, badly, and it works. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. There's a second toast, and a song nobody agreed to. | [Ship] Downtime: Share a meal.",
+    "text": "You cook, badly. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. \"Is it meant to be that color?\" \"Eat it.\" Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. \"To the recycler.\" \"Don't. You'll jinx it.\" There's a second toast anyway, and a song nobody agreed to, which stops when the recycler coughs. | [Ship] Downtime: Share a meal.",
     "mem": [
      "9 Jul 2214: The captain shared a meal with us."
     ],
@@ -8771,7 +8771,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook, badly, and it works. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. There's a second toast, and a song nobody agreed to. | [Ship] Downtime: Share a meal.",
+    "text": "You cook, badly. The stove has two settings and you find a third, the one with the smoke, and the air handler takes forty seconds longer than it should to clear the galley. \"Is it meant to be that color?\" \"Eat it.\" Everybody eats it, says it's fine, and goes back for the bread. By the second bowl the lamp is fogged with steam and someone is toasting the recycler, which hasn't failed yet this burn. \"To the recycler.\" \"Don't. You'll jinx it.\" There's a second toast anyway, and a song nobody agreed to, which stops when the recycler coughs. | [Ship] Downtime: Share a meal.",
     "mem": [
      "9 Jul 2214: The captain shared a meal with us."
     ],
@@ -9269,7 +9269,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You take the helm through the drills the old hands swear by: a flip on the sim, a docking by the numbers with the assist off, and a dead-stick approach with the board dark, counting the seconds off your own pulse. The first dead-stick ends in the deck at nine meters a second. The sixth ends on the pad, within a fraction of what the old hands call boring. (+3 experience at the pilot post.)",
+    "text": "The old hands swear by three drills, and you leave the hard one for last: a dead-stick approach with the board dark, counting the seconds off your own pulse. The first try ends in the deck at nine meters a second, and the sim plays the sound it saves for that. The fourth ends on the pad hard enough to crack a strut. The sixth ends on the pad, within a fraction of what the old hands call boring. You run it once more, and it ends in the deck. (+3 experience at the pilot post.)",
     "x": {
      "pilot": 15
     },
