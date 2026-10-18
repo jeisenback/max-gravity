@@ -7572,6 +7572,230 @@
   }
  },
  {
+  "id": "order:repel:gunner:cover:worked",
+  "label": [
+   "Dana lays covering fire (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer."
+ },
+ {
+  "id": "order:repel:gunner:cover:missed",
+  "label": [
+   "Dana lays covering fire (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana opens up and the burst goes where the wall is, not where they are. Dana is hurt."
+ },
+ {
+  "id": "order:repel:gunner:steady:worked",
+  "label": [
+   "Dana picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows."
+ },
+ {
+  "id": "order:repel:gunner:steady:missed",
+  "label": [
+   "Dana picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana waits for a runner and none runs. The round goes high, and they use the noise to push. Dana is hurt."
+ },
+ {
+  "id": "order:repel:pilot:cover:worked",
+  "label": [
+   "Dana cuts the lights (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not."
+ },
+ {
+  "id": "order:repel:pilot:cover:missed",
+  "label": [
+   "Dana cuts the lights (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana cuts the lights, and the crew cannot see the closer either. Dana is hurt."
+ },
+ {
+  "id": "order:repel:pilot:steady:worked",
+  "label": [
+   "Dana cycles a hatch on them (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
+ },
+ {
+  "id": "order:repel:pilot:steady:missed",
+  "label": [
+   "Dana cycles a hatch on them (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana cycles the hatch a beat late, and it closes on nothing. Dana is hurt."
+ },
+ {
+  "id": "order:repel:engineer:cover:worked",
+  "label": [
+   "Dana drops the pressure door (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
+ },
+ {
+  "id": "order:repel:engineer:cover:missed",
+  "label": [
+   "Dana drops the pressure door (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana drops the pressure door, and it sticks a hand short of the deck. Dana is hurt."
+ },
+ {
+  "id": "order:repel:engineer:steady:worked",
+  "label": [
+   "Dana vents a coolant line (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+ },
+ {
+  "id": "order:repel:engineer:steady:missed",
+  "label": [
+   "Dana vents a coolant line (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana opens the wrong coolant line, and it vents into the section. Dana is hurt."
+ },
+ {
+  "id": "order:repel:slicer:cover:worked",
+  "label": [
+   "Dana jams their band (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover."
+ },
+ {
+  "id": "order:repel:slicer:cover:missed",
+  "label": [
+   "Dana jams their band (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana jams their band and the crew's with it. Dana is hurt."
+ },
+ {
+  "id": "order:repel:slicer:steady:worked",
+  "label": [
+   "Dana puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+ },
+ {
+  "id": "order:repel:slicer:steady:missed",
+  "label": [
+   "Dana puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana puts a voice on their band and the voice is wrong. Somebody laughs. Dana is hurt."
+ },
+ {
+  "id": "order:assault:gunner:cover:worked",
+  "label": [
+   "Dana lays covering fire (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer."
+ },
+ {
+  "id": "order:assault:gunner:cover:missed",
+  "label": [
+   "Dana lays covering fire (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana opens up and the burst goes where the wall is, not where they are. Dana is hurt."
+ },
+ {
+  "id": "order:assault:gunner:steady:worked",
+  "label": [
+   "Dana picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows."
+ },
+ {
+  "id": "order:assault:gunner:steady:missed",
+  "label": [
+   "Dana picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana waits for a runner and none runs. The round goes high, and they use the noise to push. Dana is hurt."
+ },
+ {
+  "id": "order:assault:pilot:cover:worked",
+  "label": [
+   "Dana cuts the lights (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not."
+ },
+ {
+  "id": "order:assault:pilot:cover:missed",
+  "label": [
+   "Dana cuts the lights (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana cuts the lights, and the crew cannot see the closer either. Dana is hurt."
+ },
+ {
+  "id": "order:assault:pilot:steady:worked",
+  "label": [
+   "Dana cycles a hatch on them (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
+ },
+ {
+  "id": "order:assault:pilot:steady:missed",
+  "label": [
+   "Dana cycles a hatch on them (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana cycles the hatch a beat late, and it closes on nothing. Dana is hurt."
+ },
+ {
+  "id": "order:assault:engineer:cover:worked",
+  "label": [
+   "Dana drops the pressure door (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
+ },
+ {
+  "id": "order:assault:engineer:cover:missed",
+  "label": [
+   "Dana drops the pressure door (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana drops the pressure door, and it sticks a hand short of the deck. Dana is hurt."
+ },
+ {
+  "id": "order:assault:engineer:steady:worked",
+  "label": [
+   "Dana vents a coolant line (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+ },
+ {
+  "id": "order:assault:engineer:steady:missed",
+  "label": [
+   "Dana vents a coolant line (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana opens the wrong coolant line, and it vents into the section. Dana is hurt."
+ },
+ {
+  "id": "order:assault:slicer:cover:worked",
+  "label": [
+   "Dana jams their band (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover."
+ },
+ {
+  "id": "order:assault:slicer:cover:missed",
+  "label": [
+   "Dana jams their band (cover here, once) [80%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana jams their band and the crew's with it. Dana is hurt."
+ },
+ {
+  "id": "order:assault:slicer:steady:worked",
+  "label": [
+   "Dana puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+ },
+ {
+  "id": "order:assault:slicer:steady:missed",
+  "label": [
+   "Dana puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
+  ],
+  "text": "Dana puts a voice on their band and the voice is wrong. Somebody laughs. Dana is hurt."
+ },
+ {
   "id": "repel:gunner",
   "scenes": [
    {
@@ -7585,7 +7809,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -7599,7 +7826,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -7613,7 +7843,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -7627,7 +7860,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -7641,7 +7877,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -7655,7 +7894,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    }
   ],
@@ -7874,7 +8116,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -7888,7 +8133,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -7902,7 +8150,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -7916,7 +8167,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -7930,7 +8184,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -7944,7 +8201,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    }
   ],
@@ -8163,7 +8423,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8177,7 +8440,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8191,7 +8457,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8205,7 +8474,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8219,7 +8491,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8233,7 +8508,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    }
   ],
@@ -8452,7 +8730,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8466,7 +8747,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8480,7 +8764,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8494,7 +8781,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8508,7 +8798,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8522,7 +8815,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    }
   ],
@@ -8741,7 +9037,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8755,7 +9054,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8769,7 +9071,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8783,7 +9088,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8797,7 +9105,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -8811,7 +9122,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
      "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    }
   ],
@@ -9030,7 +9344,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9044,7 +9361,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9058,7 +9378,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9072,7 +9395,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9086,7 +9412,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9100,7 +9429,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
      "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Tomas drops the pressure door (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo puts a false order on their band (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Ines picks off a runner (one fewer of them, no ground) [80%; if it fails: a crew casualty]"
     ]
    }
   ],
@@ -9319,7 +9651,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9333,7 +9668,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9347,7 +9685,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9361,7 +9702,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9375,7 +9719,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9389,7 +9736,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
      "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]",
+     "Tomas puts a false order on their band (one fewer of them, no ground) [75%; if it fails: a crew casualty]"
     ]
    }
   ],
@@ -9608,7 +9958,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9622,7 +9975,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9636,7 +9992,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9650,7 +10009,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9664,7 +10026,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    },
    {
@@ -9678,7 +10043,10 @@
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
      "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]",
+     "Ines cuts the lights (cover here, once) [90%; if it fails: a crew casualty]",
+     "Tomas vents a coolant line (one fewer of them, no ground) [90%; if it fails: a crew casualty]",
+     "Mateo picks off a runner (one fewer of them, no ground) [85%; if it fails: a crew casualty]"
     ]
    }
   ],

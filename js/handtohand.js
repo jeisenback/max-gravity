@@ -31,6 +31,45 @@ const FIGHT_ABILITY = {
   },
 };
 
+// The crew at the lock (#711): a small sheet each, from what they already are, and orders given to them by name. A crew member whose role is a post (the gunner, the pilot, the
+// engineer, and the slicer, who is Comms) has the post's stat a point over the base, as the hand's has at the sign-on, and their skill as it stands (a level less while bad news from home
+// weighs on them); a brave one is a point up, a nervous or drunk one a point down. The rule is the hand's (check, sheet.js): the same two abilities at their own skill, a tenth easier or
+// harder as the hand's are, and a tenth harder for one already hurt in this fight. The lines are what the crew member does, after their name (the code puts it there), in the words of both fights.
+const ORDER_POST = { gunner: 'gunner', pilot: 'pilot', engineer: 'engineer', slicer: 'comms' };  // a crew role to the post whose abilities they have
+const CREW_TRAIT = { brave: 1, nervous: -1, drunk: -1 };  // a point of stat, for the traits that matter in a fight
+const CREW_HURT = 0.1;  // off an order's odds for one already hurt in this fight
+const ORDERS_MAX = 3;  // named orders on offer in an exchange
+const CREW_ABILITY = {
+  gunner: {
+    steady: { label: 'picks off a runner', win: 'waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows.', lose: 'waits for a runner and none runs. The round goes high, and they use the noise to push.' },
+    cover: { label: 'lays covering fire', win: 'lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer.', lose: 'opens up and the burst goes where the wall is, not where they are.' },
+  },
+  pilot: {
+    steady: { label: 'cycles a hatch on them', win: 'cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.', lose: 'cycles the hatch a beat late, and it closes on nothing.' },
+    cover: { label: 'cuts the lights', win: 'cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not.', lose: 'cuts the lights, and the crew cannot see the closer either.' },
+  },
+  engineer: {
+    steady: { label: 'vents a coolant line', win: 'opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.', lose: 'opens the wrong coolant line, and it vents into the section.' },
+    cover: { label: 'drops the pressure door', win: 'drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through.', lose: 'drops the pressure door, and it sticks a hand short of the deck.' },
+  },
+  comms: {
+    steady: { label: 'puts a false order on their band', win: 'puts a voice on their band: "Fall back to the lock." One of them does, and the rest hear it too late.', lose: 'puts a voice on their band and the voice is wrong. Somebody laughs.' },
+    cover: { label: 'jams their band', win: 'puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover.', lose: 'jams their band and the crew\'s with it.' },
+  },
+};
+
+// A crew member's sheet: { post, stat, skill }, or null for a role with no post (the cook, the medic, the first officer fight as a head count and no more). `low`: bad news from home.
+function crewSheet({ role, skill, traits, low }) {
+  const post = ORDER_POST[role];
+  if (!post) return null;
+  const stat = STAT_BASE + 1 + (traits || []).reduce((n, t) => n + (CREW_TRAIT[t] || 0), 0);
+  return { post, stat: Math.max(1, Math.min(STAT_MAX, stat)), skill: Math.max(0, skill - (low ? 1 : 0)) };
+}
+const crewOrderOdds = (sheet, kind, hurt) => check(sheet.stat, sheet.skill, DIFFICULTY.post, ABILITY_EDGE[kind] - (hurt ? CREW_HURT : 0));
+// Who can be sent, as { id, first, sheet }: up to ORDERS_MAX of those who have a post, the most skilled first. The first is given the cover while the fight still has it to make
+// (once a fight, the hand's own counts), and the rest the steady ability. Returns each with the `kind` of the order.
+const crewOrders = (crew, coverUsed) => crew.filter(c => c.sheet).sort((a, b) => b.sheet.skill - a.sheet.skill).slice(0, ORDERS_MAX).map((c, i) => ({ ...c, kind: i === 0 && !coverUsed ? 'cover' : 'steady' }));
+
 // The cover of each section (0 the first, 1 the middle, 2 the last) for a ship of this size, with the kit's and the fight's own (`extra`, made by the cover ability) on top.
 const baseCover = (size, pos) => (pos === 1 ? (size >= 16 ? COVER_BASE + 1 : size <= 11 ? COVER_BASE - 1 : COVER_BASE) : COVER_BASE);
 const fightCover = ({ size, kit, extra }) => [0, 1, 2].map(pos => Math.min(COVER_MAX, baseCover(size, pos) + kitCover(kit, pos) + ((extra || [])[pos] || 0)));

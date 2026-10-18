@@ -374,12 +374,12 @@ test('the lock fight offers the post\'s abilities after its own move, with the o
   const r = await ev(() => {
     const out = {};
     for (const post of ['gunner', 'pilot', 'engineer', 'comms']) {
-      fight(post); const s = repelStart(G.duel, 'full'), e = repelScene(s); out[post] = e.choices.slice(3).map(c => c.label); G.duel = null;
+      fight(post); const s = repelStart(G.duel, 'full'), e = repelScene(s); out[post] = e.choices.filter(c => !c.order).slice(3).map(c => c.label); G.duel = null;
     }
     fight(); const s = repelStart(G.duel, 'full'), e = repelScene(s), foe = makeEnemy({ kind: 'pirate' });  // the foe is made before the dice are set (people are generated from them)
-    out.shut0 = e.choices.map(c => !!c.can && !c.can()); rolls([0.01]); e.choices[5].run(); G.nextEvent = null;
-    out.shut1 = repelScene(s).choices.map(c => !!c.can && !c.can()); out.why = repelScene(s).choices[5].why;
-    out.board = e.board; out.assault = repelScene(assaultStart(foe, {})).choices.length;
+    out.shut0 = e.choices.filter(c => !c.order).map(c => !!c.can && !c.can()); rolls([0.01]); e.choices[5].run(); G.nextEvent = null;
+    out.shut1 = repelScene(s).choices.filter(c => !c.order).map(c => !!c.can && !c.can()); out.why = repelScene(s).choices[5].why;
+    out.board = e.board; out.assault = repelScene(assaultStart(foe, {})).choices.filter(c => !c.order).length;
     return out;
   });
   assert.match(r.gunner[0], /^\[Gunner\] .*\[\d+%; if it fails: a crew casualty, you may be hurt\]$/);
@@ -438,5 +438,75 @@ test('cover turns the chance of a casualty in the section the exchange was fough
   assert.equal(r.lock, 1, 'a lost exchange at the lock (a point of cover) is hit at 0.45, and a roll of 0.40 hits');
   assert.equal(r.corridor, 0, 'the corridor of a long ship (two points) is hit at 0.36, and the same roll misses');
   assert.equal(r.corridorKeys, 0); assert.equal(r.lockMade, 0, 'cover made at the lock turns it down too');
+  await done();
+});
+
+// The crew at the lock (#711): orders to named crew, each their post's ability at their own skill.
+const crewHelpers = () => {
+  // a crew of named people with the roles and skills given, all on their feet and friendly, and a fight started with them
+  window.crewOf = list => {
+    const st = G.state; st.crew = []; st.injured = {};
+    for (const [first, role, skill, traits] of list) { const p = makePerson('earth'); Object.assign(p, { first, role, skill, traits: traits || [], opinion: 30 }); registerPerson(p); st.crew.push(p.id); }
+    return st.crew.map(person);
+  };
+};
+
+test('the lock fight offers orders to named crew who have a post, best first, each with its odds and what it wins on the label', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(crewHelpers);
+  const r = await ev(() => {
+    fight(); crewOf([['Ana', 'gunner', 1], ['Bo', 'pilot', 3], ['Cy', 'cook', 3], ['Di', 'engineer', 2], ['Ed', 'slicer', 0]]);
+    const s = repelStart(G.duel, 'full'), e = repelScene(s), orders = e.choices.filter(c => c.order).map(c => c.label), base = e.choices.filter(c => !c.order).length;
+    return { orders, base, total: e.choices.length };
+  });
+  assert.equal(r.base, 6, 'the tactics, the post\'s move and its two abilities are as they were');
+  assert.equal(r.orders.length, 3, 'up to three orders');
+  assert.match(r.orders[0], /^Bo cuts the lights \(cover here, once\) \[\d+%; if it fails: a crew casualty\]$/, 'the best pilot, given the cover');
+  assert.match(r.orders[1], /^Di vents a coolant line \(one fewer of them, no ground\) \[\d+%; if it fails: a crew casualty\]$/);
+  assert.match(r.orders[2], /^Ana picks off a runner \(one fewer of them, no ground\) \[\d+%/);
+  assert.ok(!r.orders.some(l => /^Cy|^Ed/.test(l)), 'a cook has no post, and the least skilled is left out');
+  await done();
+});
+
+test('an order works as the crew member\'s own ability: it thins them or makes cover, and a miss lands on the one sent', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(crewHelpers);
+  const r = await ev(() => {
+    fight(); const [ana, bo] = crewOf([['Ana', 'gunner', 2], ['Bo', 'pilot', 3]]);
+    const mk = () => { const s = repelStart(G.duel, 'full'); s.boarders = 4; return s; };
+    const out = {};
+    let s = mk(), o = repelOrders(s); out.kinds = o.map(x => [x.first, x.kind]);
+    rolls([0.01]); out.cover = repelStep(s, o[0].kind, o[0]); out.made = [...repelCover(s)]; out.used = s.used.cover; out.pos = s.pos; G.nextEvent = null;
+    out.next = repelOrders(s).map(x => [x.first, x.kind]);  // the cover is made: both are steady now
+    const real = repelCasualty; let target = 'unset'; repelCasualty = (t, only) => { target = only; return 'Someone is hurt.'; };
+    s = mk(); o = repelOrders(s).find(x => x.first === 'Ana'); rolls([0.99, 0.01]); out.miss = repelStep(s, o.kind, o); out.target = target === ana.id ? 'Ana' : String(target); out.missBoarders = s.boarders; G.nextEvent = null;
+    rolls([0.01]); s = mk(); const t0 = s.boarders; repelStep(s, o.kind, o); out.thin = [t0, s.boarders]; G.nextEvent = null;
+    repelCasualty = real;
+    s = mk(); rolls([0.99, 0.01, 0.99]); out.real = repelStep(s, 'steady', repelOrders(s).find(x => x.first === 'Ana')); out.hurt = [...s.hurt].map(id => person(id).first); G.nextEvent = null;
+    return out;
+  });
+  assert.deepEqual(r.kinds, [['Bo', 'cover'], ['Ana', 'steady']]);
+  assert.match(r.cover, /^Bo cuts the lights in the section from the helm/); assert.deepEqual(r.made, [1, 3, 1]); assert.equal(r.used, true); assert.equal(r.pos, 1, 'the exchange stands');
+  assert.deepEqual(r.next, [['Bo', 'steady'], ['Ana', 'steady']]);
+  assert.match(r.miss, /^Ana waits for a runner and none runs\. .*Someone is hurt\.$/); assert.equal(r.target, 'Ana', 'the casualty was aimed at the one sent'); assert.equal(r.missBoarders, 4, 'a miss thins nobody');
+  assert.deepEqual(r.thin, [4, 3]);
+  assert.deepEqual(r.hurt, ['Ana'], 'with the casualty rolled for real, the one sent is the one hurt');
+  await done();
+});
+
+test('an order is easier for the skilled and harder for one already hurt in the fight, and a crew member who is down is not offered', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(crewHelpers);
+  const r = await ev(() => {
+    fight(); const [ana, bo, cy] = crewOf([['Ana', 'gunner', 1], ['Bo', 'gunner', 3], ['Cy', 'gunner', 1, ['brave']]]);
+    const pct = (s, name) => +repelScene(s).choices.find(c => c.order && c.label.startsWith(name)).label.match(/\[(\d+)%/)[1];
+    const s = repelStart(G.duel, 'full'); const out = { ana: pct(s, 'Ana'), bo: pct(s, 'Bo'), cy: pct(s, 'Cy') };
+    s.hurt.add(ana.id); G.state.injured[ana.id] = true; out.anaHurt = pct(s, 'Ana');
+    s.dead.push(bo); out.afterDeath = repelScene(s).choices.filter(c => c.order).map(c => c.label.split(' ')[0]);
+    return out;
+  });
+  assert.ok(r.bo > r.cy && r.cy > r.ana, `skill, then trait: ${JSON.stringify(r)}`);
+  assert.equal(r.anaHurt, r.ana - 10, 'hurt in this fight takes a tenth off');
+  assert.deepEqual(r.afterDeath, ['Ana', 'Cy'], 'the dead are not offered');
   await done();
 });
