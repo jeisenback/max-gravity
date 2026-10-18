@@ -20,6 +20,7 @@ const ROLES = {
     // The call on an event is the player's if the event says so ('you'), or it is the call of the post they work. The rest are the captain's or the first officer's (hired.js hiredCall).
     decides: (ev, post) => { const owner = ev.owner || (ev.via === 'ship' ? 'captain' : 'you'); return owner === 'you' || owner === post; },
     paysFrom: () => 'fund',
+    canDie: true,  // a fight can end the hand's story (stakes.js)
   },
   // An owner: everything is theirs, and the money is their own.
   owner: {
@@ -29,6 +30,7 @@ const ROLES = {
     mayAct: () => true,
     decides: () => true,
     paysFrom: () => 'credits',
+    canDie: false,  // the owner is hurt and laid up, and the game goes on
   },
 };
 

@@ -78,7 +78,12 @@ const repelSet = s => (s.assault ? { titles: ASSAULT_TITLES, openings: ASSAULT_O
 // A line of the repel or the assault fight, read through the editor's words (lineWords, storylets.js) by the name it has in the set's tables (hiredscenes.js lists them).
 const repelWords = (s, key, shipped) => lineWords(s.assault ? 'beats:assault' : 'beats:repel', key, shipped);
 
-const handHurt = () => !!(hired() && hired().hurtUntil > G.state.day);
+// The post the player fights at: a hand's, or the post an owner keeps through the buy (career, hired.js). None for an owner who never was a hand: the card duel is theirs (duel.js).
+const lockPost = () => { const c = career(); return c && c.post ? c.post : null; };
+const handHurt = () => { const c = career(); return !!(c && c.hurtUntil > G.state.day); };
+// The money a fight moves is the ship's fund for a hand and the player's credits for an owner (role.js paysFrom).
+const purse = () => (role().paysFrom() === 'fund' ? hired().fund : G.state.credits);
+const moveMoney = n => { if (role().paysFrom() === 'fund') hired().fund += n; else G.state.credits += n; };
 
 // Who stands with you. A crew member who cannot stand you keeps to their berth, and of two who are at each other's throats
 // (the bond at which a split is on the cards, stakes.js) the one who thinks less of you will not stand in the same section.
@@ -112,7 +117,7 @@ function assaultStart(foe, rate = {}) {
 }
 
 function repelScene(s) {
-  const h = hired(), post = h.post, set = repelSet(s), spec = set.post[post];
+  const post = lockPost(), set = repelSet(s), spec = set.post[post];
   const stake = { casualty: true, hand: true };  // any exchange can cost someone, and the hand is among them
   const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: `${repelWords(s, `tactic.${k}.label`, t.label)}${costNote(stake, tacticOdds(s, k))}`, run: () => repelStep(s, k) }));
   choices.push({ label: `[${POSTS[post].name}] ${repelWords(s, `post.${post}.label`, spec.label)}${costNote(stake, postOdds(post))}`, run: () => repelStep(s, 'post') });
@@ -157,7 +162,7 @@ function tacticOdds(s, kind) {
 
 // One exchange. Returns what happened; sets the next scene, or settles the fight and goes back to the duel.
 function repelStep(s, kind, who) {  // `who`: the crew member sent, when an ability is an order to them (repelScene)
-  const h = hired(), post = h.post, set = repelSet(s), theirs = kind === 'post' || kind in ABILITY_EDGE ? null : (CUNNING * (s.grade || 0) > 0 && Math.random() < CUNNING * s.grade ? counterOf(set.tactics, kind) : pickWeighted(foeLean(s)));
+  const post = lockPost(), set = repelSet(s), theirs = kind === 'post' || kind in ABILITY_EDGE ? null : (CUNNING * (s.grade || 0) > 0 && Math.random() < CUNNING * s.grade ? counterOf(set.tactics, kind) : pickWeighted(foeLean(s)));
   let result, text, press = false;  // 'win', 'lose' or 'tie'; `press`: an ability that missed, which gives them a shot at someone without costing the ground
   if (kind === 'post') {
     result = Math.random() < postOdds(post) ? 'win' : 'lose';
@@ -208,11 +213,11 @@ function handDies(s, how) {
 }
 // `s.ashore`: a hurt on a job ashore (jobs.js), which costs the clinic and the days but never the hand's life: that is the fights' own.
 function hurtHand(s) {
-  const st = G.state, h = hired(), again = s.youHurt || handHurt();
-  h.hurtUntil = st.day + (again ? 18 : 12);
+  const st = G.state, c = career(), again = s.youHurt || handHurt();
+  c.hurtUntil = st.day + (again ? 18 : 12);
   s.youHurt = true;
   captainFlag('hurt');  // kept for the goodbye (captains.js)
-  if (!s.ashore && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return again ? 'You\'re hurt again, and you stay down.' : 'You\'re hit.'; }
+  if (!s.ashore && role().canDie && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return again ? 'You\'re hurt again, and you stay down.' : 'You\'re hit.'; }
   const bill = roleHolder('medic') ? 0 : Math.min(st.credits, HAND_CLINIC);
   st.credits -= bill;
   const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';
@@ -260,45 +265,48 @@ function killCrew(c) {
 
 // How it ends: repelled (the duel goes on with the initiative yours), or the bridge taken (the ship's fund is stripped and they cut loose).
 function repelSettle(s) {
-  const st = G.state, h = hired(), cap = person(h.captain), d = s.d, repelled = s.pos < 0;
+  const st = G.state, h = hired(), cap = h && person(h.captain), d = s.d, repelled = s.pos < 0;  // an owner has no captain
   const lost = s.dead.length ? ` ${listNames(s.dead.map(c => c.first))} ${s.dead.length > 1 ? 'are' : 'is'} dead.` : '';
   if (s.assault) return assaultSettle(s, repelled, lost);
   if (repelled) {
-    like(cap, 1, repelWords(s, 'memory.held', REPEL_MEMORY.held));
+    if (cap) like(cap, 1, repelWords(s, 'memory.held', REPEL_MEMORY.held));
     for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id) && s.round >= 3) like(c, 1, repelWords(s, 'memory.together', REPEL_MEMORY.together)); }
     d.init = 'me';
     G.nextEvent = d.foeHp > 0 ? duelEvent() : null;
     return `The last of them go back through the lock. The outer door closes from the other side, and the drive of the ${theShip(d.foe).replace(/^The /, '')} lights, and she breaks away from the hull.${lost}`;
   }
-  const taken = Math.round(h.fund * 0.3);
-  h.fund -= taken;
-  like(cap, -1, repelWords(s, 'memory.taken', REPEL_MEMORY.taken));
+  const taken = Math.round(purse() * 0.3);
+  moveMoney(-taken);
+  if (cap) like(cap, -1, repelWords(s, 'memory.taken', REPEL_MEMORY.taken));
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.1));
   d.foeHp = -1; G.duel = null; G.nextEvent = null;
-  if ((s.youHurt || handHurt()) && Math.random() < handDeathOdds()) handDies(s, 'bridge');  // laid up when they came through
-  if (d.foe.kind !== 'patrol' && !s.handDied && Math.random() < CAPTAIN_LOST) {
+  if ((s.youHurt || handHurt()) && role().canDie && Math.random() < handDeathOdds()) handDies(s, 'bridge');  // laid up when they came through
+  if (cap && d.foe.kind !== 'patrol' && !s.handDied && Math.random() < CAPTAIN_LOST) {
     h.captainLost = { day: st.day, how: 'bridge' };
     G.nextEvent = captainLostScene();
     return `They're on the bridge. Captain ${cap.last} is at the console and doesn't give them the code, so they take it. They take ${fmt(taken)} cr of the ship's fund and go. The ship still flies. Captain ${cap.last} doesn't get up.${lost}`;
   }
+  if (!cap) return d.foe.kind === 'patrol'  // the owner's own words: the ship is theirs to surrender, and the money theirs to lose
+    ? `They're on the bridge. You surrender the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr, which is collected on the spot. The cutter lets you go, with a citation.${lost}`
+    : `They're on the bridge. You give them the code to the strongbox because there's no choice, and they take ${fmt(taken)} cr and go. The ship still flies.${lost}`;
   if (d.foe.kind === 'patrol') return `They're on the bridge. Captain ${cap.last} surrenders the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr against the ship's fund, which is collected on the spot. The cutter lets you go, with a citation.${lost}`;
   return `They're on the bridge. Captain ${cap.last} gives them the code to the strongbox because there's no choice, and they take ${fmt(taken)} cr of the ship's fund and go. The ship still flies.${lost}`;
 }
 
 // Boarding her ends with her bridge taken (her strongbox goes into the ship's fund) or you driven back to your own lock.
 function assaultSettle(s, won, lost) {
-  const st = G.state, h = hired(), cap = person(h.captain), foe = s.d.foe;
+  const st = G.state, h = hired(), cap = h && person(h.captain), foe = s.d.foe, post = lockPost();
   if (won) {
     const take = lootFor(foe).credits || randInt(10, 30) * 100;
-    h.fund += take;
-    like(cap, 2, repelWords(s, 'memory.took', ASSAULT_MEMORY.took));
+    moveMoney(take);
+    if (cap) like(cap, 2, repelWords(s, 'memory.took', ASSAULT_MEMORY.took));
     for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id)) like(c, 1, repelWords(s, 'memory.together', ASSAULT_MEMORY.together)); }
-    gainSkill(h.post, 5);
+    gainSkill(post, 5);
     changeRep('Pirate', -3);
     foe.dead = true;
-    return `Her captain puts the weapon down. Her strongbox is under the plot table, and ${fmt(take)} cr of it goes into the ship's fund. Captain ${cap.last} has the cutter cast off while her people are still being counted. (+5 experience at the ${POSTS[h.post].name.toLowerCase()} post.)${lost}`;
+    return `Her captain puts the weapon down. Her strongbox is under the plot table, and ${fmt(take)} cr of it goes into ${cap ? "the ship's fund" : 'your credits'}. ${cap ? `Captain ${cap.last} has` : 'You have'} the cutter cast off while her people are still being counted. (+5 experience at the ${POSTS[post].name.toLowerCase()} post.)${lost}`;
   }
-  like(cap, -1, repelWords(s, 'memory.left', ASSAULT_MEMORY.left));
+  if (cap) like(cap, -1, repelWords(s, 'memory.left', ASSAULT_MEMORY.left));
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.05));
   return `You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -${Math.round(ship().armor * 0.05)}.${lost}`;
 }
@@ -317,7 +325,7 @@ Mods.register({
         registerPerson(c); st.crew.push(c.id);
         UI.notes.push(`A new ${c.job}, ${c.first} ${c.last}, signs on at ${planet.name} for the berth.`);
       }
-      const h = hired();
+      const h = career();
       if (h && h.hurtUntil && roleHolder('medic')) { delete h.hurtUntil; UI.notes.push(`${roleHolder('medic').first} treats you.`); }
     });
   },
