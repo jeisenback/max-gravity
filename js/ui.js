@@ -80,6 +80,8 @@ const UI = {
     this.el.classList.add('event');
     this.el.scrollTop = 0;
     this.el.onscroll = () => this.moreCue();
+    const pinned = this.el.querySelector('.choices');
+    if (pinned) pinned.onscroll = () => this.moreCue();
     this.moreCue();
     trapDialog(opener);
   },
@@ -88,6 +90,8 @@ const UI = {
   moreCue() {
     const el = this.el;
     el.classList.toggle('more', el.classList.contains('event') && el.scrollHeight - el.clientHeight - el.scrollTop > 40);
+    const pinned = el.querySelector('.choices');  // and more choices than the pinned block shows, until the last is in view (#737)
+    if (pinned) pinned.classList.toggle('rest', el.classList.contains('event') && pinned.scrollHeight - pinned.clientHeight - pinned.scrollTop > 8);
   },
 
   showEventResult(title, text, shifts) {

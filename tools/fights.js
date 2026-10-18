@@ -38,6 +38,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
       count: d => (own(d).length === 6 && window.__fight && repelStanding(window.__fight) < window.__fight.boarders ? 4 : own(d).length === 6 ? 3 : own(d).length - 1),
       all: d => { const open = own(d).map((c, i) => i).filter(i => !(d.choices[i].can && !d.choices[i].can())); return open[Math.floor(Math.random() * open.length)]; },
       order: d => { const i = d.choices.findIndex(c => c.order && /cover here/.test(c.label)); return i >= 0 ? i : POLICY.count(d); },  // send the crew to make the cover while it is there to make, then the 'count' play
+      crew: d => { const i = d.choices.findIndex(c => c.order && !(c.can && !c.can())); return i >= 0 ? i : POLICY.count(d); },  // send the crew every exchange, the first of them on offer (#737), then the 'count' play once none is left
       first: () => 0,
       hold: () => 0, rush: () => 1, flank: () => 2,
     };
@@ -93,8 +94,8 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
     const cells = [
       ['crew', [1, 3, 5].map(c => [c, 2, 'random', 0])],
       ['level', [1, 2, 3].map(l => [5, l, 'post', 0])],
-      ['tactic', ['random', 'hold', 'rush', 'flank', 'post', 'steady', 'cover', 'count', 'all', 'order'].map(p => [5, 2, p, 0])],
-      ['small crew', ['post', 'cover', 'count', 'order'].map(p => [2, 2, p, 0])],
+      ['tactic', ['random', 'hold', 'rush', 'flank', 'post', 'steady', 'cover', 'count', 'all', 'order', 'crew'].map(p => [5, 2, p, 0])],
+      ['small crew', ['post', 'cover', 'count', 'order', 'crew'].map(p => [2, 2, p, 0])],
       ['grade', [0, 1, 2].map(g => [5, 2, 'random', g])],
     ];
     for (const kind of ['repel', 'assault']) {

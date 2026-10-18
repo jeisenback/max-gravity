@@ -40,4 +40,4 @@ const choiceButtonHtml = (c, i) => {
   return h`<button data-action="choose" data-arg="${i}" ${shut ? 'disabled' : ''}>${choiceLabelHtml(c.label)}</button>${why ? h`<div class="hint why">${why}</div>` : ''}`;
 };
 // A scene's choices, as the dialog draws them.
-const choiceBlockHtml = choices => h`<div class="choices">${choices.map((c, i) => choiceButtonHtml(c, i))}</div>`;
+const choiceBlockHtml = choices => h`<div class="choices">${choices.map((c, i) => h`${c.group ? h`<div class="group">${c.group}</div>` : ''}${choiceButtonHtml(c, i)}`)}</div>`;  // a choice with a `group` opens a labelled run of them
