@@ -975,7 +975,7 @@ const PEOPLE_LINES = {
   },
   'social:card-night': {
     label: 'Card night',
-    win: 'You clean everyone out for {won} cr, over three hours and a deck with a missing nine that everyone has agreed not to mention. {who} swears the deck is marked and goes through it card by card in front of the table. It isn\'t. Probably.',
+    win: 'You clean everyone out for {won} cr, over three hours and a deck with a missing nine that everyone has agreed not to mention. {who} swears the deck is marked and goes through it card by card in front of the table. It isn\'t.',
     lose: '{who} takes the pot, and {lost} cr of yours with it, on a pair of fours you should have called. Over the last hand, with the cards going round and nobody watching them, you hear the ship\'s gossip{tail}',
     'lose.gossip': ': {gossip}',
     'lose.nogossip': ', which is mostly about you. Nobody lowers their voice.',
