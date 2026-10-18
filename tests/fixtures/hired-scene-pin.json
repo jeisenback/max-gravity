@@ -438,9 +438,11 @@
  {
   "id": "cast:ines:pivot",
   "i": 1,
-  "label": "Put a second hand at the cutoff",
-  "result": "You put a second hand at the cutoff. She flies it the way she wrote it in the log: the long clean arc on the cold thrusters, the flip, the last slow roll toward the pad. The ship touches down so softly that the cup on the console doesn't move. Ines sits with her hands in her lap. \"Boring,\" she says. \"Very boring.\"",
+  "label": "Put a second hand at the cutoff (the second is hurt for it)",
+  "result": "You put a second hand at the cutoff. Tomas comes back hurt, and is off duty until the next port. She flies it the way she wrote it in the log: the long clean arc on the cold thrusters, the flip, the last slow roll toward the pad. The ship touches down so softly that the cup on the console doesn't move. Ines sits with her hands in her lap. \"Boring,\" she says. \"Very boring.\"",
   "changes": [
+   "s.injured: {} -> undefined",
+   "s.injured.c:tomas: undefined -> true",
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You let me fly it in dead, and I came down.",
@@ -449,22 +451,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Put a second hand at the cutoff",
+    "label": "Put a second hand at the cutoff (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Put a second hand at the cutoff",
+    "label": "Put a second hand at the cutoff (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Put a second hand at the cutoff",
+    "label": "Put a second hand at the cutoff (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Put a second hand at the cutoff",
+    "label": "Put a second hand at the cutoff (the second is hurt for it)",
     "open": true,
     "why": ""
    }
@@ -944,9 +946,11 @@
  {
   "id": "cast:tomas:pivot",
   "i": 1,
-  "label": "Send a second person in with him",
-  "result": "You send a second person in after him. He goes in, and comes out in four minutes with no eyebrows, which he doesn't mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.",
+  "label": "Send a second person in with him (the second is hurt for it)",
+  "result": "You send a second person in after him. Ines comes back hurt, and is off duty until the next port. He goes in, and comes out in four minutes with no eyebrows, which he doesn't mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.",
   "changes": [
+   "s.injured: {} -> undefined",
+   "s.injured.c:ines: undefined -> true",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You let me go into the plant, and I came out.",
@@ -955,22 +959,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Send a second person in with him",
+    "label": "Send a second person in with him (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Send a second person in with him",
+    "label": "Send a second person in with him (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Send a second person in with him",
+    "label": "Send a second person in with him (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Send a second person in with him",
+    "label": "Send a second person in with him (the second is hurt for it)",
     "open": true,
     "why": ""
    }
@@ -1406,9 +1410,11 @@
  {
   "id": "cast:yelena:pivot",
   "i": 1,
-  "label": "Send her with a second person",
-  "result": "You send a second hand over with her. She goes over the hull first, as she said she would, and the party follows. It's loud and fast and over before you've finished counting. She comes back across the gap with a split lip and a stranger's cap in her fist. \"Nobody on the bench,\" she says.",
+  "label": "Send her with a second person (the second is hurt for it)",
+  "result": "You send a second hand over with her. Ruben comes back hurt, and is off duty until the next port. She goes over the hull first, as she said she would, and the party follows. It's loud and fast and over before you've finished counting. She comes back across the gap with a split lip and a stranger's cap in her fist. \"Nobody on the bench,\" she says.",
   "changes": [
+   "s.injured: {} -> undefined",
+   "s.injured.c:ruben: undefined -> true",
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You let me go first, and I came back.",
@@ -1417,22 +1423,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Send her with a second person",
+    "label": "Send her with a second person (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Send her with a second person",
+    "label": "Send her with a second person (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Send her with a second person",
+    "label": "Send her with a second person (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Send her with a second person",
+    "label": "Send her with a second person (the second is hurt for it)",
     "open": true,
     "why": ""
    }
@@ -1889,9 +1895,11 @@
  {
   "id": "cast:ruben:pivot",
   "i": 1,
-  "label": "Send a second person out with him",
-  "result": "You send a second person out to the mast with him. He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once, which is the best noise he knows. \"There,\" Ruben says, pink with cold. \"Heard.\"",
+  "label": "Send a second person out with him (the second is hurt for it)",
+  "result": "You send a second person out to the mast with him. Yelena comes back hurt, and is off duty until the next port. He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once, which is the best noise he knows. \"There,\" Ruben says, pink with cold. \"Heard.\"",
   "changes": [
+   "s.injured: {} -> undefined",
+   "s.injured.c:yelena: undefined -> true",
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You let me go out to the north mast, and I came back.",
@@ -1900,22 +1908,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Send a second person out with him",
+    "label": "Send a second person out with him (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Send a second person out with him",
+    "label": "Send a second person out with him (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Send a second person out with him",
+    "label": "Send a second person out with him (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Send a second person out with him",
+    "label": "Send a second person out with him (the second is hurt for it)",
     "open": true,
     "why": ""
    }
@@ -2352,9 +2360,11 @@
  {
   "id": "cast:bexa:pivot",
   "i": 1,
-  "label": "Send a second hand out with her",
-  "result": "You send a second hand out on the line with her. She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.",
+  "label": "Send a second hand out with her (the second is hurt for it)",
+  "result": "You send a second hand out on the line with her. Pax comes back hurt, and is off duty until the next port. She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.",
   "changes": [
+   "s.injured: {} -> undefined",
+   "s.injured.c:pax: undefined -> true",
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You let me go out on the line, and I came back.",
@@ -2363,22 +2373,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Send a second hand out with her",
+    "label": "Send a second hand out with her (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Send a second hand out with her",
+    "label": "Send a second hand out with her (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Send a second hand out with her",
+    "label": "Send a second hand out with her (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Send a second hand out with her",
+    "label": "Send a second hand out with her (the second is hurt for it)",
     "open": true,
     "why": ""
    }
@@ -2819,9 +2829,11 @@
  {
   "id": "cast:pax:pivot",
   "i": 1,
-  "label": "Put a second hand at the rack beside Pax",
-  "result": "You put a second hand at the rack beside Pax. Pax puts the wrench on the coupling with the mount still swinging, and the hand at the rack puts a shoulder to the arm, and the two of them hold it for eleven seconds, side by side, until the coupling seats. Pax doesn't flinch. They check it twice, as they always do, and then sit down on the deck beside the hand who stood there, and neither says anything.",
+  "label": "Put a second hand at the rack beside Pax (the second is hurt for it)",
+  "result": "You put a second hand at the rack beside Pax. Bexa comes back hurt, and is off duty until the next port. Pax puts the wrench on the coupling with the mount still swinging, and the hand at the rack puts a shoulder to the arm, and the two of them hold it for eleven seconds, side by side, until the coupling seats. Pax doesn't flinch. They check it twice, as they always do, and then sit down on the deck beside the hand who stood there, and neither says anything.",
   "changes": [
+   "s.injured: {} -> undefined",
+   "s.injured.c:bexa: undefined -> true",
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You let me hold the mount, and I came out.",
@@ -2830,22 +2842,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Put a second hand at the rack beside Pax",
+    "label": "Put a second hand at the rack beside Pax (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Put a second hand at the rack beside Pax",
+    "label": "Put a second hand at the rack beside Pax (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Put a second hand at the rack beside Pax",
+    "label": "Put a second hand at the rack beside Pax (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Put a second hand at the rack beside Pax",
+    "label": "Put a second hand at the rack beside Pax (the second is hurt for it)",
     "open": true,
     "why": ""
    }

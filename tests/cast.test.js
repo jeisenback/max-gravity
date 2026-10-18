@@ -1197,3 +1197,27 @@ test('a second person to send is one who is on their feet: a hurt crew member do
   assert.deepEqual(r, { alone: false, withOne: true, hurt: false });
   await done();
 });
+
+test('sending a second person in a pivot costs them: they come back hurt and are off their post until the next port, and not sending costs nobody', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const key of ['yelena', 'ines', 'tomas', 'ruben', 'bexa', 'pax']) {
+      for (const backup of [false, true]) {
+        marsHired(); addThird(); const st = G.state;
+        const a = makeCrewCandidate('earth'), b = makeCrewCandidate('earth'); registerPerson(a); registerPerson(b);
+        st.crew = [castPerson(key).id, a.id, b.id]; st.injured = {};
+        const choices = CAST[key].scenes.pivot.choices, ch = backup ? choices.find(c => /second/.test(c.label)) : choices[0];
+        const text = ch.run();
+        out[`${key}:${backup}`] = { hurt: Object.keys(st.injured).length, named: new RegExp(`(${a.first}|${b.first}) comes back hurt, and is off duty until the next port\\.`).test(text), label: /\(the second is hurt for it\)$/.test(ch.label) };
+      }
+    }
+    return out;
+  });
+  for (const key of ['yelena', 'ines', 'tomas', 'ruben', 'bexa', 'pax']) {
+    assert.deepEqual(r[`${key}:true`], { hurt: 1, named: true, label: true }, `${key}: one second person is hurt, named, and the label says so`);
+    assert.deepEqual(r[`${key}:false`], { hurt: 0, named: false, label: false }, `${key}: no backup, no cost`);
+  }
+  await done();
+});
