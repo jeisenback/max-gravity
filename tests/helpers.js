@@ -14,6 +14,7 @@ const path = require('node:path');
 
 const fs = require('node:fs');
 const { bundleOf } = require('../tools/bundle');
+const STALL_MS = +process.env.TEST_STALL_MS || 120000;  // how long a page may take to answer one evaluate before the test fails (open's `stall`; 0 is no limit); the longest test takes 25 s in all
 const COVERAGE_DIR = process.env.COVERAGE_DIR || '';  // set by tools/coverage.js: each page's JS coverage is written there
 let coverageN = 0;
 const ROOT = path.resolve(__dirname, '..');
@@ -26,6 +27,26 @@ let browser = null, launching = null;  // launching: the one launch in flight, s
 // it is. Coverage (tools/coverage.js) reads each script by its own address, so it loads them one by one.
 let bundled;  // read once per test file
 const theBundle = () => (bundled === undefined ? (bundled = bundleOf(fs.readFileSync(INDEX, 'utf8'), f => fs.readFileSync(path.join(ROOT, f), 'utf8'))) : bundled);
+
+// A page that stops answering (a loop in the game, or Chromium blocked in its font lookup: #729) would stall the whole run with no failure to read. An evaluate that has not returned in `ms`
+// fails its test instead, naming where it was called from and saying whether the page's renderer was busy (a loop) or asleep (the font lookup). Used by open() on every evaluate it makes.
+async function stallReport(ms, where) {
+  let cpu = 'the renderer was not measured';
+  try {
+    const s = await browser.newBrowserCDPSession();
+    const busy = async () => (await s.send('SystemInfo.getProcessInfo')).processInfo.filter(p => p.type === 'renderer').reduce((t, p) => t + p.cpuTime, 0);
+    const a = await busy(); await new Promise(r => setTimeout(r, 1000)); const b = await busy();
+    cpu = `the renderers used ${(b - a).toFixed(2)} s of CPU in the next second (about 0: asleep, Chromium's blocked font lookup, #729; about 1: a loop in the page)`;
+  } catch (e) { cpu = `the renderers could not be measured (${e.message})`; }
+  return `the page did not answer in ${ms / 1000} s (${where}); ${cpu}`;
+}
+const guarded = (run, ms, where) => {
+  if (!ms) return run;
+  let timer;
+  const late = new Promise((_, reject) => { timer = setTimeout(() => stallReport(ms, where).then(m => reject(new Error(m))), ms); });
+  return Promise.race([run, late]).finally(() => clearTimeout(timer));
+};
+const calledFrom = () => (new Error().stack.split('\n').slice(1).find(l => !/helpers\.js|node:internal/.test(l)) || 'unknown').trim();
 
 // Runs in the page before any game script. mulberry32: small, fast, good enough.
 function seedScript(seed) {
@@ -49,9 +70,10 @@ function seedScript(seed) {
 //   seed: the random seed
 //   scope: 'earth-hired' (the default here), the narrow build the game ships with (js/build.js), or 'full' for a test of what that build switches off (the owner game, the other starts, captains and storylines)
 //   bundle: false to load the scripts one by one as index.html lists them (the default serves them as one, bundleOf above)
+//   stall: milliseconds a page may take to answer one evaluate before the test fails with a report of what the browser was doing (default STALL_MS; 0: no limit, for the soaks)
 //   debt: true to start a hired hand owing the hiring hall's bond (js/hired.js, #280). It is off in tests, so the many that buy a ship or
 //         count a hand's pay start as they did before the bond; the soak and the tests of the bond turn it on.
-async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'earth-hired', debt = false, bundle = true } = {}) {
+async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'earth-hired', debt = false, bundle = true, stall = STALL_MS } = {}) {
   if (!browser) { launching = launching || chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined }); browser = await launching; launching = null; }
   const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile });
   await ctx.addInitScript(seedScript, seed);
@@ -76,11 +98,12 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   await page.goto(URL + (query ? `?${query}` : '') + hash);  // the build's scope (js/build.js): tests run the build the game ships unless they ask for the full one
   await page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
   // The main characters are drawn from a pool (js/cast.js). A test starts from the pair it knew (by background) unless it asks for the draw: realDrawCastPair.
-  await page.evaluate(() => { window.realDrawCastPair = drawCastPair; window.drawCastPair = bg => (CAST_PAIRS[bg] ? [...CAST_PAIRS[bg]] : []); });
-  if (!debt) await page.evaluate(() => { const real = startGame; window.startGame = o => { const r = real(o); if (hired() && o.debt === undefined) hired().debt = 0; return r; }; });
+  const opening = calledFrom();
+  await guarded(page.evaluate(() => { window.realDrawCastPair = drawCastPair; window.drawCastPair = bg => (CAST_PAIRS[bg] ? [...CAST_PAIRS[bg]] : []); }), stall, `opening the page, ${opening}`);
+  if (!debt) await guarded(page.evaluate(() => { const real = startGame; window.startGame = o => { const r = real(o); if (hired() && o.debt === undefined) hired().debt = 0; return r; }; }), stall, `opening the page, ${opening}`);
   // Runs a function in the page with the random seed reset first, so a block of
   // game logic plays out the same way whatever the frame loop did before it.
-  const ev = (fn, arg) => page.evaluate(([src, a, s]) => { __seed(s); return (0, eval)(`(${src})`)(a); }, [fn.toString(), arg, seed]);
+  const ev = (fn, arg) => guarded(page.evaluate(([src, a, s]) => { __seed(s); return (0, eval)(`(${src})`)(a); }, [fn.toString(), arg, seed]), stall, `ev, ${calledFrom()}`);
   const done = async () => {
     if (COVERAGE_DIR) {  // the scripts this page ran, kept for tools/coverage.js to merge
       const entries = await page.coverage.stopJSCoverage();

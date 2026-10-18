@@ -9,7 +9,7 @@
 const { open, closeBrowser } = require('../tests/helpers');
 
 (async () => {
-  const { ev, ctx } = await open({ scope: 'earth-hired' });
+  const { ev, ctx } = await open({ scope: 'earth-hired', stall: 0 });
   const rows = await ev(() => {
     const out = [];
     const ev2 = (p, win, lose) => ({ edge: p * win[0] + (1 - p) * lose[0], hull: (1 - p) * lose[1] });

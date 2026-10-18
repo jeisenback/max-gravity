@@ -12,7 +12,7 @@ const arg = (k, d) => { const i = process.argv.indexOf(`--${k}`); return i < 0 ?
 const seeds = String(arg('seeds', '1,2,3,4,5,6')).split(',').map(Number), days = +arg('days', 240), left = +arg('left', 3000);
 
 async function one(seed) {
-  const { ev, done } = await open({ scope: 'earth-hired', seed });
+  const { ev, done } = await open({ scope: 'earth-hired', seed, stall: 0 });
   const r = await ev(([maxDays, over]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state; st.story.next = 1e9; st.tutorial = null;

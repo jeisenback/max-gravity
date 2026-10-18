@@ -12,7 +12,7 @@ const { open, closeBrowser } = require('../tests/helpers');
 
 // One seed's trials. Returns raw tallies, so the seeds can be summed.
 async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = {}) {
-  const { ev, errors, ctx } = await open({ scope: 'earth-hired', seed, debt: true });
+  const { ev, errors, ctx } = await open({ scope: 'earth-hired', seed, debt: true, stall: 0 });
   const r = await ev(([trials, postKey, shipId]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st0 = G.state; st0.story.next = 1e9; st0.day += 30; hired().raidTold = true;  // the first raid is explained once; these are the raids after it
