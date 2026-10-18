@@ -252,7 +252,7 @@ function settleRun(planet) {
     if (have < run.tons) captainFlag(have ? 'contractShort' : 'contractLost');
     if (st.day > run.due) captainFlag('late');
     shipperSettled(run, have, st.day, cut, paper);  // the shipper's regard, and a word with the agent if it was off (shippers.js)
-    if (have - run.tons > 0) st.cargo[run.good] = have - run.tons; else { delete st.cargo[run.good]; delete st.paid[run.good]; }
+    if (st.cargo[run.good] > have) st.cargo[run.good] -= have; else { delete st.cargo[run.good]; delete st.paid[run.good]; }
     h.fund += revenue;
   } else if (run.good && st.cargo[run.good] && price(planet, run.good) !== null) {
     sold = st.cargo[run.good];
@@ -273,12 +273,12 @@ function settleRun(planet) {
   h.ledger.length = Math.min(h.ledger.length, 20);
   // The first officer settles up on the first arrival (captains.js): keep the figures, and leave the one-line note for later arrivals.
   const settling = total.runs === 0 && arrivalWanted();
-  if (settling) h.first = { good: run.good ? COMMODITIES.find(c => c.id === run.good).name.toLowerCase() : null, tons: sold, cost: run.cost, revenue, profit, forecast: run.profit, wage, share, hall: toHall, owed: h.debt || 0, days, planet: planet.name };
+  if (settling) h.first = { good: run.good ? goodName(run.good).toLowerCase() : null, tons: sold, cost: run.cost, revenue, profit, forecast: run.profit, wage, share, hall: toHall, owed: h.debt || 0, days, planet: planet.name };
   h.run = null;
   h.plan = null;
   gainSkill(h.post, 2);  // a burn worked
   like(st.people[h.captain], profit > 0 ? 1 : -1, sceneSay('scene:screens', profit > 0 ? 'run.good.memory' : 'run.bad.memory'));
-  const name = run.good ? COMMODITIES.find(c => c.id === run.good).name : null;
+  const name = run.good ? goodName(run.good) : null;
   if (settling) return;
   // The figures are the captain's log's (readouts.js); the note says what was off, then the pay.
   const off = [];
@@ -549,7 +549,7 @@ function buyInHtml() {
 const runTerms = r => `${r.days} days, ${fmt(r.pay !== undefined ? r.pay : r.profit)} cr ${r.pay !== undefined ? 'on delivery' : 'profit'}, so about ${fmt((r.pay !== undefined ? r.pay : r.profit) * G.state.hired.share)} cr to you, plus ${fmt(G.state.hired.wage * r.days)} cr wage`;
 
 const runHtml = () => {
-  const hd = G.state.hired, plan = currentPlan(), led = hd.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
+  const hd = G.state.hired, plan = currentPlan(), led = hd.ledger.slice(0, 5), name = goodName;
   return String(h`<div class="post"><div class="eyebrow">${hiredCaptain() ? h`<span class="nowrap">Captain ${raw(personLink(hiredCaptain()))}'s</span> run` : 'The captain\'s run'}</div>
     <p class="desc">${plan && plan.yard && wantsYard() ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'Nothing on the board, and nowhere in reach to look. The captain is waiting for a shipper.'
       : plan.ballast ? h`Nothing on the board here.${closedHere() ? ' The shipper here has closed its board to the ship.' : ''} The captain will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`

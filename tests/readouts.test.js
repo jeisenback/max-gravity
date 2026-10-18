@@ -55,6 +55,27 @@ test('the contract is a paper in the hold: the shipper, the load, the ports, the
   await done();
 });
 
+test('a delivery takes the contract\'s tons and leaves the rest of the good in the hold; a good no longer in the game does not stop the arrival (#748, #750)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    startHand(); const st = G.state, hd = hired(), here = currentPlanet(), out = {};
+    hd.runsDone = 1;
+    hd.run = { ...aContract(st), planet: here.name, sid: st.systemId, day: st.day - 6, cost: 0, due: st.day + 2 };
+    st.cargo.water = hd.run.tons + 30; st.paid.water = 100;
+    settleRun(here);
+    out.left = st.cargo.water; out.paid = st.paid.water;
+    hd.run = { ...aContract(st), good: 'gone', planet: here.name, sid: st.systemId, day: st.day - 6, cost: 0, due: st.day + 2 };
+    try { out.note = settleRun(here); } catch (e) { out.error = String(e); }
+    return out;
+  });
+  assert.equal(r.left, 30, 'the 30t beyond the contract stay aboard');
+  assert.equal(r.paid, 100, 'and keep what was paid for them');
+  assert.equal(r.error, undefined, 'a removed mod\'s good does not throw');
+  assert.match(r.note, /^The load for .* was lost on the way/);
+  await done();
+});
+
 test('the captain\'s log: each settled run is a row with the shipper, the load, the pay and late or short, on the Journal and Port pages and the captain\'s page; the note says what was off, then the pay', async () => {
   const { ev, done } = await open();
   await ev(helpers);
