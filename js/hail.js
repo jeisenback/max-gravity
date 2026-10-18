@@ -270,7 +270,7 @@ function hailEvent(n) {
   const qty = cid && Math.min(10, st.cargo[cid]);
   const s = ship(), spare = Math.min(40, s.fuel - st.fuel);
   const free = friend || c.traits.includes('kind') || c.traits.includes('generous');
-  const v = voyageOf(n), hauling = v ? ` Hauling ${v.tons}t of ${COMMODITIES.find(x => x.id === v.cid).name} from ${v.from} to ${v.to}.` : '';
+  const v = voyageOf(n), hauling = v ? ` Hauling ${v.tons}t of ${goodName(v.cid)} from ${v.from} to ${v.to}.` : '';
   return {
     title, text: `${captain}: "${friend ? 'Captain! Good to see you again. ' : ''}${voice(n, GREETINGS, 'This is {ship}. Go ahead.')}${hauling}"`,
     choices: [

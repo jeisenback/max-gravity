@@ -143,7 +143,7 @@ function loseVoyage(n) {
   const v = voyageOf(n);
   if (!v) return;
   G.state.haul = haul().filter(x => x !== v);
-  if (v.tons > 0) worldNews(newsSay('hauler', { ship: v.ship, tons: v.tons, good: COMMODITIES.find(c => c.id === v.cid).name, to: v.to }));
+  if (v.tons > 0) worldNews(newsSay('hauler', { ship: v.ship, tons: v.tons, good: goodName(v.cid), to: v.to }));
 }
 
 // Deliveries on their way to a planet, for the Port's conditions.
@@ -158,7 +158,7 @@ function conditions(sid) {
   else if (sys.pirates >= 0.15 && danger(sid) < sys.pirates * 0.6) out.push({ id: 'quiet', bad: false, text: `Lanes around ${sys.name} are quiet` });
   for (const pl of sys.planets) {
     for (const cid of Object.keys(pl.prices)) {
-      const p = pressure(pl, cid), name = COMMODITIES.find(c => c.id === cid).name;
+      const p = pressure(pl, cid), name = goodName(cid);
       if (p > 0.2) {
         const due = inbound(pl, cid), tons = due.reduce((t, v) => t + v.tons, 0);
         const eta = due.length ? `${tons}t inbound, first due ${dateOf(Math.min(...due.map(v => v.arrive)))}` : 'no haulers inbound';

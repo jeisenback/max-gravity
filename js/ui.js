@@ -395,7 +395,7 @@ const UI = {
         st.cargo[arg] -= qty;
         st.paid[arg] -= cost;
         st.credits += income;
-        const name = COMMODITIES.find(c => c.id === arg).name;
+        const name = goodName(arg);
         this.tradeNote = `Sold ${qty}t of ${name} for ${fmt(income)} cr (${profit >= 0 ? `profit +${fmt(profit)}` : `loss ${fmt(-profit)}`} cr).`;
         break;
       }

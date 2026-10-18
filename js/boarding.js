@@ -123,7 +123,7 @@ function boardingEvent(n) {
             st.torpedoes = Math.min(TORP_MAX, (st.torpedoes || 0) + loot.torps);
             return `You take ${fmt(loot.credits)} cr from the pirates' strongbox${loot.torps ? ` and ${loot.torps} torpedo${loot.torps > 1 ? 'es' : ''} from their rack` : ''}.`;
           }
-          const q = Math.min(cargoFree(), loot.tons), name = COMMODITIES.find(c => c.id === loot.cid).name;
+          const q = Math.min(cargoFree(), loot.tons), name = goodName(loot.cid);
           st.cargo[loot.cid] = (st.cargo[loot.cid] || 0) + q;
           if (loot.voyage && (loot.voyage.tons -= q) <= 0) loseVoyage(n);  // what's left still gets delivered
           return `You haul ${q}t of ${name} across. The crew watch you do it. Somebody will report this.`;
