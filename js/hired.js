@@ -184,7 +184,7 @@ function hiredCall(ev) {
 
 // ---------- downtime ----------
 const practiceSay = (key, vars) => sceneSay('scene:screens', key, vars);  // the words are the lines of scene:screens (hiredscenes.js)
-ACTIVITIES.practise = { hiredOnly: true, get label() { return practiceSay('practise.label'); }, can: () => !!hired(), run() { if (!hired()) return practiceSay('practise.none'); gainSkill(hired().post, 3); return `${practiceSay(`practise.${hired().post}`)} ${practiceSay('practise.learn', { post: POSTS[hired().post].name.toLowerCase() })}`; } };
+ACTIVITIES.practise = { hiredOnly: true, get label() { return practiceSay('practise.label'); }, can: () => !!hired(), run() { if (!hired()) return practiceSay('practise.none'); const n = 3; gainSkill(hired().post, n); return `${practiceSay(`practise.${hired().post}`)} ${practiceSay('practise.learn', { n, post: POSTS[hired().post].name.toLowerCase() })}`; } };
 // What a hired hand can do with downtime: not the captain's drills or rounds of the berths, and the hull is the engineer's.
 const hiredMay = (id, a) => a.hiredOnly ? !!hired() : !hired() || (!['drills', 'visit'].includes(id) && (id !== 'repair' || hired().post === 'engineer'));
 

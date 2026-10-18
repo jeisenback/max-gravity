@@ -149,7 +149,7 @@ const playScenes = () => {
       run(`shiplife:acts:${v}:${engineer ? 'eng' : 'solo'}`, { mode: undefined }, () => ({ title: 'x', text: '', choices: ['meal', 'drills', 'repair', 'visit'].map(id => ({ label: ACTIVITIES[id].label, run() { const keep = Math.random; Math.random = () => (v ? 0.99 : 0); try { return ACTIVITIES[id].run(); } finally { Math.random = keep; } } })) }), { prep: burn(v, { engineer }) });
     }
     for (const [name, opts, flipped] of [['hired', {}, false], ['hired-flipped', {}, true], ['owner', { mode: undefined }, false], ['owner-flipped', { mode: undefined }, true]]) {
-      run(`shiplife:menu:${name}`, opts, () => { const ev = downtimeEvent(true); return { ...ev, choices: ev.choices.filter((c, i, all) => c.label === ACTIVITIES.meal.label || i === all.length - 1) }; }, { prep: burn(0, { flipped }) });
+      run(`shiplife:menu:${name}`, opts, () => { const ev = downtimeEvent(true); return { ...ev, choices: ev.choices.filter((c, i, all) => c.label === ACTIVITIES.meal.label || i === all.length - 1).map(c => (c.label === ACTIVITIES.meal.label ? { ...c, run: () => `${c.run()} | ${G.transit.comms[G.transit.comms.length - 1]}` } : c)) }; }, { prep: burn(0, { flipped }) });  // the meal's line in Comms too (#767)
     }
   }
   // ---------- the round for the house at the bar, and a main character coming aboard ----------

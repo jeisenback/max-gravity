@@ -250,7 +250,7 @@ test('downtime for a hired hand: a dozen additions, never for an owner, with the
   assert.ok(r.counts.every(n => n >= 1 && n <= 4), `one to four at a time (${r.counts})`);
   assert.ok(r.handSeen.length >= 6, `they come round in turn (${r.handSeen.length})`);
   assert.deepEqual(r.earthCast.sort(), ['Fly a sim with Ines', 'Learn the loop from Tomas']);
-  assert.deepEqual(r.beltPair.sort(), ['Fly a tug approach with Bexa', 'Run the range with Pax']);
+  assert.deepEqual(r.beltPair.sort(), ['Rig the tether winch with Bexa', 'Run the range with Pax']);
   assert.equal(r.beltCast, 0, 'no main character, no such choice');
   assert.equal(r.owner, 0); assert.equal(r.ownerFn, 0);
   await done();
