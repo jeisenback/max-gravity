@@ -4,17 +4,9 @@
 // button for one hour a landing and a menu of five, mixed from three lanes as the burn's is: the port's own (the regulars' table, a walk that reads the port), the hand's (an errand with a
 // crew member who asks, the room when its return was put off) and what is on (the match, the broadcast, the show at the bar). The five turn with the day; "Not now" is last and spends
 // nothing. Taking one takes no game day (the days are the captain's) but shuts the button until the next landing: st.dayAshore = { used }. The words are the lines of scene:day-ashore
-// (hiredscenes.js); the regulars' scene, the errand and the room's return are the ones that stand already. The turn (ashoreFive) takes the lanes and the day, so it runs in plain Node
+// (hiredscenes.js); the regulars' scene, the errand and the room's return are the ones that stand already. The turn (menuFive, shiplife.js) takes the lanes and the day, so it runs in plain Node
 // (tests/dayashore.test.js). The hand's: an owner has no hour here (#575). Loaded after chaptertwo.js; only called into at runtime.
 
-const ASHORE_SHOWN = 5;
-
-// Five of the lanes' entries, one from each lane in turn, each lane started at the day's place in it, so everything comes round. Fewer than five are all shown.
-function ashoreFive(lanes, day) {
-  const spun = lanes.map(l => (l.length ? l.slice(day % l.length).concat(l.slice(0, day % l.length)) : l)), out = [];
-  for (let i = 0; out.length < ASHORE_SHOWN && spun.some(l => l.length > i); i++) for (const l of spun) if (l[i] && out.length < ASHORE_SHOWN) out.push(l[i]);
-  return out;
-}
 const ashoreOpen = st => !(st.dayAshore && st.dayAshore.used);
 // What a walk through the port reads of it: the talk if there is a rumor about it, else its yard, else its market (every port has one or the other).
 const walkKind = (planet, rumored) => (rumored ? 'rumor' : planet.services.includes('shipyard') ? 'yard' : 'market');
@@ -51,7 +43,7 @@ function dayAshoreEvent(all) {
     title: daySay('title'), personal: true,
     text: daySay('text', { port: currentPlanet().name }),
     choices: [
-      ...(all ? lanes.flat() : ashoreFive(lanes, st.day)).map(a => ({ label: a.label, run() { st.dayAshore = { used: true }; return a.run(); } })),
+      ...(all ? lanes.flat() : menuFive(lanes, st.day)).map(a => ({ label: a.label, run() { st.dayAshore = { used: true }; return a.run(); } })),
       { label: daySay('none.label'), run: () => daySay('none.result') },
     ],
   };

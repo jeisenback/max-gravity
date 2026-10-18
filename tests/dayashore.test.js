@@ -10,18 +10,18 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { ashoreFive, ashoreOpen, walkKind } = load(['js/dayashore.js'], { Mods: { register() {} } }, ['ashoreFive', 'ashoreOpen', 'walkKind']);
+const { menuFive, ashoreOpen, walkKind } = load(['js/shiplife.js', 'js/dayashore.js'], { Mods: { register() {} } }, ['menuFive', 'ashoreOpen', 'walkKind']);
 const lane = (tag, n) => Array.from({ length: n }, (_, i) => `${tag}${i}`);
 
 test('the menu is five at most, one from each lane in turn, started at the day\'s place in each lane; fewer than five are all shown; the days turn it', () => {
   const lanes = [lane('p', 3), lane('h', 1), lane('n', 4)];
-  assert.deepEqual([...ashoreFive(lanes, 0)], ['p0', 'h0', 'n0', 'p1', 'n1']);
-  assert.deepEqual([...ashoreFive(lanes, 1)], ['p1', 'h0', 'n1', 'p2', 'n2']);
-  assert.notDeepEqual([...ashoreFive(lanes, 2)], [...ashoreFive(lanes, 0)]);
-  const seen = new Set(); for (let d = 0; d < 12; d++) for (const e of ashoreFive(lanes, d)) seen.add(e);
+  assert.deepEqual([...menuFive(lanes, 0)], ['p0', 'h0', 'n0', 'p1', 'n1']);
+  assert.deepEqual([...menuFive(lanes, 1)], ['p1', 'h0', 'n1', 'p2', 'n2']);
+  assert.notDeepEqual([...menuFive(lanes, 2)], [...menuFive(lanes, 0)]);
+  const seen = new Set(); for (let d = 0; d < 12; d++) for (const e of menuFive(lanes, d)) seen.add(e);
   assert.equal(seen.size, 8, 'every entry comes round');
-  assert.deepEqual([...ashoreFive([['a'], [], ['b', 'c']], 5)].sort(), ['a', 'b', 'c'], 'few are all shown');
-  assert.deepEqual([...ashoreFive([[], [], []], 3)], []);
+  assert.deepEqual([...menuFive([['a'], [], ['b', 'c']], 5)].sort(), ['a', 'b', 'c'], 'few are all shown');
+  assert.deepEqual([...menuFive([[], [], []], 3)], []);
 });
 
 test('the hour is open until it is spent, and a walk reads the port: the talk, the yard, else the market', () => {

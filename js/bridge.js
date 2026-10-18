@@ -176,7 +176,7 @@ function interiorPanel() {
   // Crew who hold no post: the roles without one, a second hand, or someone too hurt to work.
   const holders = new Set(Object.keys(POSTS).map(postHolder).filter(Boolean));
   const off = crew.filter(c => !holders.has(c)).map(c => conRead(raw(personLink(c)), `${ROLE_NAMES[c.role]}${(st.injured || {})[c.id] ? ', injured' : moodLow(c) ? ', having a hard time' : ''}`)).join('');
-  const free = t && phase() === 'move' && !(t.lifeUsed || {})[lifeSlot()];
+  const free = t && phase() === 'move' && lifeFree(t);
   return consoleHtml({
     title: 'Interior', status: `${crew.length} crew, ${berthsUsed()}/${ship().berths} berths`,
     screen: `<svg class="con-plant" viewBox="20 14 620 222" role="img" aria-label="Deck plan">${deckSvg()}</svg>`,
