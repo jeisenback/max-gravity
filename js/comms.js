@@ -56,7 +56,7 @@ const COMMS_FILTERS = [['all', 'All'], ['station', 'Stations'], ['ship', 'Ships'
 // Who you can open from here: yourself, the captain and first officer on the captain's ship, and everyone else aboard.
 // A chat is the "sit with someone" scene, so it takes the same once-a-half-burn downtime, and only with people who have a story to tell
 // (the crew and passengers the game makes; the authored crew have their own scenes).
-const chatFree = () => { const t = G.transit; return !!t && G.mode === 'transit' && !t.event && phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()]; };
+const chatFree = () => { const t = G.transit; return !!t && G.mode === 'transit' && !t.event && phase() === 'move' && !(t.lifeUsed || {})[lifeSlot()]; };
 const chatAble = id => procedural().some(f => f.id === id) || paxAboard().some(m => m.pid === id);
 
 function quietHtml() {
@@ -72,7 +72,7 @@ function contactsHtml() {
   const buttons = [`<button data-action="person" data-arg="you">You</button>`];
   if (cap) buttons.push(`<button data-action="person" data-arg="${esc(cap.id)}">Captain</button>`);
   if (xo) buttons.push(`<button data-action="person" data-arg="${esc(xo.id)}">First officer</button>`);
-  const free = chatFree(), chat = c => chatAble(c.id) ? ` <button class="link" data-action="chatWith" data-arg="${esc(c.id)}" ${free ? '' : 'disabled'} title="${free ? 'Sit with them' : 'Chats happen on the burn, once each half of the trip'}">Chat</button>` : '';
+  const free = chatFree(), chat = c => chatAble(c.id) ? ` <button class="link" data-action="chatWith" data-arg="${esc(c.id)}" ${free ? '' : 'disabled'} title="${free ? 'Sit with them' : 'Chats happen on the burn, one in each downtime'}">Chat</button>` : '';
   const rest = crew.filter(c => c !== xo).map(c => `<div class="con-read contact"><span>${personLink(c)}</span><b>${esc(ROLE_NAMES[c.role] || c.job || '')}${chat(c)}</b></div>`).join('');
   return conCard('Contacts', `<div class="row">${buttons.join('')}</div>${rest ? `<div class="eyebrow" style="margin-top:8px">Crew</div>${rest}${free ? '' : '<p class="hint">Chats happen on the burn, once each half of the trip.</p>'}` : ''}`);
 }
@@ -112,7 +112,7 @@ Mods.register({
     M.action('chatWith', id => {
       const t = G.transit, p = G.state.people[id];
       if (!p || !chatFree() || !chatAble(id)) return;
-      t.lifeUsed = t.lifeUsed || {}; t.lifeUsed[lifeHalf()] = true;
+      t.lifeUsed = t.lifeUsed || {}; t.lifeUsed[lifeSlot()] = true;
       if (hired()) hired().did = { ...hired().did, chat: true };  // the first run's steps (tutorial.js)
       G.bridgeOpen = null;
       openEvent(sitBeat(p, G.state.crew.includes(id)));

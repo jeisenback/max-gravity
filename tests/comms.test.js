@@ -196,12 +196,12 @@ test('Chat on a contact starts the sit-with scene on the burn, uses the half-bur
     uatBurn('Earth', 'mars'); G.transit.times = []; G.transit.left = G.transit.total * 0.6;  // under way, before the flip
     const burn = [...html().querySelectorAll('button[data-action=chatWith]')];
     Mods.act('chatWith', id);
-    const out = { port: { n: port.length, off: port.every(b => b.disabled) }, burn: { n: burn.length, on: burn.every(b => !b.disabled) }, scene: G.dialog && G.dialog.event.title, used: !!(G.transit.lifeUsed || {})[lifeHalf()] };
+    const out = { port: { n: port.length, off: port.every(b => b.disabled) }, burn: { n: burn.length, on: burn.every(b => !b.disabled) }, scene: G.dialog && G.dialog.event.title, used: !!(G.transit.lifeUsed || {})[lifeSlot()] };
     while (G.dialog) finishEvent();
     const after = [...html().querySelectorAll('button[data-action=chatWith]')];
     out.after = after.every(b => b.disabled);
     out.again = (() => { Mods.act('chatWith', id); return !!G.dialog; })();
-    G.transit.flipped = true; out.nextHalf = [...html().querySelectorAll('button[data-action=chatWith]')].every(b => !b.disabled);
+    G.transit.flipped = true; G.transit.left = G.transit.total * 0.3; out.nextHalf = [...html().querySelectorAll('button[data-action=chatWith]')].every(b => !b.disabled);
     return out;
   });
   assert.ok(r.port.n >= 4 && r.port.off, 'buttons at port, all off');

@@ -4,7 +4,7 @@
 // with you, your crew, and your passengers moving between the engine room, hold,
 // berths, galley, and bridge. Everyone is strapped in for the hard burns at each end
 // and floats at the flip. Crew doing something visible sometimes says so on comms.
-// Once before the flip and once after, you can pick a downtime activity. Loaded
+// A few times in a burn (every couple of days of the leg, the first before the flip and the last after), you can pick a downtime activity. Loaded
 // before game.js; only calls into it at runtime.
 
 // Two decks, stern to bow, as shares of the ship's length. Deck 0 is the upper deck, 1 the lower.
@@ -584,18 +584,26 @@ const ACTIVITIES = {
   },
 };
 
-// One activity before the flip and one after.
-const lifeHalf = () => (G.transit.flipped ? 'after' : 'before');
+// A downtime pick every couple of days of the leg: lifeSlotCount(days) of them, two on a short leg and five on a long one, spaced over the burn. The first is `before`, the last `after`
+// (what the sitting chats and the owed watch spend, family.js), the ones between m1, m2 ... A slot opens when the burn reaches its share; with two the second opens at the flip.
+const lifeSlotCount = days => Math.max(2, Math.min(5, Math.round(days / 2)));
+const lifeSlotKeys = n => ['before', ...Array.from({ length: n - 2 }, (_, i) => `m${i + 1}`), 'after'];
+// The slot the burn is in: the latest one open, so a slot not taken is gone when the next opens. Takes the transit, so it runs in plain Node.
+function lifeSlotOf(t) {
+  const n = t.slots || 2, p = Math.max(t.total ? 1 - t.left / t.total : 0, t.flipped ? 0.5 : 0);
+  return lifeSlotKeys(n)[Math.min(n - 1, Math.floor(p * n))];
+}
+const lifeSlot = () => lifeSlotOf(G.transit);
 
 const activityLabel = a => (typeof a.label === 'function' ? a.label() : a.label);
 
-// Downtime is a menu: one activity before the flip and one after. There are many to choose from, so it shows five at a
+// Downtime is a menu: one activity a slot of the burn. There are many to choose from, so it shows five at a
 // time, mixed from the three kinds (the ship's own, a hand's, and what is on now) and turned on each time, so everything
-// comes round. The same five stay while that half of the burn is open.
+// comes round. The same five stay while that slot of the burn is open.
 const DOWNTIME_SHOWN = 5;
 const baseActivities = () => Object.entries(ACTIVITIES).filter(([id, a]) => hiredMay(id, a)).map(([, a]) => a);
 function downtimeFive() {
-  const t = G.transit, st = G.state, half = lifeHalf(), ok = a => !a.can || a.can();
+  const t = G.transit, st = G.state, half = lifeSlot(), ok = a => !a.can || a.can();
   const lanes = [baseActivities().filter(ok), handDowntime().filter(ok), onNow().filter(ok)], every = lanes.flat();
   if (every.length <= DOWNTIME_SHOWN) return every;
   t.lifeShown = t.lifeShown || {};
@@ -620,7 +628,7 @@ function downtimeEvent(all) {
         label: activityLabel(a), can: a.can,
         run() {
           t.lifeUsed = t.lifeUsed || {};
-          t.lifeUsed[lifeHalf()] = true;
+          t.lifeUsed[lifeSlot()] = true;
           if (hired()) hired().did = { ...hired().did, downtime: true };  // the first run's steps (tutorial.js)
           const text = a.run();
           if (text) comm(`[Ship] ${text}`);  // one that leads straight into a scene (Sit with someone) has nothing to say yet
@@ -640,9 +648,9 @@ function syncLifeButtons() {
   if (!show) return;
   el.style.top = `${G.lifeY}px`;
   el.style.left = `${(G.W - G.hudW) / 2}px`;
-  const used = (t.lifeUsed || {})[lifeHalf()];
+  const used = (t.lifeUsed || {})[lifeSlot()], more = lifeSlotKeys(t.slots || 2).slice(-1)[0] !== lifeSlot();
   el.querySelector('button').disabled = !!used;
-  el.dataset.note = used ? (t.flipped ? 'Done for this burn' : 'Next after the flip') : 'Downtime';
+  el.dataset.note = used ? (more ? 'Next in a day or two' : 'Done for this burn') : 'Downtime';
 }
 
 function buildLifeButtons() {

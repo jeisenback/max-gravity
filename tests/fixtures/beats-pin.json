@@ -8,9 +8,9 @@
     "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [34%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -19,9 +19,9 @@
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [34%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -29,10 +29,10 @@
     "round": 0,
     "text": "She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
-     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [64%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [29%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -40,10 +40,10 @@
     "round": 0,
     "text": "She makes a second pass, closer than the first, and the grapple arms are open.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
-     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [64%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [29%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -94,7 +94,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -37.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -175,7 +175,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -37.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -222,7 +222,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -45."
    },
    {
     "beat": 1,
@@ -236,7 +236,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -33."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -37."
    },
    {
     "beat": 1,
@@ -303,7 +303,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -45. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -317,7 +317,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -33. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -476,45 +476,45 @@
    {
     "beat": 0,
     "round": 0,
-    "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
-     "Turn into her [22%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [37%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [36%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [41%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 0,
     "round": 1,
-    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 260/260.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
-     "Turn into her [22%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [37%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [36%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [41%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 1,
     "round": 0,
-    "text": "She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
-     "Fire the point defense [63%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [42%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [37%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [64%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [31%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [41%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 2,
     "round": 0,
-    "text": "She makes a second pass, closer than the first, and the grapple arms are open.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 226/260.",
+    "text": "She makes a second pass, closer than the first, and the grapple arms are open.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 223/260.",
     "labels": [
-     "Fire the point defense [63%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [42%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [37%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [64%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [31%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [41%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -565,7 +565,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -34.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -37.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -646,7 +646,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -34.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -37.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -693,7 +693,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -41."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -45."
    },
    {
     "beat": 1,
@@ -707,7 +707,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -34."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -37."
    },
    {
     "beat": 1,
@@ -754,7 +754,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -34.",
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -37.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -774,7 +774,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -41. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -45. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -788,7 +788,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -34. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -873,7 +873,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -34. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -930,12 +930,12 @@
    }
   ],
   "moved": [
-   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 260/260.",
-   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 260/260."
+   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
   ],
   "far": [
-   "She is still half a lane off, her grapple arms folded, hauling in at the best her drive will give. You bought the minute.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 260/260.",
-   "She makes a second approach from well out, the grapple arms stowed until she is close enough to use them.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Armor 260/260."
+   "She is still half a lane off, her grapple arms folded, hauling in at the best her drive will give. You bought the minute.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+   "She makes a second approach from well out, the grapple arms stowed until she is close enough to use them.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
   ],
   "lost": {
    "text": "You throw the ship sideways. Her burst goes through the place you were. She loses you. The raider hauls on for a range she will never close, and drops off the board a long way astern. (+2 experience at the pilot post.)"
@@ -950,9 +950,9 @@
     "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [77%; opens the range; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [69%; opens the range; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -961,9 +961,9 @@
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [77%; opens the range; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [69%; opens the range; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -971,21 +971,21 @@
     "round": 0,
     "text": "She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
-     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [77%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [64%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [69%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 2,
     "round": 0,
-    "text": "She makes a second pass, closer than the first, and the grapple arms are open.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 227/260.",
+    "text": "She makes a second pass, closer than the first, and the grapple arms are open.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 223/260.",
     "labels": [
-     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [77%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [64%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [69%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -1036,7 +1036,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -37.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -1117,7 +1117,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -37.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -1164,7 +1164,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -45."
    },
    {
     "beat": 1,
@@ -1178,7 +1178,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -33."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -37."
    },
    {
     "beat": 1,
@@ -1225,7 +1225,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -33.",
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -37.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -1245,7 +1245,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -45. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -1259,7 +1259,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -33. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -1344,7 +1344,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -33. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -1421,9 +1421,9 @@
     "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -1432,9 +1432,9 @@
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -1442,10 +1442,10 @@
     "round": 0,
     "text": "She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
-     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [64%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -1453,10 +1453,10 @@
     "round": 0,
     "text": "She makes a second pass, closer than the first, and the grapple arms are open.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
     "labels": [
-     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [64%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -1507,7 +1507,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -37.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -1588,7 +1588,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -37.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -1635,7 +1635,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -45."
    },
    {
     "beat": 1,
@@ -1649,7 +1649,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -33."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -37."
    },
    {
     "beat": 1,
@@ -1716,7 +1716,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen and the hull rings in three places. Armor -39. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen and the hull rings in three places. Armor -45. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -1730,7 +1730,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She's faster than the turn. The burst rakes your port side. Armor -33. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "She's faster than the turn. The burst rakes your port side. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -1889,45 +1889,45 @@
    {
     "beat": 0,
     "round": 0,
-    "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [34%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 0,
     "round": 1,
-    "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [34%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 1,
     "round": 0,
-    "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [30%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [70%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [26%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [29%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 2,
     "round": 0,
-    "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [30%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [70%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [26%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [29%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -1978,7 +1978,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -2059,7 +2059,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -2106,7 +2106,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -37."
+    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -43."
    },
    {
     "beat": 1,
@@ -2120,7 +2120,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -31."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -36."
    },
    {
     "beat": 1,
@@ -2187,7 +2187,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -37. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -43. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -2201,7 +2201,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -36. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -2343,12 +2343,12 @@
    }
   ],
   "moved": [
-   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "far": [
-   "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "lost": {
    "text": "The torpedo chases the plume and bursts well astern. She loses you. Her last torpedo burns out well short, and the corsair turns away with nothing to aim at. (+2 experience at the gunner post.)"
@@ -2363,9 +2363,9 @@
     "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [30%; if it fails: you may be hurt]",
-     "Turn into her [22%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [37%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [36%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [41%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -2374,9 +2374,9 @@
     "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [30%; if it fails: you may be hurt]",
-     "Turn into her [22%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [37%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [36%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [41%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -2384,21 +2384,21 @@
     "round": 0,
     "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [63%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [22%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [25%; if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [37%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [70%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [26%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [31%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [41%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 2,
     "round": 0,
-    "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 219/260.",
+    "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 224/260.",
     "labels": [
-     "Fire the point defense [63%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [22%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [25%; if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [37%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [70%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [26%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [31%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [41%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -2449,7 +2449,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -2530,7 +2530,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -2577,7 +2577,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -49."
+    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -43."
    },
    {
     "beat": 1,
@@ -2591,7 +2591,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -41."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -36."
    },
    {
     "beat": 1,
@@ -2638,7 +2638,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41.",
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -36.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -2658,7 +2658,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -49. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -43. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -2672,7 +2672,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -41. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -36. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -2757,7 +2757,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -36. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -2831,45 +2831,45 @@
    {
     "beat": 0,
     "round": 0,
-    "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [73%; opens the range; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [65%; opens the range; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 0,
     "round": 1,
-    "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [73%; opens the range; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [65%; opens the range; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 1,
     "round": 0,
-    "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [30%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [73%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [70%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [26%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [65%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 2,
     "round": 0,
-    "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 229/260.",
+    "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 224/260.",
     "labels": [
-     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [30%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [73%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [70%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [26%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [65%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -2920,7 +2920,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -3001,7 +3001,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -3048,7 +3048,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -37."
+    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -43."
    },
    {
     "beat": 1,
@@ -3062,7 +3062,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -31."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -36."
    },
    {
     "beat": 1,
@@ -3109,7 +3109,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31.",
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -36.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -3129,7 +3129,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -37. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -43. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -3143,7 +3143,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -36. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -3228,7 +3228,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -36. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -3285,12 +3285,12 @@
    }
   ],
   "moved": [
-   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "far": [
-   "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "lost": {
    "text": "The torpedo chases the plume and bursts well astern. She loses you. Her last torpedo burns out well short, and the corsair turns away with nothing to aim at. (+2 experience at the engineer post.)"
@@ -3302,45 +3302,45 @@
    {
     "beat": 0,
     "round": 0,
-    "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 0,
     "round": 1,
-    "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 1,
     "round": 0,
-    "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [30%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [70%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [26%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 2,
     "round": 0,
-    "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [30%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [70%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [26%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -3391,7 +3391,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -3472,7 +3472,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -3519,7 +3519,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -37."
+    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -43."
    },
    {
     "beat": 1,
@@ -3533,7 +3533,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -31."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -36."
    },
    {
     "beat": 1,
@@ -3600,7 +3600,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -37. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The torpedo comes through the screen and bursts close. The deck bucks and every light flickers. Armor -43. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -3614,7 +3614,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "The torpedo turns with you and bursts on the quarter. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "The torpedo turns with you and bursts on the quarter. Armor -36. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -3756,12 +3756,12 @@
    }
   ],
   "moved": [
-   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move bought you room. She is at 50 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry. The move cost you room. She is at 30 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "far": [
-   "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "lost": {
    "text": "The torpedo chases the plume and bursts well astern. She loses you. Her last torpedo burns out well short, and the corsair turns away with nothing to aim at. (+2 experience at the comms post.)"
@@ -3773,45 +3773,45 @@
    {
     "beat": 0,
     "round": 0,
-    "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [34%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 0,
     "round": 1,
-    "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [34%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 1,
     "round": 0,
-    "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [58%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [29%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 2,
     "round": 0,
-    "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [55%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [58%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [29%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [49%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -3862,7 +3862,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -3943,7 +3943,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -3990,7 +3990,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -43."
    },
    {
     "beat": 1,
@@ -4004,7 +4004,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -36."
    },
    {
     "beat": 1,
@@ -4071,7 +4071,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -43. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -4085,7 +4085,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -36. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -4227,12 +4227,12 @@
    }
   ],
   "moved": [
-   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move bought you room. She is at 40 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move cost you room. She is at 20 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move bought you room. She is at 40 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move cost you room. She is at 20 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "far": [
-   "She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "She comes round again from far out, the guns hot and the range still too wide for a good burst.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "She comes round again from far out, the guns hot and the range still too wide for a good burst.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "lost": {
    "text": "You throw the ship sideways and her burst goes through the place you were. She doesn't adjust fast enough. She loses you. The cutter's plume dwindles on the board and her hail goes unanswered, and then the board has nothing to show for her at all. (+2 experience at the gunner post.)"
@@ -4247,9 +4247,9 @@
     "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [30%; if it fails: you may be hurt]",
-     "Turn into her [22%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [37%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [36%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [41%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -4258,9 +4258,9 @@
     "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [30%; if it fails: you may be hurt]",
-     "Turn into her [22%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [37%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [36%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [41%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -4268,21 +4268,21 @@
     "round": 0,
     "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [51%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [42%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [25%; if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [37%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [58%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [31%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [41%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 2,
     "round": 0,
-    "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 219/260.",
+    "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 224/260.",
     "labels": [
-     "Fire the point defense [51%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [42%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [25%; if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [37%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [58%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [31%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [41%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -4333,7 +4333,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -4414,7 +4414,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -4461,7 +4461,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -49."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -43."
    },
    {
     "beat": 1,
@@ -4475,7 +4475,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -41."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -36."
    },
    {
     "beat": 1,
@@ -4522,7 +4522,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41.",
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -36.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -4542,7 +4542,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -49. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -43. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -4556,7 +4556,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -41. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -36. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -4641,7 +4641,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -36. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -4715,45 +4715,45 @@
    {
     "beat": 0,
     "round": 0,
-    "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [71%; opens the range; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [63%; opens the range; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 0,
     "round": 1,
-    "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [71%; opens the range; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [63%; opens the range; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 1,
     "round": 0,
-    "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [71%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [58%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [63%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 2,
     "round": 0,
-    "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 229/260.",
+    "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 224/260.",
     "labels": [
-     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [71%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [58%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [63%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -4804,7 +4804,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -4885,7 +4885,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -4932,7 +4932,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -43."
    },
    {
     "beat": 1,
@@ -4946,7 +4946,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -36."
    },
    {
     "beat": 1,
@@ -4993,7 +4993,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31.",
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -36.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -5013,7 +5013,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -43. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -5027,7 +5027,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -36. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -5112,7 +5112,7 @@
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -36. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
     "mem": [
      "9 Jul 2214: You made a call in a raid and it went wrong."
     ],
@@ -5169,12 +5169,12 @@
    }
   ],
   "moved": [
-   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move bought you room. She is at 40 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move cost you room. She is at 20 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move bought you room. She is at 40 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move cost you room. She is at 20 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "far": [
-   "She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "She comes round again from far out, the guns hot and the range still too wide for a good burst.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "She comes round again from far out, the guns hot and the range still too wide for a good burst.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "lost": {
    "text": "You throw the ship sideways and her burst goes through the place you were. She doesn't adjust fast enough. She loses you. The cutter's plume dwindles on the board and her hail goes unanswered, and then the board has nothing to show for her at all. (+2 experience at the engineer post.)"
@@ -5186,45 +5186,45 @@
    {
     "beat": 0,
     "round": 0,
-    "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 0,
     "round": 1,
-    "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
-     "Turn into her [30%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [37%; if it fails: you may be hurt]",
+     "Turn into her [26%; closes the range; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 1,
     "round": 0,
-    "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [58%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
     "beat": 2,
     "round": 0,
-    "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
+    "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
     "labels": [
-     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
-     "Burn evasive [50%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [70%; if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [58%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [46%; opens the range; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [32%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -5275,7 +5275,7 @@
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -5356,7 +5356,7 @@
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "text": "You turn into her and she's ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -36.",
     "mem": [
      "9 Jul 2214: You took the bold line and it did not.",
      "9 Jul 2214: You made a call in a raid and it went wrong."
@@ -5403,7 +5403,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -43."
    },
    {
     "beat": 1,
@@ -5417,7 +5417,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -36."
    },
    {
     "beat": 1,
@@ -5484,7 +5484,7 @@
     "round": 0,
     "i": 0,
     "roll": 0.999,
-    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -37. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "Her burst goes through the screen. It's a patrol gun, and it's accurate. The hull rings in three places. Armor -43. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -5498,7 +5498,7 @@
     "round": 0,
     "i": 1,
     "roll": 0.999,
-    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -31. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
+    "text": "She leads the turn and her burst takes you in it. Patrol gunners practise that exact one. Armor -36. She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13."
    },
    {
     "beat": 2,
@@ -5640,12 +5640,12 @@
    }
   ],
   "moved": [
-   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move bought you room. She is at 40 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move cost you room. She is at 20 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move bought you room. She is at 40 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine. The move cost you room. She is at 20 kilometers.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "far": [
-   "She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260.",
-   "She comes round again from far out, the guns hot and the range still too wide for a good burst.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Armor 260/260."
+   "She is still coming, twelve kilometers out and holding her fire, her turret tracking you across the gap. Whatever you did, it cost her the run.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260.",
+   "She comes round again from far out, the guns hot and the range still too wide for a good burst.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Armor 260/260."
   ],
   "lost": {
    "text": "You throw the ship sideways and her burst goes through the place you were. She doesn't adjust fast enough. She loses you. The cutter's plume dwindles on the board and her hail goes unanswered, and then the board has nothing to show for her at all. (+2 experience at the comms post.)"
@@ -6694,7 +6694,7 @@
  {
   "id": "dead:raider:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -6742,7 +6742,7 @@
  {
   "id": "dead:raider:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Crimson Vulture\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -6790,7 +6790,7 @@
  {
   "id": "dead:raider:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -6838,7 +6838,7 @@
  {
   "id": "dead:raider:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -6886,7 +6886,7 @@
  {
   "id": "dead:corsair:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -6934,7 +6934,7 @@
  {
   "id": "dead:corsair:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Crimson Vulture\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -6982,7 +6982,7 @@
  {
   "id": "dead:corsair:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -7030,7 +7030,7 @@
  {
   "id": "dead:corsair:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -7078,7 +7078,7 @@
  {
   "id": "dead:cutter:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -7126,7 +7126,7 @@
  {
   "id": "dead:cutter:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Crimson Vulture\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -7174,7 +7174,7 @@
  {
   "id": "dead:cutter:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -7222,7 +7222,7 @@
  {
   "id": "dead:cutter:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -7269,7 +7269,7 @@
  },
  {
   "id": "settle:repel:gunner:won:1",
-  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Knife\" lights, and she breaks away from the hull.",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -7279,7 +7279,7 @@
  },
  {
   "id": "settle:repel:gunner:won:3",
-  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Knife\" lights, and she breaks away from the hull.",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came.",
    "9 Jul 2214: We held the ship together.",
@@ -7329,7 +7329,7 @@
  },
  {
   "id": "settle:repel:engineer:won:1",
-  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Knife\" lights, and she breaks away from the hull.",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -7339,7 +7339,7 @@
  },
  {
   "id": "settle:repel:engineer:won:3",
-  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Knife\" lights, and she breaks away from the hull.",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came.",
    "9 Jul 2214: We held the ship together.",

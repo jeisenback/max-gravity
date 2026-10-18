@@ -14,7 +14,7 @@ after(closeBrowser);
 const helpers = () => {
   window.start = (post = 'gunner') => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; st.tutorial = null; return st; };
   // A made person with the ties wanted, found by drawing until one fits (ties.test.js).
-  window.find = (pred, role = 'cook') => { for (let i = 0; i < 600; i++) { const p = makePerson('earth'); p.role = role; p.skill = 1; registerPerson(p); if (pred(tiesOf(p), p)) { G.state.crew.push(p.id); return p; } } throw new Error('no such person'); };
+  window.find = (pred, role = 'cook') => { for (let i = 0; i < 600; i++) { const p = makePerson('earth'); p.role = role; p.skill = 1; p.wage = 50; registerPerson(p); if (pred(tiesOf(p), p)) { G.state.crew.push(p.id); return p; } } throw new Error('no such person'); };
   // The rolls: every die in the bottom tenth, then the top one, but varying, so a draw that retries for a new value ends. (A draw that picks
   // two different things from a short list needs the whole range: span 1.)
   window.rolled = (base, fn, span = 0.099, seed = 12345) => { const real = Math.random; Math.random = () => base + span * ((seed = (seed * 16807) % 2147483647) / 2147483647); try { return fn(); } finally { Math.random = real; } };
