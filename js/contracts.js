@@ -67,7 +67,7 @@ function drawContracts(st, here, from, reach, hold, day, rnd, standing = 0) {
   for (let i = 0; i < n && lanes.length; i++) {
     const lane = weightedLane(lanes, rnd);
     lanes = lanes.filter(x => x.cid !== lane.cid || x.pl !== lane.pl);
-    const days = lane.days, tons = 10 * (4 + Math.floor(rnd() * (Math.max(4, Math.floor(hold / 10)) - 3)));
+    const days = lane.days, tons = Math.min(10 * (4 + Math.floor(rnd() * (Math.max(4, Math.floor(hold / 10)) - 3))), Math.max(10, Math.floor(hold / 10) * 10));  // 40t at least, but never more than the hold takes (a ship of 20t is offered 20t, one of 35t 30t)
     const rumor = st.rumors.some(x => x.planet === lane.pl.name && x.cid === lane.cid && x.until >= day && x.mult > 1), hazard = danger(lane.sid) >= HAZARD_AT;
     const premium = 1 + (rumor ? RUMOR_PREMIUM : 0) + (hazard ? HAZARD_PREMIUM : 0) + (trusted ? TRUSTED_PAY : 0);
     out.push({ shipper: shipperOf(here, SYSTEMS[from].gov), good: lane.cid, tons, from: here.name, sid: lane.sid, planet: lane.pl.name, yard: lane.pl.services.includes('shipyard'), days,

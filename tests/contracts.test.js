@@ -20,6 +20,19 @@ function setup({ day = 10, rumors = [], danger = {}, rolls = [], hold = 120 } = 
   return { G, st: G.state, earth, reach, rnd: dice(rolls), ...api };
 }
 
+test('freight never outweighs the ship\'s hold: a hold under 40t is offered what fits, and a hold of 40t or more is offered what it always was', () => {
+  for (const hold of [10, 20, 35, 39, 40, 50, 120]) {
+    const { st, earth, reach, drawContracts } = setup({ hold });
+    const sizes = new Set();
+    for (const roll of [0.1, 0.3, 0.5, 0.7, 0.9, 0.99]) for (const k of drawContracts(st, earth, 'earth', reach, hold, 10, dice([0.9, roll, roll, roll, roll, roll, roll, roll]))) sizes.add(k.tons);
+    assert.ok(sizes.size > 0, `a hold of ${hold}t is offered freight`);
+    for (const t of sizes) assert.ok(t <= Math.max(10, Math.floor(hold / 10) * 10) && t >= Math.min(40, Math.max(10, Math.floor(hold / 10) * 10)) && t % 10 === 0, `${t}t in a hold of ${hold}t`);
+  }
+  const { st, earth, reach, drawContracts } = setup({ hold: 120 }), sizes = new Set();
+  for (const roll of [0, 0.34, 0.67, 0.99]) for (const k of drawContracts(st, earth, 'earth', reach, 120, 10, dice([0.9, roll, roll, roll, roll, roll]))) sizes.add(k.tons);
+  assert.deepEqual([...sizes].every(t => t >= 40 && t <= 120), true, 'a big hold still sees 40t to 120t');
+});
+
 test('freight goes from a port that prices a good low or middling to one in reach that prices it higher, never the other way', () => {
   const { earth, reach, freightLanes, PRICE_MULT } = setup();
   const lanes = freightLanes(earth, 'earth', reach);
