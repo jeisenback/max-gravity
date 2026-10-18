@@ -27,6 +27,7 @@ const playBeats = () => {
     for (const [id, v] of Object.entries(a.opinion)) if (v !== (b.opinion[id] === undefined ? v : b.opinion[id])) fx[id] = v - b.opinion[id];
     return { ...(mem.length ? { mem } : {}), ...(Object.keys(fx).length ? { fx } : {}) };
   };
+  fresh('gunner', 'raider');  // the first burn in a page makes the stars (a hundred and fifty draws), so it is played once before the dice are seeded for the record
   const origRaid = window.raidScene;
   let grabbed = null;
   window.raidScene = s => { grabbed = s; return origRaid(s); };

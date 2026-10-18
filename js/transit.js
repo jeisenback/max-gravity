@@ -4,7 +4,7 @@
 // events, market rumors, and comms chatter. Loaded before game.js; only calls into
 // it at runtime.
 
-const TRANSIT_MIN = 60, TRANSIT_MAX = 120;  // real seconds per burn, scaled by travel days
+const TRANSIT_MIN = 60, LIFE_SECS = 30;  // real seconds per burn: at least the minimum, else a downtime slot's worth for each (shiplife.js lifeSlotCount, a pick every couple of days of the leg)
 const CHATTER_PER_BURN = 3;  // lines of the crew's chatter in one burn, spread over it; the plotted and midpoint lines are not counted
 
 const CHATTER = [
@@ -314,7 +314,7 @@ function comm(text) {
 }
 
 function transitSeconds(days) {
-  return Math.max(TRANSIT_MIN, Math.min(TRANSIT_MAX, TRANSIT_MIN + days * 2));
+  return Math.max(TRANSIT_MIN, lifeSlotCount(days) * LIFE_SECS);
 }
 
 function enterTransit() {
@@ -325,7 +325,7 @@ function enterTransit() {
   st.dest = null;
   const count = Math.max(iceRun ? 5 : 0, 1 + Math.floor(total / 40)) + (walkPending() ? 1 : 0);  // 2 to 4 happenings per burn, one more for the first officer's walk-through (captains.js)
   G.transit = {
-    to, days, total, fuelCost, left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
+    to, days, total, fuelCost, slots: lifeSlotCount(days), left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
     times: Array.from({ length: count }, (_, i) => total * (i + rand(0.3, 0.8)) / count),
     chatter: rand(5, 10), chattered: 0,
   };

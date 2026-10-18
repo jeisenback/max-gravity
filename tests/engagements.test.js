@@ -14,6 +14,7 @@ const helpers = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state; st.story.next = 1e9; st.day += 30; hired().raidTold = true;  // the first raid is explained once (below); these are about the raids
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    __seed(2);  // the burn draws a time for each happening, and how many follows its length: the foe is drawn from a seed of its own, so a change to the length does not change the fight these scripted rolls expect
     if (!window.realMakeEnemy) window.realMakeEnemy = makeEnemy;
     const spare = window.realMakeEnemy({ kind: 'pirate' });  // made now: the enemy's person cannot be made under a constant random
     window.makeEnemy = () => Object.assign(spare, { shipId });  // the style of the raider or the corsair
