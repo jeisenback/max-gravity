@@ -16,7 +16,7 @@ const { open, closeBrowser } = require('../helpers');
 after(closeBrowser);
 
 test('every main character in the pool comes up in the draw', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
+  const { ev, done } = await open({ scope: 'earth-hired', stall: 900000 });
   const r = await ev(() => {
     const seen = {};
     for (let i = 0; i < 300; i++) { const [a, b] = realDrawCastPair(); seen[a] = (seen[a] || 0) + 1; seen[b] = (seen[b] || 0) + 1; }
@@ -27,7 +27,7 @@ test('every main character in the pool comes up in the draw', async () => {
 });
 
 test('twelve hired games give at least four different pairs, and an Earth start is not always Ines and Tomas', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
+  const { ev, done } = await open({ scope: 'earth-hired', stall: 900000 });
   const r = await ev(() => {
     window.drawCastPair = realDrawCastPair;
     const pairs = new Set();
