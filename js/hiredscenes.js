@@ -598,7 +598,7 @@ const SCENE_LINES = {
     'post.engineer': 'You have the plant: the reactor\'s output, the heat and the wear are yours to watch, and yours to break.',
     'post.comms': 'You have the bands: tips, hails and the inbox are yours. You\'re the ship\'s ear.',
     beside: 'Working beside you: {crew}.',
-    'week.run': '{cap} picks each run and buys the cargo from the ship\'s funds.',
+    'week.run': '{cap} picks each run and carries freight for a shipper, who pays on delivery.',
     'week.errands': 'Errands for wherever she\'s going come through the port, and the captain keeps a fifth.',
     'week.pay': 'You\'re paid {wage} a day and {share} percent of what she clears.',
     why: 'Why did you sign on?',
