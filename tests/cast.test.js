@@ -1134,3 +1134,66 @@ test('Ines\'s Board and Tomas\'s Third Hull each have a choice that needs their 
   assert.ok(r.ines.gain >= 2 && r.tomas.gain >= 1, 'it lifts their regard (opinion tops out, so from the minimum it is less than the full gain)'); assert.ok(r.ines.flag, 'the reference flag is set');
   await done();
 });
+
+// The follow-ups from the #127 review (#135).
+test('Yelena\'s pivot plays through the live event dialog, with the hull and the medic as the text states them', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired(); addThird();
+    sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.dialog = null;  // on a burn, where the main characters' scenes are drawn
+    const st = G.state, rec = castRec('yelena'), out = {};
+    rec.arc = 4; rec.since = st.day - 61; st.armor = ship().armor;
+    const med = makeCrewCandidate('earth'); med.role = 'medic'; med.skill = 1; registerPerson(med); st.crew.push(med.id);
+    G.dialog = null; G.nextEvent = null;
+    const c = Mods.filter('happenings', [], 'transit').find(x => String(x.make).includes('castScene') && x.tier === 2);
+    out.offered = !!c;
+    openEvent(c.make());
+    const d = G.dialog;
+    out.title = d.event.title; out.text = d.event.text; out.labels = d.choices.map(x => x.label);
+    out.hullSound = /Your hull is sound\./.test(d.event.text); out.medic = d.event.text.includes(`${med.first} has the med kit open`);
+    const i = d.choices.findIndex(x => /Let her lead/.test(x.label));
+    out.result = chooseEvent(i); finishEvent();
+    out.after = { dead: castDead('yelena'), marks: (castRec('yelena').marks || []).length, closed: !G.dialog };
+    return out;
+  });
+  assert.ok(r.offered, 'the pivot comes through the happenings');
+  assert.equal(r.title, 'Over the Hull'); assert.ok(r.hullSound, r.text); assert.ok(r.medic, r.text);
+  assert.ok(r.labels.some(l => /Let her lead/.test(l)) && r.labels.some(l => /Call it off/.test(l)));
+  assert.deepEqual(r.after, { dead: false, marks: 0, closed: true }, 'a sound hull, a medic and a gunner at 3 or more: three points, she lives');
+  await done();
+});
+
+test('a fate for a main character who never joined is ignored, and the registry keeps a dead one\'s record when it is trimmed', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired();
+    const st = G.state, out = {};
+    out.never = castFate('pax', 'die', 'Never met.', 'x'); out.memorial = (st.memorial || []).length; out.deadNever = castDead('pax');
+    addThird(); castFate('yelena', 'die', 'Cause.', 'x');
+    const pid = castRec('yelena').pid;
+    for (let i = 0; i < 120; i++) registerPerson(makeCrewCandidate(st.systemId));
+    out.size = Object.keys(st.people).length; out.kept = !!st.people[pid]; out.still = castDead('yelena');
+    return out;
+  });
+  assert.equal(r.never, 'live'); assert.equal(r.memorial, 0); assert.equal(r.deadNever, false);
+  assert.ok(r.size <= 82, `the registry is trimmed (${r.size})`); assert.ok(r.kept, 'the dead character\'s record is not trimmed away'); assert.equal(r.still, true);
+  await done();
+});
+
+test('a second person to send is one who is on their feet: a hurt crew member does not open the backup choice', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired(); addThird();
+    const st = G.state, ch = CAST.yelena.scenes.pivot.choices.find(c => /second person/.test(c.label));
+    const open = () => ch.can();
+    st.crew = ['c:yelena']; const alone = open();
+    const b = makeCrewCandidate('earth'); registerPerson(b); st.crew.push(b.id); const withOne = open();
+    st.injured = { [b.id]: true }; const hurt = open();
+    return { alone, withOne, hurt };
+  });
+  assert.deepEqual(r, { alone: false, withOne: true, hurt: false });
+  await done();
+});
