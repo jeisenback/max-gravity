@@ -21068,5 +21068,898 @@
    "Put Mateo ashore",
    "Turn the contract down"
   ]
+ },
+ {
+  "id": "dayashore:walk:market",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Heat Sink: Diego Haddad",
+     "text": "Diego Haddad nods at you.",
+     "labels": [
+      "Ask Diego about this place",
+      "Sit with Diego and say nothing",
+      "Ask about Hermes Foundry",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"The bartender knows everyone's business,\" Diego says, \"and has never repeated any of it. That is why anyone trusts this place.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "9 Jul 2214: The captain asked about the place and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Diego fans the last cards with a flourish you have seen before, in another port. 200 cr. You finish the glass."
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "9 Jul 2214: The captain asked about my work and listened."
+      ]
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The bar screen has episode 6 of \"Seven Decks\", a comedy. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Hermes Foundry is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Heat Sink",
+   "Walk through Hermes Foundry",
+   "Catch \"Seven Decks\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:walk:yard",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Gravity Well: Chen Osei",
+     "text": "Chen Osei nods at you. Since you were last here, Chen is learning the fiddle, and has been asked twice to practice elsewhere.",
+     "labels": [
+      "Ask Chen about their work",
+      "Play Chen at cards (200 cr) [50%]",
+      "Ask what they've heard",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"It is not what I thought I would do,\" Chen says. \"But I am better at it than I thought I would be.\"",
+      "mem": [
+       "9 Jul 2214: The captain asked about my work and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Chen pushes the bowl of beans across, and then the bread, and then a second glass of water from their own ration, without a word. Chen agrees at once, and orders another round for the whole watch."
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "\"The bartender knows everyone's business,\" Chen says, \"and has never repeated any of it. That is why anyone trusts this place.\"",
+      "mem": [
+       "9 Jul 2214: The captain asked about the place and listened."
+      ]
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "Chen slips two ration bars into your coat pocket at the door and says the galley will not miss them."
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the long way round by the yard, where the slips hum and a hull stands open to the dome. A rigger shows you a plate gone wrong on somebody else's ship, and says that is how you tell a good yard from a busy one.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The bar screen has episode 6 of \"Seven Decks\", a comedy. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Earth is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Gravity Well",
+   "Walk through Earth",
+   "Catch \"Seven Decks\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:walk:rumor",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Heat Sink: Diego Haddad",
+     "text": "Diego Haddad nods at you.",
+     "labels": [
+      "Ask Diego about this place",
+      "Ask about the posting",
+      "Ask Diego about their work",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"The bartender knows everyone's business,\" Diego says, \"and has never repeated any of it. That is why anyone trusts this place.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "9 Jul 2214: The captain asked about the place and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "mem": [
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "mem": [
+       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
+      ]
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the market tier, and the talk follows you: somebody has a price, somebody else has a better one, and everyone has a cousin who was there. You come back knowing what the dock is whispering.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The bar screen has episode 6 of \"Seven Decks\", a comedy. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Hermes Foundry is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Heat Sink",
+   "Walk through Hermes Foundry",
+   "Catch \"Seven Decks\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:table",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Heat Sink: Nadia Achebe",
+     "text": "Nadia Achebe nods at you.",
+     "labels": [
+      "Ask Nadia about their work",
+      "Sit with Nadia and say nothing",
+      "Ask what they've heard",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"It is not what I thought I would do,\" Nadia says. \"But I am better at it than I thought I would be.\" Nadia asks the next question, and then the one after it, about the burn profile.",
+      "mem": [
+       "9 Jul 2214: The captain asked about my work and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Nadia says they are traveling for reasons, and leaves it there, and orders another. Nadia thinks about it, then says: \"A big contract on Ring Nine has swallowed the whole local supply of Food, and the bidding has gone wild.\" Nadia adds, before you can answer: \"A disease scare on The Hollows has everyone hoarding Food.\""
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "Nadia fans the last cards with a flourish you have seen before, in another port. 200 cr. You finish the glass."
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "\"Which lane next?\" Nadia asks, at the door, and writes it on their hand."
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The bar screen has episode 6 of \"Seven Decks\", a comedy. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Hermes Foundry is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Heat Sink",
+   "Walk through Hermes Foundry",
+   "Catch \"Seven Decks\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:errand",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Heat Sink: Diego Haddad",
+     "text": "Diego Haddad nods at you.",
+     "labels": [
+      "Ask Diego about this place",
+      "Ask what they've heard",
+      "Ask about the posting",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"The bartender knows everyone's business,\" Diego says, \"and has never repeated any of it. That is why anyone trusts this place.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "12 Jul 2214: The captain asked about the place and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "mem": [
+       "12 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "Diego lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Diego talks over the answer and goes back to the story about the tug."
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "An Errand Ashore",
+     "text": "Ines has a shift owed to the wall to sign off at the rota office on the second tier, and nobody on their tier signs alone. \"It's a form,\" Ines says. \"Two names on it, and the clerk reads both out. You don't have to say anything. You have to be there.\"",
+     "labels": [
+      "Walk up to the wall office with them",
+      "Say you'll see them at the ship"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "You stand at the counter while the clerk turns pages. \"Owed four,\" the clerk says. \"Paying one.\" \"Paying one,\" Ines says, and signs. The clerk looks at you. \"Witness?\" You give your name, and the ship's, and the clerk writes the ship's name down and underlines it. Ines doesn't talk on the way back, and at the ramp says, \"My mother will hear the ship's name is in the book. That's good. Don't ask me why that's good.\"",
+      "mem": [
+       "12 Jul 2214: You stood witness at the wall office with me."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "\"Fair enough,\" Ines says, and goes up alone, and is back by the watch change with the form in a pocket and nothing to say about it."
+     }
+    ]
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "The bar screen has episode 7 of \"Seven Decks\", a comedy. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Hermes Foundry is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Heat Sink",
+   "Walk through Hermes Foundry",
+   "Go with Ines on an errand of theirs",
+   "Catch \"Seven Decks\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:room",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Heat Sink: Diego Haddad",
+     "text": "Diego Haddad nods at you.",
+     "labels": [
+      "Ask Diego about this place",
+      "Ask about Hermes Foundry",
+      "Ask about the posting",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"The bartender knows everyone's business,\" Diego says, \"and has never repeated any of it. That is why anyone trusts this place.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "9 Jul 2214: The captain asked about the place and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "mem": [
+       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
+      ]
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "mem": [
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Room in Hermes Foundry",
+     "text": "It has been 20 days. The latch sticks worse in the damp, and Duarte has put a rag in the gap under the door against it. There is dust on the sill and none on the bed. \"We kept it aired,\" Duarte says, and it comes out sounding like an apology. There is a letter on the table with your name on it in Duarte's hand. It was left here, and not sent to the dock. The bag of galley tea you left is on the hook behind the door, and it is lighter. You have slept in it once before.",
+     "labels": [
+      "Stay the night",
+      "Look in, and go back to the ship"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "You sleep through the watch change for the first time in a long while. In the morning there is bread on the table, and nobody asks where the ship is going. You leave a jar from the galley on the shelf. Duarte looks at it, and then at you, and finds a use for it by morning.",
+      "mem": [
+       "9 Jul 2214: You came back to the room."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "You put your head round the door and drink what is poured, and you are back at the lock before the dock lights change. \"Next time,\" Duarte says, to the empty doorway."
+     }
+    ]
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "The bar screen has episode 6 of \"Seven Decks\", a comedy. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Hermes Foundry is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Heat Sink",
+   "Walk through Hermes Foundry",
+   "Go up to your room",
+   "Catch \"Seven Decks\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:broadcast",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Heat Sink: Diego Haddad",
+     "text": "Diego Haddad nods at you.",
+     "labels": [
+      "Ask Diego about this place",
+      "Sit with Diego and say nothing",
+      "Ask what they've heard",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"The bartender knows everyone's business,\" Diego says, \"and has never repeated any of it. That is why anyone trusts this place.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "20 Jul 2214: The captain asked about the place and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Diego lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Diego talks over the answer and goes back to the story about the tug."
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "mem": [
+       "20 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The bar has \"Tranquility Night: the Old Footage\" on its screen, tonight only. The first Moon landing, the grainy version, with the whole of Earth and Luna watching at once. You stay to the end, and nobody asks you to buy anything.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "The bar screen has episode 8 of \"Seven Decks\", a comedy. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Hermes Foundry is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Heat Sink",
+   "Walk through Hermes Foundry",
+   "Catch \"Tranquility Night: the Old Footage\" at the bar, tonight only",
+   "Catch \"Seven Decks\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:show",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Heat Sink: Diego Haddad",
+     "text": "Diego Haddad nods at you.",
+     "labels": [
+      "Ask Diego about this place",
+      "Play Diego at cards (200 cr) [50%]",
+      "Ask about the posting",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"The bartender knows everyone's business,\" Diego says, \"and has never repeated any of it. That is why anyone trusts this place.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "9 Jul 2214: The captain asked about the place and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Diego takes out a creased photograph of Hermes Foundry and lays it between you under the bar light, the way they would lay out a chart, and neither of you mentions it. You look at it for a while. Diego talks over the answer and goes back to the story about the tug."
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "Diego has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Diego thinks about it, then says: \"Word is that the governor of Titan is stockpiling Electronics for a party, and will pay well over the odds.\" Diego adds, before you can answer: \"A cold snap on Pallas Refinery has made Refined Metals the only thing anyone wants to talk about.\""
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The bar screen has episode 6 of \"Seven Decks\", a comedy. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Hermes Foundry is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Heat Sink",
+   "Walk through Hermes Foundry",
+   "Catch \"Seven Decks\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:show:premiere",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Heat Sink: Diego Haddad",
+     "text": "Diego Haddad nods at you.",
+     "labels": [
+      "Ask Diego about this place",
+      "Play Diego at cards (200 cr) [50%]",
+      "Ask about Hermes Foundry",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"The bartender knows everyone's business,\" Diego says, \"and has never repeated any of it. That is why anyone trusts this place.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "6 Jan 2215: The captain asked about the place and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "You ask, and Diego puts down the glass."
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "mem": [
+       "6 Jan 2215: The captain bought me a drink at The Heat Sink."
+      ]
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The bar screen has the premiere of \"Cold Harbor Blues\", a Warren noir. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Hermes Foundry is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Heat Sink",
+   "Walk through Hermes Foundry",
+   "Catch \"Cold Harbor Blues\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:show:finale",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Heat Sink: Diego Haddad",
+     "text": "Diego Haddad nods at you.",
+     "labels": [
+      "Ask Diego about this place",
+      "Play Diego at cards (200 cr) [50%]",
+      "Ask about Hermes Foundry",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"The bartender knows everyone's business,\" Diego says, \"and has never repeated any of it. That is why anyone trusts this place.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "16 Aug 2214: The captain asked about the place and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "Diego lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Diego talks over the answer and goes back to the story about the tug."
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "You ask, and Diego puts down the glass."
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The bar screen has the finale of \"Seven Decks\", a comedy. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Hermes Foundry is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Heat Sink",
+   "Walk through Hermes Foundry",
+   "Catch \"Seven Decks\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:match",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": {
+     "title": "The Heat Sink: Diego Haddad",
+     "text": "Diego Haddad nods at you.",
+     "labels": [
+      "Ask Diego about this place",
+      "Ask what they've heard",
+      "Ask about the posting",
+      "Leave them to their drink"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0.5,
+      "text": "\"The bartender knows everyone's business,\" Diego says, \"and has never repeated any of it. That is why anyone trusts this place.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "9 Jul 2214: The captain asked about the place and listened."
+      ]
+     },
+     {
+      "j": 1,
+      "roll": 0.5,
+      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "9 Jul 2214: The captain asked about my work and listened."
+      ]
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
+      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "9 Jul 2214: The captain asked about my work and listened."
+      ]
+     },
+     {
+      "j": 3,
+      "roll": 0.5,
+      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You walk the market from the water sellers to the part stalls, reading prices off the boards. Nobody sells you anything. Several people try.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "Match night. Ring-ball League, ring-ball: Ceres Breakers 0, Pallas Smelters 5. Nobody here has a team in it. The screens go back to the weather after the second goal.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "The bar screen has episode 6 of \"Seven Decks\", a comedy. The sound is down and the subtitles run a beat late, and you follow it well enough.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.5,
+    "text": "You stay by the ramp and watch the dock go by.",
+    "next": null
+   }
+  ],
+  "title": "A Day Ashore",
+  "text": "The ship will keep. Hermes Foundry is out there, and the hour is yours.",
+  "labels": [
+   "Sit at the regulars' table at The Heat Sink",
+   "Walk through Hermes Foundry",
+   "Watch the Ring-ball League match on the bar screen",
+   "Catch \"Seven Decks\" at the bar",
+   "Not now"
+  ]
+ },
+ {
+  "id": "dayashore:button",
+  "plays": [],
+  "title": "x",
+  "text": "Spend a day ashore | One hour of your own at each landing. | You have had your hour here.",
+  "labels": []
  }
 ]
