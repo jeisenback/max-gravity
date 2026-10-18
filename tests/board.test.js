@@ -49,3 +49,15 @@ test('sensor wear: worn, the plot shows a second return; failing, it shows her w
   assert.doesNotMatch(boardSvg(now, { style: 'grapple', beat: 1, sunAngle: 0, sensors: SENSOR_STALE - 1 }), /STALE/, 'the first beat has nothing older to show');
   assert.ok(BOARD_PD > 0);
 });
+
+test('nothing on the plot is drawn over its header: the reach label is in the corner and the sun never rides up into the header row (#731)', () => {
+  const b = { range: 40, bearing: 90, closing: 4, aspect: 'closing' };
+  for (let k = 0; k < 16; k++) {
+    const angle = -Math.PI + (k * 2 * Math.PI) / 16, svg = boardSvg(b, { style: 'grapple', beat: 0, sunAngle: angle });
+    const sun = svg.match(/class="sun" cx="([\d.]+)" cy="([\d.]+)"/), reach = svg.match(/class="reach" x="([\d.]+)" y="([\d.]+)"/);
+    assert.ok(+sun[2] >= 28, `the sun at ${angle.toFixed(2)} is below the header row: ${sun[2]}`);
+    assert.ok(Math.hypot(+sun[1] - 180, +sun[2] - 120) <= 108.5, 'and still on its rim');
+    assert.ok(+reach[2] > 200 && +reach[1] < 50, 'the reach label is in the bottom corner, nowhere near the header or the rim');
+    assert.ok(Math.hypot(+sun[1] - 27, +sun[2] - 230) > 20, `the sun at ${angle.toFixed(2)} does not land on the reach label`);
+  }
+});

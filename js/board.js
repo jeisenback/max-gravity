@@ -8,6 +8,7 @@
 
 const BOARD_RANGES = { grapple: [40, 2, 1], gun: [30, 2, 1.5], torpedo: [40, 12, 8] };  // km at the closing, the first pass and the second, as the beats' lines have them
 const BOARD_MAX = 80, BOARD_RING = 20, BOARD_PD = 15;  // the plot's reach and its rings, and how far the point defense tracks her (the closing's "hold" line)
+const HEADER_CLEAR = 28;  // the lowest the sun marker may ride up the plot: the header text is in the top 20 units, and nothing else is drawn there
 const CLOSING_PER = 33, BEARING_STEP = 25;  // km a minute per unit of the ships' speed difference; degrees of bearing a point of position
 const SENSOR_GHOST = 60, SENSOR_STALE = 40;  // sensor condition under which the plot throws a second return, and under which it shows her late
 
@@ -29,7 +30,9 @@ function boardSvg(b, { style, beat, sensors = 100, sunAngle = 0, prev = null, pa
   const stale = sensors < SENSOR_STALE && prev, shown = stale ? prev : b, [hx, hy] = pt(shown.range, shown.bearing);
   const rings = Array.from({ length: BOARD_MAX / BOARD_RING }, (_, i) => `<circle class="ring" cx="${cx}" cy="${cy}" r="${f(rOf(BOARD_RING * (i + 1)))}" fill="none" stroke="#23405f" stroke-width="1"/>`).join('');
   const pdR = rOf(BOARD_PD), pd = `<path class="pd" d="M${cx} ${cy} L${f(cx - pdR * Math.sin(Math.PI / 3))} ${f(cy - pdR * Math.cos(Math.PI / 3))} A${f(pdR)} ${f(pdR)} 0 0 1 ${f(cx + pdR * Math.sin(Math.PI / 3))} ${f(cy - pdR * Math.cos(Math.PI / 3))} Z" fill="#4aa3ff" fill-opacity="0.12" stroke="#4aa3ff" stroke-opacity="0.4" stroke-width="1"/>`;
-  const [sx, sy] = [cx + (R + 8) * Math.cos(sunAngle), cy + (R + 8) * Math.sin(sunAngle)];
+  const sunY = Math.max(cy + (R + 8) * Math.sin(sunAngle), HEADER_CLEAR);  // the sun rides the rim but not up into the header's row (#731)
+  const sx = cx + Math.sign(Math.cos(sunAngle) || 1) * Math.sqrt(Math.max(0, (R + 8) ** 2 - (sunY - cy) ** 2));
+  const sy = sunY;
   const sun = `<circle class="sun" cx="${f(sx)}" cy="${f(sy)}" r="5" fill="#ffd27f"/>`;
   const me = `<path class="me" d="M${cx} ${cy - 7} L${cx + 5} ${cy + 5} L${cx} ${cy + 2} L${cx - 5} ${cy + 5} Z" fill="#cfe3ff"/>`;
   const contact = `<circle class="contact" cx="${hx}" cy="${hy}" r="5" fill="#ff6a4a"/>`;
@@ -40,5 +43,5 @@ function boardSvg(b, { style, beat, sensors = 100, sunAngle = 0, prev = null, pa
   const label = `Sensor board: range ${b.range} km, closing ${b.closing} km a minute, bearing ${Math.round(b.bearing)} degrees off the bow, ${b.aspect}.${word ? ` Position: ${word}.` : ''}${stale ? ' The sensors show her where she was last beat.' : ''}`;
   return `<svg class="board" viewBox="0 0 360 240" role="img" aria-label="${label}"><rect x="0" y="0" width="360" height="240" fill="#050a11"/>${rings}${pd}${sun}${track}${ghost}${second}${contact}${me}` +
     `<text x="10" y="16" fill="#7fb4ff" font-size="11" font-family="IBM Plex Mono, monospace" letter-spacing="1">${head}</text>` +
-    `<text x="${cx}" y="${cy - R - 4}" fill="#56687a" font-size="9" text-anchor="middle" font-family="IBM Plex Mono, monospace">${BOARD_MAX} km</text></svg>`;
+    `<text class="reach" x="10" y="234" fill="#56687a" font-size="9" font-family="IBM Plex Mono, monospace">${BOARD_MAX} km</text></svg>`  // the corner nothing else is drawn in: the sun rides a rim 108 units from the center, which stays clear of it;
 }

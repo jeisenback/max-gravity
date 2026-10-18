@@ -639,3 +639,38 @@ test('a choice at the last beat that leaves her far off means she cannot board, 
   assert.ok(/She loses you/.test(r.lost.text) && /\+2 experience/.test(r.lost.text) && !r.lost.title, `left at 65 she is gone: ${r.lost.text}`);
   await done();
 });
+
+test('on the page, the board\'s header, its reach label and its sun marker do not overlap (#731)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    const b = { range: 40, bearing: 90, closing: 4, aspect: 'closing' }, out = [];
+    const hit = (a, c) => !(a.right <= c.left || c.right <= a.left || a.bottom <= c.top || c.bottom <= a.top);
+    for (const angle of [-Math.PI / 2, 0, Math.PI / 2, Math.PI, -2.2, 2.2]) {
+      const box = document.createElement('div'); box.innerHTML = boardSvg(b, { style: 'grapple', beat: 0, sunAngle: angle, word: 'even' }); document.body.appendChild(box);
+      const svg = box.querySelector('svg'), head = svg.querySelector('text'), reach = svg.querySelector('text.reach'), sun = svg.querySelector('circle.sun');
+      const h = head.getBoundingClientRect(), rr = reach.getBoundingClientRect(), sb = sun.getBoundingClientRect();
+      out.push({ angle, headReach: hit(h, rr), headSun: hit(h, sb), reachSun: hit(rr, sb) });
+      box.remove();
+    }
+    return out;
+  });
+  for (const x of r) assert.deepEqual([x.headReach, x.headSun, x.reachSun], [false, false, false], `sun at ${x.angle}`);
+  await done();
+});
+
+test('the standoff line agrees with the board: close in when she is inside the close pass\'s range, at long range when she is past it (#733)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const orig = raidScene, out = {}; window.raidScene = x => { window.grabbed = x; return orig(x); };
+    const close = (range, style) => { raid('gunner'); startDuel({ kind: 'pirate' }, false); begin(); const s = window.grabbed; Object.assign(s, { style, beat: 3, edge: 0, range, base: range }); return raidClose(s); };
+    out.near = close(1.5, 'grapple'); out.gunNear = close(3, 'gun'); out.far = close(25, 'grapple'); out.edge = close(6, 'gun'); out.torp = close(10, 'torpedo');
+    return out;
+  });
+  assert.match(r.near, /close enough to hear it hit/); assert.doesNotMatch(r.near, /long range/);
+  assert.match(r.gunNear, /close enough to hear it hit/);
+  assert.match(r.far, /breaks off at long range/);
+  assert.match(r.edge, /close enough to hear it hit/, 'at the close pass\'s range it is still close in');
+  assert.match(r.torp, /breaks off at long range/, 'a corsair\'s standoff is ten kilometers out');
+  await done();
+});
