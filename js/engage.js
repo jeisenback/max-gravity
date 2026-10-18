@@ -82,7 +82,7 @@ function contactEvent(spec) {
     } });
   }
   // A hired hand whose post fits one of the options makes the call (hiredCall, hired.js): the option is theirs, rolled on their skill.
-  const post = hired() && hired().post, hand = HAND_CONTACT[post];
+  const post = lockPost(), hand = HAND_CONTACT[post];
   if (spec.kind === 'pirate' && hand) choices.push({ label: `[{crew}] ${hand.label}${costNote({ hull: hand.hull, range: 'opens the range' }, postOdds(post))}`, role: POSTS[post].role, run() {
     const won = Math.random() < postOdds(post);
     if (won) return startRaid(spec, false, { edge: 2, shift: hand.range[0], text: hand.win });

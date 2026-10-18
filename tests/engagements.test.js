@@ -675,3 +675,36 @@ test('the standoff line agrees with the board: close in when she is inside the c
   assert.match(r.torp, /breaks off at long range/, 'a corsair\'s standoff is ten kilometers out');
   await done();
 });
+
+test('an owner who kept a post meets a pirate or a patrol in the raid beats (#721): the post is the move, there is no captain to mark the call, a hurt lays them up and never kills, and the close goes in the log; one who never was a hand keeps the card duel', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    __seed(1);
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.credits = 100000; buyIn('courier'); while (G.dialog) finishEvent();
+    st.day += 30; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    out.owner = !hired() && lockPost() === 'gunner';
+    const real = Math.random;  // a foe is made with the dice back: people are drawn until they differ
+    window.rateFoe = f => { f.grade = 0; f.pack = false; return f; };  // an ordinary foe, whatever the seed draws
+    const fresh = kind => { Math.random = real; st.armor = ship().armor; G.duel = null; G.nextEvent = null; const text = startDuel({ kind, gov: 'Arcology Compact' }, false); begin(); return text; };
+    out.text = fresh('pirate'); out.title = G.dialog.event.title; out.duel = !!G.duel; out.labels = G.dialog.choices.map(c => c.label);
+    // a bold call that fails, and the hurt that follows it (the dice are set after the foe is made)
+    const xp = skillXp('gunner'); rolls([0.99, 0.01, 0.99]);
+    out.lost = choose('Turn into her'); out.hurtUntil = career().hurtUntil - st.day; out.next = G.nextEvent && G.nextEvent.title; out.alive = !!G.state && !G.state.fallen; finishEvent();
+    // a raid that goes her way: she breaks off, and the owner writes it in the log
+    fresh('pirate'); rolls([0.01, 0.01]); choose('Hold course'); finishEvent(); choose('Fire the point defense'); finishEvent();
+    out.off = choose('Burn evasive'); out.xp = skillXp('gunner') - xp;
+    out.patrol = (fresh('patrol'), G.dialog.event.title); out.patrolDuel = !!G.duel;
+    G.state.career = undefined; out.never = lockPost(); G.dialog = null; G.nextEvent = null; startDuel({ kind: 'pirate' }, false); out.neverDuel = !!G.duel;
+    return out;
+  });
+  assert.ok(r.owner); assert.match(r.text, /Battle stations/); assert.equal(r.title, 'The Closing'); assert.equal(r.duel, false, 'no card duel');
+  assert.ok(r.labels.some(l => l.startsWith('[Gunner] ')), 'the post\'s own move is offered');
+  assert.match(r.lost, /You are hurt/); assert.ok(r.hurtUntil >= 12, 'laid up'); assert.equal(r.next, 'First Pass'); assert.ok(r.alive);
+  assert.match(r.off, /breaks off/); assert.match(r.off, /You write it in the log and nothing else/); assert.doesNotMatch(r.off, /Captain/); assert.ok(r.xp >= 3, 'the post learns from a stand');
+  assert.equal(r.patrol, 'The Closing'); assert.equal(r.patrolDuel, false);
+  assert.equal(r.never, null); assert.equal(r.neverDuel, true, 'an owner who never was a hand keeps the card duel');
+  await done();
+});
