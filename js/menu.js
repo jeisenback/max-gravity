@@ -50,7 +50,7 @@ const Saves = {
     const t = String(text || '').trim();
     try { st = JSON.parse(t.startsWith('{') ? t : decodeURIComponent(escape(atob(t.replace(/-/g, '+').replace(/_/g, '/'))))); } catch (e) { return 'That is not a save this game can read.'; }
     if (!st || typeof st !== 'object' || typeof st.credits !== 'number' || typeof st.systemId !== 'string') return 'That is not a save this game can read.';
-    st = migrate(stripTags(st));  // a save code can come from anyone
+    try { st = migrate(stripTags(st)); } catch (e) { return 'That is not a save this game can read.'; }  // a save code can come from anyone
     const prev = this.current;
     this.use(n); this.write(st); this.use(prev);
     return null;
@@ -71,6 +71,10 @@ function migrate(st) {
     if (v == null || (d !== null && (typeof v !== typeof d || Array.isArray(v) !== Array.isArray(d)))) st[key] = d;
   }
   for (const p of Object.values(st.people)) if (p && typeof p === 'object') { p.first = cleanName(p.first); p.last = cleanName(p.last); }  // an event title is built from a name, and a title ends up in an attribute
+  // The fields stateDefaults() leaves out (a save may not have them) are dropped when they are the wrong kind of thing, so a pasted save code cannot throw here (#749).
+  const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+  for (const key of ['captain', 'home', 'outpost']) if (st[key] != null && !isObj(st[key])) delete st[key];
+  for (const key of ['captains', 'memorial']) if (st[key] != null) { if (Array.isArray(st[key])) st[key] = st[key].filter(isObj); else delete st[key]; }
   if (st.captain) st.captain.name = cleanName(st.captain.name);
   for (const c of st.captains || []) { c.name = cleanName(c.name); c.fate = stripTags(c.fate); }
   for (const m of st.memorial || []) m.cause = stripTags(m.cause);

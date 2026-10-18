@@ -6,7 +6,7 @@
 //                    stateDefaults() (game.js). (Before #252 this passed Import and then threw on load.)
 //   v1-save.json     the first shape a save had (newState() in the first commit that has one): no v, no captain, no hired, no cast.
 //   v3-hired-save.json  a hired-hand game at the current version (see FIXTURES below for what it holds).
-//   bad-shape-save.json  fields of the wrong kind (a string for the missions, a number for the people, a list for the flags): migrate() puts the default back, so the slot still opens (#576).
+//   bad-shape-save.json  fields of the wrong kind (a string for the missions, a number for the people, a list for the flags; a string for the captain and the home, a number for the memorial): migrate() puts the default back or drops the field, so the slot still opens (#576, #749).
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
