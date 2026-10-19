@@ -138,6 +138,8 @@ const playScenes = () => {
   // ---------- the downtime a hired hand can add, and what the crew make of what you do with a faction ----------
   const crewOf = n => { for (let i = 0; i < n; i++) { const c = makeCrewCandidate(G.state.systemId); Object.assign(c, { first: `Mate${i}`, last: 'Vale', role: ['engineer', 'pilot', 'comms', 'slicer'][i % 4], opinion: 0 }); registerPerson(c); G.state.crew.push(c.id); } };
   run('downtime:hand', {}, () => ({ title: 'Downtime', text: '', choices: HAND_DOWNTIME.map(d => ({ label: d.label, run: d.run })) }), { rolls: [0.1, 0.9], prep() { G.state.crew = []; crewOf(4); }, extra: () => hired().skill });
+  // the main characters' other tellings, taken by the day (#771): two days on from the one above, so all three are played
+  for (const shift of [1, 2]) run(`downtime:cast:${shift}`, {}, () => ({ title: 'Downtime', text: '', choices: HAND_DOWNTIME.filter(d => d.cast).map(d => ({ label: d.label, run: d.run })) }), { prep() { G.state.crew = []; crewOf(4); G.state.day += shift; }, extra: () => hired().skill });
   const GOVT = FACTIONS.find(f => f !== 'Pirate'), GOVT2 = FACTIONS.find(f => f !== 'Pirate' && f !== GOVT);
   for (const [gov, amount] of [[GOVT, 5], [GOVT, -5], [GOVT2, 12], [GOVT2, -12], [GOVT, 2]]) {
     run(`ties:reacts:${gov}:${amount}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { crewReacts(gov, amount); return ''; } }] }), { prep() { G.state.crew = []; crewOf(10); } });
