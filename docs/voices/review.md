@@ -6,7 +6,7 @@ The rubric for the review that `npm run voices` prepares (#646). It checks the l
 
 1. Before writing a moment that has more than one version (`x.result`, `x.result.1`, ...), write one line for each: where it happens, what happens, and the act it ends on. No two versions of one character share a beat, or a prop that is not on the character's card (Ines's logbook is), and no habit is shared across characters unless it is on that character's card (#773).
 2. After a prose pass and `npm run prose`, run `npm run voices` (the quoted lines and the passages in the narrative files that differ from `origin/main`) or `npm run voices -- js/captains/cato.js` (those files, all their quoted lines). `--diff REF` compares against another ref.
-3. Give the whole output to a Claude session or subagent that has not seen the pass. It is the prompt: this rubric, the cards, the numbered lines, then the changed passages whole with the other versions of the same moment.
+3. Give the whole output to a Claude session or subagent that has not seen the pass. It is the prompt: this rubric, the cards, the numbered lines, then the changed passages whole with the other versions of the same moment and the choice label it is played from.
 4. Fix what it finds, then run the review again with a rater that has seen neither the pass nor the last review. A fix is new text and can break a rule of its own. Repeat until a round finds nothing to fix, and only then open the pull request (#773).
 5. Put the last round's tables in the pull request. A line marked as breaking a rule is a question for the writer, not a verdict.
 
@@ -28,7 +28,7 @@ The rubric for the review that `npm run voices` prepares (#646). It checks the l
 The passages are printed whole after the lines, each under its file, line and key. Read them for what the lines alone do not show.
 
 1. **The narration.** Does it speak for the hand outside a choice the player picked, or say what the hand feels, thinks or knows (gunner card, Never does)? Does it end on a narrator's aside or a tidy closer that states the point (`prose-style.md`)? Is there a list of three?
-2. **The versions.** For a moment with more than one version, is each a different scene, or one scene reworded? Name any beat, prop or line two versions share.
+2. **The versions.** For a moment with more than one version, is each a different scene, or one scene reworded? Name any beat, prop or line two versions share. The versions are all what the choice label printed with them says (a sim with Ines is always a sim), so that activity and its setting are not a shared beat; what happens inside it is.
 3. **Continuity and traits.** Does a version assume someone who may not be aboard, or a fact that the character's card or `people.md` contradicts? Does a speaker with no card say what their trait in `people.md` lists under Never says?
 
 ## Rating

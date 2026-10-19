@@ -67,6 +67,7 @@ test('main reads the named files, or the narrative files that differ from the re
 test('passages keeps each changed passage whole, with the other versions of its moment, and a passage with no speech too (#773)', () => {
   const src = [
     "const L = {",
+    "  'ines.label': 'Fly a sim',",
     "  'ines.result': 'Ines runs the sim and says nothing at all.',",
     "  'ines.result.1': 'Ines runs it again with the lights off.',",
     "  'tomas.result': 'Tomas walks the loop and names each valve.',",
@@ -74,8 +75,8 @@ test('passages keeps each changed passage whole, with the other versions of its 
     "};",
   ].join('\n');
   const base = src.replace('with the lights off', 'in the dark');
-  assert.deepEqual(passages(src, passageSet(base)).map(p => [p.key, p.line]), [['ines.result', 2], ['ines.result.1', 3]], 'the changed one, which has no quote, and its sibling; Tomas is untouched');
+  assert.deepEqual(passages(src, passageSet(base)).map(p => [p.key, p.line]), [['ines.label', 2], ['ines.result', 3], ['ines.result.1', 4]], 'the changed one, which has no quote, its sibling and the label it is played from, however short; Tomas is untouched');
   assert.deepEqual(passages(src, passageSet(src)), [], 'nothing changed, nothing to read');
   const text = bundle([], { rubric: 'R', cards: {} }, passages(src, passageSet(base)).map(p => ({ ...p, file: 'js/s.js' })));
-  assert.match(text, /## Passages \(2\)\n\n### js\/s\.js:2 ines\.result\n\nInes runs the sim and says nothing at all\.\n/);
+  assert.match(text, /## Passages \(3\)\n\n### js\/s\.js:2 ines\.label\n\nFly a sim\n\n### js\/s\.js:3 ines\.result\n\nInes runs the sim and says nothing at all\.\n/);
 });
