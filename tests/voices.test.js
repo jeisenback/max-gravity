@@ -7,7 +7,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { quotedSpans, passageSet, collect, bundle, main } = require('../tools/voices');
+const { quotedSpans, passageSet, passages, collect, bundle, main } = require('../tools/voices');
 
 const SRC = [
   "const a = 'Cato says a long thing here. \"Sit down, you are not in anyone\\'s way,\" and he waits.';",
@@ -61,5 +61,21 @@ test('main reads the named files, or the narrative files that differ from the re
   assert.deepEqual(calls, ['diff --name-only main', 'show main:js/cast.js', 'show main:js/stories/x.js']);
   assert.match(diff.text, /## Lines \(3\)/, 'js/cast.js has its one new line and js/stories/x.js, which main lacks, has both; js/other.js and docs/x.md are not narrative files');
   const quiet = run([], () => '');
-  assert.match(quiet.text, /^no quoted lines changed since origin\/main$/);
+  assert.match(quiet.text, /^no passages changed since origin\/main$/);
+});
+
+test('passages keeps each changed passage whole, with the other versions of its moment, and a passage with no speech too (#773)', () => {
+  const src = [
+    "const L = {",
+    "  'ines.result': 'Ines runs the sim and says nothing at all.',",
+    "  'ines.result.1': 'Ines runs it again with the lights off.',",
+    "  'tomas.result': 'Tomas walks the loop and names each valve.',",
+    "  'tomas.result.1': 'Tomas reads the log out with you, line by line.',",
+    "};",
+  ].join('\n');
+  const base = src.replace('with the lights off', 'in the dark');
+  assert.deepEqual(passages(src, passageSet(base)).map(p => [p.key, p.line]), [['ines.result', 2], ['ines.result.1', 3]], 'the changed one, which has no quote, and its sibling; Tomas is untouched');
+  assert.deepEqual(passages(src, passageSet(src)), [], 'nothing changed, nothing to read');
+  const text = bundle([], { rubric: 'R', cards: {} }, passages(src, passageSet(base)).map(p => ({ ...p, file: 'js/s.js' })));
+  assert.match(text, /## Passages \(2\)\n\n### js\/s\.js:2 ines\.result\n\nInes runs the sim and says nothing at all\.\n/);
 });
