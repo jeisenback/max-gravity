@@ -537,9 +537,11 @@ const postOfRole = role => Object.keys(POSTS).find(k => POSTS[k].role === role);
 const shadowable = () => mates().filter(m => postOfRole(m.role) && postOfRole(m.role) !== hired().post);
 const downSay = (key, vars) => sceneSay('scene:downtime', key, vars);  // the words of these are the lines of scene:downtime (hiredscenes.js)
 const learnAt = (post, n) => { gainSkill(post, n); return ` ${downSay('learn', { n, post: POSTS[post].name.toLowerCase() })}`; };
+// A main character's downtime comes first on every burn's menu, so it has three tellings, taken in turn by the day and not by a draw (#771, docs/prose-aims.md).
+const CAST_TELLINGS = ['', '.1', '.2'];
 const castDowntime = (key, post) => ({
   cast: true, get label() { return downSay(`${key}.label`); }, can: () => castKeys().includes(key),
-  run() { castLike(key, 1, downSay('cast.memory')); return downSay(`${key}.result`) + learnAt(post, 3); },
+  run() { castLike(key, 1, downSay('cast.memory')); return downSay(`${key}.result${CAST_TELLINGS[G.state.day % CAST_TELLINGS.length]}`) + learnAt(post, 3); },
 });
 const downtime = (key, can, run) => ({ get label() { return downSay(`${key}.label`); }, can, run });
 
