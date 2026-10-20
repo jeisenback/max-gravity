@@ -189,11 +189,11 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   });
   assert.equal(r.title, 'The Lock', 'the panel is named for where the hand stands');
   assert.ok(r.size >= 16, 'the hauler is long: a cargo bay to go round by');
-  assert.deepEqual(r.heads, [[2, 3, 1], [1, 0, 2], [1, 0, 1], [1, 0, 1]], 'three of hers in the lock; five of ours spread, the odd one at the lock; the ship\'s cover by section');
+  assert.deepEqual(r.heads, [[1, 3, 1], [1, 0, 2], [2, 0, 1], [1, 0, 1]], 'three of hers in the lock; five of ours spread, the odd one on the bridge; the ship\'s cover by section');
   assert.equal(r.hand, 0);
-  assert.deepEqual(r.shown, { kind: 'push', from: 0, to: 1, n: 3, feint: false });
-  assert.equal(r.read, 'Boarders: 3 of them pushing into the Corridor.');
-  assert.equal(r.strip, 'The deck in four sections. The Lock: 2 of ours and 3 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 3 from The Lock into The Corridor.');
+  assert.deepEqual(r.shown, { kind: 'hold', from: 0, to: 0, n: 0, feint: false }, 'one of ours stands in the lock with them, so they cannot push on (R29)');
+  assert.equal(r.read, 'Boarders: holding where they are.');
+  assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 3 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold.');
   assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'You: shoot, 1 to 2 of them down']);
   assert.equal(r.labels[r.labels.length - 1], 'Fight');
   assert.ok(r.keep.every(Boolean), 'every choice redraws in place');
@@ -229,7 +229,7 @@ test('a veteran\'s shown move is marked may feint', async () => {
     }
     return out;
   });
-  assert.equal(r[0].read, 'Boarders: 3 of them pushing into the Corridor.'); assert.equal(r[0].strip, false);
+  assert.equal(r[0].read, 'Boarders: holding where they are.'); assert.equal(r[0].strip, false);
   for (const g of [1, 2]) { assert.match(r[g].read, / They may feint\.$/, `grade ${g}`); assert.equal(r[g].strip, true, `grade ${g}: on the strip`); }
   await done();
 });

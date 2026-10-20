@@ -336,7 +336,7 @@ test('their move is shown, and at a veteran grade it may feint, at CUNNING * gra
   const st = deck({ boarders: 4, crew: 1 });
   assert.deepEqual(plain(boardMove(st, LOW)), { kind: 'push', from: 0, to: 1, n: 4, feint: false }, 'they outnumber the corridor');
   const hold1 = deck({ boarders: 1, crew: 6 });
-  assert.equal(boardMove(hold1, LOW).kind, 'hold', 'one against two in the corridor: they hold');
+  assert.equal(boardMove(hold1, LOW).kind, 'hold', 'two of ours stand in the lock with them: they hold');
   for (const grade of [1, 2]) {
     let n = 0, seed = 12345;
     const rand = () => (seed = (seed * 1664525 + 1013904223) % 4294967296) / 4294967296;
@@ -351,7 +351,7 @@ test('their move is shown, and at a veteran grade it may feint, at CUNNING * gra
   const f = resolveDeckTurn(mid, { stand: 0, act: null, order: null }, { kind: 'push', from: 1, to: 2, n: 4, feint: true }, seq(0, 0, 0, 0));
   assert.deepEqual(plain(f.events[0]), { kind: 'move', from: 1, to: 0, n: 4 }, 'from the corridor the other way is back to the lock');
   const side = deck({ side: true, crew: 6 });
-  side.sections[1].mine = 6;
+  side.sections[0].mine = 0; side.sections[1].mine = 6;
   assert.deepEqual(plain(boardMove(side, LOW)), { kind: 'round', from: 0, to: 3, n: 3, feint: false }, 'with a long ship and the corridor held, round by the cargo bay');
   side.sections[3].theirs = 2; side.sections[2].theirs = 2; side.sections[0].theirs = 1;
   assert.equal(boardMove(side, LOW).from, 2, 'the front is the furthest along, the bridge over the cargo bay');
@@ -362,9 +362,13 @@ test('their move is shown, and at a veteran grade it may feint, at CUNNING * gra
   assert.deepEqual([m.kind, m.from, m.to], ['push', 2, 1], 'where she outnumbers us she pushes back toward the lock');
 });
 
-test('the deck starts with the attackers in the lock and the defenders spread, the remainder in the lock', () => {
-  assert.deepEqual(heads(deck({ boarders: 4, crew: 5 })), [[3, 4], [1, 0], [1, 0]], 'five over three: one each and two extra to the lock');
-  assert.deepEqual(heads(deck({ boarders: 7, crew: 3, assault: true })), [[3, 3], [0, 2], [0, 2]], 'in an assault mine are the attackers');
+test('the deck starts with the attackers in the lock and the defenders spread, the remainder on the bridge, which is never left empty (R29)', () => {
+  assert.deepEqual(heads(deck({ boarders: 4, crew: 5 })), [[1, 4], [1, 0], [3, 0]], 'five over three: one each and two extra to the bridge');
+  assert.deepEqual(heads(deck({ boarders: 7, crew: 3, assault: true })), [[3, 2], [0, 2], [0, 3]], 'in an assault mine are the attackers, and hers keep the bridge');
+  for (const side of [false, true]) for (let n = 1; n <= 7; n++) {
+    assert.ok(deck({ crew: n, side }).sections[2].mine > 0, `our bridge with ${n} crew${side ? ', a long ship' : ''}`);
+    assert.ok(deck({ boarders: n, crew: 3, assault: true, side }).sections[2].theirs > 0, `her bridge with ${n} of hers${side ? ', a long ship' : ''}`);
+  }
   const st = deck({ side: true, cover: [1, 2, 3] });
   assert.deepEqual(plain([st.sections.length, st.sections[3].cover, st.hand, st.began, st.turn, st.used, st.kind]), [4, 0, 0, 3, 0, {}, 'deck']);
   assert.deepEqual(plain(st.sections.map(s => s.cover)), [1, 2, 3, 0]);
@@ -372,19 +376,49 @@ test('the deck starts with the attackers in the lock and the defenders spread, t
   assert.deepEqual(plain(fightCover({ size: 12, kit: [], extra: [] })), [1, 1, 1], 'the cover input is the shape fightCover gives');
 });
 
-test('a section exchange takes heads within the ranges, less with cover', () => {
-  const two = (cover, rand) => {
-    const st = deck({ boarders: 6, crew: 6, cover });
-    st.sections[1] = { mine: 2, theirs: 2, cover: cover[1] };
-    const r = resolveDeckTurn(st, { stand: 0, act: null, order: null }, stay, rand);
-    return plain(r.state.sections[1]);
+test('a section exchange takes a CREW_HIT roll a head from the other side, so losses grow with the opposing heads (R29)', () => {
+  const trade = (mine, theirs, cover, rand) => {
+    const st = deck({ boarders: 6, crew: 6 });
+    st.sections = st.sections.map(() => ({ mine: 0, theirs: 0, cover: 0 })); st.sections[2].mine = 1;  // no one else trades, and the bridge is ours
+    st.sections[1] = { mine, theirs, cover };
+    return plain(resolveDeckTurn(st, { stand: 2, act: null, order: null }, stay, rand).state.sections[1]);
   };
-  assert.deepEqual(two([0, 0, 0], LOW), { mine: 2, theirs: 2, cover: 0 }, 'the low end of the range takes none');
-  assert.deepEqual(two([0, 0, 0], HIGH), { mine: 1, theirs: 1, cover: 0 }, 'the high end takes one a side');
-  assert.deepEqual(two([0, 1, 0], HIGH), { mine: 2, theirs: 1, cover: 1 }, 'a pip of cover takes the high end off the defenders');
+  assert.deepEqual(trade(2, 2, 0, LOW), { mine: 2, theirs: 2, cover: 0 }, 'the low end of the range takes none');
+  assert.deepEqual(trade(5, 1, 0, HIGH), { mine: 4, theirs: 0, cover: 0 }, 'one of theirs takes one of ours');
+  assert.deepEqual(trade(5, 3, 0, HIGH), { mine: 2, theirs: 0, cover: 0 }, 'three of theirs take three');
+  assert.deepEqual(trade(2, 6, 0, HIGH), { mine: 0, theirs: 4, cover: 0 }, 'a loss is never more than the heads there');
   const lone = deck({ boarders: 3, crew: 3 });
   lone.sections[2].theirs = 0;
   assert.deepEqual(heads(resolveDeckTurn(lone, { stand: 0, act: null, order: null }, stay, HIGH).state)[2], [1, 0], 'where only one side stands nothing is traded');
+});
+
+test('cover cuts the defenders\' loss, to nothing against one head, but never makes them immune (R29)', () => {
+  const trade = (mine, theirs, cover, assault = false) => {
+    const st = deck({ boarders: 6, crew: 6, assault });
+    st.sections = st.sections.map(() => ({ mine: 0, theirs: 0, cover: 0 })); st.sections[2] = assault ? { mine: 0, theirs: 1, cover: 0 } : { mine: 1, theirs: 0, cover: 0 };
+    st.sections[1] = { mine, theirs, cover }; st.hand = assault ? 0 : 2; if (assault) st.sections[0].mine = 1;
+    return plain(resolveDeckTurn(st, { stand: st.hand, act: null, order: null }, stay, HIGH).state.sections[1]);
+  };
+  assert.deepEqual(trade(5, 1, 2), { mine: 5, theirs: 0, cover: 2 }, 'two pips take the whole of one head\'s roll off ours, the defenders');
+  assert.deepEqual(trade(5, 4, 2), { mine: 3, theirs: 0, cover: 2 }, 'but four heads still take two');
+  assert.deepEqual(trade(4, 5, 1, true), { mine: 0, theirs: 2, cover: 1 }, 'in an assault the cover is hers: four of ours take three of her five, less a pip, and hers take all four of ours');
+});
+
+test('a stack does not leave a section while the other side stands in it: their push, her push back and our advance (R29)', () => {
+  const st = deck({ boarders: 4, crew: 3 });  // one of ours in each section
+  assert.equal(boardMove(st, LOW).kind, 'hold', 'one of ours in the lock holds four of them there');
+  st.sections[0].mine = 0;
+  assert.deepEqual(plain(boardMove(st, LOW)), { kind: 'push', from: 0, to: 1, n: 4, feint: false }, 'with the lock theirs alone they push on');
+  const asl = deck({ assault: true, boarders: 3, crew: 5 });
+  const r = resolveDeckTurn(asl, { stand: 0, act: null, order: null }, stay, LOW);
+  assert.ok(!r.events.some(e => e.kind === 'move' && e.who === 'mine'), 'ours stay in her lock while one of hers is there');
+  asl.sections[0].theirs = 0;
+  assert.ok(resolveDeckTurn(asl, { stand: 0, act: null, order: null }, stay, LOW).events.some(e => e.kind === 'move' && e.who === 'mine'), 'and push on once it is clear');
+  const back = deck({ assault: true, boarders: 3, crew: 3 });
+  back.sections = [{ mine: 1, theirs: 0, cover: 0 }, { mine: 1, theirs: 4, cover: 0 }, { mine: 0, theirs: 1, cover: 0 }];
+  assert.equal(boardMove(back, LOW).kind, 'hold', 'her four do not leave the corridor while one of ours is in it');
+  back.sections[1].mine = 0;
+  assert.deepEqual([boardMove(back, LOW).kind, boardMove(back, LOW).from], ['push', 1], 'with it hers alone she pushes back to the lock');
 });
 
 test('the hand shoots, steadies or covers in the section they stand in', () => {
@@ -393,10 +427,10 @@ test('the hand shoots, steadies or covers in the section they stand in', () => {
   let r = turn(SHOOT, null, seq(0, 0, 0, 0, 0, 0, 0));
   assert.equal(r.state.sections[0].theirs, 5, 'a shot adds the sidearm roll: one at least');
   r = turn(SHOOT, null, seq(0.999, 0.999, 0.999, 0.999));
-  assert.equal(r.state.sections[0].theirs, 3, 'the exchange takes one and the sidearm two');
+  assert.equal(r.state.sections[0].theirs, 2, 'the exchange takes one for each of our two, and the sidearm two');
   r = turn({ kind: 'steady', odds: 0.5 }, null, seq(0.1, 0, 0, 0, 0));
   assert.equal(r.state.sections[0].theirs, 5, 'a steady hand that works thins them by one');
-  r = turn({ kind: 'steady', odds: 0.5 }, null, seq(0.9, 0, 0, 0.999));
+  r = turn({ kind: 'steady', odds: 0.5 }, null, seq(0.9, 0, 0, 0, 0, 0, 0, 0, 0, 0.999));  // the check, six rolls against us and two against them, then the press
   assert.equal(r.state.sections[0].theirs, 6, 'one that misses thins no one');
   assert.equal(r.state.sections[0].mine, 1, 'and they press: a roll against us, here a high one');
   r = turn({ kind: 'cover', odds: 0.5 }, null, seq(0.1, 0, 0, 0, 0));
@@ -459,7 +493,7 @@ test('the ends: broken at a third, all down, pushed out of the lock, or the brid
 });
 
 test('cargo is next to the lock and the bridge both ways: the hand steps in and out, and a feint from the corridor never lands there', () => {
-  const at = (from, stand) => resolveDeckTurn({ ...deck({ side: true }), hand: from }, { stand, act: null, order: null }, stay, LOW).state.hand;
+  const at = (from, stand) => resolveDeckTurn({ ...deck({ side: true, crew: 8 }), hand: from }, { stand, act: null, order: null }, stay, LOW).state.hand;
   assert.deepEqual([at(0, 3), at(3, 0), at(2, 3), at(3, 2), at(1, 3), at(0, 2)], [3, 0, 3, 2, 1, 0], 'lock and bridge reach cargo and back; the corridor does not, nor does the lock reach the bridge');
   const st = deck({ side: true, boarders: 4, grade: 1 });
   st.sections[0].theirs = 0; st.sections[1].theirs = 4;
@@ -501,15 +535,15 @@ test('the hand falls back until it stands where they do not hold alone; with now
   assert.equal(resolveDeckTurn(lost, { stand: 0, act: null, order: null }, stay, LOW).state.hand, 0, 'with no one of ours anywhere it stays');
 });
 
-test('an assault played turn by turn reaches the end: our party advances section by section and holds her bridge', () => {
-  let st = deck({ assault: true, boarders: 3, crew: 6 });
+test('an assault played turn by turn reaches the end: our party advances section by section as each is cleared', () => {
+  let st = deck({ assault: true, boarders: 6, crew: 9 });
   let end = null;
   for (let t = 0; t < 12 && !end; t++) {
     st = resolveDeckTurn(st, { stand: 0, act: null, order: null }, boardMove(st, HIGH), HIGH).state;
     end = deckEnd(st);
   }
   assert.equal(end, 'won');
-  assert.ok(st.sections[2].mine > 0 && st.sections[2].theirs === 0, 'mine hold her bridge');
+  assert.ok(st.sections[0].theirs === 0 && st.sections[1].mine > 0, 'her lock cleared, and ours on into her corridor');
 });
 
 test('a gun that is not ready has no say: a hidden gun\'s order does not fire in place of a shown gun set to hold', () => {
