@@ -21385,7 +21385,7 @@
     "text": "",
     "next": {
      "title": "An Errand Ashore",
-     "text": "Ines wants a tin of the black tea they sell on Hermes Foundry, to send home, and doesn't trust their own nose after a month of ship coffee. \"You smell it,\" Ines says. \"If it smells like a wet rope, it's the good one.\"",
+     "text": "Ines wants a tin of the black tea they sell on Hermes Foundry, for the galley shelf, and doesn't trust their own nose after a month of ship coffee. \"You smell it,\" Ines says. \"If it smells like a wet rope, it's the good one.\"",
      "labels": [
       "Go to the tea stall with them",
       "Say you'll see them at the ship"
@@ -21395,7 +21395,7 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "A freighter crew bought the last of the black this morning, says the man minding the stall, and he has a green, nine credits the two hundred grams. Ines doesn't open it. \"Two hundred grams,\" Ines says, and writes NOT THE BLACK across the lid with the stall's marker before the man can wrap it. The man reads it upside down and wraps it anyway.",
+      "text": "A freighter crew bought the last of the black this morning, says the man minding the stall, and he has a green, nine credits the two hundred grams. Ines doesn't open it. \"Two hundred grams,\" Ines says, \"and an empty tin from the black.\" The man finds a dented one under the counter and charges a credit for it.",
       "mem": [
        "12 Jul 2214: You came to the tea stall with me."
       ]
