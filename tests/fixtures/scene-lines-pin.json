@@ -21385,9 +21385,9 @@
     "text": "",
     "next": {
      "title": "An Errand Ashore",
-     "text": "Ines has a shift owed to the wall to sign off at the rota office on the second tier, and nobody on their tier signs alone. \"It's a form,\" Ines says. \"Two names on it, and the clerk reads both out. You don't have to say anything. You have to be there.\"",
+     "text": "Ines wants a tin of the black tea they sell on Hermes Foundry, to send home, and doesn't trust their own nose after a month of ship coffee. \"You smell it,\" Ines says. \"If it smells like a wet rope, it's the good one.\"",
      "labels": [
-      "Walk up to the wall office with them",
+      "Go to the tea stall with them",
       "Say you'll see them at the ship"
      ]
     },
@@ -21395,15 +21395,15 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "You stand at the counter while the clerk turns pages. \"Owed four,\" the clerk says. \"Paying one.\" \"Paying one,\" Ines says, and signs. The clerk looks at you. \"Witness?\" You give your name, and the ship's, and the clerk writes the ship's name down and underlines it. Ines doesn't talk on the way back, and at the ramp says, \"My mother will hear the ship's name is in the book. That's good. Don't ask me why that's good.\"",
+      "text": "The woman at the stall sold the last of the black to a freighter crew this morning. She has a green, and opens the tin and holds it out to Ines, who passes it to you without smelling it. Ines buys two hundred grams of it and writes NOT THE BLACK on the lid in marker before she can wrap it.",
       "mem": [
-       "12 Jul 2214: You stood witness at the wall office with me."
+       "12 Jul 2214: You came to the tea stall with me."
       ]
      },
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"Fair enough,\" Ines says, and goes up alone, and is back by the watch change with the form in a pocket and nothing to say about it."
+      "text": "Ines goes alone and comes back with a tin, and won't open it until it's packed for the post."
      }
     ]
    },
