@@ -21,49 +21,28 @@
    {
     "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
     "armor": 260,
-    "band": 2
+    "band": 0
    },
    {
-    "text": "Turn 4: you hit her weapons for 2.",
+    "text": "",
     "armor": 260,
-    "band": 3
-   },
-   {
-    "text": "Turn 5: a shot at the weapons finds it already gone.",
-    "armor": 260,
-    "band": 4
+    "band": null
    }
   ],
   "end": {
-   "title": "Battle Stations",
-   "text": "Turn 4: you hit her weapons for 2.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+   "title": "The Corridor",
+   "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.</p><p>Boarders: 6. With you: 5. Your ship is long, with room to go round and little room for a rush.",
    "labels": [
-    "Stand down"
+    "Hold the line [24%; if it fails: a crew casualty, you may be hurt]",
+    "Rush them [20%; if it fails: a crew casualty, you may be hurt]",
+    "Go round them [36%; if it fails: a crew casualty, you may be hurt]",
+    "[Gunner] Fire down the line [55%; if it fails: a crew casualty, you may be hurt]",
+    "[Gunner] Pick off a runner (one fewer of them, no ground) [45%; if it fails: a crew casualty, you may be hurt]",
+    "[Gunner] Covering burst (cover here, once) [60%; if it fails: a crew casualty, you may be hurt]",
+    "Ines cuts the lights (cover here, once) [90%; if it fails: Ines may be hurt]",
+    "Tomas vents a coolant line (one fewer of them, no ground) [75%; if it fails: Tomas may be hurt]",
+    "Mateo puts a false order on their band (one fewer of them, no ground) [65%; if it fails: Mateo may be hurt]"
    ]
-  },
-  "mem": [
-   "9 Jul 2214: You stood us up to a raid and she broke off.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates."
-  ],
-  "fx": {
-   "p1": 1,
-   "c:ines": 1,
-   "c:tomas": 1,
-   "p2": -1,
-   "c:cato": -1,
-   "p3": 1,
-   "p4": 1,
-   "p5": 1,
-   "p6": 1,
-   "p7": 1
   }
  },
  {
@@ -76,61 +55,40 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 10, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 9, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
     "armor": 260,
-    "band": 2
+    "band": 0
    },
    {
-    "text": "Turn 4: you hit her weapons for 3.",
+    "text": "",
     "armor": 260,
-    "band": 3
-   },
-   {
-    "text": "Turn 5: a shot at the weapons finds it already gone.",
-    "armor": 260,
-    "band": 4
+    "band": null
    }
   ],
   "end": {
-   "title": "Battle Stations",
-   "text": "Turn 4: you hit her weapons for 3.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+   "title": "The Corridor",
+   "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.</p><p>Boarders: 6. With you: 5. Your ship is long, with room to go round and little room for a rush.",
    "labels": [
-    "Stand down"
+    "Hold the line [24%; if it fails: a crew casualty, you may be hurt]",
+    "Rush them [20%; if it fails: a crew casualty, you may be hurt]",
+    "Go round them [36%; if it fails: a crew casualty, you may be hurt]",
+    "[Pilot] Roll the ship [55%; if it fails: a crew casualty, you may be hurt]",
+    "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [45%; if it fails: a crew casualty, you may be hurt]",
+    "[Pilot] Cut the lights (cover here, once) [60%; if it fails: a crew casualty, you may be hurt]",
+    "Tomas drops the pressure door (cover here, once) [90%; if it fails: Tomas may be hurt]",
+    "Mateo puts a false order on their band (one fewer of them, no ground) [65%; if it fails: Mateo may be hurt]",
+    "Ines picks off a runner (one fewer of them, no ground) [60%; if it fails: Ines may be hurt]"
    ]
-  },
-  "mem": [
-   "9 Jul 2214: You stood us up to a raid and she broke off.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates."
-  ],
-  "fx": {
-   "p1": 1,
-   "c:ines": 1,
-   "c:tomas": 1,
-   "p2": -1,
-   "c:cato": -1,
-   "p3": 1,
-   "p4": 1,
-   "p5": 1,
-   "p6": 1,
-   "p7": 1
   }
  },
  {
@@ -143,61 +101,40 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 10, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 8, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
     "armor": 260,
-    "band": 2
+    "band": 0
    },
    {
-    "text": "Turn 4: you hit her weapons for 3.",
+    "text": "",
     "armor": 260,
-    "band": 3
-   },
-   {
-    "text": "Turn 5: a shot at the weapons finds it already gone.",
-    "armor": 260,
-    "band": 4
+    "band": null
    }
   ],
   "end": {
-   "title": "Battle Stations",
-   "text": "Turn 4: you hit her weapons for 3.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+   "title": "The Corridor",
+   "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.</p><p>Boarders: 6. With you: 5. Your ship is long, with room to go round and little room for a rush.",
    "labels": [
-    "Stand down"
+    "Hold the line [24%; if it fails: a crew casualty, you may be hurt]",
+    "Rush them [20%; if it fails: a crew casualty, you may be hurt]",
+    "Go round them [36%; if it fails: a crew casualty, you may be hurt]",
+    "[Engineer] Seal the bulkhead behind them [55%; if it fails: a crew casualty, you may be hurt]",
+    "[Engineer] Vent a coolant line (one fewer of them, no ground) [45%; if it fails: a crew casualty, you may be hurt]",
+    "[Engineer] Drop the pressure door (cover here, once) [60%; if it fails: a crew casualty, you may be hurt]",
+    "Ines cuts the lights (cover here, once) [90%; if it fails: Ines may be hurt]",
+    "Mateo picks off a runner (one fewer of them, no ground) [65%; if it fails: Mateo may be hurt]",
+    "Tomas puts a false order on their band (one fewer of them, no ground) [55%; if it fails: Tomas may be hurt]"
    ]
-  },
-  "mem": [
-   "9 Jul 2214: You stood us up to a raid and she broke off.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates."
-  ],
-  "fx": {
-   "p1": 1,
-   "c:ines": 1,
-   "c:tomas": 1,
-   "p2": -1,
-   "c:cato": -1,
-   "p3": 1,
-   "p4": 1,
-   "p5": 1,
-   "p6": 1,
-   "p7": 1
   }
  },
  {
@@ -210,61 +147,40 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 10, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 8, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
     "armor": 260,
-    "band": 2
+    "band": 0
    },
    {
-    "text": "Turn 4: you hit her weapons for 3.",
+    "text": "",
     "armor": 260,
-    "band": 3
-   },
-   {
-    "text": "Turn 5: a shot at the weapons finds it already gone.",
-    "armor": 260,
-    "band": 4
+    "band": null
    }
   ],
   "end": {
-   "title": "Battle Stations",
-   "text": "Turn 4: you hit her weapons for 3.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+   "title": "The Corridor",
+   "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.</p><p>Boarders: 6. With you: 5. Your ship is long, with room to go round and little room for a rush.",
    "labels": [
-    "Stand down"
+    "Hold the line [24%; if it fails: a crew casualty, you may be hurt]",
+    "Rush them [20%; if it fails: a crew casualty, you may be hurt]",
+    "Go round them [36%; if it fails: a crew casualty, you may be hurt]",
+    "[Comms] Lock the doors from the console [60%; if it fails: a crew casualty, you may be hurt]",
+    "[Comms] A false order on their band (one fewer of them, no ground) [50%; if it fails: a crew casualty, you may be hurt]",
+    "[Comms] Jam their band (cover here, once) [65%; if it fails: a crew casualty, you may be hurt]",
+    "Ines cuts the lights (cover here, once) [90%; if it fails: Ines may be hurt]",
+    "Tomas vents a coolant line (one fewer of them, no ground) [75%; if it fails: Tomas may be hurt]",
+    "Mateo picks off a runner (one fewer of them, no ground) [65%; if it fails: Mateo may be hurt]"
    ]
-  },
-  "mem": [
-   "9 Jul 2214: You stood us up to a raid and she broke off.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates.",
-   "9 Jul 2214: You set yourself against the pirates."
-  ],
-  "fx": {
-   "p1": 1,
-   "c:ines": 1,
-   "c:tomas": 1,
-   "p2": -1,
-   "c:cato": -1,
-   "p3": 1,
-   "p4": 1,
-   "p5": 1,
-   "p6": 1,
-   "p7": 1
   }
  },
  {
@@ -339,17 +255,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 16, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 14.",
+    "text": "Turn 3: you hit her weapons for 12.",
     "armor": 260,
     "band": 0
    },
@@ -361,7 +277,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
    "labels": [
     "Stand down"
    ]
@@ -401,17 +317,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 16, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 14.",
+    "text": "Turn 3: you hit her weapons for 12.",
     "armor": 260,
     "band": 0
    },
@@ -423,7 +339,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
    "labels": [
     "Stand down"
    ]
@@ -463,17 +379,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 16, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 14.",
+    "text": "Turn 3: you hit her weapons for 12.",
     "armor": 260,
     "band": 0
    },
@@ -485,7 +401,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
    "labels": [
     "Stand down"
    ]
@@ -566,7 +482,7 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 33.",
     "armor": 260,
     "band": 1
    },
@@ -607,12 +523,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 33.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 19, she hits your hull for 29.",
+    "text": "Turn 2: you hit her weapons for 20, she hits your hull for 29.",
     "armor": 260,
     "band": 0
    },
@@ -648,12 +564,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 33.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 19, she hits your hull for 29.",
+    "text": "Turn 2: you hit her weapons for 20, she hits your hull for 29.",
     "armor": 260,
     "band": 0
    },
