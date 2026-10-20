@@ -179,3 +179,14 @@ test('the function-built scenes and the code-written hired events are edited lin
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed line: ${seen.slice(0, 200)}`);
   }
 });
+
+test('the preview plays the version of a moment being edited, whichever the day would take (#781)', async () => {
+  await reload();
+  for (const [id, line] of [['scene:split', 'text.1'], ['scene:split', 'text.2'], ['scene:split', 'text']]) {
+    await select(id);
+    await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${line}.`);
+    const f = await play();
+    const seen = await f.evaluate(() => G.dialog.event.text);
+    assert.ok(seen.includes(`Typed ${line}.`), `${id} ${line} plays: ${seen.slice(0, 160)}`);
+  }
+});
