@@ -5,18 +5,19 @@
 // GRADE_HULL and GRADE_PUNCH set how much a veteran crew adds.
 
 const FIGHT = {
-  GUN_DMG: [8, 14],  // one shot's range before the multipliers
+  GUN_DMG: [12, 20], // one shot's range before the multipliers
   HEAVY: 1.4,        // what heavy rounds add; it is already in a side's dmgMult, kept here for the board's text
   SKILL_DMG: 1,      // per gunner level, added to the low end
-  BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.6 },
+  BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 },
   HEAT_CAP: 4,       // heat over this locks a gun for the next turn
   HEAT_VENT: 2,      // heat shed each turn
   SHIELD_REGEN: 0.1, // of the maximum, at the end of the turn
-  PART_HP: { weapons: 20, drive: 30, lock: 20 },  // weapons is per gun mount
+  PART_HP: { weapons: 20, drive: 20, lock: 10 },  // weapons is per gun mount
   TORP_DMG: [30, 45],
   PDC_HOLD: 0.4,     // what a turret held back takes off a volley
   TURNS: 6,
-  HAND_HURT: 0.35    // the hand's own hurt roll on a turn of a heavy hit to the armor (fightui.js); it was a lost bold call's in the raid
+  HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid
+  HEAVY_HIT: 0.1     // a turn is a heavy hit when she deals more than this share of your maximum armor, to any part (fightui.js)
 };
 
 const KNIFE = RANGE_BANDS.indexOf('knife');
@@ -42,14 +43,17 @@ const shipFight = ({ me, foes, nerve, band }) => ({ kind: 'ship', me, foes, band
 // A mount whose share of the weapons bar is gone cannot fire, nor can one that is locked.
 const gunsReady = st => Math.max(0, Math.min(st.me.guns, Math.ceil(st.me.parts.weapons.hp / FIGHT.PART_HP.weapons)) - st.locked.length);
 
-// Damage to the hull goes to shields first, then armor; to a part, to its hp. Returns what was dealt.
+// Damage to the hull goes to shields first, then armor; to a part, to its hp. Returns what it took: nothing from a part already at 0.
 function dealDamage(side, part, dmg) {
   if (part === 'hull') {
-    const s = Math.min(side.shields, dmg);
+    const s = Math.min(side.shields, dmg), a = Math.min(side.armor, dmg - s);
     side.shields -= s;
-    side.armor = Math.max(0, side.armor - (dmg - s));
-  } else side.parts[part].hp = Math.max(0, side.parts[part].hp - dmg);
-  return dmg;
+    side.armor -= a;
+    return s + a;
+  }
+  const took = Math.min(side.parts[part].hp, dmg);
+  side.parts[part].hp -= took;
+  return took;
 }
 
 function resolveShipTurn(state, orders, moves, rand) {
@@ -59,7 +63,7 @@ function resolveShipTurn(state, orders, moves, rand) {
   const lo = FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill;
 
   // A turret held back is not firing, so it costs a shot.
-  const shots = orders.guns.filter(o => o && st.foes[o.foe]).slice(0, Math.max(0, gunsReady(st) - (held ? 1 : 0)));
+  const shots = orders.guns.slice(0, gunsReady(st)).filter(o => o && st.foes[o.foe]).slice(0, Math.max(0, gunsReady(st) - (held ? 1 : 0)));  // a gun that is not ready has no say, whatever its order
   for (const o of shots) {
     const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([lo, FIGHT.GUN_DMG[1]], st.me.dmgMult * bandMult, rand));
     events.push({ who: 'me', foe: o.foe, part: o.part, dmg });
@@ -74,7 +78,7 @@ function resolveShipTurn(state, orders, moves, rand) {
   st.moves = copyOf(moves);
   st.foes.forEach((foe, i) => {
     const m = moves.foe[i];
-    if (!m || (m.kind !== 'broadside' && m.kind !== 'pin') || foe.armor <= 0 || foe.parts.weapons.hp <= 0) return;
+    if (!m || !m.target || foe.armor <= 0 || foe.parts.weapons.hp <= 0) return;  // a broadside, a pin, or the volley she fires as she closes
     const dmg = dealDamage(st.me, m.target, rollIn(m.dmg, held ? 1 - FIGHT.PDC_HOLD : 1, rand));
     events.push({ who: 'foe', foe: i, part: m.target, dmg });
   });
@@ -100,13 +104,16 @@ function foeVolley(st, i) {
   return FIGHT.GUN_DMG.map(d => Math.round(d * ready * foe.dmgMult * bandMultOf(st.band)));
 }
 
+// Her rules, in order: badly hurt, with no guns left or with no lock to board by (nothing left to come for), she breaks off; alongside she boards;
+// against a faster ship she pins its drive; she closes to the knife while her drive works, firing as she comes; else a broadside. Her guns go at yours
+// while they fire, and then at your hull.
 function foeMove(st, i) {
-  const foe = st.foes[i], armed = foe.parts.weapons.hp > 0;
-  if (hullShare(foe) < 0.3) return { kind: 'break' };
-  if (st.band === KNIFE && foe.parts.lock.hp > 0) return { kind: 'board' };
-  if (armed && st.me.parts.drive.hp > 0 && st.me.speed > foe.speed) return { kind: 'pin', target: 'drive', dmg: foeVolley(st, i) };
-  if (st.band > RANGE_BANDS.indexOf('close') && foe.parts.drive.hp > 0) return { kind: 'close' };
-  return armed ? { kind: 'broadside', target: 'weapons', dmg: foeVolley(st, i) } : { kind: 'hold' };
+  const foe = st.foes[i], at = { target: st.me.parts.weapons.hp > 0 ? 'weapons' : 'hull', dmg: foeVolley(st, i) };
+  if (hullShare(foe) < 0.3 || foe.parts.weapons.hp <= 0 || foe.parts.lock.hp <= 0) return { kind: 'break' };
+  if (st.band === KNIFE) return { kind: 'board' };
+  if (st.me.parts.drive.hp > 0 && st.me.speed > foe.speed) return { kind: 'pin', target: 'drive', dmg: foeVolley(st, i) };
+  if (st.band > KNIFE && foe.parts.drive.hp > 0) return { kind: 'close', target: 'hull', dmg: foeVolley(st, i) };
+  return { kind: 'broadside', ...at };
 }
 
 function captainMove(st) {
