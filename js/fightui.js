@@ -95,10 +95,10 @@ function fightBars(st) {
 
 // The panel for this turn, with the orders as they stand: her move and the captain's above the board, the bars, the last lines of the log, an order for each
 // ready gun, the torpedo and the turret where they are fitted, and Fire.
-function shipFightEvent(s, orders) {
+function shipFightEvent(s, orders, over = false) {  // over: the close, with no move to show
   const st = G.state, f = s.state, cap = raidCap(), ready = gunsReady(f);
   const say = (m, i) => fightSay(`foe.${m.kind}`, { ship: fightFoeName(s, i), ...(m.target ? { part: fightSay(`part.${m.target}`), lo: m.dmg[0], hi: m.dmg[1] } : {}) });
-  const read = !s.shown ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
+  const read = over ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
   const aim = o => (o ? fightSay('aim.at', { part: fightSay(`part.${o.part}`) }) : fightSay('aim.hold'));
   const turn = o => { const part = FIGHT_AIM[(FIGHT_AIM.indexOf(o ? o.part : null) + 1) % FIGHT_AIM.length]; return part ? { foe: 0, part } : null; };  // the next target round
   const redo = change => () => shipFightEvent(s, { ...orders, ...change });
@@ -143,8 +143,7 @@ function shipFightEnd(s, end) {
   const st = G.state, post = lockPost(), cap = raidCap();
   const lead = (ev, line) => ({ ...ev, text: `${line}</p><p>${ev.text}` });
   const close = (text, next = null) => {
-    s.shown = null;  // the fight is over: no move is shown
-    G.nextEvent = { ...shipFightEvent(s, { guns: [], torp: null, pdc: 'fire' }), text: `${s.state.log.slice(-2).join('</p><p>')}</p><p>${text}`,
+    G.nextEvent = { ...shipFightEvent(s, { guns: [], torp: null, pdc: 'fire' }, true), text: `${s.state.log.slice(-2).join('</p><p>')}</p><p>${text}`,
       choices: [{ label: fightSay('down.label'), keep: true, run: () => { G.nextEvent = next; return null; } }] };
   };
   if (end === 'crippled' && s.spec.kind !== 'patrol') { G.nextEvent = lead(deadInSpaceScene(s), fightSay(`end.crippled.${s.style}`)); return; }  // a navy ship is not boarded: she breaks off
