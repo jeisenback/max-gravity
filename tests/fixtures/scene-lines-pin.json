@@ -22082,7 +22082,7 @@
    {
     "i": 3,
     "roll": 0.5,
-    "text": "The captain's watch is yours tonight. You stand it at the board under the lights at a third, and log it the way the captain does: times, headings, nothing else. At oh-three-ten a nav buoy comes up on the board nine seconds late on its schedule, and that goes in the log too. In the morning the captain reads the page standing up, with a coffee, and stops at the buoy. \"Our clock or its?\" You checked neither. The captain sets the ship's clock against the next buoy while the coffee goes cold, and it's the buoy. 40 cr comes into your account at the next ledger sync. (+1 experience at the gunner post.)",
+    "text": "The captain's watch is yours tonight. You stand it at the board under the lights at a third, and log it the way the captain does: times, headings, nothing else. At oh-three-ten a nav buoy comes up on the board nine seconds late on its schedule, and that goes in the log too. In the morning the captain reads the page standing up, with a coffee, and stops at the buoy. \"Our clock or its?\" The captain sets the ship's clock against the next buoy while the coffee goes cold, and it's the buoy. 40 cr comes into your account at the next ledger sync. (+1 experience at the gunner post.)",
     "mem": [
      "11 Jul 2214: You stood a spare watch for me."
     ],
