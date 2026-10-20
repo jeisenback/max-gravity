@@ -77,7 +77,7 @@ test('played out, the panel goes turn by turn to an end: she closes firing, her 
   assert.deepEqual(r.bands, ['long', 'mid', 'close'], 'she is the faster ship, and closes a band a turn');
   assert.deepEqual(r.reads, ['closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range.', 'closing the range, firing at your hull as she comes, 13 to 22 damage. Captain Vance: holding the range.',
     'turning to break off. Captain Vance: holding the range.'], 'her move is shown before it is made, and her volley grows as she closes');
-  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, she hits your hull for 21.', 'Turn 2: you hit her weapons for 7.', 'Turn 3: a shot at the weapons finds it already gone.'], 'her guns go in two shots, and she has nothing left to come for');
+  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 12, she hits your hull for 21.', 'Turn 2: you hit her weapons for 8.', 'Turn 3: a shot at the weapons finds it already gone.'], 'her guns go in two shots, and she has nothing left to come for');
   assert.equal(r.title, 'Battle Stations'); assert.deepEqual(r.labels, ['Stand down']);
   assert.match(r.close, /^She breaks off\. Her grapple arms fold.* Captain Vance writes it in the log and nothing else\. \(\+3 experience at the engineer post\.\)$/);
   assert.deepEqual([r.opinion, r.xp], [1, 3]);

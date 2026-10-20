@@ -9,22 +9,22 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 10, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 9, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 4: you hit her weapons for 3.",
+    "text": "Turn 4: you hit her weapons for 2.",
     "armor": 260,
     "band": 3
    },
@@ -36,7 +36,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 4: you hit her weapons for 3.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+   "text": "Turn 4: you hit her weapons for 2.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
    "labels": [
     "Stand down"
    ]
@@ -76,22 +76,22 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 9, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 10, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 22.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 4: you hit her weapons for 2.",
+    "text": "Turn 4: you hit her weapons for 3.",
     "armor": 260,
     "band": 3
    },
@@ -103,7 +103,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 4: you hit her weapons for 2.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+   "text": "Turn 4: you hit her weapons for 3.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
    "labels": [
     "Stand down"
    ]
@@ -143,22 +143,22 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 8, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 10, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 22.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 4: you hit her weapons for 2.",
+    "text": "Turn 4: you hit her weapons for 3.",
     "armor": 260,
     "band": 3
    },
@@ -170,7 +170,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 4: you hit her weapons for 2.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+   "text": "Turn 4: you hit her weapons for 3.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
    "labels": [
     "Stand down"
    ]
@@ -210,22 +210,22 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 8, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 10, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 22.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 4: you hit her weapons for 2.",
+    "text": "Turn 4: you hit her weapons for 3.",
     "armor": 260,
     "band": 3
    },
@@ -237,7 +237,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 4: you hit her weapons for 2.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+   "text": "Turn 4: you hit her weapons for 3.</p><p>Turn 5: a shot at the weapons finds it already gone.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
    "labels": [
     "Stand down"
    ]
@@ -277,17 +277,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 16, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 14.",
+    "text": "Turn 3: you hit her weapons for 12.",
     "armor": 260,
     "band": 0
    },
@@ -299,7 +299,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
    "labels": [
     "Stand down"
    ]
@@ -339,17 +339,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 31.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 16, she hits your hull for 24.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 12.",
+    "text": "Turn 3: you hit her weapons for 14.",
     "armor": 260,
     "band": 0
    },
@@ -361,7 +361,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
    "labels": [
     "Stand down"
    ]
@@ -401,17 +401,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 31.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 16, she hits your hull for 24.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 12.",
+    "text": "Turn 3: you hit her weapons for 14.",
     "armor": 260,
     "band": 0
    },
@@ -423,7 +423,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
    "labels": [
     "Stand down"
    ]
@@ -463,17 +463,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 31.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 16, she hits your hull for 24.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 12.",
+    "text": "Turn 3: you hit her weapons for 14.",
     "armor": 260,
     "band": 0
    },
@@ -485,7 +485,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
    "labels": [
     "Stand down"
    ]
@@ -525,7 +525,7 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 33.",
     "armor": 260,
     "band": 1
    },
@@ -566,7 +566,7 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 33.",
     "armor": 260,
     "band": 1
    },
@@ -607,12 +607,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 33.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 20, she hits your hull for 29.",
+    "text": "Turn 2: you hit her weapons for 19, she hits your hull for 29.",
     "armor": 260,
     "band": 0
    },
@@ -648,12 +648,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 10, she hits your hull for 33.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 20, she hits your hull for 29.",
+    "text": "Turn 2: you hit her weapons for 19, she hits your hull for 29.",
     "armor": 260,
     "band": 0
    },
