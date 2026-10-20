@@ -39,11 +39,12 @@ function errandDue(st) {
   return f ? f.p : null;
 }
 const errandKind = p => ((G.state.injured || {})[p.id] ? 'clinic' : cultureOfPerson(p));
+// A culture has three errands, taken by the day (#777); the clinic, which plays only when someone is hurt, has one.
 function errandEvent(p, kind = errandKind(p)) {
-  const say = familySay('errand'), v = { n: p.first, port: G.state.planet, home: p.home };
-  return { title: say('title', v), text: say(`${kind}.text`, v), choices: [
-    { label: say(`${kind}.go.label`, v), run() { like(p, 1, say(`${kind}.go.memory`, v)); return say(`${kind}.go.result.${pick([0, 1])}`, v); } },
-    { label: say('stay.label', v), run: () => say(`${kind}.stay.result`, v) },
+  const say = familySay('errand'), v = { n: p.first, port: G.state.planet, home: p.home }, e = kind === 'clinic' ? kind : tellingOn(kind, G.state.day);
+  return { title: say('title', v), text: say(`${e}.text`, v), choices: [
+    { label: say(`${e}.go.label`, v), run() { like(p, 1, say(`${e}.go.memory`, v)); return say(`${e}.go.result.${pick([0, 1])}`, v); } },
+    { label: say('stay.label', v), run: () => say(`${e}.stay.result`, v) },
   ] };
 }
 FAMILY_SCENES.errand = p => errandEvent(p);  // with the family scenes, for the editor and the lines tests

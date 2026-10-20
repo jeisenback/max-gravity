@@ -304,8 +304,9 @@ function scenesReport(runs, rows, legs, top = 10) {
     out.push(`storylet plays by kind: ${Object.entries(kinds).map(([k, re]) => `${k} ${plays(re)}`).join(', ')} (of which at night ${plays(/^road-night-/)})`,
       `landings: ${landings}, with no scene ${mix[0]}, one ${mix[1]}, two or more ${mix[2]}`);
   }
-  const listed = new Set(rows.map(r => (r.storylet ? `id:${r.id}` : `title:${r.title}`))), unknown = [...played].filter(([key]) => !listed.has(key)).map(e => label(e));
-  out.push(`played but not listed in the index: ${unknown.length}${unknown.length ? ` (${unknown.sort().slice(0, 8).join('; ')}${unknown.length > 8 ? '; ...' : ''})` : ''}`);
+  const listed = new Set(rows.map(r => (r.storylet ? `id:${r.id}` : `title:${r.title}`))), unknown = [...played].filter(([key]) => !listed.has(key));
+  // every one, with its plays, the most played first: a scene built in code (customs, the errand) is counted only here (#777)
+  out.push(`played but not listed in the index: ${unknown.length}`, ...unknown.sort((a, b) => b[1].plays - a[1].plays || (a[0] < b[0] ? -1 : 1)).map(e => `  ${label(e)}: ${e[1].plays} plays`));
   return out;
 }
 
