@@ -40,12 +40,15 @@ const moment = key => key.replace(/\.\d+$/, '');
 // The passages of a script's source that are not in `known`, whole, with the other versions of the same moment, as { key, line, text } in file order: the rater reads
 // the narration around the speech and compares the versions with each other (#773).
 // With them comes the choice label the moment is played from ('ines.label' for 'ines.result'), since every version is what that choice says it is.
+// Versions are grouped within the scene block they sit in ('scene:split': { ... }), so `text.1` brings its own scene's `text` and not every other one (#780).
+const blockOf = (src, start) => { const m = [...src.slice(0, start).matchAll(/['"]([\w:.-]+)['"]\s*:\s*\{/g)].pop(); return m ? m[1] : ''; };
 function passages(src, known) {
-  const all = scanSource(src).lits.map(l => ({ key: keyOf(src, l.start), line: 1 + (src.slice(0, l.start).match(/\n/g) || []).length, text: l.text }));
+  const all = scanSource(src).lits.map(l => ({ key: keyOf(src, l.start), block: blockOf(src, l.start), line: 1 + (src.slice(0, l.start).match(/\n/g) || []).length, text: l.text }));
+  const at = (p, key) => `${p.block}|${key}`;
   const changed = all.filter(p => wordCount(p.text) >= 4 && !known.has(p.text));
-  const moments = new Set(changed.filter(p => p.key).map(p => moment(p.key)));
-  const labels = new Set([...moments].map(m => `${m.split('.')[0]}.label`));
-  return all.filter(p => changed.includes(p) || (p.key && wordCount(p.text) >= 4 && moments.has(moment(p.key))) || labels.has(p.key));
+  const moments = new Set(changed.filter(p => p.key).map(p => at(p, moment(p.key))));
+  const labels = new Set(changed.filter(p => p.key).map(p => at(p, `${moment(p.key).split('.')[0]}.label`)));
+  return all.filter(p => changed.includes(p) || (p.key && wordCount(p.text) >= 4 && moments.has(at(p, moment(p.key)))) || (p.key && labels.has(at(p, p.key))));
 }
 
 // The numbered spans of several files: [{ n, file, line, quote, before, after }]. `base[file]` is the earlier source, when only the new passages are wanted.
