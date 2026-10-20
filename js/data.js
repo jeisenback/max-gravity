@@ -232,7 +232,7 @@ const PATROL_NAMES = { 'Arcology Compact': 'Compact cutter', 'Dome Concord': 'Co
 // `req` needs that much standing with the faction running the shop; `pirate` gear is
 // only sold in pirate ports. Outfits move with you when you change ships.
 const OUTFITS = {
-  pdc:     { name: 'Close-defense turret', price: 6000, space: 3, max: 2, desc: 'An extra forward gun that also shoots down incoming torpedoes on its own.', mod: s => { s.guns += 1; } },
+  pdc:     { name: 'Close-defense turret', price: 6000, space: 3, max: 2, desc: 'An extra forward gun that also shoots down incoming torpedoes on its own.', mod: s => { s.guns += 1; s.pdc = true; } },
   launcher: { name: 'Torpedo launcher', price: 12000, space: 3, max: 1, desc: 'Fires homing torpedoes at your target (F). Slow off the rail, fast and hard-hitting after. Buy torpedoes at any outfitter.', mod: s => { s.launcher = true; } },
   heavy:   { name: 'Heavy rounds', price: 12000, space: 2, max: 1, req: 15, desc: 'Tungsten-cored ammunition. Your guns hit 40% harder.', mod: s => { s.dmgMult *= 1.4; } },
   armor:   { name: 'Armor plating', price: 4000, space: 4, max: 3, desc: '+40 armor.', mod: s => { s.armor += 40; } },
