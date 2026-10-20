@@ -138,7 +138,7 @@ const playScenes = () => {
   // ---------- the downtime a hired hand can add, and what the crew make of what you do with a faction ----------
   const crewOf = n => { for (let i = 0; i < n; i++) { const c = makeCrewCandidate(G.state.systemId); Object.assign(c, { first: `Mate${i}`, last: 'Vale', role: ['engineer', 'pilot', 'comms', 'slicer'][i % 4], opinion: 0 }); registerPerson(c); G.state.crew.push(c.id); } };
   run('downtime:hand', {}, () => ({ title: 'Downtime', text: '', choices: HAND_DOWNTIME.map(d => ({ label: d.label, run: d.run })) }), { rolls: [0.1, 0.9], prep() { G.state.crew = []; crewOf(4); }, extra: () => hired().skill });
-  // the main characters' other tellings, taken by the day (#771): two days on from the one above, so all three are played
+  // the other versions, taken by the day (#771, #775): two days on from the one above, so all three are played
   for (const shift of [1, 2]) run(`downtime:cast:${shift}`, {}, () => ({ title: 'Downtime', text: '', choices: HAND_DOWNTIME.filter(d => d.cast).map(d => ({ label: d.label, run: d.run })) }), { prep() { G.state.crew = []; crewOf(4); G.state.day += shift; }, extra: () => hired().skill });
   const GOVT = FACTIONS.find(f => f !== 'Pirate'), GOVT2 = FACTIONS.find(f => f !== 'Pirate' && f !== GOVT);
   for (const [gov, amount] of [[GOVT, 5], [GOVT, -5], [GOVT2, 12], [GOVT2, -12], [GOVT, 2]]) {
@@ -316,6 +316,14 @@ const playScenes = () => {
     ashore('match', st => { portLike(st, p => p.services.includes('trade')); const l = LEAGUES[0]; while (!['regular', 'playoffs', 'final'].includes(leaguePhase(l, st.day))) st.day++; const m = playMatch(l, l.teams[0], l.teams[1]); m.day = st.day; });
   }
   { const say = daySay; run('dayashore:button', {}, () => ({ title: 'x', text: [say('button'), say('hint.open'), say('hint.spent')].join(' | '), choices: [] })); }  // the Port page's button and its hint, played as words
+  // ---------- the other versions of the hand's downtime and of the drills and the repair, taken by the day (#775): last, so that the people these runs
+  // make do not move the ids in the runs above ----------
+  for (const shift of [1, 2]) run(`downtime:hand:${shift}`, {}, () => ({ title: 'Downtime', text: '', choices: HAND_DOWNTIME.filter(d => !d.cast).map(d => ({ label: d.label, run: d.run })) }), { prep() { G.state.crew = []; crewOf(4); G.state.day += shift; }, extra: () => hired().skill });
+  for (const shift of [1, 2]) for (const engineer of [false, true]) {
+    run(`shiplife:acts:day+${shift}:${engineer ? 'eng' : 'solo'}`, { mode: undefined }, () => ({ title: 'x', text: '', choices: ['drills', 'repair'].map(id => ({ label: ACTIVITIES[id].label, run: () => ACTIVITIES[id].run() })) }), {
+      prep() { uatBurn('Ceres Station', 'pallas'); G.state.armor = Math.max(1, ship().armor - 10); if (engineer) { G.state.crew = []; crewOf(1); } G.state.day += shift; },
+    });
+  }
   return out;
 };
 
