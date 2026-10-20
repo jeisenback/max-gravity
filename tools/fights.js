@@ -60,12 +60,13 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     const out = { raid: {}, repel: {}, assault: {} };
 
     // The ship fight, from the contact to its end and the lock fight that may follow it. The guns' policy picks each gun's target every turn: 'random' any
-    // part, 'focus' always her weapons, 'drive' her drive until it is gone and then her weapons. A lock fight after it is played by the 'post' policy.
+    // part, 'focus' always her weapons, 'drive' her drive until it is gone and then her weapons, 'lock' her lock and then her weapons. A lock fight after it is played by the 'post' policy.
     const PARTS = ['weapons', 'drive', 'lock', 'hull'];
     const AIM = {
       random: () => PARTS[Math.floor(Math.random() * PARTS.length)],
       focus: () => 'weapons',
       drive: f => (f.foes.some(x => x.parts.drive.hp > 0) ? 'drive' : 'weapons'),
+      lock: f => (f.foes.some(x => x.parts.lock.hp > 0) ? 'lock' : 'weapons'),
     };
     for (const policy of Object.keys(AIM)) {
       const t = out.raid[policy] = { n: 0, crippled: 0, broke: 0, standoff: 0, boarded: 0, lost: 0, escaped: 0, died: 0, boardedWon: 0, assaultWon: 0, rounds: 0, hull: 0, hurt: 0, dead: 0, hand: 0, anyHurt: 0 };

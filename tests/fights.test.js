@@ -13,7 +13,7 @@ after(closeBrowser);
 test('the fights tool plays the ship fight, the repel fight and the assault fight to their ends', async () => {
   const r = await fights({ seed: 1, n: 3 });
   assert.deepEqual(r.errors, []);
-  assert.deepEqual(Object.keys(r.raid), ['random', 'focus', 'drive'], 'the guns\' policies');
+  assert.deepEqual(Object.keys(r.raid), ['random', 'focus', 'drive', 'lock'], 'the guns\' policies');
   const closed = t => t.crippled + t.broke + t.standoff + t.boarded + t.lost + t.escaped + t.died;
   for (const t of Object.values(r.raid)) { assert.equal(t.n, 3); assert.equal(closed(t), 3, 'every fight ends one way, or with the hand killed'); assert.ok(t.rounds >= 3 - t.died && t.rounds <= 3 * 6, 'one to six turns a fight'); }
   for (const kind of [r.repel, r.assault]) {
@@ -24,7 +24,7 @@ test('the fights tool plays the ship fight, the repel fight and the assault figh
 
 // The spread of the ship fight's ends (Task 7, tuned against docs/superpowers/plans/fights-before-turn-combat.txt): played with random targets, each end lands within a
 // tenth of the raid's share before the turn-based fight (random play: off 49%, standoff 19%, crippled 7%, to the lock 26%, none lost), and so does the share of fights
-// that hurt someone (52%) and the hand (32%). A deliberate aim beats random by fifteen points or more on the good ends: crippled, broken off and escaped.
+// that hurt someone (52%) and the hand (32%). A deliberate aim beats random by fifteen points or more on the good ends (crippled, broken off and escaped), and no aim wins more than 95 times in a hundred.
 test('the ship fight\'s ends spread as the raid\'s did, and aiming on purpose beats aiming at random', async () => {
   const r = await fights({ seed: 1, n: 200, lock: false });
   assert.deepEqual(r.errors, []);
@@ -34,5 +34,6 @@ test('the ship fight\'s ends spread as the raid\'s did, and aiming on purpose be
   near(share(rnd, 'lost') + share(rnd, 'escaped'), 0, 'lost or escaped');
   near(share(rnd, 'anyHurt'), 0.52, 'someone hurt'); near(share(rnd, 'hand'), 0.32, 'the hand hurt');
   const good = t => share(t, 'crippled') + share(t, 'broke') + share(t, 'escaped');
-  assert.ok(Math.max(good(r.raid.focus), good(r.raid.drive)) >= good(rnd) + 0.15, `focus ${good(r.raid.focus).toFixed(2)}, drive ${good(r.raid.drive).toFixed(2)} against random ${good(rnd).toFixed(2)}`);
+  for (const [policy, t] of Object.entries(r.raid)) assert.ok(good(t) <= 0.95, `${policy}: ${good(t).toFixed(2)} good ends, a one-click win`);
+  assert.ok(Math.max(good(r.raid.focus), good(r.raid.drive), good(r.raid.lock)) >= good(rnd) + 0.15, `focus ${good(r.raid.focus).toFixed(2)}, drive ${good(r.raid.drive).toFixed(2)}, lock ${good(r.raid.lock).toFixed(2)} against random ${good(rnd).toFixed(2)}`);
 });

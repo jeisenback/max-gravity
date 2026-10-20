@@ -28,7 +28,7 @@ function startShipFight(spec, flee, o = {}) {
   rateFoe(s);
   const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
   const me = ship(), entry = captainEntry(), side = () => shipSide({ dmgMult: 1, ...SHIPS[foe.shipId], armor: foe.maxArmor }, { grade: s.grade });
-  const mine = shipSide(me, { skill: skillLevel('gunner') + (boresighted() ? 1 : 0), torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
+  const mine = shipSide(me, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0), torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
   mine.armor = Math.min(mine.maxArmor, st.armor);
   s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0))) });
   s.state.log = [o.open || fightSay(`open.${style}.${st.day % 2}`)];
@@ -62,10 +62,10 @@ const fightUp = foe => foe.armor > 0 && (foe.parts.weapons.hp > 0 || foe.parts.d
 const fightFoeName = (s, i) => (i ? fightSay('consort') : theShip(s.foe));
 const fightHits = events => (events.length ? events.map(e => fightSay(!e.dmg ? 'log.spent' : e.who === 'foe' ? 'log.hers' : e.torp ? 'log.torp' : 'log.mine', { part: fightSay(`part.${e.part}`), dmg: e.dmg })).join(', ') : fightSay('log.none'));  // a hit on a part already gone does nothing
 
-// What the turn cost: the ship keeps its armor and its torpedoes, and a heavy hit (she dealt more than FIGHT.HEAVY_HIT of your maximum armor, to any part)
+// What the turn cost: the ship keeps its armor and its torpedoes, and a heavy hit (the hull lost more than FIGHT.HEAVY_HIT of your maximum armor, shields and armor, R23)
 // can cost a casualty (CASUALTY_ODDS, more against a veteran crew or a pair, as the raid's lost beats did) and hurt the hand (FIGHT.HAND_HURT), said on the log's last line.
 function fightTook(s, events) {
-  const st = G.state, me = s.state.me, dealt = events.filter(e => e.who === 'foe').reduce((n, e) => n + e.dmg, 0), out = [];
+  const st = G.state, me = s.state.me, dealt = events.filter(e => e.who === 'foe' && e.part === 'hull').reduce((n, e) => n + e.dmg, 0), out = [];
   st.armor = Math.max(1, me.armor);
   if (me.launcher) st.torpedoes = me.torps;
   if (dealt > FIGHT.HEAVY_HIT * me.maxArmor) {

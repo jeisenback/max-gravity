@@ -16,8 +16,9 @@ const FIGHT = {
   TORP_DMG: [30, 45],
   PDC_HOLD: 0.4,     // what a turret held back takes off a volley
   TURNS: 6,
+  BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid
-  HEAVY_HIT: 0.1     // a turn is a heavy hit when she deals more than this share of your maximum armor, to any part (fightui.js)
+  HEAVY_HIT: 0.1     // a turn is a heavy hit when your hull (shields and armor) loses more than this share of your maximum armor (fightui.js)
 };
 
 const KNIFE = RANGE_BANDS.indexOf('knife');
@@ -104,16 +105,17 @@ function foeVolley(st, i) {
   return FIGHT.GUN_DMG.map(d => Math.round(d * ready * foe.dmgMult * bandMultOf(st.band)));
 }
 
-// Her rules, in order: badly hurt, with no guns left or with no lock to board by (nothing left to come for), she breaks off; alongside she boards;
-// against a faster ship she pins its drive; she closes to the knife while her drive works, firing as she comes; else a broadside. Her guns go at yours
-// while they fire, and then at your hull.
+// Her rules, in order: badly hurt or with no guns left she breaks off, while her drive can take her away; alongside with her lock whole she boards;
+// against a faster ship she pins its drive; she closes, firing at your hull as she comes, to the knife while her lock can board and to close range when
+// it cannot; else a broadside, at your guns while they fire and then at your hull. A lock at 0 only takes the boarding away (R20).
 function foeMove(st, i) {
-  const foe = st.foes[i], at = { target: st.me.parts.weapons.hp > 0 ? 'weapons' : 'hull', dmg: foeVolley(st, i) };
-  if (hullShare(foe) < 0.3 || foe.parts.weapons.hp <= 0 || foe.parts.lock.hp <= 0) return { kind: 'break' };
-  if (st.band === KNIFE) return { kind: 'board' };
+  const foe = st.foes[i], armed = foe.parts.weapons.hp > 0, lock = foe.parts.lock.hp > 0, drive = foe.parts.drive.hp > 0;
+  if (drive && (hullShare(foe) < FIGHT.BREAK || !armed)) return { kind: 'break' };
+  if (!armed) return { kind: 'hold' };  // no guns and no drive: she is out, and the fight has ended on her
+  if (st.band === KNIFE && lock) return { kind: 'board' };
   if (st.me.parts.drive.hp > 0 && st.me.speed > foe.speed) return { kind: 'pin', target: 'drive', dmg: foeVolley(st, i) };
-  if (st.band > KNIFE && foe.parts.drive.hp > 0) return { kind: 'close', target: 'hull', dmg: foeVolley(st, i) };
-  return { kind: 'broadside', ...at };
+  if (drive && st.band > (lock ? KNIFE : RANGE_BANDS.indexOf('close'))) return { kind: 'close', target: 'hull', dmg: foeVolley(st, i) };
+  return { kind: 'broadside', target: st.me.parts.weapons.hp > 0 ? 'weapons' : 'hull', dmg: foeVolley(st, i) };
 }
 
 function captainMove(st) {
@@ -125,11 +127,13 @@ function captainMove(st) {
   return { kind: 'hold' };
 }
 
-// Each side votes the band one step; when they differ the faster side's vote stands, and a side with no drive has no vote.
+// Each side votes the band one step; when they differ the faster side's vote stands, and a side with no drive has no vote. Her side's vote is the closest
+// of her ships' (R21): a pack holds the range while any one of them still comes, and the fastest of those that cast it is the speed that counts.
 function nextBand(st, moves) {
   if (st.band >= RANGE_BANDS.length) return st.band;
-  const pack = st.foes.map((f, i) => ({ f, m: moves.foe[i] })).filter(({ f, m }) => m && up(f)).sort((a, b) => b.f.speed - a.f.speed)[0];
-  const foeVote = pack ? ({ close: -1, break: 1 }[pack.m.kind] || 0) : null;
+  const votes = st.foes.map((f, i) => ({ f, v: moves.foe[i] ? ({ close: -1, break: 1 }[moves.foe[i].kind] || 0) : null })).filter(({ f, v }) => v !== null && up(f));
+  const foeVote = votes.length ? Math.min(...votes.map(x => x.v)) : null;
+  const pack = votes.filter(x => x.v === foeVote).sort((a, b) => b.f.speed - a.f.speed)[0];
   const meVote = st.me.parts.drive.hp > 0 ? ({ close: -1, open: 1 }[moves.captain.kind] || 0) : null;
   let step = 0;
   if (foeVote === null || meVote === null) step = foeVote === null ? meVote || 0 : foeVote;
