@@ -219,7 +219,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   const here = S[st.hand], extra = S.map(() => 0);
   let press = 0;
   const asObj = a => (typeof a === 'string' ? { kind: a } : a);  // 'shoot' may be bare; steady and cover must carry odds
-  for (const a of [asObj(act), order]) {
+  for (const a of [asObj(act), asObj(order)]) {
     if (!a || (a.kind !== 'steady' && a.kind !== 'cover')) continue;
     if (typeof a.odds !== 'number') throw new Error(a.kind + ' needs odds');
     if (a.kind === 'cover' && st.used.cover) continue;

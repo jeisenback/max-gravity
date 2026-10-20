@@ -443,6 +443,7 @@ test('steady and cover must carry odds, and shoot may be bare', () => {
   const st = deck();
   assert.throws(() => resolveDeckTurn(st, { stand: 0, act: 'steady', order: null }, stay, LOW), /odds/);
   assert.throws(() => resolveDeckTurn(st, { stand: 0, act: null, order: { kind: 'cover' } }, stay, LOW), /odds/);
+  assert.throws(() => resolveDeckTurn(st, { stand: 0, act: null, order: 'steady' }, stay, LOW), /odds/);
   assert.doesNotThrow(() => resolveDeckTurn(st, { stand: 0, act: 'shoot', order: null }, stay, LOW));
 });
 
