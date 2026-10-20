@@ -134,8 +134,8 @@ function fireTurn(s, orders) {
   return shipFightEvent(s, orders);
 }
 
-// Being boarded: the lock fight (boarders.js), a raider's whole run or a short one.
-const fightBoarded = s => repelScene(repelStart({ foe: s.foe, foeHp: 0, init: 'foe', grade: s.grade, pack: s.pack }, s.style === 'grapple' ? 'full' : 'half'));
+// Being boarded: the deck fight (below), a raider's whole run or a short one.
+const fightBoarded = s => deckFightEvent(repelStart({ foe: s.foe, foeHp: 0, init: 'foe', grade: s.grade, pack: s.pack }, s.style === 'grapple' ? 'full' : 'half'));
 
 // Where each end goes. Crippled and boarded open their scenes with the line that says how it came to them; the rest close on the panel with their line,
 // and Stand down goes on to whatever the close queued (the captain lost on the bridge, the hand's ending).
@@ -163,4 +163,94 @@ function shipFightEnd(s, end) {
     return;
   }
   close(fightSay(`end.escaped.${s.style}`));
+}
+
+// ---------- the deck fight: boarding on the same panel (spec Section 3), in place of the lock fight ----------
+// The deck is drawn as its sections (handtohand.js fightStrip) with their move shown above it. The hand stands or moves one section, does one thing there
+// (shoot, or the post's two abilities at the post's own odds, abilityOdds), and gives one order to a named crewmate (crewOrders, at crewOrderOdds); Fight
+// resolves the turn (fight.js resolveDeckTurn). A head lost on our side is a named crewmate (repelCasualty), and the ends settle as the lock fight's did
+// (repelSettle, assaultSettle). `s` is the fight from repelStart or assaultStart (boarders.js); its words are the beats' (the section names and openings, the
+// abilities, the orders, the ends) and the 'scene:fight' deck lines.
+
+const DECK_ACTS = ['shoot', 'steady', 'cover'];
+// A section's name: the beat's title (her deck is named from her bridge), and the cargo bay's from the deck lines.
+const deckTitle = (s, i) => {
+  if (i === CARGO) return fightSay(s.assault ? 'deck.cargoHers' : 'deck.cargo');
+  const k = s.assault ? 2 - i : i;
+  return repelWords(s, `title.${k}`, (s.assault ? ASSAULT_TITLES : REPEL_TITLES)[k]);
+};
+// The opening of the section the hand stands in, the other of its two each turn (the cargo bay reads as the corridor).
+// A section's name inside a sentence (the deck lines).
+const deckAt = (s, i) => fightSay(`deck.${s.assault ? 'hers' : 'ours'}.${i}`);
+const deckOpening = s => { const k = s.assault ? 2 - REACH[s.state.hand] : REACH[s.state.hand]; return repelWords(s, `open.${k}.${s.state.turn % 2}`, (s.assault ? ASSAULT_OPENINGS : REPEL_OPENINGS)[k][s.state.turn % 2]); };
+const deckBoard = (s, move) => fightStrip({ titles: s.state.sections.map((_, i) => deckTitle(s, i)), sections: s.state.sections, hand: s.state.hand, move, feint: s.state.grade > 0 });
+
+// The panel for this turn, with the hand's plan as it stands ({ stand, act, order }: a section, an act, a crewmate's id). Every choice redraws it in place.
+function deckFightEvent(s, plan = {}) {
+  const f = s.state, post = lockPost();
+  if (!s.shown) s.shown = boardMove(f, Math.random);
+  const p = { stand: f.hand, act: 'shoot', order: null, ...plan }, m = s.shown;
+  const near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])], acts = DECK_ACTS.filter(k => k !== 'cover' || !f.used.cover);
+  const orders = repelOrders(s, f.used.cover || p.act === 'cover'), order = orders.find(o => o.id === p.order) || null;
+  const next = (list, x) => list[(list.indexOf(x) + 1) % list.length], redo = change => () => deckFightEvent(s, { ...p, ...change });
+  const ability = k => repelWords(s, `ability.${post}.${k}.label`, FIGHT_ABILITY[post][k].label);
+  const choices = [
+    { label: fightSay(p.stand === f.hand ? 'deck.stand' : 'deck.move', { at: deckTitle(s, p.stand) }), keep: true, run: redo({ stand: next(near, p.stand) }) },
+    { label: p.act === 'shoot' ? fightSay('deck.shoot', { lo: DECK.SIDEARM[0], hi: DECK.SIDEARM[1] }) : fightSay(`deck.${p.act}`, { what: ability(p.act) }), keep: true, run: redo({ act: next(acts, p.act) }) },
+  ];
+  if (orders.length) {
+    const does = o => repelWords(s, `crew.${o.sheet.post}.${o.kind}.label`, CREW_ABILITY[o.sheet.post][o.kind].label);
+    choices.push({ order: true, group: fightSay('deck.orders'), label: order ? fightSay('deck.order', { first: order.first, does: does(order) }) : fightSay('deck.order.none'), keep: true, run: redo({ order: next([null, ...orders.map(o => o.id)], order && order.id) }) });
+  }
+  choices.push({ label: fightSay('deck.fight'), keep: true, run: () => deckTurn(s, { ...p, order: order && order.id }) });
+  const who = fightSay(`deck.who.${s.assault ? 'assault' : 'repel'}`), feint = f.grade > 0 ? ` ${fightSay('deck.feint')}` : '';
+  return {
+    title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s,
+    read: `${fightSay(`deck.${m.kind}`, { who, n: m.n, to: deckAt(s, m.to) })}${feint}`,  // their move, drawn above the deck (ui.js)
+    board: deckBoard(s, m.kind === 'hold' ? null : m),
+    text: [deckOpening(s), ...(s.held.length ? [s.held.join(' ')] : []), ...f.log.slice(-3)].join('</p><p>'),
+    choices,
+  };
+}
+
+// A head lost on our side is a named crewmate (repelCasualty): the one sent on an order that missed while they are up, else one of those standing.
+function deckLoss(s, sent) {
+  const up = (s.fight || []).filter(id => !s.hurt.has(id) && !s.dead.some(c => c.id === id) && !s.marked.some(c => c.id === id));
+  return up.length ? repelCasualty(s, up.includes(sent) ? sent : pick(up)) : '';
+}
+
+// Fight: the turn resolved with the move that was shown, a line for it in the log, and the panel again; at an end, the close (deckClose), and this returns nothing.
+function deckTurn(s, p) {
+  const f = s.state, post = lockPost(), o = repelOrders(s, f.used.cover || p.act === 'cover').find(x => x.id === p.order);
+  const act = p.act === 'shoot' ? 'shoot' : { kind: p.act, odds: abilityOdds(post, p.act) };
+  const r = resolveDeckTurn(f, { stand: p.stand, act, order: o ? { kind: o.kind, odds: crewOrderOdds(o.sheet, o.kind, s.hurt.has(o.id)) } : null }, s.shown, Math.random);
+  s.state = r.state;
+  const at = i => deckAt(s, i), said = [], after = [], ab = r.events.filter(e => e.kind === 'steady' || e.kind === 'cover');
+  const side = e => (e.worked ? 'win' : 'lose');
+  let sent = null;
+  if (act !== 'shoot' && !(act.kind === 'cover' && f.used.cover) && ab.length) { const e = ab.shift(); after.push(repelWords(s, `ability.${post}.${e.kind}.${side(e)}`, FIGHT_ABILITY[post][e.kind][side(e)])); }
+  if (o && ab.length) { const e = ab.shift(); after.push(`${o.first} ${repelWords(s, `crew.${o.sheet.post}.${e.kind}.${side(e)}`, CREW_ABILITY[o.sheet.post][e.kind][side(e)])}`); if (!e.worked) sent = o.id; }
+  for (const e of r.events) {
+    if (e.kind === 'move') said.push(fightSay(e.who === 'mine' ? 'deck.log.ours' : 'deck.log.theirs', { n: e.n, to: at(e.to) }));
+    if (e.kind === 'exchange') said.push(fightSay('deck.log.fight', { at: at(e.section), theirs: e.theirs, mine: e.mine }));
+    if (e.kind === 'hand') said.push(fightSay('deck.log.back', { to: at(e.to) }));
+  }
+  for (const e of r.events.filter(x => x.kind === 'exchange')) for (let n = 0; n < e.mine; n++) { const line = deckLoss(s, sent); sent = null; if (line) after.push(line); }
+  if (r.events.some(e => e.kind === 'hurt' && e.hurt)) after.push(hurtHand(s));
+  s.state.log.push(`${fightSay('deck.log.turn', { n: s.state.turn, what: said.length ? said.join(', ') : fightSay('deck.log.none') })}${after.length ? ` ${after.join(' ')}` : ''}`);
+  if (s.handDied) return null;  // the hand is dead: the ending is queued (boarders.js)
+  const end = deckEnd(s.state);
+  if (end) { deckClose(s, end); return null; }
+  s.shown = boardMove(s.state, Math.random);
+  return deckFightEvent(s, { act: p.act === 'cover' ? 'shoot' : p.act, order: p.order });
+}
+
+// The end: the line for how it was won (the last of them down, or the rest broken), then the settle (boarders.js), shown on the panel; Stand down goes on to
+// whatever the settle queued (the duel, the captain lost on the bridge, the hand's ending).
+function deckClose(s, end) {
+  const f = s.state, left = sum(f, 'theirs'), how = end !== 'won' ? null : left === 0 ? 'last' : left <= f.began * DECK.BREAK ? 'broke' : null;
+  s.won = end === 'won';
+  const said = `${how ? `${repelWords(s, `end.${how}`, FIGHT_END[s.assault ? 'assault' : 'repel'][how])} ` : ''}${repelSettle(s)}`, next = G.nextEvent;
+  G.nextEvent = { title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s, board: deckBoard(s, null), text: `${f.log.slice(-2).join('</p><p>')}</p><p>${said}`,
+    choices: [{ label: fightSay('down.label'), keep: true, run: () => { G.nextEvent = next; return null; } }] };
 }

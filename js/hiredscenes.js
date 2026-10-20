@@ -44,8 +44,8 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:fight', fn: 'shipFightEvent', file: 'js/fightui.js', title: 'Battle Stations', where: 'transit', when: 'A pirate contact or a navy stop, fought turn by turn on the sensor board: the opening, her move and the captain\'s, the orders to the guns, a line a turn, and how it ends.' },
   { id: 'beats:dead-in-space', fn: 'deadInSpaceScene', file: 'js/engagements.js', title: 'Dead in Space', where: 'transit', when: 'After a raid, when a crippled raider drifts beside you.' },
   { id: 'beats:ambush', fn: 'ambushScene', file: 'js/engagements.js', title: 'An Ambush', where: 'transit', when: 'On a dangerous lane, every 60 days at most.' },
-  { id: 'beats:repel', fn: 'repelScene', file: 'js/boarders.js', title: 'Boarders', where: 'transit', when: 'When a raid ends alongside: the lock, the corridor and the bridge.' },
-  { id: 'beats:assault', fn: 'repelScene', file: 'js/boarders.js', title: 'Boarding Her', where: 'transit', when: 'When you board the crippled raider.' },
+  { id: 'beats:repel', fn: 'deckFightEvent', file: 'js/boarders.js', title: 'Boarders', where: 'transit', when: 'When a raid ends alongside: the deck fight at the lock, the corridor and the bridge.' },
+  { id: 'beats:assault', fn: 'deckFightEvent', file: 'js/boarders.js', title: 'Boarding Her', where: 'transit', when: 'When you board the crippled raider: the deck fight on her deck.' },
 ];
 
 // The words of the ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
@@ -60,13 +60,10 @@ function ambushLines() {
 }
 function deadLines() { return { ...DEAD_TEXT }; }
 function repelLines(assault) {
-  const out = {}, set = assault ? { titles: ASSAULT_TITLES, openings: ASSAULT_OPENINGS, tactics: ASSAULT_TACTICS, post: ASSAULT_POST } : { titles: REPEL_TITLES, openings: REPEL_OPENINGS, tactics: REPEL_TACTICS, post: REPEL_POST };
-  set.titles.forEach((t, i) => { out[`title.${i}`] = t; });
-  set.openings.forEach((list, pos) => list.forEach((t, i) => { out[`open.${pos}.${i}`] = t; }));
-  for (const [k, t] of Object.entries(set.tactics)) for (const f of ['label', 'win', 'lose']) out[`tactic.${k}.${f}`] = t[f];
-  if (!assault) out.tie = REPEL_TIE;
+  const out = {};
+  (assault ? ASSAULT_TITLES : REPEL_TITLES).forEach((t, i) => { out[`title.${i}`] = t; });
+  (assault ? ASSAULT_OPENINGS : REPEL_OPENINGS).forEach((list, pos) => list.forEach((t, i) => { out[`open.${pos}.${i}`] = t; }));
   for (const [k, t] of Object.entries(FIGHT_END[assault ? 'assault' : 'repel'])) out[`end.${k}`] = t;
-  for (const [post, t] of Object.entries(set.post)) for (const f of ['label', 'win', 'lose']) out[`post.${post}.${f}`] = t[f];
   for (const [post, kinds] of Object.entries(CREW_ABILITY)) for (const [k, t] of Object.entries(kinds)) for (const f of ['label', 'win', 'lose']) out[`crew.${post}.${k}.${f}`] = t[f];
   for (const [post, kinds] of Object.entries(FIGHT_ABILITY)) for (const [k, t] of Object.entries(kinds)) for (const f of ['label', 'win', 'lose']) out[`ability.${post}.${k}.${f}`] = t[f];
   for (const [k, t] of Object.entries(assault ? ASSAULT_MEMORY : REPEL_MEMORY)) out[`memory.${k}`] = t;
@@ -472,6 +469,19 @@ const SCENE_LINES = {
     'end.boarded.torpedo': 'A torpedo takes your drive housing and she closes while you\'re slow. The grapples bang on the hull, and the lock alarm goes.',
     'down.label': 'Stand down',
     'memory.stood': 'You stood us up to a raid and she broke off.',
+    // the deck fight (deckFightEvent): {who} is who comes on, {n} how many, {to} and {at} a section, {what} an ability, {first} and {does} a crewmate's order, {lo} to {hi} what a shot takes
+    'deck.cargo': 'The Cargo Bay', 'deck.cargoHers': 'Her Cargo Bay',
+    'deck.ours.0': 'the Lock', 'deck.ours.1': 'the Corridor', 'deck.ours.2': 'the Bridge', 'deck.ours.3': 'the Cargo Bay',
+    'deck.hers.0': 'her Lock', 'deck.hers.1': 'her Corridor', 'deck.hers.2': 'her Bridge', 'deck.hers.3': 'her Cargo Bay',
+    'deck.who.repel': 'Boarders', 'deck.who.assault': 'Her crew',
+    'deck.push': '{who}: {n} of them pushing into {to}.', 'deck.round': '{who}: {n} of them going round through {to}.', 'deck.hold': '{who}: holding where they are.',
+    'deck.feint': 'They may feint.',
+    'deck.stand': 'Stand: {at}', 'deck.move': 'Move: {at}',
+    'deck.shoot': 'You: shoot, {lo} to {hi} of them down', 'deck.steady': 'You: {what}, one of them down if it works', 'deck.cover': 'You: {what}, two points of cover here, once a fight',
+    'deck.orders': 'Orders to the crew', 'deck.order': 'Order: {first} {does}', 'deck.order.none': 'Order: none',
+    'deck.fight': 'Fight',
+    'deck.log.turn': 'Turn {n}: {what}.', 'deck.log.theirs': '{n} of them into {to}', 'deck.log.ours': '{n} of ours into {to}',
+    'deck.log.fight': 'in {at} {theirs} of them down and {mine} of ours', 'deck.log.back': 'you fall back to {to}', 'deck.log.none': 'nobody gives ground',
   },
   'scene:put-ashore': {
     title: 'Put Ashore',

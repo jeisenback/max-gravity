@@ -115,7 +115,7 @@ test('a fight played to each end lands in its scene: crippled to dead in space, 
     return out;
   });
   assert.deepEqual(r.crippled, { ret: null, next: 'Dead in Space', line: true });
-  assert.deepEqual(r.boarded, { ret: null, next: 'The Corridor', line: true }, 'a raider comes in at the corridor');
+  assert.deepEqual(r.boarded, { ret: null, next: 'The Lock', line: true }, 'the deck fight opens at the lock');
   assert.equal(r.lost.ret, null); assert.equal(r.lost.title, 'Battle Stations');
   assert.match(r.lost.text, /They're on the bridge\. Captain Vance gives them the code to the strongbox because there's no choice, and they take 300 cr of the ship's fund and go\./);
   assert.equal(r.lost.fund, 700); assert.equal(r.lost.opinion, -1, 'the captain marks it');
@@ -160,5 +160,115 @@ test('a save made mid-raid in an old version loads with no fight open and no err
     return out;
   }, text);
   assert.deepEqual(r, { refused: null, mode: 'landed', dialog: ['Hull Damage', false], next: ['An Errand Ashore', false], armor: 40, fight: 'Battle Stations', me: 40 }, 'the landing\'s own scenes, and no fight; a fight after it starts from the hull the save kept');
+  await done();
+});
+
+// ---------- the deck panel, in place of the lock fight (js/fightui.js deckFightEvent) ----------
+
+const deckHelpers = () => {
+  // Math.random answers from a list, then 0.99: 0.01 passes a chance, 0.99 fails it.
+  window.rolls = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : 0.99); };
+  // boarded from a ship fight: alongside, her lock whole, and her shown move is the boarding; returns the deck panel opened
+  window.boarded = () => {
+    const s = battle(); s.state.band = RANGE_BANDS.indexOf('knife'); s.shown = { foe: [{ kind: 'board' }], captain: { kind: 'hold' } };
+    chooseEvent(choiceAt('Fire')); const deck = G.nextEvent; G.nextEvent = null; openEvent(deck); return deck.fight;
+  };
+};
+
+test('being boarded opens the deck panel: heads and cover by section, the hand\'s place, their shown move', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    fightGame('gunner'); const s = boarded(), f = s.state, e = G.dialog.event;
+    return {
+      title: e.title, read: e.read, labels: G.dialog.choices.map(c => c.label), keep: G.dialog.choices.map(c => !!c.keep),
+      strip: document.querySelector('#panel .event-body svg.board').getAttribute('aria-label'),
+      heads: f.sections.map(x => [x.mine, x.theirs, x.cover]), hand: f.hand, shown: s.shown, size: SHIPS[G.state.shipId].size,
+      text: e.text,
+    };
+  });
+  assert.equal(r.title, 'The Lock', 'the panel is named for where the hand stands');
+  assert.ok(r.size >= 16, 'the hauler is long: a cargo bay to go round by');
+  assert.deepEqual(r.heads, [[2, 3, 1], [1, 0, 2], [1, 0, 1], [1, 0, 1]], 'three of hers in the lock; five of ours spread, the odd one at the lock; the ship\'s cover by section');
+  assert.equal(r.hand, 0);
+  assert.deepEqual(r.shown, { kind: 'push', from: 0, to: 1, n: 3, feint: false });
+  assert.equal(r.read, 'Boarders: 3 of them pushing into the Corridor.');
+  assert.equal(r.strip, 'The deck in four sections. The Lock: 2 of ours and 3 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 3 from The Lock into The Corridor.');
+  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'You: shoot, 1 to 2 of them down']);
+  assert.equal(r.labels[r.labels.length - 1], 'Fight');
+  assert.ok(r.keep.every(Boolean), 'every choice redraws in place');
+  assert.match(r.text, /outer lock is cycling|hits the hull aft/, 'the opening of the lock');
+  await page.click('[data-action="choose"][data-arg="0"]');
+  assert.equal(await ev(() => G.dialog.choices[0].label), 'Move: The Corridor', 'the hand\'s place goes round the sections next to it');
+  await page.click('[data-action="choose"][data-arg="0"]');
+  assert.equal(await ev(() => G.dialog.choices[0].label), 'Move: The Cargo Bay');
+  await page.click('[data-action="choose"][data-arg="0"]');
+  assert.equal(await ev(() => G.dialog.choices[0].label), 'Stand: The Lock');
+  await page.click('[data-action="choose"][data-arg="1"]');
+  assert.equal(await ev(() => G.dialog.choices[1].label), 'You: Pick off a runner, one of them down if it works');
+  await page.click('[data-action="choose"][data-arg="1"]');
+  assert.equal(await ev(() => G.dialog.choices[1].label), 'You: Covering burst, two points of cover here, once a fight');
+  const fight = await ev(() => G.dialog.choices.length - 1);
+  await page.click(`[data-action="choose"][data-arg="${fight}"]`);
+  const t = await ev(() => { const s = G.dialog.event.fight; return { result: !!document.querySelector('#event-result'), turn: s.state.turn, last: s.state.log[s.state.log.length - 1], used: s.state.used.cover, acts: G.dialog.choices[1].label }; });
+  assert.equal(t.result, false, 'no result page between turns'); assert.equal(t.turn, 1);
+  assert.match(t.last, /^Turn 1: /, t.last);
+  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'You: shoot, 1 to 2 of them down', 'and the act goes back to the sidearm');
+  await done();
+});
+
+test('a veteran\'s shown move is marked may feint', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const grade of [0, 1, 2]) {
+      fightGame('gunner'); const foe = makeEnemy({ kind: 'pirate' });
+      rolls([0.99]); const e = deckFightEvent(repelStart({ foe, foeHp: 0, init: 'foe', grade }, 'full'));
+      out[grade] = { read: e.read, strip: /may feint/.test(e.board) };
+    }
+    return out;
+  });
+  assert.equal(r[0].read, 'Boarders: 3 of them pushing into the Corridor.'); assert.equal(r[0].strip, false);
+  for (const g of [1, 2]) { assert.match(r[g].read, / They may feint\.$/, `grade ${g}`); assert.equal(r[g].strip, true, `grade ${g}: on the strip`); }
+  await done();
+});
+
+test('repelled, taken, and an assault won or lost each settle through the existing outcomes', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const out = {};
+    const play = (s, set) => {  // the state set by hand, their move a hold, and Fight with nothing rolling for us
+      set(s.state); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };
+      const real = Math.random; rolls([]); const ev0 = deckFightEvent(s); const ret = ev0.choices[ev0.choices.length - 1].run(); Math.random = real;
+      const close = G.nextEvent; G.nextEvent = null;
+      const down = close && close.choices[0]; const after = down && down.run();
+      return { ret, title: close && close.title, text: close && close.text, labels: close && close.choices.map(c => c.label), after, then: G.nextEvent && G.nextEvent.title };
+    };
+    // repelled: one of three left, in the lock, against two of ours
+    let st = fightGame('gunner'), h = hired(), cap = person(h.captain), op = cap.opinion;
+    let s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
+    out.repelled = { ...play(s, f => { f.sections.forEach(x => { x.theirs = 0; }); f.sections[0].theirs = 1; }), opinion: cap.opinion - op };
+    // taken: three of them on the bridge and none of ours there
+    st = fightGame('gunner'); h = hired(); h.fund = 1000; cap = person(h.captain); op = cap.opinion;
+    s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
+    out.taken = { ...play(s, f => { f.sections.forEach(x => { x.theirs = 0; }); f.sections[2].theirs = 3; f.sections[2].mine = 0; }), fund: h.fund, opinion: cap.opinion - op };
+    // an assault won: ours on her bridge, and hers gone from it
+    st = fightGame('gunner'); h = hired(); let fund = h.fund; const foe = makeEnemy({ kind: 'pirate' });
+    s = assaultStart(foe);
+    out.won = { ...play(s, f => { f.sections.forEach(x => { x.theirs = x === f.sections[0] ? 0 : x.theirs; }); f.sections[2].theirs = 0; f.sections[2].mine = 2; f.sections[0].mine = 1; }), fundUp: h.fund > fund, dead: !!foe.dead };
+    // an assault lost: none of ours left standing
+    st = fightGame('gunner'); const armor = st.armor; const foe2 = makeEnemy({ kind: 'pirate' });
+    s = assaultStart(foe2);
+    out.lost = { ...play(s, f => { f.sections.forEach(x => { x.mine = 0; }); }), armorDown: st.armor < armor, drifting: !foe2.dead };
+    return out;
+  });
+  assert.equal(r.repelled.ret, null); assert.equal(r.repelled.title, 'The Lock', 'the close is shown on the panel');
+  assert.match(r.repelled.text, /The last of them go back through the lock/); assert.equal(r.repelled.opinion, 1, 'the captain remembers it');
+  assert.deepEqual(r.repelled.labels, ['Stand down']); assert.equal(r.repelled.after, null);
+  assert.match(r.taken.text, /They're on the bridge\. Captain Vance gives them the code to the strongbox/); assert.equal(r.taken.fund, 700); assert.equal(r.taken.opinion, -1);
+  assert.match(r.won.text, /Her captain puts the weapon down\. Her strongbox/); assert.ok(r.won.fundUp && r.won.dead);
+  assert.match(r.lost.text, /You're driven back to the lock/); assert.ok(r.lost.armorDown && r.lost.drifting);
   await done();
 });

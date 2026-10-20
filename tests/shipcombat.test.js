@@ -61,37 +61,18 @@ test('pirate crews differ by the lane: veterans have a longer hull and a harder 
   await done();
 });
 
-test('boarders come by her ship, her crew and her company, try what her ship tries, and your ship is the ground', async () => {
+test('boarders come by her ship, her crew and her company, and a veteran crew is kept on the deck fight', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = setup(), out = {}, raider = foe('raider').foe, corsair = foe('corsair').foe;
+    setup(); const out = {}, raider = foe('raider').foe, corsair = foe('corsair').foe;
     out.raider = boardersFor(raider, 'half'); out.corsair = boardersFor(corsair, 'half'); out.full = boardersFor(raider, 'full');
     out.vet = boardersFor(raider, 'half', { grade: 2 }); out.pair = boardersFor(raider, 'half', { pack: true });
-    // what they try, and a veteran's counter
-    const sFor = (f, grade) => ({ d: { foe: f }, grade, assault: false });
-    const tally = (f, n = 600) => { const t = { rush: 0, hold: 0, flank: 0 }; for (let i = 0; i < n; i++) t[pickWeighted(foeLean(sFor(f, 0)))]++; return t; };
-    const r1 = tally(raider), c1 = tally(corsair); out.raiderRush = r1.rush > r1.hold * 1.1; out.corsairHold = c1.hold > c1.rush * 1.1;
-    out.counter = counterOf(REPEL_TACTICS, 'hold') === 'rush' && counterOf(REPEL_TACTICS, 'rush') === 'flank' && counterOf(REPEL_TACTICS, 'flank') === 'hold';
-    // a veteran crew counters your tactic outright some of the time
-    const sv = repelStart({ foe: corsair, foeHp: 0, grade: 2 }, 'full'); out.gradeKept = sv.grade === 2;
-    let hits = 0; const real = Math.random; for (let i = 0; i < 400; i++) { const d0 = repelStart({ foe: corsair, foeHp: 0, grade: 2 }, 'half'); const before = d0.pos; Math.random = real; repelStep(d0, 'hold'); G.nextEvent = null; if (d0.pos > before) hits++; }
-    out.vetBeatsHold = hits / 400;
-    const s0 = repelStart({ foe: corsair, foeHp: 0 }, 'half'); let h0 = 0; for (let i = 0; i < 400; i++) { const d1 = repelStart({ foe: corsair, foeHp: 0 }, 'half'); const b = d1.pos; repelStep(d1, 'hold'); G.nextEvent = null; if (d1.pos > b) h0++; }
-    out.plainBeatsHold = h0 / 400;
-    // the ship: long, standard, cramped
-    st.shipId = 'freighter'; out.long = [layoutEdge('flank'), layoutEdge('rush'), layoutHint()];
-    st.shipId = 'shuttle'; out.small = [layoutEdge('flank'), layoutEdge('rush'), layoutHint()];
-    st.shipId = 'lightfreighter'; out.mid = [layoutEdge('flank'), layoutEdge('rush'), layoutHint()];
-    st.shipId = 'freighter'; out.text = /long, with room to go round/.test(repelScene(repelStart({ foe: raider, foeHp: 0 }, 'half')).text);
-    out.assault = assaultStart(corsair, { grade: 1, pack: false }).boarders > assaultStart(corsair).boarders;
+    out.gradeKept = repelStart({ foe: corsair, foeHp: 0, grade: 2 }, 'full').state.grade;
+    out.assault = assaultStart(corsair, { grade: 1, pack: false }).state.began > assaultStart(corsair).state.began;
     return out;
   });
   assert.ok(r.corsair > r.raider, 'a corsair carries more'); assert.equal(r.full, r.raider + 2); assert.ok(r.vet > r.raider && r.pair === r.raider + 2);
-  assert.ok(r.raiderRush && r.corsairHold && r.counter && r.gradeKept);
-  assert.ok(r.vetBeatsHold > r.plainBeatsHold + 0.08 || r.vetBeatsHold > 0.35, `a veteran counters: ${r.vetBeatsHold} against ${r.plainBeatsHold}`);
-  assert.deepEqual(r.long.slice(0, 2), [0.15, -0.1]); assert.match(r.long[2], /long/);
-  assert.deepEqual(r.small.slice(0, 2), [-0.15, 0.15]); assert.match(r.small[2], /cramped/); assert.deepEqual(r.mid, [0, 0, '']);
-  assert.ok(r.text); assert.ok(r.assault);
+  assert.equal(r.gradeKept, 2, 'the grade is the deck fight\'s, for its feint'); assert.ok(r.assault);
   await done();
 });

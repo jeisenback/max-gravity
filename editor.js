@@ -416,7 +416,7 @@
         const foe = makeEnemy({ kind: 'pirate' });
         if (reg.id === 'beats:ambush') openEvent(ambushScene());
         else if (reg.id === 'beats:dead-in-space') openEvent(deadInSpaceScene({ foe }));
-        else openEvent(repelScene(reg.id === 'beats:assault' ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full')));
+        else openEvent(deckFightEvent(reg.id === 'beats:assault' ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full')));
       } else if (reg.name === 'goodbye') {  // leaving the ship: with the secret learned, so every choice shows
         captainFlag('secretKnown');
         openEvent(captainGoodbye());

@@ -1,6 +1,6 @@
 'use strict';
 
-// Plays the words of the ship fight, the ambush and the boarding beats (#478), for the pin (beatpin.test.js) and the text layer's tests (beatlines.test.js). Not a test file.
+// Plays the words of the ship fight, the ambush and the boarding beats (#478; the deck fight, #786), for the pin (beatpin.test.js) and the text layer's tests (beatlines.test.js). Not a test file.
 // playBeats runs in the page: it plays every scene the beats can show and every choice with the dice set to win and then to lose, in a fresh hired game each time,
 // and returns what was said, in a fixed order, so two runs of the same game give the same record. The ship fight (fightui.js) is played to its end with every gun
 // at her weapons (the 'focus' policy of tools/fights.js), a turn at a time.
@@ -39,7 +39,7 @@ const playBeats = () => {
       while (G.dialog && G.dialog.choices.some(c => /^Fire/.test(c.label)) && rec.turns.length < 12) {
         const t = chooseEvent(G.dialog.choices.findIndex(c => /^Fire/.test(c.label)));
         if (t) openEvent(t); else finishEvent();
-        const s = G.dialog && G.dialog.event.fight;
+        const s = G.dialog && G.dialog.event.fight && G.dialog.event.fight.state.kind === 'ship' ? G.dialog.event.fight : null;  // a boarding opens the deck fight, which is recorded at the end
         rec.turns.push({ text: s ? s.state.log[s.state.log.length - 1] : '', armor: st.armor, band: s ? s.state.band : null });
       }
       rec.end = G.dialog ? { title: G.dialog.event.title, text: sceneText(G.dialog.event), labels: labelsOf(G.dialog.event) } : null;
@@ -94,50 +94,49 @@ const playBeats = () => {
   for (const assault of [false, true]) for (const post of ['gunner', 'engineer']) for (const won of [true, false]) for (const round of [1, 3]) {
     fresh(post, 'raider');
     const foe = makeEnemy({ kind: 'pirate' }), s = assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full');
-    s.round = round; s.pos = won ? -1 : 3; s.hurt = new Set(); seq([0.99, 0.99, 0.99]); const b0 = stand();
+    s.state.turn = round; s.won = won; s.hurt = new Set(); seq([0.99, 0.99, 0.99]); const b0 = stand();
     const text = assault ? assaultSettle(s, won, '') : repelSettle(s);
     out.push({ id: `settle:${assault ? 'assault' : 'repel'}:${post}:${won ? 'won' : 'lost'}:${round}`, text: String(text), ...left(b0) });
     G.nextEvent = null; G.duel = null;
   }
-  // the orders to named crew (#711): each post's two abilities as the crew member does it, worked and missed (a miss lands on the one sent)
+  // A deck fight set by hand for one turn that trades nothing: ours only at the lock where the hand stands, four of hers in the corridor, and their move a hold.
+  const quiet = s => { s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[1].theirs = 4; s.state.began = 4; s.state.hand = 0; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; return s; };
+  const fightOf = (s, plan) => { const ev = deckFightEvent(s, plan); return { labels: labelsOf(ev), run: () => ev.choices[ev.choices.length - 1].run() }; };
+  // the orders to named crew (#711): each post's two abilities as the crew member does it, worked and missed
   for (const assault of [false, true]) for (const role of ['gunner', 'pilot', 'engineer', 'slicer']) for (const kind of ['cover', 'steady']) for (const worked of [true, false]) {
     fresh('gunner', 'raider');
     const p = makePerson('earth'); Object.assign(p, { first: 'Dana', role, skill: 2, traits: [], opinion: 30 }); registerPerson(p); G.state.crew.push(p.id);
-    const foe = makeEnemy({ kind: 'pirate' }), s = assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full');
-    s.pos = 1; s.boarders = 4; s.fight = [p.id]; s.used.cover = kind === 'steady'; const label = repelScene(s).choices.filter(c => c.order).map(c => c.label); seq(worked ? [0.01] : [0.99, 0.01]); const b0 = stand();  // the one crew member offered, with the cover made or not, so the label of this kind is the one shown
-    s.used.cover = false;
-    const text = repelStep(s, kind, { id: p.id, first: p.first, sheet: crewSheet(p) });
-    out.push({ id: `order:${assault ? 'assault' : 'repel'}:${role}:${kind}:${worked ? 'worked' : 'missed'}`, label, text: String(text), ...left(b0) });
+    const foe = makeEnemy({ kind: 'pirate' }), s = quiet(assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full'));
+    s.fight = [p.id]; s.state.used.cover = kind === 'steady';  // the one crew member offered, with the cover made or not, so the order is of this kind
+    const f = fightOf(s, { order: p.id }), label = f.labels.filter(l => /^Order/.test(l)); seq(worked ? [0.01] : [0.99]); const b0 = stand();
+    f.run();
+    out.push({ id: `order:${assault ? 'assault' : 'repel'}:${role}:${kind}:${worked ? 'worked' : 'missed'}`, label, text: String(s.state.log[s.state.log.length - 1]), ...left(b0) });
     G.nextEvent = null; G.duel = null;
   }
+  // each fight for each post: the panel where the hand stands in each section, on two turns; the hand's three acts, each worked and missed; and the two ends that have lines
   for (const assault of [false, true]) {
     for (const post of POSTS_ALL) {
       fresh(post, 'raider');
       const foe = makeEnemy({ kind: 'pirate' }), rec = { id: `${assault ? 'assault' : 'repel'}:${post}`, scenes: [], steps: [] };
       const start = () => (assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full'));
-      for (const pos of [0, 1, 2]) for (const round of [0, 1]) {
-        const s = start(); s.pos = pos; s.round = round;
-        const ev = repelScene(s);
-        rec.scenes.push({ pos, round, title: ev.title, text: ev.text, labels: labelsOf(ev) });
+      for (const hand of [0, 1, 2]) for (const turn of [0, 1]) {
+        const s = start(); s.state.hand = hand; s.state.turn = turn;
+        const ev = deckFightEvent(s);
+        rec.scenes.push({ hand, turn, title: ev.title, text: ev.text, read: ev.read, labels: labelsOf(ev) });
       }
-      for (const kind of ['hold', 'rush', 'flank', 'post', 'steady', 'cover']) {
-        const single = !['hold', 'rush', 'flank'].includes(kind);  // the post's move and its abilities do not face their tactic
-        for (const roll of single ? [0.01, 0.99] : [0.01, 0.5, 0.99]) {
-          for (const delta of single ? [0] : [-1, 0, 1]) {
-            const s = start(); s.pos = 1; s.round = 0; s.boarders = repelStanding(s) + delta;
-            seq([roll]); const b0 = stand();
-            const text = repelStep(s, kind);
-            rec.steps.push({ kind, roll, delta, text: String(text), ...left(b0) });
-            G.nextEvent = null;
-          }
-        }
-      }
-      for (const [name, pos, boarders, began] of [['last', 1, 1, 4], ['broke', 0, 2, 6]]) {  // the pick-off that ends the fight: the last of them, or so few left, pushed back to the lock, that the rest break
-        const s = start(); s.pos = pos; s.round = 0; s.boarders = boarders; s.began = began;
-        seq([0.01]); const b0 = stand();
-        const text = repelStep(s, 'steady');
-        rec.steps.push({ kind: `end:${name}`, roll: 0.01, delta: 0, text: String(text), ...left(b0) });
+      for (const act of ['shoot', 'steady', 'cover']) for (const roll of [0.01, 0.99]) {
+        const s = quiet(start()), f = fightOf(s, { act });
+        seq([roll]); const b0 = stand();
+        f.run();
+        rec.steps.push({ act, roll, labels: f.labels, text: String(s.state.log[s.state.log.length - 1]), ...left(b0) });
         G.nextEvent = null;
+      }
+      for (const [name, theirs] of [['last', 0], ['broke', 1]]) {  // none of them left, or one of four
+        const s = quiet(start()); s.state.sections[1].theirs = theirs;
+        seq([]); const b0 = stand();
+        fightOf(s, {}).run();
+        rec.steps.push({ act: `end:${name}`, text: String(G.nextEvent && G.nextEvent.text), ...left(b0) });
+        G.nextEvent = null; G.duel = null;
       }
       out.push(rec);
     }

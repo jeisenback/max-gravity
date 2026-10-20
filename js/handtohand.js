@@ -1,15 +1,13 @@
 'use strict';
 
-// Hand to hand on the sheet (#684): what the lock fight (boarders.js) adds to the triangle and the post's move. Each post has two abilities more, each a check on the post's stat
-// and skill (sheet.js) that costs the exchange and wins no ground: a steady one that leaves one of them fewer, and one that makes cover (once a fight). A miss holds the ground but
-// gives them a shot at someone. The ship has cover by section, which turns the hurt chance down for the section it is fought in: the lock and the bridge a point,
-// the corridor by the ship's length (a long ship has berth doors to stand behind, a cramped one has none), and the kit adds to it (sheet.js kitCover). A point of cover over the
-// ship's own is a fifth off the chance of a casualty, and a point under it a fifth on; the triangle, the head count and the casualty rules are as they were. fightStrip draws
-// the three sections with who holds each hatch. Pure: it reads nothing of the game, so it runs in plain Node (tests/handtohand.test.js). Loaded before boarders.js.
+// Hand to hand on the sheet (#684): what the hand and the crew can do in the deck fight (fight.js resolveDeckTurn) besides shoot. Each post has two abilities, each a check on
+// the post's stat and skill (sheet.js): a steady one that leaves one of them fewer, and one that makes cover (once a fight). A miss gives them a shot at someone. The ship has cover
+// by section, which cuts what the defenders of a section lose: the lock and the bridge a point, the corridor by the ship's length (a long ship has berth doors to stand behind, a
+// cramped one has none), and the kit adds to it (sheet.js kitCover). fightStrip draws the deck. Pure: it reads nothing of the game, so it runs in plain Node
+// (tests/handtohand.test.js). Loaded before boarders.js.
 
 const ABILITY_EDGE = { steady: -0.1, cover: 0.05 };  // what the check gains over the post's own move: the cover one is an easier gamble for a smaller prize; the steady one a harder one, since the last of them going down, or the few left breaking, wins the fight
-const COVER_BASE = 1, COVER_MAX = 3, COVER_STEP = 0.2, COVER_FLOOR = 0.4, COVER_MADE = 2;  // a worked cover ability makes two points where the fight is
-const ABILITY_NOTE = { steady: 'one fewer of them, no ground', cover: 'cover here, once' };  // what the label says an ability wins (the odds and what a miss costs come after, costNote)
+const COVER_BASE = 1, COVER_MAX = 3, COVER_MADE = 2;  // a worked cover ability makes two points where the fight is
 
 // The abilities of each post, in the words of both fights (the assault and the repel use the same lines: they name the section and the front, not who is who).
 const FIGHT_ABILITY = {
@@ -73,8 +71,6 @@ const crewOrders = (crew, coverUsed) => crew.filter(c => c.sheet).sort((a, b) =>
 // The cover of each section (0 the first, 1 the middle, 2 the last) for a ship of this size, with the kit's and the fight's own (`extra`, made by the cover ability) on top.
 const baseCover = (size, pos) => (pos === 1 ? (size >= 16 ? COVER_BASE + 1 : size <= 11 ? COVER_BASE - 1 : COVER_BASE) : COVER_BASE);
 const fightCover = ({ size, kit, extra }) => [0, 1, 2].map(pos => Math.min(COVER_MAX, baseCover(size, pos) + kitCover(kit, pos) + ((extra || [])[pos] || 0)));
-// The chance of a casualty is scaled by the cover of the section the exchange was fought in: a point over the ship's own takes a fifth off, a point under puts a fifth on.
-const hurtScale = cover => Math.max(COVER_FLOOR, 1 - COVER_STEP * (cover - COVER_BASE));
 
 // What an ability does. It costs the exchange and wins no ground: when it works the steady one thins them and the cover one makes cover in the section where the fight is, and the
 // exchange stands (a tie); when it misses the ground holds too, but they get a shot at someone (`press`: a casualty is rolled as for a lost exchange). Returns the result, whether
@@ -85,18 +81,23 @@ function abilityStep(kind, worked, { pos, boarders, extra }) {
   return { result: 'tie', press: false, boarders, extra: extra.map((n, i) => (i === pos ? n + COVER_MADE : n)) };
 }
 
-// The three sections drawn: who holds each hatch (the sections the front has passed are theirs, the ones it has not reached are yours), the cover in each as pips, and how many are
-// at the front. The same in both fights: the sections before the front are theirs, the ones after it are yours.
-function fightStrip({ titles, pos, boarders, cover }) {
-  const w = 110, f = n => n.toFixed(0), cells = titles.map((t, i) => {
-    const x = 6 + i * (w + 6), holder = i === pos ? 'FRONT' : i < pos ? 'THEIRS' : 'YOURS';
-    const pips = Array.from({ length: COVER_MAX }, (_, k) => `<circle class="${k < cover[i] ? 'pip' : 'nopip'}" cx="${x + 14 + k * 14}" cy="50" r="4" fill="${k < cover[i] ? '#7fb4ff' : 'none'}" stroke="#3a587a"/>`).join('');
-    const fill = i === pos ? '#2a1a14' : holder === 'THEIRS' ? '#1c1218' : '#0d1a26', edge = i === pos ? '#ff6a4a' : '#23405f';
-    const count = i === pos ? `<text x="${x + w - 8}" y="52" fill="#ff6a4a" font-size="11" text-anchor="end" font-family="IBM Plex Mono, monospace">${boarders}</text>` : '';
+// The deck drawn (#786): a cell a section, with both sides' heads in it (ours on the left, theirs on the right), its cover as pips and the hand where they stand, and
+// their shown move as an arrow from where they are to where they say they go, marked MAY FEINT at a veteran grade. `titles` names the sections; `move` is
+// { from, to, n }, or null for a hold.
+function fightStrip({ titles, sections, hand, move, feint }) {
+  const n = sections.length, w = Math.floor(348 / n) - 6, mid = i => 6 + i * (w + 6) + w / 2, font = 'font-family="IBM Plex Mono, monospace"';
+  const cells = sections.map((s, i) => {
+    const x = 6 + i * (w + 6), fill = s.mine && s.theirs ? '#2a1a14' : s.theirs ? '#1c1218' : '#0d1a26', edge = i === hand ? '#ffcf7f' : s.theirs ? '#ff6a4a' : '#23405f';
+    const pips = Array.from({ length: COVER_MAX }, (_, k) => `<circle class="${k < s.cover ? 'pip' : 'nopip'}" cx="${x + 10 + k * 12}" cy="56" r="4" fill="${k < s.cover ? '#7fb4ff' : 'none'}" stroke="#3a587a"/>`).join('');
     return `<rect class="section" x="${x}" y="22" width="${w}" height="44" fill="${fill}" stroke="${edge}" stroke-width="1.5"/>` +
-      `<text x="${x + 6}" y="17" fill="#7fb4ff" font-size="9" font-family="IBM Plex Mono, monospace" letter-spacing="1">${holder}</text>` +
-      `<text x="${x + 6}" y="38" fill="#cfe3ff" font-size="10" font-family="IBM Plex Mono, monospace">${t.toUpperCase()}</text>${pips}${count}`;
+      `<text x="${x + 4}" y="17" fill="#7fb4ff" font-size="8" ${font} letter-spacing="1">${titles[i].toUpperCase()}</text>` +
+      `<text x="${x + 6}" y="40" fill="#7fb4ff" font-size="12" ${font}>${s.mine}</text><text x="${x + w - 6}" y="40" fill="#ff6a4a" font-size="12" text-anchor="end" ${font}>${s.theirs}</text>` +
+      `${i === hand ? `<text class="you" x="${x + w / 2}" y="40" fill="#ffcf7f" font-size="9" text-anchor="middle" ${font}>YOU</text>` : ''}${pips}`;
   }).join('');
-  const label = `The ship in three sections. ${titles.map((t, i) => `${t}: ${i === pos ? `the front, ${boarders} of them` : i < pos ? 'theirs' : 'yours'}, cover ${cover[i]}`).join('. ')}.`;
-  return `<svg class="board" viewBox="0 0 360 72" role="img" aria-label="${label}"><rect x="0" y="0" width="360" height="72" fill="#050a11"/>${cells}</svg>`;
+  const arrow = move ? `<path class="move" d="M${mid(move.from)} 80 L${mid(move.to)} 80" stroke="#ff6a4a" stroke-width="1.5"/><circle cx="${mid(move.to)}" cy="80" r="3" fill="#ff6a4a"/>` +
+    `<text x="${(mid(move.from) + mid(move.to)) / 2}" y="92" fill="#ff6a4a" font-size="9" text-anchor="middle" ${font}>${move.n}${feint ? ' MAY FEINT' : ''}</text>` : '';
+  const heads = s => [s.mine ? `${s.mine} of ours` : '', s.theirs ? `${s.theirs} of theirs` : ''].filter(Boolean).join(' and ') || 'empty';
+  const their = move ? `${move.n} from ${titles[move.from]} into ${titles[move.to]}` : 'they hold';
+  const label = `The deck in ${['three', 'four'][n - 3]} sections. ${sections.map((s, i) => `${titles[i]}: ${heads(s)}, cover ${s.cover}${i === hand ? ', you stand here' : ''}`).join('. ')}. Their move: ${their}${feint ? ', may feint' : ''}.`;
+  return `<svg class="board" viewBox="0 0 360 98" role="img" aria-label="${label}"><rect x="0" y="0" width="360" height="98" fill="#050a11"/>${cells}${arrow}</svg>`;
 }
