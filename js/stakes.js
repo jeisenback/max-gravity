@@ -113,10 +113,13 @@ function splitPair() {
   return worst;
 }
 
+// Who speaks first ({A}): the one who can leave, when the other is a main character, so a main character never gives the generic ultimatum (#782).
+const splitOrder = ({ a, b, movable }) => (movable.length === 1 && movable[0] === b ? [b, a] : [a, b]);
+
 function splitScene() {
   const st = G.state, h = hired(), cap = person(h.captain), worst = splitPair();
   if (!worst) return null;
-  const { a, b, movable } = worst, A = a.p.first, B = b.p.first, say = (key, vars) => sceneSay('scene:split', key, { A, B, last: cap.last, ...vars });
+  const { movable } = worst, [a, b] = splitOrder(worst), A = a.p.first, B = b.p.first, say = (key, vars) => sceneSay('scene:split', key, { A, B, last: cap.last, ...vars });
   (st.relAt = st.relAt || {}).split = st.day;
   const choices = movable.map(x => ({ label: say('let.label', { name: x.p.first }), run: () => letGo(x, x === a ? b : a) }));
   choices.push({
