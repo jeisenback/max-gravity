@@ -6,8 +6,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/shipcombat.js', 'js/fight.js'], {}, ['FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn']);
-const { FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn } = api;
+const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/shipcombat.js', 'js/fight.js'], {}, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn']);
+const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn } = api;
 const LOW = () => 0, HIGH = () => 0.999;
 const CLOSE = RANGE_BANDS.indexOf('close');
 const HULL = { kind: 'broadside', target: 'hull', dmg: [8, 14] };
@@ -129,4 +129,20 @@ test('resolveShipTurn does not change the state it was given', () => {
 
 test('the constants are the ones the design names', () => {
   assert.deepEqual(plain(FIGHT), { GUN_DMG: [8, 14], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.6 }, HEAT_CAP: 4, HEAT_VENT: 2, SHIELD_REGEN: 0.1, PART_HP: { weapons: 20, drive: 30, lock: 20 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, TURNS: 6 });
+});
+
+test('the turret and heavy rounds outfits reach a side: the extra gun, the turret flag and the heavy multiplier', () => {
+  // shipStats reads G, so its outfit loop is replayed on a plain copy of a hull.
+  const stats = { ...Object.values(SHIPS)[0], dmgMult: 1, spoofer: false };
+  const base = stats.guns;
+  for (const id of ['pdc', 'heavy']) OUTFITS[id].mod(stats);
+  const s = shipSide(stats, {});
+  assert.deepEqual([s.pdc, s.guns, s.dmgMult], [true, base + 1, FIGHT.HEAVY]);
+  assert.equal(s.dmgMult, 1.4);
+});
+
+test('a held turret costs a shot: two guns ordered with the turret held fire once', () => {
+  const st = fight({ stats: { guns: 2, pdc: true } });
+  const r = resolveShipTurn(st, orders(fire(2), { pdc: 'hold' }), quiet, LOW);
+  assert.equal(r.events.filter(e => e.who === 'me').length, 1);
 });
