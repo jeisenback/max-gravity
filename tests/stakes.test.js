@@ -85,6 +85,17 @@ test('a feud that has been seen and not mended splits the ship, and someone from
   await done();
 });
 
+test('the one who can leave speaks first, so a main character never gives the split\'s ultimatum (#782)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    const cast = { p: { cast: true } }, crew = { p: {} }, crew2 = { p: {} };
+    return [splitOrder({ a: cast, b: crew, movable: [crew] })[0] === crew, splitOrder({ a: crew, b: cast, movable: [crew] })[0] === crew,
+      splitOrder({ a: crew, b: crew2, movable: [crew, crew2] })[0] === crew];
+  });
+  assert.deepEqual(r, [true, true, true], 'the movable one first; two who can both leave keep their order');
+  await done();
+});
+
 test('the put-ashore scene reads up to two shared facts, and the dock carries one line into the next Signing On', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
