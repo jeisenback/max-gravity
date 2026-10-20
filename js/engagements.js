@@ -17,21 +17,22 @@ const DEAD_TEXT = {
   title: 'Dead in Space',
   text: '{ship} is still. Her drive is out and she\'s turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain {cap} holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be {ours} of yours against {theirs} of hers.',
   'board.label': 'Board her',
+  'board.none': 'Nobody aboard is fit to go across, so there is no boarding her.',
   'board.result': 'The cutter goes out of the lock. It\'s a short crossing.',
   'drift.label': 'Let her drift',
   'drift.result': 'You leave her turning in the dark. Captain {cap} writes it in the log and nothing else. (+3 experience at the {post} post.)',
 };
 const deadWords = (key, vars = {}) => lineWords('beats:dead-in-space', key, DEAD_TEXT[key]).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 
-// A crippled raider drifts beside you. Boarding her is the repel fight run the other way (boarders.js).
+// A crippled raider drifts beside you. Boarding her is the deck fight run the other way (boarders.js assaultStart, fightui.js deckFightEvent).
 function deadInSpaceScene(s) {
-  const post = lockPost(), cap = raidCap(), assault = assaultStart(s.foe), ours = repelStanding(assault) - 1;
-  const say = key => deadWords(key, { ship: theShip(s.foe), cap: cap ? cap.last : '', ours, theirs: assault.boarders, post: POSTS[post].name.toLowerCase() });
+  const post = lockPost(), cap = raidCap(), assault = assaultStart(s.foe), ours = sum(assault.state, 'mine'), theirs = assault.state.began;
+  const say = key => deadWords(key, { ship: theShip(s.foe), cap: cap ? cap.last : '', ours, theirs, post: POSTS[post].name.toLowerCase() });
   return {
     title: say('title'), personal: true, via: 'crew', owner: 'you',
-    text: cap ? say('text') : `${theShip(s.foe)} is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. You hold the ship forty meters off and ask the crew what they want to do. Her crew are armed. A boarding would be ${ours} of yours against ${assault.boarders} of hers.`,
+    text: (cap ? say('text') : `${theShip(s.foe)} is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. You hold the ship forty meters off and ask the crew what they want to do. Her crew are armed. A boarding would be ${ours} of yours against ${theirs} of hers.`) + (ours ? '' : ` ${say('board.none')}`),  // with nobody able to fight there is no boarding (R34)
     choices: [
-      { label: say('board.label'), run() { G.nextEvent = repelScene(assaultStart(s.foe, s)); return say('board.result'); } },
+      ...(ours ? [{ label: say('board.label'), run() { G.nextEvent = deckFightEvent(assaultStart(s.foe, s)); return say('board.result'); } }] : []),
       { label: say('drift.label'), run() { if (cap) like(cap, 1, fightSay('memory.stood')); changeRep('Pirate', -3); gainSkill(post, 3); return cap ? say('drift.result') : `You leave her turning in the dark and write it in the log, and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`; } },
     ],
   };

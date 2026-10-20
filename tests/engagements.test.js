@@ -1,7 +1,7 @@
 'use strict';
 
 // The engagements for a hired hand: pirates or a navy patrol make contact, and the hand fights it turn by turn on the sensor board (js/fightui.js) instead
-// of the card duel; what comes after it (the crippled ship, the lock fights); the ambush; the Gunner's orders; and the cost notes.
+// of the card duel; what comes after it (the crippled ship, the deck fights); the ambush; the Gunner's orders; and the cost notes.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -96,14 +96,14 @@ test('a corsair is a torpedo fight and a raider a grapple fight, in the words an
       fireOrders();
       const t = G.dialog.event.text;
       out[shipId].boarded = t.includes('torpedo takes') ? 'torpedo' : t.includes('grapples bang on the hull in four places') ? 'grapple' : '';
-      const n = t.match(/Boarders: (\d+)/); out[shipId].boarders = n && +n[1]; out[shipId].title = G.dialog.event.title;
+      out[shipId].boarders = G.dialog.event.fight.state.began; out[shipId].title = G.dialog.event.title;
     }
     return out;
   });
   assert.notEqual(r.raider.open, r.corsair.open);
   assert.equal(r.raider.boarded, 'grapple'); assert.equal(r.corsair.boarded, 'torpedo');
-  assert.deepEqual([r.raider.title, r.corsair.title], ['The Corridor', 'The Lock'], 'a full run for a raider, a short one for a corsair');
-  assert.ok(r.raider.boarders > r.corsair.boarders - 3);
+  assert.deepEqual([r.raider.title, r.corsair.title], ['The Lock', 'The Lock'], 'both open the deck fight at the lock');
+  assert.equal(r.raider.boarders, r.corsair.boarders + 1, 'a full run for a raider (her two and one more), a short one for a corsair (her three and one fewer), at the same grade');
   await done();
 });
 
@@ -129,7 +129,7 @@ test('other contacts for a hired hand are still the card duel', async () => {
   await done();
 });
 
-test('crippling her brings her alongside dead in space, and boarding her is the lock fight run the other way: a win takes her strongbox', async () => {
+test('crippling her brings her alongside dead in space, and boarding her is the deck fight run the other way: a win takes her strongbox', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -138,17 +138,18 @@ test('crippling her brings her alongside dead in space, and boarding her is the 
     const f = fightNow().state; f.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.parts.drive.hp = 0; });  // her guns and her drive are gone
     shownMoves({ kind: 'hold' });
     out.ret = fireOrders(); out.title = G.dialog.event.title; out.crippled = /plume goes out/.test(G.dialog.event.text); out.labels = G.dialog.choices.map(c => c.label);
-    rolls([0.01, 0.99, 0.01, 0.99]);  // a post win and no one hurt, twice: to the corridor and to her bridge, and the bridge is taken
+    rolls([0.99, 0.99, 0.99]);  // no one is hurt
     choose('Board her'); finishEvent();
-    out.first = G.dialog.event.title; out.defenders = /Defenders: \d+/.test(G.dialog.event.text);
-    out.mid = choose('Put fire down the corridor'); finishEvent();
-    out.second = G.dialog.event.title;
-    out.end = choose('Put fire down the corridor');
-    out.taken = /strongbox/.test(out.end); out.fund = h.fund - fund; out.opinion = cap.opinion - op; out.xp = skillXp('gunner') - xp; out.next = G.nextEvent;
+    out.first = G.dialog.event.title; out.heads = fightNow().state.began; out.assault = fightNow().state.assault;
+    const s = fightNow(); s.state.sections.forEach(x => { x.theirs = 0; }); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // the last of her people down
+    out.mid = choose('Fight'); finishEvent();
+    out.end = G.dialog.event.text;
+    out.taken = /strongbox/.test(out.end); out.fund = h.fund - fund; out.opinion = cap.opinion - op; out.xp = skillXp('gunner') - xp;
+    choose('Stand down'); out.next = G.nextEvent;
     return out;
   });
   assert.equal(r.ret, null); assert.equal(r.title, 'Dead in Space'); assert.ok(r.crippled, 'the line that says how'); assert.deepEqual(r.labels, ['Board her', 'Let her drift']);
-  assert.equal(r.first, 'Her Corridor'); assert.ok(r.defenders); assert.equal(r.second, 'Her Bridge');
+  assert.equal(r.first, 'Her Lock'); assert.equal(r.assault, true); assert.ok(r.heads >= 3, 'her crew and one more'); assert.equal(r.mid, null, 'the fight ends on the panel');
   assert.ok(r.taken, r.end); assert.ok(r.fund >= 1000 && r.fund <= 3000, `fund ${r.fund}`); assert.equal(r.opinion, 2, 'the strongbox'); assert.equal(r.xp, 5);
   assert.equal(r.next, null);
   await done();
@@ -161,10 +162,11 @@ test('losing the boarding drives you back to your lock, and she drifts on', asyn
     const st = raid('gunner'), h = hired(), cap = person(h.captain), op = cap.opinion, fund = h.fund, armor = st.armor;
     startDuel({ kind: 'pirate' }, false); begin();
     fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.parts.drive.hp = 0; }); shownMoves({ kind: 'hold' }); fireOrders();
-    rolls([0.99, 0.99, 0.99, 0.99]);  // every exchange fails
+    rolls([0.99, 0.99, 0.99, 0.99]);
     choose('Board her'); finishEvent();
-    choose('Put fire down the corridor'); finishEvent();
-    const end = choose('Put fire down the corridor');
+    const s = fightNow(); s.state.sections.forEach(x => { x.mine = 0; }); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // none of ours left standing
+    choose('Fight'); finishEvent();
+    const end = G.dialog.event.text; choose('Stand down');
     return { end: /driven back/.test(end), fund: h.fund === fund, opinion: cap.opinion - op, armor: st.armor < armor, next: G.nextEvent };
   });
   assert.ok(r.end); assert.ok(r.fund); assert.equal(r.opinion, -1, 'the boarding lost'); assert.ok(r.armor); assert.equal(r.next, null);
@@ -299,9 +301,9 @@ test('a patrol that boards a hired hand\'s ship levies the fund and does not rob
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); Object.assign(spare, { shipId: 'cutter' });
     h.fund = 1000;
     const d = { foe: spare, foeHp: 0, init: 'foe' }, s = repelStart(d, 'full');
-    rolls([0.99, 0.99, 0.99, 0.99]);  // every exchange fails, and no one is hurt
-    repelStep(s, 'post');
-    const text = repelStep(s, 'post');
+    s.state.sections[2] = { mine: 0, theirs: 3, cover: 1 }; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // they hold the bridge
+    rolls([0.99, 0.99, 0.99, 0.99]);  // no one is hurt
+    const e = deckFightEvent(s); e.choices[e.choices.length - 1].run(); const text = G.nextEvent.text; G.nextEvent = null;
     return { levy: /levy of 300 cr/.test(text), fund: h.fund };
   });
   assert.ok(r.levy); assert.equal(r.fund, 700);
@@ -482,11 +484,11 @@ test('each hand makes the call in a pirate contact, rolled on their own skill, a
   await done();
 });
 
-test('the ice run, the work events and the lock fights say what an option can cost, from what it declares, and an option with no stake says nothing', async () => {
+test('the ice run and the work events say what an option can cost, from what it declares, and an option with no stake says nothing', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const out = { ice: [], work: [], lock: [] };
+    const out = { ice: [], work: [] };
     const text = label => { const b = document.createElement('div'); b.innerHTML = label; return b.textContent; };
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     hired().run = { ice: { edge: 0 } };
@@ -497,8 +499,6 @@ test('the ice run, the work events and the lock fights say what an option can co
     });
     // the work events: the careful option has no stake, the quick one is bold and pays less on a miss
     for (const d of WORK_EVENTS) { const e = workEvent(d); out.work.push(e.choices.map(c => text(c.label))); }
-    // the lock fights, both ways
-    for (const s of [repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full'), assaultStart(makeEnemy({ kind: 'pirate' }))]) out.lock.push(repelScene(s).choices.map(c => text(c.label)));
     return out;
   });
   assert.ok(r.ice.length >= 12);
@@ -510,17 +510,12 @@ test('the ice run, the work events and the lock fights say what an option can co
   }
   assert.ok(r.ice.some(x => !x.hull && !x.bold) && r.ice.some(x => x.hull && !x.bold) && r.ice.some(x => x.hull && x.bold), 'the run has each kind');
   for (const [careful, quick] of r.work) { assert.ok(!careful.includes('['), careful); assert.match(quick, /\[\d+%; if it fails: you learn less, and the captain marks it\]$/, quick); }
-  for (const labels of r.lock) {
-    assert.ok(labels.length >= 6 && labels.length <= 9, 'six choices of the hand\'s own, and up to three orders to the crew (#711)');
-    for (const l of labels.slice(0, 6)) assert.match(l, /\[\d+%; if it fails: a crew casualty, you may be hurt\]$/, l);
-    for (const l of labels.slice(6)) assert.match(l, /\[\d+%; if it fails: \w+ may be hurt\]$/, `${l}: a miss costs the one sent, by name, not the hand`);
-  }
   await done();
 });
 
 // ---------- the note on the button (#491) ----------
 
-test('the cost note shows on the rendered button as text, with no markup, in a lock fight, an ice run scene and a work event', async () => {
+test('the cost note shows on the rendered button as text, with no markup, in an ice run scene and a work event', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -528,7 +523,6 @@ test('the cost note shows on the rendered button as text, with no markup, in a l
     raid('gunner');
     hired().run = { ice: { edge: 0 } };
     return {
-      lock: buttons(repelScene(repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full')).choices),
       ice: buttons(iceStageScene(0).choices),
       work: buttons(workEvent(WORK_EVENTS[0]).choices),
     };

@@ -6,8 +6,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/sheet.js', 'js/handtohand.js'], {}, ['FIGHT_ABILITY', 'ABILITY_EDGE', 'fightCover', 'baseCover', 'hurtScale', 'abilityStep', 'fightStrip', 'COVER_MAX', 'COVER_MADE', 'CREW_ABILITY', 'crewSheet', 'crewOrderOdds', 'crewOrders', 'ORDERS_MAX', 'CREW_HURT', 'check', 'POST_STAT']);
-const { FIGHT_ABILITY, ABILITY_EDGE, fightCover, hurtScale, abilityStep, fightStrip, COVER_MAX, COVER_MADE, CREW_ABILITY, crewSheet, crewOrderOdds, crewOrders, ORDERS_MAX, CREW_HURT, check, POST_STAT } = api;
+const api = load(['js/sheet.js', 'js/handtohand.js'], {}, ['FIGHT_ABILITY', 'ABILITY_EDGE', 'fightCover', 'baseCover', 'abilityStep', 'fightStrip', 'COVER_MAX', 'COVER_MADE', 'CREW_ABILITY', 'crewSheet', 'crewOrderOdds', 'crewOrders', 'ORDERS_MAX', 'CREW_HURT', 'check', 'POST_STAT']);
+const { FIGHT_ABILITY, ABILITY_EDGE, fightCover, abilityStep, fightStrip, COVER_MAX, COVER_MADE, CREW_ABILITY, crewSheet, crewOrderOdds, crewOrders, ORDERS_MAX, CREW_HURT, check, POST_STAT } = api;
 const POSTS = ['gunner', 'pilot', 'engineer', 'comms'];
 
 test('every post has a steady ability and a cover ability, each with a label and a line for working and for missing', () => {
@@ -28,12 +28,6 @@ test('cover by section: the ship\'s length sets the corridor\'s, the kit and the
   assert.deepEqual([...fightCover({ size: 18, kit: ['valve-keys'], extra: [0, COVER_MADE, 0] })], [1, COVER_MAX, 1], 'the corridor stops at three');
 });
 
-test('cover turns the chance of a casualty: a point over the ship\'s own takes a fifth off, a point under puts a fifth on, and it never falls below two fifths', () => {
-  assert.equal(hurtScale(1), 1, 'the ship\'s own cover leaves the odds as they were');
-  assert.ok(Math.abs(hurtScale(2) - 0.8) < 1e-9 && Math.abs(hurtScale(0) - 1.2) < 1e-9);
-  assert.ok(hurtScale(3) < hurtScale(2) && hurtScale(9) >= 0.4);
-});
-
 test('an ability that works thins them or makes cover and the exchange stands; one that misses holds the ground and lets them press', () => {
   const s = { pos: 1, boarders: 4, extra: [0, 0, 0] };
   assert.deepEqual({ ...abilityStep('steady', true, s) }, { result: 'tie', press: false, boarders: 3, extra: s.extra });
@@ -44,13 +38,19 @@ test('an ability that works thins them or makes cover and the exchange stands; o
   const coverMiss = abilityStep('cover', false, s); assert.deepEqual([coverMiss.result, coverMiss.press, [...coverMiss.extra]], ['tie', true, [0, 0, 0]]);
 });
 
-test('the strip draws the three sections with who holds each hatch, the cover in each and how many are at the front', () => {
-  const titles = ['The Lock', 'The Corridor', 'The Bridge'], svg = fightStrip({ titles, pos: 1, boarders: 3, cover: [1, 2, 0] });
-  assert.match(svg, /^<svg class="board" viewBox="0 0 360 72" role="img" aria-label="The ship in three sections\. The Lock: theirs, cover 1\. The Corridor: the front, 3 of them, cover 2\. The Bridge: yours, cover 0\.">/);
-  assert.deepEqual([...svg.matchAll(/letter-spacing="1">(\w+)</g)].map(m => m[1]), ['THEIRS', 'FRONT', 'YOURS']);
+test('the strip draws each section with both sides\' heads, its cover, where the hand stands, and their shown move, marked when it may feint', () => {
+  const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 2, theirs: 3, cover: 1 }, { mine: 1, theirs: 0, cover: 2 }, { mine: 0, theirs: 0, cover: 0 }];
+  const svg = fightStrip({ titles, sections, hand: 0, move: { from: 0, to: 1, n: 3 }, feint: false });
+  assert.match(svg, /^<svg class="board" viewBox="0 0 360 98" role="img" aria-label="The deck in three sections\. The Lock: 2 of ours and 3 of theirs, cover 1, you stand here\. The Corridor: 1 of ours, cover 2\. The Bridge: empty, cover 0\. Their move: 3 from The Lock into The Corridor\.">/);
+  assert.deepEqual([...svg.matchAll(/letter-spacing="1">([\w ]+)</g)].map(m => m[1]), ['THE LOCK', 'THE CORRIDOR', 'THE BRIDGE']);
   assert.equal((svg.match(/<circle class="pip"/g) || []).length, 3, 'three points of cover drawn');
   assert.equal((svg.match(/<circle class="nopip"/g) || []).length, 6);
-  assert.match(svg, /text-anchor="end"[^>]*>3</, 'the count of them is at the front');
+  assert.equal((svg.match(/class="you"/g) || []).length, 1, 'the hand in one section');
+  assert.match(svg, /<path class="move"/); assert.doesNotMatch(svg, /MAY FEINT/);
+  const vet = fightStrip({ titles: [...titles, 'The Cargo Bay'], sections: [...sections, { mine: 1, theirs: 0, cover: 1 }], hand: 3, move: null, feint: true });
+  assert.match(vet, /aria-label="The deck in four sections\. .*The Cargo Bay: 1 of ours, cover 1, you stand here\. Their move: they hold, may feint\."/);
+  assert.doesNotMatch(vet, /<path class="move"/, 'a hold draws no arrow');
+  assert.match(fightStrip({ titles, sections, hand: 0, move: { from: 0, to: 1, n: 3 }, feint: true }), />3 MAY FEINT</, 'a veteran\'s move is marked on the arrow');
 });
 
 // The crew at the lock (#711): a sheet from role, skill and traits, and the orders to named crew.

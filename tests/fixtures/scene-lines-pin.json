@@ -22591,18 +22591,13 @@
    {
     "log": "Turn 1: you hit her weapons for 19.",
     "next": {
-     "title": "The Corridor",
-     "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.</p><p>Boarders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
+     "title": "The Lock",
+     "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
-      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
-      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
-      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
-      "[Gunner] Pick off a runner (one fewer of them, no ground) [55%; if it fails: a crew casualty, you may be hurt]",
-      "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
-      "Ines cuts the lights (cover here, once) [90%; if it fails: Ines may be hurt]",
-      "Tomas vents a coolant line (one fewer of them, no ground) [75%; if it fails: Tomas may be hurt]",
-      "Mateo puts a false order on their band (one fewer of them, no ground) [65%; if it fails: Mateo may be hurt]"
+      "Stand: The Lock",
+      "You: shoot, 1 to 2 of them down",
+      "Order: none",
+      "Fight"
      ]
     },
     "mem": []
@@ -22647,17 +22642,12 @@
     "log": "Turn 1: you hit her weapons for 19.",
     "next": {
      "title": "The Lock",
-     "text": "A torpedo takes your drive housing and she closes while you're slow. The grapples bang on the hull, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Boarders: 2. With you: 5. Your ship is long, with room to go round and little room for a rush.",
+     "text": "A torpedo takes your drive housing and she closes while you're slow. The grapples bang on the hull, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
-      "Hold the line [70%; if it fails: a crew casualty, you may be hurt]",
-      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
-      "Go round them [68%; if it fails: a crew casualty, you may be hurt]",
-      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
-      "[Gunner] Pick off a runner (one fewer of them, no ground) [55%; if it fails: a crew casualty, you may be hurt]",
-      "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
-      "Ines cuts the lights (cover here, once) [90%; if it fails: Ines may be hurt]",
-      "Tomas vents a coolant line (one fewer of them, no ground) [75%; if it fails: Tomas may be hurt]",
-      "Mateo puts a false order on their band (one fewer of them, no ground) [65%; if it fails: Mateo may be hurt]"
+      "Stand: The Lock",
+      "You: shoot, 1 to 2 of them down",
+      "Order: none",
+      "Fight"
      ]
     },
     "mem": []
@@ -22702,17 +22692,12 @@
     "log": "Turn 1: you hit her weapons for 19.",
     "next": {
      "title": "The Lock",
-     "text": "She's alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They're coming aboard, by the book.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Boarders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
+     "text": "She's alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They're coming aboard, by the book.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
-      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
-      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
-      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
-      "[Gunner] Pick off a runner (one fewer of them, no ground) [55%; if it fails: a crew casualty, you may be hurt]",
-      "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
-      "Ines cuts the lights (cover here, once) [90%; if it fails: Ines may be hurt]",
-      "Tomas vents a coolant line (one fewer of them, no ground) [75%; if it fails: Tomas may be hurt]",
-      "Mateo puts a false order on their band (one fewer of them, no ground) [65%; if it fails: Mateo may be hurt]"
+      "Stand: The Lock",
+      "You: shoot, 1 to 2 of them down",
+      "Order: none",
+      "Fight"
      ]
     },
     "mem": []
@@ -22787,6 +22772,440 @@
     "mem": [
      "9 Jul 2214: The bridge was taken on your watch."
     ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: 2 of them pushing into the Lock.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Corridor",
+    "read": "Turn 1 of 8. Boarders: 2 of them pushing into the Corridor.",
+    "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
+    "labels": [
+     "Stand: The Corridor",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Bridge",
+    "read": "Turn 1 of 8. Boarders: 2 of them pushing into the Bridge.",
+    "text": "The last hatch before the bridge is the one the captain closed by hand. They're working at it from the other side. The pilot has the helm and hasn't looked round.",
+    "labels": [
+     "Stand: The Bridge",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Cargo Bay",
+    "read": "Turn 1 of 8. Boarders: 2 of them pushing into the Cargo Bay.",
+    "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
+    "labels": [
+     "Stand: The Cargo Bay",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: 2 of them going round through the Cargo Bay.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: 2 of them pushing into the Corridor. They may feint.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Move: The Corridor",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Move: The Cargo Bay",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "You: Pick off a runner, one of them down if it works",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "You: Covering burst, two points of cover here, once a fight",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: Ines cuts the lights",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "log": "Turn 1: 4 of them into the Corridor, in the Corridor 1 of them down and 1 of ours. Hana is hurt.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: in the Lock 1 of them down and 1 of ours, in the Corridor 2 of them down and 0 of ours, you fall back to the Bridge. Hana is hurt.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: nobody gives ground.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: nobody gives ground. There is nobody of theirs where you stand. Ines finds nobody of theirs to go at.",
+    "end": false
+   },
+   {
+    "log": "Turn 8: nobody gives ground.",
+    "end": true,
+    "close": "Turn 8: nobody gives ground.</p><p>They have been at it too long. The ones still standing back off down the passage to their lock, and nobody stops them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Black Debt\" lights, and she breaks away from the hull."
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: 2 of them pushing into her Lock.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Corridor",
+    "read": "Turn 1 of 8. Her crew: 2 of them pushing into her Corridor.",
+    "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
+    "labels": [
+     "Stand: Her Corridor",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Bridge",
+    "read": "Turn 1 of 8. Her crew: 2 of them pushing into her Bridge.",
+    "text": "The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.",
+    "labels": [
+     "Stand: Her Bridge",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Cargo Bay",
+    "read": "Turn 1 of 8. Her crew: 2 of them pushing into her Cargo Bay.",
+    "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
+    "labels": [
+     "Stand: Her Cargo Bay",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: 2 of them going round through her Cargo Bay.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: 2 of them pushing into her Corridor. They may feint.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Move: Her Corridor",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Move: Her Cargo Bay",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "You: Pick off a runner, one of them down if it works",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "You: Covering burst, two points of cover here, once a fight",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "You: shoot, 1 to 2 of them down",
+     "Order: Ines cuts the lights",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ]
+   },
+   {
+    "log": "Turn 1: in her Lock 1 of them down and 0 of ours.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: in her Lock 1 of them down and 0 of ours, in her Corridor 2 of them down and 0 of ours, you fall back to her Lock.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: 1 of ours into her Cargo Bay.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: 1 of ours into her Cargo Bay. There is nobody of theirs where you stand. Ines finds nobody of theirs to go at.",
+    "end": false
+   },
+   {
+    "log": "Turn 8: nobody gives ground.",
+    "end": true,
+    "close": "Turn 8: nobody gives ground.</p><p>The captain calls the party back on the intercom. Her people still hold the far hatch, and there is no more time to take her. You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13."
    }
   ]
  }

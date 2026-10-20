@@ -154,13 +154,15 @@ function shipEnd(st) {
 }
 
 // The deck fight: the same turn on the decks (spec 2026-10-20). Sections are lock, corridor, bridge, and 'cargo' on a long ship. `mine` and `theirs`
-// are always our crew and hers; `assault` says who pushes (theirs when repelling, mine when we board). Loaded after boarders.js, for REPEL_HURT.
+// are always our crew and hers; `assault` says who pushes (theirs when repelling, mine when we board). Each section keeps our cover (`cover`) and hers (`hers`)
+// apart, and each cuts only its own side's losses (R31). Loaded after boarders.js, for REPEL_HURT.
 const DECK = {
   SECTIONS: ['lock', 'corridor', 'bridge'],
   SIDEARM: [1, 2],   // heads the hand's shot takes, added to the exchange in their section
-  CREW_HIT: [0, 1],  // heads each side loses in a section where both stand; cover pips take from the high end of the defenders'
+  CREW_HIT: [0, 1],  // heads one opposing head takes in a section where both stand (a roll a head); a side's own cover cuts its total, never below one hit
   BREAK: 1 / 3,      // of her crew at the start: at or under it she breaks
-  SUIT: 0.7          // times REPEL_HURT.lose: the standard suit's stat
+  SUIT: 0.5,         // times REPEL_HURT.lose: the standard suit's stat
+  TURNS: 8           // at the end of this turn the attackers withdraw: a repel is won, an assault lost (R32)
 };
 
 const LOCK = 0, CORRIDOR = 1, BRIDGE = 2, CARGO = 3;
@@ -170,23 +172,26 @@ const BACK = [LOCK, LOCK, CORRIDOR, LOCK];           // and toward the lock
 const REACH = [0, 1, 2, 1];                          // how far along each is from the lock: the front is the furthest
 const sum = (st, key) => st.sections.reduce((n, s) => n + s[key], 0);
 const dealt = (n, lo, hi, rand) => Math.min(n, lo + Math.floor(rand() * (hi - lo + 1)));
+const rollsOf = (k, [lo, hi], rand) => { let t = 0; for (let i = 0; i < k; i++) t += lo + Math.floor(rand() * (hi - lo + 1)); return t; };  // k rolls in a range, summed
 
-function deckFight({ boarders, crew, hand = LOCK, cover, grade = 0, assault = false, side = false }) {
+// `cover` is ours by section and `hers` hers. The hand starts in `hand` (the lock), or with the nearest of our heads when none of ours is there (R34).
+function deckFight({ boarders, crew, hand = LOCK, cover, hers = [], grade = 0, assault = false, side = false }) {
   const names = side ? [...DECK.SECTIONS, 'cargo'] : DECK.SECTIONS;
-  const sections = names.map((_, i) => ({ mine: 0, theirs: 0, cover: cover[i] || 0 }));
+  const sections = names.map((_, i) => ({ mine: 0, theirs: 0, cover: cover[i] || 0, hers: hers[i] || 0 }));
   const [atk, def] = assault ? ['mine', 'theirs'] : ['theirs', 'mine'];
   const n = assault ? boarders : crew, each = Math.floor(n / sections.length);
   sections[LOCK][atk] = assault ? crew : boarders;
-  sections.forEach((s, i) => { s[def] = each + (i === LOCK ? n - each * sections.length : 0); });
-  return { kind: 'deck', sections, hand, began: boarders, grade, assault, side, used: {}, turn: 0, log: [] };
+  sections.forEach((s, i) => { s[def] = each + (i === BRIDGE ? n - each * sections.length : 0); });  // the remainder holds the bridge, so it is never left empty
+  const start = sections[hand].mine ? hand : sections.map((_, i) => i).filter(i => sections[i].mine).sort((a, b) => Math.abs(REACH[a] - REACH[hand]) - Math.abs(REACH[b] - REACH[hand]))[0];
+  return { kind: 'deck', sections, hand: start === undefined ? hand : start, began: boarders, grade, assault, side, used: {}, turn: 0, log: [] };
 }
 
 // How the side `atk` ('theirs' repelling, 'mine' in an assault) advances: from its front into the next section where it outnumbers the other, else hold; on a long
-// ship with the corridor held it goes round by the cargo bay.
+// ship with the corridor held it goes round by the cargo bay. A side does not leave a section while the other side stands in it (R29).
 function advance(st, atk) {
   const S = st.sections, foe = atk === 'mine' ? 'theirs' : 'mine';
   const from = S.reduce((f, s, i) => (s[atk] && (f < 0 || REACH[i] >= REACH[f]) ? i : f), -1);
-  if (from < 0 || from === BRIDGE) return { kind: 'hold', from: Math.max(from, 0), to: Math.max(from, 0), n: 0 };
+  if (from < 0 || from === BRIDGE || S[from][foe]) return { kind: 'hold', from: Math.max(from, 0), to: Math.max(from, 0), n: 0 };
   const to = from === LOCK && st.side && S[CORRIDOR][foe] && S[CARGO][foe] < S[CORRIDOR][foe] ? CARGO : FORWARD[from];
   return S[from][atk] <= S[to][foe] ? { kind: 'hold', from, to: from, n: 0 } : { kind: to === CARGO ? 'round' : 'push', from, to, n: S[from][atk] };
 }
@@ -198,7 +203,7 @@ function boardMove(st, rand) {
   if (!st.assault) m = advance(st, 'theirs');
   else {
     for (let i = S.length - 1; i > LOCK && m.kind === 'hold'; i--) {
-      if (S[i].theirs && S[BACK[i]].mine && S[i].theirs > S[BACK[i]].mine) m = { kind: 'push', from: i, to: BACK[i], n: S[i].theirs };
+      if (S[i].theirs && !S[i].mine && S[BACK[i]].mine && S[i].theirs > S[BACK[i]].mine) m = { kind: 'push', from: i, to: BACK[i], n: S[i].theirs };
     }
   }
   return { ...m, feint: st.grade > 0 && rand() < CUNNING * st.grade };
@@ -227,7 +232,8 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
     }
   }
 
-  // The hand's act and the crew order: steady and cover go through abilityStep, once each for the order and the act. Cover is once a fight.
+  // The hand's act and the crew order: steady and cover go through abilityStep, once each for the order and the act. Cover is once a fight, and is made for us
+  // (our cover). A steady one with nobody of theirs in the section is not rolled, and says so (R34).
   const here = S[st.hand], extra = S.map(() => 0);
   let press = 0;
   const asObj = a => (typeof a === 'string' ? { kind: a } : a);  // 'shoot' may be bare; steady and cover must carry odds
@@ -236,6 +242,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
     if (typeof a.odds !== 'number') throw new Error(a.kind + ' needs odds');
     if (a.kind === 'cover' && st.used.cover) continue;
     if (a.kind === 'cover') st.used.cover = true;
+    if (a.kind === 'steady' && !here.theirs) { events.push({ kind: a.kind, nobody: true }); continue; }
     const worked = rand() < a.odds;
     const r = abilityStep(a.kind, worked, { pos: st.hand, boarders: here.theirs, extra });
     here.theirs = r.boarders;
@@ -245,14 +252,14 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   }
   S.forEach((s, i) => { s.cover = Math.min(COVER_MAX, s.cover + extra[i]); });
 
-  // Each section where both stand trades heads; the defenders' high end is cut by the cover there. A press is one more roll against us where the hand stands.
-  // Every loss is clamped to the heads present, and the events report what was taken.
+  // Each section where both stand trades heads: a side loses a CREW_HIT roll for each opposing head there (R29), cut by that side's own cover there (R31), and a
+  // hit is never cut to nothing (R33). A press is one more roll against us where the hand stands. Every loss is clamped to the heads present, and the events report what was taken.
   const hand = st.hand, contested = here.mine > 0 && here.theirs > 0;
-  const [lo, hi] = DECK.CREW_HIT, defender = st.assault ? 'theirs' : 'mine';
+  const [lo, hi] = DECK.CREW_HIT;
   const loss = S.map((s, i) => {
     if (!s.mine || !s.theirs) return { mine: 0, theirs: 0 };
-    const cut = Math.max(lo, hi - s.cover);
-    let mine = dealt(s.mine, lo, defender === 'mine' ? cut : hi, rand), theirs = dealt(s.theirs, lo, defender === 'theirs' ? cut : hi, rand);
+    const hit = (by, cover) => { const rolls = rollsOf(s[by], DECK.CREW_HIT, rand); return rolls > 0 ? Math.max(1, rolls - cover) : 0; };
+    let mine = hit('theirs', s.cover), theirs = hit('mine', s.hers || 0);
     if (i === hand) for (let k = 0; k < press; k++) mine += dealt(s.mine, lo, hi, rand);
     return { mine, theirs };
   });
@@ -279,9 +286,12 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
 }
 
 // Her crew is at or under a third of her start, or none; or (an assault) mine hold her bridge, or (repelling) hers hold ours. Our loss comes first: the bridge lost is the ship lost.
+// At the turn cap the attackers withdraw (deckCapped): theirs go back to their ship, a repel won, or ours fall back, an assault lost (R32).
 function deckEnd(st) {
   const bridge = st.sections[BRIDGE];
   if (st.assault ? sum(st, 'mine') === 0 : bridge.theirs > 0 && bridge.mine === 0) return 'taken';
   if (sum(st, 'theirs') <= st.began * DECK.BREAK) return 'won';
-  return st.assault && bridge.mine > 0 && bridge.theirs === 0 ? 'won' : null;
+  if (st.assault && bridge.mine > 0 && bridge.theirs === 0) return 'won';
+  return deckCapped(st) ? (st.assault ? 'taken' : 'won') : null;
 }
+const deckCapped = st => st.turn >= DECK.TURNS;

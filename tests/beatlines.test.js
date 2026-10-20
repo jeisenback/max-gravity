@@ -48,7 +48,7 @@ test('an override is escaped in a text and left plain in a label and a title, an
     const warned = []; const warn = console.warn; console.warn = m => warned.push(m);
     const clean = cleanOverrides({
       'beats:ambush': { parts: { 'text.call': 'A <b>call</b> & more.', 'go.label': 'Go <i>on</i>', 'read.nope.label': 'x', 'text.trap': '' }, title: 'No', choices: { 0: { label: 'x' } } },
-      'beats:repel': { parts: { 'title.0': 'The <i>Lock</i>', tie: 'Nothing gives.' } },
+      'beats:repel': { parts: { 'title.0': 'The <i>Lock</i>', 'end.last': 'Nothing gives.' } },
       'beats:assault': { parts: { tie: 'The assault has no tie.' } },
       'beats:dead-in-space': { parts: { a: 'x' } },
     });
@@ -59,7 +59,7 @@ test('an override is escaped in a text and left plain in a label and a title, an
   await g.done();
   assert.deepEqual(r.clean, {
     'beats:ambush': { parts: { 'text.call': 'A <b>call</b> & more.', 'go.label': 'Go <i>on</i>' } },
-    'beats:repel': { parts: { 'title.0': 'The <i>Lock</i>', tie: 'Nothing gives.' } },
+    'beats:repel': { parts: { 'title.0': 'The <i>Lock</i>', 'end.last': 'Nothing gives.' } },
   });
   assert.equal(r.warned.length, 1);
   for (const bit of ['read.nope.label', 'text.trap', 'no "title"', 'no choice 0', 'beats:assault', 'beats:dead-in-space']) assert.ok(r.warned[0].includes(bit), bit);
