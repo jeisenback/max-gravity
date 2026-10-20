@@ -419,7 +419,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo goes off through the cargo lock ahead of the first pallet, and stops only to hand the berth key to whoever has the lock. Hana doesn't come out of the berth until the hatch is shut. A new slicer, Grace, takes the bunk before the ship clears the dock.",
+    "text": "Mateo goes off through the cargo lock ahead of the first pallet, and stops only to hand the berth key to whoever has the lock. Hana doesn't come out of the berth until the hatch is shut. The new slicer, Grace, gets the key off whoever has the lock and is in the berth before the last pallet is stowed.",
     "mem": [
      "9 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "9 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -440,7 +440,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana goes off through the cargo lock ahead of the first pallet, and stops only to hand the berth key to whoever has the lock. Mateo doesn't come out of the berth until the hatch is shut. A new quartermaster, Fatima, takes the bunk before the ship clears the dock.",
+    "text": "Hana goes off through the cargo lock ahead of the first pallet, and stops only to hand the berth key to whoever has the lock. Mateo doesn't come out of the berth until the hatch is shut. The new quartermaster, Fatima, gets the key off whoever has the lock and is in the berth before the last pallet is stowed.",
     "mem": [
      "9 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "9 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
@@ -461,7 +461,7 @@
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You find each of them at the lock, the way they found you, and give the same answer twice. They draw the same watch that week and say nothing to each other in it that doesn't go through the board first.",
+    "text": "Both pay requests come back to the lock unsigned before the seal light goes green. Mateo and Hana draw the same watch that week, and what they say to each other in it goes through the board.",
     "mem": [
      "9 Jul 2214: You made me stay on a ship with Hana.",
      "9 Jul 2214: You made me stay on a ship with Mateo."
@@ -22238,7 +22238,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo goes down the dock with one bag and leaves the rest to go on in the hold, tagged for the next port. Hana is on the corridor deck that night with a bucket, at the plate where the fight was. The new slicer, Fatima, comes up from the dock office with the hiring slip still in hand and asks Hana which berth is empty.",
+    "text": "Mateo signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Hana is on the corridor deck that night with a bucket, at the plate where the fight was. The new slicer, Fatima, comes aboard with the hiring slip still in hand and has to step over the bucket.",
     "mem": [
      "10 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "10 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -22259,7 +22259,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana goes down the dock with one bag and leaves the rest to go on in the hold, tagged for the next port. Mateo is on the corridor deck that night with a bucket, at the plate where the fight was. The new quartermaster, Sofia, comes up from the dock office with the hiring slip still in hand and asks Mateo which berth is empty.",
+    "text": "Hana signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Mateo is on the corridor deck that night with a bucket, at the plate where the fight was. The new quartermaster, Sofia, comes aboard with the hiring slip still in hand and has to step over the bucket.",
     "mem": [
      "10 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "10 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
@@ -22280,7 +22280,7 @@
    {
     "i": 2,
     "roll": 0.5,
-    "text": "The bag goes back up the ramp on the cargo trolley and onto Mateo's bunk, strap still done up. Captain Vance logs the lip as a fall in the corridor.",
+    "text": "The bag comes off the dock on the cargo trolley with the stores and ends up on Mateo's bunk, strap still done up. Captain Vance logs the lip as a fall in the corridor.",
     "mem": [
      "10 Jul 2214: You made me stay on a ship with Hana.",
      "10 Jul 2214: You made me stay on a ship with Mateo."
