@@ -99,14 +99,14 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
 
     // The deck fights, started directly: kind 'repel' (they board you) or 'assault' (you board her).
     const lock = (kind, crewN, level, policy, grade) => {
-      const t = { n: 0, won: 0, rounds: 0, hurt: 0, dead: 0, marked: 0, hand: 0, anyHurt: 0 };
+      const t = { n: 0, won: 0, rounds: 0, hurt: 0, dead: 0, marked: 0, hand: 0, anyHurt: 0, died: 0 };
       for (let i = 0; i < trials; i++) {
         restore(crewN, level); const foe = foeOf();
         const s = kind === 'repel' ? repelStart({ foe, foeHp: 0, init: 'foe', grade }, 'full') : assaultStart(foe, { grade });
         window.__texts = '';
         openEvent(deckFightEvent(s));
         drive(policy);
-        t.n++; if (s.won) t.won++; t.rounds += s.state.turn; t.hurt += s.hurt.size; t.dead += s.dead.length; t.marked += s.marked.length; t.hand += s.youHurt ? 1 : 0;
+        t.n++; if (s.won) t.won++; if (s.handDied) t.died++; t.rounds += s.state.turn; t.hurt += s.hurt.size; t.dead += s.dead.length; t.marked += s.marked.length; t.hand += s.youHurt ? 1 : 0;
         if (s.hurt.size || s.dead.length || s.marked.length || s.youHurt) t.anyHurt++;
       }
       return t;
@@ -147,7 +147,7 @@ function report(runs) {
   for (const kind of ['repel', 'assault']) {
     console.log(`${kind === 'repel' ? 'Repel fight (they board you)' : 'Assault fight (you board her)'}`);
     for (const [name, t] of Object.entries(sum(runs, kind))) {
-      console.log(`  ${name.split('|')[1].padEnd(34)} n ${String(t.n).padStart(4)}  won ${pct(t.won, t.n)}  rounds ${per(t.rounds, t.n)}  hurt ${per(t.hurt, t.n)}  dead ${per(t.dead, t.n)}  marked ${per(t.marked, t.n)}  you hurt ${pct(t.hand, t.n)}  anyone ${pct(t.anyHurt, t.n)}`);
+      console.log(`  ${name.split('|')[1].padEnd(34)} n ${String(t.n).padStart(4)}  won ${pct(t.won, t.n)}  rounds ${per(t.rounds, t.n)}  hurt ${per(t.hurt, t.n)}  dead ${per(t.dead, t.n)}  marked ${per(t.marked, t.n)}  you hurt ${pct(t.hand, t.n)}  you killed ${pct(t.died, t.n)}  anyone ${pct(t.anyHurt, t.n)}`);
     }
   }
 }

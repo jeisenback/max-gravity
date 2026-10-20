@@ -22970,11 +22970,11 @@
     ]
    },
    {
-    "log": "Turn 1: 4 of them into the Corridor, in the Corridor 1 of them down and 0 of ours.",
+    "log": "Turn 1: 4 of them into the Corridor, in the Corridor 1 of them down and 1 of ours. Hana is hurt.",
     "end": false
    },
    {
-    "log": "Turn 1: in the Lock 1 of them down and 0 of ours, in the Corridor 2 of them down and 0 of ours, you fall back to the Bridge.",
+    "log": "Turn 1: in the Lock 1 of them down and 1 of ours, in the Corridor 2 of them down and 0 of ours, you fall back to the Bridge. Hana is hurt.",
     "end": false
    },
    {
@@ -23178,11 +23178,11 @@
     ]
    },
    {
-    "log": "Turn 1: 4 of ours into her Corridor, in her Lock 1 of them down and 0 of ours.",
+    "log": "Turn 1: in her Lock 1 of them down and 0 of ours.",
     "end": false
    },
    {
-    "log": "Turn 1: 4 of ours into her Cargo Bay, in her Corridor 2 of them down and 0 of ours, you fall back to her Cargo Bay.",
+    "log": "Turn 1: in her Lock 1 of them down and 0 of ours, in her Corridor 2 of them down and 0 of ours, you fall back to her Lock.",
     "end": false
    },
    {
