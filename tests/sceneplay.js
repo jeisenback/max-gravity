@@ -324,6 +324,12 @@ const playScenes = () => {
       prep() { uatBurn('Ceres Station', 'pallas'); G.state.armor = Math.max(1, ship().armor - 10); if (engineer) { G.state.crew = []; crewOf(1); } G.state.day += shift; },
     });
   }
+  // the other versions of Not on the Same Ship, taken by the day (#780)
+  for (const shift of [1, 2]) run(`scene:split:day+${shift}`, {}, () => {
+    const st = G.state, crew = folk().filter(f => f.crew && !f.p.cast), [a, b] = crew;
+    addBond(a, b, -9); st.feuds = { [bondKey(a, b)]: 1 }; st.relAt = {}; st.day += shift;
+    return splitScene();
+  }, { extra: () => (G.state.home || {}).log });
   return out;
 };
 

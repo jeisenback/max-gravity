@@ -419,7 +419,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo takes a bag and goes down the ramp without looking round. Hana watches the ramp until it's clear. By the next watch bell a new slicer, Grace, has signed on for the berth.",
+    "text": "Mateo is down the ramp before the cargo is, with one bag, and stops only to shake the cook's hand. Hana doesn't come out of the berth until the hatch is shut. A new slicer, Grace, signs on for the berth before the ship clears the dock.",
     "mem": [
      "9 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "9 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -440,7 +440,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana takes a bag and goes down the ramp without looking round. Mateo watches the ramp until it's clear. By the next watch bell a new quartermaster, Fatima, has signed on for the berth.",
+    "text": "Hana is down the ramp before the cargo is, with one bag, and stops only to shake the cook's hand. Mateo doesn't come out of the berth until the hatch is shut. A new quartermaster, Fatima, signs on for the berth before the ship clears the dock.",
     "mem": [
      "9 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "9 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
@@ -461,7 +461,7 @@
    {
     "i": 2,
     "roll": 0.5,
-    "text": "\"Then we all sail,\" you say. Neither of them answers. At the next watch they take opposite ends of the galley.",
+    "text": "\"Both of you sail,\" you tell each of them at the lock, the way they came to you. They draw the same watch that week and say nothing to each other in it that doesn't go through the board first.",
     "mem": [
      "9 Jul 2214: You made me stay on a ship with Hana.",
      "9 Jul 2214: You made me stay on a ship with Mateo."
@@ -474,7 +474,7 @@
    }
   ],
   "title": "Not on the Same Ship",
-  "text": "Mateo and Hana are both on the dock when you come down the ramp, a few meters apart. \"One of us gets off here,\" Mateo says. \"I won't stand another burn with that.\" Hana says nothing. Captain Vance has put it to you: \"They both talk to you. Who stays?\"",
+  "text": "An hour out from the landing Mateo finds you at the lock and says, quietly, that one of them should get off here, and that it doesn't much matter which. An hour later Hana finds you in the same place and says the same thing in fewer words. Neither of them knows the other came. Captain Vance has put it to you: \"They both talk to you. Who stays?\"",
   "labels": [
    "Let Mateo go",
    "Let Hana go",
@@ -22230,6 +22230,142 @@
   "labels": [
    "Run drills",
    "Maintenance"
+  ]
+ },
+ {
+  "id": "scene:split:day+1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The bag on the dock goes with Mateo, repacked on the ramp where it has to be. Hana goes back aboard without waiting for the ramp to clear. By the time the ship is fueled a new slicer, Fatima, is aboard in the empty berth.",
+    "mem": [
+     "10 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
+     "10 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
+    ],
+    "fx": {
+     "p2": -3,
+     "p3": 2,
+     "p10": 0
+    },
+    "x": [
+     {
+      "day": 32,
+      "text": "Mateo Castillo left the ship at Earth."
+     }
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "The bag on the dock goes with Hana, repacked on the ramp where it has to be. Mateo goes back aboard without waiting for the ramp to clear. By the time the ship is fueled a new quartermaster, Sofia, is aboard in the empty berth.",
+    "mem": [
+     "10 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
+     "10 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
+    ],
+    "fx": {
+     "p2": 2,
+     "p3": -3,
+     "p10": 0
+    },
+    "x": [
+     {
+      "day": 32,
+      "text": "Hana Kowalski left the ship at Earth."
+     }
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You carry the bag back up the ramp yourself and put it on Mateo's bunk. The lip goes in the log as a fall in the corridor, and nobody aboard says otherwise.",
+    "mem": [
+     "10 Jul 2214: You made me stay on a ship with Hana.",
+     "10 Jul 2214: You made me stay on a ship with Mateo."
+    ],
+    "fx": {
+     "p2": -1,
+     "p3": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "Not on the Same Ship",
+  "text": "There was a fight in the corridor at the last watch change, short and nearly quiet, and Hana has a split lip from it. When you come down the ramp Mateo's bag is already on the dock, packed, with the strap done up. \"Pick,\" Mateo says, without looking at Hana. Captain Vance has put it to you: \"They both talk to you. Who stays?\"",
+  "labels": [
+   "Let Mateo go",
+   "Let Hana go",
+   "Keep both"
+  ]
+ },
+ {
+  "id": "scene:split:day+2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Mateo takes a bag and goes down the ramp without looking round. Hana watches the ramp until it's clear. By the next watch bell a new slicer, Fatima, has signed on for the berth.",
+    "mem": [
+     "11 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
+     "11 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
+    ],
+    "fx": {
+     "p2": -3,
+     "p3": 2,
+     "p10": 0
+    },
+    "x": [
+     {
+      "day": 33,
+      "text": "Mateo Castillo left the ship at Earth."
+     }
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Hana takes a bag and goes down the ramp without looking round. Mateo watches the ramp until it's clear. By the next watch bell a new quartermaster, Daniel, has signed on for the berth.",
+    "mem": [
+     "11 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
+     "11 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
+    ],
+    "fx": {
+     "p2": 2,
+     "p3": -3,
+     "p10": 0
+    },
+    "x": [
+     {
+      "day": 33,
+      "text": "Hana Kowalski left the ship at Earth."
+     }
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "\"Then we all sail,\" you say. Neither of them answers. At the next watch they take opposite ends of the galley.",
+    "mem": [
+     "11 Jul 2214: You made me stay on a ship with Hana.",
+     "11 Jul 2214: You made me stay on a ship with Mateo."
+    ],
+    "fx": {
+     "p2": -1,
+     "p3": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "Not on the Same Ship",
+  "text": "Mateo and Hana are both on the dock when you come down the ramp, a few meters apart. \"One of us gets off here,\" Mateo says. \"I won't stand another burn with that.\" Hana says nothing. Captain Vance has put it to you: \"They both talk to you. Who stays?\"",
+  "labels": [
+   "Let Mateo go",
+   "Let Hana go",
+   "Keep both"
   ]
  }
 ]

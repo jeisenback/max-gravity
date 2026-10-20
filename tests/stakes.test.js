@@ -73,7 +73,7 @@ test('a feud that has been seen and not mended splits the ship, and someone from
     const [oa, ob] = [a.p.opinion, b.p.opinion];
     const text = chooseEvent ? (G.dialog = { event: e, choices: e.choices }, chooseEvent(0)) : '';
     out.gone = !st.crew.includes(a.id); out.size = st.crew.length === n; out.sameRole = st.crew.map(person).filter(c => c.role === ra).length >= 1;
-    out.opinions = [a.p.opinion - oa, b.p.opinion - ob]; out.text = /signed on for the berth/.test(text);
+    out.opinions = [a.p.opinion - oa, b.p.opinion - ob]; out.text = text.includes(person(st.crew[st.crew.length - 1]).first);  // the new hire is named, in whichever version the day takes (#780)
     return out;
   });
   assert.equal(r.noFeud, null, 'no scene before a feud has been seen');
