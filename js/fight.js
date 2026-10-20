@@ -18,6 +18,7 @@ const FIGHT = {
   TURNS: 6
 };
 
+const KNIFE = RANGE_BANDS.indexOf('knife');
 const bandMultOf = band => FIGHT.BAND_MULT[RANGE_BANDS[band]] || 0;  // past long they have escaped and there is no volley
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);
@@ -76,7 +77,7 @@ function resolveShipTurn(state, orders, moves, rand) {
     const dmg = dealDamage(st.me, m.target, rollIn(m.dmg, held ? 1 - FIGHT.PDC_HOLD : 1, rand));
     events.push({ who: 'foe', foe: i, part: m.target, dmg });
   });
-  if (st.foes.some((foe, i) => foe.armor > 0 && foe.parts.lock.hp > 0 && st.band === 0 && moves.foe[i] && moves.foe[i].kind === 'board')) st.boarded = true;
+  if (st.foes.some((foe, i) => foe.armor > 0 && foe.parts.lock.hp > 0 && st.band === KNIFE && moves.foe[i] && moves.foe[i].kind === 'board')) st.boarded = true;
   st.band = nextBand(st, moves);
 
   const heat = st.heat + shots.length;
@@ -101,7 +102,7 @@ function foeVolley(st, i) {
 function foeMove(st, i) {
   const foe = st.foes[i], armed = foe.parts.weapons.hp > 0;
   if (hullShare(foe) < 0.3) return { kind: 'break' };
-  if (st.band === 0 && foe.parts.lock.hp > 0) return { kind: 'board' };
+  if (st.band === KNIFE && foe.parts.lock.hp > 0) return { kind: 'board' };
   if (armed && st.me.parts.drive.hp > 0 && st.me.speed > foe.speed) return { kind: 'pin', target: 'drive', dmg: foeVolley(st, i) };
   if (st.band > RANGE_BANDS.indexOf('close') && foe.parts.drive.hp > 0) return { kind: 'close' };
   return armed ? { kind: 'broadside', target: 'weapons', dmg: foeVolley(st, i) } : { kind: 'hold' };
@@ -109,10 +110,11 @@ function foeMove(st, i) {
 
 function captainMove(st) {
   const mine = hullShare(st.me), hers = poolShare(st.foes);
-  const kind = st.nerve >= 4 ? (hers < mine ? 'close' : 'hold')
-    : st.nerve >= 1 && st.nerve <= 2 ? (mine < 0.6 ? 'open' : 'hold')
-    : st.nerve === 3 ? (mine < 0.4 ? 'open' : mine - hers >= 0.3 ? 'close' : 'hold') : 'hold';
-  return { kind };
+  const lead = Math.round((mine - hers) * 100);  // whole points, so 0.7 - 0.4 is a lead of 30
+  if (st.nerve >= 4) return { kind: hers < mine ? 'close' : 'hold' };
+  if (st.nerve >= 1 && st.nerve <= 2) return { kind: mine < 0.6 ? 'open' : 'hold' };
+  if (st.nerve === 3) return { kind: mine < 0.4 ? 'open' : lead >= 30 ? 'close' : 'hold' };
+  return { kind: 'hold' };
 }
 
 // Each side votes the band one step; when they differ the faster side's vote stands, and a side with no drive has no vote.
@@ -129,7 +131,7 @@ function nextBand(st, moves) {
 }
 
 function shipEnd(st) {
-  const out = f => f.parts.weapons.hp <= 0 && f.parts.drive.hp <= 0;
+  const out = f => f.armor <= 0 || (f.parts.weapons.hp <= 0 && f.parts.drive.hp <= 0);
   const broke = st.moves && st.foes.every((f, i) => out(f) || (st.moves.foe[i] && st.moves.foe[i].kind === 'break' && f.parts.drive.hp > 0));
   if (st.me.armor <= 0) return 'lost';
   if (st.boarded) return 'boarded';

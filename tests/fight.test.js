@@ -278,3 +278,17 @@ test('in a pack, one crippled foe does not end the fight; both do', () => {
   const two = resolveShipTurn(p, orders([]), { foe: [hold, hold], captain: hold }, LOW).state;
   assert.equal(shipEnd(two), null);
 });
+
+test('a foe at armor 0 is out: the only foe so makes it crippled, even with its parts up', () => {
+  const st = fight();
+  st.foes[0].armor = 0;
+  assert.equal(shipEnd(st), 'crippled');
+});
+
+test('the captain closes when ahead by exactly 30 points, despite float error', () => {
+  const st = fight();
+  st.nerve = 3;
+  hurt(st.me, 0.7); hurt(st.foes[0], 0.4);
+  st.me.maxShields = 0; st.foes[0].maxShields = 0;
+  assert.equal(captainMove(st).kind, 'close');
+});
