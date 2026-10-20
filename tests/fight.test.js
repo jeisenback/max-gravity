@@ -152,7 +152,7 @@ const kill = (side, ...parts) => parts.forEach(p => { side.parts[p].hp = 0; });
 const hurt = (side, share) => { side.shields = 0; side.armor = Math.round(side.maxArmor * share); };  // share of armor; shields gone
 const mv = (foe, captain = 'hold') => ({ foe: [{ kind: foe }], captain: { kind: captain } });
 
-test('her move follows her rules: break below 30 percent or with no guns or no lock, board at the knife, pin when you are faster, close to the knife firing at your hull, else a broadside at your guns and then your hull', () => {
+test('her move follows her rules: break below 30 percent or with no guns, while her drive is up, board at the knife, pin when you are faster, close to the knife firing at your hull, else a broadside at your guns and then your hull', () => {
   let st = fight({ stats: { accel: 2 } }, {}, M);
   assert.deepEqual(plain(foeMove(st, 0)), { kind: 'pin', target: 'drive', dmg: [10, 17] }, 'faster me: 12 and 20 times 0.85');
   st = fight({}, {}, M);
