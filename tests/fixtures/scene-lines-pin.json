@@ -7897,7 +7897,7 @@
    {
     "i": 0,
     "roll": 0.1,
-    "text": "Captain Vance is at the galley table with the notebook, and doesn't close it when you sit down. \"Forty-two hundred,\" the captain says. \"My first bad call, on an ore hauler, when I was the senior hand. Shielding lashed for a two-g burn, and we ran at three, and I watched the straps go and logged it after the paperwork was in.\" A line goes into the book. \"Forty-two hundred for the cargo. The late log cost me the berth.\" Two more lines go in. \"This run we're lashed for two-g, and we burn at one point eight.\" (+2 experience at the gunner post.)",
+    "text": "Captain Vance has the next burn up on the nav display and turns the stylus around for you. \"Plot it.\" You plot it, and the captain watches without a word until you're done, then brings up the captain's own plot beside yours. They match to the minute, except that the captain's burns four minutes longer. \"That's for the hand who hasn't slept,\" the captain says. \"Some night it's you.\" The captain saves both plots, puts your name on yours, and leaves it on the screen. (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You asked me for advice."
     ],
@@ -7912,7 +7912,7 @@
    {
     "i": 0,
     "roll": 0.9,
-    "text": "Captain Vance is at the galley table with the notebook, and doesn't close it when you sit down. \"Forty-two hundred,\" the captain says. \"My first bad call, on an ore hauler, when I was the senior hand. Shielding lashed for a two-g burn, and we ran at three, and I watched the straps go and logged it after the paperwork was in.\" A line goes into the book. \"Forty-two hundred for the cargo. The late log cost me the berth.\" Two more lines go in. \"This run we're lashed for two-g, and we burn at one point eight.\" (+2 experience at the gunner post.)",
+    "text": "Captain Vance has the next burn up on the nav display and turns the stylus around for you. \"Plot it.\" You plot it, and the captain watches without a word until you're done, then brings up the captain's own plot beside yours. They match to the minute, except that the captain's burns four minutes longer. \"That's for the hand who hasn't slept,\" the captain says. \"Some night it's you.\" The captain saves both plots, puts your name on yours, and leaves it on the screen. (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You asked me for advice."
     ],
@@ -7927,7 +7927,7 @@
    {
     "i": 1,
     "roll": 0.1,
-    "text": "The rule at the engineer post is that you touch nothing, and for the first hour of the watch you touch nothing while Mate0 works and talks to the board: \"No. No. There you are.\" Twice an arm comes across you without asking. In the second hour the stool gets pulled closer and one control is put under your hand. \"That one. Not the one beside it.\" You get the one beside it, and Mate0 sets it back. (+3 experience at the engineer post.)",
+    "text": "Mate0 has the engineer post on a quiet watch and a meal tray on one knee, and gives you the seat. \"You do it. I eat.\" Every control you reach for, Mate0 names with the fork before you touch it, and twice the fork stops you. Nothing comes up on the board for an hour, and Mate0 has you run the checks anyway, in order, out loud. When the tray is empty Mate0 gets up and leaves you the post to the end of the watch. (+3 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You spent a watch at my post to learn it."
     ],
@@ -7943,7 +7943,7 @@
    {
     "i": 1,
     "roll": 0.9,
-    "text": "The rule at the comms post is that you touch nothing, and for the first hour of the watch you touch nothing while Mate3 works and talks to the board: \"No. No. There you are.\" Twice an arm comes across you without asking. In the second hour the stool gets pulled closer and one control is put under your hand. \"That one. Not the one beside it.\" You get the one beside it, and Mate3 sets it back. (+3 experience at the comms post.)",
+    "text": "Mate3 has the comms post on a quiet watch and a meal tray on one knee, and gives you the seat. \"You do it. I eat.\" Every control you reach for, Mate3 names with the fork before you touch it, and twice the fork stops you. Nothing comes up on the board for an hour, and Mate3 has you run the checks anyway, in order, out loud. When the tray is empty Mate3 gets up and leaves you the post to the end of the watch. (+3 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You spent a watch at my post to learn it."
     ],
@@ -7959,7 +7959,7 @@
    {
     "i": 2,
     "roll": 0.1,
-    "text": "Mate0 brings a suit glove to the galley table with its two seal rings out, and stays to watch. \"Left ring. It's been hissing at me for a week.\" You lay the rings out on a towel, so the air handler can't take them, seat them back in the glove and press it to the gauge. Mate0 checks the seals, once with a finger and once with the gauge, and sends you 50 cr from a hand terminal, about what a dock shop charges. \"Don't tell the others what I paid.\" On the way out the glove goes on and comes off twice, and gets flexed at the ceiling.",
+    "text": "Mate0 puts a boot on the galley table with its magnetic sole hanging by one corner. \"It let go on the hull. I was holding on with the other one.\" You clean the sole back to bare metal and glue it, and clamp it under the table leg, because it needs the night. Mate0 pays you 50 cr up front, about what a dock shop charges. \"If it lets go again, you'll be the first to know.\" In the morning the boot is gone, and there's a ration bar on the table where it was.",
     "mem": [
      "9 Jul 2214: You mended my gear."
     ],
@@ -7972,7 +7972,7 @@
    {
     "i": 2,
     "roll": 0.9,
-    "text": "Mate3 brings a suit glove to the galley table with its two seal rings out, and stays to watch. \"Left ring. It's been hissing at me for a week.\" You lay the rings out on a towel, so the air handler can't take them, seat them back in the glove and press it to the gauge. Mate3 checks the seals, once with a finger and once with the gauge, and sends you 50 cr from a hand terminal, about what a dock shop charges. \"Don't tell the others what I paid.\" On the way out the glove goes on and comes off twice, and gets flexed at the ceiling.",
+    "text": "Mate3 puts a boot on the galley table with its magnetic sole hanging by one corner. \"It let go on the hull. I was holding on with the other one.\" You clean the sole back to bare metal and glue it, and clamp it under the table leg, because it needs the night. Mate3 pays you 50 cr up front, about what a dock shop charges. \"If it lets go again, you'll be the first to know.\" In the morning the boot is gone, and there's a ration bar on the table where it was.",
     "mem": [
      "9 Jul 2214: You mended my gear."
     ],
@@ -7985,7 +7985,7 @@
    {
     "i": 3,
     "roll": 0.1,
-    "text": "The captain's watch is yours tonight. You stand it at the board under the lights at a third, and log it the way the captain does: times, headings, nothing else. At oh-three-ten a nav buoy comes up on the board nine seconds late on its schedule, and that goes in the log too. In the morning the captain reads the page standing up, with a coffee, and stops at the buoy. \"Nine seconds.\" It gets initialed. 40 cr comes into your account at the next ledger sync. (+1 experience at the gunner post.)",
+    "text": "The captain's watch is yours, and nothing happens in it. The board is quiet from midnight to four, and you run the checks on the hour and log them, all clear each time. At the change of watch the captain comes up, reads the page standing, and asks, \"Nothing?\" You show the page. \"Good.\" The captain takes the chair and moves it back the two inches you moved it. 40 cr comes through at the next ledger sync. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You stood a spare watch for me."
     ],
@@ -8001,7 +8001,7 @@
    {
     "i": 3,
     "roll": 0.9,
-    "text": "The captain's watch is yours tonight. You stand it at the board under the lights at a third, and log it the way the captain does: times, headings, nothing else. At oh-three-ten a nav buoy comes up on the board nine seconds late on its schedule, and that goes in the log too. In the morning the captain reads the page standing up, with a coffee, and stops at the buoy. \"Nine seconds.\" It gets initialed. 40 cr comes into your account at the next ledger sync. (+1 experience at the gunner post.)",
+    "text": "The captain's watch is yours, and nothing happens in it. The board is quiet from midnight to four, and you run the checks on the hour and log them, all clear each time. At the change of watch the captain comes up, reads the page standing, and asks, \"Nothing?\" You show the page. \"Good.\" The captain takes the chair and moves it back the two inches you moved it. 40 cr comes through at the next ledger sync. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You stood a spare watch for me."
     ],
@@ -8017,7 +8017,7 @@
    {
     "i": 4,
     "roll": 0.1,
-    "text": "You draw the gunner post on the back of a ration sheet at the galley table, control by control, and Mate0 wants the why of each one, gets it, and says \"Why, though,\" to the third, and to the fourth. By the end of the watch the sheet is covered on both sides, and two of the whys are still open. \"I'll be back for those.\" (+1 experience at the gunner post.)",
+    "text": "You put Mate0 at the gunner post itself, on a quiet watch, and teach one control and nothing else: the reach and the let-go. Mate0 does it forty times. By the thirtieth Mate0 has stopped looking at it and is telling you about a cousin on Vesta who keeps bees, and the hand on the control is doing it right. \"Is that it?\" Mate0 asks at forty. You take the next control. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You spent a watch teaching me your post."
     ],
@@ -8032,7 +8032,7 @@
    {
     "i": 4,
     "roll": 0.9,
-    "text": "You draw the gunner post on the back of a ration sheet at the galley table, control by control, and Mate3 wants the why of each one, gets it, and says \"Why, though,\" to the third, and to the fourth. By the end of the watch the sheet is covered on both sides, and two of the whys are still open. \"I'll be back for those.\" (+1 experience at the gunner post.)",
+    "text": "You put Mate3 at the gunner post itself, on a quiet watch, and teach one control and nothing else: the reach and the let-go. Mate3 does it forty times. By the thirtieth Mate3 has stopped looking at it and is telling you about a cousin on Vesta who keeps bees, and the hand on the control is doing it right. \"Is that it?\" Mate3 asks at forty. You take the next control. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You spent a watch teaching me your post."
     ],
@@ -8047,7 +8047,7 @@
    {
     "i": 5,
     "roll": 0.1,
-    "text": "Somebody starts it at the change of watch, and nobody goes to bed. The inspector at Ceres comes up first, told by three people at once. \"He had gloves on.\" \"Two pairs.\" \"He took the top pair off to touch our manifest and put them back on to touch his own.\" Then the docking at Pallas, and the time the forward lock froze shut with the purser on the wrong side of it. Somebody tells the one about your first week aboard and gets the day wrong. When the watch comes back on, the hot water ration is gone and the coffee is down to the jar with the cracked lid.",
+    "text": "At the change of watch it starts with the usual ones and goes round the table. Then the second engineer tells one about a ship called the Long Wait, which didn't come in, and nobody laughs, because it isn't that kind. The table is quiet. The cook tells the next one carefully, about a dog that learned to work an airlock, and by the end of it people are laughing again, the second engineer loudest. Nobody goes to bed till the ration lights dim.",
     "mem": [
      "9 Jul 2214: We swapped stories in the galley.",
      "9 Jul 2214: We swapped stories in the galley.",
@@ -8065,7 +8065,7 @@
    {
     "i": 5,
     "roll": 0.9,
-    "text": "Somebody starts it at the change of watch, and nobody goes to bed. The inspector at Ceres comes up first, told by three people at once. \"He had gloves on.\" \"Two pairs.\" \"He took the top pair off to touch our manifest and put them back on to touch his own.\" Then the docking at Pallas, and the time the forward lock froze shut with the purser on the wrong side of it. Somebody tells the one about your first week aboard and gets the day wrong. When the watch comes back on, the hot water ration is gone and the coffee is down to the jar with the cracked lid.",
+    "text": "At the change of watch it starts with the usual ones and goes round the table. Then the second engineer tells one about a ship called the Long Wait, which didn't come in, and nobody laughs, because it isn't that kind. The table is quiet. The cook tells the next one carefully, about a dog that learned to work an airlock, and by the end of it people are laughing again, the second engineer loudest. Nobody goes to bed till the ration lights dim.",
     "mem": [
      "9 Jul 2214: We swapped stories in the galley.",
      "9 Jul 2214: We swapped stories in the galley.",
@@ -8678,13 +8678,13 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You call it, and the klaxon goes, and the whole ship comes off its bunks at once. Damage control first: the closers on the section doors, the patch kits from the locker by the lock, a hose run out along a corridor eleven feet wide. Then the guns, against the stopwatch, with the loaders swearing at the loaders. Then damage control again, because the watch said so, and one argument about whose fault the fire in the galley was, which was a drill fire and nobody's. Four minutes ten, start to finish; the number on the card by the hatch is three-forty. Nobody enjoys it. When it's done the crew sit on the deck with their backs to the frame, breathing, and someone says, \"Again at the flip,\" and gets no answer. (Better odds in a fight for the rest of this burn.)",
+    "text": "You call a breach in the hold, and the drill says the hold gets sealed with whoever is in it, and you are in it. The door closes on you. Through the port you watch them work the corridor side, the closers first and then the pressure patch, with someone on the intercom reading the gauge to the bridge. You sit on a crate and wait the way the drill says to wait, breathing slow. At six minutes the door opens, and the first one through checks your suit seals before saying anything. (Better odds in a fight for the rest of this burn.)",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You spend a watch crawling the frame with a heat gun, a tin of compound and a flashlight in your teeth, filling old scars one plate at a time: a seam by the aft lock that has wept since Ceres, a dent in the cargo bay wall that nobody has owned up to, a hand's width of bead gone brittle along a patch. The compound takes forty minutes to set and smells of hot pennies. Hull 40 to 50 of 50. It's slow work, all of it yours, with no one to say whether the last seam is good. You sit against the wall with your hands black to the wrist until the compound stops smelling.",
+    "text": "A pass through a dust stream left the cable conduit along the spine pitted for twenty meters, and you spend the watch on it a meter at a time: cut the bad run out, splice it, sleeve it, tape the sleeve. The splices want a steady hand and a light held still, and the light keeps sliding off the frame. Hull 40 to 50 of 50. You test every splice twice, on the way down the spine and on the way back, with no one to hand the meter to.",
     "next": null
    },
    {
@@ -8729,13 +8729,13 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You call it, and the klaxon goes, and the whole ship comes off its bunks at once. Damage control first: the closers on the section doors, the patch kits from the locker by the lock, a hose run out along a corridor eleven feet wide. Then the guns, against the stopwatch, with the loaders swearing at the loaders. Then damage control again, because the watch said so, and one argument about whose fault the fire in the galley was, which was a drill fire and nobody's. Four minutes ten, start to finish; the number on the card by the hatch is three-forty. Nobody enjoys it. When it's done the crew sit on the deck with their backs to the frame, breathing, and someone says, \"Again at the flip,\" and gets no answer. (Better odds in a fight for the rest of this burn.)",
+    "text": "You call a breach in the hold, and the drill says the hold gets sealed with whoever is in it, and you are in it. The door closes on you. Through the port you watch them work the corridor side, the closers first and then the pressure patch, with someone on the intercom reading the gauge to the bridge. You sit on a crate and wait the way the drill says to wait, breathing slow. At six minutes the door opens, and the first one through checks your suit seals before saying anything. (Better odds in a fight for the rest of this burn.)",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You spend a watch crawling the frame with a heat gun, a tin of compound and a flashlight in your teeth, filling old scars one plate at a time: a seam by the aft lock that has wept since Ceres, a dent in the cargo bay wall that nobody has owned up to, a hand's width of bead gone brittle along a patch. The compound takes forty minutes to set and smells of hot pennies. Hull 40 to 50 of 50. Mate0 takes the seams you can't reach and does them with the plate off its hangers, in half the time, naming each one. When it's done Mate0 pats the bulkhead once, flat-handed, and goes to wash.",
+    "text": "A pass through a dust stream left the cable conduit along the spine pitted for twenty meters, and you spend the watch on it a meter at a time: cut the bad run out, splice it, sleeve it, tape the sleeve. The splices want a steady hand and a light held still, and the light keeps sliding off the frame. Hull 40 to 50 of 50. Mate0 comes along behind you with the meter and tests every splice, and redoes one without saying which. Then Mate0 takes the far end of the spine, and you meet in the middle.",
     "next": null
    },
    {
@@ -8778,13 +8778,13 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You call it, and the klaxon goes, and the whole ship comes off its bunks at once. Damage control first: the closers on the section doors, the patch kits from the locker by the lock, a hose run out along a corridor eleven feet wide. Then the guns, against the stopwatch, with the loaders swearing at the loaders. Then damage control again, because the watch said so, and one argument about whose fault the fire in the galley was, which was a drill fire and nobody's. Four minutes ten, start to finish; the number on the card by the hatch is three-forty. Nobody enjoys it. When it's done the crew sit on the deck with their backs to the frame, breathing, and someone says, \"Again at the flip,\" and gets no answer. (Better odds in a fight for the rest of this burn.)",
+    "text": "You call a breach in the hold, and the drill says the hold gets sealed with whoever is in it, and you are in it. The door closes on you. Through the port you watch them work the corridor side, the closers first and then the pressure patch, with someone on the intercom reading the gauge to the bridge. You sit on a crate and wait the way the drill says to wait, breathing slow. At six minutes the door opens, and the first one through checks your suit seals before saying anything. (Better odds in a fight for the rest of this burn.)",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You spend a watch crawling the frame with a heat gun, a tin of compound and a flashlight in your teeth, filling old scars one plate at a time: a seam by the aft lock that has wept since Ceres, a dent in the cargo bay wall that nobody has owned up to, a hand's width of bead gone brittle along a patch. The compound takes forty minutes to set and smells of hot pennies. Hull 40 to 50 of 50. It's slow work, all of it yours, with no one to say whether the last seam is good. You sit against the wall with your hands black to the wrist until the compound stops smelling.",
+    "text": "A pass through a dust stream left the cable conduit along the spine pitted for twenty meters, and you spend the watch on it a meter at a time: cut the bad run out, splice it, sleeve it, tape the sleeve. The splices want a steady hand and a light held still, and the light keeps sliding off the frame. Hull 40 to 50 of 50. You test every splice twice, on the way down the spine and on the way back, with no one to hand the meter to.",
     "next": null
    },
    {
@@ -8829,13 +8829,13 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You call it, and the klaxon goes, and the whole ship comes off its bunks at once. Damage control first: the closers on the section doors, the patch kits from the locker by the lock, a hose run out along a corridor eleven feet wide. Then the guns, against the stopwatch, with the loaders swearing at the loaders. Then damage control again, because the watch said so, and one argument about whose fault the fire in the galley was, which was a drill fire and nobody's. Four minutes ten, start to finish; the number on the card by the hatch is three-forty. Nobody enjoys it. When it's done the crew sit on the deck with their backs to the frame, breathing, and someone says, \"Again at the flip,\" and gets no answer. (Better odds in a fight for the rest of this burn.)",
+    "text": "You call a breach in the hold, and the drill says the hold gets sealed with whoever is in it, and you are in it. The door closes on you. Through the port you watch them work the corridor side, the closers first and then the pressure patch, with someone on the intercom reading the gauge to the bridge. You sit on a crate and wait the way the drill says to wait, breathing slow. At six minutes the door opens, and the first one through checks your suit seals before saying anything. (Better odds in a fight for the rest of this burn.)",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You spend a watch crawling the frame with a heat gun, a tin of compound and a flashlight in your teeth, filling old scars one plate at a time: a seam by the aft lock that has wept since Ceres, a dent in the cargo bay wall that nobody has owned up to, a hand's width of bead gone brittle along a patch. The compound takes forty minutes to set and smells of hot pennies. Hull 40 to 50 of 50. Mate0 takes the seams you can't reach and does them with the plate off its hangers, in half the time, naming each one. When it's done Mate0 pats the bulkhead once, flat-handed, and goes to wash.",
+    "text": "A pass through a dust stream left the cable conduit along the spine pitted for twenty meters, and you spend the watch on it a meter at a time: cut the bad run out, splice it, sleeve it, tape the sleeve. The splices want a steady hand and a light held still, and the light keeps sliding off the frame. Hull 40 to 50 of 50. Mate0 comes along behind you with the meter and tests every splice, and redoes one without saying which. Then Mate0 takes the far end of the spine, and you meet in the middle.",
     "next": null
    },
    {
@@ -21923,5 +21923,313 @@
   "title": "x",
   "text": "Spend a day ashore | One hour of your own at each landing. | You have had your hour here.",
   "labels": []
+ },
+ {
+  "id": "downtime:hand:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You find Captain Vance at the suit lockers, checking the seals on a suit that isn't the captain's, and you ask. The captain doesn't turn around. \"Ask me something you'd need on the bridge at four in the morning.\" You do. The captain finishes the seal and answers it, short, then has you ask it again, faster, and answers it again, shorter. \"That's how it sounds when it matters. If I'm wrong up there, tell me at that speed.\" The captain closes the locker and hands you the spare bridge headset. (+2 experience at the gunner post.)",
+    "mem": [
+     "10 Jul 2214: You asked me for advice."
+    ],
+    "fx": {
+     "p1": 1
+    },
+    "x": {
+     "gunner": 14
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "An hour into your watch beside Mate1, a warning comes up amber on the pilot board, and Mate1 pushes back from it. \"Your hands. My mouth.\" You do what you're told, one step at a time, and twice Mate1 says \"Wait,\" and you wait. The amber goes out. Mate1 doesn't say whether it was a drill. At the end of the watch your name goes on the post's roster for the next one, in pencil. (+3 experience at the pilot post.)",
+    "mem": [
+     "10 Jul 2214: You spent a watch at my post to learn it."
+    ],
+    "fx": {
+     "p11": 1
+    },
+    "x": {
+     "gunner": 12,
+     "pilot": 3
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "Mate2 hands you an earpiece that crackles on one side, and then the other one, which doesn't. \"This one. The other's fine.\" You take the bad one apart on a cloth and find a hair across the contact, which takes a minute to find and a minute to fix. Mate2 listens to it with both ears and sends you 30 cr from a hand terminal. Then Mate2 holds out the good one. \"Do that one too. It might be next.\" You do that one too.",
+    "mem": [
+     "10 Jul 2214: You mended my gear."
+    ],
+    "fx": {
+     "credits": 30,
+     "p12": 1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "Two hours into the captain's watch a freighter hails and asks for the captain by name. You answer as the watch. The freighter's mate wants the captain woken over a cargo rate for the next port. You log the call and the rate, and the captain sleeps. In the morning the captain reads the log, calls the freighter back before breakfast, and gets the rate down by a tenth. 40 cr lands in your account at the next ledger sync. (+1 experience at the gunner post.)",
+    "mem": [
+     "10 Jul 2214: You stood a spare watch for me."
+    ],
+    "fx": {
+     "credits": 40,
+     "p1": 1
+    },
+    "x": {
+     "gunner": 13
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.5,
+    "text": "Halfway down the gunner checklist, Mate2 stops you. \"We did that one backward on my last ship. Faster.\" You have Mate2 show it. It's faster, and it skips a check, and the two of you argue it over the board until the coffee's gone and keep half of each. You write the new step into the post's checklist in your own hand, and Mate2 reads it over your shoulder and corrects the spelling. (+1 experience at the gunner post.)",
+    "mem": [
+     "10 Jul 2214: You spent a watch teaching me your post."
+    ],
+    "fx": {
+     "p12": 2
+    },
+    "x": {
+     "gunner": 13
+    },
+    "next": null
+   },
+   {
+    "i": 5,
+    "roll": 0.5,
+    "text": "Somebody puts the last coffee pouch in the middle of the galley table and calls it a prize, for the worst berth anyone ever slept in. A cargo net on a hauler. A bunk over a reactor housing that ticked all night. Two weeks in an escape pod, which somebody says doesn't count and somebody else says counts double. A closet at Tycho with a mop in it, which loses because the mop was clean. The crew vote by knocking on the table, longer than the votes need. The bunk over the reactor wins, and the winner makes the pouch in the big pot, so there's a cup for everyone.",
+    "mem": [
+     "10 Jul 2214: We swapped stories in the galley.",
+     "10 Jul 2214: We swapped stories in the galley.",
+     "10 Jul 2214: We swapped stories in the galley.",
+     "10 Jul 2214: We swapped stories in the galley."
+    ],
+    "fx": {
+     "p10": 1,
+     "p11": 1,
+     "p12": 1,
+     "p13": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "",
+  "labels": [
+   "Ask the captain for advice",
+   "Shadow a shipmate at their post",
+   "Mend a shipmate's gear for pay",
+   "Stand a spare watch for the captain",
+   "Teach a shipmate what you know",
+   "Swap stories in the galley"
+  ]
+ },
+ {
+  "id": "downtime:hand:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Captain Vance is at the galley table with the notebook, and doesn't close it when you sit down. \"Forty-two hundred,\" the captain says. \"My first bad call, on an ore hauler, when I was the senior hand. Shielding lashed for a two-g burn, and we ran at three, and I watched the straps go and logged it after the paperwork was in.\" A line goes into the book. \"Forty-two hundred for the cargo. The late log cost me the berth.\" Two more lines go in. \"This run we're lashed for two-g, and we burn at one point eight.\" (+2 experience at the gunner post.)",
+    "mem": [
+     "11 Jul 2214: You asked me for advice."
+    ],
+    "fx": {
+     "p1": 1
+    },
+    "x": {
+     "gunner": 14
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "The rule at the pilot post is that you touch nothing, and for the first hour of the watch you touch nothing while Mate1 works and talks to the board: \"No. No. There you are.\" Twice an arm comes across you without asking. In the second hour the stool gets pulled closer and one control is put under your hand. \"That one. Not the one beside it.\" You get the one beside it, and Mate1 sets it back. (+3 experience at the pilot post.)",
+    "mem": [
+     "11 Jul 2214: You spent a watch at my post to learn it."
+    ],
+    "fx": {
+     "p11": 1
+    },
+    "x": {
+     "gunner": 12,
+     "pilot": 3
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "Mate2 brings a suit glove to the galley table with its two seal rings out, and stays to watch. \"Left ring. It's been hissing at me for a week.\" You lay the rings out on a towel, so the air handler can't take them, seat them back in the glove and press it to the gauge. Mate2 checks the seals, once with a finger and once with the gauge, and sends you 60 cr from a hand terminal, about what a dock shop charges. \"Don't tell the others what I paid.\" On the way out the glove goes on and comes off twice, and gets flexed at the ceiling.",
+    "mem": [
+     "11 Jul 2214: You mended my gear."
+    ],
+    "fx": {
+     "credits": 60,
+     "p12": 1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "The captain's watch is yours tonight. You stand it at the board under the lights at a third, and log it the way the captain does: times, headings, nothing else. At oh-three-ten a nav buoy comes up on the board nine seconds late on its schedule, and that goes in the log too. In the morning the captain reads the page standing up, with a coffee, and stops at the buoy. \"Nine seconds.\" It gets initialed. 40 cr comes into your account at the next ledger sync. (+1 experience at the gunner post.)",
+    "mem": [
+     "11 Jul 2214: You stood a spare watch for me."
+    ],
+    "fx": {
+     "credits": 40,
+     "p1": 1
+    },
+    "x": {
+     "gunner": 13
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.5,
+    "text": "You draw the gunner post on the back of a ration sheet at the galley table, control by control, and Mate2 wants the why of each one, gets it, and says \"Why, though,\" to the third, and to the fourth. By the end of the watch the sheet is covered on both sides, and two of the whys are still open. \"I'll be back for those.\" (+1 experience at the gunner post.)",
+    "mem": [
+     "11 Jul 2214: You spent a watch teaching me your post."
+    ],
+    "fx": {
+     "p12": 2
+    },
+    "x": {
+     "gunner": 13
+    },
+    "next": null
+   },
+   {
+    "i": 5,
+    "roll": 0.5,
+    "text": "Somebody starts it at the change of watch, and nobody goes to bed. The inspector at Ceres comes up first, told by three people at once. \"He had gloves on.\" \"Two pairs.\" \"He took the top pair off to touch our manifest and put them back on to touch his own.\" Then the docking at Pallas, and the time the forward lock froze shut with the purser on the wrong side of it. Somebody tells the one about your first week aboard and gets the day wrong. When the watch comes back on, the hot water ration is gone and the coffee is down to the jar with the cracked lid.",
+    "mem": [
+     "11 Jul 2214: We swapped stories in the galley.",
+     "11 Jul 2214: We swapped stories in the galley.",
+     "11 Jul 2214: We swapped stories in the galley.",
+     "11 Jul 2214: We swapped stories in the galley."
+    ],
+    "fx": {
+     "p10": 1,
+     "p11": 1,
+     "p12": 1,
+     "p13": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "",
+  "labels": [
+   "Ask the captain for advice",
+   "Shadow a shipmate at their post",
+   "Mend a shipmate's gear for pay",
+   "Stand a spare watch for the captain",
+   "Teach a shipmate what you know",
+   "Swap stories in the galley"
+  ]
+ },
+ {
+  "id": "shiplife:acts:day+1:solo",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You call a gun drill, only the guns, with training rounds and the sim for a target. The loaders race each other, and on the third pass one of them drops a round. It rolls the length of the bay, slowly, and nobody moves, because nobody can remember whether a training round minds being dropped. It doesn't. Someone laughs, and then all of them do, and the next pass is the fastest of the watch. The round goes back on the rack with a chalk mark on it. (Better odds in a fight for the rest of this burn.)",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "After the last hard burn the frame bolts want re-torquing, every one of them, and the torque wrench clicks at the number or it doesn't. You work along the ribs with a grease pencil, marking each bolt as it clicks. Four don't reach the number before the wrench slips, and you mark those with a circle. Hull 40 to 50 of 50. The four circles are still circles at the end of the watch. You leave them on the ribs for whoever has the wrench next, and put it back in the stores.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Run drills",
+   "Maintenance"
+  ]
+ },
+ {
+  "id": "shiplife:acts:day+1:eng",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You call a gun drill, only the guns, with training rounds and the sim for a target. The loaders race each other, and on the third pass one of them drops a round. It rolls the length of the bay, slowly, and nobody moves, because nobody can remember whether a training round minds being dropped. It doesn't. Someone laughs, and then all of them do, and the next pass is the fastest of the watch. The round goes back on the rack with a chalk mark on it. (Better odds in a fight for the rest of this burn.)",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "After the last hard burn the frame bolts want re-torquing, every one of them, and the torque wrench clicks at the number or it doesn't. You work along the ribs with a grease pencil, marking each bolt as it clicks. Four don't reach the number before the wrench slips, and you mark those with a circle. Hull 40 to 50 of 50. Mate0 takes your four circles and gets three of them with a longer bar, and puts a new bolt from the stores in the fourth, rubbing each circle out with a thumb as it goes.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Run drills",
+   "Maintenance"
+  ]
+ },
+ {
+  "id": "shiplife:acts:day+2:solo",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You call it, and the klaxon goes, and the whole ship comes off its bunks at once. Damage control first: the closers on the section doors, the patch kits from the locker by the lock, a hose run out along a corridor eleven feet wide. Then the guns, against the stopwatch, with the loaders swearing at the loaders. Then damage control again, because the watch said so, and one argument about whose fault the fire in the galley was, which was a drill fire and nobody's. Four minutes ten, start to finish; the number on the card by the hatch is three-forty. Nobody enjoys it. When it's done the crew sit on the deck with their backs to the frame, breathing, and someone says, \"Again at the flip,\" and gets no answer. (Better odds in a fight for the rest of this burn.)",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You spend a watch crawling the frame with a heat gun, a tin of compound and a flashlight in your teeth, filling old scars one plate at a time: a seam by the aft lock that has wept since Ceres, a dent in the cargo bay wall that nobody has owned up to, a hand's width of bead gone brittle along a patch. The compound takes forty minutes to set and smells of hot pennies. Hull 40 to 50 of 50. It's slow work, all of it yours, with no one to say whether the last seam is good. You sit against the wall with your hands black to the wrist until the compound stops smelling.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Run drills",
+   "Maintenance"
+  ]
+ },
+ {
+  "id": "shiplife:acts:day+2:eng",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You call it, and the klaxon goes, and the whole ship comes off its bunks at once. Damage control first: the closers on the section doors, the patch kits from the locker by the lock, a hose run out along a corridor eleven feet wide. Then the guns, against the stopwatch, with the loaders swearing at the loaders. Then damage control again, because the watch said so, and one argument about whose fault the fire in the galley was, which was a drill fire and nobody's. Four minutes ten, start to finish; the number on the card by the hatch is three-forty. Nobody enjoys it. When it's done the crew sit on the deck with their backs to the frame, breathing, and someone says, \"Again at the flip,\" and gets no answer. (Better odds in a fight for the rest of this burn.)",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You spend a watch crawling the frame with a heat gun, a tin of compound and a flashlight in your teeth, filling old scars one plate at a time: a seam by the aft lock that has wept since Ceres, a dent in the cargo bay wall that nobody has owned up to, a hand's width of bead gone brittle along a patch. The compound takes forty minutes to set and smells of hot pennies. Hull 40 to 50 of 50. Mate0 takes the seams you can't reach and does them with the plate off its hangers, in half the time, naming each one. When it's done Mate0 pats the bulkhead once, flat-handed, and goes to wash.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Run drills",
+   "Maintenance"
+  ]
  }
 ]
