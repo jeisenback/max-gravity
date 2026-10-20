@@ -18,7 +18,9 @@
     "js/icerun.js",
     "js/jobs.js",
     "js/suggest.js",
-    "js/signon.js"
+    "js/signon.js",
+    "js/fight.js",
+    "js/fightui.js"
   ],
   "files": {
     "js/boarders.js": 97,
@@ -34,6 +36,8 @@
     "js/cast.js": 97,
     "js/engagements.js": 97,
     "js/fate.js": 98,
+    "js/fight.js": 58,
+    "js/fightui.js": 90,
     "js/game.js": 94,
     "js/hired.js": 97,
     "js/hiredevents.js": 98,

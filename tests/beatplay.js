@@ -1,8 +1,9 @@
 'use strict';
 
-// Plays the words of the raid, ambush and boarding beats (#478), for the pin (beatpin.test.js) and the text layer's tests (beatlines.test.js). Not a test file.
+// Plays the words of the ship fight, the ambush and the boarding beats (#478), for the pin (beatpin.test.js) and the text layer's tests (beatlines.test.js). Not a test file.
 // playBeats runs in the page: it plays every scene the beats can show and every choice with the dice set to win and then to lose, in a fresh hired game each time,
-// and returns what was said, in a fixed order, so two runs of the same game give the same record.
+// and returns what was said, in a fixed order, so two runs of the same game give the same record. The ship fight (fightui.js) is played to its end with every gun
+// at her weapons (the 'focus' policy of tools/fights.js), a turn at a time.
 const playBeats = () => {
   const out = [];
   const seq = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : 0.99); };  // 0 wins a chance and picks the first of a list; 0.99 fails it
@@ -14,11 +15,11 @@ const playBeats = () => {
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     if (!window.realMakeEnemy) window.realMakeEnemy = makeEnemy;
     const spare = window.realMakeEnemy({ kind: 'pirate' });
-    window.makeEnemy = () => Object.assign(spare, { shipId });
+    window.makeEnemy = () => Object.assign(spare, { shipId, armor: SHIPS[shipId].armor, maxArmor: SHIPS[shipId].armor });
     return st;
   };
   const labelsOf = ev => ev.choices.map(c => c.label);
-  const sceneText = ev => (ev.read ? `${ev.text}</p><p>${ev.read}` : ev.text);  // a raid beat's read is drawn above its board (#734); the record keeps the words in the order they were always held in
+  const sceneText = ev => (ev.read ? `${ev.text}</p><p>${ev.read}` : ev.text);  // a fight panel's read is drawn above its board (#734); the record keeps it after the text
   const stand = () => ({ credits: G.state.credits, fund: hired().fund, opinion: Object.fromEntries(Object.values(G.state.people).map(p => [p.id, p.opinion])), mem: Object.fromEntries(Object.values(G.state.people).map(p => [p.id, (p.memories || []).length])) });
   // what a step left behind: the memories gained and what moved (the money, the ship's fund, each person's regard); nothing, if nothing did
   const left = (b) => {
@@ -29,48 +30,24 @@ const playBeats = () => {
     return { ...(mem.length ? { mem } : {}), ...(Object.keys(fx).length ? { fx } : {}) };
   };
   fresh('gunner', 'raider');  // the first burn in a page makes the stars (a hundred and fifty draws), so it is played once before the dice are seeded for the record
-  const origRaid = window.raidScene;
-  let grabbed = null;
-  window.raidScene = s => { grabbed = s; return origRaid(s); };
-  try {
-    for (const shipId of ['raider', 'corsair', 'cutter']) {
-      for (const post of POSTS_ALL) {
-        const st = fresh(post, shipId), full = ship().armor;
-        startDuel({ kind: 'pirate' }, false); G.nextEvent = null;
-        const s = grabbed, rec = { id: `raid:${shipId}:${post}`, scenes: [], plays: [], closes: [] };
-        const at = beat => { s.range = s.base = beat === 0 ? rangeAtContact(s.style) : RANGE_WANT[s.style]; };  // where the table has her, so the record is the one the words always had (the range moves with each play)
-        for (const [beat, round] of [[0, 0], [0, 1], [1, 0], [2, 0]]) {
-          s.beat = beat; s.round = round; s.edge = 0; at(beat);
-          const ev = raidScene(s);
-          rec.scenes.push({ beat, round, text: sceneText(ev), labels: labelsOf(ev) });
-          for (let i = 0; i < ev.choices.length; i++) {
-            for (const roll of [0, 0.999]) {
-              s.beat = beat; s.round = round; s.edge = 0; at(beat); s.hurt = new Set(); s.dead = []; s.marked = []; s.youHurt = false; s.handDied = false; st.armor = full;
-              seq([roll]); const b0 = stand();
-              const text = ev.choices[i].run();
-              rec.plays.push({ beat, round, i, roll, text: String(text), ...left(b0) });
-              G.nextEvent = null;
-            }
-          }
-        }
-        for (const edge of [4, 2, 0, -2]) {
-          s.beat = 3; s.edge = edge; s.range = s.base = RANGE_WANT[s.style]; s.hurt = new Set(); st.armor = full; seq([]); const b0 = stand();
-          rec.closes.push({ edge, text: String(raidClose(s)), ...left(b0) });
-          G.nextEvent = null;
-        }
-        rec.moved = [10, -10].map(d => { s.beat = 0; s.round = 0; s.edge = 0; s.base = rangeAtContact(s.style); s.range = s.base + d; return sceneText(raidScene(s)); });  // the contact's move has opened the range or closed it (engage.js)
-        // the range opened (#710): the passes told from far, the close where she cannot board, and the contact lost
-        rec.far = [1, 2].map(beat => { s.beat = beat; s.edge = 0; s.range = s.base = 25; return sceneText(raidScene(s)); });
-        s.beat = 3; s.edge = -2; s.range = s.base = 25; s.hurt = new Set(); st.armor = full; seq([]); const b1 = stand();
-        rec.closes.push({ edge: -2, far: true, text: String(raidClose(s)), ...left(b1) });
-        G.nextEvent = null;
-        s.beat = 2; s.edge = -3; s.range = s.base = 55; s.hurt = new Set(); st.armor = full; seq([0]); const b2 = stand();
-        rec.lost = { text: String(raidStep(s, RAID_EXCHANGE.find(c => c.id === 'burn'), null)), ...left(b2) };
-        G.nextEvent = null;
-        out.push(rec);
+  for (const shipId of ['raider', 'corsair', 'cutter']) {
+    for (const post of POSTS_ALL) {
+      const st = fresh(post, shipId), b0 = stand();
+      startDuel({ kind: 'pirate' }, false); const ev = G.nextEvent; G.nextEvent = null;
+      const rec = { id: `raid:${shipId}:${post}`, title: ev.title, text: sceneText(ev), labels: labelsOf(ev), turns: [] };
+      openEvent(ev);
+      while (G.dialog && G.dialog.choices.some(c => /^Fire/.test(c.label)) && rec.turns.length < 12) {
+        const t = chooseEvent(G.dialog.choices.findIndex(c => /^Fire/.test(c.label)));
+        if (t) openEvent(t); else finishEvent();
+        const s = G.dialog && G.dialog.event.fight;
+        rec.turns.push({ text: s ? s.state.log[s.state.log.length - 1] : '', armor: st.armor, band: s ? s.state.band : null });
       }
+      rec.end = G.dialog ? { title: G.dialog.event.title, text: sceneText(G.dialog.event), labels: labelsOf(G.dialog.event) } : null;
+      Object.assign(rec, left(b0));
+      G.dialog = null; G.nextEvent = null;
+      out.push(rec);
     }
-  } finally { window.raidScene = origRaid; }
+  }
   for (const post of POSTS_ALL) {
     const rec = { id: `ambush:${post}`, labels: [], real: '', trap: '' };
     for (const trap of [false, true]) {

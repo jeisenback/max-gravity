@@ -272,10 +272,13 @@ function killCrew(c) {
   homeLog(sceneSay('scene:ship-log', 'killed.log', { first: c.first, last: c.last, system: system().name }));
 }
 
-// How it ends: repelled (the duel goes on with the initiative yours), or the bridge taken (the ship's fund is stripped and they cut loose).
+// Who died in a fight, said after its close.
+const deadNote = s => (s.dead.length ? ` ${listNames(s.dead.map(c => c.first))} ${s.dead.length > 1 ? 'are' : 'is'} dead.` : '');
+
+// How it ends: repelled (the duel goes on with the initiative yours), or the bridge taken (shipTaken).
 function repelSettle(s) {
   const st = G.state, h = hired(), cap = h && person(h.captain), d = s.d, repelled = s.pos < 0;  // an owner has no captain
-  const lost = s.dead.length ? ` ${listNames(s.dead.map(c => c.first))} ${s.dead.length > 1 ? 'are' : 'is'} dead.` : '';
+  const lost = deadNote(s);
   if (s.assault) return assaultSettle(s, repelled, lost);
   if (repelled) {
     if (cap) like(cap, 1, repelWords(s, 'memory.held', REPEL_MEMORY.held));
@@ -284,6 +287,13 @@ function repelSettle(s) {
     G.nextEvent = d.foeHp > 0 ? duelEvent() : null;
     return `The last of them go back through the lock. The outer door closes from the other side, and the drive of the ${theShip(d.foe).replace(/^The /, '')} lights, and she breaks away from the hull.${lost}`;
   }
+  return shipTaken(s);
+}
+
+// The ship taken: her people are on the bridge, the ship's fund is stripped and they cut loose. The end of a lock fight lost, and of a ship fight
+// whose hull is gone (fightui.js).
+function shipTaken(s) {
+  const st = G.state, h = hired(), cap = h && person(h.captain), d = s.d, lost = deadNote(s);  // an owner has no captain
   const taken = Math.round(purse() * 0.3);
   moveMoney(-taken);
   if (cap) like(cap, -1, repelWords(s, 'memory.taken', REPEL_MEMORY.taken));

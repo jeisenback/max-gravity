@@ -88,6 +88,8 @@ She can aim at your parts. Her shown move may be "at your drive", to pin you for
 - pin, which aims at your drive;
 - break off, when she is badly hurt.
 
+Her `close` fires at your hull as she comes (R24).
+
 A veteran crew (her grade) hits harder and has longer bars, as now (`GRADE_HULL`, `GRADE_PUNCH`, `js/shipcombat.js`). A pack is two ships on the board, each with its own bars and its own shown move.
 
 **The captain** plays by rules taken from the captain card's `nerve`:
@@ -108,6 +110,7 @@ A veteran crew (her grade) hits harder and has longer bars, as now (`GRADE_HULL`
 **Carried as now:**
 - Armor damage stays on the ship.
 - Casualties and the hand's hurt roll on turns where your armor takes a heavy hit, at the existing odds (`CASUALTY_ODDS`, `HAND_RISK`), instead of on each lost choice.
+- A heavy turn is measured on the hull lost, shields plus armor, because the shields soak her volleys and armor alone would almost never be hit (R23).
 
 ## Section 3: boarding
 

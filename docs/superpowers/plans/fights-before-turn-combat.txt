@@ -1,0 +1,56 @@
+Raids (5 seeds, 9 crew aboard, a hand at the gunner post)
+  random  n 1000  off  49%  standoff  19%  lost   0%  crippled   7% (boarded  62%)  to the lock  26% (held  62%)  hull -11%  someone hurt  52%  dead 0.09  you hurt  32%
+  post    n 1000  off  49%  standoff  15%  lost   0%  crippled  23% (boarded  80%)  to the lock  13% (held  74%)  hull -2%  someone hurt  49%  dead 0.04  you hurt  37%
+  first   n 1000  off  75%  standoff  15%  lost   0%  crippled   0% (boarded   0%)  to the lock  10% (held  49%)  hull -12%  someone hurt  27%  dead 0.04  you hurt   3%
+Repel fight (they board you)
+  crew 1 level 2 random grade 0      n 1000  won  44%  rounds 3.51  hurt 0.19  dead 0.21  marked 0.00  you hurt  41%  anyone  61%
+  crew 3 level 2 random grade 0      n 1000  won  77%  rounds 3.44  hurt 0.29  dead 0.27  marked 0.00  you hurt  17%  anyone  51%
+  crew 5 level 2 random grade 0      n 1000  won  83%  rounds 3.37  hurt 0.31  dead 0.28  marked 0.00  you hurt  12%  anyone  49%
+  crew 5 level 1 post grade 0        n 1000  won  79%  rounds 2.76  hurt 0.29  dead 0.25  marked 0.00  you hurt  11%  anyone  50%
+  crew 5 level 2 post grade 0        n 1000  won  89%  rounds 2.60  hurt 0.23  dead 0.19  marked 0.00  you hurt   8%  anyone  40%
+  crew 5 level 3 post grade 0        n 1000  won  96%  rounds 2.32  hurt 0.20  dead 0.15  marked 0.00  you hurt   8%  anyone  35%
+  crew 5 level 2 random grade 0      n 1000  won  82%  rounds 3.34  hurt 0.33  dead 0.29  marked 0.00  you hurt  13%  anyone  51%
+  crew 5 level 2 hold grade 0        n 1000  won  72%  rounds 3.86  hurt 0.41  dead 0.34  marked 0.00  you hurt  15%  anyone  56%
+  crew 5 level 2 rush grade 0        n 1000  won  68%  rounds 3.88  hurt 0.41  dead 0.37  marked 0.00  you hurt  15%  anyone  56%
+  crew 5 level 2 flank grade 0       n 1000  won  88%  rounds 3.25  hurt 0.27  dead 0.29  marked 0.00  you hurt  10%  anyone  48%
+  crew 5 level 2 post grade 0        n 1000  won  89%  rounds 2.60  hurt 0.23  dead 0.24  marked 0.00  you hurt   9%  anyone  44%
+  crew 5 level 2 steady grade 0      n 1000  won  99%  rounds 4.49  hurt 0.40  dead 0.38  marked 0.00  you hurt  14%  anyone  59%
+  crew 5 level 2 cover grade 0       n 1000  won  89%  rounds 3.55  hurt 0.23  dead 0.21  marked 0.00  you hurt   8%  anyone  42%
+  crew 5 level 2 count grade 0       n 1000  won  92%  rounds 2.58  hurt 0.23  dead 0.21  marked 0.00  you hurt   9%  anyone  43%
+  crew 5 level 2 all grade 0         n 1000  won  83%  rounds 4.30  hurt 0.36  dead 0.35  marked 0.00  you hurt  15%  anyone  55%
+  crew 5 level 2 order grade 0       n 1000  won  92%  rounds 3.53  hurt 0.20  dead 0.19  marked 0.00  you hurt   7%  anyone  38%
+  crew 5 level 2 crew grade 0        n 1000  won  99%  rounds 4.79  hurt 0.26  dead 0.25  marked 0.00  you hurt   4%  anyone  41%
+  crew 2 level 2 post grade 0        n 1000  won  91%  rounds 2.55  hurt 0.17  dead 0.18  marked 0.00  you hurt  17%  anyone  43%
+  crew 2 level 2 cover grade 0       n 1000  won  90%  rounds 3.54  hurt 0.18  dead 0.18  marked 0.00  you hurt  18%  anyone  44%
+  crew 2 level 2 count grade 0       n 1000  won  88%  rounds 2.66  hurt 0.15  dead 0.17  marked 0.00  you hurt  18%  anyone  40%
+  crew 2 level 2 order grade 0       n 1000  won  89%  rounds 3.66  hurt 0.17  dead 0.18  marked 0.00  you hurt  18%  anyone  41%
+  crew 2 level 2 crew grade 0        n 1000  won  99%  rounds 4.82  hurt 0.22  dead 0.23  marked 0.00  you hurt  10%  anyone  42%
+  crew 5 level 2 random grade 0      n 1000  won  84%  rounds 3.47  hurt 0.34  dead 0.29  marked 0.00  you hurt  12%  anyone  49%
+  crew 5 level 2 random grade 1      n 1000  won  59%  rounds 3.77  hurt 0.49  dead 0.43  marked 0.00  you hurt  16%  anyone  63%
+  crew 5 level 2 random grade 2      n 1000  won  40%  rounds 3.76  hurt 0.59  dead 0.57  marked 0.00  you hurt  22%  anyone  74%
+Assault fight (you board her)
+  crew 1 level 2 random grade 0      n 1000  won  48%  rounds 3.52  hurt 0.20  dead 0.22  marked 0.00  you hurt  39%  anyone  60%
+  crew 3 level 2 random grade 0      n 1000  won  78%  rounds 3.54  hurt 0.26  dead 0.29  marked 0.00  you hurt  17%  anyone  47%
+  crew 5 level 2 random grade 0      n 1000  won  82%  rounds 3.40  hurt 0.33  dead 0.29  marked 0.00  you hurt  12%  anyone  49%
+  crew 5 level 1 post grade 0        n 1000  won  80%  rounds 2.74  hurt 0.28  dead 0.22  marked 0.00  you hurt  10%  anyone  48%
+  crew 5 level 2 post grade 0        n 1000  won  90%  rounds 2.60  hurt 0.24  dead 0.19  marked 0.00  you hurt   9%  anyone  42%
+  crew 5 level 3 post grade 0        n 1000  won  96%  rounds 2.28  hurt 0.16  dead 0.17  marked 0.00  you hurt   7%  anyone  36%
+  crew 5 level 2 random grade 0      n 1000  won  81%  rounds 3.42  hurt 0.30  dead 0.30  marked 0.00  you hurt  12%  anyone  50%
+  crew 5 level 2 hold grade 0        n 1000  won  70%  rounds 3.79  hurt 0.35  dead 0.36  marked 0.00  you hurt  15%  anyone  55%
+  crew 5 level 2 rush grade 0        n 1000  won  72%  rounds 3.90  hurt 0.36  dead 0.36  marked 0.00  you hurt  14%  anyone  54%
+  crew 5 level 2 flank grade 0       n 1000  won  89%  rounds 3.39  hurt 0.29  dead 0.26  marked 0.00  you hurt  11%  anyone  44%
+  crew 5 level 2 post grade 0        n 1000  won  90%  rounds 2.59  hurt 0.23  dead 0.18  marked 0.00  you hurt   8%  anyone  39%
+  crew 5 level 2 steady grade 0      n 1000  won  99%  rounds 4.65  hurt 0.41  dead 0.37  marked 0.00  you hurt  14%  anyone  58%
+  crew 5 level 2 cover grade 0       n 1000  won  91%  rounds 3.58  hurt 0.26  dead 0.21  marked 0.00  you hurt   8%  anyone  44%
+  crew 5 level 2 count grade 0       n 1000  won  90%  rounds 2.65  hurt 0.26  dead 0.20  marked 0.00  you hurt  12%  anyone  45%
+  crew 5 level 2 all grade 0         n 1000  won  82%  rounds 4.17  hurt 0.37  dead 0.32  marked 0.00  you hurt  14%  anyone  53%
+  crew 5 level 2 order grade 0       n 1000  won  90%  rounds 3.61  hurt 0.22  dead 0.20  marked 0.00  you hurt   8%  anyone  40%
+  crew 5 level 2 crew grade 0        n 1000  won 100%  rounds 4.85  hurt 0.25  dead 0.22  marked 0.00  you hurt   5%  anyone  39%
+  crew 2 level 2 post grade 0        n 1000  won  90%  rounds 2.52  hurt 0.17  dead 0.16  marked 0.00  you hurt  16%  anyone  42%
+  crew 2 level 2 cover grade 0       n 1000  won  89%  rounds 3.57  hurt 0.19  dead 0.15  marked 0.00  you hurt  17%  anyone  42%
+  crew 2 level 2 count grade 0       n 1000  won  91%  rounds 2.65  hurt 0.16  dead 0.17  marked 0.00  you hurt  19%  anyone  40%
+  crew 2 level 2 order grade 0       n 1000  won  90%  rounds 3.67  hurt 0.20  dead 0.18  marked 0.00  you hurt  15%  anyone  40%
+  crew 2 level 2 crew grade 0        n 1000  won  99%  rounds 4.78  hurt 0.22  dead 0.22  marked 0.00  you hurt   9%  anyone  40%
+  crew 5 level 2 random grade 0      n 1000  won  82%  rounds 3.40  hurt 0.35  dead 0.31  marked 0.00  you hurt  12%  anyone  53%
+  crew 5 level 2 random grade 1      n 1000  won  62%  rounds 3.77  hurt 0.46  dead 0.41  marked 0.00  you hurt  17%  anyone  62%
+  crew 5 level 2 random grade 2      n 1000  won  34%  rounds 3.85  hurt 0.64  dead 0.56  marked 0.00  you hurt  22%  anyone  76%

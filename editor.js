@@ -16,7 +16,7 @@
   'js/duel.js', 'js/console.js', 'js/stations.js', 'js/autopilot.js', 'js/engineering.js', 'js/comms.js', 'js/journal.js',
   'js/web.js', 'js/wear.js', 'js/projects.js', 'js/programs.js', 'js/hired.js', 'js/role.js', 'js/readouts.js', 'js/ownerboard.js', 'js/chaptertwo.js', 'js/dayashore.js', 'js/shippers.js', 'js/arcs.js', 'js/suggest.js', 'js/repairs.js', 'js/jobs.js',
   'js/awayjobs.js', 'js/stay.js', 'js/losses.js', 'js/hiredeventstext.js', 'js/hiredevents.js', 'js/bridge.js', 'js/shell.js',
-  'js/character.js', 'js/interview.js', 'js/cast.js', 'js/captains.js', 'js/stakes.js', 'js/handtohand.js', 'js/boarders.js', 'js/engagements.js',
+  'js/character.js', 'js/interview.js', 'js/cast.js', 'js/captains.js', 'js/stakes.js', 'js/handtohand.js', 'js/boarders.js', 'js/engagements.js', 'js/fightui.js',
   'js/shipcombat.js', 'js/fight.js', 'js/yardoffice.js', 'js/icerun.js', 'js/ties.js', 'js/captains/hester.js', 'js/captains/cato.js',
   'js/captains/dov.js', 'js/captains/ilsa.js', 'js/captains/imre.js', 'js/captains/pilar.js', 'js/captains/zoya.js',
   'js/captains/ansel.js', 'js/hiredscenes.js', 'js/linetables.js', 'js/fate.js', 'js/signon.js', 'js/castbar.js', 'js/regulars.js', 'js/barroom.js', 'js/revisit.js', 'js/ashore.js', 'js/official.js', 'js/barwork.js', 'js/overrides.js', 'js/storylets.js',
@@ -77,7 +77,7 @@
     };
   }
 
-  // A beat of the raid, the ambush or the boarding fights (#478): its words are the lines of the tables it reads, named in `parts`, and it has no title of its own to change
+  // A beat of the ambush or the boarding fights (#478): its words are the lines of the tables it reads, named in `parts`, and it has no title of its own to change
   // and no choices of its own (they come from the tables).
   function beatRow(s) {
     const row = registryRow({ title: s.title, text: '', choices: [] });
@@ -145,7 +145,7 @@
         else add({ id: e.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, pacing: pacingOf.hand(d), conditionsNote: note });
       } else if (e.kind === 'ice') {
         add({ id: e.id, file: fileOf.ice, belongs: 'ice run', pacing: pacingOf.ice(), conditionsNote: `Scene ${Number(e.id.slice(4))} of 3 on an ice run, once the captain takes one.`, ...tableRow(tableScene(e.id)) });
-      } else if (e.scene) {  // a beat of the raid, the ambush or the boarding fights (#478): its lines, by name
+      } else if (e.scene) {  // a beat of the ambush or the boarding fights, or a scene's lines (the ship fight) (#478): its lines, by name
         add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'beats', conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false }, ...beatRow(e.scene), codeNote: e.id.startsWith('beats:') ? BEAT_NOTE : SCENE_NOTE });
       } else {  // built by a function: no text to read, only what it is and when it plays
         add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: e.id.startsWith('beats:') ? 'beats' : 'hired chapter', text: '', choices: [], codeNote: CODE_ALL, conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false } });
@@ -406,15 +406,15 @@
           'scene:captain-lost': captainLostScene, 'scene:used-ship-offer': () => dealScene(currentPlanet()), 'scene:yard-office': () => yardScene(USED_ID),
           'scene:split': () => { if (crew.length > 1) { addBond(crew[0], crew[1], -9); st.feuds = { [bondKey(crew[0], crew[1])]: 1 }; st.relAt = {}; } return splitScene(); },
           'scene:walk-off': () => { const c = castAboard().find(x => CAST[x.cast].farewell); return c ? walkOffScene(c, currentPlanet()) : null; },
+          'scene:fight': () => { hired().raidTold = true; G.nextEvent = null; startDuel({ kind: 'pirate' }, false); const first = G.nextEvent; G.nextEvent = null; return first; },  // the ship fight, its explanation out of the way
         }[reg.id];
         const ev = build && build();
         if (!ev) return { error: 'This scene needs people the test game does not have aboard. Choose another captain or start.' };
         openEvent(ev);
-      } else if (reg.kind === 'function') {  // a beat of the raid, the ambush or the boarding fights: it needs a foe, and the first-raid explanation is out of the way
+      } else if (reg.kind === 'function') {  // a beat of the ambush or the boarding fights: it needs a foe, and the first-fight explanation is out of the way
         hired().raidTold = true;
         const foe = makeEnemy({ kind: 'pirate' });
-        if (reg.id === 'beats:raid') { startDuel({ kind: 'pirate' }, false); const first = G.nextEvent; G.nextEvent = null; openEvent(first); }
-        else if (reg.id === 'beats:ambush') openEvent(ambushScene());
+        if (reg.id === 'beats:ambush') openEvent(ambushScene());
         else if (reg.id === 'beats:dead-in-space') openEvent(deadInSpaceScene({ foe }));
         else openEvent(repelScene(reg.id === 'beats:assault' ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full')));
       } else if (reg.name === 'goodbye') {  // leaving the ship: with the secret learned, so every choice shows

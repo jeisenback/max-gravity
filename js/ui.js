@@ -350,8 +350,9 @@ const UI = {
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
-      case 'choose': { const title = G.dialog.event.title, before = G.state; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts;
+      case 'choose': { const title = G.dialog.event.title, before = G.state, kept = G.dialog.choices[Number(arg)].keep; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts;
         G.shifts = null; if (G.state !== before) return;  /* a new game began (stakes.js): its first scene is up */
+        if (kept) { if (text) openEvent(text); else finishEvent(); return; }  // keep: the choice returned the event to show next, drawn in place of this one
         if (text == null && G.nextEvent) { finishEvent(); return; }  // nothing to show, and a scene to go on to: it opens at once (the picker of Sit with someone)
         this.showEventResult(title, text, shifts); return; }
       case 'continue': finishEvent(); return;

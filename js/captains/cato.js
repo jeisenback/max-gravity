@@ -243,12 +243,11 @@ CAST.cato.arrival = {
 // The first raid (captains.js raidExplanation): Cato at the guns hatch, before the first scene.
 CAST.cato.firstRaid = {
   title: 'The Guns Hatch',
-  text: ('Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. "Look at ' +
-      'the bottom," he says. "Where it says Position. Ahead, even, behind. It\'s only a count, but everything you choose moves it. ' +
-      'Finish ahead and she breaks off. Even, and she stands off and throws one last round at us. Behind, and she comes alongside, and then it\'s the ' +
-      'lock."</p><p>He points at the screen. "One choice has your post in front of it, in brackets. That one\'s yours, and nobody else aboard can do it. ' +
-      'Mind, it\'s the one that can go wrong on you. You\'re hurt, and your work counts a level lower for some days. I had it in the hold. I wore a ' +
-      'glove for eleven days."'),
+  text: ('Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. "Look at the top of the board," he ' +
+      'says. "That\'s what she means to do next, and under it what the captain will do with the helm. You don\'t guess either."</p><p>He points at ' +
+      'the guns. "Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and ' +
+      'she can\'t board us. If she hits us hard, someone gets hurt, maybe you, and your work counts a level lower for some days. I had it in the hold. ' +
+      'I wore a glove for eleven days."'),
   choices: [{
     label: 'Take your post',
     result: 'He lets go of the hatch frame. "Choose what you\'d choose," he says. "I\'ll be behind you."',

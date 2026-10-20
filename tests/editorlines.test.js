@@ -39,15 +39,15 @@ async function play() {
   return f;
 }
 
-test('the raid, ambush and boarding beats are edited line by line, the lines go to and from the file, and each plays in the preview (#478)', async () => {
-  await reload(); await select('beats:raid');
+test('the ship fight, ambush and boarding beats are edited line by line, the lines go to and from the file, and each plays in the preview (#478)', async () => {
+  await reload(); await select('scene:fight');
   const r = await page.evaluate(() => {
-    const row = id => SceneIndex.rows.find(x => x.id === id), raid = row('beats:raid'), values = { [raid.id]: { 'part.open.gun.0': 'A new opening.', 'part.close.standoff': raid.parts['close.standoff'] } };
+    const row = id => SceneIndex.rows.find(x => x.id === id), fight = row('scene:fight'), values = { [fight.id]: { 'part.open.gun.0': 'A new opening.', 'part.end.standoff': fight.parts['end.standoff'] } };
     const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
     return {
-      kinds: ['beats:raid', 'beats:ambush', 'beats:repel', 'beats:assault', 'beats:dead-in-space'].map(id => [row(id).kind, row(id).noTitle, Object.keys(row(id).parts).length > 10]), dead: row('beats:dead-in-space').kind,
-      out: out[raid.id], back: SceneIndex.valuesFrom(out)[raid.id],
-      plan: SceneIndex.planImport({ overrides: { 'beats:raid': { title: 'No', parts: { 'open.gun.1': 'Ok.', nope: 'x' } } } }, SceneIndex.rows).items.map(i => i[0] === undefined ? i.ok : i.ok),
+      kinds: ['scene:fight', 'beats:ambush', 'beats:repel', 'beats:assault', 'beats:dead-in-space'].map(id => [row(id).kind, row(id).noTitle, Object.keys(row(id).parts).length > 10]), dead: row('beats:dead-in-space').kind,
+      out: out[fight.id], back: SceneIndex.valuesFrom(out)[fight.id], lines: Object.keys(fight.parts).length,
+      plan: SceneIndex.planImport({ overrides: { 'scene:fight': { title: 'No', parts: { 'open.gun.1': 'Ok.', nope: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
   });
   assert.deepEqual(r.kinds.slice(0, 4), [['data', true, true], ['data', true, true], ['data', true, true], ['data', true, true]]);
@@ -56,10 +56,11 @@ test('the raid, ambush and boarding beats are edited line by line, the lines go 
   assert.deepEqual(r.out, { parts: { 'open.gun.0': 'A new opening.' } }, 'only what differs');
   assert.deepEqual(r.back, { 'part.open.gun.0': 'A new opening.' });
   assert.deepEqual(r.plan, [false, false, true], 'the title and the unknown line are refused');
-  assert.equal(await page.locator('#detail #f-title').count(), 0, 'a beat has no title to change');
-  assert.ok(await page.locator('#detail textarea[data-path^="part."]').count() > 60, 'a field for every line');
-  assert.ok(await page.locator('#detail h4', { hasText: /^exchange$/ }).count() === 1, 'the lines are grouped');
-  for (const [id, lines] of [['beats:raid', ['open.grapple.0', 'open.torpedo.0', 'open.gun.0']], ['beats:repel', ['open.1.0']], ['beats:assault', ['open.1.0']], ['beats:ambush', ['read.gunner.label']]]) {  // the raid's foe is drawn, so any style's opening
+  assert.equal(await page.locator('#detail #f-title').count(), 0, 'a scene of lines has no title to change');
+  assert.equal(await page.locator('#detail textarea[data-path^="part."]').count(), r.lines, 'a field for every line');
+  assert.ok(await page.locator('#detail h4', { hasText: /^end$/ }).count() === 1, 'the lines are grouped');
+  const openings = ['grapple', 'torpedo', 'gun'].flatMap(st => [0, 1].map(n => `open.${st}.${n}`));  // the fight's foe is drawn, and the opening by the day, so every opening
+  for (const [id, lines] of [['scene:fight', openings], ['beats:repel', ['open.1.0']], ['beats:assault', ['open.1.0']], ['beats:ambush', ['read.gunner.label']]]) {
     await select(id);
     for (const line of lines) await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
     const f = await play();

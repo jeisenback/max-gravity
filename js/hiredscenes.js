@@ -41,27 +41,16 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:walk-off', fn: 'walkOffScene', file: 'js/fate.js', title: 'Walking Off', where: 'port', when: 'When a main character leaves the ship at a port.' },
   { id: 'scene:used-ship-offer', fn: 'dealScene', file: 'js/hired.js', title: 'The Used Ship', where: 'port', when: 'When the used Ore Runner is offered, after the captain\'s two scenes.' },
   { id: 'scene:yard-office', fn: 'yardScene', file: 'js/yardoffice.js', title: 'The Yard Office', where: 'port', when: 'When you ask to buy a ship.' },
-  { id: 'beats:raid', fn: 'raidScene', file: 'js/engagements.js', title: 'A Raid', where: 'transit', when: 'A pirate contact, played in beats.' },
+  { id: 'scene:fight', fn: 'shipFightEvent', file: 'js/fightui.js', title: 'Battle Stations', where: 'transit', when: 'A pirate contact or a navy stop, fought turn by turn on the sensor board: the opening, her move and the captain\'s, the orders to the guns, a line a turn, and how it ends.' },
   { id: 'beats:dead-in-space', fn: 'deadInSpaceScene', file: 'js/engagements.js', title: 'Dead in Space', where: 'transit', when: 'After a raid, when a crippled raider drifts beside you.' },
   { id: 'beats:ambush', fn: 'ambushScene', file: 'js/engagements.js', title: 'An Ambush', where: 'transit', when: 'On a dangerous lane, every 60 days at most.' },
   { id: 'beats:repel', fn: 'repelScene', file: 'js/boarders.js', title: 'Boarders', where: 'transit', when: 'When a raid ends alongside: the lock, the corridor and the bridge.' },
   { id: 'beats:assault', fn: 'repelScene', file: 'js/boarders.js', title: 'Boarding Her', where: 'transit', when: 'When you board the crippled raider.' },
 ];
 
-// The words of the raid, ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
+// The words of the ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
 // lineWords (storylets.js) by the same name. A line the table does not hold (a casualty, a name, a count, the armor) is written in code and is not here.
 // Odds, damage and the roll are in code too. tests/beatlines.test.js plays every beat and checks that each name here is read.
-function raidLines() {
-  const out = {}, text = (key, line) => { out[key] = Array.isArray(line) ? line[2] : line; };
-  for (const [name, table] of [['open', RAID_OPEN], ['pass', RAID_PASS], ['passfar', RAID_PASS_FAR]]) for (const [style, list] of Object.entries(table)) list.forEach((t, i) => text(`${name}.${style}.${i}`, t));
-  for (const [k, t] of Object.entries(RAID_OPEN_MOVED)) text(`open.moved.${k}`, t);
-  const sides = (base, c) => { for (const o of ['win', 'lose']) if (c[o]) { if (Array.isArray(c[o])) text(`${base}.${o}`, c[o]); else for (const [style, line] of Object.entries(c[o])) text(`${base}.${o}.${style}`, line); } };
-  for (const [kind, list] of [['closing', RAID_CLOSING], ['exchange', RAID_EXCHANGE]]) for (const c of list) { text(`${kind}.${c.id}.label`, c.label); sides(`${kind}.${c.id}`, c); }
-  for (const [kind, posts] of Object.entries(RAID_POST)) for (const [post, c] of Object.entries(posts)) { text(`post.${kind}.${post}.label`, c.label); sides(`post.${kind}.${post}`, c); }
-  for (const [k, v] of Object.entries(RAID_CLOSE)) { if (typeof v === 'string') text(`close.${k}`, v); else for (const [style, t] of Object.entries(v)) text(`close.${k}.${style}`, t); }
-  for (const [k, t] of Object.entries(RAID_MEMORY)) text(`memory.${k}`, t);
-  return out;
-}
 function ambushLines() {
   const out = {};
   for (const [post, c] of Object.entries(AMBUSH_READ)) for (const k of ['label', 'trap', 'real']) out[`read.${post}.${k}`] = c[k];
@@ -448,6 +437,41 @@ const SCENE_LINES = {
     'losses.aboard.many': '{aboard} read the tape on the way past, and do not say anything, and go up the ramp.',
     'alone.title': 'The Ship You Fly',
     'alone.text': 'Nobody came aboard with you at the yard. The berths have been open for {days} days, and the lock is still the quietest part of the ship.',
+  },
+  'scene:fight': {  // the ship fight (fightui.js): {ship} is her name, {cap} the captain's (the helm's, for an owner), {part} a part's word, {lo} to {hi} what her volley can do, {hits} what a volley did
+    title: 'Battle Stations',
+    'open.gun.0': 'The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn\'t be a third. She\'s on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.',
+    'open.gun.1': 'A patrol destroyer, or a cutter that thinks it\'s one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.',
+    'open.grapple.0': 'She\'s at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody\'s boots.',
+    'open.grapple.1': 'The plume is a raider\'s: short, white, hot. She\'s matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.',
+    'open.torpedo.0': 'She\'s a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn\'t hurry.',
+    'open.torpedo.1': 'A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.',
+    'first.ours': 'You fire first: {hits}.', 'first.hers': 'She fires first: {hits}.',
+    'foe.broadside': '{ship}: broadside at your {part}, {lo} to {hi} damage.', 'foe.pin': '{ship}: guns on your drive to pin you, {lo} to {hi} damage.',
+    'foe.close': '{ship}: closing the range, firing at your {part} as she comes, {lo} to {hi} damage.', 'foe.board': '{ship}: coming alongside to board.', 'foe.break': '{ship}: turning to break off.',
+    consort: 'Her consort',
+    'cap.close': '{cap}: closing the range.', 'cap.hold': '{cap}: holding the range.', 'cap.open': '{cap}: opening the range.',
+    'part.weapons': 'weapons', 'part.drive': 'drive', 'part.lock': 'lock', 'part.hull': 'hull',
+    'gun.label': 'Gun {n}: {aim}', 'torp.label': 'Torpedo, {left} left: {aim}', 'aim.at': 'at her {part}', 'aim.hold': 'hold fire',
+    'pdc.fire': 'Turret: firing with the guns', 'pdc.hold': 'Turret: held back to cut her volley',
+    'fire.label': 'Fire: heat {heat} of {cap}', 'fire.hot': 'Fire: heat {heat} of {cap}, and a gun locks next turn',
+    'log.turn': 'Turn {n}: {hits}.', 'log.mine': 'you hit her {part} for {dmg}', 'log.torp': 'your torpedo hits her {part} for {dmg}', 'log.hers': 'she hits your {part} for {dmg}', 'log.spent': 'a shot at the {part} finds it already gone', 'log.none': 'no hits',
+    'end.broke.gun': 'She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, "Your registry has been logged. The next stop won\'t be a conversation."',
+    'end.broke.grapple': 'She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she\'s a dot, then she isn\'t.',
+    'end.broke.torpedo': 'She doesn\'t fire the third torpedo. The bay doors close and she turns away, and the range opens.',
+    'end.crippled.gun': 'Your last burst takes her drive, and the cutter yaws and goes quiet. She\'ll have a tow in a day. A beacon on her hull is already calling for it.',
+    'end.crippled.grapple': 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.',
+    'end.crippled.torpedo': 'Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out.',
+    'end.standoff': 'She breaks off at long range and throws one last burst as she goes. It clips the hull aft.',
+    'end.standoffNear': 'She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft.',  // the same close, when the board has her inside the guns' reach (#733)
+    'end.escaped.gun': 'She loses you. The cutter\'s plume dwindles on the board and her hail goes unanswered, and then the board has nothing to show for her at all.',
+    'end.escaped.grapple': 'She loses you. The raider hauls on for a range she will never close, and drops off the board a long way astern.',
+    'end.escaped.torpedo': 'She loses you. Her last torpedo burns out well short, and the corsair turns away with nothing to aim at.',
+    'end.boarded.gun': 'She\'s alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They\'re coming aboard, by the book.',
+    'end.boarded.grapple': 'She\'s alongside. The grapples bang on the hull in four places and the lock alarm goes. They\'re coming aboard.',
+    'end.boarded.torpedo': 'A torpedo takes your drive housing and she closes while you\'re slow. The grapples bang on the hull, and the lock alarm goes.',
+    'down.label': 'Stand down',
+    'memory.stood': 'You stood us up to a raid and she broke off.',
   },
   'scene:put-ashore': {
     title: 'Put Ashore',
@@ -838,7 +862,7 @@ function walkOffLines() {
   return out;
 }
 const linesOf = id => (BEAT_LINES[id] ? BEAT_LINES[id]() : id === 'scene:walk-off' ? walkOffLines() : SCENE_LINES[id] || null);
-const BEAT_LINES = { 'beats:raid': raidLines, 'beats:ambush': ambushLines, 'beats:dead-in-space': deadLines, 'beats:repel': () => repelLines(false), 'beats:assault': () => repelLines(true) };
+const BEAT_LINES = { 'beats:ambush': ambushLines, 'beats:dead-in-space': deadLines, 'beats:repel': () => repelLines(false), 'beats:assault': () => repelLines(true) };
 
 // Every id, with what it is and where its scene lives: { id, kind, key, name, scene } for a cast or captain scene (its scene object), { id, kind: 'work' |
 // 'hand', def } for a hired event (with its `scene` when it is written as data), { id, kind: 'ice', stage } for an ice run scene, and { id, kind: 'function', ...the entry above } for the rest (a beat of the raid, the ambush or the boarding fights has its `scene`, the lines it can be given).

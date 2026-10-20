@@ -70,20 +70,22 @@ test('the hand\'s readouts show on the landed screen, under the header and above
   });
 });
 
-test('the sensor board fits a raid\'s dialog at the three sizes (#680)', async () => {
+test('the sensor board and the bars fit the fight panel at the three sizes (#680)', async () => {
   await atWidths(async ({ ev, size }) => {
     const r = await ev(() => {
       uatBurn('Earth', 'mars'); G.transit.times = []; G.transit.event = null; G.dialog = null; hired().raidTold = true;
-      startRaid({ kind: 'pirate' }, false); openEvent(G.nextEvent); G.nextEvent = null;
-      const svg = document.querySelector('#panel .event-body svg.board'), panel = document.getElementById('panel');
-      const b = svg && svg.getBoundingClientRect(), pb = panel.getBoundingClientRect();
-      return { has: !!svg, left: b && b.left, right: b && b.right, width: b && b.width, panelLeft: pb.left, panelRight: pb.right, scrollW: document.documentElement.scrollWidth, innerW: innerWidth };
+      startShipFight({ kind: 'pirate' }, false); openEvent(G.nextEvent); G.nextEvent = null;
+      const panel = document.getElementById('panel'), pb = panel.getBoundingClientRect();
+      const fits = cls => { const svg = document.querySelector(`#panel .event-body svg.${cls}`), b = svg && svg.getBoundingClientRect(); return { has: !!svg, left: b && b.left, right: b && b.right, width: b && b.width }; };
+      return { board: fits('board'), bars: fits('bars'), panelLeft: pb.left, panelRight: pb.right, scrollW: document.documentElement.scrollWidth, innerW: innerWidth };
     });
-    const at = `${size.name} raid`;
-    assert.ok(r.has, `${at}: the board is drawn`);
-    assert.ok(r.left >= r.panelLeft - 1 && r.right <= r.panelRight + 1, `${at}: the board is inside the dialog (${r.left} to ${r.right} in ${r.panelLeft} to ${r.panelRight})`);
-    assert.ok(r.width >= 200, `${at}: the board is readable (${r.width}px wide)`);
-    assert.ok(r.scrollW <= r.innerW, `${at}: no sideways scroll (${r.scrollW} > ${r.innerW})`);
+    for (const cls of ['board', 'bars']) {
+      const at = `${size.name} fight, the ${cls}`, b = r[cls];
+      assert.ok(b.has, `${at}: drawn`);
+      assert.ok(b.left >= r.panelLeft - 1 && b.right <= r.panelRight + 1, `${at}: inside the dialog (${b.left} to ${b.right} in ${r.panelLeft} to ${r.panelRight})`);
+      assert.ok(b.width >= 200, `${at}: readable (${b.width}px wide)`);
+    }
+    assert.ok(r.scrollW <= r.innerW, `${size.name}: no sideways scroll (${r.scrollW} > ${r.innerW})`);
   });
 });
 
