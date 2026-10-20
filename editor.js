@@ -321,6 +321,7 @@
     const where = s ? s.where : pe ? pe.where : reg.name === 'meet' || reg.name === 'goodbye' || reg.kind === 'job' || reg.bar ? 'port' : 'transit';
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
+    if (m.version != null) G.state.day += (m.version - G.state.day % TELLINGS.length + TELLINGS.length) % TELLINGS.length;  // the day lands on the version being edited (#781)
     if (pe && (pe.topic || pe.help)) {  // a bar topic: a person it is about across the table, and the topic as a choice (or the help scene it leads to)
       const person = Object.assign(makePerson('earth'), { secret: null, goal: 'home', traits: ['kind', 'brave'], opinion: 0 }, pe.topic ? pe.topic.sample : { traits: ['homesick', 'kind'], secret: 'debt', opinion: OPINION.CLOSE });
       fillBar(currentPlanet()); registerPerson(person);
@@ -704,6 +705,9 @@
     const known = new RegExp(rule.source), taken = String(shipped).match(/\{\w+\}/g) || [];  // a scene built by a function fills the {words} its own line has (#463)
     return (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = known.exec(t); return !taken.includes(t) && (!m || !!(m[1] && !rule.roles.includes(m[1]))); });
   }
+  // The version a line is (1 or 2), when a moment has versions taken by the day (tellingOn, js/storylets.js): `text.1`, `tomas.result.2` or `earth.1.text`, where the key
+  // without that number is a line of the same scene too. `go.result.1`, one of two outcomes drawn at random, is not a version, since there is no `go.result` (#781).
+  const versionOf = (key, keys) => { const segs = key.split('.'); for (let i = 1; i < segs.length; i++) if (/^[12]$/.test(segs[i]) && keys.includes([...segs.slice(0, i), ...segs.slice(i + 1)].join('.'))) return Number(segs[i]); return null; };
   const flagOf = (v, shipped) => (!v.trim() ? 'Empty: the shipped words are used.' : badPlaceholders(v, shipped).length ? `Not a placeholder the game replaces: ${badPlaceholders(v, shipped).join(' ')}` : '');
 
   const paragraphs = text => text.split('\n').filter(Boolean).map(p => `<p>${esc(p)}</p>`).join('');
@@ -1292,7 +1296,7 @@
       return { as: 'hired', captain: kind === 'captain' ? key : xo ? xo.key : setup.captain, start: pair ? pair.key : setup.start, ...(row.post ? { post: row.post } : {}) };  // a work event is played at its own post
     };
     const send = msg => { const f = frameEl(); if (previewReady) f.contentWindow.postMessage(msg, '*'); else pending = msg; };
-    let previewReady = false, pending = null;
+    let previewReady = false, pending = null, lastPath = null;  // lastPath: the scene and line last typed in, so the preview can play its version (#781)
     const frameEl = () => {
       let f = app.querySelector('#pv-frame-el');
       if (!f) { f = document.createElement('iframe'); f.id = 'pv-frame-el'; f.title = 'The scene in the game'; f.src = 'editor-preview.html?scope=full'; app.querySelector('#pv-frame').append(f); }
@@ -1322,7 +1326,7 @@
       else if (d.pv) setup[d.pv] = t.value;
       else if (d.pvRep) setup.rep[d.pvRep] = t.value;
       else if (d.path) {  // a field of the form: keep the focus, so only its flag and the changes are redrawn
-        (values[state.id] = values[state.id] || dict())[d.path] = t.value;
+        (values[state.id] = values[state.id] || dict())[d.path] = t.value; lastPath = { id: state.id, path: d.path };
         app.querySelector(`[data-warn="${d.path}"]`).textContent = flagOf(t.value, shippedOf(here(), d.path));
         refresh();
       } else if (d.rpath) {  // a condition or effect's value
@@ -1430,7 +1434,8 @@
         send({ cmd: 'simulate', id: row.isNew ? row.sceneId.trim() : row.id, overrides: overridesFrom(rows, values, struct), newScenes: newDefs(), seeds: simSetup.seeds, burns: simSetup.burns, setup: { ...setup, place: placeFor(row) } });
       } else if (action === 'play' && row && editable(row)) {
         app.querySelector('#pv-effects').replaceChildren(); app.querySelector('#pv-report').replaceChildren();
-        send({ cmd: 'play', id: row.isNew ? row.sceneId.trim() : row.id, overrides: overridesFrom(rows, values, struct), newScenes: newDefs(), setup: { ...setup, place: placeFor(row), ...(row.registry ? hiredFor(row) : {}) } });
+        const typed = lastPath && lastPath.id === state.id ? lastPath.path : '', version = typed.startsWith('part.') && row.parts ? versionOf(typed.slice(5), Object.keys(row.parts)) : null;
+        send({ cmd: 'play', id: row.isNew ? row.sceneId.trim() : row.id, overrides: overridesFrom(rows, values, struct), newScenes: newDefs(), setup: { ...setup, place: placeFor(row), ...(row.registry ? hiredFor(row) : {}) }, version });
       }
     });
     update();
