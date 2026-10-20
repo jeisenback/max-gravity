@@ -1,12 +1,12 @@
 'use strict';
 
-// The fights, over many seeded trials: the raid in beats (js/engagements.js), the repel fight and the assault fight (js/boarders.js).
-// The tuning tool for COMBAT.md's numbers (CASUALTY_ODDS in js/losses.js, REPEL_HURT and REPEL_LEAN in js/boarders.js, the odds in
-// js/engagements.js). Each trial answers the scenes from a stated policy, then the game state is put back.
+// The fights, over many seeded trials: the ship fight (js/fight.js, js/fightui.js), the repel fight and the assault fight (js/boarders.js).
+// The tuning tool for COMBAT.md's numbers (FIGHT in js/fight.js, CASUALTY_ODDS in js/losses.js, REPEL_HURT and REPEL_LEAN in js/boarders.js).
+// Each trial answers the scenes from a stated policy, then the game state is put back.
 //   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider] [--owner]
 // `--owner` plays them as an owner who kept the post (the same ship and crew, bought with a hand's savings), to put beside the hand's (#721).
 //   npm run fights
-// Report: for the raid, how it closes and what it costs; for each lock fight, how often you win and who is hurt, by crew, by the
+// Report: for the ship fight, the spread of its ends, its rounds, the hull lost, the hurt and the dead; for each lock fight, how often you win and who is hurt, by crew, by the
 // post's skill level, by tactic and by the foe's grade. Not part of `npm test`.
 
 const { open, closeBrowser } = require('../tests/helpers');
@@ -50,30 +50,41 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
         titles.push(G.dialog.event.title);
         if (/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title)) break;  // the endings start a new game: the trial is over
         const i = /Dead in Space/.test(G.dialog.event.title) ? 0 : POLICY[policy](G.dialog);  // a crippled raider is always boarded
-        last = chooseEvent(i);
-        finishEvent();
+        const keep = G.dialog.choices[i].keep;
+        last = chooseEvent(i); window.__lastText = String(last);
+        if (keep && last) openEvent(last); else finishEvent();  // a kept choice (the close of a ship fight) redraws in place
       }
       return last;
     };
     const lost = st => ({ hurt: Object.keys(st.injured || {}).length, dead: (st.fallen || []).length, marked: (st.castMarked || []).length, hand: career().hurtUntil > st.day ? 1 : 0 });
     const out = { raid: {}, repel: {}, assault: {} };
 
-    // The raid, from the first beat to the close and the lock fights that follow it.
-    for (const policy of ['random', 'post', 'first']) {
-      const t = out.raid[policy] = { n: 0, off: 0, standoff: 0, lost: 0, crippled: 0, boarded: 0, boardedWon: 0, assaultWon: 0, hull: 0, hurt: 0, dead: 0, hand: 0, anyHurt: 0 };
+    // The ship fight, from the contact to its end and the lock fight that may follow it. The guns' policy picks each gun's target every turn: 'random' any
+    // part, 'focus' always her weapons, 'drive' her drive until it is gone and then her weapons. A lock fight after it is played by the 'post' policy.
+    const PARTS = ['weapons', 'drive', 'lock', 'hull'];
+    const AIM = {
+      random: () => PARTS[Math.floor(Math.random() * PARTS.length)],
+      focus: () => 'weapons',
+      drive: f => (f.foes.some(x => x.parts.drive.hp > 0) ? 'drive' : 'weapons'),
+    };
+    for (const policy of Object.keys(AIM)) {
+      const t = out.raid[policy] = { n: 0, crippled: 0, broke: 0, standoff: 0, boarded: 0, lost: 0, escaped: 0, boardedWon: 0, assaultWon: 0, rounds: 0, hull: 0, hurt: 0, dead: 0, hand: 0, anyHurt: 0 };
       for (let i = 0; i < trials; i++) {
-        const st = restore(null, null), armor0 = st.armor, titles = [];
+        const st = restore(null, null), armor0 = st.armor;
         startDuel({ kind: 'pirate' }, false);
-        const e = G.nextEvent; G.nextEvent = null; openEvent(e);
-        const last = drive(policy, titles), c = lost(G.state), assault = titles.includes('Her Corridor') || titles.includes('Her Bridge') || titles.includes('Her Lock');
-        t.n++;
-        if (titles.includes('Dead in Space')) { t.crippled++; if (/strongbox/.test(last)) t.assaultWon++; }
-        else if (titles.some(x => /^The (Lock|Corridor|Bridge)$/.test(x))) { t.boarded++; if (/last of them go back/.test(last)) t.boardedWon++; }
-        else if (last.includes(RAID_CLOSE.standoff)) t.standoff++;
-        else if (Object.values(RAID_CLOSE.lost).some(l => last.includes(l))) t.lost++;  // she was left too far behind to follow (range.js)
-        else t.off++;
+        let ev = G.nextEvent, s = ev.fight, end = null; G.nextEvent = null;
+        while (ev && !s.handDied) {
+          const f = s.state, orders = { guns: Array.from({ length: f.me.guns }, () => ({ foe: 0, part: AIM[policy](f) })), torp: f.me.launcher && f.me.torps > 0 ? { foe: 0, part: 'hull' } : null, pdc: 'fire' };
+          ev = fireTurn(s, orders);
+          end = shipEnd(s.state);
+        }
+        const titles = [], next = G.nextEvent; G.nextEvent = null; window.__lastText = '';
+        if (next) { openEvent(next); drive('post', titles); }  // the close, dead in space, or the lock
+        const c = lost(G.state);
+        t.n++; if (end) t[end]++; t.rounds += s.state.turn;
+        if (end === 'crippled' && /strongbox/.test(window.__lastText)) t.assaultWon++;
+        if (end === 'boarded' && /last of them go back/.test(window.__lastText)) t.boardedWon++;
         t.hull += (armor0 - G.state.armor) / maxArmor; t.hurt += c.hurt; t.dead += c.dead; t.hand += c.hand; if (c.hurt || c.dead || c.hand) t.anyHurt++;
-        void assault;
       }
     }
 
@@ -122,9 +133,9 @@ const pct = (a, b) => `${String(Math.round((100 * a) / Math.max(1, b))).padStart
 const per = (a, b) => (a / Math.max(1, b)).toFixed(2);
 
 function report(runs) {
-  console.log(`Raids (${runs.length} seeds, ${runs[0].crewAboard} crew aboard, ${runs[0].owner ? 'an owner at' : 'a hand at'} the ${runs[0].post} post)`);
+  console.log(`Ship fights (${runs.length} seeds, ${runs[0].crewAboard} crew aboard, ${runs[0].owner ? 'an owner at' : 'a hand at'} the ${runs[0].post} post), by where the guns aim`);
   for (const [policy, t] of Object.entries(sum(runs, 'raid'))) {
-    console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  off ${pct(t.off, t.n)}  standoff ${pct(t.standoff, t.n)}  lost ${pct(t.lost, t.n)}  crippled ${pct(t.crippled, t.n)} (boarded ${pct(t.assaultWon, t.crippled)})  to the lock ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}`);
+    console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  crippled ${pct(t.crippled, t.n)} (boarded her ${pct(t.assaultWon, t.crippled)})  broke off ${pct(t.broke, t.n)}  standoff ${pct(t.standoff, t.n)}  boarded ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull gone ${pct(t.lost, t.n)}  escaped ${pct(t.escaped, t.n)}  rounds ${per(t.rounds, t.n)}  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}`);
   }
   for (const kind of ['repel', 'assault']) {
     console.log(`${kind === 'repel' ? 'Repel fight (they board you)' : 'Assault fight (you board her)'}`);
