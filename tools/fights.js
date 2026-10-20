@@ -12,9 +12,9 @@
 const { open, closeBrowser } = require('../tests/helpers');
 
 // One seed's trials. Returns raw tallies, so the seeds can be summed.
-async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false } = {}) {
+async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, lock = true } = {}) {  // lock: false leaves out the lock fights started directly, for a test of the ship fight alone
   const { ev, errors, ctx } = await open({ scope: 'earth-hired', seed, debt: true, stall: 0 });
-  const r = await ev(([trials, postKey, shipId, asOwner]) => {
+  const r = await ev(([trials, postKey, shipId, asOwner, lockFights]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st0 = G.state; st0.story.next = 1e9; st0.day += 30; hired().raidTold = true;  // the first raid is explained once; these are the raids after it
     if (asOwner) { const crew0 = [...st0.crew]; st0.credits = 100000; hired().debt = 0; buyIn(st0.shipId); while (G.dialog) finishEvent(); st0.crew = crew0; st0.armor = ship().armor; if (hired()) throw new Error('the buy did not make an owner'); }  // the same ship and crew: the buy took a friend, and the rest stay
@@ -68,12 +68,13 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       drive: f => (f.foes.some(x => x.parts.drive.hp > 0) ? 'drive' : 'weapons'),
     };
     for (const policy of Object.keys(AIM)) {
-      const t = out.raid[policy] = { n: 0, crippled: 0, broke: 0, standoff: 0, boarded: 0, lost: 0, escaped: 0, boardedWon: 0, assaultWon: 0, rounds: 0, hull: 0, hurt: 0, dead: 0, hand: 0, anyHurt: 0 };
+      const t = out.raid[policy] = { n: 0, crippled: 0, broke: 0, standoff: 0, boarded: 0, lost: 0, escaped: 0, died: 0, boardedWon: 0, assaultWon: 0, rounds: 0, hull: 0, hurt: 0, dead: 0, hand: 0, anyHurt: 0 };
       for (let i = 0; i < trials; i++) {
         const st = restore(null, null), armor0 = st.armor;
         startDuel({ kind: 'pirate' }, false);
-        let ev = G.nextEvent, s = ev.fight, end = null; G.nextEvent = null;
-        while (ev && !s.handDied) {
+        let ev = G.nextEvent, end = null; const s = ev && ev.fight; G.nextEvent = null;
+        if (!s) G.nextEvent = ev;  // the free volley hurt the hand past saving: the ending is the next scene
+        while (s && ev && !s.handDied) {
           const f = s.state, orders = { guns: Array.from({ length: f.me.guns }, () => ({ foe: 0, part: AIM[policy](f) })), torp: f.me.launcher && f.me.torps > 0 ? { foe: 0, part: 'hull' } : null, pdc: 'fire' };
           ev = fireTurn(s, orders);
           end = shipEnd(s.state);
@@ -81,7 +82,8 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
         const titles = [], next = G.nextEvent; G.nextEvent = null; window.__lastText = '';
         if (next) { openEvent(next); drive('post', titles); }  // the close, dead in space, or the lock
         const c = lost(G.state);
-        t.n++; if (end) t[end]++; t.rounds += s.state.turn;
+        t.n++; if (end) t[end]++; else t.died++;  // no end: the hand was killed in it
+        t.rounds += s ? s.state.turn : 0;
         if (end === 'crippled' && /strongbox/.test(window.__lastText)) t.assaultWon++;
         if (end === 'boarded' && /last of them go back/.test(window.__lastText)) t.boardedWon++;
         t.hull += (armor0 - G.state.armor) / maxArmor; t.hurt += c.hurt; t.dead += c.dead; t.hand += c.hand; if (c.hurt || c.dead || c.hand) t.anyHurt++;
@@ -111,14 +113,14 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       ['small crew', ['post', 'cover', 'count', 'order', 'crew'].map(p => [2, 2, p, 0])],
       ['grade', [0, 1, 2].map(g => [5, 2, 'random', g])],
     ];
-    for (const kind of ['repel', 'assault']) {
+    if (lockFights) for (const kind of ['repel', 'assault']) {
       for (const [group, list] of cells) {
         for (const [crewN, level, policy, grade] of list) out[kind][`${group}|crew ${crewN} level ${level} ${policy} grade ${grade}`] = lock(kind, crewN, level, policy, grade);
       }
     }
     out.crewAboard = crewAll.length;
     return out;
-  }, [n, post, ship, owner]);
+  }, [n, post, ship, owner, lock]);
   await ctx.close();
   return { seed, owner, post, ...r, errors };
 }
@@ -135,7 +137,7 @@ const per = (a, b) => (a / Math.max(1, b)).toFixed(2);
 function report(runs) {
   console.log(`Ship fights (${runs.length} seeds, ${runs[0].crewAboard} crew aboard, ${runs[0].owner ? 'an owner at' : 'a hand at'} the ${runs[0].post} post), by where the guns aim`);
   for (const [policy, t] of Object.entries(sum(runs, 'raid'))) {
-    console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  crippled ${pct(t.crippled, t.n)} (boarded her ${pct(t.assaultWon, t.crippled)})  broke off ${pct(t.broke, t.n)}  standoff ${pct(t.standoff, t.n)}  boarded ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull gone ${pct(t.lost, t.n)}  escaped ${pct(t.escaped, t.n)}  rounds ${per(t.rounds, t.n)}  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}`);
+    console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  crippled ${pct(t.crippled, t.n)} (boarded her ${pct(t.assaultWon, t.crippled)})  broke off ${pct(t.broke, t.n)}  standoff ${pct(t.standoff, t.n)}  boarded ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull gone ${pct(t.lost, t.n)}  escaped ${pct(t.escaped, t.n)}  you killed ${pct(t.died, t.n)}  rounds ${per(t.rounds, t.n)}  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}`);
   }
   for (const kind of ['repel', 'assault']) {
     console.log(`${kind === 'repel' ? 'Repel fight (they board you)' : 'Assault fight (you board her)'}`);

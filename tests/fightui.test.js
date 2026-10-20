@@ -61,12 +61,12 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
     };
   });
   assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false);
-  assert.match(r.read, /^The Pirate "[^"]+": closing the range\. Captain Vance: holding the range\.$/, r.read);
+  assert.match(r.read, /^The Pirate "[^"]+": closing the range, firing at your hull as she comes, 10 to 16 damage\. Captain Vance: holding the range\.$/, r.read);
   assert.equal(r.band, 'long', 'a raider is met at forty kilometers');
   assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
   assert.deepEqual(r.labels, ['Gun 1: at her weapons', 'Gun 2: at her weapons', 'Turret: firing with the guns', 'Fire: heat 2 of 4']);
   assert.deepEqual(r.keep, [true, true, true, true], 'every order and Fire redraw in place');
-  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 40 of 40, drive 30 of 30, lock 20 of 20, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 20 of 20, drive 30 of 30, lock 20 of 20\.$/, r.bars);
+  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 40 of 40, drive 20 of 20, lock 10 of 10, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 20 of 20, drive 20 of 20, lock 10 of 10\.$/, r.bars);
   assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
   await done();
 });

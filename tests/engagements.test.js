@@ -63,22 +63,24 @@ test('when she breaks off it costs nothing but a log line and some experience', 
   await done();
 });
 
-test('played out, the panel goes turn by turn to an end: her guns shot away before she is alongside, she stands off', async () => {
+test('played out, the panel goes turn by turn to an end: she closes firing, her guns are shot away, and she breaks off', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = raid('engineer'), armor = st.armor, out = { bands: [], reads: [] };
+    const st = raid('engineer'), h = hired(), cap = person(h.captain), op = cap.opinion, xp = skillXp('engineer'), out = { bands: [], reads: [] };
     startDuel({ kind: 'pirate' }, false); begin();
-    while (G.dialog.choices.some(c => c.label.startsWith('Fire'))) { out.bands.push(RANGE_BANDS[fightNow().state.band]); out.reads.push(G.dialog.event.read.replace(/^.*?": /, '').replace(/ Captain Vance: holding the range\.$/, '')); fireOrders(); }
-    out.log = fightNow().state.log.slice(1); out.title = G.dialog.event.title; out.labels = G.dialog.choices.map(c => c.label); out.close = G.dialog.event.text.split('</p><p>').pop(); out.hull = armor - st.armor;
+    while (G.dialog.choices.some(c => c.label.startsWith('Fire'))) { out.bands.push(RANGE_BANDS[fightNow().state.band]); out.reads.push(G.dialog.event.read.replace(/^.*?": /, '')); fireOrders(); }
+    out.log = fightNow().state.log.slice(1); out.title = G.dialog.event.title; out.labels = G.dialog.choices.map(c => c.label); out.close = G.dialog.event.text.split('</p><p>').pop();
+    out.opinion = cap.opinion - op; out.xp = skillXp('engineer') - xp; out.shields = fightNow().state.me.shields;
     return out;
   });
-  assert.deepEqual(r.bands, ['long', 'mid', 'close', 'close', 'close', 'close'], 'she is the faster ship, and closes a band a turn while she has a reason to');
-  assert.deepEqual(r.reads, ['closing the range.', 'closing the range.', 'broadside at your weapons, 10 to 18 damage.', 'holding, with nothing to fire.', 'holding, with nothing to fire.', 'holding, with nothing to fire.']);
-  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 7.', 'Turn 2: you hit her weapons for 12.', 'Turn 3: you hit her weapons for 10.', 'Turn 4: you hit her weapons for 14.', 'Turn 5: you hit her weapons for 10.', 'Turn 6: you hit her weapons for 11.'], 'her weapons go before her broadside does');
+  assert.deepEqual(r.bands, ['long', 'mid', 'close'], 'she is the faster ship, and closes a band a turn');
+  assert.deepEqual(r.reads, ['closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range.', 'closing the range, firing at your hull as she comes, 13 to 22 damage. Captain Vance: holding the range.',
+    'turning to break off. Captain Vance: holding the range.'], 'her move is shown before it is made, and her volley grows as she closes');
+  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, she hits your hull for 21.', 'Turn 2: you hit her weapons for 7.', 'Turn 3: a shot at the weapons finds it already gone.'], 'her guns go in two shots, and she has nothing left to come for');
   assert.equal(r.title, 'Battle Stations'); assert.deepEqual(r.labels, ['Stand down']);
-  assert.equal(r.close, 'She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.', 'six turns with neither side done: a standoff');
-  assert.equal(r.hull, 13);
+  assert.match(r.close, /^She breaks off\. Her grapple arms fold.* Captain Vance writes it in the log and nothing else\. \(\+3 experience at the engineer post\.\)$/);
+  assert.deepEqual([r.opinion, r.xp], [1, 3]);
   await done();
 });
 
@@ -318,7 +320,7 @@ test('a turn that takes a heavy share of the armor can hurt you: a clinic bill w
     rolls([0.5, 0.5, 0.99, 0.01]);  // our shot, her volley, no casualty, and the hand's own roll
     fireOrders();
     out.hurt = handHurt(); out.line = fightNow().state.log.slice(-1)[0]; out.paid = cred - st.credits; out.armor = st.armor;
-    hired().hurtUntil = 0; fightNow().state.me.shields = 0;
+    hired().hurtUntil = 0; fightNow().state.me.shields = 0; fightNow().state.foes.forEach(f => { f.parts.weapons.hp = f.parts.weapons.max; });  // her guns whole again, so she fires
     shownMoves({ kind: 'broadside', target: 'hull', dmg: [20, 20] });  // 20 of 260: not
     rolls([0.5, 0.5, 0.01, 0.01]); fireOrders(); out.light = handHurt(); out.lightLine = fightNow().state.log.slice(-1)[0];
     return out;
@@ -359,7 +361,7 @@ test('the first fight of a new game is explained once, by the first officer, bef
     out.later = G.dialog.event.title;
     return out;
   });
-  assert.equal(r.title, 'The Guns Hatch'); assert.match(r.body, /Position/); assert.match(r.body, /in brackets/); assert.match(r.body, /a level lower/);
+  assert.equal(r.title, 'The Guns Hatch'); assert.match(r.body, /what she means to do next/); assert.match(r.body, /her guns, her drive, her lock, her hull\. Then Fire/); assert.match(r.body, /a level lower/); assert.doesNotMatch(r.body, /Position|brackets/);
   assert.deepEqual(r.labels, ['Take your post']); assert.equal(r.told, true);
   assert.equal(r.next, 'Battle Stations', 'the fight follows'); assert.equal(r.later, 'Battle Stations', 'and it is not said twice');
   await done();
@@ -567,7 +569,7 @@ test('the fight panel shows her move and the captain\'s above the pinned orders 
       const box = read && read.getBoundingClientRect(), choices = el.querySelector('.choices').getBoundingClientRect();
       return { read: read && read.textContent, readTop: box && box.top, readBottom: box && box.bottom, panelTop: panel.top, choicesTop: choices.top };
     });
-    assert.match(r.read, /: closing the range\. Captain Vance: holding the range\.$/, `${name}: the read line is drawn`);
+    assert.match(r.read, /: closing the range, firing at your hull as she comes, \d+ to \d+ damage\. Captain Vance: holding the range\.$/, `${name}: the read line is drawn`);
     assert.ok(r.readTop >= r.panelTop && r.readBottom <= r.choicesTop, `${name}: the read line (${r.readTop} to ${r.readBottom}) is in view above the choices, which start at ${r.choicesTop}`);
     await done();
   }

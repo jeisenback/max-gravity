@@ -8,7 +8,6 @@
 
 const FIGHT_AIM = ['weapons', 'drive', 'lock', 'hull', null];  // a gun's targets in the order a click takes them; null holds its fire
 const FIGHT_KM = { knife: 1.5, close: 6, mid: 25, long: 50 };  // where the board draws her in each band (board.js)
-const FIGHT_HEAVY = 0.15;  // a turn's loss of armor, as a share of its maximum, that can cost a casualty and hurt the hand
 const fightSay = (key, vars) => sceneSay('scene:fight', key, vars);
 
 // The start: the contact's own logic (a patrol's standing, the flee roll, the first fight explained once), then the fight. Returns what to show now
@@ -37,7 +36,7 @@ function startShipFight(spec, flee, o = {}) {
     const r = headStart(s.state, s.edge, Math.random);
     s.state = r.state;
     s.state.log.push(fightSay(s.edge > 0 ? 'first.ours' : 'first.hers', { hits: fightHits(r.events) }));
-    fightTook(s, mine.armor);
+    fightTook(s, r.events);
     if (s.handDied) return text;  // the hand is dead: the ending is queued (boarders.js)
   }
   s.shown = fightMoves(s.state);
@@ -61,15 +60,15 @@ function headStart(state, edge, rand) {
 const fightMoves = st => ({ foe: st.foes.map((_, i) => foeMove(st, i)), captain: captainMove(st) });
 const fightUp = foe => foe.armor > 0 && (foe.parts.weapons.hp > 0 || foe.parts.drive.hp > 0);
 const fightFoeName = (s, i) => (i ? fightSay('consort') : theShip(s.foe));
-const fightHits = events => (events.length ? events.map(e => fightSay(e.who === 'foe' ? 'log.hers' : e.torp ? 'log.torp' : 'log.mine', { part: fightSay(`part.${e.part}`), dmg: e.dmg })).join(', ') : fightSay('log.none'));
+const fightHits = events => (events.length ? events.map(e => fightSay(!e.dmg ? 'log.spent' : e.who === 'foe' ? 'log.hers' : e.torp ? 'log.torp' : 'log.mine', { part: fightSay(`part.${e.part}`), dmg: e.dmg })).join(', ') : fightSay('log.none'));  // a hit on a part already gone does nothing
 
-// The armor the turn cost, against what it was: a heavy hit can cost a casualty (CASUALTY_ODDS, more against a veteran crew or a pair, as the raid's lost
-// beats did) and hurt the hand (FIGHT.HAND_HURT). The ship keeps its armor. Returns what the log says of it.
-function fightTook(s, before) {
-  const st = G.state, me = s.state.me, lost = before - me.armor, out = [];
+// What the turn cost: the ship keeps its armor and its torpedoes, and a heavy hit (she dealt more than FIGHT.HEAVY_HIT of your maximum armor, to any part)
+// can cost a casualty (CASUALTY_ODDS, more against a veteran crew or a pair, as the raid's lost beats did) and hurt the hand (FIGHT.HAND_HURT), said on the log's last line.
+function fightTook(s, events) {
+  const st = G.state, me = s.state.me, dealt = events.filter(e => e.who === 'foe').reduce((n, e) => n + e.dmg, 0), out = [];
   st.armor = Math.max(1, me.armor);
   if (me.launcher) st.torpedoes = me.torps;
-  if (lost > FIGHT_HEAVY * me.maxArmor) {
+  if (dealt > FIGHT.HEAVY_HIT * me.maxArmor) {
     if (Math.random() < CASUALTY_ODDS * (1 + 0.15 * s.grade + (s.pack ? 0.25 : 0))) out.push(repelCasualty(s));
     if (!s.handDied && Math.random() < FIGHT.HAND_HURT) out.push(hurtHand(s));
   }
@@ -99,14 +98,14 @@ function fightBars(st) {
 function shipFightEvent(s, orders) {
   const st = G.state, f = s.state, cap = raidCap(), ready = gunsReady(f);
   const say = (m, i) => fightSay(`foe.${m.kind}`, { ship: fightFoeName(s, i), ...(m.target ? { part: fightSay(`part.${m.target}`), lo: m.dmg[0], hi: m.dmg[1] } : {}) });
-  const read = [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
+  const read = !s.shown ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
   const aim = o => (o ? fightSay('aim.at', { part: fightSay(`part.${o.part}`) }) : fightSay('aim.hold'));
   const turn = o => { const part = FIGHT_AIM[(FIGHT_AIM.indexOf(o ? o.part : null) + 1) % FIGHT_AIM.length]; return part ? { foe: 0, part } : null; };  // the next target round
   const redo = change => () => shipFightEvent(s, { ...orders, ...change });
   const choices = orders.guns.slice(0, ready).map((g, i) => ({ label: fightSay('gun.label', { n: i + 1, aim: aim(g) }), keep: true, run: redo({ guns: orders.guns.map((x, j) => (j === i ? turn(x) : x)) }) }));
   if (f.me.launcher && f.me.torps > 0) choices.push({ label: fightSay('torp.label', { left: f.me.torps, aim: aim(orders.torp) }), keep: true, run: redo({ torp: turn(orders.torp) }) });
   if (f.me.pdc) choices.push({ label: fightSay(orders.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire'), keep: true, run: redo({ pdc: orders.pdc === 'hold' ? 'fire' : 'hold' }) });
-  const shots = Math.min(orders.guns.filter(Boolean).length, Math.max(0, ready - (f.me.pdc && orders.pdc === 'hold' ? 1 : 0))), heat = f.heat + shots;  // as the engine counts them
+  const shots = Math.min(orders.guns.slice(0, ready).filter(Boolean).length, Math.max(0, ready - (f.me.pdc && orders.pdc === 'hold' ? 1 : 0))), heat = f.heat + shots;  // as the engine counts them
   choices.push({ label: fightSay(heat > FIGHT.HEAT_CAP ? 'fire.hot' : 'fire.label', { heat, cap: FIGHT.HEAT_CAP }), keep: true, run: () => fireTurn(s, orders) });
   const board = raidBoard({ beat: f.turn, edge: 0, style: s.style, me: SHIPS[st.shipId], foe: SHIPS[s.foe.shipId], range: FIGHT_KM[RANGE_BANDS[f.band]] });
   const prev = s.board || null; s.board = board;  // last turn's picture, for sensors that show her late (board.js)
@@ -122,12 +121,12 @@ function shipFightEvent(s, orders) {
 // Fire: the turn is resolved with the moves that were shown, what it cost is counted, and the panel is drawn again; at an end the panel gives way
 // to the scene the end leads to (G.nextEvent), and this returns nothing.
 function fireTurn(s, orders) {
-  const before = s.state.me.armor, foe = s.state.foes.findIndex(fightUp), at = foe < 0 ? 0 : foe;
-  const aimed = { ...orders, guns: orders.guns.map(g => g && { foe: at, part: g.part }), torp: orders.torp && { foe: at, part: orders.torp.part } };
+  const at = o => { if (!o) return null; const i = s.state.foes.findIndex(f => f.armor > 0 && (o.part === 'hull' || f.parts[o.part].hp > 0)); return { foe: Math.max(0, i), part: o.part }; };  // the first of them whose part is still there
+  const aimed = { ...orders, guns: orders.guns.map(at), torp: at(orders.torp) };
   const r = resolveShipTurn(s.state, aimed, s.shown, Math.random);
   s.state = r.state;
   s.state.log.push(fightSay('log.turn', { n: s.state.turn, hits: fightHits(r.events) }));
-  fightTook(s, before);
+  fightTook(s, r.events);
   if (s.handDied) return null;  // the hand is dead: the ending is queued (boarders.js)
   const end = shipEnd(s.state);
   if (end) { shipFightEnd(s, end); return null; }
@@ -144,7 +143,8 @@ function shipFightEnd(s, end) {
   const st = G.state, post = lockPost(), cap = raidCap();
   const lead = (ev, line) => ({ ...ev, text: `${line}</p><p>${ev.text}` });
   const close = (text, next = null) => {
-    G.nextEvent = { ...shipFightEvent(s, { guns: [], torp: null, pdc: 'fire' }), read: '', text: `${s.state.log.slice(-2).join('</p><p>')}</p><p>${text}`,
+    s.shown = null;  // the fight is over: no move is shown
+    G.nextEvent = { ...shipFightEvent(s, { guns: [], torp: null, pdc: 'fire' }), text: `${s.state.log.slice(-2).join('</p><p>')}</p><p>${text}`,
       choices: [{ label: fightSay('down.label'), keep: true, run: () => { G.nextEvent = next; return null; } }] };
   };
   if (end === 'crippled' && s.spec.kind !== 'patrol') { G.nextEvent = lead(deadInSpaceScene(s), fightSay(`end.crippled.${s.style}`)); return; }  // a navy ship is not boarded: she breaks off
