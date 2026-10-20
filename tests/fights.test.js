@@ -10,12 +10,12 @@ const { fights } = require('../tools/fights');
 
 after(closeBrowser);
 
-test('the fights tool plays the raid, the repel fight and the assault fight to their ends', async () => {
+test('the fights tool plays the ship fight, the repel fight and the assault fight to their ends', async () => {
   const r = await fights({ seed: 1, n: 3 });
   assert.deepEqual(r.errors, []);
-  for (const t of Object.values(r.raid)) assert.equal(t.n, 3);
-  const closed = t => t.off + t.standoff + t.crippled + t.boarded;
-  for (const t of Object.values(r.raid)) assert.equal(closed(t), 3, 'every raid closes one way');
+  assert.deepEqual(Object.keys(r.raid), ['random', 'focus', 'drive'], 'the guns\' policies');
+  const closed = t => t.crippled + t.broke + t.standoff + t.boarded + t.lost + t.escaped;
+  for (const t of Object.values(r.raid)) { assert.equal(t.n, 3); assert.equal(closed(t), 3, 'every fight ends one way'); assert.ok(t.rounds >= 3 && t.rounds <= 3 * 6, 'one to six turns a fight'); }
   for (const kind of [r.repel, r.assault]) {
     assert.ok(Object.keys(kind).length >= 10);
     for (const t of Object.values(kind)) { assert.equal(t.n, 3); assert.ok(t.rounds >= 3, 'a fight lasts more than a round'); assert.ok(t.won <= 3); }

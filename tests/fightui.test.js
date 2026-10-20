@@ -28,3 +28,137 @@ test('a keep choice runs, then redraws the dialog with the event it returns, wit
   assert.equal((await page.textContent('#event-result')).trim(), 'It ends.');
   await done();
 });
+
+// ---------- the ship fight's panel, in place of the raid (js/fightui.js) ----------
+
+const helpers = () => {
+  window.fightGame = (post = 'gunner', shipId = 'raider') => {
+    __seed(1);
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.story.next = 1e9; st.day += 30; hired().raidTold = true;
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    __seed(2);
+    if (!window.realMakeEnemy) window.realMakeEnemy = makeEnemy;
+    const spare = window.realMakeEnemy({ kind: 'pirate' });
+    window.makeEnemy = () => Object.assign(spare, { shipId, armor: SHIPS[shipId].armor, maxArmor: SHIPS[shipId].armor });
+    window.rateFoe = s => { s.grade = 0; s.pack = false; return s; };  // an ordinary foe, whatever the seed draws
+    return st;
+  };
+  window.battle = () => { startDuel({ kind: 'pirate' }, false); const e = G.nextEvent; G.nextEvent = null; openEvent(e); return G.dialog.event.fight; };
+  window.choiceAt = label => G.dialog.choices.findIndex(c => c.label.startsWith(label));
+};
+
+test('battle stations opens the fight panel with both sides\' bars, her move and the captain\'s, and one order per gun', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'); st.outfits.pdc = 1; const s = battle(), f = s.state;
+    const bars = document.querySelector('#panel .event-body svg.bars');
+    return {
+      title: G.dialog.event.title, duel: !!G.duel, read: G.dialog.event.read, labels: G.dialog.choices.map(c => c.label), keep: G.dialog.choices.map(c => !!c.keep),
+      board: !!document.querySelector('#panel .event-body svg.board'), bars: bars && bars.getAttribute('aria-label'),
+      guns: f.me.guns, ready: gunsReady(f), band: RANGE_BANDS[f.band], text: G.dialog.event.text,
+    };
+  });
+  assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false);
+  assert.match(r.read, /^The Pirate "[^"]+": closing the range\. Captain Vance: holding the range\.$/, r.read);
+  assert.equal(r.band, 'long', 'a raider is met at forty kilometers');
+  assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
+  assert.deepEqual(r.labels, ['Gun 1: at her weapons', 'Gun 2: at her weapons', 'Turret: firing with the guns', 'Fire: heat 2 of 4']);
+  assert.deepEqual(r.keep, [true, true, true, true], 'every order and Fire redraw in place');
+  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 40 of 40, drive 30 of 30, lock 20 of 20, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 20 of 20, drive 30 of 30, lock 20 of 20\.$/, r.bars);
+  assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
+  await done();
+});
+
+test('setting a gun\'s target redraws in place; Fire resolves a turn and the log gains a line', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => { fightGame('gunner'); battle(); });
+  await page.click('[data-action="choose"][data-arg="0"]');
+  const a = await ev(() => ({ result: !!document.querySelector('#event-result'), label: G.dialog.choices[0].label, title: G.dialog.event.title, turn: G.dialog.event.fight.state.turn }));
+  assert.deepEqual(a, { result: false, label: 'Gun 1: at her drive', title: 'Battle Stations', turn: 0 });
+  for (let i = 0; i < 4; i++) await page.click('[data-action="choose"][data-arg="0"]');
+  assert.equal(await ev(() => G.dialog.choices[0].label), 'Gun 1: at her weapons', 'the targets go round: drive, lock, hull, hold, weapons');
+  await page.click('[data-action="choose"][data-arg="0"]');
+  const fire = await ev(() => G.dialog.choices.findIndex(c => c.label.startsWith('Fire')));
+  await page.click(`[data-action="choose"][data-arg="${fire}"]`);
+  const b = await ev(() => { const s = G.dialog.event.fight; return { result: !!document.querySelector('#event-result'), turn: s.state.turn, log: s.state.log.length, last: s.state.log[s.state.log.length - 1], text: G.dialog.event.text, drive: s.state.foes[0].parts.drive.hp, band: RANGE_BANDS[s.state.band] }; });
+  assert.equal(b.result, false, 'no result page between turns'); assert.equal(b.turn, 1); assert.equal(b.log, 2, 'the opening and the first turn');
+  assert.match(b.last, /^Turn 1: you hit her drive for \d+/, b.last); assert.ok(b.text.endsWith(b.last), 'the panel shows the newest line last');
+  assert.ok(b.drive < 30, 'the shot is on her drive'); assert.equal(b.band, 'mid', 'she closed a band, as she said she would');
+  await done();
+});
+
+test('a fight played to each end lands in its scene: crippled to dead in space, boarded to the lock, lost to the taken consequences', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    // crippled: her weapons gone, her drive one shot from gone, the gun on it
+    fightGame('gunner'); let s = battle();
+    s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 1; s.state.band = RANGE_BANDS.indexOf('close');
+    openEvent(chooseEvent(0));  // gun 1 at her drive
+    s.shown = { foe: [{ kind: 'hold' }], captain: { kind: 'hold' } };
+    out.crippled = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /plume goes out/.test(G.nextEvent.text) };
+    // boarded: alongside, her lock whole, and her shown move is the boarding
+    fightGame('gunner'); s = battle(); s.state.band = RANGE_BANDS.indexOf('knife'); s.shown = { foe: [{ kind: 'board' }], captain: { kind: 'hold' } };
+    out.boarded = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /grapples bang on the hull/.test(G.nextEvent.text) };
+    // lost: the hull is one point from gone, and her broadside is at it
+    const st = fightGame('gunner'), h = hired(); h.fund = 1000; const cap = person(h.captain), op = cap.opinion;
+    s = battle(); Object.assign(s.state.me, { shields: 0, armor: 1 }); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [10, 10] }], captain: { kind: 'hold' } };
+    const real = Math.random; Math.random = () => 0.99;  // the captain is not lost on her bridge (a roll of one in three)
+    const ret = chooseEvent(choiceAt('Fire')), close = G.nextEvent; Math.random = real;
+    out.lost = { ret, title: close && close.title, text: close && close.text, fund: h.fund, opinion: cap.opinion - op, armor: st.armor };
+    finishEvent(); out.lost.shown = G.dialog && G.dialog.event.title; out.lost.labels = G.dialog.choices.map(c => c.label);
+    out.lost.down = chooseEvent(0); out.lost.then = G.nextEvent;
+    return out;
+  });
+  assert.deepEqual(r.crippled, { ret: null, next: 'Dead in Space', line: true });
+  assert.deepEqual(r.boarded, { ret: null, next: 'The Corridor', line: true }, 'a raider comes in at the corridor');
+  assert.equal(r.lost.ret, null); assert.equal(r.lost.title, 'Battle Stations');
+  assert.match(r.lost.text, /They're on the bridge\. Captain Vance gives them the code to the strongbox because there's no choice, and they take 300 cr of the ship's fund and go\./);
+  assert.equal(r.lost.fund, 700); assert.equal(r.lost.opinion, -1, 'the captain marks it');
+  assert.equal(r.lost.armor, 1, 'the hull at its last point');
+  assert.equal(r.lost.shown, 'Battle Stations', 'the close is shown on the panel'); assert.deepEqual(r.lost.labels, ['Stand down']); assert.equal(r.lost.down, null); assert.equal(r.lost.then, null, 'and nothing follows it');
+  await done();
+});
+
+test('a head start from the contact screen is a free first volley: ours at her weapons when ahead, hers at our hull when behind', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const [name, edge, shift] of [['ahead', 2, 10], ['behind', -1, -10], ['even', 0, 0]]) {
+      const st = fightGame('gunner'), armor = st.armor;
+      startShipFight({ kind: 'pirate' }, false, { edge, shift, text: 'Battle stations.' });
+      const s = G.nextEvent.fight, f = s.state;
+      out[name] = { weapons: f.foes[0].parts.weapons.hp, hull: f.me.shields + f.me.armor, full: f.me.maxShields + f.me.maxArmor, band: RANGE_BANDS[f.band], turn: f.turn, last: f.log[f.log.length - 1], armor: st.armor === armor };
+    }
+    return out;
+  });
+  assert.ok(r.ahead.weapons < 20 && r.ahead.hull === r.ahead.full, `ours first, at her weapons: ${JSON.stringify(r.ahead)}`);
+  assert.match(r.ahead.last, /^You fire first: you hit her weapons for \d+\.$/); assert.equal(r.ahead.band, 'long', 'fifty kilometers'); assert.equal(r.ahead.turn, 0, 'the free volley is not a turn');
+  assert.ok(r.behind.weapons === 20 && r.behind.hull < r.behind.full, `hers first, at our hull: ${JSON.stringify(r.behind)}`);
+  assert.match(r.behind.last, /^She fires first: she hits your hull for \d+\.$/); assert.equal(r.behind.band, 'mid', 'thirty kilometers');
+  assert.ok(r.even.weapons === 20 && r.even.hull === r.even.full, 'no head start, no volley'); assert.equal(r.even.band, 'long');
+  await done();
+});
+
+test('a save made mid-raid in an old version loads with no fight open and no error', async () => {
+  const fs = require('node:fs'), path = require('node:path');
+  const text = fs.readFileSync(path.join(__dirname, 'fixtures', 'v3-hired-save.json'), 'utf8');
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(saved => {
+    // the raid kept nothing of its own in the save: what a raid in an old version left behind is its hull lost, its flag and a hurt hand
+    const old = JSON.parse(saved); old.armor = 40; old.hired.flags = { ...(old.hired.flags || {}), raided: true }; old.hired.raidTold = true; old.hired.hurtUntil = old.day + 6;
+    const refused = Saves.import(JSON.stringify(old), 2); Saves.use(2); loadGame();
+    const out = { refused, mode: G.mode, dialog: G.dialog && [G.dialog.event.title, !!G.dialog.event.fight], next: G.nextEvent && [G.nextEvent.title, !!G.nextEvent.fight], armor: G.state.armor };
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    startDuel({ kind: 'pirate' }, false); out.fight = G.nextEvent && G.nextEvent.title; out.me = G.nextEvent && G.nextEvent.fight.state.me.armor;
+    return out;
+  }, text);
+  assert.deepEqual(r, { refused: null, mode: 'landed', dialog: ['Hull Damage', false], next: ['An Errand Ashore', false], armor: 40, fight: 'Battle Stations', me: 40 }, 'the landing\'s own scenes, and no fight; a fight after it starts from the hull the save kept');
+  await done();
+});

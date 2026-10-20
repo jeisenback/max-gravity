@@ -871,9 +871,9 @@ test('a raid that is outrun is not fought, and a raid that is fought is kept', a
   const r = await run(() => {
     start(); const h = hired(); hired().raidTold = true;
     const rolls = [0]; const real = Math.random; Math.random = () => rolls.length ? rolls.shift() : 0.5;
-    try { startRaid({ kind: 'pirate' }, true); } finally { Math.random = real; }
+    try { startShipFight({ kind: 'pirate' }, true); } finally { Math.random = real; }
     const outrun = !!(h.flags || {}).raided;
-    startRaid({ kind: 'pirate' }, false);
+    startShipFight({ kind: 'pirate' }, false);
     return { outrun, fought: !!h.flags.raided };
   });
   assert.equal(r.outrun, false); assert.equal(r.fought, true);
@@ -928,16 +928,15 @@ test('a bold outcome moves the captain\'s opinion one more point by their nerve:
   assert.deepEqual([r.hester.won, r.hester.lost, r.zoya.won, r.zoya.lost], [0, -1, 1, 0], 'the same choice has a different best answer under each');
 });
 
-test('only the bold options carry it: the fast, big and hard ice options, the raid\'s turn and return fire, and a work event\'s quick option', async () => {
+test('only the bold options carry it: the fast, big and hard ice options, and a work event\'s quick option', async () => {
   const r = await run(() => {
-    const bold = [...RAID_CLOSING, ...RAID_EXCHANGE].filter(c => c.bold).map(c => c.id);
     const ice = ICE_STAGES.map(s => s.general.map(c => !!c.bold));
     start({ captainKey: 'zoya' }); const cap = person(hired().captain);
     const play = (choice, roll) => { cap.opinion = 0; const real = Math.random; Math.random = () => roll; try { choice.run(); } finally { Math.random = real; } return cap.opinion; };
     const ev = workEvent(WORK_EVENTS.find(w => w.post === hired().post));
-    return { bold, ice, quickWon: play(ev.choices[1], 0.001), careful: play(ev.choices[0], 0.001) };
+    return { ice, quickWon: play(ev.choices[1], 0.001), careful: play(ev.choices[0], 0.001) };
   });
-  assert.deepEqual(r.bold.sort(), ['fire', 'turn']); assert.deepEqual(r.ice, [[false, true, false], [false, true, false], [false, true, false]]);
+  assert.deepEqual(r.ice, [[false, true, false], [false, true, false], [false, true, false]]);
   assert.equal(r.quickWon, 1, 'a bold success with a nerve 5 captain'); assert.equal(r.careful, 0, 'the careful option moves nothing');
 });
 

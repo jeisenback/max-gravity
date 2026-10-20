@@ -66,10 +66,10 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     const st = G.state;
     const LIVE_SECONDS = 20, LIVE_STEP = 0.05;  // the live flight played in each system with --frames (#656): the frame step is the game's own cap
     const fr = { raids: 0, scrams: 0, hull: 0, fuel: 0, planned: 0, seen: 0, live: 0 };
-    if (play) for (const name of ['startRaid', 'overload']) { const real = window[name]; window[name] = function (...a) { fr[name === 'startRaid' ? 'raids' : 'scrams']++; return real.apply(this, a); }; }
+    if (play) for (const name of ['startShipFight', 'overload']) { const real = window[name]; window[name] = function (...a) { fr[name === 'startShipFight' ? 'raids' : 'scrams']++; return real.apply(this, a); }; }
     const target = typeof HIRED_TARGET === 'undefined' ? 19000 : HIRED_TARGET;
     const answer = () => {
-      for (let k = 0; k < 8 && G.dialog; k++) {
+      for (let k = 0; k < 8 + FIGHT.TURNS && G.dialog; k++) {  // a ship fight is a panel a turn
         const d = G.dialog;
         if (/^(The Last Run|Without a Captain|Put Ashore)$/.test(d.event.title)) { ending.v = { day: G.state.day - hired().since, title: d.event.title, how: (hired().died || hired().captainLost || {}).how }; G.dialog = null; return; }  // the endings start a new game: the chapter is over
         scenes[d.event.title] = (scenes[d.event.title] || 0) + 1;
@@ -77,11 +77,14 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         if (odd(d.event.title + d.event.text)) bad.push('text: ' + d.event.title);
         const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
         if (ok.length) {
-          const i = pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
+          const fire = d.event.fight ? ok.find(i => /^Fire/.test(d.choices[i].label)) : undefined;  // a ship fight is fought with the orders as they stand (fightui.js)
+          const i = fire !== undefined ? fire : pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
           const c0 = G.state.credits, x0 = skillXp(postKey), o0 = atBar ? opinions() : 0;
           bar.in = atBar;
-          const res = chooseEvent(i); if (odd(res)) bad.push('result: ' + String(res).slice(0, 80));
+          const res = chooseEvent(i);
           bar.in = false;
+          if (c.keep && res) { openEvent(res); continue; }  // a kept choice redraws its dialog in place (ui.js)
+          if (odd(res)) bad.push('result: ' + String(res).slice(0, 80));
           if (atBar) { const id = c.soakId || (/^Leave/.test(c.label) ? 'leave' : 'follow-up'); bar.talks++; bar.topics[id] = (bar.topics[id] || 0) + 1; bar.credits += G.state.credits - c0; bar.xp += skillXp(postKey) - x0; bar.opinion += opinions() - o0; }
         }
         finishEvent();

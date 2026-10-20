@@ -45,9 +45,9 @@ function makeEnemy(spec) {
 }
 
 // A hired hand's own move at a pirate contact (#386), one for each post that is not Comms (the spoof, below). Rolled on the hand's skill like the
-// spoof. A win starts the raid with you two ahead and a loss one behind, as the post's own move in a raid does (RAID_POST, engagements.js); a
-// loss also costs a share of the hull where `hull` is set, as a failed run does (startRaid). `range`: km the move opens (or closes, below nothing) the range the raid
-// starts at, on a win and on a loss (#710, range.js).
+// spoof. A win gives you the first volley of the fight and a loss gives it to her (fightui.js); a loss also costs a share of the hull where `hull`
+// is set, as a failed run does (startShipFight). `range`: km the move opens (or closes, below nothing) the range the fight starts at, on a win and on a
+// loss (#710, range.js).
 const HAND_CONTACT = {
   pilot: { label: 'Take the helm and break her intercept', hull: true, range: [10, -10],
     win: 'You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations.',
@@ -85,10 +85,10 @@ function contactEvent(spec) {
   const post = lockPost(), hand = HAND_CONTACT[post];
   if (spec.kind === 'pirate' && hand) choices.push({ label: `[{crew}] ${hand.label}${costNote({ hull: hand.hull, range: 'opens the range' }, postOdds(post))}`, role: POSTS[post].role, run() {
     const won = Math.random() < postOdds(post);
-    if (won) return startRaid(spec, false, { edge: 2, shift: hand.range[0], text: hand.win });
+    if (won) return startShipFight(spec, false, { edge: 2, shift: hand.range[0], text: hand.win });
     const pts = hand.hull ? Math.round(ship().armor * 0.08) : 0;
     st.armor = Math.max(1, st.armor - pts);
-    return startRaid(spec, false, { edge: -1, shift: hand.range[1], text: `${hand.lose}${pts ? ` Armor -${pts}.` : ''}` });
+    return startShipFight(spec, false, { edge: -1, shift: hand.range[1], text: `${hand.lose}${pts ? ` Armor -${pts}.` : ''}` });
   } });
   const mine = post && choices.find(c => c.role === POSTS[post].role);
   if (mine) {

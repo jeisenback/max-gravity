@@ -15,7 +15,8 @@ const FIGHT = {
   PART_HP: { weapons: 20, drive: 30, lock: 20 },  // weapons is per gun mount
   TORP_DMG: [30, 45],
   PDC_HOLD: 0.4,     // what a turret held back takes off a volley
-  TURNS: 6
+  TURNS: 6,
+  HAND_HURT: 0.35    // the hand's own hurt roll on a turn of a heavy hit to the armor (fightui.js); it was a lost bold call's in the raid
 };
 
 const KNIFE = RANGE_BANDS.indexOf('knife');

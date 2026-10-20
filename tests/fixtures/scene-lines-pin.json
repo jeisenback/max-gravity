@@ -22367,5 +22367,419 @@
    "Let Hana go",
    "Keep both"
   ]
+ },
+ {
+  "id": "scene:fight",
+  "plays": [
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>You fire first: you hit her weapons for 7.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 7.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": broadside at your weapons, 10 to 18 damage. Her consort: broadside at your weapons, 10 to 18 damage. Captain Vance: closing the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": guns on your drive to pin you, 8 to 14 damage. Her consort: guns on your drive to pin you, 8 to 14 damage. Captain Vance: opening the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": coming alongside to board. Her consort: coming alongside to board. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": turning to break off. Her consort: turning to break off. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": holding, with nothing to fire. Her consort: holding, with nothing to fire. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Her consort: closing the range. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
+    "labels": [
+     "Gun 1: at her weapons",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
+    "labels": [
+     "Gun 1: at her lock",
+     "Gun 2: hold fire",
+     "Torpedo, 2 left: at her hull",
+     "Turret: held back to cut her volley",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
+    "labels": [
+     "Gun 1: at her drive",
+     "Gun 2: at her hull",
+     "Torpedo, 2 left: hold fire",
+     "Turret: firing with the guns",
+     "Fire: heat 2 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
+    "labels": [
+     "Gun 1: at her drive",
+     "Gun 2: at her hull",
+     "Torpedo, 2 left: hold fire",
+     "Turret: firing with the guns",
+     "Fire: heat 6 of 4, and a gun locks next turn"
+    ]
+   },
+   {
+    "log": "Turn 1: your torpedo hits her hull for 39, she hits your hull for 10.",
+    "next": null,
+    "mem": []
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>Turn 1: your torpedo hits her hull for 39, she hits your hull for 10.",
+    "labels": [
+     "Gun 1: hold fire",
+     "Gun 2: hold fire",
+     "Torpedo, 1 left: at her hull",
+     "Turret: firing with the guns",
+     "Fire: heat 0 of 4"
+    ]
+   },
+   {
+    "log": "Turn 2: no hits.",
+    "next": null,
+    "mem": []
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing the range. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>Turn 1: your torpedo hits her hull for 39, she hits your hull for 10.</p><p>Turn 2: no hits.",
+    "labels": [
+     "Gun 1: hold fire",
+     "Gun 2: hold fire",
+     "Torpedo, 1 left: hold fire",
+     "Turret: firing with the guns",
+     "Fire: heat 0 of 4"
+    ]
+   },
+   {
+    "log": "Turn 1: no hits.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>Turn 1: no hits.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off."
+    ]
+   },
+   {
+    "log": "Turn 1: you hit her weapons for 13.",
+    "next": {
+     "title": "The Corridor",
+     "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.</p><p>Boarders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
+     "labels": [
+      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
+      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
+      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
+      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
+      "[Gunner] Pick off a runner (one fewer of them, no ground) [55%; if it fails: a crew casualty, you may be hurt]",
+      "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+      "Ines cuts the lights (cover here, once) [90%; if it fails: Ines may be hurt]",
+      "Tomas vents a coolant line (one fewer of them, no ground) [75%; if it fails: Tomas may be hurt]",
+      "Mateo puts a false order on their band (one fewer of them, no ground) [65%; if it fails: Mateo may be hurt]"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 1: you hit her weapons for 7.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>Turn 1: you hit her weapons for 7.</p><p>She loses you. The raider hauls on for a range she will never close, and drops off the board a long way astern.",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 1: you hit her weapons for 7.",
+    "next": {
+     "title": "Dead in Space",
+     "text": "Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+     "labels": [
+      "Board her",
+      "Let her drift"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 1: no hits.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>Turn 1: no hits.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off."
+    ]
+   },
+   {
+    "log": "Turn 1: you hit her weapons for 13.",
+    "next": {
+     "title": "The Lock",
+     "text": "A torpedo takes your drive housing and she closes while you're slow. The grapples bang on the hull, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Boarders: 2. With you: 5. Your ship is long, with room to go round and little room for a rush.",
+     "labels": [
+      "Hold the line [70%; if it fails: a crew casualty, you may be hurt]",
+      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
+      "Go round them [68%; if it fails: a crew casualty, you may be hurt]",
+      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
+      "[Gunner] Pick off a runner (one fewer of them, no ground) [55%; if it fails: a crew casualty, you may be hurt]",
+      "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+      "Ines cuts the lights (cover here, once) [90%; if it fails: Ines may be hurt]",
+      "Tomas vents a coolant line (one fewer of them, no ground) [75%; if it fails: Tomas may be hurt]",
+      "Mateo puts a false order on their band (one fewer of them, no ground) [65%; if it fails: Mateo may be hurt]"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 1: you hit her weapons for 7.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>Turn 1: you hit her weapons for 7.</p><p>She loses you. Her last torpedo burns out well short, and the corsair turns away with nothing to aim at.",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 1: you hit her weapons for 7.",
+    "next": {
+     "title": "Dead in Space",
+     "text": "Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+     "labels": [
+      "Board her",
+      "Let her drift"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 1: no hits.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>Turn 1: no hits.</p><p>She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop won't be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off."
+    ]
+   },
+   {
+    "log": "Turn 1: you hit her weapons for 13.",
+    "next": {
+     "title": "The Lock",
+     "text": "She's alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They're coming aboard, by the book.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Boarders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
+     "labels": [
+      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
+      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
+      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
+      "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
+      "[Gunner] Pick off a runner (one fewer of them, no ground) [55%; if it fails: a crew casualty, you may be hurt]",
+      "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]",
+      "Ines cuts the lights (cover here, once) [90%; if it fails: Ines may be hurt]",
+      "Tomas vents a coolant line (one fewer of them, no ground) [75%; if it fails: Tomas may be hurt]",
+      "Mateo puts a false order on their band (one fewer of them, no ground) [65%; if it fails: Mateo may be hurt]"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 1: you hit her weapons for 7.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>Turn 1: you hit her weapons for 7.</p><p>She loses you. The cutter's plume dwindles on the board and her hail goes unanswered, and then the board has nothing to show for her at all.",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 1: you hit her weapons for 10.",
+    "next": {
+     "title": "Dead in Space",
+     "text": "Your last burst takes her drive, and the cutter yaws and goes quiet. She'll have a tow in a day. A beacon on her hull is already calling for it.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+     "labels": [
+      "Board her",
+      "Let her drift"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 1: you hit her weapons for 6.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>Turn 1: you hit her weapons for 6.</p><p>She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she's a dot, then she isn't. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off."
+    ]
+   },
+   {
+    "log": "Turn 6: no hits.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>Turn 6: no hits.</p><p>She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 6: no hits.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>Turn 6: no hits.</p><p>She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": []
+   },
+   {
+    "log": "Turn 1: she hits your hull for 10.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>Turn 1: she hits your hull for 10.</p><p>They're on the bridge. Captain Vance gives them the code to the strongbox because there's no choice, and they take 3,600 cr of the ship's fund and go. The ship still flies.",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": [
+     "9 Jul 2214: The bridge was taken on your watch."
+    ]
+   }
+  ]
  }
 ]
