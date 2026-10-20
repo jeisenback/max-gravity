@@ -461,7 +461,7 @@
    {
     "i": 2,
     "roll": 0.5,
-    "text": "\"Both of you sail,\" you tell each of them at the lock, the way they came to you. They draw the same watch that week and say nothing to each other in it that doesn't go through the board first.",
+    "text": "You find each of them at the lock, the way they found you, and give the same answer twice. They draw the same watch that week and say nothing to each other in it that doesn't go through the board first.",
     "mem": [
      "9 Jul 2214: You made me stay on a ship with Hana.",
      "9 Jul 2214: You made me stay on a ship with Mateo."
@@ -22238,7 +22238,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo goes down the dock with one bag and leaves the rest to go on in the hold, tagged for the next port. Hana takes the corridor watch that night, the watch the fight started on. The new slicer, Fatima, comes up from the dock office and is in the empty berth before the lock cycles.",
+    "text": "Mateo goes down the dock with one bag and leaves the rest to go on in the hold, tagged for the next port. Hana is on the corridor deck that night with a bucket, at the plate where the fight was. The new slicer, Fatima, comes up from the dock office with the hiring slip still in hand and asks Hana which berth is empty.",
     "mem": [
      "10 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "10 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -22259,7 +22259,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana goes down the dock with one bag and leaves the rest to go on in the hold, tagged for the next port. Mateo takes the corridor watch that night, the watch the fight started on. The new quartermaster, Sofia, comes up from the dock office and is in the empty berth before the lock cycles.",
+    "text": "Hana goes down the dock with one bag and leaves the rest to go on in the hold, tagged for the next port. Mateo is on the corridor deck that night with a bucket, at the plate where the fight was. The new quartermaster, Sofia, comes up from the dock office with the hiring slip still in hand and asks Mateo which berth is empty.",
     "mem": [
      "10 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "10 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
@@ -22280,7 +22280,7 @@
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You carry the bag back up the ramp yourself and put it on Mateo's bunk. The lip goes in the log as a fall in the corridor.",
+    "text": "The bag goes back up the ramp on the cargo trolley and onto Mateo's bunk, strap still done up. Captain Vance logs the lip as a fall in the corridor.",
     "mem": [
      "10 Jul 2214: You made me stay on a ship with Hana.",
      "10 Jul 2214: You made me stay on a ship with Mateo."
@@ -22306,7 +22306,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo goes back up the ramp, comes down it again with a bag, and walks off along the dock without looking around. Hana doesn't leave the spot on the dock until the bag is out of sight. By the next watch bell a new slicer, Fatima, has signed on for the berth.",
+    "text": "Mateo is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Hana is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new slicer, Fatima, has signed on for the berth.",
     "mem": [
      "11 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "11 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -22327,7 +22327,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana goes back up the ramp, comes down it again with a bag, and walks off along the dock without looking around. Mateo doesn't leave the spot on the dock until the bag is out of sight. By the next watch bell a new quartermaster, Daniel, has signed on for the berth.",
+    "text": "Hana is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Mateo is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new quartermaster, Daniel, has signed on for the berth.",
     "mem": [
      "11 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "11 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
