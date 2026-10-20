@@ -228,6 +228,10 @@ test('a hired hand boards a ship that resists as the deck fight on her deck, and
     // A trader that has given up: no fight, and no prize for a hand.
     const t = { ...foe, kind: 'trader', dead: false, disabled: true }, te = boardingEvent(t);
     out.trader = te.choices.map(c => c.label);
+    // Nobody fit to go across: Board her is shut, with the reason (R34).
+    const crew = repelCrew; repelCrew = () => ({ fight: [], held: [] });
+    const ne = boardingEvent({ ...foe, dead: false, disabled: true }); repelCrew = crew;
+    out.noneOpen = ne.choices[0].can(); out.noneWhy = ne.choices[0].why();
     return out;
   });
   assert.deepEqual(r.labels, ['Board her', 'Let her drift']); assert.ok(!r.odds, 'no odds in the prompt'); assert.ok(r.counts, 'the numbers are in the prompt');
@@ -235,6 +239,7 @@ test('a hired hand boards a ship that resists as the deck fight on her deck, and
   assert.match(r.won, /strongbox/); assert.ok(r.fundUp && r.foeDead && r.liked);
   assert.match(r.lost, /driven back to the lock/); assert.ok(r.armorDown && r.stillDrifting);
   assert.ok(!r.trader.some(l => /prize/i.test(l)) && r.trader.some(l => /strip the cargo/.test(l)), r.trader.join('|'));
+  assert.equal(r.noneOpen, false); assert.match(r.noneWhy, /Nobody aboard is fit/);
   await done();
 });
 
