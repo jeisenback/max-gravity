@@ -88,6 +88,8 @@ const playBeats = () => {
       rec.plays.push({ i, text: String(text), next: G.nextEvent ? [G.nextEvent.title, String(sceneText(G.nextEvent))] : null, ...left(b0) });
       G.nextEvent = null; G.duel = null;
     }
+    fresh(post, shipId); G.state.crew = [];  // with nobody able to fight, no boarding is offered (#786)
+    { const e3 = deadInSpaceScene({ foe: makeEnemy({ kind: 'pirate' }) }); rec.none = { text: e3.text, labels: labelsOf(e3) }; }
     out.push(rec);
   }
   // how a boarding ends: the boarders turned back or the bridge taken, you aboard her or driven back, with the crew hurt or not
@@ -99,8 +101,9 @@ const playBeats = () => {
     out.push({ id: `settle:${assault ? 'assault' : 'repel'}:${post}:${won ? 'won' : 'lost'}:${round}`, text: String(text), ...left(b0) });
     G.nextEvent = null; G.duel = null;
   }
-  // A deck fight set by hand for one turn that trades nothing: ours only at the lock where the hand stands, four of hers in the corridor, and their move a hold.
-  const quiet = s => { s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[1].theirs = 4; s.state.began = 4; s.state.hand = 0; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; return s; };
+  // A deck fight set by hand for one turn: one of ours with the hand at the lock against four of hers, their move a hold, and (rolls) no hit lands and the hand is not hurt.
+  const quiet = s => { s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[0].theirs = 4; s.state.began = 4; s.state.hand = 0; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; return s; };
+  const rolls = first => seq([first, ...Array(16).fill(0.4)]);
   const fightOf = (s, plan) => { const ev = deckFightEvent(s, plan); return { labels: labelsOf(ev), run: () => ev.choices[ev.choices.length - 1].run() }; };
   // the orders to named crew (#711): each post's two abilities as the crew member does it, worked and missed
   for (const assault of [false, true]) for (const role of ['gunner', 'pilot', 'engineer', 'slicer']) for (const kind of ['cover', 'steady']) for (const worked of [true, false]) {
@@ -108,7 +111,7 @@ const playBeats = () => {
     const p = makePerson('earth'); Object.assign(p, { first: 'Dana', role, skill: 2, traits: [], opinion: 30 }); registerPerson(p); G.state.crew.push(p.id);
     const foe = makeEnemy({ kind: 'pirate' }), s = quiet(assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full'));
     s.fight = [p.id]; s.state.used.cover = kind === 'steady';  // the one crew member offered, with the cover made or not, so the order is of this kind
-    const f = fightOf(s, { order: p.id }), label = f.labels.filter(l => /^Order/.test(l)); seq(worked ? [0.01] : [0.99]); const b0 = stand();
+    const f = fightOf(s, { order: p.id }), label = f.labels.filter(l => /^Order/.test(l)); rolls(worked ? 0.01 : 0.99); const b0 = stand();
     f.run();
     out.push({ id: `order:${assault ? 'assault' : 'repel'}:${role}:${kind}:${worked ? 'worked' : 'missed'}`, label, text: String(s.state.log[s.state.log.length - 1]), ...left(b0) });
     G.nextEvent = null; G.duel = null;
@@ -126,13 +129,13 @@ const playBeats = () => {
       }
       for (const act of ['shoot', 'steady', 'cover']) for (const roll of [0.01, 0.99]) {
         const s = quiet(start()), f = fightOf(s, { act });
-        seq([roll]); const b0 = stand();
+        rolls(roll); const b0 = stand();
         f.run();
         rec.steps.push({ act, roll, labels: f.labels, text: String(s.state.log[s.state.log.length - 1]), ...left(b0) });
         G.nextEvent = null;
       }
       for (const [name, theirs] of [['last', 0], ['broke', 1]]) {  // none of them left, or one of four
-        const s = quiet(start()); s.state.sections[1].theirs = theirs;
+        const s = quiet(start()); s.state.sections[0].theirs = 0; s.state.sections[1].theirs = theirs;  // nobody where ours stand, so nothing is traded
         seq([]); const b0 = stand();
         fightOf(s, {}).run();
         rec.steps.push({ act: `end:${name}`, text: String(G.nextEvent && G.nextEvent.text), ...left(b0) });

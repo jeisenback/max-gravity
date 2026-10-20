@@ -463,7 +463,7 @@ test('an order works as the crewmate\'s own ability, and a miss lands on the one
     unstub(); repelCasualty = real;
     return out;
   });
-  assert.match(r.cover, /Bo cuts the lights in the section from the helm/); assert.deepEqual(r.made.slice(0, 3), [3, 2, 1]); assert.equal(r.used, true);
+  assert.match(r.cover, /Bo cuts the lights in the section from the helm/); assert.deepEqual(r.made.slice(0, 3), [1, 2, 3], 'two crew are both on the bridge, where the hand starts: the cover is made there'); assert.equal(r.used, true);
   assert.deepEqual(r.next, [['Bo', 'steady'], ['Ana', 'steady']]);
   assert.equal(r.miss, 'Turn 1: in the Lock 0 of them down and 1 of ours. Ana waits for a runner and none runs. The round goes high, and they use the noise to push. Someone is hurt.');
   assert.equal(r.target, 'Ana', 'the loss was the one sent');

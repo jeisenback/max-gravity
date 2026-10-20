@@ -375,7 +375,7 @@ const playScenes = () => {
       // and a veteran's feint; every choice it offers; and a turn of each kind of line, from states set by hand
       const deckPanel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: ev.choices.map(c => String(c.label)), group: ev.choices.map(c => c.group).filter(Boolean) });
       const deck = (assault, o = {}) => { fresh(); hired().raidTold = true; const foe = makeEnemy({ kind: 'pirate' }), s = assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0, init: 'foe' }, 'full'); s.state = deckFight({ boarders: 4, crew: 4, cover: [1, 2, 1, 1], assault, side: true, ...o }); return s; };
-      const deckLog = (s, plan, shown) => { s.shown = { feint: false, ...shown }; seq([0.01, 0.99, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.99]); const e = deckFightEvent(s, plan); const next = e.choices[e.choices.length - 1].run(); rec.plays.push({ log: s.state.log.slice(-1)[0], end: !next }); G.nextEvent = null; };
+      const deckLog = (s, plan, shown) => { s.shown = { feint: false, ...shown }; seq([0.01, 0.99, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.99]); const e = deckFightEvent(s, plan); const next = e.choices[e.choices.length - 1].run(); rec.plays.push({ log: s.state.log.slice(-1)[0], end: !next, ...(next ? {} : { close: G.nextEvent && G.nextEvent.text }) }); G.nextEvent = null; };
       for (const assault of [false, true]) {
         for (const hand of [0, 1, 2, 3]) { const s = deck(assault); s.state.hand = hand; s.shown = { kind: 'push', from: 0, to: hand, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
         { const s = deck(assault); s.shown = { kind: 'round', from: 0, to: 3, n: 2, feint: false }; deckPanel(deckFightEvent(s)); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; deckPanel(deckFightEvent(s)); }
@@ -388,6 +388,12 @@ const playScenes = () => {
         { const s = deck(assault); deckLog(s, {}, assault ? { kind: 'hold', from: 0, to: 0, n: 0 } : { kind: 'push', from: 0, to: 1, n: 4 }); }
         { const s = deck(assault); s.state.sections[1] = { mine: 0, theirs: 5, cover: 1 }; s.state.hand = 1; deckLog(s, { stand: 1 }, { kind: 'hold', from: 1, to: 1, n: 0 }); }
         { const s = deck(assault); s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[1].theirs = 4; s.state.began = 4; deckLog(s, {}, { kind: 'hold', from: 0, to: 0, n: 0 }); }
+        // a steady act and an order where nobody of theirs stands, and the last turn of the cap, where the attackers withdraw
+        { const s = deck(assault); s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[1].theirs = 4; s.state.began = 4;
+          s.state.used.cover = true; const o = repelOrders(s, true)[0]; deckLog(s, { act: 'steady', order: o && o.id }, { kind: 'hold', from: 0, to: 0, n: 0 }); }
+        { const s = deck(assault), S = s.state.sections; S.forEach(x => { x.mine = 0; x.theirs = 0; });
+          if (assault) { S[1].mine = 2; S[2].theirs = 3; s.state.hand = 1; } else { S[1].theirs = 2; S[2].mine = 3; s.state.hand = 2; }
+          s.state.began = 5; s.state.turn = DECK.TURNS - 1; deckLog(s, {}, { kind: 'hold', from: 1, to: 1, n: 0 }); }
       }
     } catch (err) { rec.error = String(err && err.stack || err); }
     out.push(rec);

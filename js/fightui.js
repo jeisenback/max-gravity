@@ -206,7 +206,7 @@ function deckFightEvent(s, plan = {}) {
   const who = fightSay(`deck.who.${s.assault ? 'assault' : 'repel'}`), feint = f.grade > 0 ? ` ${fightSay('deck.feint')}` : '';
   return {
     title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s,
-    read: `${fightSay(`deck.${m.kind}`, { who, n: m.n, to: deckAt(s, m.to) })}${feint}`,  // their move, drawn above the deck (ui.js)
+    read: `${fightSay('deck.turn', { n: f.turn + 1, max: DECK.TURNS })} ${fightSay(`deck.${m.kind}`, { who, n: m.n, to: deckAt(s, m.to) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
     board: deckBoard(s, m.kind === 'hold' ? null : m),
     text: [deckOpening(s), ...(s.held.length ? [s.held.join(' ')] : []), ...f.log.slice(-3)].join('</p><p>'),
     choices,
@@ -228,8 +228,8 @@ function deckTurn(s, p) {
   const at = i => deckAt(s, i), said = [], after = [], ab = r.events.filter(e => e.kind === 'steady' || e.kind === 'cover');
   const side = e => (e.worked ? 'win' : 'lose');
   let sent = null;
-  if (act !== 'shoot' && !(act.kind === 'cover' && f.used.cover) && ab.length) { const e = ab.shift(); after.push(repelWords(s, `ability.${post}.${e.kind}.${side(e)}`, FIGHT_ABILITY[post][e.kind][side(e)])); }
-  if (o && ab.length) { const e = ab.shift(); after.push(`${o.first} ${repelWords(s, `crew.${o.sheet.post}.${e.kind}.${side(e)}`, CREW_ABILITY[o.sheet.post][e.kind][side(e)])}`); if (!e.worked) sent = o.id; }
+  if (act !== 'shoot' && !(act.kind === 'cover' && f.used.cover) && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.you') : repelWords(s, `ability.${post}.${e.kind}.${side(e)}`, FIGHT_ABILITY[post][e.kind][side(e)])); }
+  if (o && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.crew', { first: o.first }) : `${o.first} ${repelWords(s, `crew.${o.sheet.post}.${e.kind}.${side(e)}`, CREW_ABILITY[o.sheet.post][e.kind][side(e)])}`); if (!e.worked && !e.nobody) sent = o.id; }
   for (const e of r.events) {
     if (e.kind === 'move') said.push(fightSay(e.who === 'mine' ? 'deck.log.ours' : 'deck.log.theirs', { n: e.n, to: at(e.to) }));
     if (e.kind === 'exchange') said.push(fightSay('deck.log.fight', { at: at(e.section), theirs: e.theirs, mine: e.mine }));
@@ -245,12 +245,14 @@ function deckTurn(s, p) {
   return deckFightEvent(s, { act: p.act === 'cover' ? 'shoot' : p.act, order: p.order });
 }
 
-// The end: the line for how it was won (the last of them down, or the rest broken), then the settle (boarders.js), shown on the panel; Stand down goes on to
-// whatever the settle queued (the duel, the captain lost on the bridge, the hand's ending).
+// The end: the line for how it was won (the last of them down, or the rest broken) or for the attackers withdrawing at the turn cap, then the settle (boarders.js),
+// shown on the panel; Stand down goes on to whatever the settle queued (the duel, the captain lost on the bridge, the hand's ending).
 function deckClose(s, end) {
-  const f = s.state, left = sum(f, 'theirs'), how = end !== 'won' ? null : left === 0 ? 'last' : left <= f.began * DECK.BREAK ? 'broke' : null;
+  const f = s.state, left = sum(f, 'theirs'), capped = deckCapped(f) && deckEnd({ ...f, turn: 0 }) === null;
+  const how = end !== 'won' || capped ? null : left === 0 ? 'last' : left <= f.began * DECK.BREAK ? 'broke' : null;
   s.won = end === 'won';
-  const said = `${how ? `${repelWords(s, `end.${how}`, FIGHT_END[s.assault ? 'assault' : 'repel'][how])} ` : ''}${repelSettle(s)}`, next = G.nextEvent;
+  const line = capped ? fightSay(`deck.withdraw.${s.assault ? 'assault' : 'repel'}`) : how ? repelWords(s, `end.${how}`, FIGHT_END[s.assault ? 'assault' : 'repel'][how]) : '';
+  const said = `${line ? `${line} ` : ''}${repelSettle(s)}`, next = G.nextEvent;
   G.nextEvent = { title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s, board: deckBoard(s, null), text: `${f.log.slice(-2).join('</p><p>')}</p><p>${said}`,
     choices: [{ label: fightSay('down.label'), keep: true, run: () => { G.nextEvent = next; return null; } }] };
 }

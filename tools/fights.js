@@ -49,7 +49,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       order: s => ({ stand: goal(s), act: 'shoot', order: orderOf(s) }),
     };
     // Plays what is open to its end: a deck panel by the policy, a crippled raider always boarded, and anything else (a close's Stand down) by its first choice.
-    // Every text shown is kept in window.__texts, for the ends that are read from the words.
+    // Every text shown is kept in window.__texts, for the ends that are read from the words. Returns true when it stopped at its own step cap with a fight still open.
     const drive = policy => {
       let k = 0;
       while (G.dialog && k++ < 60) {
@@ -61,6 +61,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
         window.__texts += ` ${next && typeof next === 'string' ? next : ''}`;
         if (keep && next) openEvent(next); else finishEvent();  // a kept choice (the panels) redraws in place
       }
+      return k > 60 && !!G.dialog;
     };
     const lost = st => ({ hurt: Object.keys(st.injured || {}).length, dead: (st.fallen || []).length, marked: (st.castMarked || []).length, hand: career().hurtUntil > st.day ? 1 : 0 });
     const out = { raid: {}, repel: {}, assault: {} };
@@ -99,13 +100,13 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
 
     // The deck fights, started directly: kind 'repel' (they board you) or 'assault' (you board her).
     const lock = (kind, crewN, level, policy, grade) => {
-      const t = { n: 0, won: 0, rounds: 0, hurt: 0, dead: 0, marked: 0, hand: 0, anyHurt: 0, died: 0 };
+      const t = { n: 0, won: 0, rounds: 0, hurt: 0, dead: 0, marked: 0, hand: 0, anyHurt: 0, died: 0, capped: 0 };
       for (let i = 0; i < trials; i++) {
         restore(crewN, level); const foe = foeOf();
         const s = kind === 'repel' ? repelStart({ foe, foeHp: 0, init: 'foe', grade }, 'full') : assaultStart(foe, { grade });
         window.__texts = '';
         openEvent(deckFightEvent(s));
-        drive(policy);
+        if (drive(policy)) t.capped++;  // a fight the tool gave up on: it never ended
         t.n++; if (s.won) t.won++; if (s.handDied) t.died++; t.rounds += s.state.turn; t.hurt += s.hurt.size; t.dead += s.dead.length; t.marked += s.marked.length; t.hand += s.youHurt ? 1 : 0;
         if (s.hurt.size || s.dead.length || s.marked.length || s.youHurt) t.anyHurt++;
       }
@@ -147,7 +148,7 @@ function report(runs) {
   for (const kind of ['repel', 'assault']) {
     console.log(`${kind === 'repel' ? 'Repel fight (they board you)' : 'Assault fight (you board her)'}`);
     for (const [name, t] of Object.entries(sum(runs, kind))) {
-      console.log(`  ${name.split('|')[1].padEnd(34)} n ${String(t.n).padStart(4)}  won ${pct(t.won, t.n)}  rounds ${per(t.rounds, t.n)}  hurt ${per(t.hurt, t.n)}  dead ${per(t.dead, t.n)}  marked ${per(t.marked, t.n)}  you hurt ${pct(t.hand, t.n)}  you killed ${pct(t.died, t.n)}  anyone ${pct(t.anyHurt, t.n)}`);
+      console.log(`  ${name.split('|')[1].padEnd(34)} n ${String(t.n).padStart(4)}  won ${pct(t.won, t.n)}  rounds ${per(t.rounds, t.n)}  hurt ${per(t.hurt, t.n)}  dead ${per(t.dead, t.n)}  marked ${per(t.marked, t.n)}  you hurt ${pct(t.hand, t.n)}  you killed ${pct(t.died, t.n)}  anyone ${pct(t.anyHurt, t.n)}  capped ${t.capped}`);
     }
   }
 }

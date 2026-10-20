@@ -82,13 +82,14 @@ function abilityStep(kind, worked, { pos, boarders, extra }) {
 }
 
 // The deck drawn (#786): a cell a section, with both sides' heads in it (ours on the left, theirs on the right), its cover as pips and the hand where they stand, and
-// their shown move as an arrow from where they are to where they say they go, marked MAY FEINT at a veteran grade. `titles` names the sections; `move` is
-// { from, to, n }, or null for a hold.
+// their shown move as an arrow from where they are to where they say they go, marked MAY FEINT at a veteran grade. A section shows the cover of the side that
+// holds it: hers (`hers`) where only theirs stand, ours (`cover`) otherwise. `titles` names the sections; `move` is { from, to, n }, or null for a hold.
 function fightStrip({ titles, sections, hand, move, feint }) {
   const n = sections.length, w = Math.floor(348 / n) - 6, mid = i => 6 + i * (w + 6) + w / 2, font = 'font-family="IBM Plex Mono, monospace"';
+  const pip = s => (s.theirs && !s.mine ? s.hers || 0 : s.cover);
   const cells = sections.map((s, i) => {
     const x = 6 + i * (w + 6), fill = s.mine && s.theirs ? '#2a1a14' : s.theirs ? '#1c1218' : '#0d1a26', edge = i === hand ? '#ffcf7f' : s.theirs ? '#ff6a4a' : '#23405f';
-    const pips = Array.from({ length: COVER_MAX }, (_, k) => `<circle class="${k < s.cover ? 'pip' : 'nopip'}" cx="${x + 10 + k * 12}" cy="56" r="4" fill="${k < s.cover ? '#7fb4ff' : 'none'}" stroke="#3a587a"/>`).join('');
+    const pips = Array.from({ length: COVER_MAX }, (_, k) => `<circle class="${k < pip(s) ? 'pip' : 'nopip'}" cx="${x + 10 + k * 12}" cy="56" r="4" fill="${k < pip(s) ? '#7fb4ff' : 'none'}" stroke="#3a587a"/>`).join('');
     return `<rect class="section" x="${x}" y="22" width="${w}" height="44" fill="${fill}" stroke="${edge}" stroke-width="1.5"/>` +
       `<text x="${x + 4}" y="17" fill="#7fb4ff" font-size="8" ${font} letter-spacing="1">${titles[i].toUpperCase()}</text>` +
       `<text x="${x + 6}" y="40" fill="#7fb4ff" font-size="12" ${font}>${s.mine}</text><text x="${x + w - 6}" y="40" fill="#ff6a4a" font-size="12" text-anchor="end" ${font}>${s.theirs}</text>` +
@@ -98,6 +99,6 @@ function fightStrip({ titles, sections, hand, move, feint }) {
     `<text x="${(mid(move.from) + mid(move.to)) / 2}" y="92" fill="#ff6a4a" font-size="9" text-anchor="middle" ${font}>${move.n}${feint ? ' MAY FEINT' : ''}</text>` : '';
   const heads = s => [s.mine ? `${s.mine} of ours` : '', s.theirs ? `${s.theirs} of theirs` : ''].filter(Boolean).join(' and ') || 'empty';
   const their = move ? `${move.n} from ${titles[move.from]} into ${titles[move.to]}` : 'they hold';
-  const label = `The deck in ${['three', 'four'][n - 3]} sections. ${sections.map((s, i) => `${titles[i]}: ${heads(s)}, cover ${s.cover}${i === hand ? ', you stand here' : ''}`).join('. ')}. Their move: ${their}${feint ? ', may feint' : ''}.`;
+  const label = `The deck in ${['three', 'four'][n - 3]} sections. ${sections.map((s, i) => `${titles[i]}: ${heads(s)}, cover ${pip(s)}${i === hand ? ', you stand here' : ''}`).join('. ')}. Their move: ${their}${feint ? ', may feint' : ''}.`;
   return `<svg class="board" viewBox="0 0 360 98" role="img" aria-label="${label}"><rect x="0" y="0" width="360" height="98" fill="#050a11"/>${cells}${arrow}</svg>`;
 }

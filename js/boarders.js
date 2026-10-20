@@ -1,10 +1,11 @@
 'use strict';
 
-// Repelling boarders: who comes over the side and who stands with you, and how a boarding ends. The fight itself is the deck fight (fight.js deckFight),
-// played on the deck panel (fightui.js deckFightEvent) when a ship fight ends alongside or a boarding run lands in the ship duel (duel.js). Casualties come
-// with it: someone is hurt (an injured hand's perk stops until treated, and a hurt hand works a level lower), and one who is hurt twice in a fight is dead
-// (a main character too, unless a floor of them holds, fate.js). Loaded after duel.js; only called into at runtime. The same fight, run the other way, is
-// boarding a ship you have crippled (engagements.js): a win carries her bridge instead of holding yours (assault, below).
+// Boarding, both ways: who comes over the side (shipcombat.js boardersFor) and who of the crew stands with you (repelCrew), the deck they fight on with each side's
+// cover (deckStart), the named casualties of it (repelCasualty, hurtHand), and how it ends (repelSettle, assaultSettle, shipTaken). The fight is the deck fight
+// (fight.js), played turn by turn on the deck panel (fightui.js deckFightEvent): when a ship fight ends alongside, when a boarding run lands in the card duel
+// (duel.js repelEvent), and when you board a ship you have crippled (engagements.js deadInSpaceScene), where a win carries her bridge. A hurt hand works a level
+// lower until treated; one hurt twice in a fight is dead (a main character too, unless a floor of them holds, fate.js). Loaded after duel.js and handtohand.js,
+// before fight.js and fightui.js; only called into at runtime. The words are the beats' tables below (hiredscenes.js repelLines).
 
 const REPEL_TITLES = ['The Lock', 'The Corridor', 'The Bridge'];
 const REPEL_OPENINGS = [
@@ -73,9 +74,11 @@ function assaultStart(foe, rate = {}) {
   return deckStart({ d: { foe, foeHp: 0 }, boarders: boardersFor(foe, 'full', rate), grade: rate.grade || 0, size: SHIPS[foe.shipId].size, assault: true });
 }
 
+// Each side's cover is its own (R31): on our deck the ship's cover and the kit's are ours; on hers her ship's is hers, and ours is only what the kit opens up.
 function deckStart({ d, boarders, grade, size, assault = false }) {
-  const w = repelCrew(), cover = [...fightCover({ size, kit: career().kit }), COVER_BASE];  // the cargo bay has the ship's own cover
-  const state = deckFight({ boarders, crew: Math.min(5, w.fight.length), cover, grade, assault, side: size >= 16 });
+  const w = repelCrew(), kit = career().kit, ship = [...fightCover({ size, kit: assault ? [] : kit }), COVER_BASE];  // the cargo bay has the ship's own cover
+  const cover = assault ? [...[0, 1, 2].map(pos => kitCover(kit, pos)), 0] : ship, hers = assault ? ship : [];
+  const state = deckFight({ boarders, crew: Math.min(5, w.fight.length), cover, hers, grade, assault, side: size >= 16 });
   return { d, assault, state, grade, fight: w.fight, held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false };
 }
 
