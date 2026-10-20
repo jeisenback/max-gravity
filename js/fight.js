@@ -18,6 +18,7 @@ const FIGHT = {
   TURNS: 6
 };
 
+const bandMultOf = band => FIGHT.BAND_MULT[RANGE_BANDS[band]] || 0;  // past long they have escaped and there is no volley
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);
 
@@ -29,11 +30,12 @@ function shipSide(stats, { grade = 0, skill = 0, torps = 0 }) {
     shields: stats.shields, maxShields: stats.shields, armor, maxArmor: armor,
     parts: { weapons: { hp: weapons, max: weapons }, drive: part('drive'), lock: part('lock') },
     guns: stats.guns, dmgMult: stats.dmgMult * (1 + GRADE_PUNCH * grade), skill,
+    speed: stats.accel * stats.turn,  // who wins the say on the range
     launcher: !!stats.launcher, pdc: !!stats.pdc, torps
   };
 }
 
-const shipFight = ({ me, foes, nerve, band }) => ({ kind: 'ship', me, foes, band, heat: 0, locked: [], turn: 0, nerve, log: [] });
+const shipFight = ({ me, foes, nerve, band }) => ({ kind: 'ship', me, foes, band, heat: 0, locked: [], turn: 0, nerve, log: [], moves: null, boarded: false });
 
 // A mount whose share of the weapons bar is gone cannot fire, nor can one that is locked.
 const gunsReady = st => Math.max(0, Math.min(st.me.guns, Math.ceil(st.me.parts.weapons.hp / FIGHT.PART_HP.weapons)) - st.locked.length);
@@ -51,7 +53,7 @@ function dealDamage(side, part, dmg) {
 function resolveShipTurn(state, orders, moves, rand) {
   const st = copyOf(state), events = [];
   const held = st.me.pdc && orders.pdc === 'hold';
-  const bandMult = FIGHT.BAND_MULT[RANGE_BANDS[st.band]];
+  const bandMult = bandMultOf(st.band);
   const lo = FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill;
 
   // A turret held back is not firing, so it costs a shot.
@@ -67,13 +69,15 @@ function resolveShipTurn(state, orders, moves, rand) {
     events.push({ who: 'me', foe: orders.torp.foe, part: orders.torp.part, dmg, torp: true });
   }
 
-  // Band movement and the captain's move are the next task's; here the foes only fire.
+  st.moves = copyOf(moves);
   st.foes.forEach((foe, i) => {
     const m = moves.foe[i];
-    if (!m || m.kind !== 'broadside' || foe.armor <= 0 || foe.parts.weapons.hp <= 0) return;
+    if (!m || (m.kind !== 'broadside' && m.kind !== 'pin') || foe.armor <= 0 || foe.parts.weapons.hp <= 0) return;
     const dmg = dealDamage(st.me, m.target, rollIn(m.dmg, held ? 1 - FIGHT.PDC_HOLD : 1, rand));
     events.push({ who: 'foe', foe: i, part: m.target, dmg });
   });
+  if (st.foes.some((foe, i) => foe.armor > 0 && foe.parts.lock.hp > 0 && st.band === 0 && moves.foe[i] && moves.foe[i].kind === 'board')) st.boarded = true;
+  st.band = nextBand(st, moves);
 
   const heat = st.heat + shots.length;
   st.locked = heat > FIGHT.HEAT_CAP ? [0] : [];
@@ -81,4 +85,56 @@ function resolveShipTurn(state, orders, moves, rand) {
   for (const side of [st.me, ...st.foes]) side.shields = Math.min(side.maxShields, side.shields + Math.round(FIGHT.SHIELD_REGEN * side.maxShields));
   st.turn++;
   return { state: st, events };
+}
+
+const hullShare = side => (side.shields + side.armor) / (side.maxShields + side.maxArmor);
+const poolShare = foes => foes.reduce((n, f) => n + f.shields + f.armor, 0) / foes.reduce((n, f) => n + f.maxShields + f.maxArmor, 0);
+const up = side => side.armor > 0 && side.parts.drive.hp > 0;
+
+// What the guns of foe i would do this turn: the range of one volley from the mounts it has left.
+function foeVolley(st, i) {
+  const foe = st.foes[i];
+  const ready = Math.min(foe.guns, Math.ceil(foe.parts.weapons.hp / FIGHT.PART_HP.weapons));
+  return FIGHT.GUN_DMG.map(d => Math.round(d * ready * foe.dmgMult * bandMultOf(st.band)));
+}
+
+function foeMove(st, i) {
+  const foe = st.foes[i], armed = foe.parts.weapons.hp > 0;
+  if (hullShare(foe) < 0.3) return { kind: 'break' };
+  if (st.band === 0 && foe.parts.lock.hp > 0) return { kind: 'board' };
+  if (armed && st.me.parts.drive.hp > 0 && st.me.speed > foe.speed) return { kind: 'pin', target: 'drive', dmg: foeVolley(st, i) };
+  if (st.band > RANGE_BANDS.indexOf('close') && foe.parts.drive.hp > 0) return { kind: 'close' };
+  return armed ? { kind: 'broadside', target: 'weapons', dmg: foeVolley(st, i) } : { kind: 'hold' };
+}
+
+function captainMove(st) {
+  const mine = hullShare(st.me), hers = poolShare(st.foes);
+  const kind = st.nerve >= 4 ? (hers < mine ? 'close' : 'hold')
+    : st.nerve >= 1 && st.nerve <= 2 ? (mine < 0.6 ? 'open' : 'hold')
+    : st.nerve === 3 ? (mine < 0.4 ? 'open' : mine - hers >= 0.3 ? 'close' : 'hold') : 'hold';
+  return { kind };
+}
+
+// Each side votes the band one step; when they differ the faster side's vote stands, and a side with no drive has no vote.
+function nextBand(st, moves) {
+  if (st.band >= RANGE_BANDS.length) return st.band;
+  const pack = st.foes.map((f, i) => ({ f, m: moves.foe[i] })).filter(({ f, m }) => m && up(f)).sort((a, b) => b.f.speed - a.f.speed)[0];
+  const foeVote = pack ? ({ close: -1, break: 1 }[pack.m.kind] || 0) : null;
+  const meVote = st.me.parts.drive.hp > 0 ? ({ close: -1, open: 1 }[moves.captain.kind] || 0) : null;
+  let step = 0;
+  if (foeVote === null || meVote === null) step = foeVote === null ? meVote || 0 : foeVote;
+  else if (foeVote === meVote) step = foeVote;
+  else step = st.me.speed > pack.f.speed ? meVote : st.me.speed < pack.f.speed ? foeVote : 0;
+  return Math.max(0, Math.min(RANGE_BANDS.length, st.band + step));
+}
+
+function shipEnd(st) {
+  const out = f => f.parts.weapons.hp <= 0 && f.parts.drive.hp <= 0;
+  const broke = st.moves && st.foes.every((f, i) => out(f) || (st.moves.foe[i] && st.moves.foe[i].kind === 'break' && f.parts.drive.hp > 0));
+  if (st.me.armor <= 0) return 'lost';
+  if (st.boarded) return 'boarded';
+  if (st.foes.every(out)) return 'crippled';
+  if (broke) return 'broke';
+  if (st.band >= RANGE_BANDS.length) return 'escaped';
+  return st.turn >= FIGHT.TURNS ? 'standoff' : null;
 }
