@@ -31,6 +31,12 @@ const helpers = () => {
       let text;
       try { text = chooseEvent(j); } catch (err) { report.bad.push(`${at}.${j}: threw ${err}`); return; }
       report.played++; if (text === null && G.state !== before) return;  // a choice that begins a new game says nothing
+      if (ch.keep) {  // a kept choice (the ship fight's orders, fightui.js) returns the dialog drawn again, or nothing and a scene queued
+        const again = text || G.nextEvent; G.nextEvent = null;
+        if (again) clean(`${at}.${j}`, e, ch, `${again.title}: ${again.text}`);
+        if (again && depth < 4) playEvent(again, `${at}.${j}`, depth + 1);
+        return;
+      }
       clean(`${at}.${j}`, e, ch, text);
       const next = G.nextEvent; G.nextEvent = null;
       if (next && depth < 4) playEvent(next, `${at}.${j}`, depth + 1);
