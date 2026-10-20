@@ -170,7 +170,7 @@ test('the function-built scenes and the code-written hired events are edited lin
   assert.deepEqual(r.out, { parts: { text: 'A new warning.' } }, 'only what differs');
   assert.deepEqual(r.back, { 'part.text': 'A new warning.' });
   assert.deepEqual(r.bad, [['{nobody}'], ['{last}']], 'a {word} the line has is kept as typed; one it has not is flagged');
-  for (const [id, line] of [['scene:sign-on', 'title'], ['scene:warning', 'text'], ['scene:put-ashore', 'text'], ['scene:hand-death', 'text.hurt'], ['scene:captain-lost', 'text'], ['scene:split', 'text'],
+  for (const [id, line] of [['scene:sign-on', 'title'], ['scene:warning', 'text'], ['scene:put-ashore', 'text'], ['scene:hand-death', 'text.hurt'], ['scene:captain-lost', 'text'], ['scene:split', 'ask'],  // the split's opening has three versions taken by the day (#780), and its ask plays in each
     ['scene:walk-off', 'title'], ['scene:used-ship-offer', 'tomas.title'], ['scene:yard-office', 'title'], ['hired:cap-order', 'text'], ['hired:road-scope', 'text']]) {
     await select(id);
     await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);

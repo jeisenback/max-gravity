@@ -80,3 +80,19 @@ test('passages keeps each changed passage whole, with the other versions of its 
   const text = bundle([], { rubric: 'R', cards: {} }, passages(src, passageSet(base)).map(p => ({ ...p, file: 'js/s.js' })));
   assert.match(text, /## Passages \(3\)\n\n### js\/s\.js:2 ines\.label\n\nFly a sim\n\n### js\/s\.js:3 ines\.result\n\nInes runs the sim and says nothing at all\.\n/);
 });
+
+test('versions are grouped within their scene block, so a version brings its own scene\'s first text and no other scene\'s (#780)', () => {
+  const src = [
+    "const L = {",
+    "  'scene:a': {",
+    "    text: 'The first scene opens with a long enough line.',",
+    "  },",
+    "  'scene:b': {",
+    "    text: 'The second scene opens with a long enough line.',",
+    "    'text.1': 'The second scene has another opening line now.',",
+    "  },",
+    "};",
+  ].join('\n');
+  const base = src.replace("    'text.1': 'The second scene has another opening line now.',\n", '');
+  assert.deepEqual(passages(src, passageSet(base)).map(p => [p.block, p.key]), [['scene:b', 'text'], ['scene:b', 'text.1']]);
+});

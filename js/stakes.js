@@ -121,11 +121,11 @@ function splitScene() {
   const choices = movable.map(x => ({ label: say('let.label', { name: x.p.first }), run: () => letGo(x, x === a ? b : a) }));
   choices.push({
     label: say('keep.label'),
-    run() { addBond(a, b, -1); like(a.p, -1, say('keep.memory', { other: B })); like(b.p, -1, say('keep.memory', { other: A })); return say('keep.result'); }
+    run() { addBond(a, b, -1); like(a.p, -1, say('keep.memory', { other: B })); like(b.p, -1, say('keep.memory', { other: A })); return say(tellingOn('keep.result', st.day)); }
   });
   return {
     title: say('title'), personal: true,
-    text: `${say('text')}${hired() ? ` ${say('ask')}` : ''}`,
+    text: `${say(tellingOn('text', st.day))}${hired() ? ` ${say('ask')}` : ''}`,  // three versions of the moment, by the day (#780)
     choices,
   };
 }
@@ -142,7 +142,7 @@ function letGo(x, y) {
   rep.role = role; rep.skill = Math.max(1, skill - 1); rep.job = ROLE_NAMES[role] ? ROLE_NAMES[role].toLowerCase() : 'hand'; rep.mood = null;
   registerPerson(rep); st.crew.push(rep.id);
   homeLog(sceneSay('scene:ship-log', 'left.log', { first: x.p.first, last: x.p.last, planet: st.planet }));
-  return sceneSay('scene:split', 'let.result', { gone: x.p.first, stays: y.p.first, job: rep.job, new: rep.first });
+  return sceneSay('scene:split', tellingOn('let.result', st.day), { gone: x.p.first, stays: y.p.first, job: rep.job, new: rep.first });
 }
 
 Mods.register({
