@@ -1,18 +1,18 @@
 'use strict';
 
-// The fights, over many seeded trials: the ship fight (js/fight.js, js/fightui.js), the repel fight and the assault fight (js/boarders.js).
-// The tuning tool for COMBAT.md's numbers (FIGHT in js/fight.js, CASUALTY_ODDS in js/losses.js, REPEL_HURT and REPEL_LEAN in js/boarders.js).
+// The fights, over many seeded trials: the ship fight (js/fight.js, js/fightui.js), and the deck fight both ways, repelling boarders and boarding her (js/boarders.js).
+// The tuning tool for COMBAT.md's numbers (FIGHT and DECK in js/fight.js, CASUALTY_ODDS in js/losses.js, REPEL_HURT in js/boarders.js).
 // Each trial answers the scenes from a stated policy, then the game state is put back.
 //   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider] [--owner]
 // `--owner` plays them as an owner who kept the post (the same ship and crew, bought with a hand's savings), to put beside the hand's (#721).
 //   npm run fights
-// Report: for the ship fight, the spread of its ends, its rounds, the hull lost, the hurt and the dead; for each lock fight, how often you win and who is hurt, by crew, by the
-// post's skill level, by tactic and by the foe's grade. Not part of `npm test`.
+// Report: for the ship fight, the spread of its ends, its rounds, the hull lost, the hurt and the dead; for each deck fight, how often you win and who is hurt, by crew, by the
+// post's skill level, by the hand's policy and by the foe's grade. Not part of `npm test`.
 
 const { open, closeBrowser } = require('../tests/helpers');
 
 // One seed's trials. Returns raw tallies, so the seeds can be summed.
-async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, lock = true } = {}) {  // lock: false leaves out the lock fights started directly, for a test of the ship fight alone
+async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, lock = true } = {}) {  // lock: false leaves out the deck fights started directly, for a test of the ship fight alone
   const { ev, errors, ctx } = await open({ scope: 'earth-hired', seed, debt: true, stall: 0 });
   const r = await ev(([trials, postKey, shipId, asOwner, lockFights]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: 'hester' }); while (G.dialog) finishEvent();
@@ -28,39 +28,45 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       return st;
     };
     const foeOf = () => Object.assign(makeEnemy({ kind: 'pirate' }), { shipId });
-    // The policies: which choice to make in a scene. In a lock fight the choices are the three tactics, the post's own move (index 3), and the post's other abilities (4 and 5, the
-    // second shut once used); the raid's last choice is the post's own move. 'random' draws from the choices the fights had before the abilities, so its figures read as they did.
-    // The lock fight's orders to named crew (#711) come after these on the list (`order`), so the policies read the choices without them, and the figures read as they did; the 'order' policy has the crew make the cover first, then plays 'count'.
-    const own = d => d.choices.filter(c => !c.order);
-    const POLICY = {
-      random: d => Math.floor(Math.random() * (own(d).length === 6 ? 4 : own(d).length)),
-      post: d => (own(d).length === 6 ? 3 : own(d).length - 1),
-      steady: d => (own(d).length === 6 ? 4 : own(d).length - 1),
-      cover: d => (own(d).length === 6 ? (d.choices[5].can && !d.choices[5].can() ? 3 : 5) : own(d).length - 1),
-      count: d => (own(d).length === 6 && window.__fight && repelStanding(window.__fight) < window.__fight.boarders ? 4 : own(d).length === 6 ? 3 : own(d).length - 1),
-      all: d => { const open = own(d).map((c, i) => i).filter(i => !(d.choices[i].can && !d.choices[i].can())); return open[Math.floor(Math.random() * open.length)]; },
-      order: d => { const i = d.choices.findIndex(c => c.order && /cover here/.test(c.label)); return i >= 0 ? i : POLICY.count(d); },  // send the crew to make the cover while it is there to make, then the 'count' play
-      crew: d => { const i = d.choices.findIndex(c => c.order && !(c.can && !c.can())); return i >= 0 ? i : POLICY.count(d); },  // send the crew every exchange, the first of them on offer (#737), then the 'count' play once none is left
-      first: () => 0,
-      hold: () => 0, rush: () => 1, flank: () => 2,
+    // The deck fight's policies: the hand's plan each turn ({ stand, act, order }, fightui.js deckFightEvent). 'random' draws each part of it from what the panel offers;
+    // the others go where the fight is (the section where both sides will stand after their shown move, the fullest of them, else where they are going, else the
+    // nearest of them), a section a turn, and there 'shoot' fires the sidearm, 'cover' makes the cover while it can and then shoots, and 'order' shoots and sends the first crewmate on offer every turn.
+    const rnd = list => list[Math.floor(Math.random() * list.length)];
+    const near = f => [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])];
+    const goal = s => {
+      const f = s.state, S = f.sections.map(x => ({ ...x })), m = s.shown;
+      if (m.kind !== 'hold') { S[m.from].theirs -= m.n; S[m.to].theirs += m.n; }
+      const both = S.map((_, i) => i).filter(i => S[i].theirs && S[i].mine).sort((a, b) => S[b].theirs - S[a].theirs);
+      const theirs = S.map((_, i) => i).filter(i => S[i].theirs).sort((a, b) => Math.abs(REACH[a] - REACH[f.hand]) - Math.abs(REACH[b] - REACH[f.hand]));
+      const t = both.length ? both[0] : m.kind !== 'hold' ? m.to : theirs.length ? theirs[0] : f.hand;  // with nobody trading, to the nearest of them, to shoot
+      return near(f).sort((a, b) => Math.abs(REACH[a] - REACH[t]) - Math.abs(REACH[b] - REACH[t]) || (b === t) - (a === t))[0];
     };
-    const drive = (policy, titles) => {
-      let last = '', k = 0;
-      while (G.dialog && k++ < 40) {
-        titles.push(G.dialog.event.title);
-        if (/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title)) break;  // the endings start a new game: the trial is over
-        const i = /Dead in Space/.test(G.dialog.event.title) ? 0 : POLICY[policy](G.dialog);  // a crippled raider is always boarded
-        const keep = G.dialog.choices[i].keep;
-        last = chooseEvent(i); window.__lastText = String(last);
-        if (keep && last) openEvent(last); else finishEvent();  // a kept choice (the close of a ship fight) redraws in place
+    const orderOf = s => { const o = repelOrders(s, s.state.used.cover); return o.length ? o[0].id : null; };
+    const POLICY = {
+      random: s => ({ stand: rnd(near(s.state)), act: rnd(['shoot', 'steady', ...(s.state.used.cover ? [] : ['cover'])]), order: rnd([null, ...repelOrders(s, s.state.used.cover).map(o => o.id)]) }),
+      shoot: s => ({ stand: goal(s), act: 'shoot', order: null }),
+      cover: s => ({ stand: goal(s), act: s.state.used.cover ? 'shoot' : 'cover', order: null }),
+      order: s => ({ stand: goal(s), act: 'shoot', order: orderOf(s) }),
+    };
+    // Plays what is open to its end: a deck panel by the policy, a crippled raider always boarded, and anything else (a close's Stand down) by its first choice.
+    // Every text shown is kept in window.__texts, for the ends that are read from the words.
+    const drive = policy => {
+      let k = 0;
+      while (G.dialog && k++ < 60) {
+        const ev = G.dialog.event; window.__texts += ` ${ev.text}`;
+        if (/^(Without a Captain|The Last Run)$/.test(ev.title)) break;  // the endings start a new game: the trial is over
+        const s = ev.fight, deck = s && s.state.kind === 'deck' && ev.choices.some(c => c.label === fightSay('deck.fight'));
+        const keep = deck || G.dialog.choices[0].keep;
+        const next = deck ? (e => e.choices[e.choices.length - 1].run())(deckFightEvent(s, POLICY[policy](s))) : chooseEvent(0);
+        window.__texts += ` ${next && typeof next === 'string' ? next : ''}`;
+        if (keep && next) openEvent(next); else finishEvent();  // a kept choice (the panels) redraws in place
       }
-      return last;
     };
     const lost = st => ({ hurt: Object.keys(st.injured || {}).length, dead: (st.fallen || []).length, marked: (st.castMarked || []).length, hand: career().hurtUntil > st.day ? 1 : 0 });
     const out = { raid: {}, repel: {}, assault: {} };
 
-    // The ship fight, from the contact to its end and the lock fight that may follow it. The guns' policy picks each gun's target every turn: 'random' any
-    // part, 'focus' always her weapons, 'drive' her drive until it is gone and then her weapons, 'lock' her lock and then her weapons. A lock fight after it is played by the 'post' policy.
+    // The ship fight, from the contact to its end and the deck fight that may follow it. The guns' policy picks each gun's target every turn: 'random' any
+    // part, 'focus' always her weapons, 'drive' her drive until it is gone and then her weapons, 'lock' her lock and then her weapons. A deck fight after it is played by the 'shoot' policy.
     const PARTS = ['weapons', 'drive', 'lock', 'hull'];
     const AIM = {
       random: () => PARTS[Math.floor(Math.random() * PARTS.length)],
@@ -80,38 +86,36 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
           ev = fireTurn(s, orders);
           end = shipEnd(s.state);
         }
-        const titles = [], next = G.nextEvent; G.nextEvent = null; window.__lastText = '';
-        if (next) { openEvent(next); drive('post', titles); }  // the close, dead in space, or the lock
+        const next = G.nextEvent; G.nextEvent = null; window.__texts = '';
+        if (next) { openEvent(next); drive('shoot'); }  // the close, dead in space, or the deck fight
         const c = lost(G.state);
         t.n++; if (end) t[end]++; else t.died++;  // no end: the hand was killed in it
         t.rounds += s ? s.state.turn : 0;
-        if (end === 'crippled' && /strongbox/.test(window.__lastText)) t.assaultWon++;
-        if (end === 'boarded' && /last of them go back/.test(window.__lastText)) t.boardedWon++;
+        if (end === 'crippled' && /strongbox/.test(window.__texts)) t.assaultWon++;
+        if (end === 'boarded' && /last of them go back/.test(window.__texts)) t.boardedWon++;
         t.hull += (armor0 - G.state.armor) / maxArmor; t.hurt += c.hurt; t.dead += c.dead; t.hand += c.hand; if (c.hurt || c.dead || c.hand) t.anyHurt++;
       }
     }
 
-    // The lock fights, started directly: kind 'repel' (they board you) or 'assault' (you board her).
+    // The deck fights, started directly: kind 'repel' (they board you) or 'assault' (you board her).
     const lock = (kind, crewN, level, policy, grade) => {
       const t = { n: 0, won: 0, rounds: 0, hurt: 0, dead: 0, marked: 0, hand: 0, anyHurt: 0 };
       for (let i = 0; i < trials; i++) {
-        const st = restore(crewN, level), foe = foeOf();
+        restore(crewN, level); const foe = foeOf();
         const s = kind === 'repel' ? repelStart({ foe, foeHp: 0, init: 'foe', grade }, 'full') : assaultStart(foe, { grade });
-        window.__fight = s;
-        openEvent(repelScene(s));
-        drive(policy, []);
-        const c = lost(st);
-        t.n++; if (s.pos < 0) t.won++; t.rounds += s.round; t.hurt += s.hurt.size; t.dead += s.dead.length; t.marked += s.marked.length; t.hand += s.youHurt ? 1 : 0;
+        window.__texts = '';
+        openEvent(deckFightEvent(s));
+        drive(policy);
+        t.n++; if (s.won) t.won++; t.rounds += s.state.turn; t.hurt += s.hurt.size; t.dead += s.dead.length; t.marked += s.marked.length; t.hand += s.youHurt ? 1 : 0;
         if (s.hurt.size || s.dead.length || s.marked.length || s.youHurt) t.anyHurt++;
-        void c;
       }
       return t;
     };
     const cells = [
       ['crew', [1, 3, 5].map(c => [c, 2, 'random', 0])],
-      ['level', [1, 2, 3].map(l => [5, l, 'post', 0])],
-      ['tactic', ['random', 'hold', 'rush', 'flank', 'post', 'steady', 'cover', 'count', 'all', 'order', 'crew'].map(p => [5, 2, p, 0])],
-      ['small crew', ['post', 'cover', 'count', 'order', 'crew'].map(p => [2, 2, p, 0])],
+      ['level', [1, 2, 3].map(l => [5, l, 'shoot', 0])],
+      ['policy', ['random', 'shoot', 'cover', 'order'].map(p => [5, 2, p, 0])],
+      ['small crew', ['random', 'shoot', 'cover', 'order'].map(p => [2, 2, p, 0])],
       ['grade', [0, 1, 2].map(g => [5, 2, 'random', g])],
     ];
     if (lockFights) for (const kind of ['repel', 'assault']) {
