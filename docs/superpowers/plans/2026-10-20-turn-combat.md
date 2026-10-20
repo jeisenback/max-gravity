@@ -93,7 +93,7 @@ test('resolveShipTurn does not change the state it was given', () => {});
 
 - [ ] **Step 4: Run the tests to see them pass**, plus `node --test tests/globals.test.js`. Expected: PASS.
 
-- [ ] **Step 5: Commit:** `git commit -m "The fight engine: sides, damage in ranges, heat and parts (#NNN)"`. The issue number comes from the issue opened for this plan.
+- [ ] **Step 5: Commit:** `git commit -m "The fight engine: sides, damage in ranges, heat and parts (#786)"`. The issue number comes from the issue opened for this plan.
 
 ### Task 2: the enemy's move, the captain's move, and the end
 
@@ -144,7 +144,7 @@ test('in a pack, one crippled foe does not end the fight; both do', () => {}); /
 
 - [ ] **Step 4: Run them to see them pass.**
 
-- [ ] **Step 5: Commit:** "Her move, the captain's by nerve, and the ends (#NNN)".
+- [ ] **Step 5: Commit:** "Her move, the captain's by nerve, and the ends (#786)".
 
 ### Task 3: the deck fight on the same engine
 
