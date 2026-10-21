@@ -578,7 +578,7 @@ test('the standoff line agrees with the board: close in when she is in the close
     out.knife = stand('knife'); out.close = stand('close'); out.mid = stand('mid'); out.long = stand('long');
     return out;
   });
-  for (const band of ['knife', 'close']) assert.equal(r[band].text, 'She turns away close in, and a round drums on the plating by the galley as she goes. Armor -13.', band);
+  for (const band of ['knife', 'close']) assert.equal(r[band].text, 'She turns away close in and drags her drive plume across your bow, and it scorches the plating forward. Armor -13.', band);
   for (const band of ['mid', 'long']) assert.equal(r[band].text, 'She breaks off at long range, and her last burst clips the hull aft. Armor -13.', band);
   assert.equal(r.close.armor, 13, 'five percent of the hull');
   await done();

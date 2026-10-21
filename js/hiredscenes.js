@@ -442,7 +442,7 @@ const SCENE_LINES = {
     'open.grapple.0': 'A raider at forty kilometers and closing, with no transponder and her drive running hot.',
     'open.grapple.1': 'A raider\'s plume, short and white, closing on your quarter the way they come when they mean to board.',
     'open.torpedo.0': 'A corsair at forty kilometers with her tubes open, and the sensors show them loaded. She doesn\'t hurry.',
-    'open.torpedo.1': 'A corsair is closing slowly from astern with her nose on you and her torpedo bay doors open.',
+    'open.torpedo.1': 'A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.',
     'first.ours': 'You fire first: {hits}.', 'first.hers': 'She fires first: {hits}.',
     'foe.broadside': '{ship}: broadside at your {part}, {lo} to {hi} damage.', 'foe.pin': '{ship}: guns on your drive to pin you, {lo} to {hi} damage.',
     'foe.close': '{ship}: closing, and firing at your {part} as she comes, {lo} to {hi} damage.', 'foe.board': '{ship}: coming alongside to board.', 'foe.break': '{ship}: turning to break off.',
@@ -460,7 +460,7 @@ const SCENE_LINES = {
     'end.crippled.grapple': 'Her grapple arms go slack, and she tumbles past your bow with no plume behind her.',
     'end.crippled.torpedo': 'The corsair\'s drive cone splits, and she coasts on with her bay doors stuck half open.',
     'end.standoff': 'She breaks off at long range, and her last burst clips the hull aft.',
-    'end.standoffNear': 'She turns away close in, and a round drums on the plating by the galley as she goes.',  // the same close, when the board has her inside the guns' reach (#733)
+    'end.standoffNear': 'She turns away close in and drags her drive plume across your bow, and it scorches the plating forward.',  // the same close, when the board has her inside the guns' reach (#733)
     'end.escaped.gun': 'You open the range past her guns, and her hail goes unanswered until she drops off the board.',
     'end.escaped.grapple': 'The raider\'s plume falls back on the board until the sensors lose it.',
     'end.escaped.torpedo': 'You open the range, and her last torpedo burns out well short of you.',

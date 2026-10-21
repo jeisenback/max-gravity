@@ -22392,7 +22392,7 @@
    {
     "title": "Battle Stations",
     "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 29 to 42 damage. Captain Vance: holding the range.",
-    "text": "A corsair is closing slowly from astern with her nose on you and her torpedo bay doors open.",
+    "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
     "labels": [
      "Gun 1: aim at her weapons",
      "Fire: heat 1 of 4"
@@ -22629,7 +22629,7 @@
     "log": "Turn 1: no hits.",
     "next": {
      "title": "Battle Stations",
-     "text": "A corsair is closing slowly from astern with her nose on you and her torpedo bay doors open.</p><p>Turn 1: no hits.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>Turn 1: no hits.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
      "labels": [
       "Stand down"
      ]
@@ -22656,7 +22656,7 @@
     "log": "Turn 1: you hit her weapons for 14.",
     "next": {
      "title": "Battle Stations",
-     "text": "A corsair is closing slowly from astern with her nose on you and her torpedo bay doors open.</p><p>Turn 1: you hit her weapons for 14.</p><p>You open the range, and her last torpedo burns out well short of you.",
+     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>Turn 1: you hit her weapons for 14.</p><p>You open the range, and her last torpedo burns out well short of you.",
      "labels": [
       "Stand down"
      ]
@@ -22742,7 +22742,7 @@
     "log": "Turn 6: no hits.",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 6: no hits.</p><p>She turns away close in, and a round drums on the plating by the galley as she goes. Armor -13.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 6: no hits.</p><p>She turns away close in and drags her drive plume across your bow, and it scorches the plating forward. Armor -13.",
      "labels": [
       "Stand down"
      ]

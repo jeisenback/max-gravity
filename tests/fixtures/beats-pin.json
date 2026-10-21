@@ -166,7 +166,7 @@
  {
   "id": "raid:corsair:gunner",
   "title": "Battle Stations",
-  "text": "A corsair is closing slowly from astern with her nose on you and her torpedo bay doors open.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons",
    "Fire: heat 1 of 4"
@@ -228,7 +228,7 @@
  {
   "id": "raid:corsair:pilot",
   "title": "Battle Stations",
-  "text": "A corsair is closing slowly from astern with her nose on you and her torpedo bay doors open.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons",
    "Fire: heat 1 of 4"
@@ -290,7 +290,7 @@
  {
   "id": "raid:corsair:engineer",
   "title": "Battle Stations",
-  "text": "A corsair is closing slowly from astern with her nose on you and her torpedo bay doors open.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons",
    "Fire: heat 1 of 4"
@@ -352,7 +352,7 @@
  {
   "id": "raid:corsair:comms",
   "title": "Battle Stations",
-  "text": "A corsair is closing slowly from astern with her nose on you and her torpedo bay doors open.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons",
    "Fire: heat 1 of 4"
