@@ -9617,6 +9617,22 @@
   ]
  },
  {
+  "id": "hand:restock",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The captain has the magazine filled at the yard: 2 torpedoes, 8,000 cr from the ship's fund.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
   "id": "hand:practise:owner",
   "plays": [
    {
@@ -22436,7 +22452,10 @@
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
      "Gun 1: aim at her weapons",
-     "Fire: heat 1 of 4"
+     "Gun 2: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 2 of 4"
     ]
    },
    {
@@ -22445,7 +22464,10 @@
     "text": "A raider at forty kilometers and closing, with no transponder and her drive running hot.",
     "labels": [
      "Gun 1: aim at her weapons",
-     "Fire: heat 1 of 4"
+     "Gun 2: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 2 of 4"
     ]
    },
    {
@@ -22454,7 +22476,10 @@
     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
     "labels": [
      "Gun 1: aim at her weapons",
-     "Fire: heat 1 of 4"
+     "Gun 2: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 2 of 4"
     ]
    },
    {
@@ -22463,7 +22488,10 @@
     "text": "A corsair at forty kilometers with her tubes open, and the sensors show them loaded. She doesn't hurry.",
     "labels": [
      "Gun 1: aim at her weapons",
-     "Fire: heat 1 of 4"
+     "Gun 2: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 2 of 4"
     ]
    },
    {
@@ -22472,7 +22500,10 @@
     "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.",
     "labels": [
      "Gun 1: aim at her weapons",
-     "Fire: heat 1 of 4"
+     "Gun 2: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 2 of 4"
     ]
    },
    {
@@ -22481,16 +22512,22 @@
     "text": "A navy ship at thirty kilometers, on an intercept course with her guns warm. She has hailed twice, and the second hail said there won't be a third.",
     "labels": [
      "Gun 1: aim at her weapons",
-     "Fire: heat 1 of 4"
+     "Gun 2: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 2 of 4"
     ]
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>You fire first: you hit her weapons for 14.",
+    "read": "The Pirate \"Black Widow\": turning to break off. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>You fire first: you hit her weapons for 14, you hit her weapons for 6.",
     "labels": [
      "Gun 1: aim at her weapons",
-     "Fire: heat 1 of 4"
+     "Gun 2: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 2 of 4"
     ]
    },
    {
@@ -22499,7 +22536,10 @@
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 18.",
     "labels": [
      "Gun 1: aim at her weapons",
-     "Fire: heat 1 of 4"
+     "Gun 2: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 2 of 4"
     ]
    },
    {
@@ -22508,6 +22548,8 @@
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
      "Gun 1: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
      "Fire: heat 1 of 4"
     ]
    },
@@ -22517,6 +22559,8 @@
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
      "Gun 1: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
      "Fire: heat 1 of 4"
     ]
    },
@@ -22526,6 +22570,8 @@
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
      "Gun 1: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
      "Fire: heat 1 of 4"
     ]
    },
@@ -22535,6 +22581,8 @@
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
      "Gun 1: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
      "Fire: heat 1 of 4"
     ]
    },
@@ -22544,6 +22592,8 @@
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
      "Gun 1: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
      "Fire: heat 1 of 4"
     ]
    },

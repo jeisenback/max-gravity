@@ -191,6 +191,7 @@ const playScenes = () => {
   for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
     run(`hand:practise:${post}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.practise.label, run: () => String(ACTIVITIES.practise.run()) }] }), { extra: () => hired().skill });
   }
+  run('hand:restock', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => restockTorps(G.state, hired(), currentPlanet()) }] }), { prep() { G.state.torpedoes = 0; hired().fund = 100000; } });
   run('hand:practise:owner', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.practise.run()) }] }));
   // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
   run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.filter(c => /^Heave to/.test(c.label)) }; });

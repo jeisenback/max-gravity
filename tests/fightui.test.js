@@ -52,7 +52,7 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    const st = fightGame('gunner'); st.outfits.pdc = 1; const s = battle(), f = s.state;
+    const st = fightGame('gunner'); const s = battle(), f = s.state;
     const bars = document.querySelector('#panel .event-body svg.bars');
     return {
       title: G.dialog.event.title, duel: !!G.duel, read: G.dialog.event.read, labels: G.dialog.choices.map(c => c.label), keep: G.dialog.choices.map(c => !!c.keep),
@@ -64,8 +64,8 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
   assert.match(r.read, /^The Pirate "[^"]+": closing, and firing at your hull as she comes, 14 to 21 damage\. Captain Vance: holding the range\.$/, r.read);
   assert.equal(r.band, 'long', 'a raider is met at forty kilometers');
   assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
-  assert.deepEqual(r.labels, ['Gun 1: aim at her weapons', 'Gun 2: aim at her weapons', 'Turret: fire with the guns', 'Fire: heat 2 of 4']);
-  assert.deepEqual(r.keep, [true, true, true, true], 'every order and Fire redraw in place');
+  assert.deepEqual(r.labels, ['Gun 1: aim at her weapons', 'Gun 2: aim at her weapons', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4']);
+  assert.deepEqual(r.keep, [true, true, true, true, true], 'every order and Fire redraw in place');
   assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 40 of 40, drive 15 of 15, lock 10 of 10, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 20 of 20, drive 15 of 15, lock 10 of 10\.$/, r.bars);
   assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
   await done();
@@ -107,7 +107,8 @@ test('a fight played to each end lands in its scene: crippled to dead in space, 
     out.boarded = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /grapples bang on the hull/.test(G.nextEvent.text) };
     // lost: the hull is one point from gone, and her broadside is at it
     const st = fightGame('gunner'), h = hired(); h.fund = 1000; const cap = person(h.captain), op = cap.opinion;
-    s = battle(); Object.assign(s.state.me, { shields: 0, armor: 1 }); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [10, 10] }], captain: { kind: 'hold' } };
+    s = battle(); s.state.foes.forEach(f => { f.parts.weapons.hp = f.parts.weapons.max = 90; });  // two guns would shoot away her weapons (20) before she fires
+    Object.assign(s.state.me, { shields: 0, armor: 1 }); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [10, 10] }], captain: { kind: 'hold' } };
     const real = Math.random; Math.random = () => 0.99;  // the captain is not lost on her bridge (a roll of one in three)
     const ret = chooseEvent(choiceAt('Fire')), close = G.nextEvent; Math.random = real;
     out.lost = { ret, title: close && close.title, text: close && close.text, fund: h.fund, opinion: cap.opinion - op, armor: st.armor };
@@ -139,7 +140,7 @@ test('a head start from the contact screen is a free first volley: ours at her w
     return out;
   });
   assert.ok(r.ahead.weapons < 20 && r.ahead.hull === r.ahead.full, `ours first, at her weapons: ${JSON.stringify(r.ahead)}`);
-  assert.match(r.ahead.last, /^You fire first: you hit her weapons for \d+\.$/); assert.equal(r.ahead.band, 'long', 'fifty kilometers'); assert.equal(r.ahead.turn, 0, 'the free volley is not a turn');
+  assert.match(r.ahead.last, /^You fire first: you hit her weapons for \d+, you hit her weapons for \d+\.$/); assert.equal(r.ahead.band, 'long', 'fifty kilometers'); assert.equal(r.ahead.turn, 0, 'the free volley is not a turn');
   assert.ok(r.behind.weapons === 20 && r.behind.hull < r.behind.full, `hers first, at our hull: ${JSON.stringify(r.behind)}`);
   assert.match(r.behind.last, /^She fires first: she hits your hull for \d+\.$/); assert.equal(r.behind.band, 'mid', 'thirty kilometers');
   assert.ok(r.even.weapons === 20 && r.even.hull === r.even.full, 'no head start, no volley'); assert.equal(r.even.band, 'long');

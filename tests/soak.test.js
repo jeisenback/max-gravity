@@ -37,7 +37,7 @@ test('with --jobs the soak works the station jobs and puts the jobs elsewhere to
 });
 
 test('with --frames every deck fight is played to its close, and a fight\'s panels count once with their scene (#786)', async () => {
-  const r = await soak({ seed: 3, legs: 20, frames: true });  // a seed whose raids end alongside: before #786's fix both its deck fights were cut off
+  const r = await soak({ seed: 33, legs: 20, frames: true });  // a seed whose raids end alongside (seed 3 did before #786's fix cut both its deck fights off; the Ice Hauler's two guns end most raids before a boarding, so a seed was found again)
   assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
   assert.ok(r.deck.begun > 0, 'a deck fight was fought');
   assert.equal(r.deck.settled + r.deck.died, r.deck.begun, `each settled, or the hand was killed in it: ${JSON.stringify(r.deck)}`);

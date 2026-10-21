@@ -376,6 +376,7 @@ const SCENE_LINES = {
     'buyin.captain.memory': 'You worked my ship, and then bought your own. Fair winds.', 'buyin.friend.memory': 'We left the {ship} together.',
     'buyin.result': 'You bought the {ship} for {price} cr and left the {old}. Captain {first} {last} shakes your hand on the dock and says they\'ll keep an eye out for you on the lanes.{company} She\'s yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.',
     'buyin.with': '{names} came with you.', 'buyin.alone': 'You\'re on your own.',
+    'torps.restock': 'The captain has the magazine filled at the yard: {n} torpedoes, {cost} cr from the ship\'s fund.',
     'practise.label': 'Practice at your post', 'practise.none': 'There\'s nothing to practice.', 'practise.learn': '(+{n} experience at the {post} post.)',
     'practise.pilot': 'You run the flip drill on the sim: cut the drive, swing the ship end over end, and light it again on the new heading, smoothly enough that nothing loose aboard moves. That is what the sim scores. The first flip puts a tool roll and two bulbs of coffee into the air on the sim\'s deck plan. After that most of the ship stays put, and the sim flags the restart as two seconds late every time.',
     'practise.gunner': 'You spend a watch on the range sim, tracking and leading targets: two hundred rounds, the first sixty of them spent on where the target was. The sim gives you a score and a lane-by-lane breakdown. Your worst lane is the curved one, which is the one a real raider takes.',
