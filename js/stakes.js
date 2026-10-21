@@ -101,14 +101,14 @@ function putAshore(lost) {
   return null;
 }
 
-// The pair that has split worst: a feud that has been seen, a bond at the floor, and one of them not a main character.
+// The pair that has split worst: a feud that has been seen since they were last kept together, a bond at the floor, and one of them not a main character.
 function splitPair() {
   const st = G.state;
   if (st.relAt && st.relAt.split !== undefined && st.day - st.relAt.split < SPLIT_GAP) return null;
   let worst = null;
   for (const [a, b] of pairs(folk().filter(f => f.crew))) {
-    const n = bond(a, b), movable = [a, b].filter(x => !x.p.cast);  // a main character does not leave
-    if (n <= SPLIT_BOND && ((st.feuds || {})[bondKey(a, b)] || 0) >= 1 && movable.length && (!worst || n < worst.n)) worst = { a, b, n, movable };
+    const n = bond(a, b), k = bondKey(a, b), movable = [a, b].filter(x => !x.p.cast);  // a main character does not leave
+    if (n <= SPLIT_BOND && ((st.feuds || {})[k] || 0) > ((st.splitKept || {})[k] || 0) && movable.length && (!worst || n < worst.n)) worst = { a, b, n, movable };
   }
   return worst;
 }
@@ -124,7 +124,8 @@ function splitScene() {
   const choices = movable.map(x => ({ label: say('let.label', { name: x.p.first }), run: () => letGo(x, x === a ? b : a) }));
   choices.push({
     label: say('keep.label'),
-    run() { addBond(a, b, -1); like(a.p, -1, say('keep.memory', { other: B })); like(b.p, -1, say('keep.memory', { other: A })); return say(tellingOn('keep.result', st.day)); }
+    run() { const k = bondKey(a, b); (st.splitKept = st.splitKept || {})[k] = (st.feuds || {})[k] || 0;  // settled until a new feud between them is seen (#801)
+      addBond(a, b, -1); like(a.p, -1, say('keep.memory', { other: B })); like(b.p, -1, say('keep.memory', { other: A })); return say(tellingOn('keep.result', st.day)); }
   });
   return {
     title: say('title'), personal: true,
