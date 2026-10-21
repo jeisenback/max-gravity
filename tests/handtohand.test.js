@@ -51,6 +51,13 @@ test('the strip draws each section with both sides\' heads, its cover, where the
   assert.match(vet, /aria-label="The deck in four sections\. .*The Cargo Bay: 1 of ours, cover 1, you stand here\. Their move: they hold, may feint\."/);
   assert.doesNotMatch(vet, /<path class="move"/, 'a hold draws no arrow');
   assert.match(fightStrip({ titles, sections, hand: 0, move: { from: 0, to: 1, n: 3 }, feint: true }), />3 MAY FEINT</, 'a veteran\'s move is marked on the arrow');
+  const counted = fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 6, breakAt: 2 });  // spec Section 3: the line she breaks at, on her count
+  assert.equal((counted.match(/<rect class="head"/g) || []).length, 3, 'a mark for each of hers still up');
+  assert.equal((counted.match(/<rect class="nohead"/g) || []).length, 3, 'and a hollow one for each down');
+  assert.match(counted, /<path class="break" d="M24\.5 /, 'the line after her second mark');
+  assert.match(counted, />BREAKS AT 2</);
+  assert.match(counted, /3 of their 6 still up; they break at 2\."/);
+  assert.doesNotMatch(svg, /class="break"/, 'no count is drawn when none is given');
 });
 
 // The crew at the lock (#711): a sheet from role, skill and traits, and the orders to named crew.
