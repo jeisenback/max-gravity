@@ -71,11 +71,12 @@ function seedScript(seed) {
 //   scope: 'earth-hired' (the default here), the narrow build the game ships with (js/build.js), or 'full' for a test of what that build switches off (the owner game, the other starts, captains and storylines)
 //   bundle: false to load the scripts one by one as index.html lists them (the default serves them as one, bundleOf above)
 //   stall: milliseconds a page may take to answer one evaluate before the test fails with a report of what the browser was doing (default STALL_MS; 0: no limit, for the soaks)
+//   video: a folder to record the page's video into (Playwright's recordVideo, at the viewport's size; tools/playthrough.js)
 //   debt: true to start a hired hand owing the hiring hall's bond (js/hired.js, #280). It is off in tests, so the many that buy a ship or
 //         count a hand's pay start as they did before the bond; the soak and the tests of the bond turn it on.
-async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'earth-hired', debt = false, bundle = true, stall = STALL_MS } = {}) {
+async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'earth-hired', debt = false, bundle = true, stall = STALL_MS, video = null } = {}) {
   if (!browser) { launching = launching || chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined }); browser = await launching; launching = null; }
-  const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile });
+  const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile, ...(video ? { recordVideo: { dir: video, size: viewport } } : {}) });
   await ctx.addInitScript(seedScript, seed);
   if (title) await ctx.addInitScript(() => Object.defineProperty(navigator, 'webdriver', { get: () => false }));
   if (init) await ctx.addInitScript(init);

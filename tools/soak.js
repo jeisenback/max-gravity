@@ -30,7 +30,18 @@ const { open, closeBrowser } = require('../tests/helpers');
 // realDraw: the two main characters come from the pool as in the game; tests start from the pair they knew (tests/helpers.js).
 async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null, jobs = false } = {}) {
   const { ev, errors, ctx } = await open({ scope, seed, debt: true, stall: 0 });  // the chapter's economy includes the hiring hall's bond
-  const r = await ev(([maxLegs, key, real, postKey, play, order, takeJobs]) => {
+  const r = await ev(chapter, [legs, captainKey, realDraw, post, frames, engineer, jobs]);
+  await ctx.close();
+  return { seed, ...r, errors };
+}
+
+// The chapter's driver, run in the page: it starts the hired game, sails the legs, lands, answers every dialog and reads the chapter's end. The soak runs it with no hooks,
+// and every step is made at once. tools/playthrough.js names an object of hooks on window (hooksName): its policy picks the choices (pick), it is told of each scene, result,
+// burn, landing and port (scene, result, burn, port), it stops the chapter (done), and between the steps of a burn or of the flight it yields to the page's frames (tick), so
+// the game draws what is happening. With hooks.live a burn's events are not drawn up front: they are left on the burn's clock and the burn's contact on its own, and each opens
+// when the transit update reaches it. The port hook is played at every landing (the day ashore, the buy-in); the chapter ends when the hand has bought a ship.
+async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hooksName]) {
+    const H = hooksName ? window[hooksName] : null, live = !!(H && H.live);
     if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [], losses = [], ending = { v: null };
     // Every ship message (the flight log, msg) and port note (UI.notes) the chapter writes, by its text with the numbers and the names taken out.
@@ -71,11 +82,12 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     // The deck fights (fightui.js deckFightEvent) begun: each is played to its close (deckClose sets s.won) or to the hand's death, or the run is bad (below).
     const decks = [];
     { const df = window.deckFightEvent; window.deckFightEvent = function (s) { if (s && !decks.includes(s)) decks.push(s); return df.apply(this, arguments); }; }
-    const answer = () => {
+    const answer = async () => {
       let kept = false;  // the dialog is a kept choice's redraw (a fight panel's next turn, or an order changed): a step of the same scene, not a new one
-      for (let k = 0, redraws = 0; G.dialog && k < 8 && redraws < 8 * (FIGHT.TURNS + DECK.TURNS); kept ? redraws++ : k++) {  // a fight's panels do not count against the scenes
+      const most = H ? 40 : 8;  // the scenes one answer plays before the rest are closed unanswered (with hooks, they are reported: H.stuck)
+      for (let k = 0, redraws = 0; G.dialog && k < most && redraws < 8 * (FIGHT.TURNS + DECK.TURNS); kept ? redraws++ : k++) {  // a fight's panels do not count against the scenes
         const d = G.dialog;
-        if (/^(The Last Run|Without a Captain|Put Ashore)$/.test(d.event.title)) { ending.v = { day: G.state.day - hired().since, title: d.event.title, how: (hired().died || hired().captainLost || {}).how }; G.dialog = null; return; }  // the endings start a new game: the chapter is over
+        if (/^(The Last Run|Without a Captain|Put Ashore)$/.test(d.event.title)) { if (H) await H.scene(d, -1, false); ending.v = { day: G.state.day - hired().since, title: d.event.title, how: (hired().died || hired().captainLost || {}).how }; G.dialog = null; return; }  // the endings start a new game: the chapter is over
         if (!kept) {  // a redraw is counted once, with its scene
           scenes[d.event.title] = (scenes[d.event.title] || 0) + 1;
           if (d.event.soakId) byId[d.event.soakId] = (byId[d.event.soakId] || 0) + 1; else byTitle[d.event.title] = (byTitle[d.event.title] || 0) + 1;
@@ -85,21 +97,24 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
         if (ok.length) {
           const fire = d.event.fight ? ok.find(i => /^(Fire\b|Fight$)/.test(d.choices[i].label)) : undefined;  // a ship fight or a deck fight is fought with the orders as they stand (fightui.js)
-          const i = fire !== undefined ? fire : pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
+          const i = H ? H.pick(d, ok) : fire !== undefined ? fire : pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
+          if (H) await H.scene(d, i, kept);
           const c0 = G.state.credits, x0 = skillXp(postKey), o0 = atBar ? opinions() : 0;
           bar.in = atBar;
           const res = chooseEvent(i);
           bar.in = false;
+          if (H) await H.result(d, c, res);
           if (c.keep && res) { openEvent(res); kept = true; continue; }  // a kept choice redraws its dialog in place (ui.js)
           if (odd(res)) bad.push('result: ' + String(res).slice(0, 80));
           if (atBar) { const id = c.soakId || (/^Leave/.test(c.label) ? 'leave' : 'follow-up'); bar.talks++; bar.topics[id] = (bar.topics[id] || 0) + 1; bar.credits += G.state.credits - c0; bar.xp += skillXp(postKey) - x0; bar.opinion += opinions() - o0; }
-        }
+        } else if (H) { H.stuck(d, 'no choice is open'); return; }
         finishEvent();
       }
       if (G.dialog && G.dialog.event.fight) bad.push(`fight left open: ${G.dialog.event.title}`);  // the step cap closed a fight with no settle
+      if (G.dialog && H) { H.stuck(G.dialog, 'the step cap was reached'); return; }
       while (G.dialog) finishEvent();
     };
-    answer();
+    await answer();
     // Who is gone from the crew since the last look: dead (the memorial or the fallen) or walked off.
     let seen = [...st.crew], marksSeen = 0;
     const tally = () => {
@@ -116,32 +131,34 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     let runs = 0, stuck = 0, reached = null, offerDay = null, nights = 0;
     const plans = [];  // what the captain's plan at each landing pays the ship a day (0 for a light run; an ice run is marked), for tuning the wait for the market (stay.js)
     const beatDays = [], xoDays = [], waits = [], burns = [], dueBurns = {}, introRun = {};  // introRun: the run in which each main character's first scene played  // waits: days from a captain scene becoming due to its playing; burns: burns sailed with it due, the playing one included  // the day each of the captain's scenes played, and when the used ship was offered
-    while (runs < maxLegs && stuck < 5 && !reached && !ending.v) {
+    const since = hired().since;
+    while (runs < maxLegs && stuck < 5 && !reached && !ending.v && !(H && H.done())) {
       try {
         UI.tab = 'bar'; UI.render();
-        const talk = () => { if (G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); answer(); } };
-        talk();
-        while (stayOf(hired()) && !ending.v) { if (!passNight()) break; nights++; answer(); talk(); }  // a stay in port (the yard, a wait for the market): each night, the bar again and what the dock brings
+        const talk = async () => { if (G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); await answer(); } };
+        await talk();
+        while (stayOf(hired()) && !ending.v) { if (!passNight()) break; nights++; await answer(); await talk(); }  // a stay in port (the yard, a wait for the market): each night, the bar again and what the dock brings
         if (order) Object.assign(power(), POWER_PRESETS[order].to);  // the order, before every sail
         const armor0 = st.armor;
         if (!sail()) { stuck++; st.day += 1; continue; }
         const to = hired().run.sid, runPlanet = hired().run.planet, creditsBefore = st.credits;
         const dayOut = st.day;  // the burn's days as sailed are the days from here to the arrival
         plans.push({ perDay: Math.round(hired().run.profit / Math.max(1, hired().run.days)), expected: hired().run.profit, days: hired().run.days, ice: !!hired().run.ice, light: !!hired().run.ballast });
-        answer();
+        await answer();
         G.player.x = BURN_DIST + 40; G.player.y = 0;  // clear of local traffic, as the autopilot leaves her (autopilot.js)
-        tryBurn(); enterTransit(); const drawAt = G.transit.times.slice(), draws = drawAt.length; G.transit.times = [];  // as many draws as the burn would make
+        tryBurn(); enterTransit(); const drawAt = G.transit.times.slice(), draws = drawAt.length; if (!live) G.transit.times = [];  // as many draws as the burn would make (live: left on the burn's clock)
+        if (H) await H.burn(G.transit, runPlanet);
         planOccasions();
         if (play) {  // the burn's own contact, planned and seen only if the drive is hot enough (engage.js), then answered at random
           G.transit.interceptPlanned = false; G.transit.event = null; planIntercept();
-          if (G.transit.intercept) {
+          if (G.transit.intercept && !live) {
             fr.planned++; const sp = G.transit.intercept.spec; G.transit.intercept = null;
-            if (!(sp.kind === 'pirate' && Math.random() > scanVisibility() / SCAN_MAX)) { fr.seen++; G.dialog = null; openEvent(contactEvent(sp)); answer(); }
-          }
+            if (!(sp.kind === 'pirate' && Math.random() > scanVisibility() / SCAN_MAX)) { fr.seen++; G.dialog = null; openEvent(contactEvent(sp)); await answer(); }
+          } else if (G.transit.intercept) fr.planned++;
         }
-        for (const o of G.transit.occasions) { openEvent(occasionEvent(o)); answer(); }
+        for (const o of G.transit.occasions) { openEvent(occasionEvent(o)); await answer(); }
         const due = captainBeat(); if (due) dueBurns[due] = (dueBurns[due] || 0) + 1;  // a burn sailed with the scene due
-        for (let h = 0; h < draws; h++) { G.transit.elapsed = drawAt[h] / burnSpeed(); startHappening(); answer(); }  // each draw at the second of the burn it would fall on, so the ship's night (shiplife.js) can come into it
+        if (!live) for (let h = 0; h < draws; h++) { G.transit.elapsed = drawAt[h] / burnSpeed(); startHappening(); await answer(); }  // each draw at the second of the burn it would fall on, so the ship's night (shiplife.js) can come into it
         for (const c of castAboard()) if ((castRec(c.cast).arc || 0) >= 1 && !(c.cast in introRun)) introRun[c.cast] = runs + 1;
         while (beatDays.length < (hired().beats || 0)) {  // read on the day she left, before the burn's days pass
           const name = CAPTAIN_BEATS[beatDays.length];
@@ -149,28 +166,36 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         }
         const acts = Object.values(ACTIVITIES).filter(a => a.can());
         if (acts.length) pick(acts).run();
-        const rs = relationshipScene(); if (rs) { openEvent(rs); answer(); }
+        const rs = relationshipScene(); if (rs) { openEvent(rs); await answer(); }
         if (play) {  // the whole burn, in the game's own transit update: speed, heat and reaction mass tick as the frame loop would, the comms talk, and she arrives when the burn is done
           const t = G.transit, fuel0 = st.fuel, dt = 0.25;
           G.mode = 'transit'; G.dialog = null; t.event = null; t.elapsed = 0;
-          for (let k = 0; G.transit === t && k < 100000; k++) { engineeringTick(dt); updateTransit(dt); }
+          // live: the contact opens when the burn reaches its second, and is seen only if the drive is hot enough, as the frame loop has it (engage.js)
+          const contact = () => { const ic = t.intercept; if (!ic || t.event || G.dialog || t.total - t.left < ic.at) return; t.intercept = null; if (!(ic.spec.kind === 'pirate' && Math.random() > scanVisibility() / SCAN_MAX)) { fr.seen++; openEvent(contactEvent(ic.spec)); } };
+          for (let k = 0; G.transit === t && k < 100000 && !ending.v; k++) {
+            engineeringTick(dt); updateTransit(dt);
+            if (live && G.transit === t) contact();
+            if (H) { if (G.dialog) await answer(); await H.tick('burn', t); }
+          }
           fr.fuel += fuel0 - st.fuel;
         }
         fr.hull += Math.max(0, armor0 - st.armor);  // before the ship is made whole again for the next run
         if (G.transit) arrive();  // the game's own arrival: the days, the crew's pay, the arrival line (game.js); a played burn has arrived already
         if (play) {  // a few seconds of the live flight loop in the system: its traffic speaks, the autopilot docks her, a contact may open (#656)
-          for (let t = 0; t < LIVE_SECONDS && G.mode === 'flight'; t += LIVE_STEP) { update(LIVE_STEP); fr.live += LIVE_STEP; if (G.dialog) answer(); }
+          for (let t = 0; t < LIVE_SECONDS && G.mode === 'flight' && !ending.v; t += LIVE_STEP) { update(LIVE_STEP); fr.live += LIVE_STEP; if (G.dialog) await answer(); if (H) await H.tick('flight'); }
         }
         if (G.mode !== 'landed') {  // the autopilot may have docked her already
           G.player = makeShip(st.shipId, 0, 0, 0); G.npcs = [];
           land(system().planets.find(p => p.name === runPlanet) || pick(system().planets));
         }
-        answer();
-        if (takeJobs) {  // the Missions page: one station job where the board has one, and each job elsewhere put to the captain once a stop
-          if (currentPlanet().services.includes('missions') && !jobBoard().done) { Mods.act('takeJob', pick(jobBoard().ids)); answer(); }
-          (hired().away || []).forEach((a, i) => { if (a.booked || pitchedNow(a)) return; work.pitched++; Mods.act('pitchJob', i); answer(); if (a.booked) work.booked++; });
+        if (H) await H.landed();
+        await answer();
+        if (takeJobs && !ending.v) {  // the Missions page: one station job where the board has one, and each job elsewhere put to the captain once a stop
+          if (currentPlanet().services.includes('missions') && !jobBoard().done) { Mods.act('takeJob', pick(jobBoard().ids)); await answer(); }
+          const away = hired().away || [], n = away.length;  // as forEach walks it: the length at the start, and an index still there
+          for (let i = 0; i < n && !ending.v; i++) { if (!(i in away)) continue; const a = away[i]; if (a.booked || pitchedNow(a)) continue; work.pitched++; Mods.act('pitchJob', i); await answer(); if (a.booked) work.booked++; }
         }
-        if (G.state !== st) { ending.v = ending.v || { day: st.day - st.hired.since, title: 'a new game' }; break; }  // the chapter ended in a scene the titles above do not name: never read the new game as the old
+        if (G.state !== st) { ending.v = ending.v || { day: st.day - since, title: 'a new game' }; break; }  // the chapter ended in a scene the titles above do not name: never read the new game as the old
         tally();
         runs++;
         paid.push(st.credits - creditsBefore);
@@ -180,20 +205,19 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         const xoKey = CAPTAINS[hired().captainKey] && CAPTAINS[hired().captainKey].xo;
         while (xoKey && xoDays.length < (castRec(xoKey).arc || 0)) xoDays.push(st.day - hired().since);
         const d = hired().deal, price = d && dealOpen() ? d.price : target;  // she is bought when the deal's price is in hand, or the chapter's if it lapsed
-        if (st.credits >= price) reached = { runs, day: st.day, days: st.day - hired().since, credits: st.credits, deal: d ? { price: d.price, offered: d.day, lapsed: !dealOpen() } : null };
+        if (st.credits >= price && !H) reached = { runs, day: st.day, days: st.day - hired().since, credits: st.credits, deal: d ? { price: d.price, offered: d.day, lapsed: !dealOpen() } : null };
         for (const n of UI.notes) if (odd(n)) bad.push('note: ' + n.slice(0, 80));
-      } catch (e) { bad.push('threw: ' + String(e).slice(0, 120)); break; }
+        if (H && !ending.v) await H.port(answer);  // the day ashore and the buy-in
+        if (!hired()) { ending.v = { day: st.day - since, title: 'Bought in', bought: true }; break; }  // the hand bought a ship: the chapter's own close
+      } catch (e) { bad.push('threw: ' + String(e).slice(0, 120) + (H ? ` ${String(e.stack || '').slice(0, 600)}` : '')); break; }
     }
     const avg = (a, n) => Math.round(a / Math.max(1, n));
-    if (!ending.v) tally();
+    if (!ending.v && hired()) tally();
     delete work.current; delete bar.in;
     if (hired()) freight.standing = { ...(hired().standing || {}) };  // each shipper's regard for the ship at the chapter's end (shippers.js)
     const deck = { begun: decks.length, settled: decks.filter(s => 'won' in s).length, died: decks.filter(s => !('won' in s) && s.handDied).length };
     return { messages, frames: fr, deck, hand, work, bar, nights, plans, freight, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
-  }, [legs, captainKey, realDraw, post, frames, engineer, jobs]);
-  await ctx.close();
-  return { seed, ...r, errors };
 }
 
 // The games of a distribution test, `width` at a time: each has its own browser context and its own seeded dice, so the numbers are the ones
@@ -322,7 +346,7 @@ function scenesReport(runs, rows, legs, top = 10) {
   return out;
 }
 
-module.exports = { soak, soaks, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport, barReport, plansReport, freightReport };
+module.exports = { soak, soaks, chapter, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport, barReport, plansReport, freightReport };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
