@@ -13,7 +13,8 @@
     "prose": "node tools/prose-lint.js",
     "voices": "node tools/voices.js",
     "scopes": "node tools/scopes.js",
-    "pin:from": "node tools/pin-from.js"
+    "pin:from": "node tools/pin-from.js",
+    "playthrough": "node tools/playthrough.js"
   },
   "devDependencies": {
     "playwright": "^1.63.0"
