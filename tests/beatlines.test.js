@@ -10,7 +10,7 @@ const { playBeats } = require('./beatplay');
 
 after(closeBrowser);
 
-const BEATS = ['beats:ambush', 'beats:dead-in-space', 'beats:repel', 'beats:assault'];
+const BEATS = ['beats:ambush', 'beats:dead-in-space', 'beats:repel', 'beats:assault', 'beats:deck'];
 
 test('every line of every beat is read: an override for it shows in what the beat plays, and nothing else changes', async () => {
   const g = await open({ scope: 'full' });

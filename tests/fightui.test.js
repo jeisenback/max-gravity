@@ -81,12 +81,13 @@ test('setting a gun\'s target redraws in place; Fire resolves a turn and the log
   for (let i = 0; i < 4; i++) await page.click('[data-action="choose"][data-arg="0"]');
   assert.equal(await ev(() => G.dialog.choices[0].label), 'Gun 1: aim at her weapons', 'the targets go round: drive, lock, hull, hold, weapons');
   await page.click('[data-action="choose"][data-arg="0"]');
+  await ev(() => { const d = G.dialog.event.fight.state.foes[0].parts.drive; d.hp = d.max = 100; });  // one shot cannot take her drive, so she can close as she said (the roll moves with the page's frames)
   const fire = await ev(() => G.dialog.choices.findIndex(c => c.label.startsWith('Fire')));
   await page.click(`[data-action="choose"][data-arg="${fire}"]`);
   const b = await ev(() => { const s = G.dialog.event.fight; return { result: !!document.querySelector('#event-result'), turn: s.state.turn, log: s.state.log.length, last: s.state.log[s.state.log.length - 1], text: G.dialog.event.text, drive: s.state.foes[0].parts.drive.hp, band: RANGE_BANDS[s.state.band] }; });
   assert.equal(b.result, false, 'no result page between turns'); assert.equal(b.turn, 1); assert.equal(b.log, 2, 'the opening and the first turn');
   assert.match(b.last, /^Turn 1: you hit her drive for \d+/, b.last); assert.ok(b.text.endsWith(b.last), 'the panel shows the newest line last');
-  assert.ok(b.drive < 30, 'the shot is on her drive'); assert.equal(b.band, 'mid', 'she closed a band, as she said she would');
+  assert.ok(b.drive < 100, 'the shot is on her drive'); assert.equal(b.band, 'mid', 'she closed a band, as she said she would');
   await done();
 });
 
