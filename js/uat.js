@@ -189,19 +189,33 @@ function uatShipFight(spec, { ship, grade = 0, pack = false } = {}) {
   const e = G.nextEvent; G.nextEvent = null; openEvent(e);
 }
 const uatRaider = () => Object.assign(makeEnemy({ kind: 'pirate' }), { shipId: 'raider', armor: SHIPS.raider.armor, maxArmor: SHIPS.raider.armor });
+// Late in the chapter (about 240 days on): the gunner at the top level with the guns boresighted, the valve keys carried, and a crew who are friends and a level better.
+function uatLate() {
+  const st = G.state, c = career();
+  c.skill = { ...(c.skill || {}), gunner: SKILL_STEPS[SKILL_STEPS.length - 1] }; c.kit = ['valve-keys'];
+  postState('gunner').sighted = true; st.day += 240;
+  for (const p of st.crew.map(person).filter(Boolean)) { p.opinion = Math.max(p.opinion, OPINION.FRIEND); p.skill = Math.min(3, (p.skill || 1) + 1); }
+}
+// Each fight, early and late: the late one meets a crew a grade better (up to the top), as the lanes get worse.
+const UAT_FIGHTS = [
+  { id: 'fight-raider', title: 'A lone raider', check: 'The panel shows both ships\' bars, her next move and the captain\'s, and one order per gun. Setting a gun\'s target redraws in place; Fire plays a turn and adds a log line. Aimed at her guns, she is beaten within six turns; aimed at random, it is often a standoff.',
+    run: g => uatShipFight({ kind: 'pirate' }, { ship: 'raider', grade: g }) },
+  { id: 'fight-pack', title: 'Two raiders in company', check: 'Both are on the board with their own bars and moves, and you start a volley behind. Once the first is crippled, a shot at her hull or lock goes to the consort and the log says so.',
+    run: g => uatShipFight({ kind: 'pirate' }, { ship: 'raider', grade: g, pack: true }) },
+  { id: 'fight-veteran', title: 'A veteran corsair, with torpedoes aboard', check: 'The opening names a veteran crew; her bars are longer and her volleys harder. The torpedo order shows while torpedoes are left, and a torpedo is one large hit.', grade: 2,
+    run: g => { const st = G.state; st.outfits.launcher = 1; st.torpedoes = 6; uatShipFight({ kind: 'pirate' }, { ship: 'corsair', grade: g }); } },
+  { id: 'fight-patrol', title: 'A navy stop', check: 'Firing on her costs standing with her government. She is never boarded, and crippled she calls the stop off.', grade: null,
+    run: () => uatShipFight({ kind: 'patrol', gov: 'Arcology Compact' }) },
+  { id: 'deck-repel', title: 'Being boarded', check: 'The deck cutaway shows heads and cover by section, where you stand, their next move (marked may feint above grade 0) and Turn n of 8. Stand or move, shoot, steady, cover once, and one crew order all work; it ends repelled or taken through the usual scenes.', grade: 1,
+    run: g => openEvent(repelEvent({ foe: uatRaider(), foeHp: 0, init: 'foe', grade: g, pack: false }, 'full')) },
+  { id: 'deck-assault', title: 'Boarding a crippled ship', check: 'Dead in space gives her count, and Board her opens a fight of that count. On her deck your crew push from her lock to her bridge, and her cover is hers.',
+    run: g => openEvent(deadInSpaceScene({ spec: { kind: 'pirate' }, foe: uatRaider(), grade: g, pack: false })) },
+];
+const UAT_LATE_CHECK = ' Late in the chapter: the gunner\'s level and the boresight show in your damage ranges, the valve keys add cover in the corridor, and a crewmate who is a friend takes the first hit meant for you.';
 UAT_ITEMS.push(
-  { group: 'Turn-based fights', id: 'fight-raider', title: 'A lone raider', check: 'The panel shows both ships\' bars, her next move and the captain\'s, and one order per gun. Setting a gun\'s target redraws in place; Fire plays a turn and adds a log line. Aimed at her guns, she is beaten within six turns; aimed at random, it is often a standoff.',
-    setup() { uatHand(); uatShipFight({ kind: 'pirate' }, { ship: 'raider' }); } },
-  { group: 'Turn-based fights', id: 'fight-pack', title: 'Two raiders in company', check: 'Both are on the board with their own bars and moves, and you start a volley behind. Once the first is crippled, a shot at her hull or lock goes to the consort and the log says so.',
-    setup() { uatHand(); uatShipFight({ kind: 'pirate' }, { ship: 'raider', pack: true }); } },
-  { group: 'Turn-based fights', id: 'fight-veteran', title: 'A veteran corsair, with torpedoes aboard', check: 'The opening names a veteran crew; her bars are longer and her volleys harder. The torpedo order shows while torpedoes are left, and a torpedo is one large hit.',
-    setup() { const st = uatHand(); st.outfits.launcher = 1; st.torpedoes = 6; uatShipFight({ kind: 'pirate' }, { ship: 'corsair', grade: 2 }); } },
-  { group: 'Turn-based fights', id: 'fight-patrol', title: 'A navy stop', check: 'Firing on her costs standing with her government. She is never boarded, and crippled she calls the stop off.',
-    setup() { uatHand(); uatShipFight({ kind: 'patrol', gov: 'Arcology Compact' }); } },
-  { group: 'Turn-based fights', id: 'deck-repel', title: 'Being boarded', check: 'The deck cutaway shows heads and cover by section, where you stand, their next move (marked may feint at this grade) and Turn n of 8. Stand or move, shoot, steady, cover once, and one crew order all work; it ends repelled or taken through the usual scenes.',
-    setup() { uatHand(); openEvent(repelEvent({ foe: uatRaider(), foeHp: 0, init: 'foe', grade: 1, pack: false }, 'full')); } },
-  { group: 'Turn-based fights', id: 'deck-assault', title: 'Boarding a crippled ship', check: 'Dead in space gives her count, and Board her opens a fight of that count. On her deck your crew push from her lock to her bridge, and her cover is hers.',
-    setup() { uatHand(); openEvent(deadInSpaceScene({ spec: { kind: 'pirate' }, foe: uatRaider(), grade: 0, pack: false })); } },
+  ...UAT_FIGHTS.map(f => ({ group: 'Turn-based fights', id: f.id, title: f.title, check: f.check, setup() { uatHand(); f.run(f.grade || 0); } })),
+  ...UAT_FIGHTS.map(f => ({ group: 'Turn-based fights, late chapter', id: `late-${f.id}`, title: `${f.title}, late`, check: f.check + UAT_LATE_CHECK,
+    setup() { uatHand(); uatLate(); f.run(f.grade === null ? 0 : Math.min(2, (f.grade || 0) + 1)); } })),
 );
 
 // ---------- general tools ----------
