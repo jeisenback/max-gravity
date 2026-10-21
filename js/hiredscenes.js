@@ -44,8 +44,8 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:fight', fn: 'shipFightEvent', file: 'js/fightui.js', title: 'Battle Stations', where: 'transit', when: 'A pirate contact or a navy stop, fought turn by turn on the sensor board: the opening, her move and the captain\'s, the orders to the guns, a line a turn, and how it ends.' },
   { id: 'beats:dead-in-space', fn: 'deadInSpaceScene', file: 'js/engagements.js', title: 'Dead in Space', where: 'transit', when: 'After a raid, when a crippled raider drifts beside you.' },
   { id: 'beats:ambush', fn: 'ambushScene', file: 'js/engagements.js', title: 'An Ambush', where: 'transit', when: 'On a dangerous lane, every 60 days at most.' },
-  { id: 'beats:repel', fn: 'deckFightEvent', file: 'js/boarders.js', title: 'Boarders', where: 'transit', when: 'When a raid ends alongside: the deck fight at the lock, the corridor and the bridge.' },
-  { id: 'beats:assault', fn: 'deckFightEvent', file: 'js/boarders.js', title: 'Boarding Her', where: 'transit', when: 'When you board the crippled raider: the deck fight on her deck.' },
+  { id: 'beats:repel', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarders', where: 'transit', when: 'When a raid ends alongside: the deck fight at the lock, the corridor and the bridge.' },
+  { id: 'beats:assault', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarding Her', where: 'transit', when: 'When you board the crippled raider: the deck fight on her deck.' },
 ];
 
 // The words of the ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
@@ -452,14 +452,15 @@ const SCENE_LINES = {
     'gun.label': 'Gun {n}: {aim}', 'torp.label': 'Torpedo, {left} left: {aim}', 'aim.at': 'aim at her {part}', 'aim.hold': 'hold fire',
     'pdc.fire': 'Turret: fire with the guns', 'pdc.hold': 'Turret: hold it to cut her volley',
     'fire.label': 'Fire: heat {heat} of {cap}', 'fire.hot': 'Fire: heat {heat} of {cap}, and a gun locks next turn',
-    'log.turn': 'Turn {n}: {hits}.', 'log.mine': 'you hit her {part} for {dmg}', 'log.torp': 'your torpedo hits her {part} for {dmg}', 'log.hers': 'she hits your {part} for {dmg}', 'log.spent': 'nothing left of the {part} to hit', 'log.none': 'no hits',
+    'log.turn': 'Turn {n}: {hits}.', 'log.mine': 'you hit her {part} for {dmg}', 'log.torp': 'your torpedo hits her {part} for {dmg}',
+    'log.mine.consort': 'you hit her consort\'s {part} for {dmg}', 'log.torp.consort': 'your torpedo hits her consort\'s {part} for {dmg}', 'log.hers': 'she hits your {part} for {dmg}', 'log.spent': 'nothing left of the {part} to hit', 'log.none': 'no hits',
     'end.broke.gun': 'She breaks off, and on the open band a voice says, "Your registry has been logged."',
     'end.broke.grapple': 'She breaks off with her grapple arms folded, and the range opens.',
     'end.broke.torpedo': 'She closes her bay doors with a torpedo still in the tube and turns away.',
     'end.crippled.gun': 'Her drive goes out under your last burst, and a beacon on her hull starts calling for a tow.',
     'end.crippled.grapple': 'Her grapple arms go slack, and she tumbles past your bow with no plume behind her.',
     'end.crippled.torpedo': 'The corsair\'s drive cone splits, and she coasts on with her bay doors stuck half open.',
-    'end.standoff': 'She breaks off at long range, and her last burst clips the hull aft.',
+    'end.standoff': 'She turns away with the range still open, and her last burst clips the hull aft.',
     'end.standoffNear': 'She turns away close in and drags her drive plume across your bow, and it scorches the plating forward.',  // the same close, when the board has her inside the guns' reach (#733)
     'end.escaped.gun': 'You open the range past her guns, and her hail goes unanswered until she drops off the board.',
     'end.escaped.grapple': 'The raider\'s plume falls back on the board until the sensors lose it.',
@@ -469,6 +470,7 @@ const SCENE_LINES = {
     'end.boarded.torpedo': 'She closes while your drive is slow and seals a boarding tube to your lock.',
     'down.label': 'Stand down',
     'memory.stood': 'You stood us up to a raid and she broke off.',
+    'memory.navy': 'You stood us up to a navy ship, and she left us alone.',  // a patrol that broke off, or that was crippled and calls for a tow
     // the deck fight (deckFightEvent): {who} is who comes on, {n} how many, {to} and {at} a section, {what} an ability, {first} and {does} a crewmate's order, {lo} to {hi} what a shot takes
     'deck.cargo': 'The Cargo Bay', 'deck.cargoHers': 'Her Cargo Bay',
     'deck.ours.0': 'the Lock', 'deck.ours.1': 'the Corridor', 'deck.ours.2': 'the Bridge', 'deck.ours.3': 'the Cargo Bay',

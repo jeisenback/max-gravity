@@ -22576,6 +22576,22 @@
     ]
    },
    {
+    "log": "Turn 4: you hit her consort's hull for 15, your torpedo hits her consort's hull for 36.",
+    "next": null,
+    "mem": []
+   },
+   {
+    "title": "Battle Stations",
+    "read": "Her consort: closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "text": "Turn 2: no hits.</p><p>Turn 3: nothing left of the lock to hit.</p><p>Turn 4: you hit her consort's hull for 15, your torpedo hits her consort's hull for 36.",
+    "labels": [
+     "Gun 1: aim at her hull",
+     "Gun 2: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
     "log": "Turn 1: no hits.",
     "next": {
      "title": "Battle Stations",
@@ -22735,7 +22751,7 @@
      ]
     },
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off."
+     "9 Jul 2214: You stood us up to a navy ship, and she left us alone."
     ]
    },
    {
@@ -22753,7 +22769,7 @@
     "log": "Turn 6: no hits.",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 6: no hits.</p><p>She breaks off at long range, and her last burst clips the hull aft. Armor -13.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 6: no hits.</p><p>She turns away with the range still open, and her last burst clips the hull aft. Armor -13.",
      "labels": [
       "Stand down"
      ]
@@ -22970,15 +22986,15 @@
     ]
    },
    {
-    "log": "Turn 1: 4 of them move into the Corridor, 1 of them and 1 of ours down in the Corridor. Hana is hurt.",
+    "log": "Turn 1: 4 of them move into the Corridor, 1 of them and 1 of ours down in the Corridor. None of them are where you stand.",
     "end": false
    },
    {
-    "log": "Turn 1: 1 of them and 1 of ours down in the Lock, 3 of them and 0 of ours down in the Corridor, you fall back to the Bridge. Hana is hurt.",
+    "log": "Turn 1: 1 of them and 1 of ours down in the Lock, 3 of them and 0 of ours down in the Corridor, you fall back to the Bridge.",
     "end": false
    },
    {
-    "log": "Turn 1: nobody gives ground.",
+    "log": "Turn 1: nobody gives ground. None of them are where you stand.",
     "end": false
    },
    {
@@ -22986,9 +23002,9 @@
     "end": false
    },
    {
-    "log": "Turn 8: nobody gives ground.",
+    "log": "Turn 8: nobody gives ground. None of them are where you stand.",
     "end": true,
-    "close": "Turn 8: nobody gives ground.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Black Debt\" lights, and she breaks away from the hull."
+    "close": "Turn 8: nobody gives ground. None of them are where you stand.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Black Debt\" lights, and she breaks away from the hull."
    },
    {
     "title": "Her Lock",
@@ -23195,7 +23211,7 @@
     "end": false
    },
    {
-    "log": "Turn 1: 1 of ours move into her Cargo Bay.",
+    "log": "Turn 1: 1 of ours move into her Cargo Bay. None of them are where you stand.",
     "end": false
    },
    {
@@ -23203,9 +23219,9 @@
     "end": false
    },
    {
-    "log": "Turn 8: nobody gives ground.",
+    "log": "Turn 8: nobody gives ground. None of them are where you stand.",
     "end": true,
-    "close": "Turn 8: nobody gives ground.</p><p>The captain calls you back on the intercom with her people still holding the far hatch. You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13."
+    "close": "Turn 8: nobody gives ground. None of them are where you stand.</p><p>The captain calls you back on the intercom with her people still holding the far hatch. You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13."
    }
   ]
  }

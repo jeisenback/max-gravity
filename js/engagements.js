@@ -21,19 +21,21 @@ const DEAD_TEXT = {
   'board.result': 'The cutter goes out of the lock. It\'s a short crossing.',
   'drift.label': 'Let her drift',
   'drift.result': 'You leave her turning in the dark. Captain {cap} writes it in the log and nothing else. (+3 experience at the {post} post.)',
+  'memory.drift': 'You crippled a raider, and we left her drifting.',  // what the captain remembers of it
 };
 const deadWords = (key, vars = {}) => lineWords('beats:dead-in-space', key, DEAD_TEXT[key]).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 
-// A crippled raider drifts beside you. Boarding her is the deck fight run the other way (boarders.js assaultStart, fightui.js deckFightEvent).
+// A crippled raider drifts beside you. Boarding her is the deck fight run the other way (boarders.js assaultStart, fightui.js deckFightEvent): the one built here,
+// with her grade and her consort's crew (`s`), so that the count the scene gives is the fight Board her opens.
 function deadInSpaceScene(s) {
-  const post = lockPost(), cap = raidCap(), assault = assaultStart(s.foe), ours = sum(assault.state, 'mine'), theirs = assault.state.began;
+  const post = lockPost(), cap = raidCap(), assault = assaultStart(s.foe, s), ours = sum(assault.state, 'mine'), theirs = assault.state.began;
   const say = key => deadWords(key, { ship: theShip(s.foe), cap: cap ? cap.last : '', ours, theirs, post: POSTS[post].name.toLowerCase() });
   return {
     title: say('title'), personal: true, via: 'crew', owner: 'you',
     text: (cap ? say('text') : `${theShip(s.foe)} is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. You hold the ship forty meters off and ask the crew what they want to do. Her crew are armed. A boarding would be ${ours} of yours against ${theirs} of hers.`) + (ours ? '' : ` ${say('board.none')}`),  // with nobody able to fight there is no boarding (R34)
     choices: [
-      ...(ours ? [{ label: say('board.label'), run() { G.nextEvent = deckFightEvent(assaultStart(s.foe, s)); return say('board.result'); } }] : []),
-      { label: say('drift.label'), run() { if (cap) like(cap, 1, fightSay('memory.stood')); changeRep('Pirate', -3); gainSkill(post, 3); return cap ? say('drift.result') : `You leave her turning in the dark and write it in the log, and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`; } },
+      ...(ours ? [{ label: say('board.label'), run() { G.nextEvent = deckFightEvent(assault); return say('board.result'); } }] : []),
+      { label: say('drift.label'), run() { if (cap) like(cap, 1, say('memory.drift')); changeRep('Pirate', -3); gainSkill(post, 3); return cap ? say('drift.result') : `You leave her turning in the dark and write it in the log, and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`; } },
     ],
   };
 }

@@ -9,14 +9,15 @@ const { closeBrowser } = require('./helpers');
 const { fights } = require('../tools/fights');
 
 after(closeBrowser);
-const DECK_N = 200;  // deck fights a cell in the spread test: every seed from 1 to 5 passes it at this n, and some do not at 100 or 150
+const DECK_N = 200, DECK_SEEDS = [1, 2];  // deck fights a cell in the spread test, on each of two seeds played side by side: boarding her at grade 1 wins 57 in a hundred over
+// five seeds against the lock fight's 62, so one seed of 200 can fall just past the ten points (seed 1 at 0.515 after R42's casualty roll moved the draws); two seeds hold it
 
 test('the fights tool plays the ship fight, the repel fight and the assault fight to their ends', async () => {
   const r = await fights({ seed: 1, n: 3 });
   assert.deepEqual(r.errors, []);
   assert.deepEqual(Object.keys(r.raid), ['random', 'focus', 'drive', 'lock'], 'the guns\' policies');
   const closed = t => t.crippled + t.broke + t.standoff + t.boarded + t.lost + t.escaped + t.died;
-  for (const t of Object.values(r.raid)) { assert.equal(t.n, 3); assert.equal(closed(t), 3, 'every fight ends one way, or with the hand killed'); assert.ok(t.rounds >= 3 - t.died && t.rounds <= 3 * 6, 'one to six turns a fight'); }
+  for (const t of Object.values(r.raid)) { assert.equal(t.n, 3); assert.equal(closed(t), 3, 'every fight ends one way, or with the hand killed'); assert.ok(t.rounds >= 3 - t.died && t.rounds <= 3 * 6, 'one to six turns a fight'); assert.equal(t.capped, 0, 'and the scene after it is played to its end'); }
   for (const kind of [r.repel, r.assault]) {
     assert.ok(Object.keys(kind).length >= 10);
     for (const t of Object.values(kind)) { assert.equal(t.n, 3); assert.ok(t.rounds >= 3, 'a fight lasts more than a round'); assert.ok(t.won <= 3); }
@@ -50,19 +51,25 @@ test('the ship fight rewards aiming on purpose, has no sure win across the mix, 
 });
 
 // The deck fight both ways (Task 7, R36). With five crew, random play wins about as often by her grade as the lock fight before it did (within ten points of
-// 83, 59 and 40 in a hundred repelling, and 82, 62 and 34 boarding her); and the best of the hand's plans wins five points or more over random play,
+// 83, 59 and 40 in a hundred repelling, and 82, 62 and 34 boarding her), and costs about as many dead (within 0.15 a fight of 0.28, 0.43 and 0.57
+// repelling, and 0.29, 0.41 and 0.56 boarding her: R42, a head lost is downed and only sometimes a casualty, DECK.CASUALTY); and the best of the hand's plans wins five points or more over random play,
 // so that where the hand stands and what it does there count: repelling with two crew or five, and boarding her with two. Boarding her with five, the best
 // plan is seven points up over five seeds but from -5 to 7 on one seed, so it is not checked here (task-7-report.md). The ship fights are left out
 // (raid: false), and only the groups asked are played.
-test('the deck fight is won by grade about as often as the lock fight was, and the hand\'s plan beats random play', async () => {
-  const r = await fights({ seed: 1, n: DECK_N, raid: false, groups: ['policy', 'small crew', 'grade'] });
-  assert.deepEqual(r.errors, []);
+test('the deck fight is won by grade about as often as the lock fight was, kills about as many of the crew, and the hand\'s plan beats random play', async () => {
+  const runs = await Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['policy', 'small crew', 'grade'] })));
+  for (const x of runs) assert.deepEqual(x.errors, []);
+  const r = {};  // the seeds' tallies summed, cell by cell
+  for (const kind of ['repel', 'assault']) { r[kind] = {}; for (const x of runs) for (const [cell, t] of Object.entries(x[kind])) { const acc = r[kind][cell] = r[kind][cell] || {}; for (const [k, v] of Object.entries(t)) acc[k] = (acc[k] || 0) + v; } }
   const won = t => t.won / t.n, BASE = { repel: [0.83, 0.59, 0.4], assault: [0.82, 0.62, 0.34] };
+  const dead = t => t.dead / t.n, DEAD = { repel: [0.28, 0.43, 0.57], assault: [0.29, 0.41, 0.56] };  // the lock fight's dead a fight (R42)
   for (const kind of ['repel', 'assault']) {
     const k = r[kind];
     BASE[kind].forEach((was, grade) => {
       const now = won(k[`grade|crew 5 level 2 random grade ${grade}`]);
       assert.ok(Math.abs(now - was) <= 0.1, `${kind} at grade ${grade}: ${now.toFixed(2)} won against the lock fight's ${was}`);
+      const died = dead(k[`grade|crew 5 level 2 random grade ${grade}`]);
+      assert.ok(Math.abs(died - DEAD[kind][grade]) <= 0.15, `${kind} at grade ${grade}: ${died.toFixed(2)} dead a fight against the lock fight's ${DEAD[kind][grade]}`);
     });
     for (const [group, crew] of kind === 'repel' ? [['policy', 5], ['small crew', 2]] : [['small crew', 2]]) {
       const rnd = won(k[`${group}|crew ${crew} level 2 random grade 0`]);

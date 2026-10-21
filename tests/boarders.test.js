@@ -84,7 +84,7 @@ test('a head lost on our side is a named crewmate, and one hurt twice in one fig
     const st = fight(), d = G.duel, crew = generated(3), first = crew[0], n = st.crew.length;
     const s = repelStart(d, 'full');
     stubTurn([{ kind: 'exchange', section: 0, mine: 1, theirs: 1 }]);
-    rolls([0, 0.99]); fightTurn(s); const line = s.state.log[s.state.log.length - 1];  // the first of those standing, and not killed outright
+    rolls([0, 0, 0.99]); fightTurn(s); const line = s.state.log[s.state.log.length - 1];  // a casualty (DECK.CASUALTY), the first of those standing, and not killed outright
     unstub();
     const afterOne = { injured: !!(st.injured || {})[first.id], here: st.crew.includes(first.id) };
     rolls([0.99]); repelCasualty(s, first.id);
@@ -464,7 +464,7 @@ test('an order works as the crewmate\'s own ability, and a miss lands on the one
     out.next = repelOrders(s, s.state.used.cover).map(x => [x.first, x.kind]);  // the cover is made: both are steady now
     const real = repelCasualty; let target = 'unset'; repelCasualty = (t, only) => { target = only; return 'Someone is hurt.'; };
     s = repelStart(G.duel, 'full'); stubTurn([{ kind: 'steady', worked: false }, { kind: 'exchange', section: 0, mine: 1, theirs: 0 }]);
-    fightTurn(s, { order: ana.id }); out.miss = s.state.log[s.state.log.length - 1]; out.target = target === ana.id ? 'Ana' : String(target);
+    rolls([0.01]); fightTurn(s, { order: ana.id }); out.miss = s.state.log[s.state.log.length - 1]; out.target = target === ana.id ? 'Ana' : String(target);
     unstub(); repelCasualty = real;
     return out;
   });

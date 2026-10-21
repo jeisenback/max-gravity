@@ -272,8 +272,8 @@ shown above it ("4 pushing into the Corridor"); at a veteran grade it is marked 
 Each turn the hand stands or moves one section, does one thing there (shoots, or uses one of the post's two abilities: the
 steady one takes one of them down, the cover one makes two points of cover, once a fight), and gives one order to a named
 crewmate (that person's own steady or cover ability, at their own odds). Where both sides stand they trade losses, a roll for
-each opposing head, cut by the side's own cover but never to nothing. A loss on our side is a named crewmate; the hand can be
-hurt in a contested section. It is won when about a third of her start or fewer are left (`DECK.BREAK`), or all are down, or
+each opposing head, cut by the side's own cover but never to nothing. A head lost on our side is downed, and three times in ten
+(`DECK.CASUALTY`) a named crewmate hurt or killed; the hand can be hurt in a contested section. It is won when about a third of her start or fewer are left (`DECK.BREAK`), or all are down, or
 (boarding her) her bridge is held; it is lost when they hold our bridge, or (boarding her) when none of ours are left. At eight
 turns (`DECK.TURNS`) the attackers withdraw. The numbers are `DECK` in `js/fight.js`.
 

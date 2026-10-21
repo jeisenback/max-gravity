@@ -133,12 +133,21 @@ function setupHired(o) {
 // ---------- burn events ----------
 // On the captain's ship the calls on the road are the captain's, and the money is the ship's.
 
-// A hired hand's burn events spend and earn the ship's funds, not their savings.
+// A hired hand's burn events spend and earn the ship's funds, not their savings. While they do, the savings are kept in `handPurse` (one at a time: a call
+// inside another runs as it stands), for what the hand pays in person (handPays).
+let handPurse = null;
 function hiredFunds(fn) {
-  if (!G.transit || role().paysFrom('burn') !== 'fund') return fn();
-  const h = hired(), st = G.state, mine = st.credits;
+  if (!G.transit || role().paysFrom('burn') !== 'fund' || handPurse) return fn();
+  const h = hired(), st = G.state;
+  handPurse = { credits: st.credits };
   st.credits = h.fund;
-  try { return fn(); } finally { h.fund = st.credits; st.credits = mine; }
+  try { return fn(); } finally { h.fund = st.credits; st.credits = handPurse.credits; handPurse = null; }
+}
+// What the hand pays out of their own savings, up to what they have, even inside a burn event that spends the fund (a clinic, boarders.js hurtHand). Returns what was paid.
+function handPays(n) {
+  const p = handPurse || G.state, paid = Math.min(p.credits, n);
+  p.credits -= paid;
+  return paid;
 }
 
 // How the captain's style (captains.js) shows in a run. A captain with no entry (an older save) keeps the old behavior:

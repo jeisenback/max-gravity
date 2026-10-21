@@ -28,9 +28,11 @@ test('the plot: rings, your ship, her return at its bearing and range, the point
   assert.match(svg, /^<svg class="board" viewBox="0 0 360 240" role="img" aria-label="Sensor board: range 40 km, closing 4 km a minute, bearing 90 degrees off the bow, closing\.">/);
   assert.equal((svg.match(/<circle class="ring"/g) || []).length, 4, 'rings every ten kilometers to forty');
   assert.match(svg, /<path class="pd"/, 'the point defense arc'); assert.match(svg, /<circle class="sun"/); assert.match(svg, /<circle class="contact"/); assert.match(svg, /RANGE 40 km/);
-  assert.doesNotMatch(svg, /class="track"|class="ghost"|STALE|Position:/);
-  const ahead = boardSvg(at(0, 2), { style: 'grapple', beat: 0, sunAngle: 0, word: 'ahead' });
-  assert.match(ahead, /BEARING 040  AHEAD/); assert.match(ahead, /Position: ahead\./, 'the position is a readout on the board, and in its label');
+  assert.doesNotMatch(svg, /class="track"|class="ghost"|STALE|OPENING| At /);
+  const ahead = boardSvg(at(0, 2), { style: 'grapple', beat: 0, sunAngle: 0, word: 'knife' });
+  assert.match(ahead, /BEARING 040  KNIFE/); assert.match(ahead, /At knife range\./, 'the range band is a readout on the board, and in its label');
+  const away = boardSvg(raidBoard({ beat: 2, edge: 0, style: 'grapple', me: hauler, foe: raider, away: true }), { style: 'grapple', beat: 2, sunAngle: 0 });
+  assert.match(away, /OPENING 4 km\/min/); assert.match(away, /opening 4 km a minute, bearing 90 degrees off the bow, breaking off\./, 'she breaks off: the range opens');
   const closer = boardSvg(at(1, 0), { style: 'grapple', beat: 1, sunAngle: 0 });
   const r = s => Number(/<circle class="contact" cx="([\d.]+)" cy="([\d.]+)"/.exec(s).slice(1).reduce((d, v, i) => d + (v - [180, 120][i]) ** 2, 0) ** 0.5);
   assert.ok(r(closer) < r(svg), 'a pass is drawn closer than the closing');

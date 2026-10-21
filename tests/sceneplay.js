@@ -360,6 +360,8 @@ const playScenes = () => {
         turn(s, orders({ guns: [null, null], torp: { foe: 0, part: 'hull' } }), { kind: 'broadside', target: 'hull', dmg: [10, 10] });  // the torpedo, and her hit
         turn(s, orders({ guns: [null, null] }), { kind: 'hold' });  // nobody fires
         s.state.foes[0].parts.lock.hp = 0; turn(s, orders({ guns: [{ foe: 0, part: 'lock' }, null] }), { kind: 'hold' });  // a shot at a part already gone
+        const consort = JSON.parse(JSON.stringify(s.state.foes[0])); s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; s.state.foes.push(consort); s.pack = true;
+        turn(s, orders({ guns: [{ foe: 0, part: 'hull' }, null], torp: { foe: 0, part: 'hull' } }), { kind: 'hold' });  // the lead crippled: the gun and the torpedo go to her consort
       }
       // each end, by style: she breaks off, she is crippled, she boards, she is lost astern, the standoff near and far, and the hull gone
       for (const shipId of ['raider', 'corsair', 'cutter']) {

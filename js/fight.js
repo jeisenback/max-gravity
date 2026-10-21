@@ -163,6 +163,7 @@ const DECK = {
   CREW_HIT: [0, 2],  // heads one opposing head takes in a section where both stand (a roll a head); a side's own cover cuts its total, never below one hit
   BREAK: 0.3,        // of her crew at the start: at or under it she breaks (about a third; at 6 she breaks at 1, not 2)
   SUIT: 0.3,         // times REPEL_HURT.lose: the standard suit's stat (the hand standing in the fight is hurt less often)
+  CASUALTY: 0.3,     // of our heads lost, the share that is a casualty (fightui.js deckLoss); the rest are downed and get up after it, so that a fight kills about as many as the lock fight did (R42)
   TURNS: 8           // at the end of this turn the attackers withdraw: a repel is won, an assault lost (R32)
 };
 
@@ -264,7 +265,10 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
     if (i === hand) for (let k = 0; k < press; k++) mine += dealt(s.mine, lo, hi, rand);
     return { mine, theirs };
   });
-  if ((asObj(act) || {}).kind === 'shoot') loss[hand].theirs += dealt(here.theirs, ...DECK.SIDEARM, rand);
+  if ((asObj(act) || {}).kind === 'shoot') {
+    if (here.theirs) loss[hand].theirs += dealt(here.theirs, ...DECK.SIDEARM, rand);
+    else if (sum(st, 'theirs')) events.push({ kind: 'shoot', nobody: true });  // none of them where the hand stands, and some elsewhere: the shot is not rolled, and says so (R34)
+  }
   S.forEach((s, i) => {
     const mine = Math.min(s.mine, loss[i].mine), theirs = Math.min(s.theirs, loss[i].theirs);
     s.mine -= mine; s.theirs -= theirs;

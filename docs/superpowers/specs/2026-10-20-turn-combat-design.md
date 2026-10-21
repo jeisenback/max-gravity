@@ -28,7 +28,7 @@ Whole-ship command, where the player makes every post's moves, belongs to chapte
 ## Section 1: the turn loop (shared)
 
 Each side has:
-- **Two hull bars:** shields, which come back a little each turn, and armor, which does not.
+- **Two hull bars:** shields, which take a hit first, and armor. Neither comes back during a fight (`FIGHT.SHIELD_REGEN` is 0, Task 7).
 - **A few named parts, each with its own bar.** On a ship those are the weapons, the drive and the lock. In boarding they are the deck sections.
 - **In a ship fight only:** the range band, your heat, and the torpedoes left.
 

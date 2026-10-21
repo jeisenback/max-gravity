@@ -19,7 +19,7 @@
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 24.",
+    "text": "Turn 3: you hit her consort's weapons for 17, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -60,7 +60,7 @@
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 24.",
+    "text": "Turn 3: you hit her consort's weapons for 17, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -101,7 +101,7 @@
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 24.",
+    "text": "Turn 3: you hit her consort's weapons for 18, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -142,7 +142,7 @@
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 24.",
+    "text": "Turn 3: you hit her consort's weapons for 18, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -1617,7 +1617,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -1671,7 +1671,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -1725,7 +1725,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -1779,7 +1779,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -1833,7 +1833,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -1887,7 +1887,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -1941,7 +1941,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -1995,7 +1995,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -2049,7 +2049,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -2103,7 +2103,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -2157,7 +2157,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -2211,7 +2211,7 @@
     "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
     "next": null,
     "mem": [
-     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You crippled a raider, and we left her drifting.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -2552,7 +2552,7 @@
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2565,7 +2565,7 @@
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens up and the burst goes where the wall is, not where they are. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens up and the burst goes where the wall is, not where they are.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2578,7 +2578,7 @@
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2591,7 +2591,7 @@
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana waits for a runner and none runs. The round goes high, and they use the noise to push. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana waits for a runner and none runs. The round goes high, and they use the noise to push.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2604,7 +2604,7 @@
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2617,7 +2617,7 @@
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cuts the lights, and the crew cannot see the closer either. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cuts the lights, and the crew cannot see the closer either.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2630,7 +2630,7 @@
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2643,7 +2643,7 @@
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the hatch a beat late, and it closes on nothing. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the hatch a beat late, and it closes on nothing.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2656,7 +2656,7 @@
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2669,7 +2669,7 @@
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door, and it sticks a hand short of the deck. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door, and it sticks a hand short of the deck.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2682,7 +2682,7 @@
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2695,7 +2695,7 @@
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens the wrong coolant line, and it vents into the section. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens the wrong coolant line, and it vents into the section.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2708,7 +2708,7 @@
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2721,7 +2721,7 @@
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana jams their band and the crew's with it. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana jams their band and the crew's with it.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2734,7 +2734,7 @@
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2747,7 +2747,7 @@
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts a voice on their band and the voice is wrong. Somebody laughs. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts a voice on their band and the voice is wrong. Somebody laughs.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2760,7 +2760,7 @@
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2773,7 +2773,7 @@
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana opens up and the burst goes where the wall is, not where they are. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana opens up and the burst goes where the wall is, not where they are.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2786,7 +2786,7 @@
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2799,7 +2799,7 @@
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana waits for a runner and none runs. The round goes high, and they use the noise to push. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana waits for a runner and none runs. The round goes high, and they use the noise to push.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2812,7 +2812,7 @@
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2825,7 +2825,7 @@
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cuts the lights, and the crew cannot see the closer either. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cuts the lights, and the crew cannot see the closer either.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2838,7 +2838,7 @@
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2851,7 +2851,7 @@
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cycles the hatch a beat late, and it closes on nothing. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cycles the hatch a beat late, and it closes on nothing.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2864,7 +2864,7 @@
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2877,7 +2877,7 @@
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana drops the pressure door, and it sticks a hand short of the deck. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana drops the pressure door, and it sticks a hand short of the deck.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2890,7 +2890,7 @@
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2903,7 +2903,7 @@
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana opens the wrong coolant line, and it vents into the section. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana opens the wrong coolant line, and it vents into the section.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2916,7 +2916,7 @@
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2929,7 +2929,7 @@
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana jams their band and the crew's with it. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana jams their band and the crew's with it.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2942,7 +2942,7 @@
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2955,7 +2955,7 @@
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana puts a voice on their band and the voice is wrong. Somebody laughs. Dana is hurt.",
+  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana puts a voice on their band and the voice is wrong. Somebody laughs.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -3055,7 +3055,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3072,7 +3072,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Hana is hurt.",
+    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3089,7 +3089,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows. Mateo is hurt."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows."
    },
    {
     "act": "steady",
@@ -3100,7 +3100,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line. Kwame is hurt."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line."
    },
    {
     "act": "cover",
@@ -3111,7 +3111,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down. Arjun is hit, and doesn't get up, and won't."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down."
    },
    {
     "act": "cover",
@@ -3122,7 +3122,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand. Tomas is hit, and carried below, and is alive, and isn't fit to work."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand."
    },
    {
     "act": "end:last",
@@ -3136,7 +3136,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ]
@@ -3235,7 +3235,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3252,7 +3252,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Hana is hurt.",
+    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3269,7 +3269,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits. Mateo is hurt."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits."
    },
    {
     "act": "steady",
@@ -3280,7 +3280,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again. Kwame is hurt."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again."
    },
    {
     "act": "cover",
@@ -3291,7 +3291,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop. Arjun is hit, and doesn't get up, and won't."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop."
    },
    {
     "act": "cover",
@@ -3302,7 +3302,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cut the lights, and your own people cannot see the closer either. The boarders have lamps. Tomas is hit, and carried below, and is alive, and isn't fit to work."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You cut the lights, and your own people cannot see the closer either. The boarders have lamps."
    },
    {
     "act": "end:last",
@@ -3316,7 +3316,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ]
@@ -3415,7 +3415,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3432,7 +3432,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Hana is hurt.",
+    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3449,7 +3449,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing. Mateo is hurt."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
    },
    {
     "act": "steady",
@@ -3460,7 +3460,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You open the wrong coolant line. It vents into the section you are standing in. Kwame is hurt."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You open the wrong coolant line. It vents into the section you are standing in."
    },
    {
     "act": "cover",
@@ -3471,7 +3471,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through. Arjun is hit, and doesn't get up, and won't."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through."
    },
    {
     "act": "cover",
@@ -3482,7 +3482,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it. Tomas is hit, and carried below, and is alive, and isn't fit to work."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it."
    },
    {
     "act": "end:last",
@@ -3496,7 +3496,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ]
@@ -3595,7 +3595,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3612,7 +3612,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Hana is hurt.",
+    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3629,7 +3629,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late. Mateo is hurt."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
    },
    {
     "act": "steady",
@@ -3640,7 +3640,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line. Kwame is hurt."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line."
    },
    {
     "act": "cover",
@@ -3651,7 +3651,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover. Arjun is hit, and doesn't get up, and won't."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover."
    },
    {
     "act": "cover",
@@ -3662,7 +3662,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You jam their band and your own with it, and nobody can tell the crew which hatch to hold. Tomas is hit, and carried below, and is alive, and isn't fit to work."
+    "text": "Turn 1: 1 of them and 1 of ours down in the Lock, you fall back to the Corridor. You jam their band and your own with it, and nobody can tell the crew which hatch to hold."
    },
    {
     "act": "end:last",
@@ -3676,7 +3676,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ]
@@ -3775,7 +3775,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3792,7 +3792,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Hana is hurt.",
+    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3809,7 +3809,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows. Mateo is hurt.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3826,7 +3826,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line. Kwame is hurt.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3843,7 +3843,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down. Arjun is hit, and doesn't get up, and won't.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3860,7 +3860,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand. Tomas is hit, and carried below, and is alive, and isn't fit to work.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3888,6 +3888,8 @@
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates."
     ],
     "fx": {
@@ -3897,15 +3899,18 @@
      "c:tomas": 2,
      "p3": 2,
      "p4": 2,
+     "p5": 2,
      "p6": 2,
      "p7": 2
     }
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the gunner post.)",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
+     "9 Jul 2214: We took her bridge together.",
+     "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
@@ -3930,6 +3935,7 @@
      "c:tomas": 1,
      "p3": 1,
      "p4": 1,
+     "p5": 1,
      "p6": 1,
      "p7": 1
     }
@@ -4028,7 +4034,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4045,7 +4051,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Hana is hurt.",
+    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4062,7 +4068,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits. Mateo is hurt.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4079,7 +4085,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again. Kwame is hurt.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4096,7 +4102,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop. Arjun is hit, and doesn't get up, and won't.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4113,7 +4119,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cut the lights, and your own people cannot see the closer either. The boarders have lamps. Tomas is hit, and carried below, and is alive, and isn't fit to work.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cut the lights, and your own people cannot see the closer either. The boarders have lamps.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4141,6 +4147,8 @@
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates."
     ],
     "fx": {
@@ -4150,15 +4158,18 @@
      "c:tomas": 2,
      "p3": 2,
      "p4": 2,
+     "p5": 2,
      "p6": 2,
      "p7": 2
     }
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the pilot post.)",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
+     "9 Jul 2214: We took her bridge together.",
+     "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
@@ -4183,6 +4194,7 @@
      "c:tomas": 1,
      "p3": 1,
      "p4": 1,
+     "p5": 1,
      "p6": 1,
      "p7": 1
     }
@@ -4281,7 +4293,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4298,7 +4310,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Hana is hurt.",
+    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4315,7 +4327,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing. Mateo is hurt.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4332,7 +4344,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You open the wrong coolant line. It vents into the section you are standing in. Kwame is hurt.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You open the wrong coolant line. It vents into the section you are standing in.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4349,7 +4361,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through. Arjun is hit, and doesn't get up, and won't.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4366,7 +4378,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it. Tomas is hit, and carried below, and is alive, and isn't fit to work.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4394,6 +4406,8 @@
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates."
     ],
     "fx": {
@@ -4403,15 +4417,18 @@
      "c:tomas": 2,
      "p3": 2,
      "p4": 2,
+     "p5": 2,
      "p6": 2,
      "p7": 2
     }
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the engineer post.)",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
+     "9 Jul 2214: We took her bridge together.",
+     "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
@@ -4436,6 +4453,7 @@
      "c:tomas": 1,
      "p3": 1,
      "p4": 1,
+     "p5": 1,
      "p6": 1,
      "p7": 1
     }
@@ -4534,7 +4552,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4551,7 +4569,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Hana is hurt.",
+    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4568,7 +4586,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late. Mateo is hurt.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4585,7 +4603,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line. Kwame is hurt.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4602,7 +4620,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover. Arjun is hit, and doesn't get up, and won't.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4619,7 +4637,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You jam their band and your own with it, and nobody can tell the crew which hatch to hold. Tomas is hit, and carried below, and is alive, and isn't fit to work.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You jam their band and your own with it, and nobody can tell the crew which hatch to hold.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4647,6 +4665,8 @@
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates."
     ],
     "fx": {
@@ -4656,15 +4676,18 @@
      "c:tomas": 2,
      "p3": 2,
      "p4": 2,
+     "p5": 2,
      "p6": 2,
      "p7": 2
     }
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the comms post.)",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of her people are down, and the rest back away from the hatch with their hands open. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
+     "9 Jul 2214: We took her bridge together.",
+     "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
@@ -4689,6 +4712,7 @@
      "c:tomas": 1,
      "p3": 1,
      "p4": 1,
+     "p5": 1,
      "p6": 1,
      "p7": 1
     }

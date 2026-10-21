@@ -63,7 +63,8 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       }
       return k > 60 && !!G.dialog;
     };
-    const lost = st => ({ hurt: Object.keys(st.injured || {}).length, dead: (st.fallen || []).length, marked: (st.castMarked || []).length, hand: career().hurtUntil > st.day ? 1 : 0 });
+    const dead0 = (JSON.parse(snap).memorial || []).length;  // the dead are the memorial's new names: the crew from the dock (st.fallen) and the main characters alike (losses.js loseCrew)
+    const lost = st => ({ hurt: Object.keys(st.injured || {}).length, dead: (st.memorial || []).length - dead0, marked: (st.castMarked || []).length, hand: career().hurtUntil > st.day ? 1 : 0 });
     const out = { raid: {}, match: {}, repel: {}, assault: {} };
 
     // The ship fight, from the contact to its end and the deck fight that may follow it. The guns' policy picks each gun's target every turn: 'random' any
@@ -75,7 +76,8 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       drive: f => (f.foes.some(x => x.parts.drive.hp > 0) ? 'drive' : 'weapons'),
       lock: f => (f.foes.some(x => x.parts.lock.hp > 0) ? 'lock' : 'weapons'),
     };
-    // One ship fight against `spec`, to its end and whatever scene follows it. Returns its end (null: the hand was killed in it), the fight and what it cost.
+    // One ship fight against `spec`, to its end and whatever scene follows it. Returns its end (null: the hand was killed in it), the fight, what it cost, and whether
+    // the scene after it was left open at the step cap (capped).
     const shipTrial = (policy, spec) => {
       const st = restore(null, null), armor0 = st.armor;
       startDuel(spec, false);
@@ -87,8 +89,8 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
         end = shipEnd(s.state);
       }
       const next = G.nextEvent; G.nextEvent = null; window.__texts = '';
-      if (next) { openEvent(next); drive('shoot'); }  // the close, dead in space, or the deck fight
-      return { end, s, hull: (armor0 - G.state.armor) / maxArmor, c: lost(G.state) };
+      const capped = next ? (openEvent(next), drive('shoot')) : false;  // the close, dead in space, or the deck fight
+      return { end, s, hull: (armor0 - G.state.armor) / maxArmor, c: lost(G.state), capped };
     };
     // By matchup: a lone ship by its hull, or a pair of raiders. The cutter is a navy stop's (a pirate never flies one), played as its own trials.
     const tally = (policy, who, end) => {
@@ -96,9 +98,10 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       m.n++; if (/^(crippled|broke|escaped)$/.test(end)) m.good++; if (end === 'boarded') m.boarded++; if (!end) m.died++;
     };
     if (raidFights) for (const policy of Object.keys(AIM)) {
-      const t = out.raid[policy] = { n: 0, crippled: 0, broke: 0, standoff: 0, boarded: 0, lost: 0, escaped: 0, died: 0, boardedWon: 0, assaultWon: 0, rounds: 0, hull: 0, hurt: 0, dead: 0, hand: 0, anyHurt: 0 };
+      const t = out.raid[policy] = { n: 0, crippled: 0, broke: 0, standoff: 0, boarded: 0, lost: 0, escaped: 0, died: 0, boardedWon: 0, assaultWon: 0, rounds: 0, hull: 0, hurt: 0, dead: 0, hand: 0, anyHurt: 0, capped: 0 };
       for (let i = 0; i < trials; i++) {
-        const { end, s, hull, c } = shipTrial(policy, { kind: 'pirate' });
+        const { end, s, hull, c, capped } = shipTrial(policy, { kind: 'pirate' });
+        if (capped) t.capped++;  // the deck fight after it never ended
         t.n++; if (end) t[end]++; else t.died++;  // no end: the hand was killed in it
         t.rounds += s ? s.state.turn : 0;
         if (end === 'crippled' && /strongbox/.test(window.__texts)) t.assaultWon++;
@@ -154,7 +157,7 @@ const per = (a, b) => (a / Math.max(1, b)).toFixed(2);
 function report(runs) {
   console.log(`Ship fights (${runs.length} seeds, ${runs[0].crewAboard} crew aboard, ${runs[0].owner ? 'an owner at' : 'a hand at'} the ${runs[0].post} post), by where the guns aim`);
   for (const [policy, t] of Object.entries(sum(runs, 'raid'))) {
-    console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  crippled ${pct(t.crippled, t.n)} (boarded her ${pct(t.assaultWon, t.crippled)})  broke off ${pct(t.broke, t.n)}  standoff ${pct(t.standoff, t.n)}  boarded ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull gone ${pct(t.lost, t.n)}  escaped ${pct(t.escaped, t.n)}  you killed ${pct(t.died, t.n)}  rounds ${per(t.rounds, t.n)}  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}`);
+    console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  crippled ${pct(t.crippled, t.n)} (boarded her ${pct(t.assaultWon, t.crippled)})  broke off ${pct(t.broke, t.n)}  standoff ${pct(t.standoff, t.n)}  boarded ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull gone ${pct(t.lost, t.n)}  escaped ${pct(t.escaped, t.n)}  you killed ${pct(t.died, t.n)}  rounds ${per(t.rounds, t.n)}  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}  capped ${t.capped}`);
   }
   console.log('  by matchup');
   for (const [name, t] of Object.entries(sum(runs, 'match')).sort((a, b) => a[0].localeCompare(b[0]))) {

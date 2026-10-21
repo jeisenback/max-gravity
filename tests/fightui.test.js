@@ -272,3 +272,81 @@ test('repelled, taken, and an assault won or lost each settle through the existi
   assert.match(r.lost.text, /You're driven back to the lock/); assert.ok(r.lost.armorDown && r.lost.drifting);
   await done();
 });
+
+// ---------- the final review's fixes (#786) ----------
+
+test('in a pack fight, a shot at her hull or her lock goes to the ship still in it, not to the one crippled', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const part of ['hull', 'lock']) {
+      fightGame('gunner'); window.rateFoe = s => { s.grade = 0; s.pack = true; return s; };
+      const s = battle(), [lead, consort] = s.state.foes;
+      lead.parts.weapons.hp = 0; lead.parts.drive.hp = 0;  // the lead is crippled: out of the fight, with her armor left
+      const was = [lead.shields + lead.armor + lead.parts.lock.hp, consort.shields + consort.armor + consort.parts.lock.hp];
+      s.shown = { foe: [{ kind: 'hold' }, { kind: 'hold' }], captain: { kind: 'hold' } };
+      fireTurn(s, { guns: [{ foe: 0, part }], torp: null, pdc: 'fire' });
+      const [a, b] = s.state.foes;
+      out[part] = { lead: a.shields + a.armor + a.parts.lock.hp - was[0], consort: b.shields + b.armor + b.parts.lock.hp - was[1], line: s.state.log[s.state.log.length - 1] };
+    }
+    return out;
+  });
+  for (const part of ['hull', 'lock']) {
+    assert.equal(r[part].lead, 0, `${part}: the crippled lead is not hit`);
+    assert.ok(r[part].consort < 0, `${part}: the consort is: ${JSON.stringify(r[part])}`);
+    assert.match(r[part].line, new RegExp(`you hit her consort's ${part} for \\d+`), r[part].line);
+  }
+  await done();
+});
+
+test('a head start that hurts the hand bills the clinic to the hand\'s own credits, not the ship\'s fund', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'), h = hired();
+    st.crew = st.crew.filter(id => person(id).role !== 'medic'); delete h.hurtUntil;
+    h.fund = 1000; st.credits = 500;
+    const real = headStart;
+    headStart = state => { const s2 = JSON.parse(JSON.stringify(state)); s2.me.shields = 0; s2.me.armor -= 100; return { state: s2, events: [{ who: 'foe', foe: 0, part: 'hull', dmg: 100 }] }; };  // a heavy first volley
+    rolls([0.99, 0.99, 0.01, 0.99]);  // the run fails, no casualty, the hand's own roll, and no death
+    try { hiredFunds(() => startDuel({ kind: 'pirate' }, true)); } finally { headStart = real; }
+    return { fund: h.fund, credits: st.credits, hurt: handHurt() };
+  });
+  assert.equal(r.hurt, true, 'the hand is hurt');
+  assert.equal(r.fund, 1000, 'the fund is the ship\'s'); assert.equal(r.credits, 350, 'the clinic is 150 cr of the hand\'s own');
+  await done();
+});
+
+test('in the deck fight, a friend takes the first hit meant for the hand', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'), h = hired(); delete h.hurtUntil;
+    for (const id of st.crew) { person(id).opinion = 0; delete person(id).owes; }
+    const friend = person(st.crew[0]); friend.opinion = OPINION.FRIEND;
+    const s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
+    const real = resolveDeckTurn;
+    resolveDeckTurn = st0 => { const state = JSON.parse(JSON.stringify(st0)); state.turn++; return { state, events: [{ kind: 'hurt', hurt: true }] }; };
+    rolls([0.99]);  // the friend is hurt, not killed
+    try { const e = deckFightEvent(s); e.choices[e.choices.length - 1].run(); } finally { resolveDeckTurn = real; }
+    return { line: s.state.log[s.state.log.length - 1], youHurt: handHurt(), first: friend.first, friendHurt: s.hurt.has(friend.id) };
+  });
+  assert.match(r.line, new RegExp(`${r.first} pulls you down behind the closer and takes it\\. ${r.first} is hurt`), r.line);
+  assert.equal(r.youHurt, false); assert.equal(r.friendHurt, true);
+  await done();
+});
+
+test('a shot where none of them stand says so, as a steady one does', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    fightGame('gunner');
+    const s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
+    s.state.hand = 2; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // the hand on the bridge, and all of them in the lock
+    rolls([]); const e = deckFightEvent(s, { act: 'shoot' }); e.choices[e.choices.length - 1].run();
+    return s.state.log[s.state.log.length - 1];
+  });
+  assert.match(r, /None of them are where you stand\./, r);
+  await done();
+});

@@ -60,7 +60,7 @@ function headStart(state, edge, rand) {
 const fightMoves = st => ({ foe: st.foes.map((_, i) => foeMove(st, i)), captain: captainMove(st) });
 const fightUp = foe => foe.armor > 0 && (foe.parts.weapons.hp > 0 || foe.parts.drive.hp > 0);
 const fightFoeName = (s, i) => (i ? fightSay('consort') : theShip(s.foe));
-const fightHits = events => (events.length ? events.map(e => fightSay(!e.dmg ? 'log.spent' : e.who === 'foe' ? 'log.hers' : e.torp ? 'log.torp' : 'log.mine', { part: fightSay(`part.${e.part}`), dmg: e.dmg })).join(', ') : fightSay('log.none'));  // a hit on a part already gone does nothing
+const fightHits = events => (events.length ? events.map(e => fightSay(!e.dmg ? 'log.spent' : e.who === 'foe' ? 'log.hers' : `${e.torp ? 'log.torp' : 'log.mine'}${e.foe ? '.consort' : ''}`, { part: fightSay(`part.${e.part}`), dmg: e.dmg })).join(', ') : fightSay('log.none'));  // a hit on a part already gone does nothing; a hit on her consort names it
 
 // What the turn cost: the ship keeps its armor and its torpedoes, and a heavy hit (the hull lost more than FIGHT.HEAVY_HIT of your maximum armor, shields and armor, R23)
 // can cost a casualty (CASUALTY_ODDS, more against a veteran crew or a pair, as the raid's lost beats did) and hurt the hand (FIGHT.HAND_HURT), said on the log's last line.
@@ -69,8 +69,9 @@ function fightTook(s, events) {
   st.armor = Math.max(1, me.armor);
   if (me.launcher) st.torpedoes = me.torps;
   if (dealt > FIGHT.HEAVY_HIT * me.maxArmor) {
+    const hits = s.hits || 0;  // the hand's hurts so far (hurtHand): a casualty that fell on the hand is the turn's hurt, and the hand's own roll is not made
     if (Math.random() < CASUALTY_ODDS * (1 + 0.15 * s.grade + (s.pack ? 0.25 : 0))) out.push(repelCasualty(s));
-    if (!s.handDied && Math.random() < FIGHT.HAND_HURT) out.push(hurtHand(s));
+    if (!s.handDied && (s.hits || 0) === hits && Math.random() < FIGHT.HAND_HURT) out.push(hurtHand(s));
   }
   if (out.length) s.state.log[s.state.log.length - 1] += ` ${out.join(' ')}`;
 }
@@ -107,12 +108,14 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
   if (f.me.pdc) choices.push({ label: fightSay(orders.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire'), keep: true, run: redo({ pdc: orders.pdc === 'hold' ? 'fire' : 'hold' }) });
   const shots = Math.min(orders.guns.slice(0, ready).filter(Boolean).length, Math.max(0, ready - (f.me.pdc && orders.pdc === 'hold' ? 1 : 0))), heat = f.heat + shots;  // as the engine counts them
   choices.push({ label: fightSay(heat > FIGHT.HEAT_CAP ? 'fire.hot' : 'fire.label', { heat, cap: FIGHT.HEAT_CAP }), keep: true, run: () => fireTurn(s, orders) });
-  const board = raidBoard({ beat: f.turn, edge: 0, style: s.style, me: SHIPS[st.shipId], foe: SHIPS[s.foe.shipId], range: FIGHT_KM[RANGE_BANDS[f.band]] });
+  const breaking = f.foes.map((foe, i) => fightUp(foe) && ((s.shown || {}).foe || [])[i] && s.shown.foe[i].kind === 'break');  // her move as shown: off, while the ships still in it all go
+  const away = breaking.some(Boolean) && f.foes.every((foe, i) => breaking[i] || !fightUp(foe));
+  const board = raidBoard({ beat: f.turn, edge: 0, style: s.style, me: SHIPS[st.shipId], foe: SHIPS[s.foe.shipId], range: FIGHT_KM[RANGE_BANDS[f.band]], away });
   const prev = s.board || null; s.board = board;  // last turn's picture, for sensors that show her late (board.js)
   return {
     title: fightSay('title'), personal: true, via: 'crew', owner: 'you', fight: s,  // yours to decide, not the captain's (hired.js hiredCall)
     read,  // drawn above the board (ui.js)
-    board: boardSvg(board, { style: s.style, beat: f.turn, sensors: condition().sensors, sunAngle: sunLight().angle, prev, pack: s.pack, word: RANGE_BANDS[f.band] }) + fightBars(f),
+    board: boardSvg(board, { style: s.style, beat: f.turn, sensors: condition().sensors, sunAngle: sunLight().angle, prev, pack: s.pack && fightUp(f.foes[1]), word: RANGE_BANDS[f.band] }) + fightBars(f),
     text: f.log.slice(-3).join('</p><p>'),
     choices,
   };
@@ -121,7 +124,8 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
 // Fire: the turn is resolved with the moves that were shown, what it cost is counted, and the panel is drawn again; at an end the panel gives way
 // to the scene the end leads to (G.nextEvent), and this returns nothing.
 function fireTurn(s, orders) {
-  const at = o => { if (!o) return null; const i = s.state.foes.findIndex(f => f.armor > 0 && (o.part === 'hull' || f.parts[o.part].hp > 0)); return { foe: Math.max(0, i), part: o.part }; };  // the first of them whose part is still there
+  const foes = s.state.foes, first = test => foes.findIndex(f => fightUp(f) && test(f));
+  const at = o => { if (!o) return null; const i = first(f => o.part === 'hull' || f.parts[o.part].hp > 0); return { foe: Math.max(0, i >= 0 ? i : first(() => true)), part: o.part }; };  // the first ship still in the fight whose part is still there (a crippled one is out, shipEnd)
   const aimed = { ...orders, guns: orders.guns.map(at), torp: at(orders.torp) };
   const r = resolveShipTurn(s.state, aimed, s.shown, Math.random);
   s.state = r.state;
@@ -150,7 +154,7 @@ function shipFightEnd(s, end) {
   if (end === 'boarded') { G.nextEvent = lead(fightBoarded(s), fightSay(`end.boarded.${s.style}`)); return; }
   if (end === 'lost') { const text = shipTaken(s); close(text, G.nextEvent); return; }
   if (end === 'broke' || end === 'crippled') {
-    if (cap) like(cap, 1, fightSay('memory.stood'));
+    if (cap) like(cap, 1, fightSay(s.spec.kind === 'patrol' ? 'memory.navy' : 'memory.stood'));
     if (s.spec.kind !== 'patrol') changeRep('Pirate', -3);
     gainSkill(post, 3);
     close(`${fightSay(`end.broke.${s.style}`)} ${cap ? `Captain ${cap.last} writes` : 'You write'} it in the log and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`);
@@ -168,7 +172,7 @@ function shipFightEnd(s, end) {
 // ---------- the deck fight: boarding on the same panel (spec Section 3), in place of the lock fight ----------
 // The deck is drawn as its sections (handtohand.js fightStrip) with their move shown above it. The hand stands or moves one section, does one thing there
 // (shoot, or the post's two abilities at the post's own odds, abilityOdds), and gives one order to a named crewmate (crewOrders, at crewOrderOdds); Fight
-// resolves the turn (fight.js resolveDeckTurn). A head lost on our side is a named crewmate (repelCasualty), and the ends settle as the lock fight's did
+// resolves the turn (fight.js resolveDeckTurn). A head lost on our side is downed, and some of the time a named casualty (deckLoss), and the ends settle as the lock fight's did
 // (repelSettle, assaultSettle). `s` is the fight from repelStart or assaultStart (boarders.js); its words are the beats' (the section names and openings, the
 // abilities, the orders, the ends) and the 'scene:fight' deck lines.
 
@@ -214,10 +218,11 @@ function deckFightEvent(s, plan = {}) {
   };
 }
 
-// A head lost on our side is a named crewmate (repelCasualty): the one sent on an order that missed while they are up, else one of those standing.
+// A head lost on our side is downed, and DECK.CASUALTY of the time a casualty (R42): a named crewmate (repelCasualty), the one sent on an order that missed while they are up,
+// else one of those standing. The rest get up when it is over, and are not named.
 function deckLoss(s, sent) {
   const up = (s.fight || []).filter(id => !s.hurt.has(id) && !s.dead.some(c => c.id === id) && !s.marked.some(c => c.id === id));
-  return up.length ? repelCasualty(s, up.includes(sent) ? sent : pick(up)) : '';
+  return up.length && Math.random() < DECK.CASUALTY ? repelCasualty(s, up.includes(sent) ? sent : pick(up)) : '';
 }
 
 // Fight: the turn resolved with the move that was shown, a line for it in the log, and the panel again; at an end, the close (deckClose), and this returns nothing.
@@ -237,7 +242,8 @@ function deckTurn(s, p) {
     if (e.kind === 'hand') said.push(fightSay('deck.log.back', { to: at(e.to) }));
   }
   for (const e of r.events.filter(x => x.kind === 'exchange')) for (let n = 0; n < e.mine; n++) { const line = deckLoss(s, sent); sent = null; if (line) after.push(line); }
-  if (r.events.some(e => e.kind === 'hurt' && e.hurt)) after.push(hurtHand(s));
+  if (r.events.some(e => e.kind === 'shoot' && e.nobody)) after.push(fightSay('deck.nobody.you'));  // a shot with none of them there, as a steady one says
+  if (r.events.some(e => e.kind === 'hurt' && e.hurt)) after.push(repelCasualty(s, 'you'));  // the hand's hurt, which a friend may take (once a fight)
   s.state.log.push(`${fightSay('deck.log.turn', { n: s.state.turn, what: said.length ? said.join(', ') : fightSay('deck.log.none') })}${after.length ? ` ${after.join(' ')}` : ''}`);
   if (s.handDied) return null;  // the hand is dead: the ending is queued (boarders.js)
   const end = deckEnd(s.state);

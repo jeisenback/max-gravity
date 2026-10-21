@@ -373,7 +373,7 @@ test('the deck starts with the attackers in the lock and the defenders spread, t
   const st = deck({ side: true, cover: [1, 2, 3] });
   assert.deepEqual(plain([st.sections.length, st.sections[3].cover, st.hand, st.began, st.turn, st.used, st.kind]), [4, 0, 2, 3, 0, {}, 'deck'], 'three crew over four sections are all on the bridge, and the hand starts with them (R34)');
   assert.deepEqual(plain(st.sections.map(s => s.cover)), [1, 2, 3, 0]);
-  assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM: [2, 3], CREW_HIT: [0, 2], BREAK: 0.3, SUIT: 0.3, TURNS: 8 });
+  assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM: [2, 3], CREW_HIT: [0, 2], BREAK: 0.3, SUIT: 0.3, CASUALTY: 0.3, TURNS: 8 });
   assert.equal(deck({ crew: 3 }).hand, 0, 'with one of ours in the lock the hand starts there');
   assert.deepEqual(plain(deck({ assault: true, hers: [1, 0, 1] }).sections.map(x => [x.cover, x.hers])), [[0, 1], [0, 0], [0, 1]], 'her cover is kept apart from ours');
   assert.deepEqual(plain(fightCover({ size: 12, kit: [], extra: [] })), [1, 1, 1], 'the cover input is the shape fightCover gives');

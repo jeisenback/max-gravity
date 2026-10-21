@@ -579,7 +579,7 @@ test('the standoff line agrees with the board: close in when she is in the close
     return out;
   });
   for (const band of ['knife', 'close']) assert.equal(r[band].text, 'She turns away close in and drags her drive plume across your bow, and it scorches the plating forward. Armor -13.', band);
-  for (const band of ['mid', 'long']) assert.equal(r[band].text, 'She breaks off at long range, and her last burst clips the hull aft. Armor -13.', band);
+  for (const band of ['mid', 'long']) assert.equal(r[band].text, 'She turns away with the range still open, and her last burst clips the hull aft. Armor -13.', band);
   assert.equal(r.close.armor, 13, 'five percent of the hull');
   await done();
 });
@@ -615,5 +615,67 @@ test('an owner who kept a post meets a pirate or a patrol in the ship fight (#72
   assert.match(r.off, /breaks off/); assert.match(r.off, /You write it in the log and nothing else/); assert.doesNotMatch(r.off, /Captain/); assert.ok(r.xp >= 3, 'the post learns from a stand');
   assert.equal(r.patrol, 'Battle Stations'); assert.equal(r.patrolDuel, false);
   assert.equal(r.never, null); assert.equal(r.neverDuel, true, 'an owner who never was a hand keeps the card duel');
+  await done();
+});
+
+// ---------- the final review's fixes (#786) ----------
+
+test('dead in space counts her crew as the boarding will: a veteran pair is more of hers than a lone raider, and Board her opens that same fight', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const [name, grade, pack] of [['lone', 0, false], ['pair', 2, true]]) {
+      raid('gunner');
+      const s = { foe: makeEnemy({ kind: 'pirate' }), grade, pack };
+      const e = deadInSpaceScene(s), said = Number((/against (\d+) of hers/.exec(e.text) || [])[1]);
+      G.nextEvent = null; e.choices.find(c => c.label === 'Board her').run();
+      out[name] = { said, heads: G.nextEvent.fight.state.began };
+    }
+    return out;
+  });
+  assert.equal(r.lone.said, r.lone.heads); assert.equal(r.pair.said, r.pair.heads, JSON.stringify(r));
+  assert.ok(r.pair.heads > r.lone.heads, 'a veteran pair has more crew');
+  await done();
+});
+
+test('a heavy turn whose casualty falls on the hand does not hurt the hand a second time', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), h = hired();
+    st.crew = st.crew.filter(id => person(id).role !== 'medic'); st.injured = {}; delete h.hurtUntil;
+    for (const id of st.crew) { person(id).opinion = 0; delete person(id).owes; }  // nobody to take it for you
+    startDuel({ kind: 'pirate' }, false); begin();
+    fightNow().state.me.shields = 0;
+    shownMoves({ kind: 'broadside', target: 'hull', dmg: [60, 60] });
+    rolls([0.5, 0.5, 0.01, 0.999, 0.99, 0.01, 0.99]);  // our shot, her volley, a casualty, on the hand (the last of the pool), no death; then the hand's own roll, and no death
+    fireOrders();
+    return { line: fightNow().state.log.slice(-1)[0], days: h.hurtUntil - st.day };
+  });
+  assert.match(r.line, /You are hurt\./, r.line);
+  assert.doesNotMatch(r.line, /hurt again/, 'one hurt on one turn');
+  assert.equal(r.days, 12, 'laid up as a first hurt');
+  await done();
+});
+
+test('what the captain remembers says what happened: a raider let drift, and a navy ship that broke off', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    raid('gunner'); let cap = person(hired().captain);
+    startDuel({ kind: 'pirate' }, false); begin();
+    fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.parts.drive.hp = 0; }); shownMoves({ kind: 'hold' }); fireOrders();
+    choose('Let her drift'); out.drift = cap.memories[cap.memories.length - 1];
+    raid('gunner'); cap = person(hired().captain);
+    const gov = 'Arcology Compact', spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
+    startDuel({ kind: 'patrol', gov }, false); begin();
+    fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; }); shownMoves({ kind: 'break' }); fireOrders();
+    out.navy = cap.memories[cap.memories.length - 1];
+    return out;
+  });
+  assert.doesNotMatch(r.drift, /broke off/, r.drift); assert.match(r.drift, /drift/, r.drift);
+  assert.doesNotMatch(r.navy, /raid/, r.navy); assert.match(r.navy, /navy/, r.navy);
   await done();
 });
