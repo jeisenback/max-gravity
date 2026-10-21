@@ -44,6 +44,12 @@ test('with --frames every deck fight is played to its close, and a fight\'s pane
   assert.ok((r.scenes['Battle Stations'] || 0) <= 2 * r.frames.raids, `the fight's panel and its close, not a count a turn: ${r.scenes['Battle Stations']} for ${r.frames.raids} raids`);
 });
 
+test('a card duel played over its exchanges and a boarding after it is one fight, not scenes against the step cap (the Ice Hauler\'s fitting makes the duel longer)', async () => {
+  const r = await soak({ seed: 19, legs: 40, frames: true });  // a hunter's duel runs six exchanges, then the lock and the corridor
+  assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
+  assert.ok(r.scenes['The Corridor'] > 0, 'the boarding fight was fought');
+});
+
 test('for every captain the trouble, then the secret, then the used-ship offer', async () => {
   for (const captainKey of ['hester', 'dov', 'imre', 'zoya']) {
     const r = await soak({ seed: 3, legs: 40, captainKey });  // not every seed ends with the offer: a chapter that closes at the buy price can do so before a landing at a yard (seeds 1 and 2 each have one such captain)

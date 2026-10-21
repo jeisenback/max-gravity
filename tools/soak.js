@@ -85,8 +85,8 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
     const answer = async () => {
       let kept = false;  // the dialog is a kept choice's redraw (a fight panel's next turn, or an order changed): a step of the same scene, not a new one
       const most = H ? 40 : 8;  // the scenes one answer plays before the rest are closed unanswered (with hooks, they are reported: H.stuck)
-      for (let k = 0, redraws = 0; G.dialog && k < most && redraws < 8 * (FIGHT.TURNS + DECK.TURNS); kept ? redraws++ : k++) {  // a fight's panels do not count against the scenes
-        const d = G.dialog;
+      for (let k = 0, redraws = 0, panel = false; G.dialog && k < most && redraws < 8 * (FIGHT.TURNS + DECK.TURNS); kept || panel ? redraws++ : k++) {  // a fight's panels do not count against the scenes: nor do a card duel's exchanges (up to DUEL_ROUNDS of them, before any boarding)
+        const d = G.dialog; panel = /^Contact: exchange \d/.test(d.event.title);
         if (/^(The Last Run|Without a Captain|Put Ashore)$/.test(d.event.title)) { if (H) await H.scene(d, -1, false); ending.v = { day: G.state.day - hired().since, title: d.event.title, how: (hired().died || hired().captainLost || {}).how }; G.dialog = null; return; }  // the endings start a new game: the chapter is over
         if (!kept) {  // a redraw is counted once, with its scene
           scenes[d.event.title] = (scenes[d.event.title] || 0) + 1;
