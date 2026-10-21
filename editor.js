@@ -321,7 +321,8 @@
   }
 
   // A fight row is played from one of the tester panel's fights (js/uat.js UAT_FIGHTS, uatFight), early or late (#795): the day is moved to the opening typed (startShipFight
-  // takes it by the day), a turret is fitted for the turret's lines, and boarding her goes onto her deck at once. What the report counts starts from here, before the fight.
+  // takes it by the day), a turret is fitted for the turret's lines, torpedoes are carried for a torpedo line on the consort, the hand is at the post asked for (`fightPost`), and
+  // boarding her goes onto her deck at once. What the report counts starts from here, before the fight; that the captain will remember a raid is no change worth saying.
   function playFight(m) {
     const late = m.fight.startsWith('late-'), f = UAT_FIGHTS.find(x => x.id === m.fight.replace(/^late-/, ''));
     if (!f) return { error: `The tester panel has no fight "${m.fight}".` };
@@ -329,12 +330,15 @@
       const st = G.state;
       if (m.fightDay != null) st.day += (m.fightDay - st.day % 2 + 2) % 2;
       if (m.turret) st.outfits.pdc = 1;
+      if (m.launcher && !st.outfits.launcher) { st.outfits.launcher = 1; st.torpedoes = 6; }
       since = watched();
-    });
+    }, HIRED_POSTS.includes(m.fightPost) ? m.fightPost : 'gunner');
     const board = f.id === 'deck-assault' && G.dialog && G.dialog.choices.find(c => c.label === deadWords('board.label'));
     if (board) { board.run(); const next = G.nextEvent; G.nextEvent = null; openEvent(next); }
     if (!G.dialog) return { error: 'The fight did not open in this state.' };
-    return { type: 'played', failing: [], chained: false, shut: [], note: `The fight is the tester panel's "${f.title}"${late ? ', late in the chapter' : ''}${m.turret ? ', with a turret fitted for its lines' : ''}${board ? ', boarded at once' : ''}. A fight plays by its contact, so no condition is checked here.` };
+    since['hired flag raided'] = watched()['hired flag raided'];
+    const ours = m.line === 'first.ours' ? ' The line for your own first volley plays only when the fight opens with a head start for you (after an ambush, or when her contact move goes wrong), which none of these fights has, so it cannot be previewed here.' : '';
+    return { type: 'played', failing: [], chained: false, shut: [], note: `The fight is the tester panel's "${f.title}"${late ? ', late in the chapter' : ''}, with you at the ${hired().post} post${m.turret ? ', with a turret fitted for its lines' : ''}${m.launcher ? ', with torpedoes aboard' : ''}${board ? ', boarded at once' : ''}. A fight plays by its contact, so no condition is checked here.${ours}` };
   }
 
   function play(m) {
@@ -780,7 +784,9 @@
   const fightFor = (id, key) => (id === 'beats:assault' ? 'deck-assault' : id !== 'scene:fight' ? 'deck-repel'
     : /^deck\.(hers|cargoHers|who\.assault|withdraw\.assault)/.test(key) ? 'deck-assault' : /^deck\./.test(key) ? 'deck-repel'
       : /^open\.gun\.|\.gun$/.test(key) || key === 'end.crippled.patrol' || key === 'memory.navy' ? 'fight-patrol'
-        : /(^|\.)torp/.test(key) ? 'fight-veteran' : /consort/.test(key) ? 'fight-pack' : 'fight-raider');
+        : /consort/.test(key) || key === 'first.hers' ? 'fight-pack' : /(^|\.)torp/.test(key) ? 'fight-veteran' : 'fight-raider');  // the pair starts a volley behind; a torpedo on the consort is carried in (playFight)
+  // The post the hand fights at (#795): an ability's own post, another than the gunner's for a crew gunner's order (so one is aboard to give it to), else the post chosen.
+  const fightPostFor = (key, chosen) => { const ab = /^ability\.(\w+)\./.exec(key); return ab ? ab[1] : /^crew\.gunner\./.test(key) && chosen === 'gunner' ? 'pilot' : chosen || 'gunner'; };
   // The day a version plays on, in plain words (#795): the versions are taken in turn by the day, every three days.
   const daysOf = v => `day ${[0, 1, 2].map(n => v + n * TELLING_DAYS).join(', ')}...`;
   const TELLING_DAYS = 3;  // tellingOn (js/storylets.js): three versions, one a day in turn
@@ -976,12 +982,36 @@
     return '';
   }
   // What importing a file would do, item by item: the changes it can make, and what is refused and why. Nothing is applied here.
+  // The abilities and orders of the deck fights were lines of each fight's row, and are now one row both read (#795): words kept under the old rows are moved to it, unless it has
+  // its own already. `of` gives the words a row holds by line, `put` gives the shared row one, and `drop` removes one from an old row; where the two fights held different words
+  // for a line, the repel's are kept and `differed` names it.
+  const DECK_SHARED = /^(ability|crew)\./;
+  function moveDeckWords(of, put, drop) {
+    const has = of('beats:deck'), moved = dict(), differed = [];
+    for (const old of ['beats:repel', 'beats:assault']) {
+      for (const [k, t] of Object.entries(of(old))) {
+        if (!DECK_SHARED.test(k)) continue;
+        if (!(k in has) && !(k in moved)) { put(k, t); moved[k] = t; } else if (k in moved && moved[k] !== t) differed.push(k);
+        drop(old, k);
+      }
+    }
+    return { moved: Object.keys(moved).length, differed };
+  }
+
   function planImport(parsed, rows) {
     const items = [], accepted = { overrides: dict(), scenes: [] }, byId = new Map(rows.filter(editable).map(r => [r.id, r])), storylets = new Set(rows.filter(isStorylet).map(r => r.id));
     const ok = text => items.push({ ok: true, text }), refuse = text => items.push({ ok: false, text });
     const words = v => typeof v === 'string' && v.trim() !== '' && v.length <= LIMIT.text;
     const sceneIds = () => [...byId.keys(), ...accepted.scenes.map(d => d.id)];
     const ov = parsed.overrides === undefined ? {} : parsed.overrides;
+    if (isObj(ov)) {  // a file from before the deck fights shared their abilities and orders (#795)
+      const parts = id => (isObj(ov[id]) && isObj(ov[id].parts) ? ov[id].parts : dict());
+      if (Object.keys(parts('beats:repel')).concat(Object.keys(parts('beats:assault'))).some(k => DECK_SHARED.test(k))) {
+        const put = (k, t) => { if (!isObj(ov['beats:deck'])) ov['beats:deck'] = {}; if (!isObj(ov['beats:deck'].parts)) ov['beats:deck'].parts = {}; ov['beats:deck'].parts[k] = t; };
+        const { differed } = moveDeckWords(parts, put, (id, k) => { delete ov[id].parts[k]; if (!Object.keys(ov[id].parts).length) delete ov[id].parts; if (!Object.keys(ov[id]).length) delete ov[id]; });
+        for (const k of differed) refuse(`beats:assault parts ${k}: the two deck fights now share this line, and the repel's words are kept for it`);
+      }
+    }
     if (!isObj(ov)) refuse('SCENE_OVERRIDES is not an object, so none of it is read');
     else {
       const entries = Object.entries(ov);
@@ -1319,9 +1349,12 @@
         for (const k of Object.keys(struct)) delete struct[k];
         Object.assign(values, kept.values); Object.assign(struct, kept.struct);
         newRows.length = 0; newRows.push(...kept.newRows); newKey = Math.max(kept.newKey, ...kept.newRows.map(r => Number(r.id.slice(4)) + 1), 1);
+        const deckOf = id => { const v = values[id] || dict(); return Object.fromEntries(Object.entries(v).filter(([k]) => k.startsWith('part.')).map(([k, t]) => [k.slice(5), t])); };
+        const deckMove = moveDeckWords(deckOf, (k, t) => { (values['beats:deck'] = values['beats:deck'] || dict())[`part.${k}`] = t; }, (id, k) => { delete values[id][`part.${k}`]; });  // the old rows' abilities and orders go to the one row both deck fights read (#795)
         if (snapshotOf(values, struct, newRows, base, 0) !== fresh) {
           const changed = kept.base !== base;
-          pendingNotice = noticeHtml('Your edits from earlier are back', `<p>These are the edits this browser kept from your last visit${changed ? ', and js/overrides.js has changed since' : ''}.</p>`,
+          const deckNote = deckMove.moved ? `<p>Your words for the deck fights' abilities and orders are now in the one row both fights read, Abilities and Orders on the Deck.${deckMove.differed.length ? ` Where the two fights had different words (${esc(deckMove.differed.join(', '))}), the repel's were kept.` : ''}</p>` : '';
+          pendingNotice = noticeHtml('Your edits from earlier are back', `<p>These are the edits this browser kept from your last visit${changed ? ', and js/overrides.js has changed since' : ''}.</p>${deckNote}`,
             `<button data-action="discard-saved">Discard them and start from js/overrides.js</button> <button data-action="cancel-notice">Keep working</button>`);
         }
       }
@@ -1354,6 +1387,7 @@
       app.querySelector('[data-action="simulate"]').disabled = !(ready && row && (isStorylet(row) || row.isNew));
       const fights = app.querySelector('#pv-fight'), fighting = !!row && FIGHT_ROWS.includes(row.id);
       fights.style.display = fighting ? '' : 'none';
+      if (pickFor !== state.id) { pickFor = state.id; fightPick = ''; fights.querySelector('select').value = ''; }  // a pick is for the row it was made on
       if (fighting) { const f = opt.fights.find(x => x.id === fightFor(row.id, typedOf(row))); fights.querySelector('option[value=""]').textContent = `The one the line typed needs (now: ${f ? f.title : ''})`; }
       app.querySelector('#pv-scene').textContent = ready ? `Scene: ${row.title} (${row.isNew ? row.sceneId.trim() : row.id})` : row && row.lines ? 'A table of lines has no scene to play: its lines come up in the bar and in the crew chatter.' : row && row.isNew ? 'This new scene has problems the game would refuse. Fix them to play it.' : 'Choose a data scene to play it in the game\'s own dialog, from the state below. It starts a fresh test game that is never saved.';
     };
@@ -1377,7 +1411,7 @@
       return { as: 'hired', captain: kind === 'captain' ? key : xo ? xo.key : setup.captain, start: pair ? pair.key : setup.start, ...(row.post ? { post: row.post } : {}) };  // a work event is played at its own post
     };
     const typedOf = row => (lastPath && lastPath.id === row.id && lastPath.path.startsWith('part.') ? lastPath.path.slice(5) : '');  // the line last typed in this row
-    let fightPick = '';  // the fight picked for a fight row; empty for the one its line needs (#795)
+    let fightPick = '', pickFor = null;  // the fight picked for a fight row (pickFor), empty for the one its line needs (#795)
     const send = msg => { const f = frameEl(); if (previewReady) f.contentWindow.postMessage(msg, '*'); else pending = msg; };
     let previewReady = false, pending = null, lastPath = null;  // lastPath: the scene and line last typed in, so the preview can play its version (#781)
     const frameEl = () => {
@@ -1522,7 +1556,7 @@
         const overrides = overridesFrom(rows, values, struct), line = typedOf(row), fight = FIGHT_ROWS.includes(row.id) ? fightPick || fightFor(row.id, line) : null;
         const opening = /^open\.(gun|grapple|torpedo)\.(\d)$/.exec(line), turret = /^pdc\./.test(line) || Object.keys((overrides['scene:fight'] || {}).parts || {}).some(k => k.startsWith('pdc.'));  // the opening typed plays on its day; the turret's lines need one fitted
         send({ cmd: 'play', id: row.isNew ? row.sceneId.trim() : row.id, overrides, newScenes: newDefs(), setup: { ...setup, place: placeFor(row), ...(row.registry ? hiredFor(row) : {}) }, version, line: typed.startsWith('part.') ? typed.slice(5) : null,
-          ...(fight ? { fight, fightDay: opening && row.id === 'scene:fight' ? Number(opening[2]) : null, turret } : {}) });
+          ...(fight ? { fight, fightDay: opening && row.id === 'scene:fight' ? Number(opening[2]) : null, turret, launcher: /consort/.test(line) && /(^|\.)torp/.test(line), fightPost: fightPostFor(line, setup.post) } : {}) });
       }
     });
     update();

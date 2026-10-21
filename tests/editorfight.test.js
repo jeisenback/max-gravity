@@ -66,7 +66,7 @@ test('a fight row has a picker of the tester panel\'s fights, early and late, an
 test('the ship fight plays the setup the line typed needs: the patrol, the veteran with torpedoes, the pair, the deck, and the opening typed (#795)', async () => {
   await reload(); await select('scene:fight');
   const cases = [
-    ['open.gun.1', r => r.patrol && r.ship === 'cutter', true],
+    ['open.gun.1', r => r.patrol && ['cutter', 'destroyer'].includes(r.ship), true],
     ['open.gun.0', r => r.patrol, true],
     ['end.crippled.patrol', r => r.patrol, false],
     ['memory.navy', r => r.patrol, false],
@@ -196,4 +196,84 @@ test('each version of a moment plays when it is typed: the ship\'s downtime, the
     const seen = await f.evaluate(() => G.dialog.event.text);
     assert.ok(seen.includes(`Typed ${line}.`), `family:errand ${line} plays: ${seen.slice(0, 160)}`);
   }
+});
+
+test('a deck line of a post plays with the hand at that post, and a crew gunner\'s order with a gunner aboard to give it to (#795)', async () => {
+  await reload(); await select('beats:deck');
+  await page.fill('textarea[data-path="part.ability.engineer.steady.label"]', 'Typed engineer steady');
+  let f = await play();
+  assert.equal(await f.evaluate(() => hired().post), 'engineer', 'the hand is at the ability\'s post');
+  await choose(f, 1);  // shoot to the post's steady ability
+  assert.ok((await fightOf(f)).seen.includes('Typed engineer steady'), 'the engineer\'s ability is on the panel');
+  await page.fill('textarea[data-path="part.ability.engineer.steady.label"]', '');
+  await page.fill('textarea[data-path="part.crew.gunner.cover.label"]', 'typed gunner order');  // the first of the orders is the cover one, the rest the steady one
+  await page.fill('textarea[data-path="part.crew.gunner.steady.label"]', 'typed gunner order');
+  f = await play();
+  assert.notEqual(await f.evaluate(() => hired().post), 'gunner', 'the hand is not the gunner, so a crew gunner is aboard');
+  assert.ok(await f.evaluate(() => repelOrders(G.dialog.event.fight, false).some(o => o.sheet.post === 'gunner')), 'a crew gunner can be ordered');
+  let seen = '';
+  for (let n = 0; n < 4 && !seen.includes('typed gunner order'); n++) { await choose(f, 2); seen = (await fightOf(f)).seen; }
+  assert.ok(seen.includes('typed gunner order'), `the order to the gunner is offered: ${seen.slice(0, 300)}`);
+});
+
+test('the veteran\'s torpedoes are her loadout, not a change the fight made (#795)', async () => {
+  await reload(); await select('scene:fight');
+  await page.fill('textarea[data-path="part.torp.label"]', 'Typed torpedo {left}: {aim}');
+  const f = await play();
+  assert.equal((await fightOf(f)).ship, 'corsair');
+  const shown = await choose(f, 0);
+  assert.doesNotMatch(shown, /torpedoes/, shown);
+  assert.doesNotMatch(shown, /raided/, 'the captain remembering a raid is not reported');
+});
+
+test('lines on the consort and the first volleys get a fight that plays them, or say why not (#795)', async () => {
+  await reload(); await select('scene:fight');
+  await page.fill('textarea[data-path="part.log.torp.consort"]', 'Typed.');
+  let r = await fightOf(await play());
+  assert.ok(r.pack && r.torps > 0, `the pair, with torpedoes aboard: ${JSON.stringify(r).slice(0, 200)}`);
+  await page.fill('textarea[data-path="part.log.torp.consort"]', '');
+  await page.fill('textarea[data-path="part.first.hers"]', 'She fires first, typed: {hits}.');
+  r = await fightOf(await play());
+  assert.ok(r.pack && r.seen.includes('She fires first, typed'), `the pair starts a volley behind: ${r.seen.slice(0, 300)}`);
+  await page.fill('textarea[data-path="part.first.hers"]', '');
+  await page.fill('textarea[data-path="part.first.ours"]', 'Typed ours.');
+  await play();
+  assert.match(await page.textContent('#pv-report'), /cannot be previewed here/);
+});
+
+test('a fight picked for one row is not carried to another (#795)', async () => {
+  await reload(); await select('scene:fight');
+  await page.selectOption('[data-pv-fight]', 'late-fight-veteran');
+  await select('beats:repel');
+  assert.equal(await page.inputValue('[data-pv-fight]'), '', 'the picker is back to the line typed');
+  const r = await fightOf(await play());
+  assert.deepEqual([r.kind, r.assault], ['deck', false]);
+});
+
+test('words kept for the deck fights\' abilities and orders under the old rows move to the shared row, from the browser and from a file (#795)', async () => {
+  await reload(); await select('beats:repel');
+  await page.fill('textarea[data-path="part.title.0"]', 'The Lock, typed');
+  await page.evaluate(() => {
+    const k = 'maxGravity.editor.v1', s = JSON.parse(localStorage.getItem(k));
+    Object.assign(s.values['beats:repel'], { 'part.ability.gunner.steady.label': 'Old repel words' });
+    s.values['beats:assault'] = { 'part.ability.gunner.steady.label': 'Other assault words', 'part.crew.pilot.cover.label': 'Old assault order' };
+    localStorage.setItem(k, JSON.stringify(s));
+  });
+  await page.reload(); await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 });
+  const notice = await page.textContent('#notice');
+  assert.match(notice, /Abilities and Orders on the Deck/);
+  assert.match(notice, /ability\.gunner\.steady\.label\), the repel's were kept/);
+  await page.click('[data-action="cancel-notice"]');
+  await select('beats:deck');
+  assert.equal(await page.inputValue('textarea[data-path="part.ability.gunner.steady.label"]'), 'Old repel words');
+  assert.equal(await page.inputValue('textarea[data-path="part.crew.pilot.cover.label"]'), 'Old assault order');
+  const out = JSON.parse((await page.evaluate(() => SceneIndex.exportText())).match(/const SCENE_OVERRIDES = ([\s\S]*?);\n/)[1]);
+  assert.deepEqual(out, { 'beats:repel': { parts: { 'title.0': 'The Lock, typed' } }, 'beats:deck': { parts: { 'ability.gunner.steady.label': 'Old repel words', 'crew.pilot.cover.label': 'Old assault order' } } });
+  const plan = await page.evaluate(() => {
+    const p = SceneIndex.planImport({ overrides: { 'beats:repel': { parts: { 'ability.gunner.steady.label': 'A' } }, 'beats:assault': { parts: { 'ability.gunner.steady.label': 'B', 'open.2.0': 'C' } } } }, SceneIndex.rows);
+    return { acc: JSON.parse(JSON.stringify(p.accepted.overrides)), refused: p.items.filter(i => !i.ok).map(i => i.text) };
+  });
+  assert.deepEqual(plan.acc, { 'beats:assault': { parts: { 'open.2.0': 'C' } }, 'beats:deck': { parts: { 'ability.gunner.steady.label': 'A' } } });
+  assert.equal(plan.refused.length, 1);
+  assert.match(plan.refused[0], /repel's words are kept/);
 });

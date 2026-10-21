@@ -172,9 +172,9 @@ UAT_ITEMS.push(
 );
 
 // ---------- the turn-based fights (#786): a hired hand at the guns, on a burn, in one situation ----------
-function uatHand() {
+function uatHand(post = 'gunner') {  // the tester items' hand is the gunner; the editor's preview can ask for another post
   G.dialog = null; G.nextEvent = null; G.transit = null;
-  startGame({ slot: Saves.current, background: 'earth', captain: 'Tester', mode: 'hired', post: 'gunner', captainKey: 'hester' });
+  startGame({ slot: Saves.current, background: 'earth', captain: 'Tester', mode: 'hired', post, captainKey: 'hester' });
   uatFinish();
   const st = G.state; st.uat = true; st.story.next = 1e9; hired().raidTold = true;  // the first fight's explanation is for real play
   uatBurn('Ceres Station', 'pallas'); G.dialog = null;
@@ -203,7 +203,8 @@ const UAT_FIGHTS = [
   { id: 'fight-pack', title: 'Two raiders in company', check: 'Both are on the board with their own bars and moves, and you start a volley behind. Once the first is crippled, a shot at her hull or lock goes to the consort and the log says so.',
     run: g => uatShipFight({ kind: 'pirate' }, { ship: 'raider', grade: g, pack: true }) },
   { id: 'fight-veteran', title: 'A veteran corsair, with torpedoes aboard', check: 'The opening names a veteran crew; her bars are longer and her volleys harder. The torpedo order shows while torpedoes are left, and a torpedo is one large hit.', grade: 2,
-    run: g => { const st = G.state; st.outfits.launcher = 1; st.torpedoes = 6; uatShipFight({ kind: 'pirate' }, { ship: 'corsair', grade: g }); } },
+    prep: () => { const st = G.state; st.outfits.launcher = 1; st.torpedoes = 6; },  // the loadout, before the fight (prep: what the hand brings to it)
+    run: g => uatShipFight({ kind: 'pirate' }, { ship: 'corsair', grade: g }) },
   { id: 'fight-patrol', title: 'A navy stop', check: 'Firing on her costs standing with her government. She is never boarded, and crippled she calls the stop off.', grade: null,
     run: () => uatShipFight({ kind: 'patrol', gov: 'Arcology Compact' }) },
   { id: 'deck-repel', title: 'Being boarded', check: 'The deck cutaway shows heads and cover by section, where you stand, their next move (marked may feint above grade 0) and Turn n of 8. Stand or move, shoot, steady, cover once, and one crew order all work; it ends repelled or taken through the usual scenes.', grade: 1,
@@ -212,10 +213,12 @@ const UAT_FIGHTS = [
     run: g => openEvent(deadInSpaceScene({ spec: { kind: 'pirate' }, foe: uatRaider(), grade: g, pack: false })) },
 ];
 const UAT_LATE_CHECK = ' Late in the chapter: the gunner\'s level and the boresight show in your damage ranges, the valve keys add cover in the corridor, and a crewmate who is a friend takes the first hit meant for you.';
-// One of the fights, early or late, from a fresh hand: `ready` runs once the hand is set up and before the fight starts (the editor's preview sets the day and the turret there).
-function uatFight(f, late, ready = () => {}) {
-  uatHand();
+// One of the fights, early or late, from a fresh hand (at `post`, the gunner unless asked): the fight's own loadout (`prep`), then `ready` once the hand is set up and before
+// the fight starts (the editor's preview sets the day and the turret there, and counts what the fight changes from it).
+function uatFight(f, late, ready = () => {}, post = 'gunner') {
+  uatHand(post);
   if (late) uatLate();
+  if (f.prep) f.prep();
   ready();
   f.run(!late ? f.grade || 0 : f.grade === null ? 0 : Math.min(2, (f.grade || 0) + 1));
 }
