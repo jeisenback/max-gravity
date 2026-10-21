@@ -159,7 +159,7 @@ test('a save made mid-raid in an old version loads with no fight open and no err
     startDuel({ kind: 'pirate' }, false); out.fight = G.nextEvent && G.nextEvent.title; out.me = G.nextEvent && G.nextEvent.fight.state.me.armor;
     return out;
   }, text);
-  assert.deepEqual(r, { refused: null, mode: 'landed', dialog: ['Hull Damage', false], next: ['An Errand Ashore', false], armor: 40, fight: 'Battle Stations', me: 40 }, 'the landing\'s own scenes, and no fight; a fight after it starts from the hull the save kept');
+  assert.deepEqual(r, { refused: null, mode: 'landed', dialog: ['Hull Damage', false], next: ['The Old Days', false], armor: 40, fight: 'Battle Stations', me: 40 }, 'the landing\'s own scenes, and no fight; a fight after it starts from the hull the save kept');
   await done();
 });
 
