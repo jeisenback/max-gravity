@@ -8,7 +8,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { extractProse, unpricedChoices, countTics, shape, speech, lint, report, compare, narrativeFiles, main } = require('../tools/prose-lint');
+const { extractProse, unpricedChoices, mispricedChoices, creditFigures, countTics, shape, speech, lint, report, compare, narrativeFiles, main } = require('../tools/prose-lint');
 
 const tmp = files => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'prose-'));
@@ -166,4 +166,45 @@ test('the report lists unpriced choices per file, and compare names the ones tha
   assert.ok(report(base).includes('show no figure in the label: 1') && report(base).includes('a.js: 1') && report(base).includes('x: Let it go [effect]'));
   assert.ok(compare(base, now).includes('unpriced: 1 -> 0 (-1)') && compare(base, now).includes('gone: a.js  x: Let it go [effect]'));
   assert.equal(compare({ total: { ...base.total, unpriced: undefined } , }, base).includes('unpriced: 0 -> 1'), true, 'an older baseline has none');
+});
+
+test('creditFigures finds credit figures written in the text, in digits and in words, and not the ones filled from code (#779)', () => {
+  const src = [
+    "const A = { text: 'The fare is 300 cr, and she wants it now.', label: 'Pay (1,500 cr)' };",
+    "const B = 'A shave costs six credits. The tea is nine credits, and the seed is eleven credits.';",
+    "const C = `You owe ${fine} cr, and ${n} credits more.`;",
+    "const D = 'Forty-two hundred credits for the cargo.';",
+    "const E = 'Two crew, three days, a credit chit.';",
+    "// a comment: 500 cr",
+  ].join('\n');
+  assert.deepEqual(creditFigures(src).map(f => f.figure), ['300 cr', '1,500 cr', 'six credits', 'nine credits', 'eleven credits', 'Forty-two hundred credits']);
+  assert.match(creditFigures(src)[0].text, /^The fare is 300 cr/);
+});
+
+test('the report lists credit figures per file, and compare names the ones that come and go (#779)', () => {
+  const base = lint({ 'a.js': "const t = 'The fare is 300 cr.';" }), now = lint({ 'a.js': "const t = `The fare is ${fare} cr.`;" });
+  assert.ok(report(base).includes('credit figures written in the text: 1') && report(base).includes('300 cr: The fare is 300 cr.'));
+  assert.ok(compare(base, now).includes('credits: 1 -> 0 (-1)') && compare(base, now).includes('gone: a.js  300 cr: The fare is 300 cr.'));
+  assert.equal(compare({ total: { ...base.total, credits: undefined } }, base).includes('credits: 0 -> 1'), true, 'an older baseline has none');
+});
+
+test('mispricedChoices finds a choice whose label names a price its effect or gate does not move (#779)', () => {
+  const src = [
+    "scene({ id: 'a', choices: [",
+    "  { label: 'Pay it (200 cr)', when: { credits: 200 }, effects: { credits: -200 } },",
+    "  { label: 'Pay it (200 cr)', effects: { credits: -150 } },",
+    "  { label: 'Hand her over (+2,000 cr)', effects: { credits: 2000 } },",
+    "  { label: 'Buy five tons (5t at 250 cr/t)', effects: { credits: -1250 } },",
+    "  { label: 'Pay what you like (60 cr)', run() {} },",
+    "] });",
+  ].join('\n');
+  assert.deepEqual(mispricedChoices(src), [{ id: 'a', label: 'Pay it (200 cr)', says: '200', code: '150' }]);
+});
+
+test('in the game, every choice written as data names the price its effect or gate moves (#779)', () => {
+  const root = path.resolve(__dirname, '..'), files = [];
+  const walk = d => { for (const f of fs.readdirSync(path.join(root, d))) { const p = `${d}/${f}`; if (fs.statSync(path.join(root, p)).isDirectory()) walk(p); else if (p.endsWith('.js')) files.push(p); } };
+  walk('js');
+  const wrong = files.flatMap(f => mispricedChoices(fs.readFileSync(path.join(root, f), 'utf8')).map(c => `${f}  ${c.id}: ${c.label} (the code moves ${c.code})`));
+  assert.deepEqual(wrong, [], 'the figure in the label and the credits in the code must move together');
 });

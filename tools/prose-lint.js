@@ -6,7 +6,8 @@
 //   npm run prose                 the report
 //   npm run prose -- --write      write docs/prose-baseline.json
 //   npm run prose -- --compare    the difference from the baseline
-// It also lists the choices written as data that cost something (a cost tag, credits taken, a gate on credits) and whose label shows no figure (#601, aim 1).
+// It also lists the choices written as data that cost something (a cost tag, credits taken, a gate on credits) and whose label shows no figure (#601, aim 1),
+// and the credit figures written into the words rather than filled from code (#779).
 // The string scan is a character walk, not a parser: a regex literal that holds a quote mark would confuse it.
 // It does not read js/overrides.js: words changed in the scene editor (#336) live there and not in the narrative files below, so the report does not see
 // them until they are written back into those files. The file is empty in the shipped game, and its strings are mostly ids and keys, not prose.
@@ -132,9 +133,9 @@ const NUMBER_WORD = /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|twelv
 // A label shows its cost when it holds a figure (a digit or a number word), or is built from an expression that will hold one.
 const showsCost = (label, raw) => /\d/.test(label) || NUMBER_WORD.test(label) || raw.includes('${');
 
-// The choices written as data in a script (an object with a literal `label`) that cost something and whose label shows no figure, as
-// { id, label, why } where id is the scene's last `id` before it. A choice built by a function is not found, and is left to a reader.
-function unpricedChoices(src) {
+// The choices written as data in a script (an object with a literal `label`), in order, as { id, label, raw, slice }: id is the scene's last `id` or
+// `title` before it, label its label's text, raw the label as written, slice the object's code with its literals blanked. A choice built by a function is not found.
+function dataChoices(src) {
   const { lits, code } = scanSource(src), at = new Map(lits.map(l => [l.start, l])), out = [], stack = [];
   let sceneId = '';
   for (let i = 0; i < code.length; i++) {
@@ -147,14 +148,37 @@ function unpricedChoices(src) {
     } else if (c === '{') stack.push({ start: i, label: null });
     else if (c === '}') {
       const frame = stack.pop();
-      if (!frame || !frame.label) continue;
-      const slice = code.slice(frame.start, i + 1), why = STAKES.filter(([, re]) => re.test(slice)).map(([name]) => name);
-      const raw = src.slice(frame.label.start, frame.label.end);
-      if (why.length && !showsCost(frame.label.text, raw)) out.push({ id: sceneId, label: frame.label.text, why: why.join('+') });
+      if (frame && frame.label) out.push({ id: sceneId, label: frame.label.text, raw: src.slice(frame.label.start, frame.label.end), slice: code.slice(frame.start, i + 1) });
     }
   }
   return out;
 }
+
+// The choices written as data that cost something and whose label shows no figure, as { id, label, why }. A choice built by a function is left to a reader.
+const unpricedChoices = src => dataChoices(src).flatMap(({ id, label, raw, slice }) => {
+  const why = STAKES.filter(([, re]) => re.test(slice)).map(([name]) => name);
+  return why.length && !showsCost(label, raw) ? [{ id, label, why: why.join('+') }] : [];
+});
+
+// The choices written as data whose label names a price in digits that is not the credits their effect or gate moves, as { id, label, says, code }:
+// "Pay it (200 cr)" with `effects: { credits: -150 }`. A per-ton price ("250 cr/t") is not checked, and a choice with no credits in its effect or gate is not
+// read. After a retune the figures in the words and in the code must move together (#779).
+const mispricedChoices = src => dataChoices(src).flatMap(({ id, label, slice }) => {
+  const moved = [...slice.matchAll(/\b(?:effects|when)\s*:\s*\{[^{}]*?\bcredits\s*:\s*([-+]?\d+)/g)].map(m => Math.abs(+m[1]));
+  const says = [...label.matchAll(/(?<![\w$])(\d[\d,]*)\s?cr\b(?!\/)/g)].map(m => +m[1].replace(/,/g, ''));
+  return moved.length && says.length && !says.some(n => moved.includes(n)) ? [{ id, label, says: says.join(', '), code: moved.join(', ') }] : [];
+});
+
+// ---------- credit figures written in the text ----------
+
+// A figure in credits written into the words, in digits ("300 cr") or in words ("six credits"), and not filled from code (`${n} cr` reads as X).
+// After a retune of the economy such a figure is out of scale and nothing else says so (#779).
+const NUM = '(?:one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|thousand|million)';
+const CREDIT_FIGURE = new RegExp(`(?<![\\w$])\\d[\\d,]*(?:\\.\\d+)?\\s?(?:cr|credits?)\\b|\\b${NUM}(?:[\\s-]+(?:and[\\s-]+)?${NUM})*\\s+(?:cr|credits?)\\b`, 'gi');
+
+// The credit figures in a script's strings, in order, as { figure, text } where text is the sentence that holds it, cut to 80 characters.
+const creditFigures = src => scanSource(src).lits.flatMap(l => sentences(l.text).flatMap(sentence =>
+  [...sentence.matchAll(CREDIT_FIGURE)].map(m => ({ figure: m[0], text: sentence.trim().slice(0, 80) }))));
 
 // ---------- sentence shape and speech ----------
 
@@ -201,16 +225,17 @@ function speech(strings) {
 
 const lintStrings = strings => ({ strings: strings.length, tics: countTics(strings.join('\n')), shape: shape(strings), speech: speech(strings) });
 const choiceKey = (file, c) => `${file}  ${c.id}: ${c.label} [${c.why}]`;
+const figureKey = (file, f) => `${file}  ${f.figure}: ${f.text}`;
 
 // files: { path: source }. Returns each file's figures, and the total over all their strings together.
 function lint(files) {
-  const per = {}, all = [], unpriced = [];
+  const per = {}, all = [], unpriced = [], credits = [];
   for (const [file, src] of Object.entries(files)) {
-    const strings = extractProse(src), choices = unpricedChoices(src);
-    per[file] = { ...lintStrings(strings), unpriced: choices };
-    all.push(...strings); unpriced.push(...choices.map(c => choiceKey(file, c)));
+    const strings = extractProse(src), choices = unpricedChoices(src), figures = creditFigures(src);
+    per[file] = { ...lintStrings(strings), unpriced: choices, credits: figures };
+    all.push(...strings); unpriced.push(...choices.map(c => choiceKey(file, c))); credits.push(...figures.map(f => figureKey(file, f)));
   }
-  return { files: per, total: { ...lintStrings(all), unpriced } };
+  return { files: per, total: { ...lintStrings(all), unpriced, credits } };
 }
 
 const row = (name, r) => `${name.padEnd(32)} ${String(r.strings).padStart(5)} strings  tics ${String(Object.values(r.tics).reduce((a, b) => a + b, 0)).padStart(4)}  ` +
@@ -220,8 +245,11 @@ function report(result) {
   const ticLine = Object.entries(result.total.tics).map(([id, n]) => `${id} ${n}`).join(', ');
   const choiceLines = Object.entries(result.files).filter(([, r]) => r.unpriced.length)
     .flatMap(([file, r]) => [`  ${file}: ${r.unpriced.length}`, ...r.unpriced.map(c => `    ${c.id}: ${c.label} [${c.why}]`)]);
+  const figureLines = Object.entries(result.files).filter(([, r]) => r.credits.length)
+    .flatMap(([file, r]) => [`  ${file}: ${r.credits.length}`, ...r.credits.map(f => `    ${f.figure}: ${f.text}`)]);
   return [row('total', result.total), `  tics: ${ticLine}`, ...Object.entries(result.files).map(([file, r]) => row(file, r)),
-    `choices that cost something and show no figure in the label: ${result.total.unpriced.length}`, ...choiceLines].join('\n');
+    `choices that cost something and show no figure in the label: ${result.total.unpriced.length}`, ...choiceLines,
+    `credit figures written in the text: ${result.total.credits.length}`, ...figureLines].join('\n');
 }
 
 // A figure missing from an older baseline counts as zero.
@@ -235,10 +263,13 @@ function compare(base, now) {
     diff('mean', a.shape.mean, b.shape.mean), diff('sd', a.shape.sd, b.shape.sd), diff('shortShare', a.shape.shortShare, b.shape.shortShare), diff('shortRuns', a.shape.shortRuns, b.shape.shortRuns),
     diff('quoted', a.speech.quoted, b.speech.quoted), diff('reported', a.speech.reported, b.speech.reported), diff('uncontracted', a.speech.uncontracted || 0, b.speech.uncontracted), diff('narrated', a.speech.narrated || 0, b.speech.narrated),
     diff('unpriced', (a.unpriced || []).length, b.unpriced.length),
+    diff('credits', (a.credits || []).length, b.credits.length),
   ].filter(Boolean);
-  const before = new Set(a.unpriced || []), after = new Set(b.unpriced);
-  for (const k of after) if (!before.has(k)) lines.push(`  new: ${k}`);
-  for (const k of before) if (!after.has(k)) lines.push(`  gone: ${k}`);
+  for (const key of ['unpriced', 'credits']) {
+    const before = new Set(a[key] || []), after = new Set(b[key]);
+    for (const k of after) if (!before.has(k)) lines.push(`  new: ${k}`);
+    for (const k of before) if (!after.has(k)) lines.push(`  gone: ${k}`);
+  }
   return lines.length ? lines.join('\n') : 'no change';
 }
 
@@ -283,4 +314,4 @@ function main(args, { root, out }) {
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2), { root: path.resolve(__dirname, '..'), out: console.log });
 
-module.exports = { QUOTED, scanSource, wordCount, TICS, extractProse, unpricedChoices, countTics, shape, speech, lint, report, compare, narrativeFiles, main };
+module.exports = { QUOTED, scanSource, wordCount, TICS, extractProse, dataChoices, unpricedChoices, mispricedChoices, creditFigures, countTics, shape, speech, lint, report, compare, narrativeFiles, main };
