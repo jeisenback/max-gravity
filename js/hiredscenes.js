@@ -46,6 +46,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'beats:ambush', fn: 'ambushScene', file: 'js/engagements.js', title: 'An Ambush', where: 'transit', when: 'On a dangerous lane, every 60 days at most.' },
   { id: 'beats:repel', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarders', where: 'transit', when: 'When a ship fight ends with her alongside and boarding: the deck fight at the lock, the corridor and the bridge.' },
   { id: 'beats:assault', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarding Her', where: 'transit', when: 'When you board her after a ship fight leaves her dead in space: the deck fight on her deck.' },
+  { id: 'beats:deck', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Abilities and Orders on the Deck', where: 'transit', when: 'In both deck fights, on our deck and on hers: the two abilities of your post and the orders to the crew, with what each comes to.' },
 ];
 
 // The words of the ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
@@ -64,9 +65,14 @@ function repelLines(assault) {
   (assault ? ASSAULT_TITLES : REPEL_TITLES).forEach((t, i) => { out[`title.${i}`] = t; });
   (assault ? ASSAULT_OPENINGS : REPEL_OPENINGS).forEach((list, pos) => list.forEach((t, i) => { out[`open.${pos}.${i}`] = t; }));
   for (const [k, t] of Object.entries(FIGHT_END[assault ? 'assault' : 'repel'])) out[`end.${k}`] = t;
-  for (const [post, kinds] of Object.entries(CREW_ABILITY)) for (const [k, t] of Object.entries(kinds)) for (const f of ['label', 'win', 'lose']) out[`crew.${post}.${k}.${f}`] = t[f];
-  for (const [post, kinds] of Object.entries(FIGHT_ABILITY)) for (const [k, t] of Object.entries(kinds)) for (const f of ['label', 'win', 'lose']) out[`ability.${post}.${k}.${f}`] = t[f];
   for (const [k, t] of Object.entries(assault ? ASSAULT_MEMORY : REPEL_MEMORY)) out[`memory.${k}`] = t;
+  return out;
+}
+// The lines both deck fights read (#795): the post's two abilities and the orders to the crew, the same on our deck and on hers, so one row holds them (boarders.js deckWords).
+function deckLines() {
+  const out = {};
+  for (const [post, kinds] of Object.entries(FIGHT_ABILITY)) for (const [k, t] of Object.entries(kinds)) for (const f of ['label', 'win', 'lose']) out[`ability.${post}.${k}.${f}`] = t[f];
+  for (const [post, kinds] of Object.entries(CREW_ABILITY)) for (const [k, t] of Object.entries(kinds)) for (const f of ['label', 'win', 'lose']) out[`crew.${post}.${k}.${f}`] = t[f];
   return out;
 }
 // The lines of a scene built by a function, by the name each has (#463): sceneSay (storylets.js) reads them, and fills the {words} from what the scene knows. A line is the
@@ -877,7 +883,7 @@ function walkOffLines() {
   return out;
 }
 const linesOf = id => (BEAT_LINES[id] ? BEAT_LINES[id]() : id === 'scene:walk-off' ? walkOffLines() : SCENE_LINES[id] || null);
-const BEAT_LINES = { 'beats:ambush': ambushLines, 'beats:dead-in-space': deadLines, 'beats:repel': () => repelLines(false), 'beats:assault': () => repelLines(true) };
+const BEAT_LINES = { 'beats:ambush': ambushLines, 'beats:dead-in-space': deadLines, 'beats:repel': () => repelLines(false), 'beats:assault': () => repelLines(true), 'beats:deck': deckLines };
 
 // Every id, with what it is and where its scene lives: { id, kind, key, name, scene } for a cast or captain scene (its scene object), { id, kind: 'work' |
 // 'hand', def } for a hired event (with its `scene` when it is written as data), { id, kind: 'ice', stage } for an ice run scene, and { id, kind: 'function', ...the entry above } for the rest (the ship fight, and a beat of the ambush or the boarding fights, has its `scene`, the lines it can be given).

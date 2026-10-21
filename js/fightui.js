@@ -173,8 +173,8 @@ function shipFightEnd(s, end) {
 // The deck is drawn as its sections (handtohand.js fightStrip) with their move shown above it. The hand stands or moves one section, does one thing there
 // (shoot, or the post's two abilities at the post's own odds, abilityOdds), and gives one order to a named crewmate (crewOrders, at crewOrderOdds); Fight
 // resolves the turn (fight.js resolveDeckTurn). A head lost on our side is downed, and some of the time a named casualty (deckLoss), and the ends settle as the lock fight's did
-// (repelSettle, assaultSettle). `s` is the fight from repelStart or assaultStart (boarders.js); its words are the beats' (the section names and openings, the
-// abilities, the orders, the ends) and the 'scene:fight' deck lines.
+// (repelSettle, assaultSettle). `s` is the fight from repelStart or assaultStart (boarders.js); its words are each fight's beat (the section names, openings and
+// ends), the 'beats:deck' lines both fights share (the abilities and the orders) and the 'scene:fight' deck lines.
 
 const DECK_ACTS = ['shoot', 'steady', 'cover'];
 // A section's name: the beat's title (her deck is named from her bridge), and the cargo bay's from the deck lines.
@@ -198,13 +198,13 @@ function deckFightEvent(s, plan = {}) {
   const near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])], acts = DECK_ACTS.filter(k => k !== 'cover' || !f.used.cover);
   const orders = repelOrders(s, f.used.cover || p.act === 'cover'), order = orders.find(o => o.id === p.order) || null;
   const next = (list, x) => list[(list.indexOf(x) + 1) % list.length], redo = change => () => deckFightEvent(s, { ...p, ...change });
-  const ability = k => repelWords(s, `ability.${post}.${k}.label`, FIGHT_ABILITY[post][k].label);
+  const ability = k => deckWords(`ability.${post}.${k}.label`, FIGHT_ABILITY[post][k].label);
   const choices = [
     { label: fightSay(p.stand === f.hand ? 'deck.stand' : 'deck.move', { at: deckTitle(s, p.stand) }), keep: true, run: redo({ stand: next(near, p.stand) }) },
     { label: p.act === 'shoot' ? fightSay('deck.shoot', { lo: DECK.SIDEARM[0], hi: DECK.SIDEARM[1] }) : fightSay(`deck.${p.act}`, { what: ability(p.act) }), keep: true, run: redo({ act: next(acts, p.act) }) },
   ];
   if (orders.length) {
-    const does = o => repelWords(s, `crew.${o.sheet.post}.${o.kind}.label`, CREW_ABILITY[o.sheet.post][o.kind].label);
+    const does = o => deckWords(`crew.${o.sheet.post}.${o.kind}.label`, CREW_ABILITY[o.sheet.post][o.kind].label);
     choices.push({ order: true, group: fightSay('deck.orders'), label: order ? fightSay('deck.order', { first: order.first, does: does(order) }) : fightSay('deck.order.none'), keep: true, run: redo({ order: next([null, ...orders.map(o => o.id)], order && order.id) }) });
   }
   choices.push({ label: fightSay('deck.fight'), keep: true, run: () => deckTurn(s, { ...p, order: order && order.id }) });
@@ -234,8 +234,8 @@ function deckTurn(s, p) {
   const at = i => deckAt(s, i), said = [], after = [], ab = r.events.filter(e => e.kind === 'steady' || e.kind === 'cover');
   const side = e => (e.worked ? 'win' : 'lose');
   let sent = null;
-  if (act !== 'shoot' && !(act.kind === 'cover' && f.used.cover) && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.you') : repelWords(s, `ability.${post}.${e.kind}.${side(e)}`, FIGHT_ABILITY[post][e.kind][side(e)])); }
-  if (o && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.crew', { first: o.first }) : `${o.first} ${repelWords(s, `crew.${o.sheet.post}.${e.kind}.${side(e)}`, CREW_ABILITY[o.sheet.post][e.kind][side(e)])}`); if (!e.worked && !e.nobody) sent = o.id; }
+  if (act !== 'shoot' && !(act.kind === 'cover' && f.used.cover) && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.you') : deckWords(`ability.${post}.${e.kind}.${side(e)}`, FIGHT_ABILITY[post][e.kind][side(e)])); }
+  if (o && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.crew', { first: o.first }) : `${o.first} ${deckWords(`crew.${o.sheet.post}.${e.kind}.${side(e)}`, CREW_ABILITY[o.sheet.post][e.kind][side(e)])}`); if (!e.worked && !e.nobody) sent = o.id; }
   for (const e of r.events) {
     if (e.kind === 'move') said.push(fightSay(e.who === 'mine' ? 'deck.log.ours' : 'deck.log.theirs', { n: e.n, to: at(e.to) }));
     if (e.kind === 'exchange') said.push(fightSay('deck.log.fight', { at: at(e.section), theirs: e.theirs, mine: e.mine }));

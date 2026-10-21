@@ -5,7 +5,7 @@
 // (fight.js), played turn by turn on the deck panel (fightui.js deckFightEvent): when a ship fight ends alongside, when a boarding run lands in the card duel
 // (duel.js repelEvent), and when you board a ship you have crippled (engagements.js deadInSpaceScene), where a win carries her bridge. A hurt hand works a level
 // lower until treated; one hurt twice in a fight is dead (a main character too, unless a floor of them holds, fate.js). Loaded after duel.js and handtohand.js,
-// before fight.js and fightui.js; only called into at runtime. The words are the beats' tables below (hiredscenes.js repelLines).
+// before fight.js and fightui.js; only called into at runtime. The words are the beats' tables below (hiredscenes.js repelLines, and deckLines for the abilities and orders both fights share).
 
 const REPEL_TITLES = ['The Lock', 'The Corridor', 'The Bridge'];
 const REPEL_OPENINGS = [
@@ -38,6 +38,8 @@ const REPEL_HURT = { lose: 0.45 };  // the chance the hand is hurt in a conteste
 
 // A line of the repel or the assault fight, read through the editor's words (lineWords, storylets.js) by the name it has in the set's tables (hiredscenes.js lists them).
 const repelWords = (s, key, shipped) => lineWords(s.assault ? 'beats:assault' : 'beats:repel', key, shipped);
+// A line both deck fights read, the abilities and the orders, from the one row that holds them (hiredscenes.js deckLines, #795).
+const deckWords = (key, shipped) => lineWords('beats:deck', key, shipped);
 
 // The post the player fights at: a hand's, or the post an owner keeps through the buy (career, hired.js). None for an owner who never was a hand: the card duel is theirs (duel.js).
 const lockPost = () => { const c = career(); return c && c.post ? c.post : null; };
