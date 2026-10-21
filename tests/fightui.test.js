@@ -61,12 +61,12 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
     };
   });
   assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false);
-  assert.match(r.read, /^The Pirate "[^"]+": closing the range, firing at your hull as she comes, 10 to 16 damage\. Captain Vance: holding the range\.$/, r.read);
+  assert.match(r.read, /^The Pirate "[^"]+": closing the range, firing at your hull as she comes, 14 to 21 damage\. Captain Vance: holding the range\.$/, r.read);
   assert.equal(r.band, 'long', 'a raider is met at forty kilometers');
   assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
   assert.deepEqual(r.labels, ['Gun 1: at her weapons', 'Gun 2: at her weapons', 'Turret: firing with the guns', 'Fire: heat 2 of 4']);
   assert.deepEqual(r.keep, [true, true, true, true], 'every order and Fire redraw in place');
-  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 40 of 40, drive 20 of 20, lock 10 of 10, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 20 of 20, drive 20 of 20, lock 10 of 10\.$/, r.bars);
+  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 40 of 40, drive 15 of 15, lock 10 of 10, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 20 of 20, drive 15 of 15, lock 10 of 10\.$/, r.bars);
   assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
   await done();
 });
@@ -189,12 +189,12 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   });
   assert.equal(r.title, 'The Lock', 'the panel is named for where the hand stands');
   assert.ok(r.size >= 16, 'the hauler is long: a cargo bay to go round by');
-  assert.deepEqual(r.heads, [[1, 3, 1], [1, 0, 2], [2, 0, 1], [1, 0, 1]], 'three of hers in the lock; five of ours spread, the odd one on the bridge; the ship\'s cover by section');
+  assert.deepEqual(r.heads, [[1, 4, 1], [1, 0, 2], [2, 0, 1], [1, 0, 1]], 'four of hers in the lock; five of ours spread, the odd one on the bridge; the ship\'s cover by section');
   assert.equal(r.hand, 0);
   assert.deepEqual(r.shown, { kind: 'hold', from: 0, to: 0, n: 0, feint: false }, 'one of ours stands in the lock with them, so they cannot push on (R29)');
   assert.equal(r.read, 'Turn 1 of 8. Boarders: holding where they are.', 'the turn of the cap, and their move');
-  assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 3 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold.');
-  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'You: shoot, 1 to 2 of them down']);
+  assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 4 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 4 of their 4 still up; they break at 1.');
+  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'You: shoot, 2 to 3 of them down']);
   assert.equal(r.labels[r.labels.length - 1], 'Fight');
   assert.ok(r.keep.every(Boolean), 'every choice redraws in place');
   assert.match(r.text, /outer lock is cycling|hits the hull aft/, 'the opening of the lock');
@@ -213,7 +213,7 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   const t = await ev(() => { const s = G.dialog.event.fight; return { result: !!document.querySelector('#event-result'), turn: s.state.turn, last: s.state.log[s.state.log.length - 1], used: s.state.used.cover, acts: G.dialog.choices[1].label }; });
   assert.equal(t.result, false, 'no result page between turns'); assert.equal(t.turn, 1);
   assert.match(t.last, /^Turn 1: /, t.last);
-  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'You: shoot, 1 to 2 of them down', 'and the act goes back to the sidearm');
+  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'You: shoot, 2 to 3 of them down', 'and the act goes back to the sidearm');
   await done();
 });
 

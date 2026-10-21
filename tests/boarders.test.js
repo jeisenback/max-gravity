@@ -30,20 +30,20 @@ const helpers = () => {
   window.unstub = () => { resolveDeckTurn = window.realTurn; };
 };
 
-test('a boarding run that lands opens the deck fight at the lock, one more of them for a full run than for a short one, and a stopped one does not', async () => {
+test('a boarding run that lands opens the deck fight at the lock, two more of them for a full run than for a short one, and a stopped one does not', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const st = fight(), out = {}, d = G.duel;
     const before = st.armor; d.init = 'foe'; duelExchange('burn', 'board');  // an evasive burn lets boarders across: full
     out.full = [G.nextEvent.title, G.nextEvent.fight.state.began]; out.armor = st.armor === before;
-    G.duel = null; startDuel(DUEL_SPEC, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('pdc', 'board');  // a PDC screen halves it: they are one short
+    G.duel = null; startDuel(DUEL_SPEC, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('pdc', 'board');  // a PDC screen halves it: they come without the two more
     out.half = [G.nextEvent.title, G.nextEvent.fight.state.began]; out.crew = FOE_CREW[G.duel.foe.shipId];
     G.duel = null; startDuel(DUEL_SPEC, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('locks', 'board');  // crew at the locks stop it
     out.stopped = G.nextEvent && G.nextEvent.fight;
     return out;
   });
-  assert.deepEqual(r.full, ['The Lock', r.crew + 1]); assert.deepEqual(r.half, ['The Lock', r.crew - 1]); assert.ok(r.armor, 'no hull damage from the run itself');
+  assert.deepEqual(r.full, ['The Lock', r.crew + 2]); assert.deepEqual(r.half, ['The Lock', r.crew]); assert.ok(r.armor, 'no hull damage from the run itself');
   assert.ok(!r.stopped, 'a stopped run is the duel as before');
   await done();
 });
@@ -357,11 +357,11 @@ test('the hand acts with the sidearm or the post\'s two abilities, and the cover
     out.used = s.state.used.cover; out.cover = s.state.sections.map(x => x.cover); out.line = s.state.log[s.state.log.length - 1]; out.after = acts(next);
     return out;
   });
-  assert.deepEqual(r.gunner, ['You: shoot, 1 to 2 of them down', 'You: Pick off a runner, one of them down if it works', 'You: Covering burst, two points of cover here, once a fight', 'You: shoot, 1 to 2 of them down']);
+  assert.deepEqual(r.gunner, ['You: shoot, 2 to 3 of them down', 'You: Pick off a runner, one of them down if it works', 'You: Covering burst, two points of cover here, once a fight', 'You: shoot, 2 to 3 of them down']);
   assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]], ['You: Cycle a hatch on them, one of them down if it works', 'You: Drop the pressure door, two points of cover here, once a fight', 'You: A false order on their band, one of them down if it works']);
   assert.equal(r.used, true); assert.deepEqual(r.cover.slice(0, 3), [3, 2, 1], 'two points where the hand stands, up to three');
   assert.match(r.line, /You lay a long burst along the wall at head height\./);
-  assert.deepEqual(r.after, ['You: shoot, 1 to 2 of them down', 'You: Pick off a runner, one of them down if it works', 'You: shoot, 1 to 2 of them down', 'You: Pick off a runner, one of them down if it works'], 'once a fight');
+  assert.deepEqual(r.after, ['You: shoot, 2 to 3 of them down', 'You: Pick off a runner, one of them down if it works', 'You: shoot, 2 to 3 of them down', 'You: Pick off a runner, one of them down if it works'], 'once a fight');
   await done();
 });
 
@@ -498,7 +498,7 @@ test('an owner who kept a post fights boarders on the deck with the same moves: 
     G.state.career = undefined; out.never = lockPost();  // (the shipped build starts every game as a hand: take away the career the buy left, and there is no post)
     return out;
   });
-  assert.ok(r.owner); assert.equal(r.title, 'The Lock'); assert.ok(r.armor); assert.deepEqual(r.acts, ['Stand: The Lock', 'You: shoot, 1 to 2 of them down'], 'the hand\'s own moves are offered');
+  assert.ok(r.owner); assert.equal(r.title, 'The Lock'); assert.ok(r.armor); assert.deepEqual(r.acts, ['Stand: The Lock', 'You: shoot, 2 to 3 of them down'], 'the hand\'s own moves are offered');
   assert.match(r.lost, /You give them the code to the strongbox/); assert.equal(r.credits, 7000, 'a third of the player\'s credits, not a fund'); assert.ok(r.duelGone);
   assert.match(r.held, /The last of them go back through the lock/); assert.equal(r.heldNext, 'me');
   assert.match(r.hurt, /You are hurt/); assert.ok(r.hurtUntil >= 12); assert.equal(r.died, false, 'an owner is laid up and lives'); assert.equal(r.level, true);
@@ -521,8 +521,8 @@ test('the last of them going down wins the fight with its line, and so few left 
       };
       out[kind] = {
         last: play(() => {}),                                                          // none of them left
-        broke: play(f => { f.sections[at] = { mine: 0, theirs: 2, cover: 1 }; }),      // two of six, where ours are not and ours cannot push them
-        tooMany: play(f => { f.sections[at] = { mine: 0, theirs: 3, cover: 1 }; }),    // three of six still standing
+        broke: play(f => { f.sections[at] = { mine: 0, theirs: 1, cover: 1 }; }),      // one of six, where ours are not and ours cannot push them
+        tooMany: play(f => { f.sections[at] = { mine: 0, theirs: 2, cover: 1 }; }),    // two of six still standing
       };
     }
     return out;
@@ -530,7 +530,7 @@ test('the last of them going down wins the fight with its line, and so few left 
   for (const kind of ['repel', 'assault']) {
     const x = r[kind];
     assert.deepEqual(x.last, { won: true, ended: true, last: true, broke: false }, `${kind}: the last of them down wins the fight`);
-    assert.deepEqual(x.broke, { won: true, ended: true, last: false, broke: true }, `${kind}: down to a third, the rest break`);
+    assert.deepEqual(x.broke, { won: true, ended: true, last: false, broke: true }, `${kind}: down to three in ten, the rest break`);
     assert.deepEqual([x.tooMany.ended, x.tooMany.won], [false, false], `${kind}: too many left, the fight goes on`);
   }
   await done();

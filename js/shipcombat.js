@@ -22,7 +22,8 @@ function rateFoe(s) {
 const foeFlavor = s => `${GRADE_TEXT[s.grade] || ''}${s.pack ? ' There are two of them, running in company.' : ''}`.trim();
 
 // ---------- boarding and repelling (boarders.js) ----------
-// How many come over the side: her ship's crew, one more or one fewer by how she came alongside, more for a veteran crew and a pair.
+// How many come over the side: her ship's crew, two more when she came fully alongside, two more a grade of a veteran crew, and two more for a pair.
 // A veteran crew's shown move may be a feint (fight.js boardMove), at CUNNING a grade.
 const CUNNING = 0.25;  // a veteran's chance, per grade, of a feint
-const boardersFor = (foe, outcome, rate = {}) => Math.max(1, (FOE_CREW[foe.shipId] || 3) + (outcome === 'full' ? 1 : -1) + Math.round(0.6 * (rate.grade || 0)) + (rate.pack ? 2 : 0));
+// The counts are tuned so that five crew win the deck fight about as often by grade as they won the lock fight (repel 83, 59, 40 and assault 82, 62, 34 in a hundred).
+const boardersFor = (foe, outcome, rate = {}) => Math.max(1, (FOE_CREW[foe.shipId] || 3) + (outcome === 'full' ? 2 : 0) + 2 * (rate.grade || 0) + (rate.pack ? 2 : 0));

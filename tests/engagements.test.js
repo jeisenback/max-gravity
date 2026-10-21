@@ -75,9 +75,9 @@ test('played out, the panel goes turn by turn to an end: she closes firing, her 
     return out;
   });
   assert.deepEqual(r.bands, ['long', 'mid', 'close'], 'she is the faster ship, and closes a band a turn');
-  assert.deepEqual(r.reads, ['closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range.', 'closing the range, firing at your hull as she comes, 13 to 22 damage. Captain Vance: holding the range.',
+  assert.deepEqual(r.reads, ['closing the range, firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range.', 'closing the range, firing at your hull as she comes, 20 to 29 damage. Captain Vance: holding the range.',
     'turning to break off. Captain Vance: holding the range.'], 'her move is shown before it is made, and her volley grows as she closes');
-  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, she hits your hull for 21.', 'Turn 2: you hit her weapons for 7.', 'Turn 3: a shot at the weapons finds it already gone.'], 'her guns go in two shots, and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
+  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, she hits your hull for 27.', 'Turn 2: you hit her weapons for 7.', 'Turn 3: a shot at the weapons finds it already gone.'], 'her guns go in two shots, and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
   assert.equal(r.title, 'Battle Stations'); assert.deepEqual(r.labels, ['Stand down']);
   assert.match(r.close, /^She breaks off\. Her grapple arms fold.* Captain Vance writes it in the log and nothing else\. \(\+3 experience at the engineer post\.\)$/);
   assert.deepEqual([r.opinion, r.xp], [1, 3]);
@@ -103,7 +103,7 @@ test('a corsair is a torpedo fight and a raider a grapple fight, in the words an
   assert.notEqual(r.raider.open, r.corsair.open);
   assert.equal(r.raider.boarded, 'grapple'); assert.equal(r.corsair.boarded, 'torpedo');
   assert.deepEqual([r.raider.title, r.corsair.title], ['The Lock', 'The Lock'], 'both open the deck fight at the lock');
-  assert.equal(r.raider.boarders, r.corsair.boarders + 1, 'a full run for a raider (her two and one more), a short one for a corsair (her three and one fewer), at the same grade');
+  assert.equal(r.raider.boarders, r.corsair.boarders + 1, 'a full run for a raider (her two and two more), a short one for a corsair (her three and no more), at the same grade');
   await done();
 });
 

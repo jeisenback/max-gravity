@@ -2,24 +2,24 @@
  {
   "id": "raid:raider:gunner",
   "title": "Battle Stations",
-  "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 15, she hits your hull for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 11 to 18 damage. Her consort: closing the range, firing at your hull as she comes, 11 to 18 damage. Captain Vance: holding the range.",
+  "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 21, she hits your hull for 22.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 17 to 24 damage. Her consort: closing the range, firing at your hull as she comes, 17 to 24 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 15, she hits your hull for 23, she hits your hull for 18.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 9, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 5, she hits your hull for 23.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -34,7 +34,7 @@
    "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "You: shoot, 1 to 2 of them down",
+    "You: shoot, 2 to 3 of them down",
     "Order: none",
     "Fight"
    ]
@@ -43,24 +43,24 @@
  {
   "id": "raid:raider:pilot",
   "title": "Battle Stations",
-  "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 15, she hits your hull for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 11 to 18 damage. Her consort: closing the range, firing at your hull as she comes, 11 to 18 damage. Captain Vance: holding the range.",
+  "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 21, she hits your hull for 22.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 17 to 24 damage. Her consort: closing the range, firing at your hull as she comes, 17 to 24 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 15, she hits your hull for 23, she hits your hull for 18.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 9, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 5, she hits your hull for 23.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 17, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -75,7 +75,7 @@
    "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "You: shoot, 1 to 2 of them down",
+    "You: shoot, 2 to 3 of them down",
     "Order: none",
     "Fight"
    ]
@@ -84,24 +84,24 @@
  {
   "id": "raid:raider:engineer",
   "title": "Battle Stations",
-  "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 15, she hits your hull for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 11 to 18 damage. Her consort: closing the range, firing at your hull as she comes, 11 to 18 damage. Captain Vance: holding the range.",
+  "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 21, she hits your hull for 22.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 17 to 24 damage. Her consort: closing the range, firing at your hull as she comes, 17 to 24 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 15, she hits your hull for 23, she hits your hull for 18.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 8, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 5, she hits your hull for 23.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -116,7 +116,7 @@
    "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "You: shoot, 1 to 2 of them down",
+    "You: shoot, 2 to 3 of them down",
     "Order: none",
     "Fight"
    ]
@@ -125,24 +125,24 @@
  {
   "id": "raid:raider:comms",
   "title": "Battle Stations",
-  "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 15, she hits your hull for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 11 to 18 damage. Her consort: closing the range, firing at your hull as she comes, 11 to 18 damage. Captain Vance: holding the range.",
+  "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 21, she hits your hull for 22.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 17 to 24 damage. Her consort: closing the range, firing at your hull as she comes, 17 to 24 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 17, she hits your hull for 16. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "text": "Turn 1: you hit her weapons for 15, she hits your hull for 23, she hits your hull for 18.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 8, she hits your hull for 14.",
+    "text": "Turn 2: you hit her weapons for 5, she hits your hull for 23.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 22.",
+    "text": "Turn 3: you hit her weapons for 18, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -157,7 +157,7 @@
    "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "You: shoot, 1 to 2 of them down",
+    "You: shoot, 2 to 3 of them down",
     "Order: none",
     "Fight"
    ]
@@ -166,24 +166,24 @@
  {
   "id": "raid:corsair:gunner",
   "title": "Battle Stations",
-  "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 22 to 37 damage. Captain Vance: holding the range.",
+  "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 42.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 15, she hits your hull for 49.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 12.",
+    "text": "Turn 3: you hit her weapons for 14.",
     "armor": 260,
     "band": 0
    },
@@ -195,7 +195,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
    "labels": [
     "Stand down"
    ]
@@ -228,24 +228,24 @@
  {
   "id": "raid:corsair:pilot",
   "title": "Battle Stations",
-  "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 22 to 37 damage. Captain Vance: holding the range.",
+  "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 42.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 15, she hits your hull for 49.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 12.",
+    "text": "Turn 3: you hit her weapons for 14.",
     "armor": 260,
     "band": 0
    },
@@ -257,7 +257,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
    "labels": [
     "Stand down"
    ]
@@ -290,24 +290,24 @@
  {
   "id": "raid:corsair:engineer",
   "title": "Battle Stations",
-  "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 22 to 37 damage. Captain Vance: holding the range.",
+  "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 42.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 15, she hits your hull for 49.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 12.",
+    "text": "Turn 3: you hit her weapons for 14.",
     "armor": 260,
     "band": 0
    },
@@ -319,7 +319,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
    "labels": [
     "Stand down"
    ]
@@ -352,24 +352,24 @@
  {
   "id": "raid:corsair:comms",
   "title": "Battle Stations",
-  "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 22 to 37 damage. Captain Vance: holding the range.",
+  "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 31.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 42.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 17, she hits your hull for 24.",
+    "text": "Turn 2: you hit her weapons for 15, she hits your hull for 49.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her weapons for 12.",
+    "text": "Turn 3: you hit her weapons for 14.",
     "armor": 260,
     "band": 0
    },
@@ -381,7 +381,7 @@
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 12.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+   "text": "Turn 3: you hit her weapons for 14.</p><p>Turn 4: a shot at the weapons finds it already gone.</p><p>She doesn't fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
    "labels": [
     "Stand down"
    ]
@@ -414,19 +414,19 @@
  {
   "id": "raid:cutter:gunner",
   "title": "Battle Stations",
-  "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 23 to 39 damage. Captain Vance: holding the range.",
+  "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 35 to 51 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 45.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 19, she hits your hull for 29.",
+    "text": "Turn 2: you hit her weapons for 18, she hits your hull for 57. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 0
    },
@@ -441,7 +441,7 @@
    "text": "She's alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They're coming aboard, by the book.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "You: shoot, 1 to 2 of them down",
+    "You: shoot, 2 to 3 of them down",
     "Order: none",
     "Fight"
    ]
@@ -450,19 +450,19 @@
  {
   "id": "raid:cutter:pilot",
   "title": "Battle Stations",
-  "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 23 to 39 damage. Captain Vance: holding the range.",
+  "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 35 to 51 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 11, she hits your hull for 45.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 19, she hits your hull for 29.",
+    "text": "Turn 2: you hit her weapons for 18, she hits your hull for 57. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 0
    },
@@ -477,7 +477,7 @@
    "text": "She's alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They're coming aboard, by the book.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "You: shoot, 1 to 2 of them down",
+    "You: shoot, 2 to 3 of them down",
     "Order: none",
     "Fight"
    ]
@@ -486,19 +486,19 @@
  {
   "id": "raid:cutter:engineer",
   "title": "Battle Stations",
-  "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 23 to 39 damage. Captain Vance: holding the range.",
+  "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 35 to 51 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 45.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 20, she hits your hull for 29.",
+    "text": "Turn 2: you hit her weapons for 18, she hits your hull for 57. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 0
    },
@@ -513,7 +513,7 @@
    "text": "She's alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They're coming aboard, by the book.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "You: shoot, 1 to 2 of them down",
+    "You: shoot, 2 to 3 of them down",
     "Order: none",
     "Fight"
    ]
@@ -522,19 +522,19 @@
  {
   "id": "raid:cutter:comms",
   "title": "Battle Stations",
-  "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 23 to 39 damage. Captain Vance: holding the range.",
+  "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 35 to 51 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: at her weapons",
    "Fire: heat 1 of 4"
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 33.",
+    "text": "Turn 1: you hit her weapons for 12, she hits your hull for 45.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 20, she hits your hull for 29.",
+    "text": "Turn 2: you hit her weapons for 18, she hits your hull for 57. You are hurt. Your work counts a level lower until the clinic clears you.",
     "armor": 260,
     "band": 0
    },
@@ -549,7 +549,7 @@
    "text": "She's alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They're coming aboard, by the book.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "You: shoot, 1 to 2 of them down",
+    "You: shoot, 2 to 3 of them down",
     "Order: none",
     "Fight"
    ]
@@ -681,7 +681,7 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -691,7 +691,7 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -805,7 +805,7 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They're not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -815,7 +815,7 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -931,7 +931,7 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -941,7 +941,7 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1055,7 +1055,7 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They're not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1065,7 +1065,7 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1181,7 +1181,7 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1191,7 +1191,7 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1305,7 +1305,7 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They're not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1315,7 +1315,7 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1431,7 +1431,7 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1441,7 +1441,7 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1555,7 +1555,7 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They're not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 12 to 21 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1565,7 +1565,7 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1598,7 +1598,7 @@
  {
   "id": "dead:raider:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1643,7 +1643,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 3 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -1652,7 +1652,7 @@
  {
   "id": "dead:raider:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1697,7 +1697,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 3 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -1706,7 +1706,7 @@
  {
   "id": "dead:raider:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1751,7 +1751,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 3 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -1760,7 +1760,7 @@
  {
   "id": "dead:raider:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1805,7 +1805,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 3 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -1814,7 +1814,7 @@
  {
   "id": "dead:corsair:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1859,7 +1859,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -1868,7 +1868,7 @@
  {
   "id": "dead:corsair:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1913,7 +1913,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -1922,7 +1922,7 @@
  {
   "id": "dead:corsair:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1967,7 +1967,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -1976,7 +1976,7 @@
  {
   "id": "dead:corsair:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2021,7 +2021,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -2030,7 +2030,7 @@
  {
   "id": "dead:cutter:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2075,7 +2075,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -2084,7 +2084,7 @@
  {
   "id": "dead:cutter:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2129,7 +2129,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -2138,7 +2138,7 @@
  {
   "id": "dead:cutter:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2183,7 +2183,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -2192,7 +2192,7 @@
  {
   "id": "dead:cutter:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2237,7 +2237,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across, so there is no boarding her.",
    "labels": [
     "Let her drift"
    ]
@@ -2552,224 +2552,416 @@
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:gunner:cover:missed",
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana opens up and the burst goes where the wall is, not where they are."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana opens up and the burst goes where the wall is, not where they are. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:gunner:steady:worked",
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:gunner:steady:missed",
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana waits for a runner and none runs. The round goes high, and they use the noise to push."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana waits for a runner and none runs. The round goes high, and they use the noise to push. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:pilot:cover:worked",
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:pilot:cover:missed",
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana cuts the lights, and the crew cannot see the closer either."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana cuts the lights, and the crew cannot see the closer either. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:pilot:steady:worked",
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:pilot:steady:missed",
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana cycles the hatch a beat late, and it closes on nothing."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana cycles the hatch a beat late, and it closes on nothing. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:engineer:cover:worked",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:engineer:cover:missed",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana drops the pressure door, and it sticks a hand short of the deck."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana drops the pressure door, and it sticks a hand short of the deck. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:engineer:steady:worked",
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:engineer:steady:missed",
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana opens the wrong coolant line, and it vents into the section."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana opens the wrong coolant line, and it vents into the section. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:slicer:cover:worked",
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:slicer:cover:missed",
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana jams their band and the crew's with it."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana jams their band and the crew's with it. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:slicer:steady:worked",
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:repel:slicer:steady:missed",
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: in the Lock 1 of them down and 0 of ours. Dana puts a voice on their band and the voice is wrong. Somebody laughs."
+  "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Dana puts a voice on their band and the voice is wrong. Somebody laughs. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
  },
  {
   "id": "order:assault:gunner:cover:worked",
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:gunner:cover:missed",
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana opens up and the burst goes where the wall is, not where they are."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana opens up and the burst goes where the wall is, not where they are. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:gunner:steady:worked",
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:gunner:steady:missed",
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana waits for a runner and none runs. The round goes high, and they use the noise to push."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana waits for a runner and none runs. The round goes high, and they use the noise to push. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:pilot:cover:worked",
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:pilot:cover:missed",
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana cuts the lights, and the crew cannot see the closer either."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana cuts the lights, and the crew cannot see the closer either. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:pilot:steady:worked",
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:pilot:steady:missed",
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana cycles the hatch a beat late, and it closes on nothing."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana cycles the hatch a beat late, and it closes on nothing. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:engineer:cover:worked",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:engineer:cover:missed",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana drops the pressure door, and it sticks a hand short of the deck."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana drops the pressure door, and it sticks a hand short of the deck. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:engineer:steady:worked",
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:engineer:steady:missed",
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana opens the wrong coolant line, and it vents into the section."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana opens the wrong coolant line, and it vents into the section. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:slicer:cover:worked",
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:slicer:cover:missed",
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana jams their band and the crew's with it."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana jams their band and the crew's with it. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:slicer:steady:worked",
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "order:assault:slicer:steady:missed",
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: in her Lock 1 of them down and 0 of ours. Dana puts a voice on their band and the voice is wrong. Somebody laughs."
+  "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Dana puts a voice on their band and the voice is wrong. Somebody laughs. Dana is hurt.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "repel:gunner",
@@ -2782,7 +2974,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -2795,7 +2987,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -2808,7 +3000,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -2821,7 +3013,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -2834,7 +3026,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -2847,7 +3039,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -2859,22 +3051,34 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in the Lock 1 of them down and 0 of ours."
+    "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato.",
+    "mem": [
+     "9 Jul 2214: You held the ship when boarders came."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato."
+    "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Hana is hurt.",
+    "mem": [
+     "9 Jul 2214: You held the ship when boarders came."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "act": "steady",
@@ -2885,7 +3089,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows. Mateo is hurt."
    },
    {
     "act": "steady",
@@ -2896,7 +3100,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line. Kwame is hurt."
    },
    {
     "act": "cover",
@@ -2907,7 +3111,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down. Arjun is hit, and doesn't get up, and won't."
    },
    {
     "act": "cover",
@@ -2918,7 +3122,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand. Tomas is hit, and carried below, and is alive, and isn't fit to work."
    },
    {
     "act": "end:last",
@@ -2935,10 +3139,7 @@
     "text": "Turn 1: nobody gives ground.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    ]
    }
   ]
  },
@@ -2953,7 +3154,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -2966,7 +3167,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -2979,7 +3180,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -2992,7 +3193,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3005,7 +3206,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3018,7 +3219,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3030,22 +3231,34 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in the Lock 1 of them down and 0 of ours."
+    "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato.",
+    "mem": [
+     "9 Jul 2214: You held the ship when boarders came."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato."
+    "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Hana is hurt.",
+    "mem": [
+     "9 Jul 2214: You held the ship when boarders came."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "act": "steady",
@@ -3056,7 +3269,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits. Mateo is hurt."
    },
    {
     "act": "steady",
@@ -3067,7 +3280,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again. Kwame is hurt."
    },
    {
     "act": "cover",
@@ -3078,7 +3291,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop. Arjun is hit, and doesn't get up, and won't."
    },
    {
     "act": "cover",
@@ -3089,7 +3302,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You cut the lights, and your own people cannot see the closer either. The boarders have lamps."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You cut the lights, and your own people cannot see the closer either. The boarders have lamps. Tomas is hit, and carried below, and is alive, and isn't fit to work."
    },
    {
     "act": "end:last",
@@ -3106,10 +3319,7 @@
     "text": "Turn 1: nobody gives ground.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    ]
    }
   ]
  },
@@ -3124,7 +3334,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3137,7 +3347,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3150,7 +3360,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3163,7 +3373,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3176,7 +3386,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3189,7 +3399,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3201,22 +3411,34 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in the Lock 1 of them down and 0 of ours."
+    "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato.",
+    "mem": [
+     "9 Jul 2214: You held the ship when boarders came."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato."
+    "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Hana is hurt.",
+    "mem": [
+     "9 Jul 2214: You held the ship when boarders came."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "act": "steady",
@@ -3227,7 +3449,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing. Mateo is hurt."
    },
    {
     "act": "steady",
@@ -3238,7 +3460,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You open the wrong coolant line. It vents into the section you are standing in."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You open the wrong coolant line. It vents into the section you are standing in. Kwame is hurt."
    },
    {
     "act": "cover",
@@ -3249,7 +3471,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through. Arjun is hit, and doesn't get up, and won't."
    },
    {
     "act": "cover",
@@ -3260,7 +3482,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it. Tomas is hit, and carried below, and is alive, and isn't fit to work."
    },
    {
     "act": "end:last",
@@ -3277,10 +3499,7 @@
     "text": "Turn 1: nobody gives ground.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    ]
    }
   ]
  },
@@ -3295,7 +3514,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3308,7 +3527,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3321,7 +3540,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3334,7 +3553,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3347,7 +3566,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3360,7 +3579,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3372,22 +3591,34 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in the Lock 1 of them down and 0 of ours."
+    "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato.",
+    "mem": [
+     "9 Jul 2214: You held the ship when boarders came."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. Cato is hurt. Another hit like that could kill Cato."
+    "text": "Turn 1: in the Lock 3 of them down and 1 of ours, you fall back to the Corridor. Hana is hurt.",
+    "mem": [
+     "9 Jul 2214: You held the ship when boarders came."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "act": "steady",
@@ -3398,7 +3629,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late. Mateo is hurt."
    },
    {
     "act": "steady",
@@ -3409,7 +3640,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line. Kwame is hurt."
    },
    {
     "act": "cover",
@@ -3420,7 +3651,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover. Arjun is hit, and doesn't get up, and won't."
    },
    {
     "act": "cover",
@@ -3431,7 +3662,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You jam their band and your own with it, and nobody can tell the crew which hatch to hold."
+    "text": "Turn 1: in the Lock 1 of them down and 1 of ours, you fall back to the Corridor. You jam their band and your own with it, and nobody can tell the crew which hatch to hold. Tomas is hit, and carried below, and is alive, and isn't fit to work."
    },
    {
     "act": "end:last",
@@ -3448,10 +3679,7 @@
     "text": "Turn 1: nobody gives ground.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    ]
    }
   ]
  },
@@ -3466,7 +3694,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3479,7 +3707,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3492,7 +3720,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3505,7 +3733,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3518,7 +3746,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3531,7 +3759,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3543,22 +3771,28 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in her Lock 1 of them down and 0 of ours."
+    "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Cato is hurt. Another hit like that could kill Cato.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Hana is hurt.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3575,7 +3809,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows. Mateo is hurt.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "steady",
@@ -3586,7 +3826,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line. Kwame is hurt.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "cover",
@@ -3597,7 +3843,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down. Arjun is hit, and doesn't get up, and won't.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "cover",
@@ -3608,15 +3860,19 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand. Tomas is hit, and carried below, and is alive, and isn't fit to work.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "end:last",
     "text": "Turn 1: 1 of ours into her Corridor.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
-     "9 Jul 2214: We took her bridge together.",
-     "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
@@ -3641,7 +3897,6 @@
      "c:tomas": 2,
      "p3": 2,
      "p4": 2,
-     "p5": 2,
      "p6": 2,
      "p7": 2
     }
@@ -3666,8 +3921,6 @@
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
-     "9 Jul 2214: You set yourself against the pirates.",
-     "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates."
     ],
     "fx": {
@@ -3677,7 +3930,6 @@
      "c:tomas": 1,
      "p3": 1,
      "p4": 1,
-     "p5": 1,
      "p6": 1,
      "p7": 1
     }
@@ -3695,7 +3947,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3708,7 +3960,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3721,7 +3973,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3734,7 +3986,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3747,7 +3999,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3760,7 +4012,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3772,22 +4024,28 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in her Lock 1 of them down and 0 of ours."
+    "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Cato is hurt. Another hit like that could kill Cato.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Hana is hurt.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3804,7 +4062,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits. Mateo is hurt.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "steady",
@@ -3815,7 +4079,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again. Kwame is hurt.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "cover",
@@ -3826,7 +4096,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop. Arjun is hit, and doesn't get up, and won't.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "cover",
@@ -3837,15 +4113,19 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You cut the lights, and your own people cannot see the closer either. The boarders have lamps."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You cut the lights, and your own people cannot see the closer either. The boarders have lamps. Tomas is hit, and carried below, and is alive, and isn't fit to work.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "end:last",
     "text": "Turn 1: 1 of ours into her Corridor.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
-     "9 Jul 2214: We took her bridge together.",
-     "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
@@ -3870,7 +4150,6 @@
      "c:tomas": 2,
      "p3": 2,
      "p4": 2,
-     "p5": 2,
      "p6": 2,
      "p7": 2
     }
@@ -3895,8 +4174,6 @@
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
-     "9 Jul 2214: You set yourself against the pirates.",
-     "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates."
     ],
     "fx": {
@@ -3906,7 +4183,6 @@
      "c:tomas": 1,
      "p3": 1,
      "p4": 1,
-     "p5": 1,
      "p6": 1,
      "p7": 1
     }
@@ -3924,7 +4200,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3937,7 +4213,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3950,7 +4226,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3963,7 +4239,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3976,7 +4252,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3989,7 +4265,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4001,22 +4277,28 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in her Lock 1 of them down and 0 of ours."
+    "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Cato is hurt. Another hit like that could kill Cato.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Hana is hurt.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4033,7 +4315,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing. Mateo is hurt.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "steady",
@@ -4044,7 +4332,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You open the wrong coolant line. It vents into the section you are standing in."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You open the wrong coolant line. It vents into the section you are standing in. Kwame is hurt.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "cover",
@@ -4055,7 +4349,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through. Arjun is hit, and doesn't get up, and won't.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "cover",
@@ -4066,15 +4366,19 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it. Tomas is hit, and carried below, and is alive, and isn't fit to work.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "end:last",
     "text": "Turn 1: 1 of ours into her Corridor.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
-     "9 Jul 2214: We took her bridge together.",
-     "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
@@ -4099,7 +4403,6 @@
      "c:tomas": 2,
      "p3": 2,
      "p4": 2,
-     "p5": 2,
      "p6": 2,
      "p7": 2
     }
@@ -4124,8 +4427,6 @@
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
-     "9 Jul 2214: You set yourself against the pirates.",
-     "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates."
     ],
     "fx": {
@@ -4135,7 +4436,6 @@
      "c:tomas": 1,
      "p3": 1,
      "p4": 1,
-     "p5": 1,
      "p6": 1,
      "p7": 1
     }
@@ -4153,7 +4453,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4166,7 +4466,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4179,7 +4479,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4192,7 +4492,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4205,7 +4505,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4218,7 +4518,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4230,22 +4530,28 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in her Lock 1 of them down and 0 of ours."
+    "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Cato is hurt. Another hit like that could kill Cato.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. Cato is hurt. Another hit like that could kill Cato.",
+    "text": "Turn 1: in her Lock 3 of them down and 1 of ours. Hana is hurt.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4262,7 +4568,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late. Mateo is hurt.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "steady",
@@ -4273,7 +4585,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line. Kwame is hurt.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "cover",
@@ -4284,7 +4602,13 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover. Arjun is hit, and doesn't get up, and won't.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "cover",
@@ -4295,15 +4619,19 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: nobody gives ground. You jam their band and your own with it, and nobody can tell the crew which hatch to hold."
+    "text": "Turn 1: in her Lock 1 of them down and 1 of ours. You jam their band and your own with it, and nobody can tell the crew which hatch to hold. Tomas is hit, and carried below, and is alive, and isn't fit to work.",
+    "mem": [
+     "9 Jul 2214: You went onto a crippled ship and came back without it."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "act": "end:last",
     "text": "Turn 1: 1 of ours into her Corridor.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You took a ship for us.",
-     "9 Jul 2214: We took her bridge together.",
-     "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
@@ -4328,7 +4656,6 @@
      "c:tomas": 2,
      "p3": 2,
      "p4": 2,
-     "p5": 2,
      "p6": 2,
      "p7": 2
     }
@@ -4353,8 +4680,6 @@
      "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates.",
      "9 Jul 2214: We took her bridge together.",
-     "9 Jul 2214: You set yourself against the pirates.",
-     "9 Jul 2214: We took her bridge together.",
      "9 Jul 2214: You set yourself against the pirates."
     ],
     "fx": {
@@ -4364,7 +4689,6 @@
      "c:tomas": 1,
      "p3": 1,
      "p4": 1,
-     "p5": 1,
      "p6": 1,
      "p7": 1
     }

@@ -22373,7 +22373,7 @@
   "plays": [
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
     "labels": [
      "Gun 1: at her weapons",
@@ -22382,7 +22382,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
     "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.",
     "labels": [
      "Gun 1: at her weapons",
@@ -22391,7 +22391,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 19 to 32 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 29 to 42 damage. Captain Vance: holding the range.",
     "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.",
     "labels": [
      "Gun 1: at her weapons",
@@ -22400,7 +22400,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 19 to 32 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 29 to 42 damage. Captain Vance: holding the range.",
     "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.",
     "labels": [
      "Gun 1: at her weapons",
@@ -22409,7 +22409,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 20 to 34 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 31 to 44 damage. Captain Vance: holding the range.",
     "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.",
     "labels": [
      "Gun 1: at her weapons",
@@ -22418,7 +22418,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 20 to 34 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 31 to 44 damage. Captain Vance: holding the range.",
     "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.",
     "labels": [
      "Gun 1: at her weapons",
@@ -22427,7 +22427,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>You fire first: you hit her weapons for 14.",
     "labels": [
      "Gun 1: at her weapons",
@@ -22436,8 +22436,8 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range.",
-    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 14.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She fires first: she hits your hull for 18.",
     "labels": [
      "Gun 1: at her weapons",
      "Fire: heat 1 of 4"
@@ -22490,7 +22490,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
     "labels": [
      "Gun 1: at her lock",
@@ -22502,7 +22502,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
     "labels": [
      "Gun 1: at her drive",
@@ -22514,7 +22514,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.",
     "labels": [
      "Gun 1: at her drive",
@@ -22531,7 +22531,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>Turn 1: your torpedo hits her hull for 39, she hits your hull for 10.",
     "labels": [
      "Gun 1: hold fire",
@@ -22548,7 +22548,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>Turn 1: your torpedo hits her hull for 39, she hits your hull for 10.</p><p>Turn 2: no hits.",
     "labels": [
      "Gun 1: hold fire",
@@ -22565,7 +22565,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 10 to 16 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing the range, firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
     "text": "Turn 1: your torpedo hits her hull for 39, she hits your hull for 10.</p><p>Turn 2: no hits.</p><p>Turn 3: a shot at the lock finds it already gone.",
     "labels": [
      "Gun 1: at her lock",
@@ -22595,7 +22595,7 @@
      "text": "She's alongside. The grapples bang on the hull in four places and the lock alarm goes. They're coming aboard.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
       "Stand: The Lock",
-      "You: shoot, 1 to 2 of them down",
+      "You: shoot, 2 to 3 of them down",
       "Order: none",
       "Fight"
      ]
@@ -22617,7 +22617,7 @@
     "log": "Turn 1: a shot at the weapons finds it already gone.",
     "next": {
      "title": "Dead in Space",
-     "text": "Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+     "text": "Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
      "labels": [
       "Board her",
       "Let her drift"
@@ -22645,7 +22645,7 @@
      "text": "A torpedo takes your drive housing and she closes while you're slow. The grapples bang on the hull, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
       "Stand: The Lock",
-      "You: shoot, 1 to 2 of them down",
+      "You: shoot, 2 to 3 of them down",
       "Order: none",
       "Fight"
      ]
@@ -22667,7 +22667,7 @@
     "log": "Turn 1: a shot at the weapons finds it already gone.",
     "next": {
      "title": "Dead in Space",
-     "text": "Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+     "text": "Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
      "labels": [
       "Board her",
       "Let her drift"
@@ -22695,7 +22695,7 @@
      "text": "She's alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They're coming aboard, by the book.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
       "Stand: The Lock",
-      "You: shoot, 1 to 2 of them down",
+      "You: shoot, 2 to 3 of them down",
       "Order: none",
       "Fight"
      ]
@@ -22717,7 +22717,7 @@
     "log": "Turn 1: a shot at the weapons finds it already gone.",
     "next": {
      "title": "Dead in Space",
-     "text": "Your last burst takes her drive, and the cutter yaws and goes quiet. She'll have a tow in a day. A beacon on her hull is already calling for it.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+     "text": "Your last burst takes her drive, and the cutter yaws and goes quiet. She'll have a tow in a day. A beacon on her hull is already calling for it.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
      "labels": [
       "Board her",
       "Let her drift"
@@ -22779,7 +22779,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22793,7 +22793,7 @@
     "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
     "labels": [
      "Stand: The Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22807,7 +22807,7 @@
     "text": "The last hatch before the bridge is the one the captain closed by hand. They're working at it from the other side. The pilot has the helm and hasn't looked round.",
     "labels": [
      "Stand: The Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22821,7 +22821,7 @@
     "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
     "labels": [
      "Stand: The Cargo Bay",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22835,7 +22835,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22849,7 +22849,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22863,7 +22863,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22877,7 +22877,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Move: The Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22891,7 +22891,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Move: The Cargo Bay",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22905,7 +22905,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22947,7 +22947,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -22961,7 +22961,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: Ines cuts the lights",
      "Fight"
     ],
@@ -22974,7 +22974,7 @@
     "end": false
    },
    {
-    "log": "Turn 1: in the Lock 1 of them down and 1 of ours, in the Corridor 2 of them down and 0 of ours, you fall back to the Bridge. Hana is hurt.",
+    "log": "Turn 1: in the Lock 1 of them down and 1 of ours, in the Corridor 3 of them down and 0 of ours, you fall back to the Bridge. Hana is hurt.",
     "end": false
    },
    {
@@ -22996,7 +22996,7 @@
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23010,7 +23010,7 @@
     "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
     "labels": [
      "Stand: Her Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23024,7 +23024,7 @@
     "text": "The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.",
     "labels": [
      "Stand: Her Bridge",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23038,7 +23038,7 @@
     "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
     "labels": [
      "Stand: Her Cargo Bay",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23052,7 +23052,7 @@
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23066,7 +23066,7 @@
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23080,7 +23080,7 @@
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23094,7 +23094,7 @@
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Move: Her Corridor",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23108,7 +23108,7 @@
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Move: Her Cargo Bay",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23122,7 +23122,7 @@
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23164,7 +23164,7 @@
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: none",
      "Fight"
     ],
@@ -23178,7 +23178,7 @@
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "You: shoot, 1 to 2 of them down",
+     "You: shoot, 2 to 3 of them down",
      "Order: Ines cuts the lights",
      "Fight"
     ],
@@ -23191,7 +23191,7 @@
     "end": false
    },
    {
-    "log": "Turn 1: in her Lock 1 of them down and 0 of ours, in her Corridor 2 of them down and 0 of ours, you fall back to her Lock.",
+    "log": "Turn 1: in her Lock 1 of them down and 0 of ours, in her Corridor 3 of them down and 0 of ours, you fall back to her Lock.",
     "end": false
    },
    {

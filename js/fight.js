@@ -5,20 +5,21 @@
 // GRADE_HULL and GRADE_PUNCH set how much a veteran crew adds.
 
 const FIGHT = {
-  GUN_DMG: [12, 20], // one shot's range before the multipliers
+  GUN_DMG: [12, 20], // one of your shots' range before the multipliers
+  FOE_DMG: [18, 26], // one of her guns' range before the multipliers: harder than yours, so that a random fight costs armor (Task 7)
   HEAVY: 1.4,        // what heavy rounds add; it is already in a side's dmgMult, kept here for the board's text
   SKILL_DMG: 1,      // per gunner level, added to the low end
   BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 },
   HEAT_CAP: 4,       // heat over this locks a gun for the next turn
   HEAT_VENT: 2,      // heat shed each turn
-  SHIELD_REGEN: 0.1, // of the maximum, at the end of the turn
-  PART_HP: { weapons: 20, drive: 20, lock: 10 },  // weapons is per gun mount
+  SHIELD_REGEN: 0,   // of the maximum, at the end of the turn: none, so that her volleys reach the armor (Task 7)
+  PART_HP: { weapons: 20, drive: 15, lock: 10 },  // weapons is per gun mount; a drive goes in a shot or two, so that aiming at it can cripple her inside the six turns (Task 7)
   TORP_DMG: [30, 45],
   PDC_HOLD: 0.4,     // what a turret held back takes off a volley
   TURNS: 6,
   BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid
-  HEAVY_HIT: 0.1     // a turn is a heavy hit when your hull (shields and armor) loses more than this share of your maximum armor (fightui.js)
+  HEAVY_HIT: 0.2     // a turn is a heavy hit when your hull (shields and armor) loses more than this share of your maximum armor (fightui.js); a fifth, so that the hand is rarely killed
 };
 
 const KNIFE = RANGE_BANDS.indexOf('knife');
@@ -102,7 +103,7 @@ const up = side => side.armor > 0 && side.parts.drive.hp > 0;
 function foeVolley(st, i) {
   const foe = st.foes[i];
   const ready = Math.min(foe.guns, Math.ceil(foe.parts.weapons.hp / FIGHT.PART_HP.weapons));
-  return FIGHT.GUN_DMG.map(d => Math.round(d * ready * foe.dmgMult * bandMultOf(st.band)));
+  return FIGHT.FOE_DMG.map(d => Math.round(d * ready * foe.dmgMult * bandMultOf(st.band)));
 }
 
 // Her rules, in order: badly hurt or with no guns left she breaks off, while her drive can take her away; alongside with her lock whole she boards;
@@ -158,10 +159,10 @@ function shipEnd(st) {
 // apart, and each cuts only its own side's losses (R31). Loaded after boarders.js, for REPEL_HURT.
 const DECK = {
   SECTIONS: ['lock', 'corridor', 'bridge'],
-  SIDEARM: [1, 2],   // heads the hand's shot takes, added to the exchange in their section
-  CREW_HIT: [0, 1],  // heads one opposing head takes in a section where both stand (a roll a head); a side's own cover cuts its total, never below one hit
-  BREAK: 1 / 3,      // of her crew at the start: at or under it she breaks
-  SUIT: 0.5,         // times REPEL_HURT.lose: the standard suit's stat
+  SIDEARM: [2, 3],   // heads the hand's shot takes, added to the exchange in their section
+  CREW_HIT: [0, 2],  // heads one opposing head takes in a section where both stand (a roll a head); a side's own cover cuts its total, never below one hit
+  BREAK: 0.3,        // of her crew at the start: at or under it she breaks (about a third; at 6 she breaks at 1, not 2)
+  SUIT: 0.3,         // times REPEL_HURT.lose: the standard suit's stat (the hand standing in the fight is hurt less often)
   TURNS: 8           // at the end of this turn the attackers withdraw: a repel is won, an assault lost (R32)
 };
 
