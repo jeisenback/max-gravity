@@ -384,7 +384,7 @@ const namesOf = list => list.map(c => `${c.first} ${c.last}`).join(' and ');
 // thinks of you. buyIn id USED_ID buys her; she comes worn. If the deal lapses she is gone, and the ordinary list is left.
 const USED_ID = 'used';
 const USED_PRICE = { good: 170000, mid: HIRED_TARGET, bad: 210000 };  // the broker's price is the bad one: no favor
-const USED_OFFER_AT = Math.round(0.55 * USED_PRICE.mid), DEAL_DAYS = 56;
+const USED_OFFER_AT = Math.round(0.55 * USED_PRICE.mid), DEAL_DAYS = 84;  // twelve weeks: long enough for most careful hands to reach a yard with her price (#779)
 const USED_CONDITION = { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 };
 const buyShip = id => (id === USED_ID ? { ...SHIPS.lightfreighter, name: 'Ore Runner (used)', price: hired() && hired().deal ? hired().deal.price : USED_PRICE.mid, forSale: dealOpen() } : SHIPS[id]);
 const dealOpen = () => !!hired() && !!hired().deal && G.state.day <= hired().deal.until;
