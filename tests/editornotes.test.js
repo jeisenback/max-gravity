@@ -100,7 +100,7 @@ test('the lines the ship\'s log keeps have their fields in the form and play in 
   await page.fill('textarea[data-path="part.founded.log"]', 'Broke ground at {site}.');
   const f = await play();
   const seen = await f.evaluate(() => G.dialog.event.text);
-  assert.ok(seen.includes('Broke ground at Callisto.') && seen.includes('was killed when Ceres'), seen.slice(0, 300));
+  assert.ok(seen.includes('Broke ground at Callisto.') && seen.includes('was killed repelling boarders near Ceres.'), seen.slice(0, 300));
 });
 
 test('the notes of flight and the dock have their lines in the form and play in the preview (#508)', async () => {

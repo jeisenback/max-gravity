@@ -45,6 +45,7 @@ test('an errand is due for a friend, not inside the gap, on the days their hash 
     out.cold = errandDue(st);  // no regard
     p.opinion = OPINION.FRIEND; let n = 0; while (!errandDue(st) && n++ < 10) st.day++; out.due = errandDue(st) === p; out.within = n <= ERRAND_EVERY;
     const cands = Mods.filter('happenings', [], 'port', currentPlanet()).filter(c => c.errand);  // the cat and the offer to join are crew candidates too
+    G.dialog = { event: { title: 'x' }, choices: [] }; out.stacked = Mods.filter('happenings', [], 'port', currentPlanet()).some(c => c.errand); G.dialog = null;  // not on top of another scene (#788)
     out.candidate = cands.length === 1; const ev = cands[0].make(); out.asked = p.errandAt === st.day; out.title = ev.title; out.kind = /water office/.test(ev.text);
     out.gapped = errandDue(st); st.day += ERRAND_GAP; while (!errandDue(st)) st.day++; out.again = errandDue(st) === p;
     const op = p.opinion; G.dialog = { event: ev, choices: ev.choices }; const res = chooseEvent(0);
@@ -54,7 +55,7 @@ test('an errand is due for a friend, not inside the gap, on the days their hash 
     return out;
   });
   assert.equal(r.cold, null); assert.ok(r.due && r.within, 'due within a hand of days once they think well of you');
-  assert.ok(r.candidate && r.asked); assert.equal(r.title, 'An Errand Ashore'); assert.ok(r.kind, 'a Belt hand goes to the water office');
+  assert.equal(r.stacked, false, 'no errand while another scene is up'); assert.ok(r.candidate && r.asked); assert.equal(r.title, 'An Errand Ashore'); assert.ok(r.kind, 'a Belt hand goes to the water office');
   assert.equal(r.gapped, null, 'not again inside the gap'); assert.ok(r.again);
   assert.equal(r.liked, 1); assert.match(r.mem, /water office/); assert.ok(r.res && r.stay); assert.ok(r.clinic, 'hurt, the errand is the clinic');
   await done();

@@ -15,7 +15,7 @@ const lossOdds = (c, severe) => Math.min(LOSS_MAX, LOSS_BASE * (severe ? 1 : MIL
 function loseCrew(c, cause) {
   const st = G.state, name = fullName(c);
   if (c.cast) { if (castFate(c.cast, 'die', cause, 'Pulled from the wreck.') !== 'die') return 'marked'; }
-  else { killCrew(c); (st.memorial = st.memorial || []).push({ key: c.id, name, day: st.day, place: system().name, cause: stripTags(cause) }); }
+  else { killCrew(c, cause); (st.memorial = st.memorial || []).push({ key: c.id, name, day: st.day, place: system().name, cause: stripTags(cause) }); }
   for (const p of st.crew.map(person)) {  // the ones who were close to them take it hard, for as long as they were close
     const b = p && bond(c, p);
     if (b >= 3) p.mood = { kind: 'low', until: st.day + Math.min(30, 10 + 2 * b), text: `${c.first} is gone` };

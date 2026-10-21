@@ -165,7 +165,7 @@ const playScenes = () => {
   }
   // ---------- the lines in the ship's log: a crew member killed, a captain retired or lost, a settlement founded ----------
   const logOf = () => (G.state.home || {}).log;
-  run('log:killed', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { killCrew(person(G.state.crew[0])); return ''; } }] }), { prep() { G.state.crew = []; crewOf(2); }, extra: logOf });
+  run('log:killed', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { killCrew(person(G.state.crew[0]), 'Killed repelling boarders near Earth.'); return ''; } }] }), { prep() { G.state.crew = []; crewOf(2); }, extra: logOf });
   for (const [fate, aboard] of [['retired', 0], ['died', 0], ['died', 2]]) {
     run(`log:legacy:${fate}:${aboard}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { succeed(fate, 'Mara Quill'); return ''; } }] }), { prep() { G.state.crew = []; crewOf(aboard); }, extra: logOf });
   }

@@ -60,7 +60,7 @@ Mods.register({
       if (line) comm(`[Ship] ${line}`);
     });
     M.filter('happenings', (list, where) => {
-      if (where !== 'port') return list;
+      if (where !== 'port' || G.dialog || G.nextEvent) return list;  // an errand takes a landing's turn only when nothing else is up, so it does not stack (#788)
       const p = errandDue(G.state);
       return p ? list.concat([{ tier: 2, weight: 1, via: 'crew', errand: true, make() { p.errandAt = G.state.day; return errandEvent(p); } }]) : list;
     });
