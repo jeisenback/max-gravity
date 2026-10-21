@@ -17,23 +17,25 @@ const DEAD_TEXT = {
   title: 'Dead in Space',
   text: '{ship} is still. Her drive is out and she\'s turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain {cap} holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be {ours} of yours against {theirs} of hers.',
   'board.label': 'Board her',
-  'board.none': 'Nobody aboard is fit to go across, so there is no boarding her.',
+  'board.none': 'Nobody aboard is fit to go across.',
   'board.result': 'The cutter goes out of the lock. It\'s a short crossing.',
   'drift.label': 'Let her drift',
   'drift.result': 'You leave her turning in the dark. Captain {cap} writes it in the log and nothing else. (+3 experience at the {post} post.)',
+  'memory.drift': 'You crippled a raider, and we left her drifting.',  // what the captain remembers of it
 };
 const deadWords = (key, vars = {}) => lineWords('beats:dead-in-space', key, DEAD_TEXT[key]).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 
-// A crippled raider drifts beside you. Boarding her is the deck fight run the other way (boarders.js assaultStart, fightui.js deckFightEvent).
+// A crippled raider drifts beside you. Boarding her is the deck fight run the other way (boarders.js assaultStart, fightui.js deckFightEvent): the one built here,
+// with her grade and her consort's crew (`s`), so that the count the scene gives is the fight Board her opens.
 function deadInSpaceScene(s) {
-  const post = lockPost(), cap = raidCap(), assault = assaultStart(s.foe), ours = sum(assault.state, 'mine'), theirs = assault.state.began;
+  const post = lockPost(), cap = raidCap(), assault = assaultStart(s.foe, s), ours = sum(assault.state, 'mine'), theirs = assault.state.began;
   const say = key => deadWords(key, { ship: theShip(s.foe), cap: cap ? cap.last : '', ours, theirs, post: POSTS[post].name.toLowerCase() });
   return {
     title: say('title'), personal: true, via: 'crew', owner: 'you',
     text: (cap ? say('text') : `${theShip(s.foe)} is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. You hold the ship forty meters off and ask the crew what they want to do. Her crew are armed. A boarding would be ${ours} of yours against ${theirs} of hers.`) + (ours ? '' : ` ${say('board.none')}`),  // with nobody able to fight there is no boarding (R34)
     choices: [
-      ...(ours ? [{ label: say('board.label'), run() { G.nextEvent = deckFightEvent(assaultStart(s.foe, s)); return say('board.result'); } }] : []),
-      { label: say('drift.label'), run() { if (cap) like(cap, 1, fightSay('memory.stood')); changeRep('Pirate', -3); gainSkill(post, 3); return cap ? say('drift.result') : `You leave her turning in the dark and write it in the log, and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`; } },
+      ...(ours ? [{ label: say('board.label'), run() { G.nextEvent = deckFightEvent(assault); return say('board.result'); } }] : []),
+      { label: say('drift.label'), run() { if (cap) like(cap, 1, say('memory.drift')); changeRep('Pirate', -3); gainSkill(post, 3); return cap ? say('drift.result') : `You leave her turning in the dark and write it in the log, and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`; } },
     ],
   };
 }
@@ -84,13 +86,13 @@ const AMBUSH_TEXT = {
   'text.trap': 'You know what\'s out there. They haven\'t lit their drives, and they don\'t know you know.',
   'text.real': 'The readings are clean. She\'s real, and she\'s asking again.',
   'go.label': 'Go to her',
-  'sprung.result': 'You alter course for her. At four kilometers the freighter lights a drive that\'s not a freighter\'s, and two more come off the rock behind her, and the call stops.',
+  'sprung.result': 'You alter course for her. At forty kilometers the freighter lights a drive that\'s not a freighter\'s, and two more come off the rock behind her, and the call stops.',
   'sprung.open': 'They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they\'re inside the range, and your position is already bad.',
   'real.result': 'She\'s real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship\'s fund.',
   'real.leave.label': 'Leave her',
   'real.leave.result': 'You leave her to call for someone else. Captain {cap} says nothing, and doesn\'t look up from the plot.',
   'trap.hit.label': 'Hit them before they\'re ready',
-  'trap.hit.result': 'You come in hot with the drive cold, and light it at three kilometers. They\'re not ready. Battle stations.',
+  'trap.hit.result': 'You come in hot with the drive cold, and light it at forty kilometers. They\'re not ready. Battle stations.',
   'trap.hit.open': 'They\'re in position behind the freighter, with their drives cold, and they haven\'t lit them. You have the range, and the first move.',
   'trap.leave.label': 'Turn away and leave it',
   'trap.leave.result': 'You turn away and burn for the lane. At four kilometers the freighter\'s drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the {post} post.)',

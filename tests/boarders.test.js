@@ -30,20 +30,20 @@ const helpers = () => {
   window.unstub = () => { resolveDeckTurn = window.realTurn; };
 };
 
-test('a boarding run that lands opens the deck fight at the lock, one more of them for a full run than for a short one, and a stopped one does not', async () => {
+test('a boarding run that lands opens the deck fight at the lock, two more of them for a full run than for a short one, and a stopped one does not', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const st = fight(), out = {}, d = G.duel;
     const before = st.armor; d.init = 'foe'; duelExchange('burn', 'board');  // an evasive burn lets boarders across: full
     out.full = [G.nextEvent.title, G.nextEvent.fight.state.began]; out.armor = st.armor === before;
-    G.duel = null; startDuel(DUEL_SPEC, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('pdc', 'board');  // a PDC screen halves it: they are one short
+    G.duel = null; startDuel(DUEL_SPEC, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('pdc', 'board');  // a PDC screen halves it: they come without the two more
     out.half = [G.nextEvent.title, G.nextEvent.fight.state.began]; out.crew = FOE_CREW[G.duel.foe.shipId];
     G.duel = null; startDuel(DUEL_SPEC, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('locks', 'board');  // crew at the locks stop it
     out.stopped = G.nextEvent && G.nextEvent.fight;
     return out;
   });
-  assert.deepEqual(r.full, ['The Lock', r.crew + 1]); assert.deepEqual(r.half, ['The Lock', r.crew - 1]); assert.ok(r.armor, 'no hull damage from the run itself');
+  assert.deepEqual(r.full, ['The Lock', r.crew + 2]); assert.deepEqual(r.half, ['The Lock', r.crew]); assert.ok(r.armor, 'no hull damage from the run itself');
   assert.ok(!r.stopped, 'a stopped run is the duel as before');
   await done();
 });
@@ -84,7 +84,7 @@ test('a head lost on our side is a named crewmate, and one hurt twice in one fig
     const st = fight(), d = G.duel, crew = generated(3), first = crew[0], n = st.crew.length;
     const s = repelStart(d, 'full');
     stubTurn([{ kind: 'exchange', section: 0, mine: 1, theirs: 1 }]);
-    rolls([0, 0.99]); fightTurn(s); const line = s.state.log[s.state.log.length - 1];  // the first of those standing, and not killed outright
+    rolls([0, 0, 0.99]); fightTurn(s); const line = s.state.log[s.state.log.length - 1];  // a casualty (DECK.CASUALTY), the first of those standing, and not killed outright
     unstub();
     const afterOne = { injured: !!(st.injured || {})[first.id], here: st.crew.includes(first.id) };
     rolls([0.99]); repelCasualty(s, first.id);
@@ -93,7 +93,7 @@ test('a head lost on our side is a named crewmate, and one hurt twice in one fig
     out.filled = st.crew.length === n && (st.vacancies || []).length === 0; out.note = UI.notes.some(t => /signs on/.test(t));
     return out;
   });
-  assert.equal(r.line, `Turn 1: in the Lock 1 of them down and 1 of ours. ${r.name} is hurt.`, 'the loss is named in the turn\'s line');
+  assert.equal(r.line, `Turn 1: 1 of them and 1 of ours down in the Lock. ${r.name} is hurt.`, 'the loss is named in the turn\'s line');
   assert.deepEqual(r.afterOne, { injured: true, here: true }, 'hurt the first time');
   assert.ok(r.dead && r.flagged && r.size && r.fallen === 1 && r.vacancy === 1);
   assert.ok(r.filled && r.note, 'someone from the dock takes the berth');
@@ -357,11 +357,11 @@ test('the hand acts with the sidearm or the post\'s two abilities, and the cover
     out.used = s.state.used.cover; out.cover = s.state.sections.map(x => x.cover); out.line = s.state.log[s.state.log.length - 1]; out.after = acts(next);
     return out;
   });
-  assert.deepEqual(r.gunner, ['You: shoot, 1 to 2 of them down', 'You: Pick off a runner, one of them down if it works', 'You: Covering burst, two points of cover here, once a fight', 'You: shoot, 1 to 2 of them down']);
-  assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]], ['You: Cycle a hatch on them, one of them down if it works', 'You: Drop the pressure door, two points of cover here, once a fight', 'You: A false order on their band, one of them down if it works']);
+  assert.deepEqual(r.gunner, ['Shoot: 2 to 3 of them down', 'Pick off a runner: one of them down if it works', 'Covering burst: two points of cover here, once a fight', 'Shoot: 2 to 3 of them down']);
+  assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]], ['Cycle a hatch on them: one of them down if it works', 'Drop the pressure door: two points of cover here, once a fight', 'A false order on their band: one of them down if it works']);
   assert.equal(r.used, true); assert.deepEqual(r.cover.slice(0, 3), [3, 2, 1], 'two points where the hand stands, up to three');
   assert.match(r.line, /You lay a long burst along the wall at head height\./);
-  assert.deepEqual(r.after, ['You: shoot, 1 to 2 of them down', 'You: Pick off a runner, one of them down if it works', 'You: shoot, 1 to 2 of them down', 'You: Pick off a runner, one of them down if it works'], 'once a fight');
+  assert.deepEqual(r.after, ['Shoot: 2 to 3 of them down', 'Pick off a runner: one of them down if it works', 'Shoot: 2 to 3 of them down', 'Pick off a runner: one of them down if it works'], 'once a fight');
   await done();
 });
 
@@ -464,13 +464,13 @@ test('an order works as the crewmate\'s own ability, and a miss lands on the one
     out.next = repelOrders(s, s.state.used.cover).map(x => [x.first, x.kind]);  // the cover is made: both are steady now
     const real = repelCasualty; let target = 'unset'; repelCasualty = (t, only) => { target = only; return 'Someone is hurt.'; };
     s = repelStart(G.duel, 'full'); stubTurn([{ kind: 'steady', worked: false }, { kind: 'exchange', section: 0, mine: 1, theirs: 0 }]);
-    fightTurn(s, { order: ana.id }); out.miss = s.state.log[s.state.log.length - 1]; out.target = target === ana.id ? 'Ana' : String(target);
+    rolls([0.01]); fightTurn(s, { order: ana.id }); out.miss = s.state.log[s.state.log.length - 1]; out.target = target === ana.id ? 'Ana' : String(target);
     unstub(); repelCasualty = real;
     return out;
   });
   assert.match(r.cover, /Bo cuts the lights in the section from the helm/); assert.deepEqual(r.made.slice(0, 3), [1, 2, 3], 'two crew are both on the bridge, where the hand starts: the cover is made there'); assert.equal(r.used, true);
   assert.deepEqual(r.next, [['Bo', 'steady'], ['Ana', 'steady']]);
-  assert.equal(r.miss, 'Turn 1: in the Lock 0 of them down and 1 of ours. Ana waits for a runner and none runs. The round goes high, and they use the noise to push. Someone is hurt.');
+  assert.equal(r.miss, 'Turn 1: 0 of them and 1 of ours down in the Lock. Ana waits for a runner and none runs. The round goes high, and they use the noise to push. Someone is hurt.');
   assert.equal(r.target, 'Ana', 'the loss was the one sent');
   await done();
 });
@@ -498,7 +498,7 @@ test('an owner who kept a post fights boarders on the deck with the same moves: 
     G.state.career = undefined; out.never = lockPost();  // (the shipped build starts every game as a hand: take away the career the buy left, and there is no post)
     return out;
   });
-  assert.ok(r.owner); assert.equal(r.title, 'The Lock'); assert.ok(r.armor); assert.deepEqual(r.acts, ['Stand: The Lock', 'You: shoot, 1 to 2 of them down'], 'the hand\'s own moves are offered');
+  assert.ok(r.owner); assert.equal(r.title, 'The Lock'); assert.ok(r.armor); assert.deepEqual(r.acts, ['Stand: The Lock', 'Shoot: 2 to 3 of them down'], 'the hand\'s own moves are offered');
   assert.match(r.lost, /You give them the code to the strongbox/); assert.equal(r.credits, 7000, 'a third of the player\'s credits, not a fund'); assert.ok(r.duelGone);
   assert.match(r.held, /The last of them go back through the lock/); assert.equal(r.heldNext, 'me');
   assert.match(r.hurt, /You are hurt/); assert.ok(r.hurtUntil >= 12); assert.equal(r.died, false, 'an owner is laid up and lives'); assert.equal(r.level, true);
@@ -521,8 +521,8 @@ test('the last of them going down wins the fight with its line, and so few left 
       };
       out[kind] = {
         last: play(() => {}),                                                          // none of them left
-        broke: play(f => { f.sections[at] = { mine: 0, theirs: 2, cover: 1 }; }),      // two of six, where ours are not and ours cannot push them
-        tooMany: play(f => { f.sections[at] = { mine: 0, theirs: 3, cover: 1 }; }),    // three of six still standing
+        broke: play(f => { f.sections[at] = { mine: 0, theirs: 1, cover: 1 }; }),      // one of six, where ours are not and ours cannot push them
+        tooMany: play(f => { f.sections[at] = { mine: 0, theirs: 2, cover: 1 }; }),    // two of six still standing
       };
     }
     return out;
@@ -530,7 +530,7 @@ test('the last of them going down wins the fight with its line, and so few left 
   for (const kind of ['repel', 'assault']) {
     const x = r[kind];
     assert.deepEqual(x.last, { won: true, ended: true, last: true, broke: false }, `${kind}: the last of them down wins the fight`);
-    assert.deepEqual(x.broke, { won: true, ended: true, last: false, broke: true }, `${kind}: down to a third, the rest break`);
+    assert.deepEqual(x.broke, { won: true, ended: true, last: false, broke: true }, `${kind}: down to three in ten, the rest break`);
     assert.deepEqual([x.tooMany.ended, x.tooMany.won], [false, false], `${kind}: too many left, the fight goes on`);
   }
   await done();

@@ -84,7 +84,8 @@ function abilityStep(kind, worked, { pos, boarders, extra }) {
 // The deck drawn (#786): a cell a section, with both sides' heads in it (ours on the left, theirs on the right), its cover as pips and the hand where they stand, and
 // their shown move as an arrow from where they are to where they say they go, marked MAY FEINT at a veteran grade. A section shows the cover of the side that
 // holds it: hers (`hers`) where only theirs stand, ours (`cover`) otherwise. `titles` names the sections; `move` is { from, to, n }, or null for a hold.
-function fightStrip({ titles, sections, hand, move, feint }) {
+// `began` and `breakAt`, when given, draw her count under the deck: a mark a head she started with, filled while it stands, and the line at which she breaks (spec Section 3).
+function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 0 }) {
   const n = sections.length, w = Math.floor(348 / n) - 6, mid = i => 6 + i * (w + 6) + w / 2, font = 'font-family="IBM Plex Mono, monospace"';
   const pip = s => (s.theirs && !s.mine ? s.hers || 0 : s.cover);
   const cells = sections.map((s, i) => {
@@ -97,8 +98,11 @@ function fightStrip({ titles, sections, hand, move, feint }) {
   }).join('');
   const arrow = move ? `<path class="move" d="M${mid(move.from)} 80 L${mid(move.to)} 80" stroke="#ff6a4a" stroke-width="1.5"/><circle cx="${mid(move.to)}" cy="80" r="3" fill="#ff6a4a"/>` +
     `<text x="${(mid(move.from) + mid(move.to)) / 2}" y="92" fill="#ff6a4a" font-size="9" text-anchor="middle" ${font}>${move.n}${feint ? ' MAY FEINT' : ''}</text>` : '';
+  const left = sections.reduce((k, s) => k + s.theirs, 0), H = began ? 112 : 98;
+  const count = began ? Array.from({ length: began }, (_, k) => `<rect class="${k < left ? 'head' : 'nohead'}" x="${6 + k * 10}" y="100" width="7" height="7" fill="${k < left ? '#ff6a4a' : 'none'}" stroke="#ff6a4a"/>`).join('') +
+    `<path class="break" d="M${4.5 + breakAt * 10} 97 L${4.5 + breakAt * 10} 110" stroke="#ffcf7f" stroke-width="1.5"/><text x="${10 + began * 10}" y="107" fill="#ffcf7f" font-size="8" ${font} letter-spacing="1">${breakAt ? `BREAKS AT ${breakAt}` : 'FIGHTS TO THE LAST'}</text>` : '';
   const heads = s => [s.mine ? `${s.mine} of ours` : '', s.theirs ? `${s.theirs} of theirs` : ''].filter(Boolean).join(' and ') || 'empty';
   const their = move ? `${move.n} from ${titles[move.from]} into ${titles[move.to]}` : 'they hold';
-  const label = `The deck in ${['three', 'four'][n - 3]} sections. ${sections.map((s, i) => `${titles[i]}: ${heads(s)}, cover ${pip(s)}${i === hand ? ', you stand here' : ''}`).join('. ')}. Their move: ${their}${feint ? ', may feint' : ''}.`;
-  return `<svg class="board" viewBox="0 0 360 98" role="img" aria-label="${label}"><rect x="0" y="0" width="360" height="98" fill="#050a11"/>${cells}${arrow}</svg>`;
+  const label = `The deck in ${['three', 'four'][n - 3]} sections. ${sections.map((s, i) => `${titles[i]}: ${heads(s)}, cover ${pip(s)}${i === hand ? ', you stand here' : ''}`).join('. ')}. Their move: ${their}${feint ? ', may feint' : ''}.${began ? ` ${left} of their ${began} still up; ${breakAt ? `they break at ${breakAt}` : 'they fight to the last'}.` : ''}`;
+  return `<svg class="board" viewBox="0 0 360 ${H}" role="img" aria-label="${label}"><rect x="0" y="0" width="360" height="${H}" fill="#050a11"/>${cells}${arrow}${count}</svg>`;
 }

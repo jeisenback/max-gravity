@@ -60,7 +60,7 @@ function walkPending() {
   const hand = hired(), xo = hand && hiredXo();
   return !!(xo && CAST[xo.cast].round && !hand.walked && runTotals(hand).runs === 0);
 }
-// The first raid of a new game: the first officer says what Position is, which choice is your own, and what a bad one costs, once
+// The first fight of a new game: the first officer says what the board shows, where the guns can be sent, and what a heavy hit costs, once
 // (cast entry `firstRaid`). h.raidTold starts false in a new game (hired.js); a save from before has none, so it never plays.
 function raidExplanation() {
   const h = hired(), xo = h && hiredXo();

@@ -28,7 +28,7 @@ Whole-ship command, where the player makes every post's moves, belongs to chapte
 ## Section 1: the turn loop (shared)
 
 Each side has:
-- **Two hull bars:** shields, which come back a little each turn, and armor, which does not.
+- **Two hull bars:** shields, which take a hit first, and armor. Neither comes back during a fight (`FIGHT.SHIELD_REGEN` is 0, Task 7).
 - **A few named parts, each with its own bar.** On a ship those are the weapons, the drive and the lock. In boarding they are the deck sections.
 - **In a ship fight only:** the range band, your heat, and the torpedoes left.
 
@@ -117,7 +117,7 @@ A veteran crew (her grade) hits harder and has longer bars, as now (`GRADE_HULL`
 **The board** is a cutaway of the deck: Lock, Corridor, Bridge.
 - A longer ship has a side route (the cargo bay or the engine room) for going round, as the layout bonus does now.
 - Each section shows both sides' heads and its cover pips (`fightStrip`).
-- A side breaks at a third of its number, as now, and the line is shown on its count.
+- A side breaks at about a third of its number, as now, and the line is shown on its count.
 
 **Their move is shown**, for example "Four pushing into the Corridor", "Holding the Lock" or "Two going round through the cargo bay". This replaces the hidden tactic pick.
 

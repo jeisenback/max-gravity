@@ -561,8 +561,8 @@ test('the Gunner\'s line and the GUNS tab match how contacts play for a hired ha
     return { hand, owner, hiredNow: !!hired() };
   });
   assert.doesNotMatch(r.hand.sign, /cards|threats and answers/); assert.match(r.hand.sign, /the move at the guns is yours alone/);
-  assert.match(r.hand.weapons, /A raid plays as scenes, not cards/); assert.equal(r.hand.projects, '', 'no projects a hand cannot start');
-  assert.equal(r.hiredNow, false); assert.doesNotMatch(r.owner.weapons, /A raid plays as scenes/); assert.match(r.owner.projects, /Refit the fire control/, 'an owner still has them');
+  assert.match(r.hand.weapons, /A raid or a navy stop is fought turn by turn on the sensor board, not with cards/); assert.equal(r.hand.projects, '', 'no projects a hand cannot start');
+  assert.equal(r.hiredNow, false); assert.doesNotMatch(r.owner.weapons, /not with cards/); assert.match(r.owner.projects, /Refit the fire control/, 'an owner still has them');
   await done();
 });
 

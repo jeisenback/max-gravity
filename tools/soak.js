@@ -68,27 +68,35 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     const fr = { raids: 0, scrams: 0, hull: 0, fuel: 0, planned: 0, seen: 0, live: 0 };
     if (play) for (const name of ['startShipFight', 'overload']) { const real = window[name]; window[name] = function (...a) { fr[name === 'startShipFight' ? 'raids' : 'scrams']++; return real.apply(this, a); }; }
     const target = typeof HIRED_TARGET === 'undefined' ? 19000 : HIRED_TARGET;
+    // The deck fights (fightui.js deckFightEvent) begun: each is played to its close (deckClose sets s.won) or to the hand's death, or the run is bad (below).
+    const decks = [];
+    { const df = window.deckFightEvent; window.deckFightEvent = function (s) { if (s && !decks.includes(s)) decks.push(s); return df.apply(this, arguments); }; }
     const answer = () => {
-      for (let k = 0; k < 8 + FIGHT.TURNS && G.dialog; k++) {  // a ship fight is a panel a turn
+      let kept = false;  // the dialog is a kept choice's redraw (a fight panel's next turn, or an order changed): a step of the same scene, not a new one
+      for (let k = 0, redraws = 0; G.dialog && k < 8 && redraws < 8 * (FIGHT.TURNS + DECK.TURNS); kept ? redraws++ : k++) {  // a fight's panels do not count against the scenes
         const d = G.dialog;
         if (/^(The Last Run|Without a Captain|Put Ashore)$/.test(d.event.title)) { ending.v = { day: G.state.day - hired().since, title: d.event.title, how: (hired().died || hired().captainLost || {}).how }; G.dialog = null; return; }  // the endings start a new game: the chapter is over
-        scenes[d.event.title] = (scenes[d.event.title] || 0) + 1;
-        if (d.event.soakId) byId[d.event.soakId] = (byId[d.event.soakId] || 0) + 1; else byTitle[d.event.title] = (byTitle[d.event.title] || 0) + 1;
+        if (!kept) {  // a redraw is counted once, with its scene
+          scenes[d.event.title] = (scenes[d.event.title] || 0) + 1;
+          if (d.event.soakId) byId[d.event.soakId] = (byId[d.event.soakId] || 0) + 1; else byTitle[d.event.title] = (byTitle[d.event.title] || 0) + 1;
+        }
+        kept = false;
         if (odd(d.event.title + d.event.text)) bad.push('text: ' + d.event.title);
         const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
         if (ok.length) {
-          const fire = d.event.fight ? ok.find(i => /^Fire/.test(d.choices[i].label)) : undefined;  // a ship fight is fought with the orders as they stand (fightui.js)
+          const fire = d.event.fight ? ok.find(i => /^(Fire\b|Fight$)/.test(d.choices[i].label)) : undefined;  // a ship fight or a deck fight is fought with the orders as they stand (fightui.js)
           const i = fire !== undefined ? fire : pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
           const c0 = G.state.credits, x0 = skillXp(postKey), o0 = atBar ? opinions() : 0;
           bar.in = atBar;
           const res = chooseEvent(i);
           bar.in = false;
-          if (c.keep && res) { openEvent(res); continue; }  // a kept choice redraws its dialog in place (ui.js)
+          if (c.keep && res) { openEvent(res); kept = true; continue; }  // a kept choice redraws its dialog in place (ui.js)
           if (odd(res)) bad.push('result: ' + String(res).slice(0, 80));
           if (atBar) { const id = c.soakId || (/^Leave/.test(c.label) ? 'leave' : 'follow-up'); bar.talks++; bar.topics[id] = (bar.topics[id] || 0) + 1; bar.credits += G.state.credits - c0; bar.xp += skillXp(postKey) - x0; bar.opinion += opinions() - o0; }
         }
         finishEvent();
       }
+      if (G.dialog && G.dialog.event.fight) bad.push(`fight left open: ${G.dialog.event.title}`);  // the step cap closed a fight with no settle
       while (G.dialog) finishEvent();
     };
     answer();
@@ -180,7 +188,8 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     if (!ending.v) tally();
     delete work.current; delete bar.in;
     if (hired()) freight.standing = { ...(hired().standing || {}) };  // each shipper's regard for the ship at the chapter's end (shippers.js)
-    return { messages, frames: fr, hand, work, bar, nights, plans, freight, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
+    const deck = { begun: decks.length, settled: decks.filter(s => 'won' in s).length, died: decks.filter(s => !('won' in s) && s.handDied).length };
+    return { messages, frames: fr, deck, hand, work, bar, nights, plans, freight, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
   }, [legs, captainKey, realDraw, post, frames, engineer, jobs]);
   await ctx.close();

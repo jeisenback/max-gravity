@@ -63,7 +63,7 @@ function repelCrew() {
 
 // The fight: the deck fight's state on our deck (fight.js deckFight), with who stands with you, who is hurt and who has fallen. Kept with the scene, as the
 // lock fight was, so nothing of it is in the save. Up to five of the crew are heads on the deck, as the lock fight counted them; `outcome` is how the
-// boarding run landed ('full' one more of them, 'half' one fewer). A long ship (16 and over) has the cargo bay to go round by.
+// boarding run landed ('full' two more of them than 'half', shipcombat.js boardersFor). A long ship (16 and over) has the cargo bay to go round by.
 function repelStart(d, outcome) {
   return deckStart({ d, boarders: boardersFor(d.foe, outcome, d), grade: d.grade || 0, size: SHIPS[G.state.shipId].size });
 }
@@ -94,7 +94,7 @@ const abilityOdds = (post, kind) => handCheck(POST_STAT[post], skillLevel(post),
 const pickWeighted = table => { let r = Math.random() * Object.values(table).reduce((a, b) => a + b, 0); for (const [k, w] of Object.entries(table)) if ((r -= w) < 0) return k; return Object.keys(table)[0]; };
 
 // The hand is hurt: laid up for a while (a level worse, light duty), longer if already hurt, and with no medic aboard the clinic is on
-// their own savings. Used when a crew member is hit (below) and when the hand's own call in a raid goes wrong (engagements.js).
+// their own savings. Used when a hit falls on the hand (repelCasualty, below), on a heavy turn of the ship fight (fightui.js fightTook), and on a job ashore (jobs.js).
 const HAND_CLINIC = 150;
 // The hand can die (#357): hurt a second time while still hurt, or with the bridge taken while laid up, is a roll of one in four, and a first hurt
 // is a roll of one in twelve; each is halved with a medic aboard (the factor crew deaths use, losses.js). The hand is hurt about 0.4 times a chapter
@@ -113,16 +113,18 @@ function handDies(s, how) {
 function hurtHand(s) {
   const st = G.state, c = career(), again = s.youHurt || handHurt();
   c.hurtUntil = st.day + (again ? 18 : 12);
-  s.youHurt = true;
+  s.youHurt = true; s.hits = (s.hits || 0) + 1;  // hits: how many times this fight (fightui.js fightTook)
   captainFlag('hurt');  // kept for the goodbye (captains.js)
   if (!s.ashore && role().canDie && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return again ? 'You\'re hurt again, and you stay down.' : 'You\'re hit.'; }
-  const bill = roleHolder('medic') ? 0 : Math.min(st.credits, HAND_CLINIC);
-  st.credits -= bill;
+  const bill = roleHolder('medic') ? 0 : handPays(HAND_CLINIC);  // the hand's own savings, also in a fight that a burn event started (hired.js hiredFunds)
   const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';
   return `${again ? 'You are hurt again, and you stay down.' : 'You are hurt. Your work counts a level lower until the clinic clears you.'}${pay}`;
 }
 
-// Someone goes down. The hand can be hurt but not killed. A crew member hurt twice in one fight is dead, and so is a named person marked before; where a floor of main
+// The memorial's cause of a death in a fight: the ship fight's (fightui.js), boarding her, or holding our own deck.
+const killedHow = s => `${s.state && s.state.kind === 'ship' ? (s.spec.kind === 'patrol' ? 'Killed in a navy stop' : 'Killed in a raid') : s.assault ? 'Killed boarding a crippled ship' : 'Killed repelling boarders'} near ${system().name}.`;
+
+// Someone goes down. On the hand it is the hand's hurt (hurtHand), which a friend may take once a fight. A crew member hurt twice in one fight is dead, and so is a named person marked before; where a floor of main
 // characters holds (the full build, fate.js) they are marked instead.
 function repelCasualty(s, only) {  // `only`: the one it falls on, when the exchange was an order to them
   const st = G.state, pool = [...st.crew.filter(id => !(st.injured || {})[id] || s.hurt.has(id)), 'you'];
@@ -134,7 +136,7 @@ function repelCasualty(s, only) {  // `only`: the one it falls on, when the exch
   if (who === 'you') return hurtHand(s);
   const c = person(who);
   if (s.hurt.has(who) || secondStrike(c)) {  // hurt twice in a fight, or marked before and hit again: the second strike
-    if (loseCrew(c, `Killed repelling boarders near ${system().name}.`) === 'marked') {  // a floor held them (the full build)
+    if (loseCrew(c, killedHow(s)) === 'marked') {  // a floor held them (the full build)
       s.marked.push(c);
       return `${c.first} is hit again and doesn't get up. ${c.first} is alive, and ${c.first} isn't fit to work.`;
     }
@@ -142,7 +144,7 @@ function repelCasualty(s, only) {  // `only`: the one it falls on, when the exch
     return `${c.first} is hit again and doesn't get up.`;
   }
   if (Math.random() < lossOdds(c, true)) {  // a hard hit that does not stop at hurt (losses.js)
-    if (loseCrew(c, `Killed repelling boarders near ${system().name}.`) === 'dead') { s.dead.push(c); return `${cover}${c.first} is hit, and doesn't get up, and won't.`; }
+    if (loseCrew(c, killedHow(s)) === 'dead') { s.dead.push(c); return `${cover}${c.first} is hit, and doesn't get up, and won't.`; }
     s.marked.push(c); return `${cover}${c.first} is hit, and carried below, and is alive, and isn't fit to work.`;
   }
   (st.injured = st.injured || {})[who] = true;
