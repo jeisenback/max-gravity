@@ -100,7 +100,7 @@ test('a fight played to each end lands in its scene: crippled to dead in space, 
     s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 1; s.state.band = RANGE_BANDS.indexOf('close');
     openEvent(chooseEvent(0));  // gun 1 at her drive
     s.shown = { foe: [{ kind: 'hold' }], captain: { kind: 'hold' } };
-    out.crippled = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /last burst/.test(G.nextEvent.text) };
+    out.crippled = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /grapple arms go slack|drive cone splits/.test(G.nextEvent.text) };
     // boarded: alongside, her lock whole, and her shown move is the boarding
     fightGame('gunner'); s = battle(); s.state.band = RANGE_BANDS.indexOf('knife'); s.shown = { foe: [{ kind: 'board' }], captain: { kind: 'hold' } };
     out.boarded = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /grapples bang on the hull/.test(G.nextEvent.text) };

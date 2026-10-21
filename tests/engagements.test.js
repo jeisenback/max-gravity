@@ -137,7 +137,7 @@ test('crippling her brings her alongside dead in space, and boarding her is the 
     startDuel({ kind: 'pirate' }, false); begin();
     const f = fightNow().state; f.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.parts.drive.hp = 0; });  // her guns and her drive are gone
     shownMoves({ kind: 'hold' });
-    out.ret = fireOrders(); out.title = G.dialog.event.title; out.crippled = /last burst/.test(G.dialog.event.text); out.labels = G.dialog.choices.map(c => c.label);
+    out.ret = fireOrders(); out.title = G.dialog.event.title; out.crippled = /grapple arms go slack|drive cone splits/.test(G.dialog.event.text); out.labels = G.dialog.choices.map(c => c.label);
     rolls([0.99, 0.99, 0.99]);  // no one is hurt
     choose('Board her'); finishEvent();
     out.first = G.dialog.event.title; out.heads = fightNow().state.began; out.assault = fightNow().state.assault;
@@ -578,7 +578,7 @@ test('the standoff line agrees with the board: close in when she is in the close
     out.knife = stand('knife'); out.close = stand('close'); out.mid = stand('mid'); out.long = stand('long');
     return out;
   });
-  for (const band of ['knife', 'close']) assert.equal(r[band].text, 'She breaks off close in, and her last burst rings on the hull aft. Armor -13.', band);
+  for (const band of ['knife', 'close']) assert.equal(r[band].text, 'She turns away close in, and a round drums on the plating by the galley as she goes. Armor -13.', band);
   for (const band of ['mid', 'long']) assert.equal(r[band].text, 'She breaks off at long range, and her last burst clips the hull aft. Armor -13.', band);
   assert.equal(r.close.armor, 13, 'five percent of the hull');
   await done();

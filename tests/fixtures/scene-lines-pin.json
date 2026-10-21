@@ -22606,7 +22606,7 @@
     "log": "Turn 1: you hit her weapons for 14.",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you hit her weapons for 14.</p><p>You open the range faster than she can close it, and she drops off the board astern.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you hit her weapons for 14.</p><p>The raider's plume falls back on the board until the sensors lose it.",
      "labels": [
       "Stand down"
      ]
@@ -22617,7 +22617,7 @@
     "log": "Turn 1: nothing left of the weapons to hit.",
     "next": {
      "title": "Dead in Space",
-     "text": "Your last burst takes her drive, and she turns over with her grapple arms hanging.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+     "text": "Her grapple arms go slack, and she tumbles past your bow with no plume behind her.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
      "labels": [
       "Board her",
       "Let her drift"
@@ -22642,7 +22642,7 @@
     "log": "Turn 1: you hit her weapons for 19.",
     "next": {
      "title": "The Lock",
-     "text": "She closes while your drive is slow and grapples on, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+     "text": "She closes while your drive is slow and seals a boarding tube to your lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
       "Stand: The Lock",
       "Shoot: 2 to 3 of them down",
@@ -22667,7 +22667,7 @@
     "log": "Turn 1: nothing left of the weapons to hit.",
     "next": {
      "title": "Dead in Space",
-     "text": "Your last burst finds her drive, and the corsair's plume goes out with her tubes still open.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+     "text": "The corsair's drive cone splits, and she coasts on with her bay doors stuck half open.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
      "labels": [
       "Board her",
       "Let her drift"
@@ -22742,7 +22742,7 @@
     "log": "Turn 6: no hits.",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 6: no hits.</p><p>She breaks off close in, and her last burst rings on the hull aft. Armor -13.",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 6: no hits.</p><p>She turns away close in, and a round drums on the plating by the galley as she goes. Armor -13.",
      "labels": [
       "Stand down"
      ]

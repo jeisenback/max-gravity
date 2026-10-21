@@ -457,16 +457,16 @@ const SCENE_LINES = {
     'end.broke.grapple': 'She breaks off with her grapple arms folded, and the range opens.',
     'end.broke.torpedo': 'She closes her bay doors with a torpedo still in the tube and turns away.',
     'end.crippled.gun': 'Her drive goes out under your last burst, and a beacon on her hull starts calling for a tow.',
-    'end.crippled.grapple': 'Your last burst takes her drive, and she turns over with her grapple arms hanging.',
-    'end.crippled.torpedo': 'Your last burst finds her drive, and the corsair\'s plume goes out with her tubes still open.',
+    'end.crippled.grapple': 'Her grapple arms go slack, and she tumbles past your bow with no plume behind her.',
+    'end.crippled.torpedo': 'The corsair\'s drive cone splits, and she coasts on with her bay doors stuck half open.',
     'end.standoff': 'She breaks off at long range, and her last burst clips the hull aft.',
-    'end.standoffNear': 'She breaks off close in, and her last burst rings on the hull aft.',  // the same close, when the board has her inside the guns' reach (#733)
+    'end.standoffNear': 'She turns away close in, and a round drums on the plating by the galley as she goes.',  // the same close, when the board has her inside the guns' reach (#733)
     'end.escaped.gun': 'You open the range past her guns, and her hail goes unanswered until she drops off the board.',
-    'end.escaped.grapple': 'You open the range faster than she can close it, and she drops off the board astern.',
+    'end.escaped.grapple': 'The raider\'s plume falls back on the board until the sensors lose it.',
     'end.escaped.torpedo': 'You open the range, and her last torpedo burns out well short of you.',
     'end.boarded.gun': 'She comes alongside, and a boarding party in navy gray cuts in at the lock.',
     'end.boarded.grapple': 'She\'s alongside, the grapples bang on the hull in four places, and the lock alarm goes.',
-    'end.boarded.torpedo': 'She closes while your drive is slow and grapples on, and the lock alarm goes.',
+    'end.boarded.torpedo': 'She closes while your drive is slow and seals a boarding tube to your lock.',
     'down.label': 'Stand down',
     'memory.stood': 'You stood us up to a raid and she broke off.',
     // the deck fight (deckFightEvent): {who} is who comes on, {n} how many, {to} and {at} a section, {what} an ability, {first} and {does} a crewmate's order, {lo} to {hi} what a shot takes
