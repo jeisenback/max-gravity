@@ -157,7 +157,7 @@ function shipFightEnd(s, end) {
     if (cap) like(cap, 1, fightSay(s.spec.kind === 'patrol' ? 'memory.navy' : 'memory.stood'));
     if (s.spec.kind !== 'patrol') changeRep('Pirate', -3);
     gainSkill(post, 3);
-    close(`${fightSay(`end.broke.${s.style}`)} ${cap ? `Captain ${cap.last} writes` : 'You write'} it in the log and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`);
+    close(`${fightSay(end === 'crippled' ? 'end.crippled.patrol' : `end.broke.${s.style}`)} ${cap ? `Captain ${cap.last} writes` : 'You write'} it in the log and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`);
     return;
   }
   if (end === 'standoff') {

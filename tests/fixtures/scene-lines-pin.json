@@ -9179,7 +9179,7 @@
     "x": [
      {
       "day": 31,
-      "text": "Mate0 Vale was killed when Earth's boarders came aboard."
+      "text": "Mate0 Vale was killed repelling boarders near Earth."
      }
     ],
     "next": null
@@ -22745,7 +22745,7 @@
     "log": "Turn 1: nothing left of the weapons to hit.",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: nothing left of the weapons to hit.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: nothing left of the weapons to hit.</p><p>Her drive goes dark, and on the open band her captain calls the stop off and asks the station for a tow. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
      "labels": [
       "Stand down"
      ]

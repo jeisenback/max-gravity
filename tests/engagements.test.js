@@ -270,11 +270,16 @@ test('a hostile patrol is a navy stop for a hired hand: the same fight with guns
     const out = { duel: !!G.duel, title: G.dialog.event.title, open: /navy ship/.test(G.dialog.event.text), rep: repOf(gov) - before, text: /Battle stations/.test(text), band: RANGE_BANDS[fightNow().state.band] };
     fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.parts.drive.hp = 0; }); shownMoves({ kind: 'hold' });  // a cripple, which would leave a raider dead in space
     fireOrders();
-    out.off = /registry has been logged/.test(G.dialog.event.text); out.boardable = G.dialog.event.title === 'Dead in Space'; out.pirate = repOf('Pirate');
+    out.off = /calls the stop off/.test(G.dialog.event.text); out.warned = /registry has been logged/.test(G.dialog.event.text);
+    out.boardable = G.dialog.event.title === 'Dead in Space'; out.pirate = repOf('Pirate');
+    // A crewmate killed in the stop is logged as killed in it, not by boarders.
+    const c = st.crew.map(person).find(p => p && !p.cast); loseCrew(c, killedHow({ state: { kind: 'ship' }, spec: { kind: 'patrol' } }));
+    out.log = (st.home || {}).log.slice(-1)[0];
     return out;
   });
   assert.equal(r.duel, false); assert.equal(r.title, 'Battle Stations'); assert.ok(r.open && r.text); assert.equal(r.rep, -8); assert.equal(r.band, 'mid', 'a patrol is met at thirty kilometers');
-  assert.ok(r.off, 'she breaks off with a warning'); assert.ok(!r.boardable, 'a navy ship is not boarded');
+  assert.ok(r.off && !r.warned, 'crippled, she calls the stop off; she does not break off'); assert.ok(!r.boardable, 'a navy ship is not boarded');
+  assert.match(JSON.stringify(r.log), /was killed in a navy stop near /);
   await done();
 });
 

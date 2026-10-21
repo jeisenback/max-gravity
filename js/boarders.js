@@ -153,14 +153,15 @@ function repelCasualty(s, only) {  // `only`: the one it falls on, when the exch
 }
 
 // A generated crew member dies: off the crew, on the record, and the berth is offered at the next port.
-function killCrew(c) {
+function killCrew(c, cause) {
   const st = G.state;
   st.crew = st.crew.filter(id => id !== c.id);
   delete (st.injured || {})[c.id];
   c.dead = true;
   (st.fallen = st.fallen || []).push({ name: fullName(c), role: c.role, day: st.day });
   (st.vacancies = st.vacancies || []).push(c.role);
-  homeLog(sceneSay('scene:ship-log', 'killed.log', { first: c.first, last: c.last, system: system().name }));
+  const how = stripTags(cause);  // the memorial's cause ("Killed in a raid near Sol."), read on from the name
+  homeLog(sceneSay('scene:ship-log', 'killed.log', { first: c.first, last: c.last, how: how.charAt(0).toLowerCase() + how.slice(1) }));
 }
 
 // Who died in a fight, said after its close.

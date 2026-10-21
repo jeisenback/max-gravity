@@ -275,7 +275,7 @@ const SCENE_LINES = {
     memory: 'I signed on with {ship}.', log: '{first} {last} came aboard as {article} {role}.',
   },
   'scene:ship-log': {  // the lines the ship's log keeps of what happens (boarders.js, stakes.js, legacy.js, outpost.js)
-    'killed.log': '{first} {last} was killed when {system}\'s boarders came aboard.',
+    'killed.log': '{first} {last} was {how}',
     'left.log': '{first} {last} left the ship at {planet}.',
     'lost.log': 'In memory of Captain {captain}, lost with {ship}.',
     'lost.crew.log': 'In memory of Captain {captain} and the crew, lost with {ship}.',
@@ -454,6 +454,7 @@ const SCENE_LINES = {
     'fire.label': 'Fire: heat {heat} of {cap}', 'fire.hot': 'Fire: heat {heat} of {cap}, and a gun locks next turn',
     'log.turn': 'Turn {n}: {hits}.', 'log.mine': 'you hit her {part} for {dmg}', 'log.torp': 'your torpedo hits her {part} for {dmg}',
     'log.mine.consort': 'you hit her consort\'s {part} for {dmg}', 'log.torp.consort': 'your torpedo hits her consort\'s {part} for {dmg}', 'log.hers': 'she hits your {part} for {dmg}', 'log.spent': 'nothing left of the {part} to hit', 'log.none': 'no hits',
+    'end.crippled.patrol': 'Her drive goes dark, and on the open band her captain calls the stop off and asks the station for a tow.',
     'end.broke.gun': 'She breaks off, and on the open band a voice says, "Your registry has been logged."',
     'end.broke.grapple': 'She breaks off with her grapple arms folded, and the range opens.',
     'end.broke.torpedo': 'She closes her bay doors with a torpedo still in the tube and turns away.',
