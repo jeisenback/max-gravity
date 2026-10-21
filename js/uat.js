@@ -212,10 +212,16 @@ const UAT_FIGHTS = [
     run: g => openEvent(deadInSpaceScene({ spec: { kind: 'pirate' }, foe: uatRaider(), grade: g, pack: false })) },
 ];
 const UAT_LATE_CHECK = ' Late in the chapter: the gunner\'s level and the boresight show in your damage ranges, the valve keys add cover in the corridor, and a crewmate who is a friend takes the first hit meant for you.';
+// One of the fights, early or late, from a fresh hand: `ready` runs once the hand is set up and before the fight starts (the editor's preview sets the day and the turret there).
+function uatFight(f, late, ready = () => {}) {
+  uatHand();
+  if (late) uatLate();
+  ready();
+  f.run(!late ? f.grade || 0 : f.grade === null ? 0 : Math.min(2, (f.grade || 0) + 1));
+}
 UAT_ITEMS.push(
-  ...UAT_FIGHTS.map(f => ({ group: 'Turn-based fights', id: f.id, title: f.title, check: f.check, setup() { uatHand(); f.run(f.grade || 0); } })),
-  ...UAT_FIGHTS.map(f => ({ group: 'Turn-based fights, late chapter', id: `late-${f.id}`, title: `${f.title}, late`, check: f.check + UAT_LATE_CHECK,
-    setup() { uatHand(); uatLate(); f.run(f.grade === null ? 0 : Math.min(2, (f.grade || 0) + 1)); } })),
+  ...UAT_FIGHTS.map(f => ({ group: 'Turn-based fights', id: f.id, title: f.title, check: f.check, setup() { uatFight(f, false); } })),
+  ...UAT_FIGHTS.map(f => ({ group: 'Turn-based fights, late chapter', id: `late-${f.id}`, title: `${f.title}, late`, check: f.check + UAT_LATE_CHECK, setup() { uatFight(f, true); } })),
 );
 
 // ---------- general tools ----------
