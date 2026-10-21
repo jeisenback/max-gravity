@@ -112,7 +112,7 @@
       add({
         id: s.id, title: s.title, where: s.where, file, belongs: stem(file), kind: 'data', text: plain(s.text), when: s.when || {}, chained: !!s.chained, pacing: pacingOf.storylet(s),
         choices: s.choices.map(c => ({ label: plain(c.label), result: plain(c.result), when: c.when || {}, effects: c.effects || {}, next: c.next || '' })),
-        // A text of conditional parts cannot be edited as one string, so the form leaves those fields to the code (conditions are story 4).
+        // A text of conditional parts cannot be edited as one string, so the form leaves those fields to the code.
         edit: { text: typeof s.text === 'string', choices: s.choices.map(c => ({ label: typeof c.label === 'string', result: c.result === undefined || typeof c.result === 'string' })) },
       });
     }
@@ -759,7 +759,7 @@
       <div class="shipped"><span class="hint">Shipped</span>${shipped ? paragraphs(shipped) : '<p class="hint">(none)</p>'}</div>
       ${editable ? `<textarea id="f-${esc(path)}" data-path="${esc(path)}" rows="${Math.max(2, Math.ceil((value || shipped || '').length / 60))}">${esc(value === undefined ? shipped : value)}</textarea>
         <div class="warn" data-warn="${esc(path)}" role="status">${esc(value === undefined ? '' : flagOf(value, shipped))}</div>`
-        : r.registry ? '<p class="hint">Its text is built from the game state when it plays, so it is edited in code.</p>' : '<p class="hint">This one has parts that depend on conditions. It is edited in code until the conditions can be edited (story 4).</p>'}
+        : r.registry ? '<p class="hint">Its text is built from the game state when it plays, so it is edited in code.</p>' : '<p class="hint">This one has parts that depend on conditions, which the form cannot edit as one text, so it is edited in code.</p>'}
       ${editable && r.registry && !r.table && !r.parts && /\.result$/.test(path) && !effectsEditable(r, Number(/^c(\d+)/.exec(path)[1])) ? '<p class="hint">This choice runs code. A result written here replaces the line it returns.</p>' : ''}
     </div>`;
   }
@@ -812,7 +812,7 @@
   }
 
   const changesHtml = (rows, values, struct) => `<h3>Changes so far</h3>
-    <p class="hint">Only what differs from the shipped words. Saving, export and revert come with story 6; until then this is the whole of js/overrides.js to paste in.</p>
+    <p class="hint">Only what differs from the shipped words: the whole of js/overrides.js as it would be. It is kept in this browser; Export changes downloads it.</p>
     <pre id="changes">${esc(fileText(overridesFrom(rows, values, struct), newDefs()))}</pre>`;
 
   function detailHtml(r, values = {}, rows = [], struct = dict()) {
@@ -829,11 +829,11 @@
     <h2>${esc(r.title)}</h2>
     <p class="hint">${esc(r.id)} | ${esc(r.where)} | ${esc(r.file)} | ${esc(r.belongs)} | ${esc(r.kind)}${r.off ? ' | off in the narrow build' : ''}</p>
     ${r.codeNote ? `<p class="note">${esc(r.codeNote)}</p>` : ''}
-    ${r.conditionsNote ? `<h3>When it plays</h3><p>${esc(r.conditionsNote)}</p><p class="hint">Its conditions and effects are written in code, and are read only until story 8.</p>` : ''}
+    ${r.conditionsNote ? `<h3>When it plays</h3><p>${esc(r.conditionsNote)}</p><p class="hint">Its conditions and effects are written in code, so they are shown here and changed there.</p>` : ''}
     ${paragraphs(r.text)}${r.text2 ? paragraphs(r.text2) : ''}
     ${r.choices.length ? `<h3>Choices</h3><ol>${r.choices.map(c => `<li><strong>${esc(c.label)}</strong>${c.result ? paragraphs(c.result) : ''}${c.win ? `<p><em>If it works:</em></p>${paragraphs(c.win)}` : ''}${c.lose ? `<p><em>If it fails:</em></p>${paragraphs(c.lose)}` : ''}</li>`).join('')}</ol>` : ''}
     ${pacingHtml(r)}
-    <p class="hint">A code-written scene cannot be edited here until its text has an id (story 8).</p>`;
+    <p class="hint">Its words are written in code too, so it is edited there.</p>`;
   }
 
 
@@ -1217,7 +1217,7 @@
   function newSceneHtml(r, struct, takenIds, changes = '') {
     const problems = newProblems(r, struct, takenIds), sel = (field, list) => `<select data-new="${field}">${list.map(([v, text]) => `<option value="${esc(v)}"${r[field] === v ? ' selected' : ''}>${esc(text)}</option>`).join('')}</select>`;
     return `<h2>${esc(r.title || 'New scene')}</h2>
-      <p class="hint">A scene written here is a data scene, added to the game's through addStorylet. Until saving comes (story 6) it is in the changes below; the preview plays it.</p>
+      <p class="hint">A scene written here is a data scene, added to the game's through addStorylet. It is kept with your changes below and exported with them; the preview plays it.</p>
       <button data-action="discard-scene">Discard this scene</button>
       <div id="problems">${newProblemsHtml(problems)}</div>
       <div class="field"><label for="n-id">Id</label><input id="n-id" type="text" data-new="sceneId" value="${esc(r.sceneId)}" placeholder="a-unique-id"></div>

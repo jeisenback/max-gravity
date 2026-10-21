@@ -1,6 +1,6 @@
 'use strict';
 
-// The generated people's scenes and line tables in the editor (#457, #478): the raid, ambush and boarding beats, the line tables, the passenger, crew, bar, relationship and talk
+// The generated people's scenes and line tables in the editor (#457, #478): the ship fight, the ambush and boarding beats, the line tables, the passenger, crew, bar, relationship and talk
 // scenes, and the jobs further away. Each has its words in the form and plays in the preview with the people it is about. Split from editorhired.test.js to keep each file short (#583).
 
 const { test, before, after } = require('node:test');
