@@ -556,6 +556,7 @@ const SCENE_LINES = {
     'lose.memory': 'You pushed me to fly somewhere I didn\'t want to go.',
     'never.label': 'Never mind',
     'never.result': 'You let it lie. The job will keep.',
+    deal: 'It would be about day {at} before you could be at a yard again, and the used Ore Runner comes off the yard list after day {until}.',
   },
   'scene:freight-agent': {  // the agent at the far end, when a delivery was late, short or lost (js/shippers.js)
     'title.late': 'Late at the Lock', 'title.short': 'Short at the Lock', 'title.lost': 'Nothing to Sign For',

@@ -98,6 +98,11 @@ const playScenes = () => {
     const dest = SYSTEMS.mars.planets[0].name;
     return pitchScene({ tpl: 'package', ctx: { dest, from: 'Titan', who: 'Mrs. Adeyemi', system: SYSTEMS.mars.name, scale: 1.2 }, sid: 'mars', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false });
   }, { rolls: [0, 0.999] });
+  run('scene:pitch:deal', {}, () => {  // the used Ore Runner on the yard list, and a run that keeps you from a yard past her last day (#800)
+    const h = hired(); h.deal = { price: 17000, day: G.state.day, until: G.state.day + 3, broker: false };
+    const dest = SYSTEMS.eros.planets[0].name;
+    return pitchScene({ tpl: 'package', ctx: { dest, from: 'Titan', who: 'Mrs. Adeyemi', system: SYSTEMS.eros.name, scale: 1.2 }, sid: 'eros', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false });
+  });
   // ---------- the faction ties: customs, a patrol, a friend at the dock, a recall in a war ----------
   // who is wanted, an exile, an officer or a member of what is stubbed for the crew (tiesOf), as is the faction at war and the papers the captain holds; the stubs are put back for each case
   const realTies = window.tiesOf, realYou = window.youTies, realWar = window.factionState;

@@ -116,6 +116,13 @@ function bookRun(a) {
   h.plan.run = alt ? { ...alt, ballast: false } : { sid: a.sid, planet: a.planet, yard: dest.services.includes('shipyard'), days: a.days, good: null, tons: 0, cost: 0, profit: 0, ballast: true };
   return h.plan.run;
 }
+// The earliest day the job's run would have you at a yard: there, if its port has one, else a day in port and the shortest leg on to one (#800).
+function yardDayAfter(day, a) {
+  const there = SYSTEMS[a.sid].planets.find(p => p.name === a.planet), arrive = day + a.days;
+  if (there && there.services.includes('shipyard')) return arrive;
+  const legs = Object.entries(SYSTEMS).filter(([, sys]) => sys.planets.some(p => p.services.includes('shipyard'))).map(([sid]) => (sid === a.sid ? 1 : travelDays(a.sid, sid)));
+  return arrive + 1 + Math.min(...legs);
+}
 function pitchScene(a) {
   const h = hired(), st = G.state, cap = hiredCaptain(), job = awayJob(a), say = (key, vars) => sceneSay('scene:pitch', key, { last: cap.last, first: cap.first, ...vars });
   const choices = PITCH.map(p => {
@@ -132,7 +139,8 @@ function pitchScene(a) {
     } };
   });
   choices.push({ label: say('never.label'), run: () => say('never.result') });
-  return { title: say('title'), personal: true, text: say('text', { blurb: fill2(jobBlurb(job, true), a.ctx), dest: a.ctx.dest, system: a.ctx.system, days: a.days }), choices };
+  const deal = dealOpen() && h.deal, at = deal ? yardDayAfter(st.day, a) : 0;  // the used Ore Runner goes while the run is out
+  return { title: say('title'), personal: true, text: `${say('text', { blurb: fill2(jobBlurb(job, true), a.ctx), dest: a.ctx.dest, system: a.ctx.system, days: a.days })}${deal && at > deal.until ? ` ${say('deal', { at, until: deal.until })}` : ''}`, choices };
 }
 const fill2 = (t, ctx) => t.replace(/\{(\w+)\}/g, (m, k) => (ctx[k] !== undefined ? ctx[k] : m));
 const pitchedNow = a => a.pitched === `${G.state.day}@${G.state.planet}`;
