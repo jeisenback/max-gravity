@@ -14,11 +14,9 @@ decides, and the crew flies.
 - **One combat system.** The card duel is the only fight, in burns and in classic
   flight. With no crewed gunner, the captain plays it with their own skill. The
   real-time fight is retired: in burns (#52, done), in local space (#55), and in the
-  story set pieces (#56). Since then the hired hand's fights are the raid in beats and
-  the lock fight (the section at the end), and the next chapters' design
-  (`docs/superpowers/specs/2026-10-17-next-chapters-design.md`, #680) puts the raid on
-  a sensor board with ranges and turns and folds the duel into it after, so one system
-  again, the other way round.
+  story set pieces (#56). Since then the hired hand's fights are the turn-based ship
+  fight and deck fight on the sensor board (the section at the end, #786), and the card
+  duel is the owner's, parked with the owner game (`ROADMAP.md`).
 - **Automated flight.** Departing, docking, landing and closing on a disabled ship are
   choices, and the autopilot flies them. The flight screen stays as a backdrop but is
   never steered (#53).
@@ -235,86 +233,72 @@ played.
 
 ## A hired hand's engagements
 
-In the hired-hand chapter a pirate contact is not the card duel. It plays as an authored raid in beats
-(`js/engagements.js`): the closing, two passes, and the close. At each beat you choose how to meet her or do the
-job of your own post, and each choice is a chance of going your way (+1 or +2) or hers (-1 or -2) on a running
-position. At the close she breaks off, stands off and throws a last round, or comes alongside, and then the fight goes
-to the lock (`js/boarders.js`): hold, rush, go round, your post's job, or one of the post's two other abilities (below), with casualties. Measured over random-choice
-play (`npm run fights`, below), about a quarter of raids end with her breaking off, 4 in 10 stand off, and 3 in 10 go to the lock, for 11% of the hull.
-A decisive win (ahead by four or more) cripples her instead: she drifts, and you can board her. That is the same
-lock fight run the other way (her lock, her corridor, her bridge, with the same tactics and your post's job), and a win
-takes her strongbox for the ship's fund. Or let her drift, which is the same as breaking her off. Over random-choice
-raids, about 1 in 20 cripple her, and a boarding is carried about two times in three.
+In the hired-hand chapter a pirate contact or a navy stop is not the card duel. It is fought turn by turn (`js/fight.js`, the
+engine, pure; `js/fightui.js`, the panel), as the turn-combat design sets out
+(`docs/superpowers/specs/2026-10-20-turn-combat-design.md`, #786). An owner who kept a post (`lockPost()`) fights the same way
+(`js/duel.js` startDuel); an owner who was never a hand keeps the card duel above. Bounties and hunters are still the card duel.
+
+### The ship fight
+
+The panel is the sensor board (`js/board.js`) with both sides' bars under it: shields, armor, and the weapons, drive and lock,
+each with its own bar. Each turn her move and the captain's are shown first (a broadside at a part, closing, a pin on your
+drive, coming alongside, breaking off; the captain closes, holds or opens the range by the captain card's nerve). The hand aims
+each ready gun at a part or holds it, the torpedo and the turret where they are fitted, and presses Fire. Damage is rolled in a
+range, cut at long range and harder close in; each shot adds heat, two bleed off a turn, and over the cap a gun locks for the
+next turn. A part at zero stops what it does: no weapons, fewer shots; no drive, no change of range; no lock, no boarding. One
+line a turn goes in the log.
+
+She is met at forty kilometers, long range (a raider, a corsair), or thirty, mid range (a patrol), moved by the contact's own move
+(`js/engage.js`) or the ambush (`js/engagements.js`, below). It ends crippled (her weapons and drive gone: dead in space, to
+board her or let her drift; a navy ship breaks off instead), broken off, escaped (you open past long range), boarded (the deck
+fight), your hull gone, or a standoff after six turns. A heavy turn (the hull loses more than a fifth of your armor) can cost a
+casualty and hurt the hand. The numbers are `FIGHT` in `js/fight.js`.
+
 A hired hand can also meet a distress call on a burn through unsettled space (pirates 0.25 or more at either end, at most once
 in 60 days): seven in ten are a trap, and the rest are a real freighter that pays the ship's fund 500 cr. Each post has its own
-way to read the call (scan her hull, read her drive, match her tumble, check her registry), which works at 50% plus a tenth
-a level. Answering a trap blind springs it and starts the raid two behind. A good read lets you hit them first (the raid
-starts one ahead) or turn away (the captain's regard and 2 experience), and shows a real call so you can help or leave it.
-A hostile patrol is the same beats with guns (a navy stop): firing on her costs 8 standing with her faction, a clear win only
-makes her break off with a warning (a navy ship is not boarded), and if she comes alongside her party is repelled the same
-way, with a levy on the ship's fund if the bridge is lost. A hired hand can also heave to and let the ship pay a quarter of
-its fund.
-Who stands with you depends on the crew. One who cannot stand you (their opinion of you at the enemy mark) keeps to their
-berth, and of two at each other's throats (the bond at which a split is on the cards) the one who thinks less of you will not
-stand in the same section, so the line is a person shorter each time. A friend takes the first hit meant for you, once a
-fight (so does someone who owes you one, from a watch you covered for them). The same goes for the repel fight and for boarding a crippled raider.
-Bounties and hunters are still the card duel above. The raid is not the hand's alone (#721): an owner who kept a post (`lockPost()`) who meets a pirate or a patrol plays the same beats, with the player's post as the post move and, at a contact, the post's own move first (`js/duel.js` startDuel, `js/engage.js`). There is no captain to mark a call or to write the close in the log, so the owner's lines say "You write it in the log"; a lost bold call can hurt them and lays them up without killing (`role().canDie`). `node tools/fights.js --owner` plays the same trials as an owner on the same ship and crew: over nine seeds the raid closes as the hand's does (the hand's deaths end its trial early, which the owner's laid-up hurt does not). The ambush stays the hand's. The lock fight is not the hand's alone (#685): an owner who kept a post through the buy (`career().post`) who is boarded in the card duel, or boards a crippled ship, plays the same lock fight with the player's post moves and crew orders. The money is the player's credits (a bridge taken costs a third of them; a prize pays into them), a hurt lays the player up and never kills them, and there is no captain to remember it or to lose (`role().canDie`, `role().paysFrom()`). An owner who was never a hand keeps the card duel.
-The raid happens somewhere now (`js/board.js`, #680): each beat carries a sensor board above its text, a lidar plot in the flight view's
-style with range rings every ten kilometers to forty, your ship at the center, her return at its bearing and range, the closing rate,
-the point defense arc to fifteen kilometers, the sun's side, and a torpedo on its way on a corsair's passes. The position model is the
-beats' own: the range by beat and style (a raider closes from forty kilometers to passes at two and one, a patrol opens at thirty, a corsair
-stands off at twelve and eight), the bearing by the running position (ahead, she is forward of the beam where the guns bear; behind, on
-the quarter), the closing rate from the two ships' speeds. The beats' choices, lines and odds are unchanged; the board is the picture of
-them. Worn sensors (condition under 60) throw a second return; failing ones (under 40) show her where she was last beat, marked stale.
-The owner's duel folds onto the same board later, and the card deck retires then.
+way to read the call, which works at 50% plus a tenth a level. Answering a trap blind springs it, and she fires first; a good
+read lets you hit them first or turn away (the captain's regard and 2 experience), and shows a real call so you can help or
+leave it. A hostile patrol costs 8 standing with her faction to fight, and a hired hand can heave to and let the ship pay a
+quarter of its fund.
+
+### The deck fight
+
+Boarding, both ways, is played on the same panel (`js/fight.js` resolveDeckTurn, `js/boarders.js`): when she comes alongside,
+when a boarding run lands in the card duel, and when you board a crippled ship, where a win carries her bridge. The deck is
+drawn as its sections (`js/handtohand.js` fightStrip): the Lock, the Corridor, the Bridge, and the cargo bay on a long ship,
+with both sides' heads and each side's cover in each, and her count under it with the line at which she breaks. Their move is
+shown above it ("4 pushing into the Corridor"); at a veteran grade it is marked "may feint", and it does at the `CUNNING` rate.
+
+Each turn the hand stands or moves one section, does one thing there (shoots, or uses one of the post's two abilities: the
+steady one takes one of them down, the cover one makes two points of cover, once a fight), and gives one order to a named
+crewmate (that person's own steady or cover ability, at their own odds). Where both sides stand they trade losses, a roll for
+each opposing head, cut by the side's own cover but never to nothing. A loss on our side is a named crewmate; the hand can be
+hurt in a contested section. It is won when about a third of her start or fewer are left (`DECK.BREAK`), or all are down, or
+(boarding her) her bridge is held; it is lost when they hold our bridge, or (boarding her) when none of ours are left. At eight
+turns (`DECK.TURNS`) the attackers withdraw. The numbers are `DECK` in `js/fight.js`.
+
+Who stands with you depends on the crew (`repelCrew`). One who cannot stand you keeps to their berth, and of two at each
+other's throats the one who thinks less of you will not stand in the same section. A friend takes the first hit meant for you,
+once a fight (so does someone who owes you one).
 
 ### Measured: `npm run fights`
 
-`tools/fights.js` plays the raid, the repel fight and the assault fight over many seeded trials (5 seeds of 200, a hired gunner
-on Hester's ship with nine aboard, against a raider) and reports how they close and who is hurt. The game is put back between
-trials. It is run by hand and is not part of `npm test`. Figures from the run that wrote this section (`CASUALTY_ODDS` 0.4,
-`REPEL_HURT` 0.45 on a loss and 0.15 on a win, `CUNNING` 0.25, and the boarders' lean in `BOARDER_LEAN` and `REPEL_LEAN`):
+`tools/fights.js` plays the ship fight and both deck fights over many seeded trials (`npm run fights`: 5 seeds of 200, a hired
+gunner on Hester's ship with nine aboard) and reports, for the ship fight, the spread of ends by where the guns aim and by
+matchup, and for the deck fights how often they are won and who is hurt, by crew, the post's level, the hand's policy and her
+grade. It is run by hand and is not part of `npm test`; `tests/fights.test.js` checks the targets that matter (#786, R36). From
+the run that wrote this section (after Task 7's tune):
 
-- **The raid**, random choices: she breaks off 23%, stands off 40%, is crippled 5% (boarded and carried 70% of the time), and goes
-  to the lock 31% (held 63%). Hull lost 11%. Someone is hurt in 52% of raids, someone dies in about 1 in 11, and the hand is hurt in 35%.
-  Always the post's own move: crippled 19%, hull 3%. Always the first general choice: no crippling, half stand off, 10% reach the lock.
-- **The lock fight** (repel and assault give the same figures within a few points), random tactics, level 2, five standing with
-  you: won 80%. By crew: one 43%, three 77%, five 81%. By the post's level (the post's move every round): 68%, 84%, 95%.
-  By the foe's grade: 0 is 80%, 1 is 58%, 2 is 37%. Casualties per fight with five: 0.4 hurt, 0.2 dead, 0.15 marked (a main character),
-  the hand hurt 14%, and someone or other hurt in 55% of fights. A grade 2 foe hurts someone in 78%. These are the intended cost
-  of a fight and were left as they are.
-- **Tactics are a lean, not a rule.** A raider's boarders rush a little more than they hold (38%, 30%, with going round 32%), and a
-  corsair's hold a little more than they rush. Fixed over a fight against a raider, always holding wins 72%, always rushing 70%
-  and always going round 89%, against 80% for a random mix. Going round stays ahead partly because the freighter is long and has room
-  to go round (`layoutEdge`, +0.15 for going round and -0.1 for a rush). Before the lean was flattened (50%, 20%, 30%) always going round won 97% and always holding 49%, which left one dominant tactic.
+- **The ship fight**, random aim: crippled 3%, broke off 6%, standoff 59%, boarded 31% (held 94%), hull lost 10% a fight, the
+  hand killed 1%. Aiming at her weapons: broke off 71%, boarded 29%. At her drive: crippled 13%, standoff 75%. At her lock:
+  never boarded. Against a lone raider, aiming at her weapons or her lock wins every time (R38), and against a corsair aiming
+  at her weapons wins 90%; against a raider pair or a navy cutter no aim wins more than 6%.
+- **Repelling boarders**, random play, five standing: won 90%; by her grade 88%, 58%, 41%. Shooting where they are wins 99%
+  with five or two standing, against random's 49% with two.
+- **Boarding her**, random play, five standing: won 80%; by her grade 81%, 57%, 29%. With two standing, sending a crewmate
+  every turn wins 87%, against random's 35%.
 
-The tool is how to check a change to the casualty odds, the lean or the layout bonus.
-
-### Abilities and cover in the lock fight (`js/handtohand.js`, #684)
-
-Each post has two abilities after its own move, each a check on the post's stat and skill through the sheet (`handCheck`, kind `post`, so the kit's edge counts) that costs the exchange and wins no ground:
-a **steady** one (the gunner picks off a runner, the pilot cycles a hatch on them, the engineer vents a coolant line, comms puts a false order on their band; edge -0.10: a harder gamble than the post's own move, since it is the one that can end the fight) that leaves one of them fewer, which
-settles a same-tactic tie by the numbers, and a **cover** one (a covering burst, the lights cut, the pressure door, the jammer; edge +0.05; once a fight) that makes two points of cover in the section the fight is in.
-A miss holds the ground, but they get a shot at someone: a casualty is rolled at the lost-exchange rate. The label says what the ability wins and the odds, and that a miss can cost a crew casualty.
-Cover is by section, drawn above the text as a strip of the three sections (who holds each hatch, the cover as pips, how many are at the front). The ship has a point in each section, the corridor one more in a long ship
-and one less in a cramped one, and the kit adds (the valve keys open the service crawl: a point in the corridor). A point over the ship's own takes a fifth off the chance of a casualty in the section the exchange was fought in,
-a point under puts a fifth on, to two fifths at the lowest. The triangle, the head count, the layout bonus on the tactics and the casualty rules are as they were.
-Over 3 seeds of 100 (level 2, five standing with you, grade 0): the post's move won 90% (89 before), unchanged within noise; the post's move after a cover ability won 90% with 0.27 hurt against 0.31 and someone hurt in 43% of fights against 49%; a hand who thins them
-when outnumbered and otherwise uses the post's move won 90%, with 0.26 hurt; an ability used every round never won, because nothing but the front reaching the lock could end a fight (see "Killing them, and their breaking" below: the last of them down, or the few left breaking, now can). Random tactics and the raid are as they were.
-
-### Orders to the crew in the lock fight (`js/handtohand.js`, `js/boarders.js`, #711)
-
-Each exchange also offers up to three orders to named crew who are on their feet and have a post (the gunner, the pilot, the engineer, and the slicer as Comms; the cook, the medic and the first officer fight as a head count and no more). An order is that person's cover or steady ability, so the buttons read "Bo cuts the lights (cover here, once)" and "Ana picks off a runner (one fewer of them, no ground)". A crew member's sheet comes from what they already are, with no new field: the post's stat a point over the base (as the hand's is at the sign-on), a point more for a brave one and a point less for a nervous or drunk one, their skill as it stands (a level less while bad news from home weighs on them), then the same rule (`check`) and the same edges as the hand's abilities. Someone already hurt in the fight takes a tenth off. The most skilled are offered first, the first with the cover while the fight still has it to make (once a fight, the hand's own counts).
-An order costs the exchange and wins no ground, as the hand's abilities do. A miss holds the ground and gives them a shot, and the shot is at the one sent: the casualty is rolled at the lost-exchange rate and falls on them (hurt, or dead if already hurt in the fight). The hand's own move, the triangle, the head count and the casualty rules are as they were.
-Over 3 seeds of 100 (level 2, grade 0): a hand who has the crew make the cover and then plays by the numbers won 89% with five standing (rounds 4.3, 0.27 dead) against 90% (3.3 rounds, 0.26 dead) for the numbers alone, and 87% with two standing against 85%: the orders are a choice with a cost, not a better play. The hand's own policies read as they did within noise.
-
-Should an order top the hand's own odds (#737)? It does, by design, and it stays. The hand's cover runs 60 to 70 percent at the first two skill levels, 80 at the third and 90 at the fourth, and its pick-off (steady) 45 to 55, 65 and 75 (the post's own move is 85 at the fourth); the default crew's orders run 65 to 90, because the crew at the posts are people who already have a skill of 1 to 3 and a stat a point over the base. A green hand is worse at the post than the veterans beside them and catches up by the fourth level; that is the fiction, and capping the crew at the hand's odds, or giving their ability a difficulty the hand's has not, would make the first levels read as if the crew were as green as the hand. Whether it makes the orders the move every time is a question for the fights tool, not the odds on the button: a hand who sends the crew in every exchange (`crew` in `tools/fights.js`) won 3% of lock fights while an order could not end one; now that the last of them down, or the few left breaking, can end it, that play wins 100% with five standing and 99% with two, at 0.54 and 0.46 casualties a fight against 0.43 and 0.29 for the 'count' play (84% and 88%): the safest way to win, and the dearest in crew. What changed is what the player is told: the label names who pays on a miss ("Ines may be hurt", "Ines may be lost" if she is already hurt) instead of "a crew casualty", and the orders have a heading of their own, "Orders to the crew", with a cue at the foot of the pinned choices ("More choices below. Scroll the list.") while some are out of view.
-
-### Killing them, and their breaking (the lock fight and the boarding)
-
-Until now nothing but the front reaching the lock ended a fight, and their number never fell below one, so picking them off never won: a hand who used the pick-off every exchange won none, and one who played it for a kill was left with one of them standing for thirty rounds. Now a fight is also won where it stands when **the last of them goes down** (the number may reach nothing, by the pick-off, the gunner's own move, or an order), and when **so few are left that the rest break**: at a third of their starting number or fewer, once the front has been pushed back to the lock, they run (the repel fight) or put their weapons down (the boarding). The fight is then settled as any other that is won. Their starting number is kept as `began` on the fight. Two things keep it from being the only play: the pick-off is a harder gamble than the post's own move (edge -0.10; the cover ability is unchanged), and a pick-off that works is a won exchange for what it costs, with the won exchange's chance of a casualty (a miss still gives them a shot, at the lost-exchange rate).
-
-Over 3 seeds of 100 (level 2, five standing, grade 0), the plays as they now read: the post's move won 91%, 0.19 hurt and 0.21 dead; the 'count' play 84%, 0.18 and 0.25; holding 71%, 0.39 and 0.35; the pick-off every exchange 98% in 4.7 rounds, 0.43 hurt and 0.35 dead. So killing them works and nearly always wins, and costs the most people of any plain play (0.78 casualties against 0.40 to 0.55): the trade the tactics and the post's move were already making in rounds and in who is hurt. With the pick-off at the old easy edge (+0.10) and no cost on a hit it won 100% for 0.10 casualties, which is the play every hand would have made.
+The tool is how to check a change to `FIGHT`, `DECK`, `boardersFor`, `CASUALTY_ODDS` or `REPEL_HURT`.
 
 ## Open questions
 

@@ -39,7 +39,7 @@ test('a pirate contact for a hired hand opens the ship fight, not the card duel,
     return { text: /Battle stations/.test(text), title: G.dialog.event.title, duel: !!G.duel, decided: !!G.dialog.event.decided, labels: G.dialog.choices.map(c => c.label), board: /^<svg class="board"/.test(G.dialog.event.board) };
   });
   assert.ok(r.text); assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false); assert.ok(!r.decided, 'the captain does not take this call');
-  assert.deepEqual(r.labels, ['Gun 1: at her weapons', 'Fire: heat 1 of 4'], 'a pilot hand still runs the guns: the hauler has one'); assert.ok(r.board);
+  assert.deepEqual(r.labels, ['Gun 1: aim at her weapons', 'Fire: heat 1 of 4'], 'a pilot hand still runs the guns: the hauler has one'); assert.ok(r.board);
   await done();
 });
 
@@ -75,11 +75,11 @@ test('played out, the panel goes turn by turn to an end: she closes firing, her 
     return out;
   });
   assert.deepEqual(r.bands, ['long', 'mid', 'close'], 'she is the faster ship, and closes a band a turn');
-  assert.deepEqual(r.reads, ['closing the range, firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range.', 'closing the range, firing at your hull as she comes, 20 to 29 damage. Captain Vance: holding the range.',
+  assert.deepEqual(r.reads, ['closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range.', 'closing, and firing at your hull as she comes, 20 to 29 damage. Captain Vance: holding the range.',
     'turning to break off. Captain Vance: holding the range.'], 'her move is shown before it is made, and her volley grows as she closes');
-  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, she hits your hull for 27.', 'Turn 2: you hit her weapons for 7.', 'Turn 3: a shot at the weapons finds it already gone.'], 'her guns go in two shots, and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
+  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, she hits your hull for 27.', 'Turn 2: you hit her weapons for 7.', 'Turn 3: nothing left of the weapons to hit.'], 'her guns go in two shots, and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
   assert.equal(r.title, 'Battle Stations'); assert.deepEqual(r.labels, ['Stand down']);
-  assert.match(r.close, /^She breaks off\. Her grapple arms fold.* Captain Vance writes it in the log and nothing else\. \(\+3 experience at the engineer post\.\)$/);
+  assert.match(r.close, /^She breaks off with her grapple arms folded.* Captain Vance writes it in the log and nothing else\. \(\+3 experience at the engineer post\.\)$/);
   assert.deepEqual([r.opinion, r.xp], [1, 3]);
   await done();
 });
@@ -95,7 +95,7 @@ test('a corsair is a torpedo fight and a raider a grapple fight, in the words an
       fightNow().state.band = RANGE_BANDS.indexOf('knife'); shownMoves({ kind: 'board' });
       fireOrders();
       const t = G.dialog.event.text;
-      out[shipId].boarded = t.includes('torpedo takes') ? 'torpedo' : t.includes('grapples bang on the hull in four places') ? 'grapple' : '';
+      out[shipId].boarded = t.includes('your drive is slow') ? 'torpedo' : t.includes('grapples bang on the hull in four places') ? 'grapple' : '';
       out[shipId].boarders = G.dialog.event.fight.state.began; out[shipId].title = G.dialog.event.title;
     }
     return out;
@@ -137,7 +137,7 @@ test('crippling her brings her alongside dead in space, and boarding her is the 
     startDuel({ kind: 'pirate' }, false); begin();
     const f = fightNow().state; f.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.parts.drive.hp = 0; });  // her guns and her drive are gone
     shownMoves({ kind: 'hold' });
-    out.ret = fireOrders(); out.title = G.dialog.event.title; out.crippled = /plume goes out/.test(G.dialog.event.text); out.labels = G.dialog.choices.map(c => c.label);
+    out.ret = fireOrders(); out.title = G.dialog.event.title; out.crippled = /last burst/.test(G.dialog.event.text); out.labels = G.dialog.choices.map(c => c.label);
     rolls([0.99, 0.99, 0.99]);  // no one is hurt
     choose('Board her'); finishEvent();
     out.first = G.dialog.event.title; out.heads = fightNow().state.began; out.assault = fightNow().state.assault;
@@ -267,7 +267,7 @@ test('a hostile patrol is a navy stop for a hired hand: the same fight with guns
     const st = raid('gunner'), gov = 'Arcology Compact', before = repOf(gov);
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
     const text = startDuel({ kind: 'patrol', gov }, false); begin();
-    const out = { duel: !!G.duel, title: G.dialog.event.title, open: /patrol/.test(G.dialog.event.text), rep: repOf(gov) - before, text: /Battle stations/.test(text), band: RANGE_BANDS[fightNow().state.band] };
+    const out = { duel: !!G.duel, title: G.dialog.event.title, open: /navy ship/.test(G.dialog.event.text), rep: repOf(gov) - before, text: /Battle stations/.test(text), band: RANGE_BANDS[fightNow().state.band] };
     fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.parts.drive.hp = 0; }); shownMoves({ kind: 'hold' });  // a cripple, which would leave a raider dead in space
     fireOrders();
     out.off = /registry has been logged/.test(G.dialog.event.text); out.boardable = G.dialog.event.title === 'Dead in Space'; out.pirate = repOf('Pirate');
@@ -563,7 +563,7 @@ test('the fight panel shows her move and the captain\'s above the pinned orders 
       const box = read && read.getBoundingClientRect(), choices = el.querySelector('.choices').getBoundingClientRect();
       return { read: read && read.textContent, readTop: box && box.top, readBottom: box && box.bottom, panelTop: panel.top, choicesTop: choices.top };
     });
-    assert.match(r.read, /: closing the range, firing at your hull as she comes, \d+ to \d+ damage\. Captain Vance: holding the range\.$/, `${name}: the read line is drawn`);
+    assert.match(r.read, /: closing, and firing at your hull as she comes, \d+ to \d+ damage\. Captain Vance: holding the range\.$/, `${name}: the read line is drawn`);
     assert.ok(r.readTop >= r.panelTop && r.readBottom <= r.choicesTop, `${name}: the read line (${r.readTop} to ${r.readBottom}) is in view above the choices, which start at ${r.choicesTop}`);
     await done();
   }
@@ -578,8 +578,8 @@ test('the standoff line agrees with the board: close in when she is in the close
     out.knife = stand('knife'); out.close = stand('close'); out.mid = stand('mid'); out.long = stand('long');
     return out;
   });
-  for (const band of ['knife', 'close']) assert.equal(r[band].text, 'She breaks off and throws one last burst as she goes, close enough to hear it hit. It clips the hull aft. Armor -13.', band);
-  for (const band of ['mid', 'long']) assert.equal(r[band].text, 'She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.', band);
+  for (const band of ['knife', 'close']) assert.equal(r[band].text, 'She breaks off close in, and her last burst rings on the hull aft. Armor -13.', band);
+  for (const band of ['mid', 'long']) assert.equal(r[band].text, 'She breaks off at long range, and her last burst clips the hull aft. Armor -13.', band);
   assert.equal(r.close.armor, 13, 'five percent of the hull');
   await done();
 });

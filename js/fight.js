@@ -286,7 +286,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   return { state: st, events };
 }
 
-// Her crew is at or under a third of her start, or none; or (an assault) mine hold her bridge, or (repelling) hers hold ours. Our loss comes first: the bridge lost is the ship lost.
+// Her crew is at or under about a third of her start, or none; or (an assault) mine hold her bridge, or (repelling) hers hold ours. Our loss comes first: the bridge lost is the ship lost.
 // At the turn cap the attackers withdraw (deckCapped): theirs go back to their ship, a repel won, or ours fall back, an assault lost (R32).
 function deckEnd(st) {
   const bridge = st.sections[BRIDGE];

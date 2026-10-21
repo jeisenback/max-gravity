@@ -93,7 +93,7 @@ test('a head lost on our side is a named crewmate, and one hurt twice in one fig
     out.filled = st.crew.length === n && (st.vacancies || []).length === 0; out.note = UI.notes.some(t => /signs on/.test(t));
     return out;
   });
-  assert.equal(r.line, `Turn 1: in the Lock 1 of them down and 1 of ours. ${r.name} is hurt.`, 'the loss is named in the turn\'s line');
+  assert.equal(r.line, `Turn 1: 1 of them and 1 of ours down in the Lock. ${r.name} is hurt.`, 'the loss is named in the turn\'s line');
   assert.deepEqual(r.afterOne, { injured: true, here: true }, 'hurt the first time');
   assert.ok(r.dead && r.flagged && r.size && r.fallen === 1 && r.vacancy === 1);
   assert.ok(r.filled && r.note, 'someone from the dock takes the berth');
@@ -357,11 +357,11 @@ test('the hand acts with the sidearm or the post\'s two abilities, and the cover
     out.used = s.state.used.cover; out.cover = s.state.sections.map(x => x.cover); out.line = s.state.log[s.state.log.length - 1]; out.after = acts(next);
     return out;
   });
-  assert.deepEqual(r.gunner, ['You: shoot, 2 to 3 of them down', 'You: Pick off a runner, one of them down if it works', 'You: Covering burst, two points of cover here, once a fight', 'You: shoot, 2 to 3 of them down']);
-  assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]], ['You: Cycle a hatch on them, one of them down if it works', 'You: Drop the pressure door, two points of cover here, once a fight', 'You: A false order on their band, one of them down if it works']);
+  assert.deepEqual(r.gunner, ['Shoot: 2 to 3 of them down', 'Pick off a runner: one of them down if it works', 'Covering burst: two points of cover here, once a fight', 'Shoot: 2 to 3 of them down']);
+  assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]], ['Cycle a hatch on them: one of them down if it works', 'Drop the pressure door: two points of cover here, once a fight', 'A false order on their band: one of them down if it works']);
   assert.equal(r.used, true); assert.deepEqual(r.cover.slice(0, 3), [3, 2, 1], 'two points where the hand stands, up to three');
   assert.match(r.line, /You lay a long burst along the wall at head height\./);
-  assert.deepEqual(r.after, ['You: shoot, 2 to 3 of them down', 'You: Pick off a runner, one of them down if it works', 'You: shoot, 2 to 3 of them down', 'You: Pick off a runner, one of them down if it works'], 'once a fight');
+  assert.deepEqual(r.after, ['Shoot: 2 to 3 of them down', 'Pick off a runner: one of them down if it works', 'Shoot: 2 to 3 of them down', 'Pick off a runner: one of them down if it works'], 'once a fight');
   await done();
 });
 
@@ -470,7 +470,7 @@ test('an order works as the crewmate\'s own ability, and a miss lands on the one
   });
   assert.match(r.cover, /Bo cuts the lights in the section from the helm/); assert.deepEqual(r.made.slice(0, 3), [1, 2, 3], 'two crew are both on the bridge, where the hand starts: the cover is made there'); assert.equal(r.used, true);
   assert.deepEqual(r.next, [['Bo', 'steady'], ['Ana', 'steady']]);
-  assert.equal(r.miss, 'Turn 1: in the Lock 0 of them down and 1 of ours. Ana waits for a runner and none runs. The round goes high, and they use the noise to push. Someone is hurt.');
+  assert.equal(r.miss, 'Turn 1: 0 of them and 1 of ours down in the Lock. Ana waits for a runner and none runs. The round goes high, and they use the noise to push. Someone is hurt.');
   assert.equal(r.target, 'Ana', 'the loss was the one sent');
   await done();
 });
@@ -498,7 +498,7 @@ test('an owner who kept a post fights boarders on the deck with the same moves: 
     G.state.career = undefined; out.never = lockPost();  // (the shipped build starts every game as a hand: take away the career the buy left, and there is no post)
     return out;
   });
-  assert.ok(r.owner); assert.equal(r.title, 'The Lock'); assert.ok(r.armor); assert.deepEqual(r.acts, ['Stand: The Lock', 'You: shoot, 2 to 3 of them down'], 'the hand\'s own moves are offered');
+  assert.ok(r.owner); assert.equal(r.title, 'The Lock'); assert.ok(r.armor); assert.deepEqual(r.acts, ['Stand: The Lock', 'Shoot: 2 to 3 of them down'], 'the hand\'s own moves are offered');
   assert.match(r.lost, /You give them the code to the strongbox/); assert.equal(r.credits, 7000, 'a third of the player\'s credits, not a fund'); assert.ok(r.duelGone);
   assert.match(r.held, /The last of them go back through the lock/); assert.equal(r.heldNext, 'me');
   assert.match(r.hurt, /You are hurt/); assert.ok(r.hurtUntil >= 12); assert.equal(r.died, false, 'an owner is laid up and lives'); assert.equal(r.level, true);

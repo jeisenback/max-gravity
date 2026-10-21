@@ -78,12 +78,12 @@ test('a new hired game shows the one-time tips again, and a save from before kee
   await done();
 });
 
-// A hired hand's contact plays as an authored raid in beats (js/engagements.js), with no keys and no card duel (#300).
-test('a hired hand\'s "Fights during burns" describes the raid as it plays, not the card duel', async () => {
+// A hired hand's contact is fought turn by turn (js/fightui.js, #786), with no keys and no card duel (#300).
+test('a hired hand\'s "Fights during burns" describes the fight as it plays, not the card duel', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => helpText(helpTopics().find(h => h.id === 'combat')).join(' '));
-  assert.match(r, /The Closing/); assert.match(r, /First Pass/); assert.match(r, /Second Pass/);
-  assert.match(r, /your own post/i, 'a move of your own post');
+  assert.match(r, /turn by turn/); assert.match(r, /aim each gun/); assert.match(r, /then Fire/);
+  assert.match(r, /your post's two abilities/i, 'the post\'s abilities on the deck');
   assert.doesNotMatch(r, /card duel|initiative|PDCs/, 'the duel is not explained to a hand');
   await done();
 });

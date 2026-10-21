@@ -255,9 +255,9 @@ test('a hand is told once when their post reaches a new level, and an injury say
     return out;
   });
   const N = r.name.toLowerCase();
-  assert.deepEqual(r.to12, [`Your work at the ${N} post is level 1 now. Your own move in a raid works a tenth more often.`]);
+  assert.deepEqual(r.to12, [`Your work at the ${N} post is level 1 now. Your shots in a ship fight hit harder, and your two abilities in a deck fight work more often.`]);
   assert.deepEqual(r.to45, []); assert.deepEqual(r.inside, []); assert.equal(r.twice, 0);
-  assert.deepEqual(r.cross45, [`Your work at the ${N} post is level 2 now. Your own move in a raid works a tenth more often, and the choices marked [${r.name} 2] are open to you.`]);
+  assert.deepEqual(r.cross45, [`Your work at the ${N} post is level 2 now. Your shots in a ship fight hit harder, and your two abilities in a deck fight work more often. The choices marked [${r.name} 2] are open to you.`]);
   assert.match(r.cross110[0], /level 3 now.*\[.* 3\] are open to you\.$/);
   assert.deepEqual(r.hurt, []); assert.deepEqual(r.healed, []); assert.deepEqual(r.other, []);
   assert.equal(r.log.length, 1); assert.equal(r.notesInFlight, 0);

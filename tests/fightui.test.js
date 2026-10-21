@@ -61,10 +61,10 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
     };
   });
   assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false);
-  assert.match(r.read, /^The Pirate "[^"]+": closing the range, firing at your hull as she comes, 14 to 21 damage\. Captain Vance: holding the range\.$/, r.read);
+  assert.match(r.read, /^The Pirate "[^"]+": closing, and firing at your hull as she comes, 14 to 21 damage\. Captain Vance: holding the range\.$/, r.read);
   assert.equal(r.band, 'long', 'a raider is met at forty kilometers');
   assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
-  assert.deepEqual(r.labels, ['Gun 1: at her weapons', 'Gun 2: at her weapons', 'Turret: firing with the guns', 'Fire: heat 2 of 4']);
+  assert.deepEqual(r.labels, ['Gun 1: aim at her weapons', 'Gun 2: aim at her weapons', 'Turret: fire with the guns', 'Fire: heat 2 of 4']);
   assert.deepEqual(r.keep, [true, true, true, true], 'every order and Fire redraw in place');
   assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 40 of 40, drive 15 of 15, lock 10 of 10, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 20 of 20, drive 15 of 15, lock 10 of 10\.$/, r.bars);
   assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
@@ -77,9 +77,9 @@ test('setting a gun\'s target redraws in place; Fire resolves a turn and the log
   await ev(() => { fightGame('gunner'); battle(); });
   await page.click('[data-action="choose"][data-arg="0"]');
   const a = await ev(() => ({ result: !!document.querySelector('#event-result'), label: G.dialog.choices[0].label, title: G.dialog.event.title, turn: G.dialog.event.fight.state.turn }));
-  assert.deepEqual(a, { result: false, label: 'Gun 1: at her drive', title: 'Battle Stations', turn: 0 });
+  assert.deepEqual(a, { result: false, label: 'Gun 1: aim at her drive', title: 'Battle Stations', turn: 0 });
   for (let i = 0; i < 4; i++) await page.click('[data-action="choose"][data-arg="0"]');
-  assert.equal(await ev(() => G.dialog.choices[0].label), 'Gun 1: at her weapons', 'the targets go round: drive, lock, hull, hold, weapons');
+  assert.equal(await ev(() => G.dialog.choices[0].label), 'Gun 1: aim at her weapons', 'the targets go round: drive, lock, hull, hold, weapons');
   await page.click('[data-action="choose"][data-arg="0"]');
   const fire = await ev(() => G.dialog.choices.findIndex(c => c.label.startsWith('Fire')));
   await page.click(`[data-action="choose"][data-arg="${fire}"]`);
@@ -100,7 +100,7 @@ test('a fight played to each end lands in its scene: crippled to dead in space, 
     s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 1; s.state.band = RANGE_BANDS.indexOf('close');
     openEvent(chooseEvent(0));  // gun 1 at her drive
     s.shown = { foe: [{ kind: 'hold' }], captain: { kind: 'hold' } };
-    out.crippled = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /plume goes out/.test(G.nextEvent.text) };
+    out.crippled = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /last burst/.test(G.nextEvent.text) };
     // boarded: alongside, her lock whole, and her shown move is the boarding
     fightGame('gunner'); s = battle(); s.state.band = RANGE_BANDS.indexOf('knife'); s.shown = { foe: [{ kind: 'board' }], captain: { kind: 'hold' } };
     out.boarded = { ret: chooseEvent(choiceAt('Fire')), next: G.nextEvent && G.nextEvent.title, line: G.nextEvent && /grapples bang on the hull/.test(G.nextEvent.text) };
@@ -194,26 +194,26 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   assert.deepEqual(r.shown, { kind: 'hold', from: 0, to: 0, n: 0, feint: false }, 'one of ours stands in the lock with them, so they cannot push on (R29)');
   assert.equal(r.read, 'Turn 1 of 8. Boarders: holding where they are.', 'the turn of the cap, and their move');
   assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 4 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 4 of their 4 still up; they break at 1.');
-  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'You: shoot, 2 to 3 of them down']);
+  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'Shoot: 2 to 3 of them down']);
   assert.equal(r.labels[r.labels.length - 1], 'Fight');
   assert.ok(r.keep.every(Boolean), 'every choice redraws in place');
   assert.match(r.text, /outer lock is cycling|hits the hull aft/, 'the opening of the lock');
   await page.click('[data-action="choose"][data-arg="0"]');
-  assert.equal(await ev(() => G.dialog.choices[0].label), 'Move: The Corridor', 'the hand\'s place goes round the sections next to it');
+  assert.equal(await ev(() => G.dialog.choices[0].label), 'Move to: The Corridor', 'the hand\'s place goes round the sections next to it');
   await page.click('[data-action="choose"][data-arg="0"]');
-  assert.equal(await ev(() => G.dialog.choices[0].label), 'Move: The Cargo Bay');
+  assert.equal(await ev(() => G.dialog.choices[0].label), 'Move to: The Cargo Bay');
   await page.click('[data-action="choose"][data-arg="0"]');
   assert.equal(await ev(() => G.dialog.choices[0].label), 'Stand: The Lock');
   await page.click('[data-action="choose"][data-arg="1"]');
-  assert.equal(await ev(() => G.dialog.choices[1].label), 'You: Pick off a runner, one of them down if it works');
+  assert.equal(await ev(() => G.dialog.choices[1].label), 'Pick off a runner: one of them down if it works');
   await page.click('[data-action="choose"][data-arg="1"]');
-  assert.equal(await ev(() => G.dialog.choices[1].label), 'You: Covering burst, two points of cover here, once a fight');
+  assert.equal(await ev(() => G.dialog.choices[1].label), 'Covering burst: two points of cover here, once a fight');
   const fight = await ev(() => G.dialog.choices.length - 1);
   await page.click(`[data-action="choose"][data-arg="${fight}"]`);
   const t = await ev(() => { const s = G.dialog.event.fight; return { result: !!document.querySelector('#event-result'), turn: s.state.turn, last: s.state.log[s.state.log.length - 1], used: s.state.used.cover, acts: G.dialog.choices[1].label }; });
   assert.equal(t.result, false, 'no result page between turns'); assert.equal(t.turn, 1);
   assert.match(t.last, /^Turn 1: /, t.last);
-  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'You: shoot, 2 to 3 of them down', 'and the act goes back to the sidearm');
+  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'Shoot: 2 to 3 of them down', 'and the act goes back to the sidearm');
   await done();
 });
 

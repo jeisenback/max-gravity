@@ -32,7 +32,7 @@ test('the fights tool plays the ship fight, the repel fight and the assault figh
 // so their figures are the same, at a fraction of the time; so are the navy stop's trials (cutter: false), which only the tool's rows by matchup read.
 // R36's cap by matchup (no aim over 95 in a hundred against a lone raider, a pair, a corsair or a cutter) is not met, and so not checked: aiming at her guns or
 // her lock still beats a lone raider every time (task-7-report.md), and the tool's rows by matchup show it.
-test('the ship fight rewards aiming on purpose, has no sure win, reaches crippled, broke, boarded and standoff, and the best aim is boarded as often as the raid was', async () => {
+test('the ship fight rewards aiming on purpose, has no sure win across the mix, reaches crippled, broke, boarded and standoff, and the best aim is boarded as often as the raid was', async () => {
   const r = await fights({ seed: 1, n: 200, lock: false, cutter: false });
   assert.deepEqual(r.errors, []);
   const share = (t, k) => t[k] / t.n, good = t => share(t, 'crippled') + share(t, 'broke') + share(t, 'escaped');

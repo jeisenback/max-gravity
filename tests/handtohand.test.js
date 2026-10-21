@@ -57,6 +57,9 @@ test('the strip draws each section with both sides\' heads, its cover, where the
   assert.match(counted, /<path class="break" d="M24\.5 /, 'the line after her second mark');
   assert.match(counted, />BREAKS AT 2</);
   assert.match(counted, /3 of their 6 still up; they break at 2\."/);
+  const few = fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 3, breakAt: 0 });  // a count of 1 to 3 has no line to break at
+  assert.match(few, />FIGHTS TO THE LAST</); assert.doesNotMatch(few, /BREAKS AT/);
+  assert.match(few, /3 of their 3 still up; they fight to the last\."/);
   assert.doesNotMatch(svg, /class="break"/, 'no count is drawn when none is given');
 });
 

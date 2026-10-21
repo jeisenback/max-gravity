@@ -55,7 +55,7 @@ function gainSkill(post, n) {
 // One plain line when the hand's own post reaches a new level, on the port screen when docked and in the flight log on a burn (as Mods' note).
 function levelNote(post, level) {
   const name = POSTS[post].name, text = role().canTrade ? `Your work at the ${name.toLowerCase()} post is level ${level} now. When you take it yourself it works a tenth more often.`  // an owner's post: taken by hand at the station (stations.js)
-    : `Your work at the ${name.toLowerCase()} post is level ${level} now. Your own move in a raid works a tenth more often${level >= 2 ? `, and the choices marked [${name} ${level}] are open to you` : ''}.`;
+    : `Your work at the ${name.toLowerCase()} post is level ${level} now. ${post === 'gunner' ? 'Your shots in a ship fight hit harder, and your' : 'Your'} two abilities in a deck fight work more often${level >= 2 ? `. The choices marked [${name} ${level}] are open to you` : ''}.`;
   if (G.mode !== 'landed') return msg(text);
   UI.notes.push(text);
   if (!G.dialog) UI.render();
