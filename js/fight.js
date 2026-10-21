@@ -12,8 +12,7 @@ const FIGHT = {
   BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 },
   HEAT_CAP: 4,       // heat over this locks a gun for the next turn
   HEAT_VENT: 2,      // heat shed each turn
-  SHIELD_REGEN: 0,   // of the maximum, at the end of the turn: none, so that her volleys reach the armor (Task 7)
-  PART_HP: { weapons: 20, drive: 15, lock: 10 },  // weapons is per gun mount; a drive goes in a shot or two, so that aiming at it can cripple her inside the six turns (Task 7)
+  PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 },  // weapons is per gun mount; a drive goes in a shot or two, so that aiming at it can cripple her inside the six turns (Task 7)
   TORP_DMG: [30, 45],
   PDC_HOLD: 0.4,     // what a turret held back takes off a volley
   TURNS: 6,
@@ -27,16 +26,24 @@ const bandMultOf = band => FIGHT.BAND_MULT[RANGE_BANDS[band]] || 0;  // past lon
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);
 
-function shipSide(stats, { grade = 0, skill = 0, torps = 0 }) {
+// What each kind of foe adds to her hull: the share of her shields that comes back each turn, and a torpedo launcher with its torpedoes (starting values, Task 7).
+const FOE_TYPES = {
+  raider: { regen: 0, launcher: false },
+  corsair: { regen: 0, launcher: true, torps: 3 },
+  cutter: { regen: 0.25, launcher: false },
+  destroyer: { regen: 0.15, launcher: true, torps: 4 }
+};
+
+function shipSide(stats, { grade = 0, skill = 0, torps = 0, regen = 0, launcher = stats.launcher }) {
   const armor = Math.round(stats.armor * (1 + GRADE_HULL * grade));
   const part = key => ({ hp: FIGHT.PART_HP[key], max: FIGHT.PART_HP[key] });
   const weapons = FIGHT.PART_HP.weapons * stats.guns;
   return {
     shields: stats.shields, maxShields: stats.shields, armor, maxArmor: armor,
-    parts: { weapons: { hp: weapons, max: weapons }, drive: part('drive'), lock: part('lock') },
+    parts: { weapons: { hp: weapons, max: weapons }, drive: part('drive'), lock: part('lock'), ...(launcher ? { launcher: part('launcher') } : {}) },
     guns: stats.guns, dmgMult: stats.dmgMult * (1 + GRADE_PUNCH * grade), skill,
     speed: stats.accel * stats.turn,  // who wins the say on the range
-    launcher: !!stats.launcher, pdc: !!stats.pdc, torps
+    launcher: !!launcher, pdc: !!stats.pdc, torps, regen
   };
 }
 
@@ -90,7 +97,7 @@ function resolveShipTurn(state, orders, moves, rand) {
   const heat = st.heat + shots.length;
   st.locked = heat > FIGHT.HEAT_CAP ? [0] : [];
   st.heat = Math.max(0, heat - FIGHT.HEAT_VENT);
-  for (const side of [st.me, ...st.foes]) side.shields = Math.min(side.maxShields, side.shields + Math.round(FIGHT.SHIELD_REGEN * side.maxShields));
+  for (const side of [st.me, ...st.foes]) side.shields = Math.min(side.maxShields, side.shields + Math.round(side.regen * side.maxShields));
   st.turn++;
   return { state: st, events };
 }

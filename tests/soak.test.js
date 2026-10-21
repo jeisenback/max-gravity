@@ -37,7 +37,7 @@ test('with --jobs the soak works the station jobs and puts the jobs elsewhere to
 });
 
 test('with --frames every deck fight is played to its close, and a fight\'s panels count once with their scene (#786)', async () => {
-  const r = await soak({ seed: 33, legs: 20, frames: true });  // a seed whose raids end alongside (seed 3 did before #786's fix cut both its deck fights off; the Ice Hauler's two guns end most raids before a boarding, so a seed was found again)
+  const r = await soak({ seed: 2, legs: 20, frames: true });  // a seed whose raids end alongside (seed 3 did before #786's fix cut both its deck fights off; the Ice Hauler's two guns end most raids before a boarding, and the weapons bar of 40 a mount changed the course of every fight, so a seed was found again)
   assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
   assert.ok(r.deck.begun > 0, 'a deck fight was fought');
   assert.equal(r.deck.settled + r.deck.died, r.deck.begun, `each settled, or the hand was killed in it: ${JSON.stringify(r.deck)}`);
@@ -45,7 +45,7 @@ test('with --frames every deck fight is played to its close, and a fight\'s pane
 });
 
 test('a card duel played over its exchanges and a boarding after it is one fight, not scenes against the step cap (the Ice Hauler\'s fitting makes the duel longer)', async () => {
-  const r = await soak({ seed: 19, legs: 40, frames: true });  // a hunter's duel runs six exchanges, then the lock and the corridor
+  const r = await soak({ seed: 2, legs: 40, frames: true });  // a hunter's duel runs six exchanges, then the lock and the corridor
   assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
   assert.ok(r.scenes['The Corridor'] > 0, 'the boarding fight was fought');
 });

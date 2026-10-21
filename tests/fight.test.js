@@ -26,8 +26,8 @@ const quiet = { foe: [hold], captain: hold };
 
 test('a side takes its hull from the ship and its outfits', () => {
   const s = shipSide({ shields: 90, armor: 140, guns: 1, dmgMult: 1 }, {});
-  assert.deepEqual([s.shields, s.armor, s.parts.weapons.max, s.parts.drive.max, s.parts.lock.max], [90, 140, 20, 15, 10]);
-  assert.equal(shipSide({ shields: 0, armor: 100, guns: 3, dmgMult: 1 }, {}).parts.weapons.max, 60, 'weapons are sized per gun mount');
+  assert.deepEqual([s.shields, s.armor, s.parts.weapons.max, s.parts.drive.max, s.parts.lock.max], [90, 140, 40, 15, 10]);
+  assert.equal(shipSide({ shields: 0, armor: 100, guns: 3, dmgMult: 1 }, {}).parts.weapons.max, 120, 'weapons are sized per gun mount');
 });
 
 test('a veteran grade lengthens the hull and raises the punch, and the state starts at turn 0', () => {
@@ -110,12 +110,31 @@ test('a turret held back cuts the next volley by 40 percent', () => {
   assert.deepEqual([open, held], [20, 12]);
 });
 
-test('shields do not come back in the fight as tuned (SHIELD_REGEN 0), the share comes back when it is set, and the band does not move', () => {
+test('a cutter\'s shields come back by her regen share each turn, a raider\'s not at all', () => {
+  const stats = { shields: 90, armor: 140, guns: 1, dmgMult: 1, accel: 1, turn: 1 };
   const st = fight();
-  st.me.shields = 10;
-  assert.deepEqual(plain([resolveShipTurn(st, orders([]), quiet, LOW).state.me.shields, resolveShipTurn(st, orders([]), quiet, LOW).state.band]), [10, CLOSE], 'none, so her volleys reach the armor');
-  FIGHT.SHIELD_REGEN = 0.1;
-  try { assert.equal(resolveShipTurn(st, orders([]), quiet, LOW).state.me.shields, 19, 'a tenth of 90 at the end of the turn'); } finally { FIGHT.SHIELD_REGEN = 0; }
+  st.foes = [shipSide(stats, { regen: 0.25 }), shipSide(stats, { regen: 0 })];
+  st.foes.forEach(f => { f.shields = 0; });
+  const r = resolveShipTurn(st, orders([]), { foe: [hold, hold], captain: hold }, LOW).state;
+  assert.deepEqual(plain(r.foes.map(f => f.shields)), [Math.round(0.25 * 90), 0]);
+  assert.equal(r.band, CLOSE, 'the band does not move');
+});
+
+test('a side with a launcher has a launcher part; one without has none', () => {
+  const stats = { shields: 50, armor: 100, guns: 1, dmgMult: 1 };
+  const a = shipSide(stats, { launcher: true });
+  assert.deepEqual(plain([a.parts.launcher, a.launcher]), [{ hp: FIGHT.PART_HP.launcher, max: FIGHT.PART_HP.launcher }, true]);
+  const b = shipSide(stats, {});
+  assert.deepEqual([b.parts.launcher, b.launcher], [undefined, false]);
+});
+
+test('her weapons bar is 40 a mount: one gun at the bar takes about three turns', () => {
+  assert.equal(FIGHT.PART_HP.weapons, 40);
+  const st = fight({ stats: { guns: 1 } });
+  const hit = { foe: [{ kind: 'broadside', target: 'weapons', dmg: [14, 14] }], captain: hold };
+  let s = st, turns = 0;
+  while (s.me.parts.weapons.hp > 0) { s = resolveShipTurn(s, orders([]), hit, LOW).state; turns++; }
+  assert.equal(turns, 3);
 });
 
 test('resolveShipTurn does not change the state it was given', () => {
@@ -130,7 +149,7 @@ test('resolveShipTurn does not change the state it was given', () => {
 });
 
 test('the constants are the ones the design names', () => {
-  assert.deepEqual(plain(FIGHT), { GUN_DMG: [12, 20], FOE_DMG: [18, 26], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, SHIELD_REGEN: 0, PART_HP: { weapons: 20, drive: 15, lock: 10 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, TURNS: 6, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2 });
+  assert.deepEqual(plain(FIGHT), { GUN_DMG: [12, 20], FOE_DMG: [18, 26], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, TURNS: 6, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2 });
 });
 
 test('the turret and heavy rounds outfits reach a side: the extra gun, the turret flag and the heavy multiplier', () => {

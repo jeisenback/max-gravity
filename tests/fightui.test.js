@@ -66,7 +66,7 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
   assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
   assert.deepEqual(r.labels, ['Gun 1: aim at her weapons', 'Gun 2: aim at her weapons', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4']);
   assert.deepEqual(r.keep, [true, true, true, true, true], 'every order and Fire redraw in place');
-  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 40 of 40, drive 15 of 15, lock 10 of 10, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 20 of 20, drive 15 of 15, lock 10 of 10\.$/, r.bars);
+  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 80 of 80, drive 15 of 15, lock 10 of 10, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 40 of 40, drive 15 of 15, lock 10 of 10\.$/, r.bars);
   assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
   await done();
 });
@@ -139,11 +139,11 @@ test('a head start from the contact screen is a free first volley: ours at her w
     }
     return out;
   });
-  assert.ok(r.ahead.weapons < 20 && r.ahead.hull === r.ahead.full, `ours first, at her weapons: ${JSON.stringify(r.ahead)}`);
+  assert.ok(r.ahead.weapons < 40 && r.ahead.hull === r.ahead.full, `ours first, at her weapons: ${JSON.stringify(r.ahead)}`);
   assert.match(r.ahead.last, /^You fire first: you hit her weapons for \d+, you hit her weapons for \d+\.$/); assert.equal(r.ahead.band, 'long', 'fifty kilometers'); assert.equal(r.ahead.turn, 0, 'the free volley is not a turn');
-  assert.ok(r.behind.weapons === 20 && r.behind.hull < r.behind.full, `hers first, at our hull: ${JSON.stringify(r.behind)}`);
+  assert.ok(r.behind.weapons === 40 && r.behind.hull < r.behind.full, `hers first, at our hull: ${JSON.stringify(r.behind)}`);
   assert.match(r.behind.last, /^She fires first: she hits your hull for \d+\.$/); assert.equal(r.behind.band, 'mid', 'thirty kilometers');
-  assert.ok(r.even.weapons === 20 && r.even.hull === r.even.full, 'no head start, no volley'); assert.equal(r.even.band, 'long');
+  assert.ok(r.even.weapons === 40 && r.even.hull === r.even.full, 'no head start, no volley'); assert.equal(r.even.band, 'long');
   await done();
 });
 

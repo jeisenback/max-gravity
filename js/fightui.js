@@ -27,8 +27,8 @@ function startShipFight(spec, flee, o = {}) {
   captainFlag('raided');  // fought, not outrun: kept for the goodbye (captains.js)
   rateFoe(s);
   const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
-  const me = ship(), entry = captainEntry(), side = () => shipSide({ dmgMult: 1, ...SHIPS[foe.shipId], armor: foe.maxArmor }, { grade: s.grade });
-  const mine = shipSide(me, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0), torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
+  const me = ship(), entry = captainEntry(), side = () => shipSide({ dmgMult: 1, ...SHIPS[foe.shipId], armor: foe.maxArmor }, { grade: s.grade, ...FOE_TYPES[foe.shipId], torps: (FOE_TYPES[foe.shipId] || {}).torps || 0 });
+  const mine = shipSide(me, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0), launcher: me.launcher, torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
   mine.armor = Math.min(mine.maxArmor, st.armor);
   s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0))) });
   s.state.log = [o.open || fightSay(`open.${style}.${st.day % 2}`)];

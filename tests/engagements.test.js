@@ -75,10 +75,11 @@ test('played out, the panel goes turn by turn to an end: she closes firing, her 
     out.opinion = cap.opinion - op; out.xp = skillXp('engineer') - xp; out.shields = fightNow().state.me.shields;
     return out;
   });
-  assert.deepEqual(r.bands, ['long', 'mid'], 'she is the faster ship, and closes a band a turn; two guns take her weapons in the first turn, so she turns away in the second');
+  assert.deepEqual(r.bands, ['long', 'mid', 'close'], 'she is the faster ship, and closes a band a turn; her weapons bar is 40 a mount, so two guns take it in two turns and she turns away in the third');
   assert.deepEqual(r.reads, ['closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range.',
+    'closing, and firing at your hull as she comes, 20 to 29 damage. Captain Vance: holding the range.',
     'turning to break off. Captain Vance: holding the range.'], 'her move is shown before it is made');
-  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, you hit her weapons for 7.', 'Turn 2: nothing left of the weapons to hit, nothing left of the weapons to hit.'], 'both guns hit her weapons, so her guns go in one turn, before she fires, and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
+  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, you hit her weapons for 16, she hits your hull for 19.', 'Turn 2: you hit her weapons for 11, nothing left of the weapons to hit.', 'Turn 3: nothing left of the weapons to hit, nothing left of the weapons to hit.'], 'both guns hit her weapons, so her guns go in the second turn (she fires in the first, as she closes), and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
   assert.equal(r.title, 'Battle Stations'); assert.deepEqual(r.labels, ['Stand down']);
   assert.match(r.close, /^She breaks off with her grapple arms folded.* Captain Vance writes it in the log and nothing else\. \(\+3 experience at the engineer post\.\)$/);
   assert.deepEqual([r.opinion, r.xp], [1, 3]);
