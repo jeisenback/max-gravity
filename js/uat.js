@@ -171,6 +171,39 @@ UAT_ITEMS.push(
     setup() { uatHired('hester'); uatFinish(); G.state.credits = 100000; hired().flags = { lent: true, secretKnown: true }; hired().confirm = 'courier'; Mods.act('buyInGo', 'courier'); } },
 );
 
+// ---------- the turn-based fights (#786): a hired hand at the guns, on a burn, in one situation ----------
+function uatHand() {
+  G.dialog = null; G.nextEvent = null; G.transit = null;
+  startGame({ slot: Saves.current, background: 'earth', captain: 'Tester', mode: 'hired', post: 'gunner', captainKey: 'hester' });
+  uatFinish();
+  const st = G.state; st.uat = true; st.story.next = 1e9; hired().raidTold = true;  // the first fight's explanation is for real play
+  uatBurn('Ceres Station', 'pallas'); G.dialog = null;
+  return st;
+}
+// The ship fight with her given: her ship, her grade and a consort. The game's own draws for them are put back after.
+function uatShipFight(spec, { ship, grade = 0, pack = false } = {}) {
+  const make = makeEnemy, rate = rateFoe;
+  makeEnemy = sp => { const f = make(sp); if (ship) Object.assign(f, { shipId: ship, armor: SHIPS[ship].armor, maxArmor: SHIPS[ship].armor }); return f; };
+  rateFoe = s => { rate(s); s.edge += (s.pack ? 1 : 0) - (pack ? 1 : 0); s.grade = grade; s.pack = pack; };  // a pack starts a volley behind, as rateFoe has it
+  try { startShipFight(spec, false); } finally { makeEnemy = make; rateFoe = rate; }
+  const e = G.nextEvent; G.nextEvent = null; openEvent(e);
+}
+const uatRaider = () => Object.assign(makeEnemy({ kind: 'pirate' }), { shipId: 'raider', armor: SHIPS.raider.armor, maxArmor: SHIPS.raider.armor });
+UAT_ITEMS.push(
+  { group: 'Turn-based fights', id: 'fight-raider', title: 'A lone raider', check: 'The panel shows both ships\' bars, her next move and the captain\'s, and one order per gun. Setting a gun\'s target redraws in place; Fire plays a turn and adds a log line. Aimed at her guns, she is beaten within six turns; aimed at random, it is often a standoff.',
+    setup() { uatHand(); uatShipFight({ kind: 'pirate' }, { ship: 'raider' }); } },
+  { group: 'Turn-based fights', id: 'fight-pack', title: 'Two raiders in company', check: 'Both are on the board with their own bars and moves, and you start a volley behind. Once the first is crippled, a shot at her hull or lock goes to the consort and the log says so.',
+    setup() { uatHand(); uatShipFight({ kind: 'pirate' }, { ship: 'raider', pack: true }); } },
+  { group: 'Turn-based fights', id: 'fight-veteran', title: 'A veteran corsair, with torpedoes aboard', check: 'The opening names a veteran crew; her bars are longer and her volleys harder. The torpedo order shows while torpedoes are left, and a torpedo is one large hit.',
+    setup() { const st = uatHand(); st.outfits.launcher = 1; st.torpedoes = 6; uatShipFight({ kind: 'pirate' }, { ship: 'corsair', grade: 2 }); } },
+  { group: 'Turn-based fights', id: 'fight-patrol', title: 'A navy stop', check: 'Firing on her costs standing with her government. She is never boarded, and crippled she calls the stop off.',
+    setup() { uatHand(); uatShipFight({ kind: 'patrol', gov: 'Arcology Compact' }); } },
+  { group: 'Turn-based fights', id: 'deck-repel', title: 'Being boarded', check: 'The deck cutaway shows heads and cover by section, where you stand, their next move (marked may feint at this grade) and Turn n of 8. Stand or move, shoot, steady, cover once, and one crew order all work; it ends repelled or taken through the usual scenes.',
+    setup() { uatHand(); openEvent(repelEvent({ foe: uatRaider(), foeHp: 0, init: 'foe', grade: 1, pack: false }, 'full')); } },
+  { group: 'Turn-based fights', id: 'deck-assault', title: 'Boarding a crippled ship', check: 'Dead in space gives her count, and Board her opens a fight of that count. On her deck your crew push from her lock to her bridge, and her cover is hers.',
+    setup() { uatHand(); openEvent(deadInSpaceScene({ spec: { kind: 'pirate' }, foe: uatRaider(), grade: 0, pack: false })); } },
+);
+
 // ---------- general tools ----------
 const UAT_TOOLS = {
   cash: () => { G.state.credits += 50000; },

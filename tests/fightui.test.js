@@ -350,3 +350,29 @@ test('a shot where none of them stand says so, as a steady one does', async () =
   assert.match(r, /None of them are where you stand\./, r);
   await done();
 });
+
+test('the tester panel drops a hired hand into each kind of fight (js/uat.js)', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const out = {}, item = id => UAT_ITEMS.find(i => i.id === id);
+    const now = () => { const e = G.dialog && G.dialog.event; return e && e.fight ? e.fight : null; };
+    for (const id of ['fight-raider', 'fight-pack', 'fight-veteran', 'fight-patrol']) {
+      item(id).setup(); const f = now();
+      out[id] = { title: G.dialog.event.title, kind: f && f.state.kind, foes: f && f.state.foes.length, ship: f && f.foe.shipId, grade: f && f.grade, patrol: f && f.spec.kind === 'patrol', torp: G.dialog.choices.some(c => /orpedo/.test(c.label)), post: hired().post };
+    }
+    item('deck-repel').setup(); out.repel = { kind: now() && now().state.kind, assault: now() && now().state.assault, grade: now() && now().state.grade };
+    item('deck-assault').setup(); out.dead = G.dialog.event.title; const n = /(\d+) of yours against (\d+) of hers/.exec(G.dialog.event.text);
+    chooseEvent(G.dialog.choices.findIndex(c => /Board/.test(c.label))); const e = G.nextEvent; G.nextEvent = null; openEvent(e);
+    out.assault = { kind: now().state.kind, assault: now().state.assault, stated: n && Number(n[2]), began: now().state.began };
+    return out;
+  });
+  for (const id of ['fight-raider', 'fight-pack', 'fight-veteran', 'fight-patrol']) { assert.equal(r[id].title, 'Battle Stations', id); assert.equal(r[id].kind, 'ship', id); assert.equal(r[id].post, 'gunner', id); }
+  assert.deepEqual([r['fight-raider'].ship, r['fight-raider'].foes], ['raider', 1]);
+  assert.equal(r['fight-pack'].foes, 2, 'two raiders in company');
+  assert.deepEqual([r['fight-veteran'].ship, r['fight-veteran'].grade, r['fight-veteran'].torp], ['corsair', 2, true]);
+  assert.ok(r['fight-patrol'].patrol);
+  assert.deepEqual(r.repel, { kind: 'deck', assault: false, grade: 1 });
+  assert.equal(r.dead, 'Dead in Space');
+  assert.deepEqual([r.assault.kind, r.assault.assault], ['deck', true]); assert.equal(r.assault.stated, r.assault.began, 'the count she states is the fight that opens');
+  await done();
+});
