@@ -294,9 +294,10 @@ the run that wrote this section (after Task 7's tune):
   never boarded. Against a lone raider, aiming at her weapons or her lock wins every time (R38), and against a corsair aiming
   at her weapons wins 90%; against a raider pair or a navy cutter no aim wins more than 6%.
 - **Repelling boarders**, random play, five standing: won 90%; by her grade 88%, 58%, 41%. Shooting where they are wins 99%
-  with five or two standing, against random's 49% with two.
+  with five or two standing, against random's 49% with two. Dead a fight by her grade, after the final review's tune (R42):
+  0.32, 0.44, 0.49, against the lock fight's 0.28, 0.43, 0.57.
 - **Boarding her**, random play, five standing: won 80%; by her grade 81%, 57%, 29%. With two standing, sending a crewmate
-  every turn wins 87%, against random's 35%.
+  every turn wins 87%, against random's 35%. Dead a fight by her grade: 0.36, 0.49, 0.55, against 0.29, 0.41, 0.56.
 
 The tool is how to check a change to `FIGHT`, `DECK`, `boardersFor`, `CASUALTY_ODDS` or `REPEL_HURT`.
 
