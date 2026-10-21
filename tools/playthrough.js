@@ -18,7 +18,8 @@ const { chapter } = require('./soak');
 // - Deck fight: stand where most of your crew are, shoot (steady when they outnumber you there), give the crew order when one is offered, then Fight.
 // - Scenes: the best score: no stated risk or cost first, paying work and jobs taken, a cost to standing or the captain's trust avoided, and a crewmate kept
 //   rather than let go. Ties are the seed's.
-//   At the yard's desk, buying in, the player does not walk away (memo.avoid, set by the port hook).
+//   At the yard's desk, buying in, the player does not walk away (memo.avoid, set by the port hook). With the used Ore Runner on the yard list and the money for her,
+//   it puts no work further away to the captain (#800).
 function policy(d, ok, memo) {
   const s = d.event.fight, label = i => d.choices[i].label, last = ok[ok.length - 1];
   if (s) {
@@ -43,6 +44,7 @@ function policy(d, ok, memo) {
     if (s.grade > 0 && f.me.launcher && f.me.torps > 0 && label(ready) !== fightSay('torp.label', { left: f.me.torps, aim: at })) return ready;
     return last;  // Fire
   }
+  if (dealOpen() && wantsYard() && label(last) === sceneSay('scene:pitch', 'never.label')) return last;  // Never mind: the yard first
   if (memo.avoid && ok.some(i => label(i) !== memo.avoid)) ok = ok.filter(i => label(i) !== memo.avoid);  // buying in: the walk away from the yard's desk is not taken
   const score = c => {
     const note = (/\[([^[\]]*)\]\s*$/.exec(c.label) || [])[1] || '';
