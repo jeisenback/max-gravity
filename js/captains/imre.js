@@ -8,7 +8,7 @@ CAPTAINS.imre = {
   first: 'Imre', last: 'Sato', pronouns: 'they', culture: 'earth', home: 'Osaka Arcology', age: 55, traits: ['secretive', 'brave'],
   bio: 'Eleven years in the navy and eleven out, and the same jacket for most of it. Every watch is in the log, and every rule is on the galley wall, and the rules apply to everyone, including them.',
   wants: 'A clean record, at last.', fears: 'The discharge coming out.',
-  captain: { trade: 3, nerve: 2, thrift: 4 }, wage: 45, share: 0.07, hears: 2, bonus: 3, talk: 1.0,
+  captain: { trade: 3, nerve: 2, thrift: 4 }, wage: 450, share: 0.07, hears: 2, bonus: 3, talk: 1.0,
   xo: 'pilar',
 
   intro: (wage, share) => (`Captain Imre Sato reads your papers once, straight through, and writes the time on them. The jacket is navy, and has been ` +
@@ -43,7 +43,7 @@ CAPTAINS.imre = {
     'cap-praise': {
       text: 'Captain Sato hands you a slip with your name on it and a line in their own handwriting: No faults, this run. That\'s the whole of it. It has been filed.',
       take: 'You thank them. "Noted," they say, and file it. You find, an hour later, that you\'re still holding the slip.',
-      bonusYes: '"Provision seven allows a discretionary award," they say. "Sixty." They fill in a form for it, and have you sign for it.',
+      bonusYes: '"Provision seven allows a discretionary award," they say. "Six hundred." They fill in a form for it, and have you sign for it.',
       bonusNo: '"Provision seven requires that an award follow a standing," Captain Sato says. "You haven\'t the standing yet. It\'s noted that you asked."',
     },
     'cap-dressing': {
@@ -60,7 +60,7 @@ CAPTAINS.imre = {
           'reason, the hours, and a line for your name. "It\'s outside the articles," they say. "So it\'s a request, and a request can be refused. I\'ve ' +
           'written that down too."'),
       stand: 'You sign. The hours go slowly. In the morning the log has a line in Captain Sato\'s hand: Extra watch, volunteered.',
-      fee: 'They pay it from the ship\'s contingency, forty, and enter it under the heading for it. The watch passes like any other.',
+      fee: 'They pay it from the ship\'s contingency, four hundred, and enter it under the heading for it. The watch passes like any other.',
       beg: '"Entered," Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing\'s held against you.',
     },
   },
@@ -70,7 +70,7 @@ CAPTAINS.imre = {
       title: 'The Inspection',
       text: ('A port inspector is aboard, in a clean uniform, with a tablet. Captain Sato has been up since four with every log, certificate and ' +
           'manifest laid out in order, and is perfectly calm. One certificate has lapsed by two days: a berth renewal, ' +
-          'signed at the wrong office. The inspector is polite and writes it down. "A four hundred fine, or a correction order," the inspector says. ' +
+          'signed at the wrong office. The inspector is polite and writes it down. "A four thousand fine, or a correction order," the inspector says. ' +
           'Captain Sato looks at the form, and at Pilar, who\'s not looking at them. The renewal was hers to file. Nobody has said so.'),
       choices: [
         {

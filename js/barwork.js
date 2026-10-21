@@ -7,7 +7,7 @@
 // trouble on the lanes from the world's real state. Regulars are regulars.js's. Loaded after
 // regulars.js; only calls into it at runtime.
 
-const CARD_STAKE = 100, LEAD_EVERY = 12, MAX_LEADS = 4;
+const CARD_STAKE = 1000, LEAD_EVERY = 12, MAX_LEADS = 4;
 const TREAT = {
   kind: 'Looks after a hand, and notices when one is tired.', generous: 'Pays on time and a little over, by all accounts.',
   greedy: 'Counts every credit, and a hand\'s share is no exception.', rude: 'Shouts at a hand and means very little by it.',
@@ -21,10 +21,10 @@ const TREAT = {
 const sideWorkDone = () => !!(G.barState && G.barState.worked);
 
 const SIDE_WORK = {
-  odd: { label: 'Odd jobs for the bartender (about 50 cr)', ...gated(notYet(sideWorkDone, 'You\'ve done a side job tonight already.')),
-    run() { G.barState.worked = true; const n = randInt(4, 6) * 10; G.state.credits += n; return `You haul crates, change a keg and mop the back, and the bartender counts ${fmt(n)} cr into your hand without looking up.`; } },
-  dock: { label: () => `A dock gig at your post (${60 + 40 * skillLevel(hired().post)} cr, and you learn a little)`, ...gated(notYet(sideWorkDone, 'You\'ve done a side job tonight already.')),
-    run() { const h = hired(), n = 60 + 40 * skillLevel(h.post); G.barState.worked = true; G.state.credits += n; gainSkill(h.post, 2); return (
+  odd: { label: 'Odd jobs for the bartender (about 500 cr)', ...gated(notYet(sideWorkDone, 'You\'ve done a side job tonight already.')),
+    run() { G.barState.worked = true; const n = randInt(4, 6) * 100; G.state.credits += n; return `You haul crates, change a keg and mop the back, and the bartender counts ${fmt(n)} cr into your hand without looking up.`; } },
+  dock: { label: () => `A dock gig at your post (${600 + 400 * skillLevel(hired().post)} cr, and you learn a little)`, ...gated(notYet(sideWorkDone, 'You\'ve done a side job tonight already.')),
+    run() { const h = hired(), n = 600 + 400 * skillLevel(h.post); G.barState.worked = true; G.state.credits += n; gainSkill(h.post, 2); return (
         `A dock boss who needs a ${POSTS[h.post].name.toLowerCase()} for a shift finds you at the bar. It's dull and well paid: ${fmt(n)} cr, and ` +
         `two more points of experience at the ${POSTS[h.post].name.toLowerCase()} post.`); } },
   cards: { label: `Sit in on a card game (${CARD_STAKE} cr stake)`, ...gated(needCr(CARD_STAKE), notYet(() => G.barState.played, 'You\'ve played already tonight.')),
@@ -69,14 +69,14 @@ function ownerLeads(regular) {
   const sid = pick(reachable), dest = pick(SYSTEMS[sid].planets), days = baseDays(st.systemId, sid), tons = randInt(3, 12);
   G.offers.unshift({
     type: 'delivery', good: jobSay('bar.good', { first: regular.first }), tons, destSystem: sid, destPlanet: dest.name, regular: true, contact: regular.id,
-    title: jobSay('bar.delivery', { first: regular.first, last: regular.last, tons, dest: dest.name }), pay: 1500 + days * 400 + tons * 100, deadline: st.day + days * 2 + 5,
+    title: jobSay('bar.delivery', { first: regular.first, last: regular.last, tons, dest: dest.name }), pay: 15000 + days * 4000 + tons * 1000, deadline: st.day + days * 2 + 5,
   });
   out.push(noteSay('lead.job', { first: regular.first }));
   const pirates = reachable.filter(id => SYSTEMS[id].pirates > 0), names = PIRATE_NAMES.filter(n => ![...G.offers, ...st.missions].some(m => m.targetName === n));
   if (pirates.length && names.length && Math.random() < 0.4) {
     const tsid = pick(pirates), name = pick(names);
     G.offers.unshift({ type: 'bounty', targetSystem: tsid, targetName: name, issuer: localGov(), contact: regular.id,
-      title: jobSay('bar.bounty', { first: regular.first, target: name, system: SYSTEMS[tsid].name }), pay: randInt(8, 16) * 1000, deadline: st.day + baseDays(st.systemId, tsid) * 2 + 10 });
+      title: jobSay('bar.bounty', { first: regular.first, target: name, system: SYSTEMS[tsid].name }), pay: randInt(8, 16) * 10000, deadline: st.day + baseDays(st.systemId, tsid) * 2 + 10 });
     out.push(noteSay('lead.bounty', { first: regular.first, name, system: SYSTEMS[tsid].name }));
   }
   return out;

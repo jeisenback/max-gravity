@@ -8,7 +8,7 @@ CAPTAINS.dov = {
   first: 'Dov', last: 'Adair', pronouns: 'he', culture: 'earth', home: 'Marseille Arcology', age: 47, traits: ['talkative', 'generous'],
   bio: 'Always has a passenger and a story. He gives out wages and favors with the same open hand, and keeps the books the way some people keep a drawer.',
   wants: 'To be liked, and not to be alone on the bridge at night.', fears: 'Silence, and being found out.',
-  captain: { trade: 2, nerve: 2, thrift: 1 }, wage: 50, share: 0.08, hears: -1, bonus: 0, talk: 1.5,
+  captain: { trade: 2, nerve: 2, thrift: 1 }, wage: 500, share: 0.08, hears: -1, bonus: 0, talk: 1.5,
   xo: 'ilsa',
 
   intro: (wage, share) => (`Captain Dov Adair is shaking your hand before you've finished coming up the ramp. He has read your papers, and your ` +
@@ -41,7 +41,7 @@ CAPTAINS.dov = {
     'cap-praise': {
       text: 'Captain Adair catches you at the end of the watch and tells you, at length and with names, how well the {post} has been run. He has told two passengers already.',
       take: '"The crew make it easy," you say. He laughs, and says that\'s just what he tells people, and you both know he does. You stand straighter.',
-      bonusYes: 'He doesn\'t even pause. "Sixty," he says, and is already counting it out of the cash box. "Don\'t tell Ilsa."',
+      bonusYes: 'He doesn\'t even pause. "Six hundred," he says, and is already counting it out of the cash box. "Don\'t tell Ilsa."',
       bonusNo: 'He puts a hand over the cash box. "Not this week," he says. "Ask me when I\'ve been to the bank." You leave it there.',
     },
     'cap-dressing': {
@@ -56,7 +56,7 @@ CAPTAINS.dov = {
     'cap-favour': {
       text: 'Captain Adair asks whether you\'d stand an extra watch so a passenger can sleep. He asks as he asks everything, with his hands open. It\'s not in the articles. "I\'ll owe you one," he says. "I owe a lot of people one."',
       stand: 'You take it. The hours go slowly, and the passenger sleeps, and in the morning the captain has told the whole galley what you did, and who for, and what the passenger\'s mother said when she heard.',
-      fee: 'He pays it out of the cash box, forty, and adds ten on top for no reason he gives. The watch passes like any other.',
+      fee: 'He pays it out of the cash box, four hundred, and adds a hundred on top for no reason he gives. The watch passes like any other.',
       beg: '"Of course," he says at once, brightly. "Of course. No, no." He goes to ask somebody else. It takes him longer than it should to find them.',
     },
   },
@@ -66,7 +66,7 @@ CAPTAINS.dov = {
       title: 'Short at the Dock',
       text: ('The fuel dock won\'t release the fuel. The fund is short, and Captain Adair, who has told the harbourmaster three stories already, is ' +
           'working on a fourth. He turns to you in the middle of it. "You have an honest face," he says. "Would you tell her we\'re good for it? Just ' +
-          'that. Or if you had three hundred... no. No. Tell her we\'re good for it." The harbourmaster looks at you.'),
+          'that. Or if you had three thousand... no. No. Tell her we\'re good for it." The harbourmaster looks at you.'),
       choices: [
         {
           label: 'Vouch for him',
@@ -74,9 +74,9 @@ CAPTAINS.dov = {
           result: 'You say it. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. "Once," she says. He\'s crying, and laughing at himself for it.',
         },
         {
-          label: 'Cover three hundred from your savings',
-          when: { credits: 300 },
-          effects: { credits: -300, captainLike: { n: 3, memory: 'You covered the fuel when the fund was short.' }, captainFlag: 'lent' },
+          label: 'Cover three thousand from your savings',
+          when: { credits: 3000 },
+          effects: { credits: -3000, captainLike: { n: 3, memory: 'You covered the fuel when the fund was short.' }, captainFlag: 'lent' },
           result: 'You pay it at the window, in your own cash. He stands still beside you. "I\'ll pay you back," he says, and for once doesn\'t tell a story about it. He writes the figure on the back of his hand.',
         },
       ],
@@ -130,8 +130,8 @@ CAPTAINS.dov = {
     cold: 'Captain Adair is at the foot of the ramp. He doesn\'t tell a story. He shakes your hand and says he\'s sorry it went the way it did.',
     crew: '{names} will go with you. "I\'m glad they\'re going with you," he says. "They like you. I could see it from the first week."',
     secret: 'The book he keeps is out of sight. "Look after your own fund," he says. "Not like mine."',
-    repay: 330,
-    repaid: 'He presses three hundred and thirty into your hand, the day you leave, and a card with the three stories you liked best written on the back, in case you want to tell them.',
+    repay: 3300,
+    repaid: 'He presses three thousand three hundred into your hand, the day you leave, and a card with the three stories you liked best written on the back, in case you want to tell them.',
     xoDead: 'Ilsa\'s chair on the bridge is empty, and he hasn\'t moved it. "I took her for granted," he says. "I took all of it for granted. I didn\'t know it was she who was holding it up."',
     xo: 'Ilsa is at the hatch with her arms folded. "He won\'t say it," she says, "so I will. You were good to him. Don\'t tell him I said so."',
     parting: 'He hugs you. "Come and see us," he says. "Come and see me. I\'ll be here. There\'s always somebody in the galley."',

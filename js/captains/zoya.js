@@ -8,7 +8,7 @@ CAPTAINS.zoya = {
   first: 'Zoya', last: 'Pell', pronouns: 'she', culture: 'earth', home: 'Naples Arcology', age: 38, traits: ['talkative', 'brave'],
   bio: 'Fast, funny and always one run from clearing her debts, which she has been for six years. She takes the long lanes and the hot burns, and is cheerful about losing, because the next one will come good.',
   wants: 'One run that pays enough to stop.', fears: 'Stopping at all, and the people she owes.',
-  captain: { trade: 4, nerve: 5, thrift: 1 }, wage: 25, share: 0.07, hears: 0, bonus: 2, talk: 1.0,
+  captain: { trade: 4, nerve: 5, thrift: 1 }, wage: 250, share: 0.07, hears: 0, bonus: 2, talk: 1.0,
   xo: 'ansel',
 
   intro: (wage, share) => (`Captain Zoya Pell signs your papers on the galley hatch, with a pen she has borrowed from you, and doesn't give it back. ` +
@@ -43,7 +43,7 @@ CAPTAINS.zoya = {
     'cap-praise': {
       text: 'Captain Pell finds you at the end of a watch and tells you, loudly and to the whole galley, that the {post} is the best on the lanes. She says it about everything.',
       take: '"The crew make it easy," you say. "The crew make it a gamble," she says, "and you make it a sure thing. That\'s the whole trick. Keep it." She winks, and goes.',
-      bonusYes: 'She doesn\'t even look in the cash box. "Sixty," she says. "Out of the next one, and I\'ll make it a hundred if it comes good." It lands in your account before the end of the watch.',
+      bonusYes: 'She doesn\'t even look in the cash box. "Six hundred," she says. "Out of the next one, and I\'ll make it a thousand if it comes good." It lands in your account before the end of the watch.',
       bonusNo: '"Not this week," she says, and for a second the smile isn\'t there. "Ask me on the day it comes good." The smile comes back. "It\'s always next week."',
     },
     'cap-dressing': {
@@ -58,7 +58,7 @@ CAPTAINS.zoya = {
     'cap-favour': {
       text: 'Captain Pell asks whether you\'d stand an extra watch so a crew member can sleep. She asks fast, with a grin. It\'s not in the articles. "I\'ll owe you," she says. "I owe everyone. You\'ll be in good company."',
       stand: 'You take it. The long hours go slowly. At the next port she turns up with a bag of something hot, and doesn\'t say what it\'s for.',
-      fee: 'She pays it in notes, folded small, from a roll that has seen better days. "Forty," she says. "A good price for a good watch." The watch passes like any other.',
+      fee: 'She pays it in notes, folded small, from a roll that has seen better days. "Four hundred," she says. "A good price for a good watch." The watch passes like any other.',
       beg: '"Fair," she says, easily, and spins a coin off her thumb. "Fair. I\'ll find someone." She does, and it takes longer than it should, and she\'s whistling the whole time.',
     },
   },
@@ -76,11 +76,11 @@ CAPTAINS.zoya = {
           result: 'You go down, and tell him. He leaves the folder with you. "Tell her Tuesday," he says. It\'s Thursday. When you come back up, Pell is whistling at the nav console and hasn\'t turned a page of the thing she\'s reading.',
         },
         {
-          label: 'Give him a hundred to wait a week',
-          when: { credits: 100 },
-          effects: { credits: -100, captainLike: { n: 3, memory: 'You paid Dobrescu a hundred to wait a week.' }, captainFlag: 'lent' },
+          label: 'Give him a thousand to wait a week',
+          when: { credits: 1000 },
+          effects: { credits: -1000, captainLike: { n: 3, memory: 'You paid Dobrescu a thousand to wait a week.' }, captainFlag: 'lent' },
           result: 'He counts it twice, in front of you, and goes, and you\'re not sure he\'s done. Pell laughs when she hears, ' +
-              'and then hugs you, hard, and lets go at once. "A hundred," she says. "I\'ll pay you a hundred and a ' +
+              'and then hugs you, hard, and lets go at once. "A thousand," she says. "I\'ll pay you a thousand and a ' +
               'quarter, and that\'s a bet I won\'t lose."',
         },
       ],
@@ -136,8 +136,8 @@ CAPTAINS.zoya = {
     cold: 'Captain Pell is at the foot of the ramp with your papers and a smile. "Fair winds," she says.',
     crew: '{names} will go with you. She whistles, one low note. "I bet you\'ll do better by them than I did," she says. "I\'m not even joking. That\'s not a bet. That\'s a fact."',
     secret: 'The deck is in her coat pocket. "One good run," she says, "and I\'ll send you a postcard from somewhere with a beach. If I don\'t, it\'s because it wasn\'t good enough." She has said it for six years.',
-    repay: 125,
-    repaid: 'She counts a hundred and twenty-five into your hand, in folded notes, from the roll. "A quarter," she says. "As promised. Don\'t tell Dobrescu where I got it."',
+    repay: 1250,
+    repaid: 'She counts twelve hundred and fifty into your hand, in folded notes, from the roll. "A quarter," she says. "As promised. Don\'t tell Dobrescu where I got it."',
     xoDead: 'Ansel\'s chair at the nav table is empty, and the sheet isn\'t on it. "He kept the books," she says. "I didn\'t know what I was without somebody who wrote down what I was. I\'m finding out, and I don\'t like it."',
     xo: 'Ansel is at the hatch, in his coat, with the folded sheet in one hand. "I advised against most of it," he says. "I want that on the record. And I want you to know it was the best six years of my working life. Don\'t tell her the second part."',
     parting: 'She hugs you, fast, and lets go. "Go on," she says. "Before I bet against myself."',

@@ -20,9 +20,9 @@ const run = async (fn, o, arg) => { const t = await open(o); await t.ev(helpers)
 test('nothing is offered below 55% of her price, and the beat plays once above it', async () => {
   const { r, done } = await run(() => {
     const st = start(), out = {};
-    out.below = dock(10000); out.none = !hired().deal;
-    out.first = dock(10500); out.deal = !!hired().deal;
-    out.again = dock(15000);
+    out.below = dock(100000); out.none = !hired().deal;
+    out.first = dock(105000); out.deal = !!hired().deal;
+    out.again = dock(150000);
     return out;
   });
   assert.equal(r.below, null); assert.equal(r.none, true);
@@ -34,21 +34,21 @@ test('nothing is offered below 55% of her price, and the beat plays once above i
 test('the price follows how Tomas thinks of the hand', async () => {
   const prices = {};
   for (const [name, opinion] of [['good', 3], ['middle', 0], ['bad', -2]]) {
-    const { r, done } = await run(o => { start(); tomas().opinion = o; dock(10500); return hired().deal.price; }, {}, opinion);
+    const { r, done } = await run(o => { start(); tomas().opinion = o; dock(105000); return hired().deal.price; }, {}, opinion);
     prices[name] = r; await done();
   }
-  assert.deepEqual(prices, { good: 17000, middle: 19000, bad: 21000 });
+  assert.deepEqual(prices, { good: 170000, middle: 190000, bad: 210000 });
 });
 
 test('the deal lasts a few weeks, and then the ship is gone and the ordinary yard list is left', async () => {
   const { r, done } = await run(() => {
     const st = start(), out = {};
-    dock(10500); const h = hired();
+    dock(105000); const h = hired();
     out.open = dealOpen(); out.listed = /used/i.test(buyInHtml());
     st.day = h.deal.until;  out.lastDay = dealOpen();
     st.day = h.deal.until + 1; out.lapsed = dealOpen(); out.listedAfter = /used/i.test(buyInHtml());
-    const gone = dock(12000); out.note = gone ? gone.title + ' ' + gone.text : ''; out.once = dock(12000);
-    st.credits = 50000; out.hopper = canBuyIn('shuttle', currentPlanet()); out.usedBuyable = canBuyIn(USED_ID, currentPlanet());
+    const gone = dock(120000); out.note = gone ? gone.title + ' ' + gone.text : ''; out.once = dock(120000);
+    st.credits = 500000; out.hopper = canBuyIn('shuttle', currentPlanet()); out.usedBuyable = canBuyIn(USED_ID, currentPlanet());
     out.days = h.deal.until - h.deal.day;
     return out;
   });
@@ -62,8 +62,8 @@ test('the deal lasts a few weeks, and then the ship is gone and the ordinary yar
 test('a lapsed deal without Tomas is told by the broker', async () => {
   const { r, done } = await run(() => {
     const st = start(); st.crew = st.crew.filter(id => !person(id).cast);
-    dock(10500); st.day = hired().deal.until + 1;
-    const scene = dock(12000);
+    dock(105000); st.day = hired().deal.until + 1;
+    const scene = dock(120000);
     return { title: scene && scene.title, text: scene && scene.text };
   });
   assert.equal(r.title, 'Gone From the Apron'); assert.match(r.text, /broker/i); assert.doesNotMatch(r.text, /Tomas/);
@@ -74,17 +74,17 @@ test('without Tomas a broker offers the same ship at the full second-hand price'
   const { r, done } = await run(() => {
     const st = start();
     st.crew = st.crew.filter(id => !person(id).cast);
-    const scene = dock(10500);
+    const scene = dock(105000);
     return { text: scene && scene.text, price: hired().deal && hired().deal.price, broker: hired().deal && hired().deal.broker };
   });
   assert.match(r.text, /broker/i); assert.doesNotMatch(r.text, /Tomas/);
-  assert.equal(r.price, 21000); assert.equal(r.broker, true);
+  assert.equal(r.price, 210000); assert.equal(r.broker, true);
   await done();
 });
 
 test('the bought ship starts worn, and the chapter still closes', async () => {
   const { r, done } = await run(() => {
-    const st = start(); dock(10500);
+    const st = start(); dock(105000);
     st.credits = hired().deal.price; hired().confirm = USED_ID;
     const before = st.credits, price = hired().deal.price;
     Mods.act('buyInGo', USED_ID);
@@ -101,10 +101,10 @@ test('the bought ship starts worn, and the chapter still closes', async () => {
 test('the captain heads for a yard when the used Ore Runner can be had', async () => {
   const { r, done } = await run(() => {
     const st = start(), out = {};
-    st.credits = 10449; out.beforeOffer = wantsYard();
-    st.credits = 10450; out.atOffer = wantsYard();
-    tomas().opinion = 3; dock(10500); st.credits = 16999; out.goodBelow = wantsYard(); st.credits = 17000; out.good = wantsYard();
-    st.day = hired().deal.until + 1; st.credits = 18999; out.lapsedBelow = wantsYard(); st.credits = 19000; out.lapsed = wantsYard();
+    st.credits = 104490; out.beforeOffer = wantsYard();
+    st.credits = 104500; out.atOffer = wantsYard();
+    tomas().opinion = 3; dock(105000); st.credits = 169990; out.goodBelow = wantsYard(); st.credits = 170000; out.good = wantsYard();
+    st.day = hired().deal.until + 1; st.credits = 189990; out.lapsedBelow = wantsYard(); st.credits = 190000; out.lapsed = wantsYard();
     return out;
   });
   assert.deepEqual(r, { beforeOffer: false, atOffer: true, goodBelow: false, good: true, lapsedBelow: false, lapsed: true });
@@ -117,7 +117,7 @@ test('work further away says so when it would keep you from a yard until the dea
     const job = (sid, planet, days) => ({ tpl: 'package', ctx: { dest: planet, from: st.planet, who: 'Mrs. Adeyemi', system: SYSTEMS[sid].name, scale: 1 }, sid, planet, days, until: st.day + 40, pitched: null, booked: false });
     const warns = a => pitchScene(a).text.includes('Ore Runner');
     out.noDeal = warns(job('eros', 'Eros Old Town', 6));
-    dock(10500); const until = hired().deal.until;
+    dock(105000); const until = hired().deal.until;
     st.day = until - 5; out.late = warns(job('eros', 'Eros Old Town', 6));
     out.yard = warns(job('saturn', 'Titan', 4));
     st.day = until - 40; out.early = warns(job('eros', 'Eros Old Town', 6));

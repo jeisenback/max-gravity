@@ -307,7 +307,7 @@ test('a head start that hurts the hand bills the clinic to the hand\'s own credi
   const r = await ev(() => {
     const st = fightGame('gunner'), h = hired();
     st.crew = st.crew.filter(id => person(id).role !== 'medic'); delete h.hurtUntil;
-    h.fund = 1000; st.credits = 500;
+    h.fund = 10000; st.credits = 5000;
     const real = headStart;
     headStart = state => { const s2 = JSON.parse(JSON.stringify(state)); s2.me.shields = 0; s2.me.armor -= 100; return { state: s2, events: [{ who: 'foe', foe: 0, part: 'hull', dmg: 100 }] }; };  // a heavy first volley
     rolls([0.99, 0.99, 0.01, 0.99]);  // the run fails, no casualty, the hand's own roll, and no death
@@ -315,7 +315,7 @@ test('a head start that hurts the hand bills the clinic to the hand\'s own credi
     return { fund: h.fund, credits: st.credits, hurt: handHurt() };
   });
   assert.equal(r.hurt, true, 'the hand is hurt');
-  assert.equal(r.fund, 1000, 'the fund is the ship\'s'); assert.equal(r.credits, 350, 'the clinic is 150 cr of the hand\'s own');
+  assert.equal(r.fund, 10000, 'the fund is the ship\'s'); assert.equal(r.credits, 3500, 'the clinic is 1,500 cr of the hand\'s own');
   await done();
 });
 

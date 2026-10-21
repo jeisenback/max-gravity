@@ -8,7 +8,7 @@
 // COMPANY_RESERVE credits. State is st.fleet and st.companyLog. Loaded before
 // game.js; only calls into it at runtime.
 
-const COMPANY_RESERVE = 5000;
+const COMPANY_RESERVE = 50000;
 
 function fleet() {
   const st = G.state;
@@ -26,7 +26,7 @@ function captainEdge(ship) {
   const g = captainGrade(p), cut = g.ready ? 0 : 2, s = k => Math.max(1, p.captain[k] - cut);
   return { trade: s('trade'), nerve: s('nerve'), thrift: s('thrift'), ready: g.ready };
 }
-const shipWage = ship => { const e = captainEdge(ship); return Math.max(1, Math.round(ship.captain.wage * (e ? 1 - 0.06 * (e.thrift - 3) : 1))); };
+const shipWage = ship => { const e = captainEdge(ship); return Math.max(10, Math.round(ship.captain.wage * (e ? 1 - 0.06 * (e.thrift - 3) : 1))); };
 const fuelMult = ship => { const e = captainEdge(ship); return e ? 1 - 0.04 * (e.thrift - 3) : 1; };
 const tradeMult = ship => { const e = captainEdge(ship); return e ? 1 + 0.05 * (e.trade - 3) : 1; };
 const riskMult = ship => { const e = captainEdge(ship); return e ? 1 - 0.1 * (e.nerve - 1) : 1 - 0.2 * (ship.captain.skill - 1); };
@@ -248,7 +248,7 @@ function stakes() {
 
 const stakeSid = pl => Object.keys(SYSTEMS).find(id => SYSTEMS[id].planets.includes(pl));
 // What a 10% share costs in normal times: bigger ports are worth more.
-const stakeBase = pl => 20000 + 10000 * pl.services.length;
+const stakeBase = pl => 200000 + 100000 * pl.services.length;
 
 // How well the port is doing right now, around 1.0 in normal times.
 function stakeHealth(pl) {

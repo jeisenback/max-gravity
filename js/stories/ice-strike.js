@@ -22,8 +22,8 @@ Mods.register({
           'captains to stay off Compact water contracts, and to chip in to the strike fund. We can\'t do this without you. Water doesn\'t haul ' +
           'itself."'),
       choices: [
-        { label: 'Send 2,000 cr to the strike fund', when: { credits: 2000 },
-          effects: { credits: -2000, q: { strike: 2 }, rep: { 'Charter League': 3, 'Arcology Compact': -2 }, log: "Gave 2,000 cr to the Ice Haulers' strike fund." },
+        { label: 'Send 20,000 cr to the strike fund', when: { credits: 20000 },
+          effects: { credits: -20000, q: { strike: 2 }, rep: { 'Charter League': 3, 'Arcology Compact': -2 }, log: "Gave 20,000 cr to the Ice Haulers' strike fund." },
           result: ('The transfer goes through in a moment, and a reply comes back within the hour, in the same tired, precise voice: "We won\'t ' +
               'forget it. Every credit is a shift somebody doesn\'t have to work hungry. Look me up on Ceres, captain. I\'d like to shake your ' +
               'hand." Later that evening, a second message, unsigned, just a single drop of water in ASCII, and nothing else.') },
@@ -49,9 +49,9 @@ Mods.register({
           'anything flagged for the Guild, and has for a month. I need a ship nobody\'s watching to carry eight tons of medical crates to Pallas ' +
           'Refinery. I can\'t pay you what it\'s worth."'),
       choices: [
-        { label: 'Carry them (8t, pays 3,000 cr)', when: { space: 8 },
+        { label: 'Carry them (8t, pays 30,000 cr)', when: { space: 8 },
           effects: { set: { crates: 1 }, log: 'Agreed to carry medical crates to Pallas for the Guild.',
-            mission: { to: 'Pallas Refinery', tons: 8, good: crates, pay: 3000, days: 25, title: 'Carry Guild medical crates to Pallas Refinery',
+            mission: { to: 'Pallas Refinery', tons: 8, good: crates, pay: 30000, days: 25, title: 'Carry Guild medical crates to Pallas Refinery',
               onDone: { q: { strike: 2 }, set: { crates: 0 }, log: "Delivered the Guild's medical crates to Pallas." },
               onFail: { q: { strike: -5 }, set: { crates: 0 }, rep: { 'Charter League': -5 }, log: 'The Guild crates never reached Pallas.' } } },
           result: ('"Twenty-five days," she says. "After that the kids stop waiting." She doesn\'t thank you, exactly. She hands you a ticket stub ' +
@@ -84,8 +84,8 @@ Mods.register({
           result: ('Your manifest now lists eight tons of hydroponics substrate, with a full chain of custody, a stamp from a very real Ganymede ' +
               'farm, and a small joke about compost that you\'d have missed if you weren\'t looking. The inspector skims it, yawns, and waves you ' +
               'on, bored. As the cutter falls away, {crew} lets out a breath and says, quietly, "I\'ve always wanted to write a lie that boring."') },
-        { label: 'Pay them to look elsewhere (1,500 cr)', when: { credits: 1500 },
-          effects: { credits: -1500 },
+        { label: 'Pay them to look elsewhere (15,000 cr)', when: { credits: 15000 },
+          effects: { credits: -15000 },
           result: ('The transfer goes through with a small, discreet chime. The inspector reads the manifest for exactly as long as it takes to look ' +
               'busy, and declares your hold remarkably uninteresting. "Safe burn, captain," he says, in the tone of a man who has done this before, ' +
               'and the searchlights click off, one by one.') },
@@ -110,9 +110,9 @@ Mods.register({
           'picket line at Pallas is coming down, banner by banner. Dana Oyelaran is on the ladder one last time, unpinning a hand-lettered sign that ' +
           'says NO WATER WITHOUT JUSTICE. The paint has faded. She climbs down slowly, like a woman much older than she is. "We didn\'t win," she ' +
           'says. "We just stopped losing. I\'ll take it."'),
-      choices: [{ label: 'Help take down the line', effects: { ...done, rep: { 'Charter League': 8 }, credits: 5000, log: 'The Ice Haulers\' strike ended in the war effort.', news: 'The Ice Haulers\' Guild ends its strike to haul for the Charter League\'s war effort.' },
+      choices: [{ label: 'Help take down the line', effects: { ...done, rep: { 'Charter League': 8 }, credits: 50000, log: 'The Ice Haulers\' strike ended in the war effort.', news: 'The Ice Haulers\' Guild ends its strike to haul for the Charter League\'s war effort.' },
         result: ('You hold the ladder, and fold the banners, and carry the folding tables out to the trucks, and nobody says much. When it\'s done, ' +
-            'the Guild pays you a share of the strike fund you helped fill: 5,000 cr, in a battered envelope, and a handful of the old, tired haulers ' +
+            'the Guild pays you a share of the strike fund you helped fill: 50,000 cr, in a battered envelope, and a handful of the old, tired haulers ' +
             'come to shake your hand. The League, you realize, has just decided that it remembers your name.') }],
     });
 
@@ -130,7 +130,7 @@ Mods.register({
         'Charter League': 10,
         'Arcology Compact': -3
       },
-        credits: 8000,
+        credits: 80000,
         unrest: {
         ceres: -0.2,
         pallas: -0.2
@@ -139,7 +139,7 @@ Mods.register({
         news: 'Aquilon Hydrologics concedes to the Ice Haulers\' Guild. The strike is over.'
       },
         result: ('It burns all the way down, and you won\'t remember the toast you gave. "You were there when it counted," Dana says, and her voice ' +
-            'isn\'t steady. The Guild votes you a share of the fund: 8,000 cr, and an honorary membership that comes with a pin and a very tired ' +
+            'isn\'t steady. The Guild votes you a share of the fund: 80,000 cr, and an honorary membership that comes with a pin and a very tired ' +
             'handshake. For weeks afterward, haulers on the Belt lanes flash their running lights at you, in a slow blink, as they pass.') }],
     });
 
@@ -148,11 +148,11 @@ Mods.register({
       when: { planet: 'Pallas Refinery', q: { strike: 4 }, qBelow: { strikeDone: 1 }, peace: 'Charter League' },
       text: ('The strike is deadlocked. Aquilon is hauling with scab crews from Earth at a loss, the Guild is running out of fund, and Dana Oyelaran ' +
           'looks like she hasn\'t slept in a week. The picket line at Pallas is thinner than it was: fewer banners, more empty chairs. She\'s drinking ' +
-          'cold tea from a dented cup, and she doesn\'t sit down when you come in. "Five thousand more and we outlast them," she says, and then, more ' +
+          'cold tea from a dented cup, and she doesn\'t sit down when you come in. "Fifty thousand more and we outlast them," she says, and then, more ' +
           'quietly, "I know what I\'m asking. I know exactly what it is."'),
       choices: [
-        { label: 'Put in 5,000 cr', when: { credits: 5000 },
-          effects: { ...done, credits: -5000, rep: { 'Charter League': 10, 'Arcology Compact': -3 }, log: 'Funded the Ice Haulers\' strike through to a win.', news: 'Aquilon Hydrologics concedes to the Ice Haulers\' Guild after a long deadlock.' },
+        { label: 'Put in 50,000 cr', when: { credits: 50000 },
+          effects: { ...done, credits: -50000, rep: { 'Charter League': 10, 'Arcology Compact': -3 }, log: 'Funded the Ice Haulers\' strike through to a win.', news: 'Aquilon Hydrologics concedes to the Ice Haulers\' Guild after a long deadlock.' },
           result: ('The credits go across, and the line grows. New banners appear, and the tired faces look up. Eleven days later, Aquilon caves, all ' +
               'at once, the way a wall falls after years of leaning. Dana sends a one-line message, in the same tired, precise voice: "Told you." Then ' +
               'a second: "Thank you." The Belt remembers who paid.') },

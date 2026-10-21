@@ -12,7 +12,7 @@ const helpers = () => {
   window.setup = (post = 'gunner') => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state; st.story.next = 1e9; st.day += 30; st.tutorial = null;
-    G.mode = 'landed'; st.credits = 60000;
+    G.mode = 'landed'; st.credits = 600000;
     return st;
   };
   window.ask = (label, id = 'courier') => {
@@ -57,7 +57,7 @@ test('an inspection costs the fee for most hands and is free for the engineer, w
     out.engineer = ask('Go over her yourself'); out.engPaid = c1 - st2.credits; out.xp = skillXp('engineer') - xp;
     return out;
   });
-  assert.equal(r.paid, 150); assert.equal(r.gunner.off, Math.round(r.gunner.list * 0.05));
+  assert.equal(r.paid, 1500); assert.equal(r.gunner.off, Math.round(r.gunner.list * 0.05));
   assert.equal(r.engPaid, 0); assert.ok(r.xp > 0); assert.equal(r.engineer.off, Math.round(r.engineer.list * 0.05));
   await done();
 });

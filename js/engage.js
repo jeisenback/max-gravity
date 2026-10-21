@@ -71,8 +71,8 @@ function contactEvent(spec) {
     { label: 'Burn hard to outrun them', run: () => startDuel(spec, true) },
   ];
   if (spec.kind === 'pirate') {
-    choices.push({ label: 'Pay them off (10% of your credits, at least 500)', cost: true, ...gated(needCr(500)), run() {
-      const c = Math.max(500, Math.round(st.credits * 0.1));
+    choices.push({ label: 'Pay them off (10% of your credits, at least 5,000)', cost: true, ...gated(needCr(5000)), run() {
+      const c = Math.max(5000, Math.round(st.credits * 0.1));
       st.credits -= c;
       return `You transfer ${fmt(c)} cr. Their plume swings away.`;
     } });
@@ -97,15 +97,15 @@ function contactEvent(spec) {
       ? 'Your fake transponder reads as one of their own. The plume swings away.'
       : `They see through it. ${startDuel(spec, false)}`;
   }
-  if (spec.kind === 'patrol' && hired()) choices.push({ label: `Heave to and take the fine from the ship's fund`, cost: true, run() {  // a hired hand has no 4,000 cr: the ship pays a quarter of its fund
+  if (spec.kind === 'patrol' && hired()) choices.push({ label: `Heave to and take the fine from the ship's fund`, cost: true, run() {  // a hired hand has no 40,000 cr: the ship pays a quarter of its fund
     const fine = Math.round(st.credits * 0.25);  // st.credits is the ship's fund inside a hired hand's contact (hiredFunds)
     st.credits -= fine;
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     like(person(hired().captain), -1, sceneSay('scene:memories', 'patrol-fine.memory'));
     return `You cut the drive and the cutter closes. The boarding officer reads the citation, and ${fmt(fine)} cr goes out of the ship's fund. The ship is logged as settled. For now.`;
   } });
-  else if (spec.kind === 'patrol') choices.push({ label: 'Cut your drive and pay the fine (4,000 cr)', cost: true, ...gated(needCr(4000)), run() {
-    st.credits -= 4000;
+  else if (spec.kind === 'patrol') choices.push({ label: 'Cut your drive and pay the fine (40,000 cr)', cost: true, ...gated(needCr(40000)), run() {
+    st.credits -= 40000;
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     return 'They take your money and log your ship as settled. For now.';
   } });

@@ -87,11 +87,11 @@ const HAND_EVENTS = [
     say('text'), [
       { label: say('c0.label'), run() { setLater('h-praise-trust', 10, say('c0.log')); capLike(c, 1, say('c0.memory')); return `${say('take')}${learn(1)}`; } },
       { label: say('c1.label'), run() {
-        if (c.cap.opinion >= captainBonus()) { G.state.credits += 60; capLike(c, 0, say('c1.bonusYes.memory')); return say('bonusYes'); }
+        if (c.cap.opinion >= captainBonus()) { G.state.credits += 600; capLike(c, 0, say('c1.bonusYes.memory')); return say('bonusYes'); }
         setLater('h-owed', 8, say('c1.bonusNo.log')); capLike(c, -1, say('c1.bonusNo.memory'));
         return say('bonusNo');
       } },
-      { label: say('c2.label'), skill: 3, run() { G.state.credits += 60; capLike(c, 1, say('c2.memory')); return `${say('c2.result')}${learn(1)}`; } },
+      { label: say('c2.label'), skill: 3, run() { G.state.credits += 600; capLike(c, 1, say('c2.memory')); return `${say('c2.result')}${learn(1)}`; } },
     ]); } },
 
   { id: 'cap-dressing', group: 'captain', make: c => { const say = (key, vars) => eventSay('cap-dressing', key, { last: c.cap.last, ...vars }); return handEvent(say('title'),
@@ -113,7 +113,7 @@ const HAND_EVENTS = [
   { id: 'cap-favour', group: 'captain', make: c => { const say = (key, vars) => eventSay('cap-favour', key, { last: c.cap.last, ...vars }); return handEvent(say('title'),
     say('text'), [
       { label: say('c0.label'), run() { setLater('h-favour-back', 9, say('c0.log')); capLike(c, 2, say('c0.memory')); return `${say('stand')}${learn(2)}`; } },
-      { label: say('c1.label'), run() { G.state.credits += 40; capLike(c, 0, say('c1.memory')); return say('fee'); } },
+      { label: say('c1.label'), run() { G.state.credits += 400; capLike(c, 0, say('c1.memory')); return say('fee'); } },
       { label: say('c2.label'), run() { setLater('h-favour-cold', 5, say('c2.log')); capLike(c, -1, say('c2.memory')); return say('beg'); } },
     ]); } },
 
@@ -152,10 +152,10 @@ const HAND_EVENTS = [
 
   { id: 'crew-cards', mate: true, group: 'crew', make: c => { const say = (key, vars) => eventSay('crew-cards', key, { mate: c.mate.first, ...vars }); return handEvent(say('title'),
     say('text'), [
-      { label: say('c0.label'), ...gated(needCr(50)), run() {
+      { label: say('c0.label'), ...gated(needCr(500)), run() {
         remember('cards', c.mate); setLater('h-cards-rematch', 7, say('c0.log'));
-        if (Math.random() < 0.45) { G.state.credits += 100; like(c.mate, 1, say('c0.win.memory')); return say('c0.win', { net: fmt(50) }); }
-        G.state.credits -= 50; like(c.mate, 1, say('c0.lose.memory'));
+        if (Math.random() < 0.45) { G.state.credits += 1000; like(c.mate, 1, say('c0.win.memory')); return say('c0.win', { net: fmt(500) }); }
+        G.state.credits -= 500; like(c.mate, 1, say('c0.lose.memory'));
         return say('c0.lose');
       } },
       { label: say('c1.label'), run() { like(c.mate, 0, say('c1.result.memory')); return say('c1.result'); } },
@@ -372,7 +372,7 @@ const HAND_EVENTS = [
   { id: 'money-side', group: 'money', make: c => { const say = (key, vars) => eventSay('money-side', key, vars); return handEvent(say('title'),
     say('text'), [
       { label: say('c0.label'), run() {
-        const n = randInt(8, 16) * 10;
+        const n = randInt(8, 16) * 100;
         G.nextEvent = handEvent(say('crates.title'), say('crates.text'), [
           { label: say('crates.c0.label'), run() { G.state.credits += n; return say('crates.c0.result', { n: fmt(n) }); } },
           { label: say('crates.c1.label'), run() { G.state.credits += n * 2; setLater('h-side-trouble', 9, say('crates.c1.log')); return say('crates.c1.result', { n: fmt(n * 2) }); } },
@@ -385,12 +385,12 @@ const HAND_EVENTS = [
   { id: 'money-loan', mate: true, group: 'money', make: c => { const say = (key, vars) => eventSay('money-loan', key, { mate: c.mate.first, ...vars }); return handEvent(say('title'),
     say('text'), [
       { label: say('c0.label'),
-      ...gated(needCr(100)),
-      run() { G.state.credits -= 100; remember('loan', c.mate); setLater(Math.random() < 0.7 ? 'h-loan-repaid' : 'h-loan-default', 12, say('c0.log')); like(c.mate, 3, say('c0.result.memory')); return say('c0.result'); } },
+      ...gated(needCr(1000)),
+      run() { G.state.credits -= 1000; remember('loan', c.mate); setLater(Math.random() < 0.7 ? 'h-loan-repaid' : 'h-loan-default', 12, say('c0.log')); like(c.mate, 3, say('c0.result.memory')); return say('c0.result'); } },
       {
         label: say('c1.label'),
-        ...gated(needCr(50)),
-        run() { G.state.credits -= 50; remember('loan', c.mate); setLater('h-loan-small', 12, say('c1.log')); like(c.mate, 1, say('c1.result.memory')); return say('c1.result'); }
+        ...gated(needCr(500)),
+        run() { G.state.credits -= 500; remember('loan', c.mate); setLater('h-loan-small', 12, say('c1.log')); like(c.mate, 1, say('c1.result.memory')); return say('c1.result'); }
       },
       { label: say('c2.label'), run() { like(c.mate, -1, say('c2.result.memory')); return say('c2.result'); } },
     ]); } },
@@ -549,9 +549,9 @@ const HAND_DOWNTIME = [
   downtime('shadow', () => !!hired() && shadowable().length > 0,
     () => { const m = pick(shadowable()), post = postOfRole(m.role); like(m, 1, downSay('shadow.memory')); return downSay(tellingOn('shadow.result', G.state.day), { first: m.first, post: POSTS[post].name.toLowerCase() }) + learnAt(post, 3); }),
   downtime('mend', () => !!hired() && mates().length > 0,
-    () => { const m = pick(mates()), n = randInt(3, 6) * 10; G.state.credits += n; like(m, 1, downSay('mend.memory')); return downSay(tellingOn('mend.result', G.state.day), { first: m.first, n: fmt(n) }); }),
+    () => { const m = pick(mates()), n = randInt(3, 6) * 100; G.state.credits += n; like(m, 1, downSay('mend.memory')); return downSay(tellingOn('mend.result', G.state.day), { first: m.first, n: fmt(n) }); }),
   downtime('spare', () => !!hired(),
-    () => { const cap = person(hired().captain); G.state.credits += 40; like(cap, 1, downSay('spare.memory')); return downSay(tellingOn('spare.result', G.state.day), { n: fmt(40) }) + learnAt(hired().post, 1); }),
+    () => { const cap = person(hired().captain); G.state.credits += 400; like(cap, 1, downSay('spare.memory')); return downSay(tellingOn('spare.result', G.state.day), { n: fmt(400) }) + learnAt(hired().post, 1); }),
   downtime('teach', () => !!hired() && mates().length > 0,
     () => { const m = pick(mates()); like(m, 2, downSay('teach.memory')); return downSay(tellingOn('teach.result', G.state.day), { first: m.first, post: POSTS[hired().post].name.toLowerCase() }) + learnAt(hired().post, 1); }),
   downtime('stories', () => !!hired() && mates().length > 0,

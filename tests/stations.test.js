@@ -16,7 +16,7 @@ const helpers = () => {
   // A burn with a contact on it, and the contact event open.
   window.contact = (kind = 'pirate') => {
     const st = G.state; st.tutorial = null; st.story.next = 1e9; while (G.dialog) finishEvent();
-    st.credits = 5000; st.armor = ship().armor;
+    st.credits = 50000; st.armor = ship().armor;
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     openEvent(contactEvent({ kind }));
   };
@@ -664,14 +664,14 @@ test('comms: a crewed officer takes the merchant hail themselves, a solo captain
       const e = pickHappening('transit');
       return { e: e && e.title, handled: G.handled, credits: st.credits, comms: t.comms.filter(c => /\[Comms\]/.test(c)).length };
     };
-    const solo = go(5000);
+    const solo = go(50000);
     hire('slicer', 2);
-    const rich = go(5000), poor = go(800);
+    const rich = go(50000), poor = go(8000);
     return { solo, rich, poor, inbox: st.inbox.length };
   });
   assert.equal(r.solo.e, 'Merchant Hail', 'a solo captain gets the hail to answer');
-  assert.equal(r.rich.e, null); assert.ok(r.rich.handled && r.rich.comms === 1 && r.rich.credits === 4500, 'the officer buys the tip when there is money to spare');
-  assert.ok(r.poor.handled && r.poor.credits === 800, 'and declines it when there is not');
+  assert.equal(r.rich.e, null); assert.ok(r.rich.handled && r.rich.comms === 1 && r.rich.credits === 45000, 'the officer buys the tip when there is money to spare');
+  assert.ok(r.poor.handled && r.poor.credits === 8000, 'and declines it when there is not');
   assert.ok(r.inbox >= 2);
   await done();
 });
@@ -745,14 +745,14 @@ test('wear: a worn system costs performance, and breakdowns come as a scene', as
 test('wear: port overhaul, servicing in flight, and the setting in the menu', async () => {
   const { page, ev, done } = await open({});
   await ev(helpers);
-  await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.credits = 10000; while (G.dialog) finishEvent(); st.condition = undefined; Object.assign(condition(), { drive: 50, shields: 80 }); UI.render(); });
+  await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.credits = 100000; while (G.dialog) finishEvent(); st.condition = undefined; Object.assign(condition(), { drive: 50, shields: 80 }); UI.render(); });
   await goTo(page, 'shipyard');
   assert.match(await page.innerText('#panel'), /Condition/i);
   const cost = await ev(() => overhaulCost('drive'));
-  assert.equal(cost, 400);
+  assert.equal(cost, 4000);
   await page.click('[data-action=overhaul][data-arg=drive]');
   const after = await ev(() => ({ drive: condition().drive, credits: G.state.credits }));
-  assert.deepEqual(after, { drive: 100, credits: 9600 });
+  assert.deepEqual(after, { drive: 100, credits: 96000 });
   // Servicing in flight: the worst system, once a day, better with a skilled engineer.
   const svc = await ev(() => {
     const st = G.state; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];

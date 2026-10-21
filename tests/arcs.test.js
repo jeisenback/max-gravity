@@ -101,8 +101,8 @@ test('the water dispute, with the Refinery: not speaking and the count for the r
     return out;
   });
   assert.match(r.back, /The ledger is not read\. The count comes out for the refinery, three hundred and fourteen to two hundred and ninety\./); assert.equal(r.q.leagueSide, -1);
-  assert.equal(r.coda.title, 'The Courier Rate'); assert.deepEqual(r.coda.labels, ['Take the envelope (400 cr)', 'Leave it on the table']);
-  assert.equal(r.credits, 400); assert.match(r.fee, /The envelope is thinner than the sum on it/); assert.deepEqual(r.kit, []);
+  assert.equal(r.coda.title, 'The Courier Rate'); assert.deepEqual(r.coda.labels, ['Take the envelope (4,000 cr)', 'Leave it on the table']);
+  assert.equal(r.credits, 4000); assert.match(r.fee, /The envelope is thinner than the sum on it/); assert.deepEqual(r.kit, []);
   assert.ok(r.marit >= 3 && r.wen < 0, `Marit warm (${r.marit}), Wen cooler (${r.wen})`); assert.notEqual(r.hollows, 'The Pump Crew\'s Keys', 'the Hollows have nothing for a ship that stood aside');
 });
 
@@ -169,8 +169,8 @@ test('the air audit, the other ways: waiting at the ship, the lie about the vent
     return out;
   });
   assert.equal(r.wait.next, false); assert.match(r.wait.text, /Then I count alone/); assert.equal(r.wait.q.concord, 1); assert.equal(r.wait.q.concordSide || 0, 0);
-  assert.equal(r.coda.title, 'The Steward\'s Fee'); assert.deepEqual(r.coda.labels, ['Take the envelope (300 cr)', 'Leave it with him']);
-  assert.equal(r.credits, 300); assert.match(r.fee, /Pressure's holding/); assert.deepEqual(r.kit, []);
+  assert.equal(r.coda.title, 'The Steward\'s Fee'); assert.deepEqual(r.coda.labels, ['Take the envelope (3,000 cr)', 'Leave it with him']);
+  assert.equal(r.credits, 3000); assert.match(r.fee, /Pressure's holding/); assert.deepEqual(r.kit, []);
   assert.ok(r.hob >= 2 && r.odile < 0, `Hob warm (${r.hob}), Odile cooler (${r.odile})`); assert.notEqual(r.mars, 'The Air Levy Meeting', 'the Fleet has nothing for a ship that stood aside');
 });
 
@@ -234,8 +234,8 @@ test('the license inspection, the other ways: leaving, the lie about the bay and
     return out;
   });
   assert.equal(r.leave.next, false); assert.match(r.leave.text, /Delivered, then/); assert.equal(r.leave.q.compact, 1); assert.equal(r.leave.q.compactSide || 0, 0);
-  assert.equal(r.coda.title, 'The Riggers\' Collection'); assert.deepEqual(r.coda.labels, ['Take the roll (350 cr)', 'Give it back to the row']);
-  assert.equal(r.credits, 350); assert.match(r.fee, /hull still has opinions/); assert.deepEqual(r.kit, []);
+  assert.equal(r.coda.title, 'The Riggers\' Collection'); assert.deepEqual(r.coda.labels, ['Take the roll (3,500 cr)', 'Give it back to the row']);
+  assert.equal(r.credits, 3500); assert.match(r.fee, /hull still has opinions/); assert.deepEqual(r.kit, []);
   assert.ok(r.dag >= 1, `Dag warmer for the fee (${r.dag})`); assert.notEqual(r.earth, 'The Carrier License', 'the Office has nothing for a ship that did not speak');
 });
 

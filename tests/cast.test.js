@@ -21,7 +21,7 @@ const helpers = () => {
   // An owner at Earth with both of the pair aboard and a company ship docked in port with a hired captain.
   window.ownerSetup = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; st.credits = 200000;
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; st.credits = 2000000;
     for (const key of ['ines', 'tomas']) { const p = castPerson(key); p.role = CAST[key].role; p.skill = p.skills[p.role]; st.crew.push(p.id); castRec(key).since = st.day; }
     buyCompanyShip('lightfreighter');
     G.mode = 'landed';
@@ -120,7 +120,7 @@ test('every choice of every scene runs and says what happened', async () => {
       for (const [name, sc] of Object.entries(d.scenes)) {
         sc.choices.forEach((ch, i) => {
           start({ background: d.culture, mode: 'hired', post: 'pilot' });
-          G.state.credits = 1000; castPerson(key);
+          G.state.credits = 10000; castPerson(key);
           let res = null, err = null;
           try { const d = dataChoice(ch); res = d.can && !d.can() ? 'skipped' : d.run(); } catch (e) { err = String(e); }
           out.push({ at: `${key}.${name}.${i}`, ok: err === null && typeof res === 'string' && res.length > 40, err });
@@ -197,14 +197,14 @@ test('their scenes move opinion and experience, and what is yours is your saving
     out.intro = castScene('ines', CAST.ines.scenes.intro).personal;
     dataChoice(CAST.ines.scenes.intro.choices[1]).run(); out.ines = { opinion: ines.opinion, xp: ines.xp.pilot, mem: ines.memories.length };
     // The loan comes out of your savings, in a burn, with the ship's funds untouched.
-    st.credits = 500; st.hired.fund = 4000; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.dialog = null; G.transit.event = null;
+    st.credits = 5000; st.hired.fund = 40000; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.dialog = null; G.transit.event = null;
     openEvent(castScene('tomas', CAST.tomas.scenes.mid1));
     chooseEvent(0);
     out.loan = { credits: st.credits, fund: st.hired.fund, opinion: tomas.opinion, flag: !!castRec('tomas').flags.loan };
     return out;
   });
   assert.ok(r.intro); assert.equal(r.ines.opinion, 2); assert.equal(r.ines.mem, 1);
-  assert.deepEqual(r.loan, { credits: 300, fund: 4000, opinion: 3, flag: true });
+  assert.deepEqual(r.loan, { credits: 3000, fund: 40000, opinion: 3, flag: true });
   await done();
 });
 
@@ -222,7 +222,7 @@ test('a buy-in: both come if both think well of you, otherwise the one who does,
     friend.opinion = 0; out.nobody = ids();
     // The buy-in itself: they leave with you, and the last scene is played as they go.
     ines.opinion = 3; tomas.opinion = 3; castRec('ines').arc = 3; castRec('tomas').arc = 1;
-    const st = G.state; st.credits = 99999; G.mode = 'landed';
+    const st = G.state; st.credits = 999999; G.mode = 'landed';
     const planet = SYSTEMS[st.systemId].planets.find(p => p.services.includes('shipyard')); st.planet = planet.name;
     hired().confirm = 'courier'; Mods.act('buyInGo', 'courier');
     out.crew = st.crew.slice().sort(); out.owner = !hired(); out.scene = G.dialog && G.dialog.event.title; out.arc = castRec('ines').arc;
@@ -732,7 +732,7 @@ test('a save with an invented story loses it and keeps the progress made', async
   const r = await ev(() => {
     start({ mode: 'hired', post: 'gunner' });
     const t = person('c:tomas');
-    t.story = { left: 'x', rel: 'son', name: 'Diego', hope: 'y', favor: 'debt', debt: 1000, beat: 2 };
+    t.story = { left: 'x', rel: 'son', name: 'Diego', hope: 'y', favor: 'debt', debt: 10000, beat: 2 };
     const s = storyOf(t);
     return [s.authored, s.rel, s.name, s.beat];
   });
@@ -933,8 +933,8 @@ test('the chapter\'s closing scene is one scene whatever the record: who came an
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const fresh = () => { start({ mode: 'hired', post: 'gunner' }); postsOnly(); const st = G.state; st.memorial = []; for (const k of Object.keys(st.cast || {})) { delete st.cast[k].marks; st.cast[k].flags = {}; } for (const id of st.crew) person(id).opinion = 0; st.credits = 19000; return st; };
-    const grave = key => ({ key, day: 1, place: 'Ceres', cause: 'Lost on the way.' }), rich = 19000 + SHIPS.shuttle.price + 15000, out = {};
+    const fresh = () => { start({ mode: 'hired', post: 'gunner' }); postsOnly(); const st = G.state; st.memorial = []; for (const k of Object.keys(st.cast || {})) { delete st.cast[k].marks; st.cast[k].flags = {}; } for (const id of st.crew) person(id).opinion = 0; st.credits = 190000; return st; };
+    const grave = key => ({ key, day: 1, place: 'Ceres', cause: 'Lost on the way.' }), rich = 190000 + SHIPS.shuttle.price + 150000, out = {};
     const read = name => { const e = chapterEnd('shuttle'); out[name] = { title: e.title, text: e.text, labels: e.choices.map(c => c.label) }; };
     fresh(); read('alone');
     fresh(); person('c:ines').opinion = OPINION.CLOSE; read('one');
@@ -966,9 +966,9 @@ test('an old save with no captain entry keeps the default hearing, bonus, lane r
     out.entry = captainEntry(); out.hears = captainHears(); out.bonus = captainBonus(); out.risk = laneRisk(G.state.systemId);
     const choose = (fund, choices, roll) => { h.fund = fund; Math.random = () => roll; try { return captainPick(choices).label; } finally { Math.random = real; } };
     const pay = { label: 'Pay the fine', cost: true }, fight = { label: 'Battle stations', fight: true }, run = { label: 'Run for it' };
-    out.poor = choose(3000, [pay, run], 0.1);  // under the 4,000 floor the costly choice is a fifth as likely
-    out.flush = choose(5000, [pay, run], 0.1);
-    out.fight = choose(5000, [fight, run], 0.5);  // the fight weighs 3 against 2 for a captain of no recorded nerve
+    out.poor = choose(30000, [pay, run], 0.1);  // under the 40,000 floor the costly choice is a fifth as likely
+    out.flush = choose(50000, [pay, run], 0.1);
+    out.fight = choose(50000, [fight, run], 0.5);  // the fight weighs 3 against 2 for a captain of no recorded nerve
     out.heard = OPINION.HEARD; out.bonusDefault = OPINION.BONUS;
     return out;
   });

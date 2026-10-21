@@ -86,7 +86,7 @@ Mods.register({
           '"The row put in," he says. "Every bay. They said a ship that did not name the work is a ship that can be fed. It is not a great deal. We have got a license, ' +
           'by the way, of a sort: the Office gave us ninety days, and then it will do the same again. It likes us at a distance." He pushes the glove at you and grins.'),
       choices: [
-        { label: 'Take the roll (350 cr)', effects: { credits: 350, do: ['compact-fee', 'You took the riggers\' collection and said nothing of the bay.', 'You took the riggers\' money after the inspection.'], log: 'Took the Luna riggers\' collection after the inspection.' },
+        { label: 'Take the roll (3,500 cr)', effects: { credits: 3500, do: ['compact-fee', 'You took the riggers\' collection and said nothing of the bay.', 'You took the riggers\' money after the inspection.'], log: 'Took the Luna riggers\' collection after the inspection.' },
           result: 'It is mostly small notes, much folded. Dag counts them again in front of you to be sure you are not cheated. "Come back and sit on the crate," he says. "The hull still has opinions."' },
         { label: 'Give it back to the row', effects: { do: ['arcLike', 'dag', 1, 'You would not take the riggers\' money.'], log: 'Left the Luna riggers\' collection with the row.' },
           result: 'Dag stares at the glove and then at you, and for once says nothing at all. Then he puts the roll in his shirt. "The cradle fund," he says. "Eleven years of rotas, and it has never been so big."' },

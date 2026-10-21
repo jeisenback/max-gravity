@@ -8,7 +8,7 @@
 // gunfire can hit torpedoes as well. Corsairs, cutters, and destroyers launch
 // torpedoes of their own. Loaded before game.js; only calls into it at runtime.
 
-const TORP_MAX = 6, TORP_PRICE = 400;
+const TORP_MAX = 6, TORP_PRICE = 4000;
 const TORP = { accel: 520, maxSpeed: 540, turn: 2.8, life: 7, playerDmg: 60, npcDmg: 45 };
 const NPC_TORPS = { corsair: 1, cutter: 1, destroyer: 3, gunship: 2 };
 const PD_RANGE = 300, PD_SPEED = 1100, PD_SPREAD = 0.12, PD_RATE = 0.25;  // tuned so one turret stops about two torpedoes in three

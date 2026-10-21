@@ -97,7 +97,7 @@ const pickWeighted = table => { let r = Math.random() * Object.values(table).red
 
 // The hand is hurt: laid up for a while (a level worse, light duty), longer if already hurt, and with no medic aboard the clinic is on
 // their own savings. Used when a hit falls on the hand (repelCasualty, below), on a heavy turn of the ship fight (fightui.js fightTook), and on a job ashore (jobs.js).
-const HAND_CLINIC = 150;
+const HAND_CLINIC = 1500;
 // The hand can die (#357): hurt a second time while still hurt, or with the bridge taken while laid up, is a roll of one in four, and a first hurt
 // is a roll of one in twelve; each is halved with a medic aboard (the factor crew deaths use, losses.js). The hand is hurt about 0.4 times a chapter
 // and rarely twice inside the 12 days it takes to mend, so the first-hurt roll is what puts a death near 3 in 100 chapters (as the captain's loss is).
@@ -210,7 +210,7 @@ function shipTaken(s) {
 function assaultSettle(s, won, lost) {
   const st = G.state, h = hired(), cap = h && person(h.captain), foe = s.d.foe, post = lockPost();
   if (won) {
-    const take = lootFor(foe).credits || randInt(10, 30) * 100;
+    const take = lootFor(foe).credits || randInt(10, 30) * 1000;
     moveMoney(take);
     if (cap) like(cap, 2, repelWords(s, 'memory.took', ASSAULT_MEMORY.took));
     for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id)) like(c, 1, repelWords(s, 'memory.together', ASSAULT_MEMORY.together)); }

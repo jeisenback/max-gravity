@@ -525,7 +525,7 @@
  },
  {
   "key": "news:bad:0",
-  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their best friend Ruo is sick, and the clinic on Mar\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their best friend Ruo is sick, and the clinic on Mar\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:1",
@@ -533,7 +533,7 @@
  },
  {
   "key": "news:bad:1",
-  "text": "[\"Bad News\",\"Sam has been quiet since the last port. Sam stands the watch and eats, and twice has stopped with the fork halfway up. A message came in at the last port: their\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam has been quiet since the last port. Sam stands the watch and eats, and twice has stopped with the fork halfway up. A message came in at the last port: their\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:2",
@@ -541,7 +541,7 @@
  },
  {
   "key": "news:bad:2",
-  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: the section where their grandmother Sabe lives is on\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: the section where their grandmother Sabe lives is on\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:3",
@@ -549,7 +549,7 @@
  },
  {
   "key": "news:bad:3",
-  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: their father Jo has \",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: their father Jo has \",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:4",
@@ -557,7 +557,7 @@
  },
  {
   "key": "news:bad:4",
-  "text": "[\"Bad News\",\"Sam hasn't touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: their mother Jo was hurt in an acci\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam hasn't touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: their mother Jo was hurt in an acci\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:5",
@@ -565,7 +565,7 @@
  },
  {
   "key": "news:bad:5",
-  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: the fami\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: the fami\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:6",
@@ -573,7 +573,7 @@
  },
  {
   "key": "news:bad:6",
-  "text": "[\"Bad News\",\"Sam has been quiet since the last port. Sam stands the watch and eats, and twice has stopped with the fork halfway up. A message came in at the last port: their\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam has been quiet since the last port. Sam stands the watch and eats, and twice has stopped with the fork halfway up. A message came in at the last port: their\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:7",
@@ -581,7 +581,7 @@
  },
  {
   "key": "news:bad:7",
-  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their father Jo has been arrested at a protest, and \",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their father Jo has been arrested at a protest, and \",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:8",
@@ -589,7 +589,7 @@
  },
  {
   "key": "news:bad:8",
-  "text": "[\"Bad News\",\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: an old friend of their daughter Tiko's pass\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: an old friend of their daughter Tiko's pass\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:9",
@@ -597,7 +597,7 @@
  },
  {
   "key": "news:bad:9",
-  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: their daughter Tiko \",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: their daughter Tiko \",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:10",
@@ -605,7 +605,7 @@
  },
  {
   "key": "news:bad:10",
-  "text": "[\"Bad News\",\"Sam hasn't touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: the clinic on Mars is closing, and \",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam hasn't touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: the clinic on Mars is closing, and \",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:11",
@@ -613,7 +613,7 @@
  },
  {
   "key": "news:bad:11",
-  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: their mo\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: their mo\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:12",
@@ -621,7 +621,7 @@
  },
  {
   "key": "news:bad:12",
-  "text": "[\"Bad News\",\"The terminal pings in the galley and Sam reads it standing, then sits down. The message: there was a fire in the section where their son Dru lives, and they're \",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"The terminal pings in the galley and Sam reads it standing, then sits down. The message: there was a fire in the section where their son Dru lives, and they're \",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:13",
@@ -629,7 +629,7 @@
  },
  {
   "key": "news:bad:13",
-  "text": "[\"Bad News\",\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: their best friend Tiko has been laid off, a\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: their best friend Tiko has been laid off, a\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:14",
@@ -637,7 +637,7 @@
  },
  {
   "key": "news:bad:14",
-  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: the school where the\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: the school where the\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:15",
@@ -645,7 +645,7 @@
  },
  {
   "key": "news:bad:15",
-  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: their so\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: their so\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "holiday:0",

@@ -49,11 +49,11 @@ test('every choice in every port scene works for every post, with clean text, an
     factionState().war = { a: 'Dome Concord', b: 'Arcology Compact', start: st.day, until: st.day + 40, score: { 'Dome Concord': 0, 'Arcology Compact': 0 } };
     for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
       for (const s of portScenes()) {
-        hired().post = post; st.credits = 5000; st.planet = [].concat(s.when.planet)[0]; st.systemId = { Mars: 'mars', Ganymede: 'jupiter', 'Hermes Foundry': 'mercury', Earth: 'earth', 'Ceres Station': 'ceres', 'Juno Commons': 'juno' }[st.planet]; G.mode = 'landed';
+        hired().post = post; st.credits = 50000; st.planet = [].concat(s.when.planet)[0]; st.systemId = { Mars: 'mars', Ganymede: 'jupiter', 'Hermes Foundry': 'mercury', Earth: 'earth', 'Ceres Station': 'ceres', 'Juno Commons': 'juno' }[st.planet]; G.mode = 'landed';
         const e = storyletEvent(s);
         out.counts[`${s.id}:${post}`] = e.choices.length;
         for (let i = 0; i < e.choices.length; i++) {
-          st.credits = 5000; const before = skillXp(post);
+          st.credits = 50000; const before = skillXp(post);
           const ev2 = storyletEvent(s); G.dialog = { event: ev2, choices: ev2.choices };
           const text = chooseEvent(i);
           if (!text || /undefined|NaN|\{[a-z:]+\}/.test(text) || /undefined|NaN|\{[a-z:]+\}/.test(ev2.text + ev2.choices.map(c => c.label).join(' '))) out.bad.push(`${s.id}:${post}:${i}`);
@@ -81,6 +81,6 @@ test('a post\'s own choice teaches the post, pays what it says, and a kindness i
     out.xp = skillXp('engineer') - xp; out.credits = st.credits - credits; out.cap = person(hired().captain).opinion - cap;
     return out;
   });
-  assert.equal(r.xp, 4); assert.equal(r.credits, 120); assert.equal(r.cap, 1);
+  assert.equal(r.xp, 4); assert.equal(r.credits, 1200); assert.equal(r.cap, 1);
   await done();
 });

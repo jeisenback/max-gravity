@@ -21,22 +21,22 @@ const JOBS = [
           { label: 'Cut the manual release', check: { post: 'engineer' },
             win: { text: ('You find the release behind a panel nobody has opened in years, and cut the seized pin with a torch while the dockmaster ' +
                 'counts the minutes aloud. The door goes with a bang. Four loaders come out into the light, and one of them sits down on the deck and ' +
-                'laughs.'), pay: 250, xp: 'engineer', next: 1 },
-            lose: { text: 'The pin is harder than it looked. You\'re still cutting when the inner door cycles on its own, and the edge of it catches you across the shoulder. The loaders get out by the other lock. You get a medic and a bandage.', hurt: true, pay: 40 } },
+                'laughs.'), pay: 2500, xp: 'engineer', next: 1 },
+            lose: { text: 'The pin is harder than it looked. You\'re still cutting when the inner door cycles on its own, and the edge of it catches you across the shoulder. The loaders get out by the other lock. You get a medic and a bandage.', hurt: true, pay: 400 } },
           { label: 'Talk the controller into an override', check: { post: 'comms' },
             win: { text: ('The lock controller is a tired man in a booth who has been told no by every system on the board. You give him the override ' +
-                'sequence he didn\'t know he had, and a reason to try it. The lock shudders and cycles, and the loaders come out coughing.'), pay: 250, xp: 'comms', next: 1 },
+                'sequence he didn\'t know he had, and a reason to try it. The lock shudders and cycles, and the loaders come out coughing.'), pay: 2500, xp: 'comms', next: 1 },
             lose: { text: 'The controller won\'t hear you, or can\'t, and by the time somebody senior arrives the loaders are out and the dockmaster has already written down who was in the way. It was you.', opinion: -1 } },
           { label: 'Put your shoulder to the wheel', check: { post: 'gunner', bonus: -0.05 },
-            win: { text: 'Six of you on the wheel, and the seized door gives a hand at a time. It\'s not clever and it\'s not quick, but it opens, and the dockmaster remembers the hand at the end of the bar.', pay: 150, xp: 'gunner', next: 1 },
+            win: { text: 'Six of you on the wheel, and the seized door gives a hand at a time. It\'s not clever and it\'s not quick, but it opens, and the dockmaster remembers the hand at the end of the bar.', pay: 1500, xp: 'gunner', next: 1 },
             lose: { text: 'The wheel kicks back when the pin lets go and takes you across the ribs. Somebody else gets the door open. You get a bruise the shape of a handle, and nothing else.', hurt: true } },
           { label: 'Fetch the dockmaster the crew chief and stay out of it', win: { text: ('You run for the crew chief and bring her back, and the ' +
               'dockmaster takes it from there. It\'s the right call for someone who doesn\'t know locks, and nobody thanks you for it, which is also ' +
-              'right.'), pay: 30 } },
+              'right.'), pay: 300 } },
         ] },
       { text: 'The foreman of the loader crew finds you afterwards, still shaking, with his helmet under his arm. "I owe you," he says. "I don\'t have much. I have this, or I have a word with the dockmaster, and that\'s worth more than you think on this pad."',
         choices: [
-          { label: 'Take the credits (200 cr)', win: { text: 'He counts it out of a pocket on his suit, in coins and chits, and doesn\'t look at the number. "It\'s not enough," he says. It\'s more than enough, and you both know it.', pay: 200 } },
+          { label: 'Take the credits (2,000 cr)', win: { text: 'He counts it out of a pocket on his suit, in coins and chits, and doesn\'t look at the number. "It\'s not enough," he says. It\'s more than enough, and you both know it.', pay: 2000 } },
           { label: 'Take the word with the dockmaster', win: { text: 'The dockmaster writes your ship\'s name in a book behind the counter. "Berth discount," she says, "and a second look when you want to lift in a hurry." It\'s not cash, and it\'ll be worth something.', rep: 4 } },
         ] },
     ] },
@@ -47,11 +47,11 @@ const JOBS = [
           'need it on the long bands to a ship that\'s six days out, and I need nobody to know I asked."'),
         choices: [
           { label: 'Put it on a ship\'s relay under a cargo header', check: { post: 'comms' },
-            win: { text: 'You put it in a manifest packet, in the part of the header that nobody reads, and send it with the evening cargo burst. A relay six days out opens it and sends back a receipt. The clerk reads the receipt twice and puts it in her mouth.', pay: 220, xp: 'comms' },
-            lose: { text: 'The packet is flagged at the relay for a malformed header. A customs clerk reads it before you can pull it back, and there\'s a visit to your ship the next morning, polite and thorough. Nothing\'s found, and nothing\'s forgotten.', rep: -4, cost: 60 } },
+            win: { text: 'You put it in a manifest packet, in the part of the header that nobody reads, and send it with the evening cargo burst. A relay six days out opens it and sends back a receipt. The clerk reads the receipt twice and puts it in her mouth.', pay: 2200, xp: 'comms' },
+            lose: { text: 'The packet is flagged at the relay for a malformed header. A customs clerk reads it before you can pull it back, and there\'s a visit to your ship the next morning, polite and thorough. Nothing\'s found, and nothing\'s forgotten.', rep: -4, cost: 600 } },
           { label: 'Carry it to a ship that\'s about to sail', check: { post: 'pilot', bonus: 0.05 },
-            win: { text: 'You know a hauler in the next berth that\'s lifting within the hour, with a captain who owes nobody anything. She takes the chip and the fee without a question. The clerk gets a name in return, and no more.', pay: 180, xp: 'pilot' },
-            lose: { text: 'The hauler lifts early, and you\'re left holding the chip on an empty berth, with the clerk watching from the gallery. She doesn\'t say anything. She doesn\'t pay either.', opinion: 0, cost: 20 } },
+            win: { text: 'You know a hauler in the next berth that\'s lifting within the hour, with a captain who owes nobody anything. She takes the chip and the fee without a question. The clerk gets a name in return, and no more.', pay: 1800, xp: 'pilot' },
+            lose: { text: 'The hauler lifts early, and you\'re left holding the chip on an empty berth, with the clerk watching from the gallery. She doesn\'t say anything. She doesn\'t pay either.', opinion: 0, cost: 200 } },
           { label: 'Refuse, politely', win: { text: 'You hand the chip back. "I understand," the clerk says, and she does, and goes to find somebody less careful. You don\'t find out who.' } },
         ] },
     ] },
@@ -63,16 +63,16 @@ const JOBS = [
         choices: [
           { label: 'Walk the lower decks ahead of him', check: { post: 'gunner' },
             win: { text: ('You see the two at the second junction before they see you, and they decide to see something else. At the door with the ' +
-                'lamp the courier hands you the pay without a word and goes in. The door shuts. You walk back up alone, and nothing follows.'), pay: 300, xp: 'gunner', next: 1 },
-            lose: { text: 'They\'re three, not two, and the third has a length of pipe. It\'s short and ugly in a narrow passage. The courier gets through to the lamp; you get through to a medic, with a split lip and a broken finger, and a handful of what he left you.', hurt: true, pay: 120 } },
+                'lamp the courier hands you the pay without a word and goes in. The door shuts. You walk back up alone, and nothing follows.'), pay: 3000, xp: 'gunner', next: 1 },
+            lose: { text: 'They\'re three, not two, and the third has a length of pipe. It\'s short and ugly in a narrow passage. The courier gets through to the lamp; you get through to a medic, with a split lip and a broken finger, and a handful of what he left you.', hurt: true, pay: 1200 } },
           { label: 'Take him down a service route', check: { post: 'pilot' },
-            win: { text: 'You know the service crawls better than the people who watch the main passages, and you take him through the ducts with a flashlight in your teeth. He\'s covered in dust at the other end and says nothing, and pays well for it.', pay: 260, xp: 'pilot', next: 1 },
-            lose: { text: 'The service route is blocked by a pallet somebody has left across it, and the detour puts you in the open on the wrong deck. You get him out, but not unseen, and the pay is smaller for it.', pay: 90, rep: -2 } },
+            win: { text: 'You know the service crawls better than the people who watch the main passages, and you take him through the ducts with a flashlight in your teeth. He\'s covered in dust at the other end and says nothing, and pays well for it.', pay: 2600, xp: 'pilot', next: 1 },
+            lose: { text: 'The service route is blocked by a pallet somebody has left across it, and the detour puts you in the open on the wrong deck. You get him out, but not unseen, and the pay is smaller for it.', pay: 900, rep: -2 } },
           { label: 'Tell him you won\'t go down there tonight', win: { text: '"I understand," the courier says, and goes down alone. You hear on the dock the next day that he made it. You hear on the dock a few days later that he didn\'t make the way back.' } },
         ] },
       { text: 'At the door with the lamp the courier turns. "There\'s a second case," he says. "It\'s not mine, and I don\'t know what\'s in it, and I\'d be grateful if somebody took it off the deck before tonight is over."',
         choices: [
-          { label: 'Take it (and a half day more of your time)', win: { text: 'You carry it up through the passages and leave it with a woman at the top who doesn\'t ask who you are. The courier\'s thanks arrives that night in the form of a chit. You never learn what was in it.', pay: 180 } },
+          { label: 'Take it (and a half day more of your time)', win: { text: 'You carry it up through the passages and leave it with a woman at the top who doesn\'t ask who you are. The courier\'s thanks arrives that night in the form of a chit. You never learn what was in it.', pay: 1800 } },
           { label: 'Leave it, and say you didn\'t see it', win: { text: 'You say you didn\'t see it, and the courier says that\'s what he thought. You go back up with the pay he owes, and the second case stays in the dark with the lamp.' } },
         ] },
     ] },
@@ -83,12 +83,12 @@ const JOBS = [
           'need. Somebody they both won\'t mind listening to."'),
         choices: [
           { label: 'Talk them down', check: { post: 'comms' },
-            win: { text: 'You find out whose chit it\'s by asking whose child is whose, and the thing falls apart into a conversation about names. By the end both families are sharing a bench and the clerk is stamping new chits as fast as she can.', pay: 160, xp: 'comms', rep: 3 },
+            win: { text: 'You find out whose chit it\'s by asking whose child is whose, and the thing falls apart into a conversation about names. By the end both families are sharing a bench and the clerk is stamping new chits as fast as she can.', pay: 1600, xp: 'comms', rep: 3 },
             lose: { text: 'You make it worse. Somebody says you\'re taking a side, and somebody else says which, and the shouting turns to shoving. You get out before the first real blow, with a cuff in the ear and the warden\'s eyes on your back.', hurt: true, opinion: 0, cost: 0 } },
           { label: 'Step between them', check: { post: 'gunner', bonus: -0.05 },
-            win: { text: 'You put yourself in the gap with your hands open and don\'t move. For a while nobody does. Then the louder of the two men looks at you, and at the child on his hip, and steps back, and the line breathes out.', pay: 140, xp: 'gunner', rep: 2 },
+            win: { text: 'You put yourself in the gap with your hands open and don\'t move. For a while nobody does. Then the louder of the two men looks at you, and at the child on his hip, and steps back, and the line breathes out.', pay: 1400, xp: 'gunner', rep: 2 },
             lose: { text: 'Somebody doesn\'t step back. It\'s a short, shapeless scuffle, and you come out of it with a cut over the eye and a ration chit nobody will own.', hurt: true } },
-          { label: 'Get the warden and let her handle it', win: { text: 'You bring the warden her own people, and she finds a way. You keep out of the line itself, and she gives you a half ration of thanks, which is the right size.', pay: 40 } },
+          { label: 'Get the warden and let her handle it', win: { text: 'You bring the warden her own people, and she finds a way. You keep out of the line itself, and she gives you a half ration of thanks, which is the right size.', pay: 400 } },
         ] },
     ] },
 ];
@@ -109,7 +109,7 @@ const jobBoard = () => {
 function applyJob(o, scale = 1) {
   const st = G.state, h = hired(), cap = hiredCaptain();
   const bits = [];
-  if (o.pay) { const pay = Math.round(o.pay * scale / 10) * 10; st.credits += pay; bits.push(`+${fmt(pay)} cr`); }  // work further away pays more (ctx.scale)
+  if (o.pay) { const pay = Math.round(o.pay * scale / 100) * 100; st.credits += pay; bits.push(`+${fmt(pay)} cr`); }  // work further away pays more (ctx.scale)
   if (o.cost) { st.credits = Math.max(0, st.credits - o.cost); bits.push(`-${fmt(o.cost)} cr`); }
   if (o.xp) gainSkill(o.xp, 2);
   if (o.rep) changeRep(localGov(), o.rep);

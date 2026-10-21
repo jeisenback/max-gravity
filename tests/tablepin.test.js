@@ -17,7 +17,7 @@ const FIXTURE = path.join(__dirname, 'fixtures', 'table-scenes-pin.json');
 // Runs in the page. Plays every choice of every scene with the dice set to win and then to lose, in a fresh hired game each time.
 const pinAll = () => {
   const real = Math.random, out = [];
-  const game = post => { window.__seed(11); startGame({ mode: 'hired', background: 'earth', post, captainKey: 'hester', credits: 5000 }); G.dialog = null; G.nextEvent = null; };
+  const game = post => { window.__seed(11); startGame({ mode: 'hired', background: 'earth', post, captainKey: 'hester', credits: 50000 }); G.dialog = null; G.nextEvent = null; };
   const play = (post, make, i, roll) => {
     game(post);
     const ev = make();

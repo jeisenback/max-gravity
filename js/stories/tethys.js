@@ -58,7 +58,7 @@ Mods.register({
       choices: [
         { label: 'Take the cryo-cells (20t)', when: { space: 20 },
           effects: { set: { tscTask: 1 }, log: 'Rushing Consortium cryo-cells from Titan to Earth.',
-            mission: { to: 'Earth', tons: 20, good: 'Consortium cryo-cells', pay: 15000, days: 24, title: 'Rush Consortium cryo-cells to Earth before they spoil',
+            mission: { to: 'Earth', tons: 20, good: 'Consortium cryo-cells', pay: 150000, days: 24, title: 'Rush Consortium cryo-cells to Earth before they spoil',
               onDone: { q: { tsc: 1 }, set: taskOver, rep: { 'Arcology Compact': 3 }, log: 'Delivered the Consortium\'s cryo-cells to Earth on time.' },
               onFail: { set: taskOver, log: 'The Consortium\'s cryo-cells spoiled in the hold. Halvorsen sent a one-word message: "Again."' } } },
           result: ('"Twenty-four days," she says. "The clock started when you walked in." Two technicians in white coats load the cells into your ' +
@@ -78,16 +78,16 @@ Mods.register({
       when: { q: { tsc: 2 }, qBelow: { tscDone: 1 }, chance: 0.35 },
       title: 'A Private Offer',
       text: ('A tight-beam message arrives on a private band, smooth and unhurried, and a little bit too friendly, from a broker for Ganymede ' +
-          'Freight, the Consortium\'s biggest rival. The voice is warm as a hand on your shoulder. "Captain, I won\'t waste your time. Twenty ' +
+          'Freight, the Consortium\'s biggest rival. The voice is warm as a hand on your shoulder. "Captain, I won\'t waste your time. Two hundred ' +
           'thousand credits for your Consortium access codes. No one will ever know. Nobody at Ganymede Freight has ever been caught." A pause, ' +
           'precisely timed. "It\'s a great deal of money, for a small favor. And loyalty is such a fragile thing."'),
       choices: [
-        { label: 'Sell the codes (20,000 cr)', effects: { credits: 20000, set: { tscLeak: 1 }, log: 'Sold Consortium access codes to Ganymede Freight.' },
+        { label: 'Sell the codes (200,000 cr)', effects: { credits: 200000, set: { tscLeak: 1 }, log: 'Sold Consortium access codes to Ganymede Freight.' },
           result: ('The money arrives before the channel closes, an instant, silent chime on your account. It\'s a great deal of money. The broker\'s ' +
               'voice thanks you, and there\'s not a trace of triumph in it, only a mild warm gratitude, and that\'s the worst part. You tell yourself ' +
               'nobody will ever know. You tell yourself again, an hour later, in the dark of your cabin.') },
         { label: '{crew} sells them fakes', when: { crew: 'slicer' },
-          effects: { credits: 5000, q: { tsc: 1 }, log: 'Sold Ganymede Freight a set of very convincing fake access codes.' },
+          effects: { credits: 50000, q: { tsc: 1 }, log: 'Sold Ganymede Freight a set of very convincing fake access codes.' },
           result: ('{crew:slicer} spends a happy, sleepless night building a set of codes that open nothing but a honeypot, with a small, loving ' +
               'flourish at the end that any programmer would recognize as insulting. Ganymede pays a deposit before they find out. Halvorsen, when she ' +
               'hears, laughs out loud, a real bark of delight, and sends a case of very good wine to your ship with a single card: "Well played."') },
@@ -135,10 +135,10 @@ Mods.register({
           'quiet clothes. Halvorsen stands, and the room stills. "Our newest partner. Loyal, fast, and holding a fifth of Ceres. The Consortium takes ' +
           'care of its partners." There\'s polite applause, and one or two people, you notice, don\'t join in. Through the great curved window you can ' +
           'see a new Ice Hauler waiting at your company\'s berth, crew and all, its hull shining in the ringlight.'),
-      choices: [{ label: 'Take your chair', effects: { set: { tscDone: 1 }, companyShip: 'freighter', credits: 10000, log: 'Made a partner of the Tethys Shipping Consortium.', news: 'The Tethys Shipping Consortium names a new partner, an independent captain.' },
+      choices: [{ label: 'Take your chair', effects: { set: { tscDone: 1 }, companyShip: 'freighter', credits: 100000, log: 'Made a partner of the Tethys Shipping Consortium.', news: 'The Tethys Shipping Consortium names a new partner, an independent captain.' },
         result: ('The chair is soft, the table is cool, and, when you sit, nobody speaks for a long moment. Then Halvorsen slides a slim folder ' +
             'across the polished wood, with a single line of gold lettering: PARTNER. The Ice Hauler is yours, with a Consortium-trained captain, plus ' +
-            'a 10,000 cr signing bonus. Set its route on the Company tab. You look out at Saturn, and for a moment you wonder how much of this was ' +
+            'a 100,000 cr signing bonus. Set its route on the Company tab. You look out at Saturn, and for a moment you wonder how much of this was ' +
             'ever really your choice.') }],
     });
     M.addStorylet({
@@ -151,7 +151,7 @@ Mods.register({
       choices: [{ label: 'Say nothing', effects: { set: { tscDone: 1 }, log: 'Thrown out of the Tethys Shipping Consortium for selling its codes.', news: 'The Tethys Shipping Consortium dissolves a partnership after a security breach.' },
         result: ('You say nothing, because there\'s nothing that could be said, and she lets the silence sit between you like a third guest. Your ' +
             'partnership is dissolved by the time you reach your ship, in eleven crisp lines of legal prose. The Consortium keeps your Ceres votes and ' +
-            'the story. You keep the twenty thousand, and a reputation on Titan you\'ll never shake. In the crawler back to the port, the amber rain ' +
+            'the story. You keep the two hundred thousand, and a reputation on Titan you\'ll never shake. In the crawler back to the port, the amber rain ' +
             'seems, this time, to fall a little heavier, and nobody offers you a drink.') }],
     });
   },

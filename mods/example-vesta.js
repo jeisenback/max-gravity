@@ -10,7 +10,7 @@ Mods.register({
   version: '1.0',
   init(M) {
     // A new trade good. Only markets that list it in `prices` trade it.
-    M.addCommodity({ id: 'basalt', name: 'Vesta Basalt', base: 260 });
+    M.addCommodity({ id: 'basalt', name: 'Vesta Basalt', base: 2600 });
 
     // A new location. `au` and `angle` place it on the system map; the art falls
     // back to a generic moon for bodies the game has no custom art for.
@@ -28,7 +28,7 @@ Mods.register({
     SYSTEMS.earth.planets[0].prices.basalt = 'M';
 
     M.addOutfit('drill', {
-      name: 'Mining laser', price: 7000, space: 2, max: 1,
+      name: 'Mining laser', price: 70000, space: 2, max: 1,
       desc: 'A rock-cutting laser slaved to the fire control. Your guns hit 15% harder.',
       mod: s => { s.dmgMult *= 1.15; },
     });
@@ -37,7 +37,7 @@ Mods.register({
       title: 'Survey Beacon',
       text: 'An old Vesta survey beacon drifts across your path, still broadcasting a claim marker from before the Collective.',
       choices: [
-        { label: 'Salvage it', run() { G.state.credits += 800; return 'The beacon\'s transmitter sells for 800 cr to the first collector who answers your ping.'; } },
+        { label: 'Salvage it', run() { G.state.credits += 8000; return 'The beacon\'s transmitter sells for 8,000 cr to the first collector who answers your ping.'; } },
         { label: 'Leave it', run: () => 'Somebody staked that claim. Let it keep watching.' },
       ],
     });
@@ -47,15 +47,15 @@ Mods.register({
       if (!byPlayer || ship.kind !== 'pirate' || G.state.systemId !== 'vesta') return;
       const st = M.state();
       st.kills = (st.kills || 0) + 1;
-      G.state.credits += 500;
-      M.note(`Vesta Deep Mine pays a 500 cr bounty (${st.kills} pirate${st.kills > 1 ? 's' : ''} so far).`);
+      G.state.credits += 5000;
+      M.note(`Vesta Deep Mine pays a 5,000 cr bounty (${st.kills} pirate${st.kills > 1 ? 's' : ''} so far).`);
     });
 
     M.on('landed', planet => {
       const st = M.state();
       if (planet.name !== 'Vesta Deep Mine' || st.welcomed) return;
       st.welcomed = true;
-      M.note('Welcome to Vesta. The mine pays 500 cr for every pirate you destroy in local space.');
+      M.note('Welcome to Vesta. The mine pays 5,000 cr for every pirate you destroy in local space.');
     });
   },
 });

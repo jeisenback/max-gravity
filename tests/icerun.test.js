@@ -23,10 +23,10 @@ test('the planner takes an ice run when water is dear, the hold is free, and one
   await ev(helpers);
   const r = await ev(() => {
     const st = setup(), h = hired(), here = currentPlanet(), reach = [['mars', SYSTEMS.mars]], real = window.price, out = {};
-    window.price = () => 120;
+    window.price = () => 1200;
     const o = iceOption(here, st.systemId, reach, 40); out.opt = o && { ice: o.ice, good: o.good, cost: o.cost, tons: o.tons, longRun: o.days >= 8, sid: o.sid };
-    window.price = () => 50; out.cheap = iceOption(here, st.systemId, reach, 40);
-    window.price = () => 120; out.full = iceOption(here, st.systemId, reach, 5);
+    window.price = () => 500; out.cheap = iceOption(here, st.systemId, reach, 40);
+    window.price = () => 1200; out.full = iceOption(here, st.systemId, reach, 5);
     h.iceAt = st.day - ICE_GAP / 2; out.soon = iceOption(here, st.systemId, reach, 40);
     h.iceAt = st.day - ICE_GAP - 1; out.later = !!iceOption(here, st.systemId, reach, 40);
     h.iceAt = undefined; h.since = st.day - 3; out.green = iceOption(here, st.systemId, reach, 40);  // not in the first days aboard

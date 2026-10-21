@@ -11,7 +11,7 @@ after(closeBrowser);
 const helpers = () => {
   window.setup = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
-    const st = G.state; st.story.next = 1e9; st.day += 30; st.credits = 2000;
+    const st = G.state; st.story.next = 1e9; st.day += 30; st.credits = 20000;
     fillBar(currentPlanet());
     return st;
   };
@@ -77,7 +77,7 @@ test('their work teaches a hand of the same post, and a goal opens a scene where
       const p = person2(traits, goal), pat = { p, known: false }, e1 = draw(pat, new RegExp(GOAL_HELP[goal].ask));
       G.dialog = { event: e1, choices: e1.choices }; chooseEvent(e1.choices.findIndex(c => c.label === GOAL_HELP[goal].ask));
       const next = G.nextEvent; G.nextEvent = null; G.dialog = { event: next, choices: next.choices };
-      st.credits = 2000; const before = p.opinion, cr = st.credits;
+      st.credits = 20000; const before = p.opinion, cr = st.credits;
       const text = chooseEvent(next.choices.findIndex(c => pick.test(c.label)));
       return { n: next.choices.length, liked: p.opinion - before, paid: cr - st.credits, text };
     };
@@ -86,14 +86,14 @@ test('their work teaches a hand of the same post, and a goal opens a scene where
     // a secret, once they trust you
     const debtor = person2(['kind', 'brave'], 'home', { opinion: 2, secret: 'debt' }), dp = { p: debtor, known: false };
     e = draw(dp, /weighing on them/); G.dialog = { event: e, choices: e.choices }; chooseEvent(e.choices.findIndex(c => /weighing on them/.test(c.label)));
-    const sc = G.nextEvent; G.nextEvent = null; G.dialog = { event: sc, choices: sc.choices }; st.credits = 2000; const o0 = debtor.opinion;
-    chooseEvent(sc.choices.findIndex(c => /Cover part/.test(c.label))); out.debt = { paid: 2000 - st.credits, liked: debtor.opinion - o0 };
+    const sc = G.nextEvent; G.nextEvent = null; G.dialog = { event: sc, choices: sc.choices }; st.credits = 20000; const o0 = debtor.opinion;
+    chooseEvent(sc.choices.findIndex(c => /Cover part/.test(c.label))); out.debt = { paid: 20000 - st.credits, liked: debtor.opinion - o0 };
     return out;
   });
   assert.equal(r.xp, 3, 'the engineer learns from the technician');
-  assert.equal(r.greedyGift.n, 4); assert.equal(r.greedyGift.paid, 60); assert.ok(r.greedyGift.liked >= 1, 'the greedy take it well');
+  assert.equal(r.greedyGift.n, 4); assert.equal(r.greedyGift.paid, 600); assert.ok(r.greedyGift.liked >= 1, 'the greedy take it well');
   assert.ok(r.rudeGift.liked < 0, 'the proud take charity badly'); assert.ok(r.listen.liked >= 1);
-  assert.deepEqual(r.debt, { paid: 200, liked: r.debt.liked }); assert.ok(r.debt.liked >= 1);
+  assert.deepEqual(r.debt, { paid: 2000, liked: r.debt.liked }); assert.ok(r.debt.liked >= 1);
   await done();
 });
 
@@ -103,7 +103,7 @@ test('cards, a drink and a goodbye do not always end the same way', async () => 
   const r = await ev(() => {
     const st = setup(), cards = new Set(), leaves = new Set(), out = {};
     for (let i = 0; i < 120; i++) {
-      st.credits = 2000;
+      st.credits = 20000;
       const p = makePerson('earth'), pat = { p, known: false }, e = draw(pat, /cards/), norm = t => t.replace(new RegExp(p.first, 'g'), 'N').replace(new RegExp(p.home, 'g'), 'H');
       cards.add(norm(take(e, /cards/)).split('.')[0]);
       leaves.add(norm(take(e, /Leave/)));
@@ -126,7 +126,7 @@ test('what someone says at the table is theirs: their traits, their goal, and ho
     friend.opinion = OPINION.FRIEND;
     try {
       Math.random = () => 0.01;  // the person's own line, a win at cards, the first of anything picked
-      st.credits = 2000;
+      st.credits = 20000;
       out.greedy = topic(greedy, 'cards');
       out.pious = take(talkEvent({ p: pious, known: false }), /Leave/);
       out.medical = topic(greedy, 'heard');
@@ -155,11 +155,11 @@ test('every topic and every follow-up scene runs for every kind of person, with 
       for (const t of BAR_TOPICS) {
         const pat = { p, known: i % 2 === 0, drank: true };
         if (!(t.w(p, pat) > 0) && !t.must && !['peace'].includes(t.id)) continue;
-        st.credits = 5000; G.nextEvent = null;
+        st.credits = 50000; G.nextEvent = null;
         const o = t.make(p, pat, { st, bar }), text = o.run();
         if (!clean(text)) bad.push(`${t.id}:${text}`);
         const next = G.nextEvent; G.nextEvent = null;
-        if (next) for (let k = 0; k < next.choices.length; k++) { st.credits = 5000; const c = next.choices[k], t2 = c.run(); if (!clean(t2) || !clean(next.text)) bad.push(`${t.id}/${c.label}:${t2}`); }
+        if (next) for (let k = 0; k < next.choices.length; k++) { st.credits = 50000; const c = next.choices[k], t2 = c.run(); if (!clean(t2) || !clean(next.text)) bad.push(`${t.id}/${c.label}:${t2}`); }
       }
     }
     return bad.slice(0, 5);

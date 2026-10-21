@@ -170,7 +170,7 @@ const TRANSIT_EVENTS = [
         'credits, hoser. Your choice." Behind it, in the noise, someone\'s laughing, and someone else is quietly counting.'),
     choices: [
       { label: 'Pay them off (10% of your credits)', cost: true, run() {
-        const c = Math.min(G.state.credits, Math.max(500, Math.round(G.state.credits * 0.1)));
+        const c = Math.min(G.state.credits, Math.max(5000, Math.round(G.state.credits * 0.1)));
         G.state.credits -= c;
         applyEffects({ later: { 'pi-subscription': 20 } });
         return `You transfer ${fmt(c)} cr. They peel off with a flash of their running lights, three long, one short, and on the open band a last, cheerful "Safe burn, hoser." You sit in the quiet with your hand still on the transfer key.`;
@@ -218,7 +218,7 @@ const TRANSIT_EVENTS = [
         '"I just need to get off that rock," they say. "I can pay a little. Or I know things. I know a lot of things."'),
     choices: [
       { label: 'Charge them passage', run() {
-        const c = randInt(3, 8) * 100;
+        const c = randInt(3, 8) * 1000;
         G.state.credits += c;
         chainTo('st-where');
         return (`They hand over ${fmt(c)} cr in crumpled scrip, counted out on the galley table in small sticky bills. When the last one is down they ` +
@@ -241,7 +241,7 @@ const TRANSIT_EVENTS = [
       { label: 'Match velocity and strip it', run() {
         delay(10);
         if (Math.random() < 0.6) {
-          const c = randInt(10, 30) * 100;
+          const c = randInt(10, 30) * 1000;
           G.state.credits += c;
           chainTo('de-drawing');
           return (`You go aboard in suits, through a tangle of cold, dark passages, past frozen coffee bulbs and a child\'s drawing pinned to a ` +
@@ -291,10 +291,10 @@ const TRANSIT_EVENTS = [
     via: 'ship',
     text: ('A freighter on a parallel trajectory hails you, close enough that you can see her crew in the cockpit windows, and a cheerful, weathered ' +
         'face, and a cup raised in greeting. "Market tip, friend?" the captain says, in a voice like a well-worn saddle. "I\'ve been up and down ' +
-        'these lanes forty years, and I hear things. Five hundred credits and it\'s yours. I promise you won\'t regret it. Usually."'),
+        'these lanes forty years, and I hear things. Five thousand credits and it\'s yours. I promise you won\'t regret it. Usually."'),
     choices: [
-      { label: 'Buy the tip (500 cr)', cost: true, ...gated(needCr(500)), run() {
-        G.state.credits -= 500;
+      { label: 'Buy the tip (5,000 cr)', cost: true, ...gated(needCr(5000)), run() {
+        G.state.credits -= 5000;
         applyEffects({ later: { [Math.random() < 0.6 ? 'me-good' : 'me-bad']: 10 } });
         return `The captain clears their throat and says, solemnly: "${addRumor()}" There's a pause. "That's the good stuff," they add. "I wouldn't sell it to just anyone." They sign off with a wink and a two-fingered salute, and in a few minutes their lights are a distant spark.`;
       } },

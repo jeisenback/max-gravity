@@ -16,7 +16,7 @@ const helpers = () => {
   window.S = {
     reset(stage, extra) {
       localStorage.clear(); newGame(); while (G.dialog) finishEvent();
-      const st = G.state; st.tutorial = null; st.shipId = 'freighter'; st.credits = 50000;
+      const st = G.state; st.tutorial = null; st.shipId = 'freighter'; st.credits = 500000;
       if (stage !== undefined) Object.assign(st.story, { stage }, extra || {});
       home().cat = 'Rivet';  // no stray-cat scene in front of the story scene under test
     },
@@ -112,7 +112,7 @@ test('Cold Water act 2: every side can be chosen', async () => {
     const o = {};
     // The Belt: proof to Ceres, water to Ceres, then Pallas.
     S.reset(5); S.land('ceres', 'Ceres Station'); S.choose('Give the proof');
-    G.state.cargo.water = 25; G.state.paid.water = 2000; S.land('ceres', 'Ceres Station'); S.choose('Unload');
+    G.state.cargo.water = 25; G.state.paid.water = 20000; S.land('ceres', 'Ceres Station'); S.choose('Unload');
     G.state.crew.push('rosa'); S.burn('pallas'); S.arrive('Pallas Refinery'); S.choose('Tell them');
     o.belt = [story().stage, story().side];
     // Mars: needs standing, then Hermes Foundry and Phobos.
@@ -150,7 +150,7 @@ test('Cold Water act 3: each side reaches its ending at Ceres', async () => {
       S.at('ceres', 'Ceres Station'); takeOff(); Mods.emit('frame', 0.1);
       o.blockade = G.dialog && G.dialog.event.title;
       G.dialog = null; G.pendingScene = null; story().blockadeCleared = true; G.npcs = [];  // the fights have their own test
-      G.state.cargo.water = 30; G.state.paid.water = 3000; G.state.crew = ['rosa', 'kit'];
+      G.state.cargo.water = 30; G.state.paid.water = 30000; G.state.crew = ['rosa', 'kit'];
       S.land('ceres', 'Ceres Station'); S.choose(pick);
       o.epilogue = G.dialog && G.dialog.event.title;
       S.choose('Keep flying');
@@ -174,11 +174,11 @@ test("the Ice Haulers' Strike plays to its end", async () => {
   const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
-    S.reset(); const st = G.state; st.day = 12; st.story.next = 1e9; st.credits = 30000; st.shipId = 'shuttle';
+    S.reset(); const st = G.state; st.day = 12; st.story.next = 1e9; st.credits = 300000; st.shipId = 'shuttle';
     S.slicer('earth');
     S.burn('ceres');
     let s = null; for (let i = 0; i < 60 && !s; i++) { const x = pickStorylet('transit'); if (x && x.id.startsWith('strike')) s = x; }
-    openEvent(storyletEvent(s)); const first = G.dialog.event.title; S.choose('Send 2,000');
+    openEvent(storyletEvent(s)); const first = G.dialog.event.title; S.choose('Send 20,000');
     S.arrive('Ceres Station'); const ceres = G.dialog && G.dialog.event.title; S.choose('Carry them (8t');
     S.burn('pallas'); startHappening(); if (G.dialog) S.choose(G.dialog.choices[0].label);
     S.arrive('Pallas Refinery'); if (G.dialog) S.choose(G.dialog.choices[G.dialog.choices.length - 1].label);
@@ -215,7 +215,7 @@ test("the Rook's Crown by blood and by coin; Navy officers are never invited", a
   await ev(helpers);
   for (const path of ['blood', 'coin']) {
     const r = await ev(path => {
-      S.reset(); const st = G.state; st.story.next = 1e9; st.day = 25; st.credits = 60000; S.slicer('belt');
+      S.reset(); const st = G.state; st.story.next = 1e9; st.day = 25; st.credits = 600000; S.slicer('belt');
       const steps = [];
       S.at('hygiea', 'The Rook'); steps.push(S.play('port', 'Fly under'));
       steps.push(S.play('port', 'Run the crates'));
@@ -244,7 +244,7 @@ test('the Tethys Consortium, loyal and leaking', async () => {
   await ev(helpers);
   for (const loyal of [true, false]) {
     const r = await ev(loyal => {
-      S.reset(); const st = G.state; st.story.next = 1e9; st.day = 35; st.credits = 300000;
+      S.reset(); const st = G.state; st.story.next = 1e9; st.day = 35; st.credits = 3000000;
       S.at('saturn', 'Titan');
       const noShip = S.play('port', 'Sign');
       buyCompanyShip('lightfreighter');
@@ -271,7 +271,7 @@ test('every storylet opens and every choice plays, with no unfilled text', async
     const bad = [], odd = t => /undefined|NaN|\[object|\{[a-z]+\}/.test(t);
     const fresh = () => {
       localStorage.clear(); newGame(); while (G.dialog) finishEvent();
-      const st = G.state; st.tutorial = null; st.credits = 100000; st.shipId = 'freighter'; st.day = 60;
+      const st = G.state; st.tutorial = null; st.credits = 1000000; st.shipId = 'freighter'; st.day = 60;
       st.cargo = { water: 20, medical: 10, luxury: 10, food: 10, equipment: 10 };
       st.crew.push('rosa', 'kit');
       for (const role of ['slicer', 'medic', 'pilot']) { const c = makeCrewCandidate('belt'); c.role = role; c.skill = 2; registerPerson(c); st.crew.push(c.id); }
@@ -361,7 +361,7 @@ test('the recovery ship on the console: a scene with a way out, and a fight sett
     S.choose('Hand over the book'); Mods.emit('frame', 0.1);
     out.sold = { stage: story().stage, fight: !!G.storyFight, mode: G.mode };
     // The other way: fight it out, on the console, and be back in flight after.
-    S.reset(2); hireGunner(); st.credits = 50000; st.armor = ship().armor;
+    S.reset(2); hireGunner(); st.credits = 500000; st.armor = ship().armor;
     S.land('earth', 'Earth'); takeOff(); G.npcs = []; Mods.emit('frame', 0.1);
     S.choose('Battle stations');
     out.fighting = { duel: !!G.duel, name: G.duel && G.duel.foe.name, story: G.duel && G.duel.foe.story };

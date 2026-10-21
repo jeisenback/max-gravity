@@ -12,7 +12,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 3000,
+     "bonus": 30000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -21,10 +21,10 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"That's the second form I've asked for,\" the officer says. \"For the third I come aboard.\" She comes aboard. They find Sam's stash behind a false panel in the second bay, in under ten minutes. \"Negligent inspection,\" she says, writing it, \"two thousand credits.\" You pay it. At supper the only sound in the galley is cutlery.",
+    "text": "\"That's the second form I've asked for,\" the officer says. \"For the third I come aboard.\" She comes aboard. They find Sam's stash behind a false panel in the second bay, in under ten minutes. \"Negligent inspection,\" she says, writing it, \"twenty thousand credits.\" You pay it. At supper the only sound in the galley is cutlery.",
     "mem": "9 Jun 2214: You tried to cover for me with customs.",
     "d": {
-     "credits": -2000,
+     "credits": -20000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -44,7 +44,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 3000,
+     "bonus": 30000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -53,10 +53,10 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "{crew}'s spoof fails a checksum on one line of the manifest, and the scanner lights. You pay a 2,000 cr fine. \"One digit,\" {crew} says, for the next hour. \"It was one digit.\"",
+    "text": "{crew}'s spoof fails a checksum on one line of the manifest, and the scanner lights. You pay a 20,000 cr fine. \"One digit,\" {crew} says, for the next hour. \"It was one digit.\"",
     "mem": null,
     "d": {
-     "credits": -2000,
+     "credits": -20000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -72,7 +72,7 @@
     "text": "\"Sam Vale,\" the officer says, once, to be sure, and customs takes Sam off in cuffs with one hand on their shoulder. Sam doesn't look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.",
     "mem": "9 Jun 2214: You turned me in to customs.",
     "d": {
-     "credits": 1500,
+     "credits": 15000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -88,7 +88,7 @@
     "text": "\"Sam Vale,\" the officer says, once, to be sure, and customs takes Sam off in cuffs with one hand on their shoulder. Sam doesn't look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.",
     "mem": "9 Jun 2214: You turned me in to customs.",
     "d": {
-     "credits": 1500,
+     "credits": 15000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -104,7 +104,7 @@
   "labels": [
    "Stall them",
    "[{crew}] Spoof the cargo manifest",
-   "Turn Sam in (+1,500 cr reward)"
+   "Turn Sam in (+15,000 cr reward)"
   ]
  },
  {
@@ -116,7 +116,7 @@
     "text": "\"Dock at my lock,\" the hunter says, \"and keep your hands off the panel.\" Sam goes across with one bag. At the lock Sam looks back once. The credits arrive before the lock finishes cycling.",
     "mem": "9 Jun 2214: You sold me to a bounty hunter.",
     "d": {
-     "credits": 5000,
+     "credits": 50000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -132,7 +132,7 @@
     "text": "\"Dock at my lock,\" the hunter says, \"and keep your hands off the panel.\" Sam goes across with one bag. At the lock Sam looks back once. The credits arrive before the lock finishes cycling.",
     "mem": "9 Jun 2214: You sold me to a bounty hunter.",
     "d": {
-     "credits": 5000,
+     "credits": 50000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -152,7 +152,7 @@
      "fuel": 0,
      "armor": -26,
      "left": 0,
-     "bonus": 2000,
+     "bonus": 20000,
      "onboard": true,
      "opinion": 4,
      "owes": 0
@@ -168,7 +168,7 @@
      "fuel": 0,
      "armor": -26,
      "left": 0,
-     "bonus": 2000,
+     "bonus": 20000,
      "onboard": true,
      "opinion": 4,
      "owes": 0
@@ -184,7 +184,7 @@
      "fuel": 0,
      "armor": -52,
      "left": 0,
-     "bonus": 2000,
+     "bonus": 20000,
      "onboard": true,
      "opinion": 4,
      "owes": 0
@@ -208,9 +208,9 @@
    }
   ],
   "title": "Bounty Hunter",
-  "text": "A bounty hunter matches your burn, dark, with one running light that winks on and off. \"You're carrying Sam Vale,\" says the voice on the channel, low and unhurried. \"Wanted on Mars for fraud. Five thousand for the handover. Or I come and take them, and that costs everyone aboard.\" In the galley Sam sets a cup on the table and turns it a quarter turn, so that the handle faces away.",
+  "text": "A bounty hunter matches your burn, dark, with one running light that winks on and off. \"You're carrying Sam Vale,\" says the voice on the channel, low and unhurried. \"Wanted on Mars for fraud. Fifty thousand for the handover. Or I come and take them, and that costs everyone aboard.\" In the galley Sam sets a cup on the table and turns it a quarter turn, so that the handle faces away.",
   "labels": [
-   "Hand them over (+5,000 cr)",
+   "Hand them over (+50,000 cr)",
    "[{crew}] Make them reconsider",
    "Refuse, and fight if you must"
   ]
@@ -228,7 +228,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 1000,
+     "bonus": 10000,
      "onboard": true,
      "opinion": 4,
      "owes": 0
@@ -244,7 +244,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 1000,
+     "bonus": 10000,
      "onboard": true,
      "opinion": 4,
      "owes": 0
@@ -256,11 +256,11 @@
     "text": "You sit up with them through the night, working from the manual, with a bulb of water and a flashlight in your teeth. The fever breaks in the small hours, and they sleep for the first time in days.",
     "mem": "9 Jun 2214: You spent your medical supplies on me.",
     "d": {
-     "credits": -500,
+     "credits": -5000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 800,
+     "bonus": 8000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -272,7 +272,7 @@
     "text": "You do everything the medkit and the manual allow, and it holds them stable. They need a real doctor. For the rest of the burn you take their pulse every twenty minutes, in the dark.",
     "mem": "9 Jun 2214: You spent your medical supplies on me.",
     "d": {
-     "credits": -500,
+     "credits": -5000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -324,7 +324,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": -500,
+     "bonus": -5000,
      "onboard": true,
      "opinion": -2,
      "owes": 0
@@ -340,7 +340,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": -500,
+     "bonus": -5000,
      "onboard": true,
      "opinion": -2,
      "owes": 0
@@ -351,7 +351,7 @@
   "text": "Sam goes down in the galley, dropping a cup, and slides to the deck with their back against a cabinet. Their breathing is shallow and fast. Between breaths they say they have hidden an illness for weeks and didn't want to be a burden. Everyone in the room has stopped moving. They look at you.",
   "labels": [
    "[{crew}] Treat them",
-   "Use the ship's medkit (500 cr of supplies)",
+   "Use the ship's medkit (5,000 cr of supplies)",
    "Burn harder to get them help (40 reaction mass)",
    "There's nothing you can do"
   ]
@@ -369,7 +369,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 1000,
+     "bonus": 10000,
      "onboard": true,
      "opinion": 4,
      "owes": 0
@@ -385,7 +385,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 1000,
+     "bonus": 10000,
      "onboard": true,
      "opinion": 4,
      "owes": 0
@@ -397,11 +397,11 @@
     "text": "You sit up with them through the night, working from the manual, with a bulb of water and a flashlight in your teeth. The fever breaks in the small hours, and they sleep for the first time in days.",
     "mem": "9 Jun 2214: You spent your medical supplies on me.",
     "d": {
-     "credits": -500,
+     "credits": -5000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 800,
+     "bonus": 8000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -413,7 +413,7 @@
     "text": "You do everything the medkit and the manual allow, and it holds them stable. They need a real doctor. For the rest of the burn you take their pulse every twenty minutes, in the dark.",
     "mem": "9 Jun 2214: You spent your medical supplies on me.",
     "d": {
-     "credits": -500,
+     "credits": -5000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -465,7 +465,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": -500,
+     "bonus": -5000,
      "onboard": true,
      "opinion": -2,
      "owes": 0
@@ -481,7 +481,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": -500,
+     "bonus": -5000,
      "onboard": true,
      "opinion": -2,
      "owes": 0
@@ -492,7 +492,7 @@
   "text": "Sam goes down in the galley, dropping a cup, and slides to the deck with their back against a cabinet. Their breathing is shallow and fast. The condition they were traveling to get treated has taken a turn. Everyone in the room has stopped moving. They look at you.",
   "labels": [
    "[{crew}] Treat them",
-   "Use the ship's medkit (500 cr of supplies)",
+   "Use the ship's medkit (5,000 cr of supplies)",
    "Burn harder to get them help (40 reaction mass)",
    "There's nothing you can do"
   ]
@@ -503,14 +503,14 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam sighs, looks at you, and transfers 2,500 cr \"for your discretion\". \"I like you, captain,\" they say. \"I'd rather not have to like you less.\"",
+    "text": "Sam sighs, looks at you, and transfers 25,000 cr \"for your discretion\". \"I like you, captain,\" they say. \"I'd rather not have to like you less.\"",
     "mem": "9 Jun 2214: You caught me, and took money to keep quiet.",
     "d": {
      "credits": 0,
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 2500,
+     "bonus": 25000,
      "onboard": true,
      "opinion": 1,
      "owes": 0
@@ -611,33 +611,33 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen hundred. Every credit, with interest, if it takes the rest of my life.\" They don't sit down until you have.",
+    "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen thousand. Every credit, with interest, if it takes the rest of my life.\" They don't sit down until you have.",
     "mem": "9 Jun 2214: You paid off my debt. I'll pay you back.",
     "d": {
-     "credits": -1500,
+     "credits": -15000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
      "bonus": 0,
      "onboard": true,
      "opinion": 5,
-     "owes": 1500
+     "owes": 15000
     }
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen hundred. Every credit, with interest, if it takes the rest of my life.\" They don't sit down until you have.",
+    "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen thousand. Every credit, with interest, if it takes the rest of my life.\" They don't sit down until you have.",
     "mem": "9 Jun 2214: You paid off my debt. I'll pay you back.",
     "d": {
-     "credits": -1500,
+     "credits": -15000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
      "bonus": 0,
      "onboard": true,
      "opinion": 5,
-     "owes": 1500
+     "owes": 15000
     }
    },
    {
@@ -674,9 +674,9 @@
    }
   ],
   "title": "Collectors",
-  "text": "A collection agency hails and reads from a script: Sam owes 1,500 credits and they want it now, \"or we flag your ship as an accessory\". In the corner of the galley Sam has gone the color of old paper and is looking at the deck. The agent adds that they have \"a great deal of patience, and a great many lawyers.\"",
+  "text": "A collection agency hails and reads from a script: Sam owes 15,000 credits and they want it now, \"or we flag your ship as an accessory\". In the corner of the galley Sam has gone the color of old paper and is looking at the deck. The agent adds that they have \"a great deal of patience, and a great many lawyers.\"",
   "labels": [
-   "Pay it for them (1,500 cr)",
+   "Pay it for them (15,000 cr)",
    "Tell the collectors to get lost"
   ]
  },
@@ -693,7 +693,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 800,
+     "bonus": 8000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -709,7 +709,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 800,
+     "bonus": 8000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -725,7 +725,7 @@
      "fuel": -40,
      "armor": 0,
      "left": 0,
-     "bonus": 800,
+     "bonus": 8000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -741,7 +741,7 @@
      "fuel": -40,
      "armor": 0,
      "left": 0,
-     "bonus": 800,
+     "bonus": 8000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -801,7 +801,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 20,
-     "bonus": 2000,
+     "bonus": 20000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -817,7 +817,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 20,
-     "bonus": 2000,
+     "bonus": 20000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -876,7 +876,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 12,
-     "bonus": 800,
+     "bonus": 8000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -892,7 +892,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 12,
-     "bonus": 800,
+     "bonus": 8000,
      "onboard": true,
      "opinion": 3,
      "owes": 0
@@ -1054,7 +1054,7 @@
     "text": "Sam takes the sedative with a shaking hand and lies back on the bunk. Within minutes they're breathing slow. They sleep through the rest of the burn and wake at the dock with no memory of what frightened them.",
     "mem": null,
     "d": {
-     "credits": -200,
+     "credits": -2000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -1070,7 +1070,7 @@
     "text": "Sam takes the sedative with a shaking hand and lies back on the bunk. Within minutes they're breathing slow. They sleep through the rest of the burn and wake at the dock with no memory of what frightened them.",
     "mem": null,
     "d": {
-     "credits": -200,
+     "credits": -2000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -1090,7 +1090,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": -300,
+     "bonus": -3000,
      "onboard": true,
      "opinion": -2,
      "owes": 0
@@ -1106,7 +1106,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": -300,
+     "bonus": -3000,
      "onboard": true,
      "opinion": -2,
      "owes": 0
@@ -1117,7 +1117,7 @@
   "text": "Sam panics when the drive cuts for the flip. The silence and the sudden lightness come at once, and they're sure the reactor has failed. They grip the edge of the bunk, breathing in short gasps, and a low moan starts in their throat. The others look at you.",
   "labels": [
    "Talk them through it",
-   "Give them a sedative (200 cr)",
+   "Give them a sedative (2,000 cr)",
    "Tell them to pull themselves together"
   ]
  },
@@ -1209,7 +1209,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 400,
+     "bonus": 4000,
      "onboard": true,
      "opinion": -2,
      "owes": 0
@@ -1225,7 +1225,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 400,
+     "bonus": 4000,
      "onboard": true,
      "opinion": -2,
      "owes": 0
@@ -1237,7 +1237,7 @@
     "text": "Sam goes deep red. They clean the galley themselves, top to bottom, all night, with a toothbrush, and in the morning it's the cleanest room on the ship. There's a note on the door in pencil: \"Sorry. Thank you. Never again.\"",
     "mem": "9 Jun 2214: You let the recycler thing slide.",
     "d": {
-     "credits": -400,
+     "credits": -4000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -1253,7 +1253,7 @@
     "text": "Sam goes deep red. They clean the galley themselves, top to bottom, all night, with a toothbrush, and in the morning it's the cleanest room on the ship. There's a note on the door in pencil: \"Sorry. Thank you. Never again.\"",
     "mem": "9 Jun 2214: You let the recycler thing slide.",
     "d": {
-     "credits": -400,
+     "credits": -4000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -1265,10 +1265,10 @@
    }
   ],
   "title": "Galley Incident",
-  "text": "Sam got into the good whiskey, the bottle you were saving, and somewhere around the third glass decided to give the galley water recycler \"a bit of a fix\", with a spoon and a fork. There's a gap in the wall and a fine mist in the air. Sam is sitting in the middle of the galley, wet through, holding the spoon upright. Repairs will run about 400 credits.",
+  "text": "Sam got into the good whiskey, the bottle you were saving, and somewhere around the third glass decided to give the galley water recycler \"a bit of a fix\", with a spoon and a fork. There's a gap in the wall and a fine mist in the air. Sam is sitting in the middle of the galley, wet through, holding the spoon upright. Repairs will run about 4,000 credits.",
   "labels": [
    "Add it to their fare",
-   "Let it slide (400 cr)"
+   "Let it slide (4,000 cr)"
   ]
  },
  {
@@ -1280,7 +1280,7 @@
     "text": "You clean Sam out in one long quiet hand. Sam looks at the table for ten seconds. \"Luck,\" Sam says. For the rest of the trip Sam sits in a corner and mutters it at the deck.",
     "mem": "9 Jun 2214: You beat me at cards.",
     "d": {
-     "credits": 500,
+     "credits": 5000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -1296,7 +1296,7 @@
     "text": "Sam wins in one slow hand, turning a single card over at the end. \"Well,\" Sam says, and gathers the money. \"That was friendly.\" For the rest of the trip Sam hums in the corridors and shuffles the deck where you can see it.",
     "mem": null,
     "d": {
-     "credits": -500,
+     "credits": -5000,
      "fuel": 0,
      "armor": 0,
      "left": 0,
@@ -1342,7 +1342,7 @@
   "title": "Card Game",
   "text": "Sam produces a deck worn soft at the corners and shuffles it with a flourish. \"A friendly game, captain,\" Sam says. \"With a little money on it, just to make things interesting. It's a long burn, and a man gets bored.\" The deck isn't yet square, and Sam is already smiling.",
   "labels": [
-   "Play (500 cr stake)",
+   "Play (5,000 cr stake)",
    "Decline"
   ]
  },
@@ -1359,7 +1359,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 600,
+     "bonus": 6000,
      "onboard": true,
      "opinion": 1,
      "owes": 0
@@ -1375,7 +1375,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": 600,
+     "bonus": 6000,
      "onboard": true,
      "opinion": 1,
      "owes": 0
@@ -1466,7 +1466,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": -300,
+     "bonus": -3000,
      "onboard": true,
      "opinion": -2,
      "owes": 0
@@ -1482,7 +1482,7 @@
      "fuel": 0,
      "armor": 0,
      "left": 0,
-     "bonus": -300,
+     "bonus": -3000,
      "onboard": true,
      "opinion": -2,
      "owes": 0

@@ -26,7 +26,7 @@ function changeRep(gov, amount) {
 const localGov = () => system().gov;
 
 function fineFor(gov) {
-  return 1000 * Math.ceil(-repOf(gov) / 10);
+  return 10000 * Math.ceil(-repOf(gov) / 10);
 }
 
 function blockadeWarning(n) {

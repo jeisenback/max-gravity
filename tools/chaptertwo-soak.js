@@ -3,13 +3,13 @@
 // Sails chapter two (#685) for a run of days and reports what the 90-day close (js/chaptertwo.js CHAPTER_TWO_DAYS) would read: after the buy, the player takes the best contract on
 // the board at each port that trades (js/ownerboard.js) and flies it, the crew who came along are paid at every burn (crew.js payCrew), and a crew member quits when the credits run out.
 // For each seed it reports the days to the first quit (if any), the contracts delivered, the credits at 30, 60, 90, 120, 180 and 240 days, and who was still aboard at each.
-//   node tools/chaptertwo-soak.js --seeds 1,2,3,4,5,6 [--days 240] [--left 3000] [--raw]
+//   node tools/chaptertwo-soak.js --seeds 1,2,3,4,5,6 [--days 240] [--left 30000] [--raw]
 // `--left` is the credits the player has after the buy (chapter one closes with the price of the ship and what is over). Not part of `npm test`.
 
 const { open, closeBrowser } = require('../tests/helpers');
 
 const arg = (k, d) => { const i = process.argv.indexOf(`--${k}`); return i < 0 ? d : process.argv[i + 1]; };
-const seeds = String(arg('seeds', '1,2,3,4,5,6')).split(',').map(Number), days = +arg('days', 240), left = +arg('left', 3000);
+const seeds = String(arg('seeds', '1,2,3,4,5,6')).split(',').map(Number), days = +arg('days', 240), left = +arg('left', 30000);
 
 async function one(seed) {
   const { ev, done } = await open({ scope: 'earth-hired', seed, stall: 0 });

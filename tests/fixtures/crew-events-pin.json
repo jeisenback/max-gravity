@@ -11,7 +11,7 @@
      "credits": 0,
      "fuel": 0,
      "armor": 0,
-     "wage": 25,
+     "wage": 250,
      "opinion": 3
     }
    },
@@ -24,7 +24,7 @@
      "credits": 0,
      "fuel": 0,
      "armor": 0,
-     "wage": 25,
+     "wage": 250,
      "opinion": 3
     }
    },
@@ -58,7 +58,7 @@
   "title": "Sam Wants a Raise",
   "text": "Sam finds you at the end of a long shift with a printed sheet and folded arms. The sheet lists what crew with their skills earn on other ships, what a ship of your size can afford, and what Sam has done for you lately. The last line says: \"I'm worth it.\"",
   "labels": [
-   "Give them 25% more (125 cr/day)",
+   "Give them 25% more (1,250 cr/day)",
    "No"
   ]
  },
@@ -97,7 +97,7 @@
     "text": "Sam stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the bulkhead, and they don't look up. The dent is polished.",
     "mem": "9 Jun 2214: You let the brawl go.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "fuel": 0,
      "armor": 0,
      "wage": 0,
@@ -110,7 +110,7 @@
     "text": "Sam stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the bulkhead, and they don't look up. The dent is polished.",
     "mem": "9 Jun 2214: You let the brawl go.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "fuel": 0,
      "armor": 0,
      "wage": 0,
@@ -119,10 +119,10 @@
    }
   ],
   "title": "Galley Brawl",
-  "text": "Sam got drunk on something they had been keeping in a pipe, and had an argument with the galley bulkhead. The bulkhead won. There's a dent the size of a fist in the wall, blood on the deck, and Sam on the floor with a cloth pressed to their forehead. The medical supplies cost 300 cr.",
+  "text": "Sam got drunk on something they had been keeping in a pipe, and had an argument with the galley bulkhead. The bulkhead won. There's a dent the size of a fist in the wall, blood on the deck, and Sam on the floor with a cloth pressed to their forehead. The medical supplies cost 3,000 cr.",
   "labels": [
    "Dock their pay",
-   "Pay for it and let it go (300 cr)"
+   "Pay for it and let it go (3,000 cr)"
   ]
  },
  {
@@ -134,7 +134,7 @@
     "text": "Sam takes an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes and laugh once. They don't say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.",
     "mem": "9 Jun 2214: You paid for my call home.",
     "d": {
-     "credits": -500,
+     "credits": -5000,
      "fuel": 0,
      "armor": 0,
      "wage": 0,
@@ -147,7 +147,7 @@
     "text": "Sam takes an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes and laugh once. They don't say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.",
     "mem": "9 Jun 2214: You paid for my call home.",
     "d": {
-     "credits": -500,
+     "credits": -5000,
      "fuel": 0,
      "armor": 0,
      "wage": 0,
@@ -210,7 +210,7 @@
   "title": "Homesick",
   "text": "Sam has been quiet for days. At mealtimes they push their food around. At night you've seen them at the viewport, looking at a point of light. They haven't said they miss Mars.",
   "labels": [
-   "Give them a 500 cr bonus to call home",
+   "Give them a 5,000 cr bonus to call home",
    "Share a drink and listen",
    "\"We all miss somewhere.\""
   ]

@@ -78,7 +78,7 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
     const LIVE_SECONDS = 20, LIVE_STEP = 0.05;  // the live flight played in each system with --frames (#656): the frame step is the game's own cap
     const fr = { raids: 0, scrams: 0, hull: 0, fuel: 0, planned: 0, seen: 0, live: 0 };
     if (play) for (const name of ['startShipFight', 'overload']) { const real = window[name]; window[name] = function (...a) { fr[name === 'startShipFight' ? 'raids' : 'scrams']++; return real.apply(this, a); }; }
-    const target = typeof HIRED_TARGET === 'undefined' ? 19000 : HIRED_TARGET;
+    const target = typeof HIRED_TARGET === 'undefined' ? 190000 : HIRED_TARGET;
     // The deck fights (fightui.js deckFightEvent) begun: each is played to its close (deckClose sets s.won) or to the hand's death, or the run is bad (below).
     const decks = [];
     { const df = window.deckFightEvent; window.deckFightEvent = function (s) { if (s && !decks.includes(s)) decks.push(s); return df.apply(this, arguments); }; }

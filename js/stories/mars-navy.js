@@ -51,7 +51,7 @@ Mods.register({
           'down, and the Reserve will notice."'),
       choices: [
         { label: 'Take the hunt', effects: { ...task, log: 'Tasked by the Fleet Reserve to hunt the raider Hollow Crown near Pallas.',
-          bounty: { at: 'pallas', name: 'Raider "Hollow Crown"', pay: 9000, days: 45, issuer: 'Dome Concord',
+          bounty: { at: 'pallas', name: 'Raider "Hollow Crown"', pay: 90000, days: 45, issuer: 'Dome Concord',
             onDone: { q: { mcrn: 1 }, set: taskOver, rep: { 'Dome Concord': 3 }, log: 'Destroyed the Hollow Crown for the Fleet Reserve.' },
             onFail: { set: taskOver, rep: { 'Dome Concord': -3 }, log: 'The Hollow Crown got away. Osei wasn\'t impressed.' } } },
           result: '"Forty-five days," Osei says. "After that it\'s someone else\'s problem, and a mark against yours." She taps the chit once, with one blunt fingernail, the way a sergeant taps a map. "Don\'t be brave. Be exact. The Crown is clever, and the ones who are brave don\'t come home."' },
@@ -73,8 +73,8 @@ Mods.register({
           result: ('{crew:medic} goes across in a suit with a case of dressings and a face like stone, and comes back six hours later, gray with ' +
               'exhaustion, with somebody else\'s blood down one sleeve. All three will live. The captain of the Tharsis Dawn sends a message, formal ' +
               'and stumbling and very sincere, and the Fleet logs your transponder with a commendation you didn\'t ask for.') },
-        { label: 'Send over spare parts (1,500 cr)', when: { credits: 1500 },
-          effects: { credits: -1500, q: { mcrn: 1 }, rep: { 'Dome Concord': 3 }, log: 'Answered the Tharsis Dawn\'s distress call with spare parts.' },
+        { label: 'Send over spare parts (15,000 cr)', when: { credits: 15000 },
+          effects: { credits: -15000, q: { mcrn: 1 }, rep: { 'Dome Concord': 3 }, log: 'Answered the Tharsis Dawn\'s distress call with spare parts.' },
           result: ('You pack the spare coolant pumps into a cargo sled and send it drifting across on a thin line of thrust. They fit, barely, and a ' +
               'shaky voice on the channel says, "It\'s holding. Oh, God, it\'s holding." The containment stays up until a Fleet tug arrives, two hours ' +
               'later. Their captain promises to mention you, and you suspect that, for once, it\'s true.') },
@@ -96,7 +96,7 @@ Mods.register({
       choices: [
         { label: 'Load the munitions (12t)', when: { space: 12 },
           effects: { ...task, log: 'Called up by the Fleet Reserve: munitions run to Phobos Yards.',
-            mission: { to: 'Phobos Yards', tons: 12, good: 'Fleet munitions', pay: 6000, days: 10, title: 'Fleet call-up: munitions to Phobos Yards',
+            mission: { to: 'Phobos Yards', tons: 12, good: 'Fleet munitions', pay: 60000, days: 10, title: 'Fleet call-up: munitions to Phobos Yards',
               onDone: { q: { mcrn: 1 }, set: taskOver, rep: { 'Dome Concord': 5 }, log: 'Delivered munitions to the fleet at Phobos.' },
               onFail: { set: taskOver, q: { mcrn: -1 }, rep: { 'Dome Concord': -6 }, log: 'Failed to deliver the Fleet\'s munitions.' } } },
           result: ('Sailors in gray fatigues load the crates in a silent, efficient line, and the manifest arrives on your console with three ' +
@@ -115,7 +115,7 @@ Mods.register({
           'very ordinary Fleet seal.'),
       choices: [
         { label: 'Carry the pouch', effects: { ...task, log: 'Carrying a sealed Fleet pouch to Ganymede.',
-          mission: { to: 'Ganymede', tons: 1, good: 'sealed Fleet pouch', pay: 5000, days: 35, title: 'Carry a sealed Fleet pouch to Ganymede',
+          mission: { to: 'Ganymede', tons: 1, good: 'sealed Fleet pouch', pay: 50000, days: 35, title: 'Carry a sealed Fleet pouch to Ganymede',
             onDone: { q: { mcrn: 1 }, set: taskOver, rep: { 'Dome Concord': 3 }, log: 'Delivered the Fleet pouch to Ganymede.' },
             onFail: { set: taskOver, rep: { 'Dome Concord': -3 }, log: 'The Fleet pouch never reached Ganymede.' } } },
           result: ('"Don\'t open it," Osei says. "I\'m serious. Don\'t." She pauses. "I opened one, once. As a very young ensign. It was menus. ' +
@@ -159,9 +159,9 @@ Mods.register({
           'looks slightly bored. The light comes down in long dusty bars from the gantry windows. Osei stands at the front with a small velvet box, ' +
           'and, for a moment, you think her hands aren\'t entirely steady. She pins the bars on herself, as the old custom has it. "Lieutenant, ' +
           'Reserve. You\'ve earned the Fleet\'s trust, and its enemies. Both come with the rank."'),
-      choices: [{ label: 'Salute', effects: { set: { mcrnDone: 1 }, credits: 15000, rep: { 'Dome Concord': 10 }, log: 'Promoted to Lieutenant in the Fleet Reserve.', news: 'The Dome Concord Fleet promotes an independent captain to Lieutenant in its Reserve.' },
+      choices: [{ label: 'Salute', effects: { set: { mcrnDone: 1 }, credits: 150000, rep: { 'Dome Concord': 10 }, log: 'Promoted to Lieutenant in the Fleet Reserve.', news: 'The Dome Concord Fleet promotes an independent captain to Lieutenant in its Reserve.' },
         result: ('You salute, and the honor guard, on cue, does the same, and for a moment the whole hangar is a still, white-gold picture. The ' +
-            'promotion comes with a 15,000 cr bonus and a standing no Martian patrol will question. Afterwards Osei buys you a drink at the same bar, ' +
+            'promotion comes with a 150,000 cr bonus and a standing no Martian patrol will question. Afterwards Osei buys you a drink at the same bar, ' +
             'at the same stool, and for once doesn\'t say a word about the war.') }],
     });
     M.addStorylet({
@@ -170,8 +170,8 @@ Mods.register({
       text: ('No ceremony. Osei meets you on the docks, in the gray of an early shift change, with the bars in her pocket and the look of someone who ' +
           'has been arguing all night. "The auditors wanted you out," she says, without preamble. "I told them a reservist who can say no is worth ' +
           'three who can\'t. It took a long time, and a great deal of shouting. You\'ll never make commander. You\'re still ours."'),
-      choices: [{ label: 'Take the bars', effects: { set: { mcrnDone: 1 }, credits: 8000, rep: { 'Dome Concord': 5 }, log: 'Promoted to Lieutenant in the Fleet Reserve, despite refusing an order.' },
-        result: ('You pin them on yourself, and Osei watches with her arms folded, and, very slightly, nods. The bars come with an 8,000 cr bonus and ' +
+      choices: [{ label: 'Take the bars', effects: { set: { mcrnDone: 1 }, credits: 80000, rep: { 'Dome Concord': 5 }, log: 'Promoted to Lieutenant in the Fleet Reserve, despite refusing an order.' },
+        result: ('You pin them on yourself, and Osei watches with her arms folded, and, very slightly, nods. The bars come with an 80,000 cr bonus and ' +
             'a note in your file that Osei says she\'ll deny writing. "Don\'t let it go to your head," she says. It\'s the kindest thing she has ever ' +
             'said to you, and you both know it.') }],
     });

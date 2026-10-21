@@ -26,9 +26,9 @@ test('every choice of every captain scene runs and says what happened', async ()
       for (const [name, opinion] of scenes) {
         const count = (() => { start(key); hiredCaptain().opinion = opinion; return captainScene(name).choices.length; })();
         for (let i = 0; i < count; i++) {
-          start(key); const cap = hiredCaptain(); cap.opinion = opinion; G.state.credits = 1000;
+          start(key); const cap = hiredCaptain(); cap.opinion = opinion; G.state.credits = 10000;
           const e = captainScene(name), c = e.choices[i], at = `${key}.${name}.${opinion}.${i}`;
-          if (c.can && !c.can()) { bad.push(`${at}: gated shut with a thousand credits`); continue; }
+          if (c.can && !c.can()) { bad.push(`${at}: gated shut with ten thousand credits`); continue; }
           try { check(at, c.run(), e); } catch (err) { bad.push(`${at}: threw ${err}`); }
           out.push(at);
         }
@@ -37,7 +37,7 @@ test('every choice of every captain scene runs and says what happened', async ()
       for (const flags of [{}, { secretKnown: true }, { secretKnown: true, lent: true }]) {
         const count = (() => { start(key); hired().flags = { ...flags }; return captainGoodbye().choices.length; })();
         for (let i = 0; i < count; i++) {
-          start(key); hired().flags = { ...flags }; G.state.credits = 1000;
+          start(key); hired().flags = { ...flags }; G.state.credits = 10000;
           const e = captainGoodbye(), at = `${key}.goodbye.${Object.keys(flags).join('+') || 'none'}.${i}`;
           try { check(at, e.choices[i].run(), e); } catch (err) { bad.push(`${at}: threw ${err}`); }
           out.push(at);

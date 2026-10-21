@@ -23,30 +23,30 @@
  {
   "key": "kill:bounty",
   "text": [
-   "Bounty complete: Harlan Voss destroyed. +1,200 cr"
+   "Bounty complete: Harlan Voss destroyed. +12,000 cr"
   ],
-  "credits": 1200
+  "credits": 12000
  },
  {
   "key": "kill:pirate:0",
   "text": [
-   "Pirate destroyed. Bounty +200 cr"
+   "Pirate destroyed. Bounty +2,000 cr"
   ],
-  "credits": 200
+  "credits": 2000
  },
  {
   "key": "kill:pirate:1",
   "text": [
-   "Pirate destroyed. Bounty +400 cr"
+   "Pirate destroyed. Bounty +4,000 cr"
   ],
-  "credits": 400
+  "credits": 4000
  },
  {
   "key": "kill:pirate:2",
   "text": [
-   "Pirate destroyed. Bounty +600 cr"
+   "Pirate destroyed. Bounty +6,000 cr"
   ],
-  "credits": 600
+  "credits": 6000
  },
  {
   "key": "kill:patrol",
@@ -86,44 +86,44 @@
  {
   "key": "dock:errand",
   "text": [
-   "Errand done: a sealed case handed over. Fee 300 cr."
+   "Errand done: a sealed case handed over. Fee 3,000 cr."
   ],
-  "credits": 300
+  "credits": 3000
  },
  {
   "key": "dock:delivery",
   "text": [
-   "Delivered 12t of water ice. Payment received: 900 cr."
+   "Delivered 12t of water ice. Payment received: 9,000 cr."
   ],
-  "credits": 900
+  "credits": 9000
  },
  {
   "key": "dock:pax1",
   "text": [
-   "A pilgrim disembarks. Fare received: 500 cr."
+   "A pilgrim disembarks. Fare received: 5,000 cr."
   ],
-  "credits": 500
+  "credits": 5000
  },
  {
   "key": "dock:pax2",
   "text": [
-   "A survey crew disembark. Fare received: 800 cr."
+   "A survey crew disembark. Fare received: 8,000 cr."
   ],
-  "credits": 800
+  "credits": 8000
  },
  {
   "key": "dock:pax-bonus",
   "text": [
-   "A pilgrim disembarks. Fare received: 650 cr (+150 for the trip)."
+   "A pilgrim disembarks. Fare received: 6,500 cr (+1,500 for the trip)."
   ],
-  "credits": 650
+  "credits": 6500
  },
  {
   "key": "dock:pax-penalty",
   "text": [
-   "A pilgrim disembarks. Fare received: 350 cr (-150 for the trip)."
+   "A pilgrim disembarks. Fare received: 3,500 cr (-1,500 for the trip)."
   ],
-  "credits": 350
+  "credits": 3500
  },
  {
   "key": "dock:pax-nofare",
@@ -397,14 +397,14 @@
  {
   "key": "crew:wages",
   "text": [
-   "Crew wages for 10 days: 540 cr."
+   "Crew wages for 10 days: 5,400 cr."
   ],
-  "credits": -540
+  "credits": -5400
  },
  {
   "key": "crew:quits",
   "text": [
-   "Crew wages for 10 days: 540 cr.",
+   "Crew wages for 10 days: 5,400 cr.",
    "Mara Quill quits over unpaid wages."
   ],
   "credits": -1
@@ -789,7 +789,7 @@
  {
   "key": "news:settlement",
   "text": [],
-  "credits": -40000,
+  "credits": -400000,
   "news": [
    "A new settlement, Test Landing, has been founded on Callisto."
   ]
@@ -1038,11 +1038,11 @@
    {
     "type": "errand",
     "title": "Errand: carry a sealed parcel to Ironheart",
-    "blurb": "A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch. The captain keeps 80 cr of the fee.",
+    "blurb": "A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch. The captain keeps 800 cr of the fee.",
     "destSystem": "psyche",
     "destPlanet": "Ironheart",
-    "pay": 320,
-    "cut": 80,
+    "pay": 3200,
+    "cut": 800,
     "deadline": 23
    }
   ]
@@ -1055,11 +1055,11 @@
    {
     "type": "errand",
     "title": "Errand: carry a message on a chip to Ironheart",
-    "blurb": "A hand-written note on a data chip: somebody doesn't trust the public bands with it. The captain keeps 80 cr of the fee.",
+    "blurb": "A hand-written note on a data chip: somebody doesn't trust the public bands with it. The captain keeps 800 cr of the fee.",
     "destSystem": "psyche",
     "destPlanet": "Ironheart",
-    "pay": 320,
-    "cut": 80,
+    "pay": 3200,
+    "cut": 800,
     "deadline": 23
    }
   ]
@@ -1072,11 +1072,11 @@
    {
     "type": "errand",
     "title": "Errand: carry a set of spare keys to Ironheart",
-    "blurb": "A ring of keys for a flat somebody hasn't seen in years. They want them back before the lease runs out. The captain keeps 80 cr of the fee.",
+    "blurb": "A ring of keys for a flat somebody hasn't seen in years. They want them back before the lease runs out. The captain keeps 800 cr of the fee.",
     "destSystem": "psyche",
     "destPlanet": "Ironheart",
-    "pay": 320,
-    "cut": 80,
+    "pay": 3200,
+    "cut": 800,
     "deadline": 23
    }
   ]
@@ -1089,11 +1089,11 @@
    {
     "type": "errand",
     "title": "Errand: carry a box of medicine to Ironheart",
-    "blurb": "An insulated box with a cold-chain tag. The label says to keep it upright and out of the sun. The captain keeps 80 cr of the fee.",
+    "blurb": "An insulated box with a cold-chain tag. The label says to keep it upright and out of the sun. The captain keeps 800 cr of the fee.",
     "destSystem": "psyche",
     "destPlanet": "Ironheart",
-    "pay": 320,
-    "cut": 80,
+    "pay": 3200,
+    "cut": 800,
     "deadline": 23
    }
   ]
@@ -1106,11 +1106,11 @@
    {
     "type": "errand",
     "title": "Errand: carry a crate of seedlings to Ironheart",
-    "blurb": "A tray of green shoots under a grow light that has to stay on. You carry it in your bunk. The captain keeps 80 cr of the fee.",
+    "blurb": "A tray of green shoots under a grow light that has to stay on. You carry it in your bunk. The captain keeps 800 cr of the fee.",
     "destSystem": "psyche",
     "destPlanet": "Ironheart",
-    "pay": 320,
-    "cut": 80,
+    "pay": 3200,
+    "cut": 800,
     "deadline": 23
    }
   ]
@@ -1219,20 +1219,20 @@
  {
   "key": "notes:repaid",
   "text": [],
-  "credits": 600,
+  "credits": 6000,
   "x": {
    "notes": [
-    "Mara Quill finds you at the dock and repays the 300 cr you covered, with interest: 600 cr."
+    "Mara Quill finds you at the dock and repays the 3,000 cr you covered, with interest: 6,000 cr."
    ]
   }
  },
  {
   "key": "notes:dinner",
   "text": [],
-  "credits": 2000,
+  "credits": 20000,
   "x": {
    "notes": [
-    "Mara Quill spots you at the bar and insists on buying you dinner, and slips you 2,000 cr \"for last time\"."
+    "Mara Quill spots you at the bar and insists on buying you dinner, and slips you 20,000 cr \"for last time\"."
    ]
   }
  },

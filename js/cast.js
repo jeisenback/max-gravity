@@ -15,7 +15,7 @@ const CAST_GOOD = 2;  // how well they must think of you for both to leave with 
 const CAST = {
   ines: {
     first: 'Ines', last: 'Ferreira', culture: 'earth', home: 'Lisbon Arcology', job: 'ferry pilot', age: 34, role: 'pilot',
-    traits: ['curious', 'brave'], wage: 70,
+    traits: ['curious', 'brave'], wage: 700,
     skills: { pilot: 3, gunner: 1, engineer: 1, slicer: 0 }, captain: { trade: 3, nerve: 4, thrift: 2 },
     ambition: 'Wants a ship she doesn\'t have to ask permission to land.',
     bio: 'She flew the Lisbon to Luna ferry for nine years, until the night she put a failing shuttle down on an unlit pad instead of ditching it as the tower ordered. Forty-one people walked off. She lost her license for the way she did it, and she kept the logbook.',
@@ -178,7 +178,7 @@ const CAST = {
   },
   tomas: {
     first: 'Tomas', last: 'Achebe', culture: 'earth', home: 'Lagos Ring', job: 'dockyard welder', age: 41, role: 'engineer',
-    traits: ['kind', 'homesick'], wage: 60,
+    traits: ['kind', 'homesick'], wage: 600,
     skills: { engineer: 3, slicer: 1, pilot: 1, gunner: 0 }, captain: { trade: 2, nerve: 2, thrift: 5 },
     ambition: 'Wants one ship kept running properly for ten years, with the same crew on her at the end of it.',
     bio: 'A dockyard welder who has rebuilt the same hull three times for three owners who each sold her out from under him. He sends most of his wages to a sister on Lagos Ring, and talks to every machine he works on.',
@@ -201,7 +201,7 @@ const CAST = {
     farewell: {
       walk: 'Tomas shuts the engine room door, which he has never done, and says nothing to the plant. He takes the bag that clinks down the ramp at {planet}.',
       facts: [
-        ['loan', 'The ring of braided wire he sent back with your two hundred credits is on the hook by the engine room door.'],
+        ['loan', 'The ring of braided wire he sent back with your two thousand credits is on the hook by the engine room door.'],
         ['plan', 'You can still say the plant back from memory, every valve of it, in his order.'],
         ['promised', 'He asked whether you\'d try to keep the crew together, and you said you\'d try.'],
       ],
@@ -254,20 +254,20 @@ const CAST = {
       mid1: {
         days: 10, title: 'Money Home',
         text: ('Tomas catches you in the galley with his jaw set. "I have a favor. Not a favor, a loan. My sister\'s transfer from the ring bounced, ' +
-            'and I haven\'t got the wage yet, and the rent on her flat is due." He says the number carefully, and doesn\'t meet your eye: two hundred ' +
+            'and I haven\'t got the wage yet, and the rent on her flat is due." He says the number carefully, and doesn\'t meet your eye: two thousand ' +
             'credits. "I\'ll pay it back from the first two pay days. I always pay it back."'),
         personal: true,
         choices: [
           {
-            label: 'Lend him 200 cr',
-            when: { credits: 200 },
-            effects: { credits: -200, castLike: { who: 'tomas', n: 3, memory: 'You lent me two hundred credits for my sister\'s rent.' }, castFlag: { who: 'tomas', flag: 'loan' } },
+            label: 'Lend him 2,000 cr',
+            when: { credits: 2000 },
+            effects: { credits: -2000, castLike: { who: 'tomas', n: 3, memory: 'You lent me two thousand credits for my sister\'s rent.' }, castFlag: { who: 'tomas', flag: 'loan' } },
             result: 'He takes it with both hands. "Thank you," he says, and says it again in Igbo. By the second pay day ' +
-              'the two hundred is in your account, with an extra: a ring of braided wire, on a note that says "for luck".',
+              'the two thousand is in your account, with an extra: a ring of braided wire, on a note that says "for luck".',
           },
           {
             label: '"I can\'t spare it."',
-            effects: { castLike: { who: 'tomas', n: -1, memory: 'You couldn\'t spare two hundred credits.' } },
+            effects: { castLike: { who: 'tomas', n: -1, memory: 'You couldn\'t spare two thousand credits.' } },
             result: 'He straightens his shoulders. "Of course," he says. "I shouldn\'t have asked." He doesn\'t ask anyone else. In the evening he\'s ' +
               'in the engine room with the door open, counting a month on his fingers, and the next day his name is on the bill for two extra ' +
               'shifts.',
@@ -340,7 +340,7 @@ const CAST = {
   },
   yelena: {
     first: 'Yelena', last: 'Quint', culture: 'mars', home: 'Olympus Dome', job: 'ring-ball striker', age: 29, role: 'gunner',
-    traits: ['brave', 'rude'], wage: 60,
+    traits: ['brave', 'rude'], wage: 600,
     skills: { gunner: 3, pilot: 1, engineer: 0, slicer: 1 }, captain: { trade: 2, nerve: 5, thrift: 2 },
     ambition: 'Wants to captain a ship the way she captained her ring-ball side: loud, and nobody left on the bench.',
     bio: 'Striker and captain of the Olympus Dome Ravens until a dislocated knee ended her ring-ball career at twenty-six. She took the only other job where you put something exactly where you meant to, and she\'s still in a bad mood about it.',
@@ -475,7 +475,7 @@ const CAST = {
   },
   ruben: {
     first: 'Ruben', last: 'Castellanos', culture: 'mars', home: 'Valles Dome', job: 'dome network administrator', age: 52, role: 'slicer',
-    traits: ['talkative', 'generous'], wage: 80,
+    traits: ['talkative', 'generous'], wage: 800,
     skills: { slicer: 3, engineer: 1, gunner: 1, pilot: 0 }, captain: { trade: 5, nerve: 1, thrift: 3 },
     ambition: 'Wants every dome on Mars on one open band before he retires.',
     bio: ('He ran the Valles dome network for twenty-five years, and knows what every dome is short of this week, who\'s lying about it, and what ' +
@@ -609,7 +609,7 @@ const CAST = {
   },
   bexa: {
     first: 'Bexa', last: 'Oyelaran', culture: 'belt', home: 'Ceres Station', job: 'salvage tug pilot', age: 41, role: 'pilot',
-    traits: ['secretive', 'kind'], wage: 70,
+    traits: ['secretive', 'kind'], wage: 700,
     skills: { pilot: 3, engineer: 1, slicer: 1, gunner: 0 }, captain: { trade: 3, nerve: 3, thrift: 4 },
     ambition: 'Wants to bring one ship home that everybody else had given up on, and see her fly again.',
     bio: 'She pulled dead ships into Ceres on a tug for twenty years. She keeps a list of every crew she found aboard them, the living and the others, and she doesn\'t talk about the list unless you ask the right way.',
@@ -750,7 +750,7 @@ const CAST = {
   },
   pax: {
     first: 'Pax', last: 'Iwu', culture: 'belt', home: 'Ceres Warren', job: 'ice-drill operator', age: 23, role: 'gunner',
-    traits: ['nervous', 'curious'], wage: 60,
+    traits: ['nervous', 'curious'], wage: 600,
     skills: { gunner: 3, engineer: 2, pilot: 0, slicer: 0 }, captain: { trade: 4, nerve: 2, thrift: 2 },
     ambition: 'Wants to stop flinching, and run a ship where nobody gets hurt on their watch.',
     bio: 'Pax ran a drill laser on a Ceres ice crew from sixteen, cutting blocks to the gram, until a coupling failed and the crew\'s foreman was hurt with Pax at the controls. It was nobody\'s fault, and nobody has been able to convince Pax of that.',

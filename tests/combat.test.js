@@ -48,7 +48,7 @@ test('a pirate intercepts a burn, and the duel plays to an end and back to the b
 test('bounties intercept and pay; beaten pirates can be boarded; local space stays quiet', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
-    const st = G.state, out = {}; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'freighter';
+    const st = G.state, out = {}; st.tutorial = null; st.story.next = 1e9; st.credits = 500000; st.shipId = 'freighter';
     const burnTo = (from, planet, to) => {
       G.transit = null; st.systemId = from; st.planet = planet; landAt(system().planets.find(p => p.name === planet), []);
       while (G.dialog) { chooseEvent(G.dialog.choices.length - 1); finishEvent(); }
@@ -60,7 +60,7 @@ test('bounties intercept and pay; beaten pirates can be boarded; local space sta
       const d = G.duel; d.foeHp = 1; d.init = 'me'; d.me.threat.hand[0] = 'gun'; d.them.answer.hand = ['locks'];
       return duelExchange('gun', 'locks');
     };
-    st.missions.push({ id: 777, type: 'bounty', targetSystem: 'ceres', targetName: 'The Weeping Saint', issuer: 'Charter League', title: 'Bounty', pay: 9000, deadline: 999 });
+    st.missions.push({ id: 777, type: 'bounty', targetSystem: 'ceres', targetName: 'The Weeping Saint', issuer: 'Charter League', title: 'Bounty', pay: 90000, deadline: 999 });
     burnTo('hygiea', 'The Rook', 'ceres');
     planIntercept();
     out.bountyKind = G.transit.intercept && G.transit.intercept.spec.kind;
@@ -90,7 +90,7 @@ test('bounties intercept and pay; beaten pirates can be boarded; local space sta
     return out;
   });
   assert.equal(r.bountyKind, 'bounty');
-  assert.equal(r.paid, 9000);
+  assert.equal(r.paid, 90000);
   assert.equal(r.bountyLeft, false);
   assert.equal(r.bountyBoard, false, 'a bounty target is finished, not boarded');
   assert.doesNotMatch(r.summary, /The The/);
@@ -141,7 +141,7 @@ test('boarding, prizes, injuries and the medic', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
     const out = {};
-    const fresh = () => { const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; while (G.dialog) finishEvent(); G.mode = 'landed'; takeOff(); G.spawnTimer = 1e9; G.npcs = []; G.torps = []; };
+    const fresh = () => { const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 500000; while (G.dialog) finishEvent(); G.mode = 'landed'; takeOff(); G.spawnTimer = 1e9; G.npcs = []; G.torps = []; };
     const spawn = (kind, shipId, x) => { spawnNpc(kind, false, true); const n = G.npcs[G.npcs.length - 1], s = SHIPS[shipId]; Object.assign(n, { shipId, x: G.player.x + x, y: G.player.y, vx: 0, vy: 0, shields: s.shields, armor: s.armor, maxArmor: s.armor }); return n; };
     const beat = n => { let i = 0; while (!n.disabled && !n.dead && i++ < 200) damage(n, 6, true); };
     const choose = (ev, label) => ev.choices.find(x => x.label.startsWith(label)).run();
@@ -183,7 +183,7 @@ test('boarding, prizes, injuries and the medic', async () => {
 test('every hail answers without errors, and captains remember you', async () => {
   const { page, ev, done } = await open();
   const r = await ev(() => {
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.cargo.equipment = 15; st.paid.equipment = 4000;
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 500000; st.cargo.equipment = 15; st.paid.equipment = 40000;
     while (G.dialog) finishEvent();
     takeOff();
     const setups = {
@@ -230,7 +230,7 @@ test('every hail answers without errors, and captains remember you', async () =>
 test('escorts fly with you, cost reaction mass, and can be lost', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
-    const st = G.state; st.tutorial = null; st.credits = 200000;
+    const st = G.state; st.tutorial = null; st.credits = 2000000;
     while (G.dialog) finishEvent();
     buyCompanyShip('lightfreighter'); buyCompanyShip('gunship');
     Mods.act('cescort', '0'); Mods.act('cescort', '1');
@@ -259,14 +259,14 @@ test('paying off an intercept needs the money', async () => {
     const pay = kind => contactEvent(kind === 'pirate' ? { kind } : { kind, gov: 'Arcology Compact' }).choices.find(c => /^(Pay|Cut)/.test(c.label));
     G.state.credits = 0;
     const broke = [pay('pirate').can(), pay('patrol').can()];
-    G.state.credits = 50000;
+    G.state.credits = 500000;
     const rich = [pay('pirate').can(), pay('patrol').can()];
     pay('pirate').run();
     return { broke, rich, left: G.state.credits };
   });
   assert.deepEqual(r.broke, [false, false]);
   assert.deepEqual(r.rich, [true, true]);
-  assert.equal(r.left, 45000);
+  assert.equal(r.left, 450000);
   await done();
 });
 
@@ -294,7 +294,7 @@ test('a hurt crew member treated at the clinic remembers who paid, and one treat
   const r = await ev(() => {
     const out = {}, st = G.state;
     const mk = () => { const c = makeCrewCandidate('earth'); c.role = 'gunner'; registerPerson(c); st.crew.push(c.id); st.injured = { [c.id]: true }; return c; };
-    st.credits = 5000;
+    st.credits = 50000;
     const a = mk(); treatInjuries(currentPlanet());
     out.clinic = person(a.id).memories.filter(m => /paid the clinic/.test(m)).length; out.healedA = !st.injured[a.id];
     const m = makeCrewCandidate('earth'); m.role = 'medic'; m.skill = 1; registerPerson(m); st.crew.push(m.id);

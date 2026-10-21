@@ -13,12 +13,12 @@ const helpers = () => {
   // A game that has bought its ship: the hand's record is gone and the career is left, docked at a port that trades.
   window.owner = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
-    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.credits = 100000; hired().kit = ['valve-keys']; hired().standing = { 'the League Freight Hall': 1 };
+    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.credits = 1000000; hired().kit = ['valve-keys']; hired().standing = { 'the League Freight Hall': 1 };
     buyIn('courier'); while (G.dialog) finishEvent();
     G.transit = null; G.mode = 'landed'; st.dest = null; st.systemId = 'earth'; st.planet = 'Earth'; G.dialog = null; G.nextEvent = null; UI.notes.length = 0;
     return st;
   };
-  window.contract = (o = {}) => ({ shipper: 'the Compact Freight Office', good: 'water', tons: 30, from: 'Earth', sid: 'mars', planet: 'Mars', yard: false, days: 5, pay: 1200, due: G.state.day + 9, hazard: false, rumor: false, ...o });
+  window.contract = (o = {}) => ({ shipper: 'the Compact Freight Office', good: 'water', tons: 30, from: 'Earth', sid: 'mars', planet: 'Mars', yard: false, days: 5, pay: 12000, due: G.state.day + 9, hazard: false, rumor: false, ...o });
   window.board = list => { const st = G.state; career().freight = { key: `${currentPlanet().name}@${st.day}`, list }; };
 };
 const run = async fn => { const t = await open(); await t.ev(helpers); const r = await t.ev(fn); await t.done(); return r; };
@@ -34,7 +34,7 @@ test('the Port page of a ship the player owns lists the day\'s contracts with a 
     return out;
   });
   assert.ok(!/Contracts/.test(r.hand), 'a hand\'s page has no board');
-  assert.match(r.page, /Contracts the Compact Freight Office: 30t of water to Mars \(Mars, 5 days\), due in 9 days\. Pays 1,200 cr\./); assert.deepEqual(r.buttons, [false, true], 'a load too big for the hold is shut');
+  assert.match(r.page, /Contracts the Compact Freight Office: 30t of water to Mars \(Mars, 5 days\), due in 9 days\. Pays 12,000 cr\./); assert.deepEqual(r.buttons, [false, true], 'a load too big for the hold is shut');
   assert.match(r.empty, /Nothing on the board today\./);
 });
 
@@ -61,9 +61,9 @@ test('the landing at the contract\'s port pays the player\'s credits and moves t
     out.elsewhere = (() => { board([contract()]); takeContract(0); const t = settleContract({ name: 'Luna' }); return [t, !!career().run]; })();
     return out;
   });
-  assert.equal(r.whole.pay, 1200); assert.equal(r.whole.xp, 2, 'a run worked teaches the player\'s post'); assert.equal(r.whole.standing, 1); assert.equal(r.whole.run, null); assert.equal(r.whole.water, undefined, 'the cargo is delivered'); assert.match(r.whole.text, /pays 1,200 cr for 30t of water\.$/);
-  assert.equal(r.short.pay, 720); assert.equal(r.short.standing, -1); assert.match(r.short.text, /^Short: 12t did not arrive/);
-  assert.ok(r.late.pay < 1200 && r.late.pay >= 600); assert.equal(r.late.standing, -1); assert.match(r.late.text, /days late, and the pay docked\./);
+  assert.equal(r.whole.pay, 12000); assert.equal(r.whole.xp, 2, 'a run worked teaches the player\'s post'); assert.equal(r.whole.standing, 1); assert.equal(r.whole.run, null); assert.equal(r.whole.water, undefined, 'the cargo is delivered'); assert.match(r.whole.text, /pays 12,000 cr for 30t of water\.$/);
+  assert.equal(r.short.pay, 7200); assert.equal(r.short.standing, -1); assert.match(r.short.text, /^Short: 12t did not arrive/);
+  assert.ok(r.late.pay < 12000 && r.late.pay >= 6000); assert.equal(r.late.standing, -1); assert.match(r.late.text, /days late, and the pay docked\./);
   assert.equal(r.lost.pay, 0); assert.equal(r.lost.standing, -2); assert.match(r.lost.text, /was lost on the way, and there is no pay\./);
   assert.deepEqual(r.elsewhere, ['', true], 'a landing elsewhere settles nothing');
 });
@@ -79,7 +79,7 @@ test('the board is the same one the hand\'s captain sees, drawn once a day and k
 
 test('a shipper\'s freight in the hold is not for sale at the Exchange: the owner can sell their own stock of the good and not the contract\'s load (review of #709)', async () => {
   const r = await run(() => {
-    const st = owner(), out = {}; st.cargo.water = 10; st.paid.water = 500; board([contract({ tons: 20 })]); takeContract(0); out.hold = st.cargo.water;
+    const st = owner(), out = {}; st.cargo.water = 10; st.paid.water = 5000; board([contract({ tons: 20 })]); takeContract(0); out.hold = st.cargo.water;
     UI.tab = 'trade'; UI.render(); out.held = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ').match(/Water[^]*?Held (\d+)[^]*?(\+\d+t freight)?/);
     const c0 = st.credits; UI.act('sellall', 'water'); out.afterAll = st.cargo.water; out.sold = st.credits > c0;
     const c1 = st.credits; UI.act('sell', 'water'); UI.act('sellall', 'water'); out.afterMore = st.cargo.water; out.noMore = st.credits === c1;
@@ -93,7 +93,7 @@ test('a shipper\'s freight in the hold is not for sale at the Exchange: the owne
 
 test('the pump-crew coolant bypass is in the outfitter only for a ship that holds the valve keys, and adds reaction mass for no cargo space (#685)', async () => {
   const r = await run(() => {
-    const st = owner(), out = {}; st.credits = 50000; const text = () => { UI.tab = 'shipyard'; UI.render(); return document.querySelector('.shell .body').textContent.replace(/\s+/g, ' '); };
+    const st = owner(), out = {}; st.credits = 500000; const text = () => { UI.tab = 'shipyard'; UI.render(); return document.querySelector('.shell .body').textContent.replace(/\s+/g, ' '); };
     out.with = /Pump-crew coolant bypass/.test(text()); career().kit = []; out.without = /Pump-crew coolant bypass/.test(text());
     career().kit = ['valve-keys']; out.again = /Pump-crew coolant bypass/.test(text());
     const fuel0 = ship().fuel, cargo0 = ship().cargo, c0 = st.credits; UI.act('buyout', 'pump');
@@ -101,5 +101,5 @@ test('the pump-crew coolant bypass is in the outfitter only for a ship that hold
     return out;
   });
   assert.equal(r.with, true); assert.equal(r.without, false, 'a ship without the keys is not offered it'); assert.equal(r.again, true);
-  assert.equal(r.fuel, 60); assert.equal(r.cargo, 0); assert.equal(r.paid, 1500); assert.equal(r.fitted, 1);
+  assert.equal(r.fuel, 60); assert.equal(r.cargo, 0); assert.equal(r.paid, 15000); assert.equal(r.fitted, 1);
 });

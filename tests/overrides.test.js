@@ -446,20 +446,20 @@ test('an override for a hired scene the game would not take is left out, with on
 test('a hired scene\'s data choice is shut by its conditions as the code gates were, and the file can change them', async () => {
   const g = await open({ scope: 'full' });
   const r = await g.ev(() => {
-    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 }); G.dialog = null; G.nextEvent = null;
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 50000 }); G.dialog = null; G.nextEvent = null;
     const find = (key, label) => { for (const [name, sc] of Object.entries(CAST[key].scenes)) { const i = sc.choices.findIndex(c => c.label === label); if (i >= 0) return { id: `cast:${key}:${name}`, name, i, sc }; } };
-    const lend = find('tomas', 'Lend him 200 cr'), write = find('tomas', "Ask him to write it down, so it doesn't go with the hull");
+    const lend = find('tomas', 'Lend him 2,000 cr'), write = find('tomas', "Ask him to write it down, so it doesn't go with the hull");
     const shown = (f, key) => castScene(key, CAST[key].scenes[f.name]).choices[f.i];
     const out = {};
-    G.state.credits = 100;
+    G.state.credits = 1000;
     let c = shown(lend, 'tomas');
     out.poor = { open: c.can(), why: c.why() };
-    G.state.credits = 300; c = shown(lend, 'tomas');
+    G.state.credits = 3000; c = shown(lend, 'tomas');
     const before = G.state.credits, open = c.can(); c.run();
     out.rich = { open, spent: before - G.state.credits, flag: !!castRec('tomas').flags.loan };
-    useOverrides({ [lend.id]: { choices: { [lend.i]: { when: { credits: 500 } } } } });
-    G.state.credits = 300; c = shown(lend, 'tomas'); out.edited = { open300: c.can(), why: c.why() };
-    G.state.credits = 600; out.edited.open600 = shown(lend, 'tomas').can();
+    useOverrides({ [lend.id]: { choices: { [lend.i]: { when: { credits: 5000 } } } } });
+    G.state.credits = 3000; c = shown(lend, 'tomas'); out.edited = { open300: c.can(), why: c.why() };
+    G.state.credits = 6000; out.edited.open600 = shown(lend, 'tomas').can();
     useOverrides({});
     // A regard shuts a choice with what it needs in its label (the opinion gate of captains.js), and the condition holds for the person aboard.
     castPerson('tomas').opinion = 0;
@@ -474,9 +474,9 @@ test('a hired scene\'s data choice is shut by its conditions as the code gates w
     return out;
   });
   await g.done();
-  assert.deepEqual(r.poor, { open: false, why: 'You have 100 cr; this costs 200 cr.' });
-  assert.deepEqual(r.rich, { open: true, spent: 200, flag: true });
-  assert.deepEqual(r.edited, { open300: false, why: 'You have 300 cr; this costs 500 cr.', open600: true });
+  assert.deepEqual(r.poor, { open: false, why: 'You have 1,000 cr; this costs 2,000 cr.' });
+  assert.deepEqual(r.rich, { open: true, spent: 2000, flag: true });
+  assert.deepEqual(r.edited, { open300: false, why: 'You have 3,000 cr; this costs 5,000 cr.', open600: true });
   assert.deepEqual(r.regard, { label: true, open: false, held: false, openLiked: true, heldLiked: true });
   assert.equal(r.skill, 3);
   assert.deepEqual(r.problems, [0, 1, 1, 1, 1]);
@@ -487,7 +487,7 @@ test('a hired scene\'s data choice is shut by its conditions as the code gates w
 test('a meeting scene joins or puts off the person as its closures did, with the berth check, and the file can change the check', async () => {
   const g = await open({ scope: 'full' });
   const r = await g.ev(() => {
-    uatFresh({ credits: 5000 }); G.dialog = null; G.nextEvent = null;
+    uatFresh({ credits: 50000 }); G.dialog = null; G.nextEvent = null;
     const st = G.state, meet = key => castScene(key, CAST[key].scenes.meet).choices;
     const out = { shapes: [effectProblems({ castJoin: 'ines' }).length, effectProblems({ castLater: 'nobody' }).length, effectProblems({ castJoin: 3 }).length] };
     let c = meet('ines');

@@ -67,7 +67,7 @@ function sideScene(plan, { gov, p }, agent) {
   const voidPaper = () => { h.freight = { ...h.freight, list: [] }; h.plan = null; };  // the day's board is empty, and she plans again
   const choices = [];
   if (papers) choices.push({ label: say('papers.label'), run() { like(p, 2, say('papers.memory')); return say('papers.result'); } });
-  choices.push({ label: say('pay.label'), ...gated(needFunds(400)), run() { h.fund -= 400; like(cap, -1, say('pay.memory')); return say('pay.result'); } });
+  choices.push({ label: say('pay.label'), ...gated(needFunds(4000)), run() { h.fund -= 4000; like(cap, -1, say('pay.memory')); return say('pay.result'); } });
   choices.push({ label: say('silent.label'), run() {
     if (Math.random() < 0.55) return say('silent.clear');
     voidPaper(); moveStanding(plan.shipper, -1); changeRep(gov, -2); like(cap, -1, say('silent.captain.memory')); like(p, -1, say('silent.memory'));

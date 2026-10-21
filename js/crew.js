@@ -50,7 +50,7 @@ function leaveCrew(id) {
 // and a two-part personal storyline that plays out during transits.
 const CREW = {
   rosa: {
-    name: 'Rosa Okafor', first: 'Rosa', role: 'engineer', skill: 3, home: 'Ceres Station', fee: 3000, wage: 60,
+    name: 'Rosa Okafor', first: 'Rosa', role: 'engineer', skill: 3, home: 'Ceres Station', fee: 30000, wage: 600,
     perk: 'Burns use 15% less reaction mass. Handles reactor trouble.',
     bio: ('Ceres-born drive tech who can fix anything with sealant, a spanner, and enough swearing. She learned the trade under a dockyard crane ' +
         'before she was tall enough to reach the controls, and she treats every ship she works on as a patient with a long history of neglect. She ' +
@@ -67,11 +67,11 @@ const CREW = {
       { title: "Rosa's Proposal",
         text: ('Rosa corners you in the galley, grease to the elbows and a fresh burn on one wrist she has clearly not noticed. "Captain. I need to ' +
             'talk to you about the drive." She lays a sheet of scratched paper on the table: a hand-drawn diagram, with numbers in the margins. "Give ' +
-            'me 2,500 credits for parts and I\'ll squeeze another ten percent out of it. Permanently. I\'ve been designing it for a year." She doesn\'t' +
+            'me 25,000 credits for parts and I\'ll squeeze another ten percent out of it. Permanently. I\'ve been designing it for a year." She doesn\'t' +
             ' say who she was designing it for before you.'),
         choices: [
-          { label: 'Fund it (2,500 cr)', ...gated(needCr(2500)), run() {
-            G.state.credits -= 2500;
+          { label: 'Fund it (25,000 cr)', ...gated(needCr(25000)), run() {
+            G.state.credits -= 25000;
             G.state.flags.rosaTuned = true;
             return ('Two days of swearing, one small fire, and one nearly-lost finger later, the drive runs cooler and leaner than it ever did. Rosa ' +
                 'comes out of the engine room smelling of scorched flux and looking, for the first time since she came aboard, wholly satisfied. ' +
@@ -83,12 +83,12 @@ const CREW = {
         ] },
       { title: 'Old Debts',
         text: ('The comm chirps with a Ceres dock boss, a heavy man with a heavier voice, sitting in a booth with a glass of something amber. ' +
-            '"Captain, I don\'t want to trouble you. But your engineer owes me three thousand credits, and she has been a long time paying. Settle it, ' +
+            '"Captain, I don\'t want to trouble you. But your engineer owes me thirty thousand credits, and she has been a long time paying. Settle it, ' +
             'or everyone on Ceres will hear why she really left." Behind you, Rosa has stopped moving. She\'s standing very still in the hatchway, ' +
             'with her hands at her sides, looking at the floor.'),
         choices: [
-          { label: 'Pay him (3,000 cr)', ...gated(needCr(3000)), run() {
-            G.state.credits -= 3000;
+          { label: 'Pay him (30,000 cr)', ...gated(needCr(30000)), run() {
+            G.state.credits -= 30000;
             G.state.flags.rosaHalfWage = true;
             return ('The channel closes. Rosa says nothing for an hour, then finds you in the galley with a mug of the good coffee she has been ' +
                 'saving. "I wasn\'t going to ask," she says. "I\'ll work at half wages until it\'s square. And, captain, I never got to say thank you ' +
@@ -101,7 +101,7 @@ const CREW = {
     ],
   },
   dima: {
-    name: 'Dmitri "Dima" Sokolov', first: 'Dima', role: 'pilot', skill: 3, home: 'Mars', fee: 4000, wage: 80,
+    name: 'Dmitri "Dima" Sokolov', first: 'Dima', role: 'pilot', skill: 3, home: 'Mars', fee: 40000, wage: 800,
     perk: 'Burns take 20% fewer days.',
     bio: ('Ex-Dome Concord Navy pilot, discharged for "creative interpretation of orders". Flies like he\'s still being shot at, and talks like it\'s ' +
         'a joke. He kept his flight jacket, his call sign, and a small framed photograph of a squadron that no longer exists, and he\'ll tell you ' +
@@ -142,9 +142,9 @@ const CREW = {
         choices: [
           { label: 'Tell him to take it', run() {
             leaveCrew('dima');
-            G.state.credits += 3000;
+            G.state.credits += 30000;
             return ('He hugs you hard enough to crack a rib, then holds you at arm\'s length and doesn\'t quite meet your eye. "You\'re a good ' +
-                'captain," he says, and then, because he\'s Dima, "The best I\'ve had. The others were sad and boring." The Navy pays you a 3,000 cr ' +
+                'captain," he says, and then, because he\'s Dima, "The best I\'ve had. The others were sad and boring." The Navy pays you a 30,000 cr ' +
                 'transfer fee, and a cutter matches your course within the hour. He shakes every hand aboard, and salutes the ship, and goes.');
           } },
           { label: 'Ask him to stay', run: () => ('He looks at the message for a long moment. Then he deletes it, without replying, and turns back to ' +
@@ -154,7 +154,7 @@ const CREW = {
     ],
   },
   kit: {
-    name: 'Kit Halloran', first: 'Kit', role: 'gunner', skill: 3, home: 'Luna', fee: 3500, wage: 70,
+    name: 'Kit Halloran', first: 'Kit', role: 'gunner', skill: 3, home: 'Luna', fee: 35000, wage: 700,
     perk: 'Adds one gun in combat. Better odds when fighting in transit.',
     bio: ('Arcology Compact Navy gunnery sergeant, retired early. Talks to her guns. They seem to listen. She served twelve years and lost a squad, ' +
         'and she doesn\'t drink, doesn\'t gamble, and doesn\'t sleep more than five hours a night, but she remembers every birthday aboard, and will ' +
@@ -170,11 +170,11 @@ const CREW = {
     events: [
       { title: 'Target Practice',
         text: ('Kit appears at the hatch with a shipping crate under one arm. "Captain. There\'s a rock coming up, a good big one, drifting slow. I\'d ' +
-            'like to put a few hundred rounds into it. Keeps me sharp. Ammo is about 300 credits." She sets the crate down. "I\'m not asking for ' +
+            'like to put a few hundred rounds into it. Keeps me sharp. Ammo is about 3,000 credits." She sets the crate down. "I\'m not asking for ' +
             'me. I\'m asking because the day I\'m not sharp, someone on this ship is going to get hurt."'),
         choices: [
-          { label: 'Let her (300 cr)', ...gated(needCr(300)), run() {
-            G.state.credits -= 300;
+          { label: 'Let her (3,000 cr)', ...gated(needCr(3000)), run() {
+            G.state.credits -= 3000;
             G.state.flags.kitSharp = true;
             return ('The rock doesn\'t survive. It goes to gravel in six seconds, in a pretty sweep of tracer fire, and the chunks scatter in a slow ' +
                 'silver fan. Kit lowers her guns and, for a moment, is simply happy, in the plain uncomplicated way of a person doing exactly what she\'s ' +
@@ -193,8 +193,8 @@ const CREW = {
           { label: 'We hunt him down', run() {
             const st = G.state;
             st.missions.push({ id: st.nextId++, type: 'bounty', targetSystem: 'hygiea', targetName: 'Harlan Voss',
-              title: 'Bounty: destroy Harlan Voss near Hygiea', pay: 20000, deadline: st.day + 60 });
-            return 'Kit doesn\'t say thank you. She doesn\'t have to. She stands, and nods once, and goes to the gun bay, and cleans her guns all night. In the morning the tin of tea has two cups out. (New mission: destroy Harlan Voss near Hygiea, 20,000 cr.)';
+              title: 'Bounty: destroy Harlan Voss near Hygiea', pay: 200000, deadline: st.day + 60 });
+            return 'Kit doesn\'t say thank you. She doesn\'t have to. She stands, and nods once, and goes to the gun bay, and cleans her guns all night. In the morning the tin of tea has two cups out. (New mission: destroy Harlan Voss near Hygiea, 200,000 cr.)';
           } },
           { label: '"Revenge isn\'t our business"', run: () => ('Kit doesn\'t argue. She folds the list and puts it away in her breast pocket. She ' +
               'doesn\'t talk much for the rest of the trip, and the guns stay very clean. It\'s not resentment. It\'s the quiet of someone deciding, ' +
@@ -203,7 +203,7 @@ const CREW = {
     ],
   },
   josef: {
-    name: 'Josef Brandt', first: 'Josef', role: 'quartermaster', skill: 3, home: 'Ganymede', fee: 2500, wage: 50,
+    name: 'Josef Brandt', first: 'Josef', role: 'quartermaster', skill: 3, home: 'Ganymede', fee: 25000, wage: 500,
     perk: 'Hears things: one extra market rumor on every burn.',
     bio: ('Has worked every market from Mercury to Titan. Remembers every price he has ever seen and everyone who ever cheated him, in that order, ' +
         'and has a small black notebook, kept in a chest pocket, where the second list goes. He has a soft spot for farmers, dislikes anyone who says ' +
@@ -223,7 +223,7 @@ const CREW = {
             'figures with a blunt finger. "I know the man. I know his mother. Let me make a call. It\'ll be very civilized."'),
         choices: [
           { label: 'Make the call', run() {
-            const c = randInt(8, 20) * 100;
+            const c = randInt(8, 20) * 1000;
             G.state.credits += c;
             return (`Josef speaks softly into the channel for five minutes, never once raising his voice, and using the name of the man\'s mother ` +
                 `twice. When he hangs up, ${fmt(c)} cr has already arrived in your account, with a very polite apology and a small gift of dried figs. ` +
@@ -246,7 +246,7 @@ const CREW = {
     ],
   },
   wren: {
-    name: 'Wren', first: 'Wren', role: 'slicer', skill: 3, home: 'The Rook', fee: 5000, wage: 100,
+    name: 'Wren', first: 'Wren', role: 'slicer', skill: 3, home: 'The Rook', fee: 50000, wage: 1000,
     perk: 'Can spoof transponders when pirates come calling.',
     bio: ('Slicer out of the Rook who talks mostly to machines. Nobody knows her real name, possibly including Wren. She works in the dark, with three screens ' +
         'and a mug of cold tea, and she\'s far kinder than she lets on: the ship\'s smaller machines, the thermostat and the coffee maker among them, ' +
@@ -263,11 +263,11 @@ const CREW = {
       { title: 'Ghost Transponder',
         text: ('Wren emerges from behind her screens at an odd hour, with dark circles under her eyes and a small smile that makes you want to check ' +
             'your pockets. "Captain. I have an idea. It\'s a little illegal, and a great deal smart. I can rewrite your transponder history: your ' +
-            'ship, its papers, its past. Half the pirates out here will read you as one of theirs. It\'ll take three thousand credits in parts, and ' +
+            'ship, its papers, its past. Half the pirates out here will read you as one of theirs. It\'ll take thirty thousand credits in parts, and ' +
             'one very long night."'),
         choices: [
-          { label: 'Do it (3,000 cr)', ...gated(needCr(3000)), run() {
-            G.state.credits -= 3000;
+          { label: 'Do it (30,000 cr)', ...gated(needCr(30000)), run() {
+            G.state.credits -= 30000;
             G.state.flags.ghost = true;
             return ('Wren works through the night, her hands moving in the blue of three screens like a pianist\'s, murmuring to the machines in a ' +
                 'language you don\'t know. In the morning your ship has a very interesting past: three false owners, a smuggling record in Ceres, and ' +
@@ -292,8 +292,8 @@ const CREW = {
                 `before they break off, laughing. Wren says nothing for a long time. Then she says, in a flat little voice, "That was my fault. I ` +
                 `should have known." She's wrong, and you tell her so, and she doesn't believe you yet.`);
           } },
-          { label: 'Pay them off (2,000 cr)', ...gated(needCr(2000)), run() {
-            G.state.credits -= 2000;
+          { label: 'Pay them off (20,000 cr)', ...gated(needCr(20000)), run() {
+            G.state.credits -= 20000;
             return ('They take the money, and the channel closes with a soft, satisfied click. Wren stares at the dark screen for a long time ' +
                 'afterward, her hands quite still. When she finally speaks it\'s to nobody in particular: "I\'ve never had anyone pay for me before." ' +
                 'She doesn\'t say more, but that night, on your console, there\'s a small unexplained folder titled "for the captain", and inside it ' +
@@ -314,9 +314,9 @@ const PASSENGERS = {
         'the thermometer has stopped reading at a number that makes her voice crack. You\'re days from anywhere. Behind her, in the corridor, her ' +
         'husband is trying very hard to look calm, and failing.'),
     choices: [
-      { label: "Open the ship's medkit (500 cr of supplies)", ...gated(needCr(500)), run() {
-        G.state.credits -= 500;
-        m.bonus += 1500;
+      { label: "Open the ship's medkit (5,000 cr of supplies)", ...gated(needCr(5000)), run() {
+        G.state.credits -= 5000;
+        m.bonus += 15000;
         return ('You spend the good antibiotics without a second thought, and sit by the little girl\'s bunk with a bulb of water and a very bad ' +
             'story about a talking wrench. The fever breaks in the small hours, with a long sigh, and she\'s asking for breakfast by morning. The ' +
             'family insists on paying you extra when you arrive, and Mrs. Adeyemi presses a paper bird into your hand. "She made it for the captain," ' +
@@ -325,13 +325,13 @@ const PASSENGERS = {
       { label: 'Burn harder to get there sooner (40 reaction mass)', ...gated(needMass(40)), run() {
         G.state.fuel -= 40;
         delay(-10);
-        m.bonus += 500;
+        m.bonus += 5000;
         return ('You give the drive everything it\'ll bear, and the little girl sleeps through the worst of it in her mother\'s arms, pale and damp. ' +
             'She\'s miserable but stable when you arrive, and the family is grateful for every hour saved. Mr. Adeyemi shakes your hand for a long ' +
             'time, without a word, and you feel the tremor in his fingers all the way down the corridor.');
       } },
       { label: '"Keep them hydrated. There\'s nothing else to do."', run() {
-        m.bonus -= 500;
+        m.bonus -= 5000;
         return 'The child recovers, slowly, over three long days, and the family hovers over her bunk without ever looking up. Nobody says anything to you. The galley is silent, and when they disembark, the little girl doesn\'t wave. You tell yourself you were being practical. It doesn\'t help.';
       } },
     ] }) },
@@ -344,7 +344,7 @@ const PASSENGERS = {
     choices: [
       { label: 'Match orbits and grab a sample (costs time)', run() {
         delay(20);
-        m.bonus += 2500;
+        m.bonus += 25000;
         return ('She spends six hours in a vac suit on the comet\'s black surface, tethered to the hull, giggling into the suit radio like a child in ' +
             'a snowfield. When she comes back in, frosted, shaking, and beaming, she\'s holding a vial of dirty ice up to the light. "Ten thousand ' +
             'years," she keeps whispering. She promises to name something after you, and, though you wouldn\'t have believed it, she means it.');
@@ -382,30 +382,30 @@ const PASSENGERS = {
   sable: { name: 'a woman who calls herself Sable', pax: 1, fare: 2.0, event: m => ({
     title: 'Someone Wants Her',
     text: ('A ship with no transponder matches your burn, close, in the dark, and then a voice, smooth as oil, on the open band: "You have a ' +
-        'passenger named Sable. Hand her over and there is 2,000 credits in it. Refuse and we take her anyway." The transmission isn\'t a bluff. Sable ' +
+        'passenger named Sable. Hand her over and there is 20,000 credits in it. Refuse and we take her anyway." The transmission isn\'t a bluff. Sable ' +
         'watches you from the galley door, very still, a cup of tea untouched in her hands. She hasn\'t said a word since the channel opened, and she\'s ' +
         'waiting to see what kind of captain you are.'),
     choices: [
-      { label: 'Hand her over (+2,000 cr)', run() {
-        G.state.credits += 2000;
+      { label: 'Hand her over (+20,000 cr)', run() {
+        G.state.credits += 20000;
         G.state.missions = G.state.missions.filter(x => x !== m);
         return 'Sable doesn\'t argue. She sets down her tea, gathers her one small bag, and walks into the airlock with her chin up. The airlock cycles. You try not to think about it. The tea sits where she left it, going cold.';
       } },
       { label: '[{crew}] Spoof a Navy transponder', role: 'slicer', run() {
-        m.bonus += 1000;
+        m.bonus += 10000;
         return ('{crew} bends to the console with a soft, private smile. A second later, on every scope in range, you\'re a Compact Navy frigate, ' +
             'with a full crew and an ugly reputation. The unmarked ship scatters like startled pigeons. Sable laughs, for the first time since she ' +
             'came aboard, a short startled bark, then a longer, warmer sound. "Oh," she says, wiping her eyes. "Oh, that\'s very good."');
       } },
       { label: '[{crew}] Answer them with the guns', role: 'gunner', run() {
-        m.bonus += 3000;
+        m.bonus += 30000;
         return (`{crew} answers with the guns, a single, exact burst that takes their antenna array off in a sheet of sparks. They don't ask again. ` +
             `You take ${hurt(0.1)} points of armor damage from a wild return shot, and Sable, watching from the galley, quietly doubles her fare and ` +
             `doesn't say why. When you look up, she's nodding, once.`);
       } },
       { label: 'Refuse, and fight if you have to', run() {
         if (Math.random() < fightOdds()) {
-          m.bonus += 3000;
+          m.bonus += 30000;
           return (`You drive them off in a long, ugly exchange, with ${hurt(0.2)} points of armor damage and a burnt-out gun barrel. Sable finds you ` +
               `in the cockpit afterwards, hollow-eyed, and presses a credit chip into your hand. "For your trouble," she says, and then, quieter, ` +
               `"Nobody has ever fought for me before."`);
@@ -424,7 +424,7 @@ const PASSENGERS = {
     choices: [
       { label: 'Cut thrust for them (costs time)', run() {
         delay(12);
-        m.bonus += 1200;
+        m.bonus += 12000;
         return ('The drive falls silent, and the whole ship seems to exhale. The pilgrims drift through the cargo bay in a slow, holy circle, robes ' +
             'floating like pale sails, singing in a language older than any port you\'ve ever docked at. You find that you\'ve stopped work to ' +
             'listen. When it\'s over, they pass a collection for the ship, small coins and a folded prayer, and the eldest touches the bulkhead once, ' +

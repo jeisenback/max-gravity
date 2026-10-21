@@ -9,7 +9,7 @@
 // game (boardDice), so the board is the same however often the page draws it and no other draw in the game moves because of it (the
 // job board does the same with a hash, jobs.js). Pure: each function takes the state and the dice it uses. Loaded after market.js.
 
-const CONTRACT_RATE = 26, CONTRACT_FEE = 1200;  // cr a ton a day, and a handling fee a contract (so a short haul pays a little more a day than a long one), before premiums; set from the soak (ROADMAP.md)
+const CONTRACT_RATE = 260, CONTRACT_FEE = 12000;  // cr a ton a day, and a handling fee a contract (so a short haul pays a little more a day than a long one), before premiums; set from the soak (ROADMAP.md)
 const CONTRACT_LEVEL = { L: 1, M: 0.5, H: 0 };  // what ships from a port: all of what it prices low, some of the middling, none of the dear
 const RUMOR_PREMIUM = 0.5, HAZARD_PREMIUM = 0.3, HAZARD_AT = 0.25;  // word of a shortage at the far end; a lane with raids on it
 const LONG_HAUL = 0.02, LONG_HAUL_FLOOR = 0.5;  // the rate falls two percent a day of the burn, to half at most: a long haul pays less a day than a short one, so the chapter keeps its runs

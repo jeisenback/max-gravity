@@ -30,7 +30,7 @@ function atTheHelm(backup) {
 
 CAST.pilar = {
   first: 'Pilar', last: 'Quesada', culture: 'earth', home: 'Callao Arcology', job: 'first officer', age: 49, role: 'xo',
-  traits: ['brave', 'curious'], wage: 65, xo: true, fragile: true,
+  traits: ['brave', 'curious'], wage: 650, xo: true, fragile: true,
   skills: { xo: 2, pilot: 3, engineer: 2, gunner: 1, slicer: 0 }, captain: { trade: 3, nerve: 4, thrift: 3 },
   ambition: 'Wants to be respected, not noted.',
   bio: 'A self-taught hauler lifer with no certificates, who flies the approach by feel and knows the ship\'s real tricks. She bends every rule the captain writes, and gets results.',

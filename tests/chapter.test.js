@@ -99,7 +99,7 @@ test('crew events cope with roles that have no post', async () => {
 
 test('after the buy-in the old captain\'s ship is an Ice Hauler', async () => {
   const { ev, done } = await hauler();
-  const r = await ev(() => { const st = start(); st.credits = 100000; const cap = hiredCaptain(); buyIn('courier'); return cap.ship.shipId; });
+  const r = await ev(() => { const st = start(); st.credits = 1000000; const cap = hiredCaptain(); buyIn('courier'); return cap.ship.shipId; });
   assert.equal(r, 'freighter');
   await done();
 });
@@ -107,7 +107,7 @@ test('after the buy-in the old captain\'s ship is an Ice Hauler', async () => {
 test('the fund starts whole, the hold empty, and the first contract costs the ship nothing', async () => {
   const { ev, done } = await hauler();
   const r = await ev(() => { const st = start(); const plan = currentPlan(); return { fund: HIRED_FUND, have: st.hired.fund, cost: plan && plan.cost, contract: !!(plan && (plan.contract || plan.ballast || plan.ice)), free: cargoFree(), hold: SHIPS.freighter.cargo }; });
-  assert.ok(r.fund >= 12000); assert.equal(r.have, r.fund, 'the fund is for the yard and the ship\'s bills, not cargo (contracts.js)');
+  assert.ok(r.fund >= 120000); assert.equal(r.have, r.fund, 'the fund is for the yard and the ship\'s bills, not cargo (contracts.js)');
   assert.equal(r.free, r.hold, 'the hold starts empty');
   assert.ok(r.contract && r.cost === 0, 'the cargo is the shipper\'s');
   await done();
@@ -123,7 +123,7 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
     st.credits = Math.min(...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price)); out.cheapShip = wantsYard();
     return out;
   });
-  assert.equal(r.target, 19000); assert.equal(r.below, false); assert.equal(r.at, true);
+  assert.equal(r.target, 190000); assert.equal(r.below, false); assert.equal(r.at, true);
   assert.equal(r.cheapShip, false, 'the Dust Skiff price is not the signal');
   await done();
 });
@@ -134,7 +134,7 @@ test('the sheet, the kit and the shippers\' regard outlive the buy as the career
     const st = start(), h = hired(), out = {}, hall = 'the League Freight Hall';
     h.sheet = { hands: 4, eye: 3, nerve: 3, wit: 5 }; h.kit = ['valve-keys']; h.standing = { [hall]: 2 };
     out.during = career() === h; out.hands = handStat('hands');
-    st.credits = 100000; buyIn('courier');
+    st.credits = 1000000; buyIn('courier');
     const c = st.career;
     out.gone = hired(); out.career = { sheet: { ...c.sheet }, kit: [...c.kit], standing: { ...c.standing } }; out.after = career() === c;
     out.hands2 = handStat('hands'); out.wit = handStat('wit');
@@ -158,7 +158,7 @@ test('the post the player works and what they have learned at it outlive the buy
   const r = await ev(() => {
     const st = start(), h = hired(), out = {};
     h.skill = { gunner: 40, pilot: 5 }; out.before = [skillLevel('gunner'), skillLevel('pilot')];
-    st.credits = 100000; buyIn('courier'); const c = st.career;
+    st.credits = 1000000; buyIn('courier'); const c = st.career;
     out.career = { post: c.post, skill: { ...c.skill } }; out.hired = hired(); out.level = [skillLevel('gunner'), skillLevel('pilot'), skillXp('gunner')];
     G.mode = 'landed'; UI.notes.length = 0; G.dialog = null;
     gainSkill('gunner', 3); out.quiet = UI.notes.join(' '); gainSkill('gunner', 3); out.xp = c.skill.gunner; out.levelUp = UI.notes.join(' ');

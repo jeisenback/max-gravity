@@ -120,16 +120,16 @@ test('a line table in the bar files with no id fails here: every BAR_ table is i
 test('the labels of the goal help are left plain for the dialog to escape, and the lines under them are text', async () => {
   const g = await open({ scope: 'full' });
   const r = await g.ev(() => {
-    useOverrides({ 'lines:bar-goal-help': { parts: { 'home.gift': 'Pay <b>part</b> & go (60 cr)', 'home.ask': 'Ask <i>about</i> home', 'home.text': '{n} sighs <b>twice</b>.' } } });
+    useOverrides({ 'lines:bar-goal-help': { parts: { 'home.gift': 'Pay <b>part</b> & go (600 cr)', 'home.ask': 'Ask <i>about</i> home', 'home.text': '{n} sighs <b>twice</b>.' } } });
     const h = barLines('goal-help').home, plain = barLines('goal-help').family;
     useOverrides({});
     return { gift: h.gift, ask: h.ask, text: h.text, other: plain.gift };
   });
   await g.done();
-  assert.equal(r.gift, 'Pay <b>part</b> & go (60 cr)');
+  assert.equal(r.gift, 'Pay <b>part</b> & go (600 cr)');
   assert.equal(r.ask, 'Ask <i>about</i> home');
   assert.equal(r.text, '{n} sighs &lt;b&gt;twice&lt;/b&gt;.');
-  assert.equal(r.other, 'Press a few credits into their hand for a present (60 cr)');
+  assert.equal(r.other, 'Press a few credits into their hand for a present (600 cr)');
 });
 
 test('every bar topic has an id and lines, and every line is read: the button, the reason it is shut and what it ends on', async () => {

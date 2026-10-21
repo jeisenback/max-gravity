@@ -45,7 +45,7 @@ function storyOf(p) {
   if (own && !(p.story && p.story.authored)) p.story = { ...own, authored: true, beat: p.story ? p.story.beat : 0 };
   if (!p.story) {
     const rel = pick(RELATIONS), who = makePerson(cultureOfPerson(p));
-    p.story = { left: pick(familyLines('left')), rel, name: who.first, hope: pick(familyLines('hopes')).replace('{home}', p.home), favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 100, beat: 0 };
+    p.story = { left: pick(familyLines('left')), rel, name: who.first, hope: pick(familyLines('hopes')).replace('{home}', p.home), favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 1000, beat: 0 };
   }
   return p.story;
 }
@@ -289,7 +289,7 @@ const FAMILY_SCENES = {
   'favor-visit': p => visitFavor(p, Object.assign(storyOf(p), { favor: 'visit' })),
   visit: p => visitEvent(p),
   'visit-home': p => visitHome(p),
-  'favor-debt': p => debtFavor(p, Object.assign(storyOf(p), { favor: 'debt', debt: 1500 })),
+  'favor-debt': p => debtFavor(p, Object.assign(storyOf(p), { favor: 'debt', debt: 15000 })),
   picker: () => sitPicker(),
   birthday: p => occasionEvent({ kind: 'birthday', id: p.id, day: G.state.day + 3 }),
   holiday: p => occasionEvent({ kind: 'holiday', h: HOLIDAYS[0], id: p.id, day: G.state.day + 1, year: calOf(G.state.day + 1).y }),
@@ -393,7 +393,7 @@ function newsEvent(p) {
   const say = familySay('news-bad'), others = procedural().filter(f => f.p !== p && bond(f, { id: p.id }) >= 1);
   const choices = [
     { label: say('sit.label'), run() { like(p, 2, say('sit.memory')); p.mood.until -= 10; return say(`sit.result.${pick([0, 1, 2])}`, { n }); } },
-    { label: say('advance.label'), ...gated(needCr(500)), run() { st.credits -= 500; like(p, 3, say('advance.memory')); p.mood.until = st.day; return say(`advance.result.${pick([0, 1, 2])}`, { n }); } },
+    { label: say('advance.label'), ...gated(needCr(5000)), run() { st.credits -= 5000; like(p, 3, say('advance.memory')); p.mood.until = st.day; return say(`advance.result.${pick([0, 1, 2])}`, { n }); } },
   ];
   if (others.length) {
     const o = pick(others);

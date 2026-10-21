@@ -8,7 +8,7 @@ const playMessages = () => {
   const seq = list => { const l = [...list], base = Math.random; Math.random = () => (l.length ? l.shift() : base()); };  // the rolls given, then the seeded random the case started with
   const start = (seed, hired = false) => {
     __seed(seed);
-    startGame(hired ? { slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 } : { slot: 1, background: 'earth', captain: 'Sam Rowe', credits: 5000 });
+    startGame(hired ? { slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 50000 } : { slot: 1, background: 'earth', captain: 'Sam Rowe', credits: 50000 });
     while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; st.story.next = 1e9;
     G.dialog = null; G.nextEvent = null;
@@ -30,13 +30,13 @@ const playMessages = () => {
     out.push(rec);
   };
   const here = st => system().planets.find(p => p.name === st.planet) || system().planets[0];
-  const mission = (st, over) => { const pl = here(st); const m = { id: st.nextId++, destSystem: st.systemId, destPlanet: pl.name, deadline: st.day + 10, title: 'Job', pay: 400, ...over }; st.missions.push(m); return m; };
+  const mission = (st, over) => { const pl = here(st); const m = { id: st.nextId++, destSystem: st.systemId, destPlanet: pl.name, deadline: st.day + 10, title: 'Job', pay: 4000, ...over }; st.missions.push(m); return m; };
 
   // ---------- kills ----------
   says('kill:ally', 1, null, () => settleKill({ name: 'Rook', kind: 'pirate' }, false));
   says('kill:ally-enemy', 1, null, () => settleKill({ name: 'Rook', kind: 'trader', enemy: true }, false));
   says('kill:story', 1, null, () => settleKill({ name: 'Voight', kind: 'story', story: true }, true));
-  says('kill:bounty', 1, st => { const m = mission(st, { type: 'bounty', pay: 1200, issuer: localGov(), targetName: 'Harlan Voss' }); return m; }, (st, m) => settleKill({ name: 'Harlan Voss', kind: 'pirate', bountyId: m.id }, true));
+  says('kill:bounty', 1, st => { const m = mission(st, { type: 'bounty', pay: 12000, issuer: localGov(), targetName: 'Harlan Voss' }); return m; }, (st, m) => settleKill({ name: 'Harlan Voss', kind: 'pirate', bountyId: m.id }, true));
   for (const [i, r] of [0, 0.5, 0.99].entries()) says(`kill:pirate:${i}`, 1, null, () => { seq([r]); settleKill({ name: 'Rook', kind: 'pirate' }, true); });
   says('kill:patrol', 1, null, () => settleKill({ name: 'Patrol 4', kind: 'patrol', gov: 'Compact' }, true));
   says('kill:trader', 1, null, () => settleKill({ name: 'Wren', kind: 'trader' }, true));
@@ -48,14 +48,14 @@ const playMessages = () => {
 
   // ---------- deliveries ----------
   const dock = (key, setup, extra = {}) => says(key, 1, st => { setup(st); return null; }, st => land(here(st)));
-  dock('dock:errand', st => mission(st, { type: 'errand', title: 'Errand: carry a sealed case to Ceres Station', pay: 300 }));
-  dock('dock:delivery', st => mission(st, { type: 'delivery', tons: 12, good: 'water ice', pay: 900 }));
-  dock('dock:pax1', st => mission(st, { type: 'passenger', who: 'a pilgrim', pax: 1, bonus: 0, pay: 500 }));
-  dock('dock:pax2', st => mission(st, { type: 'passenger', who: 'a survey crew', pax: 3, bonus: 0, pay: 800 }));
-  dock('dock:pax-bonus', st => mission(st, { type: 'passenger', who: 'a pilgrim', pax: 1, bonus: 150, pay: 500 }));
-  dock('dock:pax-penalty', st => mission(st, { type: 'passenger', who: 'a pilgrim', pax: 1, bonus: -150, pay: 500 }));
-  dock('dock:pax-nofare', st => mission(st, { type: 'passenger', who: 'a pilgrim', pax: 1, bonus: -500, pay: 500 }));
-  says('dock:lapsed', 1, st => { mission(st, { type: 'delivery', tons: 5, good: 'ore', pay: 100, destSystem: 'nowhere', title: 'Ore run', deadline: st.day - 1 }); }, st => expireMissions());
+  dock('dock:errand', st => mission(st, { type: 'errand', title: 'Errand: carry a sealed case to Ceres Station', pay: 3000 }));
+  dock('dock:delivery', st => mission(st, { type: 'delivery', tons: 12, good: 'water ice', pay: 9000 }));
+  dock('dock:pax1', st => mission(st, { type: 'passenger', who: 'a pilgrim', pax: 1, bonus: 0, pay: 5000 }));
+  dock('dock:pax2', st => mission(st, { type: 'passenger', who: 'a survey crew', pax: 3, bonus: 0, pay: 8000 }));
+  dock('dock:pax-bonus', st => mission(st, { type: 'passenger', who: 'a pilgrim', pax: 1, bonus: 1500, pay: 5000 }));
+  dock('dock:pax-penalty', st => mission(st, { type: 'passenger', who: 'a pilgrim', pax: 1, bonus: -1500, pay: 5000 }));
+  dock('dock:pax-nofare', st => mission(st, { type: 'passenger', who: 'a pilgrim', pax: 1, bonus: -5000, pay: 5000 }));
+  says('dock:lapsed', 1, st => { mission(st, { type: 'delivery', tons: 5, good: 'ore', pay: 1000, destSystem: 'nowhere', title: 'Ore run', deadline: st.day - 1 }); }, st => expireMissions());
 
   says('dock:walk-off', 1, st => { const c = crewMembers().find(c => c.id && !c.cast); c.opinion = OPINION.BITTER - 1; c.loyal = false; }, st => land(here(st)), true);
 
@@ -149,7 +149,7 @@ const playMessages = () => {
     says('jobs:favor', 1, st => { const p = makePerson('earth'); Object.assign(p, { first: 'Mara', last: 'Quill', opinion: OPINION.TRUSTED, thanked: false, location: st.planet }); registerPerson(p); }, () => { seq([0.9]); got = meetContacts(currentPlanet()); }, false, () => ({ notes: got, offers: offers() }));
     const person = extra => st => { const p = makePerson('earth'); Object.assign(p, { first: 'Mara', last: 'Quill', thanked: false, location: st.planet }, extra); registerPerson(p); };
     const met = rolls => () => { seq(rolls); got = meetContacts(currentPlanet()); };
-    says('notes:repaid', 1, person({ owes: 300, repaid: false }), met([0.9]), false, () => ({ notes: got }));
+    says('notes:repaid', 1, person({ owes: 3000, repaid: false }), met([0.9]), false, () => ({ notes: got }));
     says('notes:dinner', 1, person({ opinion: OPINION.TRUSTED }), met([0.1]), false, () => ({ notes: got }));
     says('notes:tip', 1, person({ opinion: OPINION.TRUSTED }), met([0.5]), false, () => ({ notes: got }));
     says('notes:warning', 1, person({ opinion: OPINION.BITTER, avenged: false }), met([0.9]), false, () => ({ notes: got }));
@@ -163,7 +163,7 @@ const playMessages = () => {
       try { for (k = 0; k < n; k++) { G.transit.chatter = 0; G.transit.chattered = 0; G.transit.comms = []; updateTransit(0.01); got.push(G.transit.comms.slice(-1)[0]); } } finally { Mods.filter = filter; }
     }, false, () => ({ lines: got }));
     for (let i = 1; i <= 4; i++) says(`jobs:board:${i}`, 31 * i, st => { st.rep[localGov()] = 40; }, () => { got = generateMissions(currentPlanet()); }, false, () => got.map(o => [o.type, o.title, o.good || null]));  // a captain a government trusts, whose delivery is a contract
-    says('jobs:story-passenger', 1, null, () => storyPassenger('Mira Castellane', 1, 'jupiter', 'Europa', 3000, 'mira-europa'), false, st => st.missions.map(m => m.title)); }
+    says('jobs:story-passenger', 1, null, () => storyPassenger('Mira Castellane', 1, 'jupiter', 'Europa', 30000, 'mira-europa'), false, st => st.missions.map(m => m.title)); }
   return out;
 };
 

@@ -9,7 +9,7 @@
 // the sims play them like the birthdays. Loaded after engagements.js; only called into at runtime.
 
 const ICE_GAP = 60;          // days between ice runs
-const ICE_WATER_PRICE = 96;  // water at a port this dear makes an ice run worth the trip (80 is the base price)
+const ICE_WATER_PRICE = 960;  // water at a port this dear makes an ice run worth the trip (800 is the base price)
 const ICE_HAZARD = 2;        // the wage, for the days it takes
 const ICE_PREMIUM = 2.5;     // what the domes pay for water on a contract, against the board price
 const ICE_AT = [0.3, 0.5, 0.78];  // how far into the burn each scene falls

@@ -27,7 +27,7 @@ function wear(part, amount) { const c = condition(); c[part] = Math.max(0, c[par
 // Full marks down to 60%, then sliding to half at nothing.
 const perf = part => { const c = condition()[part]; return c >= 60 ? 1 : 0.5 + c / 120; };
 const worstPart = () => { const c = condition(); return Object.keys(SHIP_PARTS).sort((a, b) => c[a] - c[b])[0]; };
-const overhaulCost = part => Math.round((100 - condition()[part]) * 8);
+const overhaulCost = part => Math.round((100 - condition()[part]) * 80);
 
 (ORDERS.engineer = ORDERS.engineer || []).push({
   id: 'service', name: 'Service the worst system', desc: 'Put the system in the worst shape right. Once a day.',

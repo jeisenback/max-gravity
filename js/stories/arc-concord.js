@@ -89,7 +89,7 @@ Mods.register({
           'he says. "Seven doors short, the Fleet says, and I was not asked about the rest." He holds the envelope out. "The town put in. It breathes the same air. Nobody wrote ' +
           'a word down for you, and nobody will."'),
       choices: [
-        { label: 'Take the envelope (300 cr)', effects: { credits: 300, do: ['concord-fee', 'You took the town\'s fee and said nothing of the vents.', 'You took the town\'s money after the count.'], log: 'Took the Old Town air fund\'s fee after the audit.' },
+        { label: 'Take the envelope (3,000 cr)', effects: { credits: 3000, do: ['concord-fee', 'You took the town\'s fee and said nothing of the vents.', 'You took the town\'s money after the count.'], log: 'Took the Old Town air fund\'s fee after the audit.' },
           result: 'The envelope is mostly small coin, counted twice. Hob reads it the way he reads a gauge. "Pressure\'s holding," he says. "Mind the ninth corridor."' },
         { label: 'Leave it with him', effects: { do: ['arcLike', 'hob', 1, 'You would not take the town\'s money.'], log: 'Left the Old Town air fund\'s fee with the steward.' },
           result: 'Hob turns the envelope over and puts it in the apron. He says nothing until the apron is tied. "Then the cisterns get it," he says. "Come in out of the cold."' },

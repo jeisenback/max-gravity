@@ -88,7 +88,7 @@ const AMBUSH_TEXT = {
   'go.label': 'Go to her',
   'sprung.result': 'You alter course for her. At forty kilometers the freighter lights a drive that\'s not a freighter\'s, and two more come off the rock behind her, and the call stops.',
   'sprung.open': 'They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they\'re inside the range, and your position is already bad.',
-  'real.result': 'She\'s real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship\'s fund.',
+  'real.result': 'She\'s real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 5,000 cr to the ship\'s fund.',
   'real.leave.label': 'Leave her',
   'real.leave.result': 'You leave her to call for someone else. Captain {cap} says nothing, and doesn\'t look up from the plot.',
   'trap.hit.label': 'Hit them before they\'re ready',
@@ -132,7 +132,7 @@ function ambushScene() {
 function ambushChoice(a, cap, h, post, spec) {
   const springs = (edge, text, open) => startShipFight({ kind: 'pirate' }, false, { edge, text, open }), say = key => ambushSay(key, { cap: cap.last, post: POSTS[post].name.toLowerCase() });
   const sprung = () => springs(-2, say('sprung.result'), say('sprung.open'));
-  const real = () => { h.fund += 500; like(cap, 1, lineWords('beats:ambush', 'memory.real', AMBUSH_MEMORY.real)); return say('real.result'); };
+  const real = () => { h.fund += 5000; like(cap, 1, lineWords('beats:ambush', 'memory.real', AMBUSH_MEMORY.real)); return say('real.result'); };
   const choices = [];
   if (a.known) {
     if (a.trap) {

@@ -92,7 +92,7 @@ test('a war sends warships into local space', async () => {
 
 test('outfits change the ship, standing unlocks ships, hostility closes ports', async () => {
   const { page, ev, done } = await open({});
-  await ev(() => { G.state.tutorial = null; G.state.credits = 300000; while (G.dialog) finishEvent(); UI.render(); });
+  await ev(() => { G.state.tutorial = null; G.state.credits = 3000000; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'shipyard');
   const base = await ev(() => ({ ...ship() }));
   for (const id of ['pdc', 'armor', 'tank', 'pod', 'drive']) await page.click(`[data-action=buyout][data-arg=${id}]`);
@@ -127,7 +127,7 @@ test('outfits change the ship, standing unlocks ships, hostility closes ports', 
 test('company ships and stakes earn money', async () => {
   const { ev, done } = await open({});
   const r = await ev(() => {
-    const st = G.state; st.tutorial = null; st.credits = 1e6;
+    const st = G.state; st.tutorial = null; st.credits = 1e7;
     for (const id of ['lightfreighter', 'freighter']) {
       buyCompanyShip(id);
       const s = fleet()[fleet().length - 1];
@@ -180,14 +180,14 @@ test('a greedy trader from a new game gets rich and upgrades', async () => {
       for (const [c, q] of Object.entries(best.lot)) { st.credits += tradeTotal(best.b.pl, c, q, -1); recordTrade(best.b.pl, c, q, -1); }
       if (best.b.pl.services.includes('shipyard')) for (const id of ['lightfreighter', 'freighter']) {
         const cost = SHIPS[id].price - Math.round(SHIPS[st.shipId].price * 0.6);
-        if (SHIPS[id].cargo > cap() && st.credits - cost > 10000) { st.credits -= cost; st.shipId = id; st.fuel = tank(); ships.push(`${id} day ${st.day}`); }
+        if (SHIPS[id].cargo > cap() && st.credits - cost > 100000) { st.credits -= cost; st.shipId = id; st.fuel = tank(); ships.push(`${id} day ${st.day}`); }
       }
     }
     return { day: st.day, credits: Math.round(st.credits), ship: st.shipId, ships };
   });
   assert.ok(r.day >= 300, 'never stranded');
   assert.ok(r.ships.length >= 1, 'upgraded at least once');
-  assert.ok(r.credits > 50000, `made money (${r.credits})`);
+  assert.ok(r.credits > 500000, `made money (${r.credits})`);
   await done();
 });
 
@@ -195,16 +195,16 @@ test('money never goes negative or NaN: broke escorts stay behind, empty sells d
   const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
-    st.credits = 300000; buyCompanyShip('gunship'); Mods.act('cescort', '0');
-    st.credits = 10;
+    st.credits = 3000000; buyCompanyShip('gunship'); Mods.act('cescort', '0');
+    st.credits = 100;
     takeOff(); st.dest = 'mars'; G.player.x = 6000; G.player.y = 0; tryBurn();
     const afterBurn = st.credits, stayed = !fleet()[0].escort;
     G.mode = 'landed'; G.transit = null; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
     UI.act('sellall', 'food'); UI.act('sell', 'food');
     return { afterBurn, stayed, credits: st.credits };
   });
-  assert.equal(r.afterBurn, 10);
+  assert.equal(r.afterBurn, 100);
   assert.ok(r.stayed, 'the escort waits at port');
-  assert.equal(r.credits, 10);
+  assert.equal(r.credits, 100);
   await done();
 });

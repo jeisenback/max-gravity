@@ -150,7 +150,7 @@ test('crippling her brings her alongside dead in space, and boarding her is the 
   });
   assert.equal(r.ret, null); assert.equal(r.title, 'Dead in Space'); assert.ok(r.crippled, 'the line that says how'); assert.deepEqual(r.labels, ['Board her', 'Let her drift']);
   assert.equal(r.first, 'Her Lock'); assert.equal(r.assault, true); assert.ok(r.heads >= 3, 'her crew and one more'); assert.equal(r.mid, null, 'the fight ends on the panel');
-  assert.ok(r.taken, r.end); assert.ok(r.fund >= 1000 && r.fund <= 3000, `fund ${r.fund}`); assert.equal(r.opinion, 2, 'the strongbox'); assert.equal(r.xp, 5);
+  assert.ok(r.taken, r.end); assert.ok(r.fund >= 10000 && r.fund <= 30000, `fund ${r.fund}`); assert.equal(r.opinion, 2, 'the strongbox'); assert.equal(r.xp, 5);
   assert.equal(r.next, null);
   await done();
 });
@@ -246,7 +246,7 @@ test('turning away from a trap you read earns the captain\'s regard and some exp
     let e = ambushScene(); G.dialog = { event: e, choices: e.choices }; chooseEvent(e.choices.findIndex(c => /Scan her hull/.test(c.label))); finishEvent();
     const away = chooseEvent(G.dialog.choices.findIndex(c => /Turn away/.test(c.label)));
     out.away = /burn for the lane/.test(away); out.awayOp = cap.opinion - op; out.xp = skillXp('gunner') - xp;
-    st.ambushAt = -1000; h.fund = 1000; op = cap.opinion;
+    st.ambushAt = -1000; h.fund = 10000; op = cap.opinion;
     rolls([0.99]);  // a real freighter, answered blind
     e = ambushScene(); G.dialog = { event: e, choices: e.choices };
     const real = chooseEvent(e.choices.findIndex(c => c.label === 'Go to her')); out.real = /She's real/.test(real); out.fund = h.fund; out.realOp = cap.opinion - op;
@@ -256,7 +256,7 @@ test('turning away from a trap you read earns the captain\'s regard and some exp
     return out;
   });
   assert.ok(r.away); assert.equal(r.awayOp, 1); assert.equal(r.xp, 2);
-  assert.ok(r.real); assert.equal(r.fund, 1500); assert.equal(r.realOp, 1); assert.equal(r.leftOp, -1);
+  assert.ok(r.real); assert.equal(r.fund, 15000); assert.equal(r.realOp, 1); assert.equal(r.leftOp, -1);
   await done();
 });
 
@@ -288,13 +288,13 @@ test('a hired hand can heave to and let the ship pay a quarter of its fund, inst
   await ev(helpers);
   const r = await ev(() => {
     const st = raid('gunner'), h = hired(), gov = 'Arcology Compact', cap = person(h.captain), op = cap.opinion;
-    st.rep[gov] = -30; h.fund = 2000;
+    st.rep[gov] = -30; h.fund = 20000;
     const e = contactEvent({ kind: 'patrol', gov }), i = e.choices.findIndex(c => /Heave to/.test(c.label));
     G.dialog = { event: e, choices: e.choices };
     const t = chooseEvent(i);
-    return { i, fund: h.fund, rep: st.rep[gov], opinion: cap.opinion - op, text: /500 cr/.test(t) };
+    return { i, fund: h.fund, rep: st.rep[gov], opinion: cap.opinion - op, text: /5,000 cr/.test(t) };
   });
-  assert.ok(r.i >= 0); assert.equal(r.fund, 1500); assert.equal(r.rep, -10); assert.equal(r.opinion, -1); assert.ok(r.text);
+  assert.ok(r.i >= 0); assert.equal(r.fund, 15000); assert.equal(r.rep, -10); assert.equal(r.opinion, -1); assert.ok(r.text);
   await done();
 });
 
@@ -304,14 +304,14 @@ test('a patrol that boards a hired hand\'s ship levies the fund and does not rob
   const r = await ev(() => {
     const st = raid('gunner'), h = hired(), gov = 'Arcology Compact';
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); Object.assign(spare, { shipId: 'cutter' });
-    h.fund = 1000;
+    h.fund = 10000;
     const d = { foe: spare, foeHp: 0, init: 'foe' }, s = repelStart(d, 'full');
     s.state.sections[2] = { mine: 0, theirs: 3, cover: 1 }; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // they hold the bridge
     rolls([0.99, 0.99, 0.99, 0.99]);  // no one is hurt
     const e = deckFightEvent(s); e.choices[e.choices.length - 1].run(); const text = G.nextEvent.text; G.nextEvent = null;
-    return { levy: /levy of 300 cr/.test(text), fund: h.fund };
+    return { levy: /levy of 3,000 cr/.test(text), fund: h.fund };
   });
-  assert.ok(r.levy); assert.equal(r.fund, 700);
+  assert.ok(r.levy); assert.equal(r.fund, 7000);
   await done();
 });
 
@@ -332,8 +332,8 @@ test('a turn that takes a heavy share of the armor can hurt you: a clinic bill w
     rolls([0.5, 0.5, 0.01, 0.01]); fireOrders(); out.light = handHurt(); out.lightLine = fightNow().state.log.slice(-1)[0];
     return out;
   });
-  assert.ok(r.hurt, 'hurt on a heavy hit'); assert.match(r.line, /she hits your hull for 60\. You are hurt\. Your work counts a level lower until the clinic clears you\. The clinic is 150 cr of your own, with no medic aboard\.$/, r.line);
-  assert.equal(r.paid, 150); assert.equal(r.armor, 200, 'the hit stays on the ship');
+  assert.ok(r.hurt, 'hurt on a heavy hit'); assert.match(r.line, /she hits your hull for 60\. You are hurt\. Your work counts a level lower until the clinic clears you\. The clinic is 1,500 cr of your own, with no medic aboard\.$/, r.line);
+  assert.equal(r.paid, 1500); assert.equal(r.armor, 200, 'the hit stays on the ship');
   assert.equal(r.light, false); assert.match(r.lightLine, /she hits your hull for 20\.$/);
   await done();
 });
@@ -596,7 +596,7 @@ test('an owner who kept a post meets a pirate or a patrol in the ship fight (#72
     const out = {};
     __seed(1);
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
-    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.credits = 100000; buyIn('courier'); while (G.dialog) finishEvent();
+    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.credits = 1000000; buyIn('courier'); while (G.dialog) finishEvent();
     st.day += 30; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     out.owner = !hired() && lockPost() === 'gunner';
     const real = Math.random;  // a foe is made with the dice back: people are drawn until they differ

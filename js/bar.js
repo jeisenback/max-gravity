@@ -6,7 +6,7 @@
 // deal with them (st.people), so they can turn up again. Loaded before game.js;
 // only calls into it at runtime.
 
-const DRINK = 20, CARDS = 200;
+const DRINK = 200, CARDS = 2000;
 
 const BARS = {
   'Hermes Foundry': ['The Heat Sink', ('Foundry shifts change every six hours, and the bar fills and empties with them. Everyone is red through two ' +
@@ -405,7 +405,7 @@ function talkEvent(pat) {
 function barHtml() {
   const st = G.state, planet = currentPlanet();
   if (!G.patrons || G.barState.planet !== planet.name) fillBar(planet);
-  const b = barOf(planet), round = 25 * (4 + G.patrons.filter(x => !x.cast).length);
+  const b = barOf(planet), round = 250 * (4 + G.patrons.filter(x => !x.cast).length);
   const rows = listHtml(G.patrons, ({ p, known, cast, regular }, i) => h`<div class="mission">
       <div><b>${p.first} ${p.last}</b>${known ? h` <span class="hint">(${opinionWord(p.opinion)})</span>` : ''}
         <div class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? h`${regular ? 'A regular here.' : 'Someone you know.'} ${regular && p.gossip ?
@@ -437,7 +437,7 @@ Mods.register({
     M.on('landed', fillBar);
     M.action('barTalk', i => openEvent(talkEvent(G.patrons[Number(i)])));
     M.action('barRound', () => {
-      const st = G.state, cost = 25 * (4 + G.patrons.filter(x => !x.cast).length);
+      const st = G.state, cost = 250 * (4 + G.patrons.filter(x => !x.cast).length);
       if (G.barState.round || st.credits < cost) return;
       G.barState.round = true;
       st.credits -= cost;

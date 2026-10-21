@@ -171,11 +171,11 @@ test('picking a choice shows what it changed', async () => {
   assert.match(await frame().textContent('#event-result'), /There,/);
   // A choice that changes credits and a quality.
   await select('land-customs');
-  await page.fill('[data-pv=credits]', '1000');
+  await page.fill('[data-pv=credits]', '10000');
   await play();
   await frame().click('[data-action="choose"][data-arg="1"]');
   await page.waitForFunction(() => /You chose: Offer/.test(document.querySelector('#pv-effects').textContent));
-  assert.match(await page.textContent('#pv-effects'), /credits: 1000 to 700 \(-300\)/);
+  assert.match(await page.textContent('#pv-effects'), /credits: 10000 to 7000 \(-3000\)/);
 });
 
 test('what the game reports is shown as text, never as markup', async () => {

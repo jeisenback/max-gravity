@@ -24,10 +24,10 @@ Mods.register({
         label: 'Accept the thanks',
         effects: {
         like: { captain: 1 },
-        credits: 60,
+        credits: 600,
         log: 'The hot burn made the window. {captain} said thank you, once.'
       },
-        result: 'It\'s a short speech, delivered to the deck, and the envelope that goes with it has sixty credits in it and no name. You don\'t say anything clever. You put it in the inside pocket, and the next ship in the queue goes on idling.'
+        result: 'It\'s a short speech, delivered to the deck, and the envelope that goes with it has six hundred credits in it and no name. You don\'t say anything clever. You put it in the inside pocket, and the next ship in the queue goes on idling.'
       }],
     });
     after({
@@ -53,10 +53,10 @@ Mods.register({
         label: 'Take the compliment',
         effects: {
         like: { captain: 2 },
-        credits: 40,
+        credits: 400,
         log: '{captain} told the harbourmaster I was the only one who\'d say a thing to a captain\'s face.'
       },
-        result: 'You take it with a nod, and a drink. Later there\'s an envelope with forty credits in it, left where it might look accidental.'
+        result: 'You take it with a nod, and a drink. Later there\'s an envelope with four hundred credits in it, left where it might look accidental.'
       }],
     });
 
@@ -78,11 +78,11 @@ Mods.register({
           label: 'Do the inventory',
           effects: {
           like: { captain: 1 },
-          credits: 50,
+          credits: 500,
           learn: 1,
           log: 'Earned the bonus I asked for, by counting every part in the hold.'
         },
-          result: 'It takes the day, and your back. At the end there are fifty credits and a nod. You find three parts nobody knew were missing.'
+          result: 'It takes the day, and your back. At the end there are five hundred credits and a nod. You find three parts nobody knew were missing.'
         },
         { label: 'Say you\'re busy', effects: { like: { captain: -1 } }, result: '"Busy," says the captain, agreeably, and files you somewhere out of sight, under a heading you\'d rather not know.' },
       ],
@@ -101,7 +101,7 @@ Mods.register({
     after({
       id: 'h-favour-back', title: 'The Favor Returned',
       text: 'A week ago you stood a watch for {captain} and said nothing. Today the captain comes to find you. "I\'ve signed you off the next port\'s duties," the captain says. "And, because it\'s customary, the docking fee for your berth."',
-      choices: [{ label: 'Take the free day', effects: { like: { captain: 1 }, credits: 80, log: '{captain} paid back the extra watch: no duties at the next port, and my berth fee.' }, result: 'It\'s a quiet day ashore, and a free one. You walk the dock with your hands in your pockets.' }],
+      choices: [{ label: 'Take the free day', effects: { like: { captain: 1 }, credits: 800, log: '{captain} paid back the extra watch: no duties at the next port, and my berth fee.' }, result: 'It\'s a quiet day ashore, and a free one. You walk the dock with your hands in your pockets.' }],
     });
     after({
       id: 'h-favour-cold', title: 'Passed Over',
@@ -169,9 +169,9 @@ Mods.register({
     // ---- Card Night ----
     after({
       id: 'h-cards-rematch', title: 'The Rematch',
-      text: '{thread:cards} has been keeping the deck warm. "Same table, same stakes, but I want to see you again," they say. "A hundred a hand. I\'m not a man who loses twice in a row." The deck is soft at the corners.',
+      text: '{thread:cards} has been keeping the deck warm. "Same table, same stakes, but I want to see you again," they say. "A thousand a hand. I\'m not a man who loses twice in a row." The deck is soft at the corners.',
       choices: [
-        { label: 'Play the rematch (100 cr)', when: { credits: 100 }, effects: { do: ['gamble', 100], like: { 'thread:cards': 1 } }, result: 'The cards come out, and the room goes quiet. The hand takes less than a minute. When it\'s over, everybody has something to say about it.' },
+        { label: 'Play the rematch (1,000 cr)', when: { credits: 1000 }, effects: { do: ['gamble', 1000], like: { 'thread:cards': 1 } }, result: 'The cards come out, and the room goes quiet. The hand takes less than a minute. When it\'s over, everybody has something to say about it.' },
         { label: 'Decline', effects: { like: { 'thread:cards': -1 } }, result: '"Of course," they say, and square the deck against the table twice before putting it away.' },
       ],
     });
@@ -191,13 +191,13 @@ Mods.register({
           result: 'You tell the captain, standing in the galley. {captain} listens, sighs, makes a call, and by dinner the questions have gone elsewhere. "Next time," the captain says, "ask first."'
         },
         {
-          label: 'Keep quiet, and take the 100 cr offer',
+          label: 'Keep quiet, and take the 1,000 cr offer',
           effects: {
-          credits: 100,
+          credits: 1000,
           later: { 'h-side-found': 6 },
-          log: 'Took 100 cr to stay quiet about the side work.'
+          log: 'Took 1,000 cr to stay quiet about the side work.'
         },
-          result: 'The man from the trading house finds you before the officer does, and the hundred credits in your hand is warm from his pocket. "Nothing happened," he says. You say nothing happened. The hundred stays warm from his pocket for most of the afternoon.'
+          result: 'The man from the trading house finds you before the officer does, and the thousand credits in your hand is warm from his pocket. "Nothing happened," he says. You say nothing happened. The thousand stays warm from his pocket for most of the afternoon.'
         },
       ],
     });
@@ -217,30 +217,30 @@ Mods.register({
     // ---- A Loan ----
     after({
       id: 'h-loan-repaid', title: 'Paid Back',
-      text: '{thread:loan} is waiting for you at the end of the watch with an envelope. "A hundred and ten," they say. "The ten is for the worry. I\'d have paid it sooner, but I wanted to pay it right."',
-      choices: [{ label: 'Take it, and shake their hand', effects: { credits: 110, like: { 'thread:loan': 1 }, log: '{thread:loan} paid back the hundred I lent them, with ten over.' }, result: 'You take it and shake their hand, which is warm and slightly damp.' }],
+      text: '{thread:loan} is waiting for you at the end of the watch with an envelope. "Eleven hundred," they say. "The hundred is for the worry. I\'d have paid it sooner, but I wanted to pay it right."',
+      choices: [{ label: 'Take it, and shake their hand', effects: { credits: 1100, like: { 'thread:loan': 1 }, log: '{thread:loan} paid back the thousand I lent them, with a hundred over.' }, result: 'You take it and shake their hand, which is warm and slightly damp.' }],
     });
     after({
-      id: 'h-loan-small', title: 'Fifty, With Thanks',
-      text: '{thread:loan} presses a small bundle into your hand and doesn\'t stay to talk. It\'s fifty-five credits, in smaller notes than they\'d like, and a card in careful handwriting: "The five is for being honest about what you could spare."',
-      choices: [{ label: 'Keep it', effects: { credits: 55, like: { 'thread:loan': 1 }, log: '{thread:loan} repaid the fifty, with five over.' }, result: 'You keep it, and the card. The card stays in your pocket.' }],
+      id: 'h-loan-small', title: 'Five Hundred, With Thanks',
+      text: '{thread:loan} presses a small bundle into your hand and doesn\'t stay to talk. It\'s five hundred and fifty credits, in smaller notes than they\'d like, and a card in careful handwriting: "The fifty is for being honest about what you could spare."',
+      choices: [{ label: 'Keep it', effects: { credits: 550, like: { 'thread:loan': 1 }, log: '{thread:loan} repaid the five hundred, with fifty over.' }, result: 'You keep it, and the card. The card stays in your pocket.' }],
     });
     after({
       id: 'h-loan-default', title: 'The Loan Isn\'t Mentioned',
-      text: '{thread:loan} has stopped meeting your eye. It has been three weeks. They\'re polite, and quick, and in a hurry, and there has been no mention of the hundred credits. The galley table is eleven feet long and they take the far end of it.',
+      text: '{thread:loan} has stopped meeting your eye. It has been three weeks. They\'re polite, and quick, and in a hurry, and there has been no mention of the thousand credits. The galley table is eleven feet long and they take the far end of it.',
       choices: [
         {
           label: 'Let it go',
           effects: {
           like: { 'thread:loan': 1 },
-          log: 'Let {thread:loan} keep the hundred I lent them. It wasn\'t worth the silence.'
+          log: 'Let {thread:loan} keep the thousand I lent them. It wasn\'t worth the silence.'
         },
           result: 'You say, lightly, over tea, that you have forgotten about the loan, and they look at you with such startled relief that they spill their tea, and after that they sit beside you.'
         },
         {
           label: 'Ask for it back',
           effects: {
-          credits: 50,
+          credits: 500,
           like: { 'thread:loan': -2 },
           log: 'Asked {thread:loan} for the loan. They gave me half and haven\'t forgiven the asking.'
         },

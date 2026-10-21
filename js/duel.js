@@ -225,7 +225,7 @@ function duelExchange(mine, theirs) {
   } else if (d.foeHp <= 0) {
     text += ` ${foe} is finished.${duelFinish(d.foe)}`;
   } else if (st.armor <= max * 0.25) {
-    const c = Math.min(st.credits, Math.max(200, Math.round(st.credits * 0.1)));
+    const c = Math.min(st.credits, Math.max(2000, Math.round(st.credits * 0.1)));
     st.credits -= c;
     text += ` The hull cannot take another round. ${helmName()} calls it, and you yield${c ? `, paying ${fmt(c)} cr to be let go` : ''}.`;
     d.foeHp = -1;

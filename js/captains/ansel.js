@@ -33,7 +33,7 @@ function atTheLock(backup) {
 
 CAST.ansel = {
   first: 'Ansel', last: 'Whitcombe', culture: 'earth', home: 'Edinburgh Arcology', job: 'first officer', age: 63, role: 'xo',
-  traits: ['nervous', 'kind'], wage: 65, xo: true, fragile: true,
+  traits: ['nervous', 'kind'], wage: 650, xo: true, fragile: true,
   skills: { xo: 3, slicer: 2, engineer: 1, pilot: 0, gunner: 0 }, captain: { trade: 4, nerve: 1, thrift: 5 },
   ambition: 'Wants to retire safely, on an income nobody can touch.',
   bio: 'An actuary once, and he plans for the worst, and writes it down in small numbers. He\'s the brake on every one of the captain\'s schemes, and stays out of loyalty or habit; he hasn\'t decided which.',
@@ -78,7 +78,7 @@ CAST.ansel = {
     mid1: {
       days: 25, title: 'The Annuity',
       text: ('Ansel has a letter from an annuity company, and has read it several times. "A guaranteed income, for life, with no clauses," he says. ' +
-          '"It costs eleven thousand, which I don\'t have, and I\'m sixty-three, and the price goes up every year I\'m not sixty-three. This is the ' +
+          '"It costs one hundred and ten thousand, which I don\'t have, and I\'m sixty-three, and the price goes up every year I\'m not sixty-three. This is the ' +
           'whole of my ambition. It\'s not a large one. I\'ve never wanted to be rich. I\'d like to be sure."'),
       choices: [
         {
@@ -89,7 +89,7 @@ CAST.ansel = {
         {
           label: 'Ask how close he is',
           effects: { castLike: { who: 'ansel', n: 1, memory: 'You asked how close I was.' } },
-          result: 'He tells you, to the credit, and it\'s less than half of eleven thousand. "That\'s the nice thing about a number," he says. "It doesn\'t pretend."',
+          result: 'He tells you, to the credit, and it\'s less than half of one hundred and ten thousand. "That\'s the nice thing about a number," he says. "It doesn\'t pretend."',
         },
       ],
     },

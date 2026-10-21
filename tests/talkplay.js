@@ -9,7 +9,7 @@ const playTalk = () => {
   __seed(1);
   startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' });
   while (G.dialog) finishEvent();
-  let st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 20000;
+  let st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000;
   st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
   const mk = (first, over = {}) => { const p = makePerson('mars'); Object.assign(p, { first, last: 'Vale', home: 'Mars', traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [], role: 'engineer', skill: 1 }, over); delete p.story; registerPerson(p); return p; };
   const base = mk('Sam'); st.crew = [base.id];
@@ -21,7 +21,7 @@ const playTalk = () => {
     __seed(7); const p0 = fresh(), ev0 = build(p0);
     const rec = { title: ev0.title, text: ev0.text, labels: ev0.choices.map(c => String(c.label)), opens: new Set(), runs: [] };  // opens: the other openings the dice play
     for (let i = 0; i < ev0.choices.length; i++) for (let d = 1; d <= dice; d++) {
-      __seed(d * 31 + i); const p = fresh(); seq(Array(8).fill((d - 0.5) / dice)); const ev = build(p); st.credits = 20000; st.cargo = st.cargo || {}; st.cargo.luxury = 3;  // the d-th die picks the d-th of n openings and results, so every variant is played
+      __seed(d * 31 + i); const p = fresh(); seq(Array(8).fill((d - 0.5) / dice)); const ev = build(p); st.credits = 200000; st.cargo = st.cargo || {}; st.cargo.luxury = 3;  // the d-th die picks the d-th of n openings and results, so every variant is played
       const line = ev.choices[i].run(); G.nextEvent = null; rec.runs.push([i, d, String(line), seen(p, st)]); if (ev.text !== ev0.text) rec.opens.add(ev.text);  // the second beat a sitting queues is played below, by subject
     }
     rec.opens = [...rec.opens].sort();
@@ -66,8 +66,8 @@ const playTalk = () => {
   play('sit:1', p => { storyOf(p).beat = 1; }, p => sitBeat(p, true));
   play('sit:2', p => { storyOf(p).beat = 2; p.opinion = 2; }, p => sitBeat(p, true));
   play('sit:3:crew:visit', p => { const s = storyOf(p); s.beat = 3; s.favor = 'visit'; p.opinion = 3; }, p => sitBeat(p, true));
-  play('sit:3:crew:debt', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 1500; p.opinion = 3; }, p => sitBeat(p, true));
-  play('sit:3:passenger', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 1500; p.opinion = 3; }, p => sitBeat(p, false), 6);
+  play('sit:3:crew:debt', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 15000; p.opinion = 3; }, p => sitBeat(p, true));
+  play('sit:3:passenger', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 15000; p.opinion = 3; }, p => sitBeat(p, false), 6);
   // the visit home: the lock, then the table, by culture (the first choice of the lock leads straight on: no line)
   play('visit', p => { storyOf(p); }, p => visitEvent(p));
   for (const c of ['belt', 'mars', 'earth']) play(`visit-home:${c}`, p => { p.culture = c; storyOf(p); }, p => visitHome(p));
@@ -87,7 +87,7 @@ const playTalk = () => {
     out.push({ key: 'visit:due', text: JSON.stringify(rec) }); }
   // the picker: who is aboard, how they are
   play('picker', (p, s) => { const o = mk('Ana', { role: 'pilot' }); s.crew.push(o.id); s.injured = { [o.id]: true }; p.mood = { kind: 'low', until: s.day + 40, text: 'x' }; }, p => sitPicker(), 1);
-  play('picker:pax', (p, s) => { const o = mk('Pia'); s.missions.push({ type: 'passenger', id: s.nextId++, pid: o.id, who: 'Pia Vale', pax: 1, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', title: 'Carry', pay: 100, deadline: s.day + 99 }); }, p => sitPicker(), 1);
+  play('picker:pax', (p, s) => { const o = mk('Pia'); s.missions.push({ type: 'passenger', id: s.nextId++, pid: o.id, who: 'Pia Vale', pax: 1, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', title: 'Carry', pay: 1000, deadline: s.day + 99 }); }, p => sitPicker(), 1);
   { __seed(3); const seenText = new Set(); for (let d = 0; d < 40; d++) { __seed(d); G.state = JSON.parse(snap); seenText.add(sitPicker().text); } out.push({ key: 'picker:texts', text: JSON.stringify([...seenText].sort()) }); }
   { G.state = JSON.parse(snap); st = G.state; const e = sitPicker(); const c = e.choices[0]; G.nextEvent = null; out.push({ key: 'picker:go', text: JSON.stringify([c.run(), G.nextEvent && G.nextEvent.title]) }); G.nextEvent = null; }  // nothing to show: the sitting opens at once
   // the other errands of a culture, taken by the day (#777)

@@ -6,7 +6,7 @@
 // comes out of the next run's profit, so out of your share). How you spend the days is yours to choose. Loaded after hired.js.
 
 const REPAIR_AT = 0.10, REPAIR_PLATE = 25;  // hull lost, as a share of armor, that means yard time; points of armor a ton of metal mends
-const REPAIR_LABOR = { yard: 100, field: 150 }, REPAIR_WAIT = 4, STANDBY_PAY = 0.5;  // a day's labor; days waiting for a shipment; the wage share paid while grounded
+const REPAIR_LABOR = { yard: 1000, field: 1500 }, REPAIR_WAIT = 4, STANDBY_PAY = 0.5;  // a day's labor; days waiting for a shipment; the wage share paid while grounded
 
 function repairPlan(planet) {
   const st = G.state, max = ship().armor, lost = Math.max(0, max - st.armor), yard = planet.services.includes('shipyard');
@@ -46,7 +46,7 @@ function repairScene(planet) {
     return finish(faster, h.post === 'engineer' ? 'You work the plate beside the yard crew, and learn from them. (Experience gained.)' : 'You carry plate and hold the light, and the work goes faster for it.')();
   } });
   choices.push({ label: 'Work the dock for pay', run() {
-    const earn = 30 * days; st.credits += earn;
+    const earn = 300 * days; st.credits += earn;
     return finish(days, `You hire out on the dock for the duration and earn ${fmt(earn)} cr.`)();
   } });
   if (handHurt() || Object.keys(st.injured || {}).length) choices.push({ label: 'Rest and let the hurt mend', run() {

@@ -15,7 +15,7 @@ function uatFresh(o = {}) {
   G.dialog = null; G.nextEvent = null; G.transit = null;
   newGame();
   const st = G.state;
-  Object.assign(st, { tutorial: null, credits: o.credits || 50000, shipId: o.ship || 'lightfreighter', uat: true });  // a test game, never backed up
+  Object.assign(st, { tutorial: null, credits: o.credits || 500000, shipId: o.ship || 'lightfreighter', uat: true });  // a test game, never backed up
   st.story.next = 1e9;                       // keep the Cold Water derelict out of the way
   st.fuel = SHIPS[st.shipId].fuel; st.armor = SHIPS[st.shipId].armor;
   if (o.cargo) Object.assign(st.cargo, o.cargo);
@@ -35,7 +35,7 @@ function uatCrew(n = 2, opinion = 0) {
 function uatPassenger(dest = 'mars', planet = 'Mars', opinion = 0) {
   const st = G.state, p = registerPerson(makePerson('belt'));
   p.opinion = opinion;
-  st.missions.push({ id: st.nextId++, type: 'passenger', pid: p.id, who: `${p.first} ${p.last}`, pax: 1, bonus: 0, destSystem: dest, destPlanet: planet, title: `Carry ${p.first} ${p.last} (1) to ${planet}`, pay: 2000, deadline: st.day + 60, eventDone: true });
+  st.missions.push({ id: st.nextId++, type: 'passenger', pid: p.id, who: `${p.first} ${p.last}`, pax: 1, bonus: 0, destSystem: dest, destPlanet: planet, title: `Carry ${p.first} ${p.last} (1) to ${planet}`, pay: 20000, deadline: st.day + 60, eventDone: true });
   return p;
 }
 function uatLand(name) {
@@ -61,11 +61,11 @@ const uatScene = id => { const s = STORYLETS.find(x => x.id === id); if (s) open
 // ---------- the checklist ----------
 const UAT_ITEMS = [
   { group: 'Basics', id: 'trade', title: 'Trading and markets', check: 'Buying raises the price and selling lowers it. Best market column makes sense. Port conditions show shortages with haulers inbound.',
-    setup() { uatFresh({ credits: 50000 }); uatLand('Earth'); UI.tab = 'trade'; UI.render(); } },
+    setup() { uatFresh({ credits: 500000 }); uatLand('Earth'); UI.tab = 'trade'; UI.render(); } },
   { group: 'Basics', id: 'tutorial', title: 'Tutorial', check: 'A new player is walked through an Earth-to-Mars electronics run.',
     setup() { G.dialog = null; newGame(); G.state.uat = true; } },
   { group: 'Basics', id: 'company', title: 'Company ships, escorts, stakes', check: 'Buy a company ship at the shipyard, set a route, fly with an escort, buy a stake from the Port page.',
-    setup() { uatFresh({ credits: 400000 }); uatLand('Earth'); UI.tab = 'shipyard'; UI.render(); } },
+    setup() { uatFresh({ credits: 4000000 }); uatLand('Earth'); UI.tab = 'shipyard'; UI.render(); } },
   { group: 'Life aboard', id: 'transit', title: 'Transit screen and downtime', check: 'Cutaway, route strip, star streaks, feed chatter. The downtime menu lists every activity and each one works.',
     setup() { uatFresh(); uatCrew(2, 2); uatPassenger(); uatBurn('Earth', 'mars'); G.transit.left = G.transit.total * 0.7; } },
   { group: 'Life aboard', id: 'relationships', title: 'Relationship scene', check: 'A scene between two crew opens and reads naturally. Afterwards the Crew page shows their bond.',
@@ -111,9 +111,9 @@ const UAT_ITEMS = [
   { group: 'Combat', id: 'local', title: 'Combat in local space', check: 'Pirates attack in local space; torpedoes and point defense work.',
     setup() { uatFresh({ launcher: true, ship: 'gunship' }); uatLand('The Rook'); takeOff(); for (let i = 0; i < 2; i++) { const n = spawnNpc('pirate', false); n.hostile = true; } } },
   { group: 'Frontier', id: 'claim', title: 'Found an outpost', check: 'Claim Callisto at Ganymede, fly there, deliver supplies (capped at 30 days), and build.',
-    setup() { uatFresh({ credits: 150000, ship: 'freighter', cargo: { industrial: 40, equipment: 20, metal: 30, food: 15, water: 15 } }); uatLand('Ganymede'); } },
+    setup() { uatFresh({ credits: 1500000, ship: 'freighter', cargo: { industrial: 40, equipment: 20, metal: 30, food: 15, water: 15 } }); uatLand('Ganymede'); } },
   { group: 'Frontier', id: 'outpost', title: 'A growing outpost', check: 'The First Born moment opens on landing; the outpost page shows supplies, income, and buildings.',
-    setup() { uatFresh({ credits: 150000, ship: 'freighter', cargo: { industrial: 30, equipment: 20, metal: 40 } }); found('Callisto', 'Test Landing'); G.state.outpost.pop = 70; uatLand('Callisto'); const m = MOMENTS[0]; G.state.outpost.moments.push(0); openEvent(m.make(G.state.outpost)); } },
+    setup() { uatFresh({ credits: 1500000, ship: 'freighter', cargo: { industrial: 30, equipment: 20, metal: 40 } }); found('Callisto', 'Test Landing'); G.state.outpost.pop = 70; uatLand('Callisto'); const m = MOMENTS[0]; G.state.outpost.moments.push(0); openEvent(m.make(G.state.outpost)); } },
   { group: 'Frontier', id: 'death', title: 'Death and the heir', check: 'The death screen offers going on as your heir; the heir inherits the company and outpost.',
     setup() { uatFresh({ cargo: { industrial: 20 } }); uatCrew(1); found('Callisto', 'Test Landing'); uatLand('Earth'); G.mode = 'dead'; UI.showDead(); } },
   { group: 'Frontier', id: 'retire', title: 'Retirement', check: 'Retire from the Company page; the successor takes the ship and crew, and the list of captains grows.',
@@ -123,7 +123,7 @@ const UAT_ITEMS = [
   { group: 'Cold Water', id: 'cw-mira', title: 'Mira\'s contact', check: 'Mira finds you and asks for passage to Europa.',
     setup() { uatFresh(); Object.assign(G.state.story, { stage: 3 }); uatLand('Mars'); uatScene('cw-mira-contact'); } },
   { group: 'Cold Water', id: 'cw-europa', title: 'Europa reveal', check: 'The core is decrypted on Europa and Act 1 ends.',
-    setup() { uatFresh(); Object.assign(G.state.story, { stage: 4 }); storyPassenger('Mira Castellane', 1, 'jupiter', 'Europa', 3000, 'mira-europa'); uatLand('Europa'); uatScene('cw-europa'); } },
+    setup() { uatFresh(); Object.assign(G.state.story, { stage: 4 }); storyPassenger('Mira Castellane', 1, 'jupiter', 'Europa', 30000, 'mira-europa'); uatLand('Europa'); uatScene('cw-europa'); } },
   { group: 'Cold Water', id: 'cw-contacts', title: 'Act 2: who gets the proof', check: 'At Ceres Station the League contact offers to take the proof.',
     setup() { uatFresh(); Object.assign(G.state.story, { stage: 5 }); uatLand('Ceres Station'); uatScene('cw-contact-ceres'); } },
   { group: 'Cold Water', id: 'cw-blockade', title: 'Act 3: the blockade', check: 'Arriving at Ceres, the blockade fleet engages; allies help; landing is allowed.',
@@ -145,7 +145,7 @@ const UAT_ITEMS = [
   { group: 'Campaigns', id: 'rook', title: 'The Rook\'s Crown', check: 'Hollis Mbeki invites you to fly under the Rook\'s colors.',
     setup() { uatFresh(); G.state.day = 25; uatLand('The Rook'); uatScene('rook-invite'); } },
   { group: 'Campaigns', id: 'tethys', title: 'The Partner\'s Chair', check: 'The Tethys Consortium invites you once you own a company ship.',
-    setup() { uatFresh({ credits: 200000 }); uatLand('Titan'); buyCompanyShip('freighter'); uatScene('tsc-invite'); } },
+    setup() { uatFresh({ credits: 2000000 }); uatLand('Titan'); buyCompanyShip('freighter'); uatScene('tsc-invite'); } },
   { group: 'Community', id: 'community', title: 'Mods, scenarios, shared news', check: 'At the bottom of the Port page: load the Vesta mod, share and play a scenario, paste a code. On claude.ai, Share deeds sends your deeds.',
     setup() { uatFresh(); uatLand('Earth'); UI.tab = 'port'; UI.render(); } },
 ];
@@ -168,7 +168,7 @@ UAT_ITEMS.push(
   { group: 'The hired chapter', id: 'hired-deal', title: 'The used Ore Runner', check: 'With enough savings at a yard port, the offer arrives and states the price; accepting or declining both work.',
     setup() { uatHired('hester'); uatFinish(); G.state.credits = USED_OFFER_AT; Mods.emit('landed', currentPlanet()); } },
   { group: 'The hired chapter', id: 'hired-goodbye', title: 'Buying in and the goodbye', check: 'Buying the ship runs the crew goodbyes and the captain\'s closing scene, then the ending.',
-    setup() { uatHired('hester'); uatFinish(); G.state.credits = 100000; hired().flags = { lent: true, secretKnown: true }; hired().confirm = 'courier'; Mods.act('buyInGo', 'courier'); } },
+    setup() { uatHired('hester'); uatFinish(); G.state.credits = 1000000; hired().flags = { lent: true, secretKnown: true }; hired().confirm = 'courier'; Mods.act('buyInGo', 'courier'); } },
 );
 
 // ---------- the turn-based fights (#786): a hired hand at the guns, on a burn, in one situation ----------
@@ -229,7 +229,7 @@ UAT_ITEMS.push(
 
 // ---------- general tools ----------
 const UAT_TOOLS = {
-  cash: () => { G.state.credits += 50000; },
+  cash: () => { G.state.credits += 500000; },
   refuel: () => { const st = G.state; st.fuel = ship().fuel; st.armor = ship().armor; if (G.player) { G.player.armor = G.player.maxArmor; G.player.shields = ship().shields; } },
   days: () => { const st = G.state; for (let i = 0; i < 10; i++) { st.day++; Mods.emit('newDay', st.day); } },
   cargo: () => { const st = G.state; for (const c of COMMODITIES) { const q = Math.min(20, cargoFree()); if (q > 0) st.cargo[c.id] = (st.cargo[c.id] || 0) + q; } },
@@ -281,7 +281,7 @@ const Uat = {
       <div class="uat-head"><b>Tester tools</b> <span class="hint">${tested}/${UAT_ITEMS.length} checked</span><button data-uat="close">Close</button></div>
       <p class="hint">Each Set up starts a fresh game in the right spot. Your own game was backed up when this opened: <button data-uat="tool" data-id="restore">Restore my game</button></p>
       <div class="uat-row">
-        <button data-uat="tool" data-id="cash">+50,000 cr</button><button data-uat="tool" data-id="refuel">Refuel and repair</button><button data-uat="tool" data-id="days">+10 days</button><button data-uat="tool" data-id="cargo">Fill hold</button>
+        <button data-uat="tool" data-id="cash">+500,000 cr</button><button data-uat="tool" data-id="refuel">Refuel and repair</button><button data-uat="tool" data-id="days">+10 days</button><button data-uat="tool" data-id="cargo">Fill hold</button>
         <button data-uat="tool" data-id="happen">Transit happening now</button><button data-uat="tool" data-id="intercept">Pirate contact now</button><button data-uat="tool" data-id="arrive">Arrive now</button>
       </div>
       <div class="uat-row"><select data-sel="place"><option value="">Land at...</option>${places.map(p => `<option>${esc(p)}</option>`).join('')}</select>

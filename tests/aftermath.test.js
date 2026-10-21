@@ -48,7 +48,7 @@ test('every second beat and every follow-up plays every choice, with clean text'
     for (const s of STORYLETS.filter(x => x.chained || x.consumes)) {
       const n = storyletEvent(s).choices.length;
       for (let i = 0; i < n; i++) {
-        G.state.credits = 5000; G.state.fuel = 200; G.state.armor = 100; G.state.cargo = {}; G.state.qualities = {};
+        G.state.credits = 50000; G.state.fuel = 200; G.state.armor = 100; G.state.cargo = {}; G.state.qualities = {};
         const e = storyletEvent(s), c = e.choices[i];
         if (c.can && !c.can()) continue;
         const text = String(c.run());
@@ -83,7 +83,7 @@ test('distress call: help, ask for a letter, and the letter pays fourteen days l
   }, burn.toString());
   assert.equal(r.next, 'The Owner');
   assert.equal(r.cash, 0, 'the letter is instead of cash'); assert.equal(r.journal, 1); assert.equal(r.due, 14);
-  assert.notEqual(r.early, 'dc-voss'); assert.equal(r.second, 'dc-voss'); assert.equal(r.paid, 4000);
+  assert.notEqual(r.early, 'dc-voss'); assert.equal(r.second, 'dc-voss'); assert.equal(r.paid, 40000);
   await done();
 });
 
@@ -111,13 +111,13 @@ test('paying for protection keeps the pirates away for forty days', async () => 
     const hasPirates = () => { let found = false; for (let i = 0; i < 400 && !found; i++) { t.seen = []; st.eventSeen = {}; G.dialog = null; t.event = null; const e = pickHappening('transit'); if (e && e.title === 'Pirates Matching Course') found = true; } return found; };
     out.before = hasPirates();
     const s = STORYLETS.find(x => x.id === 'pi-subscription');
-    applyEffects({ later: { 'pi-subscription': 1 } }); st.day += 1; st.credits = 5000;
+    applyEffects({ later: { 'pi-subscription': 1 } }); st.day += 1; st.credits = 50000;
     const e = storyletEvent(s); G.dialog = { event: e, choices: e.choices }; chooseEvent(0);
     out.safe = !hasPirates(); out.paid = st.credits;
     st.day += 41; out.after = hasPirates();
     return out;
   }, burn.toString());
-  assert.equal(r.before, true); assert.equal(r.safe, true, 'no pirates while protected'); assert.equal(r.paid, 4500); assert.equal(r.after, true, 'and they are back after');
+  assert.equal(r.before, true); assert.equal(r.safe, true, 'no pirates while protected'); assert.equal(r.paid, 45000); assert.equal(r.after, true, 'and they are back after');
   await done();
 });
 

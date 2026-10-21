@@ -85,7 +85,7 @@ test('the notes from contacts and regulars, and the comms chatter, have their li
   await page.fill('textarea[data-path="part.repaid"]', '{first} pays back {owes} cr with {back} cr to spare <b>');
   const f = await play();
   const seen = await f.evaluate(() => G.dialog.event.text);
-  assert.ok(seen.includes('Mara pays back 300 cr with 600 cr to spare &lt;b&gt;'), seen.slice(0, 300));
+  assert.ok(seen.includes('Mara pays back 3000 cr with 6000 cr to spare &lt;b&gt;'), seen.slice(0, 300));
   await select('lines:comms-chatter');
   const chatter = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
   assert.ok(chatter.includes('part.0') && chatter.includes('part.34'), chatter.join());

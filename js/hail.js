@@ -152,10 +152,10 @@ function hailEvent(n) {
 
   if (n.kind === 'pirate' && n.hostile) {
     const hired = !!n.payer, grudge = c.id && c.opinion <= OPINION.GRUDGE;
-    const tribute = Math.round(Math.max(500, st.credits * 0.08) * (1 + 0.5 * (c.tributes || 0)));
+    const tribute = Math.round(Math.max(5000, st.credits * 0.08) * (1 + 0.5 * (c.tributes || 0)));
     const choices = [];
     if (grudge) {
-      const price = 2000 + 500 * -c.opinion;
+      const price = 20000 + 5000 * -c.opinion;
       choices.push({ label: `Offer compensation (${fmt(price)} cr)`, ...gated(needCr(price)), run() {
         st.credits -= price;
         feel(n, 4, 'You paid to settle things between us.');
@@ -165,8 +165,8 @@ function hailEvent(n) {
             `chest, and in your shoulders, comes down, one notch at a time.`);
       } });
     } else if (hired) {
-      choices.push({ label: 'Outbid whoever paid you (3,000 cr)', ...gated(needCr(3000)), run() {
-        st.credits -= 3000;
+      choices.push({ label: 'Outbid whoever paid you (30,000 cr)', ...gated(needCr(30000)), run() {
+        st.credits -= 30000;
         leave(n);
         return (`${captain} considers it, for a long moment, with a faint, ironic hum. "Your money spends the same as ${n.payer}'s," they say at ` +
             `last, and there's even a little respect in it. "Honor among thieves, and so on." They break off, and, as they go, a last, dry joke: ` +
@@ -228,13 +228,13 @@ function hailEvent(n) {
       title, text: `${captain} ${c.id && c.opinion >= OPINION.TRUSTED ? 'recognizes you. "Our favorite customer.' : 'reads your transponder and relaxes. "One of ours.'} What do you need?"`,
       choices: [
         { label: 'Any news?', ...gated(notYet(() => n.gossiped, 'They\'ve told you what they know.')), run() { n.gossiped = true; return `"${addRumor()}"`; } },
-        { label: 'Buy stolen luxury goods (5t at 250 cr/t)', ...gated(notYet(() => n.fenced, 'They have sold you what they had.'), [() => cargoFree() >= 5, () => 'This needs 5t of room in the hold.'], needCr(1250)), run() {
+        { label: 'Buy stolen luxury goods (5t at 2,500 cr/t)', ...gated(notYet(() => n.fenced, 'They have sold you what they had.'), [() => cargoFree() >= 5, () => 'This needs 5t of room in the hold.'], needCr(12500)), run() {
           n.fenced = true;
           feel(n, 1, 'You bought our goods.');
           changeRep('Pirate', 2);
-          st.credits -= 1250;
+          st.credits -= 12500;
           st.cargo.luxury = (st.cargo.luxury || 0) + 5;
-          st.paid.luxury = (st.paid.luxury || 0) + 1250;
+          st.paid.luxury = (st.paid.luxury || 0) + 12500;
           return ('Five tons of "slightly used" luxury goods drift across on a tether, in a line of dented, glittering crates, stamped with the marks ' +
               'of at least three different owners, none of them a pirate. No questions asked. There\'s a faint smell of spilled perfume in the airlock ' +
               'for days, and, somewhere in the stack, an unopened bottle of very good wine.');
@@ -246,7 +246,7 @@ function hailEvent(n) {
 
   // A trader you shot at, just now or on an earlier meeting.
   if (n.hostile || (c.id && c.opinion <= OPINION.GRUDGE)) {
-    const price = n.hostile && !(c.id && c.opinion <= OPINION.GRUDGE) ? 500 : 1500;
+    const price = n.hostile && !(c.id && c.opinion <= OPINION.GRUDGE) ? 5000 : 15000;
     return {
       title, text: n.hostile && !n.wasShot ? `${captain}: "You! I remember you. Keep your distance."` : n.hostile ? `${captain}: "You shot at us! What kind of lunatic are you?"` : `${captain}: "Oh. It's you. We have nothing to say to you."`,
       choices: [
@@ -278,15 +278,15 @@ function hailEvent(n) {
         n.gossiped = true;
         return c.traits.includes('secretive') ? '"Nothing I care to share." Fair enough.' : `"${addRumor()}"`;
       } },
-      ...(spare > 0 ? [{ label: free ? `Could you spare ${spare} units of reaction mass?` : `Buy ${spare} units of reaction mass (${fmt(spare * 4)} cr)`,
-        ...gated(notYet(() => n.soldFuel, 'They have sold you fuel already.'), [() => free || st.credits >= spare * 4, () => `You have ${fmt(st.credits)} cr; this costs ${fmt(spare * 4)} cr.`]), run() {
+      ...(spare > 0 ? [{ label: free ? `Could you spare ${spare} units of reaction mass?` : `Buy ${spare} units of reaction mass (${fmt(spare * 40)} cr)`,
+        ...gated(notYet(() => n.soldFuel, 'They have sold you fuel already.'), [() => free || st.credits >= spare * 40, () => `You have ${fmt(st.credits)} cr; this costs ${fmt(spare * 40)} cr.`]), run() {
           n.soldFuel = true;
           st.fuel += spare;
           feel(n, 1, free ? 'We helped you out with reaction mass.' : 'You bought reaction mass from us.');
           if (free) return (`"Of course. We all need help out here," ${captain} says, warmly, without a moment's hesitation. They pass it over on a ` +
               `hose, free, in a long, low, gurgling stream, and, when the tank is full, they wave you off with a hand that you can see through the ` +
               `cockpit glass. It's a small kindness, and it sits in your chest for a long time.`);
-          st.credits -= spare * 4;
+          st.credits -= spare * 40;
           return 'You match velocity, in a long, careful dance, and they pump it across, in a steady, humming stream, with a brisk professional silence on the channel. Not cheap, but you\'re not stuck, and you tip your hand to the cockpit glass as they peel away.';
         } }] : []),
       ...(good ? [{ label: `Sell them ${qty}t of ${good.name} (${fmt(offer)} cr/t)`, ...gated(notYet(() => n.bought, 'They have bought from you already.')), run() {

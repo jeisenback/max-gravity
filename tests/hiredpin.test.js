@@ -23,7 +23,7 @@ const pinAll = () => {
     const read = () => { const c = dataChoice(c0), g = c.opinion ? opinionGate(c) : c; return g ? { label: String(g.label), open: g.can ? !!g.can((hired() || {}).flags || {}) : true, why: g.why ? String(g.why()) : '' } : 'not offered'; };
     const rich = read();
     G.state.credits = 0; const poor = read();
-    G.state.credits = 5000; hiredCaptain().opinion = 99; captainFlag('secretKnown'); if (key && CAST[key]) castPerson(key).opinion = 99; const liked = read();
+    G.state.credits = 50000; hiredCaptain().opinion = 99; captainFlag('secretKnown'); if (key && CAST[key]) castPerson(key).opinion = 99; const liked = read();
     const berths = ship().berths; ship().berths = berthsUsed(); const full = read(); ship().berths = berths;  // and with no berth free
     return { rich, poor, liked, full };
   };
@@ -39,7 +39,7 @@ const pinAll = () => {
         const pair = CAST_PAIRS[Object.keys(CAST_PAIRS).find(b => CAST_PAIRS[b].includes(e.key))] || CAST_PAIRS.earth;
         window.__seed(11);
         window.drawCastPair = () => [...pair];
-        startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey, credits: 5000 });
+        startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey, credits: 50000 });
         window.drawCastPair = real;
         G.dialog = null; G.nextEvent = null;
         const before = flat(G.state, 's', {});
@@ -62,7 +62,7 @@ const pinAll = () => {
         const pair = CAST_PAIRS[Object.keys(CAST_PAIRS).find(b => CAST_PAIRS[b].includes(key))] || CAST_PAIRS.earth;
         window.__seed(11);
         window.drawCastPair = () => [...pair];
-        startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 });
+        startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 50000 });
         window.drawCastPair = real;
         G.dialog = null; G.nextEvent = null;
         const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); G.state.crew.push(mate.id);

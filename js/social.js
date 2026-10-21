@@ -323,11 +323,11 @@ const SOCIAL_ACTIVITIES = {
       for (const [a, b] of pairs(list)) addBond(a, b, 0.7);
       everyone();
       if (Math.random() < 0.35) {
-        const won = randInt(2, 6) * 100;
+        const won = randInt(2, 6) * 1000;
         st.credits += won;
         return cardSay('win', { won: fmt(won), who: pick(list).p.first });
       }
-      const w = pick(list), lost = Math.min(st.credits, randInt(1, 4) * 100), gossip = socialLines().filter(l => / and /.test(l));
+      const w = pick(list), lost = Math.min(st.credits, randInt(1, 4) * 1000), gossip = socialLines().filter(l => / and /.test(l));
       st.credits -= lost;
       return cardSay('lose', { who: w.p.first, lost: fmt(lost), tail: cardSay(gossip.length ? 'lose.gossip' : 'lose.nogossip', { gossip: gossip.length ? pick(gossip) : '' }) });
     },
@@ -422,7 +422,7 @@ function rootsRecipe(a, b, A, B) {
   return {
     title: say('title'), text: say('text', { A, B, home }),
     choices: [
-      { label: say('c0.label'), can: () => G.state.credits >= 150, run() { G.state.credits -= 150; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return say('c0.result', { A, B }); } },
+      { label: say('c0.label'), can: () => G.state.credits >= 1500, run() { G.state.credits -= 1500; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return say('c0.result', { A, B }); } },
       { label: say('c1.label'), run() { addBond(a, b, 1.5); return say('c1.result'); } },
     ],
   };
@@ -459,9 +459,9 @@ function galleyDuty(a, b, ta, tb) {
           like(w.p, 1, null);
           return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${say(has(l, 'rude') ? 'c0.rude' : 'c0.easy', { loser: l.p.first })}`;
         } },
-        { label: say('c1.label', { ta }), can: () => st.credits >= 300, run() {
+        { label: say('c1.label', { ta }), can: () => st.credits >= 3000, run() {
           const m = playMatch(leagueOf(ta), ta, tb), won = m.winner === ta;
-          st.credits += won ? 300 : -300;
+          st.credits += won ? 3000 : -3000;
           like(a.p, won ? 1 : 0, null); like(b.p, won ? -1 : 1, null);
           return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${say(won ? 'c1.win' : 'c1.lose', { A: a.p.first, B: b.p.first })}`;
         } },
@@ -511,7 +511,7 @@ function smallSystem(a, b, A, B) {
           say('text.culture.1', { B, A }),
         ]),
       choices: [
-        { label: say('c0.label'), can: () => st.credits >= 200, run() { st.credits -= 200; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return say('c0.result', { where: a.p.home === b.p.home ? a.p.home : 'home', A, B }); } },
+        { label: say('c0.label'), can: () => st.credits >= 2000, run() { st.credits -= 2000; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return say('c0.result', { where: a.p.home === b.p.home ? a.p.home : 'home', A, B }); } },
         { label: say('c1.label'), run() { addBond(a, b, 1.5); return say('c1.result'); } },
       ] };
 }
