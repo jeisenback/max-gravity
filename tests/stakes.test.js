@@ -85,6 +85,26 @@ test('a feud that has been seen and not mended splits the ship, and someone from
   await done();
 });
 
+test('keeping both settles that pair until a new feud is seen, not for thirty days (#801)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = start(), out = {};
+    const [a, b] = folk().filter(f => f.crew && !f.p.cast), key = bondKey(a, b);
+    addBond(a, b, -9); st.feuds = { [key]: 1 };
+    const e = splitScene();
+    G.dialog = { event: e, choices: e.choices }; chooseEvent(e.choices.length - 1);  // Keep both
+    st.day += 100;
+    out.later = splitPair();
+    st.feuds[key] += 1;
+    out.afterFeud = !!splitPair();
+    return out;
+  });
+  assert.equal(r.later, null, 'kept, and no new feud: no ultimatum however long after');
+  assert.ok(r.afterFeud, 'a new feud between them can split the ship again');
+  await done();
+});
+
 test('the one who can leave speaks first, so a main character never gives the split\'s ultimatum (#782)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => {
