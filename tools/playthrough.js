@@ -77,7 +77,7 @@ function setup([policySrc, o]) {
   const snap = () => {
     const st = G.state, h = hired();
     return { credits: st.credits, fund: h ? h.fund : null, armor: st.armor, rep: { ...(st.rep || {}) }, standing: { ...((h && h.standing) || {}) }, hurt: handHurt(),
-      op: Object.fromEntries([...st.crew, h && h.captain].filter(Boolean).map(id => [id, (person(id) || {}).opinion || 0])), injured: Object.keys(st.injured || {}), crew: [...st.crew], memorial: (st.memorial || []).map(m => m.name || m.key) };
+      op: Object.fromEntries([...st.crew, h && h.captain].filter(Boolean).map(id => [id, (person(id) || {}).opinion || 0])), injured: Object.keys(st.injured || {}), crew: [...st.crew], memorial: (st.memorial || []).map(memorialName) };
   };
   const diff = (x, y) => {
     const out = [], n = v => `${v > 0 ? '+' : ''}${fmt(v)}`;
