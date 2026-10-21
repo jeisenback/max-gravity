@@ -161,7 +161,7 @@ function report(runs) {
   }
   console.log('  by matchup');
   for (const [name, t] of Object.entries(sum(runs, 'match')).sort((a, b) => a[0].localeCompare(b[0]))) {
-    console.log(`    ${name.replace('|', ' against ').padEnd(28)} n ${String(t.n).padStart(4)}  good ends ${pct(t.good, t.n)}  boarded ${pct(t.boarded, t.n)}  you killed ${pct(t.died, t.n)}`);
+    console.log(`    ${name.replace(/\|/g, ' against ').padEnd(28)} n ${String(t.n).padStart(4)}  good ends ${pct(t.good, t.n)}  boarded ${pct(t.boarded, t.n)}  you killed ${pct(t.died, t.n)}`);
   }
   for (const kind of ['repel', 'assault']) {
     console.log(`${kind === 'repel' ? 'Repel fight (they board you)' : 'Assault fight (you board her)'}`);
