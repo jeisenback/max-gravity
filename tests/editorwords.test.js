@@ -180,6 +180,18 @@ test('the function-built scenes and the code-written hired events are edited lin
   }
 });
 
+test('the freight agent, the side on the manifest, the day ashore and the close of chapter two open in the preview, each case by the line typed (#794)', async () => {
+  await reload();
+  for (const [id, line] of [['scene:freight-agent', 'title.short'], ['scene:freight-agent', 'skim.c0.label'], ['scene:freight-side', 'title'], ['scene:day-ashore', 'title'],
+    ['scene:chapter-two-end', 'together.title'], ['scene:chapter-two-end', 'losses.text.many']]) {
+    await select(id);
+    await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${line}.`);
+    const f = await play();
+    const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
+    assert.ok(seen.includes(`Typed ${line}.`), `${id} ${line} plays: ${seen.slice(0, 200)}`);
+  }
+});
+
 test('the preview plays the version of a moment being edited, whichever the day would take (#781)', async () => {
   await reload();
   for (const [id, line] of [['scene:split', 'text.1'], ['scene:split', 'text.2'], ['scene:split', 'text']]) {

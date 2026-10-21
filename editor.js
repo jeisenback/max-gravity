@@ -156,10 +156,10 @@
         ...beatRow(e.scene), lines: true, codeNote: LINES_NOTE });
     }
     for (const e of peopleEventRegistry()) {  // the passenger and crew events (#457): written in code, with their words as lines
-      const pax = !!e.event, crew = !!e.make, rel = !!e.social, fam = !!e.family, kind = pax ? 'passenger events' : crew ? 'crew events' : rel ? 'social life' : fam ? 'found family' : 'bar topics';
+      const pax = !!e.event, crew = !!e.make, rel = !!e.social, fam = !!e.family, errand = e.family === 'errand', kind = pax ? 'passenger events' : crew ? 'crew events' : rel ? 'social life' : fam ? 'found family' : 'bar topics';
       add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: kind, on: !pax || !scopeOff('errands'),  // a passenger comes from an errand, which the narrow build has not
-        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : crew ? 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.' : fam ? 'Sitting with a shipmate in downtime (the picker, or the Sit with someone activity): what is on their mind decides the scene (a hard time, an injury, the war, a rift, a friend, a memory), and a story they tell in three sittings and a favor at the end of it.' : rel ? 'Two people aboard, by the bond between them, where they come from, who is crew and who is a passenger, and what is on; a scene comes up now and then on a burn, each kind waiting its turn. The feeds and the downtime activities are what the ship hears and does with what is on.' : 'One of the few things you can do at a table with a stranger at a bar, offered by who they are; or, for a help scene, what follows when you take up their goal or their secret.',
-        pacing: { tier: null, weight: pax ? e.event.weight : null, cooldown: pax ? 'one per passenger' : 'by its own rule', trigger: pax ? 'Drawn by weight among the events that fit the passenger, on a burn.' : crew ? 'Picked at random among the crew and their traits, on a burn.' : fam ? 'Offered at the downtime screen: who you sit with picks the scene.' : rel ? 'Chosen among the scenes the pairs aboard can have, on a burn (relationshipScene, social.js); the feeds come up as chatter, and the activities are offered at the downtime screen.' : 'Offered at a bar table by the person\'s traits, goal and secret, three at a time.', editable: false },
+        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : crew ? 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.' : errand ? 'A crew member who thinks well of you asks you along on an errand of their own at a port: one of three by where they come from (Earth, Mars or the Belt), taken by the day, or the clinic when they are hurt.' : fam ? 'Sitting with a shipmate in downtime (the picker, or the Sit with someone activity): what is on their mind decides the scene (a hard time, an injury, the war, a rift, a friend, a memory), and a story they tell in three sittings and a favor at the end of it.' : rel ? 'Two people aboard, by the bond between them, where they come from, who is crew and who is a passenger, and what is on; a scene comes up now and then on a burn, each kind waiting its turn. The feeds and the downtime activities are what the ship hears and does with what is on.' : 'One of the few things you can do at a table with a stranger at a bar, offered by who they are; or, for a help scene, what follows when you take up their goal or their secret.',
+        pacing: { tier: null, weight: pax ? e.event.weight : null, cooldown: pax ? 'one per passenger' : 'by its own rule', trigger: pax ? 'Drawn by weight among the events that fit the passenger, on a burn.' : crew ? 'Picked at random among the crew and their traits, on a burn.' : errand ? `Now and then at a landing, in its turn with the dock's own scenes, or from a day ashore; the same person asks at most once in ${ERRAND_GAP} days.` : fam ? 'Offered at the downtime screen: who you sit with picks the scene.' : rel ? 'Chosen among the scenes the pairs aboard can have, on a burn (relationshipScene, social.js); the feeds come up as chatter, and the activities are offered at the downtime screen.' : 'Offered at a bar table by the person\'s traits, goal and secret, three at a time.', editable: false },
         ...beatRow(e.scene), codeNote: SCENE_NOTE });
     }
     return rows;
@@ -341,6 +341,14 @@
       openEvent(ev);
       return { type: 'played', failing: [], chained: false, shut: [], note: 'A relationship scene is chosen among what the pairs aboard can have, so no condition is checked here.' };
     }
+    if (pe && pe.family === 'errand') {  // the errand ashore, at a landing: a crew member who thinks well of you, and the errand whose line was typed last (a culture's, or the clinic's for someone hurt)
+      const kind = (String(m.line || '').match(/^(earth|mars|belt|clinic)\./) || [])[1], mate = makeCrewCandidate(G.state.systemId);
+      mate.opinion = OPINION.FRIEND; if (kind && kind !== 'clinic') mate.culture = kind;
+      registerPerson(mate); G.state.crew.push(mate.id);
+      if (kind === 'clinic') (G.state.injured = G.state.injured || {})[mate.id] = true;
+      openEvent(errandEvent(mate));
+      return { type: 'played', failing: [], chained: false, shut: [], note: 'An errand comes up at a landing for a crew member who thinks well of you, so no condition is checked here.' };
+    }
     if (pe && pe.family) {  // a "With {name}" scene: a shipmate it is about is aboard
       const mate = makeCrewCandidate(G.state.systemId); mate.home = 'Earth'; registerPerson(mate); G.state.crew.push(mate.id);
       openEvent(FAMILY_SCENES[pe.family](mate));
@@ -406,9 +414,29 @@
           'scene:captain-lost': captainLostScene, 'scene:used-ship-offer': () => dealScene(currentPlanet()), 'scene:yard-office': () => yardScene(USED_ID),
           'scene:split': () => { if (crew.length > 1) { addBond(crew[0], crew[1], -9); st.feuds = { [bondKey(crew[0], crew[1])]: 1 }; st.relAt = {}; } return splitScene(); },
           'scene:walk-off': () => { const c = castAboard().find(x => CAST[x.cast].farewell); return c ? walkOffScene(c, currentPlanet()) : null; },
+          'scene:freight-agent': () => {  // the case whose line was typed last (late, short, lost, or the money held back), else a late delivery
+            const kind = (String(m.line || '').match(/^skim\.|\.(late|short|lost|skim)$/) || [])[0], k = !kind ? 'late' : kind === 'skim.' ? 'skim' : kind.slice(1);
+            const o = { late: { tons: 90, got: 90, late: 2 }, short: { tons: 90, got: 60, late: 0 }, lost: { tons: 90, got: 0, late: 3 }, skim: { tons: 90, got: 90, late: 0, cut: 3000, owed: 20000 } }[k];
+            return agentScene({ kind: k, shipper: 'the Compact Freight Office', good: 'water', due: st.day - o.late, cut: 0, owed: 0, ...o }, freightAgent(currentPlanet()));
+          },
+          'scene:freight-side': () => {  // a contract from the Compact's freight office, with a crew member the Compact wants aboard
+            if (!crew.length) { const c = makeCrewCandidate(st.systemId); registerPerson(c); st.crew.push(c.id); crew.push({ p: c }); }
+            const plan = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 50, from: currentPlanet().name, planet: 'Mars', sid: 'mars', pay: 9000, days: 4, due: st.day + 8, cost: 0, yard: false };
+            return sideScene(plan, { gov: 'Arcology Compact', p: crew[0].p }, freightAgent(currentPlanet()));
+          },
+          'scene:day-ashore': () => { fillBar(currentPlanet()); return dayAshoreEvent(true); },  // the menu with every entry the port has today
+          'scene:chapter-two-end': () => {  // the close of chapter two, 90 days after the buy, with the ending whose line was typed last (else everyone who came is aboard)
+            const key = String(m.line || ''), id = key.split('.')[0], one = /\.one$/.test(key);
+            const rec = id === 'left' ? { aboard: key === 'left.text.all' ? [] : ['Cy'], left: ['Ana', 'Ben'], dead: [] }
+              : id === 'losses' ? { aboard: key.startsWith('losses.aboard') ? (one ? ['Cy'] : ['Cy', 'Di']) : [], left: [], dead: key === 'losses.text.one' ? ['Ana'] : ['Ana', 'Ben'] }
+              : id === 'alone' ? { aboard: [], left: [], dead: [] } : { aboard: one ? ['Ana'] : ['Ana', 'Ben'], left: [], dead: [] };
+            career().bought = st.day - CHAPTER_TWO_DAYS;
+            return chapterTwoEnd({ came: rec.aboard.length + rec.left.length + rec.dead.length, ...rec });
+          },
           'scene:fight': () => { hired().raidTold = true; G.nextEvent = null; startDuel({ kind: 'pirate' }, false); const first = G.nextEvent; G.nextEvent = null; return first; },  // the ship fight, its explanation out of the way
         }[reg.id];
-        const ev = build && build();
+        if (!build) return { error: 'The preview cannot open this scene yet: nothing here builds it.' };
+        const ev = build();
         if (!ev) return { error: 'This scene needs people the test game does not have aboard. Choose another captain or start.' };
         openEvent(ev);
       } else if (reg.kind === 'function') {  // a beat of the ambush or the boarding fights: it needs a foe, and the first-fight explanation is out of the way
@@ -706,8 +734,14 @@
     return (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = known.exec(t); return !taken.includes(t) && (!m || !!(m[1] && !rule.roles.includes(m[1]))); });
   }
   // The version a line is (1 or 2), when a moment has versions taken by the day (tellingOn, js/storylets.js): `text.1`, `tomas.result.2` or `earth.1.text`, where the key
-  // without that number is a line of the same scene too. `go.result.1`, one of two outcomes drawn at random, is not a version, since there is no `go.result` (#781).
-  const versionOf = (key, keys) => { const segs = key.split('.'); for (let i = 1; i < segs.length; i++) if (/^[12]$/.test(segs[i]) && keys.includes([...segs.slice(0, i), ...segs.slice(i + 1)].join('.'))) return Number(segs[i]); return null; };
+  // without that number is a line of the same scene too. `go.result.1`, one of two outcomes drawn at random, is not a version, since there is no `go.result` (#781). The key without a
+  // number is version 0 when a `.1` of it is a line too (`mars.text` beside `mars.1.text`), so the first version plays as well (#794).
+  const versionOf = (key, keys) => {
+    const segs = key.split('.');
+    for (let i = 1; i < segs.length; i++) if (/^[12]$/.test(segs[i]) && keys.includes([...segs.slice(0, i), ...segs.slice(i + 1)].join('.'))) return Number(segs[i]);
+    for (let i = 1; i <= segs.length; i++) if (keys.includes([...segs.slice(0, i), '1', ...segs.slice(i)].join('.'))) return 0;
+    return null;
+  };
   const flagOf = (v, shipped) => (!v.trim() ? 'Empty: the shipped words are used.' : badPlaceholders(v, shipped).length ? `Not a placeholder the game replaces: ${badPlaceholders(v, shipped).join(' ')}` : '');
 
   const paragraphs = text => text.split('\n').filter(Boolean).map(p => `<p>${esc(p)}</p>`).join('');
@@ -1435,7 +1469,7 @@
       } else if (action === 'play' && row && editable(row)) {
         app.querySelector('#pv-effects').replaceChildren(); app.querySelector('#pv-report').replaceChildren();
         const typed = lastPath && lastPath.id === state.id ? lastPath.path : '', version = typed.startsWith('part.') && row.parts ? versionOf(typed.slice(5), Object.keys(row.parts)) : null;
-        send({ cmd: 'play', id: row.isNew ? row.sceneId.trim() : row.id, overrides: overridesFrom(rows, values, struct), newScenes: newDefs(), setup: { ...setup, place: placeFor(row), ...(row.registry ? hiredFor(row) : {}) }, version });
+        send({ cmd: 'play', id: row.isNew ? row.sceneId.trim() : row.id, overrides: overridesFrom(rows, values, struct), newScenes: newDefs(), setup: { ...setup, place: placeFor(row), ...(row.registry ? hiredFor(row) : {}) }, version, line: typed.startsWith('part.') ? typed.slice(5) : null });
       }
     });
     update();
