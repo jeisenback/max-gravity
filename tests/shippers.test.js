@@ -129,7 +129,7 @@ test('a state\'s freight office reads the crew list at the lock: a crew member i
   });
   assert.equal(r.other, false, 'a paper from another shipper does not ask'); assert.equal(r.first, false, 'the first run is guided and does not'); assert.equal(r.due, true);
   assert.equal(r.scene.title, 'On the Manifest'); assert.equal(r.sailed, false, 'she does not sail until it is played'); assert.equal(r.scene.people, 2); assert.equal(r.again, false, 'and it is played once: the same person is not asked again');
-  assert.match(r.scene.text, /the Compact Freight Office puts the names of everyone aboard on its manifest/); assert.match(r.scene.text, /"the Compact wants this one,"/);
+  assert.match(r.scene.text, /the Compact Freight Office puts the names of everyone aboard on its manifest/); assert.match(r.scene.text, /"This one's wanted by the Compact,"/);
   assert.deepEqual(r.scene.labels.map(l => l.replace(r.target, 'N').replace(/ \(.*$/, '')), ['[Arcology Compact papers] Vouch for N as a member', 'Pay the office\'s fee', 'Say nothing and keep N below', 'Put N ashore', 'Turn the contract down']);
 });
 

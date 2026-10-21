@@ -21022,7 +21022,7 @@
    }
   ],
   "title": "On the Manifest",
-  "text": "Agent Singh lays the crew list beside the paper, because the Compact Freight Office puts the names of everyone aboard on its manifest. The stylus stops at Mateo Castillo and stays there. \"the Compact wants this one,\" Agent Singh says. \"I can load you without the name on the list. I can't load you with it and write nothing.\"",
+  "text": "Agent Singh lays the crew list beside the paper, because the Compact Freight Office puts the names of everyone aboard on its manifest. The stylus stops at Mateo Castillo and stays there. \"This one's wanted by the Compact,\" Agent Singh says. \"I can load you without the name on the list. I can't load you with it and write nothing.\"",
   "labels": [
    "[Arcology Compact papers] Vouch for Mateo as a member",
    "Pay the office's fee (400 cr from the ship's fund)",
@@ -22725,18 +22725,6 @@
      "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>Turn 1: you hit her weapons for 14.</p><p>You open the range past her guns, and her hail goes unanswered until she drops off the board.",
      "labels": [
       "Stand down"
-     ]
-    },
-    "mem": []
-   },
-   {
-    "log": "Turn 1: nothing left of the weapons to hit.",
-    "next": {
-     "title": "Dead in Space",
-     "text": "Her drive goes out under your last burst, and a beacon on her hull starts calling for a tow.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
-     "labels": [
-      "Board her",
-      "Let her drift"
      ]
     },
     "mem": []

@@ -1,6 +1,6 @@
 'use strict';
 
-// The generated people's scenes and line tables in the editor (#457, #478): the raid, ambush and boarding beats, the line tables, the passenger, crew, bar, relationship and talk
+// The generated people's scenes and line tables in the editor (#457, #478): the ship fight, the ambush and boarding beats, the line tables, the passenger, crew, bar, relationship and talk
 // scenes, and the jobs further away. Each has its words in the form and plays in the preview with the people it is about. Split from editorhired.test.js to keep each file short (#583).
 
 const { test, before, after } = require('node:test');
@@ -173,10 +173,10 @@ test('the talk scenes are rows with a field for every line, and each plays in a 
   await reload(); await select('family:mood');
   const r = await page.evaluate(() => {
     const rows = SceneIndex.rows.filter(x => x.id.startsWith('family:'));
-    return { ids: rows.map(x => x.id), shape: rows.every(x => x.kind === 'data' && x.noTitle && x.where === 'transit' && x.file === 'js/family.js') };
+    return { ids: rows.map(x => x.id), shape: rows.every(x => x.kind === 'data' && x.noTitle && x.where === (x.id === 'family:errand' ? 'port' : 'transit') && x.file === 'js/family.js') };
   });
   assert.equal(r.ids.length, 27, 'the talk scenes, the talk going on, the visit home, the room that is theirs (its offer and its return), the errand, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
-  assert.ok(r.shape, 'each is lines, in a burn, in js/family.js');
+  assert.ok(r.shape, 'each is lines, in a burn (the errand at a port), in js/family.js');
   for (const id of r.ids) {
     await select(id);
     const line = id === 'family:holiday' ? 'c0.label' : 'title';  // the holidays take their titles from their names
@@ -184,6 +184,21 @@ test('the talk scenes are rows with a field for every line, and each plays in a 
     const f = await play();
     const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed ${line}: ${seen.slice(0, 200)}`);
+  }
+});
+
+test('the errand ashore is a port scene, and the preview plays the errand being edited at a landing: the culture, the clinic for someone hurt, and the version (#794)', async () => {
+  await reload(); await select('family:errand');
+  const row = await page.evaluate(() => { const r = SceneIndex.rows.find(x => x.id === 'family:errand'); return { where: r.where, note: r.conditionsNote, trigger: r.pacing.trigger }; });
+  assert.equal(row.where, 'port');
+  assert.ok(!/downtime|Sit with/i.test(row.note + row.trigger), `the errand is not the downtime picker: ${row.note} ${row.trigger}`);
+  for (const line of ['clinic.text', 'mars.text', 'belt.go.label', 'earth.1.text', 'earth.text']) {
+    await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${line}.`);
+    const f = await play();
+    const seen = await f.evaluate(() => ({ mode: G.mode, hurt: Object.keys(G.state.injured || {}).length, ev: JSON.stringify([G.dialog.event.text, G.dialog.choices.map(c => c.label)]) }));
+    assert.equal(seen.mode, 'landed', `${line} plays at a landing`);
+    assert.ok(seen.ev.includes(`Typed ${line}.`), `${line} plays: ${seen.ev.slice(0, 200)}`);
+    if (line === 'clinic.text') assert.equal(seen.hurt, 1, 'the clinic errand is for someone hurt');
   }
 });
 

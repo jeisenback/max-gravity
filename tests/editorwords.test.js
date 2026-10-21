@@ -180,6 +180,28 @@ test('the function-built scenes and the code-written hired events are edited lin
   }
 });
 
+test('the freight agent, the side on the manifest, the day ashore and the close of chapter two open in the preview, each case by the line typed (#794)', async () => {
+  await reload();
+  for (const [id, line] of [['scene:freight-agent', 'title.short'], ['scene:freight-agent', 'skim.c0.label'], ['scene:freight-side', 'title'], ['scene:day-ashore', 'title'],
+    ['scene:chapter-two-end', 'together.title'], ['scene:chapter-two-end', 'losses.text.many']]) {
+    await select(id);
+    await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${line}.`);
+    const f = await play();
+    const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
+    assert.ok(seen.includes(`Typed ${line}.`), `${id} ${line} plays: ${seen.slice(0, 200)}`);
+  }
+});
+
+test('a function scene at a port previews landed there, and one in a burn previews in a burn (#794)', async () => {
+  await reload();
+  for (const [id, mode] of [['scene:customs', 'landed'], ['scene:dock-friend', 'landed'], ['scene:day-ashore', 'landed'], ['scene:chapter-two-end', 'landed'], ['scene:freight-side', 'landed'], ['scene:hand-death', 'transit']]) {
+    await select(id);
+    const f = await play();
+    assert.equal(await f.evaluate(() => G.mode), mode, `${id} plays ${mode}`);
+    if (['scene:freight-side', 'scene:chapter-two-end'].includes(id)) assert.match(await page.textContent('#pv-report'), /stand/, `${id} says what is a stand-in`);
+  }
+});
+
 test('the preview plays the version of a moment being edited, whichever the day would take (#781)', async () => {
   await reload();
   for (const [id, line] of [['scene:split', 'text.1'], ['scene:split', 'text.2'], ['scene:split', 'text']]) {

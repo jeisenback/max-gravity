@@ -42,10 +42,10 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:used-ship-offer', fn: 'dealScene', file: 'js/hired.js', title: 'The Used Ship', where: 'port', when: 'When the used Ore Runner is offered, after the captain\'s two scenes.' },
   { id: 'scene:yard-office', fn: 'yardScene', file: 'js/yardoffice.js', title: 'The Yard Office', where: 'port', when: 'When you ask to buy a ship.' },
   { id: 'scene:fight', fn: 'shipFightEvent', file: 'js/fightui.js', title: 'Battle Stations', where: 'transit', when: 'A pirate contact or a navy stop, fought turn by turn on the sensor board: the opening, her move and the captain\'s, the orders to the guns, a line a turn, and how it ends.' },
-  { id: 'beats:dead-in-space', fn: 'deadInSpaceScene', file: 'js/engagements.js', title: 'Dead in Space', where: 'transit', when: 'After a raid, when a crippled raider drifts beside you.' },
+  { id: 'beats:dead-in-space', fn: 'deadInSpaceScene', file: 'js/engagements.js', title: 'Dead in Space', where: 'transit', when: 'After a ship fight, when her drive and guns are gone and she drifts beside you.' },
   { id: 'beats:ambush', fn: 'ambushScene', file: 'js/engagements.js', title: 'An Ambush', where: 'transit', when: 'On a dangerous lane, every 60 days at most.' },
-  { id: 'beats:repel', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarders', where: 'transit', when: 'When a raid ends alongside: the deck fight at the lock, the corridor and the bridge.' },
-  { id: 'beats:assault', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarding Her', where: 'transit', when: 'When you board the crippled raider: the deck fight on her deck.' },
+  { id: 'beats:repel', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarders', where: 'transit', when: 'When a ship fight ends with her alongside and boarding: the deck fight at the lock, the corridor and the bridge.' },
+  { id: 'beats:assault', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarding Her', where: 'transit', when: 'When you board her after a ship fight leaves her dead in space: the deck fight on her deck.' },
 ];
 
 // The words of the ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
@@ -458,7 +458,6 @@ const SCENE_LINES = {
     'end.broke.gun': 'She breaks off, and on the open band a voice says, "Your registry has been logged."',
     'end.broke.grapple': 'She breaks off with her grapple arms folded, and the range opens.',
     'end.broke.torpedo': 'She closes her bay doors with a torpedo still in the tube and turns away.',
-    'end.crippled.gun': 'Her drive goes out under your last burst, and a beacon on her hull starts calling for a tow.',
     'end.crippled.grapple': 'Her grapple arms go slack, and she tumbles past your bow with no plume behind her.',
     'end.crippled.torpedo': 'The corsair\'s drive cone splits, and she coasts on with her bay doors stuck half open.',
     'end.standoff': 'She turns away with the range still open, and her last burst clips the hull aft.',
@@ -579,7 +578,7 @@ const SCENE_LINES = {
   },
   'scene:freight-side': {  // a contract from a state\'s freight office, with a crew member that state wants aboard (js/shippers.js, on the pattern of scene:customs)
     title: 'On the Manifest',
-    text: '{agent} lays the crew list beside the paper, because {office} puts the names of everyone aboard on its manifest. The stylus stops at {first} {last} and stays there. "{faction} wants this one," {agent} says. "I can load you without the name on the list. I can\'t load you with it and write nothing."',
+    text: '{agent} lays the crew list beside the paper, because {office} puts the names of everyone aboard on its manifest. The stylus stops at {first} {last} and stays there. "This one\'s wanted by {faction}," {agent} says. "I can load you without the name on the list. I can\'t load you with it and write nothing."',
     'papers.label': '[{gov} papers] Vouch for {n} as a member',
     'papers.result': 'You put your papers on the rail and say {n} is crew on your word. {agent} copies the number off them, slowly, and takes the name off the list. "Yours goes on it instead," {agent} says.',
     'papers.memory': 'You put your papers up for me at the loading.',
@@ -881,7 +880,7 @@ const linesOf = id => (BEAT_LINES[id] ? BEAT_LINES[id]() : id === 'scene:walk-of
 const BEAT_LINES = { 'beats:ambush': ambushLines, 'beats:dead-in-space': deadLines, 'beats:repel': () => repelLines(false), 'beats:assault': () => repelLines(true) };
 
 // Every id, with what it is and where its scene lives: { id, kind, key, name, scene } for a cast or captain scene (its scene object), { id, kind: 'work' |
-// 'hand', def } for a hired event (with its `scene` when it is written as data), { id, kind: 'ice', stage } for an ice run scene, and { id, kind: 'function', ...the entry above } for the rest (a beat of the raid, the ambush or the boarding fights has its `scene`, the lines it can be given).
+// 'hand', def } for a hired event (with its `scene` when it is written as data), { id, kind: 'ice', stage } for an ice run scene, and { id, kind: 'function', ...the entry above } for the rest (the ship fight, and a beat of the ambush or the boarding fights, has its `scene`, the lines it can be given).
 function hiredSceneRegistry() {
   const out = [];
   for (const [key, c] of Object.entries(CAST)) {
