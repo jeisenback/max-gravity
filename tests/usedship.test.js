@@ -110,3 +110,19 @@ test('the captain heads for a yard when the used Ore Runner can be had', async (
   assert.deepEqual(r, { beforeOffer: false, atOffer: true, goodBelow: false, good: true, lapsedBelow: false, lapsed: true });
   await done();
 });
+
+test('work further away says so when it would keep you from a yard until the deal is gone (#800)', async () => {
+  const { r, done } = await run(() => {
+    const st = start(), out = {};
+    const job = (sid, planet, days) => ({ tpl: 'package', ctx: { dest: planet, from: st.planet, who: 'Mrs. Adeyemi', system: SYSTEMS[sid].name, scale: 1 }, sid, planet, days, until: st.day + 40, pitched: null, booked: false });
+    const warns = a => pitchScene(a).text.includes('Ore Runner');
+    out.noDeal = warns(job('eros', 'Eros Old Town', 6));
+    dock(10500); const until = hired().deal.until;
+    st.day = until - 5; out.late = warns(job('eros', 'Eros Old Town', 6));
+    out.yard = warns(job('saturn', 'Titan', 4));
+    st.day = until - 40; out.early = warns(job('eros', 'Eros Old Town', 6));
+    return out;
+  });
+  assert.deepEqual(r, { noDeal: false, late: true, yard: false, early: false });
+  await done();
+});

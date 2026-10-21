@@ -1372,6 +1372,65 @@
   ]
  },
  {
+  "id": "scene:pitch:deal",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest. \"All right,\" Hester says. \"Eros, then. Don't make me regret it.\" The run is set for Eros Old Town.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You put it to Captain Vance, and Hester doesn't like being reminded of what they owe. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You put it to Captain Vance, and Hester says the ship isn't a charity. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.5,
+    "text": "You let it lie. The job will keep.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Eros Old Town, and doesn't trust the post. It is Eros Old Town, Eros: 5 days out, and the captain has other runs in mind. How do you put it? It would be about day 43 before you could be at a yard again, and the used Ore Runner comes off the yard list after day 34.",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [60%]",
+   "Call in what the captain owes you [5%; if it fails: the captain marks it]",
+   "Say it's the right thing to do [5%; if it fails: the captain marks it]",
+   "Dare them to take it [40%]",
+   "Never mind"
+  ]
+ },
+ {
   "id": "scene:customs:wanted",
   "plays": [
    {
