@@ -194,8 +194,8 @@ CAST.cato.round = () => {
   const iceA = ice[0] || 'one ice hand', iceB = ice[1] || 'the other';
   const guns = hired().post === 'gunner'
     ? ('The last stop is at the foot of the guns. "And these are yours. ' +
-        'When something closes on us, the board shows you what she\'s about to do and what the captain means to do back. You lay each gun on one ' +
-        'part of her, the drive or the guns or the lock, and you press Fire, and then it all happens at once, hers and ours. You\'ll get one wrong. I did, and I\'m still here, and so is the ship."') : '';
+        'When something closes on us, the board shows you what she\'s about to do and what the captain means to do back. You lay a gun on a part ' +
+        'of her, her guns, say, or her drive, and you press Fire, and then it all happens at once, hers and ours. You\'ll get one wrong. I did, and I\'m still here, and so is the ship."') : '';
   const walk = [
     (`He starts at the galley, because he says everyone should. "It's eleven feet across, I measured it once, and that's where we eat and where we ` +
         `argue, mostly at the same time. ${cook} runs it. The water ration is on the wall in chalk. Don't rub it out, I know it looks like something ` +

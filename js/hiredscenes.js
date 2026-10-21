@@ -45,7 +45,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'beats:dead-in-space', fn: 'deadInSpaceScene', file: 'js/engagements.js', title: 'Dead in Space', where: 'transit', when: 'After a ship fight, when her drive and guns are gone and she drifts beside you.' },
   { id: 'beats:ambush', fn: 'ambushScene', file: 'js/engagements.js', title: 'An Ambush', where: 'transit', when: 'On a dangerous lane, every 60 days at most.' },
   { id: 'beats:repel', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarders', where: 'transit', when: 'When a ship fight ends with her alongside and boarding: the deck fight at the lock, the corridor and the bridge.' },
-  { id: 'beats:assault', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarding Her', where: 'transit', when: 'When you board the crippled raider: the deck fight on her deck.' },
+  { id: 'beats:assault', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarding Her', where: 'transit', when: 'When you board her after a ship fight leaves her dead in space: the deck fight on her deck.' },
 ];
 
 // The words of the ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
@@ -578,7 +578,7 @@ const SCENE_LINES = {
   },
   'scene:freight-side': {  // a contract from a state\'s freight office, with a crew member that state wants aboard (js/shippers.js, on the pattern of scene:customs)
     title: 'On the Manifest',
-    text: '{agent} lays the crew list beside the paper, because {office} puts the names of everyone aboard on its manifest. The stylus stops at {first} {last} and stays there. "{faction} wants this one," {agent} says. "I can load you without the name on the list. I can\'t load you with it and write nothing."',
+    text: '{agent} lays the crew list beside the paper, because {office} puts the names of everyone aboard on its manifest. The stylus stops at {first} {last} and stays there. "This one\'s wanted by {faction}," {agent} says. "I can load you without the name on the list. I can\'t load you with it and write nothing."',
     'papers.label': '[{gov} papers] Vouch for {n} as a member',
     'papers.result': 'You put your papers on the rail and say {n} is crew on your word. {agent} copies the number off them, slowly, and takes the name off the list. "Yours goes on it instead," {agent} says.',
     'papers.memory': 'You put your papers up for me at the loading.',

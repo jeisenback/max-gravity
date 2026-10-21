@@ -158,7 +158,7 @@
     for (const e of peopleEventRegistry()) {  // the passenger and crew events (#457): written in code, with their words as lines
       const pax = !!e.event, crew = !!e.make, rel = !!e.social, fam = !!e.family, errand = e.family === 'errand', kind = pax ? 'passenger events' : crew ? 'crew events' : rel ? 'social life' : fam ? 'found family' : 'bar topics';
       add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: kind, on: !pax || !scopeOff('errands'),  // a passenger comes from an errand, which the narrow build has not
-        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : crew ? 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.' : errand ? 'A crew member who thinks well of you asks you along on an errand of their own at a port: one of three by where they come from (Earth, Mars or the Belt), taken by the day, or the clinic when they are hurt.' : fam ? 'Sitting with a shipmate in downtime (the picker, or the Sit with someone activity): what is on their mind decides the scene (a hard time, an injury, the war, a rift, a friend, a memory), and a story they tell in three sittings and a favor at the end of it.' : rel ? 'Two people aboard, by the bond between them, where they come from, who is crew and who is a passenger, and what is on; a scene comes up now and then on a burn, each kind waiting its turn. The feeds and the downtime activities are what the ship hears and does with what is on.' : 'One of the few things you can do at a table with a stranger at a bar, offered by who they are; or, for a help scene, what follows when you take up their goal or their secret.',
+        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : crew ? 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.' : errand ? 'A crew member who thinks well of you asks you along on an errand of their own at a port: the errand of where they come from (Earth, Mars or the Belt), in one of three versions taken by the day, or the clinic when they are hurt.' : fam ? 'Sitting with a shipmate in downtime (the picker, or the Sit with someone activity): what is on their mind decides the scene (a hard time, an injury, the war, a rift, a friend, a memory), and a story they tell in three sittings and a favor at the end of it.' : rel ? 'Two people aboard, by the bond between them, where they come from, who is crew and who is a passenger, and what is on; a scene comes up now and then on a burn, each kind waiting its turn. The feeds and the downtime activities are what the ship hears and does with what is on.' : 'One of the few things you can do at a table with a stranger at a bar, offered by who they are; or, for a help scene, what follows when you take up their goal or their secret.',
         pacing: { tier: null, weight: pax ? e.event.weight : null, cooldown: pax ? 'one per passenger' : 'by its own rule', trigger: pax ? 'Drawn by weight among the events that fit the passenger, on a burn.' : crew ? 'Picked at random among the crew and their traits, on a burn.' : errand ? `Now and then at a landing, in its turn with the dock's own scenes, or from a day ashore; the same person asks at most once in ${ERRAND_GAP} days.` : fam ? 'Offered at the downtime screen: who you sit with picks the scene.' : rel ? 'Chosen among the scenes the pairs aboard can have, on a burn (relationshipScene, social.js); the feeds come up as chatter, and the activities are offered at the downtime screen.' : 'Offered at a bar table by the person\'s traits, goal and secret, three at a time.', editable: false },
         ...beatRow(e.scene), codeNote: SCENE_NOTE });
     }
@@ -318,7 +318,7 @@
     const meeting = !!reg && reg.kind === 'cast' && reg.name === 'meet';  // an owner meets a main character at a port bar; a hired hand never does
     beginGame(meeting || pe ? { ...o, as: 'owner' } : o, !!reg && !meeting);
     // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
-    const where = s ? s.where : pe ? pe.where : reg.name === 'meet' || reg.name === 'goodbye' || reg.kind === 'job' || reg.bar ? 'port' : 'transit';
+    const where = s ? s.where : pe ? pe.where : reg.name === 'meet' || reg.name === 'goodbye' || reg.kind === 'job' || reg.bar || reg.kind === 'function' && reg.where === 'port' ? 'port' : 'transit';  // a function scene plays where its entry says (#794)
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
     if (m.version != null) G.state.day += (m.version - G.state.day % TELLINGS.length + TELLINGS.length) % TELLINGS.length;  // the day lands on the version being edited (#781)
@@ -366,6 +366,7 @@
       return { type: 'played', failing: [], chained: false, shut: [], note: 'A passenger event is drawn for a passenger it fits, so no condition is checked here.' };
     }
     if (reg) {  // a hired scene is played by its days and its place in the story: the preview opens it, with the regard that picks its reading
+      let standIn = '';  // what the preview made up to open the scene, said in its report
       if (reg.kind === 'job') openEvent(jobStage(reg.job, reg.stage, reg.id.startsWith('away:') ? { dest: 'Ironheart', from: place, who: 'Mrs. Adeyemi', system: 'Psyche', scale: 1.3 } : { scale: 1.2, who: 'Mrs. Adeyemi' }));  // a stage of a job, with the people and places an offer carries
       else if (reg.kind === 'work') openEvent(workEvent(reg.def));  // a problem at the hand's post, played by the shared template from its table
       else if (reg.kind === 'ice') { hired().run = { tons: 40, ice: { edge: 0, round: 0 } }; openEvent(iceStageScene(Number(reg.id.slice(4)) - 1)); }  // the first opening of an ice run's scene
@@ -422,6 +423,7 @@
           'scene:freight-side': () => {  // a contract from the Compact's freight office, with a crew member the Compact wants aboard
             if (!crew.length) { const c = makeCrewCandidate(st.systemId); registerPerson(c); st.crew.push(c.id); crew.push({ p: c }); }
             const plan = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 50, from: currentPlanet().name, planet: 'Mars', sid: 'mars', pay: 9000, days: 4, due: st.day + 8, cost: 0, yard: false };
+            standIn = `${crew[0].p.first} ${crew[0].p.last} stands in for the person the office wants: the first of the crew who is not a main character, whatever their ties.`;
             return sideScene(plan, { gov: 'Arcology Compact', p: crew[0].p }, freightAgent(currentPlanet()));
           },
           'scene:day-ashore': () => { fillBar(currentPlanet()); return dayAshoreEvent(true); },  // the menu with every entry the port has today
@@ -430,7 +432,7 @@
             const rec = id === 'left' ? { aboard: key === 'left.text.all' ? [] : ['Cy'], left: ['Ana', 'Ben'], dead: [] }
               : id === 'losses' ? { aboard: key.startsWith('losses.aboard') ? (one ? ['Cy'] : ['Cy', 'Di']) : [], left: [], dead: key === 'losses.text.one' ? ['Ana'] : ['Ana', 'Ben'] }
               : id === 'alone' ? { aboard: [], left: [], dead: [] } : { aboard: one ? ['Ana'] : ['Ana', 'Ben'], left: [], dead: [] };
-            career().bought = st.day - CHAPTER_TWO_DAYS;
+            career().bought = st.day - CHAPTER_TWO_DAYS; standIn = 'The names of the crew who came along (Ana, Ben, Cy, Di) are stand-ins, not the test game\'s crew.';
             return chapterTwoEnd({ came: rec.aboard.length + rec.left.length + rec.dead.length, ...rec });
           },
           'scene:fight': () => { hired().raidTold = true; G.nextEvent = null; startDuel({ kind: 'pirate' }, false); const first = G.nextEvent; G.nextEvent = null; return first; },  // the ship fight, its explanation out of the way
@@ -453,7 +455,7 @@
         if (name === 'secret') hiredCaptain().opinion = reg.name === 'secret:confide' ? SECRET_TRUST : SECRET_TRUST - 1;
         openEvent(captainScene(name));
       }
-      return { type: 'played', failing: [], chained: false, shut: [], note: 'A scene of the hired chapter plays by its days and its place in the story, so no condition is checked here.' };
+      return { type: 'played', failing: [], chained: false, shut: [], note: `A scene of the hired chapter plays by its days and its place in the story, so no condition is checked here.${standIn ? ` ${standIn}` : ''}` };
     }
     const view = sceneView(s);  // with the editor's conditions, if it changed any
     const report = { type: 'played', failing: failing(view.when), chained: !!s.chained, chance: (view.when || {}).chance, shut: view.choices.map((c, i) => ({ n: i + 1, why: failing(c.when) })).filter(x => x.why.length) };
