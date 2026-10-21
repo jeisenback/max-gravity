@@ -36,6 +36,14 @@ test('with --jobs the soak works the station jobs and puts the jobs elsewhere to
   assert.equal(plain.work.station, 0, 'without the flag no station job is taken (a job elsewhere can still play when the captain happens to land there)');
 });
 
+test('with --frames every deck fight is played to its close, and a fight\'s panels count once with their scene (#786)', async () => {
+  const r = await soak({ seed: 3, legs: 20, frames: true });  // a seed whose raids end alongside: before #786's fix both its deck fights were cut off
+  assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
+  assert.ok(r.deck.begun > 0, 'a deck fight was fought');
+  assert.equal(r.deck.settled + r.deck.died, r.deck.begun, `each settled, or the hand was killed in it: ${JSON.stringify(r.deck)}`);
+  assert.ok((r.scenes['Battle Stations'] || 0) <= 2 * r.frames.raids, `the fight's panel and its close, not a count a turn: ${r.scenes['Battle Stations']} for ${r.frames.raids} raids`);
+});
+
 test('for every captain the trouble, then the secret, then the used-ship offer', async () => {
   for (const captainKey of ['hester', 'dov', 'imre', 'zoya']) {
     const r = await soak({ seed: 3, legs: 40, captainKey });  // not every seed ends with the offer: a chapter that closes at the buy price can do so before a landing at a yard (seeds 1 and 2 each have one such captain)
