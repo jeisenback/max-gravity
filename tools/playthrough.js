@@ -16,7 +16,8 @@ const { chapter } = require('./soak');
 // The player: given the dialog and the indexes of its open choices (a shut one is never among them), the index to take. Runs in the page.
 // - Ship fight: every gun at her weapons (at her drive once no weapons are left to hit), a torpedo at a veteran crew (grade above 0) while any are left, then Fire, each turn.
 // - Deck fight: stand where most of your crew are, shoot (steady when they outnumber you there), give the crew order when one is offered, then Fight.
-// - Scenes: the best score: no stated risk or cost first, paying work and jobs taken, a cost to standing or the captain's trust avoided. Ties are the seed's.
+// - Scenes: the best score: no stated risk or cost first, paying work and jobs taken, a cost to standing or the captain's trust avoided, and a crewmate kept
+//   rather than let go. Ties are the seed's.
 //   At the yard's desk, buying in, the player does not walk away (memo.avoid, set by the port hook).
 function policy(d, ok, memo) {
   const s = d.event.fight, label = i => d.choices[i].label, last = ok[ok.length - 1];
@@ -49,6 +50,7 @@ function policy(d, ok, memo) {
     if (/standing|regard|marks it|trust/i.test(note) || /\bcost(s|ing)?\b.*\b(standing|trust)\b/i.test(c.label)) v -= 3;
     else if (/%|if it fails/.test(note)) v -= 2;
     if (c.cost || /\(\s*[\d,]+ cr\)/.test(c.label)) v -= 1;
+    if (/^Let .+ go$/.test(c.label)) v -= 3;  // Not on the Same Ship (stakes.js): keep both
     if (/\b(jobs?|work|paying|pays|paid|earn|hire[sd]?|contract)\b/i.test(c.label.replace(/\[[^\]]*\]\s*$/, ''))) v += 2;
     return v;
   };
