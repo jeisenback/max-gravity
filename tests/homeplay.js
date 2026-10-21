@@ -10,7 +10,7 @@ const playHome = () => {
   __seed(1);
   startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' });
   while (G.dialog) finishEvent();
-  let st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 20000;
+  let st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000;
   st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
   const mk = (first, over = {}) => { const p = makePerson('mars'); Object.assign(p, { first, last: 'Vale', home: 'Mars', traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [], role: 'engineer', skill: 1 }, over); delete p.story; registerPerson(p); return p; };
   const base = mk('Sam'), ana = mk('Ana', { role: 'pilot' }), ben = mk('Ben', { role: 'gunner' });
@@ -22,7 +22,7 @@ const playHome = () => {
     __seed(7); const p0 = fresh(), ev0 = build(p0);
     const rec = { title: ev0.title, text: ev0.text, labels: ev0.choices.map(c => String(c.label)), runs: [] };
     for (let i = 0; i < ev0.choices.length; i++) for (let d = 1; d <= dice; d++) {
-      __seed(d * 31 + i); const p = fresh(), ev = build(p); st.credits = 20000; st.cargo = st.cargo || {}; st.cargo.luxury = 3; G.shifts = null;
+      __seed(d * 31 + i); const p = fresh(), ev = build(p); st.credits = 200000; st.cargo = st.cargo || {}; st.cargo.luxury = 3; G.shifts = null;
       const line = ev.choices[i].run(); rec.runs.push([i, d, String(line), seen(p, st)]);
     }
     out.push({ key, text: norm(JSON.stringify(rec)) });
@@ -73,7 +73,7 @@ const playHome = () => {
     seq([0.1, 0.1, 0.5, 0.1, 0.9, 0.1, 0.3]); addTouches(); Math.random = real; window.comm = was; note('touches:add', [lines, home().touches]); }
   // every way a pick can go, by forcing the dice: the way they act on a birthday, the openings of the news, and what the choices give back
   const forceBuild = (key, setup, n, build) => { for (let k = 0; k < n; k++) { const p = reset(); setup(p, G.state); seq([(k + 0.5) / n]); const ev = build(p); Math.random = real; note(`${key}:${k}`, ev.text); } };
-  const forceRun = (key, setup, n, build, i) => { for (let k = 0; k < n; k++) { const p = reset(); setup(p, G.state); const ev = build(p); G.state.credits = 20000; seq([(k + 0.5) / n]); const line = ev.choices[i].run(); Math.random = real; note(`${key}:${i}:${k}`, line); } };
+  const forceRun = (key, setup, n, build, i) => { for (let k = 0; k < n; k++) { const p = reset(); setup(p, G.state); const ev = build(p); G.state.credits = 200000; seq([(k + 0.5) / n]); const line = ev.choices[i].run(); Math.random = real; note(`${key}:${i}:${k}`, line); } };
   forceBuild('force:birthday', () => {}, 4, p => occasionEvent({ kind: 'birthday', id: p.id, day: st.day + 3 }));
   forceBuild('force:good:open', withNews(true), 8, p => newsEvent(p));
   forceBuild('force:bad:open', withNews(false), 8, p => newsEvent(p));

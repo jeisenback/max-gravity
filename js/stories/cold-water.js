@@ -52,15 +52,15 @@ Mods.register({
           'He\'s tall and unhurried, with a silver pin of a water drop in his lapel. He holds out a hand, and, when you don\'t take ' +
           'it, lowers it. "Anselm Voight, Aquilon Hydrologics, asset recovery. You\'ve recovered some company property, ' +
           'captain: a tally book from the Persephone\'s Due. The audit board has no claim on it, having tagged the hull as surveyed and left it to rot, ' +
-          'and we\'d like it back. We\'re happy to pay a generous finder\'s fee. Eight thousand credits, and no questions." He smiles before he says ' +
+          'and we\'d like it back. We\'re happy to pay a generous finder\'s fee. Eighty thousand credits, and no questions." He smiles before he says ' +
           'it. "I think you\'ll find that I\'m a very reasonable man."'),
       choices: [
-        { label: 'Sell it (8,000 cr)', effects: { credits: 8000, story: { stage: 'sold' }, storyLog: 'Sold the Persephone\'s tally book to Anselm Voight of Aquilon Hydrologics for 8,000 cr.' },
+        { label: 'Sell it (80,000 cr)', effects: { credits: 80000, story: { stage: 'sold' }, storyLog: 'Sold the Persephone\'s tally book to Anselm Voight of Aquilon Hydrologics for 80,000 cr.' },
           result: ('Voight takes the book and slides it into an inside pocket, neatly, the way a man pockets a folded handkerchief. The credits arrive ' +
               'before he has finished turning away. "A pleasure, captain. You\'ll find Aquilon never forgets its friends." You watch him walk ' +
               'the length of the dock, and not once does he look back.') },
         { label: '[{crew}] Have {crew} copy it first, then sell', when: { crew: 'slicer' },
-          effects: { credits: 8000, story: { stage: 2, copied: true }, storyLog: 'Sold the tally book to Aquilon for 8,000 cr, after copying it.' },
+          effects: { credits: 80000, story: { stage: 2, copied: true }, storyLog: 'Sold the tally book to Aquilon for 80,000 cr, after copying it.' },
           result: ('{crew} photographs every leaf in the ninety seconds it takes you to "find" the book, fingers flying. ' +
               'Voight pays, smiles, and leaves, and the dock is very quiet after he goes. "He\'ll check it," {crew} says at last, sliding ' +
               'the copy into a pocket. "And he\'ll know. Men like that always know." Neither of you says anything more.') },
@@ -83,7 +83,7 @@ Mods.register({
           'behind you, and back. "Please. I don\'t have long."'),
       choices: [
         { label: 'Take her to Europa (needs a free berth)', when: { berths: 1 },
-          effects: { story: { stage: 4 }, do: ['storyPassenger', 'Mira Castellane', 1, 'jupiter', 'Europa', 3000, 'mira-europa'], storyLog: 'Agreed to carry Mira Castellane, a former Ceres water engineer, to Europa.' },
+          effects: { story: { stage: 4 }, do: ['storyPassenger', 'Mira Castellane', 1, 'jupiter', 'Europa', 30000, 'mira-europa'], storyLog: 'Agreed to carry Mira Castellane, a former Ceres water engineer, to Europa.' },
           result: ('She drops her battered duffel in your spare berth and doesn\'t unpack. It sits there, zipped, like a bag ready to run. "Europa. ' +
               'Jupiter. As fast as you like," she says, and then, awkwardly, as though the word were a little rusty from lack of use: "Thank you." She ' +
               'spends the first hour at the viewport, watching the dock fall away, and only when it\'s gone does she let her shoulders down.') },
@@ -110,7 +110,7 @@ Mods.register({
               'puckered, the kind that only comes from a bad decompression. "Airlock door," she says. "It closed early. Someone overrode the safety." ' +
               'She rolls the sleeve back down, slowly. "Believe whatever you like. I stopped needing people to believe me a long time ago. The book ' +
               'will speak for itself." She takes her cold mug, and goes back to her bunk, and the galley feels colder than before.') },
-        { label: '"I believe you. What do you need from me?"', effects: { storyAdd: { miraTrust: 1 }, passenger: { who: 'mira-europa', bonus: 1000 } },
+        { label: '"I believe you. What do you need from me?"', effects: { storyAdd: { miraTrust: 1 }, passenger: { who: 'mira-europa', bonus: 10000 } },
           result: ('She lets out a breath she seems to have been holding for three months, a long, shaky, ragged sound, and for the first time since ' +
               'she came aboard she looks her age, and a little younger. "Get me to Europa alive," she says. "After that, we\'ll see how brave you ' +
               'are." She insists on paying extra for the berth, pressing the credits into your hand with a stubborn tilt of her chin. "I haven\'t owed ' +
@@ -215,15 +215,15 @@ Mods.register({
       text: hasProof
         ? ('Voight receives you in an office at Hermes Foundry with a view of the solar furnaces, which glow like the inside of a forge through ' +
             'tinted glass. He\'s as immaculate as ever, without a hair out of place, and his desk holds a single glass of water, untouched, that ' +
-            'catches the light. "You came to me," he says, and smiles. "Sensible. Twenty-five thousand credits for the book and every copy, and I can ' +
+            'catches the light. "You came to me," he says, and smiles. "Sensible. Two hundred and fifty thousand credits for the book and every copy, and I can ' +
             'offer steady work besides. Aquilon rewards discretion."')
         : ('Voight receives you in an office at Hermes Foundry with a view of the solar furnaces, which glow like the inside of a forge through ' +
             'tinted glass. He\'s as immaculate as ever, and his desk holds a single glass of water, untouched, that catches the light. "Captain," he ' +
             'says, and there\'s real warmth in it. "You made the right choice about that book. Now I have a job for someone discreet."'),
       choices: [
-        { label: hasProof ? 'Sell the proof and take the job (+25,000 cr; needs 2 free berths)' : 'Take the job (needs 2 free berths)', when: { berths: 2 },
-          effects: { credits: hasProof ? 25000 : 0, story: { stage: 'aq1' }, do: ['storyPassenger', 'two Aquilon technicians', 2, 'ceres', 'Ceres Station', 2000, 'techs'],
-            storyLog: hasProof ? 'Sold the proof to Anselm Voight for 25,000 cr and took an Aquilon job.' : 'Took a job from Anselm Voight of Aquilon Hydrologics.' },
+        { label: hasProof ? 'Sell the proof and take the job (+250,000 cr; needs 2 free berths)' : 'Take the job (needs 2 free berths)', when: { berths: 2 },
+          effects: { credits: hasProof ? 25000 : 0, story: { stage: 'aq1' }, do: ['storyPassenger', 'two Aquilon technicians', 2, 'ceres', 'Ceres Station', 20000, 'techs'],
+            storyLog: hasProof ? 'Sold the proof to Anselm Voight for 250,000 cr and took an Aquilon job.' : 'Took a job from Anselm Voight of Aquilon Hydrologics.' },
           result: ('"Two of our maintenance technicians need passage to Ceres Station. Quietly." Voight smiles, and slides a slim folder across the ' +
               'desk. "They\'ll pay their own fare. They\'re very professional. You\'ll hardly notice they\'re there." He raises the glass of water, ' +
               'looks at it for a moment, and, very slowly, drinks. "Safe journey, captain."') },
@@ -243,8 +243,8 @@ Mods.register({
           'the shoulders of parents. Old women hold up their cups. Someone has begun to sing, an old Warren hymn, low and rough, and one by one the ' +
           'others take it up. Councillor Tembo stands at the head of the line, and makes sure the cameras catch every drum.'),
       choices: [{ label: 'Unload the water',
-        effects: { cargo: { water: -20 }, credits: 6000, rep: { 'Charter League': 10 }, story: { stage: 'belt2' }, storyLog: 'Delivered 20t of water to Ceres Station for the League.' },
-        result: ('The last drum rolls down the ramp, and the whole concourse erupts. The council pays 6,000 cr, and the crowd cheers your ship\'s ' +
+        effects: { cargo: { water: -20 }, credits: 60000, rep: { 'Charter League': 10 }, story: { stage: 'belt2' }, storyLog: 'Delivered 20t of water to Ceres Station for the League.' },
+        result: ('The last drum rolls down the ramp, and the whole concourse erupts. The council pays 60,000 cr, and the crowd cheers your ship\'s ' +
             'name, again and again, until it\'s a wave. A small girl presses a paper cup into your hand, half full, and looks at you with grave, wide ' +
             'eyes. Tembo doesn\'t smile. "Aquilon will have seen that too," she says, low. "Get to Pallas Refinery. The refinery crews listen to ' +
             'people who deliver."') }],
@@ -262,12 +262,12 @@ Mods.register({
           else: 'They look tired, thirsty, and in no mood for speeches. A few of them have brought their children. Nobody\'s smiling.'
         }],
       choices: [{ label: 'Tell them what the book says',
-        effects: { rep: { 'Charter League': 10 }, credits: 4000, do: ['endAct2', 'belt', 'Rallied the Pallas refinery crews. The Belt went on strike and the League voided Aquilon\'s ice claims.'] },
+        effects: { rep: { 'Charter League': 10 }, credits: 40000, do: ['endAct2', 'belt', 'Rallied the Pallas refinery crews. The Belt went on strike and the League voided Aquilon\'s ice claims.'] },
         result: [{ when: { crew: 'rosa' }, text: 'Rosa tells them about the Nine-B pumps, in her flat, plain voice, without a single decoration, and the room goes so quiet you can hear the molds cooling.' },
           ('You tell them everything: the book, the pumps, the futures bought the day before every failure. When you finish, nobody speaks. Then ' +
               'Marsh raises a fist, slowly, and one by one three hundred fists rise with hers, and the refinery shuts down around you with a long, ' +
               'falling groan of machinery. By nightfall every Belt station is on strike, and the League council declares Aquilon\'s ice claims ' +
-              'void. The union sends 4,000 cr for your trouble. Earth answers within the week: a Compact fleet is on its way "to secure Ceres." (Act ' +
+              'void. The union sends 40,000 cr for your trouble. Earth answers within the week: a Compact fleet is on its way "to secure Ceres." (Act ' +
               '2 complete. In a few days the fleets will reach Ceres, and your objective will be on the Port tab.)')] }],
     });
 
@@ -286,8 +286,8 @@ Mods.register({
               'maintenance port in four minutes. When the door closes behind you, {crew} lets out a long, slow breath, and a small, delighted grin ' +
               'breaks across a face that has been solemn all week. "Done. Their security is a joke." A pause. "Please don\'t tell Ueda I said that. ' +
               'She\'ll make it a training exercise."') },
-        { label: 'Bribe the dock technician (3,000 cr)', when: { credits: 3000 },
-          effects: { credits: -3000, story: { stage: 'mars2' }, storyLog: 'Bribed a Hermes Foundry technician to plant Commander Ueda\'s tracer.' },
+        { label: 'Bribe the dock technician (30,000 cr)', when: { credits: 30000 },
+          effects: { credits: -30000, story: { stage: 'mars2' }, storyLog: 'Bribed a Hermes Foundry technician to plant Commander Ueda\'s tracer.' },
           result: ('The technician looks at the credits, and at the tracer, and at you, and you watch him decide, very slowly, not to care. He ' +
               'pockets both, and goes back to his noodles. "I didn\'t see you," he says. "I\'ve never seen anyone." By the time you\'re back aboard, ' +
               'Ueda\'s channel blinks: "Signal confirmed." It\'s the shortest message she has ever sent, and the most relieved.') },
@@ -303,8 +303,8 @@ Mods.register({
           'the names of dead men. She reads aloud, and her voice, for once, isn\'t entirely flat. "Now," she says, "Earth will listen."'),
         { when: { crew: 'dima' }, text: 'She glances at Dima, who\'s leaning in the doorway with his arms folded. "Sokolov. I heard you were flying freighters now. Good." Dima grins, for a moment looking twenty years younger, and says nothing, which, for Dima, is a kind of speech.' }],
       choices: [{ label: 'Take the Navy\'s thanks',
-        effects: { credits: 15000, rep: { 'Dome Concord': 15 }, do: ['endAct2', 'mars', 'The Dome Concord Fleet auditor used the proof as leverage over Earth.'] },
-        result: ('The Navy pays 15,000 cr and quietly marks your record, in a small, careful hand that you never see. Mars leaks just enough to make ' +
+        effects: { credits: 150000, rep: { 'Dome Concord': 15 }, do: ['endAct2', 'mars', 'The Dome Concord Fleet auditor used the proof as leverage over Earth.'] },
+        result: ('The Navy pays 150,000 cr and quietly marks your record, in a small, careful hand that you never see. Mars leaks just enough to make ' +
             'Earth sweat, a page here, a name there, timed to the hour. Earth accuses Mars of manufacturing the evidence, loudly and at length, and ' +
             'within a week both navies are moving toward Ceres, the way two ships circle each other in a crowded harbor. (Act 2 complete. In a few ' +
             'days the fleets will reach Ceres, and your objective will be on the Port tab.)') }],
@@ -362,8 +362,8 @@ Mods.register({
           'her hand and doesn\'t look back. Not once. Her back is very straight, and the metal capsule is gone from her throat.'),
         { when: { crew: 'kit' }, text: 'Kit watches them go, arms folded, jaw set. "Protective custody," she mutters. "I\'ve seen that before. Nobody comes back from it."' }],
       choices: [{ label: 'Collect your reward',
-        effects: { credits: 20000, rep: { 'Arcology Compact': 15 }, do: ['endAct2', 'earth', 'Handed the proof and Mira Castellane to Compact intelligence.'] },
-        result: ('Achebe pays 20,000 cr from a discretionary fund and shakes your hand, warmly, with both of his. The proof disappears. So does Mira. ' +
+        effects: { credits: 200000, rep: { 'Arcology Compact': 15 }, do: ['endAct2', 'earth', 'Handed the proof and Mira Castellane to Compact intelligence.'] },
+        result: ('Achebe pays 200,000 cr from a discretionary fund and shakes your hand, warmly, with both of his. The proof disappears. So does Mira. ' +
             'Somewhere in the long cold corridors of the Luna shipyards, a door closes on a very quiet room. Two weeks later, Ceres riots over water, ' +
             'and a Compact fleet moves in to "restore order". (Act 2 complete. In a few days the fleets will reach Ceres, and your objective will be ' +
             'on the Port tab.)') }],
@@ -397,8 +397,8 @@ Mods.register({
         { when: { story: { techsKnown: true } }, text: 'You know exactly what\'s in those cases, and they know that you know.', else: 'A Water Authority engineer watching them pass goes pale, and takes a quiet step backward, as though from a snake.' },
         'Once they\'re through that door, three more pumps will fail, and a great many people you\'ll never meet will go thirsty.'],
       choices: [
-        { label: 'Look the other way', effects: { credits: 12000, rep: { 'Charter League': -30 }, do: 'aquilonPumps' },
-          result: ('An Aquilon account pays you 12,000 cr, quietly, with no note. You watch the door swing shut behind the technicians, and you turn ' +
+        { label: 'Look the other way', effects: { credits: 120000, rep: { 'Charter League': -30 }, do: 'aquilonPumps' },
+          result: ('An Aquilon account pays you 120,000 cr, quietly, with no note. You watch the door swing shut behind the technicians, and you turn ' +
               'away, and keep walking. Three more pumps fail on Ceres that week, and water there sells for more than reaction mass. In the ration ' +
               'lines, people who\'ve been calm for months begin to shout. The League blames Earth, Earth blames Mars, and the fleets start to ' +
               'gather. (Act 2 complete. In a few days the fleets will reach Ceres, and your objective will be on the Port tab.)') },
@@ -468,6 +468,6 @@ Mods.register({
     final('belt', [ending('Unload the water for the League', 'belt')]);
     final('mars', [ending('Deliver it under Mars colors', 'mars'), ending('Publish everything, Mars\'s dealings included', 'truth')]);
     final('earth', [ending('Hand the water to Compact relief', 'earth'), ending('Tell the crowd the truth', 'truth')]);
-    final('aquilon', [ending('Sell it at blockade prices (1,000 cr/t)', 'aquilon'), ending('Give it away, and tell them who poisoned their wells', 'truth')]);
+    final('aquilon', [ending('Sell it at blockade prices (10,000 cr/t)', 'aquilon'), ending('Give it away, and tell them who poisoned their wells', 'truth')]);
   },
 });

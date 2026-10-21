@@ -130,7 +130,7 @@ test('an officer of the port\'s faction has a friend on the dock, and a small sa
     G.dialog = { event: e, choices: e.choices }; chooseEvent(0);
     return { title: e.title, fund: h.fund - fund, opinion: p.opinion - op, again: dockFriendScene('Arcology Compact', planet) };
   });
-  assert.equal(r.title, 'A Friend at the Dock'); assert.equal(r.fund, 150); assert.equal(r.opinion, 1); assert.equal(r.again, null);
+  assert.equal(r.title, 'A Friend at the Dock'); assert.equal(r.fund, 1500); assert.equal(r.opinion, 1); assert.equal(r.again, null);
   await done();
 });
 
@@ -195,12 +195,12 @@ test('a patrol stop weighs on the faction: a hand-over helps, being caught or po
     let s = scene(); out.offered = s.pick(/Gunner 2/) >= 0; out.label = s.e.choices[s.pick(/Gunner 2/)].label;
     let fund = h.fund, op = s.p.opinion;
     out.win = withRandom(0, () => chooseEvent(s.pick(/Gunner 2/))); out.winRep = st.rep[gov]; out.winStays = st.crew.includes(s.p.id); out.winFund = fund - h.fund; out.winLiked = s.p.opinion - op;
-    s = scene(); h.fund = 1000; fund = h.fund;
+    s = scene(); h.fund = 10000; fund = h.fund;
     out.lose = withRandom(0.999, () => chooseEvent(s.pick(/Gunner 2/))); out.loseRep = st.rep[gov]; out.loseGone = !st.crew.includes(s.p.id); out.loseFine = fund - h.fund;
     s = scene(); withRandom(0, () => chooseEvent(s.pick(/Hand .* over/))); out.handRep = st.rep[gov];
     s = scene(); withRandom(0.999, () => chooseEvent(s.pick(/Say nothing/))); out.caughtRep = st.rep[gov];
     s = scene(); withRandom(0, () => chooseEvent(s.pick(/Say nothing/))); out.clearRep = st.rep[gov];
-    s = scene(); h.fund = 1000; withRandom(0, () => chooseEvent(s.pick(/Pay the officer/))); out.payRep = st.rep[gov];
+    s = scene(); h.fund = 10000; withRandom(0, () => chooseEvent(s.pick(/Pay the officer/))); out.payRep = st.rep[gov];
     const ines = castPerson('ines'); st.crew = st.crew.filter(id => id !== ines.id && tiesOf(person(id)).status['Arcology Compact'] !== 'wanted' && tiesOf(person(id)).status['Arcology Compact'] !== 'exile'); st.crew.push(ines.id); st.customs = {}; st.rep['Arcology Compact'] = 0;
     const e = customsScene('Arcology Compact', system(), true); G.dialog = { event: e, choices: e.choices };
     out.cast = withRandom(0.999, () => chooseEvent(e.choices.findIndex(c => /Gunner 2/.test(c.label)))); out.castHere = st.crew.includes(ines.id);

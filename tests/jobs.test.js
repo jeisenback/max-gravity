@@ -44,13 +44,13 @@ test('every choice of every job works for every post, pays your savings and take
         for (let si = 0; si < job.stages.length; si++) {
           const n = jobStage(job, si).choices.length;
           for (let ci = 0; ci < n; ci++) for (const roll of [0.01, 0.99]) {
-            hired().fund = 777; st.credits = 1000; st.injured = {}; hired().hurtUntil = 0;
+            hired().fund = 7770; st.credits = 10000; st.injured = {}; hired().hurtUntil = 0;
             const e = jobStage(job, si); G.dialog = { event: e, choices: e.choices }; G.nextEvent = null;
             const day0 = st.day; let first = true; Math.random = () => { if (first) { first = false; return roll; } return real(); };  // only the check roll is forced: a constant random hangs the generators when the day passes
             let text; try { text = chooseEvent(ci); } finally { Math.random = real; }
             if (!text || /undefined|NaN|\{[a-z]/.test(text) || /undefined|NaN|\{[a-z]/.test(e.text + e.choices.map(c => c.label).join(' '))) out.bad.push(`${job.id}:${si}:${ci}:${roll}`);
-            if (hired().fund !== 777) out.bad.push(`fund ${job.id}`);
-            out.paid += Math.max(0, st.credits - 1000); if (!G.nextEvent) out.days.push(st.day - day0);
+            if (hired().fund !== 7770) out.bad.push(`fund ${job.id}`);
+            out.paid += Math.max(0, st.credits - 10000); if (!G.nextEvent) out.days.push(st.day - day0);
             G.dialog = null; G.nextEvent = null;
           }
         }
@@ -84,7 +84,7 @@ test('the checks follow your post and level and a crew member\'s help, and a los
   assert.match(r.label, new RegExp(`\\[Engineer, ${Math.round(r.high * 100)}%; if it fails: you may be hurt\\]$`), r.label);
   assert.match(r.labels[1], /\[Comms, \d+%; if it fails: the captain marks it\]$/, r.labels[1]);
   assert.ok(!r.labels[3].includes('['), `a sure choice carries no note: ${r.labels[3]}`);
-  assert.match(r.message[0], /\[Comms, \d+%; if it fails: 60 cr of your own, your standing here\]$/, r.message[0]);
+  assert.match(r.message[0], /\[Comms, \d+%; if it fails: 600 cr of your own, your standing here\]$/, r.message[0]);
   await done();
 });
 
@@ -101,9 +101,9 @@ test('each card on the board says the posts a job tests and the most it pays, re
     return { lock: jobTerms(lock), lockBest: best(lock, 0), message: jobTerms(message), messageBest: best(message, 0), cards, board: jobBoard().ids.map(id => JOBS.find(j => j.id === id)).map(j => ({ title: jobTitle(j), terms: jobTermsLine(j) })) };
   });
   assert.deepEqual(r.lock, { posts: ['Gunner', 'Engineer', 'Comms'], pay: r.lockBest }, 'the lock: three posts in the posts\' order, the first stage\'s best win plus the second\'s');
-  assert.equal(r.lock.pay, 450);
+  assert.equal(r.lock.pay, 4500);
   assert.deepEqual(r.message, { posts: ['Pilot', 'Comms'], pay: r.messageBest });
-  assert.equal(jobLine(r.lock), 'Gunner, Engineer or Comms · up to 450 cr');
+  assert.equal(jobLine(r.lock), 'Gunner, Engineer or Comms · up to 4500 cr');
   for (const b of r.board) assert.ok(r.cards.some(c => c.title === b.title && c.terms === b.terms), `${b.title}: the card carries "${b.terms}"`);
   function jobLine(t) { return `${t.posts.slice(0, -1).join(', ')}${t.posts.length > 1 ? ' or ' : ''}${t.posts[t.posts.length - 1]} · up to ${t.pay} cr`; }
   await done();

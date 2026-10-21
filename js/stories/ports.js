@@ -81,21 +81,21 @@ Mods.register({
           when: { post: 'engineer' },
           effects: {
           learn: 4,
-          credits: 120,
+          credits: 1200,
           like: { captain: 1 }
         },
           result: ('You spend a long afternoon in a pit under the dome with a flashlight in your teeth and a stranger passing you tools. The bearing ' +
-              'was the thing. When the pump catches, every person in the dome stops what they\'re doing and looks up. They pay you 120 cr and a crate of beans.')
+              'was the thing. When the pump catches, every person in the dome stops what they\'re doing and looks up. They pay you 1,200 cr and a crate of beans.')
         },
         {
           label: '[Pilot] Fly a spare bearing in from the yard',
           when: { post: 'pilot' },
           effects: {
           learn: 3,
-          credits: 80,
+          credits: 800,
           like: { captain: 1 }
         },
-          result: 'The yard has the bearing, in a drawer, and you carry it back across the ice in a hurry. The woman in the field coat meets you at the lock and doesn\'t say anything until the pump has started. She pays you 80 cr, and then she hugs you.'
+          result: 'The yard has the bearing, in a drawer, and you carry it back across the ice in a hurry. The woman in the field coat meets you at the lock and doesn\'t say anything until the pump has started. She pays you 800 cr, and then she hugs you.'
         },
         {
           label: 'Carry buckets until the pump is fixed',
@@ -123,8 +123,8 @@ Mods.register({
           'green beans, orange squash, a pile of bright red tomatoes that a woman is selling by the single fruit, and loudly. She puts one in your ' +
           'hand before you can say no. "Taste," she says. "Then argue."'),
       choices: [
-        { label: 'Buy a crate for the galley (60 cr)', when: { credits: 60 }, effects: { credits: -60, like: { crew: 1 } }, result: 'The crate goes on the ship, and the galley smells of tomato for three days. The cook, if you have one, is in a good mood, and so is everyone else.' },
-        { label: 'Buy one tomato and eat it standing there (5 cr)', when: { credits: 5 }, effects: { credits: -5 }, result: 'It\'s warm from the sun, in a dome, under Jupiter. The woman nods.' },
+        { label: 'Buy a crate for the galley (600 cr)', when: { credits: 600 }, effects: { credits: -600, like: { crew: 1 } }, result: 'The crate goes on the ship, and the galley smells of tomato for three days. The cook, if you have one, is in a good mood, and so is everyone else.' },
+        { label: 'Buy one tomato and eat it standing there (50 cr)', when: { credits: 50 }, effects: { credits: -50 }, result: 'It\'s warm from the sun, in a dome, under Jupiter. The woman nods.' },
         { label: 'Haggle', effects: { learn: 1 }, result: 'You haggle for twenty minutes, with a great deal of noise on both sides and no purchase at the end. The woman gives you a tomato anyway, for entertainment.' },
       ],
     }, 0.25);
@@ -180,9 +180,9 @@ Mods.register({
           'one a different swirl of green and amber and black. He holds one up to the red light from the furnaces. "It\'s not worth anything," he says. ' +
           '"But look."'),
       choices: [
-        { label: 'Buy one for the ship (20 cr)', when: { credits: 20 }, effects: { credits: -20, like: { crew: 1 } }, result: 'It goes on the sill of the galley hatch, where it catches the light on every burn. By the end of the month everyone has named it.' },
+        { label: 'Buy one for the ship (200 cr)', when: { credits: 200 }, effects: { credits: -200, like: { crew: 1 } }, result: 'It goes on the sill of the galley hatch, where it catches the light on every burn. By the end of the month everyone has named it.' },
         { label: 'Ask the kid how it\'s made', effects: { learn: 1 }, result: 'He tells you, at length, with gestures: the pour, the cooling, the way the color is the metal that was in the slag. He knows more about a foundry than anyone you have met this month.' },
-        { label: 'Give him a coin and take nothing (5 cr)', when: { credits: 5 }, effects: { credits: -5}, result: 'He looks at the coin, and at you, and puts a piece of glass in your pocket when you turn away. You find it later, and smile.' },
+        { label: 'Give him a coin and take nothing (50 cr)', when: { credits: 50 }, effects: { credits: -50}, result: 'He looks at the coin, and at you, and puts a piece of glass in your pocket when you turn away. You find it later, and smile.' },
       ],
     }, 0.1);
 
@@ -288,7 +288,7 @@ Mods.register({
       personal: true,
       text: 'A trader by the pad has a hold of dried fruit that has to be gone before the next run, and a price that gets lower every time someone walks past. He\'s not a good liar about it. He says it\'s very good fruit, very good, and that he wouldn\'t sell it if he didn\'t need to.',
       choices: [
-        { label: 'Buy a sack for the galley (40 cr)', when: { credits: 40 }, effects: { credits: -40, like: { crew: 1 } }, result: 'The fruit is good. It goes in the galley locker, and for a month somebody\'s always eating it, and nobody can say who bought it.' },
+        { label: 'Buy a sack for the galley (400 cr)', when: { credits: 400 }, effects: { credits: -400, like: { crew: 1 } }, result: 'The fruit is good. It goes in the galley locker, and for a month somebody\'s always eating it, and nobody can say who bought it.' },
         { label: 'Haggle him down', effects: { learn: 1 }, result: 'You haggle, and he gives way faster than a man with that much on his hands should. You come away with a sack for almost nothing.' },
         { label: 'Walk on', result: 'The price is still falling when you reach the gate, and you hear it fall again behind you.' },
       ],

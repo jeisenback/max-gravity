@@ -3,13 +3,13 @@
 // Static game content: commodities, ships, and the solar system.
 
 const COMMODITIES = [
-  { id: 'water', name: 'Water', base: 80 },
-  { id: 'food', name: 'Food', base: 100 },
-  { id: 'industrial', name: 'Machine Parts', base: 200 },
-  { id: 'medical', name: 'Medical Supplies', base: 300 },
-  { id: 'luxury', name: 'Luxury Goods', base: 450 },
-  { id: 'metal', name: 'Refined Metals', base: 150 },
-  { id: 'equipment', name: 'Electronics', base: 350 },
+  { id: 'water', name: 'Water', base: 800 },
+  { id: 'food', name: 'Food', base: 1000 },
+  { id: 'industrial', name: 'Machine Parts', base: 2000 },
+  { id: 'medical', name: 'Medical Supplies', base: 3000 },
+  { id: 'luxury', name: 'Luxury Goods', base: 4500 },
+  { id: 'metal', name: 'Refined Metals', base: 1500 },
+  { id: 'equipment', name: 'Electronics', base: 3500 },
 ];
 
 // Price levels a market can have for a commodity: Low, Medium, High.
@@ -18,20 +18,20 @@ const PRICE_MULT = { L: 0.75, M: 1.0, H: 1.3 };
 // `fuel` is reaction mass. Burn costs scale with distance (see burnFuel in game.js).
 // `berths` are shared by crew and passengers.
 const SHIPS = {
-  shuttle:   { name: 'Dust Skiff',  price: 10000,  cargo: 20,  fuel: 300, berths: 4, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
+  shuttle:   { name: 'Dust Skiff',  price: 100000,  cargo: 20,  fuel: 300, berths: 4, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
                desc: 'A patched-up skiff held together with sealant and optimism. Every captain starts somewhere.' },
-  lightfreighter: { name: 'Ore Runner', price: 28000, cargo: 50, fuel: 300, berths: 5, shields: 90, armor: 100, accel: 150, maxSpeed: 250, turn: 2.6, guns: 1, size: 13, forSale: true,
+  lightfreighter: { name: 'Ore Runner', price: 280000, cargo: 50, fuel: 300, berths: 5, shields: 90, armor: 100, accel: 150, maxSpeed: 250, turn: 2.6, guns: 1, size: 13, forSale: true,
                desc: 'The first real step up for an independent hauler. Two and a half times the hold of a Dust Skiff.' },
-  courier:   { name: 'Needle courier', price: 45000, cargo: 35,  fuel: 380, berths: 7, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
+  courier:   { name: 'Needle courier', price: 450000, cargo: 35,  fuel: 380, berths: 7, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
                desc: 'All drive and very little else. Mail runners and smugglers swear by them.' },
-  freighter: { name: 'Ice Hauler',   price: 90000,  cargo: 120, fuel: 450, berths: 10, shields: 180, armor: 260, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,
+  freighter: { name: 'Ice Hauler',   price: 900000,  cargo: 120, fuel: 450, berths: 10, shields: 180, armor: 260, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,
                desc: 'A water tank the size of a city block with a drive bolted on. Slow, sturdy, and long-legged enough to reach Triton.' },
-  gunship:   { name: 'Corvette',     price: 160000, cargo: 15,  fuel: 380, berths: 6, shields: 300, armor: 220, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
+  gunship:   { name: 'Corvette',     price: 1600000, cargo: 15,  fuel: 380, berths: 6, shields: 300, armor: 220, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
                req: 15, desc: 'Decommissioned fast-attack ship with three forward gun mounts. Pirates give it a wide berth. Sold only to captains the local government trusts.' },
-  raider:    { name: 'Raider',  price: 22000, cargo: 10, fuel: 300, shields: 70,  armor: 60,  accel: 230, maxSpeed: 330, turn: 3.6, guns: 1, size: 10 },
-  destroyer: { name: 'Destroyer', price: 240000, cargo: 40, fuel: 600, shields: 320, armor: 480, accel: 150, maxSpeed: 230, turn: 2.2, guns: 3, size: 22 },
-  cutter:    { name: 'Patrol Cutter', price: 60000, cargo: 10, fuel: 300, shields: 150, armor: 140, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
-  corsair:   { name: 'Corsair', price: 55000, cargo: 20, fuel: 300, shields: 140, armor: 120, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
+  raider:    { name: 'Raider',  price: 220000, cargo: 10, fuel: 300, shields: 70,  armor: 60,  accel: 230, maxSpeed: 330, turn: 3.6, guns: 1, size: 10 },
+  destroyer: { name: 'Destroyer', price: 2400000, cargo: 40, fuel: 600, shields: 320, armor: 480, accel: 150, maxSpeed: 230, turn: 2.2, guns: 3, size: 22 },
+  cutter:    { name: 'Patrol Cutter', price: 600000, cargo: 10, fuel: 300, shields: 150, armor: 140, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
+  corsair:   { name: 'Corsair', price: 550000, cargo: 20, fuel: 300, shields: 140, armor: 120, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
 };
 
 const GOV_COLORS = {
@@ -232,17 +232,17 @@ const PATROL_NAMES = { 'Arcology Compact': 'Compact cutter', 'Dome Concord': 'Co
 // `req` needs that much standing with the faction running the shop; `pirate` gear is
 // only sold in pirate ports. Outfits move with you when you change ships.
 const OUTFITS = {
-  pdc:     { name: 'Close-defense turret', price: 6000, space: 3, max: 2, desc: 'An extra forward gun that also shoots down incoming torpedoes on its own.', mod: s => { s.guns += 1; s.pdc = true; } },
-  launcher: { name: 'Torpedo launcher', price: 12000, space: 3, max: 1, desc: 'Fires homing torpedoes at your target (F). Slow off the rail, fast and hard-hitting after. Buy torpedoes at any outfitter.', mod: s => { s.launcher = true; } },
-  heavy:   { name: 'Heavy rounds', price: 12000, space: 2, max: 1, req: 15, desc: 'Tungsten-cored ammunition. Your guns hit 40% harder.', mod: s => { s.dmgMult *= 1.4; } },
-  armor:   { name: 'Armor plating', price: 4000, space: 4, max: 3, desc: '+40 armor.', mod: s => { s.armor += 40; } },
-  shield:  { name: 'Deflector capacitor', price: 5000, space: 2, max: 3, desc: '+50 shields.', mod: s => { s.shields += 50; } },
-  tank:    { name: 'Reaction mass tank', price: 3000, space: 5, max: 3, desc: '+100 reaction mass capacity.', mod: s => { s.fuel += 100; } },
-  pod:     { name: 'Cargo pod', price: 2500, space: 0, max: 2, desc: '+15t cargo, at 5% less top speed.', mod: s => { s.cargo += 15; s.maxSpeed *= 0.95; } },
-  drive:   { name: 'Drive tuning', price: 8000, space: 1, max: 1, desc: '+15% acceleration and top speed.', mod: s => { s.accel *= 1.15; s.maxSpeed *= 1.15; } },
-  berth:   { name: 'Passenger berth', price: 3000, space: 3, max: 2, desc: '+1 berth for crew or passengers.', mod: s => { s.berths += 1; } },
-  pump:    { name: 'Pump-crew coolant bypass', price: 1500, space: 0, max: 1, kit: 'valve-keys', desc: 'The Hollows\' pump crew\'s bypass, fitted to the drive so the reaction mass runs through it twice. +60 reaction mass capacity, and no cargo space. Offered to a ship that carries the valve keys.', mod: s => { s.fuel += 60; } },
-  spoofer: { name: 'Transponder spoofer', price: 9000, space: 1, max: 1, req: 15, pirate: true, desc: 'Fakes transponders like a skill-1 slicer when you have none aboard.', mod: s => { s.spoofer = true; } },
+  pdc:     { name: 'Close-defense turret', price: 60000, space: 3, max: 2, desc: 'An extra forward gun that also shoots down incoming torpedoes on its own.', mod: s => { s.guns += 1; s.pdc = true; } },
+  launcher: { name: 'Torpedo launcher', price: 120000, space: 3, max: 1, desc: 'Fires homing torpedoes at your target (F). Slow off the rail, fast and hard-hitting after. Buy torpedoes at any outfitter.', mod: s => { s.launcher = true; } },
+  heavy:   { name: 'Heavy rounds', price: 120000, space: 2, max: 1, req: 15, desc: 'Tungsten-cored ammunition. Your guns hit 40% harder.', mod: s => { s.dmgMult *= 1.4; } },
+  armor:   { name: 'Armor plating', price: 40000, space: 4, max: 3, desc: '+40 armor.', mod: s => { s.armor += 40; } },
+  shield:  { name: 'Deflector capacitor', price: 50000, space: 2, max: 3, desc: '+50 shields.', mod: s => { s.shields += 50; } },
+  tank:    { name: 'Reaction mass tank', price: 30000, space: 5, max: 3, desc: '+100 reaction mass capacity.', mod: s => { s.fuel += 100; } },
+  pod:     { name: 'Cargo pod', price: 25000, space: 0, max: 2, desc: '+15t cargo, at 5% less top speed.', mod: s => { s.cargo += 15; s.maxSpeed *= 0.95; } },
+  drive:   { name: 'Drive tuning', price: 80000, space: 1, max: 1, desc: '+15% acceleration and top speed.', mod: s => { s.accel *= 1.15; s.maxSpeed *= 1.15; } },
+  berth:   { name: 'Passenger berth', price: 30000, space: 3, max: 2, desc: '+1 berth for crew or passengers.', mod: s => { s.berths += 1; } },
+  pump:    { name: 'Pump-crew coolant bypass', price: 15000, space: 0, max: 1, kit: 'valve-keys', desc: 'The Hollows\' pump crew\'s bypass, fitted to the drive so the reaction mass runs through it twice. +60 reaction mass capacity, and no cargo space. Offered to a ship that carries the valve keys.', mod: s => { s.fuel += 60; } },
+  spoofer: { name: 'Transponder spoofer', price: 90000, space: 1, max: 1, req: 15, pirate: true, desc: 'Fakes transponders like a skill-1 slicer when you have none aboard.', mod: s => { s.spoofer = true; } },
 };
 
 const MISSION_GOODS = ['medical crates', 'reactor parts', 'sealed diplomatic pouches', 'hydroponics kits', 'prefab habitat panels', 'scientific samples'];

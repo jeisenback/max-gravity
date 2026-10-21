@@ -13,7 +13,7 @@ const helpers = () => {
   // An owner at Earth with both of the pair aboard and a company ship docked in port with a hired captain.
   window.setup = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; st.credits = 200000;
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; st.credits = 2000000;
     for (const key of ['ines', 'tomas']) { const p = castPerson(key); p.role = CAST[key].role; p.skill = p.skills[p.role]; st.crew.push(p.id); castRec(key).since = st.day; }
     buyCompanyShip('lightfreighter');
     G.mode = 'landed';
@@ -44,7 +44,7 @@ test('posting: they must be with you and the ship docked where you are; the old 
   });
   assert.deepEqual(r.before, { crew: 2, cast: false });
   assert.equal(r.enRoute, false); assert.equal(r.elsewhere, false); assert.equal(r.notAboard, false);
-  assert.deepEqual(r.posted, { cast: true, crew: ['c:tomas', 'c:ines'].filter(id => id === 'c:tomas'), pid: 'c:ines', wage: 70, gain: 3, oldAt: true, oldKept: true });
+  assert.deepEqual(r.posted, { cast: true, crew: ['c:tomas', 'c:ines'].filter(id => id === 'c:tomas'), pid: 'c:ines', wage: 700, gain: 3, oldAt: true, oldKept: true });
   assert.equal(r.second, 'c:ines'); assert.deepEqual(r.relieved, { crew: ['c:ines', 'c:tomas'], cast: false, hand: true });
   await done();
 });
@@ -81,8 +81,8 @@ test('trade moves the income, nerve the raid risk, thrift the wage and the fuel'
     return out;
   });
   assert.equal(r.generic.trade, 1); assert.equal(r.generic.fuel, 1); assert.equal(r.generic.risk, 1 - 0.2 * (r.generic.skill - 1), 'a hired captain is as before');
-  assert.deepEqual(r.ines, { wage: 74, trade: 1, fuel: 1.04, risk: 0.7 }, 'Ines: costly but bold (thrift 2, nerve 4)');
-  assert.deepEqual(r.tomas, { wage: 53, trade: 0.95, fuel: 0.92, risk: 0.9 }, 'Tomas: thrifty but cautious (thrift 5, trade 2, nerve 2)');
+  assert.deepEqual(r.ines, { wage: 742, trade: 1, fuel: 1.04, risk: 0.7 }, 'Ines: costly but bold (thrift 2, nerve 4)');
+  assert.deepEqual(r.tomas, { wage: 528, trade: 0.95, fuel: 0.92, risk: 0.9 }, 'Tomas: thrifty but cautious (thrift 5, trade 2, nerve 2)');
   await done();
 });
 
@@ -103,8 +103,8 @@ test('a day under way is experience, and a main character\'s ship is never lost 
     const hand = registerPerson(makeCrewCandidate('earth'));  // before the dice are fixed: people are made with them
     const real = Math.random; Math.random = () => 0;
     try {
-      ship.at = pl.name; ship.dest = pl.name; ship.cargo = {}; ship.paid = 100; endLeg(ship); out.main = fleet().includes(ship);
-      ship.captain = { pid: hand.id, wage: 50, skill: 1 };  // a hired captain, by hand
+      ship.at = pl.name; ship.dest = pl.name; ship.cargo = {}; ship.paid = 1000; endLeg(ship); out.main = fleet().includes(ship);
+      ship.captain = { pid: hand.id, wage: 500, skill: 1 };  // a hired captain, by hand
       ship.at = pl.name; ship.dest = pl.name; ship.cargo = {}; endLeg(ship); out.generic = fleet().includes(ship);
     } finally { Math.random = real; }
     return out;

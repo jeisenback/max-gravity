@@ -17,19 +17,19 @@
  },
  {
   "key": "cards:talkative:1",
-  "text": "Sam talks through the whole hand about a tug pilot they once drank with, and loses the thread of the bet. You take 200 cr off them while they are still on the tug. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam talks through the whole hand about a tug pilot they once drank with, and loses the thread of the bet. You take 2,000 cr off them while they are still on the tug. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:talkative:2",
-  "text": "Sam talks through the whole hand about a tug pilot they once drank with, and loses the thread of the bet. You take 200 cr off them while they are still on the tug. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam talks through the whole hand about a tug pilot they once drank with, and loses the thread of the bet. You take 2,000 cr off them while they are still on the tug. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:talkative:3",
-  "text": "Sam talks about the pilotage fee on Mars, you talk back, and somewhere in it 200 cr leaves your pocket. You finish the glass.|"
+  "text": "Sam talks about the pilotage fee on Mars, you talk back, and somewhere in it 2,000 cr leaves your pocket. You finish the glass.|"
  },
  {
   "key": "cards:talkative:4",
-  "text": "Sam talks about the pilotage fee on Mars, you talk back, and somewhere in it 200 cr leaves your pocket. You finish the glass.|"
+  "text": "Sam talks about the pilotage fee on Mars, you talk back, and somewhere in it 2,000 cr leaves your pocket. You finish the glass.|"
  },
  {
   "key": "quiet:talkative:1",
@@ -81,19 +81,19 @@
  },
  {
   "key": "cards:nervous:1",
-  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 200 cr, and they laugh about it. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
+  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 2,000 cr, and they laugh about it. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:nervous:2",
-  "text": "Sam watches your hands the whole game and flinches at every card, and at every clank from the dock outside. You take 200 cr off them, and they thank you for it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam watches your hands the whole game and flinches at every card, and at every clank from the dock outside. You take 2,000 cr off them, and they thank you for it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:nervous:3",
-  "text": "Sam watches your hands the whole game and flinches at every card, and at every clank from the dock outside. You take 200 cr off them, and they thank you for it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam watches your hands the whole game and flinches at every card, and at every clank from the dock outside. You take 2,000 cr off them, and they thank you for it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:nervous:4",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "quiet:nervous:1",
@@ -145,19 +145,19 @@
  },
  {
   "key": "cards:generous:1",
-  "text": "Sam wins 200 cr and tries to press half of it back into your hand. You refuse. They put it on your berth fee at the dock office, in your name, before you can stop them. You finish the glass.|"
+  "text": "Sam wins 2,000 cr and tries to press half of it back into your hand. You refuse. They put it on your berth fee at the dock office, in your name, before you can stop them. You finish the glass.|"
  },
  {
   "key": "cards:generous:2",
-  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:generous:3",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "cards:generous:4",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "quiet:generous:1",
@@ -209,19 +209,19 @@
  },
  {
   "key": "cards:greedy:1",
-  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:greedy:2",
-  "text": "Sam takes the 200 cr, checks it against a coin they keep for the purpose. \"A pleasure,\" Sam says, and writes the figure on the back of a freight slip. You finish the glass.|"
+  "text": "Sam takes the 2,000 cr, checks it against a coin they keep for the purpose. \"A pleasure,\" Sam says, and writes the figure on the back of a freight slip. You finish the glass.|"
  },
  {
   "key": "cards:greedy:3",
-  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. You finish the glass.|"
+  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 2,000 cr, and you cannot find the mistake you made. You finish the glass.|"
  },
  {
   "key": "cards:greedy:4",
-  "text": "Sam counts the pot twice, then your 200 cr, then the margin on the tug fee they could have saved, and counts it again as you take it. \"Beginner's luck,\" Sam says. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam counts the pot twice, then your 2,000 cr, then the margin on the tug fee they could have saved, and counts it again as you take it. \"Beginner's luck,\" Sam says. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "quiet:greedy:1",
@@ -273,19 +273,19 @@
  },
  {
   "key": "cards:pious:1",
-  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry. 200 cr. You finish the glass.|"
+  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry. 2,000 cr. You finish the glass.|"
  },
  {
   "key": "cards:pious:2",
-  "text": "Sam says a word over each card. You lose 200 cr, and Sam touches the cord at their wrist and says it was not their doing. You finish the glass.|"
+  "text": "Sam says a word over each card. You lose 2,000 cr, and Sam touches the cord at their wrist and says it was not their doing. You finish the glass.|"
  },
  {
   "key": "cards:pious:3",
-  "text": "Sam says a short word over each card, as at the turn of the watch, and loses, and says one over the 200 cr as it leaves. \"What is lost is returned in another form,\" Sam says. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam says a short word over each card, as at the turn of the watch, and loses, and says one over the 2,000 cr as it leaves. \"What is lost is returned in another form,\" Sam says. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:pious:4",
-  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "quiet:pious:1",
@@ -337,19 +337,19 @@
  },
  {
   "key": "cards:rude:1",
-  "text": "Sam puts down the last card and says, in a level voice, that it was a dishonest deck, and that a tug crew would have been ashamed of it. You take 200 cr off them anyway. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam puts down the last card and says, in a level voice, that it was a dishonest deck, and that a tug crew would have been ashamed of it. You take 2,000 cr off them anyway. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:rude:2",
-  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 200 cr, and they laugh about it. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 2,000 cr, and they laugh about it. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:rude:3",
-  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. You finish the glass.|"
+  "text": "Sam wins 2,000 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. You finish the glass.|"
  },
  {
   "key": "cards:rude:4",
-  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. You finish the glass.|"
+  "text": "Sam wins 2,000 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. You finish the glass.|"
  },
  {
   "key": "quiet:rude:1",
@@ -401,19 +401,19 @@
  },
  {
   "key": "cards:curious:1",
-  "text": "Sam asks how you knew, and what the odds were, and whether you count cards the way a pilot counts burn time. You take 200 cr while they are still asking. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam asks how you knew, and what the odds were, and whether you count cards the way a pilot counts burn time. You take 2,000 cr while they are still asking. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:curious:2",
-  "text": "Sam fans the last cards with a flourish you have seen before, in another port. 200 cr. You finish the glass.|"
+  "text": "Sam fans the last cards with a flourish you have seen before, in another port. 2,000 cr. You finish the glass.|"
  },
  {
   "key": "cards:curious:3",
-  "text": "Sam plays a hand and then spends ten minutes asking how you lost it, and whether you would have flown it the same way on a flip burn. 200 cr. You finish the glass.|"
+  "text": "Sam plays a hand and then spends ten minutes asking how you lost it, and whether you would have flown it the same way on a flip burn. 2,000 cr. You finish the glass.|"
  },
  {
   "key": "cards:curious:4",
-  "text": "Sam asks how you knew, and what the odds were, and whether you count cards the way a pilot counts burn time. You take 200 cr while they are still asking. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam asks how you knew, and what the odds were, and whether you count cards the way a pilot counts burn time. You take 2,000 cr while they are still asking. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "quiet:curious:1",
@@ -465,19 +465,19 @@
  },
  {
   "key": "cards:drunk:1",
-  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was skill, the same skill that once brought a tug in blind, and then asks what game it was. You finish the glass.|"
+  "text": "Sam wins 2,000 cr and looks astonished, and wants it understood that it was skill, the same skill that once brought a tug in blind, and then asks what game it was. You finish the glass.|"
  },
  {
   "key": "cards:drunk:2",
-  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 200 cr to you in the end. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 2,000 cr to you in the end. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:drunk:3",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:drunk:4",
-  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was skill, the same skill that once brought a tug in blind, and then asks what game it was. You finish the glass.|"
+  "text": "Sam wins 2,000 cr and looks astonished, and wants it understood that it was skill, the same skill that once brought a tug in blind, and then asks what game it was. You finish the glass.|"
  },
  {
   "key": "quiet:drunk:1",
@@ -529,19 +529,19 @@
  },
  {
   "key": "cards:secretive:1",
-  "text": "Sam plays with an expression you cannot read and a hand you cannot guess. You take 200 cr, and Sam gives nothing away, and the only change is that they turn their terminal face down. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam plays with an expression you cannot read and a hand you cannot guess. You take 2,000 cr, and Sam gives nothing away, and the only change is that they turn their terminal face down. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:secretive:2",
-  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 200 cr, and they laugh about it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 2,000 cr, and they laugh about it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:secretive:3",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "cards:secretive:4",
-  "text": "Sam wins 200 cr without a word, counts it without looking, and asks what your ship carries, and for whom. You finish the glass.|"
+  "text": "Sam wins 2,000 cr without a word, counts it without looking, and asks what your ship carries, and for whom. You finish the glass.|"
  },
  {
   "key": "quiet:secretive:1",
@@ -593,19 +593,19 @@
  },
  {
   "key": "cards:kind:1",
-  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry. 200 cr. You finish the glass.|"
+  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry. 2,000 cr. You finish the glass.|"
  },
  {
   "key": "cards:kind:2",
-  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 200 cr to you in the end. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 2,000 cr to you in the end. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:kind:3",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:kind:4",
-  "text": "Sam wins 200 cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing. You finish the glass.|"
+  "text": "Sam wins 2,000 cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing. You finish the glass.|"
  },
  {
   "key": "quiet:kind:1",
@@ -657,19 +657,19 @@
  },
  {
   "key": "cards:brave:1",
-  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 200 cr to you in the end. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 2,000 cr to you in the end. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:brave:2",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass. You finish the glass.|"
+  "text": "Sam wins 2,000 cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass. You finish the glass.|"
  },
  {
   "key": "cards:brave:3",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass. You finish the glass.|"
+  "text": "Sam wins 2,000 cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass. You finish the glass.|"
  },
  {
   "key": "cards:brave:4",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass. You finish the glass.|"
+  "text": "Sam wins 2,000 cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass. You finish the glass.|"
  },
  {
   "key": "quiet:brave:1",
@@ -721,19 +721,19 @@
  },
  {
   "key": "cards:homesick:1",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "cards:homesick:2",
-  "text": "Sam plays absent-mindedly, thinking of Mars, and loses 200 cr to you without noticing. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam plays absent-mindedly, thinking of Mars, and loses 2,000 cr to you without noticing. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:homesick:3",
-  "text": "Sam plays well, for someone whose mind is on Mars. 200 cr, and a smile. You finish the glass.|"
+  "text": "Sam plays well, for someone whose mind is on Mars. 2,000 cr, and a smile. You finish the glass.|"
  },
  {
   "key": "cards:homesick:4",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "quiet:homesick:1",
@@ -1657,7 +1657,7 @@
  },
  {
   "key": "secrethelp:ill:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam puts the glass down. \\\"Six months and the recyclers on that last ship,\\\" they say. \\\"The clinic wants more than I have. I tell people it's the dust.\\\"\",[\"Pay for the clinic (100 cr)\",\"Tell them where the nearest medic is\",\"Let it be\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam puts the glass down. \\\"Six months and the recyclers on that last ship,\\\" they say. \\\"The clinic wants more than I have. I tell people it's the dust.\\\"\",[\"Pay for the clinic (1,000 cr)\",\"Tell them where the nearest medic is\",\"Let it be\"]]"
  },
  {
   "key": "secrethelp:ill:0",
@@ -1697,7 +1697,7 @@
  },
  {
   "key": "secrethelp:debt:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam turns the glass in a ring on the bar. \\\"Six hundred and twelve,\\\" they say. \\\"It's not even a lot. It's just more than I have, and the people it's owed to don't do arithmetic.\\\"\",[\"Cover part of it (200 cr)\",\"Say you'll keep an ear out for who's asking\",\"Let it be\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam turns the glass in a ring on the bar. \\\"Six hundred and twelve,\\\" they say. \\\"It's not even a lot. It's just more than I have, and the people it's owed to don't do arithmetic.\\\"\",[\"Cover part of it (2,000 cr)\",\"Say you'll keep an ear out for who's asking\",\"Let it be\"]]"
  },
  {
   "key": "secrethelp:debt:0",
@@ -1721,7 +1721,7 @@
  },
  {
   "key": "goalhelp:home:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam hasn't been home in years, and has the route on a card in a pocket, worn to cloth. \\\"Three more ports,\\\" they say. \\\"Maybe four, if the money holds.\\\"\",[\"Pay part of the fare (60 cr)\",\"Tell them which lanes are quick right now\",\"Ask them what they'll do first, when they get there\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam hasn't been home in years, and has the route on a card in a pocket, worn to cloth. \\\"Three more ports,\\\" they say. \\\"Maybe four, if the money holds.\\\"\",[\"Pay part of the fare (600 cr)\",\"Tell them which lanes are quick right now\",\"Ask them what they'll do first, when they get there\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:home:0",
@@ -1749,7 +1749,7 @@
  },
  {
   "key": "goalhelp:family:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam is going to see family, and has been trying all evening to think what to bring.\",[\"Press a few credits into their hand for a present (60 cr)\",\"Suggest something from the market here\",\"Ask who they're going to see\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam is going to see family, and has been trying all evening to think what to bring.\",[\"Press a few credits into their hand for a present (600 cr)\",\"Suggest something from the market here\",\"Ask who they're going to see\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:family:0",
@@ -1777,7 +1777,7 @@
  },
  {
   "key": "goalhelp:job:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam has an interview at the other end, and says the questions over under their breath.\",[\"Stand them the clothes for it (60 cr)\",\"Play the interviewer for a few questions\",\"Let them talk it through\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam has an interview at the other end, and says the questions over under their breath.\",[\"Stand them the clothes for it (600 cr)\",\"Play the interviewer for a few questions\",\"Let them talk it through\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:job:0",
@@ -1805,7 +1805,7 @@
  },
  {
   "key": "goalhelp:fresh:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam says only that it's a fresh start, and that they'd rather not say from what. They're watching to see how you take it.\",[\"Put something toward the first month (60 cr)\",\"Tell them what to do first in a new port\",\"Say it's all right not to say\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam says only that it's a fresh start, and that they'd rather not say from what. They're watching to see how you take it.\",[\"Put something toward the first month (600 cr)\",\"Tell them what to do first in a new port\",\"Say it's all right not to say\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:fresh:0",
@@ -1833,7 +1833,7 @@
  },
  {
   "key": "goalhelp:research:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam has a research posting, and the instruments for it in a case under the table that they haven't let go of since you sat down.\",[\"Pay the case's berth fee (60 cr)\",\"Tell them what to watch for on the lane\",\"Ask what they're going to measure\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam has a research posting, and the instruments for it in a case under the table that they haven't let go of since you sat down.\",[\"Pay the case's berth fee (600 cr)\",\"Tell them what to watch for on the lane\",\"Ask what they're going to measure\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:research:0",
@@ -1861,7 +1861,7 @@
  },
  {
   "key": "goalhelp:pilgrim:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam is bound for somewhere holy, a long way off, and has booked the cheapest berth on every leg to get there.\",[\"Pay a leg of the trip (60 cr)\",\"Tell them how to find a berth on the long haul\",\"Ask what the place means to them\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam is bound for somewhere holy, a long way off, and has booked the cheapest berth on every leg to get there.\",[\"Pay a leg of the trip (600 cr)\",\"Tell them how to find a berth on the long haul\",\"Ask what the place means to them\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:pilgrim:0",
@@ -1889,7 +1889,7 @@
  },
  {
   "key": "goalhelp:medical:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam presses a hand to their side, and says it's the reason for the trip: a specialist, a long way out.\",[\"Pay toward the specialist (60 cr)\",\"Tell them where the medics are on the way\",\"Ask them to tell you about it\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam presses a hand to their side, and says it's the reason for the trip: a specialist, a long way out.\",[\"Pay toward the specialist (600 cr)\",\"Tell them where the medics are on the way\",\"Ask them to tell you about it\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:medical:0",
@@ -2469,11 +2469,11 @@
  },
  {
   "key": "cards2:rude:1",
-  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 200 cr to you in the end. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 2,000 cr to you in the end. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:1",
-  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 200 cr to you in the end. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 2,000 cr to you in the end. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "drink2:2",
@@ -2481,11 +2481,11 @@
  },
  {
   "key": "cards2:rude:2",
-  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 200 cr, and they laugh about it. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 2,000 cr, and they laugh about it. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:2",
-  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 200 cr, and they laugh about it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 2,000 cr, and they laugh about it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "drink2:3",
@@ -2493,11 +2493,11 @@
  },
  {
   "key": "cards2:rude:3",
-  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. You finish the glass.|"
+  "text": "Sam wins 2,000 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. You finish the glass.|"
  },
  {
   "key": "cards2:kind:3",
-  "text": "Sam wins 200 cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing. You finish the glass.|"
+  "text": "Sam wins 2,000 cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing. You finish the glass.|"
  },
  {
   "key": "drink2:4",
@@ -2505,11 +2505,11 @@
  },
  {
   "key": "cards2:rude:4",
-  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers double or nothing before the cards are down. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam bets everything on the last hand with a grin and loses 2,000 cr to you, and offers double or nothing before the cards are down. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:4",
-  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers double or nothing before the cards are down. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam bets everything on the last hand with a grin and loses 2,000 cr to you, and offers double or nothing before the cards are down. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "drink2:5",
@@ -2517,11 +2517,11 @@
  },
  {
   "key": "cards2:rude:5",
-  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers double or nothing before the cards are down. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam bets everything on the last hand with a grin and loses 2,000 cr to you, and offers double or nothing before the cards are down. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:5",
-  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers double or nothing before the cards are down. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam bets everything on the last hand with a grin and loses 2,000 cr to you, and offers double or nothing before the cards are down. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "drink2:6",
@@ -2529,11 +2529,11 @@
  },
  {
   "key": "cards2:rude:6",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:6",
-  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 2,000 cr. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "drink2:7",
@@ -2541,11 +2541,11 @@
  },
  {
   "key": "cards2:rude:7",
-  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:7",
-  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "drink2:8",
@@ -2553,11 +2553,11 @@
  },
  {
   "key": "cards2:rude:8",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass. You finish the glass.|"
+  "text": "Sam wins 2,000 cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass. You finish the glass.|"
  },
  {
   "key": "cards2:kind:8",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass. You finish the glass.|"
+  "text": "Sam wins 2,000 cr on a bluff that should not have worked, and shows you the hand afterwards, like a pilot showing a close pass. You finish the glass.|"
  },
  {
   "key": "drink2:9",
@@ -2565,11 +2565,11 @@
  },
  {
   "key": "cards2:rude:9",
-  "text": "Sam puts down the last card and says, in a level voice, that it was a dishonest deck, and that a tug crew would have been ashamed of it. You take 200 cr off them anyway. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam puts down the last card and says, in a level voice, that it was a dishonest deck, and that a tug crew would have been ashamed of it. You take 2,000 cr off them anyway. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:9",
-  "text": "Sam loses gracefully, and as you take 200 cr they ask if you are all right, because you looked tired after the long burn. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam loses gracefully, and as you take 2,000 cr they ask if you are all right, because you looked tired after the long burn. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "drink2:10",
@@ -2577,11 +2577,11 @@
  },
  {
   "key": "cards2:rude:10",
-  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. You finish the glass.|"
+  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 2,000 cr, and you cannot find the mistake you made. You finish the glass.|"
  },
  {
   "key": "cards2:kind:10",
-  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. You finish the glass.|"
+  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 2,000 cr, and you cannot find the mistake you made. You finish the glass.|"
  },
  {
   "key": "drink2:11",
@@ -2589,11 +2589,11 @@
  },
  {
   "key": "cards2:rude:11",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "cards2:kind:11",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
+  "text": "It goes the other way. Sam takes 2,000 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "drink2:12",
@@ -2601,11 +2601,11 @@
  },
  {
   "key": "cards2:rude:12",
-  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:12",
-  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Three hands, slow and close. On the last card you take 2,000 cr off Sam, who groans and says you were counting. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "fight:gunner:1",
@@ -2613,11 +2613,11 @@
  },
  {
   "key": "fight:gunner:2",
-  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: The captain started a fight with me."
+  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 1,500 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: The captain started a fight with me."
  },
  {
   "key": "fight:gunner:3",
-  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: The captain started a fight with me."
+  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 1,500 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: The captain started a fight with me."
  },
  {
   "key": "fight:gunner:4",
@@ -2629,11 +2629,11 @@
  },
  {
   "key": "fight:pilot:2",
-  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: The captain started a fight with me."
+  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 1,500 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: The captain started a fight with me."
  },
  {
   "key": "fight:pilot:3",
-  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: The captain started a fight with me."
+  "text": "It's short, and it doesn't go your way. There's a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 1,500 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says.|9 Jul 2214: The captain started a fight with me."
  },
  {
   "key": "fight:pilot:4",
@@ -2765,7 +2765,7 @@
  },
  {
   "key": "label:drink",
-  "text": "Buy Sam a drink (20 cr)"
+  "text": "Buy Sam a drink (200 cr)"
  },
  {
   "key": "gate:drink",
@@ -2789,7 +2789,7 @@
  },
  {
   "key": "label:cards",
-  "text": "Play Sam at cards (200 cr) [50%]"
+  "text": "Play Sam at cards (2000 cr) [50%]"
  },
  {
   "key": "gate:cards",
@@ -2853,7 +2853,7 @@
  },
  {
   "key": "label:fight",
-  "text": "Tell them what you think of their manners [40%; if it fails: 150 cr of your own]"
+  "text": "Tell them what you think of their manners [40%; if it fails: 1,500 cr of your own]"
  },
  {
   "key": "gate:fight",
@@ -2861,7 +2861,7 @@
  },
  {
   "key": "label:peace",
-  "text": "Make peace (buy them a bottle, 300 cr)"
+  "text": "Make peace (buy them a bottle, 3,000 cr)"
  },
  {
   "key": "gate:peace",
@@ -3893,23 +3893,23 @@
  },
  {
   "key": "errand:0",
-  "text": "Errand: carry a sealed parcel to Eros Old Town | A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch. The captain keeps 216 cr of the fee."
+  "text": "Errand: carry a sealed parcel to Eros Old Town | A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch. The captain keeps 2,160 cr of the fee."
  },
  {
   "key": "errand:1",
-  "text": "Errand: carry a message on a chip to Eros Old Town | A hand-written note on a data chip: somebody doesn't trust the public bands with it. The captain keeps 216 cr of the fee."
+  "text": "Errand: carry a message on a chip to Eros Old Town | A hand-written note on a data chip: somebody doesn't trust the public bands with it. The captain keeps 2,160 cr of the fee."
  },
  {
   "key": "errand:2",
-  "text": "Errand: carry a set of spare keys to Eros Old Town | A ring of keys for a flat somebody hasn't seen in years. They want them back before the lease runs out. The captain keeps 216 cr of the fee."
+  "text": "Errand: carry a set of spare keys to Eros Old Town | A ring of keys for a flat somebody hasn't seen in years. They want them back before the lease runs out. The captain keeps 2,160 cr of the fee."
  },
  {
   "key": "errand:3",
-  "text": "Errand: carry a box of medicine to Eros Old Town | An insulated box with a cold-chain tag. The label says to keep it upright and out of the sun. The captain keeps 216 cr of the fee."
+  "text": "Errand: carry a box of medicine to Eros Old Town | An insulated box with a cold-chain tag. The label says to keep it upright and out of the sun. The captain keeps 2,160 cr of the fee."
  },
  {
   "key": "errand:4",
-  "text": "Errand: carry a crate of seedlings to Eros Old Town | A tray of green shoots under a grow light that has to stay on. You carry it in your bunk. The captain keeps 216 cr of the fee."
+  "text": "Errand: carry a crate of seedlings to Eros Old Town | A tray of green shoots under a grow light that has to stay on. You carry it in your bunk. The captain keeps 2,160 cr of the fee."
  },
  {
   "key": "comms-chatter",

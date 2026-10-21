@@ -11,7 +11,7 @@ const playFamily = () => {
   __seed(1);
   startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' });
   while (G.dialog) finishEvent();
-  const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 20000;
+  const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000;
   st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
   const mk = (culture, extra = {}) => { const p = makePerson(culture); Object.assign(p, { first: 'Sam', last: 'Vale', home: 'Mars', traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [] }, extra); delete p.story; registerPerson(p); return p; };
   const reset = () => { st.crew = []; st.injured = {}; };

@@ -52,7 +52,7 @@ test('cold shoulders: the same job is a gamble, talking to each helps a little, 
   await done();
 });
 
-test('the replay of an old match and the recipe from home each work, and the recipe costs 150 cr', async () => {
+test('the replay of an old match and the recipe from home each work, and the recipe costs 1,500 cr', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -60,13 +60,13 @@ test('the replay of an old match and the recipe from home each work, and the rec
     const sc = matchReplay(a, b, 'Luna Rovers', 'Ceres Miners'); out.title = sc.title;
     out.old = /\d/.test(take(matchReplay(a, b, tastes(a).team, tastes(b).team), /Play the old fixture/));
     out.mute = take(matchReplay(a, b, tastes(a).team, tastes(b).team), /Mute/).length > 0;
-    st.bonds = {}; st.credits = 500;
+    st.bonds = {}; st.credits = 5000;
     const rc = rootsRecipe(a, b, A, B); out.rtitle = rc.title;
     take(rc, /Pay for the missing/); out.credits = st.credits; out.bond = bond(a, b);
-    st.credits = 100; out.cannot = rootsRecipe(a, b, A, B).choices[0].can();
+    st.credits = 1000; out.cannot = rootsRecipe(a, b, A, B).choices[0].can();
     return out;
   });
-  assert.equal(r.title, 'The Replay'); assert.ok(r.old && r.mute); assert.equal(r.rtitle, 'The Recipe'); assert.equal(r.credits, 350); assert.equal(r.bond, 3); assert.equal(r.cannot, false);
+  assert.equal(r.title, 'The Replay'); assert.ok(r.old && r.mute); assert.equal(r.rtitle, 'The Recipe'); assert.equal(r.credits, 3500); assert.equal(r.bond, 3); assert.equal(r.cannot, false);
   await done();
 });
 

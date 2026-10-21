@@ -39,7 +39,7 @@ const helpers = () => {
   // A game that has bought its ship with `friends` aboard, `days` days ago, docked at a port.
   window.owned = (friends = 2) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
-    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.credits = 100000; st.crew = []; crewOf(friends); for (const id of st.crew) st.people[id].opinion = 4;
+    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.credits = 1000000; st.crew = []; crewOf(friends); for (const id of st.crew) st.people[id].opinion = 4;
     buyIn('courier'); while (G.dialog) finishEvent(); G.transit = null; G.mode = 'landed'; st.dest = null; st.systemId = 'earth'; st.planet = 'Earth'; G.dialog = null; G.nextEvent = null; UI.notes.length = 0;
     return st;
   };

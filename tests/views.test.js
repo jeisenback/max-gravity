@@ -172,7 +172,7 @@ const hostileGame = ([HOSTILE_A, HOSTILE_B]) => {
   st.journal = [{ day: 1, text: HOSTILE_A + HOSTILE_B }];
   // the port notes, the mission and work boards, and the hired captain's surname (the Suggest block prints it)
   UI.notes = [HOSTILE_A + HOSTILE_B];
-  const job = { type: 'delivery', good: 'water', tons: 1, destSystem: 'mars', pay: 100, deadline: st.day + 9, title: HOSTILE_B, blurb: HOSTILE_A };
+  const job = { type: 'delivery', good: 'water', tons: 1, destSystem: 'mars', pay: 1000, deadline: st.day + 9, title: HOSTILE_B, blurb: HOSTILE_A };
   st.missions.push({ id: st.nextId++, ...job }); G.offers.push({ id: st.nextId++, ...job });
   hiredCaptain().last = HOSTILE_B;
   noteInbox('message', HOSTILE_A + HOSTILE_B);  // the comms inbox, the news and the market tips come from text a story or a mod wrote
@@ -319,9 +319,9 @@ test('the result screen escapes its title and keeps its text raw', async () => {
 // the captain's name and the log lines for strings that carry markup (#411): they come from stories and imports, past the cleaning of typed names.
 const ownerCompany = hostile => {
   startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
-  const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 500000; st.cargo.industrial = 20;
+  const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 5000000; st.cargo.industrial = 20;
   buyCompanyShip('courier');
-  stakes()[st.planet] = { share: STAKE_STEP, paid: 20000, dividends: 150 };
+  stakes()[st.planet] = { share: STAKE_STEP, paid: 200000, dividends: 1500 };
   found(Object.keys(OUTPOST_SITES)[0], 'Landing');
   companyLog('Paid the captains.');
   st.outpost.log = [{ day: st.day, text: 'A shuttle of settlers arrived.' }];
@@ -363,7 +363,7 @@ test('the crew page of an owner renders the golden markup', async () => {
   const { ev, done } = await open({ scope: 'full' });
   const html = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 500000;
     for (const key of ['ines', 'tomas']) { const p = castPerson(key); p.role = CAST[key].role; p.skill = p.skills[p.role]; if (!st.crew.includes(p.id)) st.crew.push(p.id); castRec(key).since = st.day; }
     UI.tab = 'crew'; UI.render();
     return document.querySelector('#panel .body').innerHTML;
@@ -378,7 +378,7 @@ test('the Crew page escapes a hostile name in its rows, the for-hire list and th
   const { ev, done } = await open({ scope: 'full' });
   const r = await ev(([a, b]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 500000;
     const p = castPerson('ines'); if (!st.crew.includes(p.id)) st.crew.push(p.id);
     Object.assign(p, { first: a, last: b });
     Object.assign(G.bar[0], { first: a, last: b });
@@ -397,7 +397,7 @@ test('the bar page with known patrons, a regular and a hire list renders the gol
   const { ev, done } = await open({ scope: 'full' });
   const html = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 500000;
     const ines = castPerson('ines'); if (!st.crew.includes(ines.id)) st.crew.push(ines.id);
     const friend = registerPerson(Object.assign(makePerson(), { opinion: 2, location: st.planet })); friend.memories.push('Day 1: You bought a round.');
     const regular = registerPerson(Object.assign(makePerson(), { opinion: 1, location: st.planet, regular: true, gossip: 'says the docks are quiet this week.' }));
@@ -415,7 +415,7 @@ test('the Bar page escapes a hostile patron name, memory and job', async () => {
   const { ev, done } = await open({ scope: 'full' });
   const r = await ev(([a, b]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 500000;
     const friend = registerPerson(Object.assign(makePerson(), { first: a, last: b, opinion: 2, location: st.planet })); friend.memories.push(`Day 1: ${b}`);
     const regular = registerPerson(Object.assign(makePerson(), { first: a, last: b, opinion: 1, location: st.planet, regular: true, gossip: `says ${b}` }));
     Object.assign(G.bar[0], { first: a, last: b });
@@ -435,7 +435,7 @@ test('a choice with a trailing bracket is two lines, the label then the readout 
     const draw = label => { const d = document.createElement('div'); d.innerHTML = String(choiceButtonHtml({ label }, 0)); return d.querySelector('button'); };
     const read = b => ({ text: b.textContent, lines: [...b.querySelectorAll('span')].map(s => s.className), odds: b.querySelector('.odds b') && b.querySelector('.odds b').className, pct: b.querySelector('.odds b') && b.querySelector('.odds b').textContent });
     return {
-      job: read(draw('Carry it to a ship [Pilot, 53%; if it fails: 20 cr of your own]')),
+      job: read(draw('Carry it to a ship [Pilot, 53%; if it fails: 200 cr of your own]')),
       good: read(draw('Fire [78%; if it fails: hull damage, and the captain marks it]')),
       bad: read(draw('Rush them [35%]')),
       sure: read(draw('Refuse, politely')),
@@ -443,7 +443,7 @@ test('a choice with a trailing bracket is two lines, the label then the readout 
       noOdds: read(draw('Go [if it fails: the captain marks it]')),
     };
   });
-  assert.equal(r.job.text, 'Carry it to a ship [Pilot, 53%; if it fails: 20 cr of your own]', 'the text is the label');
+  assert.equal(r.job.text, 'Carry it to a ship [Pilot, 53%; if it fails: 200 cr of your own]', 'the text is the label');
   assert.deepEqual(r.job.lines, ['pick', 'odds'], 'the label, then the readout');
   assert.equal(r.job.odds, 'warn'); assert.equal(r.job.pct, '53%');
   assert.equal(r.good.odds, 'good'); assert.equal(r.bad.odds, 'bad');

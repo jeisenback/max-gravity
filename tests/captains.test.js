@@ -127,13 +127,13 @@ test('thrift sets the fund level below which costly choices are avoided', async 
     const st = start(), d = captainEntry(), out = {};
     const choices = [{ label: 'Pay the fine', cost: true }, { label: 'Run for it' }];
     for (const thrift of [1, 5]) {
-      d.captain.thrift = thrift; st.hired.fund = 3000; let pays = 0;
+      d.captain.thrift = thrift; st.hired.fund = 30000; let pays = 0;
       for (let i = 0; i < 400; i++) if (captainPick(choices).label === 'Pay the fine') pays++;
       out[thrift] = pays;
     }
     return out;
   });
-  assert.ok(r[1] > r[5] * 2, `at a fund of 3,000 a spendthrift pays (${r[1]}), a thrifty captain hangs on to it (${r[5]})`);
+  assert.ok(r[1] > r[5] * 2, `at a fund of 30,000 a spendthrift pays (${r[1]}), a thrifty captain hangs on to it (${r[5]})`);
 });
 
 test('hears and bonus are the opinions a captain needs before listening or paying a bonus', async () => {
@@ -251,17 +251,17 @@ test('her two scenes come once each, in order, when the days are up', async () =
   assert.equal(r.confide, 'What the Notebook Is For'); assert.equal(r.found, 'Under the Sugar'); assert.equal(r.done, null, 'once each');
 });
 
-test('the trouble scene can cost four hundred, and the secret changes with trust and sets the flags', async () => {
+test('the trouble scene can cost four thousand, and the secret changes with trust and sets the flags', async () => {
   const r = await run(() => {
     const st = start(), h = st.hired, cap = hiredCaptain(), out = {};
     const sc = captainScene('trouble'), lend = sc.choices[0];
-    st.credits = 300; out.poor = lend.can();
-    st.credits = 1000; out.rich = lend.can(); cap.opinion = 0; lend.run(); out.after = { credits: st.credits, opinion: cap.opinion, lent: !!h.flags.lent };
+    st.credits = 3000; out.poor = lend.can();
+    st.credits = 10000; out.rich = lend.can(); cap.opinion = 0; lend.run(); out.after = { credits: st.credits, opinion: cap.opinion, lent: !!h.flags.lent };
     cap.opinion = 3; captainScene('secret').choices[0].run(); out.kept = { secret: !!h.flags.secretKnown, angry: !!h.flags.secretAngry };
     delete h.flags.secretKnown; cap.opinion = 0; captainScene('secret').choices[1].run(); out.found = { secret: !!h.flags.secretKnown, angry: !!h.flags.secretAngry, opinion: cap.opinion };
     return out;
   });
-  assert.equal(r.poor, false); assert.equal(r.rich, true); assert.deepEqual(r.after, { credits: 600, opinion: 3, lent: true });
+  assert.equal(r.poor, false); assert.equal(r.rich, true); assert.deepEqual(r.after, { credits: 6000, opinion: 3, lent: true });
   assert.deepEqual(r.kept, { secret: true, angry: false }); assert.deepEqual(r.found, { secret: true, angry: true, opinion: 0 });
 });
 
@@ -280,7 +280,7 @@ test('the goodbye has an opening by warmth and a line for each thing that happen
   });
   assert.match(r.warm, /waiting at the foot of the ramp/); assert.match(r.neutral, /counts your last pay twice/); assert.match(r.cold, /doesn't offer her hand/);
   assert.doesNotMatch(r.alone, /will go with you/); assert.match(r.crew, /Ines Ferreira will go with you/);
-  assert.equal(r.noSecret, false); assert.match(r.secret, /The first of the month/); assert.match(r.lent, /four hundred and ten/);
+  assert.equal(r.noSecret, false); assert.match(r.secret, /The first of the month/); assert.match(r.lent, /four thousand one hundred/);
   assert.match(r.xo, /Cato is at the hatch/); assert.match(r.xoDead, /taken Cato out of the book/); assert.doesNotMatch(r.xoDead, /Cato is at the hatch/);
   for (const k of ['warm', 'neutral', 'cold']) assert.match(r[k], /account closed/);
 });
@@ -290,12 +290,12 @@ test('a loan is repaid when you leave, and the choices set the captain\'s last o
     const st = start(), h = st.hired, cap = hiredCaptain(), out = {}, opinion0 = cap.opinion;
     h.flags = { lent: true, secretKnown: true };
     const bye = captainGoodbye(); out.labels = bye.choices.map(c => c.label);
-    st.credits = 1000; cap.opinion = 0; bye.choices[1].run(); out.repaid = st.credits; out.opinion = cap.opinion;
+    st.credits = 10000; cap.opinion = 0; bye.choices[1].run(); out.repaid = st.credits; out.opinion = cap.opinion;
     h.flags = {}; out.labelsNoSecret = captainGoodbye().choices.map(c => c.label);
     return out;
   });
   assert.deepEqual(r.labels, ['Thank her for the work', 'Wish her the ship', 'Take the papers and go']);
-  assert.equal(r.repaid, 1410); assert.equal(r.opinion, 2);
+  assert.equal(r.repaid, 14100); assert.equal(r.opinion, 2);
   assert.deepEqual(r.labelsNoSecret, ['Thank her for the work', 'Take the papers and go']);
 });
 
@@ -371,14 +371,14 @@ test('Dov: his introduction, his wording, and his trouble and secret', async () 
     cap.opinion = -1; out.heardAtMinusOne = make('cap-order').choices[1].run();  // hears is -1: he listens to nearly anyone
     cap.opinion = -2; out.notHeard = make('cap-order').choices[1].run();
     cap.opinion = 0; const bonus = st.credits; make('cap-praise').choices[1].run(); out.bonus = st.credits - bonus;  // bonus is 0: he gives it at once
-    const sc = captainScene('trouble'); st.credits = 200; out.poor = sc.choices[1].can(); st.credits = 1000; sc.choices[1].run(); out.after = { credits: st.credits, lent: !!h.flags.lent };
+    const sc = captainScene('trouble'); st.credits = 2000; out.poor = sc.choices[1].can(); st.credits = 10000; sc.choices[1].run(); out.after = { credits: st.credits, lent: !!h.flags.lent };
     cap.opinion = 3; captainScene('secret').choices[0].run(); out.flag = !!h.flags.secretKnown;
-    h.flags = { lent: true }; st.credits = 100; captainGoodbye().choices[0].run(); out.repaid = st.credits;
+    h.flags = { lent: true }; st.credits = 1000; captainGoodbye().choices[0].run(); out.repaid = st.credits;
     return out;
   });
   assert.match(r.intro, /Captain Dov Adair is shaking your hand/); assert.ok(r.intro.includes(`${r.wage} a day and ${r.share} percent`));
   assert.match(r.order, /woman at the last port/); assert.match(r.heardAtMinusOne, /Ninety/); assert.match(r.notHeard, /I didn't ask/);
-  assert.ok(r.bonus > 0, 'a bonus at once'); assert.equal(r.poor, false); assert.deepEqual(r.after, { credits: 700, lent: true }); assert.equal(r.flag, true); assert.equal(r.repaid, 430);
+  assert.ok(r.bonus > 0, 'a bonus at once'); assert.equal(r.poor, false); assert.deepEqual(r.after, { credits: 7000, lent: true }); assert.equal(r.flag, true); assert.equal(r.repaid, 4300);
 });
 
 test('Ilsa\'s scenes come in order, and Two Orders moves the captain\'s and her opinion opposite ways', async () => {
@@ -475,15 +475,15 @@ test('Zoya: her introduction, her wording, and her trouble and secret', async ()
     cap.opinion = 0; out.heard = make('cap-order').choices[1].run();
     cap.opinion = 1; let credits = st.credits; make('cap-praise').choices[1].run(); out.noBonus = st.credits - credits;  // bonus is 2
     cap.opinion = 2; credits = st.credits; make('cap-praise').choices[1].run(); out.bonus = st.credits - credits;
-    const sc = captainScene('trouble'); st.credits = 50; out.poor = sc.choices[1].can(); st.credits = 1000; sc.choices[1].run(); out.after = { credits: st.credits, lent: !!h.flags.lent };
+    const sc = captainScene('trouble'); st.credits = 500; out.poor = sc.choices[1].can(); st.credits = 10000; sc.choices[1].run(); out.after = { credits: st.credits, lent: !!h.flags.lent };
     cap.opinion = 3; captainScene('secret').choices[1].run(); out.flag = !!h.flags.secretKnown;
-    h.flags = { lent: true }; st.credits = 100; captainGoodbye().choices[0].run(); out.repaid = st.credits;
+    h.flags = { lent: true }; st.credits = 1000; captainGoodbye().choices[0].run(); out.repaid = st.credits;
     out.style = captainEntry().captain;
     return out;
   });
   assert.match(r.intro, /Captain Zoya Pell signs your papers/); assert.ok(r.intro.includes(`${r.wage} a day and ${r.share} percent`));
   assert.match(r.order, /worth more if it arrives a day early/); assert.match(r.notHeard, /I didn't ask/); assert.match(r.heard, /Ninety/);
-  assert.equal(r.noBonus, 0); assert.ok(r.bonus > 0); assert.equal(r.poor, false); assert.deepEqual(r.after, { credits: 900, lent: true }); assert.equal(r.flag, true); assert.equal(r.repaid, 225);
+  assert.equal(r.noBonus, 0); assert.ok(r.bonus > 0); assert.equal(r.poor, false); assert.deepEqual(r.after, { credits: 9000, lent: true }); assert.equal(r.flag, true); assert.equal(r.repaid, 2250);
   assert.deepEqual(r.style, { trade: 4, nerve: 5, thrift: 1 });
 });
 
@@ -520,7 +520,7 @@ test('the used-ship offer waits for both of the captain\'s scenes and a run sail
   const r = await run(() => {
     const st = start({ captainKey: 'hester' }), h = st.hired, out = {};
     const yard = system().planets.find(p => p.services.includes('shipyard'));
-    st.credits = USED_OFFER_AT + 1000;
+    st.credits = USED_OFFER_AT + 10000;
     out.fresh = captainBeatsDone(h);
     h.beats = 1; out.oneScene = captainBeatsDone(h);
     h.beats = 2; h.runsDone = 5; h.beatRun = 5; out.sameRun = captainBeatsDone(h);
@@ -904,7 +904,7 @@ test('the first arrival shows the hall\'s cut as a ledger line, and the goodbye 
     h.flags = { debtCleared: true };
     return { text, hall: f.hall, owed: f.owed, wage: f.wage, share: f.share, debt: h.debt, goodbye: captainGoodbye().text, recap: chapterRecap().text };
   }, { debt: true });
-  assert.equal(r.hall, Math.round((r.wage + r.share) * 0.3)); assert.equal(r.owed, 3000 - r.hall); assert.equal(r.debt, r.owed);
+  assert.equal(r.hall, Math.round((r.wage + r.share) * 0.3)); assert.equal(r.owed, 30000 - r.hall); assert.equal(r.debt, r.owed);
   assert.ok(r.text.includes(`Hall bond, 30 percent of your pay: ${r.hall.toLocaleString('en-US')}. Still owed: ${r.owed.toLocaleString('en-US')}.`));
   assert.ok(r.goodbye.includes('The hall\'s bond is struck off the book, with the day it was paid.')); assert.ok(r.recap.includes('You paid off the hiring-hall bond.'));
 });
@@ -976,7 +976,7 @@ test('Tomas gives the reason when she is offered, which waits for the hull to ha
     start(); const h = hired(), st = G.state, out = {};
     h.beats = CAPTAIN_BEATS.length; h.beatRun = 0; h.runsDone = 5; h.flags = {};
     out.waits = captainBeatsDone(h); h.flags.sawHull = true; out.opens = captainBeatsDone(h);
-    h.debt = 1500; const owed = dealScene(currentPlanet()); out.owed = owed.text; out.tomasFlag = !!h.flags.tomasWaited;
+    h.debt = 15000; const owed = dealScene(currentPlanet()); out.owed = owed.text; out.tomasFlag = !!h.flags.tomasWaited;
     h.debt = 0; out.clear = dealScene(currentPlanet()).text;
     // no Tomas aboard: the broker's offer, with nothing to wait for
     G.state.crew = G.state.crew.filter(id => (person(id) || {}).cast !== 'tomas'); h.flags = {}; out.broker = captainBeatsDone(h);
@@ -984,6 +984,6 @@ test('Tomas gives the reason when she is offered, which waits for the hull to ha
   }, { debt: true });
   assert.equal(r.waits, false, 'the offer waits for the hull to have been seen'); assert.equal(r.opens, true); assert.equal(r.broker, true, 'without Tomas, nothing to wait for');
   assert.match(r.owed, /Three owners, and every one of them sold her, and none for bad luck\. Each ran one payment short, and the coolant line is what they skipped\./);
-  assert.match(r.owed, /You owe the hall 1,500 still\. I looked at its book\. Clear it, and you'll be the first owner she has had who owes nobody\./);
+  assert.match(r.owed, /You owe the hall 15,000 still\. I looked at its book\. Clear it, and you'll be the first owner she has had who owes nobody\./);
   assert.match(r.clear, /You owe nobody now\. I looked at the hall's book\. She has only ever had owners who owed everybody\./); assert.equal(r.tomasFlag, true);
 });

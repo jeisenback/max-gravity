@@ -10,14 +10,14 @@ const playSocial = raw => {  // raw: every case, with the scenes that repeat (th
   const seq = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : real()); };
   const newGame = hiredMode => {
     __seed(1);
-    startGame(hiredMode ? { slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 } : { slot: 1, background: 'earth', captain: 'Sam Rowe', credits: 5000 });
+    startGame(hiredMode ? { slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 50000 } : { slot: 1, background: 'earth', captain: 'Sam Rowe', credits: 50000 });
     while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.day += 60; st.crew = []; st.bonds = {}; st.qualities = {}; st.relAt = {}; st.feuds = {}; st.missions = st.missions.filter(m => m.type !== 'passenger');
     takeOff(); st.dest = 'mars'; G.player.x = 6000; tryBurn(); enterTransit(); G.transit.times = [];  // in a burn, with a hull
     return G.state;
   };
   const mate = (st, first, over = {}) => { const c = makeCrewCandidate(st.systemId); Object.assign(c, { first, last: 'Vale', traits: ['kind', 'brave'], home: 'Mars', culture: 'mars', role: 'engineer', opinion: 0 }, over); registerPerson(c); st.crew.push(c.id); return c; };
-  const guest = (st, first, over = {}, mission = {}) => { const c = makeCrewCandidate(st.systemId); Object.assign(c, { first, last: 'Rowe', traits: ['kind', 'brave'], home: 'Mars', culture: 'mars', opinion: 0 }, over); registerPerson(c); st.missions.push({ type: 'passenger', id: st.nextId++, pid: c.id, who: `${c.first} ${c.last}`, pax: 1, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', title: 'Carry', pay: 1000, deadline: 99, ...mission }); return c; };
+  const guest = (st, first, over = {}, mission = {}) => { const c = makeCrewCandidate(st.systemId); Object.assign(c, { first, last: 'Rowe', traits: ['kind', 'brave'], home: 'Mars', culture: 'mars', opinion: 0 }, over); registerPerson(c); st.missions.push({ type: 'passenger', id: st.nextId++, pid: c.id, who: `${c.first} ${c.last}`, pax: 1, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', title: 'Carry', pay: 10000, deadline: 99, ...mission }); return c; };
   const setBond = (st, a, b, n) => { st.bonds[[a.id, b.id].sort().join('|')] = n; };
   // two people of different teams in one league, found by looking: the match scenes need them
   const rivals = (st, traits = ['kind', 'brave']) => { for (let i = 0; i < 40; i++) { const a = mate(st, 'Ana', { home: 'Ceres Station', culture: 'belt', traits }), b = mate(st, 'Ben', { home: 'Ceres Station', culture: 'belt', traits }); const ta = tastes({ id: a.id, p: a }).team, tb = tastes({ id: b.id, p: b }).team; if (ta !== tb && leagueOf(ta) === leagueOf(tb)) return [a, b]; st.crew.length -= 2; } return null; };

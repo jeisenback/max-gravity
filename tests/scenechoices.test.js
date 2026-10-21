@@ -14,7 +14,7 @@ after(closeBrowser);
 const helpers = () => {
   window.start = (post = 'gunner') => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; st.tutorial = null; return st; };
   // A made person with the ties wanted, found by drawing until one fits (ties.test.js).
-  window.find = (pred, role = 'cook') => { for (let i = 0; i < 600; i++) { const p = makePerson('earth'); p.role = role; p.skill = 1; p.wage = 50; registerPerson(p); if (pred(tiesOf(p), p)) { G.state.crew.push(p.id); return p; } } throw new Error('no such person'); };
+  window.find = (pred, role = 'cook') => { for (let i = 0; i < 600; i++) { const p = makePerson('earth'); p.role = role; p.skill = 1; p.wage = 500; registerPerson(p); if (pred(tiesOf(p), p)) { G.state.crew.push(p.id); return p; } } throw new Error('no such person'); };
   // The rolls: every die in the bottom tenth, then the top one, but varying, so a draw that retries for a new value ends. (A draw that picks
   // two different things from a short list needs the whole range: span 1.)
   window.rolled = (base, fn, span = 0.099, seed = 12345) => { const real = Math.random; Math.random = () => base + span * ((seed = (seed * 16807) % 2147483647) / 2147483647); try { return fn(); } finally { Math.random = real; } };
@@ -27,7 +27,7 @@ const helpers = () => {
   window.playEvent = (e, at, depth = 0) => {
     e.choices.forEach((ch, j) => {
       if (ch.can && !ch.can()) { if (ch.why !== ONCE) report.shut.push(`${at}.${j}`); return; }  // an ability used once in a fight (handtohand.js) is shut by design on the scenes after it
-      G.state.credits = Math.max(G.state.credits, 5000); G.dialog = { event: e, choices: e.choices }; G.nextEvent = null; const before = G.state;
+      G.state.credits = Math.max(G.state.credits, 50000); G.dialog = { event: e, choices: e.choices }; G.nextEvent = null; const before = G.state;
       let text;
       try { text = chooseEvent(j); } catch (err) { report.bad.push(`${at}.${j}: threw ${err}`); return; }
       report.played++; if (text === null && G.state !== before) return;  // a choice that begins a new game says nothing
@@ -51,7 +51,7 @@ const helpers = () => {
         const e = build(); if (!e || !e.choices[j]) return;
         const ch = e.choices[j];
         if (ch.can && !ch.can()) { if (ch.why !== ONCE) report.shut.push(`${at}.${j}`); return; }  // an ability used once in a fight (handtohand.js) is shut by design on the scenes after it
-        G.state.credits = Math.max(G.state.credits, 5000); G.dialog = { event: e, choices: e.choices }; G.nextEvent = null;
+        G.state.credits = Math.max(G.state.credits, 50000); G.dialog = { event: e, choices: e.choices }; G.nextEvent = null;
         const before = G.state; let text;
         try { text = chooseEvent(j); } catch (err) { report.bad.push(`${at}.${j}: threw ${err}`); return; }
         report.played++; if (text === null && G.state !== before) return;
@@ -81,7 +81,7 @@ test('every transit event, whichever way it goes', async () => {
     for (const d of TRANSIT_EVENTS) {
       playBuilt(() => {
         const st = start('pilot'); uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
-        st.credits = 5000; st.fuel = ship().fuel; st.cargo = { food: 5, luxury: 3 }; st.day += 1;
+        st.credits = 50000; st.fuel = ship().fuel; st.cargo = { food: 5, luxury: 3 }; st.day += 1;
         return { ...d, choices: d.choices.map(c => ({ ...c })) };
       }, d.title);
     }
@@ -189,7 +189,7 @@ test('feuds and a word in private, as a hand and as a captain, and the favors a 
     // The favors: a debt, and a visit home, at the third beat of someone's story.
     st.cargo = { luxury: 10 };  // the rolled ones: the main characters have stories of their own
     for (const favor of ['debt', 'visit']) {
-      playDrawn(i => { const ps = procedural().map(f => f.p).filter(q => !q.cast); const p = ps[i % ps.length], s = storyOf(p); p.home = currentPlanet().name; s.beat = 3; s.favor = favor; s.debt = 900; return sitBeat(p, true); }, `favor.${favor}`, 6);
+      playDrawn(i => { const ps = procedural().map(f => f.p).filter(q => !q.cast); const p = ps[i % ps.length], s = storyOf(p); p.home = currentPlanet().name; s.beat = 3; s.favor = favor; s.debt = 9000; return sitBeat(p, true); }, `favor.${favor}`, 6);
     }
     return report;
   });

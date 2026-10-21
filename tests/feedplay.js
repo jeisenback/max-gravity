@@ -11,7 +11,7 @@ const playFeeds = raw => {  // raw: every case (the pin keeps the first of each 
   const note = (key, text) => out.push({ key, text: text === null || text === undefined ? null : String(text) });
   const start = (day, noSeasons, mode = 'fans') => {  // mode: 'fans' (two of each taste among the crew), 'few' (one, and rude) or 'none'
     __seed(1);
-    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', credits: 5000 });
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', credits: 50000 });
     while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; st.bonds = {}; st.qualities = {}; st.day = day; st.missions = st.missions.filter(m => m.type !== 'passenger');
     const mate = (first, over) => { const c = makeCrewCandidate(st.systemId); Object.assign(c, { first, last: 'Vale', traits: ['kind', 'brave'], opinion: 0, ...over }); registerPerson(c); st.crew.push(c.id); return c; };

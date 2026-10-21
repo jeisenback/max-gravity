@@ -74,7 +74,7 @@
   "captain": "hester",
   "state": "full",
   "title": "The Foot of the Ramp",
-  "text": "Captain Vance is waiting at the foot of the ramp when you come down, with the notebook under one arm. \"I have your account,\" she says. \"It's correct. I'd like you to check it anyway.\"</p><p>Ines Ferreira will go with you. She runs a finger down the crew list. \"That's a column I'll have to fill again,\" she says.</p><p>She doesn't mention the bank. \"The first of the month,\" she says, \"and the first after that. I'll be there for them.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts four hundred and ten onto the rail, the day you leave, as she said she would. You count it after her. It's correct.</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've put your name on the back of the bill, so I remember to ask after you.\"</p><p>She holds out her hand at last. It's dry and brief. \"That's the account closed,\" she says. \"Keep your own books.\"",
+  "text": "Captain Vance is waiting at the foot of the ramp when you come down, with the notebook under one arm. \"I have your account,\" she says. \"It's correct. I'd like you to check it anyway.\"</p><p>Ines Ferreira will go with you. She runs a finger down the crew list. \"That's a column I'll have to fill again,\" she says.</p><p>She doesn't mention the bank. \"The first of the month,\" she says, \"and the first after that. I'll be there for them.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts four thousand one hundred onto the rail, the day you leave, as she said she would. You count it after her. It's correct.</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've put your name on the back of the bill, so I remember to ask after you.\"</p><p>She holds out her hand at last. It's dry and brief. \"That's the account closed,\" she says. \"Keep your own books.\"",
   "labels": [
    "Thank her for the work",
    "Wish her the ship",
@@ -85,7 +85,7 @@
     "label": "Thank her for the work",
     "text": "You thank her. She writes nothing in the notebook.",
     "changes": [
-     "s.credits: 5000 -> 5410",
+     "s.credits: 50000 -> 54100",
      "s.people.p1.memories: [] -> undefined",
      "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work, and meant it."
     ]
@@ -94,7 +94,7 @@
     "label": "Wish her the ship",
     "text": "\"I'll keep her,\" she says, and opens the notebook.",
     "changes": [
-     "s.credits: 5000 -> 5410",
+     "s.credits: 50000 -> 54100",
      "s.people.p1.memories: [] -> undefined",
      "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me the ship."
     ]
@@ -103,7 +103,7 @@
     "label": "Take the papers and go",
     "text": "You take the papers and go. She doesn't call after you. When you look back from the dock she has the notebook open again, and is writing.",
     "changes": [
-     "s.credits: 5000 -> 5410",
+     "s.credits: 50000 -> 54100",
      "s.people.p1.memories: [] -> undefined",
      "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
     ]
@@ -196,7 +196,7 @@
   "captain": "dov",
   "state": "full",
   "title": "The Foot of the Ramp",
-  "text": "Captain Adair is at the foot of the ramp with a paper bag that smells of bread. \"I didn't know what to give you,\" he says. \"So it's food. It's always food.\"</p><p>Ines Ferreira will go with you. \"I'm glad they're going with you,\" he says. \"They like you. I could see it from the first week.\"</p><p>The book he keeps is out of sight. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>He presses three hundred and thirty into your hand, the day you leave, and a card with the three stories you liked best written on the back, in case you want to tell them.</p><p>Ilsa is at the hatch with her arms folded. \"He won't say it,\" she says, \"so I will. You were good to him. Don't tell him I said so.\"</p><p>He hugs you. \"Come and see us,\" he says. \"Come and see me. I'll be here. There's always somebody in the galley.\"",
+  "text": "Captain Adair is at the foot of the ramp with a paper bag that smells of bread. \"I didn't know what to give you,\" he says. \"So it's food. It's always food.\"</p><p>Ines Ferreira will go with you. \"I'm glad they're going with you,\" he says. \"They like you. I could see it from the first week.\"</p><p>The book he keeps is out of sight. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>He presses three thousand three hundred into your hand, the day you leave, and a card with the three stories you liked best written on the back, in case you want to tell them.</p><p>Ilsa is at the hatch with her arms folded. \"He won't say it,\" she says, \"so I will. You were good to him. Don't tell him I said so.\"</p><p>He hugs you. \"Come and see us,\" he says. \"Come and see me. I'll be here. There's always somebody in the galley.\"",
   "labels": [
    "Thank him for the work",
    "Tell him to ask Ilsa for help",
@@ -207,7 +207,7 @@
     "label": "Thank him for the work",
     "text": "You thank him. He says it was nothing, and then tells you what it was.",
     "changes": [
-     "s.credits: 5000 -> 5330",
+     "s.credits: 50000 -> 53300",
      "s.people.p1.memories: [] -> undefined",
      "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work."
     ]
@@ -216,7 +216,7 @@
     "label": "Tell him to ask Ilsa for help",
     "text": "He takes out a card and begins to write. \"I will,\" he says. \"I'll ask her to dinner. That's a start.\"",
     "changes": [
-     "s.credits: 5000 -> 5330",
+     "s.credits: 50000 -> 53300",
      "s.people.p1.memories: [] -> undefined",
      "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to ask for help."
     ]
@@ -225,7 +225,7 @@
     "label": "Take the bread and go",
     "text": "You take the bread and go. You look back from the end of the dock, and he's still at the foot of the ramp, waving.",
     "changes": [
-     "s.credits: 5000 -> 5330",
+     "s.credits: 50000 -> 53300",
      "s.people.p1.memories: [] -> undefined",
      "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the bread and went."
     ]
@@ -437,7 +437,7 @@
   "captain": "zoya",
   "state": "full",
   "title": "The Ramp",
-  "text": "Captain Pell is on the ramp, not at the foot of it, leaning on the rail with her boots crossed. \"I don't do goodbyes,\" she says. \"I do wagers. I bet you do well. I bet you come back. I'll take either side.\"</p><p>Ines Ferreira will go with you. She whistles, one low note. \"I bet you'll do better by them than I did,\" she says. \"I'm not even joking. That's not a bet. That's a fact.\"</p><p>The deck is in her coat pocket. \"One good run,\" she says, \"and I'll send you a postcard from somewhere with a beach. If I don't, it's because it wasn't good enough.\" She has said it for six years.</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts a hundred and twenty-five into your hand, in folded notes, from the roll. \"A quarter,\" she says. \"As promised. Don't tell Dobrescu where I got it.\"</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Don't tell her the second part.\"</p><p>She hugs you, fast, and lets go. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "text": "Captain Pell is on the ramp, not at the foot of it, leaning on the rail with her boots crossed. \"I don't do goodbyes,\" she says. \"I do wagers. I bet you do well. I bet you come back. I'll take either side.\"</p><p>Ines Ferreira will go with you. She whistles, one low note. \"I bet you'll do better by them than I did,\" she says. \"I'm not even joking. That's not a bet. That's a fact.\"</p><p>The deck is in her coat pocket. \"One good run,\" she says, \"and I'll send you a postcard from somewhere with a beach. If I don't, it's because it wasn't good enough.\" She has said it for six years.</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts twelve hundred and fifty into your hand, in folded notes, from the roll. \"A quarter,\" she says. \"As promised. Don't tell Dobrescu where I got it.\"</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Don't tell her the second part.\"</p><p>She hugs you, fast, and lets go. \"Go on,\" she says. \"Before I bet against myself.\"",
   "labels": [
    "Wish her the good run",
    "Tell her to stop",
@@ -448,7 +448,7 @@
     "label": "Wish her the good run",
     "text": "\"From your mouth,\" she says, and crosses two fingers on each hand, and holds them up, and laughs.",
     "changes": [
-     "s.credits: 5000 -> 5125",
+     "s.credits: 50000 -> 51250",
      "s.people.p1.memories: [] -> undefined",
      "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me the good run."
     ]
@@ -457,7 +457,7 @@
     "label": "Tell her to stop",
     "text": "She laughs, and doesn't. \"I'll think about it,\" she says. \"On a Tuesday.\"",
     "changes": [
-     "s.credits: 5000 -> 5125",
+     "s.credits: 50000 -> 51250",
      "s.people.p1.memories: [] -> undefined",
      "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to stop."
     ]
@@ -466,7 +466,7 @@
     "label": "Take the papers and go",
     "text": "You take the papers and go. When you look back from the dock, she's on the ramp with a coin on her thumb.",
     "changes": [
-     "s.credits: 5000 -> 5125",
+     "s.credits: 50000 -> 51250",
      "s.people.p1.memories: [] -> undefined",
      "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
     ]

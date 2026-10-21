@@ -31,9 +31,9 @@ Mods.register({
               'three tons of luxury goods. For evidence. {official} signs the form, and they carry the crates out on a sled.')
         },
         {
-          label: 'Offer a "processing fee" (300 cr)',
-          when: { credits: 300 },
-          effects: { credits: -300, do: ['official', 1, 'You paid the processing fee and said nothing about it.'] },
+          label: 'Offer a "processing fee" (3,000 cr)',
+          when: { credits: 3000 },
+          effects: { credits: -3000, do: ['official', 1, 'You paid the processing fee and said nothing about it.'] },
           result: ('{official} looks at the chit, and at you, and taps the scanner against a palm. "Would you look at that," {official} says. "A ' +
               'fault." The young one starts to speak and is stepped on. They wish you a pleasant stay and leave. The whole ' +
               'thing takes less than a minute.')
@@ -67,7 +67,7 @@ Mods.register({
           label: 'Hand out five tons at cost',
           effects: {
           cargo: { water: -5 },
-          credits: 300,
+          credits: 3000,
           rep: { 'Charter League': 3 },
           log: 'Handed out water to a crowd on {planet}.'
         },
@@ -91,10 +91,10 @@ Mods.register({
           'patched parachute silk, catches your eye across the crowd and waves you over, laughing, with a plate already in her hand.'),
       choices: [
         {
-          label: 'Bring a gift (200 cr)',
-          when: { credits: 200 },
+          label: 'Bring a gift (2,000 cr)',
+          when: { credits: 2000 },
           effects: {
-          credits: -200,
+          credits: -2000,
           rep: { 'Charter League': 2 },
           log: 'Danced at a wedding on {planet}.'
         },
@@ -116,10 +116,10 @@ Mods.register({
           'speaks. The only sound is the shuffle of boots, and the hush of the vents.'),
       choices: [
         {
-          label: 'Give to the families\' fund (300 cr)',
-          when: { credits: 300 },
+          label: 'Give to the families\' fund (3,000 cr)',
+          when: { credits: 3000 },
           effects: {
-          credits: -300,
+          credits: -3000,
           rep: { 'Charter League': 2 }
         },
           result: ('You put the credits into the box at the head of the line, a battered ore canister with a slot cut in the lid. A woman in a heat ' +
@@ -145,9 +145,9 @@ Mods.register({
               'moment. The mother, still crying, presses a fried dumpling into your hand, and you go.')
         },
         {
-          label: 'Give them 200 cr and some advice',
-          when: { credits: 200 },
-          effects: { credits: -200 },
+          label: 'Give them 2,000 cr and some advice',
+          when: { credits: 2000 },
+          effects: { credits: -2000 },
           result: '"Find a ship with a good captain," you say, low, "and learn a trade first. Don\'t go with anyone who\'s in a hurry." They take the money in both hands, staring at it, and look up at you, once. Then they\'re gone into the crowd.'
         },
         { label: 'Hand them to dock security', result: 'Security isn\'t gentle about it. The kid doesn\'t fight, doesn\'t cry, doesn\'t say a word. They look back once over their shoulder as they\'re led away, and their eyes find yours. You keep your hands in your pockets all the way back to the ship.' },
@@ -169,12 +169,12 @@ Mods.register({
           0.5,
           {},
           'You catch them two corridors on, in a dead end by the recyclers: a skinny kid, all elbows, out of breath and grinning. You get the chit back, and an apology in three languages ending with a compliment on your boots. You almost let them go.',
-          'They know these corridors and you don\'t, and within a minute you\'re lost among the laundry lines. Gone, with 250 cr, and a distant laugh.',
-          { credits: -250 }
+          'They know these corridors and you don\'t, and within a minute you\'re lost among the laundry lines. Gone, with 2,500 cr, and a distant laugh.',
+          { credits: -2500 }
         ] },
           result: ''
         },
-        { label: 'Let it go', effects: { credits: -250 }, result: 'You cancel the chit at a kiosk, but they\'ve already spent 250 cr of it. A receipt for a very large bag of candied ginger arrives on your comm a moment later, with a note: "Thank you." Welcome to {planet}.' },
+        { label: 'Let it go', effects: { credits: -2500 }, result: 'You cancel the chit at a kiosk, but they\'ve already spent 2,500 cr of it. A receipt for a very large bag of candied ginger arrives on your comm a moment later, with a note: "Thank you." Welcome to {planet}.' },
       ],
     });
 
@@ -187,14 +187,14 @@ Mods.register({
           'it\'s yours. I\'d rather it went to someone who might use it."'),
       choices: [
         {
-          label: 'Buy the map (500 cr)',
-          when: { credits: 500 },
+          label: 'Buy the map (5,000 cr)',
+          when: { credits: 5000 },
           effects: { do: [
           'gamble',
-          500,
+          5000,
           0.3,
-          { credits: 2500 },
-          'You sell the survey to the claims office for 2,500 cr, in a dusty room, to a surprised clerk. The old man was telling the truth. When you go back to find him, the dock crew say he left on the last ship to Ceres.',
+          { credits: 25000 },
+          'You sell the survey to the claims office for 25,000 cr, in a dusty room, to a surprised clerk. The old man was telling the truth. When you go back to find him, the dock crew say he left on the last ship to Ceres.',
           'The claims office laughs you out of the room, kindly: the rock was registered forty years ago and has been mined out for thirty. The old man is nowhere to be found. Someone at the dock says he does this to a new captain every year.'
         ] },
           result: ''
@@ -212,10 +212,10 @@ Mods.register({
           'country?"'),
       choices: [
         {
-          label: 'Donate to the war relief fund (300 cr)',
-          when: { credits: 300 },
+          label: 'Donate to the war relief fund (3,000 cr)',
+          when: { credits: 3000 },
           effects: {
-          credits: -300,
+          credits: -3000,
           do: [
           'localRep',
           2
@@ -238,7 +238,7 @@ Mods.register({
           label: '[{crew}] Send {crew}',
           when: { crew: 'medic' },
           effects: {
-          credits: 300,
+          credits: 3000,
           do: [
           'localRep',
           2
@@ -246,7 +246,7 @@ Mods.register({
         },
           result: ('{crew} is there in thirty seconds, with a case in one hand, shouldering through the crowd, and kneels in the wreckage without a ' +
               'word. For six minutes {crew} keeps the worker breathing, hands red to the wrist, while the dockers lift the sled by inches. When the ' +
-              'medics arrive the man is alive. The dock foreman, weeping, insists on paying you 300 cr, and the dockers stop overcharging you for ' +
+              'medics arrive the man is alive. The dock foreman, weeping, insists on paying you 3,000 cr, and the dockers stop overcharging you for ' +
               'clamps.')
         },
         {
@@ -285,14 +285,14 @@ Mods.register({
     scene({
       id: 'land-surcharge', when: { bust: 'Charter League', gov: 'Charter League' },
       title: 'Slump Surcharge',
-      text: ('{official} has a new form on official pink paper, three pages long: a "temporary economic stabilization surcharge" of 200 cr on ' +
+      text: ('{official} has a new form on official pink paper, three pages long: a "temporary economic stabilization surcharge" of 2,000 cr on ' +
           'every visiting ship, and slides it across the counter without meeting your eye. Behind the counter a hand-lettered sign has been taped over the old ' +
           'rate card: PRICES SUBJECT TO CHANGE. Somebody has added, in pencil, "DAILY."'),
       choices: [
         {
-          label: 'Pay it (200 cr)',
-          when: { credits: 200 },
-          effects: { credits: -200, do: ['official', 1, 'You paid the surcharge and did not argue.'] },
+          label: 'Pay it (2,000 cr)',
+          when: { credits: 2000 },
+          effects: { credits: -2000, do: ['official', 1, 'You paid the surcharge and did not argue.'] },
           result: ('{official} stamps your form without looking up, and files it, and doesn\'t say thank you. The stamp is worn nearly to a ' +
               'smooth blob, and each press leaves a smeared, purple ring. As you turn to go, you see {official} look at the pencilled "DAILY," and then ' +
               'at the next ship in the line.')
@@ -329,18 +329,18 @@ Mods.register({
           'dough and cheap sweet wine, and it is, for the moment, entirely joyful.'),
       choices: [
         {
-          label: 'Join in (150 cr)',
-          when: { credits: 150 },
+          label: 'Join in (1,500 cr)',
+          when: { credits: 1500 },
           effects: {
-          credits: -150,
+          credits: -1500,
           log: 'Joined a payday party on {planet}.'
         },
           result: 'You eat things on sticks, three kinds, all delicious and none identifiable, lose at a ring toss to a nine-year-old, and get home late with a paper lantern shaped like a freighter under one arm. A stranger insists on buying you a cup of the sweet wine.'
         },
         {
           label: 'Work the crowd for cargo buyers',
-          effects: { credits: 400 },
-          result: 'Everyone\'s buying, and for once nobody haggles. You set up a folding table at the mouth of the concourse and sell odds and ends from your stores for 400 cr, in twenty minutes, to a stream of cheerful, slightly drunk strangers.'
+          effects: { credits: 4000 },
+          result: 'Everyone\'s buying, and for once nobody haggles. You set up a folding table at the mouth of the concourse and sell odds and ends from your stores for 4,000 cr, in twenty minutes, to a stream of cheerful, slightly drunk strangers.'
         },
       ],
     }, 0.065);
@@ -361,10 +361,10 @@ Mods.register({
         },
         { label: '"No goal."', result: 'You say it firmly, and the other half of the kids erupt, and the cheer echoes down the corridor. The half that lost stare at you. One of them, a girl with a missing front tooth, says clearly, "You\'re a traitor," and stalks off.' },
         {
-          label: 'Buy them a new ball (50 cr)',
-          when: { credits: 50 },
+          label: 'Buy them a new ball (500 cr)',
+          when: { credits: 500 },
           effects: {
-          credits: -50,
+          credits: -500,
           rep: { 'Charter League': 1 }
         },
           result: ('You duck into the nearest shop and come back with a fresh orange ball that smells of new rubber. The old one, you see, was mostly ' +
@@ -383,14 +383,14 @@ Mods.register({
           'Who knows what riches lie within! Bidding starts at 800."'),
       choices: [
         {
-          label: 'Bid 800 cr',
+          label: 'Bid 8,000 cr',
           when: {
-          credits: 800,
+          credits: 8000,
           space: 8
         },
           effects: { do: [
           'gamble',
-          800,
+          8000,
           0.55,
           { cargo: { equipment: 8 } },
           'You crack it open on the dock, with a borrowed crowbar, while the crowd leans in: eight tons of electronics, still in their packing, gleaming and pristine. A cheer goes up, and the auctioneer tips her hat.',
@@ -415,9 +415,9 @@ Mods.register({
           'of rules. First: the Rook charges a dock tax, payable to me, now." The pen taps the clipboard. "It\'s a fair tax."'),
       choices: [
         {
-          label: 'Pay (300 cr)',
-          when: { credits: 300 },
-          effects: { credits: -300, do: ['official', 1, 'You paid the Rook\'s tax and kept the receipt.'] },
+          label: 'Pay (3,000 cr)',
+          when: { credits: 3000 },
+          effects: { credits: -3000, do: ['official', 1, 'You paid the Rook\'s tax and kept the receipt.'] },
           result: ('{official} writes you a receipt in a looping hand, tears it off the pad, and gives it to you with a flourish. It\'s a real receipt, ' +
               'stamped and numbered, with a black tower embossed at the top. "Keep it," {official} says. "If anyone stops you, show them. It\'ll save ' +
               'you trouble." A step aside, and you pass.')
@@ -516,10 +516,10 @@ Mods.register({
           'baskets. It\'s loud, and bright, and it looks like a village fair on some old green Earth.'),
       choices: [
         {
-          label: 'Buy five tons of food (250 cr)',
-          when: { credits: 250 },
+          label: 'Buy five tons of food (2,500 cr)',
+          when: { credits: 2500 },
           effects: {
-          credits: -250,
+          credits: -2500,
           cargo: { food: 5 }
         },
           result: ('Fresh, cheap, and loaded by a gang of sunburned teenagers who badger you the whole time with questions about your ship: how fast, ' +
@@ -556,10 +556,10 @@ Mods.register({
           when: { cargo: { luxury: 1 } },
           effects: {
           cargo: { luxury: -1 },
-          credits: 900
+          credits: 9000
         },
           result: ('You carry the crate down the ramp and crack the lid. Nobody moves: chocolate, coffee, bottles of spirits, a wheel of real ' +
-              'cheese. Then a laugh goes up, and someone passes the hat, and they give you 900 cr for it, which is more than it\'s worth anywhere ' +
+              'cheese. Then a laugh goes up, and someone passes the hat, and they give you 9,000 cr for it, which is more than it\'s worth anywhere ' +
               'else. A little girl sits on the crate and eats chocolate with her eyes closed.')
         },
       ],
@@ -578,7 +578,7 @@ Mods.register({
           effects: { mission: {
           to: 'Ceres Station',
           title: 'Deliver Auntie Oyelaran\'s letter to her son on Ceres Station',
-          pay: 150,
+          pay: 1500,
           days: 20
         } },
           result: ('She gives you a bowl of noodles for the road, packed in a hot metal tin with a lid tied down by string, with ginger, and chili ' +
@@ -603,10 +603,10 @@ Mods.register({
           'gamble',
           0,
           0.5,
-          { credits: 300 },
+          { credits: 3000 },
           ('You speak for a minute and forty seconds, about ships and trade and how an open dock feeds a town, and the hall listens with a long, dry ' +
               'silence that turns, unexpectedly, into a ripple of applause. They vote the fee down, and a grateful member finds you on the way out and ' +
-              'slips you a 300 cr contract to haul her ore samples, wrapped in a cloth. "Nobody ever talks that sense in here," she says.'),
+              'slips you a 3,000 cr contract to haul her ore samples, wrapped in a cloth. "Nobody ever talks that sense in here," she says.'),
           'You\'re booed off the floor within thirty seconds, in a rolling, cheerful wave of jeers, and somebody throws a heel of bread. The fee passes. On the way out the old woman with the gavel gives you a nod.'
         ] },
           result: ''
@@ -634,10 +634,10 @@ Mods.register({
           'gamble',
           0,
           0.4,
-          { credits: 400 },
+          { credits: 4000 },
           ('It takes forty minutes. At the end he grips your wrist, lowers his voice, and gives you a tip about a sealed tunnel on the west side with ' +
               'old stock in it that nobody has bothered to open. You go, out of curiosity, and find an assayer\'s office with a cracked window and, in ' +
-              'the back, four crates of scrap. You sell what you find for 400 cr.'),
+              'the back, four crates of scrap. You sell what you find for 4,000 cr.'),
           'It\'s a good story, with a long slow ending about a woman he lost in the crush of a Friday night. Some of it might be true. When you leave, he\'s still standing at the rail, looking out at the empty berths.'
         ] },
           result: ''

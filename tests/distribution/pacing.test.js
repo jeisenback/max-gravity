@@ -7,7 +7,7 @@
 // Sample:    4 captains x 5 seeds = 20 games of up to 40 runs each (tools/soak.js), a captain's five seeds at a time.
 // Tolerance: every game reaches the target in 6 to 40 runs and on day 30 to 260, never with the planner stuck, no page errors
 //            and no broken text; per captain, the median of the five seeds is 10 to 30 runs and day 60 to 190, and the mean pay
-//            per run is 800 to 2,000 cr; across captains the pay per day differs by at most 1.7 times (over 20 seeds it is
+//            per run is 8,000 to 20,000 cr; across captains the pay per day differs by at most 1.7 times (over 20 seeds it is
 //            about 1.1, but the mean of five seeds swings from 1.1 to 1.55 with nothing changed but the draws).
 // The pins that belong in `npm test` (the order of a captain's scenes, the offer after the secret) are in tests/soak.test.js.
 
@@ -26,7 +26,7 @@ test('about twenty runs reach the target with every captain, and the planner is 
   for (const captainKey of ['hester', 'dov', 'imre', 'zoya']) {
     const all = await soaks([1, 2, 3, 4, 5], { legs: 40, captainKey }, 5);
     for (const r of all) { assert.equal(r.stuck, 0, `${captainKey} seed ${r.seed}: the captain had no plan`); assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []); }
-    // A seed can end the chapter early (a hand who dies, js/boarders.js: stakes.test.js holds how often) or be ruined by one bad pick of the random answers (400 cr of a small fund
+    // A seed can end the chapter early (a hand who dies, js/boarders.js: stakes.test.js holds how often) or be ruined by one bad pick of the random answers (4,000 cr of a small fund
     // paid at a patrol stop), so most seeds must reach the target and the pace is read from those that do.
     const rs = all.filter(r => !r.ending && r.reached);
     assert.ok(rs.length >= 3, `${captainKey}: ${rs.length} of 5 seeds reached the target (${all.map(r => r.ending ? 'ended' : r.reached ? 'ok' : `no, ${r.runs} runs`).join(', ')})`);
@@ -34,8 +34,8 @@ test('about twenty runs reach the target with every captain, and the planner is 
     const med = a => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)], mr = med(rs.map(r => r.reached.runs)), md = med(rs.map(r => r.reached.day));
     assert.ok(mr >= 10 && mr <= 30 && md >= 60 && md <= 190, `${captainKey}: median ${mr} runs, day ${md}`);  // about twenty runs, with a little room: any one seed moves when the random numbers shift
     const pay = rs.reduce((t, r) => t + r.avgPayPerRun, 0) / rs.length, days = rs.reduce((t, r) => t + r.avgDaysPerRun, 0) / rs.length;
-    // (an ice run, js/icerun.js, is long and pays about 2,800, so the mean a run is up; what the economy keeps is the pay a day)
-    assert.ok(pay >= 800 && pay <= 2000, `${captainKey}: mean pay per run ${Math.round(pay)}`);
+    // (an ice run, js/icerun.js, is long and pays about 28,000, so the mean a run is up; what the economy keeps is the pay a day)
+    assert.ok(pay >= 8000 && pay <= 20000, `${captainKey}: mean pay per run ${Math.round(pay)}`);
     perDay[captainKey] = pay / days;
   }
   const rates = Object.values(perDay), spread = Math.max(...rates) / Math.min(...rates);

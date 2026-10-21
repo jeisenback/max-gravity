@@ -91,7 +91,7 @@ test('the opening says nothing of the interface, and the look back echoes why yo
     return out;
   });
   assert.doesNotMatch(r.opening, /press Sail|Save toward|credits to your name/);
-  assert.match(r.money, /You signed on for the money\. You came with 300 cr and have /);
+  assert.match(r.money, /You signed on for the money\. You came with 3,000 cr and have /);
   assert.match(r.learn, /You signed on to learn the work\. The gunner post is at level \d/);
   assert.match(r.away, /You signed on to be somewhere else\. It is \d+ days and \d+ runs? from the dock you left\./);
   assert.doesNotMatch(r.none, /You signed on/, 'a save with no reason says nothing');

@@ -14,7 +14,7 @@ const helpers = () => {
   // The ship arrives at the port she is docked at with a contract run to it: `tons` of 90 aboard, `dueIn` days from today the paper's day.
   window.deliver = ({ tons = 90, dueIn = 2, shipper = 'the Compact Freight Office', day = null } = {}) => {
     const st = G.state, h = hired(), here = currentPlanet();
-    h.run = { contract: true, shipper, good: 'water', tons: 90, from: 'X', planet: here.name, sid: st.systemId, pay: 20000, day: day === null ? st.day - 6 : day, days: 6, due: st.day + dueIn, cost: 0, profit: 20000 };
+    h.run = { contract: true, shipper, good: 'water', tons: 90, from: 'X', planet: here.name, sid: st.systemId, pay: 200000, day: day === null ? st.day - 6 : day, days: 6, due: st.day + dueIn, cost: 0, profit: 200000 };
     st.cargo = tons ? { water: tons } : {}; st.paid = {}; h.plan = null; h.off = null;
     G.dialog = null; G.nextEvent = null; UI.notes.length = 0;
     Mods.emit('landed', here);
@@ -64,7 +64,7 @@ test('the board reads the regard: a shipper that trusts the ship is named on the
     const st = start(), h = hired(), here = currentPlanet(), shipper = shipperOf(here, system().gov), out = { shipper };
     h.standing = {}; h.freight = null; const plain = contractBoard(st, here).map(c => c.pay);
     h.standing = { [shipper]: 2 }; h.freight = null; const trusted = contractBoard(st, here); out.trusted = trusted.length; out.payUp = plain.length && trusted.length ? trusted[0].pay >= plain[0] : true;
-    h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: { contract: true, shipper, good: 'water', tons: 50, planet: 'Mars', sid: 'mars', pay: 9000, days: 4, due: st.day + 8, yard: false }, alts: [] };
+    h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: { contract: true, shipper, good: 'water', tons: 50, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, yard: false }, alts: [] };
     out.panelTrusted = runHtml();
     h.standing = { [shipper]: -1 }; h.plan.at = st.planet; out.panelWary = runHtml();
     h.standing = { [shipper]: -2 }; h.freight = null; out.closed = contractBoard(st, here).length; out.closedHere = closedHere();
@@ -90,20 +90,20 @@ test('an older save with no regard kept settles a delivery without error and sta
 test('the dock broker holds money back: the pay is less than the paper, the ledger says so, and the agent explains the handling; speaking up gets it back when the case holds', async () => {
   const r = await run(() => {
     const st = start(), h = hired(), out = {}, broker = 'a dock broker', real = Math.random;
-    const day = Array.from({ length: 400 }, (_, i) => i + 1).find(d => skimOf({ shipper: broker, planet: currentPlanet().name, day: d }, 20000, 0) > 0);
-    const f0 = h.fund, e = deliver({ shipper: broker, day }); out.cut = skimOf({ shipper: broker, planet: currentPlanet().name, day }, 20000, 0);
+    const day = Array.from({ length: 400 }, (_, i) => i + 1).find(d => skimOf({ shipper: broker, planet: currentPlanet().name, day: d }, 200000, 0) > 0);
+    const f0 = h.fund, e = deliver({ shipper: broker, day }); out.cut = skimOf({ shipper: broker, planet: currentPlanet().name, day }, 200000, 0);
     out.fundGain = h.fund - f0; out.row = h.ledger[0].skim; out.title = e && e.title; out.text = e && e.text; out.labels = e && e.choices.map(c => c.label); out.log = logRowsHtml(h.ledger, 1);
     const snap = JSON.stringify(G.state);
     const play = (i, roll) => { G.state = JSON.parse(snap); G.dialog = null; const hh = hired(), f1 = hh.fund, c1 = G.state.credits, s1 = hh.standing[broker]; const ev = skimScene(); Math.random = () => roll; const text = ev.choices[i].run(); Math.random = real; return { text, fund: hh.fund - f1, credits: G.state.credits - c1, standing: hh.standing[broker] - s1, ledger: hh.ledger[0].skim }; };
-    window.skimScene = () => { const o = hired().off || { kind: 'skim', shipper: broker, good: 'water', tons: 90, got: 90, late: 0, due: G.state.day, cut: out.cut, owed: 20000 }; return agentScene(o, freightAgent(currentPlanet())); };
-    hired().off = { kind: 'skim', shipper: broker, good: 'water', tons: 90, got: 90, late: 0, due: G.state.day, cut: out.cut, owed: 20000 };
+    window.skimScene = () => { const o = hired().off || { kind: 'skim', shipper: broker, good: 'water', tons: 90, got: 90, late: 0, due: G.state.day, cut: out.cut, owed: 200000 }; return agentScene(o, freightAgent(currentPlanet())); };
+    hired().off = { kind: 'skim', shipper: broker, good: 'water', tons: 90, got: 90, late: 0, due: G.state.day, cut: out.cut, owed: 200000 };
     out.win = play(0, 0); out.lose = play(0, 0.999); out.letgo = play(1, 0.5); out.share = hired().share;
     return out;
   });
-  assert.ok(r.cut > 0 && r.fundGain === 20000 - r.cut, 'the ship was paid the paper less the cut'); assert.equal(r.row, r.cut, 'the ledger keeps what was held back');
-  assert.equal(r.title, 'Short on the Paper'); assert.match(r.text, /The paper says 20,000 cr\. a dock broker has paid 17,000\./); assert.match(r.text, /"Handling,"/);
+  assert.ok(r.cut > 0 && r.fundGain === 200000 - r.cut, 'the ship was paid the paper less the cut'); assert.equal(r.row, r.cut, 'the ledger keeps what was held back');
+  assert.equal(r.title, 'Short on the Paper'); assert.match(r.text, /The paper says 200,000 cr\. a dock broker has paid 170,000\./); assert.match(r.text, /"Handling,"/);
   assert.equal(r.labels.length, 2); assert.match(r.labels[0], /^Speak up \[\d+%; if it fails: the shipper's regard\]$/); assert.equal(r.labels[1], 'Let it go');
-  assert.match(r.log, /3,000 cr held back/);
+  assert.match(r.log, /30,000 cr held back/);
   assert.equal(r.win.fund, r.cut, 'the case held: the difference comes back to the ship'); assert.equal(r.win.credits, Math.round(r.cut * r.share), 'and the hand\'s share of it'); assert.equal(r.win.standing, 1); assert.equal(r.win.ledger, 0); assert.match(r.win.text, /I'll put it back on the account/);
   assert.deepEqual([r.lose.fund, r.lose.credits, r.lose.standing], [0, 0, -1]); assert.match(r.lose.text, /I can't strike it/);
   assert.deepEqual([r.letgo.fund, r.letgo.credits, r.letgo.standing], [0, 0, 0]); assert.match(r.letgo.text, /initials the margin/);
@@ -114,7 +114,7 @@ test('a state\'s freight office reads the crew list at the lock: a crew member i
     const st = start(), h = hired(), here = currentPlanet(), out = {}, office = 'the Compact Freight Office', gov = 'Arcology Compact';
     const target = st.crew.map(person).find(p => !p.cast);
     const realTies = tiesOf; window.tiesOf = p => (p.id === target.id ? { ...realTies(p), status: { ...realTies(p).status, [gov]: 'wanted' } } : realTies(p));
-    const plan = shipper => { h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: { contract: true, shipper, good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 9000, days: 4, due: st.day + 8, cost: 0, yard: false }, alts: [] }; h.freight = { key: `${here.name}@${st.day}`, list: [h.plan.run] }; h.run = null; G.dialog = null; };
+    const plan = shipper => { h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: { contract: true, shipper, good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false }, alts: [] }; h.freight = { key: `${here.name}@${st.day}`, list: [h.plan.run] }; h.run = null; G.dialog = null; };
     const fresh = () => { st.customs = {}; plan(office); G.state = JSON.parse(JSON.stringify(st)); };
     // not on a paper from another shipper, nor the first run
     plan('the Rook'); out.other = !!sideDue(currentPlan());
@@ -138,7 +138,7 @@ test('the side scene\'s ways out: papers and the fee clear the name, silence hol
     const st = start(), h = hired(), here = currentPlanet(), out = {}, office = 'the Compact Freight Office', gov = 'Arcology Compact', real = Math.random;
     const target = st.crew.map(person).find(p => !p.cast), realTies = tiesOf;
     window.tiesOf = p => (p.id === target.id ? { ...realTies(p), status: { ...realTies(p).status, [gov]: 'wanted' } } : realTies(p));
-    const run0 = { contract: true, shipper: office, good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 9000, days: 4, due: st.day + 8, cost: 0, yard: false };
+    const run0 = { contract: true, shipper: office, good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false };
     h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: run0, alts: [] }; h.freight = { key: `${here.name}@${st.day}`, list: [run0] }; st.customs = {};
     const snap = JSON.stringify(G.state);
     const play = (label, roll) => {
@@ -153,7 +153,7 @@ test('the side scene\'s ways out: papers and the fee clear the name, silence hol
     return out;
   });
   assert.match(r.papers.text, /Yours goes on it instead/); assert.equal(r.papers.target, 2); assert.equal(r.papers.board, 1, 'the paper stands');
-  assert.equal(r.pay.fund, -400); assert.equal(r.pay.captain, -1); assert.match(r.pay.text, /stamps it/); assert.equal(r.pay.board, 1);
+  assert.equal(r.pay.fund, -4000); assert.equal(r.pay.captain, -1); assert.match(r.pay.text, /stamps it/); assert.equal(r.pay.board, 1);
   assert.match(r.clear.text, /Then it's the list I was given/); assert.equal(r.clear.board, 1); assert.equal(r.clear.standing, 0);
   assert.match(r.lost.text, /No cargo for this ship/); assert.equal(r.lost.board, 0, 'the day\'s board is empty'); assert.equal(r.lost.planGone, true); assert.equal(r.lost.standing, -1); assert.equal(r.lost.rep, -2); assert.equal(r.lost.captain, -1); assert.equal(r.lost.target, -1);
   assert.equal(r.ashore.aboard, false, 'put ashore'); assert.equal(r.ashore.crew, 0, 'and someone from the dock signs on for the berth'); assert.equal(r.ashore.target, -3); assert.equal(r.ashore.rep, 1); assert.match(r.ashore.text, /strikes the name/);

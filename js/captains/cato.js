@@ -34,7 +34,7 @@ function inTheIceHold(backup) {
 
 CAST.cato = {
   first: 'Cato', last: 'Rahman', culture: 'earth', home: 'Chittagong Arcology', job: 'first officer', age: 44, role: 'xo',
-  traits: ['kind', 'generous'], wage: 65, xo: true, fragile: true,
+  traits: ['kind', 'generous'], wage: 650, xo: true, fragile: true,
   skills: { xo: 2, engineer: 1, pilot: 0, gunner: 1, slicer: 0 }, captain: { trade: 3, nerve: 3, thrift: 2 },
   ambition: 'Wants a share of a ship, someday, so the crew he came up with could work one deck again.',
   bio: 'He came up through the hold, and he knows every crew member by name and by family. He keeps the watch bill, and covers for the crew where the captain\'s rules wouldn\'t.',
@@ -235,7 +235,7 @@ CAST.cato.round = () => {
 // The first arrival (captains.js arrivalScene): Cato settles up at the foot of the ramp.
 CAST.cato.arrival = {
   open: 'The ramp is down. Cato has the captain\'s notebook open on a crate on the apron, and he turns it round so you can read it. "She\'s at the harbor office. I\'m to show you the page and bring it back."',
-  memory: '"My first share was ninety," he says. "I bought boots with it. They were the wrong boots, and I wore them for six years." He taps the page. "Yours is in your account. Look at the header."',
+  memory: '"My first share was nine hundred," he says. "I bought boots with it. They were the wrong boots, and I wore them for six years." He taps the page. "Yours is in your account. Look at the header."',
   column: '"That column\'s {cap}\'s," Cato says. The pencil stays behind his ear.',
   pace: '"A season," Cato says. "{cap} was a hand on this ship before she owned it. It took her three."',
 };

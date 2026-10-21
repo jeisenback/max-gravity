@@ -5499,7 +5499,7 @@
   "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They haven't spoken since they agreed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -5538,9 +5538,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 1, Ceres Breakers 3. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 1, Ceres Breakers 3. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -5552,9 +5552,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 6, Ceres Breakers 5. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 6, Ceres Breakers 5. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -5708,7 +5708,7 @@
   "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -5747,9 +5747,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 0, Ceres Breakers 1. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 1. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -5761,9 +5761,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 3, Ceres Breakers 2. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 3, Ceres Breakers 2. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -5916,16 +5916,16 @@
   "title": "The Recipe",
   "text": "Ana and Ben are in the galley, working out a dish from Ceres Station. They disagree about the spice, the pan and the order, and agree entirely about how it should taste. There's a list on the cabinet door and a space after \"chili\" with a question mark.",
   "labels": [
-   "Pay for the missing ingredients (150 cr)",
+   "Pay for the missing ingredients (1,500 cr)",
    "Let them make do"
   ],
   "plays": [
    {
     "i": 0,
     "roll": 0,
-    "text": "You find them at the next port stall for 150 cr. The dish takes two hours and the whole ship smells of it. Ana and Ben eat theirs standing up, without talking, and then wash up together.",
+    "text": "You find them at the next port stall for 1,500 cr. The dish takes two hours and the whole ship smells of it. Ana and Ben eat theirs standing up, without talking, and then wash up together.",
     "d": {
-     "credits": -150,
+     "credits": -1500,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -5940,9 +5940,9 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You find them at the next port stall for 150 cr. The dish takes two hours and the whole ship smells of it. Ana and Ben eat theirs standing up, without talking, and then wash up together.",
+    "text": "You find them at the next port stall for 1,500 cr. The dish takes two hours and the whole ship smells of it. Ana and Ben eat theirs standing up, without talking, and then wash up together.",
     "d": {
-     "credits": -150,
+     "credits": -1500,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -5991,7 +5991,7 @@
   "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -6030,9 +6030,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 2, Ceres Breakers 4. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 2, Ceres Breakers 4. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6044,9 +6044,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 2, Ceres Breakers 4. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 2, Ceres Breakers 4. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6088,7 +6088,7 @@
   "text": "Ana (Pallas Smelters) and Ben (Ceres Breakers) have put the galley rota on the match. The loser takes all of it for a week. It's written on the cabinet door in Ana's handwriting. Ben has added \"and no complaints\" and underlined it twice.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -6127,9 +6127,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6142,9 +6142,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 3, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 3, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6185,7 +6185,7 @@
   "title": "Small System",
   "text": "Ana hears Ben humming in the corridor. It's a tune from Ceres Station, a bad one, from a bar Ana knows. \"That's a Ceres Station tune,\" Ana says. Ben puts the filter down. \"Where were you?\" By the end of the watch they've named three people they both know and one they both owe money.",
   "labels": [
-   "Break out something to toast with (200 cr)",
+   "Break out something to toast with (2,000 cr)",
    "Leave them to it"
   ],
   "plays": [
@@ -6194,7 +6194,7 @@
     "roll": 0,
     "text": "You open a bottle from the locker. They toast Ceres Station, the old teachers, and the people who didn't get out. Somebody starts a song, and the others know it. It's late when it ends. Ana and Ben go to their bunks together, not quite steady.",
     "d": {
-     "credits": -200,
+     "credits": -2000,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -6211,7 +6211,7 @@
     "roll": 0.999,
     "text": "You open a bottle from the locker. They toast Ceres Station, the old teachers, and the people who didn't get out. Somebody starts a song, and the others know it. It's late when it ends. Ana and Ben go to their bunks together, not quite steady.",
     "d": {
-     "credits": -200,
+     "credits": -2000,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -6260,7 +6260,7 @@
   "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They haven't spoken since they agreed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -6299,9 +6299,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6313,9 +6313,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 1, Ceres Breakers 4. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 1, Ceres Breakers 4. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6468,7 +6468,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -6507,9 +6507,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 3, Ceres Breakers 4. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 3, Ceres Breakers 4. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6521,9 +6521,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 0, Ceres Breakers 1. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 1. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6565,7 +6565,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -6604,9 +6604,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 4, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 4, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6618,9 +6618,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 5, Ceres Breakers 3. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 3. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6663,7 +6663,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -6702,9 +6702,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 2, Ceres Breakers 4. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 2, Ceres Breakers 4. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6716,9 +6716,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 5, Ceres Breakers 1. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 1. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6761,7 +6761,7 @@
   "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -6800,9 +6800,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 2, Ceres Breakers 3. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 2, Ceres Breakers 3. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6814,9 +6814,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 1, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 1, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6858,7 +6858,7 @@
   "title": "Small System",
   "text": "Ana and Ben are arguing about coffee at the galley table when Ben says the name of a street on Ceres Station. Ana stops with the cup halfway up. \"Which end?\" Ana says. \"The water end.\" \"Then you know the baker.\" They were a few decks apart on Ceres Station for twelve years and never met. The coffee goes cold. They compare teachers, bars and the Pallas Smelters seasons.",
   "labels": [
-   "Break out something to toast with (200 cr)",
+   "Break out something to toast with (2,000 cr)",
    "Leave them to it"
   ],
   "plays": [
@@ -6867,7 +6867,7 @@
     "roll": 0,
     "text": "You open a bottle from the locker. They toast Ceres Station, the old teachers, and the people who didn't get out. Somebody starts a song, and the others know it. It's late when it ends. Ana and Ben go to their bunks together, not quite steady.",
     "d": {
-     "credits": -200,
+     "credits": -2000,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -6884,7 +6884,7 @@
     "roll": 0.999,
     "text": "You open a bottle from the locker. They toast Ceres Station, the old teachers, and the people who didn't get out. Somebody starts a song, and the others know it. It's late when it ends. Ana and Ben go to their bunks together, not quite steady.",
     "d": {
-     "credits": -200,
+     "credits": -2000,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -6933,7 +6933,7 @@
   "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They haven't spoken since they agreed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -6972,9 +6972,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 5, Ceres Breakers 4. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 4. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -6987,9 +6987,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -7031,7 +7031,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -7070,9 +7070,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 0, Ceres Breakers 3. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 3. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -7084,9 +7084,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 2, Ceres Breakers 3. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 2, Ceres Breakers 3. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -7350,7 +7350,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -7389,9 +7389,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 1, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 1, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -7404,9 +7404,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 3, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 3, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -7670,7 +7670,7 @@
   "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They haven't spoken since they agreed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -7709,9 +7709,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 4, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 4, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -7723,9 +7723,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 0, Ceres Breakers 1. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 1. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -7878,7 +7878,7 @@
   "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -7917,9 +7917,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 1, Ceres Breakers 2. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 1, Ceres Breakers 2. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -7931,9 +7931,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 5, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8086,16 +8086,16 @@
   "title": "The Recipe",
   "text": "Ana and Ben are in the galley, working out a dish from home. They disagree about the spice, the pan and the order, and agree entirely about how it should taste. There's a list on the cabinet door and a space after \"chili\" with a question mark.",
   "labels": [
-   "Pay for the missing ingredients (150 cr)",
+   "Pay for the missing ingredients (1,500 cr)",
    "Let them make do"
   ],
   "plays": [
    {
     "i": 0,
     "roll": 0,
-    "text": "You find them at the next port stall for 150 cr. The dish takes two hours and the whole ship smells of it. Ana and Ben eat theirs standing up, without talking, and then wash up together.",
+    "text": "You find them at the next port stall for 1,500 cr. The dish takes two hours and the whole ship smells of it. Ana and Ben eat theirs standing up, without talking, and then wash up together.",
     "d": {
-     "credits": -150,
+     "credits": -1500,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -8110,9 +8110,9 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You find them at the next port stall for 150 cr. The dish takes two hours and the whole ship smells of it. Ana and Ben eat theirs standing up, without talking, and then wash up together.",
+    "text": "You find them at the next port stall for 1,500 cr. The dish takes two hours and the whole ship smells of it. Ana and Ben eat theirs standing up, without talking, and then wash up together.",
     "d": {
-     "credits": -150,
+     "credits": -1500,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -8161,7 +8161,7 @@
   "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -8200,9 +8200,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 3, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 3, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8214,9 +8214,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 0, Ceres Breakers 1. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 1. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8258,7 +8258,7 @@
   "text": "Ana (Pallas Smelters) and Ben (Ceres Breakers) have put the galley rota on the match. The loser takes all of it for a week. It's written on the cabinet door in Ana's handwriting. Ben has added \"and no complaints\" and underlined it twice.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -8297,9 +8297,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 5, Ceres Breakers 6. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 5, Ceres Breakers 6. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8311,9 +8311,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 0, Ceres Breakers 2. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 2. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8354,7 +8354,7 @@
   "title": "Small System",
   "text": "Ben says something in the old slang at the galley table and Ana answers without thinking, in the same words. They look at each other. \"My grandmother used to say that,\" Ana says. \"So did mine,\" Ben says. They're still going when the watch changes.",
   "labels": [
-   "Break out something to toast with (200 cr)",
+   "Break out something to toast with (2,000 cr)",
    "Leave them to it"
   ],
   "plays": [
@@ -8363,7 +8363,7 @@
     "roll": 0,
     "text": "You open a bottle from the locker. They toast home, the old teachers, and the people who didn't get out. Somebody starts a song, and the others know it. It's late when it ends. Ana and Ben go to their bunks together, not quite steady.",
     "d": {
-     "credits": -200,
+     "credits": -2000,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -8380,7 +8380,7 @@
     "roll": 0.999,
     "text": "You open a bottle from the locker. They toast home, the old teachers, and the people who didn't get out. Somebody starts a song, and the others know it. It's late when it ends. Ana and Ben go to their bunks together, not quite steady.",
     "d": {
-     "credits": -200,
+     "credits": -2000,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -8429,7 +8429,7 @@
   "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They haven't spoken since they agreed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -8468,9 +8468,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 3, Ceres Breakers 1. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 3, Ceres Breakers 1. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8483,9 +8483,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 2, Ceres Breakers 1. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 2, Ceres Breakers 1. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8639,7 +8639,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -8678,9 +8678,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 3, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 3, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8693,9 +8693,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 4, Ceres Breakers 2. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 4, Ceres Breakers 2. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8738,7 +8738,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -8777,9 +8777,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 5, Ceres Breakers 1. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 1. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8792,9 +8792,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 0, Ceres Breakers 2. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 2. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8836,7 +8836,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -8875,9 +8875,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 5, Ceres Breakers 2. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 2. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8890,9 +8890,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 1, Ceres Breakers 2. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 1, Ceres Breakers 2. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8934,7 +8934,7 @@
   "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -8973,9 +8973,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 3, Ceres Breakers 2. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 3, Ceres Breakers 2. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -8988,9 +8988,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 4, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 4, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -9032,7 +9032,7 @@
   "title": "Small System",
   "text": "Ana and Ben have spent the morning trading rhymes and sayings from home, fast and low, in the same slang. The rest of the crew understands one word in three. Someone asks what a word means. They both try to say, and both stop.",
   "labels": [
-   "Break out something to toast with (200 cr)",
+   "Break out something to toast with (2,000 cr)",
    "Leave them to it"
   ],
   "plays": [
@@ -9041,7 +9041,7 @@
     "roll": 0,
     "text": "You open a bottle from the locker. They toast home, the old teachers, and the people who didn't get out. Somebody starts a song, and the others know it. It's late when it ends. Ana and Ben go to their bunks together, not quite steady.",
     "d": {
-     "credits": -200,
+     "credits": -2000,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -9058,7 +9058,7 @@
     "roll": 0.999,
     "text": "You open a bottle from the locker. They toast home, the old teachers, and the people who didn't get out. Somebody starts a song, and the others know it. It's late when it ends. Ana and Ben go to their bunks together, not quite steady.",
     "d": {
-     "credits": -200,
+     "credits": -2000,
      "armor": 0,
      "bonds": {
       "p3|p4": 3
@@ -9107,7 +9107,7 @@
   "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They haven't spoken since they agreed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -9146,9 +9146,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 4, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 4, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -9161,9 +9161,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 2, Ceres Breakers 4. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 2, Ceres Breakers 4. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -9205,7 +9205,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -9244,9 +9244,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 3, Ceres Breakers 4. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 3, Ceres Breakers 4. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -9258,9 +9258,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -9524,7 +9524,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -9563,9 +9563,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 2, Ceres Breakers 3. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 2, Ceres Breakers 3. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -9577,9 +9577,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 5, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10004,7 +10004,7 @@
   "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They haven't spoken since they agreed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -10043,9 +10043,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 5, Ceres Breakers 1. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 1. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10058,9 +10058,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 2, Ceres Breakers 3. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 2, Ceres Breakers 3. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10213,7 +10213,7 @@
   "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -10252,9 +10252,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 1, Ceres Breakers 2. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 1, Ceres Breakers 2. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10266,9 +10266,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 0, Ceres Breakers 3. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 3. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10421,7 +10421,7 @@
   "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -10460,9 +10460,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 1, Ceres Breakers 4. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 1, Ceres Breakers 4. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10474,9 +10474,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 2, Ceres Breakers 1. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 2, Ceres Breakers 1. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10519,7 +10519,7 @@
   "text": "Ana (Pallas Smelters) and Ben (Ceres Breakers) have put the galley rota on the match. The loser takes all of it for a week. It's written on the cabinet door in Ana's handwriting. Ben has added \"and no complaints\" and underlined it twice.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -10558,9 +10558,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 4, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 4, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10572,9 +10572,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10617,7 +10617,7 @@
   "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They haven't spoken since they agreed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -10656,9 +10656,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10671,9 +10671,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 3, Ceres Breakers 2. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 3, Ceres Breakers 2. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10827,7 +10827,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -10866,9 +10866,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 2, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 2, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10881,9 +10881,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10926,7 +10926,7 @@
   "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They haven't spoken since they agreed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -10965,9 +10965,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -10980,9 +10980,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 3, Ceres Breakers 4. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 3, Ceres Breakers 4. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -11135,7 +11135,7 @@
   "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -11174,9 +11174,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 4, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 4, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -11188,9 +11188,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -11343,7 +11343,7 @@
   "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -11382,9 +11382,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 0, Ceres Breakers 3. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 3. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -11396,9 +11396,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 3,000 cr. Ben brings it up at every meal until the next match.",
     "d": {
-     "credits": -300,
+     "credits": -3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -11440,7 +11440,7 @@
   "text": "Ana (Pallas Smelters) and Ben (Ceres Breakers) have put the galley rota on the match. The loser takes all of it for a week. It's written on the cabinet door in Ana's handwriting. Ben has added \"and no complaints\" and underlined it twice.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -11479,9 +11479,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 2, Ceres Breakers 1. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 2, Ceres Breakers 1. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -11494,9 +11494,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 5, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -11539,7 +11539,7 @@
   "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They haven't spoken since they agreed it.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -11578,9 +11578,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 5, Ceres Breakers 2. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 2. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -11593,9 +11593,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 2, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 2, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -11749,7 +11749,7 @@
   "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
   "labels": [
    "Stream it for everyone",
-   "Put 300 cr on the Pallas Smelters yourself",
+   "Put 3,000 cr on the Pallas Smelters yourself",
    "Stay out of it"
   ],
   "plays": [
@@ -11788,9 +11788,9 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Pallas Smelters 2, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 2, Ceres Breakers 0. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {
@@ -11803,9 +11803,9 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Pallas Smelters 5, Ceres Breakers 4. You collect 300 cr. Ana wants to buy a round with it.",
+    "text": "Pallas Smelters 5, Ceres Breakers 4. You collect 3,000 cr. Ana wants to buy a round with it.",
     "d": {
-     "credits": 300,
+     "credits": 3000,
      "armor": 0,
      "bonds": {},
      "opinion": {

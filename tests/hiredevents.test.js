@@ -123,7 +123,7 @@ test('every choice of every hired event lands its effects and no others, and pla
     const follow = (e, at, depth) => {
       e.choices.forEach((ch, j) => {
         if (ch.can && !ch.can()) return;
-        G.state.credits = 500; G.dialog = { event: e, choices: e.choices }; G.nextEvent = null;
+        G.state.credits = 5000; G.dialog = { event: e, choices: e.choices }; G.nextEvent = null;
         let text;
         try { text = chooseEvent(j); } catch (err) { bad.push(`${at}.${j}: threw ${err}`); return; }
         followed++; clean(`${at}.${j}`, e, ch, text);
@@ -141,7 +141,7 @@ test('every choice of every hired event lands its effects and no others, and pla
           const n = (() => { startHired(post); G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); aboard(d); return handContext(); })();
           const count = d.make(n).choices.length;
           for (let i = 0; i < count; i++) {
-            startHired(post); const st = G.state, h = st.hired; st.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.credits = 500; aboard(d);
+            startHired(post); const st = G.state, h = st.hired; st.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.credits = 5000; aboard(d);
             const c = handContext();
             if (d.when && !d.when(c)) continue;
             const e = d.make(c), choice = e.choices[i];
@@ -152,7 +152,7 @@ test('every choice of every hired event lands its effects and no others, and pla
             try { text = String(chooseEvent(i)); } catch (err) { bad.push(`${d.id}#${i}: threw ${err}`); continue; }
             played++; clean(`${d.id}#${i}`, e, choice, text);
             if (h.fund !== before.fund || h.wage !== before.wage || h.share !== before.share || JSON.stringify(h.run) !== before.run) bad.push(`${d.id}#${i}: touched the run`);
-            if (st.credits - before.cash < -100 || st.credits - before.cash > 200) bad.push(`${d.id}#${i}: savings moved by ${st.credits - before.cash}`);
+            if (st.credits - before.cash < -1000 || st.credits - before.cash > 2000) bad.push(`${d.id}#${i}: savings moved by ${st.credits - before.cash}`);
             if (skillXp(post) - before.xp > 4) bad.push(`${d.id}#${i}: experience ${skillXp(post) - before.xp}`);
             rows.push(d.group);
             const next = G.nextEvent; G.nextEvent = null;
@@ -177,7 +177,7 @@ test('specific effects land: opinion of the captain, a shipmate, savings and exp
   const r = await ev(() => {
     startHired('pilot'); const st = G.state, h = st.hired; st.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const play = (id, i) => { const c = handContext(), d = HAND_EVENTS.find(x => x.id === id), e = d.make(c); G.dialog = { event: e, choices: e.choices }; const o = { cap: c.cap.opinion, mate: c.mate.opinion, cash: st.credits, xp: skillXp('pilot') }; chooseEvent(i); return { cap: c.cap.opinion - o.cap, mate: c.mate.opinion - o.mate, cash: st.credits - o.cash, xp: skillXp('pilot') - o.xp, mateWho: c.mate }; };
-    st.credits = 500;
+    st.credits = 5000;
     const out = {};
     out.favour = play('cap-favour', 0); out.favourPaid = play('cap-favour', 1); out.refuse = play('cap-favour', 2);
     out.short = play('money-short', 0); out.loan = play('money-loan', 0); out.noLoan = play('money-loan', 2);
@@ -185,10 +185,10 @@ test('specific effects land: opinion of the captain, a shipmate, savings and exp
     return out;
   });
   assert.deepEqual([r.favour.cap, r.favour.xp, r.favour.cash], [2, 2, 0], 'standing the watch');
-  assert.deepEqual([r.favourPaid.cap, r.favourPaid.cash], [0, 40], 'standing it for a fee');
+  assert.deepEqual([r.favourPaid.cap, r.favourPaid.cash], [0, 400], 'standing it for a fee');
   assert.equal(r.refuse.cap, -1);
   assert.deepEqual([r.short.cash, r.short.cap], [r.wage, 0], 'the short pay is made good');
-  assert.deepEqual([r.loan.cash, r.loan.mate], [-100, 3], 'a loan costs savings and buys goodwill');
+  assert.deepEqual([r.loan.cash, r.loan.mate], [-1000, 3], 'a loan costs savings and buys goodwill');
   assert.equal(r.noLoan.mate, -1);
   assert.deepEqual([r.cover.mate, r.cover.xp], [2, 1]);
   await done();
@@ -264,7 +264,7 @@ test('hired downtime lands its effects, in savings and not the ship\'s purse', a
     for (const bg of ['earth', 'mars', 'belt']) {
       for (const label of labels) {
         startGame({ slot: 1, background: bg, captain: 'Ines Okafor', mode: 'hired', post: 'pilot' }); while (G.dialog) finishEvent();
-        const st = G.state, h = st.hired; st.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.credits = 500;
+        const st = G.state, h = st.hired; st.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.credits = 5000;
         const d = HAND_DOWNTIME.find(x => x.label === label);
         if (!d.can()) continue;
         const cap = person(h.captain), mates = crewPeople().map(f => f.p);
@@ -288,9 +288,9 @@ test('hired downtime lands its effects, in savings and not the ship\'s purse', a
     assert.doesNotMatch(v.text, /undefined|NaN|\[object|\{[a-z]+\}/, k);
     assert.equal(v.fund, 0, `${k}: never the ship's purse`);
   }
-  assert.ok(r['earth:Stand a spare watch for the captain'].cash === 40, 'the fee reaches your savings');
+  assert.ok(r['earth:Stand a spare watch for the captain'].cash === 400, 'the fee reaches your savings');
   const mend = r['earth:Mend a shipmate\'s gear for pay'];
-  assert.ok(mend.cash >= 30 && mend.cash <= 60 && mend.fund === 0);
+  assert.ok(mend.cash >= 300 && mend.cash <= 600 && mend.fund === 0);
   await done();
 });
 
@@ -410,7 +410,7 @@ test('the used Ore Runner is offered by Tomas or by a broker, and the choice say
   const r = await ev(() => {
     const out = [];
     for (const withTomas of [true, false]) {
-      startHired('pilot'); const st = G.state; st.credits = 20000;
+      startHired('pilot'); const st = G.state; st.credits = 200000;
       st.crew = st.crew.filter(id => id !== 'c:tomas');  // the Earth pair is aboard from the start
       if (withTomas) castJoin('tomas', '');
       const e = dealScene(currentPlanet());

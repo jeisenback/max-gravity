@@ -28,9 +28,9 @@ function loseCrew(c, cause) {
 // ---------- the scene afterwards ----------
 // Each way of marking it is loved and hated by traits; the crew answer in their own voice.
 const MOURN = [
-  { label: 'Hold a service at the port, and stand the crew a meal (150 cr from the ship)', loves: ['pious', 'kind', 'homesick', 'generous'], hates: ['rude', 'greedy'], fund: 150,
+  { label: 'Hold a service at the port, and stand the crew a meal (1,500 cr from the ship)', loves: ['pious', 'kind', 'homesick', 'generous'], hates: ['rude', 'greedy'], fund: 1500,
     text: 'You find the port\'s chapel, a plain room with a rail and a window, and the crew stand in it for a while with their hands at their sides. Afterward there is a meal, and nobody eats much, and everybody stays.' },
-  { label: 'Write to their family, and send a month\'s savings (100 cr of yours)', loves: ['kind', 'homesick', 'generous'], hates: ['greedy'], cost: 100, like: 'cap',
+  { label: 'Write to their family, and send a month\'s savings (1,000 cr of yours)', loves: ['kind', 'homesick', 'generous'], hates: ['greedy'], cost: 1000, like: 'cap',
     text: 'It takes you an evening and four drafts. The letter says what they were like aboard, which was true, and that there is something enclosed, which is not enough. You send it on the next outbound packet.' },
   { label: 'Say a few words aboard, and go on', loves: ['talkative', 'kind', 'brave'], hates: [],
     text: 'You gather the crew in the galley and say what you can. It is short. Then everyone goes back to their post, and the berth stays empty at the table.' },

@@ -38,9 +38,9 @@ ORDERS.comms = [{
   const hail = TRANSIT_EVENTS.find(e => e.title === 'Merchant Hail');
   if (hail) hail.auto = () => {
     const st = G.state, who = roleName('slicer');
-    if (st.credits < 1500) return `${who} thanks the freighter captain and declines the tip.`;
-    st.credits -= 500;
-    return `${who} pays 500 cr for the freighter captain's market tip: ${addRumor()}`;
+    if (st.credits < 15000) return `${who} thanks the freighter captain and declines the tip.`;
+    st.credits -= 5000;
+    return `${who} pays 5,000 cr for the freighter captain's market tip: ${addRumor()}`;
   };
 }
 

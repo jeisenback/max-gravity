@@ -35,21 +35,21 @@ const barWarm = (p, taste, memory) => { const r = barReact(p, taste.loves, taste
 // ---------- helping with a goal (a second scene) ----------
 // Three ways to help, whatever the goal: the same act lands differently on different people.
 const HELP_TASTE = {
-  gift: { cost: 60, loves: ['greedy', 'homesick', 'nervous'], hates: ['rude', 'pious'] },
+  gift: { cost: 600, loves: ['greedy', 'homesick', 'nervous'], hates: ['rude', 'pious'] },
   advice: { loves: ['curious', 'nervous', 'brave'], hates: ['rude', 'secretive'] },
   listen: { loves: ['homesick', 'kind', 'talkative', 'nervous'], hates: ['greedy', 'rude', 'drunk'] },
 };
 const GOAL_HELP = {
   home: { ask: 'Ask about the way home', text: ('{n} hasn\'t been home in years, and has the route on a card in a pocket, worn to cloth. "Three more ' +
-      'ports," they say. "Maybe four, if the money holds."'), gift: 'Pay part of the fare (60 cr)', advice: 'Tell them which lanes are quick right now', listen: 'Ask them what they\'ll do first, when they get there' },
-  family: { ask: 'Ask about the family', text: '{n} is going to see family, and has been trying all evening to think what to bring.', gift: 'Press a few credits into their hand for a present (60 cr)', advice: 'Suggest something from the market here', listen: 'Ask who they\'re going to see' },
-  job: { ask: 'Ask about the interview', text: '{n} has an interview at the other end, and says the questions over under their breath.', gift: 'Stand them the clothes for it (60 cr)', advice: 'Play the interviewer for a few questions', listen: 'Let them talk it through' },
+      'ports," they say. "Maybe four, if the money holds."'), gift: 'Pay part of the fare (600 cr)', advice: 'Tell them which lanes are quick right now', listen: 'Ask them what they\'ll do first, when they get there' },
+  family: { ask: 'Ask about the family', text: '{n} is going to see family, and has been trying all evening to think what to bring.', gift: 'Press a few credits into their hand for a present (600 cr)', advice: 'Suggest something from the market here', listen: 'Ask who they\'re going to see' },
+  job: { ask: 'Ask about the interview', text: '{n} has an interview at the other end, and says the questions over under their breath.', gift: 'Stand them the clothes for it (600 cr)', advice: 'Play the interviewer for a few questions', listen: 'Let them talk it through' },
   fresh: { ask: 'Ask about starting again', text: ('{n} says only that it\'s a fresh start, and that they\'d rather not say from what. They\'re ' +
-      'watching to see how you take it.'), gift: 'Put something toward the first month (60 cr)', advice: 'Tell them what to do first in a new port', listen: 'Say it\'s all right not to say' },
+      'watching to see how you take it.'), gift: 'Put something toward the first month (600 cr)', advice: 'Tell them what to do first in a new port', listen: 'Say it\'s all right not to say' },
   research: { ask: 'Ask about the posting', text: ('{n} has a research posting, and the instruments for it in a case under the table that they haven\'t' +
-      ' let go of since you sat down.'), gift: 'Pay the case\'s berth fee (60 cr)', advice: 'Tell them what to watch for on the lane', listen: 'Ask what they\'re going to measure' },
-  pilgrim: { ask: 'Ask about the pilgrimage', text: '{n} is bound for somewhere holy, a long way off, and has booked the cheapest berth on every leg to get there.', gift: 'Pay a leg of the trip (60 cr)', advice: 'Tell them how to find a berth on the long haul', listen: 'Ask what the place means to them' },
-  medical: { ask: 'Ask what\'s wrong', text: '{n} presses a hand to their side, and says it\'s the reason for the trip: a specialist, a long way out.', gift: 'Pay toward the specialist (60 cr)', advice: 'Tell them where the medics are on the way', listen: 'Ask them to tell you about it' },
+      ' let go of since you sat down.'), gift: 'Pay the case\'s berth fee (600 cr)', advice: 'Tell them what to watch for on the lane', listen: 'Ask what they\'re going to measure' },
+  pilgrim: { ask: 'Ask about the pilgrimage', text: '{n} is bound for somewhere holy, a long way off, and has booked the cheapest berth on every leg to get there.', gift: 'Pay a leg of the trip (600 cr)', advice: 'Tell them how to find a berth on the long haul', listen: 'Ask what the place means to them' },
+  medical: { ask: 'Ask what\'s wrong', text: '{n} presses a hand to their side, and says it\'s the reason for the trip: a specialist, a long way out.', gift: 'Pay toward the specialist (600 cr)', advice: 'Tell them where the medics are on the way', listen: 'Ask them to tell you about it' },
 };
 function helpScene(p, pat, ctx) {
   const g = barLines('goal-help')[p.goal], say = barSay('goal-help', p);
@@ -76,14 +76,14 @@ const SECRET_HELP = {
   debt: {
     text: '{n} turns the glass in a ring on the bar. "Six hundred and twelve," they say. "It\'s not even a lot. It\'s just more than I have, and the people it\'s owed to don\'t do arithmetic."',
     opts: [
-      { label: 'Cover part of it (200 cr)', cost: 200, n: 3, line: 'You count out the credits. {n} turns them over, and then takes them, and doesn\'t say anything for a long time.' },
+      { label: 'Cover part of it (2,000 cr)', cost: 2000, n: 3, line: 'You count out the credits. {n} turns them over, and then takes them, and doesn\'t say anything for a long time.' },
       { label: 'Say you\'ll keep an ear out for who\'s asking', cost: 0, n: 1, line: '"That\'d help," {n} says.' },
     ],
   },
   ill: {
     text: '{n} puts the glass down. "Six months and the recyclers on that last ship," they say. "The clinic wants more than I have. I tell people it\'s the dust."',
     opts: [
-      { label: 'Pay for the clinic (100 cr)', cost: 100, n: 3, line: '{n} doesn\'t argue. The next time you see them, they say, they\'ll be breathing better.' },
+      { label: 'Pay for the clinic (1,000 cr)', cost: 1000, n: 3, line: '{n} doesn\'t argue. The next time you see them, they say, they\'ll be breathing better.' },
       { label: 'Tell them where the nearest medic is', cost: 0, n: 1, line: 'You give the name and the street. {n} writes it on a napkin and puts it carefully in a pocket.' },
     ],
   },
@@ -191,14 +191,14 @@ const BAR_TOPICS = [
     ...gated(notYet(() => pat.blessed, say('gate'))),
     run() { pat.blessed = true; met(pat); like(p, 1, say('memory')); return barSays(pick(barLines('bless')), p); }
   }); } },
-  { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c), odds = roleSkill('gunner') ? 1 : handCheck('hands', 0, 'brawl'); return ({ label: `${say('label')}${costNote({ cost: 150 }, odds)}`, ...gated(notYet(() => pat.fought, say('gate'))), run() {
+  { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c), odds = roleSkill('gunner') ? 1 : handCheck('hands', 0, 'brawl'); return ({ label: `${say('label')}${costNote({ cost: 1500 }, odds)}`, ...gated(notYet(() => pat.fought, say('gate'))), run() {
     pat.fought = true; met(pat); like(p, -2, say('memory'));
     if (odds >= 1 || Math.random() < odds) return say('win', { step: roleSkill('gunner') ? `${say('win.step', { gunner: roleName('gunner') })} ` : '' });
-    c.st.credits = Math.max(0, c.st.credits - 150);
+    c.st.credits = Math.max(0, c.st.credits - 1500);
     return say('lose');
   } }); } },
-  { id: 'peace', sample: { traits: ['kind', 'brave'], opinion: -3 }, must: true, w: (p, pat) => (pat.known && p.opinion <= OPINION.GRUDGE ? 1 : 0), make: (p, pat, c) => { const say = barSay('peace', p, c); return ({ label: say('label'), ...gated(needCr(300), notYet(() => pat.peace, say('gate'))), run() {
-    pat.peace = true; c.st.credits -= 300; like(p, 3, say('memory'));
+  { id: 'peace', sample: { traits: ['kind', 'brave'], opinion: -3 }, must: true, w: (p, pat) => (pat.known && p.opinion <= OPINION.GRUDGE ? 1 : 0), make: (p, pat, c) => { const say = barSay('peace', p, c); return ({ label: say('label'), ...gated(needCr(3000), notYet(() => pat.peace, say('gate'))), run() {
+    pat.peace = true; c.st.credits -= 3000; like(p, 3, say('memory'));
     return say('result');
   } }); } },
 ];

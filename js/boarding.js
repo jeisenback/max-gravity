@@ -9,7 +9,7 @@
 // next port's clinic for CLINIC_FEE each. State is st.injured. Loaded before
 // game.js; only calls into it at runtime.
 
-const DISABLE_AT = 0.2, BOARD_RANGE = 200, BOARD_SPEED = 90, CLINIC_FEE = 1000;
+const DISABLE_AT = 0.2, BOARD_RANGE = 200, BOARD_SPEED = 90, CLINIC_FEE = 10000;
 
 const canBeDisabled = n => !n.bountyId && !n.story && !n.blockade && !n.enemy && !['escort', 'agent', 'ally'].includes(n.kind);
 const injured = () => (G.state.injured = G.state.injured || {});
@@ -61,7 +61,7 @@ const boardOdds = () => Math.min(0.9, 0.45 + roleSkill('gunner') * 0.1 + Math.mi
 function lootFor(n) {
   const v = voyageOf(n);
   if (v) return { cid: v.cid, tons: v.tons, voyage: v };
-  if (n.kind === 'pirate') return { credits: randInt(10, 30) * 100, torps: ship().launcher ? randInt(0, 2) : 0 };
+  if (n.kind === 'pirate') return { credits: randInt(10, 30) * 1000, torps: ship().launcher ? randInt(0, 2) : 0 };
   return { cid: pick(COMMODITIES).id, tons: randInt(6, 18) };
 }
 
@@ -89,7 +89,7 @@ function boardingEvent(n) {
     return { title, text: `The ${n.name} is drifting and not answering. To board, close to within ${BOARD_RANGE} and match its velocity (you are ${Math.round(d)} out, closing at ${Math.round(rel)}).`,
       choices: [{ label: 'Cut the channel', run: () => 'You cut the channel.' }] };
   }
-  const st = G.state, loot = lootFor(n), prize = SHIPS[n.shipId], prizeFee = 30 * 60;
+  const st = G.state, loot = lootFor(n), prize = SHIPS[n.shipId], prizeFee = 30 * 600;
   const resists = n.kind !== 'trader';
   // A hired hand, or an owner who keeps a post, boards a ship that resists as the authored assault (boarders.js), not a roll: a win carries her bridge.
   if (lockPost() && resists) {

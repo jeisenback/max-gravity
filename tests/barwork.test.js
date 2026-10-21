@@ -21,21 +21,21 @@ test('side work is for a hand, pays from their savings and takes the visit', asy
   const r = await ev(() => {
     start('hired'); const st = G.state, out = {}; fillBar(currentPlanet());
     out.html = /Work for yourself/.test(barHtml());
-    const c0 = st.credits, fund = st.hired.fund, xp0 = skillXp(st.hired.post); out.want = 60 + 40 * skillLevel(st.hired.post);
+    const c0 = st.credits, fund = st.hired.fund, xp0 = skillXp(st.hired.post); out.want = 600 + 400 * skillLevel(st.hired.post);
     act('sideWork', 'dock'); out.dockPaid = st.credits - c0; out.xp = skillXp(st.hired.post) - xp0; out.fund = st.hired.fund === fund;
     const c1 = st.credits; act('sideWork', 'odd'); out.second = st.credits - c1;   // one job a visit
     fillBar(currentPlanet()); const c2 = st.credits; act('sideWork', 'odd'); out.odd = st.credits - c2;
     // The card game, both ways, once a visit.
-    st.credits = 1000; fillBar(currentPlanet()); const rr = Math.random;
+    st.credits = 10000; fillBar(currentPlanet()); const rr = Math.random;
     Math.random = () => 0.1; act('sideWork', 'cards'); out.win = st.credits; act('sideWork', 'cards'); out.again = st.credits; Math.random = rr;
     fillBar(currentPlanet()); Math.random = () => 0.9; act('sideWork', 'cards'); Math.random = rr; out.lose = st.credits;
-    st.credits = 50; fillBar(currentPlanet()); out.poor = SIDE_WORK.cards.can();
+    st.credits = 500; fillBar(currentPlanet()); out.poor = SIDE_WORK.cards.can();
     start('owner'); fillBar(currentPlanet()); out.owner = /Work for yourself/.test(barHtml()); const own = G.state.credits; act('sideWork', 'odd'); out.ownerPaid = G.state.credits - own;
     return out;
   });
   assert.ok(r.html); assert.equal(r.dockPaid, r.want); assert.equal(r.xp, 2); assert.ok(r.fund);
-  assert.equal(r.second, 0); assert.ok(r.odd >= 40 && r.odd <= 60);
-  assert.equal(r.win, 1100); assert.equal(r.again, 1100); assert.equal(r.lose, 1000); assert.equal(r.poor, false);
+  assert.equal(r.second, 0); assert.ok(r.odd >= 400 && r.odd <= 600);
+  assert.equal(r.win, 11000); assert.equal(r.again, 11000); assert.equal(r.lose, 10000); assert.equal(r.poor, false);
   assert.equal(r.owner, false); assert.equal(r.ownerPaid, 0);
   await done();
 });

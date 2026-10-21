@@ -43,7 +43,7 @@ test('every hired follow-up plays every choice, with the captain and the shipmat
     for (const s of STORYLETS.filter(x => x.consumes && x.id.startsWith('h-'))) {
       const n = storyletEvent(s).choices.length;
       for (let i = 0; i < n; i++) {
-        st.credits = 5000; G.player.armor = G.player.maxArmor;
+        st.credits = 50000; G.player.armor = G.player.maxArmor;
         const e = storyletEvent(s), c = e.choices[i];
         if (c.can && !c.can()) continue;
         const text = String(c.run());
@@ -67,7 +67,7 @@ test('a choice sets a follow-up going, it arrives on its day, and the money is t
   const { ev, done } = await open();
   await ev(hiredHelpers);
   const r = await ev(() => {
-    startHired('engineer'); const st = G.state; st.credits = 500; st.hired.fund = 9000;
+    startHired('engineer'); const st = G.state; st.credits = 5000; st.hired.fund = 90000;
     const ctx = handContext(), out = {};
     // Stand a watch for the captain: back in nine days with a free day ashore.
     out.set = playChoice('cap-favour', 'Stand the watch', ctx);
@@ -76,19 +76,19 @@ test('a choice sets a follow-up going, it arrives on its day, and the money is t
     out.back = playDue('h-favour-back', 1);
     // A loan: the shipmate is remembered, and it comes back with interest or does not.
     Math.random = () => 0.1;
-    st.credits = 500; const loan = playChoice('money-loan', 'Lend a hundred', { ...ctx, mate: procedural()[0].p });
+    st.credits = 5000; const loan = playChoice('money-loan', 'Lend a thousand', { ...ctx, mate: procedural()[0].p });
     out.loan = { cash: loan.cash, due: quality('due:h-loan-repaid') - st.day, who: threadPerson('loan').first === procedural()[0].p.first };
     out.repaid = playDue('h-loan-repaid', 12);
     Math.random = () => 0.9;
-    const loan2 = playChoice('money-loan', 'Lend a hundred', { ...ctx, mate: procedural()[0].p });
+    const loan2 = playChoice('money-loan', 'Lend a thousand', { ...ctx, mate: procedural()[0].p });
     out.default = quality('due:h-loan-default') - st.day;
     return out;
   });
   assert.equal(r.set.journal, 1, 'the Journal keeps the thread'); assert.equal(r.due, 9);
   assert.notEqual(r.early, 'h-favour-back'); assert.equal(r.back.picked, 'h-favour-back');
-  assert.deepEqual([r.back.cash, r.back.fund, r.back.cap], [80, 0, 1], 'a free day, in savings and not the ship\'s purse');
-  assert.deepEqual([r.loan.cash, r.loan.due, r.loan.who], [-100, 12, true]);
-  assert.deepEqual([r.repaid.cash, r.repaid.fund], [110, 0]);
+  assert.deepEqual([r.back.cash, r.back.fund, r.back.cap], [800, 0, 1], 'a free day, in savings and not the ship\'s purse');
+  assert.deepEqual([r.loan.cash, r.loan.due, r.loan.who], [-1000, 12, true]);
+  assert.deepEqual([r.repaid.cash, r.repaid.fund], [1100, 0]);
   assert.equal(r.default, 12);
   await done();
 });
@@ -102,7 +102,7 @@ test('three events lead straight into a second beat', async () => {
     const t = beat('cap-dressing', 'Blame the old terminal'); out.terminal = [t.title, t.labels];
     Math.random = () => 0.9; const caught0 = ctx.cap.opinion; t.run(0); out.caught = ctx.cap.opinion - caught0;
     Math.random = () => 0.1; const c1 = ctx.cap.opinion; const t2 = beat('cap-dressing', 'Blame the old terminal'); t2.run(0); out.proved = ctx.cap.opinion - c1;
-    st.credits = 300; const k = beat('money-side', 'Take the work'); out.crates = [k.title, k.labels];
+    st.credits = 3000; const k = beat('money-side', 'Take the work'); out.crates = [k.title, k.labels];
     const c2 = st.credits; k.run(1); out.double = st.credits - c2; out.trouble = quality('due:h-side-trouble') - st.day;
     const l = beat('road-scope', 'Tell the captain at once'); out.lane = [l.title, l.labels];
     l.run(0); out.laneSet = quality('due:h-lane-again') - st.day;
@@ -110,7 +110,7 @@ test('three events lead straight into a second beat', async () => {
   });
   assert.deepEqual(r.terminal, ['The Terminal', ['Show how it drops entries', 'Admit it was you']]);
   assert.equal(r.caught, -2, 'a terminal that is fine is the captain\'s answer'); assert.equal(r.proved, 1, 'one that really drops entries clears you');
-  assert.equal(r.crates[0], 'The Crates'); assert.ok(r.double >= 160 && r.double <= 320 && r.double % 20 === 0, `double pay (${r.double})`); assert.equal(r.trouble, 9);
+  assert.equal(r.crates[0], 'The Crates'); assert.ok(r.double >= 1600 && r.double <= 3200 && r.double % 200 === 0, `double pay (${r.double})`); assert.equal(r.trouble, 9);
   assert.equal(r.lane[0], 'What Did You See?'); assert.equal(r.laneSet, 9);
   await done();
 });

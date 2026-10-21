@@ -12,7 +12,7 @@ after(closeBrowser);
 const helpers = () => {
   window.setup = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
-    const st = G.state; st.story.next = 1e9; st.day += 30; st.tutorial = null; G.mode = 'landed'; hired().fund = 50000; hired().iceAt = st.day; hired().runsDone = 1;  // past the port she signed on at: the market wait is on
+    const st = G.state; st.story.next = 1e9; st.day += 30; st.tutorial = null; G.mode = 'landed'; hired().fund = 500000; hired().iceAt = st.day; hired().runsDone = 1;  // past the port she signed on at: the market wait is on
     G.dialog = null; G.nextEvent = null;
     return st;
   };
@@ -54,7 +54,7 @@ test('when nothing here is worth the fuel the captain waits three days for the m
     out.wait = h.stay ? { ...h.stay } : null; out.note = UI.notes.find(n => /waiting 3 days for a shipper/.test(n)) || '';
     // a shipper comes overnight: the morning's board has a contract worth the fuel, and the wait ends
     const here = currentPlanet(), reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== st.systemId && inRange(st.systemId, sid)), lane = freightLanes(here, st.systemId, reach)[0];
-    h.freight = { key: `${here.name}@${st.day + 1}`, list: [{ shipper: 'a broker', good: lane.cid, tons: 40, from: here.name, sid: lane.sid, planet: lane.pl.name, yard: false, days: 4, pay: 20000, due: st.day + 30, hazard: false, rumor: false }] };
+    h.freight = { key: `${here.name}@${st.day + 1}`, list: [{ shipper: 'a broker', good: lane.cid, tons: 40, from: here.name, sid: lane.sid, planet: lane.pl.name, yard: false, days: 4, pay: 200000, due: st.day + 30, hazard: false, rumor: false }] };
     UI.notes.length = 0; passNight(); G.dialog = null; G.nextEvent = null;
     out.came = { stay: !!h.stay, note: UI.notes.find(n => /A shipper came/.test(n)) || '', plan: !!(currentPlan() && currentPlan().contract) };
     while (stayOf(h)) { passNight(); G.dialog = null; G.nextEvent = null; }
@@ -63,9 +63,9 @@ test('when nothing here is worth the fuel the captain waits three days for the m
     beginStay(h, 2, 'market'); beginStay(h, 5, 'yard'); out.longer = { ...h.stay }; beginStay(h, 1, 'market'); out.kept = h.stay.left;
     delete h.stay;
     // with the money for a ship she heads for a yard instead of waiting
-    st.credits = 60000; h.plan = null; landHere(); out.yardBound = h.stay ? { ...h.stay } : null;
+    st.credits = 600000; h.plan = null; landHere(); out.yardBound = h.stay ? { ...h.stay } : null;
     // a port that does not trade is no market to wait for
-    st.credits = 500; h.plan = null; G.dialog = null; Mods.emit('landed', { ...currentPlanet(), services: ['refuel'] }); out.noTrade = h.stay ? { ...h.stay } : null;
+    st.credits = 5000; h.plan = null; G.dialog = null; Mods.emit('landed', { ...currentPlanet(), services: ['refuel'] }); out.noTrade = h.stay ? { ...h.stay } : null;
     return out;
   });
   assert.ok(r.ballast, 'the test starts from a light run');

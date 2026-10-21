@@ -10,7 +10,7 @@
 // days ashore are the hand's. State on st.hired: stay { left, why }.
 // Loaded after awayjobs.js; only calls into the game at runtime.
 
-const RESUPPLY_WAIT = 3, WORTH_THE_FUEL = 1000;  // days she waits; the profit a day to the ship she sails for (set from the soak's plans, ROADMAP.md)
+const RESUPPLY_WAIT = 3, WORTH_THE_FUEL = 10000;  // days she waits; the profit a day to the ship she sails for (set from the soak's plans, ROADMAP.md)
 const STAY_WHY = { yard: 'the hull is in the yard', market: 'the captain is waiting for a market worth the fuel' };
 
 const stayOf = h => (h && h.stay && h.stay.left > 0 ? h.stay : null);

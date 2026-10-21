@@ -55,9 +55,9 @@ Mods.register({
           'depot that\'s missing some reactor parts. Ceres will pay for them and not ask. League customs might. That\'s what you\'re for." He ' +
           'smiles, thinly. "Nobody has ever inspected a captain who looks this honest."'),
       choices: [
-        { label: 'Run the crates to Ceres (10t, 7,000 cr)', when: { space: 10 },
+        { label: 'Run the crates to Ceres (10t, 70,000 cr)', when: { space: 10 },
           effects: { set: { rookTask: 1, contraband: 1 }, log: 'Running stolen reactor parts to Ceres for the Rook.',
-            mission: { to: 'Ceres Station', tons: 10, good: 'unmarked crates', pay: 7000, days: 30, title: 'Run unmarked crates to Ceres Station for the Rook',
+            mission: { to: 'Ceres Station', tons: 10, good: 'unmarked crates', pay: 70000, days: 30, title: 'Run unmarked crates to Ceres Station for the Rook',
               onDone: { q: { crown: 1 }, set: { ...taskOver, contraband: 0 }, rep: { Pirate: 3 }, log: 'Delivered the Rook\'s crates to Ceres.' },
               onFail: { set: { ...taskOver, contraband: 0 }, rep: { Pirate: -4 }, log: 'The Rook\'s crates never reached Ceres. Hollis will remember.' } } },
           result: ('"Thirty days," Hollis says. "Longer than that, and they become your crates." Two silent dockhands load them, with the exaggerated ' +
@@ -85,7 +85,7 @@ Mods.register({
           result: ('By the time the militia boards, your manifest and your crates agree completely: hydroponics substrate, ten tons, packed in the ' +
               'customary way. The sergeant in charge inspects the crates, prods a corner, and finds, to his visible sorrow, that they\'re exactly what ' +
               'they say. The militia leaves disappointed. Hollis will hear about this, and, you suspect, will be very pleased.') },
-        { label: 'Bribe the inspector (2,000 cr)', when: { credits: 2000 }, effects: { credits: -2000 },
+        { label: 'Bribe the inspector (20,000 cr)', when: { credits: 20000 }, effects: { credits: -20000 },
           result: ('The inspector counts the transfer twice, very slowly, like a man in prayer. Then he counts your crates, and, with a small, sad ' +
               'shake of the head, records them as medical supplies, nothing else, perfectly in order. "A pleasure doing business with you, captain," ' +
               'he says, and doesn\'t look at your face.') },
@@ -108,14 +108,14 @@ Mods.register({
           'Dark, which tells you everything you need to know. Settle it." His voice, for a moment, is very old.'),
       choices: [
         { label: 'Hunt her down', effects: { set: { rookTask: 1 }, log: 'Went hunting for Dagger Quartey around Saturn.',
-          bounty: { at: 'saturn', name: 'Dagger Quartey\'s "Knife in the Dark"', pay: 10000, days: 50, issuer: 'Pirate',
+          bounty: { at: 'saturn', name: 'Dagger Quartey\'s "Knife in the Dark"', pay: 100000, days: 50, issuer: 'Pirate',
             onDone: { q: { crown: 1 }, set: { ...taskOver, rivalDead: 1 }, rep: { Pirate: 5 }, log: 'Killed Dagger Quartey near Saturn.' },
             onFail: { set: taskOver, rep: { Pirate: -5 }, log: 'Dagger Quartey is still out there, telling stories about you.' } } },
           result: ('"Fifty days," Hollis says. "After that, she comes looking for you." He looks out over the bar for a moment, at the young faces in ' +
               'the corners, and something in his expression softens. "She\'s not a bad pilot, you know. That\'s the pity of it. It\'d have been a ' +
               'good thing, to have someone that good on our side."') },
-        { label: 'Buy her off (6,000 cr)', when: { credits: 6000 },
-          effects: { credits: -6000, q: { crown: 1 }, log: 'Paid Dagger Quartey to stop spreading stories.' },
+        { label: 'Buy her off (60,000 cr)', when: { credits: 60000 },
+          effects: { credits: -60000, q: { crown: 1 }, log: 'Paid Dagger Quartey to stop spreading stories.' },
           result: ('You meet her in a neutral bar on Titan, over a table with a sticky surface. She counts the money twice, with her long fingers, ' +
               'and takes it with a smile you\'ll think about later, and a look at you that\'s very nearly friendly. The stories stop. The look stays ' +
               'with you. You\'ll never quite be sure what she bought.') },
@@ -125,10 +125,10 @@ Mods.register({
 
     const raid = (lanes, sid, gov) => ({
       label: `Raid the ${lanes} lanes`,
-      effects: { q: { crown: 1 }, credits: 12000, unrest: { [sid]: 0.45 }, rep: { [gov]: -12, Pirate: 5 },
+      effects: { q: { crown: 1 }, credits: 120000, unrest: { [sid]: 0.45 }, rep: { [gov]: -12, Pirate: 5 },
         log: `Led the Rook's raid on the ${lanes} shipping lanes.`, news: `Pirates flying the Rook's colors raid shipping around ${SYSTEMS[sid].name}.` },
       result: (`Three ships, one plan, and a week of ${lanes} freighters wishing they had stayed in port. You watch the plumes go dark on the scope, ` +
-          `one after another, and you don't let yourself count the crews. Your share is 12,000 cr, counted out on the table at the Rook, in used ` +
+          `one after another, and you don't let yourself count the crews. Your share is 120,000 cr, counted out on the table at the Rook, in used ` +
           `notes that smell of engine oil. Prices around ${SYSTEMS[sid].name} will feel it for weeks, and every merchant there'll remember the black ` +
           `tower on your airlock.`),
     });
@@ -155,7 +155,7 @@ Mods.register({
     });
 
     const crown = { where: 'port', priority: 3, title: 'The Rook\'s Crown' };
-    const crowned = { set: { crownDone: 1 }, credits: 20000, rep: { Pirate: 20 }, log: 'Took a seat on the Rook\'s council.', news: 'A new captain sits at the head of the Rook\'s council.' };
+    const crowned = { set: { crownDone: 1 }, credits: 200000, rep: { Pirate: 20 }, log: 'Took a seat on the Rook\'s council.', news: 'A new captain sits at the head of the Rook\'s council.' };
     M.addStorylet({
       ...crown, id: 'rook-crown-blood',
       when: { planet: rook, q: { crown: 4, rivalDead: 1, 'seen:rook-raid': 1 }, qBelow: { crownDone: 1, rookTask: 1 } },

@@ -13,7 +13,7 @@ after(closeBrowser);
 test('found an outpost, supply it, build, save and reload', async () => {
   const { page, ev, done } = await open({ scope: 'full' });
   await ev(() => {
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 120000; st.shipId = 'freighter';
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 1200000; st.shipId = 'freighter';
     while (G.dialog) finishEvent();
     st.cargo = { industrial: 40, equipment: 20, metal: 40, food: 20, water: 20, medical: 5 };
     st.systemId = 'jupiter'; st.planet = 'Ganymede'; landAt(SYSTEMS.jupiter.planets[0], []);
@@ -48,11 +48,11 @@ test('found an outpost, supply it, build, save and reload', async () => {
 
 test('death passes the company to an heir; a captain can retire', async () => {
   const { page, ev, done } = await open({ scope: 'full' });
-  await ev(() => { const st = G.state; st.tutorial = null; st.credits = 10000; while (G.dialog) finishEvent(); st.crew.push('kit'); G.mode = 'dead'; UI.showDead(); });
+  await ev(() => { const st = G.state; st.tutorial = null; st.credits = 100000; while (G.dialog) finishEvent(); st.crew.push('kit'); G.mode = 'dead'; UI.showDead(); });
   await page.click('[data-action=heir]');
   const heir = await ev(() => ({ mode: G.mode, credits: G.state.credits, crew: G.state.crew.length, past: G.state.captains.length }));
   assert.equal(heir.mode, 'landed');
-  assert.equal(heir.credits, 5000, 'half the money');
+  assert.equal(heir.credits, 50000, 'half the money');
   assert.equal(heir.crew, 0, 'the crew are lost');
   assert.equal(heir.past, 1);
   await ev(() => { while (G.dialog) finishEvent(); UI.render(); });
@@ -124,7 +124,7 @@ test('scenarios: share a link, start it, and a hostile one is defanged', async (
   assert.ok(await p2.evaluate(() => STORYLETS.some(s => s.id.startsWith('scenario-'))), 'scenario storylets registered');
 
   const evil = await p2.evaluate(() => encode({ title: 'Evil <script>window.pwned2=1</script>', text: '<img src=x onerror="window.pwned2=1">', start: { shipId: 'nonsense', credits: 1e12, systemId: 'earth', planet: 'Nowhere' },
-    storylets: [{ id: 'x', where: 'port', when: { day: 1 }, title: '<b>t</b>', text: '<img src=x onerror="window.pwned2=1">', choices: [{ label: 'ok', effects: { credits: 5 } }] }] }));
+    storylets: [{ id: 'x', where: 'port', when: { day: 1 }, title: '<b>t</b>', text: '<img src=x onerror="window.pwned2=1">', choices: [{ label: 'ok', effects: { credits: 50 } }] }] }));
   await p2.evaluate(() => { while (G.dialog) { chooseEvent(0); finishEvent(); } UI.tab = 'port'; UI.render(); });
   // The panel can redraw between a fill and a click and empty the box, so the code is entered and sent in one step as well.
   await p2.evaluate(code => { document.getElementById('scenarioCode').value = code; document.querySelector('[data-action=scenarioPaste]').click(); }, evil);
@@ -138,7 +138,7 @@ test('scenarios: share a link, start it, and a hostile one is defanged', async (
 
 test('the UAT panel sets up every scene and restores the real game', async () => {
   const { page, ev, done } = await open({});
-  await ev(() => { while (G.dialog) finishEvent(); G.state.credits = 777; G.state.day = 33; save(); });
+  await ev(() => { while (G.dialog) finishEvent(); G.state.credits = 7770; G.state.day = 33; save(); });
   await page.keyboard.press('Shift+KeyU');
   assert.ok(await ev(() => !!document.getElementById('uat') && !!localStorage.getItem('maxGravity.save.uatBackup')));
   const failed = await ev(async () => {
@@ -156,7 +156,7 @@ test('the UAT panel sets up every scene and restores the real game', async () =>
   await page.click('[data-uat=fail][data-id=bar]');
   assert.match(await ev(() => Uat.report()), /bar/);
   await page.click('[data-uat=tool][data-id=restore]');
-  assert.deepEqual(await ev(() => [G.state.credits, G.state.day]), [777, 33]);
+  assert.deepEqual(await ev(() => [G.state.credits, G.state.day]), [7770, 33]);
   await done();
 });
 
@@ -167,7 +167,7 @@ test('names the player types never become markup', async () => {
   await page.fill('#ngCaptain', evil);
   await page.fill('#ngShip', evil);
   await page.click('[data-action=menuStart]');
-  await ev(() => { G.state.tutorial = null; G.state.credits = 200000; G.state.shipId = 'freighter'; while (G.dialog) finishEvent(); UI.render(); });
+  await ev(() => { G.state.tutorial = null; G.state.credits = 2000000; G.state.shipId = 'freighter'; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'crew');
   await page.fill('#shipName', evil);
   await page.click('[data-action=renameShip]');

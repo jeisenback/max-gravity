@@ -9,7 +9,7 @@ const playScenes = () => {
   const seq = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : real()); };  // the rolls given, then the seeded random (a constant would hang the generators)
   const fresh = (o = {}) => {
     __seed(1);
-    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000, ...o });
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 50000, ...o });
     while (G.dialog) finishEvent();
     G.state.story.next = 1e9; G.state.day += 30; G.dialog = null; G.nextEvent = null;
     return G.state;
@@ -54,7 +54,7 @@ const playScenes = () => {
   // ---------- the stakes ----------
   run('scene:warning', {}, () => warningScene());
   // The freight agent at the far end (shippers.js): late, short and lost, each choice with the case held and not held; the shipper's regard is what the extra records.
-  for (const [kind, o] of [['late', { tons: 90, got: 90, late: 2 }], ['short', { tons: 90, got: 60, late: 0 }], ['lost', { tons: 90, got: 0, late: 3 }], ['skim', { tons: 90, got: 90, late: 0, cut: 3000, owed: 20000 }]]) {
+  for (const [kind, o] of [['late', { tons: 90, got: 90, late: 2 }], ['short', { tons: 90, got: 60, late: 0 }], ['lost', { tons: 90, got: 0, late: 3 }], ['skim', { tons: 90, got: 90, late: 0, cut: 30000, owed: 200000 }]]) {
     run(`scene:freight-agent:${kind}`, {}, () => agentScene({ kind, shipper: 'the Compact Freight Office', good: 'water', due: G.state.day - o.late, cut: 0, owed: 0, ...o }, freightAgent(currentPlanet())),
       { rolls: [0, 0.99], extra: () => ({ standing: hired().standing, fund: hired().fund }) });
   }
@@ -81,13 +81,13 @@ const playScenes = () => {
     });
   }
   // ---------- the used ship ----------
-  const deal = (id, tomas, debt, opinion) => run(id, { credits: 20000 }, () => {
+  const deal = (id, tomas, debt, opinion) => run(id, { credits: 200000 }, () => {
     const st = G.state; st.crew = st.crew.filter(c => c !== 'c:tomas');
     if (tomas) { castJoin('tomas', ''); castPerson('tomas').opinion = opinion; }
     hired().debt = debt; return dealScene(currentPlanet());
   });
-  deal('scene:used-ship-offer:friend', true, 0, OPINION.FRIEND); deal('scene:used-ship-offer:plain-debt', true, 1500, 1); deal('scene:used-ship-offer:cold', true, 0, -1); deal('scene:used-ship-offer:broker', false, 0, 0);
-  for (const [id, tomas] of [['scene:used-ship-offer:lapse-tomas', true], ['scene:used-ship-offer:lapse-broker', false]]) run(id, { credits: 20000 }, () => {
+  deal('scene:used-ship-offer:friend', true, 0, OPINION.FRIEND); deal('scene:used-ship-offer:plain-debt', true, 15000, 1); deal('scene:used-ship-offer:cold', true, 0, -1); deal('scene:used-ship-offer:broker', false, 0, 0);
+  for (const [id, tomas] of [['scene:used-ship-offer:lapse-tomas', true], ['scene:used-ship-offer:lapse-broker', false]]) run(id, { credits: 200000 }, () => {
     G.state.crew = G.state.crew.filter(c => c !== 'c:tomas'); if (tomas) castJoin('tomas', '');
     return lapseScene();
   });
@@ -99,7 +99,7 @@ const playScenes = () => {
     return pitchScene({ tpl: 'package', ctx: { dest, from: 'Titan', who: 'Mrs. Adeyemi', system: SYSTEMS.mars.name, scale: 1.2 }, sid: 'mars', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false });
   }, { rolls: [0, 0.999] });
   run('scene:pitch:deal', {}, () => {  // the used Ore Runner on the yard list, and a run that keeps you from a yard past her last day (#800)
-    const h = hired(); h.deal = { price: 17000, day: G.state.day, until: G.state.day + 3, broker: false };
+    const h = hired(); h.deal = { price: 170000, day: G.state.day, until: G.state.day + 3, broker: false };
     const dest = SYSTEMS.eros.planets[0].name;
     return pitchScene({ tpl: 'package', ctx: { dest, from: 'Titan', who: 'Mrs. Adeyemi', system: SYSTEMS.eros.name, scale: 1.2 }, sid: 'eros', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false });
   });
@@ -109,7 +109,7 @@ const playScenes = () => {
   const GOV = FACTIONS.find(f => f !== 'Pirate'), GOV2 = FACTIONS.find(f => f !== 'Pirate' && f !== GOV);
   const mateOf = (first, over = {}) => { const c = makeCrewCandidate(G.state.systemId); Object.assign(c, { first, last: 'Vale', role: 'engineer', opinion: 0, ...over }); registerPerson(c); G.state.crew.push(c.id); return c; };
   const stubTies = map => { window.tiesOf = q => { const r = realTies(q), m = map[q.first]; return m ? { ...r, ...m, status: { ...r.status, ...(m.status || {}) }, regard: { ...r.regard, ...(m.regard || {}) } } : r; }; };
-  const tiesCase = (id, prep, make, o = {}) => run(id, { credits: 5000, ...(o.opts || {}) }, make, { rolls: [0, 0.999], prep() {
+  const tiesCase = (id, prep, make, o = {}) => run(id, { credits: 50000, ...(o.opts || {}) }, make, { rolls: [0, 0.999], prep() {
     window.tiesOf = realTies; window.youTies = realYou; window.factionState = realWar; G.state.crew = []; G.state.customs = {}; G.state.warCalled = {};
     prep();
   } });
@@ -162,7 +162,7 @@ const playScenes = () => {
   // ---------- the round for the house at the bar, and a main character coming aboard ----------
   { // the button's words before and after, and what the room says and remembers
     const button = () => (barHtml().match(/<button data-action="barRound"[^>]*>([^<]*)<\/button>/) || [])[1];
-    run('bar:round', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { const before = button(); Mods.actions.barRound.fn(); return `${before} | ${G.barState.note} | ${button()}`; } }] }), { prep() { G.state.credits = 5000; const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; G.transit = null; fillBar(currentPlanet()); } });
+    run('bar:round', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { const before = button(); Mods.actions.barRound.fn(); return `${before} | ${G.barState.note} | ${button()}`; } }] }), { prep() { G.state.credits = 50000; const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; G.transit = null; fillBar(currentPlanet()); } });
     run('bar:round-poor', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { return button(); } }] }), { prep() { G.state.credits = 10; const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; G.transit = null; fillBar(currentPlanet()); } });
   }
   for (const key of ['ines', 'tomas', 'yelena', 'ruben']) {
@@ -174,19 +174,19 @@ const playScenes = () => {
   for (const [fate, aboard] of [['retired', 0], ['died', 0], ['died', 2]]) {
     run(`log:legacy:${fate}:${aboard}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { succeed(fate, 'Mara Quill'); return ''; } }] }), { prep() { G.state.crew = []; crewOf(aboard); }, extra: logOf });
   }
-  run('log:founded', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { found('Callisto', 'Test Landing'); return ''; } }] }), { prep() { Object.assign(G.state, { credits: 150000, cargo: { industrial: 30, equipment: 20, metal: 40 } }); }, extra: logOf });
+  run('log:founded', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { found('Callisto', 'Test Landing'); return ''; } }] }), { prep() { Object.assign(G.state, { credits: 1500000, cargo: { industrial: 30, equipment: 20, metal: 40 } }); }, extra: logOf });
   // ---------- the memories and notes of dismissing, aborting, a run settled, a swap of posts, a ship bought in, and practice at a post ----------
   const alone = () => ({ title: 'x', text: '', choices: [] });
   run('hand:dismiss', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run() { UI.act('dismiss', '0'); return ''; } }] }), { prep() { G.state.crew = []; crewOf(2); } });
   run('hand:abort', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run() { UI.act('abort', '0'); return ''; } }] }), { prep() { uatPassenger(); } });
-  for (const [name, cost] of [['good', -500], ['bad', 800]]) {
+  for (const [name, cost] of [['good', -5000], ['bad', 8000]]) {
     run(`hand:run:${name}`, {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(settleRun(currentPlanet())) }] }), { prep() { const st = G.state; hired().run = { sid: st.systemId, planet: currentPlanet().name, day: st.day - 3, from: 'Mars', good: null, tons: 0, cost, ice: false, profit: 0 }; } });
   }
   for (const post of ['engineer', 'pilot']) {
     run(`hand:swap:${post}`, {}, () => ({ ...alone(), choices: [{ label: 'x', run() { const real = M_NOTE, notes = []; M_NOTE = t => notes.push(t); try { askSwap(post); } finally { M_NOTE = real; } return notes.join(' | '); } }] }), { rolls: [0, 0.999] });
   }
   for (const [name, friends] of [['alone', 0], ['friends', 2]]) {
-    run(`hand:buyin:${name}`, { credits: 100000 }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(buyIn('courier')) }] }), { prep() { G.state.crew = []; crewOf(friends); for (const id of G.state.crew) G.state.people[id].opinion = 4; } });
+    run(`hand:buyin:${name}`, { credits: 1000000 }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(buyIn('courier')) }] }), { prep() { G.state.crew = []; crewOf(friends); for (const id of G.state.crew) G.state.people[id].opinion = 4; } });
   }
   for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
     run(`hand:practise:${post}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.practise.label, run: () => String(ACTIVITIES.practise.run()) }] }), { extra: () => hired().skill });
@@ -198,16 +198,16 @@ const playScenes = () => {
   run('memory:lapsed', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { expireMissions(); return ''; } }] }), { prep() { uatPassenger('mars', 'Mars'); G.state.missions[0].deadline = G.state.day - 1; } });
   for (const edge of [3, -2, 0]) run(`memory:ice:${edge}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => iceHome(edge) }] }));
   for (const post of ['gunner', 'engineer']) run(`memory:repair:${post}`, { post }, () => { const ev = repairScene(currentPlanet()); return { ...ev, choices: ev.choices.filter(c => c.label === 'Help with the repair') }; }, { prep() { G.state.armor = Math.max(1, ship().armor - 40); } });
-  run('memory:mourn', {}, () => mournScene({ first: 'Mara', last: 'Quill', role: 'engineer' }), { prep() { G.state.crew = []; crewOf(8); G.state.credits = 5000; } });
+  run('memory:mourn', {}, () => mournScene({ first: 'Mara', last: 'Quill', role: 'engineer' }), { prep() { G.state.crew = []; crewOf(8); G.state.credits = 50000; } });
   run('memory:strain', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { for (let i = 0; i < 3; i++) { takeControl('pilot'); handBack('pilot'); } return ''; } }] }), { prep() { G.state.crew = []; crewOf(4); G.state.crew.map(person).forEach(c => { c.role = 'pilot'; }); } });
-  run('memory:clinic', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { treatInjuries(currentPlanet()); return ''; } }] }), { prep() { G.state.crew = []; crewOf(2); G.state.injured = { [G.state.crew[0]]: true }; G.state.credits = 5000; } });
+  run('memory:clinic', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { treatInjuries(currentPlanet()); return ''; } }] }), { prep() { G.state.crew = []; crewOf(2); G.state.injured = { [G.state.crew[0]]: true }; G.state.credits = 50000; } });
   // ---------- the talks with the main characters at a bar ----------
   for (const [key, list] of Object.entries(CAST_BAR)) list.forEach((bar, n) => {
     run(`castbar:${key}:${n}`, {}, () => {
       const p = castPerson(key), rec = castRec(key); if (!G.state.crew.includes(p.id)) G.state.crew.push(p.id);
       rec.since = 0; rec.bar = n;
       return castBarEvent({ p, known: true, cast: key });
-    }, { prep() { G.state.day = 200; G.state.credits = 5000; }, extra: () => [castRec(key).flags, castPerson(key).xp] });
+    }, { prep() { G.state.day = 200; G.state.credits = 50000; }, extra: () => [castRec(key).flags, castPerson(key).xp] });
   });
   // ---------- the first officers' scenes of danger, in each way they can end ----------
   for (const [who, go] of Object.entries({ ilsa: () => atTheReactor(false), ansel: () => atTheLock(false), pilar: () => atTheHelm(false), cato: () => inTheIceHold(false) })) for (const outcome of ['live', 'mark', 'die']) {
@@ -243,7 +243,7 @@ const playScenes = () => {
   { const grave = (name, i) => ({ key: `x${i}`, name, day: 5 + i, place: 'Ceres', cause: 'Lost on the way.' });
     const recap = (label, setup) => run(`recap:${label}`, {}, () => { const st = G.state; setup(st, hired(), folk().filter(f => f.crew && !f.p.cast).map(f => f.p)); return chapterRecap(); });
     recap('fresh', () => {});
-    for (const reason of ['money', 'learn', 'away']) for (const runs of [1, 3]) recap(`why:${reason}:${runs}`, (st, h) => { h.reason = reason; h.runsDone = runs; h.earnedTotal = 1234; });
+    for (const reason of ['money', 'learn', 'away']) for (const runs of [1, 3]) recap(`why:${reason}:${runs}`, (st, h) => { h.reason = reason; h.runsDone = runs; h.earnedTotal = 12340; });
     recap('near:one', (st, h, [a]) => { a.opinion = OPINION.FRIEND; });
     recap('kept', (st, h, [a]) => { a.opinion = OPINION.FRIEND; like(a, 0, 'You brought the ice in.'); });
     recap('near:three', (st, h, [a, b]) => { a.opinion = OPINION.ALLY; b.opinion = OPINION.FRIEND; st.people[h.captain].opinion = OPINION.FRIEND; });
@@ -259,7 +259,7 @@ const playScenes = () => {
   }
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
-    run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {
+    run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 600000 }, () => {
       if (trusted) changeRep(localGov(), 40);
       if (skilled) gainSkill(hired().post, 60);
       return yardScene(ship);
@@ -279,7 +279,7 @@ const playScenes = () => {
     for (const post of captainKey === 'hester' ? ['gunner', 'pilot', 'engineer', 'comms'] : ['gunner']) {
       for (const id of events) {
         const d = HAND_EVENTS.find(x => x.id === id);
-        run(`hired:${id}:${captainKey}:${post}`, { captainKey, post, credits: 5000 }, () => {
+        run(`hired:${id}:${captainKey}:${post}`, { captainKey, post, credits: 50000 }, () => {
           const c = handContext(); c.cap.opinion = 5;
           return d.make(c);
         }, { rolls: [0, 0.999], extra: () => (G.state.journal || []).map(j => j.text), prep: () => { if (!handContext().mate) { const m = makeCrewCandidate(G.state.systemId); registerPerson(m); G.state.crew.push(m.id); } } });
@@ -299,7 +299,7 @@ const playScenes = () => {
     run('scene:freight-side', {}, () => {
       const st = G.state, h = hired(), here = currentPlanet(), target = st.crew.map(person).find(p => !p.cast);
       window.tiesOf = p => (p.id === target.id ? { ...realTies(p), status: { ...realTies(p).status, [gov]: 'wanted' } } : realTies(p)); h.runsDone = 1;  // the first run is guided and has no side
-      const run0 = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 9000, days: 4, due: st.day + 8, cost: 0, yard: false };
+      const run0 = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false };
       h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: run0, alts: [] }; h.freight = { key: `${here.name}@${st.day}`, list: [run0] }; st.customs = {};
       return sideScene(run0, sideDue(run0), freightAgent(here));
     }, { rolls: [0, 0.99], extra: () => ({ board: hired().freight.list.length, crew: G.state.crew.length, standing: hired().standing, fund: hired().fund }) });

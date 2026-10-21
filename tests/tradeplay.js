@@ -12,7 +12,7 @@ const playTrade = () => {
   const r4 = x => Math.round(x * 10000) / 10000;
   const start = (hiredMode, seed) => {
     __seed(seed);
-    startGame(hiredMode ? { slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 } : { slot: 1, background: 'earth', captain: 'Sam Rowe', credits: 5000 });
+    startGame(hiredMode ? { slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 50000 } : { slot: 1, background: 'earth', captain: 'Sam Rowe', credits: 50000 });
     while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; st.story.next = 1e9;
     return st;

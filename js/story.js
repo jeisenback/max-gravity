@@ -317,15 +317,15 @@ function blockadeHail(n) {
 // ---------- the last choice ----------
 
 const ENDINGS = {
-  belt: { credits: 10000, rep: { 'Charter League': 20, 'Arcology Compact': -15 },
+  belt: { credits: 100000, rep: { 'Charter League': 20, 'Arcology Compact': -15 },
     text: 'Twenty tons of water roll off your ship under League banners while the blockade burns behind you. Within a month Earth withdraws its fleet, the strike ends on the Belt\'s terms, and Aquilon Hydrologics files for bankruptcy. Water flows on Ceres again.' },
-  mars: { credits: 20000, rep: { 'Dome Concord': 15, 'Arcology Compact': -10 },
+  mars: { credits: 200000, rep: { 'Dome Concord': 15, 'Arcology Compact': -10 },
     text: 'Your water comes ashore under Dome Concord colors, and the Martian parliament gets its pictures. Earth backs down and concedes water rights to Mars-friendly Belt stations. Nobody ever answers for the Ceres pumps.' },
-  earth: { credits: 25000, rep: { 'Arcology Compact': 15, 'Charter League': -20 },
+  earth: { credits: 250000, rep: { 'Arcology Compact': 15, 'Charter League': -20 },
     text: 'Compact relief comes ashore, the riots end, and the proof stays buried. Aquilon quietly sells its claims to an Earth consortium. Ceres has water again, rationed under Compact supervision.' },
-  aquilon: { credits: 20000, rep: { 'Charter League': -30 },
-    text: 'You sell twenty tons of water at a thousand credits a ton to people who\'ve been thirsty for months. Aquilon\'s share price doubles. Ceres survives, barely, and the Belt never forgets the name of your ship.' },
-  truth: { credits: 5000, rep: { 'Charter League': 20, 'Arcology Compact': -10, 'Dome Concord': -10 },
+  aquilon: { credits: 200000, rep: { 'Charter League': -30 },
+    text: 'You sell twenty tons of water at ten thousand credits a ton to people who\'ve been thirsty for months. Aquilon\'s share price doubles. Ceres survives, barely, and the Belt never forgets the name of your ship.' },
+  truth: { credits: 50000, rep: { 'Charter League': 20, 'Arcology Compact': -10, 'Dome Concord': -10 },
     text: 'You tell them everything: the pumps, the ice claims, the water futures, and everyone who looked away. The broadcast reaches every station in a day. Aquilon\'s executives are arrested on Mercury, three Compact officials resign, and even Mars has questions to answer. Ceres drinks.' },
 };
 

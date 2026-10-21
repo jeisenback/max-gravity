@@ -15,7 +15,7 @@ const CRIMES = ['fraud', 'smuggling', 'assaulting a dock boss', 'desertion', 'st
 const ROLE_NAMES = { engineer: 'Engineer', pilot: 'Pilot', gunner: 'Gunner', quartermaster: 'Quartermaster', slicer: 'Slicer', medic: 'Medic', xo: 'First officer', cook: 'Cook', icehand: 'Ice hand' };
 // The hired chapter's crew only: nobody offers to hire these, and a passenger never asks to join as one.
 const HIREABLE_ROLES = ['engineer', 'pilot', 'gunner', 'quartermaster', 'slicer', 'medic'];
-const ROLE_WAGE = { engineer: 60, pilot: 70, gunner: 60, quartermaster: 45, slicer: 80, medic: 55, xo: 65, cook: 40, icehand: 35 };
+const ROLE_WAGE = { engineer: 600, pilot: 700, gunner: 600, quartermaster: 450, slicer: 800, medic: 550, xo: 650, cook: 400, icehand: 350 };
 const ROLE_PERKS = {
   engineer: s => `Burns use ${s * 5}% less reaction mass.`,
   pilot: s => `Burns take ${s * 7}% fewer days.`,
@@ -133,7 +133,7 @@ function makePassengerOffer(here, destSystem, dest, days, deadline) {
   return {
     type: 'passenger', person: p, who, pax, bonus: 0, destSystem, destPlanet: dest.name,
     title: jobSay('carry', { who, pax, dest: dest.name }), blurb: describe(p),
-    pay: Math.round((1500 + days * 400) * (0.8 + 0.2 * p.wealth) * (1 + 0.3 * (pax - 1))),
+    pay: Math.round((15000 + days * 4000) * (0.8 + 0.2 * p.wealth) * (1 + 0.3 * (pax - 1))),
     deadline,
   };
 }
@@ -171,26 +171,26 @@ const PAX_EVENTS = [
     choices: [
       { label: say('c0.label'), run() {
         if (Math.random() < 0.6) {
-          m.bonus += 1500 * p.wealth;
+          m.bonus += 15000 * p.wealth;
           like(p, 3, say('c0.win.memory'));
           return say('c0.win');
         }
-        G.state.credits = Math.max(0, G.state.credits - 2000);
+        G.state.credits = Math.max(0, G.state.credits - 20000);
         changeRep(localGov(), -5);
         like(p, 1, say('c0.lose.memory'));
         return say('c0.lose');
       } },
       { role: 'slicer', label: say('c1.label'), run() {
         if (Math.random() < slicerOdds()) {
-          m.bonus += 1500 * p.wealth;
+          m.bonus += 15000 * p.wealth;
           like(p, 3, say('c1.win.memory'));
           return say('c1.win');
         }
-        G.state.credits = Math.max(0, G.state.credits - 2000);
+        G.state.credits = Math.max(0, G.state.credits - 20000);
         return say('c1.lose');
       } },
       { label: say('c2.label'), run() {
-        G.state.credits += 1500;
+        G.state.credits += 15000;
         dropPassenger(m, null);
         changeRep(localGov(), 3);
         like(p, -6, say('c2.result.memory'));
@@ -202,19 +202,19 @@ const PAX_EVENTS = [
     text: say('text'),
     choices: [
       { label: say('c0.label'), run() {
-        G.state.credits += 5000;
+        G.state.credits += 50000;
         dropPassenger(m, null);
         like(p, -8, say('c0.result.memory'));
         return say('c0.result');
       } },
       { role: 'gunner', label: say('c1.label'), run() {
-        m.bonus += 2000;
+        m.bonus += 20000;
         like(p, 4, say('c1.result.memory'));
         return say('c1.result', { armor: hurt(0.1) });
       } },
       { label: say('c2.label'), run() {
         if (Math.random() < fightOdds()) {
-          m.bonus += 2000;
+          m.bonus += 20000;
           like(p, 4, say('c2.win.memory'));
           return say('c2.win', { armor: hurt(0.2) });
         }
@@ -227,14 +227,14 @@ const PAX_EVENTS = [
     text: say('text', { reason: say(p.goal === 'medical' ? 'reason.medical' : 'reason.ill') }),
     choices: [
       { role: 'medic', label: say('c0.label'), run() {
-        m.bonus += 1000;
+        m.bonus += 10000;
         like(p, 4, say('c0.result.memory'));
         return say('c0.result');
       } },
-      { label: say('c1.label'), ...gated(needCr(500)), run() {
-        G.state.credits -= 500;
+      { label: say('c1.label'), ...gated(needCr(5000)), run() {
+        G.state.credits -= 5000;
         like(p, 3, say('c1.memory'));
-        if (Math.random() < 0.75) { m.bonus += 800; return say('c1.win'); }
+        if (Math.random() < 0.75) { m.bonus += 8000; return say('c1.win'); }
         return say('c1.lose');
       } },
       { label: say('c2.label'), ...gated(needMass(40)), run() {
@@ -244,7 +244,7 @@ const PAX_EVENTS = [
         return say('c2.result');
       } },
       { label: say('c3.label'), run() {
-        m.bonus -= 500;
+        m.bonus -= 5000;
         like(p, -2, say('c3.result.memory'));
         return say('c3.result');
       } },
@@ -255,7 +255,7 @@ const PAX_EVENTS = [
     choices: [
       { label: say('c0.label'), run() {
         if (Math.random() < 0.5) {
-          m.bonus += 2500;
+          m.bonus += 25000;
           like(p, 1, say('c0.win.memory'));
           return say('c0.win');
         }
@@ -274,9 +274,9 @@ const PAX_EVENTS = [
     title: say('title'),
     text: say('text'),
     choices: [
-      { label: say('c0.label'), ...gated(needCr(1500)), run() {
-        G.state.credits -= 1500;
-        p.owes = 1500;
+      { label: say('c0.label'), ...gated(needCr(15000)), run() {
+        G.state.credits -= 15000;
+        p.owes = 15000;
         like(p, 5, say('c0.result.memory'));
         return say('c0.result');
       } },
@@ -290,13 +290,13 @@ const PAX_EVENTS = [
     text: say('text'),
     choices: [
       { role: 'pilot', label: say('c0.label'), run() {
-        m.bonus += 800;
+        m.bonus += 8000;
         like(p, 3, say('c0.result.memory'));
         return say('c0.result');
       } },
       { label: say('c1.label'), ...gated(needMass(40)), run() {
         G.state.fuel -= 40;
-        m.bonus += 800;
+        m.bonus += 8000;
         like(p, 3, say('c1.result.memory'));
         return say('c1.result');
       } },
@@ -311,7 +311,7 @@ const PAX_EVENTS = [
     choices: [
       { label: say('c0.label'), run() {
         delay(20);
-        m.bonus += 1000 * p.wealth;
+        m.bonus += 10000 * p.wealth;
         like(p, 3, say('c0.result.memory'));
         return say('c0.result');
       } },
@@ -326,7 +326,7 @@ const PAX_EVENTS = [
     choices: [
       { label: say('c0.label'), run() {
         delay(12);
-        m.bonus += 400 * m.pax;
+        m.bonus += 4000 * m.pax;
         like(p, 3, say('c0.result.memory'));
         return say('c0.result');
       } },
@@ -356,13 +356,13 @@ const PAX_EVENTS = [
         like(p, 2, say('c0.result.memory'));
         return say('c0.result');
       } },
-      { label: say('c1.label'), ...gated(needCr(200)), run() {
-        G.state.credits -= 200;
+      { label: say('c1.label'), ...gated(needCr(2000)), run() {
+        G.state.credits -= 2000;
         like(p, 1, null);
         return say('c1.result');
       } },
       { label: say('c2.label'), run() {
-        m.bonus -= 300;
+        m.bonus -= 3000;
         like(p, -2, say('c2.result.memory'));
         return say('c2.result');
       } },
@@ -389,12 +389,12 @@ const PAX_EVENTS = [
     text: say('text'),
     choices: [
       { label: say('c0.label'), run() {
-        m.bonus += 400;
+        m.bonus += 4000;
         like(p, -2, say('c0.result.memory'));
         return say('c0.result');
       } },
       { label: say('c1.label'), run() {
-        G.state.credits = Math.max(0, G.state.credits - 400);
+        G.state.credits = Math.max(0, G.state.credits - 4000);
         like(p, 2, say('c1.result.memory'));
         return say('c1.result');
       } },
@@ -403,9 +403,9 @@ const PAX_EVENTS = [
     title: say('title'),
     text: say('text'),
     choices: [
-      { label: say('c0.label'), ...gated(needCr(500)), run() {
-        if (Math.random() < 0.5) { G.state.credits += 500; like(p, -1, say('c0.win.memory')); return say('c0.win'); }
-        G.state.credits -= 500;
+      { label: say('c0.label'), ...gated(needCr(5000)), run() {
+        if (Math.random() < 0.5) { G.state.credits += 5000; like(p, -1, say('c0.win.memory')); return say('c0.win'); }
+        G.state.credits -= 5000;
         like(p, 1, null);
         return say('c0.lose');
       } },
@@ -416,7 +416,7 @@ const PAX_EVENTS = [
     text: say('text'),
     choices: [
       { label: say('c0.label'), run() {
-        m.bonus += 300 * p.wealth;
+        m.bonus += 3000 * p.wealth;
         like(p, 1, null);
         return say('c0.result');
       } },
@@ -431,7 +431,7 @@ const PAX_EVENTS = [
     choices: [
       { label: say('c0.label'), run() { like(p, 1, null); return say('c0.result'); } },
       { label: say('c1.label'), run() {
-        m.bonus -= 300;
+        m.bonus -= 3000;
         like(p, -2, say('c1.result.memory'));
         return say('c1.result');
       } },
@@ -461,11 +461,11 @@ const CREW_EVENTS = {
   drunk: c => { const say = crewSay('drunk', c); return ({ title: say('title'), text: say('text'),
     choices: [
       { label: say('c0.label'), run() { like(c, -2, say('c0.result.memory')); return say('c0.result'); } },
-      { label: say('c1.label'), run() { G.state.credits = Math.max(0, G.state.credits - 300); like(c, 2, say('c1.result.memory')); return say('c1.result'); } },
+      { label: say('c1.label'), run() { G.state.credits = Math.max(0, G.state.credits - 3000); like(c, 2, say('c1.result.memory')); return say('c1.result'); } },
     ] }); },
   homesick: c => { const say = crewSay('homesick', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label'), ...gated(needCr(500)), run() { G.state.credits -= 500; like(c, 3, say('c0.result.memory')); return say('c0.result'); } },
+      { label: say('c0.label'), ...gated(needCr(5000)), run() { G.state.credits -= 5000; like(c, 3, say('c0.result.memory')); return say('c0.result'); } },
       { label: say('c1.label'), run() { like(c, 1, null); return say('c1.result'); } },
       { label: say('c2.label'), run() { like(c, -1, null); return say('c2.result'); } },
     ] }); },
@@ -534,7 +534,7 @@ function meetContacts(planet) {
       p.thanked = true;
       const roll = Math.random();
       if (roll < 0.4) {
-        const c = p.wealth * randInt(5, 12) * 100;
+        const c = p.wealth * randInt(5, 12) * 1000;
         st.credits += c;
         notes.push(noteSay('dinner', { first: p.first, last: p.last, gift: fmt(c) }));
       } else if (roll < 0.7) {
@@ -545,7 +545,7 @@ function meetContacts(planet) {
         G.offers.unshift({
           type: 'delivery', good: jobSay('favor.good', { first: p.first }), tons: 1, destSystem: sid, destPlanet: dest.name,
           title: jobSay('favor', { first: p.first, last: p.last, dest: dest.name }),
-          pay: 3000 + days * 700, deadline: st.day + days * 2 + 5,
+          pay: 30000 + days * 7000, deadline: st.day + days * 2 + 5,
         });
         notes.push(noteSay('favor', { first: p.first, last: p.last }));
       }

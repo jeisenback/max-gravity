@@ -19,12 +19,12 @@ const OUTPOST_SITES = {
 };
 const NEEDS = { food: 1.5, water: 1.5, medical: 0.3, equipment: 0.2 };  // tons per 100 settlers per day
 const BUILDINGS = {
-  habitat: { name: 'Habitat ring', cr: 40000, mat: { industrial: 20 }, cap: 120, text: 'A pressurized ring, spun up and sealed. Forty settlers move in the day it holds air.' },
-  hydroponics: { name: 'Hydroponics bay', cr: 5000, mat: { equipment: 15, industrial: 10 }, cap: 60, cuts: { food: 0.2 }, text: 'Grows most of the outpost\'s food.' },
-  icemine: { name: 'Ice mine', cr: 5000, mat: { industrial: 20, metal: 10 }, cap: 40, cuts: { water: 0.2 }, text: 'Digs and melts the outpost\'s own water.' },
-  clinic: { name: 'Clinic', cr: 8000, mat: { medical: 10, equipment: 10 }, cap: 40, cuts: { medical: 0.3 }, text: 'Cuts the need for medical supplies and helps the outpost grow faster.' },
-  dock: { name: 'Dock and trading post', cr: 10000, mat: { metal: 30, industrial: 10 }, cap: 100, services: ['missions', 'outfitter'], text: 'Opens a mission board and an outfitter, and brings in more trade: a bigger share for you.' },
-  ring2: { name: 'Second ring', cr: 20000, mat: { metal: 40, industrial: 20 }, cap: 200, after: 'dock', text: 'Room for two hundred more.' },
+  habitat: { name: 'Habitat ring', cr: 400000, mat: { industrial: 20 }, cap: 120, text: 'A pressurized ring, spun up and sealed. Forty settlers move in the day it holds air.' },
+  hydroponics: { name: 'Hydroponics bay', cr: 50000, mat: { equipment: 15, industrial: 10 }, cap: 60, cuts: { food: 0.2 }, text: 'Grows most of the outpost\'s food.' },
+  icemine: { name: 'Ice mine', cr: 50000, mat: { industrial: 20, metal: 10 }, cap: 40, cuts: { water: 0.2 }, text: 'Digs and melts the outpost\'s own water.' },
+  clinic: { name: 'Clinic', cr: 80000, mat: { medical: 10, equipment: 10 }, cap: 40, cuts: { medical: 0.3 }, text: 'Cuts the need for medical supplies and helps the outpost grow faster.' },
+  dock: { name: 'Dock and trading post', cr: 100000, mat: { metal: 30, industrial: 10 }, cap: 100, services: ['missions', 'outfitter'], text: 'Opens a mission board and an outfitter, and brings in more trade: a bigger share for you.' },
+  ring2: { name: 'Second ring', cr: 200000, mat: { metal: 40, industrial: 20 }, cap: 200, after: 'dock', text: 'Room for two hundred more.' },
 };
 const cname = cid => goodName(cid);  // goodName is in readouts.js, which loads later
 const outpost = () => G.state.outpost;
@@ -50,7 +50,7 @@ function useOf(cid) {
   return (o.pop / 100) * NEEDS[cid] * cut;
 }
 const shortages = () => Object.keys(NEEDS).filter(cid => outpost().stock[cid] < useOf(cid));
-const income = () => Math.round(outpost().pop * 1.0 * (hasBuilt('dock') ? 1.5 : 1) * OUTPOST_SITES[outpost().site].pay);
+const income = () => Math.round(outpost().pop * 10 * (hasBuilt('dock') ? 1.5 : 1) * OUTPOST_SITES[outpost().site].pay);
 const capOf = () => Object.keys(BUILDINGS).filter(hasBuilt).reduce((t, b) => t + BUILDINGS[b].cap, 0);
 const supplyPrice = cid => Math.round(COMMODITIES.find(c => c.id === cid).base * 1.2);
 // The outpost stores at most 30 days of each supply, so hauling to it can't become a money pump.

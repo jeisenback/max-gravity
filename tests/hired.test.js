@@ -29,7 +29,7 @@ test('new game offers a hired start, and the choice of post', async () => {
       tutorial: st.tutorial, mode: G.mode, intro: UI.notes.join(' '), scene: G.dialog ? { title: G.dialog.event.title, text: G.dialog.event.text } : null,
     };
   });
-  assert.equal(r.post, 'gunner'); assert.equal(r.credits, 300); assert.equal(r.ship, 'freighter'); assert.ok(r.captain);
+  assert.equal(r.post, 'gunner'); assert.equal(r.credits, 3000); assert.equal(r.ship, 'freighter'); assert.ok(r.captain);
   assert.deepEqual(r.roles, ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo'], 'the crew fill every role but yours, and the chapter\'s wider crew');
   assert.deepEqual(r.modes, ['crewed', 'manual', 'crewed', 'crewed'], 'pilot, gunner, engineer, comms: your post is the manual one');
   assert.equal(r.tutorial, 0, 'the first run begins'); assert.equal(r.mode, 'landed');
@@ -69,11 +69,11 @@ test('hired: the captain\'s business is not yours', async () => {
   });
   assert.ok(r.same, 'nothing was bought, sold or dismissed, and the crew were not paid by you');
   assert.equal(r.fuel, r.full, 'the captain tops her up');
-  assert.equal(r.credits, 300);
+  assert.equal(r.credits, 3000);
   // The ship still flies: a burn and an arrival with a hired crew raise no errors.
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.left = 1; for (let i = 0; i < 5 && G.mode === 'transit'; i++) { G.transit.event = null; update(1); Mods.emit('frame', 1); } });
   assert.notEqual(await ev(() => G.mode), 'transit', 'she arrived');
-  assert.equal(await ev(() => G.state.credits), 300, 'and the crew were still not paid by you');
+  assert.equal(await ev(() => G.state.credits), 3000, 'and the crew were still not paid by you');
   await done();
 });
 
@@ -89,7 +89,7 @@ test('hired: a save keeps it, and an owner game is unchanged', async () => {
     return { owner, loaded: { post: G.state.hired.post, captain: G.state.hired.captain === cap, known: !!G.state.people[G.state.hired.captain], credits: G.state.credits } };
   });
   assert.equal(r.owner.hired, null); assert.equal(r.owner.trade, true); assert.ok(r.owner.paid > 0, 'an owner pays the crew');
-  assert.deepEqual(r.loaded, { post: 'engineer', captain: true, known: true, credits: 300 });
+  assert.deepEqual(r.loaded, { post: 'engineer', captain: true, known: true, credits: 3000 });
   await done();
 });
 
@@ -286,7 +286,7 @@ test('posts: you can ask the captain to move you, and they decide', async () => 
 test('buying in: a ship of your own, one friend, and the captain as a contact', async () => {
   const { page, ev, done } = await open({});
   await ev(hiredHelpers);
-  await ev(() => { startHired('pilot'); const st = G.state; st.tutorial = null; st.credits = 12000; st.cargo = { water: 5 }; st.paid = { water: 100 };
+  await ev(() => { startHired('pilot'); const st = G.state; st.tutorial = null; st.credits = 120000; st.cargo = { water: 5 }; st.paid = { water: 1000 };
     const crew = st.crew.map(person); crew[0].opinion = 4; crew[1].opinion = 1; crew[2].opinion = -2; window.friendId = crew[0].id; window.otherIds = [crew[1].id, crew[2].id];
     UI.render(); });
   await goTo(page, 'shipyard');
@@ -309,7 +309,7 @@ test('buying in: a ship of your own, one friend, and the captain as a contact', 
       payCrew: (() => { const c0 = st.credits; payCrew(10); return c0 - st.credits; })(), posts: Object.keys(POSTS).map(p => postMode(p)),
     };
   });
-  assert.equal(r.hired, null); assert.equal(r.ship, 'shuttle'); assert.equal(r.credits, 12000 - price);
+  assert.equal(r.hired, null); assert.equal(r.ship, 'shuttle'); assert.equal(r.credits, 120000 - price);
   assert.deepEqual(r.crew, [r.friend], 'the friend comes, the others stay with the captain');
   assert.ok(r.left); assert.equal(r.cargo, 0, 'the hold was the captain\'s');
   assert.deepEqual(r.captain, { known: true, ship: true, haunt: true, liked: true });
@@ -327,14 +327,14 @@ test('buying in: nobody comes if nobody likes you, and it needs the money and a 
     st.crew.map(person).forEach(c => { c.opinion = 0; });
     out.friend = buyInFriend();
     out.poor = canBuyIn('shuttle', currentPlanet());
-    st.credits = 50000; out.rich = canBuyIn('shuttle', currentPlanet());
+    st.credits = 500000; out.rich = canBuyIn('shuttle', currentPlanet());
     out.noYard = canBuyIn('shuttle', { services: ['trade'] });
     out.blocked = (() => { hired().confirm = 'shuttle'; buyIn('freighter'); return !!hired(); })();
     Mods.act('buyInAsk', 'shuttle'); Mods.act('buyInGo', 'shuttle');
     out.alone = { hired: G.state.hired, crew: G.state.crew.length, note: UI.notes.join(' ') };
     // An owner has nothing to buy in to.
     startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent();
-    G.state.credits = 99999; buyIn('courier'); out.owner = G.state.shipId;
+    G.state.credits = 999999; buyIn('courier'); out.owner = G.state.shipId;
     return out;
   });
   assert.equal(r.friend, null); assert.equal(r.poor, false); assert.equal(r.rich, true); assert.equal(r.noYard, false);
@@ -374,9 +374,9 @@ test('once you can afford a ship, the captain heads for a port with a yard', asy
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, h = st.hired, out = {};
     out.yardsInReach = Object.entries(SYSTEMS).filter(([sid]) => sid !== st.systemId && inRange(st.systemId, sid)).some(([, s]) => s.planets.some(p => p.services.includes('shipyard') && p.services.includes('trade')));
-    st.credits = 20000; h.plan = null; const rich = currentPlan();
+    st.credits = 200000; h.plan = null; const rich = currentPlan();
     out.rich = { yard: rich.yard, planet: rich.planet };
-    st.credits = 300; h.plan = null; const poor = currentPlan();
+    st.credits = 3000; h.plan = null; const poor = currentPlan();
     out.poorIsNotForced = poor !== null;
     return out;
   });
@@ -392,7 +392,7 @@ test('a hired hand is offered only what is theirs: their own post, and no owner\
   const FORBIDDEN = ['sbuy', 'hire', 'dismiss', 'renameShip', 'handBack', 'programWrite', 'programSlot', 'programPick', 'programRemove', 'routeDock', 'takeoff', 'buy', 'sell'];
   const problems = [];
   for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
-    await ev(p => { startHired(p); G.state.tutorial = null; G.state.credits = 50000; UI.render(); }, post);
+    await ev(p => { startHired(p); G.state.tutorial = null; G.state.credits = 500000; UI.render(); }, post);
     for (const tab of ['nav', 'weapons', 'shipyard', 'crew', 'web', 'journal', 'comms', 'port', 'bar', 'missions']) {
       await ev(t => { UI.tab = t; UI.render(); }, tab);
       const found = await page.evaluate(() => [...document.querySelectorAll('#panel .body button, #panel .post button')].filter(b => !b.disabled).map(b => [b.dataset.action, b.dataset.arg || '']));
@@ -453,7 +453,7 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; const t = G.transit, h = st.hired;
     const distress = TRANSIT_EVENTS.find(e => e.title === 'Distress Call'), coolant = TRANSIT_EVENTS.find(e => e.title === 'Coolant Leak');
     const out = { shown: null, mine: [], yours: null };
-    h.fund = 20000;
+    h.fund = 200000;
     let fundMoved = false, minePaid = 0;
     for (let i = 0; i < 60; i++) {
       G.dialog = null; t.event = null; G.nextEvent = null; const f0 = h.fund, c0 = st.credits;
@@ -465,9 +465,9 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
     }
     out.mine = { minePaid, fundMoved };
     // The contact (a patrol: no option fits a pilot, as a pirate's would): the captain answers, and pays from the ship's purse.
-    h.fund = 20000; let contactMine = 0;
+    h.fund = 200000; let contactMine = 0;
     for (let i = 0; i < 40; i++) { G.dialog = null; t.event = null; G.nextEvent = null; G.duel = null; const c0 = st.credits; st.armor = ship().armor; openEvent(contactEvent({ kind: 'patrol', gov: 'Arcology Compact' })); const e = G.dialog.event; chooseEvent(0); contactMine += st.credits - c0; finishEvent(); for (let n = 0; G.dialog && n < 30 && !/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title); n++) { chooseEvent(0); finishEvent(); }  /* the captain's pick is measured; the boarding that may follow is the scenes' own */ if (i === 0) out.contact = { decided: e.decided, labels: e.choices.map(c => c.label) }; }
-    out.contactMine = contactMine; out.contactFund = h.fund !== 20000;
+    out.contactMine = contactMine; out.contactFund = h.fund !== 200000;
     // Your own post's event is yours; another post's is the captain's.
     G.dialog = null; t.event = null; openEvent(coolant); out.coolantPilot = { decided: !!G.dialog.event.decided, n: G.dialog.choices.length };
     st.hired.post = 'engineer'; G.dialog = null; t.event = null; openEvent(coolant); out.coolantEngineer = { decided: !!G.dialog.event.decided, n: G.dialog.choices.length };
@@ -575,14 +575,14 @@ test('a hand starts owing the hall, each arrival repays a third of the pay and n
     startHired('gunner'); const st = G.state, h = hired(), out = { start: h.debt }; h.runsDone = 1;  // a later arrival: the first is the first officer's scene
     const arrive = days => { h.run = { planet: currentPlanet().name, sid: st.systemId, day: st.day - days, from: 'X', cost: 0 }; const c0 = st.credits, d0 = h.debt; const note = settleRun(currentPlanet()); return { note, credits: st.credits - c0, paid: d0 - h.debt, entry: h.ledger[0] }; };
     out.first = arrive(5);
-    h.debt = 40; out.cap = arrive(5); out.capFlag = !!(h.flags || {}).debtCleared; out.after = h.debt;
+    h.debt = 400; out.cap = arrive(5); out.capFlag = !!(h.flags || {}).debtCleared; out.after = h.debt;
     out.none = arrive(5);
     return out;
   });
-  assert.equal(r.start, 3000);
+  assert.equal(r.start, 30000);
   assert.equal(r.first.paid, Math.round(r.first.entry.wage * 0.3)); assert.equal(r.first.credits, r.first.entry.wage + r.first.entry.share - r.first.paid, 'the hall is paid out of the pay');
   assert.match(r.first.note, new RegExp(`The hall took ${r.first.paid} cr of your pay\\. [\\d,]+ cr still owed\\.`)); assert.equal(r.first.entry.hall, r.first.paid);
-  assert.equal(r.cap.paid, 40, 'never more than is owed'); assert.match(r.cap.note, /The hall took 40 cr of your pay\. The bond is paid\./); assert.equal(r.capFlag, true); assert.equal(r.after, 0);
+  assert.equal(r.cap.paid, 400, 'never more than is owed'); assert.match(r.cap.note, /The hall took 400 cr of your pay\. The bond is paid\./); assert.equal(r.capFlag, true); assert.equal(r.after, 0);
   assert.equal(r.none.paid, 0); assert.doesNotMatch(r.none.note, /The hall/, 'nothing owed, nothing said');
   await done();
 });
@@ -596,13 +596,13 @@ test('a hand cannot buy a ship while owing, the panel says what is left, and a h
     st.credits = 2000000; const ship = Object.keys(SHIPS).find(id => SHIPS[id].forSale && !SHIPS[id].req);
     out.owing = canBuyIn(ship, yard); out.panelOwing = (st.planet = yard.name, buyInHtml());
     h.debt = 0; out.clear = canBuyIn(ship, yard);
-    h.debt = 1234; startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', debt: 1234 }); out.carried = hired().debt;
-    hired().debt = 777; putAshore(); out.ashore = hired().debt;
+    h.debt = 12340; startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', debt: 12340 }); out.carried = hired().debt;
+    hired().debt = 7770; putAshore(); out.ashore = hired().debt;
     const old = hired(); old.runsDone = 1; delete old.debt; out.older = { guard: !(old.debt > 0), note: (old.run = { planet: currentPlanet().name, sid: G.state.systemId, day: G.state.day - 3, from: 'X', cost: 0 }, settleRun(currentPlanet())) };
     return out;
   });
   assert.equal(r.owing, false); assert.match(r.panelOwing, /You owe the hiring hall [\d,]+ cr\. You cannot buy a ship until it is paid\./); assert.equal(r.clear, true);
-  assert.equal(r.carried, 1234); assert.equal(r.ashore, 777, 'a hand put ashore keeps what is left');
+  assert.equal(r.carried, 12340); assert.equal(r.ashore, 7770, 'a hand put ashore keeps what is left');
   assert.ok(r.older.guard); assert.doesNotMatch(r.older.note, /The hall/);
   await done();
 });

@@ -33,7 +33,7 @@ function atTheReactor(backup) {
 
 CAST.ilsa = {
   first: 'Ilsa', last: 'Brandt', culture: 'earth', home: 'Hamburg Arcology', job: 'first officer', age: 45, role: 'xo',
-  traits: ['secretive', 'brave'], wage: 65, xo: true, fragile: true,
+  traits: ['secretive', 'brave'], wage: 650, xo: true, fragile: true,
   skills: { xo: 3, engineer: 2, pilot: 1, gunner: 0, slicer: 1 }, captain: { trade: 4, nerve: 2, thrift: 4 },
   ambition: 'Wants command, but won\'t take it from him.',
   bio: 'She keeps the maintenance board, the night watch and the fuel orders, and when the captain is in the galley, the rest. She\'s dry, exact and tired, and she doesn\'t mind, and wants that on the record.',
@@ -127,9 +127,9 @@ CAST.ilsa = {
       choices: [
         {
           label: 'Offer to put something in',
-          when: { credits: 200 },
-          effects: { credits: -200, castLike: { who: 'ilsa', n: 2, memory: 'You offered to put something into the fund.' } },
-          result: 'She counts the two hundred. "No," she says. Then: "Yes. Not for him. For me. So that it\'s not only me." She writes it in the book, in a column of its own.',
+          when: { credits: 2000 },
+          effects: { credits: -2000, castLike: { who: 'ilsa', n: 2, memory: 'You offered to put something into the fund.' } },
+          result: 'She counts the two thousand. "No," she says. Then: "Yes. Not for him. For me. So that it\'s not only me." She writes it in the book, in a column of its own.',
         },
         {
           label: 'Ask what she needs',

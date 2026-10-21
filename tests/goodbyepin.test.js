@@ -34,7 +34,7 @@ const pinAll = () => {
   const build = (key, st) => {
     window.__seed(11);
     window.drawCastPair = () => [...CAST_PAIRS.earth];
-    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: key, credits: 5000 });
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: key, credits: 50000 });
     window.drawCastPair = real;
     G.dialog = null; G.nextEvent = null;
     hiredCaptain().opinion = st.op;

@@ -15,10 +15,10 @@ const playPax = () => {
     __seed(1);
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' });
     while (G.dialog) finishEvent();
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 20000; st.shipId = 'freighter';
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000; st.shipId = 'freighter';
     const p = makePerson('mars'); p.first = 'Sam'; p.last = 'Vale'; p.home = 'Mars'; p.crime = 'fraud'; p.secret = null; p.goal = 'home'; p.traits = ['kind', 'brave']; p.opinion = 0; p.wealth = 2;
     st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
-    const o = { type: 'passenger', id: st.nextId++, who: 'Sam Vale', pax: 2, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', pid: registerPerson(p).id, title: 'Carry Sam Vale', blurb: '', pay: 3000, deadline: 99 };
+    const o = { type: 'passenger', id: st.nextId++, who: 'Sam Vale', pax: 2, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', pid: registerPerson(p).id, title: 'Carry Sam Vale', blurb: '', pay: 30000, deadline: 99 };
     st.missions.push(o);
     PID = o.pid;
     takeOff(); st.dest = 'mars'; G.player.x = 6000; tryBurn(); enterTransit(); G.transit.times = [];
@@ -59,8 +59,8 @@ const playCrew = () => {
     __seed(1);
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' });
     while (G.dialog) finishEvent();
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 20000; st.shipId = 'freighter'; st.fuel = 50;
-    const c = makeCrewCandidate('earth'); Object.assign(c, { first: 'Sam', last: 'Vale', home: 'Mars', wage: 100, opinion: 0 });
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000; st.shipId = 'freighter'; st.fuel = 50;
+    const c = makeCrewCandidate('earth'); Object.assign(c, { first: 'Sam', last: 'Vale', home: 'Mars', wage: 1000, opinion: 0 });
     registerPerson(c); st.crew.push(c.id);
     takeOff(); st.dest = 'mars'; G.player.x = 6000; tryBurn(); enterTransit(); G.transit.times = [];
     G.state.fuel = 50;  // the burn has taken its mass: the tanks are as the events read them

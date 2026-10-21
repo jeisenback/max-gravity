@@ -5,8 +5,8 @@
 const HUD_W = 220;          // sidebar width from 1000px; narrower screens get a top strip
 const BURN_DIST = 800;      // must be this far out from local traffic to start a long burn
 const LAND_SPEED = 140;
-const FUEL_PRICE = 2;       // credits per unit of reaction mass
-const REPAIR_PRICE = 15;    // credits per armor point
+const FUEL_PRICE = 20;      // credits per unit of reaction mass
+const REPAIR_PRICE = 150;   // credits per armor point
 const SHOT_SPEED = 750;
 const SHOT_LIFE = 0.9;
 const SHOT_DMG = 8;
@@ -115,7 +115,7 @@ const cargoFree = () => ship().cargo - cargoUsed();
 function stateDefaults(shipId) {
   const ship = SHIPS[shipId] || SHIPS.shuttle;
   return {
-    credits: 12000, day: 1, systemId: 'earth', planet: 'Earth', shipId: 'shuttle',
+    credits: 120000, day: 1, systemId: 'earth', planet: 'Earth', shipId: 'shuttle',
     fuel: ship.fuel, armor: ship.armor,
     cargo: {}, paid: {}, market: {}, rumors: [], missions: [], dest: null, nextId: 1,
     crew: [], flags: {}, people: {}, nextPid: 1, rep: {}, outfits: {},
@@ -136,7 +136,7 @@ function loadSave() {
 }
 
 const INTRO = [
-  'You have 12,000 credits, a patched-up Dust Skiff, and a solar system full of opportunity.',
+  'You have 120,000 credits, a patched-up Dust Skiff, and a solar system full of opportunity.',
   'Buy low, sell high. The Commodity Exchange shows the best market in range for each good.',
   'Tip: Earth sells Electronics cheap, and Mars, a short burn away, pays well for them. Mars sells Refined Metals cheap for the trip back.',
 ];
@@ -292,9 +292,9 @@ function settleKill(o, byPlayer) {
       changeRep('Pirate', -3);
     }
   } else if (o.kind === 'pirate') {
-    const b = randInt(2, 6) * 100;
+    const b = randInt(2, 6) * 1000;
     st.credits += b;
-    msg(flySay('kill.pirate', { pay: b }));
+    msg(flySay('kill.pirate', { pay: fmt(b) }));
     if (localGov() !== 'Pirate') changeRep(localGov(), 1);
     changeRep('Pirate', -2);
   } else if (o.kind === 'patrol') {
@@ -671,7 +671,7 @@ function generateMissions(planet) {
         offers.push({
           type: 'passenger', passenger: pid, who: P.name, pax: P.pax, bonus: 0, destSystem, destPlanet: dest.name,
           title: jobSay('carry', { who: P.name, pax: P.pax, dest: dest.name }),
-          pay: Math.round((1500 + days * 400) * P.fare), deadline,
+          pay: Math.round((15000 + days * 4000) * P.fare), deadline,
         });
       } else {
         offers.push(makePassengerOffer(here, destSystem, dest, days, deadline));
@@ -684,7 +684,7 @@ function generateMissions(planet) {
       offers.push({
         type: 'delivery', good, tons, destSystem, destPlanet: dest.name,
         title: jobSay('deliver', { tons, good, dest: dest.name }),
-        pay: 1000 + days * 350 + tons * 100,
+        pay: 10000 + days * 3500 + tons * 1000,
         deadline: day + Math.ceil(days * 1.5) + randInt(2, 6),
       });
     } else {
@@ -696,7 +696,7 @@ function generateMissions(planet) {
       offers.push({
         type: 'bounty', targetSystem, targetName, issuer: localGov(),
         title: jobSay('bounty', { target: targetName, system: SYSTEMS[targetSystem].name }),
-        pay: randInt(8, 16) * 1000,
+        pay: randInt(8, 16) * 10000,
         deadline: day + daysTo(targetSystem) * 2 + 10,
       });
     }

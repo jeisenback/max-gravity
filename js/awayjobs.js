@@ -16,17 +16,17 @@ const AWAY = [
           { label: 'Ask him what {who} said to say', check: { post: 'comms' },
             win: { text: ('You ask the question {who} made you carry, the one with no right answer for a stranger. He doesn\'t have it. He smiles, ' +
                 'and doesn\'t try, and is gone into the crowd before you\'ve finished putting the package away. You find the real contact an hour ' +
-                'later, a woman in a grocery stall, and the pay with her.'), pay: 660, xp: 'comms', next: 1 },
-            lose: { text: 'You ask, and he answers well enough, and you hand it over. It\'s not until the evening, when the real contact asks where it is, that you know the answer was a good guess. You\'re paid a fee for the trip, and nothing for the package.', pay: 130, rep: -2 } },
+                'later, a woman in a grocery stall, and the pay with her.'), pay: 6600, xp: 'comms', next: 1 },
+            lose: { text: 'You ask, and he answers well enough, and you hand it over. It\'s not until the evening, when the real contact asks where it is, that you know the answer was a good guess. You\'re paid a fee for the trip, and nothing for the package.', pay: 1300, rep: -2 } },
           { label: 'Walk him to a crowded place before you hand it over', check: { post: 'gunner' },
             win: { text: ('You steer him to the market square, one hand on the package and the other on the rail. In the open he changes his mind ' +
-                'about what he wanted, and walks away with his hands in his coat. The real contact finds you at the next stall, laughing, and paying.'), pay: 620, xp: 'gunner', next: 1 },
-            lose: { text: 'The market square isn\'t as crowded as you thought. He steps close and the case leaves your hands in a movement you don\'t quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least.', hurt: true, pay: 180 } },
-          { label: 'Hand it over and take the fee', win: { text: 'You hand it over, and he thanks you in a voice you won\'t remember, and the fee is exactly what {who} promised. It\'s not until you\'re back on the ship that you think about his hands.', pay: 260 } },
+                'about what he wanted, and walks away with his hands in his coat. The real contact finds you at the next stall, laughing, and paying.'), pay: 6200, xp: 'gunner', next: 1 },
+            lose: { text: 'The market square isn\'t as crowded as you thought. He steps close and the case leaves your hands in a movement you don\'t quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least.', hurt: true, pay: 1800 } },
+          { label: 'Hand it over and take the fee', win: { text: 'You hand it over, and he thanks you in a voice you won\'t remember, and the fee is exactly what {who} promised. It\'s not until you\'re back on the ship that you think about his hands.', pay: 2600 } },
         ] },
       { text: 'The woman at the grocery stall wraps the package in a cloth. "{who} said you\'d be careful," she says. "I\'d like to say thank you in a way that costs something."',
         choices: [
-          { label: 'Take the extra credits ', win: { text: 'She counts it out into your palm from a tin of coins. You take it. It\'s a small, honest pleasure.', pay: 220 } },
+          { label: 'Take the extra credits ', win: { text: 'She counts it out into your palm from a tin of coins. You take it. It\'s a small, honest pleasure.', pay: 2200 } },
           { label: 'Take a name for the next time', win: { text: 'She writes it on a scrap, and a street, and a time of day. "Tell them I sent you," she says. It\'s not cash, but you won\'t forget where it leads.', rep: 3 } },
         ] },
     ] },
@@ -34,21 +34,21 @@ const AWAY = [
     stages: [
       { text: ('The hauler sits at the far end of the apron on {dest}, listing a degree to port, with her drive housing open to the sky and a man ' +
           'underneath it who hasn\'t slept in a day. He climbs out when you hail. "{who} sent you," he says. "I\'ve been telling the yard it\'s the ' +
-          'injector, and the yard has been telling me it\'s three thousand credits."'),
+          'injector, and the yard has been telling me it\'s thirty thousand credits."'),
         choices: [
           { label: 'Rebuild the injector', check: { post: 'engineer' },
             win: { text: ('It\'s the injector, and a cracked housing behind it that the yard didn\'t mention. You spend a long afternoon in the ' +
                 'housing with a torch in your teeth, and at dusk the drive lights on the first try. He doesn\'t say anything for a long time, and then ' +
-                'he gives you what he has.'), pay: 750, xp: 'engineer', next: 1 },
-            lose: { text: 'You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you\'re in worse shape than it is. He gives you what he can for the effort.', hurt: true, pay: 180 } },
+                'he gives you what he has.'), pay: 7500, xp: 'engineer', next: 1 },
+            lose: { text: 'You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you\'re in worse shape than it is. He gives you what he can for the effort.', hurt: true, pay: 1800 } },
           { label: 'Tow her to the yard and argue the price down', check: { post: 'pilot' },
-            win: { text: 'You take her in tow with a line you don\'t entirely trust, and drag her the length of the apron at a crawl. At the yard you argue, in her captain\'s name, for a price he can pay, and win. He pays you from what\'s left.', pay: 570, xp: 'pilot', next: 1 },
-            lose: { text: 'The line parts a hundred meters from the yard, and the hauler\'s bow swings into a post. It\'s nobody\'s fault, and everybody says so. He pays for the post. You get a bill for the line.', cost: 60, opinion: 0 } },
-          { label: 'Give him what you can spare and wish him luck (50 cr)', win: { text: 'You count fifty credits onto the hatch cover and wish him luck. He takes it the way a man takes a handhold, and doesn\'t say what he\'s thinking.', cost: 50 } },
+            win: { text: 'You take her in tow with a line you don\'t entirely trust, and drag her the length of the apron at a crawl. At the yard you argue, in her captain\'s name, for a price he can pay, and win. He pays you from what\'s left.', pay: 5700, xp: 'pilot', next: 1 },
+            lose: { text: 'The line parts a hundred meters from the yard, and the hauler\'s bow swings into a post. It\'s nobody\'s fault, and everybody says so. He pays for the post. You get a bill for the line.', cost: 600, opinion: 0 } },
+          { label: 'Give him what you can spare and wish him luck (500 cr)', win: { text: 'You count five hundred credits onto the hatch cover and wish him luck. He takes it the way a man takes a handhold, and doesn\'t say what he\'s thinking.', cost: 500 } },
         ] },
       { text: 'When the drive is running he walks you to the ramp. "I can\'t pay you what it was worth," he says. "I can give you a berth on her any time you want one, if she\'s still flying. Or I can give you this."',
         choices: [
-          { label: 'Take the credits ', win: { text: 'He puts it into your hand and closes your fingers over it. "It\'s what I have," he says. It\'s enough.', pay: 330 } },
+          { label: 'Take the credits ', win: { text: 'He puts it into your hand and closes your fingers over it. "It\'s what I have," he says. It\'s enough.', pay: 3300 } },
           { label: 'Take the offer of a berth', win: { text: 'He shakes your hand on it. You can\'t spend it, and you don\'t need to. A hauler\'s captain with a standing offer is worth more on the lanes than the credits would have been.', rep: 4 } },
         ] },
     ] },
@@ -61,20 +61,20 @@ const AWAY = [
           { label: 'Walk her through the streets', check: { post: 'gunner' },
             win: { text: ('You take the middle of the street and keep her on the inside. A man steps out of a doorway ahead of you, and sees your ' +
                 'face, and steps back into it. At the office she gives her statement for an hour, and when she comes out she takes your hand in both ' +
-                'of hers.'), pay: 700, xp: 'gunner', next: 1 },
-            lose: { text: 'They\'re waiting at the third corner, two of them, and it\'s short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark.', hurt: true, pay: 260 } },
+                'of hers.'), pay: 7000, xp: 'gunner', next: 1 },
+            lose: { text: 'They\'re waiting at the third corner, two of them, and it\'s short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark.', hurt: true, pay: 2600 } },
           { label: 'Arrange a quiet meeting by relay instead', check: { post: 'comms' },
             win: { text: ('You make a call you shouldn\'t be able to make, in a voice that sounds like an authorized one, and an officer from the ' +
                 'office comes to the noodle stall in plain clothes and takes the statement over the counter. Nobody who was watching the street sees ' +
-                'anything.'), pay: 620, xp: 'comms', next: 1 },
+                'anything.'), pay: 6200, xp: 'comms', next: 1 },
             lose: { text: ('The call goes through somebody else\'s relay. By the time the officer arrives, there\'s a man across the street with a ' +
                 'good view of the stall, and the dockworker has gone out the back and hasn\'t come back. You get a fee for the trouble, and a lasting ' +
-                'dislike of relays.'), rep: -3, pay: 130 } },
+                'dislike of relays.'), rep: -3, pay: 1300 } },
           { label: 'Tell her you can\'t do this', win: { text: '"I understand," she says. She doesn\'t look surprised, and that\'s somehow the worst of it. You leave her at the table with her tea.' } },
         ] },
       { text: 'Before you go, the dockworker presses something into your hand: a key on a loop of string. "It\'s the locker at the back of the stall," she says. "{who} knows. It\'s for whoever comes."',
         choices: [
-          { label: 'Open the locker (150 cr in a tin)', win: { text: 'The locker has a tin of credits and a folded note that says thank you in three languages. You take the credits and leave the note.', pay: 330 } },
+          { label: 'Open the locker (1,500 cr in a tin)', win: { text: 'The locker has a tin of credits and a folded note that says thank you in three languages. You take the credits and leave the note.', pay: 3300 } },
           { label: 'Leave the locker for the next one', win: { text: 'You give her back the key and say it should stay for whoever comes. She puts it in her pocket with the look of someone who was going to say the same.', rep: 3 } },
         ] },
     ] },

@@ -650,36 +650,36 @@
  {
   "id": "cast:tomas:mid1",
   "i": 0,
-  "label": "Lend him 200 cr",
-  "result": "He takes it with both hands. \"Thank you,\" he says, and says it again in Igbo. By the second pay day the two hundred is in your account, with an extra: a ring of braided wire, on a note that says \"for luck\".",
+  "label": "Lend him 2,000 cr",
+  "result": "He takes it with both hands. \"Thank you,\" he says, and says it again in Igbo. By the second pay day the two thousand is in your account, with an extra: a ring of braided wire, on a note that says \"for luck\".",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.loan: undefined -> true",
-   "s.credits: 5000 -> 4800",
+   "s.credits: 50000 -> 48000",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You lent me two hundred credits for my sister's rent.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You lent me two thousand credits for my sister's rent.",
    "s.people.c:tomas.opinion: 0 -> 3"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Lend him 200 cr",
+    "label": "Lend him 2,000 cr",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Lend him 200 cr",
+    "label": "Lend him 2,000 cr",
     "open": false,
-    "why": "You have 0 cr; this costs 200 cr."
+    "why": "You have 0 cr; this costs 2,000 cr."
    },
    "liked": {
-    "label": "Lend him 200 cr",
+    "label": "Lend him 2,000 cr",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Lend him 200 cr",
+    "label": "Lend him 2,000 cr",
     "open": true,
     "why": ""
    }
@@ -693,7 +693,7 @@
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You couldn't spare two hundred credits.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You couldn't spare two thousand credits.",
    "s.people.c:tomas.opinion: 0 -> -1"
   ],
   "next": null,
@@ -3553,9 +3553,9 @@
   "id": "cast:ilsa:late",
   "i": 0,
   "label": "Offer to put something in",
-  "result": "She counts the two hundred. \"No,\" she says. Then: \"Yes. Not for him. For me. So that it's not only me.\" She writes it in the book, in a column of its own.",
+  "result": "She counts the two thousand. \"No,\" she says. Then: \"Yes. Not for him. For me. So that it's not only me.\" She writes it in the book, in a column of its own.",
   "changes": [
-   "s.credits: 5000 -> 4800",
+   "s.credits: 50000 -> 48000",
    "s.people.c:ilsa.liftedAt: undefined -> 1",
    "s.people.c:ilsa.memories: [] -> undefined",
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You offered to put something into the fund.",
@@ -3571,7 +3571,7 @@
    "poor": {
     "label": "Offer to put something in",
     "open": false,
-    "why": "You have 0 cr; this costs 200 cr."
+    "why": "You have 0 cr; this costs 2,000 cr."
    },
    "liked": {
     "label": "Offer to put something in",
@@ -4321,7 +4321,7 @@
   "id": "cast:ansel:mid1",
   "i": 1,
   "label": "Ask how close he is",
-  "result": "He tells you, to the credit, and it's less than half of eleven thousand. \"That's the nice thing about a number,\" he says. \"It doesn't pretend.\"",
+  "result": "He tells you, to the credit, and it's less than half of one hundred and ten thousand. \"That's the nice thing about a number,\" he says. \"It doesn't pretend.\"",
   "changes": [
    "s.people.c:ansel.liftedAt: undefined -> 1",
    "s.people.c:ansel.memories: [] -> undefined",
@@ -4800,10 +4800,10 @@
  {
   "id": "cast:tomas:bar1",
   "i": 0,
-  "label": "Buy a round for the dock crew (40 cr)",
+  "label": "Buy a round for the dock crew (400 cr)",
   "result": "A round for the dock crew turns into three hours. Tomas is shown the jig they use for the rail, and a trick for a seam that has given him trouble since the ring, and he shows them one of his own. He walks back to the ship with a notebook full of sketches. \"They talk to the work,\" he says. \"The same as me.\"",
   "changes": [
-   "s.credits: 5000 -> 4960",
+   "s.credits: 50000 -> 49600",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You bought a round for the dock crew, and let me talk shop.",
@@ -4813,22 +4813,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Buy a round for the dock crew (40 cr)",
+    "label": "Buy a round for the dock crew (400 cr)",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Buy a round for the dock crew (40 cr)",
+    "label": "Buy a round for the dock crew (400 cr)",
     "open": false,
-    "why": "You have 0 cr; this costs 40 cr."
+    "why": "You have 0 cr; this costs 400 cr."
    },
    "liked": {
-    "label": "Buy a round for the dock crew (40 cr)",
+    "label": "Buy a round for the dock crew (400 cr)",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Buy a round for the dock crew (40 cr)",
+    "label": "Buy a round for the dock crew (400 cr)",
     "open": true,
     "why": ""
    }
@@ -5085,10 +5085,10 @@
  {
   "id": "cast:ruben:bar1",
   "i": 0,
-  "label": "Buy a round (30 cr)",
+  "label": "Buy a round (300 cr)",
   "result": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
   "changes": [
-   "s.credits: 5000 -> 4970",
+   "s.credits: 50000 -> 49700",
    "s.inbox.0.n: 1 -> 2",
    "s.inbox.0.pid: c:ruben -> undefined",
    "s.inbox.0.tag: undefined -> market",
@@ -5115,22 +5115,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Buy a round (30 cr)",
+    "label": "Buy a round (300 cr)",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Buy a round (30 cr)",
+    "label": "Buy a round (300 cr)",
     "open": false,
-    "why": "You have 0 cr; this costs 30 cr."
+    "why": "You have 0 cr; this costs 300 cr."
    },
    "liked": {
-    "label": "Buy a round (30 cr)",
+    "label": "Buy a round (300 cr)",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Buy a round (30 cr)",
+    "label": "Buy a round (300 cr)",
     "open": true,
     "why": ""
    }
@@ -5531,35 +5531,35 @@
  {
   "id": "captain:hester:trouble",
   "i": 0,
-  "label": "Lend her four hundred",
-  "result": "You push four hundred across the table. She counts it, and then writes it in the notebook, with the date and a figure beside it. \"Four hundred and ten,\" she says, \"the day you leave this ship.\"",
+  "label": "Lend her four thousand",
+  "result": "You push four thousand across the table. She counts it, and then writes it in the notebook, with the date and a figure beside it. \"Four thousand one hundred,\" she says, \"the day you leave this ship.\"",
   "changes": [
-   "s.credits: 5000 -> 4600",
+   "s.credits: 50000 -> 46000",
    "s.hired.flags.lent: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You lent me four hundred when the fund was short.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You lent me four thousand when the fund was short.",
    "s.people.p1.opinion: 0 -> 3"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Lend her four hundred",
+    "label": "Lend her four thousand",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Lend her four hundred",
+    "label": "Lend her four thousand",
     "open": false,
-    "why": "You have 0 cr; this costs 400 cr."
+    "why": "You have 0 cr; this costs 4,000 cr."
    },
    "liked": {
-    "label": "Lend her four hundred",
+    "label": "Lend her four thousand",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Lend her four hundred",
+    "label": "Lend her four thousand",
     "open": true,
     "why": ""
    }
@@ -5638,7 +5638,7 @@
   "id": "captain:hester:secret:confide",
   "i": 1,
   "label": "Ask how much she still owes",
-  "result": "\"Thirty-eight thousand, and some of it's interest,\" she says, and doesn't hesitate. \"Eleven good runs, if the market holds. I've counted it a good many times.\"",
+  "result": "\"Three hundred and eighty thousand, and some of it's interest,\" she says, and doesn't hesitate. \"Eleven good runs, if the market holds. I've counted it a good many times.\"",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
@@ -5883,10 +5883,10 @@
  {
   "id": "captain:dov:trouble",
   "i": 1,
-  "label": "Cover three hundred from your savings",
+  "label": "Cover three thousand from your savings",
   "result": "You pay it at the window, in your own cash. He stands still beside you. \"I'll pay you back,\" he says, and for once doesn't tell a story about it. He writes the figure on the back of his hand.",
   "changes": [
-   "s.credits: 5000 -> 4700",
+   "s.credits: 50000 -> 47000",
    "s.hired.flags.lent: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -5896,22 +5896,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Cover three hundred from your savings",
+    "label": "Cover three thousand from your savings",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Cover three hundred from your savings",
+    "label": "Cover three thousand from your savings",
     "open": false,
-    "why": "You have 0 cr; this costs 300 cr."
+    "why": "You have 0 cr; this costs 3,000 cr."
    },
    "liked": {
-    "label": "Cover three hundred from your savings",
+    "label": "Cover three thousand from your savings",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Cover three hundred from your savings",
+    "label": "Cover three thousand from your savings",
     "open": true,
     "why": ""
    }
@@ -6526,35 +6526,35 @@
  {
   "id": "captain:zoya:trouble",
   "i": 1,
-  "label": "Give him a hundred to wait a week",
-  "result": "He counts it twice, in front of you, and goes, and you're not sure he's done. Pell laughs when she hears, and then hugs you, hard, and lets go at once. \"A hundred,\" she says. \"I'll pay you a hundred and a quarter, and that's a bet I won't lose.\"",
+  "label": "Give him a thousand to wait a week",
+  "result": "He counts it twice, in front of you, and goes, and you're not sure he's done. Pell laughs when she hears, and then hugs you, hard, and lets go at once. \"A thousand,\" she says. \"I'll pay you a thousand and a quarter, and that's a bet I won't lose.\"",
   "changes": [
-   "s.credits: 5000 -> 4900",
+   "s.credits: 50000 -> 49000",
    "s.hired.flags.lent: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You paid Dobrescu a hundred to wait a week.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You paid Dobrescu a thousand to wait a week.",
    "s.people.p1.opinion: 0 -> 3"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Give him a hundred to wait a week",
+    "label": "Give him a thousand to wait a week",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Give him a hundred to wait a week",
+    "label": "Give him a thousand to wait a week",
     "open": false,
-    "why": "You have 0 cr; this costs 100 cr."
+    "why": "You have 0 cr; this costs 1,000 cr."
    },
    "liked": {
-    "label": "Give him a hundred to wait a week",
+    "label": "Give him a thousand to wait a week",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Give him a hundred to wait a week",
+    "label": "Give him a thousand to wait a week",
     "open": true,
     "why": ""
    }
@@ -7082,9 +7082,9 @@
   "id": "hired:cap-praise",
   "i": 2,
   "label": "[Gunner 3] Ask for the bonus, with the week's figures",
-  "result": "You bring the week's log from the post, with the figures marked. The captain reads down the column. \"Sixty,\" the captain says. It's in your account before the end of the watch. (+1 experience at the gunner post.)",
+  "result": "You bring the week's log from the post, with the figures marked. The captain reads down the column. \"Six hundred,\" the captain says. It's in your account before the end of the watch. (+1 experience at the gunner post.)",
   "changes": [
-   "s.credits: 5000 -> 5060",
+   "s.credits: 50000 -> 50600",
    "s.hired.skill.gunner: 12 -> 13",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -7226,32 +7226,32 @@
  {
   "id": "hired:cap-favour",
   "i": 1,
-  "label": "Stand it for forty credits",
+  "label": "Stand it for four hundred credits",
   "result": "She pays it out of her own pocket, without comment, and writes it down. The watch passes like any other.",
   "changes": [
-   "s.credits: 5000 -> 5040",
+   "s.credits: 50000 -> 50400",
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You stood a watch for me for a fee."
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Stand it for forty credits",
+    "label": "Stand it for four hundred credits",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Stand it for forty credits",
+    "label": "Stand it for four hundred credits",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Stand it for forty credits",
+    "label": "Stand it for four hundred credits",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Stand it for forty credits",
+    "label": "Stand it for four hundred credits",
     "open": true,
     "why": ""
    }
@@ -7487,10 +7487,10 @@
  {
   "id": "hired:crew-cards",
   "i": 0,
-  "label": "Sit in (50 cr)",
-  "result": "The cards fall your way for once, and you take the pot, fifty credits of other people's money, and Priya slaps the table and demands a rematch. You win 50 cr net.",
+  "label": "Sit in (500 cr)",
+  "result": "The cards fall your way for once, and you take the pot, five hundred credits of other people's money, and Priya slaps the table and demands a rematch. You win 500 cr net.",
   "changes": [
-   "s.credits: 5000 -> 5100",
+   "s.credits: 50000 -> 51000",
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Played cards with Priya. They want a rematch.",
    "s.people.p7.liftedAt: undefined -> 1",
@@ -7503,22 +7503,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Sit in (50 cr)",
+    "label": "Sit in (500 cr)",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Sit in (50 cr)",
+    "label": "Sit in (500 cr)",
     "open": false,
-    "why": "You have 0 cr; this costs 50 cr."
+    "why": "You have 0 cr; this costs 500 cr."
    },
    "liked": {
-    "label": "Sit in (50 cr)",
+    "label": "Sit in (500 cr)",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Sit in (50 cr)",
+    "label": "Sit in (500 cr)",
     "open": true,
     "why": ""
    }
@@ -8404,15 +8404,15 @@
  {
   "id": "hired:money-loan",
   "i": 0,
-  "label": "Lend a hundred",
-  "result": "You lend it, no questions, and Priya takes it with both hands and can't find the words. It's a hundred credits you may or may not see again.",
+  "label": "Lend a thousand",
+  "result": "You lend it, no questions, and Priya takes it with both hands and can't find the words. It's a thousand credits you may or may not see again.",
   "changes": [
-   "s.credits: 5000 -> 4900",
+   "s.credits: 50000 -> 49000",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Lent Priya a hundred credits.",
+   "s.journal.0.text: undefined -> Lent Priya a thousand credits.",
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You lent me a hundred credits when I needed it.",
+   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You lent me a thousand credits when I needed it.",
    "s.people.p7.opinion: 0 -> 3",
    "s.qualities.due:h-loan-repaid: undefined -> 13",
    "s.threads.loan: undefined -> p7"
@@ -8420,22 +8420,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Lend a hundred",
+    "label": "Lend a thousand",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Lend a hundred",
+    "label": "Lend a thousand",
     "open": false,
-    "why": "You have 0 cr; this costs 100 cr."
+    "why": "You have 0 cr; this costs 1,000 cr."
    },
    "liked": {
-    "label": "Lend a hundred",
+    "label": "Lend a thousand",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Lend a hundred",
+    "label": "Lend a thousand",
     "open": true,
     "why": ""
    }
@@ -8444,15 +8444,15 @@
  {
   "id": "hired:money-loan",
   "i": 1,
-  "label": "Lend fifty",
+  "label": "Lend five hundred",
   "result": "\"It's what I can spare,\" you say, and Priya says that's fine, that it's more than anyone else offered.",
   "changes": [
-   "s.credits: 5000 -> 4950",
+   "s.credits: 50000 -> 49500",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Lent Priya fifty credits.",
+   "s.journal.0.text: undefined -> Lent Priya five hundred credits.",
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You lent me fifty credits, which was what you could spare.",
+   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You lent me five hundred credits, which was what you could spare.",
    "s.people.p7.opinion: 0 -> 1",
    "s.qualities.due:h-loan-small: undefined -> 13",
    "s.threads.loan: undefined -> p7"
@@ -8460,22 +8460,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Lend fifty",
+    "label": "Lend five hundred",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Lend fifty",
+    "label": "Lend five hundred",
     "open": false,
-    "why": "You have 0 cr; this costs 50 cr."
+    "why": "You have 0 cr; this costs 500 cr."
    },
    "liked": {
-    "label": "Lend fifty",
+    "label": "Lend five hundred",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Lend fifty",
+    "label": "Lend five hundred",
     "open": true,
     "why": ""
    }
@@ -8520,9 +8520,9 @@
   "id": "hired:money-short",
   "i": 0,
   "label": "Raise it quietly with the captain",
-  "result": "You raise it at the end of a watch, with the statement in your hand, and the captain checks it, and winces. \"My error,\" the captain says. \"Fixed.\" It's fixed by morning, and you are 35 cr up.",
+  "result": "You raise it at the end of a watch, with the statement in your hand, and the captain checks it, and winces. \"My error,\" the captain says. \"Fixed.\" It's fixed by morning, and you are 350 cr up.",
   "changes": [
-   "s.credits: 5000 -> 5035",
+   "s.credits: 50000 -> 50350",
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Raised a short pay statement quietly with Captain Vance.",
    "s.people.p1.memories: [] -> undefined",
@@ -8557,9 +8557,9 @@
   "id": "hired:money-short",
   "i": 1,
   "label": "Make a scene",
-  "result": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 35 cr up.",
+  "result": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 350 cr up.",
   "changes": [
-   "s.credits: 5000 -> 5035",
+   "s.credits: 50000 -> 50350",
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Made a scene about my pay statement.",
    "s.people.p1.liftedAt: undefined -> 1",

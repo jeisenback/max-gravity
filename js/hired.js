@@ -10,16 +10,16 @@
 // Loaded before game.js; only calls into it at runtime.
 
 const HIRED_POSTS = ['pilot', 'gunner', 'engineer', 'comms'];  // the posts you can sign on to
-const HIRED_SAVINGS = 300;
+const HIRED_SAVINGS = 3000;
 // The rest of the crew, beside the four posts: a first officer, a quartermaster, a medic, a cook and two ice hands.
 const CHAPTER_CREW = [{ role: 'xo', skill: 2 }, { role: 'quartermaster', skill: 2 }, { role: 'medic', skill: 2 }, { role: 'cook', skill: 2 }, { role: 'icehand', skill: 1 }, { role: 'icehand', skill: 1 }];
-const HIRED_FUND = 12000;  // the ship's money: repairs and fuel, since the cargo is the shipper's (contracts.js)
-const HIRED_WAGE = 40, HIRED_SHARE = 0.06;  // a day's wage and a share of each run's profit, tuned with tools/soak.js so about 20 runs reach the target
+const HIRED_FUND = 120000;  // the ship's money: repairs and fuel, since the cargo is the shipper's (contracts.js)
+const HIRED_WAGE = 400, HIRED_SHARE = 0.06;  // a day's wage and a share of each run's profit, tuned with tools/soak.js so about 20 runs reach the target
 const HAND_RAID = { base: 0.08, per: 1.4 };  // a hand's chance of a pirate contact on a run: this and the lane's danger (engage.js), in place of 0.05 and 0.6
 const HAND_LANE_WEIGHT = 8;  // and how much a dangerous lane weights the ship's own incidents (happenings.js)
 const LIGHT_DUTY = 0.6;  // a hurt hand's wage while they work light duty
-const HIRED_DEBT = 3000, DEBT_SHARE = 0.3;  // the hiring hall's bond for the berth, the passage and the kit (#280): a third of each run's pay goes to it, never more than is owed
-const HIRED_TARGET = 19000;  // the used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of
+const HIRED_DEBT = 30000, DEBT_SHARE = 0.3;  // the hiring hall's bond for the berth, the passage and the kit (#280): a third of each run's pay goes to it, never more than is owed
+const HIRED_TARGET = 190000;  // the used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of
 // The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
 // her price, and at the middle price again if the deal lapses.
 const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? (captainBeatsDone(h) ? USED_OFFER_AT : HIRED_TARGET) : dealOpen() ? h.deal.price : HIRED_TARGET); };
@@ -169,7 +169,7 @@ const bossName = p => (p.role === 'xo' ? p.first : `Captain ${p.last}`);
 // self: it needs the hand in person), not from its words: an event sets them where it builds the choice, and the words are free to change.
 function captainPick(choices) {
   const fund = hired().fund, d = captainEntry();
-  const floor = 1000 * (d ? d.captain.thrift : 4), fight = d ? d.captain.nerve - 1 : 2;  // an older save's captain: 4,000 and a fight twice as likely
+  const floor = 10000 * (d ? d.captain.thrift : 4), fight = d ? d.captain.nerve - 1 : 2;  // an older save's captain: 40,000 and a fight twice as likely
   const weights = choices.map((c, i) => (c.cost && fund < floor ? 0.2 : 1 + (i === choices.length - 1 ? 1 : 0) + (c.fight ? fight : 0)));
   let r = Math.random() * weights.reduce((a, b) => a + b, 0);
   for (let i = 0; i < choices.length; i++) if ((r -= weights[i]) < 0) return choices[i];
@@ -316,7 +316,7 @@ function errandsFor(planet) {
   if (scopeOff('errands') || !planet.services.includes('missions') || !plan) return [];
   const dest = SYSTEMS[plan.sid].planets.find(p => p.name === plan.planet);
   return Array.from({ length: randInt(1, 3) }, () => {
-    const [what, blurb] = pick(linedText('lines:errands', ERRANDS)), gross = randInt(2, 6) * 10 * Math.max(1, plan.days), cut = Math.round(gross * ERRAND_CUT);
+    const [what, blurb] = pick(linedText('lines:errands', ERRANDS)), gross = randInt(2, 6) * 100 * Math.max(1, plan.days), cut = Math.round(gross * ERRAND_CUT);
     return {
       type: 'errand', what, title: jobSay('errand', { what, dest: dest.name }), blurb: `${blurb} ${jobSay('errand.cut', { cut: fmt(cut) })}`,
       destSystem: plan.sid, destPlanet: dest.name, pay: gross - cut, cut, deadline: st.day + plan.days * 2 + randInt(6, 12),
@@ -383,7 +383,7 @@ const namesOf = list => list.map(c => `${c.first} ${c.last}`).join(' and ');
 // she is offered once (by Tomas, or by a broker if he is not aboard) for DEAL_DAYS, at a price that follows how Tomas
 // thinks of you. buyIn id USED_ID buys her; she comes worn. If the deal lapses she is gone, and the ordinary list is left.
 const USED_ID = 'used';
-const USED_PRICE = { good: 17000, mid: HIRED_TARGET, bad: 21000 };  // the broker's price is the bad one: no favor
+const USED_PRICE = { good: 170000, mid: HIRED_TARGET, bad: 210000 };  // the broker's price is the bad one: no favor
 const USED_OFFER_AT = Math.round(0.55 * USED_PRICE.mid), DEAL_DAYS = 56;
 const USED_CONDITION = { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 };
 const buyShip = id => (id === USED_ID ? { ...SHIPS.lightfreighter, name: 'Ore Runner (used)', price: hired() && hired().deal ? hired().deal.price : USED_PRICE.mid, forSale: dealOpen() } : SHIPS[id]);

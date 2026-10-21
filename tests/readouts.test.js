@@ -10,7 +10,7 @@ after(closeBrowser);
 
 const helpers = () => {
   window.startHand = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.tutorial = null; G.state.story.next = 1e9; };
-  window.aContract = (st, extra = {}) => ({ contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 90, from: st.planet, planet: 'Ironheart', sid: 'psyche', pay: 22002, due: st.day + 8, days: 6, ...extra });
+  window.aContract = (st, extra = {}) => ({ contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 90, from: st.planet, planet: 'Ironheart', sid: 'psyche', pay: 220020, due: st.day + 8, days: 6, ...extra });
 };
 
 test('the strip: the contract and its days, the hull, the fund, the savings, and a hurt while it lasts, under the header of every landed screen', async () => {
@@ -18,7 +18,7 @@ test('the strip: the contract and its days, the hull, the fund, the savings, and
   await ev(helpers);
   const r = await ev(() => {
     startHand(); const st = G.state, hd = hired(), out = {};
-    hd.plan = { run: aContract(st) }; st.credits = 300;
+    hd.plan = { run: aContract(st) }; st.credits = 3000;
     out.plan = stripItems(st, hd, st.armor, ship().armor, st.day);
     hd.plan = null; hd.run = { ...aContract(st), due: st.day - 2 }; st.armor = Math.round(ship().armor / 2); hd.hurtUntil = st.day + 4;
     out.late = stripItems(st, hd, st.armor, ship().armor, st.day);
@@ -30,13 +30,13 @@ test('the strip: the contract and its days, the hull, the fund, the savings, and
     for (const tab of ['crew', 'bar', 'journal']) { UI.tab = tab; UI.render(); out[tab] = !!document.querySelector('.strip'); }
     return out;
   });
-  assert.deepEqual(r.plan, [['Contract', '90t Water to Ironheart, due in 8 days'], ['Hull', '100%'], ['Fund', '12,000 cr'], ['Savings', '300 cr']]);
-  assert.deepEqual(r.late, [['Contract', '90t Water to Ironheart, 2 days late'], ['Hull', '50%'], ['Fund', '12,000 cr'], ['Savings', '300 cr'], ['Hurt', '4 days']]);
+  assert.deepEqual(r.plan, [['Contract', '90t Water to Ironheart, due in 8 days'], ['Hull', '100%'], ['Fund', '120,000 cr'], ['Savings', '3,000 cr']]);
+  assert.deepEqual(r.late, [['Contract', '90t Water to Ironheart, 2 days late'], ['Hull', '50%'], ['Fund', '120,000 cr'], ['Savings', '3,000 cr'], ['Hurt', '4 days']]);
   assert.equal(r.today, '90t Water to Ironheart, due today');
   assert.deepEqual(r.none, ['Contract', 'Hull', 'Fund', 'Savings'], 'no contract is still a readout; a hurt that has passed is not');
-  assert.match(r.dom, /^Contract [^|]+ \| Hull 100% \| Fund 12,000 cr \| Savings 300 cr$/); assert.equal(r.role, 'status');
+  assert.match(r.dom, /^Contract [^|]+ \| Hull 100% \| Fund 120,000 cr \| Savings 3,000 cr$/); assert.equal(r.role, 'status');
   assert.ok(r.crew && r.bar && r.journal, 'the strip is on every landed screen');
-  assert.equal(r.text, 'Contract 90t Water to Ironheart, due in 8 days  Fund 12,000 cr', 'the HUD\'s line skips what it draws as a bar or a figure');
+  assert.equal(r.text, 'Contract 90t Water to Ironheart, due in 8 days  Fund 120,000 cr', 'the HUD\'s line skips what it draws as a bar or a figure');
   await done();
 });
 
@@ -51,7 +51,7 @@ test('the contract is a paper in the hold: the shipper, the load, the ports, the
   });
   assert.doesNotMatch(r.none, /class="eyebrow">Contract</, 'no contract, no paper');
   assert.match(r.paper, /class="eyebrow">Contract</);
-  for (const line of ['Shipper</span><b >the Compact Freight Office', 'Load</span><b >90t Water', 'To</span><b >Ironheart, Psyche', 'Pay on delivery</span><b >22,002 cr', 'Due</span><b >', ', in 8 days</b>', 'Signed</span><b >', 'Docked a tenth of the pay a day late']) assert.ok(r.paper.includes(line), `the paper says ${line}`);
+  for (const line of ['Shipper</span><b >the Compact Freight Office', 'Load</span><b >90t Water', 'To</span><b >Ironheart, Psyche', 'Pay on delivery</span><b >220,020 cr', 'Due</span><b >', ', in 8 days</b>', 'Signed</span><b >', 'Docked a tenth of the pay a day late']) assert.ok(r.paper.includes(line), `the paper says ${line}`);
   await done();
 });
 
@@ -62,7 +62,7 @@ test('a delivery takes the contract\'s tons and leaves the rest of the good in t
     startHand(); const st = G.state, hd = hired(), here = currentPlanet(), out = {};
     hd.runsDone = 1;
     hd.run = { ...aContract(st), planet: here.name, sid: st.systemId, day: st.day - 6, cost: 0, due: st.day + 2 };
-    st.cargo.water = hd.run.tons + 30; st.paid.water = 100;
+    st.cargo.water = hd.run.tons + 30; st.paid.water = 1000;
     settleRun(here);
     out.left = st.cargo.water; out.paid = st.paid.water;
     hd.run = { ...aContract(st), good: 'gone', planet: here.name, sid: st.systemId, day: st.day - 6, cost: 0, due: st.day + 2 };
@@ -70,7 +70,7 @@ test('a delivery takes the contract\'s tons and leaves the rest of the good in t
     return out;
   });
   assert.equal(r.left, 30, 'the 30t beyond the contract stay aboard');
-  assert.equal(r.paid, 100, 'and keep what was paid for them');
+  assert.equal(r.paid, 1000, 'and keep what was paid for them');
   assert.equal(r.error, undefined, 'a removed mod\'s good does not throw');
   assert.match(r.note, /^The load for .* was lost on the way/);
   await done();
@@ -99,9 +99,9 @@ test('the captain\'s log: each settled run is a row with the shipper, the load, 
   assert.match(r.lost, /^The load for the Compact Freight Office was lost on the way, and there is no pay\. Your pay:/);
   const rows = r.rows.match(/<div class="con-read">/g);
   assert.equal(rows.length, 4);
-  assert.match(r.rows, /90t Water for the Compact Freight Office, paid 22,002 cr<\/div>/, 'the clean run');
+  assert.match(r.rows, /90t Water for the Compact Freight Office, paid 220,020 cr<\/div>/, 'the clean run');
   assert.match(r.rows, /paid [\d,]+ cr, 3 days late<\/div>/); assert.match(r.rows, /60t Water for the Compact Freight Office, paid [\d,]+ cr, short<\/div>/); assert.match(r.rows, /the load for the Compact Freight Office lost, no pay<\/div>/);
   assert.match(r.journal, /<h3>Captain's log<\/h3>/); assert.equal((r.journal.match(/<div class="con-read">/g) || []).length, 4, 'the Journal page holds the log');
-  assert.match(r.port, /class="eyebrow">Captain's log</); assert.ok(r.captain.includes('Recent runs') && r.captain.includes('paid 22,002 cr'), 'the captain\'s page shows the same rows');
+  assert.match(r.port, /class="eyebrow">Captain's log</); assert.ok(r.captain.includes('Recent runs') && r.captain.includes('paid 220,020 cr'), 'the captain\'s page shows the same rows');
   await done();
 });

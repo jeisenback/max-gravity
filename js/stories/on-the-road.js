@@ -18,14 +18,14 @@ Mods.register({
       id: 'road-toll-beacon', when: { gov: 'Dome Concord' },
       title: 'Toll Beacon',
       text: ('An automated beacon hangs in the lane with a Dome Concord seal on its casing. It has been pinging you politely for an hour: lane ' +
-          'maintenance, a hundred and fifty credits, receipt provided. It\'s a real toll. It has also been collected, by the look of the paint, by at ' +
+          'maintenance, fifteen hundred credits, receipt provided. It\'s a real toll. It has also been collected, by the look of the paint, by at ' +
           'least three different people.'),
       choices: [
         {
-          label: 'Pay the toll (150 cr)',
-          when: { credits: 150 },
+          label: 'Pay the toll (1,500 cr)',
+          when: { credits: 1500 },
           effects: {
-          credits: -150,
+          credits: -1500,
           rep: { 'Dome Concord': 1 }
         },
           result: ('You tap the transfer, and the beacon takes a moment, humming. It prints a receipt no one will ever read, on a thin strip of ' +
@@ -255,10 +255,10 @@ Mods.register({
           0,
           0.5,
           {
-          credits: 4000,
+          credits: 40000,
           log: 'Backed a prospector who struck it.'
         },
-          'Weeks later, at the next port, a bank transfer catches up with you: four thousand credits and a one-word note, "Told you."',
+          'Weeks later, at the next port, a bank transfer catches up with you: forty thousand credits and a one-word note, "Told you."',
           'You never hear from him again. The claim was good rock and bad luck, or the reverse, or he never existed at all.',
           {}
         ]

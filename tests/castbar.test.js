@@ -66,7 +66,7 @@ test('all twelve scenes are complete, every choice runs, and the effects are the
     const out = [];
     for (const [key, scenes] of Object.entries(CAST_BAR)) {
       scenes.forEach((sc, n) => sc.choices.forEach((ch, i) => {
-        start(CAST[key].culture); G.state.credits = 1000; castPerson(key);
+        start(CAST[key].culture); G.state.credits = 10000; castPerson(key);
         const before = castPerson(key).opinion; let res = null, err = null;
         try { res = ch.can && !ch.can() ? 'skipped' : ch.run(); } catch (e) { err = String(e); }
         const bad = [];
@@ -87,11 +87,11 @@ test('all twelve scenes are complete, every choice runs, and the effects are the
 test('the bar shows them as aboard with you, the talk opens their scene, and a round for the house leaves them out', async () => {
   const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
-  await ev(() => { start(); G.state.day += 6; G.state.credits = 1000; fillBar(currentPlanet()); UI.render(); });
+  await ev(() => { start(); G.state.day += 6; G.state.credits = 10000; fillBar(currentPlanet()); UI.render(); });
   await goTo(page, 'port');
   await page.click('[data-action=tab][data-arg=bar]');
   assert.match(await page.innerText('#panel'), /Aboard with you, and at the bar tonight/);
-  const round = await ev(() => 25 * (4 + G.patrons.filter(x => !x.cast).length));
+  const round = await ev(() => (250 * (4 + G.patrons.filter(x => !x.cast).length)).toLocaleString("en-US"));
   assert.match(await page.innerText('#panel [data-action=barRound]'), new RegExp(`${round} cr`), 'the round is priced for the room, not the crew');
   const who = await ev(() => G.patrons.findIndex(x => x.cast === 'ines'));
   await page.click(`#panel [data-action=barTalk][data-arg="${who}"]`);
@@ -104,10 +104,10 @@ test('their money is your own savings, not the ship\'s', async () => {
   const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
-    start(); const st = G.state; st.credits = 500; st.hired.fund = 4000; st.day += 6;
+    start(); const st = G.state; st.credits = 5000; st.hired.fund = 40000; st.day += 6;
     const e = CAST_BAR.tomas[0]; const res = e.choices[0].run();
     return { credits: st.credits, fund: st.hired.fund, opinion: person('c:tomas').opinion };
   });
-  assert.deepEqual(r, { credits: 460, fund: 4000, opinion: 2 });
+  assert.deepEqual(r, { credits: 4600, fund: 40000, opinion: 2 });
   await done();
 });

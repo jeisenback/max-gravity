@@ -8,7 +8,7 @@ CAPTAINS.hester = {
   first: 'Hester', last: 'Vance', pronouns: 'she', culture: 'earth', home: 'Rotterdam Arcology', age: 52, traits: ['greedy', 'secretive'],
   bio: 'A hand on ore haulers for twenty years, and now the owner, on paper, of the ship she crews, which the bank owns most of. She keeps the books herself, in a notebook, and can tell you the cost of a watch to the credit.',
   wants: 'To own the ship outright.', fears: 'Being a hand again, and the bank taking her.',
-  captain: { trade: 4, nerve: 1, thrift: 5 }, wage: 35, share: 0.06, hears: 1, bonus: 3, talk: 0.7,
+  captain: { trade: 4, nerve: 1, thrift: 5 }, wage: 350, share: 0.06, hears: 1, bonus: 3, talk: 0.7,
   xo: 'cato',
 
   // The sign-on paragraph's last lines, in place of "whom the crew describe as ...".
@@ -18,7 +18,7 @@ CAPTAINS.hester = {
 
   chatter: [
     'Captain Vance is working the fuel bill out in her notebook. It doesn\'t come out any better the second time.',
-    'Captain Vance, to nobody: "Forty-one a day for the berth, and we\'re there four days."',
+    'Captain Vance, to nobody: "Four hundred and ten a day for the berth, and we\'re there four days."',
     'Cato has put a second blanket on the berth of whoever has the cold watch. The captain\'s notebook has a line for blankets. It hasn\'t been filled in.',
     'Captain Vance checks the manifest against the hold count, and for the third time against the hold.',
     'Captain Vance is eating standing up at the galley counter, one hand on the notebook, so as not to lose the page.',
@@ -48,7 +48,7 @@ CAPTAINS.hester = {
     'cap-praise': {
       text: 'Captain Vance finds you at the end of a watch with the notebook open. "The {post} hasn\'t cost me a repair or a worry in a week," she says. "I\'ve written it down."',
       take: '"The crew make it easy," you say. She turns a page.',
-      bonusYes: 'She looks at you, and at the notebook, and laughs. "Sixty," she says. "It\'s in the column already." It reaches your account before the end of the watch.',
+      bonusYes: 'She looks at you, and at the notebook, and laughs. "Six hundred," she says. "It\'s in the column already." It reaches your account before the end of the watch.',
       bonusNo: '"When it\'s a word, it\'s free," she says. "When it\'s a bonus, it has to be earned. I have a column for each."',
     },
     'cap-dressing': {
@@ -72,15 +72,15 @@ CAPTAINS.hester = {
   scenes: {
     trouble: {
       title: 'The First of the Month',
-      text: ('The bank\'s payment is due on the first, and the fund is four hundred short of it. Captain Vance tells you at the galley table, ' +
+      text: ('The bank\'s payment is due on the first, and the fund is four thousand short of it. Captain Vance tells you at the galley table, ' +
           'plainly, with the notebook open between you. She\'s not asking. She has said she doesn\'t ask. "I\'m telling you," she says, "so that when ' +
           'the cargo is late, you know what it\'s for."'),
       choices: [
         {
-          label: 'Lend her four hundred',
-          when: { credits: 400 },
-          effects: { credits: -400, captainLike: { n: 3, memory: 'You lent me four hundred when the fund was short.' }, captainFlag: 'lent' },
-          result: 'You push four hundred across the table. She counts it, and then writes it in the notebook, with the date and a figure beside it. "Four hundred and ten," she says, "the day you leave this ship."',
+          label: 'Lend her four thousand',
+          when: { credits: 4000 },
+          effects: { credits: -4000, captainLike: { n: 3, memory: 'You lent me four thousand when the fund was short.' }, captainFlag: 'lent' },
+          result: 'You push four thousand across the table. She counts it, and then writes it in the notebook, with the date and a figure beside it. "Four thousand one hundred," she says, "the day you leave this ship."',
         },
         {
           label: 'Tell her it\'s not your place',
@@ -107,7 +107,7 @@ CAPTAINS.hester = {
           {
             label: 'Ask how much she still owes',
             effects: { captainLike: { n: 1, memory: 'You asked how much I owed, and didn\'t flinch.' }, captainFlag: 'secretKnown' },
-            result: '"Thirty-eight thousand, and some of it\'s interest," she says, and doesn\'t hesitate. "Eleven good runs, if the market holds. I\'ve counted it a good many times."',
+            result: '"Three hundred and eighty thousand, and some of it\'s interest," she says, and doesn\'t hesitate. "Eleven good runs, if the market holds. I\'ve counted it a good many times."',
           },
         ],
       },
@@ -144,8 +144,8 @@ CAPTAINS.hester = {
     cold: 'Captain Vance is at the foot of the ramp, and she has the papers ready. She doesn\'t offer her hand. "Your account is correct," she says. "Sign here, and here."',
     crew: '{names} will go with you. She runs a finger down the crew list. "That\'s a column I\'ll have to fill again," she says.',
     secret: 'She doesn\'t mention the bank. "The first of the month," she says, "and the first after that. I\'ll be there for them."',
-    repay: 410,
-    repaid: 'She counts four hundred and ten onto the rail, the day you leave, as she said she would. You count it after her. It\'s correct.',
+    repay: 4100,
+    repaid: 'She counts four thousand one hundred onto the rail, the day you leave, as she said she would. You count it after her. It\'s correct.',
     xoDead: 'She doesn\'t look at the empty place on the watch bill. "I\'ve taken Cato out of the book," she says. "I had to. It\'s the first time I didn\'t want to."',
     xo: 'Cato is at the hatch, because the captain wouldn\'t go and say it. "Take care of your people," he says. "They\'ll take care of you. I\'ve put your name on the back of the bill, so I remember to ask after you."',
     parting: 'She holds out her hand at last. It\'s dry and brief. "That\'s the account closed," she says. "Keep your own books."',

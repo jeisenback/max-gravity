@@ -156,11 +156,11 @@ test('an imported file may give a table scene its words and its lines, and a lin
 
 test('a hired data choice has its conditions in forms, checked as typed, and changing one is a change to the file (#460)', async () => {
   await reload();
-  const at = await page.evaluate(() => { for (const r of SceneIndex.rows) { const i = r.choices.findIndex(c => c.label === 'Lend him 200 cr'); if (i >= 0) return { id: r.id, i }; } });
+  const at = await page.evaluate(() => { for (const r of SceneIndex.rows) { const i = r.choices.findIndex(c => c.label === 'Lend him 2,000 cr'); if (i >= 0) return { id: r.id, i }; } });
   await select(at.id);
-  assert.equal(await page.inputValue(rule(`c${at.i}.when`, 'credits')), '200');
-  await page.fill(rule(`c${at.i}.when`, 'credits'), '500');
-  assert.deepEqual((await changes())[at.id], { choices: { [at.i]: { when: { credits: 500 } } } });
+  assert.equal(await page.inputValue(rule(`c${at.i}.when`, 'credits')), '2000');
+  await page.fill(rule(`c${at.i}.when`, 'credits'), '5000');
+  assert.deepEqual((await changes())[at.id], { choices: { [at.i]: { when: { credits: 5000 } } } });
   // A regard is a condition with a form: { who, min }, and a person who is not there is refused as typed.
   const w = await page.evaluate(() => { for (const r of SceneIndex.rows) { const i = r.choices.findIndex(c => c.when && c.when.opinion); if (i >= 0) return { id: r.id, i, opinion: r.choices[i].when.opinion }; } });
   await select(w.id);
