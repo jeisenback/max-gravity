@@ -368,7 +368,7 @@ const playScenes = () => {
         let s = start(shipId).fight; s.state.foes[0].armor = 5; s.state.foes[0].shields = 0; turn(s, orders({ guns: [null] }), { kind: 'break' });
         s = start(shipId).fight; s.state.band = 0; turn(s, orders(), { kind: 'board' });
         s = start(shipId).fight; s.state.me.speed = 1e6; s.state.band = RANGE_BANDS.length - 1; turn(s, orders(), { kind: 'close' }, { kind: 'open' });
-        s = start(shipId).fight; s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; turn(s, orders(), { kind: 'hold' });
+        if (shipId !== 'cutter') { s = start(shipId).fight; s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; turn(s, orders(), { kind: 'hold' }); }  // only a patrol flies a cutter, and a patrol crippled breaks off (below)
       }
       { const s = start('raider', {}, 'patrol').fight; s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; turn(s, orders(), { kind: 'hold' }); }  // a navy ship crippled breaks off
       for (const band of [0, RANGE_BANDS.length - 1]) { const s = start('raider').fight; s.state.band = band; s.state.turn = FIGHT.TURNS - 1; turn(s, orders({ guns: [null] }), { kind: 'hold' }); }

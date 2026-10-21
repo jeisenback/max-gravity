@@ -458,7 +458,6 @@ const SCENE_LINES = {
     'end.broke.gun': 'She breaks off, and on the open band a voice says, "Your registry has been logged."',
     'end.broke.grapple': 'She breaks off with her grapple arms folded, and the range opens.',
     'end.broke.torpedo': 'She closes her bay doors with a torpedo still in the tube and turns away.',
-    'end.crippled.gun': 'Her drive goes out under your last burst, and a beacon on her hull starts calling for a tow.',
     'end.crippled.grapple': 'Her grapple arms go slack, and she tumbles past your bow with no plume behind her.',
     'end.crippled.torpedo': 'The corsair\'s drive cone splits, and she coasts on with her bay doors stuck half open.',
     'end.standoff': 'She turns away with the range still open, and her last burst clips the hull aft.',

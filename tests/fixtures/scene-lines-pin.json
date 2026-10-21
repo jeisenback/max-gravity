@@ -22732,18 +22732,6 @@
    {
     "log": "Turn 1: nothing left of the weapons to hit.",
     "next": {
-     "title": "Dead in Space",
-     "text": "Her drive goes out under your last burst, and a beacon on her hull starts calling for a tow.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
-     "labels": [
-      "Board her",
-      "Let her drift"
-     ]
-    },
-    "mem": []
-   },
-   {
-    "log": "Turn 1: nothing left of the weapons to hit.",
-    "next": {
      "title": "Battle Stations",
      "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: nothing left of the weapons to hit.</p><p>Her drive goes dark, and on the open band her captain calls the stop off and asks the station for a tow. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
      "labels": [
