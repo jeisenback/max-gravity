@@ -178,7 +178,7 @@
  {
   "id": "raid:corsair:gunner",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": torpedoes loaded in the tubes. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons",
    "Gun 2: aim at her weapons",
@@ -188,29 +188,29 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 14, she hits your hull for 43.",
+    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 14.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 2: you hit her weapons for 14, you hit her weapons for 15, she hits your hull for 88. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 16, you hit her weapons for 17, she hits your hull for 36.",
-    "armor": 260,
-    "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 3.",
-    "armor": 260,
-    "band": 0
-   },
-   {
     "text": "Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.",
     "armor": 260,
-    "band": 1
+    "band": 3
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 3.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+   "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
    "labels": [
     "Stand down"
    ]
@@ -243,7 +243,7 @@
  {
   "id": "raid:corsair:pilot",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": torpedoes loaded in the tubes. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons",
    "Gun 2: aim at her weapons",
@@ -253,29 +253,29 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 14, she hits your hull for 43.",
+    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 14.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 2: you hit her weapons for 14, you hit her weapons for 15, she hits your hull for 88. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 16, you hit her weapons for 17, she hits your hull for 36.",
-    "armor": 260,
-    "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 3.",
-    "armor": 260,
-    "band": 0
-   },
-   {
     "text": "Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.",
     "armor": 260,
-    "band": 1
+    "band": 3
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 3.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+   "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
    "labels": [
     "Stand down"
    ]
@@ -308,7 +308,7 @@
  {
   "id": "raid:corsair:engineer",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": torpedoes loaded in the tubes. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons",
    "Gun 2: aim at her weapons",
@@ -318,29 +318,29 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 14, she hits your hull for 43.",
+    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 14.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 2: you hit her weapons for 14, you hit her weapons for 15, she hits your hull for 88. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 16, you hit her weapons for 17, she hits your hull for 36.",
-    "armor": 260,
-    "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 3.",
-    "armor": 260,
-    "band": 0
-   },
-   {
     "text": "Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.",
     "armor": 260,
-    "band": 1
+    "band": 3
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 3.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+   "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
    "labels": [
     "Stand down"
    ]
@@ -373,7 +373,7 @@
  {
   "id": "raid:corsair:comms",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 33 to 48 damage. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\": torpedoes loaded in the tubes. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons",
    "Gun 2: aim at her weapons",
@@ -383,29 +383,29 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 14, she hits your hull for 43.",
+    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 14.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 2: you hit her weapons for 14, you hit her weapons for 15, she hits your hull for 88. You are hurt. Your work counts a level lower until the clinic clears you.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 16, you hit her weapons for 17, she hits your hull for 36.",
-    "armor": 260,
-    "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 3.",
-    "armor": 260,
-    "band": 0
-   },
-   {
     "text": "Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.",
     "armor": 260,
-    "band": 1
+    "band": 3
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 3.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+   "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
    "labels": [
     "Stand down"
    ]

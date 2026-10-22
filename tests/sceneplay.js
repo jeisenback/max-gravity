@@ -354,7 +354,7 @@ const playScenes = () => {
       for (const shipId of ['raider', 'corsair', 'cutter']) for (const day of [0, 1]) panel(start(shipId, { day }));  // the openings, by style and by the day
       panel(start('raider', { edge: 1 })); panel(start('raider', { edge: -1 }));  // the head start, each way
       // her moves, two of her, and the captain's: shown on the panel before they are made
-      for (const [foe, captain] of [[{ kind: 'broadside', target: 'weapons', dmg: [10, 18] }, { kind: 'close' }], [{ kind: 'pin', target: 'drive', dmg: [8, 14] }, { kind: 'open' }], [{ kind: 'board' }, { kind: 'hold' }], [{ kind: 'break' }, { kind: 'hold' }], [{ kind: 'close', target: 'hull', dmg: [10, 17] }, { kind: 'hold' }]]) {
+      for (const [foe, captain] of [[{ kind: 'broadside', target: 'weapons', dmg: [10, 18] }, { kind: 'close' }], [{ kind: 'pin', target: 'drive', dmg: [8, 14] }, { kind: 'open' }], [{ kind: 'board' }, { kind: 'hold' }], [{ kind: 'break' }, { kind: 'hold' }], [{ kind: 'close', target: 'hull', dmg: [10, 17] }, { kind: 'hold' }], [{ kind: 'arm', n: 2 }, { kind: 'hold' }], [{ kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] }, { kind: 'hold' }]]) {
         const s = start('raider').fight; s.state.foes.push(JSON.parse(JSON.stringify(s.state.foes[0]))); s.shown = { foe: [foe, foe], captain };
         panel(shipFightEvent(s, orders()));
       }

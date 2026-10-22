@@ -452,7 +452,7 @@ const SCENE_LINES = {
     'open.torpedo.1': 'A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.',
     'first.ours': 'You fire first: {hits}.', 'first.hers': 'She fires first: {hits}.',
     'foe.broadside': '{ship}: broadside at your {part}, {lo} to {hi} damage.', 'foe.pin': '{ship}: guns on your drive to pin you, {lo} to {hi} damage.',
-    'foe.close': '{ship}: closing, and firing at your {part} as she comes, {lo} to {hi} damage.', 'foe.board': '{ship}: coming alongside to board.', 'foe.break': '{ship}: turning to break off.',
+    'foe.close': '{ship}: closing, and firing at your {part} as she comes, {lo} to {hi} damage.', 'foe.board': '{ship}: coming alongside to board.', 'foe.break': '{ship}: turning to break off.', 'foe.arm': '{ship}: torpedoes loaded in the tubes.', 'foe.salvo': '{ship}: torpedo salvo at your hull, {lo} to {hi} damage.',
     consort: 'Her consort',
     'cap.close': '{cap}: closing the range.', 'cap.hold': '{cap}: holding the range.', 'cap.open': '{cap}: opening the range.',
     'part.weapons': 'weapons', 'part.drive': 'drive', 'part.lock': 'lock', 'part.hull': 'hull',

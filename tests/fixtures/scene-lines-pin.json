@@ -22472,7 +22472,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 29 to 42 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": torpedoes loaded in the tubes. Captain Vance: holding the range.",
     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
     "labels": [
      "Gun 1: aim at her weapons",
@@ -22484,7 +22484,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 29 to 42 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": torpedoes loaded in the tubes. Captain Vance: holding the range.",
     "text": "A corsair at forty kilometers with her tubes open, and the sensors show them loaded. She doesn't hurry.",
     "labels": [
      "Gun 1: aim at her weapons",
@@ -22589,6 +22589,28 @@
    {
     "title": "Battle Stations",
     "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 10 to 17 damage. Her consort: closing, and firing at your hull as she comes, 10 to 17 damage. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": torpedoes loaded in the tubes. Her consort: torpedoes loaded in the tubes. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: aim at her weapons",
+     "Torpedo, 2 left: hold fire",
+     "Turret: fire with the guns",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": torpedo salvo at your hull, 60 to 90 damage. Her consort: torpedo salvo at your hull, 60 to 90 damage. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
      "Gun 1: aim at her weapons",

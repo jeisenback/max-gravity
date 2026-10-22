@@ -149,7 +149,7 @@ test('resolveShipTurn does not change the state it was given', () => {
 });
 
 test('the constants are the ones the design names', () => {
-  assert.deepEqual(plain(FIGHT), { GUN_DMG: [12, 20], FOE_DMG: [18, 26], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, TURNS: 6, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2 });
+  assert.deepEqual(plain(FIGHT), { GUN_DMG: [12, 20], FOE_DMG: [18, 26], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 3, PDC_SALVO: 0.6, TURNS: 6, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2 });
 });
 
 test('the turret and heavy rounds outfits reach a side: the extra gun, the turret flag and the heavy multiplier', () => {
@@ -635,4 +635,46 @@ test('every end is reached by a hauler (or her sisters) against a raider or a co
   assert.equal(playOut({ me: 'freighter', foes: ['corsair'], aim: drive, nerve: 3, roll: 0.99 }), 'standoff', 'her drive gone, her guns left: six turns of it');
   assert.equal(playOut({ me: 'courier', foes: ['raider'], aim: at('hull'), armor: 1, roll: 0 }), 'escaped', 'a worn courier, a cautious captain and the faster ship: she is lost astern before her pin takes the drive');
   assert.equal(playOut({ me: 'shuttle', foes: ['corsair', 'corsair'], aim: at('hull'), roll: 0.99, grade: 2 }), 'lost', 'a skiff against a veteran pair: the hull goes before they are alongside');
+});
+
+const corsair = (torps = 3) => fight({}, { stats: { launcher: true }, opts: { torps } });
+const armTurn = st => resolveShipTurn(st, orders([]), { foe: [foeMove(st, 0)], captain: hold }, LOW).state;
+
+test('a corsair with a launcher and torpedoes arms on turn 0 and fires the salvo the turn after', () => {
+  let st = corsair();
+  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'arm', n: 2 });
+  st = armTurn(st);
+  assert.equal(st.armed[0], true);
+  const m = plain(foeMove(st, 0));
+  assert.deepEqual([m.kind, m.target, m.n, m.dmg], ['salvo', 'hull', 2, [60, 90]]);
+  const r = resolveShipTurn(st, orders([]), { foe: [m], captain: hold }, LOW);
+  assert.equal(r.state.foes[0].torps, 1);
+  assert.equal(r.state.armed[0], false);
+  assert.equal(r.events.filter(e => e.who === 'foe')[0].dmg, 60);
+});
+
+test('a turret held back cuts a salvo by PDC_SALVO; a gun-fired turret does not', () => {
+  const st = armTurn(fight({ stats: { pdc: true } }, { stats: { launcher: true }, opts: { torps: 3 } }));
+  const m = foeMove(st, 0);
+  for (const [rand, raw] of [[LOW, 60], [HIGH, 90]]) {
+    const dmgOf = pdc => resolveShipTurn(st, orders([], { pdc }), { foe: [m], captain: hold }, rand).events.find(e => e.who === 'foe').dmg;
+    assert.equal(dmgOf('fire'), raw);
+    assert.ok(Math.abs(dmgOf('hold') - Math.round(raw * 0.4)) <= 1);
+  }
+});
+
+test('her launcher at 0 takes the salvo away, armed or not', () => {
+  let st = armTurn(corsair());
+  kill(st.foes[0], 'launcher');
+  assert.notEqual(foeMove(st, 0).kind, 'salvo');
+  const r = resolveShipTurn(st, orders([]), { foe: [{ kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] }], captain: hold }, LOW);
+  assert.equal(r.state.foes[0].torps, 3);
+  assert.equal(r.events.filter(e => e.who === 'foe').length, 0);
+  st = corsair(); kill(st.foes[0], 'launcher');
+  assert.notEqual(foeMove(st, 0).kind, 'arm');
+});
+
+test('with no torpedoes left she does not arm, and with one she arms for one', () => {
+  assert.notEqual(foeMove(corsair(0), 0).kind, 'arm');
+  assert.deepEqual(plain(foeMove(corsair(1), 0)), { kind: 'arm', n: 1 });
 });
