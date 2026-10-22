@@ -91,3 +91,33 @@ test('the deck fight is won by grade about as often as the lock fight was, kills
     }
   }
 });
+
+// answerOrders (tools/answer.js, #814): the torpedo is held until her shields are down. It is a self-contained script on the game's globals, so it runs here in a bare context with those stubbed.
+const vm = require('node:vm');
+const { answerOrders } = require('../tools/answer');
+function orders(foes, { torps = 2, launcher = true } = {}) {
+  const ctx = vm.createContext({ FIGHT: { OVER_HEAT: 2, HEAT_CAP: 4 }, fightUp: f => f.armor > 0, gunsReady: st => st.me.guns });
+  const fn = vm.runInContext(`(${answerOrders.toString()})`, ctx);
+  const foe = (shields, armor, regen = 0) => ({ shields, maxShields: 100, armor, maxArmor: 100, regen, parts: { lock: { hp: 0 } } });
+  const state = { heat: 0, me: { guns: 2, launcher, torps }, foes: foes.map(([s, a, r]) => foe(s, a, r)) };
+  return JSON.parse(JSON.stringify(fn({ state, shown: { foe: [] } })));
+}
+
+test('answer holds torpedoes at full shields', () => {
+  assert.equal(orders([[100, 100, 0]]).torp, null, 'a foe that does not regenerate, at full shields');
+  assert.equal(orders([[100, 100, 0.1]]).torp, null, 'a foe that regenerates, at full shields');
+  assert.equal(orders([[26, 100, 0]]).torp, null, 'just over a quarter');
+});
+
+test('answer fires a torpedo once her shields are down', () => {
+  assert.deepEqual(orders([[25, 100, 0]]).torp, { foe: 0, part: 'hull' }, 'at a quarter, any type');
+  assert.deepEqual(orders([[0, 80, 0.1]]).torp, { foe: 0, part: 'hull' });
+  assert.equal(orders([[0, 80, 0]], { torps: 0 }).torp, null, 'none left');
+  assert.equal(orders([[0, 80, 0]], { launcher: false }).torp, null, 'no launcher');
+});
+
+test('answer fires at a pair', () => {
+  assert.deepEqual(orders([[100, 100, 0], [10, 60, 0]]).torp, { foe: 1, part: 'hull' }, 'at the one whose shields are down');
+  assert.deepEqual(orders([[10, 90, 0], [0, 50, 0]]).torp, { foe: 1, part: 'hull' }, 'at the one with the least left');
+  assert.equal(orders([[100, 100, 0], [100, 60, 0]]).torp, null, 'held while both are whole');
+});
