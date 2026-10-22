@@ -100,7 +100,7 @@ function shedCargo(frac) {
   const st = G.state;
   const cid = Object.keys(st.cargo).sort((a, b) => st.cargo[b] - st.cargo[a])[0];
   const held = st.cargo[cid], qty = Math.ceil(held * frac);
-  st.paid[cid] -= st.paid[cid] * qty / held;
+  if (st.paid[cid] !== undefined) st.paid[cid] *= (held - qty) / held;  // a contract's load has no price paid
   st.cargo[cid] -= qty;
   return { cid, qty };
 }

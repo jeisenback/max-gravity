@@ -191,7 +191,7 @@ function shipTaken(s) {
   const taken = Math.round(purse() * 0.3);
   moveMoney(-taken);
   let hold = '';  // she empties part of the hold as well
-  if (hasTradeCargo()) { const { cid, qty } = shedCargo(FIGHT.LOST_CARGO); hold = ` They take ${qty}t of ${goodName(cid)} from the hold as well.`; }
+  if (hasTradeCargo()) { const { cid, qty } = shedCargo(FIGHT.LOST_CARGO); hold = ` ${sceneSay('scene:fight', d.foe.kind === 'patrol' ? 'end.lost.cargo.patrol' : 'end.lost.cargo', { qty, good: goodName(cid) })}`; }
   if (cap) like(cap, -1, repelWords(s, 'memory.taken', REPEL_MEMORY.taken));
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.1));
   d.foeHp = -1; G.duel = null; G.nextEvent = null;

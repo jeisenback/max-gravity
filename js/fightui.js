@@ -174,7 +174,8 @@ function shipFightEnd(s, end) {
   const name = cap ? `Captain ${cap.last}` : helmName();
   if (end === 'ran') {  // the worse hurt at the turn cap: the captain runs, a lost fight, and nothing is learned
     if (cap) like(cap, -1, fightSay('memory.ran'));
-    const gone = hasTradeCargo() ? ` ${fightSay('end.ran.cargo', { cap: name, gone: loseCargo(FIGHT.LOST_CARGO) })}` : '';  // loseCargo's own line names the good and the tons
+    let gone = '';  // the captain has part of the hold dumped to run lighter
+    if (hasTradeCargo()) { const { cid, qty } = shedCargo(FIGHT.LOST_CARGO); gone = ` ${fightSay('end.ran.cargo', { cap: name, qty, good: goodName(cid) })}`; }
     close(fightSay('end.ran', { cap: name }) + gone);
     return;
   }

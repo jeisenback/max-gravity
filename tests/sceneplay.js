@@ -390,6 +390,8 @@ const playScenes = () => {
         turn(s, orders({ guns: [null, null] }), { kind: 'arm', n: 2 });  // armed
         turn(s, orders({ guns: [null, null] }), { kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] });  // and fired
       }
+      { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // the hull gone with cargo aboard: she takes a share (#809)
+      { const s = start('raider', {}, 'patrol').fight; G.state.cargo = { water: 30 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // and a navy ship takes it as part of the levy
       { const s = start('raider').fight; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }
       // the deck fight (deckFightEvent, #786): on our deck and hers, each with the cargo bay, the hand in each section and their move into each; a hold, a way round
       // and a veteran's feint; every choice it offers; and a turn of each kind of line, from states set by hand
