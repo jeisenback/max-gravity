@@ -357,6 +357,7 @@ const playScenes = () => {
         rec.plays.push({ log: s.state.log.slice(-1)[0], next: next && { title: next.title, text: next.text, labels: next.choices.map(c => String(c.label)) }, mem: (cap.memories || []).slice(m0) });
         if (ev) panel(ev);
       };
+      { fresh(); hired().raidTold = true; uatBurn('Ceres Station', 'pallas'); const make = makeEnemy; makeEnemy = sp => { const f = make(sp); seq([0.01]); return f; }; let text; try { text = startShipFight({ kind: 'pirate', shipId: 'raider' }, true); } finally { makeEnemy = make; Math.random = real; } rec.plays.push({ run: text }); }  // a clear run: the days it costs
       for (const shipId of ['raider', 'corsair', 'cutter']) for (const day of [0, 1]) panel(start(shipId, { day }));  // the openings, by style and by the day
       panel(start('raider', { edge: 1 })); panel(start('raider', { edge: -1 }));  // the head start, each way
       // her moves, two of her, and the captain's: shown on the panel before they are made

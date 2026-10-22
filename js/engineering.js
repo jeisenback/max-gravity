@@ -48,9 +48,9 @@ const burnSpeed = () => (1 + (power().drive - 40) * 0.008) * perf('drive') * (G.
 const scanVisibility = () => 1 + (power().drive - 40) * 0.012;
 
 // Days a burn took, and the date it will end: a faster burn ends sooner.
-const transitDays = t => Math.max(1, Math.round(t.days * (t.elapsed || t.total) / t.total));
+const transitDays = t => Math.max(1, Math.round(t.days * (t.elapsed || t.total) / t.total)) + (t.lost || 0);  // t.lost: days a run added (engage.js)
 const transitNow = t => G.state.day + Math.floor(t.days * (t.elapsed || 0) / t.total);
-const transitEta = t => G.state.day + Math.max(1, Math.round(t.days * ((t.elapsed || 0) + Math.max(0, t.left) / burnSpeed()) / t.total));
+const transitEta = t => G.state.day + (t.lost || 0) + Math.max(1, Math.round(t.days * ((t.elapsed || 0) + Math.max(0, t.left) / burnSpeed()) / t.total));
 
 const heat = () => G.state.heat || 0;
 const heatLimit = () => 75 + 5 * roleSkill('engineer');

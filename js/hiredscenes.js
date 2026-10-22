@@ -445,6 +445,7 @@ const SCENE_LINES = {
   },
   'scene:fight': {  // the ship fight (fightui.js): {ship} is her name, {cap} the captain's (the helm's, for an owner), {part} a part's word, {lo} to {hi} what her volley can do, {hits} what a volley did
     title: 'Battle Stations',
+    'run.days': 'The run costs {days} on the burn.',
     'open.gun.0': 'A navy ship at thirty kilometers, on an intercept course with her guns warm. She has hailed twice, and the second hail said there won\'t be a third.',
     'open.gun.1': 'A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.',
     'open.grapple.0': 'A raider at forty kilometers and closing, with no transponder and her drive running hot.',

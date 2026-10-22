@@ -688,3 +688,79 @@ test('what the captain remembers says what happened: a raider let drift, and a n
   assert.doesNotMatch(r.navy, /raid/, r.navy); assert.match(r.navy, /navy/, r.navy);
   await done();
 });
+
+test('outrunning a contact adds RUN_DAYS to the burn and says so', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    raid('pilot'); const t = G.transit, eta0 = transitEta(t), days0 = transitDays(t), out = { runDays: RUN_DAYS };
+    rolls([0.01]); out.text = startDuel({ kind: 'pirate' }, true);
+    out.eta = transitEta(t) - eta0; out.days = transitDays(t) - days0; out.raw = [t.days, t.total];
+    return out;
+  });
+  assert.equal(r.runDays, 2); assert.equal(r.eta, 2, 'the burn ends two days later'); assert.equal(r.days, 2, 'and arrival moves the date by them');
+  assert.match(r.text, /opens the range/); assert.match(r.text, /The run costs 2 days on the burn\./);
+  await done();
+});
+
+test('a spoof and a pay-off cost the same days', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {}, pick = (re, roll) => {
+      const st = raid('comms'); st.credits = 100000; hired().skill.comms = SKILL_STEPS[3]; G.dialog = null; openEvent(contactEvent({ kind: 'pirate' }));
+      const t = G.transit, eta0 = transitEta(t), i = G.dialog.choices.findIndex(c => re.test(c.label));
+      rolls([roll]); const text = chooseEvent(i);
+      return { text, eta: transitEta(t) - eta0 };
+    };
+    out.spoof = pick(/Spoof/, 0.01); out.pay = pick(/^Pay them off/, 0.5);
+    out.failed = pick(/Spoof/, 0.99);  // a spoof that fails goes on into the fight, and costs no days
+    return out;
+  });
+  for (const k of ['spoof', 'pay']) { assert.equal(r[k].eta, 2, k); assert.match(r[k].text, /The run costs 2 days on the burn\./, k); }
+  assert.equal(r.failed.eta, 0); assert.doesNotMatch(r.failed.text, /costs/);
+  await done();
+});
+
+test('a ladder step run from stays due and comes again on the next burn', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('pilot'), h = hired(); h.runsDone = 1;
+    const spec = ladderNext(h, st, 'mars').spec;
+    G.dialog = null; openEvent(contactEvent(spec));
+    const shown = ((h.fights || { done: [] }).done.slice());
+    rolls([0.01]); chooseEvent(G.dialog.choices.findIndex(c => /outrun/.test(c.label)));
+    return { shown, done: ((h.fights || { done: [] }).done.slice()), next: (ladderNext(h, st, 'mars') || {}).id, again: handIntercept(h, st, 'mars', 0).ladder };
+  });
+  assert.deepEqual(r.shown, [], 'showing the contact does not meet it'); assert.deepEqual(r.done, [], 'an outrun does not either');
+  assert.equal(r.next, 'raider'); assert.equal(r.again, 'raider');
+  await done();
+});
+
+test('a ladder step is met when its fight starts, also after a failed run', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const [name, flee, roll] of [['battle', false, 0.5], ['failedRun', true, 0.99], ['clearRun', true, 0.01]]) {
+      const st = raid('pilot'), h = hired(); h.runsDone = 1; const spec = ladderNext(h, st, 'mars').spec;
+      rolls([roll]); startDuel(spec, flee); out[name] = ((h.fights || { done: [] }).done.slice());
+    }
+    return out;
+  });
+  assert.deepEqual(r.battle, ['raider']); assert.deepEqual(r.failedRun, ['raider']); assert.deepEqual(r.clearRun, []);
+  await done();
+});
+
+test('a contract due on the arrival day is late after a run', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    raid('pilot'); const t = G.transit, due = transitEta(t), before = transitEta(t) > due;
+    rolls([0.01]); startDuel({ kind: 'pirate' }, true);
+    return { before, after: transitEta(t) > due, lateBy: transitEta(t) - due };
+  });
+  assert.equal(r.before, false); assert.equal(r.after, true); assert.equal(r.lateBy, 2);
+  await done();
+});

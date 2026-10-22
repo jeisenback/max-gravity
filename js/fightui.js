@@ -19,11 +19,12 @@ function startShipFight(spec, flee, o = {}) {
   if (spec.kind === 'patrol' && !flee) changeRep(spec.gov, -8);  // firing on a navy ship is not forgotten
   let text = o.text || `Battle stations. ${theShip(foe)} made the intercept.`;
   if (flee) {
-    if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) return `${helmName()} winds the drive past the redline and opens the range. Their plume fades.`;
+    if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) return `${helmName()} winds the drive past the redline and opens the range. Their plume fades.${runCost()}`;
     st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.08));
     s.edge = -1;
     text = `${helmName()} runs, but ${theShip(foe).replace(/^The/, 'the')} gets a burst in first. Battle stations.`;
   }
+  if (spec.ladder) ladderDone(hired(), spec.ladder);  // a ladder step is met when its fight starts, also after a failed run, and not when it is run from (fightladder.js)
   captainFlag('raided');  // fought, not outrun: kept for the goodbye (captains.js)
   rateFoe(s);
   const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
