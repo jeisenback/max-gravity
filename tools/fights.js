@@ -6,7 +6,7 @@
 //   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider] [--owner] [--ship-only] [--groups policy,grade]
 // `--owner` plays them as an owner who kept the post (the same ship and crew, bought with a hand's savings), to put beside the hand's (#721).
 //   npm run fights
-// Report: for the ship fight, the spread of its ends, its rounds, the hull lost, the hurt and the dead; for each deck fight, how often you win and who is hurt, by crew, by the
+// Report: for the ship fight, the spread of its ends, its rounds, the hull lost, the hurt and the dead, by gun policy and by the type she is; for each deck fight, how often you win and who is hurt, by crew, by the
 // post's skill level, by the hand's policy and by the foe's grade. Not part of `npm test`.
 
 const { open, closeBrowser } = require('../tests/helpers');
@@ -67,14 +67,38 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     const lost = st => ({ hurt: Object.keys(st.injured || {}).length, dead: (st.memorial || []).length - dead0, marked: (st.castMarked || []).length, hand: career().hurtUntil > st.day ? 1 : 0 });
     const out = { raid: {}, match: {}, repel: {}, assault: {} };
 
-    // The ship fight, from the contact to its end and the deck fight that may follow it. The guns' policy picks each gun's target every turn: 'random' any
-    // part, 'focus' always her weapons, 'drive' her drive until it is gone and then her weapons, 'lock' her lock and then her weapons. A deck fight after it is played by the 'shoot' policy.
+    // The ship fight, from the contact to its end and the deck fight that may follow it. The guns' policy gives the turn's orders: 'random' aims each gun at any
+    // part, 'focus' always at her weapons, 'drive' at her drive until it is gone and then her weapons, 'lock' at her lock and then her weapons; these four fire the
+    // turret and send a torpedo at her hull while there are any. 'answer' reads her shown move (s.shown): it holds the turret back when she fires a salvo, aims at her
+    // lock while she pins or closes with it whole, and against a ship whose shields come back (regen) sends the torpedoes at her hull and overcharges every gun the
+    // heat allows; else it aims at her hull. (The brief had "else her weapons", but a ship whose guns are gone and whose hull is whole
+    // breaks off as 'away', which is not a good end, so that plan never wins: task-7-report.md.) A deck fight after it is played by the 'shoot' policy.
     const PARTS = ['weapons', 'drive', 'lock', 'hull'];
-    const AIM = {
-      random: () => PARTS[Math.floor(Math.random() * PARTS.length)],
-      focus: () => 'weapons',
-      drive: f => (f.foes.some(x => x.parts.drive.hp > 0) ? 'drive' : 'weapons'),
-      lock: f => (f.foes.some(x => x.parts.lock.hp > 0) ? 'lock' : 'weapons'),
+    const fixed = aim => s => ({ guns: Array.from({ length: s.state.me.guns }, () => ({ foe: 0, part: aim(s.state) })), torp: s.state.me.launcher && s.state.me.torps > 0 ? { foe: 0, part: 'hull' } : null, pdc: 'fire' });
+    const answer = s => {
+      const f = s.state, live = f.foes.map((_, i) => i).filter(i => fightUp(f.foes[i])), shown = i => s.shown.foe[i] || {};
+      const salvo = live.some(i => shown(i).kind === 'salvo');
+      const lock = live.find(i => /^(pin|close)$/.test(shown(i).kind) && f.foes[i].parts.lock.hp > 0);
+      const regen = live.find(i => f.foes[i].regen > 0);
+      const shots = Math.max(0, gunsReady(f) - (salvo ? 1 : 0));
+      let heat = f.heat;
+      const guns = Array.from({ length: f.me.guns }, (_, n) => {
+        if (lock !== undefined) return { foe: lock, part: 'lock' };
+        if (regen !== undefined) {  // overcharged while the heat, with the shots still to come this turn, stays at or under the cap (no gun locked)
+          const over = n < shots && heat + FIGHT.OVER_HEAT + Math.max(0, shots - n - 1) <= FIGHT.HEAT_CAP;
+          if (n < shots) heat += over ? FIGHT.OVER_HEAT : 1;
+          return { foe: regen, part: 'hull', over };
+        }
+        return { foe: live[0] || 0, part: 'hull' };
+      });
+      return { guns, torp: regen !== undefined && f.me.launcher && f.me.torps > 0 ? { foe: regen, part: 'hull' } : null, pdc: salvo ? 'hold' : 'fire' };
+    };
+    const POLICY_SHIP = {
+      random: fixed(() => PARTS[Math.floor(Math.random() * PARTS.length)]),
+      focus: fixed(() => 'weapons'),
+      drive: fixed(f => (f.foes.some(x => x.parts.drive.hp > 0) ? 'drive' : 'weapons')),
+      lock: fixed(f => (f.foes.some(x => x.parts.lock.hp > 0) ? 'lock' : 'weapons')),
+      answer,
     };
     // One ship fight against `spec`, to its end and whatever scene follows it. Returns its end (null: the hand was killed in it), the fight, what it cost, and whether
     // the scene after it was left open at the step cap (capped).
@@ -84,32 +108,33 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       let ev = G.nextEvent, end = null; const s = ev && ev.fight; G.nextEvent = null;
       if (!s) G.nextEvent = ev;  // the free volley hurt the hand past saving: the ending is the next scene
       while (s && ev && !s.handDied) {
-        const f = s.state, orders = { guns: Array.from({ length: f.me.guns }, () => ({ foe: 0, part: AIM[policy](f) })), torp: f.me.launcher && f.me.torps > 0 ? { foe: 0, part: 'hull' } : null, pdc: 'fire' };
-        ev = fireTurn(s, orders);
+        ev = fireTurn(s, POLICY_SHIP[policy](s));
         end = shipEnd(s.state);
       }
       const next = G.nextEvent; G.nextEvent = null; window.__texts = '';
       const capped = next ? (openEvent(next), drive('shoot')) : false;  // the close, dead in space, or the deck fight
       return { end, s, hull: (armor0 - G.state.armor) / maxArmor, c: lost(G.state), capped };
     };
-    // By matchup: a lone ship by its hull, or a pair of raiders. The cutter is a navy stop's (a pirate never flies one), played as its own trials.
-    const tally = (policy, who, end) => {
-      const m = out.match[`${policy}|${who}`] = out.match[`${policy}|${who}`] || { n: 0, good: 0, boarded: 0, died: 0 };
-      m.n++; if (/^(crippled|broke|escaped)$/.test(end)) m.good++; if (end === 'boarded') m.boarded++; if (!end) m.died++;
+    // By matchup: a lone ship by its hull, or a pair of raiders. The cutter is a navy stop's (a pirate never flies one), played as its own trials. Each end is counted
+    // by its name (a lost fight is 'ran' or 'lost'), with the hull lost and the turns.
+    const tally = (policy, who, { end, s, hull }) => {
+      const m = out.match[`${policy}|${who}`] = out.match[`${policy}|${who}`] || { n: 0, good: 0, lostFight: 0, died: 0, hull: 0, rounds: 0 };
+      m.n++; m.hull += hull; m.rounds += s ? s.state.turn : 0;
+      if (/^(crippled|broke|escaped)$/.test(end)) m.good++; if (/^(ran|lost)$/.test(end)) m.lostFight++; if (end) m[end] = (m[end] || 0) + 1; else m.died++;
     };
-    if (raidFights) for (const policy of Object.keys(AIM)) {
+    if (raidFights) for (const policy of Object.keys(POLICY_SHIP)) {
       const t = out.raid[policy] = { n: 0, crippled: 0, broke: 0, ran: 0, away: 0, boarded: 0, lost: 0, escaped: 0, died: 0, boardedWon: 0, assaultWon: 0, rounds: 0, hull: 0, hurt: 0, dead: 0, hand: 0, anyHurt: 0, capped: 0 };
       for (let i = 0; i < trials; i++) {
-        const { end, s, hull, c, capped } = shipTrial(policy, { kind: 'pirate' });
+        const trial = shipTrial(policy, { kind: 'pirate' }), { end, s, hull, c, capped } = trial;
         if (capped) t.capped++;  // the deck fight after it never ended
         t.n++; if (end) t[end]++; else t.died++;  // no end: the hand was killed in it
         t.rounds += s ? s.state.turn : 0;
         if (end === 'crippled' && /strongbox/.test(window.__texts)) t.assaultWon++;
         if (end === 'boarded' && /last of them go back/.test(window.__texts)) t.boardedWon++;
         t.hull += hull; t.hurt += c.hurt; t.dead += c.dead; t.hand += c.hand; if (c.hurt || c.dead || c.hand) t.anyHurt++;
-        tally(policy, s ? (s.pack ? 'raider pair' : s.foe.shipId) : 'none', end);
+        tally(policy, s ? (s.pack ? 'raider pair' : s.foe.shipId) : 'none', trial);
       }
-      if (cutter) for (let i = 0; i < trials / 2; i++) tally(policy, 'cutter', shipTrial(policy, { kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }).end);
+      if (cutter) for (let i = 0; i < trials / 2; i++) tally(policy, 'cutter', shipTrial(policy, { kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }));
     }
 
     // The deck fights, started directly: kind 'repel' (they board you) or 'assault' (you board her).
@@ -159,9 +184,18 @@ function report(runs) {
   for (const [policy, t] of Object.entries(sum(runs, 'raid'))) {
     console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  crippled ${pct(t.crippled, t.n)} (boarded her ${pct(t.assaultWon, t.crippled)})  broke off ${pct(t.broke, t.n)}  got away ${pct(t.away, t.n)}  captain ran ${pct(t.ran, t.n)}  boarded ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull gone ${pct(t.lost, t.n)}  escaped ${pct(t.escaped, t.n)}  you killed ${pct(t.died, t.n)}  rounds ${per(t.rounds, t.n)}  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}  capped ${t.capped}`);
   }
-  console.log('  by matchup');
-  for (const [name, t] of Object.entries(sum(runs, 'match')).sort((a, b) => a[0].localeCompare(b[0]))) {
-    console.log(`    ${name.replace(/\|/g, ' against ').padEnd(28)} n ${String(t.n).padStart(4)}  good ends ${pct(t.good, t.n)}  boarded ${pct(t.boarded, t.n)}  you killed ${pct(t.died, t.n)}`);
+  // By the type she is: each policy's good ends, lost fights, hull lost and turns, and the spread of the ends; then each policy over every type.
+  const match = sum(runs, 'match'), TYPES = ['raider', 'corsair', 'cutter', 'raider pair'], ENDS = ['crippled', 'broke', 'escaped', 'away', 'boarded', 'ran', 'lost'];
+  const row = (label, t) => `    ${label.padEnd(8)} n ${String(t.n).padStart(4)}  good ${pct(t.good, t.n)}  lost ${pct(t.lostFight, t.n)}  hull -${String(Math.round((100 * t.hull) / Math.max(1, t.n))).padStart(2)}%  turns ${per(t.rounds, t.n)}  ${ENDS.map(e => `${e} ${pct(t[e] || 0, t.n)}`).join(' ')}  you killed ${pct(t.died, t.n)}`;
+  const policies = [...new Set(Object.keys(match).map(k => k.split('|')[0]))];
+  for (const type of TYPES.filter(x => policies.some(p => match[`${p}|${x}`]))) {
+    console.log(`  against ${type === 'raider pair' ? 'a raider pair' : `a ${type}`}`);
+    for (const p of policies) if (match[`${p}|${type}`]) console.log(row(p, match[`${p}|${type}`]));
+  }
+  console.log('  over every type');
+  for (const p of policies) {
+    const all = {}; for (const [k, t] of Object.entries(match)) if (k.split('|')[0] === p) for (const [f, v] of Object.entries(t)) all[f] = (all[f] || 0) + v;
+    console.log(row(p, all));
   }
   for (const kind of ['repel', 'assault']) {
     console.log(`${kind === 'repel' ? 'Repel fight (they board you)' : 'Assault fight (you board her)'}`);

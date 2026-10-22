@@ -26,8 +26,8 @@ const quiet = { foe: [hold], captain: hold };
 
 test('a side takes its hull from the ship and its outfits', () => {
   const s = shipSide({ shields: 90, armor: 140, guns: 1, dmgMult: 1 }, {});
-  assert.deepEqual([s.shields, s.armor, s.parts.weapons.max, s.parts.drive.max, s.parts.lock.max], [90, 140, 40, 15, 10]);
-  assert.equal(shipSide({ shields: 0, armor: 100, guns: 3, dmgMult: 1 }, {}).parts.weapons.max, 120, 'weapons are sized per gun mount');
+  assert.deepEqual([s.shields, s.armor, s.parts.weapons.max, s.parts.drive.max, s.parts.lock.max], [90, 140, 90, 50, 10]);
+  assert.equal(shipSide({ shields: 0, armor: 100, guns: 3, dmgMult: 1 }, {}).parts.weapons.max, 270, 'weapons are sized per gun mount');
 });
 
 test('a veteran grade lengthens the hull and raises the punch, and the state starts at turn 0', () => {
@@ -91,10 +91,10 @@ test('a shot at her drive at long range is cut by AIM_MULT.long on top of the ba
   const at = part => resolveShipTurn(st, orders([{ foe: 0, part }]), quiet, HIGH).events[0].dmg;
   assert.equal(at('hull'), 16, '20 * 0.8');
   assert.equal(at('weapons'), 16, 'her weapons are not aimed at');
-  assert.equal(at('drive'), 8, '20 * 0.8 * 0.5');
-  assert.equal(at('lock'), 8);
+  assert.equal(at('drive'), 4, '20 * 0.8 * 0.25');
+  assert.equal(at('lock'), 4);
   const mid = fight({ stats: { guns: 1 } }, {}, M);
-  assert.equal(resolveShipTurn(mid, orders([{ foe: 0, part: 'drive' }]), quiet, HIGH).events[0].dmg, 12, '20 * 0.85 * 0.7, 11.9');
+  assert.equal(resolveShipTurn(mid, orders([{ foe: 0, part: 'drive' }]), quiet, HIGH).events[0].dmg, 7, '20 * 0.85 * 0.4, 6.8');
 });
 
 test('shotRange gives the roll an order would make', () => {
@@ -165,10 +165,10 @@ test('a side with a launcher has a launcher part; one without has none', () => {
   assert.deepEqual([b.parts.launcher, b.launcher], [undefined, false]);
 });
 
-test('her weapons bar is 40 a mount: one gun at the bar takes about three turns', () => {
-  assert.equal(FIGHT.PART_HP.weapons, 40);
+test('her weapons bar is 90 a mount: one gun at the bar takes about three turns', () => {
+  assert.equal(FIGHT.PART_HP.weapons, 90);
   const st = fight({ stats: { guns: 1 } });
-  const hit = { foe: [{ kind: 'broadside', target: 'weapons', dmg: [14, 14] }], captain: hold };
+  const hit = { foe: [{ kind: 'broadside', target: 'weapons', dmg: [30, 30] }], captain: hold };
   let s = st, turns = 0;
   while (s.me.parts.weapons.hp > 0) { s = resolveShipTurn(s, orders([]), hit, LOW).state; turns++; }
   assert.equal(turns, 3);
@@ -186,7 +186,7 @@ test('resolveShipTurn does not change the state it was given', () => {
 });
 
 test('the constants are the ones the design names', () => {
-  assert.deepEqual(plain(FIGHT), { GUN_DMG: [12, 20], FOE_DMG: [18, 26], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.7, long: 0.5 }, PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 3, PDC_SALVO: 0.6, TURNS: 8, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2 });
+  assert.deepEqual(plain(FIGHT), { GUN_DMG: [12, 20], FOE_DMG: [10, 26], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.4, long: 0.25 }, PART_HP: { weapons: 90, drive: 50, lock: 10, launcher: 15 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 2, PDC_SALVO: 0.6, TURNS: 8, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2 });
 });
 
 test('the turret and heavy rounds outfits reach a side: the extra gun, the turret flag and the heavy multiplier', () => {
@@ -211,23 +211,23 @@ const mv = (foe, captain = 'hold') => ({ foe: [{ kind: foe }], captain: { kind: 
 
 test('her move follows her rules: break below 30 percent or with no guns, while her drive is up, board at the knife, pin when you are faster, close to the knife firing at your hull, else a broadside at your guns and then your hull', () => {
   let st = fight({ stats: { accel: 2 } }, {}, M);
-  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'pin', target: 'drive', dmg: [15, 22] }, 'faster me: her 18 and 26 times 0.85');
+  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'pin', target: 'drive', dmg: [9, 22] }, 'faster me: her 10 and 26 times 0.85');
   st = fight({}, {}, M);
-  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'close', target: 'hull', dmg: [15, 22] }, 'equal speed, above close: she closes, firing at your hull as she comes');
+  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'close', target: 'hull', dmg: [9, 22] }, 'equal speed, above close: she closes, firing at your hull as she comes');
   st = fight({}, {}, CLOSE);
-  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'close', target: 'hull', dmg: [18, 26] }, 'from close range she closes on to the knife, to board');
+  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'close', target: 'hull', dmg: [10, 26] }, 'from close range she closes on to the knife, to board');
   kill(st.foes[0], 'drive');
-  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'broadside', target: 'weapons', dmg: [18, 26] }, 'her drive gone, she stays and shoots at your guns');
+  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'broadside', target: 'weapons', dmg: [10, 26] }, 'her drive gone, she stays and shoots at your guns');
   kill(st.me, 'weapons');
-  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'broadside', target: 'hull', dmg: [18, 26] }, 'your guns gone, she shoots at your hull');
+  assert.deepEqual(plain(foeMove(st, 0)), { kind: 'broadside', target: 'hull', dmg: [10, 26] }, 'your guns gone, she shoots at your hull');
   st = fight({}, { stats: { guns: 2, dmgMult: 1.5 } }, K);
   assert.deepEqual(plain(foeMove(st, 0)), { kind: 'board' }, 'at the knife she boards');
   hurt(st.foes[0], 0.2);
   assert.deepEqual(plain(foeMove(st, 0)), { kind: 'break' }, 'a hull under 30 percent beats a board');
   st = fight({}, { stats: { guns: 2, dmgMult: 1.5 } }, CLOSE); kill(st.foes[0], 'drive');
-  assert.deepEqual(plain(foeMove(st, 0)).dmg, [54, 78], 'two mounts, 1.5, close');
+  assert.deepEqual(plain(foeMove(st, 0)).dmg, [30, 78], 'two mounts, 1.5, close');
   st.foes[0].parts.weapons.hp = 20;
-  assert.deepEqual(plain(foeMove(st, 0)).dmg, [27, 39], 'one mount left');
+  assert.deepEqual(plain(foeMove(st, 0)).dmg, [15, 39], 'one mount left');
 });
 
 test('a part at 0 changes her move: no lock, no board; no guns, she breaks off; no drive, no close; your drive out, no pin', () => {
@@ -362,7 +362,7 @@ test('your loss comes first: boarded while your armor is 0 is lost', () => {
 test('a pin is a broadside at your drive', () => {
   const st = fight({ stats: { accel: 2 } }, {}, CLOSE);
   const r = resolveShipTurn(st, orders([]), { foe: [{ kind: 'pin', target: 'drive', dmg: [8, 8] }], captain: hold }, LOW);
-  assert.deepEqual([r.state.me.parts.drive.hp, r.state.me.armor], [7, 140]);
+  assert.deepEqual([r.state.me.parts.drive.hp, r.state.me.armor], [42, 140]);
   assert.equal(r.state.moves.foe[0].kind, 'pin', 'the turn records the moves');
 });
 
@@ -680,10 +680,10 @@ function playOut({ me, foes, aim, nerve = 1, roll = 0.5, grade = 0, armor }) {
 }
 test('every end is reached by a hauler (or her sisters) against a raider or a corsair, by where the guns aim', () => {
   const at = part => () => part, drive = st => (st.foes[0].parts.drive.hp > 0 ? 'drive' : 'weapons');
-  assert.equal(playOut({ me: 'freighter', foes: ['raider'], aim: at('weapons') }), 'away', 'her guns shot away, her hull whole: she gets away with nothing for you');
+  assert.equal(playOut({ me: 'gunship', foes: ['raider'], aim: at('weapons') }), 'away', 'her guns shot away, her hull whole: she gets away with nothing for you (a hauler\'s two guns are too slow at it now: she is alongside first)');
   assert.equal(playOut({ me: 'gunship', foes: ['raider'], aim: drive, roll: 0.99 }), 'crippled', 'her drive and then her guns: dead in space');
   assert.equal(playOut({ me: 'freighter', foes: ['corsair'], aim: at('hull'), roll: 0.1 }), 'boarded', 'shooting her hull does not stop her coming alongside');
-  assert.equal(playOut({ me: 'freighter', foes: ['corsair'], aim: drive, nerve: 3, roll: 0.99 }), 'ran', 'her drive gone, her guns left: eight turns of it and the freighter is the worse hurt, so the captain runs');
+  assert.equal(playOut({ me: 'gunship', foes: ['corsair'], aim: drive }), 'ran', 'her drive gone, her guns left: eight turns of it and the corvette is the worse hurt, so the captain runs');
   assert.equal(playOut({ me: 'courier', foes: ['raider'], aim: at('hull'), armor: 1, roll: 0 }), 'escaped', 'a worn courier, a cautious captain and the faster ship: she is lost astern before her pin takes the drive');
   assert.equal(playOut({ me: 'shuttle', foes: ['corsair', 'corsair'], aim: at('hull'), roll: 0.99, grade: 2 }), 'lost', 'a skiff against a veteran pair: the hull goes before they are alongside');
 });

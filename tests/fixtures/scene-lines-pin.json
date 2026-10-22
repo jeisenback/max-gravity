@@ -22448,7 +22448,7 @@
   "plays": [
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
      "Gun 1: aim at her weapons, 10 to 16 damage",
@@ -22462,7 +22462,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
     "text": "A raider at forty kilometers and closing, with no transponder and her drive running hot.",
     "labels": [
      "Gun 1: aim at her weapons, 10 to 16 damage",
@@ -22504,7 +22504,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 31 to 44 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 17 to 44 damage. Captain Vance: holding the range.",
     "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.",
     "labels": [
      "Gun 1: aim at her weapons, 11 to 17 damage",
@@ -22518,7 +22518,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 31 to 44 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 17 to 44 damage. Captain Vance: holding the range.",
     "text": "A navy ship at thirty kilometers, on an intercept course with her guns warm. She has hailed twice, and the second hail said there won't be a third.",
     "labels": [
      "Gun 1: aim at her weapons, 11 to 17 damage",
@@ -22532,7 +22532,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>You fire first: you hit her weapons for 14, you hit her weapons for 14.",
     "labels": [
      "Gun 1: aim at her weapons, 10 to 16 damage",
@@ -22546,8 +22546,8 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 18.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 16.",
     "labels": [
      "Gun 1: aim at her weapons, 10 to 16 damage",
      "Gun 1: normal charge",
@@ -22644,10 +22644,10 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her lock, 5 to 8 damage",
+     "Gun 1: aim at her lock, 3 to 4 damage",
      "Gun 1: normal charge",
      "Gun 2: hold fire",
      "Torpedo, 2 left: aim at her hull",
@@ -22657,10 +22657,10 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her drive, 5 to 8 damage",
+     "Gun 1: aim at her drive, 3 to 4 damage",
      "Gun 1: normal charge",
      "Gun 2: aim at her hull, 10 to 16 damage",
      "Gun 2: normal charge",
@@ -22671,10 +22671,10 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her drive, 5 to 8 damage",
+     "Gun 1: aim at her drive, 3 to 4 damage",
      "Gun 1: normal charge",
      "Gun 2: aim at her hull, 10 to 16 damage",
      "Gun 2: normal charge",
@@ -22690,7 +22690,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your torpedo hits her hull for 39, she hits your hull for 10.",
     "labels": [
      "Gun 1: hold fire",
@@ -22707,7 +22707,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your torpedo hits her hull for 39, she hits your hull for 10.</p><p>Turn 2: no hits.",
     "labels": [
      "Gun 1: hold fire",
@@ -22724,10 +22724,10 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
     "text": "Turn 1: your torpedo hits her hull for 39, she hits your hull for 10.</p><p>Turn 2: no hits.</p><p>Turn 3: nothing left of the lock to hit.",
     "labels": [
-     "Gun 1: aim at her lock, 5 to 8 damage",
+     "Gun 1: aim at her lock, 3 to 4 damage",
      "Gun 1: normal charge",
      "Gun 2: hold fire",
      "Torpedo, 1 left: hold fire",
@@ -22742,7 +22742,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "Her consort: closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range.",
+    "read": "Her consort: closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range.",
     "text": "Turn 2: no hits.</p><p>Turn 3: nothing left of the lock to hit.</p><p>Turn 4: you hit her consort's hull for 15, your torpedo hits her consort's hull for 36.",
     "labels": [
      "Gun 1: aim at her hull, 10 to 16 damage",
@@ -22982,7 +22982,7 @@
     "read": "The Pirate \"Black Widow\" is loading torpedoes: 2 next turn. Captain Vance: holding the range.",
     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
     "labels": [
-     "Gun 1: aim at her launcher, 5 to 8 damage",
+     "Gun 1: aim at her launcher, 3 to 4 damage",
      "Gun 1: normal charge",
      "Gun 2: aim at her hull, 16 to 24 damage",
      "Gun 2: overcharged, heat 2",
@@ -23009,7 +23009,7 @@
     "read": "The Pirate \"Black Widow\" is loading torpedoes: 2 next turn. Captain Vance: holding the range.",
     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
     "labels": [
-     "Gun 1: aim at her launcher, 5 to 8 damage",
+     "Gun 1: aim at her launcher, 3 to 4 damage",
      "Gun 1: normal charge",
      "Gun 2: hold fire",
      "Torpedo, 2 left: hold fire",
@@ -23041,7 +23041,7 @@
    },
    {
     "title": "Battle Stations",
-    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 29 to 42 damage. Captain Vance: holding the range.",
+    "read": "The Pirate \"Black Widow\" is loading torpedoes: 2 next turn. Captain Vance: holding the range.",
     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>Turn 1: no hits.</p><p>Turn 2: she hits your hull for 78.",
     "labels": [
      "Gun 1: hold fire",

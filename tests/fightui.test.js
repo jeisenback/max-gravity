@@ -61,12 +61,12 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
     };
   });
   assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false);
-  assert.match(r.read, /^The Pirate "[^"]+": closing, and firing at your hull as she comes, 14 to 21 damage\. Captain Vance: holding the range\.$/, r.read);
+  assert.match(r.read, /^The Pirate "[^"]+": closing, and firing at your hull as she comes, 8 to 21 damage\. Captain Vance: holding the range\.$/, r.read);
   assert.equal(r.band, 'long', 'a raider is met at forty kilometers');
   assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
   assert.deepEqual(r.labels.map(l => l.replace(/\d+ to \d+ damage/, 'N to M damage')), ['Gun 1: aim at her weapons, N to M damage', 'Gun 1: normal charge', 'Gun 2: aim at her weapons, N to M damage', 'Gun 2: normal charge', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4']);
   assert.deepEqual(r.keep, [true, true, true, true, true, true, true], 'every order and Fire redraw in place');
-  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 80 of 80, drive 15 of 15, lock 10 of 10, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 40 of 40, drive 15 of 15, lock 10 of 10\.$/, r.bars);
+  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 180 of 180, drive 50 of 50, lock 10 of 10, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 90 of 90, drive 50 of 50, lock 10 of 10\.$/, r.bars);
   assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
   await done();
 });
@@ -77,7 +77,7 @@ test('setting a gun\'s target redraws in place; Fire resolves a turn and the log
   await ev(() => { fightGame('gunner'); battle(); });
   await page.click('[data-action="choose"][data-arg="0"]');
   const a = await ev(() => ({ result: !!document.querySelector('#event-result'), label: G.dialog.choices[0].label, title: G.dialog.event.title, turn: G.dialog.event.fight.state.turn }));
-  assert.deepEqual(a, { result: false, label: 'Gun 1: aim at her drive, 5 to 8 damage', title: 'Battle Stations', turn: 0 });
+  assert.deepEqual(a, { result: false, label: 'Gun 1: aim at her drive, 3 to 4 damage', title: 'Battle Stations', turn: 0 });
   for (let i = 0; i < 4; i++) await page.click('[data-action="choose"][data-arg="0"]');
   assert.equal(await ev(() => G.dialog.choices[0].label), 'Gun 1: aim at her weapons, 10 to 16 damage', 'the targets go round: drive, lock, hull, hold, weapons');
   await page.click('[data-action="choose"][data-arg="0"]');
@@ -139,11 +139,11 @@ test('a head start from the contact screen is a free first volley: ours at her w
     }
     return out;
   });
-  assert.ok(r.ahead.weapons < 40 && r.ahead.hull === r.ahead.full, `ours first, at her weapons: ${JSON.stringify(r.ahead)}`);
+  assert.ok(r.ahead.weapons < 90 && r.ahead.hull === r.ahead.full, `ours first, at her weapons: ${JSON.stringify(r.ahead)}`);
   assert.match(r.ahead.last, /^You fire first: you hit her weapons for \d+, you hit her weapons for \d+\.$/); assert.equal(r.ahead.band, 'long', 'fifty kilometers'); assert.equal(r.ahead.turn, 0, 'the free volley is not a turn');
-  assert.ok(r.behind.weapons === 40 && r.behind.hull < r.behind.full, `hers first, at our hull: ${JSON.stringify(r.behind)}`);
+  assert.ok(r.behind.weapons === 90 && r.behind.hull < r.behind.full, `hers first, at our hull: ${JSON.stringify(r.behind)}`);
   assert.match(r.behind.last, /^She fires first: she hits your hull for \d+\.$/); assert.equal(r.behind.band, 'mid', 'thirty kilometers');
-  assert.ok(r.even.weapons === 40 && r.even.hull === r.even.full, 'no head start, no volley'); assert.equal(r.even.band, 'long');
+  assert.ok(r.even.weapons === 90 && r.even.hull === r.even.full, 'no head start, no volley'); assert.equal(r.even.band, 'long');
   await done();
 });
 

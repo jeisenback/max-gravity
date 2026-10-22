@@ -2,7 +2,7 @@
  {
   "id": "raid:raider:gunner",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 21, she hits your hull for 22.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 17 to 24 damage. Her consort: closing, and firing at your hull as she comes, 17 to 24 damage. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 18, she hits your hull for 19.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 9 to 24 damage. Her consort: closing, and firing at your hull as she comes, 9 to 24 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 10 to 16 damage",
    "Gun 1: normal charge",
@@ -14,17 +14,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 15, you hit her weapons for 16, she hits your hull for 18, she hits your hull for 23.",
+    "text": "Turn 1: you hit her weapons for 15, you hit her weapons for 16, she hits your hull for 10, she hits your hull for 23.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 9, nothing left of the weapons to hit, she hits your hull for 20.",
+    "text": "Turn 2: you hit her weapons for 15, you hit her weapons for 15, she hits your hull for 15, she hits your hull for 11.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her consort's weapons for 13, you hit her consort's weapons for 19, she hits your hull for 23.",
+    "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 10, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -48,7 +48,7 @@
  {
   "id": "raid:raider:pilot",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 21, she hits your hull for 22.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 17 to 24 damage. Her consort: closing, and firing at your hull as she comes, 17 to 24 damage. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 18, she hits your hull for 19.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 9 to 24 damage. Her consort: closing, and firing at your hull as she comes, 9 to 24 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 10 to 16 damage",
    "Gun 1: normal charge",
@@ -60,17 +60,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 15, you hit her weapons for 16, she hits your hull for 18, she hits your hull for 23.",
+    "text": "Turn 1: you hit her weapons for 15, you hit her weapons for 16, she hits your hull for 10, she hits your hull for 23.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 9, nothing left of the weapons to hit, she hits your hull for 20.",
+    "text": "Turn 2: you hit her weapons for 15, you hit her weapons for 15, she hits your hull for 15, she hits your hull for 11.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her consort's weapons for 13, you hit her consort's weapons for 19, she hits your hull for 23.",
+    "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 10, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -94,7 +94,7 @@
  {
   "id": "raid:raider:engineer",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 21, she hits your hull for 22.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 17 to 24 damage. Her consort: closing, and firing at your hull as she comes, 17 to 24 damage. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 18, she hits your hull for 19.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 9 to 24 damage. Her consort: closing, and firing at your hull as she comes, 9 to 24 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 11 to 16 damage",
    "Gun 1: normal charge",
@@ -106,17 +106,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 15, you hit her weapons for 16, she hits your hull for 18, she hits your hull for 23.",
+    "text": "Turn 1: you hit her weapons for 15, you hit her weapons for 16, she hits your hull for 10, she hits your hull for 23.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 9, nothing left of the weapons to hit, she hits your hull for 20.",
+    "text": "Turn 2: you hit her weapons for 15, you hit her weapons for 15, she hits your hull for 15, she hits your hull for 11.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her consort's weapons for 14, you hit her consort's weapons for 19, she hits your hull for 23.",
+    "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 10, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -140,7 +140,7 @@
  {
   "id": "raid:raider:comms",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 21, she hits your hull for 22.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 17 to 24 damage. Her consort: closing, and firing at your hull as she comes, 17 to 24 damage. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 18, she hits your hull for 19.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 9 to 24 damage. Her consort: closing, and firing at your hull as she comes, 9 to 24 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 11 to 16 damage",
    "Gun 1: normal charge",
@@ -152,17 +152,17 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 15, you hit her weapons for 16, she hits your hull for 18, she hits your hull for 23.",
+    "text": "Turn 1: you hit her weapons for 15, you hit her weapons for 16, she hits your hull for 10, she hits your hull for 23.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 9, nothing left of the weapons to hit, she hits your hull for 20.",
+    "text": "Turn 2: you hit her weapons for 15, you hit her weapons for 15, she hits your hull for 15, she hits your hull for 11.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 3: you hit her consort's weapons for 14, you hit her consort's weapons for 19, she hits your hull for 23.",
+    "text": "Turn 3: you hit her weapons for 19, you hit her weapons for 10, she hits your hull for 24.",
     "armor": 260,
     "band": 0
    },
@@ -210,17 +210,37 @@
    {
     "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.",
     "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 4: you hit her weapons for 11, you hit her weapons for 15, she hits your hull for 66.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 5: you hit her weapons for 12, you hit her weapons for 13, she hits your hull for 23.",
+    "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 260,
-    "band": 3
+    "text": "Turn 6: you hit her weapons for 16, you hit her weapons for 12, she hits your hull for 22.",
+    "armor": 241,
+    "band": 1
+   },
+   {
+    "text": "Turn 7: you hit her weapons for 14, you hit her weapons for 7.",
+    "armor": 241,
+    "band": 0
+   },
+   {
+    "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
+    "armor": 241,
+    "band": 1
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
+   "text": "Turn 7: you hit her weapons for 14, you hit her weapons for 7.</p><p>Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
    "labels": [
     "Stand down"
    ]
@@ -253,17 +273,37 @@
    {
     "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.",
     "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 4: you hit her weapons for 11, you hit her weapons for 15, she hits your hull for 66.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 5: you hit her weapons for 12, you hit her weapons for 13, she hits your hull for 23.",
+    "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 260,
-    "band": 3
+    "text": "Turn 6: you hit her weapons for 16, you hit her weapons for 12, she hits your hull for 22.",
+    "armor": 241,
+    "band": 1
+   },
+   {
+    "text": "Turn 7: you hit her weapons for 14, you hit her weapons for 7.",
+    "armor": 241,
+    "band": 0
+   },
+   {
+    "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
+    "armor": 241,
+    "band": 1
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
+   "text": "Turn 7: you hit her weapons for 14, you hit her weapons for 7.</p><p>Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
    "labels": [
     "Stand down"
    ]
@@ -294,19 +334,39 @@
     "band": 3
    },
    {
-    "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.",
+    "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 13.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 4: you hit her weapons for 11, you hit her weapons for 15, she hits your hull for 66.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 5: you hit her weapons for 13, you hit her weapons for 13, she hits your hull for 23.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 260,
-    "band": 3
+    "text": "Turn 6: you hit her weapons for 16, you hit her weapons for 13, she hits your hull for 22.",
+    "armor": 241,
+    "band": 1
+   },
+   {
+    "text": "Turn 7: you hit her weapons for 15, you hit her weapons for 3.",
+    "armor": 241,
+    "band": 0
+   },
+   {
+    "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
+    "armor": 241,
+    "band": 1
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
+   "text": "Turn 7: you hit her weapons for 15, you hit her weapons for 3.</p><p>Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
    "labels": [
     "Stand down"
    ]
@@ -337,19 +397,39 @@
     "band": 3
    },
    {
-    "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.",
+    "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 13.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 4: you hit her weapons for 11, you hit her weapons for 15, she hits your hull for 66.",
+    "armor": 260,
+    "band": 3
+   },
+   {
+    "text": "Turn 5: you hit her weapons for 13, you hit her weapons for 13, she hits your hull for 23.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 260,
-    "band": 3
+    "text": "Turn 6: you hit her weapons for 16, you hit her weapons for 13, she hits your hull for 22.",
+    "armor": 241,
+    "band": 1
+   },
+   {
+    "text": "Turn 7: you hit her weapons for 15, you hit her weapons for 3.",
+    "armor": 241,
+    "band": 0
+   },
+   {
+    "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
+    "armor": 241,
+    "band": 1
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 3: you hit her weapons for 14, you hit her weapons for 12.</p><p>Turn 4: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
+   "text": "Turn 7: you hit her weapons for 15, you hit her weapons for 3.</p><p>Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
    "labels": [
     "Stand down"
    ]
@@ -358,7 +438,7 @@
  {
   "id": "raid:cutter:gunner",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 35 to 51 damage. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 20 to 51 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 11 to 17 damage",
    "Gun 1: normal charge",
@@ -370,12 +450,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 15, she hits your hull for 46.",
+    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 15, she hits your hull for 41.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 19, you hit her weapons for 19, she hits your hull for 42.",
+    "text": "Turn 2: you hit her weapons for 19, you hit her weapons for 19, she hits your hull for 26.",
     "armor": 260,
     "band": 0
    },
@@ -399,7 +479,7 @@
  {
   "id": "raid:cutter:pilot",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 35 to 51 damage. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 20 to 51 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 11 to 17 damage",
    "Gun 1: normal charge",
@@ -411,12 +491,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 15, she hits your hull for 46.",
+    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 15, she hits your hull for 41.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 19, you hit her weapons for 19, she hits your hull for 42.",
+    "text": "Turn 2: you hit her weapons for 19, you hit her weapons for 19, she hits your hull for 26.",
     "armor": 260,
     "band": 0
    },
@@ -440,7 +520,7 @@
  {
   "id": "raid:cutter:engineer",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 35 to 51 damage. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 20 to 51 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 12 to 17 damage",
    "Gun 1: normal charge",
@@ -452,12 +532,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 12, you hit her weapons for 15, she hits your hull for 46.",
+    "text": "Turn 1: you hit her weapons for 12, you hit her weapons for 15, she hits your hull for 41.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 19, you hit her weapons for 20, she hits your hull for 42.",
+    "text": "Turn 2: you hit her weapons for 19, you hit her weapons for 20, she hits your hull for 26.",
     "armor": 260,
     "band": 0
    },
@@ -481,7 +561,7 @@
  {
   "id": "raid:cutter:comms",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 35 to 51 damage. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 20 to 51 damage. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 12 to 17 damage",
    "Gun 1: normal charge",
@@ -493,12 +573,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 12, you hit her weapons for 15, she hits your hull for 46.",
+    "text": "Turn 1: you hit her weapons for 12, you hit her weapons for 15, she hits your hull for 41.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 19, you hit her weapons for 20, she hits your hull for 42.",
+    "text": "Turn 2: you hit her weapons for 19, you hit her weapons for 20, she hits your hull for 26.",
     "armor": 260,
     "band": 0
    },
@@ -645,7 +725,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 10 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -655,7 +735,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -769,7 +849,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 10 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -779,7 +859,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -895,7 +975,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 10 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -905,7 +985,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1019,7 +1099,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 10 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1029,7 +1109,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1145,7 +1225,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 10 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1155,7 +1235,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1269,7 +1349,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 10 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1279,7 +1359,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1395,7 +1475,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 27.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 10 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1405,7 +1485,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 21.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1519,7 +1599,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 10 to 27 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1529,7 +1609,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 21 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 16, you hit her weapons for 16.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 8 to 21 damage. Captain Vance: holding the range."
     ],
     "mem": []
    },

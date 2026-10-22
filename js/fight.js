@@ -6,7 +6,7 @@
 
 const FIGHT = {
   GUN_DMG: [12, 20], // one of your shots' range before the multipliers
-  FOE_DMG: [18, 26], // one of her guns' range before the multipliers: harder than yours, so that a random fight costs armor (Task 7)
+  FOE_DMG: [10, 26], // one of her guns' range before the multipliers: wider than yours, and harder at its top, so that a random fight costs armor (tuned, Task 7)
   HEAVY: 1.4,        // what heavy rounds add; it is already in a side's dmgMult, kept here for the board's text
   SKILL_DMG: 1,      // per gunner level, added to the low end
   BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 },
@@ -14,12 +14,12 @@ const FIGHT = {
   HEAT_VENT: 2,      // heat shed each turn
   OVER_MULT: 1.5,    // what an overcharged shot rolls more
   OVER_HEAT: 2,      // the heat an overcharged shot adds (a plain shot adds 1)
-  AIM_MULT: { knife: 1, close: 1, mid: 0.7, long: 0.5 },  // on top of the band, for a shot at her drive, lock or launcher; her hull and weapons have none
-  PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 },  // weapons is per gun mount; a drive goes in a shot or two, so that aiming at it can cripple her inside the eight turns (Task 7)
+  AIM_MULT: { knife: 1, close: 1, mid: 0.4, long: 0.25 },  // on top of the band, for a shot at her drive, lock or launcher; her hull and weapons have none. Low far out, so that her drive is not gone before she is alongside
+  PART_HP: { weapons: 90, drive: 50, lock: 10, launcher: 15 },  // weapons is per gun mount, about three turns of fire; a drive takes three or four turns, so that a raider aimed at only there boards about one time in three; a lock goes in a turn (tuned, Task 7)
   TORP_DMG: [30, 45],
   PDC_HOLD: 0.4,     // what a turret held back takes off a volley
   SALVO: 2,          // torpedoes in her salvo
-  SALVO_EVERY: 3,    // she arms on turn 0 and then every third turn, and fires the turn after
+  SALVO_EVERY: 2,    // she arms on turn 0 and then every second turn, and fires the turn after, while her torpedoes last
   PDC_SALVO: 0.6,    // what a turret held back takes off a salvo (a gun volley takes PDC_HOLD)
   TURNS: 8,
   BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
@@ -37,11 +37,12 @@ const shotRange = (st, o) => [FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, 
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);
 
-// What each kind of foe adds to her hull: the share of her shields that comes back each turn, and a torpedo launcher with its torpedoes (starting values, Task 7).
+// What each kind of foe adds to her hull: the share of her shields that comes back each turn, and a torpedo launcher with its torpedoes (the corsair's and the
+// cutter's tuned in Task 7, COMBAT.md; the destroyer's are still the starting values, as the fight tool does not play one).
 const FOE_TYPES = {
   raider: { regen: 0, launcher: false },
-  corsair: { regen: 0, launcher: true, torps: 3 },
-  cutter: { regen: 0.25, launcher: false },
+  corsair: { regen: 0, launcher: true, torps: 4 },
+  cutter: { regen: 0.125, launcher: false },
   destroyer: { regen: 0.15, launcher: true, torps: 4 }
 };
 
