@@ -12,6 +12,9 @@ const FIGHT = {
   BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 },
   HEAT_CAP: 4,       // heat over this locks a gun for the next turn
   HEAT_VENT: 2,      // heat shed each turn
+  OVER_MULT: 1.5,    // what an overcharged shot rolls more
+  OVER_HEAT: 2,      // the heat an overcharged shot adds (a plain shot adds 1)
+  AIM_MULT: { knife: 1, close: 1, mid: 0.7, long: 0.5 },  // on top of the band, for a shot at her drive, lock or launcher; her hull and weapons have none
   PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 },  // weapons is per gun mount; a drive goes in a shot or two, so that aiming at it can cripple her inside the six turns (Task 7)
   TORP_DMG: [30, 45],
   PDC_HOLD: 0.4,     // what a turret held back takes off a volley
@@ -26,6 +29,11 @@ const FIGHT = {
 
 const KNIFE = RANGE_BANDS.indexOf('knife');
 const bandMultOf = band => FIGHT.BAND_MULT[RANGE_BANDS[band]] || 0;  // past long they have escaped and there is no volley
+const AIMED = ['drive', 'lock', 'launcher'];
+// The multiplier a gun order rolls with: the side's damage, the band, an overcharge, and the aim penalty of a small part at range.
+const shotMult = (st, o) => st.me.dmgMult * bandMultOf(st.band) * (o.over ? FIGHT.OVER_MULT : 1) * (AIMED.includes(o.part) ? FIGHT.AIM_MULT[RANGE_BANDS[st.band]] || 0 : 1);
+// The [lo, hi] a gun order would roll, for the panel to show.
+const shotRange = (st, o) => [FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]].map(d => Math.round(d * shotMult(st, o)));
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);
 
@@ -71,13 +79,11 @@ function dealDamage(side, part, dmg) {
 function resolveShipTurn(state, orders, moves, rand) {
   const st = copyOf(state), events = [];
   const held = st.me.pdc && orders.pdc === 'hold';
-  const bandMult = bandMultOf(st.band);
-  const lo = FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill;
 
   // A turret held back is not firing, so it costs a shot.
   const shots = orders.guns.slice(0, gunsReady(st)).filter(o => o && st.foes[o.foe]).slice(0, Math.max(0, gunsReady(st) - (held ? 1 : 0)));  // a gun that is not ready has no say, whatever its order
   for (const o of shots) {
-    const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([lo, FIGHT.GUN_DMG[1]], st.me.dmgMult * bandMult, rand));
+    const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]], shotMult(st, o), rand));
     events.push({ who: 'me', foe: o.foe, part: o.part, dmg });
   }
   if (orders.torp && st.me.launcher && st.me.torps > 0 && st.foes[orders.torp.foe]) {
@@ -106,7 +112,7 @@ function resolveShipTurn(state, orders, moves, rand) {
   if (st.foes.some((foe, i) => foe.armor > 0 && foe.parts.lock.hp > 0 && st.band === KNIFE && moves.foe[i] && moves.foe[i].kind === 'board')) st.boarded = true;
   st.band = nextBand(st, moves);
 
-  const heat = st.heat + shots.length;
+  const heat = st.heat + shots.reduce((h, o) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);
   st.locked = heat > FIGHT.HEAT_CAP ? [0] : [];
   st.heat = Math.max(0, heat - FIGHT.HEAT_VENT);
   for (const side of [st.me, ...st.foes]) side.shields = Math.min(side.maxShields, side.shields + Math.round(side.regen * side.maxShields));

@@ -6,8 +6,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'boardMove', 'resolveDeckTurn', 'deckEnd']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
-const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, boardMove, resolveDeckTurn, deckEnd } = api;
+const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'boardMove', 'resolveDeckTurn', 'deckEnd']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
+const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, boardMove, resolveDeckTurn, deckEnd } = api;
 const LOW = () => 0, HIGH = () => 0.999;
 const CLOSE = RANGE_BANDS.indexOf('close');
 const HULL = { kind: 'broadside', target: 'hull', dmg: [8, 14] };
@@ -67,6 +67,43 @@ test('each shot adds 1 heat and 2 bleed off a turn; over 4, a gun is locked next
   assert.equal(gunsReady(st), 3);
   const r = resolveShipTurn(st, orders(fire(4)), quiet, LOW);
   assert.equal(r.events.filter(e => e.who === 'me').length, 3, 'only the ready guns fire');
+});
+
+test('an overcharged shot rolls OVER_MULT more and adds two heat', () => {
+  const st = { ...fight({ stats: { guns: 1, dmgMult: 2 } }), heat: 3 };
+  const plainShot = resolveShipTurn(st, orders([{ foe: 0, part: 'hull' }]), quiet, LOW);
+  const overShot = resolveShipTurn(st, orders([{ foe: 0, part: 'hull', over: true }]), quiet, LOW);
+  assert.deepEqual([plainShot.events[0].dmg, overShot.events[0].dmg], [24, 36], 'a ratio of OVER_MULT, 1.5');
+  assert.deepEqual([plainShot.state.heat, overShot.state.heat], [2, 3], '3 + 1 and 3 + 2, less the vent of 2');
+});
+
+test('two overcharged shots go over the heat cap and lock a gun next turn', () => {
+  const over = [{ foe: 0, part: 'hull', over: true }, { foe: 0, part: 'hull', over: true }];
+  const base = fight({ stats: { guns: 2 } });
+  const cool = resolveShipTurn(base, orders(over), quiet, LOW).state;
+  assert.deepEqual([cool.heat, cool.locked.length], [2, 0], '4 is at the cap, not over it: the existing rule locks only over HEAT_CAP');
+  const warm = resolveShipTurn({ ...base, heat: 1 }, orders(over), quiet, LOW).state;
+  assert.deepEqual([warm.heat, warm.locked.length], [3, 1], 'carried heat 1 + 4 is 5, over the cap of 4');
+});
+
+test('a shot at her drive at long range is cut by AIM_MULT.long on top of the band; at her hull it is not', () => {
+  const st = fight({ stats: { guns: 1 } }, {}, L);
+  const at = part => resolveShipTurn(st, orders([{ foe: 0, part }]), quiet, HIGH).events[0].dmg;
+  assert.equal(at('hull'), 16, '20 * 0.8');
+  assert.equal(at('weapons'), 16, 'her weapons are not aimed at');
+  assert.equal(at('drive'), 8, '20 * 0.8 * 0.5');
+  assert.equal(at('lock'), 8);
+  const mid = fight({ stats: { guns: 1 } }, {}, M);
+  assert.equal(resolveShipTurn(mid, orders([{ foe: 0, part: 'drive' }]), quiet, HIGH).events[0].dmg, 12, '20 * 0.85 * 0.7, 11.9');
+});
+
+test('shotRange gives the roll an order would make', () => {
+  const st = fight({ stats: { guns: 1, dmgMult: 1.3 }, opts: { skill: 2 } }, {}, M);
+  for (const p of ['drive', 'lock']) st.foes[0].parts[p].hp = 999;  // a part's hp would cap the damage the shot is compared by
+  for (const o of [{ foe: 0, part: 'hull' }, { foe: 0, part: 'drive', over: true }, { foe: 0, part: 'lock' }]) {
+    const lo = resolveShipTurn(st, orders([o]), quiet, LOW).events[0].dmg, hi = resolveShipTurn(st, orders([o]), quiet, HIGH).events[0].dmg;
+    assert.deepEqual(plain(shotRange(st, o)), [lo, hi], JSON.stringify(o));
+  }
 });
 
 test('with every gun locked the turn still resolves: no shots, heat bleeds, the foe acts', () => {
@@ -149,7 +186,7 @@ test('resolveShipTurn does not change the state it was given', () => {
 });
 
 test('the constants are the ones the design names', () => {
-  assert.deepEqual(plain(FIGHT), { GUN_DMG: [12, 20], FOE_DMG: [18, 26], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 3, PDC_SALVO: 0.6, TURNS: 6, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2 });
+  assert.deepEqual(plain(FIGHT), { GUN_DMG: [12, 20], FOE_DMG: [18, 26], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.7, long: 0.5 }, PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 3, PDC_SALVO: 0.6, TURNS: 6, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2 });
 });
 
 test('the turret and heavy rounds outfits reach a side: the extra gun, the turret flag and the heavy multiplier', () => {
