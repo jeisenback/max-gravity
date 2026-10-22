@@ -18,7 +18,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
   const r = await ev(([trials, postKey, shipId, asOwner, raidFights, lockFights, cutter, groups, answerSrc]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st0 = G.state; st0.story.next = 1e9; st0.day += 30; hired().raidTold = true;  // the first raid is explained once; these are the raids after it
-    if (asOwner) { const crew0 = [...st0.crew]; st0.credits = 100000; hired().debt = 0; buyIn(st0.shipId); while (G.dialog) finishEvent(); st0.crew = crew0; st0.armor = ship().armor; if (hired()) throw new Error('the buy did not make an owner'); }  // the same ship and crew: the buy took a friend, and the rest stay
+    if (asOwner) { const crew0 = [...st0.crew], fit = { ...st0.outfits }, torps = st0.torpedoes; hired().debt = 0; st0.credits = buyInPrice(st0.shipId); buyIn(st0.shipId); while (G.dialog) finishEvent(); st0.crew = crew0; st0.outfits = fit; st0.torpedoes = torps; st0.armor = ship().armor; if (hired()) throw new Error('the buy did not make an owner'); }  // the same ship, fitting and crew: the buy took a friend and cleared the captain's outfits (buyIn), and the rest are put back
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     const snap = JSON.stringify(G.state), crewAll = [...G.state.crew], maxArmor = ship().armor;
     const restore = (crewN, level) => {
@@ -69,18 +69,23 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     const out = { raid: {}, match: {}, repel: {}, assault: {} };
 
     // The ship fight, from the contact to its end and the deck fight that may follow it. The guns' policy gives the turn's orders: 'random' aims each gun at any
-    // part, 'focus' always at her weapons, 'drive' at her drive until it is gone and then her weapons, 'lock' at her lock and then her weapons; these four fire the
-    // turret and send a torpedo at her hull while there are any. 'answer' reads her shown move (s.shown): it holds the turret back when she fires a salvo, aims at her
-    // lock while she pins or closes with it whole, and against a ship whose shields come back (regen) sends the torpedoes at her hull and overcharges every gun the
-    // heat allows; else it aims at her hull (tools/answer.js). A deck fight after it is played by the 'shoot' policy.
+    // part, 'focus' always at her weapons, 'drive' at her drive until it is gone and then her weapons, 'lock' at her lock and then her weapons, 'hull' every gun at
+    // her hull, and 'hullhold' the same with the turret held back on a turn she fires a salvo; these six fire the turret (hullhold but on her salvo) and send a
+    // torpedo at her hull while there are any. 'answer' reads her shown move (s.shown): it holds the turret back when she fires a salvo, aims at her lock while she
+    // pins or closes with it whole, and against a ship whose shields come back (regen) sends the torpedoes at her hull and overcharges every gun the heat allows;
+    // else it aims at her hull (tools/answer.js). A deck fight after it is played by the 'shoot' policy. Every fixed aim is at the first ship (foe 0); fireTurn
+    // sends an order on to the next ship that still has the part.
     const PARTS = ['weapons', 'drive', 'lock', 'hull'];
-    const fixed = aim => s => ({ guns: Array.from({ length: s.state.me.guns }, () => ({ foe: 0, part: aim(s.state) })), torp: s.state.me.launcher && s.state.me.torps > 0 ? { foe: 0, part: 'hull' } : null, pdc: 'fire' });
+    const salvo = s => s.state.foes.some((f, i) => fightUp(f) && s.shown && s.shown.foe[i] && s.shown.foe[i].kind === 'salvo');
+    const fixed = (aim, hold = false) => s => ({ guns: Array.from({ length: s.state.me.guns }, () => ({ foe: 0, part: aim(s.state) })), torp: s.state.me.launcher && s.state.me.torps > 0 ? { foe: 0, part: 'hull' } : null, pdc: hold && salvo(s) ? 'hold' : 'fire' });
     const answer = (0, eval)(`(${answerSrc})`);  // tools/answer.js, shared with the play-through's player
     const POLICY_SHIP = {
       random: fixed(() => PARTS[Math.floor(Math.random() * PARTS.length)]),
       focus: fixed(() => 'weapons'),
       drive: fixed(f => (f.foes.some(x => x.parts.drive.hp > 0) ? 'drive' : 'weapons')),
       lock: fixed(f => (f.foes.some(x => x.parts.lock.hp > 0) ? 'lock' : 'weapons')),
+      hull: fixed(() => 'hull'),
+      hullhold: fixed(() => 'hull', true),
       answer,
     };
     // One ship fight against `spec`, to its end and whatever scene follows it. Returns its end (null: the hand was killed in it), the fight, what it cost, and whether
@@ -165,7 +170,7 @@ const per = (a, b) => (a / Math.max(1, b)).toFixed(2);
 function report(runs) {
   console.log(`Ship fights (${runs.length} seeds, ${runs[0].crewAboard} crew aboard, ${runs[0].owner ? 'an owner at' : 'a hand at'} the ${runs[0].post} post), by where the guns aim`);
   for (const [policy, t] of Object.entries(sum(runs, 'raid'))) {
-    console.log(`  ${policy.padEnd(7)} n ${String(t.n).padStart(4)}  crippled ${pct(t.crippled, t.n)} (boarded her ${pct(t.assaultWon, t.crippled)})  broke off ${pct(t.broke, t.n)}  got away ${pct(t.away, t.n)}  captain ran ${pct(t.ran, t.n)}  boarded ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull gone ${pct(t.lost, t.n)}  escaped ${pct(t.escaped, t.n)}  you killed ${pct(t.died, t.n)}  rounds ${per(t.rounds, t.n)}  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}  capped ${t.capped}`);
+    console.log(`  ${policy.padEnd(8)} n ${String(t.n).padStart(4)}  crippled ${pct(t.crippled, t.n)} (boarded her ${pct(t.assaultWon, t.crippled)})  broke off ${pct(t.broke, t.n)}  got away ${pct(t.away, t.n)}  captain ran ${pct(t.ran, t.n)}  boarded ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull gone ${pct(t.lost, t.n)}  escaped ${pct(t.escaped, t.n)}  you killed ${pct(t.died, t.n)}  rounds ${per(t.rounds, t.n)}  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}  capped ${t.capped}`);
   }
   // By the type she is: each policy's good ends, lost fights, hull lost and turns, and the spread of the ends; then each policy over every type.
   const match = sum(runs, 'match'), TYPES = ['raider', 'corsair', 'cutter', 'raider pair'], ENDS = ['crippled', 'broke', 'escaped', 'away', 'boarded', 'ran', 'lost'];

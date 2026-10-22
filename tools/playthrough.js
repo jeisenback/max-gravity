@@ -27,7 +27,11 @@ function policy(d, ok, memo) {
   if (s) {
     const f = s.state, turn = `${f.turn}:${f.log.length}`;
     if (memo.turn !== turn) { memo.turn = turn; memo.clicks = 0; }
-    if (ok.length === 1 || ++memo.clicks > 40) return last;  // the close (Stand down), or an order that would not take: fight as it stands
+    if (ok.length === 1) return last;  // the close (Stand down)
+    if (++memo.clicks > 40) {  // an order that would not take (a label the player does not match): said as a stop, so the player never fights on half at random
+      if (window.__pt) window.__pt.stuck(d, `the fight's orders did not take in 40 clicks on turn ${f.turn + 1}`);
+      return last;
+    }
     if (f.kind === 'deck') {
       const post = lockPost(), near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])];
       const to = near.reduce((b, i) => (f.sections[i].mine > f.sections[b].mine ? i : b), f.hand), there = f.sections[to];
