@@ -16,6 +16,8 @@ function rateFoe(s) {
   const d = laneDanger(), r = Math.random();
   s.grade = r < Math.min(0.3, 0.05 + 0.6 * d) ? 2 : r < Math.min(0.6, 0.2 + d) ? 1 : 0;
   s.pack = s.foe.shipId === 'raider' && d > 0.12 && Math.random() < 0.15 + d;
+  if (s.spec.grade !== undefined) s.grade = s.spec.grade;  // a ladder fight (fightladder.js) says how she is rated
+  if (s.spec.pack !== undefined) s.pack = s.spec.pack;
   if (s.pack) s.edge -= 1;
   return s;
 }

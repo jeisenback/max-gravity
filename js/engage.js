@@ -22,9 +22,21 @@ function planIntercept() {
   if (bounty) spec = { kind: 'bounty', mission: bounty };
   else if (G.revenge) { spec = { kind: 'hunter', person: G.revenge }; G.revenge = null; }
   else if (hostileGov && Math.random() < 0.6) spec = { kind: 'patrol', gov: hostileGov };
-  else if (Math.random() < Math.min(0.55, (hired() ? HAND_RAID.base : 0.05) + (hired() ? HAND_RAID.per : 0.6) * Math.max(danger(from), danger(to))) * SCAN_MAX) spec = { kind: 'pirate' };  // they get a second look when the drive runs cool (below)
+  else if (hired()) spec = handIntercept(hired(), st, to, Math.max(danger(from), danger(to)));
+  else if (Math.random() < Math.min(0.55, 0.05 + 0.6 * Math.max(danger(from), danger(to))) * SCAN_MAX) spec = { kind: 'pirate' };  // they get a second look when the drive runs cool (below)
   if (spec) t.intercept = { spec, at: t.total * rand(0.25, 0.7) };
 }
+
+// A hired hand's contact on a burn nothing else claimed (fightladder.js): the ladder's step when one is due, else a random pirate at LADDER_RANDOM of
+// the rate, of a type already met, and none before one is.
+function handIntercept(h, st, to, danger) {
+  const step = ladderNext(h, st, to);
+  if (step) return step.spec;
+  if (!ladderPirate(h, 0) || Math.random() >= Math.min(0.55, HAND_RAID.base + HAND_RAID.per * danger) * LADDER_RANDOM * SCAN_MAX) return null;
+  return { kind: 'pirate', shipId: ladderPirate(h, Math.random()) };
+}
+// A pirate for a scene that is not a burn's contact: a hand's is of a type met (a raider before any), an owner's is drawn as it always was.
+const scenePirate = () => (hired() ? { kind: 'pirate', shipId: ladderPirate(hired(), Math.random()) || 'raider' } : { kind: 'pirate' });
 
 function makeEnemy(spec) {
   const sid = G.state.systemId, persona = makePerson(cultureOf(sid));
@@ -124,14 +136,14 @@ Mods.register({
         t.intercept = null;
         // Pirates only find a ship they can see: a hot drive is easy to spot, a cool one is not.
         if (spec.kind === 'pirate' && Math.random() > scanVisibility() / SCAN_MAX) comm('[Scan] A drive plume sweeps past far off the bow, and does not turn.');
-        else openEvent(contactEvent(spec));
+        else { if (spec.ladder) ladderDone(hired(), spec.ladder); openEvent(contactEvent(spec)); }
       }
     });
     // The old text-only pirate ambush is a duel too.
     const ev = TRANSIT_EVENTS.find(x => x.title === 'Pirates Matching Course');
     if (ev) {
       for (const [label, flee] of [['Fight', false], ['Hard burn', true]]) {
-        ev.choices.find(x => x.label.startsWith(label)).run = () => startDuel({ kind: 'pirate' }, flee);
+        ev.choices.find(x => x.label.startsWith(label)).run = () => startDuel(scenePirate(), flee);
       }
     }
   },
