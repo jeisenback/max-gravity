@@ -695,7 +695,7 @@ test('outrunning a contact adds RUN_DAYS to the burn and says so', async () => {
   const r = await ev(() => {
     raid('pilot'); const t = G.transit, eta0 = transitEta(t), days0 = transitDays(t), out = { runDays: RUN_DAYS };
     rolls([0.01]); out.text = startDuel({ kind: 'pirate' }, true);
-    out.eta = transitEta(t) - eta0; out.days = transitDays(t) - days0; out.raw = [t.days, t.total];
+    out.eta = transitEta(t) - eta0; out.days = transitDays(t) - days0;
     return out;
   });
   assert.equal(r.runDays, 2); assert.equal(r.eta, 2, 'the burn ends two days later'); assert.equal(r.days, 2, 'and arrival moves the date by them');
@@ -757,10 +757,30 @@ test('a contract due on the arrival day is late after a run', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    raid('pilot'); const t = G.transit, due = transitEta(t), before = transitEta(t) > due;
-    rolls([0.01]); startDuel({ kind: 'pirate' }, true);
-    return { before, after: transitEta(t) > due, lateBy: transitEta(t) - due };
+    const st = raid('pilot'), h = hired(), t = G.transit, due = transitEta(t), before = transitEta(t) > due;
+    const planet = system().planets[0];
+    h.run = { contract: true, good: 'water', tons: 10, pay: 1000, due, shipper: 'Test Shipper', cost: 0, day: st.day, from: 'Earth', planet: planet.name, sid: t.to, profit: 0, days: t.days };
+    st.cargo = { water: 10 }; st.paid = { water: 0 };
+    rolls([0.01]); startDuel({ kind: 'pirate' }, true); __seed(3);
+    const eta = transitEta(t), lateBy = eta - due;
+    arrive(); settleRun(planet);
+    return { before, lateBy, day: st.day, late: h.ledger[0] && h.ledger[0].late, due };
   });
-  assert.equal(r.before, false); assert.equal(r.after, true); assert.equal(r.lateBy, 2);
+  assert.equal(r.before, false); assert.equal(r.lateBy, 2); assert.equal(r.late, 2, 'delivered two days late');
+  await done();
+});
+
+test('heaving to on the ladder cutter meets the step, and the next burn brings the pair, not the cutter again', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('pilot'), h = hired(); ladderDone(h, 'raider'); ladderDone(h, 'corsair'); h.deal = { price: 1000, day: st.day, until: st.day + 50, broker: false };
+    const spec = { kind: 'patrol', shipId: 'cutter', gov: 'Arcology Compact', ladder: 'cutter' }; h.fund = 20000;
+    const e = contactEvent(spec), shown = h.fights.done.slice(); G.dialog = { event: e, choices: e.choices };
+    chooseEvent(e.choices.findIndex(c => /^Heave to/.test(c.label)));
+    return { shown, done: h.fights.done.slice(), paid: 20000 - h.fund, next: (ladderNext(h, st, 'mars') || {}).id };
+  });
+  assert.deepEqual(r.shown, ['raider', 'corsair']); assert.deepEqual(r.done, ['raider', 'corsair', 'cutter']); assert.ok(r.paid > 0);
+  assert.equal(r.next, 'pair');
   await done();
 });
