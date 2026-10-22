@@ -703,6 +703,7 @@ test('a ladder step that is due waits for a burn with no other intercept', async
     return out;
   });
   assert.ok(r.patrolFirst, 'a wanted patrol still takes the burn');
+  assert.ok(r.laddered > 0, 'the ladder takes the burns the patrol did not');
   assert.equal(r.step.ladder, 'raider'); assert.equal(r.step.shipId, 'raider'); assert.equal(r.step.kind, 'pirate');
   assert.deepEqual(r.doneBefore, [], 'planned is not met');
   await done();
@@ -732,8 +733,7 @@ test('random contacts for a hand come only once a type is met, and only of the t
     worldOf('mars').unrest = 0.3; worldOf('earth').unrest = 0.3;
     const draws = n => { const out = []; for (let i = 0; i < n; i++) { const s = ladderBurn('mars'); if (s) out.push(s); } return out; };
     const none = draws(300).filter(s => s.kind === 'pirate').length;
-    h.runsDone = 1; h.fights = { done: ['raider', 'corsair', 'cutter', 'pair', 'setpiece'] };
-    h.fights.done = ['raider'];
+    h.runsDone = 1; h.fights = { done: ['raider'] };
     st.rep['Dome Concord'] = 0;
     const met = draws(600).filter(s => s.kind === 'pirate');
     return { none, ships: [...new Set(met.map(s => s.shipId))], count: met.length };

@@ -32,7 +32,8 @@ function planIntercept() {
 function handIntercept(h, st, to, danger) {
   const step = ladderNext(h, st, to);
   if (step) return step.spec;
-  if (!ladderPirate(h, 0) || Math.random() >= Math.min(0.55, HAND_RAID.base + HAND_RAID.per * danger) * LADDER_RANDOM * SCAN_MAX) return null;
+  const met = ladderPirate(h, 0) !== null;  // any pirate type met yet
+  if (!met || Math.random() >= Math.min(0.55, HAND_RAID.base + HAND_RAID.per * danger) * LADDER_RANDOM * SCAN_MAX) return null;
   return { kind: 'pirate', shipId: ladderPirate(h, Math.random()) };
 }
 // A pirate for a scene that is not a burn's contact: a hand's is of a type met (a raider before any), an owner's is drawn as it always was.
@@ -73,6 +74,7 @@ const HAND_CONTACT = {
 };
 
 function contactEvent(spec) {
+  if (spec.ladder) ladderDone(hired(), spec.ladder);  // met when the scene is shown, whatever is chosen after (fightladder.js)
   const st = G.state, d = fmt(Math.round(rand(3200, 3800) / 10) * 10);
   const who = { pirate: 'No transponder. The plume signature says pirate.', patrol: `Transponder: ${spec.gov} navy. You are wanted in their space.`,
     bounty: `Transponder spoofed, but the plume matches: ${spec.mission && spec.mission.targetName}, the ship you are hunting.`,
@@ -136,7 +138,7 @@ Mods.register({
         t.intercept = null;
         // Pirates only find a ship they can see: a hot drive is easy to spot, a cool one is not.
         if (spec.kind === 'pirate' && Math.random() > scanVisibility() / SCAN_MAX) comm('[Scan] A drive plume sweeps past far off the bow, and does not turn.');
-        else { if (spec.ladder) ladderDone(hired(), spec.ladder); openEvent(contactEvent(spec)); }
+        else openEvent(contactEvent(spec));
       }
     });
     // The old text-only pirate ambush is a duel too.

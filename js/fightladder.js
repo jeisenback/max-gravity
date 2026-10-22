@@ -7,8 +7,8 @@
 const LADDER_RANDOM = 0.5;  // a hand's random pirate contacts come at this share of the rate engage.js gives them, and only once a type is met
 const ladderGov = (st, to) => [SYSTEMS[st.systemId].gov, SYSTEMS[to].gov].find(g => PATROL_NAMES[g]);  // the system the burn leaves, then the one it goes to
 const FIGHT_LADDER = [
-  { id: 'raider', spec: { kind: 'pirate', shipId: 'raider' }, due: (h, st, to) => runTotals(h).runs >= 1 && !(st.systemId === 'earth' && to === 'earth') },
-  { id: 'corsair', spec: { kind: 'pirate', shipId: 'corsair' }, due: h => runTotals(h).runs >= 3 },
+  { id: 'raider', spec: { kind: 'pirate', shipId: 'raider', grade: 0, pack: false }, due: (h, st, to) => runTotals(h).runs >= 1 && !(st.systemId === 'earth' && to === 'earth') },
+  { id: 'corsair', spec: { kind: 'pirate', shipId: 'corsair', grade: 0, pack: false }, due: h => runTotals(h).runs >= 3 },
   { id: 'cutter', spec: { kind: 'patrol', shipId: 'cutter' }, gov: ladderGov, due: (h, st, to) => captainBeatsDone(h) && !!ladderGov(st, to) },
   { id: 'pair', spec: { kind: 'pirate', shipId: 'raider', pack: true }, due: h => !!h.deal },
   { id: 'setpiece', spec: { kind: 'pirate', shipId: 'corsair', grade: 2 }, due: (h, st) => !!h.deal && st.day <= h.deal.until && st.credits >= h.deal.price },  // wantsYard() with the deal open

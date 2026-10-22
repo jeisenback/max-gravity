@@ -67,3 +67,17 @@ test('what is met is the ship ids of the steps done, and random contacts draw on
   assert.deepEqual([...seen].sort(), ['corsair', 'raider'], 'the cutter is met only as a patrol');
   assert.equal(ladderPirate({ fights: { done: ['cutter'] } }, 0.5), null);
 });
+
+test('after the chapter ends with steps left, nothing throws', () => {
+  world.runs = 4; world.beats = true;
+  const h = { fights: { done: ['raider'] }, deal: { price: 90000, until: 60 } };  // the corsair, cutter, pair and set piece undone; the deal lapsed
+  assert.equal(next(h, { ...st, day: 200 }).id, 'corsair', 'a step left is still just a step');
+  assert.doesNotThrow(() => { ladderNext(null, st, 'mars'); ladderMet(null); ladderPirate(null, 0.5); ladderMet({}); ladderNext({ deal: null, fights: { done: [] } }, { ...st, day: 999 }, 'earth'); });
+  assert.equal(ladderNext(null, st, 'mars'), null, 'the hand has gone ashore: no ladder');
+});
+
+test('the raider and corsair come as a lone plain ship', () => {
+  world.runs = 3; world.beats = false;
+  const h = {}; const r = next(h); ladderDone(h, 'raider'); const c = next(h);
+  for (const x of [r, c]) { assert.equal(x.spec.grade, 0); assert.equal(x.spec.pack, false); }
+});
