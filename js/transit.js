@@ -95,12 +95,18 @@ function hurt(frac) {
 
 const hasTradeCargo = () => Object.values(G.state.cargo).some(t => t > 0);
 
-function loseCargo(frac) {
+// Takes a share of the fullest good out of the hold, at the price paid for it; returns what went.
+function shedCargo(frac) {
   const st = G.state;
   const cid = Object.keys(st.cargo).sort((a, b) => st.cargo[b] - st.cargo[a])[0];
   const held = st.cargo[cid], qty = Math.ceil(held * frac);
-  st.paid[cid] -= st.paid[cid] * qty / held;
+  if (st.paid[cid] !== undefined) st.paid[cid] *= (held - qty) / held;  // a contract's load has no price paid
   st.cargo[cid] -= qty;
+  return { cid, qty };
+}
+
+function loseCargo(frac) {
+  const { cid, qty } = shedCargo(frac);
   return `You jettison ${qty}t of ${goodName(cid)}.`;
 }
 

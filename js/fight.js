@@ -23,6 +23,7 @@ const FIGHT = {
   SALVO: 2,          // torpedoes in her salvo
   SALVO_EVERY: 2,    // she arms on turn 0 and then every second turn, and fires the turn after, while her torpedoes last
   PDC_SALVO: 0.6,    // what a turret held back takes off a salvo (a gun volley takes PDC_HOLD)
+  LOST_CARGO: 0.3,   // the share of the fullest good in the hold that she takes when the ship is lost, and that the captain jettisons to run (fightui.js, boarders.js)
   TURNS: 8,
   BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid

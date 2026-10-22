@@ -384,6 +384,84 @@ test('the captain running ends the fight as a loss and she getting away gives no
   await done();
 });
 
+// ---------- a lost fight costs cargo (#809) ----------
+
+test('when the captain runs, a third of the hold goes and the contract comes in short', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'), h = hired(), here = currentPlanet();
+    h.run = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 30, from: 'X', planet: here.name, sid: st.systemId, pay: 90000, day: st.day - 6, days: 6, due: st.day + 5, cost: 0, profit: 90000 };
+    st.cargo = { water: 30 }; st.paid = {};  // a contract's load has no price paid
+    const s = battle(); shipFightEnd(s, 'ran');
+    const held = st.cargo.water, text = G.nextEvent.text;
+    settleRun(here);
+    return { held, text, short: h.ledger[0].short, tons: h.ledger[0].tons, paid: st.paid.water };
+  });
+  assert.equal(r.held, 21); assert.equal(r.short, true); assert.equal(r.tons, 21);
+  assert.match(r.text, /calls it off.*lost fight.*Captain Vance has 9t of Water dumped to run lighter\.$/s); assert.doesNotMatch(r.text, /You jettison/); assert.ok(r.paid === undefined || Number.isFinite(r.paid), String(r.paid));
+  await done();
+});
+
+test('a contract load that is not the fullest good stays whole and the delivery is not short', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'), h = hired(), here = currentPlanet();
+    h.run = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 10, from: 'X', planet: here.name, sid: st.systemId, pay: 30000, day: st.day - 6, days: 6, due: st.day + 5, cost: 0, profit: 30000 };
+    st.cargo = { water: 10, metal: 30 }; st.paid = { metal: 300 };
+    const s = battle(); shipFightEnd(s, 'ran');
+    const left = { ...st.cargo }, paid = { ...st.paid }; settleRun(here);
+    return { left, paid, short: h.ledger[0].short };
+  });
+  assert.deepEqual(r.left, { water: 10, metal: 21 }); assert.equal(r.short, false); assert.ok(Number.isFinite(r.paid.metal) && !('water' in r.paid), JSON.stringify(r.paid));
+  await done();
+});
+
+test('when she takes the ship, she takes cargo as well as the fund', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'); st.cargo = { water: 30, metal: 10 }; st.paid = { water: 300, metal: 100 };
+    const s = battle(), real = Math.random; Math.random = () => 0.99;  // the captain is not lost
+    const text = shipTaken(s); Math.random = real;
+    const out = { water: st.cargo.water, metal: st.cargo.metal, text };
+    st.cargo = { water: 30 }; s.d.foe.kind = 'patrol'; Math.random = () => 0.99; out.navy = shipTaken(s); Math.random = real;
+    return out;
+  });
+  assert.match(r.navy, /The boarding officer has 9t of Water taken off as part of the levy\./); assert.doesNotMatch(r.navy, /They take 9t/);
+  assert.equal(r.water, 21); assert.equal(r.metal, 10); assert.match(r.text, /They take 9t of Water from the hold as well\./); assert.doesNotMatch(r.text, /jettison/);
+  await done();
+});
+
+test('a lost fight\'s armor is billed at the next yard', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'); const s = battle(); st.armor = Math.round(ship().armor * 0.4);
+    shipFightEnd(s, 'ran');
+    return repairPlan({ ...currentPlanet(), services: ['shipyard', 'trade'] });
+  });
+  assert.ok(r.total > 0 && r.yard && r.lost > 0, JSON.stringify(r));
+  await done();
+});
+
+test('with an empty hold nothing is jettisoned and nothing throws', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const end of ['ran', 'lost']) {
+      const st = fightGame('gunner'); st.cargo = {}; const s = battle(), real = Math.random; Math.random = () => 0.99;
+      shipFightEnd(s, end); Math.random = real;
+      out[end] = { text: G.nextEvent.text, cargo: JSON.stringify(st.cargo) };
+    }
+    return out;
+  });
+  for (const end of ['ran', 'lost']) { assert.equal(r[end].cargo, '{}'); assert.doesNotMatch(r[end].text, /jettison|dump|\dt of/i, end); }
+  await done();
+});
+
 // ---------- the final review's fixes (#786) ----------
 
 test('in a pack fight, a shot at her hull or her lock goes to the ship still in it, not to the one crippled', async () => {

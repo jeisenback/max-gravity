@@ -379,6 +379,7 @@ const playScenes = () => {
       { const s = start('raider', {}, 'patrol').fight; s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; turn(s, orders(), { kind: 'hold' }); }  // a navy ship crippled breaks off
       for (const shipId of ['raider', 'corsair']) { const s = start(shipId).fight; s.state.turn = FIGHT.TURNS - 1; turn(s, orders({ guns: [null] }), { kind: 'hold' }); }  // the turn cap, she the worse hurt: she breaks off
       for (const shipId of ['raider', 'corsair']) { const s = start(shipId).fight; s.state.turn = FIGHT.TURNS - 1; s.state.me.shields = 0; s.state.me.armor = 20; turn(s, orders({ guns: [null] }), { kind: 'hold' }); }  // the turn cap, you the worse hurt: the captain runs, and the captain's memory of it
+      { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; s.state.turn = FIGHT.TURNS - 1; s.state.me.shields = 0; s.state.me.armor = 20; turn(s, orders({ guns: [null] }), { kind: 'hold' }); }  // the same with cargo in the hold: a third of it goes (#809)
       for (const shipId of ['raider', 'corsair']) { const s = start(shipId).fight; s.state.foes[0].parts.weapons.hp = 0; turn(s, orders({ guns: [null] }), { kind: 'break' }); }  // her guns gone and her hull whole: she gets away
       // a corsair: her launcher on the panel as a target, the overcharge of each gun, her arming and then her salvo played through
       { fresh(); hired().raidTold = true; G.state.outfits = { launcher: 1, pdc: 1 }; G.state.torpedoes = 2; G.nextEvent = null; startShipFight({ kind: 'pirate', shipId: 'corsair' }, false); const s = G.nextEvent.fight; G.nextEvent = null;
@@ -389,6 +390,8 @@ const playScenes = () => {
         turn(s, orders({ guns: [null, null] }), { kind: 'arm', n: 2 });  // armed
         turn(s, orders({ guns: [null, null] }), { kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] });  // and fired
       }
+      { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // the hull gone with cargo aboard: she takes a share (#809)
+      { const s = start('raider', {}, 'patrol').fight; G.state.cargo = { water: 30 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // and a navy ship takes it as part of the levy
       { const s = start('raider').fight; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }
       // the deck fight (deckFightEvent, #786): on our deck and hers, each with the cargo bay, the hand in each section and their move into each; a hold, a way round
       // and a veteran's feint; every choice it offers; and a turn of each kind of line, from states set by hand

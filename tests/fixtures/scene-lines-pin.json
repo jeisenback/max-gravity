@@ -22956,6 +22956,19 @@
     ]
    },
    {
+    "log": "Turn 8: no hits.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 8: no hits.</p><p>The ship is the worse hurt, and Captain Vance calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight. Captain Vance has 9t of Water dumped to run lighter.",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": [
+     "9 Jul 2214: We had to run from a fight with you at the post."
+    ]
+   },
+   {
     "log": "Turn 1: no hits.",
     "next": {
      "title": "Battle Stations",
@@ -23049,6 +23062,32 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 0 of 4"
+    ]
+   },
+   {
+    "log": "Turn 1: she hits your hull for 1.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: she hits your hull for 1.</p><p>They're on the bridge. Captain Vance gives them the code to the strongbox because there's no choice, and they take 36,000 cr of the ship's fund and go. They take 9t of Water from the hold as well. The ship still flies.",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": [
+     "9 Jul 2214: The bridge was taken on your watch."
+    ]
+   },
+   {
+    "log": "Turn 1: she hits your hull for 1.",
+    "next": {
+     "title": "Battle Stations",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: she hits your hull for 1.</p><p>They're on the bridge. Captain Vance surrenders the ship to the Arcology Compact Navy, and the boarding officer writes a levy of 36,000 cr against the ship's fund, which is collected on the spot. The boarding officer has 9t of Water taken off as part of the levy. The cutter lets you go, with a citation.",
+     "labels": [
+      "Stand down"
+     ]
+    },
+    "mem": [
+     "9 Jul 2214: The bridge was taken on your watch."
     ]
    },
    {
