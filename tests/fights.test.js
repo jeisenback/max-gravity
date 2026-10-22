@@ -100,6 +100,7 @@ function orders(foes, { torps = 2, launcher = true } = {}) {
   const fn = vm.runInContext(`(${answerOrders.toString()})`, ctx);
   const foe = (shields, armor, regen = 0) => ({ shields, maxShields: 100, armor, maxArmor: 100, regen, parts: { lock: { hp: 0 } } });
   const state = { heat: 0, me: { guns: 2, launcher, torps }, foes: foes.map(([s, a, r]) => foe(s, a, r)) };
+  // (the round trip brings the result out of the vm's realm, so deepEqual compares plain objects)
   return JSON.parse(JSON.stringify(fn({ state, shown: { foe: [] } })));
 }
 
@@ -114,6 +115,13 @@ test('answer fires a torpedo once her shields are down', () => {
   assert.deepEqual(orders([[0, 80, 0.1]]).torp, { foe: 0, part: 'hull' });
   assert.equal(orders([[0, 80, 0]], { torps: 0 }).torp, null, 'none left');
   assert.equal(orders([[0, 80, 0]], { launcher: false }).torp, null, 'no launcher');
+});
+
+test('answer fires at a foe that regenerates once her shields are under their maximum', () => {
+  const at = n => { const o = orders([[n, 100, 0.07]]); return o.torp; };
+  assert.deepEqual(at(80), { foe: 0, part: 'hull' }, 'dented, well over a quarter');
+  assert.equal(at(100), null, 'full');
+  assert.equal(orders([[80, 100, 0]]).torp, null, 'the same shields on a foe that does not regenerate are held');
 });
 
 test('answer fires at a pair', () => {
