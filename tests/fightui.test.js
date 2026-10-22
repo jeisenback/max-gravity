@@ -64,8 +64,8 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
   assert.match(r.read, /^The Pirate "[^"]+": closing, and firing at your hull as she comes, 14 to 21 damage\. Captain Vance: holding the range\.$/, r.read);
   assert.equal(r.band, 'long', 'a raider is met at forty kilometers');
   assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
-  assert.deepEqual(r.labels, ['Gun 1: aim at her weapons', 'Gun 2: aim at her weapons', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4']);
-  assert.deepEqual(r.keep, [true, true, true, true, true], 'every order and Fire redraw in place');
+  assert.deepEqual(r.labels.map(l => l.replace(/\d+ to \d+ damage/, 'N to M damage')), ['Gun 1: aim at her weapons, N to M damage', 'Gun 1: normal charge', 'Gun 2: aim at her weapons, N to M damage', 'Gun 2: normal charge', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4']);
+  assert.deepEqual(r.keep, [true, true, true, true, true, true, true], 'every order and Fire redraw in place');
   assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 80 of 80, drive 15 of 15, lock 10 of 10, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 40 of 40, drive 15 of 15, lock 10 of 10\.$/, r.bars);
   assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
   await done();
@@ -77,9 +77,9 @@ test('setting a gun\'s target redraws in place; Fire resolves a turn and the log
   await ev(() => { fightGame('gunner'); battle(); });
   await page.click('[data-action="choose"][data-arg="0"]');
   const a = await ev(() => ({ result: !!document.querySelector('#event-result'), label: G.dialog.choices[0].label, title: G.dialog.event.title, turn: G.dialog.event.fight.state.turn }));
-  assert.deepEqual(a, { result: false, label: 'Gun 1: aim at her drive', title: 'Battle Stations', turn: 0 });
+  assert.deepEqual(a, { result: false, label: 'Gun 1: aim at her drive, 5 to 8 damage', title: 'Battle Stations', turn: 0 });
   for (let i = 0; i < 4; i++) await page.click('[data-action="choose"][data-arg="0"]');
-  assert.equal(await ev(() => G.dialog.choices[0].label), 'Gun 1: aim at her weapons', 'the targets go round: drive, lock, hull, hold, weapons');
+  assert.equal(await ev(() => G.dialog.choices[0].label), 'Gun 1: aim at her weapons, 10 to 16 damage', 'the targets go round: drive, lock, hull, hold, weapons');
   await page.click('[data-action="choose"][data-arg="0"]');
   await ev(() => { const d = G.dialog.event.fight.state.foes[0].parts.drive; d.hp = d.max = 100; });  // one shot cannot take her drive, so she can close as she said (the roll moves with the page's frames)
   const fire = await ev(() => G.dialog.choices.findIndex(c => c.label.startsWith('Fire')));
@@ -272,6 +272,115 @@ test('repelled, taken, and an assault won or lost each settle through the existi
   assert.match(r.taken.text, /They're on the bridge\. Captain Vance gives them the code to the strongbox/); assert.equal(r.taken.fund, 700); assert.equal(r.taken.opinion, -1);
   assert.match(r.won.text, /Her captain puts the weapon down\. Her strongbox/); assert.ok(r.won.fundUp && r.won.dead);
   assert.match(r.lost.text, /You're driven back to the lock/); assert.ok(r.lost.armorDown && r.lost.drifting);
+  await done();
+});
+
+// ---------- the rework's orders and ends (docs/superpowers/specs/2026-10-21-ship-fight-rework-design.md) ----------
+
+test('against a corsair the panel offers her launcher as a target, and her arming is shown above the board', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner', 'corsair'); const s = battle();
+    const first = G.dialog.choices.map(c => c.label);
+    s.shown = { foe: [{ kind: 'arm', n: 2 }], captain: { kind: 'hold' } }; openEvent(shipFightEvent(s, { guns: [{ foe: 0, part: 'lock' }, null], torp: null, pdc: 'fire' }));
+    const arming = G.dialog.event.read;
+    openEvent(chooseEvent(0)); const afterLock = G.dialog.choices[0].label;  // gun 1: lock to launcher
+    s.shown = { foe: [{ kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] }], captain: { kind: 'hold' } }; openEvent(shipFightEvent(s, { guns: [null, null], torp: null, pdc: 'fire' }));
+    const salvo = G.dialog.event.read;
+    const bars = document.querySelector('svg.bars').getAttribute('aria-label');
+    fightGame('gunner', 'raider'); const t = battle();
+    const reach = []; let o = { foe: 0, part: 'lock' };
+    openEvent(shipFightEvent(t, { guns: [o, null], torp: null, pdc: 'fire' })); openEvent(chooseEvent(0)); reach.push(G.dialog.choices[0].label);
+    return { first, arming, afterLock, salvo, bars, reach };
+  });
+  assert.match(r.arming, /is loading torpedoes: 2 next turn\./, r.arming);
+  assert.match(r.afterLock, /^Gun 1: aim at her launcher, \d+ to \d+ damage$/, 'after the lock comes her launcher');
+  assert.match(r.salvo, /fires a salvo of 2 at your hull, 60 to 90\./, r.salvo);
+  assert.match(r.bars, /launcher 15 of 15/, 'her launcher has its bar');
+  assert.match(r.reach[0], /aim at her hull/, 'a raider has no launcher to offer: after the lock comes the hull');
+  await done();
+});
+
+test('a gun can be overcharged and the Fire label counts the heat it adds', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner'); battle();
+    const labels = () => G.dialog.choices.map(c => c.label);
+    const before = labels();
+    openEvent(chooseEvent(1));  // gun 1: overcharge on
+    const on = labels();
+    openEvent(chooseEvent(0));  // the target goes round, the charge stays
+    const kept = labels();
+    return { before, on, kept };
+  });
+  assert.match(r.before[0], /^Gun 1: aim at her weapons, \d+ to \d+ damage$/); assert.match(r.before[2], /^Gun 2: aim at her weapons, \d+ to \d+ damage$/); assert.equal(r.before[3], 'Gun 2: normal charge');
+  assert.equal(r.before[1], 'Gun 1: normal charge'); assert.equal(r.before[r.before.length - 1], 'Fire: heat 2 of 4');
+  assert.equal(r.on[1], 'Gun 1: overcharged, heat 2'); assert.equal(r.on[r.on.length - 1], 'Fire: heat 3 of 4', 'one gun overcharged adds one more heat than a plain shot');
+  assert.equal(r.kept[1], 'Gun 1: overcharged, heat 2'); assert.match(r.kept[0], /aim at her drive/); assert.equal(r.kept[r.kept.length - 1], 'Fire: heat 3 of 4');
+  await done();
+});
+
+test('a gun aimed at the launcher lands on the hull of a ship that has none', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner'); window.rateFoe = s => { s.grade = 0; s.pack = true; return s; };
+    const s = battle(), [lead, consort] = s.state.foes, was = [lead.shields + lead.armor, consort.shields + consort.armor];
+    s.shown = { foe: [{ kind: 'hold' }, { kind: 'hold' }], captain: { kind: 'hold' } };
+    let threw = null;
+    try { fireTurn(s, { guns: [{ foe: 0, part: 'launcher' }], torp: null, pdc: 'fire' }); } catch (e) { threw = String(e); }
+    const [a, b] = s.state.foes;
+    return { threw, lead: a.shields + a.armor - was[0], consort: b.shields + b.armor - was[1], last: s.state.log[s.state.log.length - 1], launcher: !!a.parts.launcher };
+  });
+  assert.equal(r.threw, null); assert.equal(r.launcher, false);
+  assert.ok(r.lead < 0, `the lead's hull is hit: ${JSON.stringify(r)}`); assert.equal(r.consort, 0);
+  assert.match(r.last, /you hit her hull for \d+/, r.last);
+  await done();
+});
+
+test('with no torpedoes and no fund to restock, the torpedo order is not offered and the turret still is', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'); st.torpedoes = 0; hired().fund = 0;
+    battle(); return G.dialog.choices.map(c => c.label);
+  });
+  assert.ok(!r.some(l => l.startsWith('Torpedo')), r.join('|')); assert.ok(r.includes('Turret: fire with the guns'), r.join('|'));
+  await done();
+});
+
+test('a save from before the fitting fights with one gun and Fire', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'); delete st.outfits.pdc; delete st.outfits.launcher;
+    battle(); return G.dialog.choices.map(c => c.label);
+  });
+  assert.equal(r.filter(l => l.startsWith('Gun')).map(l => l.slice(0, 5)).filter((l, i, a) => a.indexOf(l) === i).join(), 'Gun 1', 'one gun (and its charge toggle)');
+  assert.ok(!r.some(l => /^(Torpedo|Turret)/.test(l)), r.join('|')); assert.match(r[r.length - 1], /^Fire/);
+  await done();
+});
+
+test('the captain running ends the fight as a loss and she getting away gives no experience', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const end of ['ran', 'away']) {
+      fightGame('gunner'); const s = battle(), cap = person(hired().captain), op = cap.opinion, m0 = (cap.memories || []).length, post = lockPost(), xp = () => (career().skill || {})[post] || 0, x0 = xp(), rep = G.state.rep ? JSON.stringify(G.state.rep) : '';
+      shipFightEnd(s, end);
+      const ev = G.nextEvent;
+      out[end] = { xp: xp() - x0, like: cap.opinion - op, mem: (cap.memories || []).slice(m0).map(m => m.text || m), text: ev.text, labels: ev.choices.map(c => c.label), rep: (G.state.rep ? JSON.stringify(G.state.rep) : '') === rep };
+    }
+    return out;
+  });
+  assert.equal(r.ran.xp, 0); assert.equal(r.away.xp, 0);
+  assert.equal(r.ran.like, -1); assert.equal(r.ran.mem.length, 1); assert.match(String(r.ran.mem[0]), /run from a fight/);
+  assert.match(r.ran.text, /Captain Vance calls the run\..*lost fight/); assert.doesNotMatch(r.ran.text, /experience/);
+  assert.equal(r.away.like, 0); assert.deepEqual(r.away.mem, []); assert.match(r.away.text, /she got away/); assert.doesNotMatch(r.away.text, /experience/);
+  assert.deepEqual(r.ran.labels, ['Stand down']); assert.deepEqual(r.away.labels, ['Stand down']);
   await done();
 });
 

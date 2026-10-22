@@ -16,8 +16,8 @@ test('the fights tool plays the ship fight, the repel fight and the assault figh
   const r = await fights({ seed: 1, n: 3 });
   assert.deepEqual(r.errors, []);
   assert.deepEqual(Object.keys(r.raid), ['random', 'focus', 'drive', 'lock'], 'the guns\' policies');
-  const closed = t => t.crippled + t.broke + t.standoff + t.boarded + t.lost + t.escaped + t.died;
-  for (const t of Object.values(r.raid)) { assert.equal(t.n, 3); assert.equal(closed(t), 3, 'every fight ends one way, or with the hand killed'); assert.ok(t.rounds >= 3 - t.died && t.rounds <= 3 * 6, 'one to six turns a fight'); assert.equal(t.capped, 0, 'and the scene after it is played to its end'); }
+  const closed = t => t.crippled + t.broke + t.ran + t.away + t.boarded + t.lost + t.escaped + t.died;
+  for (const t of Object.values(r.raid)) { assert.equal(t.n, 3); assert.equal(closed(t), 3, 'every fight ends one way, or with the hand killed'); assert.ok(t.rounds >= 3 - t.died && t.rounds <= 3 * 8, 'one to eight turns a fight'); assert.equal(t.capped, 0, 'and the scene after it is played to its end'); }
   for (const kind of [r.repel, r.assault]) {
     assert.ok(Object.keys(kind).length >= 10);
     for (const t of Object.values(kind)) { assert.equal(t.n, 3); assert.ok(t.rounds >= 3, 'a fight lasts more than a round'); assert.ok(t.won <= 3); }

@@ -15,7 +15,7 @@ const FIGHT = {
   OVER_MULT: 1.5,    // what an overcharged shot rolls more
   OVER_HEAT: 2,      // the heat an overcharged shot adds (a plain shot adds 1)
   AIM_MULT: { knife: 1, close: 1, mid: 0.7, long: 0.5 },  // on top of the band, for a shot at her drive, lock or launcher; her hull and weapons have none
-  PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 },  // weapons is per gun mount; a drive goes in a shot or two, so that aiming at it can cripple her inside the six turns (Task 7)
+  PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 },  // weapons is per gun mount; a drive goes in a shot or two, so that aiming at it can cripple her inside the eight turns (Task 7)
   TORP_DMG: [30, 45],
   PDC_HOLD: 0.4,     // what a turret held back takes off a volley
   SALVO: 2,          // torpedoes in her salvo

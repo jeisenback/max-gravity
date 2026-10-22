@@ -6,7 +6,7 @@
 // leads to. The fight's state is kept with the scene, as the raid's was, so nothing of it is in the save. The words are the lines of 'scene:fight'
 // (hiredscenes.js). Loaded after engagements.js; only called into at runtime.
 
-const FIGHT_AIM = ['weapons', 'drive', 'lock', 'hull', null];  // a gun's targets in the order a click takes them; null holds its fire
+const FIGHT_AIM = ['weapons', 'drive', 'lock', 'launcher', 'hull', null];  // a gun's targets in the order a click takes them; null holds its fire; the launcher is offered only when some foe has one
 const FIGHT_KM = { knife: 1.5, close: 6, mid: 25, long: 50 };  // where the board draws her in each band (board.js)
 const fightSay = (key, vars) => sceneSay('scene:fight', key, vars);
 
@@ -81,7 +81,7 @@ function fightBars(st) {
   const row = 13, W = 160;
   const bars = (side, name, x, y0) => {
     const list = [['shields', side.shields, side.maxShields, '#4aa3ff'], ['armor', side.armor, side.maxArmor, '#cfe3ff'],
-      ...['weapons', 'drive', 'lock'].map(k => [k, side.parts[k].hp, side.parts[k].max, '#ff6a4a']), ...(side === st.me ? [['heat', st.heat, FIGHT.HEAT_CAP, '#ffcf7f']] : [])];
+      ...['weapons', 'drive', 'lock', ...(side !== st.me && side.parts.launcher ? ['launcher'] : [])].map(k => [k, side.parts[k].hp, side.parts[k].max, '#ff6a4a']), ...(side === st.me ? [['heat', st.heat, FIGHT.HEAT_CAP, '#ffcf7f']] : [])];
     const svg = list.map(([k, v, max, color], i) => {
       const y = y0 + 14 + i * row, w = Math.round((W - 70) * Math.max(0, Math.min(1, v / Math.max(1, max))));
       return `<text x="${x}" y="${y + 8}" fill="#7fb4ff" font-size="9" font-family="IBM Plex Mono, monospace">${k.toUpperCase()}</text>` +
@@ -89,8 +89,8 @@ function fightBars(st) {
     }).join('');
     return { svg: `<text x="${x}" y="${y0 + 9}" fill="#cfe3ff" font-size="10" font-family="IBM Plex Mono, monospace">${esc(name)}</text>${svg}`, label: `${name}: ${list.map(([k, v, max]) => `${k} ${v} of ${max}`).join(', ')}.` };
   };
-  const mine = bars(st.me, 'You', 10, 4), foes = st.foes.map((f, i) => bars(f, i ? 'Her consort' : 'Her', 190, 4 + i * (5 * row + 18)));
-  const h = Math.max(6 * row, st.foes.length * (5 * row + 18)) + 22;
+  const mine = bars(st.me, 'You', 10, 4), rows = 5 + (st.foes.some(f => f.parts.launcher) ? 1 : 0), foes = st.foes.map((f, i) => bars(f, i ? 'Her consort' : 'Her', 190, 4 + i * (rows * row + 18)));
+  const h = Math.max(6 * row, st.foes.length * (rows * row + 18)) + 22;
   return `<svg class="bars" viewBox="0 0 360 ${h}" role="img" aria-label="${esc([mine.label, ...foes.map(f => f.label)].join(' '))}"><rect x="0" y="0" width="360" height="${h}" fill="#050a11"/>${mine.svg}${foes.map(f => f.svg).join('')}</svg>`;
 }
 
@@ -98,15 +98,22 @@ function fightBars(st) {
 // ready gun, the torpedo and the turret where they are fitted, and Fire.
 function shipFightEvent(s, orders, over = false) {  // over: the close, with no move to show
   const st = G.state, f = s.state, cap = raidCap(), ready = gunsReady(f);
-  const say = (m, i) => fightSay(`foe.${m.kind}`, { ship: fightFoeName(s, i), ...(m.target ? { part: fightSay(`part.${m.target}`), lo: m.dmg[0], hi: m.dmg[1] } : {}) });
+  const say = (m, i) => fightSay(`foe.${m.kind}`, { ship: fightFoeName(s, i), ...(m.n ? { n: m.n } : {}), ...(m.target ? { part: fightSay(`part.${m.target}`), lo: m.dmg[0], hi: m.dmg[1] } : {}) });
   const read = over ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
   const aim = o => (o ? fightSay('aim.at', { part: fightSay(`part.${o.part}`) }) : fightSay('aim.hold'));
-  const turn = o => { const part = FIGHT_AIM[(FIGHT_AIM.indexOf(o ? o.part : null) + 1) % FIGHT_AIM.length]; return part ? { foe: 0, part } : null; };  // the next target round
+  const range = o => { const [lo, hi] = shotRange(f, o); return fightSay('aim.range', { aim: aim(o), lo, hi }); };  // what a gun's order would roll
+  const aims = FIGHT_AIM.filter(p => p !== 'launcher' || f.foes.some(foe => foe.launcher));
+  const turn = o => { const part = aims[(aims.indexOf(o ? o.part : null) + 1) % aims.length]; return part ? { foe: 0, part, ...(o && o.over ? { over: true } : {}) } : null; };  // the next target round, the charge kept
   const redo = change => () => shipFightEvent(s, { ...orders, ...change });
-  const choices = orders.guns.slice(0, ready).map((g, i) => ({ label: fightSay('gun.label', { n: i + 1, aim: aim(g) }), keep: true, run: redo({ guns: orders.guns.map((x, j) => (j === i ? turn(x) : x)) }) }));
+  const setGun = (i, g) => redo({ guns: orders.guns.map((x, j) => (j === i ? g : x)) });
+  const choices = [];
+  orders.guns.slice(0, ready).forEach((g, i) => {
+    choices.push({ label: fightSay('gun.label', { n: i + 1, aim: g ? range(g) : aim(g) }), keep: true, run: setGun(i, turn(g)) });
+    if (g) choices.push({ label: fightSay(g.over ? 'gun.over.on' : 'gun.over.off', { n: i + 1, heat: FIGHT.OVER_HEAT }), keep: true, run: setGun(i, { ...g, over: !g.over }) });  // overcharge: harder, and more heat
+  });
   if (f.me.launcher && f.me.torps > 0) choices.push({ label: fightSay('torp.label', { left: f.me.torps, aim: aim(orders.torp) }), keep: true, run: redo({ torp: turn(orders.torp) }) });
   if (f.me.pdc) choices.push({ label: fightSay(orders.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire'), keep: true, run: redo({ pdc: orders.pdc === 'hold' ? 'fire' : 'hold' }) });
-  const shots = Math.min(orders.guns.slice(0, ready).filter(Boolean).length, Math.max(0, ready - (f.me.pdc && orders.pdc === 'hold' ? 1 : 0))), heat = f.heat + shots;  // as the engine counts them
+  const heat = f.heat + orders.guns.slice(0, ready).filter(Boolean).slice(0, Math.max(0, ready - (f.me.pdc && orders.pdc === 'hold' ? 1 : 0))).reduce((h, o) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);  // as the engine counts them
   choices.push({ label: fightSay(heat > FIGHT.HEAT_CAP ? 'fire.hot' : 'fire.label', { heat, cap: FIGHT.HEAT_CAP }), keep: true, run: () => fireTurn(s, orders) });
   const breaking = f.foes.map((foe, i) => fightUp(foe) && ((s.shown || {}).foe || [])[i] && s.shown.foe[i].kind === 'break');  // her move as shown: off, while the ships still in it all go
   const away = breaking.some(Boolean) && f.foes.every((foe, i) => breaking[i] || !fightUp(foe));
@@ -125,7 +132,11 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
 // to the scene the end leads to (G.nextEvent), and this returns nothing.
 function fireTurn(s, orders) {
   const foes = s.state.foes, first = test => foes.findIndex(f => fightUp(f) && test(f));
-  const at = o => { if (!o) return null; const i = first(f => o.part === 'hull' || f.parts[o.part].hp > 0); return { foe: Math.max(0, i >= 0 ? i : first(() => true)), part: o.part }; };  // the first ship still in the fight whose part is still there (a crippled one is out, shipEnd)
+  const at = o => {  // the first ship still in the fight whose part is still there (a crippled one is out, shipEnd); a part no ship has (her launcher, on a ship with none) goes to the hull of the ship chosen
+    if (!o) return null;
+    const has = (f, part) => part === 'hull' || (f.parts[part] && f.parts[part].hp > 0), i = first(f => has(f, o.part)), j = i >= 0 ? i : first(() => true), foe = foes[Math.max(0, j)];
+    return { ...o, foe: Math.max(0, j), part: foe.parts[o.part] ? o.part : 'hull' };
+  };
   const aimed = { ...orders, guns: orders.guns.map(at), torp: at(orders.torp) };
   const r = resolveShipTurn(s.state, aimed, s.shown, Math.random);
   s.state = r.state;
@@ -160,12 +171,13 @@ function shipFightEnd(s, end) {
     close(`${fightSay(end === 'crippled' ? 'end.crippled.patrol' : `end.broke.${s.style}`)} ${cap ? `Captain ${cap.last} writes` : 'You write'} it in the log and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`);
     return;
   }
-  if (end === 'standoff') {
-    const pts = Math.round(ship().armor * 0.05);
-    st.armor = Math.max(1, st.armor - pts);
-    close(`${fightSay(s.state.band <= RANGE_BANDS.indexOf('close') ? 'end.standoffNear' : 'end.standoff')} Armor -${pts}.`);
+  const name = cap ? `Captain ${cap.last}` : helmName();
+  if (end === 'ran') {  // the worse hurt at the turn cap: the captain runs, a lost fight, and nothing is learned
+    if (cap) like(cap, -1, fightSay('memory.ran'));
+    close(fightSay('end.ran', { cap: name }));
     return;
   }
+  if (end === 'away') { close(fightSay('end.away')); return; }  // she got away with her guns gone and her hull whole: no experience, no word from the captain
   close(fightSay(`end.escaped.${s.style}`));
 }
 

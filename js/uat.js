@@ -198,7 +198,7 @@ function uatLate() {
 }
 // Each fight, early and late: the late one meets a crew a grade better (up to the top), as the lanes get worse.
 const UAT_FIGHTS = [
-  { id: 'fight-raider', title: 'A lone raider', check: 'The panel shows both ships\' bars, her next move and the captain\'s, and one order per gun. Setting a gun\'s target redraws in place; Fire plays a turn and adds a log line. Aimed at her guns, she is beaten within six turns; aimed at random, it is often a standoff.',
+  { id: 'fight-raider', title: 'A lone raider', check: 'The panel shows both ships\' bars, her next move and the captain\'s, and one order per gun. Setting a gun\'s target redraws in place; Fire plays a turn and adds a log line. Aimed at her guns, she is beaten within eight turns; aimed at random, she often gets away or the captain runs.',
     run: g => uatShipFight({ kind: 'pirate' }, { ship: 'raider', grade: g }) },
   { id: 'fight-pack', title: 'Two raiders in company', check: 'Both are on the board with their own bars and moves, and you start a volley behind. Once the first is crippled, a shot at her hull or lock goes to the consort and the log says so.',
     run: g => uatShipFight({ kind: 'pirate' }, { ship: 'raider', grade: g, pack: true }) },

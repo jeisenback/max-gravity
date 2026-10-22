@@ -40,7 +40,7 @@ test('a pirate contact for a hired hand opens the ship fight, not the card duel,
     return { text: /Battle stations/.test(text), title: G.dialog.event.title, duel: !!G.duel, decided: !!G.dialog.event.decided, labels: G.dialog.choices.map(c => c.label), board: /^<svg class="board"/.test(G.dialog.event.board) };
   });
   assert.ok(r.text); assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false); assert.ok(!r.decided, 'the captain does not take this call');
-  assert.deepEqual(r.labels, ['Gun 1: aim at her weapons', 'Gun 2: aim at her weapons', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4'], 'a pilot hand still runs the guns: the hauler has two, a turret and a launcher with two torpedoes'); assert.ok(r.board);
+  assert.deepEqual(r.labels.map(l => l.replace(/\d+ to \d+ damage/, 'N to M damage')), ['Gun 1: aim at her weapons, N to M damage', 'Gun 1: normal charge', 'Gun 2: aim at her weapons, N to M damage', 'Gun 2: normal charge', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4'], 'a pilot hand still runs the guns: the hauler has two, a turret and a launcher with two torpedoes'); assert.ok(r.board);
   await done();
 });
 
@@ -64,7 +64,7 @@ test('when she breaks off it costs nothing but a log line and some experience', 
   await done();
 });
 
-test('played out, the panel goes turn by turn to an end: she closes firing, her guns are shot away, and she breaks off', async () => {
+test('played out, the panel goes turn by turn to an end: she closes firing, her guns are shot away, and she gets away', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -81,8 +81,8 @@ test('played out, the panel goes turn by turn to an end: she closes firing, her 
     'turning to break off. Captain Vance: holding the range.'], 'her move is shown before it is made');
   assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, you hit her weapons for 16, she hits your hull for 19.', 'Turn 2: you hit her weapons for 11, nothing left of the weapons to hit.', 'Turn 3: nothing left of the weapons to hit, nothing left of the weapons to hit.'], 'both guns hit her weapons, so her guns go in the second turn (she fires in the first, as she closes), and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
   assert.equal(r.title, 'Battle Stations'); assert.deepEqual(r.labels, ['Stand down']);
-  assert.match(r.close, /^She breaks off with her grapple arms folded.* Captain Vance writes it in the log and nothing else\. \(\+3 experience at the engineer post\.\)$/);
-  assert.deepEqual([r.opinion, r.xp], [1, 3]);
+  assert.equal(r.close, 'She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.', 'her guns gone and her hull whole: a weak end');
+  assert.deepEqual([r.opinion, r.xp], [0, 0], 'she got away with nothing for you');
   await done();
 });
 
@@ -576,18 +576,19 @@ test('the fight panel shows her move and the captain\'s above the pinned orders 
   }
 });
 
-test('the standoff line agrees with the board: close in when she is in the close bands, at long range when she is past them (#733)', async () => {
+test('the turn cap ends it by who is worse hurt, whatever the range: she breaks off, or the captain runs and it is a lost fight', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
-    const stand = band => { const st = raid('gunner'), armor = st.armor; startDuel({ kind: 'pirate' }, false); begin(); const f = fightNow().state; f.band = RANGE_BANDS.indexOf(band); f.turn = FIGHT.TURNS - 1; shownMoves({ kind: 'hold' }); fireOrders(); return { text: G.dialog.event.text.split('</p><p>').pop(), armor: armor - st.armor }; };
-    out.knife = stand('knife'); out.close = stand('close'); out.mid = stand('mid'); out.long = stand('long');
+    const cap = (band, hurt) => { const st = raid('gunner'), xp = skillXp('gunner'); startDuel({ kind: 'pirate' }, false); begin(); const f = fightNow().state; f.band = RANGE_BANDS.indexOf(band); f.turn = FIGHT.TURNS - 1; if (hurt) { f.me.shields = 0; f.me.armor = 20; } shownMoves({ kind: 'hold' }); fireOrders(); return { text: G.dialog.event.text.split('</p><p>').pop(), xp: skillXp('gunner') - xp }; };
+    for (const band of ['knife', 'close', 'mid', 'long']) out[band] = { broke: cap(band, false), ran: cap(band, true) };
     return out;
   });
-  for (const band of ['knife', 'close']) assert.equal(r[band].text, 'She turns away close in and drags her drive plume across your bow, and it scorches the plating forward. Armor -13.', band);
-  for (const band of ['mid', 'long']) assert.equal(r[band].text, 'She turns away with the range still open, and her last burst clips the hull aft. Armor -13.', band);
-  assert.equal(r.close.armor, 13, 'five percent of the hull');
+  for (const band of ['knife', 'close', 'mid', 'long']) {
+    assert.match(r[band].broke.text, /^She breaks off with her grapple arms folded, and the range opens\. Captain Vance writes it in the log.* \(\+3 experience/, band); assert.equal(r[band].broke.xp, 3, band);
+    assert.equal(r[band].ran.text, 'The ship is the worse hurt, and Captain Vance calls the run. The drive lights and the range opens behind you with nothing settled. It goes in the log as a lost fight.', band); assert.equal(r[band].ran.xp, 0, band);
+  }
   await done();
 });
 
@@ -678,7 +679,7 @@ test('what the captain remembers says what happened: a raider let drift, and a n
     raid('gunner'); cap = person(hired().captain);
     const gov = 'Arcology Compact', spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
     startDuel({ kind: 'patrol', gov }, false); begin();
-    fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; }); shownMoves({ kind: 'break' }); fireOrders();
+    fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.shields = 0; foe.armor = 5; }); shownMoves({ kind: 'break' }); fireOrders();  // hurt as well as unarmed: she breaks off, and does not just get away
     out.navy = cap.memories[cap.memories.length - 1];
     return out;
   });
