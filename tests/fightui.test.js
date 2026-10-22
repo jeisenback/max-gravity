@@ -378,7 +378,7 @@ test('the captain running ends the fight as a loss and she getting away gives no
   });
   assert.equal(r.ran.xp, 0); assert.equal(r.away.xp, 0);
   assert.equal(r.ran.like, -1); assert.equal(r.ran.mem.length, 1); assert.match(String(r.ran.mem[0]), /run from a fight/);
-  assert.match(r.ran.text, /Captain Vance calls the run\..*lost fight/); assert.doesNotMatch(r.ran.text, /experience/);
+  assert.match(r.ran.text, /Captain Vance calls it off\..*lost fight/); assert.doesNotMatch(r.ran.text, /experience/);
   assert.equal(r.away.like, 0); assert.deepEqual(r.away.mem, []); assert.match(r.away.text, /she got away/); assert.doesNotMatch(r.away.text, /experience/);
   assert.deepEqual(r.ran.labels, ['Stand down']); assert.deepEqual(r.away.labels, ['Stand down']);
   await done();

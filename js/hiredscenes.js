@@ -468,7 +468,7 @@ const SCENE_LINES = {
     'end.broke.torpedo': 'She closes her bay doors with a torpedo still in the tube and turns away.',
     'end.crippled.grapple': 'Her grapple arms go slack, and she tumbles past your bow with no plume behind her.',
     'end.crippled.torpedo': 'The corsair\'s drive cone splits, and she coasts on with her bay doors stuck half open.',
-    'end.ran': 'The ship is the worse hurt, and {cap} calls the run. The drive lights and the range opens behind you with nothing settled. It goes in the log as a lost fight.',
+    'end.ran': 'The ship is the worse hurt, and {cap} calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight.',
     'end.away': 'She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.',
     'end.escaped.gun': 'You open the range past her guns, and her hail goes unanswered until she drops off the board.',
     'end.escaped.grapple': 'The raider\'s plume falls back on the board until the sensors lose it.',

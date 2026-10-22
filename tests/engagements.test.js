@@ -588,7 +588,7 @@ test('the turn cap ends it by who is worse hurt, whatever the range: she breaks 
   });
   for (const band of ['knife', 'close', 'mid', 'long']) {
     assert.match(r[band].broke.text, /^She breaks off with her grapple arms folded, and the range opens\. Captain Vance writes it in the log.* \(\+3 experience/, band); assert.equal(r[band].broke.xp, 3, band);
-    assert.equal(r[band].ran.text, 'The ship is the worse hurt, and Captain Vance calls the run. The drive lights and the range opens behind you with nothing settled. It goes in the log as a lost fight.', band); assert.equal(r[band].ran.xp, 0, band);
+    assert.equal(r[band].ran.text, 'The ship is the worse hurt, and Captain Vance calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight.', band); assert.equal(r[band].ran.xp, 0, band);
   }
   await done();
 });
