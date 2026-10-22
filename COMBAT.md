@@ -251,8 +251,33 @@ line a turn goes in the log.
 She is met at forty kilometers, long range (a raider, a corsair), or thirty, mid range (a patrol), moved by the contact's own move
 (`js/engage.js`) or the ambush (`js/engagements.js`, below). It ends crippled (her weapons and drive gone: dead in space, to
 board her or let her drift; a navy ship breaks off instead), broken off, escaped (you open past long range), boarded (the deck
-fight), your hull gone, or a standoff after six turns. A heavy turn (the hull loses more than a fifth of your armor) can cost a
-casualty and hurt the hand. The numbers are `FIGHT` in `js/fight.js`.
+fight), your hull gone, or at the eighth turn (`FIGHT.TURNS`) one side breaks off: she does if she is the less whole, and else
+the captain runs, a lost fight. There is no standoff. A ship whose guns are gone and whose hull is whole gets away (a weak end, not
+a win). A heavy turn (the hull loses more than a fifth of your armor) can cost a casualty and hurt the hand; after the tune below
+only her salvo, unanswered, reaches it (about two times in five), and with the turret held back it never does. The numbers are
+`FIGHT` and `FOE_TYPES` in `js/fight.js`.
+
+A hired hand's Ice Hauler carries a close-defense turret (her second gun) and a launcher with two torpedoes (`js/hired.js`
+setupHired), and the captain restocks the torpedoes from the ship's fund at a port with an outfitter (a save from before the
+fitting, with no launcher, buys none). The two outfits take 6 t of her hold, so she carries 114 t, not 120.
+
+Each type she can be has one threat, shown in her move, that "shoot her weapons" answers badly (the rework's design,
+`docs/superpowers/specs/2026-10-21-ship-fight-rework-design.md`, #808):
+
+- **A raider** (one gun, fast) closes from long range and comes alongside to board while her lock is whole, on the fourth turn.
+  Every gun at her hull (and both torpedoes) does not take her 130 before she is alongside, so she boards (the owner's ruling,
+  #808). Shooting her lock as she closes stops it; her drive (34) is slow to shoot away at range, where an aimed shot hits for a
+  quarter (long) or 0.4 (mid), so aiming only at it is boarded about one time in five.
+- **A corsair** (two guns, four torpedoes) arms a salvo of two on the first turn and every second turn after, and fires it the
+  turn after; the board shows it a turn ahead. Holding the turret back that turn takes 60% off the salvo.
+- **A navy cutter** (thick shields) gets 7% of her shields back each turn: torpedoes and every gun overcharged at her hull beat
+  it; anything slower does not.
+- **A destroyer** (a patrol's, three in ten) has no regeneration and no launcher until the fight ladder (PR 3) decides how she is
+  met: the tool does not play one.
+- **A raider pair**: two shown moves and fire from both, and two locks to stop.
+
+Disarming her takes about three turns of fire (her weapons are 63 a mount), and she fires at your guns while they fire, so
+the guns are a race too.
 
 A hired hand can also meet a distress call on a burn through unsettled space (pirates 0.25 or more at either end, at most once
 in 60 days): seven in ten are a trap, and the rest are a real freighter that pays the ship's fund 500 cr. Each post has its own
@@ -287,12 +312,40 @@ once a fight (so does someone who owes you one).
 gunner on Hester's ship with nine aboard) and reports, for the ship fight, the spread of ends by where the guns aim and by
 matchup, and for the deck fights how often they are won and who is hurt, by crew, the post's level, the hand's policy and her
 grade. It is run by hand and is not part of `npm test`; `tests/fights.test.js` checks the targets that matter (#786, R36). From
-the run that wrote this section (after Task 7's tune):
+the run that wrote this section (after the final review's tune, #808):
 
-- **The ship fight**, random aim: crippled 3%, broke off 6%, standoff 59%, boarded 31% (held 94%), hull lost 10% a fight, the
-  hand killed 1%. Aiming at her weapons: broke off 71%, boarded 29%. At her drive: crippled 13%, standoff 75%. At her lock:
-  never boarded. Against a lone raider, aiming at her weapons or her lock wins every time (R38), and against a corsair aiming
-  at her weapons wins 90%; against a raider pair or a navy cutter no aim wins more than 6%.
+- **The ship fight** (#808: `node tools/fights.js --seeds 1,2,3,4,5 --n 100 --ship-only`, 5 seeds of 100 pirates and 50 navy
+  cutters for each gun policy). The six fixed policies (`random`; `focus`, her weapons; `drive`, her drive then her weapons;
+  `lock`, her lock then her weapons; `hull`, every gun at her hull; `hullhold`, the same with the turret held back on her salvo)
+  fire the turret and the torpedoes at her hull; `answer` reads her shown move: it holds the turret back when she fires a salvo,
+  aims at her lock while she closes or pins with it whole, against a ship whose shields come back sends the torpedoes and every
+  gun the heat allows overcharged at her hull, and else aims at her hull. Good ends are crippled, broken off and escaped; a lost
+  fight is the captain running or the hull gone.
+
+  | Against (good / lost / turns) | random | focus | drive | lock | hull | hullhold | answer |
+  |---|---|---|---|---|---|---|---|
+  | a raider | 66% / 0% / 6.9 | 0% / 0% / 4.0 | 79% / 0% / 5.6 | 0% / 0% / 6.0 | 21% / 0% / 4.0 | 23% / 0% / 4.0 | 100% / 0% / 7.7 |
+  | a corsair | 8% / 81% / 7.9 | 0% / 0% / 8.0 | 0% / 99% / 8.0 | 0% / 99% / 7.9 | 0% / 0% / 8.0 | 0% / 0% / 8.0 | 100% / 0% / 8.0 |
+  | a cutter | 0% / 66% / 6.3 | 0% / 0% / 3.0 | 0% / 10% / 3.5 | 0% / 99% / 8.0 | 0% / 0% / 3.0 | 0% / 0% / 3.0 | 88% / 12% / 8.0 |
+  | a raider pair | 13% / 20% / 5.3 | 0% / 0% / 4.0 | 0% / 0% / 4.0 | 0% / 100% / 8.0 | 0% / 0% / 4.0 | 0% / 0% / 4.0 | 57% / 43% / 8.0 |
+  | over every type | 19% / 47% / 6.7 | 0% / 0% / 4.8 | 19% / 29% / 5.3 | 0% / 79% / 7.6 | 5% / 0% / 4.7 | 5% / 0% / 4.8 | 89% / 11% / 7.9 |
+
+  The rest of the ends: every gun at her hull, the turret held or not, is boarded by a raider 77-79% of the time, by a corsair
+  (alongside on her eighth turn, her torpedoes spent) and by a cutter or a pair every time; aiming at her weapons ends in her
+  getting away (a raider 35%, a corsair 93%) or a boarding; aiming at her drive is boarded by a raider 21% and by a cutter or a
+  pair almost always; random play is boarded 32% over every type. Random play loses 0.3% of the armor a fight over every type (1%
+  against a corsair: her damage is scaled down with yours, so the hauler's 180 of shields take most of it), and the hand is
+  killed in under 1% of random fights (2% against a corsair). The best fixed policy is her drive against a lone raider and random
+  against the rest; none wins more than 70% against every type; `answer` leads the best of them by 21 points or more against
+  each type; a fight lasts 6.0 turns on the mean. Most of `answer`'s wins are on points at the turn cap (she breaks off as the
+  less whole), which the owner has accepted for now.
+  The values, against Task 7's: every damage and part bar is about 0.7 of them, so that kills are slower and a raider's run to
+  the knife is a race: your guns 8 to 14 (12 to 20), hers 7 to 18 (10 to 26), your torpedo 12 to 18 and hers 20 to 30
+  (`SALVO_DMG`, split from `TORP_DMG`; both 30 to 45), her weapons 63 a mount (90), the drive 34 (50), the lock 7 (10), the
+  launcher 10 (15), the cutter's shields back 7% a turn (an eighth). The rest are Task 7's. `answer`'s every rule counts:
+  without the lock it is boarded by every type every time; without the torpedoes and the overcharge the cutter beats it 75
+  times in 100; without the turret held back a corsair beats it 4 times in 100, and the hand is hurt in 13% of the fights
+  rather than 1%.
 - **Repelling boarders**, random play, five standing: won 90%; by her grade 88%, 58%, 41%. Shooting where they are wins 99%
   with five or two standing, against random's 49% with two. Dead a fight by her grade, after the final review's tune (R42):
   0.32, 0.44, 0.49, against the lock fight's 0.28, 0.43, 0.57.

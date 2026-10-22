@@ -5,42 +5,64 @@
 // GRADE_HULL and GRADE_PUNCH set how much a veteran crew adds.
 
 const FIGHT = {
-  GUN_DMG: [12, 20], // one of your shots' range before the multipliers
-  FOE_DMG: [18, 26], // one of her guns' range before the multipliers: harder than yours, so that a random fight costs armor (Task 7)
+  GUN_DMG: [8, 14],  // one of your shots' range before the multipliers. Every damage and part bar here is about 0.7 of Task 7's, so that a fight's kills are slower and a
+                     // raider's run to the knife is a race: two guns and two torpedoes at her hull took her 130 before she was alongside (#808 final fixes)
+  FOE_DMG: [7, 18],  // one of her guns' range before the multipliers: wider than yours, and harder at its top
   HEAVY: 1.4,        // what heavy rounds add; it is already in a side's dmgMult, kept here for the board's text
   SKILL_DMG: 1,      // per gunner level, added to the low end
   BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 },
   HEAT_CAP: 4,       // heat over this locks a gun for the next turn
   HEAT_VENT: 2,      // heat shed each turn
-  SHIELD_REGEN: 0,   // of the maximum, at the end of the turn: none, so that her volleys reach the armor (Task 7)
-  PART_HP: { weapons: 20, drive: 15, lock: 10 },  // weapons is per gun mount; a drive goes in a shot or two, so that aiming at it can cripple her inside the six turns (Task 7)
-  TORP_DMG: [30, 45],
+  OVER_MULT: 1.5,    // what an overcharged shot rolls more
+  OVER_HEAT: 2,      // the heat an overcharged shot adds (a plain shot adds 1)
+  AIM_MULT: { knife: 1, close: 1, mid: 0.4, long: 0.25 },  // on top of the band, for a shot at her drive, lock or launcher; her hull and weapons have none. Low far out, so that her drive is not gone before she is alongside
+  PART_HP: { weapons: 63, drive: 34, lock: 7, launcher: 10 },  // weapons is per gun mount, about three turns of fire; a drive takes three turns, so that a raider aimed at only there boards about one time in five; a lock goes in a turn
+  TORP_DMG: [12, 18],  // one of your torpedoes: low, so that two of them at a raider's hull do not win the race to the knife for you
+  SALVO_DMG: [20, 30], // one torpedo of her salvo: two of them unanswered are a heavy hit about two times in five, and with the turret held back never
   PDC_HOLD: 0.4,     // what a turret held back takes off a volley
-  TURNS: 6,
+  SALVO: 2,          // torpedoes in her salvo
+  SALVO_EVERY: 2,    // she arms on turn 0 and then every second turn, and fires the turn after, while her torpedoes last
+  PDC_SALVO: 0.6,    // what a turret held back takes off a salvo (a gun volley takes PDC_HOLD)
+  TURNS: 8,
   BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid
-  HEAVY_HIT: 0.2     // a turn is a heavy hit when your hull (shields and armor) loses more than this share of your maximum armor (fightui.js); a fifth, so that the hand is rarely killed
+  HEAVY_HIT: 0.2     // a turn is a heavy hit when your hull (shields and armor) loses more than this share of your maximum armor (fightui.js); a fifth, so that the hand is rarely
+                     // killed: on the Ice Hauler only her salvo unanswered reaches it (SALVO_DMG), and the soak holds the hurts a chapter (tests/distribution/stakes.test.js)
 };
 
 const KNIFE = RANGE_BANDS.indexOf('knife');
 const bandMultOf = band => FIGHT.BAND_MULT[RANGE_BANDS[band]] || 0;  // past long they have escaped and there is no volley
+const AIMED = ['drive', 'lock', 'launcher'];
+// The multiplier a gun order rolls with: the side's damage, the band, an overcharge, and the aim penalty of a small part at range.
+const shotMult = (st, o) => st.me.dmgMult * bandMultOf(st.band) * (o.over ? FIGHT.OVER_MULT : 1) * (AIMED.includes(o.part) ? FIGHT.AIM_MULT[RANGE_BANDS[st.band]] || 0 : 1);
+// The [lo, hi] a gun order would roll, for the panel to show.
+const shotRange = (st, o) => [FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]].map(d => Math.round(d * shotMult(st, o)));
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);
 
-function shipSide(stats, { grade = 0, skill = 0, torps = 0 }) {
+// What each kind of foe adds to her hull: the share of her shields that comes back each turn, and a torpedo launcher with its torpedoes (tuned with the fight
+// tool, COMBAT.md). The destroyer has neither until the fight ladder (PR 3) decides how she is met: the fight tool does not play one.
+const FOE_TYPES = {
+  raider: { regen: 0, launcher: false },
+  corsair: { regen: 0, launcher: true, torps: 4 },
+  cutter: { regen: 0.07, launcher: false },
+  destroyer: { regen: 0, launcher: false }
+};
+
+function shipSide(stats, { grade = 0, skill = 0, torps = 0, regen = 0, launcher = stats.launcher }) {
   const armor = Math.round(stats.armor * (1 + GRADE_HULL * grade));
   const part = key => ({ hp: FIGHT.PART_HP[key], max: FIGHT.PART_HP[key] });
   const weapons = FIGHT.PART_HP.weapons * stats.guns;
   return {
     shields: stats.shields, maxShields: stats.shields, armor, maxArmor: armor,
-    parts: { weapons: { hp: weapons, max: weapons }, drive: part('drive'), lock: part('lock') },
+    parts: { weapons: { hp: weapons, max: weapons }, drive: part('drive'), lock: part('lock'), ...(launcher ? { launcher: part('launcher') } : {}) },
     guns: stats.guns, dmgMult: stats.dmgMult * (1 + GRADE_PUNCH * grade), skill,
     speed: stats.accel * stats.turn,  // who wins the say on the range
-    launcher: !!stats.launcher, pdc: !!stats.pdc, torps
+    launcher: !!launcher, pdc: !!stats.pdc, torps, regen
   };
 }
 
-const shipFight = ({ me, foes, nerve, band }) => ({ kind: 'ship', me, foes, band, heat: 0, locked: [], turn: 0, nerve, log: [], moves: null, boarded: false });
+const shipFight = ({ me, foes, nerve, band }) => ({ kind: 'ship', me, foes, band, heat: 0, locked: [], turn: 0, nerve, log: [], moves: null, boarded: false, armed: [] });  // armed: one flag a foe, her salvo loaded and fired next turn
 
 // A mount whose share of the weapons bar is gone cannot fire, nor can one that is locked.
 const gunsReady = st => Math.max(0, Math.min(st.me.guns, Math.ceil(st.me.parts.weapons.hp / FIGHT.PART_HP.weapons)) - st.locked.length);
@@ -61,13 +83,11 @@ function dealDamage(side, part, dmg) {
 function resolveShipTurn(state, orders, moves, rand) {
   const st = copyOf(state), events = [];
   const held = st.me.pdc && orders.pdc === 'hold';
-  const bandMult = bandMultOf(st.band);
-  const lo = FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill;
 
   // A turret held back is not firing, so it costs a shot.
   const shots = orders.guns.slice(0, gunsReady(st)).filter(o => o && st.foes[o.foe]).slice(0, Math.max(0, gunsReady(st) - (held ? 1 : 0)));  // a gun that is not ready has no say, whatever its order
   for (const o of shots) {
-    const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([lo, FIGHT.GUN_DMG[1]], st.me.dmgMult * bandMult, rand));
+    const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]], shotMult(st, o), rand));
     events.push({ who: 'me', foe: o.foe, part: o.part, dmg });
   }
   if (orders.torp && st.me.launcher && st.me.torps > 0 && st.foes[orders.torp.foe]) {
@@ -80,6 +100,15 @@ function resolveShipTurn(state, orders, moves, rand) {
   st.moves = copyOf(moves);
   st.foes.forEach((foe, i) => {
     const m = moves.foe[i];
+    if (m && m.kind === 'arm') { if (foe.armor > 0 && foe.parts.launcher && foe.parts.launcher.hp > 0) st.armed[i] = true; return; }
+    if (m && m.kind === 'salvo') {
+      st.armed[i] = false;
+      if (foe.armor <= 0 || !foe.parts.launcher || foe.parts.launcher.hp <= 0 || foe.torps < m.n) return;  // a launcher shot away takes the salvo with it
+      foe.torps -= m.n;
+      const dmg = dealDamage(st.me, 'hull', rollIn(m.dmg, st.me.pdc && orders.pdc === 'hold' ? 1 - FIGHT.PDC_SALVO : 1, rand));
+      events.push({ who: 'foe', foe: i, part: 'hull', dmg, salvo: true });
+      return;
+    }
     if (!m || !m.target || foe.armor <= 0 || foe.parts.weapons.hp <= 0) return;  // a broadside, a pin, or the volley she fires as she closes
     const dmg = dealDamage(st.me, m.target, rollIn(m.dmg, held ? 1 - FIGHT.PDC_HOLD : 1, rand));
     events.push({ who: 'foe', foe: i, part: m.target, dmg });
@@ -87,10 +116,10 @@ function resolveShipTurn(state, orders, moves, rand) {
   if (st.foes.some((foe, i) => foe.armor > 0 && foe.parts.lock.hp > 0 && st.band === KNIFE && moves.foe[i] && moves.foe[i].kind === 'board')) st.boarded = true;
   st.band = nextBand(st, moves);
 
-  const heat = st.heat + shots.length;
+  const heat = st.heat + shots.reduce((h, o) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);
   st.locked = heat > FIGHT.HEAT_CAP ? [0] : [];
   st.heat = Math.max(0, heat - FIGHT.HEAT_VENT);
-  for (const side of [st.me, ...st.foes]) side.shields = Math.min(side.maxShields, side.shields + Math.round(FIGHT.SHIELD_REGEN * side.maxShields));
+  for (const side of [st.me, ...st.foes]) side.shields = Math.min(side.maxShields, side.shields + Math.round(side.regen * side.maxShields));
   st.turn++;
   return { state: st, events };
 }
@@ -113,6 +142,9 @@ function foeMove(st, i) {
   const foe = st.foes[i], armed = foe.parts.weapons.hp > 0, lock = foe.parts.lock.hp > 0, drive = foe.parts.drive.hp > 0;
   if (drive && (hullShare(foe) < FIGHT.BREAK || !armed)) return { kind: 'break' };
   if (!armed) return { kind: 'hold' };  // no guns and no drive: she is out, and the fight has ended on her
+  const launcher = foe.launcher && foe.parts.launcher.hp > 0;
+  if (launcher && st.armed[i]) return { kind: 'salvo', target: 'hull', n: Math.min(FIGHT.SALVO, foe.torps), dmg: FIGHT.SALVO_DMG.map(d => d * Math.min(FIGHT.SALVO, foe.torps)) };
+  if (launcher && foe.torps >= 1 && st.turn % FIGHT.SALVO_EVERY === 0) return { kind: 'arm', n: Math.min(FIGHT.SALVO, foe.torps) };
   if (st.band === KNIFE && lock) return { kind: 'board' };
   if (st.me.parts.drive.hp > 0 && st.me.speed > foe.speed) return { kind: 'pin', target: 'drive', dmg: foeVolley(st, i) };
   if (drive && st.band > (lock ? KNIFE : RANGE_BANDS.indexOf('close'))) return { kind: 'close', target: 'hull', dmg: foeVolley(st, i) };
@@ -143,15 +175,20 @@ function nextBand(st, moves) {
   return Math.max(0, Math.min(RANGE_BANDS.length, st.band + step));
 }
 
+// The ends, in order: lost, boarded, crippled, away (every foe left breaks off with her guns gone and her hull whole: she got away with nothing for you),
+// broke, escaped; at the turn cap the captain runs if she is the worse hurt ('ran', a lost fight), else the foe breaks.
 function shipEnd(st) {
   const out = f => f.armor <= 0 || (f.parts.weapons.hp <= 0 && f.parts.drive.hp <= 0);
-  const broke = st.moves && st.foes.every((f, i) => out(f) || (st.moves.foe[i] && st.moves.foe[i].kind === 'break' && f.parts.drive.hp > 0));
+  const breaking = (f, i) => st.moves && st.moves.foe[i] && st.moves.foe[i].kind === 'break' && f.parts.drive.hp > 0;
+  const broke = st.moves && st.foes.every((f, i) => out(f) || breaking(f, i));
   if (st.me.armor <= 0) return 'lost';
   if (st.boarded) return 'boarded';
   if (st.foes.every(out)) return 'crippled';
+  if (broke && st.foes.every((f, i) => out(f) || (f.parts.weapons.hp <= 0 && hullShare(f) >= FIGHT.BREAK))) return 'away';
   if (broke) return 'broke';
   if (st.band >= RANGE_BANDS.length) return 'escaped';
-  return st.turn >= FIGHT.TURNS ? 'standoff' : null;
+  if (st.turn < FIGHT.TURNS) return null;
+  return hullShare(st.me) < poolShare(st.foes) ? 'ran' : 'broke';
 }
 
 // The deck fight: the same turn on the decks (spec 2026-10-20). Sections are lock, corridor, bridge, and 'cargo' on a long ship. `mine` and `theirs`

@@ -191,6 +191,7 @@ const playScenes = () => {
   for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
     run(`hand:practise:${post}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.practise.label, run: () => String(ACTIVITIES.practise.run()) }] }), { extra: () => hired().skill });
   }
+  run('hand:restock', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => restockTorps(G.state, hired(), currentPlanet(), ship().launcher) }] }), { prep() { G.state.torpedoes = 0; hired().fund = 100000; } });
   run('hand:practise:owner', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.practise.run()) }] }));
   // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
   run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.filter(c => /^Heave to/.test(c.label)) }; });
@@ -353,7 +354,7 @@ const playScenes = () => {
       for (const shipId of ['raider', 'corsair', 'cutter']) for (const day of [0, 1]) panel(start(shipId, { day }));  // the openings, by style and by the day
       panel(start('raider', { edge: 1 })); panel(start('raider', { edge: -1 }));  // the head start, each way
       // her moves, two of her, and the captain's: shown on the panel before they are made
-      for (const [foe, captain] of [[{ kind: 'broadside', target: 'weapons', dmg: [10, 18] }, { kind: 'close' }], [{ kind: 'pin', target: 'drive', dmg: [8, 14] }, { kind: 'open' }], [{ kind: 'board' }, { kind: 'hold' }], [{ kind: 'break' }, { kind: 'hold' }], [{ kind: 'close', target: 'hull', dmg: [10, 17] }, { kind: 'hold' }]]) {
+      for (const [foe, captain] of [[{ kind: 'broadside', target: 'weapons', dmg: [10, 18] }, { kind: 'close' }], [{ kind: 'pin', target: 'drive', dmg: [8, 14] }, { kind: 'open' }], [{ kind: 'board' }, { kind: 'hold' }], [{ kind: 'break' }, { kind: 'hold' }], [{ kind: 'close', target: 'hull', dmg: [10, 17] }, { kind: 'hold' }], [{ kind: 'arm', n: 2 }, { kind: 'hold' }], [{ kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] }, { kind: 'hold' }]]) {
         const s = start('raider').fight; s.state.foes.push(JSON.parse(JSON.stringify(s.state.foes[0]))); s.shown = { foe: [foe, foe], captain };
         panel(shipFightEvent(s, orders()));
       }
@@ -368,7 +369,7 @@ const playScenes = () => {
         const consort = JSON.parse(JSON.stringify(s.state.foes[0])); s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; s.state.foes.push(consort); s.pack = true;
         turn(s, orders({ guns: [{ foe: 0, part: 'hull' }, null], torp: { foe: 0, part: 'hull' } }), { kind: 'hold' });  // the lead crippled: the gun and the torpedo go to her consort
       }
-      // each end, by style: she breaks off, she is crippled, she boards, she is lost astern, the standoff near and far, and the hull gone
+      // each end, by style: she breaks off, she is crippled, she boards, she is lost astern, and the hull gone
       for (const shipId of ['raider', 'corsair', 'cutter']) {
         let s = start(shipId).fight; s.state.foes[0].armor = 5; s.state.foes[0].shields = 0; turn(s, orders({ guns: [null] }), { kind: 'break' });
         s = start(shipId).fight; s.state.band = 0; turn(s, orders(), { kind: 'board' });
@@ -376,7 +377,18 @@ const playScenes = () => {
         if (shipId !== 'cutter') { s = start(shipId).fight; s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; turn(s, orders(), { kind: 'hold' }); }  // only a patrol flies a cutter, and a patrol crippled breaks off (below)
       }
       { const s = start('raider', {}, 'patrol').fight; s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; turn(s, orders(), { kind: 'hold' }); }  // a navy ship crippled breaks off
-      for (const band of [0, RANGE_BANDS.length - 1]) { const s = start('raider').fight; s.state.band = band; s.state.turn = FIGHT.TURNS - 1; turn(s, orders({ guns: [null] }), { kind: 'hold' }); }
+      for (const shipId of ['raider', 'corsair']) { const s = start(shipId).fight; s.state.turn = FIGHT.TURNS - 1; turn(s, orders({ guns: [null] }), { kind: 'hold' }); }  // the turn cap, she the worse hurt: she breaks off
+      for (const shipId of ['raider', 'corsair']) { const s = start(shipId).fight; s.state.turn = FIGHT.TURNS - 1; s.state.me.shields = 0; s.state.me.armor = 20; turn(s, orders({ guns: [null] }), { kind: 'hold' }); }  // the turn cap, you the worse hurt: the captain runs, and the captain's memory of it
+      for (const shipId of ['raider', 'corsair']) { const s = start(shipId).fight; s.state.foes[0].parts.weapons.hp = 0; turn(s, orders({ guns: [null] }), { kind: 'break' }); }  // her guns gone and her hull whole: she gets away
+      // a corsair: her launcher on the panel as a target, the overcharge of each gun, her arming and then her salvo played through
+      { fresh(); hired().raidTold = true; G.state.outfits = { launcher: 1, pdc: 1 }; G.state.torpedoes = 2; G.nextEvent = null; startShipFight({ kind: 'pirate', shipId: 'corsair' }, false); const s = G.nextEvent.fight; G.nextEvent = null;
+        panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'launcher' }, { foe: 0, part: 'hull', over: true }], torp: { foe: 0, part: 'launcher' } })));
+        panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'weapons', over: true }, null] })));
+        s.state.foes[0].parts.launcher.hp = 0; panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'launcher' }, null] })));  // a launcher shot away is still named
+        s.state.foes[0].parts.launcher.hp = s.state.foes[0].parts.launcher.max;
+        turn(s, orders({ guns: [null, null] }), { kind: 'arm', n: 2 });  // armed
+        turn(s, orders({ guns: [null, null] }), { kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] });  // and fired
+      }
       { const s = start('raider').fight; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }
       // the deck fight (deckFightEvent, #786): on our deck and hers, each with the cargo bay, the hand in each section and their move into each; a hold, a way round
       // and a veteran's feint; every choice it offers; and a turn of each kind of line, from states set by hand

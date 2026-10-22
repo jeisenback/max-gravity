@@ -68,9 +68,21 @@ const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, 
 const soloOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'solo');
 // The job of your own post in a fight, an ice run or a contact: half a chance at the base, a tenth better for each level.
 const postOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'post');
+// The Ice Hauler's magazine: the captain keeps it full from the ship's fund at a port with an outfitter. `launcher` is whether the ship has one (ship().launcher):
+// a save from before the fitting has none, and buys nothing. Returns the line said, or ''.
+const HAND_TORPS = 2;
+function restockTorps(st, h, planet, launcher) {
+  if (!launcher || !planet.services.includes('outfitter')) return '';
+  const n = Math.min(HAND_TORPS - (st.torpedoes || 0), Math.floor(h.fund / TORP_PRICE));
+  if (!(n > 0)) return '';
+  const cost = n * TORP_PRICE;
+  st.torpedoes = (st.torpedoes || 0) + n; h.fund -= cost; h.bill = (h.bill || 0) + cost;
+  return sceneSay('scene:screens', 'torps.restock', { n, cost: fmt(cost) });
+}
 function setupHired(o) {
   const st = G.state, post = HIRED_POSTS.includes(o.post) ? o.post : scopeOff('posts') ? 'gunner' : 'pilot';
   st.shipId = 'freighter';
+  st.outfits = { pdc: 1, launcher: 1 }; st.torpedoes = HAND_TORPS;  // a close-defense turret and a launcher with two torpedoes
   st.fuel = SHIPS.freighter.fuel; st.armor = SHIPS.freighter.armor;
   st.credits = o.credits !== undefined ? o.credits : HIRED_SAVINGS;  // o.credits and o.skill: a hand put ashore (stakes.js) carries both to the next berth
   st.carried = o.carried || null;  // one line the dock says of the last ship (stakes.js); Signing On shows it once
@@ -455,6 +467,7 @@ function buyIn(id) {
   for (const f of friends) like(f, 2, sceneSay('scene:screens', 'buyin.friend.memory', { ship: oldName }));
   // A fresh ship: nothing of the old one's wear, refits or jobs comes with you.
   for (const k of ['condition', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
+  st.outfits = {}; st.torpedoes = 0;  // the turret and the launcher stay on the captain's Ice Hauler
   if (id === USED_ID) st.condition = { ...USED_CONDITION };  // but the used Ore Runner comes as she is
   home().name = shipName(false);
   st.career = { ...careerOf(h), came: friends.map(c => c.id), bought: st.day };  // the sheet, the kit and the shippers' regard go on into the next chapter, with who came along and the day (chaptertwo.js)
@@ -581,6 +594,7 @@ Mods.register({
       if (hired() && arrivalPending(planet) && !G.dialog) { hired().arrived = true; openEvent(castScene(hiredXo().cast, arrivalScene())); }  // the first officer settles up (captains.js)
     });
     M.on('landed', planet => { hullNote(); dealCheck(planet); });
+    M.on('landed', planet => { const h = hired(), line = h && restockTorps(G.state, h, planet, ship().launcher); if (line) M.note(line); });
     M.on('landed', planet => { if (hired()) G.offers = errandsFor(planet); });  // the board has errands, not contracts
     M_NOTE = text => M.note(text);
     M.action('sail', () => { if (hired() && !sideBeforeSail()) sail(); });  // a side on the paper is a scene at the lock first (shippers.js)

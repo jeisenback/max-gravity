@@ -4,8 +4,8 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { closeBrowser } = require('./helpers');
-const { soak, report, framesReport, jobsReport, barReport, freightReport } = require('../tools/soak');
+const { open, closeBrowser } = require('./helpers');
+const { soak, chapter, report, framesReport, jobsReport, barReport, freightReport } = require('../tools/soak');
 
 test('the soak sails the captain\'s runs and reports them', async () => {
   const r = await soak({ seed: 1, legs: 6 });
@@ -36,12 +36,30 @@ test('with --jobs the soak works the station jobs and puts the jobs elsewhere to
   assert.equal(plain.work.station, 0, 'without the flag no station job is taken (a job elsewhere can still play when the captain happens to land there)');
 });
 
+// The first of seeds 1 to 10 whose chapter has what a test needs (a seed picked by hand moved with every fight tune, #808): the soak's result, or null.
+async function firstSeed(opts, has) {
+  for (let seed = 1; seed <= 10; seed++) { const r = await soak({ ...opts, seed }); if (has(r)) return r; }
+  return null;
+}
+
 test('with --frames every deck fight is played to its close, and a fight\'s panels count once with their scene (#786)', async () => {
-  const r = await soak({ seed: 3, legs: 20, frames: true });  // a seed whose raids end alongside: before #786's fix both its deck fights were cut off
+  const r = await firstSeed({ legs: 20, frames: true }, x => x.deck.begun > 0);
+  assert.ok(r, 'a deck fight was fought in one of seeds 1 to 10');
   assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
-  assert.ok(r.deck.begun > 0, 'a deck fight was fought');
-  assert.equal(r.deck.settled + r.deck.died, r.deck.begun, `each settled, or the hand was killed in it: ${JSON.stringify(r.deck)}`);
-  assert.ok((r.scenes['Battle Stations'] || 0) <= 2 * r.frames.raids, `the fight's panel and its close, not a count a turn: ${r.scenes['Battle Stations']} for ${r.frames.raids} raids`);
+  assert.equal(r.deck.settled + r.deck.died, r.deck.begun, `seed ${r.seed}: each settled, or the hand was killed in it: ${JSON.stringify(r.deck)}`);
+  assert.ok((r.scenes['Battle Stations'] || 0) <= 2 * r.frames.raids, `seed ${r.seed}: the fight's panel and its close, not a count a turn: ${r.scenes['Battle Stations']} for ${r.frames.raids} raids`);
+});
+
+test('a card duel played over its exchanges and a boarding after it is one fight, not scenes against the step cap (the Ice Hauler\'s fitting makes the duel longer)', async () => {
+  // A hunter's card duel runs up to DUEL_ROUNDS exchanges (before any boarding), then the lock and the corridor; a duel cut off at the step cap would be a bad run
+  // ('fight left open'). A duel is rare in a chapter (a hunter after the hand: one of seeds 1 to 40 plays one), so here every contact is a hunter's (G.revenge).
+  const { ev, ctx } = await open({ scope: 'earth-hired', seed: 1, debt: true, stall: 0 });
+  await ev(() => { Object.defineProperty(G, 'revenge', { configurable: true, get: () => ({ first: 'Ada', last: 'Krell' }), set() {} }); });
+  const r = await ev(chapter, [20, null, false, 'gunner', true, null, false]);
+  await ctx.close();
+  assert.deepEqual(r.bad, []);
+  assert.ok(Object.keys(r.scenes).some(t => /^Contact: exchange \d/.test(t)), `a card duel was played: ${Object.keys(r.scenes).filter(t => /Contact|Lock|Corridor/.test(t)).join(', ')}`);
+  assert.ok(r.scenes['The Corridor'] > 0 || r.scenes['The Lock'] > 0, 'and a boarding fight after one');
 });
 
 test('for every captain the trouble, then the secret, then the used-ship offer', async () => {

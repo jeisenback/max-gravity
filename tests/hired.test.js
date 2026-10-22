@@ -506,7 +506,7 @@ test('a hired hand who is not the gunner watches the duel; the gunner picks the 
       const c0 = st.credits; startDuel({ kind: 'hunter', person: { first: 'Ana', last: 'Voss' } }, false); finishEvent2();  // a pirate or a patrol is a raid in beats (engagements.js); a hunter is the card duel
       const first = G.nextEvent; const labels = first.choices.map(c => c.label); let rounds = 0;
       openEvent(first);
-      while ((G.dialog || G.nextEvent) && rounds++ < 20) { if (!G.dialog) { finishEvent(); continue; } chooseEvent(0); finishEvent(); }
+      while ((G.dialog || G.nextEvent) && rounds++ < 20) { if (!G.dialog) { finishEvent(); continue; } chooseEvent(Math.max(0, G.dialog.event.choices.findIndex(c => /locks/.test(c.label)))); finishEvent(); }  // the locks stop a boarding party; the ship now also has a PDC screen to pick first, which a boarding party gets past into a deck fight this driver does not play
       return { labels, ended: G.duel === null, credits: st.credits === c0 };
     };
     window.finishEvent2 = () => {};
@@ -623,5 +623,61 @@ test('the hand has a sheet: set at the sign-on from the background and the post,
   assert.ok(Math.abs(r.commsSharper - r.comms - 0.05) < 1e-9, 'a job on another post reads that post\'s stat');
   assert.match(r.recap, /Hands 3, eye 4, nerve 3, wit 5\./);
   assert.deepEqual(r.old, { stat: 3, recap: false }, 'without a sheet every stat is the base, and the look back says nothing of it');
+  await done();
+});
+
+test('the Ice Hauler is fitted with a close-defense turret and a launcher with two torpedoes (#fight-rework)', async () => {
+  const { page, ev, done } = await open({});
+  await page.evaluate(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner');
+    const st = G.state;
+    return { pdc: st.outfits.pdc, launcher: st.outfits.launcher, torps: st.torpedoes, shipPdc: ship().pdc, shipLauncher: ship().launcher, guns: ship().guns, cargo: ship().cargo };
+  });
+  assert.deepEqual(r, { pdc: 1, launcher: 1, torps: 2, shipPdc: true, shipLauncher: true, guns: 2, cargo: 114 });
+  await done();
+});
+
+test('at a port with an outfitter the captain restocks the torpedoes from the fund (#fight-rework)', async () => {
+  const { page, ev, done } = await open({});
+  await page.evaluate(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner');
+    const st = G.state, h = hired(), earth = currentPlanet(), out = {};
+    out.outfitter = earth.services.includes('outfitter');
+    st.torpedoes = 0; h.fund = 100000; h.bill = 0;
+    out.line = restockTorps(st, h, earth, true); out.torps = st.torpedoes; out.fund = h.fund; out.bill = h.bill; out.expect = fmt(2 * TORP_PRICE); out.price = TORP_PRICE;
+    st.torpedoes = 0; h.fund = TORP_PRICE - 1; h.bill = 0;
+    out.poor = [restockTorps(st, h, earth, true), st.torpedoes, h.fund, h.bill];
+    st.torpedoes = 1; h.fund = 100000; h.bill = 0;
+    out.one = [restockTorps(st, h, earth, true), st.torpedoes, h.fund];
+    st.torpedoes = 0;
+    h.fund = 100000;
+    const none = { name: 'Nowhere', services: ['trade'] };
+    out.none = [restockTorps(st, h, none, true), st.torpedoes, h.fund];
+    out.unfitted = [restockTorps(st, h, earth, false), st.torpedoes, h.fund];  // a ship with no launcher buys none
+    return out;
+  });
+  assert.ok(r.outfitter);
+  assert.equal(r.torps, 2); assert.equal(r.fund, 100000 - 2 * r.price); assert.equal(r.bill, 2 * r.price);
+  assert.ok(r.line.includes(r.expect), r.line);
+  assert.deepEqual(r.poor, ['', 0, r.price - 1, 0]);
+  assert.equal(r.one[1], 2); assert.equal(r.one[2], 100000 - r.price);
+  assert.deepEqual(r.none, ['', 0, 100000]);
+  assert.deepEqual(r.unfitted, ['', 0, 100000]);
+  await done();
+});
+
+test('a save from before the fitting (no launcher) lands at an outfitter and is not charged for torpedoes (#808)', async () => {
+  const { page, ev, done } = await open({});
+  await page.evaluate(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner');
+    const st = G.state, h = hired();
+    st.outfits = {}; st.torpedoes = 0; h.fund = 100000; h.bill = 0;  // the Ice Hauler as an old save has her: no turret, no launcher
+    Mods.emit('landed', currentPlanet());
+    return { outfitter: currentPlanet().services.includes('outfitter'), launcher: !!ship().launcher, torps: st.torpedoes, fund: h.fund, bill: h.bill };
+  });
+  assert.deepEqual(r, { outfitter: true, launcher: false, torps: 0, fund: 100000, bill: 0 });
   await done();
 });

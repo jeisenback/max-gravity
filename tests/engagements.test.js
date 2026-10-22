@@ -21,6 +21,7 @@ const helpers = () => {
     window.makeEnemy = () => Object.assign(spare, { shipId, armor: SHIPS[shipId].armor, maxArmor: SHIPS[shipId].armor });  // the style of the raider or the corsair
     return st;
   };
+  window.sturdy = () => fightNow().state.foes.forEach(f => { f.parts.weapons.hp = f.parts.weapons.max = 90; });  // a test of what she does when she fires keeps her guns; 90 a mount is more than the bar (63, FIGHT.PART_HP), so this pins it there
   window.rolls = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : 0.99); };
   window.begin = () => { const e = G.nextEvent; G.nextEvent = null; openEvent(e); };  // the first scene; later ones open from finishEvent
   window.choose = (label) => { const i = G.dialog.choices.findIndex(c => c.label.includes(label)); const t = chooseEvent(i); return t; };
@@ -39,7 +40,7 @@ test('a pirate contact for a hired hand opens the ship fight, not the card duel,
     return { text: /Battle stations/.test(text), title: G.dialog.event.title, duel: !!G.duel, decided: !!G.dialog.event.decided, labels: G.dialog.choices.map(c => c.label), board: /^<svg class="board"/.test(G.dialog.event.board) };
   });
   assert.ok(r.text); assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false); assert.ok(!r.decided, 'the captain does not take this call');
-  assert.deepEqual(r.labels, ['Gun 1: aim at her weapons', 'Fire: heat 1 of 4'], 'a pilot hand still runs the guns: the hauler has one'); assert.ok(r.board);
+  assert.deepEqual(r.labels.map(l => l.replace(/\d+ to \d+ damage/, 'N to M damage')), ['Gun 1: aim at her weapons, N to M damage', 'Gun 1: normal charge', 'Gun 2: aim at her weapons, N to M damage', 'Gun 2: normal charge', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4'], 'a pilot hand still runs the guns: the hauler has two, a turret and a launcher with two torpedoes'); assert.ok(r.board);
   await done();
 });
 
@@ -63,24 +64,26 @@ test('when she breaks off it costs nothing but a log line and some experience', 
   await done();
 });
 
-test('played out, the panel goes turn by turn to an end: she closes firing, her guns are shot away, and she breaks off', async () => {
+test('played out, the panel goes turn by turn to an end: she closes firing, her guns are shot away, and she gets away', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const st = raid('engineer'), h = hired(), cap = person(h.captain), op = cap.opinion, xp = skillXp('engineer'), out = { bands: [], reads: [] };
     startDuel({ kind: 'pirate' }, false); begin();
+    fightNow().state.foes[0].parts.weapons.hp = fightNow().state.foes[0].parts.weapons.max = 40;  // her weapons cut to 40 (a mount is 63): two guns take them before she is alongside
     while (G.dialog.choices.some(c => c.label.startsWith('Fire'))) { out.bands.push(RANGE_BANDS[fightNow().state.band]); out.reads.push(G.dialog.event.read.replace(/^.*?": /, '')); fireOrders(); }
     out.log = fightNow().state.log.slice(1); out.title = G.dialog.event.title; out.labels = G.dialog.choices.map(c => c.label); out.close = G.dialog.event.text.split('</p><p>').pop();
     out.opinion = cap.opinion - op; out.xp = skillXp('engineer') - xp; out.shields = fightNow().state.me.shields;
     return out;
   });
-  assert.deepEqual(r.bands, ['long', 'mid', 'close'], 'she is the faster ship, and closes a band a turn');
-  assert.deepEqual(r.reads, ['closing, and firing at your hull as she comes, 19 to 27 damage. Captain Vance: holding the range.', 'closing, and firing at your hull as she comes, 20 to 29 damage. Captain Vance: holding the range.',
-    'turning to break off. Captain Vance: holding the range.'], 'her move is shown before it is made, and her volley grows as she closes');
-  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, she hits your hull for 27.', 'Turn 2: you hit her weapons for 7.', 'Turn 3: nothing left of the weapons to hit.'], 'her guns go in two shots, and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
+  assert.deepEqual(r.bands, ['long', 'mid', 'close'], 'she is the faster ship, and closes a band a turn; her weapons cut to 40, two guns take them in two turns and she turns away in the third');
+  assert.deepEqual(r.reads, ['closing, and firing at your hull as she comes, 7 to 19 damage. Captain Vance: holding the range.',
+    'closing, and firing at your hull as she comes, 8 to 20 damage. Captain Vance: holding the range.',
+    'turning to break off. Captain Vance: holding the range.'], 'her move is shown before it is made');
+  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 9, you hit her weapons for 11, she hits your hull for 7.', 'Turn 2: you hit her weapons for 12, you hit her weapons for 8.', 'Turn 3: nothing left of the weapons to hit, nothing left of the weapons to hit.'], 'both guns hit her weapons, so her guns go in the second turn (she fires in the first, as she closes), and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
   assert.equal(r.title, 'Battle Stations'); assert.deepEqual(r.labels, ['Stand down']);
-  assert.match(r.close, /^She breaks off with her grapple arms folded.* Captain Vance writes it in the log and nothing else\. \(\+3 experience at the engineer post\.\)$/);
-  assert.deepEqual([r.opinion, r.xp], [1, 3]);
+  assert.equal(r.close, 'She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.', 'her guns gone and her hull whole: a weak end');
+  assert.deepEqual([r.opinion, r.xp], [0, 0], 'she got away with nothing for you');
   await done();
 });
 
@@ -229,7 +232,7 @@ test('a good read shows you the trap, and you can hit them first or turn away', 
     out.read = /gun housing/.test(t); finishEvent();
     out.labels = G.dialog.event.choices.map(c => c.label);
     const hit = chooseEvent(out.labels.indexOf("Hit them before they're ready")); out.hit = /not ready/.test(hit); finishEvent();
-    out.ahead = /You fire first: you hit her weapons for \d+\./.test(G.dialog.event.text);
+    out.ahead = /You fire first: you hit her weapons for \d+, you hit her weapons for \d+\./.test(G.dialog.event.text);
     return out;
   });
   assert.ok(r.read); assert.deepEqual(r.labels, ["Hit them before they're ready", 'Turn away and leave it']); assert.ok(r.hit && r.ahead);
@@ -322,14 +325,14 @@ test('a turn that takes a heavy share of the armor can hurt you: a clinic bill w
     const st = raid('gunner'), out = {};
     st.crew = st.crew.filter(id => person(id).role !== 'medic'); st.injured = {};
     startDuel({ kind: 'pirate' }, false); begin();
-    const cred = st.credits, me = fightNow().state.me; me.shields = 0;
+    const cred = st.credits, me = fightNow().state.me; me.shields = 0; sturdy();
     shownMoves({ kind: 'broadside', target: 'hull', dmg: [60, 60] });  // 60 of 260: more than fifteen percent
-    rolls([0.5, 0.5, 0.99, 0.01]);  // our shot, her volley, no casualty, and the hand's own roll
+    rolls([0.5, 0.5, 0.5, 0.99, 0.01]);  // our two shots, her volley, no casualty, and the hand's own roll
     fireOrders();
     out.hurt = handHurt(); out.line = fightNow().state.log.slice(-1)[0]; out.paid = cred - st.credits; out.armor = st.armor;
     hired().hurtUntil = 0; fightNow().state.me.shields = 0; fightNow().state.foes.forEach(f => { f.parts.weapons.hp = f.parts.weapons.max; });  // her guns whole again, so she fires
     shownMoves({ kind: 'broadside', target: 'hull', dmg: [20, 20] });  // 20 of 260: not
-    rolls([0.5, 0.5, 0.01, 0.01]); fireOrders(); out.light = handHurt(); out.lightLine = fightNow().state.log.slice(-1)[0];
+    rolls([0.5, 0.5, 0.5, 0.01, 0.01]); fireOrders(); out.light = handHurt(); out.lightLine = fightNow().state.log.slice(-1)[0];
     return out;
   });
   assert.ok(r.hurt, 'hurt on a heavy hit'); assert.match(r.line, /she hits your hull for 60\. You are hurt\. Your work counts a level lower until the clinic clears you\. The clinic is 1,500 cr of your own, with no medic aboard\.$/, r.line);
@@ -343,9 +346,9 @@ test('a medic aboard treats you free', async () => {
   await ev(helpers);
   const r = await ev(() => {
     const st = raid('gunner'); const medic = makePerson('earth'); medic.role = 'medic'; medic.skill = 1; registerPerson(medic); st.crew.push(medic.id); st.injured = {};
-    startDuel({ kind: 'pirate' }, false); begin(); const cred = st.credits;
+    startDuel({ kind: 'pirate' }, false); begin(); const cred = st.credits; sturdy();
     fightNow().state.me.shields = 0; shownMoves({ kind: 'broadside', target: 'hull', dmg: [60, 60] });
-    rolls([0.5, 0.5, 0.99, 0.01]); fireOrders();
+    rolls([0.5, 0.5, 0.5, 0.99, 0.01]); fireOrders();
     return { hurt: handHurt(), paid: cred - st.credits, bill: /clinic is/.test(fightNow().state.log.slice(-1)[0]) };
   });
   assert.deepEqual(r, { hurt: true, paid: 0, bill: false });
@@ -423,7 +426,7 @@ test('the fight carries its sensor board: a plot each turn, at the band she is i
   await ev(helpers);
   const r = await ev(() => {
     raid('gunner'); const out = {};
-    startDuel({ kind: 'pirate' }, false); begin();
+    startDuel({ kind: 'pirate' }, false); begin(); sturdy();
     const e0 = G.dialog.event; out.first = { board: /^<svg class="board"/.test(e0.board), head: /RANGE 50 km/.test(e0.board), bearing: /BEARING 090/.test(e0.board), word: /LONG/.test(e0.board) };
     fireOrders(); const e1 = G.dialog.event; out.second = { head: /RANGE 25 km/.test(e1.board), stale: /STALE/.test(e1.board) };
     condition().sensors = 30; fireOrders(); const e2 = G.dialog.event; out.failing = { stale: /STALE/.test(e2.board), head: /RANGE 6 km/.test(e2.board) };
@@ -574,18 +577,19 @@ test('the fight panel shows her move and the captain\'s above the pinned orders 
   }
 });
 
-test('the standoff line agrees with the board: close in when she is in the close bands, at long range when she is past them (#733)', async () => {
+test('the turn cap ends it by who is worse hurt, whatever the range: she breaks off, or the captain runs and it is a lost fight', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
-    const stand = band => { const st = raid('gunner'), armor = st.armor; startDuel({ kind: 'pirate' }, false); begin(); const f = fightNow().state; f.band = RANGE_BANDS.indexOf(band); f.turn = FIGHT.TURNS - 1; shownMoves({ kind: 'hold' }); fireOrders(); return { text: G.dialog.event.text.split('</p><p>').pop(), armor: armor - st.armor }; };
-    out.knife = stand('knife'); out.close = stand('close'); out.mid = stand('mid'); out.long = stand('long');
+    const cap = (band, hurt) => { const st = raid('gunner'), xp = skillXp('gunner'); startDuel({ kind: 'pirate' }, false); begin(); const f = fightNow().state; f.band = RANGE_BANDS.indexOf(band); f.turn = FIGHT.TURNS - 1; if (hurt) { f.me.shields = 0; f.me.armor = 20; } shownMoves({ kind: 'hold' }); fireOrders(); return { text: G.dialog.event.text.split('</p><p>').pop(), xp: skillXp('gunner') - xp }; };
+    for (const band of ['knife', 'close', 'mid', 'long']) out[band] = { broke: cap(band, false), ran: cap(band, true) };
     return out;
   });
-  for (const band of ['knife', 'close']) assert.equal(r[band].text, 'She turns away close in and drags her drive plume across your bow, and it scorches the plating forward. Armor -13.', band);
-  for (const band of ['mid', 'long']) assert.equal(r[band].text, 'She turns away with the range still open, and her last burst clips the hull aft. Armor -13.', band);
-  assert.equal(r.close.armor, 13, 'five percent of the hull');
+  for (const band of ['knife', 'close', 'mid', 'long']) {
+    assert.match(r[band].broke.text, /^She breaks off with her grapple arms folded, and the range opens\. Captain Vance writes it in the log.* \(\+3 experience/, band); assert.equal(r[band].broke.xp, 3, band);
+    assert.equal(r[band].ran.text, 'The ship is the worse hurt, and Captain Vance calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight.', band); assert.equal(r[band].ran.xp, 0, band);
+  }
   await done();
 });
 
@@ -651,10 +655,10 @@ test('a heavy turn whose casualty falls on the hand does not hurt the hand a sec
     const st = raid('gunner'), h = hired();
     st.crew = st.crew.filter(id => person(id).role !== 'medic'); st.injured = {}; delete h.hurtUntil;
     for (const id of st.crew) { person(id).opinion = 0; delete person(id).owes; }  // nobody to take it for you
-    startDuel({ kind: 'pirate' }, false); begin();
+    startDuel({ kind: 'pirate' }, false); begin(); sturdy();
     fightNow().state.me.shields = 0;
     shownMoves({ kind: 'broadside', target: 'hull', dmg: [60, 60] });
-    rolls([0.5, 0.5, 0.01, 0.999, 0.99, 0.01, 0.99]);  // our shot, her volley, a casualty, on the hand (the last of the pool), no death; then the hand's own roll, and no death
+    rolls([0.5, 0.5, 0.5, 0.01, 0.999, 0.99, 0.01, 0.99]);  // our two shots, her volley, a casualty, on the hand (the last of the pool), no death; then the hand's own roll, and no death
     fireOrders();
     return { line: fightNow().state.log.slice(-1)[0], days: h.hurtUntil - st.day };
   });
@@ -676,7 +680,7 @@ test('what the captain remembers says what happened: a raider let drift, and a n
     raid('gunner'); cap = person(hired().captain);
     const gov = 'Arcology Compact', spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
     startDuel({ kind: 'patrol', gov }, false); begin();
-    fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; }); shownMoves({ kind: 'break' }); fireOrders();
+    fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.shields = 0; foe.armor = 5; }); shownMoves({ kind: 'break' }); fireOrders();  // hurt as well as unarmed: she breaks off, and does not just get away
     out.navy = cap.memories[cap.memories.length - 1];
     return out;
   });

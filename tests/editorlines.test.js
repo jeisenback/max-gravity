@@ -42,17 +42,18 @@ async function play() {
 test('the ship fight, ambush and boarding beats are edited line by line, the lines go to and from the file, and each plays in the preview (#478)', async () => {
   await reload(); await select('scene:fight');
   const r = await page.evaluate(() => {
-    const row = id => SceneIndex.rows.find(x => x.id === id), fight = row('scene:fight'), values = { [fight.id]: { 'part.open.gun.0': 'A new opening.', 'part.end.standoff': fight.parts['end.standoff'] } };
+    const row = id => SceneIndex.rows.find(x => x.id === id), fight = row('scene:fight'), values = { [fight.id]: { 'part.open.gun.0': 'A new opening.', 'part.end.ran': fight.parts['end.ran'] } };  // a line given as it stands is not an override
     const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
     return {
       kinds: ['scene:fight', 'beats:ambush', 'beats:repel', 'beats:assault', 'beats:dead-in-space'].map(id => [row(id).kind, row(id).noTitle, Object.keys(row(id).parts).length > 10]), dead: row('beats:dead-in-space').kind,
-      out: out[fight.id], back: SceneIndex.valuesFrom(out)[fight.id], lines: Object.keys(fight.parts).length,
+      out: out[fight.id], back: SceneIndex.valuesFrom(out)[fight.id], lines: Object.keys(fight.parts).length, ran: fight.parts['end.ran'],
       plan: SceneIndex.planImport({ overrides: { 'scene:fight': { title: 'No', parts: { 'open.gun.1': 'Ok.', nope: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
   });
   assert.deepEqual(r.kinds.slice(0, 4), [['data', true, true], ['data', true, true], ['data', true, true], ['data', true, true]]);
   assert.deepEqual(r.kinds[4].slice(0, 2), ['data', true], 'the dead-in-space scene has fewer lines');
   assert.equal(r.dead, 'data', 'the dead-in-space scene is lines like the other beats');
+  assert.ok(typeof r.ran === 'string' && r.ran.length > 0, 'the unchanged line given is a line of the scene');
   assert.deepEqual(r.out, { parts: { 'open.gun.0': 'A new opening.' } }, 'only what differs');
   assert.deepEqual(r.back, { 'part.open.gun.0': 'A new opening.' });
   assert.deepEqual(r.plan, [false, false, true], 'the title and the unknown line are refused');
