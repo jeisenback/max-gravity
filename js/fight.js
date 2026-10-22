@@ -5,8 +5,9 @@
 // GRADE_HULL and GRADE_PUNCH set how much a veteran crew adds.
 
 const FIGHT = {
-  GUN_DMG: [12, 20], // one of your shots' range before the multipliers
-  FOE_DMG: [10, 26], // one of her guns' range before the multipliers: wider than yours, and harder at its top, so that a random fight costs armor (tuned, Task 7)
+  GUN_DMG: [8, 14],  // one of your shots' range before the multipliers. Every damage and part bar here is about 0.7 of Task 7's, so that a fight's kills are slower and a
+                     // raider's run to the knife is a race: two guns and two torpedoes at her hull took her 130 before she was alongside (#808 final fixes)
+  FOE_DMG: [7, 18],  // one of her guns' range before the multipliers: wider than yours, and harder at its top
   HEAVY: 1.4,        // what heavy rounds add; it is already in a side's dmgMult, kept here for the board's text
   SKILL_DMG: 1,      // per gunner level, added to the low end
   BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 },
@@ -15,8 +16,9 @@ const FIGHT = {
   OVER_MULT: 1.5,    // what an overcharged shot rolls more
   OVER_HEAT: 2,      // the heat an overcharged shot adds (a plain shot adds 1)
   AIM_MULT: { knife: 1, close: 1, mid: 0.4, long: 0.25 },  // on top of the band, for a shot at her drive, lock or launcher; her hull and weapons have none. Low far out, so that her drive is not gone before she is alongside
-  PART_HP: { weapons: 90, drive: 50, lock: 10, launcher: 15 },  // weapons is per gun mount, about three turns of fire; a drive takes three or four turns, so that a raider aimed at only there boards about one time in three; a lock goes in a turn (tuned, Task 7)
-  TORP_DMG: [30, 45],
+  PART_HP: { weapons: 63, drive: 34, lock: 7, launcher: 10 },  // weapons is per gun mount, about three turns of fire; a drive takes three turns, so that a raider aimed at only there boards about one time in five; a lock goes in a turn
+  TORP_DMG: [12, 18],  // one of your torpedoes: low, so that two of them at a raider's hull do not win the race to the knife for you
+  SALVO_DMG: [20, 30], // one torpedo of her salvo: two of them unanswered are a heavy hit about two times in five, and with the turret held back never
   PDC_HOLD: 0.4,     // what a turret held back takes off a volley
   SALVO: 2,          // torpedoes in her salvo
   SALVO_EVERY: 2,    // she arms on turn 0 and then every second turn, and fires the turn after, while her torpedoes last
@@ -24,7 +26,8 @@ const FIGHT = {
   TURNS: 8,
   BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid
-  HEAVY_HIT: 0.2     // a turn is a heavy hit when your hull (shields and armor) loses more than this share of your maximum armor (fightui.js); a fifth, so that the hand is rarely killed
+  HEAVY_HIT: 0.2     // a turn is a heavy hit when your hull (shields and armor) loses more than this share of your maximum armor (fightui.js); a fifth, so that the hand is rarely
+                     // killed: on the Ice Hauler only her salvo unanswered reaches it (SALVO_DMG), and the soak holds the hurts a chapter (tests/distribution/stakes.test.js)
 };
 
 const KNIFE = RANGE_BANDS.indexOf('knife');
@@ -37,13 +40,13 @@ const shotRange = (st, o) => [FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, 
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);
 
-// What each kind of foe adds to her hull: the share of her shields that comes back each turn, and a torpedo launcher with its torpedoes (the corsair's and the
-// cutter's tuned in Task 7, COMBAT.md; the destroyer's are still the starting values, as the fight tool does not play one).
+// What each kind of foe adds to her hull: the share of her shields that comes back each turn, and a torpedo launcher with its torpedoes (tuned with the fight
+// tool, COMBAT.md). The destroyer has neither until the fight ladder (PR 3) decides how she is met: the fight tool does not play one.
 const FOE_TYPES = {
   raider: { regen: 0, launcher: false },
   corsair: { regen: 0, launcher: true, torps: 4 },
-  cutter: { regen: 0.125, launcher: false },
-  destroyer: { regen: 0.15, launcher: true, torps: 4 }
+  cutter: { regen: 0.07, launcher: false },
+  destroyer: { regen: 0, launcher: false }
 };
 
 function shipSide(stats, { grade = 0, skill = 0, torps = 0, regen = 0, launcher = stats.launcher }) {
@@ -140,7 +143,7 @@ function foeMove(st, i) {
   if (drive && (hullShare(foe) < FIGHT.BREAK || !armed)) return { kind: 'break' };
   if (!armed) return { kind: 'hold' };  // no guns and no drive: she is out, and the fight has ended on her
   const launcher = foe.launcher && foe.parts.launcher.hp > 0;
-  if (launcher && st.armed[i]) return { kind: 'salvo', target: 'hull', n: Math.min(FIGHT.SALVO, foe.torps), dmg: FIGHT.TORP_DMG.map(d => d * Math.min(FIGHT.SALVO, foe.torps)) };
+  if (launcher && st.armed[i]) return { kind: 'salvo', target: 'hull', n: Math.min(FIGHT.SALVO, foe.torps), dmg: FIGHT.SALVO_DMG.map(d => d * Math.min(FIGHT.SALVO, foe.torps)) };
   if (launcher && foe.torps >= 1 && st.turn % FIGHT.SALVO_EVERY === 0) return { kind: 'arm', n: Math.min(FIGHT.SALVO, foe.torps) };
   if (st.band === KNIFE && lock) return { kind: 'board' };
   if (st.me.parts.drive.hp > 0 && st.me.speed > foe.speed) return { kind: 'pin', target: 'drive', dmg: foeVolley(st, i) };

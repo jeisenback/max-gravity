@@ -198,11 +198,11 @@ function uatLate() {
 }
 // Each fight, early and late: the late one meets a crew a grade better (up to the top), as the lanes get worse.
 const UAT_FIGHTS = [
-  { id: 'fight-raider', title: 'A lone raider', check: 'The panel shows both ships\' bars, her next move and the captain\'s, and one order per gun. Setting a gun\'s target redraws in place; Fire plays a turn and adds a log line. Aimed at her guns, she is beaten within eight turns; aimed at random, she often gets away or the captain runs.',
+  { id: 'fight-raider', title: 'A lone raider', check: 'The panel shows both ships\' bars, her next move and the captain\'s, and one order per gun. Setting a gun\'s target redraws in place; Fire plays a turn and adds a log line. Every gun at her hull, she is alongside and boards most of the time before the hull fire tells; at her guns, she boards or gets away with her guns gone; at her lock while she closes (or her drive first), she cannot board, and she breaks off or is left dead in space by the eighth turn.',
     run: g => uatShipFight({ kind: 'pirate' }, { ship: 'raider', grade: g }) },
   { id: 'fight-pack', title: 'Two raiders in company', check: 'Both are on the board with their own bars and moves, and you start a volley behind. Once the first is crippled, a shot at her hull or lock goes to the consort and the log says so.',
     run: g => uatShipFight({ kind: 'pirate' }, { ship: 'raider', grade: g, pack: true }) },
-  { id: 'fight-veteran', title: 'A veteran corsair, with torpedoes aboard', check: 'The opening names a veteran crew; her bars are longer and her volleys harder. The torpedo order shows while torpedoes are left, and a torpedo is one large hit.', grade: 2,
+  { id: 'fight-veteran', title: 'A veteran corsair, with torpedoes aboard', check: 'The opening names a veteran crew; her bars are longer and her volleys harder. The torpedo order shows while torpedoes are left, and a torpedo hits harder than a gun.', grade: 2,
     prep: () => { const st = G.state; st.outfits.launcher = 1; st.torpedoes = 6; },  // the loadout, before the fight (prep: what the hand brings to it)
     run: g => uatShipFight({ kind: 'pirate' }, { ship: 'corsair', grade: g }) },
   { id: 'fight-patrol', title: 'A navy stop', check: 'Firing on her costs standing with her government. She is never boarded, and crippled she calls the stop off.', grade: null,

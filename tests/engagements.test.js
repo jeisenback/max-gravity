@@ -21,7 +21,7 @@ const helpers = () => {
     window.makeEnemy = () => Object.assign(spare, { shipId, armor: SHIPS[shipId].armor, maxArmor: SHIPS[shipId].armor });  // the style of the raider or the corsair
     return st;
   };
-  window.sturdy = () => fightNow().state.foes.forEach(f => { f.parts.weapons.hp = f.parts.weapons.max = 90; });  // a test of what she does when she fires keeps her guns; 90 a mount is now the bar itself (FIGHT.PART_HP), so this pins it there
+  window.sturdy = () => fightNow().state.foes.forEach(f => { f.parts.weapons.hp = f.parts.weapons.max = 90; });  // a test of what she does when she fires keeps her guns; 90 a mount is more than the bar (63, FIGHT.PART_HP), so this pins it there
   window.rolls = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : 0.99); };
   window.begin = () => { const e = G.nextEvent; G.nextEvent = null; openEvent(e); };  // the first scene; later ones open from finishEvent
   window.choose = (label) => { const i = G.dialog.choices.findIndex(c => c.label.includes(label)); const t = chooseEvent(i); return t; };
@@ -70,17 +70,17 @@ test('played out, the panel goes turn by turn to an end: she closes firing, her 
   const r = await ev(() => {
     const st = raid('engineer'), h = hired(), cap = person(h.captain), op = cap.opinion, xp = skillXp('engineer'), out = { bands: [], reads: [] };
     startDuel({ kind: 'pirate' }, false); begin();
-    fightNow().state.foes[0].parts.weapons.hp = fightNow().state.foes[0].parts.weapons.max = 40;  // her weapons cut to 40 (a mount is 90): two guns take them before she is alongside
+    fightNow().state.foes[0].parts.weapons.hp = fightNow().state.foes[0].parts.weapons.max = 40;  // her weapons cut to 40 (a mount is 63): two guns take them before she is alongside
     while (G.dialog.choices.some(c => c.label.startsWith('Fire'))) { out.bands.push(RANGE_BANDS[fightNow().state.band]); out.reads.push(G.dialog.event.read.replace(/^.*?": /, '')); fireOrders(); }
     out.log = fightNow().state.log.slice(1); out.title = G.dialog.event.title; out.labels = G.dialog.choices.map(c => c.label); out.close = G.dialog.event.text.split('</p><p>').pop();
     out.opinion = cap.opinion - op; out.xp = skillXp('engineer') - xp; out.shields = fightNow().state.me.shields;
     return out;
   });
   assert.deepEqual(r.bands, ['long', 'mid', 'close'], 'she is the faster ship, and closes a band a turn; her weapons cut to 40, two guns take them in two turns and she turns away in the third');
-  assert.deepEqual(r.reads, ['closing, and firing at your hull as she comes, 10 to 27 damage. Captain Vance: holding the range.',
-    'closing, and firing at your hull as she comes, 11 to 29 damage. Captain Vance: holding the range.',
+  assert.deepEqual(r.reads, ['closing, and firing at your hull as she comes, 7 to 19 damage. Captain Vance: holding the range.',
+    'closing, and firing at your hull as she comes, 8 to 20 damage. Captain Vance: holding the range.',
     'turning to break off. Captain Vance: holding the range.'], 'her move is shown before it is made');
-  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 13, you hit her weapons for 16, she hits your hull for 11.', 'Turn 2: you hit her weapons for 11, nothing left of the weapons to hit.', 'Turn 3: nothing left of the weapons to hit, nothing left of the weapons to hit.'], 'both guns hit her weapons, so her guns go in the second turn (she fires in the first, as she closes), and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
+  assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 9, you hit her weapons for 11, she hits your hull for 7.', 'Turn 2: you hit her weapons for 12, you hit her weapons for 8.', 'Turn 3: nothing left of the weapons to hit, nothing left of the weapons to hit.'], 'both guns hit her weapons, so her guns go in the second turn (she fires in the first, as she closes), and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
   assert.equal(r.title, 'Battle Stations'); assert.deepEqual(r.labels, ['Stand down']);
   assert.equal(r.close, 'She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.', 'her guns gone and her hull whole: a weak end');
   assert.deepEqual([r.opinion, r.xp], [0, 0], 'she got away with nothing for you');
