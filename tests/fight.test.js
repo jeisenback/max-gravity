@@ -354,6 +354,39 @@ test('each end is reached: crippled, broke, boarded, lost, escaped, away, and at
   assert.equal(cap(0.7, 0.5), 'broke', 'you at 0.7 and her at 0.5: she breaks');
 });
 
+test('a tie at the turn cap goes to her: she breaks off, and the captain does not run', () => {
+  const st = fight(); st.turn = FIGHT.TURNS;
+  st.me.shields = 54; st.me.armor = 84; st.foes[0].shields = 30; st.foes[0].armor = 60;  // 138 of 230 and 90 of 150: both at 0.6
+  assert.equal((st.me.shields + st.me.armor) / (st.me.maxShields + st.me.maxArmor), (st.foes[0].shields + st.foes[0].armor) / (st.foes[0].maxShields + st.foes[0].maxArmor));
+  assert.equal(shipEnd(st), 'broke');
+});
+
+test('two ships breaking off: away only when every one left has lost her guns with her hull whole, else broke', () => {
+  const two = () => shipFight({ me: shipSide({ shields: 90, armor: 140, guns: 2, dmgMult: 1, accel: 1, turn: 1 }, {}),
+    foes: [0, 1].map(() => shipSide({ shields: 50, armor: 100, guns: 1, dmgMult: 1, accel: 1, turn: 1 }, {})), nerve: 0, band: CLOSE });
+  const breaking = st => { st.moves = { foe: [{ kind: 'break' }, { kind: 'break' }], captain: hold }; return st; };
+  let st = breaking(two()); kill(st.foes[0], 'weapons'); kill(st.foes[1], 'weapons');
+  assert.equal(shipEnd(st), 'away', 'both with no guns and their hulls whole: they got away with nothing for you');
+  st = breaking(two()); kill(st.foes[0], 'weapons'); hurt(st.foes[1], 0.2);
+  assert.equal(shipEnd(st), 'broke', 'one with her guns up and badly hurt: a broke, though her sister got away whole');
+  st = breaking(two()); kill(st.foes[0], 'weapons', 'drive'); kill(st.foes[1], 'weapons');
+  st.moves.foe[0] = { kind: 'hold' };
+  assert.equal(shipEnd(st), 'away', 'one out (no guns, no drive) and the other gone with her guns shot away and her hull whole: away');
+});
+
+test('her rule order: a corsair at the knife with her lock up arms and fires her salvos on their turns, and boards only when they are spent', () => {
+  let st = fight({}, { stats: { launcher: true }, opts: { torps: 4 } }, K);
+  const kinds = [];
+  for (let i = 0; i < 5; i++) {
+    const m = foeMove(st, 0);
+    kinds.push(m.kind);
+    if (m.kind === 'board') break;
+    st = resolveShipTurn(st, orders([]), { foe: [m], captain: hold }, LOW).state;
+    assert.equal(st.boarded, false, `turn ${i}: no boarding on an arm or a salvo turn`);
+  }
+  assert.deepEqual(kinds, ['arm', 'salvo', 'arm', 'salvo', 'board']);
+});
+
 test('your loss comes first: boarded while your armor is 0 is lost', () => {
   const st = fight({}, {}, K); st.me.armor = 0;
   assert.equal(shipEnd(resolveShipTurn(st, orders([]), mv('board'), LOW).state), 'lost');
