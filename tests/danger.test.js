@@ -23,7 +23,8 @@ test('on the same lane pirates find a hired hand more often than an owner', asyn
     const st = setup(), to = Object.keys(SYSTEMS).find(id => id !== st.systemId), out = {};
     G.state.world = G.state.world || {}; worldOf(st.systemId).unrest = 0.15; worldOf(to).unrest = 0.15;
     const rate = () => { let n = 0; for (let i = 0; i < 1500; i++) { G.transit = { to, total: 100, left: 100 }; G.mode = 'transit'; planIntercept(); if (G.transit.intercept && G.transit.intercept.spec.kind === 'pirate') n++; } G.transit = null; G.mode = 'landed'; return n / 1500; };
-    out.hand = rate();
+    st.hired.fights = { done: ['raider'] };  // a hand meets no random pirate before the ladder has shown her one (fightladder.js), and then at LADDER_RANDOM of the rate
+    out.hand = rate() / LADDER_RANDOM;
     const h = st.hired; st.hired = null; out.owner = rate(); st.hired = h;
     return out;
   });

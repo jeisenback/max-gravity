@@ -12,7 +12,7 @@
   'js/views.js', 'js/factions.js', 'js/transit.js', 'js/burnpanel.js', 'js/crew.js', 'js/peopletext.js', 'js/people.js',
   'js/hail.js', 'js/story.js', 'js/touch.js', 'js/art.js', 'js/audio.js', 'js/music.js', 'js/tutorial.js', 'js/world.js',
   'js/company.js', 'js/shiplife.js', 'js/hulldetail.js', 'js/familytext.js', 'js/family.js', 'js/room.js', 'js/calendar.js', 'js/social.js',
-  'js/bar.js', 'js/bartopics.js', 'js/outpost.js', 'js/legacy.js', 'js/torpedoes.js', 'js/boarding.js', 'js/engage.js',
+  'js/bar.js', 'js/bartopics.js', 'js/outpost.js', 'js/legacy.js', 'js/torpedoes.js', 'js/boarding.js', 'js/engage.js', 'js/fightladder.js',
   'js/duel.js', 'js/console.js', 'js/stations.js', 'js/autopilot.js', 'js/engineering.js', 'js/comms.js', 'js/journal.js',
   'js/web.js', 'js/wear.js', 'js/projects.js', 'js/programs.js', 'js/hired.js', 'js/role.js', 'js/readouts.js', 'js/ownerboard.js', 'js/chaptertwo.js', 'js/dayashore.js', 'js/shippers.js', 'js/arcs.js', 'js/suggest.js', 'js/repairs.js', 'js/jobs.js',
   'js/awayjobs.js', 'js/stay.js', 'js/losses.js', 'js/hiredeventstext.js', 'js/hiredevents.js', 'js/bridge.js', 'js/shell.js',
@@ -461,6 +461,11 @@
             const plan = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 50, from: currentPlanet().name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false };
             standIn = `${crew[0].p.first} ${crew[0].p.last} stands in for the person the office wants: the first of the crew who is not a main character, whatever their ties.`;
             return sideScene(plan, { gov: 'Arcology Compact', p: crew[0].p }, freightAgent(currentPlanet()));
+          },
+          'scene:fight-entry': () => {  // the contact of the step whose line was typed last, else the first; the Ore Runner on offer, for the set piece's price
+            const step = FIGHT_LADDER.find(x => x.id === String(m.line || '').split('.')[0]) || FIGHT_LADDER[0];
+            hired().deal = hired().deal || { price: 170000, day: st.day, until: st.day + 20, broker: false };
+            return contactEvent({ ...step.spec, ...(step.gov ? { gov: step.gov(st, 'mars') || 'Arcology Compact' } : {}), ladder: step.id });
           },
           'scene:day-ashore': () => { fillBar(currentPlanet()); return dayAshoreEvent(true); },  // the menu with every entry the port has today
           'scene:chapter-two-end': () => {  // the close of chapter two, 90 days after the buy, with the ending whose line was typed last (else everyone who came is aboard)

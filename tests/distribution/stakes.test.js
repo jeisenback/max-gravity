@@ -14,7 +14,7 @@
 //            and the three scenes of the ship's night play at least once between them (measured 4, 4 and 4; before the soak stamped each draw with its second of the burn, none).
 // The second test plays each burn's seconds and its contact (--frames), so the ship fights are in the chapter (fightui.js: a heavy turn can hurt the hand):
 // Sample:    the narrow build's captain with a gunner, seeds 1 to 40, up to 40 runs each, four at a time, the pair the tests start from.
-// Tolerance: the hand is hurt between 0.1 and 0.7 times a chapter (measured 0.33, 13 of 40; 0.30 before the fight rework, 4ed304f; 1.13 with the rework's
+// Tolerance: the hand is hurt between 0.1 and 0.7 times a chapter (measured 0.47, 19 of 40, once the soak plays on to the yard and meets the ladder's set piece, #810; 0.33, 13 of 40, before; 0.30 before the fight rework, 4ed304f; 1.13 with the rework's
 //            first tune, when two of her torpedoes unanswered were nearly always a heavy turn, #808); hurt again while still hurt in at most 3 chapters
 //            (measured 0; 0 before; 5 with the first tune); and at most 3 of the 40 chapters end early (the hand's death, the captain's loss or the hand put
 //            ashore: measured 0; 1 before; 4 with the first tune; a death is meant near 3 in 100 chapters, js/boarders.js).

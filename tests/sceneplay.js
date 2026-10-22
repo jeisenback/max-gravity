@@ -336,6 +336,12 @@ const playScenes = () => {
     addBond(a, b, -9); st.feuds = { [bondKey(a, b)]: 1 }; st.relAt = {}; st.day += shift;
     return splitScene();
   }, { extra: () => (G.state.home || {}).log });
+  // ---------- the entry lines of chapter 1's ladder of fights (engage.js contactEvent, #810): each step's contact as it opens; its choices are the contact's, played above ----------
+  for (const step of FIGHT_LADDER) run(`scene:fight-entry:${step.id}`, {}, () => {
+    hired().deal = { price: 170000, day: G.state.day, until: G.state.day + 20, broker: false };  // the Ore Runner's price, which the set piece names
+    const ev = contactEvent({ ...step.spec, ...(step.gov ? { gov: 'Arcology Compact' } : {}), ladder: step.id });
+    return { ...ev, choices: [] };
+  });
   // ---------- the ship fight (fightui.js): its panels, a move of each kind, every order, and each end, from states set by hand; last, so the
   // foes it makes do not move the ids above ----------
   if (!window.__only || /scene:fight/.test(window.__only)) {

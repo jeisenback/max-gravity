@@ -681,3 +681,132 @@ test('a save from before the fitting (no launcher) lands at an outfitter and is 
   assert.deepEqual(r, { outfitter: true, launcher: false, torps: 0, fund: 100000, bill: 0 });
   await done();
 });
+
+// ---------- the ladder of fights (js/fightladder.js, #810) ----------
+const ladderHelpers = () => {
+  window.ladderBurn = (to = 'mars') => { const prev = G.transit; G.transit = { to, total: 100, left: 100, times: [] }; planIntercept(); const spec = G.transit.intercept && JSON.parse(JSON.stringify(G.transit.intercept.spec)); G.transit = prev; return spec; };
+};
+
+test('a ladder step that is due waits for a burn with no other intercept', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(hiredHelpers); await ev(ladderHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); const st = G.state, h = hired(); h.runsDone = 1; st.flags.classicCombat = true;
+    const out = {};
+    st.rep['Dome Concord'] = -40;
+    const hostile = []; for (let i = 0; i < 30; i++) hostile.push(ladderBurn('mars'));
+    out.patrolFirst = hostile.some(s => s && s.kind === 'patrol' && !s.ladder);
+    out.laddered = hostile.filter(s => s && s.ladder).length;
+    st.rep['Dome Concord'] = 0;
+    out.step = ladderBurn('mars');
+    out.doneBefore = (h.fights || { done: [] }).done.slice();
+    return out;
+  });
+  assert.ok(r.patrolFirst, 'a wanted patrol still takes the burn');
+  assert.ok(r.laddered > 0, 'the ladder takes the burns the patrol did not');
+  assert.equal(r.step.ladder, 'raider'); assert.equal(r.step.shipId, 'raider'); assert.equal(r.step.kind, 'pirate');
+  assert.deepEqual(r.doneBefore, [], 'planned is not met');
+  await done();
+});
+
+test('the ladder contact is marked done when its scene is shown, whatever is chosen after', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(hiredHelpers); await ev(ladderHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); const h = hired(); h.runsDone = 1; G.state.flags.classicCombat = true;
+    uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.interceptPlanned = false; planIntercept(); const spec = JSON.parse(JSON.stringify(t.intercept.spec));
+    t.intercept.at = 0; t.left = 50;
+    const real = Math.random; Math.random = () => 0;  // the drive is seen
+    try { Mods.emit('frame', 0.01); } finally { Math.random = real; }
+    return { spec, scene: t.event ? t.event.title : null, done: h.fights && h.fights.done.slice(), next: ladderBurn('pallas') };
+  });
+  assert.equal(r.spec.ladder, 'raider'); assert.equal(r.scene, 'Contact'); assert.deepEqual(r.done, ['raider']);
+  assert.notEqual(r.next && r.next.ladder, 'raider', 'the same step is not met twice');
+  await done();
+});
+
+test('a ladder fight opens with its own entry line, and a random one with the sensor line', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); const st = G.state, h = hired();
+    const vars = { cap: 'Captain Vance', patrol: 'Compact cutter', price: '1,000' };  // the narrow build's captain, the patrol of Earth's space (the burn leaves it), the deal below
+    const labels = e => e.choices.map(c => String(c.label));
+    // each step's condition made to hold in turn, so the walk meets the five in the ladder's order
+    const preps = [() => { h.runsDone = 1; }, () => { h.runsDone = 3; }, () => { h.beats = CAPTAIN_BEATS.length; h.beatRun = 0; h.flags = { ...(h.flags || {}), sawHull: true }; },
+      () => { h.deal = { price: 1000, day: st.day, until: st.day + 50, broker: false }; }, () => { st.credits = Math.max(st.credits, 1000); }];
+    const steps = preps.map(prep => {
+      prep(); const step = ladderNext(h, st, 'mars');
+      if (!step) return null;
+      const plain = contactEvent({ ...step.spec, ladder: undefined }), e = contactEvent(step.spec);
+      return { id: step.id, text: e.text, want: sceneSay('scene:fight-entry', `${step.id}.text`, vars), labels: labels(e), plainLabels: labels(plain) };
+    });
+    return { steps, done: h.fights.done.slice(), pirate: contactEvent({ kind: 'pirate', shipId: 'raider' }).text, patrol: contactEvent({ kind: 'patrol', gov: 'Dome Concord', shipId: 'cutter' }).text };
+  });
+  assert.deepEqual(r.steps.map(s => s && s.id), ['raider', 'corsair', 'cutter', 'pair', 'setpiece'], 'the five, in order');
+  assert.deepEqual(r.done, ['raider', 'corsair', 'cutter', 'pair', 'setpiece']);
+  for (const s of r.steps) {
+    assert.match(s.text, /^Sensors: a drive plume at [\d,]+ km, on an intercept course\. /, `${s.id}: the range is kept`);
+    assert.ok(s.text.endsWith(` ${s.want}`), `${s.id} opens with its own line: ${s.text}`);
+    assert.doesNotMatch(s.text, /No transponder\. The plume signature says pirate\.|You are wanted in their space\.|\{\w+\}/, `${s.id}: no sensor line and no slot left unfilled`);
+    assert.deepEqual(s.labels, s.plainLabels, `${s.id}: the choices are the contact's own`);
+  }
+  assert.equal(new Set(r.steps.map(s => s.want)).size, 5, 'five different lines');
+  const by = Object.fromEntries(r.steps.map(s => [s.id, s.text]));
+  assert.ok(by.cutter.includes('Transponder: Compact cutter, with'), by.cutter); assert.ok(by.setpiece.includes('1,000 cr'), by.setpiece); assert.ok(by.raider.includes('Captain Vance'), by.raider);
+  assert.ok(r.pirate.endsWith('No transponder. The plume signature says pirate.'), r.pirate);
+  assert.ok(r.patrol.endsWith('Transponder: Dome Concord navy. You are wanted in their space.'), r.patrol);
+  await done();
+});
+
+test('random contacts for a hand come only once a type is met, and only of the types met', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(hiredHelpers); await ev(ladderHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); const st = G.state, h = hired(); h.runsDone = 0;
+    worldOf('mars').unrest = 0.3; worldOf('earth').unrest = 0.3;
+    const draws = n => { const out = []; for (let i = 0; i < n; i++) { const s = ladderBurn('mars'); if (s) out.push(s); } return out; };
+    const none = draws(300).filter(s => s.kind === 'pirate').length;
+    h.runsDone = 1; h.fights = { done: ['raider'] };
+    st.rep['Dome Concord'] = 0;
+    const met = draws(600).filter(s => s.kind === 'pirate'), scene = scenePirate().pack;
+    h.fights.done.push('corsair', 'cutter', 'pair');  // the ladder's pair met: the lane rolls a random raider's pack again
+    const after = draws(600).filter(s => s.kind === 'pirate');
+    return { none, ships: [...new Set(met.map(s => s.shipId))], count: met.length, packs: [...new Set(met.map(s => s.pack))], scene,
+      after: [...new Set(after.map(s => 'pack' in s))], afterScene: 'pack' in JSON.parse(JSON.stringify(scenePirate())) };
+  });
+  assert.equal(r.none, 0, 'no types met, no random pirate');
+  assert.ok(r.count > 20, `some contacts come (${r.count})`);
+  assert.deepEqual(r.ships, ['raider']);
+  assert.deepEqual(r.packs, [false], 'a random raider comes alone before the ladder\'s pair'); assert.equal(r.scene, false);
+  assert.deepEqual(r.after, [false], 'after the pair, the spec leaves the pack to the lane'); assert.equal(r.afterScene, false);
+  await done();
+});
+
+test('the ladder is for a hand: an owner game plans its contacts as it did', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent();
+    worldOf('earth').unrest = 0.3; worldOf('mars').unrest = 0.3;
+    const specs = []; for (let i = 0; i < 400; i++) { G.transit = { to: 'mars', total: 100, left: 100 }; planIntercept(); if (G.transit.intercept) specs.push(G.transit.intercept.spec); }
+    G.transit = null;
+    return { n: specs.length, ladder: specs.filter(s => s.ladder || s.shipId).length, hired: !!hired() };
+  });
+  assert.equal(r.hired, false); assert.ok(r.n > 10); assert.equal(r.ladder, 0, 'no ladder spec, no chosen ship');
+  await done();
+});
+
+test('a raid honors the spec\'s grade and pack, and the pack starts a volley behind', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(hiredHelpers); await ev(ladderHelpers);
+  const r = await ev(() => {
+    startHired('gunner');
+    const rate = spec => { const s = { spec, foe: makeEnemy(spec), edge: 0 }; rateFoe(s); return { grade: s.grade, pack: s.pack, edge: s.edge }; };
+    const out = []; for (let i = 0; i < 40; i++) out.push(rate({ kind: 'pirate', shipId: 'corsair', grade: 2 }), rate({ kind: 'pirate', shipId: 'raider', pack: true }), rate({ kind: 'pirate', shipId: 'raider', pack: true, grade: 0 }));
+    return { setpiece: out.filter((_, i) => i % 3 === 0), pair: out.filter((_, i) => i % 3 === 1), calm: out.filter((_, i) => i % 3 === 2) };
+  });
+  assert.ok(r.setpiece.every(x => x.grade === 2), 'the set piece is a hard crew every time');
+  assert.ok(r.pair.every(x => x.pack && x.edge === -1), 'the pair is a pair every time');
+  assert.ok(r.calm.every(x => x.grade === 0 && x.pack));
+  await done();
+});

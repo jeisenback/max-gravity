@@ -130,7 +130,7 @@ function ambushScene() {
 
 // The call, before and after a read. `known` is set once a read has told you which it is.
 function ambushChoice(a, cap, h, post, spec) {
-  const springs = (edge, text, open) => startShipFight({ kind: 'pirate' }, false, { edge, text, open }), say = key => ambushSay(key, { cap: cap.last, post: POSTS[post].name.toLowerCase() });
+  const springs = (edge, text, open) => startShipFight(scenePirate(), false, { edge, text, open }), say = key => ambushSay(key, { cap: cap.last, post: POSTS[post].name.toLowerCase() });
   const sprung = () => springs(-2, say('sprung.result'), say('sprung.open'));
   const real = () => { h.fund += 5000; like(cap, 1, lineWords('beats:ambush', 'memory.real', AMBUSH_MEMORY.real)); return say('real.result'); };
   const choices = [];

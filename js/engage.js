@@ -22,9 +22,22 @@ function planIntercept() {
   if (bounty) spec = { kind: 'bounty', mission: bounty };
   else if (G.revenge) { spec = { kind: 'hunter', person: G.revenge }; G.revenge = null; }
   else if (hostileGov && Math.random() < 0.6) spec = { kind: 'patrol', gov: hostileGov };
-  else if (Math.random() < Math.min(0.55, (hired() ? HAND_RAID.base : 0.05) + (hired() ? HAND_RAID.per : 0.6) * Math.max(danger(from), danger(to))) * SCAN_MAX) spec = { kind: 'pirate' };  // they get a second look when the drive runs cool (below)
+  else if (hired()) spec = handIntercept(hired(), st, to, Math.max(danger(from), danger(to)));
+  else if (Math.random() < Math.min(0.55, 0.05 + 0.6 * Math.max(danger(from), danger(to))) * SCAN_MAX) spec = { kind: 'pirate' };  // they get a second look when the drive runs cool (below)
   if (spec) t.intercept = { spec, at: t.total * rand(0.25, 0.7) };
 }
+
+// A hired hand's contact on a burn nothing else claimed (fightladder.js): the ladder's step when one is due, else a random pirate at LADDER_RANDOM of
+// the rate, of a type already met, and none before one is.
+function handIntercept(h, st, to, danger) {
+  const step = ladderNext(h, st, to);
+  if (step) return step.spec;
+  const met = ladderPirate(h, 0) !== null;  // any pirate type met yet
+  if (!met || Math.random() >= Math.min(0.55, HAND_RAID.base + HAND_RAID.per * danger) * LADDER_RANDOM * SCAN_MAX) return null;
+  return { kind: 'pirate', shipId: ladderPirate(h, Math.random()), pack: ladderPack(h) };
+}
+// A pirate for a scene that is not a burn's contact: a hand's is of a type met (a raider before any), an owner's is drawn as it always was.
+const scenePirate = () => (hired() ? { kind: 'pirate', shipId: ladderPirate(hired(), Math.random()) || 'raider', pack: ladderPack(hired()) } : { kind: 'pirate' });
 
 function makeEnemy(spec) {
   const sid = G.state.systemId, persona = makePerson(cultureOf(sid));
@@ -60,9 +73,14 @@ const HAND_CONTACT = {
     lose: 'You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations.' },
 };
 
+// The line a ladder contact opens with in place of the sensor's (#810): the step's reason for coming, from the lines of 'scene:fight-entry'. `cap` is the
+// hand's captain and `deal` the used Ore Runner on offer (h.deal), for the set piece's price.
+const entryLine = (spec, cap, deal) => sceneSay('scene:fight-entry', `${spec.ladder}.text`,
+  { cap: cap ? `Captain ${cap.last}` : 'The captain', patrol: spec.gov ? PATROL_NAMES[spec.gov] : '', price: deal ? fmt(deal.price) : '' });
 function contactEvent(spec) {
+  if (spec.ladder) ladderDone(hired(), spec.ladder);  // met when the scene is shown, whatever is chosen after (fightladder.js)
   const st = G.state, d = fmt(Math.round(rand(3200, 3800) / 10) * 10);
-  const who = { pirate: 'No transponder. The plume signature says pirate.', patrol: `Transponder: ${spec.gov} navy. You are wanted in their space.`,
+  const who = spec.ladder ? entryLine(spec, hiredCaptain(), hired() && hired().deal) : { pirate: 'No transponder. The plume signature says pirate.', patrol: `Transponder: ${spec.gov} navy. You are wanted in their space.`,
     bounty: `Transponder spoofed, but the plume matches: ${spec.mission && spec.mission.targetName}, the ship you are hunting.`,
     hunter: `A hired gun. The captain says ${spec.person && `${spec.person.first} ${spec.person.last}`} sends regards.` }[spec.kind];
   // A crewed gunner fights it; with none, you take the guns yourself.
@@ -131,7 +149,7 @@ Mods.register({
     const ev = TRANSIT_EVENTS.find(x => x.title === 'Pirates Matching Course');
     if (ev) {
       for (const [label, flee] of [['Fight', false], ['Hard burn', true]]) {
-        ev.choices.find(x => x.label.startsWith(label)).run = () => startDuel({ kind: 'pirate' }, flee);
+        ev.choices.find(x => x.label.startsWith(label)).run = () => startDuel(scenePirate(), flee);
       }
     }
   },
