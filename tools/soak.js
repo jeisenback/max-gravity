@@ -204,8 +204,10 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         if (hired().deal && offerDay === null) offerDay = hired().deal.day - hired().since;
         const xoKey = CAPTAINS[hired().captainKey] && CAPTAINS[hired().captainKey].xo;
         while (xoKey && xoDays.length < (castRec(xoKey).arc || 0)) xoDays.push(st.day - hired().since);
-        const d = hired().deal, price = d && dealOpen() ? d.price : target;  // she is bought when the deal's price is in hand, or the chapter's if it lapsed
-        if (st.credits >= price && !H) reached = { runs, day: st.day, days: st.day - hired().since, credits: st.credits, deal: d ? { price: d.price, offered: d.day, lapsed: !dealOpen() } : null };
+        const d = hired().deal, open = d && dealOpen(), price = open ? d.price : target;  // she is bought when the deal's price is in hand, or the chapter's if it lapsed
+        // With the deal open she is bought at a yard, as the game has it: with the price in hand at a port without one she sails on (planRun heads for a yard), and
+        // that burn is where the ladder's set piece comes (fightladder.js).
+        if (st.credits >= price && !H && (!open || currentPlanet().services.includes('shipyard'))) reached = { runs, day: st.day, days: st.day - hired().since, credits: st.credits, deal: d ? { price: d.price, offered: d.day, lapsed: !dealOpen() } : null };
         for (const n of UI.notes) if (odd(n)) bad.push('note: ' + n.slice(0, 80));
         if (H && !ending.v) await H.port(answer);  // the day ashore and the buy-in
         if (!hired()) { ending.v = { day: st.day - since, title: 'Bought in', bought: true }; break; }  // the hand bought a ship: the chapter's own close

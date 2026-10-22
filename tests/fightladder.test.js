@@ -7,9 +7,9 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const world = { runs: 0, beats: false };
-const { FIGHT_LADDER, LADDER_RANDOM, ladderNext, ladderDone, ladderMet, ladderPirate } = load(['js/data.js', 'js/fightladder.js'], {
+const { FIGHT_LADDER, LADDER_RANDOM, ladderNext, ladderDone, ladderMet, ladderPirate, ladderPack } = load(['js/data.js', 'js/fightladder.js'], {
   runTotals: h => ({ runs: world.runs }), captainBeatsDone: () => world.beats,
-}, ['FIGHT_LADDER', 'LADDER_RANDOM', 'ladderNext', 'ladderDone', 'ladderMet', 'ladderPirate']);
+}, ['FIGHT_LADDER', 'LADDER_RANDOM', 'ladderNext', 'ladderDone', 'ladderMet', 'ladderPirate', 'ladderPack']);
 const plain = x => JSON.parse(JSON.stringify(x));  // out of the context's realm
 const st = { systemId: 'ceres', day: 50, credits: 0 };
 const next = (h, s = st, to = 'pallas') => { const n = ladderNext(h, s, to); return n && plain(n); };
@@ -38,14 +38,24 @@ test('the steps come in order, each when its condition holds', () => {
   assert.equal(next(h, rich), null, 'the chapter is done; the ladder is empty and nothing throws');
 });
 
-test('the raider is not due on a burn from Earth to Earth, and the cutter takes the other end\'s gov, or waits', () => {
-  const h = { fights: { done: [] } }; world.runs = 1; world.beats = false;
-  assert.equal(next(h, { ...st, systemId: 'earth' }, 'earth'), null, 'a burn within Earth\'s own space waits');
-  assert.equal(next(h, { ...st, systemId: 'earth' }, 'mars').id, 'raider');
-  world.beats = true; h.fights.done.push('raider', 'corsair');
+test('the cutter takes the other end\'s gov, or waits', () => {
+  const h = { fights: { done: ['raider', 'corsair'] } }; world.runs = 3; world.beats = true;
   assert.equal(next(h, { ...st, systemId: 'mercury' }, 'mars').spec.gov, 'Dome Concord');
   assert.equal(next(h, { ...st, systemId: 'earth' }, 'mars').spec.gov, 'Arcology Compact');
   assert.equal(next(h, { ...st, systemId: 'mercury' }, 'mercury'), null, 'no navy at either end: the cutter waits');
+});
+
+test('a later step never comes ahead of an earlier one not done, even when its own condition holds', () => {
+  world.runs = 3; world.beats = true;
+  const h = { fights: { done: ['raider', 'corsair'] }, deal: { price: 90000, until: 80 } };  // the pair's condition holds; the cutter is next
+  assert.equal(next(h, { ...st, systemId: 'psyche' }, 'eros'), null, 'no navy at either end: the cutter waits, and the pair waits behind her');
+  assert.equal(next(h, { ...st, systemId: 'earth' }, 'mars').id, 'cutter');
+});
+
+test('a random pirate comes alone until the ladder\'s pair has been met, and after, the lane rolls it', () => {
+  assert.equal(ladderPack(null), false); assert.equal(ladderPack({}), false);
+  assert.equal(ladderPack({ fights: { done: ['raider', 'corsair', 'cutter'] } }), false);
+  assert.equal(ladderPack({ fights: { done: ['raider', 'corsair', 'cutter', 'pair'] } }), undefined);
 });
 
 test('with no hand the ladder is never asked, and an old save with no record is made one', () => {

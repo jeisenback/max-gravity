@@ -730,7 +730,7 @@ test('a ladder fight opens with its own entry line, and a random one with the se
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('gunner'); const st = G.state, h = hired();
-    const vars = { cap: 'Captain Vance', faction: 'the Compact', price: '1,000' };  // the narrow build's captain, the navy of Earth's space (the burn leaves it), the deal below
+    const vars = { cap: 'Captain Vance', patrol: 'Compact cutter', price: '1,000' };  // the narrow build's captain, the patrol of Earth's space (the burn leaves it), the deal below
     const labels = e => e.choices.map(c => String(c.label));
     // each step's condition made to hold in turn, so the walk meets the five in the ladder's order
     const preps = [() => { h.runsDone = 1; }, () => { h.runsDone = 3; }, () => { h.beats = CAPTAIN_BEATS.length; h.beatRun = 0; h.flags = { ...(h.flags || {}), sawHull: true }; },
@@ -753,7 +753,7 @@ test('a ladder fight opens with its own entry line, and a random one with the se
   }
   assert.equal(new Set(r.steps.map(s => s.want)).size, 5, 'five different lines');
   const by = Object.fromEntries(r.steps.map(s => [s.id, s.text]));
-  assert.ok(by.cutter.includes('a cutter of the Compact'), by.cutter); assert.ok(by.setpiece.includes('1,000 cr'), by.setpiece); assert.ok(by.raider.includes('Captain Vance'), by.raider);
+  assert.ok(by.cutter.includes('Transponder: Compact cutter, with'), by.cutter); assert.ok(by.setpiece.includes('1,000 cr'), by.setpiece); assert.ok(by.raider.includes('Captain Vance'), by.raider);
   assert.ok(r.pirate.endsWith('No transponder. The plume signature says pirate.'), r.pirate);
   assert.ok(r.patrol.endsWith('Transponder: Dome Concord navy. You are wanted in their space.'), r.patrol);
   await done();
@@ -769,12 +769,17 @@ test('random contacts for a hand come only once a type is met, and only of the t
     const none = draws(300).filter(s => s.kind === 'pirate').length;
     h.runsDone = 1; h.fights = { done: ['raider'] };
     st.rep['Dome Concord'] = 0;
-    const met = draws(600).filter(s => s.kind === 'pirate');
-    return { none, ships: [...new Set(met.map(s => s.shipId))], count: met.length };
+    const met = draws(600).filter(s => s.kind === 'pirate'), scene = scenePirate().pack;
+    h.fights.done.push('corsair', 'cutter', 'pair');  // the ladder's pair met: the lane rolls a random raider's pack again
+    const after = draws(600).filter(s => s.kind === 'pirate');
+    return { none, ships: [...new Set(met.map(s => s.shipId))], count: met.length, packs: [...new Set(met.map(s => s.pack))], scene,
+      after: [...new Set(after.map(s => 'pack' in s))], afterScene: 'pack' in JSON.parse(JSON.stringify(scenePirate())) };
   });
   assert.equal(r.none, 0, 'no types met, no random pirate');
   assert.ok(r.count > 20, `some contacts come (${r.count})`);
   assert.deepEqual(r.ships, ['raider']);
+  assert.deepEqual(r.packs, [false], 'a random raider comes alone before the ladder\'s pair'); assert.equal(r.scene, false);
+  assert.deepEqual(r.after, [false], 'after the pair, the spec leaves the pack to the lane'); assert.equal(r.afterScene, false);
   await done();
 });
 

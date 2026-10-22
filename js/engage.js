@@ -34,10 +34,10 @@ function handIntercept(h, st, to, danger) {
   if (step) return step.spec;
   const met = ladderPirate(h, 0) !== null;  // any pirate type met yet
   if (!met || Math.random() >= Math.min(0.55, HAND_RAID.base + HAND_RAID.per * danger) * LADDER_RANDOM * SCAN_MAX) return null;
-  return { kind: 'pirate', shipId: ladderPirate(h, Math.random()) };
+  return { kind: 'pirate', shipId: ladderPirate(h, Math.random()), pack: ladderPack(h) };
 }
 // A pirate for a scene that is not a burn's contact: a hand's is of a type met (a raider before any), an owner's is drawn as it always was.
-const scenePirate = () => (hired() ? { kind: 'pirate', shipId: ladderPirate(hired(), Math.random()) || 'raider' } : { kind: 'pirate' });
+const scenePirate = () => (hired() ? { kind: 'pirate', shipId: ladderPirate(hired(), Math.random()) || 'raider', pack: ladderPack(hired()) } : { kind: 'pirate' });
 
 function makeEnemy(spec) {
   const sid = G.state.systemId, persona = makePerson(cultureOf(sid));
@@ -76,7 +76,7 @@ const HAND_CONTACT = {
 // The line a ladder contact opens with in place of the sensor's (#810): the step's reason for coming, from the lines of 'scene:fight-entry'. `cap` is the
 // hand's captain and `deal` the used Ore Runner on offer (h.deal), for the set piece's price.
 const entryLine = (spec, cap, deal) => sceneSay('scene:fight-entry', `${spec.ladder}.text`,
-  { cap: cap ? `Captain ${cap.last}` : 'The captain', faction: spec.gov ? shortFaction(spec.gov) : '', price: deal ? fmt(deal.price) : '' });
+  { cap: cap ? `Captain ${cap.last}` : 'The captain', patrol: spec.gov ? PATROL_NAMES[spec.gov] : '', price: deal ? fmt(deal.price) : '' });
 function contactEvent(spec) {
   if (spec.ladder) ladderDone(hired(), spec.ladder);  // met when the scene is shown, whatever is chosen after (fightladder.js)
   const st = G.state, d = fmt(Math.round(rand(3200, 3800) / 10) * 10);
