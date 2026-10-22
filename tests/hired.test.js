@@ -730,7 +730,7 @@ test('a ladder fight opens with its own entry line, and a random one with the se
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('gunner'); const st = G.state, h = hired();
-    const vars = spec => ({ cap: `Captain ${hiredCaptain().last}`, ...(spec.gov ? { faction: shortFaction(spec.gov) } : {}), ...(h.deal ? { price: fmt(h.deal.price) } : {}) });
+    const vars = { cap: 'Captain Vance', faction: 'the Compact', price: '1,000' };  // the narrow build's captain, the navy of Earth's space (the burn leaves it), the deal below
     const labels = e => e.choices.map(c => String(c.label));
     // each step's condition made to hold in turn, so the walk meets the five in the ladder's order
     const preps = [() => { h.runsDone = 1; }, () => { h.runsDone = 3; }, () => { h.beats = CAPTAIN_BEATS.length; h.beatRun = 0; h.flags = { ...(h.flags || {}), sawHull: true }; },
@@ -739,7 +739,7 @@ test('a ladder fight opens with its own entry line, and a random one with the se
       prep(); const step = ladderNext(h, st, 'mars');
       if (!step) return null;
       const plain = contactEvent({ ...step.spec, ladder: undefined }), e = contactEvent(step.spec);
-      return { id: step.id, text: e.text, want: sceneSay('scene:fight-entry', `${step.id}.text`, vars(step.spec)), labels: labels(e), plainLabels: labels(plain) };
+      return { id: step.id, text: e.text, want: sceneSay('scene:fight-entry', `${step.id}.text`, vars), labels: labels(e), plainLabels: labels(plain) };
     });
     return { steps, done: h.fights.done.slice(), pirate: contactEvent({ kind: 'pirate', shipId: 'raider' }).text, patrol: contactEvent({ kind: 'patrol', gov: 'Dome Concord', shipId: 'cutter' }).text };
   });
@@ -752,6 +752,8 @@ test('a ladder fight opens with its own entry line, and a random one with the se
     assert.deepEqual(s.labels, s.plainLabels, `${s.id}: the choices are the contact's own`);
   }
   assert.equal(new Set(r.steps.map(s => s.want)).size, 5, 'five different lines');
+  const by = Object.fromEntries(r.steps.map(s => [s.id, s.text]));
+  assert.ok(by.cutter.includes('a cutter of the Compact'), by.cutter); assert.ok(by.setpiece.includes('1,000 cr'), by.setpiece); assert.ok(by.raider.includes('Captain Vance'), by.raider);
   assert.ok(r.pirate.endsWith('No transponder. The plume signature says pirate.'), r.pirate);
   assert.ok(r.patrol.endsWith('Transponder: Dome Concord navy. You are wanted in their space.'), r.patrol);
   await done();

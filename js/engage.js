@@ -73,15 +73,14 @@ const HAND_CONTACT = {
     lose: 'You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations.' },
 };
 
-// The line a ladder contact opens with in place of the sensor's (#810): the step's reason for coming, from the lines of 'scene:fight-entry'.
-const entryLine = spec => {
-  const cap = hiredCaptain(), deal = hired() && hired().deal;
-  return sceneSay('scene:fight-entry', `${spec.ladder}.text`, { cap: cap ? `Captain ${cap.last}` : 'The captain', faction: spec.gov ? shortFaction(spec.gov) : '', price: deal ? fmt(deal.price) : '' });
-};
+// The line a ladder contact opens with in place of the sensor's (#810): the step's reason for coming, from the lines of 'scene:fight-entry'. `cap` is the
+// hand's captain and `deal` the used Ore Runner on offer (h.deal), for the set piece's price.
+const entryLine = (spec, cap, deal) => sceneSay('scene:fight-entry', `${spec.ladder}.text`,
+  { cap: cap ? `Captain ${cap.last}` : 'The captain', faction: spec.gov ? shortFaction(spec.gov) : '', price: deal ? fmt(deal.price) : '' });
 function contactEvent(spec) {
   if (spec.ladder) ladderDone(hired(), spec.ladder);  // met when the scene is shown, whatever is chosen after (fightladder.js)
   const st = G.state, d = fmt(Math.round(rand(3200, 3800) / 10) * 10);
-  const who = spec.ladder ? entryLine(spec) : { pirate: 'No transponder. The plume signature says pirate.', patrol: `Transponder: ${spec.gov} navy. You are wanted in their space.`,
+  const who = spec.ladder ? entryLine(spec, hiredCaptain(), hired() && hired().deal) : { pirate: 'No transponder. The plume signature says pirate.', patrol: `Transponder: ${spec.gov} navy. You are wanted in their space.`,
     bounty: `Transponder spoofed, but the plume matches: ${spec.mission && spec.mission.targetName}, the ship you are hunting.`,
     hunter: `A hired gun. The captain says ${spec.person && `${spec.person.first} ${spec.person.last}`} sends regards.` }[spec.kind];
   // A crewed gunner fights it; with none, you take the guns yourself.

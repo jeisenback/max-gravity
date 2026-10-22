@@ -22447,35 +22447,35 @@
   "id": "scene:fight-entry:raider",
   "plays": [],
   "title": "Contact",
-  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. No transponder, and one plume: a raider, alone, on an intercept she does not trouble to hide. From her side the board shows a hauler running loaded with no escort, which is the kind of ship a raider boards without calling anyone for help. \"Two guns, and she hasn't looked at either of them,\" Captain Vance says.",
+  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. No transponder, and one plume, with nothing else on the board behind her. A raider who works alone picks a hauler with no escort, since one grapple crew can take a ship this size and nobody has to share. \"Two guns on this ship, and she hasn't changed her line for either of them,\" Captain Vance says.",
   "labels": []
  },
  {
   "id": "scene:fight-entry:corsair",
   "plays": [],
   "title": "Contact",
-  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. A corsair, with her transponder off and her tubes open. On the open band she reads out the ship's name and the day the bank's payment is due, and asks for the payment itself. \"Nobody had that date but me and the bank,\" Captain Vance says, and cuts the band.",
+  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. A corsair, with her transponder off and her launcher bay open. On the open band she reads out the ship's name and the payment this ship is carrying, due on the first, and asks for it before the first comes. \"Somebody at the last berth can count,\" Captain Vance says, and cuts the band.",
   "labels": []
  },
  {
   "id": "scene:fight-entry:cutter",
   "plays": [],
   "title": "Contact",
-  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. Transponder: a cutter of the Compact, with a stop order for your registry. Her hail says it is a check of papers, the articles and the last three landings, read out at the lock. It says too that a ship that burns away from a check is fired on.",
+  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. Transponder: a cutter of the Compact, with a stop order for the ship's registry. Her hail reads it as a check of papers at the lock, and whatever is out of order on them is cited and fined from the ship's fund on the spot. A ship that burns away from a check is fired on, the hail says, and it says so twice.",
   "labels": []
  },
  {
   "id": "scene:fight-entry:pair",
   "plays": [],
   "title": "Contact",
-  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. It is two raiders and not one, lying off the lane to the yard, and only the first has lit her drive. A ship on this lane is carrying the price of a hull or coming back with one, and the raiders who know it wait here in pairs, one to pin the drive and one to board. The second plume lights as the first one turns.",
+  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. It's two raiders and not one, lying off the lane, and only the first has lit her drive. Word goes round a dock when a crew has been asking a yard about a hull, and the raiders who hear it hunt in pairs, one to pin the drive and one to board. The second plume lights as the first one turns.",
   "labels": []
  },
  {
   "id": "scene:fight-entry:setpiece",
   "plays": [],
   "title": "Contact",
-  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. A corsair comes out from behind the yard's own beacon with her tubes open. Her hail names the Ore Runner and her price on the yard list, 170,000 cr, and says the bank sells the names of whoever asks after its ships to anyone who pays for them. \"You're carrying it,\" the voice says. \"All of it. I can wait while you count.\"",
+  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. A corsair comes off the yard's own beacon with her drive already lit. Her hail names the Ore Runner and the price on the yard list, 170,000 cr. \"The bank sells the names of who's asking after its ships, eighty credits a name,\" the voice says, \"and yours was on it this week.\"",
   "labels": []
  },
  {
