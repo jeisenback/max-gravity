@@ -725,6 +725,38 @@ test('the ladder contact is marked done when its scene is shown, whatever is cho
   await done();
 });
 
+test('a ladder fight opens with its own entry line, and a random one with the sensor line', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); const st = G.state, h = hired();
+    const vars = spec => ({ cap: `Captain ${hiredCaptain().last}`, ...(spec.gov ? { faction: shortFaction(spec.gov) } : {}), ...(h.deal ? { price: fmt(h.deal.price) } : {}) });
+    const labels = e => e.choices.map(c => String(c.label));
+    // each step's condition made to hold in turn, so the walk meets the five in the ladder's order
+    const preps = [() => { h.runsDone = 1; }, () => { h.runsDone = 3; }, () => { h.beats = CAPTAIN_BEATS.length; h.beatRun = 0; h.flags = { ...(h.flags || {}), sawHull: true }; },
+      () => { h.deal = { price: 1000, day: st.day, until: st.day + 50, broker: false }; }, () => { st.credits = Math.max(st.credits, 1000); }];
+    const steps = preps.map(prep => {
+      prep(); const step = ladderNext(h, st, 'mars');
+      if (!step) return null;
+      const plain = contactEvent({ ...step.spec, ladder: undefined }), e = contactEvent(step.spec);
+      return { id: step.id, text: e.text, want: sceneSay('scene:fight-entry', `${step.id}.text`, vars(step.spec)), labels: labels(e), plainLabels: labels(plain) };
+    });
+    return { steps, done: h.fights.done.slice(), pirate: contactEvent({ kind: 'pirate', shipId: 'raider' }).text, patrol: contactEvent({ kind: 'patrol', gov: 'Dome Concord', shipId: 'cutter' }).text };
+  });
+  assert.deepEqual(r.steps.map(s => s && s.id), ['raider', 'corsair', 'cutter', 'pair', 'setpiece'], 'the five, in order');
+  assert.deepEqual(r.done, ['raider', 'corsair', 'cutter', 'pair', 'setpiece']);
+  for (const s of r.steps) {
+    assert.match(s.text, /^Sensors: a drive plume at [\d,]+ km, on an intercept course\. /, `${s.id}: the range is kept`);
+    assert.ok(s.text.endsWith(` ${s.want}`), `${s.id} opens with its own line: ${s.text}`);
+    assert.doesNotMatch(s.text, /No transponder\. The plume signature says pirate\.|You are wanted in their space\.|\{\w+\}/, `${s.id}: no sensor line and no slot left unfilled`);
+    assert.deepEqual(s.labels, s.plainLabels, `${s.id}: the choices are the contact's own`);
+  }
+  assert.equal(new Set(r.steps.map(s => s.want)).size, 5, 'five different lines');
+  assert.ok(r.pirate.endsWith('No transponder. The plume signature says pirate.'), r.pirate);
+  assert.ok(r.patrol.endsWith('Transponder: Dome Concord navy. You are wanted in their space.'), r.patrol);
+  await done();
+});
+
 test('random contacts for a hand come only once a type is met, and only of the types met', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(hiredHelpers); await ev(ladderHelpers);

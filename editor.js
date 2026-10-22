@@ -462,6 +462,11 @@
             standIn = `${crew[0].p.first} ${crew[0].p.last} stands in for the person the office wants: the first of the crew who is not a main character, whatever their ties.`;
             return sideScene(plan, { gov: 'Arcology Compact', p: crew[0].p }, freightAgent(currentPlanet()));
           },
+          'scene:fight-entry': () => {  // the contact of the step whose line was typed last, else the first; the Ore Runner on offer, for the set piece's price
+            const step = FIGHT_LADDER.find(x => x.id === String(m.line || '').split('.')[0]) || FIGHT_LADDER[0];
+            hired().deal = hired().deal || { price: 170000, day: st.day, until: st.day + 20, broker: false };
+            return contactEvent({ ...step.spec, ...(step.gov ? { gov: step.gov(st, 'mars') || 'Arcology Compact' } : {}), ladder: step.id });
+          },
           'scene:day-ashore': () => { fillBar(currentPlanet()); return dayAshoreEvent(true); },  // the menu with every entry the port has today
           'scene:chapter-two-end': () => {  // the close of chapter two, 90 days after the buy, with the ending whose line was typed last (else everyone who came is aboard)
             const key = String(m.line || ''), id = key.split('.')[0], one = /\.one$/.test(key);

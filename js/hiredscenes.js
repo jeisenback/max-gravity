@@ -42,6 +42,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:used-ship-offer', fn: 'dealScene', file: 'js/hired.js', title: 'The Used Ship', where: 'port', when: 'When the used Ore Runner is offered, after the captain\'s two scenes.' },
   { id: 'scene:yard-office', fn: 'yardScene', file: 'js/yardoffice.js', title: 'The Yard Office', where: 'port', when: 'When you ask to buy a ship.' },
   { id: 'scene:fight', fn: 'shipFightEvent', file: 'js/fightui.js', title: 'Battle Stations', where: 'transit', when: 'A pirate contact or a navy stop, fought turn by turn on the sensor board: the opening, her move and the captain\'s, the orders to the guns, a line a turn, and how it ends.' },
+  { id: 'scene:fight-entry', fn: 'contactEvent', file: 'js/engage.js', title: 'Who Comes to Fight', where: 'transit', when: 'The five contacts of chapter 1\'s ladder of fights, in order: a lone raider, a corsair who knows of the bank\'s payment, a cutter checking papers, two raiders off the lane to the yard, and the corsair who knows the Ore Runner\'s price. Each opens with its own line in place of the sensor\'s; the choices are the contact\'s.' },
   { id: 'beats:dead-in-space', fn: 'deadInSpaceScene', file: 'js/engagements.js', title: 'Dead in Space', where: 'transit', when: 'After a ship fight, when her drive and guns are gone and she drifts beside you.' },
   { id: 'beats:ambush', fn: 'ambushScene', file: 'js/engagements.js', title: 'An Ambush', where: 'transit', when: 'On a dangerous lane, every 60 days at most.' },
   { id: 'beats:repel', fn: 'deckFightEvent', file: 'js/fightui.js', title: 'Boarders', where: 'transit', when: 'When a ship fight ends with her alongside and boarding: the deck fight at the lock, the corridor and the bridge.' },
@@ -499,6 +500,13 @@ const SCENE_LINES = {
     'deck.withdraw.assault': 'The captain calls you back on the intercom with her people still holding the far hatch.',
     'deck.log.turn': 'Turn {n}: {what}.', 'deck.log.theirs': '{n} of them move into {to}', 'deck.log.ours': '{n} of ours move into {to}',
     'deck.log.fight': '{theirs} of them and {mine} of ours down in {at}', 'deck.log.back': 'you fall back to {to}', 'deck.log.none': 'nobody gives ground',
+  },
+  'scene:fight-entry': {  // the line a contact of chapter 1's ladder opens with in place of the sensor's (engage.js contactEvent, fightladder.js), by step: {cap} is the captain, {faction} the cutter's navy, {price} the Ore Runner's
+    'raider.text': 'No transponder, and one plume: a raider, alone, on an intercept she does not trouble to hide. From her side the board shows a hauler running loaded with no escort, which is the kind of ship a raider boards without calling anyone for help. "Two guns, and she hasn\'t looked at either of them," {cap} says.',
+    'corsair.text': 'A corsair, with her transponder off and her tubes open. On the open band she reads out the ship\'s name and the day the bank\'s payment is due, and asks for the payment itself. "Nobody had that date but me and the bank," {cap} says, and cuts the band.',
+    'cutter.text': 'Transponder: a cutter of {faction}, with a stop order for your registry. Her hail says it is a check of papers, the articles and the last three landings, read out at the lock. It says too that a ship that burns away from a check is fired on.',
+    'pair.text': 'It is two raiders and not one, lying off the lane to the yard, and only the first has lit her drive. A ship on this lane is carrying the price of a hull or coming back with one, and the raiders who know it wait here in pairs, one to pin the drive and one to board. The second plume lights as the first one turns.',
+    'setpiece.text': 'A corsair comes out from behind the yard\'s own beacon with her tubes open. Her hail names the Ore Runner and her price on the yard list, {price} cr, and says the bank sells the names of whoever asks after its ships to anyone who pays for them. "You\'re carrying it," the voice says. "All of it. I can wait while you count."',
   },
   'scene:put-ashore': {
     title: 'Put Ashore',
