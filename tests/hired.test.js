@@ -646,15 +646,16 @@ test('at a port with an outfitter the captain restocks the torpedoes from the fu
     const st = G.state, h = hired(), earth = currentPlanet(), out = {};
     out.outfitter = earth.services.includes('outfitter');
     st.torpedoes = 0; h.fund = 100000; h.bill = 0;
-    out.line = restockTorps(st, h, earth); out.torps = st.torpedoes; out.fund = h.fund; out.bill = h.bill; out.expect = fmt(2 * TORP_PRICE); out.price = TORP_PRICE;
+    out.line = restockTorps(st, h, earth, true); out.torps = st.torpedoes; out.fund = h.fund; out.bill = h.bill; out.expect = fmt(2 * TORP_PRICE); out.price = TORP_PRICE;
     st.torpedoes = 0; h.fund = TORP_PRICE - 1; h.bill = 0;
-    out.poor = [restockTorps(st, h, earth), st.torpedoes, h.fund, h.bill];
+    out.poor = [restockTorps(st, h, earth, true), st.torpedoes, h.fund, h.bill];
     st.torpedoes = 1; h.fund = 100000; h.bill = 0;
-    out.one = [restockTorps(st, h, earth), st.torpedoes, h.fund];
+    out.one = [restockTorps(st, h, earth, true), st.torpedoes, h.fund];
     st.torpedoes = 0;
     h.fund = 100000;
     const none = { name: 'Nowhere', services: ['trade'] };
-    out.none = [restockTorps(st, h, none), st.torpedoes, h.fund];
+    out.none = [restockTorps(st, h, none, true), st.torpedoes, h.fund];
+    out.unfitted = [restockTorps(st, h, earth, false), st.torpedoes, h.fund];  // a ship with no launcher buys none
     return out;
   });
   assert.ok(r.outfitter);
@@ -663,5 +664,20 @@ test('at a port with an outfitter the captain restocks the torpedoes from the fu
   assert.deepEqual(r.poor, ['', 0, r.price - 1, 0]);
   assert.equal(r.one[1], 2); assert.equal(r.one[2], 100000 - r.price);
   assert.deepEqual(r.none, ['', 0, 100000]);
+  assert.deepEqual(r.unfitted, ['', 0, 100000]);
+  await done();
+});
+
+test('a save from before the fitting (no launcher) lands at an outfitter and is not charged for torpedoes (#808)', async () => {
+  const { page, ev, done } = await open({});
+  await page.evaluate(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner');
+    const st = G.state, h = hired();
+    st.outfits = {}; st.torpedoes = 0; h.fund = 100000; h.bill = 0;  // the Ice Hauler as an old save has her: no turret, no launcher
+    Mods.emit('landed', currentPlanet());
+    return { outfitter: currentPlanet().services.includes('outfitter'), launcher: !!ship().launcher, torps: st.torpedoes, fund: h.fund, bill: h.bill };
+  });
+  assert.deepEqual(r, { outfitter: true, launcher: false, torps: 0, fund: 100000, bill: 0 });
   await done();
 });

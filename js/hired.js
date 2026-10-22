@@ -68,10 +68,11 @@ const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, 
 const soloOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'solo');
 // The job of your own post in a fight, an ice run or a contact: half a chance at the base, a tenth better for each level.
 const postOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'post');
-// The Ice Hauler's magazine: the captain keeps it full from the ship's fund at a port with an outfitter. Returns the line said, or ''.
+// The Ice Hauler's magazine: the captain keeps it full from the ship's fund at a port with an outfitter. `launcher` is whether the ship has one (ship().launcher):
+// a save from before the fitting has none, and buys nothing. Returns the line said, or ''.
 const HAND_TORPS = 2;
-function restockTorps(st, h, planet) {
-  if (!planet.services.includes('outfitter')) return '';
+function restockTorps(st, h, planet, launcher) {
+  if (!launcher || !planet.services.includes('outfitter')) return '';
   const n = Math.min(HAND_TORPS - (st.torpedoes || 0), Math.floor(h.fund / TORP_PRICE));
   if (!(n > 0)) return '';
   const cost = n * TORP_PRICE;
@@ -593,7 +594,7 @@ Mods.register({
       if (hired() && arrivalPending(planet) && !G.dialog) { hired().arrived = true; openEvent(castScene(hiredXo().cast, arrivalScene())); }  // the first officer settles up (captains.js)
     });
     M.on('landed', planet => { hullNote(); dealCheck(planet); });
-    M.on('landed', planet => { const h = hired(), line = h && restockTorps(G.state, h, planet); if (line) M.note(line); });
+    M.on('landed', planet => { const h = hired(), line = h && restockTorps(G.state, h, planet, ship().launcher); if (line) M.note(line); });
     M.on('landed', planet => { if (hired()) G.offers = errandsFor(planet); });  // the board has errands, not contracts
     M_NOTE = text => M.note(text);
     M.action('sail', () => { if (hired() && !sideBeforeSail()) sail(); });  // a side on the paper is a scene at the lock first (shippers.js)
