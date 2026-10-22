@@ -186,7 +186,7 @@ test('resolveShipTurn does not change the state it was given', () => {
 });
 
 test('the constants are the ones the design names', () => {
-  assert.deepEqual(plain(FIGHT), { GUN_DMG: [12, 20], FOE_DMG: [18, 26], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.7, long: 0.5 }, PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 3, PDC_SALVO: 0.6, TURNS: 6, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2 });
+  assert.deepEqual(plain(FIGHT), { GUN_DMG: [12, 20], FOE_DMG: [18, 26], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.7, long: 0.5 }, PART_HP: { weapons: 40, drive: 15, lock: 10, launcher: 15 }, TORP_DMG: [30, 45], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 3, PDC_SALVO: 0.6, TURNS: 8, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2 });
 });
 
 test('the turret and heavy rounds outfits reach a side: the extra gun, the turret flag and the heavy multiplier', () => {
@@ -316,7 +316,7 @@ test('a ship whose drive is out has no say on the range, and in a pack the faste
   assert.equal(band(st, m), K, 'with its drive out the slower foe speaks, and I outrun it');
 });
 
-test('each end is reached: crippled, broke, boarded, lost, escaped, standoff after six turns', () => {
+test('each end is reached: crippled, broke, boarded, lost, escaped, away, and at eight turns broke or ran', () => {
   const turn = (st, m) => resolveShipTurn(st, orders([]), m, LOW).state;
   assert.equal(shipEnd(fight()), null);
   let st = fight(); kill(st.foes[0], 'weapons', 'drive');
@@ -337,7 +337,21 @@ test('each end is reached: crippled, broke, boarded, lost, escaped, standoff aft
     assert.equal(shipEnd(st), null, 'turn ' + i);
     st = turn(st, quiet);
   }
-  assert.equal(shipEnd(st), 'standoff');
+  assert.ok(['broke', 'ran'].includes(shipEnd(st)), 'eight quiet turns end in a broke or a ran, never a standoff');
+  assert.equal(FIGHT.TURNS, 8);
+  const brk = { foe: [{ kind: 'break' }], captain: { kind: 'hold' } };
+  st = fight(); st.foes[0].parts.weapons.hp = 0; st.foes[0].shields = 50; st.foes[0].armor = 70; st.moves = brk;  // 120 of 150 is 0.8
+  assert.equal(shipEnd(st), 'away', 'no guns, hull at 0.8, drive up, breaking: she got away with nothing for you');
+  st.foes[0].shields = 5; st.foes[0].armor = 5;
+  assert.equal(shipEnd(st), 'broke', 'under the break line she is a broke, not an away');
+  const cap = (me, her) => {
+    const c = fight(); c.turn = FIGHT.TURNS;
+    c.me.shields = me * c.me.maxShields; c.me.armor = me * c.me.maxArmor;
+    c.foes[0].shields = her * c.foes[0].maxShields; c.foes[0].armor = her * c.foes[0].maxArmor;
+    return shipEnd(c);
+  };
+  assert.equal(cap(0.5, 0.7), 'ran', 'at turn 8 you at 0.5 and her at 0.7: the captain runs');
+  assert.equal(cap(0.7, 0.5), 'broke', 'you at 0.7 and her at 0.5: she breaks');
 });
 
 test('your loss comes first: boarded while your armor is 0 is lost', () => {
@@ -666,10 +680,10 @@ function playOut({ me, foes, aim, nerve = 1, roll = 0.5, grade = 0, armor }) {
 }
 test('every end is reached by a hauler (or her sisters) against a raider or a corsair, by where the guns aim', () => {
   const at = part => () => part, drive = st => (st.foes[0].parts.drive.hp > 0 ? 'drive' : 'weapons');
-  assert.equal(playOut({ me: 'freighter', foes: ['raider'], aim: at('weapons') }), 'broke', 'her guns shot away, she breaks off');
+  assert.equal(playOut({ me: 'freighter', foes: ['raider'], aim: at('weapons') }), 'away', 'her guns shot away, her hull whole: she gets away with nothing for you');
   assert.equal(playOut({ me: 'gunship', foes: ['raider'], aim: drive, roll: 0.99 }), 'crippled', 'her drive and then her guns: dead in space');
   assert.equal(playOut({ me: 'freighter', foes: ['corsair'], aim: at('hull'), roll: 0.1 }), 'boarded', 'shooting her hull does not stop her coming alongside');
-  assert.equal(playOut({ me: 'freighter', foes: ['corsair'], aim: drive, nerve: 3, roll: 0.99 }), 'standoff', 'her drive gone, her guns left: six turns of it');
+  assert.equal(playOut({ me: 'freighter', foes: ['corsair'], aim: drive, nerve: 3, roll: 0.99 }), 'ran', 'her drive gone, her guns left: eight turns of it and the freighter is the worse hurt, so the captain runs');
   assert.equal(playOut({ me: 'courier', foes: ['raider'], aim: at('hull'), armor: 1, roll: 0 }), 'escaped', 'a worn courier, a cautious captain and the faster ship: she is lost astern before her pin takes the drive');
   assert.equal(playOut({ me: 'shuttle', foes: ['corsair', 'corsair'], aim: at('hull'), roll: 0.99, grade: 2 }), 'lost', 'a skiff against a veteran pair: the hull goes before they are alongside');
 });

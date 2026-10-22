@@ -21,7 +21,7 @@ const FIGHT = {
   SALVO: 2,          // torpedoes in her salvo
   SALVO_EVERY: 3,    // she arms on turn 0 and then every third turn, and fires the turn after
   PDC_SALVO: 0.6,    // what a turret held back takes off a salvo (a gun volley takes PDC_HOLD)
-  TURNS: 6,
+  TURNS: 8,
   BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid
   HEAVY_HIT: 0.2     // a turn is a heavy hit when your hull (shields and armor) loses more than this share of your maximum armor (fightui.js); a fifth, so that the hand is rarely killed
@@ -171,15 +171,20 @@ function nextBand(st, moves) {
   return Math.max(0, Math.min(RANGE_BANDS.length, st.band + step));
 }
 
+// The ends, in order: lost, boarded, crippled, away (every foe left breaks off with her guns gone and her hull whole: she got away with nothing for you),
+// broke, escaped; at the turn cap the captain runs if she is the worse hurt ('ran', a lost fight), else the foe breaks.
 function shipEnd(st) {
   const out = f => f.armor <= 0 || (f.parts.weapons.hp <= 0 && f.parts.drive.hp <= 0);
-  const broke = st.moves && st.foes.every((f, i) => out(f) || (st.moves.foe[i] && st.moves.foe[i].kind === 'break' && f.parts.drive.hp > 0));
+  const breaking = (f, i) => st.moves && st.moves.foe[i] && st.moves.foe[i].kind === 'break' && f.parts.drive.hp > 0;
+  const broke = st.moves && st.foes.every((f, i) => out(f) || breaking(f, i));
   if (st.me.armor <= 0) return 'lost';
   if (st.boarded) return 'boarded';
   if (st.foes.every(out)) return 'crippled';
+  if (broke && st.foes.every((f, i) => out(f) || (f.parts.weapons.hp <= 0 && hullShare(f) >= FIGHT.BREAK))) return 'away';
   if (broke) return 'broke';
   if (st.band >= RANGE_BANDS.length) return 'escaped';
-  return st.turn >= FIGHT.TURNS ? 'standoff' : null;
+  if (st.turn < FIGHT.TURNS) return null;
+  return hullShare(st.me) < poolShare(st.foes) ? 'ran' : 'broke';
 }
 
 // The deck fight: the same turn on the decks (spec 2026-10-20). Sections are lock, corridor, bridge, and 'cargo' on a long ship. `mine` and `theirs`
