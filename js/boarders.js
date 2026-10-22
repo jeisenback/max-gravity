@@ -190,6 +190,8 @@ function shipTaken(s) {
   const st = G.state, h = hired(), cap = h && person(h.captain), d = s.d, lost = deadNote(s);  // an owner has no captain
   const taken = Math.round(purse() * 0.3);
   moveMoney(-taken);
+  let hold = '';  // she empties part of the hold as well
+  if (hasTradeCargo()) { const { cid, qty } = shedCargo(FIGHT.LOST_CARGO); hold = ` They take ${qty}t of ${goodName(cid)} from the hold as well.`; }
   if (cap) like(cap, -1, repelWords(s, 'memory.taken', REPEL_MEMORY.taken));
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.1));
   d.foeHp = -1; G.duel = null; G.nextEvent = null;
@@ -197,13 +199,13 @@ function shipTaken(s) {
   if (cap && d.foe.kind !== 'patrol' && !s.handDied && Math.random() < CAPTAIN_LOST) {
     h.captainLost = { day: st.day, how: 'bridge' };
     G.nextEvent = captainLostScene();
-    return `They're on the bridge. Captain ${cap.last} is at the console and doesn't give them the code, so they take it. They take ${fmt(taken)} cr of the ship's fund and go. The ship still flies. Captain ${cap.last} doesn't get up.${lost}`;
+    return `They're on the bridge. Captain ${cap.last} is at the console and doesn't give them the code, so they take it. They take ${fmt(taken)} cr of the ship's fund and go.${hold} The ship still flies. Captain ${cap.last} doesn't get up.${lost}`;
   }
   if (!cap) return d.foe.kind === 'patrol'  // the owner's own words: the ship is theirs to surrender, and the money theirs to lose
-    ? `They're on the bridge. You surrender the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr, which is collected on the spot. The cutter lets you go, with a citation.${lost}`
-    : `They're on the bridge. You give them the code to the strongbox because there's no choice, and they take ${fmt(taken)} cr and go. The ship still flies.${lost}`;
-  if (d.foe.kind === 'patrol') return `They're on the bridge. Captain ${cap.last} surrenders the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr against the ship's fund, which is collected on the spot. The cutter lets you go, with a citation.${lost}`;
-  return `They're on the bridge. Captain ${cap.last} gives them the code to the strongbox because there's no choice, and they take ${fmt(taken)} cr of the ship's fund and go. The ship still flies.${lost}`;
+    ? `They're on the bridge. You surrender the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr, which is collected on the spot.${hold} The cutter lets you go, with a citation.${lost}`
+    : `They're on the bridge. You give them the code to the strongbox because there's no choice, and they take ${fmt(taken)} cr and go.${hold} The ship still flies.${lost}`;
+  if (d.foe.kind === 'patrol') return `They're on the bridge. Captain ${cap.last} surrenders the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr against the ship's fund, which is collected on the spot.${hold} The cutter lets you go, with a citation.${lost}`;
+  return `They're on the bridge. Captain ${cap.last} gives them the code to the strongbox because there's no choice, and they take ${fmt(taken)} cr of the ship's fund and go.${hold} The ship still flies.${lost}`;
 }
 
 // Boarding her ends with her bridge taken (her strongbox goes into the ship's fund) or you driven back to your own lock.
