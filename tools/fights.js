@@ -10,11 +10,12 @@
 // post's skill level, by the hand's policy and by the foe's grade. Not part of `npm test`.
 
 const { open, closeBrowser } = require('../tests/helpers');
+const { answerOrders } = require('./answer');
 
 // One seed's trials. Returns raw tallies, so the seeds can be summed.
 async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, raid = true, lock = true, cutter = true, groups = null } = {}) {  // raid: false leaves out the ship fights; lock: false the deck fights started directly; cutter: false the navy stop's trials; groups: only these groups of deck fights
   const { ev, errors, ctx } = await open({ scope: 'earth-hired', seed, debt: true, stall: 0 });
-  const r = await ev(([trials, postKey, shipId, asOwner, raidFights, lockFights, cutter, groups]) => {
+  const r = await ev(([trials, postKey, shipId, asOwner, raidFights, lockFights, cutter, groups, answerSrc]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st0 = G.state; st0.story.next = 1e9; st0.day += 30; hired().raidTold = true;  // the first raid is explained once; these are the raids after it
     if (asOwner) { const crew0 = [...st0.crew]; st0.credits = 100000; hired().debt = 0; buyIn(st0.shipId); while (G.dialog) finishEvent(); st0.crew = crew0; st0.armor = ship().armor; if (hired()) throw new Error('the buy did not make an owner'); }  // the same ship and crew: the buy took a friend, and the rest stay
@@ -71,28 +72,10 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     // part, 'focus' always at her weapons, 'drive' at her drive until it is gone and then her weapons, 'lock' at her lock and then her weapons; these four fire the
     // turret and send a torpedo at her hull while there are any. 'answer' reads her shown move (s.shown): it holds the turret back when she fires a salvo, aims at her
     // lock while she pins or closes with it whole, and against a ship whose shields come back (regen) sends the torpedoes at her hull and overcharges every gun the
-    // heat allows; else it aims at her hull. (The brief had "else her weapons", but a ship whose guns are gone and whose hull is whole
-    // breaks off as 'away', which is not a good end, so that plan never wins: task-7-report.md.) A deck fight after it is played by the 'shoot' policy.
+    // heat allows; else it aims at her hull (tools/answer.js). A deck fight after it is played by the 'shoot' policy.
     const PARTS = ['weapons', 'drive', 'lock', 'hull'];
     const fixed = aim => s => ({ guns: Array.from({ length: s.state.me.guns }, () => ({ foe: 0, part: aim(s.state) })), torp: s.state.me.launcher && s.state.me.torps > 0 ? { foe: 0, part: 'hull' } : null, pdc: 'fire' });
-    const answer = s => {
-      const f = s.state, live = f.foes.map((_, i) => i).filter(i => fightUp(f.foes[i])), shown = i => s.shown.foe[i] || {};
-      const salvo = live.some(i => shown(i).kind === 'salvo');
-      const lock = live.find(i => /^(pin|close)$/.test(shown(i).kind) && f.foes[i].parts.lock.hp > 0);
-      const regen = live.find(i => f.foes[i].regen > 0);
-      const shots = Math.max(0, gunsReady(f) - (salvo ? 1 : 0));
-      let heat = f.heat;
-      const guns = Array.from({ length: f.me.guns }, (_, n) => {
-        if (lock !== undefined) return { foe: lock, part: 'lock' };
-        if (regen !== undefined) {  // overcharged while the heat, with the shots still to come this turn, stays at or under the cap (no gun locked)
-          const over = n < shots && heat + FIGHT.OVER_HEAT + Math.max(0, shots - n - 1) <= FIGHT.HEAT_CAP;
-          if (n < shots) heat += over ? FIGHT.OVER_HEAT : 1;
-          return { foe: regen, part: 'hull', over };
-        }
-        return { foe: live[0] || 0, part: 'hull' };
-      });
-      return { guns, torp: regen !== undefined && f.me.launcher && f.me.torps > 0 ? { foe: regen, part: 'hull' } : null, pdc: salvo ? 'hold' : 'fire' };
-    };
+    const answer = (0, eval)(`(${answerSrc})`);  // tools/answer.js, shared with the play-through's player
     const POLICY_SHIP = {
       random: fixed(() => PARTS[Math.floor(Math.random() * PARTS.length)]),
       focus: fixed(() => 'weapons'),
@@ -165,7 +148,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     }
     out.crewAboard = crewAll.length;
     return out;
-  }, [n, post, ship, owner, raid, lock, cutter, groups]);
+  }, [n, post, ship, owner, raid, lock, cutter, groups, answerOrders.toString()]);
   await ctx.close();
   return { seed, owner, post, ...r, errors };
 }

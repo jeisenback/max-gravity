@@ -12,9 +12,11 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { open, closeBrowser } = require('../tests/helpers');
 const { chapter } = require('./soak');
+const { answerOrders } = require('./answer');
 
 // The player: given the dialog and the indexes of its open choices (a shut one is never among them), the index to take. Runs in the page.
-// - Ship fight: every gun at her weapons (at her drive once no weapons are left to hit), a torpedo at a veteran crew (grade above 0) while any are left, then Fire, each turn.
+// - Ship fight: the orders that read her shown move (tools/answer.js, the fight tool's `answer`): the turret held back against her salvo, her lock while she
+//   closes or pins with it, torpedoes and overcharged guns at a ship whose shields come back, else her hull; then Fire, each turn.
 // - Deck fight: stand where most of your crew are, shoot (steady when they outnumber you there), give the crew order when one is offered, then Fight.
 // - Scenes: the best score: no stated risk or cost first, paying work and jobs taken, a cost to standing or the captain's trust avoided, and a crewmate kept
 //   rather than let go. Ties are the seed's.
@@ -25,7 +27,7 @@ function policy(d, ok, memo) {
   if (s) {
     const f = s.state, turn = `${f.turn}:${f.log.length}`;
     if (memo.turn !== turn) { memo.turn = turn; memo.clicks = 0; }
-    if (ok.length === 1 || ++memo.clicks > 8) return last;  // the close (Stand down), or an order that would not take: fight as it stands
+    if (ok.length === 1 || ++memo.clicks > 40) return last;  // the close (Stand down), or an order that would not take: fight as it stands
     if (f.kind === 'deck') {
       const post = lockPost(), near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])];
       const to = near.reduce((b, i) => (f.sections[i].mine > f.sections[b].mine ? i : b), f.hand), there = f.sections[to];
@@ -38,10 +40,20 @@ function policy(d, ok, memo) {
       if (order !== undefined && label(order) === fightSay('deck.order.none')) return order;
       return last;  // Fight
     }
-    const part = f.foes.some(x => x.parts.weapons.hp > 0) ? 'weapons' : 'drive';  // her guns gone, her drive: then she is crippled
-    const at = fightSay('aim.at', { part: fightSay(`part.${part}`) }), ready = gunsReady(f);
-    for (let i = 0; i < ready; i++) if (label(i) !== fightSay('gun.label', { n: i + 1, aim: at })) return i;
-    if (s.grade > 0 && f.me.launcher && f.me.torps > 0 && label(ready) !== fightSay('torp.label', { left: f.me.torps, aim: at })) return ready;
+    // The orders tools/answer.js gives (window.__answer, set by setup), clicked toward choice by choice: each ready gun's target (a click takes the next one
+    // round), its charge, the torpedo's target and the turret, then Fire. A gun's label shows its roll, so a target is matched with either charge.
+    const want = window.__answer(s), ready = gunsReady(f);
+    const aim = o => (o ? fightSay('aim.at', { part: fightSay(`part.${o.part}`) }) : fightSay('aim.hold'));
+    const gun = (n, o) => fightSay('gun.label', { n: n + 1, aim: o ? fightSay('aim.range', { aim: aim(o), ...(([lo, hi]) => ({ lo, hi }))(shotRange(f, o)) }) : aim(o) });
+    let at = 0;
+    for (let n = 0; n < ready; n++) {
+      const g = want.guns[n], over = !!g.over;
+      if (label(at) !== gun(n, { ...g, over }) && label(at) !== gun(n, { ...g, over: !over })) return at;  // the target
+      if (label(at + 1) !== fightSay(over ? 'gun.over.on' : 'gun.over.off', { n: n + 1, heat: FIGHT.OVER_HEAT })) return at + 1;  // the charge
+      at += 2;
+    }
+    if (f.me.launcher && f.me.torps > 0) { if (label(at) !== fightSay('torp.label', { left: f.me.torps, aim: aim(want.torp) })) return at; at++; }
+    if (f.me.pdc && label(at) !== fightSay(want.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire')) return at;
     return last;  // Fire
   }
   if (dealOpen() && wantsYard() && label(last) === sceneSay('scene:pitch', 'never.label')) return last;  // Never mind: the yard first
@@ -61,8 +73,9 @@ function policy(d, ok, memo) {
 }
 
 // The hooks, put on the page as window.__pt before the chapter starts (soak.js chapter names what each is for). `o`: { video, speed, maxDays, sceneMs, resultMs }.
-function setup([policySrc, o]) {
+function setup([policySrc, answerSrc, o]) {
   const choose = (0, eval)(`(${policySrc})`), memo = {};
+  window.__answer = (0, eval)(`(${answerSrc})`);  // the ship fight's orders (tools/answer.js), for the player
   // The page's own dice, for what it draws and plays while the chapter waits on a frame, a timer or a screenshot: the game's dice are untouched by them.
   let a = 0x2545f491;
   const viewRand = () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
@@ -260,7 +273,7 @@ async function playthrough({ seed = 1, captain = 'hester', speed = 10, out = nul
   const t0 = Date.now(), videoDir = video ? path.join(dir, '.video') : null;
   const { page, ctx, ev, errors } = await open({ seed, debt: true, stall: 0, video: videoDir });
   await page.exposeFunction('__ptShot', async name => { await page.screenshot({ path: path.join(dir, 'shots', `${name}.png`) }); });  // nothing goes back: the picture as a value is a long trip to the page
-  await ev(setup, [policy.toString(), { video, speed, maxDays, sceneMs: 1200, resultMs: 700, shots }]);
+  await ev(setup, [policy.toString(), answerOrders.toString(), { video, speed, maxDays, sceneMs: 1200, resultMs: 700, shots }]);
   let r, threw = null;
   try { r = await ev(chapter, [legs, captain, false, 'gunner', true, null, true, '__pt']); } catch (e) { threw = e; }
   const P = await page.evaluate(() => ({ records: __pt.records.map(x => { const { seen, ...rest } = x; return rest; }), pay: __pt.pay, stopped: __pt.stopped, limit: __pt.limit }));
