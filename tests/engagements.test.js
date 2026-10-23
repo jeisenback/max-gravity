@@ -326,17 +326,17 @@ test('a turn that takes a heavy share of the armor can hurt you: a clinic bill w
     st.crew = st.crew.filter(id => person(id).role !== 'medic'); st.injured = {};
     startDuel({ kind: 'pirate' }, false); begin();
     const cred = st.credits, me = fightNow().state.me; me.shields = 0; sturdy();
-    shownMoves({ kind: 'broadside', target: 'hull', dmg: [60, 60] });  // 60 of 260: more than fifteen percent
+    shownMoves({ kind: 'broadside', target: 'hull', dmg: [60, 60] });  // 60: more than a fifth of the real 260 (the fight's 117 at FIGHT.POOL)
     rolls([0.5, 0.5, 0.5, 0.99, 0.01]);  // our two shots, her volley, no casualty, and the hand's own roll
     fireOrders();
     out.hurt = handHurt(); out.line = fightNow().state.log.slice(-1)[0]; out.paid = cred - st.credits; out.armor = st.armor;
     hired().hurtUntil = 0; fightNow().state.me.shields = 0; fightNow().state.foes.forEach(f => { f.parts.weapons.hp = f.parts.weapons.max; });  // her guns whole again, so she fires
-    shownMoves({ kind: 'broadside', target: 'hull', dmg: [20, 20] });  // 20 of 260: not
+    shownMoves({ kind: 'broadside', target: 'hull', dmg: [20, 20] });  // 20: not
     rolls([0.5, 0.5, 0.5, 0.01, 0.01]); fireOrders(); out.light = handHurt(); out.lightLine = fightNow().state.log.slice(-1)[0];
     return out;
   });
   assert.ok(r.hurt, 'hurt on a heavy hit'); assert.match(r.line, /she hits your hull for 60\. You are hurt\. Your work counts a level lower until the clinic clears you\. The clinic is 1,500 cr of your own, with no medic aboard\.$/, r.line);
-  assert.equal(r.paid, 1500); assert.equal(r.armor, 200, 'the hit stays on the ship');
+  assert.equal(r.paid, 1500); assert.equal(r.armor, 260 - Math.round(60 / 0.45), 'the hit stays on the ship, at the ship\'s scale: 60 of the fight\'s armor is 133 of the real');
   assert.equal(r.light, false); assert.match(r.lightLine, /she hits your hull for 20\.$/);
   await done();
 });

@@ -24,19 +24,21 @@ test('the fights tool plays the ship fight, the repel fight and the assault figh
   }
 });
 
-// The ship fight's targets (docs/superpowers/specs/2026-10-21-ship-fight-rework-design.md, "How we know it worked"; #808), read from the tool's table by
-// the type she is (a raider, a corsair, a navy cutter, a raider pair), on two seeds of 200 played side by side (about 130 to 200 fights a policy and type):
+// The ship fight's targets (docs/superpowers/specs/2026-10-21-ship-fight-rework-design.md, "How we know it worked"; #808; #814's FIGHT.POOL), read from the tool's
+// table by the type she is (a raider, a corsair, a navy cutter, a raider pair), on two seeds of 200 played side by side (about 130 to 300 fights a policy and type);
+// the figures in brackets are at three seeds of 100 (COMBAT.md has five):
 // - no fixed aim (random, focus, drive, lock, hull, hullhold) has more than 70% good ends (crippled, broken off, escaped) against every type, and the best fixed
-//   aim is not the same against every type (her drive against a lone raider, random against the rest, at five seeds of 100: COMBAT.md);
-// - the policy that reads her shown move (answer) has the best good ends against every type, by ten points or more (at five seeds its lead is 21 points or more);
-// - the raider has teeth (the owner's ruling, #808 final review): every gun at her hull, the turret held or not, is boarded at least half the time, and her
-//   drive shot out first still wins at least 60 in a hundred (79 at five seeds; answer, at her lock, 100);
-// - random play loses ('ran' or 'lost') a quarter of its fights or more over every type (47% at five seeds), and loses some armor: at least 0.15% of the
-//   hull a fight (0.3% at five seeds and at these two; it was 5% before the raider's teeth scaled the damage down, and the spec's "real hull" is waived for PR 1);
-// - a fight lasts five to eight turns on the mean over every policy and type (6.0), and every fight ends one of the named ways: there is no standoff.
-// The lock fights started directly are left out (lock: false). The hand is killed in at most 3 random fights in a hundred.
+//   aim is not the same against every type (hull fire against a lone raider and a corsair, random against a cutter and a pair);
+// - the policy that reads her shown move (answer) has good ends at or above every fixed aim's against each type, and above all of them over every type
+//   (99% against hull fire's 52%). A lone raider is beaten by hull fire, so there answer only ties it, at 100%: the owner's choice (#814), as a smaller pool
+//   halves her hull and every gun at it cripples her before she is alongside. The lock lesson is the raider pair's: every gun at the hull, the turret held or
+//   not, is boarded at least half the time (every time), and answer, at the locks, wins (93%);
+// - random play loses ('ran' or 'lost') a quarter of its fights or more over every type (38%), and loses real hull: at least 5% of it a fight (19%);
+// - a fight lasts five to eight turns on the mean over every policy and type (5.3), and under a third of answer's fights reach the turn cap (32%: a corsair
+//   and a pair still run long); every fight ends one of the named ways, so there is no standoff.
+// The lock fights started directly are left out (lock: false). The hand is killed in at most 3 random fights in a hundred (1%).
 const SHIP_N = 200, SHIP_SEEDS = [1, 2];
-test('no fixed aim wins against every type of ship and the best one differs by type, reading her move beats them all, hull fire alone loses to a raider\'s board, random play loses a quarter of its fights and some armor, and a fight lasts five to eight turns', async () => {
+test('no fixed aim wins against every type of ship and the best one differs by type, reading her move is never beaten, hull fire alone loses to a raider pair\'s board, random play loses a quarter of its fights and real hull, and a fight lasts five to eight turns and mostly ends before the cap', async () => {
   const runs = await Promise.all(SHIP_SEEDS.map(seed => fights({ seed, n: SHIP_N, lock: false })));
   for (const x of runs) assert.deepEqual(x.errors, []);
   const m = {};  // the seeds' rows by policy and type, summed
@@ -51,13 +53,15 @@ test('no fixed aim wins against every type of ship and the best one differs by t
   for (const p of FIXED) assert.ok(TYPES.some(type => good(row(p, type)) <= 0.7), `${p} has more than 70% good ends against every type: ${TYPES.map(type => good(row(p, type)).toFixed(2)).join(', ')}`);
   const best = TYPES.map(type => FIXED.slice().sort((a, b) => good(row(b, type)) - good(row(a, type)))[0]);
   assert.ok(new Set(best).size >= 2, `the best fixed aim is ${best[0]} against every type`);
-  TYPES.forEach((type, i) => assert.ok(good(row('answer', type)) >= good(row(best[i], type)) + 0.1, `against a ${type}: answer ${good(row('answer', type)).toFixed(2)}, ${best[i]} ${good(row(best[i], type)).toFixed(2)}`));
-  for (const p of ['hull', 'hullhold']) { const t = row(p, 'raider'); assert.ok(t.boarded / t.n >= 0.5, `${p} against a raider: boarded ${(t.boarded / t.n).toFixed(2)}, good ${good(t).toFixed(2)}`); }
-  assert.ok(good(row('drive', 'raider')) >= 0.6, `her drive first against a raider: ${good(row('drive', 'raider')).toFixed(2)} good`);
+  TYPES.forEach((type, i) => assert.ok(good(row('answer', type)) >= good(row(best[i], type)), `against a ${type}: answer ${good(row('answer', type)).toFixed(2)}, ${best[i]} ${good(row(best[i], type)).toFixed(2)}`));
+  for (const p of ['hull', 'hullhold']) { const t = row(p, 'raider pair'); assert.ok(t.boarded / t.n >= 0.5, `${p} against a raider pair: boarded ${(t.boarded / t.n).toFixed(2)}, good ${good(t).toFixed(2)}`); }
   const over = p => { const all = {}; for (const type of TYPES) for (const [f, v] of Object.entries(row(p, type))) all[f] = (all[f] || 0) + v; return all; };
+  const ans = over('answer');
+  for (const p of FIXED) { const t = over(p); assert.ok(good(ans) > good(t), `over every type: answer ${good(ans).toFixed(2)}, ${p} ${good(t).toFixed(2)}`); }
+  assert.ok(ans.atCap / ans.n < 1 / 3, `${(ans.atCap / ans.n).toFixed(2)} of answer's fights reach the turn cap`);
   const rnd = over('random');
   assert.ok(rnd.lostFight / rnd.n >= 0.25, `random play loses ${(rnd.lostFight / rnd.n).toFixed(2)} of its fights`);
-  assert.ok(rnd.hull / rnd.n >= 0.0015, `random play loses ${(100 * rnd.hull / rnd.n).toFixed(2)}% of the hull a fight`);
+  assert.ok(rnd.hull / rnd.n >= 0.05, `random play loses ${(100 * rnd.hull / rnd.n).toFixed(2)}% of the hull a fight`);
   assert.ok(rnd.died / rnd.n <= 0.03, `the hand is killed in ${(rnd.died / rnd.n).toFixed(3)} of random fights`);
   const every = [...FIXED, 'answer'].map(over), turns = every.reduce((n, t) => n + t.rounds, 0) / every.reduce((n, t) => n + t.n, 0);
   assert.ok(turns >= 5 && turns <= 8, `a fight lasts ${turns.toFixed(2)} turns on the mean`);

@@ -25,9 +25,12 @@ const FIGHT = {
   PDC_SALVO: 0.6,    // what a turret held back takes off a salvo (a gun volley takes PDC_HOLD)
   LOST_CARGO: 0.3,   // the share of the fullest good in the hold that she takes when the ship is lost, and that the captain jettisons to run (fightui.js, boarders.js)
   TURNS: 8,
+  POOL: 0.45,        // both sides' shields and armor in a fight are the ship's times this, so that a fight ends before TURNS (#814); the hand's real armor lost is the fight's
+                     // divided by it (fightui.js). Tuned with the fight tool (3 seeds of 100) to the targets in tests/fights.test.js: answer has 99% good ends and loses 1%,
+                     // in 6.2 turns, 32% of them at the cap (97% at 1.0); random play loses 38% and 19% of the real hull a fight; a lone raider falls to hull fire (COMBAT.md)
   BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid
-  HEAVY_HIT: 0.2     // a turn is a heavy hit when your hull (shields and armor) loses more than this share of your maximum armor (fightui.js); a fifth, so that the hand is rarely
+  HEAVY_HIT: 0.2     // a turn is a heavy hit when your hull (shields and armor) loses more than this share of your real maximum armor (fightui.js, at the ship's scale, not FIGHT.POOL's); a fifth, so that the hand is rarely
                      // killed: on the Ice Hauler only her salvo unanswered reaches it (SALVO_DMG), and the soak holds the hurts a chapter (tests/distribution/stakes.test.js)
 };
 
@@ -50,12 +53,13 @@ const FOE_TYPES = {
   destroyer: { regen: 0, launcher: false }
 };
 
+// A ship's side in a fight: her shields and armor scaled by FIGHT.POOL, her parts by FIGHT.PART_HP.
 function shipSide(stats, { grade = 0, skill = 0, torps = 0, regen = 0, launcher = stats.launcher }) {
-  const armor = Math.round(stats.armor * (1 + GRADE_HULL * grade));
+  const armor = Math.round(stats.armor * (1 + GRADE_HULL * grade) * FIGHT.POOL), shields = Math.round(stats.shields * FIGHT.POOL);
   const part = key => ({ hp: FIGHT.PART_HP[key], max: FIGHT.PART_HP[key] });
   const weapons = FIGHT.PART_HP.weapons * stats.guns;
   return {
-    shields: stats.shields, maxShields: stats.shields, armor, maxArmor: armor,
+    shields, maxShields: shields, armor, maxArmor: armor,
     parts: { weapons: { hp: weapons, max: weapons }, drive: part('drive'), lock: part('lock'), ...(launcher ? { launcher: part('launcher') } : {}) },
     guns: stats.guns, dmgMult: stats.dmgMult * (1 + GRADE_PUNCH * grade), skill,
     speed: stats.accel * stats.turn,  // who wins the say on the range

@@ -25,12 +25,12 @@
    },
    {
     "text": "Turn 3: you hit her weapons for 13, you hit her weapons for 8, she hits your hull for 17.",
-    "armor": 260,
+    "armor": 251,
     "band": 0
    },
    {
     "text": "",
-    "armor": 260,
+    "armor": 251,
     "band": null
    }
   ],
@@ -71,12 +71,12 @@
    },
    {
     "text": "Turn 3: you hit her weapons for 13, you hit her weapons for 8, she hits your hull for 17.",
-    "armor": 260,
+    "armor": 251,
     "band": 0
    },
    {
     "text": "",
-    "armor": 260,
+    "armor": 251,
     "band": null
    }
   ],
@@ -117,12 +117,12 @@
    },
    {
     "text": "Turn 3: you hit her weapons for 13, you hit her weapons for 6, she hits your hull for 17.",
-    "armor": 260,
+    "armor": 251,
     "band": 0
    },
    {
     "text": "",
-    "armor": 260,
+    "armor": 251,
     "band": null
    }
   ],
@@ -163,12 +163,12 @@
    },
    {
     "text": "Turn 3: you hit her weapons for 13, you hit her weapons for 6, she hits your hull for 17.",
-    "armor": 260,
+    "armor": 251,
     "band": 0
    },
    {
     "text": "",
-    "armor": 260,
+    "armor": 251,
     "band": null
    }
   ],
@@ -214,27 +214,27 @@
    },
    {
     "text": "Turn 4: you hit her weapons for 7, you hit her weapons for 10, she hits your hull for 44.",
-    "armor": 260,
+    "armor": 213,
     "band": 3
    },
    {
     "text": "Turn 5: you hit her weapons for 10, you hit her weapons for 11, she hits your hull for 9.",
-    "armor": 260,
+    "armor": 193,
     "band": 2
    },
    {
     "text": "Turn 6: you hit her weapons for 9, you hit her weapons for 12, she hits your hull for 17.",
-    "armor": 260,
+    "armor": 156,
     "band": 1
    },
    {
     "text": "Turn 7: you hit her weapons for 10, you hit her weapons for 1.",
-    "armor": 260,
+    "armor": 156,
     "band": 0
    },
    {
     "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 260,
+    "armor": 156,
     "band": 1
    }
   ],
@@ -277,27 +277,27 @@
    },
    {
     "text": "Turn 4: you hit her weapons for 7, you hit her weapons for 10, she hits your hull for 44.",
-    "armor": 260,
+    "armor": 213,
     "band": 3
    },
    {
     "text": "Turn 5: you hit her weapons for 10, you hit her weapons for 11, she hits your hull for 9.",
-    "armor": 260,
+    "armor": 193,
     "band": 2
    },
    {
     "text": "Turn 6: you hit her weapons for 9, you hit her weapons for 12, she hits your hull for 17.",
-    "armor": 260,
+    "armor": 156,
     "band": 1
    },
    {
     "text": "Turn 7: you hit her weapons for 10, you hit her weapons for 1.",
-    "armor": 260,
+    "armor": 156,
     "band": 0
    },
    {
     "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 260,
+    "armor": 156,
     "band": 1
    }
   ],
@@ -340,27 +340,27 @@
    },
    {
     "text": "Turn 4: you hit her weapons for 8, you hit her weapons for 11, she hits your hull for 44.",
-    "armor": 260,
+    "armor": 213,
     "band": 3
    },
    {
     "text": "Turn 5: you hit her weapons for 10, you hit her weapons for 11, she hits your hull for 9.",
-    "armor": 260,
+    "armor": 193,
     "band": 2
    },
    {
     "text": "Turn 6: you hit her weapons for 10, you hit her weapons for 12, she hits your hull for 17.",
-    "armor": 260,
+    "armor": 156,
     "band": 1
    },
    {
     "text": "Turn 7: you hit her weapons for 6, nothing left of the weapons to hit.",
-    "armor": 260,
+    "armor": 156,
     "band": 0
    },
    {
     "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 260,
+    "armor": 156,
     "band": 1
    }
   ],
@@ -403,27 +403,27 @@
    },
    {
     "text": "Turn 4: you hit her weapons for 8, you hit her weapons for 11, she hits your hull for 44.",
-    "armor": 260,
+    "armor": 213,
     "band": 3
    },
    {
     "text": "Turn 5: you hit her weapons for 10, you hit her weapons for 11, she hits your hull for 9.",
-    "armor": 260,
+    "armor": 193,
     "band": 2
    },
    {
     "text": "Turn 6: you hit her weapons for 10, you hit her weapons for 12, she hits your hull for 17.",
-    "armor": 260,
+    "armor": 156,
     "band": 1
    },
    {
     "text": "Turn 7: you hit her weapons for 6, nothing left of the weapons to hit.",
-    "armor": 260,
+    "armor": 156,
     "band": 0
    },
    {
     "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 260,
+    "armor": 156,
     "band": 1
    }
   ],
