@@ -198,7 +198,7 @@ const playScenes = () => {
     run(`hand:teach:${id}`, {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => String(ACTIVITIES.teach.run()) }] }),
       { prep() { hired().moves = [...known]; hired().skill = { ...hired().skill, gunner: xp }; for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = OPINION.TRUSTED; }, extra: () => ({ moves: hired().moves, gunner: hired().skill.gunner }) });
   }
-  run('hand:teach:none', {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, can: ACTIVITIES.teach.can, run: () => String(ACTIVITIES.teach.can()) }] }));
+  run('hand:teach:none', {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => ACTIVITIES.teach.run() }] }));  // nothing due: the button teaches nothing and says nothing (text '')
   // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
   run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.filter(c => /^Heave to/.test(c.label)) }; });
   run('memory:landing', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { land(currentPlanet()); G.dialog = null; G.nextEvent = null; return ''; } }] }), { prep() { G.state.crew = []; G.player = G.player || { armor: ship().armor, x: 0, y: 0, vx: 0, vy: 0 }; uatPassenger('earth', G.state.planet); } });

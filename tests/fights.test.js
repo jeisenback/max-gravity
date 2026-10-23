@@ -38,11 +38,17 @@ test('the fights tool plays the ship fight, the repel fight and the assault figh
 //   and a pair still run long); every fight ends one of the named ways, so there is no standoff.
 // The lock fights started directly are left out (lock: false). The hand is killed in at most 3 random fights in a hundred (1%).
 const SHIP_N = 200, SHIP_SEEDS = [1, 2];
-test('no fixed aim wins against every type of ship and the best one differs by type, reading her move is never beaten, hull fire alone loses to a raider pair\'s board, random play loses a quarter of its fights and real hull, and a fight lasts five to eight turns and mostly ends before the cap', async () => {
-  const runs = await Promise.all(SHIP_SEEDS.map(seed => fights({ seed, n: SHIP_N, lock: false })));
-  for (const x of runs) assert.deepEqual(x.errors, []);
-  const m = {};  // the seeds' rows by policy and type, summed
+let shipRuns = null;  // the ship fights without the moves, played once for the two tests that read them
+const shipFights = () => (shipRuns = shipRuns || Promise.all(SHIP_SEEDS.map(seed => fights({ seed, n: SHIP_N, lock: false }))));
+const byMatch = runs => {  // the seeds' rows by policy and type, summed
+  const m = {};
   for (const x of runs) for (const [k, t] of Object.entries(x.match)) { const acc = m[k] = m[k] || {}; for (const [f, v] of Object.entries(t)) acc[f] = (acc[f] || 0) + v; }
+  return m;
+};
+test('no fixed aim wins against every type of ship and the best one differs by type, reading her move is never beaten, hull fire alone loses to a raider pair\'s board, random play loses a quarter of its fights and real hull, and a fight lasts five to eight turns and mostly ends before the cap', async () => {
+  const runs = await shipFights();
+  for (const x of runs) assert.deepEqual(x.errors, []);
+  const m = byMatch(runs);
   const TYPES = ['raider', 'corsair', 'cutter', 'raider pair'], FIXED = ['random', 'focus', 'drive', 'lock', 'hull', 'hullhold'], ENDS = ['crippled', 'broke', 'escaped', 'away', 'boarded', 'ran', 'lost'];
   const row = (p, type) => m[`${p}|${type}`], good = t => t.good / t.n;
   for (const type of TYPES) for (const p of [...FIXED, 'answer']) {
@@ -65,6 +71,33 @@ test('no fixed aim wins against every type of ship and the best one differs by t
   assert.ok(rnd.died / rnd.n <= 0.03, `the hand is killed in ${(rnd.died / rnd.n).toFixed(3)} of random fights`);
   const every = [...FIXED, 'answer'].map(over), turns = every.reduce((n, t) => n + t.rounds, 0) / every.reduce((n, t) => n + t.n, 0);
   assert.ok(turns >= 5 && turns <= 8, `a fight lasts ${turns.toFixed(2)} turns on the mean`);
+});
+
+// The gunner moves (docs/superpowers/specs/2026-10-23-gunner-moves-design.md, section 4), the same fights with all three known (moves: true), beside the ones
+// above without them; the figures in brackets are at five seeds of 200 (COMBAT.md):
+// - a move is worth having: answer, which reads her move, does better with them against the type each answers. Split against a corsair: good ends are 100%
+//   either way, so it is the turns (7.42 to 6.18) and the turn cap (5% to 0%). Lead against a raider pair: good ends (94% to 98%) and the hull lost (7.0% to 2.3%).
+//   Vent against a cutter is not claimed here: the move rule keeps her at the heat cap there, so it never vents (5.32 and 5.27 turns, 100% good either way);
+// - a move is a choice, not a free win: no other policy with the moves has more good ends than answer against any type, among them two that use the moves
+//   without reading her move for it, randmove (random aims and a random usable move: 36% good over every type) and eager (the first usable move at
+//   its first chance: 1%); and random play with the moves still loses a quarter of its fights or more (randmove 45%).
+test('with the moves, each helps against its type, no fixed plan beats reading her move, and random play still loses a quarter', async () => {
+  const [plain, runs] = await Promise.all([shipFights(), Promise.all(SHIP_SEEDS.map(seed => fights({ seed, n: SHIP_N, lock: false, moves: true })))]);
+  for (const x of runs) assert.deepEqual(x.errors, []);
+  const was = byMatch(plain), m = byMatch(runs), TYPES = ['raider', 'corsair', 'cutter', 'raider pair'];
+  const good = t => t.good / t.n, turns = t => t.rounds / t.n, hull = t => t.hull / t.n, cap = t => t.atCap / t.n;
+  const over = (rows, p) => { const all = {}; for (const type of TYPES) for (const [f, v] of Object.entries(rows[`${p}|${type}`])) all[f] = (all[f] || 0) + v; return all; };
+  const f2 = x => x.toFixed(2);
+  const [c0, c1] = [was, m].map(r => r['answer|corsair']), [p0, p1] = [was, m].map(r => r['answer|raider pair']);
+  assert.ok(good(c1) >= good(c0) && turns(c1) < turns(c0) && cap(c1) <= cap(c0), `split against a corsair: good ${f2(good(c0))} to ${f2(good(c1))}, turns ${f2(turns(c0))} to ${f2(turns(c1))}, at cap ${f2(cap(c0))} to ${f2(cap(c1))}`);
+  assert.ok(good(p1) > good(p0) && hull(p1) < hull(p0), `lead against a raider pair: good ${f2(good(p0))} to ${f2(good(p1))}, hull ${f2(hull(p0))} to ${f2(hull(p1))}`);
+  const a0 = over(was, 'answer'), a1 = over(m, 'answer');
+  assert.ok(good(a1) >= good(a0) && hull(a1) < hull(a0), `over every type: answer good ${f2(good(a0))} to ${f2(good(a1))}, hull ${f2(hull(a0))} to ${f2(hull(a1))}`);
+  const others = [...new Set(Object.keys(m).map(k => k.split('|')[0]))].filter(p => p !== 'answer');
+  for (const p of ['randmove', 'eager']) assert.ok(others.includes(p), `the ${p} policy is played`);
+  for (const type of TYPES) for (const p of others) assert.ok(good(m[`${p}|${type}`]) <= good(m[`answer|${type}`]), `against a ${type} with the moves: ${p} ${f2(good(m[`${p}|${type}`]))}, answer ${f2(good(m[`answer|${type}`]))}`);
+  const rnd = over(m, 'randmove');
+  assert.ok(rnd.lostFight / rnd.n >= 0.25, `random play with the moves loses ${f2(rnd.lostFight / rnd.n)} of its fights`);
 });
 
 // The deck fight both ways (Task 7, R36). With five crew, random play wins about as often by her grade as the lock fight before it did (within ten points of

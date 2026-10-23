@@ -26,12 +26,17 @@ const moveTeacher = id => (MOVE_TEACH[id].post ? postHolder(MOVE_TEACH[id].post)
 const moveNow = () => (hired() ? moveDue(career(), skillLevel('gunner'), moveTeacher, p => p.opinion || 0) : null);  // a hired hand's only: no move is taught to an owner
 const teachSay = (key, vars) => sceneSay('scene:gunner-moves', key, vars);
 
+const teachLabel = id => teachSay(`${id}.label`, { first: moveTeacher(id).first });
+// The move due now, if it is the one `shown` names (the label the menu was drawn with; none: whatever is due). A teacher hurt since the menu was drawn
+// shuts the choice rather than teach another move.
+const teachDue = shown => { const id = moveNow(); return id && (shown === undefined || teachLabel(id) === shown) ? id : null; };
+
 ACTIVITIES.teach = {
   hiredOnly: true,
-  get label() { const id = moveNow(); return id ? teachSay(`${id}.label`, { first: moveTeacher(id).first }) : teachSay('idle.label'); },
-  can: () => !!moveNow(),
-  run() {
-    const id = moveNow();
+  get label() { const id = moveNow(); return id ? teachLabel(id) : teachSay('idle.label'); },
+  can: shown => !!teachDue(shown),
+  run(shown) {
+    const id = teachDue(shown);
     if (!id) return '';
     const c = career(), who = moveTeacher(id);
     c.moves = [...(c.moves || []), id];

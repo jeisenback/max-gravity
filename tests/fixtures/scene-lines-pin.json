@@ -9654,7 +9654,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Tomas walks you aft to the coolant loop behind the guns and opens the cover on the bleed valve with his thumbnail. \"This dumps the heat off every gun into the radiators at once, and the locks come off with it.\" He hands you the valve key handle first and has you turn it twice with the loop cold. Then he tells the loop, \"I know, I know, you hate it, and it's once a fight and no more, and I'll have you topped up again before anyone shoots at us.\"",
+    "text": "Tomas walks you aft to the coolant loop behind the guns and opens the cover on the bleed valve with his thumbnail. \"This dumps the heat off every gun into the radiators at once, and the locks come off with it.\" He hands you the valve key, handle first and has you turn it twice with the loop cold. Then he tells the loop, \"I know, I know, you hate it, and it's once a fight and no more, and I'll have you topped up again before anyone shoots at us.\"",
     "x": {
      "moves": [
       "vent"
@@ -9723,7 +9723,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "false",
+    "text": "",
     "next": null
    }
   ],

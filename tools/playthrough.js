@@ -50,11 +50,11 @@ function policy(d, ok, memo) {
     const want = window.__answer(s), vented = d.choices.some(c => c.label === fightSay('move.on', { label: fightSay('move.vent', { heat: f.heat }) }));
     const ready = gunsReady(vented ? { ...f, locked: [] } : f);  // a vent ordered unlocks the guns, so the panel shows an order for each (fightui.js)
     const aim = o => (o ? fightSay('aim.at', { part: fightSay(`part.${o.part}`) }) : fightSay('aim.hold'));
-    const gun = (n, o) => fightSay('gun.label', { n: n + 1, aim: o ? fightSay('aim.range', { aim: aim(o), ...(([lo, hi]) => ({ lo, hi }))(shotRange(f, o)) }) : aim(o) });
+    const gun = (n, o, led = false) => fightSay('gun.label', { n: n + 1, aim: o ? fightSay('aim.range', { aim: aim(o), ...(([lo, hi]) => ({ lo, hi }))(shotRange(f, o, led)) }) : aim(o) });  // led: the gun lead is ordered on shows the led range (fightui.js)
     let at = 0;
     for (let n = 0; n < ready; n++) {
       const g = want.guns[n], over = !!g.over;
-      if (label(at) !== gun(n, { ...g, over }) && label(at) !== gun(n, { ...g, over: !over })) return at;  // the target
+      if (![false, true].some(led => [over, !over].some(x => label(at) === gun(n, { ...g, over: x }, led)))) return at;  // the target, whatever its charge and whether lead is on it yet
       if (label(at + 1) !== fightSay(over ? 'gun.over.on' : 'gun.over.off', { n: n + 1, heat: FIGHT.OVER_HEAT })) return at + 1;  // the charge
       at += 2;
     }
@@ -130,7 +130,7 @@ function setup([policySrc, answerSrc, o]) {
     for (const id of x.crew.filter(i => !y.crew.includes(i) && !y.memorial.includes(nameOf(i)))) out.push(`${nameOf(id)} is gone from the crew`);
     return out;
   };
-  const P = window.__pt = { live: true, records: [], shots: 0, stopped: null, pay: 0, fights: new Map(), burnRec: null, before: null, last: null, since: 0 };
+  const P = window.__pt = { live: true, records: [], shots: 0, stopped: null, pay: 0, fights: new Map(), burnRec: null, before: null, last: null, since: 0, taught: [], used: {} };
   const push = r => { P.records.push(r); return r; };
   const shot = name => (o.shots === false ? null : yieldTo(window.__ptShot(`${String(++P.shots).padStart(3, '0')}-${slug(name)}`)));
   const begin = () => {
@@ -142,6 +142,9 @@ function setup([policySrc, answerSrc, o]) {
   };
   // the pay of the chapter: what the wage and the share put in the hand's savings at each arrival (game.js payCrew, hired.js settleRun)
   for (const name of ['payCrew', 'settleRun']) { const real = window[name]; window[name] = function () { const c0 = G.state.credits, out = real.apply(this, arguments); P.pay += Math.max(0, G.state.credits - c0); return out; }; }
+  // the gunner moves: each taught on a burn (gunnermoves.js), and each use in a fight, as the engine applies it (fight.js resolveShipTurn, a move event)
+  { const real = ACTIVITIES.teach.run; ACTIVITIES.teach.run = function () { const out = real.apply(this, arguments), m = (career() || {}).moves || []; if (out) P.taught.push({ id: m[m.length - 1], day: day() }); return out; }; }
+  { const real = window.resolveShipTurn; window.resolveShipTurn = function () { const r = real.apply(this, arguments); for (const e of r.events) if (e.move) P.used[e.move] = (P.used[e.move] || 0) + 1; return r; }; }
   // how each fight ended (fightui.js): the ship fight's end, and the deck fight's
   { const se = window.shipFightEnd; window.shipFightEnd = function (s, end) { const r = P.fights.get(s); if (r) r.end = end; return se.apply(this, arguments); }; }
   { const dc = window.deckClose; window.deckClose = function (s, end) { const r = P.fights.get(s); if (r) r.end = end; return dc.apply(this, arguments); }; }
@@ -279,6 +282,7 @@ function transcript(recs, r, meta) {
     `- Ending: ${ending}`,
     `- Lost or left: ${r.losses.length ? r.losses.map(l => `${l.who} ${l.what} day ${l.day} (${l.why})`).join('; ') : 'nobody'}`,
     `- Fights: ${fights.length} (ship ${fights.filter(f => f.kind === 'ship').length}, deck ${fights.filter(f => f.kind === 'deck').length}); won ${fights.filter(won).length}, lost ${fights.filter(lost).length}, other ${fights.filter(f => !won(f) && !lost(f)).length}: ${fights.map(f => `${f.kind} ${f.end || 'unsettled'}`).join(', ') || 'none'}`,
+    `- Gunner moves: learned ${(meta.taught || []).map(t => `${t.id} day ${t.day}`).join(', ') || 'none'}; used in the fights ${['vent', 'lead', 'split'].map(id => `${id} ${(meta.used || {})[id] || 0}`).join(', ')}`,
     `- Scenes: ${recs.filter(x => x.k === 'scene').length}; landings: ${recs.filter(x => x.k === 'land').length}`,
     `- Page errors: ${meta.errors.length ? meta.errors.join('; ') : 'none'}`,
     ...(r.bad.length ? [`- Trouble: ${r.bad.join('; ')}`] : []), '');
@@ -296,15 +300,15 @@ async function playthrough({ seed = 1, captain = 'hester', speed = 10, out = nul
   await ev(setup, [policy.toString(), answerOrders.toString(), { video, speed, maxDays, sceneMs: 1200, resultMs: 700, shots }]);
   let r, threw = null;
   try { r = await ev(chapter, [legs, captain, false, 'gunner', true, null, true, '__pt']); } catch (e) { threw = e; }
-  const P = await page.evaluate(() => ({ records: __pt.records.map(x => { const { seen, ...rest } = x; return rest; }), pay: __pt.pay, stopped: __pt.stopped, limit: __pt.limit }));
+  const P = await page.evaluate(() => ({ records: __pt.records.map(x => { const { seen, ...rest } = x; return rest; }), pay: __pt.pay, stopped: __pt.stopped, limit: __pt.limit, taught: __pt.taught, used: __pt.used }));
   r = r || { runs: 0, credits: 0, losses: [], bad: [`threw: ${threw && threw.message}`], ending: null, stuck: 0 };
   const v = page.video();
   await ctx.close();
   if (v) { await v.saveAs(path.join(dir, 'run.webm')); await v.delete(); fs.rmSync(videoDir, { recursive: true, force: true }); }
-  const tr = transcript(P.records, r, { seed, captain, pay: P.pay, stopped: P.stopped || P.limit, errors });
+  const tr = transcript(P.records, r, { seed, captain, pay: P.pay, stopped: P.stopped || P.limit, errors, taught: P.taught, used: P.used });
   fs.writeFileSync(path.join(dir, 'transcript.md'), tr.text);
   const secs = Math.round((Date.now() - t0) / 1000);
-  return { dir, secs, days: tr.days, legs: r.runs, ending: tr.ending, errors, bad: r.bad, records: P.records, stopped: P.stopped, video: v ? fs.statSync(path.join(dir, 'run.webm')).size : 0 };
+  return { dir, secs, days: tr.days, legs: r.runs, ending: tr.ending, errors, bad: r.bad, records: P.records, stopped: P.stopped, taught: P.taught, used: P.used, video: v ? fs.statSync(path.join(dir, 'run.webm')).size : 0 };
 }
 
 module.exports = { playthrough, policy };

@@ -99,6 +99,32 @@ test('the activity teaches the move and a few gunner points, and a burn without 
   assert.deepEqual(r.two.moves, ['vent', 'lead']); assert.equal(r.two.can, false, 'split waits for level 2');
 });
 
+test('the move taught is the one the menu showed: a teacher hurt after it was drawn shuts the choice, and teaching resumes when he is back', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    __seed(1);
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
+    G.state.tutorial = null;
+    for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = 3;
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
+    const tomas = postHolder('engineer'), label = ACTIVITIES.teach.label, choice = downtimeEvent(true).choices.find(c => c.label === label);
+    G.state.injured = { [tomas.id]: true };  // hurt between the menu and the click: lead (Ines) is due now
+    const shut = { can: choice.can(), dueNow: ACTIVITIES.teach.label, text: choice.run(), moves: [...(hired().moves || [])] };
+    G.state.injured = {}; G.transit.lifeUsed = {};
+    const again = downtimeEvent(true).choices.find(c => c.label === label), back = { can: again.can() };
+    again.run();
+    return { label, shut, back, moves: [...hired().moves] };
+  });
+  await done();
+  assert.match(r.label, /Tomas/);
+  assert.match(r.shut.dueNow, /Ines/, 'the move due now is lead');
+  assert.equal(r.shut.can, false, 'the vent choice is shut');
+  assert.equal(r.shut.text, '', 'and clicking it teaches nothing');
+  assert.deepEqual(r.shut.moves, [], 'not lead in its place');
+  assert.equal(r.back.can, true, 'Tomas back: vent is offered again');
+  assert.deepEqual(r.moves, ['vent']);
+});
+
 test('no move is taught to an owner or a non-gunner', async () => {
   assert.equal(moveDue({ post: 'engineer', moves: [] }, 3, crew(), trust), null);
   assert.equal(moveDue(null, 3, crew(), trust), null);
