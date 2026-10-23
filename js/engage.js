@@ -77,8 +77,12 @@ const HAND_CONTACT = {
 // hand's captain and `deal` the used Ore Runner on offer (h.deal), for the set piece's price.
 const entryLine = (spec, cap, deal) => sceneSay('scene:fight-entry', `${spec.ladder}.text`,
   { cap: cap ? `Captain ${cap.last}` : 'The captain', patrol: spec.gov ? PATROL_NAMES[spec.gov] : '', price: deal ? fmt(deal.price) : '' });
+// Running from a contact (outrunning it, spoofing it, paying it off) costs RUN_DAYS on the burn: they are added to the burn's length (transitDays and transitEta, engineering.js)
+// so the arrival day moves by them, and said in the contact's own scene. Fighting costs none, and heaving to for a patrol is not running.
+const RUN_DAYS = 2;
+function loseBurnDays(t, n) { t.lost = (t.lost || 0) + n; return n; }
+const runCost = () => (G.transit ? ` ${sceneSay('scene:fight', 'run.days', { days: dayWord(loseBurnDays(G.transit, RUN_DAYS)) })}` : '');
 function contactEvent(spec) {
-  if (spec.ladder) ladderDone(hired(), spec.ladder);  // met when the scene is shown, whatever is chosen after (fightladder.js)
   const st = G.state, d = fmt(Math.round(rand(3200, 3800) / 10) * 10);
   const who = spec.ladder ? entryLine(spec, hiredCaptain(), hired() && hired().deal) : { pirate: 'No transponder. The plume signature says pirate.', patrol: `Transponder: ${spec.gov} navy. You are wanted in their space.`,
     bounty: `Transponder spoofed, but the plume matches: ${spec.mission && spec.mission.targetName}, the ship you are hunting.`,
@@ -92,10 +96,10 @@ function contactEvent(spec) {
     choices.push({ label: 'Pay them off (10% of your credits, at least 5,000)', cost: true, ...gated(needCr(5000)), run() {
       const c = Math.max(5000, Math.round(st.credits * 0.1));
       st.credits -= c;
-      return `You transfer ${fmt(c)} cr. Their plume swings away.`;
+      return `You transfer ${fmt(c)} cr. Their plume swings away.${runCost()}`;
     } });
     choices.push({ label: '[{crew}] Spoof a pirate transponder', role: 'slicer', run() {
-      if (Math.random() < slicerOdds()) return '{crew}\'s fake transponder reads as one of their own. The plume swings away.';
+      if (Math.random() < slicerOdds()) return `{crew}'s fake transponder reads as one of their own. The plume swings away.${runCost()}`;
       return `They see through it. ${startDuel(spec, false)}`;
     } });
   }
@@ -112,11 +116,12 @@ function contactEvent(spec) {
   if (mine) {
     mine.label = mine.label.replace('{crew}', POSTS[post].name); mine.own = true;  // shown with no crew member in the role (transit.js)
     if (!hand) mine.run = () => Math.random() < postOdds(post)  // Comms: the spoof
-      ? 'Your fake transponder reads as one of their own. The plume swings away.'
+      ? `Your fake transponder reads as one of their own. The plume swings away.${runCost()}`
       : `They see through it. ${startDuel(spec, false)}`;
   }
   if (spec.kind === 'patrol' && hired()) choices.push({ label: `Heave to and take the fine from the ship's fund`, cost: true, run() {  // a hired hand has no 40,000 cr: the ship pays a quarter of its fund
     const fine = Math.round(st.credits * 0.25);  // st.credits is the ship's fund inside a hired hand's contact (hiredFunds)
+    if (spec.ladder) ladderDone(hired(), spec.ladder);  // the ladder's cutter is a papers check: complying answers it, so the fine is paid once (fightladder.js)
     st.credits -= fine;
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     like(person(hired().captain), -1, sceneSay('scene:memories', 'patrol-fine.memory'));

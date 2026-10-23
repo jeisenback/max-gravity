@@ -26,13 +26,23 @@ const quiet = { foe: [hold], captain: hold };
 
 test('a side takes its hull from the ship and its outfits', () => {
   const s = shipSide({ shields: 90, armor: 140, guns: 1, dmgMult: 1 }, {});
-  assert.deepEqual([s.shields, s.armor, s.parts.weapons.max, s.parts.drive.max, s.parts.lock.max], [90, 140, 63, 34, 7]);
+  assert.deepEqual([s.shields, s.armor, s.parts.weapons.max, s.parts.drive.max, s.parts.lock.max], [41, 63, 63, 34, 7], 'her 90 and 140 at FIGHT.POOL 0.45, rounded');
   assert.equal(shipSide({ shields: 0, armor: 100, guns: 3, dmgMult: 1 }, {}).parts.weapons.max, 189, 'weapons are sized per gun mount');
+});
+
+test('shipSide scales shields and armor by FIGHT.POOL', () => {
+  assert.ok(FIGHT.POOL > 0 && FIGHT.POOL < 1, `POOL ${FIGHT.POOL}`);
+  const s = shipSide({ shields: 90, armor: 140, guns: 1, dmgMult: 1 }, {});
+  const pool = n => Math.round(n * FIGHT.POOL);
+  assert.deepEqual([s.shields, s.maxShields, s.armor, s.maxArmor], [pool(90), pool(90), pool(140), pool(140)]);
+  const v = shipSide({ shields: 50, armor: 100, guns: 1, dmgMult: 1 }, { grade: 2 });
+  assert.deepEqual([v.shields, v.armor, v.maxArmor], [pool(50), pool(160), pool(160)], 'a veteran\'s longer hull is scaled too');
+  assert.deepEqual([s.parts.weapons.max, s.parts.drive.max, s.parts.lock.max], [63, 34, 7], 'the parts are not');
 });
 
 test('a veteran grade lengthens the hull and raises the punch, and the state starts at turn 0', () => {
   const s = shipSide({ shields: 50, armor: 100, guns: 1, dmgMult: 1 }, { grade: 2, skill: 1, torps: 3 });
-  assert.deepEqual([s.armor, s.maxArmor, s.dmgMult, s.skill, s.torps], [160, 160, 1.3, 1, 3]);
+  assert.deepEqual([s.armor, s.maxArmor, s.dmgMult, s.skill, s.torps], [72, 72, 1.3, 1, 3], 'her 100 lengthened to 160, at FIGHT.POOL 0.45');
   const st = fight();
   assert.deepEqual(plain([st.kind, st.band, st.heat, st.locked, st.turn, st.log]), ['ship', CLOSE, 0, [], 0, []]);
 });
@@ -51,11 +61,11 @@ test('a shot does damage within its range, times heavy rounds and the band', () 
 test('damage takes shields before armor, and a part at 0 is out', () => {
   const st = fight({ stats: { guns: 1 } }, { stats: { shields: 5 } });
   const foe = resolveShipTurn(st, orders(fire(1)), quiet, LOW).state.foes[0];
-  assert.deepEqual([foe.armor, foe.shields], [97, 0], 'the 8 points took the 5 shields, then 3 of armor; no shields come back in the fight');
+  assert.deepEqual([foe.armor, foe.shields], [39, 0], 'the 8 points took the 2 shields (5 at FIGHT.POOL), then 6 of her 45 armor; no shields come back in the fight');
   const part = fight({ stats: { guns: 1, dmgMult: 100 } });
   const r = resolveShipTurn(part, orders(fire(1, 'drive')), quiet, LOW);
   assert.equal(r.state.foes[0].parts.drive.hp, 0, 'hp does not go below 0');
-  assert.deepEqual([r.state.foes[0].armor, r.state.foes[0].shields], [100, 50], 'a part hit leaves the hull alone');
+  assert.deepEqual([r.state.foes[0].armor, r.state.foes[0].shields], [45, 23], 'a part hit leaves the hull alone (100 and 50 at FIGHT.POOL)');
 });
 
 test('each shot adds 1 heat and 2 bleed off a turn; over 4, a gun is locked next turn', () => {
@@ -153,7 +163,7 @@ test('a cutter\'s shields come back by her regen share each turn, a raider\'s no
   st.foes = [shipSide(stats, { regen: 0.25 }), shipSide(stats, { regen: 0 })];
   st.foes.forEach(f => { f.shields = 0; });
   const r = resolveShipTurn(st, orders([]), { foe: [hold, hold], captain: hold }, LOW).state;
-  assert.deepEqual(plain(r.foes.map(f => f.shields)), [Math.round(0.25 * 90), 0]);
+  assert.deepEqual(plain(r.foes.map(f => f.shields)), [Math.round(0.25 * 41), 0], 'a quarter of her 41 (90 at FIGHT.POOL)');
   assert.equal(r.band, CLOSE, 'the band does not move');
 });
 
@@ -186,7 +196,7 @@ test('resolveShipTurn does not change the state it was given', () => {
 });
 
 test('the constants are the ones the design names', () => {
-  assert.deepEqual(plain(FIGHT), { GUN_DMG: [8, 14], FOE_DMG: [7, 18], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.4, long: 0.25 }, PART_HP: { weapons: 63, drive: 34, lock: 7, launcher: 10 }, TORP_DMG: [12, 18], SALVO_DMG: [20, 30], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 2, PDC_SALVO: 0.6, TURNS: 8, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2, LOST_CARGO: 0.3 });
+  assert.deepEqual(plain(FIGHT), { GUN_DMG: [8, 14], FOE_DMG: [7, 18], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.4, long: 0.25 }, PART_HP: { weapons: 63, drive: 34, lock: 7, launcher: 10 }, TORP_DMG: [12, 18], SALVO_DMG: [20, 30], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 2, PDC_SALVO: 0.6, TURNS: 8, POOL: 0.45, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2, LOST_CARGO: 0.3 });
 });
 
 test('the turret and heavy rounds outfits reach a side: the extra gun, the turret flag and the heavy multiplier', () => {
@@ -356,7 +366,7 @@ test('each end is reached: crippled, broke, boarded, lost, escaped, away, and at
 
 test('a tie at the turn cap goes to her: she breaks off, and the captain does not run', () => {
   const st = fight(); st.turn = FIGHT.TURNS;
-  st.me.shields = 54; st.me.armor = 84; st.foes[0].shields = 30; st.foes[0].armor = 60;  // 138 of 230 and 90 of 150: both at 0.6
+  st.me.shields = 20; st.me.armor = 32; st.foes[0].shields = 11; st.foes[0].armor = 23;  // 52 of 104 and 34 of 68 (the sides at FIGHT.POOL): both at 0.5
   assert.equal((st.me.shields + st.me.armor) / (st.me.maxShields + st.me.maxArmor), (st.foes[0].shields + st.foes[0].armor) / (st.foes[0].maxShields + st.foes[0].maxArmor));
   assert.equal(shipEnd(st), 'broke');
 });
@@ -395,7 +405,7 @@ test('your loss comes first: boarded while your armor is 0 is lost', () => {
 test('a pin is a broadside at your drive', () => {
   const st = fight({ stats: { accel: 2 } }, {}, CLOSE);
   const r = resolveShipTurn(st, orders([]), { foe: [{ kind: 'pin', target: 'drive', dmg: [8, 8] }], captain: hold }, LOW);
-  assert.deepEqual([r.state.me.parts.drive.hp, r.state.me.armor], [26, 140]);
+  assert.deepEqual([r.state.me.parts.drive.hp, r.state.me.armor], [26, 63], 'the drive takes the 8; the armor (140 at FIGHT.POOL) is whole');
   assert.equal(r.state.moves.foe[0].kind, 'pin', 'the turn records the moves');
 });
 

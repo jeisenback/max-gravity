@@ -709,7 +709,7 @@ test('a ladder step that is due waits for a burn with no other intercept', async
   await done();
 });
 
-test('the ladder contact is marked done when its scene is shown, whatever is chosen after', async () => {
+test('the ladder contact is marked done when its fight starts, not when its scene is shown', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(hiredHelpers); await ev(ladderHelpers);
   const r = await ev(() => {
@@ -718,9 +718,11 @@ test('the ladder contact is marked done when its scene is shown, whatever is cho
     t.intercept.at = 0; t.left = 50;
     const real = Math.random; Math.random = () => 0;  // the drive is seen
     try { Mods.emit('frame', 0.01); } finally { Math.random = real; }
-    return { spec, scene: t.event ? t.event.title : null, done: h.fights && h.fights.done.slice(), next: ladderBurn('pallas') };
+    const shown = (h.fights || { done: [] }).done.slice(), before = ladderBurn('pallas');
+    chooseEvent(0);  // battle stations: the fight starts
+    return { spec, scene: t.event ? t.event.title : null, shown, before: before && before.ladder, done: h.fights && h.fights.done.slice(), next: ladderBurn('pallas') };
   });
-  assert.equal(r.spec.ladder, 'raider'); assert.equal(r.scene, 'Contact'); assert.deepEqual(r.done, ['raider']);
+  assert.equal(r.spec.ladder, 'raider'); assert.equal(r.scene, 'Contact'); assert.deepEqual(r.shown, []); assert.equal(r.before, 'raider', 'still due while only shown'); assert.deepEqual(r.done, ['raider']);
   assert.notEqual(r.next && r.next.ladder, 'raider', 'the same step is not met twice');
   await done();
 });
@@ -739,6 +741,7 @@ test('a ladder fight opens with its own entry line, and a random one with the se
       prep(); const step = ladderNext(h, st, 'mars');
       if (!step) return null;
       const plain = contactEvent({ ...step.spec, ladder: undefined }), e = contactEvent(step.spec);
+      ladderDone(h, step.id);  // the scene does not meet it (the fight does, startShipFight); the walk moves on to the next step
       return { id: step.id, text: e.text, want: sceneSay('scene:fight-entry', `${step.id}.text`, vars), labels: labels(e), plainLabels: labels(plain) };
     });
     return { steps, done: h.fights.done.slice(), pirate: contactEvent({ kind: 'pirate', shipId: 'raider' }).text, patrol: contactEvent({ kind: 'patrol', gov: 'Dome Concord', shipId: 'cutter' }).text };

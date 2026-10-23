@@ -22482,6 +22482,9 @@
   "id": "scene:fight",
   "plays": [
    {
+    "run": "Ines winds the drive past the redline and opens the range. Their plume fades. The run costs 2 days on the burn."
+   },
+   {
     "title": "Battle Stations",
     "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",

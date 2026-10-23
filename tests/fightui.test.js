@@ -66,7 +66,7 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
   assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
   assert.deepEqual(r.labels.map(l => l.replace(/\d+ to \d+ damage/, 'N to M damage')), ['Gun 1: aim at her weapons, N to M damage', 'Gun 1: normal charge', 'Gun 2: aim at her weapons, N to M damage', 'Gun 2: normal charge', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4']);
   assert.deepEqual(r.keep, [true, true, true, true, true, true, true], 'every order and Fire redraw in place');
-  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 180 of 180, armor 260 of 260, weapons 126 of 126, drive 34 of 34, lock 7 of 7, heat 0 of 4\. Her: shields 70 of 70, armor 60 of 60, weapons 63 of 63, drive 34 of 34, lock 7 of 7\.$/, r.bars);
+  assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 81 of 81, armor 117 of 117, weapons 126 of 126, drive 34 of 34, lock 7 of 7, heat 0 of 4\. Her: shields 32 of 32, armor 27 of 27, weapons 63 of 63, drive 34 of 34, lock 7 of 7\.$/, r.bars);
   assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
   await done();
 });
@@ -161,7 +161,7 @@ test('a save made mid-raid in an old version loads with no fight open and no err
     startDuel({ kind: 'pirate' }, false); out.fight = G.nextEvent && G.nextEvent.title; out.me = G.nextEvent && G.nextEvent.fight.state.me.armor;
     return out;
   }, text);
-  assert.deepEqual(r, { refused: null, mode: 'landed', dialog: ['Hull Damage', false], next: ['The Old Days', false], armor: 40, fight: 'Battle Stations', me: 40 }, 'the landing\'s own scenes, and no fight; a fight after it starts from the hull the save kept');
+  assert.deepEqual(r, { refused: null, mode: 'landed', dialog: ['Hull Damage', false], next: ['The Old Days', false], armor: 40, fight: 'Battle Stations', me: 18 }, 'the landing\'s own scenes, and no fight; a fight after it starts from the hull the save kept (40, at FIGHT.POOL 0.45)');
   await done();
 });
 
@@ -443,6 +443,64 @@ test('a lost fight\'s armor is billed at the next yard', async () => {
     return repairPlan({ ...currentPlanet(), services: ['shipyard', 'trade'] });
   });
   assert.ok(r.total > 0 && r.yard && r.lost > 0, JSON.stringify(r));
+  await done();
+});
+
+test('armor lost in a fight comes back to the ship at full scale, and a fight never repairs it', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = [];
+    for (const less of [0, 11, -3]) {  // whole, an odd amount down (its scaled armor rounds up), and at 3
+      const st = fightGame('gunner'), real = less < 0 ? -less : ship().armor - less; st.armor = real;
+      const s = battle(), me = s.state.me, start = me.armor, row = { real, start, max: me.maxArmor, ship: ship().armor, pool: FIGHT.POOL };
+      row.atStart = st.armor;
+      fightTook(s, []); row.unhurt = st.armor;
+      me.armor = Math.max(0, start - 7); fightTook(s, []); row.after7 = st.armor;
+      me.armor = 0; fightTook(s, []); row.atZero = st.armor;
+      out.push(row);
+    }
+    return out;
+  });
+  for (const x of r) {
+    assert.equal(x.start, Math.min(x.max, Math.round(x.real * x.pool)), `the fight armor is the real armor scaled: ${JSON.stringify(x)}`);
+    assert.equal(x.max, Math.round(x.pool * x.ship), 'her maximum is the ship\'s scaled');
+    assert.equal(x.atStart, x.real, 'starting a fight changes nothing');
+    assert.equal(x.unhurt, x.real, `a turn with no armor lost leaves the real armor as it was, rounding or not: ${JSON.stringify(x)}`);
+    assert.equal(x.after7, Math.max(1, x.real - Math.round(Math.min(7, x.start) / x.pool)), `seven fight armor lost is 7 / POOL real: ${JSON.stringify(x)}`);
+    assert.equal(x.atZero, 1, 'and it never goes under 1');
+  }
+  await done();
+});
+
+test('a ship at real armor 1 starts the fight at 1, and the first Fire does not end it lost', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'); st.armor = 1;
+    const s = battle(), start = s.state.me.armor;
+    s.shown = { foe: [{ kind: 'hold' }], captain: { kind: 'hold' } };  // she does not shoot this turn
+    const real = Math.random; Math.random = () => 0.99;
+    const ret = chooseEvent(choiceAt('Fire')); Math.random = real;
+    return { start, ret, end: shipEnd(s.state), armor: st.armor, over: G.nextEvent && G.nextEvent.title };
+  });
+  assert.equal(r.start, 1, 'the fight armor is at least 1');
+  assert.notEqual(r.end, 'lost', JSON.stringify(r)); assert.equal(r.armor, 1);
+  await done();
+});
+
+test('the yard bills the real armor lost', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'); st.armor = ship().armor;
+    const s = battle(); s.state.me.armor -= 10; fightTook(s, []);
+    shipFightEnd(s, 'broke');
+    const plan = repairPlan({ ...currentPlanet(), services: ['shipyard', 'trade'] });
+    return { lost: plan.lost, max: ship().armor, armor: st.armor, pool: FIGHT.POOL };
+  });
+  assert.equal(r.lost, Math.round(10 / r.pool), JSON.stringify(r));
+  assert.equal(r.lost, r.max - r.armor);
   await done();
 });
 

@@ -76,7 +76,8 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: key });
     const st = G.state;
     const LIVE_SECONDS = 20, LIVE_STEP = 0.05;  // the live flight played in each system with --frames (#656): the frame step is the game's own cap
-    const fr = { raids: 0, scrams: 0, hull: 0, fuel: 0, planned: 0, seen: 0, live: 0 };
+    const fr = { raids: 0, scrams: 0, hull: 0, fuel: 0, planned: 0, seen: 0, live: 0, lost: 0 };
+    const lose = loseBurnDays; loseBurnDays = (t, n) => { fr.lost += n; return lose(t, n); };  // the days a run adds to a burn (engage.js) are counted, so the days as sailed can be told from them
     if (play) for (const name of ['startShipFight', 'overload']) { const real = window[name]; window[name] = function (...a) { fr[name === 'startShipFight' ? 'raids' : 'scrams']++; return real.apply(this, a); }; }
     const target = typeof HIRED_TARGET === 'undefined' ? 190000 : HIRED_TARGET;
     // The deck fights (fightui.js deckFightEvent) begun: each is played to its close (deckClose sets s.won) or to the hand's death, or the run is bad (below).
@@ -142,7 +143,7 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         const armor0 = st.armor;
         if (!sail()) { stuck++; st.day += 1; continue; }
         const to = hired().run.sid, runPlanet = hired().run.planet, creditsBefore = st.credits;
-        const dayOut = st.day;  // the burn's days as sailed are the days from here to the arrival
+        const dayOut = st.day, lostOut = fr.lost;  // the burn's days as sailed are the days from here to the arrival, less those a run added
         plans.push({ perDay: Math.round(hired().run.profit / Math.max(1, hired().run.days)), expected: hired().run.profit, days: hired().run.days, ice: !!hired().run.ice, light: !!hired().run.ballast });
         await answer();
         G.player.x = BURN_DIST + 40; G.player.y = 0;  // clear of local traffic, as the autopilot leaves her (autopilot.js)
@@ -200,7 +201,7 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         runs++;
         paid.push(st.credits - creditsBefore);
         { const led = hired().ledger[0]; if (led && plans.length && led.day === st.day) { plans[plans.length - 1].realized = led.profit; if (led.shipper) { freight.taken++; if (led.late) freight.late++; if (!led.tons) freight.lost++; } } }  // what the run cleared against what she planned on
-        if (plans.length) plans[plans.length - 1].sailed = st.day - dayOut;  // the burn's days as sailed, against the days planned (shorter with a hot drive, --frames)
+        if (plans.length) plans[plans.length - 1].sailed = st.day - dayOut - (fr.lost - lostOut);  // the burn's days as sailed, against the days planned (shorter with a hot drive, --frames); the days a run added are left out
         if (hired().deal && offerDay === null) offerDay = hired().deal.day - hired().since;
         const xoKey = CAPTAINS[hired().captainKey] && CAPTAINS[hired().captainKey].xo;
         while (xoKey && xoDays.length < (castRec(xoKey).arc || 0)) xoDays.push(st.day - hired().since);

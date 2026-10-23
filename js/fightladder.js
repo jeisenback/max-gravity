@@ -1,8 +1,8 @@
 'use strict';
 
 // The ladder of chapter 1's fights (#810): a hired hand meets the ship types in a teaching order, and the random contacts after draw only
-// from the types already met. Each step is one scripted contact, due on a burn when its condition holds and marked done in h.fights when the
-// contact scene is shown. Pure: the hand's record and the burn come in as parameters. Loaded after engage.js; only called into at runtime.
+// from the types already met. Each step is one scripted contact, due on a burn when its condition holds and marked done in h.fights when its
+// fight starts (startShipFight), or, for the cutter, when the ship heaves to. A scene shown and run from leaves it due. Pure: the hand's record and the burn come in as parameters. Loaded after engage.js; only called into at runtime.
 
 const LADDER_RANDOM = 0.5;  // a hand's random pirate contacts come at this share of the rate engage.js gives them, and only once a type is met
 const ladderGov = (st, to) => [SYSTEMS[st.systemId].gov, SYSTEMS[to].gov].find(g => PATROL_NAMES[g]);  // the system the burn leaves, then the one it goes to

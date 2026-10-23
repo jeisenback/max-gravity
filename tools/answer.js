@@ -5,7 +5,10 @@
 // game's globals (fightUp, gunsReady, FIGHT). Given the fight (s, with s.state and her shown move s.shown), the turn's orders { guns, torp, pdc }:
 // - hold the turret back when she fires a salvo;
 // - every gun at her lock while she pins or closes with it whole;
-// - against a ship whose shields come back (regen), torpedoes and every gun at her hull, each gun overcharged while the heat, with the shots still to
+// - a torpedo only at a foe whose shields are at or under TORP_SHIELDS of their maximum (a torpedo into full shields is spent on them: #814), or, for a foe
+//   whose shields come back (regen), whose shields are under their maximum at all (she would not stay down to a quarter), at the one with the
+//   least shields and armor left, whatever the type; otherwise it is held;
+// - against a ship whose shields come back (regen), every gun at her hull, each gun overcharged while the heat, with the shots still to
 //   come this turn, stays at or under the cap (no gun locked);
 // - else every gun at her hull. (Not "her weapons": a ship whose guns are gone and whose hull is whole breaks off as 'away', a weak end; task-7-report.md.)
 function answerOrders(s) {
@@ -13,6 +16,8 @@ function answerOrders(s) {
   const salvo = live.some(i => shown(i).kind === 'salvo');
   const lock = live.find(i => /^(pin|close)$/.test(shown(i).kind) && f.foes[i].parts.lock.hp > 0);
   const regen = live.find(i => f.foes[i].regen > 0);
+  const TORP_SHIELDS = 0.25, left = i => f.foes[i].shields + f.foes[i].armor;  // (inside the function: it is passed to the page as source text)
+  const down = live.filter(i => (f.foes[i].regen > 0 ? f.foes[i].shields < f.foes[i].maxShields : f.foes[i].shields <= TORP_SHIELDS * f.foes[i].maxShields)).sort((a, b) => left(a) - left(b))[0];
   const shots = Math.max(0, gunsReady(f) - (salvo ? 1 : 0));
   let heat = f.heat;
   const guns = Array.from({ length: f.me.guns }, (_, n) => {
@@ -24,7 +29,7 @@ function answerOrders(s) {
     }
     return { foe: live[0] || 0, part: 'hull' };
   });
-  return { guns, torp: regen !== undefined && f.me.launcher && f.me.torps > 0 ? { foe: regen, part: 'hull' } : null, pdc: salvo ? 'hold' : 'fire' };
+  return { guns, torp: down !== undefined && f.me.launcher && f.me.torps > 0 ? { foe: down, part: 'hull' } : null, pdc: salvo ? 'hold' : 'fire' };
 }
 
 module.exports = { answerOrders };
