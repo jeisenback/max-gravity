@@ -135,12 +135,13 @@ test('answer fires at a pair', () => {
 });
 
 // The gunner moves in answerOrders: run against the engine's own canUse (js/fight.js loaded into the same bare context), so the rule and the engine cannot disagree.
-function moveOrders({ known, band = 2, heat = 0, locked = [], shown, lockHp = 0, pdc = true }) {
-  const ctx = vm.createContext({ RANGE_BANDS: ['knife', 'close', 'mid', 'long'], GRADE_HULL: 0, GRADE_PUNCH: 0, fightUp: f => f.armor > 0 });
-  vm.runInContext(require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js', 'fight.js'), 'utf8'), ctx);
+const moveCtx = vm.createContext({ RANGE_BANDS: ['knife', 'close', 'mid', 'long'], GRADE_HULL: 0, GRADE_PUNCH: 0, fightUp: f => f.armor > 0 });
+vm.runInContext(require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js', 'fight.js'), 'utf8'), moveCtx);  // the engine, loaded once
+function moveOrders({ known, band = 2, heat = 0, locked = [], spent = [], regen = 0, shown, lockHp = 0, pdc = true, weapons = 126 }) {
+  const ctx = moveCtx;
   const fn = vm.runInContext(`(${answerOrders.toString()})`, ctx);
-  const foe = { shields: 100, maxShields: 100, armor: 100, maxArmor: 100, regen: 0, parts: { lock: { hp: lockHp }, drive: { hp: 34 }, weapons: { hp: 63 } } };
-  const state = { kind: 'ship', band, heat, locked, spent: [], me: { guns: 2, launcher: false, torps: 0, pdc, parts: { weapons: { hp: 126, max: 126 } } }, foes: [foe] };
+  const foe = { shields: 100, maxShields: 100, armor: 100, maxArmor: 100, regen, parts: { lock: { hp: lockHp }, drive: { hp: 34 }, weapons: { hp: 63 } } };
+  const state = { kind: 'ship', band, heat, locked, spent, me: { guns: 2, launcher: false, torps: 0, pdc, parts: { weapons: { hp: weapons, max: 126 } } }, foes: [foe] };
   return JSON.parse(JSON.stringify(fn({ state, shown: { foe: [shown] }, known })));
 }
 const ALL = ['vent', 'lead', 'split'];
@@ -164,4 +165,15 @@ test('answer never orders a move the hand does not know', () => {
   }
   assert.equal(moveOrders({ known: ['lead'], shown: { kind: 'salvo' }, heat: 3 }).move, undefined, 'a salvo turn without split');
   assert.equal(moveOrders({ known: ['vent'], shown: { kind: 'pin' }, lockHp: 7, band: 3 }).move, undefined, 'a lead without lead');
+});
+
+test('answer counts the shot split gives back, vents only for a shot, picks one move by priority, and does not repeat a spent one', () => {
+  const heatOf = o => o.guns.reduce((h, g) => h + (g.over ? 2 : 1), 2);
+  const split = moveOrders({ known: ALL, shown: { kind: 'salvo' }, regen: 0.07, heat: 2 });
+  assert.equal(split.move, 'split');
+  assert.ok(heatOf(split) <= 4, 'two guns at heat 2 on a split turn stay at the cap');
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'hold' }, heat: 3 }).move, undefined, 'heat alone, no gun locked: vent would add no shot')
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'pin' }, lockHp: 7, band: 3, locked: [1] }).move, 'vent', 'vent and lead both apply: vent first');
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'pin' }, lockHp: 7, band: 3, locked: [1], spent: ['vent'] }).move, 'lead', 'a spent vent leaves lead');
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'salvo' }, spent: ['split'] }).move, undefined, 'a spent split is not ordered again');
 });
