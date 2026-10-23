@@ -38,9 +38,24 @@ const KNIFE = RANGE_BANDS.indexOf('knife');
 const bandMultOf = band => FIGHT.BAND_MULT[RANGE_BANDS[band]] || 0;  // past long they have escaped and there is no volley
 const AIMED = ['drive', 'lock', 'launcher'];
 // The multiplier a gun order rolls with: the side's damage, the band, an overcharge, and the aim penalty of a small part at range.
-const shotMult = (st, o) => st.me.dmgMult * bandMultOf(st.band) * (o.over ? FIGHT.OVER_MULT : 1) * (AIMED.includes(o.part) ? FIGHT.AIM_MULT[RANGE_BANDS[st.band]] || 0 : 1);
+const shotMult = (st, o, lead = false) => st.me.dmgMult * bandMultOf(st.band) * (o.over ? FIGHT.OVER_MULT : 1) * (AIMED.includes(o.part) && !lead ? FIGHT.AIM_MULT[RANGE_BANDS[st.band]] || 0 : 1);
 // The [lo, hi] a gun order would roll, for the panel to show.
 const shotRange = (st, o) => [FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]].map(d => Math.round(d * shotMult(st, o)));
+// The gunner's moves (docs/superpowers/specs/2026-10-23-gunner-moves-design.md), each once a fight, ordered as orders.move (lead names orders.gun).
+const FIGHT_MOVES = {
+  vent: { name: 'Vent the guns' },     // heat to 0 and the locks off before the shots, so every gun fires; needs heat or a lock
+  lead: { name: 'Lead the shot' },     // the named gun's aimed shot takes no AIM_MULT; needs that gun ready and aimed at a part
+  split: { name: 'Split the turret' }  // the held turret still fires: no shot lost to it; her volley and salvo cut stay; needs the turret held
+};
+// Whether move id can be used this turn: known, not spent, and with something to act on.
+function canUse(st, orders, id, known) {
+  if (!FIGHT_MOVES[id] || !known.includes(id) || (st.spent || []).includes(id)) return false;
+  const held = !!(st.me.pdc && orders.pdc === 'hold');
+  if (id === 'vent') return st.heat > 0 || st.locked.length > 0;
+  if (id === 'split') return held;
+  const o = orders.guns[orders.gun];
+  return !!o && orders.gun < gunsReady(st) - (held ? 1 : 0) && !!st.foes[o.foe] && AIMED.includes(o.part);
+}
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);
 
@@ -67,7 +82,7 @@ function shipSide(stats, { grade = 0, skill = 0, torps = 0, regen = 0, launcher 
   };
 }
 
-const shipFight = ({ me, foes, nerve, band }) => ({ kind: 'ship', me, foes, band, heat: 0, locked: [], turn: 0, nerve, log: [], moves: null, boarded: false, armed: [] });  // armed: one flag a foe, her salvo loaded and fired next turn
+const shipFight = ({ me, foes, nerve, band }) => ({ kind: 'ship', me, foes, band, heat: 0, locked: [], turn: 0, nerve, log: [], moves: null, boarded: false, armed: [], spent: [] });  // armed: one flag a foe, her salvo loaded and fired next turn; spent: the gunner moves used
 
 // A mount whose share of the weapons bar is gone cannot fire, nor can one that is locked.
 const gunsReady = st => Math.max(0, Math.min(st.me.guns, Math.ceil(st.me.parts.weapons.hp / FIGHT.PART_HP.weapons)) - st.locked.length);
@@ -85,14 +100,21 @@ function dealDamage(side, part, dmg) {
   return took;
 }
 
-function resolveShipTurn(state, orders, moves, rand) {
+function resolveShipTurn(state, orders, moves, rand, known = []) {
   const st = copyOf(state), events = [];
   const held = st.me.pdc && orders.pdc === 'hold';
+  const move = canUse(st, orders, orders.move, known) ? orders.move : null;
+  if (move) {
+    st.spent = [...(st.spent || []), move];
+    events.push({ who: 'me', move });
+    if (move === 'vent') { st.heat = 0; st.locked = []; }
+  }
+  const lent = move === 'split' ? 0 : held ? 1 : 0;  // split: the held turret costs no shot
 
   // A turret held back is not firing, so it costs a shot.
-  const shots = orders.guns.slice(0, gunsReady(st)).filter(o => o && st.foes[o.foe]).slice(0, Math.max(0, gunsReady(st) - (held ? 1 : 0)));  // a gun that is not ready has no say, whatever its order
+  const shots = orders.guns.slice(0, gunsReady(st)).filter(o => o && st.foes[o.foe]).slice(0, Math.max(0, gunsReady(st) - lent));  // a gun that is not ready has no say, whatever its order
   for (const o of shots) {
-    const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]], shotMult(st, o), rand));
+    const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]], shotMult(st, o, move === 'lead' && o === orders.guns[orders.gun]), rand));
     events.push({ who: 'me', foe: o.foe, part: o.part, dmg });
   }
   if (orders.torp && st.me.launcher && st.me.torps > 0 && st.foes[orders.torp.foe]) {

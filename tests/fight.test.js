@@ -6,8 +6,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'boardMove', 'resolveDeckTurn', 'deckEnd']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
-const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, boardMove, resolveDeckTurn, deckEnd } = api;
+const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'boardMove', 'resolveDeckTurn', 'deckEnd']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
+const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, boardMove, resolveDeckTurn, deckEnd } = api;
 const LOW = () => 0, HIGH = () => 0.999;
 const CLOSE = RANGE_BANDS.indexOf('close');
 const HULL = { kind: 'broadside', target: 'hull', dmg: [8, 14] };
@@ -771,4 +771,69 @@ test('her launcher at 0 takes the salvo away, armed or not', () => {
 test('with no torpedoes left she does not arm, and with one she arms for one', () => {
   assert.notEqual(foeMove(corsair(0), 0).kind, 'arm');
   assert.deepEqual(plain(foeMove(corsair(1), 0)), { kind: 'arm', n: 1 });
+});
+
+test('vent clears the heat and unlocks the guns, once a fight', () => {
+  assert.deepEqual(Object.keys(FIGHT_MOVES), ['vent', 'lead', 'split']);
+  const hot = { ...fight({ stats: { guns: 3 } }), heat: 5, locked: [0] };
+  assert.equal(gunsReady(hot), 2);
+  const r = resolveShipTurn(hot, orders(fire(3), { move: 'vent' }), quiet, LOW, ['vent']);
+  assert.equal(r.events.filter(e => e.who === 'me' && e.foe === 0).length, 3, 'every gun fires');
+  assert.deepEqual(plain([r.state.heat, r.state.locked, r.state.spent]), [3 - FIGHT.HEAT_VENT, [], ['vent']], '0 plus 3 shots, less the vent');
+  assert.ok(r.events.some(e => e.who === 'me' && e.move === 'vent'));
+  const again = resolveShipTurn({ ...r.state, heat: 5, locked: [0] }, orders(fire(3), { move: 'vent' }), quiet, LOW, ['vent']);
+  assert.equal(again.events.filter(e => e.who === 'me' && e.foe === 0).length, 2, 'spent: the lock stands');
+  assert.deepEqual(plain(again.state.spent), ['vent']);
+});
+
+const sh = r => r.events.filter(e => e.who === 'me' && e.dmg !== undefined);  // the turn's shots, without the move's own event
+
+test('lead takes no range penalty on one aimed shot', () => {
+  const st = fight({ stats: { guns: 2 } }, {}, L);
+  const two = orders([{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], { move: 'lead', gun: 0 });
+  const r = resolveShipTurn(st, two, quiet, HIGH, ['lead']);
+  const plainShot = sh(resolveShipTurn(st, orders(two.guns), quiet, HIGH));
+  assert.equal(sh(r)[0].dmg, Math.round(14 * st.me.dmgMult * FIGHT.BAND_MULT.long), 'aim factor 1');
+  assert.equal(sh(r)[1].dmg, plainShot[1].dmg, 'the other gun keeps AIM_MULT.long');
+  assert.ok(sh(r)[0].dmg > plainShot[0].dmg);
+  assert.deepEqual(plain(r.state.spent), ['lead']);
+});
+
+test('split holds the turret back and still fires it', () => {
+  const st = fight({ stats: { guns: 2, pdc: true } });
+  const held = resolveShipTurn(st, orders(fire(2), { pdc: 'hold' }), quiet, LOW);
+  assert.equal(held.events.filter(e => e.who === 'me').length, 1, 'a held turret costs a shot');
+  const r = resolveShipTurn(st, orders(fire(2), { pdc: 'hold', move: 'split' }), quiet, LOW, ['split']);
+  assert.equal(r.events.filter(e => e.who === 'me' && e.foe === 0).length, gunsReady(st), 'no shot lost');
+  const v = (o, k) => resolveShipTurn(st, orders(fire(1), o), { foe: [HULL], captain: hold }, HIGH, k).events.find(e => e.who === 'foe').dmg;
+  assert.equal(v({ pdc: 'hold', move: 'split' }, ['split']), v({ pdc: 'hold' }, []), 'her volley is cut by PDC_HOLD as before');
+  assert.ok(v({ pdc: 'hold' }, []) < v({}, []));
+});
+
+test('a move not known, already spent, or with nothing to act on is ignored and not spent', () => {
+  const cool = fight({ stats: { guns: 2, pdc: true } });
+  const hot = { ...cool, heat: 3 };
+  const run = (st, o, known) => resolveShipTurn(st, o, quiet, LOW, known);
+  const same = (st, o, known) => { const r = run(st, o, known), b = run(st, { ...o, move: undefined }, known); assert.deepEqual(plain(r), plain(b)); return r; };
+  assert.deepEqual(plain(same(hot, orders(fire(2), { move: 'vent' }), []).state.spent), [], 'not known');
+  assert.deepEqual(plain(same({ ...hot, spent: ['vent'] }, orders(fire(2), { move: 'vent' }), ['vent']).state.spent), ['vent'], 'spent');
+  assert.deepEqual(plain(same(cool, orders(fire(2), { move: 'vent' }), ['vent']).state.spent), [], 'no heat, no lock');
+  assert.deepEqual(plain(same(fight({ stats: { guns: 2 } }, {}, L), orders(fire(2), { move: 'lead', gun: 0 }), ['lead']).state.spent), [], 'a hull shot is not aimed');
+  assert.deepEqual(plain(same(cool, orders(fire(2), { move: 'split' }), ['split']).state.spent), [], 'turret not held');
+  assert.equal(canUse(hot, orders(fire(2)), 'vent', ['vent']), true);
+  assert.equal(canUse(hot, orders(fire(2)), 'vent', []), false);
+  assert.equal(canUse(cool, orders(fire(2)), 'vent', ['vent']), false);
+  assert.equal(canUse(cool, orders(fire(2), { pdc: 'hold' }), 'split', ['split']), true);
+});
+
+test('lead on a pair applies to the named gun only', () => {
+  const st = shipFight({
+    me: shipSide({ shields: 90, armor: 140, guns: 2, dmgMult: 1, accel: 1, turn: 1 }, {}),
+    foes: [0, 1].map(() => shipSide({ shields: 50, armor: 100, guns: 1, dmgMult: 1, accel: 1, turn: 1 }, {})), nerve: 0, band: L
+  });
+  const o = orders([{ foe: 0, part: 'drive' }, { foe: 1, part: 'drive' }], { move: 'lead', gun: 1 });
+  const r = resolveShipTurn(st, o, { foe: [hold, hold], captain: hold }, HIGH, ['lead']);
+  const base = sh(resolveShipTurn(st, orders(o.guns), { foe: [hold, hold], captain: hold }, HIGH));
+  assert.equal(sh(r)[0].dmg, base[0].dmg, 'gun 0 unchanged');
+  assert.ok(sh(r)[1].dmg > base[1].dmg && sh(r)[1].foe === 1, 'gun 1 leads at its own foe');
 });
