@@ -9,15 +9,14 @@ runs:
         cache: npm
     - run: npm ci
       shell: bash
-    # The browser is cached by the lockfile (it pins Playwright's version). The system libraries it needs are not part of the cache, so they are installed either way.
+    # The browser is cached by the lockfile (it pins Playwright's version). Its system libraries are not installed (no --with-deps, no install-deps): the
+    # hosted Ubuntu image already carries what Chromium needs, since it ships Chrome, and the apt step from the Ubuntu mirror could take over ten minutes
+    # before any test ran (#817).
     - uses: actions/cache@v4
       id: browser
       with:
         path: ~/.cache/ms-playwright
         key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
     - if: steps.browser.outputs.cache-hit != 'true'
-      run: npx playwright install --with-deps chromium
-      shell: bash
-    - if: steps.browser.outputs.cache-hit == 'true'
-      run: npx playwright install-deps chromium
+      run: npx playwright install chromium
       shell: bash
