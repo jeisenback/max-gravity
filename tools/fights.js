@@ -107,7 +107,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     // by its name (a lost fight is 'ran' or 'lost'), with the hull lost, the turns and whether it reached the turn cap.
     const tally = (policy, who, { end, s, hull }) => {
       const m = out.match[`${policy}|${who}`] = out.match[`${policy}|${who}`] || { n: 0, good: 0, lostFight: 0, died: 0, hull: 0, rounds: 0, atCap: 0 };
-      m.n++; m.hull += hull; m.rounds += s ? s.state.turn : 0; if (s && s.state.turn >= FIGHT.TURNS) m.atCap++;  // atCap: played to the turn cap
+      m.n++; m.hull += hull; m.rounds += s ? s.state.turn : 0; if (s && s.state.turn >= FIGHT.TURNS && shipEnd({ ...s.state, turn: 0 }) === null) m.atCap++;  // atCap: the end came from the turn cap (shipEnd would not end it earlier), not a cripple or break on turn 8
       if (/^(crippled|broke|escaped)$/.test(end)) m.good++; if (/^(ran|lost)$/.test(end)) m.lostFight++; if (end) m[end] = (m[end] || 0) + 1; else m.died++;
     };
     if (raidFights) for (const policy of Object.keys(POLICY_SHIP)) {

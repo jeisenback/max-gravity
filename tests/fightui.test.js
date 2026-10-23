@@ -473,6 +473,22 @@ test('armor lost in a fight comes back to the ship at full scale, and a fight ne
   await done();
 });
 
+test('a ship at real armor 1 starts the fight at 1, and the first Fire does not end it lost', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fightGame('gunner'); st.armor = 1;
+    const s = battle(), start = s.state.me.armor;
+    s.shown = { foe: [{ kind: 'hold' }], captain: { kind: 'hold' } };  // she does not shoot this turn
+    const real = Math.random; Math.random = () => 0.99;
+    const ret = chooseEvent(choiceAt('Fire')); Math.random = real;
+    return { start, ret, end: shipEnd(s.state), armor: st.armor, over: G.nextEvent && G.nextEvent.title };
+  });
+  assert.equal(r.start, 1, 'the fight armor is at least 1');
+  assert.notEqual(r.end, 'lost', JSON.stringify(r)); assert.equal(r.armor, 1);
+  await done();
+});
+
 test('the yard bills the real armor lost', async () => {
   const { ev, done } = await open();
   await ev(helpers);

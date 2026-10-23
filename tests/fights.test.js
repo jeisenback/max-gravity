@@ -30,7 +30,7 @@ test('the fights tool plays the ship fight, the repel fight and the assault figh
 // - no fixed aim (random, focus, drive, lock, hull, hullhold) has more than 70% good ends (crippled, broken off, escaped) against every type, and the best fixed
 //   aim is not the same against every type (hull fire against a lone raider and a corsair, random against a cutter and a pair);
 // - the policy that reads her shown move (answer) has good ends at or above every fixed aim's against each type, and above all of them over every type
-//   (99% against hull fire's 52%). A lone raider is beaten by hull fire, so there answer only ties it, at 100%: the owner's choice (#814), as a smaller pool
+//   (99% against hull fire's 52%). Two ties, as measured: the lone raider (hull fire 100% against answer's 100%) and the corsair (hull fire 99% against answer's 100%). A lone raider is beaten by hull fire, so there answer only ties it: the owner's choice (#814), as a smaller pool
 //   halves her hull and every gun at it cripples her before she is alongside. The lock lesson is the raider pair's: every gun at the hull, the turret held or
 //   not, is boarded at least half the time (every time), and answer, at the locks, wins (93%);
 // - random play loses ('ran' or 'lost') a quarter of its fights or more over every type (38%), and loses real hull: at least 5% of it a fight (19%);

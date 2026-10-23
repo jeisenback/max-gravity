@@ -255,9 +255,9 @@ fight), your hull gone, or at the eighth turn (`FIGHT.TURNS`) one side breaks of
 the captain runs, a lost fight. There is no standoff. A ship whose guns are gone and whose hull is whole gets away (a weak end, not
 a win). In the fight both sides' shields and armor are 0.45 of the ship's (`FIGHT.POOL`, #814), so that a fight usually ends
 before the eighth turn; the armor the hauler loses there comes back to the ship divided by it (seven lost in the fight is sixteen
-at the yard), and a fight never repairs it or takes it under 1. A heavy turn (the hull loses more than a fifth of your real
-armor, at the ship's scale) can cost a casualty and hurt the hand; after the tune below
-only her salvo, unanswered, reaches it (about two times in five), and with the turret held back it never does. The numbers are
+at the yard), and a fight never repairs it or takes it under 1. A heavy turn (the damage her guns do to
+your hull, which is not pooled, is over a fifth of your real maximum armor, about 44% of the hull you have in the fight) can cost a
+casualty and hurt the hand; after the tune below only her salvo, unanswered, reaches it (about two times in five), and with the turret held back it never does. The numbers are
 `FIGHT` and `FOE_TYPES` in `js/fight.js`.
 
 A hired hand's Ice Hauler carries a close-defense turret (her second gun) and a launcher with two torpedoes (`js/hired.js`
@@ -325,8 +325,8 @@ the run that wrote this section (after the final review's tune, #808):
   back on her salvo) fire the turret and the torpedoes at her hull; `answer` reads her shown move: it holds the turret back when
   she fires a salvo, aims at her lock while she closes or pins with it whole, against a ship whose shields come back sends the
   torpedoes and every gun the heat allows overcharged at her hull, against any other holds its torpedoes until her shields are
-  down (a quarter or less), and else aims at her hull. Good ends are crippled, broken off and escaped; a lost fight is the captain running or the
-  hull gone.
+  down (a quarter or less), and else aims at her hull. Good ends are crippled, broken off and escaped; a lost fight is the captain running
+  or the hull gone.
 
   | Against (good / lost / turns) | random | focus | drive | lock | hull | hullhold | answer |
   |---|---|---|---|---|---|---|---|
