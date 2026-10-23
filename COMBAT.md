@@ -366,22 +366,22 @@ the run that wrote this section (after the final review's tune, #808):
   three, or `--moves lead` and the like for one). With the moves come two more policies that use them without reading her move
   for it: `randmove` (random, with a random usable move each turn) and `eager` (her lock and then her weapons, the turret held
   on her salvo, and the first usable move at its first chance). The fixed policies order no move, so their rows do not change.
-  `answer` (tools/answer.js) splits the turret on her salvo, vents when that frees a locked gun, and leads an aimed shot where
-  there is a range penalty.
+  `answer` (tools/answer.js) splits the turret on her salvo, vents when that frees a locked gun, leads an aimed shot where
+  there is a range penalty, and against a ship whose shields come back runs every gun hot past the cap while vent is unspent.
 
   | `answer` against (good / hull lost / turns / at cap) | no moves | all three | the one move alone |
   |---|---|---|---|
   | a raider | 100% / 2.0% / 4.81 / 0% | 100% / 2.0% / 4.02 / 0% | lead: 100% / 2.1% / 4.01 / 0% |
   | a corsair | 100% / 5.6% / 7.42 / 5% | 100% / 3.8% / 6.18 / 0% | split: 100% / 4.2% / 6.57 / 0% |
-  | a cutter | 100% / 0.0% / 5.32 / 0% | 100% / 0.0% / 5.27 / 0% | vent: 100% / 0.0% / 5.32 / 0% |
+  | a cutter | 100% / 0.0% / 5.32 / 0% | 100% / 0.0% / 4.88 / 0% | vent: 100% / 0.0% / 4.91 / 0% |
   | a raider pair | 94% / 7.0% / 7.92 / 62% | 98% / 2.3% / 7.73 / 60% | lead: 98% / 2.4% / 7.74 / 66% |
-  | over every type | 99% / 3.2% / 6.21 / 11% | 100% / 1.9% / 5.66 / 10% | |
+  | over every type | 99% / 3.2% / 6.21 / 11% | 100% / 1.9% / 5.53 / 10% | |
 
   Split against a corsair ends the fight sooner (7.4 to 6.6 turns, none at the cap); lead against a pair wins more (94% to 98%)
-  and loses a third of the hull; lead also cripples a corsair more often (19% to 42% of her ends). Vent against a cutter does
-  nothing: `answer` keeps the heat at the cap there, so no gun locks and it never vents (a rule that ran hot while vent was
-  unspent, tried by hand and not kept, crippled the cutter 75% of the time instead of breaking her off, in 4.9 turns). With all
-  three, `randmove` is good 36% and loses 45% over every type (random without them: 31% and 39%), and `eager` is good 1% and
+  and loses a third of the hull; lead also cripples a corsair more often (19% to 42% of her ends). Vent against a cutter turns
+  a break-off into a cripple: running hot while it can vent, `answer` cripples her 75% of the time (1% without), in 4.9 turns
+  (5.3); without vent known, or once it is spent, the heat budget keeps every gun at or under the cap as before. With all
+  three, `randmove` is good 36% and loses 44% over every type (random without them: 31% and 39%), and `eager` is good 1% and
   loses 77%: no policy with the moves beats `answer` against any type. In the soak (`npm run soak`, seeds 1 to 40, the soak's
   downtime picked at random) a chapter learns two moves or more 24 times in 40 and both level-1 moves 20 times; in the
   play-throughs (seeds 1 to 5, Hester) four of five learn vent and lead, and lead is used in four, split in one and vent in none.

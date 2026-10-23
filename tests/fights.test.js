@@ -77,10 +77,10 @@ test('no fixed aim wins against every type of ship and the best one differs by t
 // above without them; the figures in brackets are at five seeds of 200 (COMBAT.md):
 // - a move is worth having: answer, which reads her move, does better with them against the type each answers. Split against a corsair: good ends are 100%
 //   either way, so it is the turns (7.42 to 6.18) and the turn cap (5% to 0%). Lead against a raider pair: good ends (94% to 98%) and the hull lost (7.0% to 2.3%).
-//   Vent against a cutter is not claimed here: the move rule keeps her at the heat cap there, so it never vents (5.32 and 5.27 turns, 100% good either way);
+//   Vent against a cutter: the move rule runs every gun hot while it can vent, so she is crippled rather than broken off (1% to 75% of the ends; 5.32 to 4.88 turns);
 // - a move is a choice, not a free win: no other policy with the moves has more good ends than answer against any type, among them two that use the moves
 //   without reading her move for it, randmove (random aims and a random usable move: 36% good over every type) and eager (the first usable move at
-//   its first chance: 1%); and random play with the moves still loses a quarter of its fights or more (randmove 45%).
+//   its first chance: 1%); and random play with the moves still loses a quarter of its fights or more (randmove 44%).
 test('with the moves, each helps against its type, no fixed plan beats reading her move, and random play still loses a quarter', async () => {
   const [plain, runs] = await Promise.all([shipFights(), Promise.all(SHIP_SEEDS.map(seed => fights({ seed, n: SHIP_N, lock: false, moves: true })))]);
   for (const x of runs) assert.deepEqual(x.errors, []);
@@ -91,6 +91,8 @@ test('with the moves, each helps against its type, no fixed plan beats reading h
   const [c0, c1] = [was, m].map(r => r['answer|corsair']), [p0, p1] = [was, m].map(r => r['answer|raider pair']);
   assert.ok(good(c1) >= good(c0) && turns(c1) < turns(c0) && cap(c1) <= cap(c0), `split against a corsair: good ${f2(good(c0))} to ${f2(good(c1))}, turns ${f2(turns(c0))} to ${f2(turns(c1))}, at cap ${f2(cap(c0))} to ${f2(cap(c1))}`);
   assert.ok(good(p1) > good(p0) && hull(p1) < hull(p0), `lead against a raider pair: good ${f2(good(p0))} to ${f2(good(p1))}, hull ${f2(hull(p0))} to ${f2(hull(p1))}`);
+  const [k0, k1] = [was, m].map(r => r['answer|cutter']), crip = t => (t.crippled || 0) / t.n;
+  assert.ok(good(k1) >= good(k0) && crip(k1) >= crip(k0) + 0.3, `vent against a cutter: good ${f2(good(k0))} to ${f2(good(k1))}, crippled ${f2(crip(k0))} to ${f2(crip(k1))}`);
   const a0 = over(was, 'answer'), a1 = over(m, 'answer');
   assert.ok(good(a1) >= good(a0) && hull(a1) < hull(a0), `over every type: answer good ${f2(good(a0))} to ${f2(good(a1))}, hull ${f2(hull(a0))} to ${f2(hull(a1))}`);
   const others = [...new Set(Object.keys(m).map(k => k.split('|')[0]))].filter(p => p !== 'answer');
@@ -202,11 +204,24 @@ test('answer never orders a move the hand does not know', () => {
 
 test('answer counts the shot split gives back, vents only for a shot, picks one move by priority, and does not repeat a spent one', () => {
   const heatOf = o => o.guns.reduce((h, g) => h + (g.over ? 2 : 1), 2);
-  const split = moveOrders({ known: ALL, shown: { kind: 'salvo' }, regen: 0.07, heat: 2 });
+  const split = moveOrders({ known: ALL, shown: { kind: 'salvo' }, regen: 0.07, heat: 2, spent: ['vent'] });
   assert.equal(split.move, 'split');
-  assert.ok(heatOf(split) <= 4, 'two guns at heat 2 on a split turn stay at the cap');
+  assert.ok(heatOf(split) <= 4, 'two guns at heat 2 on a split turn stay at the cap (vent spent: the budget stands)');
   assert.equal(moveOrders({ known: ALL, shown: { kind: 'hold' }, heat: 3 }).move, undefined, 'heat alone, no gun locked: vent would add no shot')
   assert.equal(moveOrders({ known: ALL, shown: { kind: 'pin' }, lockHp: 7, band: 3, locked: [1] }).move, 'vent', 'vent and lead both apply: vent first');
   assert.equal(moveOrders({ known: ALL, shown: { kind: 'pin' }, lockHp: 7, band: 3, locked: [1], spent: ['vent'] }).move, 'lead', 'a spent vent leaves lead');
   assert.equal(moveOrders({ known: ALL, shown: { kind: 'salvo' }, spent: ['split'] }).move, undefined, 'a spent split is not ordered again');
+});
+
+test('answer runs the guns hot against shields that come back while it can still vent, and keeps the heat budget otherwise', () => {
+  const overs = o => o.guns.map(g => !!g.over);
+  assert.deepEqual(overs(moveOrders({ known: ALL, shown: { kind: 'hold' }, regen: 0.07, heat: 3 })), [true, true], 'vent unspent: every gun overcharged past the cap');
+  assert.deepEqual(overs(moveOrders({ known: ['vent'], shown: { kind: 'hold' }, regen: 0.07, heat: 3 })), [true, true], 'vent alone is enough');
+  for (const [why, o] of [['no moves', { known: [] }], ['no vent', { known: ['lead', 'split'] }], ['vent spent', { known: ALL, spent: ['vent'] }]]) {
+    assert.deepEqual(overs(moveOrders({ ...o, shown: { kind: 'hold' }, regen: 0.07, heat: 3 })), [false, false], `${why}: at heat 3 no gun is overcharged (the cap)`);
+  }
+  const vented = moveOrders({ known: ALL, shown: { kind: 'hold' }, regen: 0.07, heat: 5, locked: [0] });
+  assert.equal(vented.move, 'vent', 'a gun locked: vent');
+  assert.ok(vented.guns.reduce((h, g) => h + (g.over ? 2 : 1), 0) <= 4, 'the turn it vents, the heat budget from 0 stands');
+  assert.deepEqual(overs(moveOrders({ known: ALL, shown: { kind: 'hold' }, regen: 0, heat: 0 })), [false, false], 'shields that do not come back: no overcharge');
 });

@@ -9,10 +9,11 @@
 //   whose shields come back (regen), whose shields are under their maximum at all (she would not stay down to a quarter), at the one with the
 //   least shields and armor left, whatever the type; otherwise it is held;
 // - against a ship whose shields come back (regen), every gun at her hull, each gun overcharged while the heat, with the shots still to
-//   come this turn, stays at or under the cap (no gun locked);
+//   come this turn, stays at or under the cap (no gun locked); while vent is known and unspent, every gun overcharged past the cap (vent
+//   takes the lock off when one comes);
 // - else every gun at her hull. (Not "her weapons": a ship whose guns are gone and whose hull is whole breaks off as 'away', a weak end; task-7-report.md.)
 // The gunner moves (s.known: the ones this fight offers; canUse is the engine's own test of whether one would apply), at most one a turn, the first of:
-// split when the turret is held for her salvo; vent when a gun is locked; lead on the first gun that aims at a part, where canUse allows (a band with an aim penalty).
+// split when the turret is held for her salvo; vent when it frees a locked gun (against regen she runs hot until then, above); lead on the first gun that aims at a part, where canUse allows (a band with an aim penalty).
 function answerOrders(s) {
   const f = s.state, live = f.foes.map((_, i) => i).filter(i => fightUp(f.foes[i])), shown = i => (s.shown && s.shown.foe[i]) || {};
   const salvo = live.some(i => shown(i).kind === 'salvo');
@@ -31,8 +32,9 @@ function answerOrders(s) {
   const ready = move === 'vent' ? gunsReady({ ...f, locked: [] }) : gunsReady(f);
   const shots = Math.max(0, ready - (salvo && move !== 'split' ? 1 : 0));
   let heat = move === 'vent' ? 0 : f.heat;
+  const hot = known.includes('vent') && !(f.spent || []).includes('vent') && move !== 'vent';  // vent still to come: run every gun hot, and vent the turn one locks
   if (lock === undefined && regen !== undefined) orders.guns = base.map((g, n) => {
-    const over = n < shots && heat + FIGHT.OVER_HEAT + Math.max(0, shots - n - 1) <= FIGHT.HEAT_CAP;
+    const over = n < shots && (hot || heat + FIGHT.OVER_HEAT + Math.max(0, shots - n - 1) <= FIGHT.HEAT_CAP);
     if (n < shots) heat += over ? FIGHT.OVER_HEAT : 1;
     return { ...g, over };
   });
