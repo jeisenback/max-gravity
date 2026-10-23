@@ -463,7 +463,7 @@ const SCENE_LINES = {
     'pdc.fire': 'Turret: fire with the guns', 'pdc.hold': 'Turret: hold it to cut her volley',
     'move.name.vent': 'Vent the guns', 'move.name.lead': 'Lead the shot', 'move.name.split': 'Split the turret',
     'move.vent': 'Vent the guns: heat {heat} to 0, locks off, once a fight', 'move.lead': 'Lead the shot, gun {n}: {lo} to {hi} damage with no range penalty, once a fight', 'move.lead.off': 'Lead the shot: name a gun, once a fight',
-    'move.split': 'Split the turret: it fires as well as holding her volley, adding {lo} to {hi} damage, once a fight',
+    'move.split': 'Split the turret: it fires with the guns and still cuts her volley, adding {lo} to {hi} damage, once a fight',
     'move.on': '{label} (ordered)', 'move.spent': '{name}: spent', 'move.idle': '{name}: nothing to act on this turn',
     'move.used.vent': 'you vent the guns', 'move.used.lead': 'you lead the shot', 'move.used.split': 'you split the turret',
     'fire.label': 'Fire: heat {heat} of {cap}', 'fire.hot': 'Fire: heat {heat} of {cap}, and a gun locks next turn',

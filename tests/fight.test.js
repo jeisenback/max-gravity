@@ -6,8 +6,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'boardMove', 'resolveDeckTurn', 'deckEnd']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
-const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, boardMove, resolveDeckTurn, deckEnd } = api;
+const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'turnShots', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'boardMove', 'resolveDeckTurn', 'deckEnd']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
+const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, turnShots, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, boardMove, resolveDeckTurn, deckEnd } = api;
 const LOW = () => 0, HIGH = () => 0.999;
 const CLOSE = RANGE_BANDS.indexOf('close');
 const HULL = { kind: 'broadside', target: 'hull', dmg: [8, 14] };
@@ -850,4 +850,24 @@ test('canUse for lead: the gun must exist, be ready, be past no held turret, and
   assert.equal(canUse(two, orders([{ foe: 0, part: 'hull' }, null], { gun: 0 }), 'lead', ['lead']), false, 'a hull shot is not aimed');
   assert.equal(canUse(two, orders(aimed, { gun: 0 }), 'lead'), false, 'known defaults to nothing');
   assert.ok(shotRange(two, aimed[0], true)[1] > shotRange(two, aimed[0])[1], 'the led shot rolls at least the plain one');
+});
+
+test('a split with no shot to save is not spent, and one that saves a shot adds the heat the panel counts', () => {
+  const st = fight({ stats: { guns: 2, pdc: true } });
+  const none = orders([{ foe: 0, part: 'hull' }, null], { pdc: 'hold', move: 'split' });  // the held turret costs nothing: one gun fires either way
+  const r = resolveShipTurn(st, none, quiet, LOW, ['split']), b = resolveShipTurn(st, { ...none, move: undefined }, quiet, LOW, ['split']);
+  assert.deepEqual(plain(r.state.spent), []); assert.deepEqual(plain(r.events), plain(b.events));
+  assert.equal(canUse(st, orders([null, null], { pdc: 'hold' }), 'split', ['split']), false, 'no gun fires');
+  const two = orders(fire(2), { pdc: 'hold', move: 'split' }), hot = { ...st, heat: 3 };
+  assert.equal(canUse(hot, two, 'split', ['split']), true);
+  const heatAfter = resolveShipTurn(hot, two, quiet, LOW, ['split']).state.heat;
+  const panel = hot.heat + turnShots(hot, two, true).length;  // what the panel's Fire label counts
+  assert.equal(Math.max(0, panel - FIGHT.HEAT_VENT), heatAfter, 'the panel and the engine count the same shots');
+  assert.equal(turnShots(hot, two).length + 1, turnShots(hot, two, true).length);
+});
+
+test('lead is allowed on a gun that fires behind a gun on hold fire, with the turret held', () => {
+  const st = fight({ stats: { guns: 2, pdc: true } }, {}, L), o = orders([null, { foe: 0, part: 'drive' }], { pdc: 'hold', gun: 1 });
+  assert.equal(canUse(st, o, 'lead', ['lead']), true);
+  assert.equal(canUse(st, orders([{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], { pdc: 'hold', gun: 1 }), 'lead', ['lead']), false, 'the held turret takes that gun');
 });

@@ -120,8 +120,9 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
   });
   if (f.me.launcher && f.me.torps > 0) choices.push({ label: fightSay('torp.label', { left: f.me.torps, aim: aim(orders.torp) }), keep: true, run: redo({ torp: turn(orders.torp) }) });
   if (f.me.pdc) choices.push({ label: fightSay(orders.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire'), keep: true, run: redo({ pdc: orders.pdc === 'hold' ? 'fire' : 'hold' }) });
-  choices.push(...moveChoices(f, orders, known, ready, redo));
-  const heat = (vent ? 0 : f.heat) + orders.guns.slice(0, ready).filter(Boolean).slice(0, Math.max(0, ready - (f.me.pdc && orders.pdc === 'hold' ? 1 : 0))).reduce((h, o) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);  // as the engine counts them
+  choices.push(...moveChoices(f, orders, known, redo));
+  const split = orders.move === 'split' && canUse(f, orders, 'split', known);
+  const heat = (vent ? 0 : f.heat) + turnShots(vent ? { ...f, locked: [] } : f, orders, split).reduce((h, { o }) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);  // the engine's own count of the shots
   choices.push({ label: fightSay(heat > FIGHT.HEAT_CAP ? 'fire.hot' : 'fire.label', { heat, cap: FIGHT.HEAT_CAP }), keep: true, run: () => fireTurn(s, orders) });
   const breaking = f.foes.map((foe, i) => fightUp(foe) && ((s.shown || {}).foe || [])[i] && s.shown.foe[i].kind === 'break');  // her move as shown: off, while the ships still in it all go
   const away = breaking.some(Boolean) && f.foes.every((foe, i) => breaking[i] || !fightUp(foe));
@@ -138,8 +139,8 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
 
 // The known moves as orders beside the guns (spec section 3): each a toggle for the turn, as overcharge is, with what it will do before Fire; spent, it is greyed; with
 // nothing to act on, it says so. Lead names a gun, going round the guns that have an aimed shot, then to none. Pure: it takes the state, the orders and the redraw.
-function moveChoices(f, orders, known, ready, redo) {
-  const spent = f.spent || [], held = !!(f.me.pdc && orders.pdc === 'hold'), out = [];
+function moveChoices(f, orders, known, redo) {
+  const spent = f.spent || [], out = [];
   const name = id => fightSay(`move.name.${id}`), on = (id, label) => (orders.move === id ? fightSay('move.on', { label }) : label);
   const shut = id => ({ label: fightSay(spent.includes(id) ? 'move.spent' : 'move.idle', { name: name(id) }), keep: true, can: () => false, run: redo({}) });
   for (const id of known.filter(k => FIGHT_MOVES[k])) {
@@ -154,9 +155,8 @@ function moveChoices(f, orders, known, ready, redo) {
       const [lo, hi] = led ? shotRange(f, orders.guns[orders.gun], true) : [0, 0];
       out.push({ label: led ? on(id, fightSay('move.lead', { n: orders.gun + 1, lo, hi })) : fightSay('move.lead.off'), keep: true, run: redo(next === undefined ? { move: null, gun: null } : { move: id, gun: next }) });
     } else {
-      const cut = orders.guns.slice(0, ready).filter(Boolean)[ready - 1];  // the shot a held turret would cost, which a split gives back
-      if (!held || !cut) { out.push(shut(id)); continue; }
-      const [lo, hi] = shotRange(f, cut);
+      if (!canUse(f, orders, 'split', known)) { out.push(shut(id)); continue; }
+      const [lo, hi] = shotRange(f, turnShots(f, orders, true)[gunsReady(f) - 1].o);  // the shot a held turret would cost, which a split gives back
       out.push({ label: on(id, fightSay('move.split', { lo, hi })), keep: true, run: redo({ move: orders.move === id ? null : id }) });
     }
   }

@@ -709,3 +709,26 @@ test('a hand who buys the ship keeps the moves', async () => {
   assert.deepEqual(r.older, [], 'a save from before has none');
   await done();
 });
+
+test('the Fire label counts the heat of a split as the engine does, and a split with no shot to save is greyed', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner'); hired().moves = ['split'];
+    const s = battle(); s.state.heat = 3; s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 2] }], captain: { kind: 'hold' } };
+    const guns = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], splitAt = () => G.dialog.choices.findIndex(c => /^Split the turret/.test(c.label));
+    openEvent(shipFightEvent(s, { guns, torp: null, pdc: 'hold' }));
+    openEvent(chooseEvent(splitAt()));  // ordered
+    const label = G.dialog.choices[G.dialog.choices.length - 1].label;
+    openEvent(shipFightEvent(s, { guns: [null, null], torp: null, pdc: 'hold', move: 'split' }));
+    const idle = G.dialog.choices[splitAt()];
+    openEvent(shipFightEvent(s, { guns, torp: null, pdc: 'hold', move: 'split' }));
+    openEvent(chooseEvent(G.dialog.choices.length - 1));  // Fire
+    return { label, idle: [idle.label, !!(idle.can && !idle.can())], locked: s.state.locked.length, spent: s.state.spent };
+  });
+  assert.equal(r.label, 'Fire: heat 5 of 4, and a gun locks next turn', 'two shots on top of 3: the turret still fires');
+  assert.equal(r.locked, 1, 'and the engine locked the gun');
+  assert.deepEqual(r.spent, ['split']);
+  assert.deepEqual(r.idle, ['Split the turret: nothing to act on this turn', true]);
+  await done();
+});

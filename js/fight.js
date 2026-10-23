@@ -47,14 +47,20 @@ const FIGHT_MOVES = {
   lead: {},   // the named gun's aimed shot takes no AIM_MULT; needs that gun ready and aimed at a part
   split: {}   // the held turret still fires: no shot lost to it; her volley and salvo cut stay; needs the turret held
 };
+// The shots a turn fires, each { o, i } with its gun's index: the ready guns' orders that have a foe, less the one a held turret costs (none under split).
+// The engine fires these and the panel counts their heat, so the two cannot disagree.
+function turnShots(st, orders, split = false) {
+  const n = gunsReady(st), lent = split ? 0 : st.me.pdc && orders.pdc === 'hold' ? 1 : 0;
+  return orders.guns.slice(0, n).map((o, i) => ({ o, i })).filter(({ o }) => o && st.foes[o.foe]).slice(0, Math.max(0, n - lent));  // a gun that is not ready has no say, whatever its order
+}
 // Whether move id can be used this turn: known, not spent, and with something to act on.
 function canUse(st, orders, id, known = []) {
   if (!FIGHT_MOVES[id] || !known.includes(id) || (st.spent || []).includes(id)) return false;
   const held = !!(st.me.pdc && orders.pdc === 'hold');
   if (id === 'vent') return st.heat > 0 || st.locked.length > 0;
-  if (id === 'split') return held;
-  const o = orders.guns[orders.gun];
-  return !!o && orders.gun < gunsReady(st) - (held ? 1 : 0) && !!st.foes[o.foe] && AIMED.includes(o.part);
+  if (id === 'split') return held && gunsReady(st) > 0 && turnShots(st, orders, true).length >= gunsReady(st);  // the held turret must really cost a shot
+  const shot = turnShots(st, orders).find(x => x.i === orders.gun);  // the named gun must fire
+  return !!shot && AIMED.includes(shot.o.part);
 }
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);
@@ -109,10 +115,9 @@ function resolveShipTurn(state, orders, moves, rand, known = []) {
     events.push({ who: 'me', move });
     if (move === 'vent') { st.heat = 0; st.locked = []; }
   }
-  const lent = move === 'split' ? 0 : held ? 1 : 0;  // split: the held turret costs no shot
 
   // A turret held back is not firing, so it costs a shot.
-  const shots = orders.guns.slice(0, gunsReady(st)).map((o, i) => ({ o, i })).filter(({ o }) => o && st.foes[o.foe]).slice(0, Math.max(0, gunsReady(st) - lent));  // a gun that is not ready has no say, whatever its order
+  const shots = turnShots(st, orders, move === 'split');  // split: the held turret costs no shot
   for (const { o, i } of shots) {
     const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]], shotMult(st, o, move === 'lead' && i === orders.gun), rand));
     events.push({ who: 'me', foe: o.foe, part: o.part, dmg });

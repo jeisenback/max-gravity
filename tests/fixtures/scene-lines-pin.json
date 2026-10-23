@@ -23114,7 +23114,7 @@
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 3 to 0, locks off, once a fight",
      "Lead the shot: name a gun, once a fight",
-     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight",
+     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
      "Fire: heat 4 of 4"
     ]
    },
@@ -23130,7 +23130,7 @@
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 3 to 0, locks off, once a fight (ordered)",
      "Lead the shot: name a gun, once a fight",
-     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight",
+     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
      "Fire: heat 1 of 4"
     ]
    },
@@ -23146,7 +23146,7 @@
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 3 to 0, locks off, once a fight",
      "Lead the shot, gun 1: 7 to 11 damage with no range penalty, once a fight (ordered)",
-     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight",
+     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
      "Fire: heat 4 of 4"
     ]
    },
@@ -23162,8 +23162,8 @@
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 3 to 0, locks off, once a fight",
      "Lead the shot: name a gun, once a fight",
-     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight (ordered)",
-     "Fire: heat 4 of 4"
+     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight (ordered)",
+     "Fire: heat 5 of 4, and a gun locks next turn"
     ]
    },
    {
@@ -23198,7 +23198,7 @@
      "Turret: hold it to cut her volley",
      "Vent the guns: spent",
      "Lead the shot: name a gun, once a fight",
-     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight",
+     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
      "Fire: heat 1 of 4"
     ]
    },
@@ -23219,7 +23219,7 @@
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 2 to 0, locks off, once a fight",
      "Lead the shot: spent",
-     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight",
+     "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
      "Fire: heat 3 of 4"
     ]
    },
