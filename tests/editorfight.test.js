@@ -277,3 +277,18 @@ test('words kept for the deck fights\' abilities and orders under the old rows m
   assert.equal(plan.refused.length, 1);
   assert.match(plan.refused[0], /repel's words are kept/);
 });
+
+test('a gunner move plays in the preview by the line typed: its teacher\'s button, and the words when it is taken', async () => {
+  await reload(); await select('scene:gunner-moves');
+  for (const [id, who] of [['vent', 'Tomas'], ['lead', 'Ines'], ['split', 'Cato']]) {
+    await page.fill(`textarea[data-path="part.${id}.text"]`, `Typed ${id}.text, {first}.`);
+    const f = await play();
+    const i = await f.evaluate(w => G.dialog.choices.findIndex(c => c.label.includes(w) && (!c.can || c.can())), who);
+    assert.ok(i >= 0, `${id}: ${who}'s button is on the menu`);
+    await f.click(`[data-action="choose"][data-arg="${i}"]`);
+    await f.waitForFunction(() => document.querySelector('#event-result') && document.querySelector('#event-result').textContent.length > 0);
+    assert.ok((await f.textContent('#event-result')).includes(`Typed ${id}.text, ${who}.`), `${id} plays its words`);
+    assert.match(await page.textContent('#pv-report'), new RegExp(`so ${id} is offered`));
+    await page.fill(`textarea[data-path="part.${id}.text"]`, '');
+  }
+});

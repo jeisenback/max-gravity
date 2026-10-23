@@ -16,7 +16,8 @@ const { answerOrders } = require('./answer');
 
 // The player: given the dialog and the indexes of its open choices (a shut one is never among them), the index to take. Runs in the page.
 // - Ship fight: the orders that read her shown move (tools/answer.js, the fight tool's `answer`): the turret held back against her salvo, her lock while she
-//   closes or pins with it, torpedoes and overcharged guns at a ship whose shields come back, else her hull; then Fire, each turn.
+//   closes or pins with it, torpedoes and overcharged guns at a ship whose shields come back, else her hull; the gunner move it chooses, if the hand knows one;
+//   then Fire, each turn.
 // - Deck fight: stand where most of your crew are, shoot (steady when they outnumber you there), give the crew order when one is offered, then Fight.
 // - Scenes: the best score: no stated risk or cost first, paying work and jobs taken, a cost to standing or the captain's trust avoided, and a crewmate kept
 //   rather than let go. Ties are the seed's.
@@ -45,8 +46,9 @@ function policy(d, ok, memo) {
       return last;  // Fight
     }
     // The orders tools/answer.js gives (window.__answer, set by setup), clicked toward choice by choice: each ready gun's target (a click takes the next one
-    // round), its charge, the torpedo's target and the turret, then Fire. A gun's label shows its roll, so a target is matched with either charge.
-    const want = window.__answer(s), ready = gunsReady(f);
+    // round), its charge, the torpedo's target, the turret and the moves, then Fire. A gun's label shows its roll, so a target is matched with either charge.
+    const want = window.__answer(s), vented = d.choices.some(c => c.label === fightSay('move.on', { label: fightSay('move.vent', { heat: f.heat }) }));
+    const ready = gunsReady(vented ? { ...f, locked: [] } : f);  // a vent ordered unlocks the guns, so the panel shows an order for each (fightui.js)
     const aim = o => (o ? fightSay('aim.at', { part: fightSay(`part.${o.part}`) }) : fightSay('aim.hold'));
     const gun = (n, o) => fightSay('gun.label', { n: n + 1, aim: o ? fightSay('aim.range', { aim: aim(o), ...(([lo, hi]) => ({ lo, hi }))(shotRange(f, o)) }) : aim(o) });
     let at = 0;
@@ -57,7 +59,21 @@ function policy(d, ok, memo) {
       at += 2;
     }
     if (f.me.launcher && f.me.torps > 0) { if (label(at) !== fightSay('torp.label', { left: f.me.torps, aim: aim(want.torp) })) return at; at++; }
-    if (f.me.pdc && label(at) !== fightSay(want.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire')) return at;
+    if (f.me.pdc) { if (label(at) !== fightSay(want.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire')) return at; at++; }
+    // The known moves, between the turret and Fire, one choice each (fightui.js moveChoices): the one the orders chose is ordered (lead on its gun), the others not.
+    // A move greyed (spent, or nothing to act on) is passed over.
+    for (const id of (s.known || []).filter(k => FIGHT_MOVES[k])) {
+      const c = d.choices[at], open = !c.can || c.can();
+      if (open) {
+        const on = l => fightSay('move.on', { label: l });
+        const mine = id === 'vent' ? on(fightSay('move.vent', { heat: f.heat }))
+          : id === 'split' ? on(fightSay('move.split', (([lo, hi]) => ({ lo, hi }))(shotRange(f, turnShots(f, want, true)[gunsReady(f) - 1].o))))
+          : want.move === 'lead' ? on(fightSay('move.lead', (([lo, hi]) => ({ n: want.gun + 1, lo, hi }))(shotRange(f, { ...want.guns[want.gun], over: !!want.guns[want.gun].over }, true)))) : fightSay('move.lead.off');
+        const ordered = id === 'lead' ? c.label !== fightSay('move.lead.off') : c.label === mine;
+        if (want.move === id ? c.label !== mine : ordered) return at;
+      }
+      at++;
+    }
     return last;  // Fire
   }
   if (dealOpen() && wantsYard() && label(last) === sceneSay('scene:pitch', 'never.label')) return last;  // Never mind: the yard first

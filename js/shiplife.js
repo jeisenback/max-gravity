@@ -638,11 +638,11 @@ function downtimeEvent(all) {
         run() {
           spendLife(t);
           if (hired()) hired().did = { ...hired().did, downtime: true };  // the first run's steps (tutorial.js)
-          const text = a.run();
+          const what = activityLabel(a), text = a.run();  // the label as chosen: a teaching's names the move it teaches, not the next one due (gunnermoves.js)
           // Comms gets one line, what was done and what it taught: it shows eight lines, and the result runs to twelve on a phone (#767). One that leads
           // straight into a scene (Sit with someone) has nothing to say yet.
           const taught = text && (text.match(/\([^()]*\)$/) || [''])[0];
-          if (text) comm(`[Ship] ${lifeSay('log', { what: activityLabel(a) })}${taught ? ` ${taught}` : ''}`);
+          if (text) comm(`[Ship] ${lifeSay('log', { what })}${taught ? ` ${taught}` : ''}`);
           return text;
         },
       })),

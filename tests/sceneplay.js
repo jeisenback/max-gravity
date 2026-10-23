@@ -193,6 +193,12 @@ const playScenes = () => {
   }
   run('hand:restock', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => restockTorps(G.state, hired(), currentPlanet(), ship().launcher) }] }), { prep() { G.state.torpedoes = 0; hired().fund = 100000; } });
   run('hand:practise:owner', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.practise.run()) }] }));
+  // a gunner move taught on a burn (gunnermoves.js): each by its teacher, trusted, with the moves before it known; and the button with nothing due
+  for (const [id, known, xp] of [['vent', [], 12], ['lead', ['vent'], 12], ['split', ['vent', 'lead'], 45]]) {
+    run(`hand:teach:${id}`, {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => String(ACTIVITIES.teach.run()) }] }),
+      { prep() { hired().moves = [...known]; hired().skill = { ...hired().skill, gunner: xp }; for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = OPINION.TRUSTED; }, extra: () => ({ moves: hired().moves, gunner: hired().skill.gunner }) });
+  }
+  run('hand:teach:none', {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, can: ACTIVITIES.teach.can, run: () => String(ACTIVITIES.teach.can()) }] }));
   // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
   run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.filter(c => /^Heave to/.test(c.label)) }; });
   run('memory:landing', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { land(currentPlanet()); G.dialog = null; G.nextEvent = null; return ''; } }] }), { prep() { G.state.crew = []; G.player = G.player || { armor: ship().armor, x: 0, y: 0, vx: 0, vy: 0 }; uatPassenger('earth', G.state.planet); } });
