@@ -2,7 +2,7 @@
 
 // The ship fight's move-reading orders (#808 Task 7), shared by the fight tool's `answer` policy (tools/fights.js) and the play-through's player
 // (tools/playthrough.js). It runs in the page, so it is passed there as source text and made again with eval: it reads only its argument and the
-// game's globals (fightUp, gunsReady, FIGHT). Given the fight (s, with s.state and her shown move s.shown), the turn's orders { guns, torp, pdc }:
+// game's globals (fightUp, gunsReady, canUse, RANGE_BANDS, FIGHT). Given the fight (s, with s.state and her shown move s.shown), the turn's orders { guns, torp, pdc, move, gun }:
 // - hold the turret back when she fires a salvo;
 // - every gun at her lock while she pins or closes with it whole;
 // - a torpedo only at a foe whose shields are at or under TORP_SHIELDS of their maximum (a torpedo into full shields is spent on them: #814), or, for a foe
@@ -11,6 +11,8 @@
 // - against a ship whose shields come back (regen), every gun at her hull, each gun overcharged while the heat, with the shots still to
 //   come this turn, stays at or under the cap (no gun locked);
 // - else every gun at her hull. (Not "her weapons": a ship whose guns are gone and whose hull is whole breaks off as 'away', a weak end; task-7-report.md.)
+// The gunner moves (s.known: the ones this fight offers; canUse is the engine's own test of whether one would apply), at most one a turn, the first of:
+// split when the turret is held for her salvo; vent when a gun is locked; lead on the first gun that aims at a part, at the mid or long band.
 function answerOrders(s) {
   const f = s.state, live = f.foes.map((_, i) => i).filter(i => fightUp(f.foes[i])), shown = i => (s.shown && s.shown.foe[i]) || {};
   const salvo = live.some(i => shown(i).kind === 'salvo');
@@ -29,7 +31,14 @@ function answerOrders(s) {
     }
     return { foe: live[0] || 0, part: 'hull' };
   });
-  return { guns, torp: down !== undefined && f.me.launcher && f.me.torps > 0 ? { foe: down, part: 'hull' } : null, pdc: salvo ? 'hold' : 'fire' };
+  const orders = { guns, torp: down !== undefined && f.me.launcher && f.me.torps > 0 ? { foe: down, part: 'hull' } : null, pdc: salvo ? 'hold' : 'fire' };
+  const known = s.known || [], aimed = guns.findIndex(g => g.part !== 'hull' && g.part !== 'weapons');
+  const move = !known.length ? null : salvo && canUse(f, orders, 'split', known) ? 'split'
+    : f.locked.length > 0 && canUse(f, orders, 'vent', known) ? 'vent'
+    : aimed >= 0 && /^(long|mid)$/.test(RANGE_BANDS[f.band]) && canUse(f, { ...orders, gun: aimed }, 'lead', known) ? 'lead' : null;
+  if (move) orders.move = move;
+  if (move === 'lead') orders.gun = aimed;
+  return orders;
 }
 
 module.exports = { answerOrders };

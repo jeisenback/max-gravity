@@ -133,3 +133,35 @@ test('answer fires at a pair', () => {
   assert.deepEqual(orders([[10, 90, 0], [0, 50, 0]]).torp, { foe: 1, part: 'hull' }, 'at the one with the least left');
   assert.equal(orders([[100, 100, 0], [100, 60, 0]]).torp, null, 'held while both are whole');
 });
+
+// The gunner moves in answerOrders: run against the engine's own canUse (js/fight.js loaded into the same bare context), so the rule and the engine cannot disagree.
+function moveOrders({ known, band = 2, heat = 0, locked = [], shown, lockHp = 0, pdc = true }) {
+  const ctx = vm.createContext({ RANGE_BANDS: ['knife', 'close', 'mid', 'long'], GRADE_HULL: 0, GRADE_PUNCH: 0, fightUp: f => f.armor > 0 });
+  vm.runInContext(require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js', 'fight.js'), 'utf8'), ctx);
+  const fn = vm.runInContext(`(${answerOrders.toString()})`, ctx);
+  const foe = { shields: 100, maxShields: 100, armor: 100, maxArmor: 100, regen: 0, parts: { lock: { hp: lockHp }, drive: { hp: 34 }, weapons: { hp: 63 } } };
+  const state = { kind: 'ship', band, heat, locked, spent: [], me: { guns: 2, launcher: false, torps: 0, pdc, parts: { weapons: { hp: 126, max: 126 } } }, foes: [foe] };
+  return JSON.parse(JSON.stringify(fn({ state, shown: { foe: [shown] }, known })));
+}
+const ALL = ['vent', 'lead', 'split'];
+
+test('answer splits the turret on a salvo turn, vents a locked gun, and leads an aimed shot at range', () => {
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'salvo' }, heat: 3 }).move, 'split', 'a salvo turn: the turret is held, split keeps its shot (before vent)');
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'hold' }, locked: [1] }).move, 'vent', 'a gun locked: vent fires it');
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'pin' }, lockHp: 7, band: 3 }).move, 'lead', 'a shot at her lock from long range');
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'pin' }, lockHp: 7, band: 2 }).move, 'lead', 'and from mid range');
+  const o = moveOrders({ known: ALL, shown: { kind: 'pin' }, lockHp: 7, band: 3 });
+  assert.ok(Number.isInteger(o.gun) && o.guns[o.gun].part === 'lock', 'lead names a gun that aims at a part');
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'pin' }, lockHp: 7, band: 1 }).move, undefined, 'close in, the aim costs nothing: no lead');
+  assert.equal(moveOrders({ known: ALL, shown: { kind: 'hold' } }).move, undefined, 'nothing to act on: no move');
+});
+
+test('answer never orders a move the hand does not know', () => {
+  const cases = [{ shown: { kind: 'salvo' }, heat: 3 }, { shown: { kind: 'hold' }, locked: [1] }, { shown: { kind: 'pin' }, lockHp: 7, band: 3 }];
+  for (const c of cases) {
+    assert.equal(moveOrders({ ...c, known: [] }).move, undefined, 'knowing none');
+    assert.equal(moveOrders({ ...c }).move, undefined, 'a fight with no known list');
+  }
+  assert.equal(moveOrders({ known: ['lead'], shown: { kind: 'salvo' }, heat: 3 }).move, undefined, 'a salvo turn without split');
+  assert.equal(moveOrders({ known: ['vent'], shown: { kind: 'pin' }, lockHp: 7, band: 3 }).move, undefined, 'a lead without lead');
+});
