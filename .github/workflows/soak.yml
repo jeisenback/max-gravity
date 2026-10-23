@@ -12,7 +12,7 @@ permissions:
 jobs:
   soak:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10  # the setup's apt step can be slow on its own (#817); the soak itself keeps the five
     strategy:
       fail-fast: false
       matrix:
@@ -21,4 +21,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - run: node --test --test-reporter=tap --test-reporter-destination=stdout $(for f in ${{ matrix.files }}; do printf 'tests/distribution/%s.test.js ' "$f"; done)
+      - timeout-minutes: 5
+        run: node --test --test-reporter=tap --test-reporter-destination=stdout $(for f in ${{ matrix.files }}; do printf 'tests/distribution/%s.test.js ' "$f"; done)
