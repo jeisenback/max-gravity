@@ -23103,6 +23103,160 @@
     ]
    },
    {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": broadside at your hull, 10 to 10 damage. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: normal charge",
+     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: normal charge",
+     "Turret: hold it to cut her volley",
+     "Vent the guns: heat 3 to 0, locks off, once a fight",
+     "Lead the shot: name a gun, once a fight",
+     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight",
+     "Fire: heat 4 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": broadside at your hull, 10 to 10 damage. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: normal charge",
+     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: normal charge",
+     "Turret: hold it to cut her volley",
+     "Vent the guns: heat 3 to 0, locks off, once a fight (ordered)",
+     "Lead the shot: name a gun, once a fight",
+     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": broadside at your hull, 10 to 10 damage. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: normal charge",
+     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: normal charge",
+     "Turret: hold it to cut her volley",
+     "Vent the guns: heat 3 to 0, locks off, once a fight",
+     "Lead the shot, gun 1: 7 to 11 damage with no range penalty, once a fight (ordered)",
+     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight",
+     "Fire: heat 4 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": broadside at your hull, 10 to 10 damage. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: normal charge",
+     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: normal charge",
+     "Turret: hold it to cut her volley",
+     "Vent the guns: heat 3 to 0, locks off, once a fight",
+     "Lead the shot: name a gun, once a fight",
+     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight (ordered)",
+     "Fire: heat 4 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": broadside at your hull, 10 to 10 damage. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: aim at her hull, 7 to 11 damage",
+     "Gun 1: normal charge",
+     "Gun 2: hold fire",
+     "Turret: fire with the guns",
+     "Vent the guns: nothing to act on this turn",
+     "Lead the shot: nothing to act on this turn",
+     "Split the turret: nothing to act on this turn",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "log": "Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.",
+    "next": null,
+    "mem": []
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.",
+    "labels": [
+     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: normal charge",
+     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: normal charge",
+     "Turret: hold it to cut her volley",
+     "Vent the guns: spent",
+     "Lead the shot: name a gun, once a fight",
+     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight",
+     "Fire: heat 1 of 4"
+    ]
+   },
+   {
+    "log": "Turn 2: you lead the shot, you hit her drive for 10, she hits your hull for 6.",
+    "next": null,
+    "mem": []
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.</p><p>Turn 2: you lead the shot, you hit her drive for 10, she hits your hull for 6.",
+    "labels": [
+     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: normal charge",
+     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: normal charge",
+     "Turret: hold it to cut her volley",
+     "Vent the guns: heat 2 to 0, locks off, once a fight",
+     "Lead the shot: spent",
+     "Split the turret: it fires as well as holding her volley, adding 2 to 3 damage, once a fight",
+     "Fire: heat 3 of 4"
+    ]
+   },
+   {
+    "log": "Turn 3: you split the turret, you hit her drive for 2, you hit her drive for 3, she hits your hull for 6.",
+    "next": null,
+    "mem": []
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range.",
+    "text": "Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.</p><p>Turn 2: you lead the shot, you hit her drive for 10, she hits your hull for 6.</p><p>Turn 3: you split the turret, you hit her drive for 2, you hit her drive for 3, she hits your hull for 6.",
+    "labels": [
+     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: normal charge",
+     "Turret: hold it to cut her volley",
+     "Vent the guns: heat 3 to 0, locks off, once a fight",
+     "Lead the shot: nothing to act on this turn",
+     "Split the turret: spent",
+     "Fire: heat 3 of 4"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range.",
+    "text": "Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.</p><p>Turn 2: you lead the shot, you hit her drive for 10, she hits your hull for 6.</p><p>Turn 3: you split the turret, you hit her drive for 2, you hit her drive for 3, she hits your hull for 6.",
+    "labels": [
+     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: normal charge",
+     "Turret: hold it to cut her volley",
+     "Vent the guns: spent",
+     "Lead the shot: spent",
+     "Split the turret: spent",
+     "Fire: heat 3 of 4"
+    ]
+   },
+   {
     "log": "Turn 1: she hits your hull for 1.",
     "next": {
      "title": "Battle Stations",

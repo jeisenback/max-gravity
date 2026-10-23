@@ -40,15 +40,15 @@ const AIMED = ['drive', 'lock', 'launcher'];
 // The multiplier a gun order rolls with: the side's damage, the band, an overcharge, and the aim penalty of a small part at range.
 const shotMult = (st, o, lead = false) => st.me.dmgMult * bandMultOf(st.band) * (o.over ? FIGHT.OVER_MULT : 1) * (AIMED.includes(o.part) && !lead ? FIGHT.AIM_MULT[RANGE_BANDS[st.band]] || 0 : 1);
 // The [lo, hi] a gun order would roll, for the panel to show.
-const shotRange = (st, o) => [FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]].map(d => Math.round(d * shotMult(st, o)));
+const shotRange = (st, o, lead = false) => [FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]].map(d => Math.round(d * shotMult(st, o, lead)));
 // The gunner's moves (docs/superpowers/specs/2026-10-23-gunner-moves-design.md), each once a fight, ordered as orders.move (lead names orders.gun).
 const FIGHT_MOVES = {
-  vent: { name: 'Vent the guns' },     // heat to 0 and the locks off before the shots, so every gun fires; needs heat or a lock
-  lead: { name: 'Lead the shot' },     // the named gun's aimed shot takes no AIM_MULT; needs that gun ready and aimed at a part
-  split: { name: 'Split the turret' }  // the held turret still fires: no shot lost to it; her volley and salvo cut stay; needs the turret held
+  vent: {},   // heat to 0 and the locks off before the shots, so every gun fires; needs heat or a lock
+  lead: {},   // the named gun's aimed shot takes no AIM_MULT; needs that gun ready and aimed at a part
+  split: {}   // the held turret still fires: no shot lost to it; her volley and salvo cut stay; needs the turret held
 };
 // Whether move id can be used this turn: known, not spent, and with something to act on.
-function canUse(st, orders, id, known) {
+function canUse(st, orders, id, known = []) {
   if (!FIGHT_MOVES[id] || !known.includes(id) || (st.spent || []).includes(id)) return false;
   const held = !!(st.me.pdc && orders.pdc === 'hold');
   if (id === 'vent') return st.heat > 0 || st.locked.length > 0;
@@ -112,9 +112,9 @@ function resolveShipTurn(state, orders, moves, rand, known = []) {
   const lent = move === 'split' ? 0 : held ? 1 : 0;  // split: the held turret costs no shot
 
   // A turret held back is not firing, so it costs a shot.
-  const shots = orders.guns.slice(0, gunsReady(st)).filter(o => o && st.foes[o.foe]).slice(0, Math.max(0, gunsReady(st) - lent));  // a gun that is not ready has no say, whatever its order
-  for (const o of shots) {
-    const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]], shotMult(st, o, move === 'lead' && o === orders.guns[orders.gun]), rand));
+  const shots = orders.guns.slice(0, gunsReady(st)).map((o, i) => ({ o, i })).filter(({ o }) => o && st.foes[o.foe]).slice(0, Math.max(0, gunsReady(st) - lent));  // a gun that is not ready has no say, whatever its order
+  for (const { o, i } of shots) {
+    const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]], shotMult(st, o, move === 'lead' && i === orders.gun), rand));
     events.push({ who: 'me', foe: o.foe, part: o.part, dmg });
   }
   if (orders.torp && st.me.launcher && st.me.torps > 0 && st.foes[orders.torp.foe]) {
@@ -143,7 +143,7 @@ function resolveShipTurn(state, orders, moves, rand, known = []) {
   if (st.foes.some((foe, i) => foe.armor > 0 && foe.parts.lock.hp > 0 && st.band === KNIFE && moves.foe[i] && moves.foe[i].kind === 'board')) st.boarded = true;
   st.band = nextBand(st, moves);
 
-  const heat = st.heat + shots.reduce((h, o) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);
+  const heat = st.heat + shots.reduce((h, { o }) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);
   st.locked = heat > FIGHT.HEAT_CAP ? [0] : [];
   st.heat = Math.max(0, heat - FIGHT.HEAT_VENT);
   for (const side of [st.me, ...st.foes]) side.shields = Math.min(side.maxShields, side.shields + Math.round(side.regen * side.maxShields));

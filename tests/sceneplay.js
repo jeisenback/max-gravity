@@ -397,6 +397,16 @@ const playScenes = () => {
         turn(s, orders({ guns: [null, null] }), { kind: 'arm', n: 2 });  // armed
         turn(s, orders({ guns: [null, null] }), { kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] });  // and fired
       }
+      // the gunner moves (fightui.js moveChoices): a hand who knows all three sees each as an order, ordered and not, with nothing to act on, and spent; then each used in a turn
+      { fresh(); hired().raidTold = true; hired().moves = ['vent', 'lead', 'split']; G.state.outfits = { pdc: 1 }; G.nextEvent = null; startShipFight({ kind: 'pirate', shipId: 'raider' }, false); const s = G.nextEvent.fight; G.nextEvent = null;
+        const guns = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], broadside = { kind: 'broadside', target: 'hull', dmg: [10, 10] };
+        s.state.heat = 3; s.shown = { foe: [broadside], captain: { kind: 'hold' } };
+        panel(shipFightEvent(s, orders({ guns, pdc: 'hold' })));
+        for (const move of ['vent', 'lead', 'split']) panel(shipFightEvent(s, orders({ guns, pdc: 'hold', move, gun: 0 })));
+        s.state.heat = 0; panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'hull' }, null] })));  // no heat, no aimed shot, no turret held
+        for (const move of ['vent', 'lead', 'split']) { s.state.heat = 3; s.state.spent = []; turn(s, orders({ guns, pdc: 'hold', move, gun: 0 }), broadside); }
+        s.state.spent = ['vent', 'lead', 'split']; panel(shipFightEvent(s, orders({ guns, pdc: 'hold' })));  // all three spent
+      }
       { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // the hull gone with cargo aboard: she takes a share (#809)
       { const s = start('raider', {}, 'patrol').fight; G.state.cargo = { water: 30 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // and a navy ship takes it as part of the levy
       { const s = start('raider').fight; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }

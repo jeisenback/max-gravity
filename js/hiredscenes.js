@@ -443,7 +443,7 @@ const SCENE_LINES = {
     'alone.title': 'The Ship You Fly',
     'alone.text': 'Nobody came aboard with you at the yard. The berths have been open for {days} days, and the lock is still the quietest part of the ship.',
   },
-  'scene:fight': {  // the ship fight (fightui.js): {ship} is her name, {cap} the captain's (the helm's, for an owner), {part} a part's word, {lo} to {hi} what her volley can do, {hits} what a volley did
+  'scene:fight': {  // the ship fight (fightui.js): {ship} is her name, {cap} the captain's (the helm's, for an owner), {part} a part's word, {lo} to {hi} what her volley can do, {hits} what a volley did, {name} a gunner move's name, {label} a move's order as it reads before it is ordered
     title: 'Battle Stations',
     'run.days': 'The run costs {days} on the burn.',
     'open.gun.0': 'A navy ship at thirty kilometers, on an intercept course with her guns warm. She has hailed twice, and the second hail said there won\'t be a third.',
@@ -461,6 +461,11 @@ const SCENE_LINES = {
     'gun.label': 'Gun {n}: {aim}', 'torp.label': 'Torpedo, {left} left: {aim}', 'aim.at': 'aim at her {part}', 'aim.hold': 'hold fire', 'aim.range': '{aim}, {lo} to {hi} damage',
     'gun.over.off': 'Gun {n}: normal charge', 'gun.over.on': 'Gun {n}: overcharged, heat {heat}',
     'pdc.fire': 'Turret: fire with the guns', 'pdc.hold': 'Turret: hold it to cut her volley',
+    'move.name.vent': 'Vent the guns', 'move.name.lead': 'Lead the shot', 'move.name.split': 'Split the turret',
+    'move.vent': 'Vent the guns: heat {heat} to 0, locks off, once a fight', 'move.lead': 'Lead the shot, gun {n}: {lo} to {hi} damage with no range penalty, once a fight', 'move.lead.off': 'Lead the shot: name a gun, once a fight',
+    'move.split': 'Split the turret: it fires as well as holding her volley, adding {lo} to {hi} damage, once a fight',
+    'move.on': '{label} (ordered)', 'move.spent': '{name}: spent', 'move.idle': '{name}: nothing to act on this turn',
+    'move.used.vent': 'you vent the guns', 'move.used.lead': 'you lead the shot', 'move.used.split': 'you split the turret',
     'fire.label': 'Fire: heat {heat} of {cap}', 'fire.hot': 'Fire: heat {heat} of {cap}, and a gun locks next turn',
     'log.turn': 'Turn {n}: {hits}.', 'log.mine': 'you hit her {part} for {dmg}', 'log.torp': 'your torpedo hits her {part} for {dmg}',
     'log.mine.consort': 'you hit her consort\'s {part} for {dmg}', 'log.torp.consort': 'your torpedo hits her consort\'s {part} for {dmg}', 'log.hers': 'she hits your {part} for {dmg}', 'log.spent': 'nothing left of the {part} to hit', 'log.none': 'no hits',

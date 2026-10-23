@@ -837,3 +837,17 @@ test('lead on a pair applies to the named gun only', () => {
   assert.equal(sh(r)[0].dmg, base[0].dmg, 'gun 0 unchanged');
   assert.ok(sh(r)[1].dmg > base[1].dmg && sh(r)[1].foe === 1, 'gun 1 leads at its own foe');
 });
+
+test('canUse for lead: the gun must exist, be ready, be past no held turret, and aim at a part', () => {
+  const two = fight({ stats: { guns: 2, pdc: true } }, {}, L), aimed = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }];
+  const can = (o, st = two) => canUse(st, orders(aimed, o), 'lead', ['lead']);
+  assert.equal(can({ gun: 0 }), true);
+  assert.equal(can({ gun: 1 }), true);
+  assert.equal(can({ gun: 2 }), false, 'out of range: no such gun');
+  assert.equal(can({}), false, 'no gun named');
+  assert.equal(can({ gun: 1, pdc: 'hold' }), false, 'the gun a held turret takes is not left to lead');
+  assert.equal(can({ gun: 0, pdc: 'hold' }), true);
+  assert.equal(canUse(two, orders([{ foe: 0, part: 'hull' }, null], { gun: 0 }), 'lead', ['lead']), false, 'a hull shot is not aimed');
+  assert.equal(canUse(two, orders(aimed, { gun: 0 }), 'lead'), false, 'known defaults to nothing');
+  assert.ok(shotRange(two, aimed[0], true)[1] > shotRange(two, aimed[0])[1], 'the led shot rolls at least the plain one');
+});
