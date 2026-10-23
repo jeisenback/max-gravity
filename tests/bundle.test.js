@@ -48,7 +48,8 @@ test('a long run of comments between scripts is checked in linear time', () => {
   assert.ok(bundleOf(many, () => ''), 'any number of whole comments is fine');
 });
 
-test('a test page is bundled unless it asks not to be, and both start the game', async () => {
+// Not in a coverage run (#818): it serves every page script by script, so that the coverage maps to the files (tests/helpers.js open).
+test('a test page is bundled unless it asks not to be, and both start the game', { skip: process.env.COVERAGE_DIR ? 'a coverage run does not bundle' : false }, async () => {
   const bundled = await open({});
   const a = await bundled.ev(() => ({ scripts: document.scripts.length, started: typeof G !== 'undefined' && !!G.state }));
   assert.ok(a.scripts <= 3, `bundled: ${a.scripts} script elements`); assert.equal(a.started, true);

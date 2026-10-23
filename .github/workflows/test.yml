@@ -53,7 +53,7 @@ jobs:
           git diff --name-only "$BASE" HEAD > changed.txt
           node -e "const c = require('fs').readFileSync('changed.txt', 'utf8').split('\n').filter(Boolean); console.log('floor=' + require('./tools/floor').touchesFloor(c, require('./tools/coverage-floor.json')))" | tee -a "$GITHUB_OUTPUT"
   # The coverage floor (tools/coverage-floor.json): the suite again under the browser's coverage, in the same four parts, and then one job merges what the parts saw and
-  # checks the floor. The merge job keeps the name `coverage`. Its own result is the floor, not the tests (the bundle test cannot pass in a coverage run).
+  # checks the floor. The merge job keeps the name `coverage`. Its own result is the floor, not the tests (the bundle test, which a coverage run cannot pass, skips itself there: #818).
   coverage-shard:
     needs: changes
     if: needs.changes.outputs.floor == 'true'
