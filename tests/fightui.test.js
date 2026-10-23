@@ -702,6 +702,32 @@ test('lead names a gun, shows its damage with no range penalty, and the turn lea
   await done();
 });
 
+test('lead is idle where there is no range penalty, the led gun shows the led range, and a retargeted gun is not shown as led', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner'); hired().moves = ['lead'];
+    const s = battle(); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 2] }], captain: { kind: 'hold' } };
+    const labels = orders => { openEvent(shipFightEvent(s, orders)); return G.dialog.choices.map(c => c.label); };
+    const drive = { foe: 0, part: 'drive' }, two = { guns: [drive, drive], torp: null, pdc: 'fire' };
+    s.state.band = RANGE_BANDS.indexOf('close');
+    const close = labels({ ...two, move: 'lead', gun: 0 }).find(l => /Lead the shot/.test(l));
+    s.state.band = RANGE_BANDS.indexOf('long');
+    const led = shotRange(s.state, drive, true), plain = shotRange(s.state, drive);
+    const ordered = labels({ ...two, move: 'lead', gun: 0 });
+    const launcher = { foe: 0, part: 'launcher' };
+    delete s.state.foes[0].parts.launcher;
+    const gone = labels({ guns: [launcher, drive], torp: null, pdc: 'fire', move: 'lead', gun: 0 }).find(l => /Lead the shot/.test(l));
+    return { close, led, plain, ordered: ordered.filter(l => /damage/.test(l)), gone };
+  });
+  assert.match(r.close, /nothing to act on/);
+  assert.ok(r.ordered.some(l => l.includes(`${r.led[0]} to ${r.led[1]} damage`) && !/Lead the shot/.test(l)), `the led gun shows the led range: ${JSON.stringify(r.ordered)}`);
+  assert.ok(r.ordered.some(l => l.includes(`${r.plain[0]} to ${r.plain[1]} damage`) && !/Lead the shot/.test(l)), 'the other gun keeps its penalty');
+  assert.match(r.gone, /^Lead the shot: name a gun/, 'gun 1 still has an aimed shot; gun 0 was retargeted to the hull and is not shown as led');
+  assert.doesNotMatch(r.gone, /ordered/);
+  await done();
+});
+
 test('a hand who buys the ship keeps the moves', async () => {
   const { ev, done } = await open();
   const r = await ev(() => ({ kept: careerOf({ post: 'gunner', moves: ['vent', 'split'] }).moves, older: careerOf({ post: 'gunner' }).moves }));

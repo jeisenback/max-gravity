@@ -12,7 +12,7 @@
 //   come this turn, stays at or under the cap (no gun locked);
 // - else every gun at her hull. (Not "her weapons": a ship whose guns are gone and whose hull is whole breaks off as 'away', a weak end; task-7-report.md.)
 // The gunner moves (s.known: the ones this fight offers; canUse is the engine's own test of whether one would apply), at most one a turn, the first of:
-// split when the turret is held for her salvo; vent when a gun is locked; lead on the first gun that aims at a part, at the mid or long band.
+// split when the turret is held for her salvo; vent when a gun is locked; lead on the first gun that aims at a part, where canUse allows (a band with an aim penalty).
 function answerOrders(s) {
   const f = s.state, live = f.foes.map((_, i) => i).filter(i => fightUp(f.foes[i])), shown = i => (s.shown && s.shown.foe[i]) || {};
   const salvo = live.some(i => shown(i).kind === 'salvo');
@@ -27,7 +27,7 @@ function answerOrders(s) {
   const freed = known.length > 0 && f.locked.length > 0 && turnShots({ ...f, locked: [] }, orders).length > turnShots(f, orders).length;
   const move = !known.length ? null : salvo && canUse(f, orders, 'split', known) ? 'split'
     : freed && canUse(f, orders, 'vent', known) ? 'vent'
-    : aimed >= 0 && /^(long|mid)$/.test(RANGE_BANDS[f.band]) && canUse(f, { ...orders, gun: aimed }, 'lead', known) ? 'lead' : null;
+    : aimed >= 0 && canUse(f, { ...orders, gun: aimed }, 'lead', known) ? 'lead' : null;
   const ready = move === 'vent' ? gunsReady({ ...f, locked: [] }) : gunsReady(f);
   const shots = Math.max(0, ready - (salvo && move !== 'split' ? 1 : 0));
   let heat = move === 'vent' ? 0 : f.heat;

@@ -103,26 +103,26 @@ function fightBars(st) {
 // The panel for this turn, with the orders as they stand: her move and the captain's above the board, the bars, the last lines of the log, an order for each
 // ready gun, the torpedo and the turret where they are fitted, and Fire.
 function shipFightEvent(s, orders, over = false) {  // over: the close, with no move to show
-  const st = G.state, f = s.state, cap = raidCap(), known = s.known || [], vent = orders.move === 'vent' && canUse(f, orders, 'vent', known);
+  const st = G.state, f = s.state, cap = raidCap(), known = s.known || [], hit = retargeted(f.foes, orders), vent = orders.move === 'vent' && canUse(f, hit, 'vent', known);  // hit: the orders as Fire will aim them
   const ready = gunsReady(vent ? { ...f, locked: [] } : f);  // a vent ordered unlocks the guns before the shots
   const say = (m, i) => fightSay(`foe.${m.kind}`, { ship: fightFoeName(s, i), ...(m.n ? { n: m.n } : {}), ...(m.target ? { part: fightSay(`part.${m.target}`), lo: m.dmg[0], hi: m.dmg[1] } : {}) });
   const read = over ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
   const aim = o => (o ? fightSay('aim.at', { part: fightSay(`part.${o.part}`) }) : fightSay('aim.hold'));
-  const range = o => { const [lo, hi] = shotRange(f, o); return fightSay('aim.range', { aim: aim(o), lo, hi }); };  // what a gun's order would roll
+  const range = (o, led = false) => { const [lo, hi] = shotRange(f, o, led); return fightSay('aim.range', { aim: aim(o), lo, hi }); };  // what a gun's order would roll
   const aims = FIGHT_AIM.filter(p => p !== 'launcher' || f.foes.some(foe => foe.launcher));
   const turn = o => { const part = aims[(aims.indexOf(o ? o.part : null) + 1) % aims.length]; return part ? { foe: 0, part, ...(o && o.over ? { over: true } : {}) } : null; };  // the next target round, the charge kept
   const redo = change => () => shipFightEvent(s, { ...orders, ...change });
   const setGun = (i, g) => redo({ guns: orders.guns.map((x, j) => (j === i ? g : x)) });
   const choices = [];
   orders.guns.slice(0, ready).forEach((g, i) => {
-    choices.push({ label: fightSay('gun.label', { n: i + 1, aim: g ? range(g) : aim(g) }), keep: true, run: setGun(i, turn(g)) });
+    choices.push({ label: fightSay('gun.label', { n: i + 1, aim: g ? range(g, orders.move === 'lead' && orders.gun === i && canUse(f, hit, 'lead', known)) : aim(g) }), keep: true, run: setGun(i, turn(g)) });
     if (g) choices.push({ label: fightSay(g.over ? 'gun.over.on' : 'gun.over.off', { n: i + 1, heat: FIGHT.OVER_HEAT }), keep: true, run: setGun(i, { ...g, over: !g.over }) });  // overcharge: harder, and more heat
   });
   if (f.me.launcher && f.me.torps > 0) choices.push({ label: fightSay('torp.label', { left: f.me.torps, aim: aim(orders.torp) }), keep: true, run: redo({ torp: turn(orders.torp) }) });
   if (f.me.pdc) choices.push({ label: fightSay(orders.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire'), keep: true, run: redo({ pdc: orders.pdc === 'hold' ? 'fire' : 'hold' }) });
-  choices.push(...moveChoices(f, orders, known, redo));
-  const split = orders.move === 'split' && canUse(f, orders, 'split', known);
-  const heat = (vent ? 0 : f.heat) + turnShots(vent ? { ...f, locked: [] } : f, orders, split).reduce((h, { o }) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);  // the engine's own count of the shots
+  choices.push(...moveChoices(f, hit, known, redo));
+  const split = orders.move === 'split' && canUse(f, hit, 'split', known);
+  const heat = (vent ? 0 : f.heat) + turnShots(vent ? { ...f, locked: [] } : f, hit, split).reduce((h, { o }) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);  // the engine's own count of the shots
   choices.push({ label: fightSay(heat > FIGHT.HEAT_CAP ? 'fire.hot' : 'fire.label', { heat, cap: FIGHT.HEAT_CAP }), keep: true, run: () => fireTurn(s, orders) });
   const breaking = f.foes.map((foe, i) => fightUp(foe) && ((s.shown || {}).foe || [])[i] && s.shown.foe[i].kind === 'break');  // her move as shown: off, while the ships still in it all go
   const away = breaking.some(Boolean) && f.foes.every((foe, i) => breaking[i] || !fightUp(foe));
@@ -163,16 +163,22 @@ function moveChoices(f, orders, known, redo) {
   return out;
 }
 
-// Fire: the turn is resolved with the moves that were shown, what it cost is counted, and the panel is drawn again; at an end the panel gives way
-// to the scene the end leads to (G.nextEvent), and this returns nothing.
-function fireTurn(s, orders) {
-  const foes = s.state.foes, first = test => foes.findIndex(f => fightUp(f) && test(f));
-  const at = o => {  // the first ship still in the fight whose part is still there (a crippled one is out, shipEnd); a part no ship has (her launcher, on a ship with none) goes to the hull of the ship chosen
+// The orders as the engine will get them: each at the first ship still in the fight whose part is still there (a crippled one is out, shipEnd); a part no ship has
+// (her launcher, on a ship with none) goes to the hull of the ship chosen. The panel reads them too, so that a move shown is a move that applies.
+function retargeted(foes, orders) {
+  const first = test => foes.findIndex(f => fightUp(f) && test(f));
+  const at = o => {
     if (!o) return null;
     const has = (f, part) => part === 'hull' || (f.parts[part] && f.parts[part].hp > 0), i = first(f => has(f, o.part)), j = i >= 0 ? i : first(() => true), foe = foes[Math.max(0, j)];
     return { ...o, foe: Math.max(0, j), part: foe.parts[o.part] ? o.part : 'hull' };
   };
-  const aimed = { ...orders, guns: orders.guns.map(at), torp: at(orders.torp) };
+  return { ...orders, guns: orders.guns.map(at), torp: at(orders.torp) };
+}
+
+// Fire: the turn is resolved with the moves that were shown, what it cost is counted, and the panel is drawn again; at an end the panel gives way
+// to the scene the end leads to (G.nextEvent), and this returns nothing.
+function fireTurn(s, orders) {
+  const aimed = retargeted(s.state.foes, orders);
   const r = resolveShipTurn(s.state, aimed, s.shown, Math.random, s.known || []);
   s.state = r.state;
   s.state.log.push(fightSay('log.turn', { n: s.state.turn, hits: fightHits(r.events) }));

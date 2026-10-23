@@ -871,3 +871,13 @@ test('lead is allowed on a gun that fires behind a gun on hold fire, with the tu
   assert.equal(canUse(st, o, 'lead', ['lead']), true);
   assert.equal(canUse(st, orders([{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], { pdc: 'hold', gun: 1 }), 'lead', ['lead']), false, 'the held turret takes that gun');
 });
+
+test('lead at close or knife has no range penalty to take off: not spent, nothing changed', () => {
+  for (const band of ['knife', 'close']) {
+    const st = fight({ stats: { guns: 2 } }, {}, RANGE_BANDS.indexOf(band)), o = orders([{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], { move: 'lead', gun: 0 });
+    assert.equal(canUse(st, o, 'lead', ['lead']), false, band);
+    const r = resolveShipTurn(st, o, quiet, HIGH, ['lead']), b = resolveShipTurn(st, { ...o, move: undefined }, quiet, HIGH, ['lead']);
+    assert.deepEqual(plain(r), plain(b), band);
+    assert.deepEqual(plain(r.state.spent), [], band);
+  }
+});
