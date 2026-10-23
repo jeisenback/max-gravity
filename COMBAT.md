@@ -378,13 +378,13 @@ the run that wrote this section (after the final review's tune, #808):
   | over every type | 99% / 3.2% / 6.21 / 11% | 100% / 1.9% / 5.53 / 10% | |
 
   Split against a corsair ends the fight sooner (7.4 to 6.6 turns, none at the cap); lead against a pair wins more (94% to 98%)
-  and loses a third of the hull; lead also cripples a corsair more often (19% to 42% of her ends). Vent against a cutter turns
+  and loses a third as much hull (7.0% to 2.4%); lead also cripples a corsair more often (19% to 42% of her ends), at a cost: alone it raises answer's hull lost against a corsair (5.6% to 6.3%). Vent against a cutter turns
   a break-off into a cripple: running hot while it can vent, `answer` cripples her 75% of the time (1% without), in 4.9 turns
   (5.3); without vent known, or once it is spent, the heat budget keeps every gun at or under the cap as before. With all
   three, `randmove` is good 36% and loses 44% over every type (random without them: 31% and 39%), and `eager` is good 1% and
   loses 77%: no policy with the moves beats `answer` against any type. In the soak (`npm run soak`, seeds 1 to 40, the soak's
   downtime picked at random) a chapter learns two moves or more 24 times in 40 and both level-1 moves 20 times; in the
-  play-throughs (seeds 1 to 5, Hester) four of five learn vent and lead, and lead is used in four, split in one and vent in none.
+  play-throughs (seeds 1 to 5, Hester) four of five learn vent and lead, and lead is used in four, split in one and vent in two.
 - **Repelling boarders**, random play, five standing: won 90%; by her grade 88%, 58%, 41%. Shooting where they are wins 99%
   with five or two standing, against random's 49% with two. Dead a fight by her grade, after the final review's tune (R42):
   0.32, 0.44, 0.49, against the lock fight's 0.28, 0.43, 0.57.

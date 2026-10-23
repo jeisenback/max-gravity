@@ -60,7 +60,8 @@ function canUse(st, orders, id, known = []) {
   if (id === 'vent') return st.heat > 0 || st.locked.length > 0;
   if (id === 'split') return held && gunsReady(st) > 0 && turnShots(st, orders, true).length >= gunsReady(st);  // the held turret must really cost a shot
   const shot = turnShots(st, orders).find(x => x.i === orders.gun);  // the named gun must fire
-  return !!shot && AIMED.includes(shot.o.part) && (FIGHT.AIM_MULT[RANGE_BANDS[st.band]] || 0) < 1;  // a band with no aim penalty has nothing to take off
+  const part = shot && st.foes[shot.o.foe] && st.foes[shot.o.foe].parts[shot.o.part];
+  return !!shot && AIMED.includes(shot.o.part) && !!part && part.hp > 0 && (FIGHT.AIM_MULT[RANGE_BANDS[st.band]] || 0) < 1;  // a band with no aim penalty, or a part already shot away, has nothing to take off
 }
 const copyOf = o => JSON.parse(JSON.stringify(o));
 const rollIn = ([lo, hi], mult, rand) => Math.round(lo * mult + rand() * (hi - lo) * mult);

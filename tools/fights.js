@@ -13,6 +13,7 @@
 
 const { open, closeBrowser } = require('../tests/helpers');
 const { answerOrders } = require('./answer');
+const { load } = require('../tests/nodecontext');
 
 // One seed's trials. Returns raw tallies, so the seeds can be summed.
 async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, raid = true, lock = true, cutter = true, groups = null, moves = false } = {}) {  // raid: false leaves out the ship fights; lock: false the deck fights started directly; cutter: false the navy stop's trials; groups: only these groups of deck fights
@@ -210,6 +211,11 @@ module.exports = { fights, report };
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
   const seeds = (arg('seeds') || '1,2,3').split(',').map(Number), n = Number(arg('n') || 100), post = arg('post') || 'gunner', ship = arg('ship') || 'raider', owner = process.argv.includes('--owner');
+  const asked = arg('moves');
+  if (process.argv.includes('--moves') && /^[a-z,]+$/.test(asked || '')) {
+    const { FIGHT_MOVES } = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['FIGHT_MOVES']), bad = asked.split(',').filter(id => !FIGHT_MOVES[id]);
+    if (bad.length) { console.error(`--moves: unknown move ${bad.join(', ')} (known: ${Object.keys(FIGHT_MOVES).join(', ')})`); process.exit(1); }
+  }
   (async () => {
     const runs = [];
     for (const seed of seeds) {
