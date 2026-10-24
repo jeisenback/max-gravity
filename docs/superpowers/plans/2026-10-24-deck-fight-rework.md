@@ -224,6 +224,47 @@ test('a rush onto a bridge with none of ours on it takes the ship that turn', ()
 
 - [ ] **Step 5: Commit** the modified files and the pins, with the message "Deck fight: the party from her ship, the rush, the wave and the hatch on the panel".
 
+### Task 3b: wounds, not heads, and the sidearm's reach (the spec's amendment)
+
+**Files:**
+- Modify: `js/fight.js` (sections, the exchange, the shot, the moves), `js/fightui.js` (the shot's section, the log), `js/handtohand.js`
+  (`fightStrip`), `js/hiredscenes.js` (lines below)
+- Test: `tests/fight.test.js`, `tests/fightui.test.js`, `tests/handtohand.test.js`; the pins
+
+**Interfaces:**
+- Consumes: Tasks 1 to 3 (the waves, the rush, the hatch, `sidearmOf`, the panel plan `{ stand, act, order, at }`).
+- Produces:
+  - each section gains `mineHurt` and `theirsHurt` (wounded among its heads, 0 to the heads there; a wave lands unwounded);
+  - `hitSide(s, side, hits) -> { downed, wounded }`: each hit wounds an unwounded head of `side` there, or, when all are wounded,
+    downs one; heads and hurt are updated in place;
+  - `moveHeads(S, side, from, to, n)`: the unwounded go first, the wounded last (`max(0, n - unwounded)` of them move), used by every
+    move (theirs, ours in an assault, the rush);
+  - the exchange applies its rolls through `hitSide`, and its event becomes `{ kind: 'exchange', section, mine, theirs, mineHurt,
+    theirsHurt }` (`mine` and `theirs` stay the downed, so `deckLoss`'s casualty rolls are unchanged and fall on the downed only);
+  - the shot is `{ kind: 'shoot', at }` (a bare `'shoot'` is at the hand's section). `at` is the hand's section, or from
+    `DECK.SIDEARM_REACH_LEVEL = 2` one next to it; any other `at` is the hand's section. Each head of the shot (`sidearmOf`) downs a
+    wounded head there first, else wounds one; its events say both.
+- New scene lines, for the owner to edit:
+  - `'deck.log.wounds': '{theirs} of them and {mine} of ours wounded in {at}'`
+  - `'deck.wounded': '{n} of them wounded'` (the strip's label, beside a section's heads)
+  - the shot's section reuses `'deck.order.at'` ("At {at}"), offered only when the level reaches `DECK.SIDEARM_REACH_LEVEL`.
+- The strip draws a section's wounded: theirs as a second, hollow count beside the heads, and the label carries `deck.wounded`.
+
+- [ ] **Step 1: Write the failing tests** in `tests/fight.test.js`:
+  - `hitSide` on 3 unwounded takes 3 hits to wound all and a fourth to down one;
+  - an exchange's first hits wound and do not down (the event's `theirsHurt` > 0, `theirs` 0, on a section with no wounded);
+  - the shot downs a wounded head before it wounds another;
+  - at level 2, a shot `at` a section next to the hand reaches it; at level 1 the same `at` falls back to the hand's section;
+  - a push moves the unwounded first (3 heads, 1 wounded, a push of 2 leaves the wounded one behind);
+  - a wave lands unwounded.
+  - In `tests/fightui.test.js`: at level 2 the shoot choice offers "At "; at level 1 it does not. In `tests/handtohand.test.js`: a
+    section with wounded draws the hollow count and says "of them wounded" in its label.
+- [ ] **Step 2: Run them to see them fail.** `node --test tests/fight.test.js`; `npm run test:changed`. Expected: the new tests FAIL.
+- [ ] **Step 3: Implement the interfaces above.** The log gains the wounds line beside the existing fight line.
+- [ ] **Step 4: Run, then rewrite the pins.** `npm run test:changed`, then the pins with `PIN_WRITE=1`, each diff read (only deck turns
+  should change), and the full suite. Expected: PASS but tests/fights.test.js's deck test (Task 4).
+- [ ] **Step 5: Commit**, "Deck fight: wounds, not heads, and the sidearm's reach".
+
 ### Task 4: the deck answer, the report by party, the checks and the tune
 
 **Files:**
