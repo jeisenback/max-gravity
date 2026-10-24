@@ -9,13 +9,16 @@
 const FIGHT_AIM = ['weapons', 'drive', 'lock', 'launcher', 'hull', null];  // a gun's targets in the order a click takes them; null holds its fire; the launcher is offered only when some foe has one
 const FIGHT_KM = { knife: 1.5, close: 6, mid: 25, long: 50 };  // where the board draws her in each band (board.js)
 const fightSay = (key, vars) => sceneSay('scene:fight', key, vars);
+// The gunner moves a hand knows (docs/superpowers/specs/2026-10-23-gunner-moves-design.md): the career's list, empty for a save from before. Whether this fight offers them
+// is the caller's gate (a hired hand at the gunner post, startShipFight).
+const knownMoves = c => (c && c.moves) || [];
 
 // The start: the contact's own logic (a patrol's standing, the flee roll, the first fight explained once), then the fight. Returns what to show now
 // and queues the panel. `o.edge` (the contact's move, an ambush) is a free first volley, ours ahead and hers behind; `o.shift` is km that move opened
 // or closed the range by (range.js); `o.text` and `o.open` replace the opening line and the first line of the log.
 function startShipFight(spec, flee, o = {}) {
   const st = G.state, foe = makeEnemy(spec), style = RAID_STYLE[foe.shipId] || 'grapple';
-  const s = { spec, foe, style, edge: o.edge || 0, d: { foe, foeHp: 0 }, hurt: new Set(), dead: [], marked: [], youHurt: false };
+  const s = { spec, foe, style, edge: o.edge || 0, d: { foe, foeHp: 0 }, hurt: new Set(), dead: [], marked: [], youHurt: false, known: hired() && lockPost() === 'gunner' ? knownMoves(career()) : [] };  // known: the moves this fight offers
   if (spec.kind === 'patrol' && !flee) changeRep(spec.gov, -8);  // firing on a navy ship is not forgotten
   let text = o.text || `Battle stations. ${theShip(foe)} made the intercept.`;
   if (flee) {
@@ -62,7 +65,8 @@ function headStart(state, edge, rand) {
 const fightMoves = st => ({ foe: st.foes.map((_, i) => foeMove(st, i)), captain: captainMove(st) });
 const fightUp = foe => foe.armor > 0 && (foe.parts.weapons.hp > 0 || foe.parts.drive.hp > 0);
 const fightFoeName = (s, i) => (i ? fightSay('consort') : theShip(s.foe));
-const fightHits = events => (events.length ? events.map(e => fightSay(!e.dmg ? 'log.spent' : e.who === 'foe' ? 'log.hers' : `${e.torp ? 'log.torp' : 'log.mine'}${e.foe ? '.consort' : ''}`, { part: fightSay(`part.${e.part}`), dmg: e.dmg })).join(', ') : fightSay('log.none'));  // a hit on a part already gone does nothing; a hit on her consort names it
+const fightHit = e => (e.move ? fightSay(`move.used.${e.move}`) : fightSay(!e.dmg ? 'log.spent' : e.who === 'foe' ? 'log.hers' : `${e.torp ? 'log.torp' : 'log.mine'}${e.foe ? '.consort' : ''}`, { part: fightSay(`part.${e.part}`), dmg: e.dmg }));  // a used move has no part or damage; a hit on a part already gone does nothing; a hit on her consort names it
+const fightHits = events => (events.length ? events.map(fightHit).join(', ') : fightSay('log.none'));
 
 // What the turn cost: the ship keeps its armor (the fight's armor lost since the start, divided by FIGHT.POOL, off the real armor it started with; never up, never under 1) and its torpedoes, and a heavy hit (the hull lost more than FIGHT.HEAVY_HIT of your real maximum armor, shields and armor, R23)
 // can cost a casualty (CASUALTY_ODDS, more against a veteran crew or a pair, as the raid's lost beats did) and hurt the hand (FIGHT.HAND_HURT), said on the log's last line.
@@ -99,23 +103,26 @@ function fightBars(st) {
 // The panel for this turn, with the orders as they stand: her move and the captain's above the board, the bars, the last lines of the log, an order for each
 // ready gun, the torpedo and the turret where they are fitted, and Fire.
 function shipFightEvent(s, orders, over = false) {  // over: the close, with no move to show
-  const st = G.state, f = s.state, cap = raidCap(), ready = gunsReady(f);
+  const st = G.state, f = s.state, cap = raidCap(), known = s.known || [], hit = retargeted(f.foes, orders), vent = orders.move === 'vent' && canUse(f, hit, 'vent', known);  // hit: the orders as Fire will aim them
+  const ready = gunsReady(vent ? { ...f, locked: [] } : f);  // a vent ordered unlocks the guns before the shots
   const say = (m, i) => fightSay(`foe.${m.kind}`, { ship: fightFoeName(s, i), ...(m.n ? { n: m.n } : {}), ...(m.target ? { part: fightSay(`part.${m.target}`), lo: m.dmg[0], hi: m.dmg[1] } : {}) });
   const read = over ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
   const aim = o => (o ? fightSay('aim.at', { part: fightSay(`part.${o.part}`) }) : fightSay('aim.hold'));
-  const range = o => { const [lo, hi] = shotRange(f, o); return fightSay('aim.range', { aim: aim(o), lo, hi }); };  // what a gun's order would roll
+  const range = (o, led = false) => { const [lo, hi] = shotRange(f, o, led); return fightSay('aim.range', { aim: aim(o), lo, hi }); };  // what a gun's order would roll
   const aims = FIGHT_AIM.filter(p => p !== 'launcher' || f.foes.some(foe => foe.launcher));
   const turn = o => { const part = aims[(aims.indexOf(o ? o.part : null) + 1) % aims.length]; return part ? { foe: 0, part, ...(o && o.over ? { over: true } : {}) } : null; };  // the next target round, the charge kept
   const redo = change => () => shipFightEvent(s, { ...orders, ...change });
   const setGun = (i, g) => redo({ guns: orders.guns.map((x, j) => (j === i ? g : x)) });
   const choices = [];
   orders.guns.slice(0, ready).forEach((g, i) => {
-    choices.push({ label: fightSay('gun.label', { n: i + 1, aim: g ? range(g) : aim(g) }), keep: true, run: setGun(i, turn(g)) });
+    choices.push({ label: fightSay('gun.label', { n: i + 1, aim: g ? range(g, orders.move === 'lead' && orders.gun === i && canUse(f, hit, 'lead', known)) : aim(g) }), keep: true, run: setGun(i, turn(g)) });
     if (g) choices.push({ label: fightSay(g.over ? 'gun.over.on' : 'gun.over.off', { n: i + 1, heat: FIGHT.OVER_HEAT }), keep: true, run: setGun(i, { ...g, over: !g.over }) });  // overcharge: harder, and more heat
   });
   if (f.me.launcher && f.me.torps > 0) choices.push({ label: fightSay('torp.label', { left: f.me.torps, aim: aim(orders.torp) }), keep: true, run: redo({ torp: turn(orders.torp) }) });
   if (f.me.pdc) choices.push({ label: fightSay(orders.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire'), keep: true, run: redo({ pdc: orders.pdc === 'hold' ? 'fire' : 'hold' }) });
-  const heat = f.heat + orders.guns.slice(0, ready).filter(Boolean).slice(0, Math.max(0, ready - (f.me.pdc && orders.pdc === 'hold' ? 1 : 0))).reduce((h, o) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);  // as the engine counts them
+  choices.push(...moveChoices(f, hit, known, redo));
+  const split = orders.move === 'split' && canUse(f, hit, 'split', known);
+  const heat = (vent ? 0 : f.heat) + turnShots(vent ? { ...f, locked: [] } : f, hit, split).reduce((h, { o }) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);  // the engine's own count of the shots
   choices.push({ label: fightSay(heat > FIGHT.HEAT_CAP ? 'fire.hot' : 'fire.label', { heat, cap: FIGHT.HEAT_CAP }), keep: true, run: () => fireTurn(s, orders) });
   const breaking = f.foes.map((foe, i) => fightUp(foe) && ((s.shown || {}).foe || [])[i] && s.shown.foe[i].kind === 'break');  // her move as shown: off, while the ships still in it all go
   const away = breaking.some(Boolean) && f.foes.every((foe, i) => breaking[i] || !fightUp(foe));
@@ -130,17 +137,49 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
   };
 }
 
-// Fire: the turn is resolved with the moves that were shown, what it cost is counted, and the panel is drawn again; at an end the panel gives way
-// to the scene the end leads to (G.nextEvent), and this returns nothing.
-function fireTurn(s, orders) {
-  const foes = s.state.foes, first = test => foes.findIndex(f => fightUp(f) && test(f));
-  const at = o => {  // the first ship still in the fight whose part is still there (a crippled one is out, shipEnd); a part no ship has (her launcher, on a ship with none) goes to the hull of the ship chosen
+// The known moves as orders beside the guns (spec section 3): each a toggle for the turn, as overcharge is, with what it will do before Fire; spent, it is greyed; with
+// nothing to act on, it says so. Lead names a gun, going round the guns that have an aimed shot, then to none. Pure: it takes the state, the orders and the redraw.
+function moveChoices(f, orders, known, redo) {
+  const spent = f.spent || [], out = [];
+  const name = id => fightSay(`move.name.${id}`), on = (id, label) => (orders.move === id ? fightSay('move.on', { label }) : label);
+  const shut = id => ({ label: fightSay(spent.includes(id) ? 'move.spent' : 'move.idle', { name: name(id) }), keep: true, can: () => false, run: redo({}) });
+  for (const id of known.filter(k => FIGHT_MOVES[k])) {
+    if (spent.includes(id)) { out.push(shut(id)); continue; }
+    if (id === 'vent') {
+      if (!canUse(f, orders, 'vent', known)) out.push(shut(id));
+      else out.push({ label: on(id, fightSay('move.vent', { heat: f.heat })), keep: true, run: redo({ move: orders.move === id ? null : id }) });
+    } else if (id === 'lead') {
+      const guns = orders.guns.map((_, i) => i).filter(i => canUse(f, { ...orders, gun: i }, 'lead', known));
+      if (!guns.length) { out.push(shut(id)); continue; }
+      const led = orders.move === id && guns.includes(orders.gun), now = led ? guns.indexOf(orders.gun) : -1, next = guns[now + 1];  // none, then each gun in turn
+      const [lo, hi] = led ? shotRange(f, orders.guns[orders.gun], true) : [0, 0];
+      out.push({ label: led ? on(id, fightSay('move.lead', { n: orders.gun + 1, lo, hi })) : fightSay('move.lead.off'), keep: true, run: redo(next === undefined ? { move: null, gun: null } : { move: id, gun: next }) });
+    } else {
+      if (!canUse(f, orders, 'split', known)) { out.push(shut(id)); continue; }
+      const [lo, hi] = shotRange(f, turnShots(f, orders, true)[gunsReady(f) - 1].o);  // the shot a held turret would cost, which a split gives back
+      out.push({ label: on(id, fightSay('move.split', { lo, hi })), keep: true, run: redo({ move: orders.move === id ? null : id }) });
+    }
+  }
+  return out;
+}
+
+// The orders as the engine will get them: each at the first ship still in the fight whose part is still there (a crippled one is out, shipEnd); a part no ship has
+// (her launcher, on a ship with none) goes to the hull of the ship chosen. The panel reads them too, so that a move shown is a move that applies.
+function retargeted(foes, orders) {
+  const first = test => foes.findIndex(f => fightUp(f) && test(f));
+  const at = o => {
     if (!o) return null;
     const has = (f, part) => part === 'hull' || (f.parts[part] && f.parts[part].hp > 0), i = first(f => has(f, o.part)), j = i >= 0 ? i : first(() => true), foe = foes[Math.max(0, j)];
     return { ...o, foe: Math.max(0, j), part: foe.parts[o.part] ? o.part : 'hull' };
   };
-  const aimed = { ...orders, guns: orders.guns.map(at), torp: at(orders.torp) };
-  const r = resolveShipTurn(s.state, aimed, s.shown, Math.random);
+  return { ...orders, guns: orders.guns.map(at), torp: at(orders.torp) };
+}
+
+// Fire: the turn is resolved with the moves that were shown, what it cost is counted, and the panel is drawn again; at an end the panel gives way
+// to the scene the end leads to (G.nextEvent), and this returns nothing.
+function fireTurn(s, orders) {
+  const aimed = retargeted(s.state.foes, orders);
+  const r = resolveShipTurn(s.state, aimed, s.shown, Math.random, s.known || []);
   s.state = r.state;
   s.state.log.push(fightSay('log.turn', { n: s.state.turn, hits: fightHits(r.events) }));
   fightTook(s, r.events);
@@ -148,7 +187,7 @@ function fireTurn(s, orders) {
   const end = shipEnd(s.state);
   if (end) { shipFightEnd(s, end); return null; }
   s.shown = fightMoves(s.state);
-  return shipFightEvent(s, orders);
+  return shipFightEvent(s, { ...orders, move: null });  // a move is ordered for one turn
 }
 
 // Being boarded: the deck fight (below), a raider's whole run or a short one.

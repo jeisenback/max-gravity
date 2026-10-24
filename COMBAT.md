@@ -284,6 +284,13 @@ Each type she can be has one threat, shown in her move, that "shoot her weapons"
 Disarming her takes about three turns of fire (her weapons are 63 a mount), and she fires at your guns while they fire, so
 the guns are a race too.
 
+A hired gunner learns three moves from the crew (`FIGHT_MOVES` in `js/fight.js`, `docs/superpowers/specs/2026-10-23-gunner-moves-design.md`),
+each ordered beside the guns and used once a fight: **vent** (the engineer teaches it) takes the heat to 0 and the locks off before
+the shots; **lead** (the pilot) takes the range penalty off one gun's aimed shot; **split** (the first officer) lets the turret
+held back for her salvo fire anyway. A move with nothing to act on is not spent. Each is taught on a burn as a downtime choice
+(`MOVE_TEACH` in `js/gunnermoves.js`): vent and lead at gunner level 1, split at level 2, once the teacher trusts the hand
+(`OPINION.TRUSTED`) and is aboard and unhurt. An owner is taught none.
+
 A hired hand can also meet a distress call on a burn through unsettled space (pirates 0.25 or more at either end, at most once
 in 60 days): seven in ten are a trap, and the rest are a real freighter that pays the ship's fund 500 cr. Each post has its own
 way to read the call, which works at 50% plus a tenth a level. Answering a trap blind springs it, and she fires first; a good
@@ -355,6 +362,29 @@ the run that wrote this section (after the final review's tune, #808):
   without the lock it was boarded by every type every time; without the torpedoes and the overcharge the cutter beat it 75
   times in 100; without the turret held back a corsair beat it 4 times in 100, and the hand was hurt in 13% of the fights
   rather than 1%.
+- **The gunner moves** (`node tools/fights.js --seeds 1,2,3,4,5 --n 200 --ship-only`, then with `--moves`, which gives the hand all
+  three, or `--moves lead` and the like for one). With the moves come two more policies that use them without reading her move
+  for it: `randmove` (random, with a random usable move each turn) and `eager` (her lock and then her weapons, the turret held
+  on her salvo, and the first usable move at its first chance). The fixed policies order no move, so their rows do not change.
+  `answer` (tools/answer.js) splits the turret on her salvo, vents when that frees a locked gun, leads an aimed shot where
+  there is a range penalty, and against a ship whose shields come back runs every gun hot past the cap while vent is unspent.
+
+  | `answer` against (good / hull lost / turns / at cap) | no moves | all three | the one move alone |
+  |---|---|---|---|
+  | a raider | 100% / 2.0% / 4.81 / 0% | 100% / 2.0% / 4.02 / 0% | lead: 100% / 2.1% / 4.01 / 0% |
+  | a corsair | 100% / 5.6% / 7.42 / 5% | 100% / 3.8% / 6.18 / 0% | split: 100% / 4.2% / 6.57 / 0% |
+  | a cutter | 100% / 0.0% / 5.32 / 0% | 100% / 0.0% / 4.88 / 0% | vent: 100% / 0.0% / 4.91 / 0% |
+  | a raider pair | 94% / 7.0% / 7.92 / 62% | 98% / 2.3% / 7.73 / 60% | lead: 98% / 2.4% / 7.74 / 66% |
+  | over every type | 99% / 3.2% / 6.21 / 11% | 100% / 1.9% / 5.53 / 10% | |
+
+  Split against a corsair ends the fight sooner (7.4 to 6.6 turns, none at the cap); lead against a pair wins more (94% to 98%)
+  and loses a third as much hull (7.0% to 2.4%); lead also cripples a corsair more often (19% to 42% of her ends), at a cost: alone it raises answer's hull lost against a corsair (5.6% to 6.3%). Vent against a cutter turns
+  a break-off into a cripple: running hot while it can vent, `answer` cripples her 75% of the time (1% without), in 4.9 turns
+  (5.3); without vent known, or once it is spent, the heat budget keeps every gun at or under the cap as before. With all
+  three, `randmove` is good 36% and loses 44% over every type (random without them: 31% and 39%), and `eager` is good 1% and
+  loses 77%: no policy with the moves beats `answer` against any type. In the soak (`npm run soak`, seeds 1 to 40, the soak's
+  downtime picked at random) a chapter learns two moves or more 24 times in 40 and both level-1 moves 20 times; in the
+  play-throughs (seeds 1 to 5, Hester) four of five learn vent and lead, and lead is used in four, split in one and vent in two.
 - **Repelling boarders**, random play, five standing: won 90%; by her grade 88%, 58%, 41%. Shooting where they are wins 99%
   with five or two standing, against random's 49% with two. Dead a fight by her grade, after the final review's tune (R42):
   0.32, 0.44, 0.49, against the lock fight's 0.28, 0.43, 0.57.

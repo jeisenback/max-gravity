@@ -40,7 +40,7 @@ const KIT_ITEMS = {
 const kitCover = (kit, pos) => (kit || []).reduce((n, id) => n + (((KIT_ITEMS[id] || {}).cover || [])[pos] || 0), 0);
 // What the hand takes with them when the chapter ends and the ship is bought (#685): the sheet, the kit and the shippers' regard (the post they work and what they have learned at each, and the day they signed on and the captain's id, for the board's dice), as the record the next chapter reads. It has the hand's own
 // field names, so what reads a hand's sheet, kit or standing reads this the same (hired.js career()). An old save with no sheet has none, which is every stat at the base.
-const careerOf = h => ({ sheet: h.sheet ? { ...h.sheet } : null, kit: [...(h.kit || [])], standing: { ...(h.standing || {}) }, post: h.post, skill: { ...(h.skill || {}) }, since: h.since, captain: h.captain });  // since and captain only seed the day's board, so it is not the same in every game (contracts.js)
+const careerOf = h => ({ sheet: h.sheet ? { ...h.sheet } : null, kit: [...(h.kit || [])], standing: { ...(h.standing || {}) }, post: h.post, skill: { ...(h.skill || {}) }, since: h.since, captain: h.captain, moves: [...(h.moves || [])] });  // moves: the gunner's, kept (fightui.js knownMoves); since and captain only seed the day's board, so it is not the same in every game (contracts.js)
 // Whether an item in the kit is read by a shipper (the carrier license by the Compact Freight Office): its board is drawn for the ship as for one it trusts (contracts.js boardStanding).
 const kitBoards = (kit, shipper) => (kit || []).some(id => (KIT_ITEMS[id] || {}).board === shipper);
 const kitEdge = (kit, kind) => (kit || []).reduce((n, id) => n + (((KIT_ITEMS[id] || {}).adds || {})[kind] || 0), 0);

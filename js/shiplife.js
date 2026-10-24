@@ -633,19 +633,19 @@ function downtimeEvent(all) {
     title: lifeSay('title'), personal: true,  // a hand's savings are their own, not the ship's purse
     text: lifeSay(hired() ? 'text.hired' : 'text', { when: lifeSay(t.flipped ? 'when.after' : 'when.before') }),
     choices: [
-      ...(all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive()).map(a => ({
-        label: activityLabel(a), can: a.can,
+      ...(all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive()).map(a => (what => ({  // what: the label as drawn, handed to can and run, so a teaching does the move it named (gunnermoves.js)
+        label: what, can: a.can && (() => a.can(what)),
         run() {
           spendLife(t);
           if (hired()) hired().did = { ...hired().did, downtime: true };  // the first run's steps (tutorial.js)
-          const text = a.run();
+          const text = a.run(what);
           // Comms gets one line, what was done and what it taught: it shows eight lines, and the result runs to twelve on a phone (#767). One that leads
           // straight into a scene (Sit with someone) has nothing to say yet.
           const taught = text && (text.match(/\([^()]*\)$/) || [''])[0];
-          if (text) comm(`[Ship] ${lifeSay('log', { what: activityLabel(a) })}${taught ? ` ${taught}` : ''}`);
+          if (text) comm(`[Ship] ${lifeSay('log', { what })}${taught ? ` ${taught}` : ''}`);
           return text;
         },
-      })),
+      }))(activityLabel(a))),
       { label: lifeSay('none.label'), run: () => lifeSay('none.result') },
     ],
   };

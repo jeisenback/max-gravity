@@ -3,19 +3,22 @@
 // The fights, over many seeded trials: the ship fight (js/fight.js, js/fightui.js), and the deck fight both ways, repelling boarders and boarding her (js/boarders.js).
 // The tuning tool for COMBAT.md's numbers (FIGHT and DECK in js/fight.js, CASUALTY_ODDS in js/losses.js, REPEL_HURT in js/boarders.js).
 // Each trial answers the scenes from a stated policy, then the game state is put back.
-//   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider] [--owner] [--ship-only] [--groups policy,grade]
+//   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider] [--owner] [--ship-only] [--groups policy,grade] [--moves [vent,lead,split]]
 // `--owner` plays them as an owner who kept the post (the same ship and crew, bought with a hand's savings), to put beside the hand's (#721).
+// `--moves` gives the hand all three gunner moves (vent, lead, split) for the ship fights, or the ones listed after it; without it she knows none, and the numbers are the ones before the moves.
+// With them come two more gun policies that use the moves without reading her move for it (randmove, eager: below).
 //   npm run fights
 // Report: for the ship fight, the spread of its ends, its rounds, the hull lost, the hurt and the dead, by gun policy and by the type she is; for each deck fight, how often you win and who is hurt, by crew, by the
 // post's skill level, by the hand's policy and by the foe's grade. Not part of `npm test`.
 
 const { open, closeBrowser } = require('../tests/helpers');
 const { answerOrders } = require('./answer');
+const { load } = require('../tests/nodecontext');
 
 // One seed's trials. Returns raw tallies, so the seeds can be summed.
-async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, raid = true, lock = true, cutter = true, groups = null } = {}) {  // raid: false leaves out the ship fights; lock: false the deck fights started directly; cutter: false the navy stop's trials; groups: only these groups of deck fights
+async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, raid = true, lock = true, cutter = true, groups = null, moves = false } = {}) {  // raid: false leaves out the ship fights; lock: false the deck fights started directly; cutter: false the navy stop's trials; groups: only these groups of deck fights
   const { ev, errors, ctx } = await open({ scope: 'earth-hired', seed, debt: true, stall: 0 });
-  const r = await ev(([trials, postKey, shipId, asOwner, raidFights, lockFights, cutter, groups, answerSrc]) => {
+  const r = await ev(([trials, postKey, shipId, asOwner, raidFights, lockFights, cutter, groups, answerSrc, withMoves]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st0 = G.state; st0.story.next = 1e9; st0.day += 30; hired().raidTold = true;  // the first raid is explained once; these are the raids after it
     if (asOwner) { const crew0 = [...st0.crew], fit = { ...st0.outfits }, torps = st0.torpedoes; hired().debt = 0; st0.credits = buyInPrice(st0.shipId); buyIn(st0.shipId); while (G.dialog) finishEvent(); st0.crew = crew0; st0.outfits = fit; st0.torpedoes = torps; st0.armor = ship().armor; if (hired()) throw new Error('the buy did not make an owner'); }  // the same ship, fitting and crew: the buy took a friend and cleared the captain's outfits (buyIn), and the rest are put back
@@ -24,6 +27,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     const restore = (crewN, level) => {
       G.state = JSON.parse(snap); G.dialog = null; G.nextEvent = null; G.duel = null;
       const st = G.state, h = career();
+      if (withMoves) h.moves = withMoves === true ? ['vent', 'lead', 'split'] : [...withMoves];
       if (crewN !== null) st.crew = crewAll.slice(0, crewN);
       if (level !== null) h.skill[postKey] = SKILL_STEPS[level];
       return st;
@@ -88,6 +92,15 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       hullhold: fixed(() => 'hull', true),
       answer,
     };
+    // With the moves (--moves), two policies that use them without reading her move for it, to show a move is a choice and not a free win: 'randmove' is
+    // 'random' with a random usable move each turn (lead on a random gun it applies to), and 'eager' aims at her lock and then her weapons (shots lead can
+    // help), holds the turret on her salvo (hullhold's rule, for split), and orders the first usable move, vent, lead or split, at its first chance.
+    const usable = (s, o) => ['vent', 'lead', 'split'].flatMap(id => (id === 'lead' ? o.guns.map((_, gun) => ({ move: id, gun })) : [{ move: id }]).filter(m => canUse(s.state, { ...o, ...m }, id, s.known || [])));
+    const withMove = (base, take) => s => { const o = base(s), ms = usable(s, o); return ms.length ? { ...o, ...take(ms) } : o; };
+    if (withMoves) Object.assign(POLICY_SHIP, {
+      randmove: withMove(POLICY_SHIP.random, ms => ms[Math.floor(Math.random() * ms.length)]),
+      eager: withMove(s => ({ ...fixed(f => (f.foes.some(x => x.parts.lock.hp > 0) ? 'lock' : 'weapons'))(s), pdc: salvo(s) ? 'hold' : 'fire' }), ms => ms[0]),
+    });
     // One ship fight against `spec`, to its end and whatever scene follows it. Returns its end (null: the hand was killed in it), the fight, what it cost, and whether
     // the scene after it was left open at the step cap (capped).
     const shipTrial = (policy, spec) => {
@@ -153,7 +166,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     }
     out.crewAboard = crewAll.length;
     return out;
-  }, [n, post, ship, owner, raid, lock, cutter, groups, answerOrders.toString()]);
+  }, [n, post, ship, owner, raid, lock, cutter, groups, answerOrders.toString(), moves]);
   await ctx.close();
   return { seed, owner, post, ...r, errors };
 }
@@ -198,10 +211,15 @@ module.exports = { fights, report };
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
   const seeds = (arg('seeds') || '1,2,3').split(',').map(Number), n = Number(arg('n') || 100), post = arg('post') || 'gunner', ship = arg('ship') || 'raider', owner = process.argv.includes('--owner');
+  const asked = arg('moves');
+  if (process.argv.includes('--moves') && /^[a-z,]+$/.test(asked || '')) {
+    const { FIGHT_MOVES } = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['FIGHT_MOVES']), bad = asked.split(',').filter(id => !FIGHT_MOVES[id]);
+    if (bad.length) { console.error(`--moves: unknown move ${bad.join(', ')} (known: ${Object.keys(FIGHT_MOVES).join(', ')})`); process.exit(1); }
+  }
   (async () => {
     const runs = [];
     for (const seed of seeds) {
-      const r = await fights({ seed, n, post, ship, owner, lock: !process.argv.includes('--ship-only'), groups: arg('groups') ? arg('groups').split(',') : null });
+      const r = await fights({ seed, n, post, ship, owner, lock: !process.argv.includes('--ship-only'), groups: arg('groups') ? arg('groups').split(',') : null, moves: !process.argv.includes('--moves') ? false : /^[a-z,]+$/.test(arg('moves') || '') ? arg('moves').split(',') : true });
       if (r.errors.length) console.log(`seed ${seed}: ${r.errors.length} page errors, first: ${r.errors[0]}`);
       runs.push(r);
     }

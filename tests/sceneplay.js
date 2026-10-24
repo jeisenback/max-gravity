@@ -193,6 +193,12 @@ const playScenes = () => {
   }
   run('hand:restock', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => restockTorps(G.state, hired(), currentPlanet(), ship().launcher) }] }), { prep() { G.state.torpedoes = 0; hired().fund = 100000; } });
   run('hand:practise:owner', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.practise.run()) }] }));
+  // a gunner move taught on a burn (gunnermoves.js): each by its teacher, trusted, with the moves before it known; and the button with nothing due
+  for (const [id, known, xp] of [['vent', [], 12], ['lead', ['vent'], 12], ['split', ['vent', 'lead'], 45]]) {
+    run(`hand:teach:${id}`, {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => String(ACTIVITIES.teach.run()) }] }),
+      { prep() { hired().moves = [...known]; hired().skill = { ...hired().skill, gunner: xp }; for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = OPINION.TRUSTED; }, extra: () => ({ moves: hired().moves, gunner: hired().skill.gunner }) });
+  }
+  run('hand:teach:none', {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => ACTIVITIES.teach.run() }] }));  // nothing due: the button teaches nothing and says nothing (text '')
   // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
   run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.filter(c => /^Heave to/.test(c.label)) }; });
   run('memory:landing', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { land(currentPlanet()); G.dialog = null; G.nextEvent = null; return ''; } }] }), { prep() { G.state.crew = []; G.player = G.player || { armor: ship().armor, x: 0, y: 0, vx: 0, vy: 0 }; uatPassenger('earth', G.state.planet); } });
@@ -396,6 +402,16 @@ const playScenes = () => {
         s.state.foes[0].parts.launcher.hp = s.state.foes[0].parts.launcher.max;
         turn(s, orders({ guns: [null, null] }), { kind: 'arm', n: 2 });  // armed
         turn(s, orders({ guns: [null, null] }), { kind: 'salvo', target: 'hull', n: 2, dmg: [60, 90] });  // and fired
+      }
+      // the gunner moves (fightui.js moveChoices): a hand who knows all three sees each as an order, ordered and not, with nothing to act on, and spent; then each used in a turn
+      { fresh(); hired().raidTold = true; hired().moves = ['vent', 'lead', 'split']; G.state.outfits = { pdc: 1 }; G.nextEvent = null; startShipFight({ kind: 'pirate', shipId: 'raider' }, false); const s = G.nextEvent.fight; G.nextEvent = null;
+        const guns = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }], broadside = { kind: 'broadside', target: 'hull', dmg: [10, 10] };
+        s.state.heat = 3; s.shown = { foe: [broadside], captain: { kind: 'hold' } };
+        panel(shipFightEvent(s, orders({ guns, pdc: 'hold' })));
+        for (const move of ['vent', 'lead', 'split']) panel(shipFightEvent(s, orders({ guns, pdc: 'hold', move, gun: 0 })));
+        s.state.heat = 0; panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'hull' }, null] })));  // no heat, no aimed shot, no turret held
+        for (const move of ['vent', 'lead', 'split']) { s.state.heat = 3; s.state.spent = []; turn(s, orders({ guns, pdc: 'hold', move, gun: 0 }), broadside); }
+        s.state.spent = ['vent', 'lead', 'split']; panel(shipFightEvent(s, orders({ guns, pdc: 'hold' })));  // all three spent
       }
       { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // the hull gone with cargo aboard: she takes a share (#809)
       { const s = start('raider', {}, 'patrol').fight; G.state.cargo = { water: 30 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // and a navy ship takes it as part of the levy

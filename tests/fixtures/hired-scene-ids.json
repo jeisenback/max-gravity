@@ -161,6 +161,7 @@
  "scene:war-call",
  "scene:downtime",
  "scene:shiplife",
+ "scene:gunner-moves",
  "scene:bar-round",
  "scene:cast-join",
  "scene:ship-log",
