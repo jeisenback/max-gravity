@@ -256,7 +256,7 @@ function deckFightEvent(s, plan = {}) {
   const ability = k => deckWords(`ability.${post}.${k}.label`, FIGHT_ABILITY[post][k].label);
   const choices = [
     { label: fightSay(p.stand === f.hand ? 'deck.stand' : 'deck.move', { at: deckTitle(s, p.stand) }), keep: true, run: redo({ stand: next(near, p.stand) }) },
-    { label: p.act === 'shoot' ? fightSay('deck.shoot', { lo: DECK.SIDEARM[0], hi: DECK.SIDEARM[1] }) : fightSay(`deck.${p.act}`, { what: ability(p.act) }), keep: true, run: redo({ act: next(acts, p.act) }) },
+    { label: p.act === 'shoot' ? fightSay('deck.shoot', { lo: sidearmOf(f)[0], hi: sidearmOf(f)[1] }) : fightSay(`deck.${p.act}`, { what: ability(p.act) }), keep: true, run: redo({ act: next(acts, p.act) }) },
   ];
   if (orders.length) {
     const does = o => deckWords(`crew.${o.sheet.post}.${o.kind}.label`, CREW_ABILITY[o.sheet.post][o.kind].label);
