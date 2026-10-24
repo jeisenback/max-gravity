@@ -51,8 +51,10 @@ test('the strip draws a section\'s wounded as a hollow count beside the heads, a
   const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 2, theirs: 4, mineHurt: 1, theirsHurt: 2, cover: 1 }, { mine: 1, theirs: 0, cover: 2 }, { mine: 0, theirs: 0, cover: 0 }];
   const svg = fightStrip({ titles, sections, hand: 0, move: null, feint: false });
   assert.equal((svg.match(/<circle class="hurt"/g) || []).length, 2, 'a hollow mark for each side with wounded');
-  assert.match(svg, /The Lock: 2 of ours and 4 of theirs, 2 of them wounded, cover 1/);
+  assert.match(svg, /The Lock: 2 of ours, 1 of ours wounded and 4 of theirs, 2 of them wounded, cover 1/);
   assert.doesNotMatch(fightStrip({ titles, sections: sections.map(s => ({ ...s, mineHurt: 0, theirsHurt: 0 })), hand: 0, move: null, feint: false }), /class="hurt"|wounded/, 'none wounded, nothing drawn');
+  assert.match(svg, /2 of ours, 1 of ours wounded and 4 of theirs/, 'ours are voiced too');
+  assert.match(fightStrip({ titles, sections, hand: 0, move: null, feint: false, oursSay: n => `${n} hurt` }), /2 of ours, 1 hurt/);
   assert.match(fightStrip({ titles, sections, hand: 0, move: null, feint: false, hurtSay: n => `${n} down` }), /4 of theirs, 2 down/, 'the words come from the scene');
 });
 

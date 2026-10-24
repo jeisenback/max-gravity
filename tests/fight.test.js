@@ -6,8 +6,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'turnShots', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'hitSide', 'boardMove', 'resolveDeckTurn', 'deckEnd', 'LOCK', 'CORRIDOR', 'BRIDGE', 'CARGO', 'pendingWave', 'sidearmOf', 'DECK_PARTY']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
-const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, turnShots, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, hitSide, boardMove, resolveDeckTurn, deckEnd, LOCK, CORRIDOR, BRIDGE, CARGO, pendingWave, sidearmOf, DECK_PARTY } = api;
+const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'turnShots', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'hitSide', 'shootSide', 'boardMove', 'resolveDeckTurn', 'deckEnd', 'LOCK', 'CORRIDOR', 'BRIDGE', 'CARGO', 'pendingWave', 'sidearmOf', 'DECK_PARTY']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
+const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, turnShots, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, hitSide, shootSide, boardMove, resolveDeckTurn, deckEnd, LOCK, CORRIDOR, BRIDGE, CARGO, pendingWave, sidearmOf, DECK_PARTY } = api;
 const LOW = () => 0, HIGH = () => 0.999;
 const CLOSE = RANGE_BANDS.indexOf('close');
 const HULL = { kind: 'broadside', target: 'hull', dmg: [8, 14] };
@@ -1017,6 +1017,15 @@ test('the shot downs a wounded head before it wounds another', () => {
   assert.deepEqual([ev.theirs, ev.theirsHurt], [1, 1], 'the events say both');
 });
 
+test('the shot goes a head at a time: a head it has just wounded may be downed by the next', () => {
+  const s = { mine: 0, theirs: 3, theirsHurt: 1 };
+  assert.deepEqual(plain(shootSide(s, 'theirs', 3)), { downed: 2, wounded: 1 });
+  assert.deepEqual([s.theirs, s.theirsHurt], [1, 0], 'one wounded and two unwounded, three shots: two down, one wounded then downed');
+  const t = { mine: 0, theirs: 2, theirsHurt: 0 };
+  assert.deepEqual(plain(shootSide(t, 'theirs', 1)), { downed: 0, wounded: 1 }); assert.deepEqual([t.theirs, t.theirsHurt], [2, 1]);
+  assert.deepEqual(plain(shootSide(t, 'theirs', 9)), { downed: 2, wounded: 1 }, 'no more than the heads there'); assert.deepEqual([t.theirs, t.theirsHurt], [0, 0]);
+});
+
 test('from level 2 a shot may go to a section next to the hand; at level 1 it falls back to the hand\'s', () => {
   const play = (level, at) => {
     const st = deck({ boarders: 6, crew: 6, level }); st.wave = null;
@@ -1024,12 +1033,12 @@ test('from level 2 a shot may go to a section next to the hand; at level 1 it fa
     const r = resolveDeckTurn(st, { stand: 0, act: { kind: 'shoot', at }, order: null }, { kind: 'hold', from: 2, to: 2, n: 0 }, () => 0);
     return plain(r.state.sections.slice(0, 2).map(s => [s.theirs, s.theirsHurt || 0]));
   };
-  assert.deepEqual(play(2, 1), [[3, 0], [3, 2]], 'next to the hand: the corridor takes the shot');
+  assert.deepEqual(play(2, 1), [[3, 0], [2, 0]], 'next to the hand: the corridor takes the shot (two heads: wound one, down it)');
   assert.deepEqual(play(1, 1), [[3, 1], [3, 0]], 'at level 1 the same aim is the hand\'s own section');
-  assert.deepEqual(play(2, 2), [[3, 2], [3, 0]], 'two away is out of reach at any level');
-  assert.deepEqual(play(2, 0), [[3, 2], [3, 0]], 'the hand\'s own at any level');
+  assert.deepEqual(play(2, 2), [[2, 0], [3, 0]], 'two away is out of reach at any level');
+  assert.deepEqual(play(2, 0), [[2, 0], [3, 0]], 'the hand\'s own at any level');
   const bare = deck({ boarders: 6, crew: 6 }); bare.wave = null;
-  assert.deepEqual(plain(resolveDeckTurn(bare, { stand: 0, act: 'shoot', order: null }, stay, () => 0).state.sections[0].theirsHurt), 2, 'a bare shoot is at the hand\'s section');
+  assert.deepEqual(plain(resolveDeckTurn(bare, { stand: 0, act: 'shoot', order: null }, stay, () => 0).state.sections[0].theirs), 2, 'a bare shoot is at the hand\'s section');
 });
 
 test('a push takes the unwounded first and leaves the wounded behind; a wave lands unwounded', () => {

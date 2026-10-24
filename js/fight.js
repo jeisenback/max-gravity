@@ -257,9 +257,11 @@ function hitSide(s, side, hits) {
   }
   return { downed, wounded };
 }
-function shootSide(s, side, shots) {  // each shot downs a wounded head there, else wounds one; the wounded are counted before the shot, so it does not down a head it has just wounded
-  const hurt = hurtOf(s, side), downed = Math.min(shots, hurt), wounded = Math.min(shots - downed, s[side] - hurt);
-  s[side] -= downed; s[side + 'Hurt'] = hurt - downed + wounded;
+function shootSide(s, side, shots) {  // one head of shot at a time: it downs a wounded head there, else wounds one (so the next head may down the one just wounded)
+  let downed = 0, wounded = 0;
+  for (let k = 0; k < shots && s[side] > 0; k++) {
+    if (hurtOf(s, side) > 0) { s[side]--; s[side + 'Hurt']--; downed++; } else { s[side + 'Hurt'] = 1; wounded++; }
+  }
   return { downed, wounded };
 }
 function moveHeads(S, side, from, to, n) {

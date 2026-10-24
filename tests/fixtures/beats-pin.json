@@ -39,7 +39,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them down",
+    "Shoot: 1 to 2 of them hit",
     "Order: none",
     "Fight"
    ]
@@ -85,7 +85,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them down",
+    "Shoot: 1 to 2 of them hit",
     "Order: none",
     "Fight"
    ]
@@ -131,7 +131,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them down",
+    "Shoot: 1 to 2 of them hit",
     "Order: none",
     "Fight"
    ]
@@ -177,7 +177,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them down",
+    "Shoot: 1 to 2 of them hit",
     "Order: none",
     "Fight"
    ]
@@ -470,7 +470,7 @@
    "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them down",
+    "Shoot: 1 to 2 of them hit",
     "Order: none",
     "Fight"
    ]
@@ -511,7 +511,7 @@
    "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them down",
+    "Shoot: 1 to 2 of them hit",
     "Order: none",
     "Fight"
    ]
@@ -552,7 +552,7 @@
    "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them down",
+    "Shoot: 1 to 2 of them hit",
     "Order: none",
     "Fight"
    ]
@@ -593,7 +593,7 @@
    "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them down",
+    "Shoot: 1 to 2 of them hit",
     "Order: none",
     "Fight"
    ]
@@ -2946,7 +2946,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -2959,7 +2959,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -2972,7 +2972,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -2985,7 +2985,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -2998,7 +2998,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3011,7 +3011,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3023,7 +3023,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3034,7 +3034,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3117,7 +3117,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3130,7 +3130,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3143,7 +3143,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3156,7 +3156,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3169,7 +3169,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3182,7 +3182,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3194,7 +3194,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3205,7 +3205,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3288,7 +3288,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3301,7 +3301,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3314,7 +3314,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3327,7 +3327,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3340,7 +3340,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3353,7 +3353,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3365,7 +3365,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3376,7 +3376,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3459,7 +3459,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3472,7 +3472,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3485,7 +3485,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3498,7 +3498,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3511,7 +3511,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3524,7 +3524,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3536,7 +3536,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3547,7 +3547,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3630,7 +3630,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3643,7 +3643,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3656,7 +3656,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3669,7 +3669,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3682,7 +3682,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3695,7 +3695,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3707,7 +3707,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3724,7 +3724,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3889,7 +3889,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3902,7 +3902,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3915,7 +3915,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3928,7 +3928,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3941,7 +3941,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3954,7 +3954,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -3966,7 +3966,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -3983,7 +3983,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -4148,7 +4148,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4161,7 +4161,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4174,7 +4174,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4187,7 +4187,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4200,7 +4200,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4213,7 +4213,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4225,7 +4225,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -4242,7 +4242,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -4407,7 +4407,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4420,7 +4420,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4433,7 +4433,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4446,7 +4446,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4459,7 +4459,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4472,7 +4472,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ]
@@ -4484,7 +4484,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],
@@ -4501,7 +4501,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them down",
+     "Shoot: 1 to 2 of them hit",
      "Order: none",
      "Fight"
     ],

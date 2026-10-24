@@ -196,7 +196,7 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   assert.deepEqual(r.shown, { kind: 'hold', from: 0, to: 0, n: 0, feint: false }, 'one of ours stands in the lock with them, so they cannot push on (R29)');
   assert.equal(r.read, 'Turn 1 of 8. Boarders: holding where they are.', 'the turn of the cap, and their move');
   assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn.');
-  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'Shoot: 1 to 2 of them down'], 'a new hand works at level 0');
+  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'Shoot: 1 to 2 of them hit'], 'a new hand works at level 0');
   assert.equal(r.labels[r.labels.length - 1], 'Fight');
   assert.ok(r.keep.every(Boolean), 'every choice redraws in place');
   assert.match(r.text, /outer lock is cycling|hits the hull aft/, 'the opening of the lock');
@@ -215,7 +215,7 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   const t = await ev(() => { const s = G.dialog.event.fight; return { result: !!document.querySelector('#event-result'), turn: s.state.turn, last: s.state.log[s.state.log.length - 1], used: s.state.used.cover, acts: G.dialog.choices[1].label }; });
   assert.equal(t.result, false, 'no result page between turns'); assert.equal(t.turn, 1);
   assert.match(t.last, /^Turn 1: /, t.last);
-  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'Shoot: 1 to 2 of them down', 'and the act goes back to the sidearm');
+  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'Shoot: 1 to 2 of them hit', 'and the act goes back to the sidearm');
   await done();
 });
 
@@ -257,12 +257,12 @@ test('from level 2 the shot is aimed: the shoot choice offers a section, and the
     fightGame('gunner'); let s = boarded(); s.state.level = 2; s.state.sections.forEach(x => { x.theirs = 0; }); s.state.sections[0].theirs = 3; s.state.sections[1].theirs = 3; s.state.hand = 0; s.state.wave = null; s.shown = { kind: 'hold', from: 0, to: 0, n: 0 };
     let e = deckFightEvent(s); out.two = ats(e); const i = e.choices.findIndex(c => c.label.startsWith('At ')); out.next = ats(e.choices[i].run());
     s.state.sections.forEach(x => { x.mine = 0; }); s.state.sections[0].mine = 1;
-    rolls(Array(40).fill(0)); const turned = deckFightEvent(s, { shootAt: 1 }).choices.at(-1).run(); out.hit = [s.state.sections[0].theirsHurt || 0, s.state.sections[1].theirsHurt || 0];
+    rolls(Array(40).fill(0)); const turned = deckFightEvent(s, { shootAt: 1 }).choices.at(-1).run(); out.hit = [s.state.sections[0].theirs, s.state.sections[1].theirs];
     fightGame('gunner'); s = boarded(); s.state.level = 1; out.one = ats(deckFightEvent(s));
     return out;
   });
   assert.equal(r.two.length, 1, 'level 2 offers the shot a section'); assert.match(r.two[0], /^At the Lock$/); assert.match(r.next[0], /^At the Corridor$/, 'and the choice goes to the one next to the hand');
-  assert.ok(r.hit[1] > 0 && !r.hit[0], 'the shot went to the corridor'); assert.deepEqual(r.one, [], 'level 1 has no aim');
+  assert.deepEqual(r.hit, [3, 2], 'the shot went to the corridor: two heads of it, one wounded and then downed'); assert.deepEqual(r.one, [], 'level 1 has no aim');
   await done();
 });
 
@@ -275,7 +275,7 @@ test('a hurt hand works the level below: the sidearm on the panel is that level\
     fightGame('gunner'); hired().skill.gunner = 110; career().hurtUntil = G.state.day + 5; out.hurt = [boarded().state.level, G.dialog.choices[1].label];
     return out;
   });
-  assert.deepEqual(r.well, ['gunner', 3, 'Shoot: 3 to 4 of them down']); assert.deepEqual(r.hurt, [2, 'Shoot: 2 to 3 of them down']);
+  assert.deepEqual(r.well, ['gunner', 3, 'Shoot: 3 to 4 of them hit']); assert.deepEqual(r.hurt, [2, 'Shoot: 2 to 3 of them hit']);
   await done();
 });
 

@@ -245,7 +245,7 @@ const deckAt = (s, i) => fightSay(`deck.${s.assault ? 'hers' : 'ours'}.${i}`);
 const deckOpening = s => { const k = s.assault ? 2 - REACH[s.state.hand] : REACH[s.state.hand]; return repelWords(s, `open.${k}.${s.state.turn % 2}`, (s.assault ? ASSAULT_OPENINGS : REPEL_OPENINGS)[k][s.state.turn % 2]); };
 const deckBoard = (s, move) => fightStrip({ titles: s.state.sections.map((_, i) => deckTitle(s, i)), sections: s.state.sections, hand: s.state.hand, move, feint: s.state.grade > 0,
   began: s.state.began, breakAt: Math.floor(s.state.began * DECK.BREAK),  // her count, with the line she breaks at (deckEnd)
-  hurtSay: n => fightSay('deck.wounded', { n }),  // and the wounded among them
+  hurtSay: n => fightSay('deck.wounded', { n }), oursSay: n => fightSay('deck.woundedOurs', { n }),  // and the wounded among them
   wave: pendingWave(s.state) ? fightSay('deck.wave', { n: pendingWave(s.state) }) : '' });  // and the rest of the party still to land
 
 // The panel for this turn, with the hand's plan as it stands ({ stand, act, order }: a section, an act, a crewmate's id). Every choice redraws it in place.

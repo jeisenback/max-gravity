@@ -87,7 +87,7 @@ function abilityStep(kind, worked, { pos, boarders, extra }) {
 // their shown move as an arrow from where they are to where they say they go, marked MAY FEINT at a veteran grade. A section shows the cover of the side that
 // holds it: hers (`hers`) where only theirs stand, ours (`cover`) otherwise. `titles` names the sections; `move` is { from, to, n } (a rush adds `via`, the section it goes through), or null for a hold. `wave`, when given, is the line for the heads still to land, drawn under the deck.
 // `began` and `breakAt`, when given, draw her count under the deck: a mark a head she started with, filled while it stands, and the line at which she breaks (spec Section 3).
-function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 0, wave = '', hurtSay = n => `${n} of them wounded` }) {
+function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 0, wave = '', hurtSay = n => `${n} of them wounded`, oursSay = n => `${n} of ours wounded` }) {
   const n = sections.length, w = Math.floor(348 / n) - 6, mid = i => 6 + i * (w + 6) + w / 2, font = 'font-family="IBM Plex Mono, monospace"';
   const pip = s => (s.theirs && !s.mine ? s.hers || 0 : s.cover);
   const cells = sections.map((s, i) => {
@@ -106,7 +106,7 @@ function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 
   const count = began ? Array.from({ length: began }, (_, k) => `<rect class="${k < left ? 'head' : 'nohead'}" x="${6 + k * 10}" y="100" width="7" height="7" fill="${k < left ? '#ff6a4a' : 'none'}" stroke="#ff6a4a"/>`).join('') +
     `<path class="break" d="M${4.5 + breakAt * 10} 97 L${4.5 + breakAt * 10} 110" stroke="#ffcf7f" stroke-width="1.5"/><text x="${10 + began * 10}" y="107" fill="#ffcf7f" font-size="8" ${font} letter-spacing="1">${breakAt ? `BREAKS AT ${breakAt}` : 'FIGHTS TO THE LAST'}</text>` : '';
   const waveLine = wave ? `<text class="wave" x="6" y="${H - 4}" fill="#ffcf7f" font-size="9" ${font}>${wave}</text>` : '';
-  const heads = s => [s.mine ? `${s.mine} of ours` : '', s.theirs ? `${s.theirs} of theirs${s.theirsHurt ? `, ${hurtSay(s.theirsHurt)}` : ''}` : ''].filter(Boolean).join(' and ') || 'empty';
+  const heads = s => [s.mine ? `${s.mine} of ours${s.mineHurt ? `, ${oursSay(s.mineHurt)}` : ''}` : '', s.theirs ? `${s.theirs} of theirs${s.theirsHurt ? `, ${hurtSay(s.theirsHurt)}` : ''}` : ''].filter(Boolean).join(' and ') || 'empty';
   const their = move ? `${move.n} from ${titles[move.from]}${move.via === undefined ? '' : ` through ${titles[move.via]}`} into ${titles[move.to]}` : 'they hold';
   const label = `The deck in ${['three', 'four'][n - 3]} sections. ${sections.map((s, i) => `${titles[i]}: ${heads(s)}, cover ${pip(s)}${i === hand ? ', you stand here' : ''}`).join('. ')}. Their move: ${their}${feint ? ', may feint' : ''}.${began ? ` ${left} of their ${began} still up; ${breakAt ? `they break at ${breakAt}` : 'they fight to the last'}.` : ''}${wave ? ` ${wave}` : ''}`;
   return `<svg class="board" viewBox="0 0 360 ${H}" role="img" aria-label="${label}"><rect x="0" y="0" width="360" height="${H}" fill="#050a11"/>${cells}${arrow}${count}${waveLine}</svg>`;
