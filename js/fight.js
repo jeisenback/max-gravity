@@ -273,7 +273,8 @@ function advance(st, atk) {
   return S[from][atk] <= S[to][foe] ? { kind: 'hold', from, to: from, n: 0 } : { kind: to === CARGO ? 'round' : 'push', from, to, n: S[from][atk] };
 }
 
-// What her crew do this turn. Attacking (repelling) they advance; defending (an assault), she pushes back toward the lock where she outnumbers us. A veteran may feint.
+// What her crew do this turn. Attacking (repelling) they advance; defending (an assault), she pushes back toward the lock where she outnumbers us. A veteran may feint a push.
+// Raiders rush: a push into a section we hold thinly (under half of the heads sent) and the hand is not in goes on through it, two sections in a turn (`via` is the one passed).
 function boardMove(st, rand) {
   const S = st.sections;
   let m = { kind: 'hold', from: LOCK, to: LOCK, n: 0 };
@@ -283,14 +284,42 @@ function boardMove(st, rand) {
       if (S[i].theirs && !S[i].mine && S[BACK[i]].mine && S[i].theirs > S[BACK[i]].mine) m = { kind: 'push', from: i, to: BACK[i], n: S[i].theirs };
     }
   }
-  return { ...m, feint: st.grade > 0 && rand() < CUNNING * st.grade };
+  const via = m.to, past = (st.assault ? BACK : FORWARD)[via];
+  if (m.kind === 'push' && st.party === 'raider' && past !== via && st.hand !== via && 2 * S[via].mine < m.n) m = { kind: 'rush', from: m.from, via, to: past, n: m.n };
+  return { ...m, feint: m.kind !== 'rush' && st.grade > 0 && rand() < CUNNING * st.grade };
 }
 
 function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   const st = copyOf(state), S = st.sections, events = [];
   if (stand !== undefined && S[stand] && (stand === st.hand || ADJ[st.hand].includes(stand))) st.hand = stand;
 
-  if (shown.kind !== 'hold') {  // a feint sends the heads somewhere else they can reach from where they stand, or nowhere
+  // A hatch is a steady or cover order with an `at`: it works in that section (one the deck lacks drops it), and is rolled before their move, so it can shut a rush's way.
+  const asObj = a => (typeof a === 'string' ? { kind: a } : a);  // 'shoot' may be bare; steady and cover must carry odds
+  const here = S[st.hand], extra = S.map(() => 0);
+  let press = 0, hatched = -1;
+  const ordered = asObj(order);
+  const ability = (a, at, hatch) => {
+    if (!a || (a.kind !== 'steady' && a.kind !== 'cover')) return;
+    if (typeof a.odds !== 'number') throw new Error(a.kind + ' needs odds');
+    if (a.kind === 'cover' && st.used.cover) return;
+    if (a.kind === 'cover') st.used.cover = true;
+    if (a.kind === 'steady' && !hatch && !S[at].theirs) { events.push({ kind: a.kind, nobody: true }); return; }
+    const worked = rand() < a.odds;
+    const r = abilityStep(a.kind, worked, { pos: at, boarders: S[at].theirs, extra });
+    S[at].theirs = r.boarders;
+    r.extra.forEach((n, i) => { extra[i] = n; });
+    if (r.press) press++;
+    if (hatch && worked) hatched = at;
+    events.push(hatch ? { kind: 'hatch', at, worked } : { kind: a.kind, worked });
+  };
+  const hatch = ordered && ordered.at !== undefined;
+  if (hatch && S[ordered.at]) ability(ordered, ordered.at, true);
+
+  if (shown.kind === 'rush') {  // it stops in the section passed when the hand stands there, ours there are half of them or more, or a hatch worked there
+    const stopped = st.hand === shown.via || 2 * S[shown.via].mine >= shown.n || hatched === shown.via, to = stopped ? shown.via : shown.to;
+    S[shown.from].theirs -= shown.n; S[to].theirs += shown.n;
+    events.push({ kind: 'rush', from: shown.from, to, n: shown.n, stopped });
+  } else if (shown.kind !== 'hold') {  // a feint sends the heads somewhere else they can reach from where they stand, or nowhere
     let to = shown.to;
     if (shown.feint) {
       const other = [...ADJ[shown.from], shown.from].filter(t => S[t] && t !== shown.to);
@@ -311,22 +340,8 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
 
   // The hand's act and the crew order: steady and cover go through abilityStep, once each for the order and the act. Cover is once a fight, and is made for us
   // (our cover). A steady one with nobody of theirs in the section is not rolled, and says so (R34).
-  const here = S[st.hand], extra = S.map(() => 0);
-  let press = 0;
-  const asObj = a => (typeof a === 'string' ? { kind: a } : a);  // 'shoot' may be bare; steady and cover must carry odds
-  for (const a of [asObj(act), asObj(order)]) {
-    if (!a || (a.kind !== 'steady' && a.kind !== 'cover')) continue;
-    if (typeof a.odds !== 'number') throw new Error(a.kind + ' needs odds');
-    if (a.kind === 'cover' && st.used.cover) continue;
-    if (a.kind === 'cover') st.used.cover = true;
-    if (a.kind === 'steady' && !here.theirs) { events.push({ kind: a.kind, nobody: true }); continue; }
-    const worked = rand() < a.odds;
-    const r = abilityStep(a.kind, worked, { pos: st.hand, boarders: here.theirs, extra });
-    here.theirs = r.boarders;
-    r.extra.forEach((n, i) => { extra[i] = n; });
-    if (r.press) press++;
-    events.push({ kind: a.kind, worked });
-  }
+  ability(asObj(act), st.hand);
+  if (!hatch) ability(ordered, st.hand);
   S.forEach((s, i) => { s.cover = Math.min(COVER_MAX, s.cover + extra[i]); });
 
   // Each section where both stand trades heads: a side loses a CREW_HIT roll for each opposing head there (R29), cut by that side's own cover there (R31), and a

@@ -266,7 +266,7 @@ function deckFightEvent(s, plan = {}) {
   const who = fightSay(`deck.who.${s.assault ? 'assault' : 'repel'}`), feint = f.grade > 0 ? ` ${fightSay('deck.feint')}` : '';
   return {
     title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s,
-    read: `${fightSay('deck.turn', { n: f.turn + 1, max: DECK.TURNS })} ${fightSay(`deck.${m.kind}`, { who, n: m.n, to: deckAt(s, m.to) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
+    read: `${fightSay('deck.turn', { n: f.turn + 1, max: DECK.TURNS })} ${fightSay(`deck.${m.kind === 'rush' ? 'push' : m.kind}`, { who, n: m.n, to: deckAt(s, m.to) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
     board: deckBoard(s, m.kind === 'hold' ? null : m),
     text: [deckOpening(s), ...(s.held.length ? [s.held.join(' ')] : []), ...f.log.slice(-3)].join('</p><p>'),
     choices,

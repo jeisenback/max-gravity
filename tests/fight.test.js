@@ -6,8 +6,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'turnShots', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'boardMove', 'resolveDeckTurn', 'deckEnd', 'LOCK', 'pendingWave', 'sidearmOf', 'DECK_PARTY']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
-const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, turnShots, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, boardMove, resolveDeckTurn, deckEnd, LOCK, pendingWave, sidearmOf, DECK_PARTY } = api;
+const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'turnShots', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'boardMove', 'resolveDeckTurn', 'deckEnd', 'LOCK', 'CORRIDOR', 'BRIDGE', 'CARGO', 'pendingWave', 'sidearmOf', 'DECK_PARTY']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
+const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, turnShots, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, boardMove, resolveDeckTurn, deckEnd, LOCK, CORRIDOR, BRIDGE, CARGO, pendingWave, sidearmOf, DECK_PARTY } = api;
 const LOW = () => 0, HIGH = () => 0.999;
 const CLOSE = RANGE_BANDS.indexOf('close');
 const HULL = { kind: 'broadside', target: 'hull', dmg: [8, 14] };
@@ -478,7 +478,7 @@ test('the party is keyed by the hull: cutter and destroyer are navy, an unknown 
 });
 
 test('their move is shown, and at a veteran grade it may feint, at CUNNING * grade', () => {
-  const st = deck({ boarders: 8, crew: 1 });  // four in the lock, four more in the wave
+  const st = deck({ boarders: 8, crew: 1, party: 'corsair' });  // a corsair does not rush; four in the lock, four more in the wave
   assert.deepEqual(plain(boardMove(st, LOW)), { kind: 'push', from: 0, to: 1, n: 4, feint: false }, 'they outnumber the corridor');
   const hold1 = deck({ boarders: 1, crew: 6 });
   assert.equal(boardMove(hold1, LOW).kind, 'hold', 'two of ours stand in the lock with them: they hold');
@@ -500,7 +500,7 @@ test('their move is shown, and at a veteran grade it may feint, at CUNNING * gra
   assert.deepEqual(plain(boardMove(side, LOW)), { kind: 'round', from: 0, to: 3, n: 3, feint: false }, 'with a long ship and the corridor held, round by the cargo bay');
   side.sections[3].theirs = 2; side.sections[2].theirs = 2; side.sections[0].theirs = 1;
   assert.equal(boardMove(side, LOW).from, 2, 'the front is the furthest along, the bridge over the cargo bay');
-  const asl = deck({ assault: true, boarders: 6, crew: 3 });
+  const asl = deck({ assault: true, boarders: 6, crew: 3, party: 'corsair' });
   assert.deepEqual(plain(boardMove(asl, LOW)), { kind: 'hold', from: 0, to: 0, n: 0, feint: false }, 'her crew hold');
   asl.sections[1].mine = 1; asl.sections[1].theirs = 0; asl.sections[2].theirs = 4; asl.sections[2].mine = 0;
   const m = boardMove(asl, LOW);
@@ -586,7 +586,7 @@ test('a deck fight ends at the turn cap: matched stacks that cannot move withdra
 });
 
 test('a stack does not leave a section while the other side stands in it: their push, her push back and our advance (R29)', () => {
-  const st = deck({ boarders: 8, crew: 3 });  // one of ours in each section, four of theirs in the lock
+  const st = deck({ boarders: 8, crew: 3, party: 'corsair' });  // one of ours in each section, four of theirs in the lock
   assert.equal(boardMove(st, LOW).kind, 'hold', 'one of ours in the lock holds four of them there');
   st.sections[0].mine = 0;
   assert.deepEqual(plain(boardMove(st, LOW)), { kind: 'push', from: 0, to: 1, n: 4, feint: false }, 'with the lock theirs alone they push on');
@@ -922,4 +922,38 @@ test('lead at close or knife has no range penalty to take off: not spent, nothin
     assert.deepEqual(plain(r), plain(b), band);
     assert.deepEqual(plain(r.state.spent), [], band);
   }
+});
+
+// The raider's rush: through a thinly held section in one turn. Our heads are off the lock (a head there would hold the push) and a lone one holds the corridor.
+const rushDeck = () => { const st = deckFight({ boarders: 8, crew: 3, cover: [0, 0, 0], party: 'raider' }); st.sections[LOCK].mine = 0; st.sections[CORRIDOR].mine = 1; st.hand = BRIDGE; return st; };
+
+test('raiders rush through a thin section: two sections in a turn, shown as a rush', () => {
+  const st = rushDeck(), m = boardMove(st, () => 0.99);
+  assert.equal(m.kind, 'rush'); assert.equal(m.via, CORRIDOR); assert.equal(m.to, BRIDGE);
+  const r = resolveDeckTurn(st, { stand: BRIDGE, act: 'shoot' }, m, () => 0.99);
+  assert.ok(r.events.some(e => e.kind === 'rush' && !e.stopped));
+});
+
+test('a rush stops where the hand stands, or at a hatch that worked', () => {
+  const st = rushDeck(), m = boardMove(st, () => 0.99);
+  const met = resolveDeckTurn(st, { stand: CORRIDOR, act: 'shoot' }, m, () => 0.99);
+  assert.ok(met.events.some(e => e.kind === 'rush' && e.stopped));
+  const hatched = resolveDeckTurn(st, { stand: BRIDGE, act: 'shoot', order: { kind: 'steady', odds: 1, at: CORRIDOR } }, m, () => 0.5);
+  assert.ok(hatched.events.some(e => e.kind === 'hatch' && e.worked && e.at === CORRIDOR));
+  assert.ok(hatched.events.some(e => e.kind === 'rush' && e.stopped));
+});
+
+test('only raiders rush, a rush is never feinted, and a hatch at a section the deck lacks is dropped', () => {
+  const st = rushDeck(); st.party = 'corsair';
+  assert.equal(boardMove(st, () => 0.99).kind, 'push');
+  const vet = rushDeck(); vet.grade = 2;
+  assert.equal(boardMove(vet, () => 0).feint, false);
+  const r = resolveDeckTurn(rushDeck(), { stand: BRIDGE, act: 'shoot', order: { kind: 'steady', odds: 1, at: CARGO } }, { kind: 'hold', from: LOCK, to: LOCK, n: 0 }, () => 0.5);
+  assert.ok(!r.events.some(e => e.kind === 'hatch'));
+});
+
+test('a rush onto a bridge with none of ours on it takes the ship that turn', () => {
+  const st = rushDeck(); st.sections[BRIDGE].mine = 0;
+  const r = resolveDeckTurn(st, { stand: BRIDGE, act: 'shoot' }, boardMove(st, () => 0.99), () => 0.99);
+  assert.equal(deckEnd(r.state), 'taken');
 });
