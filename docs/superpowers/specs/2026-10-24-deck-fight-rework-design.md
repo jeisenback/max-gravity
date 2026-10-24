@@ -101,6 +101,28 @@ Measured with the fight tool (by party, both ways) and the soak:
   most 3).
 - **Numbers are tuned only after measuring**: the waves, the charge's roll, the sidearm by level, the standing a head.
 
+## Amendment (2026-10-24): wounds, not heads
+
+The first build of PR 1 (the waves, the rush, the hatch) was measured against Section 3 and missed it on the raider party: a fight
+was decided in about 3 turns, the level made no difference, and in an assault a fixed policy (shooting) beat the answer. Two rounds of
+tuning (the waves, the sidearm, the break line, the exchange's lethality, the party's size, the advance rule) moved none of those far
+enough. The cause is the base model: each hit takes a head, so both sides melt in two or three exchanges, and the hand's shot is
+capped by the heads in its own section. The owner chose to change that (2026-10-24):
+
+- **A head is wounded first.** Each section keeps, for each side, how many of its heads are wounded. A hit on a side there (an
+  exchange's roll, a press) wounds one of its unwounded heads; when all of them are wounded, it downs one. A wounded head still
+  stands: it fights, counts toward a push and a rush, and counts against the break line.
+- **The hand finishes the wounded.** Each head of the sidearm's shot downs a wounded head first, and wounds an unwounded one only when
+  none is left. The crew's trades wear them down and the hand's shot ends them, so where and when the hand shoots counts.
+- **The level counts through reach.** The shot is aimed at a section in reach: the hand's own at any level, and from level 2
+  (`DECK.SIDEARM_REACH_LEVEL`) one next to it as well, as a gunner covers a corridor from its end. The heads a shot takes still
+  rise with the level (`DECK.SIDEARM_BY_LEVEL`).
+- **Losses on our side.** A head of ours downed rolls for a casualty as now (`DECK.CASUALTY`); a wounded one does not. The dead a
+  fight check in Section 3 holds the death rate where it is.
+- **The panel** shows each side's wounded in each section (on the strip, a wounded head is drawn hollow, and the label says
+  "4, 2 of them wounded"), and the shot offers its section as the hatch does.
+- The waves, the rush and the hatch stay as built. Section 3's checks stay as they are.
+
 ## Code, tests and delivery
 
 - js/fight.js: `party`, the waves, the rush, the charge, the hatch by section, pull back, the navy count; tests in tests/fight.test.js,
@@ -113,8 +135,8 @@ Measured with the fight tool (by party, both ways) and the soak:
 
 Delivered in three PRs, each leaving the game playable:
 
-1. **The base**: `party`, the two waves, the level in the sidearm, the raider's rush and the hatch order by section, with the tools and
-   the pins.
+1. **The base**: `party`, the two waves, the level in the sidearm, the raider's rush and the hatch order by section, wounds and the
+   sidearm's reach (the amendment above), with the tools and the pins.
 2. **The corsair**: her charge and pull back.
 3. **The navy**: the lawful party, the standing a head, and the search at the bridge.
 
