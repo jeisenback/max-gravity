@@ -236,8 +236,8 @@ test('the panel words a raider\'s rush, the second wave at the lock until it lan
     s = boarded(); out.plain = deckFightEvent(s, { act: 'cover', order: bo.id }).choices.map(c => c.label);  // with the cover spent, the pilot is given the steady one: the hatch
     const hatch = deckFightEvent(s, { act: 'cover', order: bo.id }), i = hatch.choices.findIndex(c => c.label.startsWith('At '));
     out.at = [hatch.choices[i].label, hatch.choices[i].keep]; out.next = hatch.choices[i].run().choices[i].label;
-    out.cover = deckFightEvent(s, { act: 'shoot', order: bo.id }).choices.map(c => c.label).filter(l => l.startsWith('At '));
-    out.none = deckFightEvent(s).choices.map(c => c.label).filter(l => l.startsWith('At '));
+    out.cover = deckFightEvent(s, { act: 'steady', order: bo.id }).choices.map(c => c.label).filter(l => l.startsWith('At '));
+    out.none = deckFightEvent(s, { act: 'steady' }).choices.map(c => c.label).filter(l => l.startsWith('At '));
     return out;
   });
   assert.equal(r.wave.before, true, 'the lock fight shows the rest coming'); assert.ok(r.wave.n >= 1);
@@ -246,6 +246,23 @@ test('the panel words a raider\'s rush, the second wave at the lock until it lan
   assert.match(r.rushLog, /3 of them rush into the Bridge/);
   assert.equal(r.at[0], 'At the Bridge', 'where the hand stands, a crew of one holding the bridge'); assert.equal(r.at[1], true); assert.equal(r.next, 'At the Cargo Bay', 'the section goes round the deck');
   assert.deepEqual(r.cover, [], 'an order that is not a hatch has no place'); assert.deepEqual(r.none, [], 'nor does none');
+  await done();
+});
+
+test('from level 2 the shot is aimed: the shoot choice offers a section, and the turn shoots there', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const out = {}, ats = e => e.choices.map(c => c.label).filter(l => l.startsWith('At '));
+    fightGame('gunner'); let s = boarded(); s.state.level = 2; s.state.sections.forEach(x => { x.theirs = 0; }); s.state.sections[0].theirs = 3; s.state.sections[1].theirs = 3; s.state.hand = 0; s.state.wave = null; s.shown = { kind: 'hold', from: 0, to: 0, n: 0 };
+    let e = deckFightEvent(s); out.two = ats(e); const i = e.choices.findIndex(c => c.label.startsWith('At ')); out.next = ats(e.choices[i].run());
+    s.state.sections.forEach(x => { x.mine = 0; }); s.state.sections[0].mine = 1;
+    rolls(Array(40).fill(0)); const turned = deckFightEvent(s, { shootAt: 1 }).choices.at(-1).run(); out.hit = [s.state.sections[0].theirsHurt || 0, s.state.sections[1].theirsHurt || 0];
+    fightGame('gunner'); s = boarded(); s.state.level = 1; out.one = ats(deckFightEvent(s));
+    return out;
+  });
+  assert.equal(r.two.length, 1, 'level 2 offers the shot a section'); assert.match(r.two[0], /^At the Lock$/); assert.match(r.next[0], /^At the Corridor$/, 'and the choice goes to the one next to the hand');
+  assert.ok(r.hit[1] > 0 && !r.hit[0], 'the shot went to the corridor'); assert.deepEqual(r.one, [], 'level 1 has no aim');
   await done();
 });
 

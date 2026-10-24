@@ -426,12 +426,13 @@ const playScenes = () => {
         { const s = deck(assault); s.shown = { kind: 'round', from: 0, to: 3, n: 2, feint: false }; deckPanel(deckFightEvent(s)); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; deckPanel(deckFightEvent(s)); }
         { const s = deck(assault); s.shown = { kind: 'rush', from: 0, via: 1, to: 2, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }  // a rush through the corridor into the bridge
         { const s = deck(assault, { grade: 1 }); s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
+        { const s = deck(assault); s.state.sections[0].mineHurt = 1; s.state.sections[0].theirsHurt = 1; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; deckPanel(deckFightEvent(s)); }  // wounded on both sides, drawn and counted in the label
         { const s = deck(assault); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; let ev = deckFightEvent(s);  // each choice goes round: the hand's place, the act, the order
           for (let i = 0; i < 3; i++) { ev = ev.choices[0].run(); deckPanel(ev); }
           for (let i = 0; i < 3; i++) { ev = ev.choices[1].run(); deckPanel(ev); }
           const at = ev.choices.findIndex(c => c.order); if (at >= 0) { ev = ev.choices[at].run(); deckPanel(ev); } }
-        { const s = deck(assault); s.state.used.cover = true; const o = repelOrders(s, true).find(isHatch);  // a hatch order, which names a section: each choice goes round
-          if (o) { let ev = deckFightEvent(s, { order: o.id }); deckPanel(ev); const at = ev.choices.findIndex(c => c.label.startsWith(fightSay('deck.order.at', { at: '' }).trim())); for (let i = 0; i < 3; i++) { ev = ev.choices[at].run(); deckPanel(ev); } } }
+        { const s = deck(assault); s.state.used.cover = true; const o = repelOrders(s, true).find(isHatch);  // a hatch order, which names a section: each choice goes round (the last "At": the shot's own comes before the orders)
+          if (o) { let ev = deckFightEvent(s, { order: o.id }); deckPanel(ev); const at = ev.choices.map(c => c.label.startsWith(fightSay('deck.order.at', { at: '' }).trim())).lastIndexOf(true); for (let i = 0; i < 3; i++) { ev = ev.choices[at].run(); deckPanel(ev); } } }
         // a turn of each kind: their push and the trade where both stand; our advance on her deck; the hand left alone with them, who falls back; and a turn where nobody gives
         { const s = deck(assault); deckLog(s, {}, assault ? { kind: 'hold', from: 0, to: 0, n: 0 } : { kind: 'push', from: 0, to: 1, n: 4 }); }
         { const s = deck(assault); s.state.sections[1] = { mine: 0, theirs: 5, cover: 1 }; s.state.hand = 1; deckLog(s, { stand: 1 }, { kind: 'hold', from: 1, to: 1, n: 0 }); }

@@ -245,6 +245,7 @@ const deckAt = (s, i) => fightSay(`deck.${s.assault ? 'hers' : 'ours'}.${i}`);
 const deckOpening = s => { const k = s.assault ? 2 - REACH[s.state.hand] : REACH[s.state.hand]; return repelWords(s, `open.${k}.${s.state.turn % 2}`, (s.assault ? ASSAULT_OPENINGS : REPEL_OPENINGS)[k][s.state.turn % 2]); };
 const deckBoard = (s, move) => fightStrip({ titles: s.state.sections.map((_, i) => deckTitle(s, i)), sections: s.state.sections, hand: s.state.hand, move, feint: s.state.grade > 0,
   began: s.state.began, breakAt: Math.floor(s.state.began * DECK.BREAK),  // her count, with the line she breaks at (deckEnd)
+  hurtSay: n => fightSay('deck.wounded', { n }),  // and the wounded among them
   wave: pendingWave(s.state) ? fightSay('deck.wave', { n: pendingWave(s.state) }) : '' });  // and the rest of the party still to land
 
 // The panel for this turn, with the hand's plan as it stands ({ stand, act, order }: a section, an act, a crewmate's id). Every choice redraws it in place.
@@ -252,7 +253,8 @@ function deckFightEvent(s, plan = {}) {
   const f = s.state, post = lockPost();
   if (!s.shown) s.shown = boardMove(f, Math.random);
   const p = { stand: f.hand, act: 'shoot', order: null, ...plan }, m = s.shown, there = p.at === undefined ? p.stand : p.at;  // `there`: where a hatch is worked
-  const near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])], acts = DECK_ACTS.filter(k => k !== 'cover' || !f.used.cover);
+  const near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])], aims = [p.stand, ...(f.level >= DECK.SIDEARM_REACH_LEVEL ? ADJ[p.stand].filter(i => f.sections[i]) : [])], aim = aims.includes(p.shootAt) ? p.shootAt : p.stand,  // `aim`: where the shot goes
+    acts = DECK_ACTS.filter(k => k !== 'cover' || !f.used.cover);
   const orders = repelOrders(s, f.used.cover || p.act === 'cover'), order = orders.find(o => o.id === p.order) || null;
   const next = (list, x) => list[(list.indexOf(x) + 1) % list.length], redo = change => () => deckFightEvent(s, { ...p, ...change });
   const ability = k => deckWords(`ability.${post}.${k}.label`, FIGHT_ABILITY[post][k].label);
@@ -260,6 +262,7 @@ function deckFightEvent(s, plan = {}) {
     { label: fightSay(p.stand === f.hand ? 'deck.stand' : 'deck.move', { at: deckTitle(s, p.stand) }), keep: true, run: redo({ stand: next(near, p.stand) }) },
     { label: p.act === 'shoot' ? fightSay('deck.shoot', { lo: sidearmOf(f)[0], hi: sidearmOf(f)[1] }) : fightSay(`deck.${p.act}`, { what: ability(p.act) }), keep: true, run: redo({ act: next(acts, p.act) }) },
   ];
+  if (p.act === 'shoot' && aims.length > 1) choices.push({ label: fightSay('deck.order.at', { at: deckAt(s, aim) }), keep: true, run: redo({ shootAt: next(aims, aim) }) });
   if (orders.length) {
     const does = o => deckWords(`crew.${o.sheet.post}.${o.kind}.label`, CREW_ABILITY[o.sheet.post][o.kind].label);
     choices.push({ order: true, group: fightSay('deck.orders'), label: order ? fightSay('deck.order', { first: order.first, does: does(order) }) : fightSay('deck.order.none'), keep: true, run: redo({ order: next([null, ...orders.map(o => o.id)], order && order.id) }) });
@@ -286,18 +289,19 @@ function deckLoss(s, sent) {
 // Fight: the turn resolved with the move that was shown, a line for it in the log, and the panel again; at an end, the close (deckClose), and this returns nothing.
 function deckTurn(s, p) {
   const f = s.state, post = lockPost(), o = repelOrders(s, f.used.cover || p.act === 'cover').find(x => x.id === p.order);
-  const act = p.act === 'shoot' ? 'shoot' : { kind: p.act, odds: abilityOdds(post, p.act) };
+  const act = p.act === 'shoot' ? { kind: 'shoot', ...(p.shootAt === undefined ? {} : { at: p.shootAt }) } : { kind: p.act, odds: abilityOdds(post, p.act) };
   const r = resolveDeckTurn(f, { stand: p.stand, act, order: o ? { kind: o.kind, odds: crewOrderOdds(o.sheet, o.kind, s.hurt.has(o.id)), ...(isHatch(o) ? { at: p.at === undefined ? p.stand : p.at } : {}) } : null }, s.shown, Math.random);
   s.state = r.state;
   const at = i => deckAt(s, i), said = [], after = [], ab = r.events.filter(e => e.kind === 'steady' || e.kind === 'cover'), worked = r.events.find(e => e.kind === 'hatch');  // a hatch is the order's own, rolled before the rest
   const side = e => (e.worked ? 'win' : 'lose');
   let sent = null;
-  if (act !== 'shoot' && !(act.kind === 'cover' && f.used.cover) && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.you') : deckWords(`ability.${post}.${e.kind}.${side(e)}`, FIGHT_ABILITY[post][e.kind][side(e)])); }
+  if (act.kind !== 'shoot' && !(act.kind === 'cover' && f.used.cover) && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.you') : deckWords(`ability.${post}.${e.kind}.${side(e)}`, FIGHT_ABILITY[post][e.kind][side(e)])); }
   const crew = !o ? null : isHatch(o) ? worked : ab.shift();
   if (crew) { const e = crew; after.push(e.nobody ? fightSay('deck.nobody.crew', { first: o.first }) : `${o.first} ${deckWords(`crew.${o.sheet.post}.${o.kind}.${side(e)}`, CREW_ABILITY[o.sheet.post][o.kind][side(e)])}`); if (!e.worked && !e.nobody) sent = o.id; }
   for (const e of r.events) {
     if (e.kind === 'move') said.push(fightSay(e.who === 'mine' ? 'deck.log.ours' : 'deck.log.theirs', { n: e.n, to: at(e.to) }));
-    if (e.kind === 'exchange') said.push(fightSay('deck.log.fight', { at: at(e.section), theirs: e.theirs, mine: e.mine }));
+    if (e.kind === 'exchange' && (e.theirs || e.mine)) said.push(fightSay('deck.log.fight', { at: at(e.section), theirs: e.theirs, mine: e.mine }));
+    if (e.kind === 'exchange' && (e.theirsHurt || e.mineHurt)) said.push(fightSay('deck.log.wounds', { at: at(e.section), theirs: e.theirsHurt, mine: e.mineHurt }));
     if (e.kind === 'hand') said.push(fightSay('deck.log.back', { to: at(e.to) }));
     if (e.kind === 'rush') said.push(e.stopped ? fightSay('deck.log.rushStopped', { n: e.n, at: at(e.to) }) : fightSay('deck.log.rush', { n: e.n, to: at(e.to) }));
     if (e.kind === 'hatch') said.push(fightSay('deck.log.hatch', { at: at(e.at), how: fightSay(e.worked ? 'deck.hatch.worked' : 'deck.hatch.failed') }));

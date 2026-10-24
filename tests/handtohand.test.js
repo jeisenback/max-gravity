@@ -47,6 +47,15 @@ test('a rush is drawn through the section it passes, and the heads still to land
   assert.doesNotMatch(fightStrip({ titles, sections, hand: 2, move: null, feint: false }), /class="wave"/, 'no line when none are to land');
 });
 
+test('the strip draws a section\'s wounded as a hollow count beside the heads, and the label says so', () => {
+  const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 2, theirs: 4, mineHurt: 1, theirsHurt: 2, cover: 1 }, { mine: 1, theirs: 0, cover: 2 }, { mine: 0, theirs: 0, cover: 0 }];
+  const svg = fightStrip({ titles, sections, hand: 0, move: null, feint: false });
+  assert.equal((svg.match(/<circle class="hurt"/g) || []).length, 2, 'a hollow mark for each side with wounded');
+  assert.match(svg, /The Lock: 2 of ours and 4 of theirs, 2 of them wounded, cover 1/);
+  assert.doesNotMatch(fightStrip({ titles, sections: sections.map(s => ({ ...s, mineHurt: 0, theirsHurt: 0 })), hand: 0, move: null, feint: false }), /class="hurt"|wounded/, 'none wounded, nothing drawn');
+  assert.match(fightStrip({ titles, sections, hand: 0, move: null, feint: false, hurtSay: n => `${n} down` }), /4 of theirs, 2 down/, 'the words come from the scene');
+});
+
 test('the strip draws each section with both sides\' heads, its cover, where the hand stands, and their shown move, marked when it may feint', () => {
   const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 2, theirs: 3, cover: 1 }, { mine: 1, theirs: 0, cover: 2 }, { mine: 0, theirs: 0, cover: 0 }];
   const svg = fightStrip({ titles, sections, hand: 0, move: { from: 0, to: 1, n: 3 }, feint: false });
