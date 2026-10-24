@@ -351,7 +351,10 @@ the run that wrote this section (after the final review's tune, #808):
   fire against a lone raider and a corsair, and random against a cutter and a pair; none wins more than 70% against every type
   (hull fire wins none against a cutter); `answer` is at or above the best of them against each type, ties hull fire at 100%
   against a lone raider (the owner's choice, #814) and a corsair, and is well above all of them over every type (99% against
-  hull fire's 51%). A fight lasts 5.3 turns on the mean over every policy and type, and 32% of `answer`'s fights reach the turn
+  hull fire's 51%). Against a corsair her lesson is the hull, not the fight (the owner's choice, #815): hull fire that ignores
+  her salvo still wins 99%, but loses 13.5% of the real armor a fight against 1.0% with the turret held back, and each salvo
+  it takes unanswered is a heavy turn for the crew. Her salvo is left as it is, since it is already the main source of the
+  hand's hurts in the soak. A fight lasts 5.3 turns on the mean over every policy and type, and 32% of `answer`'s fights reach the turn
   cap (none against a raider or a cutter, 60% against a corsair, 89% against a pair; 97% over every type before the pool, at
   #808, when most of its wins were on points at the cap).
   The values, against Task 7's: every damage and part bar is about 0.7 of them, so that kills are slower and a raider's run to
