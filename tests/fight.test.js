@@ -957,3 +957,23 @@ test('a rush onto a bridge with none of ours on it takes the ship that turn', ()
   const r = resolveDeckTurn(st, { stand: BRIDGE, act: 'shoot' }, boardMove(st, () => 0.99), () => 0.99);
   assert.equal(deckEnd(r.state), 'taken');
 });
+
+test('a worked steady hatch at the section they leave thins the heads that move, and no section goes below none', () => {
+  for (const party of ['corsair', 'raider']) {
+    const st = rushDeck(); st.party = party;
+    const m = boardMove(st, () => 0.99), order = { kind: 'steady', odds: 1, at: LOCK };
+    const r = resolveDeckTurn(st, { stand: BRIDGE, act: null, order }, m, () => 0.5);
+    assert.ok(r.state.sections.every(s => s.theirs >= 0 && s.mine >= 0), party);
+    assert.equal(r.events.find(e => e.kind === (party === 'raider' ? 'rush' : 'move')).n, m.n - 1, party);
+  }
+});
+
+test('a missed hatch at a section other than the hand\'s presses nobody where the hand stands', () => {
+  const a = rushDeck(), b = rushDeck();
+  for (const st of [a, b]) { st.sections[BRIDGE].theirs = 2; st.sections[BRIDGE].mine = 3; }
+  const hold = { kind: 'hold', from: LOCK, to: LOCK, n: 0 };
+  const plain1 = resolveDeckTurn(a, { stand: BRIDGE, act: null }, hold, seq(0.5, 0.5, 0.5, 0.5, 0.5, 0.5));
+  const missed = resolveDeckTurn(b, { stand: BRIDGE, act: null, order: { kind: 'steady', odds: 0, at: LOCK } }, hold, seq(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5));
+  assert.ok(missed.events.some(e => e.kind === 'hatch' && !e.worked));
+  assert.deepEqual(plain(missed.events.filter(e => e.kind === 'exchange')), plain(plain1.events.filter(e => e.kind === 'exchange')));
+});

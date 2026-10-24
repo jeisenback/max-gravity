@@ -308,17 +308,18 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
     const r = abilityStep(a.kind, worked, { pos: at, boarders: S[at].theirs, extra });
     S[at].theirs = r.boarders;
     r.extra.forEach((n, i) => { extra[i] = n; });
-    if (r.press) press++;
+    if (r.press && at === st.hand) press++;  // a miss elsewhere costs the section's order, not the hand
     if (hatch && worked) hatched = at;
     events.push(hatch ? { kind: 'hatch', at, worked } : { kind: a.kind, worked });
   };
   const hatch = ordered && ordered.at !== undefined;
   if (hatch && S[ordered.at]) ability(ordered, ordered.at, true);
 
+  const sent = shown.kind === 'hold' ? 0 : Math.min(shown.n, S[shown.from].theirs);  // a hatch may have thinned the section they leave
   if (shown.kind === 'rush') {  // it stops in the section passed when the hand stands there, ours there are half of them or more, or a hatch worked there
-    const stopped = st.hand === shown.via || 2 * S[shown.via].mine >= shown.n || hatched === shown.via, to = stopped ? shown.via : shown.to;
-    S[shown.from].theirs -= shown.n; S[to].theirs += shown.n;
-    events.push({ kind: 'rush', from: shown.from, to, n: shown.n, stopped });
+    const stopped = st.hand === shown.via || 2 * S[shown.via].mine >= sent || hatched === shown.via, to = stopped ? shown.via : shown.to;
+    S[shown.from].theirs -= sent; S[to].theirs += sent;
+    events.push({ kind: 'rush', from: shown.from, to, n: sent, stopped });
   } else if (shown.kind !== 'hold') {  // a feint sends the heads somewhere else they can reach from where they stand, or nowhere
     let to = shown.to;
     if (shown.feint) {
@@ -326,8 +327,8 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
       to = other[Math.floor(rand() * other.length)];
     }
     if (to !== shown.from) {
-      S[shown.from].theirs -= shown.n; S[to].theirs += shown.n;
-      events.push({ kind: 'move', from: shown.from, to, n: shown.n });
+      S[shown.from].theirs -= sent; S[to].theirs += sent;
+      events.push({ kind: 'move', from: shown.from, to, n: sent });
     }
   }
   if (st.assault) {  // our party advances by the same rule
