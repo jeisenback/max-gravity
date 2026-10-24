@@ -48,12 +48,26 @@ test('a boarding run that lands opens the deck fight at the lock, two more of th
   await done();
 });
 
+test('the party comes from her ship: a corsair\'s hull, a raider\'s, and any other a raider\'s', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    fight(); const d = G.duel, was = d.foe.shipId, out = {};
+    for (const id of ['corsair', 'raider', 'cutter', 'unknown-hull']) { d.foe.shipId = id; out[id] = repelStart(d, 'full').state.party; }
+    d.foe.shipId = was; out.level = [repelStart(d, 'full').state.level, skillLevel(lockPost())];
+    return out;
+  });
+  assert.deepEqual(r, { corsair: 'corsair', raider: 'raider', cutter: 'navy', 'unknown-hull': 'raider', level: r.level });
+  assert.equal(r.level[0], r.level[1], 'the level worked');
+  await done();
+});
+
 test('repelled, the duel goes on with the initiative yours, and the captain remembers it', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const st = fight(), d = G.duel, cap = person(hired().captain), op = cap.opinion;
-    const s = holdThem(repelStart(d, 'full'), f => { f.sections.forEach(x => { x.theirs = 0; }); });
+    const s = holdThem(repelStart(d, 'full'), f => { f.sections.forEach(x => { x.theirs = 0; }); f.wave = null; });
     rolls([]); const ret = fightTurn(s); const close = G.nextEvent; G.nextEvent = null;
     const down = close.choices[0].run();
     return { ret, title: close.title, text: close.text, labels: close.choices.map(c => c.label), down, won: s.won, init: d.init, next: G.nextEvent && G.nextEvent.title, opinion: cap.opinion - op, hurt: s.hurt.size };
@@ -357,11 +371,11 @@ test('the hand acts with the sidearm or the post\'s two abilities, and the cover
     out.used = s.state.used.cover; out.cover = s.state.sections.map(x => x.cover); out.line = s.state.log[s.state.log.length - 1]; out.after = acts(next);
     return out;
   });
-  assert.deepEqual(r.gunner, ['Shoot: 2 to 3 of them down', 'Pick off a runner: one of them down if it works', 'Covering burst: two points of cover here, once a fight', 'Shoot: 2 to 3 of them down']);
+  assert.deepEqual(r.gunner, ['Shoot: 1 to 2 of them down', 'Pick off a runner: one of them down if it works', 'Covering burst: two points of cover here, once a fight', 'Shoot: 1 to 2 of them down']);
   assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]], ['Cycle a hatch on them: one of them down if it works', 'Drop the pressure door: two points of cover here, once a fight', 'A false order on their band: one of them down if it works']);
   assert.equal(r.used, true); assert.deepEqual(r.cover.slice(0, 3), [3, 2, 1], 'two points where the hand stands, up to three');
   assert.match(r.line, /You lay a long burst along the wall at head height\./);
-  assert.deepEqual(r.after, ['Shoot: 2 to 3 of them down', 'Pick off a runner: one of them down if it works', 'Shoot: 2 to 3 of them down', 'Pick off a runner: one of them down if it works'], 'once a fight');
+  assert.deepEqual(r.after, ['Shoot: 1 to 2 of them down', 'Pick off a runner: one of them down if it works', 'Shoot: 1 to 2 of them down', 'Pick off a runner: one of them down if it works'], 'once a fight');
   await done();
 });
 
@@ -498,7 +512,7 @@ test('an owner who kept a post fights boarders on the deck with the same moves: 
     G.state.career = undefined; out.never = lockPost();  // (the shipped build starts every game as a hand: take away the career the buy left, and there is no post)
     return out;
   });
-  assert.ok(r.owner); assert.equal(r.title, 'The Lock'); assert.ok(r.armor); assert.deepEqual(r.acts, ['Stand: The Lock', 'Shoot: 2 to 3 of them down'], 'the hand\'s own moves are offered');
+  assert.ok(r.owner); assert.equal(r.title, 'The Lock'); assert.ok(r.armor); assert.deepEqual(r.acts, ['Stand: The Lock', 'Shoot: 1 to 2 of them down'], 'the hand\'s own moves are offered');
   assert.match(r.lost, /You give them the code to the strongbox/); assert.equal(r.credits, 70000, 'a third of the player\'s credits, not a fund'); assert.ok(r.duelGone);
   assert.match(r.held, /The last of them go back through the lock/); assert.equal(r.heldNext, 'me');
   assert.match(r.hurt, /You are hurt/); assert.ok(r.hurtUntil >= 12); assert.equal(r.died, false, 'an owner is laid up and lives'); assert.equal(r.level, true);
@@ -515,7 +529,7 @@ test('the last of them going down wins the fight with its line, and so few left 
     for (const assault of [false, true]) {
       const kind = assault ? 'assault' : 'repel', at = assault ? 2 : 1;  // our corridor, or her bridge (where ours would win it by holding it)
       const play = set => {  // her crew left where nobody of ours stands, so the turn trades nothing
-        __seed(7); fight(); const s = holdThem(assault ? assaultStart(G.duel.foe) : repelStart(G.duel, 'full'), f => { f.began = 6; f.sections.forEach(x => { x.theirs = 0; x.mine = 1; }); set(f); });
+        __seed(7); fight(); const s = holdThem(assault ? assaultStart(G.duel.foe) : repelStart(G.duel, 'full'), f => { f.began = 6; f.sections.forEach(x => { x.theirs = 0; x.mine = 1; }); f.wave = null; set(f); });
         rolls([]); fightTurn(s); const close = G.nextEvent; G.nextEvent = null; G.duel = null;
         return { won: s.won === true, ended: !!close, last: !!close && close.text.includes(FIGHT_END[kind].last), broke: !!close && close.text.includes(FIGHT_END[kind].broke) };
       };

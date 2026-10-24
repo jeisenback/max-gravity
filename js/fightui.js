@@ -232,6 +232,7 @@ function shipFightEnd(s, end) {
 // ends), the 'beats:deck' lines both fights share (the abilities and the orders) and the 'scene:fight' deck lines.
 
 const DECK_ACTS = ['shoot', 'steady', 'cover'];
+const isHatch = o => HATCH_ORDER[o.sheet.post] === o.kind;  // an order worked at a section of the crew's choosing (handtohand.js)
 // A section's name: the beat's title (her deck is named from her bridge), and the cargo bay's from the deck lines.
 const deckTitle = (s, i) => {
   if (i === CARGO) return fightSay(s.assault ? 'deck.cargoHers' : 'deck.cargo');
@@ -243,13 +244,14 @@ const deckTitle = (s, i) => {
 const deckAt = (s, i) => fightSay(`deck.${s.assault ? 'hers' : 'ours'}.${i}`);
 const deckOpening = s => { const k = s.assault ? 2 - REACH[s.state.hand] : REACH[s.state.hand]; return repelWords(s, `open.${k}.${s.state.turn % 2}`, (s.assault ? ASSAULT_OPENINGS : REPEL_OPENINGS)[k][s.state.turn % 2]); };
 const deckBoard = (s, move) => fightStrip({ titles: s.state.sections.map((_, i) => deckTitle(s, i)), sections: s.state.sections, hand: s.state.hand, move, feint: s.state.grade > 0,
-  began: s.state.began, breakAt: Math.floor(s.state.began * DECK.BREAK) });  // her count, with the line she breaks at (deckEnd)
+  began: s.state.began, breakAt: Math.floor(s.state.began * DECK.BREAK),  // her count, with the line she breaks at (deckEnd)
+  wave: pendingWave(s.state) ? fightSay('deck.wave', { n: pendingWave(s.state) }) : '' });  // and the rest of the party still to land
 
 // The panel for this turn, with the hand's plan as it stands ({ stand, act, order }: a section, an act, a crewmate's id). Every choice redraws it in place.
 function deckFightEvent(s, plan = {}) {
   const f = s.state, post = lockPost();
   if (!s.shown) s.shown = boardMove(f, Math.random);
-  const p = { stand: f.hand, act: 'shoot', order: null, ...plan }, m = s.shown;
+  const p = { stand: f.hand, act: 'shoot', order: null, ...plan }, m = s.shown, there = p.at === undefined ? p.stand : p.at;  // `there`: where a hatch is worked
   const near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])], acts = DECK_ACTS.filter(k => k !== 'cover' || !f.used.cover);
   const orders = repelOrders(s, f.used.cover || p.act === 'cover'), order = orders.find(o => o.id === p.order) || null;
   const next = (list, x) => list[(list.indexOf(x) + 1) % list.length], redo = change => () => deckFightEvent(s, { ...p, ...change });
@@ -261,12 +263,13 @@ function deckFightEvent(s, plan = {}) {
   if (orders.length) {
     const does = o => deckWords(`crew.${o.sheet.post}.${o.kind}.label`, CREW_ABILITY[o.sheet.post][o.kind].label);
     choices.push({ order: true, group: fightSay('deck.orders'), label: order ? fightSay('deck.order', { first: order.first, does: does(order) }) : fightSay('deck.order.none'), keep: true, run: redo({ order: next([null, ...orders.map(o => o.id)], order && order.id) }) });
+    if (order && isHatch(order)) choices.push({ label: fightSay('deck.order.at', { at: deckAt(s, there) }), keep: true, run: redo({ at: next(f.sections.map((_, i) => i), there) }) });
   }
   choices.push({ label: fightSay('deck.fight'), keep: true, run: () => deckTurn(s, { ...p, order: order && order.id }) });
   const who = fightSay(`deck.who.${s.assault ? 'assault' : 'repel'}`), feint = f.grade > 0 ? ` ${fightSay('deck.feint')}` : '';
   return {
     title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s,
-    read: `${fightSay('deck.turn', { n: f.turn + 1, max: DECK.TURNS })} ${fightSay(`deck.${m.kind === 'rush' ? 'push' : m.kind}`, { who, n: m.n, to: deckAt(s, m.to) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
+    read: `${fightSay('deck.turn', { n: f.turn + 1, max: DECK.TURNS })} ${fightSay(`deck.${m.kind}`, { who, n: m.n, to: deckAt(s, m.to), ...(m.via === undefined ? {} : { via: deckAt(s, m.via) }) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
     board: deckBoard(s, m.kind === 'hold' ? null : m),
     text: [deckOpening(s), ...(s.held.length ? [s.held.join(' ')] : []), ...f.log.slice(-3)].join('</p><p>'),
     choices,
@@ -284,17 +287,21 @@ function deckLoss(s, sent) {
 function deckTurn(s, p) {
   const f = s.state, post = lockPost(), o = repelOrders(s, f.used.cover || p.act === 'cover').find(x => x.id === p.order);
   const act = p.act === 'shoot' ? 'shoot' : { kind: p.act, odds: abilityOdds(post, p.act) };
-  const r = resolveDeckTurn(f, { stand: p.stand, act, order: o ? { kind: o.kind, odds: crewOrderOdds(o.sheet, o.kind, s.hurt.has(o.id)) } : null }, s.shown, Math.random);
+  const r = resolveDeckTurn(f, { stand: p.stand, act, order: o ? { kind: o.kind, odds: crewOrderOdds(o.sheet, o.kind, s.hurt.has(o.id)), ...(isHatch(o) ? { at: p.at === undefined ? p.stand : p.at } : {}) } : null }, s.shown, Math.random);
   s.state = r.state;
-  const at = i => deckAt(s, i), said = [], after = [], ab = r.events.filter(e => e.kind === 'steady' || e.kind === 'cover');
+  const at = i => deckAt(s, i), said = [], after = [], ab = r.events.filter(e => e.kind === 'steady' || e.kind === 'cover'), worked = r.events.find(e => e.kind === 'hatch');  // a hatch is the order's own, rolled before the rest
   const side = e => (e.worked ? 'win' : 'lose');
   let sent = null;
   if (act !== 'shoot' && !(act.kind === 'cover' && f.used.cover) && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.you') : deckWords(`ability.${post}.${e.kind}.${side(e)}`, FIGHT_ABILITY[post][e.kind][side(e)])); }
-  if (o && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.crew', { first: o.first }) : `${o.first} ${deckWords(`crew.${o.sheet.post}.${e.kind}.${side(e)}`, CREW_ABILITY[o.sheet.post][e.kind][side(e)])}`); if (!e.worked && !e.nobody) sent = o.id; }
+  const crew = !o ? null : isHatch(o) ? worked : ab.shift();
+  if (crew) { const e = crew; after.push(e.nobody ? fightSay('deck.nobody.crew', { first: o.first }) : `${o.first} ${deckWords(`crew.${o.sheet.post}.${o.kind}.${side(e)}`, CREW_ABILITY[o.sheet.post][o.kind][side(e)])}`); if (!e.worked && !e.nobody) sent = o.id; }
   for (const e of r.events) {
     if (e.kind === 'move') said.push(fightSay(e.who === 'mine' ? 'deck.log.ours' : 'deck.log.theirs', { n: e.n, to: at(e.to) }));
     if (e.kind === 'exchange') said.push(fightSay('deck.log.fight', { at: at(e.section), theirs: e.theirs, mine: e.mine }));
     if (e.kind === 'hand') said.push(fightSay('deck.log.back', { to: at(e.to) }));
+    if (e.kind === 'rush') said.push(e.stopped ? fightSay('deck.log.rushStopped', { n: e.n, at: at(e.to) }) : fightSay('deck.log.rush', { n: e.n, to: at(e.to) }));
+    if (e.kind === 'hatch') said.push(fightSay('deck.log.hatch', { at: at(e.at), how: fightSay(e.worked ? 'deck.hatch.worked' : 'deck.hatch.failed') }));
+    if (e.kind === 'wave') said.push(fightSay('deck.log.wave', { n: e.n }));
   }
   for (const e of r.events.filter(x => x.kind === 'exchange')) for (let n = 0; n < e.mine; n++) { const line = deckLoss(s, sent); sent = null; if (line) after.push(line); }
   if (r.events.some(e => e.kind === 'shoot' && e.nobody)) after.push(fightSay('deck.nobody.you'));  // a shot with none of them there, as a steady one says

@@ -39,7 +39,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 2 to 3 of them down",
+    "Shoot: 1 to 2 of them down",
     "Order: none",
     "Fight"
    ]
@@ -85,7 +85,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 2 to 3 of them down",
+    "Shoot: 1 to 2 of them down",
     "Order: none",
     "Fight"
    ]
@@ -131,7 +131,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 2 to 3 of them down",
+    "Shoot: 1 to 2 of them down",
     "Order: none",
     "Fight"
    ]
@@ -177,7 +177,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 2 to 3 of them down",
+    "Shoot: 1 to 2 of them down",
     "Order: none",
     "Fight"
    ]
@@ -470,7 +470,7 @@
    "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 2 to 3 of them down",
+    "Shoot: 1 to 2 of them down",
     "Order: none",
     "Fight"
    ]
@@ -511,7 +511,7 @@
    "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 2 to 3 of them down",
+    "Shoot: 1 to 2 of them down",
     "Order: none",
     "Fight"
    ]
@@ -552,7 +552,7 @@
    "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 2 to 3 of them down",
+    "Shoot: 1 to 2 of them down",
     "Order: none",
     "Fight"
    ]
@@ -593,7 +593,7 @@
    "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are. They may feint.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 2 to 3 of them down",
+    "Shoot: 1 to 2 of them down",
     "Order: none",
     "Fight"
    ]
@@ -2596,33 +2596,21 @@
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer."
  },
  {
   "id": "order:repel:gunner:cover:missed",
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens up and the burst goes where the wall is, not where they are.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens up and the burst goes where the wall is, not where they are."
  },
  {
   "id": "order:repel:gunner:steady:worked",
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows.",
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2635,46 +2623,28 @@
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana waits for a runner and none runs. The round goes high, and they use the noise to push.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana waits for a runner and none runs. The round goes high, and they use the noise to push."
  },
  {
   "id": "order:repel:pilot:cover:worked",
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not."
  },
  {
   "id": "order:repel:pilot:cover:missed",
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cuts the lights, and the crew cannot see the closer either.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cuts the lights, and the crew cannot see the closer either."
  },
  {
   "id": "order:repel:pilot:steady:worked",
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
+  "text": "Turn 1: the hatch at the Lock holds, 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2687,46 +2657,28 @@
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the hatch a beat late, and it closes on nothing.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: the hatch at the Lock does not close, 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the hatch a beat late, and it closes on nothing."
  },
  {
   "id": "order:repel:engineer:cover:worked",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: the hatch at the Lock holds, 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
  },
  {
   "id": "order:repel:engineer:cover:missed",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door, and it sticks a hand short of the deck.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: the hatch at the Lock does not close, 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door, and it sticks a hand short of the deck."
  },
  {
   "id": "order:repel:engineer:steady:worked",
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.",
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2739,46 +2691,28 @@
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens the wrong coolant line, and it vents into the section.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens the wrong coolant line, and it vents into the section."
  },
  {
   "id": "order:repel:slicer:cover:worked",
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover."
  },
  {
   "id": "order:repel:slicer:cover:missed",
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana jams their band and the crew's with it.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana jams their band and the crew's with it."
  },
  {
   "id": "order:repel:slicer:steady:worked",
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late.",
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2791,20 +2725,14 @@
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts a voice on their band and the voice is wrong. Somebody laughs.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts a voice on their band and the voice is wrong. Somebody laughs."
  },
  {
   "id": "order:assault:gunner:cover:worked",
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2817,7 +2745,7 @@
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana opens up and the burst goes where the wall is, not where they are.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana opens up and the burst goes where the wall is, not where they are.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2830,7 +2758,7 @@
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2843,7 +2771,7 @@
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana waits for a runner and none runs. The round goes high, and they use the noise to push.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana waits for a runner and none runs. The round goes high, and they use the noise to push.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2856,7 +2784,7 @@
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2869,7 +2797,7 @@
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cuts the lights, and the crew cannot see the closer either.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana cuts the lights, and the crew cannot see the closer either.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2882,7 +2810,7 @@
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
+  "text": "Turn 1: the hatch at her Lock holds, 2 of them and 1 of ours down in her Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2895,7 +2823,7 @@
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana cycles the hatch a beat late, and it closes on nothing.",
+  "text": "Turn 1: the hatch at her Lock does not close, 2 of them and 1 of ours down in her Lock. Dana cycles the hatch a beat late, and it closes on nothing.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2908,7 +2836,7 @@
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through.",
+  "text": "Turn 1: the hatch at her Lock holds, 2 of them and 1 of ours down in her Lock. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2921,7 +2849,7 @@
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana drops the pressure door, and it sticks a hand short of the deck.",
+  "text": "Turn 1: the hatch at her Lock does not close, 2 of them and 1 of ours down in her Lock. Dana drops the pressure door, and it sticks a hand short of the deck.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2934,7 +2862,7 @@
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2947,7 +2875,7 @@
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana opens the wrong coolant line, and it vents into the section.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana opens the wrong coolant line, and it vents into the section.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2960,7 +2888,7 @@
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2973,7 +2901,7 @@
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana jams their band and the crew's with it.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana jams their band and the crew's with it.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2986,7 +2914,7 @@
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -2999,7 +2927,7 @@
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 3 of them and 1 of ours down in her Lock. Dana puts a voice on their band and the voice is wrong. Somebody laughs.",
+  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana puts a voice on their band and the voice is wrong. Somebody laughs.",
   "mem": [
    "9 Jul 2214: You went onto a crippled ship and came back without it."
   ],
@@ -3018,7 +2946,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3031,7 +2959,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3044,7 +2972,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3057,7 +2985,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3070,7 +2998,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3083,7 +3011,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3095,34 +3023,22 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
-    "mem": [
-     "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
-    "mem": [
-     "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
    },
    {
     "act": "steady",
@@ -3183,7 +3099,10 @@
     "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
-    ]
+    ],
+    "fx": {
+     "p1": 1
+    }
    }
   ]
  },
@@ -3198,7 +3117,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3211,7 +3130,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3224,7 +3143,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3237,7 +3156,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3250,7 +3169,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3263,7 +3182,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3275,34 +3194,22 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
-    "mem": [
-     "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
-    "mem": [
-     "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
    },
    {
     "act": "steady",
@@ -3363,7 +3270,10 @@
     "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
-    ]
+    ],
+    "fx": {
+     "p1": 1
+    }
    }
   ]
  },
@@ -3378,7 +3288,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3391,7 +3301,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3404,7 +3314,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3417,7 +3327,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3430,7 +3340,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3443,7 +3353,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3455,34 +3365,22 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
-    "mem": [
-     "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
-    "mem": [
-     "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
    },
    {
     "act": "steady",
@@ -3543,7 +3441,10 @@
     "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
-    ]
+    ],
+    "fx": {
+     "p1": 1
+    }
    }
   ]
  },
@@ -3558,7 +3459,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3571,7 +3472,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3584,7 +3485,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3597,7 +3498,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3610,7 +3511,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3623,7 +3524,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3635,34 +3536,22 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
-    "mem": [
-     "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
    },
    {
     "act": "shoot",
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in the Lock, you fall back to the Corridor.",
-    "mem": [
-     "9 Jul 2214: You held the ship when boarders came."
-    ],
-    "fx": {
-     "p1": 1
-    }
+    "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor."
    },
    {
     "act": "steady",
@@ -3723,7 +3612,10 @@
     "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Rusted Grin\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
-    ]
+    ],
+    "fx": {
+     "p1": 1
+    }
    }
   ]
  },
@@ -3738,7 +3630,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3751,7 +3643,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3764,7 +3656,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3777,7 +3669,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3790,7 +3682,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3803,7 +3695,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -3815,11 +3707,11 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3832,11 +3724,11 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3997,7 +3889,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4010,7 +3902,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4023,7 +3915,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4036,7 +3928,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4049,7 +3941,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4062,7 +3954,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4074,11 +3966,11 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4091,11 +3983,11 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4256,7 +4148,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4269,7 +4161,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4282,7 +4174,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4295,7 +4187,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4308,7 +4200,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4321,7 +4213,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4333,11 +4225,11 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4350,11 +4242,11 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4515,7 +4407,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4528,7 +4420,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4541,7 +4433,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4554,7 +4446,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4567,7 +4459,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4580,7 +4472,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ]
@@ -4592,11 +4484,11 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4609,11 +4501,11 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them down",
+     "Shoot: 1 to 2 of them down",
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 3 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],

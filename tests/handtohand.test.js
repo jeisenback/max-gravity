@@ -38,6 +38,15 @@ test('an ability that works thins them or makes cover and the exchange stands; o
   const coverMiss = abilityStep('cover', false, s); assert.deepEqual([coverMiss.result, coverMiss.press, [...coverMiss.extra]], ['tie', true, [0, 0, 0]]);
 });
 
+test('a rush is drawn through the section it passes, and the heads still to land are a line under the deck', () => {
+  const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 0, theirs: 3, cover: 1 }, { mine: 0, theirs: 0, cover: 2 }, { mine: 2, theirs: 0, cover: 0 }];
+  const rush = fightStrip({ titles, sections, hand: 2, move: { from: 0, via: 1, to: 2, n: 3 }, feint: false, wave: '2 more at the lock next turn.' });
+  assert.match(rush, /<path class="move" d="M\d+(\.\d+)? 80 L\d+(\.\d+)? 80 L\d+(\.\d+)? 80"/, 'the arrow bends at the section it goes through');
+  assert.match(rush, /Their move: 3 from The Lock through The Corridor into The Bridge\. 2 more at the lock next turn\."/);
+  assert.match(rush, /<text class="wave"[^>]*>2 more at the lock next turn\.</); assert.match(rush, /viewBox="0 0 360 112"/);
+  assert.doesNotMatch(fightStrip({ titles, sections, hand: 2, move: null, feint: false }), /class="wave"/, 'no line when none are to land');
+});
+
 test('the strip draws each section with both sides\' heads, its cover, where the hand stands, and their shown move, marked when it may feint', () => {
   const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 2, theirs: 3, cover: 1 }, { mine: 1, theirs: 0, cover: 2 }, { mine: 0, theirs: 0, cover: 0 }];
   const svg = fightStrip({ titles, sections, hand: 0, move: { from: 0, to: 1, n: 3 }, feint: false });

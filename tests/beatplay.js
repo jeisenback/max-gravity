@@ -101,8 +101,8 @@ const playBeats = () => {
     out.push({ id: `settle:${assault ? 'assault' : 'repel'}:${post}:${won ? 'won' : 'lost'}:${round}`, text: String(text), ...left(b0) });
     G.nextEvent = null; G.duel = null;
   }
-  // A deck fight set by hand for one turn: one of ours with the hand at the lock against four of hers, their move a hold, and (rolls) no hit lands and the hand is not hurt.
-  const quiet = s => { s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[0].theirs = 4; s.state.began = 4; s.state.hand = 0; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; return s; };
+  // A deck fight set by hand for one turn: one of ours with the hand at the lock against four of hers (no second wave to come), their move a hold, and (rolls) no hit lands and the hand is not hurt.
+  const quiet = s => { s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[0].theirs = 4; s.state.began = 4; s.state.wave = null; s.state.hand = 0; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; return s; };
   const rolls = first => seq([first, ...Array(16).fill(0.4)]);
   const fightOf = (s, plan) => { const ev = deckFightEvent(s, plan); return { labels: labelsOf(ev), run: () => ev.choices[ev.choices.length - 1].run() }; };
   // the orders to named crew (#711): each post's two abilities as the crew member does it, worked and missed

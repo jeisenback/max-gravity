@@ -191,12 +191,12 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   });
   assert.equal(r.title, 'The Lock', 'the panel is named for where the hand stands');
   assert.ok(r.size >= 16, 'the hauler is long: a cargo bay to go round by');
-  assert.deepEqual(r.heads, [[1, 4, 1], [1, 0, 2], [2, 0, 1], [1, 0, 1]], 'four of hers in the lock; five of ours spread, the odd one on the bridge; the ship\'s cover by section');
+  assert.deepEqual(r.heads, [[1, 2, 1], [1, 0, 2], [2, 0, 1], [1, 0, 1]], 'two of the four in the lock (the other two are the wave); five of ours spread, the odd one on the bridge; the ship\'s cover by section');
   assert.equal(r.hand, 0);
   assert.deepEqual(r.shown, { kind: 'hold', from: 0, to: 0, n: 0, feint: false }, 'one of ours stands in the lock with them, so they cannot push on (R29)');
   assert.equal(r.read, 'Turn 1 of 8. Boarders: holding where they are.', 'the turn of the cap, and their move');
-  assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 4 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 4 of their 4 still up; they break at 1.');
-  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'Shoot: 2 to 3 of them down']);
+  assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn.');
+  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'Shoot: 1 to 2 of them down'], 'a new hand works at level 0');
   assert.equal(r.labels[r.labels.length - 1], 'Fight');
   assert.ok(r.keep.every(Boolean), 'every choice redraws in place');
   assert.match(r.text, /outer lock is cycling|hits the hull aft/, 'the opening of the lock');
@@ -215,7 +215,50 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   const t = await ev(() => { const s = G.dialog.event.fight; return { result: !!document.querySelector('#event-result'), turn: s.state.turn, last: s.state.log[s.state.log.length - 1], used: s.state.used.cover, acts: G.dialog.choices[1].label }; });
   assert.equal(t.result, false, 'no result page between turns'); assert.equal(t.turn, 1);
   assert.match(t.last, /^Turn 1: /, t.last);
-  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'Shoot: 2 to 3 of them down', 'and the act goes back to the sidearm');
+  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'Shoot: 1 to 2 of them down', 'and the act goes back to the sidearm');
+  await done();
+});
+
+test('the panel words a raider\'s rush, the second wave at the lock until it lands, and the hatch by section', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const out = {};
+    fightGame('gunner'); let s = boarded();
+    out.wave = { before: /more at the lock next turn/.test(document.querySelector('#panel .event-body svg.board').outerHTML), n: pendingWave(s.state) };
+    rolls([]); const turned = G.dialog.choices[G.dialog.choices.length - 1].run();
+    out.wave.after = /more at the lock next turn/.test(turned.board); out.wave.log = s.state.log[0];
+    fightGame('gunner'); s = boarded(); const f = s.state;  // none of ours in the lock or the corridor, the hand on the bridge: they rush through the corridor
+    f.party = 'raider'; f.wave = null; f.hand = 2; f.sections[0].mine = 0; f.sections[1].mine = 0; f.sections[0].theirs = 3; s.shown = null;
+    const e = deckFightEvent(s); out.read = e.read; out.arrow = /<path class="move"/.test(e.board);
+    rolls([]); e.choices[e.choices.length - 1].run(); out.rushLog = s.state.log[0];
+    fightGame('gunner'); const st = G.state; st.crew = []; const bo = makePerson('earth'); Object.assign(bo, { first: 'Bo', role: 'pilot', skill: 1, opinion: 30 }); registerPerson(bo); st.crew.push(bo.id);
+    s = boarded(); out.plain = deckFightEvent(s, { act: 'cover', order: bo.id }).choices.map(c => c.label);  // with the cover spent, the pilot is given the steady one: the hatch
+    const hatch = deckFightEvent(s, { act: 'cover', order: bo.id }), i = hatch.choices.findIndex(c => c.label.startsWith('At '));
+    out.at = [hatch.choices[i].label, hatch.choices[i].keep]; out.next = hatch.choices[i].run().choices[i].label;
+    out.cover = deckFightEvent(s, { act: 'shoot', order: bo.id }).choices.map(c => c.label).filter(l => l.startsWith('At '));
+    out.none = deckFightEvent(s).choices.map(c => c.label).filter(l => l.startsWith('At '));
+    return out;
+  });
+  assert.equal(r.wave.before, true, 'the lock fight shows the rest coming'); assert.ok(r.wave.n >= 1);
+  assert.equal(r.wave.after, false, 'and not once they have landed'); assert.match(r.wave.log, /more come through the lock/);
+  assert.match(r.read, /^Turn 1 of 8\. Boarders: \d+ rushing through the Corridor into the Bridge\.$/); assert.ok(r.arrow, 'the arrow is drawn');
+  assert.match(r.rushLog, /3 of them rush into the Bridge/);
+  assert.equal(r.at[0], 'At the Bridge', 'where the hand stands, a crew of one holding the bridge'); assert.equal(r.at[1], true); assert.equal(r.next, 'At the Cargo Bay', 'the section goes round the deck');
+  assert.deepEqual(r.cover, [], 'an order that is not a hatch has no place'); assert.deepEqual(r.none, [], 'nor does none');
+  await done();
+});
+
+test('a hurt hand works the level below: the sidearm on the panel is that level\'s', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const out = {};
+    fightGame('gunner'); hired().skill.gunner = 110; out.well = [lockPost(), boarded().state.level, G.dialog.choices[1].label];
+    fightGame('gunner'); hired().skill.gunner = 110; career().hurtUntil = G.state.day + 5; out.hurt = [boarded().state.level, G.dialog.choices[1].label];
+    return out;
+  });
+  assert.deepEqual(r.well, ['gunner', 3, 'Shoot: 3 to 4 of them down']); assert.deepEqual(r.hurt, [2, 'Shoot: 2 to 3 of them down']);
   await done();
 });
 
@@ -251,7 +294,7 @@ test('repelled, taken, and an assault won or lost each settle through the existi
     // repelled: one of three left, in the lock, against two of ours
     let st = fightGame('gunner'), h = hired(), cap = person(h.captain), op = cap.opinion;
     let s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
-    out.repelled = { ...play(s, f => { f.sections.forEach(x => { x.theirs = 0; }); f.sections[0].theirs = 1; }), opinion: cap.opinion - op };
+    out.repelled = { ...play(s, f => { f.sections.forEach(x => { x.theirs = 0; }); f.sections[0].theirs = 1; f.wave = null; }), opinion: cap.opinion - op };
     // taken: three of them on the bridge and none of ours there
     st = fightGame('gunner'); h = hired(); h.fund = 1000; cap = person(h.captain); op = cap.opinion;
     s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');

@@ -22895,7 +22895,7 @@
      "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
       "Stand: The Lock",
-      "Shoot: 2 to 3 of them down",
+      "Shoot: 1 to 2 of them down",
       "Order: none",
       "Fight"
      ]
@@ -22945,7 +22945,7 @@
      "text": "She closes while your drive is slow and seals a boarding tube to your lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
       "Stand: The Lock",
-      "Shoot: 2 to 3 of them down",
+      "Shoot: 1 to 2 of them down",
       "Order: none",
       "Fight"
      ]
@@ -22995,7 +22995,7 @@
      "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
       "Stand: The Lock",
-      "Shoot: 2 to 3 of them down",
+      "Shoot: 1 to 2 of them down",
       "Order: none",
       "Fight"
      ]
@@ -23392,7 +23392,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Lock. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Corridor",
@@ -23406,7 +23407,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2, you stand here. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Bridge",
@@ -23420,7 +23422,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1, you stand here. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Bridge. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Cargo Bay",
@@ -23434,7 +23437,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1, you stand here. Their move: 2 from The Lock into The Cargo Bay. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23448,7 +23452,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Cargo Bay. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23462,7 +23467,23 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: 2 rushing through the Corridor into the Bridge.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "Shoot: 2 to 3 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock through The Corridor into The Bridge. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23476,7 +23497,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor, may feint. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23490,7 +23512,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23504,7 +23527,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23518,7 +23542,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23532,7 +23557,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23546,7 +23572,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23560,7 +23587,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23574,22 +23602,107 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
    },
    {
-    "log": "Turn 1: 4 of them move into the Corridor, 1 of them and 1 of ours down in the Corridor. None of them are where you stand.",
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "Shoot: 2 to 3 of them down",
+     "Order: Ines cycles a hatch on them",
+     "At the Lock",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "Shoot: 2 to 3 of them down",
+     "Order: Ines cycles a hatch on them",
+     "At the Corridor",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "Shoot: 2 to 3 of them down",
+     "Order: Ines cycles a hatch on them",
+     "At the Bridge",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "Shoot: 2 to 3 of them down",
+     "Order: Ines cycles a hatch on them",
+     "At the Cargo Bay",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn."
+   },
+   {
+    "log": "Turn 1: 2 of them move into the Corridor, 1 of them and 1 of ours down in the Corridor, 2 more come through the lock. None of them are where you stand.",
     "end": false
    },
    {
-    "log": "Turn 1: 1 of them and 1 of ours down in the Lock, 3 of them and 0 of ours down in the Corridor, you fall back to the Bridge.",
+    "log": "Turn 1: 1 of them and 1 of ours down in the Lock, 3 of them and 0 of ours down in the Corridor, you fall back to the Bridge, 2 more come through the lock.",
     "end": false
    },
    {
-    "log": "Turn 1: nobody gives ground. None of them are where you stand.",
+    "log": "Turn 1: 2 more come through the lock. None of them are where you stand.",
     "end": false
    },
    {
-    "log": "Turn 1: nobody gives ground. None of them are where you stand. Ines finds none of them to go at.",
+    "log": "Turn 1: 2 more come through the lock. None of them are where you stand. Tomas finds none of them to go at.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: 3 of them rush into the Bridge, 3 of them and 2 of ours down in the Bridge, 2 more come through the lock.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: 3 of them rush and are stopped in the Corridor, 3 of them and 1 of ours down in the Corridor, 2 more come through the lock.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: the hatch at the Corridor holds, 2 of them and 1 of ours down in the Lock, 2 more come through the lock. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: the hatch at the Corridor does not close, 2 of them and 1 of ours down in the Lock, 2 more come through the lock. Ines cycles the hatch a beat late, and it closes on nothing.",
+    "end": false
+   },
+   {
+    "log": "Turn 2: 2 of them and 1 of ours down in the Lock, 2 more come through the lock.",
     "end": false
    },
    {
@@ -23609,7 +23722,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Lock. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Corridor",
@@ -23623,7 +23737,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0, you stand here. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Corridor. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Bridge",
@@ -23637,7 +23752,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0, you stand here. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Bridge. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Cargo Bay",
@@ -23651,7 +23767,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0, you stand here. Their move: 2 from Her Lock into Her Cargo Bay. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Lock",
@@ -23665,7 +23782,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Cargo Bay. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Lock",
@@ -23679,7 +23797,23 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: 2 rushing through her Corridor into her Bridge.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "Shoot: 2 to 3 of them down",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock through Her Corridor into Her Bridge. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Lock",
@@ -23693,7 +23827,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Corridor, may feint. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Lock",
@@ -23707,7 +23842,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Lock",
@@ -23721,7 +23857,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Lock",
@@ -23735,7 +23872,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Lock",
@@ -23749,7 +23887,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Lock",
@@ -23763,7 +23902,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Lock",
@@ -23777,7 +23917,8 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
    },
    {
     "title": "Her Lock",
@@ -23791,7 +23932,72 @@
     ],
     "group": [
      "Orders to the crew"
-    ]
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "Shoot: 2 to 3 of them down",
+     "Order: Ines cycles a hatch on them",
+     "At her Lock",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "Shoot: 2 to 3 of them down",
+     "Order: Ines cycles a hatch on them",
+     "At her Corridor",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "Shoot: 2 to 3 of them down",
+     "Order: Ines cycles a hatch on them",
+     "At her Bridge",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "Shoot: 2 to 3 of them down",
+     "Order: Ines cycles a hatch on them",
+     "At her Cargo Bay",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they break at 1."
    },
    {
     "log": "Turn 1: 1 of them and 0 of ours down in her Lock.",
@@ -23806,8 +24012,28 @@
     "end": false
    },
    {
-    "log": "Turn 1: 1 of ours move into her Cargo Bay. None of them are where you stand. Ines finds none of them to go at.",
+    "log": "Turn 1: 1 of ours move into her Cargo Bay. None of them are where you stand. Tomas finds none of them to go at.",
     "end": false
+   },
+   {
+    "log": "Turn 1: 3 of them rush into her Bridge, 3 of them and 2 of ours down in her Bridge.",
+    "end": true,
+    "close": "Turn 1: 3 of them rush into her Bridge, 3 of them and 2 of ours down in her Bridge.</p><p>You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13."
+   },
+   {
+    "log": "Turn 1: 3 of them rush and are stopped in her Corridor, 3 of them and 1 of ours down in her Corridor.",
+    "end": true,
+    "close": "Turn 1: 3 of them rush and are stopped in her Corridor, 3 of them and 1 of ours down in her Corridor.</p><p>The last of her people goes down at the console, and the bridge is quiet. Her captain puts the weapon down. Her strongbox is under the plot table, and 20,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the gunner post.)"
+   },
+   {
+    "log": "Turn 1: the hatch at her Corridor holds, 2 of them and 1 of ours down in her Lock. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
+    "end": true,
+    "close": "Turn 1: the hatch at her Corridor holds, 2 of them and 1 of ours down in her Lock. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.</p><p>You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13."
+   },
+   {
+    "log": "Turn 1: the hatch at her Corridor does not close, 2 of them and 1 of ours down in her Lock. Ines cycles the hatch a beat late, and it closes on nothing.",
+    "end": true,
+    "close": "Turn 1: the hatch at her Corridor does not close, 2 of them and 1 of ours down in her Lock. Ines cycles the hatch a beat late, and it closes on nothing.</p><p>You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13."
    },
    {
     "log": "Turn 8: nobody gives ground. None of them are where you stand.",
