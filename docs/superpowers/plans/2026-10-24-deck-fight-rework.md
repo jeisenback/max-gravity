@@ -402,14 +402,94 @@ Written in full after PR 1 (#825) merged, for the engine as it now stands: wound
 
 ### Task 6: the lawful party, the standing a head, and the search
 
-**Files:** `js/fight.js`, `js/boarders.js`, `js/fightui.js`, `js/hiredscenes.js`, `tools/answer.js`, `tools/fights.js`, the tests, `COMBAT.md`, and the pins.
+Written in full after PR 2 (#826) merged, for the engine as it now stands: wounds, `deckRule`, `DECK.ASSAULT`, the charge, per-cell
+streams in the fight tool, the panel plan `{ stand, act, shootAt, order, at }`, and `answerDeck(s, read, charge)`. The owner's
+choices (2026-10-27):
+- the search costs the heave-to's fine;
+- the navy check is that the answer costs at most half the standing shooting does.
+
+**Files:**
+- Modify: `js/fight.js` (`DECK`, `deckFight`, `resolveDeckTurn`'s loss tally, `deckEnd`).
+- Modify: `js/boarders.js` (`repelSettle`, and a small shared fine).
+- Modify: `js/engage.js` (the heave-to uses the shared fine).
+- Modify: `js/fightui.js` (the navy's move words, the close, the standing shown on the panel).
+- Modify: `js/hiredscenes.js` (lines below).
+- Modify: `tools/answer.js` (`answerDeck`).
+- Modify: `tools/fights.js` (a navy party: a cutter, a gov, started as the game starts her boarding; standing per fight in the tally).
+- Modify: `tools/soak.js` (a stall limit).
+- Modify: `COMBAT.md`.
+- Test: `tests/fight.test.js`, `tests/boarders.test.js`, `tests/fightui.test.js`, `tests/fights.test.js`; the pins.
 
 **Interfaces:**
-- A navy party counts its heads put down (`st.navyDown`).
-- `repelSettle` charges `DECK.NAVY_STANDING = 2` a head with her faction, through the function the ship fight's 8 for a hostile patrol uses.
-- The navy holding our bridge ends `'searched'`. `deckEnd` returns `'searched'` for a navy party where it would return `'taken'`, and the settle charges the heave-to's cost (the ship pays a quarter of its fund) through the heave-to's own function. The ship is not taken.
-- `answerDeck` holds a navy party with cover and hatches, and fires only when they would take the bridge next turn.
-- The tests:
-  - the standing is charged a head;
-  - a held bridge is a search, not the ship taken;
-  - over all three parties, no fixed policy wins 70% or more against every party, and random play loses 25% or more.
+- **The navy party** comes only on our deck. It is the party of a patrol hull (`DECK_PARTY` already maps cutter and destroyer to
+  `'navy'`), started from the ship fight's `'boarded'` end exactly as `fightBoarded` does.
+- **The heads put down.** `deckFight` gives a navy fight `st.navyDown = 0`. `resolveDeckTurn` adds every head of theirs downed
+  that turn: in the exchange, by the shot, by a steady, by a hatch. Wounds are not counted; a head is put down when it is downed.
+- **The search.** `deckEnd` returns `'searched'` for a navy party where it would return `'taken'`.
+- **The fine is shared.** `heaveToFine()` in `js/boarders.js` returns `Math.round(purse() * 0.25)`. The heave-to in
+  `js/engage.js` and the search both charge it through `moveMoney(-fine)`, so the hired hand's fund rule is one rule. The
+  heave-to keeps its own lines and its own standing reset.
+- **The settle.** `repelSettle` charges `changeRep(d.foe.gov, -DECK.NAVY_STANDING * s.state.navyDown)`, with
+  `DECK.NAVY_STANDING = 2`, for a navy fight however it ends. On `'searched'` it also:
+  - charges the fine;
+  - takes one off the captain's opinion of the hand, with a memory line;
+  - ends with the ship kept, not taken.
+
+  No standing reset, since you fought them.
+- **The navy's own move.** It is a plain push and hold (no signature move). It is never feinted, so a navy party has no
+  `CUNNING` feint.
+- **The panel lines:**
+  - `'deck.who.navy': 'The boarding party'`;
+  - `'deck.navy.down': 'Each of them put down costs standing with {gov}: {n} so far.'`, read under the deck on a navy fight;
+  - `'deck.end.searched'`: the close line for a search, which names the fine;
+  - `'memory.searched'`: the captain's memory line.
+
+  Claude drafts these lines and the owner edits them.
+- **`answerDeck` against a navy party:**
+  - it stands where they push, and makes cover there while it can;
+  - it sends hatches to the section they push into;
+  - it shoots only when they would hold our bridge after their shown move (their heads on the bridge, ours none) or when the
+    hand's section would be lost.
+- **The fight tool:**
+  - a navy cell group (`party: 'navy'`, a cutter with a gov, two crew and five, every policy);
+  - each cell tallies `standing` (the standing lost, summed) beside won and dead;
+  - each cell plays on its own stream, as now.
+- **The soak.** `tools/soak.js` opens its pages with a stall limit of 900000 (as the distribution tests do), not 0, so a hung
+  page fails with its cause rather than waiting forever.
+
+- [ ] **Step 1: Write the failing tests.** In `tests/fight.test.js`:
+  - a navy fight counts the heads it puts down from an exchange, a shot and a steady, and does not count wounds;
+  - a navy party that holds our bridge ends `'searched'`;
+  - a navy move is never feinted.
+
+  In `tests/boarders.test.js`:
+  - a search charges a quarter of the purse and takes one off the captain's opinion, and the ship is kept;
+  - the standing charged is 2 a head put down, however the fight ends;
+  - the heave-to and the search charge the same fine from the same purse.
+
+  In `tests/fightui.test.js`:
+  - a navy fight's panel names the party and shows the standing line;
+  - a search's close names the fine.
+- [ ] **Step 2: Run them to see them fail.** Run `node --test tests/fight.test.js tests/boarders.test.js`, then
+  `npm run test:changed`.
+- [ ] **Step 3: Implement the interfaces above.**
+- [ ] **Step 4: Measure** with `node tools/fights.js --seeds 1,2 --n 200 --groups party,level,grade,charge`, and add the navy checks
+  to the deck test:
+  - the answer wins at least 0.9 with two crew and five, where a win is repelled or withdrawn at the cap, not a search;
+  - the answer's standing lost a fight is at most half of shoot's, with two crew and five;
+  - random play's standing lost is more than the answer's;
+  - answer's turns are 3.5 to 6.5;
+  - random play's dead a fight is within 0.15 of the raider repel's grade-0 baseline (0.32).
+
+  Over all three parties, as the spec's Section 3 asks:
+  - no fixed policy (random, shoot, cover, order) wins 70% or more against every party;
+  - random play loses 25% or more of its fights.
+
+  The raider's and the corsair's checks must still pass. Tune only navy numbers (her break line, her party's size), each
+  measured. If no setting passes, stop and report the numbers.
+- [ ] **Step 5: Run the gates, then commit.**
+  - Rewrite the pins with `PIN_WRITE=1`, reading each diff.
+  - Update COMBAT.md's deck section with the navy party, the standing, the search and the numbers. Note there that the navy
+    deck fight is rare in play: `answer` play in the ship fight is boarded 0%, and the ladder's cutter is a papers check.
+  - Run the full `npm test`, `npm run test:editor`, `npm run soak` and `npm run coverage -- --check`.
+  - Commit: "Deck fight: the navy's lawful party, the standing a head, and the search".
