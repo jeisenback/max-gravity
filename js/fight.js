@@ -236,7 +236,7 @@ const DECK = {
   CHARGE: [1, 1],    // heads of ours a corsair's breaching charge downs outright in the section it blows in, past cover and wounds, unless its setter is hit (boardMove, resolveDeckTurn)
   BREAK: 0.15,       // of her crew at the start: at or under it she breaks (at 6 she fights to the last)
   FULL: 4,           // the heads a boarding run that landed in full brings over a half one's (shipcombat.js boardersFor)
-  CORSAIR_LESS: 2,   // the heads fewer a corsair's full run brings, and she has aboard when we board her (boardersFor): her charge takes heads of ours the rest of her crew would otherwise
+  CORSAIR_LESS: 2,   // the heads fewer a corsair has aboard when we board her, and brings on a full run (the duel's, duel.js; her ship fight boards at a half run, so not there) (boardersFor): her charge takes heads of ours the rest of her crew would otherwise
   FULL_PAIR: 2,      // and for a raider pair, which brings two more of its own: a pair at grade 1 or 2 came over with 10 and 12, and took the bridge one time in two
   SUIT: 0.2,         // times REPEL_HURT.lose: the standard suit's stat (the hand standing in the fight is hurt less often); under the lock fight's 0.3, since a deck fight lasts about twice the turns (measured over 120 chapters, tests/distribution/stakes-fights.test.js)
   CASUALTY: 0.3,     // of our heads lost, the share that is a casualty (fightui.js deckLoss); the rest are downed and get up after it, so that a fight kills about as many as the lock fight did (R42)
@@ -305,7 +305,7 @@ function advance(st, atk) {
   return S[from][atk] <= S[to][foe] ? { kind: 'hold', from, to: from, n: 0 } : { kind: to === CARGO ? 'round' : 'push', from, to, n: S[from][atk] };
 }
 
-// Where a corsair's charge goes: the section of ours with the most heads (the nearer the lock on a tie) next to one where theirs stand (`from`, the fullest), or null.
+// Where a corsair's charge goes: the section of ours with the most heads (the first in deck order on a tie) next to one where theirs stand (`from`, the fullest), or null.
 function chargeAt(st) {
   const S = st.sections;
   let best = null;
@@ -336,7 +336,7 @@ function boardMove(st, rand) {
 }
 
 function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
-  const st = copyOf(state), S = st.sections, events = [];
+  const st = copyOf(state), S = st.sections, events = [], stood = st.hand;  // stood: where the hand began the turn
   if (stand !== undefined && S[stand] && (stand === st.hand || ADJ[st.hand].includes(stand))) st.hand = stand;
 
   // A hatch is a steady or cover order with an `at`: it works in that section (one the deck lacks drops it), and is rolled before their move, so it can shut a rush's way.
@@ -388,8 +388,8 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
 
   // The hand's act and the crew order: steady and cover go through abilityStep, once each for the order and the act. Cover is once a fight, and is made for us
   // (our cover). A steady one with nobody of theirs in the section is not rolled, and says so (R34). A pull back takes the hand and all of ours there one section back
-  // (none from the back section), and the order is then worked where the hand has gone.
-  const pulled = asObj(act) && asObj(act).kind === 'pullback' && back[st.hand] !== st.hand;
+  // (none from the back section, and none on a turn the hand moved: a section a turn), and the order is then worked where the hand has gone.
+  const pulled = asObj(act) && asObj(act).kind === 'pullback' && st.hand === stood && back[st.hand] !== st.hand;
   if (pulled) {
     const from = st.hand, n = S[from].mine;
     moveHeads(S, 'mine', from, back[from], n); st.hand = back[from];
@@ -429,7 +429,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
     const s = S[shown.at], mine = setterHit || !s.mine ? 0 : Math.min(s.mine, rollsOf(1, deckRule(st, 'CHARGE'), rand));
     s.mine -= mine; s.mineHurt = Math.max(0, hurtOf(s, 'mine') - mine);
     st.charged = st.turn;
-    events.push({ kind: 'charge', at: shown.at, mine, stopped: setterHit });
+    events.push({ kind: 'charge', at: shown.at, from: shown.from, mine, stopped: setterHit });
   }
 
   // A hand left in a section that is theirs alone falls back, one section at a time, to one that is not; with none, it stays with our nearest heads. One hurt roll for it.

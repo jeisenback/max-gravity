@@ -315,22 +315,27 @@ turn (`DECK.WAVE_TURN`), shown at the lock ("3 more at the lock next turn") on t
 wave still to land.
 
 The corsair's marines have the **breaching charge**. Where their move would be a push or a hold, and one of theirs stands next to
-a section of ours, the charge is shown on that section ("Boarders: a charge on the Corridor. It blows this turn."; the one of ours
-with the most heads, if more than one), marked CHARGE on the strip. It is never shown two turns running and never feinted. Its
-setter stands in the section of theirs it is set from. The charge blows at the end of the turn, after the exchange and the shot:
+a section of ours, the charge is shown on that section ("Boarders: a charge on the Corridor, set from the Lock. Hit them in the
+Lock to stop it; it blows this turn."; the one of ours with the most heads, the first in deck order on a tie), marked CHARGE on
+the strip and SETTER on the section it is set from. It is never shown two turns running and never feinted. Its setter stands in
+the section of theirs it is set from. The charge blows at the end of the turn, after the exchange and the shot:
 it downs one of ours there outright (`DECK.CHARGE`), past cover and wounds, the wounded first, and each downed rolls for a
 casualty as an exchange's do. **It is stopped at its setter:** if ours downed or wounded one of theirs in that section this turn
 (the shot aimed there, a steady worked there, the hand's, an order's or the pilot's hatch, or the trade where ours stand there),
-it does not blow. A steady in the charged section itself does not stop it. The hand's act **pull back** takes the hand and all of
+it does not blow ("the charge in the Corridor never blows: they were hit in the Lock"). A steady in the charged section itself
+does not stop it, and a charge that blows where none of ours are left says so ("the charge blows in the Corridor on nobody"). The hand's act **pull back** takes the hand and all of
 ours in its section one section back (toward our bridge repelling, toward her lock boarding her) before it blows, and gives up the
-ground; it is not offered in the back section (our bridge, her lock). A corsair's full run, and her crew aboard when we board
-her, is two heads fewer than another ship's would be (`DECK.CORSAIR_LESS`): her charge takes heads of ours the rest of her crew
-would otherwise.
+ground; it is offered only when the hand stays in its section that turn (a section a turn: the engine ignores one on a turn the
+hand moved), and not in the back section (our bridge, her lock). Her crew aboard when we board her, and a corsair's full run in
+the duel, is two heads fewer than another ship's would be (`DECK.CORSAIR_LESS`): her charge takes heads of ours the rest of her
+crew would otherwise. In the ship fight she fights with torpedoes, so she boards us at a half run (`fightui.js` fightBoarded),
+which it leaves alone: three heads at grade 0, two more a grade.
 
 Repelling a corsair, the charge is a cost, not a puzzle. With two standing all of ours hold our bridge and her setter stands in
-the corridor, which is where any plan that goes where the fight is shoots anyway: `order` wins 98% to the answer's 97%, and
-random play with five standing loses 0.50 dead a fight against a raider's 0.33. Boarding her, it is the puzzle: with two
-standing, the answer wins 87%, the same answer that does not read the charge 61%, and no fixed policy more than 18%.
+the corridor, which is where any plan that goes where the fight is shoots anyway: `order` wins 99% to the answer's 98%, and
+random play with five standing loses 0.38 dead a fight to her half run of three (a raider's full run of six, 0.40). Boarding
+her, it is the puzzle: with two standing, the answer wins 85%, the same answer that does not read the charge 58%, and no fixed
+policy more than 16%.
 
 Each turn the hand stands or moves one section, does one thing there (shoots, uses one of the post's two abilities: the
 steady one takes one of them down, the cover one makes two points of cover, once a fight; or pulls back), and gives one order to a named
@@ -430,11 +435,12 @@ the run that wrote this section (after the final review's tune, #808):
   loses 77%: no policy with the moves beats `answer` against any type. In the soak (`npm run soak`, seeds 1 to 40, the soak's
   downtime picked at random) a chapter learns two moves or more 24 times in 40 and both level-1 moves 20 times; in the
   play-throughs (seeds 1 to 5, Hester) four of five learn vent and lead, and lead is used in four, split in one and vent in two.
-- **The deck fights** (`node tools/fights.js --seeds 1,2 --n 200 --deck-only --groups party,level,grade,charge`, the deck test's own
-  draws: tests/fights.test.js). A hand at level 2, her grade 0; each cell is won with two standing / five, then the mean
-  turns. The fixed policies go where the fight is, reading neither the rush nor the charge: `shoot` fires there, `cover` makes
+- **The deck fights** (`node tools/fights.js --seeds 1,2 --n 200 --deck-only --groups party,level,grade,charge,setpiece`, the deck
+  test's own runs: tests/fights.test.js; each cell plays on its own stream, seeded from the run's seed and the cell's name, so a
+  change to one cell moves no other's numbers). A hand at level 2, her grade 0; a raider boards us at a full run and a corsair
+  at a half one, as in the game; each cell is won with two standing / five, then the mean turns. The fixed policies go where the fight is, reading neither the rush nor the charge: `shoot` fires there, `cover` makes
   the cover first, `order` shoots and sends the first crewmate on offer every turn. `random` draws each part of the plan from
-  what the panel offers, the pull back among them. `answer` (tools/answer.js answerDeck) meets a shown rush in its path, or
+  what the panel offers, the pull back among them when it stands still. `answer` (tools/answer.js answerDeck) meets a shown rush in its path, or
   hatches it when the hand is too far, else goes where the fight is, aims the shot at the most of theirs wounded in reach, and
   orders the first crewmate on offer; boarding her it makes the cover first. On a shown charge it hits the setter: it shoots
   into the charge's `from` from the first stand whose shot reaches it (the plan's, the hand's, a section a step away), else,
@@ -443,35 +449,41 @@ the run that wrote this section (after the final review's tune, #808):
 
   | Raider party | random | shoot | cover | order | answer |
   |---|---|---|---|---|---|
-  | repelling | 26% / 56%, 4.1 / 5.7 | 25% / 94%, 3.0 / 5.0 | 36% / 93%, 3.3 / 5.2 | 69% / 97%, 3.5 / 4.1 | 97% / 97%, 5.1 / 4.1 |
-  | boarding her | 22% / 85%, 5.8 / 6.0 | 29% / 97%, 5.0 / 3.9 | 21% / 95%, 5.1 / 4.3 | 55% / 97%, 4.4 / 3.6 | 79% / 97%, 4.2 / 3.6 |
+  | repelling | 28% / 48%, 4.2 / 5.4 | 25% / 96%, 2.9 / 5.0 | 36% / 92%, 3.3 / 5.3 | 63% / 97%, 3.5 / 4.1 | 97% / 97%, 5.1 / 4.1 |
+  | boarding her | 27% / 89%, 5.3 / 5.6 | 30% / 96%, 5.1 / 4.0 | 21% / 96%, 5.1 / 4.4 | 53% / 97%, 4.4 / 3.5 | 81% / 97%, 4.3 / 3.7 |
 
   | Corsair party | random | shoot | cover | order | answer |
   |---|---|---|---|---|---|
-  | repelling | 17% / 61%, 4.8 / 6.8 | 96% / 96%, 6.4 / 4.8 | 95% / 96%, 7.3 / 5.3 | 98% / 96%, 4.8 / 3.8 | 97% / 98%, 4.7 / 3.8 |
-  | boarding her | 13% / 81%, 3.5 / 5.5 | 18% / 97%, 2.8 / 4.2 | 10% / 95%, 3.2 / 4.7 | 17% / 97%, 3.8 / 3.6 | 87% / 98%, 4.0 / 3.8 |
+  | repelling | 31% / 74%, 5.1 / 6.1 | 98% / 97%, 4.9 / 3.7 | 96% / 97%, 5.9 / 4.0 | 99% / 100%, 4.2 / 3.1 | 98% / 100%, 4.2 / 3.1 |
+  | boarding her | 16% / 92%, 3.6 / 5.0 | 16% / 97%, 2.8 / 4.2 | 10% / 94%, 3.1 / 4.6 | 16% / 96%, 3.7 / 3.5 | 85% / 98%, 4.0 / 3.8 |
+
+  A grade 2 corsair, the chapter's setpiece (`js/fightladder.js`; the `setpiece` group, reported, not checked): repelling her
+  half run of seven, the answer wins 92% / 98% (5.7 / 4.2 turns), random play 29% / 54% with 0.55 dead a fight at five
+  standing; boarding her, the answer wins 73% / 96% (4.8 / 4.1), random play 2% / 41% with 0.76 dead a fight at five.
 
   The answer by the post's level, two standing, against raiders:
 
   | Level | 0 | 1 | 2 | 3 |
   |---|---|---|---|---|
-  | repelling | 65%, 5.3 turns | 66%, 5.2 | 97%, 5.1 | 98%, 4.3 |
-  | boarding her | 42%, 4.5 | 41%, 4.5 | 83%, 4.2 | 84%, 4.1 |
+  | repelling | 67%, 5.3 turns | 65%, 5.3 | 96%, 5.1 | 99%, 4.4 |
+  | boarding her | 41%, 4.5 | 41%, 4.5 | 78%, 4.2 | 83%, 4.1 |
 
   The level that counts is 2, where the shot reaches the next section: a hand at level 0 or 1 with two standing wins a repel
-  two times in three and boarding her two in five. The charge was tuned on these draws (Task 5). When a steady in the charged
-  section stopped it, it could down no more than 0 to 1 (with two standing all of ours hold our bridge, the back section). Stopped
-  at its setter instead, at 1 to 3 heads and her party one fewer, the answer won 98% / 99% repelling her and 47% / 97% boarding
-  her; at 1 head and her party two fewer it is the table above (the owner's ruling, 2026-10-27). With the charge off (her party one fewer), random play
-  repelling her with five standing lost 0.32 dead a fight; the test holds it within 0.15 of 0.52. The hand is hurt in about a
-  quarter to a third of `answer`'s fights (raiders: repelling 26% / 23%, boarding her 25% / 21%; a corsair: 24% / 21% and 25% /
-  24%).
-- **Repelling boarders**, random play, five standing: against raiders by her grade won 58%, 29%, 12%, and dead a fight 0.33,
-  0.45, 0.48 (0.32, 0.44, 0.49 before the parties); against a corsair at grade 0, 0.50. With two standing the answer against
+  two times in three and boarding her two in five. The test holds random play repelling a corsair with five standing within 0.15
+  of 0.52 dead a fight: the raider repel's grade-0 baseline, 0.32, plus 0.2. The hand is hurt in a tenth to a third of `answer`'s
+  fights (raiders: repelling 31% / 23%, boarding her 24% / 24%; a corsair: 16% / 11% and 29% / 28%).
+
+  *How the charge was tuned* (history, Task 5; not the rules now): when a steady in the charged section stopped it, it could down
+  no more than 0 to 1 (with two standing all of ours hold our bridge, the back section). Stopped at its setter instead, at 1 to 3
+  heads and her party one fewer, the answer won 98% / 99% repelling her and 47% / 97% boarding her; at 1 head and her party two
+  fewer (the owner's ruling, 2026-10-27) it is the table above. Those runs repelled her at a full run, on one stream for every
+  cell; with the charge off (her party one fewer) random play repelling her with five standing lost 0.32 dead a fight.
+- **Repelling boarders**, random play, five standing: against raiders by her grade won 50%, 23%, 11%, and dead a fight 0.45,
+  0.41, 0.47 (0.32, 0.44, 0.49 before the parties); against a corsair at grade 0, at her half run, 0.38. With two standing the answer against
   raiders loses no one (0.00 dead a fight).
-- **Boarding her**, random play, five standing: against raiders by her grade won 80%, 57%, 21%, and dead a fight 0.26, 0.51,
-  0.33 (0.36, 0.49, 0.55 before the parties; the test holds it at no more than those and 0.15); against a corsair at grade 0,
-  0.38. The answer with two standing against raiders: 0.13 dead a fight.
+- **Boarding her**, random play, five standing: against raiders by her grade won 87%, 73%, 33%, and dead a fight 0.27, 0.42,
+  0.40 (0.36, 0.49, 0.55 before the parties; the test holds it at no more than those and 0.15); against a corsair at grade 0,
+  0.38. The answer with two standing against raiders: 0.12 dead a fight.
 - **In the soak** (`npm run soak`, the deck fights played by `answerDeck`; seeds 1 to 120, tests/distribution/stakes-fights.test.js): the
   hand is hurt 0.55 times a chapter, 9 of the 66 in 265 repels; 3 of 120 chapters lose the captain on the bridge and 5 the hand,
   8 in all (the limit is 3 in 40). With the charge the same: 66 hurts, 4 hurt again, 8 ended early; of the 257 deck fights begun,

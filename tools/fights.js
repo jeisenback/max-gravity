@@ -19,7 +19,7 @@ const { load } = require('../tests/nodecontext');
 // One seed's trials. Returns raw tallies, so the seeds can be summed.
 async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, raid = true, lock = true, cutter = true, groups = null, moves = false } = {}) {  // raid: false leaves out the ship fights; lock: false the deck fights started directly; cutter: false the navy stop's trials; groups: only these groups of deck fights
   const { ev, errors, ctx } = await open({ scope: 'earth-hired', seed, debt: true, stall: 0 });
-  const r = await ev(([trials, postKey, shipId, asOwner, raidFights, lockFights, cutter, groups, answerSrc, withMoves, deckSrc]) => {
+  const r = await ev(([trials, postKey, shipId, asOwner, raidFights, lockFights, cutter, groups, answerSrc, withMoves, deckSrc, runSeed]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st0 = G.state; st0.story.next = 1e9; st0.day += 30; hired().raidTold = true;  // the first raid is explained once; these are the raids after it
     if (asOwner) { const crew0 = [...st0.crew], fit = { ...st0.outfits }, torps = st0.torpedoes; hired().debt = 0; st0.credits = buyInPrice(st0.shipId); buyIn(st0.shipId); while (G.dialog) finishEvent(); st0.crew = crew0; st0.outfits = fit; st0.torpedoes = torps; st0.armor = ship().armor; if (hired()) throw new Error('the buy did not make an owner'); }  // the same ship, fitting and crew: the buy took a friend and cleared the captain's outfits (buyIn), and the rest are put back
@@ -44,7 +44,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     const deckAnswer = (0, eval)(`(${deckSrc})`);  // tools/answer.js
     const goal = s => deckAnswer(s, false).stand;
     const POLICY = {
-      random: s => { const f = s.state, stand = rnd(near(f)); return { stand, act: rnd(['shoot', 'steady', ...(f.used.cover ? [] : ['cover']), ...((f.assault ? BACK : FORWARD)[stand] === stand ? [] : ['pullback'])]), shootAt: rnd([stand, ...(f.level >= DECK.SIDEARM_REACH_LEVEL ? ADJ[stand].filter(i => f.sections[i]) : [])]), order: rnd([null, ...repelOrders(s, f.used.cover).map(o => o.id)]) }; },
+      random: s => { const f = s.state, stand = rnd(near(f)); return { stand, act: rnd(['shoot', 'steady', ...(f.used.cover ? [] : ['cover']), ...(stand !== f.hand || (f.assault ? BACK : FORWARD)[stand] === stand ? [] : ['pullback'])]), shootAt: rnd([stand, ...(f.level >= DECK.SIDEARM_REACH_LEVEL ? ADJ[stand].filter(i => f.sections[i]) : [])]), order: rnd([null, ...repelOrders(s, f.used.cover).map(o => o.id)]) }; },
       shoot: s => ({ stand: goal(s), act: 'shoot', shootAt: goal(s), order: null }),
       cover: s => ({ stand: goal(s), act: s.state.used.cover ? 'shoot' : 'cover', shootAt: goal(s), order: null }),
       order: s => deckAnswer(s, false),
@@ -141,7 +141,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       const t = { n: 0, won: 0, rounds: 0, hurt: 0, dead: 0, marked: 0, hand: 0, anyHurt: 0, died: 0, capped: 0 };
       for (let i = 0; i < trials; i++) {
         restore(crewN, level); const foe = foeOf(party);
-        const s = kind === 'repel' ? repelStart({ foe, foeHp: 0, init: 'foe', grade }, 'full') : assaultStart(foe, { grade });
+        const s = kind === 'repel' ? repelStart({ foe, foeHp: 0, init: 'foe', grade }, party === 'corsair' ? 'half' : 'full') : assaultStart(foe, { grade });  // as the game boards you (fightui.js fightBoarded): a raider grapples, a full run; a corsair fights with torpedoes, a half one
         window.__texts = '';
         openEvent(deckFightEvent(s));
         if (drive(policy)) t.capped++;  // a fight the tool gave up on: it never ended
@@ -155,21 +155,33 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       ['party', ['raider', 'corsair'].flatMap(party => ['random', 'shoot', 'cover', 'order', 'answer'].flatMap(p => [2, 5].map(c => [party, c, 2, p, 0])))],
       ['level', [0, 1, 2, 3].map(l => ['raider', 2, l, 'answer', 0])],
       ['grade', [0, 1, 2].map(g => ['raider', 5, 2, 'random', g])],
-      ['charge', [['corsair', 2, 2, 'answerNoCharge', 0]], 'assault'],  // boarding her only, and played last, so the cells before it keep their draws
+      ['charge', [['corsair', 2, 2, 'answerNoCharge', 0]], 'assault'],  // boarding her only
+      ['setpiece', ['answer', 'random'].flatMap(p => [2, 5].map(c => ['corsair', c, 2, p, 2]))],  // a grade 2 corsair, the chapter's setpiece (fightladder.js): reported, not checked
     ];
+    // Each cell draws on its own stream, seeded from the run's seed and the cell's name (FNV-1a), so a change to one cell cannot move another's numbers;
+    // the page's own generator (tests/helpers.js __seed) is put back after it.
+    const ownStream = (name, play) => {
+      let h = 0x811c9dc5 ^ runSeed;
+      for (const c of name) h = Math.imul(h ^ c.charCodeAt(0), 0x01000193);
+      const was = Math.random; __seed(h >>> 0);
+      try { return play(); } finally { Math.random = was; }
+    };
     // They are played without drawing the panel (UI.showEvent): the drawing rolls nothing, so the tallies are the same, and the tens of thousands of panels in one
     // evaluate grew the page about 0.7 MB a fight until it crashed.
     const show = UI.showEvent;
     if (lockFights) UI.showEvent = () => {};
     if (lockFights) for (const kind of ['repel', 'assault']) {
       for (const [group, list] of cells.filter(([g, , only]) => (!groups || groups.includes(g)) && (!only || only === kind))) {
-        for (const [party, crewN, level, policy, grade] of list) out[kind][`${group}|${party} crew ${crewN} level ${level} ${policy} grade ${grade}`] = lock(kind, party, crewN, level, policy, grade);
+        for (const [party, crewN, level, policy, grade] of list) {
+          const name = `${group}|${party} crew ${crewN} level ${level} ${policy} grade ${grade}`;
+          out[kind][name] = ownStream(`${kind}|${name}`, () => lock(kind, party, crewN, level, policy, grade));
+        }
       }
     }
     UI.showEvent = show;
     out.crewAboard = crewAll.length;
     return out;
-  }, [n, post, ship, owner, raid, lock, cutter, groups, answerOrders.toString(), moves, answerDeck.toString()]);
+  }, [n, post, ship, owner, raid, lock, cutter, groups, answerOrders.toString(), moves, answerDeck.toString(), seed]);
   await ctx.close();
   return { seed, owner, post, ...r, errors };
 }

@@ -23763,7 +23763,7 @@
    },
    {
     "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: a charge on the Corridor. It blows this turn.",
+    "read": "Turn 1 of 8. Boarders: a charge on the Corridor, set from the Lock. Hit them in the Lock to stop it; it blows this turn.",
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
@@ -23775,18 +23775,18 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: a charge on The Corridor. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: a charge on The Corridor, set from The Lock. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "log": "Turn 1: the charge blows in the Corridor, 1 of ours down. None of them are where you stand.",
     "end": false
    },
    {
-    "log": "Turn 1: 1 of them and 0 of ours down in the Lock, the charge in the Corridor never blows.",
+    "log": "Turn 1: 1 of them and 0 of ours down in the Lock, the charge in the Corridor never blows: they were hit in the Lock.",
     "end": false
    },
    {
-    "log": "Turn 1: ours fall back to the Bridge, the charge blows in the Corridor, 0 of ours down.",
+    "log": "Turn 1: ours fall back to the Bridge, the charge blows in the Corridor on nobody.",
     "end": false
    },
    {
@@ -24154,7 +24154,7 @@
    },
    {
     "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: a charge on her Lock. It blows this turn.",
+    "read": "Turn 1 of 8. Her crew: a charge on her Lock, set from her Corridor. Hit them in her Corridor to stop it; it blows this turn.",
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
@@ -24166,7 +24166,7 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: a charge on Her Lock. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: a charge on Her Lock, set from Her Corridor. 4 of their 4 still up; they fight to the last."
    }
   ]
  }

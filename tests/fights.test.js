@@ -113,7 +113,7 @@ test('with the moves, each helps against its type, no fixed plan beats reading h
 // - with two crew the answer wins more than every fixed policy, and at least 60%; with five it wins at least 90%, and no fixed policy wins more (with five crew, by more than 0.02);
 // - its fights last 2.5 turns or more on the mean;
 // - random play with five crew costs at most 0.15 a fight more dead by her grade than before the parties (0.36, 0.49 and 0.55): fewer is allowed.
-// The ship fights are left out (raid: false), and only the groups asked are played; the corsair's checks, on the same draws, are the test after this one.
+// The ship fights are left out (raid: false), and only the groups asked are played (each cell on its own seeded stream); the corsair's checks, on the same runs, are the test after this one.
 let deckRuns = null;  // the deck fights, played once for the raider's test and the corsair's
 const deckFights = async () => {
   const runs = await (deckRuns = deckRuns || Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['party', 'level', 'grade', 'charge'] }))));
@@ -132,12 +132,13 @@ function deckChecks(k, kind, party) {
     assert.ok(ans >= least, `${party}, ${kind} with ${crew} crew: answer wins ${f2(ans)}`);
     for (const p of ['random', 'shoot', 'cover', 'order']) {
       const w = won(cell(crew, p));
-      // with five crew a fixed policy may come within 0.02 of answer: about 1.7 standard errors at n = 400 and p near 0.97, and every cell draws on one stream;
+      // with five crew a fixed policy may come within 0.02 of answer: about 1.7 standard errors at n = 400 and p near 0.97;
       // so may one repelling a corsair with two crew, where every plan that goes where the fight is shoots her charge's setter without reading it
       const margin = crew === 5 || (party === 'corsair' && kind === 'repel');
       assert.ok(margin ? w <= ans + 0.02 : kind === 'assault' ? w < ans : w <= ans, `${party}, ${kind} with ${crew} crew: ${p} ${f2(w)}, answer ${f2(ans)}`);
     }
-    assert.ok(kind === 'assault' ? t >= 2.5 : t >= 3.5 && t <= 6.5, `${party}, ${kind} with ${crew} crew: answer's fights last ${f2(t)} turns`);
+    const floor = kind === 'assault' || party === 'corsair' ? 2.5 : 3.5;  // repelling a corsair is a cost, as boarding her is: her half run of three ends in about three turns (the owner, 2026-10-27)
+    assert.ok(t >= floor && (kind === 'assault' || t <= 6.5), `${party}, ${kind} with ${crew} crew: answer's fights last ${f2(t)} turns`);
   }
 }
 test('against raiders the answer wins a repel nine in ten in four to six turns and the level counts, boarding her is a short risky push it wins, and no fixed plan beats it', async () => {
@@ -156,9 +157,10 @@ test('against raiders the answer wins a repel nine in ten in four to six turns a
   }
 });
 
-// The corsair's party (Task 5: her breaching charge, stopped by hitting its setter, and the pull back), on the same draws and the same rules as the raider's
-// above, at level 2, with two crew and with five: the answer's least wins, no fixed policy above it (with five crew, and repelling with two, by more than 0.02)
-// and its turns, as above; random play with five crew at grade 0 (the only grade the tool plays a corsair at) costs dead a fight within 0.15 of 0.52 repelling
+// The corsair's party (Task 5: her breaching charge, stopped by hitting its setter, and the pull back), on the same runs and the same rules as the raider's
+// above, repelling her at a half run as the game does (she fights with torpedoes, fightui.js fightBoarded), at level 2, with two crew and with five: the
+// answer's least wins, no fixed policy above it (with five crew, and repelling with two, by more than 0.02) and its turns, as above but 2.5 turns or more
+// repelling her too; random play with five crew at grade 0 (the grade checked; the tool reports grade 2, her setpiece, unchecked) costs dead a fight within 0.15 of 0.52 repelling
 // and at most 0.15 over 0.36 boarding her; boarding her with two crew, going to them and shooting (`shoot`), which stands in the charge, wins less than the
 // answer (not checked repelling her, where her charge is a cost, not a puzzle, and shoot against answer is a strict check on noise: the 0.02 margin above holds
 // it); and boarding her with two crew, the answer wins at least 0.2 more than the answer without its charge rule (`answerNoCharge`).
@@ -167,7 +169,7 @@ test('against a corsair\'s charge the answer wins a repel nine in ten and boardi
   for (const kind of ['repel', 'assault']) {
     const k = r[kind], cell = (crew, policy) => k[`party|corsair crew ${crew} level 2 ${policy} grade 0`];
     deckChecks(k, kind, 'corsair');
-    // repelling a corsair is the cost of her charge, not a puzzle: 0.2 over the raider's 0.32
+    // repelling a corsair is the cost of her charge, not a puzzle: 0.2 over the raider repel's grade-0 baseline (DEAD.repel[0], 0.32)
     const now = dead(cell(5, 'random')), was = kind === 'repel' ? DEAD.repel[0] + 0.2 : DEAD.assault[0];
     assert.ok(kind === 'assault' ? now <= was + 0.15 : Math.abs(now - was) <= 0.15, `corsair, ${kind}: ${f2(now)} dead a fight against ${f2(was)}`);
     if (kind === 'assault') assert.ok(won(cell(2, 'shoot')) < won(cell(2, 'answer')), `corsair, ${kind} with two crew: shoot ${f2(won(cell(2, 'shoot')))}, answer ${f2(won(cell(2, 'answer')))}`);

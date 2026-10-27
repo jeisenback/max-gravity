@@ -47,12 +47,13 @@ test('a rush is drawn through the section it passes, and the heads still to land
   assert.doesNotMatch(fightStrip({ titles, sections, hand: 2, move: null, feint: false }), /class="wave"/, 'no line when none are to land');
 });
 
-test('a charge is marked on the section it blows in, not drawn as an arrow, and the label names it', () => {
+test('a charge is marked on the section it blows in and its setter\'s, not drawn as an arrow, and the label names both', () => {
   const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 0, theirs: 3, cover: 1 }, { mine: 2, theirs: 0, cover: 2 }, { mine: 1, theirs: 0, cover: 1 }];
   const svg = fightStrip({ titles, sections, hand: 2, move: { kind: 'charge', at: 1, from: 0, n: 0 }, feint: false });
   assert.doesNotMatch(svg, /<path class="move"/, 'no arrow');
   assert.equal((svg.match(/<text class="charge"[^>]*>CHARGE</g) || []).length, 1, 'one mark');
-  assert.match(svg, /Their move: a charge on The Corridor\./);
+  assert.equal((svg.match(/<text class="setter"[^>]*>SETTER</g) || []).length, 1, 'and one on the section it is set from');
+  assert.match(svg, /Their move: a charge on The Corridor, set from The Lock/);
 });
 
 test('the strip draws a section\'s wounded as a hollow count beside the heads, and the label says so', () => {

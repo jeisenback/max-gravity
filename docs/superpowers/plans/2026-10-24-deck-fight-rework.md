@@ -313,6 +313,23 @@ PR 1 opens after Task 4, when the owner asks.
 
 ### Task 5: the breaching charge and pull back
 
+> **As shipped** (PR #826). The text below this block was written before the owner's and the ledger's rulings of 2026-10-27
+> (`.superpowers/sdd/2026-10-24-deck-fight-rework/progress.md`) and is kept as it was; where it differs, this block is what shipped.
+> - `DECK.CHARGE = [1, 1]`: a charge downs one of ours.
+> - The charge blows at the end of the turn it is shown, after the exchange and the shot, and is stopped when one of theirs in its
+>   `from` (the setter's section) is downed or wounded that turn: the shot aimed there, a steady or hatch worked there, or the trade
+>   where ours stand there. The shown charge, the strip (CHARGE and SETTER) and the log name `from`.
+> - Pull back goes toward our bridge repelling and toward her lock boarding her, and only when the hand stays in its section that
+>   turn (the panel offers it only then, and the engine ignores it on a turn the hand moved).
+> - `DECK.CORSAIR_LESS = 2` applies boarding her and in the duel's full run; her ship fight boards at a half run, where it does not.
+>   The fight tool repels a corsair at a half run, as the game does (`fightui.js` fightBoarded).
+> - `answerDeck` has a charge branch (shoot into `from` from a stand that reaches it, else pull back, else the pilot's steady hatch
+>   at `from`); the tool's `charge` cell plays `answerNoCharge`, the answer without it, boarding her with two standing.
+> - The corsair checks as ruled: repelling her, a fixed policy may come within 0.02 of the answer with two standing (as with five),
+>   her fights last 2.5 turns or more, and random play's dead a fight is within 0.15 of 0.52 (the raider repel's grade-0 baseline,
+>   0.32, plus 0.2); `shoot` below the answer with two standing is checked boarding her only; and boarding her with two standing the
+>   answer wins 0.2 or more over `answerNoCharge`.
+
 Written in full after PR 1 (#825) merged, for the engine as it now stands: wounds, `deckRule`, `DECK.ASSAULT`, the panel plan
 `{ stand, act, shootAt, order, at }`, and `answerDeck(s, read)`. The owner's choice (2026-10-27): a charge downs.
 

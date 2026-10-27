@@ -257,8 +257,8 @@ function deckFightEvent(s, plan = {}) {
   if (!s.shown) s.shown = boardMove(f, Math.random);
   const p = { stand: f.hand, act: 'shoot', order: null, ...plan }, m = s.shown, there = p.at === undefined ? p.stand : p.at;  // `there`: where a hatch is worked
   const near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])], aims = [p.stand, ...(f.level >= DECK.SIDEARM_REACH_LEVEL ? ADJ[p.stand].filter(i => f.sections[i]) : [])], aim = aims.includes(p.shootAt) ? p.shootAt : p.stand,  // `aim`: where the shot goes
-    back = fallTo({ ...f, hand: p.stand }), acts = DECK_ACTS.filter(k => (k !== 'cover' || !f.used.cover) && (k !== 'pullback' || back !== p.stand));  // no pull back from the back section
-  if (!acts.includes(p.act)) p.act = 'shoot';  // a pull back planned before the hand moved to the back section
+    back = fallTo(f), acts = DECK_ACTS.filter(k => (k !== 'cover' || !f.used.cover) && (k !== 'pullback' || (p.stand === f.hand && back !== f.hand)));  // a pull back only where the hand stays (a section a turn), and none from the back section
+  if (!acts.includes(p.act)) p.act = 'shoot';  // a pull back planned before the hand moved
   const orders = repelOrders(s, f.used.cover || p.act === 'cover'), order = orders.find(o => o.id === p.order) || null;
   const next = (list, x) => list[(list.indexOf(x) + 1) % list.length], redo = change => () => deckFightEvent(s, { ...p, ...change });
   const ability = k => deckWords(`ability.${post}.${k}.label`, FIGHT_ABILITY[post][k].label);
@@ -276,7 +276,7 @@ function deckFightEvent(s, plan = {}) {
   const who = fightSay(`deck.who.${s.assault ? 'assault' : 'repel'}`), feint = mayFeint(f, m) ? ` ${fightSay('deck.feint')}` : '';
   return {
     title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s,
-    read: `${fightSay('deck.turn', { n: f.turn + 1, max: DECK.TURNS })} ${fightSay(`deck.${m.kind}`, { who, n: m.n, ...(m.kind === 'charge' ? { at: deckAt(s, m.at) } : { to: deckAt(s, m.to) }), ...(m.via === undefined ? {} : { via: deckAt(s, m.via) }) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
+    read: `${fightSay('deck.turn', { n: f.turn + 1, max: DECK.TURNS })} ${fightSay(`deck.${m.kind}`, { who, n: m.n, ...(m.kind === 'charge' ? { at: deckAt(s, m.at), from: deckAt(s, m.from) } : { to: deckAt(s, m.to) }), ...(m.via === undefined ? {} : { via: deckAt(s, m.via) }) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
     board: deckBoard(s, m.kind === 'hold' ? null : m),
     text: [deckOpening(s), ...(s.held.length ? [s.held.join(' ')] : []), ...f.log.slice(-3)].join('</p><p>'),
     choices,
@@ -311,7 +311,7 @@ function deckTurn(s, p) {
     if (e.kind === 'hatch') said.push(fightSay('deck.log.hatch', { at: at(e.at), how: fightSay(e.worked ? 'deck.hatch.worked' : 'deck.hatch.failed') }));
     if (e.kind === 'wave') said.push(fightSay('deck.log.wave', { n: e.n }));
     if (e.kind === 'pullback') said.push(fightSay('deck.log.pullback', { to: at(e.to) }));
-    if (e.kind === 'charge') said.push(e.stopped ? fightSay('deck.log.chargeStopped', { at: at(e.at) }) : fightSay('deck.log.charge', { at: at(e.at), mine: e.mine }));
+    if (e.kind === 'charge') said.push(e.stopped ? fightSay('deck.log.chargeStopped', { at: at(e.at), from: at(e.from) }) : e.mine ? fightSay('deck.log.charge', { at: at(e.at), mine: e.mine }) : fightSay('deck.log.chargeEmpty', { at: at(e.at) }));
   }
   for (const e of r.events.filter(x => x.kind === 'exchange' || x.kind === 'charge')) for (let n = 0; n < e.mine; n++) { const line = deckLoss(s, sent); sent = null; if (line) after.push(line); }
   const missed = r.events.find(e => e.kind === 'shoot' && e.nobody);  // a shot with none of them there, as a steady one says: where the hand stands, or the section it was aimed at

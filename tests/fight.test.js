@@ -1027,8 +1027,8 @@ test('a corsair party next to ours shows a charge on the section of ours with th
 test('a charge blows in the turn it is shown: DECK.CHARGE of ours in its section down outright, past cover and wounds, the wounded first', () => {
   const blow = rand => { const st = chargeDeck(); st.hand = BRIDGE; Object.assign(st.sections[CORRIDOR], { mine: 4, mineHurt: 1, cover: 3 }); return resolveDeckTurn(st, { stand: BRIDGE, act: null, order: null }, boardMove(st, LOW), rand); };
   const [lo, hi] = DECK.CHARGE, low = blow(LOW), high = blow(HIGH);
-  assert.deepEqual(plain(low.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, mine: lo, stopped: false }, 'the least of the roll');
-  assert.deepEqual(plain(high.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, mine: hi, stopped: false }, 'the most of the roll');
+  assert.deepEqual(plain(low.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, from: LOCK, mine: lo, stopped: false }, 'the least of the roll');
+  assert.deepEqual(plain(high.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, from: LOCK, mine: hi, stopped: false }, 'the most of the roll');
   assert.deepEqual([low.state.sections[CORRIDOR].mine, low.state.sections[CORRIDOR].mineHurt], [4 - lo, 0], 'the wounded one is downed first, and cover 3 cuts none of it');
   assert.deepEqual([high.state.sections[CORRIDOR].mine, high.state.sections[CORRIDOR].mineHurt], [4 - hi, 0]);
   assert.ok(!low.events.some(e => e.kind === 'move'), 'the setter does not move');
@@ -1053,7 +1053,7 @@ test('hitting its setter stops the charge: the shot aimed where it stands, a ste
   const inAt = st(); inAt.sections[CORRIDOR].theirs = 1;
   assert.equal(stopped(resolveDeckTurn(inAt, { stand: CORRIDOR, act: { kind: 'steady', odds: 1 }, order: null }, shown, () => 0.5)), false, 'a steady in the charged section, where the setter is not');
   const hit = resolveDeckTurn(st(), { stand: CORRIDOR, act: { kind: 'shoot', at: LOCK }, order: null }, shown, () => 0.5);
-  assert.deepEqual(plain(hit.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, mine: 0, stopped: true });
+  assert.deepEqual(plain(hit.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, from: LOCK, mine: 0, stopped: true });
   assert.equal(hit.state.sections[CORRIDOR].mine, 2, 'none of ours down by it');
 });
 
@@ -1064,7 +1064,7 @@ test('a pull back moves the hand and ours in its section one section back before
   assert.equal(r.state.hand, BRIDGE, 'repelling, back is toward our bridge');
   assert.deepEqual([S[CORRIDOR].mine, S[BRIDGE].mine, S[BRIDGE].mineHurt], [0, 3, 1], 'all of ours there go with the hand, the wounded too');
   assert.deepEqual(plain(r.events.find(e => e.kind === 'pullback')), { kind: 'pullback', from: CORRIDOR, to: BRIDGE, n: 2 });
-  assert.deepEqual(plain(r.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, mine: 0, stopped: false }, 'it blows on nobody');
+  assert.deepEqual(plain(r.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, from: LOCK, mine: 0, stopped: false }, 'it blows on nobody');
   const bridge = chargeDeck(); bridge.hand = BRIDGE;
   const none = resolveDeckTurn(bridge, { stand: BRIDGE, act: 'pullback', order: null }, stay, LOW);
   assert.equal(none.state.hand, BRIDGE, 'from the back section there is nowhere to fall back to');
@@ -1073,6 +1073,14 @@ test('a pull back moves the hand and ours in its section one section back before
   asl.sections = [{ mine: 1, theirs: 0, cover: 0 }, { mine: 2, theirs: 0, cover: 0 }, { mine: 0, theirs: 3, cover: 0 }]; asl.hand = CORRIDOR;
   const a = resolveDeckTurn(asl, { stand: CORRIDOR, act: 'pullback', order: null }, boardMove(asl, LOW), LOW);
   assert.deepEqual([a.state.hand, a.state.sections[LOCK].mine], [LOCK, 3], 'boarding her, back is toward her lock, the way we came');
+});
+
+test('a pull back on a turn the hand moved is ignored: a section a turn, and ours in a section it was not in stay', () => {
+  const st = chargeDeck(); st.hand = BRIDGE; st.sections[CORRIDOR].mine = 2;  // the hand on the bridge, two of ours in the corridor
+  const r = resolveDeckTurn(st, { stand: CORRIDOR, act: 'pullback', order: null }, boardMove(st, LOW), LOW);
+  assert.equal(r.state.hand, CORRIDOR, 'the hand moved into the corridor and stays there');
+  assert.ok(!r.events.some(e => e.kind === 'pullback'), 'no pull back');
+  assert.equal(r.state.sections[BRIDGE].mine, st.sections[BRIDGE].mine, 'none of ours came out of the corridor');
 });
 
 test('a raider party never shows a charge, and a charge is never feinted', () => {
