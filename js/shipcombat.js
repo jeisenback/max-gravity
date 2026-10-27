@@ -24,8 +24,8 @@ function rateFoe(s) {
 const foeFlavor = s => `${GRADE_TEXT[s.grade] || ''}${s.pack ? ' There are two of them, running in company.' : ''}`.trim();
 
 // ---------- boarding and repelling (boarders.js) ----------
-// How many come over the side: her ship's crew, two more when she came fully alongside, two more a grade of a veteran crew, and two more for a pair.
-// A veteran crew's shown move may be a feint (fight.js boardMove), at CUNNING a grade.
+// How many come over the side: her ship's crew, DECK.FULL more when she came fully alongside (a pair DECK.FULL_PAIR; boarding her, DECK.ASSAULT.FULL more aboard her), two more a
+// grade of a veteran crew, and two more for a pair. A veteran crew's shown move may be a feint (fight.js boardMove), at CUNNING a grade.
 const CUNNING = 0.25;  // a veteran's chance, per grade, of a feint
-// The counts are tuned so that five crew win the deck fight about as often by grade as they won the lock fight (repel 83, 59, 40 and assault 82, 62, 34 in a hundred).
-const boardersFor = (foe, outcome, rate = {}) => Math.max(1, (FOE_CREW[foe.shipId] || 3) + (outcome === 'full' ? 2 : 0) + 2 * (rate.grade || 0) + (rate.pack ? 2 : 0));
+// The counts are tuned with the deck's numbers so that the deck answer wins and random play kills about as many by grade as before the parties (COMBAT.md, the deck fight).
+const boardersFor = (foe, outcome, rate = {}) => Math.max(1, (FOE_CREW[foe.shipId] || 3) + (outcome === 'full' ? (rate.assault ? DECK.ASSAULT.FULL : rate.pack ? DECK.FULL_PAIR : DECK.FULL) : 0) + 2 * (rate.grade || 0) + (rate.pack ? 2 : 0));

@@ -63,6 +63,8 @@ function crewSheet({ role, skill, traits, low }) {
   const stat = STAT_BASE + 1 + (traits || []).reduce((n, t) => n + (CREW_TRAIT[t] || 0), 0);
   return { post, stat: Math.max(1, Math.min(STAT_MAX, stat)), skill: Math.max(0, skill - (low ? 1 : 0)) };
 }
+// The orders that are a hatch worked at a section of the crew's choosing (fight.js resolveDeckTurn), by post: the pilot's cycle and the engineer's pressure door.
+const HATCH_ORDER = { pilot: 'steady', engineer: 'cover' };
 const crewOrderOdds = (sheet, kind, hurt) => check(sheet.stat, sheet.skill, DIFFICULTY.post, ABILITY_EDGE[kind] - (hurt ? CREW_HURT : 0));
 // Who can be sent, as { id, first, sheet }: up to ORDERS_MAX of those who have a post, the most skilled first. The first is given the cover while the fight still has it to make
 // (once a fight, the hand's own counts), and the rest the steady ability. Returns each with the `kind` of the order.
@@ -81,11 +83,12 @@ function abilityStep(kind, worked, { pos, boarders, extra }) {
   return { result: 'tie', press: false, boarders, extra: extra.map((n, i) => (i === pos ? n + COVER_MADE : n)) };
 }
 
-// The deck drawn (#786): a cell a section, with both sides' heads in it (ours on the left, theirs on the right), its cover as pips and the hand where they stand, and
+// The deck drawn (#786): a cell a section, with both sides' heads in it (ours on the left, theirs on the right, a hollow count beside each for the wounded among them), its cover as pips and the hand where they stand (beside the pips, clear of the counts), and
 // their shown move as an arrow from where they are to where they say they go, marked MAY FEINT at a veteran grade. A section shows the cover of the side that
-// holds it: hers (`hers`) where only theirs stand, ours (`cover`) otherwise. `titles` names the sections; `move` is { from, to, n }, or null for a hold.
-// `began` and `breakAt`, when given, draw her count under the deck: a mark a head she started with, filled while it stands, and the line at which she breaks (spec Section 3).
-function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 0 }) {
+// holds it: hers (`hers`) where only theirs stand, ours (`cover`) otherwise. `titles` names the sections; `move` is { from, to, n } (a rush adds `via`, the section it goes through), or null for a hold. `wave`, when given, is the line for the heads still to land, drawn under the deck.
+// `began` and `breakAt`, when given, draw her count under the deck: a mark a head she started with, filled while it stands, dashed for the `pending` heads still to land
+// (a repel's wave, which `comeSay` words), hollow once down, and the line at which she breaks, which counts the whole party (spec Section 3).
+function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 0, pending = 0, wave = '', hurtSay = n => `${n} of them wounded`, oursSay = n => `${n} of ours wounded`, comeSay = (n, m) => `${n} aboard, ${m} still to come` }) {
   const n = sections.length, w = Math.floor(348 / n) - 6, mid = i => 6 + i * (w + 6) + w / 2, font = 'font-family="IBM Plex Mono, monospace"';
   const pip = s => (s.theirs && !s.mine ? s.hers || 0 : s.cover);
   const cells = sections.map((s, i) => {
@@ -94,15 +97,19 @@ function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 
     return `<rect class="section" x="${x}" y="22" width="${w}" height="44" fill="${fill}" stroke="${edge}" stroke-width="1.5"/>` +
       `<text x="${x + 4}" y="17" fill="#7fb4ff" font-size="8" ${font} letter-spacing="1">${titles[i].toUpperCase()}</text>` +
       `<text x="${x + 6}" y="40" fill="#7fb4ff" font-size="12" ${font}>${s.mine}</text><text x="${x + w - 6}" y="40" fill="#ff6a4a" font-size="12" text-anchor="end" ${font}>${s.theirs}</text>` +
-      `${i === hand ? `<text class="you" x="${x + w / 2}" y="40" fill="#ffcf7f" font-size="9" text-anchor="middle" ${font}>YOU</text>` : ''}${pips}`;
+      `${s.mineHurt ? `<circle class="hurt" cx="${x + 26}" cy="36" r="4" fill="none" stroke="#7fb4ff"/><text x="${x + 32}" y="40" fill="#7fb4ff" font-size="9" ${font}>${s.mineHurt}</text>` : ''}` +
+      `${s.theirsHurt ? `<circle class="hurt" cx="${x + w - 26}" cy="36" r="4" fill="none" stroke="#ff6a4a"/><text x="${x + w - 32}" y="40" fill="#ff6a4a" font-size="9" text-anchor="end" ${font}>${s.theirsHurt}</text>` : ''}` +
+      `${i === hand ? `<text class="you" x="${x + w - 6}" y="59" fill="#ffcf7f" font-size="9" text-anchor="end" ${font}>YOU</text>` : ''}${pips}`;
   }).join('');
-  const arrow = move ? `<path class="move" d="M${mid(move.from)} 80 L${mid(move.to)} 80" stroke="#ff6a4a" stroke-width="1.5"/><circle cx="${mid(move.to)}" cy="80" r="3" fill="#ff6a4a"/>` +
+  const arrow = move ? `<path class="move" d="M${mid(move.from)} 80${move.via === undefined ? '' : ` L${mid(move.via)} 80`} L${mid(move.to)} 80" stroke="#ff6a4a" stroke-width="1.5"/><circle cx="${mid(move.to)}" cy="80" r="3" fill="#ff6a4a"/>` +
     `<text x="${(mid(move.from) + mid(move.to)) / 2}" y="92" fill="#ff6a4a" font-size="9" text-anchor="middle" ${font}>${move.n}${feint ? ' MAY FEINT' : ''}</text>` : '';
-  const left = sections.reduce((k, s) => k + s.theirs, 0), H = began ? 112 : 98;
-  const count = began ? Array.from({ length: began }, (_, k) => `<rect class="${k < left ? 'head' : 'nohead'}" x="${6 + k * 10}" y="100" width="7" height="7" fill="${k < left ? '#ff6a4a' : 'none'}" stroke="#ff6a4a"/>`).join('') +
+  const left = sections.reduce((k, s) => k + s.theirs, 0), H = (began ? 112 : 98) + (wave ? 14 : 0);
+  const mark = k => (k < left ? 'head' : k < left + pending ? 'comehead' : 'nohead');
+  const count = began ? Array.from({ length: began }, (_, k) => `<rect class="${mark(k)}" x="${6 + k * 10}" y="100" width="7" height="7" fill="${k < left ? '#ff6a4a' : 'none'}" stroke="${mark(k) === 'comehead' ? '#ffcf7f' : '#ff6a4a'}"${mark(k) === 'comehead' ? ' stroke-dasharray="2 1.5"' : ''}/>`).join('') +
     `<path class="break" d="M${4.5 + breakAt * 10} 97 L${4.5 + breakAt * 10} 110" stroke="#ffcf7f" stroke-width="1.5"/><text x="${10 + began * 10}" y="107" fill="#ffcf7f" font-size="8" ${font} letter-spacing="1">${breakAt ? `BREAKS AT ${breakAt}` : 'FIGHTS TO THE LAST'}</text>` : '';
-  const heads = s => [s.mine ? `${s.mine} of ours` : '', s.theirs ? `${s.theirs} of theirs` : ''].filter(Boolean).join(' and ') || 'empty';
-  const their = move ? `${move.n} from ${titles[move.from]} into ${titles[move.to]}` : 'they hold';
-  const label = `The deck in ${['three', 'four'][n - 3]} sections. ${sections.map((s, i) => `${titles[i]}: ${heads(s)}, cover ${pip(s)}${i === hand ? ', you stand here' : ''}`).join('. ')}. Their move: ${their}${feint ? ', may feint' : ''}.${began ? ` ${left} of their ${began} still up; ${breakAt ? `they break at ${breakAt}` : 'they fight to the last'}.` : ''}`;
-  return `<svg class="board" viewBox="0 0 360 ${H}" role="img" aria-label="${label}"><rect x="0" y="0" width="360" height="${H}" fill="#050a11"/>${cells}${arrow}${count}</svg>`;
+  const waveLine = wave ? `<text class="wave" x="6" y="${H - 4}" fill="#ffcf7f" font-size="9" ${font}>${wave}</text>` : '';
+  const heads = s => [s.mine ? `${s.mine} of ours${s.mineHurt ? `, ${oursSay(s.mineHurt)}` : ''}` : '', s.theirs ? `${s.theirs} of theirs${s.theirsHurt ? `, ${hurtSay(s.theirsHurt)}` : ''}` : ''].filter(Boolean).join(' and ') || 'empty';
+  const their = move ? `${move.n} from ${titles[move.from]}${move.via === undefined ? '' : ` through ${titles[move.via]}`} into ${titles[move.to]}` : 'they hold';
+  const label = `The deck in ${['three', 'four'][n - 3]} sections. ${sections.map((s, i) => `${titles[i]}: ${heads(s)}, cover ${pip(s)}${i === hand ? ', you stand here' : ''}`).join('. ')}. Their move: ${their}${feint ? ', may feint' : ''}.${began ? ` ${pending ? comeSay(left, pending) : `${left} of their ${began} still up`}; ${breakAt ? `they break at ${breakAt}` : 'they fight to the last'}.` : ''}${wave ? ` ${wave}` : ''}`;
+  return `<svg class="board" viewBox="0 0 360 ${H}" role="img" aria-label="${label}"><rect x="0" y="0" width="360" height="${H}" fill="#050a11"/>${cells}${arrow}${count}${waveLine}</svg>`;
 }

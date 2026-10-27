@@ -191,12 +191,12 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   });
   assert.equal(r.title, 'The Lock', 'the panel is named for where the hand stands');
   assert.ok(r.size >= 16, 'the hauler is long: a cargo bay to go round by');
-  assert.deepEqual(r.heads, [[1, 4, 1], [1, 0, 2], [2, 0, 1], [1, 0, 1]], 'four of hers in the lock; five of ours spread, the odd one on the bridge; the ship\'s cover by section');
+  assert.deepEqual(r.heads, [[1, 3, 1], [1, 0, 2], [2, 0, 1], [1, 0, 1]], 'three of the six in the lock (the other three are the wave); five of ours spread, the odd one on the bridge; the ship\'s cover by section');
   assert.equal(r.hand, 0);
   assert.deepEqual(r.shown, { kind: 'hold', from: 0, to: 0, n: 0, feint: false }, 'one of ours stands in the lock with them, so they cannot push on (R29)');
   assert.equal(r.read, 'Turn 1 of 8. Boarders: holding where they are.', 'the turn of the cap, and their move');
-  assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 4 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 4 of their 4 still up; they break at 1.');
-  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'Shoot: 2 to 3 of them down']);
+  assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 3 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 3 aboard, 3 still to come; they fight to the last.', 'the wave is not drawn yet: it lands at the end of the second turn, and its heads are counted as still to come');
+  assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'Shoot: 1 to 2 of them hit'], 'a new hand works at level 0');
   assert.equal(r.labels[r.labels.length - 1], 'Fight');
   assert.ok(r.keep.every(Boolean), 'every choice redraws in place');
   assert.match(r.text, /outer lock is cycling|hits the hull aft/, 'the opening of the lock');
@@ -215,24 +215,86 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   const t = await ev(() => { const s = G.dialog.event.fight; return { result: !!document.querySelector('#event-result'), turn: s.state.turn, last: s.state.log[s.state.log.length - 1], used: s.state.used.cover, acts: G.dialog.choices[1].label }; });
   assert.equal(t.result, false, 'no result page between turns'); assert.equal(t.turn, 1);
   assert.match(t.last, /^Turn 1: /, t.last);
-  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'Shoot: 2 to 3 of them down', 'and the act goes back to the sidearm');
+  assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'Shoot: 1 to 2 of them hit', 'and the act goes back to the sidearm');
   await done();
 });
 
-test('a veteran\'s shown move is marked may feint', async () => {
+test('the panel words a raider\'s rush, the second wave at the lock on the turn at whose end it lands, and the hatch by section', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const out = {};
+    fightGame('gunner'); let s = boarded();
+    out.wave = { before: /more at the lock next turn/.test(document.querySelector('#panel .event-body svg.board').outerHTML), n: pendingWave(s.state) };
+    rolls([]); const one = G.dialog.choices[G.dialog.choices.length - 1].run(); out.wave.between = /more at the lock next turn/.test(one.board);
+    rolls([]); const turned = one.choices[one.choices.length - 1].run();  // it lands at the end of the second turn (DECK.WAVE_TURN)
+    out.wave.after = /more at the lock next turn/.test(turned.board); out.wave.log = s.state.log[1];
+    fightGame('gunner'); s = boarded(); const f = s.state;  // none of ours in the lock or the corridor, the hand on the bridge: they rush through the corridor
+    f.party = 'raider'; f.wave = null; f.hand = 2; f.sections[0].mine = 0; f.sections[1].mine = 0; f.sections[0].theirs = 3; s.shown = null;
+    const e = deckFightEvent(s); out.read = e.read; out.arrow = /<path class="move"/.test(e.board);
+    rolls([]); e.choices[e.choices.length - 1].run(); out.rushLog = s.state.log[0];
+    fightGame('gunner'); const st = G.state; st.crew = []; const bo = makePerson('earth'); Object.assign(bo, { first: 'Bo', role: 'pilot', skill: 1, opinion: 30 }); registerPerson(bo); st.crew.push(bo.id);
+    s = boarded(); out.plain = deckFightEvent(s, { act: 'cover', order: bo.id }).choices.map(c => c.label);  // with the cover spent, the pilot is given the steady one: the hatch
+    const hatch = deckFightEvent(s, { act: 'cover', order: bo.id }), i = hatch.choices.findIndex(c => c.label.startsWith('At '));
+    out.at = [hatch.choices[i].label, hatch.choices[i].keep]; out.next = hatch.choices[i].run().choices[i].label;
+    out.cover = deckFightEvent(s, { act: 'steady', order: bo.id }).choices.map(c => c.label).filter(l => l.startsWith('At '));
+    out.none = deckFightEvent(s, { act: 'steady' }).choices.map(c => c.label).filter(l => l.startsWith('At '));
+    return out;
+  });
+  assert.equal(r.wave.before, false, 'not on the first turn: they land at the end of the second, so "next turn" would be a turn early'); assert.ok(r.wave.n >= 1);
+  assert.equal(r.wave.between, true, 'on the second turn, at whose end they land'); assert.equal(r.wave.after, false, 'and not once they have landed'); assert.match(r.wave.log, /more come through the lock/);
+  assert.match(r.read, /^Turn 1 of 8\. Boarders: \d+ rushing through the Corridor into the Bridge\.$/); assert.ok(r.arrow, 'the arrow is drawn');
+  assert.match(r.rushLog, /3 of them rush into the Bridge/);
+  assert.equal(r.at[0], 'At the Bridge', 'where the hand stands, a crew of one holding the bridge'); assert.equal(r.at[1], true); assert.equal(r.next, 'At the Cargo Bay', 'the section goes round the deck');
+  assert.deepEqual(r.cover, [], 'an order that is not a hatch has no place'); assert.deepEqual(r.none, [], 'nor does none');
+  await done();
+});
+
+test('from level 2 the shot is aimed: the shoot choice offers a section, and the turn shoots there', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const out = {}, ats = e => e.choices.map(c => c.label).filter(l => l.startsWith('Aim: '));
+    fightGame('gunner'); let s = boarded(); s.state.level = 2; s.state.sections.forEach(x => { x.theirs = 0; }); s.state.sections[0].theirs = 3; s.state.sections[1].theirs = 3; s.state.hand = 0; s.state.wave = null; s.shown = { kind: 'hold', from: 0, to: 0, n: 0 };
+    let e = deckFightEvent(s); out.two = ats(e); const i = e.choices.findIndex(c => c.label.startsWith('Aim: ')); out.next = ats(e.choices[i].run());
+    s.state.sections.forEach(x => { x.mine = 0; }); s.state.sections[0].mine = 1;
+    rolls(Array(40).fill(0)); const turned = deckFightEvent(s, { shootAt: 1 }).choices.at(-1).run(); out.hit = [s.state.sections[0].theirs, s.state.sections[1].theirs];
+    fightGame('gunner'); s = boarded(); s.state.level = 1; out.one = ats(deckFightEvent(s));
+    return out;
+  });
+  assert.equal(r.two.length, 1, 'level 2 offers the shot a section'); assert.match(r.two[0], /^Aim: the Lock$/); assert.match(r.next[0], /^Aim: the Corridor$/, 'and the choice goes to the one next to the hand');
+  assert.deepEqual(r.hit, [3, 2], 'the shot went to the corridor: two heads of it, one wounded and then downed'); assert.deepEqual(r.one, [], 'level 1 has no aim');
+  await done();
+});
+
+test('a hurt hand works the level below: the sidearm on the panel is that level\'s', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const out = {};
+    fightGame('gunner'); hired().skill.gunner = 110; out.well = [lockPost(), boarded().state.level, G.dialog.choices[1].label];
+    fightGame('gunner'); hired().skill.gunner = 110; career().hurtUntil = G.state.day + 5; out.hurt = [boarded().state.level, G.dialog.choices[1].label];
+    return out;
+  });
+  assert.deepEqual(r.well, ['gunner', 3, 'Shoot: 3 to 4 of them hit']); assert.deepEqual(r.hurt, [2, 'Shoot: 2 to 3 of them hit']);
+  await done();
+});
+
+test('a veteran\'s shown push is marked may feint, and a rush, which is never feinted, is not', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(deckHelpers);
   const r = await ev(() => {
     const out = {};
     for (const grade of [0, 1, 2]) {
-      fightGame('gunner'); const foe = makeEnemy({ kind: 'pirate' });
-      rolls([0.99]); const e = deckFightEvent(repelStart({ foe, foeHp: 0, init: 'foe', grade }, 'full'));
-      out[grade] = { read: e.read, strip: /may feint/.test(e.board) };
+      fightGame('gunner'); const foe = makeEnemy({ kind: 'pirate' }), s = repelStart({ foe, foeHp: 0, init: 'foe', grade }, 'full');
+      const seen = shown => { s.shown = { feint: false, ...shown }; const e = deckFightEvent(s); return { read: e.read, strip: /may feint/i.test(e.board) }; };
+      out[grade] = { push: seen({ kind: 'push', from: 0, to: 1, n: 2 }), rush: seen({ kind: 'rush', from: 0, via: 1, to: 2, n: 2 }), hold: seen({ kind: 'hold', from: 0, to: 0, n: 0 }) };
     }
     return out;
   });
-  assert.equal(r[0].read, 'Turn 1 of 8. Boarders: holding where they are.'); assert.equal(r[0].strip, false);
-  for (const g of [1, 2]) { assert.match(r[g].read, / They may feint\.$/, `grade ${g}`); assert.equal(r[g].strip, true, `grade ${g}: on the strip`); }
+  for (const k of ['push', 'rush', 'hold']) { assert.doesNotMatch(r[0][k].read, /feint/, `grade 0, a ${k}`); assert.equal(r[0][k].strip, false, `grade 0, a ${k}`); }
+  for (const g of [1, 2]) { assert.match(r[g].push.read, /pushing into the Corridor\. They may feint\.$/, `grade ${g}`); assert.equal(r[g].push.strip, true, `grade ${g}: on the strip`); }
+  for (const k of ['rush', 'hold']) { assert.doesNotMatch(r[1][k].read, /feint/, `grade 1: a ${k} shows no feint`); assert.equal(r[1][k].strip, false, `grade 1: nor on the strip, a ${k}`); }
   await done();
 });
 
@@ -251,7 +313,7 @@ test('repelled, taken, and an assault won or lost each settle through the existi
     // repelled: one of three left, in the lock, against two of ours
     let st = fightGame('gunner'), h = hired(), cap = person(h.captain), op = cap.opinion;
     let s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
-    out.repelled = { ...play(s, f => { f.sections.forEach(x => { x.theirs = 0; }); f.sections[0].theirs = 1; }), opinion: cap.opinion - op };
+    out.repelled = { ...play(s, f => { f.sections.forEach(x => { x.theirs = 0; }); f.sections[0].theirs = 1; f.wave = null; }), opinion: cap.opinion - op };
     // taken: three of them on the bridge and none of ours there
     st = fightGame('gunner'); h = hired(); h.fund = 1000; cap = person(h.captain); op = cap.opinion;
     s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
@@ -584,17 +646,21 @@ test('in the deck fight, a friend takes the first hit meant for the hand', async
   await done();
 });
 
-test('a shot where none of them stand says so, as a steady one does', async () => {
+test('a shot where none of them stand says so, as a steady one does, and one aimed at an empty section next to the hand names it', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(deckHelpers);
   const r = await ev(() => {
-    fightGame('gunner');
-    const s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
-    s.state.hand = 2; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // the hand on the bridge, and all of them in the lock
-    rolls([]); const e = deckFightEvent(s, { act: 'shoot' }); e.choices[e.choices.length - 1].run();
-    return s.state.log[s.state.log.length - 1];
+    const shot = plan => {
+      fightGame('gunner');
+      const s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
+      s.state.hand = 2; s.state.level = 2; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // the hand on the bridge, and all of them in the lock
+      rolls([]); const e = deckFightEvent(s, { act: 'shoot', ...plan }); e.choices[e.choices.length - 1].run();
+      return s.state.log[s.state.log.length - 1];
+    };
+    return { own: shot({}), aimed: shot({ shootAt: 1 }) };
   });
-  assert.match(r, /None of them are where you stand\./, r);
+  assert.match(r.own, /None of them are where you stand\./, r.own);
+  assert.match(r.aimed, /None of them are in the Corridor\./, r.aimed); assert.doesNotMatch(r.aimed, /where you stand/, r.aimed);
   await done();
 });
 

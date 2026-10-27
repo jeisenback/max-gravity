@@ -38,7 +38,7 @@ function policy(d, ok, memo) {
       const to = near.reduce((b, i) => (f.sections[i].mine > f.sections[b].mine ? i : b), f.hand), there = f.sections[to];
       const stand = to === f.hand ? fightSay('deck.stand', { at: deckTitle(s, to) }) : fightSay('deck.move', { at: deckTitle(s, to) });
       const act = there.theirs > there.mine ? fightSay('deck.steady', { what: deckWords(`ability.${post}.steady.label`, FIGHT_ABILITY[post].steady.label) })
-        : fightSay('deck.shoot', { lo: DECK.SIDEARM[0], hi: DECK.SIDEARM[1] });
+        : fightSay('deck.shoot', { lo: sidearmOf(f)[0], hi: sidearmOf(f)[1] });
       if (label(0) !== stand) return 0;
       if (label(1) !== act) return 1;
       const order = ok.find(i => d.choices[i].order);

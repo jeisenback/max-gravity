@@ -106,7 +106,7 @@ test('a corsair is a torpedo fight and a raider a grapple fight, in the words an
   assert.notEqual(r.raider.open, r.corsair.open);
   assert.equal(r.raider.boarded, 'grapple'); assert.equal(r.corsair.boarded, 'torpedo');
   assert.deepEqual([r.raider.title, r.corsair.title], ['The Lock', 'The Lock'], 'both open the deck fight at the lock');
-  assert.equal(r.raider.boarders, r.corsair.boarders + 1, 'a full run for a raider (her two and two more), a short one for a corsair (her three and no more), at the same grade');
+  assert.equal(r.raider.boarders, r.corsair.boarders + 3, 'a full run for a raider (her two and four more), a short one for a corsair (her three and no more), at the same grade');
   await done();
 });
 

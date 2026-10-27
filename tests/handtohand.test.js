@@ -38,6 +38,26 @@ test('an ability that works thins them or makes cover and the exchange stands; o
   const coverMiss = abilityStep('cover', false, s); assert.deepEqual([coverMiss.result, coverMiss.press, [...coverMiss.extra]], ['tie', true, [0, 0, 0]]);
 });
 
+test('a rush is drawn through the section it passes, and the heads still to land are a line under the deck', () => {
+  const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 0, theirs: 3, cover: 1 }, { mine: 0, theirs: 0, cover: 2 }, { mine: 2, theirs: 0, cover: 0 }];
+  const rush = fightStrip({ titles, sections, hand: 2, move: { from: 0, via: 1, to: 2, n: 3 }, feint: false, wave: '2 more at the lock next turn.' });
+  assert.match(rush, /<path class="move" d="M\d+(\.\d+)? 80 L\d+(\.\d+)? 80 L\d+(\.\d+)? 80"/, 'the arrow bends at the section it goes through');
+  assert.match(rush, /Their move: 3 from The Lock through The Corridor into The Bridge\. 2 more at the lock next turn\."/);
+  assert.match(rush, /<text class="wave"[^>]*>2 more at the lock next turn\.</); assert.match(rush, /viewBox="0 0 360 112"/);
+  assert.doesNotMatch(fightStrip({ titles, sections, hand: 2, move: null, feint: false }), /class="wave"/, 'no line when none are to land');
+});
+
+test('the strip draws a section\'s wounded as a hollow count beside the heads, and the label says so', () => {
+  const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 2, theirs: 4, mineHurt: 1, theirsHurt: 2, cover: 1 }, { mine: 1, theirs: 0, cover: 2 }, { mine: 0, theirs: 0, cover: 0 }];
+  const svg = fightStrip({ titles, sections, hand: 0, move: null, feint: false });
+  assert.equal((svg.match(/<circle class="hurt"/g) || []).length, 2, 'a hollow mark for each side with wounded');
+  assert.match(svg, /The Lock: 2 of ours, 1 of ours wounded and 4 of theirs, 2 of them wounded, cover 1/);
+  assert.doesNotMatch(fightStrip({ titles, sections: sections.map(s => ({ ...s, mineHurt: 0, theirsHurt: 0 })), hand: 0, move: null, feint: false }), /class="hurt"|wounded/, 'none wounded, nothing drawn');
+  assert.match(svg, /2 of ours, 1 of ours wounded and 4 of theirs/, 'ours are voiced too');
+  assert.match(fightStrip({ titles, sections, hand: 0, move: null, feint: false, oursSay: n => `${n} hurt` }), /2 of ours, 1 hurt/);
+  assert.match(fightStrip({ titles, sections, hand: 0, move: null, feint: false, hurtSay: n => `${n} down` }), /4 of theirs, 2 down/, 'the words come from the scene');
+});
+
 test('the strip draws each section with both sides\' heads, its cover, where the hand stands, and their shown move, marked when it may feint', () => {
   const titles = ['The Lock', 'The Corridor', 'The Bridge'], sections = [{ mine: 2, theirs: 3, cover: 1 }, { mine: 1, theirs: 0, cover: 2 }, { mine: 0, theirs: 0, cover: 0 }];
   const svg = fightStrip({ titles, sections, hand: 0, move: { from: 0, to: 1, n: 3 }, feint: false });
@@ -60,6 +80,11 @@ test('the strip draws each section with both sides\' heads, its cover, where the
   const few = fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 3, breakAt: 0 });  // a count of 1 to 3 has no line to break at
   assert.match(few, />FIGHTS TO THE LAST</); assert.doesNotMatch(few, /BREAKS AT/);
   assert.match(few, /3 of their 3 still up; they fight to the last\."/);
+  const coming = fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 6, breakAt: 2, pending: 2 });  // a repel's wave still to land: neither up nor down
+  assert.deepEqual(['head', 'comehead', 'nohead'].map(k => (coming.match(new RegExp(`<rect class="${k}"`, 'g')) || []).length), [3, 2, 1], 'three up, two still to come, one down');
+  assert.match(coming, /<rect class="comehead"[^>]*stroke-dasharray/, 'drawn apart from the downed');
+  assert.match(coming, /3 aboard, 2 still to come; they break at 2\."/, 'and the break line counts the whole party');
+  assert.match(fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 6, breakAt: 2, pending: 2, comeSay: (n, m) => `${n} here, ${m} coming` }), /3 here, 2 coming; they break at 2\."/, 'the words come from the scene');
   assert.doesNotMatch(svg, /class="break"/, 'no count is drawn when none is given');
 });
 

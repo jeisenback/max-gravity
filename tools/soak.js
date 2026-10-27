@@ -21,16 +21,18 @@
 // is the game's own, arrive() in game.js; with --frames the whole burn runs in the game's transit update, so the comms chatter of a burn is counted, and the live flight loop
 // is played in each system too, so the traffic's sensors, kills and hails are).
 // With no captain named, the narrow build's captain (Hester, with Cato) sails every seed, as a gunner.
+// A ship fight is fought with the orders as they stand, and a deck fight by the fight tool's answer (tools/answer.js answerDeck: tools/fights.js), each turn.
 // Each chapter also reports who was lost or left, when (days since sign-on) and why, and how it ended if it ended early (#357):
 // the hand's death (The Last Run), the captain's loss (Without a Captain) or the hand put ashore (Put Ashore). Each starts a new game, so the chapter is over
 // and the soak stops there. The totals follow the last seed. Not part of `npm test`.
 
 const { open, closeBrowser } = require('../tests/helpers');
+const { answerDeck } = require('./answer');
 
 // realDraw: the two main characters come from the pool as in the game; tests start from the pair they knew (tests/helpers.js).
 async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null, jobs = false } = {}) {
   const { ev, errors, ctx } = await open({ scope, seed, debt: true, stall: 0 });  // the chapter's economy includes the hiring hall's bond
-  const r = await ev(chapter, [legs, captainKey, realDraw, post, frames, engineer, jobs]);
+  const r = await ev(chapter, [legs, captainKey, realDraw, post, frames, engineer, jobs, null, answerDeck.toString()]);
   await ctx.close();
   return { seed, ...r, errors };
 }
@@ -40,8 +42,9 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
 // burn, landing and port (scene, result, burn, port), it stops the chapter (done), and between the steps of a burn or of the flight it yields to the page's frames (tick), so
 // the game draws what is happening. With hooks.live a burn's events are not drawn up front: they are left on the burn's clock and the burn's contact on its own, and each opens
 // when the transit update reaches it. The port hook is played at every landing (the day ashore, the buy-in); the chapter ends when the hand has bought a ship.
-async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hooksName]) {
+async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hooksName, deckSrc]) {
     const H = hooksName ? window[hooksName] : null, live = !!(H && H.live);
+    const deckAnswer = deckSrc ? (0, eval)(`(${deckSrc})`) : null;  // the deck fight's plan each turn, as the fight tool's answer policy plays it (tools/answer.js answerDeck); without it, the panel's plan as it stands
     if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [], losses = [], ending = { v: null };
     // Every ship message (the flight log, msg) and port note (UI.notes) the chapter writes, by its text with the numbers and the names taken out.
@@ -98,11 +101,12 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
         if (ok.length) {
           const fire = d.event.fight ? ok.find(i => /^(Fire\b|Fight$)/.test(d.choices[i].label)) : undefined;  // a ship fight or a deck fight is fought with the orders as they stand (fightui.js)
+          const s = d.event.fight, deck = !H && deckAnswer && s && s.state.kind === 'deck' && fire !== undefined;  // a deck fight's turn is fought with the answer's plan (deckFightEvent drawn with it)
           const i = H ? H.pick(d, ok) : fire !== undefined ? fire : pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
           if (H) await H.scene(d, i, kept);
           const c0 = G.state.credits, x0 = skillXp(postKey), o0 = atBar ? opinions() : 0;
           bar.in = atBar;
-          const res = chooseEvent(i);
+          const res = deck ? (e => e.choices[e.choices.length - 1].run())(deckFightEvent(s, deckAnswer(s))) : chooseEvent(i);
           bar.in = false;
           if (H) await H.result(d, c, res);
           if (c.keep && res) { openEvent(res); kept = true; continue; }  // a kept choice redraws its dialog in place (ui.js)

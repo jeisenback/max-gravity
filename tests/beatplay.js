@@ -101,8 +101,8 @@ const playBeats = () => {
     out.push({ id: `settle:${assault ? 'assault' : 'repel'}:${post}:${won ? 'won' : 'lost'}:${round}`, text: String(text), ...left(b0) });
     G.nextEvent = null; G.duel = null;
   }
-  // A deck fight set by hand for one turn: one of ours with the hand at the lock against four of hers, their move a hold, and (rolls) no hit lands and the hand is not hurt.
-  const quiet = s => { s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; }); s.state.sections[0].mine = 1; s.state.sections[0].theirs = 4; s.state.began = 4; s.state.hand = 0; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; return s; };
+  // A deck fight set by hand for one turn: one of ours with the hand at the lock against four of hers, all wounded so that a hit downs one (no second wave to come), their move a hold, and (rolls) no hit lands and the hand is not hurt.
+  const quiet = s => { s.state.sections.forEach(x => { x.mine = 0; x.theirs = 0; x.mineHurt = 0; x.theirsHurt = 0; }); s.state.sections[0].mine = 1; s.state.sections[0].theirs = 4; s.state.sections[0].mineHurt = 1; s.state.sections[0].theirsHurt = 4; s.state.began = 4; s.state.wave = null; s.state.hand = 0; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; return s; };
   const rolls = first => seq([first, ...Array(16).fill(0.4)]);
   const fightOf = (s, plan) => { const ev = deckFightEvent(s, plan); return { labels: labelsOf(ev), run: () => ev.choices[ev.choices.length - 1].run() }; };
   // the orders to named crew (#711): each post's two abilities as the crew member does it, worked and missed
@@ -134,8 +134,9 @@ const playBeats = () => {
         rec.steps.push({ act, roll, labels: f.labels, text: String(s.state.log[s.state.log.length - 1]), ...left(b0) });
         G.nextEvent = null;
       }
-      for (const [name, theirs] of [['last', 0], ['broke', 1]]) {  // none of them left, or one of four
-        const s = quiet(start()); s.state.sections[0].theirs = 0; s.state.sections[1].theirs = theirs;  // nobody where ours stand, so nothing is traded
+      for (const [name, theirs] of [['last', 0], ['broke', 1]]) {  // none of them left, or one of seven (under the break line both ways: DECK.BREAK, DECK.ASSAULT.BREAK)
+        const s = quiet(start()); s.state.sections[0].theirs = 0; s.state.sections[0].theirsHurt = 0; s.state.sections[1].theirs = theirs;  // nobody where ours stand, so nothing is traded
+        if (theirs) s.state.began = 7;
         seq([]); const b0 = stand();
         fightOf(s, {}).run();
         rec.steps.push({ act: `end:${name}`, text: String(G.nextEvent && G.nextEvent.text), ...left(b0) });

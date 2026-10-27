@@ -65,7 +65,7 @@ function repelCrew() {
 
 // The fight: the deck fight's state on our deck (fight.js deckFight), with who stands with you, who is hurt and who has fallen. Kept with the scene, as the
 // lock fight was, so nothing of it is in the save. Up to five of the crew are heads on the deck, as the lock fight counted them; `outcome` is how the
-// boarding run landed ('full' two more of them than 'half', shipcombat.js boardersFor). A long ship (16 and over) has the cargo bay to go round by.
+// boarding run landed ('full' DECK.FULL more of them than 'half', DECK.FULL_PAIR for a raider pair and DECK.ASSAULT.FULL boarding her: shipcombat.js boardersFor). A long ship (16 and over) has the cargo bay to go round by.
 function repelStart(d, outcome) {
   return deckStart({ d, boarders: boardersFor(d.foe, outcome, d), grade: d.grade || 0, size: SHIPS[G.state.shipId].size });
 }
@@ -73,14 +73,14 @@ function repelStart(d, outcome) {
 // Boarding a crippled ship: the same fight on her deck, ours pushing from her lock to her bridge.
 function assaultStart(foe, rate = {}) {
   captainFlag('raided');  // kept for the goodbye (captains.js)
-  return deckStart({ d: { foe, foeHp: 0 }, boarders: boardersFor(foe, 'full', rate), grade: rate.grade || 0, size: SHIPS[foe.shipId].size, assault: true });
+  return deckStart({ d: { foe, foeHp: 0 }, boarders: boardersFor(foe, 'full', { ...rate, assault: true }), grade: rate.grade || 0, size: SHIPS[foe.shipId].size, assault: true });
 }
 
 // Each side's cover is its own (R31): on our deck the ship's cover and the kit's are ours; on hers her ship's is hers, and ours is only what the kit opens up.
 function deckStart({ d, boarders, grade, size, assault = false }) {
   const w = repelCrew(), kit = career().kit, ship = [...fightCover({ size, kit: assault ? [] : kit }), COVER_BASE];  // the cargo bay has the ship's own cover
   const cover = assault ? [...[0, 1, 2].map(pos => kitCover(kit, pos)), 0] : ship, hers = assault ? ship : [];
-  const state = deckFight({ boarders, crew: Math.min(5, w.fight.length), cover, hers, grade, assault, side: size >= 16 });
+  const state = deckFight({ boarders, crew: Math.min(5, w.fight.length), cover, hers, grade, assault, side: size >= 16, party: DECK_PARTY[d.foe.shipId] || 'raider', level: skillLevel(lockPost()) });  // the level worked: a hurt hand is one lower
   return { d, assault, state, grade, fight: w.fight, held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false };
 }
 
@@ -104,8 +104,9 @@ const HAND_CLINIC = 1500;
 // The next scene is the ending (stakes.js), so a caller that queues a scene after this one checks `s.handDied` first.
 const HAND_DEATH = 0.25, HAND_DEATH_FIRST = 1 / 12;
 const handDeathOdds = (again = true) => (again ? HAND_DEATH : HAND_DEATH_FIRST) * (roleHolder('medic') ? LOSS_MEDIC : 1);
-// The captain can be lost (#357): a pirate bridge taken is a roll of one in three. The next scene is the captain's loss (stakes.js).
-const CAPTAIN_LOST = 1 / 3;
+// The captain can be lost (#357): a pirate bridge taken is a roll of one in six (one in three when the lock fight was rarely lost; now a repel can be, and a lost
+// one still costs the fund, the cargo, the crew who fell and the captain's regard). The next scene is the captain's loss (stakes.js).
+const CAPTAIN_LOST = 1 / 6;
 function handDies(s, how) {
   const st = G.state, h = hired();
   s.handDied = true; h.died = { day: st.day, how };
