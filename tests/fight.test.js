@@ -6,8 +6,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'turnShots', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'hitSide', 'shootSide', 'boardMove', 'resolveDeckTurn', 'deckEnd', 'LOCK', 'CORRIDOR', 'BRIDGE', 'CARGO', 'pendingWave', 'sidearmOf', 'DECK_PARTY', 'ADJ']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
-const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, turnShots, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, hitSide, shootSide, boardMove, resolveDeckTurn, deckEnd, LOCK, CORRIDOR, BRIDGE, CARGO, pendingWave, sidearmOf, DECK_PARTY, ADJ } = api;
+const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'turnShots', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'hitSide', 'shootSide', 'boardMove', 'resolveDeckTurn', 'deckEnd', 'LOCK', 'CORRIDOR', 'BRIDGE', 'CARGO', 'pendingWave', 'sidearmOf', 'DECK_PARTY', 'ADJ', 'deckCap']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
+const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, turnShots, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, hitSide, shootSide, boardMove, resolveDeckTurn, deckEnd, LOCK, CORRIDOR, BRIDGE, CARGO, pendingWave, sidearmOf, DECK_PARTY, ADJ, deckCap } = api;
 const LOW = () => 0, HIGH = () => 0.999;
 const CLOSE = RANGE_BANDS.indexOf('close');
 const HULL = { kind: 'broadside', target: 'hull', dmg: [8, 14] };
@@ -482,7 +482,7 @@ test('the party is keyed by the hull: cutter and destroyer are navy, an unknown 
 });
 
 test('their move is shown, and at a veteran grade it may feint, at CUNNING * grade', () => {
-  const st = deck({ boarders: 8, crew: 1, party: 'navy' });  // the navy has no move of its own yet; four in the lock, four more in the wave
+  const st = deck({ boarders: 8, crew: 1, party: 'corsair' });  // a plain push that may feint: with none of ours next to her lock she has no charge to show; four in the lock, four more in the wave
   assert.deepEqual(plain(boardMove(st, LOW)), { kind: 'push', from: 0, to: 1, n: 4, feint: false }, 'they outnumber the corridor');
   const hold1 = deck({ boarders: 1, crew: 6 });
   assert.equal(boardMove(hold1, LOW).kind, 'hold', 'two of ours stand in the lock with them: they hold');
@@ -522,7 +522,7 @@ test('the deck starts with the attackers in the lock and the defenders spread, t
   assert.deepEqual(plain([st.sections.length, st.sections[3].cover, st.hand, st.began, st.turn, st.used, st.kind]), [4, 0, 2, 3, 0, {}, 'deck'], 'three crew over four sections are all on the bridge, and the hand starts with them (R34)');
   assert.deepEqual(plain(st.sections.map(s => s.cover)), [1, 2, 3, 0]);
   assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4]], SIDEARM_REACH_LEVEL: 2, WAVE_TURN: 2, CREW_HIT: [0, 2], CHARGE: [1, 1], BREAK: 0.15, FULL: 4, CORSAIR_LESS: 2, FULL_PAIR: 2, SUIT: 0.2, CASUALTY: 0.3, TURNS: 8,
-    ASSAULT: { BREAK: 0.2, FULL: 5, CREW_HIT: [0, 1], CASUALTY: 0.5 } });
+    ASSAULT: { BREAK: 0.2, FULL: 5, CREW_HIT: [0, 1], CASUALTY: 0.5 }, NAVY_TURNS: 5, NAVY_STANDING: 2 });
   assert.equal(deck({ crew: 3 }).hand, 0, 'with one of ours in the lock the hand starts there');
   assert.deepEqual(plain(deck({ assault: true, hers: [1, 0, 1] }).sections.map(x => [x.cover, x.hers])), [[0, 1], [0, 0], [0, 1]], 'her cover is kept apart from ours');
   assert.deepEqual(plain(fightCover({ size: 12, kit: [], extra: [] })), [1, 1, 1], 'the cover input is the shape fightCover gives');
@@ -1087,6 +1087,70 @@ test('a raider party never shows a charge, and a charge is never feinted', () =>
   const raider = chargeDeck({ party: 'raider' });
   assert.notEqual(boardMove(raider, LOW).kind, 'charge');
   for (const grade of [1, 2]) assert.deepEqual([boardMove({ ...chargeDeck(), grade }, () => 0).kind, boardMove({ ...chargeDeck(), grade }, () => 0).feint], ['charge', false], `grade ${grade}`);
+});
+
+// The navy's party (Task 6): each head of theirs put down is counted in the state (the settle charges the standing), holding our bridge is a search,
+// and their move is a plain push or hold, never feinted.
+const navyDeck = (o = {}) => { const st = deck({ boarders: 4, crew: 3, party: 'navy', ...o }); st.wave = null; return st; };
+
+test('a navy fight counts the heads of theirs it puts down, in the exchange, by the shot, by a steady and by a hatch, and not the wounded', () => {
+  assert.equal(navyDeck().navyDown, 0, 'a navy fight starts at none');
+  assert.equal(deck().navyDown, undefined, 'a raider fight keeps no count');
+  const fought = navyDeck(); fought.sections[LOCK] = worn({ mine: 2, theirs: 2, cover: 0 });  // every head wounded: a hit downs one
+  const ex = resolveDeckTurn(fought, { stand: LOCK, act: null, order: null }, stay, HIGH);
+  const downed = ex.events.filter(e => e.kind === 'exchange').reduce((n, e) => n + e.theirs, 0);
+  assert.ok(downed > 0, 'the exchange downs some of them'); assert.equal(ex.state.navyDown, downed, 'and each is counted');
+  const hurt = navyDeck(); hurt.sections[LOCK] = { mine: 1, theirs: 2, mineHurt: 0, theirsHurt: 0, cover: 0 };  // one roll of one hit: a wound, not a head down
+  const w = resolveDeckTurn(hurt, { stand: LOCK, act: null, order: null }, stay, () => 0.5);
+  assert.deepEqual([w.state.sections[LOCK].theirs, w.state.sections[LOCK].theirsHurt, w.state.navyDown], [2, 1, 0], 'a wound is not counted');
+  const shot = navyDeck(); shot.sections[CORRIDOR] = { mine: 1, theirs: 2, mineHurt: 0, theirsHurt: 2, cover: 0 }; shot.hand = CORRIDOR;  // two wounded: the shot of two downs both
+  const s = resolveDeckTurn(shot, { stand: CORRIDOR, act: SHOOT, order: null }, stay, LOW);
+  assert.deepEqual([s.state.sections[CORRIDOR].theirs, s.state.navyDown], [0, 2], 'the shot');
+  const steady = navyDeck(); steady.sections[LOCK].theirs = 2; steady.sections[LOCK].mine = 1;
+  const st = resolveDeckTurn(steady, { stand: LOCK, act: { kind: 'steady', odds: 1 }, order: null }, stay, LOW);
+  assert.equal(st.state.navyDown, 1, 'a worked steady');
+  const hatch = navyDeck(); hatch.hand = BRIDGE; hatch.sections[LOCK].mine = 0;
+  const h = resolveDeckTurn(hatch, { stand: BRIDGE, act: null, order: { kind: 'steady', odds: 1, at: LOCK } }, stay, LOW);
+  assert.equal(h.state.navyDown, 1, 'a worked steady hatch at their lock');
+  assert.equal(resolveDeckTurn(h.state, { stand: BRIDGE, act: null, order: { kind: 'steady', odds: 1, at: LOCK } }, stay, LOW).state.navyDown, 2, 'the count runs on over the turns');
+  const raider = deck({ boarders: 4 }); raider.wave = null; raider.hand = BRIDGE;
+  assert.equal(resolveDeckTurn(raider, { stand: BRIDGE, act: null, order: { kind: 'steady', odds: 1, at: LOCK } }, stay, LOW).state.navyDown, undefined, 'a raider fight counts nothing');
+});
+
+test('a navy party that holds our bridge ends the fight in a search, where a raider party takes the ship', () => {
+  const held = party => { const st = deck({ boarders: 4, crew: 3, party }); st.wave = null; st.sections[BRIDGE] = { mine: 0, theirs: 2, mineHurt: 0, theirsHurt: 0, cover: 0 }; return st; };
+  assert.equal(deckEnd(held('navy')), 'searched');
+  assert.equal(deckEnd(held('raider')), 'taken');
+  const capped = held('navy'); capped.sections[BRIDGE].mine = 1; capped.turn = DECK.NAVY_TURNS;
+  assert.equal(deckEnd(capped), 'won', 'held off to their cap, an inspection party withdraws: a repel won');
+  assert.equal(deckEnd({ ...capped, turn: DECK.NAVY_TURNS - 1 }), null, 'not before it');
+  const raider = held('raider'); raider.sections[BRIDGE].mine = 1; raider.turn = DECK.NAVY_TURNS;
+  assert.equal(deckEnd(raider), null, 'a raider party fights on to the deck\'s cap');
+  const hers = deck({ boarders: 4, crew: 3, party: 'navy', assault: true });  // a navy hull boarded (the owner's game): her crew, not a navy party on our deck
+  assert.deepEqual([hers.navyDown, deckCap(hers), deckEnd({ ...hers, sections: hers.sections.map(x => ({ ...x, mine: 0 })) })], [undefined, DECK.TURNS, 'taken'], 'boarding a navy hull is no search, and runs to the deck\'s cap');
+});
+
+test('a navy party pushes and holds: it never rushes, never charges, and is never feinted', () => {
+  const thin = grade => { const st = navyDeck({ grade, boarders: 6 }); st.sections[LOCK] = { mine: 0, theirs: 4, mineHurt: 0, theirsHurt: 0, cover: 0 }; st.sections[CORRIDOR].mine = 1; st.hand = BRIDGE; return st; };
+  for (const grade of [0, 1, 2]) {
+    const m = boardMove(thin(grade), () => 0);
+    assert.deepEqual([m.kind, m.to, m.feint], ['push', CORRIDOR, false], `grade ${grade}: a push into a thin section, not a rush, and no feint`);
+  }
+  const next = navyDeck({ grade: 2 }); next.sections[LOCK].mine = 0; next.sections[CORRIDOR].mine = 3; next.hand = BRIDGE;
+  assert.deepEqual([boardMove(next, () => 0).kind, boardMove(next, () => 0).feint], ['hold', false], 'next to ours, a hold and not a charge');
+});
+
+// Hold fire (fightui.js DECK_ACTS): the hand stands ready and fires at nobody. The engine does nothing for it: no shot, no ability rolled, and the turn goes as
+// it would with no act at all.
+test('hold fire fires no shot and rolls nothing: the turn is the one with no act', () => {
+  const st = navyDeck(); st.sections[LOCK] = { mine: 2, theirs: 2, mineHurt: 0, theirsHurt: 0, cover: 0 };
+  const draws = rand => { let n = 0; return [() => { n++; return rand(); }, () => n]; };
+  const [r1, n1] = draws(() => 0.5), [r2, n2] = draws(() => 0.5);
+  const held = resolveDeckTurn(st, { stand: LOCK, act: { kind: 'holdfire' }, order: null }, stay, r1), none = resolveDeckTurn(st, { stand: LOCK, act: null, order: null }, stay, r2);
+  assert.deepEqual(plain(held), plain(none), 'the same state and events');
+  assert.equal(n1(), n2(), 'and the same rolls');
+  assert.ok(!held.events.some(e => e.kind === 'shoot' || e.kind === 'steady' || e.kind === 'cover'), 'no shot, no steady, no cover');
+  assert.deepEqual(plain(held.state.used), {}, 'the cover is not spent');
 });
 
 // Wounds: a hit wounds a head, and downs one only once all are wounded; the shot finishes the wounded; a move takes the unwounded first.

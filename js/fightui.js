@@ -226,12 +226,12 @@ function shipFightEnd(s, end) {
 
 // ---------- the deck fight: boarding on the same panel (spec Section 3), in place of the lock fight ----------
 // The deck is drawn as its sections (handtohand.js fightStrip) with their move shown above it. The hand stands or moves one section, does one thing there
-// (shoot, or the post's two abilities at the post's own odds, abilityOdds), and gives one order to a named crewmate (crewOrders, at crewOrderOdds); Fight
+// (shoot, the post's two abilities at the post's own odds, abilityOdds, pull back, or hold fire), and gives one order to a named crewmate (crewOrders, at crewOrderOdds); Fight
 // resolves the turn (fight.js resolveDeckTurn). A head lost on our side is downed, and some of the time a named casualty (deckLoss), and the ends settle as the lock fight's did
 // (repelSettle, assaultSettle). `s` is the fight from repelStart or assaultStart (boarders.js); its words are each fight's beat (the section names, openings and
 // ends), the 'beats:deck' lines both fights share (the abilities and the orders) and the 'scene:fight' deck lines.
 
-const DECK_ACTS = ['shoot', 'steady', 'cover', 'pullback'];
+const DECK_ACTS = ['shoot', 'steady', 'cover', 'holdfire', 'pullback'];  // holdfire: the hand stands ready and fires at nobody, no shot and no ability rolled (the engine does nothing for it)
 const isHatch = o => HATCH_ORDER[o.sheet.post] === o.kind;  // an order worked at a section of the crew's choosing (handtohand.js)
 // A section's name: the beat's title (her deck is named from her bridge), and the cargo bay's from the deck lines.
 const deckTitle = (s, i) => {
@@ -243,7 +243,7 @@ const deckTitle = (s, i) => {
 // A section's name inside a sentence (the deck lines).
 const deckAt = (s, i) => fightSay(`deck.${s.assault ? 'hers' : 'ours'}.${i}`);
 const deckOpening = s => { const k = s.assault ? 2 - REACH[s.state.hand] : REACH[s.state.hand]; return repelWords(s, `open.${k}.${s.state.turn % 2}`, (s.assault ? ASSAULT_OPENINGS : REPEL_OPENINGS)[k][s.state.turn % 2]); };
-const mayFeint = (f, move) => f.grade > 0 && !!move && (move.kind === 'push' || move.kind === 'round');  // a veteran's push or round may feint; a rush or a charge never does
+const mayFeint = (f, move) => f.party !== 'navy' && f.grade > 0 && !!move && (move.kind === 'push' || move.kind === 'round');  // a veteran's push or round may feint; a rush or a charge never does, nor the navy
 const fallTo = f => (f.assault ? BACK : FORWARD)[f.hand];  // where a pull back takes the hand: toward our bridge, or her lock; the same section from the back one
 const deckBoard = (s, move) => fightStrip({ titles: s.state.sections.map((_, i) => deckTitle(s, i)), sections: s.state.sections, hand: s.state.hand, move, feint: mayFeint(s.state, move),
   began: s.state.began, breakAt: Math.floor(s.state.began * deckRule(s.state, 'BREAK')),  // her count, with the line she breaks at (deckEnd)
@@ -264,7 +264,7 @@ function deckFightEvent(s, plan = {}) {
   const ability = k => deckWords(`ability.${post}.${k}.label`, FIGHT_ABILITY[post][k].label);
   const choices = [
     { label: fightSay(p.stand === f.hand ? 'deck.stand' : 'deck.move', { at: deckTitle(s, p.stand) }), keep: true, run: redo({ stand: next(near, p.stand) }) },
-    { label: p.act === 'shoot' ? fightSay('deck.shoot', { lo: sidearmOf(f)[0], hi: sidearmOf(f)[1] }) : p.act === 'pullback' ? fightSay('deck.pullback', { to: deckAt(s, back) }) : fightSay(`deck.${p.act}`, { what: ability(p.act) }), keep: true, run: redo({ act: next(acts, p.act) }) },
+    { label: p.act === 'shoot' ? fightSay('deck.shoot', { lo: sidearmOf(f)[0], hi: sidearmOf(f)[1] }) : p.act === 'pullback' ? fightSay('deck.pullback', { to: deckAt(s, back) }) : p.act === 'holdfire' ? fightSay('deck.holdfire') : fightSay(`deck.${p.act}`, { what: ability(p.act) }), keep: true, run: redo({ act: next(acts, p.act) }) },
   ];
   if (p.act === 'shoot' && aims.length > 1) choices.push({ label: fightSay('deck.shoot.at', { at: deckAt(s, aim) }), keep: true, run: redo({ shootAt: next(aims, aim) }) });
   if (orders.length) {
@@ -273,12 +273,13 @@ function deckFightEvent(s, plan = {}) {
     if (order && isHatch(order)) choices.push({ label: fightSay('deck.order.at', { at: deckAt(s, there) }), keep: true, run: redo({ at: next(f.sections.map((_, i) => i), there) }) });
   }
   choices.push({ label: fightSay('deck.fight'), keep: true, run: () => deckTurn(s, { ...p, order: order && order.id }) });
-  const who = fightSay(`deck.who.${s.assault ? 'assault' : 'repel'}`), feint = mayFeint(f, m) ? ` ${fightSay('deck.feint')}` : '';
+  const who = fightSay(`deck.who.${s.assault ? 'assault' : f.party === 'navy' ? 'navy' : 'repel'}`), feint = mayFeint(f, m) ? ` ${fightSay('deck.feint')}` : '';
+  const standing = navyBoarding(f) ? [fightSay('deck.navy.down', { gov: s.d.foe.gov, n: DECK.NAVY_STANDING * f.navyDown })] : [];  // what the heads of a navy party put down have cost so far (repelSettle)
   return {
     title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s,
-    read: `${fightSay('deck.turn', { n: f.turn + 1, max: DECK.TURNS })} ${fightSay(`deck.${m.kind}`, { who, n: m.n, ...(m.kind === 'charge' ? { at: deckAt(s, m.at), from: deckAt(s, m.from) } : { to: deckAt(s, m.to) }), ...(m.via === undefined ? {} : { via: deckAt(s, m.via) }) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
+    read: `${fightSay('deck.turn', { n: f.turn + 1, max: deckCap(f) })} ${fightSay(`deck.${m.kind}`, { who, n: m.n, ...(m.kind === 'charge' ? { at: deckAt(s, m.at), from: deckAt(s, m.from) } : { to: deckAt(s, m.to) }), ...(m.via === undefined ? {} : { via: deckAt(s, m.via) }) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
     board: deckBoard(s, m.kind === 'hold' ? null : m),
-    text: [deckOpening(s), ...(s.held.length ? [s.held.join(' ')] : []), ...f.log.slice(-3)].join('</p><p>'),
+    text: [deckOpening(s), ...standing, ...(s.held.length ? [s.held.join(' ')] : []), ...f.log.slice(-3)].join('</p><p>'),
     choices,
   };
 }
@@ -293,12 +294,13 @@ function deckLoss(s, sent) {
 // Fight: the turn resolved with the move that was shown, a line for it in the log, and the panel again; at an end, the close (deckClose), and this returns nothing.
 function deckTurn(s, p) {
   const f = s.state, post = lockPost(), o = repelOrders(s, f.used.cover || p.act === 'cover').find(x => x.id === p.order);
-  const act = p.act === 'shoot' ? { kind: 'shoot', ...(p.shootAt === undefined ? {} : { at: p.shootAt }) } : p.act === 'pullback' ? { kind: 'pullback' } : { kind: p.act, odds: abilityOdds(post, p.act) };
+  const act = p.act === 'shoot' ? { kind: 'shoot', ...(p.shootAt === undefined ? {} : { at: p.shootAt }) } : p.act === 'pullback' || p.act === 'holdfire' ? { kind: p.act } : { kind: p.act, odds: abilityOdds(post, p.act) };
   const r = resolveDeckTurn(f, { stand: p.stand, act, order: o ? { kind: o.kind, odds: crewOrderOdds(o.sheet, o.kind, s.hurt.has(o.id)), ...(isHatch(o) ? { at: p.at === undefined ? p.stand : p.at } : {}) } : null }, s.shown, Math.random);
   s.state = r.state;
   const at = i => deckAt(s, i), said = [], after = [], ab = r.events.filter(e => e.kind === 'steady' || e.kind === 'cover'), worked = r.events.find(e => e.kind === 'hatch');  // a hatch is the order's own, rolled before the rest
   const side = e => (e.worked ? 'win' : 'lose');
   let sent = null;
+  if (act.kind === 'holdfire') after.push(fightSay('deck.holdfire.you'));
   if ((act.kind === 'steady' || act.kind === 'cover') && !(act.kind === 'cover' && f.used.cover) && ab.length) { const e = ab.shift(); after.push(e.nobody ? fightSay('deck.nobody.you') : deckWords(`ability.${post}.${e.kind}.${side(e)}`, FIGHT_ABILITY[post][e.kind][side(e)])); }
   const crew = !o ? null : isHatch(o) ? worked : ab.shift();
   if (crew) { const e = crew; after.push(e.nobody ? fightSay('deck.nobody.crew', { first: o.first }) : `${o.first} ${deckWords(`crew.${o.sheet.post}.${o.kind}.${side(e)}`, CREW_ABILITY[o.sheet.post][o.kind][side(e)])}`); if (!e.worked && !e.nobody) sent = o.id; }
@@ -325,12 +327,12 @@ function deckTurn(s, p) {
   return deckFightEvent(s, { act: p.act === 'cover' || p.act === 'pullback' ? 'shoot' : p.act, order: p.order });
 }
 
-// The end: the line for how it was won (the last of them down, or the rest broken) or for the attackers withdrawing at the turn cap, then the settle (boarders.js),
+// The end: the line for how it was won (the last of them down, or the rest broken) or for the attackers withdrawing at the turn cap, then the settle (boarders.js: a search says its own),
 // shown on the panel; Stand down goes on to whatever the settle queued (the duel, the captain lost on the bridge, the hand's ending).
 function deckClose(s, end) {
   const f = s.state, left = sum(f, 'theirs'), capped = deckCapped(f) && deckEnd({ ...f, turn: 0 }) === null;
   const how = end !== 'won' || capped ? null : left === 0 ? 'last' : left <= f.began * deckRule(f, 'BREAK') ? 'broke' : null;
-  s.won = end === 'won';
+  s.won = end === 'won'; s.searched = end === 'searched';
   const line = capped ? fightSay(`deck.withdraw.${s.assault ? 'assault' : 'repel'}`) : how ? repelWords(s, `end.${how}`, FIGHT_END[s.assault ? 'assault' : 'repel'][how]) : '';
   const said = `${line ? `${line} ` : ''}${repelSettle(s)}`, next = G.nextEvent;
   G.nextEvent = { title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s, board: deckBoard(s, null), text: `${f.log.slice(-2).join('</p><p>')}</p><p>${said}`,

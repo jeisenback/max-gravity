@@ -9739,12 +9739,11 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cut the drive and the cutter closes. The boarding officer reads the citation, and 12,500 cr goes out of the ship's fund. The ship is logged as settled. For now.",
+    "text": "You cut the drive and the cutter closes. The boarding officer reads the citation, and 30,000 cr goes out of the ship's fund. The ship is logged as settled. For now.",
     "mem": [
      "9 Jul 2214: We were stopped by a patrol and it cost the fund."
     ],
     "fx": {
-     "credits": -12500,
      "p1": -1
     },
     "next": null
@@ -22989,10 +22988,10 @@
     ]
    },
    {
-    "log": "Turn 1: you hit her weapons for 13.",
+    "log": "Turn 1: you hit her weapons for 12.",
     "next": {
      "title": "The Lock",
-     "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+     "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them put down costs standing with Arcology Compact: 0 so far.",
      "labels": [
       "Stand: The Lock",
       "Shoot: 1 to 2 of them hit",
@@ -23624,6 +23623,21 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
+     "Hold fire: stand ready, fire at nobody",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: holding where they are.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
      "Pull back: ours here fall back to the Corridor",
      "Order: none",
      "Fight"
@@ -24017,6 +24031,21 @@
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
+     "Hold fire: stand ready, fire at nobody",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: holding where they are.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
      "Aim: her Lock",
      "Order: none",
@@ -24167,6 +24196,36 @@
      "Orders to the crew"
     ],
     "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: a charge on Her Lock, set from Her Corridor. 4 of their 4 still up; they fight to the last."
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 5. The boarding party: 2 pushing into the Corridor.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them put down costs standing with Arcology Compact: 2 so far.",
+    "labels": [
+     "Stand: The Lock",
+     "Shoot: 2 to 3 of them hit",
+     "Aim: the Lock",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor. 2 aboard, 2 still to come; they fight to the last."
+   },
+   {
+    "log": "Turn 1: 1 of them and 1 of ours wounded in the Lock. You hold your fire.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: nobody gives ground. None of them are where you stand.",
+    "end": true,
+    "close": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>They hold the bridge. The boarding officer has the ship searched berth by berth, writes the citation, and fines her 5,000 cr, collected on the spot. The boarding party goes back across, and the ship is let go with the fine in her log."
+   },
+   {
+    "mem": [
+     "9 Jul 2214: You fought the navy at the lock, and they searched the ship anyway, and fined it."
+    ]
    }
   ]
  }

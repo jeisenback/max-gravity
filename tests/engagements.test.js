@@ -301,7 +301,7 @@ test('a hired hand can heave to and let the ship pay a quarter of its fund, inst
   await done();
 });
 
-test('a patrol that boards a hired hand\'s ship levies the fund and does not rob it', async () => {
+test('a patrol that boards a hired hand\'s ship and holds the bridge searches it, fining the fund the heave-to\'s quarter, and does not rob it', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -312,9 +312,9 @@ test('a patrol that boards a hired hand\'s ship levies the fund and does not rob
     s.state.sections[2] = { mine: 0, theirs: 3, cover: 1 }; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };  // they hold the bridge
     rolls([0.99, 0.99, 0.99, 0.99]);  // no one is hurt
     const e = deckFightEvent(s); e.choices[e.choices.length - 1].run(); const text = G.nextEvent.text; G.nextEvent = null;
-    return { levy: /levy of 3,000 cr/.test(text), fund: h.fund };
+    return { fine: /fines her 2,500 cr/.test(text), robbed: /They're on the bridge/.test(text), fund: h.fund };
   });
-  assert.ok(r.levy); assert.equal(r.fund, 7000);
+  assert.ok(r.fine); assert.equal(r.robbed, false); assert.equal(r.fund, 7500);
   await done();
 });
 

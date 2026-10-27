@@ -116,7 +116,7 @@ test('with the moves, each helps against its type, no fixed plan beats reading h
 // The ship fights are left out (raid: false), and only the groups asked are played (each cell on its own seeded stream); the corsair's checks, on the same runs, are the test after this one.
 let deckRuns = null;  // the deck fights, played once for the raider's test and the corsair's
 const deckFights = async () => {
-  const runs = await (deckRuns = deckRuns || Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['party', 'level', 'grade', 'charge'] }))));
+  const runs = await (deckRuns = deckRuns || Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['party', 'level', 'grade', 'charge', 'navy'] }))));
   for (const x of runs) assert.deepEqual(x.errors, []);
   const r = {};  // the seeds' tallies summed, cell by cell
   for (const kind of ['repel', 'assault']) { r[kind] = {}; for (const x of runs) for (const [cell, t] of Object.entries(x[kind])) { const acc = r[kind][cell] = r[kind][cell] || {}; for (const [k, v] of Object.entries(t)) acc[k] = (acc[k] || 0) + v; } }
@@ -176,6 +176,43 @@ test('against a corsair\'s charge the answer wins a repel nine in ten and boardi
   }
   const ans = won(r.assault['party|corsair crew 2 level 2 answer grade 0']), not = won(r.assault['charge|corsair crew 2 level 2 answerNoCharge grade 0']);
   assert.ok(ans >= not + 0.2, `boarding a corsair with two crew: answer ${f2(ans)}, without its charge rule ${f2(not)}`);
+});
+
+// The navy's party (Task 6: each head of theirs put down costs standing, and holding our bridge is a search), started as the game starts it (from a patrol's
+// ship fight, fightui.js fightBoarded: a half run), repelling at level 2 with two crew and with five: the answer wins at least 90% (a win is repelled, or
+// held to their cap, DECK.NAVY_TURNS, when an inspection party withdraws; a search is not), costs at most half the standing going to them and shooting does, and less than random play does, in 3.5 to 6.5 turns;
+// random play with five crew costs dead a fight within 0.15 of the raider repel's grade-0 baseline (0.32).
+test('against the navy\'s party the answer holds them at half the standing shooting costs, wins nine in ten, and random play costs more', async () => {
+  const r = await deckFights();
+  const cell = (crew, policy) => r.repel[`navy|navy crew ${crew} level 2 ${policy} grade 0`], st = t => t.standing / t.n;
+  for (const crew of [2, 5]) {
+    const ans = cell(crew, 'answer');
+    assert.ok(ans && ans.n >= 200, `navy with ${crew} crew: ${ans ? ans.n : 0} fights`);
+    assert.ok(won(ans) >= 0.9, `navy with ${crew} crew: answer wins ${f2(won(ans))}`);
+    assert.ok(st(ans) <= 0.5 * st(cell(crew, 'shoot')), `navy with ${crew} crew: answer costs ${f2(st(ans))} standing a fight, shoot ${f2(st(cell(crew, 'shoot')))}`);
+    assert.ok(st(cell(crew, 'random')) > st(ans), `navy with ${crew} crew: random costs ${f2(st(cell(crew, 'random')))}, answer ${f2(st(ans))}`);
+    assert.ok(turns(ans) >= 3.5 && turns(ans) <= 6.5, `navy with ${crew} crew: answer's fights last ${f2(turns(ans))} turns`);
+  }
+  const d = dead(cell(5, 'random'));
+  assert.ok(Math.abs(d - DEAD.repel[0]) <= 0.15, `navy, random with five crew: ${f2(d)} dead a fight against ${DEAD.repel[0]}`);
+});
+
+// Over the three parties (the spec's Section 3), at level 2 and grade 0, both ways where a party comes both ways: no fixed policy (random, shoot, cover, order) wins
+// 70% or more of its fights against every party (a party's fights pooled), with two crew (the owner's ruling, 2026-10-27: with five, shoot, cover and order
+// each win nine in ten against every party, so the five-crew rows are reported here and not checked); and random play loses 25% or more of all its fights,
+// with two crew and five. The corsair's repel stays in it: it is a cost (the owner's earlier ruling), and every policy wins it, but with two crew no fixed
+// policy wins boarding her, nor against the raider.
+test('no fixed plan wins seven in ten against every party with two crew, and random play loses a quarter of its fights', async t => {
+  const r = await deckFights();
+  const pool = (party, policy, crews) => { const all = { n: 0, won: 0 }; for (const kind of ['repel', 'assault']) for (const crew of crews) { const c = r[kind][`${party === 'navy' ? 'navy' : 'party'}|${party} crew ${crew} level 2 ${policy} grade 0`]; if (c) { all.n += c.n; all.won += c.won; } } return all; };
+  const PARTIES = ['raider', 'corsair', 'navy'];
+  for (const p of ['random', 'shoot', 'cover', 'order']) {
+    const by = PARTIES.map(party => won(pool(party, p, [2])));
+    assert.ok(by.some(w => w < 0.7), `with two crew ${p} wins ${by.map(f2).join(', ')} against the raider, the corsair and the navy`);
+    t.diagnostic(`with five crew ${p} wins ${PARTIES.map(party => f2(won(pool(party, p, [5])))).join(', ')} against the raider, the corsair and the navy (not checked)`);
+  }
+  const rnd = PARTIES.map(party => pool(party, 'random', [2, 5])).reduce((a, c) => ({ n: a.n + c.n, won: a.won + c.won }), { n: 0, won: 0 });
+  assert.ok(1 - won(rnd) >= 0.25, `random play loses ${f2(1 - won(rnd))} of its fights`);
 });
 
 // answerOrders (tools/answer.js, #814): the torpedo is held until her shields are down. It is a self-contained script on the game's globals, so it runs here in a bare context with those stubbed.

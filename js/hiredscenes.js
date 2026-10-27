@@ -500,13 +500,17 @@ const SCENE_LINES = {
     'memory.stood': 'You stood us up to a raid and she broke off.',
     'memory.ran': 'We had to run from a fight with you at the post.',
     'memory.navy': 'You stood us up to a navy ship, and she left us alone.',  // a patrol that broke off, or that was crippled and calls for a tow
+    'memory.searched': 'You fought the navy at the lock, and they searched the ship anyway, and fined it.',  // a navy party that held our bridge (boarders.js shipSearched)
     // the deck fight (deckFightEvent): {who} is who comes on, {n} how many, {mine} how many of ours, {to}, {via} and {at} a section, {what} an ability, {first} and {does} a crewmate's order, {lo} to {hi} what a shot takes
     'deck.cargo': 'The Cargo Bay', 'deck.cargoHers': 'Her Cargo Bay',
     'deck.ours.0': 'the Lock', 'deck.ours.1': 'the Corridor', 'deck.ours.2': 'the Bridge', 'deck.ours.3': 'the Cargo Bay',
     'deck.hers.0': 'her Lock', 'deck.hers.1': 'her Corridor', 'deck.hers.2': 'her Bridge', 'deck.hers.3': 'her Cargo Bay',
-    'deck.who.repel': 'Boarders', 'deck.who.assault': 'Her crew',
+    'deck.who.repel': 'Boarders', 'deck.who.assault': 'Her crew', 'deck.who.navy': 'The boarding party',
+    'deck.navy.down': 'Each of them put down costs standing with {gov}: {n} so far.',  // a navy party's fight, under the deck: {n} is the standing lost so far
+    'deck.end.searched': 'They hold the bridge. The boarding officer has the ship searched berth by berth, writes the citation, and fines her {fine} cr, collected on the spot. The boarding party goes back across, and the ship is let go with the fine in her log.',  // a navy party held our bridge: {fine} is the heave-to's fine
     'deck.push': '{who}: {n} pushing into {to}.', 'deck.rush': '{who}: {n} rushing through {via} into {to}.', 'deck.wave': '{n} more at the lock next turn.', 'deck.aboard': '{n} aboard, {m} still to come', 'deck.round': '{who}: {n} going round through {to}.', 'deck.hold': '{who}: holding where they are.',
     'deck.charge': '{who}: a charge on {at}, set from {from}. Hit them in {from} to stop it; it blows this turn.', 'deck.pullback': 'Pull back: ours here fall back to {to}',
+    'deck.holdfire': 'Hold fire: stand ready, fire at nobody', 'deck.holdfire.you': 'You hold your fire.',  // the act that does nothing (fightui.js DECK_ACTS), and its line after the turn: against a navy party, where each of them put down costs standing
     'deck.feint': 'They may feint.',
     'deck.stand': 'Stand: {at}', 'deck.move': 'Move to: {at}',
     'deck.order.at': 'At {at}', 'deck.wounded': '{n} of them wounded', 'deck.woundedOurs': '{n} of ours wounded',

@@ -246,7 +246,9 @@ const DECK = {
     FULL: 5,         // the heads over a half run's that she has aboard
     CREW_HIT: [0, 1],  // the exchange's roll a head, and a press's: lighter, so that two of ours last long enough for the hand's shot to tell
     CASUALTY: 0.5    // of our heads downed, the share that is a casualty: fewer are downed than repelling, and more of them die
-  }
+  },
+  NAVY_TURNS: 5,     // a navy party's turn cap (deckCap): an inspection party that has not held our bridge by then withdraws, and the repel is won
+  NAVY_STANDING: 2   // the standing with her government each head of a navy party put down costs, however the fight ends (boarders.js repelSettle): a quarter of the 8 that firing on her cost
 };
 
 // Who comes aboard, by the hull she is: the navy hulls are the navy's, the corsair's her own, any other ship a raider's.
@@ -292,7 +294,8 @@ function deckFight({ boarders, crew, hand = LOCK, cover, hers = [], grade = 0, a
   sections[LOCK][atk] = assault ? crew : first;
   sections.forEach((s, i) => { s[def] = each + (i === BRIDGE ? n - each * sections.length : 0); });  // the remainder holds the bridge, so it is never left empty
   const start = sections[hand].mine ? hand : sections.map((_, i) => i).filter(i => sections[i].mine).sort((a, b) => Math.abs(REACH[a] - REACH[hand]) - Math.abs(REACH[b] - REACH[hand]))[0];
-  return { kind: 'deck', sections, hand: start === undefined ? hand : start, began: boarders, party, level, wave: !assault && boarders > first ? { n: boarders - first, turn: DECK.WAVE_TURN } : null, grade, assault, side, used: {}, turn: 0, charged: null, log: [] };  // charged: the turn of the last charge
+  return { kind: 'deck', sections, hand: start === undefined ? hand : start, began: boarders, party, level, wave: !assault && boarders > first ? { n: boarders - first, turn: DECK.WAVE_TURN } : null, grade, assault, side, used: {}, turn: 0, charged: null, log: [],  // charged: the turn of the last charge
+    ...(party === 'navy' && !assault ? { navyDown: 0 } : {}) };  // navyDown: the heads of a navy party put down so far, which the settle charges in standing
 }
 
 // How the side `atk` ('theirs' repelling, 'mine' in an assault) advances: from its front into the next section where it outnumbers the other, else hold; on a long
@@ -319,6 +322,7 @@ function chargeAt(st) {
 // What her crew do this turn. Attacking (repelling) they advance; defending (an assault), she pushes back toward the lock where she outnumbers us. A veteran may feint a push.
 // Raiders rush: a push into a section we hold thinly (under half of the heads sent) and the hand is not in goes on through it, two sections in a turn (`via` is the one passed).
 // Corsairs charge: where they would push or hold, a breaching charge on a section of ours next to theirs (chargeAt), never two turns running and never feinted. It moves no heads.
+// The navy pushes and holds, and never feints: a lawful party does what it says.
 function boardMove(st, rand) {
   const S = st.sections;
   let m = { kind: 'hold', from: LOCK, to: LOCK, n: 0 };
@@ -332,7 +336,7 @@ function boardMove(st, rand) {
   if (m.kind === 'push' && st.party === 'raider' && past !== via && st.hand !== via && 2 * S[via].mine < m.n) m = { kind: 'rush', from: m.from, via, to: past, n: m.n };
   const charge = st.party === 'corsair' && (m.kind === 'push' || m.kind === 'hold') && st.charged !== st.turn - 1 ? chargeAt(st) : null;
   if (charge) return { kind: 'charge', ...charge, n: 0, feint: false };
-  return { ...m, feint: m.kind !== 'rush' && st.grade > 0 && rand() < CUNNING * st.grade };
+  return { ...m, feint: m.kind !== 'rush' && st.party !== 'navy' && st.grade > 0 && rand() < CUNNING * st.grade };
 }
 
 function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
@@ -342,7 +346,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   // A hatch is a steady or cover order with an `at`: it works in that section (one the deck lacks drops it), and is rolled before their move, so it can shut a rush's way.
   const asObj = a => (typeof a === 'string' ? { kind: a } : a);  // 'shoot' may be bare; steady and cover must carry odds
   const extra = S.map(() => 0), steadied = [], back = st.assault ? BACK : FORWARD;  // steadied: where a steady worked this turn; back: the way ours fall back, toward our bridge or her lock
-  let press = 0, hatched = -1;
+  let press = 0, hatched = -1, down = 0;  // down: heads of theirs put down this turn (a worked steady, the exchange and the shot), for a navy party's count
   const ordered = asObj(order);
   const ability = (a, at, hatch) => {
     if (!a || (a.kind !== 'steady' && a.kind !== 'cover')) return;
@@ -352,6 +356,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
     if (a.kind === 'steady' && !hatch && !S[at].theirs) { events.push({ kind: a.kind, nobody: true }); return; }
     const worked = rand() < a.odds;
     const r = abilityStep(a.kind, worked, { pos: at, boarders: S[at].theirs, extra });
+    down += S[at].theirs - r.boarders;
     S[at].theirs = r.boarders; S[at].theirsHurt = Math.min(hurtOf(S[at], 'theirs'), r.boarders);
     r.extra.forEach((n, i) => { extra[i] = n; });
     if (r.press && at === st.hand) press++;  // a miss elsewhere costs the section's order, not the hand
@@ -388,7 +393,8 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
 
   // The hand's act and the crew order: steady and cover go through abilityStep, once each for the order and the act. Cover is once a fight, and is made for us
   // (our cover). A steady one with nobody of theirs in the section is not rolled, and says so (R34). A pull back takes the hand and all of ours there one section back
-  // (none from the back section, and none on a turn the hand moved: a section a turn), and the order is then worked where the hand has gone.
+  // (none from the back section, and none on a turn the hand moved: a section a turn), and the order is then worked where the hand has gone. Hold fire
+  // (fightui.js DECK_ACTS) is none of these: nothing is rolled or fired for it.
   const pulled = asObj(act) && asObj(act).kind === 'pullback' && st.hand === stood && back[st.hand] !== st.hand;
   if (pulled) {
     const from = st.hand, n = S[from].mine;
@@ -418,6 +424,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   S.forEach((s, i) => {
     const m = hitSide(s, 'mine', hits[i].mine), t = hitSide(s, 'theirs', hits[i].theirs), g = i === aim ? shootSide(s, 'theirs', Math.min(shots, s.theirs)) : { downed: 0, wounded: 0 };
     if (i === shown.from && t.downed + t.wounded + g.downed + g.wounded > 0) setterHit = true;  // or ours there, or the shot, downed or wounded one of them
+    down += t.downed + g.downed;
     // the wounded said are the heads newly wounded this turn and still standing at its end (a head wounded and then downed is said once, as down): never more than stand there
     const e = { kind: 'exchange', section: i, mine: m.downed, theirs: t.downed + g.downed, mineHurt: Math.min(m.wounded, hurtOf(s, 'mine')), theirsHurt: Math.min(t.wounded + g.wounded, hurtOf(s, 'theirs')) };
     if (e.mine || e.theirs || e.mineHurt || e.theirsHurt) events.push(e);
@@ -443,6 +450,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   const left = at !== hand;
   if (left) { st.hand = at; events.push({ kind: 'hand', back: true, from: hand, to: at }); }
   if (contested || left) events.push({ kind: 'hurt', hurt: rand() < REPEL_HURT.lose * DECK.SUIT });
+  if (navyBoarding(st)) st.navyDown += down;  // a wounded head is not counted: only one put down
   st.turn++;
   if (st.wave && st.turn === st.wave.turn) {  // the second wave lands in the lock
     S[LOCK].theirs += st.wave.n;  // unwounded
@@ -452,11 +460,12 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   return { state: st, events };
 }
 
-// Her crew, with any wave still to land, is at or under her break share of her start (deckRule BREAK: 0.15 repelling, 0.2 boarding her), or none; or (an assault) mine hold her bridge, or (repelling) hers hold ours. Our loss comes first: the bridge lost is the ship lost.
+// Her crew, with any wave still to land, is at or under her break share of her start (deckRule BREAK: 0.15 repelling, 0.2 boarding her), or none; or (an assault) mine hold her bridge, or (repelling) hers hold ours. Our loss comes first: the bridge lost is the ship lost,
+// or held by a navy party, the ship searched ('searched': boarders.js repelSettle).
 // At the turn cap the attackers withdraw (deckCapped): theirs go back to their ship, a repel won, or ours fall back, an assault lost (R32).
 function deckEnd(st) {
   const bridge = st.sections[BRIDGE];
-  if (st.assault ? sum(st, 'mine') === 0 : bridge.theirs > 0 && bridge.mine === 0) return 'taken';
+  if (st.assault ? sum(st, 'mine') === 0 : bridge.theirs > 0 && bridge.mine === 0) return navyBoarding(st) ? 'searched' : 'taken';
   if (sum(st, 'theirs') + pendingWave(st) <= st.began * deckRule(st, 'BREAK')) return 'won';
   if (st.assault && bridge.mine > 0 && bridge.theirs === 0) return 'won';
   return deckCapped(st) ? (st.assault ? 'taken' : 'won') : null;
@@ -464,4 +473,8 @@ function deckEnd(st) {
 const deckRule = (st, key) => (st.assault && key in DECK.ASSAULT ? DECK.ASSAULT : DECK)[key];  // a DECK number, or boarding her its DECK.ASSAULT one
 const sidearmOf = st => DECK.SIDEARM_BY_LEVEL[st.level];  // [lo, hi] heads the hand's shot takes at this fight's level
 const pendingWave = st => (st.wave ? st.wave.n : 0);  // the heads still to land, 0 once landed
-const deckCapped = st => st.turn >= DECK.TURNS;
+const deckCap = st => (navyBoarding(st) ? DECK.NAVY_TURNS : DECK.TURNS);  // the turn the attackers withdraw at: a navy party's own, or the deck's
+// A navy party on our deck, the only deck it boards (a navy hull boarded, in the owner's game, fights as her crew): each of them put down costs standing, holding
+// our bridge is a search, and it withdraws at its own cap.
+const navyBoarding = st => st.party === 'navy' && !st.assault;
+const deckCapped = st => st.turn >= deckCap(st);

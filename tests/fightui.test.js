@@ -303,7 +303,7 @@ test('a corsair\'s shown charge reads that it blows this turn and is marked on i
   const { ev, done } = await open();
   await ev(helpers); await ev(deckHelpers);
   const r = await ev(() => {
-    const out = {}, acts = (s, plan) => { const seen = []; let e = deckFightEvent(s, plan); for (let k = 0; k < 4; k++) { seen.push(e.choices[1].label); e = e.choices[1].run(); } return seen; };
+    const out = {}, acts = (s, plan) => { const seen = []; let e = deckFightEvent(s, plan); for (let k = 0; k < 5; k++) { seen.push(e.choices[1].label); e = e.choices[1].run(); } return seen; };
     fightGame('gunner'); const s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
     s.shown = { kind: 'charge', at: 1, from: 0, n: 0, feint: false };
     const e = deckFightEvent(s); out.read = e.read; out.mark = /<text class="charge"[^>]*>CHARGE</.test(e.board); out.setter = /<text class="setter"[^>]*>SETTER</.test(e.board); out.arrow = /<path class="move"/.test(e.board);
@@ -348,6 +348,45 @@ test('a charge that blows is logged, and each of ours it downs rolls for a casua
   assert.match(r.stopped.line, /the charge in the Corridor never blows: they were hit in the Lock/, r.stopped.line);
   assert.match(r.empty.line, /the charge blows in the Corridor on nobody/, r.empty.line); assert.doesNotMatch(r.empty.line, /0 of ours/);
   assert.match(r.back.line, /ours fall back to the Bridge/, r.back.line);
+  await done();
+});
+
+// The navy's party (Task 6): the panel names it, never marks a feint, and says what each of them put down costs; a search's close names the fine.
+test('a navy party\'s panel names the boarding party and its own turn cap, shows the standing its heads put down have cost, and marks no feint', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    fightGame('gunner'); const gov = 'Arcology Compact', foe = window.realMakeEnemy({ kind: 'patrol', gov, shipId: 'cutter' });
+    const s = repelStart({ foe, foeHp: 0, init: 'foe', grade: 1 }, 'half'); s.state.navyDown = 2;
+    s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false };
+    const e = deckFightEvent(s);
+    const raider = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full'); raider.shown = s.shown;
+    const er = deckFightEvent(raider);
+    return { party: s.state.party, read: e.read, text: e.text, line: sceneSay('scene:fight', 'deck.navy.down', { gov, n: 4 }), strip: /may feint/i.test(e.board), raider: er.text, raiderRead: er.read };
+  });
+  assert.equal(r.party, 'navy');
+  assert.match(r.read, /^Turn 1 of 5\. The boarding party: 2 pushing into the Corridor\.$/, r.read);  // an inspection party's own cap (DECK.NAVY_TURNS)
+  assert.match(r.raiderRead, /^Turn 1 of 8\./, r.raiderRead);
+  assert.ok(r.text.includes(r.line), r.text); assert.match(r.line, /Arcology Compact: 4 so far/);
+  assert.equal(r.strip, false, 'a navy push is never feinted');
+  assert.ok(!r.raider.includes('costs standing'), 'a raider fight has no standing line'); assert.match(r.raiderRead, /Boarders: 2 pushing/);
+  await done();
+});
+
+test('a navy party holding our bridge closes the fight with a search that names the fine', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    fightGame('gunner'); const h = hired(); h.fund = 40000; G.duel = null;
+    const s = repelStart({ foe: window.realMakeEnemy({ kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }), foeHp: 0, init: 'foe' }, 'half');
+    s.state.sections.forEach(x => { x.theirs = 0; }); s.state.sections[2] = { mine: 0, theirs: 2, cover: 1 }; s.state.sections[0].mine = 1; s.state.hand = 0; s.state.wave = null;
+    s.shown = { kind: 'hold', from: 2, to: 2, n: 0, feint: false };
+    rolls([]); const e = deckFightEvent(s); const ret = e.choices[e.choices.length - 1].run();
+    const close = G.nextEvent; G.nextEvent = null;
+    return { ret, text: close.text, labels: close.choices.map(c => c.label), fund: h.fund };
+  });
+  assert.equal(r.ret, null); assert.deepEqual(r.labels, ['Stand down']);
+  assert.match(r.text, /10,000 cr/, r.text); assert.equal(r.fund, 30000);
   await done();
 });
 
@@ -714,6 +753,24 @@ test('a shot where none of them stand says so, as a steady one does, and one aim
   });
   assert.match(r.own, /None of them are where you stand\./, r.own);
   assert.match(r.aimed, /None of them are in the Corridor\./, r.aimed); assert.doesNotMatch(r.aimed, /where you stand/, r.aimed);
+  await done();
+});
+
+// Hold fire (DECK_ACTS): offered in every deck fight, after the cover; the turn fires at nobody and rolls nothing, and says so after the turn.
+test('hold fire is offered in every deck fight, and a turn of it fires no shot and says the hand held its fire', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const acts = s => { const seen = []; let e = deckFightEvent(s); for (let k = 0; k < 4; k++) { seen.push(e.choices[1].label); e = e.choices[1].run(); } return seen; };
+    fightGame('gunner'); const s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
+    s.state.hand = 2; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false };
+    const repel = acts(s), assault = acts(assaultStart(makeEnemy({ kind: 'pirate' })));
+    rolls([]); const e = deckFightEvent(s, { act: 'holdfire' }), next = e.choices[e.choices.length - 1].run();
+    return { repel, assault, last: s.state.log[s.state.log.length - 1], used: !!s.state.used.cover, act: next.choices[1].label };
+  });
+  for (const k of ['repel', 'assault']) assert.ok(r[k].includes('Hold fire: stand ready, fire at nobody'), `${k}: ${r[k].join(' | ')}`);
+  assert.match(r.last, /You hold your fire\./, r.last); assert.doesNotMatch(r.last, /None of them/, r.last);
+  assert.equal(r.used, false, 'the cover is not spent'); assert.equal(r.act, 'Hold fire: stand ready, fire at nobody', 'and the next turn keeps the act');
   await done();
 });
 

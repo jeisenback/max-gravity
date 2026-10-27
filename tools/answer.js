@@ -43,8 +43,8 @@ function answerOrders(s) {
   return orders;
 }
 
-// The deck fight's answer (the fight tool's `answer` deck policy, tools/fights.js), self-contained on the game's globals as answerOrders is (ADJ, REACH, DECK,
-// BACK, FORWARD, repelOrders, isHatch). Given the fight (s, with s.state and their shown move s.shown), the hand's plan { stand, act, shootAt, order, at } (fightui.js deckFightEvent):
+// The deck fight's answer (the fight tool's `answer` deck policy, tools/fights.js), self-contained on the game's globals as answerOrders is (ADJ, REACH, DECK, BRIDGE,
+// BACK, FORWARD, repelOrders, isHatch, navyBoarding). Given the fight (s, with s.state and their shown move s.shown), the hand's plan { stand, act, shootAt, order, at } (fightui.js deckFightEvent):
 // - on a shown rush, stand in the section it goes through (via) when it is in reach, the hand's section or one next to it; otherwise order a hatch at via
 //   when one is on offer (the pilot's or the engineer's: isHatch);
 // - otherwise go where the fight is (the section where both sides will stand after their shown move, the fullest of them, else where they are going, else the
@@ -54,7 +54,11 @@ function answerOrders(s) {
 // - order the first crewmate on offer, except where the hatch took the order;
 // - on a shown charge, hit its setter, who stands in `from`: shoot there when the shot can reach it (the hand standing there, or from DECK.SIDEARM_REACH_LEVEL
 //   next to it, the plan's stand first, then where the hand is, then a section a step away); else, where the hand stands in the charged section and it is not
-//   the back one, pull back; else send a steady hatch (the pilot's) to `from` when one is on offer. A charge moves no heads, so it is reckoned as a hold.
+//   the back one, pull back; else send a steady hatch (the pilot's) to `from` when one is on offer. A charge moves no heads, so it is reckoned as a hold;
+// - against a navy party, where each head of theirs put down costs standing and they withdraw at their own cap (DECK.NAVY_TURNS): stand where they push when ours
+//   stand there, else with ours nearest them; pull ours back out of the hand's section where they trade there while the bridge is not at stake; make the cover
+//   while it can, then hold fire; send a hatch to the section they push into; and shoot only when they would hold our bridge after their move (theirs on it, ours
+//   none) or the section stood in would be lost (theirs there outnumbering ours), at the bridge when it is in reach.
 // With read false it reads neither the rush nor the wounded and shoots where it stands: the fight tool's fixed policies go where the fight is by it, and its
 // `order` policy is that plan. With charge false it reads all but the charge: the fight tool's `answerNoCharge`, to show the charge is the puzzle boarding her.
 function answerDeck(s, read = true, charge = read) {
@@ -72,11 +76,23 @@ function answerDeck(s, read = true, charge = read) {
   const both = S.map((_, i) => i).filter(i => S[i].theirs && S[i].mine).sort((a, b) => S[b].theirs - S[a].theirs);
   const theirs = S.map((_, i) => i).filter(i => S[i].theirs).sort((a, b) => Math.abs(REACH[a] - REACH[f.hand]) - Math.abs(REACH[b] - REACH[f.hand]));
   const t = both.length ? both[0] : moves ? to : theirs.length ? theirs[0] : f.hand;  // with nobody trading, to the nearest of them, to shoot
-  const goal = near.slice().sort((a, b) => Math.abs(REACH[a] - REACH[t]) - Math.abs(REACH[b] - REACH[t]) || (b === t) - (a === t))[0];
+  const toward = x => near.slice().sort((a, b) => Math.abs(REACH[a] - REACH[x]) - Math.abs(REACH[b] - REACH[x]) || (b === x) - (a === x))[0];  // the section in reach nearest x
+  const goal = toward(t);
   const stand = meet ? m.via : goal;
   const reach = [stand, ...(f.level >= DECK.SIDEARM_REACH_LEVEL ? ADJ[stand].filter(i => f.sections[i]) : [])];
   const shootAt = !read ? stand : reach.filter(i => S[i].theirs).sort((a, b) => (S[b].theirsHurt || 0) - (S[a].theirsHurt || 0) || S[b].theirs - S[a].theirs || (b === stand) - (a === stand))[0];
   const plan = { stand, act, ...(act === 'shoot' ? { shootAt: shootAt === undefined ? stand : shootAt } : {}), order: first };
+  if (read && navyBoarding(f)) {
+    const ours = S.map((_, i) => i).filter(i => f.sections[i] && S[i].mine), them = moves ? to : t;
+    const ourSide = moves && S[to].mine ? to : ours.sort((a, b) => Math.abs(REACH[a] - REACH[them]) - Math.abs(REACH[b] - REACH[them]))[0];  // where they push when ours stand there, else ours nearest them
+    const into = toward(ourSide === undefined ? t : ourSide), bridge = S[BRIDGE].theirs > 0 && !S[BRIDGE].mine, fire = bridge || S[into].theirs > S[into].mine;
+    if (!bridge && into === f.hand && S[f.hand].theirs && S[f.hand].mine && FORWARD[f.hand] !== f.hand) return { stand: f.hand, act: 'pullback', order: null };
+    const navyAct = fire ? 'shoot' : f.used.cover ? 'holdfire' : 'cover';
+    const navyOrders = repelOrders(s, f.used.cover || navyAct === 'cover'), door = navyOrders.find(isHatch);
+    const aims = [into, ...(f.level >= DECK.SIDEARM_REACH_LEVEL ? ADJ[into].filter(i => f.sections[i]) : [])];
+    const aim = bridge && aims.includes(BRIDGE) ? BRIDGE : aims.filter(i => S[i].theirs).sort((a, b) => (S[b].theirsHurt || 0) - (S[a].theirsHurt || 0) || S[b].theirs - S[a].theirs || (b === into) - (a === into))[0];
+    return { stand: into, act: navyAct, ...(fire ? { shootAt: aim === undefined ? into : aim } : {}), order: door ? door.id : navyOrders.length ? navyOrders[0].id : null, ...(door ? { at: moves ? to : into } : {}) };
+  }
   if (read && m.kind === 'rush' && !meet && hatch) return { ...plan, order: hatch.id, at: m.via };
   if (read && charge && m.kind === 'charge') {
     const reaches = x => x === m.from || (f.level >= DECK.SIDEARM_REACH_LEVEL && ADJ[x].includes(m.from));
