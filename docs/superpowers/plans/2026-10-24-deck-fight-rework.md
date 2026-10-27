@@ -402,6 +402,23 @@ Written in full after PR 1 (#825) merged, for the engine as it now stands: wound
 
 ### Task 6: the lawful party, the standing a head, and the search
 
+> **As shipped** (PR 3). The text below this block was written before the owner's and the ledger's rulings of 2026-10-27
+> (`.superpowers/sdd/2026-10-24-deck-fight-rework/progress.md`) and is kept as it was; where it differs, this block is what shipped.
+> - `DECK.NAVY_TURNS = 5` and `deckCap`: an inspection party withdraws at turn 5 and the repel is won; the panel's "Turn n of 5" shows it.
+> - `navyBoarding` (`st.party === 'navy' && !st.assault`) is the one gate for the navy rules: the count, the search, the cap, no feint,
+>   the panel's standing line and the settle. A navy hull's crew in the owner's assault fights as her own, feints allowed.
+> - The Hold fire act is in `DECK_ACTS` (`fightui.js`), keyed `deck.holdfire` (`deck.hold` is their move's line). The engine does nothing
+>   for it, and it is offered in every deck fight.
+> - The navy answer: pull ours back out of a traded section while the bridge is not at stake, make the cover, then hold fire, and
+>   shoot only to save the bridge or the hand's section.
+> - The cross-party check ("no fixed plan wins seven in ten against every party") holds at two crew only, with the corsair repel kept
+>   in it; the five-crew rows are reported, not checked.
+> - The `DECK.NAVY` knobs (`BREAK`, `MORE`) are removed.
+> - `fundHeld` in `js/boarders.js`: `purse()` and `moveMoney()` read the fund inside `hiredFunds`, so the heave-to's fine and the search
+>   come out of the ship's fund.
+> - The navy's deck fight is "rare under the ship fight's answer".
+> - The rulings are in the ledger (`progress.md`).
+
 Written in full after PR 2 (#826) merged, for the engine as it now stands: wounds, `deckRule`, `DECK.ASSAULT`, the charge, per-cell
 streams in the fight tool, the panel plan `{ stand, act, shootAt, order, at }`, and `answerDeck(s, read, charge)`. The owner's
 choices (2026-10-27):

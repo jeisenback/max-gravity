@@ -332,8 +332,8 @@ crew would otherwise. In the ship fight she fights with torpedoes, so she boards
 which it leaves alone: three heads at grade 0, two more a grade.
 
 **The navy's party is an inspection, not a raid** (Task 6). It comes only on our deck: a patrol that boards us from the ship
-fight (`fightBoarded`), at a half run since she fights with her guns, four heads at grade 0 and two more a grade, named on the
-panel as "The boarding party". It pushes and holds, and never rushes, charges or feints. **Each of them put down costs
+fight (`fightBoarded`), at a half run since she fights with her guns, four heads at grade 0 and two more a grade (a cutter's; a destroyer, three patrols in ten, boards with six, and the navy checks measure the cutter only), named on the
+panel as "The boarding party". It pushes, goes round on a long deck, and holds, and never rushes, charges or feints. **Each of them put down costs
 standing** with her government, `DECK.NAVY_STANDING` (2) a head downed by the exchange, the shot, a steady or a hatch, charged
 at the settle whether they are repelled, withdraw or search the ship (a wound costs nothing; a hand killed ends the chapter
 with no settle), on top of the 8 that firing on her cost; the panel says it under the deck ("Each of
@@ -347,11 +347,11 @@ owner's game) fights as her crew: no standing, no search, the deck's cap.
 
 The navy's deck fight is rare under the ship fight's answer: `answer` is never boarded by a cutter (the table below), and the
 ladder's cutter is a papers check: complying answers it, so the fine is paid once and there is no fight. The soak, which plays
-the ship fight its own way (the orders as they stand), meets it 39 times in 257 deck fights.
+the ship fight its own way (the orders as they stand), meets it 39 times in 257 deck fights (PR 2's count: the soak does not tally parties).
 
 Repelling a corsair, the charge is a cost, not a puzzle. With two standing all of ours hold our bridge and her setter stands in
 the corridor, which is where any plan that goes where the fight is shoots anyway: `order` wins 99% to the answer's 98%, and
-random play with five standing loses 0.38 dead a fight to her half run of three (a raider's full run of six, 0.40). Boarding
+random play with five standing loses 0.40 dead a fight to her half run of three (a raider's full run of six, 0.42). Boarding
 her, it is the puzzle: with two standing, the answer wins 85%, the same answer that does not read the charge 58%, and no fixed
 policy more than 16%.
 
@@ -525,7 +525,7 @@ the run that wrote this section (after the final review's tune, #808):
 - **In the soak** (`npm run soak`, the deck fights played by `answerDeck`; seeds 1 to 120, tests/distribution/stakes-fights.test.js): the
   hand is hurt 0.55 times a chapter, 9 of the 66 in 265 repels; 3 of 120 chapters lose the captain on the bridge and 5 the hand,
   8 in all (the limit is 3 in 40). With the charge the same: 66 hurts, 4 hurt again, 8 ended early; of the 257 deck fights begun,
-  all repels, 14 are against a corsair's party (204 raiders', 39 the navy's). With the navy's party, its cap and hold fire (Task 6): 67
+  all repels, 14 are against a corsair's party (204 raiders', 39 the navy's: PR 2's split, the soak does not tally parties). With the navy's party, its cap and hold fire (Task 6): 67
   hurts (0.56 a chapter), 3 hurt again, 7 ended early (3 deaths, 4 captains lost; the limit is 9 in 120).
 
 The tool is how to check a change to `FIGHT`, `DECK`, `boardersFor`, `CASUALTY_ODDS` or `REPEL_HURT`.

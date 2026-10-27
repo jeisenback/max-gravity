@@ -191,6 +191,7 @@ test('against the navy\'s party the answer holds them at half the standing shoot
     assert.ok(won(ans) >= 0.9, `navy with ${crew} crew: answer wins ${f2(won(ans))}`);
     assert.ok(st(ans) <= 0.5 * st(cell(crew, 'shoot')), `navy with ${crew} crew: answer costs ${f2(st(ans))} standing a fight, shoot ${f2(st(cell(crew, 'shoot')))}`);
     assert.ok(st(cell(crew, 'random')) > st(ans), `navy with ${crew} crew: random costs ${f2(st(cell(crew, 'random')))}, answer ${f2(st(ans))}`);
+    // the navy answer holds fire to the 5-turn cap (DECK.NAVY_TURNS), so this holds while the cap sits inside the range
     assert.ok(turns(ans) >= 3.5 && turns(ans) <= 6.5, `navy with ${crew} crew: answer's fights last ${f2(turns(ans))} turns`);
   }
   const d = dead(cell(5, 'random'));
