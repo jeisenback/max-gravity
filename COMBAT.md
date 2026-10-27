@@ -342,8 +342,12 @@ them put down costs standing with Arcology Compact: 4 so far."). **If they hold 
 the heave-to charges too), goes out of the ship's fund, the captain thinks a point less of the hand, and the ship is kept,
 with her hold, her armor and her captain. Her standing is not reset as the heave-to resets it, since you fought them. **At
 five turns (`DECK.NAVY_TURNS`, the owner's ruling, 2026-10-27) an inspection party withdraws**, and the repel is won; the panel's
-"Turn n of 5" shows that cap. So the lawful answer is to hold them off and put none of them down. A navy hull boarded (in the
-owner's game) fights as her crew: no standing, no search, the deck's cap.
+"Turn n of 5" shows that cap. **The citation stands** (#828, the owner's decision, 2026-10-27): a party that withdraws at its cap
+still files it, so the ship pays the heave-to's fine, a quarter of the purse (`heaveToFine`, through `moveMoney` in `citation`,
+js/boarders.js), and the close says so (`deck.end.cited`, a draft). A party broken or downed by force charges no fine (its 2 standing a
+head still applies), there is no opinion change and no standing reset on a withdrawal, and a raider's withdrawal charges nothing. So letting a patrol board now costs
+the heave-to's fine plus the ship fight's 8 standing, and the lawful answer, to hold them off and put none of them down, saves only the
+2 a head. A navy hull boarded (in the owner's game) fights as her crew: no standing, no search, no citation, the deck's cap.
 
 The navy's deck fight is rare under the ship fight's answer: `answer` is never boarded by a cutter (the table below), and the
 ladder's cutter is a papers check: complying answers it, so the fine is paid once and there is no fight. The soak, which plays
@@ -485,8 +489,10 @@ the run that wrote this section (after the final review's tune, #808):
   | won, turns | 100% / 90%, 5.0 / 4.8 | 96% / 97%, 4.9 / 3.9 | 97% / 97%, 4.9 / 3.9 | 99% / 99%, 4.3 / 3.4 | 100% / 100%, 5.0 / 5.0 |
   | standing lost a fight | 2.65 / 4.79 | 5.78 / 7.74 | 5.79 / 7.66 | 7.83 / 7.88 | 0.00 / 0.76 |
   | searched | 0% / 9% | 0% / 0% | 0% / 0% | 0% / 0% | 0% / 0% |
+  | fined a fight (of a quarter-purse, 30,000) | 29,400 / 21,225 | 28,875 / 0 | 28,950 / 1,500 | 675 / 0 | 30,000 / 30,000 |
 
-  Against the navy every policy wins: the lesson is the standing. The answer holds them to their cap and costs none with two
+  Against the navy every policy wins: the lesson is the standing and the fine. The answer holds them to their cap, so its citation always stands
+  (30,000 a fight, the whole quarter-purse, with two crew and with five; a policy that breaks the party by force pays none of it: shoot, cover and order with five crew pay 0, 1,500 and 0), and costs none with two
   standing and 0.76 with five, against 5.8 and 7.7 for shooting; random play costs 2.65 and 4.79, and with five standing loses
   0.26 dead a fight (the test holds it within 0.15 of 0.32) and is searched 9 times in 100. With two crew no fixed policy
   wins 70% of its fights against every party (each party's fights pooled over both ways): random wins 24%, 20% and 100%

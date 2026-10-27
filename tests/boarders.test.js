@@ -580,6 +580,33 @@ test('a navy party that holds our bridge searches the ship: a quarter of the pur
   await done();
 });
 
+test('a navy party that withdraws at its cap still files its citation: a quarter of the purse, named in the close; one broken by force charges none, and a raider\'s withdrawal charges nothing (#828)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(navyHelpers);
+  const r = await ev(() => {
+    const st = fight(), h = hired(), duel = G.duel, real = Math.random; G.duel = null; st.cargo = { water: 30 }; st.paid = { water: 300 };
+    // a party at the turn before its cap, nobody of theirs on our bridge and the hand where none of them are, so the turn is held and the cap is reached
+    const close = (start, cap, set) => {
+      Math.random = real; h.fund = 20000; st.rep[GOV] = 0; G.nextEvent = null;  // the rolls are all misses (rolls), and building the party needs the real ones
+      const s = holdThem(start(), f => { f.sections.forEach(x => { x.theirs = 0; }); f.sections[1] = { mine: 0, theirs: 3, cover: 1 }; f.sections[0].mine = 1; f.hand = 0; f.wave = null; f.turn = cap - 1; f.navyDown = 2; set(f); });
+      rolls([]); fightTurn(s); Math.random = real; const e = G.nextEvent; G.nextEvent = null;
+      return { won: s.won, searched: s.searched, fund: h.fund, text: e.text, rep: st.rep[GOV] };
+    };
+    return {
+      line: sceneSay('scene:fight', 'deck.end.cited', { fine: fmt(5000) }),
+      withdrew: close(navy, DECK.NAVY_TURNS, () => {}),
+      broken: close(navy, DECK.NAVY_TURNS, f => { f.sections[1].theirs = 0; }),
+      raider: close(() => { G.duel = duel; return repelStart(duel, 'full'); }, DECK.TURNS, () => {}),
+    };
+  });
+  assert.equal(r.withdrew.won, true); assert.equal(r.withdrew.searched, false);
+  assert.equal(r.withdrew.fund, 15000, 'a quarter of the fund, the heave-to\'s fine'); assert.ok(r.withdrew.text.includes(r.line), r.withdrew.text); assert.match(r.withdrew.text, /5,000 cr/);
+  assert.equal(r.withdrew.rep, -4, 'the 2 a head still applies, with no reset');
+  assert.equal(r.broken.won, true); assert.equal(r.broken.fund, 20000, 'broken by force: no citation'); assert.ok(!r.broken.text.includes(r.line)); assert.equal(r.broken.rep, -4);
+  assert.equal(r.raider.won, true); assert.equal(r.raider.fund, 20000, 'a raider withdraws and files nothing'); assert.ok(!r.raider.text.includes(r.line));
+  await done();
+});
+
 test('the standing charged is DECK.NAVY_STANDING a head of theirs put down, whichever way a navy fight settles, and nothing for a raider\'s', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(navyHelpers);

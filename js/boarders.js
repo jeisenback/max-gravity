@@ -182,14 +182,22 @@ function repelSettle(s) {
   const lost = deadNote(s);
   if (s.assault) return assaultSettle(s, repelled, lost);
   if (navyBoarding(s.state)) changeRep(d.foe.gov, -DECK.NAVY_STANDING * s.state.navyDown);
+  const cited = repelled && navyBoarding(s.state) && deckWithdrew(s.state) ? citation() : '';  // a withdrawn inspection still files its citation (#828)
   if (repelled) {
     if (cap) like(cap, 1, repelWords(s, 'memory.held', REPEL_MEMORY.held));
     for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id) && s.state.turn >= 3) like(c, 1, repelWords(s, 'memory.together', REPEL_MEMORY.together)); }
     d.init = 'me';
     G.nextEvent = d.foeHp > 0 ? duelEvent() : null;
-    return `The last of them go back through the lock. The outer door closes from the other side, and the drive of the ${theShip(d.foe).replace(/^The /, '')} lights, and she breaks away from the hull.${lost}`;
+    return `The last of them go back through the lock. The outer door closes from the other side, and the drive of the ${theShip(d.foe).replace(/^The /, '')} lights, and she breaks away from the hull.${lost}${cited}`;
   }
   return s.searched ? shipSearched(s) : shipTaken(s);
+}
+
+// A navy party that withdrew at its cap: the citation stands, and the ship pays the heave-to's fine. No regard lost, and the standing is not reset.
+function citation() {
+  const fine = heaveToFine();
+  moveMoney(-fine);
+  return ` ${sceneSay('scene:fight', 'deck.end.cited', { fine: fmt(fine) })}`;
 }
 
 // A navy party on our bridge: the ship is searched and fined the heave-to's fine, the captain thinks a point less of the hand, and the ship is kept. The standing is

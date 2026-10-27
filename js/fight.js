@@ -478,3 +478,4 @@ const deckCap = st => (navyBoarding(st) ? DECK.NAVY_TURNS : DECK.TURNS);  // the
 // our bridge is a search, and it withdraws at its own cap.
 const navyBoarding = st => st.party === 'navy' && !st.assault;
 const deckCapped = st => st.turn >= deckCap(st);
+const deckWithdrew = st => deckCapped(st) && deckEnd({ ...st, turn: 0 }) === null;  // the attackers went back at the cap, with their party not broken or beaten: the close (fightui.js deckClose), and for a navy party the citation (boarders.js repelSettle)
