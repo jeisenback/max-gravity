@@ -500,12 +500,13 @@ const SCENE_LINES = {
     'memory.stood': 'You stood us up to a raid and she broke off.',
     'memory.ran': 'We had to run from a fight with you at the post.',
     'memory.navy': 'You stood us up to a navy ship, and she left us alone.',  // a patrol that broke off, or that was crippled and calls for a tow
-    // the deck fight (deckFightEvent): {who} is who comes on, {n} how many, {to}, {via} and {at} a section, {what} an ability, {first} and {does} a crewmate's order, {lo} to {hi} what a shot takes
+    // the deck fight (deckFightEvent): {who} is who comes on, {n} how many, {mine} how many of ours, {to}, {via} and {at} a section, {what} an ability, {first} and {does} a crewmate's order, {lo} to {hi} what a shot takes
     'deck.cargo': 'The Cargo Bay', 'deck.cargoHers': 'Her Cargo Bay',
     'deck.ours.0': 'the Lock', 'deck.ours.1': 'the Corridor', 'deck.ours.2': 'the Bridge', 'deck.ours.3': 'the Cargo Bay',
     'deck.hers.0': 'her Lock', 'deck.hers.1': 'her Corridor', 'deck.hers.2': 'her Bridge', 'deck.hers.3': 'her Cargo Bay',
     'deck.who.repel': 'Boarders', 'deck.who.assault': 'Her crew',
     'deck.push': '{who}: {n} pushing into {to}.', 'deck.rush': '{who}: {n} rushing through {via} into {to}.', 'deck.wave': '{n} more at the lock next turn.', 'deck.aboard': '{n} aboard, {m} still to come', 'deck.round': '{who}: {n} going round through {to}.', 'deck.hold': '{who}: holding where they are.',
+    'deck.charge': '{who}: a charge on {at}. It blows this turn.', 'deck.pullback': 'Pull back: ours here fall back to {to}',
     'deck.feint': 'They may feint.',
     'deck.stand': 'Stand: {at}', 'deck.move': 'Move to: {at}',
     'deck.order.at': 'At {at}', 'deck.wounded': '{n} of them wounded', 'deck.woundedOurs': '{n} of ours wounded',
@@ -518,6 +519,7 @@ const SCENE_LINES = {
     'deck.log.turn': 'Turn {n}: {what}.', 'deck.log.theirs': '{n} of them move into {to}', 'deck.log.ours': '{n} of ours move into {to}',
     'deck.log.fight': '{theirs} of them and {mine} of ours down in {at}', 'deck.log.wounds': '{theirs} of them and {mine} of ours wounded in {at}', 'deck.log.back': 'you fall back to {to}', 'deck.log.none': 'nobody gives ground',
     'deck.log.rush': '{n} of them rush into {to}', 'deck.log.rushStopped': '{n} of them rush and are stopped in {at}', 'deck.log.wave': '{n} more come through the lock',
+    'deck.log.charge': 'the charge blows in {at}, {mine} of ours down', 'deck.log.chargeStopped': 'the charge in {at} never blows', 'deck.log.pullback': 'ours fall back to {to}',
     'deck.log.hatch': 'the hatch at {at} {how}', 'deck.hatch.worked': 'holds', 'deck.hatch.failed': 'does not close',
   },
   'scene:fight-entry': {  // the line a contact of chapter 1's ladder opens with in place of the sensor's (engage.js contactEvent, fightladder.js), by step: {cap} is the captain, {patrol} the patrol as the game names her (PATROL_NAMES), {price} the Ore Runner's

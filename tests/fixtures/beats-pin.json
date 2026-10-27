@@ -1858,7 +1858,7 @@
  {
   "id": "dead:corsair:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 8 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1869,7 +1869,7 @@
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
      "Her Lock",
-     "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: a charge on her Lock. It blows this turn."
     ]
    },
    {
@@ -1903,7 +1903,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 8 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1912,7 +1912,7 @@
  {
   "id": "dead:corsair:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 8 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1923,7 +1923,7 @@
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
      "Her Lock",
-     "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: a charge on her Lock. It blows this turn."
     ]
    },
    {
@@ -1957,7 +1957,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 8 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1966,7 +1966,7 @@
  {
   "id": "dead:corsair:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 8 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1977,7 +1977,7 @@
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
      "Her Lock",
-     "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: a charge on her Lock. It blows this turn."
     ]
    },
    {
@@ -2011,7 +2011,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 8 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2020,7 +2020,7 @@
  {
   "id": "dead:corsair:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 8 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2031,7 +2031,7 @@
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
      "Her Lock",
-     "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: holding where they are."
+     "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: a charge on her Lock. It blows this turn."
     ]
    },
    {
@@ -2065,7 +2065,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 8 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]

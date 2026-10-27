@@ -113,26 +113,36 @@ test('with the moves, each helps against its type, no fixed plan beats reading h
 // - with two crew the answer wins more than every fixed policy, and at least 60%; with five it wins at least 90%, and no fixed policy wins more (with five crew, by more than 0.02);
 // - its fights last 2.5 turns or more on the mean;
 // - random play with five crew costs at most 0.15 a fight more dead by her grade than before the parties (0.36, 0.49 and 0.55): fewer is allowed.
-// The ship fights are left out (raid: false), and only the groups asked are played.
-test('against raiders the answer wins a repel nine in ten in four to six turns and the level counts, boarding her is a short risky push it wins, and no fixed plan beats it', async () => {
-  const runs = await Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['party', 'level', 'grade'] })));
+// The ship fights are left out (raid: false), and only the groups asked are played; the corsair's checks, on the same draws, are the test after this one.
+let deckRuns = null;  // the deck fights, played once for the raider's test and the corsair's
+const deckFights = async () => {
+  const runs = await (deckRuns = deckRuns || Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['party', 'level', 'grade'] }))));
   for (const x of runs) assert.deepEqual(x.errors, []);
   const r = {};  // the seeds' tallies summed, cell by cell
   for (const kind of ['repel', 'assault']) { r[kind] = {}; for (const x of runs) for (const [cell, t] of Object.entries(x[kind])) { const acc = r[kind][cell] = r[kind][cell] || {}; for (const [k, v] of Object.entries(t)) acc[k] = (acc[k] || 0) + v; } }
-  const won = t => t.won / t.n, turns = t => t.rounds / t.n, dead = t => t.dead / t.n, f2 = x => x.toFixed(2);
-  const DEAD = { repel: [0.32, 0.44, 0.49], assault: [0.36, 0.49, 0.55] };  // dead a fight by her grade before the parties (the spec's "Why")
+  return r;
+};
+const won = t => t.won / t.n, turns = t => t.rounds / t.n, dead = t => t.dead / t.n, f2 = x => x.toFixed(2);
+const DEAD = { repel: [0.32, 0.44, 0.49], assault: [0.36, 0.49, 0.55] };  // dead a fight by her grade before the parties (the spec's "Why")
+// The checks both parties share, at level 2, with two crew and with five: the answer's least wins, no fixed policy above it, and its turns.
+function deckChecks(k, kind, party) {
+  const cell = (crew, policy) => k[`party|${party} crew ${crew} level 2 ${policy} grade 0`];
+  for (const crew of [2, 5]) {
+    const ans = won(cell(crew, 'answer')), t = turns(cell(crew, 'answer')), least = kind === 'assault' && crew === 2 ? 0.6 : 0.9;
+    assert.ok(ans >= least, `${party}, ${kind} with ${crew} crew: answer wins ${f2(ans)}`);
+    for (const p of ['random', 'shoot', 'cover', 'order']) {
+      const w = won(cell(crew, p));
+      // with five crew a fixed policy may come within 0.02 of answer: about 1.7 standard errors at n = 400 and p near 0.97, and every cell draws on one stream
+      assert.ok(crew === 5 ? w <= ans + 0.02 : kind === 'assault' ? w < ans : w <= ans, `${party}, ${kind} with ${crew} crew: ${p} ${f2(w)}, answer ${f2(ans)}`);
+    }
+    assert.ok(kind === 'assault' ? t >= 2.5 : t >= 3.5 && t <= 6.5, `${party}, ${kind} with ${crew} crew: answer's fights last ${f2(t)} turns`);
+  }
+}
+test('against raiders the answer wins a repel nine in ten in four to six turns and the level counts, boarding her is a short risky push it wins, and no fixed plan beats it', async () => {
+  const r = await deckFights();
   for (const kind of ['repel', 'assault']) {
     const k = r[kind], cell = (group, crew, level, policy, grade = 0) => k[`${group}|raider crew ${crew} level ${level} ${policy} grade ${grade}`];
-    for (const crew of [2, 5]) {
-      const ans = won(cell('party', crew, 2, 'answer')), t = turns(cell('party', crew, 2, 'answer')), least = kind === 'assault' && crew === 2 ? 0.6 : 0.9;
-      assert.ok(ans >= least, `${kind} with ${crew} crew: answer wins ${f2(ans)}`);
-      for (const p of ['random', 'shoot', 'cover', 'order']) {
-        const w = won(cell('party', crew, 2, p));
-        // with five crew a fixed policy may come within 0.02 of answer: about 1.7 standard errors at n = 400 and p near 0.97, and every cell draws on one stream
-        assert.ok(crew === 5 ? w <= ans + 0.02 : kind === 'assault' ? w < ans : w <= ans, `${kind} with ${crew} crew: ${p} ${f2(w)}, answer ${f2(ans)}`);
-      }
-      assert.ok(kind === 'assault' ? t >= 2.5 : t >= 3.5 && t <= 6.5, `${kind} with ${crew} crew: answer's fights last ${f2(t)} turns`);
-    }
+    deckChecks(k, kind, 'raider');
     if (kind === 'repel') {
       const [l1, l3] = [1, 3].map(l => won(cell('level', 2, l, 'answer')));
       assert.ok(l3 >= l1 + 0.1, `${kind} with two crew: answer wins ${f2(l3)} at level 3, ${f2(l1)} at level 1`);
@@ -141,6 +151,21 @@ test('against raiders the answer wins a repel nine in ten in four to six turns a
       const now = dead(cell('grade', 5, 2, 'random', grade));
       assert.ok(kind === 'assault' ? now <= was + 0.15 : Math.abs(now - was) <= 0.15, `${kind} at grade ${grade}: ${f2(now)} dead a fight against ${was} before`);
     });
+  }
+});
+
+// The corsair's party (Task 5: her breaching charge, and the pull back that answers it), on the same draws and the same rules as the raider's above, at level 2,
+// with two crew and with five: the answer's least wins, no fixed policy above it (with five crew, by more than 0.02) and its turns, as above; random play with
+// five crew at grade 0 costs dead a fight within 0.15 of 0.32 repelling and at most 0.15 over 0.36 boarding her; and going to them and shooting (`shoot`), which
+// stands in the charge, wins less than the answer with two crew both ways.
+test('against a corsair\'s charge the answer wins a repel nine in ten and boarding her, no fixed plan beats it, and shooting where they are loses to it', async () => {
+  const r = await deckFights();
+  for (const kind of ['repel', 'assault']) {
+    const k = r[kind], cell = (crew, policy) => k[`party|corsair crew ${crew} level 2 ${policy} grade 0`];
+    deckChecks(k, kind, 'corsair');
+    const now = dead(cell(5, 'random')), was = DEAD[kind][0];
+    assert.ok(kind === 'assault' ? now <= was + 0.15 : Math.abs(now - was) <= 0.15, `corsair, ${kind}: ${f2(now)} dead a fight against ${was} before`);
+    assert.ok(won(cell(2, 'shoot')) < won(cell(2, 'answer')), `corsair, ${kind} with two crew: shoot ${f2(won(cell(2, 'shoot')))}, answer ${f2(won(cell(2, 'answer')))}`);
   }
 });
 

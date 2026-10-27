@@ -304,18 +304,30 @@ Boarding, both ways, is played on the same panel (`js/fight.js` resolveDeckTurn,
 when a boarding run lands in the card duel, and when you board a crippled ship, where a win carries her bridge. The deck is
 drawn as its sections (`js/handtohand.js` fightStrip): the Lock, the Corridor, the Bridge, and the cargo bay on a long ship,
 with both sides' heads, their wounded, and each side's cover in each, and her count under it with the line at which she breaks.
-Their move is shown above it ("4 pushing into the Corridor"); at a veteran grade it is marked "may feint", and it does at the
-`CUNNING` rate. The design is `docs/superpowers/specs/2026-10-24-deck-fight-rework-design.md`.
+Their move is shown above it ("4 pushing into the Corridor"); at a veteran grade a push or a round is marked "may feint", and it
+does at the `CUNNING` rate. The design is `docs/superpowers/specs/2026-10-24-deck-fight-rework-design.md`.
 
-The party is set by her type (`DECK_PARTY`): a raider's, a corsair's, or the navy's. So far only the raiders have their own
-move, the **rush**: where the section in front holds fewer of ours than half their number, and the hand is not in it, they go
+The party is set by her type (`DECK_PARTY`): a raider's, a corsair's, or the navy's (which has no move of its own yet). The
+raiders' move is the **rush**: where the section in front holds fewer of ours than half their number, and the hand is not in it, they go
 through it, two sections in a turn ("Boarders: 3 rushing through the Corridor into the Bridge"). The hand standing in the section passed stops them
 there, and so does a hatch worked there. A **repel comes in two waves**: half the boarders first, and the rest at the end of the second
 turn (`DECK.WAVE_TURN`), shown at the lock ("3 more at the lock next turn") on the turn at whose end they land. The break line counts the
 wave still to land.
 
-Each turn the hand stands or moves one section, does one thing there (shoots, or uses one of the post's two abilities: the
-steady one takes one of them down, the cover one makes two points of cover, once a fight), and gives one order to a named
+The corsair's marines have the **breaching charge**. Where their move would be a push or a hold, and one of theirs stands next to
+a section of ours, the charge is shown on that section ("Boarders: a charge on the Corridor. It blows this turn."; the one of ours
+with the most heads, if more than one), marked CHARGE on the strip. It is never shown two turns running and never feinted. It
+blows when the turn is resolved, after the hand's act and the order and before the exchange: it downs 0 to 1 of ours there
+outright (`DECK.CHARGE`), past cover and wounds, the wounded first, and each downed rolls for a casualty as an exchange's do. A
+steady worked in that section this turn, the hand's, an order's where the hand stands, or the pilot's hatch there, picks off its
+setter, and it does not blow. The hand's act **pull back** takes the hand and all of ours in its section one section back
+(toward our bridge repelling, toward her lock boarding her) before it blows, and gives up the ground; it is not offered in the
+back section (our bridge, her lock). A corsair's full run, and her crew aboard when we board her, is one head fewer than another
+ship's would be (`DECK.CORSAIR_LESS`), so her party is a raider's size: her charge takes heads of ours the rest of her crew
+would otherwise.
+
+Each turn the hand stands or moves one section, does one thing there (shoots, uses one of the post's two abilities: the
+steady one takes one of them down, the cover one makes two points of cover, once a fight; or pulls back), and gives one order to a named
 crewmate (that person's own steady or cover ability, at their own odds). The pilot's and the engineer's hatch is worked from
 their post, so its order names a section; every other order works where the hand stands. Where both sides stand they trade, a
 roll for each opposing head (`DECK.CREW_HIT`, 0 to 2), cut by the side's own cover but never to nothing. A hit **wounds a head
@@ -413,35 +425,51 @@ the run that wrote this section (after the final review's tune, #808):
   downtime picked at random) a chapter learns two moves or more 24 times in 40 and both level-1 moves 20 times; in the
   play-throughs (seeds 1 to 5, Hester) four of five learn vent and lead, and lead is used in four, split in one and vent in two.
 - **The deck fights** (`node tools/fights.js --seeds 1,2 --n 200 --deck-only --groups party,level,grade`, the deck test's own
-  draws: tests/fights.test.js). A raider party, a hand at level 2, her grade 0; each cell is won with two standing / five, then
-  the mean turns. The fixed policies go where the fight is: `shoot` fires there, `cover` makes the cover first, `order` shoots
-  and sends the first crewmate on offer every turn. `answer` (tools/answer.js answerDeck) meets a shown rush in its path, or
+  draws: tests/fights.test.js). A hand at level 2, her grade 0; each cell is won with two standing / five, then the mean
+  turns. The fixed policies go where the fight is, reading neither the rush nor the charge: `shoot` fires there, `cover` makes
+  the cover first, `order` shoots and sends the first crewmate on offer every turn. `random` draws each part of the plan from
+  what the panel offers, the pull back among them. `answer` (tools/answer.js answerDeck) meets a shown rush in its path, or
   hatches it when the hand is too far, else goes where the fight is, aims the shot at the most of theirs wounded in reach, and
-  orders the first crewmate on offer; boarding her it makes the cover first.
+  orders the first crewmate on offer; boarding her it makes the cover first. On a charge where the hand stands it picks off the
+  setter (its steady) when its odds are 0.5 or better and theirs stand there, else pulls back where it can; on a charge
+  elsewhere, or one it can neither pick off nor pull back from, it sends the pilot's hatch there when that order's odds are 0.5
+  or better.
 
   | Raider party | random | shoot | cover | order | answer |
   |---|---|---|---|---|---|
-  | repelling | 29% / 47%, 4.2 / 5.1 | 25% / 94%, 3.0 / 5.0 | 37% / 94%, 3.3 / 5.3 | 66% / 97%, 3.5 / 4.1 | 96% / 97%, 5.1 / 4.1 |
-  | boarding her | 25% / 89%, 5.2 / 5.6 | 30% / 97%, 5.0 / 3.9 | 25% / 96%, 5.2 / 4.4 | 55% / 97%, 4.4 / 3.5 | 79% / 97%, 4.2 / 3.6 |
+  | repelling | 26% / 56%, 4.1 / 5.7 | 25% / 94%, 3.0 / 5.0 | 36% / 93%, 3.3 / 5.2 | 69% / 97%, 3.5 / 4.1 | 97% / 97%, 5.1 / 4.1 |
+  | boarding her | 22% / 84%, 5.6 / 6.1 | 29% / 97%, 4.9 / 4.0 | 25% / 96%, 5.2 / 4.4 | 54% / 97%, 4.4 / 3.5 | 82% / 98%, 4.2 / 3.6 |
 
-  The answer by the post's level, two standing:
+  | Corsair party | random | shoot | cover | order | answer |
+  |---|---|---|---|---|---|
+  | repelling | 20% / 51%, 5.5 / 6.9 | 75% / 93%, 6.6 / 5.7 | 54% / 95%, 6.4 / 6.0 | 94% / 97%, 5.2 / 4.5 | 97% / 97%, 5.8 / 5.0 |
+  | boarding her | 10% / 66%, 4.7 / 6.3 | 13% / 91%, 3.9 / 4.4 | 9% / 93%, 3.8 / 4.9 | 25% / 97%, 3.7 / 3.8 | 72% / 95%, 4.7 / 4.5 |
+
+  The answer by the post's level, two standing, against raiders:
 
   | Level | 0 | 1 | 2 | 3 |
   |---|---|---|---|---|
-  | repelling | 65%, 5.3 turns | 62%, 5.2 | 98%, 5.2 | 98%, 4.4 |
-  | boarding her | 37%, 4.6 | 40%, 4.6 | 81%, 4.3 | 81%, 4.1 |
+  | repelling | 67%, 5.3 turns | 61%, 5.1 | 97%, 5.2 | 98%, 4.4 |
+  | boarding her | 35%, 4.6 | 40%, 4.7 | 83%, 4.2 | 86%, 4.1 |
 
   The level that counts is 2, where the shot reaches the next section: a hand at level 0 or 1 with two standing wins a repel
-  three times in five and boarding her two in five. Against a corsair's party, which has no move of its own yet, `answer` wins
-  65% / 97% repelling and 53% / 99% boarding her. The hand is hurt in about a quarter of `answer`'s fights (repelling 26% / 24%,
-  boarding her 24% / 22%).
-- **Repelling boarders**, random play, five standing: by her grade won 50%, 23%, 12%, and dead a fight 0.35, 0.46, 0.47
-  (0.32, 0.44, 0.49 before the parties). With two standing the answer loses no one (0.00 dead a fight).
-- **Boarding her**, random play, five standing: by her grade won 90%, 78%, 33%, and dead a fight 0.20, 0.38, 0.36 (0.36, 0.49,
-  0.55 before the parties; the test holds it at no more than those and 0.15). The answer with two standing: 0.13 dead a fight.
+  three times in five and boarding her two in five. The charge was tuned on these draws (Task 5): at 1 to 3 heads, with her
+  party a head larger than a raider's, `answer` won 79% / 91% repelling a corsair and 40% / 86% boarding her, and random play
+  with five standing lost 0.66 and 0.92 dead a fight; at 0 to 1 with a party of a raider's size it is the table above. Before
+  the charge (her party a head larger, no move of its own) `answer` won 65% / 97% and 53% / 99%. With two standing all of ours
+  hold our bridge, the back section, so a charge there can only be stopped by the pilot's hatch: that is why it downs one at
+  most. The hand is hurt in about a quarter to a third of `answer`'s fights (raiders: repelling 26% / 23%, boarding her 23% /
+  22%; a corsair: 34% / 29% and 26% / 27%).
+- **Repelling boarders**, random play, five standing: against raiders by her grade won 55%, 31%, 14%, and dead a fight 0.35,
+  0.40, 0.49 (0.32, 0.44, 0.49 before the parties); against a corsair at grade 0, 0.41. With two standing the answer against
+  raiders loses no one (0.00 dead a fight).
+- **Boarding her**, random play, five standing: against raiders by her grade won 82%, 62%, 20%, and dead a fight 0.31, 0.50,
+  0.36 (0.36, 0.49, 0.55 before the parties; the test holds it at no more than those and 0.15); against a corsair at grade 0,
+  0.45. The answer with two standing against raiders: 0.12 dead a fight.
 - **In the soak** (`npm run soak`, the deck fights played by `answerDeck`; seeds 1 to 120, tests/distribution/stakes-fights.test.js): the
   hand is hurt 0.55 times a chapter, 9 of the 66 in 265 repels; 3 of 120 chapters lose the captain on the bridge and 5 the hand,
-  8 in all (the limit is 3 in 40).
+  8 in all (the limit is 3 in 40). With the charge the same: 66 hurts, 4 hurt again, 8 ended early; of the 257 deck fights begun,
+  all repels, 14 are against a corsair's party (204 raiders', 39 the navy's).
 
 The tool is how to check a change to `FIGHT`, `DECK`, `boardersFor`, `CASUALTY_ODDS` or `REPEL_HURT`.
 

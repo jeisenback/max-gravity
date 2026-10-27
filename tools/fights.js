@@ -35,15 +35,16 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     };
     const foeOf = (party = 'raider') => Object.assign(makeEnemy({ kind: 'pirate' }), { shipId: { raider: shipId, corsair: 'corsair', navy: 'cutter' }[party] });  // the party comes from her type (fight.js DECK_PARTY)
     // The deck fight's policies: the hand's plan each turn ({ stand, act, order, at }, fightui.js deckFightEvent). 'random' draws each part of it from what the panel offers;
-    // the others go where the fight is (tools/answer.js answerDeck, not reading the rush), a section a turn, and there 'shoot' fires the sidearm where it stands, 'cover' makes
+    // the others go where the fight is (tools/answer.js answerDeck, not reading the rush or the charge), a section a turn, and there 'shoot' fires the sidearm where it stands, 'cover' makes
     // the cover while it can and then shoots, and 'order' shoots and sends the first crewmate on offer every turn. 'answer' reads their shown move: it meets a
-    // rush, or hatches it when the hand is too far, aims the shot at the most of theirs wounded in reach, and boarding her makes the cover first (answerDeck).
+    // rush, or hatches it when the hand is too far, pulls back from a charge or picks off its setter, aims the shot at the most of theirs wounded in reach, and boarding her
+    // makes the cover first (answerDeck).
     const rnd = list => list[Math.floor(Math.random() * list.length)];
     const near = f => [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])];
     const deckAnswer = (0, eval)(`(${deckSrc})`);  // tools/answer.js
     const goal = s => deckAnswer(s, false).stand;
     const POLICY = {
-      random: s => { const f = s.state, stand = rnd(near(f)); return { stand, act: rnd(['shoot', 'steady', ...(f.used.cover ? [] : ['cover'])]), shootAt: rnd([stand, ...(f.level >= DECK.SIDEARM_REACH_LEVEL ? ADJ[stand].filter(i => f.sections[i]) : [])]), order: rnd([null, ...repelOrders(s, f.used.cover).map(o => o.id)]) }; },
+      random: s => { const f = s.state, stand = rnd(near(f)); return { stand, act: rnd(['shoot', 'steady', ...(f.used.cover ? [] : ['cover']), ...((f.assault ? BACK : FORWARD)[stand] === stand ? [] : ['pullback'])]), shootAt: rnd([stand, ...(f.level >= DECK.SIDEARM_REACH_LEVEL ? ADJ[stand].filter(i => f.sections[i]) : [])]), order: rnd([null, ...repelOrders(s, f.used.cover).map(o => o.id)]) }; },
       shoot: s => ({ stand: goal(s), act: 'shoot', shootAt: goal(s), order: null }),
       cover: s => ({ stand: goal(s), act: s.state.used.cover ? 'shoot' : 'cover', shootAt: goal(s), order: null }),
       order: s => deckAnswer(s, false),

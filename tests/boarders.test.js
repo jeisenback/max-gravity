@@ -30,7 +30,7 @@ const helpers = () => {
   window.unstub = () => { resolveDeckTurn = window.realTurn; };
 };
 
-test('a boarding run that lands opens the deck fight at the lock, four more of them for a full run than for a short one (DECK.FULL), and a stopped one does not', async () => {
+test('a boarding run that lands opens the deck fight at the lock, four more of them for a full run than for a short one (DECK.FULL; a corsair\'s one fewer, DECK.CORSAIR_LESS), and a stopped one does not', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -38,12 +38,12 @@ test('a boarding run that lands opens the deck fight at the lock, four more of t
     const before = st.armor; d.init = 'foe'; duelExchange('burn', 'board');  // an evasive burn lets boarders across: full
     out.full = [G.nextEvent.title, G.nextEvent.fight.state.began]; out.armor = st.armor === before;
     G.duel = null; startDuel(DUEL_SPEC, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('pdc', 'board');  // a PDC screen halves it: they come without the four more
-    out.half = [G.nextEvent.title, G.nextEvent.fight.state.began]; out.crew = FOE_CREW[G.duel.foe.shipId];
+    out.half = [G.nextEvent.title, G.nextEvent.fight.state.began]; out.crew = FOE_CREW[G.duel.foe.shipId]; out.less = DECK_PARTY[G.duel.foe.shipId] === 'corsair' ? DECK.CORSAIR_LESS : 0;
     G.duel = null; startDuel(DUEL_SPEC, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('locks', 'board');  // crew at the locks stop it
     out.stopped = G.nextEvent && G.nextEvent.fight;
     return out;
   });
-  assert.deepEqual(r.full, ['The Lock', r.crew + 4]); assert.deepEqual(r.half, ['The Lock', r.crew]); assert.ok(r.armor, 'no hull damage from the run itself');
+  assert.deepEqual(r.full, ['The Lock', r.crew + 4 - r.less], 'a corsair\'s full run brings DECK.CORSAIR_LESS fewer'); assert.deepEqual(r.half, ['The Lock', r.crew]); assert.ok(r.armor, 'no hull damage from the run itself');
   assert.ok(!r.stopped, 'a stopped run is the duel as before');
   await done();
 });
@@ -360,7 +360,7 @@ test('a deck fight ends on the hand\'s death, and the ending reads the record an
   await done();
 });
 
-test('the hand acts with the sidearm or the post\'s two abilities, and the cover one is gone once it is used', async () => {
+test('the hand acts with the sidearm, the post\'s two abilities or a pull back, and the cover one is gone once it is used', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -371,11 +371,11 @@ test('the hand acts with the sidearm or the post\'s two abilities, and the cover
     out.used = s.state.used.cover; out.cover = s.state.sections.map(x => x.cover); out.line = s.state.log[s.state.log.length - 1]; out.after = acts(next);
     return out;
   });
-  assert.deepEqual(r.gunner, ['Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works', 'Covering burst: two points of cover here, once a fight', 'Shoot: 1 to 2 of them hit']);
+  assert.deepEqual(r.gunner, ['Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works', 'Covering burst: two points of cover here, once a fight', 'Pull back: ours here fall back to the Corridor']);
   assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]], ['Cycle a hatch on them: one of them down if it works', 'Drop the pressure door: two points of cover here, once a fight', 'A false order on their band: one of them down if it works']);
   assert.equal(r.used, true); assert.deepEqual(r.cover.slice(0, 3), [3, 2, 1], 'two points where the hand stands, up to three');
   assert.match(r.line, /You lay a long burst along the wall at head height\./);
-  assert.deepEqual(r.after, ['Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works', 'Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works'], 'once a fight');
+  assert.deepEqual(r.after, ['Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works', 'Pull back: ours here fall back to the Bridge', 'Shoot: 1 to 2 of them hit'], 'once a fight (the hand fell back to the corridor in that turn)');
   await done();
 });
 
