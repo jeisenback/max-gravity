@@ -482,7 +482,7 @@ test('the party is keyed by the hull: cutter and destroyer are navy, an unknown 
 });
 
 test('their move is shown, and at a veteran grade it may feint, at CUNNING * grade', () => {
-  const st = deck({ boarders: 8, crew: 1, party: 'corsair' });  // a corsair does not rush; four in the lock, four more in the wave
+  const st = deck({ boarders: 8, crew: 1, party: 'navy' });  // the navy has no move of its own yet; four in the lock, four more in the wave
   assert.deepEqual(plain(boardMove(st, LOW)), { kind: 'push', from: 0, to: 1, n: 4, feint: false }, 'they outnumber the corridor');
   const hold1 = deck({ boarders: 1, crew: 6 });
   assert.equal(boardMove(hold1, LOW).kind, 'hold', 'two of ours stand in the lock with them: they hold');
@@ -504,7 +504,7 @@ test('their move is shown, and at a veteran grade it may feint, at CUNNING * gra
   assert.deepEqual(plain(boardMove(side, LOW)), { kind: 'round', from: 0, to: 3, n: 3, feint: false }, 'with a long ship and the corridor held, round by the cargo bay');
   side.sections[3].theirs = 2; side.sections[2].theirs = 2; side.sections[0].theirs = 1;
   assert.equal(boardMove(side, LOW).from, 2, 'the front is the furthest along, the bridge over the cargo bay');
-  const asl = deck({ assault: true, boarders: 6, crew: 3, party: 'corsair' });
+  const asl = deck({ assault: true, boarders: 6, crew: 3, party: 'navy' });
   assert.deepEqual(plain(boardMove(asl, LOW)), { kind: 'hold', from: 0, to: 0, n: 0, feint: false }, 'her crew hold');
   asl.sections[1].mine = 1; asl.sections[1].theirs = 0; asl.sections[2].theirs = 4; asl.sections[2].mine = 0;
   const m = boardMove(asl, LOW);
@@ -521,7 +521,7 @@ test('the deck starts with the attackers in the lock and the defenders spread, t
   const st = deck({ side: true, cover: [1, 2, 3] });
   assert.deepEqual(plain([st.sections.length, st.sections[3].cover, st.hand, st.began, st.turn, st.used, st.kind]), [4, 0, 2, 3, 0, {}, 'deck'], 'three crew over four sections are all on the bridge, and the hand starts with them (R34)');
   assert.deepEqual(plain(st.sections.map(s => s.cover)), [1, 2, 3, 0]);
-  assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4]], SIDEARM_REACH_LEVEL: 2, WAVE_TURN: 2, CREW_HIT: [0, 2], BREAK: 0.15, FULL: 4, FULL_PAIR: 2, SUIT: 0.2, CASUALTY: 0.3, TURNS: 8,
+  assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4]], SIDEARM_REACH_LEVEL: 2, WAVE_TURN: 2, CREW_HIT: [0, 2], CHARGE: [1, 1], BREAK: 0.15, FULL: 4, CORSAIR_LESS: 2, FULL_PAIR: 2, SUIT: 0.2, CASUALTY: 0.3, TURNS: 8,
     ASSAULT: { BREAK: 0.2, FULL: 5, CREW_HIT: [0, 1], CASUALTY: 0.5 } });
   assert.equal(deck({ crew: 3 }).hand, 0, 'with one of ours in the lock the hand starts there');
   assert.deepEqual(plain(deck({ assault: true, hers: [1, 0, 1] }).sections.map(x => [x.cover, x.hers])), [[0, 1], [0, 0], [0, 1]], 'her cover is kept apart from ours');
@@ -591,7 +591,7 @@ test('a deck fight ends at the turn cap: matched stacks that cannot move withdra
 });
 
 test('a stack does not leave a section while the other side stands in it: their push, her push back and our advance (R29)', () => {
-  const st = deck({ boarders: 8, crew: 3, party: 'corsair' });  // one of ours in each section, four of theirs in the lock
+  const st = deck({ boarders: 8, crew: 3, party: 'navy' });  // one of ours in each section, four of theirs in the lock
   assert.equal(boardMove(st, LOW).kind, 'hold', 'one of ours in the lock holds four of them there');
   st.sections[0].mine = 0;
   assert.deepEqual(plain(boardMove(st, LOW)), { kind: 'push', from: 0, to: 1, n: 4, feint: false }, 'with the lock theirs alone they push on');
@@ -971,7 +971,7 @@ test('boarding her, her crew push back toward the lock, and a raider crew rush t
 });
 
 test('only raiders rush, a rush is never feinted, and a hatch at a section the deck lacks is dropped', () => {
-  const st = rushDeck(); st.party = 'corsair';
+  const st = rushDeck(); st.party = 'navy';
   assert.equal(boardMove(st, () => 0.99).kind, 'push');
   const vet = rushDeck(); vet.grade = 2;
   assert.equal(boardMove(vet, () => 0).feint, false);
@@ -986,7 +986,7 @@ test('a rush onto a bridge with none of ours on it takes the ship that turn', ()
 });
 
 test('a worked steady hatch at the section they leave thins the heads that move, and no section goes below none', () => {
-  for (const party of ['corsair', 'raider']) {
+  for (const party of ['navy', 'raider']) {
     const st = rushDeck(); st.party = party;
     const m = boardMove(st, () => 0.99), order = { kind: 'steady', odds: 1, at: LOCK };
     const r = resolveDeckTurn(st, { stand: BRIDGE, act: null, order }, m, () => 0.5);
@@ -1003,6 +1003,90 @@ test('a missed hatch at a section other than the hand\'s presses nobody where th
   const missed = resolveDeckTurn(b, { stand: BRIDGE, act: null, order: { kind: 'steady', odds: 0, at: LOCK } }, hold, seq(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5));
   assert.ok(missed.events.some(e => e.kind === 'hatch' && !e.worked));
   assert.deepEqual(plain(missed.events.filter(e => e.kind === 'exchange')), plain(plain1.events.filter(e => e.kind === 'exchange')));
+});
+
+// The corsair's breaching charge (Task 5): shown where their move would be a push or a hold, on a section of ours next to one of theirs, never two turns
+// running and never feinted; it blows in the turn it is shown, downing DECK.CHARGE of ours there past cover and wounds, unless its setter, in `from`, is hit.
+const chargeDeck = (o = {}) => { const st = deck({ boarders: 8, crew: 3, party: 'corsair', ...o }); st.wave = null; st.sections[LOCK].mine = 0; st.hand = BRIDGE; return st; };  // one of ours in the corridor and the bridge, four of theirs in the lock
+
+test('a corsair party next to ours shows a charge on the section of ours with the most heads, and not two turns running', () => {
+  const st = chargeDeck(); st.sections[CORRIDOR].mine = 2;
+  assert.deepEqual(plain(boardMove(st, LOW)), { kind: 'charge', at: CORRIDOR, from: LOCK, n: 0, feint: false }, 'the corridor is next to their lock, and their move would be a hold');
+  const side = deck({ side: true, boarders: 8, crew: 0, party: 'corsair' }); side.wave = null;
+  side.sections[CORRIDOR].mine = 1; side.sections[CARGO].mine = 3; side.sections[BRIDGE].mine = 1;
+  assert.deepEqual([boardMove(side, LOW).kind, boardMove(side, LOW).at], ['charge', CARGO], 'of two sections next to them, the one with more of ours');
+  const r = resolveDeckTurn(st, { stand: BRIDGE, act: null, order: null }, boardMove(st, LOW), LOW);
+  assert.equal(r.state.charged, 0, 'the state keeps the turn of the last charge');
+  assert.notEqual(boardMove(r.state, LOW).kind, 'charge', 'not the turn after');
+  const later = resolveDeckTurn(r.state, { stand: BRIDGE, act: null, order: null }, boardMove(r.state, LOW), LOW);
+  assert.equal(boardMove(later.state, LOW).kind, 'charge', 'and again the turn after that');
+  const far = chargeDeck(); far.sections[CORRIDOR].mine = 0;
+  assert.equal(boardMove(far, LOW).kind, 'push', 'none of ours next to them: no charge, and they push on');
+});
+
+test('a charge blows in the turn it is shown: DECK.CHARGE of ours in its section down outright, past cover and wounds, the wounded first', () => {
+  const blow = rand => { const st = chargeDeck(); st.hand = BRIDGE; Object.assign(st.sections[CORRIDOR], { mine: 4, mineHurt: 1, cover: 3 }); return resolveDeckTurn(st, { stand: BRIDGE, act: null, order: null }, boardMove(st, LOW), rand); };
+  const [lo, hi] = DECK.CHARGE, low = blow(LOW), high = blow(HIGH);
+  assert.deepEqual(plain(low.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, from: LOCK, mine: lo, stopped: false }, 'the least of the roll');
+  assert.deepEqual(plain(high.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, from: LOCK, mine: hi, stopped: false }, 'the most of the roll');
+  assert.deepEqual([low.state.sections[CORRIDOR].mine, low.state.sections[CORRIDOR].mineHurt], [4 - lo, 0], 'the wounded one is downed first, and cover 3 cuts none of it');
+  assert.deepEqual([high.state.sections[CORRIDOR].mine, high.state.sections[CORRIDOR].mineHurt], [4 - hi, 0]);
+  assert.ok(!low.events.some(e => e.kind === 'move'), 'the setter does not move');
+  assert.ok(lo >= 1 && hi <= 3 && lo <= hi, 'it downs one at least and three at most');
+});
+
+test('hitting its setter stops the charge: the shot aimed where it stands, a steady or a hatch worked there, or ours trading with it there; a steady in the charged section does not', () => {
+  const st = () => { const x = chargeDeck(); x.sections[CORRIDOR].mine = 2; x.hand = CORRIDOR; return x; };  // two of ours in the corridor, the setter among four in the lock
+  const shown = boardMove(st(), LOW), stopped = r => r.events.find(e => e.kind === 'charge').stopped;
+  assert.deepEqual([shown.kind, shown.at, shown.from], ['charge', CORRIDOR, LOCK]);
+  assert.equal(stopped(resolveDeckTurn(st(), { stand: CORRIDOR, act: { kind: 'shoot', at: LOCK }, order: null }, shown, () => 0.5)), true, 'the shot aimed into the lock from the corridor (level 2)');
+  const one = st(); one.level = 1;
+  assert.equal(stopped(resolveDeckTurn(one, { stand: CORRIDOR, act: { kind: 'shoot', at: LOCK }, order: null }, shown, () => 0.5)), false, 'at level 1 the shot stays in the corridor, where none of them are');
+  assert.equal(stopped(resolveDeckTurn(st(), { stand: LOCK, act: { kind: 'steady', odds: 1 }, order: null }, shown, () => 0.5)), true, 'the hand\'s steady, standing in the lock');
+  const away = st(); away.hand = BRIDGE;
+  assert.equal(stopped(resolveDeckTurn(away, { stand: BRIDGE, act: null, order: { kind: 'steady', odds: 1, at: LOCK } }, shown, () => 0.5)), true, 'a steady hatch worked in the lock');
+  assert.equal(stopped(resolveDeckTurn(away, { stand: BRIDGE, act: null, order: { kind: 'steady', odds: 0, at: LOCK } }, shown, () => 0.5)), false, 'one that misses');
+  const trade = st(); trade.hand = BRIDGE; trade.sections[LOCK].mine = 2;
+  assert.equal(stopped(resolveDeckTurn(trade, { stand: BRIDGE, act: null, order: null }, shown, HIGH)), true, 'ours in the lock wounding one of them');
+  const r = resolveDeckTurn(trade, { stand: BRIDGE, act: null, order: null }, shown, LOW);
+  assert.equal(stopped(r), false, 'a trade there that hits none of them');
+  const inAt = st(); inAt.sections[CORRIDOR].theirs = 1;
+  assert.equal(stopped(resolveDeckTurn(inAt, { stand: CORRIDOR, act: { kind: 'steady', odds: 1 }, order: null }, shown, () => 0.5)), false, 'a steady in the charged section, where the setter is not');
+  const hit = resolveDeckTurn(st(), { stand: CORRIDOR, act: { kind: 'shoot', at: LOCK }, order: null }, shown, () => 0.5);
+  assert.deepEqual(plain(hit.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, from: LOCK, mine: 0, stopped: true });
+  assert.equal(hit.state.sections[CORRIDOR].mine, 2, 'none of ours down by it');
+});
+
+test('a pull back moves the hand and ours in its section one section back before the charge, so a charge on the section left downs nobody', () => {
+  const st = chargeDeck(); st.hand = CORRIDOR; st.sections[CORRIDOR].mine = 2; st.sections[CORRIDOR].mineHurt = 1;  // none of ours in the lock, where the setter is
+  const r = resolveDeckTurn(st, { stand: CORRIDOR, act: 'pullback', order: null }, boardMove(st, LOW), HIGH);
+  const S = r.state.sections;
+  assert.equal(r.state.hand, BRIDGE, 'repelling, back is toward our bridge');
+  assert.deepEqual([S[CORRIDOR].mine, S[BRIDGE].mine, S[BRIDGE].mineHurt], [0, 3, 1], 'all of ours there go with the hand, the wounded too');
+  assert.deepEqual(plain(r.events.find(e => e.kind === 'pullback')), { kind: 'pullback', from: CORRIDOR, to: BRIDGE, n: 2 });
+  assert.deepEqual(plain(r.events.find(e => e.kind === 'charge')), { kind: 'charge', at: CORRIDOR, from: LOCK, mine: 0, stopped: false }, 'it blows on nobody');
+  const bridge = chargeDeck(); bridge.hand = BRIDGE;
+  const none = resolveDeckTurn(bridge, { stand: BRIDGE, act: 'pullback', order: null }, stay, LOW);
+  assert.equal(none.state.hand, BRIDGE, 'from the back section there is nowhere to fall back to');
+  assert.ok(!none.events.some(e => e.kind === 'pullback'));
+  const asl = deck({ assault: true, boarders: 3, crew: 3, party: 'corsair' });
+  asl.sections = [{ mine: 1, theirs: 0, cover: 0 }, { mine: 2, theirs: 0, cover: 0 }, { mine: 0, theirs: 3, cover: 0 }]; asl.hand = CORRIDOR;
+  const a = resolveDeckTurn(asl, { stand: CORRIDOR, act: 'pullback', order: null }, boardMove(asl, LOW), LOW);
+  assert.deepEqual([a.state.hand, a.state.sections[LOCK].mine], [LOCK, 3], 'boarding her, back is toward her lock, the way we came');
+});
+
+test('a pull back on a turn the hand moved is ignored: a section a turn, and ours in a section it was not in stay', () => {
+  const st = chargeDeck(); st.hand = BRIDGE; st.sections[CORRIDOR].mine = 2;  // the hand on the bridge, two of ours in the corridor
+  const r = resolveDeckTurn(st, { stand: CORRIDOR, act: 'pullback', order: null }, boardMove(st, LOW), LOW);
+  assert.equal(r.state.hand, CORRIDOR, 'the hand moved into the corridor and stays there');
+  assert.ok(!r.events.some(e => e.kind === 'pullback'), 'no pull back');
+  assert.equal(r.state.sections[BRIDGE].mine, st.sections[BRIDGE].mine, 'none of ours came out of the corridor');
+});
+
+test('a raider party never shows a charge, and a charge is never feinted', () => {
+  const raider = chargeDeck({ party: 'raider' });
+  assert.notEqual(boardMove(raider, LOW).kind, 'charge');
+  for (const grade of [1, 2]) assert.deepEqual([boardMove({ ...chargeDeck(), grade }, () => 0).kind, boardMove({ ...chargeDeck(), grade }, () => 0).feint], ['charge', false], `grade ${grade}`);
 });
 
 // Wounds: a hit wounds a head, and downs one only once all are wounded; the shot finishes the wounded; a move takes the unwounded first.

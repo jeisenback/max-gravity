@@ -233,8 +233,10 @@ const DECK = {
   SIDEARM_REACH_LEVEL: 2,  // from this level the shot may be aimed at a section next to the hand's as well as its own
   WAVE_TURN: 2,      // the turn at whose end the second wave of a repel lands in the lock
   CREW_HIT: [0, 2],  // heads one opposing head takes in a section where both stand (a roll a head); a side's own cover cuts its total, never below one hit
+  CHARGE: [1, 1],    // heads of ours a corsair's breaching charge downs outright in the section it blows in, past cover and wounds, unless its setter is hit (boardMove, resolveDeckTurn)
   BREAK: 0.15,       // of her crew at the start: at or under it she breaks (at 6 she fights to the last)
   FULL: 4,           // the heads a boarding run that landed in full brings over a half one's (shipcombat.js boardersFor)
+  CORSAIR_LESS: 2,   // the heads fewer a corsair has aboard when we board her, and brings on a full run (the duel's, duel.js; her ship fight boards at a half run, so not there) (boardersFor): her charge takes heads of ours the rest of her crew would otherwise
   FULL_PAIR: 2,      // and for a raider pair, which brings two more of its own: a pair at grade 1 or 2 came over with 10 and 12, and took the bridge one time in two
   SUIT: 0.2,         // times REPEL_HURT.lose: the standard suit's stat (the hand standing in the fight is hurt less often); under the lock fight's 0.3, since a deck fight lasts about twice the turns (measured over 120 chapters, tests/distribution/stakes-fights.test.js)
   CASUALTY: 0.3,     // of our heads lost, the share that is a casualty (fightui.js deckLoss); the rest are downed and get up after it, so that a fight kills about as many as the lock fight did (R42)
@@ -290,7 +292,7 @@ function deckFight({ boarders, crew, hand = LOCK, cover, hers = [], grade = 0, a
   sections[LOCK][atk] = assault ? crew : first;
   sections.forEach((s, i) => { s[def] = each + (i === BRIDGE ? n - each * sections.length : 0); });  // the remainder holds the bridge, so it is never left empty
   const start = sections[hand].mine ? hand : sections.map((_, i) => i).filter(i => sections[i].mine).sort((a, b) => Math.abs(REACH[a] - REACH[hand]) - Math.abs(REACH[b] - REACH[hand]))[0];
-  return { kind: 'deck', sections, hand: start === undefined ? hand : start, began: boarders, party, level, wave: !assault && boarders > first ? { n: boarders - first, turn: DECK.WAVE_TURN } : null, grade, assault, side, used: {}, turn: 0, log: [] };
+  return { kind: 'deck', sections, hand: start === undefined ? hand : start, began: boarders, party, level, wave: !assault && boarders > first ? { n: boarders - first, turn: DECK.WAVE_TURN } : null, grade, assault, side, used: {}, turn: 0, charged: null, log: [] };  // charged: the turn of the last charge
 }
 
 // How the side `atk` ('theirs' repelling, 'mine' in an assault) advances: from its front into the next section where it outnumbers the other, else hold; on a long
@@ -303,8 +305,20 @@ function advance(st, atk) {
   return S[from][atk] <= S[to][foe] ? { kind: 'hold', from, to: from, n: 0 } : { kind: to === CARGO ? 'round' : 'push', from, to, n: S[from][atk] };
 }
 
+// Where a corsair's charge goes: the section of ours with the most heads (the first in deck order on a tie) next to one where theirs stand (`from`, the fullest), or null.
+function chargeAt(st) {
+  const S = st.sections;
+  let best = null;
+  S.forEach((s, at) => {
+    const from = ADJ[at].filter(i => S[i] && S[i].theirs).sort((a, b) => S[b].theirs - S[a].theirs)[0];
+    if (s.mine && from !== undefined && (!best || s.mine > S[best.at].mine)) best = { at, from };
+  });
+  return best;
+}
+
 // What her crew do this turn. Attacking (repelling) they advance; defending (an assault), she pushes back toward the lock where she outnumbers us. A veteran may feint a push.
 // Raiders rush: a push into a section we hold thinly (under half of the heads sent) and the hand is not in goes on through it, two sections in a turn (`via` is the one passed).
+// Corsairs charge: where they would push or hold, a breaching charge on a section of ours next to theirs (chargeAt), never two turns running and never feinted. It moves no heads.
 function boardMove(st, rand) {
   const S = st.sections;
   let m = { kind: 'hold', from: LOCK, to: LOCK, n: 0 };
@@ -316,16 +330,18 @@ function boardMove(st, rand) {
   }
   const via = m.to, past = (st.assault ? BACK : FORWARD)[via];
   if (m.kind === 'push' && st.party === 'raider' && past !== via && st.hand !== via && 2 * S[via].mine < m.n) m = { kind: 'rush', from: m.from, via, to: past, n: m.n };
+  const charge = st.party === 'corsair' && (m.kind === 'push' || m.kind === 'hold') && st.charged !== st.turn - 1 ? chargeAt(st) : null;
+  if (charge) return { kind: 'charge', ...charge, n: 0, feint: false };
   return { ...m, feint: m.kind !== 'rush' && st.grade > 0 && rand() < CUNNING * st.grade };
 }
 
 function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
-  const st = copyOf(state), S = st.sections, events = [];
+  const st = copyOf(state), S = st.sections, events = [], stood = st.hand;  // stood: where the hand began the turn
   if (stand !== undefined && S[stand] && (stand === st.hand || ADJ[st.hand].includes(stand))) st.hand = stand;
 
   // A hatch is a steady or cover order with an `at`: it works in that section (one the deck lacks drops it), and is rolled before their move, so it can shut a rush's way.
   const asObj = a => (typeof a === 'string' ? { kind: a } : a);  // 'shoot' may be bare; steady and cover must carry odds
-  const here = S[st.hand], extra = S.map(() => 0);
+  const extra = S.map(() => 0), steadied = [], back = st.assault ? BACK : FORWARD;  // steadied: where a steady worked this turn; back: the way ours fall back, toward our bridge or her lock
   let press = 0, hatched = -1;
   const ordered = asObj(order);
   const ability = (a, at, hatch) => {
@@ -340,6 +356,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
     r.extra.forEach((n, i) => { extra[i] = n; });
     if (r.press && at === st.hand) press++;  // a miss elsewhere costs the section's order, not the hand
     if (hatch && worked) hatched = at;
+    if (a.kind === 'steady' && worked) steadied.push(at);
     events.push(hatch ? { kind: 'hatch', at, worked } : { kind: a.kind, worked });
   };
   const hatch = ordered && ordered.at !== undefined;
@@ -350,7 +367,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
     const stopped = st.hand === shown.via || 2 * S[shown.via].mine >= sent || hatched === shown.via, to = stopped ? shown.via : shown.to;
     moveHeads(S, 'theirs', shown.from, to, sent);
     events.push({ kind: 'rush', from: shown.from, to, n: sent, stopped });
-  } else if (shown.kind !== 'hold') {  // a feint sends the heads somewhere else they can reach from where they stand, or nowhere
+  } else if (shown.kind !== 'hold' && shown.kind !== 'charge') {  // a feint sends the heads somewhere else they can reach from where they stand, or nowhere
     let to = shown.to;
     if (shown.feint) {
       const other = [...ADJ[shown.from], shown.from].filter(t => S[t] && t !== shown.to);
@@ -370,7 +387,14 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   }
 
   // The hand's act and the crew order: steady and cover go through abilityStep, once each for the order and the act. Cover is once a fight, and is made for us
-  // (our cover). A steady one with nobody of theirs in the section is not rolled, and says so (R34).
+  // (our cover). A steady one with nobody of theirs in the section is not rolled, and says so (R34). A pull back takes the hand and all of ours there one section back
+  // (none from the back section, and none on a turn the hand moved: a section a turn), and the order is then worked where the hand has gone.
+  const pulled = asObj(act) && asObj(act).kind === 'pullback' && st.hand === stood && back[st.hand] !== st.hand;
+  if (pulled) {
+    const from = st.hand, n = S[from].mine;
+    moveHeads(S, 'mine', from, back[from], n); st.hand = back[from];
+    events.push({ kind: 'pullback', from, to: st.hand, n });
+  }
   ability(asObj(act), st.hand);
   if (!hatch) ability(ordered, st.hand);
   S.forEach((s, i) => { s.cover = Math.min(COVER_MAX, s.cover + extra[i]); });
@@ -378,7 +402,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   // Each section where both stand trades hits: a side takes a CREW_HIT roll (boarding her, DECK.ASSAULT's) for each opposing head there (R29), cut by that side's own cover there (R31), and a hit is never
   // cut to nothing (R33). A press is one more roll against us where the hand stands. A hit wounds a head and downs one once all are wounded (hitSide); the events say
   // both, `mine` and `theirs` being the downed. The shot comes after the exchange, at the hand's section or, from the reach level, one next to it: it finishes the wounded first.
-  const hand = st.hand, contested = here.mine > 0 && here.theirs > 0;
+  const hand = st.hand, contested = S[hand].mine > 0 && S[hand].theirs > 0;
   const [lo, hi] = deckRule(st, 'CREW_HIT');
   const hits = S.map((s, i) => {
     if (!s.mine || !s.theirs) return { mine: 0, theirs: 0 };
@@ -390,15 +414,26 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   const shot = asObj(act), aim = shot && shot.kind === 'shoot' ? (shot.at !== hand && st.level >= DECK.SIDEARM_REACH_LEVEL && ADJ[hand].includes(shot.at) && S[shot.at] ? shot.at : hand) : -1;
   const shots = aim >= 0 && S[aim].theirs ? dealt(S[aim].theirs, ...sidearmOf(st), rand) : 0;
   if (aim >= 0 && !S[aim].theirs && sum(st, 'theirs')) events.push({ kind: 'shoot', nobody: true, at: aim, aimed: aim !== hand });  // none of them where the shot goes, and some elsewhere: it is not rolled, and says so (R34)
+  let setterHit = shown.kind === 'charge' && steadied.includes(shown.from);  // a steady worked where the charge's setter stands
   S.forEach((s, i) => {
     const m = hitSide(s, 'mine', hits[i].mine), t = hitSide(s, 'theirs', hits[i].theirs), g = i === aim ? shootSide(s, 'theirs', Math.min(shots, s.theirs)) : { downed: 0, wounded: 0 };
+    if (i === shown.from && t.downed + t.wounded + g.downed + g.wounded > 0) setterHit = true;  // or ours there, or the shot, downed or wounded one of them
     // the wounded said are the heads newly wounded this turn and still standing at its end (a head wounded and then downed is said once, as down): never more than stand there
     const e = { kind: 'exchange', section: i, mine: m.downed, theirs: t.downed + g.downed, mineHurt: Math.min(m.wounded, hurtOf(s, 'mine')), theirsHurt: Math.min(t.wounded + g.wounded, hurtOf(s, 'theirs')) };
     if (e.mine || e.theirs || e.mineHurt || e.theirsHurt) events.push(e);
   });
 
+  // A charge shown blows at the end of the exchange, unless its setter was hit this turn (one of theirs in `from` downed or wounded by ours: the shot, a worked steady or
+  // hatch there, or the trade where ours stand there): DECK.CHARGE of ours in `at` down outright, past cover and wounds, the wounded first.
+  if (shown.kind === 'charge') {
+    const s = S[shown.at], mine = setterHit || !s.mine ? 0 : Math.min(s.mine, rollsOf(1, deckRule(st, 'CHARGE'), rand));
+    s.mine -= mine; s.mineHurt = Math.max(0, hurtOf(s, 'mine') - mine);
+    st.charged = st.turn;
+    events.push({ kind: 'charge', at: shown.at, from: shown.from, mine, stopped: setterHit });
+  }
+
   // A hand left in a section that is theirs alone falls back, one section at a time, to one that is not; with none, it stays with our nearest heads. One hurt roll for it.
-  const back = st.assault ? BACK : FORWARD, alone = i => !S[i].mine && S[i].theirs > 0;
+  const alone = i => !S[i].mine && S[i].theirs > 0;
   let at = hand;
   while (alone(at) && back[at] !== at) at = back[at];
   if (alone(at)) {

@@ -22967,7 +22967,7 @@
     "log": "Turn 1: nothing left of the weapons to hit.",
     "next": {
      "title": "Dead in Space",
-     "text": "The corsair's drive cone splits, and she coasts on with her bay doors stuck half open.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 8 of hers.",
+     "text": "The corsair's drive cone splits, and she coasts on with her bay doors stuck half open.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
      "labels": [
       "Board her",
       "Let her drift"
@@ -23624,8 +23624,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Pull back: ours here fall back to the Corridor",
      "Order: none",
      "Fight"
     ],
@@ -23640,8 +23639,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Pull back: ours here fall back to the Corridor",
      "Order: Ines cuts the lights",
      "Fight"
     ],
@@ -23762,6 +23760,34 @@
     "log": "Turn 8: nobody gives ground. None of them are where you stand.",
     "end": true,
     "close": "Turn 8: nobody gives ground. None of them are where you stand.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Black Debt\" lights, and she breaks away from the hull."
+   },
+   {
+    "title": "The Lock",
+    "read": "Turn 1 of 8. Boarders: a charge on the Corridor, set from the Lock. Hit them in the Lock to stop it; it blows this turn.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
+    "labels": [
+     "Stand: The Lock",
+     "Shoot: 2 to 3 of them hit",
+     "Aim: the Lock",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: a charge on The Corridor, set from The Lock. 2 aboard, 2 still to come; they fight to the last."
+   },
+   {
+    "log": "Turn 1: the charge blows in the Corridor, 1 of ours down. None of them are where you stand.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: 1 of them and 0 of ours down in the Lock, the charge in the Corridor never blows: they were hit in the Lock.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: ours fall back to the Bridge, the charge blows in the Corridor on nobody.",
+    "end": false
    },
    {
     "title": "Her Lock",
@@ -24125,6 +24151,22 @@
     "log": "Turn 8: nobody gives ground. None of them are where you stand.",
     "end": true,
     "close": "Turn 8: nobody gives ground. None of them are where you stand.</p><p>The captain calls you back on the intercom with her people still holding the far hatch. You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13."
+   },
+   {
+    "title": "Her Lock",
+    "read": "Turn 1 of 8. Her crew: a charge on her Lock, set from her Corridor. Hit them in her Corridor to stop it; it blows this turn.",
+    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "labels": [
+     "Stand: Her Lock",
+     "Shoot: 2 to 3 of them hit",
+     "Aim: her Lock",
+     "Order: none",
+     "Fight"
+    ],
+    "group": [
+     "Orders to the crew"
+    ],
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: a charge on Her Lock, set from Her Corridor. 4 of their 4 still up; they fight to the last."
    }
   ]
  }

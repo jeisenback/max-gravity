@@ -85,11 +85,12 @@ function abilityStep(kind, worked, { pos, boarders, extra }) {
 
 // The deck drawn (#786): a cell a section, with both sides' heads in it (ours on the left, theirs on the right, a hollow count beside each for the wounded among them), its cover as pips and the hand where they stand (beside the pips, clear of the counts), and
 // their shown move as an arrow from where they are to where they say they go, marked MAY FEINT at a veteran grade. A section shows the cover of the side that
-// holds it: hers (`hers`) where only theirs stand, ours (`cover`) otherwise. `titles` names the sections; `move` is { from, to, n } (a rush adds `via`, the section it goes through), or null for a hold. `wave`, when given, is the line for the heads still to land, drawn under the deck.
+// holds it: hers (`hers`) where only theirs stand, ours (`cover`) otherwise. `titles` names the sections; `move` is { from, to, n } (a rush adds `via`, the section it goes through), or null for a hold;
+// a corsair's charge ({ kind: 'charge', at, from }) is marked CHARGE on the section it blows in and SETTER on the one it is set from, with no arrow. `wave`, when given, is the line for the heads still to land, drawn under the deck.
 // `began` and `breakAt`, when given, draw her count under the deck: a mark a head she started with, filled while it stands, dashed for the `pending` heads still to land
 // (a repel's wave, which `comeSay` words), hollow once down, and the line at which she breaks, which counts the whole party (spec Section 3).
 function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 0, pending = 0, wave = '', hurtSay = n => `${n} of them wounded`, oursSay = n => `${n} of ours wounded`, comeSay = (n, m) => `${n} aboard, ${m} still to come` }) {
-  const n = sections.length, w = Math.floor(348 / n) - 6, mid = i => 6 + i * (w + 6) + w / 2, font = 'font-family="IBM Plex Mono, monospace"';
+  const n = sections.length, w = Math.floor(348 / n) - 6, mid = i => 6 + i * (w + 6) + w / 2, font = 'font-family="IBM Plex Mono, monospace"', charge = !!move && move.kind === 'charge';
   const pip = s => (s.theirs && !s.mine ? s.hers || 0 : s.cover);
   const cells = sections.map((s, i) => {
     const x = 6 + i * (w + 6), fill = s.mine && s.theirs ? '#2a1a14' : s.theirs ? '#1c1218' : '#0d1a26', edge = i === hand ? '#ffcf7f' : s.theirs ? '#ff6a4a' : '#23405f';
@@ -99,9 +100,11 @@ function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 
       `<text x="${x + 6}" y="40" fill="#7fb4ff" font-size="12" ${font}>${s.mine}</text><text x="${x + w - 6}" y="40" fill="#ff6a4a" font-size="12" text-anchor="end" ${font}>${s.theirs}</text>` +
       `${s.mineHurt ? `<circle class="hurt" cx="${x + 26}" cy="36" r="4" fill="none" stroke="#7fb4ff"/><text x="${x + 32}" y="40" fill="#7fb4ff" font-size="9" ${font}>${s.mineHurt}</text>` : ''}` +
       `${s.theirsHurt ? `<circle class="hurt" cx="${x + w - 26}" cy="36" r="4" fill="none" stroke="#ff6a4a"/><text x="${x + w - 32}" y="40" fill="#ff6a4a" font-size="9" text-anchor="end" ${font}>${s.theirsHurt}</text>` : ''}` +
-      `${i === hand ? `<text class="you" x="${x + w - 6}" y="59" fill="#ffcf7f" font-size="9" text-anchor="end" ${font}>YOU</text>` : ''}${pips}`;
+      `${i === hand ? `<text class="you" x="${x + w - 6}" y="59" fill="#ffcf7f" font-size="9" text-anchor="end" ${font}>YOU</text>` : ''}${pips}` +
+      `${charge && move.at === i ? `<text class="charge" x="${x + w / 2}" y="80" fill="#ff6a4a" font-size="9" text-anchor="middle" ${font} letter-spacing="1">CHARGE</text>` : ''}` +
+      `${charge && move.from === i ? `<text class="setter" x="${x + w / 2}" y="80" fill="#ff6a4a" font-size="9" text-anchor="middle" ${font} letter-spacing="1">SETTER</text>` : ''}`;
   }).join('');
-  const arrow = move ? `<path class="move" d="M${mid(move.from)} 80${move.via === undefined ? '' : ` L${mid(move.via)} 80`} L${mid(move.to)} 80" stroke="#ff6a4a" stroke-width="1.5"/><circle cx="${mid(move.to)}" cy="80" r="3" fill="#ff6a4a"/>` +
+  const arrow = move && !charge ? `<path class="move" d="M${mid(move.from)} 80${move.via === undefined ? '' : ` L${mid(move.via)} 80`} L${mid(move.to)} 80" stroke="#ff6a4a" stroke-width="1.5"/><circle cx="${mid(move.to)}" cy="80" r="3" fill="#ff6a4a"/>` +
     `<text x="${(mid(move.from) + mid(move.to)) / 2}" y="92" fill="#ff6a4a" font-size="9" text-anchor="middle" ${font}>${move.n}${feint ? ' MAY FEINT' : ''}</text>` : '';
   const left = sections.reduce((k, s) => k + s.theirs, 0), H = (began ? 112 : 98) + (wave ? 14 : 0);
   const mark = k => (k < left ? 'head' : k < left + pending ? 'comehead' : 'nohead');
@@ -109,7 +112,7 @@ function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 
     `<path class="break" d="M${4.5 + breakAt * 10} 97 L${4.5 + breakAt * 10} 110" stroke="#ffcf7f" stroke-width="1.5"/><text x="${10 + began * 10}" y="107" fill="#ffcf7f" font-size="8" ${font} letter-spacing="1">${breakAt ? `BREAKS AT ${breakAt}` : 'FIGHTS TO THE LAST'}</text>` : '';
   const waveLine = wave ? `<text class="wave" x="6" y="${H - 4}" fill="#ffcf7f" font-size="9" ${font}>${wave}</text>` : '';
   const heads = s => [s.mine ? `${s.mine} of ours${s.mineHurt ? `, ${oursSay(s.mineHurt)}` : ''}` : '', s.theirs ? `${s.theirs} of theirs${s.theirsHurt ? `, ${hurtSay(s.theirsHurt)}` : ''}` : ''].filter(Boolean).join(' and ') || 'empty';
-  const their = move ? `${move.n} from ${titles[move.from]}${move.via === undefined ? '' : ` through ${titles[move.via]}`} into ${titles[move.to]}` : 'they hold';
+  const their = charge ? `a charge on ${titles[move.at]}, set from ${titles[move.from]}` : move ? `${move.n} from ${titles[move.from]}${move.via === undefined ? '' : ` through ${titles[move.via]}`} into ${titles[move.to]}` : 'they hold';
   const label = `The deck in ${['three', 'four'][n - 3]} sections. ${sections.map((s, i) => `${titles[i]}: ${heads(s)}, cover ${pip(s)}${i === hand ? ', you stand here' : ''}`).join('. ')}. Their move: ${their}${feint ? ', may feint' : ''}.${began ? ` ${pending ? comeSay(left, pending) : `${left} of their ${began} still up`}; ${breakAt ? `they break at ${breakAt}` : 'they fight to the last'}.` : ''}${wave ? ` ${wave}` : ''}`;
   return `<svg class="board" viewBox="0 0 360 ${H}" role="img" aria-label="${label}"><rect x="0" y="0" width="360" height="${H}" fill="#050a11"/>${cells}${arrow}${count}${waveLine}</svg>`;
 }

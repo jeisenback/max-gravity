@@ -280,7 +280,7 @@ test('a hurt hand works the level below: the sidearm on the panel is that level\
   await done();
 });
 
-test('a veteran\'s shown push is marked may feint, and a rush, which is never feinted, is not', async () => {
+test('a veteran\'s shown push or round is marked may feint, and a rush or a charge, which are never feinted, is not', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(deckHelpers);
   const r = await ev(() => {
@@ -288,13 +288,66 @@ test('a veteran\'s shown push is marked may feint, and a rush, which is never fe
     for (const grade of [0, 1, 2]) {
       fightGame('gunner'); const foe = makeEnemy({ kind: 'pirate' }), s = repelStart({ foe, foeHp: 0, init: 'foe', grade }, 'full');
       const seen = shown => { s.shown = { feint: false, ...shown }; const e = deckFightEvent(s); return { read: e.read, strip: /may feint/i.test(e.board) }; };
-      out[grade] = { push: seen({ kind: 'push', from: 0, to: 1, n: 2 }), rush: seen({ kind: 'rush', from: 0, via: 1, to: 2, n: 2 }), hold: seen({ kind: 'hold', from: 0, to: 0, n: 0 }) };
+      out[grade] = { push: seen({ kind: 'push', from: 0, to: 1, n: 2 }), round: seen({ kind: 'round', from: 0, to: 3, n: 2 }), rush: seen({ kind: 'rush', from: 0, via: 1, to: 2, n: 2 }), hold: seen({ kind: 'hold', from: 0, to: 0, n: 0 }), charge: seen({ kind: 'charge', at: 1, from: 0, n: 0 }) };
     }
     return out;
   });
-  for (const k of ['push', 'rush', 'hold']) { assert.doesNotMatch(r[0][k].read, /feint/, `grade 0, a ${k}`); assert.equal(r[0][k].strip, false, `grade 0, a ${k}`); }
+  for (const k of ['push', 'round', 'rush', 'hold', 'charge']) { assert.doesNotMatch(r[0][k].read, /feint/, `grade 0, a ${k}`); assert.equal(r[0][k].strip, false, `grade 0, a ${k}`); }
   for (const g of [1, 2]) { assert.match(r[g].push.read, /pushing into the Corridor\. They may feint\.$/, `grade ${g}`); assert.equal(r[g].push.strip, true, `grade ${g}: on the strip`); }
-  for (const k of ['rush', 'hold']) { assert.doesNotMatch(r[1][k].read, /feint/, `grade 1: a ${k} shows no feint`); assert.equal(r[1][k].strip, false, `grade 1: nor on the strip, a ${k}`); }
+  for (const g of [1, 2]) { assert.match(r[g].round.read, /going round through the Cargo Bay\. They may feint\.$/, `grade ${g}: a round can feint as well`); assert.equal(r[g].round.strip, true, `grade ${g}: a round, on the strip`); }
+  for (const k of ['rush', 'hold', 'charge']) { assert.doesNotMatch(r[1][k].read, /feint/, `grade 1: a ${k} shows no feint`); assert.equal(r[1][k].strip, false, `grade 1: nor on the strip, a ${k}`); }
+  await done();
+});
+
+test('a corsair\'s shown charge reads that it blows this turn and is marked on its section and its setter\'s; the pull back is offered except in the back section, and only where the hand stays', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const out = {}, acts = (s, plan) => { const seen = []; let e = deckFightEvent(s, plan); for (let k = 0; k < 4; k++) { seen.push(e.choices[1].label); e = e.choices[1].run(); } return seen; };
+    fightGame('gunner'); const s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
+    s.shown = { kind: 'charge', at: 1, from: 0, n: 0, feint: false };
+    const e = deckFightEvent(s); out.read = e.read; out.mark = /<text class="charge"[^>]*>CHARGE</.test(e.board); out.setter = /<text class="setter"[^>]*>SETTER</.test(e.board); out.arrow = /<path class="move"/.test(e.board);
+    out.label = e.board.match(/aria-label="([^"]*)"/)[1];
+    s.state.hand = 1; out.corridor = acts(s);
+    s.state.hand = 2; out.bridge = acts(s);
+    s.state.hand = 1; out.moved = acts(s, { stand: 0 });  // in the corridor, moving to the lock
+    return out;
+  });
+  assert.match(r.read, /^Turn 1 of 8\. Boarders: a charge on the Corridor, set from the Lock\. Hit them in the Lock to stop it; it blows this turn\.$/, r.read);
+  assert.ok(r.mark, 'the strip marks the charged section'); assert.ok(r.setter, 'and the setter\'s'); assert.equal(r.arrow, false, 'and draws no arrow for it');
+  assert.match(r.label, /Their move: a charge on The Corridor, set from The Lock/, r.label);
+  assert.ok(r.corridor.includes('Pull back: ours here fall back to the Bridge'), r.corridor.join(' | '));
+  assert.ok(!r.bridge.some(l => l.startsWith('Pull back')), 'not from the bridge, the back section: ' + r.bridge.join(' | '));
+  assert.ok(!r.moved.some(l => l.startsWith('Pull back')), 'not on a turn the hand moves: ' + r.moved.join(' | '));
+  await done();
+});
+
+test('a charge that blows is logged, and each of ours it downs rolls for a casualty as an exchange\'s do; a pull back and a charge stopped are logged too', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    const turn = (events, list) => {
+      fightGame('gunner'); const s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full');
+      s.shown = { kind: 'charge', at: 1, from: 0, n: 0, feint: false };
+      const real = resolveDeckTurn;
+      resolveDeckTurn = st0 => { const state = JSON.parse(JSON.stringify(st0)); state.turn++; return { state, events }; };
+      rolls(list);
+      try { const e = deckFightEvent(s); e.choices[e.choices.length - 1].run(); } finally { resolveDeckTurn = real; }
+      return { line: s.state.log[s.state.log.length - 1], lost: s.hurt.size + s.dead.length + s.marked.length };
+    };
+    return {
+      blown: turn([{ kind: 'charge', at: 1, from: 0, mine: 2, stopped: false }], Array(12).fill(0.01)),
+      spared: turn([{ kind: 'charge', at: 1, from: 0, mine: 2, stopped: false }], [0.99, 0.99]),
+      stopped: turn([{ kind: 'charge', at: 1, from: 0, mine: 0, stopped: true }], []),
+      empty: turn([{ kind: 'charge', at: 1, from: 0, mine: 0, stopped: false }], []),
+      back: turn([{ kind: 'pullback', from: 1, to: 2, n: 2 }, { kind: 'charge', at: 1, from: 0, mine: 0, stopped: false }], []),
+    };
+  });
+  assert.match(r.blown.line, /the charge blows in the Corridor, 2 of ours down/, r.blown.line);
+  assert.equal(r.blown.lost, 2, 'each head it downs rolled for a casualty, and both came up'); assert.equal(r.spared.lost, 0, 'and neither came up here');
+  assert.match(r.stopped.line, /the charge in the Corridor never blows: they were hit in the Lock/, r.stopped.line);
+  assert.match(r.empty.line, /the charge blows in the Corridor on nobody/, r.empty.line); assert.doesNotMatch(r.empty.line, /0 of ours/);
+  assert.match(r.back.line, /ours fall back to the Bridge/, r.back.line);
   await done();
 });
 

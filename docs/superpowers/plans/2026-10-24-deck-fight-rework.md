@@ -313,22 +313,90 @@ PR 1 opens after Task 4, when the owner asks.
 
 ### Task 5: the breaching charge and pull back
 
-**Files:** `js/fight.js`, `js/fightui.js`, `js/hiredscenes.js`, `tools/answer.js`, `tests/fight.test.js`, `tests/fightui.test.js`, `tests/fights.test.js`, `COMBAT.md`, and the pins.
+> **As shipped** (PR #826). The text below this block was written before the owner's and the ledger's rulings of 2026-10-27
+> (`.superpowers/sdd/2026-10-24-deck-fight-rework/progress.md`) and is kept as it was; where it differs, this block is what shipped.
+> - `DECK.CHARGE = [1, 1]`: a charge downs one of ours.
+> - The charge blows at the end of the turn it is shown, after the exchange and the shot, and is stopped when one of theirs in its
+>   `from` (the setter's section) is downed or wounded that turn: the shot aimed there, a steady or hatch worked there, or the trade
+>   where ours stand there. The shown charge, the strip (CHARGE and SETTER) and the log name `from`.
+> - Pull back goes toward our bridge repelling and toward her lock boarding her, and only when the hand stays in its section that
+>   turn (the panel offers it only then, and the engine ignores it on a turn the hand moved).
+> - `DECK.CORSAIR_LESS = 2` applies boarding her and in the duel's full run; her ship fight boards at a half run, where it does not.
+>   The fight tool repels a corsair at a half run, as the game does (`fightui.js` fightBoarded).
+> - `answerDeck` has a charge branch (shoot into `from` from a stand that reaches it, else pull back, else the pilot's steady hatch
+>   at `from`); the tool's `charge` cell plays `answerNoCharge`, the answer without it, boarding her with two standing.
+> - The corsair checks as ruled: repelling her, a fixed policy may come within 0.02 of the answer with two standing (as with five),
+>   her fights last 2.5 turns or more, and random play's dead a fight is within 0.15 of 0.52 (the raider repel's grade-0 baseline,
+>   0.32, plus 0.2); `shoot` below the answer with two standing is checked boarding her only; and boarding her with two standing the
+>   answer wins 0.2 or more over `answerNoCharge`.
+
+Written in full after PR 1 (#825) merged, for the engine as it now stands: wounds, `deckRule`, `DECK.ASSAULT`, the panel plan
+`{ stand, act, shootAt, order, at }`, and `answerDeck(s, read)`. The owner's choice (2026-10-27): a charge downs.
+
+**Files:**
+- Modify: `js/fight.js` (`DECK`, `boardMove`, `resolveDeckTurn`), `js/fightui.js` (`DECK_ACTS`, the shown move, the log),
+  `js/handtohand.js` (`fightStrip`: a charge is marked on its section, not drawn as an arrow), `js/hiredscenes.js` (lines below),
+  `tools/answer.js` (`answerDeck`), `tools/fights.js` (the corsair cells already exist), `COMBAT.md`
+- Test: `tests/fight.test.js`, `tests/fightui.test.js`, `tests/handtohand.test.js`, `tests/fights.test.js`; the pins
 
 **Interfaces:**
-- A shown `{ kind: 'charge', at, n: 0 }` from a corsair party. The rule:
-  - It is shown when one of theirs stands next to a section where ours stand.
-  - It is never shown two turns running.
-- At the next turn's resolution, the charge takes `rollsOf(1, DECK.CHARGE, rand)` of ours in `at`, not cut by cover, unless a steady worked in `at` this turn. That is a pick-off of its setter, and the event is `{ kind: 'charge', at, mine, stopped }`.
-- `DECK.CHARGE = [1, 3]`, to tune.
-- A new act `'pullback'` (`DECK_ACTS`) moves ours in the hand's section, and the hand, one section back.
-- `answerDeck` pulls back from a shown charge on its section, or picks off the setter when the hand's steady odds are 0.5 or better.
-- The tests:
-  - a charge lands and ignores cover;
-  - a pick-off stops it;
-  - a pull back moves ours out;
-  - `answer` wins at least 0.9 against corsairs;
-  - "go to them and shoot" does worse against a corsair than `answer`.
+- `DECK.CHARGE = [1, 3]`: the heads of ours a charge downs, to tune.
+- The shown move `{ kind: 'charge', at, from, n: 0, feint: false }`, from a corsair party in both directions:
+  - it is chosen in `boardMove` where their move would otherwise be a push or a hold, when one of theirs stands in a section
+    (`from`) next to one where ours stand (`at`), with the most of ours chosen if more than one;
+  - it is never shown two turns running (the state keeps `st.charged`, the turn of the last one);
+  - it is never feinted.
+- It blows when the turn it is shown in is resolved, as every shown move does: after the hand's stand, the act, the order and the
+  hatch, before the exchange. It downs `rollsOf(1, DECK.CHARGE, rand)` of ours in `at` outright, past wounds and cover. The wounded
+  are downed first. Our heads downed roll for a casualty as an exchange's do.
+- A worked steady in `at` this turn, by the hand or by an order, picks off its setter: the charge does not blow.
+- The event is `{ kind: 'charge', at, mine, stopped }`, where `mine` is the downed.
+- A new act `'pullback'`, added to `DECK_ACTS`, moves the hand and all of ours in its section one section back (`BACK` repelling,
+  `FORWARD` in an assault) before the charge. It does nothing where the hand stands in the back section (the lock repelling, her
+  bridge in an assault), and the panel does not offer it there.
+- The panel:
+  - `'deck.charge': '{who}: a charge on {at}. It blows this turn.'` (the shown move);
+  - `'deck.pullback': 'Pull back: ours here fall back to {to}'` (the act's label);
+  - `'deck.log.charge': 'the charge blows in {at}, {mine} of ours down'`;
+  - `'deck.log.chargeStopped': 'the charge in {at} never blows'`;
+  - `'deck.log.pullback': 'ours fall back to {to}'`.
+
+  The strip marks the charged section ("CHARGE"), and its label says "a charge on {at}".
+- `answerDeck`, on a shown charge at the hand's section:
+  - it pulls back, unless the hand's steady odds are 0.5 or better and theirs stand there, in which case it picks off the setter
+    (act `'steady'`);
+  - on a charge at another section where a steady order is on offer, it sends that order there when the order's odds are 0.5 or
+    better;
+  - otherwise it keeps its rules.
+- Also, the parked final-review item from PR 1: the feint mark and line show on a `'round'` move as well as a push (a round can
+  feint; `js/fightui.js` `deckBoard` and `read`).
+
+- [ ] **Step 1: Write the failing tests** in `tests/fight.test.js`:
+  - a corsair party next to ours shows a charge, not two turns running;
+  - a charge downs 1 to 3 of ours, past cover and wounds (the wounded first);
+  - a worked steady in `at` stops it (an event with `stopped: true`, and none of ours downed by it);
+  - a pull back moves the hand and ours one section back, before the charge, so a charge on the section left downs nobody;
+  - a raider party never shows a charge, and a charge is never feinted.
+
+  In `tests/fightui.test.js`:
+  - a shown charge reads "It blows this turn";
+  - the pull back is offered except in the back section;
+  - a veteran's round shows the feint.
+- [ ] **Step 2: Run them to see them fail.** Run `node --test tests/fight.test.js`, then `npm run test:changed`.
+- [ ] **Step 3: Implement the interfaces above.**
+- [ ] **Step 4: Measure.**
+  - Run `node tools/fights.js --seeds 1,2 --n 200 --groups party,level,grade` and add the corsair checks to the deck test in
+    `tests/fights.test.js`, beside the raider's and on the same rules as the raider's:
+    - repel: answer >= 0.9; no fixed policy above it (the 0.02 tolerance at five crew); 3.5 to 6.5 turns; dead within 0.15;
+    - assault: two crew >= 0.6 and above every fixed policy; five crew >= 0.9; >= 2.5 turns; dead an upper bound;
+    - shooting where they are (`shoot`) wins less than `answer` against a corsair with two crew.
+  - Tune `DECK.CHARGE` first, then a corsair-only number if needed, each measured. The raider's checks must still pass.
+  - If no setting passes, stop and report the numbers.
+- [ ] **Step 5: Run the gates, then commit.**
+  - Rewrite the pins with `PIN_WRITE=1`, reading each diff.
+  - Update COMBAT.md's deck section with the charge, pull back and the corsair's numbers.
+  - Run the full `npm test`, `npm run test:editor`, `npm run soak` and `npm run coverage -- --check`.
+  - Commit: "Deck fight: the corsair's charge and pull back".
 
 ## PR 3: the navy
 
