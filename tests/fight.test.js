@@ -448,12 +448,14 @@ const SHOOT = { kind: 'shoot' };
 const worn = (x, y = {}) => ({ ...x, mineHurt: x.mine, theirsHurt: x.theirs, ...y });  // every head wounded: a hit downs one, as in the fights before wounds
 const bare = ({ mineHurt, theirsHurt, ...x }) => x;  // a section without its wounded count
 
-test('a repel comes aboard in two waves: half first, the rest at the lock at the end of the first turn, shown until then', () => {
+test('a repel comes aboard in two waves: half first, the rest at the lock at the end of the second turn, shown until then', () => {
   const st = deckFight({ boarders: 7, crew: 5, cover: [0, 0, 0], party: 'raider' });
   assert.equal(st.sections[LOCK].theirs, 4);
   assert.deepEqual(plain(st.wave), { n: 3, turn: DECK.WAVE_TURN });
   assert.equal(pendingWave(st), 3);
-  const r = resolveDeckTurn(st, { stand: st.hand, act: 'shoot' }, { kind: 'hold', from: LOCK, to: LOCK, n: 0 }, () => 0.99);
+  const hold = { kind: 'hold', from: LOCK, to: LOCK, n: 0 }, first = resolveDeckTurn(st, { stand: st.hand, act: 'shoot' }, hold, () => 0.99);
+  assert.equal(pendingWave(first.state), 3, 'still shown after the first turn');
+  const r = resolveDeckTurn(first.state, { stand: first.state.hand, act: 'shoot' }, hold, () => 0.99);
   assert.equal(pendingWave(r.state), 0);
   assert.ok(r.events.some(e => e.kind === 'wave' && e.n === 3));
   assert.equal(deckFight({ boarders: 7, crew: 5, cover: [0, 0, 0], assault: true }).wave, null);
@@ -519,7 +521,8 @@ test('the deck starts with the attackers in the lock and the defenders spread, t
   const st = deck({ side: true, cover: [1, 2, 3] });
   assert.deepEqual(plain([st.sections.length, st.sections[3].cover, st.hand, st.began, st.turn, st.used, st.kind]), [4, 0, 2, 3, 0, {}, 'deck'], 'three crew over four sections are all on the bridge, and the hand starts with them (R34)');
   assert.deepEqual(plain(st.sections.map(s => s.cover)), [1, 2, 3, 0]);
-  assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4]], SIDEARM_REACH_LEVEL: 2, WAVE_TURN: 1, CREW_HIT: [0, 2], BREAK: 0.3, SUIT: 0.3, CASUALTY: 0.3, TURNS: 8 });
+  assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4]], SIDEARM_REACH_LEVEL: 2, WAVE_TURN: 2, CREW_HIT: [0, 2], BREAK: 0.15, FULL: 4, FULL_PAIR: 2, SUIT: 0.2, CASUALTY: 0.3, TURNS: 8,
+    ASSAULT: { BREAK: 0.2, FULL: 5, CREW_HIT: [0, 1], CASUALTY: 0.5 } });
   assert.equal(deck({ crew: 3 }).hand, 0, 'with one of ours in the lock the hand starts there');
   assert.deepEqual(plain(deck({ assault: true, hers: [1, 0, 1] }).sections.map(x => [x.cover, x.hers])), [[0, 1], [0, 0], [0, 1]], 'her cover is kept apart from ours');
   assert.deepEqual(plain(fightCover({ size: 12, kit: [], extra: [] })), [1, 1, 1], 'the cover input is the shape fightCover gives');
@@ -551,8 +554,8 @@ test('each side\'s own cover cuts its loss, by a pip a pip, but never cuts a hit
   assert.deepEqual(trade(5, 1, 2, 0), { mine: 4, theirs: 0, cover: 2, hers: 0 }, 'two pips against one head\'s hit still leave it a hit');
   assert.deepEqual(trade(5, 2, 2, 0), { mine: 3, theirs: 0, cover: 2, hers: 0 }, 'four hits, two pips: two');
   assert.deepEqual(trade(5, 4, 2, 0, false, LOW), { mine: 5, theirs: 4, cover: 2, hers: 0 }, 'no hit rolled, nothing lost');
-  assert.deepEqual(trade(2, 5, 0, 1, true), { mine: 0, theirs: 2, cover: 0, hers: 1 }, 'in an assault her pip cuts her loss to three, and ours, with none, lose both');
-  assert.deepEqual(trade(4, 2, 2, 0, true), { mine: 2, theirs: 0, cover: 2, hers: 0 }, 'our pips cut only our loss: four hits less two');
+  assert.deepEqual(trade(2, 5, 0, 1, true), { mine: 0, theirs: 4, cover: 0, hers: 1 }, 'in an assault (a hit a head at most, DECK.ASSAULT) her pip cuts her loss to one, and ours, with none, lose both');
+  assert.deepEqual(trade(4, 2, 2, 0, true), { mine: 3, theirs: 0, cover: 2, hers: 0 }, 'our pips cut only our loss: two hits less two is still one');
 });
 
 test('in an assault a cover that works is ours: it cuts our loss and not hers (R31)', () => {
@@ -562,8 +565,8 @@ test('in an assault a cover that works is ours: it cuts our loss and not hers (R
     st.sections[0] = worn({ mine: 5, theirs: 2, cover: 0, hers: 0 }); st.hand = 0;
     return bare(plain(resolveDeckTurn(st, { stand: 0, act: { kind: 'cover', odds }, order: null }, stay, HIGH).state.sections[0]));
   };
-  assert.deepEqual(play(0), { mine: 0, theirs: 0, cover: 0, hers: 0 }, 'a cover that misses: her two take four of ours, and the press the last');
-  assert.deepEqual(play(1), { mine: 3, theirs: 0, cover: 2, hers: 0 }, 'one that works cuts her four hits to two, and our hits on her are not cut at all');
+  assert.deepEqual(play(0), { mine: 2, theirs: 0, cover: 0, hers: 0 }, 'a cover that misses: her two take two of ours (a hit a head at most, DECK.ASSAULT), and the press one more');
+  assert.deepEqual(play(1), { mine: 4, theirs: 0, cover: 2, hers: 0 }, 'one that works cuts her two hits to one (never to none), and our hits on her are not cut at all');
 });
 
 test('a steady act with nobody of theirs where the hand stands is not rolled, and says so; a cover still is (R34)', () => {
@@ -649,14 +652,16 @@ test('a hand standing in a taken section is pushed back one with a hurt roll, ne
   assert.equal(resolveDeckTurn(asl, { stand: 1, act: null, order: null }, push, HIGH).state.hand, 0, 'in an assault the way back is toward the lock');
 });
 
-test('the ends: broken at three in ten, all down, pushed out of the lock, or the bridge taken; mirrored for an assault', () => {
+test('the ends: broken at her break line, all down, pushed out of the lock, or the bridge taken; mirrored for an assault', () => {
   const st = deck({ boarders: 6, crew: 3 });
   assert.equal(deckEnd(st), null);
   st.wave = null;  // the wave has landed (the break line counts it until then)
   st.sections[0].theirs = 1;
-  assert.equal(deckEnd(st), 'won', 'one of six is under three in ten: broken');
-  st.sections[0].theirs = 2;
-  assert.equal(deckEnd(st), null, 'two is over');
+  assert.equal(deckEnd(st), null, 'repelling, six fight to the last: one left is over the line (DECK.BREAK)');
+  const big = deck({ boarders: 14, crew: 3 }); big.wave = null; big.sections.forEach(s => { s.theirs = 0; }); big.sections[0].theirs = 2;
+  assert.equal(deckEnd(big), 'won', 'two of fourteen is under it: broken');
+  big.sections[0].theirs = 3;
+  assert.equal(deckEnd(big), null, 'three is over');
   st.sections[0].theirs = 0;
   assert.equal(deckEnd(st), 'won', 'none aboard');
   const lost = deck({ boarders: 3, crew: 3 });
@@ -673,7 +678,7 @@ test('the ends: broken at three in ten, all down, pushed out of the lock, or the
   assert.equal(deckEnd(gone), 'taken', 'mine all down');
   const broke = deck({ assault: true, boarders: 6, crew: 3 });
   broke.sections.forEach(s => { s.theirs = 0; }); broke.sections[0].theirs = 1;
-  assert.equal(deckEnd(broke), 'won', 'hers broken at three in ten');
+  assert.equal(deckEnd(broke), 'won', 'hers broken at one of six (DECK.ASSAULT.BREAK)');
 });
 
 test('cargo is next to the lock and the bridge both ways: the hand steps in and out, and a feint from the corridor never lands there', () => {

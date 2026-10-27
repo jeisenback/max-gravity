@@ -9,8 +9,7 @@ const { closeBrowser } = require('./helpers');
 const { fights } = require('../tools/fights');
 
 after(closeBrowser);
-const DECK_N = 200, DECK_SEEDS = [1, 2];  // deck fights a cell in the spread test, on each of two seeds played side by side: boarding her at grade 1 wins 57 in a hundred over
-// five seeds against the lock fight's 62, so one seed of 200 can fall just past the ten points (seed 1 at 0.515 after R42's casualty roll moved the draws); two seeds hold it
+const DECK_N = 200, DECK_SEEDS = [1, 2];  // deck fights a cell in the deck test, on each of two seeds played side by side
 
 test('the fights tool plays the ship fight, the repel fight and the assault fight to their ends', async () => {
   const r = await fights({ seed: 1, n: 3 });
@@ -102,32 +101,45 @@ test('with the moves, each helps against its type, no fixed plan beats reading h
   assert.ok(rnd.lostFight / rnd.n >= 0.25, `random play with the moves loses ${f2(rnd.lostFight / rnd.n)} of its fights`);
 });
 
-// The deck fight both ways (Task 7, R36). With five crew, random play wins about as often by her grade as the lock fight before it did (within ten points of
-// 83, 59 and 40 in a hundred repelling, and 82, 62 and 34 boarding her), and costs about as many dead (within 0.15 a fight of 0.28, 0.43 and 0.57
-// repelling, and 0.29, 0.41 and 0.56 boarding her: R42, a head lost is downed and only sometimes a casualty, DECK.CASUALTY); and the best of the hand's plans wins five points or more over random play,
-// so that where the hand stands and what it does there count: repelling with two crew or five, and boarding her with two. Boarding her with five, the best
-// plan is seven points up over five seeds but from -5 to 7 on one seed, so it is not checked here (task-7-report.md). The ship fights are left out
-// (raid: false), and only the groups asked are played.
-test('the deck fight is won by grade about as often as the lock fight was, kills about as many of the crew, and the hand\'s plan beats random play', async () => {
-  const runs = await Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['policy', 'small crew', 'grade'] })));
+// The deck fight both ways, against a raider party (docs/superpowers/specs/2026-10-24-deck-fight-rework-design.md, Section 3, and the owner's ruling on the
+// assault, 2026-10-24: boarding her is a short, risky push; the corsair's and the navy's targets come with their signatures), on two seeds of 200 played side
+// by side, at level 2. Repelling them, with two crew and with five:
+// - the answer (tools/answer.js answerDeck: meet the rush or hatch it, else go where the fight is, shoot and order) wins at least 90%, and no fixed policy
+//   (random, shoot, cover, order) wins more than it;
+// - its fights last 3.5 to 6.5 turns on the mean (the spec's 4 to 6, with a margin for the sample);
+// - with two crew, the answer at level 3 wins ten points or more over level 1 (the sidearm by level);
+// - random play with five crew costs about as many dead a fight by her grade as the deck fight before the parties did: within 0.15 of 0.32, 0.44 and 0.49.
+// Boarding her:
+// - with two crew the answer wins more than every fixed policy, and at least 60%; with five it wins at least 90%, and no fixed policy wins more;
+// - its fights last 2.5 turns or more on the mean;
+// - random play with five crew costs at most 0.15 a fight more dead by her grade than before the parties (0.36, 0.49 and 0.55): fewer is allowed.
+// The ship fights are left out (raid: false), and only the groups asked are played.
+test('against raiders the answer wins a repel nine in ten in four to six turns and the level counts, boarding her is a short risky push it wins, and no fixed plan beats it', async () => {
+  const runs = await Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['party', 'level', 'grade'] })));
   for (const x of runs) assert.deepEqual(x.errors, []);
   const r = {};  // the seeds' tallies summed, cell by cell
   for (const kind of ['repel', 'assault']) { r[kind] = {}; for (const x of runs) for (const [cell, t] of Object.entries(x[kind])) { const acc = r[kind][cell] = r[kind][cell] || {}; for (const [k, v] of Object.entries(t)) acc[k] = (acc[k] || 0) + v; } }
-  const won = t => t.won / t.n, BASE = { repel: [0.83, 0.59, 0.4], assault: [0.82, 0.62, 0.34] };
-  const dead = t => t.dead / t.n, DEAD = { repel: [0.28, 0.43, 0.57], assault: [0.29, 0.41, 0.56] };  // the lock fight's dead a fight (R42)
+  const won = t => t.won / t.n, turns = t => t.rounds / t.n, dead = t => t.dead / t.n, f2 = x => x.toFixed(2);
+  const DEAD = { repel: [0.32, 0.44, 0.49], assault: [0.36, 0.49, 0.55] };  // dead a fight by her grade before the parties (the spec's "Why")
   for (const kind of ['repel', 'assault']) {
-    const k = r[kind];
-    BASE[kind].forEach((was, grade) => {
-      const now = won(k[`grade|crew 5 level 2 random grade ${grade}`]);
-      assert.ok(Math.abs(now - was) <= 0.1, `${kind} at grade ${grade}: ${now.toFixed(2)} won against the lock fight's ${was}`);
-      const died = dead(k[`grade|crew 5 level 2 random grade ${grade}`]);
-      assert.ok(Math.abs(died - DEAD[kind][grade]) <= 0.15, `${kind} at grade ${grade}: ${died.toFixed(2)} dead a fight against the lock fight's ${DEAD[kind][grade]}`);
-    });
-    for (const [group, crew] of kind === 'repel' ? [['policy', 5], ['small crew', 2]] : [['small crew', 2]]) {
-      const rnd = won(k[`${group}|crew ${crew} level 2 random grade 0`]);
-      const [plan, best] = ['shoot', 'cover', 'order'].map(p => [p, won(k[`${group}|crew ${crew} level 2 ${p} grade 0`])]).sort((a, b) => b[1] - a[1])[0];
-      assert.ok(best >= rnd + 0.05, `${kind} with ${crew} crew: ${plan} ${best.toFixed(2)} against random ${rnd.toFixed(2)}`);
+    const k = r[kind], cell = (group, crew, level, policy, grade = 0) => k[`${group}|raider crew ${crew} level ${level} ${policy} grade ${grade}`];
+    for (const crew of [2, 5]) {
+      const ans = won(cell('party', crew, 2, 'answer')), t = turns(cell('party', crew, 2, 'answer')), least = kind === 'assault' && crew === 2 ? 0.6 : 0.9;
+      assert.ok(ans >= least, `${kind} with ${crew} crew: answer wins ${f2(ans)}`);
+      for (const p of ['random', 'shoot', 'cover', 'order']) {
+        const w = won(cell('party', crew, 2, p));
+        assert.ok(kind === 'assault' && crew === 2 ? w < ans : w <= ans, `${kind} with ${crew} crew: ${p} ${f2(w)}, answer ${f2(ans)}`);
+      }
+      assert.ok(kind === 'assault' ? t >= 2.5 : t >= 3.5 && t <= 6.5, `${kind} with ${crew} crew: answer's fights last ${f2(t)} turns`);
     }
+    if (kind === 'repel') {
+      const [l1, l3] = [1, 3].map(l => won(cell('level', 2, l, 'answer')));
+      assert.ok(l3 >= l1 + 0.1, `${kind} with two crew: answer wins ${f2(l3)} at level 3, ${f2(l1)} at level 1`);
+    }
+    DEAD[kind].forEach((was, grade) => {
+      const now = dead(cell('grade', 5, 2, 'random', grade));
+      assert.ok(kind === 'assault' ? now <= was + 0.15 : Math.abs(now - was) <= 0.15, `${kind} at grade ${grade}: ${f2(now)} dead a fight against ${was} before`);
+    });
   }
 });
 

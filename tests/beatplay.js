@@ -134,8 +134,9 @@ const playBeats = () => {
         rec.steps.push({ act, roll, labels: f.labels, text: String(s.state.log[s.state.log.length - 1]), ...left(b0) });
         G.nextEvent = null;
       }
-      for (const [name, theirs] of [['last', 0], ['broke', 1]]) {  // none of them left, or one of four
+      for (const [name, theirs] of [['last', 0], ['broke', 1]]) {  // none of them left, or one of seven (under the break line both ways: DECK.BREAK, DECK.ASSAULT.BREAK)
         const s = quiet(start()); s.state.sections[0].theirs = 0; s.state.sections[0].theirsHurt = 0; s.state.sections[1].theirs = theirs;  // nobody where ours stand, so nothing is traded
+        if (theirs) s.state.began = 7;
         seq([]); const b0 = stand();
         fightOf(s, {}).run();
         rec.steps.push({ act: `end:${name}`, text: String(G.nextEvent && G.nextEvent.text), ...left(b0) });

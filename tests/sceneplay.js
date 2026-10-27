@@ -427,6 +427,7 @@ const playScenes = () => {
         { const s = deck(assault); s.shown = { kind: 'rush', from: 0, via: 1, to: 2, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }  // a rush through the corridor into the bridge
         { const s = deck(assault, { grade: 1 }); s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
         { const s = deck(assault); s.state.sections[0].mineHurt = 1; s.state.sections[0].theirsHurt = 1; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; deckPanel(deckFightEvent(s)); }  // wounded on both sides, drawn and counted in the label
+        if (!assault) { const s = deck(false); s.state.turn = DECK.WAVE_TURN - 1; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; deckPanel(deckFightEvent(s)); }  // the turn at whose end the wave lands: the strip says they come next turn
         { const s = deck(assault); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; let ev = deckFightEvent(s);  // each choice goes round: the hand's place, the act, the order
           for (let i = 0; i < 3; i++) { ev = ev.choices[0].run(); deckPanel(ev); }
           for (let i = 0; i < 3; i++) { ev = ev.choices[1].run(); deckPanel(ev); }

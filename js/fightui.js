@@ -244,9 +244,9 @@ const deckTitle = (s, i) => {
 const deckAt = (s, i) => fightSay(`deck.${s.assault ? 'hers' : 'ours'}.${i}`);
 const deckOpening = s => { const k = s.assault ? 2 - REACH[s.state.hand] : REACH[s.state.hand]; return repelWords(s, `open.${k}.${s.state.turn % 2}`, (s.assault ? ASSAULT_OPENINGS : REPEL_OPENINGS)[k][s.state.turn % 2]); };
 const deckBoard = (s, move) => fightStrip({ titles: s.state.sections.map((_, i) => deckTitle(s, i)), sections: s.state.sections, hand: s.state.hand, move, feint: s.state.grade > 0,
-  began: s.state.began, breakAt: Math.floor(s.state.began * DECK.BREAK),  // her count, with the line she breaks at (deckEnd)
+  began: s.state.began, breakAt: Math.floor(s.state.began * deckRule(s.state, 'BREAK')),  // her count, with the line she breaks at (deckEnd)
   hurtSay: n => fightSay('deck.wounded', { n }), oursSay: n => fightSay('deck.woundedOurs', { n }),  // and the wounded among them
-  wave: pendingWave(s.state) ? fightSay('deck.wave', { n: pendingWave(s.state) }) : '' });  // and the rest of the party still to land
+  wave: s.state.wave && s.state.turn + 1 === s.state.wave.turn ? fightSay('deck.wave', { n: s.state.wave.n }) : '' });  // and the rest of the party, on the turn at whose end it lands (DECK.WAVE_TURN)
 
 // The panel for this turn, with the hand's plan as it stands ({ stand, act, order }: a section, an act, a crewmate's id). Every choice redraws it in place.
 function deckFightEvent(s, plan = {}) {
@@ -279,11 +279,11 @@ function deckFightEvent(s, plan = {}) {
   };
 }
 
-// A head lost on our side is downed, and DECK.CASUALTY of the time a casualty (R42): a named crewmate (repelCasualty), the one sent on an order that missed while they are up,
+// A head lost on our side is downed, and DECK.CASUALTY of the time (boarding her DECK.ASSAULT's) a casualty (R42): a named crewmate (repelCasualty), the one sent on an order that missed while they are up,
 // else one of those standing. The rest get up when it is over, and are not named.
 function deckLoss(s, sent) {
   const up = (s.fight || []).filter(id => !s.hurt.has(id) && !s.dead.some(c => c.id === id) && !s.marked.some(c => c.id === id));
-  return up.length && Math.random() < DECK.CASUALTY ? repelCasualty(s, up.includes(sent) ? sent : pick(up)) : '';
+  return up.length && Math.random() < deckRule(s.state, 'CASUALTY') ? repelCasualty(s, up.includes(sent) ? sent : pick(up)) : '';
 }
 
 // Fight: the turn resolved with the move that was shown, a line for it in the log, and the panel again; at an end, the close (deckClose), and this returns nothing.
@@ -322,7 +322,7 @@ function deckTurn(s, p) {
 // shown on the panel; Stand down goes on to whatever the settle queued (the duel, the captain lost on the bridge, the hand's ending).
 function deckClose(s, end) {
   const f = s.state, left = sum(f, 'theirs'), capped = deckCapped(f) && deckEnd({ ...f, turn: 0 }) === null;
-  const how = end !== 'won' || capped ? null : left === 0 ? 'last' : left <= f.began * DECK.BREAK ? 'broke' : null;
+  const how = end !== 'won' || capped ? null : left === 0 ? 'last' : left <= f.began * deckRule(f, 'BREAK') ? 'broke' : null;
   s.won = end === 'won';
   const line = capped ? fightSay(`deck.withdraw.${s.assault ? 'assault' : 'repel'}`) : how ? repelWords(s, `end.${how}`, FIGHT_END[s.assault ? 'assault' : 'repel'][how]) : '';
   const said = `${line ? `${line} ` : ''}${repelSettle(s)}`, next = G.nextEvent;

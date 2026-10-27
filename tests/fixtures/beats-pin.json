@@ -1642,7 +1642,7 @@
  {
   "id": "dead:raider:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1687,7 +1687,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1696,7 +1696,7 @@
  {
   "id": "dead:raider:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1741,7 +1741,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1750,7 +1750,7 @@
  {
   "id": "dead:raider:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1795,7 +1795,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1804,7 +1804,7 @@
  {
   "id": "dead:raider:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1849,7 +1849,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 4 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1858,7 +1858,7 @@
  {
   "id": "dead:corsair:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 8 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1903,7 +1903,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 8 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1912,7 +1912,7 @@
  {
   "id": "dead:corsair:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 8 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1957,7 +1957,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 8 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1966,7 +1966,7 @@
  {
   "id": "dead:corsair:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 8 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2011,7 +2011,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 8 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2020,7 +2020,7 @@
  {
   "id": "dead:corsair:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 8 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2065,7 +2065,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 5 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 8 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2074,7 +2074,7 @@
  {
   "id": "dead:cutter:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2119,7 +2119,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2128,7 +2128,7 @@
  {
   "id": "dead:cutter:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2173,7 +2173,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2182,7 +2182,7 @@
  {
   "id": "dead:cutter:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2227,7 +2227,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2236,7 +2236,7 @@
  {
   "id": "dead:cutter:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
+  "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2281,7 +2281,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Rusted Grin\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2610,13 +2610,7 @@
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows."
  },
  {
   "id": "order:repel:gunner:steady:missed",
@@ -2644,13 +2638,7 @@
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: the hatch at the Lock holds, 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: the hatch at the Lock holds, 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
  },
  {
   "id": "order:repel:pilot:steady:missed",
@@ -2678,13 +2666,7 @@
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
  },
  {
   "id": "order:repel:engineer:steady:missed",
@@ -2712,13 +2694,7 @@
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late.",
-  "mem": [
-   "9 Jul 2214: You held the ship when boarders came."
-  ],
-  "fx": {
-   "p1": 1
-  }
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
  },
  {
   "id": "order:repel:slicer:steady:missed",
@@ -2732,208 +2708,112 @@
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana lays a long burst along the wall at head height. Nobody comes through it, and the others get behind the closer."
  },
  {
   "id": "order:assault:gunner:cover:missed",
   "label": [
    "Order: Dana lays covering fire"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana opens up and the burst goes where the wall is, not where they are.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana opens up and the burst goes where the wall is, not where they are."
  },
  {
   "id": "order:assault:gunner:steady:worked",
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana waits for the one who breaks from cover and puts a single round through him. The others see it, and the line slows."
  },
  {
   "id": "order:assault:gunner:steady:missed",
   "label": [
    "Order: Dana picks off a runner"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana waits for a runner and none runs. The round goes high, and they use the noise to push.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana waits for a runner and none runs. The round goes high, and they use the noise to push."
  },
  {
   "id": "order:assault:pilot:cover:worked",
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana cuts the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not."
  },
  {
   "id": "order:assault:pilot:cover:missed",
   "label": [
    "Order: Dana cuts the lights"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana cuts the lights, and the crew cannot see the closer either.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana cuts the lights, and the crew cannot see the closer either."
  },
  {
   "id": "order:assault:pilot:steady:worked",
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: the hatch at her Lock holds, 2 of them and 1 of ours down in her Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: the hatch at her Lock holds, 1 of them and 0 of ours down in her Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
  },
  {
   "id": "order:assault:pilot:steady:missed",
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: the hatch at her Lock does not close, 2 of them and 1 of ours down in her Lock. Dana cycles the hatch a beat late, and it closes on nothing.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: the hatch at her Lock does not close, 1 of them and 0 of ours down in her Lock. Dana cycles the hatch a beat late, and it closes on nothing."
  },
  {
   "id": "order:assault:engineer:cover:worked",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: the hatch at her Lock holds, 2 of them and 1 of ours down in her Lock. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: the hatch at her Lock holds, 1 of them and 0 of ours down in her Lock. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
  },
  {
   "id": "order:assault:engineer:cover:missed",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: the hatch at her Lock does not close, 2 of them and 1 of ours down in her Lock. Dana drops the pressure door, and it sticks a hand short of the deck.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: the hatch at her Lock does not close, 1 of them and 0 of ours down in her Lock. Dana drops the pressure door, and it sticks a hand short of the deck."
  },
  {
   "id": "order:assault:engineer:steady:worked",
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana opens the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
  },
  {
   "id": "order:assault:engineer:steady:missed",
   "label": [
    "Order: Dana vents a coolant line"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana opens the wrong coolant line, and it vents into the section.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana opens the wrong coolant line, and it vents into the section."
  },
  {
   "id": "order:assault:slicer:cover:worked",
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana puts the jammer on their channel. They cannot call the next in, and they fight where they stand while the crew take the cover."
  },
  {
   "id": "order:assault:slicer:cover:missed",
   "label": [
    "Order: Dana jams their band"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana jams their band and the crew's with it.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana jams their band and the crew's with it."
  },
  {
   "id": "order:assault:slicer:steady:worked",
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana puts a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
  },
  {
   "id": "order:assault:slicer:steady:missed",
   "label": [
    "Order: Dana puts a false order on their band"
   ],
-  "text": "Turn 1: 2 of them and 1 of ours down in her Lock. Dana puts a voice on their band and the voice is wrong. Somebody laughs.",
-  "mem": [
-   "9 Jul 2214: You went onto a crippled ship and came back without it."
-  ],
-  "fx": {
-   "p1": -1
-  }
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana puts a voice on their band and the voice is wrong. Somebody laughs."
  },
  {
   "id": "repel:gunner",
@@ -3711,13 +3591,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: 1 of them and 0 of ours down in her Lock."
    },
    {
     "act": "shoot",
@@ -3728,7 +3602,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. Cato is hurt. Another hit like that could kill Cato.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -3745,13 +3619,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows."
    },
    {
     "act": "steady",
@@ -3762,13 +3630,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line."
    },
    {
     "act": "cover",
@@ -3779,13 +3641,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down."
    },
    {
     "act": "cover",
@@ -3796,13 +3652,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand."
    },
    {
     "act": "end:last",
@@ -3970,13 +3820,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: 1 of them and 0 of ours down in her Lock."
    },
    {
     "act": "shoot",
@@ -3987,7 +3831,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. Cato is hurt. Another hit like that could kill Cato.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4004,13 +3848,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits."
    },
    {
     "act": "steady",
@@ -4021,13 +3859,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again."
    },
    {
     "act": "cover",
@@ -4038,13 +3870,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop."
    },
    {
     "act": "cover",
@@ -4055,13 +3881,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You cut the lights, and your own people cannot see the closer either. The boarders have lamps.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You cut the lights, and your own people cannot see the closer either. The boarders have lamps."
    },
    {
     "act": "end:last",
@@ -4229,13 +4049,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: 1 of them and 0 of ours down in her Lock."
    },
    {
     "act": "shoot",
@@ -4246,7 +4060,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. Cato is hurt. Another hit like that could kill Cato.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4263,13 +4077,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
    },
    {
     "act": "steady",
@@ -4280,13 +4088,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You open the wrong coolant line. It vents into the section you are standing in.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You open the wrong coolant line. It vents into the section you are standing in."
    },
    {
     "act": "cover",
@@ -4297,13 +4099,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through."
    },
    {
     "act": "cover",
@@ -4314,13 +4110,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it."
    },
    {
     "act": "end:last",
@@ -4488,13 +4278,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: 1 of them and 0 of ours down in her Lock."
    },
    {
     "act": "shoot",
@@ -4505,7 +4289,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 2 of them and 1 of ours down in her Lock.",
+    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. Cato is hurt. Another hit like that could kill Cato.",
     "mem": [
      "9 Jul 2214: You went onto a crippled ship and came back without it."
     ],
@@ -4522,13 +4306,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
    },
    {
     "act": "steady",
@@ -4539,13 +4317,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line."
    },
    {
     "act": "cover",
@@ -4556,13 +4328,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover."
    },
    {
     "act": "cover",
@@ -4573,13 +4339,7 @@
      "Order: none",
      "Fight"
     ],
-    "text": "Turn 1: 1 of them and 1 of ours down in her Lock. You jam their band and your own with it, and nobody can tell the crew which hatch to hold.",
-    "mem": [
-     "9 Jul 2214: You went onto a crippled ship and came back without it."
-    ],
-    "fx": {
-     "p1": -1
-    }
+    "text": "Turn 1: nobody gives ground. You jam their band and your own with it, and nobody can tell the crew which hatch to hold."
    },
    {
     "act": "end:last",

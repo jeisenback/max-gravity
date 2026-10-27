@@ -303,16 +303,40 @@ quarter of its fund.
 Boarding, both ways, is played on the same panel (`js/fight.js` resolveDeckTurn, `js/boarders.js`): when she comes alongside,
 when a boarding run lands in the card duel, and when you board a crippled ship, where a win carries her bridge. The deck is
 drawn as its sections (`js/handtohand.js` fightStrip): the Lock, the Corridor, the Bridge, and the cargo bay on a long ship,
-with both sides' heads and each side's cover in each, and her count under it with the line at which she breaks. Their move is
-shown above it ("4 pushing into the Corridor"); at a veteran grade it is marked "may feint", and it does at the `CUNNING` rate.
+with both sides' heads, their wounded, and each side's cover in each, and her count under it with the line at which she breaks.
+Their move is shown above it ("4 pushing into the Corridor"); at a veteran grade it is marked "may feint", and it does at the
+`CUNNING` rate. The design is `docs/superpowers/specs/2026-10-24-deck-fight-rework-design.md`.
+
+The party is set by her type (`DECK_PARTY`): a raider's, a corsair's, or the navy's. So far only the raiders have their own
+move, the **rush**: where the section in front holds fewer of ours than half their number, and the hand is not in it, they go
+through it, two sections in a turn ("Rushing the Corridor and the Bridge"). The hand standing in the section passed stops them
+there, and so does a hatch worked there. A **repel comes in two waves**: half the boarders first, and the rest at the end of the second
+turn (`DECK.WAVE_TURN`), shown at the lock ("3 more at the lock next turn") on the turn at whose end they land. The break line counts the
+wave still to land.
 
 Each turn the hand stands or moves one section, does one thing there (shoots, or uses one of the post's two abilities: the
 steady one takes one of them down, the cover one makes two points of cover, once a fight), and gives one order to a named
-crewmate (that person's own steady or cover ability, at their own odds). Where both sides stand they trade losses, a roll for
-each opposing head, cut by the side's own cover but never to nothing. A head lost on our side is downed, and three times in ten
-(`DECK.CASUALTY`) a named crewmate hurt or killed; the hand can be hurt in a contested section. It is won when about a third of her start or fewer are left (`DECK.BREAK`), or all are down, or
-(boarding her) her bridge is held; it is lost when they hold our bridge, or (boarding her) when none of ours are left. At eight
-turns (`DECK.TURNS`) the attackers withdraw. The numbers are `DECK` in `js/fight.js`.
+crewmate (that person's own steady or cover ability, at their own odds). The pilot's and the engineer's hatch is worked from
+their post, so its order names a section; every other order works where the hand stands. Where both sides stand they trade, a
+roll for each opposing head (`DECK.CREW_HIT`, 0 to 2), cut by the side's own cover but never to nothing. A hit **wounds a head
+first**, and downs one only when all of that side there are wounded; a wounded head still fights and counts. The hand's shot
+downs the wounded first and wounds the rest: 1 to 2 heads at levels 0 and 1, 2 to 3 at level 2, 3 to 4 at level 3
+(`DECK.SIDEARM_BY_LEVEL`), and from level 2 it can be aimed at a section next to the hand's (`DECK.SIDEARM_REACH_LEVEL`). A head
+of ours downed is a casualty three times in ten (`DECK.CASUALTY`): a named crewmate hurt or killed; the rest get up after it.
+The hand can be hurt in a contested section: a roll a turn of 0.45 (`REPEL_HURT.lose`) times 0.2 for the suit (`DECK.SUIT`), 9 in
+100, under the lock fight's 0.3 since a deck fight lasts about twice the turns.
+
+It is won when her count is at or under the break line, or all are down, or (boarding her) her bridge is held; it is lost when
+they hold our bridge, or (boarding her) when none of ours are left. At eight turns (`DECK.TURNS`) the attackers withdraw.
+Repelling, a full boarding run brings four more than a short one (`DECK.FULL`, in `boardersFor`), a raider pair two (`DECK.FULL_PAIR`:
+at four, a veteran pair came over with ten and twelve and took the bridge one time in two), and the break line is 0.15 of
+the party (`DECK.BREAK`): a raider's six fight to the last. A repel lost costs the fund, part of the hold, the fallen and the
+captain's regard, and one time in six the captain (`CAPTAIN_LOST`, js/boarders.js; one in three before repels could be lost).
+
+**Boarding her is a short, risky push** (the owner's ruling, 2026-10-24), with its own numbers (`DECK.ASSAULT`, read through
+`deckRule`): she has five more aboard than a short run would bring (a raider seven), she breaks at 0.2 of them (at one of seven),
+each head's roll is 0 to 1, so that two of ours last long enough for the hand's shot to tell, and half of ours downed are
+casualties, since fewer are downed. The numbers are `DECK` in `js/fight.js`.
 
 Who stands with you depends on the crew (`repelCrew`). One who cannot stand you keeps to their berth, and of two at each
 other's throats the one who thinks less of you will not stand in the same section. A friend takes the first hit meant for you,
@@ -388,11 +412,36 @@ the run that wrote this section (after the final review's tune, #808):
   loses 77%: no policy with the moves beats `answer` against any type. In the soak (`npm run soak`, seeds 1 to 40, the soak's
   downtime picked at random) a chapter learns two moves or more 24 times in 40 and both level-1 moves 20 times; in the
   play-throughs (seeds 1 to 5, Hester) four of five learn vent and lead, and lead is used in four, split in one and vent in two.
-- **Repelling boarders**, random play, five standing: won 90%; by her grade 88%, 58%, 41%. Shooting where they are wins 99%
-  with five or two standing, against random's 49% with two. Dead a fight by her grade, after the final review's tune (R42):
-  0.32, 0.44, 0.49, against the lock fight's 0.28, 0.43, 0.57.
-- **Boarding her**, random play, five standing: won 80%; by her grade 81%, 57%, 29%. With two standing, sending a crewmate
-  every turn wins 87%, against random's 35%. Dead a fight by her grade: 0.36, 0.49, 0.55, against 0.29, 0.41, 0.56.
+- **The deck fights** (`node tools/fights.js --seeds 1,2 --n 200 --deck-only --groups party,level,grade`, the deck test's own
+  draws: tests/fights.test.js). A raider party, a hand at level 2, her grade 0; each cell is won with two standing / five, then
+  the mean turns. The fixed policies go where the fight is: `shoot` fires there, `cover` makes the cover first, `order` shoots
+  and sends the first crewmate on offer every turn. `answer` (tools/answer.js answerDeck) meets a shown rush in its path, or
+  hatches it when the hand is too far, else goes where the fight is, aims the shot at the most of theirs wounded in reach, and
+  orders the first crewmate on offer; boarding her it makes the cover first.
+
+  | Raider party | random | shoot | cover | order | answer |
+  |---|---|---|---|---|---|
+  | repelling | 29% / 47%, 4.2 / 5.1 | 25% / 94%, 3.0 / 5.0 | 37% / 94%, 3.3 / 5.3 | 66% / 97%, 3.5 / 4.1 | 96% / 97%, 5.1 / 4.1 |
+  | boarding her | 25% / 89%, 5.2 / 5.6 | 30% / 97%, 5.0 / 3.9 | 25% / 96%, 5.2 / 4.4 | 55% / 97%, 4.4 / 3.5 | 79% / 97%, 4.2 / 3.6 |
+
+  The answer by the post's level, two standing:
+
+  | Level | 0 | 1 | 2 | 3 |
+  |---|---|---|---|---|
+  | repelling | 65%, 5.3 turns | 62%, 5.2 | 98%, 5.2 | 98%, 4.4 |
+  | boarding her | 37%, 4.6 | 40%, 4.6 | 81%, 4.3 | 81%, 4.1 |
+
+  The level that counts is 2, where the shot reaches the next section: a hand at level 0 or 1 with two standing wins a repel
+  three times in five and boarding her two in five. Against a corsair's party, which has no move of its own yet, `answer` wins
+  65% / 97% repelling and 53% / 99% boarding her. The hand is hurt in about a quarter of `answer`'s fights (repelling 26% / 24%,
+  boarding her 24% / 22%).
+- **Repelling boarders**, random play, five standing: by her grade won 50%, 23%, 12%, and dead a fight 0.35, 0.46, 0.47
+  (0.32, 0.44, 0.49 before the parties). With two standing the answer loses none (0.00 dead a fight).
+- **Boarding her**, random play, five standing: by her grade won 90%, 78%, 33%, and dead a fight 0.20, 0.38, 0.36 (0.36, 0.49,
+  0.55 before the parties; the test holds it at no more than those and 0.15). The answer with two standing: 0.13 dead a fight.
+- **In the soak** (`npm run soak`, the deck fights played by `answerDeck`; seeds 1 to 120, tests/distribution/stakes-fights.test.js): the
+  hand is hurt 0.55 times a chapter, 9 of the 66 in 265 repels; 3 of 120 chapters lose the captain on the bridge and 5 the hand,
+  8 in all (the limit is 3 in 40).
 
 The tool is how to check a change to `FIGHT`, `DECK`, `boardersFor`, `CASUALTY_ODDS` or `REPEL_HURT`.
 

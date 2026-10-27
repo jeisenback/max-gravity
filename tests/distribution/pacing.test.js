@@ -26,7 +26,7 @@ test('about twenty runs reach the target with every captain, and the planner is 
   for (const captainKey of ['hester', 'dov', 'imre', 'zoya']) {
     const all = await soaks([1, 2, 3, 4, 5], { legs: 40, captainKey }, 5);
     for (const r of all) { assert.equal(r.stuck, 0, `${captainKey} seed ${r.seed}: the captain had no plan`); assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []); }
-    // A seed can end the chapter early (a hand who dies, js/boarders.js: stakes.test.js holds how often) or be ruined by one bad pick of the random answers (4,000 cr of a small fund
+    // A seed can end the chapter early (a hand who dies, js/boarders.js: stakes.test.js and stakes-fights.test.js hold how often) or be ruined by one bad pick of the random answers (4,000 cr of a small fund
     // paid at a patrol stop), so most seeds must reach the target and the pace is read from those that do.
     const rs = all.filter(r => !r.ending && r.reached);
     assert.ok(rs.length >= 3, `${captainKey}: ${rs.length} of 5 seeds reached the target (${all.map(r => r.ending ? 'ended' : r.reached ? 'ok' : `no, ${r.runs} runs`).join(', ')})`);

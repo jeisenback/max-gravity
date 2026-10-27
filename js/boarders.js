@@ -73,7 +73,7 @@ function repelStart(d, outcome) {
 // Boarding a crippled ship: the same fight on her deck, ours pushing from her lock to her bridge.
 function assaultStart(foe, rate = {}) {
   captainFlag('raided');  // kept for the goodbye (captains.js)
-  return deckStart({ d: { foe, foeHp: 0 }, boarders: boardersFor(foe, 'full', rate), grade: rate.grade || 0, size: SHIPS[foe.shipId].size, assault: true });
+  return deckStart({ d: { foe, foeHp: 0 }, boarders: boardersFor(foe, 'full', { ...rate, assault: true }), grade: rate.grade || 0, size: SHIPS[foe.shipId].size, assault: true });
 }
 
 // Each side's cover is its own (R31): on our deck the ship's cover and the kit's are ours; on hers her ship's is hers, and ours is only what the kit opens up.
@@ -104,8 +104,9 @@ const HAND_CLINIC = 1500;
 // The next scene is the ending (stakes.js), so a caller that queues a scene after this one checks `s.handDied` first.
 const HAND_DEATH = 0.25, HAND_DEATH_FIRST = 1 / 12;
 const handDeathOdds = (again = true) => (again ? HAND_DEATH : HAND_DEATH_FIRST) * (roleHolder('medic') ? LOSS_MEDIC : 1);
-// The captain can be lost (#357): a pirate bridge taken is a roll of one in three. The next scene is the captain's loss (stakes.js).
-const CAPTAIN_LOST = 1 / 3;
+// The captain can be lost (#357): a pirate bridge taken is a roll of one in six (one in three when the lock fight was rarely lost; now a repel can be, and a lost
+// one still costs the fund, the cargo, the crew who fell and the captain's regard). The next scene is the captain's loss (stakes.js).
+const CAPTAIN_LOST = 1 / 6;
 function handDies(s, how) {
   const st = G.state, h = hired();
   s.handDied = true; h.died = { day: st.day, how };

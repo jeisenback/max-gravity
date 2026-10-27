@@ -31,7 +31,7 @@ const FIGHT = {
   BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid
   HEAVY_HIT: 0.2     // a turn is a heavy hit when the damage done to your hull (fight-scale, not pooled: the foe's damage is not scaled by FIGHT.POOL) is over this share of your real maximum armor, about 44% of the hull you have in the fight (fightui.js); a fifth, so that the hand is rarely
-                     // killed: on the Ice Hauler only her salvo unanswered reaches it (SALVO_DMG), and the soak holds the hurts a chapter (tests/distribution/stakes.test.js)
+                     // killed: on the Ice Hauler only her salvo unanswered reaches it (SALVO_DMG), and the soak holds the hurts a chapter (tests/distribution/stakes-fights.test.js)
 };
 
 const KNIFE = RANGE_BANDS.indexOf('knife');
@@ -231,12 +231,20 @@ const DECK = {
   SECTIONS: ['lock', 'corridor', 'bridge'],
   SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4]],  // heads the hand's shot takes, by the level of the fight (sidearmOf): each downs a wounded head there, else wounds one
   SIDEARM_REACH_LEVEL: 2,  // from this level the shot may be aimed at a section next to the hand's as well as its own
-  WAVE_TURN: 1,      // the turn at whose end the second wave of a repel lands in the lock
+  WAVE_TURN: 2,      // the turn at whose end the second wave of a repel lands in the lock
   CREW_HIT: [0, 2],  // heads one opposing head takes in a section where both stand (a roll a head); a side's own cover cuts its total, never below one hit
-  BREAK: 0.3,        // of her crew at the start: at or under it she breaks (about a third; at 6 she breaks at 1, not 2)
-  SUIT: 0.3,         // times REPEL_HURT.lose: the standard suit's stat (the hand standing in the fight is hurt less often)
+  BREAK: 0.15,       // of her crew at the start: at or under it she breaks (at 6 she fights to the last)
+  FULL: 4,           // the heads a boarding run that landed in full brings over a half one's (shipcombat.js boardersFor)
+  FULL_PAIR: 2,      // and for a raider pair, which brings two more of its own: a pair at grade 1 or 2 came over with 10 and 12, and took the bridge one time in two
+  SUIT: 0.2,         // times REPEL_HURT.lose: the standard suit's stat (the hand standing in the fight is hurt less often); under the lock fight's 0.3, since a deck fight lasts about twice the turns (measured over 120 chapters, tests/distribution/stakes-fights.test.js)
   CASUALTY: 0.3,     // of our heads lost, the share that is a casualty (fightui.js deckLoss); the rest are downed and get up after it, so that a fight kills about as many as the lock fight did (R42)
-  TURNS: 8           // at the end of this turn the attackers withdraw: a repel is won, an assault lost (R32)
+  TURNS: 8,          // at the end of this turn the attackers withdraw: a repel is won, an assault lost (R32)
+  ASSAULT: {         // boarding her, where it differs from a repel (deckRule): a short, risky push
+    BREAK: 0.2,      // her crew at or under this share of her start breaks (at 7 she breaks at 1)
+    FULL: 5,         // the heads over a half run's that she has aboard
+    CREW_HIT: [0, 1],  // the exchange's roll a head, and a press's: lighter, so that two of ours last long enough for the hand's shot to tell
+    CASUALTY: 0.5    // of our heads downed, the share that is a casualty: fewer are downed than repelling, and more of them die
+  }
 };
 
 // Who comes aboard, by the hull she is: the navy hulls are the navy's, the corsair's her own, any other ship a raider's.
@@ -367,14 +375,14 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   if (!hatch) ability(ordered, st.hand);
   S.forEach((s, i) => { s.cover = Math.min(COVER_MAX, s.cover + extra[i]); });
 
-  // Each section where both stand trades hits: a side takes a CREW_HIT roll for each opposing head there (R29), cut by that side's own cover there (R31), and a hit is never
+  // Each section where both stand trades hits: a side takes a CREW_HIT roll (boarding her, DECK.ASSAULT's) for each opposing head there (R29), cut by that side's own cover there (R31), and a hit is never
   // cut to nothing (R33). A press is one more roll against us where the hand stands. A hit wounds a head and downs one once all are wounded (hitSide); the events say
   // both, `mine` and `theirs` being the downed. The shot comes after the exchange, at the hand's section or, from the reach level, one next to it: it finishes the wounded first.
   const hand = st.hand, contested = here.mine > 0 && here.theirs > 0;
-  const [lo, hi] = DECK.CREW_HIT;
+  const [lo, hi] = deckRule(st, 'CREW_HIT');
   const hits = S.map((s, i) => {
     if (!s.mine || !s.theirs) return { mine: 0, theirs: 0 };
-    const hit = (by, cover) => { const rolls = rollsOf(s[by], DECK.CREW_HIT, rand); return rolls > 0 ? Math.max(1, rolls - cover) : 0; };
+    const hit = (by, cover) => { const rolls = rollsOf(s[by], deckRule(st, 'CREW_HIT'), rand); return rolls > 0 ? Math.max(1, rolls - cover) : 0; };
     let mine = hit('theirs', s.cover), theirs = hit('mine', s.hers || 0);
     if (i === hand) for (let k = 0; k < press; k++) mine += dealt(s.mine, lo, hi, rand);
     return { mine, theirs };
@@ -413,10 +421,11 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
 function deckEnd(st) {
   const bridge = st.sections[BRIDGE];
   if (st.assault ? sum(st, 'mine') === 0 : bridge.theirs > 0 && bridge.mine === 0) return 'taken';
-  if (sum(st, 'theirs') + pendingWave(st) <= st.began * DECK.BREAK) return 'won';
+  if (sum(st, 'theirs') + pendingWave(st) <= st.began * deckRule(st, 'BREAK')) return 'won';
   if (st.assault && bridge.mine > 0 && bridge.theirs === 0) return 'won';
   return deckCapped(st) ? (st.assault ? 'taken' : 'won') : null;
 }
+const deckRule = (st, key) => (st.assault && key in DECK.ASSAULT ? DECK.ASSAULT : DECK)[key];  // a DECK number, or boarding her its DECK.ASSAULT one
 const sidearmOf = st => DECK.SIDEARM_BY_LEVEL[st.level];  // [lo, hi] heads the hand's shot takes at this fight's level
 const pendingWave = st => (st.wave ? st.wave.n : 0);  // the heads still to land, 0 once landed
 const deckCapped = st => st.turn >= DECK.TURNS;

@@ -2,7 +2,7 @@ name: Soak
 # The distribution checks (npm run soak, tests/distribution/): the pacing and pay of the hired chapter, its danger, how the main characters are drawn and introduced.
 # They depend on a spread over many random games and move whenever a new random draw shifts the stream, so they are not in the suite and not a check on a pull
 # request: a red here is drift to look at, not a change to block. They run nightly on main, and by hand from the Actions page, one runner per file, since the
-# three heavy files each take about a minute alone and a runner has as many cores as they can use (tools/soak.js soaks).
+# heavy files each take a minute or two alone (the stakes are two files, each 120 chapters) and a runner has as many cores as they can use (tools/soak.js soaks).
 on:
   schedule:
     - cron: '17 3 * * *'
@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        files: ['intros', 'pacing', 'stakes', 'cast-draw frequency']
+        files: ['intros', 'pacing', 'stakes', 'stakes-fights', 'cast-draw frequency']
     name: soak (${{ matrix.files }})
     steps:
       - uses: actions/checkout@v4

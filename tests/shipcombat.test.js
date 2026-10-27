@@ -66,13 +66,13 @@ test('boarders come by her ship, her crew and her company, and a veteran crew is
   await ev(helpers);
   const r = await ev(() => {
     setup(); const out = {}, raider = foe('raider').foe, corsair = foe('corsair').foe;
-    out.raider = boardersFor(raider, 'half'); out.corsair = boardersFor(corsair, 'half'); out.full = boardersFor(raider, 'full');
-    out.vet = boardersFor(raider, 'half', { grade: 2 }); out.pair = boardersFor(raider, 'half', { pack: true });
+    out.raider = boardersFor(raider, 'half'); out.corsair = boardersFor(corsair, 'half'); out.full = boardersFor(raider, 'full'); out.hers = boardersFor(raider, 'full', { assault: true });
+    out.vet = boardersFor(raider, 'half', { grade: 2 }); out.pair = boardersFor(raider, 'half', { pack: true }); out.pairFull = boardersFor(raider, 'full', { pack: true });
     out.gradeKept = repelStart({ foe: corsair, foeHp: 0, grade: 2 }, 'full').state.grade;
     out.assault = assaultStart(corsair, { grade: 1, pack: false }).state.began > assaultStart(corsair).state.began;
     return out;
   });
-  assert.ok(r.corsair > r.raider, 'a corsair carries more'); assert.equal(r.full, r.raider + 2); assert.ok(r.vet > r.raider && r.pair === r.raider + 2);
+  assert.ok(r.corsair > r.raider, 'a corsair carries more'); assert.equal(r.full, r.raider + 4, 'a full run brings DECK.FULL more'); assert.equal(r.hers, r.raider + 5, 'and aboard her DECK.ASSAULT.FULL more'); assert.ok(r.vet > r.raider && r.pair === r.raider + 2); assert.equal(r.pairFull, r.pair + 2, 'a pair\'s full run brings DECK.FULL_PAIR more');
   assert.equal(r.gradeKept, 2, 'the grade is the deck fight\'s, for its feint'); assert.ok(r.assault);
   await done();
 });

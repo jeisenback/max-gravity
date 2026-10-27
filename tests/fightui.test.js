@@ -191,11 +191,11 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   });
   assert.equal(r.title, 'The Lock', 'the panel is named for where the hand stands');
   assert.ok(r.size >= 16, 'the hauler is long: a cargo bay to go round by');
-  assert.deepEqual(r.heads, [[1, 2, 1], [1, 0, 2], [2, 0, 1], [1, 0, 1]], 'two of the four in the lock (the other two are the wave); five of ours spread, the odd one on the bridge; the ship\'s cover by section');
+  assert.deepEqual(r.heads, [[1, 3, 1], [1, 0, 2], [2, 0, 1], [1, 0, 1]], 'three of the six in the lock (the other three are the wave); five of ours spread, the odd one on the bridge; the ship\'s cover by section');
   assert.equal(r.hand, 0);
   assert.deepEqual(r.shown, { kind: 'hold', from: 0, to: 0, n: 0, feint: false }, 'one of ours stands in the lock with them, so they cannot push on (R29)');
   assert.equal(r.read, 'Turn 1 of 8. Boarders: holding where they are.', 'the turn of the cap, and their move');
-  assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they break at 1. 2 more at the lock next turn.');
+  assert.equal(r.strip, 'The deck in four sections. The Lock: 1 of ours and 3 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 2 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 3 of their 6 still up; they fight to the last.', 'the wave is not drawn yet: it lands at the end of the second turn');
   assert.deepEqual(r.labels.slice(0, 2), ['Stand: The Lock', 'Shoot: 1 to 2 of them hit'], 'a new hand works at level 0');
   assert.equal(r.labels[r.labels.length - 1], 'Fight');
   assert.ok(r.keep.every(Boolean), 'every choice redraws in place');
@@ -219,15 +219,16 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   await done();
 });
 
-test('the panel words a raider\'s rush, the second wave at the lock until it lands, and the hatch by section', async () => {
+test('the panel words a raider\'s rush, the second wave at the lock on the turn at whose end it lands, and the hatch by section', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(deckHelpers);
   const r = await ev(() => {
     const out = {};
     fightGame('gunner'); let s = boarded();
     out.wave = { before: /more at the lock next turn/.test(document.querySelector('#panel .event-body svg.board').outerHTML), n: pendingWave(s.state) };
-    rolls([]); const turned = G.dialog.choices[G.dialog.choices.length - 1].run();
-    out.wave.after = /more at the lock next turn/.test(turned.board); out.wave.log = s.state.log[0];
+    rolls([]); const one = G.dialog.choices[G.dialog.choices.length - 1].run(); out.wave.between = /more at the lock next turn/.test(one.board);
+    rolls([]); const turned = one.choices[one.choices.length - 1].run();  // it lands at the end of the second turn (DECK.WAVE_TURN)
+    out.wave.after = /more at the lock next turn/.test(turned.board); out.wave.log = s.state.log[1];
     fightGame('gunner'); s = boarded(); const f = s.state;  // none of ours in the lock or the corridor, the hand on the bridge: they rush through the corridor
     f.party = 'raider'; f.wave = null; f.hand = 2; f.sections[0].mine = 0; f.sections[1].mine = 0; f.sections[0].theirs = 3; s.shown = null;
     const e = deckFightEvent(s); out.read = e.read; out.arrow = /<path class="move"/.test(e.board);
@@ -240,8 +241,8 @@ test('the panel words a raider\'s rush, the second wave at the lock until it lan
     out.none = deckFightEvent(s, { act: 'steady' }).choices.map(c => c.label).filter(l => l.startsWith('At '));
     return out;
   });
-  assert.equal(r.wave.before, true, 'the lock fight shows the rest coming'); assert.ok(r.wave.n >= 1);
-  assert.equal(r.wave.after, false, 'and not once they have landed'); assert.match(r.wave.log, /more come through the lock/);
+  assert.equal(r.wave.before, false, 'not on the first turn: they land at the end of the second, so "next turn" would be a turn early'); assert.ok(r.wave.n >= 1);
+  assert.equal(r.wave.between, true, 'on the second turn, at whose end they land'); assert.equal(r.wave.after, false, 'and not once they have landed'); assert.match(r.wave.log, /more come through the lock/);
   assert.match(r.read, /^Turn 1 of 8\. Boarders: \d+ rushing through the Corridor into the Bridge\.$/); assert.ok(r.arrow, 'the arrow is drawn');
   assert.match(r.rushLog, /3 of them rush into the Bridge/);
   assert.equal(r.at[0], 'At the Bridge', 'where the hand stands, a crew of one holding the bridge'); assert.equal(r.at[1], true); assert.equal(r.next, 'At the Cargo Bay', 'the section goes round the deck');
