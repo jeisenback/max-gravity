@@ -470,6 +470,10 @@ const playScenes = () => {
       { const s = deck(false, { party: 'navy' }), S = s.state.sections, cap = person(hired().captain), m0 = (cap.memories || []).length; s.d.foe.gov = 'Arcology Compact'; hired().fund = 20000;
         S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].mine = 1; S[2].theirs = 2; s.state.hand = 0; s.state.began = 4; s.state.wave = null;
         deckLog(s, {}, { kind: 'hold', from: 2, to: 2, n: 0 }); rec.plays.push({ mem: (cap.memories || []).slice(m0) }); }
+      // a navy party that withdraws at its cap still files its citation: the close names the fine
+      { const s = deck(false, { party: 'navy' }), S = s.state.sections; s.d.foe.gov = 'Arcology Compact'; hired().fund = 20000;
+        S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].mine = 1; S[1].theirs = 2; s.state.hand = 0; s.state.began = 4; s.state.wave = null; s.state.turn = DECK.NAVY_TURNS - 1;
+        deckLog(s, {}, { kind: 'hold', from: 1, to: 1, n: 0 }); }
     } catch (err) { rec.error = String(err && err.stack || err); }
     out.push(rec);
   }

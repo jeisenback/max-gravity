@@ -194,6 +194,8 @@ test('against the navy\'s party the answer holds them at half the standing shoot
     // the navy answer holds fire to the 5-turn cap (DECK.NAVY_TURNS), so this holds while the cap sits inside the range
     assert.ok(turns(ans) >= 3.5 && turns(ans) <= 6.5, `navy with ${crew} crew: answer's fights last ${f2(turns(ans))} turns`);
   }
+  // the answer always holds to the cap, and the citation stands (#828): letting a patrol board costs the heave-to's fine, a quarter of the purse
+  for (const crew of [2, 5]) { const ans = cell(crew, 'answer'); assert.ok(ans.fined >= 0.9 * ans.quarter, `navy with ${crew} crew: answer is fined ${f2(ans.fined / ans.n)} cr a fight, a quarter-purse is ${f2(ans.quarter / ans.n)}`); }
   const d = dead(cell(5, 'random'));
   assert.ok(Math.abs(d - DEAD.repel[0]) <= 0.15, `navy, random with five crew: ${f2(d)} dead a fight against ${DEAD.repel[0]}`);
 });

@@ -10,7 +10,7 @@
 // With them come two more gun policies that use the moves without reading her move for it (randmove, eager: below).
 //   npm run fights
 // Report: for the ship fight, the spread of its ends, its rounds, the hull lost, the hurt and the dead, by gun policy and by the type she is; for each deck fight, how often you win and who is hurt, by crew, by the
-// post's skill level, by the party that comes aboard (her type), by the hand's policy and by the foe's grade, and for the navy's party the standing a fight cost and how often it ended in a search. Not part of `npm test`.
+// post's skill level, by the party that comes aboard (her type), by the hand's policy and by the foe's grade, and for the navy's party the standing a fight cost, the credits it cost (the citation or the search's fine) and how often it ended in a search. Not part of `npm test`.
 
 const { open, closeBrowser } = require('../tests/helpers');
 const { answerOrders, answerDeck } = require('./answer');
@@ -140,9 +140,9 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
 
     // The deck fights, started directly: kind 'repel' (they board you) or 'assault' (you board her), against the party from her type.
     const lock = (kind, party, crewN, level, policy, grade) => {
-      const t = { n: 0, won: 0, rounds: 0, hurt: 0, dead: 0, marked: 0, hand: 0, anyHurt: 0, died: 0, capped: 0, standing: 0, searched: 0 };
+      const t = { n: 0, won: 0, rounds: 0, hurt: 0, dead: 0, marked: 0, hand: 0, anyHurt: 0, died: 0, capped: 0, standing: 0, searched: 0, fined: 0, quarter: 0 };
       for (let i = 0; i < trials; i++) {
-        restore(crewN, level); const foe = foeOf(party), rep0 = repOf(NAVY_GOV);
+        restore(crewN, level); const foe = foeOf(party), rep0 = repOf(NAVY_GOV), purse0 = purse(), quarter = heaveToFine();
         // A navy party is started as the game starts her boarding: from the patrol's ship fight's 'boarded' end (fightui.js fightBoarded), with that fight's style ('gun': a half run).
         const first = party === 'navy' && kind === 'repel' ? fightBoarded({ foe, grade, pack: false, style: RAID_STYLE[foe.shipId] || 'grapple' }) : null;
         const s = first ? first.fight : kind === 'repel' ? repelStart({ foe, foeHp: 0, init: 'foe', grade }, party === 'corsair' ? 'half' : 'full') : assaultStart(foe, { grade });  // as the game boards you (fightui.js fightBoarded): a raider grapples, a full run; a corsair fights with torpedoes, a half one
@@ -151,6 +151,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
         if (drive(policy)) t.capped++;  // a fight the tool gave up on: it never ended
         t.n++; if (s.won) t.won++; if (s.handDied) t.died++; t.rounds += s.state.turn; t.hurt += s.hurt.size; t.dead += s.dead.length; t.marked += s.marked.length; t.hand += s.youHurt ? 1 : 0;
         t.standing += rep0 - repOf(NAVY_GOV); if (s.searched) t.searched++;  // the standing a navy fight cost (boarders.js repelSettle), and the searches
+        t.fined += purse0 - purse(); t.quarter += quarter;  // the credits it cost (the citation of a withdrawal, or the search's fine), and the heave-to's fine, a quarter of the purse, to set it against
         if (s.hurt.size || s.dead.length || s.marked.length || s.youHurt) t.anyHurt++;
       }
       return t;
@@ -222,7 +223,7 @@ function report(runs) {
   for (const kind of ['repel', 'assault']) {
     console.log(`${kind === 'repel' ? 'Repel fight (they board you)' : 'Assault fight (you board her)'}`);
     for (const [name, t] of Object.entries(sum(runs, kind))) {
-      console.log(`  ${name.split('|')[1].padEnd(42)} n ${String(t.n).padStart(4)}  won ${pct(t.won, t.n)}  rounds ${per(t.rounds, t.n)}  hurt ${per(t.hurt, t.n)}  dead ${per(t.dead, t.n)}  marked ${per(t.marked, t.n)}  you hurt ${pct(t.hand, t.n)}  you killed ${pct(t.died, t.n)}  anyone ${pct(t.anyHurt, t.n)}  capped ${t.capped}${/\|navy /.test(name) ? `  standing -${per(t.standing, t.n)}  searched ${pct(t.searched, t.n)}` : ''}`);
+      console.log(`  ${name.split('|')[1].padEnd(42)} n ${String(t.n).padStart(4)}  won ${pct(t.won, t.n)}  rounds ${per(t.rounds, t.n)}  hurt ${per(t.hurt, t.n)}  dead ${per(t.dead, t.n)}  marked ${per(t.marked, t.n)}  you hurt ${pct(t.hand, t.n)}  you killed ${pct(t.died, t.n)}  anyone ${pct(t.anyHurt, t.n)}  capped ${t.capped}${/\|navy /.test(name) ? `  standing -${per(t.standing, t.n)}  searched ${pct(t.searched, t.n)}  fined ${per(t.fined, t.n)} cr of a quarter-purse ${per(t.quarter, t.n)}` : ''}`);
     }
   }
 }

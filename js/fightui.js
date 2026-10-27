@@ -330,7 +330,7 @@ function deckTurn(s, p) {
 // The end: the line for how it was won (the last of them down, or the rest broken) or for the attackers withdrawing at the turn cap, then the settle (boarders.js: a search says its own),
 // shown on the panel; Stand down goes on to whatever the settle queued (the duel, the captain lost on the bridge, the hand's ending).
 function deckClose(s, end) {
-  const f = s.state, left = sum(f, 'theirs'), capped = deckCapped(f) && deckEnd({ ...f, turn: 0 }) === null;
+  const f = s.state, left = sum(f, 'theirs'), capped = deckWithdrew(f);
   const how = end !== 'won' || capped ? null : left === 0 ? 'last' : left <= f.began * deckRule(f, 'BREAK') ? 'broke' : null;
   s.won = end === 'won'; s.searched = end === 'searched';
   const line = capped ? fightSay(`deck.withdraw.${s.assault ? 'assault' : 'repel'}`) : how ? repelWords(s, `end.${how}`, FIGHT_END[s.assault ? 'assault' : 'repel'][how]) : '';

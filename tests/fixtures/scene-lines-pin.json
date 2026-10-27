@@ -24226,6 +24226,11 @@
     "mem": [
      "9 Jul 2214: You fought the navy at the lock, and they searched the ship anyway, and fined it."
     ]
+   },
+   {
+    "log": "Turn 5: nobody gives ground. None of them are where you stand.",
+    "end": true,
+    "close": "Turn 5: nobody gives ground. None of them are where you stand.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Black Debt\" lights, and she breaks away from the hull. They go back through the lock with the citation logged, and 5,000 cr goes out of the ship's fund."
    }
   ]
  }
