@@ -243,7 +243,7 @@ const deckTitle = (s, i) => {
 // A section's name inside a sentence (the deck lines).
 const deckAt = (s, i) => fightSay(`deck.${s.assault ? 'hers' : 'ours'}.${i}`);
 const deckOpening = s => { const k = s.assault ? 2 - REACH[s.state.hand] : REACH[s.state.hand]; return repelWords(s, `open.${k}.${s.state.turn % 2}`, (s.assault ? ASSAULT_OPENINGS : REPEL_OPENINGS)[k][s.state.turn % 2]); };
-const mayFeint = (f, move) => f.party !== 'navy' && f.grade > 0 && !!move && (move.kind === 'push' || move.kind === 'round');  // a veteran's push or round may feint; a rush or a charge never does, nor the navy
+const mayFeint = (f, move) => !navyBoarding(f) && f.grade > 0 && !!move && (move.kind === 'push' || move.kind === 'round');  // a veteran's push or round may feint; a rush or a charge never does, nor a navy party on our deck
 const fallTo = f => (f.assault ? BACK : FORWARD)[f.hand];  // where a pull back takes the hand: toward our bridge, or her lock; the same section from the back one
 const deckBoard = (s, move) => fightStrip({ titles: s.state.sections.map((_, i) => deckTitle(s, i)), sections: s.state.sections, hand: s.state.hand, move, feint: mayFeint(s.state, move),
   began: s.state.began, breakAt: Math.floor(s.state.began * deckRule(s.state, 'BREAK')),  // her count, with the line she breaks at (deckEnd)

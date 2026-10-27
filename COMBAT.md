@@ -334,8 +334,9 @@ which it leaves alone: three heads at grade 0, two more a grade.
 **The navy's party is an inspection, not a raid** (Task 6). It comes only on our deck: a patrol that boards us from the ship
 fight (`fightBoarded`), at a half run since she fights with her guns, four heads at grade 0 and two more a grade, named on the
 panel as "The boarding party". It pushes and holds, and never rushes, charges or feints. **Each of them put down costs
-standing** with her government, `DECK.NAVY_STANDING` (2) a head downed by the exchange, the shot, a steady or a hatch, however
-the fight ends (a wound costs nothing), on top of the 8 that firing on her cost; the panel says it under the deck ("Each of
+standing** with her government, `DECK.NAVY_STANDING` (2) a head downed by the exchange, the shot, a steady or a hatch, charged
+at the settle whether they are repelled, withdraw or search the ship (a wound costs nothing; a hand killed ends the chapter
+with no settle), on top of the 8 that firing on her cost; the panel says it under the deck ("Each of
 them put down costs standing with Arcology Compact: 4 so far."). **If they hold our bridge the ship is searched**, not taken
 (`deckEnd` 'searched', `shipSearched` in js/boarders.js): the heave-to's fine, a quarter of the purse (`heaveToFine`, which
 the heave-to charges too), goes out of the ship's fund, the captain thinks a point less of the hand, and the ship is kept,
@@ -344,8 +345,9 @@ five turns (`DECK.NAVY_TURNS`, the owner's ruling, 2026-10-27) an inspection par
 "Turn n of 5" shows that cap. So the lawful answer is to hold them off and put none of them down. A navy hull boarded (in the
 owner's game) fights as her crew: no standing, no search, the deck's cap.
 
-The navy's deck fight is rare in play. The ship fight's `answer` is never boarded by a cutter (the table below), and the
-ladder's cutter is a papers check: complying answers it, so the fine is paid once and there is no fight.
+The navy's deck fight is rare under the ship fight's answer: `answer` is never boarded by a cutter (the table below), and the
+ladder's cutter is a papers check: complying answers it, so the fine is paid once and there is no fight. The soak, which plays
+the ship fight its own way (the orders as they stand), meets it 39 times in 257 deck fights.
 
 Repelling a corsair, the charge is a cost, not a puzzle. With two standing all of ours hold our bridge and her setter stands in
 the corridor, which is where any plan that goes where the fight is shoots anyway: `order` wins 99% to the answer's 98%, and
@@ -476,7 +478,7 @@ the run that wrote this section (after the final review's tune, #808):
   | Corsair party | random | shoot | cover | order | answer |
   |---|---|---|---|---|---|
   | repelling | 26% / 69%, 5.0 / 6.1 | 98% / 97%, 4.9 / 3.7 | 96% / 97%, 5.9 / 4.0 | 99% / 100%, 4.2 / 3.1 | 98% / 100%, 4.2 / 3.1 |
-  | boarding her | 14% / 86%, 3.4 / 5.4 | 16% / 97%, 2.8 / 4.2 |
+  | boarding her | 14% / 86%, 3.4 / 5.4 | 16% / 97%, 2.8 / 4.2 | 10% / 94%, 3.1 / 4.6 | 16% / 96%, 3.7 / 3.5 | 85% / 98%, 4.0 / 3.8 |
 
   | Navy party, repelling | random | shoot | cover | order | answer |
   |---|---|---|---|---|---|
@@ -491,7 +493,6 @@ the run that wrote this section (after the final review's tune, #808):
   against the raider, the corsair and the navy, shoot 28%, 57% and 96%, cover 29%, 53% and 97%, order 58%, 58% and 99%. With
   five crew (reported, not checked: the owner's ruling, 2026-10-27) shoot, cover and order win 94% to 98% against every party, and
   random 63%, 78% and 90%. Random play loses 44% of all its fights.
- 10% / 94%, 3.1 / 4.6 | 16% / 96%, 3.7 / 3.5 | 85% / 98%, 4.0 / 3.8 |
 
   A grade 2 corsair, the chapter's setpiece (`js/fightladder.js`; the `setpiece` group, reported, not checked): repelling her
   half run of seven, the answer wins 92% / 98% (5.7 / 4.2 turns), random play 23% / 46% with 0.52 dead a fight at five

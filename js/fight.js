@@ -248,7 +248,7 @@ const DECK = {
     CASUALTY: 0.5    // of our heads downed, the share that is a casualty: fewer are downed than repelling, and more of them die
   },
   NAVY_TURNS: 5,     // a navy party's turn cap (deckCap): an inspection party that has not held our bridge by then withdraws, and the repel is won
-  NAVY_STANDING: 2   // the standing with her government each head of a navy party put down costs, however the fight ends (boarders.js repelSettle): a quarter of the 8 that firing on her cost
+  NAVY_STANDING: 2   // the standing with her government each head of a navy party put down costs, charged at the settle (boarders.js repelSettle: repelled, withdrawn or searched): a quarter of the 8 that firing on her cost
 };
 
 // Who comes aboard, by the hull she is: the navy hulls are the navy's, the corsair's her own, any other ship a raider's.
@@ -322,7 +322,7 @@ function chargeAt(st) {
 // What her crew do this turn. Attacking (repelling) they advance; defending (an assault), she pushes back toward the lock where she outnumbers us. A veteran may feint a push.
 // Raiders rush: a push into a section we hold thinly (under half of the heads sent) and the hand is not in goes on through it, two sections in a turn (`via` is the one passed).
 // Corsairs charge: where they would push or hold, a breaching charge on a section of ours next to theirs (chargeAt), never two turns running and never feinted. It moves no heads.
-// The navy pushes and holds, and never feints: a lawful party does what it says.
+// The navy pushes and holds, and on our deck never feints: a lawful party does what it says (a navy hull's crew boarded, in the owner's game, may).
 function boardMove(st, rand) {
   const S = st.sections;
   let m = { kind: 'hold', from: LOCK, to: LOCK, n: 0 };
@@ -336,7 +336,7 @@ function boardMove(st, rand) {
   if (m.kind === 'push' && st.party === 'raider' && past !== via && st.hand !== via && 2 * S[via].mine < m.n) m = { kind: 'rush', from: m.from, via, to: past, n: m.n };
   const charge = st.party === 'corsair' && (m.kind === 'push' || m.kind === 'hold') && st.charged !== st.turn - 1 ? chargeAt(st) : null;
   if (charge) return { kind: 'charge', ...charge, n: 0, feint: false };
-  return { ...m, feint: m.kind !== 'rush' && st.party !== 'navy' && st.grade > 0 && rand() < CUNNING * st.grade };
+  return { ...m, feint: m.kind !== 'rush' && !navyBoarding(st) && st.grade > 0 && rand() < CUNNING * st.grade };
 }
 
 function resolveDeckTurn(state, { stand, act, order }, shown, rand) {

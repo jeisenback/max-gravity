@@ -175,12 +175,13 @@ function killCrew(c, cause) {
 const deadNote = s => (s.dead.length ? ` ${listNames(s.dead.map(c => c.first))} ${s.dead.length > 1 ? 'are' : 'is'} dead.` : '');
 
 // How it ends (`s.won` and `s.searched`, fightui.js deckClose): repelled (the duel goes on with the initiative yours), the bridge taken (shipTaken), or held by a navy
-// party, the ship searched (shipSearched). Each head of a navy party put down costs DECK.NAVY_STANDING with her government, however it ends.
+// party, the ship searched (shipSearched). Each head of a navy party put down costs DECK.NAVY_STANDING with her government, whichever of the three
+// ends it settles with (a hand killed returns before the close, fightui.js deckTurn, and nothing is settled).
 function repelSettle(s) {
   const st = G.state, h = hired(), cap = h && person(h.captain), d = s.d, repelled = s.won;  // an owner has no captain
   const lost = deadNote(s);
   if (s.assault) return assaultSettle(s, repelled, lost);
-  if (s.state.party === 'navy') changeRep(d.foe.gov, -DECK.NAVY_STANDING * s.state.navyDown);
+  if (navyBoarding(s.state)) changeRep(d.foe.gov, -DECK.NAVY_STANDING * s.state.navyDown);
   if (repelled) {
     if (cap) like(cap, 1, repelWords(s, 'memory.held', REPEL_MEMORY.held));
     for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id) && s.state.turn >= 3) like(c, 1, repelWords(s, 'memory.together', REPEL_MEMORY.together)); }

@@ -1138,6 +1138,8 @@ test('a navy party pushes and holds: it never rushes, never charges, and is neve
   }
   const next = navyDeck({ grade: 2 }); next.sections[LOCK].mine = 0; next.sections[CORRIDOR].mine = 3; next.hand = BRIDGE;
   assert.deepEqual([boardMove(next, () => 0).kind, boardMove(next, () => 0).feint], ['hold', false], 'next to ours, a hold and not a charge');
+  const hers = deck({ boarders: 4, crew: 4, party: 'navy', assault: true, grade: 2 });  // a navy hull's crew boarded (the owner's game) is no navy party on our deck
+  assert.equal(boardMove(hers, () => 0).feint, true, 'boarding a navy hull, her veteran crew may feint');
 });
 
 // Hold fire (fightui.js DECK_ACTS): the hand stands ready and fires at nobody. The engine does nothing for it: no shot, no ability rolled, and the turn goes as

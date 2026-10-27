@@ -550,8 +550,8 @@ test('the last of them going down wins the fight with its line, and so few left 
   await done();
 });
 
-// The navy's party (Task 6): on our deck only, from a patrol's boarding. Each head of theirs put down costs DECK.NAVY_STANDING with her government however
-// the fight ends; holding our bridge is a search, which costs the heave-to's fine (heaveToFine, a quarter of the purse) and a point of the captain's regard,
+// The navy's party (Task 6): on our deck only, from a patrol's boarding. Each head of theirs put down costs DECK.NAVY_STANDING with her government at the
+// settle, whether repelled, withdrawn or searched; holding our bridge is a search, which costs the heave-to's fine (heaveToFine, a quarter of the purse) and a point of the captain's regard,
 // and the ship is kept.
 const navyHelpers = () => {
   window.GOV = 'Arcology Compact';
@@ -580,7 +580,7 @@ test('a navy party that holds our bridge searches the ship: a quarter of the pur
   await done();
 });
 
-test('the standing charged is DECK.NAVY_STANDING a head of theirs put down, however a navy fight ends, and nothing for a raider\'s', async () => {
+test('the standing charged is DECK.NAVY_STANDING a head of theirs put down, whichever way a navy fight settles, and nothing for a raider\'s', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(navyHelpers);
   const r = await ev(() => {

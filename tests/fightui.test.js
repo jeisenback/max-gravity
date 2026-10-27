@@ -362,13 +362,14 @@ test('a navy party\'s panel names the boarding party and its own turn cap, shows
     const e = deckFightEvent(s);
     const raider = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full'); raider.shown = s.shown;
     const er = deckFightEvent(raider);
-    return { party: s.state.party, read: e.read, text: e.text, line: sceneSay('scene:fight', 'deck.navy.down', { gov, n: 4 }), strip: /may feint/i.test(e.board), raider: er.text, raiderRead: er.read };
+    return { hersFeint: mayFeint({ party: 'navy', assault: true, grade: 1 }, { kind: 'push' }), party: s.state.party, read: e.read, text: e.text, line: sceneSay('scene:fight', 'deck.navy.down', { gov, n: 4 }), strip: /may feint/i.test(e.board), raider: er.text, raiderRead: er.read };
   });
   assert.equal(r.party, 'navy');
   assert.match(r.read, /^Turn 1 of 5\. The boarding party: 2 pushing into the Corridor\.$/, r.read);  // an inspection party's own cap (DECK.NAVY_TURNS)
   assert.match(r.raiderRead, /^Turn 1 of 8\./, r.raiderRead);
   assert.ok(r.text.includes(r.line), r.text); assert.match(r.line, /Arcology Compact: 4 so far/);
   assert.equal(r.strip, false, 'a navy push is never feinted');
+  assert.equal(r.hersFeint, true, 'but a navy hull\'s veteran crew, boarded, may feint');
   assert.ok(!r.raider.includes('costs standing'), 'a raider fight has no standing line'); assert.match(r.raiderRead, /Boarders: 2 pushing/);
   await done();
 });
