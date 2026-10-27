@@ -23387,14 +23387,14 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Lock. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Lock. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Corridor",
@@ -23403,14 +23403,14 @@
     "labels": [
      "Stand: The Corridor",
      "Shoot: 2 to 3 of them hit",
-     "At the Corridor",
+     "Aim: the Corridor",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2, you stand here. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2, you stand here. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Bridge",
@@ -23419,14 +23419,14 @@
     "labels": [
      "Stand: The Bridge",
      "Shoot: 2 to 3 of them hit",
-     "At the Bridge",
+     "Aim: the Bridge",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1, you stand here. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Bridge. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1, you stand here. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Bridge. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Cargo Bay",
@@ -23435,14 +23435,14 @@
     "labels": [
      "Stand: The Cargo Bay",
      "Shoot: 2 to 3 of them hit",
-     "At the Cargo Bay",
+     "Aim: the Cargo Bay",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1, you stand here. Their move: 2 from The Lock into The Cargo Bay. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1, you stand here. Their move: 2 from The Lock into The Cargo Bay. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23451,14 +23451,14 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Cargo Bay. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Cargo Bay. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23467,14 +23467,14 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23483,14 +23483,14 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock through The Corridor into The Bridge. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock through The Corridor into The Bridge. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23499,14 +23499,14 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor, may feint. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor, may feint. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23515,14 +23515,14 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours, 1 of ours wounded and 2 of theirs, 1 of them wounded, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours, 1 of ours wounded and 2 of theirs, 1 of them wounded, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23531,14 +23531,14 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last. 2 more at the lock next turn."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last. 2 more at the lock next turn."
    },
    {
     "title": "The Lock",
@@ -23547,14 +23547,14 @@
     "labels": [
      "Move to: The Corridor",
      "Shoot: 2 to 3 of them hit",
-     "At the Corridor",
+     "Aim: the Corridor",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23563,14 +23563,14 @@
     "labels": [
      "Move to: The Cargo Bay",
      "Shoot: 2 to 3 of them hit",
-     "At the Cargo Bay",
+     "Aim: the Cargo Bay",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23579,14 +23579,14 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23601,7 +23601,7 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23616,7 +23616,7 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23625,14 +23625,14 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23641,14 +23641,14 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: Ines cuts the lights",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23657,7 +23657,7 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: Ines cycles a hatch on them",
      "At the Lock",
      "Fight"
@@ -23665,7 +23665,7 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23674,7 +23674,7 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: Ines cycles a hatch on them",
      "At the Corridor",
      "Fight"
@@ -23682,7 +23682,7 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23691,7 +23691,7 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: Ines cycles a hatch on them",
      "At the Bridge",
      "Fight"
@@ -23699,7 +23699,7 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "title": "The Lock",
@@ -23708,7 +23708,7 @@
     "labels": [
      "Stand: The Lock",
      "Shoot: 2 to 3 of them hit",
-     "At the Lock",
+     "Aim: the Lock",
      "Order: Ines cycles a hatch on them",
      "At the Cargo Bay",
      "Fight"
@@ -23716,14 +23716,14 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
    },
    {
     "log": "Turn 1: 2 of them move into the Corridor, 1 of them and 1 of ours wounded in the Corridor. None of them are where you stand.",
     "end": false
    },
    {
-    "log": "Turn 1: 1 of them and 1 of ours wounded in the Lock, 1 of them and 0 of ours down in the Corridor, 2 of them and 0 of ours wounded in the Corridor, you fall back to the Bridge.",
+    "log": "Turn 1: 1 of them and 1 of ours wounded in the Lock, 1 of them and 0 of ours down in the Corridor, 1 of them and 0 of ours wounded in the Corridor, you fall back to the Bridge.",
     "end": false
    },
    {
@@ -23735,23 +23735,27 @@
     "end": false
    },
    {
-    "log": "Turn 1: 3 of them rush into the Bridge, 2 of them and 0 of ours down in the Bridge, 3 of them and 2 of ours wounded in the Bridge.",
+    "log": "Turn 1: nobody gives ground. None of them are in the Corridor.",
     "end": false
    },
    {
-    "log": "Turn 1: 3 of them rush and are stopped in the Corridor, 2 of them and 0 of ours down in the Corridor, 2 of them and 1 of ours wounded in the Corridor.",
+    "log": "Turn 1: 3 of them rush into the Bridge, 2 of them and 0 of ours down in the Bridge, 1 of them and 2 of ours wounded in the Bridge.",
     "end": false
    },
    {
-    "log": "Turn 1: the hatch at the Corridor holds, 1 of them and 1 of ours down in the Lock, 2 of them and 1 of ours wounded in the Lock, you fall back to the Bridge. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
+    "log": "Turn 1: 3 of them rush and are stopped in the Corridor, 2 of them and 0 of ours down in the Corridor, 0 of them and 1 of ours wounded in the Corridor.",
     "end": false
    },
    {
-    "log": "Turn 1: the hatch at the Corridor does not close, 1 of them and 1 of ours down in the Lock, 2 of them and 1 of ours wounded in the Lock, you fall back to the Bridge. Ines cycles the hatch a beat late, and it closes on nothing.",
+    "log": "Turn 1: the hatch at the Corridor holds, 1 of them and 1 of ours down in the Lock, 1 of them and 0 of ours wounded in the Lock, you fall back to the Bridge. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
     "end": false
    },
    {
-    "log": "Turn 3: 1 of them and 0 of ours down in the Lock, 2 of them and 1 of ours wounded in the Lock, 2 more come through the lock.",
+    "log": "Turn 1: the hatch at the Corridor does not close, 1 of them and 1 of ours down in the Lock, 1 of them and 0 of ours wounded in the Lock, you fall back to the Bridge. Ines cycles the hatch a beat late, and it closes on nothing.",
+    "end": false
+   },
+   {
+    "log": "Turn 3: 1 of them and 0 of ours down in the Lock, 1 of them and 1 of ours wounded in the Lock, 2 more come through the lock.",
     "end": false
    },
    {
@@ -23766,7 +23770,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: none",
      "Fight"
     ],
@@ -23782,7 +23786,7 @@
     "labels": [
      "Stand: Her Corridor",
      "Shoot: 2 to 3 of them hit",
-     "At her Corridor",
+     "Aim: her Corridor",
      "Order: none",
      "Fight"
     ],
@@ -23798,7 +23802,7 @@
     "labels": [
      "Stand: Her Bridge",
      "Shoot: 2 to 3 of them hit",
-     "At her Bridge",
+     "Aim: her Bridge",
      "Order: none",
      "Fight"
     ],
@@ -23814,7 +23818,7 @@
     "labels": [
      "Stand: Her Cargo Bay",
      "Shoot: 2 to 3 of them hit",
-     "At her Cargo Bay",
+     "Aim: her Cargo Bay",
      "Order: none",
      "Fight"
     ],
@@ -23830,7 +23834,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: none",
      "Fight"
     ],
@@ -23846,7 +23850,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: none",
      "Fight"
     ],
@@ -23857,19 +23861,19 @@
    },
    {
     "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: 2 rushing through her Corridor into her Bridge.",
+    "read": "Turn 1 of 8. Her crew: 2 rushing through her Corridor into her Lock.",
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock through Her Corridor into Her Bridge. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Bridge through Her Corridor into Her Lock. 4 of their 4 still up; they fight to the last."
    },
    {
     "title": "Her Lock",
@@ -23878,7 +23882,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: none",
      "Fight"
     ],
@@ -23894,7 +23898,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: none",
      "Fight"
     ],
@@ -23910,7 +23914,7 @@
     "labels": [
      "Move to: Her Corridor",
      "Shoot: 2 to 3 of them hit",
-     "At her Corridor",
+     "Aim: her Corridor",
      "Order: none",
      "Fight"
     ],
@@ -23926,7 +23930,7 @@
     "labels": [
      "Move to: Her Cargo Bay",
      "Shoot: 2 to 3 of them hit",
-     "At her Cargo Bay",
+     "Aim: her Cargo Bay",
      "Order: none",
      "Fight"
     ],
@@ -23942,7 +23946,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: none",
      "Fight"
     ],
@@ -23988,7 +23992,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: none",
      "Fight"
     ],
@@ -24004,7 +24008,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: Ines cuts the lights",
      "Fight"
     ],
@@ -24020,7 +24024,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: Ines cycles a hatch on them",
      "At her Lock",
      "Fight"
@@ -24037,7 +24041,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: Ines cycles a hatch on them",
      "At her Corridor",
      "Fight"
@@ -24054,7 +24058,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: Ines cycles a hatch on them",
      "At her Bridge",
      "Fight"
@@ -24071,7 +24075,7 @@
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
-     "At her Lock",
+     "Aim: her Lock",
      "Order: Ines cycles a hatch on them",
      "At her Cargo Bay",
      "Fight"
@@ -24082,11 +24086,11 @@
     "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
    },
    {
-    "log": "Turn 1: 1 of them and 0 of ours down in her Lock, 1 of them and 0 of ours wounded in her Lock.",
+    "log": "Turn 1: 1 of them and 0 of ours down in her Lock.",
     "end": false
    },
    {
-    "log": "Turn 1: 1 of them and 0 of ours down in her Lock, 1 of them and 0 of ours wounded in her Lock, 1 of them and 0 of ours down in her Corridor, 2 of them and 0 of ours wounded in her Corridor, you fall back to her Lock.",
+    "log": "Turn 1: 1 of them and 0 of ours down in her Lock, 1 of them and 0 of ours down in her Corridor, 1 of them and 0 of ours wounded in her Corridor, you fall back to her Lock.",
     "end": false
    },
    {
@@ -24098,20 +24102,23 @@
     "end": false
    },
    {
-    "log": "Turn 1: 3 of them rush into her Bridge, 2 of them and 0 of ours down in her Bridge, 3 of them and 1 of ours wounded in her Bridge.",
+    "log": "Turn 1: 2 of ours move into her Corridor. None of them are in her Corridor.",
     "end": false
    },
    {
-    "log": "Turn 1: 3 of them rush and are stopped in her Corridor, 2 of them and 0 of ours down in her Corridor, 2 of them and 1 of ours wounded in her Corridor.",
-    "end": true,
-    "close": "Turn 1: 3 of them rush and are stopped in her Corridor, 2 of them and 0 of ours down in her Corridor, 2 of them and 1 of ours wounded in her Corridor.</p><p>Her captain puts the weapon down. Her strongbox is under the plot table, and 20,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the gunner post.)"
-   },
-   {
-    "log": "Turn 1: the hatch at her Corridor holds, 1 of them and 0 of ours down in her Lock, 2 of them and 1 of ours wounded in her Lock. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
+    "log": "Turn 1: 3 of them rush into her Lock, 2 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock.",
     "end": false
    },
    {
-    "log": "Turn 1: the hatch at her Corridor does not close, 1 of them and 0 of ours down in her Lock, 2 of them and 1 of ours wounded in her Lock. Ines cycles the hatch a beat late, and it closes on nothing.",
+    "log": "Turn 1: 3 of them rush and are stopped in her Corridor, 2 of them and 0 of ours down in her Corridor, 0 of them and 1 of ours wounded in her Corridor.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: the hatch at her Corridor holds, 1 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
+    "end": false
+   },
+   {
+    "log": "Turn 1: the hatch at her Corridor does not close, 1 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock. Ines cycles the hatch a beat late, and it closes on nothing.",
     "end": false
    },
    {

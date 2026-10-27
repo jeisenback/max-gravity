@@ -389,10 +389,11 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   });
   const shot = asObj(act), aim = shot && shot.kind === 'shoot' ? (shot.at !== hand && st.level >= DECK.SIDEARM_REACH_LEVEL && ADJ[hand].includes(shot.at) && S[shot.at] ? shot.at : hand) : -1;
   const shots = aim >= 0 && S[aim].theirs ? dealt(S[aim].theirs, ...sidearmOf(st), rand) : 0;
-  if (aim >= 0 && !S[aim].theirs && sum(st, 'theirs')) events.push({ kind: 'shoot', nobody: true });  // none of them where the shot goes, and some elsewhere: it is not rolled, and says so (R34)
+  if (aim >= 0 && !S[aim].theirs && sum(st, 'theirs')) events.push({ kind: 'shoot', nobody: true, at: aim, aimed: aim !== hand });  // none of them where the shot goes, and some elsewhere: it is not rolled, and says so (R34)
   S.forEach((s, i) => {
     const m = hitSide(s, 'mine', hits[i].mine), t = hitSide(s, 'theirs', hits[i].theirs), g = i === aim ? shootSide(s, 'theirs', Math.min(shots, s.theirs)) : { downed: 0, wounded: 0 };
-    const e = { kind: 'exchange', section: i, mine: m.downed, theirs: t.downed + g.downed, mineHurt: m.wounded, theirsHurt: t.wounded + g.wounded };
+    // the wounded said are the heads newly wounded this turn and still standing at its end (a head wounded and then downed is said once, as down): never more than stand there
+    const e = { kind: 'exchange', section: i, mine: m.downed, theirs: t.downed + g.downed, mineHurt: Math.min(m.wounded, hurtOf(s, 'mine')), theirsHurt: Math.min(t.wounded + g.wounded, hurtOf(s, 'theirs')) };
     if (e.mine || e.theirs || e.mineHurt || e.theirsHurt) events.push(e);
   });
 
@@ -416,7 +417,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   return { state: st, events };
 }
 
-// Her crew is at or under about a third of her start, or none; or (an assault) mine hold her bridge, or (repelling) hers hold ours. Our loss comes first: the bridge lost is the ship lost.
+// Her crew, with any wave still to land, is at or under her break share of her start (deckRule BREAK: 0.15 repelling, 0.2 boarding her), or none; or (an assault) mine hold her bridge, or (repelling) hers hold ours. Our loss comes first: the bridge lost is the ship lost.
 // At the turn cap the attackers withdraw (deckCapped): theirs go back to their ship, a repel won, or ours fall back, an assault lost (R32).
 function deckEnd(st) {
   const bridge = st.sections[BRIDGE];

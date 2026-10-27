@@ -271,7 +271,7 @@ Each type she can be has one threat, shown in her move, that "shoot her weapons"
   Her 70 shields and 60 armor are 32 and 27 in the fight, and every gun at her hull cripples her in two or three turns, before
   she is alongside: a lone raider is beaten by hull fire, by the owner's choice (#814; at #808 she boarded it). Shooting her
   lock as she closes stops the board too; her drive (34) is slow to shoot away at range, where an aimed shot hits for a
-  quarter (long) or 0.4 (mid), so aiming only at it is boarded about one time in five. The lock lesson is the pair's.
+  quarter (long) or 0.4 (mid), so aiming only at it is boarded about one time in four. The lock lesson is the pair's.
 - **A corsair** (two guns, four torpedoes) arms a salvo of two on the first turn and every second turn after, and fires it the
   turn after; the board shows it a turn ahead. Holding the turret back that turn takes 60% off the salvo.
 - **A navy cutter** (thick shields) gets 7% of her shields back each turn: torpedoes and every gun overcharged at her hull beat
@@ -309,7 +309,7 @@ Their move is shown above it ("4 pushing into the Corridor"); at a veteran grade
 
 The party is set by her type (`DECK_PARTY`): a raider's, a corsair's, or the navy's. So far only the raiders have their own
 move, the **rush**: where the section in front holds fewer of ours than half their number, and the hand is not in it, they go
-through it, two sections in a turn ("Rushing the Corridor and the Bridge"). The hand standing in the section passed stops them
+through it, two sections in a turn ("Boarders: 3 rushing through the Corridor into the Bridge"). The hand standing in the section passed stops them
 there, and so does a hatch worked there. A **repel comes in two waves**: half the boarders first, and the rest at the end of the second
 turn (`DECK.WAVE_TURN`), shown at the lock ("3 more at the lock next turn") on the turn at whose end they land. The break line counts the
 wave still to land.
@@ -361,25 +361,25 @@ the run that wrote this section (after the final review's tune, #808):
 
   | Against (good / lost / turns) | random | focus | drive | lock | hull | hullhold | answer |
   |---|---|---|---|---|---|---|---|
-  | a raider | 88% / 0% / 4.7 | 0% / 0% / 4.0 | 80% / 0% / 5.6 | 0% / 0% / 6.1 | 100% / 0% / 2.3 | 100% / 0% / 2.3 | 100% / 0% / 4.9 |
-  | a corsair | 12% / 76% / 7.8 | 0% / 0% / 8.0 | 7% / 93% / 7.9 | 0% / 98% / 7.9 | 99% / 0% / 4.7 | 100% / 0% / 5.7 | 100% / 0% / 7.5 |
-  | a cutter | 19% / 52% / 6.6 | 0% / 0% / 3.0 | 0% / 9% / 3.4 | 0% / 99% / 8.0 | 0% / 0% / 3.0 | 0% / 0% / 3.0 | 100% / 0% / 5.3 |
-  | a raider pair | 19% / 11% / 5.2 | 0% / 0% / 4.0 | 0% / 0% / 4.0 | 0% / 100% / 8.0 | 0% / 0% / 4.0 | 0% / 0% / 4.0 | 93% / 7% / 7.9 |
-  | over every type | 33% / 39% / 6.2 | 0% / 0% / 4.8 | 21% / 26% / 5.2 | 0% / 76% / 7.5 | 51% / 0% / 3.4 | 49% / 0% / 3.8 | 99% / 1% / 6.3 |
+  | a raider | 88% / 0% / 4.8 | 0% / 0% / 4.0 | 76% / 0% / 5.5 | 0% / 0% / 6.0 | 100% / 0% / 2.3 | 100% / 0% / 2.4 | 100% / 0% / 4.8 |
+  | a corsair | 10% / 80% / 7.8 | 0% / 0% / 7.9 | 5% / 94% / 7.8 | 0% / 97% / 7.9 | 99% / 0% / 4.7 | 100% / 0% / 5.7 | 100% / 0% / 7.5 |
+  | a cutter | 21% / 44% / 6.3 | 0% / 0% / 3.0 | 0% / 10% / 3.5 | 0% / 99% / 8.0 | 0% / 0% / 3.0 | 0% / 0% / 3.0 | 100% / 0% / 5.3 |
+  | a raider pair | 16% / 9% / 5.0 | 0% / 0% / 4.0 | 0% / 0% / 4.0 | 0% / 100% / 8.0 | 0% / 0% / 4.0 | 0% / 0% / 4.0 | 95% / 5% / 7.9 |
+  | over every type | 32% / 38% / 6.1 | 0% / 0% / 4.7 | 18% / 30% / 5.2 | 0% / 77% / 7.5 | 49% / 0% / 3.5 | 49% / 0% / 3.7 | 99% / 1% / 6.2 |
 
   The rest of the ends: every gun at her hull, the turret held or not, cripples a lone raider every time and breaks a corsair
-  off (95%), and is boarded by a cutter or a pair every time; aiming at her weapons ends in her getting away (a raider 38%, a
-  corsair 95%) or a boarding; aiming at her drive is boarded by a raider 20%, by a cutter 91% and by a pair every time; random
-  play is boarded 27% over every type. Random play loses 19% of the real armor a fight over every type (64% against a corsair,
-  0.5% against a raider), and the hand is killed in 1% of random fights (2% against a corsair). The best fixed policy is hull
+  off (92%), and is boarded by a cutter or a pair every time; aiming at her weapons ends in her getting away (a raider 32%, a
+  corsair 97%) or a boarding; aiming at her drive is boarded by a raider 24%, by a cutter 90% and by a pair every time; random
+  play is boarded 29% over every type. Random play loses 20% of the real armor a fight over every type (62% against a corsair,
+  0.2% against a raider), and the hand is killed in 1% of random fights (2% against a corsair). The best fixed policy is hull
   fire against a lone raider and a corsair, and random against a cutter and a pair; none wins more than 70% against every type
   (hull fire wins none against a cutter); `answer` is at or above the best of them against each type, ties hull fire at 100%
   against a lone raider (the owner's choice, #814) and a corsair, and is well above all of them over every type (99% against
-  hull fire's 51%). Against a corsair her lesson is the hull, not the fight (the owner's choice, #815): hull fire that ignores
-  her salvo still wins 99%, but loses 13.5% of the real armor a fight against 1.0% with the turret held back, and each salvo
+  hull fire's 49%). Against a corsair her lesson is the hull, not the fight (the owner's choice, #815): hull fire that ignores
+  her salvo still wins 99%, but loses 12.4% of the real armor a fight against 2.1% with the turret held back, and each salvo
   it takes unanswered is a heavy turn for the crew. Her salvo is left as it is, since it is already the main source of the
-  hand's hurts in the soak. A fight lasts 5.3 turns on the mean over every policy and type, and 32% of `answer`'s fights reach the turn
-  cap (none against a raider or a cutter, 60% against a corsair, 89% against a pair; 97% over every type before the pool, at
+  hand's hurts in the soak. A fight lasts 5.3 turns on the mean over every policy and type, and 14% of `answer`'s fights reach the turn
+  cap (none against a raider or a cutter, 8% against a corsair, 64% against a pair; 97% over every type before the pool, at
   #808, when most of its wins were on points at the cap).
   The values, against Task 7's: every damage and part bar is about 0.7 of them, so that kills are slower and a raider's run to
   the knife is a race: your guns 8 to 14 (12 to 20), hers 7 to 18 (10 to 26), your torpedo 12 to 18 and hers 20 to 30
@@ -436,7 +436,7 @@ the run that wrote this section (after the final review's tune, #808):
   65% / 97% repelling and 53% / 99% boarding her. The hand is hurt in about a quarter of `answer`'s fights (repelling 26% / 24%,
   boarding her 24% / 22%).
 - **Repelling boarders**, random play, five standing: by her grade won 50%, 23%, 12%, and dead a fight 0.35, 0.46, 0.47
-  (0.32, 0.44, 0.49 before the parties). With two standing the answer loses none (0.00 dead a fight).
+  (0.32, 0.44, 0.49 before the parties). With two standing the answer loses no one (0.00 dead a fight).
 - **Boarding her**, random play, five standing: by her grade won 90%, 78%, 33%, and dead a fight 0.20, 0.38, 0.36 (0.36, 0.49,
   0.55 before the parties; the test holds it at no more than those and 0.15). The answer with two standing: 0.13 dead a fight.
 - **In the soak** (`npm run soak`, the deck fights played by `answerDeck`; seeds 1 to 120, tests/distribution/stakes-fights.test.js): the

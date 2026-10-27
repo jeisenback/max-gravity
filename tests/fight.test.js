@@ -6,8 +6,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'turnShots', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'hitSide', 'shootSide', 'boardMove', 'resolveDeckTurn', 'deckEnd', 'LOCK', 'CORRIDOR', 'BRIDGE', 'CARGO', 'pendingWave', 'sidearmOf', 'DECK_PARTY']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
-const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, turnShots, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, hitSide, shootSide, boardMove, resolveDeckTurn, deckEnd, LOCK, CORRIDOR, BRIDGE, CARGO, pendingWave, sidearmOf, DECK_PARTY } = api;
+const api = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['SHIPS', 'OUTFITS', 'FIGHT', 'RANGE_BANDS', 'shipSide', 'shipFight', 'gunsReady', 'resolveShipTurn', 'FIGHT_MOVES', 'canUse', 'turnShots', 'shotRange', 'foeMove', 'captainMove', 'shipEnd', 'DECK', 'CUNNING', 'fightCover', 'deckFight', 'hitSide', 'shootSide', 'boardMove', 'resolveDeckTurn', 'deckEnd', 'LOCK', 'CORRIDOR', 'BRIDGE', 'CARGO', 'pendingWave', 'sidearmOf', 'DECK_PARTY', 'ADJ']);  // boarders.js is loaded for REPEL_HURT; Mods is the one thing it reaches for at load
+const { SHIPS, OUTFITS, FIGHT, RANGE_BANDS, shipSide, shipFight, gunsReady, resolveShipTurn, FIGHT_MOVES, canUse, turnShots, shotRange, foeMove, captainMove, shipEnd, DECK, CUNNING, fightCover, deckFight, hitSide, shootSide, boardMove, resolveDeckTurn, deckEnd, LOCK, CORRIDOR, BRIDGE, CARGO, pendingWave, sidearmOf, DECK_PARTY, ADJ } = api;
 const LOW = () => 0, HIGH = () => 0.999;
 const CLOSE = RANGE_BANDS.indexOf('close');
 const HULL = { kind: 'broadside', target: 'hull', dmg: [8, 14] };
@@ -642,11 +642,11 @@ test('a hand standing in a taken section is pushed back one with a hurt roll, ne
   assert.equal(r.state.hand, 2, 'the hand falls back one, toward our side');
   assert.ok(r.events.some(e => e.kind === 'hand' && e.back), 'the retreat is an event');
   assert.equal(r.events.filter(e => e.kind === 'hurt').length, 1, 'with one hurt roll');
-  assert.equal(r.events.find(e => e.kind === 'hurt').hurt, false, '0.999 is over 0.135');
+  assert.equal(r.events.find(e => e.kind === 'hurt').hurt, false, '0.999 is over 0.09');
   const lucky = resolveDeckTurn(st, { stand: 1, act: null, order: null }, push, seq(0.999, 0.999, 0.999, 0.999, 0, 0, 0, 0));
-  assert.ok(lucky.events.some(e => e.kind === 'hurt' && e.hurt), 'a low roll is hurt: 0.45 * 0.3');
+  assert.ok(lucky.events.some(e => e.kind === 'hurt' && e.hurt), 'a low roll is hurt: 0.45 * 0.2');
   const sheer = resolveDeckTurn(st, { stand: 1, act: null, order: null }, push, seq(0.999, 0.999, 0.999, 0.999, 0.4));
-  assert.ok(sheer.events.some(e => e.kind === 'hurt' && !e.hurt), '0.4 is over 0.135: not hurt');
+  assert.ok(sheer.events.some(e => e.kind === 'hurt' && !e.hurt), '0.4 is over 0.09: not hurt');
   const asl = deck({ assault: true, boarders: 3, crew: 3 });
   asl.sections[0] = { mine: 1, theirs: 0, cover: 0 }; asl.sections[1] = { mine: 0, theirs: 2, cover: 0 }; asl.hand = 1;
   assert.equal(resolveDeckTurn(asl, { stand: 1, act: null, order: null }, push, HIGH).state.hand, 0, 'in an assault the way back is toward the lock');
@@ -950,6 +950,26 @@ test('a rush stops where the hand stands, or at a hatch that worked', () => {
   assert.ok(hatched.events.some(e => e.kind === 'rush' && e.stopped));
 });
 
+test('a rush stops in the section passed when ours there are half of the heads sent or more: a worked hatch at their lock thins them to it', () => {
+  const st = rushDeck(); st.sections[LOCK].theirs = 5; st.sections[CORRIDOR].mine = 2;
+  const m = boardMove(st, () => 0.99);
+  assert.deepEqual([m.kind, m.n], ['rush', 5], 'two of ours against five: under half, a rush');
+  const r = resolveDeckTurn(st, { stand: BRIDGE, act: 'shoot', order: { kind: 'steady', odds: 1, at: LOCK } }, m, () => 0.5);
+  const rush = r.events.find(e => e.kind === 'rush');
+  assert.deepEqual([rush.n, rush.stopped, rush.to], [4, true, CORRIDOR], 'four sent against two: stopped in the corridor, not by the hand nor a hatch there');
+});
+
+test('boarding her, her crew push back toward the lock, and a raider crew rush through a thin section the same way', () => {
+  const st = deckFight({ boarders: 3, crew: 4, cover: [0, 0, 0], assault: true, party: 'raider' });
+  st.sections = st.sections.map(() => ({ mine: 0, theirs: 0, cover: 0 })); st.sections[LOCK].mine = 2; st.sections[CORRIDOR].mine = 1; st.sections[BRIDGE].theirs = 4; st.hand = LOCK;
+  const m = boardMove(st, () => 0.99);
+  assert.deepEqual([m.kind, m.from, m.via, m.to, m.n], ['rush', BRIDGE, CORRIDOR, LOCK, 4], 'from her bridge through her corridor into her lock: BACK, not FORWARD');
+  const r = resolveDeckTurn(st, { stand: LOCK, act: 'shoot' }, m, () => 0.5);
+  assert.ok(r.events.some(e => e.kind === 'rush' && !e.stopped && e.to === LOCK), 'it goes through');
+  const met = resolveDeckTurn(st, { stand: CORRIDOR, act: 'shoot' }, m, () => 0.5);
+  assert.ok(met.events.some(e => e.kind === 'rush' && e.stopped && e.to === CORRIDOR), 'and the hand in her corridor stops it there');
+});
+
 test('only raiders rush, a rush is never feinted, and a hatch at a section the deck lacks is dropped', () => {
   const st = rushDeck(); st.party = 'corsair';
   assert.equal(boardMove(st, () => 0.99).kind, 'push');
@@ -1004,11 +1024,36 @@ test('an exchange\'s first hits wound and do not down', () => {
   st.sections[1] = { mine: 3, theirs: 3, cover: 0 };
   const r = resolveDeckTurn(st, { stand: 2, act: null, order: null }, stay, seq(0.999, 0.999, 0.999, 0.999, 0.999, 0.999));  // two hits a head: six against each side
   const ex = r.events.find(e => e.kind === 'exchange' && e.section === 1);
-  assert.deepEqual([ex.theirs, ex.theirsHurt, ex.mine, ex.mineHurt], [3, 3, 3, 3], 'six hits on three heads: all wounded, then all down');
+  assert.deepEqual([ex.theirs, ex.theirsHurt, ex.mine, ex.mineHurt], [3, 0, 3, 0], 'six hits on three heads: all wounded, then all down, so none is said wounded');
   const some = resolveDeckTurn(st, { stand: 2, act: null, order: null }, stay, seq(0.5, 0.5, 0.5, 0.5, 0.5, 0.5));  // one hit a head
   const e = some.events.find(x => x.kind === 'exchange');
   assert.deepEqual([e.theirs, e.theirsHurt, e.mine, e.mineHurt], [0, 3, 0, 3], 'one hit a head wounds three and downs none');
   assert.deepEqual([some.state.sections[1].theirs, some.state.sections[1].theirsHurt], [3, 3], 'wounded heads still stand');
+});
+
+test('the wounded a turn says are those still standing at its end: with the downed, never more than the heads there', () => {
+  const st = deck({ boarders: 6, crew: 2 }); st.wave = null;  // the review's case: three rush onto the bridge, two of them are downed and all three were wounded
+  st.sections = st.sections.map(() => ({ mine: 0, theirs: 0, cover: 0 })); st.sections[LOCK].theirs = 3; st.sections[BRIDGE].mine = 2; st.hand = BRIDGE; st.level = 3; st.party = 'raider';
+  const r = resolveDeckTurn(st, { stand: BRIDGE, act: SHOOT, order: null }, { kind: 'rush', from: LOCK, via: CORRIDOR, to: BRIDGE, n: 3, feint: false }, () => 0.999);
+  const ex = r.events.find(e => e.kind === 'exchange' && e.section === BRIDGE);
+  assert.ok(ex.theirs + ex.theirsHurt <= 3 && ex.mine + ex.mineHurt <= 2, JSON.stringify(ex));
+  assert.equal(ex.theirsHurt, r.state.sections[BRIDGE].theirsHurt, 'the one wounded and standing');
+  let x = 7;
+  const rand = () => { x = (x * 16807) % 2147483647; return x / 2147483647; };  // a seeded stream: many turns of many fights
+  for (let k = 0; k < 300; k++) {
+    let f = deckFight({ boarders: 4 + (k % 7), crew: 2 + (k % 4), cover: [0, 1, 0, 1], assault: k % 3 === 0, side: k % 2 === 0, level: k % 4, party: 'raider' });
+    for (let t = 0; t < DECK.TURNS && !deckEnd(f); t++) {
+      const near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])], stand = near[Math.floor(rand() * near.length)];
+      const res = resolveDeckTurn(f, { stand, act: { kind: 'shoot', at: near[Math.floor(rand() * near.length)] }, order: null }, boardMove(f, rand), rand);
+      const wave = res.events.find(e => e.kind === 'wave');
+      for (const e of res.events.filter(y => y.kind === 'exchange')) {
+        const end = res.state.sections[e.section], landed = wave && e.section === LOCK ? wave.n : 0;
+        assert.ok(e.theirs + e.theirsHurt <= end.theirs - landed + e.theirs && e.theirsHurt <= (end.theirsHurt || 0), `theirs: ${JSON.stringify(e)}`);
+        assert.ok(e.mine + e.mineHurt <= end.mine + e.mine && e.mineHurt <= (end.mineHurt || 0), `ours: ${JSON.stringify(e)}`);
+      }
+      f = res.state;
+    }
+  }
 });
 
 test('the shot downs a wounded head before it wounds another', () => {

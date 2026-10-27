@@ -65,7 +65,7 @@ function repelCrew() {
 
 // The fight: the deck fight's state on our deck (fight.js deckFight), with who stands with you, who is hurt and who has fallen. Kept with the scene, as the
 // lock fight was, so nothing of it is in the save. Up to five of the crew are heads on the deck, as the lock fight counted them; `outcome` is how the
-// boarding run landed ('full' two more of them than 'half', shipcombat.js boardersFor). A long ship (16 and over) has the cargo bay to go round by.
+// boarding run landed ('full' DECK.FULL more of them than 'half', DECK.FULL_PAIR for a raider pair and DECK.ASSAULT.FULL boarding her: shipcombat.js boardersFor). A long ship (16 and over) has the cargo bay to go round by.
 function repelStart(d, outcome) {
   return deckStart({ d, boarders: boardersFor(d.foe, outcome, d), grade: d.grade || 0, size: SHIPS[G.state.shipId].size });
 }

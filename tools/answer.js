@@ -57,7 +57,9 @@ function answerOrders(s) {
 function answerDeck(s, read = true) {
   const f = s.state, S = f.sections.map(x => ({ ...x })), m = s.shown;
   const near = [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])];
-  const hatch = repelOrders(s, f.used.cover).find(isHatch), meet = read && m.kind === 'rush' && near.includes(m.via);
+  const act = read && f.assault && !f.used.cover ? 'cover' : 'shoot';
+  const orders = repelOrders(s, f.used.cover || act === 'cover'), first = orders.length ? orders[0].id : null;  // as the panel offers them (deckFightEvent)
+  const hatch = orders.find(isHatch), meet = read && m.kind === 'rush' && near.includes(m.via);  // the one list for the hatch, reckoned and returned
   const to = m.kind === 'rush' && (meet || (read && hatch)) ? m.via : m.to;  // a rush met, or hatched (it may fail), is reckoned as stopped in via
   if (m.kind !== 'hold') {  // their move, the wounded last (fight.js moveHeads)
     const hurt = Math.max(0, m.n - (S[m.from].theirs - (S[m.from].theirsHurt || 0)));
@@ -70,10 +72,8 @@ function answerDeck(s, read = true) {
   const stand = meet ? m.via : goal;
   const reach = [stand, ...(f.level >= DECK.SIDEARM_REACH_LEVEL ? ADJ[stand].filter(i => f.sections[i]) : [])];
   const shootAt = !read ? stand : reach.filter(i => S[i].theirs).sort((a, b) => (S[b].theirsHurt || 0) - (S[a].theirsHurt || 0) || S[b].theirs - S[a].theirs || (b === stand) - (a === stand))[0];
-  const act = read && f.assault && !f.used.cover ? 'cover' : 'shoot';
-  const orders = repelOrders(s, f.used.cover || act === 'cover'), first = orders.length ? orders[0].id : null;  // as the panel offers them (deckFightEvent)
   const plan = { stand, act, ...(act === 'shoot' ? { shootAt: shootAt === undefined ? stand : shootAt } : {}), order: first };
-  if (read && m.kind === 'rush' && !meet) { const h = orders.find(isHatch); if (h) return { ...plan, order: h.id, at: m.via }; }
+  if (read && m.kind === 'rush' && !meet && hatch) return { ...plan, order: hatch.id, at: m.via };
   return plan;
 }
 

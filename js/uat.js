@@ -207,7 +207,7 @@ const UAT_FIGHTS = [
     run: g => uatShipFight({ kind: 'pirate' }, { ship: 'corsair', grade: g }) },
   { id: 'fight-patrol', title: 'A navy stop', check: 'Firing on her costs standing with her government. She is never boarded, and crippled she calls the stop off.', grade: null,
     run: () => uatShipFight({ kind: 'patrol', gov: 'Arcology Compact' }) },
-  { id: 'deck-repel', title: 'Being boarded', check: 'The deck cutaway shows heads and cover by section, where you stand, their next move (marked may feint above grade 0) and Turn n of 8. Stand or move, shoot, steady, cover once, and one crew order all work; it ends repelled or taken through the usual scenes.', grade: 1,
+  { id: 'deck-repel', title: 'Being boarded', check: 'The deck cutaway shows heads and cover by section, where you stand, their next move (a push marked may feint above grade 0) and Turn n of 8. Stand or move, shoot, steady, cover once, and one crew order all work; it ends repelled or taken through the usual scenes.', grade: 1,
     run: g => openEvent(repelEvent({ foe: uatRaider(), foeHp: 0, init: 'foe', grade: g, pack: false }, 'full')) },
   { id: 'deck-assault', title: 'Boarding a crippled ship', check: 'Dead in space gives her count, and Board her opens a fight of that count. On her deck your crew push from her lock to her bridge, and her cover is hers.',
     run: g => openEvent(deadInSpaceScene({ spec: { kind: 'pirate' }, foe: uatRaider(), grade: g, pack: false })) },

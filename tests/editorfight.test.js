@@ -76,7 +76,7 @@ test('the ship fight plays the setup the line typed needs: the patrol, the veter
     ['log.mine.consort', r => r.pack, false],
     ['open.grapple.0', r => r.ship === 'raider' && !r.pack && !r.patrol, true],
     ['part.hull', r => r.ship === 'raider' && !r.pack && !r.patrol && r.kind === 'ship', false],
-    ['deck.feint', r => r.kind === 'deck' && !r.assault, true],
+    ['deck.feint', r => r.kind === 'deck' && !r.assault, false],  // a veteran's repel: shown on a push, and the first turn is a hold
     ['deck.stand', r => r.kind === 'deck' && !r.assault, true],
     ['deck.hers.0', r => r.kind === 'deck' && r.assault, false],
     ['pdc.fire', r => r.kind === 'ship' && r.pdc, true],

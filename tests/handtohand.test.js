@@ -80,6 +80,11 @@ test('the strip draws each section with both sides\' heads, its cover, where the
   const few = fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 3, breakAt: 0 });  // a count of 1 to 3 has no line to break at
   assert.match(few, />FIGHTS TO THE LAST</); assert.doesNotMatch(few, /BREAKS AT/);
   assert.match(few, /3 of their 3 still up; they fight to the last\."/);
+  const coming = fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 6, breakAt: 2, pending: 2 });  // a repel's wave still to land: neither up nor down
+  assert.deepEqual(['head', 'comehead', 'nohead'].map(k => (coming.match(new RegExp(`<rect class="${k}"`, 'g')) || []).length), [3, 2, 1], 'three up, two still to come, one down');
+  assert.match(coming, /<rect class="comehead"[^>]*stroke-dasharray/, 'drawn apart from the downed');
+  assert.match(coming, /3 aboard, 2 still to come; they break at 2\."/, 'and the break line counts the whole party');
+  assert.match(fightStrip({ titles, sections, hand: 0, move: null, feint: false, began: 6, breakAt: 2, pending: 2, comeSay: (n, m) => `${n} here, ${m} coming` }), /3 here, 2 coming; they break at 2\."/, 'the words come from the scene');
   assert.doesNotMatch(svg, /class="break"/, 'no count is drawn when none is given');
 });
 
