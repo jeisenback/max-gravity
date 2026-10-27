@@ -15,7 +15,7 @@ const playBeats = () => {
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     if (!window.realMakeEnemy) window.realMakeEnemy = makeEnemy;
     const spare = window.realMakeEnemy({ kind: 'pirate' });
-    window.makeEnemy = () => Object.assign(spare, { shipId, armor: SHIPS[shipId].armor, maxArmor: SHIPS[shipId].armor });
+    window.makeEnemy = () => Object.assign(spare, { shipId, armor: SHIPS[shipId].armor, maxArmor: SHIPS[shipId].armor, ...(shipId === 'cutter' ? { gov: 'Arcology Compact' } : {}) });  // a cutter is a navy's, with her government (the navy party's standing)
     return st;
   };
   const labelsOf = ev => ev.choices.map(c => c.label);

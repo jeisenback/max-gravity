@@ -44,9 +44,13 @@ const deckWords = (key, shipped) => lineWords('beats:deck', key, shipped);
 // The post the player fights at: a hand's, or the post an owner keeps through the buy (career, hired.js). None for an owner who never was a hand: the card duel is theirs (duel.js).
 const lockPost = () => { const c = career(); return c && c.post ? c.post : null; };
 const handHurt = () => { const c = career(); return !!(c && c.hurtUntil > G.state.day); };
-// The money a fight moves is the ship's fund for a hand and the player's credits for an owner (role.js paysFrom).
-const purse = () => (role().paysFrom() === 'fund' ? hired().fund : G.state.credits);
-const moveMoney = n => { if (role().paysFrom() === 'fund') hired().fund += n; else G.state.credits += n; };
+// The money a fight moves is the ship's fund for a hand and the player's credits for an owner (role.js paysFrom). Inside a burn event's choice (hired.js hiredFunds,
+// a contact's heave-to) the fund is held in the credits until the choice is done, so it is read and paid there.
+const fundHeld = () => role().paysFrom() === 'fund' && !handPurse;
+const purse = () => (fundHeld() ? hired().fund : G.state.credits);
+const moveMoney = n => { if (fundHeld()) hired().fund += n; else G.state.credits += n; };
+// The navy's fine: a quarter of the purse. The heave-to pays it (engage.js contactEvent), and so does a search, when a navy party holds our bridge (repelSettle).
+const heaveToFine = () => Math.round(purse() * 0.25);
 
 // Who stands with you. A crew member who cannot stand you keeps to their berth, and of two who are at each other's throats
 // (the bond at which a split is on the cards, stakes.js) the one who thinks less of you will not stand in the same section.
@@ -170,11 +174,14 @@ function killCrew(c, cause) {
 // Who died in a fight, said after its close.
 const deadNote = s => (s.dead.length ? ` ${listNames(s.dead.map(c => c.first))} ${s.dead.length > 1 ? 'are' : 'is'} dead.` : '');
 
-// How it ends (`s.won`, fightui.js deckClose): repelled (the duel goes on with the initiative yours), or the bridge taken (shipTaken).
+// How it ends (`s.won` and `s.searched`, fightui.js deckClose): repelled (the duel goes on with the initiative yours), the bridge taken (shipTaken), or held by a navy
+// party, the ship searched (shipSearched). Each head of a navy party put down costs DECK.NAVY_STANDING with her government, whichever of the three
+// ends it settles with (a hand killed returns before the close, fightui.js deckTurn, and nothing is settled).
 function repelSettle(s) {
   const st = G.state, h = hired(), cap = h && person(h.captain), d = s.d, repelled = s.won;  // an owner has no captain
   const lost = deadNote(s);
   if (s.assault) return assaultSettle(s, repelled, lost);
+  if (navyBoarding(s.state)) changeRep(d.foe.gov, -DECK.NAVY_STANDING * s.state.navyDown);
   if (repelled) {
     if (cap) like(cap, 1, repelWords(s, 'memory.held', REPEL_MEMORY.held));
     for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id) && s.state.turn >= 3) like(c, 1, repelWords(s, 'memory.together', REPEL_MEMORY.together)); }
@@ -182,7 +189,17 @@ function repelSettle(s) {
     G.nextEvent = d.foeHp > 0 ? duelEvent() : null;
     return `The last of them go back through the lock. The outer door closes from the other side, and the drive of the ${theShip(d.foe).replace(/^The /, '')} lights, and she breaks away from the hull.${lost}`;
   }
-  return shipTaken(s);
+  return s.searched ? shipSearched(s) : shipTaken(s);
+}
+
+// A navy party on our bridge: the ship is searched and fined the heave-to's fine, the captain thinks a point less of the hand, and the ship is kept. The standing is
+// not reset as the heave-to resets it, since we fought them.
+function shipSearched(s) {
+  const h = hired(), cap = h && person(h.captain), fine = heaveToFine();
+  moveMoney(-fine);
+  if (cap) like(cap, -1, sceneSay('scene:fight', 'memory.searched'));
+  s.d.foeHp = -1; G.duel = null; G.nextEvent = null;
+  return `${sceneSay('scene:fight', 'deck.end.searched', { fine: fmt(fine) })}${deadNote(s)}`;
 }
 
 // The ship taken: her people are on the bridge, the ship's fund is stripped and they cut loose. The end of a deck fight lost, and of a ship fight

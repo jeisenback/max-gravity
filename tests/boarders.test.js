@@ -360,22 +360,22 @@ test('a deck fight ends on the hand\'s death, and the ending reads the record an
   await done();
 });
 
-test('the hand acts with the sidearm, the post\'s two abilities or a pull back, and the cover one is gone once it is used', async () => {
+test('the hand acts with the sidearm, the post\'s two abilities, hold fire or a pull back, and the cover one is gone once it is used', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const out = {}, acts = e => { const seen = []; let x = e; for (let i = 0; i < 4; i++) { seen.push(x.choices[1].label); x = x.choices[1].run(); } return seen; };
+    const out = {}, acts = e => { const seen = []; let x = e; for (let i = 0; i < 5; i++) { seen.push(x.choices[1].label); x = x.choices[1].run(); } return seen; };
     for (const post of ['gunner', 'pilot', 'engineer', 'comms']) { fight(post); out[post] = acts(deckFightEvent(repelStart(G.duel, 'full'))); G.duel = null; }
     fight(); const s = holdThem(repelStart(G.duel, 'full'), () => {});
     rolls([0.01]); const next = fightTurn(s, { act: 'cover' });
     out.used = s.state.used.cover; out.cover = s.state.sections.map(x => x.cover); out.line = s.state.log[s.state.log.length - 1]; out.after = acts(next);
     return out;
   });
-  assert.deepEqual(r.gunner, ['Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works', 'Covering burst: two points of cover here, once a fight', 'Pull back: ours here fall back to the Corridor']);
+  assert.deepEqual(r.gunner, ['Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works', 'Covering burst: two points of cover here, once a fight', 'Hold fire: stand ready, fire at nobody', 'Pull back: ours here fall back to the Corridor']);
   assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]], ['Cycle a hatch on them: one of them down if it works', 'Drop the pressure door: two points of cover here, once a fight', 'A false order on their band: one of them down if it works']);
   assert.equal(r.used, true); assert.deepEqual(r.cover.slice(0, 3), [3, 2, 1], 'two points where the hand stands, up to three');
   assert.match(r.line, /You lay a long burst along the wall at head height\./);
-  assert.deepEqual(r.after, ['Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works', 'Pull back: ours here fall back to the Bridge', 'Shoot: 1 to 2 of them hit'], 'once a fight (the hand fell back to the corridor in that turn)');
+  assert.deepEqual(r.after, ['Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works', 'Hold fire: stand ready, fire at nobody', 'Pull back: ours here fall back to the Bridge', 'Shoot: 1 to 2 of them hit'], 'once a fight (the hand fell back to the corridor in that turn)');
   await done();
 });
 
@@ -547,5 +547,69 @@ test('the last of them going down wins the fight with its line, and so few left 
     assert.deepEqual(x.broke, { won: true, ended: true, last: false, broke: true }, `${kind}: down to her break line, the rest break`);
     assert.deepEqual([x.tooMany.ended, x.tooMany.won], [false, false], `${kind}: too many left, the fight goes on`);
   }
+  await done();
+});
+
+// The navy's party (Task 6): on our deck only, from a patrol's boarding. Each head of theirs put down costs DECK.NAVY_STANDING with her government at the
+// settle, whether repelled, withdrawn or searched; holding our bridge is a search, which costs the heave-to's fine (heaveToFine, a quarter of the purse) and a point of the captain's regard,
+// and the ship is kept.
+const navyHelpers = () => {
+  window.GOV = 'Arcology Compact';
+  window.navy = () => { const d = { foe: makeEnemy({ kind: 'patrol', gov: GOV, shipId: 'cutter' }), foeHp: 0, init: 'foe' }; return repelStart(d, 'half'); };
+};
+
+test('a navy party that holds our bridge searches the ship: a quarter of the purse and a point of the captain\'s regard, with a memory, and the ship is kept', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(navyHelpers);
+  const r = await ev(() => {
+    const st = fight(), h = hired(), cap = person(h.captain), op = cap.opinion, m0 = cap.memories.length, armor = st.armor; G.duel = null;
+    h.fund = 20000; st.rep[GOV] = 0; st.cargo = { water: 30 }; st.paid = { water: 300 };
+    const s = holdThem(navy(), f => { f.sections.forEach(x => { x.theirs = 0; }); f.sections[2] = { mine: 0, theirs: 2, cover: 1 }; f.sections[0].mine = 1; f.hand = 0; });  // the hand in the lock, where none of them are: the shot downs nobody
+    rolls([]); fightTurn(s); const close = G.nextEvent; G.nextEvent = null; const after = close.choices[0].run();
+    return { party: s.state.party, end: { won: s.won, searched: s.searched }, fund: h.fund, opinion: cap.opinion - op, memory: cap.memories.slice(m0).join(' '), armor: st.armor === armor, water: st.cargo.water, lost: !!h.captainLost,
+      text: close.text, line: sceneSay('scene:fight', 'deck.end.searched', { fine: fmt(5000) }), mem: sceneSay('scene:fight', 'memory.searched'), after, next: G.nextEvent, rep: st.rep[GOV] };
+  });
+  assert.equal(r.party, 'navy');
+  assert.deepEqual(r.end, { won: false, searched: true });
+  assert.equal(r.fund, 15000, 'a quarter of the fund'); assert.equal(r.opinion, -1); assert.ok(r.memory.includes(r.mem), r.memory);
+  assert.ok(r.text.includes(r.line), r.text); assert.match(r.text, /5,000 cr/);
+  assert.ok(r.armor && r.water === 30 && !r.lost, 'the ship is kept: her armor, her hold and her captain');
+  assert.doesNotMatch(r.text, /They're on the bridge/, 'not the ship taken');
+  assert.equal(r.rep, 0, 'none of them put down: no standing lost, and none reset');
+  assert.equal(r.after, null); assert.equal(r.next, null);
+  await done();
+});
+
+test('the standing charged is DECK.NAVY_STANDING a head of theirs put down, whichever way a navy fight settles, and nothing for a raider\'s', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(navyHelpers);
+  const r = await ev(() => {
+    const st = fight(), h = hired(), out = { per: DECK.NAVY_STANDING }, real = Math.random;
+    const end = (how, down) => { st.rep[GOV] = 0; h.fund = 20000; const s = navy(); s.state.navyDown = down; Object.assign(s, how); rolls([]); repelSettle(s); Math.random = real; G.nextEvent = null; G.duel = null; return st.rep[GOV]; };
+    out.repelled = end({ won: true }, 3);
+    out.searched = end({ won: false, searched: true }, 1);
+    out.none = end({ won: true }, 0);
+    fight(); G.state.rep[GOV] = 0; const s = repelStart(G.duel, 'full'); s.won = true; repelSettle(s); out.raider = G.state.rep[GOV];
+    return out;
+  });
+  assert.equal(r.per, 2);
+  assert.deepEqual([r.repelled, r.searched, r.none, r.raider], [-6, -2, 0, 0]);
+  await done();
+});
+
+test('the heave-to and the search charge the same fine, a quarter of the same purse', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(navyHelpers);
+  const r = await ev(() => {
+    const st = fight(), h = hired(); G.duel = null; G.nextEvent = null;
+    h.fund = 20000; const fine = heaveToFine(), purse0 = purse();
+    const e = contactEvent({ kind: 'patrol', gov: GOV }); G.dialog = { event: e, choices: e.choices };
+    chooseEvent(e.choices.findIndex(c => /^Heave to/.test(c.label))); G.dialog = null;
+    const heave = 20000 - h.fund;
+    h.fund = 20000; const s = navy(); s.won = false; s.searched = true; rolls([]); repelSettle(s); G.nextEvent = null;
+    return { fine, purse0, heave, search: 20000 - h.fund };
+  });
+  assert.equal(r.purse0, 20000, 'the purse is the ship\'s fund'); assert.equal(r.fine, 5000);
+  assert.equal(r.heave, 5000); assert.equal(r.search, 5000);
   await done();
 });

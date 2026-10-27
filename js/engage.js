@@ -120,9 +120,9 @@ function contactEvent(spec) {
       : `They see through it. ${startDuel(spec, false)}`;
   }
   if (spec.kind === 'patrol' && hired()) choices.push({ label: `Heave to and take the fine from the ship's fund`, cost: true, run() {  // a hired hand has no 40,000 cr: the ship pays a quarter of its fund
-    const fine = Math.round(st.credits * 0.25);  // st.credits is the ship's fund inside a hired hand's contact (hiredFunds)
+    const fine = heaveToFine();  // the navy's fine, the one a search charges (boarders.js)
     if (spec.ladder) ladderDone(hired(), spec.ladder);  // the ladder's cutter is a papers check: complying answers it, so the fine is paid once (fightladder.js)
-    st.credits -= fine;
+    moveMoney(-fine);
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     like(person(hired().captain), -1, sceneSay('scene:memories', 'patrol-fine.memory'));
     return `You cut the drive and the cutter closes. The boarding officer reads the citation, and ${fmt(fine)} cr goes out of the ship's fund. The ship is logged as settled. For now.`;

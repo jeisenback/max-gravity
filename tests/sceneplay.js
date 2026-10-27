@@ -385,7 +385,7 @@ const playScenes = () => {
       // each end, by style: she breaks off, she is crippled, she boards, she is lost astern, and the hull gone
       for (const shipId of ['raider', 'corsair', 'cutter']) {
         let s = start(shipId).fight; s.state.foes[0].armor = 5; s.state.foes[0].shields = 0; turn(s, orders({ guns: [null] }), { kind: 'break' });
-        s = start(shipId).fight; s.state.band = 0; turn(s, orders(), { kind: 'board' });
+        s = start(shipId, {}, shipId === 'cutter' ? 'patrol' : 'pirate').fight; s.state.band = 0; turn(s, orders(), { kind: 'board' });  // a cutter that boards is a patrol's, with her government (the navy's party)
         s = start(shipId).fight; s.state.me.speed = 1e6; s.state.band = RANGE_BANDS.length - 1; turn(s, orders(), { kind: 'close' }, { kind: 'open' });
         if (shipId !== 'cutter') { s = start(shipId).fight; s.state.foes[0].parts.weapons.hp = 0; s.state.foes[0].parts.drive.hp = 0; turn(s, orders(), { kind: 'hold' }); }  // only a patrol flies a cutter, and a patrol crippled breaks off (below)
       }
@@ -430,7 +430,7 @@ const playScenes = () => {
         if (!assault) { const s = deck(false); s.state.turn = DECK.WAVE_TURN - 1; s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; deckPanel(deckFightEvent(s)); }  // the turn at whose end the wave lands: the strip says they come next turn
         { const s = deck(assault); s.shown = { kind: 'hold', from: 0, to: 0, n: 0, feint: false }; let ev = deckFightEvent(s);  // each choice goes round: the hand's place, the act, the order
           for (let i = 0; i < 3; i++) { ev = ev.choices[0].run(); deckPanel(ev); }
-          for (let i = 0; i < 3; i++) { ev = ev.choices[1].run(); deckPanel(ev); }
+          for (let i = 0; i < 4; i++) { ev = ev.choices[1].run(); deckPanel(ev); }
           const at = ev.choices.findIndex(c => c.order); if (at >= 0) { ev = ev.choices[at].run(); deckPanel(ev); } }
         { const s = deck(assault); s.state.used.cover = true; const o = repelOrders(s, true).find(isHatch);  // a hatch order, which names a section: each choice goes round (the hatch's "At"; the shot's is "Aim")
           if (o) { let ev = deckFightEvent(s, { order: o.id }); deckPanel(ev); const at = ev.choices.map(c => c.label.startsWith(fightSay('deck.order.at', { at: '' }).trim())).lastIndexOf(true); for (let i = 0; i < 3; i++) { ev = ev.choices[at].run(); deckPanel(ev); } } }
@@ -464,6 +464,12 @@ const playScenes = () => {
           deckLog(charged(2, 0), { stand: 1, act: 'pullback' }, shown);
         }
       }
+      // the navy's party (Task 6): the panel names it, with its own cap, and says the standing its heads put down have cost; a turn of hold fire; holding our bridge is a search, with its fine, and the captain's memory of it
+      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Compact'; s.state.navyDown = 1; s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
+      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Compact'; deckLog(s, { act: 'holdfire' }, { kind: 'hold', from: 0, to: 0, n: 0 }); }  // a turn of hold fire, the hand standing ready
+      { const s = deck(false, { party: 'navy' }), S = s.state.sections, cap = person(hired().captain), m0 = (cap.memories || []).length; s.d.foe.gov = 'Arcology Compact'; hired().fund = 20000;
+        S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].mine = 1; S[2].theirs = 2; s.state.hand = 0; s.state.began = 4; s.state.wave = null;
+        deckLog(s, {}, { kind: 'hold', from: 2, to: 2, n: 0 }); rec.plays.push({ mem: (cap.memories || []).slice(m0) }); }
     } catch (err) { rec.error = String(err && err.stack || err); }
     out.push(rec);
   }

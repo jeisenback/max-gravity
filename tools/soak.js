@@ -29,9 +29,11 @@
 const { open, closeBrowser } = require('../tests/helpers');
 const { answerDeck } = require('./answer');
 
+// A page that has not answered one evaluate in this long fails with what the browser was doing (tests/helpers.js open's `stall`), as the distribution tests' pages do, rather than waiting forever.
+const SOAK_STALL = 900000;
 // realDraw: the two main characters come from the pool as in the game; tests start from the pair they knew (tests/helpers.js).
 async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null, jobs = false } = {}) {
-  const { ev, errors, ctx } = await open({ scope, seed, debt: true, stall: 0 });  // the chapter's economy includes the hiring hall's bond
+  const { ev, errors, ctx } = await open({ scope, seed, debt: true, stall: SOAK_STALL });  // the chapter's economy includes the hiring hall's bond
   const r = await ev(chapter, [legs, captainKey, realDraw, post, frames, engineer, jobs, null, answerDeck.toString()]);
   await ctx.close();
   return { seed, ...r, errors };
@@ -314,7 +316,7 @@ function report(runs) {
 
 // The scene index the editor shows (editor.html), as { id, title, off, storylet } for each scene with a title; off is a scene the narrow build leaves out, storylet one that is data outside the hired chapter's registry.
 async function sceneRows() {
-  const { ctx, url } = await open({ scope: 'full', stall: 0 });
+  const { ctx, url } = await open({ scope: 'full', stall: SOAK_STALL });
   const page = await ctx.newPage();
   await page.goto(url.replace(/index\.html$/, 'editor.html'));
   await page.waitForFunction(() => window.SceneIndex && SceneIndex.rows, null, { timeout: 60000 });
