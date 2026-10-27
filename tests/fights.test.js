@@ -116,7 +116,7 @@ test('with the moves, each helps against its type, no fixed plan beats reading h
 // The ship fights are left out (raid: false), and only the groups asked are played; the corsair's checks, on the same draws, are the test after this one.
 let deckRuns = null;  // the deck fights, played once for the raider's test and the corsair's
 const deckFights = async () => {
-  const runs = await (deckRuns = deckRuns || Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['party', 'level', 'grade'] }))));
+  const runs = await (deckRuns = deckRuns || Promise.all(DECK_SEEDS.map(seed => fights({ seed, n: DECK_N, raid: false, groups: ['party', 'level', 'grade', 'charge'] }))));
   for (const x of runs) assert.deepEqual(x.errors, []);
   const r = {};  // the seeds' tallies summed, cell by cell
   for (const kind of ['repel', 'assault']) { r[kind] = {}; for (const x of runs) for (const [cell, t] of Object.entries(x[kind])) { const acc = r[kind][cell] = r[kind][cell] || {}; for (const [k, v] of Object.entries(t)) acc[k] = (acc[k] || 0) + v; } }
@@ -132,8 +132,10 @@ function deckChecks(k, kind, party) {
     assert.ok(ans >= least, `${party}, ${kind} with ${crew} crew: answer wins ${f2(ans)}`);
     for (const p of ['random', 'shoot', 'cover', 'order']) {
       const w = won(cell(crew, p));
-      // with five crew a fixed policy may come within 0.02 of answer: about 1.7 standard errors at n = 400 and p near 0.97, and every cell draws on one stream
-      assert.ok(crew === 5 ? w <= ans + 0.02 : kind === 'assault' ? w < ans : w <= ans, `${party}, ${kind} with ${crew} crew: ${p} ${f2(w)}, answer ${f2(ans)}`);
+      // with five crew a fixed policy may come within 0.02 of answer: about 1.7 standard errors at n = 400 and p near 0.97, and every cell draws on one stream;
+      // so may one repelling a corsair with two crew, where every plan that goes where the fight is shoots her charge's setter without reading it
+      const margin = crew === 5 || (party === 'corsair' && kind === 'repel');
+      assert.ok(margin ? w <= ans + 0.02 : kind === 'assault' ? w < ans : w <= ans, `${party}, ${kind} with ${crew} crew: ${p} ${f2(w)}, answer ${f2(ans)}`);
     }
     assert.ok(kind === 'assault' ? t >= 2.5 : t >= 3.5 && t <= 6.5, `${party}, ${kind} with ${crew} crew: answer's fights last ${f2(t)} turns`);
   }
@@ -154,19 +156,23 @@ test('against raiders the answer wins a repel nine in ten in four to six turns a
   }
 });
 
-// The corsair's party (Task 5: her breaching charge, and the pull back that answers it), on the same draws and the same rules as the raider's above, at level 2,
-// with two crew and with five: the answer's least wins, no fixed policy above it (with five crew, by more than 0.02) and its turns, as above; random play with
-// five crew at grade 0 costs dead a fight within 0.15 of 0.32 repelling and at most 0.15 over 0.36 boarding her; and going to them and shooting (`shoot`), which
-// stands in the charge, wins less than the answer with two crew both ways.
-test('against a corsair\'s charge the answer wins a repel nine in ten and boarding her, no fixed plan beats it, and shooting where they are loses to it', async () => {
+// The corsair's party (Task 5: her breaching charge, stopped by hitting its setter, and the pull back), on the same draws and the same rules as the raider's
+// above, at level 2, with two crew and with five: the answer's least wins, no fixed policy above it (with five crew, and repelling with two, by more than 0.02)
+// and its turns, as above; random play with five crew at grade 0 (the only grade the tool plays a corsair at) costs dead a fight within 0.15 of 0.52 repelling
+// and at most 0.15 over 0.36 boarding her; going to them and shooting (`shoot`), which stands in the charge, wins less than the answer with two crew both
+// ways; and boarding her with two crew, the answer wins at least 0.2 more than the answer without its charge rule (`answerNoCharge`).
+test('against a corsair\'s charge the answer wins a repel nine in ten and boarding her, no fixed plan beats it, and boarding her the charge is the puzzle', async () => {
   const r = await deckFights();
   for (const kind of ['repel', 'assault']) {
     const k = r[kind], cell = (crew, policy) => k[`party|corsair crew ${crew} level 2 ${policy} grade 0`];
     deckChecks(k, kind, 'corsair');
-    const now = dead(cell(5, 'random')), was = DEAD[kind][0];
-    assert.ok(kind === 'assault' ? now <= was + 0.15 : Math.abs(now - was) <= 0.15, `corsair, ${kind}: ${f2(now)} dead a fight against ${was} before`);
+    // repelling a corsair is the cost of her charge, not a puzzle: 0.2 over the raider's 0.32
+    const now = dead(cell(5, 'random')), was = kind === 'repel' ? DEAD.repel[0] + 0.2 : DEAD.assault[0];
+    assert.ok(kind === 'assault' ? now <= was + 0.15 : Math.abs(now - was) <= 0.15, `corsair, ${kind}: ${f2(now)} dead a fight against ${f2(was)}`);
     assert.ok(won(cell(2, 'shoot')) < won(cell(2, 'answer')), `corsair, ${kind} with two crew: shoot ${f2(won(cell(2, 'shoot')))}, answer ${f2(won(cell(2, 'answer')))}`);
   }
+  const ans = won(r.assault['party|corsair crew 2 level 2 answer grade 0']), not = won(r.assault['charge|corsair crew 2 level 2 answerNoCharge grade 0']);
+  assert.ok(ans >= not + 0.2, `boarding a corsair with two crew: answer ${f2(ans)}, without its charge rule ${f2(not)}`);
 });
 
 // answerOrders (tools/answer.js, #814): the torpedo is held until her shields are down. It is a self-contained script on the game's globals, so it runs here in a bare context with those stubbed.

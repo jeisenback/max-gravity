@@ -22967,7 +22967,7 @@
     "log": "Turn 1: nothing left of the weapons to hit.",
     "next": {
      "title": "Dead in Space",
-     "text": "The corsair's drive cone splits, and she coasts on with her bay doors stuck half open.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
+     "text": "The corsair's drive cone splits, and she coasts on with her bay doors stuck half open.</p><p>The Pirate \"Black Widow\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
      "labels": [
       "Board her",
       "Let her drift"
@@ -23782,7 +23782,7 @@
     "end": false
    },
    {
-    "log": "Turn 1: the charge in the Corridor never blows. You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows.",
+    "log": "Turn 1: 1 of them and 0 of ours down in the Lock, the charge in the Corridor never blows.",
     "end": false
    },
    {
@@ -24154,7 +24154,7 @@
    },
    {
     "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: a charge on her Corridor. It blows this turn.",
+    "read": "Turn 1 of 8. Her crew: a charge on her Lock. It blows this turn.",
     "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
@@ -24166,7 +24166,7 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: a charge on Her Corridor. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: a charge on Her Lock. 4 of their 4 still up; they fight to the last."
    }
   ]
  }

@@ -454,13 +454,13 @@ const playScenes = () => {
         { const s = deck(assault), S = s.state.sections; S.forEach(x => { x.mine = 0; x.theirs = 0; });
           if (assault) { S[1].mine = 2; S[2].theirs = 3; s.state.hand = 1; } else { S[1].theirs = 2; S[2].mine = 3; s.state.hand = 2; }
           s.state.began = 5; s.state.turn = DECK.TURNS - 1; deckLog(s, {}, { kind: 'hold', from: 1, to: 1, n: 0 }); }
-        // a corsair's charge (Task 5): shown on the corridor; it blows, a steady where it is set stops it, and a pull back leaves it nobody to down
-        { const s = deck(assault, { party: 'corsair' }); s.shown = { kind: 'charge', at: 1, from: assault ? 2 : 0, n: 0, feint: false }; deckPanel(deckFightEvent(s)); }
+        // a corsair's charge (Task 5): shown; it blows, the shot at its setter stops it, and a pull back leaves it nobody to down
+        { const s = deck(assault, { party: 'corsair' }); s.shown = boardMove(s.state, () => 0.99); deckPanel(deckFightEvent(s)); }  // the charge the game shows on this deck: our corridor from their lock, or her lock from her corridor
         if (!assault) {
           const charged = (mine, theirs) => { const s = deck(false, { party: 'corsair' }), S = s.state.sections; S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].theirs = 3; S[1].mine = mine; S[1].theirs = theirs; S[2].mine = 1; s.state.hand = 1; s.state.began = 3 + theirs; s.state.wave = null; return s; };
           const shown = { kind: 'charge', at: 1, from: 0, n: 0 };
           deckLog(charged(2, 0), { stand: 1 }, shown, 0.99);
-          deckLog(charged(2, 1), { stand: 1, act: 'steady' }, shown);
+          deckLog(charged(2, 0), { stand: 1, act: 'shoot', shootAt: 0 }, shown);  // the shot into the lock hits its setter
           deckLog(charged(2, 0), { stand: 1, act: 'pullback' }, shown);
         }
       }

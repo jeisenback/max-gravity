@@ -30,7 +30,7 @@ const helpers = () => {
   window.unstub = () => { resolveDeckTurn = window.realTurn; };
 };
 
-test('a boarding run that lands opens the deck fight at the lock, four more of them for a full run than for a short one (DECK.FULL; a corsair\'s one fewer, DECK.CORSAIR_LESS), and a stopped one does not', async () => {
+test('a boarding run that lands opens the deck fight at the lock, four more of them for a full run than for a short one (DECK.FULL; a corsair\'s DECK.CORSAIR_LESS fewer), and a stopped one does not', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {

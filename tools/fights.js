@@ -38,7 +38,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     // the others go where the fight is (tools/answer.js answerDeck, not reading the rush or the charge), a section a turn, and there 'shoot' fires the sidearm where it stands, 'cover' makes
     // the cover while it can and then shoots, and 'order' shoots and sends the first crewmate on offer every turn. 'answer' reads their shown move: it meets a
     // rush, or hatches it when the hand is too far, pulls back from a charge or picks off its setter, aims the shot at the most of theirs wounded in reach, and boarding her
-    // makes the cover first (answerDeck).
+    // makes the cover first (answerDeck). 'answerNoCharge' is the answer without its charge rule.
     const rnd = list => list[Math.floor(Math.random() * list.length)];
     const near = f => [f.hand, ...ADJ[f.hand].filter(i => f.sections[i])];
     const deckAnswer = (0, eval)(`(${deckSrc})`);  // tools/answer.js
@@ -49,6 +49,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       cover: s => ({ stand: goal(s), act: s.state.used.cover ? 'shoot' : 'cover', shootAt: goal(s), order: null }),
       order: s => deckAnswer(s, false),
       answer: s => deckAnswer(s),
+      answerNoCharge: s => deckAnswer(s, true, false),
     };
     // Plays what is open to its end: a deck panel by the policy, a crippled raider always boarded, and anything else (a close's Stand down) by its first choice.
     // Every text shown is kept in window.__texts, for the ends that are read from the words. Returns true when it stopped at its own step cap with a fight still open.
@@ -154,13 +155,14 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       ['party', ['raider', 'corsair'].flatMap(party => ['random', 'shoot', 'cover', 'order', 'answer'].flatMap(p => [2, 5].map(c => [party, c, 2, p, 0])))],
       ['level', [0, 1, 2, 3].map(l => ['raider', 2, l, 'answer', 0])],
       ['grade', [0, 1, 2].map(g => ['raider', 5, 2, 'random', g])],
+      ['charge', [['corsair', 2, 2, 'answerNoCharge', 0]], 'assault'],  // boarding her only, and played last, so the cells before it keep their draws
     ];
     // They are played without drawing the panel (UI.showEvent): the drawing rolls nothing, so the tallies are the same, and the tens of thousands of panels in one
     // evaluate grew the page about 0.7 MB a fight until it crashed.
     const show = UI.showEvent;
     if (lockFights) UI.showEvent = () => {};
     if (lockFights) for (const kind of ['repel', 'assault']) {
-      for (const [group, list] of cells.filter(([g]) => !groups || groups.includes(g))) {
+      for (const [group, list] of cells.filter(([g, , only]) => (!groups || groups.includes(g)) && (!only || only === kind))) {
         for (const [party, crewN, level, policy, grade] of list) out[kind][`${group}|${party} crew ${crewN} level ${level} ${policy} grade ${grade}`] = lock(kind, party, crewN, level, policy, grade);
       }
     }

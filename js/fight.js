@@ -233,10 +233,10 @@ const DECK = {
   SIDEARM_REACH_LEVEL: 2,  // from this level the shot may be aimed at a section next to the hand's as well as its own
   WAVE_TURN: 2,      // the turn at whose end the second wave of a repel lands in the lock
   CREW_HIT: [0, 2],  // heads one opposing head takes in a section where both stand (a roll a head); a side's own cover cuts its total, never below one hit
-  CHARGE: [0, 1],    // heads of ours a corsair's breaching charge downs outright in the section it blows in, past cover and wounds (boardMove, resolveDeckTurn)
+  CHARGE: [1, 1],    // heads of ours a corsair's breaching charge downs outright in the section it blows in, past cover and wounds, unless its setter is hit (boardMove, resolveDeckTurn)
   BREAK: 0.15,       // of her crew at the start: at or under it she breaks (at 6 she fights to the last)
   FULL: 4,           // the heads a boarding run that landed in full brings over a half one's (shipcombat.js boardersFor)
-  CORSAIR_LESS: 1,   // the heads fewer a corsair's full run brings, and she has aboard when we board her (boardersFor): her charge takes heads of ours, so her party is a raider's size
+  CORSAIR_LESS: 2,   // the heads fewer a corsair's full run brings, and she has aboard when we board her (boardersFor): her charge takes heads of ours the rest of her crew would otherwise
   FULL_PAIR: 2,      // and for a raider pair, which brings two more of its own: a pair at grade 1 or 2 came over with 10 and 12, and took the bridge one time in two
   SUIT: 0.2,         // times REPEL_HURT.lose: the standard suit's stat (the hand standing in the fight is hurt less often); under the lock fight's 0.3, since a deck fight lasts about twice the turns (measured over 120 chapters, tests/distribution/stakes-fights.test.js)
   CASUALTY: 0.3,     // of our heads lost, the share that is a casualty (fightui.js deckLoss); the rest are downed and get up after it, so that a fight kills about as many as the lock fight did (R42)
@@ -399,14 +399,6 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   if (!hatch) ability(ordered, st.hand);
   S.forEach((s, i) => { s.cover = Math.min(COVER_MAX, s.cover + extra[i]); });
 
-  // A charge shown blows now, unless a steady worked in its section this turn (its setter picked off): DECK.CHARGE of ours there down outright, past cover and wounds, the wounded first.
-  if (shown.kind === 'charge') {
-    const s = S[shown.at], stopped = steadied.includes(shown.at), mine = stopped || !s.mine ? 0 : Math.min(s.mine, rollsOf(1, deckRule(st, 'CHARGE'), rand));
-    s.mine -= mine; s.mineHurt = Math.max(0, hurtOf(s, 'mine') - mine);
-    st.charged = st.turn;
-    events.push({ kind: 'charge', at: shown.at, mine, stopped });
-  }
-
   // Each section where both stand trades hits: a side takes a CREW_HIT roll (boarding her, DECK.ASSAULT's) for each opposing head there (R29), cut by that side's own cover there (R31), and a hit is never
   // cut to nothing (R33). A press is one more roll against us where the hand stands. A hit wounds a head and downs one once all are wounded (hitSide); the events say
   // both, `mine` and `theirs` being the downed. The shot comes after the exchange, at the hand's section or, from the reach level, one next to it: it finishes the wounded first.
@@ -422,12 +414,23 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
   const shot = asObj(act), aim = shot && shot.kind === 'shoot' ? (shot.at !== hand && st.level >= DECK.SIDEARM_REACH_LEVEL && ADJ[hand].includes(shot.at) && S[shot.at] ? shot.at : hand) : -1;
   const shots = aim >= 0 && S[aim].theirs ? dealt(S[aim].theirs, ...sidearmOf(st), rand) : 0;
   if (aim >= 0 && !S[aim].theirs && sum(st, 'theirs')) events.push({ kind: 'shoot', nobody: true, at: aim, aimed: aim !== hand });  // none of them where the shot goes, and some elsewhere: it is not rolled, and says so (R34)
+  let setterHit = shown.kind === 'charge' && steadied.includes(shown.from);  // a steady worked where the charge's setter stands
   S.forEach((s, i) => {
     const m = hitSide(s, 'mine', hits[i].mine), t = hitSide(s, 'theirs', hits[i].theirs), g = i === aim ? shootSide(s, 'theirs', Math.min(shots, s.theirs)) : { downed: 0, wounded: 0 };
+    if (i === shown.from && t.downed + t.wounded + g.downed + g.wounded > 0) setterHit = true;  // or ours there, or the shot, downed or wounded one of them
     // the wounded said are the heads newly wounded this turn and still standing at its end (a head wounded and then downed is said once, as down): never more than stand there
     const e = { kind: 'exchange', section: i, mine: m.downed, theirs: t.downed + g.downed, mineHurt: Math.min(m.wounded, hurtOf(s, 'mine')), theirsHurt: Math.min(t.wounded + g.wounded, hurtOf(s, 'theirs')) };
     if (e.mine || e.theirs || e.mineHurt || e.theirsHurt) events.push(e);
   });
+
+  // A charge shown blows at the end of the exchange, unless its setter was hit this turn (one of theirs in `from` downed or wounded by ours: the shot, a worked steady or
+  // hatch there, or the trade where ours stand there): DECK.CHARGE of ours in `at` down outright, past cover and wounds, the wounded first.
+  if (shown.kind === 'charge') {
+    const s = S[shown.at], mine = setterHit || !s.mine ? 0 : Math.min(s.mine, rollsOf(1, deckRule(st, 'CHARGE'), rand));
+    s.mine -= mine; s.mineHurt = Math.max(0, hurtOf(s, 'mine') - mine);
+    st.charged = st.turn;
+    events.push({ kind: 'charge', at: shown.at, mine, stopped: setterHit });
+  }
 
   // A hand left in a section that is theirs alone falls back, one section at a time, to one that is not; with none, it stays with our nearest heads. One hurt roll for it.
   const alone = i => !S[i].mine && S[i].theirs > 0;
