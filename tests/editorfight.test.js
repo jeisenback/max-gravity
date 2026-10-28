@@ -40,7 +40,7 @@ async function play() {
 // What the fight in the frame is: her ship, a consort, the deck and whose, the turret, the day and the gunner's experience.
 const fightOf = f => f.evaluate(() => {
   const s = G.dialog.event.fight || {}, st = s.state || {};
-  return { kind: st.kind, ship: s.foe && s.foe.shipId, patrol: !!(s.spec && s.spec.kind === 'patrol'), pack: !!s.pack, assault: !!s.assault, torps: st.me ? st.me.torps : 0, pdc: !!(st.me && st.me.pdc),
+  return { kind: st.kind, ship: s.foe && s.foe.shipId, patrol: !!(s.spec && s.spec.kind === 'patrol'), pack: !!s.pack, assault: !!s.assault, navy: !!(st.party === 'navy'), torps: st.me ? st.me.torps : 0, pdc: !!(st.me && st.me.pdc),
     day: G.state.day, gunner: (career().skill || {}).gunner || 0, seen: JSON.stringify([G.dialog.event.title, G.dialog.event.read || '', G.dialog.event.text, G.dialog.choices.map(c => c.label)]) };
 });
 // Clicks a choice in the frame and waits for the report of it.
@@ -56,7 +56,7 @@ test('a fight row has a picker of the tester panel\'s fights, early and late, an
   const box = page.locator('#pv-fight');
   assert.equal(await box.isVisible(), true, 'the picker shows for the ship fight');
   const options = await page.locator('[data-pv-fight] option').evaluateAll(els => els.map(e => e.value));
-  const ids = ['fight-raider', 'fight-pack', 'fight-veteran', 'fight-patrol', 'deck-repel', 'deck-assault'];
+  const ids = ['fight-raider', 'fight-pack', 'fight-veteran', 'fight-patrol', 'deck-repel', 'deck-navy', 'deck-assault'];
   assert.deepEqual(options, ['', ...ids, ...ids.map(id => `late-${id}`)], 'from the line typed, then each setup early and late');
   for (const id of ['beats:repel', 'beats:assault', 'beats:deck']) { await select(id); assert.equal(await box.isVisible(), true, `the picker shows for ${id}`); }
   await select('port-mars-sky');
@@ -78,6 +78,12 @@ test('the ship fight plays the setup the line typed needs: the patrol, the veter
     ['part.hull', r => r.ship === 'raider' && !r.pack && !r.patrol && r.kind === 'ship', false],
     ['deck.feint', r => r.kind === 'deck' && !r.assault, false],  // a veteran's repel: shown on a push, and the first turn is a hold
     ['deck.stand', r => r.kind === 'deck' && !r.assault, true],
+    ['deck.who.navy', r => r.kind === 'deck' && r.navy && !r.assault, true],  // the navy's own lines play in the navy's deck (#831)
+    ['deck.navy.down', r => r.kind === 'deck' && r.navy, true],
+    ['deck.end.searched', r => r.kind === 'deck' && r.navy, false],
+    ['deck.end.cited', r => r.kind === 'deck' && r.navy, false],
+    ['memory.searched', r => r.kind === 'deck' && r.navy, false],
+    ['deck.holdfire', r => r.kind === 'deck' && !r.navy && !r.assault, false],  // the repel keeps hold fire
     ['deck.hers.0', r => r.kind === 'deck' && r.assault, false],
     ['pdc.fire', r => r.kind === 'ship' && r.pdc, true],
   ];

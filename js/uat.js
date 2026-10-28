@@ -209,6 +209,8 @@ const UAT_FIGHTS = [
     run: () => uatShipFight({ kind: 'patrol', gov: 'Arcology Compact' }) },
   { id: 'deck-repel', title: 'Being boarded', check: 'The deck cutaway shows heads and cover by section, where you stand, their next move (a push marked may feint above grade 0) and Turn n of 8. Stand or move, shoot, steady, cover once, and one crew order all work; it ends repelled or taken through the usual scenes.', grade: 1,
     run: g => openEvent(repelEvent({ foe: uatRaider(), foeHp: 0, init: 'foe', grade: g, pack: false }, 'full')) },
+  { id: 'deck-navy', title: 'Boarded by a navy patrol', check: 'The deck names the boarding party, with Turn n of 5, and the standing line under it (what each head put down costs with her government). Hold fire is an order. They never feint, rush or charge. At turn 5 they withdraw and the citation (the heave-to\'s fine) is charged; if you let them take the bridge they search the ship and fine it.', grade: 1,
+    run: g => openEvent(repelEvent({ foe: makeEnemy({ kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }), foeHp: 0, init: 'foe', grade: g, pack: false }, 'half')) },
   { id: 'deck-assault', title: 'Boarding a crippled ship', check: 'Dead in space gives her count, and Board her opens a fight of that count. On her deck your crew push from her lock to her bridge, and her cover is hers.',
     run: g => openEvent(deadInSpaceScene({ spec: { kind: 'pirate' }, foe: uatRaider(), grade: g, pack: false })) },
 ];
