@@ -96,28 +96,28 @@ function boldWithCaptain(won) {
 const crewNamed = role => { const c = roleHolder(role); return c ? c.first : `the ${ROLE_NAMES[role].toLowerCase()}`; };
 
 // The first arrival: settleRun (hired.js) keeps the first run's figures in h.first instead of the one-line note, and the first officer
-// settles up at the port, opened by hired.js's own 'landed' handler (which runs before the others, so before any landing scene or station call). Their words are the cast entry's `arrival`: open, memory, column
-// (the captain's name is {cap}), pace. An older save with runs behind it has no h.first, so it never plays.
+// settles up at the port, opened by hired.js's own 'landed' handler (which runs before the others, so before any landing scene or station call). The page's words are the lines of
+// 'scene:settling-up' (hiredscenes.js); the first officer's are the cast entry's `arrival`: open, memory, column (the captain's name is {cap}), pace, which that row lists as theirs. An older save with runs behind it has no h.first, so it never plays.
 const arrivalWanted = () => { const xo = hiredXo(); return !!(xo && CAST[xo.cast].arrival); };
 function arrivalPending(planet) {
   const h = hired(), f = h && h.first;
   return !!(f && !h.arrived && planet && planet.name === f.planet && arrivalWanted());
 }
 function arrivalScene() {
-  const h = hired(), f = h.first, xo = hiredXo(), a = CAST[xo.cast].arrival, cap = hiredCaptain(), say = s => s.replace(/\{cap\}/g, cap.first);
+  const h = hired(), f = h.first, xo = hiredXo(), a = CAST[xo.cast].arrival, cap = hiredCaptain(), say = (key, vars) => sceneSay('scene:settling-up', key, { cap: cap.first, ...vars });
+  const own = k => lineWords('scene:settling-up', `${xo.cast}.${k === 'memory' ? 'recall' : k}`, a[k]).replace(/\{cap\}/g, cap.first);  // the first officer's own words (hiredscenes.js settlingLines)
   const ledger = [
-    f.good ? `${f.tons} t ${f.good}. Bought ${fmt(f.cost)}. Sold ${fmt(f.revenue)}. ${f.profit < 0 ? 'Loss' : 'Clear'} ${fmt(Math.abs(f.profit))}.${isFinite(f.forecast) ? ` Forecast, ${fmt(f.forecast)}.` : ''}` : 'No cargo this run.',
-    `Your wage for ${f.days} days, ${fmt(f.wage)}. Your share, ${fmt(f.share)}.`,
-    ...(f.hall ? [`Hall bond, ${Math.round(DEBT_SHARE * 100)} percent of your pay: ${fmt(f.hall)}. Still owed: ${fmt(f.owed)}.`] : []),
+    f.good ? say('ledger.cargo', { tons: f.tons, good: f.good, cost: fmt(f.cost), revenue: fmt(f.revenue), net: say(f.profit < 0 ? 'ledger.loss' : 'ledger.clear'), profit: fmt(Math.abs(f.profit)), forecast: isFinite(f.forecast) ? say('ledger.forecast', { forecast: fmt(f.forecast) }) : '' }) : say('ledger.none'),
+    say('ledger.wage', { days: f.days, wage: fmt(f.wage), share: fmt(f.share) }),
+    ...(f.hall ? [say('ledger.hall', { pct: Math.round(DEBT_SHARE * 100), hall: fmt(f.hall), owed: fmt(f.owed) })] : []),
   ].join('<br>');
-  const column = `Under the crew column, below ${crewNamed('engineer')} and ${crewNamed('pilot')}, ${f.profit > 0 ? `there is a line in ${cap.first}'s hand with your name on it.` : 'your line is empty.'} ${say(a.column)}`;
-  const ashore = `"You're off until ${cap.first} has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew."`;
+  const column = `${say(f.profit > 0 ? 'column.share' : 'column.empty', { engineer: crewNamed('engineer'), pilot: crewNamed('pilot') })} ${own('column')}`;
   return {
-    title: 'Settling Up', personal: true,
-    text: [say(a.open), ledger, say(a.memory), column, ashore].join('</p><p>'),
+    title: say('title'), personal: true,
+    text: [own('open'), ledger, own('memory'), column, say('ashore')].join('</p><p>'),
     choices: [
-      { label: 'Ask how long a ship takes', run: () => say(a.pace) },
-      { label: 'Go ashore', run: () => `${xo.first} takes the book back up the ramp.` },
+      { label: say('pace.label'), run: () => own('pace') },
+      { label: say('ashore.label'), run: () => say('ashore.result', { xo: xo.first }) },
     ],
   };
 }

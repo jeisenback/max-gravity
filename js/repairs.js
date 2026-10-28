@@ -22,12 +22,11 @@ function repairPlan(planet) {
 // Days that pass in port at once, with the same new-day events as a burn (a job ashore, jobs.js). The yard's own days pass as nights (stay.js).
 function repairDays(n) { const st = G.state; for (let i = 0; i < n; i++) { st.day++; Mods.emit('newDay', st.day); } }
 
+// The words are the lines of 'scene:repair' (hiredscenes.js); the plan's figures and what each choice does are here.
 function repairScene(planet) {
-  const st = G.state, h = hired(), plan = repairPlan(planet), cap = hiredCaptain();
-  const where = plan.yard ? `The yard at ${planet.name} has a berth` : `${planet.name} has no yard, only a dock crew and a welding rig`;
-  const source = plan.held ? `The captain will use ${plan.tons}t of the refined metals in the hold for plate, and take the loss on the cargo.`
-    : plan.stocked ? `The plate is ${plan.tons}t of refined metals from the market here, at the yard's price: ${fmt(plan.parts)} cr.`
-    : `Nobody here stocks refined metals, so the plate has to be shipped in: ${plan.wait} more days.`;
+  const st = G.state, h = hired(), plan = repairPlan(planet), cap = hiredCaptain(), say = (key, vars) => sceneSay('scene:repair', key, vars);
+  const where = say(plan.yard ? 'where.yard' : 'where.field', { planet: planet.name });
+  const source = say(plan.held ? 'source.held' : plan.stocked ? 'source.stocked' : 'source.wait', { tons: plan.tons, parts: fmt(plan.parts), wait: plan.wait });
   const finish = (days, text) => () => {
     const total = plan.total;
     if (plan.held) { st.cargo.metal -= plan.tons; if (st.cargo.metal <= 0) { delete st.cargo.metal; delete st.paid.metal; } }
@@ -36,27 +35,25 @@ function repairScene(planet) {
     st.armor = ship().armor;
     beginStay(h, days, 'yard');  // the days pass as nights on the pad (stay.js)
     const pay = Math.round(h.wage * STANDBY_PAY * days); st.credits += pay;
-    return `${text} The yard wants ${days} day${days === 1 ? '' : 's'} before she sails, and the hull will be whole. Parts and labor came to ${fmt(total)} cr from the ship's fund, and will come out of the next run before the share is cut. Captain ${cap.last} paid you ${fmt(pay)} cr standby.`;
+    return say('done', { text, days: say(days === 1 ? 'days.one' : 'days.many', { n: days }), total: fmt(total), last: cap.last, pay: fmt(pay) });
   };
   const days = plan.days + plan.wait, choices = [];
-  choices.push({ label: 'Stand by while the work is done', run: finish(days, 'You stand by, and the work gets done around you.') });
-  choices.push({ label: 'Help with the repair', run() {
+  choices.push({ label: say('stand.label'), run: finish(days, say('stand.result')) });
+  choices.push({ label: say('help.label'), run() {
     const faster = Math.max(1, days - 1);
     if (h.post === 'engineer') gainSkill('engineer', 3); else like(cap, 1, sceneSay('scene:memories', 'repair.memory'));
-    return finish(faster, h.post === 'engineer' ? 'You work the plate beside the yard crew, and learn from them. (Experience gained.)' : 'You carry plate and hold the light, and the work goes faster for it.')();
+    return finish(faster, say(h.post === 'engineer' ? 'help.engineer' : 'help.other'))();
   } });
-  choices.push({ label: 'Work the dock for pay', run() {
+  choices.push({ label: say('dock.label'), run() {
     const earn = 300 * days; st.credits += earn;
-    return finish(days, `You hire out on the dock for the duration and earn ${fmt(earn)} cr.`)();
+    return finish(days, say('dock.result', { earn: fmt(earn) }))();
   } });
-  if (handHurt() || Object.keys(st.injured || {}).length) choices.push({ label: 'Rest and let the hurt mend', run() {
+  if (handHurt() || Object.keys(st.injured || {}).length) choices.push({ label: say('rest.label'), run() {
     if (h.hurtUntil) delete h.hurtUntil;
     for (const id of Object.keys(st.injured || {})) delete st.injured[id];
-    return finish(days, 'You and the others sleep, eat and sit in the sun lamp for a few days. The aches go.')();
+    return finish(days, say('rest.result'))();
   } });
-  return { title: 'Hull Damage', personal: true, text: (`The ship has taken enough damage on the way in that she cannot sail as she is. ${where}, and ` +
-      `the estimate is ${plan.days} days${plan.wait ? ` and ${plan.wait} waiting for a shipment` : ''}. ${source} Labor is ${fmt(plan.labor)} cr. The ` +
-      `captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.`), choices };
+  return { title: say('title'), personal: true, text: say('text', { where, days: plan.days, wait: plan.wait ? say('text.wait', { wait: plan.wait }) : '', source, labor: fmt(plan.labor) }), choices };
 }
 
 Mods.register({

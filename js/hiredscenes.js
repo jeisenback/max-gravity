@@ -42,6 +42,10 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:walk-off', fn: 'walkOffScene', file: 'js/fate.js', title: 'Walking Off', where: 'port', when: 'When a main character leaves the ship at a port.' },
   { id: 'scene:used-ship-offer', fn: 'dealScene', file: 'js/hired.js', title: 'The Used Ship', where: 'port', when: 'When the used Ore Runner is offered, after the captain\'s two scenes.' },
   { id: 'scene:yard-office', fn: 'yardScene', file: 'js/yardoffice.js', title: 'The Yard Office', where: 'port', when: 'When you ask to buy a ship.' },
+  { id: 'scene:mourn', fn: 'mournScene', file: 'js/losses.js', title: 'After the Loss', where: 'port', when: 'At the first port after a crew member is killed: how you mark it (a service and a meal, a letter home with money, a few words aboard, or nothing), and how the crew take it.' },
+  { id: 'scene:repair', fn: 'repairScene', file: 'js/repairs.js', title: 'Hull Damage', where: 'port', when: 'At a port, when the ship comes in with a tenth of her hull or more gone: the yard\'s estimate, and how you spend the days while she is mended.' },
+  { id: 'scene:settling-up', fn: 'arrivalScene', file: 'js/captains.js', title: 'Settling Up', where: 'port', when: 'Once, at the port the first run ends at: the first officer shows you the captain\'s page of the run (the cargo, your wage and share, the hall bond) and you go ashore. The first officer\'s own words are theirs (Cato\'s in this game).' },
+  { id: 'scene:arc-offers', plain: true, fn: 'arcOffer', file: 'js/arcs.js', title: 'Mission Arc Offers', where: 'port', when: 'On the Missions page, when a freight office that knows the ship has work that is not freight (a sealed crate, a passenger, a notice): the offer\'s title and what it says.' },
   { id: 'scene:fight', fn: 'shipFightEvent', file: 'js/fightui.js', title: 'Battle Stations', where: 'transit', when: 'A pirate contact or a navy stop, fought turn by turn on the sensor board: the opening, her move and the captain\'s, the orders to the guns, a line a turn, and how it ends.' },
   { id: 'scene:contact', fn: 'contactEvent', file: 'js/engage.js', title: 'Contact', where: 'transit', when: 'A pirate or a navy ship on an intercept course on a burn: what the sensors show of her, the ways out (fight, run, pay her off, spoof her, heave to for the navy), and the hand\'s own move at a pirate from the post.' },
   { id: 'scene:fight-entry', fn: 'contactEvent', file: 'js/engage.js', title: 'Who Comes to Fight', where: 'transit', when: 'The five contacts of chapter 1\'s ladder of fights, in order: a lone raider, a corsair who knows of the payment the ship is carrying, a navy patrol checking papers, two raiders who heard the crew asking a yard about a hull, and the corsair who knows the Ore Runner\'s price. Each opens with its own line in place of the sensor\'s; the choices are the contact\'s.' },
@@ -576,6 +580,55 @@ const SCENE_LINES = {
     'pair.text': 'It\'s two raiders and not one, lying off the lane, and only the first has lit her drive. Word goes round a dock when a crew has been asking a yard about a hull, and the raiders who hear it hunt in pairs, one to pin the drive and one to board. The second plume lights as the first one turns.',
     'setpiece.text': 'A corsair comes off the yard\'s own beacon with her drive already lit. Her hail names the Ore Runner and the price on the yard list, {price} cr. "The bank sells the names of who\'s asking after its ships, eighty credits a name," the voice says, "and yours was on it this week."',
   },
+  'scene:mourn': {  // after a loss (losses.js mournScene): {who} is the name of the one lost, {role} their post (role.none if they had none)
+    title: 'After the Loss',
+    text: '{who}, the {role}, is on the ship\'s memorial now, and the ship is in port. There is a berth with a made bunk and a locker nobody has opened. The crew are waiting to see what you do.',
+    'role.none': 'hand',
+    'service.label': 'Hold a service at the port, and stand the crew a meal (1,500 cr from the ship)',
+    'service.result': 'You find the port\'s chapel, a plain room with a rail and a window, and the crew stand in it for a while with their hands at their sides. Afterward there is a meal, and nobody eats much, and everybody stays.',
+    'letter.label': 'Write to their family, and send a month\'s savings (1,000 cr of yours)',
+    'letter.result': 'It takes you an evening and four drafts. The letter says what they were like aboard, which was true, and that there is something enclosed, which is not enough. You send it on the next outbound packet.',
+    'words.label': 'Say a few words aboard, and go on',
+    'words.result': 'You gather the crew in the galley and say what you can. It is short. Then everyone goes back to their post, and the berth stays empty at the table.',
+    'silence.label': 'Say nothing, and keep working',
+    'silence.result': 'There is a run to make and a clock on it. You do not mention it, and neither does anyone else for a while, which is its own kind of mention.',
+  },
+  'scene:repair': {  // the yard (repairs.js repairScene): {planet} the port, {tons} the plate, {parts} and {labor} the sums, {wait} the days a shipment takes, {days} the estimate; done.* closes every choice
+    title: 'Hull Damage',
+    text: 'The ship has taken enough damage on the way in that she cannot sail as she is. {where}, and the estimate is {days} days{wait}. {source} Labor is {labor} cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.',
+    'text.wait': ' and {wait} waiting for a shipment',
+    'where.yard': 'The yard at {planet} has a berth',
+    'where.field': '{planet} has no yard, only a dock crew and a welding rig',
+    'source.held': 'The captain will use {tons}t of the refined metals in the hold for plate, and take the loss on the cargo.',
+    'source.stocked': 'The plate is {tons}t of refined metals from the market here, at the yard\'s price: {parts} cr.',
+    'source.wait': 'Nobody here stocks refined metals, so the plate has to be shipped in: {wait} more days.',
+    'stand.label': 'Stand by while the work is done',
+    'stand.result': 'You stand by, and the work gets done around you.',
+    'help.label': 'Help with the repair',
+    'help.engineer': 'You work the plate beside the yard crew, and learn from them. (Experience gained.)',
+    'help.other': 'You carry plate and hold the light, and the work goes faster for it.',
+    'dock.label': 'Work the dock for pay',
+    'dock.result': 'You hire out on the dock for the duration and earn {earn} cr.',
+    'rest.label': 'Rest and let the hurt mend',
+    'rest.result': 'You and the others sleep, eat and sit in the sun lamp for a few days. The aches go.',
+    done: '{text} The yard wants {days} before she sails, and the hull will be whole. Parts and labor came to {total} cr from the ship\'s fund, and will come out of the next run before the share is cut. Captain {last} paid you {pay} cr standby.',
+    'days.one': '{n} day', 'days.many': '{n} days',
+  },
+  'scene:settling-up': {  // the first arrival (captains.js arrivalScene): the captain's page of the first run, read with the first officer; {cap} is the captain's first name. The first officer's own lines are theirs (settlingLines below)
+    title: 'Settling Up',
+    'ledger.cargo': '{tons} t {good}. Bought {cost}. Sold {revenue}. {net} {profit}.{forecast}',
+    'ledger.loss': 'Loss', 'ledger.clear': 'Clear', 'ledger.forecast': ' Forecast, {forecast}.',
+    'ledger.none': 'No cargo this run.',
+    'ledger.wage': 'Your wage for {days} days, {wage}. Your share, {share}.',
+    'ledger.hall': 'Hall bond, {pct} percent of your pay: {hall}. Still owed: {owed}.',
+    'column.share': 'Under the crew column, below {engineer} and {pilot}, there is a line in {cap}\'s hand with your name on it.',
+    'column.empty': 'Under the crew column, below {engineer} and {pilot}, your line is empty.',
+    ashore: '"You\'re off until {cap} has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew."',
+    'pace.label': 'Ask how long a ship takes',
+    'ashore.label': 'Go ashore',
+    'ashore.result': '{xo} takes the book back up the ramp.',
+  },
+  'scene:arc-offers': {},  // the offers' titles and blurbs are each arc's own (arcOfferLines below)
   'scene:put-ashore': {
     title: 'Put Ashore',
     text: 'Captain {last} is at the foot of the ramp with the articles in one hand and your bag in the other. "I said I\'d say it once," the captain says. "I did. The berth isn\'t yours after this port." Your pay is settled to the day.',
@@ -965,7 +1018,21 @@ function walkOffLines() {
   for (const [who, c] of Object.entries(CAST)) if (c.farewell) { out[`walk.${who}`] = c.farewell.walk; for (const [id, line] of c.farewell.facts) out[`fact.${who}.${id}`] = line; }
   return out;
 }
-const linesOf = id => (BEAT_LINES[id] ? BEAT_LINES[id]() : id === 'scene:walk-off' ? walkOffLines() : SCENE_LINES[id] || null);
+// A first officer's words at the first arrival are in their own entry (`arrival`: open, memory, column, pace), so Settling Up lists theirs with its own; the memory is `recall`
+// here, since a line named memory is a memory's plain text.
+function settlingLines() {
+  const out = { ...SCENE_LINES['scene:settling-up'] };
+  for (const [who, c] of Object.entries(CAST)) if (c.arrival) for (const k of ['open', 'memory', 'column', 'pace']) out[`${who}.${k === 'memory' ? 'recall' : k}`] = c.arrival[k];
+  return out;
+}
+// A mission arc's offer is in its own entry (arcs.js MISSION_ARCS: title, blurb).
+function arcOfferLines() {
+  const out = {};
+  for (const [id, a] of Object.entries(MISSION_ARCS)) { out[`${id}.title`] = a.title; out[`${id}.blurb`] = a.blurb; }
+  return out;
+}
+const OWN_LINES = { 'scene:walk-off': walkOffLines, 'scene:settling-up': settlingLines, 'scene:arc-offers': arcOfferLines };  // rows that list a person's or an arc's own words with the scene's
+const linesOf = id => (BEAT_LINES[id] ? BEAT_LINES[id]() : OWN_LINES[id] ? OWN_LINES[id]() : SCENE_LINES[id] || null);
 const BEAT_LINES = { 'beats:ambush': ambushLines, 'beats:dead-in-space': deadLines, 'beats:repel': () => repelLines(false), 'beats:assault': () => repelLines(true), 'beats:deck': deckLines };
 
 // Every id, with what it is and where its scene lives: { id, kind, key, name, scene } for a cast or captain scene (its scene object), { id, kind: 'work' |
