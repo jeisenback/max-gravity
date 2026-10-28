@@ -792,10 +792,11 @@
     for (let i = 1; i <= segs.length; i++) if (keys.includes([...segs.slice(0, i), '1', ...segs.slice(i)].join('.'))) return 0;
     return null;
   };
-  // The fight a fight row's line needs (#795): our deck or hers for the deck lines, the patrol for the navy's lines, the veteran corsair for the torpedo's, the pair for the
+  // The fight a fight row's line needs (#795): our deck, hers or the navy's for the deck lines, the patrol for the navy's lines, the veteran corsair for the torpedo's, the pair for the
   // consort's, else the lone raider. A deck row plays on its own deck (the shared lines on ours).
   const fightFor = (id, key) => (id === 'beats:assault' ? 'deck-assault' : id !== 'scene:fight' ? 'deck-repel'
-    : /^deck\.(hers|cargoHers|who\.assault|withdraw\.assault)/.test(key) ? 'deck-assault' : /^deck\./.test(key) ? 'deck-repel'
+    : /^deck\.(hers|cargoHers|who\.assault|withdraw\.assault)/.test(key) ? 'deck-assault'
+      : /^(deck\.(who\.navy|navy\.|end\.(searched|cited))|memory\.searched)/.test(key) ? 'deck-navy' : /^deck\./.test(key) ? 'deck-repel'  // the boarding party's own lines are the navy's deck, where a raider's fight does not show them
       : /^open\.gun\.|\.gun$/.test(key) || key === 'end.crippled.patrol' || key === 'memory.navy' ? 'fight-patrol'
         : /consort/.test(key) || key === 'first.hers' ? 'fight-pack' : /(^|\.)torp/.test(key) ? 'fight-veteran' : 'fight-raider');  // the pair starts a volley behind; a torpedo on the consort is carried in (playFight)
   // The post the hand fights at (#795): an ability's own post, another than the gunner's for a crew gunner's order (so one is aboard to give it to), else the post chosen.

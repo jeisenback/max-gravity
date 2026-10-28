@@ -785,6 +785,7 @@ test('the tester panel drops a hired hand into each kind of fight, early and lat
       out[id] = { title: G.dialog.event.title, kind: f && f.state.kind, foes: f && f.state.foes.length, ship: f && f.foe.shipId, grade: f && f.grade, patrol: f && f.spec.kind === 'patrol', torp: G.dialog.choices.some(c => /orpedo/.test(c.label)), post: hired().post };
     }
     item('deck-repel').setup(); out.repel = { kind: now() && now().state.kind, assault: now() && now().state.assault, grade: now() && now().state.grade };
+    item('deck-navy').setup(); out.navy = { kind: now().state.kind, party: now().state.party, assault: now().state.assault, grade: now().state.grade, gov: now().d.foe.gov, ship: now().d.foe.shipId, text: G.dialog.event.text, read: G.dialog.event.read || '' };
     item('deck-assault').setup(); out.dead = G.dialog.event.title; const n = /(\d+) of yours against (\d+) of hers/.exec(G.dialog.event.text);
     chooseEvent(G.dialog.choices.findIndex(c => /Board/.test(c.label))); const e = G.nextEvent; G.nextEvent = null; openEvent(e);
     out.assault = { kind: now().state.kind, assault: now().state.assault, stated: n && Number(n[2]), began: now().state.began };
@@ -800,11 +801,13 @@ test('the tester panel drops a hired hand into each kind of fight, early and lat
   assert.deepEqual([r['fight-veteran'].ship, r['fight-veteran'].grade, r['fight-veteran'].torp], ['corsair', 2, true]);
   assert.ok(r['fight-patrol'].patrol);
   assert.deepEqual(r.repel, { kind: 'deck', assault: false, grade: 1 });
+  assert.deepEqual([r.navy.kind, r.navy.party, r.navy.assault, r.navy.grade, r.navy.ship], ['deck', 'navy', false, 1, 'cutter'], 'a navy patrol boards: her party, on our deck');
+  assert.ok(r.navy.gov && /The boarding party/.test(r.navy.read) && /Turn 1 of 5/.test(r.navy.read) && /standing with/.test(r.navy.text), r.navy.read);
   assert.equal(r.dead, 'Dead in Space');
   assert.deepEqual([r.assault.kind, r.assault.assault], ['deck', true]); assert.equal(r.assault.stated, r.assault.began, 'the count she states is the fight that opens');
   assert.deepEqual(r.late, { grade: 1, skill: 4, level: 3, sighted: true, kit: ['valve-keys'], friends: true }, 'the late hand: level 3 and boresighted (skill 4 in the fight), the keys, friends aboard, and a raider a grade better');
   assert.equal(r.lateRepel, 2);
-  assert.deepEqual(r.lateIds, ['late-fight-raider', 'late-fight-pack', 'late-fight-veteran', 'late-fight-patrol', 'late-deck-repel', 'late-deck-assault']);
+  assert.deepEqual(r.lateIds, ['late-fight-raider', 'late-fight-pack', 'late-fight-veteran', 'late-fight-patrol', 'late-deck-repel', 'late-deck-navy', 'late-deck-assault']);
   await done();
 });
 
