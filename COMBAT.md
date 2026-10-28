@@ -428,6 +428,12 @@ the run that wrote this section (after the final review's tune, #808):
   hand's hurts in the soak. A fight lasts 5.3 turns on the mean over every policy and type, and 14% of `answer`'s fights reach the turn
   cap (none against a raider or a cutter, 8% against a corsair, 64% against a pair; 97% over every type before the pool, at
   #808, when most of its wins were on points at the cap).
+  A navy destroyer (three patrol stops in ten, and met only by a ship hostile with that navy) is not in the table: she is a ship
+  to heave to for, not to fight (the owner's choice, #833), and the tool plays her as its own trials to show it. At three seeds
+  of 100 no policy has more than 5% good ends against her (random play 5%, `answer` none). `answer` fights her to the cap
+  until the captain runs (99%), and loses 55% of the hull a fight. Every gun at her hull or her weapons is boarded by her every
+  time (a search and its fine). Heaving to at the contact (engage.js) is the way out, and it lifts the standing back to -10,
+  above the -15 line that sends the patrols.
   The values, against Task 7's: every damage and part bar is about 0.7 of them, so that kills are slower and a raider's run to
   the knife is a race: your guns 8 to 14 (12 to 20), hers 7 to 18 (10 to 26), your torpedo 12 to 18 and hers 20 to 30
   (`SALVO_DMG`, split from `TORP_DMG`; both 30 to 45), her weapons 63 a mount (90), the drive 34 (50), the lock 7 (10), the

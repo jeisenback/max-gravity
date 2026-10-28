@@ -17,7 +17,7 @@ const { answerOrders, answerDeck } = require('./answer');
 const { load } = require('../tests/nodecontext');
 
 // One seed's trials. Returns raw tallies, so the seeds can be summed.
-async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, raid = true, lock = true, cutter = true, groups = null, moves = false } = {}) {  // raid: false leaves out the ship fights; lock: false the deck fights started directly; cutter: false the navy stop's trials; groups: only these groups of deck fights
+async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, raid = true, lock = true, cutter = true, groups = null, moves = false } = {}) {  // raid: false leaves out the ship fights; lock: false the deck fights started directly; cutter: false the navy stop's trials (a cutter and a destroyer); groups: only these groups of deck fights
   const { ev, errors, ctx } = await open({ scope: 'earth-hired', seed, debt: true, stall: 0 });
   const r = await ev(([trials, postKey, shipId, asOwner, raidFights, lockFights, cutter, groups, answerSrc, withMoves, deckSrc, runSeed]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: 'hester' }); while (G.dialog) finishEvent();
@@ -116,7 +116,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       const capped = next ? (openEvent(next), drive('shoot')) : false;  // the close, dead in space, or the deck fight
       return { end, s, hull: (armor0 - G.state.armor) / maxArmor, c: lost(G.state), capped };
     };
-    // By matchup: a lone ship by its hull, or a pair of raiders. The cutter is a navy stop's (a pirate never flies one), played as its own trials. Each end is counted
+    // By matchup: a lone ship by its hull, or a pair of raiders. The cutter and the destroyer are a navy stop's (a pirate never flies one), each played as its own trials. Each end is counted
     // by its name (a lost fight is 'ran' or 'lost'), with the hull lost, the turns and whether it reached the turn cap.
     const tally = (policy, who, { end, s, hull }) => {
       const m = out.match[`${policy}|${who}`] = out.match[`${policy}|${who}`] || { n: 0, good: 0, lostFight: 0, died: 0, hull: 0, rounds: 0, atCap: 0 };
@@ -136,6 +136,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
         tally(policy, s ? (s.pack ? 'raider pair' : s.foe.shipId) : 'none', trial);
       }
       if (cutter) for (let i = 0; i < trials / 2; i++) tally(policy, 'cutter', shipTrial(policy, { kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }));
+      if (cutter) for (let i = 0; i < trials / 2; i++) tally(policy, 'destroyer', shipTrial(policy, { kind: 'patrol', gov: 'Arcology Compact', shipId: 'destroyer' }));  // the navy's other ship, three stops in ten (engage.js makeEnemy): a ship to heave to for (#833)
     }
 
     // The deck fights, started directly: kind 'repel' (they board you) or 'assault' (you board her), against the party from her type.
@@ -208,7 +209,7 @@ function report(runs) {
     console.log(`  ${policy.padEnd(8)} n ${String(t.n).padStart(4)}  crippled ${pct(t.crippled, t.n)} (boarded her ${pct(t.assaultWon, t.crippled)})  broke off ${pct(t.broke, t.n)}  got away ${pct(t.away, t.n)}  captain ran ${pct(t.ran, t.n)}  boarded ${pct(t.boarded, t.n)} (held ${pct(t.boardedWon, t.boarded)})  hull gone ${pct(t.lost, t.n)}  escaped ${pct(t.escaped, t.n)}  you killed ${pct(t.died, t.n)}  rounds ${per(t.rounds, t.n)}  hull -${Math.round((100 * t.hull) / t.n)}%  someone hurt ${pct(t.anyHurt, t.n)}  dead ${per(t.dead, t.n)}  you hurt ${pct(t.hand, t.n)}  capped ${t.capped}`);
   }
   // By the type she is: each policy's good ends, lost fights, hull lost and turns, and the spread of the ends; then each policy over every type.
-  const match = sum(runs, 'match'), TYPES = ['raider', 'corsair', 'cutter', 'raider pair'], ENDS = ['crippled', 'broke', 'escaped', 'away', 'boarded', 'ran', 'lost'];
+  const match = sum(runs, 'match'), TYPES = ['raider', 'corsair', 'cutter', 'destroyer', 'raider pair'], ENDS = ['crippled', 'broke', 'escaped', 'away', 'boarded', 'ran', 'lost'];
   const row = (label, t) => `    ${label.padEnd(8)} n ${String(t.n).padStart(4)}  good ${pct(t.good, t.n)}  lost ${pct(t.lostFight, t.n)}  hull -${((100 * t.hull) / Math.max(1, t.n)).toFixed(1).padStart(4)}%  turns ${per(t.rounds, t.n)}  at cap ${pct(t.atCap || 0, t.n)}  ${ENDS.map(e => `${e} ${pct(t[e] || 0, t.n)}`).join(' ')}  you killed ${pct(t.died, t.n)}`;
   const policies = [...new Set(Object.keys(match).map(k => k.split('|')[0]))];
   for (const type of TYPES.filter(x => policies.some(p => match[`${p}|${x}`]))) {
