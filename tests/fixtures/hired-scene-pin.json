@@ -3330,6 +3330,36 @@
   }
  },
  {
+  "id": "cast:cato:firstRaid",
+  "i": 0,
+  "label": "Take your post",
+  "result": "He lets go of the hatch frame. \"Choose what you'd choose,\" he says. \"I'll be behind you.\"",
+  "changes": [],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take your post",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take your post",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take your post",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Take your post",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
   "id": "cast:ilsa:intro",
   "i": 0,
   "label": "Ask how long she has had the night watch",

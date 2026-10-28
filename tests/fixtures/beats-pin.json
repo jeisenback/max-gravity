@@ -4414,5 +4414,29 @@
     }
    }
   ]
+ },
+ {
+  "id": "settle:taken:navy",
+  "text": "They're on the bridge. Captain Vance surrenders the ship to the Arcology Compact Navy, and the boarding officer writes a levy of 36,000 cr against the ship's fund, which is collected on the spot. The cutter lets you go, with a citation.",
+  "next": null,
+  "mem": [
+   "9 Jul 2214: The bridge was taken on your watch."
+  ],
+  "fx": {
+   "fund": -36000,
+   "p1": -1
+  }
+ },
+ {
+  "id": "settle:taken:captain",
+  "text": "They're on the bridge. Captain Vance is at the console and doesn't give them the code, so they take it. They take 36,000 cr of the ship's fund and go. The ship still flies. Captain Vance doesn't get up.",
+  "next": "Without a Captain",
+  "mem": [
+   "9 Jul 2214: The bridge was taken on your watch."
+  ],
+  "fx": {
+   "fund": -36000,
+   "p1": -1
+  }
  }
 ]

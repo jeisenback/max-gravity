@@ -20,12 +20,12 @@ function startShipFight(spec, flee, o = {}) {
   const st = G.state, foe = makeEnemy(spec), style = RAID_STYLE[foe.shipId] || 'grapple';
   const s = { spec, foe, style, edge: o.edge || 0, d: { foe, foeHp: 0 }, hurt: new Set(), dead: [], marked: [], youHurt: false, known: hired() && lockPost() === 'gunner' ? knownMoves(career()) : [] };  // known: the moves this fight offers
   if (spec.kind === 'patrol' && !flee) changeRep(spec.gov, -8);  // firing on a navy ship is not forgotten
-  let text = o.text || `Battle stations. ${theShip(foe)} made the intercept.`;
+  let text = o.text || fightSay('start.text', { ship: theShip(foe) });
   if (flee) {
-    if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) return `${helmName()} winds the drive past the redline and opens the range. Their plume fades.${runCost()}`;
+    if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) return `${fightSay('flee.away', { helm: helmName() })}${runCost()}`;
     st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.08));
     s.edge = -1;
-    text = `${helmName()} runs, but ${theShip(foe).replace(/^The/, 'the')} gets a burst in first. Battle stations.`;
+    text = fightSay('flee.caught', { helm: helmName(), ship: theShip(foe).replace(/^The/, 'the') });
   }
   if (spec.ladder) ladderDone(hired(), spec.ladder);  // a ladder step is met when its fight starts, also after a failed run, and not when it is run from (fightladder.js)
   captainFlag('raided');  // fought, not outrun: kept for the goodbye (captains.js)
@@ -209,7 +209,8 @@ function shipFightEnd(s, end) {
     if (cap) like(cap, 1, fightSay(s.spec.kind === 'patrol' ? 'memory.navy' : 'memory.stood'));
     if (s.spec.kind !== 'patrol') changeRep('Pirate', -3);
     gainSkill(post, 3);
-    close(`${fightSay(end === 'crippled' ? 'end.crippled.patrol' : `end.broke.${s.style}`)} ${cap ? `Captain ${cap.last} writes` : 'You write'} it in the log and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`);
+    const where = POSTS[post].name.toLowerCase();  // an owner has no captain, and writes it in the log themselves
+    close(`${fightSay(end === 'crippled' ? 'end.crippled.patrol' : `end.broke.${s.style}`)} ${cap ? fightSay('end.logged', { cap: `Captain ${cap.last}`, post: where }) : `You write it in the log and nothing else. (+3 experience at the ${where} post.)`}`);
     return;
   }
   const name = cap ? `Captain ${cap.last}` : helmName();

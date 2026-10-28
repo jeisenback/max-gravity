@@ -43,6 +43,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:used-ship-offer', fn: 'dealScene', file: 'js/hired.js', title: 'The Used Ship', where: 'port', when: 'When the used Ore Runner is offered, after the captain\'s two scenes.' },
   { id: 'scene:yard-office', fn: 'yardScene', file: 'js/yardoffice.js', title: 'The Yard Office', where: 'port', when: 'When you ask to buy a ship.' },
   { id: 'scene:fight', fn: 'shipFightEvent', file: 'js/fightui.js', title: 'Battle Stations', where: 'transit', when: 'A pirate contact or a navy stop, fought turn by turn on the sensor board: the opening, her move and the captain\'s, the orders to the guns, a line a turn, and how it ends.' },
+  { id: 'scene:contact', fn: 'contactEvent', file: 'js/engage.js', title: 'Contact', where: 'transit', when: 'A pirate or a navy ship on an intercept course on a burn: what the sensors show of her, the ways out (fight, run, pay her off, spoof her, heave to for the navy), and the hand\'s own move at a pirate from the post.' },
   { id: 'scene:fight-entry', fn: 'contactEvent', file: 'js/engage.js', title: 'Who Comes to Fight', where: 'transit', when: 'The five contacts of chapter 1\'s ladder of fights, in order: a lone raider, a corsair who knows of the payment the ship is carrying, a navy patrol checking papers, two raiders who heard the crew asking a yard about a hull, and the corsair who knows the Ore Runner\'s price. Each opens with its own line in place of the sensor\'s; the choices are the contact\'s.' },
   { id: 'beats:dead-in-space', fn: 'deadInSpaceScene', file: 'js/engagements.js', title: 'Dead in Space', where: 'transit', when: 'After a ship fight, when her drive and guns are gone and she drifts beside you.' },
   { id: 'beats:ambush', fn: 'ambushScene', file: 'js/engagements.js', title: 'An Ambush', where: 'transit', when: 'On a dangerous lane, every 60 days at most.' },
@@ -456,6 +457,10 @@ const SCENE_LINES = {
   'scene:fight': {  // the ship fight (fightui.js): {ship} is her name, {cap} the captain's (the helm's, for an owner), {part} a part's word, {lo} to {hi} what her volley can do, {hits} what a volley did, {name} a gunner move's name, {label} a move's order as it reads before it is ordered
     title: 'Battle Stations',
     'run.days': 'The run costs {days} on the burn.',
+    // how it starts (startShipFight): {ship} is her name as the sentence takes it, {helm} who has the helm; a run that gets away, and one she catches; then how she is rated (shipcombat.js foeFlavor)
+    'start.text': 'Battle stations. {ship} made the intercept.',
+    'flee.away': '{helm} winds the drive past the redline and opens the range. Their plume fades.', 'flee.caught': '{helm} runs, but {ship} gets a burst in first. Battle stations.',
+    'grade.1': 'Her crew have done this before.', 'grade.2': 'She is flown by a hard crew, with a captain who has done it for years.', pair: 'There are two of them, running in company.',
     'open.gun.0': 'A navy ship at thirty kilometers, on an intercept course with her guns warm. She has hailed twice, and the second hail said there won\'t be a third.',
     'open.gun.1': 'A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.',
     'open.grapple.0': 'A raider at forty kilometers and closing, with no transponder and her drive running hot.',
@@ -485,6 +490,7 @@ const SCENE_LINES = {
     'end.broke.torpedo': 'She closes her bay doors with a torpedo still in the tube and turns away.',
     'end.crippled.grapple': 'Her grapple arms go slack, and she tumbles past your bow with no plume behind her.',
     'end.crippled.torpedo': 'The corsair\'s drive cone splits, and she coasts on with her bay doors stuck half open.',
+    'end.logged': '{cap} writes it in the log and nothing else. (+3 experience at the {post} post.)',  // after she breaks off or is crippled, for a hand: {post} is the hand's
     'end.ran': 'The ship is the worse hurt, and {cap} calls it off. The guns go quiet on both sides with nothing settled. It goes in the log as a lost fight.',
     'end.ran.cargo': '{cap} has {qty}t of {good} dumped to run lighter.',
     'end.lost.cargo': 'They take {qty}t of {good} from the hold as well.',
@@ -509,6 +515,17 @@ const SCENE_LINES = {
     'deck.navy.down': 'Each of them put down costs standing with {gov}: {n} so far.',  // a navy party's fight, under the deck: {n} is the standing lost so far
     'deck.end.searched': 'They hold the bridge. The boarding officer has the ship searched berth by berth, writes the citation, and fines her {fine} cr, collected on the spot. The boarding party goes back across, and the ship is let go with the fine in her log.',  // a navy party held our bridge: {fine} is the heave-to's fine
     'deck.end.cited': 'They go back through the lock with the citation logged, and {fine} cr goes out of the ship\'s fund.',  // a navy party that withdrew at its cap: {fine} is the heave-to's fine, which the citation stands for (boarders.js repelSettle, #828). Drafted for the owner to edit
+    // who keeps out of a deck fight (boarders.js repelCrew): {first} the one who won't, {other} the one they are at odds with
+    'deck.held.enemy': '{first} won\'t fight for you.', 'deck.held.feud': '{first} won\'t stand in the same section as {other}.',
+    // the hurt and the fallen, in any fight (boarders.js hurtHand and repelCasualty; a job ashore hurts the hand with the same lines): the hand's (killed, or killed hurt again; hurt, or hurt again; the clinic it pays, {cr}),
+    // a friend who takes it for the hand ({first}; the one who owed you says so), and a crewmate's ({first}) hit again (dead, or alive and unfit where a floor holds), hit hard (dead, or carried below), or hurt
+    'hurt.you.down': 'You\'re hurt again, and you stay down.', 'hurt.you.hit': 'You\'re hit.', 'hurt.you': 'You are hurt. Your work counts a level lower until the clinic clears you.', 'hurt.you.again': 'You are hurt again, and you stay down.',
+    'hurt.clinic': 'The clinic is {cr} cr of your own, with no medic aboard.',
+    cover: '{first} pulls you down behind the closer and takes it.', 'cover.even': '{first} pulls you down behind the closer and takes it ("We are even," {first} says later).',
+    'hit.again.dead': '{first} is hit again and doesn\'t get up.', 'hit.again.marked': '{first} is hit again and doesn\'t get up. {first} is alive, and {first} isn\'t fit to work.',
+    'hit.dead': '{first} is hit, and doesn\'t get up, and won\'t.', 'hit.marked': '{first} is hit, and carried below, and is alive, and isn\'t fit to work.', 'hit.hurt': '{first} is hurt.',
+    // the cause of a death in a fight, on the memorial and in the ship's log (boarders.js killedHow): the ship fight, a navy stop, boarding her, holding our deck; {system} where. Plain text
+    'killed.raid.log': 'Killed in a raid near {system}.', 'killed.navy.log': 'Killed in a navy stop near {system}.', 'killed.assault.log': 'Killed boarding a crippled ship near {system}.', 'killed.repel.log': 'Killed repelling boarders near {system}.',
     'deck.push': '{who}: {n} pushing into {to}.', 'deck.rush': '{who}: {n} rushing through {via} into {to}.', 'deck.wave': '{n} more at the lock next turn.', 'deck.aboard': '{n} aboard, {m} still to come', 'deck.round': '{who}: {n} going round through {to}.', 'deck.hold': '{who}: holding where they are.',
     'deck.charge': '{who}: a charge on {at}, set from {from}. Hit them in {from} to stop it; it blows this turn.', 'deck.pullback': 'Pull back: ours here fall back to {to}',
     'deck.holdfire': 'Hold fire: stand ready, fire at nobody', 'deck.holdfire.you': 'You hold your fire.',  // the act that does nothing (fightui.js DECK_ACTS), and its line after the turn: against a navy party, where each of them put down costs standing
@@ -526,6 +543,31 @@ const SCENE_LINES = {
     'deck.log.rush': '{n} of them rush into {to}', 'deck.log.rushStopped': '{n} of them rush and are stopped in {at}', 'deck.log.wave': '{n} more come through the lock',
     'deck.log.charge': 'the charge blows in {at}, {mine} of ours down', 'deck.log.chargeEmpty': 'the charge blows in {at} on nobody', 'deck.log.chargeStopped': 'the charge in {at} never blows: they were hit in {from}', 'deck.log.pullback': 'ours fall back to {to}',
     'deck.log.hatch': 'the hatch at {at} {how}', 'deck.hatch.worked': 'holds', 'deck.hatch.failed': 'does not close',
+  },
+  'scene:contact': {  // a contact on a burn (engage.js contactEvent): {km} is her range, {who} the line for who she is (or a ladder step's, scene:fight-entry), {gunner} who fights the guns, {crew} the crew member who spoofs, {cr} the payoff, {fine} the heave-to's fine; a run's days are said after (run.days of scene:fight)
+    title: 'Contact',
+    text: 'Sensors: a drive plume at {km} km, on an intercept course. {who}',
+    'who.pirate': 'No transponder. The plume signature says pirate.',
+    'who.patrol': 'Transponder: {gov} navy. You are wanted in their space.',
+    'who.bounty': 'Transponder spoofed, but the plume matches: {target}, the ship you are hunting.',
+    'who.hunter': 'A hired gun. The captain says {payer} sends regards.',
+    'fight.label': 'Battle stations ({gunner})',
+    'run.label': 'Burn hard to outrun them',
+    'pay.label': 'Pay them off (10% of your credits, at least 5,000)', 'pay.result': 'You transfer {cr} cr. Their plume swings away.',
+    'spoof.label': '[{crew}] Spoof a pirate transponder', 'spoof.win': '{crew}\'s fake transponder reads as one of their own. The plume swings away.',
+    'spoof.own': 'Your fake transponder reads as one of their own. The plume swings away.', 'spoof.lose': 'They see through it.',  // the spoof when it is the hand's own, at the comms post; a miss goes to the fight either way
+    // the hand's own move at a pirate (HAND_CONTACT), by post: a win gives you the first volley and a loss gives it to her (the armor a loss costs is said after it)
+    'move.pilot.label': 'Take the helm and break her intercept',
+    'move.pilot.win': 'You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations.',
+    'move.pilot.lose': 'You put the ship across her line a second late. She is already inside the turn, and her first burst takes the aft plating before the range opens enough to matter. Battle stations.',
+    'move.gunner.label': 'Put a burst across her bow',
+    'move.gunner.win': 'The burst crosses her bow at a kilometer. She comes off her line, and on the open band a voice asks whether you are always this friendly. Her guns are still warm. Battle stations.',
+    'move.gunner.lose': 'The burst goes wide. She has your range by then, and her answer comes back across the hull in three places. Battle stations.',
+    'move.engineer.label': 'Cut the drive and go dark',
+    'move.engineer.win': 'You pull the drive down to a cold idle and the plume goes out. The ship coasts with the lights on emergency, and she overshoots your heading by eight kilometers before her sensors pick you up again. Battle stations.',
+    'move.engineer.lose': 'You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations.',
+    'heave.label': 'Heave to and take the fine from the ship\'s fund',  // a navy stop, for a hired hand: the ship pays a quarter of its fund
+    'heave.result': 'You cut the drive and the cutter closes. The boarding officer reads the citation, and {fine} cr goes out of the ship\'s fund. The ship is logged as settled. For now.',
   },
   'scene:fight-entry': {  // the line a contact of chapter 1's ladder opens with in place of the sensor's (engage.js contactEvent, fightladder.js), by step: {cap} is the captain, {patrol} the patrol as the game names her (PATROL_NAMES), {price} the Ore Runner's
     'raider.text': 'No transponder, and one plume, with nothing else on the board behind her. A raider who works alone picks a hauler with no escort, since one grapple crew can take a ship this size and nobody has to share. "Two guns on this ship, and she hasn\'t changed her line for either of them," {cap} says.',
@@ -935,6 +977,7 @@ function hiredSceneRegistry() {
       out.push({ id: `cast:${key}:${name}`, kind: 'cast', key, name, scene });
       if (scene.closed) out.push({ id: `cast:${key}:${name}:closed`, kind: 'cast', key, name, closed: true, scene: scene.closed });
     }
+    if (c.firstRaid) out.push({ id: `cast:${key}:firstRaid`, kind: 'cast', key, name: 'firstRaid', scene: c.firstRaid });  // a first officer's word before the first fight (captains.js raidExplanation), not one of the scenes they are drawn for
   }
   if (typeof CAST_BAR !== 'undefined') for (const [key, list] of Object.entries(CAST_BAR)) list.forEach((scene, i) => out.push({ id: `cast:${key}:bar${i + 1}`, kind: 'cast', key, name: `bar${i + 1}`, bar: true, scene }));  // a main character's talk at a port bar (castbar.js)
   for (const [key, c] of Object.entries(CAPTAINS)) {

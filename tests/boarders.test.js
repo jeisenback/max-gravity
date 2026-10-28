@@ -223,6 +223,24 @@ test('a friend takes the first hit meant for you, once in a fight, and the rest 
   await done();
 });
 
+test('a friend who shares a first name with a crewmate who keeps out still takes the hit for you: the one held out is known by who they are, not by the name (#796)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fight(), h = hired(), [a, b] = generated(2), d = { foe: makeEnemy(DUEL_SPEC), foeHp: 4, init: 'foe' };
+    Object.assign(a, { first: 'Dana', opinion: OPINION.ENEMY }); Object.assign(b, { first: 'Dana', opinion: OPINION.FRIEND }); delete h.hurtUntil;
+    const s = repelStart(d, 'full'), real = Math.random;
+    Math.random = () => 0.999;  // the last in the list, which is you
+    let line;
+    try { line = repelCasualty(s); } finally { Math.random = real; }
+    return { held: s.held, line, friendHurt: !!(st.injured || {})[b.id], heldHurt: !!(st.injured || {})[a.id], youHurt: !!(h.hurtUntil > st.day) };
+  });
+  assert.deepEqual(r.held, ['Dana won\'t fight for you.']);
+  assert.match(r.line, /^Dana pulls you down behind the closer and takes it\. Dana is hurt/);
+  assert.ok(r.friendHurt && !r.heldHurt && !r.youHurt, 'the friend took it, not the one held out, nor you');
+  await done();
+});
+
 test('a hired hand boards a ship that resists as the deck fight on her deck, and a ship that has given up needs no fight', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
