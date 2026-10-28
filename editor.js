@@ -432,6 +432,16 @@
         const crew = folk().filter(f => f.crew && !f.p.cast), st = G.state;
         const build = {
           'scene:sign-on': () => { st.carried = null; return signOnEvent(); }, 'scene:warning': warningScene, 'scene:put-ashore': putAshoreScene, 'scene:hand-death': () => handDeathScene('hurt'),
+          'scene:mourn': () => mournScene(crew[0] ? crew[0].p : { first: 'Mara', last: 'Quill', role: 'engineer' }),  // a loss: the first of the crew stands in for the one lost (#796)
+          'scene:repair': () => { if (!hired()) return null; st.armor = Math.min(st.armor, Math.round(ship().armor * (1 - REPAIR_AT * 2))); return repairScene(currentPlanet()); },  // the ship in with a fifth of her hull gone
+          'scene:settling-up': () => {  // the first arrival, with a first run's figures standing in, read with the first officer of the captain chosen
+            const xo = hired() && hiredXo();
+            if (!xo || !CAST[xo.cast].arrival) return null;
+            hired().first = { good: 'water', tons: 40, cost: 20000, revenue: 31000, profit: 11000, forecast: 9000, wage: 1200, share: 400, days: 9, hall: 0, owed: 0, planet: st.planet };
+            standIn = 'The first run\'s figures are stand-ins: 40 t of water, a clear 11,000.';
+            return arrivalScene();
+          },
+          'scene:arc-offers': () => ({ title: 'Mission Arc Offers', text: Object.keys(MISSION_ARCS).map(arc => { const j = arcJob({ arc }), fill = t => t.replace(/\{dest\}/g, MISSION_ARCS[arc].dest).replace(/\{who\}/g, 'Clerk Okafor'); return `${esc(fill(j.title))}: ${esc(fill(j.blurb))}`; }).join(' | '), personal: true, choices: [{ label: 'Carry on', run: () => '' }] }),  // the three offers, as the Missions page lists them, with a stand-in clerk
           'scene:pitch': () => { const dest = SYSTEMS.mars.planets[0].name; return pitchScene({ tpl: 'package', ctx: { dest, from: G.state.planet, who: 'Mrs. Adeyemi', system: SYSTEMS.mars.name, scale: 1.2 }, sid: 'mars', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false }); },
           'scene:customs': () => tiesPreview(gov => customsScene(gov, currentPlanet(), false), 'wanted'), 'scene:dock-friend': () => tiesPreview(gov => dockFriendScene(gov, currentPlanet()), 'officer'),
           'scene:war-call': () => tiesPreview(() => warCallScene(currentPlanet()), 'member', true),

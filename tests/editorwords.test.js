@@ -192,6 +192,17 @@ test('the freight agent, the side on the manifest, the day ashore and the close 
   }
 });
 
+test('After the Loss, Hull Damage, Settling Up and the arc offers open in the preview landed at a port, with the line typed (#796, batch 3)', async () => {
+  await reload();
+  for (const [id, line] of [['scene:mourn', 'text'], ['scene:mourn', 'silence.label'], ['scene:repair', 'source.stocked'], ['scene:settling-up', 'ledger.wage'], ['scene:settling-up', 'cato.open'], ['scene:arc-offers', 'league.blurb']]) {
+    await select(id);
+    await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${line}.`);
+    const f = await play();
+    const seen = await f.evaluate(() => JSON.stringify([G.mode, G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
+    assert.ok(seen.includes(`Typed ${line}.`) && seen.startsWith('["landed"'), `${id} ${line} plays: ${seen.slice(0, 200)}`);
+  }
+});
+
 test('a function scene at a port previews landed there, and one in a burn previews in a burn (#794)', async () => {
   await reload();
   for (const [id, mode] of [['scene:customs', 'landed'], ['scene:dock-friend', 'landed'], ['scene:day-ashore', 'landed'], ['scene:chapter-two-end', 'landed'], ['scene:freight-side', 'landed'], ['scene:hand-death', 'transit']]) {

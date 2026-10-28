@@ -26,31 +26,29 @@ function loseCrew(c, cause) {
 }
 
 // ---------- the scene afterwards ----------
-// Each way of marking it is loved and hated by traits; the crew answer in their own voice.
+// Each way of marking it is loved and hated by traits; the crew answer in their own voice. Its words are the `<key>.label` and `<key>.result` lines of
+// 'scene:mourn' (hiredscenes.js).
 const MOURN = [
-  { label: 'Hold a service at the port, and stand the crew a meal (1,500 cr from the ship)', loves: ['pious', 'kind', 'homesick', 'generous'], hates: ['rude', 'greedy'], fund: 1500,
-    text: 'You find the port\'s chapel, a plain room with a rail and a window, and the crew stand in it for a while with their hands at their sides. Afterward there is a meal, and nobody eats much, and everybody stays.' },
-  { label: 'Write to their family, and send a month\'s savings (1,000 cr of yours)', loves: ['kind', 'homesick', 'generous'], hates: ['greedy'], cost: 1000, like: 'cap',
-    text: 'It takes you an evening and four drafts. The letter says what they were like aboard, which was true, and that there is something enclosed, which is not enough. You send it on the next outbound packet.' },
-  { label: 'Say a few words aboard, and go on', loves: ['talkative', 'kind', 'brave'], hates: [],
-    text: 'You gather the crew in the galley and say what you can. It is short. Then everyone goes back to their post, and the berth stays empty at the table.' },
-  { label: 'Say nothing, and keep working', loves: ['rude', 'greedy', 'brave'], hates: ['kind', 'pious', 'homesick', 'generous'],
-    text: 'There is a run to make and a clock on it. You do not mention it, and neither does anyone else for a while, which is its own kind of mention.' },
+  { key: 'service', loves: ['pious', 'kind', 'homesick', 'generous'], hates: ['rude', 'greedy'], fund: 1500 },
+  { key: 'letter', loves: ['kind', 'homesick', 'generous'], hates: ['greedy'], cost: 1000, like: 'cap' },
+  { key: 'words', loves: ['talkative', 'kind', 'brave'], hates: [] },
+  { key: 'silence', loves: ['rude', 'greedy', 'brave'], hates: ['kind', 'pious', 'homesick', 'generous'] },
 ];
+const mournSay = (key, vars) => sceneSay('scene:mourn', key, vars);
 function mournScene(m) {
   const st = G.state, h = hired(), cap = h && hiredCaptain();
   const who = `${m.first} ${m.last}`, crew = st.crew.map(person).filter(Boolean);
-  return { title: 'After the Loss', personal: true,
-    text: [`${who}, the ${ROLE_NAMES[m.role] ? ROLE_NAMES[m.role].toLowerCase() : 'hand'}, is on the ship's memorial now, and the ship is in port. There is a berth with a made bunk and a locker nobody has opened. The crew are waiting to see what you do.`,
+  return { title: mournSay('title'), personal: true,
+    text: [mournSay('text', { who, role: ROLE_NAMES[m.role] ? ROLE_NAMES[m.role].toLowerCase() : mournSay('role.none') }),
       ...(m.cast ? farewellFacts(m.cast) : [])].join('</p><p>'),
-    choices: MOURN.map(o => ({ label: o.label, ...(o.cost ? gated(needCr(o.cost)) : {}), run() {
+    choices: MOURN.map(o => ({ label: mournSay(`${o.key}.label`), ...(o.cost ? gated(needCr(o.cost)) : {}), run() {
       if (o.cost) st.credits -= o.cost;
       if (o.fund && h) h.fund = Math.max(0, h.fund - o.fund);
       const lines = [];
       for (const p of crew) { const r = barReact(p, o.loves, o.hates), n = r.n === 2 ? 1 : r.n === -1 ? -1 : 0; if (n) like(p, n, sceneSay('scene:memories', n > 0 ? 'mourn.honored.memory' : 'mourn.slighted.memory', { first: m.first })); if (r.line &&
         lines.length < 2) lines.push(r.line); }
       if (cap && o.like === 'cap') like(cap, 1, sceneSay('scene:memories', 'mourn.wrote.memory', { first: m.first }));
-      return `${o.text} ${lines.join(' ')}`.trim();
+      return `${mournSay(`${o.key}.result`)} ${lines.join(' ')}`.trim();
     } })),
   };
 }

@@ -25,8 +25,9 @@ const ARC_PEOPLE = {
   dag: { first: 'Dag', last: 'Ibarra', job: 'master rigger', at: 'Luna' },
 };
 
-// An offer in the shape the Missions page and the pitch read (awayjobs.js): no stages, only a title and a blurb; the far end is the arc's first scene.
-const arcJob = a => ({ id: `arc-${a.arc}`, title: MISSION_ARCS[a.arc].title, blurb: MISSION_ARCS[a.arc].blurb, stages: [] });
+// An offer in the shape the Missions page and the pitch read (awayjobs.js): no stages, only a title and a blurb, each the editor's words if it has any
+// ('scene:arc-offers', hiredscenes.js arcOfferLines); the far end is the arc's first scene.
+const arcJob = a => ({ id: `arc-${a.arc}`, title: lineWords('scene:arc-offers', `${a.arc}.title`, MISSION_ARCS[a.arc].title), blurb: lineWords('scene:arc-offers', `${a.arc}.blurb`, MISSION_ARCS[a.arc].blurb), stages: [] });
 // The scene that opens at the far end of an arc's offer (a storylet marked `chained`, so the landings do not pick it).
 function arcBeginning(a) { const s = STORYLETS.find(x => x.id === MISSION_ARCS[a.arc].first); return s ? storyletEvent(s) : null; }
 

@@ -204,8 +204,22 @@ const playScenes = () => {
   run('memory:landing', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { land(currentPlanet()); G.dialog = null; G.nextEvent = null; return ''; } }] }), { prep() { G.state.crew = []; G.player = G.player || { armor: ship().armor, x: 0, y: 0, vx: 0, vy: 0 }; uatPassenger('earth', G.state.planet); } });
   run('memory:lapsed', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { expireMissions(); return ''; } }] }), { prep() { uatPassenger('mars', 'Mars'); G.state.missions[0].deadline = G.state.day - 1; } });
   for (const edge of [3, -2, 0]) run(`memory:ice:${edge}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => iceHome(edge) }] }));
-  for (const post of ['gunner', 'engineer']) run(`memory:repair:${post}`, { post }, () => { const ev = repairScene(currentPlanet()); return { ...ev, choices: ev.choices.filter(c => c.label === 'Help with the repair') }; }, { prep() { G.state.armor = Math.max(1, ship().armor - 40); } });
+  // help with the repair, found by its place (an override renames it)
+  for (const post of ['gunner', 'engineer']) run(`memory:repair:${post}`, { post }, () => { const ev = repairScene(currentPlanet()); return { ...ev, choices: ev.choices.filter((c, i) => i === 1) }; }, { prep() { G.state.armor = Math.max(1, ship().armor - 40); } });
   run('memory:mourn', {}, () => mournScene({ first: 'Mara', last: 'Quill', role: 'engineer' }), { prep() { G.state.crew = []; crewOf(8); G.state.credits = 50000; } });
+  run('scene:mourn:no-role', {}, () => mournScene({ first: 'Mara', last: 'Quill' }), { skip: [0, 1, 2, 3] });  // a loss with no post on the books (#796)
+  // the yard (#796, scene:repair): the plate from the hold, from the market (above), or shipped in to a port with no yard, with every choice, a hurt crew member to rest
+  // and a one-day job; the plan is put to the case, since the ports the hand lands at have both a yard and metals for sale
+  for (const [kind, plan] of [['held', { yard: true, held: true, stocked: true, days: 2, tons: 2, wait: 0, parts: 0, labor: 2000 }], ['wait', { yard: false, held: false, stocked: false, days: 1, tons: 3, wait: 4, parts: 0, labor: 7500 }]]) {
+    run(`scene:repair:${kind}`, {}, () => { const real = repairPlan; repairPlan = () => ({ lost: 40, total: plan.parts + plan.labor, ...plan }); try { return repairScene(currentPlanet()); } finally { repairPlan = real; } },
+      { prep() { G.state.armor = Math.max(1, ship().armor - 40); G.state.cargo.metal = 5; G.state.crew = []; crewOf(2); G.state.injured = { [G.state.crew[0]]: true }; } });
+  }
+  // Settling Up (#796, scene:settling-up): the first run's page, a profit with a forecast and the hall bond, a loss, and no cargo; and each first officer's own words, at their captain's
+  for (const [kind, f] of [['profit', { good: 'water', tons: 40, cost: 20000, revenue: 31000, profit: 11000, forecast: 9000, hall: 800, owed: 39200 }], ['loss', { good: 'ore', tons: 30, cost: 18000, revenue: 16000, profit: -2000, forecast: NaN, hall: 0, owed: 0 }], ['empty', { good: null, tons: 0, cost: 0, revenue: 0, profit: 0, forecast: NaN, hall: 0, owed: 0 }]]) {
+    run(`scene:settling-up:${kind}`, {}, () => { hired().first = { wage: 1200, share: 400, days: 9, planet: G.state.planet, ...f }; return arrivalScene(); });
+  }
+  for (const key of ['dov', 'imre', 'zoya']) run(`scene:settling-up:${key}`, { captainKey: key }, () => { hired().first = { good: 'water', tons: 40, cost: 20000, revenue: 31000, profit: 11000, forecast: 9000, wage: 1200, share: 400, days: 9, hall: 0, owed: 0, planet: G.state.planet }; return arrivalScene(); });
+  run('scene:arc-offers', {}, () => ({ title: 'x', text: Object.keys(MISSION_ARCS).map(arc => { const j = arcJob({ arc }), fill = t => t.replace(/\{dest\}/g, MISSION_ARCS[arc].dest).replace(/\{who\}/g, 'Clerk Okafor'); return `${fill(j.title)}: ${fill(j.blurb)}`; }).join(' '), choices: [] }));  // the offers on the Missions page (#796)
   run('memory:strain', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { for (let i = 0; i < 3; i++) { takeControl('pilot'); handBack('pilot'); } return ''; } }] }), { prep() { G.state.crew = []; crewOf(4); G.state.crew.map(person).forEach(c => { c.role = 'pilot'; }); } });
   run('memory:clinic', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { treatInjuries(currentPlanet()); return ''; } }] }), { prep() { G.state.crew = []; crewOf(2); G.state.injured = { [G.state.crew[0]]: true }; G.state.credits = 50000; } });
   // ---------- the talks with the main characters at a bar ----------

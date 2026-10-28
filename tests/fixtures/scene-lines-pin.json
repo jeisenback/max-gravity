@@ -10035,6 +10035,277 @@
   ]
  },
  {
+  "id": "scene:mourn:no-role",
+  "plays": [],
+  "title": "After the Loss",
+  "text": "Mara Quill, the hand, is on the ship's memorial now, and the ship is in port. There is a berth with a made bunk and a locker nobody has opened. The crew are waiting to see what you do.",
+  "labels": [
+   "Hold a service at the port, and stand the crew a meal (1,500 cr from the ship)",
+   "Write to their family, and send a month's savings (1,000 cr of yours)",
+   "Say a few words aboard, and go on",
+   "Say nothing, and keep working"
+  ]
+ },
+ {
+  "id": "scene:repair:held",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You stand by, and the work gets done around you. The yard wants 2 days before she sails, and the hull will be whole. Parts and labor came to 2,000 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 350 cr standby.",
+    "fx": {
+     "credits": 350,
+     "fund": -2000
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You carry plate and hold the light, and the work goes faster for it. The yard wants 1 day before she sails, and the hull will be whole. Parts and labor came to 2,000 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 175 cr standby.",
+    "mem": [
+     "9 Jul 2214: You pitched in on the hull."
+    ],
+    "fx": {
+     "credits": 175,
+     "fund": -2000,
+     "p1": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You hire out on the dock for the duration and earn 600 cr. The yard wants 2 days before she sails, and the hull will be whole. Parts and labor came to 2,000 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 350 cr standby.",
+    "fx": {
+     "credits": 950,
+     "fund": -2000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You and the others sleep, eat and sit in the sun lamp for a few days. The aches go. The yard wants 2 days before she sails, and the hull will be whole. Parts and labor came to 2,000 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 350 cr standby.",
+    "fx": {
+     "credits": 350,
+     "fund": -2000
+    },
+    "next": null
+   }
+  ],
+  "title": "Hull Damage",
+  "text": "The ship has taken enough damage on the way in that she cannot sail as she is. The yard at Earth has a berth, and the estimate is 2 days. The captain will use 2t of the refined metals in the hold for plate, and take the loss on the cargo. Labor is 2,000 cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.",
+  "labels": [
+   "Stand by while the work is done",
+   "Help with the repair",
+   "Work the dock for pay",
+   "Rest and let the hurt mend"
+  ]
+ },
+ {
+  "id": "scene:repair:wait",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You stand by, and the work gets done around you. The yard wants 5 days before she sails, and the hull will be whole. Parts and labor came to 7,500 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 875 cr standby.",
+    "fx": {
+     "credits": 875,
+     "fund": -7500
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You carry plate and hold the light, and the work goes faster for it. The yard wants 4 days before she sails, and the hull will be whole. Parts and labor came to 7,500 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 700 cr standby.",
+    "mem": [
+     "9 Jul 2214: You pitched in on the hull."
+    ],
+    "fx": {
+     "credits": 700,
+     "fund": -7500,
+     "p1": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You hire out on the dock for the duration and earn 1,500 cr. The yard wants 5 days before she sails, and the hull will be whole. Parts and labor came to 7,500 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 875 cr standby.",
+    "fx": {
+     "credits": 2375,
+     "fund": -7500
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You and the others sleep, eat and sit in the sun lamp for a few days. The aches go. The yard wants 5 days before she sails, and the hull will be whole. Parts and labor came to 7,500 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 875 cr standby.",
+    "fx": {
+     "credits": 875,
+     "fund": -7500
+    },
+    "next": null
+   }
+  ],
+  "title": "Hull Damage",
+  "text": "The ship has taken enough damage on the way in that she cannot sail as she is. Earth has no yard, only a dock crew and a welding rig, and the estimate is 1 days and 4 waiting for a shipment. Nobody here stocks refined metals, so the plate has to be shipped in: 4 more days. Labor is 7,500 cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.",
+  "labels": [
+   "Stand by while the work is done",
+   "Help with the repair",
+   "Work the dock for pay",
+   "Rest and let the hurt mend"
+  ]
+ },
+ {
+  "id": "scene:settling-up:profit",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "\"A season,\" Cato says. \"Hester was a hand on this ship before she owned it. It took her three.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Cato takes the book back up the ramp.",
+    "next": null
+   }
+  ],
+  "title": "Settling Up",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>40 t water. Bought 20,000. Sold 31,000. Clear 11,000. Forecast, 9,000.<br>Your wage for 9 days, 1,200. Your share, 400.<br>Hall bond, 30 percent of your pay: 800. Still owed: 39,200.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. Look at the header.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Hester's hand with your name on it. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "labels": [
+   "Ask how long a ship takes",
+   "Go ashore"
+  ]
+ },
+ {
+  "id": "scene:settling-up:loss",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "\"A season,\" Cato says. \"Hester was a hand on this ship before she owned it. It took her three.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Cato takes the book back up the ramp.",
+    "next": null
+   }
+  ],
+  "title": "Settling Up",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>30 t ore. Bought 18,000. Sold 16,000. Loss 2,000.<br>Your wage for 9 days, 1,200. Your share, 400.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. Look at the header.\"</p><p>Under the crew column, below Tomas and Ines, your line is empty. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "labels": [
+   "Ask how long a ship takes",
+   "Go ashore"
+  ]
+ },
+ {
+  "id": "scene:settling-up:empty",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "\"A season,\" Cato says. \"Hester was a hand on this ship before she owned it. It took her three.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Cato takes the book back up the ramp.",
+    "next": null
+   }
+  ],
+  "title": "Settling Up",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>No cargo this run.<br>Your wage for 9 days, 1,200. Your share, 400.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. Look at the header.\"</p><p>Under the crew column, below Tomas and Ines, your line is empty. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "labels": [
+   "Ask how long a ship takes",
+   "Go ashore"
+  ]
+ },
+ {
+  "id": "scene:settling-up:dov",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "\"A season of runs,\" Ilsa says. \"More if the fuel goes up. I keep that in pencil.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Ilsa takes the book back up the ramp.",
+    "next": null
+   }
+  ],
+  "title": "Settling Up",
+  "text": "Ilsa is at the foot of the ramp with the maintenance board under one arm and the ledger on top of it. She has the page open before you reach her.</p><p>40 t water. Bought 20,000. Sold 31,000. Clear 11,000. Forecast, 9,000.<br>Your wage for 9 days, 1,200. Your share, 400.</p><p>\"I've checked it twice, in two pencils,\" Ilsa says. \"I do that with anything I'm going to hand to somebody.\" She slides the page an inch toward you. \"It's in your account. The header will say so.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Dov's hand with your name on it. \"That column is Dov's,\" Ilsa says. \"I don't touch it, and I don't read it either.\"</p><p>\"You're off until Dov has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "labels": [
+   "Ask how long a ship takes",
+   "Go ashore"
+  ]
+ },
+ {
+  "id": "scene:settling-up:imre",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "\"A season of good runs,\" Pilar says. \"Most seasons don't have that many.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Pilar takes the book back up the ramp.",
+    "next": null
+   }
+  ],
+  "title": "Settling Up",
+  "text": "Pilar comes down the ramp last, with the ledger in one hand and a spanner in the other, and puts both on the nearest crate. She opens the book with the spanner.</p><p>40 t water. Bought 20,000. Sold 31,000. Clear 11,000. Forecast, 9,000.<br>Your wage for 9 days, 1,200. Your share, 400.</p><p>\"First pay I ever drew on a hauler,\" Pilar says, \"the purser counted it into my hand and told me I wouldn't see that much again. I saw it again in March.\" She taps the page. \"Yours has gone to your account. Look at the header.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Imre's hand with your name on it. \"That column is Imre's,\" Pilar says. \"I've never been in it.\"</p><p>\"You're off until Imre has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "labels": [
+   "Ask how long a ship takes",
+   "Go ashore"
+  ]
+ },
+ {
+  "id": "scene:settling-up:zoya",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "\"A season, if the runs hold,\" Ansel says. \"I've written down what happens if they don't. It's a longer number.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Ansel takes the book back up the ramp.",
+    "next": null
+   }
+  ],
+  "title": "Settling Up",
+  "text": "Ansel is waiting at the foot of the ramp in his coat, with the ledger held flat against his chest like a tray. He opens it at the right page and holds it out.</p><p>40 t water. Bought 20,000. Sold 31,000. Clear 11,000. Forecast, 9,000.<br>Your wage for 9 days, 1,200. Your share, 400.</p><p>\"There are three numbers,\" Ansel says. \"The forecast, the result, and a third that I keep for myself, which is what the run would have paid if something had gone wrong. It's smaller than people like. I won't show you that one.\" He turns the book toward you. \"Yours is in your account. Look at the header.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Zoya's hand with your name on it. \"That column is Zoya's,\" Ansel says. \"I've advised against it, and it's hers to keep.\"</p><p>\"You're off until Zoya has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "labels": [
+   "Ask how long a ship takes",
+   "Go ashore"
+  ]
+ },
+ {
+  "id": "scene:arc-offers",
+  "plays": [],
+  "title": "x",
+  "text": "A Crate for The Hollows: Clerk Okafor has a sealed crate for the Hollows that the Hall will not put on a bill of lading. It has no weight to speak of, and a day on it. A Passenger for Eros Old Town: Clerk Okafor has a Fleet auditor who needs a berth to Old Town and does not want her name on the manifest. She travels light and pays on arrival. A Notice for Luna: Clerk Okafor has a notice of inspection for a rigger on Luna that the Office would rather not send by the relay. It is one page, and wants a signature.",
+  "labels": []
+ },
+ {
   "id": "memory:strain",
   "plays": [
    {
