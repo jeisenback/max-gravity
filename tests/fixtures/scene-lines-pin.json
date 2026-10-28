@@ -24233,5 +24233,473 @@
     "close": "Turn 5: nobody gives ground. None of them are where you stand.</p><p>The ones still standing back down the passage to their lock and cast off. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Black Debt\" lights, and she breaks away from the hull. They go back through the lock with the citation logged, and 5,000 cr goes out of the ship's fund."
    }
   ]
+ },
+ {
+  "id": "scene:contact:pirate:gunner",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Battle stations. The Pirate \"Crimson Tooth\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Battle stations. The Pirate \"Bitter Tooth\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Mate1 runs, but the Pirate \"Rusted Debt\" gets a burst in first. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "They see through it. Battle stations. The Pirate \"Silent Hook\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "The burst crosses her bow at a kilometer. She comes off her line, and on the open band a voice asks whether you are always this friendly. Her guns are still warm. Battle stations.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.99,
+    "text": "The burst goes wide. She has your range by then, and her answer comes back across the hull in three places. Battle stations. Her crew have done this before.",
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,750 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them",
+   "Pay them off (10% of your credits, at least 5,000)",
+   "[{crew}] Spoof a pirate transponder",
+   "[Gunner] Put a burst across her bow [65%; opens the range]"
+  ]
+ },
+ {
+  "id": "scene:contact:pirate:pilot",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Battle stations. The Pirate \"Crimson Widow\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Battle stations. The Pirate \"Crimson Widow\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "They see through it. Battle stations. The Pirate \"Silent Widow\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.99,
+    "text": "You put the ship across her line a second late. She is already inside the turn, and her first burst takes the aft plating before the range opens enough to matter. Battle stations. Armor -21.",
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,750 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them",
+   "Pay them off (10% of your credits, at least 5,000)",
+   "[{crew}] Spoof a pirate transponder",
+   "[Pilot] Take the helm and break her intercept [65%; opens the range; if it fails: hull damage, a crew casualty]"
+  ]
+ },
+ {
+  "id": "scene:contact:pirate:engineer",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Battle stations. The Pirate \"Silent Debt\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Battle stations. The Pirate \"Crimson Tooth\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Mate1 runs, but the Pirate \"Rusted Tooth\" gets a burst in first. Battle stations.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "They see through it. Battle stations. The Pirate \"Crimson Tooth\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You pull the drive down to a cold idle and the plume goes out. The ship coasts with the lights on emergency, and she overshoots your heading by eight kilometers before her sensors pick you up again. Battle stations.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.99,
+    "text": "You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations. Armor -21.",
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,750 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them",
+   "Pay them off (10% of your credits, at least 5,000)",
+   "[{crew}] Spoof a pirate transponder",
+   "[Engineer] Cut the drive and go dark [65%; opens the range; if it fails: hull damage, a crew casualty]"
+  ]
+ },
+ {
+  "id": "scene:contact:pirate:comms",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Battle stations. The Pirate \"Bitter Debt\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Battle stations. The Pirate \"Hungry Debt\" made the intercept. Her crew have done this before.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Mate1 runs, but the Pirate \"Crimson Knife\" gets a burst in first. Battle stations. Her crew have done this before.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "Your fake transponder reads as one of their own. The plume swings away.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "They see through it. Battle stations. The Pirate \"Crimson Hook\" made the intercept.",
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,750 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them",
+   "Pay them off (10% of your credits, at least 5,000)",
+   "[Comms] Spoof a pirate transponder"
+  ]
+ },
+ {
+  "id": "scene:contact:patrol",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Battle stations. The Compact cutter \"Distant Ember\" made the intercept.",
+    "mem": [
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact."
+    ],
+    "fx": {
+     "c:ines": 1,
+     "c:tomas": -1,
+     "p3": 1,
+     "p4": -1,
+     "p5": -1
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Battle stations. The Compact cutter \"Wandering Promise\" made the intercept.",
+    "mem": [
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact."
+    ],
+    "fx": {
+     "c:ines": 1,
+     "c:tomas": -1,
+     "p3": 1,
+     "p4": -1,
+     "p5": -1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Ines winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Ines winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You cut the drive and the cutter closes. The boarding officer reads the citation, and 30,000 cr goes out of the ship's fund. The ship is logged as settled. For now.",
+    "mem": [
+     "9 Jul 2214: We were stopped by a patrol and it cost the fund."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You cut the drive and the cutter closes. The boarding officer reads the citation, and 30,000 cr goes out of the ship's fund. The ship is logged as settled. For now.",
+    "mem": [
+     "9 Jul 2214: We were stopped by a patrol and it cost the fund."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. Transponder: Arcology Compact navy. You are wanted in their space.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them",
+   "Heave to and take the fine from the ship's fund"
+  ]
+ },
+ {
+  "id": "scene:contact:bounty",
+  "plays": [],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. Transponder spoofed, but the plume matches: Harlan Voss, the ship you are hunting.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them"
+  ]
+ },
+ {
+  "id": "scene:contact:hunter",
+  "plays": [],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. A hired gun. The captain says Mara Quill sends regards.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them"
+  ]
+ },
+ {
+  "id": "scene:fight:rated",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Battle stations. The Pirate \"Black Vulture\" made the intercept. Her crew have done this before.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Battle stations. The Pirate \"Bitter Debt\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "Battle stations. The Pirate \"Bitter Tooth\" made the intercept. There are two of them, running in company.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "Battle stations. The Pirate \"Bitter Vulture\" made the intercept. She is flown by a hard crew, with a captain who has done it for years. There are two of them, running in company.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x",
+   "x",
+   "x",
+   "x"
+  ]
+ },
+ {
+  "id": "cast:cato:firstRaid",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He lets go of the hatch frame. \"Choose what you'd choose,\" he says. \"I'll be behind you.\"",
+    "next": null
+   }
+  ],
+  "title": "The Guns Hatch",
+  "text": "Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. \"Look at the top of the board,\" he says. \"That's what she means to do next, and under it what the captain will do with the helm. You don't guess either.\"</p><p>He points at the guns. \"Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and she can't board us. If she hits us hard, someone gets hurt, maybe you, and your work counts a level lower for some days. I had it in the hold. I wore a glove for eleven days.\"",
+  "labels": [
+   "Take your post"
+  ]
  }
 ]

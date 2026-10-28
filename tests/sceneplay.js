@@ -200,7 +200,7 @@ const playScenes = () => {
   }
   run('hand:teach:none', {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => ACTIVITIES.teach.run() }] }));  // nothing due: the button teaches nothing and says nothing (text '')
   // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
-  run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.filter(c => /^Heave to/.test(c.label)) }; });
+  run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.slice(-1) }; });  // the heave-to, last of a hired hand's choices at a navy stop
   run('memory:landing', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { land(currentPlanet()); G.dialog = null; G.nextEvent = null; return ''; } }] }), { prep() { G.state.crew = []; G.player = G.player || { armor: ship().armor, x: 0, y: 0, vx: 0, vy: 0 }; uatPassenger('earth', G.state.planet); } });
   run('memory:lapsed', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { expireMissions(); return ''; } }] }), { prep() { uatPassenger('mars', 'Mars'); G.state.missions[0].deadline = G.state.day - 1; } });
   for (const edge of [3, -2, 0]) run(`memory:ice:${edge}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => iceHome(edge) }] }));
@@ -477,6 +477,17 @@ const playScenes = () => {
     } catch (err) { rec.error = String(err && err.stack || err); }
     out.push(rec);
   }
+  // ---------- a contact on a burn (engage.js contactEvent, #796), after the fight so the ids above stay: what the sensors show, and each choice at each post, won and lost; the fight
+  // a choice opens is left unplayed (its start is what the choice returns) ----------
+  const unfought = ev => ({ ...ev, choices: ev.choices.map(c => ({ ...c, run() { const t = c.run(); G.nextEvent = null; return t; } })) });
+  for (const post of ['gunner', 'pilot', 'engineer', 'comms']) run(`scene:contact:pirate:${post}`, { post }, () => unfought(contactEvent({ kind: 'pirate', shipId: 'raider' })), { rolls: [0, 0.99], prep() { G.state.crew = []; crewOf(4); } });
+  run('scene:contact:patrol', {}, () => unfought(contactEvent({ kind: 'patrol', gov: GOVT })), { rolls: [0, 0.99] });
+  run('scene:contact:bounty', {}, () => contactEvent({ kind: 'bounty', mission: { targetName: 'Harlan Voss' } }), { skip: [0, 1] });
+  run('scene:contact:hunter', {}, () => contactEvent({ kind: 'hunter', person: { first: 'Mara', last: 'Quill' } }), { skip: [0, 1] });
+  // how a fight opens on a veteran crew and on a pair (shipcombat.js foeFlavor), each grade and the pair alone and with one
+  run('scene:fight:rated', {}, () => ({ title: 'x', text: '', choices: [[1, false], [2, false], [0, true], [2, true]].map(([grade, pack]) => ({ label: 'x', run() { const t = startShipFight({ kind: 'pirate', shipId: 'raider', grade, pack }, false); G.nextEvent = null; return t; } })) }));
+  // the first officer's word before the first fight (captains.js raidExplanation): Cato's, under Hester
+  run('cast:cato:firstRaid', {}, () => { hired().raidTold = false; return raidExplanation(); });
   return out;
 };
 

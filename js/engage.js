@@ -60,18 +60,13 @@ function makeEnemy(spec) {
 // A hired hand's own move at a pirate contact (#386), one for each post that is not Comms (the spoof, below). Rolled on the hand's skill like the
 // spoof. A win gives you the first volley of the fight and a loss gives it to her (fightui.js); a loss also costs a share of the hull where `hull`
 // is set, as a failed run does (startShipFight). `range`: km the move opens (or closes, below nothing) the range the fight starts at, on a win and on a
-// loss (#710, range.js).
+// loss (#710, range.js). The words are the `move.<post>` lines of 'scene:contact' (hiredscenes.js).
 const HAND_CONTACT = {
-  pilot: { label: 'Take the helm and break her intercept', hull: true, range: [10, -10],
-    win: 'You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations.',
-    lose: 'You put the ship across her line a second late. She is already inside the turn, and her first burst takes the aft plating before the range opens enough to matter. Battle stations.' },
-  gunner: { label: 'Put a burst across her bow', range: [10, -10],
-    win: 'The burst crosses her bow at a kilometer. She comes off her line, and on the open band a voice asks whether you are always this friendly. Her guns are still warm. Battle stations.',
-    lose: 'The burst goes wide. She has your range by then, and her answer comes back across the hull in three places. Battle stations.' },
-  engineer: { label: 'Cut the drive and go dark', hull: true, range: [20, -10],
-    win: 'You pull the drive down to a cold idle and the plume goes out. The ship coasts with the lights on emergency, and she overshoots your heading by eight kilometers before her sensors pick you up again. Battle stations.',
-    lose: 'You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations.' },
+  pilot: { hull: true, range: [10, -10] },
+  gunner: { range: [10, -10] },
+  engineer: { hull: true, range: [20, -10] },
 };
+const contactSay = (key, vars) => sceneSay('scene:contact', key, vars);
 
 // The line a ladder contact opens with in place of the sensor's (#810): the step's reason for coming, from the lines of 'scene:fight-entry'. `cap` is the
 // hand's captain and `deal` the used Ore Runner on offer (h.deal), for the set piece's price.
@@ -84,55 +79,54 @@ function loseBurnDays(t, n) { t.lost = (t.lost || 0) + n; return n; }
 const runCost = () => (G.transit ? ` ${sceneSay('scene:fight', 'run.days', { days: dayWord(loseBurnDays(G.transit, RUN_DAYS)) })}` : '');
 function contactEvent(spec) {
   const st = G.state, d = fmt(Math.round(rand(3200, 3800) / 10) * 10);
-  const who = spec.ladder ? entryLine(spec, hiredCaptain(), hired() && hired().deal) : { pirate: 'No transponder. The plume signature says pirate.', patrol: `Transponder: ${spec.gov} navy. You are wanted in their space.`,
-    bounty: `Transponder spoofed, but the plume matches: ${spec.mission && spec.mission.targetName}, the ship you are hunting.`,
-    hunter: `A hired gun. The captain says ${spec.person && `${spec.person.first} ${spec.person.last}`} sends regards.` }[spec.kind];
+  const who = spec.ladder ? entryLine(spec, hiredCaptain(), hired() && hired().deal) : contactSay(`who.${spec.kind}`, { gov: spec.gov, target: spec.mission && spec.mission.targetName,
+    payer: spec.person && `${spec.person.first} ${spec.person.last}` });
   // A crewed gunner fights it; with none, you take the guns yourself.
   const choices = [
-    { label: `Battle stations (${gunnerLabel()})`, fight: true, run: () => startDuel(spec, false) },
-    { label: 'Burn hard to outrun them', run: () => startDuel(spec, true) },
+    { label: contactSay('fight.label', { gunner: gunnerLabel() }), fight: true, run: () => startDuel(spec, false) },
+    { label: contactSay('run.label'), run: () => startDuel(spec, true) },
   ];
   if (spec.kind === 'pirate') {
-    choices.push({ label: 'Pay them off (10% of your credits, at least 5,000)', cost: true, ...gated(needCr(5000)), run() {
+    choices.push({ label: contactSay('pay.label'), cost: true, ...gated(needCr(5000)), run() {
       const c = Math.max(5000, Math.round(st.credits * 0.1));
       st.credits -= c;
-      return `You transfer ${fmt(c)} cr. Their plume swings away.${runCost()}`;
+      return `${contactSay('pay.result', { cr: fmt(c) })}${runCost()}`;
     } });
-    choices.push({ label: '[{crew}] Spoof a pirate transponder', role: 'slicer', run() {
-      if (Math.random() < slicerOdds()) return `{crew}'s fake transponder reads as one of their own. The plume swings away.${runCost()}`;
-      return `They see through it. ${startDuel(spec, false)}`;
+    choices.push({ label: contactSay('spoof.label'), role: 'slicer', run() {
+      if (Math.random() < slicerOdds()) return `${contactSay('spoof.win')}${runCost()}`;
+      return `${contactSay('spoof.lose')} ${startDuel(spec, false)}`;
     } });
   }
   // A hired hand whose post fits one of the options makes the call (hiredCall, hired.js): the option is theirs, rolled on their skill.
   const post = lockPost(), hand = HAND_CONTACT[post];
-  if (spec.kind === 'pirate' && hand) choices.push({ label: `[{crew}] ${hand.label}${costNote({ hull: hand.hull, range: 'opens the range' }, postOdds(post))}`, role: POSTS[post].role, run() {
+  if (spec.kind === 'pirate' && hand) choices.push({ label: `[{crew}] ${contactSay(`move.${post}.label`)}${costNote({ hull: hand.hull, range: 'opens the range' }, postOdds(post))}`, role: POSTS[post].role, run() {
     const won = Math.random() < postOdds(post);
-    if (won) return startShipFight(spec, false, { edge: 2, shift: hand.range[0], text: hand.win });
+    if (won) return startShipFight(spec, false, { edge: 2, shift: hand.range[0], text: contactSay(`move.${post}.win`) });
     const pts = hand.hull ? Math.round(ship().armor * 0.08) : 0;
     st.armor = Math.max(1, st.armor - pts);
-    return startShipFight(spec, false, { edge: -1, shift: hand.range[1], text: `${hand.lose}${pts ? ` Armor -${pts}.` : ''}` });
+    return startShipFight(spec, false, { edge: -1, shift: hand.range[1], text: `${contactSay(`move.${post}.lose`)}${pts ? ` Armor -${pts}.` : ''}` });
   } });
   const mine = post && choices.find(c => c.role === POSTS[post].role);
   if (mine) {
     mine.label = mine.label.replace('{crew}', POSTS[post].name); mine.own = true;  // shown with no crew member in the role (transit.js)
     if (!hand) mine.run = () => Math.random() < postOdds(post)  // Comms: the spoof
-      ? `Your fake transponder reads as one of their own. The plume swings away.${runCost()}`
-      : `They see through it. ${startDuel(spec, false)}`;
+      ? `${contactSay('spoof.own')}${runCost()}`
+      : `${contactSay('spoof.lose')} ${startDuel(spec, false)}`;
   }
-  if (spec.kind === 'patrol' && hired()) choices.push({ label: `Heave to and take the fine from the ship's fund`, cost: true, run() {  // a hired hand has no 40,000 cr: the ship pays a quarter of its fund
+  if (spec.kind === 'patrol' && hired()) choices.push({ label: contactSay('heave.label'), cost: true, run() {  // a hired hand has no 40,000 cr: the ship pays a quarter of its fund
     const fine = heaveToFine();  // the navy's fine, the one a search charges (boarders.js)
     if (spec.ladder) ladderDone(hired(), spec.ladder);  // the ladder's cutter is a papers check: complying answers it, so the fine is paid once (fightladder.js)
     moveMoney(-fine);
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     like(person(hired().captain), -1, sceneSay('scene:memories', 'patrol-fine.memory'));
-    return `You cut the drive and the cutter closes. The boarding officer reads the citation, and ${fmt(fine)} cr goes out of the ship's fund. The ship is logged as settled. For now.`;
+    return contactSay('heave.result', { fine: fmt(fine) });
   } });
-  else if (spec.kind === 'patrol') choices.push({ label: 'Cut your drive and pay the fine (40,000 cr)', cost: true, ...gated(needCr(40000)), run() {
+  else if (spec.kind === 'patrol') choices.push({ label: 'Cut your drive and pay the fine (40,000 cr)', cost: true, ...gated(needCr(40000)), run() {  // the owner's: the money is theirs
     st.credits -= 40000;
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     return 'They take your money and log your ship as settled. For now.';
   } });
-  return { title: 'Contact', via: 'ship', ...(mine ? { owner: post } : {}), text: `Sensors: a drive plume at ${d} km, on an intercept course. ${who}`, choices };
+  return { title: contactSay('title'), via: 'ship', ...(mine ? { owner: post } : {}), text: contactSay('text', { km: d, who }), choices };
 }
 
 Mods.register({

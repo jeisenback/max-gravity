@@ -120,9 +120,11 @@
     // The hired chapter's scenes, as the game's own registry lists them (js/hiredscenes.js): each has its id there.
     for (const e of hiredSceneRegistry()) {
       if (e.kind === 'cast') {
-        const c = CAST[e.key], sc = e.bar ? e.scene : c.scenes[e.name], barNote = e.bar ? `Offered at a port bar ${sc.days} days after they join, as the first port with a bar after that day.` : '';
+        const c = CAST[e.key], sc = e.bar || e.name === 'firstRaid' ? e.scene : c.scenes[e.name], barNote = e.bar ? `Offered at a port bar ${sc.days} days after they join, as the first port with a bar after that day.` : '';
+        const raidNote = 'Before the first fight of a new game, once, from your first officer.';  // the first-fight explanation (captains.js raidExplanation)
         add({ id: e.id, where: e.name === 'meet' || e.bar ? 'port' : 'transit', file: fileOf['cast:' + e.key], belongs: `${e.key} (${c.xo ? 'first officer' : 'main character'})`, on: castOn(e.key),
-          conditionsNote: e.bar ? barNote : e.name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${e.closed ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`, pacing: e.bar ? { tier: null, weight: null, cooldown: 'plays once', trigger: barNote, editable: false } : pacingOf.cast(e.name, sc, e.closed), ...registryRow(e.scene) });
+          conditionsNote: e.bar ? barNote : e.name === 'firstRaid' ? raidNote : e.name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${e.closed ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`,
+          pacing: e.bar ? { tier: null, weight: null, cooldown: 'plays once', trigger: barNote, editable: false } : e.name === 'firstRaid' ? { tier: null, weight: null, cooldown: 'plays once', trigger: raidNote, editable: false } : pacingOf.cast(e.name, sc, e.closed), ...registryRow(e.scene) });
       } else if (e.kind === 'captain' && e.name !== 'goodbye') {
         const note = e.name === 'trouble' ? `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.` : e.name === 'secret:confide' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.` : `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.`;
         add({ id: e.id, where: 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: pacingOf.captain(e.name.split(':')[0]), ...registryRow(e.scene) });
@@ -350,7 +352,8 @@
     if (reg && FIGHT_ROWS.includes(reg.id) && m.fight) return playFight(m);
     const repair = !!reg && reg.id === 'scene:shiplife' && /^repair\./.test(m.line || '');  // the repair is offered to a hand at the engineer post, with the armor down
     const teach = !!reg && reg.id === 'scene:gunner-moves';  // a move is taught to a hand at the gunner post
-    const o = repair ? { ...m.setup, post: 'engineer' } : teach ? { ...m.setup, post: 'gunner' } : m.setup || {};
+    const contactPost = !!reg && reg.id === 'scene:contact' && ((String(m.line || '').match(/^move\.(pilot|gunner|engineer)\./) || [])[1] || (m.line === 'spoof.own' ? 'comms' : null));  // a hand's own move at a contact is played at its post
+    const o = repair ? { ...m.setup, post: 'engineer' } : teach ? { ...m.setup, post: 'gunner' } : contactPost ? { ...m.setup, post: contactPost } : m.setup || {};
     const place = planetNamed(o.place) ? o.place : 'Earth', at = planetNamed(place);
     const meeting = !!reg && reg.kind === 'cast' && reg.name === 'meet';  // an owner meets a main character at a port bar; a hired hand never does
     beginGame(meeting || pe ? { ...o, as: 'owner' } : o, !!reg && !meeting);
@@ -414,7 +417,7 @@
         castPerson(reg.key);
         openEvent(sceneWords(reg.id, { title: reg.scene.title, text: reg.scene.text, personal: true, choices: reg.scene.choices }));
       } else if (reg.kind === 'cast') {
-        const sc = CAST[reg.key].scenes[reg.name];
+        const sc = reg.name === 'firstRaid' ? reg.scene : CAST[reg.key].scenes[reg.name];  // the first-fight explanation opens as raidExplanation opens it
         if (sc.closed) castPerson(reg.key).opinion = reg.closed ? OPINION.FRIEND - 1 : OPINION.FRIEND;
         openEvent(castScene(reg.key, sc));
       } else if (reg.kind === 'function' && !reg.id.startsWith('beats:')) {  // a scene built by a function (#463), with what it needs about
@@ -469,6 +472,11 @@
             const plan = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 50, from: currentPlanet().name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false };
             standIn = `${crew[0].p.first} ${crew[0].p.last} stands in for the person the office wants: the first of the crew who is not a main character, whatever their ties.`;
             return sideScene(plan, { gov: 'Arcology Compact', p: crew[0].p }, freightAgent(currentPlanet()));
+          },
+          'scene:contact': () => {  // a pirate's contact, or the one whose line was typed: a navy patrol for its lines and the heave-to, a bounty or a hired gun for theirs
+            const kind = (String(m.line || '').match(/^who\.(patrol|bounty|hunter)$/) || [])[1] || (/^heave\./.test(m.line || '') ? 'patrol' : 'pirate');
+            if (contactPost) standIn = `The hand is at the ${contactPost} post, whose own move it is.`;
+            return contactEvent({ kind, ...(kind === 'patrol' ? { gov: 'Arcology Compact' } : {}), ...(kind === 'bounty' ? { mission: { targetName: 'Harlan Voss' } } : {}), ...(kind === 'hunter' ? { person: { first: 'Mara', last: 'Quill' } } : {}) });
           },
           'scene:fight-entry': () => {  // the contact of the step whose line was typed last, else the first; the Ore Runner on offer, for the set piece's price
             const step = FIGHT_LADDER.find(x => x.id === String(m.line || '').split('.')[0]) || FIGHT_LADDER[0];

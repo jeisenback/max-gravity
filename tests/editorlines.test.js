@@ -250,3 +250,24 @@ test('the entry lines of the ladder\'s fights are in the form, and the step whos
   assert.equal(seen.title, 'Contact');
   assert.match(seen.text, /^Sensors: a drive plume at [\d,]+ km, on an intercept course\. The (Compact cutter|Concord frigate|League militia), edited\. /, seen.text);
 });
+
+test('the contact on a burn has its lines in the form, and a hand\'s own move plays at its post in the preview (#796)', async () => {
+  await reload(); await select('scene:contact');
+  const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  for (const k of ['text', 'who.pirate', 'who.patrol', 'fight.label', 'pay.result', 'spoof.own', 'move.pilot.win', 'heave.result']) assert.ok(paths.includes(`part.${k}`), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.who.pirate"]', 'A pirate, edited.');
+  await page.fill('textarea[data-path="part.move.engineer.label"]', 'Go dark, edited');
+  const f = await play();
+  const seen = await f.evaluate(() => ({ title: G.dialog.event.title, text: G.dialog.event.text, labels: G.dialog.choices.map(c => c.label), post: hired().post }));
+  assert.equal(seen.title, 'Contact');
+  assert.match(seen.text, /^Sensors: a drive plume at [\d,]+ km, on an intercept course\. A pirate, edited\./, seen.text);
+  assert.equal(seen.post, 'engineer', 'the hand is at the post whose move was typed');
+  assert.ok(seen.labels.some(l => l.startsWith('[Engineer] Go dark, edited')), seen.labels.join(' | '));
+});
+
+test('the first officer\'s word before the first fight is a scene of theirs in the form, and plays in the preview (#796)', async () => {
+  await reload(); await select('cast:cato:firstRaid');
+  await page.fill('#f-title', 'The Hatch, edited');
+  const f = await play();
+  assert.equal(await f.evaluate(() => G.dialog.event.title), 'The Hatch, edited');
+});

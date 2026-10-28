@@ -5,7 +5,6 @@
 // boards (boarders.js). Loaded after engagements.js; only called into at runtime.
 
 const GRADE_HULL = 0.3, GRADE_PUNCH = 0.15;
-const GRADE_TEXT = ['', 'Her crew have done this before.', 'She is flown by a hard crew, with a captain who has done it for years.'];
 
 const laneDanger = () => { const st = G.state; return G.transit ? Math.max(danger(G.transit.to), danger(st.systemId)) : danger(st.systemId); };
 
@@ -21,7 +20,8 @@ function rateFoe(s) {
   if (s.pack) s.edge -= 1;
   return s;
 }
-const foeFlavor = s => `${GRADE_TEXT[s.grade] || ''}${s.pack ? ' There are two of them, running in company.' : ''}`.trim();
+// What the opening says of her: her grade and a pair, as the lines of 'scene:fight' (hiredscenes.js) have them.
+const foeFlavor = s => [s.grade ? fightSay(`grade.${s.grade}`) : '', s.pack ? fightSay('pair') : ''].filter(Boolean).join(' ');
 
 // ---------- boarding and repelling (boarders.js) ----------
 // How many come over the side: her ship's crew, DECK.FULL more when she came fully alongside (a pair DECK.FULL_PAIR; boarding her, DECK.ASSAULT.FULL more aboard her; a corsair DECK.CORSAIR_LESS fewer, so boarding her and in the duel's full run), two more a
