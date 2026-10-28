@@ -142,56 +142,47 @@ function addRumor() {
 
 // ---------- events ----------
 
+// The four a hired hand meets (#796) have an id, and their words are the lines of 'scene:<id>' (hiredscenes.js), read as they are shown; the game finds
+// them by id, so a title the editor changes does not lose them. What a choice does, and its odds, are here.
+const roadSay = (id, key, vars) => sceneSay(`scene:${id}`, key, vars);
 const TRANSIT_EVENTS = [
   {
-    title: 'Distress Call',
+    id: 'distress-call',
+    get title() { return roadSay('distress-call', 'title'); },
     via: 'ship',
-    text: ('A signal cuts through the static: "...reactor scram... life support failing... anyone..." The voice is thin and cracked. A private yacht ' +
-        'is drifting ballistic just off your trajectory, small and dark, with a single tumbling running light. There\'s no other traffic within a ' +
-        'day\'s burn. Whoever is aboard hasn\'t much air left.'),
+    get text() { return roadSay('distress-call', 'text'); },
     choices: [
-      { label: 'Kill your burn and help (costs time)', run() {
+      { get label() { return roadSay('distress-call', 'help.label'); }, run() {
         delay(15);
         if (Math.random() < 0.65) {
           chainTo('dc-owner');
-          return ('You match velocity, and cross in suits, and find three people in the yacht\'s galley, gray-faced, wrapped in blankets, breathing ' +
-              'in shallow sips. You patch their air recyclers with a borrowed part, and share some rations, and stay until the color returns to their ' +
-              'cheeks. The owner, a rich man in a torn silk shirt, grips your hand so hard it hurts. "I won\'t forget this," he says.');
+          return roadSay('distress-call', 'help.owner');
         }
         chainTo('dc-raiders');
-        return (`It was bait. Two raiders light their drives the moment you match velocity, dark shapes swinging out from behind the yacht\'s hull, ` +
-            `guns already hot. The "life support failure" was a recording, looping on a dead panel. You break away, hard, with ${hurt(0.3)} points of ` +
-            `armor damage and a long, ringing anger, at yourself, at them, at a universe in which this works.`);
+        return roadSay('distress-call', 'help.bait', { armor: hurt(0.3) });
       } },
-      { label: 'Stay on course', run: () => (applyEffects({ later: { 'dc-silence': 9 } }), ('You tune out the signal, and tell yourself it\'s ' +
-          'probably a trap, and it probably is. It fades behind you, thinner and thinner, until it\'s just a whisper in the static, and then it stops. ' +
-          'You don\'t sleep well, that night, and you don\'t know whether it\'s because of the voice or because of the silence that followed.')) },
+      { get label() { return roadSay('distress-call', 'stay.label'); }, run: () => (applyEffects({ later: { 'dc-silence': 9 } }), roadSay('distress-call', 'stay.result')) },
     ],
   },
   {
-    title: 'Pirates Matching Course',
+    id: 'pirates',
+    get title() { return roadSay('pirates', 'title'); },
     via: 'ship',
-    text: ('A dark ship with no transponder slides in off your quarter and matches your burn, close enough that you can see the scars on her hull, ' +
-        'and paints you with targeting lidar, a cold red pulse across your instruments. A voice on the open band, amused and very young: "Cargo or ' +
-        'credits, hoser. Your choice." Behind it, in the noise, someone\'s laughing, and someone else is quietly counting.'),
+    get text() { return roadSay('pirates', 'text'); },
     choices: [
-      { label: 'Pay them off (10% of your credits)', cost: true, run() {
+      { get label() { return roadSay('pirates', 'pay.label'); }, cost: true, run() {
         const c = Math.min(G.state.credits, Math.max(5000, Math.round(G.state.credits * 0.1)));
         G.state.credits -= c;
         applyEffects({ later: { 'pi-subscription': 20 } });
-        return `You transfer ${fmt(c)} cr. They peel off with a flash of their running lights, three long, one short, and on the open band a last, cheerful "Safe burn, hoser." You sit in the quiet with your hand still on the transfer key.`;
+        return roadSay('pirates', 'pay.result', { paid: fmt(c) });
       } },
-      { label: 'Dump half your biggest cargo', ...gated(needGoods), run: () => (`${loseCargo(0.5)} The crates tumble away into the dark, spinning and ` +
-          `glinting. The pirates chase them down, whooping on the channel, while you burn on. You watch their running lights dwindle, and try not to ` +
-          `do the arithmetic.`) },
-      { label: 'Fight', run: () => '' },  // a duel: engage.js sets what it does
-      { label: '[{crew}] Spoof a pirate transponder', role: 'slicer', run() {
-        if (Math.random() < slicerOdds()) return applyEffects({ later: { 'pi-brother': 12 } }) && ('{crew}\'s fake transponder reads as one of their ' +
-            'own, with a scrawled skull for good measure. They wave you through with a rude gesture, and one of them calls you "brother" over the ' +
-            'channel. You don\'t answer. Your hands on the controls aren\'t steady.');
-        return `They see through it in seconds and open fire. ${hurt(0.2)} points of armor damage before you get clear, and {crew} sits still afterward, mouthing a numbered list of what went wrong.`;
+      { get label() { return roadSay('pirates', 'dump.label'); }, ...gated(needGoods), run: () => roadSay('pirates', 'dump.result', { lost: loseCargo(0.5) }) },
+      { key: 'fight', get label() { return roadSay('pirates', 'fight.label'); }, run: () => '' },  // a duel: engage.js sets what it does
+      { get label() { return roadSay('pirates', 'spoof.label'); }, role: 'slicer', run() {
+        if (Math.random() < slicerOdds()) return applyEffects({ later: { 'pi-brother': 12 } }) && roadSay('pirates', 'spoof.win');
+        return roadSay('pirates', 'spoof.lose', { armor: hurt(0.2) });
       } },
-      { label: 'Hard burn to outrun them (50 reaction mass)', ...gated(needMass(50)), run: () => '' },  // a duel too (engage.js)
+      { key: 'burn', get label() { return roadSay('pirates', 'burn.label'); }, ...gated(needMass(50)), run: () => '' },  // a duel too (engage.js)
     ],
   },
   {
@@ -238,57 +229,43 @@ const TRANSIT_EVENTS = [
     ],
   },
   {
-    title: 'Derelict Ship',
+    id: 'derelict',
+    get title() { return roadSay('derelict', 'title'); },
     via: 'ship',
-    text: ('Your sensors pick up a derelict drifting dark, an old ore hauler with her hull breached, her running lights out, and a long black scorch ' +
-        'mark down one side. No transponder, no life signs, no heat signature. She has been dead a long time. Salvage rights go to whoever gets there ' +
-        'first, and the cockpit has gone quiet.'),
+    get text() { return roadSay('derelict', 'text'); },
     choices: [
-      { label: 'Match velocity and strip it', run() {
+      { get label() { return roadSay('derelict', 'strip.label'); }, run() {
         delay(10);
         if (Math.random() < 0.6) {
           const c = randInt(10, 30) * 1000;
           G.state.credits += c;
           chainTo('de-drawing');
-          return (`You go aboard in suits, through a tangle of cold, dark passages, past frozen coffee bulbs and a child\'s drawing pinned to a ` +
-              `bulkhead, and cut out the nav core and a crate of spare parts, worth ${fmt(c)} cr to the right buyer. On the way out, you don't look ` +
-              `at the drawing. You almost make it.`);
+          return roadSay('derelict', 'strip.win', { cr: fmt(c) });
         }
-        return `Something in the reactor section was still live. A blue-white flash, a slam like a hammer, and the blast, as you scramble for the airlock, costs you ${hurt(0.15)} points of armor, and leaves your ears ringing for an hour. You don't go back for the parts. Nobody suggests it.`;
+        return roadSay('derelict', 'strip.lose', { armor: hurt(0.15) });
       } },
-      { label: 'Log it and keep burning', run: () => (applyEffects({ later: { 'de-claim': 8 } }), ('Whatever happened to them, it\'s not your ' +
-          'business. You log the position, the ship\'s name and the time, and move on. Behind you the dead ship dwindles. Someone in the galley keeps ' +
-          'watching the screen, and nobody says why.')) },
+      { get label() { return roadSay('derelict', 'log.label'); }, run: () => (applyEffects({ later: { 'de-claim': 8 } }), roadSay('derelict', 'log.result')) },
     ],
   },
   {
-    title: 'Coolant Leak',
+    id: 'coolant-leak',
+    get title() { return roadSay('coolant-leak', 'title'); },
     via: 'crew', owner: 'engineer',
-    text: ('Alarms. A shrill wail goes through the whole ship, and on the reactor panel a line of lights goes from green to amber to red, one after ' +
-        'another. The coolant loop has sprung a leak somewhere in the tangle of pipes behind the drive housing, and the drive is running hotter every ' +
-        'minute, with a metallic ticking. The corridor smells of burnt glycol. Everyone\'s looking at you.'),
+    get text() { return roadSay('coolant-leak', 'text'); },
     choices: [
-      { label: '[{crew}] Handle it', role: 'engineer', run: () => ('{crew} is in the coolant loop before the alarm finishes, sleeves rolled, one hand ' +
-          'already on the valve. For twenty minutes there\'s only the sound of tools, and the hiss of venting steam, and low muttering. Then the ' +
-          'lights go back to green, one by one. "Go back to sleep, captain," {crew} says, wiping their hands, black to the elbows.') },
-      { label: 'Suit up and patch it', run() {
+      { get label() { return roadSay('coolant-leak', 'crew.label'); }, role: 'engineer', run: () => roadSay('coolant-leak', 'crew.result') },
+      { get label() { return roadSay('coolant-leak', 'patch.label'); }, run() {
         chainTo('cl-aftermath');
-        if (Math.random() < 0.5) return ('An hour in a vac suit with a sealant gun and some swearing, wedged into a space the size of a coffin, with ' +
-            'a flashlight in your teeth and a hot jet hissing at your elbow. Near the end of the hour the hiss stops. Good as new. You crawl out, ' +
-            'drenched, and someone hands you a cup of tea without a word.');
+        if (Math.random() < 0.5) return roadSay('coolant-leak', 'patch.win');
         const lost = Math.min(G.state.fuel, 50);
         G.state.fuel -= lost;
-        return (`The patch fails, in a spray of hot white vapor, and you vent ${lost} units of reaction mass before you get it sealed, on the second ` +
-            `try, with a great deal of swearing and a scorched sleeve. When it holds, at last, you slide down the wall and sit on the deck, laughing, ` +
-            `because it's that or something else.`);
+        return roadSay('coolant-leak', 'patch.lose', { lost });
       } },
-      { label: 'Throttle back and burn extra mass to cool it', run() {
+      { get label() { return roadSay('coolant-leak', 'throttle.label'); }, run() {
         const lost = Math.min(G.state.fuel, 25);
         G.state.fuel -= lost;
         chainTo('cl-aftermath');
-        return (`You throttle back, watching the needles, and burn ${lost} units of reaction mass through the leak in a long controlled sigh, and the ` +
-            `temperature settles, degree by degree. It's not elegant and it's not cheap. The drive is quiet again, and in the corridor the smell of ` +
-            `glycol begins to fade.`);
+        return roadSay('coolant-leak', 'throttle.result', { lost });
       } },
     ],
   },

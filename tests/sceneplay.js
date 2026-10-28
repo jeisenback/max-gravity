@@ -220,6 +220,9 @@ const playScenes = () => {
   }
   for (const key of ['dov', 'imre', 'zoya']) run(`scene:settling-up:${key}`, { captainKey: key }, () => { hired().first = { good: 'water', tons: 40, cost: 20000, revenue: 31000, profit: 11000, forecast: 9000, wage: 1200, share: 400, days: 9, hall: 0, owed: 0, planet: G.state.planet }; return arrivalScene(); });
   run('scene:arc-offers', {}, () => ({ title: 'x', text: Object.keys(MISSION_ARCS).map(arc => { const j = arcJob({ arc }), fill = t => t.replace(/\{dest\}/g, MISSION_ARCS[arc].dest).replace(/\{who\}/g, 'Clerk Okafor'); return `${fill(j.title)}: ${fill(j.blurb)}`; }).join(' '), choices: [] }));  // the offers on the Missions page (#796)
+  // Cato's round on the first burn: the crew by name, at the gunner post and at another; and with nobody aboard, each post read as the job
+  for (const post of ['gunner', 'pilot']) run(`scene:cato-round:${post}`, { post }, () => castScene('cato', CAST.cato.round()));  // played as the game plays it (captains.js)
+  run('scene:cato-round:empty', {}, () => castScene('cato', CAST.cato.round()), { prep() { G.state.crew = []; } });
   run('memory:strain', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { for (let i = 0; i < 3; i++) { takeControl('pilot'); handBack('pilot'); } return ''; } }] }), { prep() { G.state.crew = []; crewOf(4); G.state.crew.map(person).forEach(c => { c.role = 'pilot'; }); } });
   run('memory:clinic', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { treatInjuries(currentPlanet()); return ''; } }] }), { prep() { G.state.crew = []; crewOf(2); G.state.injured = { [G.state.crew[0]]: true }; G.state.credits = 50000; } });
   // ---------- the talks with the main characters at a bar ----------
@@ -520,6 +523,14 @@ const playScenes = () => {
   ] }; }, { rolls: [0, 0.99], prep() { G.state.crew = G.state.crew.filter(id => person(id).cast); crewOf(2); }, extra: () => (G.state.memorial || []).map(m => m.cause) });
   run('scene:fight:held', {}, () => { const s = deckOf(); return { title: 'x', text: deckFightEvent(s).text, choices: [] }; },
     { prep() { G.state.crew = G.state.crew.filter(id => person(id).cast); crewOf(3); const [a, b, c] = folk().filter(f => f.crew && !f.p.cast); a.p.opinion = OPINION.ENEMY; addBond(b, c, -9); b.p.opinion = 1; c.p.opinion = 0; } });
+  // ---------- the burn's own scenes (#796, batch 3), last: a burn begun here outlasts the new game a case starts ----------
+  // the four events of the lane a hired hand meets, each choice won and lost (the pirates' fight and hard burn are duels, played elsewhere), on a burn under way
+  const onBurn = () => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.dialog = null; };
+  for (const id of ['distress-call', 'pirates', 'derelict', 'coolant-leak']) {
+    run(`scene:${id}`, {}, () => TRANSIT_EVENTS.find(e => e.id === id), { rolls: [0, 0.99], skip: id === 'pirates' ? [2, 4] : [], prep() { onBurn(); G.state.cargo = { water: 20 }; G.state.fuel = 200; } });
+  }
+  // a system gone bad, for each system, fixed, jury-rigged (won and lost) and nursed along
+  for (const part of Object.keys(SHIP_PARTS)) run(`scene:trouble:${part}`, {}, () => breakdownEvent(part), { rolls: [0, 0.99], prep() { onBurn(); condition()[part] = 30; } });
   return out;
 };
 

@@ -7,12 +7,13 @@
 // menu turns it off, slow (the default), or normal. Loaded before game.js; only calls into
 // it at runtime.
 
+// What each system's fault looks like is a line of 'scene:trouble' (hiredscenes.js), `fault.<part>`.
 const SHIP_PARTS = {
-  drive: { name: 'Drive', fault: 'The drive has started to cough: a stutter in the thrust, and a rattle in the plume pipes that was not there before.' },
-  fire: { name: 'Fire control', fault: 'The fire control is drifting. The mounts keep slewing a hair off the solution, and the targeting cache has started serving stale tracks.' },
-  shields: { name: 'Shields', fault: 'The shield emitters are flickering, and every few minutes one of the projectors drops out for a second and comes back.' },
-  life: { name: 'Life support', fault: 'The air has gone stale. The scrubbers are running flat out, the recycler is groaning, and somebody has started a pool on which one gives up first.' },
-  sensors: { name: 'Sensors', fault: 'The sensor mast is throwing ghosts: contacts that are not there, and, worse, a long scan that keeps missing the ones that are.' },
+  drive: { name: 'Drive' },
+  fire: { name: 'Fire control' },
+  shields: { name: 'Shields' },
+  life: { name: 'Life support' },
+  sensors: { name: 'Sensors' },
 };
 const WEAR_RATE = { off: 0, slow: 1, normal: 2.5 };
 const BREAKDOWN_BELOW = 40;
@@ -50,26 +51,27 @@ function wearHtml() {
   </div>`;
 }
 
-// A scene for a system that has gone bad, played through the happenings picker.
+// A scene for a system that has gone bad, played through the happenings picker. Its words are the lines of 'scene:trouble' (hiredscenes.js): {part} is the system,
+// {name} the same in lower case, {pct} its condition after the choice; {crew} is the engineer, filled when it is shown.
 function breakdownEvent(part) {
-  const name = SHIP_PARTS[part].name.toLowerCase(), c = condition;
+  const name = SHIP_PARTS[part].name.toLowerCase(), c = condition, say = (key, vars) => sceneSay('scene:trouble', key, { part: SHIP_PARTS[part].name, name, pct: Math.round(c()[part]), ...vars });
   return {
-    title: `${SHIP_PARTS[part].name} Trouble`,
-    text: `${SHIP_PARTS[part].fault} It is at ${Math.round(c()[part])} percent and it will not get better by being ignored. The question is how much of the burn you are willing to spend on it.`,
+    title: say('title'),
+    text: say('text', { fault: say(`fault.${part}`) }),
     choices: [
-      { label: '[{crew}] Fix it properly', role: 'engineer', run() {
+      { label: say('fix.label'), role: 'engineer', run() {
         delay(10);
         c()[part] = Math.min(100, c()[part] + 30);
-        return `{crew} pulls the ${name} apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the ${name} is at ${Math.round(c()[part])} percent.`;
+        return say('fix.result');
       } },
-      { label: 'Jury-rig it yourself', run() {
-        if (Math.random() < 0.65) { c()[part] = Math.min(100, c()[part] + 12); return `It takes a borrowed tool kit and a great deal of swearing, but the ${name} comes back a little, to ${Math.round(c()[part])} percent. It will do.`; }
+      { label: say('rig.label'), run() {
+        if (Math.random() < 0.65) { c()[part] = Math.min(100, c()[part] + 12); return say('rig.win'); }
         c()[part] = Math.max(0, c()[part] - 8);
-        return `You get the panel open and make it worse. The ${name} drops to ${Math.round(c()[part])} percent, and you close the panel quickly, as though nobody saw.`;
+        return say('rig.lose');
       } },
-      { label: 'Nurse it along', run() {
+      { label: say('nurse.label'), run() {
         c()[part] = Math.max(0, c()[part] - 4);
-        return `You decide to live with it. The ${name} slips a little further, to ${Math.round(c()[part])} percent, and everybody aboard learns to listen for it.`;
+        return say('nurse.result');
       } },
     ],
   };

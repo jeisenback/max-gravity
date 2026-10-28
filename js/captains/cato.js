@@ -187,47 +187,20 @@ CAST.cato = {
 };
 
 // The walk-through on the first burn (captains.js plays it once, before anything else): Cato takes the new hand round the ship. The
-// names are the crew's own; a role nobody holds reads as the job. Only the Gunner's post gets a line of its own.
+// names are the crew's own; a role nobody holds reads as the job. Only the Gunner's post gets a line of its own. The words are the lines of
+// 'scene:cato-round' (hiredscenes.js).
 CAST.cato.round = () => {
+  const say = (key, vars) => sceneSay('scene:cato-round', key, vars);
   const ice = G.state.crew.map(person).filter(c => c && c.role === 'icehand').map(c => c.first);
   const [cook, medic, qm, eng, pilot, comms] = ['cook', 'medic', 'quartermaster', 'engineer', 'pilot', 'slicer'].map(crewNamed);
-  const iceA = ice[0] || 'one ice hand', iceB = ice[1] || 'the other';
-  const guns = hired().post === 'gunner'
-    ? ('The last stop is at the foot of the guns. "And these are yours. ' +
-        'When something closes on us, the board shows you what she\'s about to do and what the captain means to do back. You lay a gun on a part ' +
-        'of her, her guns, say, or her drive, and you press Fire, and then it all happens at once, hers and ours. You\'ll get one wrong. I did, and I\'m still here, and so is the ship."') : '';
-  const walk = [
-    (`He starts at the galley, because he says everyone should. "It's eleven feet across, I measured it once, and that's where we eat and where we ` +
-        `argue, mostly at the same time. ${cook} runs it. The water ration is on the wall in chalk. Don't rub it out, I know it looks like something ` +
-        `you could rub out. And tell ${cook} what you won't eat. Once, early. ${cook} is fine about it if you say it the first week. After that it's ` +
-        `a complaint, and then there's a conversation."`),
-    (`Two doors down, he knocks on the frame of the medical bay without going in. "${medic}. This is the one I said. ${medic} keeps the kit and the ` +
-        `log, and I'll tell you what I tell everybody, which is come in when you're hurt, not when it's bad. I once knew a man who ` +
-        `walked on a cracked rib for a week to save the fuss." ${medic} says something to him that you don't catch, and he laughs.`),
-    (`In the hold he slows down and his voice drops. "${qm} has the count. ` +
-        `Everything aboard, twice. If a number looks off to you, ask ${qm} before you go to the captain, because it has already been found and it's ` +
-        `sitting on a list somewhere. And these two," he says, nodding at ${iceA} and ${iceB}, who are lashing a drum of reaction mass, ` +
-        `"they'll ask you to hold a strap. Just hold it. It's not a test. I mean, it's a bit."`),
-    (`The engine room is warm and the passage floor hums under your boots. "${eng}'s plant. I wouldn't touch anything with a tag on it, and ` +
-        `everything has a tag. If ${eng} hands you a spanner, though, you can take that how you like. I've been aboard four years and I've had it ` +
-        `twice." Up forward he points at the helm without going in. "${pilot} flies her. Talks to the board the whole time. Don't answer. It's not ` +
-        `for you." Beside it, ${comms} has the bands. "Anything that comes in for you comes through there, and ${comms} reads it first. It's ` +
-        `nothing personal. ${comms} reads mine."`),
-    `At a row of doors on the left he stops. "Third one is yours. It's on a closer, so it hisses, it doesn't slam. You'll try to slam it once. Everyone does. It's all right."`,
-    guns,
-    `He takes the pencil from behind his ear and checks the bill. "That's everyone. You have the middle watch with ${pilot}, it's on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before."`,
-  ].filter(Boolean);
+  const names = { cook, medic, qm, eng, pilot, comms, iceA: ice[0] || say('ice.first'), iceB: ice[1] || say('ice.second') };
+  const walk = ['galley', 'medic', 'hold', 'engine', 'door', ...(hired().post === 'gunner' ? ['guns'] : []), 'bill'].map(k => say(`walk.${k}`, names));
   return {
-    title: 'The Round', personal: true,
-    text: ('Cato Rahman finds you in the passage an hour after the burn starts, with the watch bill rolled under one arm and a stub of pencil behind his ' +
-        'ear. "The captain says I should do this on the dock," he says. "But on the dock nobody\'s listening, they\'re ' +
-        'looking for their bunk. Walk with me. It\'s not far. It feels far, the first time."'),
+    title: say('title'), personal: true,
+    text: say('text'),
     choices: [
-      { label: 'Walk it with him', run: () => walk.join('</p><p>') },
-      {
-        label: 'Another time',
-        result: '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you\'ll find by walking into it, and I\'ll be somewhere nearby when you do." He tucks the watch bill back under his arm.',
-      },
+      { label: say('walk.label'), run: () => walk.join('</p><p>') },
+      { label: say('later.label'), result: say('later.result') },
     ],
   };
 };
