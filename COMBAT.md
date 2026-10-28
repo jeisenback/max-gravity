@@ -513,7 +513,8 @@ the run that wrote this section (after the final review's tune, #808):
 
   The level that counts is 2, where the shot reaches the next section: a hand at level 0 or 1 with two standing wins a repel
   two times in three and boarding her two in five. The test holds random play repelling a corsair with five standing within 0.15
-  of 0.52 dead a fight: the raider repel's grade-0 baseline, 0.32, plus 0.2. The hand is hurt in a tenth to a third of `answer`'s
+  of 0.40 dead a fight, measured at 0.39 to 0.40 in two runs of 1,600 fights after the pull back (#832; it was the raider repel's grade-0 baseline,
+  0.32, plus 0.2, which sat a standard error over its floor). The hand is hurt in a tenth to a third of `answer`'s
   fights (raiders: repelling 31% / 23%, boarding her 24% / 24%; a corsair: 16% / 11% and 29% / 28%).
 
   *How the charge was tuned* (history, Task 5; not the rules now): when a steady in the charged section stopped it, it could down

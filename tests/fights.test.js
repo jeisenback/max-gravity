@@ -7,9 +7,10 @@ const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { closeBrowser } = require('./helpers');
 const { fights } = require('../tools/fights');
+const { load } = require('./nodecontext');
 
 after(closeBrowser);
-const DECK_N = 200, DECK_SEEDS = [1, 2];  // deck fights a cell in the deck test, on each of two seeds played side by side
+const DECK_N = 400, DECK_SEEDS = [1, 2, 3, 4];  // deck fights a cell in the deck test, on each of four seeds played side by side (1,600 a cell: the margins of #832)
 
 test('the fights tool plays the ship fight, the repel fight and the assault fight to their ends', async () => {
   const r = await fights({ seed: 1, n: 3 });
@@ -102,7 +103,7 @@ test('with the moves, each helps against its type, no fixed plan beats reading h
 });
 
 // The deck fight both ways, against a raider party (docs/superpowers/specs/2026-10-24-deck-fight-rework-design.md, Section 3, and the owner's ruling on the
-// assault, 2026-10-24: boarding her is a short, risky push; the corsair's and the navy's targets come with their signatures), on two seeds of 200 played side
+// assault, 2026-10-24: boarding her is a short, risky push; the corsair's and the navy's targets come with their signatures), on four seeds of 400 played side
 // by side, at level 2. Repelling them, with two crew and with five:
 // - the answer (tools/answer.js answerDeck: meet the rush or hatch it, else go where the fight is, shoot and order) wins at least 90%, and no fixed policy
 //   (random, shoot, cover, order) wins more than it (with five crew, by more than 0.02);
@@ -124,6 +125,7 @@ const deckFights = async () => {
 };
 const won = t => t.won / t.n, turns = t => t.rounds / t.n, dead = t => t.dead / t.n, f2 = x => x.toFixed(2);
 const DEAD = { repel: [0.32, 0.44, 0.49], assault: [0.36, 0.49, 0.55] };  // dead a fight by her grade before the parties (the spec's "Why")
+const CORSAIR_REPEL_DEAD = 0.40;  // random play repelling a corsair with five crew (#832)
 // The checks both parties share, at level 2, with two crew and with five: the answer's least wins, no fixed policy above it, and its turns.
 function deckChecks(k, kind, party) {
   const cell = (crew, policy) => k[`party|${party} crew ${crew} level 2 ${policy} grade 0`];
@@ -132,7 +134,7 @@ function deckChecks(k, kind, party) {
     assert.ok(ans >= least, `${party}, ${kind} with ${crew} crew: answer wins ${f2(ans)}`);
     for (const p of ['random', 'shoot', 'cover', 'order']) {
       const w = won(cell(crew, p));
-      // with five crew a fixed policy may come within 0.02 of answer: about 1.7 standard errors at n = 400 and p near 0.97;
+      // with five crew a fixed policy may come within 0.02 of answer: about 3 standard errors of the difference at n = 1,600 and p near 0.97;
       // so may one repelling a corsair with two crew, where every plan that goes where the fight is shoots her charge's setter without reading it
       const margin = crew === 5 || (party === 'corsair' && kind === 'repel');
       assert.ok(margin ? w <= ans + 0.02 : kind === 'assault' ? w < ans : w <= ans, `${party}, ${kind} with ${crew} crew: ${p} ${f2(w)}, answer ${f2(ans)}`);
@@ -160,7 +162,7 @@ test('against raiders the answer wins a repel nine in ten in four to six turns a
 // The corsair's party (Task 5: her breaching charge, stopped by hitting its setter, and the pull back), on the same runs and the same rules as the raider's
 // above, repelling her at a half run as the game does (she fights with torpedoes, fightui.js fightBoarded), at level 2, with two crew and with five: the
 // answer's least wins, no fixed policy above it (with five crew, and repelling with two, by more than 0.02) and its turns, as above but 2.5 turns or more
-// repelling her too; random play with five crew at grade 0 (the grade checked; the tool reports grade 2, her setpiece, unchecked) costs dead a fight within 0.15 of 0.52 repelling
+// repelling her too; random play with five crew at grade 0 (the grade checked; the tool reports grade 2, her setpiece, unchecked) costs dead a fight within 0.15 of 0.40 repelling
 // and at most 0.15 over 0.36 boarding her; boarding her with two crew, going to them and shooting (`shoot`), which stands in the charge, wins less than the
 // answer (not checked repelling her, where her charge is a cost, not a puzzle, and shoot against answer is a strict check on noise: the 0.02 margin above holds
 // it); and boarding her with two crew, the answer wins at least 0.2 more than the answer without its charge rule (`answerNoCharge`).
@@ -169,8 +171,9 @@ test('against a corsair\'s charge the answer wins a repel nine in ten and boardi
   for (const kind of ['repel', 'assault']) {
     const k = r[kind], cell = (crew, policy) => k[`party|corsair crew ${crew} level 2 ${policy} grade 0`];
     deckChecks(k, kind, 'corsair');
-    // repelling a corsair is the cost of her charge, not a puzzle: 0.2 over the raider repel's grade-0 baseline (DEAD.repel[0], 0.32)
-    const now = dead(cell(5, 'random')), was = kind === 'repel' ? DEAD.repel[0] + 0.2 : DEAD.assault[0];
+    // repelling a corsair is the cost of her charge, not a puzzle: above the raider repel's grade-0 baseline (DEAD.repel[0], 0.32), at the 0.39 to 0.40 measured
+    // in two runs of 1,600 fights after the pull back (the owner, 2026-10-28, #832; it was 0.32 + 0.2, which sat a standard error over its floor)
+    const now = dead(cell(5, 'random')), was = kind === 'repel' ? CORSAIR_REPEL_DEAD : DEAD.assault[0];
     assert.ok(kind === 'assault' ? now <= was + 0.15 : Math.abs(now - was) <= 0.15, `corsair, ${kind}: ${f2(now)} dead a fight against ${f2(was)}`);
     if (kind === 'assault') assert.ok(won(cell(2, 'shoot')) < won(cell(2, 'answer')), `corsair, ${kind} with two crew: shoot ${f2(won(cell(2, 'shoot')))}, answer ${f2(won(cell(2, 'answer')))}`);
   }
@@ -180,8 +183,10 @@ test('against a corsair\'s charge the answer wins a repel nine in ten and boardi
 
 // The navy's party (Task 6: each head of theirs put down costs standing, and holding our bridge is a search), started as the game starts it (from a patrol's
 // ship fight, fightui.js fightBoarded: a half run), repelling at level 2 with two crew and with five: the answer wins at least 90% (a win is repelled, or
-// held to their cap, DECK.NAVY_TURNS, when an inspection party withdraws; a search is not), costs at most half the standing going to them and shooting does, and less than random play does, in 3.5 to 6.5 turns;
+// held to their cap, DECK.NAVY_TURNS, when an inspection party withdraws; a search is not), costs at most half the standing going to them and shooting does, and less than random play does, and holds them to that cap, which sits in the spec's 4 to 6 turns;
 // random play with five crew costs dead a fight within 0.15 of the raider repel's grade-0 baseline (0.32).
+const { DECK } = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['DECK']);  // the cap, as tests/fight.test.js loads it
+test('the navy party\'s cap sits in the spec\'s 4 to 6 turns', () => assert.ok(DECK.NAVY_TURNS >= 4 && DECK.NAVY_TURNS <= 6, `DECK.NAVY_TURNS is ${DECK.NAVY_TURNS}`));
 test('against the navy\'s party the answer holds them at half the standing shooting costs, wins nine in ten, and random play costs more', async () => {
   const r = await deckFights();
   const cell = (crew, policy) => r.repel[`navy|navy crew ${crew} level 2 ${policy} grade 0`], st = t => t.standing / t.n;
@@ -191,8 +196,8 @@ test('against the navy\'s party the answer holds them at half the standing shoot
     assert.ok(won(ans) >= 0.9, `navy with ${crew} crew: answer wins ${f2(won(ans))}`);
     assert.ok(st(ans) <= 0.5 * st(cell(crew, 'shoot')), `navy with ${crew} crew: answer costs ${f2(st(ans))} standing a fight, shoot ${f2(st(cell(crew, 'shoot')))}`);
     assert.ok(st(cell(crew, 'random')) > st(ans), `navy with ${crew} crew: random costs ${f2(st(cell(crew, 'random')))}, answer ${f2(st(ans))}`);
-    // the navy answer holds fire to the 5-turn cap (DECK.NAVY_TURNS), so this holds while the cap sits inside the range
-    assert.ok(turns(ans) >= 3.5 && turns(ans) <= 6.5, `navy with ${crew} crew: answer's fights last ${f2(turns(ans))} turns`);
+    // the answer wins by holding: its fights last the cap, every one (#832: a range check passed by construction)
+    assert.equal(turns(ans), DECK.NAVY_TURNS, `navy with ${crew} crew: answer's fights last ${f2(turns(ans))} turns`);
   }
   // the answer always holds to the cap, and the citation stands (#828): letting a patrol board costs the heave-to's fine, a quarter of the purse
   for (const crew of [2, 5]) { const ans = cell(crew, 'answer'); assert.ok(ans.fined >= 0.9 * ans.quarter, `navy with ${crew} crew: answer is fined ${f2(ans.fined / ans.n)} cr a fight, a quarter-purse is ${f2(ans.quarter / ans.n)}`); }
