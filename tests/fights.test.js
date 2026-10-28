@@ -73,6 +73,20 @@ test('no fixed aim wins against every type of ship and the best one differs by t
   assert.ok(turns >= 5 && turns <= 8, `a fight lasts ${turns.toFixed(2)} turns on the mean`);
 });
 
+// A navy destroyer (three patrol stops in ten, met only by a ship hostile with that navy) is a ship to heave to for, not to fight (the owner, 2026-10-28, #833):
+// against her no policy, the answer among them, has more than 10% good ends (random play, the best of them, has 3% to 5%), and the answer, which fights her to the cap until the captain runs, loses a
+// third of the hull or more a fight. Heaving to at the contact is the way out (engage.js), and it lifts the standing back above the line that sends the patrols.
+test('a navy destroyer is not beaten by any plan, and fighting her costs the hull: she is a ship to heave to for', async () => {
+  const m = byMatch(await shipFights());
+  for (const p of ['random', 'focus', 'drive', 'lock', 'hull', 'hullhold', 'answer']) {
+    const t = m[`${p}|destroyer`];
+    assert.ok(t && t.n >= 80, `${p} against a destroyer: ${t ? t.n : 0} fights`);
+    assert.ok(t.good / t.n <= 0.1, `${p} against a destroyer: ${(t.good / t.n).toFixed(2)} good ends`);
+  }
+  const ans = m['answer|destroyer'];
+  assert.ok(ans.hull / ans.n >= 1 / 3, `answer against a destroyer loses ${(100 * ans.hull / ans.n).toFixed(1)}% of the hull a fight`);
+});
+
 // The gunner moves (docs/superpowers/specs/2026-10-23-gunner-moves-design.md, section 4), the same fights with all three known (moves: true), beside the ones
 // above without them; the figures in brackets are at five seeds of 200 (COMBAT.md):
 // - a move is worth having: answer, which reads her move, does better with them against the type each answers. Split against a corsair: good ends are 100%
