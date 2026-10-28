@@ -15,6 +15,6 @@ pinTests({
   play: playBeats,
   words: ['text', 'labels', 'label', 'title', 'mem'],
   // three foe styles and four posts for the ship fight, four for the ambush, each choice of it blind and after a read to a trap and a real call, the dead-in-space scene for three
-  // foes and four posts, how the two fights end, two fights for four posts, and the orders to named crew (two fights, four roles, two abilities, worked and missed)
-  check: got => assert.equal(got.length, 12 + 4 + 16 + 12 + 16 + 8 + 32),
+  // foes and four posts, how the two fights end, two fights for four posts, the orders to named crew (two fights, four roles, two abilities, worked and missed), and the bridge taken by a navy party and with the captain lost
+  check: got => assert.equal(got.length, 12 + 4 + 16 + 12 + 16 + 8 + 32 + 2),
 });

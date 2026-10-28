@@ -24701,5 +24701,161 @@
   "labels": [
    "Take your post"
   ]
+ },
+ {
+  "id": "scene:fight:casualty",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You're hit.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "You are hurt. Your work counts a level lower until the clinic clears you. The clinic is 1,500 cr of your own, with no medic aboard.",
+    "fx": {
+     "credits": -1500
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You're hurt again, and you stay down.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You are hurt again, and you stay down. The clinic is 1,500 cr of your own, with no medic aboard.",
+    "fx": {
+     "credits": -1500
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "Mate0 pulls you down behind the closer and takes it. Mate0 is hit, and doesn't get up, and won't.",
+    "fx": {
+     "p10": 2
+    },
+    "x": [
+     "Killed repelling boarders near Earth."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "Mate0 pulls you down behind the closer and takes it. Mate0 is hurt.",
+    "fx": {
+     "p10": 2
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "Mate0 pulls you down behind the closer and takes it (\"We are even,\" Mate0 says later). Mate0 is hit, and doesn't get up, and won't.",
+    "fx": {
+     "p10": 2
+    },
+    "x": [
+     "Killed boarding a crippled ship near Earth."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "Mate0 pulls you down behind the closer and takes it (\"We are even,\" Mate0 says later). Mate0 is hurt.",
+    "fx": {
+     "p10": 2
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "Mate1 is hit again and doesn't get up.",
+    "x": [
+     "Killed in a raid near Earth."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.99,
+    "text": "Mate1 is hit again and doesn't get up.",
+    "x": [
+     "Killed in a raid near Earth."
+    ],
+    "next": null
+   },
+   {
+    "i": 5,
+    "roll": 0,
+    "text": "Mate1 is hit again and doesn't get up.",
+    "x": [
+     "Killed in a navy stop near Earth."
+    ],
+    "next": null
+   },
+   {
+    "i": 5,
+    "roll": 0.99,
+    "text": "Mate1 is hit again and doesn't get up.",
+    "x": [
+     "Killed in a navy stop near Earth."
+    ],
+    "next": null
+   },
+   {
+    "i": 6,
+    "roll": 0,
+    "text": "Ines is hit again and doesn't get up. Ines is alive, and Ines isn't fit to work.",
+    "next": null
+   },
+   {
+    "i": 6,
+    "roll": 0.99,
+    "text": "Ines is hit again and doesn't get up. Ines is alive, and Ines isn't fit to work.",
+    "next": null
+   },
+   {
+    "i": 7,
+    "roll": 0,
+    "text": "Ines is hit, and carried below, and is alive, and isn't fit to work.",
+    "next": null
+   },
+   {
+    "i": 7,
+    "roll": 0.99,
+    "text": "Ines is hurt. Another hit like that could kill Ines.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x",
+   "x"
+  ]
+ },
+ {
+  "id": "scene:fight:held",
+  "plays": [],
+  "title": "x",
+  "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Mate0 won't fight for you. Mate2 won't stand in the same section as Mate1.",
+  "labels": []
  }
 ]

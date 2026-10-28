@@ -145,6 +145,15 @@ const playBeats = () => {
       out.push(rec);
     }
   }
+  // the bridge taken by a navy party, and by pirates with the captain lost at the console (#796)
+  for (const [name, shipId, roll] of [['navy', 'cutter', 0.99], ['captain', 'raider', 0]]) {
+    fresh('gunner', shipId);
+    const foe = makeEnemy({ kind: 'pirate' }); if (shipId === 'cutter') foe.kind = 'patrol';
+    const s = repelStart({ foe, foeHp: 0 }, 'full'); s.hurt = new Set(); seq([roll, roll, roll]); const b0 = stand();
+    const text = shipTaken(s);
+    out.push({ id: `settle:taken:${name}`, text: String(text), next: G.nextEvent ? G.nextEvent.title : null, ...left(b0) });
+    G.nextEvent = null; G.duel = null;
+  }
   Math.random = Math.random;
   return out;
 };

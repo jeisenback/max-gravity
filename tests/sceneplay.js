@@ -488,6 +488,24 @@ const playScenes = () => {
   run('scene:fight:rated', {}, () => ({ title: 'x', text: '', choices: [[1, false], [2, false], [0, true], [2, true]].map(([grade, pack]) => ({ label: 'x', run() { const t = startShipFight({ kind: 'pirate', shipId: 'raider', grade, pack }, false); G.nextEvent = null; return t; } })) }));
   // the first officer's word before the first fight (captains.js raidExplanation): Cato's, under Hester
   run('cast:cato:firstRaid', {}, () => { hired().raidTold = false; return raidExplanation(); });
+  // ---------- the hurt and the fallen in a fight (boarders.js repelCasualty, hurtHand, killedHow, #796): each case won (0) and lost (0.99) on its first roll, with the causes the memorial
+  // keeps; and who keeps out of a deck fight (repelCrew) ----------
+  const deckOf = (assault = false) => { const foe = makeEnemy({ kind: 'pirate' }); return assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full'); };
+  const shipOf = kind => ({ state: { kind: 'ship' }, spec: { kind }, hurt: new Set(), dead: [], marked: [], covered: true });
+  const hit = (s, set, who) => ({ label: 'x', run() { set(s); const t = repelCasualty(s, who(s)); G.nextEvent = null; return t; } });  // the fight is made before the roll is set, so the roll is the hit's
+  const mate = n => G.state.crew.map(person).filter(c => c && !c.cast)[n].id;
+  run('scene:fight:casualty', {}, () => { const ours = deckOf(), hers = deckOf(true), raid = shipOf('pirate'), stop = shipOf('patrol'); return { title: 'x', text: '', choices: [
+    hit(ours, s => { s.covered = true; }, () => 'you'),  // the hand, a first hurt: killed, or hurt with the clinic to pay
+    hit(ours, s => { s.covered = true; career().hurtUntil = G.state.day + 5; }, () => 'you'),  // the hand hurt again
+    hit(ours, () => { person(mate(0)).opinion = OPINION.FRIEND; }, () => 'you'),  // a friend takes it, and is hit hard or hurt
+    hit(hers, () => { Object.assign(person(mate(0)), { opinion: OPINION.FRIEND, owes: true }); }, () => 'you'),  // one who owed you, on her deck
+    hit(raid, s => s.hurt.add(mate(1)), () => mate(1)),  // a crewmate hit again in a raid
+    hit(stop, s => s.hurt.add(mate(1)), () => mate(1)),  // and in a navy stop
+    hit(ours, s => s.hurt.add(castAboard()[0].id), () => castAboard()[0].id),  // a main character hit again, where a floor holds
+    hit(ours, () => {}, () => castAboard()[0].id),  // a main character hit hard
+  ] }; }, { rolls: [0, 0.99], prep() { G.state.crew = G.state.crew.filter(id => person(id).cast); crewOf(2); }, extra: () => (G.state.memorial || []).map(m => m.cause) });
+  run('scene:fight:held', {}, () => { const s = deckOf(); return { title: 'x', text: deckFightEvent(s).text, choices: [] }; },
+    { prep() { G.state.crew = G.state.crew.filter(id => person(id).cast); crewOf(3); const [a, b, c] = folk().filter(f => f.crew && !f.p.cast); a.p.opinion = OPINION.ENEMY; addBond(b, c, -9); b.p.opinion = 1; c.p.opinion = 0; } });
   return out;
 };
 

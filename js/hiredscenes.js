@@ -515,6 +515,17 @@ const SCENE_LINES = {
     'deck.navy.down': 'Each of them put down costs standing with {gov}: {n} so far.',  // a navy party's fight, under the deck: {n} is the standing lost so far
     'deck.end.searched': 'They hold the bridge. The boarding officer has the ship searched berth by berth, writes the citation, and fines her {fine} cr, collected on the spot. The boarding party goes back across, and the ship is let go with the fine in her log.',  // a navy party held our bridge: {fine} is the heave-to's fine
     'deck.end.cited': 'They go back through the lock with the citation logged, and {fine} cr goes out of the ship\'s fund.',  // a navy party that withdrew at its cap: {fine} is the heave-to's fine, which the citation stands for (boarders.js repelSettle, #828). Drafted for the owner to edit
+    // who keeps out of a deck fight (boarders.js repelCrew): {first} the one who won't, {other} the one they are at odds with
+    'deck.held.enemy': '{first} won\'t fight for you.', 'deck.held.feud': '{first} won\'t stand in the same section as {other}.',
+    // the hurt and the fallen, in any fight (boarders.js hurtHand and repelCasualty; a job ashore hurts the hand with the same lines): the hand's (killed, or killed hurt again; hurt, or hurt again; the clinic it pays, {cr}),
+    // a friend who takes it for the hand ({first}; the one who owed you says so), and a crewmate's ({first}) hit again (dead, or alive and unfit where a floor holds), hit hard (dead, or carried below), or hurt
+    'hurt.you.down': 'You\'re hurt again, and you stay down.', 'hurt.you.hit': 'You\'re hit.', 'hurt.you': 'You are hurt. Your work counts a level lower until the clinic clears you.', 'hurt.you.again': 'You are hurt again, and you stay down.',
+    'hurt.clinic': 'The clinic is {cr} cr of your own, with no medic aboard.',
+    cover: '{first} pulls you down behind the closer and takes it.', 'cover.even': '{first} pulls you down behind the closer and takes it ("We are even," {first} says later).',
+    'hit.again.dead': '{first} is hit again and doesn\'t get up.', 'hit.again.marked': '{first} is hit again and doesn\'t get up. {first} is alive, and {first} isn\'t fit to work.',
+    'hit.dead': '{first} is hit, and doesn\'t get up, and won\'t.', 'hit.marked': '{first} is hit, and carried below, and is alive, and isn\'t fit to work.', 'hit.hurt': '{first} is hurt.',
+    // the cause of a death in a fight, on the memorial and in the ship's log (boarders.js killedHow): the ship fight, a navy stop, boarding her, holding our deck; {system} where. Plain text
+    'killed.raid.log': 'Killed in a raid near {system}.', 'killed.navy.log': 'Killed in a navy stop near {system}.', 'killed.assault.log': 'Killed boarding a crippled ship near {system}.', 'killed.repel.log': 'Killed repelling boarders near {system}.',
     'deck.push': '{who}: {n} pushing into {to}.', 'deck.rush': '{who}: {n} rushing through {via} into {to}.', 'deck.wave': '{n} more at the lock next turn.', 'deck.aboard': '{n} aboard, {m} still to come', 'deck.round': '{who}: {n} going round through {to}.', 'deck.hold': '{who}: holding where they are.',
     'deck.charge': '{who}: a charge on {at}, set from {from}. Hit them in {from} to stop it; it blows this turn.', 'deck.pullback': 'Pull back: ours here fall back to {to}',
     'deck.holdfire': 'Hold fire: stand ready, fire at nobody', 'deck.holdfire.you': 'You hold your fire.',  // the act that does nothing (fightui.js DECK_ACTS), and its line after the turn: against a navy party, where each of them put down costs standing

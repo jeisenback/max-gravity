@@ -19,10 +19,19 @@ const REPEL_OPENINGS = [
 // What the captain and the crew remember of a boarding, as lines of the beat: `memory.<name>` (hiredscenes.js repelLines).
 const REPEL_MEMORY = { held: 'You held the ship when boarders came.', together: 'We held the ship together.', taken: 'The bridge was taken on your watch.' };
 const ASSAULT_MEMORY = { took: 'You took a ship for us.', together: 'We took her bridge together.', left: 'You went onto a crippled ship and came back without it.' };
-// How a fight is won short of a bridge: the last of them is down, or so few are left that the rest break (the shipped line by fight).
+// How a fight is won short of a bridge: the last of them is down, or so few are left that the rest break (the shipped line by fight). Then how it settles, for a hand
+// (repelSettle, shipTaken, assaultSettle): on our deck, they go back (`held`, {ship} her name) or hold the bridge (`taken`, the navy's `takenNavy`, and `captainLost` when the
+// captain doesn't get up; {last} is the captain's, {cr} what is taken, {gov} the navy's, {hold} the cargo taken with it or nothing); on hers, her bridge taken (`took`, {cr}
+// her strongbox, {post} the hand's) or you driven back (`driven`, the armor it costs said after). A ship fight whose hull is gone ends as `taken` does.
 const FIGHT_END = {
-  repel: { last: 'The last of them goes down in the passage, and nobody comes through behind him.', broke: 'Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them.' },
-  assault: { last: 'The last of her people goes down at the console, and the bridge is quiet.', broke: 'Most of her people are down, and the rest back away from the hatch with their hands open.' },
+  repel: { last: 'The last of them goes down in the passage, and nobody comes through behind him.', broke: 'Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them.',
+    held: 'The last of them go back through the lock. The outer door closes from the other side, and the drive of the {ship} lights, and she breaks away from the hull.',
+    taken: 'They\'re on the bridge. Captain {last} gives them the code to the strongbox because there\'s no choice, and they take {cr} cr of the ship\'s fund and go.{hold} The ship still flies.',
+    takenNavy: 'They\'re on the bridge. Captain {last} surrenders the ship to the {gov} Navy, and the boarding officer writes a levy of {cr} cr against the ship\'s fund, which is collected on the spot.{hold} The cutter lets you go, with a citation.',
+    captainLost: 'They\'re on the bridge. Captain {last} is at the console and doesn\'t give them the code, so they take it. They take {cr} cr of the ship\'s fund and go.{hold} The ship still flies. Captain {last} doesn\'t get up.' },
+  assault: { last: 'The last of her people goes down at the console, and the bridge is quiet.', broke: 'Most of her people are down, and the rest back away from the hatch with their hands open.',
+    took: 'Her captain puts the weapon down. Her strongbox is under the plot table, and {cr} cr of it goes into the ship\'s fund. Captain {last} has the cutter cast off while her people are still being counted. (+5 experience at the {post} post.)',
+    driven: 'You\'re driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she\'s still drifting.' },
 };
 // Boarding her: the same three places from the other side, named from her bridge (0) to her lock (2).
 const ASSAULT_TITLES = ['Her Bridge', 'Her Corridor', 'Her Lock'];
@@ -38,6 +47,10 @@ const REPEL_HURT = { lose: 0.45 };  // the chance the hand is hurt in a conteste
 
 // A line of the repel or the assault fight, read through the editor's words (lineWords, storylets.js) by the name it has in the set's tables (hiredscenes.js lists them).
 const repelWords = (s, key, shipped) => lineWords(s.assault ? 'beats:assault' : 'beats:repel', key, shipped);
+// How the fight settles (FIGHT_END), with its {words} filled.
+const endWords = (s, k, vars) => fillLine(repelWords(s, `end.${k}`, FIGHT_END[s.assault ? 'assault' : 'repel'][k]), vars);
+// The casualties, the causes and who keeps out of a deck fight are lines of 'scene:fight' (hiredscenes.js).
+const hurtSay = (key, vars) => sceneSay('scene:fight', key, vars);
 // A line both deck fights read, the abilities and the orders, from the one row that holds them (hiredscenes.js deckLines, #795).
 const deckWords = (key, shipped) => lineWords('beats:deck', key, shipped);
 
@@ -57,14 +70,14 @@ const heaveToFine = () => Math.round(purse() * 0.25);
 // A crew member close to you covers you: the first hit that would have been yours is theirs.
 function repelCrew() {
   const st = G.state, ids = st.crew.filter(id => !(st.injured || {})[id]), held = new Map(), fighters = ids.map(id => ({ id, p: person(id) })).filter(f => f.p);
-  for (const f of fighters) if (f.p.opinion <= OPINION.ENEMY) held.set(f.id, `${f.p.first} won't fight for you.`);
+  for (const f of fighters) if (f.p.opinion <= OPINION.ENEMY) held.set(f.id, hurtSay('deck.held.enemy', { first: f.p.first }));
   const live = fighters.filter(f => !held.has(f.id));
   for (const [a, b] of pairs(live)) {
     if (held.has(a.id) || held.has(b.id) || bond(a, b) > SPLIT_BOND) continue;
     const [out, stays] = a.p.opinion <= b.p.opinion ? [a, b] : [b, a];
-    held.set(out.id, `${out.p.first} won't stand in the same section as ${stays.p.first}.`);
+    held.set(out.id, hurtSay('deck.held.feud', { first: out.p.first, other: stays.p.first }));
   }
-  return { fight: fighters.filter(f => !held.has(f.id)).map(f => f.id), held: [...held.values()] };
+  return { fight: fighters.filter(f => !held.has(f.id)).map(f => f.id), held: [...held.values()], out: [...held.keys()] };  // out: who the lines are about
 }
 
 // The fight: the deck fight's state on our deck (fight.js deckFight), with who stands with you, who is hurt and who has fallen. Kept with the scene, as the
@@ -85,7 +98,7 @@ function deckStart({ d, boarders, grade, size, assault = false }) {
   const w = repelCrew(), kit = career().kit, ship = [...fightCover({ size, kit: assault ? [] : kit }), COVER_BASE];  // the cargo bay has the ship's own cover
   const cover = assault ? [...[0, 1, 2].map(pos => kitCover(kit, pos)), 0] : ship, hers = assault ? ship : [];
   const state = deckFight({ boarders, crew: Math.min(5, w.fight.length), cover, hers, grade, assault, side: size >= 16, party: DECK_PARTY[d.foe.shipId] || 'raider', level: skillLevel(lockPost()) });  // the level worked: a hurt hand is one lower
-  return { d, assault, state, grade, fight: w.fight, held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false };
+  return { d, assault, state, grade, fight: w.fight, held: w.held, out: w.out, hurt: new Set(), dead: [], marked: [], youHurt: false };
 }
 
 function repelEvent(d, outcome) { return deckFightEvent(repelStart(d, outcome)); }
@@ -122,14 +135,14 @@ function hurtHand(s) {
   c.hurtUntil = st.day + (again ? 18 : 12);
   s.youHurt = true; s.hits = (s.hits || 0) + 1;  // hits: how many times this fight (fightui.js fightTook)
   captainFlag('hurt');  // kept for the goodbye (captains.js)
-  if (!s.ashore && role().canDie && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return again ? 'You\'re hurt again, and you stay down.' : 'You\'re hit.'; }
+  if (!s.ashore && role().canDie && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return hurtSay(again ? 'hurt.you.down' : 'hurt.you.hit'); }
   const bill = roleHolder('medic') ? 0 : handPays(HAND_CLINIC);  // the hand's own savings, also in a fight that a burn event started (hired.js hiredFunds)
-  const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';
-  return `${again ? 'You are hurt again, and you stay down.' : 'You are hurt. Your work counts a level lower until the clinic clears you.'}${pay}`;
+  const pay = bill ? ` ${hurtSay('hurt.clinic', { cr: fmt(bill) })}` : '';
+  return `${hurtSay(again ? 'hurt.you.again' : 'hurt.you')}${pay}`;
 }
 
 // The memorial's cause of a death in a fight: the ship fight's (fightui.js), boarding her, or holding our own deck.
-const killedHow = s => `${s.state && s.state.kind === 'ship' ? (s.spec.kind === 'patrol' ? 'Killed in a navy stop' : 'Killed in a raid') : s.assault ? 'Killed boarding a crippled ship' : 'Killed repelling boarders'} near ${system().name}.`;
+const killedHow = s => hurtSay(`killed.${s.state && s.state.kind === 'ship' ? (s.spec.kind === 'patrol' ? 'navy' : 'raid') : s.assault ? 'assault' : 'repel'}.log`, { system: system().name });
 
 // Someone goes down. On the hand it is the hand's hurt (hurtHand), which a friend may take once a fight. A crew member hurt twice in one fight is dead, and so is a named person marked before; where a floor of main
 // characters holds (the full build, fate.js) they are marked instead.
@@ -137,26 +150,26 @@ function repelCasualty(s, only) {  // `only`: the one it falls on, when the exch
   const st = G.state, pool = [...st.crew.filter(id => !(st.injured || {})[id] || s.hurt.has(id)), 'you'];
   let who = only || pick(pool), cover = '';
   if (who === 'you' && !s.covered) {  // a friend takes it for you, once in a fight
-    const friend = st.crew.map(person).find(c => c && (c.opinion >= OPINION.FRIEND || c.owes) && !(st.injured || {})[c.id] && !s.hurt.has(c.id) && !(s.held || []).some(l => l.startsWith(c.first)));
-    if (friend) { who = friend.id; s.covered = true; cover = `${friend.first} pulls you down behind the closer and takes it${friend.owes ? ` ("We are even," ${friend.first} says later)` : ''}. `; delete friend.owes; }
+    const friend = st.crew.map(person).find(c => c && (c.opinion >= OPINION.FRIEND || c.owes) && !(st.injured || {})[c.id] && !s.hurt.has(c.id) && !(s.out || []).includes(c.id));
+    if (friend) { who = friend.id; s.covered = true; cover = `${hurtSay(friend.owes ? 'cover.even' : 'cover', { first: friend.first })} `; delete friend.owes; }
   }
   if (who === 'you') return hurtHand(s);
   const c = person(who);
   if (s.hurt.has(who) || secondStrike(c)) {  // hurt twice in a fight, or marked before and hit again: the second strike
     if (loseCrew(c, killedHow(s)) === 'marked') {  // a floor held them (the full build)
       s.marked.push(c);
-      return `${c.first} is hit again and doesn't get up. ${c.first} is alive, and ${c.first} isn't fit to work.`;
+      return hurtSay('hit.again.marked', { first: c.first });
     }
     s.dead.push(c);
-    return `${c.first} is hit again and doesn't get up.`;
+    return hurtSay('hit.again.dead', { first: c.first });
   }
   if (Math.random() < lossOdds(c, true)) {  // a hard hit that does not stop at hurt (losses.js)
-    if (loseCrew(c, killedHow(s)) === 'dead') { s.dead.push(c); return `${cover}${c.first} is hit, and doesn't get up, and won't.`; }
-    s.marked.push(c); return `${cover}${c.first} is hit, and carried below, and is alive, and isn't fit to work.`;
+    if (loseCrew(c, killedHow(s)) === 'dead') { s.dead.push(c); return `${cover}${hurtSay('hit.dead', { first: c.first })}`; }
+    s.marked.push(c); return `${cover}${hurtSay('hit.marked', { first: c.first })}`;
   }
   (st.injured = st.injured || {})[who] = true;
   s.hurt.add(who);
-  return `${cover}${c.first} is hurt.${hurtWarning(c)}`;
+  return `${cover}${hurtSay('hit.hurt', { first: c.first })}${hurtWarning(c)}`;
 }
 
 // A generated crew member dies: off the crew, on the record, and the berth is offered at the next port.
@@ -188,7 +201,7 @@ function repelSettle(s) {
     for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id) && s.state.turn >= 3) like(c, 1, repelWords(s, 'memory.together', REPEL_MEMORY.together)); }
     d.init = 'me';
     G.nextEvent = d.foeHp > 0 ? duelEvent() : null;
-    return `The last of them go back through the lock. The outer door closes from the other side, and the drive of the ${theShip(d.foe).replace(/^The /, '')} lights, and she breaks away from the hull.${lost}${cited}`;
+    return `${endWords(s, 'held', { ship: theShip(d.foe).replace(/^The /, '') })}${lost}${cited}`;
   }
   return s.searched ? shipSearched(s) : shipTaken(s);
 }
@@ -225,13 +238,12 @@ function shipTaken(s) {
   if (cap && d.foe.kind !== 'patrol' && !s.handDied && Math.random() < CAPTAIN_LOST) {
     h.captainLost = { day: st.day, how: 'bridge' };
     G.nextEvent = captainLostScene();
-    return `They're on the bridge. Captain ${cap.last} is at the console and doesn't give them the code, so they take it. They take ${fmt(taken)} cr of the ship's fund and go.${hold} The ship still flies. Captain ${cap.last} doesn't get up.${lost}`;
+    return `${endWords(s, 'captainLost', { last: cap.last, cr: fmt(taken), hold })}${lost}`;
   }
   if (!cap) return d.foe.kind === 'patrol'  // the owner's own words: the ship is theirs to surrender, and the money theirs to lose
     ? `They're on the bridge. You surrender the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr, which is collected on the spot.${hold} The cutter lets you go, with a citation.${lost}`
     : `They're on the bridge. You give them the code to the strongbox because there's no choice, and they take ${fmt(taken)} cr and go.${hold} The ship still flies.${lost}`;
-  if (d.foe.kind === 'patrol') return `They're on the bridge. Captain ${cap.last} surrenders the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr against the ship's fund, which is collected on the spot.${hold} The cutter lets you go, with a citation.${lost}`;
-  return `They're on the bridge. Captain ${cap.last} gives them the code to the strongbox because there's no choice, and they take ${fmt(taken)} cr of the ship's fund and go.${hold} The ship still flies.${lost}`;
+  return `${endWords(s, d.foe.kind === 'patrol' ? 'takenNavy' : 'taken', { last: cap.last, gov: d.foe.gov, cr: fmt(taken), hold })}${lost}`;
 }
 
 // Boarding her ends with her bridge taken (her strongbox goes into the ship's fund) or you driven back to your own lock.
@@ -245,11 +257,13 @@ function assaultSettle(s, won, lost) {
     gainSkill(post, 5);
     changeRep('Pirate', -3);
     foe.dead = true;
-    return `Her captain puts the weapon down. Her strongbox is under the plot table, and ${fmt(take)} cr of it goes into ${cap ? "the ship's fund" : 'your credits'}. ${cap ? `Captain ${cap.last} has` : 'You have'} the cutter cast off while her people are still being counted. (+5 experience at the ${POSTS[post].name.toLowerCase()} post.)${lost}`;
+    const where = POSTS[post].name.toLowerCase();
+    if (!cap) return `Her captain puts the weapon down. Her strongbox is under the plot table, and ${fmt(take)} cr of it goes into your credits. You have the cutter cast off while her people are still being counted. (+5 experience at the ${where} post.)${lost}`;  // the owner's own words
+    return `${endWords(s, 'took', { cr: fmt(take), last: cap.last, post: where })}${lost}`;
   }
   if (cap) like(cap, -1, repelWords(s, 'memory.left', ASSAULT_MEMORY.left));
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.05));
-  return `You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -${Math.round(ship().armor * 0.05)}.${lost}`;
+  return `${endWords(s, 'driven', {})} Armor -${Math.round(ship().armor * 0.05)}.${lost}`;
 }
 
 const listNames = names => (names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0]);
