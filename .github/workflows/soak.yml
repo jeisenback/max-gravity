@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        files: ['intros', 'pacing', 'stakes', 'stakes-fights', 'cast-draw frequency']
+        files: ['intros', 'pacing', 'stakes', 'stakes-fights', 'fights', 'cast-draw frequency']
     name: soak (${{ matrix.files }})
     steps:
       - uses: actions/checkout@v4

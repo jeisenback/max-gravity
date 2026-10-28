@@ -26,7 +26,7 @@ const FIGHT = {
   LOST_CARGO: 0.3,   // the share of the fullest good in the hold that she takes when the ship is lost, and that the captain jettisons to run (fightui.js, boarders.js)
   TURNS: 8,
   POOL: 0.45,        // both sides' shields and armor in a fight are the ship's times this, so that a fight ends before TURNS (#814); the hand's real armor lost is the fight's
-                     // divided by it (fightui.js). Tuned with the fight tool (3 seeds of 100) to the targets in tests/fights.test.js: answer has 99% good ends and loses 1%,
+                     // divided by it (fightui.js). Tuned with the fight tool (3 seeds of 100) to the targets in tests/distribution/fights.test.js: answer has 99% good ends and loses 1%,
                      // in 6.2 turns, 32% of them at the cap (97% at 1.0); random play loses 38% and 19% of the real hull a fight; a lone raider falls to hull fire (COMBAT.md)
   BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid

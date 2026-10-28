@@ -6,7 +6,7 @@
 //   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider] [--owner] [--ship-only | --deck-only] [--groups party,grade] [--moves [vent,lead,split]]
 // `--owner` plays them as an owner who kept the post (the same ship and crew, bought with a hand's savings), to put beside the hand's (#721).
 // `--moves` gives the hand all three gunner moves (vent, lead, split) for the ship fights, or the ones listed after it; without it she knows none, and the numbers are the ones before the moves.
-// `--deck-only` leaves the ship fights out, so the deck fights are played on the same draws as the deck test (tests/fights.test.js).
+// `--deck-only` leaves the ship fights out, so the deck fights are played on the same draws as the deck test (tests/distribution/fights.test.js).
 // With them come two more gun policies that use the moves without reading her move for it (randmove, eager: below).
 //   npm run fights
 // Report: for the ship fight, the spread of its ends, its rounds, the hull lost, the hurt and the dead, by gun policy and by the type she is; for each deck fight, how often you win and who is hurt, by crew, by the
