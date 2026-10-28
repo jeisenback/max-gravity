@@ -672,9 +672,9 @@ const SCENE_LINES = {
     'silence.label': 'Say nothing, and keep working',
     'silence.result': 'There is a run to make and a clock on it. You do not mention it, and neither does anyone else for a while, which is its own kind of mention.',
   },
-  'scene:repair': {  // the yard (repairs.js repairScene): {planet} the port, {tons} the plate, {parts} and {labor} the sums, {wait} the days a shipment takes, {days} the estimate; done.* closes every choice
+  'scene:repair': {  // the yard (repairs.js repairScene): {planet} the port, {tons} the plate, {parts} and {labor} the sums, {wait} the days a shipment takes, {days} the estimate or the days in the yard (days.one or days.many); done closes every choice
     title: 'Hull Damage',
-    text: 'The ship has taken enough damage on the way in that she cannot sail as she is. {where}, and the estimate is {days} days{wait}. {source} Labor is {labor} cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.',
+    text: 'The ship has taken enough damage on the way in that she cannot sail as she is. {where}, and the estimate is {days}{wait}. {source} Labor is {labor} cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.',
     'text.wait': ' and {wait} waiting for a shipment',
     'where.yard': 'The yard at {planet} has a berth',
     'where.field': '{planet} has no yard, only a dock crew and a welding rig',
