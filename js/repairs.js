@@ -53,7 +53,7 @@ function repairScene(planet) {
     for (const id of Object.keys(st.injured || {})) delete st.injured[id];
     return finish(days, say('rest.result'))();
   } });
-  return { title: say('title'), personal: true, text: say('text', { where, days: plan.days, wait: plan.wait ? say('text.wait', { wait: plan.wait }) : '', source, labor: fmt(plan.labor) }), choices };
+  return { title: say('title'), personal: true, text: say('text', { where, days: say(plan.days === 1 ? 'days.one' : 'days.many', { n: plan.days }), wait: plan.wait ? say('text.wait', { wait: plan.wait }) : '', source, labor: fmt(plan.labor) }), choices };
 }
 
 Mods.register({
