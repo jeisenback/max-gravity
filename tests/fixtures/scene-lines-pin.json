@@ -10306,6 +10306,75 @@
   "labels": []
  },
  {
+  "id": "scene:cato-round:gunner",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He starts at the galley, because he says everyone should. \"It's eleven feet across, I measured it once, and that's where we eat and where we argue, mostly at the same time. Arjun runs it. The water ration is on the wall in chalk. Don't rub it out, I know it looks like something you could rub out. And tell Arjun what you won't eat. Once, early. Arjun is fine about it if you say it the first week. After that it's a complaint, and then there's a conversation.\"</p><p>Two doors down, he knocks on the frame of the medical bay without going in. \"Kwame. This is the one I said. Kwame keeps the kit and the log, and I'll tell you what I tell everybody, which is come in when you're hurt, not when it's bad. I once knew a man who walked on a cracked rib for a week to save the fuss.\" Kwame says something to him that you don't catch, and he laughs.</p><p>In the hold he slows down and his voice drops. \"Hana has the count. Everything aboard, twice. If a number looks off to you, ask Hana before you go to the captain, because it has already been found and it's sitting on a list somewhere. And these two,\" he says, nodding at Wim and Gaz, who are lashing a drum of reaction mass, \"they'll ask you to hold a strap. Just hold it. It's not a test. I mean, it's a bit.\"</p><p>The engine room is warm and the passage floor hums under your boots. \"Tomas's plant. I wouldn't touch anything with a tag on it, and everything has a tag. If Tomas hands you a spanner, though, you can take that how you like. I've been aboard four years and I've had it twice.\" Up forward he points at the helm without going in. \"Ines flies her. Talks to the board the whole time. Don't answer. It's not for you.\" Beside it, Mateo has the bands. \"Anything that comes in for you comes through there, and Mateo reads it first. It's nothing personal. Mateo reads mine.\"</p><p>At a row of doors on the left he stops. \"Third one is yours. It's on a closer, so it hisses, it doesn't slam. You'll try to slam it once. Everyone does. It's all right.\"</p><p>The last stop is at the foot of the guns. \"And these are yours. When something closes on us, the board shows you what she's about to do and what the captain means to do back. You lay a gun on a part of her, her guns, say, or her drive, and you press Fire, and then it all happens at once, hers and ours. You'll get one wrong. I did, and I'm still here, and so is the ship.\"</p><p>He takes the pencil from behind his ear and checks the bill. \"That's everyone. You have the middle watch with Ines, it's on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "\"Fair enough,\" Cato says. \"The watch bill is on the galley wall. Everything else you'll find by walking into it, and I'll be somewhere nearby when you do.\" He tucks the watch bill back under his arm.",
+    "next": null
+   }
+  ],
+  "title": "The Round",
+  "text": "Cato Rahman finds you in the passage an hour after the burn starts, with the watch bill rolled under one arm and a stub of pencil behind his ear. \"The captain says I should do this on the dock,\" he says. \"But on the dock nobody's listening, they're looking for their bunk. Walk with me. It's not far. It feels far, the first time.\"",
+  "labels": [
+   "Walk it with him",
+   "Another time"
+  ]
+ },
+ {
+  "id": "scene:cato-round:pilot",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He starts at the galley, because he says everyone should. \"It's eleven feet across, I measured it once, and that's where we eat and where we argue, mostly at the same time. Arjun runs it. The water ration is on the wall in chalk. Don't rub it out, I know it looks like something you could rub out. And tell Arjun what you won't eat. Once, early. Arjun is fine about it if you say it the first week. After that it's a complaint, and then there's a conversation.\"</p><p>Two doors down, he knocks on the frame of the medical bay without going in. \"Kwame. This is the one I said. Kwame keeps the kit and the log, and I'll tell you what I tell everybody, which is come in when you're hurt, not when it's bad. I once knew a man who walked on a cracked rib for a week to save the fuss.\" Kwame says something to him that you don't catch, and he laughs.</p><p>In the hold he slows down and his voice drops. \"Hana has the count. Everything aboard, twice. If a number looks off to you, ask Hana before you go to the captain, because it has already been found and it's sitting on a list somewhere. And these two,\" he says, nodding at Wim and Gaz, who are lashing a drum of reaction mass, \"they'll ask you to hold a strap. Just hold it. It's not a test. I mean, it's a bit.\"</p><p>The engine room is warm and the passage floor hums under your boots. \"Tomas's plant. I wouldn't touch anything with a tag on it, and everything has a tag. If Tomas hands you a spanner, though, you can take that how you like. I've been aboard four years and I've had it twice.\" Up forward he points at the helm without going in. \"the pilot flies her. Talks to the board the whole time. Don't answer. It's not for you.\" Beside it, Mateo has the bands. \"Anything that comes in for you comes through there, and Mateo reads it first. It's nothing personal. Mateo reads mine.\"</p><p>At a row of doors on the left he stops. \"Third one is yours. It's on a closer, so it hisses, it doesn't slam. You'll try to slam it once. Everyone does. It's all right.\"</p><p>He takes the pencil from behind his ear and checks the bill. \"That's everyone. You have the middle watch with the pilot, it's on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "\"Fair enough,\" Cato says. \"The watch bill is on the galley wall. Everything else you'll find by walking into it, and I'll be somewhere nearby when you do.\" He tucks the watch bill back under his arm.",
+    "next": null
+   }
+  ],
+  "title": "The Round",
+  "text": "Cato Rahman finds you in the passage an hour after the burn starts, with the watch bill rolled under one arm and a stub of pencil behind his ear. \"The captain says I should do this on the dock,\" he says. \"But on the dock nobody's listening, they're looking for their bunk. Walk with me. It's not far. It feels far, the first time.\"",
+  "labels": [
+   "Walk it with him",
+   "Another time"
+  ]
+ },
+ {
+  "id": "scene:cato-round:empty",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He starts at the galley, because he says everyone should. \"It's eleven feet across, I measured it once, and that's where we eat and where we argue, mostly at the same time. the cook runs it. The water ration is on the wall in chalk. Don't rub it out, I know it looks like something you could rub out. And tell the cook what you won't eat. Once, early. the cook is fine about it if you say it the first week. After that it's a complaint, and then there's a conversation.\"</p><p>Two doors down, he knocks on the frame of the medical bay without going in. \"the medic. This is the one I said. the medic keeps the kit and the log, and I'll tell you what I tell everybody, which is come in when you're hurt, not when it's bad. I once knew a man who walked on a cracked rib for a week to save the fuss.\" the medic says something to him that you don't catch, and he laughs.</p><p>In the hold he slows down and his voice drops. \"the quartermaster has the count. Everything aboard, twice. If a number looks off to you, ask the quartermaster before you go to the captain, because it has already been found and it's sitting on a list somewhere. And these two,\" he says, nodding at one ice hand and the other, who are lashing a drum of reaction mass, \"they'll ask you to hold a strap. Just hold it. It's not a test. I mean, it's a bit.\"</p><p>The engine room is warm and the passage floor hums under your boots. \"the engineer's plant. I wouldn't touch anything with a tag on it, and everything has a tag. If the engineer hands you a spanner, though, you can take that how you like. I've been aboard four years and I've had it twice.\" Up forward he points at the helm without going in. \"the pilot flies her. Talks to the board the whole time. Don't answer. It's not for you.\" Beside it, the slicer has the bands. \"Anything that comes in for you comes through there, and the slicer reads it first. It's nothing personal. the slicer reads mine.\"</p><p>At a row of doors on the left he stops. \"Third one is yours. It's on a closer, so it hisses, it doesn't slam. You'll try to slam it once. Everyone does. It's all right.\"</p><p>The last stop is at the foot of the guns. \"And these are yours. When something closes on us, the board shows you what she's about to do and what the captain means to do back. You lay a gun on a part of her, her guns, say, or her drive, and you press Fire, and then it all happens at once, hers and ours. You'll get one wrong. I did, and I'm still here, and so is the ship.\"</p><p>He takes the pencil from behind his ear and checks the bill. \"That's everyone. You have the middle watch with the pilot, it's on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "\"Fair enough,\" Cato says. \"The watch bill is on the galley wall. Everything else you'll find by walking into it, and I'll be somewhere nearby when you do.\" He tucks the watch bill back under his arm.",
+    "next": null
+   }
+  ],
+  "title": "The Round",
+  "text": "Cato Rahman finds you in the passage an hour after the burn starts, with the watch bill rolled under one arm and a stub of pencil behind his ear. \"The captain says I should do this on the dock,\" he says. \"But on the dock nobody's listening, they're looking for their bunk. Walk with me. It's not far. It feels far, the first time.\"",
+  "labels": [
+   "Walk it with him",
+   "Another time"
+  ]
+ },
+ {
   "id": "memory:strain",
   "plays": [
    {
@@ -25168,5 +25237,647 @@
   "title": "x",
   "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Mate0 won't fight for you. Mate2 won't stand in the same section as Mate1.",
   "labels": []
+ },
+ {
+  "id": "scene:distress-call",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You match velocity, and cross in suits, and find three people in the yacht's galley, gray-faced, wrapped in blankets, breathing in shallow sips. You patch their air recyclers with a borrowed part, and share some rations, and stay until the color returns to their cheeks. The owner, a rich man in a torn silk shirt, grips your hand so hard it hurts. \"I won't forget this,\" he says.",
+    "next": {
+     "title": "The Owner",
+     "text": "The owner, Halden Voss, has recovered enough to be embarrassed. He runs a shipping house out of Luna, he says, and the yacht was a present to himself. \"Name your price,\" he says. \"I'd rather it were a fair one. I'm told I'm a poor judge of my own life.\"",
+     "labels": [
+      "Take payment now (30,000 cr)",
+      "Ask for a letter of introduction",
+      "Ask for nothing"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0,
+      "text": "He transfers it without looking at the number, and thanks you again, quietly, and then a third time."
+     },
+     {
+      "j": 0,
+      "roll": 0.99,
+      "text": "He transfers it without looking at the number, and thanks you again, quietly, and then a third time."
+     },
+     {
+      "j": 1,
+      "roll": 0,
+      "text": "He writes it on the back of his own business card, in a shaky hand, with a pen borrowed from your galley: \"Bearer saved my life. Treat accordingly.\" He seals it with a thumbprint. \"Don't lose it. I'll make sure the right people know.\""
+     },
+     {
+      "j": 1,
+      "roll": 0.99,
+      "text": "He writes it on the back of his own business card, in a shaky hand, with a pen borrowed from your galley: \"Bearer saved my life. Treat accordingly.\" He seals it with a thumbprint. \"Don't lose it. I'll make sure the right people know.\""
+     },
+     {
+      "j": 2,
+      "roll": 0,
+      "text": "\"Nothing,\" you say. \"Go home.\" He looks at you and doesn't answer at once. \"Then I owe you something worse than money,\" he says. \"I'll think of something.\""
+     },
+     {
+      "j": 2,
+      "roll": 0.99,
+      "text": "\"Nothing,\" you say. \"Go home.\" He looks at you and doesn't answer at once. \"Then I owe you something worse than money,\" he says. \"I'll think of something.\""
+     }
+    ]
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "It was bait. Two raiders light their drives the moment you match velocity, dark shapes swinging out from behind the yacht's hull, guns already hot. The \"life support failure\" was a recording, looping on a dead panel. You break away, hard, with 78 points of armor damage and a long, ringing anger, at yourself, at them, at a universe in which this works.",
+    "next": {
+     "title": "They Follow You",
+     "text": "The raiders aren't done. Two dark shapes keep pace off your quarter, closing, and the yacht behind them has gone from a distress call to a decoy to a joke. On the open band a voice you haven't heard before says: \"Cargo or hull, friend.\" There's a pause.",
+     "labels": [
+      "Burn hard to break away (30 reaction mass)",
+      "Turn and fight",
+      "Pay them to leave (8,000 cr)"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0,
+      "text": "You throw the drive wide open, and the ship groans, and the two shapes fall behind, one at a time, still talking on the band, still cheerful about it. When the last of them is a spark, someone in the galley starts, shakily, to laugh."
+     },
+     {
+      "j": 0,
+      "roll": 0.99,
+      "text": "You throw the drive wide open, and the ship groans, and the two shapes fall behind, one at a time, still talking on the band, still cheerful about it. When the last of them is a spark, someone in the galley starts, shakily, to laugh."
+     },
+     {
+      "j": 1,
+      "roll": 0,
+      "text": "You turn, and fire, and so do they, and the exchange is short and loud and ugly. You come out of it with the hull scarred and both raiders limping for the dark. The yacht's decoy transponder is still pinging from a lost position. You write it down. 52 points of armor damage."
+     },
+     {
+      "j": 1,
+      "roll": 0.99,
+      "text": "You turn, and fire, and so do they, and the exchange is short and loud and ugly. You come out of it with the hull scarred and both raiders limping for the dark. The yacht's decoy transponder is still pinging from a lost position. You write it down. 52 points of armor damage."
+     },
+     {
+      "j": 2,
+      "roll": 0,
+      "text": "You send the credits, and they take them, with a mock bow on the channel, and a \"pleasure.\" They don't follow."
+     },
+     {
+      "j": 2,
+      "roll": 0.99,
+      "text": "You send the credits, and they take them, with a mock bow on the channel, and a \"pleasure.\" They don't follow."
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You tune out the signal, and tell yourself it's probably a trap, and it probably is. It fades behind you, thinner and thinner, until it's just a whisper in the static, and then it stops. You don't sleep well, that night, and you don't know whether it's because of the voice or because of the silence that followed.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You tune out the signal, and tell yourself it's probably a trap, and it probably is. It fades behind you, thinner and thinner, until it's just a whisper in the static, and then it stops. You don't sleep well, that night, and you don't know whether it's because of the voice or because of the silence that followed.",
+    "next": null
+   }
+  ],
+  "title": "Distress Call",
+  "text": "A signal cuts through the static: \"...reactor scram... life support failing... anyone...\" The voice is thin and cracked. A private yacht is drifting ballistic just off your trajectory, small and dark, with a single tumbling running light. There's no other traffic within a day's burn. Whoever is aboard hasn't much air left.",
+  "labels": [
+   "Kill your burn and help (costs time)",
+   "Stay on course"
+  ]
+ },
+ {
+  "id": "scene:pirates",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You transfer 5,000 cr. They peel off with a flash of their running lights, three long, one short, and on the open band a last, cheerful \"Safe burn, hoser.\" You sit in the quiet with your hand still on the transfer key.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "You transfer 5,000 cr. They peel off with a flash of their running lights, three long, one short, and on the open band a last, cheerful \"Safe burn, hoser.\" You sit in the quiet with your hand still on the transfer key.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You jettison 10t of Water. The crates tumble away into the dark, spinning and glinting. The pirates chase them down, whooping on the channel, while you burn on. You watch their running lights dwindle, and try not to do the arithmetic.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You jettison 10t of Water. The crates tumble away into the dark, spinning and glinting. The pirates chase them down, whooping on the channel, while you burn on. You watch their running lights dwindle, and try not to do the arithmetic.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "{crew}'s fake transponder reads as one of their own, with a scrawled skull for good measure. They wave you through with a rude gesture, and one of them calls you \"brother\" over the channel. You don't answer. Your hands on the controls aren't steady.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "They see through it in seconds and open fire. 52 points of armor damage before you get clear, and {crew} sits still afterward, mouthing a numbered list of what went wrong.",
+    "next": null
+   }
+  ],
+  "title": "Pirates Matching Course",
+  "text": "A dark ship with no transponder slides in off your quarter and matches your burn, close enough that you can see the scars on her hull, and paints you with targeting lidar, a cold red pulse across your instruments. A voice on the open band, amused and very young: \"Cargo or credits, hoser. Your choice.\" Behind it, in the noise, someone's laughing, and someone else is quietly counting.",
+  "labels": [
+   "Pay them off (10% of your credits)",
+   "Dump half your biggest cargo",
+   "Fight",
+   "[{crew}] Spoof a pirate transponder",
+   "Hard burn to outrun them (50 reaction mass)"
+  ]
+ },
+ {
+  "id": "scene:derelict",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You go aboard in suits, through a tangle of cold, dark passages, past frozen coffee bulbs and a child's drawing pinned to a bulkhead, and cut out the nav core and a crate of spare parts, worth 30,000 cr to the right buyer. On the way out, you don't look at the drawing. You almost make it.",
+    "fx": {
+     "credits": 30000
+    },
+    "next": {
+     "title": "The Drawing",
+     "text": "On the way out, the child's drawing comes with you, pinned to your sleeve by a bit of tape. Under the crayon, in careful adult handwriting, there's a ship name and a registry number.",
+     "labels": [
+      "Look up the registry (costs time)",
+      "Put it in the log and say nothing"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0,
+      "text": "It takes an afternoon of slow channels and a favor from a registry clerk, but the name resolves, in the end, to a home and a family. You put the drawing in a drawer, and the drawer stays slightly open."
+     },
+     {
+      "j": 0,
+      "roll": 0.99,
+      "text": "It takes an afternoon of slow channels and a favor from a registry clerk, but the name resolves, in the end, to a home and a family. You put the drawing in a drawer, and the drawer stays slightly open."
+     },
+     {
+      "j": 1,
+      "roll": 0,
+      "text": "You tape it to the inside of a locker, and close the locker."
+     },
+     {
+      "j": 1,
+      "roll": 0.99,
+      "text": "You tape it to the inside of a locker, and close the locker."
+     }
+    ]
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Something in the reactor section was still live. A blue-white flash, a slam like a hammer, and the blast, as you scramble for the airlock, costs you 39 points of armor, and leaves your ears ringing for an hour. You don't go back for the parts. Nobody suggests it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Whatever happened to them, it's not your business. You log the position, the ship's name and the time, and move on. Behind you the dead ship dwindles. Someone in the galley keeps watching the screen, and nobody says why.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Whatever happened to them, it's not your business. You log the position, the ship's name and the time, and move on. Behind you the dead ship dwindles. Someone in the galley keeps watching the screen, and nobody says why.",
+    "next": null
+   }
+  ],
+  "title": "Derelict Ship",
+  "text": "Your sensors pick up a derelict drifting dark, an old ore hauler with her hull breached, her running lights out, and a long black scorch mark down one side. No transponder, no life signs, no heat signature. She has been dead a long time. Salvage rights go to whoever gets there first, and the cockpit has gone quiet.",
+  "labels": [
+   "Match velocity and strip it",
+   "Log it and keep burning"
+  ]
+ },
+ {
+  "id": "scene:coolant-leak",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "{crew} is in the coolant loop before the alarm finishes, sleeves rolled, one hand already on the valve. For twenty minutes there's only the sound of tools, and the hiss of venting steam, and low muttering. Then the lights go back to green, one by one. \"Go back to sleep, captain,\" {crew} says, wiping their hands, black to the elbows.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "{crew} is in the coolant loop before the alarm finishes, sleeves rolled, one hand already on the valve. For twenty minutes there's only the sound of tools, and the hiss of venting steam, and low muttering. Then the lights go back to green, one by one. \"Go back to sleep, captain,\" {crew} says, wiping their hands, black to the elbows.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "An hour in a vac suit with a sealant gun and some swearing, wedged into a space the size of a coffin, with a flashlight in your teeth and a hot jet hissing at your elbow. Near the end of the hour the hiss stops. Good as new. You crawl out, drenched, and someone hands you a cup of tea without a word.",
+    "next": {
+     "title": "The Patch",
+     "text": "The patch holds, but it's ugly: a lump of sealant the size of a fist, bulging over a section of pipe that's thinner than it should be. The drive is happy. The pipe isn't. A patch on a pipe like that doesn't last.",
+     "labels": [
+      "Pay a yard to replace the section at the next port (4,000 cr)",
+      "Run on the patch"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0,
+      "text": "You book it, and it's dull, and it works. The old section comes out in a yard worker's gloves, with the patch still on it, and the worker holds it up and says, with real admiration, \"Whoever did this was brave.\""
+     },
+     {
+      "j": 0,
+      "roll": 0.99,
+      "text": "You book it, and it's dull, and it works. The old section comes out in a yard worker's gloves, with the patch still on it, and the worker holds it up and says, with real admiration, \"Whoever did this was brave.\""
+     },
+     {
+      "j": 1,
+      "roll": 0,
+      "text": "You leave it, and it holds, day after day. Every watch someone puts a hand on the pipe."
+     },
+     {
+      "j": 1,
+      "roll": 0.99,
+      "text": "You leave it, and it holds, day after day. Every watch someone puts a hand on the pipe."
+     }
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The patch fails, in a spray of hot white vapor, and you vent 50 units of reaction mass before you get it sealed, on the second try, with a great deal of swearing and a scorched sleeve. When it holds, at last, you slide down the wall and sit on the deck, laughing, because it's that or something else.",
+    "next": {
+     "title": "The Patch",
+     "text": "The patch holds, but it's ugly: a lump of sealant the size of a fist, bulging over a section of pipe that's thinner than it should be. The drive is happy. The pipe isn't. A patch on a pipe like that doesn't last.",
+     "labels": [
+      "Pay a yard to replace the section at the next port (4,000 cr)",
+      "Run on the patch"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0,
+      "text": "You book it, and it's dull, and it works. The old section comes out in a yard worker's gloves, with the patch still on it, and the worker holds it up and says, with real admiration, \"Whoever did this was brave.\""
+     },
+     {
+      "j": 0,
+      "roll": 0.99,
+      "text": "You book it, and it's dull, and it works. The old section comes out in a yard worker's gloves, with the patch still on it, and the worker holds it up and says, with real admiration, \"Whoever did this was brave.\""
+     },
+     {
+      "j": 1,
+      "roll": 0,
+      "text": "You leave it, and it holds, day after day. Every watch someone puts a hand on the pipe."
+     },
+     {
+      "j": 1,
+      "roll": 0.99,
+      "text": "You leave it, and it holds, day after day. Every watch someone puts a hand on the pipe."
+     }
+    ]
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You throttle back, watching the needles, and burn 25 units of reaction mass through the leak in a long controlled sigh, and the temperature settles, degree by degree. It's not elegant and it's not cheap. The drive is quiet again, and in the corridor the smell of glycol begins to fade.",
+    "next": {
+     "title": "The Patch",
+     "text": "The patch holds, but it's ugly: a lump of sealant the size of a fist, bulging over a section of pipe that's thinner than it should be. The drive is happy. The pipe isn't. A patch on a pipe like that doesn't last.",
+     "labels": [
+      "Pay a yard to replace the section at the next port (4,000 cr)",
+      "Run on the patch"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0,
+      "text": "You book it, and it's dull, and it works. The old section comes out in a yard worker's gloves, with the patch still on it, and the worker holds it up and says, with real admiration, \"Whoever did this was brave.\""
+     },
+     {
+      "j": 0,
+      "roll": 0.99,
+      "text": "You book it, and it's dull, and it works. The old section comes out in a yard worker's gloves, with the patch still on it, and the worker holds it up and says, with real admiration, \"Whoever did this was brave.\""
+     },
+     {
+      "j": 1,
+      "roll": 0,
+      "text": "You leave it, and it holds, day after day. Every watch someone puts a hand on the pipe."
+     },
+     {
+      "j": 1,
+      "roll": 0.99,
+      "text": "You leave it, and it holds, day after day. Every watch someone puts a hand on the pipe."
+     }
+    ]
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You throttle back, watching the needles, and burn 25 units of reaction mass through the leak in a long controlled sigh, and the temperature settles, degree by degree. It's not elegant and it's not cheap. The drive is quiet again, and in the corridor the smell of glycol begins to fade.",
+    "next": {
+     "title": "The Patch",
+     "text": "The patch holds, but it's ugly: a lump of sealant the size of a fist, bulging over a section of pipe that's thinner than it should be. The drive is happy. The pipe isn't. A patch on a pipe like that doesn't last.",
+     "labels": [
+      "Pay a yard to replace the section at the next port (4,000 cr)",
+      "Run on the patch"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0,
+      "text": "You book it, and it's dull, and it works. The old section comes out in a yard worker's gloves, with the patch still on it, and the worker holds it up and says, with real admiration, \"Whoever did this was brave.\""
+     },
+     {
+      "j": 0,
+      "roll": 0.99,
+      "text": "You book it, and it's dull, and it works. The old section comes out in a yard worker's gloves, with the patch still on it, and the worker holds it up and says, with real admiration, \"Whoever did this was brave.\""
+     },
+     {
+      "j": 1,
+      "roll": 0,
+      "text": "You leave it, and it holds, day after day. Every watch someone puts a hand on the pipe."
+     },
+     {
+      "j": 1,
+      "roll": 0.99,
+      "text": "You leave it, and it holds, day after day. Every watch someone puts a hand on the pipe."
+     }
+    ]
+   }
+  ],
+  "title": "Coolant Leak",
+  "text": "Alarms. A shrill wail goes through the whole ship, and on the reactor panel a line of lights goes from green to amber to red, one after another. The coolant loop has sprung a leak somewhere in the tangle of pipes behind the drive housing, and the drive is running hotter every minute, with a metallic ticking. The corridor smells of burnt glycol. Everyone's looking at you.",
+  "labels": [
+   "[{crew}] Handle it",
+   "Suit up and patch it",
+   "Throttle back and burn extra mass to cool it"
+  ]
+ },
+ {
+  "id": "scene:trouble:drive",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "{crew} pulls the drive apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the drive is at 60 percent.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "{crew} pulls the drive apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the drive is at 60 percent.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "It takes a borrowed tool kit and a great deal of swearing, but the drive comes back a little, to 42 percent. It will do.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You get the panel open and make it worse. The drive drops to 22 percent, and you close the panel quickly, as though nobody saw.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You decide to live with it. The drive slips a little further, to 26 percent, and everybody aboard learns to listen for it.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You decide to live with it. The drive slips a little further, to 26 percent, and everybody aboard learns to listen for it.",
+    "next": null
+   }
+  ],
+  "title": "Drive Trouble",
+  "text": "The drive has started to cough: a stutter in the thrust, and a rattle in the plume pipes that was not there before. It is at 30 percent and it will not get better by being ignored. The question is how much of the burn you are willing to spend on it.",
+  "labels": [
+   "[{crew}] Fix it properly",
+   "Jury-rig it yourself",
+   "Nurse it along"
+  ]
+ },
+ {
+  "id": "scene:trouble:fire",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "{crew} pulls the fire control apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the fire control is at 60 percent.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "{crew} pulls the fire control apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the fire control is at 60 percent.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "It takes a borrowed tool kit and a great deal of swearing, but the fire control comes back a little, to 42 percent. It will do.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You get the panel open and make it worse. The fire control drops to 22 percent, and you close the panel quickly, as though nobody saw.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You decide to live with it. The fire control slips a little further, to 26 percent, and everybody aboard learns to listen for it.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You decide to live with it. The fire control slips a little further, to 26 percent, and everybody aboard learns to listen for it.",
+    "next": null
+   }
+  ],
+  "title": "Fire control Trouble",
+  "text": "The fire control is drifting. The mounts keep slewing a hair off the solution, and the targeting cache has started serving stale tracks. It is at 30 percent and it will not get better by being ignored. The question is how much of the burn you are willing to spend on it.",
+  "labels": [
+   "[{crew}] Fix it properly",
+   "Jury-rig it yourself",
+   "Nurse it along"
+  ]
+ },
+ {
+  "id": "scene:trouble:shields",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "{crew} pulls the shields apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the shields is at 60 percent.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "{crew} pulls the shields apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the shields is at 60 percent.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "It takes a borrowed tool kit and a great deal of swearing, but the shields comes back a little, to 42 percent. It will do.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You get the panel open and make it worse. The shields drops to 22 percent, and you close the panel quickly, as though nobody saw.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You decide to live with it. The shields slips a little further, to 26 percent, and everybody aboard learns to listen for it.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You decide to live with it. The shields slips a little further, to 26 percent, and everybody aboard learns to listen for it.",
+    "next": null
+   }
+  ],
+  "title": "Shields Trouble",
+  "text": "The shield emitters are flickering, and every few minutes one of the projectors drops out for a second and comes back. It is at 30 percent and it will not get better by being ignored. The question is how much of the burn you are willing to spend on it.",
+  "labels": [
+   "[{crew}] Fix it properly",
+   "Jury-rig it yourself",
+   "Nurse it along"
+  ]
+ },
+ {
+  "id": "scene:trouble:life",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "{crew} pulls the life support apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the life support is at 60 percent.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "{crew} pulls the life support apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the life support is at 60 percent.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "It takes a borrowed tool kit and a great deal of swearing, but the life support comes back a little, to 42 percent. It will do.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You get the panel open and make it worse. The life support drops to 22 percent, and you close the panel quickly, as though nobody saw.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You decide to live with it. The life support slips a little further, to 26 percent, and everybody aboard learns to listen for it.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You decide to live with it. The life support slips a little further, to 26 percent, and everybody aboard learns to listen for it.",
+    "next": null
+   }
+  ],
+  "title": "Life support Trouble",
+  "text": "The air has gone stale. The scrubbers are running flat out, the recycler is groaning, and somebody has started a pool on which one gives up first. It is at 30 percent and it will not get better by being ignored. The question is how much of the burn you are willing to spend on it.",
+  "labels": [
+   "[{crew}] Fix it properly",
+   "Jury-rig it yourself",
+   "Nurse it along"
+  ]
+ },
+ {
+  "id": "scene:trouble:sensors",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "{crew} pulls the sensors apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the sensors is at 60 percent.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "{crew} pulls the sensors apart, and puts it back together better, and takes most of a watch to do it. The burn runs ten seconds long, and the sensors is at 60 percent.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "It takes a borrowed tool kit and a great deal of swearing, but the sensors comes back a little, to 42 percent. It will do.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You get the panel open and make it worse. The sensors drops to 22 percent, and you close the panel quickly, as though nobody saw.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You decide to live with it. The sensors slips a little further, to 26 percent, and everybody aboard learns to listen for it.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You decide to live with it. The sensors slips a little further, to 26 percent, and everybody aboard learns to listen for it.",
+    "next": null
+   }
+  ],
+  "title": "Sensors Trouble",
+  "text": "The sensor mast is throwing ghosts: contacts that are not there, and, worse, a long scan that keeps missing the ones that are. It is at 30 percent and it will not get better by being ignored. The question is how much of the burn you are willing to spend on it.",
+  "labels": [
+   "[{crew}] Fix it properly",
+   "Jury-rig it yourself",
+   "Nurse it along"
+  ]
  }
 ]

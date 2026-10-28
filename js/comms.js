@@ -35,7 +35,7 @@ ORDERS.comms = [{
 
 // The merchant's offer is routine: the officer buys the tip when there is money to spare.
 {
-  const hail = TRANSIT_EVENTS.find(e => e.title === 'Merchant Hail');
+  const hail = TRANSIT_EVENTS.find(e => !e.id && e.title === 'Merchant Hail');  // an event with an id reads its title from the registry, which loads later (transit.js)
   if (hail) hail.auto = () => {
     const st = G.state, who = roleName('slicer');
     if (st.credits < 15000) return `${who} thanks the freighter captain and declines the tip.`;

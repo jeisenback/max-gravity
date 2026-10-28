@@ -145,10 +145,10 @@ Mods.register({
       }
     });
     // The old text-only pirate ambush is a duel too.
-    const ev = TRANSIT_EVENTS.find(x => x.title === 'Pirates Matching Course');
+    const ev = TRANSIT_EVENTS.find(x => x.id === 'pirates');  // by id and key, since the editor can change its words (transit.js)
     if (ev) {
-      for (const [label, flee] of [['Fight', false], ['Hard burn', true]]) {
-        ev.choices.find(x => x.label.startsWith(label)).run = () => startDuel(scenePirate(), flee);
+      for (const [key, flee] of [['fight', false], ['burn', true]]) {
+        ev.choices.find(x => x.key === key).run = () => startDuel(scenePirate(), flee);
       }
     }
   },

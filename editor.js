@@ -432,6 +432,14 @@
         const crew = folk().filter(f => f.crew && !f.p.cast), st = G.state;
         const build = {
           'scene:sign-on': () => { st.carried = null; return signOnEvent(); }, 'scene:warning': warningScene, 'scene:put-ashore': putAshoreScene, 'scene:hand-death': () => handDeathScene('hurt'),
+          'scene:distress-call': () => TRANSIT_EVENTS.find(e => e.id === 'distress-call'), 'scene:pirates': () => TRANSIT_EVENTS.find(e => e.id === 'pirates'),  // the lane's events (#796), as the burn draws them
+          'scene:derelict': () => TRANSIT_EVENTS.find(e => e.id === 'derelict'), 'scene:coolant-leak': () => TRANSIT_EVENTS.find(e => e.id === 'coolant-leak'),
+          'scene:trouble': () => {  // the system whose fault was typed (else the drive), run down under the line
+            const part = (String(m.line || '').match(/^fault\.(\w+)$/) || [])[1] || 'drive';
+            condition()[part] = Math.min(condition()[part], BREAKDOWN_BELOW - 10);
+            return breakdownEvent(part);
+          },
+          'scene:cato-round': () => { const xo = hired() && hiredXo(); return xo && xo.cast === 'cato' ? castScene('cato', CAST.cato.round()) : null; },  // Cato's round, with Hester's crew (his captain)
           'scene:mourn': () => mournScene(crew[0] ? crew[0].p : { first: 'Mara', last: 'Quill', role: 'engineer' }),  // a loss: the first of the crew stands in for the one lost (#796)
           'scene:repair': () => { if (!hired()) return null; st.armor = Math.min(st.armor, Math.round(ship().armor * (1 - REPAIR_AT * 2))); return repairScene(currentPlanet()); },  // the ship in with a fifth of her hull gone
           'scene:settling-up': () => {  // the first arrival, with a first run's figures standing in, read with the first officer of the captain chosen
