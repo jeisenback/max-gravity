@@ -14,8 +14,8 @@ const playScenes = () => {
     G.state.story.next = 1e9; G.state.day += 30; G.dialog = null; G.nextEvent = null;
     return G.state;
   };
-  const standing = () => ({ credits: G.state.credits, opinion: Object.fromEntries(Object.values(G.state.people).map(p => [p.id, p.opinion])) });
-  const moved = (b, a) => ({ ...(a.credits !== b.credits ? { credits: a.credits - b.credits } : {}), ...Object.fromEntries(Object.entries(a.opinion).filter(([id, v]) => v !== b.opinion[id]).map(([id, v]) => [id, v - (b.opinion[id] || 0)])) });  // what a choice did to the money and to each person's regard
+  const standing = () => ({ credits: G.state.credits, fund: hired() && hired().fund, opinion: Object.fromEntries(Object.values(G.state.people).map(p => [p.id, p.opinion])) });
+  const moved = (b, a) => ({ ...(a.credits !== b.credits ? { credits: a.credits - b.credits } : {}), ...(a.fund !== b.fund ? { fund: a.fund - b.fund } : {}), ...Object.fromEntries(Object.entries(a.opinion).filter(([id, v]) => v !== b.opinion[id]).map(([id, v]) => [id, v - (b.opinion[id] || 0)])) });  // what a choice did to the money, the ship's fund and each person's regard
   const memLens = () => Object.fromEntries(Object.values(G.state.people).map(p => [p.id, (p.memories || []).length]));
   const gained = lens => Object.values(G.state.people).flatMap(p => (p.memories || []).slice(lens[p.id] === undefined ? 0 : lens[p.id]));  // the memories a choice leaves
   const look = ev => (ev ? { title: ev.title, text: ev.text, labels: ev.choices.map(c => String(c.label)) } : null);
