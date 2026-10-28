@@ -86,6 +86,12 @@ test('the ship fight plays the setup the line typed needs: the patrol, the veter
     ['deck.holdfire', r => r.kind === 'deck' && !r.navy && !r.assault, false],  // the repel keeps hold fire
     ['deck.hers.0', r => r.kind === 'deck' && r.assault, false],
     ['pdc.fire', r => r.kind === 'ship' && r.pdc, true],
+    ['hurt.you', r => r.kind === 'deck' && !r.assault && !r.navy, false],  // the hurt and the fallen play on our deck, where a head of ours down reads them (#796)
+    ['hit.again.dead', r => r.kind === 'deck' && !r.assault && !r.navy, false],
+    ['cover.even', r => r.kind === 'deck' && !r.assault && !r.navy, false],
+    ['killed.repel.log', r => r.kind === 'deck' && !r.assault && !r.navy, false],  // and a death's cause where it is written
+    ['killed.assault.log', r => r.kind === 'deck' && r.assault, false],
+    ['killed.navy.log', r => r.kind === 'ship' && r.patrol, false],
   ];
   for (const [line, ok, shown] of cases) {
     await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${line}.`);
@@ -96,6 +102,17 @@ test('the ship fight plays the setup the line typed needs: the patrol, the veter
     await page.fill(`textarea[data-path="part.${line}"]`, '');
   }
   assert.match(await page.textContent('#pv-report'), /fight/i, 'the report names the fight played');
+});
+
+test('the navy\'s levy on our bridge plays in the navy\'s deck fight, and the rest of the repel\'s ends on our deck against raiders (#796)', async () => {
+  await reload(); await select('beats:repel');
+  await page.fill('textarea[data-path="part.end.takenNavy"]', 'Typed levy.');
+  let r = await fightOf(await play());
+  assert.ok(r.kind === 'deck' && r.navy && !r.assault, `the navy's deck: ${JSON.stringify(r).slice(0, 200)}`);
+  await page.fill('textarea[data-path="part.end.takenNavy"]', '');
+  await page.fill('textarea[data-path="part.end.captainLost"]', 'Typed loss.');
+  r = await fightOf(await play());
+  assert.ok(r.kind === 'deck' && !r.navy && !r.assault, `our deck against raiders: ${JSON.stringify(r).slice(0, 200)}`);
 });
 
 test('the writer can pick another fight, early or late, over the one the line needs (#795)', async () => {
