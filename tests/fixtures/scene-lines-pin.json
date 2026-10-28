@@ -311,6 +311,7 @@
     ],
     "fx": {
      "credits": 1800,
+     "fund": 30000,
      "p10": 1
     },
     "x": {
@@ -1465,6 +1466,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -1477,6 +1479,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -1496,6 +1499,7 @@
      "9 Jul 2214: You kept me aboard and I was found."
     ],
     "fx": {
+     "fund": -8000,
      "p1": -1,
      "p10": -1,
      "p12": 0
@@ -1577,6 +1581,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -1589,6 +1594,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -1608,6 +1614,7 @@
      "9 Jul 2214: You kept me aboard and I was found."
     ],
     "fx": {
+     "fund": -8000,
      "p1": -1,
      "p10": -1,
      "p12": 0
@@ -1689,6 +1696,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -1701,6 +1709,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -1720,6 +1729,7 @@
      "9 Jul 2214: You kept me aboard and I was found."
     ],
     "fx": {
+     "fund": -8000,
      "p1": -1,
      "p10": -1,
      "p12": 0
@@ -1747,6 +1757,7 @@
      "9 Jul 2214: You pointed the guns at a patrol and it cost the ship."
     ],
     "fx": {
+     "fund": -8000,
      "p1": -2,
      "p12": 0
     },
@@ -1852,6 +1863,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -1864,6 +1876,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -1883,6 +1896,7 @@
      "9 Jul 2214: You kept me aboard and I was found."
     ],
     "fx": {
+     "fund": -8000,
      "p1": -1,
      "p10": -1,
      "p13": 0
@@ -1910,6 +1924,7 @@
      "9 Jul 2214: You pointed the guns at a patrol and it cost the ship."
     ],
     "fx": {
+     "fund": -8000,
      "p1": -2,
      "p13": 0
     },
@@ -1996,6 +2011,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -2008,6 +2024,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -2027,6 +2044,7 @@
      "9 Jul 2214: You kept me aboard and I was found."
     ],
     "fx": {
+     "fund": -8000,
      "p1": -1,
      "p10": -1,
      "p12": 0
@@ -2108,6 +2126,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -2120,6 +2139,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -2139,6 +2159,7 @@
      "9 Jul 2214: You kept me aboard and I was found."
     ],
     "fx": {
+     "fund": -8000,
      "p1": -1,
      "p10": -1
     },
@@ -2188,6 +2209,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -2200,6 +2222,7 @@
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "next": null
@@ -2219,6 +2242,7 @@
      "9 Jul 2214: You kept me aboard and I was found."
     ],
     "fx": {
+     "fund": -8000,
      "p1": -1,
      "p10": -1
     },
@@ -2245,6 +2269,7 @@
      "9 Jul 2214: You pointed the guns at a patrol and it cost the ship."
     ],
     "fx": {
+     "fund": -8000,
      "p1": -2
     },
     "next": null
@@ -7705,6 +7730,7 @@
      "9 Jul 2214: You let me call in a favor at Earth."
     ],
     "fx": {
+     "fund": 1500,
      "p10": 1
     },
     "next": null
@@ -7717,6 +7743,7 @@
      "9 Jul 2214: You let me call in a favor at Earth."
     ],
     "fx": {
+     "fund": 1500,
      "p10": 1
     },
     "next": null
@@ -9504,6 +9531,7 @@
     ],
     "fx": {
      "credits": -450000,
+     "fund": -120000,
      "p1": 2
     },
     "next": null
@@ -9528,6 +9556,7 @@
     ],
     "fx": {
      "credits": -450000,
+     "fund": -120000,
      "p1": 2,
      "p10": 1
     },
@@ -9623,6 +9652,9 @@
     "i": 0,
     "roll": 0.5,
     "text": "The captain has the magazine filled at the yard, 2 bought for 8,000 cr from the ship's fund.",
+    "fx": {
+     "fund": -8000
+    },
     "next": null
    }
   ],
@@ -9744,6 +9776,7 @@
      "9 Jul 2214: We were stopped by a patrol and it cost the fund."
     ],
     "fx": {
+     "fund": -30000,
      "p1": -1
     },
     "next": null
@@ -9872,6 +9905,7 @@
     ],
     "fx": {
      "credits": 350,
+     "fund": -7859,
      "p1": 1
     },
     "next": null
@@ -9891,7 +9925,8 @@
     "roll": 0.5,
     "text": "You work the plate beside the yard crew, and learn from them. (Experience gained.) The yard wants 2 days before she sails, and the hull will be whole. Parts and labor came to 7,859 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 350 cr standby.",
     "fx": {
-     "credits": 350
+     "credits": 350,
+     "fund": -7859
     },
     "next": null
    }
@@ -9918,6 +9953,7 @@
      "9 Jul 2214: The captain didn't give Mara their due."
     ],
     "fx": {
+     "fund": -1500,
      "p10": 1,
      "p12": 1,
      "p13": -1,
@@ -21057,6 +21093,7 @@
      "9 Jul 2214: The ship paid four thousand to keep a name off a manifest."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "x": {
@@ -21075,6 +21112,7 @@
      "9 Jul 2214: The ship paid four thousand to keep a name off a manifest."
     ],
     "fx": {
+     "fund": -4000,
      "p1": -1
     },
     "x": {
@@ -24604,6 +24642,7 @@
      "9 Jul 2214: We were stopped by a patrol and it cost the fund."
     ],
     "fx": {
+     "fund": -30000,
      "p1": -1
     },
     "next": null
@@ -24616,6 +24655,7 @@
      "9 Jul 2214: We were stopped by a patrol and it cost the fund."
     ],
     "fx": {
+     "fund": -30000,
      "p1": -1
     },
     "next": null
