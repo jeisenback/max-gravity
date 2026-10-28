@@ -15,7 +15,7 @@ const st = { systemId: 'ceres', day: 50, credits: 0 };
 const next = (h, s = st, to = 'pallas') => { const n = ladderNext(h, s, to); return n && plain(n); };
 const walk = h => { const n = next(h); if (n) ladderDone(h, n.id); return n && n.id; };
 
-test('the steps come in order, each when its condition holds', () => {
+test('the steps come in order, each when its condition holds, and the parked pair never comes', () => {
   const h = {};
   assert.deepEqual(plain(FIGHT_LADDER.map(s => s.id)), ['raider', 'corsair', 'cutter', 'pair', 'setpiece']);
   world.runs = 0; world.beats = false;
@@ -27,10 +27,9 @@ test('the steps come in order, each when its condition holds', () => {
   world.beats = true; const c = next(h);
   assert.deepEqual(c.spec, { kind: 'patrol', shipId: 'cutter', gov: 'Charter League', ladder: 'cutter' }, 'the gov of the system the burn leaves');
   assert.equal(walk(h), 'cutter');
-  assert.equal(next(h), null, 'the pair waits for the offer of a ship');
+  assert.ok(FIGHT_LADDER.find(s => s.id === 'pair').parked, 'the pair is parked: chapter two\'s, not chapter one\'s');
   h.deal = { price: 90000, until: 80 };
-  const p = next(h); assert.equal(p.id, 'pair'); assert.deepEqual(p.spec, { kind: 'pirate', shipId: 'raider', pack: true, ladder: 'pair' }); walk(h);
-  assert.equal(next(h), null, 'the set piece waits for the money');
+  assert.equal(next(h), null, 'the parked pair is passed over, and the set piece waits for the money');
   const rich = { ...st, credits: 90000 };
   assert.deepEqual(next(h, rich).spec, { kind: 'pirate', shipId: 'corsair', grade: 2, ladder: 'setpiece' });
   assert.equal(next(h, { ...rich, day: 81 }), null, 'a lapsed deal is no set piece');
