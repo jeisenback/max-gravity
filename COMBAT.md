@@ -394,7 +394,7 @@ once a fight (so does someone who owes you one).
 `tools/fights.js` plays the ship fight and both deck fights over many seeded trials (`npm run fights`: 5 seeds of 200, a hired
 gunner on Hester's ship with nine aboard) and reports, for the ship fight, the spread of ends by where the guns aim and by
 matchup, and for the deck fights how often they are won and who is hurt, by crew, the post's level, the hand's policy and her
-grade. It is run by hand and is not part of `npm test`; `tests/fights.test.js` checks the targets that matter (#786, R36). From
+grade. It is run by hand and is not part of `npm test`; `tests/distribution/fights.test.js` checks the targets that matter in the soak (#786, R36; moved out of `npm test` in #753). From
 the run that wrote this section (after the final review's tune, #808):
 
 - **The ship fight** (#814: `node tools/fights.js --seeds 1,2,3,4,5 --n 100 --ship-only`, 5 seeds of 100 pirates and 50 navy
@@ -466,7 +466,7 @@ the run that wrote this section (after the final review's tune, #808):
   downtime picked at random) a chapter learns two moves or more 24 times in 40 and both level-1 moves 20 times; in the
   play-throughs (seeds 1 to 5, Hester) four of five learn vent and lead, and lead is used in four, split in one and vent in two.
 - **The deck fights** (`node tools/fights.js --seeds 1,2 --n 200 --deck-only --groups party,level,grade,charge,setpiece,navy`, the deck
-  test's own runs: tests/fights.test.js; each cell plays on its own stream, seeded from the run's seed and the cell's name, so a
+  test's own runs: tests/distribution/fights.test.js; each cell plays on its own stream, seeded from the run's seed and the cell's name, so a
   change to one cell moves no other's numbers). A hand at level 2, her grade 0; a raider boards us at a full run and a corsair
   at a half one, as in the game, and the navy's party is started from a patrol cutter's boarding as the game starts it; each cell is won with two standing / five, then the mean turns. The fixed policies go where the fight is, reading neither the rush nor the charge: `shoot` fires there, `cover` makes
   the cover first, `order` shoots and sends the first crewmate on offer every turn. `random` draws each part of the plan from
