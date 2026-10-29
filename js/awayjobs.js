@@ -107,14 +107,14 @@ function pitchOdds(arg, a) {
   return handCheck('wit', 0, 'word', 0.2 * (r.n - 1) + trust + fit);  // a word, not the post's work: the hand's wit and the captain's trust
 }
 // The run to the job's port: the one already planned, one of the runners-up, or a light run if nothing there pays.
-function bookRun(a) {
-  const h = hired(), plan = currentPlan();
+// `plan` is the stop's plan (hired.js currentPlan, which books it again when it is remade).
+function bookRun(a, plan = (currentPlan(), hired().plan)) {
   const same = o => o && o.sid === a.sid && o.planet === a.planet;
-  if (same(plan)) return plan;
-  const alt = (h.plan.alts || []).find(same);
+  if (same(plan.run)) return plan.run;
+  const alt = (plan.alts || []).find(same);
   const dest = SYSTEMS[a.sid].planets.find(p => p.name === a.planet);
-  h.plan.run = alt ? { ...alt, ballast: false } : { sid: a.sid, planet: a.planet, yard: dest.services.includes('shipyard'), days: a.days, good: null, tons: 0, cost: 0, profit: 0, ballast: true };
-  return h.plan.run;
+  plan.run = alt ? { ...alt, ballast: false } : { sid: a.sid, planet: a.planet, yard: dest.services.includes('shipyard'), days: a.days, good: null, tons: 0, cost: 0, profit: 0, ballast: true };
+  return plan.run;
 }
 // The earliest day the job's run would have you at a yard: there, if its port has one, else a day in port and the shortest leg on to one (#800).
 function yardDayAfter(day, a) {
@@ -140,19 +140,30 @@ function pitchScene(a) {
   });
   choices.push({ label: say('never.label'), run: () => say('never.result') });
   const deal = dealOpen() && h.deal, at = deal ? yardDayAfter(st.day, a) : 0;  // the used Ore Runner goes while the run is out
-  return { title: say('title'), personal: true, text: `${say('text', { blurb: fill2(jobBlurb(job, true), a.ctx), dest: a.ctx.dest, system: a.ctx.system, days: a.days })}${deal && at > deal.until ? ` ${say('deal', { at, until: deal.until })}` : ''}`, choices };
+  const plan = currentPlan(), instead = !plan ? '' : plan.ballast ? say('instead.light', { planet: plan.planet }) : say('instead', { run: runWord(plan), share: fmt(Math.round(plan.profit * h.share)) });  // what the pitch would replace (#848)
+  return { title: say('title'), personal: true, text: `${say('text', { blurb: fill2(jobBlurb(job, true), a.ctx), dest: a.ctx.dest, system: a.ctx.system, days: a.days, instead }).replace(/\s{2,}/g, ' ')}${deal && at > deal.until ? ` ${say('deal', { at, until: deal.until })}` : ''}`, choices };
 }
 const fill2 = (t, ctx) => t.replace(/\{(\w+)\}/g, (m, k) => (ctx[k] !== undefined ? ctx[k] : m));
 const pitchedNow = a => a.pitched === `${G.state.day}@${G.state.planet}`;
+const bookedJob = h => (h.away || []).find(a => a.booked);  // one run agreed at a time: a second pitch waits until it is flown (#848)
+const atJob = a => a.planet === G.state.planet && a.sid === G.state.systemId;
+// The far end: the job's first scene, now or after the one that is open.
+function startAway(h, i) {
+  const a = h.away.splice(i, 1)[0], ev = a.arc ? arcBeginning(a) : jobStage(awayJob(a), 0, a.ctx);  // an arc begins with its own first scene (arcs.js)
+  if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+}
 
 // ---------- the board and the far end ----------
 function awayHtml() {
-  const h = hired(), list = h.away || [];
+  const hd = hired(), list = hd.away || [];
   if (!list.length) return '';
-  return `<div class="post"><div class="eyebrow">Work elsewhere &middot; you'd need the captain to fly you there</div>
-    ${list.map((a, i) => `<div class="row"><span><b>${esc(fill2(jobTitle(awayJob(a)), a.ctx))}</b> <span class="hint">${esc(fill2(jobBlurb(awayJob(a)), a.ctx))} ${esc(a.ctx.dest)}, ${esc(a.ctx.system)}, ${a.days} days. Until day ${a.until}.</span></span>
-      ${a.booked ? '<span class="tag good">the captain is flying you there</span>' : `<button data-action="pitchJob" data-arg="${i}" ${pitchedNow(a) ? 'disabled' : ''}>Put it to the captain</button>`}</div>`).join('')}
-    <p class="hint">Once a stop for each. The captain decides, by who they are and how they feel about you.</p></div>`;
+  const act = (a, i) => (a.booked && atJob(a) ? h`<button data-action="awayGo" data-arg="${i}">Go to it</button>`
+    : a.booked ? h`<span class="tag good">the captain is flying you there</span>`
+    : h`<button data-action="pitchJob" data-arg="${i}" ${pitchedNow(a) || bookedJob(hd) ? 'disabled' : ''}>Put it to the captain</button>`);
+  return String(h`<div class="post"><div class="eyebrow">Work elsewhere &middot; you'd need the captain to fly you there</div>
+    ${listHtml(list, (a, i) => h`<div class="row"><span><b>${fill2(jobTitle(awayJob(a)), a.ctx)}</b> <span class="hint">${fill2(jobBlurb(awayJob(a)), a.ctx)} ${a.ctx.dest}, ${a.ctx.system}, ${a.days} days. Until day ${a.until}.</span></span>
+      ${act(a, i)}</div>`)}
+    <p class="hint">Once a stop for each. The captain decides, by who they are and how they feel about you.</p></div>`);
 }
 const awayView = UI.views.missions;
 UI.views.missions = function () { return (hired() ? awayHtml() : '') + awayView.call(this); };
@@ -162,8 +173,13 @@ Mods.register({
   init(M) {
     M.action('pitchJob', i => {
       const h = hired(), a = h && (h.away || [])[Number(i)];
-      if (!a || G.mode !== 'landed' || G.dialog || a.booked || pitchedNow(a)) return;
+      if (!a || G.mode !== 'landed' || G.dialog || a.booked || pitchedNow(a) || bookedJob(h)) return;
       openEvent(pitchScene(a));
+    });
+    M.action('awayGo', i => {
+      const h = hired(), a = h && (h.away || [])[Number(i)];
+      if (!a || G.mode !== 'landed' || G.dialog || !atJob(a)) return;
+      startAway(h, Number(i));
     });
     M.on('landed', planet => {
       const h = hired(), st = G.state;
@@ -172,9 +188,9 @@ Mods.register({
       // the far end: a job for this port, wherever it was agreed
       const here = h.away.findIndex(a => a.planet === planet.name && a.sid === st.systemId);
       if (here >= 0) {
-        if (G.dialog && G.nextEvent) return;  // nowhere to put it yet: it waits, and the offer keeps until its day
-        const a = h.away.splice(here, 1)[0], ev = a.arc ? arcBeginning(a) : jobStage(awayJob(a), 0, a.ctx);  // an arc begins with its own first scene (arcs.js)
-        if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+        const a = h.away[here];
+        if (G.dialog && G.nextEvent) { if (a.booked) UI.notes.push(`${a.ctx.who}'s work here is waiting for you on the Missions page.`); return; }  // nowhere to put it yet: a job flown here waits on the page (#848), and the offer keeps until its day
+        startAway(h, here);
         return;
       }
       // a contact offers something, now and then, at a port with a board

@@ -97,3 +97,36 @@ test('at the far end the job plays: every stage and choice works for every post,
   assert.ok(r.opened, 'the job opens on arrival'); assert.ok(r.removed); assert.deepEqual(r.bad, []);
   await done();
 });
+
+test('a run the captain agreed to is the one she flies: it stands through a day in port, a second pitch waits, a change of run is said, and a busy landing keeps the job on the page (#848)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), out = {}, h = hired(), a = offerOne();
+    out.instead = /in mind/.test(pitchScene(a).text) && !/\{\w+\}/.test(pitchScene(a).text);  // the pitch says what it would replace
+    let e = pitchScene(a); G.dialog = { event: e, choices: e.choices }; rolls([0.001]); chooseEvent(0); G.dialog = null;
+    st.day++; out.stands = currentPlan().planet === a.planet && currentPlan().sid === a.sid;  // the morning's remake keeps it
+    const b = { ...a, pitched: null, booked: false }; h.away.push(b);
+    out.shut = /data-arg="1" disabled/.test(awayHtml()); Mods.act('pitchJob', 1); out.unopened = !G.dialog;
+    h.away = []; UI.notes.length = 0;  // with nothing agreed, a remade run that differs is said
+    h.plan.day = st.day - 1; h.plan.run = { ...h.plan.run, sid: 'nowhere', planet: 'Nowhere Station', ballast: true };
+    currentPlan(); out.said = UI.notes.find(n => /^Captain \w+ drops a light run to Nowhere Station/.test(n)) || UI.notes.join(' | ');
+    // the far end, with the landing's scenes already queued: the job waits on the Missions page
+    a.booked = true; h.away = [a]; UI.notes.length = 0;
+    const planet = SYSTEMS[a.sid].planets.find(p => p.name === a.planet); st.systemId = a.sid; st.planet = a.planet;
+    G.dialog = { event: { title: 'busy' }, choices: [] }; G.nextEvent = { title: 'also busy', choices: [] };
+    Mods.emit('landed', planet);
+    out.kept = h.away.includes(a) && UI.notes.some(n => /waiting for you on the Missions page/.test(n));
+    G.dialog = null; G.nextEvent = null;
+    out.go = /data-action="awayGo"/.test(awayHtml()); Mods.act('awayGo', 0);
+    out.opened = !!G.dialog && G.dialog.event.title.includes(a.ctx.dest) && !h.away.includes(a);
+    G.dialog = null;
+    return out;
+  });
+  assert.ok(r.instead, 'the pitch names the run it would replace');
+  assert.ok(r.stands, 'the agreed run stands through a day in port');
+  assert.ok(r.shut, 'a second pitch is shut while one is agreed'); assert.ok(r.unopened);
+  assert.match(r.said, /^Captain \w+ drops a light run to Nowhere Station/);
+  assert.ok(r.kept, 'a busy landing keeps the job, and says so'); assert.ok(r.go, 'the page offers it'); assert.ok(r.opened, 'and the button opens it');
+  await done();
+});
