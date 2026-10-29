@@ -34,7 +34,7 @@ function deadInSpaceScene(s) {
     title: say('title'), personal: true, via: 'crew', owner: 'you',
     text: (cap ? say('text') : `${theShip(s.foe)} is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. You hold the ship forty meters off and ask the crew what they want to do. Her crew are armed. A boarding would be ${ours} of yours against ${theirs} of hers.`) + (ours ? '' : ` ${say('board.none')}`),  // with nobody able to fight there is no boarding (R34)
     choices: [
-      ...(ours ? [{ label: say('board.label'), run() { G.nextEvent = deckFightEvent(assault); return say('board.result'); } }] : []),
+      ...(ours ? [{ label: say('board.label'), run() { G.nextEvent = deckOpen(assault); return say('board.result'); } }] : []),
       { label: say('drift.label'), run() { if (cap) like(cap, 1, say('memory.drift')); changeRep('Pirate', -3); gainSkill(post, 3); return cap ? say('drift.result') : `You leave her turning in the dark and write it in the log, and nothing else. (+3 experience at the ${POSTS[post].name.toLowerCase()} post.)`; } },
     ],
   };

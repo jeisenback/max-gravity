@@ -511,6 +511,7 @@ const playScenes = () => {
   run('scene:fight:rated', {}, () => ({ title: 'x', text: '', choices: [[1, false], [2, false], [0, true], [2, true]].map(([grade, pack]) => ({ label: 'x', run() { const t = startShipFight({ kind: 'pirate', shipId: 'raider', grade, pack }, false); G.nextEvent = null; return t; } })) }));
   // the first officer's word before the first fight (captains.js raidExplanation): Cato's, under Hester
   run('cast:cato:firstRaid', {}, () => { hired().raidTold = false; return raidExplanation(); });
+  run('cast:cato:firstDeck', {}, () => { hired().deckTold = false; return deckExplanation(); });  // the first deck fight's briefing (#850)
   // ---------- the hurt and the fallen in a fight (boarders.js repelCasualty, hurtHand, killedHow, #796): each case won (0) and lost (0.99) on its first roll, with the causes the memorial
   // keeps; and who keeps out of a deck fight (repelCrew) ----------
   const deckOf = (assault = false) => { const foe = makeEnemy({ kind: 'pirate' }); return assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full'); };

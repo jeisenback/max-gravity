@@ -120,11 +120,11 @@
     // The hired chapter's scenes, as the game's own registry lists them (js/hiredscenes.js): each has its id there.
     for (const e of hiredSceneRegistry()) {
       if (e.kind === 'cast') {
-        const c = CAST[e.key], sc = e.bar || e.name === 'firstRaid' ? e.scene : c.scenes[e.name], barNote = e.bar ? `Offered at a port bar ${sc.days} days after they join, as the first port with a bar after that day.` : '';
-        const raidNote = 'Before the first fight of a new game, once, from your first officer.';  // the first-fight explanation (captains.js raidExplanation)
+        const first = e.name === 'firstRaid' || e.name === 'firstDeck', c = CAST[e.key], sc = e.bar || first ? e.scene : c.scenes[e.name], barNote = e.bar ? `Offered at a port bar ${sc.days} days after they join, as the first port with a bar after that day.` : '';
+        const raidNote = e.name === 'firstDeck' ? 'Before the first deck fight of a new game, once, from your first officer.' : 'Before the first fight of a new game, once, from your first officer.';  // the first-fight explanations (captains.js raidExplanation, deckExplanation)
         add({ id: e.id, where: e.name === 'meet' || e.bar ? 'port' : 'transit', file: fileOf['cast:' + e.key], belongs: `${e.key} (${c.xo ? 'first officer' : 'main character'})`, on: castOn(e.key),
-          conditionsNote: e.bar ? barNote : e.name === 'firstRaid' ? raidNote : e.name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${e.closed ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`,
-          pacing: e.bar ? { tier: null, weight: null, cooldown: 'plays once', trigger: barNote, editable: false } : e.name === 'firstRaid' ? { tier: null, weight: null, cooldown: 'plays once', trigger: raidNote, editable: false } : pacingOf.cast(e.name, sc, e.closed), ...registryRow(e.scene) });
+          conditionsNote: e.bar ? barNote : first ? raidNote : e.name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${e.closed ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`,
+          pacing: e.bar ? { tier: null, weight: null, cooldown: 'plays once', trigger: barNote, editable: false } : first ? { tier: null, weight: null, cooldown: 'plays once', trigger: raidNote, editable: false } : pacingOf.cast(e.name, sc, e.closed), ...registryRow(e.scene) });
       } else if (e.kind === 'captain' && e.name !== 'goodbye') {
         const note = e.name === 'trouble' ? `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.` : e.name === 'secret:confide' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.` : `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.`;
         add({ id: e.id, where: 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: pacingOf.captain(e.name.split(':')[0]), ...registryRow(e.scene) });
@@ -417,7 +417,7 @@
         castPerson(reg.key);
         openEvent(sceneWords(reg.id, { title: reg.scene.title, text: reg.scene.text, personal: true, choices: reg.scene.choices }));
       } else if (reg.kind === 'cast') {
-        const sc = reg.name === 'firstRaid' ? reg.scene : CAST[reg.key].scenes[reg.name];  // the first-fight explanation opens as raidExplanation opens it
+        const sc = reg.name === 'firstRaid' || reg.name === 'firstDeck' ? reg.scene : CAST[reg.key].scenes[reg.name];  // the first-fight explanations open as raidExplanation and deckExplanation open them
         if (sc.closed) castPerson(reg.key).opinion = reg.closed ? OPINION.FRIEND - 1 : OPINION.FRIEND;
         openEvent(castScene(reg.key, sc));
       } else if (reg.kind === 'function' && !reg.id.startsWith('beats:')) {  // a scene built by a function (#463), with what it needs about

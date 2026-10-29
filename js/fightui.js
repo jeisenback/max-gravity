@@ -104,13 +104,28 @@ function fightBars(st) {
   return `<svg class="bars" viewBox="0 0 360 ${h}" role="img" aria-label="${esc([mine.label, ...foes.map(f => f.label)].join(' '))}"><rect x="0" y="0" width="360" height="${h}" fill="#050a11"/>${mine.svg}${foes.map(f => f.svg).join('')}</svg>`;
 }
 
+// What answers her shown move, where the ship has it (#850): the turret held back for a salvo or a volley, her launcher before she fires, her lock before she
+// boards. One line a kind, however many of her ships make that move.
+function moveHints(f, shown) {
+  const keys = new Set();
+  f.foes.forEach((foe, i) => {
+    const m = fightUp(foe) && shown.foe[i];
+    if (!m) return;
+    if (m.kind === 'salvo' && f.me.pdc) keys.add('hint.salvo');
+    else if (m.kind === 'arm') keys.add(f.me.pdc ? 'hint.arm' : 'hint.arm.launcher');
+    else if (m.kind === 'board' && foe.parts.lock.hp > 0) keys.add('hint.board');
+    else if (['broadside', 'pin', 'close'].includes(m.kind) && f.me.pdc) keys.add('hint.volley');
+  });
+  return [...keys].map(k => fightSay(k, { salvo: Math.round(FIGHT.PDC_SALVO * 100), volley: Math.round(FIGHT.PDC_HOLD * 100) }));
+}
+
 // The panel for this turn, with the orders as they stand: her move and the captain's above the board, the bars, the last lines of the log, an order for each
 // ready gun, the torpedo and the turret where they are fitted, and Fire.
 function shipFightEvent(s, orders, over = false) {  // over: the close, with no move to show
   const st = G.state, f = s.state, cap = raidCap(), known = s.known || [], hit = retargeted(f.foes, orders), vent = orders.move === 'vent' && canUse(f, hit, 'vent', known);  // hit: the orders as Fire will aim them
   const ready = gunsReady(vent ? { ...f, locked: [] } : f);  // a vent ordered unlocks the guns before the shots
   const say = (m, i) => fightSay(`foe.${m.kind}`, { ship: fightFoeName(s, i), ...(m.n ? { n: m.n } : {}), ...(m.target ? { part: fightSay(`part.${m.target}`), lo: m.dmg[0], hi: m.dmg[1] } : {}) });
-  const read = over ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
+  const read = over ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), ...moveHints(f, s.shown), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
   const aim = o => (o ? fightSay('aim.at', { part: fightSay(`part.${o.part}`) }) : fightSay('aim.hold'));
   const range = (o, led = false) => { const [lo, hi] = shotRange(f, o, led); return fightSay('aim.range', { aim: aim(o), lo, hi }); };  // what a gun's order would roll
   const aims = FIGHT_AIM.filter(p => p !== 'launcher' || f.foes.some(foe => foe.launcher));
@@ -195,7 +210,7 @@ function fireTurn(s, orders) {
 }
 
 // Being boarded: the deck fight (below), a raider's whole run or a short one.
-const fightBoarded = s => deckFightEvent(repelStart({ foe: s.foe, foeHp: 0, init: 'foe', grade: s.grade, pack: s.pack }, s.style === 'grapple' ? 'full' : 'half'));
+const fightBoarded = s => deckOpen(repelStart({ foe: s.foe, foeHp: 0, init: 'foe', grade: s.grade, pack: s.pack }, s.style === 'grapple' ? 'full' : 'half'));
 
 // Where each end goes. Crippled and boarded open their scenes with the line that says how it came to them; the rest close on the panel with their line,
 // and Stand down goes on to whatever the close queued (the captain lost on the bridge, the hand's ending).
@@ -256,6 +271,9 @@ const deckBoard = (s, move) => fightStrip({ titles: s.state.sections.map((_, i) 
   hurtSay: n => fightSay('deck.wounded', { n }), oursSay: n => fightSay('deck.woundedOurs', { n }),  // and the wounded among them
   wave: s.state.wave && s.state.turn + 1 === s.state.wave.turn ? fightSay('deck.wave', { n: s.state.wave.n }) : '' });  // and the rest of the party, on the turn at whose end it lands (DECK.WAVE_TURN)
 
+// A deck fight begins: the first of a new game is explained once, before its panel (captains.js deckExplanation, #850).
+const deckOpen = s => { const told = deckExplanation(); return told ? chainEvents([told, deckFightEvent(s)]) : deckFightEvent(s); };
+
 // The panel for this turn, with the hand's plan as it stands ({ stand, act, order }: a section, an act, a crewmate's id). Every choice redraws it in place.
 function deckFightEvent(s, plan = {}) {
   const f = s.state, post = lockPost();
@@ -283,7 +301,7 @@ function deckFightEvent(s, plan = {}) {
   return {
     title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s,
     read: `${fightSay('deck.turn', { n: f.turn + 1, max: deckCap(f) })} ${fightSay(`deck.${m.kind}`, { who, n: m.n, ...(m.kind === 'charge' ? { at: deckAt(s, m.at), from: deckAt(s, m.from) } : { to: deckAt(s, m.to) }), ...(m.via === undefined ? {} : { via: deckAt(s, m.via) }) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
-    board: deckBoard(s, m.kind === 'hold' ? null : m),
+    board: `${deckBoard(s, m.kind === 'hold' ? null : m)}<p class="hint">${esc(fightSay('deck.legend'))}</p>`,  // what the board's marks are (#850)
     text: [deckOpening(s), ...standing, ...(s.held.length ? [s.held.join(' ')] : []), ...f.log.slice(-3)].join('</p><p>'),
     choices,
   };

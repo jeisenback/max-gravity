@@ -439,6 +439,27 @@ test('repelled, taken, and an assault won or lost each settle through the existi
   await done();
 });
 
+test('her shown move says what answers it, where the ship has it: the turret for a salvo or a volley, her launcher before she fires, her lock before she boards (#850)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner', 'corsair'); const s = battle(), orders = { guns: [null, null], torp: null, pdc: 'fire' }, out = {};
+    const read = foe => { s.shown = { foe: [foe], captain: { kind: 'hold' } }; return shipFightEvent(s, orders).read; };
+    out.pdc = !!s.state.me.pdc;
+    out.salvo = read({ kind: 'salvo', target: 'hull', n: 2, dmg: [40, 60] }); out.arm = read({ kind: 'arm', n: 2 });
+    out.board = read({ kind: 'board' }); out.volley = read({ kind: 'broadside', target: 'weapons', dmg: [10, 20] });
+    s.state.me.pdc = false; out.noTurret = read({ kind: 'salvo', target: 'hull', n: 2, dmg: [40, 60] }); out.armNo = read({ kind: 'arm', n: 2 });
+    return out;
+  });
+  assert.ok(r.pdc, 'the ship has a turret');
+  assert.match(r.salvo, /Hold the turret back: it takes 60 percent off a salvo\./);
+  assert.match(r.arm, /hold the turret back then, or aim at her launcher now/);
+  assert.match(r.board, /Hit her lock and she can't board\./);
+  assert.match(r.volley, /takes 40 percent off her volley, for one gun's shot/);
+  assert.doesNotMatch(r.noTurret, /turret/, 'no turret, no turret hint'); assert.match(r.armNo, /aim at her launcher now/);
+  await done();
+});
+
 // ---------- the rework's orders and ends (docs/superpowers/specs/2026-10-21-ship-fight-rework-design.md) ----------
 
 test('against a corsair the panel offers her launcher as a target, and her arming is shown above the board', async () => {

@@ -213,6 +213,20 @@ CAST.cato.arrival = {
   pace: '"A season," Cato says. "{cap} was a hand on this ship before she owned it. It took her three."',
 };
 
+// The first deck fight (captains.js deckExplanation): Cato at the inner lock, before the first turn of it.
+CAST.cato.firstDeck = {
+  title: 'The Inner Lock',
+  text: ('Cato has the sidearm locker open and hands you yours butt first. "Same as the guns," he says. "The top line\'s what they mean to do. ' +
+      'The board\'s the deck, a box a section. Ours on the left, theirs on the right, and the dots are cover. Fewer dots, less to get behind."</p><p>' +
+      'He points at the line under it. "That\'s their count, and the mark is where they break. Put enough of them down and the rest go back the ' +
+      'way they came. Each turn you stand or move a section, and you do one thing there. Then you give one of us an order. Me, if you like. I\'ll ' +
+      'tell you if it\'s a bad one."'),
+  choices: [{
+    label: 'Check the sidearm',
+    result: 'The safety is where he said it would be. "Breathe out before you squeeze," Cato says. "Everyone forgets the first time."',
+  }],
+};
+
 // The first raid (captains.js raidExplanation): Cato at the guns hatch, before the first scene.
 CAST.cato.firstRaid = {
   title: 'The Guns Hatch',
@@ -220,7 +234,10 @@ CAST.cato.firstRaid = {
       'says. "That\'s what she means to do next, and under it what the captain will do with the helm. You don\'t guess either."</p><p>He points at ' +
       'the guns. "Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and ' +
       'she can\'t board us. If she hits us hard, someone gets hurt, maybe you, and your work counts a level lower for some days. I had it in the hold. ' +
-      'I wore a glove for eleven days."'),
+      'I wore a glove for eleven days."</p><p>He taps the gauge over the breech. "Every shot puts heat in the guns, and past that mark one locks ' +
+      'for a turn. An overcharged shot hits harder and runs hotter. The turret up top fires with the guns, or you hold it back and it takes the edge ' +
+      'off what she throws at us, torpedoes most of all. Holding it costs you a gun. When she opens her bay doors, you have one turn to choose. We ' +
+      'carry a few torpedoes of our own. They hit hard, and when they\'re gone they\'re gone."'),
   choices: [{
     label: 'Take your post',
     result: 'He lets go of the hatch frame. "Choose what you\'d choose," he says. "I\'ll be behind you."',

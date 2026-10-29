@@ -658,3 +658,19 @@ test('the heave-to and the search charge the same fine, a quarter of the same pu
   assert.equal(r.heave, 5000); assert.equal(r.search, 5000);
   await done();
 });
+
+test('the first deck fight of a new game opens with the first officer\'s briefing, once, and the deck panel says what its marks are (#850)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired', brief: true });
+  await ev(helpers);
+  const r = await ev(() => {
+    fight(); hired().deckTold = false;
+    const first = repelEvent({ foe: G.duel.foe, foeHp: 0, init: 'foe' }, 'full'), out = { title: first.title, fightFirst: !!first.fight };
+    G.nextEvent = null; first.choices[0].run(); out.then = G.nextEvent && !!G.nextEvent.fight; out.legend = G.nextEvent && /the dots are its cover/.test(G.nextEvent.board);
+    G.nextEvent = null; const again = repelEvent({ foe: G.duel.foe, foeHp: 0, init: 'foe' }, 'full'); out.again = !!again.fight;
+    return out;
+  });
+  assert.equal(r.title, 'The Inner Lock'); assert.equal(r.fightFirst, false, 'the briefing comes first');
+  assert.ok(r.then, 'and leads into the deck panel'); assert.ok(r.legend, 'which has its legend');
+  assert.ok(r.again, 'the second deck fight has no briefing');
+  await done();
+});

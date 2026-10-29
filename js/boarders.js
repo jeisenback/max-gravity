@@ -101,7 +101,7 @@ function deckStart({ d, boarders, grade, size, assault = false }) {
   return { d, assault, state, grade, fight: w.fight, held: w.held, out: w.out, hurt: new Set(), dead: [], marked: [], youHurt: false };
 }
 
-function repelEvent(d, outcome) { return deckFightEvent(repelStart(d, outcome)); }
+function repelEvent(d, outcome) { return deckOpen(repelStart(d, outcome)); }
 
 // Who can be sent: the crew who are on their feet and have a post, with their sheets (handtohand.js crewSheet), the most skilled first; the first is given the
 // cover while the fight has it to make.
