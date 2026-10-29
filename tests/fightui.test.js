@@ -65,7 +65,7 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
     };
   });
   assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false);
-  assert.match(r.read, /^The Pirate "[^"]+": closing, and firing at your hull as she comes, 6 to 14 damage\. Captain Vance: holding the range\.$/, r.read);
+  assert.match(r.read, /^The Pirate "[^"]+": closing, and firing at your hull as she comes, 6 to 14 damage\. Holding the turret back takes 40 percent off her volley, for one gun's shot\. Captain Vance: holding the range\.$/, r.read);
   assert.equal(r.band, 'long', 'a raider is met at forty kilometers');
   assert.equal(r.guns, 2, 'the hauler\'s gun and the turret'); assert.equal(r.ready, 2);
   assert.deepEqual(r.labels.map(l => l.replace(/\d+ to \d+ damage/, 'N to M damage')), ['Gun 1: aim at her weapons, N to M damage', 'Gun 1: normal charge', 'Gun 2: aim at her weapons, N to M damage', 'Gun 2: normal charge', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4']);
@@ -436,6 +436,27 @@ test('repelled, taken, and an assault won or lost each settle through the existi
   assert.match(r.taken.text, /They're on the bridge\. Captain Vance gives them the code to the strongbox/); assert.equal(r.taken.fund, 700); assert.equal(r.taken.opinion, -1);
   assert.match(r.won.text, /Her captain puts the weapon down\. Her strongbox/); assert.ok(r.won.fundUp && r.won.dead);
   assert.match(r.lost.text, /You're driven back to the lock/); assert.ok(r.lost.armorDown && r.lost.drifting);
+  await done();
+});
+
+test('her shown move says what answers it, where the ship has it: the turret for a salvo or a volley, her launcher before she fires, her lock before she boards (#850)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner', 'corsair'); const s = battle(), orders = { guns: [null, null], torp: null, pdc: 'fire' }, out = {};
+    const read = foe => { s.shown = { foe: [foe], captain: { kind: 'hold' } }; return shipFightEvent(s, orders).read; };
+    out.pdc = !!s.state.me.pdc;
+    out.salvo = read({ kind: 'salvo', target: 'hull', n: 2, dmg: [40, 60] }); out.arm = read({ kind: 'arm', n: 2 });
+    out.board = read({ kind: 'board' }); out.volley = read({ kind: 'broadside', target: 'weapons', dmg: [10, 20] });
+    s.state.me.pdc = false; out.noTurret = read({ kind: 'salvo', target: 'hull', n: 2, dmg: [40, 60] }); out.armNo = read({ kind: 'arm', n: 2 });
+    return out;
+  });
+  assert.ok(r.pdc, 'the ship has a turret');
+  assert.match(r.salvo, /Hold the turret back: it takes 60 percent off a salvo\./);
+  assert.match(r.arm, /hold the turret back then, or aim at her launcher now/);
+  assert.match(r.board, /Hit her lock and she can't board\./);
+  assert.match(r.volley, /takes 40 percent off her volley, for one gun's shot/);
+  assert.doesNotMatch(r.noTurret, /turret/, 'no turret, no turret hint'); assert.match(r.armNo, /aim at her launcher now/);
   await done();
 });
 

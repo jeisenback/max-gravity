@@ -1181,7 +1181,7 @@ function choiceGate(when) {
 const dataChoice = (c, ctx) => (c.run ? c : { ...c, ...(c.when ? choiceGate(c.when) : {}), run() { applyEffects(c.effects, ctx); const n = c.effects && c.effects.learn; return n && hired() ? c.result + learnNote(n) : c.result; } });
 // The id a scene has in js/hiredscenes.js, found by the object it is (a scene made on the spot, like a first officer's round, has none). A first officer's word before the
 // first fight (`firstRaid`) is listed with their scenes.
-const castSceneId = (key, sc, shown) => { const e = Object.entries({ ...CAST[key].scenes, ...(CAST[key].firstRaid ? { firstRaid: CAST[key].firstRaid } : {}) }).find(([, x]) => x === sc); return e ? `cast:${key}:${e[0]}${shown !== sc ? ':closed' : ''}` : null; };
+const castSceneId = (key, sc, shown) => { const e = Object.entries({ ...CAST[key].scenes, ...(CAST[key].firstRaid ? { firstRaid: CAST[key].firstRaid } : {}), ...(CAST[key].firstDeck ? { firstDeck: CAST[key].firstDeck } : {}) }).find(([, x]) => x === sc); return e ? `cast:${key}:${e[0]}${shown !== sc ? ':closed' : ''}` : null; };
 const castScene = (key, sc) => {
   const s = sc.closed && castPerson(key).opinion < OPINION.FRIEND ? sc.closed : sc;
   if (s.flag) captainFlag(s.flag);  // a fact the open reading tells (the captain's secret, #283): the goodbye reads it, as it does when the captain tells it

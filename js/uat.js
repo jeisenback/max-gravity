@@ -176,7 +176,7 @@ function uatHand(post = 'gunner') {  // the tester items' hand is the gunner; th
   G.dialog = null; G.nextEvent = null; G.transit = null;
   startGame({ slot: Saves.current, background: 'earth', captain: 'Tester', mode: 'hired', post, captainKey: 'hester' });
   uatFinish();
-  const st = G.state; st.uat = true; st.story.next = 1e9; hired().raidTold = true;  // the first fight's explanation is for real play
+  const st = G.state; st.uat = true; st.story.next = 1e9; hired().raidTold = true; hired().deckTold = true;  // the first fight's explanation is for real play
   uatBurn('Ceres Station', 'pallas'); G.dialog = null;
   return st;
 }

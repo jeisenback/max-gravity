@@ -134,6 +134,7 @@ function setupHired(o) {
     off: null,  // a delivery that was late, short or lost, for the agent at the dock to meet (shippers.js)
     asked: 0,
     raidTold: false,
+    deckTold: false,  // the first deck fight's briefing is given (captains.js deckExplanation, #850)
     debt: o.debt !== undefined ? o.debt : HIRED_DEBT
   };  // o.debt: a hand put ashore carries what is left (stakes.js)
   // The port screen says only what Signing On (signon.js) does not: who put a hand ashore, or that the captain was lost. The ship, the captain, the post and

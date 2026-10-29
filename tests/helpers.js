@@ -74,7 +74,9 @@ function seedScript(seed) {
 //   video: a folder to record the page's video into (Playwright's recordVideo, at the viewport's size; tools/playthrough.js)
 //   debt: true to start a hired hand owing the hiring hall's bond (js/hired.js, #280). It is off in tests, so the many that buy a ship or
 //         count a hand's pay start as they did before the bond; the soak and the tests of the bond turn it on.
-async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'earth-hired', debt = false, bundle = true, stall = STALL_MS, video = null } = {}) {
+//   brief: true to play the first deck fight's briefing (captains.js deckExplanation, #850). It is off in tests, so the many that open a deck fight see
+//          its panel as they did before; the play-through, the soak and the briefing's own test turn it on.
+async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'earth-hired', debt = false, brief = false, bundle = true, stall = STALL_MS, video = null } = {}) {
   if (!browser) { launching = launching || chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined }); browser = await launching; launching = null; }
   const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile, ...(video ? { recordVideo: { dir: video, size: viewport } } : {}) });
   await ctx.addInitScript(seedScript, seed);
@@ -101,7 +103,7 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   // The main characters are drawn from a pool (js/cast.js). A test starts from the pair it knew (by background) unless it asks for the draw: realDrawCastPair.
   const opening = calledFrom();
   await guarded(page.evaluate(() => { window.realDrawCastPair = drawCastPair; window.drawCastPair = bg => (CAST_PAIRS[bg] ? [...CAST_PAIRS[bg]] : []); }), stall, `opening the page, ${opening}`);
-  if (!debt) await guarded(page.evaluate(() => { const real = startGame; window.startGame = o => { const r = real(o); if (hired() && o.debt === undefined) hired().debt = 0; return r; }; }), stall, `opening the page, ${opening}`);
+  if (!debt || !brief) await guarded(page.evaluate(([debt, brief]) => { const real = startGame; window.startGame = o => { const r = real(o); if (hired() && !debt && o.debt === undefined) hired().debt = 0; if (hired() && !brief) hired().deckTold = true; return r; }; }, [debt, brief]), stall, `opening the page, ${opening}`);
   // Runs a function in the page with the random seed reset first, so a block of
   // game logic plays out the same way whatever the frame loop did before it.
   const ev = (fn, arg) => guarded(page.evaluate(([src, a, s]) => { __seed(s); return (0, eval)(`(${src})`)(a); }, [fn.toString(), arg, seed]), stall, `ev, ${calledFrom()}`);

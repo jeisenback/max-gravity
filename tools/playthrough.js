@@ -295,7 +295,7 @@ async function playthrough({ seed = 1, captain = 'hester', speed = 10, out = nul
   fs.rmSync(dir, { recursive: true, force: true });
   fs.mkdirSync(path.join(dir, 'shots'), { recursive: true });
   const t0 = Date.now(), videoDir = video ? path.join(dir, '.video') : null;
-  const { page, ctx, ev, errors } = await open({ seed, debt: true, stall: 0, video: videoDir });
+  const { page, ctx, ev, errors } = await open({ seed, debt: true, brief: true, stall: 0, video: videoDir });
   await page.exposeFunction('__ptShot', async name => { await page.screenshot({ path: path.join(dir, 'shots', `${name}.png`) }); });  // nothing goes back: the picture as a value is a long trip to the page
   await ev(setup, [policy.toString(), answerOrders.toString(), { video, speed, maxDays, sceneMs: 1200, resultMs: 700, shots }]);
   let r, threw = null;

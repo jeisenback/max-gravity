@@ -68,6 +68,13 @@ function raidExplanation() {
   h.raidTold = true;
   return castScene(xo.cast, CAST[xo.cast].firstRaid);
 }
+// The same for the first deck fight (cast entry `firstDeck`, #850): h.deckTold starts false in a new game; a save from before has none.
+function deckExplanation() {
+  const h = hired(), xo = h && hiredXo();
+  if (!(h && h.deckTold === false && xo && CAST[xo.cast].firstDeck)) return null;
+  h.deckTold = true;
+  return castScene(xo.cast, CAST[xo.cast].firstDeck);
+}
 
 // A choice that needs someone's regard (`opinion: { who, min }`, `who` being 'captain', 'xo' or a cast key; `min` a cutoff from OPINION):
 // shown shut, with what it needs said in its label, until they stand at `min` or better. With nobody in that place (a first officer

@@ -481,6 +481,10 @@ const SCENE_LINES = {
     'foe.broadside': '{ship}: broadside at your {part}, {lo} to {hi} damage.', 'foe.pin': '{ship}: guns on your drive to pin you, {lo} to {hi} damage.',
     'foe.close': '{ship}: closing, and firing at your {part} as she comes, {lo} to {hi} damage.', 'foe.board': '{ship}: coming alongside to board.', 'foe.break': '{ship}: turning to break off.', 'foe.arm': '{ship} is loading torpedoes: {n} next turn.', 'foe.salvo': '{ship} fires a salvo of {n} at your hull, {lo} to {hi}.',
     consort: 'Her consort',
+    // what answers her shown move, where the ship has it (fightui.js moveHints): {salvo} and {volley} are what a turret held back takes off, in percent
+    'hint.salvo': 'Hold the turret back: it takes {salvo} percent off a salvo.', 'hint.arm': 'Her torpedoes come next turn: hold the turret back then, or aim at her launcher now.',
+    'hint.arm.launcher': 'Her torpedoes come next turn: aim at her launcher now.', 'hint.board': 'Hit her lock and she can\'t board.',
+    'hint.volley': 'Holding the turret back takes {volley} percent off her volley, for one gun\'s shot.',
     'cap.close': '{cap}: closing the range.', 'cap.hold': '{cap}: holding the range.', 'cap.open': '{cap}: opening the range.',
     'part.weapons': 'weapons', 'part.drive': 'drive', 'part.lock': 'lock', 'part.launcher': 'launcher', 'part.hull': 'hull',
     'gun.label': 'Gun {n}: {aim}', 'torp.label': 'Torpedo, {left} left: {aim}', 'aim.at': 'aim at her {part}', 'aim.hold': 'hold fire', 'aim.range': '{aim}, {lo} to {hi} damage',
@@ -521,6 +525,7 @@ const SCENE_LINES = {
     'deck.cargo': 'The Cargo Bay', 'deck.cargoHers': 'Her Cargo Bay',
     'deck.ours.0': 'the Lock', 'deck.ours.1': 'the Corridor', 'deck.ours.2': 'the Bridge', 'deck.ours.3': 'the Cargo Bay',
     'deck.hers.0': 'her Lock', 'deck.hers.1': 'her Corridor', 'deck.hers.2': 'her Bridge', 'deck.hers.3': 'her Cargo Bay',
+    'deck.legend': 'Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break.',
     'deck.who.repel': 'Boarders', 'deck.who.assault': 'Her crew', 'deck.who.navy': 'The boarding party',
     'deck.navy.down': 'Each of them put down costs standing with {gov}: {n} so far.',  // a navy party's fight, under the deck: {n} is the standing lost so far
     'deck.end.searched': 'They hold the bridge. The boarding officer has the ship searched berth by berth, writes the citation, and fines her {fine} cr, collected on the spot. The boarding party goes back across, and the ship is let go with the fine in her log.',  // a navy party held our bridge: {fine} is the heave-to's fine
@@ -1129,6 +1134,7 @@ function hiredSceneRegistry() {
       if (scene.closed) out.push({ id: `cast:${key}:${name}:closed`, kind: 'cast', key, name, closed: true, scene: scene.closed });
     }
     if (c.firstRaid) out.push({ id: `cast:${key}:firstRaid`, kind: 'cast', key, name: 'firstRaid', scene: c.firstRaid });  // a first officer's word before the first fight (captains.js raidExplanation), not one of the scenes they are drawn for
+    if (c.firstDeck) out.push({ id: `cast:${key}:firstDeck`, kind: 'cast', key, name: 'firstDeck', scene: c.firstDeck });  // and before the first deck fight (deckExplanation)
   }
   if (typeof CAST_BAR !== 'undefined') for (const [key, list] of Object.entries(CAST_BAR)) list.forEach((scene, i) => out.push({ id: `cast:${key}:bar${i + 1}`, kind: 'cast', key, name: `bar${i + 1}`, bar: true, scene }));  // a main character's talk at a port bar (castbar.js)
   for (const [key, c] of Object.entries(CAPTAINS)) {

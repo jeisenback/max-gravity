@@ -621,7 +621,8 @@ function downtimeFive() {
   const kept = (t.lifeShown[half] || []).map(l => every.find(a => activityLabel(a) === l)).filter(Boolean);
   if (kept.length) return kept;
   const turn = st.lifeTurn = (st.lifeTurn || 0) + 1;
-  const out = menuFive(lanes, turn);
+  const due = lanes[0].find(a => a === ACTIVITIES.teach);  // a move the crew would show you (gunnermoves.js) is never left out of the five: the rotation could hide it for a chapter (#850)
+  const out = due ? [due, ...menuFive(lanes.map(l => l.filter(a => a !== due)), turn)].slice(0, MENU_SHOWN) : menuFive(lanes, turn);
   t.lifeShown[half] = out.map(activityLabel);
   return out;
 }

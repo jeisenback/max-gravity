@@ -33,7 +33,7 @@ const { answerDeck } = require('./answer');
 const SOAK_STALL = 900000;
 // realDraw: the two main characters come from the pool as in the game; tests start from the pair they knew (tests/helpers.js).
 async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false, post = 'gunner', frames = false, engineer = null, jobs = false } = {}) {
-  const { ev, errors, ctx } = await open({ scope, seed, debt: true, stall: SOAK_STALL });  // the chapter's economy includes the hiring hall's bond
+  const { ev, errors, ctx } = await open({ scope, seed, debt: true, brief: true, stall: SOAK_STALL });  // the chapter's economy includes the hiring hall's bond
   const r = await ev(chapter, [legs, captainKey, realDraw, post, frames, engineer, jobs, null, answerDeck.toString()]);
   await ctx.close();
   return { seed, ...r, errors };

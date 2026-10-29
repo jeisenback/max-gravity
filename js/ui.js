@@ -73,6 +73,7 @@ const UI = {
         <h1>${ev.title}</h1>
         ${ev.read ? h`<p class="read">${raw(ev.read)}</p>` : ''}
         ${ev.board ? raw(ev.board) : ''}
+        ${ev.legend ? h`<p class="hint">${ev.legend}</p>` : ''}
         <p>${raw(ev.text)}</p>
         ${choices.some(c => c.pin) ? h`${choiceBlockHtml(choices, c => !c.pin, 'choices flow')}${choiceBlockHtml(choices, c => c.pin)}` : choiceBlockHtml(choices)}
       </div>`);  // a pinned choice (a fight's Fire, #846): the others flow with the scene, so the board and bars above them stay in view

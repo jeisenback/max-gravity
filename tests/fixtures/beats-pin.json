@@ -2,7 +2,7 @@
  {
   "id": "raid:raider:gunner",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 13, she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 17 damage. Her consort: closing, and firing at your hull as she comes, 6 to 17 damage. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 13, she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 17 damage. Her consort: closing, and firing at your hull as she comes, 6 to 17 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 7 to 11 damage",
    "Gun 1: normal charge",
@@ -48,7 +48,7 @@
  {
   "id": "raid:raider:pilot",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 13, she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 17 damage. Her consort: closing, and firing at your hull as she comes, 6 to 17 damage. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 13, she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 17 damage. Her consort: closing, and firing at your hull as she comes, 6 to 17 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 7 to 11 damage",
    "Gun 1: normal charge",
@@ -94,7 +94,7 @@
  {
   "id": "raid:raider:engineer",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 13, she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 17 damage. Her consort: closing, and firing at your hull as she comes, 6 to 17 damage. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 13, she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 17 damage. Her consort: closing, and firing at your hull as she comes, 6 to 17 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 8 to 11 damage",
    "Gun 1: normal charge",
@@ -140,7 +140,7 @@
  {
   "id": "raid:raider:comms",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 13, she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 17 damage. Her consort: closing, and firing at your hull as she comes, 6 to 17 damage. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 13, she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 17 damage. Her consort: closing, and firing at your hull as she comes, 6 to 17 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 8 to 11 damage",
    "Gun 1: normal charge",
@@ -186,7 +186,7 @@
  {
   "id": "raid:corsair:gunner",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\" is loading torpedoes: 2 next turn. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 7 to 11 damage",
    "Gun 1: normal charge",
@@ -249,7 +249,7 @@
  {
   "id": "raid:corsair:pilot",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\" is loading torpedoes: 2 next turn. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 7 to 11 damage",
    "Gun 1: normal charge",
@@ -312,7 +312,7 @@
  {
   "id": "raid:corsair:engineer",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\" is loading torpedoes: 2 next turn. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 8 to 11 damage",
    "Gun 1: normal charge",
@@ -375,7 +375,7 @@
  {
   "id": "raid:corsair:comms",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\" is loading torpedoes: 2 next turn. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Rusted Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 8 to 11 damage",
    "Gun 1: normal charge",
@@ -438,7 +438,7 @@
  {
   "id": "raid:cutter:gunner",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 35 damage. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 35 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 8 to 12 damage",
    "Gun 1: normal charge",
@@ -479,7 +479,7 @@
  {
   "id": "raid:cutter:pilot",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 35 damage. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 35 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 8 to 12 damage",
    "Gun 1: normal charge",
@@ -520,7 +520,7 @@
  {
   "id": "raid:cutter:engineer",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 35 damage. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 35 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 9 to 12 damage",
    "Gun 1: normal charge",
@@ -561,7 +561,7 @@
  {
   "id": "raid:cutter:comms",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 35 damage. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 14 to 35 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Gun 1: aim at her weapons, 9 to 12 damage",
    "Gun 1: normal charge",
@@ -725,7 +725,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -735,7 +735,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -849,7 +849,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -859,7 +859,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -975,7 +975,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -985,7 +985,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1099,7 +1099,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1109,7 +1109,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1225,7 +1225,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1235,7 +1235,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1349,7 +1349,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1359,7 +1359,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1475,7 +1475,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1485,7 +1485,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1599,7 +1599,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1609,7 +1609,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Rusted Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },

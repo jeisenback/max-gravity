@@ -147,3 +147,20 @@ test('no move is taught to an owner or a non-gunner', async () => {
   assert.equal(r.owner, false);
   assert.ok(!r.menu.includes(r.label), 'not on an owner\'s menu');
 });
+
+test('a move that is due is on every downtime menu of five, however the menu turns (#850)', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    __seed(1);
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
+    G.state.tutorial = null;
+    for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = 3;
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
+    const label = ACTIVITIES.teach.label, menus = [];
+    for (let i = 0; i < 12; i++) { G.transit.lifeUsed = {}; G.transit.lifeShown = {}; menus.push(downtimeEvent().choices.map(c => c.label)); }
+    return { label, menus };
+  });
+  await done();
+  assert.ok(r.menus.every(m => m.length <= 6), 'still five, and Not now');
+  assert.ok(r.menus.every(m => m.includes(r.label)), `the move is on each: ${JSON.stringify(r.menus.find(m => !m.includes(r.label)))}`);
+});

@@ -3360,6 +3360,36 @@
   }
  },
  {
+  "id": "cast:cato:firstDeck",
+  "i": 0,
+  "label": "Check the sidearm",
+  "result": "The safety is where he said it would be. \"Breathe out before you squeeze,\" Cato says. \"Everyone forgets the first time.\"",
+  "changes": [],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Check the sidearm",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Check the sidearm",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Check the sidearm",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Check the sidearm",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
   "id": "cast:ilsa:intro",
   "i": 0,
   "label": "Ask how long she has had the night watch",
