@@ -77,8 +77,8 @@ test('played out, the panel goes turn by turn to an end: she closes firing, her 
     return out;
   });
   assert.deepEqual(r.bands, ['long', 'mid', 'close'], 'she is the faster ship, and closes a band a turn; her weapons cut to 40, two guns take them in two turns and she turns away in the third');
-  assert.deepEqual(r.reads, ['closing, and firing at your hull as she comes, 7 to 19 damage. Captain Vance: holding the range.',
-    'closing, and firing at your hull as she comes, 8 to 20 damage. Captain Vance: holding the range.',
+  assert.deepEqual(r.reads, ["closing, and firing at your hull as she comes, 7 to 19 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
+    "closing, and firing at your hull as she comes, 8 to 20 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     'turning to break off. Captain Vance: holding the range.'], 'her move is shown before it is made');
   assert.deepEqual(r.log, ['Turn 1: you hit her weapons for 9, you hit her weapons for 11, she hits your hull for 7.', 'Turn 2: you hit her weapons for 12, you hit her weapons for 8.', 'Turn 3: nothing left of the weapons to hit, nothing left of the weapons to hit.'], 'both guns hit her weapons, so her guns go in the second turn (she fires in the first, as she closes), and with nothing left to fire she breaks off (the gunner post is crewed here, so the crew gunner\'s level counts, R22)');
   assert.equal(r.title, 'Battle Stations'); assert.deepEqual(r.labels, ['Stand down']);
@@ -571,7 +571,7 @@ test('the fight panel shows her move and the captain\'s above the pinned orders 
       const box = read && read.getBoundingClientRect(), choices = el.querySelector('.choices').getBoundingClientRect();
       return { read: read && read.textContent, readTop: box && box.top, readBottom: box && box.bottom, panelTop: panel.top, choicesTop: choices.top };
     });
-    assert.match(r.read, /: closing, and firing at your hull as she comes, \d+ to \d+ damage\. Captain Vance: holding the range\.$/, `${name}: the read line is drawn`);
+    assert.match(r.read, /: closing, and firing at your hull as she comes, \d+ to \d+ damage\. Holding the turret back takes 40 percent off her volley, for one gun's shot\. Captain Vance: holding the range\.$/, `${name}: the read line is drawn`);
     assert.ok(r.readTop >= r.panelTop && r.readBottom <= r.choicesTop, `${name}: the read line (${r.readTop} to ${r.readBottom}) is in view above the choices, which start at ${r.choicesTop}`);
     await done();
   }

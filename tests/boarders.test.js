@@ -665,7 +665,7 @@ test('the first deck fight of a new game opens with the first officer\'s briefin
   const r = await ev(() => {
     fight(); hired().deckTold = false;
     const first = repelEvent({ foe: G.duel.foe, foeHp: 0, init: 'foe' }, 'full'), out = { title: first.title, fightFirst: !!first.fight };
-    G.nextEvent = null; first.choices[0].run(); out.then = G.nextEvent && !!G.nextEvent.fight; out.legend = G.nextEvent && /the dots are its cover/.test(G.nextEvent.board);
+    G.nextEvent = null; first.choices[0].run(); out.then = G.nextEvent && !!G.nextEvent.fight; out.legend = G.nextEvent && /the dots are its cover/.test(G.nextEvent.legend);
     G.nextEvent = null; const again = repelEvent({ foe: G.duel.foe, foeHp: 0, init: 'foe' }, 'full'); out.again = !!again.fight;
     return out;
   });

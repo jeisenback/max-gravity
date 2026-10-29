@@ -301,7 +301,8 @@ function deckFightEvent(s, plan = {}) {
   return {
     title: deckTitle(s, f.hand), personal: true, via: 'crew', fight: s,
     read: `${fightSay('deck.turn', { n: f.turn + 1, max: deckCap(f) })} ${fightSay(`deck.${m.kind}`, { who, n: m.n, ...(m.kind === 'charge' ? { at: deckAt(s, m.at), from: deckAt(s, m.from) } : { to: deckAt(s, m.to) }), ...(m.via === undefined ? {} : { via: deckAt(s, m.via) }) })}${feint}`,  // the turn and their move, drawn above the deck (ui.js)
-    board: `${deckBoard(s, m.kind === 'hold' ? null : m)}<p class="hint">${esc(fightSay('deck.legend'))}</p>`,  // what the board's marks are (#850)
+    board: deckBoard(s, m.kind === 'hold' ? null : m),
+    legend: fightSay('deck.legend'),  // what the board's marks are, under it (ui.js, #850)
     text: [deckOpening(s), ...standing, ...(s.held.length ? [s.held.join(' ')] : []), ...f.log.slice(-3)].join('</p><p>'),
     choices,
   };

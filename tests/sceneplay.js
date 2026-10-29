@@ -394,6 +394,7 @@ const playScenes = () => {
         const s = start('raider').fight; s.state.foes.push(JSON.parse(JSON.stringify(s.state.foes[0]))); s.shown = { foe: [foe, foe], captain };
         panel(shipFightEvent(s, orders()));
       }
+      { const s = start('raider').fight; s.state.me.pdc = false; s.shown = { foe: [{ kind: 'arm', n: 2 }], captain: { kind: 'hold' } }; panel(shipFightEvent(s, orders())); }  // a ship with no turret: her launcher is the answer (#850)
       // every order: a gun at each part and holding, the torpedo, the turret both ways, and Fire over the heat cap
       { fresh(); hired().raidTold = true; G.state.outfits = { launcher: 1, pdc: 1 }; G.state.torpedoes = 2; G.nextEvent = null; startShipFight({ kind: 'pirate', shipId: 'raider' }, false); const s = G.nextEvent.fight; G.nextEvent = null;
         panel(shipFightEvent(s, orders({ guns: [{ foe: 0, part: 'lock' }, null], torp: { foe: 0, part: 'hull' }, pdc: 'hold' })));
@@ -441,7 +442,7 @@ const playScenes = () => {
       { const s = start('raider').fight; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }
       // the deck fight (deckFightEvent, #786): on our deck and hers, each with the cargo bay, the hand in each section and their move into each; a hold, a way round
       // and a veteran's feint; every choice it offers; and a turn of each kind of line, from states set by hand
-      const deckPanel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: ev.choices.map(c => String(c.label)), group: ev.choices.map(c => c.group).filter(Boolean), strip: ((ev.board || '').match(/aria-label="([^"]*)"/) || [])[1] });  // the strip's words: their move through a section, and the wave
+      const deckPanel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: ev.choices.map(c => String(c.label)), group: ev.choices.map(c => c.group).filter(Boolean), strip: ((ev.board || '').match(/aria-label="([^"]*)"/) || [])[1], legend: ev.legend });  // the strip's words: their move through a section, and the wave
       const deck = (assault, o = {}) => { fresh(); hired().raidTold = true; const foe = makeEnemy({ kind: 'pirate' }), s = assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0, init: 'foe' }, 'full'); s.state = deckFight({ boarders: 4, crew: 4, cover: [1, 2, 1, 1], assault, side: true, ...o }); return s; };
       const deckLog = (s, plan, shown, first = 0.01) => { s.shown = { feint: false, ...shown }; seq([first, 0.99, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.99]); const e = deckFightEvent(s, plan); const next = e.choices[e.choices.length - 1].run(); rec.plays.push({ log: s.state.log.slice(-1)[0], end: !next, ...(next ? {} : { close: G.nextEvent && G.nextEvent.text }) }); G.nextEvent = null; };
       for (const assault of [false, true]) {

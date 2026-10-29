@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(r.goodbye && r.signon, 'the goodbye and the sign-on are rows of the registry');
-  assert.equal(r.dataRegistry, 164);  // with the deck fights' shared lines, one row (#795), the ladder's entry lines, one row (#810), the gunner moves' lines, one row, the contact and the first officer's word before the first fight (#796), four port scenes and six on a burn (#796, batch 3)
+  assert.equal(r.dataRegistry, 165);  // with the deck fights' shared lines, one row (#795), the ladder's entry lines, one row (#810), the gunner moves' lines, one row, the contact and the first officer's word before the first fight (#796), four port scenes and six on a burn (#796, batch 3), and the first officer's word before the first deck fight (#850)
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {

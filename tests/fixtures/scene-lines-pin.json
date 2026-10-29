@@ -23290,6 +23290,20 @@
    },
    {
     "title": "Battle Stations",
+    "read": "The Pirate \"Black Widow\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: aim at her launcher now. Captain Vance: holding the range.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: normal charge",
+     "Torpedo, 2 left: hold fire",
+     "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
+    ]
+   },
+   {
+    "title": "Battle Stations",
     "read": "The Pirate \"Black Widow\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
@@ -23980,7 +23994,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Lock. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Lock. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Corridor",
@@ -23996,7 +24011,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2, you stand here. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2, you stand here. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Bridge",
@@ -24012,7 +24028,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1, you stand here. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Bridge. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1, you stand here. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Bridge. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Cargo Bay",
@@ -24028,7 +24045,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1, you stand here. Their move: 2 from The Lock into The Cargo Bay. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1, you stand here. Their move: 2 from The Lock into The Cargo Bay. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24044,7 +24062,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Cargo Bay. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Cargo Bay. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24060,7 +24079,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24076,7 +24096,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock through The Corridor into The Bridge. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock through The Corridor into The Bridge. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24092,7 +24113,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor, may feint. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor, may feint. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24108,7 +24130,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours, 1 of ours wounded and 2 of theirs, 1 of them wounded, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours, 1 of ours wounded and 2 of theirs, 1 of them wounded, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24124,7 +24147,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last. 2 more at the lock next turn."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last. 2 more at the lock next turn.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24140,7 +24164,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24156,7 +24181,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24172,7 +24198,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24187,7 +24214,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24202,7 +24230,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24217,7 +24246,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24232,7 +24262,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24247,7 +24278,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24264,7 +24296,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24281,7 +24314,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24298,7 +24332,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24315,7 +24350,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "log": "Turn 1: 2 of them move into the Corridor, 1 of them and 1 of ours wounded in the Corridor. None of them are where you stand.",
@@ -24376,7 +24412,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: a charge on The Corridor, set from The Lock. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: a charge on The Corridor, set from The Lock. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "log": "Turn 1: the charge blows in the Corridor, 1 of ours down. None of them are where you stand.",
@@ -24404,7 +24441,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Lock. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Lock. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Corridor",
@@ -24420,7 +24458,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0, you stand here. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Corridor. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0, you stand here. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Corridor. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Bridge",
@@ -24436,7 +24475,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0, you stand here. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Bridge. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0, you stand here. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Bridge. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Cargo Bay",
@@ -24452,7 +24492,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0, you stand here. Their move: 2 from Her Lock into Her Cargo Bay. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0, you stand here. Their move: 2 from Her Lock into Her Cargo Bay. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24468,7 +24509,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Cargo Bay. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Cargo Bay. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24484,7 +24526,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24500,7 +24543,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Bridge through Her Corridor into Her Lock. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Bridge through Her Corridor into Her Lock. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24516,7 +24560,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Corridor, may feint. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: 2 from Her Lock into Her Corridor, may feint. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24532,7 +24577,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours, 1 of ours wounded and 1 of theirs, 1 of them wounded, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours, 1 of ours wounded and 1 of theirs, 1 of them wounded, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24548,7 +24594,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24564,7 +24611,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24580,7 +24628,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24595,7 +24644,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24610,7 +24660,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24625,7 +24676,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24641,7 +24693,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24657,7 +24710,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24674,7 +24728,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24691,7 +24746,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24708,7 +24764,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "Her Lock",
@@ -24725,7 +24782,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "log": "Turn 1: 1 of them and 0 of ours down in her Lock.",
@@ -24782,7 +24840,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: a charge on Her Lock, set from Her Corridor. 4 of their 4 still up; they fight to the last."
+    "strip": "The deck in four sections. Her Lock: 4 of ours and 1 of theirs, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: a charge on Her Lock, set from Her Corridor. 4 of their 4 still up; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "title": "The Lock",
@@ -24798,7 +24857,8 @@
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor. 2 aboard, 2 still to come; they fight to the last."
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: 2 from The Lock into The Corridor. 2 aboard, 2 still to come; they fight to the last.",
+    "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
     "log": "Turn 1: 1 of them and 1 of ours wounded in the Lock. You hold your fire.",
