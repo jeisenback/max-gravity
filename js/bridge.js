@@ -103,6 +103,18 @@ function gunnerySvg() {
 }
 
 // The Weapons station as a console: the armament on the display, the fire deck beside it, and the gunner's post along the bottom.
+// The parts of the fight a hand plays turn by turn (fight.js, fightui.js), with this ship's numbers (#851).
+function fightCard() {
+  const me = ship(), moves = knownMoves(career()), pct = x => Math.round(x * 100);
+  return conCard('The fight', [
+    conRead('Guns', `${me.guns}, aimed at her weapons, drive, lock or hull`),
+    conRead('Heat', `a shot adds 1, overcharged ${FIGHT.OVER_HEAT}; over ${FIGHT.HEAT_CAP} a gun locks for a turn`),
+    ...(me.launcher ? [conRead('Torpedoes', `${Math.min(TORP_MAX, G.state.torpedoes || 0)} of ${TORP_MAX}`)] : []),
+    conRead('Turret', me.pdc ? `held back, it takes ${pct(FIGHT.PDC_HOLD)}% off her volley and ${pct(FIGHT.PDC_SALVO)}% off a salvo, for a gun's shot` : 'none fitted'),
+    conRead('Moves', moves.length ? moves.map(id => fightSay(`move.name.${id}`)).join(', ') : 'none yet: the crew teach them on a burn'),
+  ].join(''));
+}
+
 function weaponsPanel() {
   const st = G.state, c = condition(), deck = playerCounts();
   const status = notYours('gunner') ? `${roleHolder('gunner') ? roleName('gunner') : 'The gunner'} has the guns`
@@ -111,7 +123,7 @@ function weaponsPanel() {
   return consoleHtml({
     title: 'Weapons', status,
     screen: `<svg class="con-plant" viewBox="0 0 640 300" role="img" aria-label="Armament diagram">${gunnerySvg()}</svg>`,
-    side: conCard('Fire deck', `${hired() ? '<p class="hint">A raid or a navy stop is fought turn by turn on the sensor board, not with cards. The deck is used only when someone comes looking for you.</p>' : ''}<div class="hint">Threats</div>${cards(DUEL_THREATS)}<div class="hint">Answers</div>${cards(DUEL_ANSWERS)}`)
+    side: (hired() ? fightCard() : conCard('Fire deck', `<div class="hint">Threats</div>${cards(DUEL_THREATS)}<div class="hint">Answers</div>${cards(DUEL_ANSWERS)}`))  // a hand fights turn by turn; the deck is an owner's (#851)
       + conCard('Gun systems', `${conRead('Weapons power', `${power().weapons}%`)}${conRead('Fire control', `${Math.round(c.fire)}%`)}${armament()}`),
     controls: `<div class="row"><button data-action="combatMode">Change combat mode</button></div>${projectsHtml('gunner')}${postHtml('gunner')}`,
   });
