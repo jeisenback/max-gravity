@@ -550,7 +550,7 @@ function drawTransit(W, H) {
   // Our ship in cutaway, with everyone aboard (shiplife.js). It turns at the midpoint.
   const L = Math.min(viewW - 60, 640), shipY = cy + (narrow ? 56 : 70);
   // On a wide screen the cutaway is drawn larger (up to half again), scaled so it still clears the panels.
-  const k = narrow ? 1 : Math.max(1, Math.min(1.35, (viewW - 120) / L, (H / 2 - 282) / (L * CUTAWAY_H / 2)));
+  const k = narrow ? Math.max(1, Math.min(1.35, (viewW - 24) / L)) : Math.max(1, Math.min(1.35, (viewW - 120) / L, (H / 2 - 282) / (L * CUTAWAY_H / 2)));  // a narrow screen: the width it has (#852)
   const shake = !Settings.reduceMotion && !t.event && speed > 0.2 ? speed * 0.9 : 0;
   ctx.save();
   ctx.translate(cx + (narrow ? 0 : 40) + Math.sin(G.time * 53) * 0.5 * shake, shipY + Math.sin(G.time * 71 + 1) * 0.8 * shake);  // a shiver, not a random draw: the game's random is seeded in the tests
