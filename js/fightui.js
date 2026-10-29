@@ -82,21 +82,25 @@ function fightTook(s, events) {
   if (out.length) s.state.log[s.state.log.length - 1] += ` ${out.join(' ')}`;
 }
 
-// The bars of both sides as a picture under the board: shields, armor and each part, and your heat.
+// The bars of both sides as a picture under the board: shields, armor and each part, and your heat, each with its value. A part is drawn by how much of it is left
+// (green, then amber, then red), so a part at full does not read as damage (#846); the labels are about 12px on a phone.
+const FIGHT_BAR = { row: 18, W: 175, label: 12, bar: [66, 66] };  // the row's height, a side's width, the label's size, the bar's x and width (in a 360-wide picture)
+const partTone = frac => (frac > 0.6 ? '#7fd8a0' : frac > 0.3 ? '#ffcf7f' : '#ff6a4a');
 function fightBars(st) {
-  const row = 13, W = 160;
+  const { row, W, label, bar: [bx, bw] } = FIGHT_BAR;
   const bars = (side, name, x, y0) => {
-    const list = [['shields', side.shields, side.maxShields, '#4aa3ff'], ['armor', side.armor, side.maxArmor, '#cfe3ff'],
-      ...['weapons', 'drive', 'lock', ...(side !== st.me && side.parts.launcher ? ['launcher'] : [])].map(k => [k, side.parts[k].hp, side.parts[k].max, '#ff6a4a']), ...(side === st.me ? [['heat', st.heat, FIGHT.HEAT_CAP, '#ffcf7f']] : [])];
-    const svg = list.map(([k, v, max, color], i) => {
-      const y = y0 + 14 + i * row, w = Math.round((W - 70) * Math.max(0, Math.min(1, v / Math.max(1, max))));
-      return `<text x="${x}" y="${y + 8}" fill="#7fb4ff" font-size="9" font-family="IBM Plex Mono, monospace">${k.toUpperCase()}</text>` +
-        `<rect x="${x + 56}" y="${y}" width="${W - 70}" height="8" fill="#14243a"/><rect x="${x + 56}" y="${y}" width="${w}" height="8" fill="${color}"/>`;
+    const list = [['shields', side.shields, side.maxShields, () => '#4aa3ff'], ['armor', side.armor, side.maxArmor, () => '#cfe3ff'],
+      ...['weapons', 'drive', 'lock', ...(side !== st.me && side.parts.launcher ? ['launcher'] : [])].map(k => [k, side.parts[k].hp, side.parts[k].max, partTone]), ...(side === st.me ? [['heat', st.heat, FIGHT.HEAT_CAP, () => '#ffcf7f']] : [])];
+    const svg = list.map(([k, v, max, tone], i) => {
+      const y = y0 + 18 + i * row, frac = Math.max(0, Math.min(1, v / Math.max(1, max))), w = Math.round(bw * frac);
+      return `<text x="${x}" y="${y + 10}" fill="#7fb4ff" font-size="${label}" font-family="IBM Plex Mono, monospace">${k.toUpperCase()}</text>` +
+        `<rect x="${x + bx}" y="${y + 1}" width="${bw}" height="10" fill="#14243a"/><rect x="${x + bx}" y="${y + 1}" width="${w}" height="10" fill="${tone(frac)}"/>` +
+        `<text x="${x + W - 4}" y="${y + 10}" text-anchor="end" fill="#cfe3ff" font-size="${label - 1}" font-family="IBM Plex Mono, monospace">${Math.round(v)}</text>`;
     }).join('');
-    return { svg: `<text x="${x}" y="${y0 + 9}" fill="#cfe3ff" font-size="10" font-family="IBM Plex Mono, monospace">${esc(name)}</text>${svg}`, label: `${name}: ${list.map(([k, v, max]) => `${k} ${v} of ${max}`).join(', ')}.` };
+    return { svg: `<text x="${x}" y="${y0 + 12}" fill="#cfe3ff" font-size="${label + 1}" font-family="IBM Plex Mono, monospace">${esc(name)}</text>${svg}`, label: `${name}: ${list.map(([k, v, max]) => `${k} ${v} of ${max}`).join(', ')}.` };
   };
-  const mine = bars(st.me, 'You', 10, 4), rows = 5 + (st.foes.some(f => f.parts.launcher) ? 1 : 0), foes = st.foes.map((f, i) => bars(f, i ? 'Her consort' : 'Her', 190, 4 + i * (rows * row + 18)));
-  const h = Math.max(6 * row, st.foes.length * (rows * row + 18)) + 22;
+  const rows = 5 + (st.foes.some(f => f.parts.launcher) ? 1 : 0), mine = bars(st.me, 'You', 4, 4), foes = st.foes.map((f, i) => bars(f, i ? 'Her consort' : 'Her', 4 + W + 6, 4 + i * (rows * row + 24)));
+  const h = Math.max(6 * row, st.foes.length * (rows * row + 24)) + 24;
   return `<svg class="bars" viewBox="0 0 360 ${h}" role="img" aria-label="${esc([mine.label, ...foes.map(f => f.label)].join(' '))}"><rect x="0" y="0" width="360" height="${h}" fill="#050a11"/>${mine.svg}${foes.map(f => f.svg).join('')}</svg>`;
 }
 
@@ -115,7 +119,7 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
   const setGun = (i, g) => redo({ guns: orders.guns.map((x, j) => (j === i ? g : x)) });
   const choices = [];
   orders.guns.slice(0, ready).forEach((g, i) => {
-    choices.push({ label: fightSay('gun.label', { n: i + 1, aim: g ? range(g, orders.move === 'lead' && orders.gun === i && canUse(f, hit, 'lead', known)) : aim(g) }), keep: true, run: setGun(i, turn(g)) });
+    choices.push({ ...(i ? {} : { group: fightSay('ship.orders') }), label: fightSay('gun.label', { n: i + 1, aim: g ? range(g, orders.move === 'lead' && orders.gun === i && canUse(f, hit, 'lead', known)) : aim(g) }), keep: true, run: setGun(i, turn(g)) });
     if (g) choices.push({ label: fightSay(g.over ? 'gun.over.on' : 'gun.over.off', { n: i + 1, heat: FIGHT.OVER_HEAT }), keep: true, run: setGun(i, { ...g, over: !g.over }) });  // overcharge: harder, and more heat
   });
   if (f.me.launcher && f.me.torps > 0) choices.push({ label: fightSay('torp.label', { left: f.me.torps, aim: aim(orders.torp) }), keep: true, run: redo({ torp: turn(orders.torp) }) });
@@ -123,7 +127,7 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
   choices.push(...moveChoices(f, hit, known, redo));
   const split = orders.move === 'split' && canUse(f, hit, 'split', known);
   const heat = (vent ? 0 : f.heat) + turnShots(vent ? { ...f, locked: [] } : f, hit, split).reduce((h, { o }) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);  // the engine's own count of the shots
-  choices.push({ label: fightSay(heat > FIGHT.HEAT_CAP ? 'fire.hot' : 'fire.label', { heat, cap: FIGHT.HEAT_CAP }), keep: true, run: () => fireTurn(s, orders) });
+  choices.push({ label: fightSay(heat > FIGHT.HEAT_CAP ? 'fire.hot' : 'fire.label', { heat, cap: FIGHT.HEAT_CAP }), keep: true, pin: true, primary: true, run: () => fireTurn(s, orders) });  // the one that ends the turn: pinned in view (ui.js)
   const breaking = f.foes.map((foe, i) => fightUp(foe) && ((s.shown || {}).foe || [])[i] && s.shown.foe[i].kind === 'break');  // her move as shown: off, while the ships still in it all go
   const away = breaking.some(Boolean) && f.foes.every((foe, i) => breaking[i] || !fightUp(foe));
   const board = raidBoard({ beat: f.turn, edge: 0, style: s.style, me: SHIPS[st.shipId], foe: SHIPS[s.foe.shipId], range: FIGHT_KM[RANGE_BANDS[f.band]], away });

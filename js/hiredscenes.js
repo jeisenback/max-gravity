@@ -491,7 +491,7 @@ const SCENE_LINES = {
     'move.split': 'Split the turret: it fires with the guns and still cuts her volley, adding {lo} to {hi} damage, once a fight',
     'move.on': '{label} (ordered)', 'move.spent': '{name}: spent', 'move.idle': '{name}: nothing to act on this turn',
     'move.used.vent': 'you vent the guns', 'move.used.lead': 'you lead the shot', 'move.used.split': 'you split the turret',
-    'fire.label': 'Fire: heat {heat} of {cap}', 'fire.hot': 'Fire: heat {heat} of {cap}, and a gun locks next turn',
+    'ship.orders': 'Orders to the guns', 'fire.label': 'Fire: heat {heat} of {cap}', 'fire.hot': 'Fire: heat {heat} of {cap}, and a gun locks next turn',
     'log.turn': 'Turn {n}: {hits}.', 'log.mine': 'you hit her {part} for {dmg}', 'log.torp': 'your torpedo hits her {part} for {dmg}',
     'log.mine.consort': 'you hit her consort\'s {part} for {dmg}', 'log.torp.consort': 'your torpedo hits her consort\'s {part} for {dmg}', 'log.hers': 'she hits your {part} for {dmg}', 'log.spent': 'nothing left of the {part} to hit', 'log.none': 'no hits',
     'end.crippled.patrol': 'Her drive goes dark, and on the open band her captain calls the stop off and asks the station for a tow.',

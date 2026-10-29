@@ -58,6 +58,10 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
       title: G.dialog.event.title, duel: !!G.duel, read: G.dialog.event.read, labels: G.dialog.choices.map(c => c.label), keep: G.dialog.choices.map(c => !!c.keep),
       board: !!document.querySelector('#panel .event-body svg.board'), bars: bars && bars.getAttribute('aria-label'),
       guns: f.me.guns, ready: gunsReady(f), band: RANGE_BANDS[f.band], text: G.dialog.event.text,
+      // the orders flow with the scene under their heading, and only Fire is pinned, as the primary button (#846)
+      flow: [...document.querySelectorAll('#panel .choices.flow button')].map(b => b.textContent.split(':')[0]), heading: (document.querySelector('#panel .choices.flow .group') || {}).textContent,
+      pinned: [...document.querySelectorAll('#panel .choices:not(.flow) button')].map(b => [b.textContent.split(':')[0], b.classList.contains('primary')]),
+      bars12: [...bars.querySelectorAll('text')].every(t => +t.getAttribute('font-size') >= 11), intact: [...bars.querySelectorAll('rect')].filter(x => x.getAttribute('fill') === '#ff6a4a').length,
     };
   });
   assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false);
@@ -68,6 +72,11 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
   assert.deepEqual(r.keep, [true, true, true, true, true, true, true], 'every order and Fire redraw in place');
   assert.ok(r.board, 'the sensor board'); assert.match(r.bars, /^You: shields 81 of 81, armor 117 of 117, weapons 126 of 126, drive 34 of 34, lock 7 of 7, heat 0 of 4\. Her: shields 32 of 32, armor 27 of 27, weapons 63 of 63, drive 34 of 34, lock 7 of 7\.$/, r.bars);
   assert.match(r.text, /raider|plume|forty kilometers/i, 'the opening line is the first line of the log');
+  assert.deepEqual(r.flow, ['Gun 1', 'Gun 1', 'Gun 2', 'Gun 2', 'Torpedo, 2 left', 'Turret'], 'the orders, in the flow of the scene');
+  assert.equal(r.heading, 'Orders to the guns');
+  assert.deepEqual(r.pinned, [['Fire', true]], 'only Fire is pinned, and it is the primary button');
+  assert.ok(r.bars12, 'the bars\' labels are 11 or more in the picture (about 12px on a phone)');
+  assert.equal(r.intact, 0, 'no part at full is drawn in the red of damage');
   await done();
 });
 
