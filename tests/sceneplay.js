@@ -98,6 +98,11 @@ const playScenes = () => {
     const dest = SYSTEMS.mars.planets[0].name;
     return pitchScene({ tpl: 'package', ctx: { dest, from: 'Titan', who: 'Mrs. Adeyemi', system: SYSTEMS.mars.name, scale: 1.2 }, sid: 'mars', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false });
   }, { rolls: [0, 0.999] });
+  run('scene:pitch:light', {}, () => {  // the captain's plan a light run: what the pitch would replace says so (#848)
+    currentPlan(); hired().plan.run = { sid: 'eros', planet: SYSTEMS.eros.planets[0].name, days: 4, good: null, tons: 0, cost: 0, profit: 0, ballast: true };
+    const dest = SYSTEMS.mars.planets[0].name;
+    return pitchScene({ tpl: 'package', ctx: { dest, from: 'Titan', who: 'Mrs. Adeyemi', system: SYSTEMS.mars.name, scale: 1.2 }, sid: 'mars', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false });
+  });
   run('scene:pitch:deal', {}, () => {  // the used Ore Runner on the yard list, and a run that keeps you from a yard past her last day (#800)
     const h = hired(); h.deal = { price: 170000, day: G.state.day, until: G.state.day + 3, broker: false };
     const dest = SYSTEMS.eros.planets[0].name;

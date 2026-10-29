@@ -233,16 +233,23 @@ function planRun() {
   return dest ? { ...dest, good: null, tons: 0, cost: 0, profit: 0, ballast: true } : null;
 }
 
-// The plan is made once per stop and kept, unless the hold has changed since (a plan to sell cargo that is gone).
+// The plan is made once a day in port and kept, unless the hold has changed since (a plan to sell cargo that is gone). A run the captain
+// agreed to (a pitched job, awayjobs.js) stands through the remaking; any other change of run is said, so the stated run is the one she flies (#848).
 const planStale = h => !h.plan || h.plan.day !== G.state.day || h.plan.at !== G.state.planet
   || h.plan.cargo !== JSON.stringify(G.state.cargo);
-const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const run = planRun(); h.plan = {
+const sameRun = (a, b) => !!a && !!b && a.sid === b.sid && a.planet === b.planet && a.good === b.good && !!a.ice === !!b.ice;
+const runWord = r => (r.ice ? `the ice run to ${r.planet}` : r.ballast ? `a light run to ${r.planet}` : `${r.tons}t of ${goodName(r.good).toLowerCase()} to ${r.planet}`);
+const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const was = h.plan && h.plan.at === G.state.planet ? h.plan.run : null, run = planRun(); h.plan = {
   day: G.state.day,
   at: G.state.planet,
   cargo: JSON.stringify(G.state.cargo),
   run,
   alts: [...roomAlts(run), ...planAlts.filter(o => !run || o.sid !== run.sid || o.planet !== run.planet || o.good !== run.good)].slice(0, 3)  // the room's port first (room.js)
-}; } return h.plan.run; };
+};
+  const booked = (h.away || []).find(a => a.booked && (a.sid !== G.state.systemId || a.planet !== G.state.planet));
+  if (booked) bookRun(booked, h.plan);
+  else if (was && !sameRun(was, h.plan.run)) UI.notes.push(`Captain ${hiredCaptain().last} drops ${runWord(was)}${h.plan.run ? ` for ${runWord(h.plan.run)}` : ', and waits for a shipper'}.`);
+} return h.plan.run; };
 
 // Buys the cargo, sets the course, and sails: a crewed pilot flies her out, otherwise the pilot is you.
 function sail() {

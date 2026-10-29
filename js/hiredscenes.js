@@ -750,7 +750,9 @@ const SCENE_LINES = {
   },
   'scene:pitch': {  // putting work further away to the captain (awayjobs.js): the four ways of putting it, each with how the captain takes it when it lands well and when it does not
     title: 'Putting It to the Captain',
-    text: '{blurb} It is {dest}, {system}: {days} days out, and the captain has other runs in mind. How do you put it?',
+    text: '{blurb} It is {dest}, {system}: {days} days out. {instead} How do you put it?',
+    instead: 'The captain has {run} in mind, about {share} cr to you.',
+    'instead.light': 'The captain has a light run to {planet} in mind, to look for work there.',
     'pay.label': 'Put the fee in front of them (it pays about 9,000 cr, all told)',
     'pay.yes': 'looks at the figure, and at the route, and does the sum.',
     'pay.no': 'doesn\'t look at the figure.',
