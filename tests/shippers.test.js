@@ -130,7 +130,7 @@ test('a state\'s freight office reads the crew list at the lock: a crew member i
   assert.equal(r.other, false, 'a paper from another shipper does not ask'); assert.equal(r.first, false, 'the first run is guided and does not'); assert.equal(r.due, true);
   assert.equal(r.scene.title, 'On the Manifest'); assert.equal(r.sailed, false, 'she does not sail until it is played'); assert.equal(r.scene.people, 2); assert.equal(r.again, false, 'and it is played once: the same person is not asked again');
   assert.match(r.scene.text, /the Compact Freight Office puts the names of everyone aboard on its manifest/); assert.match(r.scene.text, /"This one's wanted by the Compact,"/);
-  assert.deepEqual(r.scene.labels.map(l => l.replace(r.target, 'N').replace(/ \(.*$/, '')), ['[Arcology Compact papers] Vouch for N as a member', 'Pay the office\'s fee', 'Say nothing and keep N below', 'Put N ashore', 'Turn the contract down']);
+  assert.deepEqual(r.scene.labels.map(l => l.replace(r.target, 'N').replace(/ \(.*$/, '')), ['[Your Arcology Compact papers] Vouch for N as a member', 'Pay the office\'s fee', 'Say nothing and keep N below', 'Put N ashore', 'Turn the contract down']);
 });
 
 test('the side scene\'s ways out: papers and the fee clear the name, silence holds more often than not and costs the paper when it does not, a crew member put ashore is replaced, and turning the paper down leaves the day\'s board empty', async () => {
@@ -148,7 +148,7 @@ test('the side scene\'s ways out: papers and the fee clear the name, silence hol
       const text = c.run(); Math.random = real;
       return { text, fund: hh.fund - f1, standing: ((hh.standing || {})[office] || 0) - st1, rep: repOf(gov) - rep1, captain: person(hh.captain).opinion - cap1, target: person(target.id).opinion - t1, board: hh.freight.list.length, planGone: !hh.plan, aboard: s2.crew.includes(target.id), crew: s2.crew.length - crew1 };
     };
-    out.papers = play('[Arcology Compact papers]', 0.5); out.pay = play('Pay the office', 0.5); out.clear = play('Say nothing', 0); out.lost = play('Say nothing', 0.999); out.ashore = play('Put', null); out.decline = play('Turn the contract down', 0.5);
+    out.papers = play('[Your Arcology Compact papers]', 0.5); out.pay = play('Pay the office', 0.5); out.clear = play('Say nothing', 0); out.lost = play('Say nothing', 0.999); out.ashore = play('Put', null); out.decline = play('Turn the contract down', 0.5);
     window.tiesOf = realTies;
     return out;
   });

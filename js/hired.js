@@ -18,7 +18,7 @@ const HIRED_WAGE = 400, HIRED_SHARE = 0.06;  // a day's wage and a share of each
 const HAND_RAID = { base: 0.08, per: 1.4 };  // a hand's chance of a pirate contact on a run: this and the lane's danger (engage.js), in place of 0.05 and 0.6
 const HAND_LANE_WEIGHT = 8;  // and how much a dangerous lane weights the ship's own incidents (happenings.js)
 const LIGHT_DUTY = 0.6;  // a hurt hand's wage while they work light duty
-const HIRED_DEBT = 30000, DEBT_SHARE = 0.3;  // the hiring hall's bond for the berth, the passage and the kit (#280): a third of each run's pay goes to it, never more than is owed
+const HIRED_DEBT = 30000, DEBT_SHARE = 0.3;  // the hiring hall's bond for the berth, the passage and the kit (#280): 30 percent of each run's pay goes to it, never more than is owed
 const HIRED_TARGET = 190000;  // the used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of
 // The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
 // her price, and at the middle price again if the deal lapses.
@@ -554,6 +554,12 @@ function buyInHtml() {
 // A run in the hand's terms: the days, the ship's profit, and what that is to you. The captain's run and each suggested run say it alike.
 const runTerms = r => `${r.days} days, ${fmt(r.pay !== undefined ? r.pay : r.profit)} cr ${r.pay !== undefined ? 'on delivery' : 'profit'}, so about ${fmt((r.pay !== undefined ? r.pay : r.profit) * G.state.hired.share)} cr to you, plus ${fmt(G.state.hired.wage * r.days)} cr wage`;
 
+// Where the hand stands on the way to a ship (#849): what the hall is still owed, the ship's price, and the savings. The used Ore Runner is named
+// only while she is offered (the day-0 text does not give the deal away); otherwise it is the yard's cheapest.
+const goalLine = (st, hd) => {
+  const ship = dealOpen() ? `The used Ore Runner is ${fmt(hd.deal.price)} cr` : `The cheapest ship at a yard, a ${SHIPS.shuttle.name}, is ${fmt(SHIPS.shuttle.price)} cr`;
+  return `${hd.debt > 0 ? `Owed to the hall: ${fmt(hd.debt)} cr. ` : ''}${ship}, and you have ${fmt(st.credits)} cr.`;
+};
 const runHtml = () => {
   const hd = G.state.hired, plan = currentPlan(), led = hd.ledger.slice(0, 5), name = goodName;
   return String(h`<div class="post"><div class="eyebrow">${hiredCaptain() ? h`<span class="nowrap">Captain ${raw(personLink(hiredCaptain()))}'s</span> run` : 'The captain\'s run'}</div>
@@ -561,6 +567,7 @@ const runHtml = () => {
       : plan.ballast ? h`Nothing on the board here.${closedHere() ? ' The shipper here has closed its board to the ship.' : ''} The captain will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
       : plan.contract ? h`The captain has a contract from ${plan.shipper}${shipperWord(standingOf(hd, plan.shipper)) ? `, ${shipperWord(standingOf(hd, plan.shipper))}` : ''}: ${plan.tons}t of ${name(plan.good)} to ${plan.planet}, ${SYSTEMS[plan.sid].name}, due by ${dateOf(plan.due)}: ${runTerms(plan)}.${plan.hazard ? ' The lane has raids on it.' : ''}`
       : h`The captain will take the ${plan.tons}t of ${name(plan.good)} aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${runTerms(plan)}.`}</p>
+    <p class="hint">${goalLine(G.state, hd)}</p>
     ${raw(swayHtml())}
     ${led.length ? h`<div class="eyebrow">Captain's log</div>${raw(logRowsHtml(led, 5))}` : ''}
   </div>`);

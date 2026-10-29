@@ -109,7 +109,7 @@ const SCENE_LINES = {
     'text.patrol': 'The list reaches {first} {last}, and {lt} slows by a single beat, the way a hand slows at a bad rung. "{charge}," {lt} says, and waits. On your deck nobody is looking at {n}, with such care that it amounts to looking. The cutter hasn\'t moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer\'s pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.',  // after the lieutenant's question (lieutenantScene, ties.js)
     // the lieutenant of a patrol cutter, one set of lines for each faction (PATROL_LT, ties.js): .name, .intro (a first stop), .again (a later one, with the .recall line for how the last was answered), .q (the question), and the four answers
     'ask.straight.label': 'Answer it straight',
-    'ask.gap.label': 'Answer it, and shade one detail (saying nothing clears less often afterwards)',
+    'ask.gap.label': 'Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)',
     'ask.asking.label': 'Answer with "Who\'s asking?"',
     'charter.name': 'Teague',
     'charter.intro': 'The cutter\'s lieutenant comes on the band before the crew list does. The collar on your screen says TEAGUE, and the voice is the voice of someone reading a lading bill.',
@@ -153,7 +153,7 @@ const SCENE_LINES = {
     'officer.label': '[{officer}, an officer of {faction}] Let {officer} answer the hail',
     'officer.result': '{officer} takes the open band without being asked and gives a rank and a unit, in the flat voice of someone who learned to say it before they learned to say anything else. The cutter\'s captain asks one question, about a posting two years back, and {officer} answers it with a name and a deck number. There\'s a pause. The captain says the crew list is in order, apologizes for the delay, and means about half of it. The cutter peels off on the same clean arc it came in on. Nobody on your deck says anything until it\'s a dot on the plot. Then {officer} takes a long breath, says that was a lucky question, and goes below.',
     'officer.memory': 'You let me answer a patrol of {faction}.',
-    'papers.label': '[{gov} papers] Vouch for {n} as a member',
+    'papers.label': '[Your {gov} papers] Vouch for {n} as a member',
     'papers.result': 'You put your {gov} papers on the counter and say {n} is signed on the ship\'s articles, in your own hand, on a date you give. The officer reads the date, then reads your name, then reads the date again. The stylus comes out from behind the ear. The officer doesn\'t look at {n}, who is standing eight feet away, or at the register, which is still glowing on the slate. The manifest is stamped, torn along its perforation, and slid back. "Safe flying," the officer says to the next window, not to you. The thing you\'ve just done, you notice, took less time than the three ships behind you have been waiting.',
     'papers.patrol.result': 'You send your {gov} papers across on the open band, a scan of the articles with your name and the date, and say {n} is signed on the ship\'s articles. The cutter\'s captain takes a long minute with it. You can hear a clerk on the cutter asking if the date is right, and the captain saying it\'s right. Nothing on your own bridge moves. Then the captain says the articles are in order, notes the stamp, and doesn\'t ask to see {n}, who is standing eight feet behind you and hasn\'t breathed in some time. The cutter drops astern, and after a while the feeling comes back into your hands.',
     'papers.memory': 'You vouched for me at customs on {planet}.', 'papers.patrol.memory': 'You vouched for me to a patrol.',
@@ -802,7 +802,7 @@ const SCENE_LINES = {
   'scene:freight-side': {  // a contract from a state\'s freight office, with a crew member that state wants aboard (js/shippers.js, on the pattern of scene:customs)
     title: 'On the Manifest',
     text: '{agent} lays the crew list beside the paper, because {office} puts the names of everyone aboard on its manifest. The stylus stops at {first} {last} and stays there. "This one\'s wanted by {faction}," {agent} says. "I can load you without the name on the list. I can\'t load you with it and write nothing."',
-    'papers.label': '[{gov} papers] Vouch for {n} as a member',
+    'papers.label': '[Your {gov} papers] Vouch for {n} as a member',
     'papers.result': 'You put your papers on the rail and say {n} is crew on your word. {agent} copies the number off them, slowly, and takes the name off the list. "Yours goes on it instead," {agent} says.',
     'papers.memory': 'You put your papers up for me at the loading.',
     'pay.label': 'Pay the office\'s fee (4,000 cr from the ship\'s fund)',
@@ -890,6 +890,9 @@ const SCENE_LINES = {
     'week.run': '{cap} picks each run and carries freight for a shipper, who pays on delivery.',
     'week.errands': 'Errands for wherever she\'s going come through the port, and the captain keeps a fifth.',
     'week.pay': 'You\'re paid {wage} a day and {share} percent of what she clears.',
+    bond: 'The hiring hall paid for the berth, the passage and the kit, and you owe it {debt} cr for them: {cut} percent of each run\'s pay goes to the hall until it is paid, and no ship can be bought while anything is owed.',
+    goal: 'A hand who saves can have a ship of their own: the cheapest at a yard, a {ship}, is {price} cr.',
+    papers: 'Your papers name you a member of the {gov}, and its officers read them, at customs and on patrol.',
     why: 'Why did you sign on?',
     'c0.label': 'For the money',
     'c1.label': 'To learn the work',

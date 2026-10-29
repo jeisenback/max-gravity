@@ -134,3 +134,24 @@ test('signing on for the money says the share went up, with the figure the hand 
   assert.ok(r.text.includes(`${r.now} percent of every run now, 2 points up on what you were offered`), r.text);
   await done();
 });
+
+test('Signing On says what the pay goes to: the hall\'s bond, the cheapest ship a hand saves toward, and the papers; the Port page keeps the count (#849)', async () => {
+  const { ev, done } = await open({ debt: true });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
+    const text = G.dialog.event.text; while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), port = () => goalLine(st, h);
+    const before = port();
+    h.deal = { price: 170000, day: st.day, until: st.day + 10, broker: false }; const offered = port();
+    st.day += 11; const lapsed = port();
+    return { text, before, offered, lapsed };
+  });
+  assert.match(r.text, /you owe it 30,000 cr for them: 30 percent of each run's pay goes to the hall/);
+  assert.match(r.text, /the cheapest at a yard, a Dust Skiff, is 100,000 cr/);
+  assert.match(r.text, /Your papers name you a member of the Arcology Compact/);
+  assert.doesNotMatch(r.text, /Ore Runner/, 'the used ship is Tomas\'s to find');
+  assert.equal(r.before, 'Owed to the hall: 30,000 cr. The cheapest ship at a yard, a Dust Skiff, is 100,000 cr, and you have 3,000 cr.');
+  assert.match(r.offered, /The used Ore Runner is 170,000 cr/, 'named while she is offered');
+  assert.match(r.lapsed, /Dust Skiff/, 'and not once she is gone');
+  await done();
+});

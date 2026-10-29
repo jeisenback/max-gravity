@@ -82,7 +82,7 @@ test('a crew member the port\'s faction wants is a customs matter, and your own 
     return out;
   });
   assert.equal(r.gov, 'Arcology Compact'); assert.equal(r.title, 'The Customs Officer'); assert.ok(r.offered, 'offered at the port');
-  assert.ok(r.labels.some(l => /^\[Arcology Compact papers\]/.test(l)), 'you are Compact, so you have papers');
+  assert.ok(r.labels.some(l => /^\[Your Arcology Compact papers\]/.test(l)), 'you are Compact, so you have papers');
   assert.ok(r.labels.length >= 4); assert.equal(r.again, null); assert.ok(r.later, 'and again after the cooldown');
   assert.ok(r.papers && r.opinion === 2 && r.stays);
   await done();
