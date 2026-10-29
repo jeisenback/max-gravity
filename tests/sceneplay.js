@@ -298,6 +298,7 @@ const playScenes = () => {
   for (const background of ['earth', 'mars', 'belt']) for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
     run(`scene:sign-on:${background}:${post}`, { background, post }, () => { G.state.carried = null; return signOnEvent(); });
   }
+  run('scene:sign-on:bond', {}, () => { G.state.carried = null; hired().debt = HIRED_DEBT; return signOnEvent(); });  // the hall's bond, which the tests' games start without (helpers.js)
   run('scene:sign-on:carried', {}, () => { G.state.carried = 'On the dock they say the hand on the last ship did not come back.'; return signOnEvent(); });
   run('scene:sign-on:generated', {}, () => { G.state.carried = null; hired().captainKey = null; return signOnEvent(); });  // a captain with no words of their own (an older save's)
   for (const captainKey of ['dov', 'imre', 'zoya']) run(`scene:sign-on:${captainKey}`, { captainKey, background: 'mars' }, () => { G.state.carried = null; return signOnEvent(); });

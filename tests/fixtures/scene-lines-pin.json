@@ -1599,7 +1599,7 @@
   "title": "The Customs Officer",
   "text": "The customs officer at Earth has a stylus behind one ear and three ships queued behind yours. The officer takes the crew list, lays it against the Arcology Compact register on a slate, and runs a thumbnail down the names. The thumbnail stops at Sam Vale and stays there long enough that the clerk at the next window looks over. \"This one is wanted by the Compact,\" the officer says, not loudly, and doesn't look up. The slate hums. Somewhere on the dock a loader is backing up with its alarm going. The officer waits the way people wait who have all day and have done this before, and the stamp sits open on the counter between you, inked and ready.",
   "labels": [
-   "[Arcology Compact papers] Vouch for Sam as a member",
+   "[Your Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (4,000 cr from the ship's fund)",
    "Say nothing and keep Sam below",
    "Put Sam ashore"
@@ -1714,7 +1714,7 @@
   "title": "The Customs Officer",
   "text": "The customs officer at Earth has a stylus behind one ear and three ships queued behind yours. The officer takes the crew list, lays it against the Arcology Compact register on a slate, and runs a thumbnail down the names. The thumbnail stops at Sam Vale and stays there long enough that the clerk at the next window looks over. \"This one left the Compact with a mark against them,\" the officer says, not loudly, and doesn't look up. The slate hums. Somewhere on the dock a loader is backing up with its alarm going. The officer waits the way people wait who have all day and have done this before, and the stamp sits open on the counter between you, inked and ready.",
   "labels": [
-   "[Arcology Compact papers] Vouch for Sam as a member",
+   "[Your Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (4,000 cr from the ship's fund)",
    "Say nothing and keep Sam below",
    "Put Sam ashore"
@@ -1856,7 +1856,7 @@
   "title": "A Patrol Cutter",
   "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
   "labels": [
-   "[Arcology Compact papers] Vouch for Sam as a member",
+   "[Your Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (4,000 cr from the ship's fund)",
    "Say nothing and keep Sam below",
    "[Gunner 2] Lock fire control on her and ask what this is [70%; if it fails: a fine, and the patrol takes them]",
@@ -2028,7 +2028,7 @@
   "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
   "labels": [
    "[Ben, an officer of the Compact] Let Ben answer the hail",
-   "[Arcology Compact papers] Vouch for Sam as a member",
+   "[Your Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (4,000 cr from the ship's fund)",
    "Say nothing and keep Sam below",
    "[Gunner 2] Lock fire control on her and ask what this is [70%; if it fails: a fine, and the patrol takes them]",
@@ -2144,7 +2144,7 @@
   "title": "The Customs Officer",
   "text": "The customs officer at Earth has a stylus behind one ear and three ships queued behind yours. The officer takes the crew list, lays it against the Arcology Compact register on a slate, and runs a thumbnail down the names. The thumbnail stops at Sam Vale and stays there long enough that the clerk at the next window looks over. \"This one is wanted by the Compact,\" the officer says, not loudly, and doesn't look up. The slate hums. Somewhere on the dock a loader is backing up with its alarm going. The officer waits the way people wait who have all day and have done this before, and the stamp sits open on the counter between you, inked and ready.",
   "labels": [
-   "[Arcology Compact papers] Vouch for Sam as a member",
+   "[Your Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (4,000 cr from the ship's fund)",
    "Say nothing and keep Sam below",
    "Put Sam ashore"
@@ -2228,7 +2228,7 @@
   "title": "The Customs Officer",
   "text": "The customs officer at Earth has a stylus behind one ear and three ships queued behind yours. The officer takes the crew list, lays it against the Arcology Compact register on a slate, and runs a thumbnail down the names. The thumbnail stops at Sam Vale and stays there long enough that the clerk at the next window looks over. \"This one is wanted by the Compact,\" the officer says, not loudly, and doesn't look up. The slate hums. Somewhere on the dock a loader is backing up with its alarm going. The officer waits the way people wait who have all day and have done this before, and the stamp sits open on the counter between you, inked and ready.",
   "labels": [
-   "[Arcology Compact papers] Vouch for Sam as a member",
+   "[Your Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (4,000 cr from the ship's fund)",
    "Say nothing and keep Sam below"
   ]
@@ -2337,7 +2337,7 @@
   "title": "A Patrol Cutter",
   "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one left the Compact with a mark against them,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
   "labels": [
-   "[Arcology Compact papers] Vouch for Sam as a member",
+   "[Your Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (4,000 cr from the ship's fund)",
    "Say nothing and keep Sam below",
    "[Gunner 2] Lock fire control on her and ask what this is [70%; if it fails: a fine]"
@@ -2354,7 +2354,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -2433,7 +2433,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -2512,7 +2512,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -2591,7 +2591,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -2682,7 +2682,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -2758,7 +2758,7 @@
   "text": "The Compact cutter comes alongside slowly, like a neighbor, and the lieutenant who hails you sounds as if the day has gone well so far. \"Osei, Arcology Compact, patrol. Lovely old freighter. Is it true they don't make them with that much hold anymore?\" Osei doesn't wait. \"The seals, then. You carry cargo, you carry seals, and the seals have numbers, and every hold I've ever met has a number it's rather proud of. Read me yours? Whichever end you like.\" Off the band someone laughs, and stops. \"No hurry,\" Osei says. \"The crew list is only the crew list.\"",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -2773,7 +2773,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -2852,7 +2852,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -2931,7 +2931,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3010,7 +3010,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3101,7 +3101,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3177,7 +3177,7 @@
   "text": "The same cutter drifts up on your quarter like a neighbor. \"Well, hello again,\" Osei says. \"You answered so nicely last time that I've been telling people about it.\" \"Now, a small thing, and I'd ask it of anyone.\" The petty officer is off the band for once, and Osei's voice is the only one. \"Sam. Who signed Sam on, and where? The dock, I mean. I'm fond of docks. I grew up above one, and the sound of the lift still gets me in the mornings.\" Osei laughs, softly, at nothing. \"The name of whoever put a pen to it, and the berth number if you have it. That's all. It's not a trap, and I'd tell you if it were. I'm terrible at keeping those.\"",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -3192,7 +3192,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3271,7 +3271,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3350,7 +3350,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3429,7 +3429,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3520,7 +3520,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3596,7 +3596,7 @@
   "text": "The same cutter drifts up on your quarter like a neighbor. \"Well, hello again,\" Osei says. \"Last time one of your answers was a little off, and you were so pleasant about it. I remember pleasant.\" \"Now, a small thing, and I'd ask it of anyone.\" The petty officer is off the band for once, and Osei's voice is the only one. \"Sam. Who signed Sam on, and where? The dock, I mean. I'm fond of docks. I grew up above one, and the sound of the lift still gets me in the mornings.\" Osei laughs, softly, at nothing. \"The name of whoever put a pen to it, and the berth number if you have it. That's all. It's not a trap, and I'd tell you if it were. I'm terrible at keeping those.\"",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -3611,7 +3611,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3690,7 +3690,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3769,7 +3769,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3848,7 +3848,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -3939,7 +3939,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -4015,7 +4015,7 @@
   "text": "The same cutter drifts up on your quarter like a neighbor. \"Well, hello again,\" Osei says. \"Last time you asked who was asking, and I went and told the whole mess. They still laugh.\" \"Now, a small thing, and I'd ask it of anyone.\" The petty officer is off the band for once, and Osei's voice is the only one. \"Sam. Who signed Sam on, and where? The dock, I mean. I'm fond of docks. I grew up above one, and the sound of the lift still gets me in the mornings.\" Osei laughs, softly, at nothing. \"The name of whoever put a pen to it, and the berth number if you have it. That's all. It's not a trap, and I'd tell you if it were. I'm terrible at keeping those.\"",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -4030,7 +4030,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -4109,7 +4109,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -4188,7 +4188,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -4267,7 +4267,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -4358,7 +4358,7 @@
      "title": "A Patrol Cutter",
      "text": "The list reaches Sam Vale, and Osei slows by a single beat, the way a hand slows at a bad rung. \"This one is wanted by the Compact,\" Osei says, and waits. On your deck nobody is looking at Sam, with such care that it amounts to looking. The cutter hasn't moved. Its lock is stowed, and the ticking on the band is its drive keeping pace with yours, which is what a ship does when it means to stay. In the back of the call the petty officer's pen has stopped. You have a few seconds in which the whole next hour belongs to you, and you can feel exactly how few.",
      "labels": [
-      "[Arcology Compact papers] Vouch for Sam as a member",
+      "[Your Arcology Compact papers] Vouch for Sam as a member",
       "Pay the officer (4,000 cr from the ship's fund)",
       "Say nothing and keep Sam below",
       "Hand Sam over to the cutter"
@@ -4434,7 +4434,7 @@
   "text": "The same cutter drifts up on your quarter like a neighbor. \"Well, hello again,\" Osei says. \"Last time you asked who was asking. I wasn't offended. I'm told I should have been.\" \"Now, a small thing, and I'd ask it of anyone.\" The petty officer is off the band for once, and Osei's voice is the only one. \"Sam. Who signed Sam on, and where? The dock, I mean. I'm fond of docks. I grew up above one, and the sound of the lift still gets me in the mornings.\" Osei laughs, softly, at nothing. \"The name of whoever put a pen to it, and the berth number if you have it. That's all. It's not a trap, and I'd tell you if it were. I'm terrible at keeping those.\"",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -4768,7 +4768,7 @@
   "text": "The Concord frigate holds a hundred kilometers off and speaks first, which is correct procedure, and the officer who speaks is correct about everything else too. \"Commander Varga, Dome Concord, aboard the frigate,\" the voice says. \"Thank you for matching. The crew list will wait one moment, and I would be obliged for a complete answer.\" A pen scratches somewhere behind the voice. \"Who signed Sam onto your articles, and at which dock? The name, please, and the dock.\" Varga waits, and you can hear the pen waiting too. \"I write what's said to me,\" Varga says, \"exactly as it's said. Please bear that in mind.\"",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -5102,7 +5102,7 @@
   "text": "Varga is on the band again, at the same distance, with the same pen. \"Dome Concord remembers you,\" Varga says. \"Last time you answered everything I asked, in order. Thank you. Today I'll ask something different.\" The pen is already moving. \"Your articles, please, and the date of your last landing. The date, and the dock.\" Somewhere behind Varga a second voice reads a number from a screen, and Varga says, \"Thank you, not yet.\" The frigate hasn't moved closer, and doesn't need to. \"I will read your answer back to you,\" Varga says, \"so that we both hear it. If a word is wrong, now is the moment to say so. It is a courtesy, and it is only offered the once.\"",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -5436,7 +5436,7 @@
   "text": "Varga is on the band again, at the same distance, with the same pen. \"Dome Concord remembers you,\" Varga says. \"Last time one of your answers did not hold. I have it written. Today I will ask something different, and check this one against the port records as you speak.\" The pen is already moving. \"Your articles, please, and the date of your last landing. The date, and the dock.\" Somewhere behind Varga a second voice reads a number from a screen, and Varga says, \"Thank you, not yet.\" The frigate hasn't moved closer, and doesn't need to. \"I will read your answer back to you,\" Varga says, \"so that we both hear it. If a word is wrong, now is the moment to say so. It is a courtesy, and it is only offered the once.\"",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -5770,7 +5770,7 @@
   "text": "Varga is on the band again, at the same distance, with the same pen. \"Dome Concord remembers you,\" Varga says. \"Last time you asked who was asking. I gave my name twice, and you said you hadn't caught it. It's written down, in both places.\" The pen is already moving. \"Your articles, please, and the date of your last landing. The date, and the dock.\" Somewhere behind Varga a second voice reads a number from a screen, and Varga says, \"Thank you, not yet.\" The frigate hasn't moved closer, and doesn't need to. \"I will read your answer back to you,\" Varga says, \"so that we both hear it. If a word is wrong, now is the moment to say so. It is a courtesy, and it is only offered the once.\"",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -6104,7 +6104,7 @@
   "text": "Varga is on the band again, at the same distance, with the same pen. \"Dome Concord remembers you,\" Varga says. \"Last time you asked who was asking. I gave my name three times. Today I will ask something different, and I will give it only once.\" The pen is already moving. \"Your articles, please, and the date of your last landing. The date, and the dock.\" Somewhere behind Varga a second voice reads a number from a screen, and Varga says, \"Thank you, not yet.\" The frigate hasn't moved closer, and doesn't need to. \"I will read your answer back to you,\" Varga says, \"so that we both hear it. If a word is wrong, now is the moment to say so. It is a courtesy, and it is only offered the once.\"",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -6438,7 +6438,7 @@
   "text": "The cutter's lieutenant comes on the band before the crew list does. The collar on your screen says TEAGUE, and the voice is the voice of someone reading a lading bill. \"Ship's articles,\" Teague says. \"And the date of your last landing. The date, not the port.\" Behind the lieutenant a petty officer holds a slate and doesn't look at it. \"We lose hands off ships that signed on at the wrong dock,\" Teague says. \"Then it's three forms. So. Articles. Date.\" The cutter's lock is stowed, and its bow isn't pointed at anything in particular, which on a ship that size takes some doing. Teague waits with a pen already out.",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -6772,7 +6772,7 @@
   "text": "It's Teague again, on the same band, with the same collar and a new slate. \"We've met,\" Teague says. \"You had it right last time, so I'll ask something else.\" The petty officer in the background leans over a screen. \"Cargo seals. Read me the numbers off your hold, bow to stern, and don't go and look them up.\" You can hear the cutter ticking as it matches your thrust. \"Last ship that read me seals off a manifest had two of them reversed,\" Teague says. \"The crew list is next, either way. I'd just like to know what kind of ship I'm reading it to.\" The pen is out. It's the same pen.",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -7106,7 +7106,7 @@
   "text": "It's Teague again, on the same band, with the same collar and a new slate. \"We've met,\" Teague says. \"Last time one of your answers was off. I looked it up. So this time I'll ask something I can check faster.\" The petty officer in the background leans over a screen. \"Cargo seals. Read me the numbers off your hold, bow to stern, and don't go and look them up.\" You can hear the cutter ticking as it matches your thrust. \"Last ship that read me seals off a manifest had two of them reversed,\" Teague says. \"The crew list is next, either way. I'd just like to know what kind of ship I'm reading it to.\" The pen is out. It's the same pen.",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -7440,7 +7440,7 @@
   "text": "It's Teague again, on the same band, with the same collar and a new slate. \"We've met,\" Teague says. \"Last time you asked who was asking. I wrote it up. It's still written up.\" The petty officer in the background leans over a screen. \"Cargo seals. Read me the numbers off your hold, bow to stern, and don't go and look them up.\" You can hear the cutter ticking as it matches your thrust. \"Last ship that read me seals off a manifest had two of them reversed,\" Teague says. \"The crew list is next, either way. I'd just like to know what kind of ship I'm reading it to.\" The pen is out. It's the same pen.",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -7774,7 +7774,7 @@
   "text": "It's Teague again, on the same band, with the same collar and a new slate. \"We've met,\" Teague says. \"Last time you asked who was asking. I said it twice. I won't say it a third time, so I'll just ask something else.\" The petty officer in the background leans over a screen. \"Cargo seals. Read me the numbers off your hold, bow to stern, and don't go and look them up.\" You can hear the cutter ticking as it matches your thrust. \"Last ship that read me seals off a manifest had two of them reversed,\" Teague says. \"The crew list is next, either way. I'd just like to know what kind of ship I'm reading it to.\" The pen is out. It's the same pen.",
   "labels": [
    "Answer it straight",
-   "Answer it, and shade one detail (saying nothing clears less often afterwards)",
+   "Answer it, and shade one detail (then keeping quiet at the stop is less likely to see them through)",
    "Answer with \"Who's asking?\" [60%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
@@ -12207,7 +12207,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Arcology Compact, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12249,7 +12249,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Arcology Compact, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12291,7 +12291,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Arcology Compact, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12333,7 +12333,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Arcology Compact, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12375,7 +12375,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Dome Concord, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12417,7 +12417,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Dome Concord, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12459,7 +12459,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Dome Concord, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12501,7 +12501,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Dome Concord, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12543,7 +12543,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The League's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The League's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the helm: Captain Hester Vance plots the run, and you fly it, by hand.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Charter League, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12585,7 +12585,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The League's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The League's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Charter League, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12627,7 +12627,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The League's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The League's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the plant: the reactor's output, the heat and the wear are yours to watch, and yours to break.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Charter League, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12669,7 +12669,49 @@
    }
   ],
   "title": "Signing On",
-  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The League's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back isn't much, but it's a berth, and a berth is the one thing in the Belt that's truly yours. The League's dock office stamped the papers and wished you luck, in the tone of people who've wished a great many people luck. The Iron Anvil, an ice hauler out of Ceres, sails. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the bands: tips, hails and the inbox are yours. You're the ship's ear.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Charter League, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "labels": [
+   "For the money",
+   "To learn the work",
+   "To be somewhere else"
+  ]
+ },
+ {
+  "id": "scene:sign-on:bond",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You work it out on the ramp, on your fingers: 350 a day, and 8 percent of every run now, 2 points up on what you were offered, and no cousin needed. The berth book goes in the bottom of the bag.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you've asked eleven more questions. The twelfth is to the cook, and the answer is a tray.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You stow your bag behind the third door on the left and don't go back down the ramp. The hatch shuts on its closer. Down on the water the tide gates sound at the turn. Then they don't.",
+    "mem": [
+     "9 Jul 2214: You came aboard easy to get along with.",
+     "9 Jul 2214: You came aboard easy to get along with.",
+     "9 Jul 2214: You came aboard easy to get along with.",
+     "9 Jul 2214: You came aboard easy to get along with."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "c:cato": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Signing On",
+  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. The hiring hall paid for the berth, the passage and the kit, and you owe it 30,000 cr for them: 30 percent of each run's pay goes to the hall until it is paid, and no ship can be bought while anything is owed. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Arcology Compact, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12711,7 +12753,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>On the dock they say the hand on the last ship did not come back.</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"350 a day and 6 percent of what we clear,\" she says. \"That's the whole of it. I won't surprise you, and I'd like you not to surprise me.\"</p><p>On the dock they say the hand on the last ship did not come back.</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Arcology Compact, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12753,7 +12795,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance, whom the crew describe as money-minded, signed the papers.</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Ines Ferreira, ferry pilot from Lisbon Arcology, on the pilot post, and Tomas Achebe, dockyard welder from Lagos Ring, on the engineer post, and Cato Rahman, the first officer, from Chittagong Arcology.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. You're paid 350 a day and 6 percent of what she clears. Why did you sign on?",
+  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance, whom the crew describe as money-minded, signed the papers.</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Ines Ferreira, ferry pilot from Lisbon Arcology, on the pilot post, and Tomas Achebe, dockyard welder from Lagos Ring, on the engineer post, and Cato Rahman, the first officer, from Chittagong Arcology.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. You're paid 350 a day and 6 percent of what she clears. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Arcology Compact, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12795,7 +12837,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Dov Adair is shaking your hand before you've finished coming up the ramp. He has read your papers, and your next of kin, and he says your sister's name correctly, the first time. \"500 a day and 8 percent,\" he says, \"and if the fund runs thin, which it does, we don't talk about it before supper. Sit. Have you eaten?\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Ilsa Brandt, the first officer, from Hamburg Arcology.</p><p>Captain Dov Adair picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Dov Adair is shaking your hand before you've finished coming up the ramp. He has read your papers, and your next of kin, and he says your sister's name correctly, the first time. \"500 a day and 8 percent,\" he says, \"and if the fund runs thin, which it does, we don't talk about it before supper. Sit. Have you eaten?\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Ilsa Brandt, the first officer, from Hamburg Arcology.</p><p>Captain Dov Adair picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Dome Concord, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12837,7 +12879,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Imre Sato reads your papers once, straight through, and writes the time on them. The jacket is navy, and has been worn for years without a mark on it. \"450 a day and 7 percent,\" they say. \"The rules are on the wall of the galley. They apply to everyone, including me. Noted that you're aboard.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Pilar Quesada, the first officer, from Callao Arcology.</p><p>Captain Imre Sato picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Imre Sato reads your papers once, straight through, and writes the time on them. The jacket is navy, and has been worn for years without a mark on it. \"450 a day and 7 percent,\" they say. \"The rules are on the wall of the galley. They apply to everyone, including me. Noted that you're aboard.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Pilar Quesada, the first officer, from Callao Arcology.</p><p>Captain Imre Sato picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Dome Concord, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12879,7 +12921,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Zoya Pell signs your papers on the galley hatch, with a pen she has borrowed from you, and doesn't give it back. \"250 a day and 7 percent,\" she says. \"Which is nothing, most days, and a great deal on the day it comes good. And it'll come good.\" She grins. \"Mind the third step. It lies.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Ansel Whitcombe, the first officer, from Edinburgh Arcology.</p><p>Captain Zoya Pell picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Zoya Pell signs your papers on the galley hatch, with a pen she has borrowed from you, and doesn't give it back. \"250 a day and 7 percent,\" she says. \"Which is nothing, most days, and a great deal on the day it comes good. And it'll come good.\" She grins. \"Mind the third step. It lies.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Ansel Whitcombe, the first officer, from Edinburgh Arcology.</p><p>Captain Zoya Pell picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Dome Concord, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -21620,7 +21662,7 @@
   "title": "On the Manifest",
   "text": "Agent Singh lays the crew list beside the paper, because the Compact Freight Office puts the names of everyone aboard on its manifest. The stylus stops at Mateo Castillo and stays there. \"This one's wanted by the Compact,\" Agent Singh says. \"I can load you without the name on the list. I can't load you with it and write nothing.\"",
   "labels": [
-   "[Arcology Compact papers] Vouch for Mateo as a member",
+   "[Your Arcology Compact papers] Vouch for Mateo as a member",
    "Pay the office's fee (4,000 cr from the ship's fund)",
    "Say nothing and keep Mateo below",
    "Put Mateo ashore",
