@@ -624,9 +624,11 @@ function relationshipScene() {
     if (Math.random() < 0.4) return matchReplay(a, b, ta, tb);
     return galleyDuty(a, b, ta, tb);
   });
-  if (askers.length && Math.random() < 0.4) return coverWatchScene(pick(askers).p);  // a friend's ask is not one among a hundred pairs' scenes
+  // The crew's own affairs: what the hand puts in (a gift, a bet) comes out of their savings, not the ship's fund (transit.js chooseEvent).
+  const yours = ev => ev && Object.assign(ev, { personal: true });
+  if (askers.length && Math.random() < 0.4) return yours(coverWatchScene(pick(askers).p));  // a friend's ask is not one among a hundred pairs' scenes
   const options = scenes.map(f => f).sort(() => Math.random() - 0.5);
-  for (const make of options) { const ev = make(); if (ev) return ev; }
+  for (const make of options) { const ev = make(); if (ev) return yours(ev); }
   return null;
 }
 

@@ -813,3 +813,26 @@ test('a raid honors the spec\'s grade and pack, and the pack starts a volley beh
   assert.ok(r.calm.every(x => x.grade === 0 && x.pack));
   await done();
 });
+
+test('a crew scene is the hand\'s own affair: the Galley Duty bet is paid from their savings, not the ship\'s fund (#847)', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    __seed(1);
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired();
+    G.transit = { times: [] };
+    let scene = null;
+    for (let i = 0; i < 20 && !scene; i++) { st.day += 60; scene = relationshipScene(); }
+    const [a, b] = folk().filter(f => f.crew);
+    h.fund = 10000; st.credits = 5000;
+    openEvent({ ...SOCIAL_SCENES['galley-duty'](a, b), personal: scene.personal });
+    const said = chooseEvent(1);
+    const out = { personal: scene.personal, fund: h.fund, credits: st.credits, said };
+    G.dialog = null; G.transit = null;
+    return out;
+  });
+  assert.equal(r.personal, true, 'the scene is marked the hand\'s own');
+  assert.equal(r.fund, 10000, 'the fund is untouched');
+  assert.ok(r.credits === 8000 || r.credits === 2000, `the bet moves the savings by 3,000 (now ${r.credits})`);
+  await done();
+});
