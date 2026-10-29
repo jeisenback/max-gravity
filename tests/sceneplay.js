@@ -370,7 +370,7 @@ const playScenes = () => {
   if (!window.__only || /scene:fight/.test(window.__only)) {
     const rec = { id: 'scene:fight', plays: [] };
     try {
-      const panel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: ev.choices.map(c => String(c.label)) });
+      const panel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: ev.choices.map(c => String(c.label)), group: ev.choices.map(c => c.group).filter(Boolean) });  // the orders' heading too (#846), as the deck panel's
       const orders = (o = {}) => ({ guns: [{ foe: 0, part: 'weapons' }], torp: null, pdc: 'fire', ...o });
       const start = (shipId, o = {}, kind = 'pirate') => { fresh(); hired().raidTold = true; G.state.day += o.day || 0; G.nextEvent = null; startShipFight({ kind, gov: 'Arcology Compact', shipId }, false, o); const ev = G.nextEvent; G.nextEvent = null; return ev; };
       const turn = (s, o, foe, captain = { kind: 'hold' }) => {  // one Fire with the moves set; what it shows next, or the scene it queued and what it left

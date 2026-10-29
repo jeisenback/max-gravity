@@ -127,9 +127,11 @@ canvas { display: block; touch-action: none; }
 /* A run of choices with a heading of its own (the lock fight's orders to the crew, #737), and a cue at the foot of the pinned choices while more follow below. */
 .choices .group { margin: 8px 0 -2px; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 #panel.event .choices > * { flex-shrink: 0; }  /* the pinned block scrolls; its buttons keep their height, with the odds line whole, rather than shrink to fit */
+#panel.event .choices.flow { position: static; max-height: none; overflow: visible; margin: 14px 0 0; padding: 0; background: none; }  /* a fight's orders (#846): in the flow, so only Fire is pinned over the scene */
+#panel.event .choices.flow + .choices { margin-top: 8px; background: linear-gradient(transparent, var(--panel) 30%); }  /* Fire on a solid base, so the orders do not show through it */
 #panel.event .choices.rest::after { content: 'More choices below. Scroll the list.'; display: block; position: sticky; bottom: -12px; margin: 0 -16px -12px; padding: 4px 16px; background: var(--panel); font-size: 12px; color: var(--muted); }
 /* A scene longer than the dialog says so above the pinned choices, until the last of the text is in view. */
-#panel.event.more .choices::before { content: 'The scene continues. Scroll to read the rest.'; display: block; margin: 0 -16px 8px; padding: 4px 16px; background: var(--panel); font-size: 12px; color: var(--muted); }
+#panel.event.more .choices:not(.flow)::before { content: 'The scene continues. Scroll to read the rest.'; display: block; margin: 0 -16px 8px; padding: 4px 16px; background: var(--panel); font-size: 12px; color: var(--muted); }
 .choices button { text-align: left; padding: 10px 12px; }
 /* A choice with a cost note: the label, then the note as a readout line, its odds toned (#689). */
 .choices .pick { display: block; }

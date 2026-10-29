@@ -74,13 +74,13 @@ const UI = {
         ${ev.read ? h`<p class="read">${raw(ev.read)}</p>` : ''}
         ${ev.board ? raw(ev.board) : ''}
         <p>${raw(ev.text)}</p>
-        ${choiceBlockHtml(choices)}
-      </div>`);
+        ${choices.some(c => c.pin) ? h`${choiceBlockHtml(choices, c => !c.pin, 'choices flow')}${choiceBlockHtml(choices, c => c.pin)}` : choiceBlockHtml(choices)}
+      </div>`);  // a pinned choice (a fight's Fire, #846): the others flow with the scene, so the board and bars above them stay in view
     this.el.classList.remove('hidden');
     this.el.classList.add('event');
     this.el.scrollTop = 0;
     this.el.onscroll = () => this.moreCue();
-    const pinned = this.el.querySelector('.choices');
+    const pinned = this.el.querySelector('.choices:not(.flow)');
     if (pinned) pinned.onscroll = () => this.moreCue();
     this.moreCue();
     trapDialog(opener);
@@ -90,7 +90,7 @@ const UI = {
   moreCue() {
     const el = this.el;
     el.classList.toggle('more', el.classList.contains('event') && el.scrollHeight - el.clientHeight - el.scrollTop > 40);
-    const pinned = el.querySelector('.choices');  // and more choices than the pinned block shows, until the last is in view (#737)
+    const pinned = el.querySelector('.choices:not(.flow)');  // and more choices than the pinned block shows, until the last is in view (#737)
     if (pinned) pinned.classList.toggle('rest', el.classList.contains('event') && pinned.scrollHeight - pinned.clientHeight - pinned.scrollTop > 8);
   },
 

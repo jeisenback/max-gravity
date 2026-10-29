@@ -37,7 +37,8 @@ const choiceLabelHtml = label => {
 };
 const choiceButtonHtml = (c, i) => {
   const shut = c.can && !c.can(), why = shut && (typeof c.why === 'function' ? c.why() : c.why);
-  return h`<button data-action="choose" data-arg="${i}" ${shut ? 'disabled' : ''}>${choiceLabelHtml(c.label)}</button>${why ? h`<div class="hint why">${why}</div>` : ''}`;
+  return h`<button data-action="choose" data-arg="${i}" ${c.primary ? raw('class="primary" ') : ''}${shut ? 'disabled' : ''}>${choiceLabelHtml(c.label)}</button>${why ? h`<div class="hint why">${why}</div>` : ''}`;  // primary: the one that ends the turn
 };
-// A scene's choices, as the dialog draws them.
-const choiceBlockHtml = choices => h`<div class="choices">${choices.map((c, i) => h`${c.group ? h`<div class="group">${c.group}</div>` : ''}${choiceButtonHtml(c, i)}`)}</div>`;  // a choice with a `group` opens a labelled run of them
+// A scene's choices, as the dialog draws them. `only` keeps some of them, each at its own index, in a block of class `cls` (#846: a fight's orders flow with the
+// scene and only its Fire is pinned).
+const choiceBlockHtml = (choices, only = null, cls = 'choices') => h`<div class="${cls}">${choices.map((c, i) => (only && !only(c) ? '' : h`${c.group ? h`<div class="group">${c.group}</div>` : ''}${choiceButtonHtml(c, i)}`))}</div>`;  // a choice with a `group` opens a labelled run of them

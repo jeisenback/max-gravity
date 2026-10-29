@@ -22958,6 +22958,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 2 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -22972,6 +22975,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 2 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -22986,6 +22992,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 2 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23000,6 +23009,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 2 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23014,6 +23026,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 2 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23028,6 +23043,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 2 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23042,6 +23060,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 2 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23056,6 +23077,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 2 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23068,6 +23092,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23080,6 +23107,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23092,6 +23122,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23104,6 +23137,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23116,6 +23152,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23128,6 +23167,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23140,6 +23182,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23153,6 +23198,9 @@
      "Torpedo, 2 left: aim at her hull",
      "Turret: hold it to cut her volley",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23167,6 +23215,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 2 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23181,6 +23232,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 6 of 4, and a gun locks next turn"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23198,6 +23252,9 @@
      "Torpedo, 1 left: aim at her hull",
      "Turret: fire with the guns",
      "Fire: heat 0 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23215,6 +23272,9 @@
      "Torpedo, 1 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 0 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23233,6 +23293,9 @@
      "Torpedo, 1 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23250,6 +23313,9 @@
      "Gun 2: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23502,6 +23568,9 @@
      "Torpedo, 2 left: aim at her launcher",
      "Turret: fire with the guns",
      "Fire: heat 3 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23515,6 +23584,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 2 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23528,6 +23600,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23545,6 +23620,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 0 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23562,6 +23640,9 @@
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
      "Fire: heat 0 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23578,6 +23659,9 @@
      "Lead the shot: name a gun, once a fight",
      "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
      "Fire: heat 4 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23594,6 +23678,9 @@
      "Lead the shot: name a gun, once a fight",
      "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23610,6 +23697,9 @@
      "Lead the shot, gun 1: 7 to 11 damage with no range penalty, once a fight (ordered)",
      "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
      "Fire: heat 4 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23626,6 +23716,9 @@
      "Lead the shot: name a gun, once a fight",
      "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight (ordered)",
      "Fire: heat 5 of 4, and a gun locks next turn"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23641,6 +23734,9 @@
      "Lead the shot: nothing to act on this turn",
      "Split the turret: nothing to act on this turn",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23662,6 +23758,9 @@
      "Lead the shot: name a gun, once a fight",
      "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
      "Fire: heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23683,6 +23782,9 @@
      "Lead the shot: spent",
      "Split the turret: it fires with the guns and still cuts her volley, adding 2 to 3 damage, once a fight",
      "Fire: heat 3 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23702,6 +23804,9 @@
      "Lead the shot: nothing to act on this turn",
      "Split the turret: spent",
      "Fire: heat 3 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
@@ -23716,6 +23821,9 @@
      "Lead the shot: spent",
      "Split the turret: spent",
      "Fire: heat 3 of 4"
+    ],
+    "group": [
+     "Orders to the guns"
     ]
    },
    {
