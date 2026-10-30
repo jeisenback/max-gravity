@@ -52,10 +52,9 @@ const G = {
   tutThrust: 0,       // seconds of thrust the tutorial has seen, see tutorial.js
   cutHits: [], cutRooms: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js
   cam: null, cutOutline: null,  // the burn view's camera ({ x, t }: the world x it centres and the G.time of its last step; null snaps) and the outline's boxes for a tap ({ ...outlineLayout, ids }), see camera.js
-  burnBoxes: null,    // where each block of the burn view was drawn, for the tests, see transit.js
+  burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, ticker or tutorial, dest), for a tap and the tests, see transit.js
   hudStrip: null,     // where the HUD drew the hand's readouts (the strip, readouts.js), for the tests
-  commsBox: null,     // where the comms log was drawn, for the tests, see transit.js
-  lifeY: null,        // the line below the ship cutaway where the downtime buttons sit, see transit.js
+  lifeY: null,        // the top of the row under the Comms ticker where the downtime buttons sit, see transit.js
 };
 
 // ---------- helpers ----------
@@ -1299,6 +1298,10 @@ canvas.addEventListener('click', e => {
   }
   // On a burn, tap or click someone in the cutaway to open their page, or a room (in view or in the outline) to open its console.
   if (G.mode === 'transit' && G.transit && !G.transit.event) {
+    const tk = G.burnBoxes && G.burnBoxes.ticker;
+    if (tk && e.clientX >= tk.x && e.clientX <= tk.x + tk.w && e.clientY >= tk.y && e.clientY <= tk.y + tk.h) {  // the ticker opens Comms, as its key does
+      G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); return;
+    }
     const reach = Touch.on ? 24 : 14, outlined = G.cutOutline && outlineRoomAt(G.cutOutline, e.clientX, e.clientY);  // the outline is over the view: it comes first
     const near = !outlined && (G.cutHits || []).map(h => ({ h, d: tapToBody(e.clientX, e.clientY, h) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
     if (near) Mods.act('person', near.h.id);

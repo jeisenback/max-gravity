@@ -7,8 +7,8 @@
 // The box the cutaway is drawn in, its height over its width: on a wide screen and on a phone.
 const CUTAWAY_ASPECT = { wide: 0.36, narrow: 0.6 };
 
-const BURN_GUTTER = 12, BURN_KEYS_H = 52, BURN_HUD_STRIP = 84;
-const BURN_WIDE = { bar: 64, barNoDates: 48, ticker: 78, ticker1: 40, life: 44, shipShare: 0.58, shipWant: 0.55, dockMax: 560, dockShare: 0.45, keysGap: 6 };
+const BURN_GUTTER = 12, BURN_KEYS_H = 53, BURN_KEYS_SHORT = 39, BURN_HUD_STRIP = 84;  // the key bar as the page draws it (#bkeys: 53 px, 39 in a window 480 or less tall, style.css), and the phone HUD strip (78 px and its line) with air
+const BURN_WIDE = { bar: 64, barNoDates: 48, ticker: 78, ticker1: 40, life: 57, shipShare: 0.58, shipWant: 0.55, dockMax: 560, dockShare: 0.45, keysGap: 6 };
 const BURN_NARROW = { bar: 72, barNoDates: 48, ticker: 120, ticker1: 40, life: 92, life1: 44, shipMin: 1.0, shipMax: 1.2, gap: 6, keysGap: 4 };
 
 // Today's ship box, as drawTransit computes it (js/transit.js): the floor the new ship is never smaller than.
@@ -26,7 +26,7 @@ function burnLayout(W, H, hudW, narrow, dialog) {
   const P = narrow ? BURN_NARROW : BURN_WIDE, gap = narrow ? P.gap : G;
   const top = narrow ? BURN_HUD_STRIP + P.gap : G;
   // The height left for the ship once the other blocks are laid out; shed until it is wanted or nothing is left to shed.
-  const room = (barH, tickH, lifeH) => H - top - barH - gap - ((tickH ? gap + tickH + gap : gap) + lifeH + P.keysGap + BURN_KEYS_H);
+  const room = (barH, tickH, lifeH) => H - top - barH - gap - ((tickH ? gap + tickH + gap : gap) + lifeH + P.keysGap + (H <= 480 ? BURN_KEYS_SHORT : BURN_KEYS_H));
   const wanted = narrow ? Math.min(viewW * P.shipMin, H * 0.5) : P.shipWant * H;  // blocks are shed only until the ship is this tall
   const want = old.h <= H ? Math.max(wanted, old.h) : wanted;  // never below today's box, where today's box fits the window
   let tickerLines = 2, datesLine = true, lifeH = P.life;

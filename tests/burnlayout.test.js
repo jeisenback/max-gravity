@@ -6,7 +6,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const { burnLayout, legacyShipBox } = load(['js/burnlayout.js'], {}, ['burnLayout', 'legacyShipBox']);
+const { burnLayout, legacyShipBox, BURN_KEYS_H, BURN_KEYS_SHORT } = load(['js/burnlayout.js'], {}, ['burnLayout', 'legacyShipBox', 'BURN_KEYS_H', 'BURN_KEYS_SHORT']);
 const apart = (a, b) => a.x + a.w <= b.x + 0.01 || b.x + b.w <= a.x + 0.01 || a.y + a.h <= b.y + 0.01 || b.y + b.h <= a.y + 0.01;
 
 const SIZES = [[1280, 800, 220, false], [768, 1024, 0, true], [390, 844, 0, true], [1280, 600, 220, false], [844, 390, 0, true]];
@@ -16,7 +16,7 @@ test('every block is inside the view, and none overlaps another but the dock', (
     for (const k of ['bar', 'ship', 'ticker', 'life']) { const b = L[k]; assert.ok(b.x >= 0 && b.y >= 0 && b.x + b.w <= viewW && b.y + b.h <= H, `${W}x${H} ${k}`); }
     const ks = ['bar', 'ship', 'ticker', 'life'];
     for (let i = 0; i < ks.length; i++) for (let j = i + 1; j < ks.length; j++) assert.ok(apart(L[ks[i]], L[ks[j]]), `${W}x${H} ${ks[i]}/${ks[j]}`);
-    assert.ok(L.life.y + L.life.h + (narrow ? 4 : 6) + 52 <= H, `${W}x${H} keys fit`);
+    assert.ok(L.life.y + L.life.h + (narrow ? 4 : 6) + (H <= 480 ? BURN_KEYS_SHORT : BURN_KEYS_H) <= H, `${W}x${H} keys fit`);  // the key bar is shorter in a short window (style.css)
     if (dialog) assert.ok(L.dock.x + L.dock.w <= viewW && L.dock.y + L.dock.h <= H, `${W}x${H} dock inside`);
   }
 });

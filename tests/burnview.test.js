@@ -36,7 +36,7 @@ test('the instruments follow the burn: from rest up to a peak at the flip, then 
   await done();
 });
 
-test('with an event open, the Comms box stays clear of the dialog on a wide screen and a phone (#262)', async () => {
+test('with an event open, the Comms ticker stays clear of the dialog on a wide screen and a phone (#262)', async () => {
   for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
@@ -47,12 +47,12 @@ test('with an event open, the Comms box stays clear of the dialog on a wide scre
     });
     await frames(page);
     const r = await ev(() => {
-      const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), box = G.commsBox;
+      const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), box = G.burnBoxes.ticker;
       return { box, dialog: { x: d.left - c.left, y: d.top - c.top } };
     });
-    assert.ok(r.box, `${name}: the Comms box is drawn`);
+    if (name === 'wide') assert.ok(r.box, 'wide: the ticker is drawn beside the dialog');
     if (name === 'wide') assert.ok(r.box.x + r.box.w <= r.dialog.x - 8, `wide: the box ends at ${r.box.x + r.box.w}, the dialog starts at ${r.dialog.x}`);
-    else assert.ok(r.box.y + r.box.h <= r.dialog.y - 4, `phone: the box ends at ${r.box.y + r.box.h}, the dialog starts at ${r.dialog.y}`);
+    else if (r.box) assert.ok(r.box.y + r.box.h <= r.dialog.y - 4, `phone: the box ends at ${r.box.y + r.box.h}, the dialog starts at ${r.dialog.y}`);
     // The tutorial's prompt, when it shows, keeps clear of the dialog too (#735).
     await ev(() => { G.state.tutorial = 1; });
     await frames(page);
@@ -121,20 +121,64 @@ test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)',
       for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
     });
     await frames(page);
-    const r = await ev(() => ({ boxes: G.burnBoxes, viewW: innerWidth - G.hudW, H: innerHeight }));
+    const r = await ev(() => {
+      const c = canvas.getBoundingClientRect(), rect = el => { if (!el || el.hidden) return null; const b = el.getBoundingClientRect(); return b.width ? { x: b.left - c.left, y: b.top - c.top, w: b.width, h: b.height } : null; };
+      return { boxes: G.burnBoxes, viewW: innerWidth - G.hudW, H: innerHeight, buttons: { menu: rect(document.getElementById('menuBtn')), map: rect(document.getElementById('tmap')) } };
+    });
     assert.ok(r.boxes.tutorial, `${name}: the tutorial box is drawn`);
+    assert.deepEqual(Object.keys(r.boxes).filter(k => k !== 'dest').sort(), ['bar', 'ship', 'tutorial'], `${name}: the blocks drawn`);  // the prompt takes the ticker's place
+    assert.ok(r.buttons.menu && r.buttons.map, `${name}: the Menu and System map buttons are shown`);
     const names = Object.keys(r.boxes);
     for (const n of names) {
       const b = r.boxes[n];
       assert.ok(b.x >= 0 && b.y >= 0 && b.x + b.w <= r.viewW && b.y + b.h <= r.H, `${name}: ${n} is inside the view ${JSON.stringify(b)}`);
     }
-    for (let i = 0; i < names.length; i++) for (let j = i + 1; j < names.length; j++) {
-      const a = r.boxes[names[i]], b = r.boxes[names[j]];
+    const all = { ...r.boxes, ...r.buttons }, keys = Object.keys(all);
+    for (let i = 0; i < keys.length; i++) for (let j = i + 1; j < keys.length; j++) {
+      if ([keys[i], keys[j]].sort().join() === 'dest,ship') continue;  // the destination is drawn in the ship box's background
+      const a = all[keys[i]], b = all[keys[j]];
       const apart = a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
-      assert.ok(apart, `${name}: ${names[i]} ${JSON.stringify(a)} overlaps ${names[j]} ${JSON.stringify(b)}`);
+      assert.ok(apart, `${name}: ${keys[i]} ${JSON.stringify(a)} overlaps ${keys[j]} ${JSON.stringify(b)}`);
     }
     await done();
   }
+});
+
+test('without the prompt the ticker is drawn under the ship, clear of the bar, the ship and the buttons, at the three screen sizes', async () => {
+  for (const [name, viewport, mobile] of BURN_SIZES) {
+    const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    await ev(() => { burn(); G.transit.left = G.transit.total * 0.3; comm('A line.'); });
+    await frames(page);
+    const r = await ev(() => {
+      const c = canvas.getBoundingClientRect(), rect = el => { const b = el.getBoundingClientRect(); return { x: b.left - c.left, y: b.top - c.top, w: b.width, h: b.height }; };
+      return { boxes: G.burnBoxes, buttons: [rect(document.getElementById('menuBtn')), rect(document.getElementById('tmap'))] };
+    });
+    const { ticker, ship, bar } = r.boxes;
+    assert.ok(ticker && ticker.h > 0, `${name}: the ticker is drawn`);
+    assert.equal(r.boxes.tutorial, undefined, `${name}: no prompt`);
+    assert.ok(bar.y + bar.h <= ship.y && ship.y + ship.h <= ticker.y, `${name}: bar, ship, ticker, top to bottom`);
+    for (const b of r.buttons) assert.ok(b.x + b.w <= ticker.x || ticker.x + ticker.w <= b.x || b.y + b.h <= ticker.y || ticker.y + ticker.h <= b.y, `${name}: a button ${JSON.stringify(b)} is over the ticker`);
+    await done();
+  }
+});
+
+test('a tap on the ticker opens the Comms sheet, and does nothing while a scene is open', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.3; comm('A line.'); G.bridgeOpen = null; });
+  await frames(page);
+  const mid = async () => ev(() => { const b = G.burnBoxes.ticker; return { x: b.x + b.w / 2, y: b.y + b.h / 2 }; });
+  let p = await mid();
+  await page.mouse.click(p.x, p.y);
+  await frames(page);
+  assert.equal(await ev(() => G.bridgeOpen), 'comms', 'the Comms sheet is open');
+  await ev(() => { G.bridgeOpen = null; syncBridge(true); openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); });
+  await frames(page);
+  await ev(([x, y]) => canvas.dispatchEvent(new MouseEvent('click', { clientX: x, clientY: y, bubbles: true })), [p.x, p.y]);  // on the canvas, under the scene
+  await frames(page);
+  assert.equal(await ev(() => G.bridgeOpen), null, 'no sheet opens under a scene');
+  await done();
 });
 
 test('canvas text in the burn view is 12px or more (#265)', async () => {
