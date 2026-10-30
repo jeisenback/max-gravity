@@ -33,7 +33,7 @@ function gaugeInner(v, limit) {
     <path d="${arc(limit, limit + 0.8, 76)}" stroke="#ff6a4a" stroke-width="22" fill="none" opacity=".8"/>
     <line x1="100" y1="100" x2="${n[0].toFixed(1)}" y2="${n[1].toFixed(1)}" stroke="#d4e4f5" stroke-width="2"/><circle cx="100" cy="100" r="4" fill="#d4e4f5"/>
     <text x="100" y="116" fill="#d4e4f5" font-size="14" text-anchor="middle">${v}%</text>
-    <text x="${m[0].toFixed(1)}" y="${m[1].toFixed(1)}" fill="#ff6a4a" font-size="9" text-anchor="middle">LIMIT</text>`;
+    <text x="${m[0].toFixed(1)}" y="${m[1].toFixed(1)}" fill="#ff6a4a" font-size="11" text-anchor="middle">LIMIT</text>`;
 }
 const gaugeSvg = (name, v, limit) => `<svg class="con-gauge" viewBox="0 0 200 120" data-gauge="${name}" data-v="${v}/${limit}" role="img" aria-label="${name} ${v}%">${gaugeInner(v, limit)}</svg>`;
 function refreshGauges(name, v, limit) {
