@@ -9,7 +9,16 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { phase, posture, POSTURES, LADDER } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER']);
+const { phase, posture, POSTURES, LADDER, drawPerson } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson']);
+
+const fakeCtx = () => { const calls = [], fonts = []; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'fonts' ? fonts : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); o[k] = v; return true; } }); return c; };
+test('every posture draws, faced either way, with or without a face, and gives a point to tap', () => {
+  for (const name of Object.keys(POSTURES)) for (const face of [1, -1]) for (const img of [null, { width: 12 }]) for (const frame of [0, POSTURES[name].frames - 1]) {
+    const c = fakeCtx(), at = drawPerson(c, { name, x: 0.5, deck: 0, face, frame }, 400, 100, { color: '#ffb347', face: img });
+    assert.ok(c.calls.length > 0, `${name} drew`); assert.ok(at.y < 100 && at.y > 100 - 80, `${name}: a tap point on the body`);
+    if (img && !name.startsWith('cat')) assert.ok(c.calls.includes('drawImage'), `${name}: the face is the head`);
+  }
+});
 
 test('the phase weights: all burn at the ends, all cruise between, all flip at the middle, and they always sum to one', () => {
   assert.deepEqual(phaseWeights(0.02), { burn: 1, cruise: 0, flip: 0 });
