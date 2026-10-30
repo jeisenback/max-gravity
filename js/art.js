@@ -503,30 +503,9 @@ function drawRings(x, y, r, back, sun, c = ctx) {
   c.restore();
 }
 
-// The Sun (sized by your real distance from it) and any gas giant behind the moons.
-// The Sun is far away, so it holds its real direction, but it drifts a little against the ship's travel (SUN_PARALLAX)
-// so it does not look pinned to the screen.
-const SUN_PARALLAX = 0.04;
-function sunScreen(cam, viewW, H) {
-  const sun = sunLight(), edge = Math.min(viewW, H) * 0.42;
-  return [viewW / 2 + Math.cos(sun.angle) * edge - cam.x * SUN_PARALLAX, H / 2 + Math.sin(sun.angle) * edge - cam.y * SUN_PARALLAX];
-}
+// Any gas giant behind the moons. The Sun is not drawn: it lights the ships and bodies (sunLight) from its real direction,
+// but a disc at a fixed screen offset read as following the ship (#865).
 function drawBackdrop(cam, viewW, H) {
-  const pos = orbitPos(G.state.systemId), au = Math.hypot(pos.x, pos.y);
-  const [sx, sy] = sunScreen(cam, viewW, H);
-  const sr = Math.max(2, 9 / au);
-  ctx.save();
-  ctx.globalCompositeOperation = 'lighter';
-  const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr * 8);
-  glow.addColorStop(0, 'rgba(255,245,220,0.8)');
-  glow.addColorStop(0.15, 'rgba(255,220,150,0.25)');
-  glow.addColorStop(1, 'rgba(255,180,90,0)');
-  ctx.fillStyle = glow;
-  ctx.beginPath(); ctx.arc(sx, sy, sr * 8, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = '#fffaf0';
-  ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI * 2); ctx.fill();
-  ctx.restore();
-
   const b = BACKDROPS[G.state.systemId];
   if (b) {
     const x = viewW / 2 + (b.x - cam.x) * 0.3, y = H / 2 + (b.y - cam.y) * 0.3;

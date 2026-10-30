@@ -289,11 +289,15 @@ test('the character sheet shows experience on every post row, not only the one h
   await done();
 });
 
-test('the Sun drifts as the ship travels instead of sitting fixed on the screen', async () => {
+test('the flight view draws no Sun: with no gas giant behind the moons, the backdrop draws nothing (#865)', async () => {
   const { ev, done } = await open();
-  const r = await ev(() => { const a = sunScreen({ x: 0, y: 0 }, 1000, 800), b = sunScreen({ x: 1000, y: 0 }, 1000, 800); return { dx: b[0] - a[0], dy: b[1] - a[1] }; });
-  assert.ok(r.dx < -10 && r.dx > -100, `moves against the ship's travel: ${r.dx}`);
-  assert.equal(r.dy, 0);
+  const r = await ev(() => {
+    const sid = Object.keys(SYSTEMS).find(s => !BACKDROPS[s]), keep = G.state.systemId; G.state.systemId = sid;
+    let drawn = 0; const real = { arc: ctx.arc, fillRect: ctx.fillRect }; ctx.arc = (...a) => { drawn++; return real.arc.apply(ctx, a); }; ctx.fillRect = (...a) => { drawn++; return real.fillRect.apply(ctx, a); };
+    try { drawBackdrop({ x: 0, y: 0 }, 1000, 800); } finally { ctx.arc = real.arc; ctx.fillRect = real.fillRect; G.state.systemId = keep; }
+    return { sid, drawn, gone: typeof sunScreen === 'undefined' };
+  });
+  assert.ok(r.sid, 'a system with no backdrop'); assert.equal(r.drawn, 0); assert.ok(r.gone, 'sunScreen is gone');
   await done();
 });
 

@@ -1120,7 +1120,7 @@ function drawMap(W, H) {
   ctx.setLineDash([2, 6]);
   ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
   ctx.setLineDash([]);
-  // The Sun, with the flight view's glow (drawBackdrop, js/art.js).
+  // The Sun at the centre of the map.
   const sun = ctx.createRadialGradient(cx, cy, 0, cx, cy, 40);
   sun.addColorStop(0, 'rgba(255,245,220,0.8)'); sun.addColorStop(0.15, 'rgba(255,220,150,0.25)'); sun.addColorStop(1, 'rgba(255,180,90,0)');
   ctx.fillStyle = sun;
