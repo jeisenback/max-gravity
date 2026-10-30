@@ -109,7 +109,8 @@ test('clicking someone in the burn view opens their page', async () => {
   await frames(page);
   assert.ok(await page.$(`#bsheet .con`), 'their page is on the bridge sheet');
   await ev(() => { G.bridgeOpen = null; G.viewPerson = null; });
-  await page.mouse.click(30, 300);  // empty space does nothing
+  const gap = await ev(() => { const b = G.burnBoxes.ship; return { x: b.x / 2, y: b.y + b.h / 2 }; });
+  await page.mouse.click(gap.x, gap.y);  // empty space, in the gutter left of the ship, does nothing
   assert.equal(await ev(() => G.bridgeOpen), null);
   await done();
 });

@@ -452,7 +452,7 @@ function transitPanel(x, y, w, h, title) {
 }
 
 // The route strip: origin, destination, the flip, and where we are.
-function drawRoute(cx, y, barW, progress) {
+function drawRoute(cx, y, barW, progress, arrive = null) {
   const t = G.transit, bx = cx - barW / 2;
   const dot = (x, sid) => {
     ctx.fillStyle = SYSTEMS[sid].planets[0].color;
@@ -485,6 +485,8 @@ function drawRoute(cx, y, barW, progress) {
     if (at > 0 && at < 1) ctx.fillRect(bx + barW * at - 1, y - 8, 2, 16);
     ctx.textAlign = 'right';
     ctx.fillText(`due ${dateOf(due)}`, bx + barW, y + 20);
+  } else if (arrive) {  // no contract: the arrival in its place (a phone's bar, which has no dates line)
+    ctx.fillStyle = '#9ab'; ctx.textAlign = 'right'; ctx.fillText(arrive, bx + barW, y + 20);
   }
   // Our ship: a chevron pointing the way the drive faces.
   const sx = bx + barW * progress, dir = t.flipped ? -1 : 1;
@@ -492,22 +494,126 @@ function drawRoute(cx, y, barW, progress) {
   ctx.beginPath(); ctx.moveTo(sx + 6 * dir, y); ctx.lineTo(sx - 4 * dir, y - 5); ctx.lineTo(sx - 4 * dir, y + 5); ctx.closePath(); ctx.fill();
 }
 
-// How many lines the Comms box may take: 16 on a wide screen; on a phone as many as fit between the clock and the ship, at most 8.
-// shipTop is where the cutaway's box begins.
-const transitCommsLines = (narrow, top, shipTop) => Math.max(narrow ? 2 : 4, Math.min(narrow ? 8 : 16, Math.floor((shipTop - (top + (narrow ? 132 : 116)) - 38) / 16)));
-
-// Where the event dialog sits, in canvas pixels, while one is open (the panel, style.css), so the Comms box can keep clear of it (#262).
-function transitDialogBox(W) {
-  const el = G.transit && G.transit.event && document.querySelector('#panel.event');
-  if (!el) return null;
-  const r = el.getBoundingClientRect(), c = canvas.getBoundingClientRect(), k = W / c.width;
-  return { x: (r.left - c.left) * k, y: (r.top - c.top) * k, w: r.width * k, h: r.height * k };
+// A line cut to maxW in the current font, with an ellipsis where it was cut.
+function fitLine(text, maxW) {
+  if (ctx.measureText(text).width <= maxW) return text;
+  let lo = 0, hi = text.length;
+  while (lo < hi) { const m = Math.ceil((lo + hi) / 2); if (ctx.measureText(`${text.slice(0, m).trimEnd()}...`).width <= maxW) lo = m; else hi = m - 1; }
+  return `${text.slice(0, lo).trimEnd()}...`;
 }
 
+// The scene dialog in the burn view's dock (burnLayout's dock box, in viewport px), as tall as its content up to the dock's height, or out
+// of it when dock is null. Written only when it changed, so a resize with the dialog open follows on the next frame.
+function dockEventPanel(el, dock) {
+  const want = dock ? { '--dock-x': dock.x, '--dock-y': dock.y, '--dock-w': dock.w, '--dock-h': dock.h } : {};
+  let moved = el.classList.contains('docked') !== !!dock;
+  for (const k of ['--dock-x', '--dock-y', '--dock-w', '--dock-h']) {
+    const v = k in want ? `${Math.round(want[k])}px` : '';
+    if (el.style.getPropertyValue(k) !== v) { moved = true; if (v) el.style.setProperty(k, v); else el.style.removeProperty(k); }
+  }
+  el.classList.toggle('docked', !!dock);
+  return moved;
+}
+
+// The bar over the ship: the ship and the route at the left, the route strip with its flip and the dates in the middle, and the speed
+// over the drive's pull at the right. A phone's bar is too narrow for three columns, so it stacks them over the strip.
+function drawBurnBar(b, dates, progress) {
+  const t = G.transit, st = G.state, s = burnState(), label = px => `600 ${px}px ${LABEL_FONT}`, mono = px => `${px}px "IBM Plex Mono", monospace`;
+  const put = (str, x, y, font, color, align = 'left', maxW = Infinity) => { ctx.font = font; ctx.fillStyle = color; ctx.textAlign = align; ctx.fillText(fitLine(str, maxW), x, y); };
+  const width = (str, font) => { ctx.font = font; return ctx.measureText(str).width; };
+  glassPanel(b.x, b.y, b.w, b.h);
+  const title = `${shipTitle().toUpperCase()} IN TRANSIT`;
+  const local = t.to === st.systemId && st.route && st.route.dock;  // a run inside one system (Earth to Luna) names the ports, not the system twice (#854)
+  const route = local ? `${st.planet}  >  ${st.route.dock}` : `${system().name}  >  ${SYSTEMS[t.to].name}`;
+  const pull = s.phase === 'FLIP' ? 'FLIP: drive off, weightless' : `${s.phase}: ${s.g.toFixed(2)} g thrust`, hot = Math.min(1, s.v / s.peak || 0);
+  const speedColor = `rgb(${Math.round(150 + 90 * hot)},${Math.round(200 + 40 * hot)},255)`;
+  const secs = Math.max(0, Math.ceil(t.left)), mss = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
+  const clock = `${mss} remaining${t.event ? ' (paused)' : ''}`, short = `${mss}${t.event ? ' paused' : ''}`;  // the short one beside the speed on a phone
+  const L = b.x + 14, R = b.x + b.w - 14;
+  if (b.w >= 560) {
+    const leftW = Math.min(b.w * 0.28, Math.max(width(route, label(18)), width(title, label(12))));
+    const cw = dates ? 0 : width('88:88 paused', mono(12)) + 10;  // without the dates line the clock goes beside the speed
+    const rightW = Math.max(width('88,888 km/s', `600 20px "IBM Plex Mono", monospace`) + cw, width('FLIP: drive off, weightless', mono(12)));  // the widest each can read, so the strip does not jump
+    put(title, L, b.y + (dates ? 22 : 18), label(12), '#7fb4ff', 'left', leftW);
+    put(route, L, b.y + (dates ? 46 : 40), label(18), '#e6f0ff', 'left', leftW);
+    put(fmtKms(s.v), R, b.y + (dates ? 28 : 24), `600 20px "IBM Plex Mono", monospace`, speedColor, 'right');
+    if (!dates) put(short, R - width(fmtKms(s.v), `600 20px "IBM Plex Mono", monospace`) - 10, b.y + 24, mono(12), '#9ab', 'right');
+    put(pull, R, b.y + (dates ? 46 : 41), mono(12), '#8fb0d0', 'right');
+    const x0 = L + leftW + 32, x1 = R - rightW - 32;
+    drawRoute((x0 + x1) / 2, b.y + (dates ? 20 : 18), x1 - x0, progress);
+    // Out to the columns' edges; the clock first, so a cut takes the dates. A tablet (the HUD strip, which shows today's date) says the
+    // arrival before today's, so a cut takes today's.
+    const now = dateOf(transitNow(t)), eta = dateOf(transitEta(t)), line = G.hudW ? `${clock} - ${now}, arriving ${eta}` : `${clock} - arriving ${eta}, today ${now}`;
+    if (dates) put(line, (x0 + x1) / 2, b.y + 58, mono(12), '#9ab', 'center', x1 - x0 + 56);
+  } else if (dates) {  // a phone: the title and the clock and speed, the route and the pull, then the strip; no room for the dates (today's is on the HUD strip)
+    const sw = width(fmtKms(s.v), `600 15px "IBM Plex Mono", monospace`), cw = width(short, mono(12)), gw = width(pull, mono(12));
+    const arr = `arr. ${dateOf(transitEta(t))}`, aw = width(arr, mono(12)), beside = R - L - sw - cw - aw - 34 >= 100;  // beside the clock while the title keeps 100 px
+    put(title, L, b.y + 16, label(12), '#7fb4ff', 'left', R - L - sw - cw - 24 - (beside ? aw + 10 : 0));
+    put(short, R - sw - 10, b.y + 16, mono(12), '#9ab', 'right');
+    if (beside) put(arr, R - sw - cw - 20, b.y + 16, mono(12), '#9ab', 'right');
+    put(fmtKms(s.v), R, b.y + 16, `600 15px "IBM Plex Mono", monospace`, speedColor, 'right');
+    put(route, L, b.y + 33, label(14), '#e6f0ff', 'left', R - L - gw - 12);
+    put(pull, R, b.y + 33, mono(12), '#8fb0d0', 'right');
+    drawRoute((L + R) / 2, b.y + 45, R - L - 12, progress, beside ? null : arr);  // else under the strip's far end, where there is no due date
+  } else {  // a short phone: the route, the clock and the speed over the strip
+    const sw = width(fmtKms(s.v), `600 15px "IBM Plex Mono", monospace`), cw = width(short, mono(12));
+    put(route, L, b.y + 15, label(14), '#e6f0ff', 'left', R - L - sw - cw - 24);
+    put(short, R - sw - 10, b.y + 15, mono(12), '#9ab', 'right');
+    put(fmtKms(s.v), R, b.y + 15, `600 15px "IBM Plex Mono", monospace`, speedColor, 'right');
+    drawRoute((L + R) / 2, b.y + 25, R - L - 12, progress);
+  }
+  ctx.textAlign = 'left';
+}
+
+// The Comms ticker under the ship: the last n messages, the newest brighter. On a wide screen one line each, cut to fit; on a narrow
+// one they wrap to fill the box, the newest first to be kept whole.
+function drawCommsTicker(b, comms, n, wrap) {
+  transitPanel(b.x, b.y, b.w, b.h, 'COMMS');
+  const w = b.w - 24, msgs = comms.slice(-n), color = (m, newest) => (m.startsWith('[Market]') ? '#ffcf7f' : newest ? '#cfe3ff' : '#7d93aa');
+  let rows = [];
+  if (wrap) {
+    const max = Math.max(1, Math.floor((b.h - 30) / 16));
+    for (let i = msgs.length - 1; i >= 0 && rows.length < max; i--) {
+      let lines = wrapText(msgs[i], w);
+      const room = max - rows.length;
+      if (lines.length > room) { lines[room - 1] = fitLine(`${lines[room - 1]} ${lines[room]}`, w); lines = lines.slice(0, room); }  // cut, with an ellipsis
+      rows = lines.map(l => ({ l, c: color(msgs[i], i === msgs.length - 1) })).concat(rows);
+    }
+  } else rows = msgs.map((m, i) => ({ l: fitLine(m, w), c: color(m, i === msgs.length - 1) }));
+  const first = b.y + (b.h >= 60 ? 38 : 32), step = wrap ? 16 : 20;
+  rows.forEach((r, i) => { ctx.fillStyle = r.c; ctx.fillText(r.l, b.x + 12, first + i * step); });
+}
+
+// The ship's log for a burn (it was the canvas box at the bottom left; now the HUD sidebar and the Comms sheet draw it): what the owner has on the books, then what is aboard. The
+// carried contract (#686) is the captain's log line: the load, the shipper, the due date, and whether the ship is on time for it. Reads only what it is given.
+function shipLogLines(st, t, carried, crewNames = []) {
+  const log = [], owner = roleOf(st.hired).canTrade;
+  for (const m of st.missions) log.push(`${m.title} (due ${dateOf(m.deadline)})`);
+  if (owner) {  // the owner's books: the empty-missions line and the crew (named by the caller)
+    if (!st.missions.length) log.push('No active missions.');
+    if (crewNames.length) log.push(`Crew: ${crewNames.join(', ')}`);
+  }
+  const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
+  if (carried) {
+    const lateBy = transitEta(t) - carried.due;
+    log.push(`${carried.tons}t ${goodName(carried.good)} for ${carried.shipper}, due ${dateOf(carried.due)}, ${lateBy > 0 ? `late by ${dayWord(lateBy)}` : 'on time'}`);
+  } else log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
+  return log;
+}
+
+// The log for the burn in progress, or none: the one place the lines are read from the game (the HUD and the Comms sheet ask here).
+const burnShipLog = () => (G.transit ? shipLogLines(G.state, G.transit, hired() && heldContract(hired()), crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`)) : []);
+
+// The burn view, laid out by burnLayout (burnlayout.js): the bar of the route and the burn on top, the ship cutaway as the stage, and the
+// Comms ticker under it, or the tutorial's prompt in its place. The downtime buttons (shiplife.js) and the bridge keys are DOM below.
 function drawTransit(W, H) {
-  const viewW = W - G.hudW, cx = viewW / 2, cy = H / 2, t = G.transit, st = G.state;
-  const narrow = !G.hudW, top = narrow ? 84 : 0;  // clear the phone HUD strip
+  const viewW = W - G.hudW, cy = H / 2, t = G.transit;
+  const narrow = !G.hudW;  // the HUD strip on top
   const progress = Math.min(1, 1 - t.left / t.total);
+  const panel = t.event && document.querySelector('#panel.event');
+  const dialogSize = panel ? { h: panel.scrollHeight + panel.offsetHeight - panel.clientHeight } : null;  // the content and the panel's border, which max-height includes (border-box)
+  const prompt = tutorialPrompt(viewW - 2 * BURN_GUTTER);  // the tutorial's prompt, at the ticker's width: the layout keeps room for it
+  const L = burnLayout(W, H, G.hudW, narrow, dialogSize, prompt ? prompt.h : 0), shipBox = L.ship;
   const bg = ctx.createLinearGradient(0, 0, 0, H);
   bg.addColorStop(0, '#03060f'); bg.addColorStop(1, '#070b18');
   ctx.fillStyle = bg;
@@ -521,22 +627,6 @@ function drawTransit(W, H) {
   };
   glow(viewW * 0.92, cy - H * 0.2, H * 0.55, 'rgba(60,90,160,0.16)');
   glow(viewW * 0.05, cy + H * 0.3, H * 0.45, 'rgba(160,110,60,0.08)');
-  // The destination ahead, in the glow, growing with progress: one 40px sprite drawn scaled, lit from the sun behind us.
-  // Not on a phone, where the Comms card spans the width.
-  let destBox = null;
-  if (!narrow) {
-    const dest = SYSTEMS[t.to].planets[0], dx = viewW * 0.92, dy = 284, k = (8 + 32 * progress) / 40;
-    ctx.save(); ctx.translate(dx, dy); ctx.scale(k, k);
-    drawBody({ name: dest.name, color: dest.color, r: 40 }, 0, 0, { sun: { angle: Math.PI, strength: 1 } });
-    ctx.restore();
-    destBox = { x: dx - 40, y: dy - 40, w: 80, h: 80 };
-  }
-
-  // Our ship in cutaway, with everyone aboard (shiplife.js), in a box under its camera.
-  const L = Math.min(viewW - 60, 640), shipY = cy + (narrow ? 56 : 70), aspect = CUTAWAY_ASPECT[narrow ? 'narrow' : 'wide'];
-  // On a wide screen the cutaway is drawn larger (up to half again), scaled so it still clears the panels.
-  const k = narrow ? Math.max(1, Math.min(1.35, (viewW - 24) / L)) : Math.max(1, Math.min(1.35, (viewW - 120) / L, (H / 2 - 282) / (L * aspect / 2)));  // a narrow screen: the width it has (#852)
-  const shipBox = { x: cx + (narrow ? 0 : 40) - L * k / 2, y: shipY - L * k * aspect / 2, w: L * k, h: L * k * aspect };
 
   // Stars streak with our speed: longest at the midpoint, with a fading tail, and a few long lines when we are really moving. They turn
   // with the ship about the cutaway's centre (0 before the flip, half a turn after), wrapped so they fill the view at any angle.
@@ -556,88 +646,40 @@ function drawTransit(W, H) {
     for (let i = 0; i < 26; i++) {
       const lane = (i * 0.618033) % 1, rate = 0.5 + (i % 5) * 0.22, phase = (i * 0.37 + G.time * speed * 0.35 * rate) % 1, len = speed * (120 + (i % 4) * 70);
       ctx.fillStyle = `rgba(150,195,255,${Math.min(0.3, (speed - 0.2) * 0.5)})`;
-      streak(viewW * (1 - phase), 120 + lane * (H - 240), () => ctx.fillRect(0, 0, len, 1));  // clear of the title and the bar of keys
+      streak(viewW * (1 - phase), shipBox.y + lane * shipBox.h, () => ctx.fillRect(0, 0, len, 1));  // across the ship's band, clear of the bar and the keys
     }
   }
 
-  drawCutaway(shipBox);
-  G.burnBoxes = { ship: shipBox };  // where each block was drawn, for the test (#262)
+  // The destination ahead, growing with progress: one 40px sprite drawn scaled, lit from the sun behind us. In the ship box's top right,
+  // behind the nose, drawn first so the hull covers it. Not on a narrow screen, where the ship takes the box's width.
+  let destBox = null;
+  if (!narrow) {
+    const dest = SYSTEMS[t.to].planets[0], dx = shipBox.x + shipBox.w - 56, dy = shipBox.y + 44, k = (8 + 32 * progress) / 40;
+    ctx.save(); ctx.translate(dx, dy); ctx.scale(k, k);
+    drawBody({ name: dest.name, color: dest.color, r: 40 }, 0, 0, { sun: { angle: Math.PI, strength: 1 } });
+    ctx.restore();
+    destBox = { x: dx - 40, y: dy - 40, w: 80, h: 80 };
+  }
+
+  // Our ship in cutaway, with everyone aboard (shiplife.js), in the box the layout gives it; the camera keeps the hand in the part a
+  // docked dialog leaves clear.
+  drawCutaway(shipBox, L.clear);
+  G.burnBoxes = { bar: L.bar, ship: shipBox };  // where each block was drawn, for the taps and the tests (#262)
+  if (L.dock) Object.assign(G.burnBoxes, { dock: L.dock, clear: L.clear });  // a scene's dock (the frame puts the dialog in it) and the ship it leaves clear
   if (destBox) G.burnBoxes.dest = destBox;
-  G.lifeY = shipBox.y + shipBox.h + 14;  // downtime buttons sit below it
+  G.lifeY = L.life.y;  // the downtime buttons sit in the row of life under the ticker
+  drawBurnBar(L.bar, L.datesLine, progress);
 
-  // Route, on a plate so the star streaks do not run through the title and the clock (#262)
-  const plateW = Math.min(viewW - 24, 640);
-  G.burnBoxes.plate = { x: cx - plateW / 2, y: top + 6, w: plateW, h: narrow ? 116 : 100 };
-  glassPanel(cx - plateW / 2, top + 6, plateW, narrow ? 116 : 100);
-  const barW = Math.min(420, viewW - 60);
-  ctx.textAlign = 'center';
-  ctx.font = `600 12px ${LABEL_FONT}`;
-  ctx.fillStyle = '#7fb4ff';
-  ctx.fillText(`${shipTitle().toUpperCase()} IN TRANSIT`, cx, top + 22);
-  ctx.fillStyle = '#e6f0ff';
-  ctx.font = `600 20px ${LABEL_FONT}`;
-  const local = t.to === st.systemId && st.route && st.route.dock;  // a run inside one system (Earth to Luna) names the ports, not the system twice (#854)
-  ctx.fillText(local ? `${st.planet}  >  ${st.route.dock}` : `${system().name}  >  ${SYSTEMS[t.to].name}`, cx, top + 44);
-  drawRoute(cx, top + 62, barW, progress);
-  const secs = Math.max(0, Math.ceil(t.left));
-  ctx.textAlign = 'center';
-  ctx.font = '12px "IBM Plex Mono", monospace';
-  ctx.fillStyle = '#9ab';
-  const clock = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}${narrow ? `  ${fmtKms(burnState().v)}` : ''}`, dates = `${dateOf(transitNow(t))}, arriving ${dateOf(transitEta(t))}`;
-  if (narrow) { ctx.fillText(dates, cx, top + 98); ctx.fillText(clock, cx, top + 114); }  // two lines: one is wider than a phone
-  else ctx.fillText(`${dates}  -  ${clock}`, cx, top + 98);
-
-  // The burn instruments: a panel at the right on a wide screen, the figure on the clock line on a phone.
-  if (!narrow) { drawBurnPanel(viewW - 316, 116, 300); G.burnBoxes.burn = { x: viewW - 316, y: 116, w: 300, h: 112 }; }
-
-  // Comms log, top-left
-  let colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = transitCommsLines(narrow, top, shipBox.y);
-  const commsY = top + (narrow ? 132 : 116), dlg = transitDialogBox(W);
-  if (dlg && !narrow) colW = Math.max(120, Math.min(colW, dlg.x - 56));  // its right edge (colW + 40) stays 16 left of the dialog
-  const tut = tutorialPrompt(colW + 24);  // the tutorial's box goes under Comms, which gives up the lines it takes (#735)
-  if (tut) maxLines = Math.max(maxLines - Math.ceil((tut.h + 8) / 16), narrow ? 2 : 4);
-  if (dlg && narrow) maxLines = Math.min(maxLines, Math.floor((dlg.y - 8 - commsY - 30) / 16));  // ends above the dialog
-  const room = maxLines >= 1;
-  ctx.font = '12px "IBM Plex Mono", monospace';
-  // Show whole messages, newest last, as many as fit.
-  let lines = [];
-  for (let i = t.comms.length - 1; i >= 0; i--) {
-    const c = t.comms[i], wrapped = wrapText(c, colW);
-    if (lines.length + wrapped.length > maxLines) break;
-    lines = wrapped.map(l => ({ l, recent: i === t.comms.length - 1, market: c.startsWith('[Market]') })).concat(lines);
+  // The ticker, clear of the dock: beside it on a wide screen, under it (so not drawn) on a narrow one. None on a landscape phone.
+  const dock = L.dock;
+  let tick = L.tickerLines ? { ...L.ticker } : null;
+  if (tick && dock && !narrow) tick.w = Math.min(tick.w, dock.x - BURN_GUTTER - tick.x);
+  if (tick && dock && narrow && tick.y + tick.h > dock.y - 4) tick = null;
+  if (!tick || tick.w < 160) return;
+  if (prompt && !dock) {  // drawn by the tutorial (tutorial.js) in the ticker's place (#735); hidden while a scene is open, which is what to read then
+    G.burnBoxes.tutorial = tick;
+    return;
   }
-  if (!lines.length && t.comms.length) lines = wrapText(t.comms[t.comms.length - 1], colW).slice(-maxLines).map(l => ({ l, recent: true, market: false }));  // the newest message alone is longer than the box: its end
-  let y = commsY;
-  G.commsBox = room ? { x: 16, y, w: colW + 24, h: 30 + lines.length * 16 } : null;  // where it was drawn, for the test
-  if (G.commsBox) G.burnBoxes.comms = G.commsBox;
-  if (room) {
-    transitPanel(16, y, colW + 24, 30 + lines.length * 16, 'COMMS');
-    y += 18;
-    for (const { l, recent, market } of lines) {
-      ctx.fillStyle = market ? '#ffcf7f' : recent ? '#cfe3ff' : '#7d93aa';
-      ctx.fillText(l, 28, y += 16);
-    }
-  }
-  if (tut) {  // drawn by the tutorial (tutorial.js), left out when an open dialog on a phone leaves no room under Comms
-    const tutY = G.commsBox ? G.commsBox.y + G.commsBox.h + 8 : commsY;
-    if (!(dlg && narrow && tutY + tut.h > dlg.y - 4)) G.burnBoxes.tutorial = { x: 16, y: tutY, w: colW + 24, h: tut.h };
-  }
-
-  // Ship's log, bottom-left
-  const log = [];
-  for (const m of st.missions) log.push(`${m.title} (due ${dateOf(m.deadline)})`);
-  if (!st.missions.length && !hired()) log.push('No active missions.');
-  if (st.crew.length && !hired()) log.push(`Crew: ${crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`).join(', ')}`);
-  const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`), carried = hired() && heldContract(hired());
-  if (carried) {  // the captain's log line (#686): the load, the shipper, the due date, and whether the ship is on time for it
-    const lateBy = transitEta(t) - carried.due;
-    log.push(`${carried.tons}t ${goodName(carried.good)} for ${carried.shipper}, due ${dateOf(carried.due)}, ${lateBy > 0 ? `late by ${dayWord(lateBy)}` : 'on time'}`);
-  } else log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
-  const logW = narrow ? viewW - 170 : Math.min(460, viewW - 56);  // clear the Map button on phones
-  const logLines = log.flatMap(l => wrapText(l, logW));
-  y = H - BRIDGE_KEYS_H - 30 - logLines.length * 16;  // above the bridge key bar
-  G.burnBoxes.log = { x: 16, y: y - 18, w: logW + 24, h: 30 + logLines.length * 16 };
-  transitPanel(16, y - 18, logW + 24, 30 + logLines.length * 16, "SHIP'S LOG");
-  ctx.fillStyle = '#cfe3ff';
-  for (const l of logLines) ctx.fillText(l, 28, y += 16);
+  G.burnBoxes.ticker = tick;
+  drawCommsTicker(tick, t.comms, L.tickerLines, narrow);
 }

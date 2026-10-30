@@ -51,11 +51,10 @@ const G = {
   patrons: null,      // who is at the bar now, filled on arrival; null until a bar is opened, see bar.js
   tutThrust: 0,       // seconds of thrust the tutorial has seen, see tutorial.js
   cutHits: [], cutRooms: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js
-  cam: null, cutOutline: null,  // the burn view's camera ({ x, t }: the world x it centres and the G.time of its last step; null snaps) and the outline's boxes for a tap ({ ...outlineLayout, ids }), see camera.js
-  burnBoxes: null,    // where each block of the burn view was drawn, for the tests, see transit.js
+  cam: null, cutOutline: null,  // the burn view's camera ({ x, t }: the world x it centres and the G.time of its last step; null snaps) and the outline's boxes for a tap ({ ...outlineLayout, ids, squeeze, view: the world x and span its frame shows }), see camera.js
+  burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, ticker or tutorial, dest, and a scene's dock with the part of the ship it leaves clear), for a tap, the dock and the tests, see transit.js
   hudStrip: null,     // where the HUD drew the hand's readouts (the strip, readouts.js), for the tests
-  commsBox: null,     // where the comms log was drawn, for the tests, see transit.js
-  lifeY: null,        // the line below the ship cutaway where the downtime buttons sit, see transit.js
+  lifeY: null,        // the top of the row under the Comms ticker where the downtime buttons sit, see transit.js
 };
 
 // ---------- helpers ----------
@@ -1050,6 +1049,14 @@ function drawHud(W, H) {
     ctx.fillText(`${travelDays(from, st.dest)} days, ${need} mass`, x, y += 16);
   }
 
+  if (inTransit) {  // the ship's log (transit.js), where the burn view's box was
+    y += 28;
+    hudLabel("Ship's log", x, y);
+    ctx.font = '12px "IBM Plex Mono", monospace';
+    ctx.fillStyle = '#cfe3ff';
+    for (const l of burnShipLog().flatMap(l => wrapText(l, w))) ctx.fillText(l, x, y += 16);
+  }
+
   if (!calm) {
     y += 28;
     hudLabel('Target', x, y);
@@ -1299,6 +1306,10 @@ canvas.addEventListener('click', e => {
   }
   // On a burn, tap or click someone in the cutaway to open their page, or a room (in view or in the outline) to open its console.
   if (G.mode === 'transit' && G.transit && !G.transit.event) {
+    const tk = G.burnBoxes && G.burnBoxes.ticker;
+    if (tk && e.clientX >= tk.x && e.clientX <= tk.x + tk.w && e.clientY >= tk.y && e.clientY <= tk.y + tk.h) {  // the ticker opens Comms, as its key does
+      G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); return;
+    }
     const reach = Touch.on ? 24 : 14, outlined = G.cutOutline && outlineRoomAt(G.cutOutline, e.clientX, e.clientY);  // the outline is over the view: it comes first
     const near = !outlined && (G.cutHits || []).map(h => ({ h, d: tapToBody(e.clientX, e.clientY, h) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
     if (near) Mods.act('person', near.h.id);
@@ -1336,6 +1347,8 @@ function frame(now) {
   last = now;
   if (!G.paused && ['flight', 'departing', 'transit', 'dead'].includes(G.mode)) update(dt);
   render();
+  const docked = G.mode === 'transit' && G.transit && G.transit.event && G.burnBoxes ? G.burnBoxes.dock : null;  // a scene's dialog in the burn view's dock, out of it otherwise
+  if (dockEventPanel(UI.el, docked)) UI.moreCue();
   Touch.sync();
   if (G.mode !== 'title') Mods.emit('frame', G.paused ? 0 : dt);  // paused: time stands still
   requestAnimationFrame(frame);

@@ -16,6 +16,10 @@ const helpers = () => {
     sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.transit.event = null; G.dialog = null;
     return st;
   };
+  window.scene = (text = 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she is not answering. The captain says it is your call.') => {
+    for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
+    openEvent({ title: 'Distress Call', text, choices: [{ label: 'See how it goes', run: () => 'Done.' }] });
+  };
 };
 
 test('the instruments follow the burn: from rest up to a peak at the flip, then back, with the thrust steady either side', async () => {
@@ -36,31 +40,74 @@ test('the instruments follow the burn: from rest up to a peak at the flip, then 
   await done();
 });
 
-test('with an event open, the Comms box stays clear of the dialog on a wide screen and a phone (#262)', async () => {
+// The dialog's rect and the boxes the burn view drew around it, in canvas px.
+const dockState = () => {
+  const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), el = document.querySelector('#panel.event');
+  return { rect: { x: d.left - c.left, y: d.top - c.top, w: d.width, h: d.height }, dock: G.burnBoxes.dock, clear: G.burnBoxes.clear, outline: G.cutOutline, hand: G.cutHits[0], handId: shipPeople()[0].id,
+    frame: G.cutOutline.view, zoom: G.burnBoxes.ship.h / 290, tutorial: G.burnBoxes.tutorial || null, ticker: G.burnBoxes.ticker || null, scrolls: el.scrollHeight - el.clientHeight > 1, docked: el.classList.contains('docked') };
+};
+const near = (a, b) => ['x', 'y', 'w', 'h'].every(k => Math.abs(a[k] - b[k]) <= 1);
+// In the dock: at its x, y and width (as the page rounds them to px), and as tall as the scene up to the dock's height.
+const inDock = (r, d) => ['x', 'y', 'w'].every(k => r[k] === Math.round(d[k])) && r.h <= Math.round(d.h);
+const apart = (a, b) => a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
+const inside = (p, b) => p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h;
+
+test('with a scene open, the dialog sits in the dock, clear of the outline, and the hand is drawn in the clear part', async () => {
   for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
-    await ev(() => {
-      burn(); G.transit.left = G.transit.total * 0.5;
-      for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
-      openEvent({ title: 'Distress Call', text: 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she is not answering. The captain says it is your call.', choices: [{ label: 'See how it goes', run: () => 'Done.' }] });
-    });
-    await frames(page);
-    const r = await ev(() => {
-      const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), box = G.commsBox;
-      return { box, dialog: { x: d.left - c.left, y: d.top - c.top } };
-    });
-    assert.ok(r.box, `${name}: the Comms box is drawn`);
-    if (name === 'wide') assert.ok(r.box.x + r.box.w <= r.dialog.x - 8, `wide: the box ends at ${r.box.x + r.box.w}, the dialog starts at ${r.dialog.x}`);
-    else assert.ok(r.box.y + r.box.h <= r.dialog.y - 4, `phone: the box ends at ${r.box.y + r.box.h}, the dialog starts at ${r.dialog.y}`);
-    // The tutorial's prompt, when it shows, keeps clear of the dialog too (#735).
-    await ev(() => { G.state.tutorial = 1; });
-    await frames(page);
-    const t = await ev(() => { const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(); return { box: G.burnBoxes.tutorial, dialog: { x: d.left - c.left, y: d.top - c.top } }; });
-    if (t.box && name === 'wide') assert.ok(t.box.x + t.box.w <= t.dialog.x - 8, `wide: the tutorial ends at ${t.box.x + t.box.w}, the dialog starts at ${t.dialog.x}`);
-    else if (t.box) assert.ok(t.box.y + t.box.h <= t.dialog.y - 4, `phone: the tutorial ends at ${t.box.y + t.box.h}, the dialog starts at ${t.dialog.y}`);
+    await ev(() => { burn(); G.transit.left = G.transit.total * 0.5; scene(); });
+    await frames(page, 3);
+    for (const tutorial of [null, 1]) {
+      await ev(t => { G.state.tutorial = t; }, tutorial);
+      await frames(page, 3);
+      const r = await ev(dockState);
+      assert.ok(r.dock && r.docked, `${name}: the dialog is docked`);
+      assert.ok(inDock(r.rect, r.dock), `${name}: the dialog ${JSON.stringify(r.rect)} is in the dock ${JSON.stringify(r.dock)}`);
+      assert.ok(apart(r.rect, r.outline), `${name}: the dialog keeps off the outline ${JSON.stringify(r.outline)}`);
+      assert.ok(r.hand && r.hand.id === r.handId && inside(r.hand, r.clear), `${name}: the hand ${JSON.stringify(r.hand)} is in the clear part ${JSON.stringify(r.clear)}`);
+      assert.ok(Math.abs(r.frame.span * r.zoom - r.clear.w) < 1, `${name}: the outline's frame is the clear part's width (${r.frame.span * r.zoom} against ${r.clear.w})`);
+      assert.equal(r.tutorial, null, `${name}: the tutorial's prompt is hidden while a scene is open`);
+      if (name === 'wide') assert.ok(r.ticker && apart(r.ticker, r.dock), `${name}: the ticker is drawn beside the dock`);
+      assert.ok(!r.scrolls, `${name}: the short scene does not scroll`);
+      if (name === 'wide') assert.ok(r.rect.h < r.dock.h - 100, `${name}: the short scene's panel is as tall as the scene (${r.rect.h}), not the dock (${r.dock.h})`);
+    }
     await done();
   }
+});
+
+test('a scene taller than the dock scrolls inside it, and the dialog stays the dock', async () => {
+  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+    const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    await ev(() => { burn(); scene(Array(30).fill('The drive hums and the long night goes on, and someone down the passage is singing.').join(' ')); });
+    await frames(page, 3);
+    const r = await ev(dockState);
+    assert.ok(r.scrolls, `${name}: the dialog scrolls`);
+    assert.ok(inDock(r.rect, r.dock) && near(r.rect, r.dock), `${name}: the dialog ${JSON.stringify(r.rect)} fills the dock ${JSON.stringify(r.dock)}`);
+    await done();
+  }
+});
+
+test('a resize with a scene open moves the dialog into the new dock, and closing it undocks the panel', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(helpers);
+  await ev(() => { burn(); scene(); });
+  await frames(page, 3);
+  const wide = await ev(dockState);
+  assert.ok(inDock(wide.rect, wide.dock), 'wide: the dialog is in the dock');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForFunction(() => G.W === 390);
+  await frames(page, 2);
+  const phone = await ev(dockState);
+  assert.ok(phone.dock.w > wide.dock.w || phone.dock.x < wide.dock.x, 'the dock is the phone\'s');
+  assert.ok(inDock(phone.rect, phone.dock), `phone: the dialog ${JSON.stringify(phone.rect)} is in the new dock ${JSON.stringify(phone.dock)}`);
+  await ev(() => finishEvent());
+  await frames(page, 2);
+  const after = await ev(() => { const el = document.querySelector('#panel'); return { docked: el.classList.contains('docked'), x: el.style.getPropertyValue('--dock-x'), dock: G.burnBoxes.dock, clear: G.burnBoxes.clear }; });
+  assert.ok(!after.docked && !after.x, 'closed: the panel is not docked and has no dock left on it');
+  assert.equal(after.dock, undefined, 'closed: no dock'); assert.equal(after.clear, undefined);
+  await done();
 });
 
 test('the burn view draws for every ship and every turn of the hull without an error, and the click targets stay put', async () => {
@@ -110,7 +157,7 @@ test('crew who die on a burn leave the cutaway, and are not drawn again after th
 });
 
 // The burn view's canvas blocks, at the three screen sizes (#262): none overlaps another, and each is inside the view.
-const BURN_SIZES = [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true]];
+const BURN_SIZES = [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true], ['short', { width: 1280, height: 600 }, false]];
 
 test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)', async () => {
   for (const [name, viewport, mobile] of BURN_SIZES) {
@@ -121,20 +168,64 @@ test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)',
       for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
     });
     await frames(page);
-    const r = await ev(() => ({ boxes: G.burnBoxes, viewW: innerWidth - G.hudW, H: innerHeight }));
+    const r = await ev(() => {
+      const c = canvas.getBoundingClientRect(), rect = el => { if (!el || el.hidden) return null; const b = el.getBoundingClientRect(); return b.width ? { x: b.left - c.left, y: b.top - c.top, w: b.width, h: b.height } : null; };
+      return { boxes: G.burnBoxes, viewW: innerWidth - G.hudW, H: innerHeight, buttons: { menu: rect(document.getElementById('menuBtn')), map: rect(document.getElementById('tmap')) } };
+    });
     assert.ok(r.boxes.tutorial, `${name}: the tutorial box is drawn`);
+    assert.deepEqual(Object.keys(r.boxes).filter(k => k !== 'dest').sort(), ['bar', 'ship', 'tutorial'], `${name}: the blocks drawn`);  // the prompt takes the ticker's place
+    assert.ok(r.buttons.menu && r.buttons.map, `${name}: the Menu and System map buttons are shown`);
     const names = Object.keys(r.boxes);
     for (const n of names) {
       const b = r.boxes[n];
       assert.ok(b.x >= 0 && b.y >= 0 && b.x + b.w <= r.viewW && b.y + b.h <= r.H, `${name}: ${n} is inside the view ${JSON.stringify(b)}`);
     }
-    for (let i = 0; i < names.length; i++) for (let j = i + 1; j < names.length; j++) {
-      const a = r.boxes[names[i]], b = r.boxes[names[j]];
+    const all = { ...r.boxes, ...r.buttons }, keys = Object.keys(all);
+    for (let i = 0; i < keys.length; i++) for (let j = i + 1; j < keys.length; j++) {
+      if ([keys[i], keys[j]].sort().join() === 'dest,ship') continue;  // the destination is drawn in the ship box's background
+      const a = all[keys[i]], b = all[keys[j]];
       const apart = a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
-      assert.ok(apart, `${name}: ${names[i]} ${JSON.stringify(a)} overlaps ${names[j]} ${JSON.stringify(b)}`);
+      assert.ok(apart, `${name}: ${keys[i]} ${JSON.stringify(a)} overlaps ${keys[j]} ${JSON.stringify(b)}`);
     }
     await done();
   }
+});
+
+test('without the prompt the ticker is drawn under the ship, clear of the bar, the ship and the buttons, at the three screen sizes', async () => {
+  for (const [name, viewport, mobile] of BURN_SIZES) {
+    const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    await ev(() => { burn(); G.transit.left = G.transit.total * 0.3; comm('A line.'); });
+    await frames(page);
+    const r = await ev(() => {
+      const c = canvas.getBoundingClientRect(), rect = el => { const b = el.getBoundingClientRect(); return { x: b.left - c.left, y: b.top - c.top, w: b.width, h: b.height }; };
+      return { boxes: G.burnBoxes, buttons: [rect(document.getElementById('menuBtn')), rect(document.getElementById('tmap'))] };
+    });
+    const { ticker, ship, bar } = r.boxes;
+    assert.ok(ticker && ticker.h > 0, `${name}: the ticker is drawn`);
+    assert.equal(r.boxes.tutorial, undefined, `${name}: no prompt`);
+    assert.ok(bar.y + bar.h <= ship.y && ship.y + ship.h <= ticker.y, `${name}: bar, ship, ticker, top to bottom`);
+    for (const b of r.buttons) assert.ok(b.x + b.w <= ticker.x || ticker.x + ticker.w <= b.x || b.y + b.h <= ticker.y || ticker.y + ticker.h <= b.y, `${name}: a button ${JSON.stringify(b)} is over the ticker`);
+    await done();
+  }
+});
+
+test('a tap on the ticker opens the Comms sheet, and does nothing while a scene is open', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.3; comm('A line.'); G.bridgeOpen = null; });
+  await frames(page);
+  const mid = async () => ev(() => { const b = G.burnBoxes.ticker; return { x: b.x + b.w / 2, y: b.y + b.h / 2 }; });
+  let p = await mid();
+  await page.mouse.click(p.x, p.y);
+  await frames(page);
+  assert.equal(await ev(() => G.bridgeOpen), 'comms', 'the Comms sheet is open');
+  await ev(() => { G.bridgeOpen = null; syncBridge(true); openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); });
+  await frames(page);
+  await ev(([x, y]) => canvas.dispatchEvent(new MouseEvent('click', { clientX: x, clientY: y, bubbles: true })), [p.x, p.y]);  // on the canvas, under the scene
+  await frames(page);
+  assert.equal(await ev(() => G.bridgeOpen), null, 'no sheet opens under a scene');
+  await done();
 });
 
 test('canvas text in the burn view is 12px or more (#265)', async () => {
@@ -355,4 +446,71 @@ test('when the crew secure for the flip they strap in where they are, and someon
   });
   assert.equal(r.phase, 'secure'); assert.equal(r.ax, 0.5, 'stays where they were'); assert.ok(r.bdk === 0 || r.bdk === 1, `on a deck: ${r.bdk}`); assert.equal(r.btx, null);
   await done();
+});
+
+test('the Bridge sheet reads the peak speed and the distance in a burn', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); G.transit.left = G.transit.total * 0.4; const b = burnState();
+    G.bridgeOpen = 'nav'; syncBridge(true);
+    const text = document.getElementById('bsheet').textContent.replace(/\s+/g, ' ');
+    return { text, peak: fmtKms(b.peak), dist: `${(b.covered / 1e6).toFixed(1)} of ${(b.dist / 1e6).toFixed(1)} million km` };
+  });
+  assert.ok(r.text.includes(`Peak${r.peak}`), `the peak: ${r.text}`);
+  assert.ok(r.text.includes(`Distance${r.dist}`), `the distance: ${r.text}`);
+  await done();
+});
+
+test('shipLogLines: the carried contract, its due date and whether the ship is on time', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = burn(), t = G.transit, run = hired().run, carried = heldContract(hired()), out = { contract: !!carried };
+    out.due = dateOf(carried.due); out.onTime = shipLogLines(st, t, carried);
+    carried.due = transitEta(t) - 2; out.lateDue = dateOf(carried.due); out.late = shipLogLines(st, t, carried);
+    out.none = shipLogLines(st, t, null);
+    const mission = { title: 'Haul ore', deadline: st.day + 3 }, saved = G.state;
+    out.same = JSON.stringify(shipLogLines({ ...st, missions: [mission], crew: ['x'], hired: null }, t, null, ['Ann Lee (Pilot)']));
+    G.state = { ...st, day: st.day + 40, crew: [], missions: [], hired: null };  // whatever G.state holds, the lines follow the st given
+    out.same2 = JSON.stringify(shipLogLines({ ...saved, missions: [mission], crew: ['x'], hired: null }, t, null, ['Ann Lee (Pilot)']));
+    G.state = saved;
+    out.handMissions = shipLogLines({ ...st, missions: [mission] }, t, null).length;
+    return out;
+  });
+  assert.ok(r.contract);
+  assert.equal(r.onTime.length, 1); assert.match(r.onTime[0], / for .*, due .*, on time$/); assert.ok(r.onTime[0].includes(`due ${r.due}`));
+  assert.match(r.late[0], / for .*, due .*, late by \d+ days$/); assert.ok(r.late[0].includes(`due ${r.lateDue}`));
+  assert.ok(!r.onTime.some(l => /^Cargo:/.test(l)), 'the contract line says what is aboard');
+  assert.equal(r.same, r.same2, 'the lines depend on the st given, not on G.state'); assert.match(r.same, /No active missions|Haul ore/); assert.ok(r.same.includes('Crew: Ann Lee (Pilot)'));
+  assert.equal(r.handMissions, 2, 'a hand sees the missions too, then the cargo line');
+  assert.equal(r.none.length, 1); assert.match(r.none[0], /^Cargo: /, 'with no contract the log says what is aboard');
+  await done();
+});
+
+test('the ship\'s log is in the HUD on a wide screen and at the top of Comms on a phone', async () => {
+  const wide = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await wide.ev(helpers);
+  await wide.ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [`() => { const drawn = [], fill = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (t, x, ...a) { drawn.push([String(t), x]); return fill.call(this, t, x, ...a); }; return () => { CanvasRenderingContext2D.prototype.fillText = fill; return drawn; }; }`]);
+  const w = await wide.ev(() => {
+    burn(); G.transit.left = G.transit.total * 0.5;
+    const lines = burnShipLog().flatMap(l => wrapText(l, HUD_W - 28)), stop = drawnText(); drawHud(G.W, G.H); const drawn = stop();
+    return { lines, drawn, x0: G.W - HUD_W, hudW: G.hudW, label: drawn.some(d => d[0] === "SHIP'S LOG") };
+  });
+  assert.ok(w.hudW > 0 && w.lines.length > 0 && w.label, 'a wide screen draws the log label');
+  for (const l of w.lines) assert.ok(w.drawn.some(d => d[0] === l && d[1] >= w.x0), `HUD line: ${l}`);
+  await wide.done();
+  const narrow = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  await narrow.ev(helpers);
+  const n = await narrow.ev(() => {
+    burn(); G.state.inbox = [{ day: 1, n: 1, via: 'message', text: 'INBOXMARK' }];
+    const html = commsPanel(), lines = burnShipLog();
+    return { hudW: G.hudW, html, lines, inbox: html.indexOf('INBOXMARK') };
+  });
+  assert.equal(n.hudW, 0);
+  assert.ok(n.lines.length > 0);
+  for (const l of n.lines) { const i = n.html.indexOf(l.replace(/&/g, '&amp;')); assert.ok(i >= 0 && i < n.inbox, `Comms line: ${l}`); }
+  const off = await narrow.ev(() => { const t = G.transit; G.transit = null; const r = commsPanel().includes("Ship's log"); G.transit = t; return r; });
+  assert.ok(!off, 'no log outside a burn');
+  await narrow.done();
 });

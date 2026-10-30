@@ -67,6 +67,8 @@ test('the camera snaps first, then eases, and stays inside the hull', () => {
   assert.equal(camStep(null, 800, 0.1, 600, 1600), 800);
   const x = camStep(800, 1000, 0.1, 600, 1600); assert.ok(x > 800 && x < 1000);
   assert.equal(camStep(800, 0, 1, 600, 1600), 300); assert.equal(camStep(800, 5000, 1, 600, 1600), 1632 - 300);
+  // a camera left outside the hull (a dialog closed, and the view is the whole box again) eases back in, not in one jump
+  const back = camStep(1500, 5000, 0.1, 600, 1600); assert.ok(back < 1500 && back > 1632 - 300, `eased to ${back}`);
 });
 test('a hull shorter than the view sits in the middle and does not jitter', () => {
   const a = camStep(null, 100, 0.1, 1200, 960), b = camStep(a, 900, 0.1, 1200, 960); assert.equal(a, 960 * 0.51); assert.equal(b, a);

@@ -59,6 +59,8 @@ canvas { display: block; touch-action: none; }
   box-shadow: 0 0 60px #000, inset 0 0 0 1px rgba(0,0,0,0.6);
   padding: 0;
 }
+/* In the burn view a scene docks beside the ship (wide) or rises from the bottom (narrow), in the box burnLayout gives it (js/transit.js). */
+#panel.event.docked { inset: auto; left: var(--dock-x); top: var(--dock-y); width: var(--dock-w); max-height: var(--dock-h); transform: none; overflow-y: auto; overflow-x: hidden; }  /* as tall as the scene, up to the dock */
 /* Bracketed corners in the accent color. */
 #panel::before, #panel::after {
   content: "";
@@ -503,7 +505,11 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .menu textarea { font-size: 12px; }
 #menuBtn { position: fixed; top: 10px; left: 10px; z-index: 50; font-size: 12px; min-height: 30px; padding: 3px 12px; opacity: 0.85; }
 @media (max-width: 699px) { #menuBtn { top: 86px; } }
-@media (max-width: 999px) { #menuBtn.burn { top: auto; left: auto; right: 16px; bottom: calc(124px + env(safe-area-inset-bottom, 0px)); } }  /* the burn: above System map, clear of the HUD and the route card (#852) */
+/* The burn (burnlayout.js): Menu and System map at the two ends of the row of downtime buttons, over the bridge keys and clear of the
+   bar, the ship and the ticker. On a narrow screen they are the second of its two rows; in a short window the row folds to one. */
+#menuBtn.burn { top: auto; left: 16px; bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
+@media (max-width: 999px) { #menuBtn.burn, #tmap { bottom: calc(57px + env(safe-area-inset-bottom, 0px)); min-height: 32px; } }
+@media (max-width: 999px) and (max-height: 480px) { #menuBtn.burn, #tmap { bottom: calc(43px + env(safe-area-inset-bottom, 0px)); } #tlife::before { display: none; } }
 
 /* ---------- the bridge (bridge.js) ---------- */
 /* Viewscreen strip at the top of a landed screen, then the station keys. */

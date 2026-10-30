@@ -9,7 +9,7 @@
   // index.html's scripts, in its order, without game.js; tests/editor.test.js checks the two lists agree.
   const SCRIPTS = [
   'js/build.js', 'js/data.js', 'js/util.js', 'js/sheet.js', 'js/range.js', 'js/board.js', 'js/gates.js', 'js/orbits.js', 'js/market.js', 'js/contracts.js', 'js/mods.js', 'js/ui.js',
-  'js/views.js', 'js/factions.js', 'js/transit.js', 'js/burnpanel.js', 'js/crew.js', 'js/peopletext.js', 'js/people.js',
+  'js/views.js', 'js/factions.js', 'js/transit.js', 'js/burnlayout.js', 'js/burnpanel.js', 'js/crew.js', 'js/peopletext.js', 'js/people.js',
   'js/hail.js', 'js/story.js', 'js/touch.js', 'js/art.js', 'js/audio.js', 'js/music.js', 'js/tutorial.js', 'js/world.js',
   'js/company.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/hulldetail.js', 'js/familytext.js', 'js/family.js', 'js/room.js', 'js/calendar.js', 'js/social.js',
   'js/bar.js', 'js/bartopics.js', 'js/outpost.js', 'js/legacy.js', 'js/torpedoes.js', 'js/boarding.js', 'js/engage.js', 'js/fightladder.js',

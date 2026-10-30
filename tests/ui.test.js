@@ -407,19 +407,15 @@ test('the cue that a scene continues shows on a long scene and a long result, an
   await done();
 });
 
-test('the transit Comms box leaves room for the ship on a short phone', async () => {
+test('the burn view\'s Comms ticker keeps two lines where there is room, one on a short window, and none on a landscape phone', async () => {
   const { ev, done } = await open();
   const r = await ev(() => ({
-    wide: transitCommsLines(false, 0, 470 - 640 * CUTAWAY_ASPECT.wide / 2),
-    wideBig: transitCommsLines(false, 0, 470 - 860 * CUTAWAY_ASPECT.wide / 2),
-    tall: transitCommsLines(true, 84, 492 - 330 * CUTAWAY_ASPECT.narrow / 2),
-    short: transitCommsLines(true, 84, 390 - 300 * CUTAWAY_ASPECT.narrow / 2),
-    tiny: transitCommsLines(true, 84, 100 - 300 * CUTAWAY_ASPECT.narrow / 2),
+    wide: burnLayout(1280, 800, 220, false, null).tickerLines,
+    tablet: burnLayout(768, 1024, 0, true, null).tickerLines,
+    short: burnLayout(1280, 600, 220, false, null).tickerLines,
+    landscape: burnLayout(844, 390, 0, true, null).tickerLines,
   }));
-  assert.ok(r.wide >= 12 && r.wide <= 16, `a wide screen keeps most of its lines: ${r.wide}`); assert.ok(r.wideBig < r.wide && r.wideBig >= 4, 'and fewer when the ship is drawn larger');
-  assert.equal(r.tall, 8, 'a tall phone keeps 8 lines');
-  assert.ok(r.short >= 2 && r.short < 8, `a short phone gets fewer: ${r.short}`);
-  assert.equal(r.tiny, 2, 'never fewer than 2');
+  assert.deepEqual(r, { wide: 2, tablet: 2, short: 1, landscape: 0 });
   await done();
 });
 
@@ -729,7 +725,7 @@ test('the hand\'s sheet shows the four stats with the posts on them and the kit,
   await done();
 });
 
-// #686 (the pieces main's readouts did not carry): the due date on the burn's bar, the log line, the booked load in the hold.
+// #686 (the pieces main's readouts did not carry): the due date on the burn's bar, the booked load in the hold.
 test('on a burn with a contract the bar says the due date and the log says the load, the shipper and whether the ship is on time', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
@@ -738,15 +734,57 @@ test('on a burn with a contract the bar says the due date and the log says the l
     G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null;
     const run = hired().run, out = { contract: !!run.contract, due: dateOf(run.due) };
     let stop = drawnText(); drawTransit(G.W, G.H); out.onTime = stop();
-    run.due = G.state.day - 2; stop = drawnText(); drawTransit(G.W, G.H); out.late = stop();
+    out.logOn = shipLogLines(G.state, G.transit, heldContract(hired()))[0];
+    run.due = G.state.day - 2; out.lateDue = dateOf(run.due); out.logLate = shipLogLines(G.state, G.transit, heldContract(hired()))[0]; stop = drawnText(); drawTransit(G.W, G.H); out.late = stop();
     return out;
   });
   assert.ok(r.contract);
   assert.ok(r.onTime.includes(`due ${r.due}`), `the due date under the bar: ${r.onTime.join('|')}`);
-  assert.match(r.onTime.join(' '), / for .*, due .*, on time/, 'the log line (wrapped to the box)');
-  assert.ok(!r.onTime.some(t => /^Cargo:/.test(t)), 'the contract line says what is aboard');
-  assert.match(r.late.join(' '), / for .*, due .*, late by \d+ days/, 'late');
+  assert.ok(r.late.includes(`due ${r.lateDue}`), 'and when the ship is late for it');
+  assert.match(r.logOn, / for .*, due .*, on time$/, 'the ship\'s log line says the load, the shipper, the due date and that the ship is on time');
+  assert.ok(!/^Cargo:/.test(r.logOn), 'the contract line says what is aboard');
+  assert.match(r.logLate, / for .*, due .*, late by \d+ days$/, 'and late');
   await done();
+});
+
+// The burn's time remaining is on the bar at every size: in the dates line, clock first, or beside the speed where there is no room for it.
+test('the time remaining is drawn on the burn bar on a phone, a tablet, a desktop, a landscape phone and a short window with the prompt', async () => {
+  for (const [W, H, mobile, prompt] of [[390, 844, true], [768, 1024, false], [1280, 800, false], [844, 390, true], [1280, 600, false, true]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: W, height: H }, mobile });
+    await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
+    const r = await ev(prompt => {
+      startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+      G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null; G.transit.event = null;
+      if (prompt) G.state.tutorial = tutorialSteps().findIndex(s => /Work your post/.test(s.text()));
+      G.transit.left = G.transit.total * 0.7; const secs = Math.ceil(G.transit.left), mss = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
+      const stop = drawnText(); drawTransit(innerWidth, innerHeight); return { mss, text: stop(), tut: !!(G.burnBoxes && G.burnBoxes.tutorial) };
+    }, !!prompt);
+    assert.ok(r.text.some(t => t.includes(r.mss)), `${W}x${H}: ${r.mss} is drawn: ${r.text.join('|')}`);
+    if (prompt) assert.ok(r.tut, `${W}x${H}: the prompt shows`);
+    await done();
+  }
+});
+
+// The arrival date on a narrow screen: a phone says it beside the clock where it fits, or under the strip's far end when there is no
+// due date there; a tablet's dates line says it before today's date, so a cut takes today's (which the HUD strip shows).
+test('the arrival date is drawn on the burn bar on a phone without a contract, and first in a tablet\'s dates line', async () => {
+  for (const [W, H, mobile] of [[390, 844, true], [768, 1024, false]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: W, height: H }, mobile });
+    await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
+    const r = await ev(() => {
+      startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+      G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null; G.transit.event = null;
+      const hd = hired(); if (hd.run) hd.run.contract = null; if (hd.plan && hd.plan.run) hd.plan.run.contract = null;  // no contract, so no due date under the strip
+      G.transit.left = G.transit.total * 0.7;
+      const stop = drawnText(); drawTransit(innerWidth, innerHeight); return { eta: dateOf(transitEta(G.transit)), today: dateOf(transitNow(G.transit)), text: stop() };
+    });
+    if (W === 390) assert.ok(r.text.includes(`arr. ${r.eta}`), `${W}x${H}: arr. ${r.eta} is drawn: ${r.text.join('|')}`);
+    else {
+      const line = r.text.find(t => t.includes('arriving'));
+      assert.ok(line && line.includes(`arriving ${r.eta}`) && (!line.includes(r.today) || line.indexOf(r.today) > line.indexOf('arriving')), `${W}x${H}: the arrival comes before today's date: ${line}`);
+    }
+    await done();
+  }
 });
 
 test('the hold draws a contract\'s load as booked cells before sailing, and as cargo after', async () => {
