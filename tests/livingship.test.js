@@ -37,7 +37,8 @@ test('the phase weights: all burn at the ends, all cruise between, all flip at t
   for (let p = 0; p <= 1; p += 0.001) { const w = phaseWeights(p); assert.ok(Math.abs(w.burn + w.cruise + w.flip - 1) < 1e-9 && Math.min(w.burn, w.cruise, w.flip) >= 0); }
 });
 test('the g reading: three times the thrust in the hard burn, the thrust in cruise, nothing at the flip, and no jumps', () => {
-  assert.equal(gReading(0.02, 0.9), 2.7); assert.equal(gReading(0.3, 0.9), 0.9); assert.equal(gReading(0.5, 0.9), 0); assert.equal(gReading(0.97, 0.9), 2.7);
+  assert.equal(gReading(0.02, 0.9), 2.7); assert.equal(gReading(0.3, 0.9), 0.9); assert.equal(gReading(0.5, 0.9), 0); assert.equal(gReading(0.99, 0.9), 2.7);
+  assert.equal(phaseWeights(0.06).burn, 0, 'the burn has ramped down by the time the couches empty'); assert.equal(phaseWeights(0.94).burn, 0);
   for (let p = 0; p < 1; p += 0.001) assert.ok(Math.abs(gReading(p + 0.001, 0.9) - gReading(p, 0.9)) < 0.1, `a jump at ${p.toFixed(3)}`);
 });
 test('the phases of a run, with the crew securing either side of the flip', () => {
@@ -76,6 +77,13 @@ test('the zoom fits both decks in the box; the outline finds every room, and not
   for (const r of o.rooms) assert.equal(outlineRoomAt(o, r.x + r.w / 2, r.y + r.h / 2), r.id);
   assert.equal(o.rooms.length, ROOMS.length); assert.equal(outlineRoomAt(o, o.x - 4, o.y - 4), null);
   assert.equal(floorY(0), 100); assert.equal(floorY(1), 212); assert.equal(hullLength(18), 1600); assert.equal(hullLength(10), 960); assert.equal(hullLength(20), 1600);
+});
+test('a tap on the outline mid-turn finds the room where it is drawn, squeezed', () => {
+  const o = outlineLayout({ x: 0, y: 0, w: 864, h: 311 }, 1600), cx = o.x + o.w / 2, sq = 0.5, half = { ...o, squeeze: sq };
+  for (const r of o.rooms) assert.equal(outlineRoomAt(half, cx + (r.x + r.w / 2 - cx) * sq, r.y + r.h / 2), r.id, `${r.id} where it is drawn`);
+  const bridge = o.rooms.find(r => r.id === 'bridge');
+  assert.equal(outlineRoomAt(half, bridge.x + bridge.w / 2, bridge.y + bridge.h / 2), null, 'not where the full-width box would be');
+  assert.equal(outlineRoomAt({ ...o, squeeze: 1 }, bridge.x + bridge.w / 2, bridge.y + bridge.h / 2), 'bridge');
 });
 test('the outline draws balanced, squeezed by the turn, with no text', () => {
   const o = outlineLayout({ x: 0, y: 0, w: 864, h: 311 }, 1600);

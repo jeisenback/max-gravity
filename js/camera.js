@@ -29,8 +29,11 @@ function outlineLayout(box, len) {
   return { x, y, w, h, rooms };
 }
 
-// The room under a point, or null.
+// The room under a point, or null. outline.squeeze (abs(turn), as drawOutline draws it; 1 if not set) maps the point back across the
+// squeezed outline to the full-width boxes.
 function outlineRoomAt(outline, x, y) {
+  const sq = Math.max(0.05, outline.squeeze === undefined ? 1 : outline.squeeze), cx = outline.x + outline.w / 2;
+  x = cx + (x - cx) / sq;
   const r = outline.rooms.find(q => x >= q.x && x <= q.x + q.w && y >= q.y && y <= q.y + q.h);
   return r ? r.id : null;
 }

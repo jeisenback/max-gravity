@@ -9,7 +9,7 @@ const AU_KM = 149.6e6, G_KMS2 = 0.00981;
 // How much of the run is hard burn, cruise and flip at a point p (0..1): the weights ease between phases and always sum to one.
 const burnRamp = (p, a, b) => { const x = Math.min(1, Math.max(0, (p - a) / (b - a))); return x * x * (3 - 2 * x); };
 function phaseWeights(pr) {
-  const burn = 1 - burnRamp(pr, 0.06, 0.10) + burnRamp(pr, 0.90, 0.94), flip = burnRamp(pr, 0.44, 0.47) - burnRamp(pr, 0.53, 0.56);
+  const burn = 1 - burnRamp(pr, 0.02, 0.06) + burnRamp(pr, 0.94, 0.98), flip = burnRamp(pr, 0.44, 0.47) - burnRamp(pr, 0.53, 0.56);
   return { burn, cruise: 1 - burn - flip, flip };
 }
 // What the g meter reads: three times the thrust in the hard burn, the thrust in cruise, nothing at the flip.

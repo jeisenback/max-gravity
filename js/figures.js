@@ -20,7 +20,8 @@ const POSTURES = {
 // A placeholder figure, until the sprite sheets replace it: drawPerson(ctx, pose, x, y, look) draws one person or the cat from a
 // posture (shiplife.js posture() gives pose = { name, face, frame }). x, y are the place on the deck and the floor under them (the
 // bunk's mattress for bunk). A standing person is 72 units tall. look = { color, face (an Image or null), floating }. Limb angles are
-// absolute radians from straight down, ported from the mockup (docs/superpowers/mockups). Returns the point a tap should aim at.
+// absolute radians from straight down, ported from the mockup (docs/superpowers/mockups). Returns the point a tap should aim at (the torso's
+// middle), with the head and the front foot, so a tap can be tested against the whole body.
 const FIG_TALL = 87, FIG_SCALE = 72 / FIG_TALL;  // a standing figure is 87 mockup units from the floor to the top of the head
 
 function figShade(hex, k) { const n = parseInt(hex.slice(1), 16), f = v => Math.max(0, Math.min(255, Math.round(v * k))); return `rgb(${f(n >> 16)},${f((n >> 8) & 255)},${f(n & 255)})`; }
@@ -73,8 +74,8 @@ function figCat(ctx, name, frame, frames) {
 function drawPerson(ctx, pose, x, y, look) {
   const frames = POSTURES[pose.name].frames, face = pose.face < 0 && pose.name !== 'bunk' ? -1 : 1;  // a sleeper always lies head to the left
   ctx.save(); ctx.translate(x, y); ctx.scale(face, 1);
-  let tap;
-  if (pose.name.startsWith('cat')) tap = figCat(ctx, pose.name, pose.frame, frames);
+  let tap, head, foot;
+  if (pose.name.startsWith('cat')) head = foot = tap = figCat(ctx, pose.name, pose.frame, frames);
   else {
     const k = FIG_SCALE, q = figPose(pose.name, pose.frame, frames), j = figJoints(q), S = Math.sin, col = look.color;
     ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
@@ -102,8 +103,9 @@ function drawPerson(ctx, pose, x, y, look) {
       ctx.save(); ctx.beginPath(); ctx.arc(hx, hy, 9, 0, Math.PI * 2); ctx.clip(); ctx.translate(hx, hy); ctx.scale(face, 1); ctx.drawImage(look.face, -9, -9, 18, 18); ctx.restore();  // counter-flipped: the face is not mirrored
     } else figDot(ctx, hx, hy, 9, skin);
     ctx.strokeStyle = col; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.arc(hx, hy, 9.6, 0, Math.PI * 2); ctx.stroke();
-    tap = { x: j.mid[0] * k, y: j.mid[1] * k };
+    tap = { x: j.mid[0] * k, y: j.mid[1] * k }; head = { x: j.head[0] * k, y: j.head[1] * k }; foot = { x: j.legF[2][0] * k, y: j.legF[2][1] * k };
   }
   ctx.restore();
-  return { x: x + tap.x * face, y: y + tap.y };
+  const at = p => ({ x: x + p.x * face, y: y + p.y });
+  return { ...at(tap), head: at(head), foot: at(foot) };
 }

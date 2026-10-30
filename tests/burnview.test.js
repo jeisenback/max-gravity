@@ -192,8 +192,9 @@ test('a tap at the centre of each room finds that room, on every ship, both ways
             const hit = roomAtPoint(b.x + b.w / 2, b.y + b.h / 2);
             if (hit !== b.id) out.wrong.push(`${shipId} (${where}): ${b.id} found ${hit}`);
           }
-          const top = Math.min(...G.cutRooms.map(b => b.y));
-          if (roomAtPoint(G.cutRooms[0].x + 2, top - 20) !== null) out.gap.push(shipId);
+          // A point above the hull, past the outline (which ends left of the box's middle), and above every room in view.
+          const box = G.burnBoxes.ship, px = box.x + box.w * 0.6, py = box.y + 4;
+          if (py >= Math.min(...G.cutRooms.map(b => b.y)) || outlineRoomAt(G.cutOutline, px, py) !== null || roomAtPoint(px, py) !== null) out.gap.push(shipId);
         }
       }
       return out;
@@ -282,6 +283,38 @@ test('a face is not there until its picture has loaded, and is drawn for each pe
   await page.waitForFunction(() => shipPeople().filter(p => p.role !== 'cat').every(p => faceImage(p) !== null), null, { timeout: 5000 });
   const r = await ev(() => { __faces = 0; drawTransit(innerWidth, innerHeight); return { faces: __faces, awake: G.cutHits.filter(h => !shipPeople().find(p => p.id === h.id && (p.role === 'cat' || isAsleep(p)))).length }; });
   assert.ok(r.faces > 0 && r.faces === r.awake, `a face for each of the ${r.awake} people awake in view, drawn ${r.faces}`);
+  await done();
+});
+
+test('a tap on a person\'s head opens the person', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.3; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; G.transit.event = null; G.dialog = null; });
+  await frames(page);
+  // In one go, so the head is where it was drawn: the hand's head, at least 14px from the torso's middle on a desktop.
+  const r = await ev(() => {
+    drawTransit(innerWidth, innerHeight); const h = G.cutHits[0]; G.bridgeOpen = null;
+    canvas.dispatchEvent(new MouseEvent('click', { clientX: h.head.x, clientY: h.head.y, bubbles: true }));
+    return { open: G.bridgeOpen, apart: Math.hypot(h.head.x - h.x, h.head.y - h.y) };
+  });
+  assert.ok(r.apart > 14, `the head is beyond the torso's reach (${Math.round(r.apart)}px)`);
+  assert.equal(r.open, 'person');
+  await done();
+});
+
+test('the camera goes with the hand to an activity\'s room', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, W = innerWidth, H = innerHeight, len = hullLength(SHIPS[G.state.shipId].size), gal = roomAt('galley');
+    t.left = t.total * 0.3; drawTransit(W, H); const from = G.cam.x;
+    ACTIVITIES.meal.run();
+    let steps = 0;
+    for (; steps < 600 && !(G.cam.x >= gal.x0 * len && G.cam.x <= gal.x1 * len); steps++) { lifeTick(0.1); G.time += 0.1; drawTransit(W, H); }
+    return { from, to: G.cam.x, steps, galley: [gal.x0 * len, gal.x1 * len] };
+  });
+  assert.ok(r.from > r.galley[1], `the camera starts on the bridge (${Math.round(r.from)})`);
+  assert.ok(r.to >= r.galley[0] && r.to <= r.galley[1], `the camera is in the galley ${JSON.stringify(r.galley)}: ${Math.round(r.to)} after ${r.steps} steps`);
   await done();
 });
 

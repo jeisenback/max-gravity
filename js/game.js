@@ -1281,6 +1281,12 @@ canvas.addEventListener('wheel', e => {
   zoomMap(e.deltaY > 0 ? 1 : -1);
 }, { passive: false });
 
+// How far a tap is from a person in the cutaway: from the line head to torso to foot (shiplife.js records them), or the torso alone.
+function tapToBody(px, py, h) {
+  const seg = (a, b) => { const dx = b.x - a.x, dy = b.y - a.y, l = dx * dx + dy * dy, t = l ? Math.max(0, Math.min(1, ((px - a.x) * dx + (py - a.y) * dy) / l)) : 0; return Math.hypot(px - a.x - t * dx, py - a.y - t * dy); };
+  return Math.min(seg(h.head || h, h), seg(h, h.foot || h));
+}
+
 canvas.addEventListener('click', e => {
   // In flight, tap or click a ship to target it, or a planet to set it as the nav target.
   if (G.mode === 'flight') {
@@ -1294,7 +1300,7 @@ canvas.addEventListener('click', e => {
   // On a burn, tap or click someone in the cutaway to open their page, or a room (in view or in the outline) to open its console.
   if (G.mode === 'transit' && G.transit && !G.transit.event) {
     const reach = Touch.on ? 24 : 14, outlined = G.cutOutline && outlineRoomAt(G.cutOutline, e.clientX, e.clientY);  // the outline is over the view: it comes first
-    const near = !outlined && (G.cutHits || []).map(h => ({ h, d: Math.hypot(e.clientX - h.x, e.clientY - h.y) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
+    const near = !outlined && (G.cutHits || []).map(h => ({ h, d: tapToBody(e.clientX, e.clientY, h) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
     if (near) Mods.act('person', near.h.id);
     else {  // no one there: the room, which opens its console as the key bar's key does (a second tap closes it)
       const room = roomAtPoint(e.clientX, e.clientY), sheet = room && roomSheet(room);

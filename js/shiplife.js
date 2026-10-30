@@ -260,7 +260,8 @@ function weighted(table) {
   return entries[0][0];
 }
 
-// Hard burn at each end, weightless at the flip, free to move otherwise.
+// Hard burn at each end (on the couches), strapped in at a station either side of the flip (secure), weightless at the flip, free to move
+// otherwise.
 function phase() {
   const t = G.transit, pr = 1 - t.left / t.total;
   if (pr < 0.06 || pr > 0.94) return 'couch';
@@ -363,8 +364,9 @@ function drawCutaway(box) {
   ctx.scale(zoom, zoom); ctx.translate(-camX, -view.y);
 
   // The drive plume from the two bells, and the thrusters puffing at nose and stern while the ship turns.
-  if (burning) {
-    const pl = len * (PLUME.base + PLUME.gain * Math.sin(Math.PI * pr)) + Math.sin(time * 23) * PLUME.flicker, mouth = -46, hr = H * PLUME.halo;
+  if (burning && w.flip < 1) {  // it fades with the flip
+    const pl = (len * (PLUME.base + PLUME.gain * Math.sin(Math.PI * pr)) + Math.sin(time * 23) * PLUME.flicker) * (1 - w.flip), mouth = -46, hr = H * PLUME.halo;
+    ctx.save(); ctx.globalAlpha = 1 - w.flip;
     const halo = ctx.createRadialGradient(mouth, cy, 0, mouth, cy, hr);
     halo.addColorStop(0, 'rgba(140,190,255,0.3)'); halo.addColorStop(1, 'rgba(60,90,255,0)');
     ctx.fillStyle = halo; ctx.fillRect(mouth - hr, cy - hr, hr * 2, hr * 2);
@@ -373,7 +375,8 @@ function drawCutaway(box) {
       g.addColorStop(0, 'rgba(255,255,255,0.95)'); g.addColorStop(Math.min(0.5, 40 / pl), 'rgba(140,190,255,0.75)'); g.addColorStop(1, 'rgba(60,90,255,0)');
       ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(mouth, m - c); ctx.quadraticCurveTo(mouth - pl * 0.25, m - c * 0.4, mouth - pl, m); ctx.quadraticCurveTo(mouth - pl * 0.25, m + c * 0.4, mouth, m + c); ctx.fill();
     }
-  } else if (!t.event) {
+    ctx.restore();
+  } else if (!burning && !t.event) {
     const on = Math.sin(time * 3) > 0, a = 0.5 + 0.5 * Math.abs(Math.sin(time * 9));
     ctx.fillStyle = `rgba(230,240,255,${a})`;
     for (const [x, y] of on ? [[X(0.955) + 14, 80], [-14, 206]] : [[X(0.955) + 14, 132], [-14, 6]]) { ctx.beginPath(); ctx.ellipse(x, y, 14, 6, 0, 0, Math.PI * 2); ctx.fill(); }
@@ -423,7 +426,7 @@ function drawCutaway(box) {
   // The thrust sign over the galley's forward hatch, on the galley's side (clear of the gunnery's name), scaled up where the camera is far
   // enough out that its text would be under 12px.
   const sk = Math.max(1, 1.05 / zoom);
-  ctx.save(); ctx.translate(X(roomAt('galley').x1) - 6 - 56 * sk, 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, burnState().g, w, G.time, zoom * sk); ctx.restore();
+  ctx.save(); ctx.translate(X(roomAt('galley').x1) - 6 - 56 * sk, 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, burnState().g, w, time, zoom * sk); ctx.restore();
 
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
   ctx.font = `600 12px ${roomFont}`;
@@ -434,7 +437,7 @@ function drawCutaway(box) {
     dots.push({ x: X(p.x), deck: p.dk, color: ROLE_COLORS[p.role] });
     if (Math.abs(x - camX) > half + 60) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = Math.abs(x - camX) <= half;
-    if (pose.name === 'couch') roomCouch(ctx, x, y, true);  // a crash couch, deployed under each person in the hard burn
+    if (pose.name === 'couch' && Math.abs(p.dk - dk) < 0.05) roomCouch(ctx, x, y, true);  // a crash couch, deployed under each person in the hard burn (once they are on a deck)
     const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], face: inView && !asleep && p.role !== 'cat' ? faceImage(p) : null, floating: ph === 'float' });
     if (pose.name === 'tether') {  // a line to a ring on the nearest bulkhead
       const d = CUT_WALLS[dk], bx = X([...d.hatch, d.end].reduce((a, b) => (Math.abs(b - p.x) < Math.abs(a - p.x) ? b : a))), rx = bx + Math.sign(x - bx) * 6, ry = floorY(dk) - 60;
@@ -443,12 +446,12 @@ function drawCutaway(box) {
       ctx.beginPath(); ctx.arc(rx, ry, 3, 0, Math.PI * 2); ctx.stroke();
     }
     if (!inView) continue;
-    if (p.id) { const at = toScreen(tap.x, tap.y); hits.push({ x: at.x, y: at.y, id: p.id }); }
+    if (p.id) hits.push({ ...toScreen(tap.x, tap.y), id: p.id, head: toScreen(tap.head.x, tap.head.y), foot: toScreen(tap.foot.x, tap.foot.y) });  // the body, head to foot, for a tap (game.js)
     if (p.role !== 'passenger' || p.pid) {
       const nw = ctx.measureText(p.name).width / zoom;
       if (!labels.some(b => b.dk === dk && Math.abs(b.x - x) < (b.w + nw) / 2 + 4 / zoom)) {
         labels.push({ x, w: nw, dk });
-        worldText(ctx, zoom, p.name, x, floorY(dk) + 10, 12 / zoom, '#9fb4c9', 'center');
+        worldText(ctx, zoom, p.name, x, (bunk ? floorY(0) : y) + 10, 12 / zoom, '#9fb4c9', 'center');
       }
     }
   }
@@ -468,7 +471,7 @@ function drawCutaway(box) {
     return { id: r.id, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
   }).filter(b => b.w > 0 && b.h > 0);
   G.cutHits = hits;
-  G.cutOutline = { ...outlineLayout(box, len), ids: people.filter(p => p.id).map(p => p.id) };
+  G.cutOutline = { ...outlineLayout(box, len), ids: people.filter(p => p.id).map(p => p.id), squeeze: Math.abs(turn) };
   drawOutline(ctx, G.cutOutline, dots, camX, view.span, len, turn);
 }
 
