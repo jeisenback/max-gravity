@@ -19,7 +19,16 @@ test('every posture draws, faced either way, with or without a face, and gives a
     if (img && !name.startsWith('cat')) assert.ok(c.calls.includes('drawImage'), `${name}: the face is the head`);
   }
 });
-
+test('a sleeper lies with the head to the left whichever way they last faced', () => {
+  for (const face of [1, -1]) {
+    const at = drawPerson(fakeCtx(), { name: 'bunk', x: 0.5, deck: 0, face, frame: 0 }, 400, 100, { color: '#ffb347', face: null });
+    assert.ok(at.x < 400, `face ${face}: the body (and so the head) is left of the hip`);
+  }
+});
+test('a person facing left is drawn mirrored', () => {
+  const at = f => drawPerson(fakeCtx(), { name: 'tether', x: 0.5, deck: 0, face: f, frame: 0 }, 400, 100, { color: '#ffb347', face: null });
+  assert.ok(at(1).x > 400 && at(-1).x < 400, 'the tap point follows the way they face');
+});
 test('the phase weights: all burn at the ends, all cruise between, all flip at the middle, and they always sum to one', () => {
   assert.deepEqual(phaseWeights(0.02), { burn: 1, cruise: 0, flip: 0 });
   assert.deepEqual(phaseWeights(0.25), { burn: 0, cruise: 1, flip: 0 });
