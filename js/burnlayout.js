@@ -9,7 +9,7 @@ const CUTAWAY_ASPECT = { wide: 0.36, narrow: 0.6 };
 
 const BURN_GUTTER = 12, BURN_KEYS_H = 52, BURN_HUD_STRIP = 84;
 const BURN_WIDE = { bar: 64, barNoDates: 48, ticker: 78, ticker1: 40, life: 44, shipShare: 0.58, shipWant: 0.55, dockMax: 560, dockShare: 0.45, keysGap: 6 };
-const BURN_NARROW = { bar: 72, barNoDates: 48, ticker: 120, ticker1: 40, life: 92, life1: 44, shipMin: 1.0, shipMax: 1.2, shipWant: 0.9, gap: 6, keysGap: 4 };
+const BURN_NARROW = { bar: 72, barNoDates: 48, ticker: 120, ticker1: 40, life: 92, life1: 44, shipMin: 1.0, shipMax: 1.2, gap: 6, keysGap: 4 };
 
 // Today's ship box, as drawTransit computes it (js/transit.js): the floor the new ship is never smaller than.
 function legacyShipBox(W, H, hudW, narrow) {
@@ -27,7 +27,8 @@ function burnLayout(W, H, hudW, narrow, dialog) {
   const top = narrow ? BURN_HUD_STRIP + P.gap : G;
   // The height left for the ship once the other blocks are laid out; shed until it is wanted or nothing is left to shed.
   const room = (barH, tickH, lifeH) => H - top - barH - gap - ((tickH ? gap + tickH + gap : gap) + lifeH + P.keysGap + BURN_KEYS_H);
-  const want = narrow ? Math.max(P.shipWant * viewW, old.h) : Math.max(P.shipWant * H, old.h);
+  const wanted = narrow ? Math.min(viewW * P.shipMin, H * 0.5) : P.shipWant * H;  // blocks are shed only until the ship is this tall
+  const want = old.h <= H ? Math.max(wanted, old.h) : wanted;  // never below today's box, where today's box fits the window
   let tickerLines = 2, datesLine = true, lifeH = P.life;
   const fits = () => room(datesLine ? P.bar : P.barNoDates, tickerLines === 2 ? P.ticker : tickerLines ? P.ticker1 : 0, lifeH) >= want;
   if (!fits()) tickerLines = 1;
@@ -40,7 +41,7 @@ function burnLayout(W, H, hudW, narrow, dialog) {
   const bar = { x: x0, y: top, w: w0, h: barH };
   const ship = { x: x0, y: bar.y + barH + gap, w: w0, h: shipH };
   const ticker = { x: x0, y: ship.y + shipH + gap, w: w0, h: tickH };
-  const life = { x: x0, y: ticker.y + tickH + gap, w: w0, h: lifeH };
+  const life = { x: x0, y: ticker.y + (tickH ? tickH + gap : 0), w: w0, h: lifeH };
   let dock = null, clear = ship;
   if (dialog && !narrow) {
     const dw = Math.min(P.dockMax, viewW * P.dockShare), dx = x0 + w0 - dw;
@@ -51,5 +52,6 @@ function burnLayout(W, H, hudW, narrow, dialog) {
     dock = { x: x0, y: bottom - h, w: w0, h };
     clear = { x: ship.x, y: ship.y, w: ship.w, h: Math.min(ship.h, dock.y - ship.y) };
   }
-  return { bar, ship, ticker, tickerLines, life, tutorial: ticker, dock, clear, datesLine };
+  return { bar, ship, ticker, tickerLines, life, tutorial: tickerLines ? ticker : null,  // the prompt replaces the ticker while it shows; with no ticker it is not drawn
+     dock, clear, datesLine };
 }

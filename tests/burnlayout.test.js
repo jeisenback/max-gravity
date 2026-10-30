@@ -16,6 +16,7 @@ test('every block is inside the view, and none overlaps another but the dock', (
     for (const k of ['bar', 'ship', 'ticker', 'life']) { const b = L[k]; assert.ok(b.x >= 0 && b.y >= 0 && b.x + b.w <= viewW && b.y + b.h <= H, `${W}x${H} ${k}`); }
     const ks = ['bar', 'ship', 'ticker', 'life'];
     for (let i = 0; i < ks.length; i++) for (let j = i + 1; j < ks.length; j++) assert.ok(apart(L[ks[i]], L[ks[j]]), `${W}x${H} ${ks[i]}/${ks[j]}`);
+    assert.ok(L.life.y + L.life.h + (narrow ? 4 : 6) + 52 <= H, `${W}x${H} keys fit`);
     if (dialog) assert.ok(L.dock.x + L.dock.w <= viewW && L.dock.y + L.dock.h <= H, `${W}x${H} dock inside`);
   }
 });
@@ -23,7 +24,8 @@ test('the ship is never smaller than today where today\'s box fits the window, a
   for (const [W, H, hud, narrow] of SIZES) {
     const s = burnLayout(W, H, hud, narrow, null).ship, old = legacyShipBox(W, H, hud, narrow);
     // today's box already overflows the window at 844x390, so the floor cannot hold there
-    if (old.h <= H * 0.6) assert.ok(s.w >= old.w - 0.5 && s.h >= old.h - 0.5, `${W}x${H}`);    else assert.ok(s.h > 0, `${W}x${H} keeps some ship`);
+    if (old.h <= H) assert.ok(s.w >= old.w - 0.5 && s.h >= old.h - 0.5, `${W}x${H}`);
+    else assert.ok(s.h > 0, `${W}x${H} keeps some ship`);
   }
   const w = burnLayout(1280, 800, 220, false, null).ship; assert.ok(w.h >= 1.8 * legacyShipBox(1280, 800, 220, false).h);
 });
@@ -44,9 +46,12 @@ test('without a dialog there is no dock, and the whole ship is clear', () => {
 });
 test('a landscape phone keeps a usable ship, with every box inside the view', () => {
   const l = burnLayout(844, 390, 0, true, null);
-  assert.ok(l.ship.h >= 140, `ship ${l.ship.h}`); assert.equal(l.tickerLines, 0); assert.equal(l.ticker.h, 0);
+  assert.ok(l.ship.h >= 140, `ship ${l.ship.h}`); assert.equal(l.tickerLines, 0); assert.equal(l.ticker.h, 0); assert.equal(l.tutorial, null);
   for (const k of ['bar', 'ship', 'ticker', 'life']) assert.ok(l[k].y >= 0 && l[k].y + l[k].h <= 390 && l[k].x + l[k].w <= 844, k);
 });
 test('a tall phone keeps the two-line ticker and the full button rows', () => {
   const l = burnLayout(390, 844, 0, true, null); assert.equal(l.tickerLines, 2); assert.equal(l.life.h, 92);
+});
+test('a tablet keeps its two-line ticker and full button rows, with a ship of at least 512 px', () => {
+  const l = burnLayout(768, 1024, 0, true, null); assert.equal(l.tickerLines, 2); assert.equal(l.life.h, 92); assert.ok(l.ship.h >= 512, `ship ${l.ship.h}`);
 });
