@@ -313,6 +313,7 @@ function enterTransit() {
     chatter: rand(5, 10), chattered: 0,
   };
   G.mode = 'transit';
+  G.cam = null;  // each burn starts with the camera snapped to the hand
   G.npcs = []; G.shots = []; G.target = null;
   if (!G.transitStars) G.transitStars = Array.from({ length: 150 }, () => ({ x: Math.random(), y: Math.random(), z: rand(0.2, 1) }));
   comm(`Burn plotted for ${SYSTEMS[to].name}: ${days} days. Crash couches ready.`);
@@ -492,7 +493,8 @@ function drawRoute(cx, y, barW, progress) {
 }
 
 // How many lines the Comms box may take: 16 on a wide screen; on a phone as many as fit between the clock and the ship, at most 8.
-const transitCommsLines = (narrow, top, shipY, L) => Math.max(narrow ? 2 : 4, Math.min(narrow ? 8 : 16, Math.floor((shipY - L * 0.13 - (top + (narrow ? 132 : 116)) - 38) / 16)));
+// shipTop is where the cutaway's box begins.
+const transitCommsLines = (narrow, top, shipTop) => Math.max(narrow ? 2 : 4, Math.min(narrow ? 8 : 16, Math.floor((shipTop - (top + (narrow ? 132 : 116)) - 38) / 16)));
 
 // Where the event dialog sits, in canvas pixels, while one is open (the panel, style.css), so the Comms box can keep clear of it (#262).
 function transitDialogBox(W) {
@@ -530,40 +532,38 @@ function drawTransit(W, H) {
     destBox = { x: dx - 40, y: dy - 40, w: 80, h: 80 };
   }
 
-  // Stars streak with our speed: longest at the midpoint, with a fading tail, and a few long lines when we are really moving.
+  // Our ship in cutaway, with everyone aboard (shiplife.js), in a box under its camera.
+  const L = Math.min(viewW - 60, 640), shipY = cy + (narrow ? 56 : 70), aspect = CUTAWAY_ASPECT[narrow ? 'narrow' : 'wide'];
+  // On a wide screen the cutaway is drawn larger (up to half again), scaled so it still clears the panels.
+  const k = narrow ? Math.max(1, Math.min(1.35, (viewW - 24) / L)) : Math.max(1, Math.min(1.35, (viewW - 120) / L, (H / 2 - 282) / (L * aspect / 2)));  // a narrow screen: the width it has (#852)
+  const shipBox = { x: cx + (narrow ? 0 : 40) - L * k / 2, y: shipY - L * k * aspect / 2, w: L * k, h: L * k * aspect };
+
+  // Stars streak with our speed: longest at the midpoint, with a fading tail, and a few long lines when we are really moving. They turn
+  // with the ship about the cutaway's centre (0 before the flip, half a turn after), wrapped so they fill the view at any angle.
   const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6, still = Settings.reduceMotion;
+  const a = t.angle + Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a), ox = shipBox.x + shipBox.w / 2, oy = shipBox.y + shipBox.h / 2, wrap = (v, m) => ((v % m) + m) % m;
+  const streak = (x, y, draw) => { const dx = x - ox, dy = y - oy; ctx.save(); ctx.translate(wrap(ox + dx * ca - dy * sa, viewW), wrap(oy + dx * sa + dy * ca, H)); ctx.rotate(a); draw(); ctx.restore(); };
   for (const s of G.transitStars) {
-    const x = s.x * viewW, y = s.y * H, len = Math.max(s.z * 2, speed * s.z * s.z * (still ? 8 : 110)), w = s.z > 0.7 ? 2 : 1, hot = Math.min(1, speed * 1.4);
-    for (let i = 0; i < 3; i++) {  // head, body and a fainter tail
-      ctx.fillStyle = `rgba(${200 + 40 * hot * (1 - i / 3)},${215 + 30 * hot * (1 - i / 3)},255,${s.z * (0.85 - i * 0.28)})`;
-      ctx.fillRect(x + (len * i) / 3, y, len / 3 + 1, w);
-    }
+    const len = Math.max(s.z * 2, speed * s.z * s.z * (still ? 8 : 110)), w = s.z > 0.7 ? 2 : 1, hot = Math.min(1, speed * 1.4);
+    streak(s.x * viewW, s.y * H, () => {
+      for (let i = 0; i < 3; i++) {  // head, body and a fainter tail
+        ctx.fillStyle = `rgba(${200 + 40 * hot * (1 - i / 3)},${215 + 30 * hot * (1 - i / 3)},255,${s.z * (0.85 - i * 0.28)})`;
+        ctx.fillRect((len * i) / 3, 0, len / 3 + 1, w);
+      }
+    });
   }
   if (!still && speed > 0.2) {
     for (let i = 0; i < 26; i++) {
       const lane = (i * 0.618033) % 1, rate = 0.5 + (i % 5) * 0.22, phase = (i * 0.37 + G.time * speed * 0.35 * rate) % 1, len = speed * (120 + (i % 4) * 70);
       ctx.fillStyle = `rgba(150,195,255,${Math.min(0.3, (speed - 0.2) * 0.5)})`;
-      ctx.fillRect(viewW * (1 - phase), 120 + lane * (H - 240), len, 1);  // clear of the title and the bar of keys
+      streak(viewW * (1 - phase), 120 + lane * (H - 240), () => ctx.fillRect(0, 0, len, 1));  // clear of the title and the bar of keys
     }
   }
 
-  // Our ship in cutaway, with everyone aboard (shiplife.js). It turns at the midpoint.
-  const L = Math.min(viewW - 60, 640), shipY = cy + (narrow ? 56 : 70);
-  // On a wide screen the cutaway is drawn larger (up to half again), scaled so it still clears the panels.
-  const k = narrow ? Math.max(1, Math.min(1.35, (viewW - 24) / L)) : Math.max(1, Math.min(1.35, (viewW - 120) / L, (H / 2 - 282) / (L * CUTAWAY_H / 2)));  // a narrow screen: the width it has (#852)
-  const shake = !Settings.reduceMotion && !t.event && speed > 0.2 ? speed * 0.9 : 0;
-  ctx.save();
-  ctx.translate(cx + (narrow ? 0 : 40) + Math.sin(G.time * 53) * 0.5 * shake, shipY + Math.sin(G.time * 71 + 1) * 0.8 * shake);  // a shiver, not a random draw: the game's random is seeded in the tests
-  ctx.scale(k, k);
-  G.cutHits = []; G.cutRooms = [];  // (a mid-turn frame draws no one)
-  drawCutaway(0, 0, L);
-  G.burnBoxes = { ship: { x: cx + (narrow ? 0 : 40) - L * k / 2, y: shipY - L * k * CUTAWAY_H / 2, w: L * k, h: L * k * CUTAWAY_H } };  // where each block was drawn, for the test (#262)
+  drawCutaway(shipBox);
+  G.burnBoxes = { ship: shipBox };  // where each block was drawn, for the test (#262)
   if (destBox) G.burnBoxes.dest = destBox;
-  ctx.restore();
-  const ox = cx + (narrow ? 0 : 40);  // where the cutaway's origin was drawn
-  for (const r of G.cutRooms) { r.x = ox + r.x * k; r.y = shipY + r.y * k; r.w *= k; r.h *= k; }
-  for (const h of G.cutHits || []) { h.x = ox + h.x * k; h.y = shipY + h.y * k; }  // drawn at the origin, scaled: back to the screen for a click
-  G.lifeY = shipY + L * k * CUTAWAY_H / 2 + 14 + 40 * k;  // downtime buttons sit below it
+  G.lifeY = shipBox.y + shipBox.h + 14;  // downtime buttons sit below it
 
   // Route, on a plate so the star streaks do not run through the title and the clock (#262)
   const plateW = Math.min(viewW - 24, 640);
@@ -591,7 +591,7 @@ function drawTransit(W, H) {
   if (!narrow) { drawBurnPanel(viewW - 316, 116, 300); G.burnBoxes.burn = { x: viewW - 316, y: 116, w: 300, h: 112 }; }
 
   // Comms log, top-left
-  let colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = transitCommsLines(narrow, top, shipY, L * k);
+  let colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = transitCommsLines(narrow, top, shipBox.y);
   const commsY = top + (narrow ? 132 : 116), dlg = transitDialogBox(W);
   if (dlg && !narrow) colW = Math.max(120, Math.min(colW, dlg.x - 56));  // its right edge (colW + 40) stays 16 left of the dialog
   const tut = tutorialPrompt(colW + 24);  // the tutorial's box goes under Comms, which gives up the lines it takes (#735)

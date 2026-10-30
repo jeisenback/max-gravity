@@ -410,11 +410,11 @@ test('the cue that a scene continues shows on a long scene and a long result, an
 test('the transit Comms box leaves room for the ship on a short phone', async () => {
   const { ev, done } = await open();
   const r = await ev(() => ({
-    wide: transitCommsLines(false, 0, 470, 640),
-    wideBig: transitCommsLines(false, 0, 470, 860),
-    tall: transitCommsLines(true, 84, 492, 330),
-    short: transitCommsLines(true, 84, 390, 300),
-    tiny: transitCommsLines(true, 84, 100, 300),
+    wide: transitCommsLines(false, 0, 470 - 640 * CUTAWAY_ASPECT.wide / 2),
+    wideBig: transitCommsLines(false, 0, 470 - 860 * CUTAWAY_ASPECT.wide / 2),
+    tall: transitCommsLines(true, 84, 492 - 330 * CUTAWAY_ASPECT.narrow / 2),
+    short: transitCommsLines(true, 84, 390 - 300 * CUTAWAY_ASPECT.narrow / 2),
+    tiny: transitCommsLines(true, 84, 100 - 300 * CUTAWAY_ASPECT.narrow / 2),
   }));
   assert.ok(r.wide >= 12 && r.wide <= 16, `a wide screen keeps most of its lines: ${r.wide}`); assert.ok(r.wideBig < r.wide && r.wideBig >= 4, 'and fewer when the ship is drawn larger');
   assert.equal(r.tall, 8, 'a tall phone keeps 8 lines');
