@@ -4,8 +4,8 @@
 // The camera is close in on the ship and follows the hand; the outline shows the whole hull, and a tap on a room of it opens that room.
 
 const HULL = { deck: 100, plate: 12, length: 1600, skin: 12 };  // world units: the height of a deck, a floor plate, the length of the largest hull, the skin
-const hullLength = size => 160 + 80 * size;  // size 18 is 1600, size 10 is 960
-const floorY = dk => 100 + 112 * dk;  // the floor of deck 0 is 100, of deck 1 is 212, linear between
+const hullLength = size => HULL.length * Math.min(1, 0.6 + 0.4 * (size - 10) / 8);  // size 18 and up is the full length, size 10 is 0.6 of it
+const floorY = dk => HULL.deck + dk * (HULL.deck + HULL.plate);  // the floor of deck 0 is 100, of deck 1 is 212, linear between
 
 // Both decks (250 world units tall) fit the box high; the width then says how much of the ship is in view.
 function viewOf(box) {

@@ -75,7 +75,7 @@ test('the zoom fits both decks in the box; the outline finds every room, and not
   const o = outlineLayout({ x: 100, y: 50, w: 864, h: 311 }, 1600);
   for (const r of o.rooms) assert.equal(outlineRoomAt(o, r.x + r.w / 2, r.y + r.h / 2), r.id);
   assert.equal(o.rooms.length, ROOMS.length); assert.equal(outlineRoomAt(o, o.x - 4, o.y - 4), null);
-  assert.equal(floorY(0), 100); assert.equal(floorY(1), 212); assert.equal(hullLength(18), 1600); assert.equal(hullLength(10), 960);
+  assert.equal(floorY(0), 100); assert.equal(floorY(1), 212); assert.equal(hullLength(18), 1600); assert.equal(hullLength(10), 960); assert.equal(hullLength(20), 1600);
 });
 test('the outline draws balanced, squeezed by the turn, with no text', () => {
   const o = outlineLayout({ x: 0, y: 0, w: 864, h: 311 }, 1600);
