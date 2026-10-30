@@ -110,7 +110,7 @@ function plantSvg() {
   <line x1="580" y1="140" x2="612" y2="108" stroke="${col('sensors')}" stroke-width="3"/><circle cx="614" cy="106" r="6" fill="#0a1320" stroke="${col('sensors')}" stroke-width="2"/>
   <g class="lbl" font-size="11" fill="#7f95ab" letter-spacing="1"><text x="26" y="206">DRIVE</text><text x="420" y="92">FIRE CTRL</text><text x="410" y="214">SHIELDS</text><text x="476" y="190">LIFE</text><text x="520" y="70">SENSORS</text></g>
   <text x="14" y="24" fill="#7f95ab" font-size="11" letter-spacing="2">PLANT SCHEMATIC</text>
-  <text class="lbl" x="14" y="282" fill="#4b617a" font-size="10">Conduit width is the power share. Color is the system's condition.</text>`;
+  <text class="lbl" x="14" y="282" fill="#4b617a" font-size="11">Conduit width is the power share. Color is the system's condition.</text>`;
 }
 const plantSig = () => `${Object.values(power())}|${Object.values(condition()).map(x => condColor(x))}`;
 

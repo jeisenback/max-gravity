@@ -26,7 +26,7 @@ test('the body painter draws on a second canvas, with its own sun, and caches by
 test('the panel is glass, lit from the sun\'s side', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => { UI.render(); const cs = getComputedStyle(document.getElementById('panel')); return { bg: cs.backgroundColor, light: cs.getPropertyValue('--light-x').trim() }; });
-  assert.match(r.bg, /rgba\(11, 17, 27, 0\.86\)/);
+  assert.match(r.bg, /rgba\(11, 17, 27, 0\.97\)/);  // near opaque, so the canvas does not print through (#853)
   assert.match(r.light, /^\d{1,3}%$/);
   await done();
 });

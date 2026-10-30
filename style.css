@@ -15,7 +15,7 @@
   --good: #5fd35f;
   --warn: #ff9a3c;
   --bad: #ff6a4a;
-  --glass: rgba(11, 17, 27, 0.86);  /* every panel: a dark glass over whatever the canvas paints behind it */
+  --glass: rgba(11, 17, 27, 0.97);  /* every panel: a dark glass over the canvas, near opaque so the route, the crew's names and the planet do not print through (#853) */
   --light-x: 50%;  /* where the sun is, across the panel; set per render (UI.setLight) so the header is lit from its side */
   --font-label: "Chakra Petch", "Rajdhani", ui-sans-serif, system-ui, sans-serif;
   --font-body: "IBM Plex Mono", ui-monospace, "Courier New", monospace;
@@ -86,7 +86,7 @@ canvas { display: block; touch-action: none; }
 
 /* A tablet has the compact HUD strip (84px) across the top, so the panel sits below it. From 1000px the HUD is a sidebar. */
 @media (min-width: 700px) and (max-width: 999px) {
-  #panel:not(.event) { top: 84px; height: min(780px, calc(100vh - 92px)); }
+  #panel:not(.event) { top: 84px; margin-top: 0; height: calc(100vh - 92px); }  /* the whole height below the HUD strip, not capped and centred (#853) */
 }
 
 .eyebrow {
@@ -255,7 +255,8 @@ button {
 }
 button:hover:not(:disabled) { background: color-mix(in srgb, var(--accent) 16%, var(--panel-2)); border-color: color-mix(in srgb, var(--accent) 50%, var(--line)); }
 button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
-button:disabled { opacity: 0.35; cursor: default; }
+button:disabled { opacity: 0.55; cursor: default; }  /* about 4:1, still read as shut (#853) */
+.row > span > b + .hint { display: block; margin-top: 2px; }  /* a job's description under its title, not run on after it (the Missions page, #853) */
 button.active { background: color-mix(in srgb, var(--accent) 22%, var(--panel-2)); }
 button.primary { background: color-mix(in srgb, var(--good) 22%, var(--panel-2)); border-color: var(--good); color: #eaffea; }
 button.primary:hover { background: color-mix(in srgb, var(--good) 34%, var(--panel-2)); }
@@ -481,6 +482,7 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 
 /* Menus (js/menu.js) */
 .menu { padding: 24px 22px; max-width: 640px; margin: 0 auto; width: 100%; }
+#panel:has(> .menu.at-title) { right: 0; background: rgba(11, 17, 27, 0.72); }  /* the title has no HUD to sit beside, and the planet shows through (#853) */
 /* The menu is taller than a phone: it scrolls inside the panel (the page itself does not), and the
    New game buttons stay in reach at the bottom (menu.js marks them .sticky). */
 #panel:has(> .menu) { overflow-y: auto; -webkit-overflow-scrolling: touch; overscroll-behavior: contain; }
@@ -557,7 +559,7 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .con-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin: 0 4px 8px; color: var(--muted); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
 .con-head b { color: var(--text); font-weight: 600; }
 .con-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
-.con-screen { display: flex; align-items: center; background: #050a11; border: 1px solid var(--line-soft); border-radius: 6px; overflow: hidden; }
+.con-screen { display: flex; align-items: flex-start; background: #050a11; border: 1px solid var(--line-soft); border-radius: 6px; overflow: hidden; }
 .con-screen svg { display: block; width: 100%; height: auto; }
 .con-side { display: flex; flex-direction: column; gap: 10px; }
 .con-card { background: #050a11; border: 1px solid var(--line-soft); border-radius: 6px; padding: 10px; }
@@ -609,7 +611,6 @@ details.feeds .more { color: var(--accent); }
 .char-skill { grid-template-columns: 96px 1fr 12px 50px; gap: 5px; }
 .char-xp { text-align: right; white-space: nowrap; }
 .char-cap { grid-template-columns: 70px 1fr 48px; }
-.con-screen:has(.char-id) { align-items: flex-start; }
 .pips { display: flex; gap: 3px; } .pips u { flex: 1; height: 7px; background: #12202f; border-radius: 2px; text-decoration: none; } .pips u.on { background: var(--accent); }
 .con-read button.link, .con-part button.link { color: var(--text); padding: 0; }
 @container (min-width: 640px) { .char-id { grid-template-columns: 200px 1fr; } }
@@ -626,8 +627,8 @@ details.feeds .more { color: var(--accent); }
 .con-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
 .con-plant .lbl { display: block; }
 @container (max-width: 560px) { .con-plant .lbl { display: none; } }
-@container (min-width: 640px) {
-  .con-grid { grid-template-columns: 1fr 240px; }
+@container (min-width: 900px) {  /* the diagram takes the page's width up to here, so its 640-wide viewBox draws its words near their size, with the readouts under it (#853) */
+  .con-grid { grid-template-columns: 1fr 290px; }
   .con-chans { grid-template-columns: repeat(3, 1fr); }
 }
 /* Progress rows for projects and programs (projects.js, programs.js). */
@@ -647,6 +648,8 @@ details.feeds .more { color: var(--accent); }
    it is a column beside the page. */
 .shell { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .shell .body { min-width: 0; order: 1; }
+.shell .body:focus { outline: none; }  /* focus moves here on a room change (ui.js focusPage); a keyboard user gets a ring, a click does not (#853) */
+.shell .body:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
 .rail { order: 2; display: flex; flex-direction: column; gap: 4px; padding: 4px 12px 6px; flex-shrink: 0; background: var(--panel-2); border-top: 1px solid var(--line); }
 .rail-group { display: grid; grid-template-columns: 54px repeat(auto-fill, minmax(60px, 1fr)); gap: 4px; }  /* a phone: each group its own rows, its label in a column beside them (#852) */
 .rail-group h3 { grid-row: 1 / span 2; align-self: center; margin: 0; font-size: 12px; line-height: 1.3; }

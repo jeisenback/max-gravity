@@ -6,11 +6,12 @@
 // the crew orders and manual/crewed modes come later (issue #27).
 // Loaded before game.js; only calls into it at runtime.
 
+// The burn's keys go by the rail's names (shell.js RAIL), so a room is called one thing in port and on a burn (#853); the hold has no rail entry.
 const STATIONS = [
-  { id: 'nav', name: 'Navigation', short: 'Nav' },
-  { id: 'weapons', name: 'Weapons', short: 'Guns' },
-  { id: 'eng', name: 'Engineering', short: 'Eng' },
-  { id: 'interior', name: 'Interior', short: 'Deck' },
+  { id: 'nav', name: 'Bridge', short: 'Bridge' },
+  { id: 'weapons', name: 'Gunnery', short: 'Guns' },
+  { id: 'eng', name: 'Engine', short: 'Eng' },
+  { id: 'interior', name: 'Crew', short: 'Crew' },
   { id: 'comms', name: 'Comms', short: 'Comms' },
   { id: 'ops', name: 'Operations', short: 'Ops' },
 ];
@@ -150,7 +151,7 @@ function deckSvg() {
   for (const c of crewMembers()) if (!holders.has(c)) placed.push({ room: homeRoom(c.role), o: { who: c } });
   const rooms = ROOMS.map(r => {
     const y0 = r.deck === 0 ? top + 4 : r.tall ? top + 4 : mid + 4, y1 = r.deck === 0 ? mid - 4 : bottom - 4, floor = r.deck === 0 ? mid - 12 : bottom - 12, w = (r.x1 - r.x0) * 580;
-    let out = `<rect x="${X(r.x0) + 1}" y="${y0}" width="${w - 2}" height="${y1 - y0}" rx="4" fill="#0a1320" stroke="#34506e"/><text class="lbl" x="${X(r.x0) + 6}" y="${y0 + 13}" fill="#7f95ab" font-size="9" letter-spacing="1">${r.name.toUpperCase()}</text>`;
+    let out = `<rect x="${X(r.x0) + 1}" y="${y0}" width="${w - 2}" height="${y1 - y0}" rx="4" fill="#0a1320" stroke="#34506e"/><text class="lbl" x="${X(r.x0) + 6}" y="${y0 + 13}" fill="#7f95ab" font-size="11" letter-spacing="1">${r.name.toUpperCase()}</text>`;
     if (r.id === 'berths') {
       const n = Math.min(6, ship().berths), used = berthsUsed(), cols = Math.ceil(n / 2);
       out += Array.from({ length: n }, (_, i) => `<rect x="${(X(r.x0) + (X(r.x1) - X(r.x0)) * (Math.floor(i / 2) + 0.5) / cols - 12).toFixed(1)}" y="${y0 + 22 + (i % 2) * 20}" width="24" height="12" rx="2" fill="${i < used ? '#1d3a5c' : 'none'}" stroke="#34506e"/>`).join('');
@@ -160,7 +161,7 @@ function deckSvg() {
     return out + who.map((q, i) => {
       const row = Math.floor(i / perRow), inRow = Math.min(perRow, who.length - row * perRow), cx = (X(r.mid) + ((i % perRow) - (inRow - 1) / 2) * 24).toFixed(1), cy = floor - row * 24;
       if (!q.o) return `<circle cx="${cx}" cy="${cy}" r="10" fill="none" stroke="#4b617a" stroke-dasharray="4 4"/>`;
-      if (q.o.you) return `<circle class="person" cx="${cx}" cy="${cy}" r="10" fill="#12202f" stroke="#5fd35f" stroke-width="3"/><text x="${cx}" y="${cy + 3}" fill="#d4e4f5" font-size="8" text-anchor="middle">YOU</text>`;
+      if (q.o.you) return `<circle class="person" cx="${cx}" cy="${cy}" r="10" fill="#12202f" stroke="#5fd35f" stroke-width="3"/><text x="${cx}" y="${cy + 3}" fill="#d4e4f5" font-size="11" text-anchor="middle">YOU</text>`;
       const c = q.o.who;
       const clip = `face-${String(c.id).replace(/\W/g, '')}-${i}`;  // the portrait, cut to the token's circle, inside the mood ring
       return (`<clipPath id="${clip}"><circle cx="${cx}" cy="${cy}" r="10"/></clipPath><g class="face" ` +

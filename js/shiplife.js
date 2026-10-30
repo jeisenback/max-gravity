@@ -402,10 +402,14 @@ function drawCutaway(cx, cy, maxL) {
   ctx.fillStyle = '#5b7896';
   ctx.font = `600 12px ${LABEL_FONT}`;
   ctx.textAlign = 'center';
-  for (const r of ROOMS) {  // a name too long for a narrow room is cut to three letters
-    const name = r.name.toUpperCase();
-    ctx.fillText(ctx.measureText(name).width < span(r.x0, r.x1) - 4 ? name : name.slice(0, 3), X(r.mid), r.deck === 0 || r.tall ? top + 14 : mid + 13);
+  for (const r of ROOMS) {  // a name too long for a narrow room is drawn smaller, down to 9px, and only then cut to three letters (#853)
+    const name = r.name.toUpperCase(), room = span(r.x0, r.x1) - 4;
+    let px = 12;
+    for (; px > 9; px--) { ctx.font = `600 ${px}px ${LABEL_FONT}`; if (ctx.measureText(name).width < room) break; }
+    ctx.font = `600 ${px}px ${LABEL_FONT}`;
+    ctx.fillText(ctx.measureText(name).width < room ? name : name.slice(0, 3), X(r.mid), r.deck === 0 || r.tall ? top + 14 : mid + 13);
   }
+  ctx.font = `600 12px ${LABEL_FONT}`;
 
   // Engine: the reactor, brighter under thrust, with its coolant lines and a console.
   const eng = roomAt('engine'), glow = (burning ? 0.9 : 0.35) * (0.9 + 0.1 * Math.sin(G.time * 6));
