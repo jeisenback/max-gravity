@@ -137,7 +137,7 @@ function roomBerths(ctx, r, s, X, W) {
   if (W >= 260) {
     const [sx, sy] = hangEnd(X(0.66), F - 60, 10, 1.3, w, time, s.still); ctx.strokeStyle = '#ddd'; ctx.lineWidth = 1; roomSeg(ctx, [[X(0.66), F - 60], [sx, sy]]); roomBox(ctx, sx - 3, sy, 6, 9, '#c84a3a');
   }
-  roomCouch(ctx, X(0.93), F, w.burn > 0.5);
+  roomCouch(ctx, X(0.93), F, false);  // stowed: in the hard burn the cutaway deploys one under each person (shiplife.js)
 }
 
 function roomGalley(ctx, r, s, X, W) {
@@ -210,7 +210,7 @@ function roomBridge(ctx, r, s, X, W) {
   }
   if (W >= 180) { const bob = Math.sin(time * 6) * (2 * w.cruise + 4 * w.flip) - 1.5 * w.burn, bx = X(0.5); roomBox(ctx, bx, F - 46, 6, 6, '#ffb347'); roomDot(ctx, bx + 3, F - 50 + bob, 4, '#e0b48e'); }
   if (W >= 200) { const lx = X(0.04); roomBox(ctx, lx, F - 94, 34, 26, '#2a2016'); roomBox(ctx, lx + 3, F - 91, 28, 20, '#e8e0c8'); worldText(ctx, s.zoom, 'MASTER', lx + 4, F - 77, 9, '#3a3226'); }
-  roomCouch(ctx, X(0.4), F, w.burn > 0.5);
+  roomCouch(ctx, X(0.4), F, false);
 }
 
 function roomHold(ctx, r, s, X, W) {

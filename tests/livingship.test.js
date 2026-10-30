@@ -71,7 +71,7 @@ test('a hull shorter than the view sits in the middle and does not jitter', () =
   const a = camStep(null, 100, 0.1, 1200, 960), b = camStep(a, 900, 0.1, 1200, 960); assert.equal(a, 960 * 0.51); assert.equal(b, a);
 });
 test('the zoom fits both decks in the box; the outline finds every room, and nothing outside it', () => {
-  const v = viewOf({ x: 0, y: 0, w: 864, h: 311 }); assert.ok(Math.abs(v.zoom - 1.244) < 0.01); assert.ok(Math.abs(v.span - 864 / v.zoom) < 1e-9);
+  const v = viewOf({ x: 0, y: 0, w: 864, h: 311 }); assert.ok(Math.abs(v.zoom - 311 / 290) < 1e-9); assert.equal(v.y, 83); assert.ok(Math.abs(v.span - 864 / v.zoom) < 1e-9);
   const o = outlineLayout({ x: 100, y: 50, w: 864, h: 311 }, 1600);
   for (const r of o.rooms) assert.equal(outlineRoomAt(o, r.x + r.w / 2, r.y + r.h / 2), r.id);
   assert.equal(o.rooms.length, ROOMS.length); assert.equal(outlineRoomAt(o, o.x - 4, o.y - 4), null);

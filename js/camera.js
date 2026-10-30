@@ -7,10 +7,11 @@ const HULL = { deck: 100, plate: 12, length: 1600, skin: 12 };  // world units: 
 const hullLength = size => HULL.length * Math.min(1, 0.6 + 0.4 * (size - 10) / 8);  // size 18 and up is the full length, size 10 is 0.6 of it
 const floorY = dk => HULL.deck + dk * (HULL.deck + HULL.plate);  // the floor of deck 0 is 100, of deck 1 is 212, linear between
 
-// Both decks (250 world units tall) fit the box high; the width then says how much of the ship is in view.
+// The box is 290 world units high: the hull (-12 to 224) in the lower part, and a band of 50 above it that holds the outline. The width
+// then says how much of the ship is in view; y is the world y at the box's centre.
 function viewOf(box) {
-  const zoom = box.h / 250;
-  return { zoom, span: box.w / zoom };
+  const zoom = box.h / 290;
+  return { zoom, span: box.w / zoom, y: 228 - 145 };
 }
 
 // One step of the camera toward a target x. A null camera snaps; a hull shorter than the view sits in the middle.

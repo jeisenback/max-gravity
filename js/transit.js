@@ -563,7 +563,7 @@ function drawTransit(W, H) {
   drawCutaway(shipBox);
   G.burnBoxes = { ship: shipBox };  // where each block was drawn, for the test (#262)
   if (destBox) G.burnBoxes.dest = destBox;
-  G.lifeY = shipBox.y + shipBox.h + 14 + 40 * k;  // downtime buttons sit below it
+  G.lifeY = shipBox.y + shipBox.h + 14;  // downtime buttons sit below it
 
   // Route, on a plate so the star streaks do not run through the title and the clock (#262)
   const plateW = Math.min(viewW - 24, 640);

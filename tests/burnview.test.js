@@ -233,6 +233,21 @@ test('a tap on a room opens its console as a sheet, and a second tap on the room
       assert.equal(await ev(() => G.bridgeOpen), null, `${id}: a second tap closes it`);
     }
   }
+  // And a room in view: the point of its box farthest from everyone, clear of the outline, so a tap there is the room's.
+  await ev(() => { G.bridgeOpen = null; });
+  await frames(page);
+  const v = await ev(() => {
+    let best = null;
+    for (const b of G.cutRooms) for (let fx = 0.15; fx <= 0.85; fx += 0.1) for (let fy = 0.15; fy <= 0.85; fy += 0.1) {
+      const x = b.x + b.w * fx, y = b.y + b.h * fy, d = Math.min(99, ...G.cutHits.map(h => Math.hypot(x - h.x, y - h.y)));
+      if (!outlineRoomAt(G.cutOutline, x, y) && (!best || d > best.d)) best = { x, y, d, id: b.id };
+    }
+    return best;
+  });
+  assert.ok(v.d > 24, `a point in view clear of people (${Math.round(v.d)}px)`);
+  await page.mouse.click(v.x, v.y);
+  await frames(page);
+  assert.equal(await ev(() => G.bridgeOpen), await ev(id => roomSheet(id), v.id), `${v.id} in view: its sheet is open`);
   await done();
 });
 

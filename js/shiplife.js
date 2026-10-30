@@ -328,12 +328,14 @@ const CUTAWAY_ASPECT = { wide: 0.36, narrow: 0.6 };
 const PLUME = { base: 0.28, gain: 0.32, flicker: 14, halo: 0.7, cone: 0.16 };
 // The two drive bells on the stern (the top and bottom of each, world units), and the room the camera may show aft of the hull for them.
 const CUT_BELLS = [[28, 72], [140, 184]], CUT_STERN = 120;
+// The tanks in the lower nose (drawn as a room of their own by rooms.js).
+const CUT_TANKS = { x0: 0.66, x1: 0.9, deck: 1 };
 // The bulkheads of each deck as shares of the length: those with a hatch at the floor, and the nose's end wall.
 const CUT_WALLS = [{ dk: 0, hatch: [0.17, 0.44, 0.66, 0.78], end: 0.92 }, { dk: 1, hatch: [0.17, 0.4, 0.66], end: 0.9 }];
 
 // A room's box in world units: the engine room is the full height of the stern; the lower deck's ceiling is under the upper deck's plate.
 const cutRect = (r, len) => ({ x0: r.x0 * len, x1: r.x1 * len, top: r.tall || r.deck === 0 ? 0 : floorY(0) + HULL.plate, floor: floorY(r.tall ? 1 : r.deck) });
-function cutBulkhead(x, top, F, hatch) {
+function cutBulkhead(ctx, x, top, F, hatch) {
   ctx.fillStyle = '#1a3048'; ctx.fillRect(x - 6, top, 12, F - top);
   if (hatch) { ctx.fillStyle = '#060d16'; ctx.fillRect(x - 4, F - 92, 8, 92); ctx.fillStyle = '#2a4664'; ctx.fillRect(x - 6, F - 96, 12, 4); ctx.fillStyle = '#c9a227'; ctx.fillRect(x - 4, F - 4, 4, 4); }
 }
@@ -351,14 +353,14 @@ function drawCutaway(box) {
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
   const turn = -Math.sin(t.angle), spin = t.angle + Math.PI / 2;  // turn: 1 before the flip, -1 after, 0 mid-turn; spin: the ship's turn, 0 to pi
   const X = f => f * len, top = -12, H = 236, cy = top + H / 2;
-  const bcx = box.x + box.w / 2, bcy = box.y + box.h / 2, toScreen = (x, y) => ({ x: bcx + (x - camX) * zoom, y: bcy + (y - cy) * zoom });
+  const bcx = box.x + box.w / 2, bcy = box.y + box.h / 2, toScreen = (x, y) => ({ x: bcx + (x - camX) * zoom, y: bcy + (y - view.y) * zoom });
   const speed = 0.05 + Math.sin(Math.PI * pr) * 0.6, shake = !still && !t.event && speed > 0.2 ? speed * 0.9 : 0;
   const seen = (a, b) => b >= camX - half && a <= camX + half;
 
   ctx.save();
   ctx.beginPath(); ctx.rect(box.x, box.y, box.w, box.h); ctx.clip();
   ctx.translate(bcx + Math.sin(G.time * 53) * 0.5 * shake, bcy + Math.sin(G.time * 71 + 1) * 0.8 * shake);  // a shiver, not a random draw: the game's random is seeded in the tests
-  ctx.scale(zoom, zoom); ctx.translate(-camX, -cy);
+  ctx.scale(zoom, zoom); ctx.translate(-camX, -view.y);
 
   // The drive plume from the two bells, and the thrusters puffing at nose and stern while the ship turns.
   if (burning) {
@@ -395,11 +397,11 @@ function drawCutaway(box) {
   const cap = ship().cargo, nb = Math.min(12, ship().berths), slots = new Map();
   for (const p of people) if (slots.size < nb && isAsleep(p)) slots.set(p, slots.size);  // whoever is turned in lies on a bunk
   const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size };
-  for (const [id, r] of [...ROOMS.map(r => [r.id, r]), ['tanks', { x0: 0.66, x1: 0.9, deck: 1 }]]) {
+  for (const [id, r] of [...ROOMS.map(r => [r.id, r]), ['tanks', CUT_TANKS]]) {
     const q = cutRect(r, len);
     if (seen(q.x0, q.x1)) drawRoom(ctx, id, q, s);
   }
-  roomWalls(ctx, cutRect({ x0: 0.6, x1: 0.66, deck: 1 }, len), w, time, still);  // between the medbay and the tanks
+  roomWalls(ctx, cutRect({ x0: roomAt('medbay').x1, x1: CUT_TANKS.x0, deck: 1 }, len), w, time, still);  // the ladder well, between the medbay and the tanks
   const lx = X(LADDER);
   ctx.fillStyle = '#060d16'; ctx.fillRect(lx - 14, floorY(0), 28, HULL.plate);
   ctx.strokeStyle = '#4a6a8a'; ctx.lineWidth = 2;
@@ -409,11 +411,19 @@ function drawCutaway(box) {
   ctx.stroke();
   for (const d of CUT_WALLS) {
     const q = cutRect({ x0: 0, x1: 0, deck: d.dk }, len);
-    for (const f of d.hatch) cutBulkhead(X(f), q.top, q.floor, true);
-    cutBulkhead(X(d.end), q.top, q.floor, false);
+    for (const f of d.hatch) cutBulkhead(ctx, X(f), q.top, q.floor, true);
+    cutBulkhead(ctx, X(d.end), q.top, q.floor, false);
   }
-  for (const r of ROOMS) worldText(ctx, zoom, r.name.toUpperCase(), X(r.x0) + 12, cutRect(r, len).top + 34, 14, '#5a7088');
-  drawThrustSign(ctx, X(roomAt('galley').x1), 10, burnState().g, w, G.time, zoom);  // over the galley's forward hatch
+  ctx.font = `600 13px ${roomFont}`;
+  for (const r of ROOMS) {  // each name at 13px on a dark plate, so it reads over the props behind it
+    const name = r.name.toUpperCase(), nx = X(r.x0) + 12, ny = cutRect(r, len).top + 34, fs = 13 / zoom, pad = 4 / zoom;
+    ctx.fillStyle = 'rgba(6,13,22,0.8)'; ctx.fillRect(nx - pad, ny - fs, ctx.measureText(name).width / zoom + pad * 2, fs * 1.3);
+    worldText(ctx, zoom, name, nx, ny, fs, '#7f97b0');
+  }
+  // The thrust sign over the galley's forward hatch, on the galley's side (clear of the gunnery's name), scaled up where the camera is far
+  // enough out that its text would be under 12px.
+  const sk = Math.max(1, 1.05 / zoom);
+  ctx.save(); ctx.translate(X(roomAt('galley').x1) - 6 - 56 * sk, 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, burnState().g, w, G.time, zoom * sk); ctx.restore();
 
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
   ctx.font = `600 12px ${roomFont}`;
@@ -424,6 +434,7 @@ function drawCutaway(box) {
     dots.push({ x: X(p.x), deck: p.dk, color: ROLE_COLORS[p.role] });
     if (Math.abs(x - camX) > half + 60) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = Math.abs(x - camX) <= half;
+    if (pose.name === 'couch') roomCouch(ctx, x, y, true);  // a crash couch, deployed under each person in the hard burn
     const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], face: inView && !asleep && p.role !== 'cat' ? faceImage(p) : null, floating: ph === 'float' });
     if (pose.name === 'tether') {  // a line to a ring on the nearest bulkhead
       const d = CUT_WALLS[dk], bx = X([...d.hatch, d.end].reduce((a, b) => (Math.abs(b - p.x) < Math.abs(a - p.x) ? b : a))), rx = bx + Math.sign(x - bx) * 6, ry = floorY(dk) - 60;
