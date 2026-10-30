@@ -1400,7 +1400,7 @@ const PEOPLE_LINES = {
     'open.2': 'You find {n} in the corridor with the terminal pressed flat against their chest and their eyes shut. Then they hold it out to you: {news}. "I had to tell somebody," {n} says. "You were closest."',
     'open.3': '{n} has been humming since the start of watch. You ask why, and {n} hands you the terminal: {news}. {n} stands there while you read it.',
     'open.4': '{n} slides the terminal across the galley table without a word and watches you read it. The message: {news}. "Third time I\'ve read it," {n} says. "It still says that."',
-    'open.5': 'Over the intercom, {n}: "Captain, can you come aft? It\'s not an emergency." You find {n} at the engine room hatch with the terminal. The message: {news}. {n} is grinning at the deck.',
+    'open.5': 'Over the intercom, {n}: "Can you come aft? It\'s not an emergency." You find {n} at the engine room hatch with the terminal. The message: {news}. {n} is grinning at the deck.',
     'open.6': 'The message came in at the last port, and {n} carried it for a watch before saying anything. At the galley table {n} says it: {news}. Somebody at the table drops a spoon.',
     'open.7': '{n} is waiting for you at the end of the watch, rocking on their heels. "Captain, do you have a minute?" The terminal is already out: {news}. "That\'s all," {n} says. "That\'s the whole thing."',
     'c0.label': 'Break out something to celebrate',

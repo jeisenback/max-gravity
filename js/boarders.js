@@ -30,8 +30,8 @@ const FIGHT_END = {
     takenNavy: 'They\'re on the bridge. Captain {last} surrenders the ship to the {gov} Navy, and the boarding officer writes a levy of {cr} cr against the ship\'s fund, which is collected on the spot.{hold} The cutter lets you go, with a citation.',
     captainLost: 'They\'re on the bridge. Captain {last} is at the console and doesn\'t give them the code, so they take it. They take {cr} cr of the ship\'s fund and go.{hold} The ship still flies. Captain {last} doesn\'t get up.' },
   assault: { last: 'The last of her people goes down at the console, and the bridge is quiet.', broke: 'Most of her people are down, and the rest back away from the hatch with their hands open.',
-    took: 'Her captain puts the weapon down. Her strongbox is under the plot table, and {cr} cr of it goes into the ship\'s fund. Captain {last} has the cutter cast off while her people are still being counted. (+5 experience at the {post} post.)',
-    driven: 'You\'re driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she\'s still drifting.' },
+    took: 'Her captain puts the weapon down. Her strongbox is under the plot table, and {cr} cr of it goes into the ship\'s fund. Captain {last} has the boat cast off while her people are still being counted. (+5 experience at the {post} post.)',
+    driven: 'You\'re driven back to the lock, and the boat pulls away with the door half closed. Her drive is dead and she\'s still drifting.' },
 };
 // Boarding her: the same three places from the other side, named from her bridge (0) to her lock (2).
 const ASSAULT_TITLES = ['Her Bridge', 'Her Corridor', 'Her Lock'];
@@ -40,7 +40,7 @@ const ASSAULT_OPENINGS = [
     `There's one door left. It's thin, and the light under it moves. Whatever is on her bridge has heard you coming for some time.`],
   [`You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.`,
     `Her corridor is dark and the deck is tilted a few degrees, because her gravity plates are out. They're at the galley hatch. You can hear a gun being checked.`],
-  [`The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.`,
+  [`The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.`,
     `Her lock is wide open and empty, and nobody has fired. Beyond the inner door there's a corridor, and in the corridor somebody's waiting.`],
 ];
 const REPEL_HURT = { lose: 0.45 };  // the chance the hand is hurt in a contested section, before the suit (fight.js DECK.SUIT)
@@ -258,7 +258,7 @@ function assaultSettle(s, won, lost) {
     changeRep('Pirate', -3);
     foe.dead = true;
     const where = POSTS[post].name.toLowerCase();
-    if (!cap) return `Her captain puts the weapon down. Her strongbox is under the plot table, and ${fmt(take)} cr of it goes into your credits. You have the cutter cast off while her people are still being counted. (+5 experience at the ${where} post.)${lost}`;  // the owner's own words
+    if (!cap) return `Her captain puts the weapon down. Her strongbox is under the plot table, and ${fmt(take)} cr of it goes into your credits. You have the boat cast off while her people are still being counted. (+5 experience at the ${where} post.)${lost}`;  // the owner's own words
     return `${endWords(s, 'took', { cr: fmt(take), last: cap.last, post: where })}${lost}`;
   }
   if (cap) like(cap, -1, repelWords(s, 'memory.left', ASSAULT_MEMORY.left));

@@ -16,13 +16,14 @@ const knownMoves = c => (c && c.moves) || [];
 // The start: the contact's own logic (a patrol's standing, the flee roll, the first fight explained once), then the fight. Returns what to show now
 // and queues the panel. `o.edge` (the contact's move, an ambush) is a free first volley, ours ahead and hers behind; `o.shift` is km that move opened
 // or closed the range by (range.js); `o.text` and `o.open` replace the opening line and the first line of the log.
+const fleeOdds = () => 0.4 + 0.12 * roleSkill('pilot');  // a run from a contact gets away, by the pilot's skill; a run that fails costs hull and fights (the label says so: engage.js)
 function startShipFight(spec, flee, o = {}) {
   const st = G.state, foe = makeEnemy(spec), style = RAID_STYLE[foe.shipId] || 'grapple';
   const s = { spec, foe, style, edge: o.edge || 0, d: { foe, foeHp: 0 }, hurt: new Set(), dead: [], marked: [], youHurt: false, known: hired() && lockPost() === 'gunner' ? knownMoves(career()) : [] };  // known: the moves this fight offers
   if (spec.kind === 'patrol' && !flee) changeRep(spec.gov, -8);  // firing on a navy ship is not forgotten
   let text = o.text || fightSay('start.text', { ship: theShip(foe) });
   if (flee) {
-    if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) return `${fightSay('flee.away', { helm: helmName() })}${runCost()}`;
+    if (Math.random() < fleeOdds()) return `${fightSay('flee.away', { helm: helmName() })}${runCost()}`;
     st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.08));
     s.edge = -1;
     text = fightSay('flee.caught', { helm: helmName(), ship: theShip(foe).replace(/^The/, 'the') });
@@ -341,7 +342,7 @@ function deckTurn(s, p) {
   }
   for (const e of r.events.filter(x => x.kind === 'exchange' || x.kind === 'charge')) for (let n = 0; n < e.mine; n++) { const line = deckLoss(s, sent); sent = null; if (line) after.push(line); }
   const missed = r.events.find(e => e.kind === 'shoot' && e.nobody);  // a shot with none of them there, as a steady one says: where the hand stands, or the section it was aimed at
-  if (missed) after.push(missed.aimed ? fightSay('deck.nobody.aim', { at: at(missed.at) }) : fightSay('deck.nobody.you'));
+  if (missed) { const line = missed.aimed ? fightSay('deck.nobody.aim', { at: at(missed.at) }) : fightSay('deck.nobody.you'); if (!after.includes(line)) after.push(line); }  // said once a turn, though an ability and the shot both find none (#854)
   if (r.events.some(e => e.kind === 'hurt' && e.hurt)) after.push(repelCasualty(s, 'you'));  // the hand's hurt, which a friend may take (once a fight)
   s.state.log.push(`${fightSay('deck.log.turn', { n: s.state.turn, what: said.length ? said.join(', ') : fightSay('deck.log.none') })}${after.length ? ` ${after.join(' ')}` : ''}`);
   if (s.handDied) return null;  // the hand is dead: the ending is queued (boarders.js)

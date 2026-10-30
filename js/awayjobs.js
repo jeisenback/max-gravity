@@ -135,7 +135,7 @@ function pitchScene(a) {
         return say('win', { react: r.n === 2 ? say(`${p.id}.yes`) : say('win.weighs'), line: r.line, system: SYSTEMS[a.sid].name, planet: a.planet }).replace(/\s+/g, ' ');
       }
       like(cap, r.n < 0 ? -1 : 0, say('lose.memory'));
-      return say('lose', { react: r.n < 0 ? say(`${p.id}.no`) : say('lose.weighs'), line: r.line }).replace(/\s+/g, ' ');
+      return say('lose', { react: r.n < 0 ? say(`${p.id}.no`) : say('lose.weighs'), line: r.n < 0 ? r.line : '' }).replace(/\s+/g, ' ');  // on a no, only a line of dislike: a liking reads as an offer (#854)
     } };
   });
   choices.push({ label: say('never.label'), run: () => say('never.result') });

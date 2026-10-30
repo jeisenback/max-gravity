@@ -369,13 +369,14 @@ function askSwap(post) {
 }
 let M_NOTE = () => {};
 
+// Your own post first (#854), then the others you could ask for.
 function swapHtml() {
-  const h = hired(), cap = bossFor('swap'), asked = h.asked === G.state.day;
-  return `<div class="post"><div class="eyebrow">Your posts &middot; ${esc(bossName(cap))} decides</div>
-    ${HIRED_POSTS.map(p => `<div class="row"><span><b>${POSTS[p].name}</b>${p === h.post ? ' <span class="tag good">yours</span>' : ''} <span class="hint">level ${skillLevel(p)} (${skillXp(p)} points)</span></span>
-      ${p === h.post ? '' : `<button data-action="swapPost" data-arg="${p}" ${asked ? 'disabled' : ''}>Ask to move (${Math.round(swapOdds(p) * 100)}%)</button>`}</div>`).join('')}
+  const hd = hired(), cap = bossFor('swap'), asked = hd.asked === G.state.day, posts = [hd.post, ...HIRED_POSTS.filter(p => p !== hd.post)];
+  return String(h`<div class="post"><div class="eyebrow">Your posts &middot; ${bossName(cap)} decides</div>
+    ${listHtml(posts, p => h`<div class="row"><span><b>${POSTS[p].name}</b>${p === hd.post ? h` <span class="tag good">yours</span>` : ''} <span class="hint">level ${skillLevel(p)} (${skillXp(p)} points)</span></span>
+      ${p === hd.post ? '' : h`<button data-action="swapPost" data-arg="${p}" ${asked ? 'disabled' : ''}>Ask to move (${Math.round(swapOdds(p) * 100)}%)</button>`}</div>`)}
     <p class="hint">Your work at a post teaches you, and what you learn stays with you. They decide, by how far they trust you and what you know. ${asked ? 'You have asked already; ask again after the next run.' : ''}</p>
-  </div>`;
+  </div>`);
 }
 
 const crewView = UI.views.crew;

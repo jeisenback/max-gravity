@@ -170,7 +170,7 @@ CAST.pilar = {
 // The first arrival (captains.js arrivalScene): Pilar settles up at the foot of the ramp.
 CAST.pilar.arrival = {
   open: 'Pilar comes down the ramp last, with the ledger in one hand and a spanner in the other, and puts both on the nearest crate. She opens the book with the spanner.',
-  memory: '"First pay I ever drew on a hauler," Pilar says, "the purser counted it into my hand and told me I wouldn\'t see that much again. I saw it again in March." She taps the page. "Yours has gone to your account. Look at the header."',
+  memory: '"First pay I ever drew on a hauler," Pilar says, "the purser counted it into my hand and told me I wouldn\'t see that much again. I saw it again in March." She taps the page. "Yours has gone to your account. It\'s in your savings."',
   column: '"That column is {cap}\'s," Pilar says. "I\'ve never been in it."',
   pace: '"A season of good runs," Pilar says. "Most seasons don\'t have that many."',
 };

@@ -177,7 +177,7 @@ CAST.ansel.arrival = {
   open: 'Ansel is waiting at the foot of the ramp in his coat, with the ledger held flat against his chest like a tray. He opens it at the right page and holds it out.',
   memory: ('"There are three numbers," Ansel says. "The forecast, the result, and a third that I keep for myself, which is what the run would have ' +
       'paid if something had gone wrong. It\'s smaller than people like. I won\'t show you that one." He turns the book toward you. "Yours is in your ' +
-      'account. Look at the header."'),
+      'account. It\'s in your savings."'),
   column: '"That column is {cap}\'s," Ansel says. "I\'ve advised against it, and it\'s hers to keep."',
   pace: '"A season, if the runs hold," Ansel says. "I\'ve written down what happens if they don\'t. It\'s a longer number."',
 };

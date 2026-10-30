@@ -130,10 +130,10 @@ function iceStageScene(n) {
   const own = { odds: postOdds(post), win: spec.win, lose: spec.lose };
   choices.push({ label: `[${POSTS[post].name}] ${spec.label}${iceCostNote(own)}`, run: () => iceStep(n, own, post) });
   const runNo = h.iceRuns || 1, opening = runNo < 2 ? [line(o.text, stage.open[0]), line(o.text2, stage.open[1])] : null;  // the editor's openings are the first run's
-  return { title: o.title || stage.title, personal: true, via: 'crew', owner: 'you', text: `${opening ? opening[ice.round % 2 || 0] : iceOpening(stage, n, ice.round, runNo, h.flags || {})}</p><p>The haul so far: ${iceHaulWord(ice.edge)}. Armor ${st.armor}/${ship().armor}.`, choices };
+  return { title: o.title || stage.title, personal: true, via: 'crew', owner: 'you', text: `${opening ? opening[ice.round % 2 || 0] : iceOpening(stage, n, ice.round, runNo, h.flags || {})}</p><p>The haul so far, which sets what the ice fetches: ${iceHaulWord(ice.edge)}. Armor ${st.armor}/${ship().armor}.`, choices };
 }
 // What a choice can cost, from what it declares: its odds, a lost roll's hull cost (and the casualty that can come with it), and a bold call the captain marks.
-const iceCostNote = c => costNote({ hull: (c.lose || c.win)[1] > 0, marks: !!c.bold }, c.odds);
+const iceCostNote = c => costNote({ hull: (c.lose || c.win)[1] > 0, haul: (c.lose || c.win)[0] < 0, marks: !!c.bold }, c.odds);  // a lost roll that takes from the haul says so (#854)
 // What the first scene of a later run says of the last haul (the captain's flags, set by iceHome); the first run says nothing.
 const ICE_LAST = { clean: 'The log from the last haul is still open on the captain\'s console, with one word in it: clean.',
   bad: 'The last haul isn\'t in the log, and the captain hasn\'t brought it up.', even: 'The last haul went into the log with no remark.' };

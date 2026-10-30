@@ -114,7 +114,7 @@ function arrivalScene() {
   const h = hired(), f = h.first, xo = hiredXo(), a = CAST[xo.cast].arrival, cap = hiredCaptain(), say = (key, vars) => sceneSay('scene:settling-up', key, { cap: cap.first, ...vars });
   const own = k => lineWords('scene:settling-up', `${xo.cast}.${k === 'memory' ? 'recall' : k}`, a[k]).replace(/\{cap\}/g, cap.first);  // the first officer's own words (hiredscenes.js settlingLines)
   const ledger = [
-    f.good ? say('ledger.cargo', { tons: f.tons, good: f.good, cost: fmt(f.cost), revenue: fmt(f.revenue), net: say(f.profit < 0 ? 'ledger.loss' : 'ledger.clear'), profit: fmt(Math.abs(f.profit)), forecast: isFinite(f.forecast) ? say('ledger.forecast', { forecast: fmt(f.forecast) }) : '' }) : say('ledger.none'),
+    f.good ? say(f.cost ? 'ledger.cargo' : 'ledger.contract', { tons: f.tons, good: f.good, cost: fmt(f.cost), revenue: fmt(f.revenue), net: say(f.profit < 0 ? 'ledger.loss' : 'ledger.clear'), profit: fmt(Math.abs(f.profit)), forecast: isFinite(f.forecast) && f.forecast !== f.profit ? say('ledger.forecast', { forecast: fmt(f.forecast) }) : '' }) : say('ledger.none'),
     say('ledger.wage', { days: f.days, wage: fmt(f.wage), share: fmt(f.share) }),
     ...(f.hall ? [say('ledger.hall', { pct: Math.round(DEBT_SHARE * 100), hall: fmt(f.hall), owed: fmt(f.owed) })] : []),
   ].join('<br>');

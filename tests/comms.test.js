@@ -141,7 +141,7 @@ test('muting market tips hides them from the burn feed and the inbox, but they s
     out.back = Settings.quiet.market;
     return out;
   });
-  assert.deepEqual(r.loud, { feed: 1, inbox: 1, rumors: 1 });
+  assert.deepEqual(r.loud, { feed: 0, inbox: 1, rumors: 1 }, 'a hand, who does not trade, gets the tip in the inbox and not the feed (#854)');
   assert.equal(r.muted, true);
   assert.equal(r.quiet.feed, 0, 'no feed line while muted');
   assert.equal(r.quiet.rumors, 2, 'but the tip is still in force');

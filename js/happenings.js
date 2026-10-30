@@ -53,8 +53,8 @@ Mods.register({
         const t = G.transit, progress = 1 - t.left / t.total;
         const told = procedural().find(f => f.p.news);
         if (told) out.push({ tier: 1, weight: BURN_WEIGHTS.news, via: 'message', make: () => newsEvent(told.p) });
-        const o = (t.occasions || []).find(x => !x.done && x.at <= progress);
-        if (o) out.push({ tier: 1, weight: o.kind === 'ice' ? BURN_WEIGHTS.iceOccasion : BURN_WEIGHTS.occasion, via: 'crew', make() { o.done = true; return occasionEvent(o); } });
+        const o = (t.occasions || []).find(x => !x.done && x.at <= progress && !occasionPlayed(x));
+        if (o) out.push({ tier: 1, weight: o.kind === 'ice' ? BURN_WEIGHTS.iceOccasion : BURN_WEIGHTS.occasion, via: 'crew', make() { o.done = true; markOccasion(o); return occasionEvent(o); } });
         out.push({ tier: 1, weight: BURN_WEIGHTS.welcomeBack, via: 'crew', make: welcomeBack });
         const weak = worstPart();
         if (condition()[weak] < BREAKDOWN_BELOW) out.push({ tier: 1, weight: BURN_WEIGHTS.breakdown, via: 'crew', make: () => Math.random() < 0.5 ? breakdownEvent(weak) : null });

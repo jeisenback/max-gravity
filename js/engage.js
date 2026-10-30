@@ -84,7 +84,7 @@ function contactEvent(spec) {
   // A crewed gunner fights it; with none, you take the guns yourself.
   const choices = [
     { label: contactSay('fight.label', { gunner: gunnerLabel() }), fight: true, run: () => startDuel(spec, false) },
-    { label: contactSay('run.label'), run: () => startDuel(spec, true) },
+    { label: `${contactSay('run.label')}${lockPost() && ['pirate', 'patrol'].includes(spec.kind) ? costNote({ sent: 'hull damage, and the fight anyway' }, fleeOdds()) : ''}`, run: () => startDuel(spec, true) },  // the odds and the cost of the turn-based fight's run (fightui.js, #854)
   ];
   if (spec.kind === 'pirate') {
     choices.push({ label: contactSay('pay.label'), cost: true, ...gated(needCr(5000)), run() {

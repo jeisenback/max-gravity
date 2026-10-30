@@ -320,6 +320,16 @@ function planOccasions() {
   if (hired() && hired().run && hired().run.ice) ICE_AT.forEach((at, stage) => t.occasions.push({ kind: 'ice', stage, at }));  // the ice run's three scenes (icerun.js)
 }
 
+// A dated occasion plays once, whatever plans it again (the play-through saw a birthday and the ice run's scenes twice in one burn, #854): the key is
+// what it is, whose it is and its day (an ice stage's, the run's), kept on the state a season.
+const occasionKey = o => (o.kind === 'ice' ? `ice:${o.stage}:${(hired() || {}).iceAt}` : `${o.kind}:${o.id}:${o.day}`);
+const occasionPlayed = o => !!(G.state.occasionsPlayed || {})[occasionKey(o)];
+function markOccasion(o) {
+  const st = G.state, seen = st.occasionsPlayed = st.occasionsPlayed || {};
+  seen[occasionKey(o)] = st.day;
+  for (const k of Object.keys(seen)) if (st.day - seen[k] > 120) delete seen[k];
+}
+
 function occasionEvent(o) {
   if (o.kind === 'ice') return iceStageScene(o.stage);
   const p = person(o.id), n = p.first, st = G.state;
