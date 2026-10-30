@@ -17,7 +17,8 @@ and for the flip to be a moment.
   (approach 3). So the work builds the layer sprites plug into (postures) and keeps the code-drawn figures simple.
 - **Phases read differently.** A hard burn, the cruise and the flip each have their own light, posture and props.
 - **Professionals at the flip**: the crew strap in; they do not tumble. Only loose things float, and one crewmate on a tether.
-- **The g reading is live**, not three fixed values.
+- **The g reading is live**, not three fixed values: the real figure the BURN panel already works out, pushed harder at the ends
+  (option A, chosen 2026-10-30 when the plan found the panel's constant-thrust `burnState().g`).
 - **Lived-in rooms**, with **low decks** (space is at a premium: a hand's width over a standing head).
 - **A camera, close in** (option A): about two rooms across, both decks, rather than the whole ship small.
 - **The camera is automatic**: it follows the hand and goes where a scene is. No panning by hand.
@@ -37,14 +38,15 @@ third is the reference for this spec; its names (Ines, Tomas, Oduya) and furnitu
 | `js/figures.js` (new) | The sprite seam. `POSTURES`: each posture name with its frame count. `drawPerson(ctx, posture, x, y, scale, look)` draws the placeholder figure (`look` is colours and the face picture). |
 | `js/camera.js` (new, pure) | `camTarget(people)`, `camStep(cam, target, dt)`, the span of the hull in view, and the outline: drawing it and a tap to a room id. |
 | `js/rooms.js` (new) | One function per room drawing its props in room-relative units, the helper for things that hang and float, and the phase lighting. |
-| `js/transit.js` (existing) | `drawTransit` hands the cutaway the screen box it has now; the zoom fits about two rooms across it (one on a phone). New: `gReading(progress)`, pure. |
+| `js/transit.js` (existing) | `drawTransit` hands the cutaway its screen box; the zoom fits about two rooms across it (fewer on a phone). |
+| `js/burnpanel.js` (existing) | New, pure: `phaseWeights(pr)` (how much burn, cruise and flip there is at a point in the run) and `gReading(pr, accel)`. `burnState().g` becomes `gReading`, so the panel and the sign agree. |
 | `js/game.js` (existing) | Declares the camera's state on `G`, with a comment. |
 
 The postures are: `couch`, `stand`, `walk`, `climb` (the ladder), `sit` (a stool or console), `bunk` (lying), `strap` (strapped in at
 a station), `tether` (floating on a line); and the cat's `cat-walk`, `cat-sit`, `cat-sleep`, `cat-float`. This list is what the
 sprite sheets will be drawn to; swapping in sprites replaces only `drawPerson`.
 
-New logic takes the state it reads as parameters and returns a value, so `posture`, the camera and `gReading` run through
+New logic takes the state it reads as parameters and returns a value, so `posture`, the camera, `phaseWeights` and `gReading` run through
 `tests/nodecontext.js`. The new scripts are linked in `index.html`, with unique top-level names (`tests/globals.test.js`).
 
 ## 2. Behaviour
@@ -56,15 +58,16 @@ New logic takes the state it reads as parameters and returns a value, so `postur
 | Hard burn | `pr < 0.06` or `pr > 0.94` | To their crash couch (berths and bridge, `couchX` as now): `couch` | Red |
 | Cruise | otherwise | Haunts and movement as now; `walk`, `stand`, `sit`, `climb` or `bunk` by where they stop | Warm |
 | Secure (new) | `0.44 <= pr < 0.47` and `0.53 < pr <= 0.56` | Strap in at a station in the room they are in, not back to the couches: `strap` | Amber beacon |
-| Flip | `abs(pr - 0.5) <= 0.03` | Stay strapped; the engineer, if aboard, floats on a tether near the reactor: `tether` | Pulsing amber |
+| Flip | `abs(pr - 0.5) <= 0.03` | Stay strapped; the engineer, if aboard, floats on a tether where they stopped: `tether` | Pulsing amber |
 
 At the flip loose things float: hair, the cat (`cat-float`), a pen, droplets, and every hanging item. The light is layered over the
 day and night dimming that exists now. The second secure step is the crew unstrapping after the turn; they start moving again in
 cruise.
 
-**The g reading.** `gReading(pr)`: about 2.8 g in the hard burn, about 0.4 g in cruise, 0.00 at the flip, with smooth ramps across each
-change and no jumps. A sign over the galley's forward hatch shows it (`THRUST 2.80 G`, `CRUISE 0.40 G`, `FLIP SECURE` alternating
-with `FLIP 0.00 G`).
+**The g reading.** `gReading(pr, accel)`, where `accel` is the constant-thrust figure `burnState` works out now: `accel` in cruise,
+three times it in the hard burn, 0.00 at the flip, with smooth ramps across each change and no jumps. The BURN panel shows the same
+number. A sign over the galley's forward hatch shows it (`THRUST 2.70 G` in the hard burn, `CRUISE 0.90 G`, `FLIP SECURE`
+alternating with `FLIP 0.00 G`; the figures are the run's).
 
 **The camera.** It follows the hand, easing as the hand moves, and never leaves the hull. There is no manual control. Scenes carry no
 room today; the downtime activities (meal, drills, repair, visit) already send the hand to the room they happen in, so the camera
@@ -93,8 +96,8 @@ ship in the outline turns over.
 
 - **Pure units** (through `tests/nodecontext.js`): every phase gives every person a posture in `POSTURES`; the secure and flip steps
   strap people in the room they are in; only the engineer is tethered; `camTarget` follows the hand, including to an activity's room;
-  `camStep` eases and stays in the hull; the outline's tap gives the right room; `gReading` is near 2.8 at the ends, near 0.4 in cruise,
-  0 at the flip, and has no step larger than a small bound between neighbouring progress values.
+  `camStep` eases and stays in the hull; the outline's tap gives the right room; `gReading` is three times `accel` at the ends, `accel` in
+  cruise, 0 at the flip, and has no step larger than a small bound between neighbouring progress values.
 - **`tests/burnview.test.js`**: the room box tests become "the rooms in view have boxes, and every room is reachable through the
   outline"; the mid-turn tests (nothing drawn edge-on) become "the crew are drawn, strapped, through the turn". The rest stay: every
   ship draws without an error, taps on people and rooms, faces, no overlap, text size.
