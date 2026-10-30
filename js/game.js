@@ -1049,6 +1049,14 @@ function drawHud(W, H) {
     ctx.fillText(`${travelDays(from, st.dest)} days, ${need} mass`, x, y += 16);
   }
 
+  if (inTransit) {  // the ship's log (transit.js), where the burn view's box was
+    y += 28;
+    hudLabel("Ship's log", x, y);
+    ctx.font = '12px "IBM Plex Mono", monospace';
+    ctx.fillStyle = '#cfe3ff';
+    for (const l of burnShipLog().flatMap(l => wrapText(l, w))) ctx.fillText(l, x, y += 16);
+  }
+
   if (!calm) {
     y += 28;
     hudLabel('Target', x, y);

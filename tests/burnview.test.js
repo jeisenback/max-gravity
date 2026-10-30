@@ -400,3 +400,62 @@ test('when the crew secure for the flip they strap in where they are, and someon
   assert.equal(r.phase, 'secure'); assert.equal(r.ax, 0.5, 'stays where they were'); assert.ok(r.bdk === 0 || r.bdk === 1, `on a deck: ${r.bdk}`); assert.equal(r.btx, null);
   await done();
 });
+
+test('the Bridge sheet reads the peak speed and the distance in a burn', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); G.transit.left = G.transit.total * 0.4; const b = burnState();
+    G.bridgeOpen = 'nav'; syncBridge(true);
+    const text = document.getElementById('bsheet').textContent.replace(/\s+/g, ' ');
+    return { text, peak: fmtKms(b.peak), dist: `${(b.covered / 1e6).toFixed(1)} of ${(b.dist / 1e6).toFixed(1)} million km` };
+  });
+  assert.ok(r.text.includes(`Peak${r.peak}`), `the peak: ${r.text}`);
+  assert.ok(r.text.includes(`Distance${r.dist}`), `the distance: ${r.text}`);
+  await done();
+});
+
+test('shipLogLines: the carried contract, its due date and whether the ship is on time', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = burn(), t = G.transit, run = hired().run, carried = heldContract(hired()), out = { contract: !!carried };
+    out.due = dateOf(carried.due); out.onTime = shipLogLines(st, t, carried);
+    carried.due = transitEta(t) - 2; out.lateDue = dateOf(carried.due); out.late = shipLogLines(st, t, carried);
+    out.none = shipLogLines(st, t, null);
+    return out;
+  });
+  assert.ok(r.contract);
+  assert.equal(r.onTime.length, 1); assert.match(r.onTime[0], / for .*, due .*, on time$/); assert.ok(r.onTime[0].includes(`due ${r.due}`));
+  assert.match(r.late[0], / for .*, due .*, late by \d+ days$/); assert.ok(r.late[0].includes(`due ${r.lateDue}`));
+  assert.ok(!r.onTime.some(l => /^Cargo:/.test(l)), 'the contract line says what is aboard');
+  assert.equal(r.none.length, 1); assert.match(r.none[0], /^Cargo: /, 'with no contract the log says what is aboard');
+  await done();
+});
+
+test('the ship\'s log is in the HUD on a wide screen and at the top of Comms on a phone', async () => {
+  const wide = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await wide.ev(helpers);
+  await wide.ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [`() => { const drawn = [], fill = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (t, x, ...a) { drawn.push([String(t), x]); return fill.call(this, t, x, ...a); }; return () => { CanvasRenderingContext2D.prototype.fillText = fill; return drawn; }; }`]);
+  const w = await wide.ev(() => {
+    burn(); G.transit.left = G.transit.total * 0.5;
+    const lines = burnShipLog().flatMap(l => wrapText(l, HUD_W - 28)), stop = drawnText(); drawHud(G.W, G.H); const drawn = stop();
+    return { lines, drawn, x0: G.W - HUD_W, hudW: G.hudW, label: drawn.some(d => d[0] === "SHIP'S LOG") };
+  });
+  assert.ok(w.hudW > 0 && w.lines.length > 0 && w.label, 'a wide screen draws the log label');
+  for (const l of w.lines) assert.ok(w.drawn.some(d => d[0] === l && d[1] >= w.x0), `HUD line: ${l}`);
+  await wide.done();
+  const narrow = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  await narrow.ev(helpers);
+  const n = await narrow.ev(() => {
+    burn(); G.state.inbox = [{ day: 1, n: 1, via: 'message', text: 'INBOXMARK' }];
+    const html = commsPanel(), lines = burnShipLog();
+    return { hudW: G.hudW, html, lines, inbox: html.indexOf('INBOXMARK') };
+  });
+  assert.equal(n.hudW, 0);
+  assert.ok(n.lines.length > 0);
+  for (const l of n.lines) { const i = n.html.indexOf(l.replace(/&/g, '&amp;')); assert.ok(i >= 0 && i < n.inbox, `Comms line: ${l}`); }
+  const off = await narrow.ev(() => { const t = G.transit; G.transit = null; const r = commsPanel().includes("Ship's log"); G.transit = t; return r; });
+  assert.ok(!off, 'no log outside a burn');
+  await narrow.done();
+});

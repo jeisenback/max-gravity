@@ -572,6 +572,26 @@ function drawCommsTicker(b, comms, n, wrap) {
   rows.forEach((r, i) => { ctx.fillStyle = r.c; ctx.fillText(r.l, b.x + 12, first + i * step); });
 }
 
+// The ship's log for a burn (it was the canvas box at the bottom left; now the HUD sidebar and the Comms sheet draw it): what the owner has on the books, then what is aboard. The
+// carried contract (#686) is the captain's log line: the load, the shipper, the due date, and whether the ship is on time for it. Reads only what it is given.
+function shipLogLines(st, t, carried) {
+  const log = [];
+  if (roleOf(st.hired).canTrade) {  // the owner's books: the missions and the crew
+    for (const m of st.missions) log.push(`${m.title} (due ${dateOf(m.deadline)})`);
+    if (!st.missions.length) log.push('No active missions.');
+    if (st.crew.length) log.push(`Crew: ${crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`).join(', ')}`);
+  }
+  const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
+  if (carried) {
+    const lateBy = transitEta(t) - carried.due;
+    log.push(`${carried.tons}t ${goodName(carried.good)} for ${carried.shipper}, due ${dateOf(carried.due)}, ${lateBy > 0 ? `late by ${dayWord(lateBy)}` : 'on time'}`);
+  } else log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
+  return log;
+}
+
+// The log for the burn in progress, or none: the one place the lines are read from the game (the HUD and the Comms sheet ask here).
+const burnShipLog = () => (G.transit ? shipLogLines(G.state, G.transit, hired() && heldContract(hired())) : []);
+
 // The burn view, laid out by burnLayout (burnlayout.js): the bar of the route and the burn on top, the ship cutaway as the stage, and the
 // Comms ticker under it, or the tutorial's prompt in its place. The downtime buttons (shiplife.js) and the bridge keys are DOM below.
 function drawTransit(W, H) {

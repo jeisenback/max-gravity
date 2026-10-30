@@ -726,7 +726,7 @@ test('the hand\'s sheet shows the four stats with the posts on them and the kit,
 });
 
 // #686 (the pieces main's readouts did not carry): the due date on the burn's bar, the booked load in the hold.
-test('on a burn with a contract the bar says the due date', async () => {
+test('on a burn with a contract the bar says the due date and the log says the load, the shipper and whether the ship is on time', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
   const r = await ev(() => {
@@ -734,12 +734,16 @@ test('on a burn with a contract the bar says the due date', async () => {
     G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null;
     const run = hired().run, out = { contract: !!run.contract, due: dateOf(run.due) };
     let stop = drawnText(); drawTransit(G.W, G.H); out.onTime = stop();
-    run.due = G.state.day - 2; out.lateDue = dateOf(run.due); stop = drawnText(); drawTransit(G.W, G.H); out.late = stop();
+    out.logOn = shipLogLines(G.state, G.transit, heldContract(hired()))[0];
+    run.due = G.state.day - 2; out.lateDue = dateOf(run.due); out.logLate = shipLogLines(G.state, G.transit, heldContract(hired()))[0]; stop = drawnText(); drawTransit(G.W, G.H); out.late = stop();
     return out;
   });
   assert.ok(r.contract);
   assert.ok(r.onTime.includes(`due ${r.due}`), `the due date under the bar: ${r.onTime.join('|')}`);
   assert.ok(r.late.includes(`due ${r.lateDue}`), 'and when the ship is late for it');
+  assert.match(r.logOn, / for .*, due .*, on time$/, 'the ship\'s log line says the load, the shipper, the due date and that the ship is on time');
+  assert.ok(!/^Cargo:/.test(r.logOn), 'the contract line says what is aboard');
+  assert.match(r.logLate, / for .*, due .*, late by \d+ days$/, 'and late');
   await done();
 });
 

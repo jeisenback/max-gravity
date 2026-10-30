@@ -49,6 +49,12 @@ function routeSvg(from, to, progress, flipped) {
     <text x="14" y="24" fill="#7f95ab" font-size="11" letter-spacing="2">ROUTE</text>`;
 }
 
+// The burn's peak speed and the distance covered, in the course card (they were the BURN panel's footer).
+function burnReads() {
+  const b = burnState();
+  return conRead('Peak', fmtKms(b.peak)) + conRead('Distance', `${(b.covered / 1e6).toFixed(1)} of ${(b.dist / 1e6).toFixed(1)} million km`);
+}
+
 // The Navigation station as a console: the route on the display, the course beside it, and the helm along the bottom.
 function navigationPanel() {
   const st = G.state, t = G.transit, plan = hired() && !t ? currentPlan() : null;
@@ -57,7 +63,7 @@ function navigationPanel() {
   const helm = notYours('pilot') ? `${roleHolder('pilot') ? roleName('pilot') : 'The helm'} has the helm`
     : postMode('pilot') === 'manual' ? 'You have the helm' : `${roleName('pilot')} has the helm`;
   const course = t
-    ? conRead('Destination', SYSTEMS[t.to].name) + conRead('Burn', `${Math.round(progress * 100)}%, ${t.flipped ? 'braking' : 'accelerating'}`) + conRead('Arrival', dateOf(transitEta(t))) + conRead('Reaction mass', `${st.fuel}/${ship().fuel}`)
+    ? conRead('Destination', SYSTEMS[t.to].name) + conRead('Burn', `${Math.round(progress * 100)}%, ${t.flipped ? 'braking' : 'accelerating'}`) + burnReads() + conRead('Arrival', dateOf(transitEta(t))) + conRead('Reaction mass', `${st.fuel}/${ship().fuel}`)
     : to ? conRead('Destination', SYSTEMS[to].name) + conRead('Distance', `${distAU(st.systemId, to).toFixed(2)} AU`) + conRead('Burn', `${travelDays(st.systemId, to)} days`)
         + (hired() ? '' : conRead('Reaction mass', `${burnFuel(st.systemId, to)} of ${st.fuel}`))
     : '<p class="hint">No course set.</p>';

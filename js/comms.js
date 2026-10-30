@@ -77,6 +77,12 @@ function contactsHtml() {
   return conCard('Contacts', `<div class="row">${buttons.join('')}</div>${rest ? `<div class="eyebrow" style="margin-top:8px">Crew</div>${rest}${free ? '' : '<p class="hint">Chats happen on the burn, once each half of the trip.</p>'}` : ''}`);
 }
 
+// The ship's log at the top of the sheet during a burn, on a narrow screen (a wide one has it in the HUD, drawHud).
+function shipLogCard() {
+  const log = G.hudW ? [] : burnShipLog();
+  return log.length ? String(conCard("Ship's log", log.map(l => h`<p class="hint">${l}</p>`.toString()).join(''))) : '';
+}
+
 // The Comms station as a console: the inbox as a feed on the display, the market tips in force beside it, and the
 // comms post and the programs along the bottom.
 function commsPanel() {
@@ -92,7 +98,7 @@ function commsPanel() {
   return consoleHtml({
     title: 'Comms',
     status: notYours('comms') ? `${holder ? roleName('slicer') : 'Nobody'} has the bands` : postMode('comms') === 'manual' ? 'You have the bands' : `${roleName('slicer')} has the bands`,
-    screen: `<div class="con-feed" role="log" aria-label="Inbox"><div class="eyebrow">Inbox</div><div class="con-filters">${chips}</div>${feed}</div>`,
+    screen: `${shipLogCard()}<div class="con-feed" role="log" aria-label="Inbox"><div class="eyebrow">Inbox</div><div class="con-filters">${chips}</div>${feed}</div>`,
     side: contactsHtml() + quietHtml() + conCard(`Market tips in force`, Settings.quiet.market ? '<p class="hint">Muted. They still move prices.</p>' : tips.length ? String(listHtml(tips, r => h`<div class="hint">${r.text}, until ${dateOf(r.until)}</div>`)) : '<p class="hint">None in force.</p>'),
     controls: `${postHtml('comms')}${programsHtml()}`,
   });
