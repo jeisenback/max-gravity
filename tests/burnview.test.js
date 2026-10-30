@@ -283,3 +283,17 @@ test('a face is built from the person alone, and a name puts no markup in the pi
   assert.ok(!src.includes('<script>'), 'the name is escaped');
   await done();
 });
+
+test('when the crew secure for the flip they strap in where they are, and someone on the ladder ends on a deck', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit; t.left = t.total * 0.7; updateTransit(0.1);
+    const ps = shipPeople(), a = ps[0], b = ps[1];
+    a.x = 0.5; a.room = 'galley'; a.tx = null; b.x = LADDER; b.dk = 0.4; b.tdk = 1;
+    t.left = t.total * (1 - 0.455); for (let i = 0; i < 40; i++) lifeTick(0.1);
+    return { phase: phase(), ax: a.x, bdk: b.dk, btx: b.tx };
+  });
+  assert.equal(r.phase, 'secure'); assert.equal(r.ax, 0.5, 'stays where they were'); assert.ok(r.bdk === 0 || r.bdk === 1, `on a deck: ${r.bdk}`); assert.equal(r.btx, null);
+  await done();
+});

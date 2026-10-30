@@ -262,6 +262,7 @@ function phase() {
   const t = G.transit, pr = 1 - t.left / t.total;
   if (pr < 0.06 || pr > 0.94) return 'couch';
   if (Math.abs(pr - 0.5) < 0.03) return 'float';
+  if ((pr >= 0.44 && pr < 0.47) || (pr > 0.53 && pr <= 0.56)) return 'secure';
   return 'move';
 }
 
@@ -275,6 +276,11 @@ function lifeTick(dt) {
     for (const p of people) if (!NIGHT_WATCH.includes(p.role)) p.wait = Math.min(p.wait, rand(0.2, 3));
   }
   for (const p of people) {
+    if (ph === 'secure' || ph === 'float') {  // strap in where they are; someone on the ladder finishes onto a deck
+      p.tx = null; p.tdk = Math.round(p.dk);
+      p.dk = Math.abs(p.tdk - p.dk) < 0.01 ? p.tdk : p.dk + Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
+      continue;
+    }
     if (ph !== 'move') { const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
     const step = 0.06 * dt;
     if (p.dk !== p.tdk) {  // to the ladder, then up or down it
