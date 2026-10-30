@@ -266,6 +266,21 @@ function phase() {
   return 'move';
 }
 
+// What a person is doing, by name from POSTURES (js/figures.js), for the sprite to be drawn: where, which way, and which frame.
+function posture(p, ph, time, asleep) {
+  let name;
+  if (p.role === 'cat') name = ph === 'float' ? 'cat-float' : ph !== 'move' ? 'cat-sleep' : p.tx !== null ? 'cat-walk' : 'cat-sit';
+  else if (asleep) name = 'bunk';
+  else if (ph === 'couch') name = 'couch';
+  else if (ph === 'secure') name = 'strap';
+  else if (ph === 'float') name = p.role === 'engineer' ? 'tether' : 'strap';
+  else if (p.dk !== p.tdk) name = 'climb';
+  else if (p.tx !== null) name = 'walk';
+  else name = ['galley', 'gunnery', 'bridge', 'medbay'].includes(p.room) ? 'sit' : 'stand';
+  const { frames, fps } = POSTURES[name];
+  return { name, x: p.x, deck: p.dk, face: p.face || 1, frame: fps ? Math.floor(time * fps) % frames : 0 };
+}
+
 function lifeTick(dt) {
   syncLifeButtons();
   if (G.mode !== 'transit' || !G.transit) return;
@@ -284,9 +299,10 @@ function lifeTick(dt) {
     if (ph !== 'move') { const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
     const step = 0.06 * dt;
     if (p.dk !== p.tdk) {  // to the ladder, then up or down it
-      if (Math.abs(LADDER - p.x) > 0.003) p.x += Math.max(-step, Math.min(step, LADDER - p.x));
+      if (Math.abs(LADDER - p.x) > 0.003) { p.face = Math.sign(LADDER - p.x) || p.face; p.x += Math.max(-step, Math.min(step, LADDER - p.x)); }
       else p.dk += Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
     } else if (p.tx !== null) {
+      p.face = Math.sign(p.tx - p.x) || p.face;
       p.x += Math.max(-step, Math.min(step, p.tx - p.x));
       if (Math.abs(p.tx - p.x) < 0.002) {
         p.tx = null; p.wait = rand(5, 12);
