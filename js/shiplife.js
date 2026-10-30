@@ -322,8 +322,6 @@ function lifeTick(dt) {
 }
 
 // ---------- the cutaway ----------
-// The box the cutaway is drawn in, its height over its width: on a wide screen and on a phone (js/transit.js).
-const CUTAWAY_ASPECT = { wide: 0.36, narrow: 0.6 };
 // The drive plume off the stern: its length as a share of the hull (growing with the burn's peak), the flicker in world units, and the
 // halo and each bell's cone half-width as shares of the hull's height.
 const PLUME = { base: 0.28, gain: 0.32, flicker: 14, halo: 0.7, cone: 0.16 };
