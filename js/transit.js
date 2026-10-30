@@ -500,12 +500,18 @@ function fitLine(text, maxW) {
   return `${text.slice(0, lo).trimEnd()}...`;
 }
 
-// Where the event dialog sits, in canvas pixels, while one is open (the panel, style.css), so the Comms ticker can keep clear of it (#262).
-function transitDialogBox(W) {
-  const el = G.transit && G.transit.event && document.querySelector('#panel.event');
-  if (!el) return null;
-  const r = el.getBoundingClientRect(), c = canvas.getBoundingClientRect(), k = W / c.width;
-  return { x: (r.left - c.left) * k, y: (r.top - c.top) * k, w: r.width * k, h: r.height * k };
+// The scene dialog in the burn view's dock (burnLayout's dock box, in viewport px), or out of it when dock is null. fill gives it the
+// dock's whole height (a wide screen's dock); otherwise it is as tall as its content, up to the dock. Written only when it changed, so a
+// resize with the dialog open follows on the next frame.
+function dockEventPanel(el, dock, fill) {
+  const want = dock ? { '--dock-x': dock.x, '--dock-y': dock.y, '--dock-w': dock.w, '--dock-h': dock.h } : {};
+  let moved = el.classList.contains('docked') !== !!dock || el.classList.contains('dock-fill') !== !!(dock && fill);
+  for (const k of ['--dock-x', '--dock-y', '--dock-w', '--dock-h']) {
+    const v = k in want ? `${Math.round(want[k])}px` : '';
+    if (el.style.getPropertyValue(k) !== v) { moved = true; if (v) el.style.setProperty(k, v); else el.style.removeProperty(k); }
+  }
+  el.classList.toggle('docked', !!dock); el.classList.toggle('dock-fill', !!(dock && fill));
+  return moved;
 }
 
 // The bar over the ship: the ship and the route at the left, the route strip with its flip and the dates in the middle, and the speed
@@ -648,22 +654,23 @@ function drawTransit(W, H) {
     destBox = { x: dx - 40, y: dy - 40, w: 80, h: 80 };
   }
 
-  // Our ship in cutaway, with everyone aboard (shiplife.js), in the box the layout gives it.
-  drawCutaway(shipBox);
+  // Our ship in cutaway, with everyone aboard (shiplife.js), in the box the layout gives it; the camera keeps the hand in the part a
+  // docked dialog leaves clear.
+  drawCutaway(shipBox, L.clear);
   G.burnBoxes = { bar: L.bar, ship: shipBox };  // where each block was drawn, for the taps and the tests (#262)
+  if (L.dock) Object.assign(G.burnBoxes, { dock: L.dock, clear: L.clear });  // a scene's dock (the frame puts the dialog in it) and the ship it leaves clear
   if (destBox) G.burnBoxes.dest = destBox;
   G.lifeY = L.life.y;  // the downtime buttons sit in the row of life under the ticker
   drawBurnBar(L.bar, L.datesLine, progress);
 
-  // The ticker, clear of an open dialog: beside it on a wide screen, left out under it on a narrow one. None on a landscape phone.
-  const dlg = transitDialogBox(W);
+  // The ticker, clear of the dock: beside it on a wide screen, under it (so not drawn) on a narrow one. None on a landscape phone.
+  const dock = L.dock;
   let tick = L.tickerLines ? { ...L.ticker } : null;
-  if (tick && dlg && !narrow) tick.w = Math.min(tick.w, dlg.x - 8 - tick.x);
-  if (tick && dlg && narrow && tick.y + tick.h > dlg.y - 4) tick = null;
+  if (tick && dock && !narrow) tick.w = Math.min(tick.w, dock.x - BURN_GUTTER - tick.x);
+  if (tick && dock && narrow && tick.y + tick.h > dock.y - 4) tick = null;
   if (!tick || tick.w < 160) return;
-  if (prompt) {  // drawn by the tutorial (tutorial.js) in the ticker's place (#735); left out while a dialog has narrowed the box below its height
-    const tut = tutorialPrompt(tick.w);
-    if (tut && tut.h <= tick.h) G.burnBoxes.tutorial = tick;
+  if (prompt && !dock) {  // drawn by the tutorial (tutorial.js) in the ticker's place (#735); hidden while a scene is open, which is what to read then
+    G.burnBoxes.tutorial = tick;
     return;
   }
   G.burnBoxes.ticker = tick;

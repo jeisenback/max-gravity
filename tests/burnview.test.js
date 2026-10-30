@@ -16,6 +16,10 @@ const helpers = () => {
     sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.transit.event = null; G.dialog = null;
     return st;
   };
+  window.scene = (text = 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she is not answering. The captain says it is your call.') => {
+    for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
+    openEvent({ title: 'Distress Call', text, choices: [{ label: 'See how it goes', run: () => 'Done.' }] });
+  };
 };
 
 test('the instruments follow the burn: from rest up to a peak at the flip, then back, with the thrust steady either side', async () => {
@@ -36,31 +40,68 @@ test('the instruments follow the burn: from rest up to a peak at the flip, then 
   await done();
 });
 
-test('with an event open, the Comms ticker stays clear of the dialog on a wide screen and a phone (#262)', async () => {
+// The dialog's rect and the boxes the burn view drew around it, in canvas px.
+const dockState = () => {
+  const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), el = document.querySelector('#panel.event');
+  return { rect: { x: d.left - c.left, y: d.top - c.top, w: d.width, h: d.height }, dock: G.burnBoxes.dock, clear: G.burnBoxes.clear, outline: G.cutOutline, hand: G.cutHits[0], handId: shipPeople()[0].id,
+    tutorial: G.burnBoxes.tutorial || null, scrolls: el.scrollHeight > el.clientHeight, docked: el.classList.contains('docked') };
+};
+const near = (a, b) => ['x', 'y', 'w', 'h'].every(k => Math.abs(a[k] - b[k]) <= 1);
+const apart = (a, b) => a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
+const inside = (p, b) => p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h;
+
+test('with a scene open, the dialog sits in the dock, clear of the outline, and the hand is drawn in the clear part', async () => {
   for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
-    await ev(() => {
-      burn(); G.transit.left = G.transit.total * 0.5;
-      for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
-      openEvent({ title: 'Distress Call', text: 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she is not answering. The captain says it is your call.', choices: [{ label: 'See how it goes', run: () => 'Done.' }] });
-    });
-    await frames(page);
-    const r = await ev(() => {
-      const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), box = G.burnBoxes.ticker;
-      return { box, dialog: { x: d.left - c.left, y: d.top - c.top } };
-    });
-    if (name === 'wide') assert.ok(r.box, 'wide: the ticker is drawn beside the dialog');
-    if (name === 'wide') assert.ok(r.box.x + r.box.w <= r.dialog.x - 8, `wide: the box ends at ${r.box.x + r.box.w}, the dialog starts at ${r.dialog.x}`);
-    else if (r.box) assert.ok(r.box.y + r.box.h <= r.dialog.y - 4, `phone: the box ends at ${r.box.y + r.box.h}, the dialog starts at ${r.dialog.y}`);
-    // The tutorial's prompt, when it shows, keeps clear of the dialog too (#735).
-    await ev(() => { G.state.tutorial = 1; });
-    await frames(page);
-    const t = await ev(() => { const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(); return { box: G.burnBoxes.tutorial, dialog: { x: d.left - c.left, y: d.top - c.top } }; });
-    if (t.box && name === 'wide') assert.ok(t.box.x + t.box.w <= t.dialog.x - 8, `wide: the tutorial ends at ${t.box.x + t.box.w}, the dialog starts at ${t.dialog.x}`);
-    else if (t.box) assert.ok(t.box.y + t.box.h <= t.dialog.y - 4, `phone: the tutorial ends at ${t.box.y + t.box.h}, the dialog starts at ${t.dialog.y}`);
+    await ev(() => { burn(); G.transit.left = G.transit.total * 0.5; scene(); });
+    await frames(page, 3);
+    for (const tutorial of [null, 1]) {
+      await ev(t => { G.state.tutorial = t; }, tutorial);
+      await frames(page, 3);
+      const r = await ev(dockState);
+      assert.ok(r.dock && r.docked, `${name}: the dialog is docked`);
+      assert.ok(near(r.rect, r.dock), `${name}: the dialog ${JSON.stringify(r.rect)} is the dock ${JSON.stringify(r.dock)}`);
+      assert.ok(apart(r.rect, r.outline), `${name}: the dialog keeps off the outline ${JSON.stringify(r.outline)}`);
+      assert.ok(r.hand && r.hand.id === r.handId && inside(r.hand, r.clear), `${name}: the hand ${JSON.stringify(r.hand)} is in the clear part ${JSON.stringify(r.clear)}`);
+      if (r.tutorial) assert.ok(apart(r.tutorial, r.dock), `${name}: the tutorial's prompt keeps off the dock`);
+    }
     await done();
   }
+});
+
+test('a scene taller than the dock scrolls inside it, and the dialog stays the dock', async () => {
+  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+    const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    await ev(() => { burn(); scene(Array(30).fill('The drive hums and the long night goes on, and someone down the passage is singing.').join(' ')); });
+    await frames(page, 3);
+    const r = await ev(dockState);
+    assert.ok(r.scrolls, `${name}: the dialog scrolls`);
+    assert.ok(near(r.rect, r.dock), `${name}: the dialog ${JSON.stringify(r.rect)} is the dock ${JSON.stringify(r.dock)}`);
+    await done();
+  }
+});
+
+test('a resize with a scene open moves the dialog into the new dock, and closing it undocks the panel', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(helpers);
+  await ev(() => { burn(); scene(); });
+  await frames(page, 3);
+  const wide = await ev(dockState);
+  assert.ok(near(wide.rect, wide.dock), 'wide: the dialog is the dock');
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.waitForFunction(() => G.W === 390);
+  await frames(page, 2);
+  const phone = await ev(dockState);
+  assert.ok(phone.dock.w > wide.dock.w || phone.dock.x < wide.dock.x, 'the dock is the phone\'s');
+  assert.ok(near(phone.rect, phone.dock), `phone: the dialog ${JSON.stringify(phone.rect)} is the new dock ${JSON.stringify(phone.dock)}`);
+  await ev(() => finishEvent());
+  await frames(page, 2);
+  const after = await ev(() => { const el = document.querySelector('#panel'); return { docked: el.classList.contains('docked'), x: el.style.getPropertyValue('--dock-x'), dock: G.burnBoxes.dock, clear: G.burnBoxes.clear }; });
+  assert.ok(!after.docked && !after.x, 'closed: the panel is not docked and has no dock left on it');
+  assert.equal(after.dock, undefined, 'closed: no dock'); assert.equal(after.clear, undefined);
+  await done();
 });
 
 test('the burn view draws for every ship and every turn of the hull without an error, and the click targets stay put', async () => {

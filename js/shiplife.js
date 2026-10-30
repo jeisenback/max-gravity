@@ -342,12 +342,15 @@ function cutBulkhead(ctx, x, top, F, hatch) {
 // The cutaway in the screen box { x, y, w, h }: a camera close in on the hand, both decks high, and the outline of the whole hull in the
 // corner. The nose is to the right through the flip; the turn shows in the stars, the windows, the thrusters and the outline.
 // Leaves G.cutRooms (the rooms in view, screen boxes clipped to the box), G.cutHits (the people in view) and G.cutOutline for a tap (game.js).
-function drawCutaway(box) {
+function drawCutaway(box, clear = box) {
   const t = G.transit, st = G.state, people = shipPeople(), ph = phase(), still = Settings.reduceMotion, time = still ? 0 : G.time;
   const len = hullLength(SHIPS[st.shipId].size), view = viewOf(box), zoom = view.zoom, half = view.span / 2;
   const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = phaseWeights(pr);
-  // The camera eases after the hand; it may look a little aft of the stern, at the bells.
-  const camX = camStep(G.cam && G.cam.x + CUT_STERN, people[0].x * len + CUT_STERN, G.cam ? Math.max(0, G.time - G.cam.t) : 0, view.span, len + CUT_STERN) - CUT_STERN;
+  // The camera eases after the hand, keeping them in the middle of the part of the box a docked dialog leaves clear (all of it with
+  // none): it steps in that part's own terms, its centre and its span, offset from the box's centre by off. It may look a little aft of
+  // the stern, at the bells.
+  const off = (box.x + box.w / 2 - (clear.x + clear.w / 2)) / zoom, held = G.cam && G.cam.x - off + CUT_STERN;
+  const camX = camStep(held, people[0].x * len + CUT_STERN, G.cam ? Math.max(0, G.time - G.cam.t) : 0, clear.w / zoom, len + CUT_STERN) - CUT_STERN + off;
   G.cam = { x: camX, t: G.time };
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
   const turn = -Math.sin(t.angle), spin = t.angle + Math.PI / 2;  // turn: 1 before the flip, -1 after, 0 mid-turn; spin: the ship's turn, 0 to pi
@@ -462,13 +465,15 @@ function drawCutaway(box) {
   }
   ctx.restore();
 
-  // What a tap can find: the rooms in view, the people in view, and the outline with everyone it shows.
+  // What a tap can find: the rooms in view, the people in view, and the outline with everyone it shows; in the clear part, as the part
+  // under a dialog belongs to the dialog.
+  const cx0 = Math.max(box.x, clear.x), cy0 = Math.max(box.y, clear.y), cx1 = Math.min(box.x + box.w, clear.x + clear.w), cy1 = Math.min(box.y + box.h, clear.y + clear.h);
   G.cutRooms = ROOMS.map(r => {
     const q = cutRect(r, len), a = toScreen(q.x0, q.top), b = toScreen(q.x1, q.floor);
-    const x0 = Math.max(box.x, a.x), y0 = Math.max(box.y, a.y), x1 = Math.min(box.x + box.w, b.x), y1 = Math.min(box.y + box.h, b.y);
+    const x0 = Math.max(cx0, a.x), y0 = Math.max(cy0, a.y), x1 = Math.min(cx1, b.x), y1 = Math.min(cy1, b.y);
     return { id: r.id, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
   }).filter(b => b.w > 0 && b.h > 0);
-  G.cutHits = hits;
+  G.cutHits = hits.filter(h => h.x >= cx0 && h.x <= cx1 && h.y >= cy0 && h.y <= cy1);
   G.cutOutline = { ...outlineLayout(box, len), ids: people.filter(p => p.id).map(p => p.id), squeeze: Math.abs(turn) };
   drawOutline(ctx, G.cutOutline, dots, camX, view.span, len, turn);
 }

@@ -14,12 +14,13 @@ function viewOf(box) {
   return { zoom, span: box.w / zoom, y: 228 - 145 };
 }
 
-// One step of the camera toward a target x. A null camera snaps; a hull shorter than the view sits in the middle.
+// One step of the camera toward a target x, held where the view stays inside the hull. A null camera snaps; a hull shorter than the
+// view sits in the middle; a camera left outside (the view grew as a dialog closed) eases back in.
 function camStep(camX, target, dt, span, len) {
   const max = len * 1.02;
   if (span >= max) return len * 0.51;
-  const x = camX === null ? target : camX + (target - camX) * Math.min(1, dt * 2.5);
-  return Math.max(span / 2, Math.min(max - span / 2, x));
+  const to = Math.max(span / 2, Math.min(max - span / 2, target));
+  return camX === null ? to : camX + (to - camX) * Math.min(1, dt * 2.5);
 }
 
 // The outline's boxes in screen units, in the top left corner of the view box. Each room is mapped by its shares and its deck.
