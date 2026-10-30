@@ -20,8 +20,9 @@ function legacyShipBox(W, H, hudW, narrow) {
 }
 
 // Every block's box {x, y, w, h} in screen px, in the view beside the HUD. dialog is null or { h }, the height of the dialog's content.
-// A short window gives up height in this order: the ticker to one line, the bar's dates line, then the ship shrinks.
-function burnLayout(W, H, hudW, narrow, dialog) {
+// tutorialH is the height of the tutorial's prompt while it shows (0 when not): it takes the ticker's place, so the ticker's box is at
+// least that tall. A short window gives up height in this order: the ticker to one line, the bar's dates line, then the ship shrinks.
+function burnLayout(W, H, hudW, narrow, dialog, tutorialH = 0) {
   const viewW = W - hudW, G = BURN_GUTTER, x0 = G, w0 = viewW - 2 * G, old = legacyShipBox(W, H, hudW, narrow);
   const P = narrow ? BURN_NARROW : BURN_WIDE, gap = narrow ? P.gap : G;
   const top = narrow ? BURN_HUD_STRIP + P.gap : G;
@@ -30,12 +31,13 @@ function burnLayout(W, H, hudW, narrow, dialog) {
   const wanted = narrow ? Math.min(viewW * P.shipMin, H * 0.5) : P.shipWant * H;  // blocks are shed only until the ship is this tall
   const want = old.h <= H ? Math.max(wanted, old.h) : wanted;  // never below today's box, where today's box fits the window
   let tickerLines = 2, datesLine = true, lifeH = P.life;
-  const fits = () => room(datesLine ? P.bar : P.barNoDates, tickerLines === 2 ? P.ticker : tickerLines ? P.ticker1 : 0, lifeH) >= want;
+  const tickOf = n => (n ? Math.max(n === 2 ? P.ticker : P.ticker1, tutorialH) : 0);
+  const fits = () => room(datesLine ? P.bar : P.barNoDates, tickOf(tickerLines), lifeH) >= want;
   if (!fits()) tickerLines = 1;
   if (!fits()) datesLine = false;
   if (narrow && !fits()) lifeH = P.life1;  // the button rows fold to one
   if (narrow && !fits()) tickerLines = 0;  // Comms is still on its key
-  const barH = datesLine ? P.bar : P.barNoDates, tickH = tickerLines === 2 ? P.ticker : tickerLines ? P.ticker1 : 0, avail = Math.max(0, room(barH, tickH, lifeH));
+  const barH = datesLine ? P.bar : P.barNoDates, tickH = tickOf(tickerLines), avail = Math.max(0, room(barH, tickH, lifeH));
   const shipH = Math.min(narrow ? P.shipMax * viewW : P.shipShare * H, avail);
 
   const bar = { x: x0, y: top, w: w0, h: barH };

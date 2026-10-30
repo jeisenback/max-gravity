@@ -55,3 +55,12 @@ test('a tall phone keeps the two-line ticker and the full button rows', () => {
 test('a tablet keeps its two-line ticker and full button rows, with a ship of at least 512 px', () => {
   const l = burnLayout(768, 1024, 0, true, null); assert.equal(l.tickerLines, 2); assert.equal(l.life.h, 92); assert.ok(l.ship.h >= 512, `ship ${l.ship.h}`);
 });
+test('the tutorial prompt takes the ticker\'s place: the box is as tall as the prompt, and the ship keeps at least today\'s box', () => {
+  for (const [W, H, hud, narrow] of [[1280, 800, 220, false], [1280, 600, 220, false], [390, 844, 0, true]]) for (const th of [51, 68, 85]) {
+    const L = burnLayout(W, H, hud, narrow, null, th), old = legacyShipBox(W, H, hud, narrow);
+    assert.ok(L.ticker.h >= th, `${W}x${H} ${th}: ticker ${L.ticker.h}`); assert.ok(L.ship.h >= old.h - 0.5, `${W}x${H} ${th}: ship ${L.ship.h}`);
+    assert.ok(L.life.y + L.life.h + (narrow ? 4 : 6) + BURN_KEYS_H <= H, `${W}x${H} ${th}: the keys fit`);
+  }
+  const short = burnLayout(1280, 600, 220, false, null, 68); assert.equal(short.datesLine, false, 'a short window gives up the dates line for the prompt');
+});
+

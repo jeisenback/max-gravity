@@ -520,28 +520,33 @@ function drawBurnBar(b, dates, progress) {
   const route = local ? `${st.planet}  >  ${st.route.dock}` : `${system().name}  >  ${SYSTEMS[t.to].name}`;
   const pull = s.phase === 'FLIP' ? 'FLIP: drive off, weightless' : `${s.phase}: ${s.g.toFixed(2)} g thrust`, hot = Math.min(1, s.v / s.peak || 0);
   const speedColor = `rgb(${Math.round(150 + 90 * hot)},${Math.round(200 + 40 * hot)},255)`;
-  const secs = Math.max(0, Math.ceil(t.left)), clock = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? ' (paused)' : ''}`;
+  const secs = Math.max(0, Math.ceil(t.left)), mss = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
+  const clock = `${mss} remaining${t.event ? ' (paused)' : ''}`, short = `${mss}${t.event ? ' paused' : ''}`;  // the short one beside the speed on a phone
   const L = b.x + 14, R = b.x + b.w - 14;
   if (b.w >= 560) {
     const leftW = Math.min(b.w * 0.28, Math.max(width(route, label(18)), width(title, label(12))));
-    const rightW = Math.max(width('88,888 km/s', `600 20px "IBM Plex Mono", monospace`), width('FLIP: drive off, weightless', mono(12)));  // the widest each can read, so the strip does not jump
+    const cw = dates ? 0 : width('88:88 paused', mono(12)) + 10;  // without the dates line the clock goes beside the speed
+    const rightW = Math.max(width('88,888 km/s', `600 20px "IBM Plex Mono", monospace`) + cw, width('FLIP: drive off, weightless', mono(12)));  // the widest each can read, so the strip does not jump
     put(title, L, b.y + (dates ? 22 : 18), label(12), '#7fb4ff', 'left', leftW);
     put(route, L, b.y + (dates ? 46 : 40), label(18), '#e6f0ff', 'left', leftW);
     put(fmtKms(s.v), R, b.y + (dates ? 28 : 24), `600 20px "IBM Plex Mono", monospace`, speedColor, 'right');
+    if (!dates) put(short, R - width(fmtKms(s.v), `600 20px "IBM Plex Mono", monospace`) - 10, b.y + 24, mono(12), '#9ab', 'right');
     put(pull, R, b.y + (dates ? 46 : 41), mono(12), '#8fb0d0', 'right');
     const x0 = L + leftW + 32, x1 = R - rightW - 32;
     drawRoute((x0 + x1) / 2, b.y + (dates ? 20 : 18), x1 - x0, progress);
-    if (dates) put(`${dateOf(transitNow(t))}, arriving ${dateOf(transitEta(t))} - ${clock}`, (x0 + x1) / 2, b.y + 58, mono(12), '#9ab', 'center', x1 - x0 + 56);  // out to the columns' edges
-  } else if (dates) {  // a phone: the title and the speed, the route and the pull, then the strip; no room for the dates line (today's date is on the HUD strip)
-    const sw = width(fmtKms(s.v), `600 15px "IBM Plex Mono", monospace`), gw = width(pull, mono(12));
-    put(title, L, b.y + 16, label(12), '#7fb4ff', 'left', R - L - sw - 12);
+    if (dates) put(`${clock} - ${dateOf(transitNow(t))}, arriving ${dateOf(transitEta(t))}`, (x0 + x1) / 2, b.y + 58, mono(12), '#9ab', 'center', x1 - x0 + 56);  // out to the columns' edges; the clock first, so a cut takes the dates
+  } else if (dates) {  // a phone: the title and the clock and speed, the route and the pull, then the strip; no room for the dates (today's is on the HUD strip)
+    const sw = width(fmtKms(s.v), `600 15px "IBM Plex Mono", monospace`), cw = width(short, mono(12)), gw = width(pull, mono(12));
+    put(title, L, b.y + 16, label(12), '#7fb4ff', 'left', R - L - sw - cw - 24);
+    put(short, R - sw - 10, b.y + 16, mono(12), '#9ab', 'right');
     put(fmtKms(s.v), R, b.y + 16, `600 15px "IBM Plex Mono", monospace`, speedColor, 'right');
     put(route, L, b.y + 33, label(14), '#e6f0ff', 'left', R - L - gw - 12);
     put(pull, R, b.y + 33, mono(12), '#8fb0d0', 'right');
     drawRoute((L + R) / 2, b.y + 45, R - L - 12, progress);
-  } else {  // a short phone: the route and the speed over the strip
-    const sw = width(fmtKms(s.v), `600 15px "IBM Plex Mono", monospace`);
-    put(route, L, b.y + 15, label(14), '#e6f0ff', 'left', R - L - sw - 12);
+  } else {  // a short phone: the route, the clock and the speed over the strip
+    const sw = width(fmtKms(s.v), `600 15px "IBM Plex Mono", monospace`), cw = width(short, mono(12));
+    put(route, L, b.y + 15, label(14), '#e6f0ff', 'left', R - L - sw - cw - 24);
+    put(short, R - sw - 10, b.y + 15, mono(12), '#9ab', 'right');
     put(fmtKms(s.v), R, b.y + 15, `600 15px "IBM Plex Mono", monospace`, speedColor, 'right');
     drawRoute((L + R) / 2, b.y + 25, R - L - 12, progress);
   }
@@ -574,7 +579,8 @@ function drawTransit(W, H) {
   const narrow = !G.hudW;  // the HUD strip on top
   const progress = Math.min(1, 1 - t.left / t.total);
   const panel = t.event && document.querySelector('#panel.event'), dialogSize = panel ? { h: panel.scrollHeight } : null;
-  const L = burnLayout(W, H, G.hudW, narrow, dialogSize), shipBox = L.ship;
+  const prompt = tutorialPrompt(viewW - 2 * BURN_GUTTER);  // the tutorial's prompt, at the ticker's width: the layout keeps room for it
+  const L = burnLayout(W, H, G.hudW, narrow, dialogSize, prompt ? prompt.h : 0), shipBox = L.ship;
   const bg = ctx.createLinearGradient(0, 0, 0, H);
   bg.addColorStop(0, '#03060f'); bg.addColorStop(1, '#070b18');
   ctx.fillStyle = bg;
@@ -631,13 +637,13 @@ function drawTransit(W, H) {
 
   // The ticker, clear of an open dialog: beside it on a wide screen, left out under it on a narrow one. None on a landscape phone.
   const dlg = transitDialogBox(W);
-  let tick = L.tutorial && { ...L.ticker };
+  let tick = L.tickerLines ? { ...L.ticker } : null;
   if (tick && dlg && !narrow) tick.w = Math.min(tick.w, dlg.x - 8 - tick.x);
   if (tick && dlg && narrow && tick.y + tick.h > dlg.y - 4) tick = null;
   if (!tick || tick.w < 160) return;
-  const tut = tutorialPrompt(tick.w);
-  if (tut) {  // drawn by the tutorial (tutorial.js) in the ticker's place (#735); one taller than a short window's ticker rises over the ship's foot, not the buttons
-    G.burnBoxes.tutorial = tut.h > tick.h ? { ...tick, y: tick.y + tick.h - tut.h, h: tut.h } : tick;
+  if (prompt) {  // drawn by the tutorial (tutorial.js) in the ticker's place (#735); left out while a dialog has narrowed the box below its height
+    const tut = tutorialPrompt(tick.w);
+    if (tut && tut.h <= tick.h) G.burnBoxes.tutorial = tick;
     return;
   }
   G.burnBoxes.ticker = tick;

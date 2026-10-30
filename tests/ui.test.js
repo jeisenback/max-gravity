@@ -743,6 +743,24 @@ test('on a burn with a contract the bar says the due date', async () => {
   await done();
 });
 
+// The burn's time remaining is on the bar at every size: in the dates line, clock first, or beside the speed where there is no room for it.
+test('the time remaining is drawn on the burn bar on a phone, a tablet, a desktop, a landscape phone and a short window with the prompt', async () => {
+  for (const [W, H, mobile, prompt] of [[390, 844, true], [768, 1024, false], [1280, 800, false], [844, 390, true], [1280, 600, false, true]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: W, height: H }, mobile });
+    await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
+    const r = await ev(prompt => {
+      startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+      G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null; G.transit.event = null;
+      if (prompt) G.state.tutorial = tutorialSteps().findIndex(s => /Work your post/.test(s.text()));
+      G.transit.left = G.transit.total * 0.7; const secs = Math.ceil(G.transit.left), mss = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
+      const stop = drawnText(); drawTransit(innerWidth, innerHeight); return { mss, text: stop(), tut: !!(G.burnBoxes && G.burnBoxes.tutorial) };
+    }, !!prompt);
+    assert.ok(r.text.some(t => t.includes(r.mss)), `${W}x${H}: ${r.mss} is drawn: ${r.text.join('|')}`);
+    if (prompt) assert.ok(r.tut, `${W}x${H}: the prompt shows`);
+    await done();
+  }
+});
+
 test('the hold draws a contract\'s load as booked cells before sailing, and as cargo after', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => {

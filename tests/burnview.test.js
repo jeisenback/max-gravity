@@ -110,7 +110,7 @@ test('crew who die on a burn leave the cutaway, and are not drawn again after th
 });
 
 // The burn view's canvas blocks, at the three screen sizes (#262): none overlaps another, and each is inside the view.
-const BURN_SIZES = [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true]];
+const BURN_SIZES = [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true], ['short', { width: 1280, height: 600 }, false]];
 
 test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)', async () => {
   for (const [name, viewport, mobile] of BURN_SIZES) {
