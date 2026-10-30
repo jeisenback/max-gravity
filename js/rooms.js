@@ -49,22 +49,30 @@ function roomStool(ctx, x, F, back) {
   roomBox(ctx, x - 10, F - 18, 20, 4, '#2a4664'); roomBox(ctx, x - 2, F - 14, 4, 14, '#1c3249'); roomBox(ctx, x - 8, F - 3, 16, 3, '#1c3249');
   if (back) roomBox(ctx, x - 14 * back, F - 54, 5 * back, 38, '#2a4664');
 }
-function roomPlant(ctx, x, y, w, time) {
+// A mug in a holder ring on the table: free in cruise (it steams), clipped in at the flip (no steam), in the ring in the burn.
+function roomMug(ctx, x, y, w, time) {
+  const free = w.cruise, lift = 3 * free;
+  ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1.5; ctx.strokeRect(x - 6, y - 4, 12, 4);
+  roomBox(ctx, x - 4, y - 9 - lift, 8, 9, '#cfe3ff'); ctx.strokeStyle = '#cfe3ff'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x + 5, y - 5 - lift, 2.5, -Math.PI / 2, Math.PI / 2); ctx.stroke();
+  if (w.flip > 0.5) roomBox(ctx, x - 6, y - 7, 12, 2, '#7a8a9a');
+  if (free > 0.05) { ctx.strokeStyle = `rgba(220,230,240,${0.35 * free})`; ctx.lineWidth = 1; for (let k = 0; k < 2; k++) { const y0 = y - 12 - lift, ph = time * 2 + k * 2; ctx.beginPath(); ctx.moveTo(x - 2 + k * 4, y0); ctx.quadraticCurveTo(x + Math.sin(ph) * 3, y0 - 6, x - 1 + k * 3 + Math.sin(ph + 1) * 3, y0 - 12); ctx.stroke(); } }
+}
+function roomPlant(ctx, x, y, w, time, still) {
   roomBox(ctx, x - 6, y, 12, 10, '#8a5a3a'); const droop = w.burn * 0.9 - w.flip * 0.5; ctx.strokeStyle = '#5fae5a'; ctx.lineWidth = 1.8;
   for (const [a, l, sd] of [[-0.9, 11, 0], [-0.3, 14, 1], [0.35, 13, 2], [0.95, 10, 3]]) {
-    const ang = a * (1 - w.burn * 0.3) + Math.sin(time * 1.1 + sd) * 0.25 * w.flip;
+    const ang = a * (1 - w.burn * 0.3) + (still ? 0 : Math.sin(time * 1.1 + sd) * 0.25 * w.flip);
     ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x + Math.sin(ang) * l * 0.4, y - l * 0.7, x + Math.sin(ang) * l, y - Math.cos(ang) * l * (1 - droop * 0.7) + droop * 6); ctx.stroke();
   }
 }
 
 // Walls, seams, the deck plate and the cable run (it sags under thrust, less in cruise, and floats at the flip).
-function roomWalls(ctx, r, w, time) {
+function roomWalls(ctx, r, w, time, still) {
   const { x0, x1, top, floor: F } = r;
   roomBox(ctx, x0, top, x1 - x0, F - top, '#0c1826');
   ctx.fillStyle = '#0e1c2c'; for (let x = x0; x < x1 - 40; x += 48) ctx.fillRect(x + 2, top + 14, 44, F - top - 34);
   for (let x = x0; x < x1; x += 48) { roomBox(ctx, x, top, 2, F - top, '#132538'); roomDot(ctx, x + 5, top + 16, 0.9, '#21384f'); roomDot(ctx, x + 5, F - 22, 0.9, '#21384f'); }
   roomBox(ctx, x0, F, x1 - x0, HULL.plate, '#132438'); ctx.fillStyle = '#1b3047'; for (let x = x0 + 4; x < x1 - 4; x += 10) ctx.fillRect(x, F + 2, 5, 2);
-  const sag = 9 * w.burn + 4 * w.cruise + (-2 + Math.sin(time * 0.9 + x0) * 3) * w.flip;
+  const sag = 9 * w.burn + 4 * w.cruise + (still ? -2 : -2 + Math.sin(time * 0.9 + x0) * 3) * w.flip;
   ctx.strokeStyle = '#2b4462'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(x0 + 6, top + 6); ctx.quadraticCurveTo((x0 + x1) / 2, top + 6 + sag, x1 - 6, top + 6); ctx.stroke();
   ctx.strokeStyle = '#3a2f22'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x0 + 6, top + 10); ctx.quadraticCurveTo((x0 + x1) / 2, top + 10 + sag * 0.7, x1 - 6, top + 10); ctx.stroke();
 }
@@ -133,13 +141,14 @@ function roomGalley(ctx, r, s, X, W) {
     roomBox(ctx, tx, F - 40, tw, 5, '#2c4c6e'); roomBox(ctx, tx + 8, F - 35, 4, 35, '#20384f'); roomBox(ctx, tx + tw - 12, F - 35, 4, 35, '#20384f');
     roomBox(ctx, tx + tw * 0.3, F - 43, 8, 3, '#ddd6c8'); roomBox(ctx, tx + tw * 0.45, F - 43, 8, 3, '#ddd6c8'); roomBox(ctx, tx + tw * 0.45 + 2, F - 43, 3, 3, '#b8483a');
     roomStool(ctx, tx - 12, F); roomStool(ctx, tx + tw + 12, F);
+    roomMug(ctx, tx + tw * 0.75, F - 43, w, time);
     if (w.burn > 0.5) { ctx.strokeStyle = 'rgba(140,170,200,0.5)'; ctx.lineWidth = 0.8; for (let x = tx + 22; x < tx + tw - 22; x += 6) roomSeg(ctx, [[x, F - 14], [x + 6, F]]); }
   }
   if (W >= 240) {
     const cx = X(0.74), cw = Math.min(100, W * 0.24);
     roomBox(ctx, cx, F - 40, cw, 6, '#24405e'); roomBox(ctx, cx + 4, F - 34, cw - 8, 34, '#18304a'); roomBox(ctx, cx + 8, F - 30, cw / 2 - 12, 26, '#132538'); roomBox(ctx, cx + cw / 2 + 2, F - 30, cw / 2 - 12, 26, '#132538');
     roomBox(ctx, cx + 10, F - 58, 16, 18, '#9aa8b6'); roomBox(ctx, cx + 26, F - 54, 6, 4, '#9aa8b6'); roomBox(ctx, cx + 8, F - 46, 20, 3, '#5a6672');
-    if (W >= 290) roomPlant(ctx, cx + cw - 6, F - 50, w, time);
+    if (W >= 290) roomPlant(ctx, cx + cw - 6, F - 50, w, time, s.still);
     if (W >= 320) {
       roomBox(ctx, cx, F - 96, cw, 3, '#3d5a7a');
       [[0.2, 14, 7], [0.5, 20, 9], [0.82, 12, 6]].forEach(([f, l, rad], k) => {
@@ -148,7 +157,7 @@ function roomGalley(ctx, r, s, X, W) {
       });
     }
   }
-  if (W >= 260) { const kx = X(0.1); roomBox(ctx, kx, F - 72, 26, 30, '#d8d2c4'); roomBox(ctx, kx, F - 72, 26, 7, '#b8483a'); ctx.strokeStyle = '#7a2a22'; ctx.lineWidth = 1; for (let k = 0; k < 8; k++) roomSeg(ctx, [[kx + 3 + (k % 4) * 5, F - 62 + Math.floor(k / 4) * 8], [kx + 7 + (k % 4) * 5, F - 56 + Math.floor(k / 4) * 8]]); }
+  if (W >= 340) { const kx = X(0.1); roomBox(ctx, kx, F - 72, 26, 30, '#d8d2c4'); roomBox(ctx, kx, F - 72, 26, 7, '#b8483a'); ctx.strokeStyle = '#7a2a22'; ctx.lineWidth = 1; for (let k = 0; k < 8; k++) roomSeg(ctx, [[kx + 3 + (k % 4) * 5, F - 62 + Math.floor(k / 4) * 8], [kx + 7 + (k % 4) * 5, F - 56 + Math.floor(k / 4) * 8]]); }
 }
 
 function roomGunnery(ctx, r, s, X, W) {
@@ -203,7 +212,7 @@ function roomHold(ctx, r, s, X, W) {
     roomBox(ctx, x, y, cw, 30, col); ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1; ctx.strokeRect(x + 3.5, y + 3.5, cw - 7, 23); if (lab && tier === 0) worldText(ctx, s.zoom, lab, x + 5, y + 20, 10, 'rgba(230,220,190,0.7)');
   }
   if (n > 0) {
-    const a = X(0.02), b = X(0.03) + Math.ceil(n / 3) * (cw + 2) + 2, bulge = w.flip * (3 + Math.sin(time) * 2), nt = F - 30 * Math.min(3, n) - 4;
+    const a = X(0.02), b = X(0.03) + Math.ceil(n / 3) * (cw + 2) + 2, bulge = w.flip * (s.still ? 3 : 3 + Math.sin(time) * 2), nt = F - 30 * Math.min(3, n) - 4;
     ctx.strokeStyle = 'rgba(180,170,140,0.55)'; ctx.lineWidth = 1;
     for (let x = a; x <= b; x += 10) { ctx.beginPath(); ctx.moveTo(x, nt - bulge); ctx.lineTo(x + 6, F); ctx.stroke(); }
     ctx.beginPath(); ctx.moveTo(a, nt - bulge); ctx.quadraticCurveTo((a + b) / 2, nt - bulge * 2, b, nt - bulge); ctx.stroke();
@@ -212,7 +221,7 @@ function roomHold(ctx, r, s, X, W) {
     const jx = X(0.7); roomBox(ctx, jx, F - 10, 50, 6, '#c9a227'); roomBox(ctx, jx + 44, F - 40, 4, 32, '#c9a227'); roomDot(ctx, jx + 8, F - 2, 3, '#222'); roomDot(ctx, jx + 40, F - 2, 3, '#222');
     const lx = X(0.84), [ex, ey] = hangEnd(lx, top + 6, 16, 0.7, w, time, s.still); ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1; roomSeg(ctx, [[lx, top + 6], [ex, ey]]); roomBox(ctx, ex - 5, ey, 10, 6, '#ffe2b8');
   }
-  if (w.flip > 0.05) { ctx.save(); ctx.globalAlpha = w.flip; ctx.translate(X(0.6) + Math.sin(time * 0.4) * 24, F - 80 + Math.cos(time * 0.5) * 8); ctx.rotate(time * 0.6); roomBox(ctx, -5, -4, 10, 8, '#c9a227'); roomBox(ctx, -5, -8, 3, 5, '#c9a227'); ctx.restore(); }
+  if (w.flip > 0.05 && !s.still) { ctx.save(); ctx.globalAlpha = w.flip; ctx.translate(X(0.6) + Math.sin(time * 0.4) * 24, F - 80 + Math.cos(time * 0.5) * 8); ctx.rotate(time * 0.6); roomBox(ctx, -5, -4, 10, 8, '#c9a227'); roomBox(ctx, -5, -8, 3, 5, '#c9a227'); ctx.restore(); }
 }
 
 function roomMedbay(ctx, r, s, X, W) {
@@ -241,7 +250,7 @@ function roomTanks(ctx, r, s, X, W) {
   const lx = X(0.74);
   if (W >= 150) for (let k = 0; k < 3; k++) { const x = lx + k * 30; if (x + 28 > r.x1) break; roomBox(ctx, x, F - 96, 26, 96, '#1c3249'); for (let v = 0; v < 4; v++) roomBox(ctx, x + 4, F - 88 + v * 4, 18, 2, '#12233a'); }
   ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 4; roomSeg(ctx, [[tx + tw + 24, F - 70], [lx - 8, F - 70], [lx - 8, F - 10]]); ctx.strokeStyle = '#b83a30'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(lx - 8, F - 40, 6, 0, Math.PI * 2); ctx.stroke();
-  if (W >= 260) { const mx = X(0.7); roomBox(ctx, mx, F - 20, 22, 20, '#5a6a7a'); ctx.save(); ctx.translate(mx + 16, F - 20); ctx.rotate(0.35 - w.flip * 0.3 * Math.sin(time)); roomBox(ctx, -1.5, -66, 3, 68, '#9a7a4a'); roomBox(ctx, -7, -6, 14, 10, '#c8c0a8'); ctx.restore(); }
+  if (W >= 260) { const mx = X(0.7); roomBox(ctx, mx, F - 20, 22, 20, '#5a6a7a'); ctx.save(); ctx.translate(mx + 16, F - 20); ctx.rotate(0.35 - (s.still ? 0 : w.flip * 0.3 * Math.sin(time))); roomBox(ctx, -1.5, -66, 3, 68, '#9a7a4a'); roomBox(ctx, -7, -6, 14, 10, '#c8c0a8'); ctx.restore(); }
 }
 
 // The lamp: a pool of light mixing red (burn), warm (cruise) and a pulsing amber (flip), dimmed at night unless the room keeps its lights.
@@ -262,15 +271,16 @@ function drawPhaseLight(ctx, r, w, time, night, keepsLights) {
 function drawThrustSign(ctx, x, y, g, w, time, zoom) {
   const ph = w.flip > 0.5 ? 'flip' : w.burn > 0.5 ? 'burn' : 'cruise';
   const txt = ph === 'flip' && Math.floor(time) % 4 < 2 ? 'FLIP SECURE' : (ph === 'burn' ? 'THRUST ' : ph === 'cruise' ? 'CRUISE ' : 'FLIP ') + g.toFixed(2) + ' G';
-  roomBox(ctx, x - 42, y, 84, 18, '#081019'); ctx.strokeStyle = '#2a4664'; ctx.lineWidth = 1; ctx.strokeRect(x - 41.5, y + 0.5, 83, 17);
+  const bw = 112; roomBox(ctx, x - bw / 2, y, bw, 18, '#081019'); ctx.strokeStyle = '#2a4664'; ctx.lineWidth = 1; ctx.strokeRect(x - bw / 2 + 0.5, y + 0.5, bw - 1, 17);
   worldText(ctx, zoom, txt, x, y + 13, 12, { burn: '#ff6a52', cruise: '#9fe0b0', flip: '#ffb030' }[ph], 'center');
 }
 
 const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay, tanks: roomTanks };
 // A room, r = { x0, x1, top, floor } in world units, drawn for the state s (w, time, zoom, spin, still, berths, cargo, fuel, burning, night, asleep): walls, props, then its lamp.
 function drawRoom(ctx, id, r, s) {
+  if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses
   const W = r.x1 - r.x0;
-  roomWalls(ctx, r, s.w, s.time);
+  roomWalls(ctx, r, s.w, s.time, s.still);
   ROOM_DRAW[id](ctx, r, s, sh => r.x0 + W * sh, W);
   drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine');
 }

@@ -11,7 +11,7 @@ const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of t
 const G = {};
 const { phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign']);
 
-const fakeCtx = () => { const calls = [], fonts = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); o[k] = v; return true; } }); return c; };
+const fakeCtx = () => { const calls = [], fonts = [], args = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); o[k] = v; return true; } }); return c; };
 test('every posture draws, faced either way, with or without a face, and gives a point to tap', () => {
   for (const name of Object.keys(POSTURES)) for (const face of [1, -1]) for (const img of [null, { width: 12 }]) for (const frame of [0, POSTURES[name].frames - 1]) {
     const c = fakeCtx(), at = drawPerson(c, { name, x: 0.5, deck: 0, face, frame }, 400, 100, { color: '#ffb347', face: img });
@@ -107,4 +107,17 @@ test('the phase light and the thrust sign', () => {
   assert.match(say(0.02, 1), /THRUST 2\.70 G/); assert.match(say(0.3, 1), /CRUISE/);
   assert.match(say(0.5, 1), /FLIP SECURE/); assert.match(say(0.5, 3), /FLIP 2\.70 G/);
   assert.equal(say(0.02, 1, 0.5), '');
+});
+test('with reduced motion the flip holds still: a room drawn at two times is the same', () => {
+  const moving = [];
+  for (const id of [...ROOMS.map(r => r.id), 'tanks']) {
+    const at = (time, still) => { const c = fakeCtx(); drawRoom(c, id, RR, RS({ w: phaseWeights(0.5), time, still })); return c.args.join('|'); };
+    assert.equal(at(1.3, true), at(4.9, true), id);
+    if (at(1.3, false) !== at(4.9, false)) moving.push(id);
+  }
+  assert.ok(moving.length > 0, 'without reduced motion the flip does move');
+});
+test('a mug sits in its holder: steaming and free in cruise, clipped in at the flip', () => {
+  const draw = pr => { const c = fakeCtx(); drawRoom(c, 'galley', RR, RS({ w: phaseWeights(pr) })); return c; };
+  assert.ok(draw(0.3).calls.filter(k => k === 'quadraticCurveTo').length > draw(0.5).calls.filter(k => k === 'quadraticCurveTo').length, 'steam in cruise only');
 });
