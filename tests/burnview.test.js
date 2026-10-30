@@ -44,7 +44,7 @@ test('the instruments follow the burn: from rest up to a peak at the flip, then 
 const dockState = () => {
   const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), el = document.querySelector('#panel.event');
   return { rect: { x: d.left - c.left, y: d.top - c.top, w: d.width, h: d.height }, dock: G.burnBoxes.dock, clear: G.burnBoxes.clear, outline: G.cutOutline, hand: G.cutHits[0], handId: shipPeople()[0].id,
-    tutorial: G.burnBoxes.tutorial || null, ticker: G.burnBoxes.ticker || null, scrolls: el.scrollHeight - el.clientHeight > 1, docked: el.classList.contains('docked') };
+    frame: G.cutOutline.view, zoom: G.burnBoxes.ship.h / 290, tutorial: G.burnBoxes.tutorial || null, ticker: G.burnBoxes.ticker || null, scrolls: el.scrollHeight - el.clientHeight > 1, docked: el.classList.contains('docked') };
 };
 const near = (a, b) => ['x', 'y', 'w', 'h'].every(k => Math.abs(a[k] - b[k]) <= 1);
 // In the dock: at its x, y and width (as the page rounds them to px), and as tall as the scene up to the dock's height.
@@ -66,9 +66,11 @@ test('with a scene open, the dialog sits in the dock, clear of the outline, and 
       assert.ok(inDock(r.rect, r.dock), `${name}: the dialog ${JSON.stringify(r.rect)} is in the dock ${JSON.stringify(r.dock)}`);
       assert.ok(apart(r.rect, r.outline), `${name}: the dialog keeps off the outline ${JSON.stringify(r.outline)}`);
       assert.ok(r.hand && r.hand.id === r.handId && inside(r.hand, r.clear), `${name}: the hand ${JSON.stringify(r.hand)} is in the clear part ${JSON.stringify(r.clear)}`);
+      assert.ok(Math.abs(r.frame.span * r.zoom - r.clear.w) < 1, `${name}: the outline's frame is the clear part's width (${r.frame.span * r.zoom} against ${r.clear.w})`);
       assert.equal(r.tutorial, null, `${name}: the tutorial's prompt is hidden while a scene is open`);
       if (name === 'wide') assert.ok(r.ticker && apart(r.ticker, r.dock), `${name}: the ticker is drawn beside the dock`);
-      if (name === 'wide') assert.ok(!r.scrolls && r.rect.h < r.dock.h - 100, `${name}: the short scene's panel is as tall as the scene (${r.rect.h}), not the dock (${r.dock.h})`);
+      assert.ok(!r.scrolls, `${name}: the short scene does not scroll`);
+      if (name === 'wide') assert.ok(r.rect.h < r.dock.h - 100, `${name}: the short scene's panel is as tall as the scene (${r.rect.h}), not the dock (${r.dock.h})`);
     }
     await done();
   }

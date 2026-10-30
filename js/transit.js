@@ -452,7 +452,7 @@ function transitPanel(x, y, w, h, title) {
 }
 
 // The route strip: origin, destination, the flip, and where we are.
-function drawRoute(cx, y, barW, progress) {
+function drawRoute(cx, y, barW, progress, arrive = null) {
   const t = G.transit, bx = cx - barW / 2;
   const dot = (x, sid) => {
     ctx.fillStyle = SYSTEMS[sid].planets[0].color;
@@ -485,6 +485,8 @@ function drawRoute(cx, y, barW, progress) {
     if (at > 0 && at < 1) ctx.fillRect(bx + barW * at - 1, y - 8, 2, 16);
     ctx.textAlign = 'right';
     ctx.fillText(`due ${dateOf(due)}`, bx + barW, y + 20);
+  } else if (arrive) {  // no contract: the arrival in its place (a phone's bar, which has no dates line)
+    ctx.fillStyle = '#9ab'; ctx.textAlign = 'right'; ctx.fillText(arrive, bx + barW, y + 20);
   }
   // Our ship: a chevron pointing the way the drive faces.
   const sx = bx + barW * progress, dir = t.flipped ? -1 : 1;
@@ -539,15 +541,20 @@ function drawBurnBar(b, dates, progress) {
     put(pull, R, b.y + (dates ? 46 : 41), mono(12), '#8fb0d0', 'right');
     const x0 = L + leftW + 32, x1 = R - rightW - 32;
     drawRoute((x0 + x1) / 2, b.y + (dates ? 20 : 18), x1 - x0, progress);
-    if (dates) put(`${clock} - ${dateOf(transitNow(t))}, arriving ${dateOf(transitEta(t))}`, (x0 + x1) / 2, b.y + 58, mono(12), '#9ab', 'center', x1 - x0 + 56);  // out to the columns' edges; the clock first, so a cut takes the dates
+    // Out to the columns' edges; the clock first, so a cut takes the dates. A tablet (the HUD strip, which shows today's date) says the
+    // arrival before today's, so a cut takes today's.
+    const now = dateOf(transitNow(t)), eta = dateOf(transitEta(t)), line = G.hudW ? `${clock} - ${now}, arriving ${eta}` : `${clock} - arriving ${eta}, today ${now}`;
+    if (dates) put(line, (x0 + x1) / 2, b.y + 58, mono(12), '#9ab', 'center', x1 - x0 + 56);
   } else if (dates) {  // a phone: the title and the clock and speed, the route and the pull, then the strip; no room for the dates (today's is on the HUD strip)
     const sw = width(fmtKms(s.v), `600 15px "IBM Plex Mono", monospace`), cw = width(short, mono(12)), gw = width(pull, mono(12));
-    put(title, L, b.y + 16, label(12), '#7fb4ff', 'left', R - L - sw - cw - 24);
+    const arr = `arr. ${dateOf(transitEta(t))}`, aw = width(arr, mono(12)), beside = R - L - sw - cw - aw - 34 >= 100;  // beside the clock while the title keeps 100 px
+    put(title, L, b.y + 16, label(12), '#7fb4ff', 'left', R - L - sw - cw - 24 - (beside ? aw + 10 : 0));
     put(short, R - sw - 10, b.y + 16, mono(12), '#9ab', 'right');
+    if (beside) put(arr, R - sw - cw - 20, b.y + 16, mono(12), '#9ab', 'right');
     put(fmtKms(s.v), R, b.y + 16, `600 15px "IBM Plex Mono", monospace`, speedColor, 'right');
     put(route, L, b.y + 33, label(14), '#e6f0ff', 'left', R - L - gw - 12);
     put(pull, R, b.y + 33, mono(12), '#8fb0d0', 'right');
-    drawRoute((L + R) / 2, b.y + 45, R - L - 12, progress);
+    drawRoute((L + R) / 2, b.y + 45, R - L - 12, progress, beside ? null : arr);  // else under the strip's far end, where there is no due date
   } else {  // a short phone: the route, the clock and the speed over the strip
     const sw = width(fmtKms(s.v), `600 15px "IBM Plex Mono", monospace`), cw = width(short, mono(12));
     put(route, L, b.y + 15, label(14), '#e6f0ff', 'left', R - L - sw - cw - 24);
@@ -603,7 +610,8 @@ function drawTransit(W, H) {
   const viewW = W - G.hudW, cy = H / 2, t = G.transit;
   const narrow = !G.hudW;  // the HUD strip on top
   const progress = Math.min(1, 1 - t.left / t.total);
-  const panel = t.event && document.querySelector('#panel.event'), dialogSize = panel ? { h: panel.scrollHeight } : null;
+  const panel = t.event && document.querySelector('#panel.event');
+  const dialogSize = panel ? { h: panel.scrollHeight + panel.offsetHeight - panel.clientHeight } : null;  // the content and the panel's border, which max-height includes (border-box)
   const prompt = tutorialPrompt(viewW - 2 * BURN_GUTTER);  // the tutorial's prompt, at the ticker's width: the layout keeps room for it
   const L = burnLayout(W, H, G.hudW, narrow, dialogSize, prompt ? prompt.h : 0), shipBox = L.ship;
   const bg = ctx.createLinearGradient(0, 0, 0, H);

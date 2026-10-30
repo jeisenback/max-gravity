@@ -44,13 +44,16 @@ function burnLayout(W, H, hudW, narrow, dialog, tutorialH = 0) {
   const ship = { x: x0, y: bar.y + barH + gap, w: w0, h: shipH };
   const ticker = { x: x0, y: ship.y + shipH + gap, w: w0, h: tickH };
   const life = { x: x0, y: ticker.y + (tickH ? tickH + gap : 0), w: w0, h: lifeH };
+  // Under a scene the bridge keys, the life row and the Menu and map buttons are hidden, so the dock runs down to a gutter above the
+  // window's bottom (the dialog's pinned choices pad themselves clear of a phone's home bar, style.css).
   let dock = null, clear = ship;
+  const bottom = H - G;
   if (dialog && !narrow) {
     const dw = Math.min(P.dockMax, viewW * P.dockShare), dx = x0 + w0 - dw;
-    dock = { x: dx, y: ship.y, w: dw, h: ticker.y + ticker.h - ship.y };
+    dock = { x: dx, y: ship.y, w: dw, h: Math.max(0, bottom - ship.y) };
     clear = { x: ship.x, y: ship.y, w: Math.max(0, dx - G - ship.x), h: ship.h };
   } else if (dialog) {
-    const bottom = life.y + life.h, h = Math.max(0, Math.min(dialog.h, bottom - (ship.y + ship.h / 2)));
+    const h = Math.max(0, Math.min(dialog.h, bottom - (ship.y + ship.h / 2)));
     dock = { x: x0, y: bottom - h, w: w0, h };
     clear = { x: ship.x, y: ship.y, w: ship.w, h: Math.min(ship.h, dock.y - ship.y) };
   }

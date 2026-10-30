@@ -765,6 +765,28 @@ test('the time remaining is drawn on the burn bar on a phone, a tablet, a deskto
   }
 });
 
+// The arrival date on a narrow screen: a phone says it beside the clock where it fits, or under the strip's far end when there is no
+// due date there; a tablet's dates line says it before today's date, so a cut takes today's (which the HUD strip shows).
+test('the arrival date is drawn on the burn bar on a phone without a contract, and first in a tablet\'s dates line', async () => {
+  for (const [W, H, mobile] of [[390, 844, true], [768, 1024, false]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: W, height: H }, mobile });
+    await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
+    const r = await ev(() => {
+      startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+      G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null; G.transit.event = null;
+      const hd = hired(); if (hd.run) hd.run.contract = null; if (hd.plan && hd.plan.run) hd.plan.run.contract = null;  // no contract, so no due date under the strip
+      G.transit.left = G.transit.total * 0.7;
+      const stop = drawnText(); drawTransit(innerWidth, innerHeight); return { eta: dateOf(transitEta(G.transit)), today: dateOf(transitNow(G.transit)), text: stop() };
+    });
+    if (W === 390) assert.ok(r.text.includes(`arr. ${r.eta}`), `${W}x${H}: arr. ${r.eta} is drawn: ${r.text.join('|')}`);
+    else {
+      const line = r.text.find(t => t.includes('arriving'));
+      assert.ok(line && line.includes(`arriving ${r.eta}`) && (!line.includes(r.today) || line.indexOf(r.today) > line.indexOf('arriving')), `${W}x${H}: the arrival comes before today's date: ${line}`);
+    }
+    await done();
+  }
+});
+
 test('the hold draws a contract\'s load as booked cells before sailing, and as cargo after', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => {

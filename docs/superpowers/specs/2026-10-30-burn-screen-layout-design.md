@@ -66,8 +66,8 @@ The Menu and System map buttons keep their DOM places where those are clear of t
 - **The camera.** `drawCutaway(box, clear)` takes the part of the ship box left clear of the dialog. While a dialog is open, the camera
   centres the hand in that part. When the dialog closes, the camera eases back to the whole box. On a narrow screen with the hand on
   the lower deck, the camera shows the upper deck above them, and the outline still marks where the hand is.
-- **Taps.** The outline stays top left of the ship box, so it is always clear of the dialog. Taps on the ship work in the clear part.
-  The part under the dialog belongs to the dialog.
+- **Taps.** The outline stays top left of the ship box, so it is always clear of the dialog. Taps on the ship are ignored
+  while a scene is open, as before; the outline stays visible.
 - **Station sheets** (`#bsheet`, the bridge keys) are not scenes and keep their places.
 
 ## 3. Where the rest goes

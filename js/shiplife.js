@@ -474,8 +474,9 @@ function drawCutaway(box, clear = box) {
     return { id: r.id, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
   }).filter(b => b.w > 0 && b.h > 0);
   G.cutHits = hits.filter(h => h.x >= cx0 && h.x <= cx1 && h.y >= cy0 && h.y <= cy1);
-  G.cutOutline = { ...outlineLayout(box, len), ids: people.filter(p => p.id).map(p => p.id), squeeze: Math.abs(turn) };
-  drawOutline(ctx, G.cutOutline, dots, camX, view.span, len, turn);
+  const seenPart = { x: camX - off, span: clear.w / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers
+  G.cutOutline = { ...outlineLayout(box, len), ids: people.filter(p => p.id).map(p => p.id), squeeze: Math.abs(turn), view: seenPart };
+  drawOutline(ctx, G.cutOutline, dots, seenPart.x, seenPart.span, len, turn);
 }
 
 // ---------- downtime activities ----------
