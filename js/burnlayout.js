@@ -8,8 +8,8 @@
 const CUTAWAY_ASPECT = { wide: 0.36, narrow: 0.6 };
 
 const BURN_GUTTER = 12, BURN_KEYS_H = 52, BURN_HUD_STRIP = 84;
-const BURN_WIDE = { bar: 64, barNoDates: 48, ticker: 78, ticker1: 40, life: 44, shipShare: 0.58, shipWant: 0.55, dockMax: 560, dockShare: 0.45 };
-const BURN_NARROW = { bar: 72, barNoDates: 48, ticker: 120, ticker1: 40, life: 92, shipMin: 1.0, shipMax: 1.2, shipWant: 0.9, gap: 8 };
+const BURN_WIDE = { bar: 64, barNoDates: 48, ticker: 78, ticker1: 40, life: 44, shipShare: 0.58, shipWant: 0.55, dockMax: 560, dockShare: 0.45, keysGap: 6 };
+const BURN_NARROW = { bar: 72, barNoDates: 48, ticker: 120, ticker1: 40, life: 92, life1: 44, shipMin: 1.0, shipMax: 1.2, shipWant: 0.9, gap: 6, keysGap: 4 };
 
 // Today's ship box, as drawTransit computes it (js/transit.js): the floor the new ship is never smaller than.
 function legacyShipBox(W, H, hudW, narrow) {
@@ -26,18 +26,21 @@ function burnLayout(W, H, hudW, narrow, dialog) {
   const P = narrow ? BURN_NARROW : BURN_WIDE, gap = narrow ? P.gap : G;
   const top = narrow ? BURN_HUD_STRIP + P.gap : G;
   // The height left for the ship once the other blocks are laid out; shed until it is wanted or nothing is left to shed.
-  const room = (barH, tickH) => H - top - barH - gap - (gap + tickH + gap + P.life + 6 + BURN_KEYS_H);
+  const room = (barH, tickH, lifeH) => H - top - barH - gap - ((tickH ? gap + tickH + gap : gap) + lifeH + P.keysGap + BURN_KEYS_H);
   const want = narrow ? Math.max(P.shipWant * viewW, old.h) : Math.max(P.shipWant * H, old.h);
-  let tickerLines = 2, datesLine = true;
-  if (room(P.bar, P.ticker) < want) tickerLines = 1;
-  if (tickerLines === 1 && room(P.bar, P.ticker1) < want) datesLine = false;
-  const barH = datesLine ? P.bar : P.barNoDates, tickH = tickerLines === 2 ? P.ticker : P.ticker1, avail = Math.max(0, room(barH, tickH));
+  let tickerLines = 2, datesLine = true, lifeH = P.life;
+  const fits = () => room(datesLine ? P.bar : P.barNoDates, tickerLines === 2 ? P.ticker : tickerLines ? P.ticker1 : 0, lifeH) >= want;
+  if (!fits()) tickerLines = 1;
+  if (!fits()) datesLine = false;
+  if (narrow && !fits()) lifeH = P.life1;  // the button rows fold to one
+  if (narrow && !fits()) tickerLines = 0;  // Comms is still on its key
+  const barH = datesLine ? P.bar : P.barNoDates, tickH = tickerLines === 2 ? P.ticker : tickerLines ? P.ticker1 : 0, avail = Math.max(0, room(barH, tickH, lifeH));
   const shipH = Math.min(narrow ? P.shipMax * viewW : P.shipShare * H, avail);
 
   const bar = { x: x0, y: top, w: w0, h: barH };
   const ship = { x: x0, y: bar.y + barH + gap, w: w0, h: shipH };
   const ticker = { x: x0, y: ship.y + shipH + gap, w: w0, h: tickH };
-  const life = { x: x0, y: ticker.y + tickH + gap, w: w0, h: P.life };
+  const life = { x: x0, y: ticker.y + tickH + gap, w: w0, h: lifeH };
   let dock = null, clear = ship;
   if (dialog && !narrow) {
     const dw = Math.min(P.dockMax, viewW * P.dockShare), dx = x0 + w0 - dw;

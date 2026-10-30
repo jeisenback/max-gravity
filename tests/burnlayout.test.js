@@ -22,8 +22,8 @@ test('every block is inside the view, and none overlaps another but the dock', (
 test('the ship is never smaller than today where today\'s box fits the window, and on a wide screen is at least 1.8 times as tall', () => {
   for (const [W, H, hud, narrow] of SIZES) {
     const s = burnLayout(W, H, hud, narrow, null).ship, old = legacyShipBox(W, H, hud, narrow);
-    if (old.h <= H * 0.6) assert.ok(s.w >= old.w - 0.5 && s.h >= old.h - 0.5, `${W}x${H}`);  // a landscape phone (844x390): today's box is taller than the window, so the ship gets what remains
-    else assert.ok(s.h > 0, `${W}x${H} keeps some ship`);
+    // today's box already overflows the window at 844x390, so the floor cannot hold there
+    if (old.h <= H * 0.6) assert.ok(s.w >= old.w - 0.5 && s.h >= old.h - 0.5, `${W}x${H}`);    else assert.ok(s.h > 0, `${W}x${H} keeps some ship`);
   }
   const w = burnLayout(1280, 800, 220, false, null).ship; assert.ok(w.h >= 1.8 * legacyShipBox(1280, 800, 220, false).h);
 });
@@ -41,4 +41,12 @@ test('a dialog docks at the right of the ship on a wide screen and leaves the le
 });
 test('without a dialog there is no dock, and the whole ship is clear', () => {
   const l = burnLayout(1280, 800, 220, false, null); assert.equal(l.dock, null); assert.deepEqual(l.clear, l.ship);
+});
+test('a landscape phone keeps a usable ship, with every box inside the view', () => {
+  const l = burnLayout(844, 390, 0, true, null);
+  assert.ok(l.ship.h >= 140, `ship ${l.ship.h}`); assert.equal(l.tickerLines, 0); assert.equal(l.ticker.h, 0);
+  for (const k of ['bar', 'ship', 'ticker', 'life']) assert.ok(l[k].y >= 0 && l[k].y + l[k].h <= 390 && l[k].x + l[k].w <= 844, k);
+});
+test('a tall phone keeps the two-line ticker and the full button rows', () => {
+  const l = burnLayout(390, 844, 0, true, null); assert.equal(l.tickerLines, 2); assert.equal(l.life.h, 92);
 });
