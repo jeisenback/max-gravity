@@ -313,6 +313,7 @@ function enterTransit() {
     chatter: rand(5, 10), chattered: 0,
   };
   G.mode = 'transit';
+  G.cam = null;  // each burn starts with the camera snapped to the hand
   G.npcs = []; G.shots = []; G.target = null;
   if (!G.transitStars) G.transitStars = Array.from({ length: 150 }, () => ({ x: Math.random(), y: Math.random(), z: rand(0.2, 1) }));
   comm(`Burn plotted for ${SYSTEMS[to].name}: ${days} days. Crash couches ready.`);
