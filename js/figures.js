@@ -99,7 +99,7 @@ function drawPerson(ctx, pose, x, y, look) {
       for (let i = -1; i <= 1; i++) { ctx.beginPath(); ctx.moveTo(hx + i * 4, hy - 7); ctx.quadraticCurveTo(hx + i * 7 + S(ph + i) * 4, hy - 16, hx + i * 5 + S(ph * 0.75 + i) * 6, hy - 21); ctx.stroke(); }
     }
     if (look.face) {
-      ctx.save(); ctx.beginPath(); ctx.arc(hx, hy, 9, 0, Math.PI * 2); ctx.clip(); ctx.translate(hx, hy); ctx.scale(face, 1); ctx.drawImage(look.face, -9, -9, 18, 18);  // counter-flipped: the face is not mirrored ctx.restore();
+      ctx.save(); ctx.beginPath(); ctx.arc(hx, hy, 9, 0, Math.PI * 2); ctx.clip(); ctx.translate(hx, hy); ctx.scale(face, 1); ctx.drawImage(look.face, -9, -9, 18, 18); ctx.restore();  // counter-flipped: the face is not mirrored
     } else figDot(ctx, hx, hy, 9, skin);
     ctx.strokeStyle = col; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.arc(hx, hy, 9.6, 0, Math.PI * 2); ctx.stroke();
     tap = { x: j.mid[0] * k, y: j.mid[1] * k };
