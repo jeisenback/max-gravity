@@ -500,17 +500,16 @@ function fitLine(text, maxW) {
   return `${text.slice(0, lo).trimEnd()}...`;
 }
 
-// The scene dialog in the burn view's dock (burnLayout's dock box, in viewport px), or out of it when dock is null. fill gives it the
-// dock's whole height (a wide screen's dock); otherwise it is as tall as its content, up to the dock. Written only when it changed, so a
-// resize with the dialog open follows on the next frame.
-function dockEventPanel(el, dock, fill) {
+// The scene dialog in the burn view's dock (burnLayout's dock box, in viewport px), as tall as its content up to the dock's height, or out
+// of it when dock is null. Written only when it changed, so a resize with the dialog open follows on the next frame.
+function dockEventPanel(el, dock) {
   const want = dock ? { '--dock-x': dock.x, '--dock-y': dock.y, '--dock-w': dock.w, '--dock-h': dock.h } : {};
-  let moved = el.classList.contains('docked') !== !!dock || el.classList.contains('dock-fill') !== !!(dock && fill);
+  let moved = el.classList.contains('docked') !== !!dock;
   for (const k of ['--dock-x', '--dock-y', '--dock-w', '--dock-h']) {
     const v = k in want ? `${Math.round(want[k])}px` : '';
     if (el.style.getPropertyValue(k) !== v) { moved = true; if (v) el.style.setProperty(k, v); else el.style.removeProperty(k); }
   }
-  el.classList.toggle('docked', !!dock); el.classList.toggle('dock-fill', !!(dock && fill));
+  el.classList.toggle('docked', !!dock);
   return moved;
 }
 

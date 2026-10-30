@@ -1348,7 +1348,7 @@ function frame(now) {
   if (!G.paused && ['flight', 'departing', 'transit', 'dead'].includes(G.mode)) update(dt);
   render();
   const docked = G.mode === 'transit' && G.transit && G.transit.event && G.burnBoxes ? G.burnBoxes.dock : null;  // a scene's dialog in the burn view's dock, out of it otherwise
-  if (dockEventPanel(UI.el, docked, G.hudW > 0)) UI.moreCue();
+  if (dockEventPanel(UI.el, docked)) UI.moreCue();
   Touch.sync();
   if (G.mode !== 'title') Mods.emit('frame', G.paused ? 0 : dt);  // paused: time stands still
   requestAnimationFrame(frame);

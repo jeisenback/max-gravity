@@ -44,9 +44,11 @@ test('the instruments follow the burn: from rest up to a peak at the flip, then 
 const dockState = () => {
   const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), el = document.querySelector('#panel.event');
   return { rect: { x: d.left - c.left, y: d.top - c.top, w: d.width, h: d.height }, dock: G.burnBoxes.dock, clear: G.burnBoxes.clear, outline: G.cutOutline, hand: G.cutHits[0], handId: shipPeople()[0].id,
-    tutorial: G.burnBoxes.tutorial || null, scrolls: el.scrollHeight > el.clientHeight, docked: el.classList.contains('docked') };
+    tutorial: G.burnBoxes.tutorial || null, ticker: G.burnBoxes.ticker || null, scrolls: el.scrollHeight - el.clientHeight > 1, docked: el.classList.contains('docked') };
 };
 const near = (a, b) => ['x', 'y', 'w', 'h'].every(k => Math.abs(a[k] - b[k]) <= 1);
+// In the dock: at its x, y and width (as the page rounds them to px), and as tall as the scene up to the dock's height.
+const inDock = (r, d) => ['x', 'y', 'w'].every(k => r[k] === Math.round(d[k])) && r.h <= Math.round(d.h);
 const apart = (a, b) => a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
 const inside = (p, b) => p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h;
 
@@ -61,10 +63,12 @@ test('with a scene open, the dialog sits in the dock, clear of the outline, and 
       await frames(page, 3);
       const r = await ev(dockState);
       assert.ok(r.dock && r.docked, `${name}: the dialog is docked`);
-      assert.ok(near(r.rect, r.dock), `${name}: the dialog ${JSON.stringify(r.rect)} is the dock ${JSON.stringify(r.dock)}`);
+      assert.ok(inDock(r.rect, r.dock), `${name}: the dialog ${JSON.stringify(r.rect)} is in the dock ${JSON.stringify(r.dock)}`);
       assert.ok(apart(r.rect, r.outline), `${name}: the dialog keeps off the outline ${JSON.stringify(r.outline)}`);
       assert.ok(r.hand && r.hand.id === r.handId && inside(r.hand, r.clear), `${name}: the hand ${JSON.stringify(r.hand)} is in the clear part ${JSON.stringify(r.clear)}`);
-      if (r.tutorial) assert.ok(apart(r.tutorial, r.dock), `${name}: the tutorial's prompt keeps off the dock`);
+      assert.equal(r.tutorial, null, `${name}: the tutorial's prompt is hidden while a scene is open`);
+      if (name === 'wide') assert.ok(r.ticker && apart(r.ticker, r.dock), `${name}: the ticker is drawn beside the dock`);
+      if (name === 'wide') assert.ok(!r.scrolls && r.rect.h < r.dock.h - 100, `${name}: the short scene's panel is as tall as the scene (${r.rect.h}), not the dock (${r.dock.h})`);
     }
     await done();
   }
@@ -78,7 +82,7 @@ test('a scene taller than the dock scrolls inside it, and the dialog stays the d
     await frames(page, 3);
     const r = await ev(dockState);
     assert.ok(r.scrolls, `${name}: the dialog scrolls`);
-    assert.ok(near(r.rect, r.dock), `${name}: the dialog ${JSON.stringify(r.rect)} is the dock ${JSON.stringify(r.dock)}`);
+    assert.ok(inDock(r.rect, r.dock) && near(r.rect, r.dock), `${name}: the dialog ${JSON.stringify(r.rect)} fills the dock ${JSON.stringify(r.dock)}`);
     await done();
   }
 });
@@ -89,13 +93,13 @@ test('a resize with a scene open moves the dialog into the new dock, and closing
   await ev(() => { burn(); scene(); });
   await frames(page, 3);
   const wide = await ev(dockState);
-  assert.ok(near(wide.rect, wide.dock), 'wide: the dialog is the dock');
+  assert.ok(inDock(wide.rect, wide.dock), 'wide: the dialog is in the dock');
   await page.setViewportSize({ width: 390, height: 844 });
   await page.waitForFunction(() => G.W === 390);
   await frames(page, 2);
   const phone = await ev(dockState);
   assert.ok(phone.dock.w > wide.dock.w || phone.dock.x < wide.dock.x, 'the dock is the phone\'s');
-  assert.ok(near(phone.rect, phone.dock), `phone: the dialog ${JSON.stringify(phone.rect)} is the new dock ${JSON.stringify(phone.dock)}`);
+  assert.ok(inDock(phone.rect, phone.dock), `phone: the dialog ${JSON.stringify(phone.rect)} is in the new dock ${JSON.stringify(phone.dock)}`);
   await ev(() => finishEvent());
   await frames(page, 2);
   const after = await ev(() => { const el = document.querySelector('#panel'); return { docked: el.classList.contains('docked'), x: el.style.getPropertyValue('--dock-x'), dock: G.burnBoxes.dock, clear: G.burnBoxes.clear }; });

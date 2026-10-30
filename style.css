@@ -60,8 +60,7 @@ canvas { display: block; touch-action: none; }
   padding: 0;
 }
 /* In the burn view a scene docks beside the ship (wide) or rises from the bottom (narrow), in the box burnLayout gives it (js/transit.js). */
-#panel.event.docked { inset: auto; left: var(--dock-x); top: var(--dock-y); width: var(--dock-w); max-height: var(--dock-h); transform: none; overflow-y: auto; }
-#panel.event.docked.dock-fill { height: var(--dock-h); }  /* a wide screen's dock has a fixed height */
+#panel.event.docked { inset: auto; left: var(--dock-x); top: var(--dock-y); width: var(--dock-w); max-height: var(--dock-h); transform: none; overflow-y: auto; overflow-x: hidden; }  /* as tall as the scene, up to the dock */
 /* Bracketed corners in the accent color. */
 #panel::before, #panel::after {
   content: "";
