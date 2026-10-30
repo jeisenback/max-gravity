@@ -21,8 +21,11 @@ const ROOMS = [
 const LADDER = 0.62;
 for (const r of ROOMS) { r.w = r.x1 - r.x0; r.mid = (r.x0 + r.x1) / 2; }
 const roomAt = id => ROOMS.find(r => r.id === id);
-// The room under a point on the screen, from the boxes the last cutaway drawing recorded (js/transit.js maps them to pixels).
-const roomAtPoint = (x, y) => { const r = (G.cutRooms || []).find(b => x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h); return r ? r.id : null; };
+// The room under a point on the screen: the outline's first, then the rooms in view, from what the last cutaway drawing recorded.
+function roomAtPoint(x, y) {
+  const r = (G.cutRooms || []).find(b => x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h);
+  return (G.cutOutline && outlineRoomAt(G.cutOutline, x, y)) || (r ? r.id : null);
+}
 
 // Where each kind of person likes to spend a burn.
 const HAUNTS = {
@@ -318,50 +321,68 @@ function lifeTick(dt) {
 }
 
 // ---------- the cutaway ----------
-const CUTAWAY_H = 0.24;  // hull height as a share of its length: two decks
-// The drive plume off the stern: its length as a share of the hull (growing with the burn's peak), the flicker in pixels, and the
-// halo and the cone's half-width as shares of the hull's height.
+// The box the cutaway is drawn in, its height over its width: on a wide screen and on a phone (js/transit.js).
+const CUTAWAY_ASPECT = { wide: 0.36, narrow: 0.6 };
+// The drive plume off the stern: its length as a share of the hull (growing with the burn's peak), the flicker in world units, and the
+// halo and each bell's cone half-width as shares of the hull's height.
 const PLUME = { base: 0.28, gain: 0.32, flicker: 14, halo: 0.7, cone: 0.16 };
+// The two drive bells on the stern (the top and bottom of each, world units), and the room the camera may show aft of the hull for them.
+const CUT_BELLS = [[28, 72], [140, 184]], CUT_STERN = 120;
+// The bulkheads of each deck as shares of the length: those with a hatch at the floor, and the nose's end wall.
+const CUT_WALLS = [{ dk: 0, hatch: [0.17, 0.44, 0.66, 0.78], end: 0.92 }, { dk: 1, hatch: [0.17, 0.4, 0.66], end: 0.9 }];
 
-function drawCutaway(cx, cy, maxL) {
-  // Longer hulls for bigger ships: a Dust Skiff is 60% of the space, an Ice Hauler all of it.
-  const L = maxL * Math.min(1, 0.6 + 0.4 * (SHIPS[G.state.shipId].size - 10) / 8);
-  const t = G.transit, people = shipPeople(), ph = phase(), H = Math.round(maxL * CUTAWAY_H);
+// A room's box in world units: the engine room is the full height of the stern; the lower deck's ceiling is under the upper deck's plate.
+const cutRect = (r, len) => ({ x0: r.x0 * len, x1: r.x1 * len, top: r.tall || r.deck === 0 ? 0 : floorY(0) + HULL.plate, floor: floorY(r.tall ? 1 : r.deck) });
+function cutBulkhead(x, top, F, hatch) {
+  ctx.fillStyle = '#1a3048'; ctx.fillRect(x - 6, top, 12, F - top);
+  if (hatch) { ctx.fillStyle = '#060d16'; ctx.fillRect(x - 4, F - 92, 8, 92); ctx.fillStyle = '#2a4664'; ctx.fillRect(x - 6, F - 96, 12, 4); ctx.fillStyle = '#c9a227'; ctx.fillRect(x - 4, F - 4, 4, 4); }
+}
+
+// The cutaway in the screen box { x, y, w, h }: a camera close in on the hand, both decks high, and the outline of the whole hull in the
+// corner. The nose is to the right through the flip; the turn shows in the stars, the windows, the thrusters and the outline.
+// Leaves G.cutRooms (the rooms in view, screen boxes clipped to the box), G.cutHits (the people in view) and G.cutOutline for a tap (game.js).
+function drawCutaway(box) {
+  const t = G.transit, st = G.state, people = shipPeople(), ph = phase(), still = Settings.reduceMotion, time = still ? 0 : G.time;
+  const len = hullLength(SHIPS[st.shipId].size), view = viewOf(box), zoom = view.zoom, half = view.span / 2;
+  const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = phaseWeights(pr);
+  // The camera eases after the hand; it may look a little aft of the stern, at the bells.
+  const camX = camStep(G.cam && G.cam.x + CUT_STERN, people[0].x * len + CUT_STERN, G.cam ? Math.max(0, G.time - G.cam.t) : 0, view.span, len + CUT_STERN) - CUT_STERN;
+  G.cam = { x: camX, t: G.time };
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
-  // Nose to the right on the way out; at the flip the ship turns end over end.
-  const turn = -Math.sin(t.angle);  // 1 before the flip, -1 after, 0 mid-turn
-  const X = f => cx + (f - 0.5) * L * turn;
-  const top = cy - H / 2, mid = top + H / 2, upper = mid - 3, lower = top + H - 6;  // the deck line and each deck's floor
-  const dh = H / 2, ph_ = Math.max(9, Math.min(15, dh * 0.24));  // a deck's height, a person's
-  const night = nightLevel();
-  const floorOf = dk => upper + (lower - upper) * dk;
-  const span = (a, b) => Math.max(2, (b - a) * L * Math.abs(turn));  // a share of the length, in pixels
+  const turn = -Math.sin(t.angle), spin = t.angle + Math.PI / 2;  // turn: 1 before the flip, -1 after, 0 mid-turn; spin: the ship's turn, 0 to pi
+  const X = f => f * len, top = -12, H = 236, cy = top + H / 2;
+  const bcx = box.x + box.w / 2, bcy = box.y + box.h / 2, toScreen = (x, y) => ({ x: bcx + (x - camX) * zoom, y: bcy + (y - cy) * zoom });
+  const speed = 0.05 + Math.sin(Math.PI * pr) * 0.6, shake = !still && !t.event && speed > 0.2 ? speed * 0.9 : 0;
+  const seen = (a, b) => b >= camX - half && a <= camX + half;
 
-  // Drive plume off the stern.
+  ctx.save();
+  ctx.beginPath(); ctx.rect(box.x, box.y, box.w, box.h); ctx.clip();
+  ctx.translate(bcx + Math.sin(G.time * 53) * 0.5 * shake, bcy + Math.sin(G.time * 71 + 1) * 0.8 * shake);  // a shiver, not a random draw: the game's random is seeded in the tests
+  ctx.scale(zoom, zoom); ctx.translate(-camX, -cy);
+
+  // The drive plume from the two bells, and the thrusters puffing at nose and stern while the ship turns.
   if (burning) {
-    const pk = Math.sin(Math.PI * Math.min(1, 1 - t.left / t.total)), len = L * (PLUME.base + PLUME.gain * pk) + Math.random() * PLUME.flicker, sx = X(0), dir = -Math.sign(turn || 1);
-    const g = ctx.createLinearGradient(sx, 0, sx + dir * len, 0);
-    g.addColorStop(0, 'rgba(255,255,255,0.95)');
-    g.addColorStop(0.15, 'rgba(140,190,255,0.8)');
-    g.addColorStop(1, 'rgba(60,90,255,0)');
-    const halo = ctx.createRadialGradient(sx, cy, 0, sx, cy, H * PLUME.halo);
+    const pl = len * (PLUME.base + PLUME.gain * Math.sin(Math.PI * pr)) + Math.sin(time * 23) * PLUME.flicker, mouth = -46, hr = H * PLUME.halo;
+    const halo = ctx.createRadialGradient(mouth, cy, 0, mouth, cy, hr);
     halo.addColorStop(0, 'rgba(140,190,255,0.3)'); halo.addColorStop(1, 'rgba(60,90,255,0)');
-    ctx.fillStyle = halo;
-    ctx.fillRect(sx - H * PLUME.halo, cy - H * PLUME.halo, H * PLUME.halo * 2, H * PLUME.halo * 2);
-    ctx.fillStyle = g;
-    ctx.beginPath(); ctx.moveTo(sx, cy - H * PLUME.cone); ctx.lineTo(sx + dir * len, cy); ctx.lineTo(sx, cy + H * PLUME.cone); ctx.fill();
+    ctx.fillStyle = halo; ctx.fillRect(mouth - hr, cy - hr, hr * 2, hr * 2);
+    for (const [a, b] of CUT_BELLS) {
+      const m = (a + b) / 2, c = H * PLUME.cone, g = ctx.createLinearGradient(mouth, 0, mouth - pl, 0);  // white-hot for the first 40 units, then blue fading out
+      g.addColorStop(0, 'rgba(255,255,255,0.95)'); g.addColorStop(Math.min(0.5, 40 / pl), 'rgba(140,190,255,0.75)'); g.addColorStop(1, 'rgba(60,90,255,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(mouth, m - c); ctx.quadraticCurveTo(mouth - pl * 0.25, m - c * 0.4, mouth - pl, m); ctx.quadraticCurveTo(mouth - pl * 0.25, m + c * 0.4, mouth, m + c); ctx.fill();
+    }
+  } else if (!t.event) {
+    const on = Math.sin(time * 3) > 0, a = 0.5 + 0.5 * Math.abs(Math.sin(time * 9));
+    ctx.fillStyle = `rgba(230,240,255,${a})`;
+    for (const [x, y] of on ? [[X(0.955) + 14, 80], [-14, 206]] : [[X(0.955) + 14, 132], [-14, 6]]) { ctx.beginPath(); ctx.ellipse(x, y, 14, 6, 0, 0, Math.PI * 2); ctx.fill(); }
   }
-  if (Math.abs(turn) < 0.05) return;  // edge-on mid-turn
+  ctx.fillStyle = '#16283a';
+  for (const [a, b] of CUT_BELLS) { ctx.beginPath(); ctx.moveTo(0, a + 4); ctx.lineTo(-46, a - 16); ctx.lineTo(-46, b + 16); ctx.lineTo(0, b - 4); ctx.fill(); }
 
-  // Each room's box, for a tap (#323): x0 and x1 swap after the flip, and the engine is the full height of the stern.
-  G.cutRooms = ROOMS.map(r => { const a = X(r.x0), b = X(r.x1), tall = r.tall || r.deck === 0 ? top : mid; return { id: r.id, x: Math.min(a, b), y: r.tall ? top : tall, w: Math.abs(b - a), h: r.tall ? H : H / 2 }; });
-
-  // Hull, with a rounded nose, lit from above.
+  // The hull, with a rounded nose, lit from above; everything inside is clipped to it.
   const shade = ctx.createLinearGradient(0, top, 0, top + H);
   shade.addColorStop(0, '#132338'); shade.addColorStop(1, '#08111c');
-  ctx.fillStyle = shade;
-  ctx.strokeStyle = '#3d5f82';
-  ctx.lineWidth = 2;
+  ctx.fillStyle = shade; ctx.strokeStyle = '#3d5f82'; ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.moveTo(X(0), top + 6); ctx.lineTo(X(0.9), top);
   ctx.quadraticCurveTo(X(1.02), cy, X(0.9), top + H);
@@ -370,204 +391,74 @@ function drawCutaway(cx, cy, maxL) {
   ctx.save();
   ctx.clip();
 
-  // A pool of light under each room's ceiling lamp: warm in the galley and berths.
-  for (const r of ROOMS) {
-    const lx = X(r.mid), ly = r.deck === 0 || r.tall ? top + 4 : mid + 3, warm = r.id === 'galley' || r.id === 'berths';
-    const dim = 1 - (r.id === 'bridge' || r.id === 'engine' ? 0.4 : 0.8) * night;  // the watch keeps its lights
-    const lamp = ctx.createRadialGradient(lx, ly, 0, lx, ly, dh * 1.1);
-    lamp.addColorStop(0, warm ? `rgba(255,200,130,${0.22 * dim})` : `rgba(150,200,255,${0.15 * dim})`);
-    lamp.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = lamp;
-    ctx.fillRect(lx - dh * 1.1, ly - 2, dh * 2.2, dh * 1.2);
-    ctx.fillStyle = warm ? '#ffcf8f' : '#bfe0ff';
-    ctx.fillRect(lx - 4, ly - 1, 8, 1.5);
+  // The rooms, the ladder well, the ladder through the upper deck's plate, and the bulkheads.
+  const cap = ship().cargo, nb = Math.min(12, ship().berths), slots = new Map();
+  for (const p of people) if (slots.size < nb && isAsleep(p)) slots.set(p, slots.size);  // whoever is turned in lies on a bunk
+  const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size };
+  for (const [id, r] of [...ROOMS.map(r => [r.id, r]), ['tanks', { x0: 0.66, x1: 0.9, deck: 1 }]]) {
+    const q = cutRect(r, len);
+    if (seen(q.x0, q.x1)) drawRoom(ctx, id, q, s);
   }
-  // Bridge window in the nose.
-  ctx.strokeStyle = 'rgba(160,215,255,0.8)';
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(X(0.915), top + dh * 0.3); ctx.quadraticCurveTo(X(0.955), top + dh * 0.5, X(0.96), mid - dh * 0.15);
+  roomWalls(ctx, cutRect({ x0: 0.6, x1: 0.66, deck: 1 }, len), w, time, still);  // between the medbay and the tanks
+  const lx = X(LADDER);
+  ctx.fillStyle = '#060d16'; ctx.fillRect(lx - 14, floorY(0), 28, HULL.plate);
+  ctx.strokeStyle = '#4a6a8a'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(lx - 8, floorY(0)); ctx.lineTo(lx - 8, floorY(1)); ctx.moveTo(lx + 8, floorY(0)); ctx.lineTo(lx + 8, floorY(1)); ctx.stroke();
+  ctx.lineWidth = 1.5; ctx.beginPath();
+  for (let y = floorY(0) + 8; y < floorY(1); y += 14) { ctx.moveTo(lx - 8, y); ctx.lineTo(lx + 8, y); }
   ctx.stroke();
-  hullSeams(X, top, H, turn);  // plating, rivets and scars (hulldetail.js)
-  ctx.restore();
-  hullFittings(X, top, H, L, turn, cy);  // mast, fins and turrets
-  // Running lights, blinking.
-  if (G.time % 1.6 < 0.2) {
-    ctx.fillStyle = '#ff5a5a'; ctx.fillRect(X(0.45) - 1.5, top - 3, 3, 3);
-    ctx.fillStyle = '#5aff8a'; ctx.fillRect(X(0.45) - 1.5, top + H, 3, 3);
+  for (const d of CUT_WALLS) {
+    const q = cutRect({ x0: 0, x1: 0, deck: d.dk }, len);
+    for (const f of d.hatch) cutBulkhead(X(f), q.top, q.floor, true);
+    cutBulkhead(X(d.end), q.top, q.floor, false);
   }
+  for (const r of ROOMS) worldText(ctx, zoom, r.name.toUpperCase(), X(r.x0) + 12, cutRect(r, len).top + 34, 14, '#5a7088');
+  drawThrustSign(ctx, X(roomAt('galley').x1), 10, burnState().g, w, G.time, zoom);  // over the galley's forward hatch
 
-  // Decks, bulkheads with a door at each floor, and the ladder.
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = '#27405c';
-  ctx.beginPath();
-  ctx.moveTo(X(0.17), mid); ctx.lineTo(X(LADDER - 0.012), mid);
-  ctx.moveTo(X(LADDER + 0.012), mid); ctx.lineTo(X(0.9), mid);
-  for (const x of [0.17, 0.44, 0.66, 0.78]) { ctx.moveTo(X(x), top + 4); ctx.lineTo(X(x), mid); }  // upper rooms
-  ctx.moveTo(X(0.17), mid); ctx.lineTo(X(0.17), top + H - 4);  // the engine room's wall
-  ctx.moveTo(X(0.4), mid); ctx.lineTo(X(0.4), top + H - 4);  // the medbay begins
-  ctx.moveTo(X(0.66), mid); ctx.lineTo(X(0.66), top + H - 4);  // the tanks begin
-  ctx.stroke();
-  ctx.fillStyle = '#0c1826';
-  for (const [x, f] of [[0.17, upper], [0.44, upper], [0.66, upper], [0.78, upper], [0.17, lower], [0.4, lower], [0.66, lower]]) {
-    ctx.fillRect(X(x) - 2, f - ph_ - 3, 4, ph_ + 3);
-    ctx.strokeRect(X(x) - 2, f - ph_ - 3, 4, ph_ + 3);
-  }
-  ctx.strokeStyle = '#1f3349';
-  ctx.beginPath(); ctx.moveTo(X(0.01), lower + 1); ctx.lineTo(X(0.9), lower + 1); ctx.stroke();
-  ctx.strokeStyle = '#4a6a8c';
-  ctx.beginPath();
-  ctx.moveTo(X(LADDER) - 4, mid); ctx.lineTo(X(LADDER) - 4, lower);
-  ctx.moveTo(X(LADDER) + 4, mid); ctx.lineTo(X(LADDER) + 4, lower);
-  for (let y = mid + 4; y < lower; y += 5) { ctx.moveTo(X(LADDER) - 4, y); ctx.lineTo(X(LADDER) + 4, y); }
-  ctx.stroke();
-  ctx.fillStyle = '#5b7896';
-  ctx.font = `600 12px ${LABEL_FONT}`;
-  ctx.textAlign = 'center';
-  for (const r of ROOMS) {  // a name too long for a narrow room is drawn smaller, down to 9px, and only then cut to three letters (#853)
-    const name = r.name.toUpperCase(), room = span(r.x0, r.x1) - 4;
-    let px = 12;
-    for (; px > 9; px--) { ctx.font = `600 ${px}px ${LABEL_FONT}`; if (ctx.measureText(name).width < room) break; }
-    ctx.font = `600 ${px}px ${LABEL_FONT}`;
-    ctx.fillText(ctx.measureText(name).width < room ? name : name.slice(0, 3), X(r.mid), r.deck === 0 || r.tall ? top + 14 : mid + 13);
-  }
-  ctx.font = `600 12px ${LABEL_FONT}`;
-
-  // Engine: the reactor, brighter under thrust, with its coolant lines and a console.
-  const eng = roomAt('engine'), glow = (burning ? 0.9 : 0.35) * (0.9 + 0.1 * Math.sin(G.time * 6));
-  const ex = X(eng.mid), ey = cy + 2, er = Math.min(H * 0.14, span(0, 0.17) * 0.3);
-  const core = ctx.createRadialGradient(ex, ey, 0, ex, ey, er * 1.7);
-  core.addColorStop(0, `rgba(230,245,255,${glow})`);
-  core.addColorStop(0.4, `rgba(120,180,255,${glow * 0.8})`);
-  core.addColorStop(1, 'rgba(60,110,255,0)');
-  ctx.fillStyle = core;
-  ctx.beginPath(); ctx.arc(ex, ey, er * 1.7, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = '#5d7fa3';
-  ctx.beginPath(); ctx.arc(ex, ey, er, 0, Math.PI * 2); ctx.stroke();
-  ctx.strokeStyle = '#2a4561';
-  ctx.beginPath();
-  ctx.moveTo(ex, ey - er); ctx.lineTo(ex, top + 20);
-  ctx.moveTo(ex, ey + er); ctx.lineTo(ex, lower);
-  ctx.moveTo(ex - er, ey); ctx.lineTo(X(0.01), ey);
-  ctx.stroke();
-  ctx.fillStyle = '#35587d';
-  ctx.fillRect(X(0.145) - 3, lower - 12, 6, 12);
-  ctx.fillStyle = `rgba(255,170,80,${0.5 + 0.4 * Math.sin(G.time * 3)})`;
-  ctx.fillRect(X(0.145) - 2, lower - 10, 4, 2);
-
-  // Hold: crates for the cargo you carry, two rows on the deck.
-  const hold = roomAt('hold'), cap = ship().cargo, used = Math.min(cap, cargoUsed());
-  const fillN = cap ? Math.round(12 * used / cap) : 0, cw = span(hold.x0, hold.x1) / 6 - 3, chh = Math.min(10, (lower - mid - 22) / 2);
-  const colors = ['#8a6d3b', '#6d7f3b', '#3b6d7f', '#7f3b5a'];
-  for (let i = 0; i < fillN; i++) {
-    const col = i % 6, row = Math.floor(i / 6);
-    ctx.fillStyle = colors[i % colors.length];
-    ctx.fillRect(X(hold.x0 + hold.w * (col + 0.5) / 6) - cw / 2, lower - (row + 1) * (chh + 1), cw, chh);
-  }
-
-  // Reaction mass tanks in the lower nose, filled to what is left.
-  const fuelShare = Math.max(0, Math.min(1, G.state.fuel / ship().fuel)) || 0, th = lower - mid - 22;
-  for (const [a, b] of [[0.685, 0.775], [0.79, 0.88]]) {
-    const tx = X(Math.min(a, b)), tw = span(a, b), x0 = Math.min(X(a), X(b));
-    ctx.strokeStyle = '#4a6a8c';
-    ctx.strokeRect(x0, lower - th, tw, th);
-    ctx.fillStyle = '#2f7f4a';
-    ctx.fillRect(x0 + 1, lower - th * fuelShare, tw - 2, th * fuelShare - 1);
-  }
-
-  // Berths: bunks in two tiers for each berth on this ship (up to twelve drawn).
-  const berths = roomAt('berths'), n = Math.min(12, ship().berths), cols = Math.ceil(n / 2), bw = Math.min(26, span(berths.x0, berths.x1) / cols - 5);
-  for (let i = 0; i < n; i++) {
-    const bx = X(berths.x0 + berths.w * (Math.floor(i / 2) + 0.5) / cols), by = i % 2 ? upper - 22 : upper - 9;
-    ctx.fillStyle = '#1d2f45'; ctx.fillRect(bx - bw / 2, by, bw, 5);
-    ctx.fillStyle = '#2c4766'; ctx.fillRect(bx - bw / 2 + 1, by, bw - 2, 3);
-    ctx.fillStyle = '#6f8aa8'; ctx.fillRect(bx - bw / 2 + 1, by, 4, 3);
-  }
-  // Galley: a counter along the wall, and a table with stools.
-  const gal = roomAt('galley'), gx = X(gal.mid);
-  ctx.fillStyle = '#2a3f58';
-  ctx.fillRect(Math.min(X(0.455), X(0.5)), upper - 9, span(0.455, 0.5), 9);
-  ctx.fillRect(gx - 10, upper - 9, 20, 2);
-  ctx.fillRect(gx - 1, upper - 7, 2, 7);
-  ctx.fillRect(gx - 12, upper - 4, 4, 4); ctx.fillRect(gx + 8, upper - 4, 4, 4);
-  ctx.fillStyle = '#e8c890'; ctx.fillRect(gx - 4, upper - 12, 3, 3);
-  // Gunnery: a fire-control console with a red screen, and the weapons locker.
-  const gun = roomAt('gunnery'), gcx = X(gun.x0 + 0.035);
-  ctx.fillStyle = '#35587d'; ctx.fillRect(gcx - 5, upper - 12, 10, 12);
-  ctx.fillStyle = `rgba(255,110,90,${0.5 + 0.25 * Math.sin(G.time * 2.5)})`; ctx.fillRect(gcx - 4, upper - 11, 8, 4);
-  const lock = X(gun.x0 + 0.095);
-  ctx.fillStyle = '#2a3f58'; ctx.fillRect(lock - 3, upper - 16, 6, 16);
-  ctx.fillStyle = '#0c1826'; for (let y = upper - 14; y < upper - 2; y += 4) ctx.fillRect(lock - 2, y, 4, 1);
-  // Bridge: two consoles with live screens, and the helm chair.
-  const br = roomAt('bridge');
-  for (const f of [0.03, 0.075]) {
-    const bx = X(br.x0 + f);
-    ctx.fillStyle = '#35587d'; ctx.fillRect(bx - 4, upper - 12, 8, 12);
-    ctx.fillStyle = `rgba(120,200,255,${0.55 + 0.25 * Math.sin(G.time * 2 + f * 40)})`; ctx.fillRect(bx - 3, upper - 11, 6, 4);
-  }
-  ctx.fillStyle = '#2a3f58'; ctx.fillRect(X(br.x0 + 0.115) - 3, upper - 8, 6, 8);
-  // Medbay: an exam bed, a drug cabinet with a green cross, and a drip stand.
-  const med = roomAt('medbay'), mb = X(med.x0 + med.w * 0.35);
-  ctx.fillStyle = '#2a3f58'; ctx.fillRect(mb - 12, lower - 7, 24, 3); ctx.fillRect(mb - 10, lower - 4, 2, 4); ctx.fillRect(mb + 8, lower - 4, 2, 4);
-  ctx.fillStyle = '#9fb4c9'; ctx.fillRect(mb - 12, lower - 9, 7, 2);
-  const cab = X(med.x0 + med.w * 0.8);
-  ctx.fillStyle = '#35587d'; ctx.fillRect(cab - 5, lower - 18, 10, 18);
-  ctx.fillStyle = '#6fd08c'; ctx.fillRect(cab - 1, lower - 15, 2, 8); ctx.fillRect(cab - 3, lower - 12, 6, 2);
-  ctx.strokeStyle = '#5b7896'; ctx.lineWidth = 1;
-  ctx.beginPath(); ctx.moveTo(mb + 14, lower); ctx.lineTo(mb + 14, lower - 18); ctx.lineTo(mb + 11, lower - 18); ctx.stroke();
-
-  // People, with names below the hull where they fit.
-  ctx.textAlign = 'center';
-  ctx.font = '12px "IBM Plex Mono", monospace';
-  const labels = [];
-  // At night, whoever is turned in lies on a bunk.
-  const bunk = i => ({ x: X(berths.x0 + berths.w * (Math.floor(i / 2) + 0.5) / cols), y: i % 2 ? upper - 22 : upper - 9 });
-  const slots = new Map();
-  for (const p of people) if (slots.size < n && isAsleep(p)) slots.set(p, slots.size);
-  G.cutHits = [];  // where each person is on screen, for a click (game.js)
-  people.forEach((p, i) => {
-    const asleep = slots.has(p), x = asleep ? bunk(slots.get(p)).x : X(p.x), floating = ph === 'float', bob = floating ? Math.sin(G.time * 2 + i) * dh * 0.18 - dh * 0.12 : 0;
-    const y = floorOf(p.dk) + bob, seated = ph === 'couch', walking = (p.tx !== null || p.dk !== p.tdk) && !floating && !seated;
-    if (p.id) G.cutHits.push({ x, y: asleep ? bunk(slots.get(p)).y - 2 : y - ph_ / 2, id: p.id });
-    ctx.fillStyle = ROLE_COLORS[p.role];
-    ctx.strokeStyle = ROLE_COLORS[p.role];
-    if (asleep) {
-      const b = bunk(slots.get(p));
-      ctx.fillRect(b.x - 7, b.y - 3, 14, 3);
-      ctx.beginPath(); ctx.arc(b.x - 10, b.y - 2, 2.6, 0, Math.PI * 2); ctx.fill();
-    } else if (p.role === 'cat') {  // low to the deck: a body, a head with ears and eyes, and a tail that sways
-      const walkingCat = p.tx !== null && !floating && !seated, sway = Math.sin(G.time * (walkingCat ? 6 : 2.2) + i) * 2;
-      ctx.fillRect(x - 4, y - 4, 8, 4);
-      ctx.fillRect(x + 3, y - 7, 4, 4);
-      ctx.fillRect(x + 3, y - 9, 1, 2); ctx.fillRect(x + 6, y - 9, 1, 2);
-      ctx.fillRect(x - 4, y - 1, 1.5, 1); ctx.fillRect(x + 2, y - 1, 1.5, 1);
-      ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(x - 4, y - 3); ctx.quadraticCurveTo(x - 8, y - 6 + sway, x - 7, y - 9 + sway); ctx.stroke(); ctx.lineWidth = 1;
-      ctx.fillStyle = '#10213a'; ctx.fillRect(x + 4, y - 6, 1, 1); ctx.fillRect(x + 6, y - 6, 1, 1);
-      ctx.fillStyle = ROLE_COLORS[p.role];
-    } else {
-      const bodyH = seated ? ph_ * 0.5 : ph_ * 0.62, legH = seated ? 0 : ph_ - bodyH - 4;
-      const swing = walking ? Math.sin(G.time * 9 + i) * 2 : 0;
-      ctx.lineWidth = 1.5;
-      if (legH > 0) { ctx.beginPath(); ctx.moveTo(x - 1, y - legH); ctx.lineTo(x - 1 + swing, y); ctx.moveTo(x + 1, y - legH); ctx.lineTo(x + 1 - swing, y); ctx.stroke(); }
-      ctx.lineWidth = 1;
-      ctx.fillRect(x - 2.5, y - legH - bodyH, 5, bodyH);
-      const face = faceImage(p), hy = y - legH - bodyH - 2.5;  // the head: a face once its picture has loaded (#297), else a dot
-      if (face) {
-        ctx.save(); ctx.beginPath(); ctx.arc(x, hy - 1.5, 6, 0, Math.PI * 2); ctx.clip(); ctx.drawImage(face, x - 6, hy - 7.5, 12, 12); ctx.restore();
-        ctx.beginPath(); ctx.arc(x, hy - 1.5, 6, 0, Math.PI * 2); ctx.stroke();
-      } else { ctx.beginPath(); ctx.arc(x, hy, 2.6, 0, Math.PI * 2); ctx.fill(); }
+  // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
+  ctx.font = `600 12px ${roomFont}`;
+  const berths = cutRect(roomAt('berths'), len), labels = [], dots = [], hits = [];
+  for (const p of people) {
+    const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p));
+    const x = bunk ? bunk.x + Math.min(44, bunk.w * 0.62) : X(p.x), y = bunk ? bunk.y - 5 : floorY(p.dk), dk = Math.round(p.dk);
+    dots.push({ x: X(p.x), deck: p.dk, color: ROLE_COLORS[p.role] });
+    if (Math.abs(x - camX) > half + 60) continue;  // out of view (a little margin, so no one pops in at the edge)
+    const inView = Math.abs(x - camX) <= half;
+    const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], face: inView && !asleep && p.role !== 'cat' ? faceImage(p) : null, floating: ph === 'float' });
+    if (pose.name === 'tether') {  // a line to a ring on the nearest bulkhead
+      const d = CUT_WALLS[dk], bx = X([...d.hatch, d.end].reduce((a, b) => (Math.abs(b - p.x) < Math.abs(a - p.x) ? b : a))), rx = bx + Math.sign(x - bx) * 6, ry = floorY(dk) - 60;
+      ctx.strokeStyle = 'rgba(201,162,39,0.9)'; ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.moveTo(tap.x, tap.y); ctx.quadraticCurveTo((tap.x + rx) / 2, Math.max(tap.y, ry) + 12 + Math.sin(time) * 6, rx, ry); ctx.stroke();
+      ctx.beginPath(); ctx.arc(rx, ry, 3, 0, Math.PI * 2); ctx.stroke();
     }
+    if (!inView) continue;
+    if (p.id) { const at = toScreen(tap.x, tap.y); hits.push({ x: at.x, y: at.y, id: p.id }); }
     if (p.role !== 'passenger' || p.pid) {
-      const w = ctx.measureText(p.name).width + 4;
-      const row = [0, 1, 2].find(r => !labels.some(b => b.row === r && Math.abs(b.x - x) < (b.w + w) / 2));
-      if (row !== undefined) {
-        labels.push({ x, w, row });
-        ctx.fillStyle = '#9fb4c9';
-        ctx.fillText(p.name, x, top + H + 12 + row * 14);
+      const nw = ctx.measureText(p.name).width / zoom;
+      if (!labels.some(b => b.dk === dk && Math.abs(b.x - x) < (b.w + nw) / 2 + 4 / zoom)) {
+        labels.push({ x, w: nw, dk });
+        worldText(ctx, zoom, p.name, x, floorY(dk) + 10, 12 / zoom, '#9fb4c9', 'center');
       }
     }
-  });
-  ctx.textAlign = 'left';
+  }
+  hullSeams(X, top, H, 1);  // plating, rivets and scars (hulldetail.js)
+  ctx.restore();
+  hullFittings(X, top, H, len, 1, cy);  // mast, fins and turrets
+  if (time % 1.6 < 0.2) {  // running lights, blinking
+    ctx.fillStyle = '#ff5a5a'; ctx.fillRect(X(0.45) - 2, top - 4, 4, 4);
+    ctx.fillStyle = '#5aff8a'; ctx.fillRect(X(0.45) - 2, top + H, 4, 4);
+  }
+  ctx.restore();
+
+  // What a tap can find: the rooms in view, the people in view, and the outline with everyone it shows.
+  G.cutRooms = ROOMS.map(r => {
+    const q = cutRect(r, len), a = toScreen(q.x0, q.top), b = toScreen(q.x1, q.floor);
+    const x0 = Math.max(box.x, a.x), y0 = Math.max(box.y, a.y), x1 = Math.min(box.x + box.w, b.x), y1 = Math.min(box.y + box.h, b.y);
+    return { id: r.id, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
+  }).filter(b => b.w > 0 && b.h > 0);
+  G.cutHits = hits;
+  G.cutOutline = { ...outlineLayout(box, len), ids: people.filter(p => p.id).map(p => p.id) };
+  drawOutline(ctx, G.cutOutline, dots, camX, view.span, len, turn);
 }
 
 // ---------- downtime activities ----------

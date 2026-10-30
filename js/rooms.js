@@ -21,10 +21,12 @@ function hangEnd(ax, ay, len, seed, w, time, still) {
 }
 
 // Text sized in world units, drawn only if it is 12px or more on the screen (the font number is the screen size). Returns whether it drew.
+// The size is rounded to a hundredth of a pixel, so text asked for at 12 / zoom world px is 12px and drawn.
 function worldText(ctx, zoom, text, x, y, worldPx, color, align) {
-  if (worldPx * zoom < 12) return false;
+  const px = Math.round(worldPx * zoom * 100) / 100;
+  if (px < 12) return false;
   ctx.save(); ctx.translate(x, y); ctx.scale(1 / zoom, 1 / zoom);
-  ctx.fillStyle = color; ctx.font = `600 ${worldPx * zoom}px ${roomFont}`; ctx.textAlign = align || 'left'; ctx.fillText(text, 0, 0);
+  ctx.fillStyle = color; ctx.font = `600 ${px}px ${roomFont}`; ctx.textAlign = align || 'left'; ctx.fillText(text, 0, 0);
   ctx.restore();
   return true;
 }
@@ -104,11 +106,18 @@ function roomEngine(ctx, r, s, X, W) {
   }
 }
 
+// Bunk k of n in the berths room r, in two tiers: its left end x, its width w, and y the bottom of its frame (the mattress lies on it, 5 deep).
+// The berths draw their bunks here, and the cutaway lays its sleepers on them (shiplife.js).
+function berthBunk(r, n, k) {
+  const cols = Math.max(1, Math.ceil(n / 2)), w = Math.min(70, (r.x1 - r.x0) * 0.5 / cols);
+  return { x: r.x0 + (r.x1 - r.x0) * 0.02 + Math.floor(k / 2) * w, w, y: k % 2 ? r.floor - 56 : r.floor - 8 };
+}
+
 function roomBerths(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), cols = Math.max(1, Math.ceil(n / 2)), cw = Math.min(70, W * 0.5 / cols), bx0 = X(0.02);
+  const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), cols = Math.max(1, Math.ceil(n / 2)), { x: bx0, w: cw } = berthBunk(r, n, 0);
   for (let c = 0; c <= cols; c++) roomBox(ctx, bx0 + c * cw - 2, F - 96, 4, 96, '#2a4664');
   for (let k = 0; k < n; k++) {
-    const bx = bx0 + Math.floor(k / 2) * cw, y = k % 2 ? F - 56 : F - 8;
+    const { x: bx, y } = berthBunk(r, n, k);
     roomBox(ctx, bx, y, cw, 8, '#1f3a56'); roomBox(ctx, bx + 2, y - 5, cw - 4, 5, '#3a4a5e'); roomBox(ctx, bx + 3, y - 9, 12, 4, '#d8d2c4');
     if (k < s.asleep) roomBox(ctx, bx + 16, y - 9, cw - 20, 5, '#334560');
   }

@@ -99,7 +99,7 @@ test('the ship has a night: the lights go down and whoever is off watch turns in
 test('clicking someone in the burn view opens their page', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
-  await ev(() => { setup(); UI.hide(); });
+  await ev(() => { setup(); UI.hide(); const [you, mate] = shipPeople(); mate.x = mate.seat = you.x + 0.04; });  // a crewmate on the next couch, in the camera's view of the hand
   await frames(page);
   const target = await ev(() => { const h = G.cutHits.find(h => h.id !== 'you'); return h && { x: h.x, y: h.y, id: h.id }; });
   assert.ok(target, 'the cutaway knows where people are');
