@@ -758,7 +758,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -767,7 +767,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -785,7 +785,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -803,13 +803,13 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -844,7 +844,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester touches the cord at their wrist, once for each leg of the trip, and says nothing. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester touches the cord at their wrist, once for each leg of the trip, and says nothing. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -862,13 +862,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -883,7 +883,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester says a short word over you, as at the turn of the watch. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -892,7 +892,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester touches the cord at their wrist, once for each leg of the trip, and says nothing. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester touches the cord at their wrist, once for each leg of the trip, and says nothing. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -936,13 +936,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -957,7 +957,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You'll have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -972,7 +972,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You'll have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -987,7 +987,7 @@
    {
     "i": 3,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You'll have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1022,7 +1022,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester waves it away, and asks whether you ate at the watch change. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester waves it away, and asks whether you ate at the watch change. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -1046,7 +1046,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester says to have the rest, and means a ration case and a bottle at the next port. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1055,13 +1055,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1070,13 +1070,13 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1111,13 +1111,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1126,7 +1126,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester says what they think of that, in order, the way they read out a fuel invoice, and doesn't raise their voice. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester says what they think of that, in order, the way they read out a fuel invoice, and doesn't raise their voice. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -1144,7 +1144,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester says what they think of that, in order, the way they read out a fuel invoice, and doesn't raise their voice. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester says what they think of that, in order, the way they read out a fuel invoice, and doesn't raise their voice. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -1162,13 +1162,13 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1203,13 +1203,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1218,13 +1218,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1233,13 +1233,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1248,7 +1248,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester flinches, and checks the seal on the nearest hatch. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. Hester flinches, and checks the seal on the nearest hatch. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
@@ -1292,13 +1292,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1313,7 +1313,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester takes your hand for a moment and doesn't say anything. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1328,7 +1328,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester takes your hand for a moment and doesn't say anything. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1337,13 +1337,13 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1408,7 +1408,7 @@
    {
     "i": 3,
     "roll": 0.5,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -1467,7 +1467,7 @@
    {
     "i": 3,
     "roll": 0.5,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
@@ -10236,7 +10236,7 @@
    }
   ],
   "title": "Settling Up",
-  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>40 t water. Bought 20,000. Sold 31,000. Clear 11,000. Forecast, 9,000.<br>Your wage for 9 days, 1,200. Your share, 400.<br>Hall bond, 30 percent of your pay: 800. Still owed: 39,200.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. Look at the header.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Hester's hand with your name on it. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>40 t of water, bought for 20,000 and sold for 31,000: the ship clears 11,000. The captain had it down for 9,000.<br>Your pay: 1,200 in wages for 9 days, and 400 as your share of what the ship clears.<br>The hiring hall takes 30 percent of your pay, 800. You still owe it 39,200.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. It's in your savings.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Hester's hand with your name on it. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
   "labels": [
    "Ask how long a ship takes",
    "Go ashore"
@@ -10259,7 +10259,7 @@
    }
   ],
   "title": "Settling Up",
-  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>30 t ore. Bought 18,000. Sold 16,000. Loss 2,000.<br>Your wage for 9 days, 1,200. Your share, 400.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. Look at the header.\"</p><p>Under the crew column, below Tomas and Ines, your line is empty. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>30 t of ore, bought for 18,000 and sold for 16,000: the ship loses 2,000.<br>Your pay: 1,200 in wages for 9 days, and 400 as your share of what the ship clears.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. It's in your savings.\"</p><p>Under the crew column, below Tomas and Ines, your line is empty. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
   "labels": [
    "Ask how long a ship takes",
    "Go ashore"
@@ -10282,7 +10282,30 @@
    }
   ],
   "title": "Settling Up",
-  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>No cargo this run.<br>Your wage for 9 days, 1,200. Your share, 400.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. Look at the header.\"</p><p>Under the crew column, below Tomas and Ines, your line is empty. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>No cargo this run.<br>Your pay: 1,200 in wages for 9 days, and 400 as your share of what the ship clears.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. It's in your savings.\"</p><p>Under the crew column, below Tomas and Ines, your line is empty. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "labels": [
+   "Ask how long a ship takes",
+   "Go ashore"
+  ]
+ },
+ {
+  "id": "scene:settling-up:contract",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "\"A season,\" Cato says. \"Hester was a hand on this ship before she owned it. It took her three.\"",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Cato takes the book back up the ramp.",
+    "next": null
+   }
+  ],
+  "title": "Settling Up",
+  "text": "The ramp is down. Cato has the captain's notebook open on a crate on the apron, and he turns it round so you can read it. \"She's at the harbor office. I'm to show you the page and bring it back.\"</p><p>80 t of water for a shipper, 197,309 paid on delivery: the ship clears 197,309.<br>Your pay: 1,200 in wages for 9 days, and 400 as your share of what the ship clears.<br>The hiring hall takes 30 percent of your pay, 3,467. You still owe it 26,533.</p><p>\"My first share was nine hundred,\" he says. \"I bought boots with it. They were the wrong boots, and I wore them for six years.\" He taps the page. \"Yours is in your account. It's in your savings.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Hester's hand with your name on it. \"That column's Hester's,\" Cato says. The pencil stays behind his ear.</p><p>\"You're off until Hester has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
   "labels": [
    "Ask how long a ship takes",
    "Go ashore"
@@ -10305,7 +10328,7 @@
    }
   ],
   "title": "Settling Up",
-  "text": "Ilsa is at the foot of the ramp with the maintenance board under one arm and the ledger on top of it. She has the page open before you reach her.</p><p>40 t water. Bought 20,000. Sold 31,000. Clear 11,000. Forecast, 9,000.<br>Your wage for 9 days, 1,200. Your share, 400.</p><p>\"I've checked it twice, in two pencils,\" Ilsa says. \"I do that with anything I'm going to hand to somebody.\" She slides the page an inch toward you. \"It's in your account. The header will say so.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Dov's hand with your name on it. \"That column is Dov's,\" Ilsa says. \"I don't touch it, and I don't read it either.\"</p><p>\"You're off until Dov has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "text": "Ilsa is at the foot of the ramp with the maintenance board under one arm and the ledger on top of it. She has the page open before you reach her.</p><p>40 t of water, bought for 20,000 and sold for 31,000: the ship clears 11,000. The captain had it down for 9,000.<br>Your pay: 1,200 in wages for 9 days, and 400 as your share of what the ship clears.</p><p>\"I've checked it twice, in two pencils,\" Ilsa says. \"I do that with anything I'm going to hand to somebody.\" She slides the page an inch toward you. \"It's in your account. The header will say so.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Dov's hand with your name on it. \"That column is Dov's,\" Ilsa says. \"I don't touch it, and I don't read it either.\"</p><p>\"You're off until Dov has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
   "labels": [
    "Ask how long a ship takes",
    "Go ashore"
@@ -10328,7 +10351,7 @@
    }
   ],
   "title": "Settling Up",
-  "text": "Pilar comes down the ramp last, with the ledger in one hand and a spanner in the other, and puts both on the nearest crate. She opens the book with the spanner.</p><p>40 t water. Bought 20,000. Sold 31,000. Clear 11,000. Forecast, 9,000.<br>Your wage for 9 days, 1,200. Your share, 400.</p><p>\"First pay I ever drew on a hauler,\" Pilar says, \"the purser counted it into my hand and told me I wouldn't see that much again. I saw it again in March.\" She taps the page. \"Yours has gone to your account. Look at the header.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Imre's hand with your name on it. \"That column is Imre's,\" Pilar says. \"I've never been in it.\"</p><p>\"You're off until Imre has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "text": "Pilar comes down the ramp last, with the ledger in one hand and a spanner in the other, and puts both on the nearest crate. She opens the book with the spanner.</p><p>40 t of water, bought for 20,000 and sold for 31,000: the ship clears 11,000. The captain had it down for 9,000.<br>Your pay: 1,200 in wages for 9 days, and 400 as your share of what the ship clears.</p><p>\"First pay I ever drew on a hauler,\" Pilar says, \"the purser counted it into my hand and told me I wouldn't see that much again. I saw it again in March.\" She taps the page. \"Yours has gone to your account. It's in your savings.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Imre's hand with your name on it. \"That column is Imre's,\" Pilar says. \"I've never been in it.\"</p><p>\"You're off until Imre has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
   "labels": [
    "Ask how long a ship takes",
    "Go ashore"
@@ -10351,7 +10374,7 @@
    }
   ],
   "title": "Settling Up",
-  "text": "Ansel is waiting at the foot of the ramp in his coat, with the ledger held flat against his chest like a tray. He opens it at the right page and holds it out.</p><p>40 t water. Bought 20,000. Sold 31,000. Clear 11,000. Forecast, 9,000.<br>Your wage for 9 days, 1,200. Your share, 400.</p><p>\"There are three numbers,\" Ansel says. \"The forecast, the result, and a third that I keep for myself, which is what the run would have paid if something had gone wrong. It's smaller than people like. I won't show you that one.\" He turns the book toward you. \"Yours is in your account. Look at the header.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Zoya's hand with your name on it. \"That column is Zoya's,\" Ansel says. \"I've advised against it, and it's hers to keep.\"</p><p>\"You're off until Zoya has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
+  "text": "Ansel is waiting at the foot of the ramp in his coat, with the ledger held flat against his chest like a tray. He opens it at the right page and holds it out.</p><p>40 t of water, bought for 20,000 and sold for 31,000: the ship clears 11,000. The captain had it down for 9,000.<br>Your pay: 1,200 in wages for 9 days, and 400 as your share of what the ship clears.</p><p>\"There are three numbers,\" Ansel says. \"The forecast, the result, and a third that I keep for myself, which is what the run would have paid if something had gone wrong. It's smaller than people like. I won't show you that one.\" He turns the book toward you. \"Yours is in your account. It's in your savings.\"</p><p>Under the crew column, below Tomas and Ines, there is a line in Zoya's hand with your name on it. \"That column is Zoya's,\" Ansel says. \"I've advised against it, and it's hers to keep.\"</p><p>\"You're off until Zoya has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew.\"",
   "labels": [
    "Ask how long a ship takes",
    "Go ashore"
@@ -24430,7 +24453,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: 2 pushing into her Lock.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24498,7 +24521,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: 2 going round through her Cargo Bay.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24515,7 +24538,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24532,7 +24555,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: 2 rushing through her Corridor into her Lock.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24549,7 +24572,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: 2 pushing into her Corridor. They may feint.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24566,7 +24589,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24583,7 +24606,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Move to: Her Corridor",
      "Shoot: 2 to 3 of them hit",
@@ -24600,7 +24623,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Move to: Her Cargo Bay",
      "Shoot: 2 to 3 of them hit",
@@ -24617,7 +24640,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24634,7 +24657,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Pick off a runner: one of them down if it works",
@@ -24650,7 +24673,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Covering burst: two points of cover here, once a fight",
@@ -24666,7 +24689,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Hold fire: stand ready, fire at nobody",
@@ -24682,7 +24705,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24699,7 +24722,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24716,7 +24739,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24734,7 +24757,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24752,7 +24775,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24770,7 +24793,7 @@
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: holding where they are.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24824,12 +24847,12 @@
    {
     "log": "Turn 8: nobody gives ground. None of them are where you stand.",
     "end": true,
-    "close": "Turn 8: nobody gives ground. None of them are where you stand.</p><p>The captain calls you back on the intercom with her people still holding the far hatch. You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13."
+    "close": "Turn 8: nobody gives ground. None of them are where you stand.</p><p>The captain calls you back on the intercom with her people still holding the far hatch. You're driven back to the lock, and the boat pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -13."
    },
    {
     "title": "Her Lock",
     "read": "Turn 1 of 8. Her crew: a charge on her Lock, set from her Corridor. Hit them in her Corridor to stop it; it blows this turn.",
-    "text": "The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
+    "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
      "Shoot: 2 to 3 of them hit",
@@ -24955,7 +24978,7 @@
   "text": "Sensors: a drive plume at 3,750 km, on an intercept course. No transponder. The plume signature says pirate.",
   "labels": [
    "Battle stations (you take the guns)",
-   "Burn hard to outrun them",
+   "Burn hard to outrun them [64%; if it fails: hull damage, and the fight anyway]",
    "Pay them off (10% of your credits, at least 5,000)",
    "[{crew}] Spoof a pirate transponder",
    "[Gunner] Put a burst across her bow [65%; opens the range]"
@@ -25035,7 +25058,7 @@
   "text": "Sensors: a drive plume at 3,750 km, on an intercept course. No transponder. The plume signature says pirate.",
   "labels": [
    "Battle stations (you take the guns)",
-   "Burn hard to outrun them",
+   "Burn hard to outrun them [64%; if it fails: hull damage, and the fight anyway]",
    "Pay them off (10% of your credits, at least 5,000)",
    "[{crew}] Spoof a pirate transponder",
    "[Pilot] Take the helm and break her intercept [65%; opens the range; if it fails: hull damage, a crew casualty]"
@@ -25115,7 +25138,7 @@
   "text": "Sensors: a drive plume at 3,750 km, on an intercept course. No transponder. The plume signature says pirate.",
   "labels": [
    "Battle stations (you take the guns)",
-   "Burn hard to outrun them",
+   "Burn hard to outrun them [64%; if it fails: hull damage, and the fight anyway]",
    "Pay them off (10% of your credits, at least 5,000)",
    "[{crew}] Spoof a pirate transponder",
    "[Engineer] Cut the drive and go dark [65%; opens the range; if it fails: hull damage, a crew casualty]"
@@ -25183,7 +25206,7 @@
   "text": "Sensors: a drive plume at 3,750 km, on an intercept course. No transponder. The plume signature says pirate.",
   "labels": [
    "Battle stations (you take the guns)",
-   "Burn hard to outrun them",
+   "Burn hard to outrun them [64%; if it fails: hull damage, and the fight anyway]",
    "Pay them off (10% of your credits, at least 5,000)",
    "[Comms] Spoof a pirate transponder"
   ]
@@ -25274,7 +25297,7 @@
   "text": "Sensors: a drive plume at 3,400 km, on an intercept course. Transponder: Arcology Compact navy. You are wanted in their space.",
   "labels": [
    "Battle stations (you take the guns)",
-   "Burn hard to outrun them",
+   "Burn hard to outrun them [76%; if it fails: hull damage, and the fight anyway]",
    "Heave to and take the fine from the ship's fund"
   ]
  },

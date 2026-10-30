@@ -135,7 +135,7 @@ function addRumor() {
   st.rumors = st.rumors.filter(r => !(r.planet === p.name && r.cid === cid));
   const system = SYSTEMS[sid].name, tipSay = (key, vars) => sceneSay('scene:market-news', key, { text, system, ...vars });  // the words around a rumor are in the text layer too
   st.rumors.push({ planet: p.name, cid, mult: up ? rand(1.35, 1.6) : rand(0.55, 0.7), until: st.day + days, text: tipSay('where') });
-  comm(tipSay('comm', { days }));
+  if (role().mayTab('trade')) comm(tipSay('comm', { days }));  // a tip is for a player who trades; a hand's comms are not filled with them (#854), and the inbox keeps it
   noteInbox('station', tipSay('where'), null, 'market');
   return text;
 }
@@ -576,7 +576,8 @@ function drawTransit(W, H) {
   ctx.fillText(`${shipTitle().toUpperCase()} IN TRANSIT`, cx, top + 22);
   ctx.fillStyle = '#e6f0ff';
   ctx.font = `600 20px ${LABEL_FONT}`;
-  ctx.fillText(`${system().name}  >  ${SYSTEMS[t.to].name}`, cx, top + 44);
+  const local = t.to === st.systemId && st.route && st.route.dock;  // a run inside one system (Earth to Luna) names the ports, not the system twice (#854)
+  ctx.fillText(local ? `${st.planet}  >  ${st.route.dock}` : `${system().name}  >  ${SYSTEMS[t.to].name}`, cx, top + 44);
   drawRoute(cx, top + 62, barW, progress);
   const secs = Math.max(0, Math.ceil(t.left));
   ctx.textAlign = 'center';

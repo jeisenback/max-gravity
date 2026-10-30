@@ -623,7 +623,7 @@ test('the first arrival is the first officer settling up, with the figures and t
   assert.equal(r.title, 'Settling Up'); assert.doesNotMatch(r.notes, /Your pay:/, 'the one-line note is not shown as well');
   assert.ok(r.f.profit > 0 && r.f.wage > 0, 'the figures are kept');
   for (const x of [r.f.revenue, r.f.cost, r.f.profit, r.f.wage, r.f.share]) assert.ok(r.text.includes(Math.round(x).toLocaleString('en-US')), `the page shows ${x}`);
-  assert.match(r.text, /Forecast, [\d,]+\./); assert.match(r.text, /there is a line in Hester's hand with your name on it/);
+  assert.match(r.text, /the ship clears [\d,]+\./); assert.match(r.text, /Your pay: [\d,]+ in wages for \d+ days, and [\d,]+ as your share/); assert.match(r.text, /there is a line in Hester's hand with your name on it/);  // in plain words (#854)
   assert.match(r.text, /Missions page/); assert.match(r.text, /The bar/);
   assert.doesNotMatch(r.text, /undefined|NaN/); assert.equal(r.arrived, true); assert.equal(r.opinion, 1);
   assert.deepEqual(r.labels, ['Ask how long a ship takes', 'Go ashore']); assert.match(r.ask, /A season/);
@@ -640,7 +640,7 @@ test('a run that lost money leaves the line empty, and a second arrival is the p
     out.second = b; out.runs = runTotals(hired()).runs;
     return out;
   });
-  assert.match(r.text, /Loss [\d,]+\./); assert.match(r.text, /your line is empty/);
+  assert.match(r.text, /the ship loses [\d,]+\./); assert.match(r.text, /your line is empty/);
   assert.equal(r.second.scene && r.second.scene.title === 'Settling Up', false, 'it does not play twice');
   assert.match(r.second.notes, /Your pay:/, 'later arrivals keep the one-line note');
 });
@@ -905,7 +905,7 @@ test('the first arrival shows the hall\'s cut as a ledger line, and the goodbye 
     return { text, hall: f.hall, owed: f.owed, wage: f.wage, share: f.share, debt: h.debt, goodbye: captainGoodbye().text, recap: chapterRecap().text };
   }, { debt: true });
   assert.equal(r.hall, Math.round((r.wage + r.share) * 0.3)); assert.equal(r.owed, 30000 - r.hall); assert.equal(r.debt, r.owed);
-  assert.ok(r.text.includes(`Hall bond, 30 percent of your pay: ${r.hall.toLocaleString('en-US')}. Still owed: ${r.owed.toLocaleString('en-US')}.`));
+  assert.ok(r.text.includes(`The hiring hall takes 30 percent of your pay, ${r.hall.toLocaleString('en-US')}. You still owe it ${r.owed.toLocaleString('en-US')}.`));
   assert.ok(r.goodbye.includes('The hall\'s bond is struck off the book, with the day it was paid.')); assert.ok(r.recap.includes('You paid off the hiring-hall bond.'));
 });
 

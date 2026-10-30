@@ -534,7 +534,7 @@ test('an owner who kept a post fights boarders on the deck with the same moves: 
   assert.match(r.lost, /You give them the code to the strongbox/); assert.equal(r.credits, 70000, 'a third of the player\'s credits, not a fund'); assert.ok(r.duelGone);
   assert.match(r.held, /The last of them go back through the lock/); assert.equal(r.heldNext, 'me');
   assert.match(r.hurt, /You are hurt/); assert.ok(r.hurtUntil >= 12); assert.equal(r.died, false, 'an owner is laid up and lives'); assert.equal(r.level, true);
-  assert.match(r.won, /goes into your credits\. You have the cutter cast off/); assert.ok(r.take); assert.equal(r.xp, 5);
+  assert.match(r.won, /goes into your credits\. You have the boat cast off/); assert.ok(r.take); assert.equal(r.xp, 5);
   assert.equal(r.never, null, 'an owner who never was a hand has no post to fight at');
   await done();
 });

@@ -95,12 +95,16 @@ const JOBS = [
 
 // ---------- the board ----------
 // Two jobs a day, the same two for the port and the day (so the tab does not change under you), and one worked a day: a night in port (stay.js) brings a new board,
-// since the days ashore are the hand's (docs/superpowers/specs/2026-10-17-contracts-design.md).
+// since the days ashore are the hand's (docs/superpowers/specs/2026-10-17-contracts-design.md). A job on a board in the last JOB_FRESH_DAYS is left off while
+// enough others are left, so one does not turn up port after port (#854); h.jobsSeen keeps the day each was last on a board.
+const JOB_FRESH_DAYS = 20;
 const jobBoard = () => {
   const h = hired(), st = G.state, key = `${st.planet}@${st.day}`;
   if (!h.board || h.board.key !== key) {
-    const list = JOBS.filter(j => !j.where || j.where(currentPlanet())), start = Math.abs(hash(key)) % list.length;
-    h.board = { key, ids: Array.from({ length: Math.min(JOB_BOARD, list.length) }, (_, i) => list[(start + i) % list.length].id), done: false };
+    const list = JOBS.filter(j => !j.where || j.where(currentPlanet())), seen = h.jobsSeen = h.jobsSeen || {}, n = Math.min(JOB_BOARD, list.length);
+    const fresh = list.filter(j => seen[j.id] === undefined || st.day - seen[j.id] >= JOB_FRESH_DAYS), pool = fresh.length >= n ? fresh : list, start = Math.abs(hash(key)) % pool.length;
+    h.board = { key, ids: Array.from({ length: n }, (_, i) => pool[(start + i) % pool.length].id), done: false };
+    for (const id of h.board.ids) seen[id] = st.day;
   }
   return h.board;
 };

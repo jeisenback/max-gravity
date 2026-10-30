@@ -208,7 +208,7 @@ CAST.cato.round = () => {
 // The first arrival (captains.js arrivalScene): Cato settles up at the foot of the ramp.
 CAST.cato.arrival = {
   open: 'The ramp is down. Cato has the captain\'s notebook open on a crate on the apron, and he turns it round so you can read it. "She\'s at the harbor office. I\'m to show you the page and bring it back."',
-  memory: '"My first share was nine hundred," he says. "I bought boots with it. They were the wrong boots, and I wore them for six years." He taps the page. "Yours is in your account. Look at the header."',
+  memory: '"My first share was nine hundred," he says. "I bought boots with it. They were the wrong boots, and I wore them for six years." He taps the page. "Yours is in your account. It\'s in your savings."',
   column: '"That column\'s {cap}\'s," Cato says. The pencil stays behind his ear.',
   pace: '"A season," Cato says. "{cap} was a hand on this ship before she owned it. It took her three."',
 };
