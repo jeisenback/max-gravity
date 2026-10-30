@@ -423,12 +423,20 @@ test('shipLogLines: the carried contract, its due date and whether the ship is o
     out.due = dateOf(carried.due); out.onTime = shipLogLines(st, t, carried);
     carried.due = transitEta(t) - 2; out.lateDue = dateOf(carried.due); out.late = shipLogLines(st, t, carried);
     out.none = shipLogLines(st, t, null);
+    const mission = { title: 'Haul ore', deadline: st.day + 3 }, saved = G.state;
+    out.same = JSON.stringify(shipLogLines({ ...st, missions: [mission], crew: ['x'], hired: null }, t, null, ['Ann Lee (Pilot)']));
+    G.state = { ...st, day: st.day + 40, crew: [], missions: [], hired: null };  // whatever G.state holds, the lines follow the st given
+    out.same2 = JSON.stringify(shipLogLines({ ...saved, missions: [mission], crew: ['x'], hired: null }, t, null, ['Ann Lee (Pilot)']));
+    G.state = saved;
+    out.handMissions = shipLogLines({ ...st, missions: [mission] }, t, null).length;
     return out;
   });
   assert.ok(r.contract);
   assert.equal(r.onTime.length, 1); assert.match(r.onTime[0], / for .*, due .*, on time$/); assert.ok(r.onTime[0].includes(`due ${r.due}`));
   assert.match(r.late[0], / for .*, due .*, late by \d+ days$/); assert.ok(r.late[0].includes(`due ${r.lateDue}`));
   assert.ok(!r.onTime.some(l => /^Cargo:/.test(l)), 'the contract line says what is aboard');
+  assert.equal(r.same, r.same2, 'the lines depend on the st given, not on G.state'); assert.match(r.same, /No active missions|Haul ore/); assert.ok(r.same.includes('Crew: Ann Lee (Pilot)'));
+  assert.equal(r.handMissions, 2, 'a hand sees the missions too, then the cargo line');
   assert.equal(r.none.length, 1); assert.match(r.none[0], /^Cargo: /, 'with no contract the log says what is aboard');
   await done();
 });
