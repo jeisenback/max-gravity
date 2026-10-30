@@ -130,9 +130,10 @@ const UI = {
   },
 
   // The port's name, government, date, ship and stores: the top of a landed screen, and of the shell's (js/shell.js).
+  // Each line of the stats is a span, which a phone runs together (style.css); a hand's money is the strip's (readouts.js), so not here (#852).
   headerHtml(p) {
-    const st = G.state, sys = system(), s = ship();
-    return `
+    const st = G.state, sys = system(), s = ship(), cap = hired() && hiredCaptain();
+    return String(h`
       <div class="hdr">
         <div>
           <div class="eyebrow">Docked &middot; ${sys.name}</div>
@@ -140,11 +141,11 @@ const UI = {
           <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.gov}</div>
         </div>
         <div class="stats">
-          ${dateOf()} &middot; ${esc(shipTitle())}, ${s.name}${hired() ? ` &middot; <span class="nowrap">Capt. ${esc(hiredCaptain().first)} ${esc(hiredCaptain().last)}</span>` : ''}<br>
-          <b>${fmt(st.credits)} cr</b><br>
-          Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}
+          <span class="ln">${dateOf()} &middot; ${shipTitle()}, ${s.name}${cap ? h` &middot; <span class="nowrap">Capt. ${cap.first} ${cap.last}</span>` : ''}</span>
+          ${stripHtml() ? '' : h`<span class="ln"><b>${fmt(st.credits)} cr</b></span>`}
+          <span class="ln hold">Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}</span>
         </div>
-      </div>`;
+      </div>`);
   },
 
   // The bottom bar: the map, and the way off the ground.

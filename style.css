@@ -165,6 +165,13 @@ canvas { display: block; touch-action: none; }
 }
 .sub { font-size: 12px; margin-top: 2px; }
 .stats { font-size: 12px; line-height: 1.6; font-variant-numeric: tabular-nums; color: var(--muted); }
+.stats .ln { display: block; }
+@media (max-width: 699px) {  /* a phone: the stats run on as one line, and the hold's figures, which a hand does not act on, are left to the pages (#852) */
+  .hdr { padding: 8px 16px; }
+  .stats .ln { display: inline; }
+  .stats .ln + .ln::before { content: ' \00b7  '; }
+  .stats .ln.hold { display: none; }
+}
 .stats b { color: var(--text); font-weight: 600; }
 @media (min-width: 700px) {
   .hdr { padding: 14px 18px; }
@@ -183,8 +190,8 @@ canvas { display: block; touch-action: none; }
   flex-shrink: 0;
 }
 .dock { flex-wrap: nowrap; }  /* phones: Menu, System map and the primary action share one row */
-.dock button { flex: 1 1 0; min-width: 0; }
-.dock button.primary { flex: 2 1 0; }
+.dock button { flex: 1 1 auto; min-width: 0; }  /* sized by their words, so a short one (Menu) gives its room to System map (#852) */
+.dock button.primary { flex: 2 1 auto; }
 @media (min-width: 700px) { .dock button, .dock button.primary { flex: 0 0 auto; } }
 
 .tutorial {
@@ -494,11 +501,13 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .menu textarea { font-size: 12px; }
 #menuBtn { position: fixed; top: 10px; left: 10px; z-index: 50; font-size: 12px; min-height: 30px; padding: 3px 12px; opacity: 0.85; }
 @media (max-width: 699px) { #menuBtn { top: 86px; } }
+@media (max-width: 999px) { #menuBtn.burn { top: auto; left: auto; right: 16px; bottom: calc(124px + env(safe-area-inset-bottom, 0px)); } }  /* the burn: above System map, clear of the HUD and the route card (#852) */
 
 /* ---------- the bridge (bridge.js) ---------- */
 /* Viewscreen strip at the top of a landed screen, then the station keys. */
 .vs { display: block; width: 100%; height: 92px; flex-shrink: 0; background: #03070a; border-bottom: 1px solid var(--line); }
 @media (min-width: 700px) { .vs { height: 150px; } }  /* room for the port's limb and sky; a phone keeps its height */
+@media (max-width: 699px) { .vs:not(.port) { display: none; } }  /* a phone shows the planet on Port only, for room on the other pages (#852) */
 /* In a burn: station keys along the bottom, and a status sheet above them. */
 #bkeys {
   position: fixed;
@@ -553,8 +562,9 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .con-side { display: flex; flex-direction: column; gap: 10px; }
 .con-card { background: #050a11; border: 1px solid var(--line-soft); border-radius: 6px; padding: 10px; }
 .con-gauge { display: block; width: 100%; max-width: 230px; margin: 0 auto; }
-.con-read { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin: 2px 0; }
-.con-read b { color: var(--text); font-weight: 500; }
+.con-read { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); margin: 2px 0; }
+.con-read b { color: var(--text); font-weight: 500; text-align: right; }
+.con-read > span:first-child { flex-shrink: 0; }  /* a long value wraps beside its label, not into it (the fight's readouts on a phone, #851) */
 .con-read.contact { gap: 8px; }
 .con-swatch.booked { background: none; border: 1px dashed; }
 /* The bar as a room (barroom.js, #687): a patron's token is a button. */
@@ -637,9 +647,9 @@ details.feeds .more { color: var(--accent); }
    it is a column beside the page. */
 .shell { flex: 1; min-height: 0; display: flex; flex-direction: column; }
 .shell .body { min-width: 0; order: 1; }
-.rail { order: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 4px; padding: 6px 12px; flex-shrink: 0; background: var(--panel-2); border-top: 1px solid var(--line); }
-.rail-group { display: contents; }
-.rail-group h3 { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.rail { order: 2; display: flex; flex-direction: column; gap: 4px; padding: 4px 12px 6px; flex-shrink: 0; background: var(--panel-2); border-top: 1px solid var(--line); }
+.rail-group { display: grid; grid-template-columns: 54px repeat(auto-fill, minmax(60px, 1fr)); gap: 4px; }  /* a phone: each group its own rows, its label in a column beside them (#852) */
+.rail-group h3 { grid-row: 1 / span 2; align-self: center; margin: 0; font-size: 12px; line-height: 1.3; }
 .rail-group h3::after { display: none; }
 .rail button { min-height: 44px; padding-inline: 4px; }
 .rail button.active { color: var(--accent); border-color: var(--accent); }

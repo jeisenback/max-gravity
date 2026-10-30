@@ -311,6 +311,7 @@ function menuButton() {
   }
   const show = ['flight', 'transit'].includes(G.mode) && !G.paused && !G.dialog;
   if (b.hidden === show) b.hidden = !show;
+  b.classList.toggle('burn', G.mode === 'transit');  // where it sits in the burn view (style.css, #852)
 }
 
 Mods.register({
