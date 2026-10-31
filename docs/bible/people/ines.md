@@ -1,6 +1,6 @@
 # Ines Ferreira
 
-Status: draft for the owner's review, 2026-10-31. Built on `lisbon.md`, `work.md` and `ship.md`.
+Status: approved by the owner on 2026-10-31. Built on `lisbon.md`, `work.md` and `ship.md`.
 
 ## Where she stands
 
