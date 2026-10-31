@@ -361,7 +361,7 @@ function lineWords(id, key, shipped) {
 // One line of a scene built by a function (#463): the editor's words for it, else the shipped line (SCENE_LINES, hiredscenes.js), with each {word} filled from `vars` (the names, sums
 // and days the scene reads from the game) and left as typed if `vars` has no such word. What the scene builds from the game state itself stays in code.
 // The key of a moment's version for a day: a moment that plays often has three, taken in turn by the day and not by a draw, so the dice of a pinned play are
-// unchanged (#771, #775, docs/prose-aims.md). `x.result` on one day, `x.result.1` the next, `x.result.2` the day after.
+// unchanged (#771, #775, docs/bible/voice.md). `x.result` on one day, `x.result.1` the next, `x.result.2` the day after.
 const TELLINGS = ['', '.1', '.2'];
 const tellingOn = (key, day) => `${key}${TELLINGS[day % TELLINGS.length]}`;
 

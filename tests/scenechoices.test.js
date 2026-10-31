@@ -3,7 +3,7 @@
 // Every choice of the scenes that are drawn or built from the state, not authored one by one (#395): the transit events, the
 // warning and the split, customs and the friend at the dock, a boarding, the sit-downs and occasions, the traditions and the cat,
 // and the relationship scenes. Each choice runs on a low roll and a high one and must say what happened in plain text, with nothing
-// thrown. The wording is not checked here (docs/prose-style.md). A choice a state cannot reach is counted in `shut`, not skipped quietly.
+// thrown. The wording is not checked here (docs/bible/voice.md). A choice a state cannot reach is counted in `shut`, not skipped quietly.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');

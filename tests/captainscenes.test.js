@@ -1,7 +1,7 @@
 'use strict';
 
 // Every choice of each captain's scenes (the trouble, the secret told two ways, the goodbye), run for each of the four captains:
-// each says what happened in plain text and nothing throws. The wording is not checked here (docs/prose-style.md).
+// each says what happened in plain text and nothing throws. The wording is not checked here (docs/bible/voice.md).
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');

@@ -1,6 +1,6 @@
 # The world bible
 
-Status: the world and `voice.md` approved by the owner on 2026-10-31. `people/` holds the characters, each a draft until approved. It replaces `docs/world/` for new writing.
+Status: the world and `voice.md` approved by the owner on 2026-10-31. `people/` holds the characters, each a draft until approved. It replaced `docs/world/`, and `voice.md` replaced the old writing guides (#869).
 
 This is the world the game's writing comes from. It is built from the base up: who owns what and who works first, then the jurisdictions and private arrangements that keep that order, then work, technology and everyday life, and only then the people. Characters and dialogue come after it and answer to it.
 
@@ -54,3 +54,4 @@ The owner decided (2026-10-31) that where the bible and the game disagree, the g
 - Luna, Mars's domes, Ceres and the Belt stations, the outer moons.
 - The other crew members' places: Rotterdam (Hester), Lagos Ring (Tomas), Cato's home.
 - What replaces the faction economies and wars in the game (a code project).
+- History before day 1 (the old `docs/world/timeline.md`), the player's start backgrounds (`backgrounds.md`), customs aboard (`customs.md`) and the posts aboard (`trades.md`). Those files were retired in #869; they are in git history, written to the old world, and are a source to check, not to copy.

@@ -1,7 +1,7 @@
 'use strict';
 
 // The prose report: counts tic phrases, sentence shape and reported speech in the text of the narrative files, so the style rules in
-// docs/prose-style.md and docs/voices/ can be read as numbers (docs/superpowers/specs/2026-10-08-prose-and-world-design.md).
+// docs/bible/voice.md can be read as numbers (docs/superpowers/specs/2026-10-08-prose-and-world-design.md).
 // It reports and never fails, and it is not part of `npm test`.
 //   npm run prose                 the report
 //   npm run prose -- --write      write docs/prose-baseline.json
@@ -15,7 +15,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-// The tic table of docs/prose-style.md. Each pattern is counted case-insensitively.
+// The tic table (the old prose rules, still counted; the voice is docs/bible/voice.md). Each pattern is counted case-insensitively.
 const TICS = [
   { id: 'hedge', re: /\b(?:a little|a small|very slightly)\b/gi },
   { id: 'nods', re: /\bnods\b/gi },
@@ -209,7 +209,7 @@ const REPORTED = /\b(?:says|said|answers|answered|replies|replied|asks|asked|(?:
 const QUOTED = /"[^"]{2,}"|“[^”]{2,}”/g;
 
 // Quoted spans against reported speech, over all the strings.
-// A quoted span or a stretch of narration that says "I do not" or "it is" in full: speech and narration use contractions (docs/voices/dialogue.md, rule 13). "I have" is not counted, since it is also the plain verb.
+// A quoted span or a stretch of narration that says "I do not" or "it is" in full: speech and narration use contractions (docs/bible/voice.md, rule 1). "I have" is not counted, since it is also the plain verb.
 const UNCONTRACTED = /\b(?:I (?:am|will|would) [a-z]|(?:you|we|they) (?:are|will|would) [a-z]|(?:he|she|it|that|there|who) (?:will|would) [a-z]|(?:he|she|it|that|there|who|what) is [a-z]|(?:do|does|did|is|are|was|were|has|have|had|would|could|should|will) not\b|cannot\b|let us\b)/i;
 function speech(strings) {
   let quoted = 0, reported = 0, uncontracted = 0, narrated = 0;
