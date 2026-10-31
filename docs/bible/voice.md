@@ -1,6 +1,6 @@
 # The voice
 
-Status: draft, written 2026-10-31 from the samples the owner corrected in conversation. When approved it replaces `docs/prose-style.md`, `docs/prose-aims.md`, `docs/writing-a-scene.md` and `docs/voices/`. The world it uses is the rest of this bible.
+Status: approved by the owner on 2026-10-31, written from the samples the owner corrected in conversation. It replaces `docs/prose-style.md`, `docs/prose-aims.md`, `docs/writing-a-scene.md` and `docs/voices/`. The world it uses is the rest of this bible.
 
 The game's writing comes from the world. People talk about their lives, and their lives are the arrangements in this bible: rent, deductions, licences, charters, lag, old kit. The writer's job is to know those arrangements well enough that people can mention them without explaining them.
 

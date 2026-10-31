@@ -1,6 +1,6 @@
 # The world bible
 
-Status: the world (all sections but `voice.md`) approved by the owner on 2026-10-31. `voice.md` is a draft for review. It replaces `docs/world/` for new writing.
+Status: the world and `voice.md` approved by the owner on 2026-10-31. `people/` holds the characters, each a draft until approved. It replaces `docs/world/` for new writing.
 
 This is the world the game's writing comes from. It is built from the base up: who owns what and who works first, then the jurisdictions and private arrangements that keep that order, then work, technology and everyday life, and only then the people. Characters and dialogue come after it and answer to it.
 
@@ -31,6 +31,8 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 4. `technology.md`: drives and freight, the old fleet, software, light, who has what, bodies.
 5. `lisbon.md`: Lisbon Arcology, the old city, the wall, the lift, and Ines.
 6. `ship.md`: Hester's ship, its crew, and life aboard.
+7. `voice.md`: how the game's writing sounds.
+8. `people/`: one sheet per character (`ines.md` first).
 
 ## Where the game must change to fit
 
