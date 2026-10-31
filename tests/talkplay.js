@@ -66,6 +66,14 @@ const playTalk = () => {
   play('sit:1', p => { storyOf(p).beat = 1; }, p => sitBeat(p, true));
   play('sit:2', p => { storyOf(p).beat = 2; p.opinion = 2; }, p => sitBeat(p, true));
   for (const b of [0, 1, 2]) play(`sit:${b}:ines`, p => { p.cast = 'ines'; p.first = 'Ines'; storyOf(p).beat = b; p.opinion = 3; }, p => sitBeat(p, true));  // an authored person's own lines (family:ines-*)
+  // Ines's own talk after a sitting (family:ines-goeson, family:ines-idle), by subject, and the offers before the flip
+  const ines = p => { p.cast = 'ines'; p.first = 'Ines'; p.role = 'pilot'; };
+  for (const k of ['port', 'ship', 'last', 'work']) play(`goeson:${k}:ines`, ines, p => goesOn(p, k));
+  play('goeson:captain:ines', (p, s) => { ines(p); const c = mk('Vance'); s.hired = { captain: c.id, post: 'gunner', since: s.day }; }, p => goesOn(p, 'captain'));
+  play('idle:ines', ines, p => idleTalk(p));
+  { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; ines(p); const rec = {};
+    for (const k of ['port', 'ship', 'last', 'work']) { G.transit = { to: 'pallas', flipped: false, lifeUsed: {} }; __seed(9); rec[k] = String(goesOn(p, k).choices[0].label); }
+    G.transit = null; out.push({ key: 'goeson:offer:ines', text: JSON.stringify(rec) }); }
   play('sit:3:crew:visit', p => { const s = storyOf(p); s.beat = 3; s.favor = 'visit'; p.opinion = 3; }, p => sitBeat(p, true));
   play('sit:3:crew:debt', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 15000; p.opinion = 3; }, p => sitBeat(p, true));
   play('sit:3:passenger', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 15000; p.opinion = 3; }, p => sitBeat(p, false), 6);

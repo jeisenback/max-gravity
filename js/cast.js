@@ -38,11 +38,11 @@ const CAST = {
     ],
     // What they leave behind when they walk off or die (fate.js farewellFacts): a flag and its line, in priority order, two at most.
     farewell: {
-      walk: 'Ines doesn\'t ask for leave. At the foot of the ramp on {planet} she writes the landing in the logbook, the pad and the time, and then she\'s gone.',
+      walk: 'Ines doesn\'t ask for leave. At the lock on {planet} she writes the date in her logbook, and then she\'s gone.',
       facts: [
-        ['reference', 'Your reference for the Lisbon board is folded into the back of her logbook, with the date of the hearing written on the fold.'],
-        ['practiced', 'Her logbook has the dead-stick flip on a page of its own: ten seconds, cold thrusters, your hand on the cutoff.'],
-        ['promised', 'On the last page of the logbook she has written the word someday, and no date.'],
+        ['reference', 'The countersigned pages of her logbook went to Lisbon with the appeal. The hearing still has no date.'],
+        ['practiced', 'Her logbook has the hand-flown approach on a page of its own, with your name in the second seat.'],
+        ['promised', 'Her lawyer\'s invoice still comes in every month, wherever she is, and she still pays it.'],
       ],
     },
     scenes: {
@@ -69,107 +69,101 @@ const CAST = {
         ],
       },
       intro: {
-        title: 'The Woman at the Helm',
-        text: 'Ines Ferreira has the helm, and has been flying with one hand for an hour, the other holding a logbook that\'s not the ship\'s. "Don\'t," she says, without turning round, "ask about the landing. Everybody asks about the landing." Nobody has, on this ship.',
+        title: 'The Flip',
+        text: 'You have the bridge watch when Ines comes up for the flip, with a coffee and a paper logbook under her arm. She straps in, takes the helm from the software, and reads the flip checklist out for you to confirm. Halfway down it she says, "Don\'t ask about the landing. Everyone asks about the landing." You hadn\'t.',
         choices: [
           {
             label: 'Ask about the landing anyway',
-            effects: { castLike: { who: 'ines', n: 1, memory: 'I told you about the landing, and you didn\'t look at me differently.' } },
-            result: 'She\'s silent for most of a minute. Then she tells it flat and fast. "The tower said ditch. The pad was unlit, with forty-one on ' +
-              'the cabin feed and a hull good for one approach and not for a swim. I put her down. The stop was mine, because nobody on the ' +
-              'tower could see the pad." She lets out a breath. "There," she says. "That\'s the whole thing. It\'s much shorter than I thought."',
+            effects: { castLike: { who: 'ines', n: 1, memory: 'I told you about the landing, and you didn\'t make a thing of it.' } },
+            result: 'She finishes the checklist first. Then, while the drive spools down: "Both engines went on the descent. The tower said ditch, clear of the platform. ' +
+              'The second runway was closed for resurfacing. It was the only concrete I could reach, so I put it there." The drive is off and the ship goes light. ' +
+              '"Everyone walked off. I lost my licence. That\'s it." She starts the turn.',
           },
           {
-            label: 'Ask about the book instead',
+            label: 'Ask about the logbook',
             effects: { castLike: { who: 'ines', n: 2, memory: 'You asked about the book, not the landing.' }, castXp: { who: 'ines', role: 'pilot', n: 2 } },
-            result: '"Oh," she says, and for the first time looks round. "It\'s my log. Every landing I\'ve made, nine years of them, with the pad, the ' +
-              'wind and what I\'d do differently." She turns it so you can see a column of small neat entries. "Most of what I know is in here." ' +
-              'She lets you read one page, and you do.',
+            result: '"Every landing I\'ve flown. Nine years of the ferry, most days twice." She opens it at a page of short entries: the date, the runway, the wind, ' +
+              'the fuel at touchdown. "The board has the official one. This one\'s mine." She flies the flip by hand, and when it\'s done she writes it in.',
           },
         ],
       },
       mid1: {
-        days: 10, title: 'Dead Stick',
-        text: ('Ines catches you in the corridor, one hand on the bulkhead. "I want to run a dead-stick flip. Drive off, ten seconds, the whole turn ' +
-            'on cold thrusters. It\'s the one thing I\'ve never been allowed to practice, because it frightens the people who sign things." She ' +
-            'waits. "I won\'t do it without somebody to say stop."'),
+        days: 10, title: 'The Approach',
+        text: ('Ines finds you in the galley. "Next port, I want to fly the approach by hand. Docking software off, all the way to the collar." She drinks her ' +
+            'coffee. "I\'ve flown one approach in nine years without the software helping, and that was the landing. I\'d like to have done it once on purpose. ' +
+            'It needs somebody on the abort, who\'ll hit it if I say so, or if I stop saying anything."'),
         choices: [
           {
-            label: 'Stand by the cutoff while she does it',
-            effects: { castLike: { who: 'ines', n: 2, memory: 'You stood by the cutoff while I flew it dead.' }, castFlag: { who: 'ines', flag: 'practiced' }, castXp: { who: 'ines', role: 'pilot', n: 4 } },
-            result: 'You put your hand on the cutoff and she cuts the drive. The ship drifts in a silence you feel in your teeth. Ines turns her on cold ' +
-              'thrusters, a long clean arc, and when she brings the drive back up she\'s grinning so widely that she has to look away. "Ten seconds," ' +
-              'she says. "I didn\'t touch the stop." You didn\'t say it.',
+            label: 'Take the abort for her',
+            effects: { castLike: { who: 'ines', n: 2, memory: 'You sat on the abort while I flew the approach by hand.' }, castFlag: { who: 'ines', flag: 'practiced' }, castXp: { who: 'ines', role: 'pilot', n: 4 } },
+            result: 'You sit in the second seat with your hand by the abort. She turns the docking software off, and it asks her twice if she\'s sure. She flies ' +
+              'the approach on the thrusters, slowly, saying the numbers to herself, and the collar latches at a little under a tenth of a metre a second. ' +
+              '"Didn\'t need you," she says. "Good to have you, though." She writes it in the logbook.',
           },
           {
-            label: 'Not on a loaded burn',
-            effects: { castLike: { who: 'ines', n: 1, memory: 'You said not on a loaded burn, and you were right.' } },
-            result: '"That\'s the correct answer," she says. "Ask me again when there\'s nothing aboard but air." She goes back to the helm, ' +
-              'and flies the rest of the shift by the book.',
+            label: 'Not on a loaded run',
+            effects: { castLike: { who: 'ines', n: 1, memory: 'You said not on a loaded run, and you were right.' } },
+            result: '"Fair," she says. "The cargo\'s not mine to scratch." At the next port she lets the software fly it in, and reads every number it gives.',
           },
         ],
       },
       mid2: {
-        days: 25, title: 'The Board',
-        text: ('A message from the Lisbon licensing board comes in on a slow channel. Ines reads it twice, standing still, and then hands you the ' +
-            'terminal without a word. A reinstatement hearing, in forty days, for anyone with a license who can find a reference: "a person of ' +
-            'standing who has flown with the applicant, and will say so." She doesn\'t ask. She\'s watching the wall.'),
+        days: 25, title: 'The Appeal',
+        text: ('A message from Ines\'s lawyer comes in with the morning batch, and she reads it out across the galley table. The appeal needs recent flight hours, ' +
+            'on any registry, with each entry countersigned by the watchkeeper who was on the bridge. "You\'ve been on for six of my flips," she says. "The ' +
+            'rest of the rota has the others." She has the logbook open at the right pages.'),
         choices: [
           {
-            label: 'Write the reference',
-            effects: { castLike: { who: 'ines', n: 3, memory: 'You wrote my reference for the Lisbon board.' }, castFlag: { who: 'ines', flag: 'reference' } },
-            result: 'You write it that night, plainly: nine years of landings in a log she keeps in her own hand, the one you\'ve watched her fly, and ' +
-              'that you\'d stand in front of the board and say so. When you send it, Ines is standing in the hatch and doesn\'t say anything at all. In ' +
-              'the morning there\'s a mug of coffee on your console.',
+            label: 'Countersign them',
+            effects: { castLike: { who: 'ines', n: 3, memory: 'You countersigned my hours for the appeal.' }, castFlag: { who: 'ines', flag: 'reference' } },
+            result: 'You go through the pages with her, one entry at a time: the date, the burn, the flip, her name, then yours. She checks each one against the ' +
+              'watch rota before she turns the page. Then she photographs the pages and sends them to Lisbon on the cheap slot, twice, in case one copy drops.',
           },
           {
-            label: 'Offer to say it to the board in person',
+            label: 'Countersign them, and write down how she flies',
             when: { opinion: { who: 'ines', min: OPINION.TRUSTED } },
-            effects: { castLike: { who: 'ines', n: 3, memory: 'You offered to stand before the Lisbon board for me.' }, castFlag: { who: 'ines', flag: 'reference' } },
-            result: 'You say it before she can fold the message away. "I\'ll come to Lisbon. I\'ll stand up and say it myself." Ines turns from the ' +
-              'wall. "It\'s forty days," she says. "You\'d be away from the ship for a week." "Then I\'ll ask the captain for the week." She ' +
-              'takes the pencil from behind her ear and writes the date of the hearing on the inside of her ' +
-              'wrist, the way she writes a landing slot, and holds it up for you to read. "In ten years," she says, "nobody has offered me a week."',
+            effects: { castLike: { who: 'ines', n: 3, memory: 'You wrote down how I fly, for the appeal.' }, castFlag: { who: 'ines', flag: 'reference' } },
+            result: 'You sign the entries, and then write a page of your own: the flips you watched, the checklist she reads out every time, what she does when the ' +
+              'software disagrees with her. It takes you an hour. Ines reads it when you\'ve finished and doesn\'t say anything about it. She puts it in front of ' +
+              'the logbook pages and sends both.',
           },
           {
             label: '"It\'s not my place."',
-            effects: { castLike: { who: 'ines', n: -1, memory: 'You said a reference wasn\'t your place.' } },
-            result: 'Her face doesn\'t change. "No," she says, "of course not." She folds the message and puts it away. For the rest of the day she says good morning, good evening and thank you, and nothing in between.',
+            effects: { castLike: { who: 'ines', n: -1, memory: 'You wouldn\'t countersign my hours.' } },
+            result: '"It\'s a signature," she says. She closes the logbook and goes to find the others on the rota. For a few days after that she says good morning and good night to you, and not much else.',
           },
         ],
       },
       late: {
-        days: 45, title: 'Permission to Land',
-        text: ('It\'s late in the watch, and Ines is at the helm with the lights low. "May I say something that\'s not about flying?" she says. "I ' +
-            'want a command. Not now. Someday, a ship with my name on her papers, where I don\'t have to ask anyone for leave to put her down. I haven\'t' +
-            ' said it to anybody since Lisbon." She doesn\'t look round. "If you ever have ships and need somebody to put in the chair, I\'d ' +
-            'like to be asked."'),
+        days: 45, title: 'The Invoice',
+        text: ('The lawyer\'s monthly invoice comes in with the batch. Ines reads it at the galley table and turns the terminal so you can see: the month\'s fee, two ' +
+            'letters to the ferry operator\'s lawyers, and a line that says "monitoring of hearing schedule". "That\'s him checking a calendar," she says. "Every ' +
+            'month I think about stopping. If I stop, the appeal lapses, and then it\'s just the lawsuit." She closes it. "Would you keep paying?"'),
         choices: [
           {
-            label: 'Promise her a ship, someday',
-            effects: { castLike: { who: 'ines', n: 2, memory: 'I told you I wanted a command, and you promised.' }, castFlag: { who: 'ines', flag: 'promised' } },
-            result: '"Someday," you say, "and you\'ll be asked." She doesn\'t answer. Then, to the windscreen: "That\'s all I wanted," she ' +
-              'says. "A date would have been a lie. This is better."',
+            label: 'Tell her to keep paying',
+            effects: { castLike: { who: 'ines', n: 2, memory: 'You told me to keep paying the lawyer, and I did.' }, castFlag: { who: 'ines', flag: 'promised' } },
+            result: '"Yeah," she says. "That\'s what I tell myself." She pays it from her terminal while you\'re sitting there, in Lisbon scrip, and watches the exchange take its cut.',
           },
           {
-            label: 'Make no promises',
-            effects: { castLike: { who: 'ines', n: 1, memory: 'You wouldn\'t promise a command, but you listened.' } },
-            result: '"I can\'t promise that," you say, "but I heard you." She smiles at the glass, crooked. "That\'s the honest answer," she says. "I\'ll take the honest one."',
+            label: 'Say it\'s her money',
+            effects: { castLike: { who: 'ines', n: 1, memory: 'You said it was my money. It was the honest answer.' } },
+            result: '"It is," she says. "That\'s the problem." She pays it anyway, and puts the terminal face down.',
           },
         ],
       },
       pivot: {
         days: 60, title: 'Cold Thrusters',
         get text() {
-          return 'The drive trips out on the approach and won\'t relight. The dock is closing, and there\'s no thrust to slow the ship, only the cold thrusters. Ines has both hands on the helm and the logbook shut beside her. "I can bring her in on these," she says. "It\'s the dead-stick flip again, with a dock at the end of it. I\'d like somebody at the cutoff."'
+          return 'The drive trips on final approach and won\'t relight, with the dock a few kilometres off and closing. There\'s nothing to slow the ship but the thrusters. Ines has both hands on the controls and the docking software off. "I can bring her in on these," she says. "Same as the practice, with less room. Somebody on the abort."'
             + castRiskLines();
         },
         choices: [
           { label: 'Let her fly it', run: () => coldThrusters(false) },
-          { label: 'Put a second hand at the cutoff (the second is hurt for it)', ...gated(needCrew(2)), run: () => coldThrusters(true) },
-          { label: 'Order her to ditch', memory: 'You ordered me to ditch the ship, as the tower did.', run() {
+          { label: 'Put a second hand on the abort (the second is hurt for it)', ...gated(needCrew(2)), run: () => coldThrusters(true) },
+          { label: 'Order the abort and wait for the dock\'s tug', memory: 'You ordered the abort, the way the tower did.', run() {
             castLike('ines', -3, this.memory);
-            return 'You order the ditch. She does it by the book. Afterward she writes the ditch in the logbook, the time, the order and who gave it, and turns the page.';
+            return 'You order the abort. She fires the thrusters to take the ship wide of the dock, and calls the tug. It\'s three hours coming, and the dock bills for it. Afterward she writes it in the logbook: the time, the order and who gave it.';
           } },
         ],
       },
@@ -894,8 +888,9 @@ const CAST = {
 // Who you meet. Each game draws two from the pool (drawCastPair), of different posts where it can, and keeps them in st.castPair. CAST_PAIRS
 // is how the pairs used to be given, by start background: a game saved before the draw keeps the pair it had, and the tests use it
 // to start from a pair they know (tests/helpers.js).
-// An authored person's own sittings (family:<key>-<beat> in peopletext.js), with the family scenes, for the editor and the lines tests.
-for (const k of Object.keys(CAST)) for (const [beat, make] of Object.entries(SIT_BEATS)) if (PEOPLE_LINES[`family:${k}-${beat}`]) FAMILY_SCENES[`${k}-${beat}`] = p => make(p, storyOf(p), `${k}-${beat}`);
+// An authored person's own sittings and talk (family:<key>-<beat> in peopletext.js), with the family scenes, for the editor and the lines tests.
+const CAST_TALK = { ...SIT_BEATS, goeson: (p, s, id) => goesOn(p, undefined, id), idle: (p, s, id) => idleTalk(p, id) };
+for (const k of Object.keys(CAST)) for (const [beat, make] of Object.entries(CAST_TALK)) if (PEOPLE_LINES[`family:${k}-${beat}`]) FAMILY_SCENES[`${k}-${beat}`] = p => make(p, storyOf(p), `${k}-${beat}`);
 const CAST_PAIRS = { earth: ['ines', 'tomas'], mars: ['yelena', 'ruben'], belt: ['bexa', 'pax'] };
 const castPool = () => Object.keys(CAST).filter(k => !CAST[k].xo);
 // A main character of the start background's own culture is this many times as likely as one from elsewhere, so an earth start is mostly
@@ -1081,21 +1076,21 @@ function castRiskLines() {
 const castRiskPoints = () => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0);
 const castPoints = n => (n >= 3 ? 'live' : n === 2 ? 'mark' : 'die');
 
-// Ines's pivot: a point each for a medic, a hull above 60 percent, the dead-stick flip practiced with you, and a second hand at the cutoff.
+// Ines's pivot: a point each for a medic, a hull above 60 percent, the hand-flown approach practiced with you, and a second hand on the abort.
 function coldThrusters(backup) {
   const rec = castRec('ines'), practiced = !!rec.flags.practiced, promised = !!rec.flags.promised;
-  const outcome = castFate('ines', castPoints(castRiskPoints() + (practiced ? 1 : 0) + (backup ? 1 : 0)), `Flew the ship in dead stick near ${system().name}.`, 'Her left hand shakes on the stick.', 'pilot');
-  const lead = backup ? 'You put a second hand at the cutoff. ' + castBackupCost('ines') : '';
+  const outcome = castFate('ines', castPoints(castRiskPoints() + (practiced ? 1 : 0) + (backup ? 1 : 0)), `Docked the ship on thrusters near ${system().name}.`, 'Her left hand shakes on the controls.', 'pilot');
+  const lead = backup ? 'You put a second hand on the abort. ' + castBackupCost('ines') : '';
   if (outcome === 'die') {
-    return lead + 'The flip is a half second late. The hull meets the pad before the thrusters have finished the turn. When the crew reach the helm the logbook is open on the chair, and the last entry is half written.'
-      + (promised ? ' The ship you promised her is on the last page of the logbook, the word someday and no date.' : '');
+    return lead + 'She\'s half a second late on the last burn. The ship meets the collar too fast, and the docking ring takes the bow. When the crew reach the bridge the logbook is open on the console, and the last entry is half written.'
+      + (promised ? ' The lawyer\'s next invoice comes in with the batch two days later.' : '');
   }
-  castLike('ines', 2, outcome === 'mark' ? 'You let me fly it in dead, and I came down with a hand that shakes.' : 'You let me fly it in dead, and I came down.');
+  castLike('ines', 2, outcome === 'mark' ? 'You let me bring her in on thrusters, and I came in with a hand that shakes.' : 'You let me bring her in on thrusters, and I came in.');
   if (outcome === 'mark') {
-    return lead + 'She holds the ship, and the ship comes down hard, and the helm throws her against the harness. She walks off on her own. Later you see her in the pilot\'s chair, holding her left hand in her right until it stops shaking. It doesn\'t quite stop.';
+    return lead + 'She gets the speed off, nearly all of it, and the ship hits the collar hard enough to throw everyone against their straps. She walks off on her own. Later you see her in the pilot\'s seat, holding her left hand in her right until it stops shaking. It doesn\'t quite stop.';
   }
-  return lead + 'She flies it the way she wrote it in the log: the long clean arc on the cold thrusters, the flip, the last slow roll toward the pad. The ship touches down so softly that the cup on the console doesn\'t move. Ines sits with her hands in her lap. "Boring," she says. "Very boring."'
-    + (practiced ? ' "You stood by the cutoff once," she adds. "It was enough to know it was there."' : '');
+  return lead + 'She flies it the way she flew the practice: slowly, the numbers out loud, the last few metres at walking pace and then slower. The collar latches without a bump. Ines sits with her hands in her lap. "Boring," she says. "Very boring."'
+    + (practiced ? ' "We\'ve done that one before," she adds.' : '');
 }
 
 // Tomas's pivot: a point each for a medic, a hull above 60 percent, the plan he taught or wrote down for you, and a second person with him.
