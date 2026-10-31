@@ -22152,7 +22152,7 @@
     "text": "",
     "next": {
      "title": "The Room in Hermes Foundry",
-     "text": "It has been 20 days. The latch sticks worse in the damp, and Duarte has put a rag in the gap under the door against it. There is dust on the sill and none on the bed. \"We kept it aired,\" Duarte says, and it comes out sounding like an apology. There is a letter on the table with your name on it in Duarte's hand. It was left here, and not sent to the dock. The bag of galley tea you left is on the hook behind the door, and it is lighter. You have slept in it once before.",
+     "text": "It has been 20 days. The latch sticks worse in the damp, and Graça has put a rag in the gap under the door against it. There is dust on the sill and none on the bed. \"We kept it aired,\" Graça says, and it comes out sounding like an apology. There is a letter on the table with your name on it in Graça's hand. It was left here, and not sent to the dock. The bag of galley tea you left is on the hook behind the door, and it is lighter. You have slept in it once before.",
      "labels": [
       "Stay the night",
       "Look in, and go back to the ship"
@@ -22162,7 +22162,7 @@
      {
       "j": 0,
       "roll": 0.5,
-      "text": "You sleep through the watch change for the first time in a long while. In the morning there is bread on the table, and nobody asks where the ship is going. You leave a jar from the galley on the shelf. Duarte looks at it, and then at you, and finds a use for it by morning.",
+      "text": "You sleep through the watch change for the first time in a long while. In the morning there is bread on the table, and nobody asks where the ship is going. You leave a jar from the galley on the shelf. Graça looks at it, and then at you, and finds a use for it by morning.",
       "mem": [
        "9 Jul 2214: You came back to the room."
       ]
@@ -22170,7 +22170,7 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "You put your head round the door and drink what is poured, and you are back at the lock before the dock lights change. \"Next time,\" Duarte says, to the empty doorway."
+      "text": "You put your head round the door and drink what is poured, and you are back at the lock before the dock lights change. \"Next time,\" Graça says, to the empty doorway."
      }
     ]
    },

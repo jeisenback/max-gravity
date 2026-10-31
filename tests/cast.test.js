@@ -709,7 +709,7 @@ test('an authored character plays their own story, not an invented one', async (
     return { tomas: [storyOf(t).authored, storyOf(t).rel, storyOf(t).name, missed(t)], ines: [storyOf(i).authored, missed(i)] };
   });
   assert.deepEqual(r.tomas, [true, 'sister', 'Ngozi', 'sister Ngozi']);
-  assert.deepEqual(r.ines, [true, 'niece Leonor']);
+  assert.deepEqual(r.ines, [true, 'mother Graça']);
   await done();
 });
 
@@ -791,9 +791,9 @@ test('letters from home are about their own people', async () => {
     return { good: run([0, 0, 0]), bad: run([0, 0.9, 0]) };  // each person draws: whether to write, good or bad, which
   });
   assert.match(r.good, /their sister Ngozi got the lease on the flat renewed/);
-  assert.match(r.good, /their niece Leonor has started at the crèche/);
+  assert.match(r.good, /their mother Graça has got the day shift at the pharmacy back/);
   assert.match(r.bad, /their sister Ngozi says the rent on Lagos Ring has gone up again/);
-  assert.match(r.bad, /their niece Leonor has been in the clinic with a chest infection/);
+  assert.match(r.bad, /their mother Graça says the service charge on the flat has gone up again/);
   await done();
 });
 

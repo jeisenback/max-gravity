@@ -21,12 +21,12 @@ const CAST = {
     bio: 'She flew the ferry operator\'s spaceplane between the Lisbon platform and orbit for nine years, until both engines failed on a descent and the tower ordered her to ditch in the sea. She glided it onto the closed second runway instead, and forty-one people walked off. The pilots\' board revoked her licence, and the ferry operator is suing her for the runway.',
     // The story you learn sitting with her (family.js uses it in place of an invented one): the same slots, her own life. Her sittings have lines of their own (family:ines-*).
     story: {
-      left: 'the landing on the closed runway, and the licence after it', rel: 'niece', name: 'Leonor',
+      left: 'the landing on the closed runway, and the licence after it', rel: 'mother', name: 'Graça',
       hope: 'her licence back, and the ferry operator\'s lawsuit dropped',
       favor: null,  // her own asks are her scenes below
       news: {
-        good: ['{who} has started at the crèche on her grandmother\'s tier', '{who} said "Tia Ines" on a video her brother sent', 'her mother has got the day shift at the pharmacy back'],
-        bad: ['{who} has been in the clinic with a chest infection', 'the service charge on her mother\'s flat has gone up again', 'the ferry operator\'s lawyers have asked the court to add interest to the runway claim'],
+        good: ['{who} has got the day shift at the pharmacy back', 'her niece Leonor said "Tia Ines" on a video her brother sent', 'her niece Leonor has started at the crèche on the family\'s tier'],
+        bad: ['{who} says the service charge on the flat has gone up again', 'her niece Leonor has been in the clinic with a chest infection', 'the ferry operator\'s lawyers have asked the court to add interest to the runway claim'],
       },
     },
     chatter: [
