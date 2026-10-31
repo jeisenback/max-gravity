@@ -65,6 +65,7 @@ const playTalk = () => {
   for (const c of ['belt', 'mars', 'earth']) play(`sit:0:${c}`, p => { p.culture = c; storyOf(p); }, p => sitBeat(p, true));
   play('sit:1', p => { storyOf(p).beat = 1; }, p => sitBeat(p, true));
   play('sit:2', p => { storyOf(p).beat = 2; p.opinion = 2; }, p => sitBeat(p, true));
+  for (const b of [0, 1, 2]) play(`sit:${b}:ines`, p => { p.cast = 'ines'; p.first = 'Ines'; storyOf(p).beat = b; p.opinion = 3; }, p => sitBeat(p, true));  // an authored person's own lines (family:ines-*)
   play('sit:3:crew:visit', p => { const s = storyOf(p); s.beat = 3; s.favor = 'visit'; p.opinion = 3; }, p => sitBeat(p, true));
   play('sit:3:crew:debt', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 15000; p.opinion = 3; }, p => sitBeat(p, true));
   play('sit:3:passenger', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 15000; p.opinion = 3; }, p => sitBeat(p, false), 6);

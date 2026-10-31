@@ -17,25 +17,24 @@ const CAST = {
     first: 'Ines', last: 'Ferreira', culture: 'earth', home: 'Lisbon Arcology', job: 'ferry pilot', age: 34, role: 'pilot',
     traits: ['curious', 'brave'], wage: 700,
     skills: { pilot: 3, gunner: 1, engineer: 1, slicer: 0 }, captain: { trade: 3, nerve: 4, thrift: 2 },
-    ambition: 'Wants a ship she doesn\'t have to ask permission to land.',
-    bio: 'She flew the Lisbon to Luna ferry for nine years, until the night she put a failing shuttle down on an unlit pad instead of ditching it as the tower ordered. Forty-one people walked off. She lost her license for the way she did it, and she kept the logbook.',
-    // The story you learn sitting with her (family.js uses it in place of an invented one): the same slots, her own life.
+    ambition: 'Wants her licence back, and the ferry operator\'s lawsuit dropped.',
+    bio: 'She flew the ferry operator\'s spaceplane between the Lisbon platform and orbit for nine years, until both engines failed on a descent and the tower ordered her to ditch in the sea. She glided it onto the closed second runway instead, and forty-one people walked off. The pilots\' board revoked her licence, and the ferry operator is suing her for the runway.',
+    // The story you learn sitting with her (family.js uses it in place of an invented one): the same slots, her own life. Her sittings have lines of their own (family:ines-*).
     story: {
-      left: 'a license lost over one landing', rel: 'old ferry chief', name: 'Duarte',
-      hope: 'her license back, with the Lisbon board\'s stamp on it',
-      homeDetail: 'the ferry pads at dawn, the harbor bell, and an ocean you could hear from the arcology at night',
+      left: 'the landing on the closed runway, and the licence after it', rel: 'niece', name: 'Leonor',
+      hope: 'her licence back, and the ferry operator\'s lawsuit dropped',
       favor: null,  // her own asks are her scenes below
       news: {
-        good: ['{who} stood up for her at the license board', '{who} sent the new ferry schedule with her old slot circled', '{who} has retired to a house with a garden and a view of the water'],
-        bad: ['{who} is ill, and the old ferry crew are passing a hat', '{who} wrote that the board has put her appeal back another season', '{who} says the old ferry is being scrapped'],
+        good: ['{who} has started at the crèche on her grandmother\'s tier', '{who} said "Tia Ines" on a video her brother sent', 'her mother has got the day shift at the pharmacy back'],
+        bad: ['{who} has been in the clinic with a chest infection', 'the service charge on her mother\'s flat has gone up again', 'the ferry operator\'s lawyers have asked the court to add interest to the runway claim'],
       },
     },
     chatter: [
-      'Ines is flying with one hand and writing in a logbook that\'s not the ship\'s with the other.',
       'Ines: "A good landing is boring. People forget that. I\'m very proud of my boring landings."',
-      'Ines has taped a card to the nav display with a single word on it: ASK.',
-      'Ines is running a dead-stick approach on the sim, humming, with her eyes shut.',
-      'Ines: "Everybody wants to tell the pilot where to put the ship down. Nobody wants to be aboard when it doesn\'t."'
+      'Ines is listening to a message from her mum at double speed.',
+      'Ines: "The passenger wants to route us round a beacon that\'s been dead for thirty years. I\'m letting it think about that."',
+      'Ines is watching an action vid with the sound off and the subtitles on.',
+      'Ines: "I\'ll fly the flip. It\'s the only interesting bit."'
     ],
     // What they leave behind when they walk off or die (fate.js farewellFacts): a flag and its line, in priority order, two at most.
     farewell: {
@@ -895,6 +894,8 @@ const CAST = {
 // Who you meet. Each game draws two from the pool (drawCastPair), of different posts where it can, and keeps them in st.castPair. CAST_PAIRS
 // is how the pairs used to be given, by start background: a game saved before the draw keeps the pair it had, and the tests use it
 // to start from a pair they know (tests/helpers.js).
+// An authored person's own sittings (family:<key>-<beat> in peopletext.js), with the family scenes, for the editor and the lines tests.
+for (const k of Object.keys(CAST)) for (const [beat, make] of Object.entries(SIT_BEATS)) if (PEOPLE_LINES[`family:${k}-${beat}`]) FAMILY_SCENES[`${k}-${beat}`] = p => make(p, storyOf(p), `${k}-${beat}`);
 const CAST_PAIRS = { earth: ['ines', 'tomas'], mars: ['yelena', 'ruben'], belt: ['bexa', 'pax'] };
 const castPool = () => Object.keys(CAST).filter(k => !CAST[k].xo);
 // A main character of the start background's own culture is this many times as likely as one from elsewhere, so an earth start is mostly

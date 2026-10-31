@@ -709,7 +709,7 @@ test('an authored character plays their own story, not an invented one', async (
     return { tomas: [storyOf(t).authored, storyOf(t).rel, storyOf(t).name, missed(t)], ines: [storyOf(i).authored, missed(i)] };
   });
   assert.deepEqual(r.tomas, [true, 'sister', 'Ngozi', 'sister Ngozi']);
-  assert.deepEqual(r.ines, [true, 'old ferry chief Duarte']);
+  assert.deepEqual(r.ines, [true, 'niece Leonor']);
   await done();
 });
 
@@ -761,6 +761,21 @@ test('the sit-down beats are about their own life, and there is no invented favo
   await done();
 });
 
+test('Ines\'s sittings are her own lines, not the shared ones', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const i = person('c:ines'), s = storyOf(i), out = [];
+    i.opinion = 5;
+    for (const b of [0, 1, 2]) { s.beat = b; const e = sitBeat(i, true); out.push([e.title, e.text, e.choices.length]); }
+    return out;
+  });
+  assert.match(r[0][1], /"Crowded," she says/); assert.match(r[1][1], /"Leonor," Ines says/); assert.match(r[2][1], /the hearing's imminent/);
+  for (const [title, , n] of r) { assert.equal(title, 'With Ines'); assert.equal(n, 2); }
+  await done();
+});
+
 test('letters from home are about their own people', async () => {
   const { ev, done } = await open();
   await ev(helpers);
@@ -776,9 +791,9 @@ test('letters from home are about their own people', async () => {
     return { good: run([0, 0, 0]), bad: run([0, 0.9, 0]) };  // each person draws: whether to write, good or bad, which
   });
   assert.match(r.good, /their sister Ngozi got the lease on the flat renewed/);
-  assert.match(r.good, /their old ferry chief Duarte stood up for her at the license board/);
+  assert.match(r.good, /their niece Leonor has started at the crèche/);
   assert.match(r.bad, /their sister Ngozi says the rent on Lagos Ring has gone up again/);
-  assert.match(r.bad, /their old ferry chief Duarte is ill, and the old ferry crew are passing a hat/);
+  assert.match(r.bad, /their niece Leonor has been in the clinic with a chest infection/);
   await done();
 });
 

@@ -1213,6 +1213,31 @@ const PEOPLE_LINES = {
     'c1.result.0': 'You say it simply, and {n} looks up. "You mean that," {n} says. "People say it and don\'t." Then: "I\'m going to remember you said it. I\'m going to hold you to it at the worst possible time." They refill your mug without being asked.',
     'c1.result.1': '{n} doesn\'t answer at once. They take the terminal out and type something short and put it away again. "That\'s the date," {n} says. "And what you said. So I can show you later." They stand to go on watch, and at the hatch they say, "Thank you," to the hatch, and go.',
   },
+  // Ines's own sittings (family.js sitLines): read in place of family:story-* when she is the one you sit with. Written to docs/bible/voice.md and docs/bible/people/ines.md.
+  'family:ines-home': {
+    title: 'With Ines',
+    'text.0': 'Ines is in the galley at the end of her watch, eating rehydrated eggs out of the pouch with a spoon. You ask about Lisbon. "Crowded," she says. "It\'s an arcology, it\'s all crowded." She scrapes the corner of the pouch. "My mum\'s still there, on the tier I grew up on. My brother\'s two tiers down with his wife and the baby. He fixes lifts, which in an arcology is basically being a doctor."',
+    'c0.label': 'Ask why she left',
+    'c0.result.0': '"You know why." She doesn\'t look up. "It was on the feeds for a week." She folds the pouch flat and puts it in the recycler. "I\'d still be on the ferry. Nine years. Platform to orbit and back, most days."',
+    'c1.label': 'Tell her where you\'re from',
+    'c1.result.0': 'She listens to the whole thing, eating. "Did your building have a lift?" You tell her. "Did it work?"',
+  },
+  'family:ines-picture': {
+    title: 'With Ines',
+    'text.0': 'The morning batch came in an hour ago. Ines has her terminal propped against the coffee pot, and when you sit down she turns it round: a photo of a small girl on a kitchen floor, with a saucepan lid in each hand. "Leonor," Ines says. "My brother\'s. She\'s two." She turns it back. "I\'ve met her four times."',
+    'c0.label': 'Ask about her',
+    'c0.result.0': '"She says no to everything. Rui says that\'s normal. Mum says Rui was the same, and he was." She scrolls back through the batch. "He sends one every couple of days. Mum sends forty minutes about the building."',
+    'c1.label': 'Say she looks like her',
+    'c1.result.0': '"Everyone says that. She looks like Rui." She leaves the photo up while she finishes her coffee.',
+  },
+  'family:ines-hope': {
+    title: 'With Ines',
+    'text.0': 'You\'re on the bridge with Ines for the flip check, the hour before the turn. Between items she opens a message from her lawyer that came in with the batch, reads it, and closes it. "He says the hearing\'s imminent," she says. "He said that in March." She reads the next item off the list, and you confirm it.',
+    'c0.label': 'Ask what happens if she wins',
+    'c0.result.0': '"I get my licence back. Then I go home and ask the ferry for my job, and they say no, because they\'re suing me." She checks the tank figures against the board. "There are other operators. Not many."',
+    'c1.label': 'Ask if the lawyer\'s any good',
+    'c1.result.0': '"He\'s what I can afford." She closes the list. "Flip in forty. Go and strap in."',
+  },
   'family:favor-visit': {
     title: 'A Favor',
     text: '{n} comes to find you in the cockpit, and stands in the hatch, twisting the hem of their sleeve, which isn\'t like them. "Could we put in at {home} sometime?" they ask. "I want to see my {missed} while I still can. It has been too long. I\'d work the whole trip for nothing, captain, I swear, I\'d work double, just to see them one time." They stop. Their voice has gone thin. "I\'ve never asked for anything before."',
