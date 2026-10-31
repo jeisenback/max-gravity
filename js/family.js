@@ -116,12 +116,12 @@ function ordinaryTalk(p) {
   const topics = talkTopics(p), tp = topics.length ? pick(topics) : null;
   return tp ? { title: tp.title, text: tp.open, choices: tp.choices } : idleTalk(p);
 }
-function idleTalk(p) {
-  const say = familySay('idle'), n = p.first, idle = (p.traits || []).map(t => familyLines('idle')[t]).filter(Boolean);
-  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2, 3])}`, { n, idle: idle.length ? pick(idle) : say('easy') }),
+function idleTalk(p, id = talkLines(p, 'idle')) {
+  const say = familySay(id), n = p.first, idle = (p.traits || []).map(t => familyLines('idle')[t]).filter(Boolean), v = k => pick(variants(id, k));
+  return { title: say('title', { n }), text: say(`text.${v('text')}`, { n, idle: idle.length ? pick(idle) : PEOPLE_LINES[`family:${id}`].easy === undefined ? '' : say('easy') }),
     choices: [
-      { label: say('c0.label'), run() { like(p, 1, null); if (moodLow(p)) p.mood.until -= 5; return say(`c0.result.${pick([0, 1, 2, 3])}`, { n }); } },
-      { label: say('c1.label', { n, home: p.home }), run() { like(p, 1, null); return say(`c1.result.${pick([0, 1, 2])}`, { n, home: p.home }); } },
+      { label: say('c0.label'), run() { like(p, 1, null); if (moodLow(p)) p.mood.until -= 5; return say(`c0.result.${v('c0.result')}`, { n }); } },
+      { label: say('c1.label', { n, home: p.home }), run() { like(p, 1, null); return say(`c1.result.${v('c1.result')}`, { n, home: p.home }); } },
     ] };
 }
 
@@ -131,16 +131,16 @@ function idleTalk(p) {
 // The first choice is an offer that costs the hand something real and is remembered (two points of regard and a memory, which a later
 // sitting brings back): a watch, which is the downtime after the flip, or the first of the next burn when the sitting is after the flip
 // (st.watchOwed, stood by standOwedWatch); on the captain, a point of the captain's regard. The second choice is talk and leaves nothing.
-const goesOn = (p, key) => {
-  const say = familySay('goeson'), n = p.first, st = G.state, t = G.transit;
+const goesOn = (p, key, id = talkLines(p, 'goeson')) => {
+  const say = familySay(id), n = p.first, st = G.state, t = G.transit;
   const subjects = ['port', 'ship', 'last', ...(hired() ? ['captain'] : []), ...(ROLE_NAMES[p.role] ? ['work'] : [])];  // the captain is a hand's subject; a post is a crew member's
   const k = key || pick(subjects.filter(s => s !== p.turn));
   p.turn = k;
   const cap = hiredCaptain(), vars = { n, port: t ? SYSTEMS[t.to].name : st.planet, cap: cap ? cap.last : '', ship: shipTitle(), post: (ROLE_NAMES[p.role] || '').toLowerCase() };
   const owed = !t || t.flipped, offer = say(`${k}.c0.label${k !== 'captain' && owed ? '.owed' : ''}`, vars);
   const spend = () => { if (k === 'captain') like(cap, -1, null); else if (owed) st.watchOwed = { n }; else spendLife(t, 'after'); };
-  const result = c => () => say(`${k}.${c}.result.${pick([0, 1])}`, vars);
-  return { title: say('title', { n }), text: say(`${k}.${pick([0, 1])}`, vars),
+  const result = c => () => say(`${k}.${c}.result.${pick(variants(id, `${k}.${c}.result`))}`, vars);
+  return { title: say('title', { n }), text: say(`${k}.${pick(variants(id, k))}`, vars),
     choices: [{ label: offer, run() { spend(); like(p, 2, say(`${k}.c0.memory`, vars)); return result('c0')(); } }, { label: say(`${k}.c1.label`, vars), run: result('c1') }] };
 };
 // The watch owed from a sitting after the flip is stood when the next burn begins: its downtime before the flip is spent, and the ship says so (the line, for comm).
@@ -196,6 +196,7 @@ const politeScene = p => {
 // The beats of a sitting, in order, each a scene built from the lines `id` names. An authored person with lines of their own for a beat (family:<cast>-<beat>, as family:ines-home) has
 // those read; everyone else the shared ones (family:story-<beat>). How many openings and results a beat has is how many its lines hold.
 const sitLines = (p, beat) => (p.cast && PEOPLE_LINES[`family:${p.cast}-${beat}`] ? `${p.cast}-${beat}` : `story-${beat}`);
+const talkLines = (p, kind) => (p.cast && PEOPLE_LINES[`family:${p.cast}-${kind}`] ? `${p.cast}-${kind}` : kind);  // the talk after a sitting (family:goeson, family:idle), the same way
 const variants = (id, key) => { let n = 0; while (PEOPLE_LINES[`family:${id}`][`${key}.${n}`] !== undefined) n++; return [...Array(n).keys()]; };
 const homeScene = (p, s, id = sitLines(p, 'home')) => {
   const say = familySay(id), n = p.first, talk = storyTalk(p, s), all = (key, v) => variants(id, key).map(i => say(`${key}.${i}`, v));
@@ -284,8 +285,8 @@ const FAMILY_SCENES = {
   rift: p => asTalk(riftTopic(p, { first: 'Ana' })),
   friend: p => asTalk(friendTopic(p, { first: 'Ben' })),
   memory: p => asTalk(memoryTopic(p, 'You sat with me when it was hard.')),
-  idle: p => idleTalk(p),
-  goeson: p => goesOn(p),
+  idle: p => idleTalk(p, 'idle'),
+  goeson: p => goesOn(p, undefined, 'goeson'),
   polite: p => politeScene(p),
   'story-home': p => homeScene(p, storyOf(p), 'story-home'),
   'story-picture': p => pictureScene(p, storyOf(p), 'story-picture'),
