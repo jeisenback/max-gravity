@@ -193,21 +193,26 @@ const politeScene = p => {
   const say = familySay('polite'), n = p.first;
   return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2])}`, { n }), choices: [{ label: say('c0.label'), run() { like(p, 1, null); return say(`c0.result.${pick([0, 1])}`, { n }); } }] };
 };
-const homeScene = (p, s) => {
-  const say = familySay('story-home'), n = p.first, talk = storyTalk(p, s);
-  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2])}`, { n, home: p.home, detail: s.homeDetail || familyLines('home')[cultureOfPerson(p)], left: s.left }),
-    choices: [talk(say('c0.label'), 1, [say('c0.result.0', { n }), say('c0.result.1', { n }), say('c0.result.2', { n })]), talk(say('c1.label'), 2, [say('c1.result.0', { n }), say('c1.result.1', { n })])] };
+// The beats of a sitting, in order, each a scene built from the lines `id` names. An authored person with lines of their own for a beat (family:<cast>-<beat>, as family:ines-home) has
+// those read; everyone else the shared ones (family:story-<beat>). How many openings and results a beat has is how many its lines hold.
+const sitLines = (p, beat) => (p.cast && PEOPLE_LINES[`family:${p.cast}-${beat}`] ? `${p.cast}-${beat}` : `story-${beat}`);
+const variants = (id, key) => { let n = 0; while (PEOPLE_LINES[`family:${id}`][`${key}.${n}`] !== undefined) n++; return [...Array(n).keys()]; };
+const homeScene = (p, s, id = sitLines(p, 'home')) => {
+  const say = familySay(id), n = p.first, talk = storyTalk(p, s), all = (key, v) => variants(id, key).map(i => say(`${key}.${i}`, v));
+  return { title: say('title', { n }), text: say(`text.${pick(variants(id, 'text'))}`, { n, home: p.home, detail: s.homeDetail || familyLines('home')[cultureOfPerson(p)], left: s.left }),
+    choices: [talk(say('c0.label'), 1, all('c0.result', { n })), talk(say('c1.label'), 2, all('c1.result', { n }))] };
 };
-const pictureScene = (p, s) => {
-  const say = familySay('story-picture'), n = p.first, talk = storyTalk(p, s);
-  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2])}`, { n, missed: missed(p) }),
-    choices: [talk(say('c0.label'), 1, [say('c0.result.0', { n, rel: s.rel }), say('c0.result.1', { n, rel: s.rel })]), talk(say('c1.label'), 1, [say('c1.result.0', { n }), say('c1.result.1', { n })])] };
+const pictureScene = (p, s, id = sitLines(p, 'picture')) => {
+  const say = familySay(id), n = p.first, talk = storyTalk(p, s), all = (key, v) => variants(id, key).map(i => say(`${key}.${i}`, v));
+  return { title: say('title', { n }), text: say(`text.${pick(variants(id, 'text'))}`, { n, missed: missed(p) }),
+    choices: [talk(say('c0.label'), 1, all('c0.result', { n, rel: s.rel })), talk(say('c1.label'), 1, all('c1.result', { n }))] };
 };
-const hopeScene = (p, s) => {
-  const say = familySay('story-hope'), n = p.first, talk = storyTalk(p, s);
-  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2])}`, { n, hope: s.hope }),
-    choices: [talk(say('c0.label'), 1, [say('c0.result.0', { n }), say('c0.result.1', { n })]), talk(say('c1.label'), 2, [say('c1.result.0', { n }), say('c1.result.1', { n })], () => { s.promised = true; })] };
+const hopeScene = (p, s, id = sitLines(p, 'hope')) => {
+  const say = familySay(id), n = p.first, talk = storyTalk(p, s), all = (key, v) => variants(id, key).map(i => say(`${key}.${i}`, v));
+  return { title: say('title', { n }), text: say(`text.${pick(variants(id, 'text'))}`, { n, hope: s.hope }),
+    choices: [talk(say('c0.label'), 1, all('c0.result', { n })), talk(say('c1.label'), 2, all('c1.result', { n }), () => { s.promised = true; })] };
 };
+const SIT_BEATS = { home: homeScene, picture: pictureScene, hope: hopeScene };  // s.beat 0, 1 and 2
 // The favor at the end of it, for crew: to see their family (a mission home), or a debt to pay.
 const visitFavor = (p, s) => {
   const say = familySay('favor-visit'), n = p.first, st = G.state, where = planetNamed(p.home);
@@ -247,9 +252,8 @@ function sitBeat(p, isCrew) {
     if (t) { p.pressed = pressKey; return leadOn(p, { title: t.title, text: t.open, choices: t.choices }); }
   }
   if (s.beat > (p.opinion + 1) && s.beat < 4) return leadOn(p, politeScene(p));
-  if (s.beat === 0) return leadOn(p, homeScene(p, s));
-  if (s.beat === 1) return leadOn(p, pictureScene(p, s));
-  if (s.beat === 2) return leadOn(p, hopeScene(p, s));
+  const beat = Object.values(SIT_BEATS)[s.beat];
+  if (beat) return leadOn(p, beat(p, s));
   if (s.beat === 3 && isCrew && s.favor) return s.favor === 'visit' ? visitFavor(p, s) : debtFavor(p, s);  // the favor ends a sitting on its own
   return leadOn(p, ordinaryTalk(p));
 }
@@ -283,9 +287,9 @@ const FAMILY_SCENES = {
   idle: p => idleTalk(p),
   goeson: p => goesOn(p),
   polite: p => politeScene(p),
-  'story-home': p => homeScene(p, storyOf(p)),
-  'story-picture': p => pictureScene(p, storyOf(p)),
-  'story-hope': p => hopeScene(p, storyOf(p)),
+  'story-home': p => homeScene(p, storyOf(p), 'story-home'),
+  'story-picture': p => pictureScene(p, storyOf(p), 'story-picture'),
+  'story-hope': p => hopeScene(p, storyOf(p), 'story-hope'),
   'favor-visit': p => visitFavor(p, Object.assign(storyOf(p), { favor: 'visit' })),
   visit: p => visitEvent(p),
   'visit-home': p => visitHome(p),
