@@ -149,7 +149,7 @@ test('a code choice that leaves a memory takes another one from the override lay
   const r = await g.ev(() => {
     __seed(1);
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
-    const hit = Object.entries(CAST).flatMap(([k, c]) => Object.entries(c.scenes).flatMap(([n, sc]) => sc.choices.map((ch, i) => ({ k, n, i, ch })))).find(x => x.ch.label === 'Order her to ditch');
+    const hit = Object.entries(CAST).flatMap(([k, c]) => Object.entries(c.scenes).flatMap(([n, sc]) => sc.choices.map((ch, i) => ({ k, n, i, ch })))).find(x => x.ch.label === 'Order the abort and wait for the dock\'s tug');
     const id = `cast:${hit.k}:${hit.n}`, warned = [], warn = console.warn; console.warn = m => warned.push(m);
     const clean = cleanOverrides({ [id]: { choices: { [hit.i]: { memory: 'You made the <b>call</b> & I took it.' }, 0: { memory: 'x' } } } });
     console.warn = warn;
@@ -168,7 +168,7 @@ test('a code choice that leaves a memory takes another one from the override lay
   assert.equal(r.warned.length, 1);
   assert.ok(r.warned[0].includes('choice 0 leaves no memory'), r.warned[0]);
   assert.ok(r.changed.endsWith('You made the <b>call</b> & I took it.'), r.changed);
-  assert.ok(r.shipped.endsWith('You ordered me to ditch the ship, as the tower did.'), r.shipped);
+  assert.ok(r.shipped.endsWith('You ordered the abort, the way the tower did.'), r.shipped);
 });
 
 test('the one-line notes are drawn as plain text, so an override is left as typed; a scene drawn as markup still escapes it (#508)', async () => {

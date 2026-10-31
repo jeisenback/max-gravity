@@ -117,7 +117,7 @@ test('the memories play leaves where no scene is its own have their lines in the
 
 test('a cast scene\'s code choice that leaves a memory has a field for it in the form, and the file keeps what is typed (#508)', async () => {
   await reload();
-  const hit = await page.evaluate(() => { const r = SceneIndex.rows.find(x => x.choices.some(c => c.label === 'Order her to ditch')); return { id: r.id, i: r.choices.findIndex(c => c.label === 'Order her to ditch') }; });
+  const hit = await page.evaluate(() => { const r = SceneIndex.rows.find(x => x.choices.some(c => c.label === 'Order the abort and wait for the dock\'s tug')); return { id: r.id, i: r.choices.findIndex(c => c.label === 'Order the abort and wait for the dock\'s tug') }; });
   await select(hit.id);
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
   assert.ok(paths.includes(`c${hit.i}.memory`), `${hit.i} in ${paths.join()}`);

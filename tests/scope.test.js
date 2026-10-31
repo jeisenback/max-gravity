@@ -142,7 +142,7 @@ test('the closing scene waits for a main character\'s own buy-in scene', async (
     const third = G.dialog && G.dialog.event.title; chooseEvent(0); finishEvent();
     return { first, second, third, fourth: G.dialog && G.dialog.event.title };
   });
-  assert.equal(r.first, 'Permission to Land'); assert.equal(r.second, 'The Foot of the Ramp'); assert.equal(r.third, 'Looking Back'); assert.equal(r.fourth, 'Your Own Ship');
+  assert.equal(r.first, 'The Invoice'); assert.equal(r.second, 'The Foot of the Ramp'); assert.equal(r.third, 'Looking Back'); assert.equal(r.fourth, 'Your Own Ship');
   await done();
 });
 
