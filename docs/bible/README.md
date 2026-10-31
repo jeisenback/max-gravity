@@ -32,6 +32,20 @@ The voice that uses this world goes in `docs/bible/voice.md` (to come). In short
 5. `lisbon.md`: Lisbon Arcology, the old city, the wall, the lift, and Ines.
 6. `ship.md`: Hester's ship, its crew, and life aboard.
 
+## Where the game must change to fit
+
+The owner decided (2026-10-31) that where the bible and the game disagree, the game changes, in stages, each as its own project after the writing pilot. Known conflicts:
+
+1. **Crew size and posts.** The code crews Hester's ship with about ten (`CHAPTER_CREW` in `js/hired.js`: the hand's post, a first officer, a quartermaster, a medic, a cook, two ice hands). The bible has five to seven: three officers, a bosun and two or three ratings.
+2. **The hand's post and share.** The hand can sign on as pilot or engineer, licensed posts, and gets a 6 percent share (`HIRED_SHARE`) that the bible gives only to officers.
+3. **Cato** is the first officer (`xo`) in the code, deciding the watch and able to overrule the captain. In the bible he is the bosun.
+4. **Ice runs, the ice hold and ice hands.** The bible's ship is a fast cargo hull, and bulk ice goes slow.
+5. **The chapter's goal.** The hand saves to buy a used ship (`HIRED_TARGET`). The bible gives a rating no way to own one outright; the goal becomes something a hand can reach (a hire-purchase deposit, a co-op share, an officer's licence).
+6. **Hester's code entry.** Her bio ("the owner, on paper... the bank owns most of") becomes the hire-purchase charter, and her `greedy` trait goes: her thrift is the charter's cause, not a vice.
+7. **Tomas's hope** to buy his sister's flat is out of reach. It becomes paying off her lease arrears, or a lease on a better tier.
+8. **Lagos Ring** is an orbital spin habitat owned by the Lagos Arcology (the code's ring gravity and call delay stand).
+9. **The three powers** (`FACTIONS`) and the faction economies and wars, to be replaced by major and minor owners.
+
 ## Still to write
 
 - Everyday life: fun and media (the code has vids, books and ring-ball), religion, crime, what the news covers, age and health, marriage and children, accents.
