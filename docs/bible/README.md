@@ -1,6 +1,6 @@
 # The world bible
 
-Status: draft, revised 2026-10-31 after an adversarial read and the owner's decisions on money, the crew, Hester's charter, freight and Ines's licence. It replaces `docs/world/` when the owner approves it. Until then, nothing in `docs/world/` should be used for new writing without checking it against this.
+Status: the world (all sections but `voice.md`) approved by the owner on 2026-10-31. `voice.md` is a draft for review. It replaces `docs/world/` for new writing.
 
 This is the world the game's writing comes from. It is built from the base up: who owns what and who works first, then the jurisdictions and private arrangements that keep that order, then work, technology and everyday life, and only then the people. Characters and dialogue come after it and answer to it.
 
@@ -21,7 +21,7 @@ This is the world the game's writing comes from. It is built from the base up: w
 
 ## The voice
 
-The voice that uses this world goes in `docs/bible/voice.md` (to come). In short: plain, ordinary speech; Brechtian distance in the narration, where who owns, charges and pays is stated flatly and never commented on; extraction shown by setting facts side by side; no villains, only the system working as it was built to, for extracting wealth; every detail technically and socially plausible.
+The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ordinary speech; Brechtian distance in the narration, where who owns, charges and pays is stated flatly and never commented on; extraction shown by setting facts side by side; no villains, only the system working as it was built to, for extracting wealth; every detail technically and socially plausible.
 
 ## Sections
 
