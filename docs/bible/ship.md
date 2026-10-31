@@ -2,34 +2,52 @@
 
 ## The ship
 
-An ore and ice hauler, about sixty years old, chartered from a finance house and registered at a small station that sells cheap registrations. Two decks: berths, galley and bridge above; the engine, the hold and the reaction mass tanks below, joined by a ladder. She has had four owners and three names, and the old names are still on some of the panels.
+A sixty-year-old ice hauler, refitted cheaply to run fast with high-value cargo. She is chartered on hire-purchase from a finance house and registered at a small Belt station that sells registration and pilot endorsements cheaply. Two decks: berths, galley and bridge above; the engine, the hold and the reaction mass tanks below, joined by a ladder. She has had four owners and three names.
 
-Everything aboard is the finance house's, Hester's, or rented. The hull and drive belong to the house. The fittings Hester has added are hers, and go with the ship if the house takes it. The nav and docking software is licensed by the year. The fabricator's design files are paid for by the print. The crew's suits and kit are Hester's, and the hands pay for them through deductions.
+Ownership aboard:
 
-## The people
+- The hull and drive belong to the finance house until the last payment.
+- The fittings Hester has added are hers, and go with the ship if the house takes it.
+- The navigation, docking and accounts software is licensed by the year; the licence lets the finance house read the accounts.
+- The fabricator's design files are paid for by the print.
+- The suits and kit are Hester's, rented to the crew through deductions from their pay.
 
-Captain Hester Vance, who holds the charter. Cato Rahman, her first officer. Ines Ferreira, the pilot. Tomas Achebe, the engineer. The hired hand, who is the player. A cat, sometimes.
+Hester keeps a paper notebook of her own accounts, which the finance house can't read.
 
-They are four or five people who did not choose each other, in a space about the size of a small flat, for weeks at a time. They are not a family. Some of them become friends.
+## The crew
+
+**Officers**, on Hester's articles, with a daily rate and a share of what the ship clears:
+
+- Captain Hester Vance, who holds the charter.
+- Ines Ferreira, the pilot.
+- Tomas Achebe, the engineer.
+
+**Ratings**, placed by an agency, on a lower rate with full deductions:
+
+- Cato Rahman, the bosun, who runs the ratings.
+- The hired hand, the player.
+- One or two deckhands, generated.
+
+On high-value runs, the finance house may send a **supercargo**: its own representative, aboard as a passenger, who watches the cargo and the books on the house's behalf.
 
 ## Life aboard
 
-**Weight.** The ship has weight only under thrust. At the hard burns at each end of a run everyone is strapped in; in the long middle the drive pushes at a fraction of a g and people move about; at the flip there is none, and everything not fixed down floats.
+**Weight.** The ship has weight only under thrust. At the hard burns at each end of a run, everyone is strapped in. In the long middle the drive pushes at a fraction of a g. At the flip there is none.
 
-**Money.** The charter payment falls due monthly and everyone knows roughly when. Fuel is the biggest bill on any run. Hester keeps the books in a notebook as well as on the ship's system, because the notebook doesn't have a licence.
+**Money.** The charter payment falls due monthly. Fuel is the largest bill on every run: deuterium and reaction mass, bought at depots in the trade currency. Wages are paid in each person's contract currency at a port.
 
-**Water and air.** Recycled, metered by the ship's own system, and rationed when the recycler is struggling. A shower is a schedule.
+**Water and air.** Recycled and metered by the ship's own system, rationed when the recycler struggles. Showers are on a rota.
 
-**Watches.** The ship keeps a watch rota. Somebody is always awake.
+**Watches.** The ship keeps a watch rota, and someone is always on the bridge.
 
-**Food.** Mostly printed or rehydrated, with whatever was cheap at the last port. Real food is an event.
+**Food.** Mostly printed or rehydrated, with whatever was cheap at the last port.
 
-**Messages.** Each person gets messages from home in batches at ports or through the relay, minutes or hours old. They watch them in their berths or in the galley.
+**Messages.** The ship buys a cheap relay slot, so messages and news arrive in a batch twice a day. People watch theirs in their berths or in the galley.
 
-**Privacy.** Almost none. Berths have curtains. The galley is everyone's.
+**Privacy.** Berths have curtains. The galley is shared.
 
 ## Assumptions to confirm
 
-- The ship's name: the code calls her by `shipTitle()`, which the player can set. The default is still to be chosen in the light of this bible.
-- She is an ice hauler (the game's Ice Hauler hull) and about sixty years old.
-- Hester keeps a paper notebook alongside the ship's system, and the reason is that the notebook doesn't need a licence.
+- The ship's default name is still to be chosen.
+- Two deckhands besides the hand, so the ratings outnumber the officers.
+- The supercargo appears on a run carrying cargo worth more than a set sum.

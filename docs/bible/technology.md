@@ -1,32 +1,39 @@
 # Technology
 
-The one large leap is the torch drive: a fusion engine that can thrust for days at a meaningful fraction of a g. It is what makes the system crossable in days, and it is old. Everything else is our technology improved by a century, unevenly.
+The one large leap is the torch drive: a fusion engine that can thrust for days at a meaningful fraction of a g, burning deuterium split from ice and throwing reaction mass. Everything else is our technology improved by a century, unevenly.
+
+## Drives and freight
+
+Torch drives are old. Newer, more efficient drives exist and cost more; the corporate spaces' new ships have them, and the second-hand fleet runs on older ones.
+
+Burning a torch for days costs fuel, and most freight does not pay for that. Bulk ore, ice and metal go on slow transfer orbits in big, cheap freighters that take months. Torch ships carry what can't wait: parts for a stopped refinery, medicine, perishables, a mine's shortfall before a contract deadline. A fast ship is paid a premium for speed and pays for it in fuel.
 
 ## The fleet is old
 
-Torch drives were developed generations ago and nobody has built a better one. Hulls last fifty or eighty years, and most ships in service are older than their crews. They have been refitted, patched and re-registered under several owners. Parts are made new at the big yards, printed from licensed files, or taken off ships being broken up. Old ships need hands, which is one reason crews still exist.
+Hulls last fifty or eighty years, and most ships in service are older than their crews. They have been refitted, patched and re-registered under several owners. Parts are made new at the big yards, printed from licensed files on the ship's fabricator from stock feedstock, or taken off ships being broken up. A printed part that isn't rated for its job is logged as temporary.
 
-**In everyday life:** repairs, workarounds and part prices are constant talk. Every ship has things that "do that", and a crew that knows which ones to ignore. A part that is not rated for the job gets logged as temporary and stays.
+Ships still carry crews because crews are cheaper than the refit that would replace them.
 
-## Software runs everything, badly
+## Software
 
-There is no human-level AI. There is a great deal of narrow software: navigation, docking, diagnostics, scheduling, translation, the ship's logs. It is licensed by the year from companies that update it when they like. It is mostly reliable and occasionally baffling, and the crew supervise it, override it and complain about it.
+There is no human-level AI. There is a great deal of narrow software: navigation, docking, diagnostics, scheduling, translation, accounts. It is licensed by the year from companies that update it when they choose, and a lapsed licence switches a feature off. Ships run whatever version their licence covers. Crews supervise the software, override it and complain about it. An owner's or lender's licence often lets them read what the software records.
 
-**In everyday life:** people argue with software the way we argue with printers. Ships run versions their licence still covers, which may not be the latest. A lapsed licence means a feature stops working.
+## Light and messages
 
-## Light is slow
+Nothing goes faster than light. Earth to Mars is three to twenty-two minutes each way; the Belt is more. There is no conversation across the system, only recorded messages. Relay bandwidth is rented: a rich ship or station buys a continuous link, and a poor one buys a cheap slot and gets its messages and news in a batch once or twice a day, or at the next port.
 
-Nothing goes faster than light, including messages. Earth to Mars is three to twenty minutes each way; the Belt is more. There is no conversation across the system, only recorded messages back and forth, and news arrives in batches. Prices differ between ports partly because information is old by the time it arrives.
-
-**In everyday life:** families send recorded messages. People say "eleven minutes" the way we say "on the train". Answering a message means answering something said a while ago. A message from home is often watched more than once.
+Families talk in recorded messages, answered a day or a week later. A birthday message arrives on the wrong day. Children grow up knowing a parent mostly as a face on a screen.
 
 ## Who has what
 
-Technology is spread by money. The inner system's corporate spaces have new ships, current software and good medicine. The arcologies' upper tiers live like the rich now; the lower tiers run on what is cheap. The Belt's squats run on second-hand kit decades old. You can tell a person's class from their phone, their suit and their teeth.
+Technology is spread by money. The corporate spaces and the upper tiers have new ships, current software, continuous links and good medicine. The lower tiers and the Belt squats run on what is cheap and old. A person's phone, suit and teeth say what they earn.
+
+## Bodies
+
+Long spells in low gravity cost bone and muscle, and radiation adds up. Both can be managed with drugs, exercise and treatment, for a fee, covered in part by an employer while the contract lasts.
 
 ## Assumptions to confirm
 
+- There is no artificial gravity; ships get weight from thrust, stations from spin.
 - Personal devices are phones and terminals much like ours, rented on plans.
-- Artificial gravity does not exist; ships get weight from thrust, stations from spin.
-- Medicine can manage the effects of low gravity and radiation, for a fee, usually covered (partly) by an employer.
-- Fabricators print parts from licensed design files and feedstock; the file is paid for each print.
+- The lift off Earth is spaceplanes from offshore launch platforms, owned by a few companies; see `lisbon.md`.

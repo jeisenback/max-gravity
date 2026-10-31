@@ -1,37 +1,48 @@
 # Work
 
+## Who works, and who waits
+
+Most people work for wages, on contracts that end. Behind every working person there are others who want the job: the inland shanties outside Lisbon, the unleased in every arcology, the Belt squats. Agencies recruit there, and the wages and terms offered anywhere are set by what those people would accept. A lease that comes with a job makes an arcology a company town: lose the job and you lose the home.
+
 ## How crews are hired
 
-Most crews are hired through manning agencies. An agency finds the hand a berth, charges a recruitment fee for doing so, and advances it as a debt the hand repays out of wages. It holds the hand's records and ratings, books the travel to the ship, and takes its fee from both sides.
+Most crews come through manning agencies. An agency places a hand on a ship, charges a recruitment fee, and advances it as a debt repaid from wages. It holds the hand's record and ratings and takes a fee from the shipowner too.
 
-Wages are set by the voyage. Deductions come off before the hand sees anything: the agency's repayment, berth, air and food aboard, kit on hire, insurance, the agency's monthly fee. What is left is paid at a port, often late. When an owner goes broke mid-voyage, the crew may be left in port with no ship and no pay, and the agency's contract usually says that isn't the agency's problem.
+Pay is a rate per day, set in the contract. Deductions come off first: the agency's repayment, berth, air and food, kit on hire, insurance. What is left is paid at a port, often late. When an owner fails mid-voyage, the crew can be left in port with no ship and no pay.
 
-Small operators can hire directly, on their own articles, to save the agency's cut. It is the better deal for the hand, with fewer deductions and wages paid on time, and it comes with no protection at all if the operator fails.
+## Officers and ratings
 
-**In everyday life:** hands talk about what they clear, not what they earn. They know their deductions by heart. A captain who pays on time is worth a lower wage. Being "left in port" is a known thing that happens to people.
+A crew has two layers.
+
+**Officers** hold licences: pilot, engineer, sometimes medic. They sign on a ship's own articles or a better agency contract, earn more, and often get a share of what the ship clears.
+
+**Ratings** are everyone else: deckhands, gunners on armed ships, cargo hands. They come through agencies, on lower pay with full deductions.
+
+The two eat at the same table on a small ship and live on different terms. Officers can quit with a licence to take elsewhere. Ratings can quit into debt.
+
+## Remittances and households
+
+Most hands send money home: to parents, children, siblings, the household's lease. A ship's crew is a set of households in other places, and their money goes to those places in their currencies, losing a cut each time. A parent away for years is ordinary; children are raised by grandparents and paid for by remittances. Families talk by recorded message.
 
 ## Licences and records
 
-Skilled work needs a licence: pilots, engineers, medics, gunners on armed ships. A licence is issued by a jurisdiction's board, costs a fee, lapses unless renewed, and can be suspended or revoked by the board that issued it. Other jurisdictions may honour it or not.
+Skilled work needs a licence issued by a board, for a fee, renewed every few years, and suspendable or revocable by the board that issued it. Other jurisdictions honour it or not. Cheap registries sell their own endorsements: legal on their ships and wherever they are honoured, worthless elsewhere.
 
 A hand's record follows them through the agencies: voyages, ratings, incidents, complaints. A bad mark can keep someone off the better ships for years.
 
-**In everyday life:** a licence is a thing people worry about, like a visa. A revoked licence is not a disgrace exactly; everyone knows someone it happened to. It is a closed door.
+## What people do about it
+
+They organise where they can. Ships' crews and dockers have unions in some ports and are fought by the owners and agencies everywhere; a strike at a depot is news across the Belt. Tenants' associations in the arcologies negotiate service charges, sometimes successfully. Crews file wage claims at ports that allow them. People also evade: cash work off the books, unregistered berths, fake records. And they leave, which is what most of them do, and which is why the Belt and the frontier are full of people from the lower tiers.
 
 ## Hester's charter
 
-Captain Hester Vance does not own her ship. She runs it on a bareboat charter from a finance house: the house owns the hull and the drive, and she supplies the crew, the fuel, the insurance, the repairs and everything else, and pays the charter monthly. If she misses enough payments, the house takes the ship back, with whatever she put into it.
+Captain Hester Vance runs her ship on a hire-purchase charter from a finance house. Each monthly payment includes a share of the ship's price. She is eleven years into a fifteen-year term. If she misses three payments, the house takes the ship back, along with everything she has paid. She does not own it until the last payment.
 
-She hires directly, on her own articles, because she can't afford an agency's fee and because she was a hand for twenty years. She pays on time. She can't pay much.
-
-**In everyday life aboard:** the charter payment is the ship's weather. Everyone aboard knows roughly when it falls due. A good run means the payment is safe; a bad one means Hester is quiet for a week.
-
-## The hand's bond
-
-The player is a hired hand from Lisbon's lower tiers (or another arcology's) who came aboard through a manning agency before Hester took them on directly. They still owe the agency the recruitment debt, and that is the bond: a fixed sum repaid from wages, with interest, before anything else.
+She hires her officers directly on her own articles, with a daily rate and six percent of what the ship clears, because she was a hand for twenty years and because good officers cost less that way than through an agency. Her ratings come through an agency, because she can't find them any other way.
 
 ## Assumptions to confirm
 
-- Hester's ship was chartered, not mortgaged. The code says she owns it "on paper, which the bank owns most of"; the text should change to the charter when her scenes are rewritten.
-- The player came through an agency and still owes it, even though Hester hires directly now. This keeps the bond in the game.
-- A hand's share of what the ship clears (the code's 6 percent) is Hester's own articles, which the agencies don't offer.
+- Hester is eleven years into a fifteen-year hire-purchase term.
+- Hester's officers get the share; ratings do not.
+- The hand is a rating placed with Hester by an agency, owing the agency the recruitment debt (the bond), repaid by deductions Hester takes from their pay and passes on.
+- Unions exist and are weak, strongest among dockers and on the big companies' freighters.

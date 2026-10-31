@@ -1,44 +1,52 @@
 # Lisbon Arcology
 
-The arcology that replaced Lisbon when the old city went under. It stands on the old harbour, half in the water: a set of linked towers on a common base, a sea wall along the river side, and the ferry pads on the roof of the harbour block. About two million people live in it, and more in the shanties along the high ground inland, outside the wall and outside the lease.
+## The place
+
+The sea rose a little under two metres over the century. Lisbon's riverfront, the Baixa and the low ground along the Tagus flooded and were abandoned. The arcology was built on the drowned riverfront: linked towers on a common base, with a sea wall along the river and the estuary. About two million people live in it.
+
+The old city on the hills (Alfama, Graça, Mouraria, the Bairro Alto) is still standing, outside the arcology and outside the lease. It is crowded with people who have no lease: families who lost one, people who never had one, people waiting for one. The arcology's agencies recruit there, and the wall rota is bought there cheaply.
 
 ## Who owns it
 
-Lisbon Arcology is owned by its holding company and run by a board answerable to its bondholders. Residents are tenants. Residence comes with a lease, and a lease comes with a job, a family member's lease, or enough money. Losing the lease means losing residence, and the shanties inland are full of people it happened to.
+Lisbon Arcology is owned by its holding company and run by a board answerable to its bondholders. It has its own police, courts, currency (Lisbon scrip) and licensing boards, and contracts most services out: the lifts to one company, the water to another, security to a third, each with its own charges.
 
-The holding company runs everything inside: housing, water, air on the sealed tiers, the lifts, the schools, police, courts and licensing. It contracts most of it out. The lift company, the water company and the security company are separate firms with their own contracts and their own charges.
+Residence comes with a lease, and a lease comes with a job, a family member's lease, or money. Losing the lease means moving up the hill into the old city.
 
 ## The tiers
 
-The towers are divided into tiers by height, and the tiers are divided by price. The upper tiers have views, windows that open, and their own lifts. The middle tiers are ordinary flats over ordinary shops. The lower tiers, near the water and the wall, are smaller, darker and cheaper, with longer waits for everything.
-
-A tier is an address and a class at once. People ask "which tier?" before they ask anything else.
+The towers are divided by height and price. Upper tiers have views and their own lifts. Middle tiers are ordinary flats over shops. Lower tiers, near the water and the wall, are smaller, darker and cheaper, and wait longest for repairs.
 
 ## The wall
 
-The sea wall is maintained partly by contract and partly by a rota: every lower-tier household owes the wall a number of shifts a year, or pays someone else to stand them. The rota used to be paid. When the company stopped paying it, it called the change "shared responsibility".
+The sea wall is maintained partly by contract and partly by a rota owed by lower-tier households: shifts of pump-watch, drain clearing and inspection walks, a few a year per household. The rota was paid until the company stopped paying it. Households that can afford to pay someone from the old city to stand their shifts.
 
-**In everyday life:** lower-tier families keep track of who owes the wall what. Teenagers stand their first shift at sixteen. People who can afford it pay a cousin.
+## The lift
 
-## Work
+Lisbon's traffic to orbit goes by spaceplane from a launch platform out in the estuary mouth, owned by a launch company under contract to the arcology. The ferry to Luna runs from there: spaceplane to an orbital dock, then a short torch transfer to Luna. The arcology licenses the pilots who fly the spaceplanes and the transfer shuttles.
 
-Most work in Lisbon is the arcology's own upkeep, the harbour and the ferry pads, or service in the upper tiers. The ferry pads fly to Luna and the orbital docks, and they employ pilots, ground crew and controllers. A ferry pilot is a good, steady job for someone from the middle tiers.
+## Tenants
 
-Licences are issued by the arcology's boards. The pilots' board licenses the ferry crews, and its decisions are final within Lisbon and honoured wherever Lisbon is.
+Lower-tier tenants have associations that negotiate service charges and repairs with the contractors. They win sometimes. Tenants have no vote on the board.
 
-## What it is like
+## Language
 
-Crowded, loud and ordinary. The ferry pads run all night. The lower tiers smell of the river. People complain about the lifts, the service charge, the board, the ferries, and their neighbours. Old Lisbon, the city under the water, is a thing grandparents mention and children have seen in pictures.
+People speak Portuguese at home and in the arcology, and English for work off-world and with the contractors. Older people in the old city speak only Portuguese.
 
 ## Ines
 
-Ines Ferreira grew up on a middle tier and flew the Lisbon to Luna ferry for nine years. Six months ago she put a failing shuttle down on an unlit pad instead of ditching it in the river as the tower ordered. Forty-one people walked off. The pilots' board revoked her licence for disobeying the tower, and the ruling stands while her appeal waits. Without a licence she cannot fly passengers anywhere Lisbon is honoured. Hester's ship is freight, under a cheap registry, and asks fewer questions.
+Ines Ferreira grew up on a middle tier and flew the Lisbon to Luna ferry for nine years: the spaceplane leg up from the estuary platform, and later the transfer shuttle.
 
-Her mother still lives on the family's tier. Her brother works for the lift contractor.
+Six months ago a shuttle she was flying lost an engine on approach to the platform. The tower ordered her to ditch in the estuary, clear of the platform and the towers, which is the insurer's standard instruction: a ditched shuttle is a known loss, and a shuttle coming down near the platform puts the launch company's property and the arcology's towers at risk. She put it down instead on an unlit maintenance pad at the edge of the platform, leased to another company and closed for repairs. Forty-one people walked off. Ditching might have drowned some of them.
+
+The launch company's insurer refused to cover the damage to the pad, because she had broken the tower's order. The pilots' board revoked her licence for the same reason. Her appeal is pending. The order and the ruling are the insurer's terms working as written.
+
+Without a Lisbon licence she can't fly passengers anywhere Lisbon is honoured. She bought a pilot endorsement from the small registry Hester's ship is registered at. It is legal aboard Hester's ship and worthless in Lisbon.
+
+Her mother still lives on the family's tier, on the lease Ines's wages paid toward. Her brother works for the lift contractor.
 
 ## Assumptions to confirm
 
-- Lisbon Arcology's population (about two million) and the shanties inland outside the lease.
-- Her brother works for the lift contractor, which puts Ines's family on the receiving end of the lift problems in the pilot scene from the inside.
-- The ferry pilot was a middle-tier job, and her family is middle-tier, not lower.
-- The board revoked her licence (not suspended it), with an appeal pending.
+- About two metres of sea-level rise over the century, drowning the riverfront and the Baixa; the old city on the hills stands.
+- The old city is the unleased district outside the arcology.
+- The family is middle-tier, and the lease is now in her mother's name, with Ines sending money toward it.
+- The tower's order was the insurer's standard ditch instruction.
