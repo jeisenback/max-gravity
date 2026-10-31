@@ -231,7 +231,7 @@ test('a buy-in: both come if both think well of you, otherwise the one who does,
   assert.deepEqual(r.both, ['c:ines', 'c:tomas']); assert.deepEqual(r.one, ['c:ines']);
   assert.deepEqual(r.friend, [false], 'a generated friend, not one of the pair'); assert.deepEqual(r.nobody, []);
   assert.deepEqual(r.crew, ['c:ines', 'c:tomas']); assert.ok(r.owner);
-  assert.equal(r.scene, 'Permission to Land', 'the last scene plays as they leave'); assert.equal(r.arc, 4);
+  assert.equal(r.scene, 'The Invoice', 'the last scene plays as they leave'); assert.equal(r.arc, 4);
   await done();
 });
 
@@ -597,7 +597,7 @@ test('a farewell reads at most two true facts, in priority order, and none when 
     return out;
   });
   assert.deepEqual(r.none, [[], [], []]);
-  assert.equal(r.ines.length, 2); assert.match(r.ines[0], /reference for the Lisbon board/); assert.match(r.ines[1], /dead-stick flip/);
+  assert.equal(r.ines.length, 2); assert.match(r.ines[0], /countersigned pages of her logbook/); assert.match(r.ines[1], /hand-flown approach/);
   assert.match(r.cato[0], /hold you sealed on him/); assert.match(r.cato[1], /tell them if it goes badly/);
   assert.deepEqual(r.other, [], 'someone with no farewell reads nothing');
   await done();
@@ -621,8 +621,8 @@ test('a main character who walks off is a scene with their leaving line and what
     return out;
   });
   assert.equal(r.title, 'Gone Ashore'); assert.deepEqual(r.choices, ['Close the hatch']);
-  assert.ok(r.text.startsWith(`Ines doesn't ask for leave. At the foot of the ramp on ${r.planet}`));
-  assert.ok(r.text.includes('the word someday'), 'what you did with her');
+  assert.ok(r.text.startsWith(`Ines doesn't ask for leave. At the lock on ${r.planet}`));
+  assert.ok(r.text.includes('still pays it'), 'what you did with her');
   assert.deepEqual(r.gone, [true, true, true], 'Ines and the crew member go, loyal Tomas stays');
   assert.equal(r.departed.length, 1); assert.equal(r.departed[0].key, 'ines'); assert.equal(r.departed[0].why, 'opinion');
   assert.ok(r.message, 'a crew member with no farewell keeps the one line');
@@ -1084,7 +1084,7 @@ test('Ines\'s Board and Tomas\'s Third Hull each have a choice that needs their 
   const r = await ev(() => {
     start({ post: 'gunner', captainKey: 'hester' });
     const out = {};
-    for (const [key, sceneId, label, flag] of [['ines', 'mid2', 'Offer to say it to the board in person', 'reference'], ['tomas', 'mid2', 'Ask him to write it down', null]]) {
+    for (const [key, sceneId, label, flag] of [['ines', 'mid2', 'write down how she flies', 'reference'], ['tomas', 'mid2', 'Ask him to write it down', null]]) {
       const p = castAboard().find(c => c.cast === key), probe = op => {
         p.opinion = op; G.dialog = null; if (G.transit) G.transit.event = null;
         openEvent(castScene(key, CAST[key].scenes[sceneId]));

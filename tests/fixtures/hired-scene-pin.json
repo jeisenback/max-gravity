@@ -74,11 +74,11 @@
   "id": "cast:ines:intro",
   "i": 0,
   "label": "Ask about the landing anyway",
-  "result": "She's silent for most of a minute. Then she tells it flat and fast. \"The tower said ditch. The pad was unlit, with forty-one on the cabin feed and a hull good for one approach and not for a swim. I put her down. The stop was mine, because nobody on the tower could see the pad.\" She lets out a breath. \"There,\" she says. \"That's the whole thing. It's much shorter than I thought.\"",
+  "result": "She finishes the checklist first. Then, while the drive spools down: \"Both engines went on the descent. The tower said ditch, clear of the platform. The second runway was closed for resurfacing. It was the only concrete I could reach, so I put it there.\" The drive is off and the ship goes light. \"Everyone walked off. I lost my licence. That's it.\" She starts the turn.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I told you about the landing, and you didn't look at me differently.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I told you about the landing, and you didn't make a thing of it.",
    "s.people.c:ines.opinion: 0 -> 1"
   ],
   "next": null,
@@ -108,8 +108,8 @@
  {
   "id": "cast:ines:intro",
   "i": 1,
-  "label": "Ask about the book instead",
-  "result": "\"Oh,\" she says, and for the first time looks round. \"It's my log. Every landing I've made, nine years of them, with the pad, the wind and what I'd do differently.\" She turns it so you can see a column of small neat entries. \"Most of what I know is in here.\" She lets you read one page, and you do.",
+  "label": "Ask about the logbook",
+  "result": "\"Every landing I've flown. Nine years of the ferry, most days twice.\" She opens it at a page of short entries: the date, the runway, the wind, the fuel at touchdown. \"The board has the official one. This one's mine.\" She flies the flip by hand, and when it's done she writes it in.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
@@ -120,22 +120,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Ask about the book instead",
+    "label": "Ask about the logbook",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Ask about the book instead",
+    "label": "Ask about the logbook",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Ask about the book instead",
+    "label": "Ask about the logbook",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Ask about the book instead",
+    "label": "Ask about the logbook",
     "open": true,
     "why": ""
    }
@@ -144,36 +144,36 @@
  {
   "id": "cast:ines:mid1",
   "i": 0,
-  "label": "Stand by the cutoff while she does it",
-  "result": "You put your hand on the cutoff and she cuts the drive. The ship drifts in a silence you feel in your teeth. Ines turns her on cold thrusters, a long clean arc, and when she brings the drive back up she's grinning so widely that she has to look away. \"Ten seconds,\" she says. \"I didn't touch the stop.\" You didn't say it.",
+  "label": "Take the abort for her",
+  "result": "You sit in the second seat with your hand by the abort. She turns the docking software off, and it asks her twice if she's sure. She flies the approach on the thrusters, slowly, saying the numbers to herself, and the collar latches at a little under a tenth of a metre a second. \"Didn't need you,\" she says. \"Good to have you, though.\" She writes it in the logbook.",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.practiced: undefined -> true",
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You stood by the cutoff while I flew it dead.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You sat on the abort while I flew the approach by hand.",
    "s.people.c:ines.opinion: 0 -> 2",
    "s.people.c:ines.xp.pilot: 110 -> 114"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Stand by the cutoff while she does it",
+    "label": "Take the abort for her",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Stand by the cutoff while she does it",
+    "label": "Take the abort for her",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Stand by the cutoff while she does it",
+    "label": "Take the abort for her",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Stand by the cutoff while she does it",
+    "label": "Take the abort for her",
     "open": true,
     "why": ""
    }
@@ -182,33 +182,33 @@
  {
   "id": "cast:ines:mid1",
   "i": 1,
-  "label": "Not on a loaded burn",
-  "result": "\"That's the correct answer,\" she says. \"Ask me again when there's nothing aboard but air.\" She goes back to the helm, and flies the rest of the shift by the book.",
+  "label": "Not on a loaded run",
+  "result": "\"Fair,\" she says. \"The cargo's not mine to scratch.\" At the next port she lets the software fly it in, and reads every number it gives.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You said not on a loaded burn, and you were right.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You said not on a loaded run, and you were right.",
    "s.people.c:ines.opinion: 0 -> 1"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Not on a loaded burn",
+    "label": "Not on a loaded run",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Not on a loaded burn",
+    "label": "Not on a loaded run",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Not on a loaded burn",
+    "label": "Not on a loaded run",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Not on a loaded burn",
+    "label": "Not on a loaded run",
     "open": true,
     "why": ""
    }
@@ -217,35 +217,35 @@
  {
   "id": "cast:ines:mid2",
   "i": 0,
-  "label": "Write the reference",
-  "result": "You write it that night, plainly: nine years of landings in a log she keeps in her own hand, the one you've watched her fly, and that you'd stand in front of the board and say so. When you send it, Ines is standing in the hatch and doesn't say anything at all. In the morning there's a mug of coffee on your console.",
+  "label": "Countersign them",
+  "result": "You go through the pages with her, one entry at a time: the date, the burn, the flip, her name, then yours. She checks each one against the watch rota before she turns the page. Then she photographs the pages and sends them to Lisbon on the cheap slot, twice, in case one copy drops.",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.reference: undefined -> true",
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You wrote my reference for the Lisbon board.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You countersigned my hours for the appeal.",
    "s.people.c:ines.opinion: 0 -> 3"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Write the reference",
+    "label": "Countersign them",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Write the reference",
+    "label": "Countersign them",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Write the reference",
+    "label": "Countersign them",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Write the reference",
+    "label": "Countersign them",
     "open": true,
     "why": ""
    }
@@ -254,35 +254,35 @@
  {
   "id": "cast:ines:mid2",
   "i": 1,
-  "label": "Offer to say it to the board in person",
-  "result": "You say it before she can fold the message away. \"I'll come to Lisbon. I'll stand up and say it myself.\" Ines turns from the wall. \"It's forty days,\" she says. \"You'd be away from the ship for a week.\" \"Then I'll ask the captain for the week.\" She takes the pencil from behind her ear and writes the date of the hearing on the inside of her wrist, the way she writes a landing slot, and holds it up for you to read. \"In ten years,\" she says, \"nobody has offered me a week.\"",
+  "label": "Countersign them, and write down how she flies",
+  "result": "You sign the entries, and then write a page of your own: the flips you watched, the checklist she reads out every time, what she does when the software disagrees with her. It takes you an hour. Ines reads it when you've finished and doesn't say anything about it. She puts it in front of the logbook pages and sends both.",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.reference: undefined -> true",
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You offered to stand before the Lisbon board for me.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You wrote down how I fly, for the appeal.",
    "s.people.c:ines.opinion: 0 -> 3"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Offer to say it to the board in person",
+    "label": "Countersign them, and write down how she flies",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Offer to say it to the board in person",
+    "label": "Countersign them, and write down how she flies",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Offer to say it to the board in person",
+    "label": "Countersign them, and write down how she flies",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Offer to say it to the board in person",
+    "label": "Countersign them, and write down how she flies",
     "open": true,
     "why": ""
    }
@@ -292,11 +292,11 @@
   "id": "cast:ines:mid2",
   "i": 2,
   "label": "\"It's not my place.\"",
-  "result": "Her face doesn't change. \"No,\" she says, \"of course not.\" She folds the message and puts it away. For the rest of the day she says good morning, good evening and thank you, and nothing in between.",
+  "result": "\"It's a signature,\" she says. She closes the logbook and goes to find the others on the rota. For a few days after that she says good morning and good night to you, and not much else.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You said a reference wasn't your place.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You wouldn't countersign my hours.",
    "s.people.c:ines.opinion: 0 -> -1"
   ],
   "next": null,
@@ -326,35 +326,35 @@
  {
   "id": "cast:ines:late",
   "i": 0,
-  "label": "Promise her a ship, someday",
-  "result": "\"Someday,\" you say, \"and you'll be asked.\" She doesn't answer. Then, to the windscreen: \"That's all I wanted,\" she says. \"A date would have been a lie. This is better.\"",
+  "label": "Tell her to keep paying",
+  "result": "\"Yeah,\" she says. \"That's what I tell myself.\" She pays it from her terminal while you're sitting there, in Lisbon scrip, and watches the exchange take its cut.",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.promised: undefined -> true",
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I told you I wanted a command, and you promised.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You told me to keep paying the lawyer, and I did.",
    "s.people.c:ines.opinion: 0 -> 2"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Promise her a ship, someday",
+    "label": "Tell her to keep paying",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Promise her a ship, someday",
+    "label": "Tell her to keep paying",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Promise her a ship, someday",
+    "label": "Tell her to keep paying",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Promise her a ship, someday",
+    "label": "Tell her to keep paying",
     "open": true,
     "why": ""
    }
@@ -363,33 +363,33 @@
  {
   "id": "cast:ines:late",
   "i": 1,
-  "label": "Make no promises",
-  "result": "\"I can't promise that,\" you say, \"but I heard you.\" She smiles at the glass, crooked. \"That's the honest answer,\" she says. \"I'll take the honest one.\"",
+  "label": "Say it's her money",
+  "result": "\"It is,\" she says. \"That's the problem.\" She pays it anyway, and puts the terminal face down.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You wouldn't promise a command, but you listened.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You said it was my money. It was the honest answer.",
    "s.people.c:ines.opinion: 0 -> 1"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Make no promises",
+    "label": "Say it's her money",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Make no promises",
+    "label": "Say it's her money",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Make no promises",
+    "label": "Say it's her money",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Make no promises",
+    "label": "Say it's her money",
     "open": true,
     "why": ""
    }
@@ -399,13 +399,13 @@
   "id": "cast:ines:pivot",
   "i": 0,
   "label": "Let her fly it",
-  "result": "She holds the ship, and the ship comes down hard, and the helm throws her against the harness. She walks off on her own. Later you see her in the pilot's chair, holding her left hand in her right until it stops shaking. It doesn't quite stop.",
+  "result": "She gets the speed off, nearly all of it, and the ship hits the collar hard enough to throw everyone against their straps. She walks off on her own. Later you see her in the pilot's seat, holding her left hand in her right until it stops shaking. It doesn't quite stop.",
   "changes": [
    "s.cast.ines.marks.0.day: undefined -> 1",
-   "s.cast.ines.marks.0.text: undefined -> Her left hand shakes on the stick.",
+   "s.cast.ines.marks.0.text: undefined -> Her left hand shakes on the controls.",
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You let me fly it in dead, and I came down with a hand that shakes.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You let me bring her in on thrusters, and I came in with a hand that shakes.",
    "s.people.c:ines.opinion: 0 -> 2",
    "s.people.c:ines.skill: 3 -> 2",
    "s.people.c:ines.skills.pilot: 3 -> 2",
@@ -438,35 +438,35 @@
  {
   "id": "cast:ines:pivot",
   "i": 1,
-  "label": "Put a second hand at the cutoff (the second is hurt for it)",
-  "result": "You put a second hand at the cutoff. Tomas comes back hurt, and is off duty until the next port. She flies it the way she wrote it in the log: the long clean arc on the cold thrusters, the flip, the last slow roll toward the pad. The ship touches down so softly that the cup on the console doesn't move. Ines sits with her hands in her lap. \"Boring,\" she says. \"Very boring.\"",
+  "label": "Put a second hand on the abort (the second is hurt for it)",
+  "result": "You put a second hand on the abort. Tomas comes back hurt, and is off duty until the next port. She flies it the way she flew the practice: slowly, the numbers out loud, the last few metres at walking pace and then slower. The collar latches without a bump. Ines sits with her hands in her lap. \"Boring,\" she says. \"Very boring.\"",
   "changes": [
    "s.injured: {} -> undefined",
    "s.injured.c:tomas: undefined -> true",
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You let me fly it in dead, and I came down.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You let me bring her in on thrusters, and I came in.",
    "s.people.c:ines.opinion: 0 -> 2"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Put a second hand at the cutoff (the second is hurt for it)",
+    "label": "Put a second hand on the abort (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Put a second hand at the cutoff (the second is hurt for it)",
+    "label": "Put a second hand on the abort (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Put a second hand at the cutoff (the second is hurt for it)",
+    "label": "Put a second hand on the abort (the second is hurt for it)",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Put a second hand at the cutoff (the second is hurt for it)",
+    "label": "Put a second hand on the abort (the second is hurt for it)",
     "open": true,
     "why": ""
    }
@@ -475,33 +475,33 @@
  {
   "id": "cast:ines:pivot",
   "i": 2,
-  "label": "Order her to ditch",
-  "result": "You order the ditch. She does it by the book. Afterward she writes the ditch in the logbook, the time, the order and who gave it, and turns the page.",
+  "label": "Order the abort and wait for the dock's tug",
+  "result": "You order the abort. She fires the thrusters to take the ship wide of the dock, and calls the tug. It's three hours coming, and the dock bills for it. Afterward she writes it in the logbook: the time, the order and who gave it.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You ordered me to ditch the ship, as the tower did.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You ordered the abort, the way the tower did.",
    "s.people.c:ines.opinion: 0 -> -3"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Order her to ditch",
+    "label": "Order the abort and wait for the dock's tug",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Order her to ditch",
+    "label": "Order the abort and wait for the dock's tug",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Order her to ditch",
+    "label": "Order the abort and wait for the dock's tug",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Order her to ditch",
+    "label": "Order the abort and wait for the dock's tug",
     "open": true,
     "why": ""
    }
