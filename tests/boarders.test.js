@@ -297,7 +297,7 @@ test('the hand dies on a second hurt or a lost bridge while laid up, one in four
     const st = fight(), h = hired(), out = {}, d = G.duel;  // a lost bridge ends the duel, so keep it
     const medic = makePerson('earth'); medic.role = 'medic'; medic.skill = 1; registerPerson(medic);  // made before the rolls: a constant random hangs makePerson
     const reset = () => { G.nextEvent = null; delete h.died; delete h.hurtUntil; };
-    st.crew = st.crew.filter(id => person(id).role !== 'medic');  // the chapter's crew carries one: start without
+    st.crew = st.crew.filter(id => person(id).role !== 'medic' && !(CAST[person(id).cast] || {}).firstAid)  // no medic, and no first aid (the bosun's, #879);  // the chapter's crew carries one: start without
     reset(); rolls([0.5]); const first = {}; hurtHand(first); out.first = { died: !!first.handDied, next: G.nextEvent };   // 0.5 is over one in twelve
     reset(); rolls([0.05]); const firstDies = {}; const said = hurtHand(firstDies); out.firstDies = { died: !!firstDies.handDied, title: G.nextEvent && G.nextEvent.title, how: h.died && h.died.how, said };
     reset(); st.crew.push(medic.id); rolls([0.05]); const firstMedic = {}; hurtHand(firstMedic); out.firstMedic = !firstMedic.handDied;   // 0.05 is under one in twelve, over one in twenty-four

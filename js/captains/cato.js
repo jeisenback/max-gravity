@@ -8,7 +8,7 @@
 // The hold: a point each for a medic who is not hurt, a hull above 60 percent, both hold hands (the icehand post until #879) aboard,
 // and a second person with him. Three or more he lives, two he is marked, fewer he dies.
 const iceHands = () => G.state.crew.map(person).filter(c => c && c.role === 'icehand').length;
-const catoHoldPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (iceHands() >= 2 ? 1 : 0) + (backup ? 1 : 0);
+const catoHoldPoints = backup => ((m => m && m.cast !== 'cato')(roleHolder('medic')) ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (iceHands() >= 2 ? 1 : 0) + (backup ? 1 : 0);
 function inTheIceHold(backup) {
   const points = catoHoldPoints(backup), told = castRec('cato').flags.told, cap = hiredCaptain();
   const outcome = castFate('cato', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost in the hold near ${system().name}.`, 'Left hand doesn\'t close properly.', 'xo');
@@ -34,7 +34,7 @@ function inTheIceHold(backup) {
 
 CAST.cato = {
   first: 'Cato', last: 'Rahman', culture: 'earth', home: 'Chittagong Arcology', job: 'bosun', age: 44, role: 'xo',
-  traits: ['kind', 'generous'], wage: 650, xo: true, fragile: true,
+  traits: ['kind', 'generous'], wage: 650, xo: true, fragile: true, firstAid: true,  // the bosun holds the first-aid rating (#879)
   skills: { xo: 2, engineer: 1, pilot: 0, gunner: 1, slicer: 0 }, captain: { trade: 3, nerve: 3, thrift: 2 },
   ambition: 'Wants a member\'s share in a Belt co-op ship, so the people he works with could sign on and stay together.',
   bio: 'Twenty-four years an agency rating, nine of them with Captain Vance. As bosun he runs the ratings and the watch rota, and he knows everyone aboard by family. He moves hours on the rota for people when he can, and the captain counts every one.',
@@ -162,7 +162,7 @@ CAST.cato = {
     pivot: {
       days: 70, title: 'In the Hold',
       get text() {
-        const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6, hands = iceHands();
+        const medic = (m => (m && m.cast !== 'cato' ? m : null))(roleHolder('medic')), low = G.state.armor <= ship().armor * 0.6, hands = iceHands();
         return ('The alarm is a flat two-tone from the hold, and the board shows the number two cargo pod with a lashing gone and the load moving ' +
             'under thrust. Cato is already at the hatch with a strap over one shoulder. "I know where it goes," he says. "It\'s my hold. Give me ten ' +
             'minutes." At a fraction of a g a pod that size doesn\'t move quickly, but it doesn\'t stop, either, and the bulkhead it\'s leaning on isn\'t rated for it.')

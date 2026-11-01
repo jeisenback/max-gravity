@@ -737,7 +737,7 @@ test('a head start that hurts the hand bills the clinic to the hand\'s own credi
   await ev(helpers); await ev(deckHelpers);
   const r = await ev(() => {
     const st = fightGame('gunner'), h = hired();
-    st.crew = st.crew.filter(id => person(id).role !== 'medic'); delete h.hurtUntil;
+    st.crew = st.crew.filter(id => person(id).role !== 'medic' && !(CAST[person(id).cast] || {}).firstAid)  // no medic, and no first aid (the bosun's, #879); delete h.hurtUntil;
     h.fund = 10000; st.credits = 5000;
     const real = headStart;
     headStart = state => { const s2 = JSON.parse(JSON.stringify(state)); s2.me.shields = 0; s2.me.armor -= 100; return { state: s2, events: [{ who: 'foe', foe: 0, part: 'hull', dmg: 100 }] }; };  // a heavy first volley

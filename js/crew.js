@@ -9,8 +9,9 @@ const person = id => CREW[id] || G.state.people[id];
 const fullName = c => c.name || `${c.first} ${c.last}`;
 const crewMembers = () => G.state.crew.map(person);
 // Injured crew (boarding.js) can't do their jobs until they are treated.
-const roleHolder = role => G.state.crew.filter(id => !(G.state.injured || {})[id]).map(person)
-  .filter(c => c.role === role).sort((a, b) => b.skill - a.skill)[0];
+// With no medic aboard, the first aid is held by whoever is rated for it (Cato, the bosun: docs/bible/people/cato.md, #879), while they are aboard and not hurt.
+const roleHolder = role => { const up = G.state.crew.filter(id => !(G.state.injured || {})[id]).map(person), held = up.filter(c => c.role === role).sort((a, b) => b.skill - a.skill)[0];
+  return held || (role === 'medic' ? up.find(c => c && c.cast && CAST[c.cast] && CAST[c.cast].firstAid) : undefined); };
 // A transponder spoofer outfit stands in for a skill-1 slicer.
 // Bad news from home (family.js) costs a skill level until it lifts.
 const roleSkill = role => { const h = roleHolder(role); return Math.max(h ? h.skill - (moodLow(h) ? 1 : 0) : 0, role === 'slicer' && ship().spoofer ? 1 : 0); };
