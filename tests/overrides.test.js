@@ -448,7 +448,7 @@ test('a hired scene\'s data choice is shut by its conditions as the code gates w
   const r = await g.ev(() => {
     startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 50000 }); G.dialog = null; G.nextEvent = null;
     const find = (key, label) => { for (const [name, sc] of Object.entries(CAST[key].scenes)) { const i = sc.choices.findIndex(c => c.label === label); if (i >= 0) return { id: `cast:${key}:${name}`, name, i, sc }; } };
-    const lend = find('tomas', 'Lend him 2,000 cr'), write = find('tomas', "Ask him to write it down, so it doesn't go with the hull");
+    const lend = find('tomas', 'Lend him 2,000 cr'), write = find('tomas', 'Ask him to write it down, so it stays with the ship');
     const shown = (f, key) => castScene(key, CAST[key].scenes[f.name]).choices[f.i];
     const out = {};
     G.state.credits = 1000;
