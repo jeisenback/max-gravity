@@ -10507,9 +10507,9 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "She talks you through it like a commentator: the flare a second too late, the crosswind he hasn't read, the thrust he'll wish he had saved. He clips the gantry, gently, as she said he would, and she raises her glass to the screen. \"Eleven out of ten for effort,\" she says.",
+    "text": "She talks you through it: he's coming in too fast and correcting late, and every correction makes the next one bigger. He touches the gantry, gently, as she said he would. The dock's charge for it is on the screen before he has latched. \"That comes out of somebody's share,\" she says.",
     "mem": [
-     "25 Dec 2214: You watched a bad landing with me, and I enjoyed the company."
+     "25 Dec 2214: You watched a bad approach with me."
     ],
     "fx": {
      "c:ines": 1
@@ -10528,9 +10528,9 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "She turns from the screen. \"The ferry ran every forty minutes,\" she says. \"Nine years. I knew the regulars by their shoes. There was an old man who rode the 6:40 every morning to feed the pigeons on the Luna side. I never spoke to him once. I'd give a great deal to know if he still does.\" She drinks. \"I only ever saw the back of his head.\"",
+    "text": "She turns from the screen. \"Two runs a day. Up with contract workers starting a month on a station, down with the ones finishing. Going up, they slept. Coming down, they'd had a drink in the departure lounge first, and they sang.\" She finishes hers.",
     "mem": [
-     "25 Dec 2214: You asked about Lisbon, and I told you."
+     "25 Dec 2214: You asked about the ferry, and I told you."
     ],
     "fx": {
      "c:ines": 2
@@ -10550,10 +10550,10 @@
    }
   ],
   "title": "Third Approach",
-  "text": "In the dock bar, Ines Ferreira has the stool nearest the docking screen. A pilot on it's making a poor job of an approach. \"Third attempt,\" she says, without turning. \"He's going to clip the gantry.\" She keeps her eyes on the screen. \"When somebody lands badly, I used to buy the controller a drink. It's not the controller's fault. Nobody remembers that.\"",
+  "text": "In the dock bar, Ines Ferreira has the stool nearest the traffic screen, which shows the approaches to the collar. A freighter on it is making its third try. \"He's flying it by hand, and he shouldn't be,\" she says, without turning. \"He's going to touch the gantry.\"",
   "labels": [
    "Watch the approach with her",
-   "Ask about Lisbon"
+   "Ask about the ferry"
   ]
  },
  {
@@ -10562,7 +10562,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You go together, and it takes her three tries to say her name. The controller hears all of it: the pad, the order, the forty-one. \"I was on the desk that night,\" the controller says. \"It wasn't my call. Everyone on the desk knew who'd put that shuttle down. It was the best landing I've seen.\" Ines says nothing. She shakes the controller's hand, and keeps hold of it.",
+    "text": "You go over together. He knows her before she says her name. \"I read it off the screen,\" he says. \"It was the procedure. If I hadn't read it, someone else would have, and I'd have been out.\" He turns his glass. \"They cut the desk by a third the year after, anyway.\" Ines buys him a drink, and doesn't say much, and stays until he's finished it.",
     "mem": [
      "25 Dec 2214: You went over to the controller with me."
     ],
@@ -10585,7 +10585,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You say nothing, and she doesn't go over. She finishes her drink and puts the glass down with a click. \"Not tonight,\" she says. On the way out she looks back once at the badge, and then straight ahead.",
+    "text": "You say nothing, and she doesn't go over. She finishes her drink and puts the glass down. \"Not tonight,\" she says. On the way out she nods to him, once, and he nods back.",
     "mem": [
      "25 Dec 2214: You let me decide about the controller."
     ],
@@ -10595,10 +10595,10 @@
     "next": null
    }
   ],
-  "title": "The Badge",
-  "text": "Someone at the end of the bar is wearing a tower controller's badge, and Ines has stopped moving. The crest is Lisbon's. \"It could be nothing,\" she says to her glass. \"There are four hundred of them. It's almost certainly not the one who gave the order.\" She hasn't looked round. Her hand is flat on the bar, and the knuckles are white.",
+  "title": "The Desk",
+  "text": "A man at the end of the bar has a Lisbon launch company jacket over the back of his stool, and Ines has stopped moving. \"Paulo Nunes,\" she says to her glass. \"He was on the desk that night. He read me the order.\" She hasn't looked round. \"He works traffic here now, I heard. On contract.\"",
   "labels": [
-   "Go over to them together",
+   "Go over to him together",
    "Let her decide"
   ]
  },
