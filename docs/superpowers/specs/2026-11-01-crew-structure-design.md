@@ -11,7 +11,7 @@ Bring the hired chapter's crew, and the hand's place in it, in line with `docs/b
 1. **Scope A.** Only the crew list, the bosun and the hand's pay. The ice runs and the Ore Runner goal stay.
 2. **The crew** on Hester's ship is seven: Captain Vance; Ines (pilot) and Tomas (engineer), the officers; Cato, the bosun; the hand (guns); and two deckhands. The quartermaster, the medic and the cook go.
 3. **First aid is Cato's.** The bosun holds the first-aid rating and stands in for the medic wherever the code asks for one, while he is aboard and not hurt. In his own pivot he is the one at risk, so his rating does not count there.
-4. **A rating's pay.** The hand gets no share. The day rate rises, retuned with `npm run soak` so the chapter still takes about 20 runs to reach the goal. The pay note shows a kit deduction (the suit and kit Hester rents to the ratings). The hiring hall's cut stays.
+4. **A rating's pay.** The hand gets no share, on a rating's day rate that stays below the officers' (the pilot's post is paid 700 and the engineer's 600 in `ROLE_WAGE`, so officer pay does not need to change). The pay note shows a kit deduction for the suit and kit Hester rents to the ratings. The hiring hall's cut stays. A plausible rate pays about a third of what the share did, so **as a labelled stopgap** the used Ore Runner's prices come down until the chapter's length is about what it is now (17 runs, about 133 days, by the baseline soak). The goal itself becomes a member's share in a Belt co-op ship in #882, which removes the stopgap.
 5. **The bosun's slot.** The internal key stays `xo`, with the per-captain title Hester's ship already has ("Bosun"). The slot keeps what it does (crew swaps, the rota, teaching the `split` move, the tutorial walk). Its perk text on Hester's ship becomes the bosun's. The other captains' first officers (the full build, parked) keep their title and text.
 
 ## Changes
@@ -44,14 +44,16 @@ The `icehand` key stays, so saves and the ice runs keep working. `ROLE_NAMES.ice
 
 ### Pay (`js/hired.js`, `js/captains/*.js`)
 
-- `HIRED_SHARE` becomes 0. The hand's share no longer comes from the captain's `share` field. That field goes from the entries, and `tests/captains.test.js`'s required fields follow.
-- The hand's day rate is the hired captain's own `wage` field (Hester's is 350; `HIRED_WAGE`, 400, is the fallback with no captain). Each captain's `wage` rises to the figure the soak gives for about 20 runs to the target with no share (a starting guess for Hester: about 650), and `HIRED_WAGE` with them. The comment says how it was tuned.
-- `KIT_DEDUCTION`, a fixed sum a day (a starting guess: 30), comes out of the wage before the hall's cut. The pay note says so: "Your pay: X cr wage, less Y cr for your kit."
-- The sign-on lines that quote a share follow:
-  - Hester's intro: "${wage} a day and ${share} percent";
-  - the hiring board;
-  - the settling-up scene;
-  - a run's terms (`runTerms` in `js/hired.js`, "so about X cr to you"), which become the wage for the days and the kit deduction.
+- **No share.** `HIRED_SHARE` becomes 0. The hand's share no longer comes from the captain's `share` field. That field goes from the captain entries, and `tests/captains.test.js`'s required fields follow.
+- **The day rate** is the hired captain's `wage` field (`HIRED_WAGE` is the fallback). Hester's becomes 500. The other captains (dov, imre, zoya, in the full build) get theirs scaled by the same factor, rounded to 50, and `HIRED_WAGE` too.
+- **`KIT_DEDUCTION = 30`** a day comes out of the wage before the hall's cut. The pay note says: "Your pay: X cr wage, less Y cr for your kit."
+- **The stopgap.** `USED_PRICE` (good, mid, bad) is scaled down by one factor until `node tools/soak.js --seeds 1,2,3,4,5,6 --legs 40 --captain hester` gives a mean of about 17 runs (baseline 16.7 runs, 133 days). `HIRED_TARGET` and `USED_OFFER_AT` follow `USED_PRICE.mid`, as they do now. The constant's comment and `docs/bible/README.md`'s conflict 5 say it is a stopgap until #882.
+- **The places that quote a share or the old pay:**
+  - Hester's intro (`intro(wage, share)`);
+  - the character page (`js/character.js`: "% of profit", "% of each run's profit");
+  - the settling-up scene (`js/captains.js`, its ledger line);
+  - a run's terms (`runTerms`, "so about X cr to you"), which becomes the wage for the days, less the kit;
+  - the pay note.
 
 ### Cato's walk round the ship (`scene:cato-round`) and the help (`js/help.js`)
 
@@ -67,13 +69,13 @@ The `icehand` key stays, so saves and the ice runs keep working. `ROLE_NAMES.ice
 ## Tests
 
 - Pins: effects will change on purpose: the crew aboard, and with them who holds what; the pay; and every run's numbers. Each pin is written again, and its diff read for anything the decisions don't explain. The commit messages say what changed and why.
-- `npm run soak` before and after, for pacing and pay. The new wage is the one that gives about 20 runs, and the figure goes in the commit.
+- The soak (`node tools/soak.js --seeds 1,2,3,4,5,6 --legs 40 --captain hester`) before and after, and `npm run soak` for the distribution checks. The stopgap's factor and the runs and days it gives go in the commit.
 - New tests: the first-aid fallback; the pay note's kit line; the crew list (seven aboard, no quartermaster, medic or cook).
 - `npm test`, `npm run test:editor`, `npm run coverage -- --check`.
 
 ## Out of scope
 
 - The ice runs, the ice hazard pay and the ice hold (conflict 4).
-- The chapter's goal (conflict 5).
+- The chapter's goal (conflict 5), which is #882.
 - The other captains' first officers (the full build).
 - Renaming the `xo` and `icehand` keys.
