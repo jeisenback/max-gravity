@@ -1378,31 +1378,25 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester asks which port you cleared last, and this time wants the answer. \"All right,\" Hester says. \"Mars, then. Don't make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You put it to Captain Vance, and Hester doesn't like being reminded of what they owe. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
-    "fx": {
-     "p1": -1
-    },
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You put it to Captain Vance, and Hester says the ship isn't a charity. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
-    "fx": {
-     "p1": -1
-    },
     "next": null
    },
    {
@@ -1425,8 +1419,8 @@
   "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and doesn't trust the post. It is Mars, Mars: 5 days out. The captain has a light run to Eros Old Town in mind, to look for work there. How do you put it?",
   "labels": [
    "Put the fee in front of them (it pays about 9,000 cr, all told) [60%]",
-   "Call in what the captain owes you [5%; if it fails: the captain marks it]",
-   "Say it's the right thing to do [5%; if it fails: the captain marks it]",
+   "Call in what the captain owes you [40%]",
+   "Say it's the right thing to do [40%]",
    "Dare them to take it [40%]",
    "Never mind"
   ]
@@ -1437,31 +1431,25 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest. \"All right,\" Hester says. \"Eros, then. Don't make me regret it.\" The run is set for Eros Old Town.",
+    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester asks which port you cleared last, and this time wants the answer. \"All right,\" Hester says. \"Eros, then. Don't make me regret it.\" The run is set for Eros Old Town.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You put it to Captain Vance, and Hester doesn't like being reminded of what they owe. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
-    "fx": {
-     "p1": -1
-    },
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "You put it to Captain Vance, and Hester says the ship isn't a charity. Hester asks what it'd fetch at the next port, per ton, less the pilotage, and doesn't like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and turns it down. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
-    "fx": {
-     "p1": -1
-    },
     "next": null
    },
    {
@@ -1484,8 +1472,8 @@
   "text": "Mrs. Adeyemi has a sealed package for a contact on Eros Old Town, and doesn't trust the post. It is Eros Old Town, Eros: 5 days out. The captain has the ice run to Pallas Refinery in mind, about 19,152 cr to you. How do you put it? It would be about day 43 before you could be at a yard again, and the used Ore Runner comes off the yard list after day 34.",
   "labels": [
    "Put the fee in front of them (it pays about 9,000 cr, all told) [60%]",
-   "Call in what the captain owes you [5%; if it fails: the captain marks it]",
-   "Say it's the right thing to do [5%; if it fails: the captain marks it]",
+   "Call in what the captain owes you [40%]",
+   "Say it's the right thing to do [40%]",
    "Dare them to take it [40%]",
    "Never mind"
   ]
@@ -12818,7 +12806,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance, whom the crew describe as money-minded, signed the papers.</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Ines Ferreira, ferry pilot from Lisbon Arcology, on the pilot post, and Tomas Achebe, dockyard welder from Lagos Ring, on the engineer post, and Cato Rahman, the first officer, from Chittagong Arcology.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. You're paid 350 a day and 6 percent of what she clears. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Arcology Compact, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "The queue at the foot of the elevator is kept by the berth book, and a clerk won't stamp a book until the shifts owed on it are stood. Yours has two seasons of gate duty in it and no berth. The berths go to people with a cousin, and you have a trade and no cousin. The card was pinned to the notice board at the arcology docks, in pencil: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance, whom the crew describe as guarded, signed the papers.</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Ines Ferreira, ferry pilot from Lisbon Arcology, on the pilot post, and Tomas Achebe, dockyard welder from Lagos Ring, on the engineer post, and Cato Rahman, the first officer, from Chittagong Arcology.</p><p>Captain Hester Vance picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. You're paid 350 a day and 6 percent of what she clears. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Arcology Compact, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -12957,7 +12945,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the gunner post.)",
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
@@ -12969,7 +12957,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the gunner post.)",
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
@@ -13236,7 +13224,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong, which I'll put in the book in the ink I keep for that.\" (+1 experience at the gunner post.)",
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong. I'll put that in the book.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: The terminal really did drop an entry, and you showed me."
       ]
@@ -13283,7 +13271,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong, which I'll put in the book in the ink I keep for that.\" (+1 experience at the gunner post.)",
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong. I'll put that in the book.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: The terminal really did drop an entry, and you showed me."
       ]
@@ -14144,7 +14132,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the pilot post.)",
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
@@ -14156,7 +14144,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the pilot post.)",
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
@@ -14423,7 +14411,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong, which I'll put in the book in the ink I keep for that.\" (+1 experience at the pilot post.)",
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong. I'll put that in the book.\" (+1 experience at the pilot post.)",
       "mem": [
        "9 Jul 2214: The terminal really did drop an entry, and you showed me."
       ]
@@ -14470,7 +14458,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong, which I'll put in the book in the ink I keep for that.\" (+1 experience at the pilot post.)",
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong. I'll put that in the book.\" (+1 experience at the pilot post.)",
       "mem": [
        "9 Jul 2214: The terminal really did drop an entry, and you showed me."
       ]
@@ -15331,7 +15319,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the engineer post.)",
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
@@ -15343,7 +15331,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the engineer post.)",
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
@@ -15610,7 +15598,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong, which I'll put in the book in the ink I keep for that.\" (+1 experience at the engineer post.)",
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong. I'll put that in the book.\" (+1 experience at the engineer post.)",
       "mem": [
        "9 Jul 2214: The terminal really did drop an entry, and you showed me."
       ]
@@ -15657,7 +15645,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong, which I'll put in the book in the ink I keep for that.\" (+1 experience at the engineer post.)",
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong. I'll put that in the book.\" (+1 experience at the engineer post.)",
       "mem": [
        "9 Jul 2214: The terminal really did drop an entry, and you showed me."
       ]
@@ -16518,7 +16506,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the comms post.)",
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
@@ -16530,7 +16518,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the comms post.)",
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
@@ -16797,7 +16785,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong, which I'll put in the book in the ink I keep for that.\" (+1 experience at the comms post.)",
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong. I'll put that in the book.\" (+1 experience at the comms post.)",
       "mem": [
        "9 Jul 2214: The terminal really did drop an entry, and you showed me."
       ]
@@ -16844,7 +16832,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong, which I'll put in the book in the ink I keep for that.\" (+1 experience at the comms post.)",
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I'll have it replaced,\" she says. \"And I was wrong. I'll put that in the book.\" (+1 experience at the comms post.)",
       "mem": [
        "9 Jul 2214: The terminal really did drop an entry, and you showed me."
       ]
@@ -21266,7 +21254,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the gunner post.)",
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
@@ -21281,7 +21269,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the gunner post.)",
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],

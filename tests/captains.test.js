@@ -35,7 +35,7 @@ test('every captain and first officer entry is complete and plain text', async (
       for (const f of need) if (d[f] === undefined || d[f] === null || d[f] === '') bad(out, key, f);
       if (!d.xo || !CAST[d.xo] || !CAST[d.xo].xo || !CAST[d.xo].fragile) out.bad.push(`${key}: its first officer`);
       for (const k of ['trade', 'nerve', 'thrift']) if (!(d.captain[k] >= 1 && d.captain[k] <= 5)) out.bad.push(`${key}: ${k}`);
-      if (d.traits.length !== 2 || !d.traits.every(t => TRAITS[t])) out.bad.push(`${key}: traits`);
+      if (d.traits.length < 1 || d.traits.length > 2 || !d.traits.every(t => TRAITS[t])) out.bad.push(`${key}: traits`);  // one or two (Hester has one: her thrift is the charter's, not a trait)
       if (/[\u{1F300}-\u{1FAFF}☀-➿]/u.test(JSON.stringify(d))) out.bad.push(`${key}: emoji`);
     }
     function bad(o, key, f) { o.bad.push(`${key}: ${f}`); }
@@ -959,15 +959,15 @@ test('the hull is seen once, painted over, from the second arrival on, and only 
   assert.doesNotMatch(r.again, /painted over/, 'once'); assert.doesNotMatch(r.noTomas, /painted over/); assert.equal(r.noTomasFlag, false);
 });
 
-test('the captain\'s secret tells the bank holds the Ore Runner too, in both readings, and sets the fact', async () => {
+test('the captain\'s secret tells the finance house holds the Ore Runner too, in both readings, and sets the fact', async () => {
   const r = await run(() => {
     start(); const h = hired(), cap = person(h.captain), out = {};
     cap.opinion = SECRET_TRUST; const confide = captainScene('secret'); out.confide = confide.text; out.confideFlag = !!(h.flags || {}).ownersDebt;
     h.flags = {}; cap.opinion = SECRET_TRUST - 1; const found = captainScene('secret'); out.found = found.text; out.foundFlag = !!h.flags.ownersDebt;
     return out;
   });
-  assert.match(r.confide, /There's an Ore Runner on the yard list at the next port with her name painted over\. Same bank\. Three owners, and each of them missed one payment\. One\./);
-  assert.match(r.found, /schedule of ships the bank has taken since the spring, and the Ore Runner is the third line/);
+  assert.match(r.confide, /There's an Ore Runner on the yard list at the next port with her name painted over\. Same house\. Three owners, and each of them got to three\./);
+  assert.match(r.found, /schedule of ships the house has taken back since the spring, and the Ore Runner is the third line/);
   assert.equal(r.confideFlag, true); assert.equal(r.foundFlag, true);
 });
 
