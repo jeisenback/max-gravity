@@ -41,11 +41,11 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 
 The owner decided (2026-10-31) that where the bible and the game disagree, the game changes, in stages, each as its own project after the writing pilot. Known conflicts:
 
-1. **Crew size and posts.** The code crews Hester's ship with about ten (`CHAPTER_CREW` in `js/hired.js`: the hand's post, a first officer, a quartermaster, a medic, a cook, two ice hands). The bible has five to seven: three officers, a bosun and two or three ratings.
-2. **The hand's post and share.** The hand can sign on as pilot or engineer, licensed posts, and gets a 6 percent share (`HIRED_SHARE`) that the bible gives only to officers.
-3. **Cato** is the first officer (`xo`) in the code, deciding the watch and able to overrule the captain. In the bible he is the bosun.
+1. **Crew size and posts.** The code crews Hester's ship with about ten (`CHAPTER_CREW` in `js/hired.js`: the hand's post, a first officer, a quartermaster, a medic, a cook, two ice hands). The bible has five to seven: three officers, a bosun and two or three ratings. Resolved (#879): seven aboard, the bosun, one deckhand and the comms rating with the hand; no quartermaster, medic or cook, and the bosun holds the first aid.
+2. **The hand's post and share.** The hand can sign on as pilot or engineer, licensed posts, and gets a 6 percent share (`HIRED_SHARE`) that the bible gives only to officers. Resolved for the pay (#879): the hand is a rating, on a day rate less a kit deduction, with no share. The posts a hand may sign on to stay as they are (the narrow build offers only the guns).
+3. **Cato** is the first officer (`xo`) in the code, deciding the watch and able to overrule the captain. In the bible he is the bosun. Resolved (#879): he is shown as the bosun on Hester's ship and holds the first aid; the code's slot stays `xo`.
 4. **Ice runs, the ice hold and ice hands.** The bible's ship is a fast cargo hull, and bulk ice goes slow.
-5. **The chapter's goal.** The hand saves to buy a used ship (`HIRED_TARGET`). The bible gives a rating no way to own one outright; the goal becomes something a hand can reach (a hire-purchase deposit, a co-op share, an officer's licence).
+5. **The chapter's goal.** The hand saves to buy a used ship (`HIRED_TARGET`). The bible gives a rating no way to own one outright; the goal becomes a member's share in a Belt co-op ship (#882). Stopgap until then (#879): with the hand paid as a rating, the used Ore Runner's prices and the hall's bond are scaled by 0.3 (`STOPGAP_FACTOR` in `js/hired.js`) to keep the chapter's length.
 6. **Hester's code entry.** Her bio ("the owner, on paper... the bank owns most of") becomes the hire-purchase charter, and her `greedy` trait goes: her thrift is the charter's cause, not a vice.
 7. **Tomas's hope** to buy his sister's flat is out of reach. It becomes paying off her lease arrears, or a lease on a better tier.
 8. **Lagos Ring** is an orbital spin habitat owned by the Lagos Arcology (the code's ring gravity and call delay stand).

@@ -22,8 +22,13 @@ const HIRED_WAGE = 550, HIRED_SHARE = 0, KIT_DEDUCTION = 30;
 const HAND_RAID = { base: 0.08, per: 1.4 };  // a hand's chance of a pirate contact on a run: this and the lane's danger (engage.js), in place of 0.05 and 0.6
 const HAND_LANE_WEIGHT = 8;  // and how much a dangerous lane weights the ship's own incidents (happenings.js)
 const LIGHT_DUTY = 0.6;  // a hurt hand's wage while they work light duty
-const HIRED_DEBT = 30000, DEBT_SHARE = 0.3;  // the hiring hall's bond for the berth, the passage and the kit (#280): 30 percent of each run's pay goes to it, never more than is owed
-const HIRED_TARGET = 190000;  // the used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of
+const DEBT_SHARE = 0.3;  // the hiring hall's bond for the berth, the passage and the kit (#280): 30 percent of each run's pay goes to it, never more than is owed
+// The used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of. STOPGAP until #882: a rating's pay (#879) is about a
+// third of what the share paid, so her prices are scaled by STOPGAP_FACTOR to keep the chapter's length (tools/soak.js, see the commit), until the goal becomes a
+// member's share in a Belt co-op ship. 0.3 gives a mean of 17.7 runs and 144 days over seeds 1 to 6 (node tools/soak.js --seeds 1,2,3,4,5,6 --legs 40 --captain
+// hester), against 16.7 and 133 with the share before.
+const STOPGAP_FACTOR = 0.3, HIRED_TARGET = Math.round(190000 * STOPGAP_FACTOR / 1000) * 1000;
+const HIRED_DEBT = Math.round(30000 * STOPGAP_FACTOR / 1000) * 1000;  // the hall's bond, scaled with the price for the same stopgap: at a rating's pay the old 30,000 alone took most of a chapter
 // The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
 // her price, and at the middle price again if the deal lapses.
 const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? (captainBeatsDone(h) ? USED_OFFER_AT : HIRED_TARGET) : dealOpen() ? h.deal.price : HIRED_TARGET); };
@@ -409,7 +414,7 @@ const namesOf = list => list.map(c => `${c.first} ${c.last}`).join(' and ');
 // she is offered once (by Tomas, or by a broker if he is not aboard) for DEAL_DAYS, at a price that follows how Tomas
 // thinks of you. buyIn id USED_ID buys her; she comes worn. If the deal lapses she is gone, and the ordinary list is left.
 const USED_ID = 'used';
-const USED_PRICE = { good: 170000, mid: HIRED_TARGET, bad: 210000 };  // the broker's price is the bad one: no favor
+const USED_PRICE = { good: Math.round(170000 * STOPGAP_FACTOR / 1000) * 1000, mid: HIRED_TARGET, bad: Math.round(210000 * STOPGAP_FACTOR / 1000) * 1000 };  // scaled with HIRED_TARGET (the stopgap above)  // the broker's price is the bad one: no favor
 const USED_OFFER_AT = Math.round(0.55 * USED_PRICE.mid), DEAL_DAYS = 84;  // twelve weeks: long enough for most careful hands to reach a yard with her price (#779)
 const USED_CONDITION = { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 };
 const buyShip = id => (id === USED_ID ? { ...SHIPS.lightfreighter, name: 'Ore Runner (used)', price: hired() && hired().deal ? hired().deal.price : USED_PRICE.mid, forSale: dealOpen() } : SHIPS[id]);
