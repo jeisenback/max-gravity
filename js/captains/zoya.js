@@ -8,7 +8,7 @@ CAPTAINS.zoya = {
   first: 'Zoya', last: 'Pell', pronouns: 'she', culture: 'earth', home: 'Naples Arcology', age: 38, traits: ['talkative', 'brave'],
   bio: 'Fast, funny and always one run from clearing her debts, which she has been for six years. She takes the long lanes and the hot burns, and is cheerful about losing, because the next one will come good.',
   wants: 'One run that pays enough to stop.', fears: 'Stopping at all, and the people she owes.',
-  captain: { trade: 4, nerve: 5, thrift: 1 }, wage: 350, hears: 0, bonus: 2, talk: 1.0,
+  captain: { trade: 4, nerve: 5, thrift: 1 }, wage: 450, hears: 0, bonus: 2, talk: 1.0,
   xo: 'ansel',
 
   intro: wage => (`Captain Zoya Pell signs your papers on the galley hatch, with a pen she has borrowed from you, and doesn't give it back. ` +

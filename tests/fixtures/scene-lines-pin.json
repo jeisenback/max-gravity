@@ -12882,7 +12882,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "The Concord offered you a dome stipend. The freighter offers 375 a day, 25 more than the first offer, in writing, and you read the page to the bottom before you sign.",
+    "text": "The Concord offered you a dome stipend. The freighter offers 475 a day, 25 more than the first offer, in writing, and you read the page to the bottom before you sign.",
     "next": null
    },
    {
@@ -12911,7 +12911,7 @@
    }
   ],
   "title": "Signing On",
-  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Zoya Pell signs your papers on the galley hatch, with a pen she has borrowed from you, and doesn't give it back. \"350 a day, less your kit,\" she says. \"Which is not much. The fund's thin, and it'll come good.\" She grins. \"Mind the third step. It lies.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Ansel Whitcombe, the first officer, from Edinburgh Arcology.</p><p>Captain Zoya Pell picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Dome Concord, and its officers read them, at customs and on patrol. Why did you sign on?",
+  "text": "You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy didn't want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. The Iron Anvil, an ice hauler out of Mars, is yours to work. Captain Zoya Pell signs your papers on the galley hatch, with a pen she has borrowed from you, and doesn't give it back. \"450 a day, less your kit,\" she says. \"Which is not much. The fund's thin, and it'll come good.\" She grins. \"Mind the third step. It lies.\"</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Yelena Quint, ring-ball striker from Olympus Dome, on the pilot post, and Ruben Castellanos, dome network administrator from Valles Dome, on the comms post, and Ansel Whitcombe, the first officer, from Edinburgh Arcology.</p><p>Captain Zoya Pell picks each run and carries freight for a shipper, who pays on delivery. Errands for wherever she's going come through the port, and the captain keeps a fifth. A hand who saves can have a ship of their own: the cheapest at a yard, a Dust Skiff, is 100,000 cr. Your papers name you a member of the Dome Concord, and its officers read them, at customs and on patrol. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -20863,12 +20863,12 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You raise it at the end of a watch, with the statement in your hand, and the captain checks it, and winces. \"My error,\" the captain says. \"Fixed.\" It's fixed by morning, and you are 350 cr up.",
+    "text": "You raise it at the end of a watch, with the statement in your hand, and the captain checks it, and winces. \"My error,\" the captain says. \"Fixed.\" It's fixed by morning, and you are 450 cr up.",
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
     "fx": {
-     "credits": 350
+     "credits": 450
     },
     "x": [
      "Raised a short pay statement quietly with Captain Pell."
@@ -20878,12 +20878,12 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You raise it at the end of a watch, with the statement in your hand, and the captain checks it, and winces. \"My error,\" the captain says. \"Fixed.\" It's fixed by morning, and you are 350 cr up.",
+    "text": "You raise it at the end of a watch, with the statement in your hand, and the captain checks it, and winces. \"My error,\" the captain says. \"Fixed.\" It's fixed by morning, and you are 450 cr up.",
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
     "fx": {
-     "credits": 350
+     "credits": 450
     },
     "x": [
      "Raised a short pay statement quietly with Captain Pell."
@@ -20893,12 +20893,12 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 350 cr up.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 450 cr up.",
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
     "fx": {
-     "credits": 350,
+     "credits": 450,
      "p1": -2
     },
     "x": [
@@ -20909,12 +20909,12 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 350 cr up.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 450 cr up.",
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
     "fx": {
-     "credits": 350,
+     "credits": 450,
      "p1": -2
     },
     "x": [
@@ -20936,7 +20936,7 @@
    }
   ],
   "title": "Short on the Pay",
-  "text": "The statement for the last run is a day short. You've counted it twice, and once more, in case. It's a small amount, 350 cr, and it's yours, and it'd be easy to say nothing.",
+  "text": "The statement for the last run is a day short. You've counted it twice, and once more, in case. It's a small amount, 450 cr, and it's yours, and it'd be easy to say nothing.",
   "labels": [
    "Raise it quietly with the captain",
    "Make a scene",
