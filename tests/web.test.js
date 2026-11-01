@@ -30,7 +30,7 @@ test('every person aboard is a node, and a line joins each pair with a bond, gre
   const r = await ev(() => {
     hand();
     const l = folk(), none = webSvg(l).match(/data-tie/g);
-    addBond(l[0].p, l[1].p, 7); addBond(l[0].p, l[2].p, 3); addBond(l[3].p, l[4].p, -5); addBond(l[5].p, l[6].p, 0.5);  // the last is too faint to count
+    addBond(l[0].p, l[1].p, 7); addBond(l[0].p, l[2].p, 3); addBond(l[3].p, l[4].p, -5); addBond(l[1].p, l[3].p, 0.5);  // the last is too faint to count (five aboard with the bible's crew, #879)
     const d = document.createElement('div'); d.innerHTML = webSvg(l);
     return {
       n: l.length, none: none ? none.length : 0, nodes: d.querySelectorAll('.web-node').length,
@@ -54,7 +54,7 @@ test('the strongest ties are listed strongest first, and a click on a node opens
   await ev(helpers);
   const ids = await ev(() => {
     hand();
-    const l = folk(); addBond(l[0].p, l[1].p, 2); addBond(l[2].p, l[3].p, -8); addBond(l[4].p, l[5].p, 5);
+    const l = folk(); addBond(l[0].p, l[1].p, 2); addBond(l[2].p, l[3].p, -8); addBond(l[4].p, l[0].p, 5);  // five aboard with the bible's crew (#879)
     UI.tab = 'web'; UI.render();
     return l.map(f => f.id);
   });

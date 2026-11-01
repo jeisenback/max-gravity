@@ -5,7 +5,7 @@
   "label": "Offer her the helm",
   "result": "Ines folds the jacket over one arm and looks at you for a moment. \"Asked,\" she says. \"Good.\" She follows you down the dock with a bag that holds, as far as you can tell, one logbook and nothing else.",
   "changes": [
-   "s.crew.9: undefined -> c:ines",
+   "s.crew.5: undefined -> c:ines",
    "s.home.log: [] -> undefined",
    "s.home.log.0.day: undefined -> 1",
    "s.home.log.0.text: undefined -> Ines Ferreira came aboard as a pilot.",
@@ -18,23 +18,23 @@
   "gate": {
    "rich": {
     "label": "Offer her the helm",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "poor": {
     "label": "Offer her the helm",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "liked": {
     "label": "Offer her the helm",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "full": {
     "label": "Offer her the helm",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    }
   }
  },
@@ -513,7 +513,7 @@
   "label": "Take him on as engineer",
   "result": "He wipes his hands on the rag. Then he wipes them again. \"Properly,\" he says, and picks up his bag, which clinks. \"I'll tell you now that I'm going to talk to her. The engines. It's not a joke. They like it.\"",
   "changes": [
-   "s.crew.9: undefined -> c:tomas",
+   "s.crew.5: undefined -> c:tomas",
    "s.home.log: [] -> undefined",
    "s.home.log.0.day: undefined -> 1",
    "s.home.log.0.text: undefined -> Tomas Achebe came aboard as an engineer.",
@@ -526,23 +526,23 @@
   "gate": {
    "rich": {
     "label": "Take him on as engineer",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "poor": {
     "label": "Take him on as engineer",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "liked": {
     "label": "Take him on as engineer",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "full": {
     "label": "Take him on as engineer",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    }
   }
  },
@@ -1021,7 +1021,7 @@
   "label": "Offer her the guns",
   "result": "She puts the ice down and gets up so fast the stool falls over, and doesn't pick it up. \"Do you know,\" she says, \"you're the first person to ask me that and wait for the answer.\" She's already walking. Over her shoulder, to the screen: \"Don't think I've forgotten the foul.\"",
   "changes": [
-   "s.crew.9: undefined -> c:yelena",
+   "s.crew.5: undefined -> c:yelena",
    "s.home.log: [] -> undefined",
    "s.home.log.0.day: undefined -> 1",
    "s.home.log.0.text: undefined -> Yelena Quint came aboard as a gunner.",
@@ -1036,23 +1036,23 @@
   "gate": {
    "rich": {
     "label": "Offer her the guns",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "poor": {
     "label": "Offer her the guns",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "liked": {
     "label": "Offer her the guns",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "full": {
     "label": "Offer her the guns",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    }
   }
  },
@@ -1487,7 +1487,7 @@
   "label": "Take him on as comms",
   "result": "He packs the whole stall into one battered case in what seems like a single motion, and presses the thermos into your hands. \"Hold this,\" he says, \"it's still hot, that's important.\" He talks the whole way to the ship: about the band, about your ship, about three domes you've never heard of, and about how glad he is. Nobody has the heart to interrupt.",
   "changes": [
-   "s.crew.9: undefined -> c:ruben",
+   "s.crew.5: undefined -> c:ruben",
    "s.home.log: [] -> undefined",
    "s.home.log.0.day: undefined -> 1",
    "s.home.log.0.text: undefined -> Ruben Castellanos came aboard as a slicer.",
@@ -1500,23 +1500,23 @@
   "gate": {
    "rich": {
     "label": "Take him on as comms",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "poor": {
     "label": "Take him on as comms",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "liked": {
     "label": "Take him on as comms",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "full": {
     "label": "Take him on as comms",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    }
   }
  },
@@ -1627,17 +1627,17 @@
   "id": "cast:ruben:mid1",
   "i": 0,
   "label": "Act on the tip",
-  "result": "He tells you, and he's right to be careful: A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. He watches your face while you take it in, fiddling with the lid of the thermos. \"Not a word,\" he says, delighted, \"about where you heard it.\"",
+  "result": "He tells you, and he's right to be careful: Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. He watches your face while you take it in, fiddling with the lid of the thermos. \"Not a word,\" he says, delighted, \"about where you heard it.\"",
   "changes": [
    "s.inbox.0.n: 1 -> 2",
-   "s.inbox.0.pid: c:ruben -> undefined",
+   "s.inbox.0.pid: p2 -> undefined",
    "s.inbox.0.tag: undefined -> market",
-   "s.inbox.0.text: A message for Ruben at Earth: their daughter Viktor has been laid off, and the severance hasn't come. -> A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. (Jupiter)",
+   "s.inbox.0.text: A message for Fen at Earth: the section where their brother Wim lives is on emergency rationing. -> Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. (Psyche)",
    "s.inbox.0.via: message -> station",
    "s.inbox.1.day: undefined -> 1",
    "s.inbox.1.n: undefined -> 1",
-   "s.inbox.1.pid: undefined -> c:ruben",
-   "s.inbox.1.text: undefined -> A message for Ruben at Earth: their daughter Viktor has been laid off, and the severance hasn't come.",
+   "s.inbox.1.pid: undefined -> p2",
+   "s.inbox.1.text: undefined -> A message for Fen at Earth: the section where their brother Wim lives is on emergency rationing.",
    "s.inbox.1.via: undefined -> message",
    "s.inboxN: 1 -> 2",
    "s.people.c:ruben.liftedAt: undefined -> 1",
@@ -1646,11 +1646,11 @@
    "s.people.c:ruben.opinion: 0 -> 2",
    "s.people.c:ruben.xp.slicer: 110 -> 112",
    "s.rumors: [] -> undefined",
-   "s.rumors.0.cid: undefined -> luxury",
-   "s.rumors.0.mult: undefined -> 0.6165445584454574",
-   "s.rumors.0.planet: undefined -> Ganymede",
-   "s.rumors.0.text: undefined -> A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. (Jupiter)",
-   "s.rumors.0.until: undefined -> 20"
+   "s.rumors.0.cid: undefined -> industrial",
+   "s.rumors.0.mult: undefined -> 0.6754059599363245",
+   "s.rumors.0.planet: undefined -> Ironheart",
+   "s.rumors.0.text: undefined -> Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. (Psyche)",
+   "s.rumors.0.until: undefined -> 23"
   ],
   "next": null,
   "gate": {
@@ -1972,7 +1972,7 @@
   "label": "Offer her the helm",
   "result": "She looks at you for the length of a breath, hangs the pen on its chain from her belt, and picks up her bag. \"I'll take your helm,\" she says. \"I'll tell you now that I talk to the transponder. It's not a problem. It listens better than most people.\"",
   "changes": [
-   "s.crew.9: undefined -> c:bexa",
+   "s.crew.5: undefined -> c:bexa",
    "s.home.log: [] -> undefined",
    "s.home.log.0.day: undefined -> 1",
    "s.home.log.0.text: undefined -> Bexa Oyelaran came aboard as a pilot.",
@@ -1985,23 +1985,23 @@
   "gate": {
    "rich": {
     "label": "Offer her the helm",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "poor": {
     "label": "Offer her the helm",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "liked": {
     "label": "Offer her the helm",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "full": {
     "label": "Offer her the helm",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    }
   }
  },
@@ -2437,7 +2437,7 @@
   "label": "Offer them the guns",
   "result": "The dart goes down, carefully. \"Really?\" Pax says. That sounded like asking for too much. \"I mean, thanks. Yes. I mean, I'll try not to flinch.\" You tell them the flinching can come, too. Pax picks up a bag.",
   "changes": [
-   "s.crew.9: undefined -> c:pax",
+   "s.crew.5: undefined -> c:pax",
    "s.home.log: [] -> undefined",
    "s.home.log.0.day: undefined -> 1",
    "s.home.log.0.text: undefined -> Pax Iwu came aboard as a gunner.",
@@ -2452,23 +2452,23 @@
   "gate": {
    "rich": {
     "label": "Offer them the guns",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "poor": {
     "label": "Offer them the guns",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "liked": {
     "label": "Offer them the guns",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    },
    "full": {
     "label": "Offer them the guns",
-    "open": false,
-    "why": "There's no free berth aboard."
+    "open": true,
+    "why": ""
    }
   }
  },
@@ -3226,12 +3226,20 @@
   "id": "cast:cato:pivot",
   "i": 0,
   "label": "Let him go in",
-  "result": "He goes in, and the pod is lashed, and the load stops. He comes out with grease to the elbows and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That's where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
+  "result": "He goes in first, and it goes wrong at the number two strap, and the hold is nothing but noise and shouting. He comes out carried, and the hand that held the strap doesn't close properly, and won't. The med kit is already open. He says, from the deck, \"Number two is lashed. So that's done.\"",
   "changes": [
+   "s.cast.cato.marks.0.day: undefined -> 1",
+   "s.cast.cato.marks.0.text: undefined -> Left hand doesn't close properly.",
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You let me go into the hold, and I came out.",
-   "s.people.c:cato.opinion: 0 -> 2"
+   "s.people.c:cato.opinion: 0 -> 2",
+   "s.people.c:cato.skill: 2 -> 1",
+   "s.people.c:cato.skills.xo: 2 -> 1",
+   "s.people.c:cato.xp.xo: 45 -> 12",
+   "s.people.p1.mood: null -> undefined",
+   "s.people.p1.mood.kind: undefined -> low",
+   "s.people.p1.mood.until: undefined -> 16"
   ],
   "next": null,
   "gate": {
@@ -3260,8 +3268,8 @@
  {
   "id": "cast:cato:pivot",
   "i": 1,
-  "label": "Send a hold hand in with him",
-  "result": "You send a hand in with him. He goes in, and the pod is lashed, and the load stops. He comes out with grease to the elbows and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That's where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
+  "label": "Send the deckhand in with him",
+  "result": "You send the deckhand in with him. He goes in, and the pod is lashed, and the load stops. He comes out with grease to the elbows and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That's where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -3271,22 +3279,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Send a hold hand in with him",
+    "label": "Send the deckhand in with him",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Send a hold hand in with him",
+    "label": "Send the deckhand in with him",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Send a hold hand in with him",
+    "label": "Send the deckhand in with him",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Send a hold hand in with him",
+    "label": "Send the deckhand in with him",
     "open": true,
     "why": ""
    }
@@ -3716,8 +3724,10 @@
   "id": "cast:ilsa:pivot",
   "i": 0,
   "label": "Let her go in",
-  "result": "She goes in, and the scram goes home, and the alarm winds down through its notes into silence. She comes out with her sleeves burnt through and her hands steady, and sits on the deck for a minute. \"Routine,\" she says, and writes it in the log. Captain Adair has come down the passage without any of his speeches, and stands at the door.",
+  "result": "She goes in first, and the housing is hotter than the board said, and for three minutes the only sound on the bridge is the alarm. She comes out held up between two crew, and the hand that found the scram doesn't close properly, and won't. She sits down on the deck by the door. \"It's off,\" she says. \"Tell him the plant is off. He'll want to know it's all right.\"",
   "changes": [
+   "s.cast.ilsa.marks.0.day: undefined -> 1",
+   "s.cast.ilsa.marks.0.text: undefined -> Right hand doesn't close properly.",
    "s.condition.drive: undefined -> 100",
    "s.condition.fire: undefined -> 100",
    "s.condition.life: undefined -> 100",
@@ -3726,7 +3736,13 @@
    "s.people.c:ilsa.liftedAt: undefined -> 1",
    "s.people.c:ilsa.memories: [] -> undefined",
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You let me go into the reactor, and I came out.",
-   "s.people.c:ilsa.opinion: 0 -> 2"
+   "s.people.c:ilsa.opinion: 0 -> 2",
+   "s.people.c:ilsa.skill: 3 -> 2",
+   "s.people.c:ilsa.skills.xo: 3 -> 2",
+   "s.people.c:ilsa.xp.xo: 110 -> 45",
+   "s.people.p1.mood: null -> undefined",
+   "s.people.p1.mood.kind: undefined -> low",
+   "s.people.p1.mood.until: undefined -> 16"
   ],
   "next": null,
   "gate": {
@@ -4156,8 +4172,10 @@
   "id": "cast:pilar:pivot",
   "i": 0,
   "label": "Let her fly it",
-  "result": "She brings her in by hand, and the ship settles into the berth like a coin into a slot. Pilar lets go of the stick and flexes her fingers. \"Four minutes,\" she says. \"Enter that.\" Captain Sato enters it, word for word, and under it, in their own hand, writes: Correct.",
+  "result": "She brings her in by hand, and the crosswind catches the ship at the last four meters, and the stick kicks. She lands her by main strength and nothing else, and the hand that held the stick doesn't close properly, and won't. \"It's in the berth,\" she says. \"Enter that.\"",
   "changes": [
+   "s.cast.pilar.marks.0.day: undefined -> 1",
+   "s.cast.pilar.marks.0.text: undefined -> Right hand doesn't close properly.",
    "s.condition.drive: undefined -> 100",
    "s.condition.fire: undefined -> 100",
    "s.condition.life: undefined -> 100",
@@ -4166,7 +4184,13 @@
    "s.people.c:pilar.liftedAt: undefined -> 1",
    "s.people.c:pilar.memories: [] -> undefined",
    "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You let me fly the approach by hand, and I came out.",
-   "s.people.c:pilar.opinion: 0 -> 2"
+   "s.people.c:pilar.opinion: 0 -> 2",
+   "s.people.c:pilar.skill: 2 -> 1",
+   "s.people.c:pilar.skills.xo: 2 -> 1",
+   "s.people.c:pilar.xp.xo: 45 -> 12",
+   "s.people.p1.mood: null -> undefined",
+   "s.people.p1.mood.kind: undefined -> low",
+   "s.people.p1.mood.until: undefined -> 16"
   ],
   "next": null,
   "gate": {
@@ -4596,20 +4620,22 @@
   "id": "cast:ansel:pivot",
   "i": 0,
   "label": "Let him go to the lock",
-  "result": "He goes to the lock with the sheet, and it goes wrong at the second sentence, and for a minute the only sound is shouting through a hatch. He comes back carried, with a cut over one eye, and the hand that held the sheet is closed round it and won't open properly. \"They've agreed to wait,\" he says. \"I told them the odds.\"",
+  "result": "He goes to the lock alone, with the sheet in his hand, and the lock cycles, and what the people on the other side do isn't something the board can tell you. When the lock opens again, he's not what's in it. Captain Pell comes down from the guns slowly, with the grin gone, and stands at the lock without moving. \"He told me,\" she says. \"Every time. He told me.\"",
   "changes": [
-   "s.cast.ansel.marks.0.day: undefined -> 1",
-   "s.cast.ansel.marks.0.text: undefined -> The hand that held the sheet doesn't close properly.",
-   "s.people.c:ansel.liftedAt: undefined -> 1",
-   "s.people.c:ansel.memories: [] -> undefined",
-   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You let me go to the lock, and I came back.",
-   "s.people.c:ansel.opinion: 0 -> 2",
-   "s.people.c:ansel.skill: 3 -> 2",
-   "s.people.c:ansel.skills.xo: 3 -> 2",
-   "s.people.c:ansel.xp.xo: 110 -> 45",
+   "s.cast.ansel.status: undefined -> dead",
+   "s.crew.3: c:ansel -> p3",
+   "s.crew.4: p3 -> undefined",
+   "s.memorial.0.cause: undefined -> Lost at the boarding lock near Earth.",
+   "s.memorial.0.day: undefined -> 1",
+   "s.memorial.0.key: undefined -> ansel",
+   "s.memorial.0.place: undefined -> Earth",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: We lost Ansel at the lock.",
    "s.people.p1.mood: null -> undefined",
    "s.people.p1.mood.kind: undefined -> low",
-   "s.people.p1.mood.until: undefined -> 16"
+   "s.people.p1.mood.until: undefined -> 31",
+   "s.people.p1.opinion: 0 -> -1"
   ],
   "next": null,
   "gate": {
@@ -4639,12 +4665,20 @@
   "id": "cast:ansel:pivot",
   "i": 1,
   "label": "Send a second person with him",
-  "result": "You send a second person to the lock with him. He goes to the lock with the sheet in his hand, and talks for eleven minutes, in a level voice, about the odds. The long ship backs off. He comes back with his coat buttoned wrong and says, \"They've agreed to wait,\" and sits down on the lock coaming and doesn't say anything else for a while. Captain Pell doesn't make a joke. She puts a hand on his shoulder, and takes it off again.",
+  "result": "You send a second person to the lock with him. He goes to the lock with the sheet, and it goes wrong at the second sentence, and for a minute the only sound is shouting through a hatch. He comes back carried, with a cut over one eye, and the hand that held the sheet is closed round it and won't open properly. \"They've agreed to wait,\" he says. \"I told them the odds.\"",
   "changes": [
+   "s.cast.ansel.marks.0.day: undefined -> 1",
+   "s.cast.ansel.marks.0.text: undefined -> The hand that held the sheet doesn't close properly.",
    "s.people.c:ansel.liftedAt: undefined -> 1",
    "s.people.c:ansel.memories: [] -> undefined",
    "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You let me go to the lock, and I came back.",
-   "s.people.c:ansel.opinion: 0 -> 2"
+   "s.people.c:ansel.opinion: 0 -> 2",
+   "s.people.c:ansel.skill: 3 -> 2",
+   "s.people.c:ansel.skills.xo: 3 -> 2",
+   "s.people.c:ansel.xp.xo: 110 -> 45",
+   "s.people.p1.mood: null -> undefined",
+   "s.people.p1.mood.kind: undefined -> low",
+   "s.people.p1.mood.until: undefined -> 16"
   ],
   "next": null,
   "gate": {
@@ -5146,18 +5180,18 @@
   "id": "cast:ruben:bar1",
   "i": 0,
   "label": "Buy a round (300 cr)",
-  "result": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
+  "result": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
   "changes": [
    "s.credits: 50000 -> 49700",
    "s.inbox.0.n: 1 -> 2",
-   "s.inbox.0.pid: c:ruben -> undefined",
+   "s.inbox.0.pid: p2 -> undefined",
    "s.inbox.0.tag: undefined -> market",
-   "s.inbox.0.text: A message for Ruben at Earth: their daughter Viktor has been laid off, and the severance hasn't come. -> A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. (Jupiter)",
+   "s.inbox.0.text: A message for Fen at Earth: the section where their brother Wim lives is on emergency rationing. -> Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. (Psyche)",
    "s.inbox.0.via: message -> station",
    "s.inbox.1.day: undefined -> 1",
    "s.inbox.1.n: undefined -> 1",
-   "s.inbox.1.pid: undefined -> c:ruben",
-   "s.inbox.1.text: undefined -> A message for Ruben at Earth: their daughter Viktor has been laid off, and the severance hasn't come.",
+   "s.inbox.1.pid: undefined -> p2",
+   "s.inbox.1.text: undefined -> A message for Fen at Earth: the section where their brother Wim lives is on emergency rationing.",
    "s.inbox.1.via: undefined -> message",
    "s.inboxN: 1 -> 2",
    "s.people.c:ruben.liftedAt: undefined -> 1",
@@ -5166,11 +5200,11 @@
    "s.people.c:ruben.opinion: 0 -> 2",
    "s.people.c:ruben.xp.slicer: 110 -> 112",
    "s.rumors: [] -> undefined",
-   "s.rumors.0.cid: undefined -> luxury",
-   "s.rumors.0.mult: undefined -> 0.6165445584454574",
-   "s.rumors.0.planet: undefined -> Ganymede",
-   "s.rumors.0.text: undefined -> A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. (Jupiter)",
-   "s.rumors.0.until: undefined -> 20"
+   "s.rumors.0.cid: undefined -> industrial",
+   "s.rumors.0.mult: undefined -> 0.6754059599363245",
+   "s.rumors.0.planet: undefined -> Ironheart",
+   "s.rumors.0.text: undefined -> Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. (Psyche)",
+   "s.rumors.0.until: undefined -> 23"
   ],
   "next": null,
   "gate": {
@@ -7359,11 +7393,11 @@
   "id": "hired:crew-cover",
   "i": 0,
   "label": "Cover for them",
-  "result": "You cover it, and it's a quiet hour. When they come back, Priya looks at you across the galley, and doesn't mention it. (+1 experience at the gunner post.)",
+  "result": "You cover it, and it's a quiet hour. When they come back, Arjun looks at you across the galley, and doesn't mention it. (+1 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 13",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Covered an hour of Priya's watch.",
+   "s.journal.0.text: undefined -> Covered an hour of Arjun's watch.",
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
    "s.people.p7.memories.0: undefined -> 9 Jun 2214: You covered an hour of my watch and said nothing.",
@@ -7399,10 +7433,10 @@
   "id": "hired:crew-cover",
   "i": 1,
   "label": "Not tonight",
-  "result": "Priya says it's fine. For a day or two Priya takes the other end of the galley table.",
+  "result": "Arjun says it's fine. For a day or two Arjun takes the other end of the galley table.",
   "changes": [
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Wouldn't cover for Priya.",
+   "s.journal.0.text: undefined -> Wouldn't cover for Arjun.",
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
    "s.people.p7.memories.0: undefined -> 9 Jun 2214: You wouldn't cover an hour of my watch.",
@@ -7438,11 +7472,11 @@
   "id": "hired:crew-needle",
   "i": 0,
   "label": "Show them the work",
-  "result": "You take them through a watch at your post, slowly and without a word of argument, and by the end they're a good deal quieter. \"All right,\" Priya says. \"Fair.\" (+2 experience at the gunner post.)",
+  "result": "You take them through a watch at your post, slowly and without a word of argument, and by the end they're a good deal quieter. \"All right,\" Arjun says. \"Fair.\" (+2 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 14",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Showed Priya my post, and they came round.",
+   "s.journal.0.text: undefined -> Showed Arjun my post, and they came round.",
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
    "s.people.p7.memories.0: undefined -> 9 Jun 2214: You showed me what the post is really like.",
@@ -7478,7 +7512,7 @@
   "id": "hired:crew-needle",
   "i": 1,
   "label": "[Gunner 2] Take them through the post, step by step",
-  "result": "You take Priya through a full watch at your post and say each step before you do it. By the end they've stopped saying soft. (+1 experience at the gunner post.)",
+  "result": "You take Arjun through a full watch at your post and say each step before you do it. By the end they've stopped saying soft. (+1 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 13",
    "s.people.p7.liftedAt: undefined -> 1",
@@ -7548,11 +7582,11 @@
   "id": "hired:crew-cards",
   "i": 0,
   "label": "Sit in (500 cr)",
-  "result": "The cards fall your way for once, and you take the pot, five hundred credits of other people's money, and Priya slaps the table and demands a rematch. You win 500 cr net.",
+  "result": "The cards fall your way for once, and you take the pot, five hundred credits of other people's money, and Arjun slaps the table and demands a rematch. You win 500 cr net.",
   "changes": [
    "s.credits: 50000 -> 51000",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Played cards with Priya. They want a rematch.",
+   "s.journal.0.text: undefined -> Played cards with Arjun. They want a rematch.",
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
    "s.people.p7.memories.0: undefined -> 9 Jun 2214: You took the pot off me fair and square.",
@@ -8465,11 +8499,11 @@
   "id": "hired:money-loan",
   "i": 0,
   "label": "Lend a thousand",
-  "result": "You lend it, no questions, and Priya takes it with both hands and can't find the words. It's a thousand credits you may or may not see again.",
+  "result": "You lend it, no questions, and Arjun takes it with both hands and can't find the words. It's a thousand credits you may or may not see again.",
   "changes": [
    "s.credits: 50000 -> 49000",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Lent Priya a thousand credits.",
+   "s.journal.0.text: undefined -> Lent Arjun a thousand credits.",
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
    "s.people.p7.memories.0: undefined -> 9 Jun 2214: You lent me a thousand credits when I needed it.",
@@ -8505,11 +8539,11 @@
   "id": "hired:money-loan",
   "i": 1,
   "label": "Lend five hundred",
-  "result": "\"It's what I can spare,\" you say, and Priya says that's fine, that it's more than anyone else offered.",
+  "result": "\"It's what I can spare,\" you say, and Arjun says that's fine, that it's more than anyone else offered.",
   "changes": [
    "s.credits: 50000 -> 49500",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Lent Priya five hundred credits.",
+   "s.journal.0.text: undefined -> Lent Arjun five hundred credits.",
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
    "s.people.p7.memories.0: undefined -> 9 Jun 2214: You lent me five hundred credits, which was what you could spare.",
@@ -8545,7 +8579,7 @@
   "id": "hired:money-loan",
   "i": 2,
   "label": "Say no",
-  "result": "You say you can't, and it's true, or true enough. Priya doesn't ask again.",
+  "result": "You say you can't, and it's true, or true enough. Arjun doesn't ask again.",
   "changes": [
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
@@ -8580,9 +8614,9 @@
   "id": "hired:money-short",
   "i": 0,
   "label": "Raise it quietly with the captain",
-  "result": "You raise it at the end of a watch, with the statement in your hand, and the captain checks it, and winces. \"My error,\" the captain says. \"Fixed.\" It's fixed by morning, and you are 350 cr up.",
+  "result": "You raise it at the end of a watch, with the statement in your hand, and the captain checks it, and winces. \"My error,\" the captain says. \"Fixed.\" It's fixed by morning, and you are 500 cr up.",
   "changes": [
-   "s.credits: 50000 -> 50350",
+   "s.credits: 50000 -> 50500",
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Raised a short pay statement quietly with Captain Vance.",
    "s.people.p1.memories: [] -> undefined",
@@ -8617,9 +8651,9 @@
   "id": "hired:money-short",
   "i": 1,
   "label": "Make a scene",
-  "result": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 350 cr up.",
+  "result": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 500 cr up.",
   "changes": [
-   "s.credits: 50000 -> 50350",
+   "s.credits: 50000 -> 50500",
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Made a scene about my pay statement.",
    "s.people.p1.liftedAt: undefined -> 1",

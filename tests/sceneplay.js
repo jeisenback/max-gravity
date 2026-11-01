@@ -528,7 +528,7 @@ const playScenes = () => {
     hit(stop, s => s.hurt.add(mate(1)), () => mate(1)),  // and in a navy stop
     hit(ours, s => s.hurt.add(castAboard()[0].id), () => castAboard()[0].id),  // a main character hit again, where a floor holds
     hit(ours, () => {}, () => castAboard()[0].id),  // a main character hit hard
-  ] }; }, { rolls: [0, 0.99], prep() { G.state.crew = G.state.crew.filter(id => person(id).cast); crewOf(2); }, extra: () => (G.state.memorial || []).map(m => m.cause) });
+  ] }; }, { rolls: [0, 0.99], prep() { G.state.crew = G.state.crew.filter(id => person(id).cast); crewOf(2); const bosun = castPerson('cato'); if (bosun) G.state.injured = { ...(G.state.injured || {}), [bosun.id]: true }; }, extra: () => (G.state.memorial || []).map(m => m.cause) });  // no medic, and the bosun laid up, so nobody holds the first aid (#879)
   run('scene:fight:held', {}, () => { const s = deckOf(); return { title: 'x', text: deckFightEvent(s).text, choices: [] }; },
     { prep() { G.state.crew = G.state.crew.filter(id => person(id).cast); crewOf(3); const [a, b, c] = folk().filter(f => f.crew && !f.p.cast); a.p.opinion = OPINION.ENEMY; addBond(b, c, -9); b.p.opinion = 1; c.p.opinion = 0; } });
   // ---------- the burn's own scenes (#796, batch 3), last: a burn begun here outlasts the new game a case starts ----------

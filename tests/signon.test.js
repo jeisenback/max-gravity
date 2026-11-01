@@ -47,17 +47,17 @@ test('each reason has its own small, permanent effect', async () => {
     for (const [i, reason] of ['money', 'learn', 'away'].entries()) {
       startGame({ slot: 1, background: 'mars', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });  // one captain, so one base share
       const st = G.state, h = st.hired, cap = st.people[h.captain], pair = st.crew.map(person).filter(c => c.cast);
-      const before = { share: h.share, xp: skillXp('gunner'), cap: cap.opinion, pair: pair.map(c => c.opinion) };
+      const before = { wage: h.wage, xp: skillXp('gunner'), cap: cap.opinion, pair: pair.map(c => c.opinion) };
       const text = chooseEvent(i);
-      out[reason] = { text: text.length > 40, reason: h.reason, share: h.share, xp: skillXp('gunner') - before.xp, cap: cap.opinion - before.cap, pair: pair.map((c, k) => c.opinion - before.pair[k]) };
-      out.base = before.share;
+      out[reason] = { text: text.length > 40, reason: h.reason, wage: h.wage, xp: skillXp('gunner') - before.xp, cap: cap.opinion - before.cap, pair: pair.map((c, k) => c.opinion - before.pair[k]) };
+      out.base = before.wage;
     }
     return out;
   });
-  assert.ok(r.base > 0 && r.base < 0.2, 'the captain\'s own share');
-  assert.deepEqual(r.money, { text: true, reason: 'money', share: +(r.base + 0.02).toFixed(3), xp: 0, cap: 0, pair: [0, 0, 0] });
-  assert.deepEqual(r.learn, { text: true, reason: 'learn', share: r.base, xp: 8, cap: 0, pair: [0, 0, 0] });
-  assert.deepEqual(r.away, { text: true, reason: 'away', share: r.base, xp: 0, cap: 1, pair: [1, 1, 1] });
+  assert.equal(r.base, 500, 'the captain\'s own day rate (a rating\'s, #879)');
+  assert.deepEqual(r.money, { text: true, reason: 'money', wage: r.base + 25, xp: 0, cap: 0, pair: [0, 0, 0] });
+  assert.deepEqual(r.learn, { text: true, reason: 'learn', wage: r.base, xp: 8, cap: 0, pair: [0, 0, 0] });
+  assert.deepEqual(r.away, { text: true, reason: 'away', wage: r.base, xp: 0, cap: 1, pair: [1, 1, 1] });
   await done();
 });
 
@@ -105,12 +105,12 @@ test('each answer to Signing On is in the stored game, so quitting before the fi
     for (const [i, reason] of ['money', 'learn', 'away'].entries()) {
       startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
       const h = hired(), pair = G.state.crew.map(person).filter(c => c.cast), cap = person(h.captain);
-      const live = { share: h.share, xp: skillXp('gunner'), cap: cap.opinion, pair: pair.map(c => c.opinion) };
+      const live = { wage: h.wage, xp: skillXp('gunner'), cap: cap.opinion, pair: pair.map(c => c.opinion) };
       chooseEvent(i);
-      const now = { share: h.share, xp: skillXp('gunner'), cap: cap.opinion, pair: pair.map(c => c.opinion), reason: h.reason };
+      const now = { wage: h.wage, xp: skillXp('gunner'), cap: cap.opinion, pair: pair.map(c => c.opinion), reason: h.reason };
       Saves.use(1); loadGame();   // as Continue does, after quitting before the next dock
       const g = hired(), c2 = person(g.captain), p2 = G.state.crew.map(person).filter(c => c.cast);
-      out[reason] = { live, now, stored: { share: g.share, xp: skillXp('gunner'), cap: c2.opinion, pair: p2.map(c => c.opinion), reason: g.reason } };
+      out[reason] = { live, now, stored: { wage: g.wage, xp: skillXp('gunner'), cap: c2.opinion, pair: p2.map(c => c.opinion), reason: g.reason } };
     }
     return out;
   });
@@ -119,19 +119,19 @@ test('each answer to Signing On is in the stored game, so quitting before the fi
     assert.deepEqual(x.stored, x.now, `${reason}: the stored game has what the choice did`);
     assert.equal(x.stored.reason, reason);
   }
-  assert.ok(r.money.stored.share > r.money.live.share); assert.ok(r.learn.stored.xp > r.learn.live.xp); assert.ok(r.away.stored.cap > r.away.live.cap);
+  assert.ok(r.money.stored.wage > r.money.live.wage); assert.ok(r.learn.stored.xp > r.learn.live.xp); assert.ok(r.away.stored.cap > r.away.live.cap);
   await done();
 });
 
-test('signing on for the money says the share went up, with the figure the hand now has (#736)', async () => {
+test('signing on for the money says the day rate went up, with the figure the hand now has (#736, #879)', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
-    const h = G.state.hired, base = Math.round(h.share * 100), text = chooseEvent(0);
-    return { base, now: Math.round(h.share * 100), text: String(text) };
+    const h = G.state.hired, base = h.wage, text = chooseEvent(0);
+    return { base, now: h.wage, text: String(text) };
   });
-  assert.equal(r.now, r.base + 2, 'the share is two points up');
-  assert.ok(r.text.includes(`${r.now} percent of every run now, 2 points up on what you were offered`), r.text);
+  assert.equal(r.now, r.base + 25, 'the day rate is 25 up');
+  assert.ok(r.text.includes(`${r.now} a day now, 25 up on what you were offered`), r.text);
   await done();
 });
 
@@ -142,16 +142,16 @@ test('Signing On says what the pay goes to: the hall\'s bond, the cheapest ship 
     const text = G.dialog.event.text; while (G.dialog) finishEvent();
     const st = G.state, h = hired(), port = () => goalLine(st, h);
     const before = port();
-    h.deal = { price: 170000, day: st.day, until: st.day + 10, broker: false }; const offered = port();
+    h.deal = { price: 51000, day: st.day, until: st.day + 10, broker: false }; const offered = port();
     st.day += 11; const lapsed = port();
     return { text, before, offered, lapsed };
   });
-  assert.match(r.text, /you owe it 30,000 cr for them: 30 percent of each run's pay goes to the hall/);
+  assert.match(r.text, /you owe it 9,000 cr for them: 30 percent of each run's pay goes to the hall/);
   assert.match(r.text, /the cheapest at a yard, a Dust Skiff, is 100,000 cr/);
   assert.match(r.text, /Your papers name you a member of the Arcology Compact/);
   assert.doesNotMatch(r.text, /Ore Runner/, 'the used ship is Tomas\'s to find');
-  assert.equal(r.before, 'Owed to the hall: 30,000 cr. The cheapest ship at a yard, a Dust Skiff, is 100,000 cr, and you have 3,000 cr.');
-  assert.match(r.offered, /The used Ore Runner is 170,000 cr/, 'named while she is offered');
+  assert.equal(r.before, 'Owed to the hall: 9,000 cr. The cheapest ship at a yard, a Dust Skiff, is 100,000 cr, and you have 3,000 cr.');
+  assert.match(r.offered, /The used Ore Runner is 51,000 cr/, 'named while she is offered');
   assert.match(r.lapsed, /Dust Skiff/, 'and not once she is gone');
   await done();
 });

@@ -11,14 +11,14 @@ const HELP = [
   { id: 'hand', title: 'Your post, your pay and a ship of your own', handOnly: true, text: () => [
     (`You sign on to a captain's ship and work one post: the pilot's helm, the guns, the engineer's plant, or the comms. The post is yours to work by ` +
         `hand; the rest of the crew hold the others. The captain picks every run, and the cargo is a shipper's, paid for on delivery. You press Sail, and on ` +
-        `arrival you are paid a wage for each day and a share of the run's profit. Your savings are your own, but you came aboard owing the hiring ` +
-        `hall for the berth, the passage and the kit: about thirty thousand credits. Thirty percent of each run's pay goes to it until it is paid, and a ship ` +
+        `arrival you are paid a wage for each day, less the kit you rent from the captain. Your savings are your own, but you came aboard owing the hiring ` +
+        `hall for the berth, the passage and the kit: ${fmt(HIRED_DEBT)} credits. Thirty percent of each run's pay goes to it until it is paid, and a ship ` +
         `cannot be bought while anything is owed.`),
-    `A first officer runs the watch: they decide who moves to which post, and the crew-side calls on the road. The captain keeps money and ship matters. You have an opinion with each of them, and the two can differ.`,
+    `The bosun runs the ratings and the rota: they decide who moves to which post, and the crew-side calls on the road. The captain keeps money and ship matters. You have an opinion with each of them, and the two can differ.`,
     `Save toward a ship of your own. Once your savings are high enough, a ship may be offered to you at a port with a yard. The yard's own ships stay on the list, and the Dust Skiff is the cheapest, at ${fmt(SHIPS.shuttle.price)} credits.`,
     'Buying a ship ends your time as a hand. The crew who like you come with you, and the captain says goodbye at the foot of the ramp.' ] },
   { id: 'trading', title: 'Trading and markets', hand: [
-    'The captain trades. Each run is the best cargo and port within reach, bought from the ship\'s funds; the Port page shows the plan, the funds and your savings. When you press Sail, the captain buys the cargo and the ship leaves. On arrival it is sold, and your wage and share are paid.',
+    'The captain trades. Each run is the best cargo and port within reach, bought from the ship\'s funds; the Port page shows the plan, the funds and your savings. When you press Sail, the captain buys the cargo and the ship leaves. On arrival it is sold, and your wage is paid.',
     'Markets have real stock. A big hold moves a price when it is bought or sold, and stations use up what they import and pile up what they export. A raided port runs short, which is a chance for a bold captain.' ], text: [
     'Buy where a good is cheap and sell where it is dear. The Exchange page shows each good\'s price here and the best market within one tank of reaction mass.',
     'Markets have real stock. Buying pushes a price up and selling pushes it down, so a big hold has to spread its trade around. Stations use up what they import and pile up what they export; NPC haulers carry goods between them.',
@@ -36,7 +36,7 @@ const HELP = [
     'The fight is a card duel on the console. The ship with the initiative plays a threat, the other an answer. PDCs stop torpedoes, evasive burns stop gun runs, and crew at the locks stop boarders. A stopped threat passes the initiative.',
     'Your cards come from your ship: torpedoes, close-defense turrets, guns, pilot, power, and crew. A beaten pirate drifts, disabled, and can be boarded.' ] },
   { id: 'crew', title: 'Crew and relationships', hand: [
-    'You work one post, and the rest of the crew hold the others. A first officer runs the watch and decides post swaps. Each role has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun, quartermasters hear rumors, slicers spoof transponders, medics heal.',
+    'You work one post, and the rest of the crew hold the others. The bosun runs the ratings and the rota, decides post swaps, and holds the first aid. Each post has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun.',
     'People aboard have feelings about you and about each other. Shared tastes bring them together; clashing habits pull them apart. Downtime activities build bonds, and a day of work at your post is experience.',
     ('Sit with someone during downtime to learn their story over several talks. Letters from home arrive at ports, and a crew member having a hard ' +
         'time works one skill lower until someone helps. A hurt or dead crew member is marked on the crew screen, and the dead are remembered there. ' +

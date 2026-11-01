@@ -323,7 +323,7 @@ test('a turn that takes a heavy share of the armor can hurt you: a clinic bill w
   await ev(helpers);
   const r = await ev(() => {
     const st = raid('gunner'), out = {};
-    st.crew = st.crew.filter(id => person(id).role !== 'medic'); st.injured = {};
+    st.crew = st.crew.filter(id => person(id).role !== 'medic' && !(CAST[person(id).cast] || {}).firstAid)  // no medic, and no first aid (the bosun's, #879); st.injured = {};
     startDuel({ kind: 'pirate' }, false); begin();
     const cred = st.credits, me = fightNow().state.me; me.shields = 0; sturdy();
     shownMoves({ kind: 'broadside', target: 'hull', dmg: [60, 60] });  // 60: more than a fifth of the real 260 (the fight's 117 at FIGHT.POOL)
@@ -653,7 +653,7 @@ test('a heavy turn whose casualty falls on the hand does not hurt the hand a sec
   await ev(helpers);
   const r = await ev(() => {
     const st = raid('gunner'), h = hired();
-    st.crew = st.crew.filter(id => person(id).role !== 'medic'); st.injured = {}; delete h.hurtUntil;
+    st.crew = st.crew.filter(id => person(id).role !== 'medic' && !(CAST[person(id).cast] || {}).firstAid)  // no medic, and no first aid (the bosun's, #879); st.injured = {}; delete h.hurtUntil;
     for (const id of st.crew) { person(id).opinion = 0; delete person(id).owes; }  // nobody to take it for you
     startDuel({ kind: 'pirate' }, false); begin(); sturdy();
     fightNow().state.me.shields = 0;

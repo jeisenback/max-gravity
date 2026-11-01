@@ -12039,7 +12039,7 @@
   "id": "hiredWord",
   "seed": 1,
   "title": "A Word",
-  "text": "Ana catches you alone, by the lockers while you're stowing your kit, one shoulder against the bulkhead. \"Hey. Can I ask you something about Ben?\" Their voice is casual, and their ears have gone pink. They wait, and watch your face, and their hands, at their sides, are very still.",
+  "text": "Ana waits for you at the foot of the ladder to the engine room. \"A word, about Ben,\" Ana says. Their voice is casual, and their ears have gone pink. They keep one hand on the rail and don't come closer.",
   "labels": [
    "\"Talk to Ben, not me.\"",
    "\"That's between the two of you.\"",
@@ -12054,7 +12054,7 @@
      "credits": 0,
      "armor": 0,
      "bonds": {
-      "p10|p11": 1.833
+      "p6|p7": 1.833
      },
      "opinion": {},
      "memories": {}
@@ -12068,7 +12068,7 @@
      "credits": 0,
      "armor": 0,
      "bonds": {
-      "p10|p11": 1.833
+      "p6|p7": 1.833
      },
      "opinion": {},
      "memories": {}
@@ -12105,7 +12105,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much Warren noir. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12119,7 +12119,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much Warren noir. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12136,7 +12136,7 @@
   "id": "hiredWordCold",
   "seed": 1,
   "title": "A Word",
-  "text": "Ana catches you alone, by the lockers while you're stowing your kit, one shoulder against the bulkhead. \"Hey. Can I ask you something about Ben?\" Their voice is level, and tight at the edges. They wait, and watch your face, and their hands, at their sides, are very still.",
+  "text": "Ana waits for you at the foot of the ladder to the engine room. \"A word, about Ben,\" Ana says. Their voice is level, and tight at the edges. They keep one hand on the rail and don't come closer.",
   "labels": [
    "\"Talk to Ben, not me.\"",
    "\"That's between the two of you.\"",
@@ -12151,7 +12151,7 @@
      "credits": 0,
      "armor": 0,
      "bonds": {
-      "p10|p11": 1.5
+      "p6|p7": 1.5
      },
      "opinion": {},
      "memories": {}
@@ -12165,7 +12165,7 @@
      "credits": 0,
      "armor": 0,
      "bonds": {
-      "p10|p11": 1.5
+      "p6|p7": 1.5
      },
      "opinion": {},
      "memories": {}
@@ -12202,7 +12202,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much Warren noir. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12216,7 +12216,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much Warren noir. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12233,7 +12233,7 @@
   "id": "hiredCover",
   "seed": 1,
   "title": "Cover My Watch",
-  "text": "Ana catches you at the end of your shift, a little too casually. \"I've got the pilot watch tonight,\" Ana says, \"and there's somebody I'd like to talk to on the long link while it's still early where they are. Could you take it? I'll show you what to do. It's not hard. I'd owe you one.\"",
+  "text": "Ana waits by the lockers until you're alone. \"I'm due on the pilot watch in an hour,\" Ana says, \"and I have a call booked on the long link, the only slot where it's morning there. Would you stand it for me? Ten minutes on the board and you have it. I'll owe you.\"",
   "labels": [
    "Take Ana's watch",
    "Say you have your own watch to keep"

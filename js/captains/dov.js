@@ -8,11 +8,11 @@ CAPTAINS.dov = {
   first: 'Dov', last: 'Adair', pronouns: 'he', culture: 'earth', home: 'Marseille Arcology', age: 47, traits: ['talkative', 'generous'],
   bio: 'Always has a passenger and a story. He gives out wages and favors with the same open hand, and keeps the books the way some people keep a drawer.',
   wants: 'To be liked, and not to be alone on the bridge at night.', fears: 'Silence, and being found out.',
-  captain: { trade: 2, nerve: 2, thrift: 1 }, wage: 500, share: 0.08, hears: -1, bonus: 0, talk: 1.5,
+  captain: { trade: 2, nerve: 2, thrift: 1 }, wage: 700, hears: -1, bonus: 0, talk: 1.5,
   xo: 'ilsa',
 
-  intro: (wage, share) => (`Captain Dov Adair is shaking your hand before you've finished coming up the ramp. He has read your papers, and your ` +
-      `next of kin, and he says your sister\'s name correctly, the first time. "${wage} a day and ${share} percent," he says, "and if the fund runs ` +
+  intro: wage => (`Captain Dov Adair is shaking your hand before you've finished coming up the ramp. He has read your papers, and your ` +
+      `next of kin, and he says your sister\'s name correctly, the first time. "${wage} a day, less your kit," he says, "and if the fund runs ` +
       `thin, which it does, we don't talk about it before supper. Sit. Have you eaten?"`),
 
   chatter: [

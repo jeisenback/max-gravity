@@ -5,14 +5,14 @@
 // fate.js does not protect them with the floor. His scenes follow the cast order (intro, mid1, mid2, late, pivot); mid2 is
 // "Two Orders", where the captain's written order and his ask pull the hand two ways.
 
-// The hold: a point each for a medic who is not hurt, a hull above 60 percent, both hold hands (the icehand post until #879) aboard,
+// The hold: a point each for a medic other than him who is not hurt, a hull above 60 percent, a deckhand (the icehand key) aboard,
 // and a second person with him. Three or more he lives, two he is marked, fewer he dies.
 const iceHands = () => G.state.crew.map(person).filter(c => c && c.role === 'icehand').length;
-const catoHoldPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (iceHands() >= 2 ? 1 : 0) + (backup ? 1 : 0);
+const catoHoldPoints = backup => ((m => m && m.cast !== 'cato')(roleHolder('medic')) ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (iceHands() >= 1 ? 1 : 0) + (backup ? 1 : 0);
 function inTheIceHold(backup) {
   const points = catoHoldPoints(backup), told = castRec('cato').flags.told, cap = hiredCaptain();
   const outcome = castFate('cato', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost in the hold near ${system().name}.`, 'Left hand doesn\'t close properly.', 'xo');
-  const lead = backup ? 'You send a hand in with him. ' : '';
+  const lead = backup ? 'You send the deckhand in with him. ' : '';
   if (outcome === 'die') {
     like(cap, -1, sceneSay('scene:memories', 'cato.lost.memory')); cap.mood = { kind: 'low', until: G.state.day + 30 };
     return lead + ('He goes in first, as he said he would. The strap holds, and the pod doesn\'t, and the board shows nothing you can ' +
@@ -34,7 +34,7 @@ function inTheIceHold(backup) {
 
 CAST.cato = {
   first: 'Cato', last: 'Rahman', culture: 'earth', home: 'Chittagong Arcology', job: 'bosun', age: 44, role: 'xo',
-  traits: ['kind', 'generous'], wage: 650, xo: true, fragile: true,
+  traits: ['kind', 'generous'], wage: 650, xo: true, fragile: true, firstAid: true,  // the bosun holds the first-aid rating (#879)
   skills: { xo: 2, engineer: 1, pilot: 0, gunner: 1, slicer: 0 }, captain: { trade: 3, nerve: 3, thrift: 2 },
   ambition: 'Wants a member\'s share in a Belt co-op ship, so the people he works with could sign on and stay together.',
   bio: 'Twenty-four years an agency rating, nine of them with Captain Vance. As bosun he runs the ratings and the watch rota, and he knows everyone aboard by family. He moves hours on the rota for people when he can, and the captain counts every one.',
@@ -69,8 +69,8 @@ CAST.cato = {
     intro: {
       title: 'The Watch Bill',
       text: ('Cato Rahman finds you at the end of your first watch with a mug in each hand. He\'s a big man, and he moves slowly in the passages. ' +
-          '"Sit," he says. "You got the cold watch, and that was me, so if you hate it, say so. The cook has a boy at home, so the cook has the ' +
-          'evenings. The medic is waiting on a letter, and I try to have the medic on when we dock. The rest of you get what\'s left. Tell me what ' +
+          '"Sit," he says. "You got the cold watch, and that was me, so if you hate it, say so. The deckhand has a boy at home, so the deckhand has the ' +
+          'evenings. Comms is waiting on a letter, and I try to have comms off when we dock. The rest of you get what\'s left. Tell me what ' +
           'you can\'t stand and I\'ll see what I can move. The captain counts every hour I move, mind. I move them anyway." He holds out one of the mugs.'),
       choices: [
         {
@@ -162,18 +162,18 @@ CAST.cato = {
     pivot: {
       days: 70, title: 'In the Hold',
       get text() {
-        const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6, hands = iceHands();
+        const medic = (m => (m && m.cast !== 'cato' ? m : null))(roleHolder('medic')), low = G.state.armor <= ship().armor * 0.6, hands = iceHands();
         return ('The alarm is a flat two-tone from the hold, and the board shows the number two cargo pod with a lashing gone and the load moving ' +
             'under thrust. Cato is already at the hatch with a strap over one shoulder. "I know where it goes," he says. "It\'s my hold. Give me ten ' +
             'minutes." At a fraction of a g a pod that size doesn\'t move quickly, but it doesn\'t stop, either, and the bulkhead it\'s leaning on isn\'t rated for it.')
           + (low ? ' The hull has taken a beating, and a bad hull is a bad place for a load to shift.' : ' The hull is sound.')
           + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There\'s nobody aboard who can do more than a field dressing.')
-          + (hands >= 2 ? ' Both hold hands are suited and waiting.' : ' There aren\'t enough hands in the hold for a load like this.')
+          + (hands >= 1 ? ' The deckhand is suited and waiting.' : ' There\'s nobody else in the hold for a load like this.')
           + ' He waits for your answer, and has already started on the strap.';
       },
       choices: [
         { label: 'Let him go in', run: () => inTheIceHold(false) },
-        { label: 'Send a hold hand in with him', ...gated([() => iceHands() >= 1, () => 'There\'s no hold hand to send.']), run: () => inTheIceHold(true) },
+        { label: 'Send the deckhand in with him', ...gated([() => iceHands() >= 1, () => 'There\'s no deckhand to send.']), run: () => inTheIceHold(true) },
         {
           label: 'Seal the hold and let the pod go',
           effects: { castFlag: { who: 'cato', flag: 'benched' }, castLike: { who: 'cato', n: -3, memory: 'You sealed the hold on me.' } },
@@ -192,9 +192,9 @@ castTalkScenes('cato');  // his own sittings and talk (family:cato-*), with the 
 CAST.cato.round = () => {
   const say = (key, vars) => sceneSay('scene:cato-round', key, vars);
   const ice = G.state.crew.map(person).filter(c => c && c.role === 'icehand').map(c => c.first);
-  const [cook, medic, qm, eng, pilot, comms] = ['cook', 'medic', 'quartermaster', 'engineer', 'pilot', 'slicer'].map(crewNamed);
-  const names = { cook, medic, qm, eng, pilot, comms, iceA: ice[0] || say('ice.first'), iceB: ice[1] || say('ice.second') };
-  const walk = ['galley', 'medic', 'hold', 'engine', 'door', ...(hired().post === 'gunner' ? ['guns'] : []), 'bill'].map(k => say(`walk.${k}`, names));
+  const [eng, pilot, comms] = ['engineer', 'pilot', 'slicer'].map(crewNamed);
+  const names = { eng, pilot, comms, iceA: ice[0] || say('ice.first') };
+  const walk = ['galley', 'hold', 'engine', 'door', ...(hired().post === 'gunner' ? ['guns'] : []), 'bill'].map(k => say(`walk.${k}`, names));
   return {
     title: say('title'), personal: true,
     text: say('text'),

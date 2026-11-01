@@ -113,11 +113,11 @@ test('with the moves, each helps against its type, no fixed plan beats reading h
 //   (random, shoot, cover, order) wins more than it (with five crew, by more than 0.02);
 // - its fights last 3.5 to 6.5 turns on the mean (the spec's 4 to 6, with a margin for the sample);
 // - with two crew, the answer at level 3 wins ten points or more over level 1 (the sidearm by level);
-// - random play with five crew costs about as many dead a fight by her grade as the deck fight before the parties did: within 0.15 of 0.32, 0.44 and 0.49.
+// - random play with five crew costs about as many dead a fight by her grade as measured with the bosun's first aid aboard (#879): within 0.15 of 0.16, 0.18 and 0.21.
 // Boarding her:
 // - with two crew the answer wins more than every fixed policy, and at least 60%; with five it wins at least 90%, and no fixed policy wins more (with five crew, by more than 0.02);
 // - its fights last 2.5 turns or more on the mean;
-// - random play with five crew costs at most 0.15 a fight more dead by her grade than before the parties (0.36, 0.49 and 0.55): fewer is allowed.
+// - random play with five crew costs at most 0.15 a fight more dead by her grade than measured with the bosun's first aid aboard (0.15, 0.21 and 0.21, #879): fewer is allowed.
 // The ship fights are left out (raid: false), and only the groups asked are played (each cell on its own seeded stream); the corsair's checks, on the same runs, are the test after this one.
 let deckRuns = null;  // the deck fights, played once for the raider's test and the corsair's
 const deckFights = async () => {
@@ -128,8 +128,11 @@ const deckFights = async () => {
   return r;
 };
 const won = t => t.won / t.n, turns = t => t.rounds / t.n, dead = t => t.dead / t.n, f2 = x => x.toFixed(2);
-const DEAD = { repel: [0.32, 0.44, 0.49], assault: [0.36, 0.49, 0.55] };  // dead a fight by her grade before the parties (the spec's "Why")
-const CORSAIR_REPEL_DEAD = 0.40;  // random play repelling a corsair with five crew (#832)
+// Dead a fight by her grade. They were 0.32, 0.44, 0.49 and 0.36, 0.49, 0.55 before the parties (the spec's "Why"), with no medic among the five crew; since
+// #879 the five are the bosun's ship, and his first aid (crew.js roleHolder) takes the loss odds from 1.3 to 0.5 (losses.js), so they are measured again
+// (tools/fights.js --seeds 1,2,3 --n 400 --deck-only, the owner, 2026-11-01).
+const DEAD = { repel: [0.16, 0.18, 0.21], assault: [0.15, 0.21, 0.21] };
+const CORSAIR_REPEL_DEAD = 0.18;  // random play repelling a corsair with five crew (#832: 0.40 with no medic; 0.16 to 0.20 with the bosun's first aid, #879)
 // The checks both parties share, at level 2, with two crew and with five: the answer's least wins, no fixed policy above it, and its turns.
 function deckChecks(k, kind, party) {
   const cell = (crew, policy) => k[`party|${party} crew ${crew} level 2 ${policy} grade 0`];
@@ -175,7 +178,7 @@ test('against a corsair\'s charge the answer wins a repel nine in ten and boardi
   for (const kind of ['repel', 'assault']) {
     const k = r[kind], cell = (crew, policy) => k[`party|corsair crew ${crew} level 2 ${policy} grade 0`];
     deckChecks(k, kind, 'corsair');
-    // repelling a corsair is the cost of her charge, not a puzzle: above the raider repel's grade-0 baseline (DEAD.repel[0], 0.32), at the 0.39 to 0.40 measured
+    // repelling a corsair is the cost of her charge, not a puzzle: above the raider repel's grade-0 baseline (DEAD.repel[0]), at the 0.39 to 0.40 measured with no medic (0.16 to 0.20 with the bosun's first aid, #879)
     // in two runs of 1,600 fights after the pull back (the owner, 2026-10-28, #832; it was 0.32 + 0.2, which sat a standard error over its floor)
     const now = dead(cell(5, 'random')), was = kind === 'repel' ? CORSAIR_REPEL_DEAD : DEAD.assault[0];
     assert.ok(kind === 'assault' ? now <= was + 0.15 : Math.abs(now - was) <= 0.15, `corsair, ${kind}: ${f2(now)} dead a fight against ${f2(was)}`);
@@ -188,7 +191,7 @@ test('against a corsair\'s charge the answer wins a repel nine in ten and boardi
 // The navy's party (Task 6: each head of theirs put down costs standing, and holding our bridge is a search), started as the game starts it (from a patrol's
 // ship fight, fightui.js fightBoarded: a half run), repelling at level 2 with two crew and with five: the answer wins at least 90% (a win is repelled, or
 // held to their cap, DECK.NAVY_TURNS, when an inspection party withdraws; a search is not), costs at most half the standing going to them and shooting does, and less than random play does, and holds them to that cap, which sits in the spec's 4 to 6 turns;
-// random play with five crew costs dead a fight within 0.15 of the raider repel's grade-0 baseline (0.32).
+// random play with five crew costs dead a fight within 0.15 of the raider repel's grade-0 baseline (DEAD.repel[0]).
 const { DECK } = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['DECK']);  // the cap, as tests/fight.test.js loads it
 test('the navy party\'s cap sits in the spec\'s 4 to 6 turns', () => assert.ok(DECK.NAVY_TURNS >= 4 && DECK.NAVY_TURNS <= 6, `DECK.NAVY_TURNS is ${DECK.NAVY_TURNS}`));
 test('against the navy\'s party the answer holds them at half the standing shooting costs, wins nine in ten, and random play costs more', async () => {

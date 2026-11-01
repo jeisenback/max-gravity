@@ -8,7 +8,7 @@
 // The words are in SCENE_LINES (hiredscenes.js), by the name each has: an opening for each start background, what each reason says, and a line for each post.
 
 const SIGN_BACKGROUNDS = ['earth', 'mars', 'belt'];
-const SIGN_LEARN_XP = 8, SIGN_SHARE_UP = 0.02;  // signing on for the money asks for two points more of the share
+const SIGN_LEARN_XP = 8, SIGN_WAGE_UP = 25;  // signing on for the money asks for 25 more a day (a rating has no share to ask for, #879)
 
 function signOnEvent() {
   const st = G.state, h = hired(), cap = st.people[h.captain], bg = SIGN_BACKGROUNDS.includes(st.background) ? st.background : 'earth', say = (key, vars) => sceneSay('scene:sign-on', key, vars);
@@ -16,7 +16,7 @@ function signOnEvent() {
     cap: `Captain ${cap.first} ${cap.last}`, adj: TRAITS[cap.traits[0]].adj, sys: system().name };
   // Who the captain is: their own introduction, or, for a generated captain, a clause on how the crew describe them.
   const d = captainEntry();
-  ctx.who = d && d.intro ? ` ${d.intro(h.wage, Math.round(h.share * 100))}` : ` ${say('who.generated', ctx)}`;
+  ctx.who = d && d.intro ? ` ${d.intro(h.wage)}` : ` ${say('who.generated', ctx)}`;
   const pair = st.crew.map(person).filter(c => c && c.cast);
   const postKey = c => Object.keys(POSTS).find(k => POSTS[k].role === c.role);
   // A first officer holds no post.
@@ -24,7 +24,7 @@ function signOnEvent() {
   // A first officer who walks you round the ship on the first burn (cato.js) does the introducing there.
   const beside = pair.length && !(d && CAST[d.xo] && CAST[d.xo].round) ? ` ${say('beside', { crew: pair.map(who).join(', and ') })}` : '';
   // A captain with their own words has said what the pay is.
-  const week = [say('week.run', ctx), ...(scopeOff('errands') ? [] : [say('week.errands')]), ...(d && d.intro ? [] : [say('week.pay', { wage: h.wage, share: Math.round(h.share * 100) })])].join(' ');
+  const week = [say('week.run', ctx), ...(scopeOff('errands') ? [] : [say('week.errands')]), ...(d && d.intro ? [] : [say('week.pay', { wage: h.wage, kit: KIT_DEDUCTION })])].join(' ');
   // What the pay goes to, said once at the start (#849): the hall's bond, the cheapest ship a hand can save toward (the used Ore Runner is
   // Tomas's to find, hired.js), and the papers you carry.
   const terms = [...(h.debt > 0 ? [say('bond', { debt: fmt(h.debt), cut: Math.round(DEBT_SHARE * 100) })] : []), say('goal', { ship: SHIPS.shuttle.name, price: fmt(SHIPS.shuttle.price) }), say('papers', { gov: youTies().aff })].join(' ');
@@ -32,7 +32,7 @@ function signOnEvent() {
     title: say('title'),
     text: [say(`text.${bg}`, ctx), ...(st.carried ? [st.carried] : []), `${say(`post.${h.post}`, ctx)}${beside}`, `${week} ${terms} ${say('why')}`].join('</p><p>'),
     choices: [
-      { label: say('c0.label'), run() { h.share = +(h.share + SIGN_SHARE_UP).toFixed(3); h.reason = 'money'; return say(`money.${bg}`, { wage: h.wage, share: Math.round(h.share * 100), up: Math.round(SIGN_SHARE_UP * 100) }); } },
+      { label: say('c0.label'), run() { h.wage += SIGN_WAGE_UP; h.reason = 'money'; return say(`money.${bg}`, { wage: h.wage, up: SIGN_WAGE_UP }); } },
       { label: say('c1.label'), run() { gainSkill(h.post, SIGN_LEARN_XP); h.reason = 'learn'; return say(`learn.${bg}`); } },
       { label: say('c2.label'), run() { like(cap, 1, say('c2.memory')); for (const c of pair) like(c, 1, say('c2.memory')); h.reason = 'away'; return say(`away.${bg}`); } },
     ],

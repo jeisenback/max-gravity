@@ -73,7 +73,7 @@ test('a suggested run reads in the captain\'s terms, and the deck plan draws a f
     return { captain: dock.querySelector('p.desc').textContent, alt: dock.querySelector('.row .hint').textContent, terms: runTerms(base) };
   });
   assert.ok(r.captain.includes(r.terms) && r.alt.includes(r.terms), 'the same terms, from one formula');
-  assert.match(r.alt, /cr to you, plus .* cr wage/);
+  assert.match(r.alt, /cr wage to you, less .* cr for your kit/);  // a rating's pay (#879)
   const n = await ev(() => { G.mode = 'landed'; UI.render(); return crewMembers().length + 2; });
   for (const [w, h] of [[1280, 800], [390, 844]]) {
     await page.setViewportSize({ width: w, height: h });

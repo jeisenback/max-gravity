@@ -93,7 +93,7 @@ test('the captain\'s log: each settled run is a row with the shipper, the load, 
     G.viewPerson = hd.captain; UI.tab = 'person'; UI.render(); out.captain = document.querySelector('.shell .body').innerHTML;
     return out;
   });
-  assert.match(r.clean, /^Your pay: [\d,]+ cr wage and [\d,]+ cr share\./, 'nothing off: the pay alone');
+  assert.match(r.clean, /^Your pay: [\d,]+ cr wage, less [\d,]+ cr for your kit\./, 'nothing off: the pay alone (a rating\'s, #879)');
   assert.match(r.late, /^3 days late, and the pay docked\. Your pay:/);
   assert.match(r.short, /^Short: 30t of the water did not arrive, and the Compact Freight Office paid for what did\. Your pay:/);
   assert.match(r.lost, /^The load for the Compact Freight Office was lost on the way, and there is no pay\. Your pay:/);

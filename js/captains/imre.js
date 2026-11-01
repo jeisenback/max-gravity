@@ -8,11 +8,11 @@ CAPTAINS.imre = {
   first: 'Imre', last: 'Sato', pronouns: 'they', culture: 'earth', home: 'Osaka Arcology', age: 55, traits: ['secretive', 'brave'],
   bio: 'Eleven years in the navy and eleven out, and the same jacket for most of it. Every watch is in the log, and every rule is on the galley wall, and the rules apply to everyone, including them.',
   wants: 'A clean record, at last.', fears: 'The discharge coming out.',
-  captain: { trade: 3, nerve: 2, thrift: 4 }, wage: 450, share: 0.07, hears: 2, bonus: 3, talk: 1.0,
+  captain: { trade: 3, nerve: 2, thrift: 4 }, wage: 650, hears: 2, bonus: 3, talk: 1.0,
   xo: 'pilar',
 
-  intro: (wage, share) => (`Captain Imre Sato reads your papers once, straight through, and writes the time on them. The jacket is navy, and has been ` +
-      `worn for years without a mark on it. "${wage} a day and ${share} percent," they say. "The rules are on the wall of the galley. They apply to ` +
+  intro: wage => (`Captain Imre Sato reads your papers once, straight through, and writes the time on them. The jacket is navy, and has been ` +
+      `worn for years without a mark on it. "${wage} a day, less your kit," they say. "The rules are on the wall of the galley. They apply to ` +
       `everyone, including me. Noted that you're aboard."`),
 
   chatter: [

@@ -30,7 +30,7 @@ test('new game offers a hired start, and the choice of post', async () => {
     };
   });
   assert.equal(r.post, 'gunner'); assert.equal(r.credits, 3000); assert.equal(r.ship, 'freighter'); assert.ok(r.captain);
-  assert.deepEqual(r.roles, ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo'], 'the crew fill every role but yours, and the chapter\'s wider crew');
+  assert.deepEqual(r.roles, ['engineer', 'icehand', 'pilot', 'slicer', 'xo'], 'the crew fill every role but yours, and the bosun and a deckhand (#879)');
   assert.deepEqual(r.modes, ['crewed', 'manual', 'crewed', 'crewed'], 'pilot, gunner, engineer, comms: your post is the manual one');
   assert.equal(r.tutorial, 0, 'the first run begins'); assert.equal(r.mode, 'landed');
   assert.doesNotMatch(r.intro, /signed on to the|credits to your name|Save toward a ship|You are her/, 'the port screen does not repeat what Signing On says');
@@ -117,7 +117,7 @@ test('the captain plans a run: a contract from the board her hold can fill, and 
   await done();
 });
 
-test('a run, end to end: sail, burn, come in, sell, and be paid a wage and a share', async () => {
+test('a run, end to end: sail, burn, come in, sell, and be paid a wage less the kit (#879)', async () => {
   const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
@@ -135,7 +135,7 @@ test('a run, end to end: sail, burn, come in, sell, and be paid a wage and a sha
     }
     const e = h.ledger[0];
     out.settled = { mode: G.mode, planet: st.planet, matches: st.planet === plan.planet, run: h.run, cargo: Object.keys(st.cargo).length, entry: e && { tons: e.tons, profit: e.profit, revenue: e.revenue - e.cost === e.profit, wage: e.wage > 0 } };
-    out.paid = { credits: st.credits - credits0, equals: e && st.credits - credits0 === e.wage + e.share, share: e && e.share === Math.round(Math.max(0, e.profit) * h.share), fund: e && h.fund === fund0 - e.cost + e.revenue };
+    out.paid = { credits: st.credits - credits0, equals: e && st.credits - credits0 === e.wage - e.kit + e.share - (e.hall || 0), share: e && e.share === 0, fund: e && h.fund === fund0 - e.cost + e.revenue };
     out.note = UI.notes.join(' '); out.scene = G.dialog && G.dialog.event.title;
     return out;
   });
@@ -213,7 +213,7 @@ test('errands: delivered when she docks, the fee to you and the cut to the ship'
       update(G.mode === 'transit' ? 1 : 1 / 30); Mods.emit('frame', G.mode === 'transit' ? 1 : 1 / 30);
     }
     const e = h.ledger[0];
-    return { planet: st.planet === plan.planet, left: st.missions.length, earned: st.credits - credits0, runPay: e.wage + e.share, fee: errand.pay, cut: errand.cut, fund: h.fund, expectFund: HIRED_FUND - e.cost + e.revenue + errand.cut };
+    return { planet: st.planet === plan.planet, left: st.missions.length, earned: st.credits - credits0, runPay: e.wage - e.kit + e.share - (e.hall || 0), fee: errand.pay, cut: errand.cut, fund: h.fund, expectFund: HIRED_FUND - e.cost + e.revenue + errand.cut };
   });
   assert.ok(r.planet); assert.equal(r.left, 0, 'the errand is done');
   assert.equal(r.earned, r.runPay + r.fee, 'you got your pay for the run and the errand fee');
@@ -506,15 +506,16 @@ test('a hired hand who is not the gunner watches the duel; the gunner picks the 
       const c0 = st.credits; startDuel({ kind: 'hunter', person: { first: 'Ana', last: 'Voss' } }, false); finishEvent2();  // a pirate or a patrol is a raid in beats (engagements.js); a hunter is the card duel
       const first = G.nextEvent; const labels = first.choices.map(c => c.label); let rounds = 0;
       openEvent(first);
-      while ((G.dialog || G.nextEvent) && rounds++ < 20) { if (!G.dialog) { finishEvent(); continue; } chooseEvent(Math.max(0, G.dialog.event.choices.findIndex(c => /locks/.test(c.label)))); finishEvent(); }  // the locks stop a boarding party; the ship now also has a PDC screen to pick first, which a boarding party gets past into a deck fight this driver does not play
-      return { labels, ended: G.duel === null, credits: st.credits === c0 };
+      let boarded = false;  // with the bible's smaller crew (#879) fewer stand at the locks, and her boarders can get across into a deck fight, which this loop does not drive
+      while ((G.dialog || G.nextEvent) && rounds++ < 20) { if (!G.dialog) { finishEvent(); continue; } if (G.dialog.event.choices.some(c => c.label === 'Fight')) { boarded = true; break; } chooseEvent(Math.max(0, G.dialog.event.choices.findIndex(c => /locks/.test(c.label)))); finishEvent(); }  // the locks stop a boarding party; the ship now also has a PDC screen to pick first, which a boarding party gets past into a deck fight this driver does not play
+      return { labels, ended: G.duel === null || boarded, credits: st.credits === c0 };
     };
     window.finishEvent2 = () => {};
     return { pilot: run('pilot'), gunner: run('gunner') };
   });
   assert.deepEqual(r.pilot.labels, ['Hold on'], 'the gunner plays it for you');
   assert.ok(r.gunner.labels.length >= 1 && !r.gunner.labels.includes('Hold on'), 'as the gunner you pick the card');
-  assert.ok(r.pilot.ended && r.gunner.ended); assert.ok(r.pilot.credits && r.gunner.credits, 'and your savings are not in it');
+  assert.ok(r.pilot.ended && r.gunner.ended, 'the duel ends, or goes to the deck'); assert.ok(r.pilot.credits && r.gunner.credits, 'and your savings are not in it');
   await done();
 });
 
@@ -579,8 +580,8 @@ test('a hand starts owing the hall, each arrival repays a third of the pay and n
     out.none = arrive(5);
     return out;
   });
-  assert.equal(r.start, 30000);
-  assert.equal(r.first.paid, Math.round(r.first.entry.wage * 0.3)); assert.equal(r.first.credits, r.first.entry.wage + r.first.entry.share - r.first.paid, 'the hall is paid out of the pay');
+  assert.equal(r.start, 9000);  // the hall's bond, scaled with the stopgap (#879)
+  assert.equal(r.first.paid, Math.round((r.first.entry.wage - r.first.entry.kit) * 0.3)); assert.equal(r.first.credits, r.first.entry.wage - r.first.entry.kit + r.first.entry.share - r.first.paid, 'the hall is paid out of the pay, after the kit (#879)');
   assert.match(r.first.note, new RegExp(`The hall took ${r.first.paid} cr of your pay\\. [\\d,]+ cr still owed\\.`)); assert.equal(r.first.entry.hall, r.first.paid);
   assert.equal(r.cap.paid, 400, 'never more than is owed'); assert.match(r.cap.note, /The hall took 400 cr of your pay\. The bond is paid\./); assert.equal(r.capFlag, true); assert.equal(r.after, 0);
   assert.equal(r.none.paid, 0); assert.doesNotMatch(r.none.note, /The hall/, 'nothing owed, nothing said');

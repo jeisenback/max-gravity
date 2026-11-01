@@ -9487,21 +9487,21 @@
  },
  {
   "key": "awayHtml",
-  "v": "<div class=\"post\"><div class=\"eyebrow\">Work elsewhere &middot; you'd need the captain to fly you there</div>\n    <div class=\"row\"><span><b>A Package for Juno Commons</b> <span class=\"hint\">The woman at the pump has a sealed package for a contact on Juno Commons, and doesn't trust the post. Juno Commons, Juno, 11 days. Until day 56.</span></span>\n      <button data-action=\"pitchJob\" data-arg=\"0\" >Put it to the captain</button></div><div class=\"row\"><span><b>A Witness on Hermes Foundry</b> <span class=\"hint\">Janek at the noodle counter knows a dockworker on Hermes Foundry who saw something and needs an escort to give a statement. Nobody there'll do it. Hermes Foundry, Mercury, 13 days. Until day 60.</span></span>\n      <button data-action=\"pitchJob\" data-arg=\"1\" >Put it to the captain</button></div>\n    <p class=\"hint\">Once a stop for each. The captain decides, by who they are and how they feel about you.</p></div>"
+  "v": "<div class=\"post\"><div class=\"eyebrow\">Work elsewhere &middot; you'd need the captain to fly you there</div>\n    <div class=\"row\"><span><b>A Package for Juno Commons</b> <span class=\"hint\">The woman at the pump has a sealed package for a contact on Juno Commons, and doesn't trust the post. Juno Commons, Juno, 12 days. Until day 58.</span></span>\n      <button data-action=\"pitchJob\" data-arg=\"0\" >Put it to the captain</button></div><div class=\"row\"><span><b>A Witness on Hermes Foundry</b> <span class=\"hint\">Janek at the noodle counter knows a dockworker on Hermes Foundry who saw something and needs an escort to give a statement. Nobody there'll do it. Hermes Foundry, Mercury, 15 days. Until day 64.</span></span>\n      <button data-action=\"pitchJob\" data-arg=\"1\" >Put it to the captain</button></div>\n    <p class=\"hint\">Once a stop for each. The captain decides, by who they are and how they feel about you.</p></div>"
  },
  {
   "key": "away:Hermes Foundry:1",
   "v": {
    "tpl": "package",
    "ctx": {
-    "dest": "The Rook",
+    "dest": "Mars",
     "from": "Hermes Foundry",
     "who": "Mrs. Adeyemi",
-    "system": "Hygiea",
+    "system": "Mars",
     "scale": 1.5
    },
-   "sid": "hygiea",
-   "planet": "The Rook",
+   "sid": "mars",
+   "planet": "Mars",
    "days": 6,
    "until": 46,
    "pitched": null,
@@ -9513,14 +9513,14 @@
   "v": {
    "tpl": "stranded",
    "ctx": {
-    "dest": "Boneyard",
+    "dest": "Mars",
     "from": "Hermes Foundry",
     "who": "Mrs. Adeyemi",
-    "system": "Hygiea",
+    "system": "Mars",
     "scale": 1.5
    },
-   "sid": "hygiea",
-   "planet": "Boneyard",
+   "sid": "mars",
+   "planet": "Mars",
    "days": 6,
    "until": 46,
    "pitched": null,
@@ -9551,14 +9551,14 @@
   "v": {
    "tpl": "package",
    "ctx": {
-    "dest": "Mars",
+    "dest": "Earth",
     "from": "Ring Nine",
     "who": "Mrs. Adeyemi",
-    "system": "Mars",
+    "system": "Earth",
     "scale": 1.5
    },
-   "sid": "mars",
-   "planet": "Mars",
+   "sid": "earth",
+   "planet": "Earth",
    "days": 6,
    "until": 46,
    "pitched": null,
@@ -9570,14 +9570,14 @@
   "v": {
    "tpl": "stranded",
    "ctx": {
-    "dest": "Mars",
+    "dest": "Luna",
     "from": "Ring Nine",
     "who": "Mrs. Adeyemi",
-    "system": "Mars",
+    "system": "Earth",
     "scale": 1.5
    },
-   "sid": "mars",
-   "planet": "Mars",
+   "sid": "earth",
+   "planet": "Luna",
    "days": 6,
    "until": 46,
    "pitched": null,
@@ -9608,16 +9608,16 @@
   "v": {
    "tpl": "package",
    "ctx": {
-    "dest": "Ceres Station",
+    "dest": "Mars",
     "from": "Juno Commons",
     "who": "Mrs. Adeyemi",
-    "system": "Ceres",
-    "scale": 1.5
+    "system": "Mars",
+    "scale": 1
    },
-   "sid": "ceres",
-   "planet": "Ceres Station",
-   "days": 6,
-   "until": 46,
+   "sid": "mars",
+   "planet": "Mars",
+   "days": 4,
+   "until": 42,
    "pitched": null,
    "booked": false
   }
@@ -9627,16 +9627,16 @@
   "v": {
    "tpl": "stranded",
    "ctx": {
-    "dest": "Ring Nine",
+    "dest": "Mars",
     "from": "Juno Commons",
     "who": "Mrs. Adeyemi",
-    "system": "Ceres",
-    "scale": 1.5
+    "system": "Mars",
+    "scale": 1
    },
-   "sid": "ceres",
-   "planet": "Ring Nine",
-   "days": 6,
-   "until": 46,
+   "sid": "mars",
+   "planet": "Mars",
+   "days": 4,
+   "until": 42,
    "pitched": null,
    "booked": false
   }
@@ -9673,8 +9673,8 @@
    },
    "sid": "psyche",
    "planet": "Ironheart",
-   "days": 28,
-   "until": 90,
+   "days": 30,
+   "until": 94,
    "pitched": null,
    "booked": false
   }
@@ -9692,8 +9692,8 @@
    },
    "sid": "hygiea",
    "planet": "Boneyard",
-   "days": 29,
-   "until": 92,
+   "days": 32,
+   "until": 98,
    "pitched": null,
    "booked": false
   }
@@ -9711,8 +9711,8 @@
    },
    "sid": "mercury",
    "planet": "Hermes Foundry",
-   "days": 28,
-   "until": 90,
+   "days": 30,
+   "until": 94,
    "pitched": null,
    "booked": false
   }

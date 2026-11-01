@@ -72,7 +72,7 @@ test('each scene offers three ways and your post\'s own, a good run fills the ho
       const tons = st.cargo.water, xp = skillXp('engineer');
       const credits = st.credits, realPrice = window.price; window.price = () => 100;
       try { settleRun(planet); } finally { window.price = realPrice; }
-      return { labels, tons, wage: st.credits - credits, perDay: wage, t1, hold: /tons of ice/.test(t1), titles: [sc.title, iceStageScene(1).title, iceStageScene(2).title] };
+      return { labels, tons, wage: (h.ledger[0] || {}).wage || 0, perDay: wage, t1, hold: /tons of ice/.test(t1), titles: [sc.title, iceStageScene(1).title, iceStageScene(2).title] };  // the wage paid, before the kit and the hall come out of it (#879)
     };
     out.good = run([0.01, 0.01, 0.01]);   // every choice works
     out.bad = run([0.99, 0.99, 0.99]);    // none does

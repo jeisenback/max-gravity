@@ -29,7 +29,7 @@ const run = async (fn, o, arg) => { const t = await open(o); await t.ev(helpers)
 
 test('every captain and first officer entry is complete and plain text', async () => {
   const r = await run(() => {
-    const need = ['first', 'last', 'pronouns', 'culture', 'home', 'age', 'traits', 'bio', 'wants', 'fears', 'captain', 'wage', 'share', 'hears', 'bonus', 'talk'];
+    const need = ['first', 'last', 'pronouns', 'culture', 'home', 'age', 'traits', 'bio', 'wants', 'fears', 'captain', 'wage', 'hears', 'bonus', 'talk'];  // no share: the hand is a rating (#879)
     const out = { captains: Object.keys(CAPTAINS).sort(), bad: [] };
     for (const [key, d] of Object.entries(CAPTAINS)) {
       for (const f of need) if (d[f] === undefined || d[f] === null || d[f] === '') bad(out, key, f);
@@ -56,7 +56,7 @@ test('a hired game is run by an authored captain with their first officer aboard
   assert.equal(r.role, 'captain'); assert.equal(r.captainKey, r.key);
   assert.equal(r.crewed, true); assert.equal(r.xoRole, 'xo'); assert.equal(r.cast, 'cato'); assert.equal(r.since, 'number');
   assert.equal(r.generated, 0, 'the authored first officer takes the generated one\'s place');
-  assert.deepEqual(r.roster, ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo']);
+  assert.deepEqual(r.roster, ['engineer', 'icehand', 'pilot', 'slicer', 'xo']);  // the bible's crew (#879): the posts, the bosun and a deckhand
 });
 
 test('the same seed picks the same captain', async () => {
@@ -79,14 +79,14 @@ test('a hired save with no captain key keeps its generated captain and plays on'
 
 const withStyle = fn => async arg => run(fn, {}, arg);
 
-test('wage and share come from the entry, and "for the money" adds two points to the share', async () => {
+test('the wage comes from the entry, there is no share, and "for the money" adds 25 a day (#879)', async () => {
   const r = await run(() => {
     const st = start(), d = captainEntry(), h = st.hired, before = { wage: h.wage, share: h.share };
     while (G.dialog) finishEvent();
     const ev = signOnEvent(); const money = ev.choices[0]; money.run();
-    return { d: { wage: d.wage, share: d.share }, before, after: h.share };
+    return { d: { wage: d.wage, share: 0 }, before, after: h.wage };
   });
-  assert.deepEqual(r.before, r.d); assert.equal(r.after, +(r.d.share + 0.02).toFixed(3));
+  assert.deepEqual(r.before, r.d); assert.equal(r.after, r.d.wage + 25);
 });
 
 test('trade sets how close to the best run the captain plans', async () => {
@@ -207,7 +207,7 @@ test('the sign-on paragraph is the captain\'s own introduction, with the pay in 
     return { text, wage: h.wage, share: Math.round(h.share * 100), generic: /whom the crew describe/.test(text) };
   });
   assert.match(r.text, /Captain Hester Vance reads your papers twice/);
-  assert.ok(r.text.includes(`${r.wage} a day and ${r.share} percent`), 'the figures are the captain\'s own');
+  assert.ok(r.text.includes(`${r.wage} a day, less your kit`), 'the figures are the captain\'s own (a rating\'s pay, #879)');
   assert.equal(r.generic, false);
 });
 
@@ -326,7 +326,7 @@ test('the ice hold follows the state: he lives, is marked or dies, and the capta
   const r = await run(() => {
     const run = ({ medic = true, hull = 'good', hands = 2, backup = false }) => {
       const st = start(), cap = hiredCaptain(); cap.opinion = 2;
-      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'icehand' || hands-- > 0); });
+      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'icehand' || hands-- > 0); }); if (medic) { const md = makePerson('earth'); md.role = 'medic'; md.skill = 1; registerPerson(md); st.crew.push(md.id); }  // the chapter's crew carries none (#879): bring one when the case wants one
       st.armor = hull === 'good' ? ship().armor : Math.floor(ship().armor * 0.5);
       const text = CAST.cato.scenes.pivot.choices[backup ? 1 : 0].run(), m = (st.memorial || [])[0];
       return { text: typeof text === 'string' && text.length > 40, dead: castDead('cato'), marks: (castRec('cato').marks || []).length, mood: moodLow(cap), opinion: cap.opinion, cause: m ? m.cause : null, crewed: st.crew.includes('c:cato') };
@@ -376,7 +376,7 @@ test('Dov: his introduction, his wording, and his trouble and secret', async () 
     h.flags = { lent: true }; st.credits = 1000; captainGoodbye().choices[0].run(); out.repaid = st.credits;
     return out;
   });
-  assert.match(r.intro, /Captain Dov Adair is shaking your hand/); assert.ok(r.intro.includes(`${r.wage} a day and ${r.share} percent`));
+  assert.match(r.intro, /Captain Dov Adair is shaking your hand/); assert.ok(r.intro.includes(`${r.wage} a day, less your kit`));
   assert.match(r.order, /woman at the last port/); assert.match(r.heardAtMinusOne, /Ninety/); assert.match(r.notHeard, /I didn't ask/);
   assert.ok(r.bonus > 0, 'a bonus at once'); assert.equal(r.poor, false); assert.deepEqual(r.after, { credits: 7000, lent: true }); assert.equal(r.flag, true); assert.equal(r.repaid, 4300);
 });
@@ -398,7 +398,7 @@ test('the reactor follows the state: she lives, is marked or dies, and the capta
   const r = await run(() => {
     const run = ({ medic = true, drive = 100, engineer = true, backup = false }) => {
       const st = start({ captainKey: 'dov' }), cap = hiredCaptain(); cap.opinion = 2;
-      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'engineer' || engineer); });
+      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'engineer' || engineer); }); if (medic) { const md = makePerson('earth'); md.role = 'medic'; md.skill = 1; registerPerson(md); st.crew.push(md.id); }  // the chapter's crew carries none (#879): bring one when the case wants one
       condition().drive = drive;
       const text = CAST.ilsa.scenes.pivot.choices[backup ? 1 : 0].run(), m = (st.memorial || [])[0];
       return { text: typeof text === 'string' && text.length > 40, dead: castDead('ilsa'), marks: (castRec('ilsa').marks || []).length, mood: moodLow(cap), opinion: cap.opinion, cause: m ? m.cause : null };
@@ -427,7 +427,7 @@ test('Imre: their introduction, their wording, and their trouble and secret', as
     cap.opinion = 3; captainScene('secret').choices[1].run(); out.flag = !!h.flags.secretKnown;
     return out;
   });
-  assert.match(r.intro, /Captain Imre Sato reads your papers once/); assert.ok(r.intro.includes(`${r.wage} a day and ${r.share} percent`));
+  assert.match(r.intro, /Captain Imre Sato reads your papers once/); assert.ok(r.intro.includes(`${r.wage} a day, less your kit`));
   assert.match(r.order, /standing order eleven/i); assert.match(r.notHeard, /closing a file/); assert.match(r.heard, /Ninety/);
   assert.equal(r.noBonus, 0); assert.ok(r.bonus > 0);
   assert.ok(r.cover[0] < 0 && r.cover[1] > 0 && r.cover[2], `taking the blame: ${r.cover}`); assert.ok(r.answer[0] > 0 && r.answer[1] < 0, `letting the captain answer: ${r.answer}`);
@@ -451,7 +451,7 @@ test('the docking emergency follows the state: she lives, is marked or dies, and
   const r = await run(() => {
     const run = ({ medic = true, hull = 'good', drive = 100, backup = false }) => {
       const st = start({ captainKey: 'imre' }), cap = hiredCaptain(); cap.opinion = 2;
-      st.crew = st.crew.filter(id => person(id).role !== 'medic' || medic);
+      st.crew = st.crew.filter(id => person(id).role !== 'medic' || medic); if (medic) { const md = makePerson('earth'); md.role = 'medic'; md.skill = 1; registerPerson(md); st.crew.push(md.id); }  // the chapter's crew carries none (#879)
       st.armor = hull === 'good' ? ship().armor : Math.floor(ship().armor * 0.5); condition().drive = drive;
       const text = CAST.pilar.scenes.pivot.choices[backup ? 1 : 0].run(), m = (st.memorial || [])[0];
       return { text: typeof text === 'string' && text.length > 40, dead: castDead('pilar'), marks: (castRec('pilar').marks || []).length, mood: moodLow(cap), opinion: cap.opinion, cause: m ? m.cause : null };
@@ -481,7 +481,7 @@ test('Zoya: her introduction, her wording, and her trouble and secret', async ()
     out.style = captainEntry().captain;
     return out;
   });
-  assert.match(r.intro, /Captain Zoya Pell signs your papers/); assert.ok(r.intro.includes(`${r.wage} a day and ${r.share} percent`));
+  assert.match(r.intro, /Captain Zoya Pell signs your papers/); assert.ok(r.intro.includes(`${r.wage} a day, less your kit`));
   assert.match(r.order, /worth more if it arrives a day early/); assert.match(r.notHeard, /I didn't ask/); assert.match(r.heard, /Ninety/);
   assert.equal(r.noBonus, 0); assert.ok(r.bonus > 0); assert.equal(r.poor, false); assert.deepEqual(r.after, { credits: 9000, lent: true }); assert.equal(r.flag, true); assert.equal(r.repaid, 2250);
   assert.deepEqual(r.style, { trade: 4, nerve: 5, thrift: 1 });
@@ -504,7 +504,7 @@ test('the boarding lock follows the state: he lives, is marked or dies, and the 
   const r = await run(() => {
     const run = ({ medic = true, hull = 'good', gunner = true, backup = false }) => {
       const st = start({ captainKey: 'zoya', post: 'pilot' }), cap = hiredCaptain(); cap.opinion = 2;  // a pilot's game has a gunner aboard
-      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'gunner' || gunner); });
+      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'gunner' || gunner); }); if (medic) { const md = makePerson('earth'); md.role = 'medic'; md.skill = 1; registerPerson(md); st.crew.push(md.id); }  // the chapter's crew carries none (#879): bring one when the case wants one
       st.armor = hull === 'good' ? ship().armor : Math.floor(ship().armor * 0.5);
       const text = CAST.ansel.scenes.pivot.choices[backup ? 1 : 0].run(), m = (st.memorial || [])[0];
       return { text: typeof text === 'string' && text.length > 40, dead: castDead('ansel'), marks: (castRec('ansel').marks || []).length, mood: moodLow(cap), opinion: cap.opinion, cause: m ? m.cause : null };
@@ -574,8 +574,8 @@ test('the first burn begins with Cato walking you round the ship, once, naming t
     return out;
   });
   assert.equal(r.title, 'The Round'); assert.equal(r.walked, true);
-  assert.equal(r.crew, 8, 'eight crew besides Cato; the hand is the ninth'); assert.deepEqual(r.missing, [], 'every one of them is named');
-  assert.match(r.walk, /You have the middle watch/); assert.match(r.walk, /these are yours/);
+  assert.equal(r.crew, 4, 'four crew besides Cato (#879): the officers, the comms rating and the deckhand'); assert.deepEqual(r.missing, [], 'every one of them is named');
+  assert.match(r.walk, /on the middle watch/); assert.match(r.walk, /these are yours/);
   assert.doesNotMatch(r.opening, /Working beside you/, 'the opening leaves the introductions to him');
   assert.notEqual(r.again, 'The Round', 'and it does not play twice');
 });
@@ -596,7 +596,7 @@ test('"Another time" closes the walk-through at once', async () => {
     const ev = pickHappening('transit');
     return { text: ev.choices[1].run(), label: ev.choices[1].label };
   });
-  assert.equal(r.label, 'Another time'); assert.match(r.text, /watch bill is on the galley wall/);
+  assert.equal(r.label, 'Another time'); assert.match(r.text, /rota\'s on the galley wall/);
 });
 
 test('the first burn has a happening more for the walk-through, and later burns do not', async () => {
@@ -622,8 +622,8 @@ test('the first arrival is the first officer settling up, with the figures and t
   }, undefined);
   assert.equal(r.title, 'Settling Up'); assert.doesNotMatch(r.notes, /Your pay:/, 'the one-line note is not shown as well');
   assert.ok(r.f.profit > 0 && r.f.wage > 0, 'the figures are kept');
-  for (const x of [r.f.revenue, r.f.cost, r.f.profit, r.f.wage, r.f.share]) assert.ok(r.text.includes(Math.round(x).toLocaleString('en-US')), `the page shows ${x}`);
-  assert.match(r.text, /the ship clears [\d,]+\./); assert.match(r.text, /Your pay: [\d,]+ in wages for \d+ days, and [\d,]+ as your share/); assert.match(r.text, /there is a line in Hester's hand with your name on it/);  // in plain words (#854)
+  for (const x of [r.f.revenue, r.f.cost, r.f.profit, r.f.wage, r.f.kit]) assert.ok(r.text.includes(Math.round(x).toLocaleString('en-US')), `the page shows ${x}`);
+  assert.match(r.text, /the ship clears [\d,]+\./); assert.match(r.text, /Your pay: [\d,]+ in wages for \d+ days, less [\d,]+ for your kit/); assert.match(r.text, /The ratings are paid by the day/);  // in plain words (#854)
   assert.match(r.text, /Missions page/); assert.match(r.text, /The bar/);
   assert.doesNotMatch(r.text, /undefined|NaN/); assert.equal(r.arrived, true); assert.equal(r.opinion, 1);
   assert.deepEqual(r.labels, ['Ask how long a ship takes', 'Go ashore']); assert.match(r.ask, /A season/);
@@ -640,7 +640,7 @@ test('a run that lost money leaves the line empty, and a second arrival is the p
     out.second = b; out.runs = runTotals(hired()).runs;
     return out;
   });
-  assert.match(r.text, /the ship loses [\d,]+\./); assert.match(r.text, /your line is empty/);
+  assert.match(r.text, /the ship loses [\d,]+\./); assert.match(r.text, /The ratings are paid by the day/);
   assert.equal(r.second.scene && r.second.scene.title === 'Settling Up', false, 'it does not play twice');
   assert.match(r.second.notes, /Your pay:/, 'later arrivals keep the one-line note');
 });
@@ -902,9 +902,9 @@ test('the first arrival shows the hall\'s cut as a ledger line, and the goodbye 
     start(); const h = hired();
     const a = arriveFirst(), text = a.scene.text, f = h.first;
     h.flags = { debtCleared: true };
-    return { text, hall: f.hall, owed: f.owed, wage: f.wage, share: f.share, debt: h.debt, goodbye: captainGoodbye().text, recap: chapterRecap().text };
+    return { text, hall: f.hall, owed: f.owed, wage: f.wage, kit: f.kit, debt: h.debt, goodbye: captainGoodbye().text, recap: chapterRecap().text };
   }, { debt: true });
-  assert.equal(r.hall, Math.round((r.wage + r.share) * 0.3)); assert.equal(r.owed, 30000 - r.hall); assert.equal(r.debt, r.owed);
+  assert.equal(r.hall, Math.round((r.wage - r.kit) * 0.3)); assert.equal(r.owed, 9000 - r.hall); assert.equal(r.debt, r.owed);
   assert.ok(r.text.includes(`The hiring hall takes 30 percent of your pay, ${r.hall.toLocaleString('en-US')}. You still owe it ${r.owed.toLocaleString('en-US')}.`));
   assert.ok(r.goodbye.includes('The hall\'s bond is struck off the book, with the day it was paid.')); assert.ok(r.recap.includes('You paid off the hiring-hall bond.'));
 });
