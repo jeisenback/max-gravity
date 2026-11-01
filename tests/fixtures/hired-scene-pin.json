@@ -5591,35 +5591,35 @@
  {
   "id": "captain:hester:trouble",
   "i": 0,
-  "label": "Lend her four thousand",
-  "result": "You push four thousand across the table. She counts it, and then writes it in the notebook, with the date and a figure beside it. \"Four thousand one hundred,\" she says, \"the day you leave this ship.\"",
+  "label": "Take your pay at the next port",
+  "result": "You say yes. She writes it in the notebook while you watch: four thousand, the date, and a figure beside it. She turns the book so you can read it. \"Four thousand one hundred,\" she says, \"the day you leave this ship, or the next port, whichever you ask for.\"",
   "changes": [
    "s.credits: 50000 -> 46000",
    "s.hired.flags.lent: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You lent me four thousand when the fund was short.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took your pay a port late when the fund was short.",
    "s.people.p1.opinion: 0 -> 3"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Lend her four thousand",
+    "label": "Take your pay at the next port",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Lend her four thousand",
+    "label": "Take your pay at the next port",
     "open": false,
     "why": "You have 0 cr; this costs 4,000 cr."
    },
    "liked": {
-    "label": "Lend her four thousand",
+    "label": "Take your pay at the next port",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Lend her four thousand",
+    "label": "Take your pay at the next port",
     "open": true,
     "why": ""
    }
@@ -5629,10 +5629,10 @@
   "id": "captain:hester:trouble",
   "i": 1,
   "label": "Tell her it's not your place",
-  "result": "\"It's not,\" she says. \"Thank you for knowing it.\" She turns the notebook round and goes on with the figures, and you go back to your watch. The payment is made on the first. You never learn how.",
+  "result": "\"It's not,\" she says. \"That's why I asked.\" She turns the notebook round and goes on with the figures. The payment is made on the first. You never learn how.",
   "changes": [
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said it wasn't your place to lend."
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said it wasn't your place to wait for your pay."
   ],
   "next": null,
   "gate": {
@@ -5667,7 +5667,7 @@
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you'd keep the bank to yourself.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you'd keep the house to yourself.",
    "s.people.p1.opinion: 0 -> 2"
   ],
   "next": null,
@@ -5698,7 +5698,7 @@
   "id": "captain:hester:secret:confide",
   "i": 1,
   "label": "Ask how much she still owes",
-  "result": "\"Three hundred and eighty thousand, and some of it's interest,\" she says, and doesn't hesitate. \"Eleven good runs, if the market holds. I've counted it a good many times.\"",
+  "result": "\"Three hundred and eighty thousand, and some of it's interest,\" she says, and doesn't hesitate. \"Forty-eight payments. I've made a hundred and thirty-two.\"",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
@@ -5740,7 +5740,7 @@
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you hadn't read the bank's letter, and you had.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you hadn't read the house's letter, and you had.",
    "s.people.p1.opinion: 0 -> -2"
   ],
   "next": null,
@@ -5776,7 +5776,7 @@
    "s.hired.flags.secretAngry: undefined -> true",
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you had read the bank's letter, and would say nothing."
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you had read the house's letter, and would say nothing."
   ],
   "next": null,
   "gate": {
@@ -6871,7 +6871,7 @@
   "id": "hired:cap-order",
   "i": 0,
   "label": "Do as ordered",
-  "result": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the gunner post.)",
+  "result": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing. (+1 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 13",
    "s.journal.0.day: undefined -> 1",
