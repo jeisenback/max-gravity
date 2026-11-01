@@ -884,7 +884,8 @@ const CAST = {
 // to start from a pair they know (tests/helpers.js).
 // An authored person's own sittings and talk (family:<key>-<beat> in peopletext.js), with the family scenes, for the editor and the lines tests.
 const CAST_TALK = { ...SIT_BEATS, goeson: (p, s, id) => goesOn(p, undefined, id), idle: (p, s, id) => idleTalk(p, id) };
-for (const k of Object.keys(CAST)) for (const [beat, make] of Object.entries(CAST_TALK)) if (PEOPLE_LINES[`family:${k}-${beat}`]) FAMILY_SCENES[`${k}-${beat}`] = p => make(p, storyOf(p), `${k}-${beat}`);
+const castTalkScenes = k => { for (const [beat, make] of Object.entries(CAST_TALK)) if (PEOPLE_LINES[`family:${k}-${beat}`]) FAMILY_SCENES[`${k}-${beat}`] = p => make(p, storyOf(p), `${k}-${beat}`); };
+Object.keys(CAST).forEach(castTalkScenes);  // a first officer added later (js/captains/) calls it for itself
 const CAST_PAIRS = { earth: ['ines', 'tomas'], mars: ['yelena', 'ruben'], belt: ['bexa', 'pax'] };
 const castPool = () => Object.keys(CAST).filter(k => !CAST[k].xo);
 // A main character of the start background's own culture is this many times as likely as one from elsewhere, so an earth start is mostly
