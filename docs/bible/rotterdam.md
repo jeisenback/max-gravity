@@ -1,6 +1,6 @@
 # Rotterdam Arcology
 
-Status: draft for the owner's review, 2026-11-01. Built on `economy.md`, `jurisdictions.md` and `work.md`.
+Status: approved by the owner on 2026-11-01. Built on `economy.md`, `jurisdictions.md` and `work.md`.
 
 ## The place
 
