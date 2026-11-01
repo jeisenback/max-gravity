@@ -43,32 +43,28 @@ const CAST_BAR = {
   tomas: [
     {
       days: 5, title: 'Shop Talk',
-      text: ('Tomas Achebe has found a welder at the bar: a working one, in dock coveralls, with burn scars on both wrists and a nervous laugh. They\'ve ' +
-          'been talking for an hour. "Look at the bead," Tomas says to you, low, with a hand on the bar rail. "Look at that. Somebody welded this ' +
-          'properly. Nobody does that for a bar."'),
+      text: ('Tomas Achebe has found a yard welder at the bar, a man in dock coveralls with burn scars on both wrists. They\'ve been talking about filler ' +
+          'rod for an hour. "He does hull work here," Tomas tells you. "On contract. Same as I was."'),
       choices: [
         { label: 'Buy a round for the dock crew (400 cr)', ...gated(needCr(400)), memory: 'You bought a round for the dock crew, and let me talk shop.', run() { G.state.credits -= 400; castLike('tomas', 2, this.memory); castXp('tomas', 'engineer', 2); return (
-            'A round for the dock crew turns into three hours. Tomas is shown the jig they use for the rail, and a trick for a seam that has given ' +
-            'him trouble since the ring, and he shows them one of his own. He walks back to the ship with a notebook full of sketches. "They talk to ' +
-            'the work," he says. "The same as me."'); } },
+            'A round turns into three hours. The dock crew show Tomas the jig they use for hull plate, and he shows them how the ring yard does a seam with ' +
+            'no weight. He walks back to the ship with sketches in his notebook. "Their contracts are three months," he says. "Ours were six."'); } },
         { label: 'Let him have his shop talk', memory: 'You let me talk shop with a welder.', run() { castLike('tomas', 1, this.memory); return (
-            'You take a stool at the other end of the bar and leave them to it. Every so often a burst of technical argument comes down the bar, with ' +
-            'hand gestures. When Tomas finds you, hours later, he\'s hoarse, and holds up a hand with a new burn across the knuckle. "Thank you," he ' +
-            'says. "He let me try the jig."'); } },
+            'You take a stool at the other end of the bar and leave them to it. When Tomas finds you, hours later, he\'s hoarse, and has a new burn across ' +
+            'one knuckle. "He let me try the jig," he says.'); } },
       ],
     },
     {
-      days: 30, title: 'A Call to Lagos Ring',
-      text: ('The bar has a row of call booths at the back. In the last one, with the door open a hand\'s width, Tomas Achebe is on a long-distance ' +
-          'link to his sister. You can hear his half, loud the way people are across a delay: "No, it was paid. Yes. I promise. Eat something." He ' +
-          'sees you, covers the handset, and beckons. "Would you say hello? She doesn\'t believe I have a crew."'),
+      days: 30, title: 'A Message to the Ring',
+      text: ('The bar has message booths at the back, cheaper than the ship\'s relay slot. Tomas is in the last one with the door open, recording a message ' +
+          'to Ngozi: "Yes, it was paid. Yes. Eat something." He sees you and stops the recording. "Would you say hello on it? She doesn\'t believe I have ' +
+          'friends on this ship."'),
       choices: [
         { label: 'Say hello to his sister', memory: 'You said hello to my sister.', run() { castLike('tomas', 3, this.memory); castFlag('tomas', 'sister'); return (
-            'The delay is eleven seconds. You say your name and wait. A small voice says, in a rush: "He never says he has people. I\'m glad. Are ' +
-            'you feeding him?" Tomas looks at the floor. "Eleven seconds," he says afterwards, "and she heard every word."'); } },
+            'You say your name into the booth, and that you work with him, and he sends it. Her reply comes in with the ship\'s next batch: Ngozi at the ' +
+            'stall, with the pots behind her and the top of Chidi\'s head at the edge of the picture. "Hello. I\'m glad. Is he eating?" Tomas plays it twice.'); } },
         { label: 'Wave from across the room', memory: 'You waved to my sister from across the room.', run() { castLike('tomas', 1, this.memory); return (
-            'You wave. He grins, holds the handset up to the glass, and says something to her in Igbo. When he comes out of the booth he doesn\'t ' +
-            'talk for the rest of the evening, and you leave him to it.'); } },
+            'You wave. He turns the booth camera so it catches you, says something to her in Igbo, and sends it. He doesn\'t talk much for the rest of the evening.'); } },
       ],
     },
   ],
