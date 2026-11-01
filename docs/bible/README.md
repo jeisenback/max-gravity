@@ -31,9 +31,9 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 4. `technology.md`: drives and freight, the old fleet, software, light, who has what, bodies.
 5. `lisbon.md`: Lisbon Arcology, the old city, the wall, the lift, and Ines.
 6. `ship.md`: Hester's ship, its crew, and life aboard.
-6a. `lagos.md`: Lagos Arcology, the mainland, Lagos Ring, and Tomas.
-7. `voice.md`: how the game's writing sounds.
-8. `people/`: one sheet per character (`ines.md` first).
+7. `lagos.md`: Lagos Arcology, the mainland, Lagos Ring, and Tomas.
+8. `voice.md`: how the game's writing sounds.
+9. `people/`: one sheet per character (`ines.md` first).
 
 ## Where the game must change to fit
 
