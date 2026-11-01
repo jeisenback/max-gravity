@@ -904,7 +904,7 @@ test('the first arrival shows the hall\'s cut as a ledger line, and the goodbye 
     h.flags = { debtCleared: true };
     return { text, hall: f.hall, owed: f.owed, wage: f.wage, kit: f.kit, debt: h.debt, goodbye: captainGoodbye().text, recap: chapterRecap().text };
   }, { debt: true });
-  assert.equal(r.hall, Math.round((r.wage - r.kit) * 0.3)); assert.equal(r.owed, 30000 - r.hall); assert.equal(r.debt, r.owed);
+  assert.equal(r.hall, Math.round((r.wage - r.kit) * 0.3)); assert.equal(r.owed, 9000 - r.hall); assert.equal(r.debt, r.owed);
   assert.ok(r.text.includes(`The hiring hall takes 30 percent of your pay, ${r.hall.toLocaleString('en-US')}. You still owe it ${r.owed.toLocaleString('en-US')}.`));
   assert.ok(r.goodbye.includes('The hall\'s bond is struck off the book, with the day it was paid.')); assert.ok(r.recap.includes('You paid off the hiring-hall bond.'));
 });

@@ -580,7 +580,7 @@ test('a hand starts owing the hall, each arrival repays a third of the pay and n
     out.none = arrive(5);
     return out;
   });
-  assert.equal(r.start, 30000);
+  assert.equal(r.start, 9000);  // the hall's bond, scaled with the stopgap (#879)
   assert.equal(r.first.paid, Math.round((r.first.entry.wage - r.first.entry.kit) * 0.3)); assert.equal(r.first.credits, r.first.entry.wage - r.first.entry.kit + r.first.entry.share - r.first.paid, 'the hall is paid out of the pay, after the kit (#879)');
   assert.match(r.first.note, new RegExp(`The hall took ${r.first.paid} cr of your pay\\. [\\d,]+ cr still owed\\.`)); assert.equal(r.first.entry.hall, r.first.paid);
   assert.equal(r.cap.paid, 400, 'never more than is owed'); assert.match(r.cap.note, /The hall took 400 cr of your pay\. The bond is paid\./); assert.equal(r.capFlag, true); assert.equal(r.after, 0);

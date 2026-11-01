@@ -1909,15 +1909,15 @@
  },
  {
   "key": "crewbar:engineer:1",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p305\">Sam</button> is holding a fork up to the light and saying \"tolerances\" under their breath."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p301\">Sam</button> is holding a fork up to the light and saying \"tolerances\" under their breath."
  },
  {
   "key": "crewbar:engineer:2",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p306\">Sam</button> has been handed a wrench by the bartender and is fixing the tap."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p302\">Sam</button> has been handed a wrench by the bartender and is fixing the tap."
  },
  {
   "key": "crewbar:engineer:3",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p307\">Sam</button> has found the one other engineer here. They are arguing about injectors."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p303\">Sam</button> has found the one other engineer here. They are arguing about injectors."
  },
  {
   "key": "crewbar:engineer:4",
@@ -1929,7 +1929,7 @@
  },
  {
   "key": "crewbar:engineer:6",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p310\">Sam</button> is under a table with a flashlight, looking at the bar's wiring."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p306\">Sam</button> is under a table with a flashlight, looking at the bar's wiring."
  },
  {
   "key": "crewbar:pilot:1",
@@ -1937,11 +1937,11 @@
  },
  {
   "key": "crewbar:pilot:2",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p312\">Sam</button> and another pilot at the far end of the bar are arguing about angles, in hand gestures."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p308\">Sam</button> and another pilot at the far end of the bar are arguing about angles, in hand gestures."
  },
  {
   "key": "crewbar:pilot:3",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p313\">Sam</button> has drawn a lane map in spilled beer and is arguing for it with anyone who comes by."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p309\">Sam</button> has drawn a lane map in spilled beer and is arguing for it with anyone who comes by."
  },
  {
   "key": "crewbar:pilot:4",
@@ -1953,7 +1953,7 @@
  },
  {
   "key": "crewbar:pilot:6",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p316\">Sam</button> is losing at darts and blaming the gravity."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p312\">Sam</button> is losing at darts and blaming the gravity."
  },
  {
   "key": "crewbar:gunner:1",
@@ -1961,11 +1961,11 @@
  },
  {
   "key": "crewbar:gunner:2",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p318\">Sam</button> has won a small bet on a dart throw and is refusing the money."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p314\">Sam</button> has won a small bet on a dart throw and is refusing the money."
  },
  {
   "key": "crewbar:gunner:3",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p319\">Sam</button> is cleaning a cup with the hem of their shirt and watching the door."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p315\">Sam</button> is cleaning a cup with the hem of their shirt and watching the door."
  },
  {
   "key": "crewbar:gunner:4",
@@ -1977,7 +1977,7 @@
  },
  {
   "key": "crewbar:gunner:6",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p322\">Sam</button> sits with their back to the wall and watches hands, not faces."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p318\">Sam</button> sits with their back to the wall and watches hands, not faces."
  },
  {
   "key": "crewbar:quartermaster:1",
@@ -1985,11 +1985,11 @@
  },
  {
   "key": "crewbar:quartermaster:2",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p324\">Sam</button> is talking with a grain merchant. A price has been mentioned twice."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p320\">Sam</button> is talking with a grain merchant. A price has been mentioned twice."
  },
  {
   "key": "crewbar:quartermaster:3",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p325\">Sam</button> is making a list on the back of a receipt."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p321\">Sam</button> is making a list on the back of a receipt."
  },
  {
   "key": "crewbar:quartermaster:4",
@@ -2001,7 +2001,7 @@
  },
  {
   "key": "crewbar:quartermaster:6",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p328\">Sam</button> is haggling with the bartender over the price of a bottle."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p324\">Sam</button> is haggling with the bartender over the price of a bottle."
  },
  {
   "key": "crewbar:slicer:1",
@@ -2009,11 +2009,11 @@
  },
  {
   "key": "crewbar:slicer:2",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p330\">Sam</button> is watching the bar's security feed on a very small screen."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p326\">Sam</button> is watching the bar's security feed on a very small screen."
  },
  {
   "key": "crewbar:slicer:3",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p331\">Sam</button> has taken over the bar's music. Nobody has complained."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p327\">Sam</button> has taken over the bar's music. Nobody has complained."
  },
  {
   "key": "crewbar:slicer:4",
@@ -2025,7 +2025,7 @@
  },
  {
   "key": "crewbar:slicer:6",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p334\">Sam</button> is on their terminal with their back to the room."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p330\">Sam</button> is on their terminal with their back to the room."
  },
  {
   "key": "crewbar:medic:1",
@@ -2033,11 +2033,11 @@
  },
  {
   "key": "crewbar:medic:2",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p336\">Sam</button> is giving a short lecture on hydration to a table of dockers."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p332\">Sam</button> is giving a short lecture on hydration to a table of dockers."
  },
  {
   "key": "crewbar:medic:3",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p337\">Sam</button> has been cornered by a stranger with a rash."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p333\">Sam</button> has been cornered by a stranger with a rash."
  },
  {
   "key": "crewbar:medic:4",
@@ -2049,7 +2049,7 @@
  },
  {
   "key": "crewbar:medic:6",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p340\">Sam</button> is nursing one drink and watching everyone else's."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p336\">Sam</button> is nursing one drink and watching everyone else's."
  },
  {
   "key": "heard2:talkative:1",

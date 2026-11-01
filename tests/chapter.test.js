@@ -120,10 +120,10 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
     st.hired.deal = { price: HIRED_TARGET, day: st.day, until: st.day - 1 };  // a lapsed deal: back to the chapter's price
     st.credits = HIRED_TARGET - 1; out.below = wantsYard();
     st.credits = HIRED_TARGET; out.at = wantsYard();
-    st.credits = Math.min(...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price)); out.cheapShip = wantsYard();
+    st.credits = Math.min(HIRED_TARGET - 1, ...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price)); out.cheapShip = wantsYard();  // under the stopgap (#879) the cheapest ship costs more than the target, so the lower of the two
     return out;
   });
-  assert.equal(r.target, 190000); assert.equal(r.below, false); assert.equal(r.at, true);
+  assert.equal(r.target, 57000); assert.equal(r.below, false); assert.equal(r.at, true);  // the stopgap price until #882 (#879)
   assert.equal(r.cheapShip, false, 'the Dust Skiff price is not the signal');
   await done();
 });
