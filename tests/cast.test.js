@@ -643,8 +643,8 @@ test('a main character lost outside their own pivot has what you did added to Af
     return { ...out, scenes, cast: st.mourn.map(m => m.cast || null) };
   });
   assert.equal(r.tomas, 'dead');
-  assert.match(r.scenes[0], /ring of braided wire/); assert.match(r.scenes[0], /say the plant back/);
-  assert.doesNotMatch(r.scenes[1], /braided|plant back/, 'a crew member with no farewell reads as before');
+  assert.match(r.scenes[0], /ring of braided wire/); assert.match(r.scenes[0], /every place she cracks/);
+  assert.doesNotMatch(r.scenes[1], /braided|she cracks/, 'a crew member with no farewell reads as before');
   await done();
 });
 
@@ -753,9 +753,9 @@ test('the sit-down beats are about their own life, and there is no invented favo
     s.beat = 3; out.b3 = sitBeat(t, true).title; out.home = homeHtml();
     return out;
   });
-  assert.match(r.b0, /Lagos Ring/); assert.match(r.b0, /weld shops/); assert.match(r.b0, /three owners who each sold the same hull/);
+  assert.match(r.b0, /"I'm from the ring," he says/); assert.match(r.b0, /Surulere/);
   assert.doesNotMatch(r.b0, /arcology/);
-  assert.match(r.b1, /sister Ngozi/); assert.match(r.b2, /his sister's flat/);
+  assert.match(r.b1, /"Ngozi," he says/); assert.match(r.b2, /Eight more months/);
   assert.equal(r.b3, 'With Tomas', 'no generic favor beat');
   assert.doesNotMatch(r.home, /Tomas:[^<]*favor/);
   await done();
@@ -790,7 +790,7 @@ test('letters from home are about their own people', async () => {
     };
     return { good: run([0, 0, 0]), bad: run([0, 0.9, 0]) };  // each person draws: whether to write, good or bad, which
   });
-  assert.match(r.good, /their sister Ngozi got the lease on the flat renewed/);
+  assert.match(r.good, /their sister Ngozi has paid off another month of the arrears/);
   assert.match(r.good, /their mother Graça has got the day shift at the pharmacy back/);
   assert.match(r.bad, /their sister Ngozi says the rent on Lagos Ring has gone up again/);
   assert.match(r.bad, /their mother Graça says the service charge on the flat has gone up again/);

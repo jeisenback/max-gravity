@@ -582,7 +582,7 @@
   "id": "cast:tomas:intro",
   "i": 0,
   "label": "Offer to help with the service",
-  "result": "He gives you a rag and a torque wrench, and names the three things not to touch, and you spend two hours on your back under a coolant loop. When you come out, black to the elbows, he looks at you. \"Next time,\" he says, \"you're holding the light. You're better at that.\"",
+  "result": "He hands you a rag and a torque wrench and names the three things not to touch. You spend two hours on your back under the pump. When you come out, black to the elbows, he checks your torques with his own wrench, all of them. \"Good,\" he says. \"Next time you hold the light. You're better at that.\"",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -618,7 +618,7 @@
   "id": "cast:tomas:intro",
   "i": 1,
   "label": "Leave him to it",
-  "result": "\"It's all right,\" he says. \"Most people do. She'll thank you anyway.\" He goes back to the loop, and you hear him, softly, as you leave: \"Nobody's angry at you. Nobody's angry.\"",
+  "result": "\"Fine,\" he says. \"Most people do.\" He goes back to the pump. When you come past at the end of the watch he's still there, and the cracked seal is in the bin.",
   "changes": [
    "s.people.c:tomas.memories: [] -> undefined",
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You left me to my service."
@@ -651,7 +651,7 @@
   "id": "cast:tomas:mid1",
   "i": 0,
   "label": "Lend him 2,000 cr",
-  "result": "He takes it with both hands. \"Thank you,\" he says, and says it again in Igbo. By the second pay day the two thousand is in your account, with an extra: a ring of braided wire, on a note that says \"for luck\".",
+  "result": "He takes it with both hands. \"Thank you,\" he says, and again in Igbo, and writes it in his notebook while you watch. By the second pay day the two thousand is back in your account, and there's a ring of braided wire on your locker, made from a weld offcut, with a note that says \"for luck\".",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.loan: undefined -> true",
@@ -689,7 +689,7 @@
   "id": "cast:tomas:mid1",
   "i": 1,
   "label": "\"I can't spare it.\"",
-  "result": "He straightens his shoulders. \"Of course,\" he says. \"I shouldn't have asked.\" He doesn't ask anyone else. In the evening he's in the engine room with the door open, counting a month on his fingers, and the next day his name is on the bill for two extra shifts.",
+  "result": "\"No. Of course.\" He doesn't ask anyone else. The next day his name is on the rota for two extra shifts, and the late fee is in his notebook, under the rent.",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -723,37 +723,37 @@
  {
   "id": "cast:tomas:mid2",
   "i": 0,
-  "label": "Ask him to teach you",
-  "result": "It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, every valve of her in his order. Then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. \"There,\" he says. \"Now you know her. Don't tell the owners.\"",
+  "label": "Ask him to show you",
+  "result": "It takes the whole of the quiet watch. He takes you round the frame with a torch and a mirror on a stick, and shows you every place a hull like this one cracks, in the order to check them. Then he makes you find each one again without him. \"There,\" he says. \"Now you know where to look.\"",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.plan: undefined -> true",
    "s.hired.skill.engineer: undefined -> 3",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me how I'd rebuild her, and listened.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me to show you where she cracks, and listened.",
    "s.people.c:tomas.opinion: 0 -> 2",
    "s.people.c:tomas.xp.engineer: 110 -> 112"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Ask him to teach you",
+    "label": "Ask him to show you",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Ask him to teach you",
+    "label": "Ask him to show you",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Ask him to teach you",
+    "label": "Ask him to show you",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Ask him to teach you",
+    "label": "Ask him to show you",
     "open": true,
     "why": ""
    }
@@ -762,35 +762,35 @@
  {
   "id": "cast:tomas:mid2",
   "i": 1,
-  "label": "Ask him to write it down, so it doesn't go with the hull",
-  "result": "He looks at the flask. \"Nobody has asked me that,\" he says. He goes below and comes back with a notebook with a stained cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, carefully, and puts them in your hand. \"If she's sold again,\" he says, \"somebody will need to know where the cracks are. Not the owners. Somebody.\" You fold the pages into your jacket. He puts the notebook back in his pocket with the stubs still in it.",
+  "label": "Ask him to write it down, so it stays with the ship",
+  "result": "\"Nobody has asked me that,\" he says. He spends the quiet watch filling eleven pages of his notebook in small square capitals, with a sketch on each: where to look, and what it looks like when it starts. He tears them out along the fold and gives them to you. \"If she's sold,\" he says, \"give them to whoever works on her next.\"",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.plan: undefined -> true",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me to write the plan down, so it'd last.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me to write it down, so it would stay with the ship.",
    "s.people.c:tomas.opinion: 0 -> 2"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Ask him to write it down, so it doesn't go with the hull (needs Tomas's trust)",
+    "label": "Ask him to write it down, so it stays with the ship (needs Tomas's trust)",
     "open": false,
     "why": ""
    },
    "poor": {
-    "label": "Ask him to write it down, so it doesn't go with the hull (needs Tomas's trust)",
+    "label": "Ask him to write it down, so it stays with the ship (needs Tomas's trust)",
     "open": false,
     "why": ""
    },
    "liked": {
-    "label": "Ask him to write it down, so it doesn't go with the hull",
+    "label": "Ask him to write it down, so it stays with the ship",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Ask him to write it down, so it doesn't go with the hull",
+    "label": "Ask him to write it down, so it stays with the ship",
     "open": true,
     "why": ""
    }
@@ -800,7 +800,7 @@
   "id": "cast:tomas:mid2",
   "i": 2,
   "label": "\"Stick to your shifts.\"",
-  "result": "He closes his mouth, and the flask. \"As you say.\" The plant runs perfectly for the rest of the burn.",
+  "result": "He closes the flask. \"As you say.\" He goes back to the schedule the software sets, and keeps to it.",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -834,35 +834,35 @@
  {
   "id": "cast:tomas:late",
   "i": 0,
-  "label": "Say you'd try",
-  "result": "\"I'd try,\" you say, and he lets out a breath. \"That's enough,\" he says. \"Nobody has ever said that.\" He claps your shoulder, once, hard, and goes below.",
+  "label": "Ask him to stay",
+  "result": "\"All right,\" he says, after a while. He closes the message without answering it. \"All right. I'll stay.\" He goes back to the engine room.",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.promised: undefined -> true",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You said you'd try to keep the crew together.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me to stay, and I stayed.",
    "s.people.c:tomas.opinion: 0 -> 2"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Say you'd try",
+    "label": "Ask him to stay",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Say you'd try",
+    "label": "Ask him to stay",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Say you'd try",
+    "label": "Ask him to stay",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Say you'd try",
+    "label": "Ask him to stay",
     "open": true,
     "why": ""
    }
@@ -871,33 +871,33 @@
  {
   "id": "cast:tomas:late",
   "i": 1,
-  "label": "Say you can't promise that",
-  "result": "\"No,\" he says, \"no, of course. Nobody can.\" He smiles. \"Thank you for not being kind,\" he says. \"It's a rare thing.\" He goes back to the engines, and, on the way, pats the bulkhead twice.",
+  "label": "Tell him to take it",
+  "result": "He nods, and opens the terms to accept them, and reads them first. There's a new placement fee, in instalments, and the instalments take three of the four months back. \"One month,\" he says, \"for a new ship, a new captain and a new crew.\" He closes it without answering.",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You were honest about what you could promise.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You told me to take the offer. It was the honest answer.",
    "s.people.c:tomas.opinion: 0 -> 1"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Say you can't promise that",
+    "label": "Tell him to take it",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Say you can't promise that",
+    "label": "Tell him to take it",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Say you can't promise that",
+    "label": "Tell him to take it",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Say you can't promise that",
+    "label": "Tell him to take it",
     "open": true,
     "why": ""
    }
@@ -907,10 +907,10 @@
   "id": "cast:tomas:pivot",
   "i": 0,
   "label": "Let him go in",
-  "result": "He comes out carried, both forearms scalded, and the plant holds behind him. He'll weld again. He doesn't take the flask in his left hand after that, and he doesn't complain.",
+  "result": "He comes out carried, both forearms scalded where the suit's cuffs gave, and the plant holds behind him. He'll weld again. He doesn't complain about it, then or after.",
   "changes": [
    "s.cast.tomas.marks.0.day: undefined -> 1",
-   "s.cast.tomas.marks.0.text: undefined -> His hands ache in the cold.",
+   "s.cast.tomas.marks.0.text: undefined -> His forearms are scarred from the scald.",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You let me go into the plant, and I came out scalded.",
@@ -947,7 +947,7 @@
   "id": "cast:tomas:pivot",
   "i": 1,
   "label": "Send a second person in with him (the second is hurt for it)",
-  "result": "You send a second person in after him. Ines comes back hurt, and is off duty until the next port. He goes in, and comes out in four minutes with no eyebrows, which he doesn't mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.",
+  "result": "You send a second person in after him. Ines comes back hurt, and is off duty until the next port. He goes in, and comes out in four minutes with the visor fogged and his eyebrows gone, which he doesn't mention. The plant settles. He sits on a crate with the flask and writes the four valves and the times in his notebook.",
   "changes": [
    "s.injured: {} -> undefined",
    "s.injured.c:ines: undefined -> true",
@@ -984,7 +984,7 @@
   "id": "cast:tomas:pivot",
   "i": 2,
   "label": "Tell him to vent the plant",
-  "result": "You tell him to vent her. He stands at the door with the rag in his hand. Then he opens the valve, and the whine runs down and stops. He doesn't look at you. He goes below.",
+  "result": "You tell him to vent her. He stands at the hatch in the suit. Then he opens the vent, and the whine runs down and stops, and the plant is cold for the rest of the burn. He doesn't look at you.",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",

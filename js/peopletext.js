@@ -1238,6 +1238,31 @@ const PEOPLE_LINES = {
     'c1.label': 'Ask if the lawyer\'s any good',
     'c1.result.0': '"He\'s what I can afford." She closes the list. "Flip in forty. Go and strap in."',
   },
+  // Tomas's own sittings (family.js sitLines), read in place of family:story-*. Written to docs/bible/voice.md and docs/bible/people/tomas.md.
+  'family:tomas-home': {
+    title: 'With Tomas',
+    'text.0': 'Tomas is in the galley after his shift with his boots off, eating rice out of a tub. You ask about Lagos. "I\'m from the ring," he says. "Lagos is where my parents live. Surulere, the same flat. My father drove buses. My mother sells cloth." He eats. "I went up at twenty-two. I come down for funerals and Christmas."',
+    'c0.label': 'Ask why he left the ring',
+    'c0.result.0': '"The yard lost a big fleet\'s refits to Luna. Half my shift went down on the same spaceplane." He scrapes the tub. "My berth came with the contract. No contract, no berth. So."',
+    'c1.label': 'Tell him where you\'re from',
+    'c1.result.0': 'He listens, and asks what the work was there, and who did it, and whether they were on contracts. Then he nods and finishes the rice.',
+  },
+  'family:tomas-picture': {
+    title: 'With Tomas',
+    'text.0': 'Tomas has a photo up on his terminal when you sit down: a stall with a steel counter and two big pots, and a woman behind it in a hairnet, not smiling for the camera. "Ngozi," he says. "That\'s the stall. That\'s Chidi\'s homework on the counter." He enlarges it for you: a boy\'s exercise book, open, next to the ladle.',
+    'c0.label': 'Ask about her',
+    'c0.result.0': '"She works from four in the morning to the end of second shift. She says the stall is fine." He turns the terminal off. "Ngozi always says the stall is fine."',
+    'c1.label': 'Ask about Chidi',
+    'c1.result.0': '"Nine. He\'s never been down. He thinks Earth is heavy and loud, and he\'s right." Tomas smiles. "He wants to be a pilot. I told him to be an engineer, and he laughed at me."',
+  },
+  'family:tomas-hope': {
+    title: 'With Tomas',
+    'text.0': 'Ngozi\'s rent statement comes in with the batch, forwarded. Tomas reads it at the galley table and copies the arrears into his paper notebook, under last month\'s. The number is smaller. "Eight more months," he says. "If nothing breaks." He closes the notebook.',
+    'c0.label': 'Ask what comes after',
+    'c0.result.0': '"A lease of my own. A repair shop on the rim. The yard workers bring me their kit and I fix it, and I don\'t care who has the refits." He says what the lease costs, to the credit. It\'s a lot.',
+    'c1.label': 'Ask if Ngozi knows how much he sends',
+    'c1.result.0': '"She knows. She pretends she doesn\'t, so she doesn\'t have to thank me, and I pretend I don\'t notice." He puts the notebook in his pocket.',
+  },
   'family:ines-goeson': {  // Ines's talk after a sitting (family.js goesOn): one opening a subject, the same offers and what they cost
     title: 'With Ines',
     'port.0': 'The talk turns to {port}. "I\'ve docked there twice," Ines says. "Bad tug, good noodles. The collar fee went up last year, and the captain read the invoice three times." She finishes her coffee.',
