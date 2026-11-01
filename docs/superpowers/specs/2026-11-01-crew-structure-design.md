@@ -45,7 +45,7 @@ The `icehand` key stays, so saves and the ice runs keep working. `ROLE_NAMES.ice
 ### Pay (`js/hired.js`, `js/captains/*.js`)
 
 - `HIRED_SHARE` becomes 0. The hand's share no longer comes from the captain's `share` field. That field goes from the entries, and `tests/captains.test.js`'s required fields follow.
-- `HIRED_WAGE` rises to the figure the soak gives for about 20 runs to the target (a starting guess: about 650). The comment says how it was tuned.
+- The hand's day rate is the hired captain's own `wage` field (Hester's is 350; `HIRED_WAGE`, 400, is the fallback with no captain). Each captain's `wage` rises to the figure the soak gives for about 20 runs to the target with no share (a starting guess for Hester: about 650), and `HIRED_WAGE` with them. The comment says how it was tuned.
 - `KIT_DEDUCTION`, a fixed sum a day (a starting guess: 30), comes out of the wage before the hall's cut. The pay note says so: "Your pay: X cr wage, less Y cr for your kit."
 - The sign-on lines that quote a share follow:
   - Hester's intro: "${wage} a day and ${share} percent";
