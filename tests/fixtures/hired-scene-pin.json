@@ -2974,7 +2974,7 @@
   "id": "cast:cato:mid1",
   "i": 0,
   "label": "Ask which ship has the question mark",
-  "result": "He tells you, and it's a hull you've seen on the lanes: old, slow, honest. \"Her owner wants out in two years,\" he says. \"I've been watching her price like the weather.\" He talks about her for ten minutes without stopping, and when he's done the mug in his hand has gone cold.",
+  "result": "He tells you: an old, slow ore carrier the co-op bought from a finance house when her last charter failed. \"They're taking two members on her next year,\" he says. \"I'm saving for one of the places, and I'll be short.\" He talks about her until his tea has gone cold.",
   "changes": [
    "s.cast.cato.flags: {} -> undefined",
    "s.cast.cato.flags.share: undefined -> true",
@@ -3011,7 +3011,7 @@
   "id": "cast:cato:mid1",
   "i": 1,
   "label": "Say it's not stupid, but it's a long way off",
-  "result": "\"It is,\" he says. \"It's a long way off every day, and then it's one day nearer.\" He puts a hand on the lashing.",
+  "result": "\"It is,\" he says. \"It's a long way off every year, and every year it costs more.\" He puts the notebook away.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -3050,7 +3050,7 @@
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
-   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You held the deck against my order.",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You held the deck when I asked you not to.",
    "s.people.c:cato.opinion: 0 -> -1",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -3084,12 +3084,12 @@
  {
   "id": "cast:cato:mid2",
   "i": 1,
-  "label": "Stand the watch down, as Cato said",
-  "result": "You stand them down. Cato covers the watch. The count isn't done until morning, and Captain Vance finds the gap in it, and finds you. \"Whose order?\" she says. You tell her. \"I see,\" she says, and writes something down. Cato, passing in the passage, doesn't look at either of you, and puts a hand flat on the bulkhead as he goes.",
+  "label": "Stand the watch down, as Cato asked",
+  "result": "You stand them down. Cato does the count, alone. It isn't finished until morning, and Captain Vance finds the gap in the log, and finds you. \"Whose idea?\" she says. You tell her. \"I see,\" she says, and writes something down. Cato, passing in the passage, doesn't look at either of you.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
-   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You stood the watch down on my word.",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You stood the watch down when I asked.",
    "s.people.c:cato.opinion: 0 -> 2",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -3099,22 +3099,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Stand the watch down, as Cato said",
+    "label": "Stand the watch down, as Cato asked",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Stand the watch down, as Cato said",
+    "label": "Stand the watch down, as Cato asked",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Stand the watch down, as Cato said",
+    "label": "Stand the watch down, as Cato asked",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Stand the watch down, as Cato said",
+    "label": "Stand the watch down, as Cato asked",
     "open": true,
     "why": ""
    }
@@ -3226,7 +3226,7 @@
   "id": "cast:cato:pivot",
   "i": 0,
   "label": "Let him go in",
-  "result": "He goes in, and the pod is lashed, and the load stops. He comes out with ice in his beard and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That's where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
+  "result": "He goes in, and the pod is lashed, and the load stops. He comes out with grease to the elbows and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That's where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -3260,8 +3260,8 @@
  {
   "id": "cast:cato:pivot",
   "i": 1,
-  "label": "Send an ice hand in with him",
-  "result": "You send an ice hand in with him. He goes in, and the pod is lashed, and the load stops. He comes out with ice in his beard and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That's where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
+  "label": "Send a hold hand in with him",
+  "result": "You send a hand in with him. He goes in, and the pod is lashed, and the load stops. He comes out with grease to the elbows and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That's where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -3271,22 +3271,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Send an ice hand in with him",
+    "label": "Send a hold hand in with him",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Send an ice hand in with him",
+    "label": "Send a hold hand in with him",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Send an ice hand in with him",
+    "label": "Send a hold hand in with him",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Send an ice hand in with him",
+    "label": "Send a hold hand in with him",
     "open": true,
     "why": ""
    }
@@ -3295,8 +3295,8 @@
  {
   "id": "cast:cato:pivot",
   "i": 2,
-  "label": "Seal the hold and let the ice go",
-  "result": "You tell him no, and shut the hatch. The ice goes where ice goes, and the pod won't be the same. Cato stands at the hatch with the strap in his hands and says nothing until the lock indicator goes green. \"It's your call,\" he says.",
+  "label": "Seal the hold and let the pod go",
+  "result": "You tell him no, and shut the hatch. The pod goes where it goes, and the bulkhead won't be the same. Cato stands at the hatch with the strap in his hands and says nothing until the lock indicator goes green. \"It's your call,\" he says.",
   "changes": [
    "s.cast.cato.flags: {} -> undefined",
    "s.cast.cato.flags.benched: undefined -> true",
@@ -3308,22 +3308,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Seal the hold and let the ice go",
+    "label": "Seal the hold and let the pod go",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Seal the hold and let the ice go",
+    "label": "Seal the hold and let the pod go",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Seal the hold and let the ice go",
+    "label": "Seal the hold and let the pod go",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Seal the hold and let the ice go",
+    "label": "Seal the hold and let the pod go",
     "open": true,
     "why": ""
    }

@@ -33,8 +33,9 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 6. `ship.md`: Hester's ship, its crew, and life aboard.
 7. `lagos.md`: Lagos Arcology, the mainland, Lagos Ring, and Tomas.
 8. `rotterdam.md`: Rotterdam Arcology, the port, the finance houses, and Hester.
-9. `voice.md`: how the game's writing sounds.
-10. `people/`: one sheet per character (`ines.md` first).
+9. `chittagong.md`: Chittagong Arcology, the hill settlements, the manning agencies, and Cato.
+10. `voice.md`: how the game's writing sounds.
+11. `people/`: one sheet per character (`ines.md` first).
 
 ## Where the game must change to fit
 
@@ -54,6 +55,5 @@ The owner decided (2026-10-31) that where the bible and the game disagree, the g
 
 - Everyday life: fun and media (the code has vids, books and ring-ball), religion, crime, what the news covers, age and health, marriage and children, accents.
 - Luna, Mars's domes, Ceres and the Belt stations, the outer moons.
-- The other crew members' places: Cato's home.
 - What replaces the faction economies and wars in the game (a code project).
 - History before day 1 (the old `docs/world/timeline.md`), the player's start backgrounds (`backgrounds.md`), customs aboard (`customs.md`) and the posts aboard (`trades.md`). Those files were retired in #869; they are in git history, written to the old world, and are a source to check, not to copy.
