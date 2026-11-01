@@ -50,7 +50,8 @@ The `icehand` key stays, so saves and the ice runs keep working. `ROLE_NAMES.ice
 - The sign-on lines that quote a share follow:
   - Hester's intro: "${wage} a day and ${share} percent";
   - the hiring board;
-  - the settling-up scene.
+  - the settling-up scene;
+  - a run's terms (`runTerms` in `js/hired.js`, "so about X cr to you"), which become the wage for the days and the kit deduction.
 
 ### Cato's walk round the ship (`scene:cato-round`) and the help (`js/help.js`)
 
