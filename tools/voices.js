@@ -1,7 +1,7 @@
 'use strict';
 
 // The voice review (#646): a bundle for a rater. After a prose pass, this finds the quoted speech in the narrative files that changed, numbers it with the
-// scene text around it, and prints it with the voice cards and the rubric (docs/voices/review.md) for a Claude session or subagent to read. The code cannot say who
+// scene text around it, and prints it with the character sheets (docs/bible/people/) and the voice guide (docs/bible/voice.md) for a Claude session or subagent to read. The code cannot say who
 // speaks (the speaker is the scene's, not the string's), so the rater does. Nothing is scored here, nothing fails a build, and no model is called.
 //   node tools/voices.js [file ...] [--diff REF]
 // With files it reads those; otherwise the narrative files that differ from REF (default origin/main), and of those only the passages REF did not have. After the lines
@@ -13,7 +13,6 @@ const { execFileSync } = require('node:child_process');
 const { QUOTED, scanSource, wordCount, narrativeFiles } = require('./prose-lint');
 
 const CONTEXT = 300;  // characters of scene text kept either side of a line
-const CARDS = ['hester', 'cato', 'ines', 'tomas', 'gunner', 'patrol-officers'];
 
 // The quoted lines in a script's source that are not in `known` (a set of passage texts), as { line, quote, before, after }: the passage is a whole string or a run of
 // strings joined by `+`, and the line is where it starts in the file.
@@ -88,8 +87,8 @@ function main(args, { root, out, git = a => defaultGit(root, a) }) {
   // the passages whole only for a diff: for files named, every passage of the file would be too many to read
   const whole = named.length ? [] : Object.entries(srcs).flatMap(([f, src]) => passages(src, passageSet(base[f])).map(p => ({ ...p, file: f })));
   if (!spans.length && !whole.length) { out(`no passages ${named.length ? 'in the files named' : `changed since ${ref}`}`); return 0; }
-  const docs = f => fs.readFileSync(path.join(root, 'docs', 'voices', f), 'utf8');
-  out(bundle(spans, { rubric: docs('review.md'), cards: Object.fromEntries(CARDS.map(c => [c, docs(`${c}.md`)])) }, whole));
+  const bible = (...f) => path.join(root, 'docs', 'bible', ...f), people = fs.readdirSync(bible('people')).filter(f => f.endsWith('.md')).sort();
+  out(bundle(spans, { rubric: fs.readFileSync(bible('voice.md'), 'utf8'), cards: Object.fromEntries(people.map(f => [f.replace(/\.md$/, ''), fs.readFileSync(bible('people', f), 'utf8')])) }, whole));
   return 0;
 }
 
