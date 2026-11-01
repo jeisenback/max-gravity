@@ -1,6 +1,6 @@
 # Lagos Arcology and Lagos Ring
 
-Status: draft for the owner's review, 2026-11-01. Built on `economy.md`, `jurisdictions.md`, `work.md` and `technology.md`.
+Status: approved by the owner on 2026-11-01. Built on `economy.md`, `jurisdictions.md`, `work.md` and `technology.md`.
 
 ## The city
 
