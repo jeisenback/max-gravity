@@ -753,9 +753,9 @@ test('the sit-down beats are about their own life, and there is no invented favo
     s.beat = 3; out.b3 = sitBeat(t, true).title; out.home = homeHtml();
     return out;
   });
-  assert.match(r.b0, /Lagos Ring/); assert.match(r.b0, /weld shops/); assert.match(r.b0, /three owners who each sold the same hull/);
+  assert.match(r.b0, /"I'm from the ring," he says/); assert.match(r.b0, /Surulere/);
   assert.doesNotMatch(r.b0, /arcology/);
-  assert.match(r.b1, /sister Ngozi/); assert.match(r.b2, /his sister's flat/);
+  assert.match(r.b1, /"Ngozi," he says/); assert.match(r.b2, /Eight more months/);
   assert.equal(r.b3, 'With Tomas', 'no generic favor beat');
   assert.doesNotMatch(r.home, /Tomas:[^<]*favor/);
   await done();
@@ -790,7 +790,7 @@ test('letters from home are about their own people', async () => {
     };
     return { good: run([0, 0, 0]), bad: run([0, 0.9, 0]) };  // each person draws: whether to write, good or bad, which
   });
-  assert.match(r.good, /their sister Ngozi got the lease on the flat renewed/);
+  assert.match(r.good, /their sister Ngozi has paid off another month of the arrears/);
   assert.match(r.good, /their mother Graça has got the day shift at the pharmacy back/);
   assert.match(r.bad, /their sister Ngozi says the rent on Lagos Ring has gone up again/);
   assert.match(r.bad, /their mother Graça says the service charge on the flat has gone up again/);

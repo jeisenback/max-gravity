@@ -173,23 +173,23 @@ const CAST = {
     first: 'Tomas', last: 'Achebe', culture: 'earth', home: 'Lagos Ring', job: 'dockyard welder', age: 41, role: 'engineer',
     traits: ['kind', 'homesick'], wage: 600,
     skills: { engineer: 3, slicer: 1, pilot: 1, gunner: 0 }, captain: { trade: 2, nerve: 2, thrift: 5 },
-    ambition: 'Wants one ship kept running properly for ten years, with the same crew on her at the end of it.',
-    bio: 'A dockyard welder who has rebuilt the same hull three times for three owners who each sold her out from under him. He sends most of his wages to a sister on Lagos Ring, and talks to every machine he works on.',
-    // The story you learn sitting with him (family.js uses it in place of an invented one): the same slots, his own life.
+    ambition: 'Wants his sister\'s arrears on Lagos Ring cleared, and then a repair-shop lease of his own there.',
+    bio: 'Twenty years a welder in the yard on Lagos Ring, on one contract after another, and an engineer\'s ticket sat at night and paid for himself. He shipped out when the yard lost its refits and his berth went with his contract. He sends money up to his sister on the ring and down to his parents on the mainland.',
+    // The story you learn sitting with him (family.js uses it in place of an invented one): the same slots, his own life. His sittings have lines of their own (family:tomas-*).
     story: {
-      left: 'three owners who each sold the same hull out from under him', rel: 'sister', name: 'Ngozi',
-      hope: 'to buy out his sister\'s flat on Lagos Ring, so the rent never has to cross the gap again',
-      homeDetail: 'ring gravity you could hang a bucket on, the weld shops going at shift change, and a market you could smell from the dock',
+      left: 'the yard losing its refits, and his berth with them', rel: 'sister', name: 'Ngozi',
+      hope: 'to clear his sister\'s arrears on the ring, and then a repair shop of his own there',
       favor: null,  // his own asks are his scenes below
       news: {
-        good: ['{who} got the lease on the flat renewed for five years', '{who} sent a photo of the new stall, with a hand-painted sign', '{who} is back on her feet after being ill'],
-        bad: ['{who} says the rent on {home} has gone up again', '{who} is ill, and the ring clinic wants money up front', '{who} lost the stall\'s permit and is looking for work'],
+        good: ['{who} has paid off another month of the arrears', '{who} sent a photo of Chidi\'s school report', '{who} got the stall\'s permit renewed for another year'],
+        bad: ['{who} says the rent on {home} has gone up again', '{who} says the yard has laid off another shift, and the stall is quiet', '{who} says Chidi is in the ring clinic with a fever, and the clinic wants paying first'],
       },
     },
-    chatter: ['Tomas is talking to the coolant loop, quietly, in Igbo.', ('Tomas: "She\'s not noisy. She\'s telling you something. Stop and listen, ' +
-        'and then be embarrassed that you didn\'t before."'), 'Tomas has left the engine room door open. He says she likes the air.',
-        'Tomas is sending a message home, and counting something on his fingers, and sending it again.',
-        'Tomas: "Ten years, one ship. That\'s the whole plan. People think I\'m being modest."'],
+    chatter: ['Tomas is swearing at a seized valve in Igbo, quietly and steadily.',
+        'Tomas: "The pump\'s noisy because the bearing\'s going. Running fine and noisy aren\'t the same thing."',
+        'Tomas is copying numbers from his terminal into a paper notebook.',
+        'Tomas is watching the Lagos Orbitals on a two-day-old recording, with the score hidden.',
+        'Tomas: "I did it right the first time. Now I\'m doing it right the second time."'],
     // What they leave behind when they walk off or die (fate.js farewellFacts): a flag and its line, in priority order, two at most.
     farewell: {
       walk: 'Tomas shuts the engine room door, which he has never done, and says nothing to the plant. He takes the bag that clinks down the ramp at {planet}.',
