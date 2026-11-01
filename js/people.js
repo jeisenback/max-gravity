@@ -12,7 +12,8 @@ const GOALS = {
 const SECRETS = ['contraband', 'wanted', 'ill', 'spy', 'debt'];
 const CRIMES = ['fraud', 'smuggling', 'assaulting a dock boss', 'desertion', 'stealing a ship', 'selling forged water ration cards'];
 
-const ROLE_NAMES = { engineer: 'Engineer', pilot: 'Pilot', gunner: 'Gunner', quartermaster: 'Quartermaster', slicer: 'Slicer', medic: 'Medic', xo: 'First officer', cook: 'Cook', icehand: 'Ice hand' };
+// The xo post is named by the hired captain when the captain's entry has its own title for it (Hester's ship calls it the bosun, docs/bible/people/cato.md).
+const ROLE_NAMES = { engineer: 'Engineer', pilot: 'Pilot', gunner: 'Gunner', quartermaster: 'Quartermaster', slicer: 'Slicer', medic: 'Medic', get xo() { const d = typeof captainEntry === 'function' ? captainEntry() : null; return (d && d.xoTitle) || 'First officer'; }, cook: 'Cook', icehand: 'Ice hand' };
 // The hired chapter's crew only: nobody offers to hire these, and a passenger never asks to join as one.
 const HIREABLE_ROLES = ['engineer', 'pilot', 'gunner', 'quartermaster', 'slicer', 'medic'];
 const ROLE_WAGE = { engineer: 600, pilot: 700, gunner: 600, quartermaster: 450, slicer: 800, medic: 550, xo: 650, cook: 400, icehand: 350 };

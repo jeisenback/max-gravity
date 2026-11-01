@@ -621,7 +621,7 @@
    }
   ],
   "title": "Gone Ashore",
-  "text": "Cato leaves the watch bill on the galley table, filled in for the next seven days, and takes his mug.</p><p>At the foot of the watch bill, in pencil, is a line that reads: tell them if it goes badly.</p><p>His notebook has the old slow ship with the question mark, and her price, crossed out and written again six times.",
+  "text": "Cato leaves the watch bill on the galley table, filled in for the next seven days, and takes his mug.</p><p>At the foot of the watch bill, in pencil, is a line that reads: tell them if it goes badly.</p><p>His notebook has the co-op's old ore carrier with the question mark, and the price of a share, crossed out and written again six times.",
   "labels": [
    "Close the hatch"
   ]
@@ -10213,7 +10213,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "\"A season,\" Cato says. \"Hester was a hand on this ship before she owned it. It took her three.\"",
+    "text": "\"A season,\" Cato says. \"Everyone takes a season. Hester was a rating for twenty years before she had a ship.\"",
     "next": null
    },
    {
@@ -10236,7 +10236,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "\"A season,\" Cato says. \"Hester was a hand on this ship before she owned it. It took her three.\"",
+    "text": "\"A season,\" Cato says. \"Everyone takes a season. Hester was a rating for twenty years before she had a ship.\"",
     "next": null
    },
    {
@@ -10259,7 +10259,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "\"A season,\" Cato says. \"Hester was a hand on this ship before she owned it. It took her three.\"",
+    "text": "\"A season,\" Cato says. \"Everyone takes a season. Hester was a rating for twenty years before she had a ship.\"",
     "next": null
    },
    {
@@ -10282,7 +10282,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "\"A season,\" Cato says. \"Hester was a hand on this ship before she owned it. It took her three.\"",
+    "text": "\"A season,\" Cato says. \"Everyone takes a season. Hester was a rating for twenty years before she had a ship.\"",
     "next": null
    },
    {
@@ -11226,7 +11226,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He goes in, and the pod is lashed, and the load stops. He comes out with ice in his beard and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That's where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
+    "text": "He goes in, and the pod is lashed, and the load stops. He comes out with grease to the elbows and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That's where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
     "mem": [
      "9 Jul 2214: You let me go into the hold, and I came out."
     ],
@@ -11248,7 +11248,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He goes in first, and it goes wrong at the number two strap, and the hold is nothing but ice and shouting. He comes out carried, and the hand that held the strap doesn't close properly, and won't. The med kit is already open. He says, from the deck, \"Number two is lashed. So that's done.\"",
+    "text": "He goes in first, and it goes wrong at the number two strap, and the hold is nothing but noise and shouting. He comes out carried, and the hand that held the strap doesn't close properly, and won't. The med kit is already open. He says, from the deck, \"Number two is lashed. So that's done.\"",
     "mem": [
      "9 Jul 2214: You let me go into the hold, and I came out."
     ],

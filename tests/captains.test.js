@@ -337,7 +337,7 @@ test('the ice hold follows the state: he lives, is marked or dies, and the capta
   assert.deepEqual([r.two.dead, r.two.marks, r.two.mood], [false, 1, true], 'two points: marked, and the captain is low');
   for (const k of ['one', 'noHands']) {
     assert.deepEqual([r[k].dead, r[k].mood, r[k].crewed], [true, true, false], `${k}: one point, he dies`);
-    assert.match(r[k].cause, /^Lost in the ice hold near /); assert.equal(r[k].opinion, 1, 'the captain takes it hard');
+    assert.match(r[k].cause, /^Lost in the hold near /); assert.equal(r[k].opinion, 1, 'the captain takes it hard');
   }
 });
 
@@ -785,7 +785,7 @@ test('Cato\'s "What Cato Knows" opens at friendly or better, and below it he kee
     return out;
   });
   assert.deepEqual(r.closed, ['Say it can wait']); assert.match(r.closedText, /I don't know you well enough/); assert.equal(r.closedTold, false, 'the favour is not asked');
-  assert.deepEqual(r.open, ['Ask him to tell you if it goes badly', "Tell him it's not yours to carry"]); assert.match(r.openText, /I've known about the bank since the spring/);
+  assert.deepEqual(r.open, ['Ask him to tell you if it goes badly', "Tell him it's not yours to carry"]); assert.match(r.openText, /I've known about the house since the spring/);
   assert.equal(r.openTold, true); assert.match(r.result, /I wouldn't have known how to start/);
 });
 
