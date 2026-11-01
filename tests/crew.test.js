@@ -18,7 +18,7 @@ test('first aid: with no medic aboard Cato holds it, a hurt Cato gives none, a m
     st.crew = st.crew.filter(id => person(id).role !== 'medic');
     const out = { noMedic: (roleHolder('medic') || {}).cast || null };
     st.armor = 0;  // no hull point
-    out.pivot = catoHoldPoints(false) - (iceHands() >= 2 ? 1 : 0);  // with the hands point taken off, only a medic other than Cato could count
+    out.pivot = catoHoldPoints(false) - (iceHands() >= 1 ? 1 : 0);  // with the hands point taken off, only a medic other than Cato could count
     st.injured = { [cato.id]: true };
     out.hurt = roleHolder('medic') === undefined;
     st.injured = {};
@@ -31,4 +31,25 @@ test('first aid: with no medic aboard Cato holds it, a hurt Cato gives none, a m
   assert.equal(r.hurt, true, 'a hurt Cato gives none');
   assert.equal(r.medicFirst, 'medic', 'a medic aboard comes first');
   assert.equal(r.pivot, 0, 'his own pivot does not count his first aid');
+});
+
+test('Hester\'s ship carries seven: the captain, two officers, the bosun, the hand, the comms rating and a deckhand', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const roles = G.state.crew.map(person).map(c => c.role);  // the captain and the hand are not in st.crew
+    return { aboard: G.state.crew.length + 2, roles, deck: ROLE_NAMES.icehand, perk: ROLE_PERKS.xo(), title: ROLE_NAMES.xo };
+  });
+  await done();
+  assert.equal(r.aboard, 7, `seven aboard: ${r.roles}`);  // the captain, Ines, Tomas, Cato, the hand, the comms rating and the deckhand
+  for (const gone of ['quartermaster', 'medic', 'cook']) assert.ok(!r.roles.includes(gone), `no ${gone}`);
+  assert.equal(r.deck, 'Deckhand');
+  assert.equal(r.title, 'Bosun'); assert.match(r.perk, /first-aid rating/);
+});
+
+test('with no hired captain, the first officer keeps its name and its perk', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const r = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent(); return { title: ROLE_NAMES.xo, perk: ROLE_PERKS.xo() }; });
+  await done();
+  assert.equal(r.title, 'First officer'); assert.equal(r.perk, 'Runs the watch bill and speaks for the captain.');
 });

@@ -13,7 +13,7 @@ const SECRETS = ['contraband', 'wanted', 'ill', 'spy', 'debt'];
 const CRIMES = ['fraud', 'smuggling', 'assaulting a dock boss', 'desertion', 'stealing a ship', 'selling forged water ration cards'];
 
 // The xo post is named by the hired captain when the captain's entry has its own title for it (Hester's ship calls it the bosun, docs/bible/people/cato.md).
-const ROLE_NAMES = { engineer: 'Engineer', pilot: 'Pilot', gunner: 'Gunner', quartermaster: 'Quartermaster', slicer: 'Slicer', medic: 'Medic', get xo() { const d = typeof captainEntry === 'function' ? captainEntry() : null; return (d && d.xoTitle) || 'First officer'; }, cook: 'Cook', icehand: 'Ice hand' };
+const ROLE_NAMES = { engineer: 'Engineer', pilot: 'Pilot', gunner: 'Gunner', quartermaster: 'Quartermaster', slicer: 'Slicer', medic: 'Medic', get xo() { const d = typeof captainEntry === 'function' ? captainEntry() : null; return (d && d.xoTitle) || 'First officer'; }, cook: 'Cook', icehand: 'Deckhand' };  // the icehand key is a deckhand's post (#879); the key stays for saves and the ice runs
 // The hired chapter's crew only: nobody offers to hire these, and a passenger never asks to join as one.
 const HIREABLE_ROLES = ['engineer', 'pilot', 'gunner', 'quartermaster', 'slicer', 'medic'];
 const ROLE_WAGE = { engineer: 600, pilot: 700, gunner: 600, quartermaster: 450, slicer: 800, medic: 550, xo: 650, cook: 400, icehand: 350 };
@@ -24,9 +24,9 @@ const ROLE_PERKS = {
   quartermaster: () => 'One extra market rumor on every burn.',
   slicer: s => `Can spoof transponders and manifests (${60 + s * 10}% reliable).`,
   medic: () => 'Can treat sick or injured passengers.',
-  xo: () => 'Runs the watch bill and speaks for the captain.',
+  xo: () => { const d = typeof captainEntry === 'function' ? captainEntry() : null; return d && d.xoPerk ? d.xoPerk : 'Runs the watch bill and speaks for the captain.'; },  // the hired captain's own word for the post, as with its name
   cook: () => 'Keeps the galley and knows everyone\'s business.',
-  icehand: () => 'Handles the ice and the cargo.',
+  icehand: () => 'Handles the cargo, the lashings and the ice.',
 };
 
 // ---------- generation ----------

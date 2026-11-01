@@ -14,7 +14,7 @@ const HELP = [
         `arrival you are paid a wage for each day and a share of the run's profit. Your savings are your own, but you came aboard owing the hiring ` +
         `hall for the berth, the passage and the kit: about thirty thousand credits. Thirty percent of each run's pay goes to it until it is paid, and a ship ` +
         `cannot be bought while anything is owed.`),
-    `A first officer runs the watch: they decide who moves to which post, and the crew-side calls on the road. The captain keeps money and ship matters. You have an opinion with each of them, and the two can differ.`,
+    `The bosun runs the ratings and the rota: they decide who moves to which post, and the crew-side calls on the road. The captain keeps money and ship matters. You have an opinion with each of them, and the two can differ.`,
     `Save toward a ship of your own. Once your savings are high enough, a ship may be offered to you at a port with a yard. The yard's own ships stay on the list, and the Dust Skiff is the cheapest, at ${fmt(SHIPS.shuttle.price)} credits.`,
     'Buying a ship ends your time as a hand. The crew who like you come with you, and the captain says goodbye at the foot of the ramp.' ] },
   { id: 'trading', title: 'Trading and markets', hand: [
@@ -36,7 +36,7 @@ const HELP = [
     'The fight is a card duel on the console. The ship with the initiative plays a threat, the other an answer. PDCs stop torpedoes, evasive burns stop gun runs, and crew at the locks stop boarders. A stopped threat passes the initiative.',
     'Your cards come from your ship: torpedoes, close-defense turrets, guns, pilot, power, and crew. A beaten pirate drifts, disabled, and can be boarded.' ] },
   { id: 'crew', title: 'Crew and relationships', hand: [
-    'You work one post, and the rest of the crew hold the others. A first officer runs the watch and decides post swaps. Each role has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun, quartermasters hear rumors, slicers spoof transponders, medics heal.',
+    'You work one post, and the rest of the crew hold the others. The bosun runs the ratings and the rota, decides post swaps, and holds the first aid. Each post has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun.',
     'People aboard have feelings about you and about each other. Shared tastes bring them together; clashing habits pull them apart. Downtime activities build bonds, and a day of work at your post is experience.',
     ('Sit with someone during downtime to learn their story over several talks. Letters from home arrive at ports, and a crew member having a hard ' +
         'time works one skill lower until someone helps. A hurt or dead crew member is marked on the crew screen, and the dead are remembered there. ' +

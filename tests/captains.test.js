@@ -56,7 +56,7 @@ test('a hired game is run by an authored captain with their first officer aboard
   assert.equal(r.role, 'captain'); assert.equal(r.captainKey, r.key);
   assert.equal(r.crewed, true); assert.equal(r.xoRole, 'xo'); assert.equal(r.cast, 'cato'); assert.equal(r.since, 'number');
   assert.equal(r.generated, 0, 'the authored first officer takes the generated one\'s place');
-  assert.deepEqual(r.roster, ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo']);
+  assert.deepEqual(r.roster, ['engineer', 'icehand', 'pilot', 'slicer', 'xo']);  // the bible's crew (#879): the posts, the bosun and a deckhand
 });
 
 test('the same seed picks the same captain', async () => {
@@ -326,7 +326,7 @@ test('the ice hold follows the state: he lives, is marked or dies, and the capta
   const r = await run(() => {
     const run = ({ medic = true, hull = 'good', hands = 2, backup = false }) => {
       const st = start(), cap = hiredCaptain(); cap.opinion = 2;
-      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'icehand' || hands-- > 0); });
+      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'icehand' || hands-- > 0); }); if (medic) { const md = makePerson('earth'); md.role = 'medic'; md.skill = 1; registerPerson(md); st.crew.push(md.id); }  // the chapter's crew carries none (#879): bring one when the case wants one
       st.armor = hull === 'good' ? ship().armor : Math.floor(ship().armor * 0.5);
       const text = CAST.cato.scenes.pivot.choices[backup ? 1 : 0].run(), m = (st.memorial || [])[0];
       return { text: typeof text === 'string' && text.length > 40, dead: castDead('cato'), marks: (castRec('cato').marks || []).length, mood: moodLow(cap), opinion: cap.opinion, cause: m ? m.cause : null, crewed: st.crew.includes('c:cato') };
@@ -398,7 +398,7 @@ test('the reactor follows the state: she lives, is marked or dies, and the capta
   const r = await run(() => {
     const run = ({ medic = true, drive = 100, engineer = true, backup = false }) => {
       const st = start({ captainKey: 'dov' }), cap = hiredCaptain(); cap.opinion = 2;
-      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'engineer' || engineer); });
+      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'engineer' || engineer); }); if (medic) { const md = makePerson('earth'); md.role = 'medic'; md.skill = 1; registerPerson(md); st.crew.push(md.id); }  // the chapter's crew carries none (#879): bring one when the case wants one
       condition().drive = drive;
       const text = CAST.ilsa.scenes.pivot.choices[backup ? 1 : 0].run(), m = (st.memorial || [])[0];
       return { text: typeof text === 'string' && text.length > 40, dead: castDead('ilsa'), marks: (castRec('ilsa').marks || []).length, mood: moodLow(cap), opinion: cap.opinion, cause: m ? m.cause : null };
@@ -451,7 +451,7 @@ test('the docking emergency follows the state: she lives, is marked or dies, and
   const r = await run(() => {
     const run = ({ medic = true, hull = 'good', drive = 100, backup = false }) => {
       const st = start({ captainKey: 'imre' }), cap = hiredCaptain(); cap.opinion = 2;
-      st.crew = st.crew.filter(id => person(id).role !== 'medic' || medic);
+      st.crew = st.crew.filter(id => person(id).role !== 'medic' || medic); if (medic) { const md = makePerson('earth'); md.role = 'medic'; md.skill = 1; registerPerson(md); st.crew.push(md.id); }  // the chapter's crew carries none (#879)
       st.armor = hull === 'good' ? ship().armor : Math.floor(ship().armor * 0.5); condition().drive = drive;
       const text = CAST.pilar.scenes.pivot.choices[backup ? 1 : 0].run(), m = (st.memorial || [])[0];
       return { text: typeof text === 'string' && text.length > 40, dead: castDead('pilar'), marks: (castRec('pilar').marks || []).length, mood: moodLow(cap), opinion: cap.opinion, cause: m ? m.cause : null };
@@ -504,7 +504,7 @@ test('the boarding lock follows the state: he lives, is marked or dies, and the 
   const r = await run(() => {
     const run = ({ medic = true, hull = 'good', gunner = true, backup = false }) => {
       const st = start({ captainKey: 'zoya', post: 'pilot' }), cap = hiredCaptain(); cap.opinion = 2;  // a pilot's game has a gunner aboard
-      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'gunner' || gunner); });
+      st.crew = st.crew.filter(id => { const c = person(id); return (c.role !== 'medic' || medic) && (c.role !== 'gunner' || gunner); }); if (medic) { const md = makePerson('earth'); md.role = 'medic'; md.skill = 1; registerPerson(md); st.crew.push(md.id); }  // the chapter's crew carries none (#879): bring one when the case wants one
       st.armor = hull === 'good' ? ship().armor : Math.floor(ship().armor * 0.5);
       const text = CAST.ansel.scenes.pivot.choices[backup ? 1 : 0].run(), m = (st.memorial || [])[0];
       return { text: typeof text === 'string' && text.length > 40, dead: castDead('ansel'), marks: (castRec('ansel').marks || []).length, mood: moodLow(cap), opinion: cap.opinion, cause: m ? m.cause : null };
@@ -574,8 +574,8 @@ test('the first burn begins with Cato walking you round the ship, once, naming t
     return out;
   });
   assert.equal(r.title, 'The Round'); assert.equal(r.walked, true);
-  assert.equal(r.crew, 8, 'eight crew besides Cato; the hand is the ninth'); assert.deepEqual(r.missing, [], 'every one of them is named');
-  assert.match(r.walk, /You have the middle watch/); assert.match(r.walk, /these are yours/);
+  assert.equal(r.crew, 4, 'four crew besides Cato (#879): the officers, the comms rating and the deckhand'); assert.deepEqual(r.missing, [], 'every one of them is named');
+  assert.match(r.walk, /on the middle watch/); assert.match(r.walk, /these are yours/);
   assert.doesNotMatch(r.opening, /Working beside you/, 'the opening leaves the introductions to him');
   assert.notEqual(r.again, 'The Round', 'and it does not play twice');
 });
@@ -596,7 +596,7 @@ test('"Another time" closes the walk-through at once', async () => {
     const ev = pickHappening('transit');
     return { text: ev.choices[1].run(), label: ev.choices[1].label };
   });
-  assert.equal(r.label, 'Another time'); assert.match(r.text, /watch bill is on the galley wall/);
+  assert.equal(r.label, 'Another time'); assert.match(r.text, /rota\'s on the galley wall/);
 });
 
 test('the first burn has a happening more for the walk-through, and later burns do not', async () => {

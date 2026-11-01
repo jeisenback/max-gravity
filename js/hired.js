@@ -11,8 +11,10 @@
 
 const HIRED_POSTS = ['pilot', 'gunner', 'engineer', 'comms'];  // the posts you can sign on to
 const HIRED_SAVINGS = 3000;
-// The rest of the crew, beside the four posts: a first officer, a quartermaster, a medic, a cook and two ice hands.
-const CHAPTER_CREW = [{ role: 'xo', skill: 2 }, { role: 'quartermaster', skill: 2 }, { role: 'medic', skill: 2 }, { role: 'cook', skill: 2 }, { role: 'icehand', skill: 1 }, { role: 'icehand', skill: 1 }];
+// The rest of the crew, beside the four posts: the bosun (the xo slot) and a deckhand (the icehand key), as docs/bible/ship.md has it (#879). With the
+// captain, the two officers (the main characters at pilot and engineer), the hand and the rating at the post the hand doesn't hold (comms, in the narrow
+// build), that is seven: three officers, the bosun and three ratings. The bosun holds the first aid (crew.js roleHolder).
+const CHAPTER_CREW = [{ role: 'xo', skill: 2 }, { role: 'icehand', skill: 1 }];
 const HIRED_FUND = 120000;  // the ship's money: repairs and fuel, since the cargo is the shipper's (contracts.js)
 const HIRED_WAGE = 400, HIRED_SHARE = 0.06;  // a day's wage and a share of each run's profit, tuned with tools/soak.js so about 20 runs reach the target
 const HAND_RAID = { base: 0.08, per: 1.4 };  // a hand's chance of a pirate contact on a run: this and the lane's danger (engage.js), in place of 0.05 and 0.6

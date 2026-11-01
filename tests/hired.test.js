@@ -30,7 +30,7 @@ test('new game offers a hired start, and the choice of post', async () => {
     };
   });
   assert.equal(r.post, 'gunner'); assert.equal(r.credits, 3000); assert.equal(r.ship, 'freighter'); assert.ok(r.captain);
-  assert.deepEqual(r.roles, ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo'], 'the crew fill every role but yours, and the chapter\'s wider crew');
+  assert.deepEqual(r.roles, ['engineer', 'icehand', 'pilot', 'slicer', 'xo'], 'the crew fill every role but yours, and the bosun and a deckhand (#879)');
   assert.deepEqual(r.modes, ['crewed', 'manual', 'crewed', 'crewed'], 'pilot, gunner, engineer, comms: your post is the manual one');
   assert.equal(r.tutorial, 0, 'the first run begins'); assert.equal(r.mode, 'landed');
   assert.doesNotMatch(r.intro, /signed on to the|credits to your name|Save toward a ship|You are her/, 'the port screen does not repeat what Signing On says');
@@ -506,15 +506,16 @@ test('a hired hand who is not the gunner watches the duel; the gunner picks the 
       const c0 = st.credits; startDuel({ kind: 'hunter', person: { first: 'Ana', last: 'Voss' } }, false); finishEvent2();  // a pirate or a patrol is a raid in beats (engagements.js); a hunter is the card duel
       const first = G.nextEvent; const labels = first.choices.map(c => c.label); let rounds = 0;
       openEvent(first);
-      while ((G.dialog || G.nextEvent) && rounds++ < 20) { if (!G.dialog) { finishEvent(); continue; } chooseEvent(Math.max(0, G.dialog.event.choices.findIndex(c => /locks/.test(c.label)))); finishEvent(); }  // the locks stop a boarding party; the ship now also has a PDC screen to pick first, which a boarding party gets past into a deck fight this driver does not play
-      return { labels, ended: G.duel === null, credits: st.credits === c0 };
+      let boarded = false;  // with the bible's smaller crew (#879) fewer stand at the locks, and her boarders can get across into a deck fight, which this loop does not drive
+      while ((G.dialog || G.nextEvent) && rounds++ < 20) { if (!G.dialog) { finishEvent(); continue; } if (G.dialog.event.choices.some(c => c.label === 'Fight')) { boarded = true; break; } chooseEvent(Math.max(0, G.dialog.event.choices.findIndex(c => /locks/.test(c.label)))); finishEvent(); }  // the locks stop a boarding party; the ship now also has a PDC screen to pick first, which a boarding party gets past into a deck fight this driver does not play
+      return { labels, ended: G.duel === null || boarded, credits: st.credits === c0 };
     };
     window.finishEvent2 = () => {};
     return { pilot: run('pilot'), gunner: run('gunner') };
   });
   assert.deepEqual(r.pilot.labels, ['Hold on'], 'the gunner plays it for you');
   assert.ok(r.gunner.labels.length >= 1 && !r.gunner.labels.includes('Hold on'), 'as the gunner you pick the card');
-  assert.ok(r.pilot.ended && r.gunner.ended); assert.ok(r.pilot.credits && r.gunner.credits, 'and your savings are not in it');
+  assert.ok(r.pilot.ended && r.gunner.ended, 'the duel ends, or goes to the deck'); assert.ok(r.pilot.credits && r.gunner.credits, 'and your savings are not in it');
   await done();
 });
 

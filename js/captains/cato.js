@@ -5,14 +5,14 @@
 // fate.js does not protect them with the floor. His scenes follow the cast order (intro, mid1, mid2, late, pivot); mid2 is
 // "Two Orders", where the captain's written order and his ask pull the hand two ways.
 
-// The hold: a point each for a medic who is not hurt, a hull above 60 percent, both hold hands (the icehand post until #879) aboard,
+// The hold: a point each for a medic other than him who is not hurt, a hull above 60 percent, a deckhand (the icehand key) aboard,
 // and a second person with him. Three or more he lives, two he is marked, fewer he dies.
 const iceHands = () => G.state.crew.map(person).filter(c => c && c.role === 'icehand').length;
-const catoHoldPoints = backup => ((m => m && m.cast !== 'cato')(roleHolder('medic')) ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (iceHands() >= 2 ? 1 : 0) + (backup ? 1 : 0);
+const catoHoldPoints = backup => ((m => m && m.cast !== 'cato')(roleHolder('medic')) ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (iceHands() >= 1 ? 1 : 0) + (backup ? 1 : 0);
 function inTheIceHold(backup) {
   const points = catoHoldPoints(backup), told = castRec('cato').flags.told, cap = hiredCaptain();
   const outcome = castFate('cato', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost in the hold near ${system().name}.`, 'Left hand doesn\'t close properly.', 'xo');
-  const lead = backup ? 'You send a hand in with him. ' : '';
+  const lead = backup ? 'You send the deckhand in with him. ' : '';
   if (outcome === 'die') {
     like(cap, -1, sceneSay('scene:memories', 'cato.lost.memory')); cap.mood = { kind: 'low', until: G.state.day + 30 };
     return lead + ('He goes in first, as he said he would. The strap holds, and the pod doesn\'t, and the board shows nothing you can ' +
@@ -168,12 +168,12 @@ CAST.cato = {
             'minutes." At a fraction of a g a pod that size doesn\'t move quickly, but it doesn\'t stop, either, and the bulkhead it\'s leaning on isn\'t rated for it.')
           + (low ? ' The hull has taken a beating, and a bad hull is a bad place for a load to shift.' : ' The hull is sound.')
           + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There\'s nobody aboard who can do more than a field dressing.')
-          + (hands >= 2 ? ' Both hold hands are suited and waiting.' : ' There aren\'t enough hands in the hold for a load like this.')
+          + (hands >= 1 ? ' The deckhand is suited and waiting.' : ' There\'s nobody else in the hold for a load like this.')
           + ' He waits for your answer, and has already started on the strap.';
       },
       choices: [
         { label: 'Let him go in', run: () => inTheIceHold(false) },
-        { label: 'Send a hold hand in with him', ...gated([() => iceHands() >= 1, () => 'There\'s no hold hand to send.']), run: () => inTheIceHold(true) },
+        { label: 'Send the deckhand in with him', ...gated([() => iceHands() >= 1, () => 'There\'s no deckhand to send.']), run: () => inTheIceHold(true) },
         {
           label: 'Seal the hold and let the pod go',
           effects: { castFlag: { who: 'cato', flag: 'benched' }, castLike: { who: 'cato', n: -3, memory: 'You sealed the hold on me.' } },
@@ -192,9 +192,9 @@ castTalkScenes('cato');  // his own sittings and talk (family:cato-*), with the 
 CAST.cato.round = () => {
   const say = (key, vars) => sceneSay('scene:cato-round', key, vars);
   const ice = G.state.crew.map(person).filter(c => c && c.role === 'icehand').map(c => c.first);
-  const [cook, medic, qm, eng, pilot, comms] = ['cook', 'medic', 'quartermaster', 'engineer', 'pilot', 'slicer'].map(crewNamed);
-  const names = { cook, medic, qm, eng, pilot, comms, iceA: ice[0] || say('ice.first'), iceB: ice[1] || say('ice.second') };
-  const walk = ['galley', 'medic', 'hold', 'engine', 'door', ...(hired().post === 'gunner' ? ['guns'] : []), 'bill'].map(k => say(`walk.${k}`, names));
+  const [eng, pilot, comms] = ['engineer', 'pilot', 'slicer'].map(crewNamed);
+  const names = { eng, pilot, comms, iceA: ice[0] || say('ice.first') };
+  const walk = ['galley', 'hold', 'engine', 'door', ...(hired().post === 'gunner' ? ['guns'] : []), 'bill'].map(k => say(`walk.${k}`, names));
   return {
     title: say('title'), personal: true,
     text: say('text'),

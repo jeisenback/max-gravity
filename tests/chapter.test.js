@@ -14,7 +14,7 @@ test('the chapter\'s roles have a name, a wage and a perk', async () => {
   const { ev, done } = await open();
   const r = await ev(() => ({ names: [ROLE_NAMES.xo, ROLE_NAMES.cook, ROLE_NAMES.icehand],
     wages: ['xo', 'cook', 'icehand'].map(k => typeof ROLE_WAGE[k]), perks: ['xo', 'cook', 'icehand'].map(k => ROLE_PERKS[k](2)) }));
-  assert.deepEqual(r.names, ['First officer', 'Cook', 'Ice hand']);
+  assert.deepEqual(r.names, ['First officer', 'Cook', 'Deckhand']);  // no hired captain here, so the xo slot keeps its name; the icehand key is a deckhand (#879)
   assert.deepEqual(r.wages, ['number', 'number', 'number']);
   assert.ok(r.perks.every(p => typeof p === 'string' && p.length > 0));
   await done();
@@ -40,7 +40,7 @@ const helpers = () => {
   window.underway = () => { if (!sail()) throw new Error('no plan'); answerAll(); tryBurn(); enterTransit(); G.transit.times = []; };
   window.answerAll = () => { for (let k = 0; k < 8 && G.dialog; k++) { const d = G.dialog, ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can()); if (ok.length) chooseEvent(ok[0]); finishEvent(); } while (G.dialog) finishEvent(); };
 };
-const ROSTER = ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo'];
+const ROSTER = ['engineer', 'icehand', 'pilot', 'slicer', 'xo'];  // the bible's crew (#879)
 const hauler = async o => { const t = await open(o); await t.ev(helpers); return t; };
 
 test('a hired hand starts on an Ice Hauler', async () => {
@@ -52,12 +52,12 @@ test('a hired hand starts on an Ice Hauler', async () => {
   await done();
 });
 
-test('the crew is nine, in the ten berths, whatever the background', async () => {
+test('the crew is five beside the hand and the captain, in the ten berths, whatever the background (#879)', async () => {
   for (const background of ['earth', 'mars', 'belt']) {
     const { ev, done } = await hauler();
     const r = await ev(bg => { const st = start({ background: bg }); return { roles: crewMembers().map(c => c.role).sort(), used: berthsUsed(), free: berthsFree(), cast: crewMembers().filter(c => c.cast && !CAST[c.cast].xo).length }; }, background);
     assert.deepEqual(r.roles, ROSTER, background);
-    assert.equal(r.used, 9); assert.equal(r.free, 1); assert.equal(r.cast, 2, 'Ines and Tomas are aboard');
+    assert.equal(r.used, 5); assert.equal(r.free, 5); assert.equal(r.cast, 2, 'Ines and Tomas are aboard');
     await done();
   }
 });
