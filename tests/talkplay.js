@@ -67,6 +67,14 @@ const playTalk = () => {
   play('sit:2', p => { storyOf(p).beat = 2; p.opinion = 2; }, p => sitBeat(p, true));
   for (const b of [0, 1, 2]) play(`sit:${b}:tomas`, p => { p.cast = 'tomas'; p.first = 'Tomas'; storyOf(p).beat = b; p.opinion = 3; }, p => sitBeat(p, true));
   for (const b of [0, 1, 2]) play(`sit:${b}:ines`, p => { p.cast = 'ines'; p.first = 'Ines'; storyOf(p).beat = b; p.opinion = 3; }, p => sitBeat(p, true));  // an authored person's own lines (family:ines-*)
+  // Tomas's own talk after a sitting (family:tomas-goeson, family:tomas-idle), by subject, and the offers before the flip
+  const tomas = p => { p.cast = 'tomas'; p.first = 'Tomas'; p.role = 'engineer'; };
+  for (const k of ['port', 'ship', 'last', 'work']) play(`goeson:${k}:tomas`, tomas, p => goesOn(p, k));
+  play('goeson:captain:tomas', (p, s) => { tomas(p); const c = mk('Vance'); s.hired = { captain: c.id, post: 'gunner', since: s.day }; }, p => goesOn(p, 'captain'));
+  play('idle:tomas', tomas, p => idleTalk(p));
+  { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; tomas(p); const rec = {};
+    for (const k of ['port', 'ship', 'last', 'work']) { G.transit = { to: 'pallas', flipped: false, lifeUsed: {} }; __seed(9); rec[k] = String(goesOn(p, k).choices[0].label); }
+    G.transit = null; out.push({ key: 'goeson:offer:tomas', text: JSON.stringify(rec) }); }
   // Ines's own talk after a sitting (family:ines-goeson, family:ines-idle), by subject, and the offers before the flip
   const ines = p => { p.cast = 'ines'; p.first = 'Ines'; p.role = 'pilot'; };
   for (const k of ['port', 'ship', 'last', 'work']) play(`goeson:${k}:ines`, ines, p => goesOn(p, k));

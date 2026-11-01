@@ -4861,7 +4861,7 @@
   "id": "cast:tomas:bar1",
   "i": 0,
   "label": "Buy a round for the dock crew (400 cr)",
-  "result": "A round for the dock crew turns into three hours. Tomas is shown the jig they use for the rail, and a trick for a seam that has given him trouble since the ring, and he shows them one of his own. He walks back to the ship with a notebook full of sketches. \"They talk to the work,\" he says. \"The same as me.\"",
+  "result": "A round turns into three hours. The dock crew show Tomas the jig they use for hull plate, and he shows them how the ring yard does a seam with no weight. He walks back to the ship with sketches in his notebook. \"Their contracts are three months,\" he says. \"Ours were six.\"",
   "changes": [
    "s.credits: 50000 -> 49600",
    "s.people.c:tomas.liftedAt: undefined -> 1",
@@ -4898,7 +4898,7 @@
   "id": "cast:tomas:bar1",
   "i": 1,
   "label": "Let him have his shop talk",
-  "result": "You take a stool at the other end of the bar and leave them to it. Every so often a burst of technical argument comes down the bar, with hand gestures. When Tomas finds you, hours later, he's hoarse, and holds up a hand with a new burn across the knuckle. \"Thank you,\" he says. \"He let me try the jig.\"",
+  "result": "You take a stool at the other end of the bar and leave them to it. When Tomas finds you, hours later, he's hoarse, and has a new burn across one knuckle. \"He let me try the jig,\" he says.",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -4933,7 +4933,7 @@
   "id": "cast:tomas:bar2",
   "i": 0,
   "label": "Say hello to his sister",
-  "result": "The delay is eleven seconds. You say your name and wait. A small voice says, in a rush: \"He never says he has people. I'm glad. Are you feeding him?\" Tomas looks at the floor. \"Eleven seconds,\" he says afterwards, \"and she heard every word.\"",
+  "result": "You say your name into the booth, and that you work with him, and he sends it. Her reply comes in with the ship's next batch: Ngozi at the stall, with the pots behind her and the top of Chidi's head at the edge of the picture. \"Hello. I'm glad. Is he eating?\" Tomas plays it twice.",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.sister: undefined -> true",
@@ -4970,7 +4970,7 @@
   "id": "cast:tomas:bar2",
   "i": 1,
   "label": "Wave from across the room",
-  "result": "You wave. He grins, holds the handset up to the glass, and says something to her in Igbo. When he comes out of the booth he doesn't talk for the rest of the evening, and you leave him to it.",
+  "result": "You wave. He turns the booth camera so it catches you, says something to her in Igbo, and sends it. He doesn't talk much for the rest of the evening.",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
