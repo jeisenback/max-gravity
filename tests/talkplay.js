@@ -75,6 +75,15 @@ const playTalk = () => {
   { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; tomas(p); const rec = {};
     for (const k of ['port', 'ship', 'last', 'work']) { G.transit = { to: 'pallas', flipped: false, lifeUsed: {} }; __seed(9); rec[k] = String(goesOn(p, k).choices[0].label); }
     G.transit = null; out.push({ key: 'goeson:offer:tomas', text: JSON.stringify(rec) }); }
+  // Cato's own sittings and talk (family:cato-*): the three beats, each subject, the idle talk, and the offers before the flip
+  const cato = p => { p.cast = 'cato'; p.first = 'Cato'; p.role = 'xo'; };
+  for (const b of [0, 1, 2]) play(`sit:${b}:cato`, p => { cato(p); storyOf(p).beat = b; p.opinion = 3; }, p => sitBeat(p, true));
+  for (const k of ['port', 'ship', 'last', 'work']) play(`goeson:${k}:cato`, cato, p => goesOn(p, k));
+  play('goeson:captain:cato', (p, s) => { cato(p); const c = mk('Vance'); s.hired = { captain: c.id, post: 'gunner', since: s.day }; }, p => goesOn(p, 'captain'));
+  play('idle:cato', cato, p => idleTalk(p));
+  { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; cato(p); const rec = {};
+    for (const k of ['port', 'ship', 'last', 'work']) { G.transit = { to: 'pallas', flipped: false, lifeUsed: {} }; __seed(9); rec[k] = String(goesOn(p, k).choices[0].label); }
+    G.transit = null; out.push({ key: 'goeson:offer:cato', text: JSON.stringify(rec) }); }
   // Ines's own talk after a sitting (family:ines-goeson, family:ines-idle), by subject, and the offers before the flip
   const ines = p => { p.cast = 'ines'; p.first = 'Ines'; p.role = 'pilot'; };
   for (const k of ['port', 'ship', 'last', 'work']) play(`goeson:${k}:ines`, ines, p => goesOn(p, k));

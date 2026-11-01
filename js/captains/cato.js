@@ -184,6 +184,8 @@ CAST.cato = {
   },
 };
 
+castTalkScenes('cato');  // his own sittings and talk (family:cato-*), with the family scenes, for the editor and the lines tests
+
 // The walk-through on the first burn (captains.js plays it once, before anything else): Cato takes the new hand round the ship. The
 // names are the crew's own; a role nobody holds reads as the job. Only the Gunner's post gets a line of its own. The words are the lines of
 // 'scene:cato-round' (hiredscenes.js).
