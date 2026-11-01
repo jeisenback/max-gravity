@@ -192,11 +192,11 @@ const CAST = {
         'Tomas: "I did it right the first time. Now I\'m doing it right the second time."'],
     // What they leave behind when they walk off or die (fate.js farewellFacts): a flag and its line, in priority order, two at most.
     farewell: {
-      walk: 'Tomas shuts the engine room door, which he has never done, and says nothing to the plant. He takes the bag that clinks down the ramp at {planet}.',
+      walk: 'Tomas racks and labels his tools before he goes, so the next engineer can find them. He takes his bag down the ramp at {planet}.',
       facts: [
-        ['loan', 'The ring of braided wire he sent back with your two thousand credits is on the hook by the engine room door.'],
-        ['plan', 'You can still say the plant back from memory, every valve of it, in his order.'],
-        ['promised', 'He asked whether you\'d try to keep the crew together, and you said you\'d try.'],
+        ['loan', 'The ring of braided wire he sent back with your two thousand credits is still on your locker.'],
+        ['plan', 'You can still find every place she cracks, the way he showed you, in his order.'],
+        ['promised', 'The agency\'s offer of a bigger ship is still on his terminal, unanswered. He stayed because you asked.'],
       ],
     },
     scenes: {
@@ -223,101 +223,95 @@ const CAST = {
         ],
       },
       intro: {
-        title: 'The Engine Room Door',
-        text: ('Tomas Achebe has left the engine room door open, which no engineer ever does. "Fresh air for her," he says, patting the housing. "She ' +
-            'hasn\'t had a proper service in a year. Nobody asks me, so I do it in my own time." He has the plates off the coolant loop and the parts ' +
-            'laid out on a rag in a careful row, each in the place it came from.'),
+        title: 'The Service',
+        text: ('Tomas has the covers off the coolant pump, with the parts laid out on a rag in the order they came off. "The last engineer skipped it," he ' +
+            'says. "The schedule says every two thousand hours. The software doesn\'t give anyone the hours to do it, so it doesn\'t get done." He holds up ' +
+            'a seal, cracked through. "That\'s what not getting done looks like."'),
         choices: [
           {
             label: 'Offer to help with the service',
             effects: { castLike: { who: 'tomas', n: 1, memory: 'You helped me with the service on my own time.' }, castXp: { who: 'tomas', role: 'engineer', n: 2 } },
-            result: 'He gives you a rag and a torque wrench, and names the three things not to touch, and you spend two hours on your back under a ' +
-              'coolant loop. When you come out, black to the elbows, he looks at you. "Next time," he says, "you\'re holding the light. ' +
+            result: 'He hands you a rag and a torque wrench and names the three things not to touch. You spend two hours on your back under the pump. When ' +
+              'you come out, black to the elbows, he checks your torques with his own wrench, all of them. "Good," he says. "Next time you hold the light. ' +
               'You\'re better at that."',
           },
           {
             label: 'Leave him to it',
             effects: { castLike: { who: 'tomas', n: 0, memory: 'You left me to my service.' } },
-            result: '"It\'s all right," he says. "Most ' +
-              'people do. She\'ll thank you anyway." He goes back to the loop, and you hear him, softly, as you leave: "Nobody\'s angry at you. ' +
-              'Nobody\'s angry."',
+            result: '"Fine," he says. "Most people do." He goes back to the pump. When you come past at the end of the watch he\'s still there, and the cracked seal is in the bin.',
           },
         ],
       },
       mid1: {
         days: 10, title: 'Money Home',
-        text: ('Tomas catches you in the galley with his jaw set. "I have a favor. Not a favor, a loan. My sister\'s transfer from the ring bounced, ' +
-            'and I haven\'t got the wage yet, and the rent on her flat is due." He says the number carefully, and doesn\'t meet your eye: two thousand ' +
-            'credits. "I\'ll pay it back from the first two pay days. I always pay it back."'),
+        text: ('Tomas catches you in the galley. "I need to ask for a loan. My transfer to Ngozi bounced. The ring\'s bank flagged it again, and it\'ll take ' +
+            'them a week to clear, and her rent is due Thursday. After Thursday there\'s a late fee." He says the number carefully: two thousand credits. ' +
+            '"I\'ll pay it back from the next two pay days."'),
         personal: true,
         choices: [
           {
             label: 'Lend him 2,000 cr',
             when: { credits: 2000 },
             effects: { credits: -2000, castLike: { who: 'tomas', n: 3, memory: 'You lent me two thousand credits for my sister\'s rent.' }, castFlag: { who: 'tomas', flag: 'loan' } },
-            result: 'He takes it with both hands. "Thank you," he says, and says it again in Igbo. By the second pay day ' +
-              'the two thousand is in your account, with an extra: a ring of braided wire, on a note that says "for luck".',
+            result: 'He takes it with both hands. "Thank you," he says, and again in Igbo, and writes it in his notebook while you watch. By the second pay day ' +
+              'the two thousand is back in your account, and there\'s a ring of braided wire on your locker, made from a weld offcut, with a note that says "for luck".',
           },
           {
             label: '"I can\'t spare it."',
             effects: { castLike: { who: 'tomas', n: -1, memory: 'You couldn\'t spare two thousand credits.' } },
-            result: 'He straightens his shoulders. "Of course," he says. "I shouldn\'t have asked." He doesn\'t ask anyone else. In the evening he\'s ' +
-              'in the engine room with the door open, counting a month on his fingers, and the next day his name is on the bill for two extra ' +
-              'shifts.',
+            result: '"No. Of course." He doesn\'t ask anyone else. The next day his name is on the rota for two extra shifts, and the late fee is in his notebook, under the rent.',
           },
         ],
       },
       mid2: {
         days: 25, title: 'The Third Hull',
-        text: ('Tomas is sitting on a crate in the engine room with a flask of something hot, looking at the reactor housing. "I rebuilt a hull like ' +
-            'this three times," he says. "The same hull. For three owners. Every time I made her better, and every time they sold her to somebody who ' +
-            'didn\'t know." He turns the flask in his hands. "Do you want to know how I\'d rebuild her now? It\'d take a long time to tell."'),
+        text: ('Tomas is on a crate in the engine room with a flask of tea, looking at the frame behind the tanks. "I worked on a hull like this three ' +
+            'times," he says. "The same hull. She came into the yard for a refit three times in twelve years, under three owners. Every time I fixed what ' +
+            'the last owner let go, and every time she was sold after." He turns the flask. "This one cracks in the same places. Do you want me to show you?"'),
         choices: [
           {
-            label: 'Ask him to teach you',
-            effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me how I\'d rebuild her, and listened.' }, castXp: { who: 'tomas', role: 'engineer', n: 2 }, gainSkill: { post: 'engineer', n: 3 } },
-            result: 'It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, every valve of her in his order. ' +
-              'Then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. "There," he says. "Now you know her. Don\'t tell the owners."',
+            label: 'Ask him to show you',
+            effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me to show you where she cracks, and listened.' }, castXp: { who: 'tomas', role: 'engineer', n: 2 }, gainSkill: { post: 'engineer', n: 3 } },
+            result: 'It takes the whole of the quiet watch. He takes you round the frame with a torch and a mirror on a stick, and shows you every place a hull ' +
+              'like this one cracks, in the order to check them. Then he makes you find each one again without him. "There," he says. "Now you know where to look."',
           },
           {
-            label: 'Ask him to write it down, so it doesn\'t go with the hull',
+            label: 'Ask him to write it down, so it stays with the ship',
             when: { opinion: { who: 'tomas', min: OPINION.TRUSTED } },
-            effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me to write the plan down, so it\'d last.' } },
-            result: 'He looks at the flask. "Nobody has asked me that," he says. He goes below and comes back with a notebook with a stained ' +
-              'cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, ' +
-              'carefully, and puts them in your hand. "If she\'s sold again," he says, "somebody will need to know where the cracks are. Not the ' +
-              'owners. Somebody." You fold the pages into your jacket. He puts the notebook back in his pocket with the stubs still in it.',
+            effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me to write it down, so it would stay with the ship.' } },
+            result: '"Nobody has asked me that," he says. He spends the quiet watch filling eleven pages of his notebook in small square capitals, with a sketch ' +
+              'on each: where to look, and what it looks like when it starts. He tears them out along the fold and gives them to you. "If she\'s sold," he ' +
+              'says, "give them to whoever works on her next."',
           },
           {
             label: '"Stick to your shifts."',
             effects: { castLike: { who: 'tomas', n: -1, memory: 'You told me to stick to my shifts.' } },
-            result: 'He closes his mouth, and the flask. "As you say." The plant runs perfectly for the rest of the burn.',
+            result: 'He closes the flask. "As you say." He goes back to the schedule the software sets, and keeps to it.',
           },
         ],
       },
       late: {
-        days: 45, title: 'Ten Years',
-        text: ('Tomas is waiting at the hatch when you come off watch, with his hands behind his back. "I want to ask you something, and you must not ' +
-            'say yes to be kind. If you ever have a ship of your own, would you try to keep the crew together? Ten years. I\'m not asking for a ' +
-            'promise. I\'m asking whether you\'d try."'),
+        days: 45, title: 'The Offer',
+        text: ('Tomas has a message from the agency open on the galley table: an engineer\'s berth on a bigger ship, at more pay. "Ngozi\'s arrears gone four ' +
+            'months sooner," he says. He reads it again. "I\'d like to know what you think. Not to be kind. What you think."'),
         choices: [
           {
-            label: 'Say you\'d try',
-            effects: { castLike: { who: 'tomas', n: 2, memory: 'You said you\'d try to keep the crew together.' }, castFlag: { who: 'tomas', flag: 'promised' } },
-            result: '"I\'d try," you say, and he lets out a breath. "That\'s enough," he says. "Nobody has ever said that." He claps your shoulder, once, hard, and goes below.',
+            label: 'Ask him to stay',
+            effects: { castLike: { who: 'tomas', n: 2, memory: 'You asked me to stay, and I stayed.' }, castFlag: { who: 'tomas', flag: 'promised' } },
+            result: '"All right," he says, after a while. He closes the message without answering it. "All right. I\'ll stay." He goes back to the engine room.',
           },
           {
-            label: 'Say you can\'t promise that',
-            effects: { castLike: { who: 'tomas', n: 1, memory: 'You were honest about what you could promise.' } },
-            result: '"No," he says, "no, of course. Nobody can." He smiles. "Thank you for not being kind," he says. "It\'s a rare thing." He goes back to ' +
-              'the engines, and, on the way, pats the bulkhead twice.',
+            label: 'Tell him to take it',
+            effects: { castLike: { who: 'tomas', n: 1, memory: 'You told me to take the offer. It was the honest answer.' } },
+            result: 'He nods, and opens the terms to accept them, and reads them first. There\'s a new placement fee, in instalments, and the instalments take ' +
+              'three of the four months back. "One month," he says, "for a new ship, a new captain and a new crew." He closes it without answering.',
           },
         ],
       },
       pivot: {
         days: 60, title: 'The Plant',
         get text() {
-          return 'A coolant line lets go in the engine room and the plant climbs to a whine you feel in your fillings. The only way to hold her is to go in and close the valves by hand, with the compartment too hot to stand in. Tomas is already at the door with a wet rag over his face. "I know where she\'s cracked," he says. "I know where all of them are. Nobody else should be in there."'
+          return 'A coolant line lets go in the engine room, and the plant climbs to a whine you can feel in your teeth. The only way to hold her is to go in and close the isolation valves by hand, and the compartment is hotter than the ship\'s hot-work suit is rated for. Tomas is already in the suit, sealing the gloves. "I know where they are," he says. "Four valves. I\'ll be quick."'
             + castRiskLines();
         },
         choices: [
@@ -325,7 +319,7 @@ const CAST = {
           { label: 'Send a second person in with him (the second is hurt for it)', ...gated(needCrew(2)), run: () => thePlant(true) },
           { label: 'Tell him to vent the plant', memory: 'You told me to vent the plant.', run() {
             castLike('tomas', -3, this.memory);
-            return 'You tell him to vent her. He stands at the door with the rag in his hand. Then he opens the valve, and the whine runs down and stops. He doesn\'t look at you. He goes below.';
+            return 'You tell him to vent her. He stands at the hatch in the suit. Then he opens the vent, and the whine runs down and stops, and the plant is cold for the rest of the burn. He doesn\'t look at you.';
           } },
         ],
       },
@@ -1093,20 +1087,20 @@ function coldThrusters(backup) {
     + (practiced ? ' "We\'ve done that one before," she adds.' : '');
 }
 
-// Tomas's pivot: a point each for a medic, a hull above 60 percent, the plan he taught or wrote down for you, and a second person with him.
+// Tomas's pivot: a point each for a medic, a hull above 60 percent, the cracks he showed you or wrote down, and a second person with him.
 function thePlant(backup) {
   const rec = castRec('tomas'), plan = !!rec.flags.plan, promised = !!rec.flags.promised;
-  const outcome = castFate('tomas', castPoints(castRiskPoints() + (plan ? 1 : 0) + (backup ? 1 : 0)), `Went into the plant to close the valves near ${system().name}.`, 'His hands ache in the cold.', 'engineer');
+  const outcome = castFate('tomas', castPoints(castRiskPoints() + (plan ? 1 : 0) + (backup ? 1 : 0)), `Went into the plant in the hot-work suit near ${system().name}.`, 'His forearms are scarred from the scald.', 'engineer');
   const lead = backup ? 'You send a second person in after him. ' + castBackupCost('tomas') : '';
   if (outcome === 'die') {
-    return lead + 'The whine drops. The plant holds. Nobody comes out. When the compartment has cooled you open the hatch, and he\'s at the last valve with the wrench in his hand and the rag still over his face. He had closed them all. The plant runs perfectly for the rest of the burn.'
-      + (promised ? ' He asked you once whether you\'d try to keep the crew together, and you said you\'d try.' : '');
+    return lead + 'The whine drops. The plant holds. He doesn\'t come out. When the compartment has cooled you open the hatch, and he\'s at the fourth valve with the wrench still on it. He had closed them all. The suit\'s rating is printed on its collar.'
+      + (promised ? ' The agency\'s offer is still on his terminal, unanswered.' : '');
   }
   castLike('tomas', 2, outcome === 'mark' ? 'You let me go into the plant, and I came out scalded.' : 'You let me go into the plant, and I came out.');
   if (outcome === 'mark') {
-    return lead + 'He comes out carried, both forearms scalded, and the plant holds behind him. He\'ll weld again. He doesn\'t take the flask in his left hand after that, and he doesn\'t complain.';
+    return lead + 'He comes out carried, both forearms scalded where the suit\'s cuffs gave, and the plant holds behind him. He\'ll weld again. He doesn\'t complain about it, then or after.';
   }
-  return lead + 'He goes in, and comes out in four minutes with no eyebrows, which he doesn\'t mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.';
+  return lead + 'He goes in, and comes out in four minutes with the visor fogged and his eyebrows gone, which he doesn\'t mention. The plant settles. He sits on a crate with the flask and writes the four valves and the times in his notebook.';
 }
 
 // Pax's pivot: a point each for a medic, a hull above 60 percent, the foreman's message read, and a second hand at the rack beside them.

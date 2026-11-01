@@ -643,8 +643,8 @@ test('a main character lost outside their own pivot has what you did added to Af
     return { ...out, scenes, cast: st.mourn.map(m => m.cast || null) };
   });
   assert.equal(r.tomas, 'dead');
-  assert.match(r.scenes[0], /ring of braided wire/); assert.match(r.scenes[0], /say the plant back/);
-  assert.doesNotMatch(r.scenes[1], /braided|plant back/, 'a crew member with no farewell reads as before');
+  assert.match(r.scenes[0], /ring of braided wire/); assert.match(r.scenes[0], /every place she cracks/);
+  assert.doesNotMatch(r.scenes[1], /braided|she cracks/, 'a crew member with no farewell reads as before');
   await done();
 });
 
