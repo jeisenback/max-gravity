@@ -4716,11 +4716,11 @@
   "id": "cast:ines:bar1",
   "i": 0,
   "label": "Watch the approach with her",
-  "result": "She talks you through it like a commentator: the flare a second too late, the crosswind he hasn't read, the thrust he'll wish he had saved. He clips the gantry, gently, as she said he would, and she raises her glass to the screen. \"Eleven out of ten for effort,\" she says.",
+  "result": "She talks you through it: he's coming in too fast and correcting late, and every correction makes the next one bigger. He touches the gantry, gently, as she said he would. The dock's charge for it is on the screen before he has latched. \"That comes out of somebody's share,\" she says.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You watched a bad landing with me, and I enjoyed the company.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You watched a bad approach with me.",
    "s.people.c:ines.opinion: 0 -> 1",
    "s.people.c:ines.xp.pilot: 110 -> 113"
   ],
@@ -4751,35 +4751,35 @@
  {
   "id": "cast:ines:bar1",
   "i": 1,
-  "label": "Ask about Lisbon",
-  "result": "She turns from the screen. \"The ferry ran every forty minutes,\" she says. \"Nine years. I knew the regulars by their shoes. There was an old man who rode the 6:40 every morning to feed the pigeons on the Luna side. I never spoke to him once. I'd give a great deal to know if he still does.\" She drinks. \"I only ever saw the back of his head.\"",
+  "label": "Ask about the ferry",
+  "result": "She turns from the screen. \"Two runs a day. Up with contract workers starting a month on a station, down with the ones finishing. Going up, they slept. Coming down, they'd had a drink in the departure lounge first, and they sang.\" She finishes hers.",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.lisbon: undefined -> true",
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You asked about Lisbon, and I told you.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You asked about the ferry, and I told you.",
    "s.people.c:ines.opinion: 0 -> 2"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Ask about Lisbon",
+    "label": "Ask about the ferry",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Ask about Lisbon",
+    "label": "Ask about the ferry",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Ask about Lisbon",
+    "label": "Ask about the ferry",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Ask about Lisbon",
+    "label": "Ask about the ferry",
     "open": true,
     "why": ""
    }
@@ -4788,8 +4788,8 @@
  {
   "id": "cast:ines:bar2",
   "i": 0,
-  "label": "Go over to them together",
-  "result": "You go together, and it takes her three tries to say her name. The controller hears all of it: the pad, the order, the forty-one. \"I was on the desk that night,\" the controller says. \"It wasn't my call. Everyone on the desk knew who'd put that shuttle down. It was the best landing I've seen.\" Ines says nothing. She shakes the controller's hand, and keeps hold of it.",
+  "label": "Go over to him together",
+  "result": "You go over together. He knows her before she says her name. \"I read it off the screen,\" he says. \"It was the procedure. If I hadn't read it, someone else would have, and I'd have been out.\" He turns his glass. \"They cut the desk by a third the year after, anyway.\" Ines buys him a drink, and doesn't say much, and stays until he's finished it.",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.tower: undefined -> true",
@@ -4801,22 +4801,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Go over to them together",
+    "label": "Go over to him together",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Go over to them together",
+    "label": "Go over to him together",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Go over to them together",
+    "label": "Go over to him together",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Go over to them together",
+    "label": "Go over to him together",
     "open": true,
     "why": ""
    }
@@ -4826,7 +4826,7 @@
   "id": "cast:ines:bar2",
   "i": 1,
   "label": "Let her decide",
-  "result": "You say nothing, and she doesn't go over. She finishes her drink and puts the glass down with a click. \"Not tonight,\" she says. On the way out she looks back once at the badge, and then straight ahead.",
+  "result": "You say nothing, and she doesn't go over. She finishes her drink and puts the glass down. \"Not tonight,\" she says. On the way out she nods to him, once, and he nods back.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
