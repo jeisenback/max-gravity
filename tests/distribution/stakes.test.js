@@ -10,7 +10,7 @@
 // Tolerance: every game runs with no page errors and no broken text; the hand is hurt between 0.1 and 0.8 times a chapter (measured 0.14, 17 of 120, with the
 //            deck fight's DECK.SUIT 0.2; 0.10, 3 of 30, on seeds 11 to 40 before it; 0.40 earlier, and 0.27 after the turn-based fights made a hurt rarer, #786);
 //            at most a fifth of the chapters end in the hand's death, 24 of 120 (measured 0; about 1 in 30 is the aim; a floor would fail one run in three at that rate, so there is none);
-//            of the landings, 75 to 95 percent open at least one scene and 5 to 20 percent open two or more (measured 86 and 12 over 120 chapters; 87 and 15 over 30,
+//            of the landings, 70 to 95 percent open at least one scene (75 before the bible's smaller crew, #879: measured 74 and 8 over 120 chapters, the owner, 2026-11-01) and 5 to 20 percent open two or more (measured 86 and 12 over 120 chapters; 87 and 15 over 30,
 //            64 with none, 342 with one, 72 with two or more of 478; it was 56 before the crew's errands ashore, #678, fill the quiet stops, #788);
 //            and the three scenes of the ship's night play at least once between them (measured 63 plays; before the soak stamped each draw with its second of the burn, none).
 // The ship fights' share of the danger, with each burn's seconds and its contact played, is in tests/distribution/stakes-fights.test.js, on a runner of its own (.github/workflows/soak.yml).
@@ -32,7 +32,7 @@ test('the hand is hurt about as often as tuned and rarely dies, a landing opens 
   const mix = [0, 0, 0];
   for (const r of runs) for (const [n, c] of Object.entries(r.landings)) mix[Math.min(2, Number(n))] += c;
   const landings = mix[0] + mix[1] + mix[2], some = 100 * (mix[1] + mix[2]) / landings, two = 100 * mix[2] / landings;
-  assert.ok(some >= 75 && some <= 95, `${some.toFixed(0)} percent of ${landings} landings opened a scene (none ${mix[0]}, one ${mix[1]}, two or more ${mix[2]})`);
+  assert.ok(some >= 70 && some <= 95, `${some.toFixed(0)} percent of ${landings} landings opened a scene (none ${mix[0]}, one ${mix[1]}, two or more ${mix[2]})`);
   assert.ok(two >= 5 && two <= 20, `${two.toFixed(0)} percent of ${landings} landings opened two scenes or more`);
   const night = ['road-night-watch', 'road-night-pump', 'road-night-bread'].reduce((n, id) => n + runs.reduce((t, r) => t + (r.byId[id] || 0), 0), 0);
   assert.ok(night >= 1, `the ship's night scenes never played in ${runs.length} chapters`);
