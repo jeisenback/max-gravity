@@ -53,3 +53,38 @@ test('with no hired captain, the first officer keeps its name and its perk', asy
   await done();
   assert.equal(r.title, 'First officer'); assert.equal(r.perk, 'Runs the watch bill and speaks for the captain.');
 });
+
+// A run to its arrival, as captains.test.js's arriveFirst does it.
+const arrive = () => {
+  const st = G.state, h = hired(); delete h.stay;
+  if (!sail()) throw new Error('no plan');
+  while (G.dialog) finishEvent();
+  const run = h.run, c0 = st.credits;
+  G.transit = null; G.mode = 'landed'; st.dest = null; st.systemId = run.sid; st.planet = run.planet; st.day += run.days;
+  UI.notes.length = 0; G.dialog = null; G.nextEvent = null;
+  Mods.emit('landed', currentPlanet());
+  return { gain: st.credits - c0, row: h.ledger[0], notes: UI.notes.join(' ') };
+};
+
+test('a rating\'s pay: the day rate less the kit, then the hall\'s cut, and no share, even for a save that signed for one', async () => {
+  const { ev, done } = await open();
+  const r = await ev(arriveSrc => {
+    const arrive = (0, eval)(`(${arriveSrc})`);
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.story.next = 1e9; st.tutorial = null;
+    hired().share = 0.06;  // a save from before (#879) signed for a share
+    const first = arrive(); while (G.dialog) finishEvent();
+    const second = arrive();
+    return { wage: hired().wage, first, second, kitDay: KIT_DEDUCTION };
+  }, arrive.toString());
+  await done();
+  assert.equal(r.kitDay, 30);
+  assert.equal(r.wage, 500, 'Hester pays a rating 500 a day');
+  for (const k of ['first', 'second']) {
+    const { row, gain } = r[k];
+    assert.equal(row.share, 0, `${k}: no share`);
+    assert.equal(row.kit, 30 * row.days, `${k}: the kit is 30 a day`);
+    assert.equal(gain, row.wage - row.kit - (row.hall || 0), `${k}: the wage less the kit and the hall`);
+  }
+  assert.match(r.second.notes, new RegExp(`less ${r.second.row.kit.toLocaleString('en-US')} cr for your kit`), r.second.notes);
+});

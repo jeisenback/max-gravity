@@ -16,7 +16,9 @@ const HIRED_SAVINGS = 3000;
 // build), that is seven: three officers, the bosun and three ratings. The bosun holds the first aid (crew.js roleHolder).
 const CHAPTER_CREW = [{ role: 'xo', skill: 2 }, { role: 'icehand', skill: 1 }];
 const HIRED_FUND = 120000;  // the ship's money: repairs and fuel, since the cargo is the shipper's (contracts.js)
-const HIRED_WAGE = 400, HIRED_SHARE = 0.06;  // a day's wage and a share of each run's profit, tuned with tools/soak.js so about 20 runs reach the target
+// A rating's pay (#879, docs/bible/work.md): a day rate and no share, less the kit the captain rents to the ratings (KIT_DEDUCTION a day). The day rate is the hired
+// captain's own (their entry's wage); HIRED_WAGE is a generated captain's. HIRED_SHARE stays, at 0, so a save that signed for a share is paid none.
+const HIRED_WAGE = 550, HIRED_SHARE = 0, KIT_DEDUCTION = 30;
 const HAND_RAID = { base: 0.08, per: 1.4 };  // a hand's chance of a pirate contact on a run: this and the lane's danger (engage.js), in place of 0.05 and 0.6
 const HAND_LANE_WEIGHT = 8;  // and how much a dangerous lane weights the ship's own incidents (happenings.js)
 const LIGHT_DUTY = 0.6;  // a hurt hand's wage while they work light duty
@@ -40,7 +42,7 @@ const SKILL_STEPS = [0, 12, 45, 110];
 // Runs with the captain and what they paid you, over the whole chapter. A save from before these were kept counts what its ledger holds.
 const runTotals = h => ({
   runs: h.runsDone !== undefined ? h.runsDone : h.ledger.length,
-  earned: h.earnedTotal !== undefined ? h.earnedTotal : h.ledger.reduce((t, l) => t + l.wage + l.share, 0),
+  earned: h.earnedTotal !== undefined ? h.earnedTotal : h.ledger.reduce((t, l) => t + l.wage - (l.kit || 0) + l.share, 0),
 });
 const skillXp = post => (career() && career().skill && career().skill[post]) || 0;  // the player's own, which the buy keeps (career())
 const skillLevel = post => Math.max(0, SKILL_STEPS.filter(n => skillXp(post) >= n).length - 1 - (handHurt() ? 1 : 0));  // a hurt hand works a level lower (boarders.js)
@@ -122,7 +124,7 @@ function setupHired(o) {
     post,
     since: st.day,
     wage: d ? d.wage : HIRED_WAGE,
-    share: d ? d.share : HIRED_SHARE,
+    share: HIRED_SHARE,  // a rating's: none (#879)
     fund: HIRED_FUND,
     run: null,
     ledger: [],
@@ -293,18 +295,19 @@ function settleRun(planet) {
     h.fund += revenue;
   }
   const profit = revenue - run.cost, days = Math.max(1, st.day - run.day);
-  const wage = Math.round(h.wage * days * (run.ice ? ICE_HAZARD : 1) * (handHurt() ? LIGHT_DUTY : 1)), owed = Math.min(h.bill || 0, Math.max(0, profit)), share = profit > 0 ? Math.round((profit - owed) * h.share) : 0;  // the yard bill (repairs.js) comes out of the profit first
+  const wage = Math.round(h.wage * days * (run.ice ? ICE_HAZARD : 1) * (handHurt() ? LIGHT_DUTY : 1)), owed = Math.min(h.bill || 0, Math.max(0, profit)), share = profit > 0 ? Math.round((profit - owed) * HIRED_SHARE) : 0;  // the yard bill (repairs.js) comes out of the profit first; a rating has no share (#879), whatever an old save signed for
   h.bill = Math.max(0, (h.bill || 0) - owed);  // (the long run pays double the wage, above)
-  const toHall = Math.min(h.debt || 0, Math.round((wage + share) * DEBT_SHARE));  // the hall's cut of the pay, never more than is owed
+  const kit = Math.min(wage, KIT_DEDUCTION * days);  // the suit and kit the captain rents to the ratings, out of the wage (docs/bible/ship.md)
+  const toHall = Math.min(h.debt || 0, Math.round((wage - kit + share) * DEBT_SHARE));  // the hall's cut of the pay, never more than is owed
   if (toHall) { h.debt -= toHall; if (!h.debt) captainFlag('debtCleared'); }
-  st.credits += wage + share - toHall;
+  st.credits += wage - kit + share - toHall;
   const total = runTotals(h);
-  h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter
-  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, hall: toHall, days, ice: !!run.ice, shipper: run.shipper, late: run.contract ? Math.max(0, st.day - run.due) : 0, short: !!run.contract && sold < run.tons, skim: cut });
+  h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage - kit + share;  // the ledger keeps the last 20; these keep the whole chapter
+  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, kit, share, hall: toHall, days, ice: !!run.ice, shipper: run.shipper, late: run.contract ? Math.max(0, st.day - run.due) : 0, short: !!run.contract && sold < run.tons, skim: cut });
   h.ledger.length = Math.min(h.ledger.length, 20);
   // The first officer settles up on the first arrival (captains.js): keep the figures, and leave the one-line note for later arrivals.
   const settling = total.runs === 0 && arrivalWanted();
-  if (settling) h.first = { good: run.good ? goodName(run.good).toLowerCase() : null, tons: sold, cost: run.cost, revenue, profit, forecast: run.profit, wage, share, hall: toHall, owed: h.debt || 0, days, planet: planet.name };
+  if (settling) h.first = { good: run.good ? goodName(run.good).toLowerCase() : null, tons: sold, cost: run.cost, revenue, profit, forecast: run.profit, wage, kit, share, hall: toHall, owed: h.debt || 0, days, planet: planet.name };
   h.run = null;
   h.plan = null;
   gainSkill(h.post, 2);  // a burn worked
@@ -318,7 +321,7 @@ function settleRun(planet) {
   if (profit < 0) off.push(`The run lost ${fmt(-profit)} cr.`);
   return (`${off.length ? `${off.join(' ')} ` : ''}Your ` +
       `pay: ${fmt(wage)} cr ` +
-      `wage${share ? ` and ${fmt(share)} cr share` : ''}.${owed ? ` The yard bill took ${fmt(owed)} cr of the profit first.` : ''}${toHall ? ` The hall took ${fmt(toHall)} cr of your pay. ${h.debt ? `${fmt(h.debt)} cr still owed.` : 'The bond is paid.'}` : ''}`);
+      `wage${kit ? `, less ${fmt(kit)} cr for your kit` : ''}${share ? ` and ${fmt(share)} cr share` : ''}.${owed ? ` The yard bill took ${fmt(owed)} cr of the profit first.` : ''}${toHall ? ` The hall took ${fmt(toHall)} cr of your pay. ${h.debt ? `${fmt(h.debt)} cr still owed.` : 'The bond is paid.'}` : ''}`);
 }
 
 // ---------- errands ----------
@@ -556,7 +559,7 @@ function buyInHtml() {
 }
 
 // A run in the hand's terms: the days, the ship's profit, and what that is to you. The captain's run and each suggested run say it alike.
-const runTerms = r => `${r.days} days, ${fmt(r.pay !== undefined ? r.pay : r.profit)} cr ${r.pay !== undefined ? 'on delivery' : 'profit'}, so about ${fmt((r.pay !== undefined ? r.pay : r.profit) * G.state.hired.share)} cr to you, plus ${fmt(G.state.hired.wage * r.days)} cr wage`;
+const runTerms = r => `${r.days} days, ${fmt(r.pay !== undefined ? r.pay : r.profit)} cr ${r.pay !== undefined ? 'on delivery' : 'profit'}, so ${fmt(G.state.hired.wage * r.days)} cr wage to you, less ${fmt(KIT_DEDUCTION * r.days)} cr for your kit`;  // a rating's pay: the days at the day rate (#879)
 
 // Where the hand stands on the way to a ship (#849): what the hall is still owed, the ship's price, and the savings. The used Ore Runner is named
 // only while she is offered (the day-0 text does not give the deal away); otherwise it is the yard's cheapest.

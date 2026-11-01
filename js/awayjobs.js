@@ -140,7 +140,7 @@ function pitchScene(a) {
   });
   choices.push({ label: say('never.label'), run: () => say('never.result') });
   const deal = dealOpen() && h.deal, at = deal ? yardDayAfter(st.day, a) : 0;  // the used Ore Runner goes while the run is out
-  const plan = currentPlan(), instead = !plan ? '' : plan.ballast ? say('instead.light', { planet: plan.planet }) : say('instead', { run: runWord(plan), share: fmt(Math.round(plan.profit * h.share)) });  // what the pitch would replace (#848)
+  const plan = currentPlan(), instead = !plan ? '' : plan.ballast ? say('instead.light', { planet: plan.planet }) : say('instead', { run: runWord(plan), days: plan.days });  // what the pitch would replace (#848)
   return { title: say('title'), personal: true, text: `${say('text', { blurb: fill2(jobBlurb(job, true), a.ctx), dest: a.ctx.dest, system: a.ctx.system, days: a.days, instead }).replace(/\s{2,}/g, ' ')}${deal && at > deal.until ? ` ${say('deal', { at, until: deal.until })}` : ''}`, choices };
 }
 const fill2 = (t, ctx) => t.replace(/\{(\w+)\}/g, (m, k) => (ctx[k] !== undefined ? ctx[k] : m));

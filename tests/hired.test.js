@@ -117,7 +117,7 @@ test('the captain plans a run: a contract from the board her hold can fill, and 
   await done();
 });
 
-test('a run, end to end: sail, burn, come in, sell, and be paid a wage and a share', async () => {
+test('a run, end to end: sail, burn, come in, sell, and be paid a wage less the kit (#879)', async () => {
   const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
@@ -135,7 +135,7 @@ test('a run, end to end: sail, burn, come in, sell, and be paid a wage and a sha
     }
     const e = h.ledger[0];
     out.settled = { mode: G.mode, planet: st.planet, matches: st.planet === plan.planet, run: h.run, cargo: Object.keys(st.cargo).length, entry: e && { tons: e.tons, profit: e.profit, revenue: e.revenue - e.cost === e.profit, wage: e.wage > 0 } };
-    out.paid = { credits: st.credits - credits0, equals: e && st.credits - credits0 === e.wage + e.share, share: e && e.share === Math.round(Math.max(0, e.profit) * h.share), fund: e && h.fund === fund0 - e.cost + e.revenue };
+    out.paid = { credits: st.credits - credits0, equals: e && st.credits - credits0 === e.wage - e.kit + e.share - (e.hall || 0), share: e && e.share === 0, fund: e && h.fund === fund0 - e.cost + e.revenue };
     out.note = UI.notes.join(' '); out.scene = G.dialog && G.dialog.event.title;
     return out;
   });
@@ -213,7 +213,7 @@ test('errands: delivered when she docks, the fee to you and the cut to the ship'
       update(G.mode === 'transit' ? 1 : 1 / 30); Mods.emit('frame', G.mode === 'transit' ? 1 : 1 / 30);
     }
     const e = h.ledger[0];
-    return { planet: st.planet === plan.planet, left: st.missions.length, earned: st.credits - credits0, runPay: e.wage + e.share, fee: errand.pay, cut: errand.cut, fund: h.fund, expectFund: HIRED_FUND - e.cost + e.revenue + errand.cut };
+    return { planet: st.planet === plan.planet, left: st.missions.length, earned: st.credits - credits0, runPay: e.wage - e.kit + e.share - (e.hall || 0), fee: errand.pay, cut: errand.cut, fund: h.fund, expectFund: HIRED_FUND - e.cost + e.revenue + errand.cut };
   });
   assert.ok(r.planet); assert.equal(r.left, 0, 'the errand is done');
   assert.equal(r.earned, r.runPay + r.fee, 'you got your pay for the run and the errand fee');
@@ -581,7 +581,7 @@ test('a hand starts owing the hall, each arrival repays a third of the pay and n
     return out;
   });
   assert.equal(r.start, 30000);
-  assert.equal(r.first.paid, Math.round(r.first.entry.wage * 0.3)); assert.equal(r.first.credits, r.first.entry.wage + r.first.entry.share - r.first.paid, 'the hall is paid out of the pay');
+  assert.equal(r.first.paid, Math.round((r.first.entry.wage - r.first.entry.kit) * 0.3)); assert.equal(r.first.credits, r.first.entry.wage - r.first.entry.kit + r.first.entry.share - r.first.paid, 'the hall is paid out of the pay, after the kit (#879)');
   assert.match(r.first.note, new RegExp(`The hall took ${r.first.paid} cr of your pay\\. [\\d,]+ cr still owed\\.`)); assert.equal(r.first.entry.hall, r.first.paid);
   assert.equal(r.cap.paid, 400, 'never more than is owed'); assert.match(r.cap.note, /The hall took 400 cr of your pay\. The bond is paid\./); assert.equal(r.capFlag, true); assert.equal(r.after, 0);
   assert.equal(r.none.paid, 0); assert.doesNotMatch(r.none.note, /The hall/, 'nothing owed, nothing said');

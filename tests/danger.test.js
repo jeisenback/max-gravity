@@ -40,7 +40,7 @@ test('a hurt hand is paid light duty for a run', async () => {
     const wageFor = hurtNow => {
       h.hurtUntil = hurtNow ? st.day + 10 : 0; h.ledger = [];
       h.run = { ballast: true, good: null, tons: 0, cost: 0, day: st.day - 5, from: st.planet, sid: st.systemId, planet: st.planet };
-      const before = st.credits; settleRun(currentPlanet()); return st.credits - before;
+      settleRun(currentPlanet()); return h.ledger[0].wage;  // the wage, before the kit comes out of it (#879)
     };
     out.well = wageFor(false); out.hurt = wageFor(true);
     return out;

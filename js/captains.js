@@ -115,10 +115,10 @@ function arrivalScene() {
   const own = k => lineWords('scene:settling-up', `${xo.cast}.${k === 'memory' ? 'recall' : k}`, a[k]).replace(/\{cap\}/g, cap.first);  // the first officer's own words (hiredscenes.js settlingLines)
   const ledger = [
     f.good ? say(f.cost ? 'ledger.cargo' : 'ledger.contract', { tons: f.tons, good: f.good, cost: fmt(f.cost), revenue: fmt(f.revenue), net: say(f.profit < 0 ? 'ledger.loss' : 'ledger.clear'), profit: fmt(Math.abs(f.profit)), forecast: isFinite(f.forecast) && f.forecast !== f.profit ? say('ledger.forecast', { forecast: fmt(f.forecast) }) : '' }) : say('ledger.none'),
-    say('ledger.wage', { days: f.days, wage: fmt(f.wage), share: fmt(f.share) }),
+    say('ledger.wage', { days: f.days, wage: fmt(f.wage), kit: fmt(f.kit || 0) }),
     ...(f.hall ? [say('ledger.hall', { pct: Math.round(DEBT_SHARE * 100), hall: fmt(f.hall), owed: fmt(f.owed) })] : []),
   ].join('<br>');
-  const column = `${say(f.profit > 0 ? 'column.share' : 'column.empty', { engineer: crewNamed('engineer'), pilot: crewNamed('pilot') })} ${own('column')}`;
+  const column = `${say('column.rating', { engineer: crewNamed('engineer'), pilot: crewNamed('pilot') })} ${own('column')}`;  // the officers' shares; a rating has none (#879)
   return {
     title: say('title'), personal: true,
     text: [own('open'), ledger, own('memory'), column, say('ashore')].join('</p><p>'),

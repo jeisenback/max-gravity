@@ -20,7 +20,7 @@ function shipperSettled(run, sold, day, cut = 0, owed = 0) {
 }
 // What a shipper held back comes back to the ship's fund when the hand's case holds, with the hand's share of it, and the ledger's line is mended.
 function restoreSkim(off) {
-  const st = G.state, h = hired(), extra = Math.round(off.cut * h.share), e = h.ledger[0];
+  const st = G.state, h = hired(), extra = Math.round(off.cut * HIRED_SHARE), e = h.ledger[0];  // the extra is the hand's share, which a rating has none of (#879)
   h.fund += off.cut; st.credits += extra; h.earnedTotal = (h.earnedTotal || 0) + extra;
   if (e && e.skim === off.cut) { e.revenue += off.cut; e.profit += off.cut; e.share += extra; e.skim = 0; }
 }
