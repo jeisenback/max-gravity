@@ -88,3 +88,28 @@ test('a rating\'s pay: the day rate less the kit, then the hall\'s cut, and no s
   }
   assert.match(r.second.notes, new RegExp(`less ${r.second.row.kit.toLocaleString('en-US')} cr for your kit`), r.second.notes);
 });
+
+test('a save signed before (#879) is put on a rating\'s terms: the captain\'s day rate, no share, and the bond scaled with the stopgap', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const old = JSON.parse(JSON.stringify(G.state)), money = JSON.parse(JSON.stringify(G.state));
+    Object.assign(old.hired, { wage: 350, share: 0.06, debt: 30000 });
+    Object.assign(money.hired, { wage: 375, share: 0.06, debt: 12000, reason: 'money' });
+    const now = JSON.parse(JSON.stringify(G.state));  // a save from after: left alone
+    now.hired.wage = 525; now.hired.debt = 4000;
+    const pick = st => (h => ({ wage: h.wage, share: h.share, debt: h.debt }))(migrate(st).hired);
+    return { old: pick(old), money: pick(money), now: pick(now) };
+  });
+  await done();
+  assert.deepEqual(r.old, { wage: 500, share: 0, debt: 9000 });
+  assert.deepEqual(r.money, { wage: 525, share: 0, debt: 4000 });  // 12,000 owed of the old 30,000 is 4,000 of the 9,000 (rounded to 1,000 as the bond is)
+  assert.deepEqual(r.now, { wage: 525, share: 0, debt: 4000 });
+});
+
+test('Cato\'s watch bill names the ship he has: no cook and no medic aboard', async () => {
+  const { ev, done } = await open();
+  const text = await ev(() => CAST.cato.scenes.intro.text);
+  await done();
+  assert.doesNotMatch(text, /cook|medic/i, text);
+});

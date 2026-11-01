@@ -73,6 +73,7 @@ function migrate(st) {
   for (const p of Object.values(st.people)) if (p && typeof p === 'object') { p.first = cleanName(p.first); p.last = cleanName(p.last); }  // an event title is built from a name, and a title ends up in an attribute
   // The fields stateDefaults() leaves out (a save may not have them) are dropped when they are the wrong kind of thing, so a pasted save code cannot throw here (#749).
   const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
+  if (isObj(st.hired) && st.hired.share > 0) Object.assign(st.hired, ratingTerms(st.hired));  // signed for a share, before a rating's pay (#879)
   for (const key of ['captain', 'home', 'outpost']) if (st[key] != null && !isObj(st[key])) delete st[key];
   for (const key of ['captains', 'memorial']) if (st[key] != null) { if (Array.isArray(st[key])) st[key] = st[key].filter(isObj); else delete st[key]; }
   if (st.captain) st.captain.name = cleanName(st.captain.name);

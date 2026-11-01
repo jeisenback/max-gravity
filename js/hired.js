@@ -29,6 +29,9 @@ const DEBT_SHARE = 0.3;  // the hiring hall's bond for the berth, the passage an
 // hester), against 16.7 and 133 with the share before.
 const STOPGAP_FACTOR = 0.3, HIRED_TARGET = Math.round(190000 * STOPGAP_FACTOR / 1000) * 1000;
 const HIRED_DEBT = Math.round(30000 * STOPGAP_FACTOR / 1000) * 1000;  // the hall's bond, scaled with the price for the same stopgap: at a rating's pay the old 30,000 alone took most of a chapter
+// A save signed before (#879) holds a share, the old day rate and the old bond: its terms as a rating's, for migrate() (menu.js) to write. The captain's day
+// rate (and the 25 more a hand who signed for the money asked, signon.js), no share, and what is left of the bond scaled as HIRED_DEBT is.
+const ratingTerms = h => ({ share: 0, wage: ((CAPTAINS[h.captainKey] || {}).wage || HIRED_WAGE) + (h.reason === 'money' ? SIGN_WAGE_UP : 0), debt: Math.round((h.debt || 0) * STOPGAP_FACTOR / 1000) * 1000 });
 // The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
 // her price, and at the middle price again if the deal lapses.
 const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? (captainBeatsDone(h) ? USED_OFFER_AT : HIRED_TARGET) : dealOpen() ? h.deal.price : HIRED_TARGET); };

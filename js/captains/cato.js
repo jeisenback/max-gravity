@@ -69,8 +69,8 @@ CAST.cato = {
     intro: {
       title: 'The Watch Bill',
       text: ('Cato Rahman finds you at the end of your first watch with a mug in each hand. He\'s a big man, and he moves slowly in the passages. ' +
-          '"Sit," he says. "You got the cold watch, and that was me, so if you hate it, say so. The cook has a boy at home, so the cook has the ' +
-          'evenings. The medic is waiting on a letter, and I try to have the medic on when we dock. The rest of you get what\'s left. Tell me what ' +
+          '"Sit," he says. "You got the cold watch, and that was me, so if you hate it, say so. The deckhand has a boy at home, so the deckhand has the ' +
+          'evenings. Comms is waiting on a letter, and I try to have comms off when we dock. The rest of you get what\'s left. Tell me what ' +
           'you can\'t stand and I\'ll see what I can move. The captain counts every hour I move, mind. I move them anyway." He holds out one of the mugs.'),
       choices: [
         {

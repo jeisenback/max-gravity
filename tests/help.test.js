@@ -19,7 +19,10 @@ test('the narrow build hides the topics for what is off, and says what a hand ha
   for (const id of OFF) assert.ok(!ids.includes(id), `${id} is hidden`);
   assert.ok(ids.includes('hand') && ids.includes('trading') && ids.includes('crew') && ids.includes('saves'));
   const text = Object.fromEntries(r.map(t => [t.id, t.text]));
-  assert.match(text.hand, /bosun/);  // the bible's crew (#879) assert.match(text.hand, /ship of your own/);
+  assert.match(text.hand, /bosun/);  // the bible's crew (#879)
+  assert.match(text.hand, /ship of your own/);
+  assert.doesNotMatch(text.hand + text.trading, /share|thirty thousand/, 'a rating has no share, and the bond is the stopgap\'s (#879)');
+  assert.match(text.hand, /less the kit/); assert.match(text.hand, /9,000 credits/);
   assert.doesNotMatch(text.hand, /Tomas|Ore Runner|weeks|17,000|21,000/, 'the day-0 text does not give away the used-ship deal');
   assert.match(text.trading, /The captain trades/); assert.doesNotMatch(text.trading, /Buy where a good is cheap/);
   assert.match(text.crew, /bosun/); assert.doesNotMatch(text.crew, /Hire crew in the Bar/);
