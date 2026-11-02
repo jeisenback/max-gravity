@@ -429,7 +429,7 @@ function dealScene(planet) {
   const st = G.state, h = hired(), tomas = tomasAboard();
   const price = tomas ? (tomas.opinion >= OPINION.FRIEND ? BUY_IN.good : tomas.opinion < 0 ? BUY_IN.bad : BUY_IN.mid) : BUY_IN.bad;
   h.deal = { price, day: st.day, until: st.day + DEAL_DAYS, broker: !tomas };
-  const say = (key, vars) => sceneSay('scene:used-ship-offer', key, { price: fmt(price), until: h.deal.until, ...vars });
+  const say = (key, vars) => sceneSay('scene:used-ship-offer', key, { price: fmt(price), share: fmt(SHARE_PRICE), owed: fmt(SHARE_PRICE - price), until: h.deal.until, ...vars });
   const tellKey = price < BUY_IN.mid ? 'good' : price > BUY_IN.mid && tomas ? 'bad' : 'plain';  // how the price is put: a favor, a price he will not call one, or only the figure
   if (tomas) captainFlag('tomasWaited');  // the last piece of the spine (#294)
   return tomas ? {

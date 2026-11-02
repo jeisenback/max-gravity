@@ -984,6 +984,6 @@ test('Tomas gives the reason when she is offered, which waits for the hull to ha
   }, { debt: true });
   assert.equal(r.waits, false, 'the offer waits for the hull to have been seen'); assert.equal(r.opens, true); assert.equal(r.broker, true, 'without Tomas, nothing to wait for');
   assert.match(r.owed, /Three owners, and every one of them sold her, and none for bad luck\. Each ran one payment short, and the coolant line is what they skipped\./);
-  assert.match(r.owed, /You owe the hall 15,000 still\. I looked at its book\. Clear it, and you'll be the first owner she has had who owes nobody\./);
-  assert.match(r.clear, /You owe nobody now\. I looked at the hall's book\. She has only ever had owners who owed everybody\./); assert.equal(r.tomasFlag, true);
+  assert.match(r.owed, /You owe the hall 15,000 still\. I looked at its book\. The co-op won't sign anyone who owes an agency, so clear it first\./);
+  assert.match(r.clear, /You owe nobody now\. I looked at the hall's book\. That matters to them\./); assert.equal(r.tomasFlag, true);
 });

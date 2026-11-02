@@ -27,6 +27,7 @@ test('nothing is offered below 55% of her price, and the beat plays once above i
   });
   assert.equal(r.below, null); assert.equal(r.none, true);
   assert.match(r.first.text, /Tomas/); assert.equal(r.deal, true);
+  assert.match(r.first.text, /co-op/); assert.match(r.first.text, /150,000/, 'the full share beside the buy-in (#882)'); assert.match(r.first.text, /speak for you/);
   assert.equal(r.again, null, 'once');
   await done();
 });
@@ -54,7 +55,7 @@ test('the deal lasts a few weeks, and then the ship is gone and the ordinary yar
   });
   assert.equal(r.open, true); assert.equal(r.listed, true); assert.equal(r.lastDay, true);
   assert.equal(r.lapsed, false); assert.equal(r.listedAfter, false); assert.equal(r.usedBuyable, false);
-  assert.match(r.note, /Empty Cradle/); assert.match(r.note, /Tomas/); assert.doesNotMatch((r.once && r.once.text) || '', /Empty Cradle/, 'said once'); assert.equal(r.hopper, true, 'the Dust Skiff stays buyable');
+  assert.match(r.note, /Empty Cradle/); assert.match(r.note, /Tomas/); assert.match(r.note, /berths/, 'the co-op has filled her berths (#882)'); assert.doesNotMatch((r.once && r.once.text) || '', /Empty Cradle/, 'said once'); assert.equal(r.hopper, true, 'the Dust Skiff stays buyable');
   assert.ok(r.days >= 14 && r.days <= 90);
   await done();
 });
@@ -66,7 +67,7 @@ test('a lapsed deal without Tomas is told by the broker', async () => {
     const scene = dock(120000);
     return { title: scene && scene.title, text: scene && scene.text };
   });
-  assert.equal(r.title, 'Gone From the Apron'); assert.match(r.text, /broker/i); assert.doesNotMatch(r.text, /Tomas/);
+  assert.equal(r.title, 'Gone From the Apron'); assert.match(r.text, /co-op/); assert.match(r.text, /berths/); assert.doesNotMatch(r.text, /Tomas/);
   await done();
 });
 
@@ -77,7 +78,7 @@ test('without Tomas a broker offers the same ship at the full second-hand price'
     const scene = dock(32000);
     return { text: scene && scene.text, price: hired().deal && hired().deal.price, broker: hired().deal && hired().deal.broker };
   });
-  assert.match(r.text, /broker/i); assert.doesNotMatch(r.text, /Tomas/);
+  assert.match(r.text, /co-op/); assert.match(r.text, /63,000/); assert.match(r.text, /150,000/); assert.doesNotMatch(r.text, /Tomas/);
   assert.equal(r.price, 63000); assert.equal(r.broker, true);
   await done();
 });
