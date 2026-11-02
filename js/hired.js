@@ -23,15 +23,17 @@ const HAND_RAID = { base: 0.08, per: 1.4 };  // a hand's chance of a pirate cont
 const HAND_LANE_WEIGHT = 8;  // and how much a dangerous lane weights the ship's own incidents (happenings.js)
 const LIGHT_DUTY = 0.6;  // a hurt hand's wage while they work light duty
 const DEBT_SHARE = 0.3;  // the hiring hall's bond for the berth, the passage and the kit (#280): 30 percent of each run's pay goes to it, never more than is owed
-// The used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of. STOPGAP until #882: a rating's pay (#879) is about a
-// third of what the share paid, so her prices are scaled by STOPGAP_FACTOR to keep the chapter's length (tools/soak.js, see the commit), until the goal becomes a
-// member's share in a Belt co-op ship. 0.3 gives a mean of 17.7 runs and 144 days over seeds 1 to 6 (node tools/soak.js --seeds 1,2,3,4,5,6 --legs 40 --captain
-// hester), against 16.7 and 133 with the share before.
-const STOPGAP_FACTOR = 0.3, HIRED_TARGET = Math.round(190000 * STOPGAP_FACTOR / 1000) * 1000;
-const HIRED_DEBT = Math.round(30000 * STOPGAP_FACTOR / 1000) * 1000;  // the hall's bond, scaled with the price for the same stopgap: at a rating's pay the old 30,000 alone took most of a chapter
+// The chapter's goal (#882, docs/bible/ceres-coop.md): a member's share in the Ceres Crew Co-operative's Ore Runner, the hull Tomas rebuilt three times. The
+// share is 150,000 (a fifth of the hull, her refit and the loan's cost); a new member puts down a buy-in set by the members' vote, and owes the rest out of
+// their earnings. The buy-ins keep the chapter's length at a rating's pay: a mean of 17.7 runs and 144 days over seeds 1 to 6 (node tools/soak.js --seeds
+// 1,2,3,4,5,6 --legs 40 --captain hester).
+const SHARE_PRICE = 150000, BUY_IN = { good: 51000, mid: 57000, bad: 63000 };  // the vote: a member speaks for you, a plain vote, nobody speaks for you
+const HIRED_TARGET = BUY_IN.mid, COOP_PORT = 'Ceres Station';  // the co-op's office, where the share is signed
+const HIRED_DEBT = 9000;  // the hall's bond: a rating's recruitment debt for the berth, the passage and the kit
+const OLD_BOND_SCALE = 0.3;  // what a save from before (#879) owes the hall, scaled as the bond was then
 // A save signed before (#879) holds a share, the old day rate and the old bond: its terms as a rating's, for migrate() (menu.js) to write. The captain's day
-// rate (and the 25 more a hand who signed for the money asked, signon.js), no share, and what is left of the bond scaled as HIRED_DEBT is.
-const ratingTerms = h => ({ share: 0, wage: ((CAPTAINS[h.captainKey] || {}).wage || HIRED_WAGE) + (h.reason === 'money' ? SIGN_WAGE_UP : 0), debt: Math.round((h.debt || 0) * STOPGAP_FACTOR / 1000) * 1000 });
+// rate (and the 25 more a hand who signed for the money asked, signon.js), no share, and what is left of the bond scaled by OLD_BOND_SCALE.
+const ratingTerms = h => ({ share: 0, wage: ((CAPTAINS[h.captainKey] || {}).wage || HIRED_WAGE) + (h.reason === 'money' ? SIGN_WAGE_UP : 0), debt: Math.round((h.debt || 0) * OLD_BOND_SCALE / 1000) * 1000 });
 // The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
 // her price, and at the middle price again if the deal lapses.
 const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? (captainBeatsDone(h) ? USED_OFFER_AT : HIRED_TARGET) : dealOpen() ? h.deal.price : HIRED_TARGET); };
@@ -417,19 +419,18 @@ const namesOf = list => list.map(c => `${c.first} ${c.last}`).join(' and ');
 // she is offered once (by Tomas, or by a broker if he is not aboard) for DEAL_DAYS, at a price that follows how Tomas
 // thinks of you. buyIn id USED_ID buys her; she comes worn. If the deal lapses she is gone, and the ordinary list is left.
 const USED_ID = 'used';
-const USED_PRICE = { good: Math.round(170000 * STOPGAP_FACTOR / 1000) * 1000, mid: HIRED_TARGET, bad: Math.round(210000 * STOPGAP_FACTOR / 1000) * 1000 };  // scaled with HIRED_TARGET (the stopgap above)  // the broker's price is the bad one: no favor
-const USED_OFFER_AT = Math.round(0.55 * USED_PRICE.mid), DEAL_DAYS = 84;  // twelve weeks: long enough for most careful hands to reach a yard with her price (#779)
+const USED_OFFER_AT = Math.round(0.55 * BUY_IN.mid), DEAL_DAYS = 84;  // twelve weeks: long enough for most careful hands to reach a yard with her price (#779)
 const USED_CONDITION = { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 };
-const buyShip = id => (id === USED_ID ? { ...SHIPS.lightfreighter, name: 'Ore Runner (used)', price: hired() && hired().deal ? hired().deal.price : USED_PRICE.mid, forSale: dealOpen() } : SHIPS[id]);
+const buyShip = id => (id === USED_ID ? { ...SHIPS.lightfreighter, name: 'Ore Runner (used)', price: hired() && hired().deal ? hired().deal.price : BUY_IN.mid, forSale: dealOpen() } : SHIPS[id]);
 const dealOpen = () => !!hired() && !!hired().deal && G.state.day <= hired().deal.until;
 const tomasAboard = () => castAboard().find(c => c.cast === 'tomas') || null;
 
 function dealScene(planet) {
   const st = G.state, h = hired(), tomas = tomasAboard();
-  const price = tomas ? (tomas.opinion >= OPINION.FRIEND ? USED_PRICE.good : tomas.opinion < 0 ? USED_PRICE.bad : USED_PRICE.mid) : USED_PRICE.bad;
+  const price = tomas ? (tomas.opinion >= OPINION.FRIEND ? BUY_IN.good : tomas.opinion < 0 ? BUY_IN.bad : BUY_IN.mid) : BUY_IN.bad;
   h.deal = { price, day: st.day, until: st.day + DEAL_DAYS, broker: !tomas };
   const say = (key, vars) => sceneSay('scene:used-ship-offer', key, { price: fmt(price), until: h.deal.until, ...vars });
-  const tellKey = price < USED_PRICE.mid ? 'good' : price > USED_PRICE.mid && tomas ? 'bad' : 'plain';  // how the price is put: a favor, a price he will not call one, or only the figure
+  const tellKey = price < BUY_IN.mid ? 'good' : price > BUY_IN.mid && tomas ? 'bad' : 'plain';  // how the price is put: a favor, a price he will not call one, or only the figure
   if (tomas) captainFlag('tomasWaited');  // the last piece of the spine (#294)
   return tomas ? {
     title: say('tomas.title'), personal: true,
