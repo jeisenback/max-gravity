@@ -108,10 +108,11 @@ test('the captain picks what pays the ship most a day among what her hold can fi
     { sid: 'ceres', planet: 'Ceres Station', good: 'food', tons: 120, days: 6, pay: 7200, yard: true },  // 1200 a day, but 120 tons
     { sid: 'eros', planet: 'Eros Old Town', good: 'metal', tons: 40, days: 5, pay: 4500, yard: false },  // 900 a day
   ];
-  const deps = { free: 120, wantYard: false, risk: () => 1, picks: 1 };
+  const deps = { free: 120, risk: () => 1, picks: 1 };
   assert.equal(pickContract(list, deps).best.planet, 'Ceres Station');
   assert.equal(pickContract(list, { ...deps, free: 100 }).best.planet, 'Mars', 'the hold cannot take the Ceres load');
-  assert.equal(pickContract(list, { ...deps, free: 100, wantYard: true }).best.planet, 'Mars', 'no yard among what fits');
+  assert.equal(pickContract(list, { ...deps, free: 100, goal: c => c.planet === 'Ceres Station' }).best.planet, 'Mars', 'the goal is not among what fits');
+  assert.equal(pickContract(list, { ...deps, risk: sid => (sid === 'ceres' ? 0.5 : 1), goal: c => c.planet === 'Ceres Station' }).best.planet, 'Ceres Station', 'the goal counts four times over (#882)');
   assert.equal(pickContract(list, { ...deps, risk: sid => (sid === 'ceres' ? 0.5 : 1) }).best.planet, 'Mars', 'a cautious captain marks the League lane down');
   assert.deepEqual(pickContract(list, deps).ranked.map(c => c.planet), ['Ceres Station', 'Mars', 'Eros Old Town']);
   assert.equal(pickContract([], deps).best, null); assert.equal(pickContract(list, { ...deps, free: 30 }).best, null, 'nothing fits');

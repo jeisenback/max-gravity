@@ -29,6 +29,7 @@ const DEBT_SHARE = 0.3;  // the hiring hall's bond for the berth, the passage an
 // 1,2,3,4,5,6 --legs 40 --captain hester).
 const SHARE_PRICE = 150000, BUY_IN = { good: 51000, mid: 57000, bad: 63000 };  // the vote: a member speaks for you, a plain vote, nobody speaks for you
 const HIRED_TARGET = BUY_IN.mid, COOP_PORT = 'Ceres Station';  // the co-op's office, where the share is signed
+const isCoop = planet => !!planet && planet.name === COOP_PORT;
 const HIRED_DEBT = 9000;  // the hall's bond: a rating's recruitment debt for the berth, the passage and the kit
 const OLD_BOND_SCALE = 0.3;  // what a save from before (#879) owes the hall, scaled as the bond was then
 // A save signed before (#879) holds a share, the old day rate and the old bond: its terms as a rating's, for migrate() (menu.js) to write. The captain's day
@@ -235,15 +236,15 @@ function planRun() {
   planAlts = []; planRanked = [];
   const st = G.state, here = currentPlanet(), free = cargoFree(), from = st.systemId;
   const reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid));
-  const wantYard = wantsYard();  // once your savings would buy the chapter's ship, she heads for a port with a yard when she can
+  const wantYard = wantsYard();  // once your savings would take up the share, she heads for the co-op's office at Ceres when she can
   const ice = iceOption(here, from, reach, free);
   if (ice) return ice;
-  const { best, ranked } = pickContract(here.services.includes('trade') ? contractBoard(st, here) : [], { free, wantYard, risk: laneRisk, picks: captainEntry() ? TRADE_PICKS[captainEntry().captain.trade] : 1 });
+  const { best, ranked } = pickContract(here.services.includes('trade') ? contractBoard(st, here) : [], { free, wantYard, risk: laneRisk, picks: captainEntry() ? TRADE_PICKS[captainEntry().captain.trade] : 1, goal: c => wantYard && c.planet === COOP_PORT });
   planAlts = ranked.slice(0, 4).map(asRun); planRanked = ranked;
-  const take = wantYard ? ranked.find(c => c.yard) || null : best;  // with your money in hand, a contract to a yard if the board has one, else light to the nearest yard (below)
+  const take = wantYard ? ranked.find(c => c.planet === COOP_PORT) || null : best;  // with your money in hand, a contract to Ceres if the board has one, else light toward Ceres (below)
   if (take) return asRun(take);
-  // Nothing on the board (or nothing to a yard when she wants one): run light to the nearest port that trades, and look for work there.
-  const dest = reach.flatMap(([sid, sys]) => sys.planets.filter(x => x.services.includes('trade')).map(pl => ({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), days: Math.max(1, travelDays(from, sid)) })))
+  // Nothing on the board (or nothing to Ceres when she wants it): run light to the nearest port that trades, Ceres first when she wants it, and look for work there.
+  const dest = reach.flatMap(([sid, sys]) => sys.planets.filter(x => x.services.includes('trade')).map(pl => ({ sid, planet: pl.name, yard: isCoop(pl), days: Math.max(1, travelDays(from, sid)) })))
     .sort((a, b) => (wantYard ? (b.yard - a.yard) : 0) || a.days - b.days)[0];
   return dest ? { ...dest, good: null, tons: 0, cost: 0, profit: 0, ballast: true } : null;
 }
@@ -470,7 +471,7 @@ function dealCheck(planet) {
   openEvent(dealScene(planet));
 }
 const buyInPrice = id => buyShip(id).price - (hired() && hired().haggle && hired().haggle.id === id ? hired().haggle.off : 0);  // nothing to trade in: the ship you fly is the captain's
-const canBuyIn = (id, planet) => !!hired() && G.mode === 'landed' && planet.services.includes('shipyard') && buyShip(id) && buyShip(id).forSale
+const canBuyIn = (id, planet) => !!hired() && G.mode === 'landed' && planet.services.includes('shipyard') && (id !== USED_ID || isCoop(planet)) && buyShip(id) && buyShip(id).forSale
   && !(hired().debt > 0) && G.state.credits >= buyInPrice(id) && !(buyShip(id).req && repOf(localGov()) < buyShip(id).req);
 
 function buyIn(id) {
@@ -546,25 +547,27 @@ function chapterRecap() {
 }
 
 function buyInHtml() {
-  const h = hired(), p = currentPlanet(), friends = buyInCompanions(), cap = G.state.people[h.captain];
-  if (!p.services.includes('shipyard')) return '<p class="hint">The yard deals with the captain, not with you. A ship of your own can be bought at a shipyard.</p>';
-  const rows = [...(dealOpen() ? [[USED_ID, buyShip(USED_ID)]] : []), ...Object.entries(SHIPS).filter(([, s]) => s.forSale)].map(([id, s]) => {
+  const h = hired(), p = currentPlanet(), friends = buyInCompanions(), cap = G.state.people[h.captain], say = (key, vars) => sceneSay('scene:screens', key, vars);
+  if (!p.services.includes('shipyard')) return `<p class="hint">${say('coop.noyard')}</p>`;
+  // The co-op's berth (#882): signed at its office at Ceres; at any other yard its notice says so.
+  const coop = !dealOpen() ? '' : !isCoop(p) ? `<div class="row"><div><b>${say('coop.row', { price: fmt(h.deal.price) })}</b> <span class="hint">${say('coop.notice', { until: h.deal.until })}</span></div></div>`
+    : (`<div class="row"><div><b>${say('coop.row', { price: fmt(h.deal.price) })}</b> <span class="hint">${say('coop.terms', { share: fmt(SHARE_PRICE), owed: fmt(SHARE_PRICE - h.deal.price), until: h.deal.until })}</span></div>
+     ` + ` ${h.confirm === USED_ID ? `<span><button data-action="buyInGo" data-arg="${USED_ID}" class="primary">${say('coop.confirm')}</button> <button data-action="buyInNo">Not yet</button></span>`
+      : `<button data-action="buyInAsk" data-arg="${USED_ID}" ${canBuyIn(USED_ID, p) ? '' : 'disabled'}>${say('coop.sign', { price: fmt(h.deal.price) })}</button>`}</div>`);
+  // The yard's own ships, for the full build's hand only: the shipped build's goal is the share.
+  const ships = scopeNarrow() ? '' : Object.entries(SHIPS).filter(([, s]) => s.forSale).map(([id, s]) => {
     const locked = s.req && repOf(localGov()) < s.req;
     return (`<div class="row"><div><b>${s.name}</b> <span class="hint">${s.cargo}t, ${s.berths} berths, ${s.guns} ` +
-        `gun${s.guns > 1 ? 's' : ''}. ${fmt(s.price)} ` +
-        `cr${locked ? ', needs better standing here' : ''}${id === USED_ID ? `. Worn, with her fire control close to failing. Until about day ${h.deal.until}` : ''}</span></div>
+        `gun${s.guns > 1 ? 's' : ''}. ${fmt(s.price)} cr${locked ? ', needs better standing here' : ''}</span></div>
      ` +
         ` ${h.confirm === id ? `<span><button data-action="buyInGo" data-arg="${id}" class="primary">Yes, buy and leave</button> <button data-action="buyInNo">Not yet</button></span>`
       : `<button data-action="buyInAsk" data-arg="${id}" ${canBuyIn(id, p) ? '' : 'disabled'}>Buy (${fmt(s.price)})</button>`}</div>`);
   }).join('');
-  return (`<div class="post"><div class="eyebrow">A ship of your own &middot; your savings ${fmt(G.state.credits)} cr</div>
-    ${h.debt > 0 ? `<p class="hint">You owe the hiring hall ${fmt(h.debt)} cr. You cannot buy a ship until it is paid.</p>` : ''}
-    ${rows}
-    <p ` +
-      `class="hint">${h.confirm ? (`Leaving means leaving Captain ${esc(cap.first)} ${esc(cap.last)} and the crew ` +
-        `behind${friends.length ? `, but ${esc(namesOf(friends))} would come with you` : ', and nobody on the crew knows you well enough to come'}.`) : (
-        `Buy a ship and go out on your ` +
-        `own. ${friends.length ? `${esc(namesOf(friends))} would come with you.` : 'Nobody on the crew knows you well enough to come with you yet.'}`)}</p></div>`);
+  const who = friends.length ? esc(namesOf(friends)) : '';
+  return (`<div class="post"><div class="eyebrow">${say('coop.eyebrow', { savings: fmt(G.state.credits) })}</div>
+    ${h.debt > 0 ? `<p class="hint">${say('coop.bond', { debt: fmt(h.debt) })}</p>` : ''}
+    ${coop || `<p class="hint">${say('coop.none')}</p>`}${ships}
+    <p class="hint">${h.confirm ? say(who ? 'coop.leave.with' : 'coop.leave.alone', { first: esc(cap.first), last: esc(cap.last), names: who }) : say(who ? 'coop.with' : 'coop.alone', { names: who })}</p></div>`);
 }
 
 // A run in the hand's terms: the days, the ship's profit, and what that is to you. The captain's run and each suggested run say it alike.
@@ -579,7 +582,7 @@ const goalLine = (st, hd) => {
 const runHtml = () => {
   const hd = G.state.hired, plan = currentPlan(), led = hd.ledger.slice(0, 5), name = goodName;
   return String(h`<div class="post"><div class="eyebrow">${hiredCaptain() ? h`<span class="nowrap">Captain ${raw(personLink(hiredCaptain()))}'s</span> run` : 'The captain\'s run'}</div>
-    <p class="desc">${plan && plan.yard && wantsYard() ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'Nothing on the board, and nowhere in reach to look. The captain is waiting for a shipper.'
+    <p class="desc">${plan && plan.planet === COOP_PORT && wantsYard() ? sceneSay('scene:screens', 'coop.heading') : ''}${!plan ? 'Nothing on the board, and nowhere in reach to look. The captain is waiting for a shipper.'
       : plan.ballast ? h`Nothing on the board here.${closedHere() ? ' The shipper here has closed its board to the ship.' : ''} The captain will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
       : plan.contract ? h`The captain has a contract from ${plan.shipper}${shipperWord(standingOf(hd, plan.shipper)) ? `, ${shipperWord(standingOf(hd, plan.shipper))}` : ''}: ${plan.tons}t of ${name(plan.good)} to ${plan.planet}, ${SYSTEMS[plan.sid].name}, due by ${dateOf(plan.due)}: ${runTerms(plan)}.${plan.hazard ? ' The lane has raids on it.' : ''}`
       : h`The captain will take the ${plan.tons}t of ${name(plan.good)} aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${runTerms(plan)}.`}</p>
@@ -631,7 +634,7 @@ Mods.register({
     M.action('swapPost', post => askSwap(post));
     M.action('buyInAsk', id => {
       if (!hired() || !canBuyIn(id, currentPlanet())) return;
-      if (hired().haggle && hired().haggle.id === id) hired().confirm = id;  // already settled at the yard office
+      if (id === USED_ID || (hired().haggle && hired().haggle.id === id)) hired().confirm = id;  // the share's buy-in is the vote's, with nothing to haggle; another ship already settled at the yard office
       else openEvent(yardScene(id));
     });
     M.action('buyInNo', () => { if (hired()) hired().confirm = hired().haggle = null; });

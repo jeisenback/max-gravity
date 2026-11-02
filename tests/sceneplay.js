@@ -193,6 +193,15 @@ const playScenes = () => {
   for (const [name, friends] of [['alone', 0], ['friends', 2]]) {
     run(`hand:buyin:${name}`, { credits: 1000000 }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(buyIn('courier')) }] }), { prep() { G.state.crew = []; crewOf(friends); for (const id of G.state.crew) G.state.people[id].opinion = 4; } });
   }
+  // the co-op's office (#882): its notice at another yard, the row and the confirm at Ceres, the bond, nothing posted, a port with no yard, and the captain heading for Ceres
+  { const deal = (o = {}) => () => { const st = G.state, h = hired(); h.deal = { price: BUY_IN.mid, day: st.day, until: st.day + DEAL_DAYS }; h.debt = o.debt || 0; st.credits = 60000; G.state.crew = []; crewOf(o.friends || 0); for (const id of G.state.crew) G.state.people[id].opinion = 4;
+      if (o.at) { st.systemId = o.at[0]; st.planet = o.at[1]; } if (o.confirm) h.confirm = USED_ID; if (o.none) h.deal = null; };
+    for (const [name, o] of [['notice', {}], ['ceres', { at: ['ceres', 'Ceres Station'], friends: 2 }], ['confirm', { at: ['ceres', 'Ceres Station'], confirm: true, friends: 2 }], ['confirm-alone', { at: ['ceres', 'Ceres Station'], confirm: true }],
+      ['bond', { at: ['ceres', 'Ceres Station'], debt: 3000 }], ['none', { none: true }], ['noyard', { at: ['pallas', 'Pallas Refinery'] }]]) {
+      run(`hand:office:${name}`, {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => buyInHtml() }] }), { prep: deal(o) });
+    }
+    run('hand:office:heading', {}, () => ({ ...alone(), choices: [{ label: 'x', run() { deal({ at: ['pallas', 'Pallas Refinery'] })(); G.state.cargo = {}; hired().iceAt = G.state.day; hired().plan = null; return runHtml(); } }] }));
+  }
   for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
     run(`hand:practise:${post}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.practise.label, run: () => String(ACTIVITIES.practise.run()) }] }), { extra: () => hired().skill });
   }

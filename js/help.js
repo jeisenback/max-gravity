@@ -15,7 +15,7 @@ const HELP = [
         `hall for the berth, the passage and the kit: ${fmt(HIRED_DEBT)} credits. Thirty percent of each run's pay goes to it until it is paid, and a ship ` +
         `cannot be bought while anything is owed.`),
     `The bosun runs the ratings and the rota: they decide who moves to which post, and the crew-side calls on the road. The captain keeps money and ship matters. You have an opinion with each of them, and the two can differ.`,
-    `Save toward a ship of your own. Once your savings are high enough, a ship may be offered to you at a port with a yard. The yard's own ships stay on the list, and the Dust Skiff is the cheapest, at ${fmt(SHIPS.shuttle.price)} credits.`,
+    `Save toward a member's share in a co-op ship. Once your savings are high enough, a share may be offered to you at a port with a yard, and it is signed at the co-op's office on Ceres Station. The buy-in is ${fmt(BUY_IN.mid)} credits on a plain vote, less if a member speaks for you.`,
     'Buying a ship ends your time as a hand. The crew who like you come with you, and the captain says goodbye at the foot of the ramp.' ] },
   { id: 'trading', title: 'Trading and markets', hand: [
     'The captain trades. Each run is the best cargo and port within reach, bought from the ship\'s funds; the Port page shows the plan, the funds and your savings. When you press Sail, the captain buys the cargo and the ship leaves. On arrival it is sold, and your wage is paid.',

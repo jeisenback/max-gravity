@@ -54,7 +54,7 @@ test('hired: the captain\'s business is not yours', async () => {
   assert.equal(await page.$('[data-action=refuel]'), null);
   await goTo(page, 'shipyard');
   assert.equal(await page.$('[data-action=buyship]'), null); assert.equal(await page.$('[data-action=overhaul]'), null);
-  assert.match(await page.innerText('#panel'), /a ship of your own/i);
+  assert.match(await page.innerText('#panel'), /the Ceres co-op/i);  // the hand's page is the co-op's (#882)
   assert.equal(await page.$eval('[data-action=buyInAsk]', b => b.disabled), true, 'and you cannot afford one yet');
   await goTo(page, 'crew');
   assert.equal(await page.$('[data-action=hire]'), null); assert.equal(await page.$('[data-action=dismiss]'), null);
@@ -602,7 +602,7 @@ test('a hand cannot buy a ship while owing, the panel says what is left, and a h
     const old = hired(); old.runsDone = 1; delete old.debt; out.older = { guard: !(old.debt > 0), note: (old.run = { planet: currentPlanet().name, sid: G.state.systemId, day: G.state.day - 3, from: 'X', cost: 0 }, settleRun(currentPlanet())) };
     return out;
   });
-  assert.equal(r.owing, false); assert.match(r.panelOwing, /You owe the hiring hall [\d,]+ cr\. You cannot buy a ship until it is paid\./); assert.equal(r.clear, true);
+  assert.equal(r.owing, false); assert.match(r.panelOwing, /You owe the hiring hall [\d,]+ cr\. The co-op won't sign anyone who owes an agency\./); assert.equal(r.clear, true);
   assert.equal(r.carried, 12340); assert.equal(r.ashore, 7770, 'a hand put ashore keeps what is left');
   assert.ok(r.older.guard); assert.doesNotMatch(r.older.note, /The hall/);
   await done();

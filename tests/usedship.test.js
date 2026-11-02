@@ -45,9 +45,9 @@ test('the deal lasts a few weeks, and then the ship is gone and the ordinary yar
   const { r, done } = await run(() => {
     const st = start(), out = {};
     dock(32000); const h = hired();
-    out.open = dealOpen(); out.listed = /used/i.test(buyInHtml());
+    out.open = dealOpen(); out.listed = /member's share/i.test(buyInHtml());
     st.day = h.deal.until;  out.lastDay = dealOpen();
-    st.day = h.deal.until + 1; out.lapsed = dealOpen(); out.listedAfter = /used/i.test(buyInHtml());
+    st.day = h.deal.until + 1; out.lapsed = dealOpen(); out.listedAfter = /member's share/i.test(buyInHtml());
     const gone = dock(120000); out.note = gone ? gone.title + ' ' + gone.text : ''; out.once = dock(120000);
     st.credits = 500000; out.hopper = canBuyIn('shuttle', currentPlanet()); out.usedBuyable = canBuyIn(USED_ID, currentPlanet());
     out.days = h.deal.until - h.deal.day;
