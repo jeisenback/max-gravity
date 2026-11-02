@@ -1,6 +1,6 @@
 # The Ceres Crew Co-operative
 
-Status: draft for the owner's review, 2026-11-02. The name is proposed. Built on `jurisdictions.md`, `economy.md` and `work.md`.
+Status: approved by the owner on 2026-11-02. Built on `jurisdictions.md`, `economy.md` and `work.md`.
 
 ## What it is
 

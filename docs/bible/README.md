@@ -34,8 +34,9 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 7. `lagos.md`: Lagos Arcology, the mainland, Lagos Ring, and Tomas.
 8. `rotterdam.md`: Rotterdam Arcology, the port, the finance houses, and Hester.
 9. `chittagong.md`: Chittagong Arcology, the hill settlements, the manning agencies, and Cato.
-10. `voice.md`: how the game's writing sounds.
-11. `people/`: one sheet per character (`ines.md` first).
+10. `ceres-coop.md`: the Ceres Crew Co-operative, its Ore Runner, and a member's share.
+11. `voice.md`: how the game's writing sounds.
+12. `people/`: one sheet per character (`ines.md` first).
 
 ## Where the game must change to fit
 

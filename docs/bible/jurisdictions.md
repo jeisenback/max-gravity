@@ -10,7 +10,7 @@ There are no great powers. A jurisdiction is a place whose owner makes its rules
 
 **Domes** (Mars). Each dome is run by a dome company with the air bill as its main charge. Several domes share a patrol under a joint agreement.
 
-**Co-ops and guild stations** (the Belt). Stations owned by the people who work them, or by their guilds: Ironheart, Juno Commons, Ceres's guilds. Members own shares, and the co-op owes the finance houses that lent it the money to build or buy the station. In a bad year the lender sets the terms. Non-members rent.
+**Co-ops and guild stations** (the Belt). Stations owned by the people who work them, or by their guilds: Ironheart, Juno Commons, Ceres's guilds. Members own shares, and the co-op owes the finance houses that lent it the money to build or buy the station. In a bad year the lender sets the terms. Non-members rent. One of them, the Ceres Crew Co-operative, is in `ceres-coop.md`.
 
 **Squats and havens.** Places nobody can collect from at a profit: Ring Nine, on an abandoned ore carrier; the Boneyard; the Rook at Hygiea. Owners elsewhere use them for cheap labour, cheap repairs, and a market for goods that can't be sold openly, and leave them alone while that pays.
 
