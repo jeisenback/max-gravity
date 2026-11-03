@@ -2974,7 +2974,7 @@
   "id": "cast:cato:mid1",
   "i": 0,
   "label": "Ask which ship has the question mark",
-  "result": "He tells you: an old, slow ore carrier the co-op bought from a finance house when her last charter failed. \"They're taking two members on her next year,\" he says. \"I'm saving for one of the places, and I'll be short.\" He talks about her until his tea has gone cold.",
+  "result": "He tells you: a long, tired Ore Runner the co-op means to buy when her last owner lets her go. \"Five berths,\" he says. \"I've the buy-in saved. I've been waiting for a hull the people I work with could sign on to as well.\" He talks about her until his tea has gone cold.",
   "changes": [
    "s.cast.cato.flags: {} -> undefined",
    "s.cast.cato.flags.share: undefined -> true",

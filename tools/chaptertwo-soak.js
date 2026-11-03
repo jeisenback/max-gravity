@@ -18,7 +18,7 @@ async function one(seed) {
     const st = G.state; st.story.next = 1e9; st.tutorial = null;
     for (const id of st.crew) person(id).opinion = OPINION.FRIEND + 1;  // everyone is a friend: all come along
     st.systemId = 'earth'; st.planet = 'Earth'; G.transit = null; G.mode = 'landed'; st.dest = null; G.dialog = null; G.nextEvent = null;
-    hired().deal = { price: USED_PRICE.mid, day: st.day, until: st.day + DEAL_DAYS }; hired().debt = 0; st.credits = buyInPrice(USED_ID) + over; buyIn(USED_ID);  // the chapter's goal: the used Ore Runner while (G.dialog) finishEvent();
+    hired().deal = { price: BUY_IN.mid, day: st.day }; hired().debt = 0; st.credits = buyInPrice(USED_ID) + over; buyIn(USED_ID);  // the chapter's goal: the used Ore Runner while (G.dialog) finishEvent();
     const day0 = st.day, came = [...career().came], marks = {}, out = { came: came.length, delivered: 0, firstQuit: null, snap: {}, stuck: 0 };
     const crewNow = () => st.crew.filter(id => came.includes(id)).length;
     const snap = () => { for (const n of [30, 60, 90, 120, 180, 240]) if (st.day - day0 >= n && !(n in out.snap)) out.snap[n] = { credits: st.credits, aboard: crewNow() }; };

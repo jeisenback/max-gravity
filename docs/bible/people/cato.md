@@ -58,7 +58,7 @@ He doesn't say: anything that overrules the captain in front of the crew; speech
 
 ## What he wants
 
-A member's share in a Belt co-op ship (`jurisdictions.md`): part-owner of the hull, with a vote, so that the people he works with could sign on as members and stay together. He has been watching one co-op's ships for years, and knows what a share costs. It is a long way off.
+A member's share in a Belt co-op ship: part-owner of the hull, with a vote, so that the people he works with could sign on as members and stay together. The co-op is the Ceres Crew Co-operative, "Kettle's" (`ceres-coop.md`), and the ship is its Ore Runner. He has watched its hulls for years, knows what a share costs, and has the buy-in saved; he was waiting for a hull the people he works with could sign on to together.
 
 ## Changes from the current game
 

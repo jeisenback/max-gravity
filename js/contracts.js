@@ -86,10 +86,10 @@ function contractBoard(st, here) {
   return h.freight.list;
 }
 
-// The captain's pick among the contracts her hold can fill: the most a day to the ship, a yard counted four times over when she wants
-// one, a dangerous lane marked down by her nerve (risk), and the best `picks` of them hers to choose among (her trade stat).
-function pickContract(list, { free, wantYard, risk, picks }) {
-  const score = c => (c.pay / c.days) * (wantYard && c.yard ? 4 : 1) * risk(c.sid);
+// The captain's pick among the contracts her hold can fill: the most a day to the ship, one to where the hand is going (`goal`, the co-op's
+// office once the hand holds the buy-in, hired.js) counted four times over, a dangerous lane marked down by her nerve (risk), and the best `picks` of them hers to choose among (her trade stat).
+function pickContract(list, { free, goal = () => false, risk, picks }) {
+  const score = c => (c.pay / c.days) * (goal(c) ? 4 : 1) * risk(c.sid);
   const ranked = list.filter(c => c.tons <= free).sort((a, b) => score(b) - score(a));
   const top = ranked.slice(0, Math.max(1, picks));
   return { best: top.length > 1 ? pick(top) : top[0] || null, ranked };
