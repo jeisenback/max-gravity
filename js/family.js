@@ -57,10 +57,12 @@ function originOf(p) {
   return (p.origin = `${city}:${kinds[Math.floor(h / cities.length) % kinds.length]}`);
 }
 const moduleId = p => { const o = originOf(p); return o ? o.replace(':', '-') : null; };  // the sittings' tables, family:<city>-<kind>-<beat>
-const placeId = p => { const o = originOf(p); return o ? o.split(':')[0] : null; };  // the visit's and the room's, family:<scene>-<city>
 // The words of the visit and the room by place (#871): the circumstance's own line (family:<scene>-<city>-<kind>, the family's rooms and street), else the city's
 // (its titles), else the shared scene's; each writes only what is its own.
-const placeTables = (p, id) => [moduleId(p) && `${id}-${moduleId(p)}`, placeId(p) && `${id}-${placeId(p)}`, id].filter(t => t && PEOPLE_LINES[`family:${t}`]);
+// A place's scenes are a story's only when the story was made from that place: a story from before (an old save) keeps the shared scenes, so nothing
+// contradicts what it has already said.
+const ownModule = p => { const s = storyOf(p), m = moduleId(p); return m && s.module === m ? m : null; };
+const placeTables = (p, id) => { const m = ownModule(p); return [m && `${id}-${m}`, m && `${id}-${m.split('-')[0]}`, id].filter(t => t && PEOPLE_LINES[`family:${t}`]); };
 const placeSay = (p, id) => { const tables = placeTables(p, id); return (key, vars) => familySay(tables.find(t => PEOPLE_LINES[`family:${t}`][key] !== undefined) || id)(key, vars); };
 
 function storyOf(p) {
@@ -70,7 +72,7 @@ function storyOf(p) {
     const rel = pick(RELATIONS), who = makePerson(cultureOfPerson(p));
     p.story = { left: pick(familyLines('left')), rel, name: who.first, hope: pick(familyLines('hopes')).replace('{home}', p.home), favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 1000, beat: 0 };
     const m = moduleId(p);  // a module's story (#871), after the same draws as before, so none moves; read through its lines, so an edit to them shows
-    if (m && PEOPLE_LINES[`family:${m}-story`]) { const say = familySay(`${m}-story`); Object.assign(p.story, { rel: say('rel'), left: say('left'), hope: say('hope'), homeDetail: say('detail'), ...(PEOPLE_LINES[`family:${m}-story`].name ? { name: say('name') } : {}) }); }  // a module may name who is missed (Femi, Lagos Ring)
+    if (m && PEOPLE_LINES[`family:${m}-story`]) { const say = familySay(`${m}-story`); Object.assign(p.story, { rel: say('rel'), left: say('left'), hope: say('hope'), homeDetail: say('detail'), module: m, ...(PEOPLE_LINES[`family:${m}-story`].name ? { name: say('name') } : {}) }); }  // a module may name who is missed (Femi, Lagos Ring)
   }
   return p.story;
 }
@@ -220,7 +222,7 @@ const politeScene = p => {
 };
 // The beats of a sitting, in order, each a scene built from the lines `id` names. An authored person with lines of their own for a beat (family:<cast>-<beat>, as family:ines-home) has
 // those read; everyone else the shared ones (family:story-<beat>). How many openings and results a beat has is how many its lines hold.
-const sitLines = (p, beat) => (p.cast && PEOPLE_LINES[`family:${p.cast}-${beat}`] ? `${p.cast}-${beat}` : moduleId(p) && PEOPLE_LINES[`family:${moduleId(p)}-${beat}`] ? `${moduleId(p)}-${beat}` : `story-${beat}`);  // a cast's own, then the place's (#871), then the shared template
+const sitLines = (p, beat) => (p.cast && PEOPLE_LINES[`family:${p.cast}-${beat}`] ? `${p.cast}-${beat}` : ownModule(p) && PEOPLE_LINES[`family:${ownModule(p)}-${beat}`] ? `${ownModule(p)}-${beat}` : `story-${beat}`);  // a cast's own, then the place's (#871), then the shared template
 const talkLines = (p, kind) => (p.cast && PEOPLE_LINES[`family:${p.cast}-${kind}`] ? `${p.cast}-${kind}` : kind);  // the talk after a sitting (family:goeson, family:idle), the same way
 const variants = (id, key) => { let n = 0; while (PEOPLE_LINES[`family:${id}`][`${key}.${n}`] !== undefined) n++; return [...Array(n).keys()]; };
 const homeScene = (p, s, id = sitLines(p, 'home')) => {

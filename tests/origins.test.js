@@ -88,3 +88,15 @@ test('Lagos\'s scenes are whole', cityScenes('lagos'));
 test('Rotterdam\'s scenes are whole', cityScenes('rotterdam'));
 test('Chittagong\'s scenes are whole', cityScenes('chittagong'));
 test('Ceres\'s scenes are whole', cityScenes('ceres'));
+
+test('a story made before its place was written keeps the shared scenes: no place lines contradict it', async () => {
+  const { ev, done } = await open();
+  const r = await ev(([h, c]) => { (0, eval)(`(${h})`)(); const crewFrom = (0, eval)(`(${c})`);
+    const old = crewFrom('Earth'); old.story = { left: 'x', rel: 'brother', name: 'Ana', hope: 'z', beat: 0, favor: 'visit', debt: 9000 };
+    const fresh = crewFrom('Earth');
+    return { old: sitLines(old, 'home'), oldVisit: placeTables(old, 'visit-home'), fresh: sitLines(fresh, 'home'), freshModule: storyOf(fresh).module };
+  }, [hand.toString(), crewFrom.toString()]);
+  await done();
+  assert.equal(r.old, 'story-home'); assert.deepEqual(r.oldVisit, ['visit-home']);
+  assert.match(r.fresh, /^(lisbon|lagos|rotterdam|chittagong)-\w+-home$/); assert.ok(r.freshModule);
+});
