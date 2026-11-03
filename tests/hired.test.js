@@ -284,7 +284,7 @@ test('posts: you can ask the captain to move you, and they decide', async () => 
 });
 
 test('buying in: a ship of your own, one friend, and the captain as a contact', async () => {
-  const { page, ev, done } = await open({});
+  const { page, ev, done } = await open({ scope: 'full' });  // the yard's ships are the full build's; the shipped build signs for the co-op's share (#882, tests/coop.test.js)
   await ev(hiredHelpers);
   await ev(() => { startHired('pilot'); const st = G.state; st.tutorial = null; st.credits = 120000; st.cargo = { water: 5 }; st.paid = { water: 1000 };
     const crew = st.crew.map(person); crew[0].opinion = 4; crew[1].opinion = 1; crew[2].opinion = -2; window.friendId = crew[0].id; window.otherIds = [crew[1].id, crew[2].id];
@@ -294,7 +294,7 @@ test('buying in: a ship of your own, one friend, and the captain as a contact', 
   assert.equal(await page.$$eval('[data-action=buyInAsk]:not([disabled])', b => b.length), 1, 'only the ship you can afford');
   await page.click('[data-action=buyInAsk]:not([disabled])');
   await ev(() => { chooseEvent(0); finishEvent(); UI.render(); });  // the yard office: pay the asking price
-  assert.match(await page.innerText('#panel'), /would come with you/);
+  assert.match(await page.innerText('#panel'), /would sign on with you/);  // the page's words are the co-op's (#882)
   await page.click('[data-action=buyInNo]');
   assert.ok(await ev(() => !!G.state.hired), 'not yet is not yet');
   await page.click('[data-action=buyInAsk]:not([disabled])');

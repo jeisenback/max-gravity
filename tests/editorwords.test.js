@@ -146,9 +146,9 @@ test('the main characters\' talks at a port bar are rows of the editor, with a f
 test('the close of the hired chapter has its lines in the form, a line for one and a line for more where a verb follows, and plays in the preview (#508)', async () => {
   await reload(); await select('scene:chapter-end');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['part.foot', 'part.close', 'part.keep.label', 'part.plain.aboard.one', 'part.plain.aboard.many', 'part.plain.alone']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
-  await page.fill('textarea[data-path="part.keep.label"]', 'Fly on');
-  await page.fill('textarea[data-path="part.close"]', 'The chapter closes here.');
+  for (const k of ['part.share.foot', 'part.share.close', 'part.share.label', 'part.share.aboard.one', 'part.share.aboard.many', 'part.share.alone']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.share.label"]', 'Fly on');  // the preview plays the co-op's close (#882)
+  await page.fill('textarea[data-path="part.share.close"]', 'The chapter closes here.');
   const f = await play();
   const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
   assert.ok(seen.includes('Fly on') && seen.includes('The chapter closes here.') && seen.includes('is on the apron at'), seen.slice(0, 400));

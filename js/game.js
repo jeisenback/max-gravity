@@ -155,6 +155,7 @@ function loadGame() {
   dropMissingModContent(G.state);
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
+  reopenFinished();  // a save whose chapter one is finished reopens on its end (hired.js, #882)
 }
 
 // A save can name content from a mod that has since been removed. Fall back to

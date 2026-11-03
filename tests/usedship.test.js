@@ -83,22 +83,7 @@ test('without Tomas a broker offers the same ship at the full second-hand price'
   await done();
 });
 
-test('the bought ship starts worn, and the chapter still closes', async () => {
-  const { r, done } = await run(() => {
-    const st = start(); dock(32000);
-    st.credits = hired().deal.price; hired().confirm = USED_ID;
-    const before = st.credits, price = hired().deal.price;
-    Mods.act('buyInGo', USED_ID);
-    const goodbye = G.dialog ? G.dialog.event.title : null; chooseEvent(0); finishEvent();  // the captain's goodbye comes first, then the look back
-    chooseEvent(0); finishEvent();
-    return { ship: st.shipId, price, left: before - st.credits, condition: { ...st.condition }, hired: !!st.hired, goodbye, scene: G.dialog ? G.dialog.event.title : null, closes: !!G.dialog && G.dialog.event.title === 'Your Own Ship', chapter: !!st.flags.chapterOne };
-  }, { scope: 'earth-hired' });
-  assert.equal(r.ship, 'lightfreighter'); assert.equal(r.left, r.price);
-  assert.deepEqual(r.condition, { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 });
-  assert.equal(r.hired, false); assert.equal(r.closes, true, 'the chapter closes on one of its endings'); assert.equal(r.chapter, true);
-  await done();
-});
-
+// Signing for the co-op's share, the close and the end of chapter one are in tests/coop.test.js (#882): the hand owns no ship, so none starts worn.
 test('the captain heads for a yard when the used Ore Runner can be had', async () => {
   const { r, done } = await run(() => {
     const st = start(), out = {};

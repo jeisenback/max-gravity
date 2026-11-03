@@ -89,3 +89,97 @@ test('the captain heads for Ceres with the buy-in in hand', async () => {
   await done();
   assert.equal(r.wants, true); assert.equal(r.dest, 'Ceres Station'); assert.equal(r.pickBest, 'Ceres Station', 'a contract to Ceres counts four times over');
 });
+
+// Sign at Ceres: play the chain the buyInGo action opens, choosing the first choice of each scene, and return the titles in order.
+const signAndPlay = () => {
+  window.signAndPlay = () => {
+    at('ceres', 'Ceres Station'); hired().confirm = USED_ID; Mods.act('buyInGo', USED_ID);
+    const titles = []; let guard = 20;
+    while (G.dialog && guard--) { titles.push(G.dialog.event.title); chooseEvent(0); finishEvent(); }
+    return titles;
+  };
+};
+
+test('Cato signs on with you whatever he thinks of you, and the others who like you come too', async () => {
+  const { ev, done } = await open();
+  await ev(withDeal);
+  const r = await ev(() => {
+    handWithDeal(); at('ceres', 'Ceres Station'); const cato = castPerson('cato'), ines = castPerson('ines');
+    cato.opinion = -1; ines.opinion = OPINION.CLOSE; castPerson('tomas').opinion = 0;
+    const both = buyInCompanions().map(c => c.cast);
+    ines.opinion = 0; const catoOnly = buyInCompanions().map(c => c.cast);
+    G.state.people[cato.id].dead = true; G.state.crew = G.state.crew.filter(id => id !== cato.id); const without = buyInCompanions().map(c => c.cast);
+    return { both, catoOnly, without };
+  });
+  await done();
+  assert.deepEqual(r.both, ['cato', 'ines']); assert.deepEqual(r.catoOnly, ['cato']); assert.ok(!r.without.includes('cato'));
+  // and only for the share: at another yard, or buying another ship, the old rule stands
+});
+
+test('signing takes the buy-in, keeps the share on the career, and leaves the captain her ship', async () => {
+  const { ev, done } = await open();
+  await ev(withDeal); await ev(signAndPlay);
+  const r = await ev(() => {
+    const st = handWithDeal(), ship0 = st.shipId, c0 = st.credits, price = hired().deal.price, cap = hiredCaptain();
+    const titles = signAndPlay();
+    return { titles, spent: c0 - st.credits, price, share: st.career && st.career.share, hired: st.hired, ship: st.shipId, ship0, finished: st.career && st.career.finished, bought: st.career && st.career.bought, capShip: !!cap.ship };
+  });
+  await done();
+  assert.equal(r.spent, r.price); assert.deepEqual(r.share, { coop: 'Ceres Station', buyIn: 57000, owed: 93000 });
+  assert.equal(r.hired, null); assert.equal(r.ship, r.ship0, 'the hand owns no ship'); assert.equal(r.capShip, true, 'the captain stays a contact with her ship');
+  assert.equal(r.finished, true); assert.equal(r.bought, undefined, 'chapter two\'s owner close does not start');
+  assert.ok(r.titles.includes("A Member's Share"), r.titles.join(' | ')); assert.equal(r.titles[r.titles.length - 1], 'The End of Chapter One');
+});
+
+test('the close names Cato first and says what is owed, and reads without him when he is gone', async () => {
+  const { ev, done } = await open();
+  await ev(withDeal);
+  const r = await ev(() => {
+    handWithDeal(); at('ceres', 'Ceres Station'); const close = chapterEnd(USED_ID).text;
+    const cato = castPerson('cato'); G.state.people[cato.id].dead = true; G.state.crew = G.state.crew.filter(id => id !== cato.id);
+    return { close, without: chapterEnd(USED_ID).text, title: chapterEnd(USED_ID).title };
+  });
+  await done();
+  assert.equal(r.title, "A Member's Share");
+  assert.match(r.close, /Cato/); assert.match(r.close, /93,000/); assert.match(r.close, /Ceres/);
+  assert.doesNotMatch(r.without, /Cato/);
+});
+
+test('after the close the chapter ends at the title, and a finished save reopens on the end', async () => {
+  const { ev, done } = await open();
+  await ev(withDeal); await ev(signAndPlay);
+  const r = await ev(() => {
+    handWithDeal(); signAndPlay(); const mode = G.mode;
+    save(); loadGame(); const reopened = G.dialog ? G.dialog.event.title : null;
+    return { mode, reopened };
+  });
+  await done();
+  assert.equal(r.mode, 'title'); assert.equal(r.reopened, 'The End of Chapter One');
+});
+
+test('a save that bought her before reopens as it was', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.career = { ...careerOf(hired()), came: [], bought: st.day }; st.hired = null; st.shipId = 'lightfreighter';
+    save(); loadGame(); return { dialog: G.dialog ? G.dialog.event.title : null, ship: G.state.shipId };
+  });
+  await done();
+  assert.notEqual(r.dialog, 'The End of Chapter One'); assert.equal(r.ship, 'lightfreighter');
+});
+
+test('an open deal from before signs at its price', async () => {
+  const { ev, done } = await open();
+  await ev(withDeal); await ev(signAndPlay);
+  const r = await ev(() => { const st = handWithDeal({ credits: 70000 }); hired().deal.price = 61000; const c0 = st.credits; signAndPlay(); return { spent: c0 - st.credits, owed: st.career.share.owed }; });
+  await done();
+  assert.equal(r.spent, 61000); assert.equal(r.owed, 89000);
+});
+
+test('Cato\'s rule is the share\'s: away from the co-op\'s office he comes only if he likes you', async () => {
+  const { ev, done } = await open();
+  await ev(withDeal);
+  const r = await ev(() => { handWithDeal(); castPerson('cato').opinion = -1; for (const k of ['ines', 'tomas']) castPerson(k).opinion = 0; return buyInCompanions().map(c => c.cast); });
+  await done();
+  assert.ok(!r.includes('cato'), r.join(','));
+});

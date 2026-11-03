@@ -405,13 +405,16 @@ function buyInFriend() {
   const crew = G.state.crew.map(person).filter(c => c.opinion >= OPINION.CLOSE);
   return crew.sort((a, b) => b.opinion - a.opinion || b.skill - a.skill)[0] || null;
 }
-// Who leaves with you: the main characters aboard who like you, both if both think well of you, otherwise the one who
+// Who leaves with you. For the co-op's share (at its office, with the berths open), Cato, whenever he is aboard: he has saved for this co-op for years,
+// and signs on whatever he thinks of you (#882). Then the other main characters who like you, both if both think well of you, otherwise the one who
 // likes you most; and if none do, the crew member you are closest to.
-function buyInCompanions() {
-  const cast = G.state.crew.map(person).filter(c => c.cast && c.opinion >= OPINION.CLOSE).sort((a, b) => b.opinion - a.opinion);
-  if (cast.length) return cast.length > 1 && cast[1].opinion >= CAST_GOOD ? cast.slice(0, 2) : cast.slice(0, 1);
-  const friend = buyInFriend();
-  return friend ? [friend] : [];
+const forShare = () => dealOpen() && isCoop(currentPlanet());
+function buyInCompanions(share = forShare()) {
+  const crew = G.state.crew.map(person), cato = share ? crew.filter(c => c && c.cast === 'cato' && !c.dead) : [];
+  const cast = crew.filter(c => c.cast && c.cast !== 'cato' && c.opinion >= OPINION.CLOSE).sort((a, b) => b.opinion - a.opinion);
+  if (cast.length) return [...cato, ...(cast.length > 1 && cast[1].opinion >= CAST_GOOD ? cast.slice(0, 2) : cast.slice(0, 1))];
+  const friend = crew.filter(c => c.cast !== 'cato' && c.opinion >= OPINION.CLOSE).sort((a, b) => b.opinion - a.opinion || b.skill - a.skill)[0];
+  return [...cato, ...(friend ? [friend] : [])];
 }
 const namesOf = list => list.map(c => `${c.first} ${c.last}`).join(' and ');
 
@@ -500,6 +503,30 @@ function buyIn(id) {
   return sceneSay('scene:screens', 'buyin.result', { ship: bought.name, price: fmt(price), old: oldName, first: cap.first, last: cap.last, company: ` ${friends.length ? sceneSay('scene:screens', 'buyin.with', { names: namesOf(friends) }) : sceneSay('scene:screens', 'buyin.alone')}` });
 }
 
+// Signing on for the share (#882): the buy-in comes out of your savings, and you leave the captain's ship with those who sign on with you. The captain
+// keeps her ship, her fund and the rest of her crew; you own no ship. The career keeps the share, who came and the day, and the chapter is finished.
+function signOn(id) {
+  const st = G.state, h = hired(), planet = currentPlanet();
+  if (id !== USED_ID || !canBuyIn(id, planet)) return;
+  const cap = st.people[h.captain], friends = buyInCompanions(), price = buyInPrice(id), oldName = home().name, say = (key, vars) => sceneSay('scene:screens', key, vars);
+  st.credits -= price;
+  h.haggle = null;
+  Object.assign(cap, { ship: { name: oldName, shipId: st.shipId, kind: 'trader' }, haunt: st.systemId, location: planet.name });
+  like(cap, 2, say('coop.captain.memory'));
+  for (const c of st.crew.map(person)) if (!friends.includes(c)) c.location = planet.name;  // the rest stay with her
+  st.crew = friends.map(c => c.id);
+  for (const f of friends) like(f, 2, say('coop.friend.memory', { ship: oldName }));
+  st.career = { ...careerOf(h), came: friends.map(c => c.id), signed: st.day, share: { coop: COOP_PORT, buyIn: price, owed: SHARE_PRICE - price }, finished: true };
+  st.hired = null;
+  return say('coop.result', { price: fmt(price), old: oldName, first: cap.first, last: cap.last, owed: fmt(SHARE_PRICE - price),
+    company: ` ${friends.length ? sceneSay('scene:screens', 'buyin.with', { names: namesOf(friends) }) : sceneSay('scene:screens', 'buyin.alone')}` });
+}
+
+// The end of chapter one (#882): after the close, until chapter two is written. Its one choice goes back to the title; a finished save reopens on it.
+const overSay = key => sceneSay('scene:chapter-over', key);
+function chapterOverScene() { return { title: overSay('title'), personal: true, text: overSay('text'), choices: [{ label: overSay('label'), run() { save(); Menu.showTitle(); return null; } }] }; }  // saved while still landed: the title saves nothing
+const reopenFinished = () => { if (((G.state || {}).career || {}).finished) openEvent(chapterOverScene()); };
+
 // The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp, read before buyIn takes the
 // captain and the crew apart. It closes the chapter, not the game: the game's own endings (docs/endings-parked.md, #132) wait for the end of the last
 // chapter, and the losses and who came are told here in a line and in the recap that follows (chapterRecap).
@@ -508,6 +535,7 @@ const endMany = (list, key, vars) => endSay(`${key}.${list.length > 1 ? 'many' :
 function chapterEnd(id) {
   if (!scopeNarrow()) return null;
   const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions();
+  if (id === USED_ID) return shareEnd(st, h, cap, friends);
   const foot = endSay('foot', { ship: buyShip(id).name, planet: currentPlanet().name });
   const plain = endSay('plain', { old: home().name, days: st.day - h.since, savings: fmt(HIRED_SAVINGS), memorial: memorialNote(),
     captain: captainEntry() ? '' : `${endSay('plain.captain', { last: cap.last })} `, company: friends.length ? endMany(friends, 'plain.aboard', { names: namesOf(friends) }) : endSay('plain.alone') });
@@ -515,6 +543,19 @@ function chapterEnd(id) {
     title: endSay('plain.title'), personal: true,
     text: [foot, plain, endSay('close')].join(' '),
     choices: [{ label: endSay('keep.label'), run: () => endSay('keep.result') }],
+  };
+}
+
+// The close for the share (#882): at the foot of the co-op's Ore Runner at Ceres, Cato first by how he thinks of you, the others, what is still owed.
+function shareEnd(st, h, cap, friends) {
+  const price = h.deal ? h.deal.price : BUY_IN.mid, cato = friends.find(c => c.cast === 'cato'), others = friends.filter(c => c !== cato);  // no offer open: the editor's preview, at the middle buy-in
+  const company = [cato ? endSay(cato.opinion >= OPINION.CLOSE ? 'share.cato.warm' : 'share.cato.cool', { first: cato.first }) : '',
+    others.length ? endMany(others, 'share.aboard', { names: namesOf(others) }) : '', friends.length ? '' : endSay('share.alone')].filter(Boolean).join(' ');
+  return {
+    title: endSay('share.title'), personal: true,
+    text: [endSay('share.foot', { planet: COOP_PORT }), endSay('share.plain', { old: home().name, days: st.day - h.since, savings: fmt(HIRED_SAVINGS), memorial: memorialNote(),
+      captain: captainEntry() ? '' : `${endSay('plain.captain', { last: cap.last })} `, company }), endSay('share.owed', { price: fmt(price), owed: fmt(SHARE_PRICE - price) }), endSay('share.close')].join(' '),
+    choices: [{ label: endSay('share.label'), run: () => endSay('share.result') }],
   };
 }
 
@@ -640,11 +681,11 @@ Mods.register({
     M.action('buyInNo', () => { if (hired()) hired().confirm = hired().haggle = null; });
     M.action('buyInGo', id => {
       if (!hired() || hired().confirm !== id) return;
-      const scene = castLateAtBuyIn(), goodbye = captainGoodbye(), closing = chapterEnd(id), recap = closing ? chapterRecap() : null, text = buyIn(id);  // all read from the crew and the captain before they leave
+      const share = id === USED_ID, scene = castLateAtBuyIn(), goodbye = captainGoodbye(), closing = chapterEnd(id), recap = closing ? chapterRecap() : null, text = share ? signOn(id) : buyIn(id);  // all read from the crew and the captain before they leave
       if (text) M.note(text);
       if (!text || G.dialog) return;
       if (closing) G.state.flags.chapterOne = true;
-      const scenes = [scene, goodbye, recap, closing].filter(Boolean);  // a main character's last scene, the goodbye, the look back, then the close
+      const scenes = [scene, goodbye, recap, closing, share ? chapterOverScene() : null].filter(Boolean);  // a main character's last scene, the goodbye, the look back, the close, then the end of chapter one
       if (scenes.length) openEvent(chainEvents(scenes));
     });
   },

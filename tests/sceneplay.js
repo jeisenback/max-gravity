@@ -271,6 +271,21 @@ const playScenes = () => {
       });
     }
   }
+  // ---------- the close for the co-op's share (#882): Cato warm, cool or gone, with one or two others, or nobody; and the end of chapter one ----------
+  { const mates = n => Array.from({ length: n }, (_, i) => ({ first: ['Ana', 'Ben'][i], last: 'Vale' }));
+    for (const [name, cato, others] of [['warm', 4, 1], ['cool', -1, 2], ['gone', null, 0], ['alone-cato', 4, 0]]) {
+      run(`chapterend:share:${name}`, {}, () => {
+        const real = window.buyInCompanions, scope = BUILD.scope, st = G.state, h = hired();
+        h.deal = { price: BUY_IN.mid, day: st.day, until: st.day + DEAL_DAYS };
+        window.buyInCompanions = () => [...(cato === null ? [] : [{ first: 'Cato', last: 'Rahman', cast: 'cato', opinion: cato }]), ...mates(others)]; BUILD.scope = 'earth-hired';
+        try { return chapterEnd(USED_ID); } finally { window.buyInCompanions = real; BUILD.scope = scope; }
+      });
+    }
+    run('chapterend:share:nobody', {}, () => { const real = window.buyInCompanions, scope = BUILD.scope, st = G.state; hired().deal = { price: BUY_IN.mid, day: st.day, until: st.day + DEAL_DAYS };
+      window.buyInCompanions = () => []; BUILD.scope = 'earth-hired'; try { return chapterEnd(USED_ID); } finally { window.buyInCompanions = real; BUILD.scope = scope; } });
+    run('chapter-over', {}, () => ({ ...chapterOverScene(), choices: chapterOverScene().choices.map(c => ({ ...c, run: () => '' })) }));  // its choice goes to the title, which the player does not follow
+    run('hand:signon', { credits: 100000 }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; hired().deal = { price: BUY_IN.mid, day: st.day, until: st.day + DEAL_DAYS }; hired().debt = 0; return String(signOn(USED_ID)); } }] }));
+  }
   // ---------- the close of chapter two, for each ending and each count of the crew who came along ----------
   { const rec = (aboard, left, dead) => ({ came: aboard.length + left.length + dead.length, aboard, left, dead });
     const cases = { 'together:one': rec(['Ana'], [], []), 'together:two': rec(['Ana', 'Ben'], [], []), 'left:some': rec(['Ana'], ['Ben'], []), 'left:all': rec([], ['Ana', 'Ben'], []),
