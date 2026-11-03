@@ -1645,7 +1645,7 @@ const PEOPLE_LINES = {
   'family:visit-home-chittagong-floors': {  // the meal at the family's rooms over the cargo exchange (family.js visitHome): the place, and the parting
     'text.earth': 'The rooms are two over a cargo exchange in the lower floors, and the floor shakes when the forklifts come in at shift change. The lease is on the wall in its plastic sleeve where another household would keep a picture, and {who} shows it to you before your name. There\'s biryani from the stall by the lift and tea from the other stall, because {who} won\'t buy tea from the first one, and {n} sits by the window with the port\'s lights in it.',
     'parting.0': 'At the door {who} puts a bag in your hands, heavy, warm at the bottom. "For the galley," {who} says. On the lift down {n} reads the notices by the button, the way you check a thing you\'re afraid of finding.',
-    'parting.1': '{who} walks you to the lift and no further, and gives {n} a long look and you a short one. "Next pay day," {who} says. "Send it early." {n} laughs all the way down.',
+    'parting.1': '{who} walks you to the lift and no further, and gives {n} a long look and you a short one. "Next time, a pay day," {who} says. "Send it early." {n} laughs all the way down.',
   },
   'family:room-offer-chittagong': {  // the bed {who} offers in Chittagong, at the end of the visit (room.js roomOffer): the title
     title: 'A Bed in Chittagong',
