@@ -23,7 +23,7 @@ const roomVars = (p, room, day) => ({ ...visitVars(p), gap: dayWord(day - room.l
 
 // The relation's offer, at the end of the visit.
 function roomOffer(p) {
-  const say = roomSay('room-offer'), v = visitVars(p);
+  const say = roomSay(placeTable(p, 'room-offer')), v = visitVars(p);
   return { title: say('title', v), text: say(`text.${pick([0, 1])}`, v), choices: [
     { label: say('c0.label', v), run() { const st = G.state; st.room = { planet: p.home, pid: p.id, since: st.day, last: st.day, visits: 0 }; like(p, 1, say('c0.memory', v)); return say('c0.result', v); } },
     { label: say('c1.label', v), run: () => say('c1.result', v) },
@@ -32,7 +32,7 @@ function roomOffer(p) {
 
 // The return, by the gap and the count of stays.
 function roomReturn(p) {
-  const st = G.state, room = st.room, say = roomSay('room-return'), v = roomVars(p, room, st.day);
+  const st = G.state, room = st.room, say = roomSay(placeTable(p, 'room-return')), v = roomVars(p, room, st.day);
   const band = roomBand(st.day - room.last), left = roomThings(room.visits).pop();
   const text = [say(`text.${band}`, v), roomLetter(room, st.day) ? say(`letter.${band}`, v) : '', left ? say(`thing.${left}.there`, v) : '', say(room.visits ? (room.visits > 1 ? 'been.many' : 'been.one') : 'first', v)].filter(Boolean).join(' ');
   const away = () => { room.last = st.day; };
@@ -63,7 +63,7 @@ function roomAlts(run) {
 function roomCardHtml() {
   const st = G.state, room = st.room;
   if (!hired() || !room || room.planet !== currentPlanet().name || !st.people[room.pid]) return '';
-  const v = roomVars(st.people[room.pid], room, st.day), say = roomSay('room-return'), things = roomThings(room.visits).map(k => say(`thing.${k}.name`, v));
+  const v = roomVars(st.people[room.pid], room, st.day), say = roomSay(placeTable(st.people[room.pid], 'room-return')), things = roomThings(room.visits).map(k => say(`thing.${k}.name`, v));
   return String(h`<h3>Your room</h3><p class="desc">${v.who}'s, at ${room.planet}. ${v.gap} since you last slept here${room.visits ? `, and ${room.visits} stay${room.visits === 1 ? '' : 's'} so far` : ''}.${things.length ? ` Left here: ${listNames(things)}.` : ''}${roomLetter(room, st.day) ? ` ${say('letter.card', v)}` : ''}</p>`);
 }
 
