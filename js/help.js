@@ -8,15 +8,15 @@
 // only (`handOnly`). Loaded before game.js; only calls into it at runtime.
 
 const HELP = [
-  { id: 'hand', title: 'Your post, your pay and a ship of your own', handOnly: true, text: () => [
+  { id: 'hand', title: 'Your post, your pay and a share of your own', handOnly: true, text: () => [
     (`You sign on to a captain's ship and work one post: the pilot's helm, the guns, the engineer's plant, or the comms. The post is yours to work by ` +
         `hand; the rest of the crew hold the others. The captain picks every run, and the cargo is a shipper's, paid for on delivery. You press Sail, and on ` +
         `arrival you are paid a wage for each day, less the kit you rent from the captain. Your savings are your own, but you came aboard owing the hiring ` +
-        `hall for the berth, the passage and the kit: ${fmt(HIRED_DEBT)} credits. Thirty percent of each run's pay goes to it until it is paid, and a ship ` +
-        `cannot be bought while anything is owed.`),
+        `hall for the berth, the passage and the kit: ${fmt(HIRED_DEBT)} credits. Thirty percent of each run's pay goes to it until it is paid, and the co-op ` +
+        `won't sign anyone who owes an agency.`),
     `The bosun runs the ratings and the rota: they decide who moves to which post, and the crew-side calls on the road. The captain keeps money and ship matters. You have an opinion with each of them, and the two can differ.`,
     `Save toward a member's share in a co-op ship. Once your savings are high enough, a share may be offered to you at a port with a yard, and it is signed at the co-op's office on Ceres Station. The buy-in is ${fmt(BUY_IN.mid)} credits on a plain vote, less if a member speaks for you.`,
-    'Buying a ship ends your time as a hand. The crew who like you come with you, and the captain says goodbye at the foot of the ramp.' ] },
+    'Signing on ends your time as a hand. Cato signs on with you if he is aboard, and so do the crew who like you, and the captain says goodbye at the foot of the ramp.' ] },
   { id: 'trading', title: 'Trading and markets', hand: [
     'The captain trades. Each run is the best cargo and port within reach, bought from the ship\'s funds; the Port page shows the plan, the funds and your savings. When you press Sail, the captain buys the cargo and the ship leaves. On arrival it is sold, and your wage is paid.',
     'Markets have real stock. A big hold moves a price when it is bought or sold, and stations use up what they import and pile up what they export. A raided port runs short, which is a chance for a bold captain.' ], text: [
@@ -40,7 +40,7 @@ const HELP = [
     'People aboard have feelings about you and about each other. Shared tastes bring them together; clashing habits pull them apart. Downtime activities build bonds, and a day of work at your post is experience.',
     ('Sit with someone during downtime to learn their story over several talks. Letters from home arrive at ports, and a crew member having a hard ' +
         'time works one skill lower until someone helps. A hurt or dead crew member is marked on the crew screen, and the dead are remembered there. ' +
-        'When you buy a ship, the crew who like you come with you.') ], text: [
+        'When you sign on with the co-op or buy a ship, the crew who like you come with you.') ], text: [
     'Hire crew in the Bar or the Crew page. Each role has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun, quartermasters hear rumors, slicers spoof transponders, medics heal.',
     'People aboard have feelings about you and about each other. Shared tastes (a favorite kind of vid or book, a ring-ball team) bring them together; clashing habits pull them apart. Downtime activities build bonds.',
     'Sit with someone during downtime to learn their story over several talks. A crew member may ask a favor; keeping it makes them loyal for good. Letters from home arrive at ports, and a crew member having a hard time works one skill lower until someone helps.' ] },

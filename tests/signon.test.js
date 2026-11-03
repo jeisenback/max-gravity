@@ -135,7 +135,7 @@ test('signing on for the money says the day rate went up, with the figure the ha
   await done();
 });
 
-test('Signing On says what the pay goes to: the hall\'s bond, the cheapest ship a hand saves toward, and the papers; the Port page keeps the count (#849)', async () => {
+test('Signing On says what the pay goes to: the hall\'s bond, the co-op\'s buy-in a hand saves toward, and the papers; the Port page keeps the count (#849, #882)', async () => {
   const { ev, done } = await open({ debt: true });
   const r = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
@@ -147,11 +147,11 @@ test('Signing On says what the pay goes to: the hall\'s bond, the cheapest ship 
     return { text, before, offered, lapsed };
   });
   assert.match(r.text, /you owe it 9,000 cr for them: 30 percent of each run's pay goes to the hall/);
-  assert.match(r.text, /the cheapest at a yard, a Dust Skiff, is 100,000 cr/);
+  assert.match(r.text, /the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote/);
   assert.match(r.text, /Your papers name you a member of the Arcology Compact/);
   assert.doesNotMatch(r.text, /Ore Runner/, 'the used ship is Tomas\'s to find');
-  assert.equal(r.before, 'Owed to the hall: 9,000 cr. The cheapest ship at a yard, a Dust Skiff, is 100,000 cr, and you have 3,000 cr.');
-  assert.match(r.offered, /The used Ore Runner is 51,000 cr/, 'named while she is offered');
-  assert.match(r.lapsed, /Dust Skiff/, 'and not once she is gone');
+  assert.equal(r.before, 'Owed to the hall: 9,000 cr. A co-op buy-in on a plain vote is 57,000 cr, and you have 3,000 cr.');
+  assert.match(r.offered, /The co-op's buy-in for you is 51,000 cr/, 'your own buy-in while the berths are open');
+  assert.match(r.lapsed, /on a plain vote is 57,000/, 'and the plain vote once they are filled');
   await done();
 });

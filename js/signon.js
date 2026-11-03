@@ -25,9 +25,9 @@ function signOnEvent() {
   const beside = pair.length && !(d && CAST[d.xo] && CAST[d.xo].round) ? ` ${say('beside', { crew: pair.map(who).join(', and ') })}` : '';
   // A captain with their own words has said what the pay is.
   const week = [say('week.run', ctx), ...(scopeOff('errands') ? [] : [say('week.errands')]), ...(d && d.intro ? [] : [say('week.pay', { wage: h.wage, kit: KIT_DEDUCTION })])].join(' ');
-  // What the pay goes to, said once at the start (#849): the hall's bond, the cheapest ship a hand can save toward (the used Ore Runner is
+  // What the pay goes to, said once at the start (#849): the hall's bond, the co-op buy-in a hand saves toward on a plain vote (#882; the Ore Runner is
   // Tomas's to find, hired.js), and the papers you carry.
-  const terms = [...(h.debt > 0 ? [say('bond', { debt: fmt(h.debt), cut: Math.round(DEBT_SHARE * 100) })] : []), say('goal', { ship: SHIPS.shuttle.name, price: fmt(SHIPS.shuttle.price) }), say('papers', { gov: youTies().aff })].join(' ');
+  const terms = [...(h.debt > 0 ? [say('bond', { debt: fmt(h.debt), cut: Math.round(DEBT_SHARE * 100) })] : []), say('goal', { price: fmt(BUY_IN.mid) }), say('papers', { gov: youTies().aff })].join(' ');
   const event = {
     title: say('title'),
     text: [say(`text.${bg}`, ctx), ...(st.carried ? [st.carried] : []), `${say(`post.${h.post}`, ctx)}${beside}`, `${week} ${terms} ${say('why')}`].join('</p><p>'),

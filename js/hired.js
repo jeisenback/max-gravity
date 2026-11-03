@@ -617,7 +617,7 @@ const runTerms = r => `${r.days} days, ${fmt(r.pay !== undefined ? r.pay : r.pro
 // Where the hand stands on the way to a ship (#849): what the hall is still owed, the ship's price, and the savings. The used Ore Runner is named
 // only while she is offered (the day-0 text does not give the deal away); otherwise it is the yard's cheapest.
 const goalLine = (st, hd) => {
-  const ship = dealOpen() ? `The used Ore Runner is ${fmt(hd.deal.price)} cr` : `The cheapest ship at a yard, a ${SHIPS.shuttle.name}, is ${fmt(SHIPS.shuttle.price)} cr`;
+  const ship = dealOpen() ? `The co-op's buy-in for you is ${fmt(hd.deal.price)} cr` : `A co-op buy-in on a plain vote is ${fmt(BUY_IN.mid)} cr`;  // the goal is the share (#882)
   return `${hd.debt > 0 ? `Owed to the hall: ${fmt(hd.debt)} cr. ` : ''}${ship}, and you have ${fmt(st.credits)} cr.`;
 };
 const runHtml = () => {

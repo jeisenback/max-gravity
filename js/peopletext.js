@@ -1327,11 +1327,11 @@ const PEOPLE_LINES = {
   },
   'family:cato-hope': {
     title: 'With Cato',
-    'text.0': 'Cato has the co-op\'s membership terms open on his terminal, a long document with a price at the bottom. "That\'s this year\'s," he says. "Last year\'s was less." He scrolls up. "A share, a vote, a berth. They\'re taking two members on the old carrier next year. I\'ve got about two-thirds of it."',
+    'text.0': 'Cato has the co-op\'s membership terms open on his terminal, a long document with a price at the bottom. "That\'s this year\'s," he says. "Last year\'s was less." He scrolls up. "A share, a vote, a berth. They\'ll take five on the Ore Runner, if they get her. I\'ve the buy-in, near enough."',
     'c0.label': 'Ask what he\'d do with a vote',
     'c0.result.0': '"Vote for who signs on." He closes the terms. "Then I\'d sign on the people I want to work with, and they\'d stay."',
-    'c1.label': 'Ask where the last third comes from',
-    'c1.result.0': '"The next two years, if nothing happens at home." He doesn\'t say what might happen at home. He pours more tea.',
+    'c1.label': 'Ask what he\'s waiting for',
+    'c1.result.0': '"A hull I could bring people onto, and nothing happening at home." He doesn\'t say what might happen at home. He pours more tea.',
   },
   'family:cato-goeson': {  // Cato's talk after a sitting (family.js goesOn): one opening a subject, the same offers and what they cost
     title: 'With Cato',

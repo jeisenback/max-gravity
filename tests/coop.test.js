@@ -183,3 +183,15 @@ test('Cato\'s rule is the share\'s: away from the co-op\'s office he comes only 
   await done();
   assert.ok(!r.includes('cato'), r.join(','));
 });
+
+test('the hand\'s text says a member\'s share, not a ship', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const help = HELP.find(t => t.id === 'hand'), helpText = help.title + ' ' + help.text().join(' ');
+    return { help: helpText, goal: goalLine(G.state, hired()), cato: CAST.cato.scenes.mid1.text + ' ' + CAST.cato.scenes.mid1.choices[0].result, hope: PEOPLE_LINES['family:cato-hope']['text.0'] };
+  });
+  await done();
+  for (const [k, t] of Object.entries(r)) assert.doesNotMatch(t, /ship of your own|buy a ship|Dust Skiff|cheapest ship|two members|old carrier/, `${k}: ${t}`);
+  assert.match(r.help, /co-op/); assert.match(r.goal, /buy-in/); assert.match(r.cato, /Ore Runner/); assert.match(r.hope, /five/);
+});

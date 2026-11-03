@@ -62,7 +62,7 @@ CAST.cato = {
     facts: [
       ['benched', 'The hold you sealed on him is in the log, with the date and the hour, in his hand.'],
       ['told', 'At the foot of the watch bill, in pencil, is a line that reads: tell them if it goes badly.'],
-      ['share', 'His notebook has the co-op\'s old ore carrier with the question mark, and the price of a share, crossed out and written again six times.'],
+      ['share', 'His notebook has the co-op\'s Ore Runner with the question mark, and the price of a share, crossed out and written again six times.'],
     ],
   },
   scenes: {
@@ -96,8 +96,8 @@ CAST.cato = {
         {
           label: 'Ask which ship has the question mark',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You asked about the ship with the question mark.' }, castFlag: { who: 'cato', flag: 'share' } },
-          result: ('He tells you: an old, slow ore carrier the co-op bought from a finance house when her last charter failed. "They\'re taking two ' +
-              'members on her next year," he says. "I\'m saving for one of the places, and I\'ll be short." He talks about her until his tea has gone cold.'),
+          result: ('He tells you: a long, tired Ore Runner the co-op means to buy when her last owner lets her go. "Five berths," he says. "I\'ve the ' +
+              'buy-in saved. I\'ve been waiting for a hull the people I work with could sign on to as well." He talks about her until his tea has gone cold.'),
         },
         {
           label: 'Say it\'s not stupid, but it\'s a long way off',
