@@ -87,3 +87,4 @@ test('Lisbon\'s scenes are whole', cityScenes('lisbon'));
 test('Lagos\'s scenes are whole', cityScenes('lagos'));
 test('Rotterdam\'s scenes are whole', cityScenes('rotterdam'));
 test('Chittagong\'s scenes are whole', cityScenes('chittagong'));
+test('Ceres\'s scenes are whole', cityScenes('ceres'));
