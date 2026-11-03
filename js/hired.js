@@ -35,8 +35,8 @@ const OLD_BOND_SCALE = 0.3;  // what a save from before (#879) owes the hall, sc
 // A save signed before (#879) holds a share, the old day rate and the old bond: its terms as a rating's, for migrate() (menu.js) to write. The captain's day
 // rate (and the 25 more a hand who signed for the money asked, signon.js), no share, and what is left of the bond scaled by OLD_BOND_SCALE.
 const ratingTerms = h => ({ share: 0, wage: ((CAPTAINS[h.captainKey] || {}).wage || HIRED_WAGE) + (h.reason === 'money' ? SIGN_WAGE_UP : 0), debt: Math.round((h.debt || 0) * OLD_BOND_SCALE / 1000) * 1000 });
-// The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
-// her price, and at the middle price again if the deal lapses.
+// The captain heads for Ceres when the co-op's share can be had: at the offer's threshold until it is offered, then at the buy-in it
+// was offered at (#882).
 const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? (captainBeatsDone(h) ? USED_OFFER_AT : HIRED_TARGET) : dealOpen() ? h.deal.price : HIRED_TARGET); };
 const hired = () => (G.state && G.state.hired) || null;
 // The hand's sheet, kit and standing, which outlive the buy (#685): the hand's own record while there is one, else the career it left (st.career, made at the buy by careerOf, sheet.js).
@@ -420,20 +420,20 @@ const namesOf = list => list.map(c => `${c.first} ${c.last}`).join(' and ');
 
 // ---------- the used Ore Runner ----------
 // The hull Tomas rebuilt three times. Once your savings reach USED_OFFER_AT (55% of her middle price), at a port with a yard,
-// she is offered once (by Tomas, or by a broker if he is not aboard) for DEAL_DAYS, at a price that follows how Tomas
-// thinks of you. buyIn id USED_ID buys her; she comes worn. If the deal lapses she is gone, and the ordinary list is left.
+// she is offered once (by Tomas, or by the co-op's notice if he is not aboard), and the co-op holds the berth until you sign (#882), at a price that follows how Tomas
+// thinks of you. signOn signs for the share at Ceres (#882).
 const USED_ID = 'used';
-const USED_OFFER_AT = Math.round(0.55 * BUY_IN.mid), DEAL_DAYS = 84;  // twelve weeks: long enough for most careful hands to reach a yard with her price (#779)
+const USED_OFFER_AT = Math.round(0.55 * BUY_IN.mid);
 const USED_CONDITION = { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 };
 const buyShip = id => (id === USED_ID ? { ...SHIPS.lightfreighter, name: 'Ore Runner (used)', price: hired() && hired().deal ? hired().deal.price : BUY_IN.mid, forSale: dealOpen() } : SHIPS[id]);
-const dealOpen = () => !!hired() && !!hired().deal && G.state.day <= hired().deal.until;
+const dealOpen = () => !!hired() && !!hired().deal;  // the berth is held until you sign (the owner, 2026-11-03, #882)
 const tomasAboard = () => castAboard().find(c => c.cast === 'tomas') || null;
 
 function dealScene(planet) {
   const st = G.state, h = hired(), tomas = tomasAboard();
   const price = tomas ? (tomas.opinion >= OPINION.FRIEND ? BUY_IN.good : tomas.opinion < 0 ? BUY_IN.bad : BUY_IN.mid) : BUY_IN.bad;
-  h.deal = { price, day: st.day, until: st.day + DEAL_DAYS, broker: !tomas };
-  const say = (key, vars) => sceneSay('scene:used-ship-offer', key, { price: fmt(price), share: fmt(SHARE_PRICE), owed: fmt(SHARE_PRICE - price), until: h.deal.until, ...vars });
+  h.deal = { price, day: st.day, broker: !tomas };
+  const say = (key, vars) => sceneSay('scene:used-ship-offer', key, { price: fmt(price), share: fmt(SHARE_PRICE), owed: fmt(SHARE_PRICE - price), ...vars });
   const tellKey = price < BUY_IN.mid ? 'good' : price > BUY_IN.mid && tomas ? 'bad' : 'plain';  // how the price is put: a favor, a price he will not call one, or only the figure
   if (tomas) captainFlag('tomasWaited');  // the last piece of the spine (#294)
   return tomas ? {
@@ -454,22 +454,10 @@ function hullNote() {
   captainFlag('sawHull');
   M_NOTE('On the apron a long Ore Runner sits on her struts with her name painted over in grey. Tomas stops at the foot of the ramp and looks at her. Then he walks on.');
 }
-// The used Ore Runner is sold to someone else: said once, by Tomas if he is aboard, by the broker if not.
-function lapseScene() {
-  const tomas = tomasAboard(), say = key => sceneSay('scene:used-ship-offer', key);
-  return tomas ? {
-    title: say('lapse.tomas.title'), personal: true, text: say('lapse.tomas.text'),
-    choices: [{ label: say('lapse.tomas.c0.label'), run() { like(tomas, 1, say('lapse.tomas.c0.memory')); return say('lapse.tomas.c0.result'); } }],
-  } : {
-    title: say('lapse.broker.title'), personal: true, text: say('lapse.broker.text'),
-    choices: [{ label: say('lapse.broker.c0.label'), run: () => say('lapse.broker.c0.result') }],
-  };
-}
-// Offered once, at a yard, when the savings are about 55% of her middle price and the captain's two scenes have played (captains.js). A lapsed deal is noted once.
+// Offered once, at a yard, when the savings are about 55% of her middle price and the captain's two scenes have played (captains.js).
 function dealCheck(planet) {
   const st = G.state, h = hired();
   if (!h) return;
-  if (h.deal && !dealOpen() && !h.deal.lapsed) { if (!G.dialog) { h.deal.lapsed = true; openEvent(lapseScene()); } return; }  // it waits for a landing with nothing else open
   if (h.deal || !planet.services.includes('shipyard') || st.credits < USED_OFFER_AT || !captainBeatsDone(h) || G.dialog) return;
   openEvent(dealScene(planet));
 }
@@ -524,8 +512,8 @@ function signOn(id) {
 
 // The end of chapter one (#882): after the close, until chapter two is written. Its one choice goes back to the title; a finished save reopens on it.
 const overSay = key => sceneSay('scene:chapter-over', key);
-function chapterOverScene() { return { title: overSay('title'), personal: true, text: overSay('text'), choices: [{ label: overSay('label'), run() { save(); Menu.showTitle(); return null; } }] }; }  // saved while still landed: the title saves nothing
-const reopenFinished = () => { if (((G.state || {}).career || {}).finished) openEvent(chapterOverScene()); };
+function chapterOverScene() { return { title: overSay('title'), personal: true, text: overSay('text'), choices: [{ label: overSay('label'), run() { save(); G.dialog = null; G.nextEvent = null; Menu.showTitle(); return null; } }] }; }  // saved while still landed (the title saves nothing), and nothing left to open over the title
+const finishedSave = () => !!((G.state || {}).career || {}).finished;
 
 // The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp, read before buyIn takes the
 // captain and the crew apart. It closes the chapter, not the game: the game's own endings (docs/endings-parked.md, #132) wait for the end of the last
@@ -591,8 +579,8 @@ function buyInHtml() {
   const h = hired(), p = currentPlanet(), friends = buyInCompanions(), cap = G.state.people[h.captain], say = (key, vars) => sceneSay('scene:screens', key, vars);
   if (!p.services.includes('shipyard')) return `<p class="hint">${say('coop.noyard')}</p>`;
   // The co-op's berth (#882): signed at its office at Ceres; at any other yard its notice says so.
-  const coop = !dealOpen() ? '' : !isCoop(p) ? `<div class="row"><div><b>${say('coop.row', { price: fmt(h.deal.price) })}</b> <span class="hint">${say('coop.notice', { until: h.deal.until })}</span></div></div>`
-    : (`<div class="row"><div><b>${say('coop.row', { price: fmt(h.deal.price) })}</b> <span class="hint">${say('coop.terms', { share: fmt(SHARE_PRICE), owed: fmt(SHARE_PRICE - h.deal.price), until: h.deal.until })}</span></div>
+  const coop = !dealOpen() ? '' : !isCoop(p) ? `<div class="row"><div><b>${say('coop.row', { price: fmt(h.deal.price) })}</b> <span class="hint">${say('coop.notice')}</span></div></div>`
+    : (`<div class="row"><div><b>${say('coop.row', { price: fmt(h.deal.price) })}</b> <span class="hint">${say('coop.terms', { share: fmt(SHARE_PRICE), owed: fmt(SHARE_PRICE - h.deal.price) })}</span></div>
      ` + ` ${h.confirm === USED_ID ? `<span><button data-action="buyInGo" data-arg="${USED_ID}" class="primary">${say('coop.confirm')}</button> <button data-action="buyInNo">Not yet</button></span>`
       : `<button data-action="buyInAsk" data-arg="${USED_ID}" ${canBuyIn(USED_ID, p) ? '' : 'disabled'}>${say('coop.sign', { price: fmt(h.deal.price) })}</button>`}</div>`);
   // The yard's own ships, for the full build's hand only: the shipped build's goal is the share.

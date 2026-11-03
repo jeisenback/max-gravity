@@ -32,7 +32,6 @@ test('the steps come in order, each when its condition holds, and the parked pai
   assert.equal(next(h), null, 'the parked pair is passed over, and the set piece waits for the money');
   const rich = { ...st, credits: 90000 };
   assert.deepEqual(next(h, rich).spec, { kind: 'pirate', shipId: 'corsair', grade: 2, ladder: 'setpiece' });
-  assert.equal(next(h, { ...rich, day: 81 }), null, 'a lapsed deal is no set piece');
   ladderDone(h, 'setpiece');
   assert.equal(next(h, rich), null, 'the chapter is done; the ladder is empty and nothing throws');
 });
@@ -79,7 +78,7 @@ test('what is met is the ship ids of the steps done, and random contacts draw on
 
 test('after the chapter ends with steps left, nothing throws', () => {
   world.runs = 4; world.beats = true;
-  const h = { fights: { done: ['raider'] }, deal: { price: 90000, until: 60 } };  // the corsair, cutter, pair and set piece undone; the deal lapsed
+  const h = { fights: { done: ['raider'] }, deal: { price: 90000, until: 60 } };  // the corsair, cutter, pair and set piece undone, and the money not in hand
   assert.equal(next(h, { ...st, day: 200 }).id, 'corsair', 'a step left is still just a step');
   assert.doesNotThrow(() => { ladderNext(null, st, 'mars'); ladderMet(null); ladderPirate(null, 0.5); ladderMet({}); ladderNext({ deal: null, fights: { done: [] } }, { ...st, day: 999 }, 'earth'); });
   assert.equal(ladderNext(null, st, 'mars'), null, 'the hand has gone ashore: no ladder');

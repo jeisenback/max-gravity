@@ -41,48 +41,19 @@ test('the price follows how Tomas thinks of the hand', async () => {
   assert.deepEqual(prices, { good: 51000, middle: 57000, bad: 63000 });
 });
 
-test('the deal lasts a few weeks, and then the ship is gone and the ordinary yard list is left', async () => {
+test('the co-op holds the berth until you sign: months on, the share is still on the page and nothing lapses (#882)', async () => {
   const { r, done } = await run(() => {
     const st = start(), out = {};
-    dock(32000); const h = hired();
+    dock(32000); st.day += 200;
     out.open = dealOpen(); out.listed = /member's share/i.test(buyInHtml());
-    st.day = h.deal.until;  out.lastDay = dealOpen();
-    st.day = h.deal.until + 1; out.lapsed = dealOpen(); out.listedAfter = /member's share/i.test(buyInHtml());
-    const gone = dock(120000); out.note = gone ? gone.title + ' ' + gone.text : ''; out.once = dock(120000);
+    const later = dock(120000); out.note = later ? later.title : null;
     st.credits = 500000; out.hopper = canBuyIn('shuttle', currentPlanet()); out.usedBuyable = canBuyIn(USED_ID, currentPlanet());
-    out.days = h.deal.until - h.deal.day;
     return out;
   });
-  assert.equal(r.open, true); assert.equal(r.listed, true); assert.equal(r.lastDay, true);
-  assert.equal(r.lapsed, false); assert.equal(r.listedAfter, false); assert.equal(r.usedBuyable, false);
-  assert.match(r.note, /Empty Cradle/); assert.match(r.note, /Tomas/); assert.match(r.note, /berths/, 'the co-op has filled her berths (#882)'); assert.doesNotMatch((r.once && r.once.text) || '', /Empty Cradle/, 'said once'); assert.equal(r.hopper, true, 'the Dust Skiff stays buyable');
-  assert.ok(r.days >= 14 && r.days <= 90);
+  assert.equal(r.open, true); assert.equal(r.listed, true); assert.equal(r.note, null, 'no lapse');
+  assert.equal(r.usedBuyable, false, 'signed at Ceres, not here'); assert.equal(r.hopper, true, 'the Dust Skiff stays buyable');
   await done();
 });
-
-test('a lapsed deal without Tomas is told by the broker', async () => {
-  const { r, done } = await run(() => {
-    const st = start(); st.crew = st.crew.filter(id => !person(id).cast);
-    dock(32000); st.day = hired().deal.until + 1;
-    const scene = dock(120000);
-    return { title: scene && scene.title, text: scene && scene.text };
-  });
-  assert.equal(r.title, 'Gone From the Apron'); assert.match(r.text, /co-op/); assert.match(r.text, /berths/); assert.doesNotMatch(r.text, /Tomas/);
-  await done();
-});
-
-test('without Tomas a broker offers the same ship at the full second-hand price', async () => {
-  const { r, done } = await run(() => {
-    const st = start();
-    st.crew = st.crew.filter(id => !person(id).cast);
-    const scene = dock(32000);
-    return { text: scene && scene.text, price: hired().deal && hired().deal.price, broker: hired().deal && hired().deal.broker };
-  });
-  assert.match(r.text, /co-op/); assert.match(r.text, /63,000/); assert.match(r.text, /150,000/); assert.doesNotMatch(r.text, /Tomas/);
-  assert.equal(r.price, 63000); assert.equal(r.broker, true);
-  await done();
-});
-
 // Signing for the co-op's share, the close and the end of chapter one are in tests/coop.test.js (#882): the hand owns no ship, so none starts worn.
 test('the captain heads for a yard when the used Ore Runner can be had', async () => {
   const { r, done } = await run(() => {
@@ -90,25 +61,8 @@ test('the captain heads for a yard when the used Ore Runner can be had', async (
     st.credits = 31340; out.beforeOffer = wantsYard();
     st.credits = 31350; out.atOffer = wantsYard();
     tomas().opinion = 3; dock(32000); st.credits = 50990; out.goodBelow = wantsYard(); st.credits = 51000; out.good = wantsYard();
-    st.day = hired().deal.until + 1; st.credits = 56990; out.lapsedBelow = wantsYard(); st.credits = 57000; out.lapsed = wantsYard();
     return out;
   });
-  assert.deepEqual(r, { beforeOffer: false, atOffer: true, goodBelow: false, good: true, lapsedBelow: false, lapsed: true });
-  await done();
-});
-
-test('work further away says so when it would keep you from a yard until the deal is gone (#800)', async () => {
-  const { r, done } = await run(() => {
-    const st = start(), out = {};
-    const job = (sid, planet, days) => ({ tpl: 'package', ctx: { dest: planet, from: st.planet, who: 'Mrs. Adeyemi', system: SYSTEMS[sid].name, scale: 1 }, sid, planet, days, until: st.day + 40, pitched: null, booked: false });
-    const warns = a => pitchScene(a).text.includes('Ore Runner');
-    out.noDeal = warns(job('eros', 'Eros Old Town', 6));
-    dock(32000); const until = hired().deal.until;
-    st.day = until - 5; out.late = warns(job('eros', 'Eros Old Town', 6));
-    out.yard = warns(job('saturn', 'Titan', 4));
-    st.day = until - 40; out.early = warns(job('eros', 'Eros Old Town', 6));
-    return out;
-  });
-  assert.deepEqual(r, { noDeal: false, late: true, yard: false, early: false });
+  assert.deepEqual(r, { beforeOffer: false, atOffer: true, goodBelow: false, good: true });
   await done();
 });

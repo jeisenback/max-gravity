@@ -154,8 +154,8 @@ function loadGame() {
   Mods.emit('stateReady');
   dropMissingModContent(G.state);
   resetWorld();
+  if (finishedSave()) { G.mode = 'landed'; UI.openLanded(currentPlanet(), []); openEvent(chapterOverScene()); return; }  // chapter one is finished (hired.js, #882): its end, with no landing played
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
-  reopenFinished();  // a save whose chapter one is finished reopens on its end (hired.js, #882)
 }
 
 // A save can name content from a mod that has since been removed. Fall back to

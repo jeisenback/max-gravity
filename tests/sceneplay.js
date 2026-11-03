@@ -87,10 +87,6 @@ const playScenes = () => {
     hired().debt = debt; return dealScene(currentPlanet());
   });
   deal('scene:used-ship-offer:friend', true, 0, OPINION.FRIEND); deal('scene:used-ship-offer:plain-debt', true, 15000, 1); deal('scene:used-ship-offer:cold', true, 0, -1); deal('scene:used-ship-offer:broker', false, 0, 0);
-  for (const [id, tomas] of [['scene:used-ship-offer:lapse-tomas', true], ['scene:used-ship-offer:lapse-broker', false]]) run(id, { credits: 200000 }, () => {
-    G.state.crew = G.state.crew.filter(c => c !== 'c:tomas'); if (tomas) castJoin('tomas', '');
-    return lapseScene();
-  });
   // ---------- putting work further away to the captain ----------
   // a captain who loves, hates or shrugs at each way of putting it (by trait), for each of the four pitches, on a good roll and a bad one
   for (const trait of ['greedy', 'pious', 'brave', 'generous', 'rude', 'nervous', 'kind']) run(`scene:pitch:${trait}`, {}, () => {
@@ -194,7 +190,7 @@ const playScenes = () => {
     run(`hand:buyin:${name}`, { credits: 1000000 }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(buyIn('courier')) }] }), { prep() { G.state.crew = []; crewOf(friends); for (const id of G.state.crew) G.state.people[id].opinion = 4; } });
   }
   // the co-op's office (#882): its notice at another yard, the row and the confirm at Ceres, the bond, nothing posted, a port with no yard, and the captain heading for Ceres
-  { const deal = (o = {}) => () => { const st = G.state, h = hired(); h.deal = { price: BUY_IN.mid, day: st.day, until: st.day + DEAL_DAYS }; h.debt = o.debt || 0; st.credits = 60000; G.state.crew = []; crewOf(o.friends || 0); for (const id of G.state.crew) G.state.people[id].opinion = 4;
+  { const deal = (o = {}) => () => { const st = G.state, h = hired(); h.deal = { price: BUY_IN.mid, day: st.day }; h.debt = o.debt || 0; st.credits = 60000; G.state.crew = []; crewOf(o.friends || 0); for (const id of G.state.crew) G.state.people[id].opinion = 4;
       if (o.at) { st.systemId = o.at[0]; st.planet = o.at[1]; } if (o.confirm) h.confirm = USED_ID; if (o.none) h.deal = null; };
     for (const [name, o] of [['notice', {}], ['ceres', { at: ['ceres', 'Ceres Station'], friends: 2 }], ['confirm', { at: ['ceres', 'Ceres Station'], confirm: true, friends: 2 }], ['confirm-alone', { at: ['ceres', 'Ceres Station'], confirm: true }],
       ['bond', { at: ['ceres', 'Ceres Station'], debt: 3000 }], ['none', { none: true }], ['noyard', { at: ['pallas', 'Pallas Refinery'] }]]) {
@@ -276,15 +272,15 @@ const playScenes = () => {
     for (const [name, cato, others] of [['warm', 4, 1], ['cool', -1, 2], ['gone', null, 0], ['alone-cato', 4, 0]]) {
       run(`chapterend:share:${name}`, {}, () => {
         const real = window.buyInCompanions, scope = BUILD.scope, st = G.state, h = hired();
-        h.deal = { price: BUY_IN.mid, day: st.day, until: st.day + DEAL_DAYS };
+        h.deal = { price: BUY_IN.mid, day: st.day };
         window.buyInCompanions = () => [...(cato === null ? [] : [{ first: 'Cato', last: 'Rahman', cast: 'cato', opinion: cato }]), ...mates(others)]; BUILD.scope = 'earth-hired';
         try { return chapterEnd(USED_ID); } finally { window.buyInCompanions = real; BUILD.scope = scope; }
       });
     }
-    run('chapterend:share:nobody', {}, () => { const real = window.buyInCompanions, scope = BUILD.scope, st = G.state; hired().deal = { price: BUY_IN.mid, day: st.day, until: st.day + DEAL_DAYS };
+    run('chapterend:share:nobody', {}, () => { const real = window.buyInCompanions, scope = BUILD.scope, st = G.state; hired().deal = { price: BUY_IN.mid, day: st.day };
       window.buyInCompanions = () => []; BUILD.scope = 'earth-hired'; try { return chapterEnd(USED_ID); } finally { window.buyInCompanions = real; BUILD.scope = scope; } });
     run('chapter-over', {}, () => ({ ...chapterOverScene(), choices: chapterOverScene().choices.map(c => ({ ...c, run: () => '' })) }));  // its choice goes to the title, which the player does not follow
-    run('hand:signon', { credits: 100000 }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; hired().deal = { price: BUY_IN.mid, day: st.day, until: st.day + DEAL_DAYS }; hired().debt = 0; return String(signOn(USED_ID)); } }] }));
+    run('hand:signon', { credits: 100000 }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; hired().deal = { price: BUY_IN.mid, day: st.day }; hired().debt = 0; return String(signOn(USED_ID)); } }] }));
   }
   // ---------- the close of chapter two, for each ending and each count of the crew who came along ----------
   { const rec = (aboard, left, dead) => ({ came: aboard.length + left.length + dead.length, aboard, left, dead });

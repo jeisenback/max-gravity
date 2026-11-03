@@ -25,7 +25,7 @@ const withDeal = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state, h = hired(); st.story.next = 1e9; st.tutorial = null;
     Object.assign(h, { beats: 2, beatRun: -2, flags: { sawHull: true }, debt: o.debt || 0 });
-    h.deal = { price: BUY_IN.mid, day: st.day, until: st.day + DEAL_DAYS, broker: false };
+    h.deal = { price: BUY_IN.mid, day: st.day, broker: false };
     st.credits = o.credits === undefined ? 60000 : o.credits;
     return st;
   };
@@ -194,4 +194,41 @@ test('the hand\'s text says a member\'s share, not a ship', async () => {
   await done();
   for (const [k, t] of Object.entries(r)) assert.doesNotMatch(t, /ship of your own|buy a ship|Dust Skiff|cheapest ship|two members|old carrier/, `${k}: ${t}`);
   assert.match(r.help, /co-op/); assert.match(r.goal, /buy-in/); assert.match(r.cato, /Ore Runner/); assert.match(r.hope, /five/);
+});
+
+test('the end scene\'s choice, taken through the page, leaves the title menu up with nothing over it', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    openEvent(chapterOverScene()); UI.act('choose', '0');
+    const menu = document.getElementById('menu') || document.querySelector('[data-action=menuView]');
+    return { mode: G.mode, dialog: !!G.dialog, menuButtons: document.querySelectorAll('[data-action=menuView]').length, hidden: !!(menu && menu.closest('[hidden]')) };
+  });
+  await done();
+  assert.equal(r.mode, 'title'); assert.equal(r.dialog, false, 'no result card over the title'); assert.ok(r.menuButtons > 0, 'the menu has its buttons'); assert.equal(r.hidden, false);
+});
+
+test('a finished save opens on its end without running the landing\'s handlers', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    G.state.career = { ...careerOf(hired()), came: [], finished: true }; G.state.hired = null; save();
+    const emit = Mods.emit, seen = []; Mods.emit = (name, ...a) => { seen.push(name); return emit.call(Mods, name, ...a); };
+    try { loadGame(); } finally { Mods.emit = emit; }
+    return { landed: seen.filter(n => n === 'landed').length, title: G.dialog && G.dialog.event.title };
+  });
+  await done();
+  assert.equal(r.title, 'The End of Chapter One'); assert.equal(r.landed, 0);
+});
+
+test('the co-op holds the berth until you sign: long after the offer, it stands and nothing lapses', async () => {
+  const { ev, done } = await open();
+  await ev(withDeal);
+  const r = await ev(() => {
+    const st = handWithDeal({ credits: 40000 }); st.day += 400; G.mode = 'landed'; Mods.emit('landed', currentPlanet());
+    const lapse = G.dialog && ['The Empty Cradle', 'Gone From the Apron'].includes(G.dialog.event.title) ? G.dialog.event.title : null; G.dialog = null; G.nextEvent = null;  // a landing may open other scenes
+    return { open: dealOpen(), lapse, page: buyInHtml(), wants: (st.credits = 60000, wantsYard()) };
+  });
+  await done();
+  assert.equal(r.open, true); assert.equal(r.lapse, null); assert.match(r.page, /member's share/); assert.doesNotMatch(r.page, /until about day/); assert.equal(r.wants, true);
 });

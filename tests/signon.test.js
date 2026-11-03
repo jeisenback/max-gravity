@@ -143,8 +143,7 @@ test('Signing On says what the pay goes to: the hall\'s bond, the co-op\'s buy-i
     const st = G.state, h = hired(), port = () => goalLine(st, h);
     const before = port();
     h.deal = { price: 51000, day: st.day, until: st.day + 10, broker: false }; const offered = port();
-    st.day += 11; const lapsed = port();
-    return { text, before, offered, lapsed };
+    return { text, before, offered };
   });
   assert.match(r.text, /you owe it 9,000 cr for them: 30 percent of each run's pay goes to the hall/);
   assert.match(r.text, /the Ceres co-op takes members at a buy-in of 57,000 cr on a plain vote/);
@@ -152,6 +151,5 @@ test('Signing On says what the pay goes to: the hall\'s bond, the co-op\'s buy-i
   assert.doesNotMatch(r.text, /Ore Runner/, 'the used ship is Tomas\'s to find');
   assert.equal(r.before, 'Owed to the hall: 9,000 cr. A co-op buy-in on a plain vote is 57,000 cr, and you have 3,000 cr.');
   assert.match(r.offered, /The co-op's buy-in for you is 51,000 cr/, 'your own buy-in while the berths are open');
-  assert.match(r.lapsed, /on a plain vote is 57,000/, 'and the plain vote once they are filled');
   await done();
 });

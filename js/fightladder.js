@@ -11,7 +11,7 @@ const FIGHT_LADDER = [
   { id: 'corsair', spec: { kind: 'pirate', shipId: 'corsair', grade: 0, pack: false }, due: h => runTotals(h).runs >= 3 },
   { id: 'cutter', spec: { kind: 'patrol', shipId: 'cutter' }, gov: ladderGov, due: (h, st, to) => captainBeatsDone(h) && !!ladderGov(st, to) },
   { id: 'pair', parked: true, spec: { kind: 'pirate', shipId: 'raider', pack: true }, due: h => !!h.deal },  // the lock lesson: not in chapter one, it waits for chapter two, the owner's (the owner, 2026-10-28); its fight and lines stay
-  { id: 'setpiece', spec: { kind: 'pirate', shipId: 'corsair', grade: 2 }, due: (h, st) => !!h.deal && st.day <= h.deal.until && st.credits >= h.deal.price },  // wantsYard() with the deal open
+  { id: 'setpiece', spec: { kind: 'pirate', shipId: 'corsair', grade: 2 }, due: (h, st) => !!h.deal && st.credits >= h.deal.price },  // wantsYard() with the deal open
 ];
 
 // The first step not done, when its condition holds on this burn (from st.systemId to `to`), with its spec as the fight takes it; else null. A
