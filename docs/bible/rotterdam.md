@@ -26,6 +26,12 @@ The old districts on the south bank (Charlois, Feijenoord, IJsselmonde) are the 
 
 People who lose a lease have nowhere uphill to go, as there is in Lisbon. They go to the given-up polders south of the city, where people live in what was left behind, on ground that floods in winter, outside the arcology's services, or they go into space on a recruitment debt.
 
+## Growing up here
+
+**On the south bank, on a port lease.** A family in a low terrace in Charlois or Feijenoord, below the level of the water outside the barrier, on a lease tied to port work: a crane driver, a lasher, a tally clerk. The work is in shifts, by the port's roster, and the household runs by the roster: who sleeps when, who eats with whom. The pumps run under the streets, and everyone knows the sound of the one that's going. A lease can pass from parent to child if the child gets on the port's books, and most try. People who don't get on the books go to sea or to space. Who is missed: the parent still on the roster, or a sister who got the lease. What they hope for: a place on the port's books, or a lease on the north bank.
+
+**In the polders, with no lease.** A family that lost its port lease and went south to the given-up polders, into a farmhouse or a barn the water has had for years, outside the arcology's services. Water comes from a tank, power from panels and a battery somebody fixed. The ground floods in winter, and families move upstairs and wait. Children walk to the barrier and get day work in the port when the port wants it. A recruitment debt is how many get out, and what they send buys the next winter's fuel. Who is missed: the grandfather who won't leave the farm, or the cousins in the next barn. What they hope for: a lease back inside the barrier, for the family.
+
 ## Language
 
 Dutch at home and on the docks, English for work off-world and in the finance houses, and the languages of the people who came to work the port.
@@ -41,3 +47,5 @@ Hester Vance grew up in Charlois, on a port lease her mother held through a job 
 - Rotterdam is where the ship finance houses sit, Hester's among them.
 - People who lose a lease go to the given-up polders, or into space on a recruitment debt.
 - Hester grew up in Charlois, on her mother's lease through the pump contractor.
+- A port lease can pass to a child who gets on the port's books.
+- Polder families live in farmhouses and barns the water has had for years, and move upstairs in winter.

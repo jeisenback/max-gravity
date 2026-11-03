@@ -28,6 +28,12 @@ Lisbon's traffic to orbit goes by spaceplane from a launch platform forty kilome
 
 Lower-tier tenants have associations that negotiate service charges and repairs with the contractors. They win sometimes. Tenants have no vote on the board.
 
+## Growing up here
+
+**On the wall rota (lower tiers).** A household of four or five in two rooms on a lower tier, a lift ride from the water, on a lease held by one parent's job with a contractor: the water company, the lifts, the wall itself. The rota comes round a few times a year: a night of pump-watch in the gallery under the wall, with the pumps loud and the tide on the far side of the concrete, or a morning clearing drains along the base. Children go along from about twelve, to carry the flasks and learn the gauges. Families keep the rota card on the kitchen door. When the lease-holder loses the job, the household has a month to find another lease or go up the hill. Most people who leave for space leave from here, on a recruitment debt, to keep the lease alive with what they send. Who is missed: the parent who held the lease, or a grandmother who did the rota nights for everyone. What they hope for: a middle-tier lease, two floors up, where the rota doesn't reach.
+
+**In the old city, by the week.** A room in Alfama or Mouraria, rented weekly from a landlord who lives somewhere else, in a building with stairs worn into dips and a shared tap on the landing. Rent is paid on Friday to whoever comes for it. People there take what work there is: cleaning in the arcology on day passes, carrying for the market at the foot of the hill, waiting for a lease that comes with a job. The trams stopped long ago; people walk up and down the hill to the arcology's gate. Neighbours know each other's business, and lend. People leave because a week's rent is always due and space pays in advance, through the agencies. Who is missed: a mother who still rents the same room, or a younger brother who sleeps in it now. What they hope for: a lease of any kind, inside the wall.
+
 ## Language
 
 People speak Portuguese at home and in the arcology, and English for work off-world and with the contractors. Many in the old city speak only Portuguese.
@@ -50,3 +56,5 @@ Her mother still lives on the family's tier. The lease is in her mother's name, 
 - The old city is owned by landlords renting rooms weekly, outside the lease.
 - The ferry operator is suing Ines for part of the runway damage, which is a debt she may carry for years.
 - The game's "dead-stick approach" stays: she glided the spaceplane in.
+- Children go along on the wall rota from about twelve.
+- Weekly rent in the old city is paid on Friday to whoever the landlord sends.

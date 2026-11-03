@@ -29,6 +29,12 @@ The fifth hull is a used Ore Runner, the one Tomas rebuilt three times on her la
   - 63,000 when nobody speaks for you.
 - **The rest** is owed to the co-op, and through it to the lender, and comes out of a member's earnings until it is paid: about 93,000 at the middle figure. A member who leaves before it is paid sells the share back at what the co-op will give.
 
+## Growing up on Ceres
+
+**A member's child.** Raised in the co-op's rented rooms near the yard, by parents who were members and away on its hulls for months at a time. Children of members grow up in each other's rooms, minded by whoever is ashore, and know the hulls by name and the board in the office by heart. A member's child can apply for a berth at sixteen, and the vote usually takes them, but the buy-in is the same as anyone's. Many go to work for another owner first, to save it. Who is missed: a parent on a hull that's out, or the aunt who minded them. What they hope for: a share of their own, on the hull their parents crewed.
+
+**A renter, not a member.** Raised on the station by a family renting by the month from the station's owner, in the Warren, among the people who drink three deep at its bar. Parents take the station's work as it comes: the yard, the docks, the ice house. There is no vote and no share, and the rent goes up when the station's owner says so. Children learn early which co-ops hire and which don't. Who is missed: a father on the dock crews, or the friend they grew up with who got a co-op berth. What they hope for: a co-op berth, or at least a lease that doesn't rise every year.
+
 ## Cato
 
 Cato has watched the co-op's hulls for years. His notebook has them in it: one crossed out (sold, with her crew scattered), and one with a question mark, which is the Ore Runner. Beside them is the price of a share, written again each year since he started. He has the buy-in saved. He was waiting for a hull the people he works with could sign on to together.
@@ -44,3 +50,5 @@ The co-op is not a family, and nobody there says it is. It is a business its mem
 - The office up a stair from the yard floor, rented from the station's owner.
 - A member leaving before the share is paid sells it back at what the co-op will give.
 - Cato has the buy-in saved, and was waiting for a hull to sign on to with others.
+- Members' children can apply for a berth at sixteen, at the same buy-in as anyone.
+- Renters on Ceres rent by the month from the station's owner, in the Warren.

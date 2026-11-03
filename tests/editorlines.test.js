@@ -176,14 +176,16 @@ test('the talk scenes are rows with a field for every line, and each plays in a 
     const rows = SceneIndex.rows.filter(x => x.id.startsWith('family:'));
     return { ids: rows.map(x => x.id), shape: rows.every(x => x.kind === 'data' && x.noTitle && x.where === (x.id === 'family:errand' ? 'port' : 'transit') && x.file === 'js/family.js') };
   });
-  assert.equal(r.ids.length, 42, 'the talk scenes, Ines\'s, Tomas\'s and Cato\'s own three sittings and their talk after them, the talk going on, the visit home, the room that is theirs (its offer and its return), the errand, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
+  assert.equal(r.ids.length, 127, 'with the scenes by place of Lisbon, Lagos, Rotterdam, Chittagong and Ceres (#871): with by place (#871), the talk scenes, Ines\'s, Tomas\'s and Cato\'s own three sittings and their talk after them, the talk going on, the visit home, the room that is theirs (its offer and its return), the errand, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
   assert.ok(r.shape, 'each is lines, in a burn (the errand at a port), in js/family.js');
   for (const id of r.ids) {
     await select(id);
-    const line = id === 'family:holiday' ? 'c0.label' : 'title';  // the holidays take their titles from their names
-    await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
+    const line = id === 'family:holiday' ? 'c0.label' : id.endsWith('-story') ? 'hope' : 'title';  // the holidays take their titles from their names; a module's story shows as the hope in the visit's choice (#871)
+    const paths = await page.locator('#detail textarea[data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+    if (paths.includes(`part.${line}`)) await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
+    else for (const pth of paths) await page.fill(`textarea[data-path="${pth}"]`, `Typed ${id}.`);  // a circumstance's place lines, with no title of their own (#871): one of them shows
     const f = await play();
-    const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));
+    const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed ${line}: ${seen.slice(0, 200)}`);
   }
 });

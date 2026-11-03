@@ -32,6 +32,12 @@ Leases on the ring are few and dear. People who hold one mostly run something th
 
 The yard's work comes and goes with the refit contracts, and the contracts come and go with the owners' rivalry: a fleet owner who falls out with the holding company takes its refits to Luna, and the yard lays people off.
 
+## Growing up here
+
+**On the mainland, by the month.** A family in a rented flat in Yaba or Surulere, two rooms and a corridor shared with three other flats, in a block the landlord doesn't repair. The rent is monthly, and late is a week's grace and then the door. One parent works in the arcology on a day pass or in the market; the other runs something from the flat: tailoring, phone repair, a cook-stall in the street. Power comes from the generator on the roof, by the hour, and everyone knows the generator man. Children who are good with their hands go to the yard agencies at sixteen, and the agencies recruit on the mainland because it's cheap. Who is missed: the mother who keeps the stall, or an uncle who got them their first contract. What they hope for: paying off the family's arrears, or a lease that doesn't run out.
+
+**On the Ring, by the contract.** A yard worker who came up from the mainland on a refit contract and has stayed up on one contract after another: welder, fitter, rigger. The berth comes with the contract, in a bunkroom on the rim at half a g, and it ends when the contract does. Between contracts there are a few days to find another or go down on the next spaceplane. The ring market is where they eat, at the stalls that hold leases, and where they hear which owner is sending a refit and which has taken its work to Luna. Who is missed: the family on the mainland they send money to, and a friend from the bunkroom who went down and didn't come back up. What they hope for: a lease on the ring, a stall or a repair shop, so the next layoff doesn't send them down.
+
 ## Language
 
 English for work, Yoruba and Pidgin on the mainland and in most of the market, and Igbo, Hausa and the other languages of the people who came to Lagos for work.
@@ -49,3 +55,5 @@ His sister Ngozi followed him up. She holds a lease on the ring, in her own name
 - Yard work is by contract, and a yard worker's berth ends with the contract.
 - Ngozi holds a ring lease through her food stall, and its permit is renewed yearly.
 - Tomas's family is Igbo, settled in Lagos two generations ago.
+- Mainland rent is monthly with a week's grace, and power is bought by the hour from a block generator.
+- A yard worker between contracts has a few days to find another before going down.

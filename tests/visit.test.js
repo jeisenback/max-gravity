@@ -39,8 +39,9 @@ test('landing at their home with their regard, they ask you up; going up opens t
     return { ...out, who: s.name, hope: s.hope };
   });
   assert.equal(r.asked, 'At the Lock'); assert.ok(r.marked && r.lockText);
-  assert.equal(r.table, `At ${r.who}'s Table`); assert.ok(!r.tableButtons.includes('Continue'), `the table, not a screen before it (${r.tableButtons})`);
-  assert.ok(r.liked >= 1, `regard rises (${r.liked}; two points, eased for someone who already thinks well of you)`); assert.match(r.mem, /You told my \w+( \w+)? what I want, because I couldn't\.$/); assert.ok(r.result.includes(r.hope) && /For the galley|Next time, longer/.test(r.result), 'the true thing, and the parting');
+  assert.ok(r.table.startsWith(`At ${r.who}'s Table`), r.table);  // a place's title may follow, as "in Lisbon" (#871)
+  assert.ok(!r.tableButtons.includes('Continue'), `the table, not a screen before it (${r.tableButtons})`);
+  assert.ok(r.liked >= 1, `regard rises (${r.liked}; two points, eased for someone who already thinks well of you)`); assert.match(r.mem, /You told my \w+( \w+)? what I want, because I couldn't\.$/); assert.ok(r.result.includes(r.hope) && /For the galley|Next time,/.test(r.result), 'the true thing, and the parting (a place has its own, #871)');
   assert.ok(!r.again || r.again !== 'At the Lock', `not asked twice (${r.again})`); assert.ok(r.comesBack);
   await done();
 });

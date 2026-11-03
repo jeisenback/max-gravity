@@ -22,6 +22,12 @@ Remittances from ratings off-world are a large share of what the arcology's lowe
 
 The arcology's lower floors are near the port, in blocks over shops, warehouses and the cargo exchanges, where the work runs on three shifts and the lifts run all night. The upper floors and the hills behind the wall are dearer.
 
+## Growing up here
+
+**In the hill settlements, by the week.** A family in a rented room in the settlements outside the arcology, on a hill that was a camp a generation ago, with a landlord who collects on Sunday. The room has a tin roof and a cooking corner, and the water comes from a standpipe down the path. The children of the delta's families grew up here, and the grandparents still talk about the land that went under. The agencies recruit on the hill road, and a son or daughter who signs on is the family's way off the hill. Who is missed: a mother who still cooks for the whole lane, or a younger sister at school on the fees. What they hope for: a lease in the arcology, for the family.
+
+**In the lower floors, on a rating's pay.** A household in two rooms above a cargo exchange in the arcology's lower floors, whose lease is held because a son or daughter off-world sends money every month. The work downstairs runs on three shifts and the lifts run all night. If the money stops, the lease goes. The rating who holds it knows that every pay day. Who is missed: the parent whose lease it is on paper, or a niece who writes every week. What they hope for: the lease paid ahead, a year or two, so a missed month doesn't end it.
+
 ## Language
 
 Chittagonian at home, Bangla in the arcology's offices, and English for work off-world, in the agencies and at the port.
@@ -37,3 +43,5 @@ Cato Rahman grew up in the hill settlements. He signed with an agency on the por
 - Chittagong is the system's biggest source of ratings, through the manning agencies on the port road.
 - A lease can be held by money, and many of the lower floors' leases are held by remittances.
 - Cato grew up in the hill settlements; his mother's lease in the arcology is held by his pay.
+- Hill rents are collected weekly, on Sundays.
+- A lower-floors lease held by remittances goes if the money stops.

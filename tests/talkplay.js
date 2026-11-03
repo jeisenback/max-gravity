@@ -103,6 +103,19 @@ const playTalk = () => {
   for (const [name, gap, visits] of [['few', 5, 0], ['few:one', 5, 1], ['few:two', 5, 2], ['month', 40, 1], ['month:two', 40, 2], ['long', 200, 3]]) play(`room-return:${name}`, (p, s) => { storyOf(p); s.room = { planet: p.home, pid: p.id, since: s.day - gap - 10, last: s.day - gap, visits }; }, p => roomReturn(p), 2);
   // the Port page's card at the room reads the names of what is left and the letter (room.js roomCardHtml): played here as its words, since the card needs a hired game
   play('room-card', p => { storyOf(p); }, p => { const say = familySay('room-return'), v = visitVars(p); return { title: 'Your room', text: [...ROOM_THINGS.map(k => say(`thing.${k}.name`, v)), say('letter.card', v)].join(' | '), choices: [] }; }, 1);
+  // the generated crew by place and circumstance (#871): each module's three sittings and its story read at the family's table, and each city's visit and room
+  for (const [city, o] of Object.entries(ORIGINS)) {
+    for (const kind of o.kinds) {
+      const m = `${city}-${kind}`, as = p => { p.home = o.home; p.culture = o.home === 'Earth' ? 'earth' : 'belt'; p.origin = `${city}:${kind}`; delete p.story; };
+      if (!PEOPLE_LINES[`family:${m}-home`]) continue;
+      for (const b of [0, 1, 2]) play(`sit:${b}:${m}`, p => { as(p); storyOf(p).beat = b; p.opinion = 3; }, p => sitBeat(p, true));
+      play(`visit-home:${m}`, p => { as(p); storyOf(p); }, p => visitHome(p));
+      play(`story:${m}`, as, p => { const s = storyOf(p); return { title: 'x', text: [s.rel, s.name, s.left, s.hope, s.homeDetail].join(' | '), choices: [] }; }, 1);  // what the module tells the rest of the game
+      const at = p => { as(p); storyOf(p); };
+      play(`room-offer:${m}`, at, p => roomOffer(p), 2);
+      for (const [name, gap] of [['few', 5], ['month', 40], ['long', 200]]) play(`room-return:${m}:${name}`, (p, s) => { at(p); s.room = { planet: p.home, pid: p.id, since: s.day - gap - 10, last: s.day - gap, visits: 1 }; }, p => roomReturn(p), 2);
+    }
+  }
   // an errand ashore, by culture and the clinic when hurt
   for (const c of ['belt', 'mars', 'earth']) play(`errand:${c}`, p => { p.culture = c; }, p => errandEvent(p));
   play('errand:clinic', (p, s) => { s.injured = { [p.id]: true }; }, p => errandEvent(p));
