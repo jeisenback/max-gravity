@@ -84,3 +84,4 @@ const cityScenes = city => async () => {
   assert.deepEqual(r.missing, [], 'every beat has its table'); assert.deepEqual(r.place, [], 'the city has its visit and room'); assert.deepEqual(r.blanks, [], 'no blanks');
 };
 test('Lisbon\'s scenes are whole', cityScenes('lisbon'));
+test('Lagos\'s scenes are whole', cityScenes('lagos'));
