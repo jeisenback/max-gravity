@@ -110,11 +110,11 @@ const playTalk = () => {
       if (!PEOPLE_LINES[`family:${m}-home`]) continue;
       for (const b of [0, 1, 2]) play(`sit:${b}:${m}`, p => { as(p); storyOf(p).beat = b; p.opinion = 3; }, p => sitBeat(p, true));
       play(`visit-home:${m}`, p => { as(p); storyOf(p); }, p => visitHome(p));
-      play(`story:${m}`, as, p => { const s = storyOf(p); return { title: 'x', text: [s.rel, s.left, s.hope, s.homeDetail].join(' | '), choices: [] }; }, 1);  // what the module tells the rest of the game
+      play(`story:${m}`, as, p => { const s = storyOf(p); return { title: 'x', text: [s.rel, s.name, s.left, s.hope, s.homeDetail].join(' | '), choices: [] }; }, 1);  // what the module tells the rest of the game
+      const at = p => { as(p); storyOf(p); };
+      play(`room-offer:${m}`, at, p => roomOffer(p), 2);
+      for (const [name, gap] of [['few', 5], ['month', 40], ['long', 200]]) play(`room-return:${m}:${name}`, (p, s) => { at(p); s.room = { planet: p.home, pid: p.id, since: s.day - gap - 10, last: s.day - gap, visits: 1 }; }, p => roomReturn(p), 2);
     }
-    const at = p => { p.home = o.home; p.culture = o.home === 'Earth' ? 'earth' : 'belt'; p.origin = `${city}:${o.kinds[0]}`; delete p.story; storyOf(p); };
-    if (PEOPLE_LINES[`family:room-offer-${city}`]) play(`room-offer:${city}`, at, p => roomOffer(p), 2);
-    if (PEOPLE_LINES[`family:room-return-${city}`]) for (const [name, gap] of [['few', 5], ['month', 40], ['long', 200]]) play(`room-return:${city}:${name}`, (p, s) => { at(p); s.room = { planet: p.home, pid: p.id, since: s.day - gap - 10, last: s.day - gap, visits: 1 }; }, p => roomReturn(p), 2);
   }
   // an errand ashore, by culture and the clinic when hurt
   for (const c of ['belt', 'mars', 'earth']) play(`errand:${c}`, p => { p.culture = c; }, p => errandEvent(p));

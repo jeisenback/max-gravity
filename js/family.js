@@ -58,9 +58,10 @@ function originOf(p) {
 }
 const moduleId = p => { const o = originOf(p); return o ? o.replace(':', '-') : null; };  // the sittings' tables, family:<city>-<kind>-<beat>
 const placeId = p => { const o = originOf(p); return o ? o.split(':')[0] : null; };  // the visit's and the room's, family:<scene>-<city>
-const placeTable = (p, id) => (placeId(p) && PEOPLE_LINES[`family:${id}-${placeId(p)}`] ? `${id}-${placeId(p)}` : id);
-// The words of a scene by the city: its own line where the city's table has one, else the shared scene's (a city writes what is its own, its rooms and streets).
-const placeSay = (p, id) => { const own = placeTable(p, id), mine = familySay(own), base = familySay(id); return (key, vars) => (PEOPLE_LINES[`family:${own}`][key] !== undefined ? mine : base)(key, vars); };
+// The words of the visit and the room by place (#871): the circumstance's own line (family:<scene>-<city>-<kind>, the family's rooms and street), else the city's
+// (its titles), else the shared scene's; each writes only what is its own.
+const placeTables = (p, id) => [moduleId(p) && `${id}-${moduleId(p)}`, placeId(p) && `${id}-${placeId(p)}`, id].filter(t => t && PEOPLE_LINES[`family:${t}`]);
+const placeSay = (p, id) => { const tables = placeTables(p, id); return (key, vars) => familySay(tables.find(t => PEOPLE_LINES[`family:${t}`][key] !== undefined) || id)(key, vars); };
 
 function storyOf(p) {
   const own = authoredStory(p);
@@ -69,7 +70,7 @@ function storyOf(p) {
     const rel = pick(RELATIONS), who = makePerson(cultureOfPerson(p));
     p.story = { left: pick(familyLines('left')), rel, name: who.first, hope: pick(familyLines('hopes')).replace('{home}', p.home), favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 1000, beat: 0 };
     const m = moduleId(p);  // a module's story (#871), after the same draws as before, so none moves; read through its lines, so an edit to them shows
-    if (m && PEOPLE_LINES[`family:${m}-story`]) { const say = familySay(`${m}-story`); Object.assign(p.story, { rel: say('rel'), left: say('left'), hope: say('hope'), homeDetail: say('detail') }); }
+    if (m && PEOPLE_LINES[`family:${m}-story`]) { const say = familySay(`${m}-story`); Object.assign(p.story, { rel: say('rel'), left: say('left'), hope: say('hope'), homeDetail: say('detail'), ...(PEOPLE_LINES[`family:${m}-story`].name ? { name: say('name') } : {}) }); }  // a module may name who is missed (Femi, Lagos Ring)
   }
   return p.story;
 }
@@ -337,9 +338,9 @@ for (const [city, o] of Object.entries(ORIGINS)) {
     if (!PEOPLE_LINES[`family:${m}-home`]) continue;
     for (const [beat, make] of Object.entries(SIT_BEATS)) FAMILY_SCENES[`${m}-${beat}`] = p => make(as(p), storyOf(p), `${m}-${beat}`);
     FAMILY_SCENES[`${m}-story`] = p => { as(p); delete p.story; return visitHome(p); };
+    for (const id of ['visit-home', 'room-offer', 'room-return']) if (PEOPLE_LINES[`family:${id}-${m}`]) FAMILY_SCENES[`${id}-${m}`] = p => FAMILY_SCENES[id](as(p));  // room.js's, at call time
   }
-  if (PEOPLE_LINES[`family:visit-home-${city}`]) FAMILY_SCENES[`visit-home-${city}`] = p => visitHome(asOrigin(city, o.kinds[0])(p));
-  for (const id of ['room-offer', 'room-return']) if (PEOPLE_LINES[`family:${id}-${city}`]) FAMILY_SCENES[`${id}-${city}`] = p => FAMILY_SCENES[id](asOrigin(city, o.kinds[0])(p));  // room.js's, at call time
+  for (const id of ['visit-home', 'room-offer', 'room-return']) if (PEOPLE_LINES[`family:${id}-${city}`]) FAMILY_SCENES[`${id}-${city}`] = p => FAMILY_SCENES[id](asOrigin(city, o.kinds[0])(p));
 }
 
 // ---------- birthdays and holidays ----------

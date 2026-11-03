@@ -77,7 +77,7 @@ const cityScenes = city => async () => {
       if (!t) { out.missing.push(`${c}-${k}-${beat}`); continue; }
       for (const [key, v] of Object.entries(t)) if (/\{(?!n\})\w+\}/.test(v)) out.blanks.push(`${c}-${k}-${beat} ${key}`);
     }
-    for (const id of ['visit-home', 'room-offer', 'room-return']) { const t = PEOPLE_LINES[`family:${id}-${c}`]; if (!t) out.place.push(id); else for (const [key, v] of Object.entries(t)) if (/\{(?!(n|who|rel|hope)\})\w+\}/.test(v)) out.blanks.push(`${id}-${c} ${key}`); }
+    for (const id of ['visit-home', 'room-offer', 'room-return']) for (const t of [c, ...kinds.map(k => `${c}-${k}`)]) { const lines = PEOPLE_LINES[`family:${id}-${t}`]; if (!lines) out.place.push(`${id}-${t}`); else for (const [key, v] of Object.entries(lines)) if (/\{(?!(n|who|rel|hope)\})\w+\}/.test(v)) out.blanks.push(`${id}-${t} ${key}`); }  // the city's titles and each circumstance's own place
     return out;
   }, city);
   await done();
@@ -85,3 +85,4 @@ const cityScenes = city => async () => {
 };
 test('Lisbon\'s scenes are whole', cityScenes('lisbon'));
 test('Lagos\'s scenes are whole', cityScenes('lagos'));
+test('Rotterdam\'s scenes are whole', cityScenes('rotterdam'));

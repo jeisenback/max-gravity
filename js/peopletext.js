@@ -1261,23 +1261,44 @@ const PEOPLE_LINES = {
     'c1.result.0': '{n} looks up. "A lease needs a reference," {n} says. "Somebody with a lease who\'ll put their name to you." They hold your eye. "I\'m going to remember you said it, and I\'m going to hold you to it at the worst time."',
     'c1.result.1': '{n} writes the date on the ration sleeve beside the sum, and "said they\'d help," and puts it in their pocket. "So I can show you later," {n} says, and goes on watch.',
   },
-  'family:visit-home-lisbon': {  // the meal at the family's table in Lisbon (family.js visitHome): the place, and the parting; the choices are the shared scene's
+  'family:visit-home-lisbon': {  // the visit home in Lisbon: its title; the lines are each circumstance's
     title: 'At {who}\'s Table in Lisbon',
+  },
+  'family:visit-home-lisbon-wall': {  // the meal at the family's table in Lisbon (family.js visitHome): the place, and the parting; the choices are the shared scene's
     'text.earth': 'The flat is two rooms on a lower tier, the window full of the sea wall and the lift doors outside loud every few minutes. The rota card is on the kitchen door, written in {who}\'s hand, and {who} reads you the next shift off it before your name. There\'s soup, because there\'s always soup, and bread from the bakery at the foot of the tower, and {n} sits in the chair nearest the window without being told.',
     'parting.0': 'At the door {who} puts a flask in your hands, the dented one, still warm. "For the galley," {who} says. "Bring it back." On the lift down {n} holds it like it might spill.',
     'parting.1': '{who} walks you to the lift and no further, and gives {n} a long look and you a short one. "Next time, a shift," {who} says. "I\'ll put you on the card." {n} laughs all the way down to the gate.',
   },
-  'family:room-offer-lisbon': {  // the bed {who} offers in Lisbon, at the end of the visit (room.js roomOffer)
+  'family:room-offer-lisbon': {  // the room offer in Lisbon: its title; the lines are each circumstance's
     title: 'A Bed in Lisbon',
+  },
+  'family:room-offer-lisbon-wall': {  // the bed {who} offers in Lisbon, at the end of the visit (room.js roomOffer)
     'text.0': 'At the door {who} puts a hand flat on your sleeve. "The chair by the window folds out," {who} says. "It\'s made up. For you, when she\'s in at Lisbon. The lift\'s noisy. You\'ll stop hearing it." {n} says nothing and looks at the rota card on the door.',
     'text.1': '{who} stops you at the lift. "There\'s a bed in the back room," {who} says, "under the window that looks at the wall. Nobody sleeps in it since {n} went. I\'d like it slept in. When your ship\'s at Lisbon you come here, and you don\'t have to say why."',
     'c0.result': '{who} writes your name on the bottom of the rota card, under the household, in pencil. "So the office knows you\'re one of ours," {who} says. That is the whole of the arrangement.',
   },
-  'family:room-return-lisbon': {  // the room in Lisbon on a later landing, by the gap (room.js roomReturn); the rest is the shared scene's
+  'family:room-return-lisbon': {  // the room return in Lisbon: its title; the lines are each circumstance's
     title: 'The Room in Lisbon',
+  },
+  'family:room-return-lisbon-wall': {  // the room in Lisbon on a later landing, by the gap (room.js roomReturn); the rest is the shared scene's
     'text.few': 'The lift smells of the river, and the folding bed by the window is made, and the rota card on the door has your name still at the bottom in pencil. {who} has the kettle on before you have your coat off.',
     'text.month': 'It has been a while. The rota card on the door is a new one, with a winter of shifts on it, and your name is at the bottom of it in pencil, copied across. "I kept you on it," {who} says. "In case."',
     'text.long': '{who} stands in the doorway a moment before saying anything. The window is still full of wall. The bed is still made. "I wondered," {who} says, and then the kettle, and then nothing else about it.',
+  },
+  'family:visit-home-lisbon-oldcity': {  // the meal at the family's room in Mouraria (family.js visitHome): the place, and the parting
+    'text.earth': 'The room is four flights up in Mouraria, the stairs worn into dips, the tap on the landing, and {who} has the rent for Friday already counted into piles on the shelf by the door. There\'s grilled sardines from the corner, and bread, and a bottle of something the neighbour sent up when they heard. {n} sits on the bed because there\'s one chair, and gives it to you.',
+    'parting.0': 'At the door {who} puts a parcel in your hands, wrapped in newspaper, still warm. "Sardines," {who} says. "For the galley. They\'ll smell. Let them." On the stairs {n} goes down on the edges, without thinking about it, and you copy them.',
+    'parting.1': '{who} comes down all four flights with you to the street, which {who} doesn\'t do for anyone, and stands at the corner. "Next time, a Friday," {who} says. "Then you\'ll see." {n} laughs all the way down the hill to the gate.',
+  },
+  'family:room-offer-lisbon-oldcity': {  // the bed {who} offers in Mouraria, at the end of the visit (room.js roomOffer)
+    'text.0': 'At the door {who} puts a hand flat on your sleeve. "There\'s a mattress under the bed," {who} says. "It pulls out. For you, when she\'s in at Lisbon. The landlord doesn\'t need to know. He doesn\'t count heads, only money." {n} says nothing and looks at the piles on the shelf.',
+    'text.1': '{who} stops you on the landing by the tap. "The neighbour\'s back room is empty since her son went," {who} says. "I asked her. When your ship\'s at Lisbon you come up the hill and you sleep there, and you don\'t have to say why."',
+    'c0.result': '{who} doesn\'t write anything down. "Come on a Friday," {who} says, "and bring a little for the pile. Not much. So it\'s fair." That is the whole of the arrangement.',
+  },
+  'family:room-return-lisbon-oldcity': {  // the room in Mouraria on a later landing, by the gap (room.js roomReturn)
+    'text.few': 'The stairs, the tap on the landing, the piles on the shelf by the door. {who} has the mattress pulled out before you\'re through it, and the kettle on the ring.',
+    'text.month': 'It has been a while. There\'s a new pile on the shelf, a small one, with your name on a slip of paper under it. "Your share," {who} says. "I kept it for you, from what you left. Friday comes whether you\'re here or not."',
+    'text.long': '{who} stands at the top of the stairs a moment before saying anything. The room is the same. The piles are the same. "I wondered," {who} says, and then goes down to the corner for sardines.',
   },
   // ---------- Lagos (#871, docs/bible/lagos.md, Growing up here): the mainland by the month and the Ring by the contract; the visit and the room by the city ----------
   'family:lagos-mainland-story': {  // the story of a Lagos crew member from a mainland family renting by the month
@@ -1324,6 +1345,7 @@ const PEOPLE_LINES = {
   },
   'family:lagos-ring-story': {  // the story of a Lagos crew member who worked contract to contract in the yard on Lagos Ring
     rel: 'best friend',
+    name: 'Femi',
     left: 'a refit contract that ended, and no berth after it',
     hope: 'a lease on Lagos Ring, a repair stall in the market, so the next layoff doesn\'t send them down',
     detail: 'a bunkroom on the rim of Lagos Ring at half a g, with the berth tied to the contract and the market two spokes over',
@@ -1364,23 +1386,168 @@ const PEOPLE_LINES = {
     'c1.result.0': '{n} looks up. "Leases on the Ring go to people who know someone on the board," {n} says. "I don\'t." They hold your eye. "I\'m going to remember you said it."',
     'c1.result.1': '{n} adds a line to the permit form on their terminal: the date, and "said they\'d help." "So I can show you later," {n} says, and goes on watch.',
   },
-  'family:visit-home-lagos': {  // the meal at the family's table in Lagos (family.js visitHome): the place, and the parting; the choices are the shared scene's
+  'family:visit-home-lagos': {  // the visit home in Lagos: its title; the lines are each circumstance's
     title: 'At {who}\'s Table in Lagos',
+  },
+  'family:visit-home-lagos-mainland': {  // the meal at the family's table in Lagos (family.js visitHome): the place, and the parting; the choices are the shared scene's
     'text.earth': 'The flat is off a corridor in Yaba, two rooms and the sewing machine in the corridor where it always was, and the generator on the roof is running because {who} has bought an extra hour for the visit. There\'s jollof and fried plantain, too much of both, and the neighbours put their heads round the door to look at you and go away satisfied. {n} sits on the end of the bed because there are only three chairs.',
     'parting.0': 'At the door {who} puts a bag in your hands, heavy, warm at the bottom. "For the galley," {who} says. "And this." It\'s a mended shirt of {n}\'s, folded. "They left it. I fixed the cuff." {n} takes it without a word.',
     'parting.1': '{who} walks you down to the street and stands under the generator\'s noise until the bus comes. "Next time, a week," {who} says. "Not a day. A week." {n} waves from the bus until the corner.',
   },
-  'family:room-offer-lagos': {  // the bed {who} offers in Lagos, at the end of the visit (room.js roomOffer)
+  'family:room-offer-lagos': {  // the room offer in Lagos: its title; the lines are each circumstance's
     title: 'A Bed in Lagos',
+  },
+  'family:room-offer-lagos-mainland': {  // the bed {who} offers in Lagos, at the end of the visit (room.js roomOffer)
     'text.0': 'At the door {who} puts a hand on your arm. "The mat behind the machine," {who} says. "It\'s clean. When your ship is in at Lagos and you come down, you sleep here. Not a hotel. Here." {n} looks at the corridor and says nothing.',
     'text.1': '{who} stops you on the stairs. "{n}\'s brother sleeps in the corridor when he\'s here," {who} says. "There\'s room for one more. When you come down to Lagos you come here, and you don\'t have to say why."',
     'c0.result': '{who} doesn\'t write anything down. "Bring bread from the ring," {who} says. "Theirs is better." That is the whole of the arrangement.',
   },
-  'family:room-return-lagos': {  // the room in Lagos on a later landing, by the gap (room.js roomReturn); the rest is the shared scene's
+  'family:room-return-lagos': {  // the room return in Lagos: its title; the lines are each circumstance's
     title: 'The Room in Lagos',
+  },
+  'family:room-return-lagos-mainland': {  // the room in Lagos on a later landing, by the gap (room.js roomReturn); the rest is the shared scene's
     'text.few': 'The generator is on when you arrive, which means {who} bought the hour, and the mat behind the sewing machine is rolled out already. {who} doesn\'t look up from a hem until it\'s finished.',
     'text.month': 'It has been a while. The corridor has a new neighbour, and the machine has a new needle plate, and the mat behind it is where it was. "I aired it," {who} says. "Every Sunday. With the oil."',
     'text.long': '{who} stands at the door a moment with the tape measure round their neck before saying anything. The mat is still there. "I wondered," {who} says, and then goes to buy an hour from the generator man.',
+  },
+  'family:visit-home-lagos-ring': {  // the meal at Femi's in Ikeja (family.js visitHome): the friend who went down, his flat, and the parting
+    'text.earth': 'Femi\'s flat is one room over a bus depot in Ikeja, and it shakes when the night buses come in. {who} has cooked pepper soup on a single ring and makes a show of not being pleased to see {n}, and fails. The bunkroom picture is on the wall, the one with the cup of water in the air, and {who} keeps looking at it while {n} talks about the yard. "Still half a g," {who} says. "Still?"',
+    'parting.0': 'At the door {who} puts a bag in your hands, heavy, warm at the bottom. "For the galley," {who} says. "Proper food. Not ring food." On the stairs {n} says, "He misses it," and you don\'t answer, because you both heard him.',
+    'parting.1': '{who} walks you to the depot gate and stands under the floodlights in his driver\'s jacket. "Next time, ride the bus," {who} says. "The whole route. I\'ll show you Lagos from the ground." {n} waves from the corner until the bus pulls out.',
+  },
+  'family:room-offer-lagos-ring': {  // the couch Femi offers in Ikeja, at the end of the visit (room.js roomOffer)
+    'text.0': 'At the door {who} puts a hand on your arm. "The couch folds out," {who} says. "It\'s broken on one side. You\'ll sleep on the other. When she\'s in and you come down, you come here. The buses wake you. You get used to it." {n} looks at the picture on the wall and says nothing.',
+    'text.1': '{who} stops you on the stairs over the depot. "You\'ll come down on the spaceplane and have nowhere," {who} says. "Everyone off the ring comes down with nowhere. Not you. You come here, and you don\'t have to say why."',
+    'c0.result': '{who} doesn\'t write anything down. "Bring me something from the ring market," {who} says. "Anything. So I know it\'s still there." That is the whole of the arrangement.',
+  },
+  'family:room-return-lagos-ring': {  // the couch in Ikeja on a later landing, by the gap (room.js roomReturn)
+    'text.few': 'The buses are coming in when you arrive, and the flat shakes, and the couch is already folded out with the broken side to the wall. {who} is still in the driver\'s jacket and puts the soup on without asking.',
+    'text.month': 'It has been a while. There\'s a new route map on the wall beside the bunkroom picture, and the couch is where it was. "Night routes now," {who} says. "Better money. Worse buses." The kettle\'s already on.',
+    'text.long': '{who} stands in the doorway a moment before saying anything. The picture is still on the wall. The couch is still broken on one side. "I wondered," {who} says, and then, "The ring still up there?"',
+  },
+  // ---------- Rotterdam (#871, docs/bible/rotterdam.md, Growing up here): the south bank on a port lease and the given-up polders; the visit and the room by the city ----------
+  'family:rotterdam-southbank-story': {  // the story of a Rotterdam crew member from a south-bank port family on a lease tied to port work
+    rel: 'sister',
+    left: 'not getting on the port\'s books, the year the roster closed',
+    hope: 'a place on the port\'s books in Rotterdam, so the lease could pass to them one day',
+    detail: 'a low terrace in Charlois below the level of the water outside the barrier, with the household run by the port\'s roster',
+  },
+  'family:rotterdam-southbank-home': {  // a Rotterdam crew member's home: a south-bank terrace on a port lease
+    title: 'With {n}',
+    'text.0': '{n} puts their head on one side when the ship\'s pumps change note, the way other people react to their name. "Pump under Boergoensevliet," {n} says, half to themselves. "That was ours. It had a knock in it every winter. You\'d lie in bed and count." They look embarrassed. "Charlois. Below the water. Everyone there listens to pumps."',
+    'text.1': 'You ask {n} where they grew up. "Charlois," {n} says. "South bank. A terrace that\'s two metres under the river on the far side of the barrier. My father drove a crane, my mother lashed, and the house ran on the roster: who slept when, who ate with whom. We had a whiteboard by the door with the shifts."',
+    'text.2': '{n} is writing the watch rota on the galley board in a neat block, initials and hours, and you say it looks practised. "Port roster," {n} says. "My mother\'s handwriting. Every household on our street had one of these by the door. You read it before you said good morning."',
+    'c0.label': 'Listen',
+    'c1.label': 'Tell them about where you came from',
+    'c0.result.0': '{n} tells you about the lease: tied to port work, passing to a child who gets on the port\'s books, and the year the port closed the books for new names. "My sister got on the year before," {n} says. "I didn\'t. So the lease is hers, one day. That\'s fair. That\'s how it works." They put the marker down very carefully.',
+    'c0.result.1': 'You let {n} talk, and it\'s the street: the terraces, the dikes, the barrier at the end of the road with the river higher than the roofs, and the night the pumps under the next street failed and everyone stood in their doorways listening. "Nobody slept," {n} says. "And nobody went to bed either. We just stood there."',
+    'c1.result.0': 'You tell them something true about where you came from, and {n} asks whether it was below anything. Below the water, or the street, or anyone. You tell them. "Above," {n} says. "That must be strange."',
+    'c1.result.1': 'You trade them a street for the terrace in Charlois. {n} asks whether you had a roster by the door, and nods when you say no. "You didn\'t miss much," {n} says. "Except knowing where everyone was."',
+  },
+  'family:rotterdam-southbank-picture': {  // a Rotterdam crew member's picture of their sister, who got on the port's books
+    title: 'With {n}',
+    'text.0': '{n} shows you a picture: a woman in a port jacket and ear defenders at the foot of a container crane, grinning, with a lanyard held up to the camera. "My sister," {n} says. "Her first day on the books. That lanyard\'s the lease, basically. She had it laminated."',
+    'text.1': 'There\'s a picture inside {n}\'s locker: two children on a dike top in raincoats, the barrier behind them and the river high on the far side. "Me and my sister," {n} says. "We used to walk the dike after school and guess which ships were coming in. She always knew. She knew the port before she worked in it."',
+    'text.2': '{n} has a picture on their terminal of a kitchen table with a whiteboard behind it, and a woman writing on it in marker with her tongue between her teeth. "My sister," {n} says. "Doing the roster. She does it now. It used to be my mother."',
+    'c0.label': '"Tell me about them."',
+    'c1.label': '"You\'ll see them again."',
+    'c0.result.0': '{n} does: their sister is a tally clerk on the night roster, she married a lasher from the next street, she has the lease in her name now that their mother has stopped work, and she writes every week in the same handwriting as the roster. "She says there\'s a room for me if I come back," {n} says. "On the lease. She means it."',
+    'c0.result.1': '{n} tells you about the year the books closed: their sister on the list, their own name not, the agency\'s office on the Maashaven that took everyone the port didn\'t. "She cried more than I did," {n} says. "She thought she\'d taken something from me. She hadn\'t. There was only one lease."',
+    'c1.result.0': '{n} looks at you. "She\'d have me on the roster within a week," {n} says. "Doing the dishes at four in the morning." They laugh. "Yes. When we\'re in at Rotterdam. I\'ll read the board before I say good morning."',
+    'c1.result.1': '"The next run near Rotterdam is months," {n} says. "She\'ll have rewritten the roster twenty times." They prop the picture against the sugar tin. "You\'re right. I will."',
+  },
+  'family:rotterdam-southbank-hope': {  // a Rotterdam crew member's hope: a place on the port's books
+    title: 'With {n}',
+    'text.0': 'Late in the watch {n} tells you what they want, and it\'s a list: the port\'s books, a name on the roster, a lanyard. "The books open again some years," {n} says. "If you have time at sea, it counts. Every year out here is a year on the application." They look at the hatch. "I\'m not saving money. I\'m saving years."',
+    'text.1': '{n} has an application form on their terminal, the port\'s, with a box for years at sea that they\'ve filled in and corrected several times. "That\'s the one," {n} says. "Rotterdam port, new names. They open the books when they open them. I want to be on the list the next time."',
+    'text.2': '{n} asks what you want, out here, and then says, "I want to go back and be on the roster," and explains: a place on the port\'s books, so that one day there\'s a lease in their own name on the south bank. "Not the north bank," {n} says. "The towers. Who wants to live in the air."',
+    'c0.label': '"It\'s not a stupid thing to want."',
+    'c1.label': '"If I can help, I will."',
+    'c0.result.0': 'You tell them it isn\'t, and {n} breathes out. "People out here want to get away from things," {n} says. "I want to get back onto one." They drink what\'s left in the mug.',
+    'c0.result.1': '"Say that again," {n} says. You do. "A lanyard," {n} says. "That\'s my whole ambition. A laminated lanyard." They laugh, and it\'s a real one.',
+    'c1.result.0': '{n} looks up. "The port takes references from captains," {n} says. "Time at sea and a good word." They hold your eye. "I\'m going to remember you said it."',
+    'c1.result.1': '{n} adds a line to the application form: the date, and "said they\'d help." "So I can show you later," {n} says, and goes on watch.',
+  },
+  'family:rotterdam-polders-story': {  // the story of a Rotterdam crew member from a family that lost its lease and lives in the given-up polders
+    rel: 'grandfather',
+    left: 'a winter in the polders when the fuel ran out, and a recruitment debt that paid for the next one',
+    hope: 'a lease back inside the barrier for the family, before another winter on the farm',
+    detail: 'a farmhouse in the given-up polders south of Rotterdam, with tank water, a battery somebody fixed, and the ground floor given to the water every winter',
+  },
+  'family:rotterdam-polders-home': {  // a Rotterdam crew member's home: a farmhouse in the given-up polders, outside the barrier
+    title: 'With {n}',
+    'text.0': '{n} is drying their socks on the galley heater with great care, turning them, and catches you watching. "Polders," {n} says. "South of Rotterdam. We lived on the top floor of a farm the water has every winter. You learn to dry everything you own, all the time. Damp is the enemy. The cold is just the cold."',
+    'text.1': 'You ask {n} where they grew up. "Outside the barrier," {n} says. "My family lost the port lease when I was six, and we went south to the polders, where people live in what was left behind. A farmhouse. Upstairs in winter, downstairs in summer. My grandfather still farms the high field."',
+    'text.2': '{n} has taken apart the galley\'s water filter and is cleaning it with a toothbrush, and does it as if they\'ve done it a thousand times. "Tank water," {n} says. "In the polders you clean the filter or you\'re ill. My grandfather made me do it every Sunday."',
+    'c0.label': 'Listen',
+    'c1.label': 'Tell them about where you came from',
+    'c0.result.0': '{n} tells you about winter: the water coming over the field in November, carrying everything upstairs, the stove on the landing, the battery that one neighbour kept alive for three farms. "The port\'s lights are right there," {n} says. "Across the water. You can see them all night. You\'re just not inside them."',
+    'c0.result.1': 'You let {n} talk, and it\'s the walk to the barrier for day work in the port, two hours each way, and the queue at the gate where the port took who it wanted that morning. "Some mornings it wanted twenty," {n} says. "Some mornings it wanted none. You walked back."',
+    'c1.result.0': 'You tell them something true about where you came from, and {n} asks whether it flooded. You tell them. "Never?" {n} says, and then, quietly, "That must be nice."',
+    'c1.result.1': 'You trade them a street for a farm track on a dike. {n} asks what you did in winter where you grew up, and listens with real interest. "We moved upstairs," {n} says. "That was winter."',
+  },
+  'family:rotterdam-polders-picture': {  // a Rotterdam crew member's picture of their grandfather, who won't leave the farm
+    title: 'With {n}',
+    'text.0': '{n} shows you a picture: an old man in waders in a flooded field, holding up a cabbage the size of his head and looking very pleased. "My grandfather," {n} says. "High field. The water had the low one, so he grew everything on the high one. He sends me a picture of every harvest."',
+    'text.1': 'There\'s a picture inside {n}\'s locker of a farmhouse half under water, with a light on in the upstairs window and a rowing boat tied to the porch. "Home," {n} says. "In February. That\'s my grandfather\'s window. He sits there with the radio and waits for the water to go."',
+    'text.2': '{n} hands you a picture on their terminal: an old man and a child on a dike top, the port\'s lights behind them across the water. "Me and my grandfather," {n} says. "He used to take me up there to look at Rotterdam. He worked in the port for forty years. He says he doesn\'t miss it. He goes up there every night."',
+    'c0.label': '"Tell me about them."',
+    'c1.label': '"You\'ll see them again."',
+    'c0.result.0': '{n} does: their grandfather drove a straddle carrier on the port roster until the lease went, and moved the whole family south without a word of complaint, and taught himself to farm from an old book. "He says the polders are the only place in Rotterdam nobody charges you for," {n} says. "He says it\'s worth the water."',
+    'c0.result.1': '{n} tells you about the winter the fuel ran out: the stove cold, the family in one room, the agency in the port taking names for space on a recruitment debt. "I signed the next morning," {n} says. "The first thing I sent home was fuel." They put the picture away carefully.',
+    'c1.result.0': '{n} looks at you. "He won\'t leave," {n} says. "He\'ll be in that window when I get back." They laugh. "Yes. When we\'re in at Rotterdam. I\'ll walk out to the farm and he\'ll make me clean the filter."',
+    'c1.result.1': '"Eleven months to the next run near Rotterdam," {n} says. "That\'s a winter." They look at the picture. "You\'re right, though. I will."',
+  },
+  'family:rotterdam-polders-hope': {  // a Rotterdam crew member's hope: a lease back inside the barrier
+    title: 'With {n}',
+    'text.0': 'Late in the watch {n} tells you what the money is for: a lease back inside the barrier, for the family, any lease, in any terrace on the south bank. "Inside the pumps," {n} says. "Where the water\'s somebody else\'s problem." They look at their hands. "My grandfather says he won\'t move. I\'m going to make him."',
+    'text.1': '{n} has a lease listing on their terminal: a two-room terrace in Feijenoord, port-tied, with a waiting list. "That\'s the kind," {n} says. "You need port work or money. We haven\'t got the port work any more." They close it. "So it\'s the money."',
+    'text.2': '{n} asks what you want, out here, and then says, "I want to be bored in winter," and explains: a lease inside the barrier, where winter is just weather. "Nothing to carry upstairs," {n} says. "Nothing to dry. Just cold."',
+    'c0.label': '"It\'s not a stupid thing to want."',
+    'c1.label': '"If I can help, I will."',
+    'c0.result.0': 'You tell them it isn\'t, and {n} lets out a long breath. "My grandfather says the polders are freedom," {n} says. "He\'s seventy-eight. He says it while he\'s bailing." They drink what\'s left in the mug.',
+    'c0.result.1': '"Say that again," {n} says. You do. "Bored in winter," {n} says, and laughs. "Write it on my grave."',
+    'c1.result.0': '{n} looks up. "A port-tied lease needs someone on the roster to vouch for you," {n} says. "Or a deposit nobody in the polders has." They hold your eye. "I\'m going to remember you said it."',
+    'c1.result.1': '{n} writes the date on their terminal under the listing, and "said they\'d help." "So I can show you later," {n} says. "In winter." They go on watch.',
+  },
+  'family:visit-home-rotterdam': {  // the visit home in Rotterdam: its title; the lines are each circumstance's
+    title: 'At {who}\'s Table in Rotterdam',
+  },
+  'family:visit-home-rotterdam-southbank': {  // the meal at the family's table in Rotterdam (family.js visitHome): the place, and the parting; the choices are the shared scene's
+    'text.earth': 'The terrace is on a south-bank street below the water outside the barrier, and the pumps under the road are the first thing you hear and the last. The roster is on the whiteboard by the door in {who}\'s handwriting, and {who} reads you off it before your name: who\'s asleep, who\'s on, who\'s eating with you. There\'s stew, and bread from the bakery on the corner that opens for the night roster, and {n} sits with their back to the whiteboard as if it might change while they\'re not looking.',
+    'parting.0': 'At the door {who} puts a bag in your hands, heavy, warm at the bottom. "For the galley," {who} says. "Not the captain." On the way to the tram {n} carries it against their chest like something that might spill.',
+    'parting.1': '{who} walks you to the end of the street, to the foot of the dike, and no further. "Next time, a shift," {who} says. "I\'ll put you on the board." {n} laughs most of the way to the tram.',
+  },
+  'family:room-offer-rotterdam': {  // the room offer in Rotterdam: its title; the lines are each circumstance's
+    title: 'A Bed in Rotterdam',
+  },
+  'family:room-offer-rotterdam-southbank': {  // the bed {who} offers in Rotterdam, at the end of the visit (room.js roomOffer)
+    'text.0': 'At the door {who} puts a hand flat on your sleeve. "The box room at the top," {who} says. "It\'s made up. For you, when she\'s in at Rotterdam. The pump knocks. You stop hearing it." {n} says nothing and reads the roster on the board.',
+    'text.1': '{who} stops you at the step. "There\'s a bed in the front room," {who} says, "under the window that looks at the dike. Nobody sleeps in it. When your ship\'s at Rotterdam you come here, and you don\'t have to say why."',
+    'c0.result': '{who} writes your initials on the bottom of the roster on the whiteboard, with no hours beside them. "So everyone knows," {who} says. That is the whole of the arrangement.',
+  },
+  'family:room-return-rotterdam': {  // the room return in Rotterdam: its title; the lines are each circumstance's
+    title: 'The Room in Rotterdam',
+  },
+  'family:room-return-rotterdam-southbank': {  // the room in Rotterdam on a later landing, by the gap (room.js roomReturn); the rest is the shared scene's
+    'text.few': 'The pump under the road is knocking the way it did, and your initials are still at the bottom of the roster on the board. The bed is made. {who} has the kettle on before you have your coat off.',
+    'text.month': 'It has been a while. The roster on the board is rewritten, a new month of shifts, and your initials are copied across at the bottom with no hours beside them. "I kept you on it," {who} says. "In case."',
+    'text.long': '{who} stands in the doorway a moment before saying anything. The pump is still knocking. Your initials are still on the board, faded and gone over again. "I wondered," {who} says, and puts the kettle on.',
+  },
+  'family:visit-home-rotterdam-polders': {  // the meal at the farm in the polders (family.js visitHome): the place, and the parting
+    'text.earth': 'The farmhouse stands on a dike south of the city with the water on two sides and the port\'s lights across it, and the ground floor smells of last winter. {who} has the stove going on the landing and a pot of soup from the high field, and the battery-light is on in the kitchen for the visit. {who} shows you the filter before the table, because that\'s the first thing anyone is shown. {n} sits by the window with the port in it.',
+    'parting.0': 'At the door {who} puts a sack in your hands: potatoes, onions, a cabbage too big for it. "For the galley," {who} says. "From the high field." On the long walk back to the barrier {n} carries it and won\'t let you.',
+    'parting.1': '{who} walks you to the top of the dike and no further, and points at the port\'s lights. "You can see it from here," {who} says. "Every night." {n} looks back at the farm twice on the way to the barrier.',
+  },
+  'family:room-offer-rotterdam-polders': {  // the bed {who} offers at the farm, at the end of the visit (room.js roomOffer)
+    'text.0': 'At the door {who} puts a hand flat on your sleeve. "The room under the roof stays dry," {who} says. "Even in February. For you, when she\'s in at Rotterdam and you\'ve walked out this far. There\'s always soup." {n} says nothing and looks at the water.',
+    'text.1': '{who} stops you on the landing by the stove. "There\'s a bed upstairs nobody sleeps in since {n} went," {who} says. "When your ship\'s at Rotterdam you come out to the farm, and you don\'t have to say why."',
+    'c0.result': '{who} writes nothing down. "Clean the filter when you come," {who} says. "That\'s the rent." That is the whole of the arrangement.',
+  },
+  'family:room-return-rotterdam-polders': {  // the room at the farm on a later landing, by the gap (room.js roomReturn)
+    'text.few': 'The water is where it was, and the stove is on the landing, and the room under the roof is made up and dry. {who} has the filter out on the table waiting for you.',
+    'text.month': 'It has been a while. The water has been up and gone down again, and the ground floor smells of it, and the room under the roof is still dry. "It held," {who} says. "I told you it would."',
+    'text.long': '{who} stands at the top of the dike a moment before saying anything. The farm is the same. The water is the same. "I wondered," {who} says, and then, "Filter first."',
   },
   'family:story-home': {
     title: 'With {n}',
