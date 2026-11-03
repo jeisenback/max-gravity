@@ -65,3 +65,22 @@ test('an old story keeps what it said', async () => {
   await done();
   assert.deepEqual([r.left, r.rel, r.hope], ['x', 'y', 'z']); assert.ok(r.origin);
 });
+
+// Each city's scenes (Tasks 3 to 7): every module beat has its table, a module's sittings name nothing but {n}, and the city's visit and room tables
+// exist (they may use the shared scenes' {n}, {who}, {rel}, {hope}, and fall back key by key to the shared scenes for the rest).
+const cityScenes = city => async () => {
+  const { ev, done } = await open();
+  const r = await ev(c => {
+    const kinds = ORIGINS[c].kinds, out = { missing: [], blanks: [], place: [] };
+    for (const k of kinds) for (const beat of ['home', 'picture', 'hope', 'story']) {
+      const t = PEOPLE_LINES[`family:${c}-${k}-${beat}`];
+      if (!t) { out.missing.push(`${c}-${k}-${beat}`); continue; }
+      for (const [key, v] of Object.entries(t)) if (/\{(?!n\})\w+\}/.test(v)) out.blanks.push(`${c}-${k}-${beat} ${key}`);
+    }
+    for (const id of ['visit-home', 'room-offer', 'room-return']) { const t = PEOPLE_LINES[`family:${id}-${c}`]; if (!t) out.place.push(id); else for (const [key, v] of Object.entries(t)) if (/\{(?!(n|who|rel|hope)\})\w+\}/.test(v)) out.blanks.push(`${id}-${c} ${key}`); }
+    return out;
+  }, city);
+  await done();
+  assert.deepEqual(r.missing, [], 'every beat has its table'); assert.deepEqual(r.place, [], 'the city has its visit and room'); assert.deepEqual(r.blanks, [], 'no blanks');
+};
+test('Lisbon\'s scenes are whole', cityScenes('lisbon'));
