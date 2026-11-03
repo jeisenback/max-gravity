@@ -46,7 +46,7 @@ test('the co-op holds the berth until you sign: months on, the share is still on
     const st = start(), out = {};
     dock(32000); st.day += 200;
     out.open = dealOpen(); out.listed = /member's share/i.test(buyInHtml());
-    const later = dock(120000); out.note = later ? later.title : null;
+    const later = dock(120000); out.note = later && ['The Empty Cradle', 'Gone From the Apron'].includes(later.title) ? later.title : null;  // a landing may open other scenes
     st.credits = 500000; out.hopper = canBuyIn('shuttle', currentPlanet()); out.usedBuyable = canBuyIn(USED_ID, currentPlanet());
     return out;
   });

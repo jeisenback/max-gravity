@@ -631,7 +631,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, about the ship and not the money. The co-op's office at Ceres has your name for a berth until about day 115. The share is signed there.",
+    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, about the ship and not the money. The co-op's office at Ceres has your name for a berth, and holds it until you sign there.",
     "mem": [
      "9 Jul 2214: The captain walked the Ore Runner with me, and listened."
     ],
@@ -642,7 +642,7 @@
    }
   ],
   "title": "A Hull on the Apron",
-  "text": "Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that hasn't been clean in years. \"Come and see something,\" he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. \"I've rebuilt her three times,\" he says. \"Three owners, and every one of them sold her, and none for bad luck. Each ran one payment short, and the coolant line is what they skipped.\" He lays a palm flat on her hull. \"The co-op at Ceres has bought her. Kettle's. They're taking five members to crew her, and a member owns a fifth of her. Her drive is all right. Her life support I'd watch. Her fire control is nearly done, and you shouldn't trust it. I know every fault she has. You owe nobody now. I looked at the hall's book. That matters to them. I'd rather you had a berth on her than a stranger, and I'll speak for you at the vote. With my word the buy-in is 51,000 cr, and that's as low as they go. The full share is 150,000, and the rest comes out of what she earns. They'll hold the berths a few weeks.\"",
+  "text": "Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that hasn't been clean in years. \"Come and see something,\" he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. \"I've rebuilt her three times,\" he says. \"Three owners, and every one of them sold her, and none for bad luck. Each ran one payment short, and the coolant line is what they skipped.\" He lays a palm flat on her hull. \"The co-op at Ceres has bought her. Kettle's. They're taking five members to crew her, and a member owns a fifth of her. Her drive is all right. Her life support I'd watch. Her fire control is nearly done, and you shouldn't trust it. I know every fault she has. You owe nobody now. I looked at the hall's book. That matters to them. I'd rather you had a berth on her than a stranger, and I'll speak for you at the vote. With my word the buy-in is 51,000 cr, and that's as low as they go. The full share is 150,000, and the rest comes out of what she earns. They'll hold a berth for you until you sign.\"",
   "labels": [
    "Walk her with him"
   ]
@@ -653,7 +653,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, about the ship and not the money. The co-op's office at Ceres has your name for a berth until about day 115. The share is signed there.",
+    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, about the ship and not the money. The co-op's office at Ceres has your name for a berth, and holds it until you sign there.",
     "mem": [
      "9 Jul 2214: The captain walked the Ore Runner with me, and listened."
     ],
@@ -664,7 +664,7 @@
    }
   ],
   "title": "A Hull on the Apron",
-  "text": "Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that hasn't been clean in years. \"Come and see something,\" he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. \"I've rebuilt her three times,\" he says. \"Three owners, and every one of them sold her, and none for bad luck. Each ran one payment short, and the coolant line is what they skipped.\" He lays a palm flat on her hull. \"The co-op at Ceres has bought her. Kettle's. They're taking five members to crew her, and a member owns a fifth of her. Her drive is all right. Her life support I'd watch. Her fire control is nearly done, and you shouldn't trust it. I know every fault she has. You owe the hall 15,000 still. I looked at its book. The co-op won't sign anyone who owes an agency, so clear it first. I'd rather you had a berth on her than a stranger, and I'll speak for you at the vote. The buy-in is 57,000 cr. The full share is 150,000, and the rest comes out of what she earns. They'll hold the berths a few weeks.\"",
+  "text": "Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that hasn't been clean in years. \"Come and see something,\" he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. \"I've rebuilt her three times,\" he says. \"Three owners, and every one of them sold her, and none for bad luck. Each ran one payment short, and the coolant line is what they skipped.\" He lays a palm flat on her hull. \"The co-op at Ceres has bought her. Kettle's. They're taking five members to crew her, and a member owns a fifth of her. Her drive is all right. Her life support I'd watch. Her fire control is nearly done, and you shouldn't trust it. I know every fault she has. You owe the hall 15,000 still. I looked at its book. The co-op won't sign anyone who owes an agency, so clear it first. I'd rather you had a berth on her than a stranger, and I'll speak for you at the vote. The buy-in is 57,000 cr. The full share is 150,000, and the rest comes out of what she earns. They'll hold a berth for you until you sign.\"",
   "labels": [
    "Walk her with him"
   ]
@@ -675,7 +675,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, about the ship and not the money. The co-op's office at Ceres has your name for a berth until about day 115. The share is signed there.",
+    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, about the ship and not the money. The co-op's office at Ceres has your name for a berth, and holds it until you sign there.",
     "mem": [
      "9 Jul 2214: The captain walked the Ore Runner with me, and listened."
     ],
@@ -686,7 +686,7 @@
    }
   ],
   "title": "A Hull on the Apron",
-  "text": "Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that hasn't been clean in years. \"Come and see something,\" he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. \"I've rebuilt her three times,\" he says. \"Three owners, and every one of them sold her, and none for bad luck. Each ran one payment short, and the coolant line is what they skipped.\" He lays a palm flat on her hull. \"The co-op at Ceres has bought her. Kettle's. They're taking five members to crew her, and a member owns a fifth of her. Her drive is all right. Her life support I'd watch. Her fire control is nearly done, and you shouldn't trust it. I know every fault she has. You owe nobody now. I looked at the hall's book. That matters to them. I'd rather you had a berth on her than a stranger, and I'll speak for you at the vote. The buy-in is 63,000 cr. My word won't bring it down much, and I'm not going to pretend it will. The full share is 150,000, and the rest comes out of what she earns. They'll hold the berths a few weeks.\"",
+  "text": "Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that hasn't been clean in years. \"Come and see something,\" he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. \"I've rebuilt her three times,\" he says. \"Three owners, and every one of them sold her, and none for bad luck. Each ran one payment short, and the coolant line is what they skipped.\" He lays a palm flat on her hull. \"The co-op at Ceres has bought her. Kettle's. They're taking five members to crew her, and a member owns a fifth of her. Her drive is all right. Her life support I'd watch. Her fire control is nearly done, and you shouldn't trust it. I know every fault she has. You owe nobody now. I looked at the hall's book. That matters to them. I'd rather you had a berth on her than a stranger, and I'll speak for you at the vote. The buy-in is 63,000 cr. My word won't bring it down much, and I'm not going to pretend it will. The full share is 150,000, and the rest comes out of what she earns. They'll hold a berth for you until you sign.\"",
   "labels": [
    "Walk her with him"
   ]
@@ -697,52 +697,14 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You copy the terms into your notes and go out to look at her. She's worn, and she's a ship. The co-op's office at Ceres holds the berths until about day 115.",
+    "text": "You copy the terms into your notes and go out to look at her. She's worn, and she's a ship. The co-op's office at Ceres will hold a berth for you until you sign.",
     "next": null
    }
   ],
   "title": "The Co-op's Call",
-  "text": "There's a notice on the board at the yard office, printed on co-op paper: the Ceres Crew Co-operative has bought the used Ore Runner on the apron and is taking five members to crew her. A member owns a fifth of her, has a vote and a berth. \"Buy-in 63,000 cr, where no member speaks for you,\" it says. \"Full share 150,000 cr, the rest paid from earnings. Apply at the co-op's office, Ceres Station. Berths held for a few weeks.\" Someone has written \"fire control poor, life support tired\" along the bottom in pencil.",
+  "text": "There's a notice on the board at the yard office, printed on co-op paper: the Ceres Crew Co-operative has bought the used Ore Runner on the apron and is taking five members to crew her. A member owns a fifth of her, has a vote and a berth. \"Buy-in 63,000 cr, where no member speaks for you,\" it says. \"Full share 150,000 cr, the rest paid from earnings. Apply at the co-op's office, Ceres Station. A berth is held for each applicant until they sign.\" Someone has written \"fire control poor, life support tired\" along the bottom in pencil.",
   "labels": [
    "Copy down the terms"
-  ]
- },
- {
-  "id": "scene:used-ship-offer:lapse-tomas",
-  "plays": [
-   {
-    "i": 0,
-    "roll": 0.5,
-    "text": "He doesn't say anything more about her. After a while he starts back toward the ramp.",
-    "mem": [
-     "9 Jul 2214: The captain stood on the apron with me when she was gone."
-    ],
-    "fx": {
-     "c:tomas": 1
-    },
-    "next": null
-   }
-  ],
-  "title": "The Empty Cradle",
-  "text": "The Ore Runner's cradle on the apron is bare, with its clamps open and a ring of dust where her struts stood. Tomas is at the edge of it with his rag in both hands. A yard hand says the co-op filled her berths last week and took her out to Ceres. Tomas folds the rag and puts it in his pocket. \"She'll have a good crew,\" he says. \"I did the coolant line right.\"",
-  "labels": [
-   "Stand with him a while"
-  ]
- },
- {
-  "id": "scene:used-ship-offer:lapse-broker",
-  "plays": [
-   {
-    "i": 0,
-    "roll": 0.5,
-    "text": "You fold it and put it in your pocket. Nobody stops you.",
-    "next": null
-   }
-  ],
-  "title": "Gone From the Apron",
-  "text": "The co-op's notice is still on the board at the yard office, with \"berths filled\" written across it in marker. Her cradle on the apron is empty. A yard hand says she went out to Ceres last week with her new crew aboard.",
-  "labels": [
-   "Take the notice down"
   ]
  },
  {
@@ -1468,7 +1430,7 @@
    }
   ],
   "title": "Putting It to the Captain",
-  "text": "Mrs. Adeyemi has a sealed package for a contact on Eros Old Town, and doesn't trust the post. It is Eros Old Town, Eros: 5 days out. The captain has the ice run to Pallas Refinery in mind, 14 days at your day rate. How do you put it? It would be about day 43 before you could be at a yard again, and the used Ore Runner comes off the yard list after day 34.",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Eros Old Town, and doesn't trust the post. It is Eros Old Town, Eros: 5 days out. The captain has the ice run to Pallas Refinery in mind, 14 days at your day rate. How do you put it?",
   "labels": [
    "Put the fee in front of them (it pays about 9,000 cr, all told) [60%]",
    "Call in what the captain owes you [40%]",
@@ -9609,7 +9571,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "<div class=\"post\"><div class=\"eyebrow\">The Ceres co-op &middot; your savings 60,000 cr</div>\n    \n    <div class=\"row\"><div><b>A member's share in the Ore Runner, buy-in 57,000 cr</b> <span class=\"hint\">The co-op's notice is on the board here: the share is signed at Ceres, at its office by the yard, and the berths are held until about day 115.</span></div></div><div class=\"row\"><div><b>Dust Skiff</b> <span class=\"hint\">20t, 4 berths, 1 gun. 100,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"shuttle\" disabled>Buy (100,000)</button></div><div class=\"row\"><div><b>Ore Runner</b> <span class=\"hint\">50t, 5 berths, 1 gun. 280,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"lightfreighter\" disabled>Buy (280,000)</button></div><div class=\"row\"><div><b>Needle courier</b> <span class=\"hint\">35t, 7 berths, 1 gun. 450,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"courier\" disabled>Buy (450,000)</button></div><div class=\"row\"><div><b>Ice Hauler</b> <span class=\"hint\">120t, 10 berths, 1 gun. 900,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"freighter\" disabled>Buy (900,000)</button></div><div class=\"row\"><div><b>Corvette</b> <span class=\"hint\">15t, 6 berths, 3 guns. 1,600,000 cr, needs better standing here</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"gunship\" disabled>Buy (1,600,000)</button></div>\n    <p class=\"hint\">Nobody on the crew knows you well enough to sign on with you yet.</p></div>",
+    "text": "<div class=\"post\"><div class=\"eyebrow\">The Ceres co-op &middot; your savings 60,000 cr</div>\n    \n    <div class=\"row\"><div><b>A member's share in the Ore Runner, buy-in 57,000 cr</b> <span class=\"hint\">The co-op's notice is on the board here: the share is signed at Ceres, at its office by the yard, and the co-op holds your berth until you sign.</span></div></div><div class=\"row\"><div><b>Dust Skiff</b> <span class=\"hint\">20t, 4 berths, 1 gun. 100,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"shuttle\" disabled>Buy (100,000)</button></div><div class=\"row\"><div><b>Ore Runner</b> <span class=\"hint\">50t, 5 berths, 1 gun. 280,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"lightfreighter\" disabled>Buy (280,000)</button></div><div class=\"row\"><div><b>Needle courier</b> <span class=\"hint\">35t, 7 berths, 1 gun. 450,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"courier\" disabled>Buy (450,000)</button></div><div class=\"row\"><div><b>Ice Hauler</b> <span class=\"hint\">120t, 10 berths, 1 gun. 900,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"freighter\" disabled>Buy (900,000)</button></div><div class=\"row\"><div><b>Corvette</b> <span class=\"hint\">15t, 6 berths, 3 guns. 1,600,000 cr, needs better standing here</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"gunship\" disabled>Buy (1,600,000)</button></div>\n    <p class=\"hint\">Nobody on the crew knows you well enough to sign on with you yet.</p></div>",
     "next": null
    }
   ],
@@ -9625,7 +9587,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "<div class=\"post\"><div class=\"eyebrow\">The Ceres co-op &middot; your savings 60,000 cr</div>\n    \n    <div class=\"row\"><div><b>A member's share in the Ore Runner, buy-in 57,000 cr</b> <span class=\"hint\">The full share is 150,000 cr, and 93,000 cr of it is still owed after the buy-in, paid from what she earns. The berths are held until about day 115.</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"used\" >Sign on (57,000)</button></div><div class=\"row\"><div><b>Dust Skiff</b> <span class=\"hint\">20t, 4 berths, 1 gun. 100,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"shuttle\" disabled>Buy (100,000)</button></div><div class=\"row\"><div><b>Ore Runner</b> <span class=\"hint\">50t, 5 berths, 1 gun. 280,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"lightfreighter\" disabled>Buy (280,000)</button></div><div class=\"row\"><div><b>Needle courier</b> <span class=\"hint\">35t, 7 berths, 1 gun. 450,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"courier\" disabled>Buy (450,000)</button></div><div class=\"row\"><div><b>Ice Hauler</b> <span class=\"hint\">120t, 10 berths, 1 gun. 900,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"freighter\" disabled>Buy (900,000)</button></div><div class=\"row\"><div><b>Corvette</b> <span class=\"hint\">15t, 6 berths, 3 guns. 1,600,000 cr, needs better standing here</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"gunship\" disabled>Buy (1,600,000)</button></div>\n    <p class=\"hint\">Sign on, and Mate0 Vale would sign on with you.</p></div>",
+    "text": "<div class=\"post\"><div class=\"eyebrow\">The Ceres co-op &middot; your savings 60,000 cr</div>\n    \n    <div class=\"row\"><div><b>A member's share in the Ore Runner, buy-in 57,000 cr</b> <span class=\"hint\">The full share is 150,000 cr, and 93,000 cr of it is still owed after the buy-in, paid from what she earns. The co-op holds your berth until you sign.</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"used\" >Sign on (57,000)</button></div><div class=\"row\"><div><b>Dust Skiff</b> <span class=\"hint\">20t, 4 berths, 1 gun. 100,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"shuttle\" disabled>Buy (100,000)</button></div><div class=\"row\"><div><b>Ore Runner</b> <span class=\"hint\">50t, 5 berths, 1 gun. 280,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"lightfreighter\" disabled>Buy (280,000)</button></div><div class=\"row\"><div><b>Needle courier</b> <span class=\"hint\">35t, 7 berths, 1 gun. 450,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"courier\" disabled>Buy (450,000)</button></div><div class=\"row\"><div><b>Ice Hauler</b> <span class=\"hint\">120t, 10 berths, 1 gun. 900,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"freighter\" disabled>Buy (900,000)</button></div><div class=\"row\"><div><b>Corvette</b> <span class=\"hint\">15t, 6 berths, 3 guns. 1,600,000 cr, needs better standing here</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"gunship\" disabled>Buy (1,600,000)</button></div>\n    <p class=\"hint\">Sign on, and Mate0 Vale would sign on with you.</p></div>",
     "next": null
    }
   ],
@@ -9641,7 +9603,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "<div class=\"post\"><div class=\"eyebrow\">The Ceres co-op &middot; your savings 60,000 cr</div>\n    \n    <div class=\"row\"><div><b>A member's share in the Ore Runner, buy-in 57,000 cr</b> <span class=\"hint\">The full share is 150,000 cr, and 93,000 cr of it is still owed after the buy-in, paid from what she earns. The berths are held until about day 115.</span></div>\n      <span><button data-action=\"buyInGo\" data-arg=\"used\" class=\"primary\">Yes, sign and leave</button> <button data-action=\"buyInNo\">Not yet</button></span></div><div class=\"row\"><div><b>Dust Skiff</b> <span class=\"hint\">20t, 4 berths, 1 gun. 100,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"shuttle\" disabled>Buy (100,000)</button></div><div class=\"row\"><div><b>Ore Runner</b> <span class=\"hint\">50t, 5 berths, 1 gun. 280,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"lightfreighter\" disabled>Buy (280,000)</button></div><div class=\"row\"><div><b>Needle courier</b> <span class=\"hint\">35t, 7 berths, 1 gun. 450,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"courier\" disabled>Buy (450,000)</button></div><div class=\"row\"><div><b>Ice Hauler</b> <span class=\"hint\">120t, 10 berths, 1 gun. 900,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"freighter\" disabled>Buy (900,000)</button></div><div class=\"row\"><div><b>Corvette</b> <span class=\"hint\">15t, 6 berths, 3 guns. 1,600,000 cr, needs better standing here</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"gunship\" disabled>Buy (1,600,000)</button></div>\n    <p class=\"hint\">Signing on means leaving Captain Hester Vance and the crew behind, but Mate0 Vale would sign on with you.</p></div>",
+    "text": "<div class=\"post\"><div class=\"eyebrow\">The Ceres co-op &middot; your savings 60,000 cr</div>\n    \n    <div class=\"row\"><div><b>A member's share in the Ore Runner, buy-in 57,000 cr</b> <span class=\"hint\">The full share is 150,000 cr, and 93,000 cr of it is still owed after the buy-in, paid from what she earns. The co-op holds your berth until you sign.</span></div>\n      <span><button data-action=\"buyInGo\" data-arg=\"used\" class=\"primary\">Yes, sign and leave</button> <button data-action=\"buyInNo\">Not yet</button></span></div><div class=\"row\"><div><b>Dust Skiff</b> <span class=\"hint\">20t, 4 berths, 1 gun. 100,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"shuttle\" disabled>Buy (100,000)</button></div><div class=\"row\"><div><b>Ore Runner</b> <span class=\"hint\">50t, 5 berths, 1 gun. 280,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"lightfreighter\" disabled>Buy (280,000)</button></div><div class=\"row\"><div><b>Needle courier</b> <span class=\"hint\">35t, 7 berths, 1 gun. 450,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"courier\" disabled>Buy (450,000)</button></div><div class=\"row\"><div><b>Ice Hauler</b> <span class=\"hint\">120t, 10 berths, 1 gun. 900,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"freighter\" disabled>Buy (900,000)</button></div><div class=\"row\"><div><b>Corvette</b> <span class=\"hint\">15t, 6 berths, 3 guns. 1,600,000 cr, needs better standing here</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"gunship\" disabled>Buy (1,600,000)</button></div>\n    <p class=\"hint\">Signing on means leaving Captain Hester Vance and the crew behind, but Mate0 Vale would sign on with you.</p></div>",
     "next": null
    }
   ],
@@ -9657,7 +9619,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "<div class=\"post\"><div class=\"eyebrow\">The Ceres co-op &middot; your savings 60,000 cr</div>\n    \n    <div class=\"row\"><div><b>A member's share in the Ore Runner, buy-in 57,000 cr</b> <span class=\"hint\">The full share is 150,000 cr, and 93,000 cr of it is still owed after the buy-in, paid from what she earns. The berths are held until about day 115.</span></div>\n      <span><button data-action=\"buyInGo\" data-arg=\"used\" class=\"primary\">Yes, sign and leave</button> <button data-action=\"buyInNo\">Not yet</button></span></div><div class=\"row\"><div><b>Dust Skiff</b> <span class=\"hint\">20t, 4 berths, 1 gun. 100,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"shuttle\" disabled>Buy (100,000)</button></div><div class=\"row\"><div><b>Ore Runner</b> <span class=\"hint\">50t, 5 berths, 1 gun. 280,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"lightfreighter\" disabled>Buy (280,000)</button></div><div class=\"row\"><div><b>Needle courier</b> <span class=\"hint\">35t, 7 berths, 1 gun. 450,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"courier\" disabled>Buy (450,000)</button></div><div class=\"row\"><div><b>Ice Hauler</b> <span class=\"hint\">120t, 10 berths, 1 gun. 900,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"freighter\" disabled>Buy (900,000)</button></div><div class=\"row\"><div><b>Corvette</b> <span class=\"hint\">15t, 6 berths, 3 guns. 1,600,000 cr, needs better standing here</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"gunship\" disabled>Buy (1,600,000)</button></div>\n    <p class=\"hint\">Signing on means leaving Captain Hester Vance and the crew behind, and nobody on the crew knows you well enough to come.</p></div>",
+    "text": "<div class=\"post\"><div class=\"eyebrow\">The Ceres co-op &middot; your savings 60,000 cr</div>\n    \n    <div class=\"row\"><div><b>A member's share in the Ore Runner, buy-in 57,000 cr</b> <span class=\"hint\">The full share is 150,000 cr, and 93,000 cr of it is still owed after the buy-in, paid from what she earns. The co-op holds your berth until you sign.</span></div>\n      <span><button data-action=\"buyInGo\" data-arg=\"used\" class=\"primary\">Yes, sign and leave</button> <button data-action=\"buyInNo\">Not yet</button></span></div><div class=\"row\"><div><b>Dust Skiff</b> <span class=\"hint\">20t, 4 berths, 1 gun. 100,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"shuttle\" disabled>Buy (100,000)</button></div><div class=\"row\"><div><b>Ore Runner</b> <span class=\"hint\">50t, 5 berths, 1 gun. 280,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"lightfreighter\" disabled>Buy (280,000)</button></div><div class=\"row\"><div><b>Needle courier</b> <span class=\"hint\">35t, 7 berths, 1 gun. 450,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"courier\" disabled>Buy (450,000)</button></div><div class=\"row\"><div><b>Ice Hauler</b> <span class=\"hint\">120t, 10 berths, 1 gun. 900,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"freighter\" disabled>Buy (900,000)</button></div><div class=\"row\"><div><b>Corvette</b> <span class=\"hint\">15t, 6 berths, 3 guns. 1,600,000 cr, needs better standing here</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"gunship\" disabled>Buy (1,600,000)</button></div>\n    <p class=\"hint\">Signing on means leaving Captain Hester Vance and the crew behind, and nobody on the crew knows you well enough to come.</p></div>",
     "next": null
    }
   ],
@@ -9673,7 +9635,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "<div class=\"post\"><div class=\"eyebrow\">The Ceres co-op &middot; your savings 60,000 cr</div>\n    <p class=\"hint\">You owe the hiring hall 3,000 cr. The co-op won't sign anyone who owes an agency.</p>\n    <div class=\"row\"><div><b>A member's share in the Ore Runner, buy-in 57,000 cr</b> <span class=\"hint\">The full share is 150,000 cr, and 93,000 cr of it is still owed after the buy-in, paid from what she earns. The berths are held until about day 115.</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"used\" disabled>Sign on (57,000)</button></div><div class=\"row\"><div><b>Dust Skiff</b> <span class=\"hint\">20t, 4 berths, 1 gun. 100,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"shuttle\" disabled>Buy (100,000)</button></div><div class=\"row\"><div><b>Ore Runner</b> <span class=\"hint\">50t, 5 berths, 1 gun. 280,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"lightfreighter\" disabled>Buy (280,000)</button></div><div class=\"row\"><div><b>Needle courier</b> <span class=\"hint\">35t, 7 berths, 1 gun. 450,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"courier\" disabled>Buy (450,000)</button></div><div class=\"row\"><div><b>Ice Hauler</b> <span class=\"hint\">120t, 10 berths, 1 gun. 900,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"freighter\" disabled>Buy (900,000)</button></div><div class=\"row\"><div><b>Corvette</b> <span class=\"hint\">15t, 6 berths, 3 guns. 1,600,000 cr, needs better standing here</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"gunship\" disabled>Buy (1,600,000)</button></div>\n    <p class=\"hint\">Nobody on the crew knows you well enough to sign on with you yet.</p></div>",
+    "text": "<div class=\"post\"><div class=\"eyebrow\">The Ceres co-op &middot; your savings 60,000 cr</div>\n    <p class=\"hint\">You owe the hiring hall 3,000 cr. The co-op won't sign anyone who owes an agency.</p>\n    <div class=\"row\"><div><b>A member's share in the Ore Runner, buy-in 57,000 cr</b> <span class=\"hint\">The full share is 150,000 cr, and 93,000 cr of it is still owed after the buy-in, paid from what she earns. The co-op holds your berth until you sign.</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"used\" disabled>Sign on (57,000)</button></div><div class=\"row\"><div><b>Dust Skiff</b> <span class=\"hint\">20t, 4 berths, 1 gun. 100,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"shuttle\" disabled>Buy (100,000)</button></div><div class=\"row\"><div><b>Ore Runner</b> <span class=\"hint\">50t, 5 berths, 1 gun. 280,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"lightfreighter\" disabled>Buy (280,000)</button></div><div class=\"row\"><div><b>Needle courier</b> <span class=\"hint\">35t, 7 berths, 1 gun. 450,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"courier\" disabled>Buy (450,000)</button></div><div class=\"row\"><div><b>Ice Hauler</b> <span class=\"hint\">120t, 10 berths, 1 gun. 900,000 cr</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"freighter\" disabled>Buy (900,000)</button></div><div class=\"row\"><div><b>Corvette</b> <span class=\"hint\">15t, 6 berths, 3 guns. 1,600,000 cr, needs better standing here</span></div>\n      <button data-action=\"buyInAsk\" data-arg=\"gunship\" disabled>Buy (1,600,000)</button></div>\n    <p class=\"hint\">Nobody on the crew knows you well enough to sign on with you yet.</p></div>",
     "next": null
    }
   ],
