@@ -37,8 +37,9 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 10. `ceres-coop.md`: the Ceres Crew Co-operative, its Ore Runner, and a member's share.
 11. `hermes-foundry.md`, `luna.md`, `mars.md`, `phobos-yards.md`: the foundry on Mercury, Luna's yards and dust towns, Mars's domes and air, and the domes' shipyard.
 12. `ironheart.md`, `juno-commons.md`, `eros-old-town.md`, `triton-outpost.md`: the prospectors' co-op at Psyche, the growers' commons at Juno, the boomtown's two halves, and the edge at Neptune (#885).
-13. `voice.md`: how the game's writing sounds.
-14. `people/`: one sheet per character (`ines.md` first).
+13. `ring-nine.md`, `pallas-refinery.md`, `the-hollows.md`, `the-rook.md`, `boneyard.md`: the squat in Ceres's shadow, the company refinery and its families' tunnels, the haven at Hygiea and the town of dead ships (drafts, #885).
+14. `voice.md`: how the game's writing sounds.
+15. `people/`: one sheet per character (`ines.md` first).
 
 ## Where the game must change to fit
 
@@ -57,6 +58,6 @@ The owner decided (2026-10-31) that where the bible and the game disagree, the g
 ## Still to write
 
 - Everyday life: fun and media (the code has vids, books and ring-ball), religion, crime, what the news covers, age and health, marriage and children, accents.
-- The rest of the Belt stations and outer moons: Ring Nine, Pallas Refinery, The Hollows, The Rook, Boneyard, Ganymede, Europa, Titan and Enceladus (#885).
+- The outer moons: Ganymede, Europa, Titan and Enceladus (#885).
 - What replaces the faction economies and wars in the game (a code project).
 - History before day 1 (the old `docs/world/timeline.md`), the player's start backgrounds (`backgrounds.md`), customs aboard (`customs.md`) and the posts aboard (`trades.md`). Those files were retired in #869; they are in git history, written to the old world, and are a source to check, not to copy.
