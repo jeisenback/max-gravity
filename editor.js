@@ -390,7 +390,7 @@
       return { type: 'played', failing: [], chained: false, shut: [], note: 'An errand comes up at a landing for a crew member who thinks well of you, so no condition is checked here.' };
     }
     if (pe && pe.family) {  // a "With {name}" scene: a shipmate it is about is aboard
-      const mate = makeCrewCandidate(G.state.systemId); mate.home = 'Titan'; registerPerson(mate); G.state.crew.push(mate.id);  // a home with no place written (#871, #885): a shared scene shows as it is; a place's scenes set their own
+      const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); G.state.crew.push(mate.id);  // a hand from a place: a shared scene shows under that place's own lines (#885), and a place's scenes set their own place
       openEvent(FAMILY_SCENES[pe.family](mate));
       return { type: 'played', failing: [], chained: false, shut: [], note: 'A talk scene is chosen by how the shipmate is, so no condition is checked here.' };
     }

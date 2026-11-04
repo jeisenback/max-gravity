@@ -28,7 +28,7 @@ test('every talk scene has an id and lines, and every line is read: an override 
     return { base, changed, ids, have, warned, registry: peopleEventRegistry().map(e => e.id).filter(id => id.startsWith('family:')), keys: Object.fromEntries(ids.map(id => [id, Object.keys(PEOPLE_LINES[id])])) };
   }, { src: playTalk.toString(), home: playHome.toString(), family: playFamily.toString() });
   await g.done();
-  assert.equal(r.ids.length, 348, 'with the scenes by place of Lisbon, Lagos, Rotterdam, Chittagong, Ceres (#871), Hermes Foundry, Luna, Mars, Phobos Yards and the rest of the Belt (#885): with sittings, stories, visit and room by place (#871), the talk scenes, Ines\'s, Tomas\'s and Cato\'s own three sittings and their talk after them, the talk going on, the visit home, the room that is theirs (its offer and its return), the errand, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
+  assert.equal(r.ids.length, 413, 'with the scenes by place of Lisbon, Lagos, Rotterdam, Chittagong, Ceres (#871), Hermes Foundry, Luna, Mars, Phobos Yards, the rest of the Belt and the outer moons (#885): with sittings, stories, visit and room by place (#871), the talk scenes, Ines\'s, Tomas\'s and Cato\'s own three sittings and their talk after them, the talk going on, the visit home, the room that is theirs (its offer and its return), the errand, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
   assert.deepEqual([...r.have].sort(), [...r.ids].sort(), 'lines for every one, and for nothing else');
   assert.deepEqual(r.registry, r.ids, 'the registry lists them, in the order they are listed in');
   assert.deepEqual(r.warned, [], 'the game keeps every line');
@@ -37,7 +37,7 @@ test('every talk scene has an id and lines, and every line is read: an override 
   assert.deepEqual(missing, [], 'a line that is never read');
   assert.equal(r.changed.length, r.base.length);
   // what the choices change is the same: the pin's record of regard, memory, mood, the story and the missions, without the words
-  const effects = rec => { let j; try { j = JSON.parse(rec.text); } catch (e) { return null; } return Array.isArray(j) || !j.runs ? null : j.runs.map(x => JSON.stringify([x[0], x[1], { ...x[3], mem: null, log: null }])); };  // the memory and the log are words
+  const effects = rec => { let j; try { j = JSON.parse(rec.text); } catch (e) { return null; } return Array.isArray(j) || !j.runs ? null : j.runs.map(x => JSON.stringify([x[0], x[1], { ...x[3], mem: null, log: null, missions: x[3].missions && x[3].missions.length }])); };  // the memory, the log and the missions' names (a place's who-is-missed is in them, #885) are words
   for (let n = 0; n < r.base.length; n++) assert.deepEqual(effects(r.changed[n]), effects(r.base[n]), `${r.base[n].key}: what the choices change is the same`);
 });
 

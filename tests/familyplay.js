@@ -1,7 +1,7 @@
 'use strict';
 
-// Plays the words of js/familytext.js for the pin (familypin.test.js) and the text layer's tests (#457): the lines a crew member's story is rolled from (what they left, what they hope
-// for, where they are from), what they say when there is nothing on their mind, the letters from home and the holidays. Not a test file. playFamily runs in the page and reads the
+// Plays the words of js/familytext.js for the pin (familypin.test.js) and the text layer's tests (#457): a crew member's story by
+// home (who is missed, what they left and hope for, the favor), what they say when there is nothing on their mind, the letters from home and the holidays. Not a test file. playFamily runs in the page and reads the
 // tables only through the game's own scenes, so it plays the same before and after the text layer is put in front of them.
 const playFamily = () => {
   const out = [];
@@ -15,11 +15,9 @@ const playFamily = () => {
   st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
   const mk = (culture, extra = {}) => { const p = makePerson(culture); Object.assign(p, { first: 'Sam', last: 'Vale', home: 'Titan', traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [] }, extra); delete p.story; registerPerson(p); return p; };
   const reset = () => { st.crew = []; st.injured = {}; };
-  // what a story is rolled from: what they left and what they hope for, over many dice
-  for (let i = 0; i < 80; i++) { reset(); __seed(100 + i); const p = mk(['belt', 'mars', 'earth'][i % 3], { home: ['Titan', 'Europa', 'Enceladus'][i % 3] }  /* homes with no place yet, so the shared story rolls for each culture (#871, #885); the places' stories are the talk pin's */); const s = storyOf(p); note(`story:${i}`, [s.left, s.hope, s.rel]); }
-  // the first sitting: where they are from, for each culture, and the line they left for
-  ['belt', 'mars', 'earth'].forEach((c, i) => { reset(); __seed(200 + i); const p = mk(c); const e = sitBeat(p, true); note(`beat0:${c}`, [e.title, e.text, e.choices.map(x => String(x.label))]); });
-  { reset(); __seed(210); const p = mk('belt'); storyOf(p).homeDetail = 'a hand-picked detail'; note('beat0:detail', sitBeat(p, true).text); }
+  // what a story is rolled from, over many dice and every home: who is missed, the favor, the debt, and what the place gives (#885)
+  const homes = [...new Set(Object.values(ORIGINS).map(o => o.home))];
+  for (let i = 0; i < 80; i++) { reset(); __seed(100 + i); const p = mk(['belt', 'mars', 'earth'][i % 3], { home: homes[i % homes.length] }); const s = storyOf(p); note(`story:${i}`, [s.left, s.hope, s.rel, s.name, s.favor, s.debt]); }
   // what they say when there is nothing on their mind, for each trait (and for two together, and for none)
   Object.keys(TALK_IDLE).forEach((t, i) => { reset(); __seed(300 + i); const p = mk('earth', { traits: [t] }); const e = ordinaryTalk(p); note(`idle:${t}`, [e.title, e.text]); });
   { reset(); __seed(330); note('idle:two', ordinaryTalk(mk('earth', { traits: ['kind', 'brave'] })).text); }

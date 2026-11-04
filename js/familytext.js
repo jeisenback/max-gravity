@@ -2,27 +2,6 @@
 
 // The text tables of family.js, moved out so the logic reads on its own (#254). Data only; loaded before family.js.
 
-const LEFT = [
-  'a mine closure that emptied half the town',
-  'a marriage that ended badly',
-  'a debt to the wrong people',
-  'wanting to see a sky that wasn\'t painted on a dome',
-  'a sister who went first and wrote home about it',
-  'an accident at work they still blame themselves for',
-  'the rationing, and being tired of being thirsty',
-  'a scholarship that fell through at the last minute'
-];
-
-const HOPES = [
-  'a berth on a ship of their own someday',
-  'to see one of Earth\'s oceans, just once',
-  'to open a noodle stand somewhere with real gravity',
-  'to get their family off {home}',
-  'to finish the engineering license they started years ago',
-  'to be somewhere long enough to grow something',
-  'to find out what happened to their father\'s old ship'
-];
-
 // When there is no arc to move on, the talk is about what is on their mind now: how they are (a letter, an injury), the war if they
 // are of a side in it, how they get on with the others, what you did last time. Each is its own short scene, with its own choices.
 const TALK_IDLE = {

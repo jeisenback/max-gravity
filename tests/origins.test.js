@@ -11,11 +11,11 @@ after(closeBrowser);
 const hand = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); };
 const crewFrom = home => { const p = makePerson('earth'); p.home = home; registerPerson(p); return p; };
 
-test('an Earth crew member draws one of the four cities and a circumstance, Ceres, Luna, Mars, Hermes Foundry, Phobos Yards, Ironheart, Juno Commons, Eros Old Town, Triton Outpost and the rest of the Belt draw their own, and others none', async () => {
+test('an Earth crew member draws one of the four cities and a circumstance, Ceres, Luna, Mars, Hermes Foundry, Phobos Yards, Ironheart, Juno Commons, Eros Old Town, Triton Outpost and the rest of the Belt and the outer moons draw their own, and a home that is no place none', async () => {
   const { ev, done } = await open();
   const r = await ev(([h, c]) => { (0, eval)(`(${h})`)(); const crewFrom = (0, eval)(`(${c})`);
     const earth = Array.from({ length: 12 }, () => originOf(crewFrom('Earth')));
-    return { earth, ceres: originOf(crewFrom('Ceres Station')), luna: originOf(crewFrom('Luna')), mars: originOf(crewFrom('Mars')), hermes: originOf(crewFrom('Hermes Foundry')), phobos: originOf(crewFrom('Phobos Yards')), ironheart: originOf(crewFrom('Ironheart')), juno: originOf(crewFrom('Juno Commons')), eros: originOf(crewFrom('Eros Old Town')), triton: originOf(crewFrom('Triton Outpost')), ringnine: originOf(crewFrom('Ring Nine')), pallas: originOf(crewFrom('Pallas Refinery')), hollows: originOf(crewFrom('The Hollows')), rook: originOf(crewFrom('The Rook')), boneyard: originOf(crewFrom('Boneyard')), europa: originOf(crewFrom('Europa')), titan: originOf(crewFrom('Titan')) };
+    return { earth, ceres: originOf(crewFrom('Ceres Station')), luna: originOf(crewFrom('Luna')), mars: originOf(crewFrom('Mars')), hermes: originOf(crewFrom('Hermes Foundry')), phobos: originOf(crewFrom('Phobos Yards')), ironheart: originOf(crewFrom('Ironheart')), juno: originOf(crewFrom('Juno Commons')), eros: originOf(crewFrom('Eros Old Town')), triton: originOf(crewFrom('Triton Outpost')), ringnine: originOf(crewFrom('Ring Nine')), pallas: originOf(crewFrom('Pallas Refinery')), hollows: originOf(crewFrom('The Hollows')), rook: originOf(crewFrom('The Rook')), boneyard: originOf(crewFrom('Boneyard')), europa: originOf(crewFrom('Europa')), titan: originOf(crewFrom('Titan')), ganymede: originOf(crewFrom('Ganymede')), enceladus: originOf(crewFrom('Enceladus')), nowhere: originOf(crewFrom('Nowhere')) };
   }, [hand.toString(), crewFrom.toString()]);
   await done();
   for (const o of r.earth) assert.match(o, /^(lisbon:(wall|oldcity)|lagos:(mainland|ring)|rotterdam:(southbank|polders)|chittagong:(hills|floors))$/, o);
@@ -24,7 +24,8 @@ test('an Earth crew member draws one of the four cities and a circumstance, Cere
   assert.match(r.luna, /^luna:(licensed|dust)$/); assert.match(r.mars, /^mars:(hub|edge)$/); assert.match(r.hermes, /^hermes:(quarters|fins)$/); assert.match(r.phobos, /^phobos:(shipwright|docks)$/);  // #885
   assert.match(r.ironheart, /^ironheart:(claim|tailings)$/); assert.match(r.juno, /^juno:(rooted|incomers)$/); assert.match(r.eros, /^eros:(silver|dark)$/); assert.match(r.triton, /^triton:(domes|supply)$/);  // #885
   assert.match(r.ringnine, /^ringnine:(stalls|yards)$/); assert.match(r.pallas, /^pallas:(staff|contract)$/); assert.match(r.hollows, /^hollows:(shifts|pension)$/); assert.match(r.rook, /^rook:(dock|market)$/); assert.match(r.boneyard, /^boneyard:(hull|bays)$/);  // #885
-  assert.equal(r.europa, null); assert.equal(r.titan, null);  // a place not yet written
+  assert.match(r.ganymede, /^ganymede:(lease|hands)$/); assert.match(r.europa, /^europa:(authority|hoses)$/); assert.match(r.titan, /^titan:(labs|domes)$/); assert.match(r.enceladus, /^enceladus:(dock|queue)$/);  // #885
+  assert.equal(r.nowhere, null);
 });
 
 test('the origin is drawn once, without Math.random, and kept through a save', async () => {
@@ -47,7 +48,7 @@ test('a cast character draws no origin', async () => {
   assert.equal(r, null);
 });
 
-test('the lookup prefers a cast\'s lines, then the module\'s, then the template', async () => {
+test('the lookup prefers a cast\'s lines, then the module\'s, and finds none without either', async () => {
   const { ev, done } = await open();
   const r = await ev(([h, c]) => { (0, eval)(`(${h})`)(); const crewFrom = (0, eval)(`(${c})`);
     const p = crewFrom('Earth'); p.origin = 'lisbon:wall';
@@ -57,7 +58,7 @@ test('the lookup prefers a cast\'s lines, then the module\'s, then the template'
     return { withModule, without, ines: sitLines(castPerson('ines'), 'home') };
   }, [hand.toString(), crewFrom.toString()]);
   await done();
-  assert.equal(r.withModule, 'lisbon-wall-home'); assert.equal(r.without, 'story-home'); assert.equal(r.ines, 'ines-home');
+  assert.equal(r.withModule, 'lisbon-wall-home'); assert.equal(r.without, null); assert.equal(r.ines, 'ines-home');
 });
 
 test('an old story keeps what it said', async () => {
@@ -93,17 +94,6 @@ test('Rotterdam\'s scenes are whole', cityScenes('rotterdam'));
 test('Chittagong\'s scenes are whole', cityScenes('chittagong'));
 test('Ceres\'s scenes are whole', cityScenes('ceres'));
 
-test('a story made before its place was written keeps the shared scenes: no place lines contradict it', async () => {
-  const { ev, done } = await open();
-  const r = await ev(([h, c]) => { (0, eval)(`(${h})`)(); const crewFrom = (0, eval)(`(${c})`);
-    const old = crewFrom('Earth'); old.story = { left: 'x', rel: 'brother', name: 'Ana', hope: 'z', beat: 0, favor: 'visit', debt: 9000 };
-    const fresh = crewFrom('Earth');
-    return { old: sitLines(old, 'home'), oldVisit: placeTables(old, 'visit-home'), fresh: sitLines(fresh, 'home'), freshModule: storyOf(fresh).module };
-  }, [hand.toString(), crewFrom.toString()]);
-  await done();
-  assert.equal(r.old, 'story-home'); assert.deepEqual(r.oldVisit, ['visit-home']);
-  assert.match(r.fresh, /^(lisbon|lagos|rotterdam|chittagong)-\w+-home$/); assert.ok(r.freshModule);
-});
 test('Hermes Foundry\'s scenes are whole', cityScenes('hermes'));
 test('Luna\'s scenes are whole', cityScenes('luna'));
 test('Mars\'s scenes are whole', cityScenes('mars'));
@@ -117,3 +107,7 @@ test('Pallas Refinery\'s scenes are whole', cityScenes('pallas'));
 test('The Hollows\'s scenes are whole', cityScenes('hollows'));
 test('The Rook\'s scenes are whole', cityScenes('rook'));
 test('Boneyard\'s scenes are whole', cityScenes('boneyard'));
+test('Ganymede\'s scenes are whole', cityScenes('ganymede'));
+test('Europa\'s scenes are whole', cityScenes('europa'));
+test('Titan\'s scenes are whole', cityScenes('titan'));
+test('Enceladus\'s scenes are whole', cityScenes('enceladus'));
