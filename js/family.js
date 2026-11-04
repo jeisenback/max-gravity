@@ -54,7 +54,9 @@ const ORIGINS = {
   eros: { home: 'Eros Old Town', culture: 'belt', kinds: ['silver', 'dark'] }, triton: { home: 'Triton Outpost', culture: 'belt', kinds: ['domes', 'supply'] },
   ringnine: { home: 'Ring Nine', culture: 'belt', kinds: ['stalls', 'yards'] }, pallas: { home: 'Pallas Refinery', culture: 'belt', kinds: ['staff', 'contract'] },
   hollows: { home: 'The Hollows', culture: 'belt', kinds: ['shifts', 'pension'] }, rook: { home: 'The Rook', culture: 'belt', kinds: ['dock', 'market'] },
-  boneyard: { home: 'Boneyard', culture: 'belt', kinds: ['hull', 'bays'] },
+  boneyard: { home: 'Boneyard', culture: 'belt', kinds: ['hull', 'bays'] }, ganymede: { home: 'Ganymede', culture: 'belt', kinds: ['lease', 'hands'] },
+  europa: { home: 'Europa', culture: 'belt', kinds: ['authority', 'hoses'] }, titan: { home: 'Titan', culture: 'belt', kinds: ['labs', 'domes'] },
+  enceladus: { home: 'Enceladus', culture: 'belt', kinds: ['dock', 'queue'] },
 };
 const idHash = s => { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; } return h; };  // FNV-1a
 function originOf(p) {
