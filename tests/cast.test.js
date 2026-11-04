@@ -718,7 +718,7 @@ test('a generated crew member still gets a rolled story', async () => {
   await ev(helpers);
   const r = await ev(() => {
     start({ mode: 'hired', post: 'gunner' });
-    const g = makeCrewCandidate('earth'); registerPerson(g);
+    const g = makeCrewCandidate('earth'); g.home = 'Titan'; registerPerson(g);  // a home with no place written yet (#871): the shared roll
     const s = storyOf(g);
     return { authored: !!s.authored, left: LEFT.includes(s.left), rel: RELATIONS.includes(s.rel) };
   });

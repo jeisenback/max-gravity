@@ -124,7 +124,7 @@ test('the filters narrow by where, by source and by data or code', async () => {
 
 test('the page shows the rows, opens a scene to read it, and filters as you type', async () => {
   assert.equal(await page.textContent('#count'), `${rows.length} of ${rows.length} scenes`);
-  await page.fill('#q', 'butterscotch');
+  await page.fill('#q', 'applauds napkin');  // only the port's scene: Mars's own sittings say butterscotch too (#885)
   assert.equal(await page.textContent('#count'), '1 of ' + rows.length + ' scenes');
   await page.click('button[data-id="port-mars-sky"]');
   const detail = await page.textContent('#detail');
