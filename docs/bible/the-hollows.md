@@ -1,6 +1,6 @@
 # The Hollows
 
-Status: draft for the owner's review (#885). Built on `economy.md`, `work.md`, `jurisdictions.md` and `pallas-refinery.md`.
+Status: approved by the owner on 2026-11-04. Built on `economy.md`, `work.md`, `jurisdictions.md` and `pallas-refinery.md`.
 
 ## The place
 

@@ -41,7 +41,7 @@ const cultureOfPerson = p => p.culture || HOME_CULTURE[p.home] || 'earth';
 const authoredStory = p => { const d = p.cast ? CAST[p.cast] : p.captainKey ? CAPTAINS[p.captainKey] : null; return d ? d.story || null : null; };
 
 // The generated crew's place and circumstance (#871, docs/bible: each city's "Growing up here"): drawn once from the person's id, with no random number, so no
-// other draw moves; kept on the person. A home of Earth draws one of the four cities, and Ceres Station, Hermes Foundry, Luna, Mars, Phobos Yards, Ironheart, Juno Commons, Eros Old Town and Triton Outpost their own; any other home draws none and keeps the
+// other draw moves; kept on the person. A home of Earth draws one of the four cities, and Ceres Station, Hermes Foundry, Luna, Mars, Phobos Yards, Ironheart, Juno Commons, Eros Old Town, Triton Outpost and the Belt's other homes their own; any other home draws none and keeps the
 // shared templates until its place is written. Adding a place is an entry here and its lines (peopletext.js), with no change to the code; `culture` is the
 // shared scenes' word for it (the visit's text.earth, text.mars, text.belt).
 const ORIGINS = {
@@ -52,6 +52,9 @@ const ORIGINS = {
   mars: { home: 'Mars', culture: 'mars', kinds: ['hub', 'edge'] }, phobos: { home: 'Phobos Yards', culture: 'mars', kinds: ['shipwright', 'docks'] },
   ironheart: { home: 'Ironheart', culture: 'belt', kinds: ['claim', 'tailings'] }, juno: { home: 'Juno Commons', culture: 'belt', kinds: ['rooted', 'incomers'] },
   eros: { home: 'Eros Old Town', culture: 'belt', kinds: ['silver', 'dark'] }, triton: { home: 'Triton Outpost', culture: 'belt', kinds: ['domes', 'supply'] },
+  ringnine: { home: 'Ring Nine', culture: 'belt', kinds: ['stalls', 'yards'] }, pallas: { home: 'Pallas Refinery', culture: 'belt', kinds: ['staff', 'contract'] },
+  hollows: { home: 'The Hollows', culture: 'belt', kinds: ['shifts', 'pension'] }, rook: { home: 'The Rook', culture: 'belt', kinds: ['dock', 'market'] },
+  boneyard: { home: 'Boneyard', culture: 'belt', kinds: ['hull', 'bays'] },
 };
 const idHash = s => { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; } return h; };  // FNV-1a
 function originOf(p) {
