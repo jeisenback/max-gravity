@@ -12,7 +12,7 @@ const playHome = () => {
   while (G.dialog) finishEvent();
   let st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000;
   st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
-  const mk = (first, over = {}) => { const p = makePerson('mars'); Object.assign(p, { first, last: 'Vale', home: 'Titan', traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [], role: 'engineer', skill: 1 }, over); delete p.story; registerPerson(p); return p; };
+  const mk = (first, over = {}) => { const p = makePerson('belt'); Object.assign(p, { first, last: 'Vale', home: 'Titan', traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [], role: 'engineer', skill: 1 }, over); delete p.story; registerPerson(p); return p; };
   const base = mk('Sam'), ana = mk('Ana', { role: 'pilot' }), ben = mk('Ben', { role: 'gunner' });
   st.crew = [base.id, ana.id, ben.id];
   const snap = JSON.stringify(G.state), PID = base.id, AID = ana.id;

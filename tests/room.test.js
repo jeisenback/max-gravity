@@ -39,10 +39,10 @@ test('a stay leaves one more thing in the room, three at most; a letter waits on
 });
 
 const helpers = () => {
-  // A hired game with a shipmate whose family is on Ceres (Bexa, of the cast, who has the shared visit and room: #885), who thinks well of the hand, and the visit's table.
+  // A hired game with a shipmate from a lab family on Titan (#885), who thinks well of the hand, and the visit's table.
   window.setup = (key = 'hester') => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: key }); while (G.dialog) finishEvent();
-    const st = G.state; st.story.next = 1e9; st.tutorial = null; const p = makePerson('mars'); Object.assign(p, { cast: 'bexa', first: 'Bexa', last: 'Oyelaran', culture: 'belt', home: 'Ceres Station', opinion: 4, role: 'engineer', skill: 1 }); delete p.story; registerPerson(p); st.crew.push(p.id); storyOf(p);
+    const st = G.state; st.story.next = 1e9; st.tutorial = null; const p = makePerson('mars'); Object.assign(p, { first: 'Sam', last: 'Vale', culture: 'belt', home: 'Titan', origin: 'titan:labs', opinion: 4, role: 'engineer', skill: 1 }); delete p.story; registerPerson(p); st.crew.push(p.id); storyOf(p);
     return { st, p };
   };
   window.goTo = (sid, planet) => { const st = G.state; G.transit = null; G.mode = 'landed'; st.dest = null; st.systemId = sid; st.planet = planet; UI.notes.length = 0; G.dialog = null; G.nextEvent = null; };
@@ -59,7 +59,7 @@ test('telling the family the true thing earns the offer of a room, once; the kin
     out.noRoomYet = st.room; offer.choices[1].run(); out.declined = st.room;
     return out;
   });
-  assert.equal(r.kind, null); assert.equal(r.kindFlag, false); assert.equal(r.title, 'A Bed in Ceres Station'); assert.match(r.text, /bed|room/i); assert.deepEqual(r.labels, ['Say yes', 'Thank them, and say no']); assert.equal(r.flag, true);
+  assert.equal(r.kind, null); assert.equal(r.kindFlag, false); assert.equal(r.title, 'A Bed on Titan'); assert.match(r.text, /bed|room/i); assert.deepEqual(r.labels, ['Say yes', 'Thank them, and say no']); assert.equal(r.flag, true);
   assert.equal(r.again, null, 'it does not come again from that family'); assert.equal(r.noRoomYet, undefined); assert.equal(r.declined, undefined, 'declining sets nothing');
 });
 
@@ -68,33 +68,33 @@ test('accepting sets the room at the family\'s port with the day, and thinks the
     const { st, p } = setup(), op = p.opinion; visitHome(p).choices[1].run(); const offer = G.nextEvent; G.nextEvent = null; const text = offer.choices[0].run();
     return { room: { ...st.room }, day: st.day, text, op: p.opinion - op, mem: JSON.stringify(p.memories), pid: p.id };
   });
-  assert.equal(r.room.planet, 'Ceres Station'); assert.equal(r.room.pid, r.pid); assert.equal(r.room.since, r.day); assert.equal(r.room.last, r.day); assert.equal(r.room.visits, 0);
-  assert.match(r.text, /The door with the bad latch/); assert.ok(r.op >= 1); assert.match(r.mem, /took the bed my .* offered/);
+  assert.equal(r.room.planet, 'Titan'); assert.equal(r.room.pid, r.pid); assert.equal(r.room.since, r.day); assert.equal(r.room.last, r.day); assert.equal(r.room.visits, 0);
+  assert.match(r.text, /writes your name on a napkin/); assert.ok(r.op >= 1); assert.match(r.mem, /took the bed my .* offered/);
 });
 
 test('landing at the room\'s port opens the return by the gap and the count, once a stay; nothing elsewhere or the day of a stay; the Port page has the card only there', async () => {
   const r = await run(() => {
-    const { st, p } = setup(), out = {}; p.visitedAt = st.day; st.room = { planet: 'Ceres Station', pid: p.id, since: st.day - 300, last: st.day - 5, visits: 0 };  // (the visit home is not what this is about)
-    out.elsewhere = (landOn('mars', 'Mars') || {}).title;
-    const few = landOn('ceres', 'Ceres Station'); out.few = { title: few.title, text: few.text, labels: few.choices.map(c => c.label) };
+    const { st, p } = setup(), out = {}; p.visitedAt = st.day; st.room = { planet: 'Titan', pid: p.id, since: st.day - 300, last: st.day - 5, visits: 0 };  // (the visit home is not what this is about)
+    out.elsewhere = (landOn('ceres', 'Ceres Station') || {}).title;
+    const few = landOn('saturn', 'Titan'); out.few = { title: few.title, text: few.text, labels: few.choices.map(c => c.label) };
     UI.tab = 'port'; UI.render(); out.card = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ');
-    out.stay = few.choices[0].run(); out.room = { ...st.room }; out.day = st.day; out.same = (landOn('ceres', 'Ceres Station') || {}).title;
-    p.visitedAt = st.day + 1000; st.day += 40; const month = landOn('ceres', 'Ceres Station'); out.month = month.text; month.choices[1].run(); out.afterLook = { ...st.room, day: st.day };
-    st.day += 200; const long = landOn('ceres', 'Ceres Station'); out.long = long.text; G.dialog = null; UI.render(); out.card3 = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ');
-    goTo('mars', 'Mars'); UI.render(); out.cardAway = document.querySelector('.shell .body').textContent;
+    out.stay = few.choices[0].run(); out.room = { ...st.room }; out.day = st.day; out.same = (landOn('saturn', 'Titan') || {}).title;
+    p.visitedAt = st.day + 1000; st.day += 40; const month = landOn('saturn', 'Titan'); out.month = month.text; month.choices[1].run(); out.afterLook = { ...st.room, day: st.day };
+    st.day += 200; const long = landOn('saturn', 'Titan'); out.long = long.text; G.dialog = null; UI.render(); out.card3 = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ');
+    goTo('ceres', 'Ceres Station'); UI.render(); out.cardAway = document.querySelector('.shell .body').textContent;
     return out;
   });
-  assert.notEqual(r.elsewhere, 'The Room in Ceres Station'); assert.equal(r.few.title, 'The Room in Ceres Station'); assert.match(r.few.text, /^The door sticks the way it did, and \S+ has not moved a thing in 5 days\./); assert.match(r.few.text, /It is the first time you have slept in it\.$/);
-  assert.deepEqual(r.few.labels, ['Stay the night', 'Look in, and go back to the ship']); assert.match(r.card, /Your room\s*\S+'s, at Ceres Station\. 5 days since you last slept here\./);
-  assert.match(r.stay, /sleep through the watch change/); assert.match(r.stay, /bag of galley tea on the hook/); assert.ok(!/letter/i.test(r.few.text) && !/Left here|letter/.test(r.card), 'nothing left and no letter yet'); assert.equal(r.room.visits, 1); assert.equal(r.room.last, r.day); assert.notEqual(r.same, 'The Room in Ceres Station', 'not the day of a stay');
-  assert.match(r.month, /^It has been 40 days\./); assert.match(r.month, /You have slept in it once before\.$/); assert.match(r.month, /There is a letter on the table with your name on it/); assert.match(r.month, /The bag of galley tea you left is on the hook/);
+  assert.notEqual(r.elsewhere, 'The Room on Titan'); assert.equal(r.few.title, 'The Room on Titan'); assert.match(r.few.text, /^The haze-light is late afternoon, as always, and the visitors' room is made/); assert.match(r.few.text, /It is the first time you have slept in it\.$/);
+  assert.deepEqual(r.few.labels, ['Stay the night', 'Look in, and go back to the ship']); assert.match(r.card, /Your room\s*\S+'s, at Titan\. 5 days since you last slept here\./);
+  assert.match(r.stay, /sleep through the watch change/); assert.match(r.stay, /bag of galley tea on the hook/); assert.ok(!/letter/i.test(r.few.text) && !/Left here|letter/.test(r.card), 'nothing left and no letter yet'); assert.equal(r.room.visits, 1); assert.equal(r.room.last, r.day); assert.notEqual(r.same, 'The Room on Titan', 'not the day of a stay');
+  assert.match(r.month, /^It has been a while\. The labs have a new compound/); assert.match(r.month, /You have slept in it once before\.$/); assert.match(r.month, /There is a letter on the table with your name on it/); assert.match(r.month, /The bag of galley tea you left is on the hook/);
   assert.equal(r.afterLook.visits, 1, 'looking in is not a stay'); assert.equal(r.afterLook.last, r.afterLook.day, 'but it is the last time you were there');
-  assert.match(r.long, /^It has been 200 days, and/); assert.match(r.card3, /Left here: a bag of galley tea\.\s*A letter is waiting\./); assert.match(r.long, /moved to wipe under/); assert.match(r.long, /The bag of galley tea you left/); assert.ok(!/Your room/.test(r.cardAway));
+  assert.match(r.long, /^So long that \S+ has retired from the bench/); assert.match(r.card3, /Left here: a bag of galley tea\.\s*A letter is waiting\./); assert.match(r.long, /moved to wipe under/); assert.match(r.long, /The bag of galley tea you left/); assert.ok(!/Your room/.test(r.cardAway));
 });
 
 test('the person a room is kept by is not forgotten when the registry is full', async () => {
   const r = await run(() => {
-    const { st, p } = setup(); st.room = { planet: 'Ceres Station', pid: p.id, since: 1, last: 1, visits: 0 }; st.crew = st.crew.filter(id => id !== p.id);
+    const { st, p } = setup(); st.room = { planet: 'Titan', pid: p.id, since: 1, last: 1, visits: 0 }; st.crew = st.crew.filter(id => id !== p.id);
     for (let i = 0; i < 140; i++) { const q = makePerson(cultureOf(st.systemId)); registerPerson(q); }
     return !!st.people[p.id];
   });

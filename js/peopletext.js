@@ -4141,9 +4141,7 @@ const PEOPLE_LINES = {
     'c1.label': 'Say you\'ll see them at the ship',
     'c1.result': '"Right," {n} says, and doesn\'t argue, and goes. You see them from the ramp at the top of the dock, getting smaller. They\'re back before the watch change the next morning with red eyes and a bag that smells of {home}, and they put the bag in the galley and a plate in front of you, and go to their bunk in their boots.',
   },
-  'family:visit-home': {  // the meal at their family's table (family.js visitHome), the place by culture, and the one choice: what you tell the family about them
-    title: 'At {who}\'s Table',
-    'text.earth': 'The flat is on the fourth tier of the ward, two rooms and a window that gives on the sea wall, and the wall book is on the shelf where another household would keep a picture. {who} has it open before the kettle has boiled, to the page with {n}\'s name on it. "Four shifts," {who} says. "Owed to the wall. I stand them." The meal is fish and a grain you don\'t know, on three plates, and {who} serves you first and {n} last. "They write that you sit with them," {who} says, and looks at {n}, and {n} looks at the plate. "Left over {left}," {who} says, to you. "You\'ll have heard. Everyone on this tier has heard."',
+  'family:visit-home': {  // the meal at their family's table (family.js visitHome): the one choice, what you tell the family about them; each place writes its own title, table and parting (#871, #885)
     'kind.label': 'Say that aboard, {n} is the one people go to',
     'kind.result.0': 'You say it, and it\'s true, and {who} hears the whole of it. "They were that here," {who} says. "Before." They don\'t say before what. {n} looks at the window, and {who} puts another piece on your plate, and the talk goes to the ship, the food, the noise the recycler makes at night, which {n} has described, it turns out, in detail.',
     'kind.result.1': '{who} sets the spoon down. "That\'s the one I knew," {who} says. "I wondered whether they\'d taken that with them or left it here." {n} says, "Stop it," and {who} doesn\'t. You eat. When you look up {n} is watching {who} the way you watch a gauge come back into the green.',
@@ -4152,24 +4150,14 @@ const PEOPLE_LINES = {
     'true.result.0': 'You say it plainly: {hope}. The table goes quiet. Then {who} laughs, once, and wipes their eyes with the back of the hand that holds the spoon. "They never said that here," {who} says. "Not once. Not to me." {n} says, "You\'d have talked me out of it." "I would," {who} says. "I\'d have been wrong." They put the pot in the middle of the table and nobody serves for a minute.',
     'true.result.1': '"{hope}," {who} repeats, and looks at {n}, who is looking at the tap. "Since when?" "Since Pallas." "You could have written that." "I wrote the food." {who} turns to you. "They write the food. Every letter. The food." It isn\'t a complaint. {who} gets up and gets the good cups down, the ones that don\'t match, and pours.',
     'true.memory': 'You told my {rel} what I want, because I couldn\'t.',
-    'parting.0': 'At the hatch {who} puts a bag in your hands, heavy, warm at the bottom, and doesn\'t say what\'s in it. "For the galley," {who} says. "Not for the captain. For the galley." On the walk back to the lock {n} doesn\'t talk until the dock lights, and says "Thank you" to the lights, and goes up the ramp ahead of you.',
-    'parting.1': '{who} walks you to the lift and no further, and gives {n} a long look and you a short one, and says, "Next time, longer." The bag they\'ve given you has bread in it and something in a jar. "They liked you," {n} says, halfway down the dock. A good way after that: "They don\'t, usually."',
   },
-  'family:room-offer': {  // at the end of a visit home where the hand told the family the true thing (room.js roomOffer): the relation offers a bed for when the ship is in
-    title: 'A Bed in {home}',
-    'text.0': 'At the hatch {who} puts a hand flat on your sleeve, which is as near as {who} comes to asking. "There\'s a bed here," {who} says. "It\'s made up. Not for the ship, and not for the captain. For you, when she\'s in at {home}. Nobody will ask what the berth is paying." {n} is looking at the floor, and is pleased.',
-    'text.1': '{who} stops you at the lift with the bag still in one hand. "There\'s a room off the back," {who} says, "that nobody sleeps in. I\'d like it slept in. When your ship is at {home} you come here, and you don\'t have to say why." {n} says nothing at all, and has already said yes on {n}\'s own behalf.',
+  'family:room-offer': {  // at the end of a visit home where the hand told the family the true thing (room.js roomOffer): the choices, under each place's own offer of a bed (#885)
     'c0.label': 'Say yes',
-    'c0.result': '{who} writes nothing down. "The door with the bad latch," {who} says. "It sticks in the damp. Lift and push." That is the whole of the arrangement. {n} will have told the galley by morning.',
     'c0.memory': 'You took the bed my {rel} offered.',
     'c1.label': 'Thank them, and say no',
     'c1.result': '"Then it stays made," {who} says, kindly, "and nobody sleeps in it." {n} lets out a breath on the way down and says nothing about it all the way back to the lock.',
   },
-  'family:room-return': {  // a landing at the port of the room (room.js roomReturn): the scene knows the gap and the count of stays, by band and not by a draw
-    title: 'The Room in {home}',
-    'text.few': 'The door sticks the way it did, and {who} has not moved a thing in {gap}. The bed is made. The kettle is on before you have your coat off, and has the look of having been on since you left.',
-    'text.month': 'It has been {gap}. The latch sticks worse in the damp, and {who} has put a rag in the gap under the door against it. There is dust on the sill and none on the bed. "We kept it aired," {who} says, and it comes out sounding like an apology.',
-    'text.long': 'It has been {gap}, and {who} stands in the doorway a moment before saying anything. The room is the same. That is the odd thing, how much it is the same: the blanket, the jar on the shelf, the latch. "I wondered," {who} says. "I told myself you\'d found a better bed."',
+  'family:room-return': {  // a landing at the port of the room (room.js roomReturn): the count of stays, the things left and the letter, under each place's own return by the gap (#885)
     first: 'It is the first time you have slept in it.',
     'been.one': 'You have slept in it once before.',
     'been.many': 'You have slept in it {count} times before.',

@@ -178,11 +178,13 @@ test('the talk scenes are rows with a field for every line, and each plays in a 
   });
   assert.equal(r.ids.length, 413, 'with the scenes by place of Lisbon, Lagos, Rotterdam, Chittagong, Ceres (#871), Hermes Foundry, Luna, Mars, Phobos Yards, the rest of the Belt and the outer moons (#885): with by place (#871), the talk scenes, Ines\'s, Tomas\'s and Cato\'s own three sittings and their talk after them, the talk going on, the visit home, the room that is theirs (its offer and its return), the errand, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
   assert.ok(r.shape, 'each is lines, in a burn (the errand at a port), in js/family.js');
+  const SHARED = { 'family:visit-home': 'kind.label', 'family:room-offer': 'c0.label', 'family:room-return': 'c0.label' };
   for (const id of r.ids) {
     await select(id);
     const line = id === 'family:holiday' ? 'c0.label' : id.endsWith('-story') ? 'hope' : 'title';  // the holidays take their titles from their names; a module's story shows as the hope in the visit's choice (#871)
     const paths = await page.locator('#detail textarea[data-path]').evaluateAll(els => els.map(e => e.dataset.path));
     if (paths.includes(`part.${line}`)) await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
+    else if (SHARED[id]) await page.fill(`textarea[data-path="part.${SHARED[id]}"]`, `Typed ${id}.`);  // the shared visit and room under every place (#885): a choice, so the rest of the rows still read their own
     else for (const pth of paths) await page.fill(`textarea[data-path="${pth}"]`, `Typed ${id}.`);  // a circumstance's place lines, with no title of their own (#871): one of them shows
     const f = await play();
     const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));

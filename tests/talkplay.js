@@ -11,7 +11,7 @@ const playTalk = () => {
   while (G.dialog) finishEvent();
   let st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000;
   st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
-  const mk = (first, over = {}) => { const p = makePerson('mars'); Object.assign(p, { first, last: 'Vale', home: 'Titan',  /* a Titan hand, with Titan's story (#885) */ traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [], role: 'engineer', skill: 1 }, over); delete p.story; registerPerson(p); return p; };
+  const mk = (first, over = {}) => { const p = makePerson('belt'); Object.assign(p, { first, last: 'Vale', home: 'Titan',  /* a Titan hand, with Titan's story (#885) */ traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [], role: 'engineer', skill: 1 }, over); delete p.story; registerPerson(p); return p; };
   const base = mk('Sam'); st.crew = [base.id];
   const snap = JSON.stringify(G.state), PID = base.id;
   const seen = (p, s) => ({ op: p.opinion, mem: p.memories.slice(-1)[0] || null, until: p.mood ? p.mood.until - s.day : null, beat: p.story ? p.story.beat : null, promised: p.story ? !!p.story.promised : null, loyal: !!p.loyal, credits: s.credits, missions: s.missions.map(m => m.title), pressed: p.pressed || null, log: s.home ? s.home.log.map(l => l.text) : null });
@@ -93,15 +93,12 @@ const playTalk = () => {
   play('sit:3:crew:visit', p => { const s = storyOf(p); s.beat = 3; s.favor = 'visit'; p.opinion = 3; }, p => sitBeat(p, true));
   play('sit:3:crew:debt', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 15000; p.opinion = 3; }, p => sitBeat(p, true));
   play('sit:3:passenger', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 15000; p.opinion = 3; }, p => sitBeat(p, false), 6);
-  // the visit home, the shared one the cast have (#885): the lock, then the table (the first choice of the lock leads straight on: no line)
-  const castAs = (k, first) => p => { Object.assign(p, { cast: k, first, culture: CAST[k].culture, home: CAST[k].home }); storyOf(p); };
-  play('visit', castAs('ines', 'Ines'), p => visitEvent(p));
-  play('visit-home:earth', castAs('ines', 'Ines'), p => visitHome(p));  // only the cast's own stories have the shared visit, and they are all from Earth
-  // the room that is theirs: the offer at the end of the visit, and the return by the gap and the count of stays
-  play('room-offer', castAs('ines', 'Ines'), p => roomOffer(p), 2);
-  for (const [name, gap, visits] of [['few', 5, 0], ['few:one', 5, 1], ['few:two', 5, 2], ['month', 40, 1], ['month:two', 40, 2], ['long', 200, 3]]) play(`room-return:${name}`, (p, s) => { castAs('ines', 'Ines')(p); s.room = { planet: p.home, pid: p.id, since: s.day - gap - 10, last: s.day - gap, visits }; }, p => roomReturn(p), 2);
+  // the visit home: the lock (the first choice of it leads straight on: no line); the table is each place's, below
+  play('visit', () => {}, p => visitEvent(p));
+  // the room that is theirs: the return by the count of stays (the offer and the gap are each place's, below)
+  for (const [name, gap, visits] of [['few', 5, 0], ['few:one', 5, 1], ['few:two', 5, 2], ['month', 40, 1], ['month:two', 40, 2], ['long', 200, 3]]) play(`room-return:${name}`, (p, s) => { s.room = { planet: p.home, pid: p.id, since: s.day - gap - 10, last: s.day - gap, visits }; }, p => roomReturn(p), 2);
   // the Port page's card at the room reads the names of what is left and the letter (room.js roomCardHtml): played here as its words, since the card needs a hired game
-  play('room-card', castAs('ines', 'Ines'), p => { const say = familySay('room-return'), v = visitVars(p); return { title: 'Your room', text: [...ROOM_THINGS.map(k => say(`thing.${k}.name`, v)), say('letter.card', v)].join(' | '), choices: [] }; }, 1);
+  play('room-card', () => {}, p => { const say = familySay('room-return'), v = visitVars(p); return { title: 'Your room', text: [...ROOM_THINGS.map(k => say(`thing.${k}.name`, v)), say('letter.card', v)].join(' | '), choices: [] }; }, 1);
   // the generated crew by place and circumstance (#871): each module's three sittings and its story read at the family's table, and each city's visit and room
   for (const [city, o] of Object.entries(ORIGINS)) {
     for (const kind of o.kinds) {
