@@ -145,7 +145,7 @@
  },
  {
   "key": "touch:4",
-  "text": "\"Sam put up a picture of their grandmother Olga by the coffee maker\""
+  "text": "\"Sam put up a picture of their mother Sana by the coffee maker\""
  },
  {
   "key": "touch:5",
@@ -213,7 +213,7 @@
  },
  {
   "key": "chatter:all",
-  "text": "[\"Sam has been quiet all watch.\",\"Sam is rereading an old message from their father Viktor.\",\"Ana is humming. Ana never hums.\",\"Rivet is asleep on the reactor housing again.\",\"Rivet knocked a wrench off the workbench, on purpose, while making eye contact.\",\"Somebody has been feeding Rivet from the good rations.\",\"Sam hung a pennant in the galley, and it makes the ship feel more like home.\"]"
+  "text": "[\"Sam has been quiet all watch.\",\"Sam is rereading an old message from their mother Mei.\",\"Ana is humming. Ana never hums.\",\"Rivet is asleep on the reactor housing again.\",\"Rivet knocked a wrench off the workbench, on purpose, while making eye contact.\",\"Somebody has been feeding Rivet from the good rations.\",\"Sam hung a pennant in the galley, and it makes the ship feel more like home.\"]"
  },
  {
   "key": "chatter:pool",
@@ -229,7 +229,7 @@
  },
  {
   "key": "favor:done",
-  "text": "[[\"Sam goes ashore to see their daughter Noor, and comes back the next morning with red eyes and a bag of home cooking for everyone.\"],true,[\"Sam Vale will follow the Second Chance anywhere now.\"],\"9 Jun 2214: The captain took me home to see my daughter.\"]"
+  "text": "[[\"Sam goes ashore to see their mother Felix, and comes back the next morning with red eyes and a bag of home cooking for everyone.\"],true,[\"Sam Vale will follow the Second Chance anywhere now.\"],\"9 Jun 2214: The captain took me home to see my mother.\"]"
  },
  {
   "key": "rename",
@@ -237,11 +237,11 @@
  },
  {
   "key": "letter:note",
-  "text": "[\"A message for Sam at Ceres Station: their sister Tariq won a little money on the ring-ball pool, and is buying everyone a round.\"]"
+  "text": "[\"A message for Sam at Ceres Station: their mother Anton won a little money on the ring-ball pool, and is buying everyone a round.\"]"
  },
  {
   "key": "letter:visit",
-  "text": "[[\"A message for Sam at Ceres Station: their daughter Ingrid writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back.\"],{\"good\":true,\"text\":\"their daughter Ingrid writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back\"},\"high\",true,[]]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Viktor writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back.\"],{\"good\":true,\"text\":\"their mother Viktor writes that a plate is laid at every meal now for the shipmate who came up, and asks when the ship is back\"},\"high\",true,[]]"
  },
  {
   "key": "birthday:gate",

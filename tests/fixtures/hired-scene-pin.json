@@ -1627,17 +1627,17 @@
   "id": "cast:ruben:mid1",
   "i": 0,
   "label": "Act on the tip",
-  "result": "He tells you, and he's right to be careful: Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. He watches your face while you take it in, fiddling with the lid of the thermos. \"Not a word,\" he says, delighted, \"about where you heard it.\"",
+  "result": "He tells you, and he's right to be careful: A shipping delay has stranded a convoy of Luxury Goods on the way to Ganymede, and buyers are getting anxious. He watches your face while you take it in, fiddling with the lid of the thermos. \"Not a word,\" he says, delighted, \"about where you heard it.\"",
   "changes": [
    "s.inbox.0.n: 1 -> 2",
    "s.inbox.0.pid: p2 -> undefined",
    "s.inbox.0.tag: undefined -> market",
-   "s.inbox.0.text: A message for Fen at Earth: the section where their mother Wim lives is on emergency rationing. -> Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. (Psyche)",
+   "s.inbox.0.text: A message for Fen at Earth: their mother Tuk is sick, and the clinic on Ironheart wants money up front. -> A shipping delay has stranded a convoy of Luxury Goods on the way to Ganymede, and buyers are getting anxious. (Jupiter)",
    "s.inbox.0.via: message -> station",
    "s.inbox.1.day: undefined -> 1",
    "s.inbox.1.n: undefined -> 1",
    "s.inbox.1.pid: undefined -> p2",
-   "s.inbox.1.text: undefined -> A message for Fen at Earth: the section where their mother Wim lives is on emergency rationing.",
+   "s.inbox.1.text: undefined -> A message for Fen at Earth: their mother Tuk is sick, and the clinic on Ironheart wants money up front.",
    "s.inbox.1.via: undefined -> message",
    "s.inboxN: 1 -> 2",
    "s.people.c:ruben.liftedAt: undefined -> 1",
@@ -1646,10 +1646,10 @@
    "s.people.c:ruben.opinion: 0 -> 2",
    "s.people.c:ruben.xp.slicer: 110 -> 112",
    "s.rumors: [] -> undefined",
-   "s.rumors.0.cid: undefined -> industrial",
-   "s.rumors.0.mult: undefined -> 0.6754059599363245",
-   "s.rumors.0.planet: undefined -> Ironheart",
-   "s.rumors.0.text: undefined -> Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. (Psyche)",
+   "s.rumors.0.cid: undefined -> luxury",
+   "s.rumors.0.mult: undefined -> 1.4066681330092252",
+   "s.rumors.0.planet: undefined -> Ganymede",
+   "s.rumors.0.text: undefined -> A shipping delay has stranded a convoy of Luxury Goods on the way to Ganymede, and buyers are getting anxious. (Jupiter)",
    "s.rumors.0.until: undefined -> 23"
   ],
   "next": null,
@@ -5180,18 +5180,18 @@
   "id": "cast:ruben:bar1",
   "i": 0,
   "label": "Buy a round (300 cr)",
-  "result": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
+  "result": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A shipping delay has stranded a convoy of Luxury Goods on the way to Ganymede, and buyers are getting anxious. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
   "changes": [
    "s.credits: 50000 -> 49700",
    "s.inbox.0.n: 1 -> 2",
    "s.inbox.0.pid: p2 -> undefined",
    "s.inbox.0.tag: undefined -> market",
-   "s.inbox.0.text: A message for Fen at Earth: the section where their mother Wim lives is on emergency rationing. -> Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. (Psyche)",
+   "s.inbox.0.text: A message for Fen at Earth: their mother Tuk is sick, and the clinic on Ironheart wants money up front. -> A shipping delay has stranded a convoy of Luxury Goods on the way to Ganymede, and buyers are getting anxious. (Jupiter)",
    "s.inbox.0.via: message -> station",
    "s.inbox.1.day: undefined -> 1",
    "s.inbox.1.n: undefined -> 1",
    "s.inbox.1.pid: undefined -> p2",
-   "s.inbox.1.text: undefined -> A message for Fen at Earth: the section where their mother Wim lives is on emergency rationing.",
+   "s.inbox.1.text: undefined -> A message for Fen at Earth: their mother Tuk is sick, and the clinic on Ironheart wants money up front.",
    "s.inbox.1.via: undefined -> message",
    "s.inboxN: 1 -> 2",
    "s.people.c:ruben.liftedAt: undefined -> 1",
@@ -5200,10 +5200,10 @@
    "s.people.c:ruben.opinion: 0 -> 2",
    "s.people.c:ruben.xp.slicer: 110 -> 112",
    "s.rumors: [] -> undefined",
-   "s.rumors.0.cid: undefined -> industrial",
-   "s.rumors.0.mult: undefined -> 0.6754059599363245",
-   "s.rumors.0.planet: undefined -> Ironheart",
-   "s.rumors.0.text: undefined -> Three haulers just unloaded Machine Parts on Ironheart. Prices there are collapsing. (Psyche)",
+   "s.rumors.0.cid: undefined -> luxury",
+   "s.rumors.0.mult: undefined -> 1.4066681330092252",
+   "s.rumors.0.planet: undefined -> Ganymede",
+   "s.rumors.0.text: undefined -> A shipping delay has stranded a convoy of Luxury Goods on the way to Ganymede, and buyers are getting anxious. (Jupiter)",
    "s.rumors.0.until: undefined -> 23"
   ],
   "next": null,
@@ -7393,17 +7393,17 @@
   "id": "hired:crew-cover",
   "i": 0,
   "label": "Cover for them",
-  "result": "You cover it, and it's a quiet hour. When they come back, Arjun looks at you across the galley, and doesn't mention it. (+1 experience at the gunner post.)",
+  "result": "You cover it, and it's a quiet hour. When they come back, Aiko looks at you across the galley, and doesn't mention it. (+1 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 13",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Covered an hour of Arjun's watch.",
-   "s.people.p7.liftedAt: undefined -> 1",
-   "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You covered an hour of my watch and said nothing.",
-   "s.people.p7.opinion: 0 -> 2",
+   "s.journal.0.text: undefined -> Covered an hour of Aiko's watch.",
+   "s.people.p6.liftedAt: undefined -> 1",
+   "s.people.p6.memories: [] -> undefined",
+   "s.people.p6.memories.0: undefined -> 9 Jun 2214: You covered an hour of my watch and said nothing.",
+   "s.people.p6.opinion: 0 -> 2",
    "s.qualities.due:h-cover-back: undefined -> 11",
-   "s.threads.cover: undefined -> p7"
+   "s.threads.cover: undefined -> p6"
   ],
   "next": null,
   "gate": {
@@ -7433,16 +7433,16 @@
   "id": "hired:crew-cover",
   "i": 1,
   "label": "Not tonight",
-  "result": "Arjun says it's fine. For a day or two Arjun takes the other end of the galley table.",
+  "result": "Aiko says it's fine. For a day or two Aiko takes the other end of the galley table.",
   "changes": [
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Wouldn't cover for Arjun.",
-   "s.people.p7.liftedAt: undefined -> 1",
-   "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You wouldn't cover an hour of my watch.",
-   "s.people.p7.opinion: 0 -> -1",
+   "s.journal.0.text: undefined -> Wouldn't cover for Aiko.",
+   "s.people.p6.liftedAt: undefined -> 1",
+   "s.people.p6.memories: [] -> undefined",
+   "s.people.p6.memories.0: undefined -> 9 Jun 2214: You wouldn't cover an hour of my watch.",
+   "s.people.p6.opinion: 0 -> -1",
    "s.qualities.due:h-cover-cold: undefined -> 6",
-   "s.threads.cover: undefined -> p7"
+   "s.threads.cover: undefined -> p6"
   ],
   "next": null,
   "gate": {
@@ -7472,17 +7472,17 @@
   "id": "hired:crew-needle",
   "i": 0,
   "label": "Show them the work",
-  "result": "You take them through a watch at your post, slowly and without a word of argument, and by the end they're a good deal quieter. \"All right,\" Arjun says. \"Fair.\" (+2 experience at the gunner post.)",
+  "result": "You take them through a watch at your post, slowly and without a word of argument, and by the end they're a good deal quieter. \"All right,\" Aiko says. \"Fair.\" (+2 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 14",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Showed Arjun my post, and they came round.",
-   "s.people.p7.liftedAt: undefined -> 1",
-   "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You showed me what the post is really like.",
-   "s.people.p7.opinion: 0 -> 1",
+   "s.journal.0.text: undefined -> Showed Aiko my post, and they came round.",
+   "s.people.p6.liftedAt: undefined -> 1",
+   "s.people.p6.memories: [] -> undefined",
+   "s.people.p6.memories.0: undefined -> 9 Jun 2214: You showed me what the post is really like.",
+   "s.people.p6.opinion: 0 -> 1",
    "s.qualities.due:h-needle-ally: undefined -> 9",
-   "s.threads.needle: undefined -> p7"
+   "s.threads.needle: undefined -> p6"
   ],
   "next": null,
   "gate": {
@@ -7512,14 +7512,14 @@
   "id": "hired:crew-needle",
   "i": 1,
   "label": "[Gunner 2] Take them through the post, step by step",
-  "result": "You take Arjun through a full watch at your post and say each step before you do it. By the end they've stopped saying soft. (+1 experience at the gunner post.)",
+  "result": "You take Aiko through a full watch at your post and say each step before you do it. By the end they've stopped saying soft. (+1 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 13",
-   "s.people.p7.liftedAt: undefined -> 1",
-   "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You took me through your post, one step at a time.",
-   "s.people.p7.opinion: 0 -> 2",
-   "s.threads.needle: undefined -> p7"
+   "s.people.p6.liftedAt: undefined -> 1",
+   "s.people.p6.memories: [] -> undefined",
+   "s.people.p6.memories.0: undefined -> 9 Jun 2214: You took me through your post, one step at a time.",
+   "s.people.p6.opinion: 0 -> 2",
+   "s.threads.needle: undefined -> p6"
   ],
   "next": null,
   "gate": {
@@ -7551,8 +7551,8 @@
   "label": "Let it go",
   "result": "You let it go, and finish your tea, and the table moves on.",
   "changes": [
-   "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You let a needling go."
+   "s.people.p6.memories: [] -> undefined",
+   "s.people.p6.memories.0: undefined -> 9 Jun 2214: You let a needling go."
   ],
   "next": null,
   "gate": {
@@ -7582,17 +7582,17 @@
   "id": "hired:crew-cards",
   "i": 0,
   "label": "Sit in (500 cr)",
-  "result": "The cards fall your way for once, and you take the pot, five hundred credits of other people's money, and Arjun slaps the table and demands a rematch. You win 500 cr net.",
+  "result": "The cards fall your way for once, and you take the pot, five hundred credits of other people's money, and Aiko slaps the table and demands a rematch. You win 500 cr net.",
   "changes": [
    "s.credits: 50000 -> 51000",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Played cards with Arjun. They want a rematch.",
-   "s.people.p7.liftedAt: undefined -> 1",
-   "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You took the pot off me fair and square.",
-   "s.people.p7.opinion: 0 -> 1",
+   "s.journal.0.text: undefined -> Played cards with Aiko. They want a rematch.",
+   "s.people.p6.liftedAt: undefined -> 1",
+   "s.people.p6.memories: [] -> undefined",
+   "s.people.p6.memories.0: undefined -> 9 Jun 2214: You took the pot off me fair and square.",
+   "s.people.p6.opinion: 0 -> 1",
    "s.qualities.due:h-cards-rematch: undefined -> 8",
-   "s.threads.cards: undefined -> p7"
+   "s.threads.cards: undefined -> p6"
   ],
   "next": null,
   "gate": {
@@ -7624,8 +7624,8 @@
   "label": "Watch from the side",
   "result": "You watch from the end of the bench, with your tea, and enjoy the argument more than the cards.",
   "changes": [
-   "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You watched the card game and kept your credits."
+   "s.people.p6.memories: [] -> undefined",
+   "s.people.p6.memories.0: undefined -> 9 Jun 2214: You watched the card game and kept your credits."
   ],
   "next": null,
   "gate": {
@@ -8499,17 +8499,17 @@
   "id": "hired:money-loan",
   "i": 0,
   "label": "Lend a thousand",
-  "result": "You lend it, no questions, and Arjun takes it with both hands and can't find the words. It's a thousand credits you may or may not see again.",
+  "result": "You lend it, no questions, and Aiko takes it with both hands and can't find the words. It's a thousand credits you may or may not see again.",
   "changes": [
    "s.credits: 50000 -> 49000",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Lent Arjun a thousand credits.",
-   "s.people.p7.liftedAt: undefined -> 1",
-   "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You lent me a thousand credits when I needed it.",
-   "s.people.p7.opinion: 0 -> 3",
+   "s.journal.0.text: undefined -> Lent Aiko a thousand credits.",
+   "s.people.p6.liftedAt: undefined -> 1",
+   "s.people.p6.memories: [] -> undefined",
+   "s.people.p6.memories.0: undefined -> 9 Jun 2214: You lent me a thousand credits when I needed it.",
+   "s.people.p6.opinion: 0 -> 3",
    "s.qualities.due:h-loan-repaid: undefined -> 13",
-   "s.threads.loan: undefined -> p7"
+   "s.threads.loan: undefined -> p6"
   ],
   "next": null,
   "gate": {
@@ -8539,17 +8539,17 @@
   "id": "hired:money-loan",
   "i": 1,
   "label": "Lend five hundred",
-  "result": "\"It's what I can spare,\" you say, and Arjun says that's fine, that it's more than anyone else offered.",
+  "result": "\"It's what I can spare,\" you say, and Aiko says that's fine, that it's more than anyone else offered.",
   "changes": [
    "s.credits: 50000 -> 49500",
    "s.journal.0.day: undefined -> 1",
-   "s.journal.0.text: undefined -> Lent Arjun five hundred credits.",
-   "s.people.p7.liftedAt: undefined -> 1",
-   "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You lent me five hundred credits, which was what you could spare.",
-   "s.people.p7.opinion: 0 -> 1",
+   "s.journal.0.text: undefined -> Lent Aiko five hundred credits.",
+   "s.people.p6.liftedAt: undefined -> 1",
+   "s.people.p6.memories: [] -> undefined",
+   "s.people.p6.memories.0: undefined -> 9 Jun 2214: You lent me five hundred credits, which was what you could spare.",
+   "s.people.p6.opinion: 0 -> 1",
    "s.qualities.due:h-loan-small: undefined -> 13",
-   "s.threads.loan: undefined -> p7"
+   "s.threads.loan: undefined -> p6"
   ],
   "next": null,
   "gate": {
@@ -8579,12 +8579,12 @@
   "id": "hired:money-loan",
   "i": 2,
   "label": "Say no",
-  "result": "You say you can't, and it's true, or true enough. Arjun doesn't ask again.",
+  "result": "You say you can't, and it's true, or true enough. Aiko doesn't ask again.",
   "changes": [
-   "s.people.p7.liftedAt: undefined -> 1",
-   "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You wouldn't lend me anything.",
-   "s.people.p7.opinion: 0 -> -1"
+   "s.people.p6.liftedAt: undefined -> 1",
+   "s.people.p6.memories: [] -> undefined",
+   "s.people.p6.memories.0: undefined -> 9 Jun 2214: You wouldn't lend me anything.",
+   "s.people.p6.opinion: 0 -> -1"
   ],
   "next": null,
   "gate": {

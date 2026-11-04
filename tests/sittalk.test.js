@@ -107,7 +107,7 @@ test('after the first exchange the talk goes on to a second subject, never the s
   const r = await ev(() => {
     const { st, p } = setup(), out = {}, subjects = new Set();
     p.traits = ['kind'];
-    for (let i = 0; i < 12; i++) {
+    for (let i = 0; i < 20; i++) {  // enough sittings for the five subjects to come up on these dice
       G.nextEvent = null; const prev = p.turn; take(sitBeat(p, true), /Stay a while/);
       const on = G.nextEvent; if (!on || !on.title.startsWith('With ') || on.choices.length !== 2 || on.text.length < 80) { out.bad = on && [on.title, on.text]; break; }
       if (p.turn === prev) out.repeated = true;

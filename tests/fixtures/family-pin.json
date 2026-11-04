@@ -1,339 +1,323 @@
 [
  {
   "key": "story:0",
-  "text": "[\"a sister who went first and wrote home about it\",\"to find out what happened to their father's old ship\",\"daughter\"]"
+  "text": "[\"a winter in the polders when the fuel ran out, and a recruitment debt that paid for the next one\",\"a lease back inside the barrier for the family, before another winter on the farm\",\"grandfather\",\"Dru\",\"visit\",18000]"
  },
  {
   "key": "story:1",
-  "text": "[\"a mine closure that emptied half the town\",\"to finish the engineering license they started years ago\",\"brother\"]"
+  "text": "[\"a rent that rose every year by what the station's owner said, and no vote on any of it\",\"a co-op berth on Ceres, or at least a lease there that doesn't rise every year\",\"father\",\"Zara\",\"visit\",19000]"
  },
  {
   "key": "story:2",
-  "text": "[\"wanting to see a sky that wasn't painted on a dome\",\"to find out what happened to their father's old ship\",\"old crew chief\"]"
+  "text": "[\"a third two-year contract their parents signed, and wanting to stop the next two years before they started\",\"to live somewhere their family chose, not where a contract put them\",\"father\",\"Diego\",\"visit\",23000]"
  },
  {
   "key": "story:3",
-  "text": "[\"a sister who went first and wrote home about it\",\"to finish the engineering license they started years ago\",\"mother\"]"
+  "text": "[\"the morning queue at the yard gate, and the days it took nobody\",\"a licence of any kind, or the family out of Luna's dust\",\"grandmother\",\"Mika\",\"visit\",19000]"
  },
  {
   "key": "story:4",
-  "text": "[\"a marriage that ended badly\",\"to finish the engineering license they started years ago\",\"daughter\"]"
+  "text": "[\"an air bill that rose every year, and council meetings that never ended\",\"the family's air account on Mars paid a year ahead, or a seat on the dome's council\",\"father\",\"Felix\",\"visit\",8000]"
  },
  {
   "key": "story:5",
-  "text": "[\"a mine closure that emptied half the town\",\"to finish the engineering license they started years ago\",\"grandmother\"]"
+  "text": "[\"an apprenticeship that was theirs by birth, and wanting to find out if they were a shipwright or only a shipwright's child\",\"a slip of their own at Phobos Yards, or a hull built somewhere else that's as good as theirs\",\"grandfather\",\"Nadia\",\"visit\",8000]"
  },
  {
   "key": "story:6",
-  "text": "[\"a debt to the wrong people\",\"to see one of Earth's oceans, just once\",\"old crew chief\"]"
+  "text": "[\"a claim that gave out, and a family account with the co-op that day wages don't pay down\",\"the new claim to come through, or to clear the family's account and go home to Ironheart owing nothing\",\"mother\",\"Kez\",\"visit\",13000]"
  },
  {
   "key": "story:7",
-  "text": "[\"a marriage that ended badly\",\"to finish the engineering license they started years ago\",\"daughter\"]"
+  "text": "[\"a greenhouse that goes to one child, and their not being the one\",\"a greenhouse of their own somewhere, or to go home to Juno with something the Commons can't grow\",\"grandmother\",\"Felix\",\"visit\",22000]"
  },
  {
   "key": "story:8",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to open a noodle stand somewhere with real gravity\",\"grandmother\"]"
+  "text": "[\"the trust's inspectors coming round twice a year, and knowing that one year they would find the taps\",\"a flat in the lit half of Eros, on the books, or a home that isn't anyone's secret\",\"father\",\"Fatima\",\"visit\",24000]"
  },
  {
   "key": "story:9",
-  "text": "[\"a sister who went first and wrote home about it\",\"to be somewhere long enough to grow something\",\"brother\"]"
+  "text": "[\"the outpost needing what only money from outside can buy, and someone in every family going to earn it\",\"to send home enough for the next supply contract, or to see one place where the sky isn't dark\",\"mother\",\"Esa\",\"visit\",23000]"
  },
  {
   "key": "story:10",
-  "text": "[\"an accident at work they still blame themselves for\",\"to finish the engineering license they started years ago\",\"father\"]"
+  "text": "[\"being paid in cash for what the guild pays its members properly, and wanting a record of their own\",\"a proper rating with an agency record, or a guild card on Ceres\",\"father\",\"Hector\",\"visit\",20000]"
  },
  {
   "key": "story:11",
-  "text": "[\"a mine closure that emptied half the town\",\"to finish the engineering license they started years ago\",\"son\"]"
+  "text": "[\"the company offering them a post, and wanting to know whether anyone else would\",\"a post they got on their own, or to go back to Pallas Refinery as staff on their own terms\",\"mother\",\"Grace\",\"visit\",20000]"
  },
  {
   "key": "story:12",
-  "text": "[\"a debt to the wrong people\",\"to be somewhere long enough to grow something\",\"mother\"]"
+  "text": "[\"the death benefit ending in a few years, and the lease on the family's tunnel with it\",\"somewhere for the family to live when the lease in the Hollows ends, or work that pays enough to keep the tunnel\",\"mother\",\"Kez\",\"visit\",11000]"
  },
  {
   "key": "story:13",
-  "text": "[\"the rationing, and being tired of being thirsty\",\"to be somewhere long enough to grow something\",\"grandmother\"]"
+  "text": "[\"wanting to work somewhere they could say where they were from\",\"a berth where nobody asks, or to go home to the Rook and keep the dock when their family stops\",\"aunt\",\"Hector\",\"visit\",24000]"
  },
  {
   "key": "story:14",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to find out what happened to their father's old ship\",\"old crew chief\"]"
+  "text": "[\"a share of a salvage being good money in a good year, and there not being many good years\",\"a family hull of their own in the Boneyard, or a berth on a ship that pays a wage\",\"mother\",\"Grace\",\"visit\",21000]"
  },
  {
   "key": "story:15",
-  "text": "[\"the rationing, and being tired of being thirsty\",\"to see one of Earth's oceans, just once\",\"grandmother\"]"
+  "text": "[\"a bad harvest paying nothing, and the bunkhouses being for the season, not for living\",\"a lease on Ganymede, which hands almost never get, or a job that pays by the month\",\"mother\",\"Ruo\",\"visit\",9000]"
  },
  {
   "key": "story:16",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to open a noodle stand somewhere with real gravity\",\"best friend\"]"
+  "text": "[\"the Authority offering them a post, and wanting to know what it was like to work for someone else\",\"to see the shortage at Ceres for themselves, or a post somewhere they don't have to wear the pin\",\"mother\",\"Ingrid\",\"visit\",23000]"
  },
  {
   "key": "story:17",
-  "text": "[\"an accident at work they still blame themselves for\",\"a berth on a ship of their own someday\",\"old crew chief\"]"
+  "text": "[\"the support crews being a cost on Titan, and the agency's contract never going up\",\"work where the person who keeps it running gets counted, or a seat at the other end of the long table on Titan\",\"father\",\"Priya\",\"visit\",21000]"
  },
  {
   "key": "story:18",
-  "text": "[\"wanting to see a sky that wasn't painted on a dome\",\"to finish the engineering license they started years ago\",\"son\"]"
+  "text": "[\"there being nobody their age on the surface, and the contract only having room for the families on it\",\"to find out what it's like where it's loud, or to go home to the quiet on Enceladus and keep the dock\",\"father\",\"Dru\",\"visit\",14000]"
  },
  {
   "key": "story:19",
-  "text": "[\"a sister who went first and wrote home about it\",\"to get their family off Europa\",\"grandmother\"]"
+  "text": "[\"the arrears on the flat, and a yard agency on the corner that paid in advance\",\"to pay off the family's arrears in Yaba, all of it, so the landlord stops coming round\",\"mother\",\"Olga\",\"visit\",22000]"
  },
  {
   "key": "story:20",
-  "text": "[\"an accident at work they still blame themselves for\",\"to be somewhere long enough to grow something\",\"grandmother\"]"
+  "text": "[\"a buy-in nobody in the family could lend, and an owner's ship that was hiring\",\"a member's share on the hull their parents crewed, at Kettle's on Ceres\",\"aunt\",\"Kwame\",\"visit\",22000]"
  },
  {
   "key": "story:21",
-  "text": "[\"a debt to the wrong people\",\"to finish the engineering license they started years ago\",\"mother\"]"
+  "text": "[\"a career on the fins that was waiting for them, and wanting to choose one\",\"to come back to Hermes Foundry and run a fin crew of their own, after they've seen a sky that isn't the Sun's\",\"grandmother\",\"Yuri\",\"visit\",14000]"
  },
  {
   "key": "story:22",
-  "text": "[\"a debt to the wrong people\",\"a berth on a ship of their own someday\",\"best friend\"]"
+  "text": "[\"a training debt to the yard's school that grew faster than a rigger's pay\",\"the family's rigging licence on Luna paid off, so it belongs to them and not the yard\",\"mother\",\"Tariq\",\"visit\",10000]"
  },
  {
   "key": "story:23",
-  "text": "[\"a marriage that ended badly\",\"a berth on a ship of their own someday\",\"daughter\"]"
+  "text": "[\"a rationed winter when the share board in the square went down twice\",\"a full air share for the family at the edge, or a lake there of its own\",\"mother\",\"Chen\",\"visit\",20000]"
  },
  {
   "key": "story:24",
-  "text": "[\"a scholarship that fell through at the last minute\",\"a berth on a ship of their own someday\",\"brother\"]"
+  "text": "[\"an apprenticeship that was theirs by birth, and wanting to find out if they were a shipwright or only a shipwright's child\",\"a slip of their own at Phobos Yards, or a hull built somewhere else that's as good as theirs\",\"grandfather\",\"Dru\",\"visit\",23000]"
  },
  {
   "key": "story:25",
-  "text": "[\"a marriage that ended badly\",\"to open a noodle stand somewhere with real gravity\",\"grandmother\"]"
+  "text": "[\"a claim that keeps the family but not every child in it\",\"a claim of their own, or a share in a ship that runs on the same rules as the hall\",\"father\",\"Dalia\",\"visit\",12000]"
  },
  {
   "key": "story:26",
-  "text": "[\"the rationing, and being tired of being thirsty\",\"to find out what happened to their father's old ship\",\"mother\"]"
+  "text": "[\"a share the family is waiting for that isn't coming up, and a wage that won't buy it if it does\",\"the family's share on Juno, or a place where nobody asks how long they've been there\",\"father\",\"Kwame\",\"visit\",22000]"
  },
  {
   "key": "story:27",
-  "text": "[\"an accident at work they still blame themselves for\",\"to be somewhere long enough to grow something\",\"son\"]"
+  "text": "[\"the family selling another piece every time the service charge went up, and wanting to send money home before they sold the last of it\",\"to keep the flat on Eros in the family, or to buy back something that was sold\",\"grandmother\",\"Vesna\",\"visit\",10000]"
  },
  {
   "key": "story:28",
-  "text": "[\"a mine closure that emptied half the town\",\"to be somewhere long enough to grow something\",\"father\"]"
+  "text": "[\"there being no berth for them on the family's ship\",\"a place they don't have to leave in three weeks, or a berth of their own on the Triton supply run\",\"father\",\"Marcus\",\"visit\",8000]"
  },
  {
   "key": "story:29",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to get their family off Enceladus\",\"son\"]"
+  "text": "[\"a stall that keeps the family and a rota that keeps the ring, and neither of them paying\",\"a stall of their own somewhere with rent they can pay, or to send home to Ring Nine enough for a new burner\",\"mother\",\"Kwame\",\"visit\",8000]"
  },
  {
   "key": "story:30",
-  "text": "[\"a sister who went first and wrote home about it\",\"to find out what happened to their father's old ship\",\"brother\"]"
+  "text": "[\"the account at the company store never quite clearing, and the agency offering them a ship's berth instead\",\"to clear the family's account at the store on Pallas, or a staff post with a flat and a pension\",\"father\",\"Dru\",\"visit\",24000]"
  },
  {
   "key": "story:31",
-  "text": "[\"a marriage that ended badly\",\"to see one of Earth's oceans, just once\",\"mother\"]"
+  "text": "[\"not wanting to be the fourth generation on the smelter line\",\"a family that doesn't need the line, or to go home to the Hollows and see their parent off it\",\"father\",\"Viktor\",\"visit\",8000]"
  },
  {
   "key": "story:32",
-  "text": "[\"a debt to the wrong people\",\"to open a noodle stand somewhere with real gravity\",\"daughter\"]"
+  "text": "[\"the margins being good and the family wanting one of them somewhere legal\",\"a trade with a licence, or the family's stall on the Rook without anyone needing to look over their shoulder\",\"father\",\"Kwame\",\"visit\",13000]"
  },
  {
   "key": "story:33",
-  "text": "[\"a marriage that ended badly\",\"to get their family off Titan\",\"daughter\"]"
+  "text": "[\"the family tug taking one child, and the town having more children than wrecks\",\"a hull of their own in the Boneyard, towed in by themselves, or a ship that isn't dead\",\"grandfather\",\"Fen\",\"visit\",19000]"
  },
  {
   "key": "story:34",
-  "text": "[\"the rationing, and being tired of being thirsty\",\"to finish the engineering license they started years ago\",\"son\"]"
+  "text": "[\"a bad harvest paying nothing, and the bunkhouses being for the season, not for living\",\"a lease on Ganymede, which hands almost never get, or a job that pays by the month\",\"mother\",\"Mei\",\"visit\",24000]"
  },
  {
   "key": "story:35",
-  "text": "[\"a debt to the wrong people\",\"to see one of Earth's oceans, just once\",\"sister\"]"
+  "text": "[\"the hazard pay being good, and the fingertips going\",\"an Authority post on Europa with the pin and the housing, or work that isn't outside\",\"father\",\"Hana\",\"visit\",11000]"
  },
  {
   "key": "story:36",
-  "text": "[\"a sister who went first and wrote home about it\",\"to find out what happened to their father's old ship\",\"best friend\"]"
+  "text": "[\"not being a scientist, on a moon where that's the only thing to be\",\"to find something they're as good at as their mother is at hers, or to go home to Titan with news worth the long table\",\"mother\",\"Tuk\",\"visit\",25000]"
  },
  {
   "key": "story:37",
-  "text": "[\"a debt to the wrong people\",\"a berth on a ship of their own someday\",\"brother\"]"
+  "text": "[\"the slot prices going up, and the family ship only being able to carry so many\",\"a slot of the family's own on a good contract at Enceladus, or a ship that doesn't have to wait\",\"mother\",\"Hector\",\"visit\",14000]"
  },
  {
   "key": "story:38",
-  "text": "[\"a mine closure that emptied half the town\",\"a berth on a ship of their own someday\",\"sister\"]"
+  "text": "[\"a winter in the polders when the fuel ran out, and a recruitment debt that paid for the next one\",\"a lease back inside the barrier for the family, before another winter on the farm\",\"grandfather\",\"Arjun\",\"visit\",8000]"
  },
  {
   "key": "story:39",
-  "text": "[\"a marriage that ended badly\",\"to see one of Earth's oceans, just once\",\"sister\"]"
+  "text": "[\"a rent that rose every year by what the station's owner said, and no vote on any of it\",\"a co-op berth on Ceres, or at least a lease there that doesn't rise every year\",\"father\",\"Dru\",\"visit\",13000]"
  },
  {
   "key": "story:40",
-  "text": "[\"wanting to see a sky that wasn't painted on a dome\",\"to be somewhere long enough to grow something\",\"grandmother\"]"
+  "text": "[\"a third two-year contract their parents signed, and wanting to stop the next two years before they started\",\"to live somewhere their family chose, not where a contract put them\",\"father\",\"Zara\",\"visit\",20000]"
  },
  {
   "key": "story:41",
-  "text": "[\"a marriage that ended badly\",\"to finish the engineering license they started years ago\",\"daughter\"]"
+  "text": "[\"the morning queue at the yard gate, and the days it took nobody\",\"a licence of any kind, or the family out of Luna's dust\",\"grandmother\",\"Oliver\",\"visit\",8000]"
  },
  {
   "key": "story:42",
-  "text": "[\"wanting to see a sky that wasn't painted on a dome\",\"to find out what happened to their father's old ship\",\"best friend\"]"
+  "text": "[\"an air bill that rose every year, and council meetings that never ended\",\"the family's air account on Mars paid a year ahead, or a seat on the dome's council\",\"father\",\"Wim\",\"visit\",8000]"
  },
  {
   "key": "story:43",
-  "text": "[\"a marriage that ended badly\",\"to open a noodle stand somewhere with real gravity\",\"old crew chief\"]"
+  "text": "[\"the dock contracts ending, and full gravity getting harder every year they stayed\",\"a place that isn't on a tether, or a berth on the yards' books at Phobos\",\"mother\",\"Felix\",\"visit\",19000]"
  },
  {
   "key": "story:44",
-  "text": "[\"a marriage that ended badly\",\"to be somewhere long enough to grow something\",\"grandmother\"]"
+  "text": "[\"a claim that keeps the family but not every child in it\",\"a claim of their own, or a share in a ship that runs on the same rules as the hall\",\"father\",\"Kwame\",\"visit\",18000]"
  },
  {
   "key": "story:45",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to see one of Earth's oceans, just once\",\"old crew chief\"]"
+  "text": "[\"a greenhouse that goes to one child, and their not being the one\",\"a greenhouse of their own somewhere, or to go home to Juno with something the Commons can't grow\",\"grandmother\",\"Tiko\",\"visit\",24000]"
  },
  {
   "key": "story:46",
-  "text": "[\"a scholarship that fell through at the last minute\",\"a berth on a ship of their own someday\",\"daughter\"]"
+  "text": "[\"the trust's inspectors coming round twice a year, and knowing that one year they would find the taps\",\"a flat in the lit half of Eros, on the books, or a home that isn't anyone's secret\",\"father\",\"Zara\",\"visit\",24000]"
  },
  {
   "key": "story:47",
-  "text": "[\"an accident at work they still blame themselves for\",\"to finish the engineering license they started years ago\",\"grandmother\"]"
+  "text": "[\"the outpost needing what only money from outside can buy, and someone in every family going to earn it\",\"to send home enough for the next supply contract, or to see one place where the sky isn't dark\",\"mother\",\"Chen\",\"visit\",20000]"
  },
  {
   "key": "story:48",
-  "text": "[\"a sister who went first and wrote home about it\",\"to finish the engineering license they started years ago\",\"mother\"]"
+  "text": "[\"being paid in cash for what the guild pays its members properly, and wanting a record of their own\",\"a proper rating with an agency record, or a guild card on Ceres\",\"father\",\"Mika\",\"visit\",14000]"
  },
  {
   "key": "story:49",
-  "text": "[\"a marriage that ended badly\",\"to finish the engineering license they started years ago\",\"brother\"]"
+  "text": "[\"the company offering them a post, and wanting to know whether anyone else would\",\"a post they got on their own, or to go back to Pallas Refinery as staff on their own terms\",\"mother\",\"Hector\",\"visit\",15000]"
  },
  {
   "key": "story:50",
-  "text": "[\"a mine closure that emptied half the town\",\"to finish the engineering license they started years ago\",\"mother\"]"
+  "text": "[\"the death benefit ending in a few years, and the lease on the family's tunnel with it\",\"somewhere for the family to live when the lease in the Hollows ends, or work that pays enough to keep the tunnel\",\"mother\",\"Oliver\",\"visit\",10000]"
  },
  {
   "key": "story:51",
-  "text": "[\"wanting to see a sky that wasn't painted on a dome\",\"to get their family off Titan\",\"brother\"]"
+  "text": "[\"wanting to work somewhere they could say where they were from\",\"a berth where nobody asks, or to go home to the Rook and keep the dock when their family stops\",\"aunt\",\"Fen\",\"visit\",10000]"
  },
  {
   "key": "story:52",
-  "text": "[\"the rationing, and being tired of being thirsty\",\"to finish the engineering license they started years ago\",\"father\"]"
+  "text": "[\"a share of a salvage being good money in a good year, and there not being many good years\",\"a family hull of their own in the Boneyard, or a berth on a ship that pays a wage\",\"mother\",\"Olga\",\"visit\",22000]"
  },
  {
   "key": "story:53",
-  "text": "[\"a sister who went first and wrote home about it\",\"a berth on a ship of their own someday\",\"father\"]"
+  "text": "[\"the lease passing to one child, and the renewal fee taking everything the family saved\",\"a lease of their own on Ganymede, or enough sent home that the next renewal doesn't take the farm's savings\",\"father\",\"Sofia\",\"visit\",11000]"
  },
  {
   "key": "story:54",
-  "text": "[\"a sister who went first and wrote home about it\",\"to find out what happened to their father's old ship\",\"grandmother\"]"
+  "text": "[\"the hazard pay being good, and the fingertips going\",\"an Authority post on Europa with the pin and the housing, or work that isn't outside\",\"father\",\"Mika\",\"visit\",18000]"
  },
  {
   "key": "story:55",
-  "text": "[\"a marriage that ended badly\",\"a berth on a ship of their own someday\",\"daughter\"]"
+  "text": "[\"the support crews being a cost on Titan, and the agency's contract never going up\",\"work where the person who keeps it running gets counted, or a seat at the other end of the long table on Titan\",\"father\",\"Noor\",\"visit\",15000]"
  },
  {
   "key": "story:56",
-  "text": "[\"a marriage that ended badly\",\"to find out what happened to their father's old ship\",\"father\"]"
+  "text": "[\"there being nobody their age on the surface, and the contract only having room for the families on it\",\"to find out what it's like where it's loud, or to go home to the quiet on Enceladus and keep the dock\",\"father\",\"Samuel\",\"visit\",17000]"
  },
  {
   "key": "story:57",
-  "text": "[\"the rationing, and being tired of being thirsty\",\"to finish the engineering license they started years ago\",\"father\"]"
+  "text": "[\"the room on the hill, and an agency on the hill road that took names every Sunday\",\"a lease in Chittagong Arcology for the family, off the hill\",\"mother\",\"Ruo\",\"visit\",21000]"
  },
  {
   "key": "story:58",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to get their family off Europa\",\"sister\"]"
+  "text": "[\"a buy-in nobody in the family could lend, and an owner's ship that was hiring\",\"a member's share on the hull their parents crewed, at Kettle's on Ceres\",\"aunt\",\"Kenji\",\"visit\",25000]"
  },
  {
   "key": "story:59",
-  "text": "[\"a sister who went first and wrote home about it\",\"to finish the engineering license they started years ago\",\"old crew chief\"]"
+  "text": "[\"a career on the fins that was waiting for them, and wanting to choose one\",\"to come back to Hermes Foundry and run a fin crew of their own, after they've seen a sky that isn't the Sun's\",\"grandmother\",\"Samuel\",\"visit\",12000]"
  },
  {
   "key": "story:60",
-  "text": "[\"a mine closure that emptied half the town\",\"to open a noodle stand somewhere with real gravity\",\"father\"]"
+  "text": "[\"a training debt to the yard's school that grew faster than a rigger's pay\",\"the family's rigging licence on Luna paid off, so it belongs to them and not the yard\",\"mother\",\"Kez\",\"visit\",8000]"
  },
  {
   "key": "story:61",
-  "text": "[\"a sister who went first and wrote home about it\",\"to open a noodle stand somewhere with real gravity\",\"sister\"]"
+  "text": "[\"a rationed winter when the share board in the square went down twice\",\"a full air share for the family at the edge, or a lake there of its own\",\"mother\",\"Tariq\",\"visit\",18000]"
  },
  {
   "key": "story:62",
-  "text": "[\"a marriage that ended badly\",\"a berth on a ship of their own someday\",\"father\"]"
+  "text": "[\"an apprenticeship that was theirs by birth, and wanting to find out if they were a shipwright or only a shipwright's child\",\"a slip of their own at Phobos Yards, or a hull built somewhere else that's as good as theirs\",\"grandfather\",\"Hana\",\"visit\",25000]"
  },
  {
   "key": "story:63",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to be somewhere long enough to grow something\",\"sister\"]"
+  "text": "[\"a claim that gave out, and a family account with the co-op that day wages don't pay down\",\"the new claim to come through, or to clear the family's account and go home to Ironheart owing nothing\",\"mother\",\"Esa\",\"visit\",14000]"
  },
  {
   "key": "story:64",
-  "text": "[\"a marriage that ended badly\",\"to see one of Earth's oceans, just once\",\"father\"]"
+  "text": "[\"a greenhouse that goes to one child, and their not being the one\",\"a greenhouse of their own somewhere, or to go home to Juno with something the Commons can't grow\",\"grandmother\",\"Marcus\",\"visit\",10000]"
  },
  {
   "key": "story:65",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to be somewhere long enough to grow something\",\"mother\"]"
+  "text": "[\"the family selling another piece every time the service charge went up, and wanting to send money home before they sold the last of it\",\"to keep the flat on Eros in the family, or to buy back something that was sold\",\"grandmother\",\"Chen\",\"visit\",8000]"
  },
  {
   "key": "story:66",
-  "text": "[\"an accident at work they still blame themselves for\",\"to be somewhere long enough to grow something\",\"old crew chief\"]"
+  "text": "[\"there being no berth for them on the family's ship\",\"a place they don't have to leave in three weeks, or a berth of their own on the Triton supply run\",\"father\",\"Wim\",\"visit\",11000]"
  },
  {
   "key": "story:67",
-  "text": "[\"a mine closure that emptied half the town\",\"to see one of Earth's oceans, just once\",\"old crew chief\"]"
+  "text": "[\"a stall that keeps the family and a rota that keeps the ring, and neither of them paying\",\"a stall of their own somewhere with rent they can pay, or to send home to Ring Nine enough for a new burner\",\"mother\",\"Dalia\",\"visit\",9000]"
  },
  {
   "key": "story:68",
-  "text": "[\"a debt to the wrong people\",\"to finish the engineering license they started years ago\",\"old crew chief\"]"
+  "text": "[\"the account at the company store never quite clearing, and the agency offering them a ship's berth instead\",\"to clear the family's account at the store on Pallas, or a staff post with a flat and a pension\",\"father\",\"Chen\",\"visit\",20000]"
  },
  {
   "key": "story:69",
-  "text": "[\"the rationing, and being tired of being thirsty\",\"to be somewhere long enough to grow something\",\"mother\"]"
+  "text": "[\"not wanting to be the fourth generation on the smelter line\",\"a family that doesn't need the line, or to go home to the Hollows and see their parent off it\",\"father\",\"Gaz\",\"visit\",22000]"
  },
  {
   "key": "story:70",
-  "text": "[\"an accident at work they still blame themselves for\",\"to see one of Earth's oceans, just once\",\"old crew chief\"]"
+  "text": "[\"the margins being good and the family wanting one of them somewhere legal\",\"a trade with a licence, or the family's stall on the Rook without anyone needing to look over their shoulder\",\"father\",\"Kenji\",\"visit\",20000]"
  },
  {
   "key": "story:71",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to finish the engineering license they started years ago\",\"mother\"]"
+  "text": "[\"the family tug taking one child, and the town having more children than wrecks\",\"a hull of their own in the Boneyard, towed in by themselves, or a ship that isn't dead\",\"grandfather\",\"Diego\",\"visit\",19000]"
  },
  {
   "key": "story:72",
-  "text": "[\"a mine closure that emptied half the town\",\"to finish the engineering license they started years ago\",\"son\"]"
+  "text": "[\"a bad harvest paying nothing, and the bunkhouses being for the season, not for living\",\"a lease on Ganymede, which hands almost never get, or a job that pays by the month\",\"mother\",\"Mika\",\"visit\",20000]"
  },
  {
   "key": "story:73",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to get their family off Europa\",\"best friend\"]"
+  "text": "[\"the Authority offering them a post, and wanting to know what it was like to work for someone else\",\"to see the shortage at Ceres for themselves, or a post somewhere they don't have to wear the pin\",\"mother\",\"Viktor\",\"visit\",11000]"
  },
  {
   "key": "story:74",
-  "text": "[\"a debt to the wrong people\",\"a berth on a ship of their own someday\",\"best friend\"]"
+  "text": "[\"the support crews being a cost on Titan, and the agency's contract never going up\",\"work where the person who keeps it running gets counted, or a seat at the other end of the long table on Titan\",\"father\",\"Samuel\",\"visit\",13000]"
  },
  {
   "key": "story:75",
-  "text": "[\"a debt to the wrong people\",\"a berth on a ship of their own someday\",\"grandmother\"]"
+  "text": "[\"the slot prices going up, and the family ship only being able to carry so many\",\"a slot of the family's own on a good contract at Enceladus, or a ship that doesn't have to wait\",\"mother\",\"Fen\",\"visit\",8000]"
  },
  {
   "key": "story:76",
-  "text": "[\"a scholarship that fell through at the last minute\",\"a berth on a ship of their own someday\",\"sister\"]"
+  "text": "[\"a room rented by the week, and every Friday the same arithmetic\",\"a lease inside the wall, any lease, for their mother\",\"mother\",\"Marcus\",\"visit\",19000]"
  },
  {
   "key": "story:77",
-  "text": "[\"a marriage that ended badly\",\"to finish the engineering license they started years ago\",\"daughter\"]"
+  "text": "[\"a rent that rose every year by what the station's owner said, and no vote on any of it\",\"a co-op berth on Ceres, or at least a lease there that doesn't rise every year\",\"father\",\"Nadia\",\"visit\",12000]"
  },
  {
   "key": "story:78",
-  "text": "[\"a scholarship that fell through at the last minute\",\"to get their family off Titan\",\"daughter\"]"
+  "text": "[\"a third two-year contract their parents signed, and wanting to stop the next two years before they started\",\"to live somewhere their family chose, not where a contract put them\",\"father\",\"Ama\",\"visit\",13000]"
  },
  {
   "key": "story:79",
-  "text": "[\"a mine closure that emptied half the town\",\"to find out what happened to their father's old ship\",\"brother\"]"
- },
- {
-  "key": "beat0:belt",
-  "text": "[\"With Sam\",\"It's the slack end of the watch and Sam has drawn the last of the day's water and is making it last. You ask about Titan, which you haven't before, and Sam tells you: the hum of the recyclers, the tunnel markets, spin gravity you could argue with. The telling gets specific, down to a street and the name of a shop on it. Then Sam sets the cup down. \\\"I left because of a scholarship that fell through at the last minute,\\\" Sam says. \\\"Since you didn't ask.\\\"\",[\"Listen\",\"Tell them about where you came from\"]]"
- },
- {
-  "key": "beat0:mars",
-  "text": "[\"With Sam\",\"Sam tells you about Titan: dust storms that last a month, dome lights at dusk, everyone arguing about the future. They turn their mug a quarter turn on the table as they say it, and again. \\\"You'd think I'd miss the big things,\\\" Sam says. \\\"I miss the stairs.\\\" Then, unprompted, they say they left because of a mine closure that emptied half the town, and stop, and drink, and look at you across the mug.\",[\"Listen\",\"Tell them about where you came from\"]]"
- },
- {
-  "key": "beat0:earth",
-  "text": "[\"With Sam\",\"Sam is in the galley with the lights down to a third, in their socks, and when you sit down they push the second mug across without asking whether you want it. You ask about Titan. \\\"Titan,\\\" Sam says. \\\"You want the postcard, it's too many people, real rain, and an ocean you could hear from the arcology at night. That's the postcard.\\\" They drink. \\\"What I actually left over was wanting to see a sky that wasn't painted on a dome. I don't tell people that part.\\\"\",[\"Listen\",\"Tell them about where you came from\"]]"
- },
- {
-  "key": "beat0:detail",
-  "text": "It's the slack end of the watch and Sam has drawn the last of the day's water and is making it last. You ask about Titan, which you haven't before, and Sam tells you: a hand-picked detail. The telling gets specific, down to a street and the name of a shop on it. Then Sam sets the cup down. \"I left because of a debt to the wrong people,\" Sam says. \"Since you didn't ask.\""
+  "text": "[\"the morning queue at the yard gate, and the days it took nobody\",\"a licence of any kind, or the family out of Luna's dust\",\"grandmother\",\"Tariq\",\"visit\",8000]"
  },
  {
   "key": "idle:talkative",
@@ -393,123 +377,123 @@
  },
  {
   "key": "letter:good:0",
-  "text": "[[\"A message for Sam at Ceres Station: their best friend Ruo got into the engineering academy on Ceres.\"],\"their best friend Ruo got into the engineering academy on Ceres\",{\"good\":true,\"text\":\"their best friend Ruo got into the engineering academy on Ceres\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Dru got into the engineering academy on Ceres.\"],\"their father Dru got into the engineering academy on Ceres\",{\"good\":true,\"text\":\"their father Dru got into the engineering academy on Ceres\"}]"
  },
  {
   "key": "news:good:0",
-  "text": "[\"Good News\",\"Over the intercom, Sam: \\\"Can you come aft? It's not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their best friend Ruo g\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Over the intercom, Sam: \\\"Can you come aft? It's not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their father Dru got in\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:1",
-  "text": "[[\"A message for Sam at Ceres Station: their father Vesna had a baby, a girl, healthy and loud.\"],\"their father Vesna had a baby, a girl, healthy and loud\",{\"good\":true,\"text\":\"their father Vesna had a baby, a girl, healthy and loud\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Mika had a baby, a girl, healthy and loud.\"],\"their mother Mika had a baby, a girl, healthy and loud\",{\"good\":true,\"text\":\"their mother Mika had a baby, a girl, healthy and loud\"}]"
  },
  {
   "key": "news:good:1",
-  "text": "[\"Good News\",\"Sam comes into the galley fast, holding the terminal out in front of them. \\\"Listen,\\\" Sam says. \\\"Listen to this.\\\" The message reads: their father Vesna had a bab\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam comes into the galley fast, holding the terminal out in front of them. \\\"Listen,\\\" Sam says. \\\"Listen to this.\\\" The message reads: their mother Mika had a baby\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:2",
-  "text": "[[\"A message for Sam at Ceres Station: their grandmother Sabe finally paid off the family's water debt.\"],\"their grandmother Sabe finally paid off the family's water debt\",{\"good\":true,\"text\":\"their grandmother Sabe finally paid off the family's water debt\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Sabe finally paid off the family's water debt.\"],\"their father Sabe finally paid off the family's water debt\",{\"good\":true,\"text\":\"their father Sabe finally paid off the family's water debt\"}]"
  },
  {
   "key": "news:good:2",
-  "text": "[\"Good News\",\"Sam slides the terminal across the galley table without a word and watches you read it. The message: their grandmother Sabe finally paid off the family's water \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam slides the terminal across the galley table without a word and watches you read it. The message: their father Sabe finally paid off the family's water debt.\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:3",
-  "text": "[[\"A message for Sam at Ceres Station: their father Jo sent a photo of the whole family at one table, laughing.\"],\"their father Jo sent a photo of the whole family at one table, laughing\",{\"good\":true,\"text\":\"their father Jo sent a photo of the whole family at one table, laughing\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Jo sent a photo of the whole family at one table, laughing.\"],\"their mother Jo sent a photo of the whole family at one table, laughing\",{\"good\":true,\"text\":\"their mother Jo sent a photo of the whole family at one table, laughing\"}]"
  },
  {
   "key": "news:good:3",
-  "text": "[\"Good News\",\"Sam is waiting for you at the end of the watch, rocking on their heels. \\\"Captain, do you have a minute?\\\" The terminal is already out: their father Jo sent a pho\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam is waiting for you at the end of the watch, rocking on their heels. \\\"Captain, do you have a minute?\\\" The terminal is already out: their mother Jo sent a pho\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:4",
-  "text": "[[\"A message for Sam at Ceres Station: their mother Jo was promoted, after nine years, to shift foreman.\"],\"their mother Jo was promoted, after nine years, to shift foreman\",{\"good\":true,\"text\":\"their mother Jo was promoted, after nine years, to shift foreman\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Fen was promoted, after nine years, to shift foreman.\"],\"their father Fen was promoted, after nine years, to shift foreman\",{\"good\":true,\"text\":\"their father Fen was promoted, after nine years, to shift foreman\"}]"
  },
  {
   "key": "news:good:4",
-  "text": "[\"Good News\",\"Sam is waiting for you at the end of the watch, rocking on their heels. \\\"Captain, do you have a minute?\\\" The terminal is already out: their mother Jo was promot\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam is waiting for you at the end of the watch, rocking on their heels. \\\"Captain, do you have a minute?\\\" The terminal is already out: their father Fen was promo\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:5",
-  "text": "[[\"A message for Sam at Ceres Station: their mother Gaz planted the first real tomatoes in the family's section, and they came up red.\"],\"their mother Gaz planted the first real tomatoes in the family's section, and they came up red\",{\"good\":true,\"text\":\"their mother Gaz planted the first real tomatoes in the family's section, and they came up red\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Mika planted the first real tomatoes in the family's section, and they came up red.\"],\"their mother Mika planted the first real tomatoes in the family's section, and they came up red\",{\"good\":true,\"text\":\"their mother Mika planted the first real tomatoes in the family's section, and they came up red\"}]"
  },
  {
   "key": "news:good:5",
-  "text": "[\"Good News\",\"You find Sam in the corridor with the terminal pressed flat against their chest and their eyes shut. Then they hold it out to you: their mother Gaz planted the \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"You find Sam in the corridor with the terminal pressed flat against their chest and their eyes shut. Then they hold it out to you: their mother Mika planted the\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:6",
-  "text": "[[\"A message for Sam at Ceres Station: their grandmother Kez got a berth on a ship bound for the outer moons, and is thrilled.\"],\"their grandmother Kez got a berth on a ship bound for the outer moons, and is thrilled\",{\"good\":true,\"text\":\"their grandmother Kez got a berth on a ship bound for the outer moons, and is thrilled\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Kez got a berth on a ship bound for the outer moons, and is thrilled.\"],\"their father Kez got a berth on a ship bound for the outer moons, and is thrilled\",{\"good\":true,\"text\":\"their father Kez got a berth on a ship bound for the outer moons, and is thrilled\"}]"
  },
  {
   "key": "news:good:6",
-  "text": "[\"Good News\",\"Sam slides the terminal across the galley table without a word and watches you read it. The message: their grandmother Kez got a berth on a ship bound for the o\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam slides the terminal across the galley table without a word and watches you read it. The message: their father Kez got a berth on a ship bound for the outer \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:7",
-  "text": "[[\"A message for Sam at Ceres Station: their father Jo recovered from a long illness, and is walking again.\"],\"their father Jo recovered from a long illness, and is walking again\",{\"good\":true,\"text\":\"their father Jo recovered from a long illness, and is walking again\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Fen recovered from a long illness, and is walking again.\"],\"their mother Fen recovered from a long illness, and is walking again\",{\"good\":true,\"text\":\"their mother Fen recovered from a long illness, and is walking again\"}]"
  },
  {
   "key": "news:good:7",
-  "text": "[\"Good News\",\"Over the intercom, Sam: \\\"Can you come aft? It's not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their father Jo recover\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Over the intercom, Sam: \\\"Can you come aft? It's not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their mother Fen recove\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:8",
-  "text": "[[\"A message for Sam at Ceres Station: their daughter Tiko won a little money on the ring-ball pool, and is buying everyone a round.\"],\"their daughter Tiko won a little money on the ring-ball pool, and is buying everyone a round\",{\"good\":true,\"text\":\"their daughter Tiko won a little money on the ring-ball pool, and is buying everyone a round\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Kez won a little money on the ring-ball pool, and is buying everyone a round.\"],\"their father Kez won a little money on the ring-ball pool, and is buying everyone a round\",{\"good\":true,\"text\":\"their father Kez won a little money on the ring-ball pool, and is buying everyone a round\"}]"
  },
  {
   "key": "news:good:8",
-  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their daughter Tiko won a little money on the ring-ball pool, and is\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their father Kez won a little money on the ring-ball pool, and is bu\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:9",
-  "text": "[[\"A message for Sam at Ceres Station: their daughter Tiko sent a letter that said only \\\"I'm proud of you,\\\" and nothing else.\"],\"their daughter Tiko sent a letter that said only \\\"I'm proud of you,\\\" and nothing else\",{\"good\":true,\"text\":\"their daughter Tiko sent a letter that said only \\\"I'm proud of you,\\\" and nothing else\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Fen sent a letter that said only \\\"I'm proud of you,\\\" and nothing else.\"],\"their mother Fen sent a letter that said only \\\"I'm proud of you,\\\" and nothing else\",{\"good\":true,\"text\":\"their mother Fen sent a letter that said only \\\"I'm proud of you,\\\" and nothing else\"}]"
  },
  {
   "key": "news:good:9",
-  "text": "[\"Good News\",\"Sam is waiting for you at the end of the watch, rocking on their heels. \\\"Captain, do you have a minute?\\\" The terminal is already out: their daughter Tiko sent a\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam is waiting for you at the end of the watch, rocking on their heels. \\\"Captain, do you have a minute?\\\" The terminal is already out: their mother Fen sent a le\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:10",
-  "text": "[[\"A message for Sam at Ceres Station: their grandmother Mika passed the pilot exam on the third try.\"],\"their grandmother Mika passed the pilot exam on the third try\",{\"good\":true,\"text\":\"their grandmother Mika passed the pilot exam on the third try\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Kez passed the pilot exam on the third try.\"],\"their father Kez passed the pilot exam on the third try\",{\"good\":true,\"text\":\"their father Kez passed the pilot exam on the third try\"}]"
  },
  {
   "key": "news:good:10",
-  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their grandmother Mika passed the pilot exam on the third try. Sam s\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their father Kez passed the pilot exam on the third try. Sam stands \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:11",
-  "text": "[[\"A message for Sam at Ceres Station: their mother Wim moved into a bigger section, with a window.\"],\"their mother Wim moved into a bigger section, with a window\",{\"good\":true,\"text\":\"their mother Wim moved into a bigger section, with a window\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Ruo moved into a bigger section, with a window.\"],\"their father Ruo moved into a bigger section, with a window\",{\"good\":true,\"text\":\"their father Ruo moved into a bigger section, with a window\"}]"
  },
  {
   "key": "news:good:11",
-  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their mother Wim moved into a bigger section, with a window. Sam sta\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their father Ruo moved into a bigger section, with a window. Sam sta\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:12",
-  "text": "[[\"A message for Sam at Ceres Station: their son Dru got the loan for the shop, and the sign goes up on Monday.\"],\"their son Dru got the loan for the shop, and the sign goes up on Monday\",{\"good\":true,\"text\":\"their son Dru got the loan for the shop, and the sign goes up on Monday\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Imi got the loan for the shop, and the sign goes up on Monday.\"],\"their mother Imi got the loan for the shop, and the sign goes up on Monday\",{\"good\":true,\"text\":\"their mother Imi got the loan for the shop, and the sign goes up on Monday\"}]"
  },
  {
   "key": "news:good:12",
-  "text": "[\"Good News\",\"Sam stops you at the hatch. \\\"Captain. Listen to this.\\\" The message is open on the terminal: their son Dru got the loan for the shop, and the sign goes up on Mon\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam stops you at the hatch. \\\"Captain. Listen to this.\\\" The message is open on the terminal: their mother Imi got the loan for the shop, and the sign goes up on \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:13",
-  "text": "[[\"A message for Sam at Ceres Station: their best friend Tiko sent the first picture of a new dog, a brown one, asleep on a boot.\"],\"their best friend Tiko sent the first picture of a new dog, a brown one, asleep on a boot\",{\"good\":true,\"text\":\"their best friend Tiko sent the first picture of a new dog, a brown one, asleep on a boot\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Tiko sent the first picture of a new dog, a brown one, asleep on a boot.\"],\"their father Tiko sent the first picture of a new dog, a brown one, asleep on a boot\",{\"good\":true,\"text\":\"their father Tiko sent the first picture of a new dog, a brown one, asleep on a boot\"}]"
  },
  {
   "key": "news:good:13",
-  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their best friend Tiko sent the first picture of a new dog, a brown \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their father Tiko sent the first picture of a new dog, a brown one, \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:14",
-  "text": "[[\"A message for Sam at Ceres Station: the strike at the foundry on Titan is over, and their mother Vesna is back on full shifts.\"],\"the strike at the foundry on Titan is over, and their mother Vesna is back on full shifts\",{\"good\":true,\"text\":\"the strike at the foundry on Titan is over, and their mother Vesna is back on full shifts\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: the strike at the foundry on Titan is over, and their mother Ruo is back on full shifts.\"],\"the strike at the foundry on Titan is over, and their mother Ruo is back on full shifts\",{\"good\":true,\"text\":\"the strike at the foundry on Titan is over, and their mother Ruo is back on full shifts\"}]"
  },
  {
   "key": "news:good:14",
-  "text": "[\"Good News\",\"Sam stops you at the hatch. \\\"Captain. Listen to this.\\\" The message is open on the terminal: the strike at the foundry on Titan is over, and their mother Vesna i\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Sam stops you at the hatch. \\\"Captain. Listen to this.\\\" The message is open on the terminal: the strike at the foundry on Titan is over, and their mother Ruo is \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:15",
@@ -521,15 +505,15 @@
  },
  {
   "key": "letter:bad:0",
-  "text": "[[\"A message for Sam at Ceres Station: their best friend Ruo is sick, and the clinic on Titan wants money up front.\"],\"their best friend Ruo is sick, and the clinic on Titan wants money up front\",{\"good\":false,\"text\":\"their best friend Ruo is sick, and the clinic on Titan wants money up front\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Dru is sick, and the clinic on Titan wants money up front.\"],\"their mother Dru is sick, and the clinic on Titan wants money up front\",{\"good\":false,\"text\":\"their mother Dru is sick, and the clinic on Titan wants money up front\"}]"
  },
  {
   "key": "news:bad:0",
-  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their best friend Ruo is sick, and the clinic on Tit\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their mother Dru is sick, and the clinic on Titan wa\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:1",
-  "text": "[[\"A message for Sam at Ceres Station: their father Vesna lost their job when the mine cut shifts.\"],\"their father Vesna lost their job when the mine cut shifts\",{\"good\":false,\"text\":\"their father Vesna lost their job when the mine cut shifts\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Mika lost their job when the mine cut shifts.\"],\"their father Mika lost their job when the mine cut shifts\",{\"good\":false,\"text\":\"their father Mika lost their job when the mine cut shifts\"}]"
  },
  {
   "key": "news:bad:1",
@@ -537,11 +521,11 @@
  },
  {
   "key": "letter:bad:2",
-  "text": "[[\"A message for Sam at Ceres Station: the section where their grandmother Sabe lives is on emergency rationing.\"],\"the section where their grandmother Sabe lives is on emergency rationing\",{\"good\":false,\"text\":\"the section where their grandmother Sabe lives is on emergency rationing\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: the section where their mother Sabe lives is on emergency rationing.\"],\"the section where their mother Sabe lives is on emergency rationing\",{\"good\":false,\"text\":\"the section where their mother Sabe lives is on emergency rationing\"}]"
  },
  {
   "key": "news:bad:2",
-  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: the section where their grandmother Sabe lives is on\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: the section where their mother Sabe lives is on emer\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:3",
@@ -553,11 +537,11 @@
  },
  {
   "key": "letter:bad:4",
-  "text": "[[\"A message for Sam at Ceres Station: their mother Jo was hurt in an accident at work, and it's not clear how badly.\"],\"their mother Jo was hurt in an accident at work, and it's not clear how badly\",{\"good\":false,\"text\":\"their mother Jo was hurt in an accident at work, and it's not clear how badly\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Fen was hurt in an accident at work, and it's not clear how badly.\"],\"their mother Fen was hurt in an accident at work, and it's not clear how badly\",{\"good\":false,\"text\":\"their mother Fen was hurt in an accident at work, and it's not clear how badly\"}]"
  },
  {
   "key": "news:bad:4",
-  "text": "[\"Bad News\",\"Sam hasn't touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: their mother Jo was hurt in an acci\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam hasn't touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: their mother Fen was hurt in an acc\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:5",
@@ -569,7 +553,7 @@
  },
  {
   "key": "letter:bad:6",
-  "text": "[[\"A message for Sam at Ceres Station: their grandmother Kez is being evicted, and has nowhere to go.\"],\"their grandmother Kez is being evicted, and has nowhere to go\",{\"good\":false,\"text\":\"their grandmother Kez is being evicted, and has nowhere to go\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Kez is being evicted, and has nowhere to go.\"],\"their father Kez is being evicted, and has nowhere to go\",{\"good\":false,\"text\":\"their father Kez is being evicted, and has nowhere to go\"}]"
  },
  {
   "key": "news:bad:6",
@@ -577,31 +561,31 @@
  },
  {
   "key": "letter:bad:7",
-  "text": "[[\"A message for Sam at Ceres Station: their father Jo has been arrested at a protest, and nobody knows for how long.\"],\"their father Jo has been arrested at a protest, and nobody knows for how long\",{\"good\":false,\"text\":\"their father Jo has been arrested at a protest, and nobody knows for how long\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Fen has been arrested at a protest, and nobody knows for how long.\"],\"their mother Fen has been arrested at a protest, and nobody knows for how long\",{\"good\":false,\"text\":\"their mother Fen has been arrested at a protest, and nobody knows for how long\"}]"
  },
  {
   "key": "news:bad:7",
-  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their father Jo has been arrested at a protest, and \",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their mother Fen has been arrested at a protest, and\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:8",
-  "text": "[[\"A message for Sam at Ceres Station: an old friend of their daughter Tiko's passed away, and the funeral is next week.\"],\"an old friend of their daughter Tiko's passed away, and the funeral is next week\",{\"good\":false,\"text\":\"an old friend of their daughter Tiko's passed away, and the funeral is next week\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: an old friend of their father Kez's passed away, and the funeral is next week.\"],\"an old friend of their father Kez's passed away, and the funeral is next week\",{\"good\":false,\"text\":\"an old friend of their father Kez's passed away, and the funeral is next week\"}]"
  },
  {
   "key": "news:bad:8",
-  "text": "[\"Bad News\",\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: an old friend of their daughter Tiko's pass\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: an old friend of their father Kez's passed \",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:9",
-  "text": "[[\"A message for Sam at Ceres Station: their daughter Tiko says the recyclers on Titan are failing, and the water tastes wrong.\"],\"their daughter Tiko says the recyclers on Titan are failing, and the water tastes wrong\",{\"good\":false,\"text\":\"their daughter Tiko says the recyclers on Titan are failing, and the water tastes wrong\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Fen says the recyclers on Titan are failing, and the water tastes wrong.\"],\"their mother Fen says the recyclers on Titan are failing, and the water tastes wrong\",{\"good\":false,\"text\":\"their mother Fen says the recyclers on Titan are failing, and the water tastes wrong\"}]"
  },
  {
   "key": "news:bad:9",
-  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: their daughter Tiko \",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: their mother Fen say\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:10",
-  "text": "[[\"A message for Sam at Ceres Station: the clinic on Titan is closing, and their grandmother Mika has to travel two days for treatment.\"],\"the clinic on Titan is closing, and their grandmother Mika has to travel two days for treatment\",{\"good\":false,\"text\":\"the clinic on Titan is closing, and their grandmother Mika has to travel two days for treatment\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: the clinic on Titan is closing, and their father Kez has to travel two days for treatment.\"],\"the clinic on Titan is closing, and their father Kez has to travel two days for treatment\",{\"good\":false,\"text\":\"the clinic on Titan is closing, and their father Kez has to travel two days for treatment\"}]"
  },
  {
   "key": "news:bad:10",
@@ -609,7 +593,7 @@
  },
  {
   "key": "letter:bad:11",
-  "text": "[[\"A message for Sam at Ceres Station: their mother Wim broke a leg in the market and can't work for six weeks.\"],\"their mother Wim broke a leg in the market and can't work for six weeks\",{\"good\":false,\"text\":\"their mother Wim broke a leg in the market and can't work for six weeks\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Ruo broke a leg in the market and can't work for six weeks.\"],\"their mother Ruo broke a leg in the market and can't work for six weeks\",{\"good\":false,\"text\":\"their mother Ruo broke a leg in the market and can't work for six weeks\"}]"
  },
  {
   "key": "news:bad:11",
@@ -617,23 +601,23 @@
  },
  {
   "key": "letter:bad:12",
-  "text": "[[\"A message for Sam at Ceres Station: there was a fire in the section where their son Dru lives, and they're in a shelter.\"],\"there was a fire in the section where their son Dru lives, and they're in a shelter\",{\"good\":false,\"text\":\"there was a fire in the section where their son Dru lives, and they're in a shelter\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: there was a fire in the section where their father Imi lives, and they're in a shelter.\"],\"there was a fire in the section where their father Imi lives, and they're in a shelter\",{\"good\":false,\"text\":\"there was a fire in the section where their father Imi lives, and they're in a shelter\"}]"
  },
  {
   "key": "news:bad:12",
-  "text": "[\"Bad News\",\"The terminal pings in the galley and Sam reads it standing, then sits down. The message: there was a fire in the section where their son Dru lives, and they're \",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"The terminal pings in the galley and Sam reads it standing, then sits down. The message: there was a fire in the section where their father Imi lives, and they'\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:13",
-  "text": "[[\"A message for Sam at Ceres Station: their best friend Tiko has been laid off, and the severance hasn't come.\"],\"their best friend Tiko has been laid off, and the severance hasn't come\",{\"good\":false,\"text\":\"their best friend Tiko has been laid off, and the severance hasn't come\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Tiko has been laid off, and the severance hasn't come.\"],\"their mother Tiko has been laid off, and the severance hasn't come\",{\"good\":false,\"text\":\"their mother Tiko has been laid off, and the severance hasn't come\"}]"
  },
  {
   "key": "news:bad:13",
-  "text": "[\"Bad News\",\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: their best friend Tiko has been laid off, a\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: their mother Tiko has been laid off, and th\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:14",
-  "text": "[[\"A message for Sam at Ceres Station: the school where their mother Vesna teaches is closing at the end of the term.\"],\"the school where their mother Vesna teaches is closing at the end of the term\",{\"good\":false,\"text\":\"the school where their mother Vesna teaches is closing at the end of the term\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: the school where their father Ruo teaches is closing at the end of the term.\"],\"the school where their father Ruo teaches is closing at the end of the term\",{\"good\":false,\"text\":\"the school where their father Ruo teaches is closing at the end of the term\"}]"
  },
  {
   "key": "news:bad:14",
@@ -641,11 +625,11 @@
  },
  {
   "key": "letter:bad:15",
-  "text": "[[\"A message for Sam at Ceres Station: their son Yuri left a message that says only \\\"call when you can,\\\" and the line doesn't connect.\"],\"their son Yuri left a message that says only \\\"call when you can,\\\" and the line doesn't connect\",{\"good\":false,\"text\":\"their son Yuri left a message that says only \\\"call when you can,\\\" and the line doesn't connect\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their father Sabe left a message that says only \\\"call when you can,\\\" and the line doesn't connect.\"],\"their father Sabe left a message that says only \\\"call when you can,\\\" and the line doesn't connect\",{\"good\":false,\"text\":\"their father Sabe left a message that says only \\\"call when you can,\\\" and the line doesn't connect\"}]"
  },
  {
   "key": "news:bad:15",
-  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: their so\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: their fa\",[\"Sit with them\",\"Advance them 5,000 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "holiday:0",

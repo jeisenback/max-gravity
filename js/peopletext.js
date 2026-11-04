@@ -3905,44 +3905,7 @@ const PEOPLE_LINES = {
     'text.month': 'It has been a while. The family bought a contract slot, a short one, and the seat is the same. "Two years fixed," {who} says. "No waiting on the price."',
     'text.long': 'So long that the hauler has a new scoop and a new name painted under the old one. The seat still folds flat. {who} answers channel nine before you\'ve finished calling.',
   },
-  'family:story-home': {
-    title: 'With {n}',
-    'text.0': '{n} tells you about {home}: {detail}. They turn their mug a quarter turn on the table as they say it, and again. "You\'d think I\'d miss the big things," {n} says. "I miss the stairs." Then, unprompted, they say they left because of {left}, and stop, and drink, and look at you across the mug.',
-    'text.1': 'It\'s the slack end of the watch and {n} has drawn the last of the day\'s water and is making it last. You ask about {home}, which you haven\'t before, and {n} tells you: {detail}. The telling gets specific, down to a street and the name of a shop on it. Then {n} sets the cup down. "I left because of {left}," {n} says. "Since you didn\'t ask."',
-    'text.2': '{n} is in the galley with the lights down to a third, in their socks, and when you sit down they push the second mug across without asking whether you want it. You ask about {home}. "{home}," {n} says. "You want the postcard, it\'s {detail}. That\'s the postcard." They drink. "What I actually left over was {left}. I don\'t tell people that part."',
-    'c0.label': 'Listen',
-    'c0.result.0': 'You say nothing, and let the silence hold, and {n} goes on about smaller things: a street, a smell, a name, the hour the bakery opened. It\'s a long time before either of you looks at the clock. At the end {n} says it\'s late, and doesn\'t get up.',
-    'c0.result.1': '{n} talks for most of an hour, and you mostly listen, and when they run down they let out a long breath and look at the empty mug. "I never told anyone that," {n} says. "Not aloud. I wrote it down once and deleted it." They take both mugs to the tap.',
-    'c0.result.2': 'You let {n} talk, and the talk goes where it goes: the people who stayed, the one who wrote, the price of a ticket out. The lights go down to a third while they\'re still going. "That\'s enough of me," {n} says at the end, and stays sitting there.',
-    'c1.label': 'Tell them about where you came from',
-    'c1.result.0': 'You tell them something true and small about where you came from, and {n} listens with their whole face, laughs at the right place, and at one point reaches over and steals a bite off your plate. "You left too, then," {n} says, with their mouth full. "Good. I was starting to think it was only me."',
-    'c1.result.1': 'You trade them a street for a street. {n} asks what it smelled like, and what time the lights came on, and whether you\'d go back, and listens to each answer all the way to the end. "Right," {n} says. "So it\'s not just me." They top up your mug from their own ration without comment.',
-  },
-  'family:story-picture': {
-    title: 'With {n}',
-    'text.0': '{n} takes something out of a breast pocket, a small worn picture, soft at the edges from handling, and slides it across the table. It shows their {missed}, squinting into the light, mid-laugh. "We used to talk every day," {n} says. "Now it\'s a message every few weeks, with a lag. Half of what I say is out of date before they hear it." They look at the picture while you look at it. Then they put it back in the pocket and button the flap.',
-    'text.1': 'There\'s a picture taped inside the lid of {n}\'s locker, and tonight, when they come to the galley, they bring it, and set it against the sugar tin between the two mugs. It\'s their {missed}, younger, at a table somewhere with real daylight on it. "That\'s a Tuesday," {n} says. "That\'s what a Tuesday looked like." They don\'t pick it up again until you\'ve both finished.',
-    'text.2': '{n} hands you the terminal across the table without a word, with a picture open on it: their {missed}, caught halfway through saying something, in a kitchen with a window. "That\'s the last one they sent," {n} says. "Three months. I\'ve asked for another. The relay from there drops half of what they send." They take the terminal back and turn the screen down flat and keep a hand on it.',
-    'c0.label': '"Tell me about them."',
-    'c0.result.0': '{n} does, and it takes a long time, and it\'s not a story so much as a list of small things: how their {rel} hums when they cook, what they say when they lose at cards, the particular way they say the name of a place. By the end {n} is smiling, and wiping their face with the heel of a hand, and keeps going.',
-    'c0.result.1': '{n} starts with the easy things, the job, the flat, the dog that isn\'t theirs, and gets to the hard ones without noticing: the last visit, the thing their {rel} said at the lock, the message {n} still hasn\'t answered. "Ask me something else," {n} says at the end, and doesn\'t wait for you to.',
-    'c1.label': '"You\'ll see them again."',
-    'c1.result.0': '{n} looks at you for a moment. "You can\'t promise that," {n} says. "Nobody can, out here." They take the picture out again and prop it against the sugar tin where you can both see it. "No," {n} says. "But thank you for saying it. Say it again sometime."',
-    'c1.result.1': '"Eleven months," {n} says. "That\'s the next time the run goes anywhere near. I\'ve counted." They leave the picture between the mugs. "You\'re right, though. I will." They say it to the picture, not to you, and finish the coffee.',
-  },
-  'family:story-hope': {
-    title: 'With {n}',
-    'text.0': 'Late in the watch, when the lights are down to a third and the ship is quiet, {n} admits what they really want: {hope}. They say it in a rush, looking at their hands, and as soon as it\'s out they laugh, a short laugh, and look at the hatch. Then they go still, with their shoulders braced, and wait.',
-    'text.1': 'You\'re on the bench in the engine room with {n}, where it\'s too loud to be overheard, and {n} has been working up to something for ten minutes. It comes out all at once: what they want is {hope}. "There," {n} says. "That\'s it. That\'s the whole plan." They go back to the gauge they were watching and don\'t read it.',
-    'text.2': '{n} asks what you want, out here, in the long run, and listens to the answer, and then says, "Mine\'s smaller," and tells you: {hope}. They say it looking at the galley board where the water number is, and put a hand flat on the table when it\'s said, and keep it there.',
-    'c0.label': '"It\'s not a stupid thing to want."',
-    'c0.result.0': 'You tell them, plainly, that it\'s not, and {n} lets out a long slow breath. "Nobody has ever said that to me," {n} says. "They say it\'s nice, or it\'s a long way off, or they change the subject. They never say it\'s not stupid." They drink what\'s left in the mug and set it down on the far side of the table, out of reach.',
-    'c0.result.1': '"Say that again," {n} says. You do. {n} looks at the table and then at you. "My mother said it was a phase. Fifteen years, it\'s been a phase." They laugh, and this time it\'s a real one, and they drink the cold coffee in one go.',
-    'c1.label': '"If I can help, I will."',
-    'c1.result.0': 'You say it simply, and {n} looks up. "You mean that," {n} says. "People say it and don\'t." Then: "I\'m going to remember you said it. I\'m going to hold you to it at the worst possible time." They refill your mug without being asked.',
-    'c1.result.1': '{n} doesn\'t answer at once. They take the terminal out and type something short and put it away again. "That\'s the date," {n} says. "And what you said. So I can show you later." They stand to go on watch, and at the hatch they say, "Thank you," to the hatch, and go.',
-  },
-  // Ines's own sittings (family.js sitLines): read in place of family:story-* when she is the one you sit with. Written to docs/bible/voice.md and docs/bible/people/ines.md.
+  // Ines's own sittings (family.js sitLines): read in place of her place's when she is the one you sit with. Written to docs/bible/voice.md and docs/bible/people/ines.md.
   'family:ines-home': {
     title: 'With Ines',
     'text.0': 'Ines is in the galley at the end of her watch, eating rehydrated eggs out of the pouch with a spoon. You ask about Lisbon. "Crowded," she says. "It\'s an arcology, it\'s all crowded." She scrapes the corner of the pouch. "My mum\'s still there, on the tier I grew up on. My brother\'s two tiers down with his wife and the baby. He fixes lifts, which in an arcology is basically being a doctor."',
@@ -3967,7 +3930,7 @@ const PEOPLE_LINES = {
     'c1.label': 'Ask if the lawyer\'s any good',
     'c1.result.0': '"He\'s what I can afford." She closes the list. "Flip in forty. Go and strap in."',
   },
-  // Tomas's own sittings (family.js sitLines), read in place of family:story-*. Written to docs/bible/voice.md and docs/bible/people/tomas.md.
+  // Tomas's own sittings (family.js sitLines). Written to docs/bible/voice.md and docs/bible/people/tomas.md.
   'family:tomas-home': {
     title: 'With Tomas',
     'text.0': 'Tomas is in the galley after his shift with his boots off, eating rice out of a tub. You ask about Lagos. "I\'m from the ring," he says. "Lagos is where my parents live. Surulere, the same flat. My father drove buses. My mother sells cloth." He eats. "I went up at twenty-two. I come down for funerals and Christmas."',
@@ -4037,7 +4000,7 @@ const PEOPLE_LINES = {
     'c1.label': 'Ask Tomas about Lagos',
     'c1.result.0': '"My mother says the landlord has put the rent up again and fixed nothing. She says that every year." He turns the match back on. "She\'s right every year."',
   },
-  // Cato's own sittings and talk (family.js sitLines, talkLines), read in place of the shared ones. Written to docs/bible/voice.md and docs/bible/people/cato.md.
+  // Cato's own sittings and talk (family.js sitLines, talkLines). Written to docs/bible/voice.md and docs/bible/people/cato.md.
   'family:cato-home': {
     title: 'With Cato',
     'text.0': 'Cato is in the galley with a pot of tea he has made too sweet for anyone else. You ask about Chittagong. "Hills," he says. "I grew up in the hills, outside the wall. Rooms by the week." He pours you a cup anyway. "My mother\'s inside the wall now. Two rooms over a cargo exchange. The lift runs all night, and she sleeps through it."',
@@ -4181,8 +4144,6 @@ const PEOPLE_LINES = {
   'family:visit-home': {  // the meal at their family's table (family.js visitHome), the place by culture, and the one choice: what you tell the family about them
     title: 'At {who}\'s Table',
     'text.earth': 'The flat is on the fourth tier of the ward, two rooms and a window that gives on the sea wall, and the wall book is on the shelf where another household would keep a picture. {who} has it open before the kettle has boiled, to the page with {n}\'s name on it. "Four shifts," {who} says. "Owed to the wall. I stand them." The meal is fish and a grain you don\'t know, on three plates, and {who} serves you first and {n} last. "They write that you sit with them," {who} says, and looks at {n}, and {n} looks at the plate. "Left over {left}," {who} says, to you. "You\'ll have heard. Everyone on this tier has heard."',
-    'text.mars': 'The household is under the third dome out from the hub, a door with the air share stenciled beside it, and {who} reads the number off to you before your name, the way you\'d read a hull number. Inside it\'s warm and close and smells of the soy they\'re cooking. "We argued about the share for a year," {who} says, setting a bowl in front of you. "Then {n} left, and there was a share for the sibling, and we stopped arguing." {n} eats. "They don\'t say that part in letters," {who} says. "They say the ship, and the food, and a shipmate who sits with them. That\'s you." The dome lights go to evening while you eat.',
-    'text.belt': 'The household is a hatch on the third deck of the Warren, and {who} taps the pipe beside it twice before opening, which {n} does too without noticing. Inside, the water share is written on the tap in marker, and under it, in a different hand, {n}\'s name, crossed out. "Not crossed out for bad," {who} says. "Crossed out for gone. The share went to the cousin." Soup, with real onion in it. {who} fills your bowl to the line and {n}\'s to the line and their own under it. "They write about a shipmate who sits," {who} says. "I said, which one. They said, the one who\'ll come up if you ask."',
     'kind.label': 'Say that aboard, {n} is the one people go to',
     'kind.result.0': 'You say it, and it\'s true, and {who} hears the whole of it. "They were that here," {who} says. "Before." They don\'t say before what. {n} looks at the window, and {who} puts another piece on your plate, and the talk goes to the ship, the food, the noise the recycler makes at night, which {n} has described, it turns out, in detail.',
     'kind.result.1': '{who} sets the spoon down. "That\'s the one I knew," {who} says. "I wondered whether they\'d taken that with them or left it here." {n} says, "Stop it," and {who} doesn\'t. You eat. When you look up {n} is watching {who} the way you watch a gauge come back into the green.',

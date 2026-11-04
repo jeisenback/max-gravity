@@ -28,12 +28,7 @@ const moodLow = p => !!(p && p.mood && p.mood.kind === 'low' && p.mood.until > G
 const moodHigh = p => !!(p && p.mood && p.mood.kind === 'high' && p.mood.until > G.state.day);
 
 // ---------- personal stories ----------
-const RELATIONS = ['mother', 'father', 'sister', 'brother', 'grandmother', 'daughter', 'son', 'best friend', 'old crew chief'];
-const HOME_DETAIL = {
-  belt: 'the hum of the recyclers, the tunnel markets, spin gravity you could argue with',
-  mars: 'dust storms that last a month, dome lights at dusk, everyone arguing about the future',
-  earth: 'too many people, real rain, and an ocean you could hear from the arcology at night',
-};
+const RELATIONS = ['mother', 'father', 'sister', 'brother', 'grandmother', 'daughter', 'son', 'best friend', 'old crew chief'];  // who is missed, for someone with no place and no story of their own (the parked game's other cast and its captains)
 const cultureOfPerson = p => p.culture || HOME_CULTURE[p.home] || 'earth';
 
 // An authored person (cast.js) has their own story in their entry. It replaces anything rolled before, and keeps the
@@ -41,9 +36,9 @@ const cultureOfPerson = p => p.culture || HOME_CULTURE[p.home] || 'earth';
 const authoredStory = p => { const d = p.cast ? CAST[p.cast] : p.captainKey ? CAPTAINS[p.captainKey] : null; return d ? d.story || null : null; };
 
 // The generated crew's place and circumstance (#871, docs/bible: each city's "Growing up here"): drawn once from the person's id, with no random number, so no
-// other draw moves; kept on the person. A home of Earth draws one of the four cities, and Ceres Station, Hermes Foundry, Luna, Mars, Phobos Yards, Ironheart, Juno Commons, Eros Old Town, Triton Outpost and the Belt's other homes their own; any other home draws none and keeps the
-// shared templates until its place is written. Adding a place is an entry here and its lines (peopletext.js), with no change to the code; `culture` is the
-// shared scenes' word for it (the visit's text.earth, text.mars, text.belt).
+// other draw moves; kept on the person. A home of Earth draws one of the four cities, and every other home its own (#885); a home not here draws none, and its
+// person has no story of their own and no sittings. A place is an entry here and its lines (peopletext.js), with no change to the code; `culture` is the shared
+// visit's word for it (text.earth, text.mars, text.belt).
 const ORIGINS = {
   lisbon: { home: 'Earth', culture: 'earth', kinds: ['wall', 'oldcity'] }, lagos: { home: 'Earth', culture: 'earth', kinds: ['mainland', 'ring'] },
   rotterdam: { home: 'Earth', culture: 'earth', kinds: ['southbank', 'polders'] }, chittagong: { home: 'Earth', culture: 'earth', kinds: ['hills', 'floors'] },
@@ -70,8 +65,7 @@ function originOf(p) {
 const moduleId = p => { const o = originOf(p); return o ? o.replace(':', '-') : null; };  // the sittings' tables, family:<city>-<kind>-<beat>
 // The words of the visit and the room by place (#871): the circumstance's own line (family:<scene>-<city>-<kind>, the family's rooms and street), else the city's
 // (its titles), else the shared scene's; each writes only what is its own.
-// A place's scenes are a story's only when the story was made from that place: a story from before (an old save) keeps the shared scenes, so nothing
-// contradicts what it has already said.
+// A place's scenes are a story's only when the story was made from that place; the cast's, with stories of their own, have the shared visit and room.
 const ownModule = p => { const s = storyOf(p), m = moduleId(p); return m && s.module === m ? m : null; };
 const placeTables = (p, id) => { const m = ownModule(p); return [m && `${id}-${m}`, m && `${id}-${m.split('-')[0]}`, id].filter(t => t && PEOPLE_LINES[`family:${t}`]); };
 const placeSay = (p, id) => { const tables = placeTables(p, id); return (key, vars) => familySay(tables.find(t => PEOPLE_LINES[`family:${t}`][key] !== undefined) || id)(key, vars); };
@@ -80,10 +74,11 @@ function storyOf(p) {
   const own = authoredStory(p);
   if (own && !(p.story && p.story.authored)) p.story = { ...own, authored: true, beat: p.story ? p.story.beat : 0 };
   if (!p.story) {
-    const rel = pick(RELATIONS), who = makePerson(cultureOfPerson(p));
-    p.story = { left: pick(familyLines('left')), rel, name: who.first, hope: pick(familyLines('hopes')).replace('{home}', p.home), favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 1000, beat: 0 };
-    const m = moduleId(p);  // a module's story (#871), after the same draws as before, so none moves; read through its lines, so an edit to them shows
+    const who = makePerson(cultureOfPerson(p));
+    p.story = { name: who.first, favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 1000, beat: 0 };
+    const m = moduleId(p);  // who is missed, what they left and hope for, and home, from the place's story (#871, #885); read through its lines, so an edit to them shows
     if (m && PEOPLE_LINES[`family:${m}-story`]) { const say = familySay(`${m}-story`); Object.assign(p.story, { rel: say('rel'), left: say('left'), hope: say('hope'), homeDetail: say('detail'), module: m, ...(PEOPLE_LINES[`family:${m}-story`].name ? { name: say('name') } : {}) }); }  // a module may name who is missed (Femi, Lagos Ring)
+    else p.story.rel = pick(RELATIONS);
   }
   return p.story;
 }
@@ -232,13 +227,14 @@ const politeScene = p => {
   return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2])}`, { n }), choices: [{ label: say('c0.label'), run() { like(p, 1, null); return say(`c0.result.${pick([0, 1])}`, { n }); } }] };
 };
 // The beats of a sitting, in order, each a scene built from the lines `id` names. An authored person with lines of their own for a beat (family:<cast>-<beat>, as family:ines-home) has
-// those read; everyone else the shared ones (family:story-<beat>). How many openings and results a beat has is how many its lines hold.
-const sitLines = (p, beat) => (p.cast && PEOPLE_LINES[`family:${p.cast}-${beat}`] ? `${p.cast}-${beat}` : ownModule(p) && PEOPLE_LINES[`family:${ownModule(p)}-${beat}`] ? `${ownModule(p)}-${beat}` : `story-${beat}`);  // a cast's own, then the place's (#871), then the shared template
+// those read, a generated one their place's (#871). Someone with neither (the parked game's other cast, captains and XOs) has no sittings yet (#885). How many openings and results a
+// beat has is how many its lines hold.
+const sitLines = (p, beat) => (p.cast && PEOPLE_LINES[`family:${p.cast}-${beat}`] ? `${p.cast}-${beat}` : ownModule(p) && PEOPLE_LINES[`family:${ownModule(p)}-${beat}`] ? `${ownModule(p)}-${beat}` : null);  // a cast's own, then the place's (#871)
 const talkLines = (p, kind) => (p.cast && PEOPLE_LINES[`family:${p.cast}-${kind}`] ? `${p.cast}-${kind}` : kind);  // the talk after a sitting (family:goeson, family:idle), the same way
 const variants = (id, key) => { let n = 0; while (PEOPLE_LINES[`family:${id}`][`${key}.${n}`] !== undefined) n++; return [...Array(n).keys()]; };
 const homeScene = (p, s, id = sitLines(p, 'home')) => {
   const say = familySay(id), n = p.first, talk = storyTalk(p, s), all = (key, v) => variants(id, key).map(i => say(`${key}.${i}`, v));
-  return { title: say('title', { n }), text: say(`text.${pick(variants(id, 'text'))}`, { n, home: p.home, detail: s.homeDetail || familyLines('home')[cultureOfPerson(p)], left: s.left }),
+  return { title: say('title', { n }), text: say(`text.${pick(variants(id, 'text'))}`, { n, home: p.home, detail: s.homeDetail, left: s.left }),
     choices: [talk(say('c0.label'), 1, all('c0.result', { n })), talk(say('c1.label'), 2, all('c1.result', { n }))] };
 };
 const pictureScene = (p, s, id = sitLines(p, 'picture')) => {
@@ -290,6 +286,7 @@ function sitBeat(p, isCrew) {
     const t = talkTopics(p).find(x => x.pressing);
     if (t) { p.pressed = pressKey; return leadOn(p, { title: t.title, text: t.open, choices: t.choices }); }
   }
+  if (s.beat < 3 && !sitLines(p, 'home')) return leadOn(p, ordinaryTalk(p));  // no sittings written for them
   if (s.beat > (p.opinion + 1) && s.beat < 4) return leadOn(p, politeScene(p));
   const beat = Object.values(SIT_BEATS)[s.beat];
   if (beat) return leadOn(p, beat(p, s));
@@ -326,9 +323,6 @@ const FAMILY_SCENES = {
   idle: p => idleTalk(p, 'idle'),
   goeson: p => goesOn(p, undefined, 'goeson'),
   polite: p => politeScene(p),
-  'story-home': p => homeScene(p, storyOf(p), 'story-home'),
-  'story-picture': p => pictureScene(p, storyOf(p), 'story-picture'),
-  'story-hope': p => hopeScene(p, storyOf(p), 'story-hope'),
   'favor-visit': p => visitFavor(p, Object.assign(storyOf(p), { favor: 'visit' })),
   visit: p => visitEvent(p),
   'visit-home': p => visitHome(p),
@@ -344,13 +338,13 @@ const FAMILY_SCENES = {
 };
 // The generated crew's scenes by place and circumstance (#871), listed with the family scenes for the editor and the lines tests: each module's three
 // sittings, its story (read at the family's table), and each city's visit home and room.
-const asOrigin = (city, kind) => p => { p.home = ORIGINS[city].home; p.culture = ORIGINS[city].culture; p.origin = `${city}:${kind}`; return p; };
+const asOrigin = (city, kind) => p => { delete p.cast; delete p.story; p.home = ORIGINS[city].home; p.culture = ORIGINS[city].culture; p.origin = `${city}:${kind}`; return p; };  // a generated person from that place
 for (const [city, o] of Object.entries(ORIGINS)) {
   for (const kind of o.kinds) {
     const m = `${city}-${kind}`, as = asOrigin(city, kind);
     if (!PEOPLE_LINES[`family:${m}-home`]) continue;
     for (const [beat, make] of Object.entries(SIT_BEATS)) FAMILY_SCENES[`${m}-${beat}`] = p => make(as(p), storyOf(p), `${m}-${beat}`);
-    FAMILY_SCENES[`${m}-story`] = p => { as(p); delete p.story; return visitHome(p); };
+    FAMILY_SCENES[`${m}-story`] = p => visitHome(as(p));
     for (const id of ['visit-home', 'room-offer', 'room-return']) if (PEOPLE_LINES[`family:${id}-${m}`]) FAMILY_SCENES[`${id}-${m}`] = p => FAMILY_SCENES[id](as(p));  // room.js's, at call time
   }
   for (const id of ['visit-home', 'room-offer', 'room-return']) if (PEOPLE_LINES[`family:${id}-${city}`]) FAMILY_SCENES[`${id}-${city}`] = p => FAMILY_SCENES[id](asOrigin(city, o.kinds[0])(p));

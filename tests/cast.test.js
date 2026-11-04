@@ -713,16 +713,16 @@ test('an authored character plays their own story, not an invented one', async (
   await done();
 });
 
-test('a generated crew member still gets a rolled story', async () => {
+test('a generated crew member gets their place\'s story', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     start({ mode: 'hired', post: 'gunner' });
-    const g = makeCrewCandidate('earth'); g.home = 'Titan'; registerPerson(g);  // a home with no place written yet (#871): the shared roll
-    const s = storyOf(g);
-    return { authored: !!s.authored, left: LEFT.includes(s.left), rel: RELATIONS.includes(s.rel) };
+    const g = makeCrewCandidate('earth'); g.home = 'Titan'; registerPerson(g);
+    const s = storyOf(g), lines = PEOPLE_LINES[`family:${s.module}-story`];
+    return { authored: !!s.authored, place: /^titan-/.test(s.module), left: s.left === lines.left, rel: s.rel === lines.rel };
   });
-  assert.deepEqual(r, { authored: false, left: true, rel: true });
+  assert.deepEqual(r, { authored: false, place: true, left: true, rel: true });
   await done();
 });
 
