@@ -41,11 +41,15 @@ const cultureOfPerson = p => p.culture || HOME_CULTURE[p.home] || 'earth';
 const authoredStory = p => { const d = p.cast ? CAST[p.cast] : p.captainKey ? CAPTAINS[p.captainKey] : null; return d ? d.story || null : null; };
 
 // The generated crew's place and circumstance (#871, docs/bible: each city's "Growing up here"): drawn once from the person's id, with no random number, so no
-// other draw moves; kept on the person. A home of Earth draws one of the four cities, Ceres Station draws Ceres; any other home draws none and keeps the
-// shared templates until its place is written. Adding a place is an entry here and its lines (peopletext.js), with no change to the code.
+// other draw moves; kept on the person. A home of Earth draws one of the four cities, and Ceres Station, Hermes Foundry, Luna, Mars and Phobos Yards their own; any other home draws none and keeps the
+// shared templates until its place is written. Adding a place is an entry here and its lines (peopletext.js), with no change to the code; `culture` is the
+// shared scenes' word for it (the visit's text.earth, text.mars, text.belt).
 const ORIGINS = {
-  lisbon: { home: 'Earth', kinds: ['wall', 'oldcity'] }, lagos: { home: 'Earth', kinds: ['mainland', 'ring'] }, rotterdam: { home: 'Earth', kinds: ['southbank', 'polders'] },
-  chittagong: { home: 'Earth', kinds: ['hills', 'floors'] }, ceres: { home: 'Ceres Station', kinds: ['member', 'renter'] },
+  lisbon: { home: 'Earth', culture: 'earth', kinds: ['wall', 'oldcity'] }, lagos: { home: 'Earth', culture: 'earth', kinds: ['mainland', 'ring'] },
+  rotterdam: { home: 'Earth', culture: 'earth', kinds: ['southbank', 'polders'] }, chittagong: { home: 'Earth', culture: 'earth', kinds: ['hills', 'floors'] },
+  ceres: { home: 'Ceres Station', culture: 'belt', kinds: ['member', 'renter'] },
+  hermes: { home: 'Hermes Foundry', culture: 'earth', kinds: ['quarters', 'fins'] }, luna: { home: 'Luna', culture: 'earth', kinds: ['licensed', 'dust'] },  // #885
+  mars: { home: 'Mars', culture: 'mars', kinds: ['hub', 'edge'] }, phobos: { home: 'Phobos Yards', culture: 'mars', kinds: ['shipwright', 'docks'] },
 };
 const idHash = s => { let h = 2166136261; for (const ch of String(s)) { h ^= ch.charCodeAt(0); h = Math.imul(h, 16777619) >>> 0; } return h; };  // FNV-1a
 function originOf(p) {
@@ -333,7 +337,7 @@ const FAMILY_SCENES = {
 };
 // The generated crew's scenes by place and circumstance (#871), listed with the family scenes for the editor and the lines tests: each module's three
 // sittings, its story (read at the family's table), and each city's visit home and room.
-const asOrigin = (city, kind) => p => { p.home = ORIGINS[city].home; p.culture = p.home === 'Earth' ? 'earth' : 'belt'; p.origin = `${city}:${kind}`; return p; };
+const asOrigin = (city, kind) => p => { p.home = ORIGINS[city].home; p.culture = ORIGINS[city].culture; p.origin = `${city}:${kind}`; return p; };
 for (const [city, o] of Object.entries(ORIGINS)) {
   for (const kind of o.kinds) {
     const m = `${city}-${kind}`, as = asOrigin(city, kind);

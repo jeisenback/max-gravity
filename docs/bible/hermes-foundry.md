@@ -1,6 +1,6 @@
 # Hermes Foundry
 
-Status: draft for the owner's review, 2026-11-04. Built on `economy.md`, `work.md` and `jurisdictions.md`.
+Status: approved by the owner on 2026-11-04. Built on `economy.md`, `work.md` and `jurisdictions.md`.
 
 ## The place
 

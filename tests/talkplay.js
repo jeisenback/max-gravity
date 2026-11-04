@@ -11,7 +11,7 @@ const playTalk = () => {
   while (G.dialog) finishEvent();
   let st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000;
   st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
-  const mk = (first, over = {}) => { const p = makePerson('mars'); Object.assign(p, { first, last: 'Vale', home: 'Mars', traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [], role: 'engineer', skill: 1 }, over); delete p.story; registerPerson(p); return p; };
+  const mk = (first, over = {}) => { const p = makePerson('mars'); Object.assign(p, { first, last: 'Vale', home: 'Titan',  /* a home with no place written yet, so the shared scenes play (#885) */ traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [], role: 'engineer', skill: 1 }, over); delete p.story; registerPerson(p); return p; };
   const base = mk('Sam'); st.crew = [base.id];
   const snap = JSON.stringify(G.state), PID = base.id;
   const seen = (p, s) => ({ op: p.opinion, mem: p.memories.slice(-1)[0] || null, until: p.mood ? p.mood.until - s.day : null, beat: p.story ? p.story.beat : null, promised: p.story ? !!p.story.promised : null, loyal: !!p.loyal, credits: s.credits, missions: s.missions.map(m => m.title), pressed: p.pressed || null, log: s.home ? s.home.log.map(l => l.text) : null });
@@ -106,7 +106,7 @@ const playTalk = () => {
   // the generated crew by place and circumstance (#871): each module's three sittings and its story read at the family's table, and each city's visit and room
   for (const [city, o] of Object.entries(ORIGINS)) {
     for (const kind of o.kinds) {
-      const m = `${city}-${kind}`, as = p => { p.home = o.home; p.culture = o.home === 'Earth' ? 'earth' : 'belt'; p.origin = `${city}:${kind}`; delete p.story; };
+      const m = `${city}-${kind}`, as = p => { p.home = o.home; p.culture = o.culture; p.origin = `${city}:${kind}`; delete p.story; };
       if (!PEOPLE_LINES[`family:${m}-home`]) continue;
       for (const b of [0, 1, 2]) play(`sit:${b}:${m}`, p => { as(p); storyOf(p).beat = b; p.opinion = 3; }, p => sitBeat(p, true));
       play(`visit-home:${m}`, p => { as(p); storyOf(p); }, p => visitHome(p));
@@ -121,9 +121,9 @@ const playTalk = () => {
   play('errand:clinic', (p, s) => { s.injured = { [p.id]: true }; }, p => errandEvent(p));
   // who the visit is due for: the home, the regard, the gap, and a promise kept
   { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; const rec = {};
-    rec.away = visitDue(st, 'Ceres Station', null) && 'yes'; p.opinion = OPINION.TRUSTED; rec.cold = visitDue(st, 'Ceres Station', null) && 'yes'; rec.home = visitDue(st, 'Mars', null) === p;
-    p.visitedAt = st.day - 10; rec.soon = visitDue(st, 'Mars', null) && 'yes'; p.visitedAt = st.day - 60; rec.again = visitDue(st, 'Mars', null) === p;
-    p.opinion = 0; p.visitedAt = undefined; rec.favor = visitDue(st, 'Mars', p.id) === p;
+    rec.away = visitDue(st, 'Ceres Station', null) && 'yes'; p.opinion = OPINION.TRUSTED; rec.cold = visitDue(st, 'Ceres Station', null) && 'yes'; rec.home = visitDue(st, 'Titan', null) === p;
+    p.visitedAt = st.day - 10; rec.soon = visitDue(st, 'Titan', null) && 'yes'; p.visitedAt = st.day - 60; rec.again = visitDue(st, 'Titan', null) === p;
+    p.opinion = 0; p.visitedAt = undefined; rec.favor = visitDue(st, 'Titan', p.id) === p;
     out.push({ key: 'visit:due', text: JSON.stringify(rec) }); }
   // the picker: who is aboard, how they are
   play('picker', (p, s) => { const o = mk('Ana', { role: 'pilot' }); s.crew.push(o.id); s.injured = { [o.id]: true }; p.mood = { kind: 'low', until: s.day + 40, text: 'x' }; }, p => sitPicker(), 1);

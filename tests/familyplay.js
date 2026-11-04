@@ -16,7 +16,7 @@ const playFamily = () => {
   const mk = (culture, extra = {}) => { const p = makePerson(culture); Object.assign(p, { first: 'Sam', last: 'Vale', home: 'Mars', traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [] }, extra); delete p.story; registerPerson(p); return p; };
   const reset = () => { st.crew = []; st.injured = {}; };
   // what a story is rolled from: what they left and what they hope for, over many dice
-  for (let i = 0; i < 80; i++) { reset(); __seed(100 + i); const p = mk(['belt', 'mars', 'earth'][i % 3], { home: ['Mars', 'Ceres Station', 'Earth'][i % 3] }); const s = storyOf(p); note(`story:${i}`, [s.left, s.hope, s.rel]); }
+  for (let i = 0; i < 80; i++) { reset(); __seed(100 + i); const p = mk(['belt', 'mars', 'earth'][i % 3], { home: ['Titan', 'Ceres Station', 'Earth'][i % 3] }  /* Titan has no place yet: the shared story's rolls (#885) */); const s = storyOf(p); note(`story:${i}`, [s.left, s.hope, s.rel]); }
   // the first sitting: where they are from, for each culture, and the line they left for
   ['belt', 'mars', 'earth'].forEach((c, i) => { reset(); __seed(200 + i); const p = mk(c); const e = sitBeat(p, true); note(`beat0:${c}`, [e.title, e.text, e.choices.map(x => String(x.label))]); });
   { reset(); __seed(210); const p = mk('belt'); storyOf(p).homeDetail = 'a hand-picked detail'; note('beat0:detail', sitBeat(p, true).text); }
