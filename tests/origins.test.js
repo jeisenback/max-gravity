@@ -11,17 +11,18 @@ after(closeBrowser);
 const hand = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); };
 const crewFrom = home => { const p = makePerson('earth'); p.home = home; registerPerson(p); return p; };
 
-test('an Earth crew member draws one of the four cities and a circumstance, Ceres, Luna, Mars, Hermes Foundry and Phobos Yards draw their own, and others none', async () => {
+test('an Earth crew member draws one of the four cities and a circumstance, Ceres, Luna, Mars, Hermes Foundry, Phobos Yards, Ironheart, Juno Commons, Eros Old Town and Triton Outpost draw their own, and others none', async () => {
   const { ev, done } = await open();
   const r = await ev(([h, c]) => { (0, eval)(`(${h})`)(); const crewFrom = (0, eval)(`(${c})`);
     const earth = Array.from({ length: 12 }, () => originOf(crewFrom('Earth')));
-    return { earth, ceres: originOf(crewFrom('Ceres Station')), luna: originOf(crewFrom('Luna')), mars: originOf(crewFrom('Mars')), hermes: originOf(crewFrom('Hermes Foundry')), phobos: originOf(crewFrom('Phobos Yards')), europa: originOf(crewFrom('Europa')), titan: originOf(crewFrom('Titan')) };
+    return { earth, ceres: originOf(crewFrom('Ceres Station')), luna: originOf(crewFrom('Luna')), mars: originOf(crewFrom('Mars')), hermes: originOf(crewFrom('Hermes Foundry')), phobos: originOf(crewFrom('Phobos Yards')), ironheart: originOf(crewFrom('Ironheart')), juno: originOf(crewFrom('Juno Commons')), eros: originOf(crewFrom('Eros Old Town')), triton: originOf(crewFrom('Triton Outpost')), europa: originOf(crewFrom('Europa')), titan: originOf(crewFrom('Titan')) };
   }, [hand.toString(), crewFrom.toString()]);
   await done();
   for (const o of r.earth) assert.match(o, /^(lisbon:(wall|oldcity)|lagos:(mainland|ring)|rotterdam:(southbank|polders)|chittagong:(hills|floors))$/, o);
   assert.ok(new Set(r.earth.map(o => o.split(':')[0])).size >= 2, 'more than one city is drawn');
   assert.match(r.ceres, /^ceres:(member|renter)$/);
   assert.match(r.luna, /^luna:(licensed|dust)$/); assert.match(r.mars, /^mars:(hub|edge)$/); assert.match(r.hermes, /^hermes:(quarters|fins)$/); assert.match(r.phobos, /^phobos:(shipwright|docks)$/);  // #885
+  assert.match(r.ironheart, /^ironheart:(claim|tailings)$/); assert.match(r.juno, /^juno:(rooted|incomers)$/); assert.match(r.eros, /^eros:(silver|dark)$/); assert.match(r.triton, /^triton:(domes|supply)$/);  // #885
   assert.equal(r.europa, null); assert.equal(r.titan, null);  // a place not yet written
 });
 
@@ -106,3 +107,7 @@ test('Hermes Foundry\'s scenes are whole', cityScenes('hermes'));
 test('Luna\'s scenes are whole', cityScenes('luna'));
 test('Mars\'s scenes are whole', cityScenes('mars'));
 test('Phobos Yards\'s scenes are whole', cityScenes('phobos'));
+test('Ironheart\'s scenes are whole', cityScenes('ironheart'));
+test('Juno Commons\'s scenes are whole', cityScenes('juno'));
+test('Eros Old Town\'s scenes are whole', cityScenes('eros'));
+test('Triton Outpost\'s scenes are whole', cityScenes('triton'));
