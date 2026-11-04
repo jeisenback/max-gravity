@@ -13,10 +13,10 @@ const playFamily = () => {
   while (G.dialog) finishEvent();
   const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000;
   st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
-  const mk = (culture, extra = {}) => { const p = makePerson(culture); Object.assign(p, { first: 'Sam', last: 'Vale', home: 'Mars', traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [] }, extra); delete p.story; registerPerson(p); return p; };
+  const mk = (culture, extra = {}) => { const p = makePerson(culture); Object.assign(p, { first: 'Sam', last: 'Vale', home: 'Titan', traits: ['kind', 'brave'], secret: null, opinion: 0, memories: [] }, extra); delete p.story; registerPerson(p); return p; };
   const reset = () => { st.crew = []; st.injured = {}; };
   // what a story is rolled from: what they left and what they hope for, over many dice
-  for (let i = 0; i < 80; i++) { reset(); __seed(100 + i); const p = mk(['belt', 'mars', 'earth'][i % 3], { home: ['Mars', 'Ceres Station', 'Earth'][i % 3] }); const s = storyOf(p); note(`story:${i}`, [s.left, s.hope, s.rel]); }
+  for (let i = 0; i < 80; i++) { reset(); __seed(100 + i); const p = mk(['belt', 'mars', 'earth'][i % 3], { home: ['Titan', 'Europa', 'Triton Outpost'][i % 3] }  /* homes with no place yet, so the shared story rolls for each culture (#871, #885); the places' stories are the talk pin's */); const s = storyOf(p); note(`story:${i}`, [s.left, s.hope, s.rel]); }
   // the first sitting: where they are from, for each culture, and the line they left for
   ['belt', 'mars', 'earth'].forEach((c, i) => { reset(); __seed(200 + i); const p = mk(c); const e = sitBeat(p, true); note(`beat0:${c}`, [e.title, e.text, e.choices.map(x => String(x.label))]); });
   { reset(); __seed(210); const p = mk('belt'); storyOf(p).homeDetail = 'a hand-picked detail'; note('beat0:detail', sitBeat(p, true).text); }
