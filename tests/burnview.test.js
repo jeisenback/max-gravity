@@ -431,7 +431,7 @@ test('a scene at night wakes the one it is about, and the rest sleep on', async 
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(() => {
-    const t = stageBurn(); t.elapsed = 24;  // night
+    const t = stageBurn(); t.elapsed = 24; t.dark = true;  // night, the lights already down
     const sleepers = shipPeople().filter(p => p.id && p.id !== 'you' && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role)).slice(0, 2);
     const b = ROOMS.find(x => x.id === 'berths');
     sleepers.forEach((p, i) => Object.assign(p, { room: 'berths', x: b.x0 + 0.05 + i * 0.05, dk: 0, tdk: 0, tx: null, wait: 999 }));
@@ -468,6 +468,24 @@ test('someone in the way of a scene, who is not in it, leaves for their next roo
   });
   await done();
   assert.ok(r.left, 'the one in the way is gone to another room'); assert.ok(r.cap, 'and the scene is on the bridge');
+});
+
+test('a scene in the berths at night does not get the sleepers up, and arriving at a scene draws none of the game\'s dice', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    const t = stageBurn(); t.elapsed = 24; t.dark = true;  // night, the lights already down
+    const b = ROOMS.find(x => x.id === 'berths'), sleeper = shipPeople().find(p => p.id && p.id !== 'you' && p.role !== 'cat' && p.role !== 'captain' && !NIGHT_WATCH.includes(p.role));
+    Object.assign(sleeper, { room: 'berths', x: b.mid, dk: 0, tdk: 0, tx: null, wait: 999 });
+    const mate = shipPeople().find(p => p.id && p.id !== 'you' && p !== sleeper && p.role !== 'cat' && p.role !== 'captain');
+    sayScene(`With ${mate.name}`, `${mate.name} is sitting on a bunk, awake.`); tickFor(25);
+    const real = Math.random; let draws = 0; Math.random = () => { draws++; return real(); };
+    const you = aboardBy('you'); Object.assign(you, { tx: you.x + 0.001 }); lifeTick(1 / 30); Math.random = real;  // arriving at the spot
+    return { asleep: isAsleep(sleeper), x: sleeper.x, mid: b.mid, staged: !!mate.staged, draws };
+  });
+  await done();
+  assert.ok(r.staged, 'the scene is staged in the berths'); assert.ok(r.asleep && Math.abs(r.x - r.mid) < 1e-6, 'the sleeper sleeps on where they lie');
+  assert.equal(r.draws, 0, 'arriving at a scene draws no dice');
 });
 
 test('a scene at the couches moves nobody', async () => {

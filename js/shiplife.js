@@ -247,7 +247,7 @@ function shipPeople() {
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
   people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), dk: 0, tdk: 0, tx: null, wait: rand(1, 4), seat: couchX(i, people.length) }));
-  // A hand's captain is aboard too, strapped in on the bridge beside the hand's couch: placed without a random draw, so the game's dice fall as before.
+  // A hand's captain is aboard too, strapped in on the bridge beside the hand's couch: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
   const cap = hiredCaptain(), bx = roomAt('bridge').mid + 0.025;
   if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: 0, tdk: 0, tx: null, wait: 3, seat: bx });
   return (t.aboard = people);
@@ -300,8 +300,7 @@ function posture(p, ph, time, asleep) {
 // apart, each facing the group's middle (the one in the middle faces you); those not in it are let go, and when it closes everyone is, to go
 // back to their routine after a few seconds. Only in the move phase: at the couches, the straps and the flip nobody gets up.
 const SEATED_STATIONS = ['bridge', 'gunnery', 'medbay'];
-function stageScene(people, ph) {
-  const t = G.transit, open = (G.dialog && G.dialog.event) || null;
+function stageScene(people, ph, t, open) {
   if (open === t.stageOf) return;
   t.stageOf = open; t.stageSpan = null;
   const stage = open && ph === 'move' ? sceneStage(open, people, scenePeople(open).map(c => c.id)) : null, ids = new Set(stage ? stage.ids : []);
@@ -314,9 +313,9 @@ function stageScene(people, ph) {
 }
 
 // Anyone standing or heading where a scene's people gather, who is not in it, leaves for their next-favourite room, to a spot a little apart from
-// the others sent there (no draw of the game's dice): a word with the captain or a hard letter is given the room.
+// the others sent there (no draw of the game's dice): a word with the captain or a hard letter is given the room. Someone asleep there sleeps on.
 function stepAside(p, span) {
-  if (!span || p.staged || p.room !== span.room || p.tdk !== span.deck) return;
+  if (!span || p.staged || isAsleep(p) || p.room !== span.room || p.tdk !== span.deck) return;
   const at = p.tx !== null ? p.tx : p.x;  // where they are, or where they are going in that room
   if (at <= span.lo || at >= span.hi) return;
   const alt = Object.entries(HAUNTS[p.role] || HAUNTS.passenger).filter(([id]) => id !== span.room).sort((a, b) => b[1] - a[1])[0][0], r = roomAt(alt), k = (span.sent[alt] = (span.sent[alt] || 0) + 1) - 1;
@@ -332,7 +331,7 @@ function lifeTick(dt) {
     comm(`[Ship] ${lineWords('lines:ship-lights', dark ? 'dusk' : 'dawn', LIFE_NOTES[dark ? 'dusk' : 'dawn'])}`);
     for (const p of people) if (!NIGHT_WATCH.includes(p.role)) p.wait = Math.min(p.wait, rand(0.2, 3));
   }
-  stageScene(people, ph);
+  stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
   for (const p of people) {
     if (ph === 'secure' || ph === 'float') {  // strap in where they are; someone on the ladder finishes onto a deck
       p.tx = null; p.tdk = Math.round(p.dk);
@@ -349,8 +348,9 @@ function lifeTick(dt) {
       p.face = Math.sign(p.tx - p.x) || p.face;
       p.x += Math.max(-step, Math.min(step, p.tx - p.x));
       if (Math.abs(p.tx - p.x) < 0.002) {
-        p.tx = null; p.wait = rand(5, 12);
-        if (p.staged) { p.face = p.faceTo || p.face; continue; }  // in place for the scene, facing the others
+        p.tx = null;
+        if (p.staged) { p.face = p.faceTo || p.face; continue; }  // in place for the scene, facing the others: no draw of the game's dice
+        p.wait = rand(5, 12);
         if (p.role !== 'you' && Math.random() < 0.18 && !lifeHushed(lifeState())) {
           const line = lifeLine(p, people);
           if (line) comm(`[Ship] ${line}`);
