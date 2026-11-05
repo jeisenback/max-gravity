@@ -21,6 +21,24 @@ const ROOMS = [
 const LADDER = 0.62;
 for (const r of ROOMS) { r.w = r.x1 - r.x0; r.mid = (r.x0 + r.x1) / 2; }
 const roomAt = id => ROOMS.find(r => r.id === id);
+
+// ---------- scenes staged ----------
+// Where a scene open in a burn is acted out, and who goes there (docs/superpowers/specs/2026-11-05-scenes-staged-design.md): the room the scene
+// sets, else the first room its words name, else the bridge for the captain, the berths for a passenger, the galley otherwise. `aboard` is the
+// cutaway's people ({ id, role }), `staged` the ids the scene names (scenePeople, character.js). null when nobody it names is aboard, or for a fight.
+const SCENE_ROOM_WORDS = {
+  galley: /\b(galley|the mess|the table)\b/i, bridge: /\b(bridge|cockpit)\b/i, engine: /\b(engine room|the drive)\b/i, hold: /\b(the hold|cargo bay)\b/i,
+  medbay: /\b(medbay|clinic bunk)\b/i, berths: /\b(berths?|bunks?)\b/i, gunnery: /\b(gunnery|the guns)\b/i,
+};
+function sceneStage(ev, aboard, staged) {
+  if (!ev || ev.board) return null;
+  const by = new Map(aboard.map(p => [p.id, p])), named = staged.filter(id => id !== 'you' && by.has(id));
+  if (!named.length) return null;
+  const words = `${ev.title || ''} ${ev.text || ''}`, said = Object.entries(SCENE_ROOM_WORDS).map(([room, re]) => [room, words.search(re)]).filter(([, at]) => at >= 0).sort((a, b) => a[1] - b[1]);
+  const has = role => named.some(id => by.get(id).role === role);
+  const room = (ev.room && roomAt(ev.room) && ev.room) || (said[0] && said[0][0]) || (has('captain') ? 'bridge' : has('passenger') ? 'berths' : 'galley');
+  return { room, ids: ['you', ...named] };
+}
 // The room under a point on the screen: the outline's first, then the rooms in view, from what the last cutaway drawing recorded.
 function roomAtPoint(x, y) {
   const r = (G.cutRooms || []).find(b => x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h);
