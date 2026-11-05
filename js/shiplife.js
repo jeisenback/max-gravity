@@ -21,6 +21,24 @@ const ROOMS = [
 const LADDER = 0.62;
 for (const r of ROOMS) { r.w = r.x1 - r.x0; r.mid = (r.x0 + r.x1) / 2; }
 const roomAt = id => ROOMS.find(r => r.id === id);
+
+// ---------- scenes staged ----------
+// Where a scene open in a burn is acted out, and who goes there (docs/superpowers/specs/2026-11-05-scenes-staged-design.md): the room the scene
+// sets, else the first room its words name, else the bridge for the captain, the berths for a passenger, the galley otherwise. `aboard` is the
+// cutaway's people ({ id, role }), `staged` the ids the scene names (scenePeople, character.js). null when nobody it names is aboard, or for a fight.
+const SCENE_ROOM_WORDS = {
+  galley: /\b(galley|the mess|the table)\b/i, bridge: /\b(bridge|cockpit)\b/i, engine: /\b(engine room|the drive)\b/i, hold: /\b(the hold|cargo bay)\b/i,
+  medbay: /\b(medbay|clinic bunk)\b/i, berths: /\b(berths?|bunks?)\b/i, gunnery: /\b(gunnery|the guns)\b/i,
+};
+function sceneStage(ev, aboard, staged) {
+  if (!ev || ev.board) return null;
+  const by = new Map(aboard.map(p => [p.id, p])), named = staged.filter(id => id !== 'you' && by.has(id));
+  if (!named.length) return null;
+  const words = `${ev.title || ''} ${ev.text || ''}`, said = Object.entries(SCENE_ROOM_WORDS).map(([room, re]) => [room, words.search(re)]).filter(([, at]) => at >= 0).sort((a, b) => a[1] - b[1]);
+  const has = role => named.some(id => by.get(id).role === role);
+  const room = (ev.room && roomAt(ev.room) && ev.room) || (said[0] && said[0][0]) || (has('captain') ? 'bridge' : has('passenger') ? 'berths' : 'galley');
+  return { room, ids: ['you', ...named] };
+}
 // The room under a point on the screen: the outline's first, then the rooms in view, from what the last cutaway drawing recorded.
 function roomAtPoint(x, y) {
   const r = (G.cutRooms || []).find(b => x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h);
@@ -40,9 +58,10 @@ const HAUNTS = {
   cook: { galley: 6, hold: 1, berths: 1 },
   icehand: { hold: 5, galley: 2, berths: 2 },
   passenger: { berths: 4, galley: 3, medbay: 1 },
+  captain: { bridge: 6, galley: 2, berths: 1 },  // the hired captain (hired.js)
   cat: { engine: 4, galley: 3, berths: 2, bridge: 1, hold: 1 },
 };
-const ROLE_COLORS = { you: '#d9d4cc', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', xo: '#e8e8f0', cook: '#e8a0a0', icehand: '#8fd8e8', passenger: '#9aa7b5', cat: '#b8aca0' };
+const ROLE_COLORS = { you: '#d9d4cc', captain: '#b9c4d0', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', xo: '#e8e8f0', cook: '#e8a0a0', icehand: '#8fd8e8', passenger: '#9aa7b5', cat: '#b8aca0' };
 
 // The ship's day: every SHIP_DAY seconds of a burn the lights go down for a night, and everyone who is not on watch turns in.
 // 0 in the day, 1 at night, and a ramp at dusk and dawn. A burn starts in the morning.
@@ -55,7 +74,7 @@ function nightLevel() {
 }
 const isDark = () => nightLevel() > 0.3;
 const nightHaunts = role => NIGHT_WATCH.includes(role) ? HAUNTS[role] : role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 };
-const isAsleep = p => isDark() && p.room === 'berths' && p.tx === null && p.dk === 0 && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role) && phase() === 'move';
+const isAsleep = p => !p.staged && isDark() && p.room === 'berths' && p.tx === null && p.dk === 0 && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role) && phase() === 'move';
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {
@@ -218,7 +237,7 @@ function lifeLine(p, crowd) {
 // ---------- the people aboard ----------
 function shipPeople() {
   const t = G.transit;
-  if (t.aboard) return (t.aboard = t.aboard.filter(p => p.role === 'you' || p.role === 'cat' || p.role === 'passenger' || G.state.crew.includes(p.id)));  // the burn keeps its people's places, but someone lost on the way is no longer aboard
+  if (t.aboard) return (t.aboard = t.aboard.filter(p => p.role === 'you' || p.role === 'cat' || p.role === 'passenger' || p.role === 'captain' || G.state.crew.includes(p.id)));  // the burn keeps its people's places, but someone lost on the way is no longer aboard
   const people = [{ name: 'You', role: 'you', id: 'you' }];
   for (const c of crewMembers()) people.push({ name: c.first, role: c.role, id: c.id });
   for (const m of paxAboard().slice(0, 4)) {
@@ -228,6 +247,9 @@ function shipPeople() {
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
   people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), dk: 0, tdk: 0, tx: null, wait: rand(1, 4), seat: couchX(i, people.length) }));
+  // A hand's captain is aboard too, strapped in on the bridge beside the hand's couch: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
+  const cap = hiredCaptain(), bx = roomAt('bridge').mid + 0.025;
+  if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: 0, tdk: 0, tx: null, wait: 3, seat: bx });
   return (t.aboard = people);
 }
 
@@ -238,7 +260,7 @@ function goTo(p, roomId) {
   const r = roomAt(roomId);
   p.room = roomId;
   p.tdk = r.deck;
-  p.tx = r.x0 + r.w * rand(0.25, 0.75);
+  p.tx = r.x0 + r.w * (p.role === 'captain' ? 0.6 : rand(0.25, 0.75));  // the captain's place takes no draw of the game's dice (hired.js's captain was added after the dice were set)
 }
 
 function weighted(table) {
@@ -268,9 +290,36 @@ function posture(p, ph, time, asleep) {
   else if (ph === 'float') name = p.role === 'engineer' ? 'tether' : 'strap';
   else if (p.dk !== p.tdk) name = 'climb';
   else if (p.tx !== null) name = 'walk';
+  else if (p.staged) name = p.staged === 'galley' || p.staged === 'berths' || (p.role === 'captain' && SEATED_STATIONS.includes(p.staged)) ? 'sit' : 'stand';  // at the table or a bunk's edge; the captain at the station
   else name = ['galley', 'gunnery', 'bridge', 'medbay'].includes(p.room) ? 'sit' : 'stand';
   const { frames, fps } = POSTURES[name];
   return { name, x: p.x, deck: p.dk, face: p.face || 1, frame: fps ? Math.floor(time * fps) % frames : 0 };
+}
+
+// The scene open in a burn, acted out: when it opens (or the next one in a chain opens) those it stages walk to spots in its room, a little
+// apart, each facing the group's middle (the one in the middle faces you); those not in it are let go, and when it closes everyone is, to go
+// back to their routine after a few seconds. Only in the move phase: at the couches, the straps and the flip nobody gets up.
+const SEATED_STATIONS = ['bridge', 'gunnery', 'medbay'];
+function stageScene(people, ph, t, open) {
+  if (open === t.stageOf) return;
+  t.stageOf = open; t.stageSpan = null;
+  const stage = open && ph === 'move' ? sceneStage(open, people, scenePeople(open).map(c => c.id)) : null, ids = new Set(stage ? stage.ids : []);
+  for (const p of people) if (p.staged && !ids.has(p.id)) { p.staged = undefined; p.faceTo = undefined; p.wait = 3; }  // a fixed linger: staging draws none of the game's dice
+  if (!stage) return;
+  const r = roomAt(stage.room), cast = stage.ids.map(id => people.find(q => q.id === id)).filter(Boolean), n = cast.length;
+  const spots = cast.map((_, i) => Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.mid + (i - (n - 1) / 2) * 0.03))), mid = spots.reduce((a, b) => a + b, 0) / n;
+  cast.forEach((p, i) => { Object.assign(p, { staged: stage.room, room: stage.room, tdk: r.deck, tx: spots[i] }); p.faceTo = Math.sign(mid - spots[i]) || Math.sign(spots[0] - spots[i]) || 1; });
+  t.stageSpan = { room: stage.room, deck: r.deck, lo: spots[0] - 0.03, hi: spots[n - 1] + 0.03, sent: {} };  // where they gather: kept clear (stepAside)
+}
+
+// Anyone standing or heading where a scene's people gather, who is not in it, leaves for their next-favourite room, to a spot a little apart from
+// the others sent there (no draw of the game's dice): a word with the captain or a hard letter is given the room. Someone asleep there sleeps on.
+function stepAside(p, span) {
+  if (!span || p.staged || isAsleep(p) || p.room !== span.room || p.tdk !== span.deck) return;
+  const at = p.tx !== null ? p.tx : p.x;  // where they are, or where they are going in that room
+  if (at <= span.lo || at >= span.hi) return;
+  const alt = Object.entries(HAUNTS[p.role] || HAUNTS.passenger).filter(([id]) => id !== span.room).sort((a, b) => b[1] - a[1])[0][0], r = roomAt(alt), k = (span.sent[alt] = (span.sent[alt] || 0) + 1) - 1;
+  Object.assign(p, { room: alt, tdk: r.deck, tx: Math.min(r.x1 - 0.01, r.x0 + r.w * 0.3 + 0.02 * k) });
 }
 
 function lifeTick(dt) {
@@ -282,6 +331,7 @@ function lifeTick(dt) {
     comm(`[Ship] ${lineWords('lines:ship-lights', dark ? 'dusk' : 'dawn', LIFE_NOTES[dark ? 'dusk' : 'dawn'])}`);
     for (const p of people) if (!NIGHT_WATCH.includes(p.role)) p.wait = Math.min(p.wait, rand(0.2, 3));
   }
+  stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
   for (const p of people) {
     if (ph === 'secure' || ph === 'float') {  // strap in where they are; someone on the ladder finishes onto a deck
       p.tx = null; p.tdk = Math.round(p.dk);
@@ -289,7 +339,8 @@ function lifeTick(dt) {
       continue;
     }
     if (ph !== 'move') { const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
-    const step = 0.06 * dt;
+    stepAside(p, G.transit.stageSpan);
+    const step = (p.staged ? 0.09 : 0.06) * dt;  // to a scene a little faster
     if (p.dk !== p.tdk) {  // to the ladder, then up or down it
       if (Math.abs(LADDER - p.x) > 0.003) { p.face = Math.sign(LADDER - p.x) || p.face; p.x += Math.max(-step, Math.min(step, LADDER - p.x)); }
       else p.dk += Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
@@ -297,13 +348,15 @@ function lifeTick(dt) {
       p.face = Math.sign(p.tx - p.x) || p.face;
       p.x += Math.max(-step, Math.min(step, p.tx - p.x));
       if (Math.abs(p.tx - p.x) < 0.002) {
-        p.tx = null; p.wait = rand(5, 12);
+        p.tx = null;
+        if (p.staged) { p.face = p.faceTo || p.face; continue; }  // in place for the scene, facing the others: no draw of the game's dice
+        p.wait = rand(5, 12);
         if (p.role !== 'you' && Math.random() < 0.18 && !lifeHushed(lifeState())) {
           const line = lifeLine(p, people);
           if (line) comm(`[Ship] ${line}`);
         }
       }
-    } else if ((p.wait -= dt) <= 0) {
+    } else if (!p.staged && (p.wait -= dt) <= 0) {
       goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role]));
     }
   }
@@ -484,7 +537,7 @@ const ACTIVITIES = {
     get label() { return lifeSay('drills.label'); }, can: () => !G.transit.drilled,
     run() {
       G.transit.drilled = true;
-      for (const p of shipPeople()) goTo(p, p.role === 'you' ? 'bridge' : pick(['hold', 'bridge', 'engine']));
+      for (const p of shipPeople()) goTo(p, p.role === 'you' ? 'bridge' : p.role === 'captain' ? 'bridge' : pick(['hold', 'bridge', 'engine']));
       return lifeSay(tellingOn('drills.result', G.state.day));
     },
   },
@@ -493,7 +546,7 @@ const ACTIVITIES = {
     run() {
       const max = ship().armor, amount = Math.round(max * (roleSkill('engineer') ? 0.4 : 0.2)), before = G.state.armor;
       G.state.armor = Math.min(max, before + amount);
-      for (const p of shipPeople()) goTo(p, p.role === 'passenger' ? 'galley' : pick(['engine', 'hold']));
+      for (const p of shipPeople()) goTo(p, p.role === 'passenger' ? 'galley' : p.role === 'captain' ? 'bridge' : pick(['engine', 'hold']));
       const day = G.state.day;  // the result and its tail are one version, taken by the day
       return `${lifeSay(tellingOn('repair.result', day), { before, after: G.state.armor, max })} ${roleSkill('engineer') ? lifeSay(tellingOn('repair.skilled', day), { name: roleName('engineer') }) : lifeSay(tellingOn('repair.alone', day))}`;
     },
