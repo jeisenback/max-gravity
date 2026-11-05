@@ -209,7 +209,11 @@ function roomBridge(ctx, r, s, X, W) {
     roomBox(ctx, cx + cw - 56, F - 52, 6, 12, '#7a8a7a');
   }
   if (W >= 180) { const bob = Math.sin(time * 6) * (2 * w.cruise + 4 * w.flip) - 1.5 * w.burn, bx = X(0.5); roomBox(ctx, bx, F - 46, 6, 6, '#ffb347'); roomDot(ctx, bx + 3, F - 50 + bob, 4, '#e0b48e'); }
-  if (W >= 200) { const lx = X(0.04); roomBox(ctx, lx, F - 94, 34, 26, '#2a2016'); roomBox(ctx, lx + 3, F - 91, 28, 20, '#e8e0c8'); worldText(ctx, s.zoom, 'MASTER', lx + 4, F - 77, 9, '#3a3226'); }
+  if (W >= 200) {  // the master's certificate, framed under the room's name: a seal and lines, no word (it would be wider than the frame at 12px)
+    const lx = X(0.04), ly = F - 72; roomBox(ctx, lx, ly, 34, 26, '#2a2016'); roomBox(ctx, lx + 3, ly + 3, 28, 20, '#e8e0c8');
+    for (const dy of [7, 11, 15]) roomBox(ctx, lx + 7, ly + dy, dy === 7 ? 20 : 14, 1.2, '#8a8070');
+    roomDot(ctx, lx + 25, ly + 17, 3, '#b0322a');
+  }
   roomCouch(ctx, X(0.4), F, false);
 }
 

@@ -413,9 +413,9 @@ function drawCutaway(box, clear = box) {
     worldText(ctx, zoom, name, nx, ny, fs, '#7f97b0');
   }
   // The thrust sign over the galley's forward hatch, on the galley's side (clear of the gunnery's name), scaled up where the camera is far
-  // enough out that its text would be under 12px.
-  const sk = Math.max(1, 1.05 / zoom);
-  ctx.save(); ctx.translate(X(roomAt('galley').x1) - 6 - 56 * sk, 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, burnState().g, w, time, zoom * sk); ctx.restore();
+  // enough out that its text would be under 12px; kept whole inside the view's edges when the galley is partly or wholly out of it.
+  const sk = Math.max(1, 1.05 / zoom), signHalf = 56 * sk + 4, signX = Math.min(camX + half - signHalf, Math.max(camX - half + signHalf, X(roomAt('galley').x1) - 6 - 56 * sk));
+  ctx.save(); ctx.translate(signX, 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, burnState().g, w, time, zoom * sk); ctx.restore();
 
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
   ctx.font = `600 12px ${roomFont}`;
