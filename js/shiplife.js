@@ -42,7 +42,7 @@ const HAUNTS = {
   passenger: { berths: 4, galley: 3, medbay: 1 },
   cat: { engine: 4, galley: 3, berths: 2, bridge: 1, hold: 1 },
 };
-const ROLE_COLORS = { you: '#ffffff', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', xo: '#e8e8f0', cook: '#e8a0a0', icehand: '#8fd8e8', passenger: '#9aa7b5', cat: '#b8aca0' };
+const ROLE_COLORS = { you: '#d9d4cc', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', xo: '#e8e8f0', cook: '#e8a0a0', icehand: '#8fd8e8', passenger: '#9aa7b5', cat: '#b8aca0' };
 
 // The ship's day: every SHIP_DAY seconds of a burn the lights go down for a night, and everyone who is not on watch turns in.
 // 0 in the day, 1 at night, and a ramp at dusk and dawn. A burn starts in the morning.
@@ -213,18 +213,6 @@ function lifeLine(p, crowd) {
   const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you' && o.role !== 'cat');
   const line = pickFresh(pool.filter(l => !l.includes('{m}') || others.length));
   return line && line.replace('{n}', p.name).replace('{m}', others.length ? pick(others).name : '');
-}
-
-// ---------- faces ----------
-// A person's portrait as a picture the canvas can draw (#297): the same drawing as their page, made once. null until it has loaded,
-// so a frame before then draws the figure alone.
-const faceCache = new Map();
-const faceSource = p => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(portraitSvg({ id: p.id, name: p.name, role: p.role }).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" '))}`;
-function faceImage(p) {
-  const key = `${p.id || p.name}:${p.role}`;
-  let img = faceCache.get(key);
-  if (!img) { img = new Image(); img.src = faceSource(p); faceCache.set(key, img); }
-  return img.complete && img.naturalWidth ? img : null;
 }
 
 // ---------- the people aboard ----------
@@ -439,7 +427,7 @@ function drawCutaway(box, clear = box) {
     if (Math.abs(x - camX) > half + 60) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = Math.abs(x - camX) <= half;
     if (pose.name === 'couch' && Math.abs(p.dk - dk) < 0.05) roomCouch(ctx, x, y, true);  // a crash couch, deployed under each person in the hard burn (once they are on a deck)
-    const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], face: inView && !asleep && p.role !== 'cat' ? faceImage(p) : null, floating: ph === 'float' });
+    const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float', ...(p.role === 'cat' ? {} : portraitLook({ id: p.id, name: p.name })) });
     if (pose.name === 'tether') {  // a line to a ring on the nearest bulkhead
       const d = CUT_WALLS[dk], bx = X([...d.hatch, d.end].reduce((a, b) => (Math.abs(b - p.x) < Math.abs(a - p.x) ? b : a))), rx = bx + Math.sign(x - bx) * 6, ry = floorY(dk) - 60;
       ctx.strokeStyle = 'rgba(201,162,39,0.9)'; ctx.lineWidth = 1.4;

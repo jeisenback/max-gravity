@@ -10,9 +10,11 @@ const PORTRAIT_SKIN = ['#f1c9a5', '#d9a77a', '#b98156', '#8d5a3b', '#5e3b27'];
 const PORTRAIT_HAIR = ['#1a1210', '#2a1d18', '#5a3b22', '#8a6a3a', '#9aa3ab'];
 const ROLE_COLLAR = { pilot: '#1d3a5c', gunner: '#5c2a1d', engineer: '#5c4a1d', slicer: '#3a1d5c', quartermaster: '#1d5c3a', medic: '#1d5c5c', captain: '#34506e' };
 
+// A person's skin, hair and its cut, from their id: the portrait's, and the figure's in the burn view (shiplife.js).
+const portraitLook = c => { const h = Math.abs(hash(String(c.id || c.name || 'x'))); return { skin: PORTRAIT_SKIN[h % 5], hair: PORTRAIT_HAIR[(h >> 3) % 5], cut: (h >> 6) % 3 }; };
 // A bust in the person's colors: skin, hair and its cut come from their id, the collar from their role.
 function portraitSvg(c) {
-  const h = Math.abs(hash(String(c.id || c.name || 'x'))), skin = PORTRAIT_SKIN[h % 5], hair = PORTRAIT_HAIR[(h >> 3) % 5], cut = (h >> 6) % 3, collar = ROLE_COLLAR[c.role] || '#34506e';
+  const { skin, hair, cut } = portraitLook(c), collar = ROLE_COLLAR[c.role] || '#34506e';
   const cap = cut === 0 ? 'M58 88 Q60 40 100 38 Q142 40 142 88 Q130 62 100 62 Q70 62 58 88Z'
     : cut === 1 ? 'M54 120 Q48 40 100 36 Q152 40 146 120 Q138 70 100 64 Q62 70 54 120Z'
     : 'M62 80 Q66 48 100 46 Q134 48 138 80 Q126 66 100 66 Q74 66 62 80Z';
