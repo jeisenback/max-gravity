@@ -58,9 +58,10 @@ const HAUNTS = {
   cook: { galley: 6, hold: 1, berths: 1 },
   icehand: { hold: 5, galley: 2, berths: 2 },
   passenger: { berths: 4, galley: 3, medbay: 1 },
+  captain: { bridge: 6, galley: 2, berths: 1 },  // the hired captain (hired.js)
   cat: { engine: 4, galley: 3, berths: 2, bridge: 1, hold: 1 },
 };
-const ROLE_COLORS = { you: '#d9d4cc', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', xo: '#e8e8f0', cook: '#e8a0a0', icehand: '#8fd8e8', passenger: '#9aa7b5', cat: '#b8aca0' };
+const ROLE_COLORS = { you: '#d9d4cc', captain: '#b9c4d0', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', xo: '#e8e8f0', cook: '#e8a0a0', icehand: '#8fd8e8', passenger: '#9aa7b5', cat: '#b8aca0' };
 
 // The ship's day: every SHIP_DAY seconds of a burn the lights go down for a night, and everyone who is not on watch turns in.
 // 0 in the day, 1 at night, and a ramp at dusk and dawn. A burn starts in the morning.
@@ -236,9 +237,10 @@ function lifeLine(p, crowd) {
 // ---------- the people aboard ----------
 function shipPeople() {
   const t = G.transit;
-  if (t.aboard) return (t.aboard = t.aboard.filter(p => p.role === 'you' || p.role === 'cat' || p.role === 'passenger' || G.state.crew.includes(p.id)));  // the burn keeps its people's places, but someone lost on the way is no longer aboard
+  if (t.aboard) return (t.aboard = t.aboard.filter(p => p.role === 'you' || p.role === 'cat' || p.role === 'passenger' || p.role === 'captain' || G.state.crew.includes(p.id)));  // the burn keeps its people's places, but someone lost on the way is no longer aboard
   const people = [{ name: 'You', role: 'you', id: 'you' }];
   for (const c of crewMembers()) people.push({ name: c.first, role: c.role, id: c.id });
+  const cap = hiredCaptain(); if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id });  // a hand's captain is aboard too
   for (const m of paxAboard().slice(0, 4)) {
     const p = m.pid && G.state.people[m.pid];
     people.push({ name: p ? p.first : m.who.split(' ').slice(-1)[0], role: 'passenger', pid: m.pid, id: p ? m.pid : null });

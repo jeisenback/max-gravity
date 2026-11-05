@@ -378,6 +378,14 @@ test('each figure has its portrait\'s skin and hair, and no picture is drawn int
   await done();
 });
 
+test('the hired captain is aboard in the cutaway, and spends the day on the bridge', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => { burn(); const cap = hiredCaptain(), p = shipPeople().find(x => x.role === 'captain'); return { id: p && p.id, cap: cap.id, haunt: HAUNTS.captain, color: ROLE_COLORS.captain }; });
+  await done();
+  assert.equal(r.id, r.cap); assert.deepEqual(r.haunt, { bridge: 6, galley: 2, berths: 1 }); assert.equal(r.color, '#b9c4d0');
+});
+
 test('a tap on a person\'s head opens the person', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
