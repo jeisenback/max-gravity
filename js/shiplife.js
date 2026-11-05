@@ -303,13 +303,24 @@ const SEATED_STATIONS = ['bridge', 'gunnery', 'medbay'];
 function stageScene(people, ph) {
   const t = G.transit, open = (G.dialog && G.dialog.event) || null;
   if (open === t.stageOf) return;
-  t.stageOf = open;
+  t.stageOf = open; t.stageSpan = null;
   const stage = open && ph === 'move' ? sceneStage(open, people, scenePeople(open).map(c => c.id)) : null, ids = new Set(stage ? stage.ids : []);
   for (const p of people) if (p.staged && !ids.has(p.id)) { p.staged = undefined; p.faceTo = undefined; p.wait = 3; }  // a fixed linger: staging draws none of the game's dice
   if (!stage) return;
   const r = roomAt(stage.room), cast = stage.ids.map(id => people.find(q => q.id === id)).filter(Boolean), n = cast.length;
   const spots = cast.map((_, i) => Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.mid + (i - (n - 1) / 2) * 0.03))), mid = spots.reduce((a, b) => a + b, 0) / n;
   cast.forEach((p, i) => { Object.assign(p, { staged: stage.room, room: stage.room, tdk: r.deck, tx: spots[i] }); p.faceTo = Math.sign(mid - spots[i]) || Math.sign(spots[0] - spots[i]) || 1; });
+  t.stageSpan = { room: stage.room, deck: r.deck, lo: spots[0] - 0.03, hi: spots[n - 1] + 0.03, sent: {} };  // where they gather: kept clear (stepAside)
+}
+
+// Anyone standing or heading where a scene's people gather, who is not in it, leaves for their next-favourite room, to a spot a little apart from
+// the others sent there (no draw of the game's dice): a word with the captain or a hard letter is given the room.
+function stepAside(p, span) {
+  if (!span || p.staged || p.room !== span.room || p.tdk !== span.deck) return;
+  const at = p.tx !== null ? p.tx : p.x;  // where they are, or where they are going in that room
+  if (at <= span.lo || at >= span.hi) return;
+  const alt = Object.entries(HAUNTS[p.role] || HAUNTS.passenger).filter(([id]) => id !== span.room).sort((a, b) => b[1] - a[1])[0][0], r = roomAt(alt), k = (span.sent[alt] = (span.sent[alt] || 0) + 1) - 1;
+  Object.assign(p, { room: alt, tdk: r.deck, tx: Math.min(r.x1 - 0.01, r.x0 + r.w * 0.3 + 0.02 * k) });
 }
 
 function lifeTick(dt) {
@@ -329,6 +340,7 @@ function lifeTick(dt) {
       continue;
     }
     if (ph !== 'move') { const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
+    stepAside(p, G.transit.stageSpan);
     const step = (p.staged ? 0.09 : 0.06) * dt;  // to a scene a little faster
     if (p.dk !== p.tdk) {  // to the ladder, then up or down it
       if (Math.abs(LADDER - p.x) > 0.003) { p.face = Math.sign(LADDER - p.x) || p.face; p.x += Math.max(-step, Math.min(step, LADDER - p.x)); }

@@ -456,6 +456,20 @@ test('a scene that leads into another moves its people to the next room, and let
   assert.equal(r.mate, false, 'the first scene\'s mate is let go'); assert.ok(r.cap && r.you, 'the captain and you on the bridge');
 });
 
+test('someone in the way of a scene, who is not in it, leaves for their next room', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    stageBurn(); const cap = hiredCaptain(), b = ROOMS.find(x => x.id === 'bridge');
+    const other = shipPeople().find(p => p.id && p.id !== 'you' && p.role !== 'captain' && p.role !== 'cat');
+    Object.assign(other, { room: 'bridge', x: b.mid, dk: 0, tdk: 0, tx: null, wait: 999 });
+    sayScene('The Captain', `${cap.first} wants a word.`); tickFor(25);
+    return { left: !inRoom(other, 'bridge') && other.room !== 'bridge', cap: inRoom(aboardBy(cap.id), 'bridge') };
+  });
+  await done();
+  assert.ok(r.left, 'the one in the way is gone to another room'); assert.ok(r.cap, 'and the scene is on the bridge');
+});
+
 test('a scene at the couches moves nobody', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
