@@ -389,11 +389,11 @@ test('the hand acts with the sidearm, the post\'s two abilities, hold fire or a 
     out.used = s.state.used.cover; out.cover = s.state.sections.map(x => x.cover); out.line = s.state.log[s.state.log.length - 1]; out.after = acts(next);
     return out;
   });
-  assert.deepEqual(r.gunner, ['Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works', 'Covering burst: two points of cover here, once a fight', 'Hold fire: stand ready, fire at nobody', 'Pull back: ours here fall back to the Corridor']);
+  assert.deepEqual(r.gunner, ['Shoot: hits 1 to 2 of them', 'Pick off a runner: one of them down if it works', 'Covering burst: two points of cover here, once a fight', 'Hold fire: stand ready, and shoot nobody', 'Pull back: ours here fall back to the Corridor']);
   assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]], ['Cycle a hatch on them: one of them down if it works', 'Drop the pressure door: two points of cover here, once a fight', 'A false order on their band: one of them down if it works']);
   assert.equal(r.used, true); assert.deepEqual(r.cover.slice(0, 3), [3, 2, 1], 'two points where the hand stands, up to three');
   assert.match(r.line, /You lay a long burst along the wall at head height\./);
-  assert.deepEqual(r.after, ['Shoot: 1 to 2 of them hit', 'Pick off a runner: one of them down if it works', 'Hold fire: stand ready, fire at nobody', 'Pull back: ours here fall back to the Bridge', 'Shoot: 1 to 2 of them hit'], 'once a fight (the hand fell back to the corridor in that turn)');
+  assert.deepEqual(r.after, ['Shoot: hits 1 to 2 of them', 'Pick off a runner: one of them down if it works', 'Hold fire: stand ready, and shoot nobody', 'Pull back: ours here fall back to the Bridge', 'Shoot: hits 1 to 2 of them'], 'once a fight (the hand fell back to the corridor in that turn)');
   await done();
 });
 
@@ -530,7 +530,7 @@ test('an owner who kept a post fights boarders on the deck with the same moves: 
     G.state.career = undefined; out.never = lockPost();  // (the shipped build starts every game as a hand: take away the career the buy left, and there is no post)
     return out;
   });
-  assert.ok(r.owner); assert.equal(r.title, 'The Lock'); assert.ok(r.armor); assert.deepEqual(r.acts, ['Stand: The Lock', 'Shoot: 1 to 2 of them hit'], 'the hand\'s own moves are offered');
+  assert.ok(r.owner); assert.equal(r.title, 'The Lock'); assert.ok(r.armor); assert.deepEqual(r.acts, ['Stand: The Lock', 'Shoot: hits 1 to 2 of them'], 'the hand\'s own moves are offered');
   assert.match(r.lost, /You give them the code to the strongbox/); assert.equal(r.credits, 70000, 'a third of the player\'s credits, not a fund'); assert.ok(r.duelGone);
   assert.match(r.held, /The last of them go back through the lock/); assert.equal(r.heldNext, 'me');
   assert.match(r.hurt, /You are hurt/); assert.ok(r.hurtUntil >= 12); assert.equal(r.died, false, 'an owner is laid up and lives'); assert.equal(r.level, true);

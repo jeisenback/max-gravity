@@ -335,7 +335,6 @@ function deckTurn(s, p) {
     if (e.kind === 'exchange' && (e.theirsHurt || e.mineHurt)) said.push(fightSay('deck.log.wounds', { at: at(e.section), theirs: e.theirsHurt, mine: e.mineHurt }));
     if (e.kind === 'hand') said.push(fightSay('deck.log.back', { to: at(e.to) }));
     if (e.kind === 'rush') said.push(e.stopped ? fightSay('deck.log.rushStopped', { n: e.n, at: at(e.to) }) : fightSay('deck.log.rush', { n: e.n, to: at(e.to) }));
-    if (e.kind === 'hatch') said.push(fightSay('deck.log.hatch', { at: at(e.at), how: fightSay(e.worked ? 'deck.hatch.worked' : 'deck.hatch.failed') }));
     if (e.kind === 'wave') said.push(fightSay('deck.log.wave', { n: e.n }));
     if (e.kind === 'pullback') said.push(fightSay('deck.log.pullback', { to: at(e.to) }));
     if (e.kind === 'charge') said.push(e.stopped ? fightSay('deck.log.chargeStopped', { at: at(e.at), from: at(e.from) }) : e.mine ? fightSay('deck.log.charge', { at: at(e.at), mine: e.mine }) : fightSay('deck.log.chargeEmpty', { at: at(e.at) }));
