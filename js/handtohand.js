@@ -89,7 +89,7 @@ function abilityStep(kind, worked, { pos, boarders, extra }) {
 // a corsair's charge ({ kind: 'charge', at, from }) is marked CHARGE on the section it blows in and SETTER on the one it is set from, with no arrow. `wave`, when given, is the line for the heads still to land, drawn under the deck.
 // `began` and `breakAt`, when given, draw her count under the deck: a mark a head she started with, filled while it stands, dashed for the `pending` heads still to land
 // (a repel's wave, which `comeSay` words), hollow once down, and the line at which she breaks, which counts the whole party (spec Section 3).
-function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 0, pending = 0, wave = '', hurtSay = n => `${n} of them wounded`, oursSay = n => `${n} of ours wounded`, comeSay = (n, m) => `${n} aboard, ${m} still to come` }) {
+function fightStrip({ titles, sections, hand, move, feint, began = 0, breakAt = 0, pending = 0, wave = '', hurtSay = n => `${n} wounded`, oursSay = n => `${n} wounded`, comeSay = (n, m) => `${n} aboard, ${m} still to come` }) {
   const n = sections.length, w = Math.floor(348 / n) - 6, mid = i => 6 + i * (w + 6) + w / 2, font = 'font-family="IBM Plex Mono, monospace"', charge = !!move && move.kind === 'charge';
   const pip = s => (s.theirs && !s.mine ? s.hers || 0 : s.cover);
   const cells = sections.map((s, i) => {

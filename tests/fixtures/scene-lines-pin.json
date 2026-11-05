@@ -23646,7 +23646,7 @@
      "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
       "Stand: The Lock",
-      "Shoot: 1 to 2 of them hit",
+      "Shoot: hits 1 to 2 of them",
       "Order: none",
       "Fight"
      ]
@@ -23696,7 +23696,7 @@
      "text": "She closes while your drive is slow and seals a boarding tube to your lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
      "labels": [
       "Stand: The Lock",
-      "Shoot: 1 to 2 of them hit",
+      "Shoot: hits 1 to 2 of them",
       "Order: none",
       "Fight"
      ]
@@ -23743,10 +23743,10 @@
     "log": "Turn 1: you hit her weapons for 13.",
     "next": {
      "title": "The Lock",
-     "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them put down costs standing with Arcology Compact: 0 so far.",
+     "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Compact. 0 lost so far.",
      "labels": [
       "Stand: The Lock",
-      "Shoot: 1 to 2 of them hit",
+      "Shoot: hits 1 to 2 of them",
       "Order: none",
       "Fight"
      ]
@@ -24179,8 +24179,8 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: none",
      "Fight"
     ],
@@ -24196,8 +24196,8 @@
     "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Corridor",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Corridor",
      "Order: none",
      "Fight"
     ],
@@ -24213,8 +24213,8 @@
     "text": "The last hatch before the bridge is the one the captain closed by hand. They're working at it from the other side. The pilot has the helm and hasn't looked round.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Bridge",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Bridge",
      "Order: none",
      "Fight"
     ],
@@ -24230,8 +24230,8 @@
     "text": "They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.",
     "labels": [
      "Stand: The Cargo Bay",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Cargo Bay",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Cargo Bay",
      "Order: none",
      "Fight"
     ],
@@ -24247,8 +24247,8 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: none",
      "Fight"
     ],
@@ -24264,8 +24264,8 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: none",
      "Fight"
     ],
@@ -24281,8 +24281,8 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: none",
      "Fight"
     ],
@@ -24298,8 +24298,8 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: none",
      "Fight"
     ],
@@ -24315,15 +24315,15 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours, 1 of ours wounded and 2 of theirs, 1 of them wounded, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
+    "strip": "The deck in four sections. The Lock: 1 of ours, 1 wounded and 2 of theirs, 1 wounded, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last.",
     "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
@@ -24332,15 +24332,15 @@
     "text": "Something hits the hull aft and the deck rings. The lock indicator goes amber, then red. Through the inner window there are three suits in the lock and a fourth coming.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last. 2 more at the lock next turn.",
+    "strip": "The deck in four sections. The Lock: 1 of ours and 2 of theirs, cover 1, you stand here. The Corridor: 1 of ours, cover 2. The Bridge: 1 of ours, cover 1. The Cargo Bay: 1 of ours, cover 1. Their move: they hold. 2 aboard, 2 still to come; they fight to the last. 2 more cycling through the lock next turn.",
     "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
@@ -24349,8 +24349,8 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Move to: The Corridor",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Corridor",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Corridor",
      "Order: none",
      "Fight"
     ],
@@ -24366,8 +24366,8 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Move to: The Cargo Bay",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Cargo Bay",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Cargo Bay",
      "Order: none",
      "Fight"
     ],
@@ -24383,8 +24383,8 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: none",
      "Fight"
     ],
@@ -24432,7 +24432,7 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Hold fire: stand ready, fire at nobody",
+     "Hold fire: stand ready, and shoot nobody",
      "Order: none",
      "Fight"
     ],
@@ -24480,10 +24480,10 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: Ines cycles a hatch on them",
-     "At the Lock",
+     "Hatch at the Lock",
      "Fight"
     ],
     "group": [
@@ -24498,10 +24498,10 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: Ines cycles a hatch on them",
-     "At the Corridor",
+     "Hatch at the Corridor",
      "Fight"
     ],
     "group": [
@@ -24516,10 +24516,10 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: Ines cycles a hatch on them",
-     "At the Bridge",
+     "Hatch at the Bridge",
      "Fight"
     ],
     "group": [
@@ -24534,10 +24534,10 @@
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: Ines cycles a hatch on them",
-     "At the Cargo Bay",
+     "Hatch at the Cargo Bay",
      "Fight"
     ],
     "group": [
@@ -24563,23 +24563,23 @@
     "end": false
    },
    {
-    "log": "Turn 1: nobody gives ground. None of them are in the Corridor.",
+    "log": "Turn 1: nobody gives ground. You aim into the Corridor, and none of them are there.",
     "end": false
    },
    {
-    "log": "Turn 1: 3 of them rush into the Bridge, 2 of them and 0 of ours down in the Bridge, 1 of them and 2 of ours wounded in the Bridge.",
+    "log": "Turn 1: 3 of them get through into the Bridge, 2 of them and 0 of ours down in the Bridge, 1 of them and 2 of ours wounded in the Bridge.",
     "end": false
    },
    {
-    "log": "Turn 1: 3 of them rush and are stopped in the Corridor, 2 of them and 0 of ours down in the Corridor, 0 of them and 1 of ours wounded in the Corridor.",
+    "log": "Turn 1: 3 of them run into ours in the Corridor and stop there, 2 of them and 0 of ours down in the Corridor, 0 of them and 1 of ours wounded in the Corridor.",
     "end": false
    },
    {
-    "log": "Turn 1: the hatch at the Corridor holds, 1 of them and 1 of ours down in the Lock, 1 of them and 0 of ours wounded in the Lock, you fall back to the Bridge. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
+    "log": "Turn 1: 1 of them and 1 of ours down in the Lock, 1 of them and 0 of ours wounded in the Lock, you fall back to the Bridge. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
     "end": false
    },
    {
-    "log": "Turn 1: the hatch at the Corridor does not close, 1 of them and 1 of ours down in the Lock, 1 of them and 0 of ours wounded in the Lock, you fall back to the Bridge. Ines cycles the hatch a beat late, and it closes on nothing.",
+    "log": "Turn 1: 1 of them and 1 of ours down in the Lock, 1 of them and 0 of ours wounded in the Lock, you fall back to the Bridge. Ines cycles the hatch a beat late, and it closes on nothing.",
     "end": false
    },
    {
@@ -24593,12 +24593,12 @@
    },
    {
     "title": "The Lock",
-    "read": "Turn 1 of 8. Boarders: a charge on the Corridor, set from the Lock. Hit them in the Lock to stop it; it blows this turn.",
+    "read": "Turn 1 of 8. Boarders: setting a charge on the Corridor from the Lock. It blows this turn unless you hit them in the Lock.",
     "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: none",
      "Fight"
     ],
@@ -24613,11 +24613,11 @@
     "end": false
    },
    {
-    "log": "Turn 1: 1 of them and 0 of ours down in the Lock, the charge in the Corridor never blows: they were hit in the Lock.",
+    "log": "Turn 1: 1 of them and 0 of ours down in the Lock, they're hit in the Lock before the charge on the Corridor can blow.",
     "end": false
    },
    {
-    "log": "Turn 1: ours fall back to the Bridge, the charge blows in the Corridor on nobody.",
+    "log": "Turn 1: ours fall back to the Bridge, the charge blows in the Corridor, with nobody of ours there.",
     "end": false
    },
    {
@@ -24626,8 +24626,8 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: none",
      "Fight"
     ],
@@ -24643,8 +24643,8 @@
     "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Corridor",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Corridor",
      "Order: none",
      "Fight"
     ],
@@ -24660,8 +24660,8 @@
     "text": "The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Bridge",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Bridge",
      "Order: none",
      "Fight"
     ],
@@ -24677,8 +24677,8 @@
     "text": "You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.",
     "labels": [
      "Stand: Her Cargo Bay",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Cargo Bay",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Cargo Bay",
      "Order: none",
      "Fight"
     ],
@@ -24694,8 +24694,8 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: none",
      "Fight"
     ],
@@ -24711,8 +24711,8 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: none",
      "Fight"
     ],
@@ -24728,8 +24728,8 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: none",
      "Fight"
     ],
@@ -24745,8 +24745,8 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: none",
      "Fight"
     ],
@@ -24762,15 +24762,15 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: none",
      "Fight"
     ],
     "group": [
      "Orders to the crew"
     ],
-    "strip": "The deck in four sections. Her Lock: 4 of ours, 1 of ours wounded and 1 of theirs, 1 of them wounded, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
+    "strip": "The deck in four sections. Her Lock: 4 of ours, 1 wounded and 1 of theirs, 1 wounded, cover 1, you stand here. Her Corridor: 1 of theirs, cover 0. Her Bridge: 1 of theirs, cover 0. Her Cargo Bay: 1 of theirs, cover 0. Their move: they hold. 4 of their 4 still up; they fight to the last.",
     "legend": "Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break."
    },
    {
@@ -24779,8 +24779,8 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Move to: Her Corridor",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Corridor",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Corridor",
      "Order: none",
      "Fight"
     ],
@@ -24796,8 +24796,8 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Move to: Her Cargo Bay",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Cargo Bay",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Cargo Bay",
      "Order: none",
      "Fight"
     ],
@@ -24813,8 +24813,8 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: none",
      "Fight"
     ],
@@ -24862,7 +24862,7 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Hold fire: stand ready, fire at nobody",
+     "Hold fire: stand ready, and shoot nobody",
      "Order: none",
      "Fight"
     ],
@@ -24878,8 +24878,8 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: none",
      "Fight"
     ],
@@ -24895,8 +24895,8 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: Ines cuts the lights",
      "Fight"
     ],
@@ -24912,10 +24912,10 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: Ines cycles a hatch on them",
-     "At her Lock",
+     "Hatch at her Lock",
      "Fight"
     ],
     "group": [
@@ -24930,10 +24930,10 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: Ines cycles a hatch on them",
-     "At her Corridor",
+     "Hatch at her Corridor",
      "Fight"
     ],
     "group": [
@@ -24948,10 +24948,10 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: Ines cycles a hatch on them",
-     "At her Bridge",
+     "Hatch at her Bridge",
      "Fight"
     ],
     "group": [
@@ -24966,10 +24966,10 @@
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: Ines cycles a hatch on them",
-     "At her Cargo Bay",
+     "Hatch at her Cargo Bay",
      "Fight"
     ],
     "group": [
@@ -24995,23 +24995,23 @@
     "end": false
    },
    {
-    "log": "Turn 1: 2 of ours move into her Corridor. None of them are in her Corridor.",
+    "log": "Turn 1: 2 of ours move into her Corridor. You aim into her Corridor, and none of them are there.",
     "end": false
    },
    {
-    "log": "Turn 1: 3 of them rush into her Lock, 2 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock.",
+    "log": "Turn 1: 3 of them get through into her Lock, 2 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock.",
     "end": false
    },
    {
-    "log": "Turn 1: 3 of them rush and are stopped in her Corridor, 2 of them and 0 of ours down in her Corridor, 0 of them and 1 of ours wounded in her Corridor.",
+    "log": "Turn 1: 3 of them run into ours in her Corridor and stop there, 2 of them and 0 of ours down in her Corridor, 0 of them and 1 of ours wounded in her Corridor.",
     "end": false
    },
    {
-    "log": "Turn 1: the hatch at her Corridor holds, 1 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
+    "log": "Turn 1: 1 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock. Ines cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back.",
     "end": false
    },
    {
-    "log": "Turn 1: the hatch at her Corridor does not close, 1 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock. Ines cycles the hatch a beat late, and it closes on nothing.",
+    "log": "Turn 1: 1 of them and 0 of ours down in her Lock, 1 of them and 1 of ours wounded in her Lock. Ines cycles the hatch a beat late, and it closes on nothing.",
     "end": false
    },
    {
@@ -25021,12 +25021,12 @@
    },
    {
     "title": "Her Lock",
-    "read": "Turn 1 of 8. Her crew: a charge on her Lock, set from her Corridor. Hit them in her Corridor to stop it; it blows this turn.",
+    "read": "Turn 1 of 8. Her crew: setting a charge on her Lock from her Corridor. It blows this turn unless you hit them in her Corridor.",
     "text": "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: her Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at her Lock",
      "Order: none",
      "Fight"
     ],
@@ -25039,11 +25039,11 @@
    {
     "title": "The Lock",
     "read": "Turn 1 of 5. The boarding party: 2 pushing into the Corridor.",
-    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them put down costs standing with Arcology Compact: 2 so far.",
+    "text": "The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Compact. 2 lost so far.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 2 to 3 of them hit",
-     "Aim: the Lock",
+     "Shoot: hits 2 to 3 of them",
+     "Aim at the Lock",
      "Order: none",
      "Fight"
     ],
@@ -25060,11 +25060,11 @@
    {
     "log": "Turn 1: nobody gives ground. None of them are where you stand.",
     "end": true,
-    "close": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>They hold the bridge. The boarding officer has the ship searched berth by berth, writes the citation, and fines her 5,000 cr, collected on the spot. The boarding party goes back across, and the ship is let go with the fine in her log."
+    "close": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>They hold the bridge. The boarding officer has the ship searched berth by berth and writes the citation: 5,000 cr, taken from the ship's account before they go back across."
    },
    {
     "mem": [
-     "9 Jul 2214: You fought the navy at the lock, and they searched the ship anyway, and fined it."
+     "9 Jul 2214: You fought the navy at the lock, and they searched the ship anyway."
     ]
    },
    {

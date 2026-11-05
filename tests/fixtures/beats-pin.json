@@ -39,7 +39,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them hit",
+    "Shoot: hits 1 to 2 of them",
     "Order: none",
     "Fight"
    ]
@@ -85,7 +85,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them hit",
+    "Shoot: hits 1 to 2 of them",
     "Order: none",
     "Fight"
    ]
@@ -131,7 +131,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them hit",
+    "Shoot: hits 1 to 2 of them",
     "Order: none",
     "Fight"
    ]
@@ -177,7 +177,7 @@
    "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them hit",
+    "Shoot: hits 1 to 2 of them",
     "Order: none",
     "Fight"
    ]
@@ -467,10 +467,10 @@
   ],
   "end": {
    "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them put down costs standing with Arcology Compact: 0 so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Compact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them hit",
+    "Shoot: hits 1 to 2 of them",
     "Order: none",
     "Fight"
    ]
@@ -508,10 +508,10 @@
   ],
   "end": {
    "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them put down costs standing with Arcology Compact: 0 so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Compact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them hit",
+    "Shoot: hits 1 to 2 of them",
     "Order: none",
     "Fight"
    ]
@@ -549,10 +549,10 @@
   ],
   "end": {
    "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them put down costs standing with Arcology Compact: 0 so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Compact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them hit",
+    "Shoot: hits 1 to 2 of them",
     "Order: none",
     "Fight"
    ]
@@ -590,10 +590,10 @@
   ],
   "end": {
    "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them put down costs standing with Arcology Compact: 0 so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Compact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
    "labels": [
     "Stand: The Lock",
-    "Shoot: 1 to 2 of them hit",
+    "Shoot: hits 1 to 2 of them",
     "Order: none",
     "Fight"
    ]
@@ -1837,7 +1837,7 @@
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
      "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: a charge on her Lock, set from her Corridor. Hit them in her Corridor to stop it; it blows this turn."
+     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: setting a charge on her Lock from her Corridor. It blows this turn unless you hit them in her Corridor."
     ]
    },
    {
@@ -1883,7 +1883,7 @@
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
      "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: a charge on her Lock, set from her Corridor. Hit them in her Corridor to stop it; it blows this turn."
+     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: setting a charge on her Lock from her Corridor. It blows this turn unless you hit them in her Corridor."
     ]
    },
    {
@@ -1929,7 +1929,7 @@
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
      "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: a charge on her Lock, set from her Corridor. Hit them in her Corridor to stop it; it blows this turn."
+     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: setting a charge on her Lock from her Corridor. It blows this turn unless you hit them in her Corridor."
     ]
    },
    {
@@ -1975,7 +1975,7 @@
     "text": "The cutter goes out of the lock. It's a short crossing.",
     "next": [
      "Her Lock",
-     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: a charge on her Lock, set from her Corridor. Hit them in her Corridor to stop it; it blows this turn."
+     "The boat has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.</p><p>Turn 1 of 8. Her crew: setting a charge on her Lock from her Corridor. It blows this turn unless you hit them in her Corridor."
     ]
    },
    {
@@ -2478,28 +2478,28 @@
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: the hatch at the Lock holds, 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
  },
  {
   "id": "order:repel:pilot:steady:missed",
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: the hatch at the Lock does not close, 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the hatch a beat late, and it closes on nothing."
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana cycles the hatch a beat late, and it closes on nothing."
  },
  {
   "id": "order:repel:engineer:cover:worked",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: the hatch at the Lock holds, 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
  },
  {
   "id": "order:repel:engineer:cover:missed",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: the hatch at the Lock does not close, 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door, and it sticks a hand short of the deck."
+  "text": "Turn 1: 2 of them and 1 of ours down in the Lock, you fall back to the Corridor. Dana drops the pressure door, and it sticks a hand short of the deck."
  },
  {
   "id": "order:repel:engineer:steady:worked",
@@ -2590,28 +2590,28 @@
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: the hatch at her Lock holds, 1 of them and 0 of ours down in her Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana cycles the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back."
  },
  {
   "id": "order:assault:pilot:steady:missed",
   "label": [
    "Order: Dana cycles a hatch on them"
   ],
-  "text": "Turn 1: the hatch at her Lock does not close, 1 of them and 0 of ours down in her Lock. Dana cycles the hatch a beat late, and it closes on nothing."
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana cycles the hatch a beat late, and it closes on nothing."
  },
  {
   "id": "order:assault:engineer:cover:worked",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: the hatch at her Lock holds, 1 of them and 0 of ours down in her Lock. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana drops the pressure door half across the corridor: a wall to stand behind, with a gap to shoot through."
  },
  {
   "id": "order:assault:engineer:cover:missed",
   "label": [
    "Order: Dana drops the pressure door"
   ],
-  "text": "Turn 1: the hatch at her Lock does not close, 1 of them and 0 of ours down in her Lock. Dana drops the pressure door, and it sticks a hand short of the deck."
+  "text": "Turn 1: 1 of them and 0 of ours down in her Lock. Dana drops the pressure door, and it sticks a hand short of the deck."
  },
  {
   "id": "order:assault:engineer:steady:worked",
@@ -2666,7 +2666,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2679,7 +2679,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2692,7 +2692,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2705,7 +2705,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2718,7 +2718,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2731,7 +2731,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2743,7 +2743,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -2754,7 +2754,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -2837,7 +2837,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2850,7 +2850,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2863,7 +2863,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2876,7 +2876,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2889,7 +2889,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2902,7 +2902,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -2914,7 +2914,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -2925,7 +2925,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3008,7 +3008,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3021,7 +3021,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3034,7 +3034,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3047,7 +3047,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3060,7 +3060,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3073,7 +3073,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3085,7 +3085,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3096,7 +3096,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3179,7 +3179,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3192,7 +3192,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3205,7 +3205,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3218,7 +3218,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3231,7 +3231,7 @@
     "read": "Turn 1 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3244,7 +3244,7 @@
     "read": "Turn 2 of 8. Boarders: holding where they are.",
     "labels": [
      "Stand: The Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3256,7 +3256,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3267,7 +3267,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: The Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3350,7 +3350,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3363,7 +3363,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3376,7 +3376,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3389,7 +3389,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3402,7 +3402,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3415,7 +3415,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3427,7 +3427,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3438,7 +3438,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3555,7 +3555,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3568,7 +3568,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3581,7 +3581,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3594,7 +3594,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3607,7 +3607,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3620,7 +3620,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3632,7 +3632,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3643,7 +3643,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3760,7 +3760,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3773,7 +3773,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3786,7 +3786,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3799,7 +3799,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3812,7 +3812,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3825,7 +3825,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3837,7 +3837,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3848,7 +3848,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -3965,7 +3965,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3978,7 +3978,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -3991,7 +3991,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -4004,7 +4004,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Corridor",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -4017,7 +4017,7 @@
     "read": "Turn 1 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -4030,7 +4030,7 @@
     "read": "Turn 2 of 8. Her crew: holding where they are.",
     "labels": [
      "Stand: Her Bridge",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ]
@@ -4042,7 +4042,7 @@
     "roll": 0.01,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],
@@ -4053,7 +4053,7 @@
     "roll": 0.99,
     "labels": [
      "Stand: Her Lock",
-     "Shoot: 1 to 2 of them hit",
+     "Shoot: hits 1 to 2 of them",
      "Order: none",
      "Fight"
     ],

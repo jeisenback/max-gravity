@@ -549,15 +549,15 @@ const SCENE_LINES = {
     'memory.stood': 'You stood us up to a raid and she broke off.',
     'memory.ran': 'We had to run from a fight with you at the post.',
     'memory.navy': 'You stood us up to a navy ship, and she left us alone.',  // a patrol that broke off, or that was crippled and calls for a tow
-    'memory.searched': 'You fought the navy at the lock, and they searched the ship anyway, and fined it.',  // a navy party that held our bridge (boarders.js shipSearched)
+    'memory.searched': 'You fought the navy at the lock, and they searched the ship anyway.',  // a navy party that held our bridge (boarders.js shipSearched)
     // the deck fight (deckFightEvent): {who} is who comes on, {n} how many, {mine} how many of ours, {to}, {via} and {at} a section, {what} an ability, {first} and {does} a crewmate's order, {lo} to {hi} what a shot takes
     'deck.cargo': 'The Cargo Bay', 'deck.cargoHers': 'Her Cargo Bay',
     'deck.ours.0': 'the Lock', 'deck.ours.1': 'the Corridor', 'deck.ours.2': 'the Bridge', 'deck.ours.3': 'the Cargo Bay',
     'deck.hers.0': 'her Lock', 'deck.hers.1': 'her Corridor', 'deck.hers.2': 'her Bridge', 'deck.hers.3': 'her Cargo Bay',
     'deck.legend': 'Ours on the left of a section, theirs on the right; the dots are its cover. The line under it is their count, and the mark is where they break.',
     'deck.who.repel': 'Boarders', 'deck.who.assault': 'Her crew', 'deck.who.navy': 'The boarding party',
-    'deck.navy.down': 'Each of them put down costs standing with {gov}: {n} so far.',  // a navy party's fight, under the deck: {n} is the standing lost so far
-    'deck.end.searched': 'They hold the bridge. The boarding officer has the ship searched berth by berth, writes the citation, and fines her {fine} cr, collected on the spot. The boarding party goes back across, and the ship is let go with the fine in her log.',  // a navy party held our bridge: {fine} is the heave-to's fine
+    'deck.navy.down': 'Each of them you put down costs standing with {gov}. {n} lost so far.',  // a navy party's fight, under the deck: {n} is the standing lost so far
+    'deck.end.searched': 'They hold the bridge. The boarding officer has the ship searched berth by berth and writes the citation: {fine} cr, taken from the ship\'s account before they go back across.',  // a navy party held our bridge: {fine} is the heave-to's fine
     'deck.end.cited': 'They go back through the lock with the citation logged, and {fine} cr goes out of the ship\'s fund.',  // a navy party that withdrew at its cap: {fine} is the heave-to's fine, which the citation stands for (boarders.js repelSettle, #828). Drafted for the owner to edit
     // who keeps out of a deck fight (boarders.js repelCrew): {first} the one who won't, {other} the one they are at odds with
     'deck.held.enemy': '{first} won\'t fight for you.', 'deck.held.feud': '{first} won\'t stand in the same section as {other}.',
@@ -570,23 +570,22 @@ const SCENE_LINES = {
     'hit.dead': '{first} is hit, and doesn\'t get up, and won\'t.', 'hit.marked': '{first} is hit, and carried below, and is alive, and isn\'t fit to work.', 'hit.hurt': '{first} is hurt.',
     // the cause of a death in a fight, on the memorial and in the ship's log (boarders.js killedHow): the ship fight, a navy stop, boarding her, holding our deck; {system} where. Plain text
     'killed.raid.log': 'Killed in a raid near {system}.', 'killed.navy.log': 'Killed in a navy stop near {system}.', 'killed.assault.log': 'Killed boarding a crippled ship near {system}.', 'killed.repel.log': 'Killed repelling boarders near {system}.',
-    'deck.push': '{who}: {n} pushing into {to}.', 'deck.rush': '{who}: {n} rushing through {via} into {to}.', 'deck.wave': '{n} more at the lock next turn.', 'deck.aboard': '{n} aboard, {m} still to come', 'deck.round': '{who}: {n} going round through {to}.', 'deck.hold': '{who}: holding where they are.',
-    'deck.charge': '{who}: a charge on {at}, set from {from}. Hit them in {from} to stop it; it blows this turn.', 'deck.pullback': 'Pull back: ours here fall back to {to}',
-    'deck.holdfire': 'Hold fire: stand ready, fire at nobody', 'deck.holdfire.you': 'You hold your fire.',  // the act that does nothing (fightui.js DECK_ACTS), and its line after the turn: against a navy party, where each of them put down costs standing
+    'deck.push': '{who}: {n} pushing into {to}.', 'deck.rush': '{who}: {n} rushing through {via} into {to}.', 'deck.wave': '{n} more cycling through the lock next turn.', 'deck.aboard': '{n} aboard, {m} still to come', 'deck.round': '{who}: {n} going round through {to}.', 'deck.hold': '{who}: holding where they are.',
+    'deck.charge': '{who}: setting a charge on {at} from {from}. It blows this turn unless you hit them in {from}.', 'deck.pullback': 'Pull back: ours here fall back to {to}',
+    'deck.holdfire': 'Hold fire: stand ready, and shoot nobody', 'deck.holdfire.you': 'You hold your fire.',  // the act that does nothing (fightui.js DECK_ACTS), and its line after the turn: against a navy party, where each of them put down costs standing
     'deck.feint': 'They may feint.',
     'deck.stand': 'Stand: {at}', 'deck.move': 'Move to: {at}',
-    'deck.order.at': 'At {at}', 'deck.wounded': '{n} of them wounded', 'deck.woundedOurs': '{n} of ours wounded',
-    'deck.shoot': 'Shoot: {lo} to {hi} of them hit', 'deck.shoot.at': 'Aim: {at}', 'deck.steady': '{what}: one of them down if it works', 'deck.cover': '{what}: two points of cover here, once a fight',
+    'deck.order.at': 'Hatch at {at}', 'deck.wounded': '{n} wounded', 'deck.woundedOurs': '{n} wounded',
+    'deck.shoot': 'Shoot: hits {lo} to {hi} of them', 'deck.shoot.at': 'Aim at {at}', 'deck.steady': '{what}: one of them down if it works', 'deck.cover': '{what}: two points of cover here, once a fight',
     'deck.orders': 'Orders to the crew', 'deck.order': 'Order: {first} {does}', 'deck.order.none': 'Order: none',
     'deck.fight': 'Fight', 'deck.turn': 'Turn {n} of {max}.',
-    'deck.nobody.you': 'None of them are where you stand.', 'deck.nobody.aim': 'None of them are in {at}.', 'deck.nobody.crew': '{first} finds none of them to go at.',
+    'deck.nobody.you': 'None of them are where you stand.', 'deck.nobody.aim': 'You aim into {at}, and none of them are there.', 'deck.nobody.crew': '{first} finds none of them to go at.',
     'deck.withdraw.repel': 'The ones still standing back down the passage to their lock and cast off.',
     'deck.withdraw.assault': 'The captain calls you back on the intercom with her people still holding the far hatch.',
     'deck.log.turn': 'Turn {n}: {what}.', 'deck.log.theirs': '{n} of them move into {to}', 'deck.log.ours': '{n} of ours move into {to}',
     'deck.log.fight': '{theirs} of them and {mine} of ours down in {at}', 'deck.log.wounds': '{theirs} of them and {mine} of ours wounded in {at}', 'deck.log.back': 'you fall back to {to}', 'deck.log.none': 'nobody gives ground',
-    'deck.log.rush': '{n} of them rush into {to}', 'deck.log.rushStopped': '{n} of them rush and are stopped in {at}', 'deck.log.wave': '{n} more come through the lock',
-    'deck.log.charge': 'the charge blows in {at}, {mine} of ours down', 'deck.log.chargeEmpty': 'the charge blows in {at} on nobody', 'deck.log.chargeStopped': 'the charge in {at} never blows: they were hit in {from}', 'deck.log.pullback': 'ours fall back to {to}',
-    'deck.log.hatch': 'the hatch at {at} {how}', 'deck.hatch.worked': 'holds', 'deck.hatch.failed': 'does not close',
+    'deck.log.rush': '{n} of them get through into {to}', 'deck.log.rushStopped': '{n} of them run into ours in {at} and stop there', 'deck.log.wave': '{n} more come through the lock',
+    'deck.log.charge': 'the charge blows in {at}, {mine} of ours down', 'deck.log.chargeEmpty': 'the charge blows in {at}, with nobody of ours there', 'deck.log.chargeStopped': 'they\'re hit in {from} before the charge on {at} can blow', 'deck.log.pullback': 'ours fall back to {to}',
   },
   'scene:contact': {  // a contact on a burn (engage.js contactEvent): {km} is her range, {who} the line for who she is (or a ladder step's, scene:fight-entry), {gunner} who fights the guns, {crew} the crew member who spoofs, {cr} the payoff, {fine} the heave-to's fine; a run's days are said after (run.days of scene:fight)
     title: 'Contact',
