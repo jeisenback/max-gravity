@@ -19,7 +19,7 @@ const POSTURES = {
 
 // A placeholder figure, until the sprite sheets replace it: drawPerson(ctx, pose, x, y, look) draws one person or the cat from a
 // posture (shiplife.js posture() gives pose = { name, face, frame }). x, y are the place on the deck and the floor under them (the
-// bunk's mattress for bunk). A standing person is 72 units tall. look = { color, face (an Image or null), floating, hair (a colour; the head's hair when there is no face) }. Limb angles are
+// bunk's mattress for bunk). A standing person is 72 units tall. look = { color, floating, skin, hair } (skin and hair as the person's portrait has them, character.js portraitLook). Limb angles are
 // absolute radians from straight down, ported from the mockup (docs/superpowers/mockups). Returns the point a tap should aim at (the torso's
 // middle), with the head and the front foot, so a tap can be tested against the whole body.
 const FIG_TALL = 87, FIG_SCALE = 72 / FIG_TALL;  // a standing figure is 87 mockup units from the floor to the top of the head
@@ -39,7 +39,18 @@ function figTorso(ctx, j, col) {
   ctx.strokeStyle = figShade(col, 0.55); ctx.lineWidth = 2; figSeg(ctx, [b1, b2]);  // the belt
   ctx.strokeStyle = figShade(col, 1.18); ctx.lineWidth = 1.1; figSeg(ctx, [[ne[0] - px * 1.2, ne[1] - py * 1.2], [he[0] - px * 1.2, he[1] - py * 1.2]]);  // the light on the front edge
 }
-const FIG_HAIR = ['#2b211b', '#3a2a1e', '#5a3a22', '#7a5230', '#a07a4a', '#1c1c20', '#6b6460', '#8a3a24'];  // hair, from near black to grey and red: one drawn from a person's id
+// The head in profile, facing +x (the figure is mirrored to face left): the face, the hair over the crown and the back with a fringe at
+// the front, an eye under a brow, and the nose. `up` is the way from the neck to the head, so the head turns with the body.
+function figHead(ctx, hx, hy, up, skin, hair) {
+  const ux = Math.cos(up), uy = Math.sin(up), fx = -uy, fy = ux, at = (f, u) => [hx + fx * f + ux * u, hy + fy * f + uy * u];  // fx, fy: the way the face looks
+  const [nx, ny] = at(9.2, -0.5); figDot(ctx, nx, ny, 2.1, skin);  // the nose, standing off the face
+  figDot(ctx, hx, hy, 9.5, skin);
+  ctx.fillStyle = hair; ctx.beginPath(); ctx.arc(hx, hy, 10, up - 2.0, up + 0.62); ctx.closePath(); ctx.fill();  // the crown and the back
+  const [f1x, f1y] = at(8.6, 4.6), [f2x, f2y] = at(2.5, 9.8), [f3x, f3y] = at(6.8, 7.4);
+  ctx.beginPath(); ctx.moveTo(f1x, f1y); ctx.quadraticCurveTo(f3x, f3y, f2x, f2y); ctx.lineTo(hx + ux * 9, hy + uy * 9); ctx.closePath(); ctx.fill();  // the fringe
+  const [bx, by] = at(5.2, 2.8), [bx2, by2] = at(8.2, 2.4); ctx.strokeStyle = figShade(hair, 0.9); ctx.lineWidth = 1.1; figSeg(ctx, [[bx, by], [bx2, by2]]);  // the brow
+  const [eyx, eyy] = at(6.4, 0.9); figDot(ctx, eyx, eyy, 1.25, '#15181d');  // the eye
+}
 const FIG_GROUNDED = ['stand', 'walk', 'sit', 'strap'];  // the postures with their feet (or seat) on the deck, which cast a shadow
 
 // The joint angles of a person's posture at a frame, for a figure facing right (a figure facing left is the same drawn mirrored).
@@ -93,7 +104,7 @@ function drawPerson(ctx, pose, x, y, look) {
   else {
     const k = FIG_SCALE, q = figPose(pose.name, pose.frame, frames), j = figJoints(q), S = Math.sin, col = look.color;
     ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-    const skin = '#c9a98a', boot = '#20242b', glove = '#2c3139', back = figShade(col, 0.62);  // no skin colour in the data: the head is the face image, or this muted tone
+    const skin = look.skin || '#c9a98a', hair = look.hair || '#3a2f28', boot = '#20242b', glove = '#2c3139', back = figShade(col, 0.62);
     if (!look.floating && FIG_GROUNDED.includes(pose.name)) { ctx.fillStyle = 'rgba(0,0,0,0.32)'; ctx.beginPath(); ctx.ellipse(2, 0, 17, 3.2, 0, 0, Math.PI * 2); ctx.fill(); }  // a shadow on the deck
     figLimb(ctx, j.legB, 6.4, 5, back); figBoot(ctx, j.legB, boot);
     figLimb(ctx, j.armB, 5, 4, figShade(col, 0.55)); figDot(ctx, j.armB[2][0], j.armB[2][1], 2.5, glove);
@@ -109,15 +120,10 @@ function drawPerson(ctx, pose, x, y, look) {
     ctx.strokeStyle = figShade(skin, 0.85); ctx.lineWidth = 4.5; figSeg(ctx, [j.neck, [j.neck[0] + Math.cos(up) * 3, j.neck[1] + Math.sin(up) * 3]]);  // the neck
     figLimb(ctx, j.armF, 5, 4, col); figDot(ctx, j.armF[2][0], j.armF[2][1], 2.6, glove);
     if (look.floating) {  // three strands of hair rising
-      ctx.strokeStyle = look.hair || figShade(col, 0.5); ctx.lineWidth = 1.6;
+      ctx.strokeStyle = hair; ctx.lineWidth = 1.6;
       for (let i = -1; i <= 1; i++) { ctx.beginPath(); ctx.moveTo(hx + i * 4, hy - 8); ctx.quadraticCurveTo(hx + i * 7 + S(ph + i) * 4, hy - 17, hx + i * 5 + S(ph * 0.75 + i) * 6, hy - 22); ctx.stroke(); }
     }
-    if (look.face) {
-      ctx.save(); ctx.beginPath(); ctx.arc(hx, hy, 9.5, 0, Math.PI * 2); ctx.clip(); ctx.translate(hx, hy); ctx.scale(face, 1); ctx.drawImage(look.face, -9.5, -9.5, 19, 19); ctx.restore();  // counter-flipped: the face is not mirrored
-    } else {
-      figDot(ctx, hx, hy, 9.5, skin);
-      ctx.fillStyle = look.hair || '#3a2f28'; ctx.beginPath(); ctx.arc(hx, hy, 10, up - 1.9, up + 1.75); ctx.closePath(); ctx.fill();  // the hair, over the crown and a little to the back
-    }
+    figHead(ctx, hx, hy, up, skin, hair);
     tap = { x: j.mid[0] * k, y: j.mid[1] * k }; head = { x: j.head[0] * k, y: j.head[1] * k }; foot = { x: j.legF[2][0] * k, y: j.legF[2][1] * k };
   }
   ctx.restore();
