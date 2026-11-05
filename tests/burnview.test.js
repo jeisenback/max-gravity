@@ -386,6 +386,88 @@ test('the hired captain is aboard in the cutaway, and spends the day on the brid
   assert.equal(r.id, r.cap); assert.deepEqual(r.haunt, { bridge: 6, galley: 2, berths: 1 }); assert.equal(r.color, '#b9c4d0');
 });
 
+// Scenes staged (docs/superpowers/specs/2026-11-05-scenes-staged-design.md): a burn in the move phase, a scene opened, and the ship's life ticked on.
+const stageHelpers = () => {
+  window.stageBurn = (at = 0.7) => { burn(); const t = G.transit; t.left = t.total * (1 - at); t.elapsed = 0; shipPeople(); return t; };
+  window.tickFor = secs => { for (let i = 0; i < secs * 30; i++) lifeTick(1 / 30); };
+  window.sayScene = (title, text) => openEvent({ title, text, choices: [{ label: 'Go on', run: () => 'Done.' }] });
+  window.inRoom = (p, id) => { const r = ROOMS.find(x => x.id === id); return p.dk === r.deck && p.x >= r.x0 && p.x <= r.x1 && p.tx === null; };
+  window.aboardBy = id => shipPeople().find(p => p.id === id);
+};
+
+test('a scene during a burn brings the people in it and you to its room, facing each other, and closing it lets them go', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    const t = stageBurn(), mate = person(G.state.crew[0]), out = {};
+    sayScene(`With ${mate.first}`, `${mate.first} is in the galley with a cup going cold.`); tickFor(20);
+    const you = aboardBy('you'), m = aboardBy(mate.id);
+    out.inGalley = [you, m].every(p => inRoom(p, 'galley'));
+    out.facing = you.face === Math.sign(m.x - you.x) && m.face === -you.face;
+    out.poses = [you, m].map(p => posture(p, phase(), 0, false).name);
+    G.dialog = null; t.event = null; tickFor(10);
+    out.released = [you, m].every(p => !p.staged);
+    return out;
+  });
+  await done();
+  assert.ok(r.inGalley, 'both in the galley, standing still'); assert.ok(r.facing, 'facing each other');
+  assert.deepEqual(r.poses, ['sit', 'sit'], 'seated at the galley table'); assert.ok(r.released, 'let go when it closes');
+});
+
+test('someone on the ladder when a scene opens finishes onto a deck and comes', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    stageBurn(); const mate = person(G.state.crew[0]), m = aboardBy(mate.id);
+    Object.assign(m, { x: LADDER, dk: 0.5, tdk: 1, tx: null });
+    sayScene(`With ${mate.first}`, `${mate.first} waits at the bridge rail.`); tickFor(25);
+    return { dk: m.dk, there: inRoom(m, 'bridge') };
+  });
+  await done();
+  assert.ok(r.dk === 0 || r.dk === 1, `on a deck (${r.dk})`); assert.ok(r.there, 'and at the scene');
+});
+
+test('a scene at night wakes the one it is about, and the rest sleep on', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    const t = stageBurn(); t.elapsed = 24;  // night
+    const sleepers = shipPeople().filter(p => p.id && p.id !== 'you' && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role)).slice(0, 2);
+    const b = ROOMS.find(x => x.id === 'berths');
+    sleepers.forEach((p, i) => Object.assign(p, { room: 'berths', x: b.x0 + 0.05 + i * 0.05, dk: 0, tdk: 0, tx: null, wait: 999 }));
+    const [one, other] = sleepers;
+    sayScene(`With ${one.name}`, `${one.name} is in the galley, unable to sleep.`); tickFor(25);
+    return { dark: isDark(), came: inRoom(one, 'galley'), slept: isAsleep(other), n: sleepers.length };
+  });
+  await done();
+  assert.ok(r.dark && r.n === 2, 'night, with two asleep'); assert.ok(r.came, 'the one in the scene got up and came'); assert.ok(r.slept, 'the other sleeps on');
+});
+
+test('a scene that leads into another moves its people to the next room, and lets go of those not in it', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    stageBurn(); const mate = person(G.state.crew[0]), cap = hiredCaptain();
+    sayScene(`With ${mate.first}`, `${mate.first} is in the galley.`); tickFor(20);
+    sayScene('The Captain', `${cap.first} wants a word.`); tickFor(25);
+    return { mate: !!aboardBy(mate.id).staged, cap: inRoom(aboardBy(cap.id), 'bridge'), you: inRoom(aboardBy('you'), 'bridge') };
+  });
+  await done();
+  assert.equal(r.mate, false, 'the first scene\'s mate is let go'); assert.ok(r.cap && r.you, 'the captain and you on the bridge');
+});
+
+test('a scene at the couches moves nobody', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    stageBurn(0.02); const mate = person(G.state.crew[0]); tickFor(5);
+    sayScene(`With ${mate.first}`, `${mate.first} is in the galley.`); tickFor(20);
+    return shipPeople().every(p => Math.abs(p.x - p.seat) < 1e-6 && !p.staged);
+  });
+  await done();
+  assert.ok(r, 'everyone at their couch, nobody staged');
+});
+
 test('a tap on a person\'s head opens the person', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
