@@ -7,13 +7,14 @@
 // Sample:    4 captains x 5 seeds = 20 games of up to 40 runs each (tools/soak.js), a captain's five seeds at a time.
 // Tolerance: every game reaches the target in 6 to 40 runs and on day 30 to 260, never with the planner stuck, no page errors
 //            and no broken text; per captain, the median of the five seeds is 10 to 30 runs and day 60 to 190, and the mean pay
-//            per run is 8,000 to 20,000 cr; across captains the pay per day differs by at most 1.7 times (over 20 seeds it is
-//            about 1.1, but the mean of five seeds swings from 1.1 to 1.55 with nothing changed but the draws).
+//            per run is 2,500 to 8,000 cr; across captains the pay per day, as a share of each captain's day rate less the kit,
+//            differs by at most 1.25 times. A rating is paid a day rate that differs by captain on purpose (#879: Dov 700, Zoya 450), so
+//            the raw pay per day differs by about that much; measured against the rate it sat at 0.95 to 1.01 (20 seeds, 2026-11-06).
 // The pins that belong in `npm test` (the order of a captain's scenes, the offer after the secret) are in tests/soak.test.js.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { closeBrowser } = require('../helpers');
+const { closeBrowser, open } = require('../helpers');
 
 after(closeBrowser);
 
@@ -38,8 +39,9 @@ test('about twenty runs reach the target with every captain, and the planner is 
     assert.ok(pay >= 2500 && pay <= 8000, `${captainKey}: mean pay per run ${Math.round(pay)}`);  // a rating's day rate less the kit, and no share (#879): measured 3,166 to 5,408 over the four captains; 8,000 to 20,000 with the share
     perDay[captainKey] = pay / days;
   }
-  const rates = Object.values(perDay), spread = Math.max(...rates) / Math.min(...rates);
-  // Measured: over 20 seeds a captain's pay per day differs by about 1.1 at most between captains, but the mean of five seeds swings
-  // between 1.1 and 1.55 with nothing changed but which random numbers are drawn. So this guards against gross imbalance only.
-  assert.ok(spread <= 1.7, `pay per day across captains: ${JSON.stringify(perDay)}`);
+  const { ev, done } = await open({ scope: 'full' }), rate = await ev(() => Object.fromEntries(Object.entries(CAPTAINS).map(([k, c]) => [k, c.wage - KIT_DEDUCTION]))); await done();  // the day rate a rating is paid (hired.js)
+  const rates = Object.entries(perDay).map(([k, v]) => v / rate[k]), spread = Math.max(...rates) / Math.min(...rates);
+  // Measured against each captain's day rate less the kit: 0.95 to 1.01 over 20 seeds (2026-11-06); five seeds swing more, so this
+  // guards against something other than the rate skewing a captain's pay, not against the rates themselves (the owner sets those).
+  assert.ok(spread <= 1.25, `pay per day against each captain's day rate: ${JSON.stringify(Object.fromEntries(Object.entries(perDay).map(([k, v]) => [k, `${Math.round(v)} of ${rate[k]}`])))}`);
 });
