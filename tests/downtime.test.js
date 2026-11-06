@@ -78,8 +78,8 @@ test('the ship has a night: the lights go down and whoever is off watch turns in
     setup();
     const t = G.transit; t.left = t.total * 0.3;  // under way, not at the flip
     const level = e => { t.elapsed = e; return nightLevel(); };
-    const levels = { morning: level(5), dusk: level(17), night: level(22), dawn: level(32) };
-    t.elapsed = 22;
+    const levels = { morning: level(5), dusk: level(42), night: level(50), dawn: level(70) };
+    t.elapsed = 50;
     lifeTick(0.5);
     const noted = t.comms.some(c => /lights go down/.test(c));  // the comms keep only the last ten lines
     for (let i = 0; i < 200; i++) lifeTick(0.5);

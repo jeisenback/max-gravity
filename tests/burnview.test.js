@@ -431,7 +431,7 @@ test('a scene at night wakes the one it is about, and the rest sleep on', async 
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(() => {
-    const t = stageBurn(); t.elapsed = 24; t.dark = true;  // night, the lights already down
+    const t = stageBurn(); t.elapsed = 50; t.dark = true;  // night, the lights already down
     const sleepers = shipPeople().filter(p => p.id && p.id !== 'you' && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role)).slice(0, 2);
     const b = ROOMS.find(x => x.id === 'berths');
     sleepers.forEach((p, i) => Object.assign(p, { room: 'berths', x: b.x0 + 0.05 + i * 0.05, dk: 0, tdk: 0, tx: null, wait: 999 }));
@@ -474,7 +474,7 @@ test('a scene in the berths at night does not get the sleepers up, and arriving 
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(() => {
-    const t = stageBurn(); t.elapsed = 24; t.dark = true;  // night, the lights already down
+    const t = stageBurn(); t.elapsed = 50; t.dark = true;  // night, the lights already down
     const b = ROOMS.find(x => x.id === 'berths'), sleeper = shipPeople().find(p => p.id && p.id !== 'you' && p.role !== 'cat' && p.role !== 'captain' && !NIGHT_WATCH.includes(p.role));
     Object.assign(sleeper, { room: 'berths', x: b.mid, dk: 0, tdk: 0, tx: null, wait: 999 });
     const mate = shipPeople().find(p => p.id && p.id !== 'you' && p !== sleeper && p.role !== 'cat' && p.role !== 'captain');
@@ -628,4 +628,26 @@ test('the ship\'s log is in the HUD on a wide screen and at the top of Comms on 
   const off = await narrow.ev(() => { const t = G.transit; G.transit = null; const r = commsPanel().includes("Ship's log"); G.transit = t; return r; });
   assert.ok(!off, 'no log outside a burn');
   await narrow.done();
+});
+
+test('a whole burn of ship life draws none of the game\'s dice', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    const t = stageBurn(0), real = Math.random, start = shipPeople().map(p => p.x); let draws = 0, moved = 0;
+    Math.random = () => { draws++; return real(); };
+    try { for (let el = 0; t.left > 0; el += 1 / 30) { t.left -= 1 / 30; t.elapsed = el; lifeTick(1 / 30); shipPeople().forEach((p, i) => { if (Math.abs(p.x - start[i]) > 0.05) moved++; }); } } finally { Math.random = real; }
+    return { draws, moved };
+  });
+  await done();
+  assert.equal(r.draws, 0, 'ship life used only its own dice');
+  assert.ok(r.moved > 0, 'and people did move');
+});
+
+test('ship life on a burn from an old save starts its own dice and runs', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => { const t = stageBurn(); delete t.lifeRng; tickFor(5); return typeof t.lifeRng; });
+  await done();
+  assert.equal(r, 'number', 'the dice started themselves');
 });

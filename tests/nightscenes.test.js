@@ -30,7 +30,7 @@ test('the night condition holds on a burn while the lights are down, and not by 
     out.offBurn = [meets({ night: true }), meets({ night: false })];
     burn(); const t = G.transit;
     t.elapsed = 5; out.day = [meets({ night: true }), meets({ night: false })];
-    t.elapsed = 22; out.night = [meets({ night: true }), meets({ night: false })];
+    t.elapsed = 50; out.night = [meets({ night: true }), meets({ night: false })];
     return out;
   });
   assert.deepEqual(r.offBurn, [false, false], 'with no burn there is no night to test');
@@ -45,7 +45,7 @@ test('the night scenes play at night with their post filled, and not by day or w
   const r = await ev(() => {
     const st = burn(), t = G.transit, out = {}; st.day = 30;
     const staff = role => { st.crew = st.crew.filter(id => person(id).role !== role); const p = makePerson('earth'); p.role = role; p.skill = 1; registerPerson(p); st.crew.push(p.id); return p; };
-    t.elapsed = 22; for (const role of ['pilot', 'engineer', 'cook']) st.crew = st.crew.filter(id => person(id).role !== role);
+    t.elapsed = 50; for (const role of ['pilot', 'engineer', 'cook']) st.crew = st.crew.filter(id => person(id).role !== role);
     out.empty = NIGHT_IDS.map(holds);
     staff('pilot'); staff('engineer'); staff('cook');
     out.night = NIGHT_IDS.map(holds);

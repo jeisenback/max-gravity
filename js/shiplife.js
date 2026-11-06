@@ -65,7 +65,7 @@ const ROLE_COLORS = { you: '#d9d4cc', captain: '#b9c4d0', engineer: '#ffa24a', p
 
 // The ship's day: every SHIP_DAY seconds of a burn the lights go down for a night, and everyone who is not on watch turns in.
 // 0 in the day, 1 at night, and a ramp at dusk and dawn. A burn starts in the morning.
-const SHIP_DAY = 40, NIGHT_WATCH = ['pilot', 'engineer'];
+const SHIP_DAY = 80, NIGHT_WATCH = ['pilot', 'engineer'];
 function nightLevel() {
   const t = G.transit;
   if (!t) return 0;
@@ -73,6 +73,17 @@ function nightLevel() {
   return f < 0.55 ? 0 : f < 0.65 ? (f - 0.55) / 0.1 : f < 0.9 ? 1 : 1 - (f - 0.9) / 0.1;
 }
 const isDark = () => nightLevel() > 0.3;
+
+// Ship life's own dice (docs/superpowers/specs/2026-11-05-working-routine-design.md): everything that only changes the cutaway (where someone
+// walks, a seat, a comms flavour line) rolls these and not Math.random, so ship life never moves the game's dice. The state is a 32-bit number
+// on the burn, seeded from the burn's facts (no draw of the game's); a burn from an older save seeds itself on first use.
+function shipRand(t, st) {
+  if (typeof t.lifeRng !== 'number') { let h = 2166136261; for (const ch of `${st.day}|${t.to}|${t.days}`) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); t.lifeRng = h >>> 0; }
+  let x = (t.lifeRng = (t.lifeRng + 0x6D2B79F5) >>> 0);  // mulberry32
+  x = Math.imul(x ^ (x >>> 15), x | 1); x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
+  return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+}
+const lifeRnd = () => shipRand(G.transit, G.state), lifeRand = (a, b) => a + lifeRnd() * (b - a), lifePick = arr => arr[Math.floor(lifeRnd() * arr.length)];
 const nightHaunts = role => NIGHT_WATCH.includes(role) ? HAUNTS[role] : role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 };
 const isAsleep = p => !p.staged && isDark() && p.room === 'berths' && p.tx === null && p.dk === 0 && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role) && phase() === 'move';
 
@@ -226,12 +237,12 @@ function lifeState() {
 }
 
 // The pools are read through the editor's words (lines:ship-life, lines:ship-lights; js/linetables.js).
-function lifeLine(p, crowd) {
+function lifeLine(p, crowd, rnd = Math.random) {  // rnd: ship life's dice in a burn (lifeTick)
   const room = linedText('lines:ship-life', LIFE_LINES)[p.room], pool = room[p.role] || room.any;
   if (!pool) return null;
   const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you' && o.role !== 'cat');
-  const line = pickFresh(pool.filter(l => !l.includes('{m}') || others.length));
-  return line && line.replace('{n}', p.name).replace('{m}', others.length ? pick(others).name : '');
+  const line = pickFresh(pool.filter(l => !l.includes('{m}') || others.length), rnd);
+  return line && line.replace('{n}', p.name).replace('{m}', others.length ? others[Math.floor(rnd() * others.length)].name : '');
 }
 
 // ---------- the people aboard ----------
@@ -246,7 +257,7 @@ function shipPeople() {
   }
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
-  people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), dk: 0, tdk: 0, tx: null, wait: rand(1, 4), seat: couchX(i, people.length) }));
+  people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), dk: 0, tdk: 0, tx: null, wait: lifeRand(1, 4), seat: couchX(i, people.length) }));
   // A hand's captain is aboard too, strapped in on the bridge beside the hand's couch: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
   const cap = hiredCaptain(), bx = roomAt('bridge').mid + 0.025;
   if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: 0, tdk: 0, tx: null, wait: 3, seat: bx });
@@ -260,12 +271,12 @@ function goTo(p, roomId) {
   const r = roomAt(roomId);
   p.room = roomId;
   p.tdk = r.deck;
-  p.tx = r.x0 + r.w * (p.role === 'captain' ? 0.6 : rand(0.25, 0.75));  // the captain's place takes no draw of the game's dice (hired.js's captain was added after the dice were set)
+  p.tx = r.x0 + r.w * (p.role === 'captain' ? 0.6 : lifeRand(0.25, 0.75));
 }
 
-function weighted(table) {
+function weighted(table, rnd = Math.random) {
   const entries = Object.entries(table), total = entries.reduce((s, [, w]) => s + w, 0);
-  let r = Math.random() * total;
+  let r = rnd() * total;
   for (const [k, w] of entries) if ((r -= w) <= 0) return k;
   return entries[0][0];
 }
@@ -329,7 +340,7 @@ function lifeTick(dt) {
   if (dark !== !!G.transit.dark) {  // dusk or dawn
     G.transit.dark = dark;
     comm(`[Ship] ${lineWords('lines:ship-lights', dark ? 'dusk' : 'dawn', LIFE_NOTES[dark ? 'dusk' : 'dawn'])}`);
-    for (const p of people) if (!NIGHT_WATCH.includes(p.role)) p.wait = Math.min(p.wait, rand(0.2, 3));
+    for (const p of people) if (!NIGHT_WATCH.includes(p.role)) p.wait = Math.min(p.wait, lifeRand(0.2, 3));
   }
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
   for (const p of people) {
@@ -350,14 +361,14 @@ function lifeTick(dt) {
       if (Math.abs(p.tx - p.x) < 0.002) {
         p.tx = null;
         if (p.staged) { p.face = p.faceTo || p.face; continue; }  // in place for the scene, facing the others: no draw of the game's dice
-        p.wait = rand(5, 12);
-        if (p.role !== 'you' && Math.random() < 0.18 && !lifeHushed(lifeState())) {
-          const line = lifeLine(p, people);
+        p.wait = lifeRand(5, 12);
+        if (p.role !== 'you' && lifeRnd() < 0.18 && !lifeHushed(lifeState())) {
+          const line = lifeLine(p, people, lifeRnd);
           if (line) comm(`[Ship] ${line}`);
         }
       }
     } else if (!p.staged && (p.wait -= dt) <= 0) {
-      goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role]));
+      goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], lifeRnd));
     }
   }
 }
@@ -537,7 +548,7 @@ const ACTIVITIES = {
     get label() { return lifeSay('drills.label'); }, can: () => !G.transit.drilled,
     run() {
       G.transit.drilled = true;
-      for (const p of shipPeople()) goTo(p, p.role === 'you' ? 'bridge' : p.role === 'captain' ? 'bridge' : pick(['hold', 'bridge', 'engine']));
+      for (const p of shipPeople()) goTo(p, p.role === 'you' ? 'bridge' : p.role === 'captain' ? 'bridge' : lifePick(['hold', 'bridge', 'engine']));
       return lifeSay(tellingOn('drills.result', G.state.day));
     },
   },
@@ -546,7 +557,7 @@ const ACTIVITIES = {
     run() {
       const max = ship().armor, amount = Math.round(max * (roleSkill('engineer') ? 0.4 : 0.2)), before = G.state.armor;
       G.state.armor = Math.min(max, before + amount);
-      for (const p of shipPeople()) goTo(p, p.role === 'passenger' ? 'galley' : p.role === 'captain' ? 'bridge' : pick(['engine', 'hold']));
+      for (const p of shipPeople()) goTo(p, p.role === 'passenger' ? 'galley' : p.role === 'captain' ? 'bridge' : lifePick(['engine', 'hold']));
       const day = G.state.day;  // the result and its tail are one version, taken by the day
       return `${lifeSay(tellingOn('repair.result', day), { before, after: G.state.armor, max })} ${roleSkill('engineer') ? lifeSay(tellingOn('repair.skilled', day), { name: roleName('engineer') }) : lifeSay(tellingOn('repair.alone', day))}`;
     },

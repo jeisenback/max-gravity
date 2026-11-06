@@ -80,7 +80,7 @@ const playLines = () => {
     uatBurn('Ceres Station', 'pallas');
     const realComm = window.comm, heard = [];
     window.comm = text => heard.push(text);
-    for (const [name, elapsed, dark] of [['dusk', 24, false], ['dawn', -2, true]]) { G.transit.elapsed = elapsed; G.transit.dark = dark; heard.length = 0; lifeTick(0.01); note(`lights:${name}`, heard.join(' | ')); }
+    for (const [name, elapsed, dark] of [['dusk', 50, false], ['dawn', -2, true]]) { G.transit.elapsed = elapsed; G.transit.dark = dark; heard.length = 0; lifeTick(0.01); note(`lights:${name}`, heard.join(' | ')); }
     window.comm = realComm; }
   // the world's news: every line of the pool of pirate raids and of the pool of incidents, as the game draws it (the dice that pick line k; the first draws of the tick are the chance and the sides)
   { const realRandom = Math.random, drawn = list => { const q = [...list]; Math.random = () => (q.length ? q.shift() : 0.99); };  // the dice given, then dice that start nothing else
