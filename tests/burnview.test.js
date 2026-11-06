@@ -862,7 +862,8 @@ test('a hurt crew member lies in the medbay all day, and whoever gives first aid
     const dayAt = eval(dayAtSrc), t = stageBurn(), pilot = shipPeople().find(p => p.role === 'pilot'), pose = p => posture(p, phase(), 0, isAsleep(p)).name, out = {};
     (G.state.injured = G.state.injured || {})[pilot.id] = true;
     for (const [k, f] of [['breakfast', 0.04], ['shift', 0.15], ['supper', 0.5]]) { t.elapsed = dayAt(f); tickFor(30); out[k] = [inRoom(pilot, 'medbay'), pose(pilot)]; if (k === 'shift') { const aid = shipPeople().find(p => p.id === roleHolder('medic').id); out.aid = [inRoom(aid, 'medbay'), pose(aid)]; } }
-    delete G.state.injured[pilot.id]; t.elapsed = dayAt(0.15); tickFor(30); out.back = inRoom(pilot, 'bridge');
+    delete G.state.injured[pilot.id]; t.elapsed = dayAt(0.15); out.back = false;
+    for (let i = 0; i < 30 * 30 && !out.back; i++) { lifeTick(1 / 30); out.back = inRoom(pilot, 'bridge'); }  // gets there (a later errand may take them out again)
     return out;
   }, dayAt.toString());
   await done();

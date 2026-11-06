@@ -332,10 +332,10 @@ const toActivity = (p, roomId) => { goTo(p, roomId); Object.assign(p, { block: '
 function routineTarget(p, spot, r, i, n, rnd) {
   if (spot.at === 'post') return r.x0 + r.w * (0.15 + 0.7 * (n > 1 ? i / (n - 1) : 0.5));  // place i of the n whose post is this room
   if (spot.at === 'stove') return r.x0 + r.w * 0.15;
-  if (spot.at === 'bed') return r.x0 + r.w * (0.2 + 0.34 * (n > 1 ? i / (n - 1) : 0));  // along the medbay's bunk, one to a patient
+  if (spot.at === 'bed') return r.x0 + r.w * (0.34 + 0.16 * (n > 1 ? i / (n - 1) : 0));  // on the medbay's cot (0.2 to 0.54 of the room), the head toward its pillow end
   if (spot.at === 'aid') return r.x0 + r.w * 0.6;
   if (spot.at === 'repair') return r.x0 + r.w * 0.5;
-  if (spot.at === 'alone') return r.x0 + r.w * 0.85;
+  if (spot.at === 'alone') return r.x0 + r.w * 0.12;  // on the edge of the first bunk
   if (spot.at === 'table') return Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.x0 + r.w * (0.3 + 0.6 * (n > 1 ? i / (n - 1) : 0.5))));
   return r.x0 + r.w * (0.25 + 0.5 * rnd());  // a bunk
 }
@@ -612,7 +612,8 @@ function drawCutaway(box, clear = box) {
   const berths = cutRect(roomAt('berths'), len), labels = [], dots = [], hits = [];
   for (const p of people) {
     const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p));
-    const x = bunk ? bunk.x + Math.min(44, bunk.w * 0.62) : X(p.x), y = bunk ? bunk.y - 5 : floorY(p.dk), dk = Math.round(p.dk);
+    const cot = pose.name === 'bunk' && !bunk && p.room === 'medbay';  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
+    const x = bunk ? bunk.x + Math.min(44, bunk.w * 0.62) : X(p.x), y = bunk ? bunk.y - 5 : floorY(p.dk) - (cot ? 36 : 0), dk = Math.round(p.dk);
     dots.push({ x: X(p.x), deck: p.dk, color: ROLE_COLORS[p.role] });
     if (Math.abs(x - camX) > half + 60) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = Math.abs(x - camX) <= half;
