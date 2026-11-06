@@ -636,6 +636,7 @@ test('a whole burn of ship life draws none of the game\'s dice', async () => {
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(() => {
     const t = stageBurn(0), real = Math.random, start = shipPeople().map(p => p.x); let draws = 0, moved = 0;
+    G.state.armor = Math.round(ship().armor / 2); (G.state.injured = G.state.injured || {})[G.state.crew[0]] = true; person(G.state.crew[1]).mood = { kind: 'low', until: G.state.day + 10, text: '' };  // damage, a patient and someone low aboard
     Math.random = () => { draws++; return real(); };
     try { for (let el = 0; t.left > 0; el += 1 / 30) { t.left -= 1 / 30; t.elapsed = el; lifeTick(1 / 30); shipPeople().forEach((p, i) => { if (Math.abs(p.x - start[i]) > 0.05) moved++; }); } } finally { Math.random = real; }
     return { draws, moved };
@@ -661,7 +662,7 @@ test('at breakfast the crew are at the galley table, seated, the cook at the sto
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.04);
-    G.state.crew.push('p:cook'); shipPeople().push({ name: 'Cook', role: 'cook', id: 'p:cook', room: 'berths', x: 0.3, dk: 0, tdk: 0, tx: null, wait: 1, seat: 0.3 });  // the narrow build's crew has no cook
+    G.state.crew.push('p:cook'); G.state.people['p:cook'] = { id: 'p:cook', first: 'Cook', role: 'cook', skill: 1, traits: [] }; shipPeople().push({ name: 'Cook', role: 'cook', id: 'p:cook', room: 'berths', x: 0.3, dk: 0, tdk: 0, tx: null, wait: 1, seat: 0.3 });  // the narrow build's crew has no cook
     for (let i = 0; shipPeople().filter(p => p.role !== 'cat').length < 8; i++) shipPeople().push({ name: `P${i}`, role: 'passenger', id: `p:t${i}`, room: 'berths', x: 0.3, dk: 0, tdk: 0, tx: null, wait: 1, seat: 0.3 });
     tickFor(30);
     const g = ROOMS.find(x => x.id === 'galley'), at = shipPeople().filter(p => p.role !== 'cat');
@@ -845,10 +846,129 @@ test('the cook sent on a drill does not work at the stove from the hold', async 
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.15);
-    G.state.crew.push('p:cook'); shipPeople().push({ name: 'Cook', role: 'cook', id: 'p:cook', room: 'berths', x: 0.3, dk: 0, tdk: 0, tx: null, wait: 1, seat: 0.3 });
+    G.state.crew.push('p:cook'); G.state.people['p:cook'] = { id: 'p:cook', first: 'Cook', role: 'cook', skill: 1, traits: [] }; shipPeople().push({ name: 'Cook', role: 'cook', id: 'p:cook', room: 'berths', x: 0.3, dk: 0, tdk: 0, tx: null, wait: 1, seat: 0.3 });
     tickFor(25); const cook = shipPeople().find(p => p.role === 'cook'); toActivity(cook, 'hold'); tickFor(20);
     return { room: cook.room, pose: posture(cook, phase(), 0, isAsleep(cook)).name };
   }, dayAt.toString());
   await done();
   assert.equal(r.room, 'hold'); assert.notEqual(r.pose, 'work', 'no stove in the hold');
+});
+
+// The ship's state (docs/superpowers/specs/2026-11-06-ship-state-design.md).
+test('a hurt crew member lies in the medbay all day, and whoever gives first aid works by them in a shift', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(), pilot = shipPeople().find(p => p.role === 'pilot'), pose = p => posture(p, phase(), 0, isAsleep(p)).name, out = {};
+    (G.state.injured = G.state.injured || {})[pilot.id] = true;
+    for (const [k, f] of [['breakfast', 0.04], ['shift', 0.15], ['supper', 0.5]]) { t.elapsed = dayAt(f); tickFor(30); out[k] = [inRoom(pilot, 'medbay'), pose(pilot)]; if (k === 'shift') { const aid = shipPeople().find(p => p.id === roleHolder('medic').id); out.aid = [inRoom(aid, 'medbay'), pose(aid)]; } }
+    delete G.state.injured[pilot.id]; t.elapsed = dayAt(0.15); out.back = false;
+    for (let i = 0; i < 30 * 30 && !out.back; i++) { lifeTick(1 / 30); out.back = inRoom(pilot, 'bridge'); }  // gets there (a later errand may take them out again)
+    return out;
+  }, dayAt.toString());
+  await done();
+  for (const k of ['breakfast', 'shift', 'supper']) assert.deepEqual(r[k], [true, 'bunk'], `the pilot in a medbay bunk at ${k}`);
+  assert.deepEqual(r.aid, [true, 'work'], 'first aid at work by the bunk'); assert.ok(r.back, 'treated, back on the bridge');
+});
+
+test('with damage the engineer works at a marked room in a shift, keeps the drive at night, and goes back to it when the hull is mended', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(), eng = shipPeople().find(p => p.role === 'engineer'), pose = p => posture(p, phase(), 0, isAsleep(p)).name, out = {};
+    G.state.armor = Math.round(ship().armor * 0.6);  // 0.4 lost: two marks
+    t.elapsed = dayAt(0.15); tickFor(30); out.marks = [...(t.marks || [])]; out.shift = [out.marks.includes(eng.room) && eng.tx === null, pose(eng)];
+    t.elapsed = dayAt(0.7); tickFor(30); out.night = inRoom(eng, 'engine');
+    t.elapsed = dayAt(0.15); tickFor(30); G.state.armor = ship().armor; tickFor(30); out.mended = [t.marks.length, inRoom(eng, 'engine')];
+    return out;
+  }, dayAt.toString());
+  await done();
+  assert.equal(r.marks.length, 2, 'two rooms marked'); assert.deepEqual(r.shift, [true, 'work'], 'the engineer at work at a mark');
+  assert.ok(r.night, 'the drive at night'); assert.deepEqual(r.mended, [0, true], 'mended: no marks, back at the drive');
+});
+
+test('with more marks than hands the hands take the nearest and nobody is stuck', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(); G.state.armor = 1; t.elapsed = dayAt(0.15); tickFor(35);
+    const hands = shipPeople().filter(p => p.role === 'engineer' || p.role === 'icehand');
+    return { marks: t.marks.length, at: hands.map(h => t.marks.includes(h.room) && h.tx === null && h.dk === h.tdk), rooms: new Set(hands.map(h => h.room)).size, hands: hands.length };
+  }, dayAt.toString());
+  await done();
+  assert.equal(r.marks, 3); assert.ok(r.at.every(Boolean), 'each hand at a mark'); assert.equal(r.rooms, r.hands, 'one hand to a room');
+});
+
+test('someone having a hard time eats alone in the berths', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(), gun = shipPeople().find(p => p.id && p.role !== 'you' && p.role !== 'captain' && !NIGHT_WATCH.includes(p.role) && G.state.crew.includes(p.id) && p.role !== 'cook');
+    person(gun.id).mood = { kind: 'low', until: G.state.day + 10, text: '' };
+    t.elapsed = dayAt(0.33); tickFor(30);
+    const others = shipPeople().filter(p => p !== gun && p.role !== 'cat' && G.state.crew.includes(p.id) && p.role !== 'cook');
+    return { alone: inRoom(gun, 'berths'), pose: posture(gun, phase(), 0, isAsleep(gun)).name, table: others.every(p => inRoom(p, 'galley')) };
+  }, dayAt.toString());
+  await done();
+  assert.ok(r.alone, 'in the berths'); assert.equal(r.pose, 'sit'); assert.ok(r.table, 'the rest at the table');
+});
+
+test('you, hurt, sleep in the medbay and walk slower', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(), you = aboardBy('you'), mate = shipPeople().find(p => p.role === 'pilot');
+    const pace = p => { Object.assign(p, { room: 'galley', x: 0.45, dk: 0, tdk: 0, tx: 0.65, staged: undefined, block: 'x', wait: 99 }); const b = shipDay(t.elapsed).block; p.block = b; const x0 = p.x; lifeTick(0.5); return p.x - x0; };
+    career().hurtUntil = G.state.day + 5;
+    t.elapsed = dayAt(0.7); tickFor(35);
+    const out = { bed: inRoom(you, 'medbay'), pose: posture(you, phase(), 0, isAsleep(you)).name };
+    t.elapsed = dayAt(0.15); out.paces = [pace(you), pace(mate)];
+    return out;
+  }, dayAt.toString());
+  await done();
+  assert.ok(r.bed, 'in the medbay at night'); assert.equal(r.pose, 'bunk');
+  assert.ok(Math.abs(r.paces[0] / r.paces[1] - 2 / 3) < 0.05, `two thirds of the pace (${r.paces})`);
+});
+
+test('with no first-aid giver up, nobody waits by the bunks', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(), aid = roleHolder('medic');
+    (G.state.injured = G.state.injured || {})[aid.id] = true;
+    const left = roleHolder('medic'); t.elapsed = dayAt(0.15); tickFor(30);
+    return { left: left ? left.id : null, aiding: shipPeople().filter(p => p.at === 'aid').map(p => p.id) };
+  }, dayAt.toString());
+  await done();
+  assert.equal(r.left, null, 'the only one with first aid is the one hurt'); assert.deepEqual(r.aiding, [], 'nobody by the bunks');
+});
+
+test('a burn with half its armor draws its two marked rooms without an error', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => { const t = stageBurn(); G.state.armor = Math.round(ship().armor / 2); tickFor(1); drawTransit(innerWidth, innerHeight); return t.marks.length; });
+  await done();
+  assert.equal(r, 2);
+});
+
+test('someone having a hard time sits up alone in the dusk, the wounded stay in bed through a medbay scene and the straps', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(), pose = p => posture(p, phase(), 0, isAsleep(p)).name, out = {};
+    const low = shipPeople().find(p => p.id && G.state.crew.includes(p.id) && !NIGHT_WATCH.includes(p.role) && p.role !== 'cook' && p.role !== 'xo');
+    person(low.id).mood = { kind: 'low', until: G.state.day + 10, text: '' };
+    t.elapsed = dayAt(0.6); tickFor(25); out.dusk = [isAsleep(low), pose(low)];
+    const pilot = shipPeople().find(p => p.role === 'pilot'), mate = shipPeople().find(p => p.role === 'engineer');
+    (G.state.injured = G.state.injured || {})[pilot.id] = true; t.elapsed = dayAt(0.15); tickFor(30);
+    sayScene(`With ${mate.name}`, `${mate.name} is in the medbay, by the cot.`); tickFor(15);
+    out.scene = [pilot.room, inRoom(pilot, 'medbay'), pose(pilot)]; G.dialog = null; t.event = null; tickFor(5);
+    delete G.state.injured[pilot.id]; tickFor(2); (G.state.injured)[pilot.id] = true; Object.assign(pilot, { room: 'galley', x: 0.5, dk: 0, tdk: 0, tx: 0.55, block: undefined });
+    lifeTick(1 / 30); t.left = t.total * (1 - 0.45); tickFor(1); out.strapped = pose(pilot);
+    return out;
+  }, dayAt.toString());
+  await done();
+  assert.deepEqual(r.dusk, [false, 'sit'], 'awake and sitting at dusk');
+  assert.deepEqual(r.scene, ['medbay', true, 'bunk'], 'the patient stays in bed through the scene');
+  assert.notEqual(r.strapped, 'bunk', 'not lying in the air on the way to the medbay at the straps');
 });
