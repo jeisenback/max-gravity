@@ -117,3 +117,43 @@ test('a hand with a room sees its port among the runs to suggest, and the captai
   assert.equal(r.none, false, 'no room, no row');
   assert.equal(r.first.room, true, 'the room\'s port comes first'); assert.notEqual(r.here, 'mars');
 });
+
+test('the cast\'s visit home, the room offered and the room come back to all play, from the shared lines (their homes have no place written)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const out = {};
+    for (const id of ['c:ines', 'c:tomas', 'c:cato']) {
+      const p = person(id), said = [];
+      try {
+        const v = visitHome(p); said.push(v.title, v.text, ...v.choices.map(c => c.label), v.choices[0].run());
+        const o = roomOffer(p); said.push(o.title, o.text); o.choices[0].run();
+        G.state.day += 3; const back = roomReturn(p); said.push(back.title, back.text);
+        G.state.room = null; p.roomOffered = false;
+        out[id] = said.filter(s => typeof s !== 'string' || !s || /\{\w+\}|undefined/.test(s));
+      } catch (e) { out[id] = [String(e)]; }
+    }
+    return out;
+  });
+  await done();
+  for (const [id, bad] of Object.entries(r)) assert.deepEqual(bad, [], `${id}: every line there and filled`);
+});
+
+test('nobody is asked home whose story has no hope to tell the family: a cast member not yet written is not, Ines is', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, ines = person('c:ines'), other = person('c:tomas');
+    ines.opinion = OPINION.TRUSTED; other.opinion = 0;
+    const out = { ines: (visitDue(st, ines.home, null) || {}).id };
+    ines.opinion = 0; Object.assign(other, { cast: 'yelena', opinion: OPINION.TRUSTED }); delete other.story;  // a cast member whose story is not written (#885)
+    const before = Math.random; let draws = 0; Math.random = () => { draws++; return before(); };
+    out.unwritten = (visitDue(st, other.home, null) || {}).id || null; Math.random = before;
+    out.draws = draws;
+    return out;
+  });
+  await done();
+  assert.equal(r.ines, 'c:ines', 'Ines is asked home');
+  assert.equal(r.unwritten, null, 'one with no hope written is not');
+  assert.equal(r.draws, 0, 'asking draws none of the game\'s dice');
+});
