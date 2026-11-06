@@ -736,7 +736,7 @@ test('at dusk the captain waits on the bridge for the pilot, they face each othe
       lifeTick(1 / 30);
       const here = inRoom(pilot, 'bridge');
       if (!here && !arrived && !inRoom(cap, 'bridge')) out.waited = false;
-      if (here && arrived === null) { arrived = i; out.faces = [Math.sign(cap.face) === Math.sign(pilot.x - cap.x), null]; }
+      if (here && arrived === null) { arrived = i; out.apart = Math.abs(pilot.x - cap.x); out.faces = [Math.sign(cap.face) === Math.sign(pilot.x - cap.x), null]; }
       if (arrived !== null && i === arrived + 15) out.faces[1] = Math.sign(pilot.face) === Math.sign(cap.x - pilot.x);  // half a second on, both turned to each other
       if (arrived !== null && cap.tx !== null && out.left === undefined) out.left = (i - arrived) / 30;
     }
@@ -746,7 +746,7 @@ test('at dusk the captain waits on the bridge for the pilot, they face each othe
   await done();
   assert.deepEqual(r.before, [true, true], 'at supper the captain keeps the bridge and the pilot eats');
   assert.ok(r.waited, 'the captain stays on the bridge until the pilot is there');
-  assert.deepEqual(r.faces, [true, true], 'they face each other');
+  assert.ok(r.apart > 0.02, `each at their own place on the bridge (${r.apart})`); assert.deepEqual(r.faces, [true, true], 'they face each other');
   assert.ok(r.left >= 1.5 && r.left <= 2.5, `the captain turns in about two seconds after (${r.left})`);
   assert.ok(r.berths, 'and is in the berths');
 });
@@ -776,4 +776,17 @@ test('a watch-keeper held in a scene at dusk leaves the one waiting to turn in b
   }, dayAt.toString());
   await done();
   assert.equal(r.staged, 'galley', 'the pilot was held at the table'); assert.ok(r.berths, 'and the captain is in the berths by night');
+});
+
+test('people who share a post each have their own place in the room, and at dusk they hand over across it', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.15); tickFor(25);
+    const on = shipPeople().filter(p => p.block === 'shift' && p.at === 'post' && p.tx === null && !p.errand), clash = [];
+    for (const a of on) for (const b of on) if (a !== b && a.room === b.room && Math.abs(a.x - b.x) < 0.02) clash.push(`${a.name}/${b.name} in ${a.room}`);
+    return { clash, bridge: on.filter(p => p.room === 'bridge').length };
+  }, dayAt.toString());
+  await done();
+  assert.ok(r.bridge >= 2, 'two at the bridge'); assert.deepEqual(r.clash, [], 'no two in one place');
 });

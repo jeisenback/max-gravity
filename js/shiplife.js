@@ -289,10 +289,10 @@ const couchX = (i, n) => (i === 0 ? roomAt('bridge').mid : roomAt('berths').x0 +
 
 // Sent somewhere by a downtime activity you chose: the timetable takes them back when they have been there a while (lifeTick).
 const toActivity = (p, roomId) => { goTo(p, roomId); p.block = 'activity'; p.errand = false; };
-// Where in its room a place of the timetable is (routineSpot): a post at the station (the bridge's and the guns' seat) or somewhere about the room, the
-// stove at the galley's end, seat i of n along the table, a bunk in the berths.
+// Where in its room a place of the timetable is (routineSpot): place i of the n who share a post there, the stove at the galley's end, seat i of n
+// along the table, a bunk in the berths.
 function routineTarget(p, spot, r, i, n, rnd) {
-  if (spot.at === 'post') return r.x0 + r.w * (spot.room === 'bridge' || spot.room === 'gunnery' ? 0.6 : 0.3 + 0.4 * rnd());
+  if (spot.at === 'post') return r.x0 + r.w * (0.15 + 0.7 * (n > 1 ? i / (n - 1) : 0.5));  // place i of the n whose post is this room
   if (spot.at === 'stove') return r.x0 + r.w * 0.15;
   if (spot.at === 'table') return Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.x0 + r.w * (0.3 + 0.6 * (n > 1 ? i / (n - 1) : 0.5))));
   return r.x0 + r.w * (0.25 + 0.5 * rnd());  // a bunk
@@ -307,17 +307,18 @@ function routineGo(p, block, people, dark) {
   const spot = routineSpot(p, block);
   Object.assign(p, { block, errand: false, at: spot.at });
   if (spot.rounds) { goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], lifeRnd)); return; }
-  const r = roomAt(spot.room), table = spot.at === 'table' ? people.filter(q => q.role !== 'cat' && routineSpot(q, block).at === 'table') : [];
-  Object.assign(p, { room: spot.room, tdk: r.deck, tx: routineTarget(p, spot, r, table.indexOf(p), table.length, lifeRnd) });
+  const holds = q => (s => s.at === 'post' && s.room === spot.room)(routineSpot(q, 'shift'));  // a post's places are numbered by who holds it in a shift, the same in every block
+  const r = roomAt(spot.room), mates = spot.at === 'table' ? people.filter(q => routineSpot(q, block).at === 'table') : spot.at === 'post' ? people.filter(holds) : [];  // who shares the table or the post
+  Object.assign(p, { room: spot.room, tdk: r.deck, tx: routineTarget(p, spot, r, mates.indexOf(p), mates.length, lifeRnd) });
 }
-// When a wait at a place runs out: in a shift someone at their post now and then goes on a short errand to another room on its deck, and from it back to the
+// When a wait at a place runs out: in a shift someone at their post now and then goes on a short errand to a room near it on its deck, and from it back to the
 // post; someone let go by a scene or done with an activity goes back to the timetable; the rounds go on; at the table, the stove or a bunk they stay.
 function routineWait(p, block, dark) {
   if (p.block === 'activity' || p.block === 'linger' || p.errand) { p.block = undefined; p.errand = false; return; }  // the next frame takes them back
   const spot = routineSpot(p, block);
   if (spot.rounds) goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], lifeRnd));
   else if (block === 'shift' && spot.at === 'post' && lifeRnd() < 0.25) {
-    const deck = roomAt(spot.room).deck, near = ROOMS.filter(r => r.id !== spot.room && r.deck === deck).map(r => r.id);  // a short errand: a room on the post's own deck
+    const post = roomAt(spot.room), near = ROOMS.filter(r => r.id !== spot.room && r.deck === post.deck).sort((a, b) => Math.abs(a.mid - post.mid) - Math.abs(b.mid - post.mid)).slice(0, 2).map(r => r.id);  // a short errand: one of the two rooms nearest the post on its deck
     if (near.length) { goTo(p, lifePick(near)); p.errand = true; p.at = undefined; }
   }
   p.wait = lifeRand(5, 12);
