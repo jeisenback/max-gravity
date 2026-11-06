@@ -346,7 +346,8 @@ test('a tap on a room opens its console as a sheet, and a second tap on the room
 test('a tap on a person opens the person, not the room under them; and a tap does nothing while a scene is open', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
-  await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false;
+    const block = shipDay(G.transit.elapsed).block; for (const p of shipPeople()) Object.assign(p, { block, tx: null, wait: 999 }); });  // everyone still where they are, so the tap lands on them
   await frames(page);
   const hit = await ev(() => G.cutHits[0]);
   await page.mouse.click(hit.x, hit.y);
@@ -707,4 +708,72 @@ test('a block that changes while someone is on the ladder takes them to the new 
   }, dayAt.toString());
   await done();
   assert.ok(r.in, 'at the table for supper'); assert.equal(r.dk, 0, 'up on the galley deck');
+});
+
+test('in a shift the engineer works at the drive and the pilot at the controls', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.15); tickFor(25);
+    const pose = p => posture(p, phase(), 0, isAsleep(p)).name, eng = shipPeople().find(p => p.role === 'engineer'), pilot = shipPeople().find(p => p.role === 'pilot'), you = aboardBy('you'), seen = { eng: new Set(), pilot: new Set(), you: new Set() };
+    for (let i = 0; i < 30 * 30; i++) { lifeTick(1 / 30); if (inRoom(eng, 'engine')) seen.eng.add(pose(eng)); if (inRoom(pilot, 'bridge')) seen.pilot.add(pose(pilot)); seen.you.add(pose(you)); }
+    return { eng: [...seen.eng], pilot: [...seen.pilot], you: [...seen.you] };
+  }, dayAt.toString());
+  await done();
+  assert.deepEqual(r.eng, ['work'], 'the engineer at the drive, working'); assert.deepEqual(r.pilot, ['work-sit'], 'the pilot at the controls');
+  assert.ok(!r.you.includes('work') && !r.you.includes('work-sit'), 'you on your rounds, not at a post');
+});
+
+test('at dusk the captain waits on the bridge for the pilot, they face each other, and then the captain turns in', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.5); tickFor(25);  // supper: the captain on the bridge, the pilot at the table
+    const cap = shipPeople().find(p => p.role === 'captain'), pilot = shipPeople().find(p => p.role === 'pilot'), out = { before: [inRoom(cap, 'bridge'), inRoom(pilot, 'galley')], waited: true };
+    t.elapsed = dayAt(0.56);
+    let arrived = null;
+    for (let i = 0; i < 40 * 30; i++) {
+      lifeTick(1 / 30);
+      const here = inRoom(pilot, 'bridge');
+      if (!here && !arrived && !inRoom(cap, 'bridge')) out.waited = false;
+      if (here && arrived === null) { arrived = i; out.faces = [Math.sign(cap.face) === Math.sign(pilot.x - cap.x), null]; }
+      if (arrived !== null && i === arrived + 15) out.faces[1] = Math.sign(pilot.face) === Math.sign(cap.x - pilot.x);  // half a second on, both turned to each other
+      if (arrived !== null && cap.tx !== null && out.left === undefined) out.left = (i - arrived) / 30;
+    }
+    out.berths = inRoom(cap, 'berths') || (cap.room === 'berths');
+    return out;
+  }, dayAt.toString());
+  await done();
+  assert.deepEqual(r.before, [true, true], 'at supper the captain keeps the bridge and the pilot eats');
+  assert.ok(r.waited, 'the captain stays on the bridge until the pilot is there');
+  assert.deepEqual(r.faces, [true, true], 'they face each other');
+  assert.ok(r.left >= 1.5 && r.left <= 2.5, `the captain turns in about two seconds after (${r.left})`);
+  assert.ok(r.berths, 'and is in the berths');
+});
+
+test('with no night watch aboard nobody waits at dusk', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(); t.aboard = t.aboard.filter(p => !NIGHT_WATCH.includes(p.role));
+    t.elapsed = dayAt(0.5); tickFor(25); t.elapsed = dayAt(0.56); tickFor(1);
+    const cap = shipPeople().find(p => p.role === 'captain');
+    return { room: cap.room, going: cap.tx !== null || cap.dk !== cap.tdk };
+  }, dayAt.toString());
+  await done();
+  assert.deepEqual(r, { room: 'berths', going: true }, 'the captain is on the way to the berths');
+});
+
+test('a watch-keeper held in a scene at dusk leaves the one waiting to turn in by night', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.5); tickFor(25);
+    const cap = shipPeople().find(p => p.role === 'captain'), pilot = shipPeople().find(p => p.role === 'pilot');
+    sayScene(`With ${pilot.name}`, `${pilot.name} is at the table with the last of the bread.`); tickFor(3);
+    t.elapsed = dayAt(0.56); tickFor(10); t.elapsed = dayAt(0.7); tickFor(30);
+    return { staged: pilot.staged, berths: cap.room === 'berths' && cap.tx === null };
+  }, dayAt.toString());
+  await done();
+  assert.equal(r.staged, 'galley', 'the pilot was held at the table'); assert.ok(r.berths, 'and the captain is in the berths by night');
 });

@@ -99,6 +99,7 @@ const postOf = role => (role === 'captain' ? 'bridge' : Object.entries(HAUNTS[ro
 function routineSpot(p, block) {
   const role = p.role;
   if (role === 'cat') return { rounds: true };
+  if (block === 'supper' && role === 'captain') return { room: 'bridge', at: 'post' };  // the bridge is not left empty: the captain eats there, for the watch to take it
   if (['wake', 'breakfast', 'meal', 'supper'].includes(block)) return role === 'cook' ? { room: 'galley', at: 'stove' } : { room: 'galley', at: 'table' };
   if (block === 'shift') return role === 'you' || role === 'passenger' ? { rounds: true } : role === 'cook' ? { room: 'galley', at: 'stove' } : { room: postOf(role), at: 'post' };
   return NIGHT_WATCH.includes(role) ? { room: postOf(role), at: 'post' } : { room: 'berths', at: 'bunk' };  // the handover and the night
@@ -298,6 +299,11 @@ function routineTarget(p, spot, r, i, n, rnd) {
 }
 // To where the timetable has `p` in `block`: their place in it, or the rounds (a room they like, as before the timetable).
 function routineGo(p, block, people, dark) {
+  p.relief = undefined;
+  if (block === 'handover' && !NIGHT_WATCH.includes(p.role) && p.at === 'post' && p.tx === null && !p.errand) {  // at a post the watch keeps: wait to hand it over
+    const w = people.find(q => NIGHT_WATCH.includes(q.role) && postOf(q.role) === p.room && !q.staged);
+    if (w) { Object.assign(p, { block, relief: w.id, reliefT: 0 }); return; }
+  }
   const spot = routineSpot(p, block);
   Object.assign(p, { block, errand: false, at: spot.at });
   if (spot.rounds) { goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], lifeRnd)); return; }
@@ -315,6 +321,16 @@ function routineWait(p, block, dark) {
     if (near.length) { goTo(p, lifePick(near)); p.errand = true; p.at = undefined; }
   }
   p.wait = lifeRand(5, 12);
+}
+
+// The watch handed over at dusk: the one going off waits at the post until the watch-keeper is there, they face each other for 2 seconds, and then the
+// one going off turns in. A watch-keeper who does not come (held in a scene, or no longer aboard) leaves them to turn in when the block ends.
+function handOver(p, people, dt, block, dark) {
+  const w = people.find(q => q.id === p.relief);
+  if (!w || block !== 'handover') { p.relief = undefined; return; }
+  if (w.room !== p.room || w.tx !== null || w.dk !== w.tdk) return;
+  p.face = Math.sign(w.x - p.x) || p.face; w.face = Math.sign(p.x - w.x) || w.face;
+  if ((p.reliefT += dt) >= 2) { p.relief = undefined; p.at = undefined; Object.assign(p, { block, room: 'berths', tdk: roomAt('berths').deck, tx: routineTarget(p, { at: 'bunk' }, roomAt('berths'), 0, 1, lifeRnd) }); }
 }
 
 function goTo(p, roomId) {
@@ -352,6 +368,7 @@ function posture(p, ph, time, asleep) {
   else if (p.dk !== p.tdk) name = 'climb';
   else if (p.tx !== null) name = 'walk';
   else if (p.staged) name = p.staged === 'galley' || p.staged === 'berths' || (p.role === 'captain' && SEATED_STATIONS.includes(p.staged)) ? 'sit' : 'stand';  // at the table or a bunk's edge; the captain at the station
+  else if (!p.staged && !p.errand && ((p.block === 'shift' && p.at === 'post') || p.at === 'stove')) name = p.at === 'post' && (p.room === 'bridge' || p.room === 'gunnery') ? 'work-sit' : 'work';  // at work: seated at the bridge and the guns
   else name = p.at !== 'stove' && ['galley', 'gunnery', 'bridge', 'medbay'].includes(p.room) ? 'sit' : 'stand';  // the cook at the stove stands
   const { frames, fps } = POSTURES[name];
   return { name, x: p.x, deck: p.dk, face: p.face || 1, frame: fps ? Math.floor(time * fps) % frames : 0 };
@@ -403,6 +420,7 @@ function lifeTick(dt) {
     if (ph !== 'move') { const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
     stepAside(p, G.transit.stageSpan);
     if (!p.staged && p.block !== block && p.block !== 'activity' && p.block !== 'linger' && !p.errand) routineGo(p, block, people, dark);  // the timetable: a new block, or back to it
+    if (p.relief) { handOver(p, people, dt, block, dark); continue; }
     const step = (p.staged ? 0.09 : 0.06) * dt;  // to a scene a little faster
     if (p.dk !== p.tdk) {  // to the ladder, then up or down it
       if (Math.abs(LADDER - p.x) > 0.003) { p.face = Math.sign(LADDER - p.x) || p.face; p.x += Math.max(-step, Math.min(step, LADDER - p.x)); }

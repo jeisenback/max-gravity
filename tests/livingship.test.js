@@ -166,6 +166,7 @@ test('the ship\'s day runs to a timetable, and each person has a place in it', (
   assert.deepEqual(spot('cook', 'meal'), { room: 'galley', at: 'stove' });
   assert.deepEqual(spot('captain', 'shift'), { room: 'bridge', at: 'post' });
   assert.deepEqual(spot('captain', 'handover'), { room: 'berths', at: 'bunk' });
+  assert.deepEqual(spot('captain', 'supper'), { room: 'bridge', at: 'post' }, 'the captain keeps the bridge through supper, for the watch to take it');
   assert.deepEqual(spot('you', 'shift'), { rounds: true });
   assert.deepEqual(spot('you', 'breakfast'), { room: 'galley', at: 'table' });
   assert.deepEqual(spot('passenger', 'shift'), { rounds: true });
