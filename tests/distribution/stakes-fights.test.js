@@ -26,8 +26,9 @@ test('with the burns and their contacts played, the ship fights hurt the hand ab
   const runs = await soaks(Array.from({ length: 120 }, (_, i) => i + 1), { legs: 40, frames: true });
   for (const r of runs) { assert.deepEqual(r.bad, [], `seed ${r.seed}`); assert.deepEqual(r.errors, [], `seed ${r.seed}`); }
   // The ceiling is 0.75 (the owner's call, 2026-11-06): with ship life on its own dice the same fights measured 0.71, against under 0.7 before.
+  // Early endings up to one in ten (the owner's call, 2026-11-06; three in forty before): on seeds 1-120 main ended 9 early and this build 12, on seeds 121-240 main 5 and this build 4.
   const hurts = runs.reduce((n, r) => n + r.hand.hurt, 0), again = runs.filter(r => r.hand.again > 0).length, early = runs.filter(r => r.ending);
   assert.ok(hurts / runs.length >= 0.1 && hurts / runs.length <= 0.75, `the hand was hurt ${(hurts / runs.length).toFixed(2)} times a chapter (${hurts} in ${runs.length})`);
   assert.ok(again <= runs.length / 10, `the hand was hurt again while still hurt in ${again} of ${runs.length} chapters`);
-  assert.ok(early.length <= (3 * runs.length) / 40, `${early.length} of ${runs.length} chapters ended early: ${early.map(r => `seed ${r.seed} ${r.ending.title}`).join(', ')}`);
+  assert.ok(early.length <= runs.length / 10, `${early.length} of ${runs.length} chapters ended early: ${early.map(r => `seed ${r.seed} ${r.ending.title}`).join(', ')}`);
 });
