@@ -950,3 +950,25 @@ test('a burn with half its armor draws its two marked rooms without an error', a
   await done();
   assert.equal(r, 2);
 });
+
+test('someone having a hard time sits up alone in the dusk, the wounded stay in bed through a medbay scene and the straps', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(), pose = p => posture(p, phase(), 0, isAsleep(p)).name, out = {};
+    const low = shipPeople().find(p => p.id && G.state.crew.includes(p.id) && !NIGHT_WATCH.includes(p.role) && p.role !== 'cook' && p.role !== 'xo');
+    person(low.id).mood = { kind: 'low', until: G.state.day + 10, text: '' };
+    t.elapsed = dayAt(0.6); tickFor(25); out.dusk = [isAsleep(low), pose(low)];
+    const pilot = shipPeople().find(p => p.role === 'pilot'), mate = shipPeople().find(p => p.role === 'engineer');
+    (G.state.injured = G.state.injured || {})[pilot.id] = true; t.elapsed = dayAt(0.15); tickFor(30);
+    sayScene(`With ${mate.name}`, `${mate.name} is in the medbay, by the cot.`); tickFor(15);
+    out.scene = [pilot.room, inRoom(pilot, 'medbay'), pose(pilot)]; G.dialog = null; t.event = null; tickFor(5);
+    delete G.state.injured[pilot.id]; tickFor(2); (G.state.injured)[pilot.id] = true; Object.assign(pilot, { room: 'galley', x: 0.5, dk: 0, tdk: 0, tx: 0.55, block: undefined });
+    lifeTick(1 / 30); t.left = t.total * (1 - 0.45); tickFor(1); out.strapped = pose(pilot);
+    return out;
+  }, dayAt.toString());
+  await done();
+  assert.deepEqual(r.dusk, [false, 'sit'], 'awake and sitting at dusk');
+  assert.deepEqual(r.scene, ['medbay', true, 'bunk'], 'the patient stays in bed through the scene');
+  assert.notEqual(r.strapped, 'bunk', 'not lying in the air on the way to the medbay at the straps');
+});
