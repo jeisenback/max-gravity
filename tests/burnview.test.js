@@ -476,7 +476,7 @@ test('a scene in the berths at night does not get the sleepers up, and arriving 
   const r = await ev(() => {
     const t = stageBurn(); t.elapsed = 50; t.dark = true;  // night, the lights already down
     const b = ROOMS.find(x => x.id === 'berths'), sleeper = shipPeople().find(p => p.id && p.id !== 'you' && p.role !== 'cat' && p.role !== 'captain' && !NIGHT_WATCH.includes(p.role));
-    Object.assign(sleeper, { room: 'berths', x: b.mid, dk: 0, tdk: 0, tx: null, wait: 999 });
+    Object.assign(sleeper, { room: 'berths', x: b.mid, dk: 0, tdk: 0, tx: null, wait: 999, block: shipDay(t.elapsed).block, at: 'bunk' });  // in their bunk for the night
     const mate = shipPeople().find(p => p.id && p.id !== 'you' && p !== sleeper && p.role !== 'cat' && p.role !== 'captain');
     sayScene(`With ${mate.name}`, `${mate.name} is sitting on a bunk, awake.`); tickFor(25);
     const real = Math.random; let draws = 0; Math.random = () => { draws++; return real(); };
@@ -650,4 +650,61 @@ test('ship life on a burn from an old save starts its own dice and runs', async 
   const r = await ev(() => { const t = stageBurn(); delete t.lifeRng; tickFor(5); return typeof t.lifeRng; });
   await done();
   assert.equal(r, 'number', 'the dice started themselves');
+});
+
+// The working routine (docs/superpowers/specs/2026-11-05-working-routine-design.md): a burn in the move phase at a set time of the ship's day.
+const dayAt = f => ((f * SHIP_DAY - 6) % SHIP_DAY + SHIP_DAY) % SHIP_DAY;  // the elapsed time at a share of the ship's day
+
+test('at breakfast the crew are at the galley table, seated, the cook at the stove', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.04);
+    for (let i = 0; shipPeople().filter(p => p.role !== 'cat').length < 8; i++) shipPeople().push({ name: `P${i}`, role: 'passenger', id: `p:t${i}`, room: 'berths', x: 0.3, dk: 0, tdk: 0, tx: null, wait: 1, seat: 0.3 });
+    tickFor(30);
+    const g = ROOMS.find(x => x.id === 'galley'), at = shipPeople().filter(p => p.role !== 'cat');
+    return { block: shipDay(t.elapsed).block, n: at.length, g: [g.x0, g.x1, g.w],
+      eat: at.filter(p => p.role !== 'cook').map(p => ({ id: p.id, in: inRoom(p, 'galley'), pose: posture(p, phase(), 0, isAsleep(p)).name, x: p.x })),
+      cook: at.filter(p => p.role === 'cook').map(p => ({ in: inRoom(p, 'galley'), x: p.x, pose: posture(p, phase(), 0, isAsleep(p)).name })) };
+  }, dayAt.toString());
+  await done();
+  assert.equal(r.block, 'breakfast'); assert.ok(r.n >= 8, 'eight aboard');
+  for (const p of r.eat) { assert.ok(p.in, `${p.id} at the table`); assert.equal(p.pose, 'sit', `${p.id} seated`); assert.ok(p.x > r.g[0] && p.x < r.g[1], `${p.id} inside the galley`); }
+  for (const c of r.cook) { assert.ok(c.in && Math.abs(c.x - (r.g[0] + 0.15 * r.g[2])) < 0.003, 'the cook at the stove'); assert.equal(c.pose, 'stand'); }
+});
+
+test('in a shift the crew are at their posts, you on rounds, and a scene ends back at the post', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.15);
+    tickFor(25);
+    const eng = shipPeople().find(p => p.role === 'engineer'), pilot = shipPeople().find(p => p.role === 'pilot'), you = aboardBy('you'), out = { block: shipDay(t.elapsed).block, engine: 0, bridge: 0, frames: 0, rooms: new Set() };
+    for (let i = 0; i < 40 * 30; i++) { lifeTick(1 / 30); out.frames++; if (inRoom(eng, 'engine')) out.engine++; if (inRoom(pilot, 'bridge')) out.bridge++; if (you.tx === null) out.rooms.add(you.room); }
+    out.rooms = out.rooms.size;
+    sayScene(`With ${eng.name}`, `${eng.name} is at the table with a mug.`); tickFor(12);
+    out.staged = eng.staged; G.dialog = null; t.event = null; tickFor(20);
+    out.back = inRoom(eng, 'engine');
+    return out;
+  }, dayAt.toString());
+  await done();
+  assert.equal(r.block, 'shift');
+  assert.ok(r.engine / r.frames > 0.6, `the engineer mostly in the engine room (${r.engine} of ${r.frames})`);
+  assert.ok(r.bridge / r.frames > 0.6, `the pilot mostly on the bridge (${r.bridge} of ${r.frames})`);
+  assert.ok(r.rooms >= 2, 'you went the rounds');
+  assert.equal(r.staged, 'galley', 'the scene had the engineer'); assert.ok(r.back, 'and after it the engineer is back at the post');
+});
+
+test('a block that changes while someone is on the ladder takes them to the new place', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.45); tickFor(25);
+    const eng = shipPeople().find(p => p.role === 'engineer');
+    Object.assign(eng, { x: LADDER, dk: 0.5, tdk: 1 });  // halfway up the ladder from the engine deck, on the way back down
+    t.elapsed = dayAt(0.5); tickFor(25);  // supper
+    return { in: inRoom(eng, 'galley'), dk: eng.dk };
+  }, dayAt.toString());
+  await done();
+  assert.ok(r.in, 'at the table for supper'); assert.equal(r.dk, 0, 'up on the galley deck');
 });
