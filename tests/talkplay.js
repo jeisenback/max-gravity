@@ -90,6 +90,12 @@ const playTalk = () => {
   { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; ines(p); const rec = {};
     for (const k of ['port', 'ship', 'last', 'work']) { G.transit = { to: 'pallas', flipped: false, lifeUsed: {} }; __seed(9); rec[k] = String(goesOn(p, k).choices[0].label); }
     G.transit = null; out.push({ key: 'goeson:offer:ines', text: JSON.stringify(rec) }); }
+  // the cast's visit home and room (their homes have no place written): the shared table, its offer and its return by the gap
+  const inesHome = p => { ines(p); p.home = 'Lisbon Arcology'; p.culture = 'earth'; delete p.story; storyOf(p); };
+  play('visit-home:ines', inesHome, p => visitHome(p));
+  for (const c of ['mars', 'belt']) play(`visit-home:shared:${c}`, p => { p.culture = c; storyOf(p).module = undefined; }, p => visitHome(p));  // a story not made from the person's place (an older save's) reads the shared table too
+  play('room-offer:ines', inesHome, p => roomOffer(p), 2);
+  for (const [name, gap] of [['few', 5], ['month', 40], ['long', 200]]) play(`room-return:ines:${name}`, (p, s) => { inesHome(p); s.room = { planet: p.home, pid: p.id, since: s.day - gap - 10, last: s.day - gap, visits: 1 }; }, p => roomReturn(p), 2);
   play('sit:3:crew:visit', p => { const s = storyOf(p); s.beat = 3; s.favor = 'visit'; p.opinion = 3; }, p => sitBeat(p, true));
   play('sit:3:crew:debt', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 15000; p.opinion = 3; }, p => sitBeat(p, true));
   play('sit:3:passenger', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 15000; p.opinion = 3; }, p => sitBeat(p, false), 6);
