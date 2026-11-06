@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED']);
+const { marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -180,4 +180,18 @@ test('the working poses stand on the deck, and the routine takes its dice as a p
   const p = { role: 'engineer', block: 'shift', at: 'post', room: 'engine', x: 0.1, dk: 1, tdk: 1, tx: null, wait: 0 };
   routineWait(p, 'shift', false, () => 0);  // no burn, no G: the dice are given
   assert.equal(p.errand, true, 'an errand when the dice say so'); assert.ok(p.wait >= 5, 'and a wait set from them');
+});
+
+test('the ship\'s damage marks one to three rooms, kept through the burn, cleared last-first, never the medbay', () => {
+  const rnd = (n => () => (n = (n * 16807) % 2147483647) / 2147483647)(7), t = {};
+  const m = d => JSON.parse(JSON.stringify(marksFor(t, d, rnd)));
+  assert.equal(m(0).length, 0);
+  const one = m(0.2); assert.equal(one.length, 1);
+  assert.deepEqual(m(0.2), one, 'kept');
+  const two = m(0.5); assert.equal(two.length, 2); assert.equal(two[0], one[0], 'added to');
+  const three = m(0.9); assert.equal(three.length, 3); assert.equal(new Set(three).size, 3, 'three rooms');
+  assert.deepEqual(m(0.5), three.slice(0, 2), 'the last added cleared first');
+  assert.ok(!three.includes('medbay'));
+  assert.deepEqual(m(0), []);
+  assert.equal(m(1 / 3).length, 1, 'a third is still one'); assert.equal(m(2 / 3).length, 2, 'two thirds is still two');
 });

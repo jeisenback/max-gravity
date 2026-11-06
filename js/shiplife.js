@@ -96,6 +96,21 @@ function shipDay(elapsed) {
   return { block: SHIP_TIMETABLE.find(b => f >= b.from && f < b.to).block, f };
 }
 const postOf = role => (role === 'captain' ? 'bridge' : Object.entries(HAUNTS[role] || HAUNTS.passenger).sort((a, b) => b[1] - a[1])[0][0]);
+// The ship's state (docs/superpowers/specs/2026-11-06-ship-state-design.md): the hull's damage marked on one to three rooms (the share of armor lost: up
+// to a third one, up to two thirds two, more three), picked with ship life's dice and kept on the burn in the order added, so they stay put and the
+// last added clears first; never the medbay. The hurt, those having a hard time, you hurt, and whoever gives first aid, read from the game.
+function marksFor(t, d, rnd) {
+  const n = d <= 0 ? 0 : d <= 1 / 3 ? 1 : d <= 2 / 3 ? 2 : 3, marks = (t.marks = t.marks || []);
+  while (marks.length > n) marks.pop();
+  while (marks.length < n) { const free = ROOMS.map(r => r.id).filter(id => id !== 'medbay' && !marks.includes(id)); marks.push(free[Math.floor(rnd() * free.length)]); }
+  return marks;
+}
+function shipState(st, t, maxArmor, rnd) {
+  const crew = st.crew.map(person).filter(Boolean), hurt = crew.filter(c => (st.injured || {})[c.id]).map(c => c.id), aid = roleHolder('medic');
+  const d = maxArmor > 0 ? 1 - st.armor / maxArmor : 0;
+  return { marks: marksFor(t, d, rnd), severe: d > 2 / 3, hurt, low: crew.filter(c => !hurt.includes(c.id) && moodLow(c)).map(c => c.id), you: handHurt(), aid: aid ? aid.id : null };
+}
+
 function routineSpot(p, block) {
   const role = p.role;
   if (role === 'cat') return { rounds: true };
