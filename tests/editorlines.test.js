@@ -183,8 +183,8 @@ test('the talk scenes are rows with a field for every line, and each plays in a 
     await select(id);
     const line = id === 'family:holiday' ? 'c0.label' : id.endsWith('-story') ? 'hope' : 'title';  // the holidays take their titles from their names; a module's story shows as the hope in the visit's choice (#871)
     const paths = await page.locator('#detail textarea[data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-    if (paths.includes(`part.${line}`)) await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
-    else if (SHARED[id]) await page.fill(`textarea[data-path="part.${SHARED[id]}"]`, `Typed ${id}.`);  // the shared visit and room under every place (#885): a choice, so the rest of the rows still read their own
+    if (SHARED[id]) await page.fill(`textarea[data-path="part.${SHARED[id]}"]`, `Typed ${id}.`);  // the shared visit and room under every place (#885): a choice, so the rest of the rows still read their own (its title is the cast's, under a place's own)
+    else if (paths.includes(`part.${line}`)) await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
     else for (const pth of paths) await page.fill(`textarea[data-path="${pth}"]`, `Typed ${id}.`);  // a circumstance's place lines, with no title of their own (#871): one of them shows
     const f = await play();
     const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));

@@ -194,8 +194,11 @@ const leadOn = (p, ev) => ({ ...ev, choices: ev.choices.map(c => ({ ...c, run() 
 // (the invitation; going up leads straight into visitHome), visitHome the place by culture and the one choice, what you tell the family, which gives
 // regard and a memory in their words. The family writes afterward (letters, familyLines('ship').visitLetter, once: p.visitLetter).
 const VISIT_GAP = 60;
+// A visit is built on telling the family what the person hopes for, so someone whose story has no hope (a cast member not yet written, a home with no place)
+// is not asked: read from what is there, with no draw (storyOf would roll a story).
+const hasHope = p => { const own = authoredStory(p), m = moduleId(p); return !!(own ? own.hope : p.story ? p.story.hope : m && PEOPLE_LINES[`family:${m}-story`]); };
 const visitDue = (st, planet, favorPid) => {
-  const f = procedural().find(x => x.p.home === planet && st.day - (x.p.visitedAt || -VISIT_GAP) >= VISIT_GAP && (x.id === favorPid || x.p.opinion >= OPINION.TRUSTED));
+  const f = procedural().find(x => x.p.home === planet && st.day - (x.p.visitedAt || -VISIT_GAP) >= VISIT_GAP && (x.id === favorPid || x.p.opinion >= OPINION.TRUSTED) && hasHope(x.p));
   return f ? f.p : null;
 };
 const visitVars = p => { const s = storyOf(p); return { n: p.first, rel: s.rel, who: s.name, home: p.home, left: s.left, hope: s.hope, ship: shipTitle() }; };
