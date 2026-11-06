@@ -53,7 +53,7 @@ function figHead(ctx, hx, hy, up, skin, hair) {
   const [bx, by] = at(5.2, 2.8), [bx2, by2] = at(8.2, 2.4); ctx.strokeStyle = figShade(hair, 0.9); ctx.lineWidth = 1.1; figSeg(ctx, [[bx, by], [bx2, by2]]);  // the brow
   const [eyx, eyy] = at(6.4, 0.9); figDot(ctx, eyx, eyy, 1.25, '#15181d');  // the eye
 }
-const FIG_GROUNDED = ['stand', 'walk', 'sit', 'strap'];  // the postures with their feet (or seat) on the deck, which cast a shadow
+const FIG_GROUNDED = ['stand', 'walk', 'sit', 'strap', 'work', 'work-sit'];  // the postures with their feet (or seat) on the deck, which cast a shadow
 
 // The joint angles of a person's posture at a frame, for a figure facing right (a figure facing left is the same drawn mirrored).
 // hip is how high the hip is above the floor; rot leans the whole body (0 upright, negative back, -pi/2 lying with the head to the left).

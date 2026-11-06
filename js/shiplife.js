@@ -288,7 +288,7 @@ function shipPeople() {
 const couchX = (i, n) => (i === 0 ? roomAt('bridge').mid : roomAt('berths').x0 + 0.02 + (roomAt('berths').w - 0.04) * (i / Math.max(1, n - 1)));
 
 // Sent somewhere by a downtime activity you chose: the timetable takes them back when they have been there a while (lifeTick).
-const toActivity = (p, roomId) => { goTo(p, roomId); p.block = 'activity'; p.errand = false; };
+const toActivity = (p, roomId) => { goTo(p, roomId); Object.assign(p, { block: 'activity', errand: false, at: undefined, relief: undefined }); };
 // Where in its room a place of the timetable is (routineSpot): place i of the n who share a post there, the stove at the galley's end, seat i of n
 // along the table, a bunk in the berths.
 function routineTarget(p, spot, r, i, n, rnd) {
@@ -298,7 +298,7 @@ function routineTarget(p, spot, r, i, n, rnd) {
   return r.x0 + r.w * (0.25 + 0.5 * rnd());  // a bunk
 }
 // To where the timetable has `p` in `block`: their place in it, or the rounds (a room they like, as before the timetable).
-function routineGo(p, block, people, dark) {
+function routineGo(p, block, people, dark, rnd) {
   p.relief = undefined;
   if (block === 'handover' && !NIGHT_WATCH.includes(p.role) && p.at === 'post' && p.tx === null && !p.errand) {  // at a post the watch keeps: wait to hand it over
     const w = people.find(q => NIGHT_WATCH.includes(q.role) && postOf(q.role) === p.room && !q.staged);
@@ -306,39 +306,40 @@ function routineGo(p, block, people, dark) {
   }
   const spot = routineSpot(p, block);
   Object.assign(p, { block, errand: false, at: spot.at });
-  if (spot.rounds) { goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], lifeRnd)); return; }
+  if (spot.rounds) { goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd); return; }
   const holds = q => (s => s.at === 'post' && s.room === spot.room)(routineSpot(q, 'shift'));  // a post's places are numbered by who holds it in a shift, the same in every block
   const r = roomAt(spot.room), mates = spot.at === 'table' ? people.filter(q => routineSpot(q, block).at === 'table') : spot.at === 'post' ? people.filter(holds) : [];  // who shares the table or the post
-  Object.assign(p, { room: spot.room, tdk: r.deck, tx: routineTarget(p, spot, r, mates.indexOf(p), mates.length, lifeRnd) });
+  Object.assign(p, { room: spot.room, tdk: r.deck, tx: routineTarget(p, spot, r, mates.indexOf(p), mates.length, rnd) });
 }
 // When a wait at a place runs out: in a shift someone at their post now and then goes on a short errand to a room near it on its deck, and from it back to the
 // post; someone let go by a scene or done with an activity goes back to the timetable; the rounds go on; at the table, the stove or a bunk they stay.
-function routineWait(p, block, dark) {
+function routineWait(p, block, dark, rnd) {
   if (p.block === 'activity' || p.block === 'linger' || p.errand) { p.block = undefined; p.errand = false; return; }  // the next frame takes them back
+  if (p.aside) { p.wait = 5 + 7 * rnd(); return; }  // out of a scene's way until it closes (stageScene)
   const spot = routineSpot(p, block);
-  if (spot.rounds) goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], lifeRnd));
-  else if (block === 'shift' && spot.at === 'post' && lifeRnd() < 0.25) {
+  if (spot.rounds) goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd);
+  else if (block === 'shift' && spot.at === 'post' && rnd() < 0.25) {
     const post = roomAt(spot.room), near = ROOMS.filter(r => r.id !== spot.room && r.deck === post.deck).sort((a, b) => Math.abs(a.mid - post.mid) - Math.abs(b.mid - post.mid)).slice(0, 2).map(r => r.id);  // a short errand: one of the two rooms nearest the post on its deck
-    if (near.length) { goTo(p, lifePick(near)); p.errand = true; p.at = undefined; }
+    if (near.length) { goTo(p, near[Math.floor(rnd() * near.length)], rnd); p.errand = true; p.at = undefined; }
   }
-  p.wait = lifeRand(5, 12);
+  p.wait = 5 + 7 * rnd();
 }
 
 // The watch handed over at dusk: the one going off waits at the post until the watch-keeper is there, they face each other for 2 seconds, and then the
 // one going off turns in. A watch-keeper who does not come (held in a scene, or no longer aboard) leaves them to turn in when the block ends.
-function handOver(p, people, dt, block, dark) {
+function handOver(p, people, dt, block, rnd) {
   const w = people.find(q => q.id === p.relief);
   if (!w || block !== 'handover') { p.relief = undefined; return; }
   if (w.room !== p.room || w.tx !== null || w.dk !== w.tdk) return;
   p.face = Math.sign(w.x - p.x) || p.face; w.face = Math.sign(p.x - w.x) || w.face;
-  if ((p.reliefT += dt) >= 2) { p.relief = undefined; p.at = undefined; Object.assign(p, { block, room: 'berths', tdk: roomAt('berths').deck, tx: routineTarget(p, { at: 'bunk' }, roomAt('berths'), 0, 1, lifeRnd) }); }
+  if ((p.reliefT += dt) >= 2) { p.relief = undefined; p.at = undefined; Object.assign(p, { block, room: 'berths', tdk: roomAt('berths').deck, tx: routineTarget(p, { at: 'bunk' }, roomAt('berths'), 0, 1, rnd) }); }
 }
 
-function goTo(p, roomId) {
+function goTo(p, roomId, rnd = lifeRnd) {
   const r = roomAt(roomId);
   p.room = roomId;
   p.tdk = r.deck;
-  p.tx = r.x0 + r.w * (p.role === 'captain' ? 0.6 : lifeRand(0.25, 0.75));
+  p.tx = r.x0 + r.w * (p.role === 'captain' ? 0.6 : 0.25 + 0.5 * rnd());
 }
 
 function weighted(table, rnd = Math.random) {
@@ -382,12 +383,13 @@ const SEATED_STATIONS = ['bridge', 'gunnery', 'medbay'];
 function stageScene(people, ph, t, open) {
   if (open === t.stageOf) return;
   t.stageOf = open; t.stageSpan = null;
+  for (const p of people) if (p.aside) Object.assign(p, { aside: false, block: 'linger', wait: 3 });  // out of the last scene's way: back to the timetable
   const stage = open && ph === 'move' ? sceneStage(open, people, scenePeople(open).map(c => c.id)) : null, ids = new Set(stage ? stage.ids : []);
   for (const p of people) if (p.staged && !ids.has(p.id)) { p.staged = undefined; p.faceTo = undefined; p.wait = 3; p.block = 'linger'; }  // a fixed linger: staging draws none of the game's dice
   if (!stage) return;
   const r = roomAt(stage.room), cast = stage.ids.map(id => people.find(q => q.id === id)).filter(Boolean), n = cast.length;
   const spots = cast.map((_, i) => Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.mid + (i - (n - 1) / 2) * 0.03))), mid = spots.reduce((a, b) => a + b, 0) / n;
-  cast.forEach((p, i) => { Object.assign(p, { staged: stage.room, room: stage.room, tdk: r.deck, tx: spots[i] }); p.faceTo = Math.sign(mid - spots[i]) || Math.sign(spots[0] - spots[i]) || 1; });
+  cast.forEach((p, i) => { Object.assign(p, { staged: stage.room, room: stage.room, tdk: r.deck, tx: spots[i], at: undefined, relief: undefined, errand: false }); p.faceTo = Math.sign(mid - spots[i]) || Math.sign(spots[0] - spots[i]) || 1; });
   t.stageSpan = { room: stage.room, deck: r.deck, lo: spots[0] - 0.03, hi: spots[n - 1] + 0.03, sent: {} };  // where they gather: kept clear (stepAside)
 }
 
@@ -398,7 +400,7 @@ function stepAside(p, span) {
   const at = p.tx !== null ? p.tx : p.x;  // where they are, or where they are going in that room
   if (at <= span.lo || at >= span.hi) return;
   const alt = Object.entries(HAUNTS[p.role] || HAUNTS.passenger).filter(([id]) => id !== span.room).sort((a, b) => b[1] - a[1])[0][0], r = roomAt(alt), k = (span.sent[alt] = (span.sent[alt] || 0) + 1) - 1;
-  Object.assign(p, { room: alt, tdk: r.deck, tx: Math.min(r.x1 - 0.01, r.x0 + r.w * 0.3 + 0.02 * k) });
+  Object.assign(p, { room: alt, tdk: r.deck, tx: Math.min(r.x1 - 0.01, r.x0 + r.w * 0.3 + 0.02 * k), aside: true, at: undefined, errand: false });
 }
 
 function lifeTick(dt) {
@@ -414,14 +416,14 @@ function lifeTick(dt) {
   const block = shipDay(G.transit.elapsed).block;
   for (const p of people) {
     if (ph === 'secure' || ph === 'float') {  // strap in where they are; someone on the ladder finishes onto a deck
-      p.tx = null; p.tdk = Math.round(p.dk);
+      p.tx = null; p.tdk = Math.round(p.dk); p.block = undefined; p.relief = undefined;  // strapped in: under way again, the timetable sends them on
       p.dk = Math.abs(p.tdk - p.dk) < 0.01 ? p.tdk : p.dk + Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
       continue;
     }
-    if (ph !== 'move') { const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
+    if (ph !== 'move') { p.block = undefined; p.relief = undefined; const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
     stepAside(p, G.transit.stageSpan);
-    if (!p.staged && p.block !== block && p.block !== 'activity' && p.block !== 'linger' && !p.errand) routineGo(p, block, people, dark);  // the timetable: a new block, or back to it
-    if (p.relief) { handOver(p, people, dt, block, dark); continue; }
+    if (!p.staged && p.block !== block && p.block !== 'activity' && p.block !== 'linger' && !p.errand) routineGo(p, block, people, dark, lifeRnd);  // the timetable: a new block, or back to it
+    if (p.relief && !p.staged) { handOver(p, people, dt, block, lifeRnd); continue; }
     const step = (p.staged ? 0.09 : 0.06) * dt;  // to a scene a little faster
     if (p.dk !== p.tdk) {  // to the ladder, then up or down it
       if (Math.abs(LADDER - p.x) > 0.003) { p.face = Math.sign(LADDER - p.x) || p.face; p.x += Math.max(-step, Math.min(step, LADDER - p.x)); }
@@ -439,7 +441,7 @@ function lifeTick(dt) {
         }
       }
     } else if (!p.staged && (p.wait -= dt) <= 0) {
-      routineWait(p, block, dark);
+      routineWait(p, block, dark, lifeRnd);
     }
   }
 }
