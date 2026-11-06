@@ -8,6 +8,8 @@ const POSTURES = {
   walk: { frames: 8, fps: 10 },
   climb: { frames: 4, fps: 6 },
   sit: { frames: 2, fps: 1 },
+  work: { frames: 4, fps: 3 },  // at a panel, the hands moving (shiplife.js: at a post in a shift, the cook at the stove)
+  'work-sit': { frames: 4, fps: 3 },  // seated at the controls, the hands moving (the bridge and the guns)
   bunk: { frames: 1, fps: 0 },
   strap: { frames: 2, fps: 1 },
   tether: { frames: 8, fps: 4 },
@@ -51,7 +53,7 @@ function figHead(ctx, hx, hy, up, skin, hair) {
   const [bx, by] = at(5.2, 2.8), [bx2, by2] = at(8.2, 2.4); ctx.strokeStyle = figShade(hair, 0.9); ctx.lineWidth = 1.1; figSeg(ctx, [[bx, by], [bx2, by2]]);  // the brow
   const [eyx, eyy] = at(6.4, 0.9); figDot(ctx, eyx, eyy, 1.25, '#15181d');  // the eye
 }
-const FIG_GROUNDED = ['stand', 'walk', 'sit', 'strap'];  // the postures with their feet (or seat) on the deck, which cast a shadow
+const FIG_GROUNDED = ['stand', 'walk', 'sit', 'strap', 'work', 'work-sit'];  // the postures with their feet (or seat) on the deck, which cast a shadow
 
 // The joint angles of a person's posture at a frame, for a figure facing right (a figure facing left is the same drawn mirrored).
 // hip is how high the hip is above the floor; rot leans the whole body (0 upright, negative back, -pi/2 lying with the head to the left).
@@ -64,6 +66,8 @@ function figPose(name, frame, frames) {
     case 'walk': return { ...base, rot: 0.05, arms: [-wave * 0.45, -wave * 0.45 + 0.45, wave * 0.45, wave * 0.45 + 0.45], legs: [wave * 0.42, wave * 0.42 - 0.75 * Math.max(0, S(ph + 1.5)), -wave * 0.42, -wave * 0.42 - 0.75 * Math.max(0, S(ph + 4.6))], hip: 35 - Math.abs(wave) * 1.2 };  // a short stride, the knee bending as the foot comes through
     case 'climb': return { ...base, arms: [2.55 + wave * 0.4, 3.0 + wave * 0.2, 2.55 - wave * 0.4, 3.0 - wave * 0.2], legs: [0.35 + wave * 0.45, -0.25 + wave * 0.35, 0.35 - wave * 0.45, -0.25 - wave * 0.35], hip: 36 + wave * 2 };  // hand over hand on the rungs, a knee up as the other reaches
     case 'sit': { const k = wave * 0.08; return { ...base, hip: 18, rot: -0.06, arms: [1.2 + k, 1.6 + k, 1.1 - k, 1.5 - k], legs: [1.57, 0, 1.5, -0.05], head: 0.1 }; }
+    case 'work': return { ...base, arms: [1.25 + wave * 0.12, 1.75 + wave * 0.25, 1.1 - wave * 0.12, 1.6 - S(ph + 1) * 0.25], head: 0.08 };  // the forearms on the panel, working
+    case 'work-sit': return { ...base, hip: 18, rot: -0.04, arms: [1.3 + wave * 0.1, 1.7 + wave * 0.2, 1.2 - wave * 0.1, 1.6 - S(ph + 1) * 0.2], legs: [1.57, 0, 1.5, -0.05], head: 0.12 };
     case 'bunk': return { ...base, hip: 5, rot: -1.57, arms: [1.4, 1.5, 1.3, 1.5], legs: [1.57, 1.57, 1.5, 1.62], head: 0 };
     case 'strap': return { ...base, hip: 19, rot: 0.08 * (1 - 2 * frame), arms: [1.2, 1.6, 0.3, -0.2], legs: [1.6 + wave * 0.08, 0.3 + wave * 0.1, 1.5, 0.2], head: 0.1, strap: 1 };
     case 'tether': return { ...base, hip: 70 + wave * 3, rot: 1.25, arms: [2.1, 1.4, 1.0, 1.6], legs: [-1.4 + wave * 0.25, -1.6 + S(ph + 1) * 0.3, -1.2 + S(ph + 2) * 0.25, -1.0 + S(ph * 2) * 0.3], head: 0.1 };

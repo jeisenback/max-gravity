@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage']);
+const { shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -144,4 +144,40 @@ test('with reduced motion the flip holds still: a room drawn at two times is the
 test('a mug sits in its holder: steaming and free in cruise, clipped in at the flip', () => {
   const draw = pr => { const c = fakeCtx(); drawRoom(c, 'galley', RR, RS({ w: phaseWeights(pr) })); return c; };
   assert.ok(draw(0.3).calls.filter(k => k === 'quadraticCurveTo').length > draw(0.5).calls.filter(k => k === 'quadraticCurveTo').length, 'steam in cruise only');
+});
+
+test('ship life rolls its own dice, the same for the same burn', () => {
+  const st = { day: 12 }, a = { to: 'mars', days: 3 }, b = { to: 'mars', days: 3 }, c = { to: 'mars', days: 3 };
+  const five = t => Array.from({ length: 5 }, () => shipRand(t, st));
+  const fa = five(a);
+  assert.ok(fa.every(v => v >= 0 && v < 1), 'in [0, 1)');
+  assert.deepEqual(five(b), fa, 'the same burn rolls the same');
+  assert.notEqual(shipRand(c, { day: 13 }), fa[0], 'another day rolls otherwise');
+});
+
+test('the ship\'s day runs to a timetable, and each person has a place in it', () => {
+  const at = f => ((f * SHIP_DAY - 6 + 0.01) + SHIP_DAY) % SHIP_DAY;  // the elapsed burn time at a share of the day (just after it)
+  assert.deepEqual([0, 0.079, 0.08, 0.3, 0.38, 0.48, 0.55, 0.65, 0.9].map(f => shipDay(at(f)).block),
+    ['breakfast', 'breakfast', 'shift', 'meal', 'shift', 'supper', 'handover', 'night', 'wake']);
+  assert.ok(Math.abs(shipDay(at(0.3)).f - 0.3) < 0.001, 'and how far into the day');
+  const spot = (role, block) => JSON.parse(JSON.stringify(routineSpot({ role }, block)));
+  assert.deepEqual(spot('engineer', 'shift'), { room: 'engine', at: 'post' });
+  assert.deepEqual(spot('pilot', 'night'), { room: 'bridge', at: 'post' }, 'the watch at night');
+  assert.deepEqual(spot('cook', 'meal'), { room: 'galley', at: 'stove' });
+  assert.deepEqual(spot('captain', 'shift'), { room: 'bridge', at: 'post' });
+  assert.deepEqual(spot('captain', 'handover'), { room: 'berths', at: 'bunk' });
+  assert.deepEqual(spot('captain', 'supper'), { room: 'bridge', at: 'post' }, 'the captain keeps the bridge through supper, for the watch to take it');
+  assert.deepEqual(spot('you', 'shift'), { rounds: true });
+  assert.deepEqual(spot('you', 'breakfast'), { room: 'galley', at: 'table' });
+  assert.deepEqual(spot('passenger', 'shift'), { rounds: true });
+  assert.deepEqual(spot('passenger', 'supper'), { room: 'galley', at: 'table' });
+  assert.deepEqual(spot('quartermaster', 'night'), { room: 'berths', at: 'bunk' });
+  assert.deepEqual(spot('cat', 'breakfast'), { rounds: true });
+});
+
+test('the working poses stand on the deck, and the routine takes its dice as a parameter', () => {
+  assert.ok(FIG_GROUNDED.includes('work') && FIG_GROUNDED.includes('work-sit'), 'a shadow under someone at work');
+  const p = { role: 'engineer', block: 'shift', at: 'post', room: 'engine', x: 0.1, dk: 1, tdk: 1, tx: null, wait: 0 };
+  routineWait(p, 'shift', false, () => 0);  // no burn, no G: the dice are given
+  assert.equal(p.errand, true, 'an errand when the dice say so'); assert.ok(p.wait >= 5, 'and a wait set from them');
 });

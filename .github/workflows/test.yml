@@ -58,7 +58,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.floor == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 8  # a part under coverage runs slower than the plain test part: part 2 took about 4:57 of 5 on main (2026-11-05)
     strategy:
       fail-fast: false
       matrix:

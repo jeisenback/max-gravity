@@ -65,7 +65,7 @@ const ROLE_COLORS = { you: '#d9d4cc', captain: '#b9c4d0', engineer: '#ffa24a', p
 
 // The ship's day: every SHIP_DAY seconds of a burn the lights go down for a night, and everyone who is not on watch turns in.
 // 0 in the day, 1 at night, and a ramp at dusk and dawn. A burn starts in the morning.
-const SHIP_DAY = 40, NIGHT_WATCH = ['pilot', 'engineer'];
+const SHIP_DAY = 80, NIGHT_WATCH = ['pilot', 'engineer'];
 function nightLevel() {
   const t = G.transit;
   if (!t) return 0;
@@ -73,6 +73,37 @@ function nightLevel() {
   return f < 0.55 ? 0 : f < 0.65 ? (f - 0.55) / 0.1 : f < 0.9 ? 1 : 1 - (f - 0.9) / 0.1;
 }
 const isDark = () => nightLevel() > 0.3;
+
+// Ship life's own dice (docs/superpowers/specs/2026-11-05-working-routine-design.md): everything that only changes the cutaway (where someone
+// walks, a seat, a comms flavour line) rolls these and not Math.random, so ship life never moves the game's dice. The state is a 32-bit number
+// on the burn, seeded from the burn's facts (no draw of the game's); a burn from an older save seeds itself on first use.
+function shipRand(t, st) {
+  if (typeof t.lifeRng !== 'number') { let h = 2166136261; for (const ch of `${st.day}|${t.to}|${t.days}`) h = Math.imul(h ^ ch.charCodeAt(0), 16777619); t.lifeRng = h >>> 0; }
+  let x = (t.lifeRng = (t.lifeRng + 0x6D2B79F5) >>> 0);  // mulberry32
+  x = Math.imul(x ^ (x >>> 15), x | 1); x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
+  return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+}
+const lifeRnd = () => shipRand(G.transit, G.state), lifeRand = (a, b) => a + lifeRnd() * (b - a), lifePick = arr => arr[Math.floor(lifeRnd() * arr.length)];
+
+// The ship's timetable (docs/superpowers/specs/2026-11-05-working-routine-design.md): the blocks of the day by the same share of it as nightLevel,
+// and where each kind of person belongs in a block. A post is the room they like best; the watch keeps theirs through the dusk and the night.
+const SHIP_TIMETABLE = [
+  { block: 'breakfast', from: 0, to: 0.08 }, { block: 'shift', from: 0.08, to: 0.3 }, { block: 'meal', from: 0.3, to: 0.38 }, { block: 'shift', from: 0.38, to: 0.48 },
+  { block: 'supper', from: 0.48, to: 0.55 }, { block: 'handover', from: 0.55, to: 0.65 }, { block: 'night', from: 0.65, to: 0.9 }, { block: 'wake', from: 0.9, to: 1 },
+];
+function shipDay(elapsed) {
+  const f = (((elapsed || 0) + 6) / SHIP_DAY) % 1;
+  return { block: SHIP_TIMETABLE.find(b => f >= b.from && f < b.to).block, f };
+}
+const postOf = role => (role === 'captain' ? 'bridge' : Object.entries(HAUNTS[role] || HAUNTS.passenger).sort((a, b) => b[1] - a[1])[0][0]);
+function routineSpot(p, block) {
+  const role = p.role;
+  if (role === 'cat') return { rounds: true };
+  if (block === 'supper' && role === 'captain') return { room: 'bridge', at: 'post' };  // the bridge is not left empty: the captain eats there, for the watch to take it
+  if (['wake', 'breakfast', 'meal', 'supper'].includes(block)) return role === 'cook' ? { room: 'galley', at: 'stove' } : { room: 'galley', at: 'table' };
+  if (block === 'shift') return role === 'you' || role === 'passenger' ? { rounds: true } : role === 'cook' ? { room: 'galley', at: 'stove' } : { room: postOf(role), at: 'post' };
+  return NIGHT_WATCH.includes(role) ? { room: postOf(role), at: 'post' } : { room: 'berths', at: 'bunk' };  // the handover and the night
+}
 const nightHaunts = role => NIGHT_WATCH.includes(role) ? HAUNTS[role] : role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 };
 const isAsleep = p => !p.staged && isDark() && p.room === 'berths' && p.tx === null && p.dk === 0 && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role) && phase() === 'move';
 
@@ -226,12 +257,12 @@ function lifeState() {
 }
 
 // The pools are read through the editor's words (lines:ship-life, lines:ship-lights; js/linetables.js).
-function lifeLine(p, crowd) {
+function lifeLine(p, crowd, rnd = Math.random) {  // rnd: ship life's dice in a burn (lifeTick)
   const room = linedText('lines:ship-life', LIFE_LINES)[p.room], pool = room[p.role] || room.any;
   if (!pool) return null;
   const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you' && o.role !== 'cat');
-  const line = pickFresh(pool.filter(l => !l.includes('{m}') || others.length));
-  return line && line.replace('{n}', p.name).replace('{m}', others.length ? pick(others).name : '');
+  const line = pickFresh(pool.filter(l => !l.includes('{m}') || others.length), rnd);
+  return line && line.replace('{n}', p.name).replace('{m}', others.length ? others[Math.floor(rnd() * others.length)].name : '');
 }
 
 // ---------- the people aboard ----------
@@ -246,7 +277,7 @@ function shipPeople() {
   }
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
-  people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), dk: 0, tdk: 0, tx: null, wait: rand(1, 4), seat: couchX(i, people.length) }));
+  people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), dk: 0, tdk: 0, tx: null, wait: lifeRand(1, 4), seat: couchX(i, people.length) }));
   // A hand's captain is aboard too, strapped in on the bridge beside the hand's couch: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
   const cap = hiredCaptain(), bx = roomAt('bridge').mid + 0.025;
   if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: 0, tdk: 0, tx: null, wait: 3, seat: bx });
@@ -256,16 +287,64 @@ function shipPeople() {
 // Crash couches: along the berths and bridge.
 const couchX = (i, n) => (i === 0 ? roomAt('bridge').mid : roomAt('berths').x0 + 0.02 + (roomAt('berths').w - 0.04) * (i / Math.max(1, n - 1)));
 
-function goTo(p, roomId) {
+// Sent somewhere by a downtime activity you chose: the timetable takes them back when they have been there a while (lifeTick).
+const toActivity = (p, roomId) => { goTo(p, roomId); Object.assign(p, { block: 'activity', errand: false, at: undefined, relief: undefined }); };
+// Where in its room a place of the timetable is (routineSpot): place i of the n who share a post there, the stove at the galley's end, seat i of n
+// along the table, a bunk in the berths.
+function routineTarget(p, spot, r, i, n, rnd) {
+  if (spot.at === 'post') return r.x0 + r.w * (0.15 + 0.7 * (n > 1 ? i / (n - 1) : 0.5));  // place i of the n whose post is this room
+  if (spot.at === 'stove') return r.x0 + r.w * 0.15;
+  if (spot.at === 'table') return Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.x0 + r.w * (0.3 + 0.6 * (n > 1 ? i / (n - 1) : 0.5))));
+  return r.x0 + r.w * (0.25 + 0.5 * rnd());  // a bunk
+}
+// To where the timetable has `p` in `block`: their place in it, or the rounds (a room they like, as before the timetable).
+function routineGo(p, block, people, dark, rnd) {
+  p.relief = undefined;
+  if (block === 'handover' && !NIGHT_WATCH.includes(p.role) && p.at === 'post' && p.tx === null && !p.errand) {  // at a post the watch keeps: wait to hand it over
+    const w = people.find(q => NIGHT_WATCH.includes(q.role) && postOf(q.role) === p.room && !q.staged);
+    if (w) { Object.assign(p, { block, relief: w.id, reliefT: 0 }); return; }
+  }
+  const spot = routineSpot(p, block);
+  Object.assign(p, { block, errand: false, at: spot.at });
+  if (spot.rounds) { goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd); return; }
+  const holds = q => (s => s.at === 'post' && s.room === spot.room)(routineSpot(q, 'shift'));  // a post's places are numbered by who holds it in a shift, the same in every block
+  const r = roomAt(spot.room), mates = spot.at === 'table' ? people.filter(q => routineSpot(q, block).at === 'table') : spot.at === 'post' ? people.filter(holds) : [];  // who shares the table or the post
+  Object.assign(p, { room: spot.room, tdk: r.deck, tx: routineTarget(p, spot, r, mates.indexOf(p), mates.length, rnd) });
+}
+// When a wait at a place runs out: in a shift someone at their post now and then goes on a short errand to a room near it on its deck, and from it back to the
+// post; someone let go by a scene or done with an activity goes back to the timetable; the rounds go on; at the table, the stove or a bunk they stay.
+function routineWait(p, block, dark, rnd) {
+  if (p.block === 'activity' || p.block === 'linger' || p.errand) { p.block = undefined; p.errand = false; return; }  // the next frame takes them back
+  if (p.aside) { p.wait = 5 + 7 * rnd(); return; }  // out of a scene's way until it closes (stageScene)
+  const spot = routineSpot(p, block);
+  if (spot.rounds) goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd);
+  else if (block === 'shift' && spot.at === 'post' && rnd() < 0.25) {
+    const post = roomAt(spot.room), near = ROOMS.filter(r => r.id !== spot.room && r.deck === post.deck).sort((a, b) => Math.abs(a.mid - post.mid) - Math.abs(b.mid - post.mid)).slice(0, 2).map(r => r.id);  // a short errand: one of the two rooms nearest the post on its deck
+    if (near.length) { goTo(p, near[Math.floor(rnd() * near.length)], rnd); p.errand = true; p.at = undefined; }
+  }
+  p.wait = 5 + 7 * rnd();
+}
+
+// The watch handed over at dusk: the one going off waits at the post until the watch-keeper is there, they face each other for 2 seconds, and then the
+// one going off turns in. A watch-keeper who does not come (held in a scene, or no longer aboard) leaves them to turn in when the block ends.
+function handOver(p, people, dt, block, rnd) {
+  const w = people.find(q => q.id === p.relief);
+  if (!w || block !== 'handover') { p.relief = undefined; return; }
+  if (w.room !== p.room || w.tx !== null || w.dk !== w.tdk) return;
+  p.face = Math.sign(w.x - p.x) || p.face; w.face = Math.sign(p.x - w.x) || w.face;
+  if ((p.reliefT += dt) >= 2) { p.relief = undefined; p.at = undefined; Object.assign(p, { block, room: 'berths', tdk: roomAt('berths').deck, tx: routineTarget(p, { at: 'bunk' }, roomAt('berths'), 0, 1, rnd) }); }
+}
+
+function goTo(p, roomId, rnd = lifeRnd) {
   const r = roomAt(roomId);
   p.room = roomId;
   p.tdk = r.deck;
-  p.tx = r.x0 + r.w * (p.role === 'captain' ? 0.6 : rand(0.25, 0.75));  // the captain's place takes no draw of the game's dice (hired.js's captain was added after the dice were set)
+  p.tx = r.x0 + r.w * (p.role === 'captain' ? 0.6 : 0.25 + 0.5 * rnd());
 }
 
-function weighted(table) {
+function weighted(table, rnd = Math.random) {
   const entries = Object.entries(table), total = entries.reduce((s, [, w]) => s + w, 0);
-  let r = Math.random() * total;
+  let r = rnd() * total;
   for (const [k, w] of entries) if ((r -= w) <= 0) return k;
   return entries[0][0];
 }
@@ -291,7 +370,8 @@ function posture(p, ph, time, asleep) {
   else if (p.dk !== p.tdk) name = 'climb';
   else if (p.tx !== null) name = 'walk';
   else if (p.staged) name = p.staged === 'galley' || p.staged === 'berths' || (p.role === 'captain' && SEATED_STATIONS.includes(p.staged)) ? 'sit' : 'stand';  // at the table or a bunk's edge; the captain at the station
-  else name = ['galley', 'gunnery', 'bridge', 'medbay'].includes(p.room) ? 'sit' : 'stand';
+  else if (!p.staged && !p.errand && ((p.block === 'shift' && p.at === 'post') || p.at === 'stove')) name = p.at === 'post' && (p.room === 'bridge' || p.room === 'gunnery') ? 'work-sit' : 'work';  // at work: seated at the bridge and the guns
+  else name = p.at !== 'stove' && ['galley', 'gunnery', 'bridge', 'medbay'].includes(p.room) ? 'sit' : 'stand';  // the cook at the stove stands
   const { frames, fps } = POSTURES[name];
   return { name, x: p.x, deck: p.dk, face: p.face || 1, frame: fps ? Math.floor(time * fps) % frames : 0 };
 }
@@ -303,12 +383,13 @@ const SEATED_STATIONS = ['bridge', 'gunnery', 'medbay'];
 function stageScene(people, ph, t, open) {
   if (open === t.stageOf) return;
   t.stageOf = open; t.stageSpan = null;
+  for (const p of people) if (p.aside) Object.assign(p, { aside: false, block: 'linger', wait: 3 });  // out of the last scene's way: back to the timetable
   const stage = open && ph === 'move' ? sceneStage(open, people, scenePeople(open).map(c => c.id)) : null, ids = new Set(stage ? stage.ids : []);
-  for (const p of people) if (p.staged && !ids.has(p.id)) { p.staged = undefined; p.faceTo = undefined; p.wait = 3; }  // a fixed linger: staging draws none of the game's dice
+  for (const p of people) if (p.staged && !ids.has(p.id)) { p.staged = undefined; p.faceTo = undefined; p.wait = 3; p.block = 'linger'; }  // a fixed linger: staging draws none of the game's dice
   if (!stage) return;
   const r = roomAt(stage.room), cast = stage.ids.map(id => people.find(q => q.id === id)).filter(Boolean), n = cast.length;
   const spots = cast.map((_, i) => Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.mid + (i - (n - 1) / 2) * 0.03))), mid = spots.reduce((a, b) => a + b, 0) / n;
-  cast.forEach((p, i) => { Object.assign(p, { staged: stage.room, room: stage.room, tdk: r.deck, tx: spots[i] }); p.faceTo = Math.sign(mid - spots[i]) || Math.sign(spots[0] - spots[i]) || 1; });
+  cast.forEach((p, i) => { Object.assign(p, { staged: stage.room, room: stage.room, tdk: r.deck, tx: spots[i], at: undefined, relief: undefined, errand: false }); p.faceTo = Math.sign(mid - spots[i]) || Math.sign(spots[0] - spots[i]) || 1; });
   t.stageSpan = { room: stage.room, deck: r.deck, lo: spots[0] - 0.03, hi: spots[n - 1] + 0.03, sent: {} };  // where they gather: kept clear (stepAside)
 }
 
@@ -319,7 +400,7 @@ function stepAside(p, span) {
   const at = p.tx !== null ? p.tx : p.x;  // where they are, or where they are going in that room
   if (at <= span.lo || at >= span.hi) return;
   const alt = Object.entries(HAUNTS[p.role] || HAUNTS.passenger).filter(([id]) => id !== span.room).sort((a, b) => b[1] - a[1])[0][0], r = roomAt(alt), k = (span.sent[alt] = (span.sent[alt] || 0) + 1) - 1;
-  Object.assign(p, { room: alt, tdk: r.deck, tx: Math.min(r.x1 - 0.01, r.x0 + r.w * 0.3 + 0.02 * k) });
+  Object.assign(p, { room: alt, tdk: r.deck, tx: Math.min(r.x1 - 0.01, r.x0 + r.w * 0.3 + 0.02 * k), aside: true, at: undefined, errand: false });
 }
 
 function lifeTick(dt) {
@@ -329,17 +410,20 @@ function lifeTick(dt) {
   if (dark !== !!G.transit.dark) {  // dusk or dawn
     G.transit.dark = dark;
     comm(`[Ship] ${lineWords('lines:ship-lights', dark ? 'dusk' : 'dawn', LIFE_NOTES[dark ? 'dusk' : 'dawn'])}`);
-    for (const p of people) if (!NIGHT_WATCH.includes(p.role)) p.wait = Math.min(p.wait, rand(0.2, 3));
+    for (const p of people) if (!NIGHT_WATCH.includes(p.role)) p.wait = Math.min(p.wait, lifeRand(0.2, 3));
   }
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
+  const block = shipDay(G.transit.elapsed).block;
   for (const p of people) {
     if (ph === 'secure' || ph === 'float') {  // strap in where they are; someone on the ladder finishes onto a deck
-      p.tx = null; p.tdk = Math.round(p.dk);
+      p.tx = null; p.tdk = Math.round(p.dk); p.block = undefined; p.relief = undefined;  // strapped in: under way again, the timetable sends them on
       p.dk = Math.abs(p.tdk - p.dk) < 0.01 ? p.tdk : p.dk + Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
       continue;
     }
-    if (ph !== 'move') { const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
+    if (ph !== 'move') { p.block = undefined; p.relief = undefined; const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
     stepAside(p, G.transit.stageSpan);
+    if (!p.staged && p.block !== block && p.block !== 'activity' && p.block !== 'linger' && !p.errand) routineGo(p, block, people, dark, lifeRnd);  // the timetable: a new block, or back to it
+    if (p.relief && !p.staged) { handOver(p, people, dt, block, lifeRnd); continue; }
     const step = (p.staged ? 0.09 : 0.06) * dt;  // to a scene a little faster
     if (p.dk !== p.tdk) {  // to the ladder, then up or down it
       if (Math.abs(LADDER - p.x) > 0.003) { p.face = Math.sign(LADDER - p.x) || p.face; p.x += Math.max(-step, Math.min(step, LADDER - p.x)); }
@@ -350,14 +434,14 @@ function lifeTick(dt) {
       if (Math.abs(p.tx - p.x) < 0.002) {
         p.tx = null;
         if (p.staged) { p.face = p.faceTo || p.face; continue; }  // in place for the scene, facing the others: no draw of the game's dice
-        p.wait = rand(5, 12);
-        if (p.role !== 'you' && Math.random() < 0.18 && !lifeHushed(lifeState())) {
-          const line = lifeLine(p, people);
+        p.wait = p.errand ? lifeRand(1.5, 3) : lifeRand(5, 12);  // an errand is in and out
+        if (p.role !== 'you' && lifeRnd() < 0.18 && !lifeHushed(lifeState())) {
+          const line = lifeLine(p, people, lifeRnd);
           if (line) comm(`[Ship] ${line}`);
         }
       }
     } else if (!p.staged && (p.wait -= dt) <= 0) {
-      goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role]));
+      routineWait(p, block, dark, lifeRnd);
     }
   }
 }
@@ -526,8 +610,8 @@ const ACTIVITIES = {
   meal: {
     get label() { return lifeSay('meal.label'); }, can: () => true,
     run() {
-      for (const p of shipPeople()) if (p.role !== 'you') goTo(p, 'galley');
-      goTo(shipPeople()[0], 'galley');
+      for (const p of shipPeople()) if (p.role !== 'you') toActivity(p, 'galley');
+      toActivity(shipPeople()[0], 'galley');
       for (const id of G.state.crew) if (G.state.people[id]) likeAmbient(G.state.people[id], 1, lifeSay('meal.crew.memory'));
       for (const m of paxAboard()) if (m.pid) likeAmbient(G.state.people[m.pid], 1, lifeSay('meal.pax.memory'));
       return pick([lifeSay('meal.result.0'), lifeSay('meal.result.1')]);
@@ -537,7 +621,7 @@ const ACTIVITIES = {
     get label() { return lifeSay('drills.label'); }, can: () => !G.transit.drilled,
     run() {
       G.transit.drilled = true;
-      for (const p of shipPeople()) goTo(p, p.role === 'you' ? 'bridge' : p.role === 'captain' ? 'bridge' : pick(['hold', 'bridge', 'engine']));
+      for (const p of shipPeople()) toActivity(p, p.role === 'you' ? 'bridge' : p.role === 'captain' ? 'bridge' : lifePick(['hold', 'bridge', 'engine']));
       return lifeSay(tellingOn('drills.result', G.state.day));
     },
   },
@@ -546,7 +630,7 @@ const ACTIVITIES = {
     run() {
       const max = ship().armor, amount = Math.round(max * (roleSkill('engineer') ? 0.4 : 0.2)), before = G.state.armor;
       G.state.armor = Math.min(max, before + amount);
-      for (const p of shipPeople()) goTo(p, p.role === 'passenger' ? 'galley' : p.role === 'captain' ? 'bridge' : pick(['engine', 'hold']));
+      for (const p of shipPeople()) toActivity(p, p.role === 'passenger' ? 'galley' : p.role === 'captain' ? 'bridge' : lifePick(['engine', 'hold']));
       const day = G.state.day;  // the result and its tail are one version, taken by the day
       return `${lifeSay(tellingOn('repair.result', day), { before, after: G.state.armor, max })} ${roleSkill('engineer') ? lifeSay(tellingOn('repair.skilled', day), { name: roleName('engineer') }) : lifeSay(tellingOn('repair.alone', day))}`;
     },
@@ -554,7 +638,7 @@ const ACTIVITIES = {
   visit: {
     get label() { return lifeSay('visit.label'); }, can: () => paxAboard().length > 0,
     run() {
-      goTo(shipPeople()[0], 'berths');
+      toActivity(shipPeople()[0], 'berths');
       for (const m of paxAboard()) if (m.pid) like(G.state.people[m.pid], 1, lifeSay('visit.memory'));
       return pick([lifeSay('visit.result.0'), lifeSay('visit.result.1')]);
     },
