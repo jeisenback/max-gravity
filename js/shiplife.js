@@ -84,6 +84,25 @@ function shipRand(t, st) {
   return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
 }
 const lifeRnd = () => shipRand(G.transit, G.state), lifeRand = (a, b) => a + lifeRnd() * (b - a), lifePick = arr => arr[Math.floor(lifeRnd() * arr.length)];
+
+// The ship's timetable (docs/superpowers/specs/2026-11-05-working-routine-design.md): the blocks of the day by the same share of it as nightLevel,
+// and where each kind of person belongs in a block. A post is the room they like best; the watch keeps theirs through the dusk and the night.
+const SHIP_TIMETABLE = [
+  { block: 'breakfast', from: 0, to: 0.08 }, { block: 'shift', from: 0.08, to: 0.3 }, { block: 'meal', from: 0.3, to: 0.38 }, { block: 'shift', from: 0.38, to: 0.48 },
+  { block: 'supper', from: 0.48, to: 0.55 }, { block: 'handover', from: 0.55, to: 0.65 }, { block: 'night', from: 0.65, to: 0.9 }, { block: 'wake', from: 0.9, to: 1 },
+];
+function shipDay(elapsed) {
+  const f = (((elapsed || 0) + 6) / SHIP_DAY) % 1;
+  return { block: SHIP_TIMETABLE.find(b => f >= b.from && f < b.to).block, f };
+}
+const postOf = role => (role === 'captain' ? 'bridge' : Object.entries(HAUNTS[role] || HAUNTS.passenger).sort((a, b) => b[1] - a[1])[0][0]);
+function routineSpot(p, block) {
+  const role = p.role;
+  if (role === 'cat') return { rounds: true };
+  if (['wake', 'breakfast', 'meal', 'supper'].includes(block)) return role === 'cook' ? { room: 'galley', at: 'stove' } : { room: 'galley', at: 'table' };
+  if (block === 'shift') return role === 'you' || role === 'passenger' ? { rounds: true } : role === 'cook' ? { room: 'galley', at: 'stove' } : { room: postOf(role), at: 'post' };
+  return NIGHT_WATCH.includes(role) ? { room: postOf(role), at: 'post' } : { room: 'berths', at: 'bunk' };  // the handover and the night
+}
 const nightHaunts = role => NIGHT_WATCH.includes(role) ? HAUNTS[role] : role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 };
 const isAsleep = p => !p.staged && isDark() && p.room === 'berths' && p.tx === null && p.dk === 0 && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role) && phase() === 'move';
 

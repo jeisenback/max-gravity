@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { shipRand, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand']);
+const { shipRand, shipDay, routineSpot, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -153,4 +153,23 @@ test('ship life rolls its own dice, the same for the same burn', () => {
   assert.ok(fa.every(v => v >= 0 && v < 1), 'in [0, 1)');
   assert.deepEqual(five(b), fa, 'the same burn rolls the same');
   assert.notEqual(shipRand(c, { day: 13 }), fa[0], 'another day rolls otherwise');
+});
+
+test('the ship\'s day runs to a timetable, and each person has a place in it', () => {
+  const at = f => ((f * SHIP_DAY - 6 + 0.01) + SHIP_DAY) % SHIP_DAY;  // the elapsed burn time at a share of the day (just after it)
+  assert.deepEqual([0, 0.079, 0.08, 0.3, 0.38, 0.48, 0.55, 0.65, 0.9].map(f => shipDay(at(f)).block),
+    ['breakfast', 'breakfast', 'shift', 'meal', 'shift', 'supper', 'handover', 'night', 'wake']);
+  assert.ok(Math.abs(shipDay(at(0.3)).f - 0.3) < 0.001, 'and how far into the day');
+  const spot = (role, block) => JSON.parse(JSON.stringify(routineSpot({ role }, block)));
+  assert.deepEqual(spot('engineer', 'shift'), { room: 'engine', at: 'post' });
+  assert.deepEqual(spot('pilot', 'night'), { room: 'bridge', at: 'post' }, 'the watch at night');
+  assert.deepEqual(spot('cook', 'meal'), { room: 'galley', at: 'stove' });
+  assert.deepEqual(spot('captain', 'shift'), { room: 'bridge', at: 'post' });
+  assert.deepEqual(spot('captain', 'handover'), { room: 'berths', at: 'bunk' });
+  assert.deepEqual(spot('you', 'shift'), { rounds: true });
+  assert.deepEqual(spot('you', 'breakfast'), { room: 'galley', at: 'table' });
+  assert.deepEqual(spot('passenger', 'shift'), { rounds: true });
+  assert.deepEqual(spot('passenger', 'supper'), { room: 'galley', at: 'table' });
+  assert.deepEqual(spot('quartermaster', 'night'), { room: 'berths', at: 'bunk' });
+  assert.deepEqual(spot('cat', 'breakfast'), { rounds: true });
 });
