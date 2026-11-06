@@ -247,8 +247,8 @@ function roomMedbay(ctx, r, s, X, W) {
     roomBox(ctx, ix - 5, iy, 10, 14, 'rgba(200,230,255,0.75)'); ctx.strokeStyle = 'rgba(200,230,255,0.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(ix, iy + 14); ctx.quadraticCurveTo(px - 20, F - 50, bx + bw - 14, F - 38); ctx.stroke();
   }
   if (W >= 260) {
-    const mx = X(0.7), mw = Math.min(64, W * 0.2); roomBox(ctx, mx, F - 92, mw, 34, '#04101a'); ctx.strokeStyle = '#7fd8a0'; ctx.lineWidth = 1.2; ctx.beginPath();
-    for (let x = 0; x < mw - 4; x++) { const u = (x + time * 30) % 30, y = u > 12 && u < 15 ? (u < 13.5 ? -12 : 8) : 0; if (x) ctx.lineTo(mx + 2 + x, F - 75 + y); else ctx.moveTo(mx + 2, F - 75 + y); } ctx.stroke();
+    const mx = X(0.7), mw = Math.min(64, W * 0.2); roomBox(ctx, mx, F - 92, mw, 34, '#04101a'); ctx.strokeStyle = s.patient ? '#ffb030' : '#7fd8a0'; ctx.lineWidth = 1.2; ctx.beginPath();  // amber and quicker with a patient
+    for (let x = 0; x < mw - 4; x++) { const u = (x + time * (s.patient ? 60 : 30)) % 30, y = u > 12 && u < 15 ? (u < 13.5 ? -12 : 8) : 0; if (x) ctx.lineTo(mx + 2 + x, F - 75 + y); else ctx.moveTo(mx + 2, F - 75 + y); } ctx.stroke();
   }
   if (W >= 300) { const cx = X(0.04); roomBox(ctx, cx, F - 92, 40, 40, '#d8dde4'); roomBox(ctx, cx + 17, F - 85, 7, 24, '#c03a30'); roomBox(ctx, cx + 9, F - 77, 23, 8, '#c03a30'); }
 }
@@ -288,6 +288,22 @@ function drawThrustSign(ctx, x, y, g, w, time, zoom) {
   worldText(ctx, zoom, txt, x, y + 13, 12, { burn: '#ff6a52', cruise: '#9fe0b0', flip: '#ffb030' }[ph], 'center');
 }
 
+// The hull's damage on a marked room's wall (shiplife.js shipState): a scorch, a panel hanging open with bare cable behind it, and now and then a few
+// sparks, brighter in the dark. By the drawing's clock, not dice, so a frame is the same each time it is drawn.
+function drawDamage(ctx, r, s) {
+  const px = r.x0 + (r.x1 - r.x0) * 0.7, top = r.floor - 90, beat = Math.floor(s.time * 7);
+  ctx.fillStyle = 'rgba(20,12,8,0.3)'; ctx.beginPath(); ctx.ellipse(px + 13, top + 15, 26, 18, 0, 0, Math.PI * 2); ctx.fill();
+  roomBox(ctx, px, top, 26, 30, '#05080c');
+  ctx.save(); ctx.translate(px, top + 2); ctx.rotate(0.5); roomBox(ctx, -3, 0, 4, 28, '#4a5a6e'); ctx.restore();  // the panel's door, hanging
+  ctx.strokeStyle = '#c8a050'; ctx.lineWidth = 1.5; ctx.beginPath();
+  ctx.moveTo(px + 7, top + 4); ctx.quadraticCurveTo(px + 4, top + 40, px + 12, top + 46); ctx.moveTo(px + 18, top + 4); ctx.quadraticCurveTo(px + 22, top + 36, px + 16, top + 48); ctx.stroke();
+  if (beat % 5 === 0) {
+    ctx.strokeStyle = s.night > 0.5 ? '#fff4c0' : '#ffd070'; ctx.lineWidth = 1.2; ctx.beginPath();
+    for (let i = 0; i < 3; i++) { const a = 0.4 + i * 1.1 + (beat % 3) * 0.7; ctx.moveTo(px + 13, top + 28); ctx.lineTo(px + 13 + Math.cos(a) * 8, top + 28 + Math.sin(a) * 8); }
+    ctx.stroke();
+  }
+}
+
 const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay, tanks: roomTanks };
 // A room, r = { x0, x1, top, floor } in world units, drawn for the state s (w, time, zoom, spin, still, berths, cargo, fuel, burning, night, asleep): walls, props, then its lamp.
 function drawRoom(ctx, id, r, s) {
@@ -295,5 +311,7 @@ function drawRoom(ctx, id, r, s) {
   const W = r.x1 - r.x0;
   roomWalls(ctx, r, s.w, s.time, s.still);
   ROOM_DRAW[id](ctx, r, s, sh => r.x0 + W * sh, W);
-  drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine');
+  const marked = !!(s.damage && s.damage.marks.has(id));
+  if (marked) drawDamage(ctx, r, s);
+  if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine');  // severe damage: the lamp flickers
 }

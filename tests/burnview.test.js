@@ -941,3 +941,11 @@ test('with no first-aid giver up, nobody waits by the bunks', async () => {
   await done();
   assert.equal(r.left, null, 'the only one with first aid is the one hurt'); assert.deepEqual(r.aiding, [], 'nobody by the bunks');
 });
+
+test('a burn with half its armor draws its two marked rooms without an error', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => { const t = stageBurn(); G.state.armor = Math.round(ship().armor / 2); tickFor(1); drawTransit(innerWidth, innerHeight); return t.marks.length; });
+  await done();
+  assert.equal(r, 2);
+});

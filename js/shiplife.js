@@ -577,7 +577,8 @@ function drawCutaway(box, clear = box) {
   // The rooms, the ladder well, the ladder through the upper deck's plate, and the bulkheads.
   const cap = ship().cargo, nb = Math.min(12, ship().berths), slots = new Map();
   for (const p of people) if (slots.size < nb && isAsleep(p)) slots.set(p, slots.size);  // whoever is turned in lies on a bunk
-  const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size };
+  const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
+    damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt() };  // the marks lifeTick keeps (shipState)
   for (const [id, r] of [...ROOMS.map(r => [r.id, r]), ['tanks', CUT_TANKS]]) {
     const q = cutRect(r, len);
     if (seen(q.x0, q.x1)) drawRoom(ctx, id, q, s);
