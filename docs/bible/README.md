@@ -43,7 +43,7 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 16. `people/`: one sheet per character (`ines.md` first).
 17. `shape.md`: the shape of the game: a run is one life, the chapters widen into a sandbox, many endings, a thin legacy between runs, and how a random game is tested (#891).
 18. `chapter-2.md`: chapter two, the member on the Ore Runner: the vote, paying the share down, the lender's squeeze from an owners' war, and the last vote (#891).
-19. `the-belt.md`: the Belt between the named places: the kinds of settlement, the three zones of law, what holds it together, the work on its boards, and the war landing there (#891; draft).
+19. `the-belt.md`: the Belt between the named places: the kinds of settlement, the three zones of law, what holds it together, the work on its boards, and the war landing there (#891).
 
 ## Where the game must change to fit
 

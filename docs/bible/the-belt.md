@@ -1,6 +1,6 @@
 # The Belt
 
-Status: draft for the owner's review (#891). Agreed in conversation on 2026-11-07, written up here for approval. Built on `economy.md`, `jurisdictions.md`, `work.md` and `shape.md`.
+Status: approved by the owner on 2026-11-07 (#891). Built on `economy.md`, `jurisdictions.md`, `work.md` and `shape.md`.
 
 ## What it is
 
