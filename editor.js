@@ -23,7 +23,7 @@
   'js/happenings.js', 'js/stories/ice-strike.js', 'js/stories/mars-navy.js', 'js/stories/rook-crown.js',
   'js/stories/tethys.js', 'js/stories/cold-water.js', 'js/stories/landings.js', 'js/stories/ports.js',
   'js/stories/on-the-road.js', 'js/stories/aftermath.js', 'js/stories/hired-aftermath.js', 'js/stories/arc-league.js', 'js/stories/arc-concord.js', 'js/stories/arc-compact.js', 'js/community.js', 'js/uat.js',
-  'js/help.js', 'js/menu.js', 'js/a11y.js',
+  'js/help.js', 'js/report.js', 'js/menu.js', 'js/a11y.js',
   ];
 
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
