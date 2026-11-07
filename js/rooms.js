@@ -50,6 +50,12 @@ function roomCouchFold(ctx, x, F, d) {
   if (d > 0.5) { roomBox(ctx, x + 22, F - 24 * d, 8, 12 * d, '#23405e'); roomBox(ctx, x + 4, F - 12 * d, 6, 12 * d, '#1a3048'); }
   ctx.save(); ctx.translate(x, F - 14 - 4 * d); ctx.rotate(-Math.PI / 2 + (Math.PI / 2 - 0.9) * d); roomBox(ctx, -11, -62, 9, 66, '#23405e'); roomBox(ctx, -12, -66, 10, 8, '#2c4c6e'); ctx.restore();
 }
+// The galley's bench (#925): one long seat from x0 to x1 in front of the mess table, on legs, where the table's places are (SEATS, shiplife.js).
+function roomBench(ctx, x0, x1, F) {
+  roomBox(ctx, x0, F - 19, x1 - x0, 5, '#2a4664'); roomBox(ctx, x0 + 2, F - 14, x1 - x0 - 4, 2, '#1c3249');
+  const legs = Math.max(2, Math.round((x1 - x0) / 60) + 1);
+  for (let k = 0; k < legs; k++) roomBox(ctx, x0 + 4 + (x1 - x0 - 12) * (k / (legs - 1)), F - 14, 4, 14, '#1c3249');
+}
 function roomStool(ctx, x, F, back) {
   roomBox(ctx, x - 10, F - 18, 20, 4, '#2a4664'); roomBox(ctx, x - 2, F - 14, 4, 14, '#1c3249'); roomBox(ctx, x - 8, F - 3, 16, 3, '#1c3249');
   if (back) roomBox(ctx, x - 14 * back, F - 54, 5 * back, 38, '#2a4664');
@@ -148,7 +154,7 @@ function roomGalley(ctx, r, s, X, W) {
   worldText(ctx, s.zoom, 'MUGS', X(0.02) + 8, F - 83, 9, '#c7b48a');
   roomPorthole(ctx, X(0.34), F - 66, 13, s.spin);
   if (W >= 200) {
-    const tx = X(0.42), tw = Math.min(108, W * 0.26);
+    const tx = X(0.25), tw = X(0.73) - tx;  // the mess table, the length of its bench (#925)
     roomBox(ctx, tx, F - 40, tw, 5, '#2c4c6e'); roomBox(ctx, tx + 8, F - 35, 4, 35, '#20384f'); roomBox(ctx, tx + tw - 12, F - 35, 4, 35, '#20384f');
     roomBox(ctx, tx + tw * 0.3, F - 43, 8, 3, '#ddd6c8'); roomBox(ctx, tx + tw * 0.45, F - 43, 8, 3, '#ddd6c8'); roomBox(ctx, tx + tw * 0.45 + 2, F - 43, 3, 3, '#b8483a');
     roomMug(ctx, tx + tw * 0.75, F - 43, w, time);
@@ -328,7 +334,9 @@ function drawRoom(ctx, id, r, s) {
   const W = r.x1 - r.x0;
   roomWalls(ctx, r, s.w, s.time, s.still);
   ROOM_DRAW[id](ctx, r, s, sh => r.x0 + W * sh, W);
-  for (const f of SEATS[id] || []) roomStool(ctx, r.x0 + W * f, r.floor);  // its seats (shiplife.js), where people sit (#925)
+  const seats = SEATS[id] || [];  // its seats (shiplife.js), where people sit (#925): the galley's on one bench along the mess table, a stool anywhere else
+  if (id === 'galley' && seats.length) roomBench(ctx, r.x0 + W * seats[0] - 14, r.x0 + W * seats[seats.length - 1] + 14, r.floor);
+  else for (const f of seats) roomStool(ctx, r.x0 + W * f, r.floor);
   const marked = !!(s.damage && s.damage.marks.has(id));
   if (marked) drawDamage(ctx, r, s);
   if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine');  // severe damage: the lamp flickers

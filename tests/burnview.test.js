@@ -1030,12 +1030,16 @@ test('people sit only on a seat the cutaway draws, and the table and the posts a
     out.post = [0, 1].map(i => routineTarget({}, { at: 'post', room: 'bridge' }, b, i, 2, () => 0.5)).map(x => +((x - b.x0) / b.w).toFixed(2));
     out.workOff = posture({ ...base, room: 'bridge', x: b.x0 + b.w * 0.56, at: 'post', block: 'shift' }, 'move', 0, false).name;  // between two of its seats
     out.workOn = posture({ ...base, room: 'bridge', x: b.x0 + b.w * SEATS.bridge[0], at: 'post', block: 'shift' }, 'move', 0, false).name;
-    // and the cutaway draws a stool at each seat of the rooms it draws
-    const drawn = [], real = window.roomStool; window.roomStool = (c, x, F, ...a) => { drawn.push(Math.round(x)); return real(c, x, F, ...a); };
+    // and the cutaway draws a seat at each: a stool, or in the galley one bench the length of the table's places
+    const drawn = [], benches = [], real = window.roomStool, realBench = window.roomBench;
+    window.roomStool = (c, x, F, ...a) => { drawn.push([Math.round(x), Math.round(F)]); return real(c, x, F, ...a); };
+    window.roomBench = (c, x0, x1, F) => { benches.push([x0, x1]); return realBench(c, x0, x1, F); };
     for (const room of Object.keys(SEATS)) { const rm = roomAt(room); G.cam = { x: (rm.x0 + rm.w / 2) * hullLength(SHIPS[G.state.shipId].size), t: G.time }; drawTransit(innerWidth, innerHeight); }
-    window.roomStool = real;
-    const len = hullLength(SHIPS[G.state.shipId].size);
-    out.missing = Object.entries(SEATS).flatMap(([room, fs]) => fs.map(f => [room, Math.round((roomAt(room).x0 + roomAt(room).w * f) * len)])).filter(([, x]) => !drawn.some(d => Math.abs(d - x) <= 1));
+    window.roomStool = real; window.roomBench = realBench;
+    const len = hullLength(SHIPS[G.state.shipId].size), seatAt = (room, f) => (roomAt(room).x0 + roomAt(room).w * f) * len, on = (room, f) => drawn.some(([x, F]) => Math.abs(x - seatAt(room, f)) <= 1 && F === Math.round(floorY(roomAt(room).deck)));  // the place and its deck
+    out.missing = Object.entries(SEATS).filter(([room]) => room !== 'galley').flatMap(([room, fs]) => fs.filter(f => !on(room, f)).map(f => [room, f]));
+    out.bench = SEATS.galley.every(f => benches.some(([a, b]) => seatAt('galley', f) > a && seatAt('galley', f) < b));
+    out.galleyStools = SEATS.galley.filter(f => on('galley', f)).length;
     return out;
   });
   for (const [room, v] of Object.entries(r.rooms)) {
@@ -1045,7 +1049,7 @@ test('people sit only on a seat the cutaway draws, and the table and the posts a
   assert.deepEqual(r.table, SEATS_EXPECTED.galley, 'the table\'s places are the galley\'s seats');
   assert.deepEqual(r.post, SEATS_EXPECTED.bridge, 'the bridge posts are its seats');
   assert.equal(r.workOff, 'work', 'at work off a seat: standing'); assert.equal(r.workOn, 'work-sit', 'at work on a seat: sitting');
-  assert.deepEqual(r.missing, [], 'every seat is drawn');
+  assert.deepEqual(r.missing, [], 'every seat is drawn'); assert.ok(r.bench, 'the galley\'s places are one bench'); assert.equal(r.galleyStools, 0, 'not a row of stools');
   await done();
 });
 const SEATS_EXPECTED = { galley: [0.28, 0.35, 0.42, 0.49], bridge: [0.3, 0.46] };
