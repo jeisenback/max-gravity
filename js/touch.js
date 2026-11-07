@@ -74,7 +74,7 @@ const Touch = {
     this.shown = key;
     const flying = G.mode === 'flight';
     document.getElementById('touch').hidden = !(this.on && flying && !(hired() && G.auto));  // no stick or fire button while the crewed pilot flies her out (#692)
-    document.querySelector('#touch [data-tap=burn]').hidden = !!hired();  // a hand does not call the burn; the captain does
+    document.querySelector('#touch [data-tap=burn]').hidden = !role().mayAct('burn');  // a hand does not call the burn; the captain does
     document.getElementById('tmap').hidden = !(G.mode === 'transit' && !eventOpen);
     document.getElementById('tmap').style.right = `${16 + G.hudW}px`;  // clear the HUD sidebar in landscape
     for (const id of ['tclose', 'tzoomin', 'tzoomout']) document.getElementById(id).hidden = G.mode !== 'map';

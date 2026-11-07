@@ -1277,7 +1277,7 @@ window.addEventListener('keydown', e => {
     else if (e.code === 'Equal' || e.code === 'NumpadAdd') zoomMap(-1);
     else if (e.code === 'Minus' || e.code === 'NumpadSubtract') zoomMap(1);
   } else if (G.mode === 'landed') {
-    if (e.code === 'KeyT' && !G.dialog) { if (!hired()) takeOff(); else if (stayOf(hired())) passNight(); else Mods.act('sail'); }
+    if (e.code === 'KeyT' && !G.dialog) { if (role().mayAct('takeoff')) takeOff(); else if (stayOf(hired())) passNight(); else Mods.act('sail'); }
   }
 });
 window.addEventListener('keyup', e => { if (KEYMAP[e.code]) G.keys[KEYMAP[e.code]] = false; });
@@ -1324,7 +1324,7 @@ canvas.addEventListener('click', e => {
   for (const id of Object.keys(SYSTEMS)) {
     const [x, y] = G.mapPos(id);
     if (Math.hypot(e.clientX - x, e.clientY - y) < (Touch.on ? 26 : 16)) {
-      if (hired()) { msg(flySay('picks')); return; }  // the map is for looking, to a hired hand
+      if (!role().mayAct('plot')) { msg(flySay('picks')); return; }  // the map is for looking, to a hired hand
       G.state.dest = id === (G.transit ? G.transit.to : G.state.systemId) ? null : id;
       return;
     }

@@ -728,7 +728,7 @@ function menuFive(lanes, turn) {
   for (let i = 0; out.length < MENU_SHOWN && spun.some(l => l.length > i); i++) for (const l of spun) if (l[i] && out.length < MENU_SHOWN) out.push(l[i]);
   return out;
 }
-const baseActivities = () => Object.entries(ACTIVITIES).filter(([id, a]) => hiredMay(id, a)).map(([, a]) => a);
+const baseActivities = () => Object.entries(ACTIVITIES).filter(([id, a]) => role().mayDowntime(id, a, hired() && hired().post)).map(([, a]) => a);  // role.js
 function downtimeFive() {
   const t = G.transit, st = G.state, half = lifeSlot(), ok = a => !a.can || a.can();
   const lanes = [baseActivities().filter(ok), handDowntime().filter(ok), onNow().filter(ok)], every = lanes.flat();
