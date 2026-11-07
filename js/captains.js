@@ -10,7 +10,25 @@
 const CAPTAINS = {};
 
 const captainEntry = () => { const h = hired(); return (h && h.captainKey && CAPTAINS[h.captainKey]) || null; };
-const pickCaptainKey = () => { const key = pick(Object.keys(CAPTAINS)); return scopeOff('captains') ? 'hester' : key; };  // still draws, so the random stream is the same in both builds
+const pickCaptainKey = () => { const key = pick(Object.keys(CAPTAINS).filter(k => !CAPTAINS[k].master)); return scopeOff('captains') ? 'hester' : key; };  // still draws, so the random stream is the same in both builds; the lender's masters are chapter two's
+
+// The lender's masters (chapter two, #891): four in its pool (js/captains/saran.js and the rest), three sent to the co-op. The draw rolls the co-op's own
+// dice, kept on the hand's record and seeded from the day the share was signed and the day the hand signed on, so it shifts no other system's rolls (as ship life's).
+const MASTERS = ['saran', 'kessler', 'mensah', 'belanger'];
+function coopRand(st) {
+  const h = st.hired;
+  if (typeof h.coopRng !== 'number') { let x = 2166136261; for (const ch of `${h.signed}|${h.since}`) x = Math.imul(x ^ ch.charCodeAt(0), 16777619); h.coopRng = x >>> 0; }
+  return () => {
+    let x = (h.coopRng = (h.coopRng + 0x6D2B79F5) >>> 0);  // mulberry32
+    x = Math.imul(x ^ (x >>> 15), x | 1); x ^= x + Math.imul(x ^ (x >>> 7), x | 61);
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function masterDraw(rnd) {
+  const left = [...MASTERS], out = [];
+  while (out.length < 3) out.push(left.splice(Math.floor(rnd() * left.length), 1)[0]);
+  return out;
+}
 
 // The captain's person record, built from the entry the way castPerson builds a main character's.
 function captainPerson(key) {
