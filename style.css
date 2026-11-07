@@ -685,6 +685,9 @@ details.feeds .more { color: var(--accent); }
 .strip .k { font-family: var(--font-label); letter-spacing: 0.06em; text-transform: uppercase; }  /* 12px like the rest: no text on a shell page is smaller (tests/shell.test.js) */
 .strip b { color: var(--text); font-weight: 500; }
 @media (min-width: 700px) { .strip { padding: 6px 18px; } }
-#panel.event .fight-bars { position: sticky; top: 0; z-index: 2; margin: 0 -16px; padding: 4px 16px 6px; background: var(--panel); }  /* a fight's bars stay in view above the log and the orders (the owner, 2026-11-07) */
 #panel.event .fight-bars svg.bars { margin: 0; }
+@media (min-height: 720px) {  /* a fight's bars and her move stay in view above the log and the orders (the owner, 2026-11-07); a short screen keeps them in the flow, for room for the orders */
+  #panel.event .fight-bars { position: sticky; top: 0; z-index: 2; margin: 0 -16px; padding: 4px 16px 6px; background: var(--panel); }
+  #panel.event:has(.fight-bars) { scroll-padding-top: 260px; }  /* a choice scrolled into view stops below them */
+}
 svg.board { display: block; width: 100%; max-width: 360px; height: auto; margin: 4px 0 10px; border: 1px solid var(--line); }  /* the sensor board (js/board.js) above a raid's text */

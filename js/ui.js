@@ -71,8 +71,7 @@ const UI = {
         <div class="eyebrow">${ev.via ? raw(`${VIA_LABELS[ev.via]} &middot; `) : ''}${where}</div>
         ${raw(sceneFacesHtml(ev))}
         <h1>${ev.title}</h1>
-        ${ev.bars ? h`<div class="fight-bars">${raw(ev.bars)}</div>` : ''}
-        ${ev.read ? h`<p class="read">${raw(ev.read)}</p>` : ''}
+        ${ev.bars ? h`<div class="fight-bars">${raw(ev.bars)}${ev.read ? h`<p class="read">${raw(ev.read)}</p>` : ''}</div>` : ev.read ? h`<p class="read">${raw(ev.read)}</p>` : ''}
         ${ev.board ? raw(ev.board) : ''}
         ${ev.legend ? h`<p class="hint">${ev.legend}</p>` : ''}
         <p>${raw(ev.text)}</p>

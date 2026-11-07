@@ -4,9 +4,9 @@
   "title": "Battle Stations",
   "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 7 to 11 damage",
+   "Gun 1: aims at her hull (a hit does 7 to 11)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 7 to 11 damage",
+   "Gun 2: aims at her hull (a hit does 7 to 11)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -14,19 +14,14 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, you hit her weapons for 8, she hits your hull for 13.",
+    "text": "Turn 1: you hit her hull for 10, you hit her hull for 8, she hits your hull for 13.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 10, you hit her weapons for 9, she hits your hull for 14.",
+    "text": "Turn 2: you hit her hull for 10, you hit her hull for 9, she hits your hull for 14.",
     "armor": 260,
     "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her weapons for 12, you hit her weapons for 11, she hits your hull for 11.",
-    "armor": 260,
-    "band": 0
    },
    {
     "text": "",
@@ -35,13 +30,11 @@
    }
   ],
   "end": {
-   "title": "The Lock",
-   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
+   "title": "Dead in Space",
+   "text": "Her grapple arms go slack, and she tumbles past your bow with no plume behind her.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
    "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
+    "Board her",
+    "Let her drift"
    ]
   }
  },
@@ -50,9 +43,9 @@
   "title": "Battle Stations",
   "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 7 to 11 damage",
+   "Gun 1: aims at her hull (a hit does 7 to 11)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 7 to 11 damage",
+   "Gun 2: aims at her hull (a hit does 7 to 11)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -60,19 +53,14 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, you hit her weapons for 8, she hits your hull for 13.",
+    "text": "Turn 1: you hit her hull for 10, you hit her hull for 8, she hits your hull for 13.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 10, you hit her weapons for 9, she hits your hull for 14.",
+    "text": "Turn 2: you hit her hull for 10, you hit her hull for 9, she hits your hull for 14.",
     "armor": 260,
     "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her weapons for 12, you hit her weapons for 11, she hits your hull for 11.",
-    "armor": 260,
-    "band": 0
    },
    {
     "text": "",
@@ -81,13 +69,11 @@
    }
   ],
   "end": {
-   "title": "The Lock",
-   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
+   "title": "Dead in Space",
+   "text": "Her grapple arms go slack, and she tumbles past your bow with no plume behind her.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
    "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
+    "Board her",
+    "Let her drift"
    ]
   }
  },
@@ -96,9 +82,9 @@
   "title": "Battle Stations",
   "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 8 to 11 damage",
+   "Gun 1: aims at her hull (a hit does 8 to 11)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 8 to 11 damage",
+   "Gun 2: aims at her hull (a hit does 8 to 11)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -106,19 +92,14 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 8, she hits your hull for 13.",
+    "text": "Turn 1: you hit her hull for 11, you hit her hull for 8, she hits your hull for 13.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 10, you hit her weapons for 10, she hits your hull for 14.",
+    "text": "Turn 2: you hit her hull for 10, you hit her hull for 10, she hits your hull for 14.",
     "armor": 260,
     "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her weapons for 12, you hit her weapons for 11, she hits your hull for 11.",
-    "armor": 260,
-    "band": 0
    },
    {
     "text": "",
@@ -127,13 +108,11 @@
    }
   ],
   "end": {
-   "title": "The Lock",
-   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
+   "title": "Dead in Space",
+   "text": "Her grapple arms go slack, and she tumbles past your bow with no plume behind her.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
    "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
+    "Board her",
+    "Let her drift"
    ]
   }
  },
@@ -142,9 +121,9 @@
   "title": "Battle Stations",
   "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 8 to 11 damage",
+   "Gun 1: aims at her hull (a hit does 8 to 11)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 8 to 11 damage",
+   "Gun 2: aims at her hull (a hit does 8 to 11)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -152,19 +131,14 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 8, she hits your hull for 13.",
+    "text": "Turn 1: you hit her hull for 11, you hit her hull for 8, she hits your hull for 13.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her weapons for 10, you hit her weapons for 10, she hits your hull for 14.",
+    "text": "Turn 2: you hit her hull for 10, you hit her hull for 10, she hits your hull for 14.",
     "armor": 260,
     "band": 1
-   },
-   {
-    "text": "Turn 3: you hit her weapons for 12, you hit her weapons for 11, she hits your hull for 11.",
-    "armor": 260,
-    "band": 0
    },
    {
     "text": "",
@@ -173,13 +147,11 @@
    }
   ],
   "end": {
-   "title": "The Lock",
-   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
+   "title": "Dead in Space",
+   "text": "Her grapple arms go slack, and she tumbles past your bow with no plume behind her.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
    "labels": [
-    "Stand: The Lock",
-    "Shoot: hits 1 to 2 of them",
-    "Order: none",
-    "Fight"
+    "Board her",
+    "Let her drift"
    ]
   }
  },
@@ -188,9 +160,9 @@
   "title": "Battle Stations",
   "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Silent Debt\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 7 to 11 damage",
+   "Gun 1: aims at her hull (a hit does 7 to 11)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 7 to 11 damage",
+   "Gun 2: aims at her hull (a hit does 7 to 11)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -198,52 +170,58 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, you hit her weapons for 10.",
+    "text": "Turn 1: you hit her hull for 10, you hit her hull for 10.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 2: you hit her weapons for 8, you hit her weapons for 11, she hits your hull for 51.",
+    "text": "Turn 2: you hit her hull for 8, you hit her hull for 11, she hits your hull for 51.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 3: you hit her weapons for 9, you hit her weapons for 11.",
+    "text": "Turn 3: you hit her hull for 9, you hit her hull for 11.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 4: you hit her weapons for 9, you hit her weapons for 9, she hits your hull for 47.",
+    "text": "Turn 4: you hit her hull for 9, you hit her hull for 9, she hits your hull for 47.",
     "armor": 222,
     "band": 3
    },
    {
-    "text": "Turn 5: you hit her weapons for 10, you hit her weapons for 9, she hits your hull for 13.",
-    "armor": 193,
+    "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 26.",
+    "armor": 164,
     "band": 2
    },
    {
-    "text": "Turn 6: you hit her weapons for 9, you hit her weapons for 11, she hits your hull for 10.",
-    "armor": 171,
-    "band": 1
-   },
-   {
-    "text": "Turn 7: you hit her weapons for 10, nothing left of the weapons to hit.",
-    "armor": 171,
-    "band": 0
-   },
-   {
-    "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 171,
-    "band": 1
+    "text": "Turn 6: you hit her hull for 9, you hit her hull for 11.",
+    "armor": 164,
+    "band": 3
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 7: you hit her weapons for 10, nothing left of the weapons to hit.</p><p>Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
+   "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 26.</p><p>Turn 6: you hit her hull for 9, you hit her hull for 11.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
    "labels": [
     "Stand down"
    ]
+  },
+  "mem": [
+   "9 Jul 2214: You stood us up to a raid and she broke off.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": -1,
+   "c:cato": -1,
+   "p3": 1
   }
  },
  {
@@ -251,9 +229,9 @@
   "title": "Battle Stations",
   "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Silent Debt\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 7 to 11 damage",
+   "Gun 1: aims at her hull (a hit does 7 to 11)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 7 to 11 damage",
+   "Gun 2: aims at her hull (a hit does 7 to 11)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -261,52 +239,58 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, you hit her weapons for 10.",
+    "text": "Turn 1: you hit her hull for 10, you hit her hull for 10.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 2: you hit her weapons for 8, you hit her weapons for 11, she hits your hull for 51.",
+    "text": "Turn 2: you hit her hull for 8, you hit her hull for 11, she hits your hull for 51.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 3: you hit her weapons for 9, you hit her weapons for 11.",
+    "text": "Turn 3: you hit her hull for 9, you hit her hull for 11.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 4: you hit her weapons for 9, you hit her weapons for 9, she hits your hull for 47.",
+    "text": "Turn 4: you hit her hull for 9, you hit her hull for 9, she hits your hull for 47.",
     "armor": 222,
     "band": 3
    },
    {
-    "text": "Turn 5: you hit her weapons for 10, you hit her weapons for 9, she hits your hull for 13.",
-    "armor": 193,
+    "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 26.",
+    "armor": 164,
     "band": 2
    },
    {
-    "text": "Turn 6: you hit her weapons for 9, you hit her weapons for 11, she hits your hull for 10.",
-    "armor": 171,
-    "band": 1
-   },
-   {
-    "text": "Turn 7: you hit her weapons for 10, nothing left of the weapons to hit.",
-    "armor": 171,
-    "band": 0
-   },
-   {
-    "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 171,
-    "band": 1
+    "text": "Turn 6: you hit her hull for 9, you hit her hull for 11.",
+    "armor": 164,
+    "band": 3
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 7: you hit her weapons for 10, nothing left of the weapons to hit.</p><p>Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
+   "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 26.</p><p>Turn 6: you hit her hull for 9, you hit her hull for 11.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
    "labels": [
     "Stand down"
    ]
+  },
+  "mem": [
+   "9 Jul 2214: You stood us up to a raid and she broke off.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": -1,
+   "c:cato": -1,
+   "p3": 1
   }
  },
  {
@@ -314,9 +298,9 @@
   "title": "Battle Stations",
   "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Silent Debt\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 8 to 11 damage",
+   "Gun 1: aims at her hull (a hit does 8 to 11)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 8 to 11 damage",
+   "Gun 2: aims at her hull (a hit does 8 to 11)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -324,51 +308,42 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, you hit her weapons for 11.",
+    "text": "Turn 1: you hit her hull for 10, you hit her hull for 11.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 2: you hit her weapons for 8, you hit her weapons for 11, she hits your hull for 51.",
+    "text": "Turn 2: you hit her hull for 8, you hit her hull for 11, she hits your hull for 51.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 3: you hit her weapons for 9, you hit her weapons for 11.",
+    "text": "Turn 3: you hit her hull for 9, you hit her hull for 11.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 4: you hit her weapons for 10, you hit her weapons for 9, she hits your hull for 47.",
+    "text": "Turn 4: you hit her hull for 10, you hit her hull for 9, she hits your hull for 47.",
     "armor": 222,
     "band": 3
    },
    {
-    "text": "Turn 5: you hit her weapons for 11, you hit her weapons for 10, she hits your hull for 13.",
-    "armor": 193,
+    "text": "Turn 5: you hit her hull for 11, you hit her hull for 10, she hits your hull for 26.",
+    "armor": 164,
     "band": 2
    },
    {
-    "text": "Turn 6: you hit her weapons for 9, you hit her weapons for 12, she hits your hull for 10.",
-    "armor": 171,
-    "band": 1
-   },
-   {
-    "text": "Turn 7: you hit her weapons for 5, nothing left of the weapons to hit.",
-    "armor": 171,
-    "band": 0
-   },
-   {
-    "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 171,
-    "band": 1
+    "text": "",
+    "armor": 164,
+    "band": null
    }
   ],
   "end": {
-   "title": "Battle Stations",
-   "text": "Turn 7: you hit her weapons for 5, nothing left of the weapons to hit.</p><p>Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
+   "title": "Dead in Space",
+   "text": "The corsair's drive cone splits, and she coasts on with her bay doors stuck half open.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
    "labels": [
-    "Stand down"
+    "Board her",
+    "Let her drift"
    ]
   }
  },
@@ -377,9 +352,9 @@
   "title": "Battle Stations",
   "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Silent Debt\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 8 to 11 damage",
+   "Gun 1: aims at her hull (a hit does 8 to 11)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 8 to 11 damage",
+   "Gun 2: aims at her hull (a hit does 8 to 11)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -387,51 +362,42 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 10, you hit her weapons for 11.",
+    "text": "Turn 1: you hit her hull for 10, you hit her hull for 11.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 2: you hit her weapons for 8, you hit her weapons for 11, she hits your hull for 51.",
+    "text": "Turn 2: you hit her hull for 8, you hit her hull for 11, she hits your hull for 51.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 3: you hit her weapons for 9, you hit her weapons for 11.",
+    "text": "Turn 3: you hit her hull for 9, you hit her hull for 11.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 4: you hit her weapons for 10, you hit her weapons for 9, she hits your hull for 47.",
+    "text": "Turn 4: you hit her hull for 10, you hit her hull for 9, she hits your hull for 47.",
     "armor": 222,
     "band": 3
    },
    {
-    "text": "Turn 5: you hit her weapons for 11, you hit her weapons for 10, she hits your hull for 13.",
-    "armor": 193,
+    "text": "Turn 5: you hit her hull for 11, you hit her hull for 10, she hits your hull for 26.",
+    "armor": 164,
     "band": 2
    },
    {
-    "text": "Turn 6: you hit her weapons for 9, you hit her weapons for 12, she hits your hull for 10.",
-    "armor": 171,
-    "band": 1
-   },
-   {
-    "text": "Turn 7: you hit her weapons for 5, nothing left of the weapons to hit.",
-    "armor": 171,
-    "band": 0
-   },
-   {
-    "text": "Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.",
-    "armor": 171,
-    "band": 1
+    "text": "",
+    "armor": 164,
+    "band": null
    }
   ],
   "end": {
-   "title": "Battle Stations",
-   "text": "Turn 7: you hit her weapons for 5, nothing left of the weapons to hit.</p><p>Turn 8: nothing left of the weapons to hit, nothing left of the weapons to hit.</p><p>She breaks off with her guns gone and her hull whole, and she is clear before you can stop her. There is nothing to log but that she got away.",
+   "title": "Dead in Space",
+   "text": "The corsair's drive cone splits, and she coasts on with her bay doors stuck half open.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
    "labels": [
-    "Stand down"
+    "Board her",
+    "Let her drift"
    ]
   }
  },
@@ -440,9 +406,9 @@
   "title": "Battle Stations",
   "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 8 to 12 damage",
+   "Gun 1: aims at her hull (a hit does 8 to 12)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 8 to 12 damage",
+   "Gun 2: aims at her hull (a hit does 8 to 12)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -450,12 +416,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 11, she hits your hull for 14.",
+    "text": "Turn 1: you hit her hull for 11, you hit her hull for 11, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 13, you hit her weapons for 12, she hits your hull for 22.",
+    "text": "Turn 2: you hit her hull for 13, you hit her hull for 12, she hits your hull for 22.",
     "armor": 260,
     "band": 0
    },
@@ -481,9 +447,9 @@
   "title": "Battle Stations",
   "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 8 to 12 damage",
+   "Gun 1: aims at her hull (a hit does 8 to 12)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 8 to 12 damage",
+   "Gun 2: aims at her hull (a hit does 8 to 12)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -491,12 +457,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 11, she hits your hull for 14.",
+    "text": "Turn 1: you hit her hull for 11, you hit her hull for 11, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 13, you hit her weapons for 12, she hits your hull for 22.",
+    "text": "Turn 2: you hit her hull for 13, you hit her hull for 12, she hits your hull for 22.",
     "armor": 260,
     "band": 0
    },
@@ -522,9 +488,9 @@
   "title": "Battle Stations",
   "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 9 to 12 damage",
+   "Gun 1: aims at her hull (a hit does 9 to 12)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 9 to 12 damage",
+   "Gun 2: aims at her hull (a hit does 9 to 12)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -532,12 +498,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 11, she hits your hull for 14.",
+    "text": "Turn 1: you hit her hull for 11, you hit her hull for 11, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 14, you hit her weapons for 12, she hits your hull for 22.",
+    "text": "Turn 2: you hit her hull for 14, you hit her hull for 12, she hits your hull for 22.",
     "armor": 260,
     "band": 0
    },
@@ -563,9 +529,9 @@
   "title": "Battle Stations",
   "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
-   "Gun 1: aim at her weapons, 9 to 12 damage",
+   "Gun 1: aims at her hull (a hit does 9 to 12)",
    "Gun 1: normal charge",
-   "Gun 2: aim at her weapons, 9 to 12 damage",
+   "Gun 2: aims at her hull (a hit does 9 to 12)",
    "Gun 2: normal charge",
    "Torpedo, 2 left: hold fire",
    "Turret: fire with the guns",
@@ -573,12 +539,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her weapons for 11, you hit her weapons for 11, she hits your hull for 14.",
+    "text": "Turn 1: you hit her hull for 11, you hit her hull for 11, she hits your hull for 14.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her weapons for 14, you hit her weapons for 12, she hits your hull for 22.",
+    "text": "Turn 2: you hit her hull for 14, you hit her hull for 12, she hits your hull for 22.",
     "armor": 260,
     "band": 0
    },

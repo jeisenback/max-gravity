@@ -46,7 +46,7 @@ function startShipFight(spec, flee, o = {}) {
     if (s.handDied) return text;  // the hand is dead: the ending is queued (boarders.js)
   }
   s.shown = fightMoves(s.state);
-  const orders = { guns: Array.from({ length: mine.guns }, () => ({ foe: 0, part: 'weapons' })), torp: null, pdc: 'fire' };
+  const orders = { guns: Array.from({ length: mine.guns }, () => ({ foe: 0, part: 'hull' })), torp: null, pdc: 'fire' };  // the guns start on her hull (the owner, 2026-11-07); her weapons, drive and lock are a click away
   const told = raidExplanation();  // the first fight of a new game is explained once, before the panel (captains.js)
   G.nextEvent = told ? chainEvents([told, shipFightEvent(s, orders)]) : shipFightEvent(s, orders);
   return text;
