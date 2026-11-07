@@ -51,6 +51,7 @@ const G = {
   patrons: null,      // who is at the bar now, filled on arrival; null until a bar is opened, see bar.js
   tutThrust: 0,       // seconds of thrust the tutorial has seen, see tutorial.js
   cutHits: [], cutRooms: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js
+  cutRack: null,     // the comms rack's screen box where the burn view drew it whole, or null; a tap on it opens Comms (#919, shiplife.js)
   cam: null, cutOutline: null,  // the burn view's camera ({ x, t }: the world x it centres and the G.time of its last step; null snaps) and the outline's boxes for a tap ({ ...outlineLayout, ids, squeeze, view: the world x and span its frame shows }), see camera.js
   burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, ticker or tutorial, dest, and a scene's dock with the part of the ship it leaves clear), for a tap, the dock and the tests, see transit.js
   hudStrip: null,     // where the HUD drew the hand's readouts (the strip, readouts.js), for the tests
@@ -1324,7 +1325,9 @@ canvas.addEventListener('click', e => {
     }
     const reach = Touch.on ? 24 : 14, outlined = G.cutOutline && outlineRoomAt(G.cutOutline, e.clientX, e.clientY);  // the outline is over the view: it comes first
     const near = !outlined && (G.cutHits || []).map(h => ({ h, d: tapToBody(e.clientX, e.clientY, h) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
+    const rk = !outlined && !near && G.cutRack, onRack = rk && e.clientX >= rk.x && e.clientX <= rk.x + rk.w && e.clientY >= rk.y && e.clientY <= rk.y + rk.h;
     if (near) Mods.act('person', near.h.id);
+    else if (onRack) { G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); }  // the comms rack, as the ticker does
     else {  // no one there: the room, which opens its console as the key bar's key does (a second tap closes it)
       const room = roomAtPoint(e.clientX, e.clientY), sheet = room && roomSheet(room);
       if (sheet) { G.bridgeOpen = G.bridgeOpen === sheet ? null : sheet; Sfx.click(); syncBridge(true); }

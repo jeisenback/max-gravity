@@ -194,6 +194,22 @@ function roomGunnery(ctx, r, s, X, W) {
   }
 }
 
+// The comms rack at the back of the bridge (#919): the room's own box r (cutRect), the rack's box in the same world units. A tap on it opens
+// Comms (game.js), as a tap on a room opens its console; the cutaway records where it was drawn (G.cutRack, shiplife.js).
+const commsRackBox = r => ({ x: r.x0 + 8, y: r.floor - 46, w: 30, h: 46 });  // against the aft bulkhead, under the certificate, clear of the couches
+function roomCommsRack(ctx, r, s) {
+  const b = commsRackBox(r);
+  roomBox(ctx, b.x, b.y, b.w, b.h, '#1b2f45'); roomBox(ctx, b.x + 3, b.y + 14, b.w - 6, b.h - 17, '#0c1826');
+  for (let row = 0; row < 4; row++) for (let col = 0; col < 3; col++) {  // the status lights, blinking on the clock (still under reduced motion: s.time is 0)
+    const on = Math.sin(s.time * (1.3 + row * 0.7) + col * 2.1 + row) > -0.2;
+    roomDot(ctx, b.x + 9 + col * 6, b.y + 20 + row * 6, 1.4, on ? (row === 0 ? '#ffcf7f' : '#6fd08f') : '#24384c');
+  }
+  ctx.font = `600 12px ${roomFont}`;  // the label at 12px on a dark plate, as the rooms' names are; it may be wider than the rack
+  const lw = ctx.measureText('COMMS').width / s.zoom, fs = 12 / s.zoom, pad = 3 / s.zoom, cx = b.x + b.w / 2;
+  ctx.fillStyle = 'rgba(6,13,22,0.85)'; ctx.fillRect(cx - lw / 2 - pad, b.y + 1, lw + pad * 2, fs * 1.25);
+  worldText(ctx, s.zoom, 'COMMS', cx, b.y + 1 + fs, fs, '#9fb4c9', 'center');
+}
+
 function roomBridge(ctx, r, s, X, W) {
   const { w, time, spin } = s, F = r.floor, wl = X(0.55), wr = X(0.97);
   const pane = () => { ctx.beginPath(); ctx.moveTo(wl, F - 92); ctx.lineTo(wr - 6, F - 92); ctx.lineTo(wr, F - 54); ctx.lineTo(wl, F - 54); ctx.closePath(); };
@@ -214,6 +230,7 @@ function roomBridge(ctx, r, s, X, W) {
     for (const dy of [7, 11, 15]) roomBox(ctx, lx + 7, ly + dy, dy === 7 ? 20 : 14, 1.2, '#8a8070');
     roomDot(ctx, lx + 25, ly + 17, 3, '#b0322a');
   }
+  roomCommsRack(ctx, r, s);
   roomCouch(ctx, X(0.4), F, false);
 }
 
