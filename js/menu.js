@@ -346,6 +346,7 @@ Mods.register({
     window.addEventListener('keydown', e => {
       if (e.code === 'F8' && !e.repeat) { e.preventDefault(); Menu.report(); return; }  // Report a problem, from anywhere in a game (report.js)
       if (e.code !== 'Escape' || e.repeat || ['map', 'hail', 'title'].includes(G.mode)) return;
+      if (G.bridgeOpen && !G.paused) { G.bridgeOpen = null; syncBridge(true); return; }  // an open sheet of the burn view closes first (#913)
       if (G.paused) Menu.resume(); else if (G.mode !== 'landed') Menu.pause();
     });
     document.addEventListener('change', e => {

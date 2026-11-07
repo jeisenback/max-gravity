@@ -691,3 +691,5 @@ details.feeds .more { color: var(--accent); }
   #panel.event:has(.fight-bars) { scroll-padding-top: 260px; }  /* a choice scrolled into view stops below them */
 }
 svg.board { display: block; width: 100%; max-width: 360px; height: auto; margin: 4px 0 10px; border: 1px solid var(--line); }  /* the sensor board (js/board.js) above a raid's text */
+
+#bsheet .bsheet-close { position: sticky; top: 0; float: right; z-index: 2; margin: 0 0 6px 8px; font-size: 12px; padding: 4px 10px; }  /* a burn sheet's own way out (#913) */
