@@ -136,6 +136,14 @@ const Menu = {
     this.render();
   },
 
+  // Report a problem (report.js): over whatever is up, a scene or a fight included, which the pause menu does not open over. Back returns to it.
+  report() {
+    if (!G.state || G.mode === 'title' || G.paused) return;
+    G.paused = true; G.keys = {};
+    this.pausedFrom = G.mode; this.fromKey = true;  // Back goes straight back to the game
+    this.view = 'report';
+    this.render();
+  },
   pause() {
     if (G.paused || !['flight', 'transit', 'landed'].includes(G.mode) || G.dialog) return;
     G.paused = true;
@@ -246,7 +254,7 @@ const Menu = {
       const hand = scopeNarrow() || hired();  // a hand has no burn-fight keys: the raid plays in beats, and the captain calls the burn
       const flying = `<h3>Flying</h3>${row('W / Up', 'thrust')}${row('A D / Left Right', 'turn')}${row('S / Down', 'turn to brake')}${row('Space', 'fire')}${row('F',
         'launch a torpedo')}${row('Tab', 'next target')}${row('H', 'hail your target')}${row('L', 'land at the nearest port')}${row('M', 'system map')}${row('J',
-        'start a burn')}${row('N', 'sound on or off')}${row('Esc', 'pause menu')}`;
+        'start a burn')}${row('N', 'sound on or off')}${row('Esc', 'pause menu')}${row('F8', 'report a problem')}`;
       const fights = hand ? '' : `<h3>Fights during burns</h3>${row('W', 'burn at your set thrust')}${row('Q / E', 'less or more thrust')}${row('S', 'point retrograde against the enemy')}${row('Space', 'guns')}${row('F', 'torpedo')}${row('H', 'hail, or board a disabled ship')}`;
       const touch = `<h3>Touch</h3><div class="hint">The stick steers and burns (push further for more thrust), Fire and Brake are held, and the buttons above them tap.</div>`;
       const note = hand ? '<div class="hint">The captain calls the burn. You work your post.</div>' : '';
@@ -261,6 +269,14 @@ const Menu = {
         <div class="hint">Built with Claude Code.</div>
         <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`;
     },
+    report() {  // a note and where the game was, to a new GitHub issue (report.js)
+      const lines = reportSnapshot(G.state, G, BUILD);
+      return `<h2>Report a problem</h2>
+        <p class="desc">Say what went wrong. The game adds where it was, below, and opens a new issue on GitHub with both filled in, for you to read and submit. You need a GitHub account.</p>
+        <textarea data-report-note rows="4" style="width:100%" placeholder="What happened, and what you expected"></textarea>
+        <pre class="report-snapshot hint" style="white-space:pre-wrap">${esc(lines.join('\n'))}</pre>
+        <div class="menu-buttons row"><button class="primary" data-action="menuReport">Open on GitHub</button><button data-action="menuBack">Back</button></div>`;
+    },
     pause() {
       const docked = this.pausedFrom === 'landed';
       return `<div class="menu-title small">Paused</div>
@@ -271,6 +287,7 @@ const Menu = {
           <button data-action="menuView" data-arg="settings">Settings</button>
           <button data-action="menuView" data-arg="help">Help</button>
           <button data-action="menuView" data-arg="controls">Controls</button>
+          <button data-action="menuView" data-arg="report">Report a problem</button>
           <button data-action="menuQuit">Quit to title${docked ? '' : '<span class="hint">Progress since you last docked is lost.</span>'}</button>
         </div>`;
     },
@@ -326,6 +343,7 @@ Mods.register({
     });
     M.filter('dockButtons', html => `<button data-action="menuPause">Menu</button>${html}`);
     window.addEventListener('keydown', e => {
+      if (e.code === 'F8' && !e.repeat) { e.preventDefault(); Menu.report(); return; }  // Report a problem, from anywhere in a game (report.js)
       if (e.code !== 'Escape' || e.repeat || ['map', 'hail', 'title'].includes(G.mode)) return;
       if (G.paused) Menu.resume(); else if (G.mode !== 'landed') Menu.pause();
     });
@@ -350,8 +368,9 @@ Mods.register({
     const back = () => { Menu.exported = null; Menu.confirm = null; Menu.view = Menu.pausedFrom ? 'pause' : 'main'; };
     const act = (name, fn) => M.action(name, arg => { fn(arg); if (G.mode === 'title' || G.paused) Menu.render(); });
     act('menuView', v => { keepForm(); Menu.view = v; });
-    act('menuBack', () => { Menu.topic = null; back(); });
+    act('menuBack', () => { Menu.topic = null; if (Menu.view === 'report' && Menu.fromKey) { Menu.fromKey = false; Menu.resume(); return; } back(); });
     act('menuTopic', id => { Menu.topic = id || null; });
+    act('menuReport', () => { const el = document.querySelector('textarea[data-report-note]'); window.open(reportUrl(el ? el.value : '', reportSnapshot(G.state, G, BUILD)), '_blank'); });
     act('menuContinue', () => loadSlot(Saves.latest()));
     act('menuBackground', id => { keepForm(); Menu.form.background = id; });
     act('menuMode', id => { keepForm(); Menu.form.mode = id; });

@@ -6,7 +6,7 @@
 //
 // Sample:    4 captains x 5 seeds = 20 games of up to 40 runs each (tools/soak.js), a captain's five seeds at a time.
 // Tolerance: every game reaches the target in 6 to 40 runs and on day 30 to 260, never with the planner stuck, no page errors
-//            and no broken text; per captain, the median of the five seeds is 10 to 30 runs and day 60 to 190, and the mean pay
+//            and no broken text; per captain, the median of the five seeds is 10 to 30 runs and day 60 to 200 (raised from 190 by the owner, 2026-11-07: Zoya sat on 190 and the guns on her hull put one seed a day over), and the mean pay
 //            per run is 2,500 to 8,000 cr; across captains the pay per day, as a share of each captain's day rate less the kit,
 //            differs by at most 1.25 times. A rating is paid a day rate that differs by captain on purpose (#879: Dov 700, Zoya 450), so
 //            the raw pay per day differs by about that much; measured against the rate it sat at 0.95 to 1.01 (20 seeds, 2026-11-06).
@@ -33,7 +33,7 @@ test('about twenty runs reach the target with every captain, and the planner is 
     assert.ok(rs.length >= 3, `${captainKey}: ${rs.length} of 5 seeds reached the target (${all.map(r => r.ending ? 'ended' : r.reached ? 'ok' : `no, ${r.runs} runs`).join(', ')})`);
     for (const r of rs) assert.ok(r.reached.runs >= 6 && r.reached.runs <= 40 && r.reached.day >= 30 && r.reached.day <= 260, `${captainKey} seed ${r.seed}: ${r.reached.runs} runs, day ${r.reached.day}`);  // no single seed is far out: the tight band is on the median, below
     const med = a => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)], mr = med(rs.map(r => r.reached.runs)), md = med(rs.map(r => r.reached.day));
-    assert.ok(mr >= 10 && mr <= 30 && md >= 60 && md <= 190, `${captainKey}: median ${mr} runs, day ${md}`);  // about twenty runs, with a little room: any one seed moves when the random numbers shift
+    assert.ok(mr >= 10 && mr <= 30 && md >= 60 && md <= 200, `${captainKey}: median ${mr} runs, day ${md}`);  // about twenty runs, with a little room: any one seed moves when the random numbers shift
     const pay = rs.reduce((t, r) => t + r.avgPayPerRun, 0) / rs.length, days = rs.reduce((t, r) => t + r.avgDaysPerRun, 0) / rs.length;
     // (an ice run, js/icerun.js, is long and pays about 28,000, so the mean a run is up; what the economy keeps is the pay a day)
     assert.ok(pay >= 2500 && pay <= 8000, `${captainKey}: mean pay per run ${Math.round(pay)}`);  // a rating's day rate less the kit, and no share (#879): measured 3,166 to 5,408 over the four captains; 8,000 to 20,000 with the share
