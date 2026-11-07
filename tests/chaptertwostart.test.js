@@ -166,3 +166,22 @@ test('a fight that ends the hand\'s life in chapter two ends the run as in chapt
   assert.equal(r.canDie, true); assert.equal(r.title, 'The Last Run'); assert.deepEqual(r.choices, ['Begin again']);
   assert.ok(r.text.includes(r.last), 'the master says it'); assert.doesNotMatch(r.text, /undefined|NaN|Hester/);
 });
+
+// ---------- Task 5: last-seen prices ----------
+
+test('the Exchange shows the best last-seen price elsewhere and its age; the map tells the co-op to plot, and how old its prices are', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt(); landAtPort('mars', 'Mars'); const mars = currentPlanet();
+    st.day += 4; landAtPort('ceres', 'Ceres Station'); const ceres = currentPlanet();
+    const cid = Object.keys(ceres.prices).find(k => mars.prices[k]), seenAt = st.seen.Mars.prices[cid];
+    UI.planet = ceres; UI.tab = 'trade'; UI.render(); const exchange = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ');
+    st.dest = 'mars'; const said = []; const fill = ctx.fillText; ctx.fillText = (t, ...a) => { said.push(String(t)); return fill.call(ctx, t, ...a); };
+    try { drawMap(G.W || 1200, G.H || 800); } finally { ctx.fillText = fill; }
+    return { exchange, line: `Mars ${fmt(seenAt)}, 4 days ago`, map: said.join(' ') };
+  });
+  await done();
+  assert.ok(r.exchange.includes(r.line), `${r.line} in: ${r.exchange.slice(0, 500)}`);
+  assert.doesNotMatch(r.map, /The captain picks/); assert.match(r.map, /plot a burn/); assert.match(r.map, /Prices 4 days old/);
+});

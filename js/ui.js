@@ -197,11 +197,11 @@ const UI = {
     },
 
     trade() {
-      const st = G.state, p = this.planet;
+      const st = G.state, p = this.planet, known = chapterOf(st) > 1;
       const rows = COMMODITIES.map(c => {
         const freight = freightHeld(c.id), pr = price(p, c.id), held = Math.max(0, (st.cargo[c.id] || 0) - freight);  // a shipper's freight in the hold is not for sale (ownerboard.js)
         const tag = { L: 'low', M: 'med', H: 'high' }[p.prices[c.id]] || '';
-        const best = bestSale(p, c.id);
+        const best = known ? null : bestSale(p, c.id), seen = known ? bestSeen(st, c.id, p.name) : null;  // the co-op knows only what it has seen (#891); the owner game reads every market
         const avg = held ? Math.round((st.paid[c.id] || 0) / held) : 0;
         const mp = pr === null ? 0 : Math.round(pressure(p, c.id) * 100);
         const moved = Math.abs(mp) >= 3 ? ` <span class="hint">${mp > 0 ? `scarce +${mp}%` : `surplus ${mp}%`}</span>` : '';
@@ -210,7 +210,7 @@ const UI = {
           <div class="tname">${c.name}</div>
           <div class="tprice">${pr === null ? '--' : `${fmt(pr)}<span class="mlabel"> cr/t</span>`} <span class="tag ${tag}">${tag}</span>${moved}</div>
           <div class="theld"><span class="mlabel">Held </span>${held}${held ? ` <span class="hint">@${fmt(avg)}</span>` : ''}${freight ? ` <span class="hint">+${freight}t freight</span>` : ''}</div>
-          <div class="tbest">${best ? `<span class="mlabel">Sell at </span>${best.planet.name} <span class="tag low">+${fmt(best.profit)}/t</span> <span class="hint">${best.days ? `${best.days}d` : 'local'}</span>` : '<span class="hint">--</span>'}</div>
+          <div class="tbest">${seen ? `<span class="mlabel">Last seen </span>${seen.planet} ${fmt(seen.price)}, <span class="hint">${seen.age ? `${seen.age} day${seen.age > 1 ? 's' : ''} ago` : 'today'}</span>` : best ? `<span class="mlabel">Sell at </span>${best.planet.name} <span class="tag low">+${fmt(best.profit)}/t</span> <span class="hint">${best.days ? `${best.days}d` : 'local'}</span>` : '<span class="hint">--</span>'}</div>
           <div class="tact">
             <button data-action="buy" data-arg="${c.id}" ${off}>Buy 1</button>
             <button data-action="buymax" data-arg="${c.id}" ${off}>Max</button>
@@ -221,7 +221,7 @@ const UI = {
       }).join('');
       return `
         ${this.tradeNote ? `<div class="note">${this.tradeNote}</div>` : ''}
-        <div class="trow thead"><div class="tname">Commodity</div><div class="tprice">Price/t</div><div class="theld">Held</div><div class="tbest">Best market (in range)</div><div class="tact"></div></div>
+        <div class="trow thead"><div class="tname">Commodity</div><div class="tprice">Price/t</div><div class="theld">Held</div><div class="tbest">${known ? 'Best last seen' : 'Best market (in range)'}</div><div class="tact"></div></div>
         ${rows}
         <p class="hint">Free cargo space: ${cargoFree()}t. Buying raises a market's price and selling lowers it; NPC haulers bring prices back as their deliveries arrive. Best market is based on today's prices.</p>`;
     },

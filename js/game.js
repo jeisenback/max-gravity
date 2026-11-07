@@ -1086,6 +1086,8 @@ function drawHud(W, H) {
   if (!inTransit) help.forEach((h, i) => ctx.fillText(h, x, H - 14 - (help.length - 1 - i) * 14));
 }
 
+// How old what the co-op knows of a system's exchanges is (#891): the freshest last-seen prices among its ports, or nothing.
+const seenNote = (st, sid) => { const ages = SYSTEMS[sid].planets.map(pl => (st.seen || {})[pl.name]).filter(Boolean).map(s => st.day - s.day); return ages.length ? ` Prices ${Math.min(...ages)} days old.` : ''; };
 function drawMap(W, H) {
   ctx.fillStyle = '#050a12';
   ctx.fillRect(0, 0, W, H);
@@ -1138,7 +1140,8 @@ function drawMap(W, H) {
     ctx.setLineDash([]);
   }
   // A hired hand's map shows the captain's plan, from the same source as the Port tab, and in a burn the course she is on.
-  const plan = hired() && !G.transit ? currentPlan() : null, bound = hired() ? (G.transit ? G.transit.to : plan && plan.sid) : st.dest;
+  const hand = hired() && chapterOf(st) === 1;  // the captain's map is chapter one's; the co-op plots its own (#891)
+  const plan = hand && !G.transit ? currentPlan() : null, bound = hand ? (G.transit ? G.transit.to : plan && plan.sid) : st.dest;
   if (bound && bound !== from) {
     ctx.strokeStyle = '#5fd35f';
     line(from, bound);
@@ -1152,7 +1155,7 @@ function drawMap(W, H) {
   const order = [from, st.dest, ...ids].filter((id, i, a) => id && a.indexOf(id) === i);
   for (const id of order) {
     const [x, y] = P(id), sys = SYSTEMS[id], rim = sys.au > span;
-    ctx.globalAlpha = hired() || inRange(from, id) ? 1 : 0.35;
+    ctx.globalAlpha = hand || inRange(from, id) ? 1 : 0.35;
     ctx.fillStyle = GOV_COLORS[sys.gov];
     if (rim) {
       // Off the edge of this zoom: a pointer on the rim.
@@ -1190,7 +1193,7 @@ function drawMap(W, H) {
       ctx.strokeStyle = '#ff6b5a'; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.arc(x, y, 11, 0, Math.PI * 2); ctx.stroke();
     }
-    if (hired() && id === bound && id !== from) {  // where the captain is taking her
+    if (hand && id === bound && id !== from) {  // where the captain is taking her
       ctx.strokeStyle = '#5fd35f'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.arc(x, y, 15, 0, Math.PI * 2); ctx.stroke();
     }
@@ -1216,13 +1219,13 @@ function drawMap(W, H) {
   ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   const zoom = `True scale, ${span} AU to the rim${Touch.on ? '' : ' (scroll or +/- to zoom)'}.`, close = Touch.on ? '' : ' M or Esc to close.';
-  const help = hired() ? `${zoom} The captain picks where she goes. Look around; you can't plot a burn.${close} White ring: you. Green ring: where she's going. Orange: mission. Red: pirate raids.`
+  const help = hand ? `${zoom} The captain picks where she goes. Look around; you can't plot a burn.${close} White ring: you. Green ring: where she's going. Orange: mission. Red: pirate raids.`
     : `${zoom} ${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${close} White ring: you. Orange: mission. Red: pirate raids. Dim: beyond a full tank.`;
   let y = 42;
   for (const l of wrapText(help, W - 150)) ctx.fillText(l, 16, y += 16);  // clear of the Close and zoom buttons
   let status = 'No burn plotted.';
   ctx.fillStyle = '#9ab';
-  if (hired()) {
+  if (hand) {
     status = bound ? (G.transit ? `The ship is bound for ${SYSTEMS[bound].name}.` : `The captain's run: ${SYSTEMS[from].name} to ${SYSTEMS[bound].name}, ${plan.days} days.`)
       : 'The captain is waiting for a market worth the fuel.';
   } else if (st.dest) {
@@ -1230,7 +1233,8 @@ function drawMap(W, H) {
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#5fd35f';
     const now = travelDays(from, st.dest), w = bestWindow(from, st.dest);
     status = `Burn to ${SYSTEMS[st.dest].name}: ${now} days, ${need} reaction mass (you have ${st.fuel}). `
-      + (w.wait ? `Best window: ${w.days} days, in ${w.wait} days.` : 'Near the best window for this route.');
+      + (w.wait ? `Best window: ${w.days} days, in ${w.wait} days.` : 'Near the best window for this route.')
+      + seenNote(st, st.dest);
   }
   const lines = wrapText(status, W - 32);
   lines.forEach((l, i) => ctx.fillText(l, 16, H - 20 - (lines.length - 1 - i) * 16));
