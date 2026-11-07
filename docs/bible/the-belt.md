@@ -74,13 +74,13 @@ The members vote on which to take (`chapter-2.md`). The kinds make the board; th
 
 ## When the war comes
 
-The owners' war (its own page, to come) is fought over fuel, and the Belt is where it lands:
+The owners' war (`the-fuel-war.md`) is fought over fuel, and the Belt is where it lands. It rumbles through chapter two and breaks out in chapter three:
 
 - Depots close or ration, and fuel prices jump. The small rocks are desperate, and running fuel to them is the best-paid and most dangerous work in the Belt, legal or not.
 - Both sides hire guns. Pirates become privateers with papers.
 - Freeholds are pushed to choose a side, or be starved.
 
-This is the Belt the co-op's squeeze happens in (`chapter-2.md`). Yelena, a hired gun, and Ruben, on one side's networks, come out of it.
+The co-op's squeeze happens as it rumbles (`chapter-2.md`). Yelena, a hired gun, and Ruben, on one side's networks, come out of it.
 
 ## Assumptions to confirm
 

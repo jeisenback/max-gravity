@@ -44,7 +44,7 @@ None of these is the right way. Each has its own people, risks and endings.
 
 ## Events in the world
 
-The world has events that run whether or not the player joins them. The first is an **owners' war**: two large owners fighting over something both need (a port, a fuel depot, the lift off Earth), with convoys, blockades, hired guns, seized cargo and insurance rates going up across the system. It rumbles in chapter 2's first half and is the reason for the lender's squeeze in its second. Who the owners are, and what they fight over, gets its own page.
+The world has events that run whether or not the player joins them. The first is an **owners' war**: two large owners fighting over something both need (a port, a fuel depot, the lift off Earth), with convoys, blockades, hired guns, seized cargo and insurance rates going up across the system. It rumbles through chapter 2, and is the reason for the lender's squeeze in its second half; it breaks out in chapter 3. It is the fuel war (`the-fuel-war.md`).
 
 There is no interstellar war and no great power. The torch drive is the one leap (`technology.md`), so the game stays in this one system. The old game's three factions and their wars give way to major and minor owners (`README.md`, conflict 9).
 
@@ -71,6 +71,6 @@ Every run is seeded fresh, so the game's randomness is the player's. The tests h
 - The legacy carried between runs is small and earned, and never makes winning easier.
 - Each chapter widens the player's freedom; the spine thins and the world takes over.
 - Chapter 2's last vote sets chapter 3 as the organiser's, the master's or outside; owning a hull is a goal some runs may reach, not the default.
-- The first world event is an owners' war, in the background of chapter 2.
+- The first world event is an owners' war, rumbling in chapter 2 and breaking out in chapter 3.
 - Endings are many, plot-based and goal-based, and read the run's record.
 - Pins guard words; distributions guard outcomes; each system rolls its own dice.
