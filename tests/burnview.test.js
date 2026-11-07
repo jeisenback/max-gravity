@@ -851,11 +851,13 @@ test('the cook sent on a drill does not work at the stove from the hold', async 
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.15);
     G.state.crew.push('p:cook'); G.state.people['p:cook'] = { id: 'p:cook', first: 'Cook', role: 'cook', skill: 1, traits: [] }; shipPeople().push({ name: 'Cook', role: 'cook', id: 'p:cook', room: 'berths', x: 0.3, dk: 0, tdk: 0, tx: null, wait: 1, seat: 0.3 });
-    tickFor(25); const cook = shipPeople().find(p => p.role === 'cook'); toActivity(cook, 'hold'); tickFor(20);
-    return { room: cook.room, pose: posture(cook, phase(), 0, isAsleep(cook)).name };
+    tickFor(25); const cook = shipPeople().find(p => p.role === 'cook'); toActivity(cook, 'hold');
+    const out = { reached: false, worked: false };  // through the visit, frame by frame: the timetable may take them back to the stove before it ends
+    for (let i = 0; i < 20 * 30; i++) { lifeTick(1 / 30); if (inRoom(cook, 'hold')) { out.reached = true; if (posture(cook, phase(), 0, isAsleep(cook)).name === 'work') out.worked = true; } }
+    return out;
   }, dayAt.toString());
   await done();
-  assert.equal(r.room, 'hold'); assert.notEqual(r.pose, 'work', 'no stove in the hold');
+  assert.ok(r.reached, 'the cook got to the hold'); assert.equal(r.worked, false, 'no stove in the hold');
 });
 
 // The ship's state (docs/superpowers/specs/2026-11-06-ship-state-design.md).
@@ -1007,5 +1009,70 @@ test('the comms rack on the bridge opens Comms and the rest of the bridge opens 
   });
   assert.ok(titles.shut.includes('COMMS · tap to open'), JSON.stringify(titles));
   assert.ok(titles.shown.includes('COMMS · tap to close'), JSON.stringify(titles));
+  await done();
+});
+
+// #925: a seat under everyone who sits, and crash couches that fold out of the deck.
+test('people sit only on a seat the cutaway draws, and the table and the posts at the bridge and the guns are seats (#925)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false;
+    const out = { rooms: {} }, base = { role: 'engineer', dk: 0, tdk: 0, tx: null, block: 'linger' };
+    for (const room of ['galley', 'gunnery', 'bridge', 'medbay']) {
+      const rm = roomAt(room), seats = SEATS[room].map(f => rm.x0 + rm.w * f);
+      const at = x => posture({ ...base, room, x, dk: rm.deck, tdk: rm.deck }, 'move', 0, false).name;
+      out.rooms[room] = { onSeat: seats.map(at), off: at(rm.x0 + rm.w * 0.1) };  // a tenth of the way in: no seat there
+    }
+    // the table and the posts go to the seats, as many as there are
+    const g = roomAt('galley'), b = roomAt('bridge');
+    out.table = [0, 1, 2, 3].map(i => routineTarget({}, { at: 'table' }, g, i, 4, () => 0.5)).map(x => +((x - g.x0) / g.w).toFixed(2));
+    out.post = [0, 1].map(i => routineTarget({}, { at: 'post', room: 'bridge' }, b, i, 2, () => 0.5)).map(x => +((x - b.x0) / b.w).toFixed(2));
+    out.workOff = posture({ ...base, room: 'bridge', x: b.x0 + b.w * 0.56, at: 'post', block: 'shift' }, 'move', 0, false).name;  // between two of its seats
+    out.workOn = posture({ ...base, room: 'bridge', x: b.x0 + b.w * SEATS.bridge[0], at: 'post', block: 'shift' }, 'move', 0, false).name;
+    // and the cutaway draws a stool at each seat of the rooms it draws
+    const drawn = [], real = window.roomStool; window.roomStool = (c, x, F, ...a) => { drawn.push(Math.round(x)); return real(c, x, F, ...a); };
+    for (const room of Object.keys(SEATS)) { const rm = roomAt(room); G.cam = { x: (rm.x0 + rm.w / 2) * hullLength(SHIPS[G.state.shipId].size), t: G.time }; drawTransit(innerWidth, innerHeight); }
+    window.roomStool = real;
+    const len = hullLength(SHIPS[G.state.shipId].size);
+    out.missing = Object.entries(SEATS).flatMap(([room, fs]) => fs.map(f => [room, Math.round((roomAt(room).x0 + roomAt(room).w * f) * len)])).filter(([, x]) => !drawn.some(d => Math.abs(d - x) <= 1));
+    return out;
+  });
+  for (const [room, v] of Object.entries(r.rooms)) {
+    assert.ok(v.onSeat.every(n => n === 'sit'), `${room}: on a seat, they sit (${v.onSeat})`);
+    assert.equal(v.off, 'stand', `${room}: off a seat, they stand`);
+  }
+  assert.deepEqual(r.table, SEATS_EXPECTED.galley, 'the table\'s places are the galley\'s seats');
+  assert.deepEqual(r.post, SEATS_EXPECTED.bridge, 'the bridge posts are its seats');
+  assert.equal(r.workOff, 'work', 'at work off a seat: standing'); assert.equal(r.workOn, 'work-sit', 'at work on a seat: sitting');
+  assert.deepEqual(r.missing, [], 'every seat is drawn');
+  await done();
+});
+const SEATS_EXPECTED = { galley: [0.28, 0.35, 0.42, 0.49], bridge: [0.3, 0.46] };
+
+test('a crash couch is a plate in the deck that unfolds as its person reaches it in the hard burn, and folds away after (#925)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, people = shipPeople().filter(p => p.role !== 'cat');
+    const folds = () => { const seen = []; const real = window.roomCouchFold; window.roomCouchFold = (c, x, F, d) => { seen.push(d); return real(c, x, F, d); }; drawTransit(innerWidth, innerHeight); window.roomCouchFold = real; return seen; };
+    const run = s => { for (let k = 0; k < s * 20; k++) lifeTick(0.05); };
+    const out = {};
+    t.left = t.total * 0.99; run(2);  // the burn out: everyone on their couch
+    out.start = { open: people.every(p => p.couch > 0.95), lying: people.every(p => posture(p, phase(), 0, false).name === 'couch'), drawn: folds().length };
+    t.left = t.total * 0.5 - t.total * 0.1; run(3);  // under way: folded away
+    out.cruise = { shut: people.every(p => p.couch === 0), drawn: folds() };
+    for (const p of people) { p.x = p.seat + 0.1; p.tx = null; }  // the hard burn in: they start away from their couches
+    t.left = t.total * 0.03; lifeTick(0.05);
+    out.away = { shut: people.every(p => p.couch < 0.2), lying: people.filter(p => posture(p, phase(), 0, false).name === 'couch').length };
+    run(4);
+    out.end = { open: people.every(p => p.couch > 0.95), lying: people.every(p => posture(p, phase(), 0, false).name === 'couch') };
+    out.n = people.length;
+    return out;
+  });
+  assert.ok(r.start.open && r.start.lying, `the burn out: couches open and everyone on one ${JSON.stringify(r.start)}`);
+  assert.ok(r.cruise.shut, 'under way the couches fold away'); assert.ok(r.cruise.drawn.length >= 1 && r.cruise.drawn.every(d => d === 0), 'and are still drawn, folded into the deck');
+  assert.ok(r.away.shut, 'at the start of the hard burn the couches are still folded'); assert.equal(r.away.lying, 0, 'and nobody lies back on the air');
+  assert.ok(r.end.open && r.end.lying, `once at their couches, they unfold and everyone lies on one ${JSON.stringify(r.end)}`);
   await done();
 });
