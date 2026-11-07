@@ -42,6 +42,7 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 15. `voice.md`: how the game's writing sounds.
 16. `people/`: one sheet per character (`ines.md` first).
 17. `shape.md`: the shape of the game: a run is one life, the chapters widen into a sandbox, many endings, a thin legacy between runs, and how a random game is tested (#891; draft).
+18. `chapter-2.md`: chapter two, the member on the Ore Runner: the vote, paying the share down, the lender's squeeze from an owners' war, and the last vote (#891; draft).
 
 ## Where the game must change to fit
 
@@ -61,5 +62,6 @@ The owner decided (2026-10-31) that where the bible and the game disagree, the g
 
 - Everyday life: fun and media (the code has vids, books and ring-ball), religion, crime, what the news covers, age and health, marriage and children, accents.
 - What replaces the faction economies and wars in the game (a code project).
-- Chapter 2, the member on the Ore Runner (#891), and the owners' war in its background: who fights, over what.
+- The owners' war in chapter two's background: who fights, over what (#891).
+- People sheets for chapter two: the master (new), Bexa, Pax, Yelena and Ruben (#891).
 - History before day 1 (the old `docs/world/timeline.md`), the player's start backgrounds (`backgrounds.md`), customs aboard (`customs.md`) and the posts aboard (`trades.md`). Those files were retired in #869; they are in git history, written to the old world, and are a source to check, not to copy.
