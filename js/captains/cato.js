@@ -74,15 +74,18 @@ CAST.cato = {
           'you can\'t stand and I\'ll see what I can move. The captain counts every hour I move, mind. I move them anyway." He holds out one of the mugs.'),
       choices: [
         {
-          label: 'Tell him what you need',
-          effects: { castLike: { who: 'cato', n: 2, memory: 'You told me what you needed, and I put it on the bill.' } },
+          label: 'Ask for the middle watch',
+          effects: { castLike: { who: 'cato', n: 2, memory: 'You told me what you needed, and I put it on the bill.' }, captainLike: { n: -1, memory: 'Cato moved an hour on the bill for you.' } },
           result: ('You tell him you\'d rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on ' +
-              'the back of his hand with a stub of pencil. "Done," he says. "Hard burns, middle watch. Nobody has to know why."'),
+              'the back of his hand with a stub of pencil. "Done," he says. "Hard burns, middle watch. Nobody has to know why." At the next change of ' +
+              'watch the captain reads the bill, finds the hour he moved, and looks at you over it before she signs.'),
         },
         {
-          label: 'Say you\'re fine',
-          effects: { castLike: { who: 'cato', n: 1, memory: 'You said you were fine, and I left it there.' } },
-          result: 'You say you\'re fine. "All right," he says. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else\'s watch.',
+          label: 'Keep the cold watch',
+          effects: { castLike: { who: 'cato', n: 1, memory: 'You kept the cold watch, so I didn\'t have to move anyone.' }, captainLike: { n: 1, memory: 'You kept the watch you were given.' }, learn: 1 },
+          result: ('You say you\'ll keep the cold watch. "All right," he says, and leaves the mug on the rail beside you. Nobody comes forward in the cold ' +
+              'watch, and you spend it at your station, running the checks twice because there is time to. In the morning the captain signs the bill ' +
+              'without a word.'),
         },
       ],
     },

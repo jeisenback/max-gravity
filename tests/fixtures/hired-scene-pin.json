@@ -73,43 +73,8 @@
  {
   "id": "cast:ines:intro",
   "i": 0,
-  "label": "Ask about the landing anyway",
-  "result": "She finishes the checklist first. Then, while the drive spools down: \"Both engines went on the descent. The tower said ditch, clear of the platform. The second runway was closed for resurfacing. It was the only concrete I could reach, so I put it there.\" The drive is off and the ship goes light. \"Everyone walked off. I lost my licence. That's it.\" She starts the turn.",
-  "changes": [
-   "s.people.c:ines.liftedAt: undefined -> 1",
-   "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I told you about the landing, and you didn't make a thing of it.",
-   "s.people.c:ines.opinion: 0 -> 1"
-  ],
-  "next": null,
-  "gate": {
-   "rich": {
-    "label": "Ask about the landing anyway",
-    "open": true,
-    "why": ""
-   },
-   "poor": {
-    "label": "Ask about the landing anyway",
-    "open": true,
-    "why": ""
-   },
-   "liked": {
-    "label": "Ask about the landing anyway",
-    "open": true,
-    "why": ""
-   },
-   "full": {
-    "label": "Ask about the landing anyway",
-    "open": true,
-    "why": ""
-   }
-  }
- },
- {
-  "id": "cast:ines:intro",
-  "i": 1,
   "label": "Ask about the logbook",
-  "result": "\"Every landing I've flown. Nine years of the ferry, most days twice.\" She opens it at a page of short entries: the date, the runway, the wind, the fuel at touchdown. \"The board has the official one. This one's mine.\" She flies the flip by hand, and when it's done she writes it in.",
+  "result": "\"Every landing I've flown. Nine years of the ferry, most days twice.\" She opens it at a page of short entries: the date, the runway, the wind, the fuel at touchdown. One entry has no runway, only \"second, closed\", and she turns past it. \"That's the landing. Everyone walked off.\" \"The board has the official one. This one's mine.\" She flies the flip by hand, and when it's done she writes it in.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
@@ -136,6 +101,42 @@
    },
    "full": {
     "label": "Ask about the logbook",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:ines:intro",
+  "i": 1,
+  "label": "Take the checklist and fly it with her",
+  "result": "She hands you the checklist and talks you through the turn: the drive down, the attitude jets in pairs, your hand on the stick and hers over it. \"Slower. The ship knows where it's going.\" You bring the nose round to the mark and hold it there while she counts. \"That'll do,\" she says, and takes it back for the burn. (+1 experience at the pilot post.)",
+  "changes": [
+   "s.hired.skill.pilot: undefined -> 1",
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You flew the flip with me, and you listened.",
+   "s.people.c:ines.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the checklist and fly it with her",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the checklist and fly it with her",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the checklist and fly it with her",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Take the checklist and fly it with her",
     "open": true,
     "why": ""
    }
@@ -724,7 +725,7 @@
   "id": "cast:tomas:mid2",
   "i": 0,
   "label": "Ask him to show you",
-  "result": "It takes the whole of the quiet watch. He takes you round the frame with a torch and a mirror on a stick, and shows you every place a hull like this one cracks, in the order to check them. Then he makes you find each one again without him. \"There,\" he says. \"Now you know where to look.\"",
+  "result": "It takes the whole of the quiet watch. He takes you round the frame with a torch and a mirror on a stick, and shows you every place a hull like this one cracks, in the order to check them. Then he makes you find each one again without him. \"There,\" he says. \"Now you know where to look.\" (+3 experience at the engineer post.)",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.plan: undefined -> true",
@@ -2903,33 +2904,37 @@
  {
   "id": "cast:cato:intro",
   "i": 0,
-  "label": "Tell him what you need",
-  "result": "You tell him you'd rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on the back of his hand with a stub of pencil. \"Done,\" he says. \"Hard burns, middle watch. Nobody has to know why.\"",
+  "label": "Ask for the middle watch",
+  "result": "You tell him you'd rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on the back of his hand with a stub of pencil. \"Done,\" he says. \"Hard burns, middle watch. Nobody has to know why.\" At the next change of watch the captain reads the bill, finds the hour he moved, and looks at you over it before she signs.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You told me what you needed, and I put it on the bill.",
-   "s.people.c:cato.opinion: 0 -> 2"
+   "s.people.c:cato.opinion: 0 -> 2",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: Cato moved an hour on the bill for you.",
+   "s.people.p1.opinion: 0 -> -1"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Tell him what you need",
+    "label": "Ask for the middle watch",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Tell him what you need",
+    "label": "Ask for the middle watch",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Tell him what you need",
+    "label": "Ask for the middle watch",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Tell him what you need",
+    "label": "Ask for the middle watch",
     "open": true,
     "why": ""
    }
@@ -2938,33 +2943,38 @@
  {
   "id": "cast:cato:intro",
   "i": 1,
-  "label": "Say you're fine",
-  "result": "You say you're fine. \"All right,\" he says. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else's watch.",
+  "label": "Keep the cold watch",
+  "result": "You say you'll keep the cold watch. \"All right,\" he says, and leaves the mug on the rail beside you. Nobody comes forward in the cold watch, and you spend it at your station, running the checks twice because there is time to. In the morning the captain signs the bill without a word. (+1 experience at the gunner post.)",
   "changes": [
+   "s.hired.skill.gunner: 12 -> 13",
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
-   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said you were fine, and I left it there.",
-   "s.people.c:cato.opinion: 0 -> 1"
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You kept the cold watch, so I didn't have to move anyone.",
+   "s.people.c:cato.opinion: 0 -> 1",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You kept the watch you were given.",
+   "s.people.p1.opinion: 0 -> 1"
   ],
   "next": null,
   "gate": {
    "rich": {
-    "label": "Say you're fine",
+    "label": "Keep the cold watch",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Say you're fine",
+    "label": "Keep the cold watch",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Say you're fine",
+    "label": "Keep the cold watch",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Say you're fine",
+    "label": "Keep the cold watch",
     "open": true,
     "why": ""
    }

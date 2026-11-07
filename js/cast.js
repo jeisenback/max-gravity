@@ -73,17 +73,18 @@ const CAST = {
         text: 'You have the bridge watch when Ines comes up for the flip, with a coffee and a paper logbook under her arm. She straps in, takes the helm from the software, and reads the flip checklist out for you to confirm. Halfway down it she says, "Don\'t ask about the landing. Everyone asks about the landing." You hadn\'t.',
         choices: [
           {
-            label: 'Ask about the landing anyway',
-            effects: { castLike: { who: 'ines', n: 1, memory: 'I told you about the landing, and you didn\'t make a thing of it.' } },
-            result: 'She finishes the checklist first. Then, while the drive spools down: "Both engines went on the descent. The tower said ditch, clear of the platform. ' +
-              'The second runway was closed for resurfacing. It was the only concrete I could reach, so I put it there." The drive is off and the ship goes light. ' +
-              '"Everyone walked off. I lost my licence. That\'s it." She starts the turn.',
-          },
-          {
             label: 'Ask about the logbook',
             effects: { castLike: { who: 'ines', n: 2, memory: 'You asked about the book, not the landing.' }, castXp: { who: 'ines', role: 'pilot', n: 2 } },
             result: '"Every landing I\'ve flown. Nine years of the ferry, most days twice." She opens it at a page of short entries: the date, the runway, the wind, ' +
-              'the fuel at touchdown. "The board has the official one. This one\'s mine." She flies the flip by hand, and when it\'s done she writes it in.',
+              'the fuel at touchdown. One entry has no runway, only "second, closed", and she turns past it. "That\'s the landing. Everyone walked off." ' +
+              '"The board has the official one. This one\'s mine." She flies the flip by hand, and when it\'s done she writes it in.',
+          },
+          {
+            label: 'Take the checklist and fly it with her',
+            effects: { castLike: { who: 'ines', n: 1, memory: 'You flew the flip with me, and you listened.' }, gainSkill: { post: 'pilot', n: 1 } },
+            result: 'She hands you the checklist and talks you through the turn: the drive down, the attitude jets in pairs, your hand on the stick and hers ' +
+              'over it. "Slower. The ship knows where it\'s going." You bring the nose round to the mark and hold it there while she counts. "That\'ll do," she ' +
+              'says, and takes it back for the burn.',
           },
         ],
       },
@@ -1169,7 +1170,11 @@ function choiceGate(when) {
   if (Object.keys(rest).length) checks.push([() => meets(rest), () => '']);
   return { ...(checks.length ? gated(...checks) : {}), ...(opinion ? { opinion } : {}) };
 }
-const dataChoice = (c, ctx) => (c.run ? c : { ...c, ...(c.when ? choiceGate(c.when) : {}), run() { applyEffects(c.effects, ctx); const n = c.effects && c.effects.learn; return n && hired() ? c.result + learnNote(n) : c.result; } });
+const dataChoice = (c, ctx) => (c.run ? c : { ...c, ...(c.when ? choiceGate(c.when) : {}), run() {  // the experience a choice gives is said after its words, at the hand's own post (learn) or another (gainSkill)
+  applyEffects(c.effects, ctx);
+  const e = c.effects || {}, notes = hired() ? `${e.learn ? learnNote(e.learn) : ''}${e.gainSkill ? ` (+${e.gainSkill.n} experience at the ${POSTS[e.gainSkill.post].name.toLowerCase()} post.)` : ''}` : '';
+  return notes ? c.result + notes : c.result;
+} });
 // The id a scene has in js/hiredscenes.js, found by the object it is (a scene made on the spot, like a first officer's round, has none). A first officer's word before the
 // first fight (`firstRaid`) is listed with their scenes.
 const castSceneId = (key, sc, shown) => { const e = Object.entries({ ...CAST[key].scenes, ...(CAST[key].firstRaid ? { firstRaid: CAST[key].firstRaid } : {}), ...(CAST[key].firstDeck ? { firstDeck: CAST[key].firstDeck } : {}) }).find(([, x]) => x === sc); return e ? `cast:${key}:${e[0]}${shown !== sc ? ':closed' : ''}` : null; };
