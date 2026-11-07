@@ -1,6 +1,6 @@
 # Ruben Castellanos
 
-Status: a draft for review (#891). Built on `mars.md`, `the-belt.md`, `the-fuel-war.md` and `chapter-2.md`.
+Status: approved by the owner on 2026-11-07 (#891). Built on `mars.md`, `the-belt.md`, `the-fuel-war.md` and `chapter-2.md`.
 
 ## Where he stands
 

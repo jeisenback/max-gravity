@@ -1,6 +1,6 @@
 # Dov Saran
 
-Status: a draft for review (#891). Built on `ceres-coop.md`, `chapter-2.md`, `work.md`, `luna.md` and `the-fuel-war.md`.
+Status: approved by the owner on 2026-11-07 (#891). Built on `ceres-coop.md`, `chapter-2.md`, `work.md`, `luna.md` and `the-fuel-war.md`.
 
 ## Where he stands
 

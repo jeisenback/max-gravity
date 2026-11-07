@@ -62,9 +62,9 @@ The chapter can also end the run early, as any chapter can: the hand dies, or is
 
 Hester's ship goes on without the hand, and is not part of this chapter.
 
-## Still to write
+## The people
 
-- The people sheets are drafts for review: `people/saran.md` (the master, Dov Saran), `people/bexa.md`, `people/pax.md`, `people/yelena.md` and `people/ruben.md`.
+The sheets are in `people/`: `saran.md` (the master, Dov Saran), `bexa.md`, `pax.md`, `yelena.md` and `ruben.md`.
 
 ## Assumptions to confirm
 
