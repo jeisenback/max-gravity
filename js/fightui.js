@@ -84,23 +84,27 @@ function fightTook(s, events) {
 }
 
 // The bars of both sides as a picture under the board: shields, armor and each part, and your heat, each with its value. A part is drawn by how much of it is left
-// (green, then amber, then red), so a part at full does not read as damage (#846); the labels are about 12px on a phone.
+// (green, then amber, then red), so a part at full does not read as damage (#846); the labels are about 12px on a phone. With `prev` (the state before the last
+// turn) what each bar lost that turn is drawn in red at its end and named in the label, so a hit shows where it landed.
 const FIGHT_BAR = { row: 18, W: 175, label: 12, bar: [66, 66] };  // the row's height, a side's width, the label's size, the bar's x and width (in a 360-wide picture)
 const partTone = frac => (frac > 0.6 ? '#7fd8a0' : frac > 0.3 ? '#ffcf7f' : '#ff6a4a');
-function fightBars(st) {
+function fightBars(st, prev = null) {
   const { row, W, label, bar: [bx, bw] } = FIGHT_BAR;
-  const bars = (side, name, x, y0) => {
+  const bars = (side, name, x, y0, was = null) => {
+    const before = k => (!was ? null : k === 'shields' ? was.shields : k === 'armor' ? was.armor : k === 'heat' ? null : was.parts[k] ? was.parts[k].hp : null);
     const list = [['shields', side.shields, side.maxShields, () => '#4aa3ff'], ['armor', side.armor, side.maxArmor, () => '#cfe3ff'],
       ...['weapons', 'drive', 'lock', ...(side !== st.me && side.parts.launcher ? ['launcher'] : [])].map(k => [k, side.parts[k].hp, side.parts[k].max, partTone]), ...(side === st.me ? [['heat', st.heat, FIGHT.HEAT_CAP, () => '#ffcf7f']] : [])];
     const svg = list.map(([k, v, max, tone], i) => {
-      const y = y0 + 18 + i * row, frac = Math.max(0, Math.min(1, v / Math.max(1, max))), w = Math.round(bw * frac);
+      const y = y0 + 18 + i * row, frac = Math.max(0, Math.min(1, v / Math.max(1, max))), w = Math.round(bw * frac), b = before(k);
+      const lost = b !== null && b > v ? Math.round(bw * Math.max(0, Math.min(1, b / Math.max(1, max)))) - w : 0;  // last turn's loss, in red at the bar's end
       return `<text x="${x}" y="${y + 10}" fill="#7fb4ff" font-size="${label}" font-family="IBM Plex Mono, monospace">${k.toUpperCase()}</text>` +
         `<rect x="${x + bx}" y="${y + 1}" width="${bw}" height="10" fill="#14243a"/><rect x="${x + bx}" y="${y + 1}" width="${w}" height="10" fill="${tone(frac)}"/>` +
+        (lost > 0 ? `<rect class="lost" x="${x + bx + w}" y="${y + 1}" width="${lost}" height="10" fill="#ff3b2f" opacity="0.75"/>` : '') +
         `<text x="${x + W - 4}" y="${y + 10}" text-anchor="end" fill="#cfe3ff" font-size="${label - 1}" font-family="IBM Plex Mono, monospace">${Math.round(v)}</text>`;
     }).join('');
-    return { svg: `<text x="${x}" y="${y0 + 12}" fill="#cfe3ff" font-size="${label + 1}" font-family="IBM Plex Mono, monospace">${esc(name)}</text>${svg}`, label: `${name}: ${list.map(([k, v, max]) => `${k} ${v} of ${max}`).join(', ')}.` };
+    return { svg: `<text x="${x}" y="${y0 + 12}" fill="#cfe3ff" font-size="${label + 1}" font-family="IBM Plex Mono, monospace">${esc(name)}</text>${svg}`, label: `${name}: ${list.map(([k, v, max]) => { const b = before(k); return `${k} ${v} of ${max}${b !== null && b > v ? `, down ${b - v}` : ''}`; }).join(', ')}.` };
   };
-  const rows = 5 + (st.foes.some(f => f.parts.launcher) ? 1 : 0), mine = bars(st.me, 'You', 4, 4), foes = st.foes.map((f, i) => bars(f, i ? 'Her consort' : 'Her', 4 + W + 6, 4 + i * (rows * row + 24)));
+  const rows = 5 + (st.foes.some(f => f.parts.launcher) ? 1 : 0), mine = bars(st.me, 'You', 4, 4, prev && prev.me), foes = st.foes.map((f, i) => bars(f, i ? 'Her consort' : 'Her', 4 + W + 6, 4 + i * (rows * row + 24), prev && prev.foes[i]));
   const h = Math.max(6 * row, st.foes.length * (rows * row + 24)) + 24;
   return `<svg class="bars" viewBox="0 0 360 ${h}" role="img" aria-label="${esc([mine.label, ...foes.map(f => f.label)].join(' '))}"><rect x="0" y="0" width="360" height="${h}" fill="#050a11"/>${mine.svg}${foes.map(f => f.svg).join('')}</svg>`;
 }
@@ -151,7 +155,8 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
   return {
     title: fightSay('title'), personal: true, via: 'crew', owner: 'you', fight: s,  // yours to decide, not the captain's (hired.js hiredCall)
     read,  // drawn above the board (ui.js)
-    board: boardSvg(board, { style: s.style, beat: f.turn, sensors: condition().sensors, sunAngle: sunLight().angle, prev, pack: s.pack && fightUp(f.foes[1]), word: RANGE_BANDS[f.band] }) + fightBars(f),
+    board: boardSvg(board, { style: s.style, beat: f.turn, sensors: condition().sensors, sunAngle: sunLight().angle, prev, pack: s.pack && fightUp(f.foes[1]), word: RANGE_BANDS[f.band] }),
+    bars: fightBars(f, s.before),  // pinned at the top of the panel (ui.js), with what the last turn took
     text: f.log.slice(-3).join('</p><p>'),
     choices,
   };
@@ -200,7 +205,7 @@ function retargeted(foes, orders) {
 function fireTurn(s, orders) {
   const aimed = retargeted(s.state.foes, orders);
   const r = resolveShipTurn(s.state, aimed, s.shown, Math.random, s.known || []);
-  s.state = r.state;
+  s.before = s.state; s.state = r.state;  // the state before the turn, for the bars' losses
   s.state.log.push(fightSay('log.turn', { n: s.state.turn, hits: fightHits(r.events) }));
   fightTook(s, r.events);
   if (s.handDied) return null;  // the hand is dead: the ending is queued (boarders.js)
