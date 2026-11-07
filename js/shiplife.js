@@ -19,6 +19,10 @@ const ROOMS = [
   { id: 'bridge', name: 'Bridge', x0: 0.78, x1: 0.92, deck: 0 },
 ];
 const LADDER = 0.62;
+// Seats (#925): where a room has something to sit on, as fractions of the room. rooms.js draws a stool at each, the table and the posts at the
+// bridge and the guns are these places (routineTarget), and a seated pose needs one under it (posture): anyone stopped elsewhere stands.
+const SEATS = { galley: [0.28, 0.35, 0.42, 0.49, 0.56, 0.63, 0.7], gunnery: [0.25, 0.55], bridge: [0.3, 0.46, 0.66, 0.84], medbay: [0.66] };  // the table seats seven; the bridge its four posts
+const onSeat = p => { const r = roomAt(p.room); return !!r && Math.abs(p.dk - r.deck) < 0.05 && (SEATS[p.room] || []).some(f => Math.abs(p.x - (r.x0 + r.w * f)) < 0.004); };
 for (const r of ROOMS) { r.w = r.x1 - r.x0; r.mid = (r.x0 + r.x1) / 2; }
 const roomAt = id => ROOMS.find(r => r.id === id);
 
@@ -317,10 +321,10 @@ function shipPeople() {
   }
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
-  people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), dk: 0, tdk: 0, tx: null, wait: lifeRand(1, 4), seat: couchX(i, people.length) }));
+  people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), dk: 0, tdk: 0, tx: null, wait: lifeRand(1, 4), seat: couchX(i, people.length), couch: 1 }));
   // A hand's captain is aboard too, strapped in on the bridge beside the hand's couch: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
   const cap = hiredCaptain(), bx = roomAt('bridge').mid + 0.025;
-  if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: 0, tdk: 0, tx: null, wait: 3, seat: bx });
+  if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: 0, tdk: 0, tx: null, wait: 3, seat: bx, couch: 1 });
   return (t.aboard = people);
 }
 
@@ -332,6 +336,8 @@ const toActivity = (p, roomId) => { goTo(p, roomId); Object.assign(p, { block: '
 // Where in its room a place of the timetable is (routineSpot): place i of the n who share a post there, the stove at the galley's end, seat i of n
 // along the table, a bunk in the berths.
 function routineTarget(p, spot, r, i, n, rnd) {
+  const seats = SEATS[r.id] || [];
+  if ((spot.at === 'post' || spot.at === 'table') && i >= 0 && i < seats.length) return r.x0 + r.w * seats[i];  // a seat, while there are seats (#925)
   if (spot.at === 'post') return r.x0 + r.w * (0.15 + 0.7 * (n > 1 ? i / (n - 1) : 0.5));  // place i of the n whose post is this room
   if (spot.at === 'stove') return r.x0 + r.w * 0.15;
   if (spot.at === 'bed') return r.x0 + r.w * (0.34 + 0.16 * (n > 1 ? i / (n - 1) : 0));  // on the medbay's cot (0.2 to 0.54 of the room), the head toward its pillow end
@@ -408,14 +414,14 @@ function posture(p, ph, time, asleep) {
   let name;
   if (p.role === 'cat') name = ph === 'float' ? 'cat-float' : ph !== 'move' ? 'cat-sleep' : p.tx !== null ? 'cat-walk' : 'cat-sit';
   else if (asleep || (ph === 'move' && p.at === 'bed' && p.tx === null && p.dk === p.tdk && !p.staged)) name = 'bunk';  // asleep, or a patient in the medbay
-  else if (ph === 'couch') name = 'couch';
+  else if (ph === 'couch') name = (p.couch || 0) >= 0.6 ? 'couch' : Math.abs(p.x - p.seat) > 0.004 ? 'walk' : 'stand';  // on the couch once it has unfolded under them (#925)
   else if (ph === 'secure') name = 'strap';
   else if (ph === 'float') name = p.role === 'engineer' ? 'tether' : 'strap';
   else if (p.dk !== p.tdk) name = 'climb';
   else if (p.tx !== null) name = 'walk';
-  else if (p.staged) name = p.staged === 'galley' || p.staged === 'berths' || (p.role === 'captain' && SEATED_STATIONS.includes(p.staged)) ? 'sit' : 'stand';  // at the table or a bunk's edge; the captain at the station
-  else if (!p.staged && !p.errand && ((p.block === 'shift' && ['post', 'aid', 'repair'].includes(p.at)) || p.at === 'stove')) name = p.at === 'post' && (p.room === 'bridge' || p.room === 'gunnery') ? 'work-sit' : 'work';  // at work: seated at the bridge and the guns
-  else name = p.at === 'alone' || (p.at !== 'stove' && ['galley', 'gunnery', 'bridge', 'medbay'].includes(p.room)) ? 'sit' : 'stand';  // the cook at the stove stands; someone alone sits on a bunk
+  else if (p.staged) name = p.staged === 'berths' || ((p.staged === 'galley' || (p.role === 'captain' && SEATED_STATIONS.includes(p.staged))) && onSeat(p)) ? 'sit' : 'stand';  // on a seat at the table, a bunk's edge; the captain at the station
+  else if (!p.staged && !p.errand && ((p.block === 'shift' && ['post', 'aid', 'repair'].includes(p.at)) || p.at === 'stove')) name = p.at === 'post' && (p.room === 'bridge' || p.room === 'gunnery') && onSeat(p) ? 'work-sit' : 'work';  // at work: seated at the bridge and the guns, where there is a seat
+  else name = p.at === 'alone' || (p.at !== 'stove' && onSeat(p)) ? 'sit' : 'stand';  // on a seat; someone alone sits on a bunk's edge; anyone else stands (#925)
   const { frames, fps } = POSTURES[name];
   return { name, x: p.x, deck: p.dk, face: p.face || 1, frame: fps ? Math.floor(time * fps) % frames : 0 };
 }
@@ -432,7 +438,8 @@ function stageScene(people, ph, t, open) {
   for (const p of people) if (p.staged && !ids.has(p.id)) { p.staged = undefined; p.faceTo = undefined; p.wait = 3; p.block = 'linger'; }  // a fixed linger: staging draws none of the game's dice
   if (!stage) return;
   const r = roomAt(stage.room), cast = stage.ids.map(id => people.find(q => q.id === id)).filter(Boolean), n = cast.length;
-  const spots = cast.map((_, i) => Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.mid + (i - (n - 1) / 2) * 0.03))), mid = spots.reduce((a, b) => a + b, 0) / n;
+  const seats = SEATS[stage.room] || [], from = Math.floor((seats.length - n) / 2);  // the room's seats when there are enough, the middle ones (#925)
+  const spots = n <= seats.length ? seats.slice(from, from + n).map(f => r.x0 + r.w * f) : cast.map((_, i) => Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.mid + (i - (n - 1) / 2) * 0.03))), mid = spots.reduce((a, b) => a + b, 0) / n;
   cast.forEach((p, i) => { Object.assign(p, { staged: stage.room, room: stage.room, tdk: r.deck, tx: spots[i], at: undefined, relief: undefined, errand: false }); p.faceTo = Math.sign(mid - spots[i]) || Math.sign(spots[0] - spots[i]) || 1; });
   t.stageSpan = { room: stage.room, deck: r.deck, lo: spots[0] - 0.03, hi: spots[n - 1] + 0.03, sent: {} };  // where they gather: kept clear (stepAside)
 }
@@ -469,6 +476,8 @@ function lifeTick(dt) {
     }
   }
   for (const p of people) {
+    const atCouch = ph === 'couch' && Math.abs(p.x - p.seat) < 0.004 && Math.abs(p.dk) < 0.05;  // a crash couch unfolds out of the deck under its person in the hard burn, and folds away after (#925)
+    p.couch = Settings.reduceMotion ? +atCouch : Math.max(0, Math.min(1, (p.couch || 0) + (atCouch ? 1 : -1) * dt * 1.5));
     if (ph === 'secure' || ph === 'float') {  // strap in where they are; someone on the ladder finishes onto a deck
       p.tx = null; p.tdk = Math.round(p.dk); p.block = undefined; p.relief = undefined;  // strapped in: under way again, the timetable sends them on
       p.dk = Math.abs(p.tdk - p.dk) < 0.01 ? p.tdk : p.dk + Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
@@ -613,6 +622,7 @@ function drawCutaway(box, clear = box) {
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
   ctx.font = `600 12px ${roomFont}`;
   const berths = cutRect(roomAt('berths'), len), labels = [], dots = [], hits = [];
+  for (const p of people) if (p.role !== 'cat' && p.seat !== undefined && seen(X(p.seat) - 40, X(p.seat) + 40)) roomCouchFold(ctx, X(p.seat), floorY(0), p.couch || 0);  // each crash couch, folded into the deck or out (#925)
   for (const p of people) {
     const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p));
     const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
@@ -620,7 +630,6 @@ function drawCutaway(box, clear = box) {
     dots.push({ x: X(p.x), deck: p.dk, color: ROLE_COLORS[p.role] });
     if (Math.abs(x - camX) > half + 60) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = Math.abs(x - camX) <= half;
-    if (pose.name === 'couch' && Math.abs(p.dk - dk) < 0.05) roomCouch(ctx, x, y, true);  // a crash couch, deployed under each person in the hard burn (once they are on a deck)
     const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float', ...(p.role === 'cat' ? {} : portraitLook({ id: p.id, name: p.name })) });
     if (pose.name === 'tether') {  // a line to a ring on the nearest bulkhead
       const d = CUT_WALLS[dk], bx = X([...d.hatch, d.end].reduce((a, b) => (Math.abs(b - p.x) < Math.abs(a - p.x) ? b : a))), rx = bx + Math.sign(x - bx) * 6, ry = floorY(dk) - 60;
