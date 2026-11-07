@@ -1235,12 +1235,16 @@
   "id": "cast:yelena:mid2",
   "i": 0,
   "label": "Take her watch",
-  "result": "You tell her to go. She doesn't argue. You hear the roar from the galley, through the deck, from the second quarter on: shouted refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there's a small black raven drawn on the back of your hand, in marker, and she doesn't mention it.",
+  "result": "You tell her to go. She doesn't argue. You hear the roar from the galley, through the deck, from the second quarter on: shouted refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there's a small black raven drawn on the back of your hand, in marker, and she doesn't mention it. The captain finds your name on Yelena's line of the bill, an hour moved that nobody asked her about, and taps it with her pencil before she signs.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You took my watch on the night of the final.",
-   "s.people.c:yelena.opinion: 0 -> 3"
+   "s.people.c:yelena.opinion: 0 -> 3",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took a watch that wasn't yours, and didn't ask.",
+   "s.people.p1.opinion: 0 -> -1"
   ],
   "next": null,
   "gate": {
@@ -1270,12 +1274,17 @@
   "id": "cast:yelena:mid2",
   "i": 1,
   "label": "\"It's your watch.\"",
-  "result": "\"Of course,\" she says. She stands the watch perfectly, to the minute, with the radio turned low, and says nothing at all, then or after. When you come to relieve her she's at the guns with her chin up.",
+  "result": "\"Of course,\" she says. She stands the watch perfectly, to the minute, with the radio turned low, and says nothing at all, then or after. She runs every drill on the board while she's up there, twice, faster the second time. When you come to relieve her she's at the guns with her chin up.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You said it was my watch on the night of the final.",
-   "s.people.c:yelena.opinion: 0 -> -1"
+   "s.people.c:yelena.opinion: 0 -> -1",
+   "s.people.c:yelena.xp.gunner: 110 -> 112",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You kept the watch bill as it was written.",
+   "s.people.p1.opinion: 0 -> 1"
   ],
   "next": null,
   "gate": {
@@ -3095,16 +3104,24 @@
   "id": "cast:cato:mid2",
   "i": 1,
   "label": "Stand the watch down, as Cato asked",
-  "result": "You stand them down. Cato does the count, alone. It isn't finished until morning, and Captain Vance finds the gap in the log, and finds you. \"Whose idea?\" she says. You tell her. \"I see,\" she says, and writes something down. Cato, passing in the passage, doesn't look at either of you.",
+  "result": "You stand them down. Cato does the count, alone. It isn't finished until morning, and Captain Vance finds the gap in the log, and finds you. \"Whose idea?\" she says. You tell her. \"I see,\" she says, and writes something down. Cato, passing in the passage, doesn't look at either of you. The watch you stood down slept eight hours straight, and at breakfast they pass you the coffee first.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You stood the watch down when I asked.",
-   "s.people.c:cato.opinion: 0 -> 2",
+   "s.people.c:cato.opinion: 0 -> 3",
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.opinion: 0 -> 1",
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.opinion: 0 -> 1",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You stood the watch down against my order.",
-   "s.people.p1.opinion: 0 -> -1"
+   "s.people.p1.opinion: 0 -> -1",
+   "s.people.p2.liftedAt: undefined -> 1",
+   "s.people.p2.opinion: 0 -> 1",
+   "s.people.p3.liftedAt: undefined -> 1",
+   "s.people.p3.opinion: 0 -> 1"
   ],
   "next": null,
   "gate": {
