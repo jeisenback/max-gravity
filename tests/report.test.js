@@ -61,10 +61,17 @@ test('F8 opens Report a problem anywhere in a game, in the middle of a fight too
   await page.keyboard.press('F8');
   const shown = await page.textContent('.report-snapshot');
   await page.click('[data-action="menuBack"]');
-  const after = await ev(() => ({ paused: !!G.paused, dialog: G.dialog && G.dialog.event.title }));
+  const after = await ev(() => ({ paused: !!G.paused, dialog: G.dialog && G.dialog.event.title, buttons: [...document.querySelectorAll('#panel:not(.hidden) button[data-action="choose"]')].length }));
+  await page.keyboard.press('F8'); await page.keyboard.press('Escape');  // the other way out (#910)
+  const escaped = await ev(() => ({ paused: !!G.paused, buttons: [...document.querySelectorAll('#panel:not(.hidden) button[data-action="choose"]')].length }));
+  await page.click('#panel button[data-action="choose"][data-arg="0"]');  // and the scene still takes a click
+  const clicked = await ev(() => G.dialog && G.dialog.event.title);
   await done();
   assert.match(shown, /Open: Battle Stations/); assert.match(shown, /Choices: .*Fire/);
-  assert.deepEqual(after, { paused: false, dialog: 'Battle Stations' }, 'Back returns to the fight');
+  assert.equal(after.paused, false); assert.equal(after.dialog, 'Battle Stations', 'Back returns to the fight');
+  assert.ok(after.buttons > 0, 'the fight is drawn again, its choices on screen (#910)');
+  assert.equal(escaped.paused, false); assert.ok(escaped.buttons > 0, 'Escape returns to the fight too');
+  assert.equal(clicked, 'Battle Stations');
 });
 
 test('a scene\'s text is read as plain text by the browser\'s parser: tags gone, entities read once, nothing run', async () => {

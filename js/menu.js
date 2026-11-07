@@ -157,7 +157,8 @@ const Menu = {
     G.paused = false;
     const was = this.pausedFrom;
     this.pausedFrom = null;
-    if (was === 'landed') UI.show(); else UI.hide();
+    if (G.dialog) UI.showEvent(G.dialog.event, G.dialog.choices);  // a scene the report was opened over (F8, report.js) is drawn again, or it stays open unseen and nothing can be clicked (#910)
+    else if (was === 'landed') UI.show(); else UI.hide();
   },
 
   render() {
