@@ -1020,8 +1020,9 @@ function drawHud(W, H) {
 
   y += 26;
   if (p) {
-    drawBar(x, y, w, 'Shields', p.shields, s.shields, '#4aa3ff');
-    drawBar(x, y += 30, w, 'Armor', p.armor, p.maxArmor, '#ff9a3c');
+    const [sh, shMax, ar, arMax] = hudHull(p, G.dialog, s.shields);
+    drawBar(x, y, w, 'Shields', sh, shMax, '#4aa3ff');
+    drawBar(x, y += 30, w, 'Armor', ar, arMax, '#ff9a3c');
   }
   drawBar(x, y += 30, w, 'Reaction mass', st.fuel, s.fuel, '#5fd35f');
 
@@ -1238,6 +1239,12 @@ function drawMap(W, H) {
   }
   const lines = wrapText(status, W - 32);
   lines.forEach((l, i) => ctx.fillText(l, 16, H - 20 - (lines.length - 1 - i) * 16));
+}
+
+// The sidebar's shields and armor: the ship's, or while a ship fight is up the fight's own (fightui.js), the numbers its panel shows (the owner, 2026-11-07).
+function hudHull(p, dialog, maxShields) {
+  const me = dialog && dialog.event && dialog.event.fight && dialog.event.fight.state && dialog.event.fight.state.me;
+  return me && me.maxArmor !== undefined ? [me.shields, me.maxShields, me.armor, me.maxArmor] : [p.shields, maxShields, p.armor, p.maxArmor];
 }
 
 function render() {

@@ -23334,9 +23334,9 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her hull (a hit does 7 to 11)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her weapons, 7 to 11 damage",
+     "Gun 2: aims at her hull (a hit does 7 to 11)",
      "Gun 2: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23351,9 +23351,9 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider at forty kilometers and closing, with no transponder and her drive running hot.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her hull (a hit does 7 to 11)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her weapons, 7 to 11 damage",
+     "Gun 2: aims at her hull (a hit does 7 to 11)",
      "Gun 2: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23368,9 +23368,9 @@
     "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her hull (a hit does 7 to 11)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her weapons, 7 to 11 damage",
+     "Gun 2: aims at her hull (a hit does 7 to 11)",
      "Gun 2: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23385,9 +23385,9 @@
     "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
     "text": "A corsair at forty kilometers with her tubes open, and the sensors show them loaded. She doesn't hurry.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her hull (a hit does 7 to 11)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her weapons, 7 to 11 damage",
+     "Gun 2: aims at her hull (a hit does 7 to 11)",
      "Gun 2: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23402,9 +23402,9 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.",
     "labels": [
-     "Gun 1: aim at her weapons, 8 to 12 damage",
+     "Gun 1: aims at her hull (a hit does 8 to 12)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her weapons, 8 to 12 damage",
+     "Gun 2: aims at her hull (a hit does 8 to 12)",
      "Gun 2: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23419,9 +23419,9 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A navy ship at thirty kilometers, on an intercept course with her guns warm. She has hailed twice, and the second hail said there won't be a third.",
     "labels": [
-     "Gun 1: aim at her weapons, 8 to 12 damage",
+     "Gun 1: aims at her hull (a hit does 8 to 12)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her weapons, 8 to 12 damage",
+     "Gun 2: aims at her hull (a hit does 8 to 12)",
      "Gun 2: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23436,9 +23436,9 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>You fire first: you hit her weapons for 8, you hit her weapons for 9.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her hull (a hit does 7 to 11)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her weapons, 7 to 11 damage",
+     "Gun 2: aims at her hull (a hit does 7 to 11)",
      "Gun 2: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23453,9 +23453,9 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 8.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her hull (a hit does 7 to 11)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her weapons, 7 to 11 damage",
+     "Gun 2: aims at her hull (a hit does 7 to 11)",
      "Gun 2: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23470,7 +23470,7 @@
     "read": "The Pirate \"Bitter Grin\": broadside at your weapons, 10 to 18 damage. Her consort: broadside at your weapons, 10 to 18 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: closing the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her weapons (a hit does 7 to 11)",
      "Gun 1: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23485,7 +23485,7 @@
     "read": "The Pirate \"Bitter Grin\": guns on your drive to pin you, 8 to 14 damage. Her consort: guns on your drive to pin you, 8 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: opening the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her weapons (a hit does 7 to 11)",
      "Gun 1: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23500,7 +23500,7 @@
     "read": "The Pirate \"Bitter Grin\": coming alongside to board. Her consort: coming alongside to board. Hit her lock and she can't board. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her weapons (a hit does 7 to 11)",
      "Gun 1: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23515,7 +23515,7 @@
     "read": "The Pirate \"Bitter Grin\": turning to break off. Her consort: turning to break off. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her weapons (a hit does 7 to 11)",
      "Gun 1: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23530,7 +23530,7 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 10 to 17 damage. Her consort: closing, and firing at your hull as she comes, 10 to 17 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her weapons (a hit does 7 to 11)",
      "Gun 1: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23545,7 +23545,7 @@
     "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her consort is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her weapons (a hit does 7 to 11)",
      "Gun 1: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23560,7 +23560,7 @@
     "read": "The Pirate \"Bitter Grin\" fires a salvo of 2 at your hull, 60 to 90. Her consort fires a salvo of 2 at your hull, 60 to 90. Hold the turret back: it takes 60 percent off a salvo. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her weapons (a hit does 7 to 11)",
      "Gun 1: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23575,7 +23575,7 @@
     "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: aim at her launcher now. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her weapons, 7 to 11 damage",
+     "Gun 1: aims at her weapons (a hit does 7 to 11)",
      "Gun 1: normal charge",
      "Torpedo, 2 left: hold fire",
      "Fire: heat 1 of 4"
@@ -23589,10 +23589,10 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her lock, 2 to 3 damage",
+     "Gun 1: aims at her lock (a hit does 2 to 3)",
      "Gun 1: normal charge",
      "Gun 2: hold fire",
-     "Torpedo, 2 left: aim at her hull",
+     "Torpedo, 2 left: aims at her hull",
      "Turret: hold it to cut her volley",
      "Fire: heat 1 of 4"
     ],
@@ -23605,9 +23605,9 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: aims at her drive (a hit does 2 to 3)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her hull, 7 to 11 damage",
+     "Gun 2: aims at her hull (a hit does 7 to 11)",
      "Gun 2: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23622,9 +23622,9 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: aims at her drive (a hit does 2 to 3)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her hull, 7 to 11 damage",
+     "Gun 2: aims at her hull (a hit does 7 to 11)",
      "Gun 2: normal charge",
      "Torpedo, 2 left: hold fire",
      "Turret: fire with the guns",
@@ -23646,7 +23646,7 @@
     "labels": [
      "Gun 1: hold fire",
      "Gun 2: hold fire",
-     "Torpedo, 1 left: aim at her hull",
+     "Torpedo, 1 left: aims at her hull",
      "Turret: fire with the guns",
      "Fire: heat 0 of 4"
     ],
@@ -23684,7 +23684,7 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "Turn 1: your torpedo hits her hull for 14, she hits your hull for 10.</p><p>Turn 2: no hits.</p><p>Turn 3: nothing left of the lock to hit.",
     "labels": [
-     "Gun 1: aim at her lock, 2 to 3 damage",
+     "Gun 1: aims at her lock (a hit does 2 to 3)",
      "Gun 1: normal charge",
      "Gun 2: hold fire",
      "Torpedo, 1 left: hold fire",
@@ -23705,7 +23705,7 @@
     "read": "Her consort: closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "Turn 2: no hits.</p><p>Turn 3: nothing left of the lock to hit.</p><p>Turn 4: you hit her consort's hull for 7, your torpedo hits her consort's hull for 13.",
     "labels": [
-     "Gun 1: aim at her hull, 7 to 11 damage",
+     "Gun 1: aims at her hull (a hit does 7 to 11)",
      "Gun 1: normal charge",
      "Gun 2: hold fire",
      "Turret: fire with the guns",
@@ -23958,11 +23958,11 @@
     "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
     "labels": [
-     "Gun 1: aim at her launcher, 2 to 3 damage",
+     "Gun 1: aims at her launcher (a hit does 2 to 3)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her hull, 11 to 17 damage",
+     "Gun 2: aims at her hull (a hit does 11 to 17)",
      "Gun 2: overcharged, heat 2",
-     "Torpedo, 2 left: aim at her launcher",
+     "Torpedo, 2 left: aims at her launcher",
      "Turret: fire with the guns",
      "Fire: heat 3 of 4"
     ],
@@ -23975,7 +23975,7 @@
     "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
     "labels": [
-     "Gun 1: aim at her weapons, 11 to 17 damage",
+     "Gun 1: aims at her weapons (a hit does 11 to 17)",
      "Gun 1: overcharged, heat 2",
      "Gun 2: hold fire",
      "Torpedo, 2 left: hold fire",
@@ -23991,7 +23991,7 @@
     "read": "The Pirate \"Bitter Grin\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
     "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.",
     "labels": [
-     "Gun 1: aim at her launcher, 2 to 3 damage",
+     "Gun 1: aims at her launcher (a hit does 2 to 3)",
      "Gun 1: normal charge",
      "Gun 2: hold fire",
      "Torpedo, 2 left: hold fire",
@@ -24047,9 +24047,9 @@
     "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: aims at her drive (a hit does 2 to 3)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: aims at her drive (a hit does 2 to 3)",
      "Gun 2: normal charge",
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 3 to 0, locks off, once a fight",
@@ -24066,9 +24066,9 @@
     "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: aims at her drive (a hit does 2 to 3)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: aims at her drive (a hit does 2 to 3)",
      "Gun 2: normal charge",
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 3 to 0, locks off, once a fight (ordered)",
@@ -24085,9 +24085,9 @@
     "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her drive, 7 to 11 damage",
+     "Gun 1: aims at her drive (a hit does 7 to 11)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: aims at her drive (a hit does 2 to 3)",
      "Gun 2: normal charge",
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 3 to 0, locks off, once a fight",
@@ -24104,9 +24104,9 @@
     "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: aims at her drive (a hit does 2 to 3)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: aims at her drive (a hit does 2 to 3)",
      "Gun 2: normal charge",
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 3 to 0, locks off, once a fight",
@@ -24123,7 +24123,7 @@
     "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
     "labels": [
-     "Gun 1: aim at her hull, 7 to 11 damage",
+     "Gun 1: aims at her hull (a hit does 7 to 11)",
      "Gun 1: normal charge",
      "Gun 2: hold fire",
      "Turret: fire with the guns",
@@ -24146,9 +24146,9 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.",
     "labels": [
-     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: aims at her drive (a hit does 2 to 3)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: aims at her drive (a hit does 2 to 3)",
      "Gun 2: normal charge",
      "Turret: hold it to cut her volley",
      "Vent the guns: spent",
@@ -24170,9 +24170,9 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.</p><p>Turn 2: you lead the shot, you hit her drive for 11, she hits your hull for 6.",
     "labels": [
-     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: aims at her drive (a hit does 2 to 3)",
      "Gun 1: normal charge",
-     "Gun 2: aim at her drive, 2 to 3 damage",
+     "Gun 2: aims at her drive (a hit does 2 to 3)",
      "Gun 2: normal charge",
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 2 to 0, locks off, once a fight",
@@ -24194,7 +24194,7 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.</p><p>Turn 2: you lead the shot, you hit her drive for 11, she hits your hull for 6.</p><p>Turn 3: you split the turret, you hit her drive for 2, you hit her drive for 2, she hits your hull for 6.",
     "labels": [
-     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: aims at her drive (a hit does 2 to 3)",
      "Gun 1: normal charge",
      "Turret: hold it to cut her volley",
      "Vent the guns: heat 3 to 0, locks off, once a fight",
@@ -24211,7 +24211,7 @@
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
     "text": "Turn 1: you vent the guns, you hit her drive for 2, she hits your hull for 6.</p><p>Turn 2: you lead the shot, you hit her drive for 11, she hits your hull for 6.</p><p>Turn 3: you split the turret, you hit her drive for 2, you hit her drive for 2, she hits your hull for 6.",
     "labels": [
-     "Gun 1: aim at her drive, 2 to 3 damage",
+     "Gun 1: aims at her drive (a hit does 2 to 3)",
      "Gun 1: normal charge",
      "Turret: hold it to cut her volley",
      "Vent the guns: spent",

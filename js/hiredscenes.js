@@ -527,7 +527,7 @@ const SCENE_LINES = {
     'hint.volley': 'Holding the turret back takes {volley} percent off her volley, for one gun\'s shot.',
     'cap.close': '{cap}: closing the range.', 'cap.hold': '{cap}: holding the range.', 'cap.open': '{cap}: opening the range.',
     'part.weapons': 'weapons', 'part.drive': 'drive', 'part.lock': 'lock', 'part.launcher': 'launcher', 'part.hull': 'hull',
-    'gun.label': 'Gun {n}: {aim}', 'torp.label': 'Torpedo, {left} left: {aim}', 'aim.at': 'aim at her {part}', 'aim.hold': 'hold fire', 'aim.range': '{aim}, {lo} to {hi} damage',
+    'gun.label': 'Gun {n}: {aim}', 'torp.label': 'Torpedo, {left} left: {aim}', 'aim.at': 'aims at her {part}', 'aim.hold': 'hold fire', 'aim.range': '{aim} (a hit does {lo} to {hi})',
     'gun.over.off': 'Gun {n}: normal charge', 'gun.over.on': 'Gun {n}: overcharged, heat {heat}',
     'pdc.fire': 'Turret: fire with the guns', 'pdc.hold': 'Turret: hold it to cut her volley',
     'move.name.vent': 'Vent the guns', 'move.name.lead': 'Lead the shot', 'move.name.split': 'Split the turret',

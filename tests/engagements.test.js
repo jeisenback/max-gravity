@@ -40,7 +40,7 @@ test('a pirate contact for a hired hand opens the ship fight, not the card duel,
     return { text: /Battle stations/.test(text), title: G.dialog.event.title, duel: !!G.duel, decided: !!G.dialog.event.decided, labels: G.dialog.choices.map(c => c.label), board: /^<svg class="board"/.test(G.dialog.event.board) };
   });
   assert.ok(r.text); assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false); assert.ok(!r.decided, 'the captain does not take this call');
-  assert.deepEqual(r.labels.map(l => l.replace(/\d+ to \d+ damage/, 'N to M damage')), ['Gun 1: aim at her weapons, N to M damage', 'Gun 1: normal charge', 'Gun 2: aim at her weapons, N to M damage', 'Gun 2: normal charge', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4'], 'a pilot hand still runs the guns: the hauler has two, a turret and a launcher with two torpedoes'); assert.ok(r.board);
+  assert.deepEqual(r.labels.map(l => l.replace(/a hit does \d+ to \d+/, 'a hit does N to M')), ['Gun 1: aims at her hull (a hit does N to M)', 'Gun 1: normal charge', 'Gun 2: aims at her hull (a hit does N to M)', 'Gun 2: normal charge', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4'], 'a pilot hand still runs the guns: the hauler has two, a turret and a launcher with two torpedoes'); assert.ok(r.board);
   await done();
 });
 
@@ -70,6 +70,7 @@ test('played out, the panel goes turn by turn to an end: she closes firing, her 
   const r = await ev(() => {
     const st = raid('engineer'), h = hired(), cap = person(h.captain), op = cap.opinion, xp = skillXp('engineer'), out = { bands: [], reads: [] };
     startDuel({ kind: 'pirate' }, false); begin();
+    { const s = fightNow(); G.dialog = null; openEvent(shipFightEvent(s, { guns: Array.from({ length: s.state.me.guns }, () => ({ foe: 0, part: 'weapons' })), torp: null, pdc: 'fire' })); }  // the guns on her weapons (they start on her hull)
     fightNow().state.foes[0].parts.weapons.hp = fightNow().state.foes[0].parts.weapons.max = 40;  // her weapons cut to 40 (a mount is 63): two guns take them before she is alongside
     while (G.dialog.choices.some(c => c.label.startsWith('Fire'))) { out.bands.push(RANGE_BANDS[fightNow().state.band]); out.reads.push(G.dialog.event.read.replace(/^.*?": /, '')); fireOrders(); }
     out.log = fightNow().state.log.slice(1); out.title = G.dialog.event.title; out.labels = G.dialog.choices.map(c => c.label); out.close = G.dialog.event.text.split('</p><p>').pop();
