@@ -135,6 +135,12 @@ canvas { display: block; touch-action: none; }
 /* A scene longer than the dialog says so above the pinned choices, until the last of the text is in view. */
 #panel.event.more .choices:not(.flow)::before { content: 'The scene continues. Scroll to read the rest.'; display: block; margin: 0 -16px 8px; padding: 4px 16px; background: var(--panel); font-size: 12px; color: var(--muted); }
 .choices button { text-align: left; padding: 10px 12px; }
+/* A gun's targets as one row of buttons under its label, the one picked marked (#916). */
+.choices .choice-row { display: flex; flex-direction: column; gap: 4px; }
+.choices .row-label { font-size: 13px; color: var(--muted); }
+.choices .row-picks { display: flex; flex-wrap: wrap; gap: 6px; }
+.choices .row-picks button { flex: 1 1 0; min-width: 64px; text-align: center; padding: 8px 6px; }
+.choices .row-picks button.on { background: color-mix(in srgb, var(--accent) 30%, var(--panel-2)); border-color: var(--accent); color: var(--text, inherit); font-weight: 600; }
 /* A choice with a cost note: the label, then the note as a readout line, its odds toned (#689). */
 .choices .pick { display: block; }
 .choices .odds { display: block; margin-top: 3px; font-family: var(--font-body); font-size: 12px; font-weight: 400; letter-spacing: 0; line-height: 1.4; color: var(--muted); }

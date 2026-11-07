@@ -45,20 +45,23 @@ function policy(d, ok, memo) {
       if (order !== undefined && label(order) === fightSay('deck.order.none')) return order;
       return last;  // Fight
     }
-    // The orders tools/answer.js gives (window.__answer, set by setup), clicked toward choice by choice: each ready gun's target (a click takes the next one
-    // round), its charge, the torpedo's target, the turret and the moves, then Fire. A gun's label shows its roll, so a target is matched with either charge.
+    // The orders tools/answer.js gives (window.__answer, set by setup), clicked toward choice by choice: each ready gun's target (a row of them, the one picked
+    // marked, fightui.js), its charge, the torpedo's target, the turret and the moves, then Fire.
     const want = window.__answer(s), vented = d.choices.some(c => c.label === fightSay('move.on', { label: fightSay('move.vent', { heat: f.heat }) }));
     const ready = gunsReady(vented ? { ...f, locked: [] } : f);  // a vent ordered unlocks the guns, so the panel shows an order for each (fightui.js)
-    const aim = o => (o ? fightSay('aim.at', { part: fightSay(`part.${o.part}`) }) : fightSay('aim.hold'));
-    const gun = (n, o, led = false) => fightSay('gun.label', { n: n + 1, aim: o ? fightSay('aim.range', { aim: aim(o), ...(([lo, hi]) => ({ lo, hi }))(shotRange(f, o, led)) }) : aim(o) });  // led: the gun lead is ordered on shows the led range (fightui.js)
+    const pickIn = (k, o) => {  // the row of targets starting at k: the index to click for o (null holds), or the row's end once o is the one marked
+      let end = k; while (end < d.choices.length && d.choices[end].row && d.choices[end].row === d.choices[k].row) end++;
+      const i = d.choices.findIndex((c, j) => j >= k && j < end && c.label === fightSay(o ? `aim.${o.part}` : 'aim.hold'));
+      return i < 0 || !d.choices[i].on ? { click: i < 0 ? k : i } : { end };
+    };
     let at = 0;
     for (let n = 0; n < ready; n++) {
-      const g = want.guns[n], over = !!g.over;
-      if (![false, true].some(led => [over, !over].some(x => label(at) === gun(n, { ...g, over: x }, led)))) return at;  // the target, whatever its charge and whether lead is on it yet
-      if (label(at + 1) !== fightSay(over ? 'gun.over.on' : 'gun.over.off', { n: n + 1, heat: FIGHT.OVER_HEAT })) return at + 1;  // the charge
-      at += 2;
+      const g = want.guns[n], p = pickIn(at, g);
+      if (p.click !== undefined) return p.click;  // the target
+      at = p.end;
+      if (g) { if (label(at) !== fightSay(g.over ? 'gun.over.on' : 'gun.over.off', { n: n + 1, heat: FIGHT.OVER_HEAT })) return at; at++; }  // the charge
     }
-    if (f.me.launcher && f.me.torps > 0) { if (label(at) !== fightSay('torp.label', { left: f.me.torps, aim: aim(want.torp) })) return at; at++; }
+    if (f.me.launcher && f.me.torps > 0) { const p = pickIn(at, want.torp); if (p.click !== undefined) return p.click; at = p.end; }
     if (f.me.pdc) { if (label(at) !== fightSay(want.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire')) return at; at++; }
     // The known moves, between the turret and Fire, one choice each (fightui.js moveChoices): the one the orders chose is ordered (lead on its gun), the others not.
     // A move greyed (spent, or nothing to act on) is passed over.
