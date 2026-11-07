@@ -1,6 +1,6 @@
 # The fuel war
 
-Status: draft for the owner's review (#891). Agreed in conversation on 2026-11-07, written up here for approval. Built on `economy.md`, `the-belt.md`, `shape.md` and `chapter-2.md`.
+Status: approved by the owner on 2026-11-07 (#891). Built on `economy.md`, `the-belt.md`, `shape.md` and `chapter-2.md`.
 
 ## What it is
 
