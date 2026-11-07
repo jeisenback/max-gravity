@@ -7,7 +7,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const { roleOf, ROLES, OWNER_TABS, OWNER_ACTIONS } = load(['js/role.js'], {}, ['roleOf', 'ROLES', 'OWNER_TABS', 'OWNER_ACTIONS']);
+const { roleOf, ROLES, OWNER_TABS, OWNER_ACTIONS, COOP_BARRED, chapterOf } = load(['js/role.js'], {}, ['roleOf', 'ROLES', 'OWNER_TABS', 'OWNER_ACTIONS', 'COOP_BARRED', 'chapterOf']);
 const hand = roleOf({ post: 'gunner' }), owner = roleOf(null);
 
 test('a hand\'s record gives the hand\'s role and no record gives the owner\'s', () => {
@@ -46,4 +46,20 @@ test('plotting a course and calling the burn are the owner\'s; a hand picks the 
   for (const id of ['drills', 'visit']) { assert.equal(hand.mayDowntime(id, any, 'gunner'), false, `${id} is the captain's`); assert.equal(owner.mayDowntime(id, any), true, id); }
   assert.equal(hand.mayDowntime('repair', any, 'engineer'), true, 'the hull is the engineer\'s'); assert.equal(hand.mayDowntime('repair', any, 'gunner'), false);
   assert.equal(hand.mayDowntime('meal', any, 'gunner'), true); assert.equal(owner.mayDowntime('meal', any), true);
+});
+
+test('a chapter-two record gives the co-op\'s role: it flies and trades, and buys no ship, runs no company and hires nobody', () => {
+  const coop = roleOf({ post: 'gunner', chapter: 2 });
+  assert.equal(coop, ROLES.coop); assert.equal(coop.id, 'coop');
+  assert.deepEqual(Object.keys(coop).sort(), Object.keys(ROLES.hand).sort(), 'the same questions');
+  assert.equal(coop.canTrade, true); assert.equal(coop.canDie, true);
+  assert.equal(coop.mayTab('trade'), true); assert.equal(coop.mayTab('company'), false);
+  for (const a of ['takeoff', 'plot', 'burn', 'buy', 'sell', 'refuel', 'repair', 'torpbuy']) assert.equal(coop.mayAct(a), true, a);
+  for (const a of COOP_BARRED) assert.equal(coop.mayAct(a), false, a);
+  assert.equal(coop.decides({ via: 'ship' }, 'gunner'), true); assert.equal(coop.paysFrom(), 'credits');
+  for (const id of ['drills', 'practise', 'repair']) assert.equal(coop.mayDowntime(id, {}, 'gunner'), ROLES.hand.mayDowntime(id, {}, 'gunner'), id);
+});
+
+test('the chapter is read from the hand\'s record', () => {
+  assert.equal(chapterOf({ hired: null }), 1); assert.equal(chapterOf({ hired: { post: 'gunner' } }), 1); assert.equal(chapterOf({ hired: { chapter: 2 } }), 2);
 });
