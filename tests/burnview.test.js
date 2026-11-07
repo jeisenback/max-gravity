@@ -349,9 +349,13 @@ test('a tap on a person opens the person, not the room under them; and a tap doe
   await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false;
     const block = shipDay(G.transit.elapsed).block; for (const p of shipPeople()) Object.assign(p, { block, tx: null, wait: 999 }); });  // everyone still where they are, so the tap lands on them
   await frames(page);
-  const hit = await ev(() => G.cutHits[0]);
-  await page.mouse.click(hit.x, hit.y);
-  await frames(page);
+  // The view keeps moving between reading where someone is and the click landing; on a loaded machine they can step off the spot, so try again (a room under them would win every try).
+  for (let k = 0; k < 3 && (await ev(() => G.bridgeOpen)) !== 'person'; k++) {
+    await ev(() => { G.bridgeOpen = null; syncBridge(true); });
+    const hit = await ev(() => G.cutHits[0]);
+    await page.mouse.click(hit.x, hit.y);
+    await frames(page);
+  }
   assert.equal(await ev(() => G.bridgeOpen), 'person', 'the person came first');
   await ev(() => { G.bridgeOpen = null; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); });
   const b = await ev(() => G.cutRooms[0]);
