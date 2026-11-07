@@ -185,3 +185,32 @@ test('the Exchange shows the best last-seen price elsewhere and its age; the map
   assert.ok(r.exchange.includes(r.line), `${r.line} in: ${r.exchange.slice(0, 500)}`);
   assert.doesNotMatch(r.map, /The captain picks/); assert.match(r.map, /plot a burn/); assert.match(r.map, /Prices 4 days old/);
 });
+
+test('an old finished save goes on with chapter one\'s fights behind it, so pirates can come in chapter two', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.career = { ...careerOf(hired()), came: [], signed: st.day, share: { coop: 'Ceres Station', buyIn: 57000, owed: 93000 }, finished: true };
+    st.hired = null; save(); loadGame(); goOnAndPick(0);
+    return { met: ladderPirate(hired(), 0) };
+  });
+  await done();
+  assert.ok(r.met, 'a pirate type is met');
+});
+
+test('the lender\'s three names differ from game to game, not only by the day the share was signed', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => { const firsts = new Set(); for (let s = 1; s <= 8; s++) { __seed(s); toShare(); goOnAndPick(0); firsts.add(hiredCaptain().captainKey); } return [...firsts]; });
+  await done();
+  assert.ok(r.length >= 2, `the first name sent: ${r.join(', ')}`);
+});
+
+test('the master cannot put a member ashore: the captain\'s patience is chapter one\'s', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => { coopAt(); const h = hired(); hiredCaptain().opinion = -5; h.warned = true; const a = Mods.filter('happenings', [], 'port').map(x => x.make); h.warned = false; const b = Mods.filter('happenings', [], 'port').map(x => x.make); return { ashore: a.includes(putAshoreScene), warned: b.includes(warningScene) }; });
+  await done();
+  assert.equal(r.ashore, false); assert.equal(r.warned, false);
+});

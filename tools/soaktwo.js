@@ -39,7 +39,7 @@ async function chapterTwo([days]) {
   // Chapter one, to the share: as tests/chaptertwostart.test.js signs it.
   startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
   const st = G.state, h = hired(); st.story.next = 1e9; st.tutorial = null;
-  Object.assign(h, { beats: 2, beatRun: -2, flags: { sawHull: true }, debt: 0 });
+  Object.assign(h, { beats: 2, beatRun: -2, flags: { sawHull: true }, debt: 0, fights: { done: FIGHT_LADDER.filter(x => !x.parked).map(x => x.id) } });  // a chapter one fought through its ladder
   h.deal = { price: BUY_IN.mid, day: st.day, broker: false }; st.credits = 60000;
   st.systemId = 'ceres'; st.planet = 'Ceres Station'; G.mode = 'landed';
   h.confirm = USED_ID; Mods.act('buyInGo', USED_ID);

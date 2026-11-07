@@ -504,7 +504,8 @@ function signOn(id) {
   for (const f of friends) like(f, 2, say('coop.friend.memory', { ship: oldName }));
   // The record carries on into chapter two (#891): the hand is a member now, with the share, who came and the day. The captain on it stays Hester
   // until the player goes on and picks the master (goOn, pickMaster): the end of chapter one is still read with her name.
-  Object.assign(h, { chapter: 2, share: { coop: COOP_PORT, buyIn: price, owed: SHARE_PRICE - price }, came: friends.map(c => c.id), signed: st.day, run: null, deal: null, confirm: null });
+  Object.assign(h, { chapter: 2, share: { coop: COOP_PORT, buyIn: price, owed: SHARE_PRICE - price }, came: friends.map(c => c.id), signed: st.day, run: null, deal: null, confirm: null,
+    coopRng: Math.floor(Math.random() * 4294967296) });  // the co-op's own dice, seeded once here from the game's (captains.js coopRand), so each game's lender sends its own three
   return say('coop.result', { price: fmt(price), old: oldName, first: cap.first, last: cap.last, owed: fmt(SHARE_PRICE - price),
     company: ` ${friends.length ? sceneSay('scene:screens', 'buyin.with', { names: namesOf(friends) }) : sceneSay('scene:screens', 'buyin.alone')}` });
 }
@@ -522,7 +523,7 @@ const finishedSave = () => { const st = G.state || {}; return (!st.hired && !!(s
 function goOn(st) {
   if (!st.hired && st.career) {
     const c = st.career;
-    st.hired = { ...c, chapter: 2, share: c.share, came: c.came || [], signed: c.signed === undefined ? st.day : c.signed, fund: 0, debt: 0, flags: {}, wage: 0, ledger: [], run: null, off: null, asked: 0, raidTold: true, deckTold: true };  // the fields a hand's record has (setupHired); the briefings were given in chapter one
+    st.hired = { ...c, chapter: 2, share: c.share, came: c.came || [], signed: c.signed === undefined ? st.day : c.signed, fund: 0, debt: 0, flags: {}, wage: 0, ledger: [], run: null, off: null, asked: 0, raidTold: true, deckTold: true, fights: { done: FIGHT_LADDER.filter(x => !x.parked).map(x => x.id) } };  // the fields a hand's record has (setupHired); the briefings were given and the ladder's fights fought in chapter one
     delete c.finished;
   }
   const h = st.hired;
