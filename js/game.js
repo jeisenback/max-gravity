@@ -154,7 +154,7 @@ function loadGame() {
   Mods.emit('stateReady');
   dropMissingModContent(G.state);
   resetWorld();
-  if (finishedSave()) { G.mode = 'landed'; UI.openLanded(currentPlanet(), []); openEvent(chapterOverScene()); return; }  // chapter one is finished (hired.js, #882): its end, with no landing played
+  if (finishedSave()) { G.mode = 'landed'; UI.openLanded(currentPlanet(), []); openEvent(chapterOverScene()); return; }  // chapter one is finished (hired.js, #882) and chapter two not yet begun: its end, with no landing played
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
 }
 
