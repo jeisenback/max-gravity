@@ -271,3 +271,30 @@ test('review: Ines flies the co-op out, and the burn is the player\'s call, not 
   await done();
   assert.equal(r.pilot, 'crewed'); assert.equal(r.can, true); assert.equal(r.burned, false);
 });
+
+// ---------- #905: in chapter two the co-op's money is its fund (st.credits), never the captain's old one ----------
+
+test('#905: the ship\'s-funds gate and the mourning cost read and spend the co-op\'s fund', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt(), h = hired(); h.fund = 0; st.credits = 5000;
+    const gate = needFunds(4000), open = gate[0](); st.credits = 100; const shut = gate[0](), why = gate[1]();
+    st.credits = 5000; const m = person(st.crew[0]), o = MOURN.find(x => x.fund), i = MOURN.indexOf(o), ev = mournScene(m);
+    const c0 = st.credits, f0 = h.fund; ev.choices[i].run();
+    return { open, shut, why, spent: c0 - st.credits, want: (o.cost || 0) + o.fund, fund: h.fund - f0 };
+  });
+  await done();
+  assert.equal(r.open, true); assert.equal(r.shut, false); assert.match(r.why, /100 cr/);
+  assert.equal(r.spent, r.want); assert.equal(r.fund, 0);
+});
+
+test('#905: nothing outside the hand\'s own code touches the captain\'s fund directly; it goes through purse and moveMoney (boarders.js)', () => {
+  const fs = require('node:fs'), path = require('node:path'), dir = path.join(__dirname, '..', 'js');
+  const allowed = new Set(['hired.js', 'boarders.js', 'readouts.js', 'repairs.js']);  // the hand's own code, the purse helpers, and two places gated to chapter one
+  const found = [];
+  for (const f of fs.readdirSync(dir).filter(f => f.endsWith('.js') && !allowed.has(f))) {
+    fs.readFileSync(path.join(dir, f), 'utf8').split('\n').forEach((line, i) => { if (/\b(h|hd|hand|hired\(\))\.fund\b/.test(line)) found.push(`${f}:${i + 1}`); });
+  }
+  assert.deepEqual(found, []);
+});

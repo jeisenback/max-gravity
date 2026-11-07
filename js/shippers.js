@@ -21,7 +21,7 @@ function shipperSettled(run, sold, day, cut = 0, owed = 0) {
 // What a shipper held back comes back to the ship's fund when the hand's case holds, with the hand's share of it, and the ledger's line is mended.
 function restoreSkim(off) {
   const st = G.state, h = hired(), extra = Math.round(off.cut * HIRED_SHARE), e = h.ledger[0];  // the extra is the hand's share, which a rating has none of (#879)
-  h.fund += off.cut; st.credits += extra; h.earnedTotal = (h.earnedTotal || 0) + extra;
+  moveMoney(off.cut); st.credits += extra;  // the ship's purse: the captain's fund, or the co-op's (boarders.js, #905) h.earnedTotal = (h.earnedTotal || 0) + extra;
   if (e && e.skim === off.cut) { e.revenue += off.cut; e.profit += off.cut; e.share += extra; e.skim = 0; }
 }
 
@@ -67,7 +67,7 @@ function sideScene(plan, { gov, p }, agent) {
   const voidPaper = () => { h.freight = { ...h.freight, list: [] }; h.plan = null; };  // the day's board is empty, and she plans again
   const choices = [];
   if (papers) choices.push({ label: say('papers.label'), run() { like(p, 2, say('papers.memory')); return say('papers.result'); } });
-  choices.push({ label: say('pay.label'), ...gated(needFunds(4000)), run() { h.fund -= 4000; like(cap, -1, say('pay.memory')); return say('pay.result'); } });
+  choices.push({ label: say('pay.label'), ...gated(needFunds(4000)), run() { moveMoney(-4000); like(cap, -1, say('pay.memory')); return say('pay.result'); } });
   choices.push({ label: say('silent.label'), run() {
     if (Math.random() < 0.55) return say('silent.clear');
     voidPaper(); moveStanding(plan.shipper, -1); changeRep(gov, -2); like(cap, -1, say('silent.captain.memory')); like(p, -1, say('silent.memory'));

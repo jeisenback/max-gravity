@@ -150,7 +150,7 @@ function characterPanel() {
     ? conCard('Command', `${conRead('Ship', `${shipTitle()}, ${ship().name}`)}${conRead('Crew', `${st.crew.length}, ${berthsUsed()}/${ship().berths} berths`)}${(st.fleet || []).length ? conRead('Company', `${st.fleet.length} ship${st.fleet.length > 1 ? 's' : ''}`) : ''}`) + crewOpinionsCard()
     : hand && c.id === hand.captain ? conCard('Command', `${conRead('Your wage', `${fmt(hand.wage)} cr/day`)}${conRead('Your kit',
       `less ${fmt(KIT_DEDUCTION)} cr/day`)}${conRead('Runs together', runTotals(hand).runs)}${conRead('You earned',
-      `${fmt(runTotals(hand).earned)} cr`)}${conRead('The ship\'s funds', `${fmt(hand.fund)} cr`)}`) + captainRunsHtml() : '';
+      `${fmt(runTotals(hand).earned)} cr`)}${conRead('The ship\'s funds', `${fmt(purse())} cr`)}`) + captainRunsHtml() : '';
   const marked = marksOf(c).length ? conCard('Marks', marksOf(c).map(m => `<div class="hint">${esc(dateOf(m.day))}: ${esc(m.text)}</div>`).join('')) : '';
   const news = (moodLow(c) || moodHigh(c)) && c.mood.text ? `<div class="hint">News from home: ${esc(c.mood.text)}.</div>` : '';
   const blurb = c.ambition || c.bio ? String(h`<div class="char-amb">${c.ambition || c.bio}</div>`) : '';

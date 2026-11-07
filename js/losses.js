@@ -43,7 +43,7 @@ function mournScene(m) {
       ...(m.cast ? farewellFacts(m.cast) : [])].join('</p><p>'),
     choices: MOURN.map(o => ({ label: mournSay(`${o.key}.label`), ...(o.cost ? gated(needCr(o.cost)) : {}), run() {
       if (o.cost) st.credits -= o.cost;
-      if (o.fund && h) h.fund = Math.max(0, h.fund - o.fund);
+      if (o.fund && h) moveMoney(-Math.min(purse(), o.fund));  // the ship's purse: the captain's fund, or the co-op's (boarders.js, #905)
       const lines = [];
       for (const p of crew) { const r = barReact(p, o.loves, o.hates), n = r.n === 2 ? 1 : r.n === -1 ? -1 : 0; if (n) like(p, n, sceneSay('scene:memories', n > 0 ? 'mourn.honored.memory' : 'mourn.slighted.memory', { first: m.first })); if (r.line &&
         lines.length < 2) lines.push(r.line); }
