@@ -357,7 +357,7 @@ function syncBridge(force) {
   if (G.bridgeOpen) {
     const html = transitSheet(G.bridgeOpen);
     if (force || !sheet.dataset.html || (G.bridgeOpen !== 'eng' && sheet.dataset.html !== html)) {  // the engineering console updates itself, so a slider is not rebuilt mid-drag
-      sheet.dataset.html = html; sheet.innerHTML = `<button class="bsheet-close" data-bclose aria-label="Close">Close</button>${html}`;
+      sheet.dataset.html = html; sheet.innerHTML = `<button class="bsheet-close" data-bclose aria-label="Close">Close</button><div class="bsheet-body">${html}</div>`;  // the body scrolls; the close button stays put above it (#913)
     }
   }
 }
