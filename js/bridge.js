@@ -329,7 +329,8 @@ function buildBridgeKeys() {
   document.body.append(sheet, keys);
   const click = e => {
     const k = e.target.closest('[data-bst]'), down = e.target.closest('[data-bdown]'), act = e.target.closest('[data-action]'), t = G.transit;
-    if (act && !act.disabled) { Sfx.click(); Mods.act(act.dataset.action, act.dataset.arg); syncBridge(true); }
+    if (e.target.closest('[data-bclose]')) { Sfx.click(); G.bridgeOpen = null; syncBridge(true); }  // the sheet's own close button (#913)
+    else if (act && !act.disabled) { Sfx.click(); Mods.act(act.dataset.action, act.dataset.arg); syncBridge(true); }
     else if (k) { G.bridgeOpen = G.bridgeOpen === k.dataset.bst ? null : k.dataset.bst; Sfx.click(); syncBridge(true); }
     else if (down && !down.disabled && t && !t.event) { Sfx.click(); G.bridgeOpen = null; openEvent(downtimeEvent()); }
   };
@@ -356,7 +357,7 @@ function syncBridge(force) {
   if (G.bridgeOpen) {
     const html = transitSheet(G.bridgeOpen);
     if (force || !sheet.dataset.html || (G.bridgeOpen !== 'eng' && sheet.dataset.html !== html)) {  // the engineering console updates itself, so a slider is not rebuilt mid-drag
-      sheet.dataset.html = html; sheet.innerHTML = html;
+      sheet.dataset.html = html; sheet.innerHTML = `<button class="bsheet-close" data-bclose aria-label="Close">Close</button><div class="bsheet-body">${html}</div>`;  // the body scrolls; the close button stays put above it (#913)
     }
   }
 }

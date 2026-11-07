@@ -37,8 +37,19 @@ const choiceLabelHtml = label => {
 };
 const choiceButtonHtml = (c, i) => {
   const shut = c.can && !c.can(), why = shut && (typeof c.why === 'function' ? c.why() : c.why);
-  return h`<button data-action="choose" data-arg="${i}" ${c.primary ? raw('class="primary" ') : ''}${shut ? 'disabled' : ''}>${choiceLabelHtml(c.label)}</button>${why ? h`<div class="hint why">${why}</div>` : ''}`;  // primary: the one that ends the turn
+  const mark = c.primary ? raw('class="primary" ') : c.on ? raw('class="on" aria-pressed="true" ') : c.row ? raw('aria-pressed="false" ') : '';  // on: the one picked in its row
+  return h`<button data-action="choose" data-arg="${i}" ${mark}${shut ? 'disabled' : ''}>${choiceLabelHtml(c.label)}</button>${why ? h`<div class="hint why">${why}</div>` : ''}`;  // primary: the one that ends the turn
 };
 // A scene's choices, as the dialog draws them. `only` keeps some of them, each at its own index, in a block of class `cls` (#846: a fight's orders flow with the
-// scene and only its Fire is pinned).
-const choiceBlockHtml = (choices, only = null, cls = 'choices') => h`<div class="${cls}">${choices.map((c, i) => (only && !only(c) ? '' : h`${c.group ? h`<div class="group">${c.group}</div>` : ''}${choiceButtonHtml(c, i)}`))}</div>`;  // a choice with a `group` opens a labelled run of them
+// scene and only its Fire is pinned). A choice with a `group` opens a labelled run of them; choices next to each other with the same `row` are one row of
+// buttons under the first one's `rowLabel` (a gun's targets, #916).
+const choiceBlockHtml = (choices, only = null, cls = 'choices') => {
+  const out = [];
+  choices.forEach((c, i) => {
+    if (only && !only(c)) return;
+    const head = c.group ? h`<div class="group">${c.group}</div>` : '', last = out[out.length - 1];
+    if (c.row && last && last.row === c.row) last.buttons.push(choiceButtonHtml(c, i));
+    else out.push({ row: c.row, head, label: c.rowLabel, buttons: [choiceButtonHtml(c, i)] });
+  });
+  return h`<div class="${cls}">${out.map(r => (r.row ? h`${r.head}<div class="choice-row" role="group" aria-label="${r.label}"><span class="row-label">${r.label}</span><span class="row-picks">${r.buttons}</span></div>` : h`${r.head}${r.buttons}`))}</div>`;
+};

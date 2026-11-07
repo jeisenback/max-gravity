@@ -40,7 +40,8 @@ test('a pirate contact for a hired hand opens the ship fight, not the card duel,
     return { text: /Battle stations/.test(text), title: G.dialog.event.title, duel: !!G.duel, decided: !!G.dialog.event.decided, labels: G.dialog.choices.map(c => c.label), board: /^<svg class="board"/.test(G.dialog.event.board) };
   });
   assert.ok(r.text); assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false); assert.ok(!r.decided, 'the captain does not take this call');
-  assert.deepEqual(r.labels.map(l => l.replace(/a hit does \d+ to \d+/, 'a hit does N to M')), ['Gun 1: aims at her hull (a hit does N to M)', 'Gun 1: normal charge', 'Gun 2: aims at her hull (a hit does N to M)', 'Gun 2: normal charge', 'Torpedo, 2 left: hold fire', 'Turret: fire with the guns', 'Fire: heat 2 of 4'], 'a pilot hand still runs the guns: the hauler has two, a turret and a launcher with two torpedoes'); assert.ok(r.board);
+  const row = ['Hull', 'Weapons', 'Drive', 'Lock', 'Hold'];
+  assert.deepEqual(r.labels, [...row, 'Gun 1: normal charge', ...row, 'Gun 2: normal charge', ...row, 'Turret: fire with the guns', 'Fire: 2 guns at her hull, torpedo held, heat 2 of 4'], 'a pilot hand still runs the guns: the hauler has two, a turret and a launcher with two torpedoes'); assert.ok(r.board);
   await done();
 });
 
