@@ -4,7 +4,7 @@ Status: approved by the owner on 2026-11-07 (#891). Built on `ceres-coop.md`, `c
 
 ## Where he stands
 
-The Ore Runner's master, 54, from Luna. Hired by the Ceres Crew Co-operative on a wage, and not a member: he has no share and no vote. He holds a master's licence and commands the hull day to day (the route, the burn, the fight) and answers to the members' meeting on everything else (`chapter-2.md`).
+The Ore Runner's master, 54, from Luna. Hired by the Ceres Crew Co-operative on a wage, and not a member: he has no share and no vote. He holds a master's licence and the bridge, as the co-op's master. In play he carries out what the player and the meeting decide (`chapter-2.md`). He can refuse an order he thinks unsafe, once, in a scene, and overruling him costs the co-op something: his trust, or a mark on the hull's papers.
 
 His hire was one of the lender's terms. Van Leeuwen & Co. would not lend against a hull without a licensed master on her that it had approved, and it sent the co-op three names. Saran was the one the members could stand.
 
@@ -68,4 +68,5 @@ A bridge that cannot be sold out from under him, and his daughter's career clear
 - He is from Luna; his last bridge was sold to pay an owner's debt.
 - His wife works for Tycho Yard Holdings; his daughter is a freighter officer.
 - In a charter, he becomes the hull's real command; he never asks for it.
+- He carries out what the player and the meeting decide, and can refuse an unsafe order once, at a cost.
 - The name, Dov Saran.

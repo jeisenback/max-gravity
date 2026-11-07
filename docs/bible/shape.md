@@ -21,7 +21,7 @@ Each chapter hands the player more of the world. The first is mostly spine: who 
 | Chapter | Where the player stands | What is theirs |
 |---|---|---|
 | 1, the hand | a rating on Hester's ship | their post, their people, their savings |
-| 2, the member | a member of the Ceres co-op, on the Ore Runner | their vote: the runs, who joins, how to answer the lender |
+| 2, the co-op | a member of the Ceres co-op, and the view is the co-op's | the Ore Runner, flown, traded and fought by the player, and answerable to the members' vote |
 | 3 | set by chapter 2's last vote | more again, in the direction the player chose |
 
 Chapter 2's last vote (on chapter 2's own page, to come; the co-op itself is `ceres-coop.md`) points chapter 3 one of three ways:

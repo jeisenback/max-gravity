@@ -1,10 +1,10 @@
-# Chapter 2: the member
+# Chapter 2: the co-op
 
 Status: approved by the owner on 2026-11-07 (#891). Built on `shape.md`, `ceres-coop.md`, `work.md` and `ship.md`.
 
 ## What it is
 
-The hand has bought into the Ceres Crew Co-operative and signed for a member's share in the Ore Runner (`ceres-coop.md`). Chapter one ended there. Chapter two is the hand's life as a member: still working a post, but now with a vote on what the hull does, and a debt of about 93,000 on the share to pay down out of their earnings.
+The hand has bought into the Ceres Crew Co-operative and signed for a member's share in the Ore Runner (`ceres-coop.md`). Chapter one ended there. Chapter two is the co-op's: the view moves from the hand to the hull the hand is a member of. The player flies, trades and fights the Ore Runner, and every big decision goes to the members' meeting, where the hand is one of five votes. The hand is still a member, with a share, a vote and a debt of about 93,000 on the share to pay down out of their earnings, and the endings still read the hand's own record.
 
 It has two halves. In the first the hand learns to be a member: the meetings, the votes, the runs that pay the share down. In the second the rumblings of an owners' war (`the-fuel-war.md`) reach the Belt, the co-op's lender starts setting the terms, and the votes get hard. The war itself breaks out in chapter three. It ends in one vote that decides what becomes of the co-op, and where the hand stands in chapter three.
 
@@ -18,22 +18,23 @@ Seven, as on Hester's ship.
   - **Cato**, who saved his buy-in for years and was waiting for a hull to sign on to with others (`ceres-coop.md`);
   - **Bexa**, the older hand. She pulled dead ships into Ceres on a salvage tug for twenty years and wants to bring home one that everybody else gave up on. The Ore Runner is that ship, and it is why she bought in;
   - **Pax**, the young member. A renter's child from the Warren, on the ice crews from sixteen until a coupling failed. A co-op berth was what Warren children hope for; Pax fought for this one, and wants a ship where nobody gets hurt on their watch.
-- **The master**, Dov Saran (`people/saran.md`), hired by the co-op and not a member: a licensed master who commands the hull day to day (the route, the burn, the fight) and answers to the members' vote. The only character written new for this chapter.
+- **The master**, Dov Saran (`people/saran.md`), hired by the co-op and not a member: a licensed master who holds the bridge for the co-op. In play he carries out what the player and the meeting decide; he can refuse an order he thinks unsafe, once, in a scene, and overruling him costs something. The only character written new for this chapter.
 - **Ines**, hired as the pilot on a wage, not a member. She left Hester's ship to come with Tomas, Cato and the hand. She flies on a cheap registry's endorsement (`README.md`, decision 12), which is good only on a hull under that registry, so the co-op has to register the Ore Runner where her endorsement counts, or Ines has to earn a real licence.
 
 The Ore Runner's refit adds the master's cabin and a bunk for the pilot to her five berths.
 
-## What is the member's
+## What is the co-op's
 
-- **The vote**, at members' meetings in port: which runs the hull takes, who joins, how to answer the lender, and in the middle of the chapter, whether to make Ines a member or put the co-op behind her licence.
-- **A post**, as before: the hand still works it under the master.
-- **A share**, and the debt on it: what the hull earns pays the loan and the running costs first, then the members, and the hand's part pays down the rest of the share.
+- **The hull**, for the player to carry out: the course, the burn, the trade and the fights, as the owner game plays them.
+- **The books**, open to the player: what the hull earns, the loan, the running costs, and what is left for the members.
+- **The meeting**, in port, where the big decisions go: which run the hull takes, who joins, how to answer the lender, and in the middle of the chapter, whether to make Ines a member or put the co-op behind her licence. The player proposes, and the members vote, the hand among them. A vote that goes against the player stands, and the hull takes the run the members chose.
+- **The hand's share**, and the debt on it: what the hull earns pays the loan and the running costs first, then the members, and the hand's part pays down the rest of the share.
 
-What is not the member's: the bridge (the master's), the hull alone (the co-op's, and the lender's behind it), and the terms in a bad year (the lender's).
+What is not the co-op's: the terms in a bad year (the lender's). The lender's terms limit what the player may load and which lanes they may fly.
 
 ## The first half: paying her off
 
-- The runs come from the boards at each port, as in chapter one, and the meeting votes on which to take. The hand argues for a run, backs a member, or keeps quiet, and the others remember.
+- The runs come from the boards at each port, and the meeting votes on which to take. The player proposes a run, argues for it, backs a member's, or lets the meeting choose, and the members remember.
 - Each run pays down the share. A risky run pays more and costs more if it goes wrong.
 - The owners' war rumbles: on the feeds, in the bars, in insurance and freight rates, in lanes that close for a week and open again.
 
@@ -69,7 +70,8 @@ The sheets are in `people/`: `saran.md` (the master, Dov Saran), `bexa.md`, `pax
 ## Assumptions to confirm
 
 - Chapter two has two halves: paying the share down, then the lender's squeeze as an owners' war rumbles; the war breaks out in chapter three.
-- The master is hired by the co-op and is not a member; the members vote on the big things and the hand keeps a post.
+- The view is the co-op's: the player flies, trades and fights the Ore Runner, and the big decisions go to the members' vote, which can overrule the player.
+- The master is hired by the co-op and is not a member; he carries out what is decided, and can refuse an unsafe order once, at a cost.
 - The five members are the hand, Tomas, Cato, Bexa and Pax; Ines comes as the hired pilot, and her membership or licence is a vote mid-chapter.
 - The Ore Runner's refit adds the master's cabin and a bunk for the pilot, so seven are aboard.
 - Yelena and Ruben come in through the war, as people to meet and possibly recruit.
