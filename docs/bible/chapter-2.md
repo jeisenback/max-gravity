@@ -18,7 +18,7 @@ Seven, as on Hester's ship.
   - **Cato**, who saved his buy-in for years and was waiting for a hull to sign on to with others (`ceres-coop.md`);
   - **Bexa**, the older hand. She pulled dead ships into Ceres on a salvage tug for twenty years and wants to bring home one that everybody else gave up on. The Ore Runner is that ship, and it is why she bought in;
   - **Pax**, the young member. A renter's child from the Warren, on the ice crews from sixteen until a coupling failed. A co-op berth was what Warren children hope for; Pax fought for this one, and wants a ship where nobody gets hurt on their watch.
-- **The master**, hired by the co-op and not a member: a licensed master who commands the hull day to day (the route, the burn, the fight) and answers to the members' vote. The only character written new for this chapter.
+- **The master**, Dov Saran (`people/saran.md`), hired by the co-op and not a member: a licensed master who commands the hull day to day (the route, the burn, the fight) and answers to the members' vote. The only character written new for this chapter.
 - **Ines**, hired as the pilot on a wage, not a member. She left Hester's ship to come with Tomas, Cato and the hand. She flies on a cheap registry's endorsement (`README.md`, decision 12), which is good only on a hull under that registry, so the co-op has to register the Ore Runner where her endorsement counts, or Ines has to earn a real licence.
 
 The Ore Runner's refit adds the master's cabin and a bunk for the pilot to her five berths.
@@ -63,7 +63,7 @@ Hester's ship goes on without the hand, and is not part of this chapter.
 
 ## Still to write
 
-- People sheets (`people/`), each fitted to the bible, for review as Ines's was: the master (new); Bexa and Pax (against `ceres-coop.md`); Yelena and Ruben (against `mars.md`). The four were written for the old world (`js/cast.js`).
+- The people sheets are drafts for review: `people/saran.md` (the master, Dov Saran), `people/bexa.md`, `people/pax.md`, `people/yelena.md` and `people/ruben.md`.
 - Whether opinion fades over time (#891): it decides how much chapter one's goodwill and grudges weigh in chapter two's votes.
 
 ## Assumptions to confirm
