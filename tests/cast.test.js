@@ -195,7 +195,7 @@ test('their scenes move opinion and experience, and what is yours is your saving
     const st = G.state, ines = person('c:ines'), tomas = person('c:tomas');
     const out = {};
     out.intro = castScene('ines', CAST.ines.scenes.intro).personal;
-    dataChoice(CAST.ines.scenes.intro.choices[1]).run(); out.ines = { opinion: ines.opinion, xp: ines.xp.pilot, mem: ines.memories.length };
+    dataChoice(CAST.ines.scenes.intro.choices.find(c => c.label === 'Ask about the logbook')).run(); out.ines = { opinion: ines.opinion, xp: ines.xp.pilot, mem: ines.memories.length };
     // The loan comes out of your savings, in a burn, with the ship's funds untouched.
     st.credits = 5000; st.hired.fund = 40000; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.dialog = null; G.transit.event = null;
     openEvent(castScene('tomas', CAST.tomas.scenes.mid1));
@@ -1190,5 +1190,38 @@ test('sending a second person in a pivot costs them: they come back hurt and are
     assert.deepEqual(r[`${key}:true`], { hurt: 1, named: true, label: true }, `${key}: one second person is hurt, named, and the label says so`);
     assert.deepEqual(r[`${key}:false`], { hurt: 0, named: false, label: false }, `${key}: no backup, no cost`);
   }
+  await done();
+});
+
+// Player reports #914 and #915: each choice in the Watch Bill and the Flip does something the other does not.
+test('the Watch Bill trades the middle watch against the captain and a quiet watch, and the Flip trades Ines\'s skill against yours (#914, #915)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const play = (key, sceneId, label) => {
+      start({ mode: 'hired', post: 'gunner', captainKey: 'hester' });
+      const h = hired(), cap = person(h.captain), them = castPerson(key), ines = castPerson('ines');
+      cap.opinion = them.opinion = ines.opinion = 0; h.skill = h.skill || {};
+      const was = { cap: cap.opinion, them: them.opinion, gunner: h.skill.gunner || 0, pilot: h.skill.pilot || 0, ines: (ines.xp || {}).pilot || 0 };
+      G.dialog = null; if (G.transit) G.transit.event = null;
+      openEvent(castScene(key, CAST[key].scenes[sceneId]));
+      const labels = G.dialog.choices.map(c => c.label), i = labels.indexOf(label);
+      const text = i < 0 ? '' : chooseEvent(i);
+      return { labels, text, cap: cap.opinion - was.cap, them: them.opinion - was.them, gunner: (h.skill.gunner || 0) - was.gunner, pilot: (h.skill.pilot || 0) - was.pilot, inesPilot: ((ines.xp || {}).pilot || 0) - was.ines };
+    };
+    return {
+      middle: play('cato', 'intro', 'Ask for the middle watch'), cold: play('cato', 'intro', 'Keep the cold watch'),
+      book: play('ines', 'intro', 'Ask about the logbook'), fly: play('ines', 'intro', 'Take the checklist and fly it with her'),
+    };
+  });
+  assert.deepEqual(r.middle.labels, ['Ask for the middle watch', 'Keep the cold watch']);
+  assert.deepEqual([r.middle.them, r.middle.cap, r.middle.gunner], [2, -1, 0], 'the middle watch: Cato warmer, the captain counts the hour he moved');
+  assert.deepEqual([r.cold.them, r.cold.cap, r.cold.gunner], [1, 1, 1], 'the cold watch: a little each, and a quiet watch at your post');
+  assert.match(r.cold.text, /\(\+1 experience at the gunner post\.\)$/, r.cold.text);
+  assert.deepEqual(r.book.labels, ['Ask about the logbook', 'Take the checklist and fly it with her']);
+  assert.deepEqual([r.book.them, r.book.pilot], [2, 0]); assert.ok(r.book.inesPilot > 0, 'the logbook: Ines grows');
+  assert.match(r.book.text, /landing/, 'the landing is still told, in the book');
+  assert.deepEqual([r.fly.them, r.fly.pilot, r.fly.inesPilot], [1, 1, 0], 'flying it with her: you grow');
+  assert.match(r.fly.text, /\(\+1 experience at the pilot post\.\)$/, r.fly.text);
   await done();
 });
