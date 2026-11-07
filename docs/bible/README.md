@@ -41,8 +41,8 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 14. `ganymede.md`, `europa.md`, `titan.md`, `enceladus.md`: the lease terraces, the Water Authority's ice, the biolab domes, and the queue at the plumes (#885).
 15. `voice.md`: how the game's writing sounds.
 16. `people/`: one sheet per character (`ines.md` first).
-17. `shape.md`: the shape of the game: a run is one life, the chapters widen into a sandbox, many endings, a thin legacy between runs, and how a random game is tested (#891; draft).
-18. `chapter-2.md`: chapter two, the member on the Ore Runner: the vote, paying the share down, the lender's squeeze from an owners' war, and the last vote (#891; draft).
+17. `shape.md`: the shape of the game: a run is one life, the chapters widen into a sandbox, many endings, a thin legacy between runs, and how a random game is tested (#891).
+18. `chapter-2.md`: chapter two, the member on the Ore Runner: the vote, paying the share down, the lender's squeeze from an owners' war, and the last vote (#891).
 
 ## Where the game must change to fit
 

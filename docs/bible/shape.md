@@ -1,6 +1,6 @@
 # The shape of the game
 
-Status: draft for the owner's review (#891). Agreed in conversation on 2026-11-07, written up here for approval.
+Status: approved by the owner on 2026-11-07 (#891).
 
 ## What it is
 
