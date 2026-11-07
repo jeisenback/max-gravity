@@ -195,7 +195,7 @@ test('their scenes move opinion and experience, and what is yours is your saving
     const st = G.state, ines = person('c:ines'), tomas = person('c:tomas');
     const out = {};
     out.intro = castScene('ines', CAST.ines.scenes.intro).personal;
-    dataChoice(CAST.ines.scenes.intro.choices[1]).run(); out.ines = { opinion: ines.opinion, xp: ines.xp.pilot, mem: ines.memories.length };
+    dataChoice(CAST.ines.scenes.intro.choices.find(c => c.label === 'Ask about the logbook')).run(); out.ines = { opinion: ines.opinion, xp: ines.xp.pilot, mem: ines.memories.length };
     // The loan comes out of your savings, in a burn, with the ship's funds untouched.
     st.credits = 5000; st.hired.fund = 40000; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.dialog = null; G.transit.event = null;
     openEvent(castScene('tomas', CAST.tomas.scenes.mid1));
