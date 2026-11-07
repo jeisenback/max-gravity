@@ -18,7 +18,8 @@ function reportUrl(note, lines) {
 }
 
 // What the game was doing, one line each: the build, the day, the chapter, where the ship is, her state, and the scene that is open with its last lines.
-const reportText = html => String(html || '').replace(/<\/p><p>/g, ' / ').replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/\s+/g, ' ').trim();
+// A scene's text as plain text, read by the browser's own parser (nothing in it is run, and each entity is read once).
+const reportText = html => (new DOMParser().parseFromString(String(html || '').replace(/<\/p><p>/g, ' / '), 'text/html').body.textContent || '').replace(/\s+/g, ' ').trim();
 function reportSnapshot(st, g, build) {
   if (!st) return [`Version: ${build.version} (${build.scope})`, 'No game is running.'];
   const h = st.hired, d = g.dialog, f = d && d.event && d.event.fight && d.event.fight.state;

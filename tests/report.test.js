@@ -66,3 +66,11 @@ test('F8 opens Report a problem anywhere in a game, in the middle of a fight too
   assert.match(shown, /Open: Battle Stations/); assert.match(shown, /Choices: .*Fire/);
   assert.deepEqual(after, { paused: false, dialog: 'Battle Stations' }, 'Back returns to the fight');
 });
+
+test('a scene\'s text is read as plain text by the browser\'s parser: tags gone, entities read once, nothing run', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => [reportText('<p>She closes</p><p>fast &amp; low</p>'), reportText('<scr<script>ipt>alert(1)</script>x &amp;lt;b&amp;gt;'), window.__ran === undefined]);
+  await done();
+  assert.equal(r[0], 'She closes / fast & low');
+  assert.doesNotMatch(r[1], /<script/i); assert.match(r[1], /&lt;b&gt;/, 'an escaped entity is read once, not twice'); assert.equal(r[2], true);
+});
