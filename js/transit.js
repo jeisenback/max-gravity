@@ -568,7 +568,7 @@ function drawBurnBar(b, dates, progress) {
 // The Comms ticker under the ship: the last n messages, the newest brighter. On a wide screen one line each, cut to fit; on a narrow
 // one they wrap to fill the box, the newest first to be kept whole.
 function drawCommsTicker(b, comms, n, wrap) {
-  transitPanel(b.x, b.y, b.w, b.h, 'COMMS');
+  transitPanel(b.x, b.y, b.w, b.h, G.bridgeOpen === 'comms' ? 'COMMS · tap to close' : 'COMMS · tap to open');  // a tap on the box opens the sheet (game.js), and the box says so (#919)
   const w = b.w - 24, msgs = comms.slice(-n), color = (m, newest) => (m.startsWith('[Market]') ? '#ffcf7f' : newest ? '#cfe3ff' : '#7d93aa');
   let rows = [];
   if (wrap) {

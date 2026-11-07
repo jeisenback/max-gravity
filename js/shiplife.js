@@ -520,7 +520,8 @@ function cutBulkhead(ctx, x, top, F, hatch) {
 
 // The cutaway in the screen box { x, y, w, h }: a camera close in on the hand, both decks high, and the outline of the whole hull in the
 // corner. The nose is to the right through the flip; the turn shows in the stars, the windows, the thrusters and the outline.
-// Leaves G.cutRooms (the rooms in view, screen boxes clipped to the box), G.cutHits (the people in view) and G.cutOutline for a tap (game.js).
+// Leaves G.cutRooms (the rooms in view, screen boxes clipped to the box), G.cutHits (the people in view), G.cutRack (the comms rack in view) and
+// G.cutOutline for a tap (game.js).
 function drawCutaway(box, clear = box) {
   const t = G.transit, st = G.state, people = shipPeople(), ph = phase(), still = Settings.reduceMotion, time = still ? 0 : G.time;
   const len = hullLength(SHIPS[st.shipId].size), view = viewOf(box), zoom = view.zoom, half = view.span / 2;
@@ -655,6 +656,8 @@ function drawCutaway(box, clear = box) {
     return { id: r.id, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
   }).filter(b => b.w > 0 && b.h > 0);
   G.cutHits = hits.filter(h => h.x >= cx0 && h.x <= cx1 && h.y >= cy0 && h.y <= cy1);
+  const rack = commsRackBox(cutRect(roomAt('bridge'), len)), ra = toScreen(rack.x, rack.y), rb = toScreen(rack.x + rack.w, rack.y + rack.h);  // the comms rack, whole in the clear part or not at all
+  G.cutRack = ra.x >= cx0 && rb.x <= cx1 && ra.y >= cy0 && rb.y <= cy1 ? { x: ra.x, y: ra.y, w: rb.x - ra.x, h: rb.y - ra.y } : null;
   const seenPart = { x: camX - off, span: clear.w / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers
   G.cutOutline = { ...outlineLayout(box, len), ids: people.filter(p => p.id).map(p => p.id), squeeze: Math.abs(turn), view: seenPart };
   drawOutline(ctx, G.cutOutline, dots, seenPart.x, seenPart.span, len, turn);

@@ -976,3 +976,36 @@ test('someone having a hard time sits up alone in the dusk, the wounded stay in 
   assert.deepEqual(r.scene, ['medbay', true, 'bunk'], 'the patient stays in bed through the scene');
   assert.notEqual(r.strapped, 'bunk', 'not lying in the air on the way to the medbay at the straps');
 });
+
+// #919: Comms has a place in the ship. A comms rack at the back of the bridge opens the Comms sheet, as a room opens its console; the rest
+// of the bridge still opens the bridge. And the COMMS box under the ship says that a tap opens it.
+test('the comms rack on the bridge opens Comms and the rest of the bridge opens the bridge; the COMMS box says it opens', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => {
+    burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false;
+    const br = roomAt('bridge'); for (const p of shipPeople()) Object.assign(p, { x: br.x0 + (br.x1 - br.x0) * 0.6, dk: br.deck, tdk: br.deck, tx: null, wait: 999 });  // everyone at the front of the bridge, the camera on it
+    G.cam = null;
+  });
+  await frames(page);
+  const rack = await ev(() => G.cutRack);
+  assert.ok(rack && rack.w > 8 && rack.h > 20, `the rack is drawn in view: ${JSON.stringify(rack)}`);
+  await page.mouse.click(rack.x + rack.w / 2, rack.y + rack.h / 2);
+  await frames(page);
+  assert.equal(await ev(() => G.bridgeOpen), 'comms', 'a tap on the rack opens Comms');
+  await ev(() => { G.bridgeOpen = null; syncBridge(true); });  // the sheet is over the ship now; it closes with its own Close (#913)
+  await frames(page);
+  const elsewhere = await ev(r => { const b = G.cutRooms.find(x => x.id === 'bridge'); return { x: Math.max(b.x + 4, r.x - 30), y: r.y + r.h / 2 }; }, rack);
+  await page.mouse.click(elsewhere.x, elsewhere.y);
+  await frames(page);
+  assert.equal(await ev(() => G.bridgeOpen), 'nav', 'beside the rack is still the bridge');
+  const titles = await ev(() => {
+    const seen = [], real = ctx.fillText.bind(ctx); ctx.fillText = (s, ...a) => { seen.push(String(s)); return real(s, ...a); };
+    G.bridgeOpen = null; drawTransit(innerWidth, innerHeight); const shut = seen.filter(s => s.startsWith('COMMS'));
+    seen.length = 0; G.bridgeOpen = 'comms'; drawTransit(innerWidth, innerHeight); const shown = seen.filter(s => s.startsWith('COMMS'));
+    ctx.fillText = real; G.bridgeOpen = null; return { shut, shown };
+  });
+  assert.ok(titles.shut.includes('COMMS · tap to open'), JSON.stringify(titles));
+  assert.ok(titles.shown.includes('COMMS · tap to close'), JSON.stringify(titles));
+  await done();
+});
