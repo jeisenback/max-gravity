@@ -13,13 +13,13 @@ after(closeBrowser);
 const helpers = () => {
   window.toShare = (o = {}) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
-    const st = G.state, h = hired(); st.story.next = 1e9; st.tutorial = null;
+    const st = G.state, h = hired(); st.story.next = 1e9; st.tutorial = o.keepTutorial ? 0 : null;  // 0: the hand's first-run steps, left on
     Object.assign(h, { beats: 2, beatRun: -2, flags: { sawHull: true }, debt: 0 });
     h.deal = { price: BUY_IN.mid, day: st.day, broker: false }; st.credits = 60000;
     if (o.alone) for (const id of [...st.crew]) { const p = person(id); if (p && p.cast) p.opinion = -3; }
     if (o.alone) { const cato = castPerson('cato'); G.state.people[cato.id].dead = true; st.crew = st.crew.filter(id => id !== cato.id); }
     st.systemId = 'ceres'; st.planet = 'Ceres Station'; G.mode = 'landed';
-    hired().confirm = USED_ID; Mods.act('buyInGo', USED_ID);
+    window.tutorialAtSigning = st.tutorial != null; hired().confirm = USED_ID; Mods.act('buyInGo', USED_ID);
     const titles = []; let guard = 20;
     while (G.dialog && G.dialog.event.title !== 'The End of Chapter One' && guard--) { titles.push(G.dialog.event.title); chooseEvent(0); finishEvent(); }
     return titles;
@@ -213,4 +213,61 @@ test('the master cannot put a member ashore: the captain\'s patience is chapter 
   const r = await ev(() => { coopAt(); const h = hired(); hiredCaptain().opinion = -5; h.warned = true; const a = Mods.filter('happenings', [], 'port').map(x => x.make); h.warned = false; const b = Mods.filter('happenings', [], 'port').map(x => x.make); return { ashore: a.includes(putAshoreScene), warned: b.includes(warningScene) }; });
   await done();
   assert.equal(r.ashore, false); assert.equal(r.warned, false);
+});
+
+// ---------- the final review's findings (#891) ----------
+
+test('review: the Port page\'s way off the ground is the co-op\'s takeoff, not the captain\'s sail, and sail does nothing in chapter two', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => { const st = coopAt(); UI.planet = currentPlanet(); const dock = UI.dockHtml(); Mods.act('sail'); return { dock, run: career().run, mode: G.mode }; });
+  await done();
+  assert.doesNotMatch(r.dock, /Sail with the captain|data-action="sail"/); assert.match(r.dock, /data-action="takeoff"/);
+  assert.equal(r.run, null, 'no captain\'s plan is written'); assert.equal(r.mode, 'landed');
+});
+
+test('review: a damaged hull landing in chapter two opens no captain\'s repair, pays no wage and takes nothing from the captain\'s fund', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => { const st = coopAt(), h = hired(); st.armor = 20; const c0 = st.credits, f0 = h.fund; const titles = landAtPort('mars', 'Mars'); return { titles, credits: st.credits - c0, fund: h.fund - f0, stay: !!stayOf(h), armor: st.armor }; });
+  await done();
+  assert.deepEqual(r.titles, []); assert.equal(r.credits, 0); assert.equal(r.fund, 0); assert.equal(r.stay, false); assert.equal(r.armor, 20);
+});
+
+test('review: a burn in chapter two never draws the captain\'s pay events', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => { const st = coopAt(); st.dest = 'mars'; takeOff(); G.player.x = BURN_DIST + 40; G.player.y = 0; tryBurn(); enterTransit(); const groups = []; const real = window.hiredEvent; window.hiredEvent = g => { groups.push(g); return null; }; try { for (const c of Mods.filter('happenings', [], 'transit')) if (c.make) try { c.make(); } catch (e) {} } finally { window.hiredEvent = real; } return groups; });
+  await done();
+  assert.ok(!r.includes('money'), r.join(','));
+});
+
+test('review: the tutorial ends at the share, the start is saved at the pick, and the board and Ceres\'s prices are there at once', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    toShare({ keepTutorial: true }); const had = window.tutorialAtSigning; UI.act('choose', '0'); UI.act('choose', '0'); finishEvent();
+    const st = G.state, after = { had, tutorial: st.tutorial, errands: (G.offers || []).filter(o => o.errand).length, seen: !!(st.seen || {})['Ceres Station'] };
+    loadGame(); while (G.dialog && !/Three Names|End of Chapter One/.test(G.dialog.event.title)) finishEvent();
+    return { ...after, reloaded: { chapter: chapterOf(G.state), master: !!MASTER_CAPTAINS[hired().captainKey], title: G.dialog && G.dialog.event.title } };
+  });
+  await done();
+  assert.equal(r.had, true, 'the hand\'s tutorial was on'); assert.equal(r.tutorial, null); assert.equal(r.errands, 0); assert.equal(r.seen, true);
+  assert.deepEqual(r.reloaded, { chapter: 2, master: true, title: null });
+});
+
+test('review: the co-op\'s money is one Fund, its own, in the strip', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => { const st = coopAt(); st.credits = 12345; return stripItems(st, hired(), st.armor, ship().armor, st.day).map(([k, v]) => `${k}: ${v}`); });
+  await done();
+  assert.ok(r.includes('Fund: 12,345 cr'), r.join(' | ')); assert.ok(!r.some(x => /^Savings/.test(x)), r.join(' | '));
+});
+
+test('review: Ines flies the co-op out, and the burn is the player\'s call, not the captain\'s', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => { const st = coopAt(); const ines = castPerson('ines'); if (!st.crew.includes(ines.id)) st.crew.push(ines.id); ines.role = 'pilot'; st.dest = 'mars'; st.route = { dock: 'Mars', go: true }; const can = canDepart(); G.mode = 'flight'; hired().run = { sid: 'mars', planet: 'Mars' }; G.player = makeShip(st.shipId, BURN_DIST + 100, 0, 0); const t0 = !!G.transit; captainCallsBurn(); return { can, pilot: postMode('pilot'), burned: !t0 && !!G.transit }; });
+  await done();
+  assert.equal(r.pilot, 'crewed'); assert.equal(r.can, true); assert.equal(r.burned, false);
 });

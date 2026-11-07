@@ -505,7 +505,8 @@ function signOn(id) {
   // The record carries on into chapter two (#891): the hand is a member now, with the share, who came and the day. The captain on it stays Hester
   // until the player goes on and picks the master (goOn, pickMaster): the end of chapter one is still read with her name.
   Object.assign(h, { chapter: 2, share: { coop: COOP_PORT, buyIn: price, owed: SHARE_PRICE - price }, came: friends.map(c => c.id), signed: st.day, run: null, deal: null, confirm: null,
-    coopRng: Math.floor(Math.random() * 4294967296) });  // the co-op's own dice, seeded once here from the game's (captains.js coopRand), so each game's lender sends its own three
+    coopRng: Math.floor(Math.random() * 4294967296) });
+  st.tutorial = null;  // the hand's first run is long done  // the co-op's own dice, seeded once here from the game's (captains.js coopRand), so each game's lender sends its own three
   return say('coop.result', { price: fmt(price), old: oldName, first: cap.first, last: cap.last, owed: fmt(SHARE_PRICE - price),
     company: ` ${friends.length ? sceneSay('scene:screens', 'buyin.with', { names: namesOf(friends) }) : sceneSay('scene:screens', 'buyin.alone')}` });
 }
@@ -570,6 +571,10 @@ function pickMaster(st, key) {
   chapterTwoShip(st);
   st.crew = chapterTwoCrew(st, h);
   st.systemId = 'ceres'; st.planet = COOP_PORT; G.mode = 'landed';
+  const port = currentPlanet();
+  G.offers = generateMissions(port);  // the co-op's own board of work (the owner's), not the hand's errands
+  if (port.services.includes('trade')) seenPrices(st, port, st.day, price);
+  save();  // the start is kept: a reload before the first landing reopens in chapter two
   const ines = st.crew.map(id => st.people[id]).find(p => p && p.cast === 'ines');
   return [twoSay('picked', { first: cap.first, last: cap.last }), ines ? twoSay('ines') : twoSay('noines')].join(' ');
 }
@@ -719,7 +724,7 @@ Mods.register({
     M.on('landed', planet => { if (hired() && chapterOf(G.state) === 1) G.offers = errandsFor(planet); });
     M.on('landed', planet => { if (chapterOf(G.state) > 1 && planet.services.includes('trade')) seenPrices(G.state, planet, G.state.day, price); });  // the co-op remembers each exchange it docks at (market.js, #891)  // a hand's board has errands, not contracts; the co-op's has the contracts (ownerboard.js)
     M_NOTE = text => M.note(text);
-    M.action('sail', () => { if (hired() && !sideBeforeSail()) sail(); });  // a side on the paper is a scene at the lock first (shippers.js)
+    M.action('sail', () => { if (hired() && chapterOf(G.state) === 1 && !sideBeforeSail()) sail(); });  // the captain's sail is chapter one's; the co-op takes off (#891)  // a side on the paper is a scene at the lock first (shippers.js)
     M.action('swapPost', post => askSwap(post));
     M.action('buyInAsk', id => {
       if (!hired() || !canBuyIn(id, currentPlanet())) return;

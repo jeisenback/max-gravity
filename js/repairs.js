@@ -61,7 +61,7 @@ Mods.register({
   init(M) {
     M.on('landed', planet => {
       const h = hired();
-      if (!h || !planet.services.includes('refuel') || G.state.armor >= ship().armor * (1 - REPAIR_AT) || G.state.armor >= ship().armor) return;
+      if (!h || chapterOf(G.state) > 1 || !planet.services.includes('refuel') || G.state.armor >= ship().armor * (1 - REPAIR_AT) || G.state.armor >= ship().armor) return;
       const ev = repairScene(planet);
       if (G.dialog) G.nextEvent = ev; else openEvent(ev);
     });

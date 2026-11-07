@@ -70,7 +70,7 @@ Mods.register({
         // Not one seen in the last SHIP_INCIDENT_WAIT days, on this burn or an earlier one.
         const met = st.eventSeen = st.eventSeen || {}, seenAs = e => (e.id ? SCENE_LINES[`scene:${e.id}`].title : e.title);  // kept by its shipped title, which the editor's words do not change (transit.js)
         const hand = hired(), fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e) && !(met[seenAs(e)] > st.day - SHIP_INCIDENT_WAIT) && !(hand && OWNER_ONLY_EVENTS.includes(e.title)) && !(e.id === 'pirates' && quality('due:pi-safe') > st.day));
-        if (hand) for (const g of HIRED_GROUPS) out.push({ tier: 2, weight: captainWeight(g), via: 'crew', make: () => hiredEvent(g) });
+        if (hand) for (const g of HIRED_GROUPS.filter(g => g !== 'money' || chapterOf(st) === 1)) out.push({ tier: 2, weight: captainWeight(g), via: 'crew', make: () => hiredEvent(g) });
         if (fresh.length) out.push({ tier: 2, weight: hand ? HIRED_WEIGHTS.ship * (1 + HAND_LANE_WEIGHT * Math.max(danger(t.to), danger(st.systemId))) : BURN_WEIGHTS.ship, via: 'ship', make() { const ev = pick(fresh); t.seen.push(ev); met[seenAs(ev)] = st.day; return ev; } });
         out.push({ tier: 2, weight: BURN_WEIGHTS.quiet, quiet: true });
       } else {
