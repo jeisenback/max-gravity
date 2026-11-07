@@ -1,14 +1,15 @@
 # Chapter Two, Piece 1: The Start and the Co-op's Role
 
-Status: approved by the owner on 2026-11-07 (#891). The first of five pieces of chapter two's code; the bible is `docs/bible/chapter-2.md`.
+Status: approved by the owner on 2026-11-07 (#891). The first of six pieces of chapter two's code; the bible is `docs/bible/chapter-2.md`.
 
-## The five pieces
+## The six pieces
 
 1. **The start and the co-op's role** (this spec): a finished chapter one goes on into chapter two, on the Ore Runner, with the player flying, trading and fighting her. Playable, with no votes yet.
-2. **The meeting:** the members vote on the board's runs, who joins, and the master; the board's Take goes through it.
-3. **The books and the share:** what a run clears pays the loan and running costs, then the members; the hand's part pays down the share.
-4. **The squeeze:** the war's prices and closed lanes, the lender's terms, Yelena and Ruben, remote prices over Ruben's band.
-5. **The last vote:** hold, charter or sell, replacing `js/chaptertwo.js`'s close.
+2. **The work:** trading and non-combat play as a long-term way to play: the law by port (banned and taxed goods), inspections and bluffing, patrols and the zones of law, shortages in place of the price wobble, the kinds of work (corporate contracts, the Belt's small runs, smuggling, aid for the freeholds, trade), and standing as currency.
+3. **The meeting:** the members vote on the runs, who joins, and the master; the board's Take goes through it.
+4. **The books and the share:** what a run clears pays the loan and running costs, then the members; the hand's part pays down the share.
+5. **The squeeze:** the war's prices and closed lanes, the lender's terms, Yelena and Ruben, remote prices over Ruben's band.
+6. **The last vote:** hold, charter or sell, replacing `js/chaptertwo.js`'s close.
 
 ## What piece 1 does
 
