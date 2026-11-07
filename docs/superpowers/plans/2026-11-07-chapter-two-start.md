@@ -146,6 +146,6 @@ test('the chapter is read from the hand\'s record', () => {
 - Consumes: Task 3's start (a seeded chapter-two state), Task 4's board.
 
 - [ ] **Step 1: Add a chapter-two case to each**: fights: the share of raids in a 60-day chapter-two run that end in loss of hull below a quarter, a crew death, or the hand's death; pacing: credits a day over 60 days on the board. Mark each band `// to be set by the owner from the measured figures (#891)` with a wide provisional band (0 to 1 for shares, 0 to 10,000 a day) so the files pass.
-- [ ] **Step 2: Run** `npm run soak -- tests/distribution/fights.test.js tests/distribution/pacing.test.js` (in the background; each takes minutes). Expected: PASS, printing the measured figures.
+- [ ] **Step 2: Run** `node --test tests/distribution/fights.test.js tests/distribution/pacing.test.js` (in the background; each takes minutes). Expected: PASS, printing the measured figures.
 - [ ] **Step 3: Report** the figures to the owner for the bands; set them when given.
 - [ ] **Step 4: Commit** `git commit -m "Chapter two: the fights and pacing soaks measure the co-op's runs (#891)"`
