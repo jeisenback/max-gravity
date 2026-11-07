@@ -41,7 +41,7 @@ async function play() {
 const fightOf = f => f.evaluate(() => {
   const s = G.dialog.event.fight || {}, st = s.state || {};
   return { kind: st.kind, ship: s.foe && s.foe.shipId, patrol: !!(s.spec && s.spec.kind === 'patrol'), pack: !!s.pack, assault: !!s.assault, navy: !!(st.party === 'navy'), torps: st.me ? st.me.torps : 0, pdc: !!(st.me && st.me.pdc),
-    day: G.state.day, gunner: (career().skill || {}).gunner || 0, seen: JSON.stringify([G.dialog.event.title, G.dialog.event.read || '', G.dialog.event.text, G.dialog.choices.map(c => c.label)]) };
+    day: G.state.day, gunner: (career().skill || {}).gunner || 0, seen: JSON.stringify([G.dialog.event.title, G.dialog.event.read || '', G.dialog.event.text, G.dialog.choices.map(c => (c.rowLabel ? `${c.rowLabel}: ${c.label}` : c.label))]) };  // a gun's or the torpedo's row reads its label too
 });
 // Clicks a choice in the frame and waits for the report of it.
 async function choose(f, i) {
@@ -71,7 +71,7 @@ test('the ship fight plays the setup the line typed needs: the patrol, the veter
     ['end.crippled.patrol', r => r.patrol, false],
     ['memory.navy', r => r.patrol, false],
     ['end.broke.gun', r => r.patrol, false],
-    ['torp.label', r => r.ship === 'corsair' && r.torps > 0, true],
+    ['torp.row', r => r.ship === 'corsair' && r.torps > 0, true],
     ['open.torpedo.1', r => r.ship === 'corsair', true],
     ['log.mine.consort', r => r.pack, false],
     ['open.grapple.0', r => r.ship === 'raider' && !r.pack && !r.patrol, true],
@@ -241,7 +241,7 @@ test('a deck line of a post plays with the hand at that post, and a crew gunner\
 
 test('the veteran\'s torpedoes are her loadout, not a change the fight made (#795)', async () => {
   await reload(); await select('scene:fight');
-  await page.fill('textarea[data-path="part.torp.label"]', 'Typed torpedo {left}: {aim}');
+  await page.fill('textarea[data-path="part.torp.row"]', 'Typed torpedo {left}');
   const f = await play();
   assert.equal((await fightOf(f)).ship, 'corsair');
   const shown = await choose(f, 0);

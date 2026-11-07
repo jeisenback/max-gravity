@@ -18,7 +18,9 @@ const playScenes = () => {
   const moved = (b, a) => ({ ...(a.credits !== b.credits ? { credits: a.credits - b.credits } : {}), ...(a.fund !== b.fund ? { fund: a.fund - b.fund } : {}), ...Object.fromEntries(Object.entries(a.opinion).filter(([id, v]) => v !== b.opinion[id]).map(([id, v]) => [id, v - (b.opinion[id] || 0)])) });  // what a choice did to the money, the ship's fund and each person's regard
   const memLens = () => Object.fromEntries(Object.values(G.state.people).map(p => [p.id, (p.memories || []).length]));
   const gained = lens => Object.values(G.state.people).flatMap(p => (p.memories || []).slice(lens[p.id] === undefined ? 0 : lens[p.id]));  // the memories a choice leaves
-  const look = ev => (ev ? { title: ev.title, text: ev.text, labels: ev.choices.map(c => String(c.label)) } : null);
+  // the choices' labels as the panel shows them: a row of buttons (a gun's targets) reads its row label once, on its first
+  const labelsOf = ev => ev.choices.map((c, i, all) => (c.row && (!i || all[i - 1].row !== c.row) ? `${c.rowLabel}: ${c.label}` : String(c.label)));
+  const look = ev => (ev ? { title: ev.title, text: ev.text, labels: labelsOf(ev) } : null);
   // One case: `make` builds the scene (in a game `opts` started); each choice not in `skip` is played on a copy of that game's state, once for each of the rolls.
   const run = (id, opts, make, { rolls = [0.5], skip = [], prep = null, extra = null } = {}) => {
     if (window.__only && !new RegExp(window.__only).test(id)) return;
@@ -400,14 +402,14 @@ const playScenes = () => {
   if (!window.__only || /scene:fight/.test(window.__only)) {
     const rec = { id: 'scene:fight', plays: [] };
     try {
-      const panel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: ev.choices.map(c => String(c.label)), group: ev.choices.map(c => c.group).filter(Boolean) });  // the orders' heading too (#846), as the deck panel's
+      const panel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: labelsOf(ev), group: ev.choices.map(c => c.group).filter(Boolean) });  // the orders' heading too (#846), as the deck panel's
       const orders = (o = {}) => ({ guns: [{ foe: 0, part: 'weapons' }], torp: null, pdc: 'fire', ...o });
       const start = (shipId, o = {}, kind = 'pirate') => { fresh(); hired().raidTold = true; G.state.day += o.day || 0; G.nextEvent = null; startShipFight({ kind, gov: 'Arcology Compact', shipId }, false, o); const ev = G.nextEvent; G.nextEvent = null; return ev; };
       const turn = (s, o, foe, captain = { kind: 'hold' }) => {  // one Fire with the moves set; what it shows next, or the scene it queued and what it left
         const cap = person(hired().captain), m0 = (cap.memories || []).length;
         s.shown = { foe: s.state.foes.map(() => foe), captain }; G.nextEvent = null;
         const ev = fireTurn(s, o), next = G.nextEvent; G.nextEvent = null;
-        rec.plays.push({ log: s.state.log.slice(-1)[0], next: next && { title: next.title, text: next.text, labels: next.choices.map(c => String(c.label)) }, mem: (cap.memories || []).slice(m0) });
+        rec.plays.push({ log: s.state.log.slice(-1)[0], next: next && { title: next.title, text: next.text, labels: labelsOf(next) }, mem: (cap.memories || []).slice(m0) });
         if (ev) panel(ev);
       };
       { fresh(); hired().raidTold = true; uatBurn('Ceres Station', 'pallas'); const make = makeEnemy; makeEnemy = sp => { const f = make(sp); seq([0.01]); return f; }; let text; try { text = startShipFight({ kind: 'pirate', shipId: 'raider' }, true); } finally { makeEnemy = make; Math.random = real; } rec.plays.push({ run: text }); }  // a clear run: the days it costs
@@ -466,7 +468,7 @@ const playScenes = () => {
       { const s = start('raider').fight; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }
       // the deck fight (deckFightEvent, #786): on our deck and hers, each with the cargo bay, the hand in each section and their move into each; a hold, a way round
       // and a veteran's feint; every choice it offers; and a turn of each kind of line, from states set by hand
-      const deckPanel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: ev.choices.map(c => String(c.label)), group: ev.choices.map(c => c.group).filter(Boolean), strip: ((ev.board || '').match(/aria-label="([^"]*)"/) || [])[1], legend: ev.legend });  // the strip's words: their move through a section, and the wave
+      const deckPanel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: labelsOf(ev), group: ev.choices.map(c => c.group).filter(Boolean), strip: ((ev.board || '').match(/aria-label="([^"]*)"/) || [])[1], legend: ev.legend });  // the strip's words: their move through a section, and the wave
       const deck = (assault, o = {}) => { fresh(); hired().raidTold = true; const foe = makeEnemy({ kind: 'pirate' }), s = assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0, init: 'foe' }, 'full'); s.state = deckFight({ boarders: 4, crew: 4, cover: [1, 2, 1, 1], assault, side: true, ...o }); return s; };
       const deckLog = (s, plan, shown, first = 0.01) => { s.shown = { feint: false, ...shown }; seq([first, 0.99, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.99]); const e = deckFightEvent(s, plan); const next = e.choices[e.choices.length - 1].run(); rec.plays.push({ log: s.state.log.slice(-1)[0], end: !next, ...(next ? {} : { close: G.nextEvent && G.nextEvent.text }) }); G.nextEvent = null; };
       for (const assault of [false, true]) {
