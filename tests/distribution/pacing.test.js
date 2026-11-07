@@ -45,3 +45,14 @@ test('about twenty runs reach the target with every captain, and the planner is 
   // guards against something other than the rate skewing a captain's pay, not against the rates themselves (the owner sets those).
   assert.ok(spread <= 1.25, `pay per day against each captain's day rate: ${JSON.stringify(Object.fromEntries(Object.entries(perDay).map(([k, v]) => [k, `${Math.round(v)} of ${rate[k]}`])))}`);
 });
+
+// Chapter two (#891): the co-op's Ore Runner on the board's contracts for 60 days (tools/soaktwo.js), the pay a day into the co-op's fund.
+// Sample: 6 seeds. Measured 2026-11-07 over 8 seeds: 4 to 5 runs, 5,121 to 10,823 cr a day (mean about 8,600), every master drawn. The band is provisional,
+// to be set by the owner from the measured figures (#891); it guards only that the co-op earns, and is never stuck.
+test('chapter two: the co-op earns on the board, and is never stuck', async () => {
+  const { soaksTwo } = require('../../tools/soaktwo');
+  const rs = await soaksTwo([1, 2, 3, 4, 5, 6], { days: 60 }, 3);
+  for (const r of rs) { assert.deepEqual(r.bad, [], `seed ${r.seed}`); assert.deepEqual(r.errors, [], `seed ${r.seed}`); assert.ok(r.runs >= 2, `seed ${r.seed}: ${r.runs} runs`); }
+  for (const r of rs.filter(r => !r.ending)) assert.ok(r.perDay > 0 && r.perDay <= 20000, `seed ${r.seed}: ${r.perDay} cr a day`);  // provisional (#891)
+  console.log(`chapter two pacing: ${rs.map(r => `${r.seed}:${r.runs} runs ${r.perDay}/day`).join(', ')}`);
+});
