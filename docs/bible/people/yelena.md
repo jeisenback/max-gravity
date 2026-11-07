@@ -1,6 +1,6 @@
 # Yelena Quint
 
-Status: a draft for review (#891). Built on `mars.md`, `the-fuel-war.md`, `chapter-2.md` and `work.md`.
+Status: approved by the owner on 2026-11-07 (#891). Built on `mars.md`, `the-fuel-war.md`, `chapter-2.md` and `work.md`.
 
 ## Where she stands
 

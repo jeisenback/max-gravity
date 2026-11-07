@@ -64,5 +64,4 @@ The owner decided (2026-10-31) that where the bible and the game disagree, the g
 
 - Everyday life: fun and media (the code has vids, books and ring-ball), religion, crime, what the news covers, age and health, marriage and children, accents.
 - What replaces the faction economies and wars in the game (a code project).
-- People sheets for chapter two, drafts for review: Dov Saran (the master), Bexa, Pax, Yelena and Ruben (#891).
 - History before day 1 (the old `docs/world/timeline.md`), the player's start backgrounds (`backgrounds.md`), customs aboard (`customs.md`) and the posts aboard (`trades.md`). Those files were retired in #869; they are in git history, written to the old world, and are a source to check, not to copy.

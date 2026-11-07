@@ -56,15 +56,15 @@ The chapter can also end the run early, as any chapter can: the hand dies, or is
 ## What carries over from chapter one
 
 - Tomas, Cato and Ines, with their stories, their sittings and their opinion of the hand.
+- Opinion carries as it stands; nothing resets at the chapter's start. Goodwill needs keeping up: a high opinion fades by one every 14 days the hand does nothing for that person, down to friend and no further, and never for someone loyal (`OPINION_FADE`, js/people.js). A grudge does not fade; it stays until the hand puts it right. So a friend from chapter one starts chapter two leaning the hand's way but not a sure vote, and a wrong done in chapter one has to be mended on purpose before the last vote.
 - The hand's room, if they have one, and the crew's family lines and stories by place (#871, #885).
 - The record, for the endings: who lived, who was promised what, who was let down.
 
 Hester's ship goes on without the hand, and is not part of this chapter.
 
-## Still to write
+## The people
 
-- The people sheets are drafts for review: `people/saran.md` (the master, Dov Saran), `people/bexa.md`, `people/pax.md`, `people/yelena.md` and `people/ruben.md`.
-- Whether opinion fades over time (#891): it decides how much chapter one's goodwill and grudges weigh in chapter two's votes.
+The sheets are in `people/`: `saran.md` (the master, Dov Saran), `bexa.md`, `pax.md`, `yelena.md` and `ruben.md`.
 
 ## Assumptions to confirm
 
@@ -75,4 +75,5 @@ Hester's ship goes on without the hand, and is not part of this chapter.
 - Yelena and Ruben come in through the war, as people to meet and possibly recruit.
 - The chapter ends in one vote on the lender's offer, with three outcomes: hold, charter or sell.
 - Hester's ship is not part of the chapter.
+- Opinion carries over as it stands: goodwill fades to friend without upkeep, grudges stay until mended.
 - Bexa's and Pax's Ceres homes (the station, the Warren) stand; Yelena's and Ruben's Mars domes (Olympus, Valles) are names from the old world, to be checked against `mars.md`.

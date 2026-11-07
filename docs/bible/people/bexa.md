@@ -1,6 +1,6 @@
 # Bexa Oyelaran
 
-Status: a draft for review (#891). Built on `ceres-coop.md`, `chapter-2.md`, `the-belt.md` and `work.md`.
+Status: approved by the owner on 2026-11-07 (#891). Built on `ceres-coop.md`, `chapter-2.md`, `the-belt.md` and `work.md`.
 
 ## Where she stands
 
