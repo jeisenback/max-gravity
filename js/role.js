@@ -50,7 +50,7 @@ const ROLES = {
   },
 };
 
-const COOP_BARRED = ['buyship', 'cbuy', 'buyout', 'sellout', 'hire', 'interviewHire', 'dismiss'];  // what the co-op may not do: buy a ship, run the company, hire
+const COOP_BARRED = ['buyship', 'cbuy', 'hire', 'interviewHire', 'dismiss'];  // what the co-op may not do: buy a ship, buy one for the company, hire (buyout and sellout are outfits, which it fits)
 const chapterOf = st => (st.hired && st.hired.chapter) || 1;  // chapter two keeps the hand's record, marked (hired.js signOn)
 const roleOf = hand => (hand ? (hand.chapter === 2 ? ROLES.coop : ROLES.hand) : ROLES.owner);
 const role = () => roleOf(hired());

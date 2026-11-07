@@ -224,26 +224,26 @@ function bayGrid(booked = null) {
 
 // The Operations station as a console: the cargo bay on the display, the manifest and the contracts beside it.
 function operationsPanel() {
-  const st = G.state, s = ship(), held = hired() && heldContract(hired());
-  const booked = held && !hired().run && !(st.cargo[held.good] > 0) ? { id: held.good, tons: held.tons, shipper: held.shipper } : null;  // the contract at the dock: its load goes aboard at sailing (hired.js sail)
+  const st = G.state, s = ship(), hand = hired() && chapterOf(st) === 1 ? hired() : null, held = hand && heldContract(hand);  // the captain's hold is chapter one's; the co-op's hold is its own (#891)
+  const booked = held && !hand.run && !(st.cargo[held.good] > 0) ? { id: held.good, tons: held.tons, shipper: held.shipper } : null;  // the contract at the dock: its load goes aboard at sailing (hired.js sail)
   const bay = bayGrid(booked);
   const bookedRow = booked ? String(h`<div class="con-read"><span><i class="con-swatch booked" style="border-color:${CARGO_COLORS[COMMODITIES.findIndex(c => c.id === booked.id) % CARGO_COLORS.length]}"></i>${goodName(booked.id)}</span><b>${booked.tons}t booked</b></div><p class="hint">Loads at sailing, for ${booked.shipper}.</p>`) : '';
   const manifest = String(listHtml(COMMODITIES.filter(c => st.cargo[c.id] > 0), c => h`<div class="con-read"><span><i class="con-swatch" style="background:${CARGO_COLORS[COMMODITIES.indexOf(c) % CARGO_COLORS.length]}"></i>${c.name}</span><b>${st.cargo[c.id]}t</b></div>`));
   const jobs = String(listHtml(st.missions, m => h`<div class="hint">${m.title} (due ${dateOf(m.deadline)})</div>`));
   return consoleHtml({
-    title: 'Operations', status: hired() ? String(h`The captain's hold: ${cargoUsed()}/${s.cargo}t, Capt. ${hiredCaptain().first} ${hiredCaptain().last}`) : `Hold ${cargoUsed()}/${s.cargo}t`,
+    title: 'Operations', status: hand ? String(h`The captain's hold: ${cargoUsed()}/${s.cargo}t, Capt. ${hiredCaptain().first} ${hiredCaptain().last}`) : `Hold ${cargoUsed()}/${s.cargo}t`,
     screen: bay.svg,
-    side: (hired() && heldContract(hired()) ? contractPaperHtml(heldContract(hired()), st.day) : '') + conCard('Manifest', manifest + bookedRow || '<p class="hint">The hold is empty.</p>') + (jobs || !hired() ? conCard('Contracts', jobs || '<p class="hint">No active contracts.</p>') : ''),  // the paper (readouts.js); a hand with no errand has no contracts to show
+    side: (held ? contractPaperHtml(held, st.day) : '') + conCard('Manifest', manifest + bookedRow || '<p class="hint">The hold is empty.</p>') + (jobs || !hand ? conCard('Contracts', jobs || '<p class="hint">No active contracts.</p>') : ''),  // the paper (readouts.js); a hand with no errand has no contracts to show
     controls: G.transit ? '<p class="hint">Trade, contracts, and the bar open when you dock.</p>' : '',
   });
 }
 
 const portView = UI.views.port;
-UI.views.port = function () { return (hired() ? runHtml() : '') + operationsPanel() + portView.call(this); };  // a hand's first question is what the captain will do next, so the run leads
+UI.views.port = function () { return (hired() && chapterOf(G.state) === 1 ? runHtml() : '') + operationsPanel() + portView.call(this); };  // a hand's first question is what the captain will do next, so the run leads; the co-op's runs are its own (#891)
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;
-UI.views.shipyard = function () { return engineerPanel() + (hired() ? buyInHtml() : shipyardView.call(this)); };
+UI.views.shipyard = function () { return engineerPanel() + (hired() && chapterOf(G.state) === 1 ? buyInHtml() : shipyardView.call(this)); };  // the share's offer is chapter one's; the co-op refuels, repairs and fits out (#891)
 
 // ---------- the viewscreen at port ----------
 

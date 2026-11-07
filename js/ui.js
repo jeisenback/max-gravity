@@ -177,7 +177,7 @@ const UI = {
     port() {
       const st = G.state, s = ship(), p = this.planet;
       const fuelNeed = s.fuel - st.fuel, armorNeed = s.armor - st.armor;
-      const canService = p.services.includes('refuel') && !hired();  // a hired ship is topped up by the captain
+      const canService = p.services.includes('refuel') && role().mayAct('refuel');  // a hired ship is topped up by the captain; the owner and the co-op buy their own
       return String(h`
         <p class="desc">${p.desc}</p>
         ${listHtml(this.notes, n => h`<div class="note">${n}</div>`)}
@@ -282,7 +282,7 @@ const UI = {
       const tradeIn = Math.round(SHIPS[st.shipId].price * 0.6);
       const govName = gov === 'Pirate' ? 'the pirates' : `the ${gov}`;
       let html = '';
-      if (p.services.includes('shipyard')) {
+      if (p.services.includes('shipyard') && role().mayAct('buyship')) {  // the co-op has one hull and buys no other (role.js, #891)
         const rows = Object.entries(SHIPS).filter(([, s]) => s.forSale).map(([id, s]) => {
           const cost = s.price - tradeIn, owned = id === st.shipId, eff = shipStats(id);
           const locked = s.req && standing < s.req;

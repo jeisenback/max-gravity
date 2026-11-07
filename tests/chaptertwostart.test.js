@@ -88,3 +88,81 @@ test('a finished save from before chapter two goes on the same way', async () =>
   assert.deepEqual(r.share, { coop: 'Ceres Station', buyIn: 57000, owed: 93000 });
   assert.ok(r.v.crew.some(c => c.cast === 'cato'));
 });
+
+// ---------- Task 4: the co-op's board and exchange, and nothing of chapter one's own ----------
+
+const started = () => {
+  window.coopAt = (i = 0) => { toShare(); goOnAndPick(i); const st = G.state; st.story.next = 1e9; G.dialog = null; G.nextEvent = null; UI.notes.length = 0; return st; };
+  window.contract = (o = {}) => ({ shipper: 'the Compact Freight Office', good: 'water', tons: 20, from: 'Ceres Station', sid: 'mars', planet: 'Mars', yard: false, days: 5, pay: 12000, due: G.state.day + 9, hazard: false, rumor: false, ...o });
+  window.landAtPort = (sid, planet) => { const st = G.state; G.transit = null; st.systemId = sid; st.planet = planet; G.mode = 'landed'; G.dialog = null; G.nextEvent = null; st.customs = { ...(st.customs || {}), last: st.day };
+    const titles = []; Mods.emit('landed', currentPlanet()); let guard = 10; while (G.dialog && guard--) { titles.push(G.dialog.event.title); chooseEvent(0); finishEvent(); } return titles; };
+};
+
+test('the co-op takes a contract from the board and is paid into the fund, with no wage', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt(), h = hired(); UI.tab = 'port'; UI.render();
+    const board = document.querySelectorAll('button[data-action="takeContract"]').length;
+    career().freight = { key: `${currentPlanet().name}@${st.day}`, list: [contract()] };
+    const took = takeContract(0), fund0 = h.fund, c0 = st.credits; UI.notes.length = 0;
+    st.day += 5; landAtPort('mars', 'Mars');
+    return { board, took: !!took, paid: st.credits - c0, fund: h.fund - fund0, notes: UI.notes.join(' | ') };
+  });
+  await done();
+  assert.ok(r.board >= 0); assert.equal(r.took, true);
+  assert.equal(r.paid, 12000 - 0, `paid into the fund: ${r.notes}`); assert.equal(r.fund, 0, 'the captain\'s fund is not the co-op\'s');
+  assert.doesNotMatch(r.notes, /wage/i);
+});
+
+test('the co-op trades on the exchange from its fund', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => { const st = coopAt(); st.credits = 50000; const ready = tabReady(currentPlanet(), 'trade'); const cid = Object.keys(currentPlanet().prices)[0]; const c0 = st.credits; UI.planet = currentPlanet(); UI.act('buy', cid); return { ready, bought: st.cargo[cid] || 0, spent: c0 - st.credits }; });
+  await done();
+  assert.equal(r.ready, true); assert.equal(r.bought, 1); assert.ok(r.spent > 0);
+});
+
+test('the leak test: three landings in chapter two play nothing of chapter one\'s own, and fuel is not topped up for free', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt(), seen = [], fuel = [];
+    for (const [sid, pl] of [['mars', 'Mars'], ['earth', 'Earth'], ['ceres', 'Ceres Station']]) {
+      st.day += 6; st.fuel = 50; seen.push(...landAtPort(sid, pl)); fuel.push(st.fuel);
+      seen.push(...UI.notes); UI.notes.length = 0;
+    }
+    return { seen, fuel, offers: (G.offers || []).filter(o => o.errand).length, tutorial: st.tutorial };
+  });
+  await done();
+  const chapterOne = /The End of Chapter One|A Member's Share|Gone From the Apron|The Empty Cradle|Settling Up|wage|savings|buy-in|hire-purchase/i;
+  assert.deepEqual(r.seen.filter(t => chapterOne.test(t)), [], r.seen.join(' | '));
+  assert.deepEqual(r.fuel, [50, 50, 50], 'the co-op buys its own fuel');
+  assert.equal(r.offers, 0, 'no errands board'); assert.equal(r.tutorial, null);
+});
+
+test('the co-op\'s shipyard refuels, repairs and fits out, sells no ship, and the Port page has no chapter-one panels', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt(); st.credits = 50000; st.fuel = 10;
+    const text = tab => { UI.tab = tab; UI.render(); return document.querySelector('.shell .body').textContent.replace(/\s+/g, ' '); };
+    const yard = text('shipyard'), port = text('port'), buttons = [...document.querySelectorAll('.shell button[data-action]')].map(b => b.dataset.action);
+    UI.tab = 'shipyard'; UI.render(); const yardButtons = [...document.querySelectorAll('.shell button[data-action]')].map(b => b.dataset.action);
+    return { yard, port, buttons, yardButtons };
+  });
+  await done();
+  assert.doesNotMatch(r.yard, /member's share|Sign on|savings/i, r.yard.slice(0, 300));
+  assert.ok(r.buttons.includes('refuel'), `the Port page refuels: ${r.buttons.join(',')}`); assert.ok(r.yardButtons.includes('buyout'), 'outfits are fitted');
+  assert.ok(!r.yardButtons.includes('buyship') && !r.yardButtons.includes('buyInAsk') && !r.yardButtons.includes('cbuy'), r.yardButtons.join(','));
+  assert.doesNotMatch(r.port, /member's share|buy-in|your savings/i, r.port.slice(0, 400));
+});
+
+test('a fight that ends the hand\'s life in chapter two ends the run as in chapter one, naming the master', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => { const st = coopAt(); const cap = hiredCaptain(); handDies({}, 'first'); const e = G.nextEvent; return { canDie: role().canDie, title: e && e.title, text: e && e.text, choices: e && e.choices.map(c => c.label), last: cap.last }; });
+  await done();
+  assert.equal(r.canDie, true); assert.equal(r.title, 'The Last Run'); assert.deepEqual(r.choices, ['Begin again']);
+  assert.ok(r.text.includes(r.last), 'the master says it'); assert.doesNotMatch(r.text, /undefined|NaN|Hester/);
+});

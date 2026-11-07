@@ -54,7 +54,8 @@ test('a chapter-two record gives the co-op\'s role: it flies and trades, and buy
   assert.deepEqual(Object.keys(coop).sort(), Object.keys(ROLES.hand).sort(), 'the same questions');
   assert.equal(coop.canTrade, true); assert.equal(coop.canDie, true);
   assert.equal(coop.mayTab('trade'), true); assert.equal(coop.mayTab('company'), false);
-  for (const a of ['takeoff', 'plot', 'burn', 'buy', 'sell', 'refuel', 'repair', 'torpbuy']) assert.equal(coop.mayAct(a), true, a);
+  for (const a of ['takeoff', 'plot', 'burn', 'buy', 'sell', 'refuel', 'repair', 'torpbuy', 'buyout', 'sellout']) assert.equal(coop.mayAct(a), true, a);
+  assert.deepEqual([...COOP_BARRED].sort(), ['buyship', 'cbuy', 'dismiss', 'hire', 'interviewHire']);
   for (const a of COOP_BARRED) assert.equal(coop.mayAct(a), false, a);
   assert.equal(coop.decides({ via: 'ship' }, 'gunner'), true); assert.equal(coop.paysFrom(), 'credits');
   for (const id of ['drills', 'practise', 'repair']) assert.equal(coop.mayDowntime(id, {}, 'gunner'), ROLES.hand.mayDowntime(id, {}, 'gunner'), id);
