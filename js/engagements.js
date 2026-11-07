@@ -132,7 +132,7 @@ function ambushScene() {
 function ambushChoice(a, cap, h, post, spec) {
   const springs = (edge, text, open) => startShipFight(scenePirate(), false, { edge, text, open }), say = key => ambushSay(key, { cap: cap.last, post: POSTS[post].name.toLowerCase() });
   const sprung = () => springs(-2, say('sprung.result'), say('sprung.open'));
-  const real = () => { h.fund += 5000; like(cap, 1, lineWords('beats:ambush', 'memory.real', AMBUSH_MEMORY.real)); return say('real.result'); };
+  const real = () => { moveMoney(5000); like(cap, 1, lineWords('beats:ambush', 'memory.real', AMBUSH_MEMORY.real)); return say('real.result'); };
   const choices = [];
   if (a.known) {
     if (a.trap) {

@@ -12,7 +12,7 @@ const gated = (...checks) => ({
 });
 const needCr = cost => [() => G.state.credits >= cost, () => `You have ${fmt(G.state.credits)} cr; this costs ${fmt(cost)} cr.`];
 const needMass = n => [() => G.state.fuel >= n, () => `You have ${Math.floor(G.state.fuel)} reaction mass; this takes ${n}.`];
-const needFunds = cost => [() => hired().fund >= cost, () => `The ship's funds have ${fmt(hired().fund)} cr; this takes ${fmt(cost)} cr.`];
+const needFunds = cost => [() => purse() >= cost, () => `The ship's funds have ${fmt(purse())} cr; this takes ${fmt(cost)} cr.`];  // the captain's fund, or the co-op's (boarders.js purse, #905)
 const needBerth = [() => berthsFree() > 0, () => 'There is no free berth aboard.'];
 const needRoom = [() => cargoFree() > 0, () => 'There is no room in the hold.'];
 const needGoods = [() => hasTradeCargo(), () => 'There is no cargo in the hold to trade.'];
