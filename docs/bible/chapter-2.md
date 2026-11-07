@@ -18,7 +18,13 @@ Seven, as on Hester's ship.
   - **Cato**, who saved his buy-in for years and was waiting for a hull to sign on to with others (`ceres-coop.md`);
   - **Bexa**, the older hand. She pulled dead ships into Ceres on a salvage tug for twenty years and wants to bring home one that everybody else gave up on. The Ore Runner is that ship, and it is why she bought in;
   - **Pax**, the young member. A renter's child from the Warren, on the ice crews from sixteen until a coupling failed. A co-op berth was what Warren children hope for; Pax fought for this one, and wants a ship where nobody gets hurt on their watch.
-- **The master**, Dov Saran (`people/saran.md`), hired by the co-op and not a member: a licensed master who holds the bridge for the co-op. In play he carries out what the player and the meeting decide; he can refuse an order he thinks unsafe, once, in a scene, and overruling him costs something. The only character written new for this chapter.
+- **The master**, hired by the co-op on a wage and not a member: a licensed master who holds the bridge for the co-op. The lender made a master one of its terms, and sends the co-op three names from a pool of four it approves; the co-op chooses one (the members' first vote). Each pulls the co-op toward someone in the war:
+  - **Aron Saran** (`people/saran.md`), careful, by the book; his wife works for Tycho;
+  - **Ama Kessler** (`people/kessler.md`), the lender's placement master, who reports to the house and says so;
+  - **Tavi Mensah** (`people/mensah.md`), a Belt master who flew Kaur's tankers for ten years;
+  - **Noor Belanger** (`people/belanger.md`), a former Ballast convoy master with a mark on her licence.
+
+  In play the master carries out what the player and the meeting decide, and can refuse an order they think unsafe, once, in a scene; overruling them costs something. The masters are the characters written new for this chapter.
 - **Ines**, hired as the pilot on a wage, not a member. She left Hester's ship to come with Tomas, Cato and the hand. She flies on a cheap registry's endorsement (`README.md`, decision 12), which is good only on a hull under that registry, so the co-op has to register the Ore Runner where her endorsement counts, or Ines has to earn a real licence.
 
 The Ore Runner's refit adds the master's cabin and a bunk for the pilot to her five berths.
@@ -65,13 +71,13 @@ Hester's ship goes on without the hand, and is not part of this chapter.
 
 ## The people
 
-The sheets are in `people/`: `saran.md` (the master, Dov Saran), `bexa.md`, `pax.md`, `yelena.md` and `ruben.md`.
+The sheets are in `people/`: the four masters (`saran.md`, `kessler.md`, `mensah.md`, `belanger.md`), `bexa.md`, `pax.md`, `yelena.md` and `ruben.md`.
 
 ## Assumptions to confirm
 
 - Chapter two has two halves: paying the share down, then the lender's squeeze as an owners' war rumbles; the war breaks out in chapter three.
 - The view is the co-op's: the player flies, trades and fights the Ore Runner, and the big decisions go to the members' vote, which can overrule the player.
-- The master is hired by the co-op and is not a member; he carries out what is decided, and can refuse an unsafe order once, at a cost.
+- The master is one of three the lender sends from a pool of four, chosen by the co-op, and is not a member; he carries out what is decided, and can refuse an unsafe order once, at a cost.
 - The five members are the hand, Tomas, Cato, Bexa and Pax; Ines comes as the hired pilot, and her membership or licence is a vote mid-chapter.
 - The Ore Runner's refit adds the master's cabin and a bunk for the pilot, so seven are aboard.
 - Yelena and Ruben come in through the war, as people to meet and possibly recruit.
