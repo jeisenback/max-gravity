@@ -1225,3 +1225,30 @@ test('the Watch Bill trades the middle watch against the captain and a quiet wat
   assert.match(r.fly.text, /\(\+1 experience at the pilot post\.\)$/, r.fly.text);
   await done();
 });
+
+// #920: The Final trades Yelena against the captain and her own edge at the guns; Two Orders' stand-down rests the crew it was for.
+test('The Final trades Yelena\'s regard against the captain\'s and Yelena\'s gunnery, and standing the watch down in Two Orders rests the crew (#920)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const play = (key, sceneId, label) => {
+      start({ mode: 'hired', post: 'gunner', captainKey: 'hester' });
+      const cap = person(hiredCaptain().id), them = castPerson(key), crew = procedural().map(f => f.p).filter(p => p !== them);  // the rest of the crew
+      cap.opinion = them.opinion = 0; for (const p of crew) p.opinion = 0;
+      const xp0 = (them.xp || {}).gunner || 0;
+      G.dialog = null; if (G.transit) G.transit.event = null;
+      openEvent(castScene(key, CAST[key].scenes[sceneId]));
+      const i = G.dialog.choices.findIndex(c => c.label === label), text = i < 0 ? '' : chooseEvent(i);
+      return { i, text, them: them.opinion, cap: cap.opinion, xp: ((them.xp || {}).gunner || 0) - xp0, crew: crew.length ? crew.every(p => p.opinion === 1) : null, crewN: crew.length };
+    };
+    return { take: play('yelena', 'mid2', 'Take her watch'), yours: play('yelena', 'mid2', '"It\'s your watch."'), hold: play('cato', 'mid2', 'Hold the deck, as the captain wrote it'), down: play('cato', 'mid2', 'Stand the watch down, as Cato asked') };
+  });
+  assert.deepEqual([r.take.them, r.take.cap, r.take.xp], [3, -1, 0], 'taking her watch: Yelena warmer, the captain counts the hour moved');
+  assert.deepEqual([r.yours.them, r.yours.cap], [-1, 1], 'her watch as written: the captain approves');
+  assert.ok(r.yours.xp > 0, 'and Yelena stands it sharp at the guns');
+  assert.match(r.take.text, /captain/i, r.take.text);
+  assert.deepEqual([r.hold.them, r.hold.cap, r.hold.crew], [-1, 2, false], 'holding the deck: the crew get nothing');
+  assert.ok(r.down.crewN > 0, 'there is a crew to rest');
+  assert.deepEqual([r.down.them, r.down.cap, r.down.crew], [3, -1, true], 'standing it down: Cato (+2, and +1 as one of the crew aboard), against the captain, and the crew rested');
+  await done();
+});

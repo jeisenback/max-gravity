@@ -122,10 +122,10 @@ CAST.cato = {
         },
         {
           label: 'Stand the watch down, as Cato asked',
-          effects: { castLike: { who: 'cato', n: 2, memory: 'You stood the watch down when I asked.' }, captainLike: { n: -1, memory: 'You stood the watch down against my order.' } },
+          effects: { castLike: { who: 'cato', n: 2, memory: 'You stood the watch down when I asked.' }, captainLike: { n: -1, memory: 'You stood the watch down against my order.' }, like: { crew: 1 } },
           result: ('You stand them down. Cato does the count, alone. It isn\'t finished until morning, and Captain Vance finds the gap in the log, and ' +
               'finds you. "Whose idea?" she says. You tell her. "I see," she says, and writes something down. Cato, passing in the passage, doesn\'t ' +
-              'look at either of you.'),
+              'look at either of you. The watch you stood down slept eight hours straight, and at breakfast they pass you the coffee first.'),
         },
       ],
     },
