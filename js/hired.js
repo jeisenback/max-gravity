@@ -502,16 +502,81 @@ function signOn(id) {
   for (const c of st.crew.map(person)) if (!friends.includes(c)) c.location = planet.name;  // the rest stay with her
   st.crew = friends.map(c => c.id);
   for (const f of friends) like(f, 2, say('coop.friend.memory', { ship: oldName }));
-  st.career = { ...careerOf(h), came: friends.map(c => c.id), signed: st.day, share: { coop: COOP_PORT, buyIn: price, owed: SHARE_PRICE - price }, finished: true };
-  st.hired = null;
+  // The record carries on into chapter two (#891): the hand is a member now, with the share, who came and the day. The captain on it stays Hester
+  // until the player goes on and picks the master (goOn, pickMaster): the end of chapter one is still read with her name.
+  Object.assign(h, { chapter: 2, share: { coop: COOP_PORT, buyIn: price, owed: SHARE_PRICE - price }, came: friends.map(c => c.id), signed: st.day, run: null, deal: null, confirm: null });
+  st.tutorial = null;  // the hand's first run is long done
   return say('coop.result', { price: fmt(price), old: oldName, first: cap.first, last: cap.last, owed: fmt(SHARE_PRICE - price),
     company: ` ${friends.length ? sceneSay('scene:screens', 'buyin.with', { names: namesOf(friends) }) : sceneSay('scene:screens', 'buyin.alone')}` });
 }
 
-// The end of chapter one (#882): after the close, until chapter two is written. Its one choice goes back to the title; a finished save reopens on it.
+// The end of chapter one (#882): after the close. Its one choice goes on into chapter two (#891); a save between the two reopens on it.
 const overSay = key => sceneSay('scene:chapter-over', key);
-function chapterOverScene() { return { title: overSay('title'), personal: true, text: overSay('text'), choices: [{ label: overSay('label'), run() { save(); G.dialog = null; G.nextEvent = null; Menu.showTitle(); return null; } }] }; }  // saved while still landed (the title saves nothing), and nothing left to open over the title
-const finishedSave = () => !!((G.state || {}).career || {}).finished;
+function chapterOverScene() { return { title: overSay('title'), personal: true, text: overSay('text'), choices: [{ label: overSay('label'), run() { G.nextEvent = goOn(G.state); return null; } }] }; }
+// A save at the end of chapter one: one from before chapter two (the record cleared, the career finished), or a member's record with no master picked yet.
+const masterPicked = h => !!(h && MASTER_CAPTAINS[h.captainKey]);
+const finishedSave = () => { const st = G.state || {}; return (!st.hired && !!(st.career || {}).finished) || (chapterOf(st) === 2 && !masterPicked(st.hired)); };
+
+// ---------- chapter two's start (#891, docs/superpowers/specs/2026-11-07-chapter-two-start-design.md) ----------
+
+// Going on: a save from before chapter two has its record rebuilt from the career; then the lender sends three masters, and the start scene opens.
+function goOn(st) {
+  if (!st.hired && st.career) {
+    const c = st.career;
+    st.hired = { ...c, chapter: 2, share: c.share, came: c.came || [], signed: c.signed === undefined ? st.day : c.signed, fund: 0, debt: 0, flags: {}, wage: 0, ledger: [], run: null, off: null, asked: 0, raidTold: true, deckTold: true, fights: { done: FIGHT_LADDER.filter(x => !x.parked).map(x => x.id) } };  // the fields a hand's record has (setupHired); the briefings were given and the ladder's fights fought in chapter one
+    delete c.finished;
+  }
+  const h = st.hired;
+  if (!h.masters) h.masters = masterDraw(coopRand(st));
+  return chapterTwoStartScene();
+}
+
+// The co-op's hull: the used Ore Runner as she is, tanks and armor full, nothing fitted, an empty hold. Her name waits for the members' first meeting.
+function chapterTwoShip(st) {
+  st.shipId = 'lightfreighter'; st.fuel = SHIPS.lightfreighter.fuel; st.armor = SHIPS.lightfreighter.armor;
+  st.condition = { ...USED_CONDITION }; st.outfits = {}; st.torpedoes = 0; st.cargo = {}; st.paid = {};
+  for (const k of ['refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
+  home().name = 'Ore Runner';
+}
+
+// Who is aboard: who came, with their posts; Bexa on the deck and Pax at the gun beside the hand. A berth left by someone who did not come stays
+// empty until the members vote on who joins. The master is not crew, as a captain is not. Returns the crew's ids.
+function chapterTwoCrew(st, h) {
+  const ids = (h.came || []).filter(id => st.people[id] && !st.people[id].dead);
+  for (const [key, role] of [['bexa', 'icehand'], ['pax', 'gunner']]) {
+    const p = castPerson(key);
+    Object.assign(p, { role, skill: role === 'icehand' ? 1 : (p.skills.gunner || 1), location: null });
+    if (!ids.includes(p.id)) ids.push(p.id);
+  }
+  return ids;
+}
+
+// The start: the members at the ramp, the lender's letter, a choice for each master. The pick puts the master on the bridge and the co-op at Ceres.
+const twoSay = (key, vars) => sceneSay('scene:chapter-two-start', key, vars);
+function chapterTwoStartScene() {
+  const h = G.state.hired, came = (h.came || []).map(id => G.state.people[id]).filter(p => p && !p.dead), names = came.map(p => p.first);
+  const members = names.length ? twoSay('members', { names: namesOf(came) }) : twoSay('members.alone');
+  const intros = h.masters.map(k => MASTER_CAPTAINS[k].intro()).join('</p><p>');
+  return {
+    title: twoSay('title'), personal: true,
+    text: [twoSay('ramp'), members, twoSay('letter'), intros].join('</p><p>'),
+    choices: h.masters.map(k => ({ label: `${MASTER_CAPTAINS[k].first} ${MASTER_CAPTAINS[k].last}`, run() { return pickMaster(G.state, k); } })),
+  };
+}
+function pickMaster(st, key) {
+  const h = st.hired, cap = captainPerson(key);
+  cap.role = 'captain'; cap.job = 'master';
+  Object.assign(h, { captainKey: key, captain: cap.id });
+  chapterTwoShip(st);
+  st.crew = chapterTwoCrew(st, h);
+  st.systemId = 'ceres'; st.planet = COOP_PORT; G.mode = 'landed';
+  const port = currentPlanet();
+  G.offers = [];  // the hand's errands are chapter one's; the co-op's work comes with its first landing, as the owner's does (game.js), with no draw here
+  if (port.services.includes('trade')) seenPrices(st, port, st.day, price);
+  save();  // the start is kept: a reload before the first landing reopens in chapter two
+  const ines = st.crew.map(id => st.people[id]).find(p => p && p.cast === 'ines');
+  return [twoSay('picked', { first: cap.first, last: cap.last }), ines ? twoSay('ines') : twoSay('noines')].join(' ');
+}
 
 // The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp, read before buyIn takes the
 // captain and the crew apart. It closes the chapter, not the game: the game's own endings (docs/endings-parked.md, #132) wait for the end of the last
@@ -644,20 +709,21 @@ Mods.register({
     M.filter('chatter', pool => (hired() && hiredCaptain() && Math.random() < 0.2 ? captainChatter() : pool));
     // The captain pays for fuel and repairs: a hired ship is topped up whenever she docks somewhere that sells them.
     M.on('landed', planet => {
-      if (!hired() || !planet.services.includes('refuel')) return;
+      if (!hired() || chapterOf(G.state) > 1 || !planet.services.includes('refuel')) return;  // the captain's; the co-op buys its own (#891)
       G.state.fuel = ship().fuel;
       if (G.state.armor >= ship().armor * (1 - REPAIR_AT)) G.state.armor = ship().armor;  // a scrape is patched on the way in; real damage is the yard's (repairs.js)
     });
     M.on('landed', planet => {
-      const text = hired() && settleRun(planet);
+      const text = hired() && chapterOf(G.state) === 1 && settleRun(planet);  // the captain's run and the hand's wage; the co-op's contracts settle on its board (ownerboard.js)
       if (text) M.note(text);
-      if (hired() && arrivalPending(planet) && !G.dialog) { hired().arrived = true; openEvent(castScene(hiredXo().cast, arrivalScene())); }  // the first officer settles up (captains.js)
+      if (hired() && chapterOf(G.state) === 1 && arrivalPending(planet) && !G.dialog) { hired().arrived = true; openEvent(castScene(hiredXo().cast, arrivalScene())); }  // the first officer settles up (captains.js)
     });
-    M.on('landed', planet => { hullNote(); dealCheck(planet); });
-    M.on('landed', planet => { const h = hired(), line = h && restockTorps(G.state, h, planet, ship().launcher); if (line) M.note(line); });
-    M.on('landed', planet => { if (hired()) G.offers = errandsFor(planet); });  // the board has errands, not contracts
+    M.on('landed', planet => { if (chapterOf(G.state) > 1) return; hullNote(); dealCheck(planet); });  // the share's offer is chapter one's
+    M.on('landed', planet => { const h = hired(), line = h && chapterOf(G.state) === 1 && restockTorps(G.state, h, planet, ship().launcher); if (line) M.note(line); });  // the captain restocks hers; the co-op buys its own
+    M.on('landed', planet => { if (hired() && chapterOf(G.state) === 1) G.offers = errandsFor(planet); });
+    M.on('landed', planet => { if (chapterOf(G.state) > 1 && planet.services.includes('trade')) seenPrices(G.state, planet, G.state.day, price); });  // the co-op remembers each exchange it docks at (market.js, #891)  // a hand's board has errands, not contracts; the co-op's has the contracts (ownerboard.js)
     M_NOTE = text => M.note(text);
-    M.action('sail', () => { if (hired() && !sideBeforeSail()) sail(); });  // a side on the paper is a scene at the lock first (shippers.js)
+    M.action('sail', () => { if (hired() && chapterOf(G.state) === 1 && !sideBeforeSail()) sail(); });  // the captain's sail is chapter one's; the co-op takes off (#891)  // a side on the paper is a scene at the lock first (shippers.js)
     M.action('swapPost', post => askSwap(post));
     M.action('buyInAsk', id => {
       if (!hired() || !canBuyIn(id, currentPlanet())) return;

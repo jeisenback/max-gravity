@@ -19,8 +19,7 @@ function stripItems(st, hd, armor, maxArmor, day) {
   return [
     ['Contract', c ? `${c.tons}t ${goodName(c.good)} to ${c.planet}, ${dueWord(c, day)}` : 'none'],
     ['Hull', `${Math.round(100 * armor / maxArmor)}%`],
-    ['Fund', `${fmt(hd.fund)} cr`],
-    ['Savings', `${fmt(st.credits)} cr`],
+    ...(chapterOf(st) > 1 ? [['Fund', `${fmt(st.credits)} cr`]] : [['Fund', `${fmt(hd.fund)} cr`], ['Savings', `${fmt(st.credits)} cr`]]),  // the co-op's fund is its money (#891); the captain's fund and the hand's savings are chapter one's
     ...(hurt ? [['Hurt', dayWord(hurt)]] : []),
   ];
 }

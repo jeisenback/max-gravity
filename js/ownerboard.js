@@ -6,10 +6,10 @@
 // career (career().run), and on the landing at the contract's port the shipper pays, docked for lateness and short or lost loads, to the player's credits, and its regard for the ship moves
 // (shippers.js). Only the owner has a board; the hand's is the captain's. Loaded after readouts.js; only called into at runtime.
 
-const ownerHasBoard = () => !hired() && !!career() && currentPlanet().services.includes('trade');
+const ownerHasBoard = () => role().canTrade && !!career() && currentPlanet().services.includes('trade');  // the owner's, and the co-op's in chapter two (#891)
 
 // Tons of a good in the hold that are a shipper's, on their way to its port: not the owner's to sell at the Exchange (ui.js), whatever the market pays.
-const freightHeld = good => { const run = !hired() && career() && career().run; return run && run.good === good ? run.tons : 0; };
+const freightHeld = good => { const run = role().canTrade && career() && career().run; return run && run.good === good ? run.tons : 0; };
 
 // The Port page's section: the run under way, or the day's contracts, each with its pay and when it is due.
 function ownerBoardHtml() {
@@ -40,7 +40,7 @@ function takeContract(i) {
 // The landing at the contract's port: the shipper pays for what arrived, docked for lateness, less what a dock broker held back, to the player's credits; its regard for the ship moves with
 // how it came in. Returns the note, or '' when this is not the contract's port.
 function settleContract(planet) {
-  const st = G.state, c = career(), run = !hired() && c && c.run;
+  const st = G.state, c = career(), run = role().canTrade && c && c.run;
   if (!run || planet.name !== run.planet || st.systemId !== run.sid) return '';
   const have = Math.min(run.tons, st.cargo[run.good] || 0), paper = latePay(Math.round(run.pay * have / run.tons), run.due, st.day), cut = skimOf(run, paper, standingOf(c, run.shipper)), pay = paper - cut;
   moveStanding(run.shipper, standingDelta(run, have, st.day));

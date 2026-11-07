@@ -156,7 +156,7 @@ Mods.register({
       const h = hired();
       if (!h || where !== 'port') return list;
       const cap = person(h.captain), out = [];
-      if (cap && cap.memories) {
+      if (cap && cap.memories && chapterOf(G.state) === 1) {  // a captain's patience with her rating; a member of the co-op cannot be put ashore by the master it hired (#891)
         if (cap.opinion >= 0) h.warned = false;  // a captain who has come round forgets
         if (cap.opinion <= PATIENCE.end && h.warned) out.push({ tier: 0, weight: 1, via: 'crew', make: putAshoreScene });
         else if (cap.opinion <= PATIENCE.warn && !h.warned) out.push({ tier: 0, weight: 1, via: 'crew', make: warningScene });

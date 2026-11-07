@@ -57,3 +57,20 @@ function bestSale(planet, cid) {
   }
   return best;
 }
+
+// Last-seen prices (chapter two, #891, docs/bible/trade-and-law.md): what a ship knows of another port's exchange is what it saw when it last
+// docked there. seenPrices records a port's prices on the day; bestSeen gives the highest last-seen price for a good at a port other than `here`,
+// with how many days old it is, or null when nothing is known. Pure: the state and the price function are passed in.
+function seenPrices(st, planet, day, priceOf) {
+  st.seen = st.seen || {};
+  st.seen[planet.name] = { day, prices: Object.fromEntries(Object.keys(planet.prices).map(cid => [cid, priceOf(planet, cid)])) };
+}
+function bestSeen(st, cid, here) {
+  let best = null;
+  for (const [planet, s] of Object.entries(st.seen || {})) {
+    const p = s.prices[cid];
+    if (planet !== here && p != null && (!best || p > best.price)) best = { planet, price: p, age: st.day - s.day };
+  }
+  return best;
+}
+

@@ -280,6 +280,10 @@ const playScenes = () => {
     run('chapterend:share:nobody', {}, () => { const real = window.buyInCompanions, scope = BUILD.scope, st = G.state; hired().deal = { price: BUY_IN.mid, day: st.day };
       window.buyInCompanions = () => []; BUILD.scope = 'earth-hired'; try { return chapterEnd(USED_ID); } finally { window.buyInCompanions = real; BUILD.scope = scope; } });
     run('chapter-over', {}, () => ({ ...chapterOverScene(), choices: chapterOverScene().choices.map(c => ({ ...c, run: () => '' })) }));  // its choice goes to the title, which the player does not follow
+    // chapter two's start (#891): the members with the hand, or nobody came; Ines in the pilot's seat or not; each master picked
+    for (const [name, came] of [['with', ['cato', 'ines']], ['alone', []]]) {
+      run(`chaptertwo:start:${name}`, {}, () => { const st = G.state, h = hired(); Object.assign(h, { chapter: 2, signed: st.day, share: { coop: COOP_PORT, buyIn: BUY_IN.mid, owed: SHARE_PRICE - BUY_IN.mid }, came: came.map(k => castPerson(k).id) }); return goOn(st); });
+    }
     run('hand:signon', { credits: 100000 }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; hired().deal = { price: BUY_IN.mid, day: st.day }; hired().debt = 0; return String(signOn(USED_ID)); } }] }));
   }
   // ---------- the close of chapter two, for each ending and each count of the crew who came along ----------

@@ -116,19 +116,19 @@ test('Cato signs on with you whatever he thinks of you, and the others who like 
   // and only for the share: at another yard, or buying another ship, the old rule stands
 });
 
-test('signing takes the buy-in, keeps the share on the career, and leaves the captain her ship', async () => {
+test('signing takes the buy-in, keeps the share on the member\'s record, and leaves the captain her ship', async () => {
   const { ev, done } = await open();
   await ev(withDeal); await ev(signAndPlay);
   const r = await ev(() => {
     const st = handWithDeal(), ship0 = st.shipId, c0 = st.credits, price = hired().deal.price, cap = hiredCaptain();
     const titles = signAndPlay();
-    return { titles, spent: c0 - st.credits, price, share: st.career && st.career.share, hired: st.hired, ship: st.shipId, ship0, finished: st.career && st.career.finished, bought: st.career && st.career.bought, capShip: !!cap.ship };
+    return { titles, spent: c0 - st.credits, price, share: st.hired && st.hired.share, chapter: chapterOf(st), ship: st.shipId, ship0, finished: !!(st.career && st.career.finished), bought: st.career && st.career.bought, capShip: !!cap.ship };
   });
   await done();
   assert.equal(r.spent, r.price); assert.deepEqual(r.share, { coop: 'Ceres Station', buyIn: 57000, owed: 93000 });
-  assert.equal(r.hired, null); assert.equal(r.ship, r.ship0, 'the hand owns no ship'); assert.equal(r.capShip, true, 'the captain stays a contact with her ship');
-  assert.equal(r.finished, true); assert.equal(r.bought, undefined, 'chapter two\'s owner close does not start');
-  assert.ok(r.titles.includes("A Member's Share"), r.titles.join(' | ')); assert.equal(r.titles[r.titles.length - 1], 'The End of Chapter One');
+  assert.equal(r.chapter, 2, 'the record carries on into chapter two (#891)'); assert.equal(r.ship, 'lightfreighter', 'the co-op\'s Ore Runner, once a master is picked'); assert.equal(r.capShip, true, 'the captain stays a contact with her ship');
+  assert.equal(r.finished, false); assert.equal(r.bought, undefined, 'the old owner close does not start');
+  assert.ok(r.titles.includes("A Member's Share"), r.titles.join(' | ')); assert.deepEqual(r.titles.slice(-2), ['The End of Chapter One', 'Three Names']);
 });
 
 test('the close names Cato first and says what is owed, and reads without him when he is gone', async () => {
@@ -145,16 +145,18 @@ test('the close names Cato first and says what is owed, and reads without him wh
   assert.doesNotMatch(r.without, /Cato/);
 });
 
-test('after the close the chapter ends at the title, and a finished save reopens on the end', async () => {
+test('after the close the player goes on into chapter two, and a save at the end reopens on the end', async () => {
   const { ev, done } = await open();
   await ev(withDeal); await ev(signAndPlay);
   const r = await ev(() => {
-    handWithDeal(); signAndPlay(); const mode = G.mode;
+    handWithDeal(); at('ceres', 'Ceres Station'); hired().confirm = USED_ID; Mods.act('buyInGo', USED_ID);
+    let guard = 20; while (G.dialog && G.dialog.event.title !== 'The End of Chapter One' && guard--) { chooseEvent(0); finishEvent(); }
     save(); loadGame(); const reopened = G.dialog ? G.dialog.event.title : null;
-    return { mode, reopened };
+    UI.act('choose', '0'); const next = G.dialog ? G.dialog.event.title : null;
+    return { reopened, next };
   });
   await done();
-  assert.equal(r.mode, 'title'); assert.equal(r.reopened, 'The End of Chapter One');
+  assert.equal(r.reopened, 'The End of Chapter One'); assert.equal(r.next, 'Three Names');
 });
 
 test('a save that bought her before reopens as it was', async () => {
@@ -171,7 +173,7 @@ test('a save that bought her before reopens as it was', async () => {
 test('an open deal from before signs at its price', async () => {
   const { ev, done } = await open();
   await ev(withDeal); await ev(signAndPlay);
-  const r = await ev(() => { const st = handWithDeal({ credits: 70000 }); hired().deal.price = 61000; const c0 = st.credits; signAndPlay(); return { spent: c0 - st.credits, owed: st.career.share.owed }; });
+  const r = await ev(() => { const st = handWithDeal({ credits: 70000 }); hired().deal.price = 61000; const c0 = st.credits; signAndPlay(); return { spent: c0 - st.credits, owed: st.hired.share.owed }; });
   await done();
   assert.equal(r.spent, 61000); assert.equal(r.owed, 89000);
 });
@@ -196,16 +198,17 @@ test('the hand\'s text says a member\'s share, not a ship', async () => {
   assert.match(r.help, /co-op/); assert.match(r.goal, /buy-in/); assert.match(r.cato, /Ore Runner/); assert.match(r.hope, /five/);
 });
 
-test('the end scene\'s choice, taken through the page, leaves the title menu up with nothing over it', async () => {
+test('the end scene\'s choice, taken through the page, opens chapter two\'s start with three masters', async () => {
   const { ev, done } = await open();
+  await ev(withDeal);
   const r = await ev(() => {
-    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
-    openEvent(chapterOverScene()); UI.act('choose', '0');
-    const menu = document.getElementById('menu') || document.querySelector('[data-action=menuView]');
-    return { mode: G.mode, dialog: !!G.dialog, menuButtons: document.querySelectorAll('[data-action=menuView]').length, hidden: !!(menu && menu.closest('[hidden]')) };
+    handWithDeal(); at('ceres', 'Ceres Station'); hired().confirm = USED_ID; Mods.act('buyInGo', USED_ID);
+    let guard = 20; while (G.dialog && G.dialog.event.title !== 'The End of Chapter One' && guard--) { chooseEvent(0); finishEvent(); }
+    UI.act('choose', '0');
+    return { mode: G.mode, title: G.dialog && G.dialog.event.title, choices: G.dialog ? G.dialog.event.choices.length : 0 };
   });
   await done();
-  assert.equal(r.mode, 'title'); assert.equal(r.dialog, false, 'no result card over the title'); assert.ok(r.menuButtons > 0, 'the menu has its buttons'); assert.equal(r.hidden, false);
+  assert.equal(r.mode, 'landed'); assert.equal(r.title, 'Three Names'); assert.equal(r.choices, 3);
 });
 
 test('a finished save opens on its end without running the landing\'s handlers', async () => {

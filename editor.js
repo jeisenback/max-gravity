@@ -19,7 +19,7 @@
   'js/character.js', 'js/interview.js', 'js/cast.js', 'js/captains.js', 'js/stakes.js', 'js/handtohand.js', 'js/boarders.js', 'js/engagements.js', 'js/fightui.js',
   'js/shipcombat.js', 'js/fight.js', 'js/yardoffice.js', 'js/icerun.js', 'js/ties.js', 'js/captains/hester.js', 'js/captains/cato.js',
   'js/captains/dov.js', 'js/captains/ilsa.js', 'js/captains/imre.js', 'js/captains/pilar.js', 'js/captains/zoya.js',
-  'js/captains/ansel.js', 'js/hiredscenes.js', 'js/linetables.js', 'js/fate.js', 'js/signon.js', 'js/castbar.js', 'js/regulars.js', 'js/barroom.js', 'js/revisit.js', 'js/ashore.js', 'js/official.js', 'js/barwork.js', 'js/overrides.js', 'js/storylets.js',
+  'js/captains/ansel.js', 'js/captains/saran.js', 'js/captains/kessler.js', 'js/captains/mensah.js', 'js/captains/belanger.js', 'js/hiredscenes.js', 'js/linetables.js', 'js/fate.js', 'js/signon.js', 'js/castbar.js', 'js/regulars.js', 'js/barroom.js', 'js/revisit.js', 'js/ashore.js', 'js/official.js', 'js/barwork.js', 'js/overrides.js', 'js/storylets.js',
   'js/happenings.js', 'js/stories/ice-strike.js', 'js/stories/mars-navy.js', 'js/stories/rook-crown.js',
   'js/stories/tethys.js', 'js/stories/cold-water.js', 'js/stories/landings.js', 'js/stories/ports.js',
   'js/stories/on-the-road.js', 'js/stories/aftermath.js', 'js/stories/hired-aftermath.js', 'js/stories/arc-league.js', 'js/stories/arc-concord.js', 'js/stories/arc-compact.js', 'js/community.js', 'js/uat.js',

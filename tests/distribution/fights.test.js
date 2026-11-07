@@ -229,3 +229,16 @@ test('no fixed plan wins seven in ten against every party with two crew, and ran
   const rnd = PARTIES.map(party => pool(party, 'random', [2, 5])).reduce((a, c) => ({ n: a.n + c.n, won: a.won + c.won }), { n: 0, won: 0 });
   assert.ok(1 - won(rnd) >= 0.25, `random play loses ${f2(1 - won(rnd))} of its fights`);
 });
+
+// Chapter two (#891): the raids the co-op's Ore Runner meets on 60 days of the board's contracts (tools/soaktwo.js), what they cost the hull, and who is lost.
+// Sample: 6 seeds. Measured 2026-11-07 over 8 seeds: 0 to 3 raids a seed (about 0.3 a run), 0 to 297 hull lost (the Ore Runner has 100), nobody lost and no
+// hand killed. The bands are provisional, to be set by the owner from the measured figures (#891).
+test('chapter two: the co-op meets raids on the board\'s runs, and they cost the hull without ending every run', async () => {
+  const { soaksTwo } = require('../../tools/soaktwo');
+  const rs = await soaksTwo([1, 2, 3, 4, 5, 6], { days: 60 }, 3);
+  const runs = rs.reduce((t, r) => t + r.runs, 0), raids = rs.reduce((t, r) => t + r.raids, 0), ended = rs.filter(r => r.ending).length;
+  for (const r of rs) { assert.deepEqual(r.bad, [], `seed ${r.seed}`); assert.deepEqual(r.errors, [], `seed ${r.seed}`); }
+  assert.ok(raids / runs <= 1, `${raids} raids in ${runs} runs`);  // provisional (#891)
+  assert.ok(ended <= rs.length / 2, `${ended} of ${rs.length} runs ended early`);  // provisional (#891)
+  console.log(`chapter two fights: ${rs.map(r => `${r.seed}:${r.raids} raids ${r.hull} hull${r.ending ? ` ${r.ending}` : ''}`).join(', ')}`);
+});

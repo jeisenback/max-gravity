@@ -11741,9 +11741,99 @@
    }
   ],
   "title": "The End of Chapter One",
-  "text": "You hold a member's share in a co-op hull, a vote, and a berth nobody can sell out from under you. What comes of it is chapter two, which is still being written.",
+  "text": "You hold a member's share in a co-op hull, a vote, and a berth nobody can sell out from under you. What comes of it is chapter two.",
   "labels": [
-   "Back to the title"
+   "Go on"
+  ]
+ },
+ {
+  "id": "chaptertwo:start:with",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Aron Saran signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. Ines is already in the pilot's seat, with the panel open and her endorsement taped to the console.",
+    "fx": {
+     "p6": 0,
+     "c:bexa": 0,
+     "c:pax": 0
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Noor Belanger signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. Ines is already in the pilot's seat, with the panel open and her endorsement taped to the console.",
+    "fx": {
+     "p6": 0,
+     "c:bexa": 0,
+     "c:pax": 0
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Ama Kessler signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. Ines is already in the pilot's seat, with the panel open and her endorsement taped to the console.",
+    "fx": {
+     "p6": 0,
+     "c:bexa": 0,
+     "c:pax": 0
+    },
+    "next": null
+   }
+  ],
+  "title": "Three Names",
+  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Cato Rahman and Ines Ferreira came up from Hester's ship with you, and stand with the others as if they had always been here.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master on her that the house approves, and it has sent three names. The three are waiting in the yard office, and come down one at a time.</p><p>Aron Saran stands a little apart from the other two, in a jacket pressed for the occasion. \"I commanded freighters out of Luna for fifteen years,\" he says. \"My last one was sold to pay a man's debt, with the crew still aboard. On my bridge, I decide. In your meeting, you do. I'll keep the two apart if you will. And you should know my wife works for Tycho. I'd rather you heard it from me.\"</p><p>Noor Belanger answers the question before anyone asks it. \"Yes, I was the master. Yes, three died. Ask what you want to ask.\" Nobody does. \"I'm cheap because of the mark,\" she says. \"You're getting a bargain. Don't make me prove it.\"</p><p>Ama Kessler has a folder under her arm and the rain of somewhere else still on her coat. \"I write to the house every Sunday,\" she says. \"The log, the cargo, the minutes. Nothing you'd not show them yourselves. You may read it first, if you like. Most crews stop asking by the third. I've been on eleven hulls, and nine still fly. I'd like this to be the tenth.\"",
+  "labels": [
+   "Aron Saran",
+   "Noor Belanger",
+   "Ama Kessler"
+  ]
+ },
+ {
+  "id": "chaptertwo:start:alone",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Aron Saran signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. The pilot's seat is empty. Somebody will have to fly her.",
+    "fx": {
+     "p6": 0,
+     "c:bexa": 0,
+     "c:pax": 0
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Noor Belanger signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. The pilot's seat is empty. Somebody will have to fly her.",
+    "fx": {
+     "p6": 0,
+     "c:bexa": 0,
+     "c:pax": 0
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Ama Kessler signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. The pilot's seat is empty. Somebody will have to fly her.",
+    "fx": {
+     "p6": 0,
+     "c:bexa": 0,
+     "c:pax": 0
+    },
+    "next": null
+   }
+  ],
+  "title": "Three Names",
+  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Nobody came up from Hester's ship with you. Bexa and Pax look at you, and then at each other, and make room.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master on her that the house approves, and it has sent three names. The three are waiting in the yard office, and come down one at a time.</p><p>Aron Saran stands a little apart from the other two, in a jacket pressed for the occasion. \"I commanded freighters out of Luna for fifteen years,\" he says. \"My last one was sold to pay a man's debt, with the crew still aboard. On my bridge, I decide. In your meeting, you do. I'll keep the two apart if you will. And you should know my wife works for Tycho. I'd rather you heard it from me.\"</p><p>Noor Belanger answers the question before anyone asks it. \"Yes, I was the master. Yes, three died. Ask what you want to ask.\" Nobody does. \"I'm cheap because of the mark,\" she says. \"You're getting a bargain. Don't make me prove it.\"</p><p>Ama Kessler has a folder under her arm and the rain of somewhere else still on her coat. \"I write to the house every Sunday,\" she says. \"The log, the cargo, the minutes. Nothing you'd not show them yourselves. You may read it first, if you like. Most crews stop asking by the third. I've been on eleven hulls, and nine still fly. I'd like this to be the tenth.\"",
+  "labels": [
+   "Aron Saran",
+   "Noor Belanger",
+   "Ama Kessler"
   ]
  },
  {
@@ -11759,7 +11849,6 @@
     ],
     "fx": {
      "credits": -57000,
-     "fund": -120000,
      "p1": 2,
      "c:cato": 2
     },

@@ -24,6 +24,19 @@ const ROLES = {
     mayDowntime: (id, a, post) => !!a.hiredOnly || (!['drills', 'visit'].includes(id) && (id !== 'repair' || post === 'engineer')),
     canDie: true,  // a fight can end the hand's story (stakes.js)
   },
+  // The co-op (chapter two, #891): the player flies, trades and fights the co-op's hull and makes every call, on the co-op's fund; the hull is
+  // the co-op's only one, so no ship is bought, and the company, the stakes and hiring are not the co-op's (who joins is the members' vote).
+  // The player is still the hand, a member with a post: the hand's downtime, and a fight can end the hand's story.
+  coop: {
+    id: 'coop',
+    canTrade: true,
+    mayTab: id => id !== 'company',
+    mayAct: action => !COOP_BARRED.includes(action),
+    decides: () => true,
+    paysFrom: () => 'credits',
+    mayDowntime: (id, a, post) => ROLES.hand.mayDowntime(id, a, post),
+    canDie: true,
+  },
   // An owner: everything is theirs, and the money is their own.
   owner: {
     id: 'owner',
@@ -37,5 +50,7 @@ const ROLES = {
   },
 };
 
-const roleOf = hand => (hand ? ROLES.hand : ROLES.owner);
+const COOP_BARRED = ['buyship', 'cbuy', 'hire', 'interviewHire', 'dismiss'];  // what the co-op may not do: buy a ship, buy one for the company, hire (buyout and sellout are outfits, which it fits)
+const chapterOf = st => (st.hired && st.hired.chapter) || 1;  // chapter two keeps the hand's record, marked (hired.js signOn)
+const roleOf = hand => (hand ? (hand.chapter === 2 ? ROLES.coop : ROLES.hand) : ROLES.owner);
 const role = () => roleOf(hired());

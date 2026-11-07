@@ -35,6 +35,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:day-ashore', fn: 'dayAshoreEvent', file: 'js/dayashore.js', title: 'A Day Ashore', where: 'port', when: 'The hand\'s own hour at a port, once a landing: a menu of five from the port\'s own (the regulars\' table, a walk through the port), the hand\'s (an errand with a crew member, the room) and what is on (the match, the broadcast, the show at the bar), and Not now.' },
   { id: 'scene:chapter-two-end', fn: 'chapterTwoEnd', file: 'js/chaptertwo.js', title: 'The Crew Who Came', where: 'port', when: 'On the first landing 90 days after you buy your own ship: the close of chapter two, by who of the crew who came along is still aboard (all of them, some who have left, some who have died, or nobody came).' },
   { id: 'scene:chapter-end', fn: 'chapterEnd', file: 'js/hired.js', title: 'A Member\'s Share', where: 'port', when: 'When you sign on for the co-op\'s share (or, in the full build, buy your own ship): the close of the hired-hand chapter, by what the chapter held (those lost, who comes with you, a promise kept, a quiet fortune).' },
+  { id: 'scene:chapter-two-start', fn: 'chapterTwoStartScene', file: 'js/hired.js', title: 'Three Names', where: 'port', when: 'When you go on from the end of chapter one: the members at the Ore Runner\'s ramp, the lender\'s three masters, and the pick (#891).' },
   { id: 'scene:chapter-over', fn: 'chapterOverScene', file: 'js/hired.js', title: 'The End of Chapter One', where: 'port', when: 'After the close, when you sign on for the co-op\'s share, and when a finished save is opened (#882).' },
   { id: 'scene:put-ashore', fn: 'putAshoreScene', file: 'js/stakes.js', title: 'Put Ashore', where: 'port', when: 'When the captain\'s opinion of you falls to -3, at a later port.' },
   { id: 'scene:hand-death', fn: 'handDeathScene', file: 'js/stakes.js', title: 'The Last Run', where: 'transit', when: 'When the hand is lost in a fight.' },
@@ -453,8 +454,18 @@ const SCENE_LINES = {
   },
   'scene:chapter-over': {  // the end of chapter one, until chapter two on a co-op ship is written (hired.js chapterOverScene, #882)
     title: 'The End of Chapter One',
-    text: 'You hold a member\'s share in a co-op hull, a vote, and a berth nobody can sell out from under you. What comes of it is chapter two, which is still being written.',
-    label: 'Back to the title',
+    text: 'You hold a member\'s share in a co-op hull, a vote, and a berth nobody can sell out from under you. What comes of it is chapter two.',
+    label: 'Go on',
+  },
+  'scene:chapter-two-start': {  // chapter two's start (hired.js chapterTwoStartScene, #891): the ramp at the Ceres yard, the lender's three masters, the pick
+    title: 'Three Names',
+    ramp: 'The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.',
+    members: '{names} came up from Hester\'s ship with you, and stand with the others as if they had always been here.',
+    'members.alone': 'Nobody came up from Hester\'s ship with you. Bexa and Pax look at you, and then at each other, and make room.',
+    letter: 'The co-op\'s clerk brings the lender\'s letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master on her that the house approves, and it has sent three names. The three are waiting in the yard office, and come down one at a time.',
+    picked: 'The members talk it over at the foot of the ramp, and the choice is put to you. {first} {last} signs the hull\'s papers in the yard office, reads them twice, and goes up to the bridge.',
+    ines: 'Ines is already in the pilot\'s seat, with the panel open and her endorsement taped to the console.',
+    noines: 'The pilot\'s seat is empty. Somebody will have to fly her.',
   },
   'scene:day-ashore': {  // the hand's hour at a port (dayashore.js): the menu and what each of its own entries comes to; the regulars' scene, the errand and the room's return are theirs
     title: 'A Day Ashore',

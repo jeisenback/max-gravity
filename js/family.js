@@ -33,7 +33,7 @@ const cultureOfPerson = p => p.culture || HOME_CULTURE[p.home] || 'earth';
 
 // An authored person (cast.js) has their own story in their entry. It replaces anything rolled before, and keeps the
 // progress made. Later authored people (the captains and XOs) add their lookup here.
-const authoredStory = p => { const d = p.cast ? CAST[p.cast] : p.captainKey ? CAPTAINS[p.captainKey] : null; return d ? d.story || null : null; };
+const authoredStory = p => { const d = p.cast ? CAST[p.cast] : p.captainKey ? captainDef(p.captainKey) : null; return d ? d.story || null : null; };
 
 // The generated crew's place and circumstance (#871, docs/bible: each city's "Growing up here"): drawn once from the person's id, with no random number, so no
 // other draw moves; kept on the person. A home of Earth draws one of the four cities, and every other home its own (#885); a home not here draws none, and its

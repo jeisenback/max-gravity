@@ -51,13 +51,13 @@ function updateAutopilot(dt) {
 // local space on a run the captain sailed, it starts (the J key still starts it sooner).
 function captainCallsBurn() {
   const st = G.state;
-  if (!hired() || G.mode !== 'flight' || !hired().run || !st.dest || postMode('pilot') === 'crewed') return;
+  if (!hired() || chapterOf(st) > 1 || G.mode !== 'flight' || !hired().run || !st.dest || postMode('pilot') === 'crewed') return;
   if (Math.hypot(G.player.x, G.player.y) >= BURN_DIST + 40) tryBurn();
 }
 
 const canDepart = () => {
   const st = G.state;
-  return !hired() && G.mode === 'landed' && !G.dialog && postMode('pilot') === 'crewed' && !!st.dest && st.dest !== st.systemId && st.fuel >= burnFuel(st.systemId, st.dest);
+  return (!hired() || chapterOf(st) > 1) && G.mode === 'landed' && !G.dialog && postMode('pilot') === 'crewed' && !!st.dest && st.dest !== st.systemId && st.fuel >= burnFuel(st.systemId, st.dest);
 };
 
 ORDERS.pilot = [{

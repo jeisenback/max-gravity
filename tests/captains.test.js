@@ -987,3 +987,18 @@ test('Tomas gives the reason when she is offered, which waits for the hull to ha
   assert.match(r.owed, /You owe the hall 15,000 still\. I looked at its book\. The co-op won't sign anyone who owes an agency, so clear it first\./);
   assert.match(r.clear, /You owe nobody now\. I looked at the hall's book\. That matters to them\./); assert.equal(r.tomasFlag, true);
 });
+
+test('the lender\'s masters are chapter two\'s: kept apart, complete, and never a new game\'s captain (#891)', async () => {
+  const r = await run(() => {
+    const need = ['first', 'last', 'pronouns', 'culture', 'home', 'age', 'traits', 'bio', 'wants', 'fears', 'captain', 'wage', 'hears', 'bonus', 'talk', 'intro', 'chatter', 'sway', 'leans'], bad = [];
+    for (const [key, d] of Object.entries(MASTER_CAPTAINS)) {
+      for (const f of need) if (d[f] === undefined || d[f] === null || d[f] === '') bad.push(`${key}: ${f}`);
+      if (!d.traits.every(t => TRAITS[t])) bad.push(`${key}: traits`);
+      if (/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u.test(JSON.stringify(d) + d.intro())) bad.push(`${key}: emoji`);
+      if (CAPTAINS[key]) bad.push(`${key}: among chapter one's captains`);
+    }
+    const got = []; for (let i = 0; i < 50; i++) got.push(pickCaptainKey());
+    return { keys: Object.keys(MASTER_CAPTAINS).sort(), bad, picked: got.filter(k => MASTER_CAPTAINS[k]) };
+  }, { scope: 'full' });
+  assert.deepEqual(r.keys, ['belanger', 'kessler', 'mensah', 'saran']); assert.deepEqual(r.bad, []); assert.deepEqual(r.picked, []);
+});

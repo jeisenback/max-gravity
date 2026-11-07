@@ -8,7 +8,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const NAMES = ['SYSTEMS', 'COMMODITIES', 'PRICE_MULT', 'MARKET_CAP', 'MARKET_PER_TON', 'pressure', 'pushed', 'price', 'tradeTotal', 'recordTrade', 'bestSale', 'inRange', 'travelDays'];
+const NAMES = ['SYSTEMS', 'COMMODITIES', 'PRICE_MULT', 'MARKET_CAP', 'MARKET_PER_TON', 'pressure', 'pushed', 'price', 'tradeTotal', 'recordTrade', 'bestSale', 'inRange', 'travelDays', 'seenPrices', 'bestSeen'];
 
 // A fresh game state for each test. `rumors` and `market` are the state's own; `filter` is what a mod's 'price' filter does.
 function setup({ day = 3, rumors = [], market = {}, fuel = 300, filter = (name, value) => value } = {}) {
@@ -137,4 +137,19 @@ test('the best place to sell is the one that pays most a day within a full tank,
   assert.ok(stay === null || stay.days === 0, 'with an empty tank only the same system is in reach');
   const nowhere = setup().planets.find(p => !p.prices.metal);
   assert.equal(setup().bestSale(nowhere, 'metal'), null, 'no price here, nothing to sell');
+});
+
+// Last-seen prices (chapter two, #891): what the co-op knows of a port's exchange is what it saw when it last docked there.
+test('a port\'s prices are remembered as last seen, the later sighting kept', () => {
+  const { planets, seenPrices } = setup(), st = { day: 4 }, earth = planets.find(p => p.name === 'Earth');
+  seenPrices(st, earth, 4, (p, cid) => 100); seenPrices(st, earth, 9, (p, cid) => 120);
+  assert.equal(st.seen.Earth.day, 9);
+  assert.deepEqual(JSON.stringify(Object.keys(st.seen.Earth.prices).sort()), JSON.stringify(Object.keys(earth.prices).sort()));
+  assert.ok(Object.values(st.seen.Earth.prices).every(v => v === 120));
+});
+
+test('the best last-seen price for a good is at another port, with its age', () => {
+  const { bestSeen } = setup(), st = { day: 20, seen: { Earth: { day: 10, prices: { water: 50 } }, Mars: { day: 15, prices: { water: 80 } }, Ceres: { day: 18, prices: { water: 99 } } } };
+  assert.deepEqual(JSON.parse(JSON.stringify(bestSeen(st, 'water', 'Ceres'))), { planet: 'Mars', price: 80, age: 5 });
+  assert.equal(bestSeen(st, 'metal', 'Ceres'), null); assert.equal(bestSeen({ day: 1 }, 'water', 'Earth'), null);
 });
