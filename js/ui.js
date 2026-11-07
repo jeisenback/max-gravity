@@ -244,7 +244,7 @@ const UI = {
           ring,
           sub: h`${hurt ? raw(' <span class="tag high">injured</span>') : ''}${moodLow(c) ? raw(' <span class="char-chip warn">having a hard time</span>') : moodHigh(c) ? raw(' <span class="char-chip good">in high spirits</span>') : ''} &middot; ${skill(c)}${raw(traits(c))}${raw(mood)}
             <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div>${raw(marksHtml(c))}`,
-          actions: hired() ? '' : raw(`<button data-action="dismiss" data-arg="${i}">Dismiss</button>`),
+          actions: role().mayAct('dismiss') ? raw(`<button data-action="dismiss" data-arg="${i}">Dismiss</button>`) : '',
         });
       });
       const unique = Object.entries(CREW).filter(([id, c]) => c.home === here && !st.crew.includes(id))

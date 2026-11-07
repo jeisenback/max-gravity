@@ -38,3 +38,12 @@ test('a hand\'s road events spend the ship\'s fund and an owner\'s spend their o
   assert.equal(hand.paysFrom('burn'), 'fund'); assert.equal(owner.paysFrom('burn'), 'credits');
   assert.equal(hand.canDie, true); assert.equal(owner.canDie, false, 'an owner is laid up by a hurt and the game goes on');
 });
+
+test('plotting a course and calling the burn are the owner\'s; a hand picks the downtime of a hand (#757)', () => {
+  for (const action of ['plot', 'burn']) { assert.equal(hand.mayAct(action), false, action); assert.equal(owner.mayAct(action), true, action); }
+  const own = { hiredOnly: true }, any = {};
+  assert.equal(hand.mayDowntime('practise', own, 'gunner'), true, 'practising the post'); assert.equal(owner.mayDowntime('practise', own), false, 'an owner has no post to practise');
+  for (const id of ['drills', 'visit']) { assert.equal(hand.mayDowntime(id, any, 'gunner'), false, `${id} is the captain's`); assert.equal(owner.mayDowntime(id, any), true, id); }
+  assert.equal(hand.mayDowntime('repair', any, 'engineer'), true, 'the hull is the engineer\'s'); assert.equal(hand.mayDowntime('repair', any, 'gunner'), false);
+  assert.equal(hand.mayDowntime('meal', any, 'gunner'), true); assert.equal(owner.mayDowntime('meal', any), true);
+});
