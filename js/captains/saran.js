@@ -4,7 +4,7 @@
 // when an owner sold it to pay a debt. His wife Liv is a yard clerk at Tycho, so he leans the co-op toward Tycho without asking for it. No first
 // officer: the co-op's bosun is Cato. Uses "he".
 
-CAPTAINS.saran = {
+MASTER_CAPTAINS.saran = {
   first: 'Aron', last: 'Saran', pronouns: 'he', culture: 'earth', home: 'the Luna yards', age: 54, traits: ['secretive'],
   bio: 'Fifteen years commanding freighters for Luna owners, until his last bridge was sold out from under him and the crew at a day\'s notice to pay an owner\'s debt. He spent a year ashore, and took the co-op\'s job because a members\' vote is at least something he can read.',
   wants: 'A bridge that cannot be sold out from under him, and his daughter clear of his debts.', fears: 'Losing a ship to a man he never met, again.',

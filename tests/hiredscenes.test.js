@@ -41,7 +41,7 @@ test('the registry holds every scene the game\'s own registries hold', async () 
   await g.done();
   assert.deepEqual(r.missing, []);
   assert.deepEqual(r.gone, []);
-  assert.equal(r.functions, 54);  // with the end of chapter one (#882)
+  assert.equal(r.functions, 55);  // with the end of chapter one (#882) and chapter two's start (#891)
   assert.ok(r.n >= 124, `${r.n} scenes`);
 });
 

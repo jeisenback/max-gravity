@@ -3,7 +3,7 @@
 // Ama Kessler, one of the lender's four masters (chapter two, #891, docs/bible/people/kessler.md). A placement master: Van Leeuwen & Co. puts her on
 // the hulls it is nervous about. She tells the members she reports to the house, and does. She leans the co-op toward the lender. Uses "she".
 
-CAPTAINS.kessler = {
+MASTER_CAPTAINS.kessler = {
   first: 'Ama', last: 'Kessler', pronouns: 'she', culture: 'earth', home: 'Rotterdam Arcology', age: 61, traits: ['secretive', 'kind'],
   bio: 'Eighteen years a placement master for Van Leeuwen & Co., on eleven hulls the house was nervous about. Nine still fly. She writes to the house every Sunday, and tells every crew so on the first day.',
   wants: 'A clean last placement, and a pension she can live on in Rotterdam.', fears: 'A surprise.',

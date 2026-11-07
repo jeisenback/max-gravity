@@ -4,7 +4,7 @@
 // convoy she commanded fired on a freehold's ship, three died, and the inquiry put a mark on her licence. The cheapest of the four and the best in a
 // fight; she leans the co-op toward Ballast, through people she still knows. Uses "she".
 
-CAPTAINS.belanger = {
+MASTER_CAPTAINS.belanger = {
   first: 'Noor', last: 'Belanger', pronouns: 'she', culture: 'mars', home: 'a hub dome on Mars', age: 46, traits: ['brave', 'secretive'],
   bio: 'Eight years commanding convoys for Ballast Security. A convoy she commanded fired on a freehold\'s ship that would not stand off, and three of its crew died. The inquiry put a mark on her licence, and she pays toward their families each month.',
   wants: 'The mark lifted, and a bridge she does not have to apologise for.', fears: 'Having to fire again.',

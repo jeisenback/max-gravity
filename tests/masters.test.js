@@ -8,7 +8,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const files = ['js/captains.js', 'js/captains/saran.js', 'js/captains/kessler.js', 'js/captains/mensah.js', 'js/captains/belanger.js'];
-const { MASTERS, masterDraw, coopRand, CAPTAINS } = load(files, { Mods: { register() {} }, OPINION: {} }, ['MASTERS', 'masterDraw', 'coopRand', 'CAPTAINS']);
+const { MASTERS, masterDraw, coopRand, MASTER_CAPTAINS: CAPTAINS } = load(files, { Mods: { register() {} }, OPINION: {} }, ['MASTERS', 'masterDraw', 'coopRand', 'MASTER_CAPTAINS']);
 const plain = x => JSON.parse(JSON.stringify(x));  // arrays from the context have its prototypes
 const seeded = seed => coopRand({ hired: { signed: seed, since: 3 } });
 

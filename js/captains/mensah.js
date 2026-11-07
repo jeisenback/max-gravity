@@ -4,7 +4,7 @@
 // out of Vesta to the small rocks for ten years, and left when Kaur cut the small runs. Quick, warm, reckless; he leans the co-op toward Kaur and the
 // rocks behind it. Uses "he".
 
-CAPTAINS.mensah = {
+MASTER_CAPTAINS.mensah = {
   first: 'Tavi', last: 'Mensah', pronouns: 'he', culture: 'belt', home: 'Ceres Station', age: 39, traits: ['brave', 'talkative'],
   bio: 'Ten years on Kaur Enrichment\'s tankers out of Vesta, out to the small rocks off the lanes. He left when Kaur cut the small runs to save money. He knows the rocks by name, and most of them know him.',
   wants: 'To fly the Belt\'s small runs, and keep the rocks alive.', fears: 'A rock going dry that he could have reached.',

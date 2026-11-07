@@ -33,7 +33,7 @@ test('every captain and first officer entry is complete and plain text', async (
     const out = { captains: Object.keys(CAPTAINS).sort(), bad: [] };
     for (const [key, d] of Object.entries(CAPTAINS)) {
       for (const f of need) if (d[f] === undefined || d[f] === null || d[f] === '') bad(out, key, f);
-      if (!d.master && (!d.xo || !CAST[d.xo] || !CAST[d.xo].xo || !CAST[d.xo].fragile)) out.bad.push(`${key}: its first officer`);  // a master of chapter two has none: the co-op's bosun is Cato
+      if (!d.xo || !CAST[d.xo] || !CAST[d.xo].xo || !CAST[d.xo].fragile) out.bad.push(`${key}: its first officer`);
       for (const k of ['trade', 'nerve', 'thrift']) if (!(d.captain[k] >= 1 && d.captain[k] <= 5)) out.bad.push(`${key}: ${k}`);
       if (d.traits.length < 1 || d.traits.length > 2 || !d.traits.every(t => TRAITS[t])) out.bad.push(`${key}: traits`);  // one or two (Hester has one: her thrift is the charter's, not a trait)
       if (/[\u{1F300}-\u{1FAFF}☀-➿]/u.test(JSON.stringify(d))) out.bad.push(`${key}: emoji`);
@@ -41,7 +41,7 @@ test('every captain and first officer entry is complete and plain text', async (
     function bad(o, key, f) { o.bad.push(`${key}: ${f}`); }
     return out;
   });
-  assert.deepEqual(r.captains, ['belanger', 'dov', 'hester', 'imre', 'kessler', 'mensah', 'saran', 'zoya']); assert.deepEqual(r.bad, []);
+  assert.deepEqual(r.captains, ['dov', 'hester', 'imre', 'zoya']); assert.deepEqual(r.bad, []);
 });
 
 test('a hired game is run by an authored captain with their first officer aboard', async () => {
@@ -988,7 +988,17 @@ test('Tomas gives the reason when she is offered, which waits for the hull to ha
   assert.match(r.clear, /You owe nobody now\. I looked at the hall's book\. That matters to them\./); assert.equal(r.tomasFlag, true);
 });
 
-test('the lender\'s masters are chapter two\'s: a new game\'s captain is never one (#891)', async () => {
-  const r = await run(() => { const got = []; for (let i = 0; i < 50; i++) got.push(pickCaptainKey()); return got.filter(k => CAPTAINS[k].master); }, { scope: 'full' });
-  assert.deepEqual(r, []);
+test('the lender\'s masters are chapter two\'s: kept apart, complete, and never a new game\'s captain (#891)', async () => {
+  const r = await run(() => {
+    const need = ['first', 'last', 'pronouns', 'culture', 'home', 'age', 'traits', 'bio', 'wants', 'fears', 'captain', 'wage', 'hears', 'bonus', 'talk', 'intro', 'chatter', 'sway', 'leans'], bad = [];
+    for (const [key, d] of Object.entries(MASTER_CAPTAINS)) {
+      for (const f of need) if (d[f] === undefined || d[f] === null || d[f] === '') bad.push(`${key}: ${f}`);
+      if (!d.traits.every(t => TRAITS[t])) bad.push(`${key}: traits`);
+      if (/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u.test(JSON.stringify(d) + d.intro())) bad.push(`${key}: emoji`);
+      if (CAPTAINS[key]) bad.push(`${key}: among chapter one's captains`);
+    }
+    const got = []; for (let i = 0; i < 50; i++) got.push(pickCaptainKey());
+    return { keys: Object.keys(MASTER_CAPTAINS).sort(), bad, picked: got.filter(k => MASTER_CAPTAINS[k]) };
+  }, { scope: 'full' });
+  assert.deepEqual(r.keys, ['belanger', 'kessler', 'mensah', 'saran']); assert.deepEqual(r.bad, []); assert.deepEqual(r.picked, []);
 });

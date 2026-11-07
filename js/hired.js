@@ -513,7 +513,7 @@ function signOn(id) {
 const overSay = key => sceneSay('scene:chapter-over', key);
 function chapterOverScene() { return { title: overSay('title'), personal: true, text: overSay('text'), choices: [{ label: overSay('label'), run() { G.nextEvent = goOn(G.state); return null; } }] }; }
 // A save at the end of chapter one: one from before chapter two (the record cleared, the career finished), or a member's record with no master picked yet.
-const masterPicked = h => !!(h && CAPTAINS[h.captainKey] && CAPTAINS[h.captainKey].master);
+const masterPicked = h => !!(h && MASTER_CAPTAINS[h.captainKey]);
 const finishedSave = () => { const st = G.state || {}; return (!st.hired && !!(st.career || {}).finished) || (chapterOf(st) === 2 && !masterPicked(st.hired)); };
 
 // ---------- chapter two's start (#891, docs/superpowers/specs/2026-11-07-chapter-two-start-design.md) ----------
@@ -555,11 +555,11 @@ const twoSay = (key, vars) => sceneSay('scene:chapter-two-start', key, vars);
 function chapterTwoStartScene() {
   const h = G.state.hired, came = (h.came || []).map(id => G.state.people[id]).filter(p => p && !p.dead), names = came.map(p => p.first);
   const members = names.length ? twoSay('members', { names: namesOf(came) }) : twoSay('members.alone');
-  const intros = h.masters.map(k => CAPTAINS[k].intro()).join('</p><p>');
+  const intros = h.masters.map(k => MASTER_CAPTAINS[k].intro()).join('</p><p>');
   return {
     title: twoSay('title'), personal: true,
     text: [twoSay('ramp'), members, twoSay('letter'), intros].join('</p><p>'),
-    choices: h.masters.map(k => ({ label: `${CAPTAINS[k].first} ${CAPTAINS[k].last}`, run() { return pickMaster(G.state, k); } })),
+    choices: h.masters.map(k => ({ label: `${MASTER_CAPTAINS[k].first} ${MASTER_CAPTAINS[k].last}`, run() { return pickMaster(G.state, k); } })),
   };
 }
 function pickMaster(st, key) {

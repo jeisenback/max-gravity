@@ -8,9 +8,11 @@
 // way the main characters are. A hired save with no `captainKey` keeps the generated captain it was made with.
 
 const CAPTAINS = {};
+const MASTER_CAPTAINS = {};  // the lender's masters (chapter two, #891): kept apart from chapter one's captains, who each come with a first officer
+const captainDef = key => CAPTAINS[key] || MASTER_CAPTAINS[key] || null;  // a captain or a master, by key
 
-const captainEntry = () => { const h = hired(); return (h && h.captainKey && CAPTAINS[h.captainKey]) || null; };
-const pickCaptainKey = () => { const key = pick(Object.keys(CAPTAINS).filter(k => !CAPTAINS[k].master)); return scopeOff('captains') ? 'hester' : key; };  // still draws, so the random stream is the same in both builds; the lender's masters are chapter two's
+const captainEntry = () => { const h = hired(); return (h && h.captainKey && captainDef(h.captainKey)) || null; };
+const pickCaptainKey = () => { const key = pick(Object.keys(CAPTAINS)); return scopeOff('captains') ? 'hester' : key; };  // still draws, so the random stream is the same in both builds
 
 // The lender's masters (chapter two, #891): four in its pool (js/captains/saran.js and the rest), three sent to the co-op. The draw rolls the co-op's own
 // dice, kept on the hand's record and seeded from the day the share was signed and the day the hand signed on, so it shifts no other system's rolls (as ship life's).
@@ -32,7 +34,7 @@ function masterDraw(rnd) {
 
 // The captain's person record, built from the entry the way castPerson builds a main character's.
 function captainPerson(key) {
-  const d = CAPTAINS[key];
+  const d = captainDef(key);
   return registerPerson({
     captainKey: key, first: d.first, last: d.last, culture: d.culture, home: d.home, job: 'captain', role: 'captain', age: d.age, bio: d.bio,
     traits: [...d.traits], goal: 'job', wealth: 2, secret: null, opinion: 0, memories: [], location: null, mood: null, captain: { ...d.captain },
