@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle']);
+const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = [], styles = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'styles' ? styles : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); if (k === 'fillStyle' || k === 'strokeStyle') styles.push(String(v).toLowerCase()); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -108,14 +108,14 @@ test('the phases of a run, with the crew securing either side of the flip', () =
 });
 
 test('a patient in the medbay bed stays on the cot in every phase, strapped down at the straps and the float (#976)', () => {
-  const bed = { role: 'gunner', room: 'medbay', at: 'bed', x: 0.5, dk: 1, tdk: 1, tx: null, seat: 0.3, couch: 0 };
+  const bed = { role: 'gunner', room: 'medbay', at: 'bed', x: 0.7, dk: 4, tdk: 4, tx: null, seat: 0.3, couch: 0 };
   for (const ph of ['move', 'couch', 'secure', 'float']) assert.equal(posture({ ...bed }, ph, 0, false).name, 'bunk', `${ph}: on the cot`);
   assert.ok(posture({ ...bed }, 'float', 0, false).strapped, 'strapped down at the float'); assert.ok(!posture({ ...bed }, 'move', 0, false).strapped);
   assert.equal(posture({ ...bed, tx: 0.55 }, 'couch', 0, false).name !== 'bunk', true, 'not lying down while still on the way to it');
 });
 test('a posture for everyone in every phase, from the list the sprites are drawn to', () => {
   const seat = roomAt('galley').x0 + roomAt('galley').w * SEATS.galley[0];  // on one of the galley's seats (#925)
-  const p = (o) => ({ role: 'gunner', room: 'galley', x: seat, dk: 0, tdk: 0, tx: null, seat, couch: 1, ...o });
+  const p = (o) => ({ role: 'gunner', room: 'galley', x: seat, dk: 1, tdk: 1, tx: null, seat, couch: 1, ...o });
   assert.equal(posture(p(), 'couch', 0, false).name, 'couch');
   assert.equal(posture(p({ couch: 0 }), 'couch', 0, false).name, 'stand', 'not on the couch until it has unfolded');
   assert.equal(posture(p({ x: seat + 0.03, couch: 0 }), 'couch', 0, false).name, 'walk', 'and on the way to it');
@@ -125,7 +125,7 @@ test('a posture for everyone in every phase, from the list the sprites are drawn
   assert.equal(posture(p({ role: 'engineer' }), 'float', 0, false).name, 'tether');
   assert.equal(posture(p({ role: 'engineer' }), 'secure', 0, false).name, 'strap');
   assert.equal(posture(p({ tx: 0.6 }), 'move', 0, false).name, 'walk');
-  assert.equal(posture(p({ x: LADDER, dk: 0.5, tdk: 1 }), 'move', 0, false).name, 'climb');
+  assert.equal(posture(p({ x: LADDER, dk: 1.5, tdk: 2 }), 'move', 0, false).name, 'climb');
   assert.equal(posture(p(), 'move', 0, false).name, 'sit');
   assert.equal(posture(p({ room: 'hold' }), 'move', 0, false).name, 'stand');
   assert.equal(posture(p({ room: 'berths' }), 'move', 0, true).name, 'bunk');
@@ -154,9 +154,9 @@ test('the zoom fits both decks in the box; the outline finds every room, and not
 test('a tap on the outline mid-turn finds the room where it is drawn, squeezed', () => {
   const o = outlineLayout({ x: 0, y: 0, w: 864, h: 311 }, 1600), cx = o.x + o.w / 2, sq = 0.5, half = { ...o, squeeze: sq };
   for (const r of o.rooms) assert.equal(outlineRoomAt(half, cx + (r.x + r.w / 2 - cx) * sq, r.y + r.h / 2), r.id, `${r.id} where it is drawn`);
-  const bridge = o.rooms.find(r => r.id === 'bridge');
-  assert.equal(outlineRoomAt(half, bridge.x + bridge.w / 2, bridge.y + bridge.h / 2), null, 'not where the full-width box would be');
-  assert.equal(outlineRoomAt({ ...o, squeeze: 1 }, bridge.x + bridge.w / 2, bridge.y + bridge.h / 2), 'bridge');
+  const galley = o.rooms.find(r => r.id === 'galley');  // a room off the middle (the bridge spans the tower's width, #972)
+  assert.equal(outlineRoomAt(half, galley.x + galley.w / 2, galley.y + galley.h / 2), null, 'not where the full-width box would be');
+  assert.equal(outlineRoomAt({ ...o, squeeze: 1 }, galley.x + galley.w / 2, galley.y + galley.h / 2), 'galley');
 });
 test('the outline draws balanced, squeezed by the turn, with no text', () => {
   const o = outlineLayout({ x: 0, y: 0, w: 864, h: 311 }, 1600);
@@ -234,9 +234,34 @@ test('the ship\'s day runs to a timetable, and each person has a place in it', (
 
 test('the working poses stand on the deck, and the routine takes its dice as a parameter', () => {
   assert.ok(FIG_GROUNDED.includes('work') && FIG_GROUNDED.includes('work-sit'), 'a shadow under someone at work');
-  const p = { role: 'engineer', block: 'shift', at: 'post', room: 'engine', x: 0.1, dk: 1, tdk: 1, tx: null, wait: 0 };
+  const p = { role: 'engineer', block: 'shift', at: 'post', room: 'engine', x: 0.1, dk: 6, tdk: 6, tx: null, wait: 0 };
   routineWait(p, 'shift', false, () => 0);  // no burn, no G: the dice are given
   assert.equal(p.errand, true, 'an errand when the dice say so'); assert.ok(p.wait >= 5, 'and a wait set from them');
+});
+
+test('the rooms are the tower\'s: seven decks, the well in the middle, the seats from the layout (#972)', () => {
+  assert.deepEqual(ROOMS.map(r => r.id), layoutRooms(LAYOUTS.freighter).map(r => r.id));
+  assert.equal(roomAt('berths').deck, 2); assert.equal(roomAt('engine').deck, 6);
+  assert.equal(LADDER, 0.5);
+  assert.deepEqual([...SEATS.bridge], [0.12, 0.3, 0.7, 0.88]);
+  assert.ok(ROOMS.every(r => !('tall' in r)), 'no room is the stern\'s full height');
+});
+test('the climb through the tank takes as long as its height (#972)', () => {
+  const lay = LAYOUTS.freighter;
+  assert.ok(Math.abs(climbRate(lay, 5.2, 1) * 372 / 112 - climbRate(lay, 1.5, 1)) < 1e-9);
+  assert.ok(Math.abs(climbRate(lay, 5.8, -1) - climbRate(lay, 5.2, 1)) < 1e-9, 'up the tube as slow as down it');
+});
+test('an errand finds two rooms on a deck with one (#972)', () => {
+  HAUNTS.plantsman = { lifesupport: 1 };  // nobody's post is the plant deck yet (step 3, #973): a role for the test
+  try {
+    const post = roomAt('lifesupport'), far = r => Math.abs(r.deck - post.deck) + Math.abs(r.mid - post.mid);
+    const two = ROOMS.filter(r => r.id !== 'lifesupport').map(far).sort((a, b) => a - b)[1];
+    const p = { role: 'plantsman', block: 'shift', at: 'post', room: 'lifesupport', x: 0.5, dk: 5, tdk: 5, tx: null, wait: 0 };
+    routineWait(p, 'shift', false, () => 0);
+    assert.equal(p.errand, true, 'an errand');
+    assert.notEqual(p.room, 'lifesupport');
+    assert.ok(far(roomAt(p.room)) <= two + 1e-9, `${p.room} is one of the two nearest`);
+  } finally { delete HAUNTS.plantsman; }
 });
 
 test('the ship\'s damage marks one to three rooms, kept through the burn, cleared last-first, never the medbay', () => {

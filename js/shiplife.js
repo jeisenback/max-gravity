@@ -7,22 +7,17 @@
 // A few times in a burn (every couple of days of the leg, the first before the flip and the last after), you can pick a downtime activity. Loaded
 // before game.js; only calls into it at runtime.
 
-// Two decks, stern to bow, as shares of the ship's length. Deck 0 is the upper deck, 1 the lower.
-// The engine room is the full height of the stern; a ladder joins the decks.
-const ROOMS = [
-  { id: 'engine', name: 'Engine', x0: 0, x1: 0.17, deck: 1, tall: true },
-  { id: 'hold', name: 'Hold', x0: 0.17, x1: 0.4, deck: 1 },
-  { id: 'medbay', name: 'Medbay', x0: 0.4, x1: 0.6, deck: 1 },
-  { id: 'berths', name: 'Berths', x0: 0.17, x1: 0.44, deck: 0 },
-  { id: 'galley', name: 'Galley', x0: 0.44, x1: 0.66, deck: 0 },
-  { id: 'gunnery', name: 'Gunnery', x0: 0.66, x1: 0.78, deck: 0 },
-  { id: 'bridge', name: 'Bridge', x0: 0.78, x1: 0.92, deck: 0 },
-];
-const LADDER = 0.62;
+// The tower's rooms (js/layouts.js, #972): seven decks from the nose (deck 0, the bridge) to the drive (deck 6, under the water tank), each room's
+// x0 and x1 shares of the tower's width. A person's x is a share of the width and their dk a deck index, fractional on the ladder in the well.
+const ROOMS = layoutRooms(LAYOUTS.freighter);
+const LADDER = LAYOUTS.freighter.well.x;
+// A share of the old lengthwise hull (1600 units) as a share of the tower's width (880), the same distance in world units: every distance
+// below written in shares is `share * CUT_K`.
+const CUT_K = 1600 / 880;
 // Seats (#925): where a room has something to sit on, as fractions of the room. rooms.js draws a stool at each, the table and the posts at the
 // bridge and the guns are these places (routineTarget), and a seated pose needs one under it (posture): anyone stopped elsewhere stands.
-const SEATS = { galley: [0.28, 0.35, 0.42, 0.49, 0.56, 0.63, 0.7], gunnery: [0.25, 0.55], bridge: [0.3, 0.46, 0.66, 0.84], medbay: [0.66] };  // the table seats seven; the bridge its four posts
-const onSeat = p => { const r = roomAt(p.room); return !!r && Math.abs(p.dk - r.deck) < 0.05 && (SEATS[p.room] || []).some(f => Math.abs(p.x - (r.x0 + r.w * f)) < 0.004); };
+const SEATS = LAYOUTS.freighter.seats;  // the table seats seven; the bridge its four posts
+const onSeat = p => { const r = roomAt(p.room); return !!r && Math.abs(p.dk - r.deck) < 0.05 && (SEATS[p.room] || []).some(f => Math.abs(p.x - (r.x0 + r.w * f)) < 0.004 * CUT_K); };
 for (const r of ROOMS) { r.w = r.x1 - r.x0; r.mid = (r.x0 + r.x1) / 2; }
 const roomAt = id => ROOMS.find(r => r.id === id);
 
@@ -157,7 +152,7 @@ function routineSpot(p, block, state) {
   return NIGHT_WATCH.includes(role) ? { room: postOf(role), at: 'post' } : { room: 'berths', at: 'bunk' };  // the handover and the night
 }
 const nightHaunts = role => NIGHT_WATCH.includes(role) ? HAUNTS[role] : role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 };
-const isAsleep = p => !p.staged && p.at !== 'alone' && isDark() && p.room === 'berths' && p.tx === null && p.dk === 0 && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role) && phase() !== 'couch';  // asleep through the straps and the float too: strapped into the bunk (#927)
+const isAsleep = p => !p.staged && p.at !== 'alone' && isDark() && p.room === 'berths' && p.tx === null && p.dk === roomAt('berths').deck && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role) && phase() !== 'couch';  // asleep through the straps and the float too: strapped into the bunk (#927)
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {
@@ -297,6 +292,9 @@ const LIFE_LINES = {
       '{n} is holding a mug against the console rail with a hand over the top.'] },
 };
 
+// What someone is seen doing in a room with no lines of its own yet (the tower's head, workshop, airlock and life support; their own are step 3, #973).
+const LIFE_ANY = { any: ['{n} is passing through.', '{n} stops to check something on the wall, and moves on.', '{n} is here for a minute, then gone again.'] };
+
 // The lights going down and coming up, a line each, in the ship's log of the burn.
 const LIFE_NOTES = { dusk: 'The lights go down for the night.', dawn: 'The lights come up.' };
 
@@ -310,7 +308,7 @@ function lifeState() {
 
 // The pools are read through the editor's words (lines:ship-life, lines:ship-lights; js/linetables.js).
 function lifeLine(p, crowd, rnd = Math.random) {  // rnd: ship life's dice in a burn (lifeTick)
-  const room = linedText('lines:ship-life', LIFE_LINES)[p.room], pool = room[p.role] || room.any;
+  const room = linedText('lines:ship-life', LIFE_LINES)[p.room] || LIFE_ANY, pool = room[p.role] || room.any;  // a room with no lines of its own: the generic ones
   if (!pool) return null;
   const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you' && o.role !== 'cat');
   const line = pickFresh(pool.filter(l => !l.includes('{m}') || others.length), rnd);
@@ -329,10 +327,10 @@ function shipPeople() {
   }
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
-  people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), dk: 0, tdk: 0, tx: null, wait: lifeRand(1, 4), seat: couchX(i, people.length), couch: 1 }));
+  people.forEach((p, i) => { const dk = couchDk(i); Object.assign(p, { room: i === 0 ? 'bridge' : 'berths', x: couchX(i, people.length), dk, tdk: dk, seatDk: dk, tx: null, wait: lifeRand(1, 4), seat: couchX(i, people.length), couch: 1 }); });
   // A hand's captain is aboard too, strapped in on the bridge beside the hand's couch: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
-  const cap = hiredCaptain(), bx = roomAt('bridge').mid + 0.025;
-  if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: 0, tdk: 0, tx: null, wait: 3, seat: bx, couch: 1 });
+  const cap = hiredCaptain(), bx = roomAt('bridge').mid + 0.025 * CUT_K, bd = roomAt('bridge').deck;
+  if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: bd, tdk: bd, seatDk: bd, tx: null, wait: 3, seat: bx, couch: 1 });
   return (t.aboard = people);
 }
 
@@ -344,15 +342,16 @@ const personShare = (p, salt) => { let h = 2166136261 ^ salt; for (const c of St
 function clearOf(p, x, people = []) {
   const r = roomAt(p.room);
   for (const o of [0, 0.014, -0.014, 0.028, -0.028]) {
-    const c = x + o;
-    if (c < r.x0 + 0.005 || c > r.x1 - 0.005) continue;
-    if (!people.some(q => q !== p && q.role !== 'cat' && q.room === p.room && q.tdk === p.tdk && Math.abs((q.tx !== null ? q.tx : q.x) - c) < 0.01)) return c;
+    const c = x + o * CUT_K;
+    if (c < r.x0 + 0.005 * CUT_K || c > r.x1 - 0.005 * CUT_K) continue;
+    if (!people.some(q => q !== p && q.role !== 'cat' && q.room === p.room && q.tdk === p.tdk && Math.abs((q.tx !== null ? q.tx : q.x) - c) < 0.01 * CUT_K)) return c;
   }
   return x;
 }
 
-// Crash couches: along the berths and bridge.
-const couchX = (i, n) => (i === 0 ? roomAt('bridge').mid : roomAt('berths').x0 + 0.02 + (roomAt('berths').w - 0.04) * (i / Math.max(1, n - 1)));
+// Crash couches: yours at the bridge's middle, the rest spread across the berths; couchDk the deck each is on.
+const couchX = (i, n) => (i === 0 ? roomAt('bridge').mid : roomAt('berths').x0 + 0.02 * CUT_K + (roomAt('berths').w - 0.04 * CUT_K) * (i / Math.max(1, n - 1)));
+const couchDk = i => roomAt(i === 0 ? 'bridge' : 'berths').deck;
 
 // Sent somewhere by a downtime activity you chose: the timetable takes them back when they have been there a while (lifeTick).
 const toActivity = (p, roomId) => { goTo(p, roomId); Object.assign(p, { block: 'activity', errand: false, at: undefined, relief: undefined }); };
@@ -367,7 +366,7 @@ function routineTarget(p, spot, r, i, n, rnd) {
   if (spot.at === 'aid') return r.x0 + r.w * 0.6;
   if (spot.at === 'repair') return r.x0 + r.w * 0.5;
   if (spot.at === 'alone') return r.x0 + r.w * 0.12;  // on the edge of the first bunk
-  if (spot.at === 'table') return Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.x0 + r.w * (0.3 + 0.6 * (n > 1 ? i / (n - 1) : 0.5))));
+  if (spot.at === 'table') return Math.max(r.x0 + 0.01 * CUT_K, Math.min(r.x1 - 0.01 * CUT_K, r.x0 + r.w * (0.3 + 0.6 * (n > 1 ? i / (n - 1) : 0.5))));
   return r.x0 + r.w * (0.25 + 0.5 * rnd());  // a bunk
 }
 // To where the timetable has `p` in `block`: their place in it, or the rounds (a room they like, as before the timetable).
@@ -386,7 +385,7 @@ function routineGo(p, block, people, dark, rnd, state) {
   Object.assign(p, { room: spot.room, tdk: r.deck });
   p.tx = placed ? tx : clearOf(p, tx, people);
 }
-// When a wait at a place runs out: in a shift someone at their post now and then goes on a short errand to a room near it on its deck, and from it back to the
+// When a wait at a place runs out: in a shift someone at their post now and then goes on a short errand to a room near it, and from it back to the
 // post; someone let go by a scene or done with an activity goes back to the timetable; the rounds go on; at the table, the stove or a bunk they stay.
 function routineWait(p, block, dark, rnd, state) {
   if (p.block === 'activity' || p.block === 'linger' || p.errand) { p.block = undefined; p.errand = false; return; }  // the next frame takes them back
@@ -394,7 +393,8 @@ function routineWait(p, block, dark, rnd, state) {
   const spot = routineSpot(p, block, state);
   if (spot.rounds) goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd);
   else if (block === 'shift' && spot.at === 'post' && rnd() < 0.25) {
-    const post = roomAt(spot.room), near = ROOMS.filter(r => r.id !== spot.room && r.deck === post.deck).sort((a, b) => Math.abs(a.mid - post.mid) - Math.abs(b.mid - post.mid)).slice(0, 2).map(r => r.id);  // a short errand: one of the two rooms nearest the post on its deck
+    const post = roomAt(spot.room), far = r => Math.abs(r.deck - post.deck) + Math.abs(r.mid - post.mid);
+    const near = ROOMS.filter(r => r.id !== spot.room).sort((a, b) => far(a) - far(b)).slice(0, 2).map(r => r.id);  // a short errand: one of the two rooms nearest the post, by decks and across, so a deck of one room finds them on the decks either side
     if (near.length) { goTo(p, near[Math.floor(rnd() * near.length)], rnd); p.errand = true; p.at = undefined; }
   }
   p.wait = 5 + 7 * rnd();
@@ -442,7 +442,7 @@ function posture(p, ph, time, asleep) {
   let name;
   if (p.role === 'cat') name = ph === 'float' ? 'cat-float' : ph !== 'move' ? 'cat-sleep' : p.tx !== null ? 'cat-walk' : 'cat-sit';
   else if (asleep || inBed(p)) name = 'bunk';  // asleep, or a patient in the medbay (on the cot in every phase, #976)
-  else if (ph === 'couch') name = (p.couch || 0) >= 0.6 ? 'couch' : Math.abs(p.x - p.seat) > 0.004 ? 'walk' : 'stand';  // on the couch once it has unfolded under them (#925)
+  else if (ph === 'couch') name = (p.couch || 0) >= 0.6 ? 'couch' : Math.abs(p.x - p.seat) > 0.004 * CUT_K ? 'walk' : 'stand';  // on the couch once it has unfolded under them (#925)
   else if (ph === 'secure') name = 'strap';
   else if (ph === 'float') name = p.role === 'engineer' ? 'tether' : 'strap';
   else if (p.dk !== p.tdk) name = 'climb';
@@ -453,7 +453,7 @@ function posture(p, ph, time, asleep) {
   const { frames, fps } = POSTURES[name];
   // a walking stride by the ground covered, so the feet do not slide (#924)
   const view = ph === 'move' && FIG_FACING.includes(name) ? (name.startsWith('work') ? 'back' : 'front') : 'side';  // facing you to stand and sit, the wall at work; side-on on the move and in the burn (#978)
-  return { name, view, x: p.x, deck: p.dk, face: p.face || 1, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
+  return { name, view, x: p.x, deck: p.dk, face: p.face || 1, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160 / CUT_K) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
 }
 
 // The scene open in a burn, acted out: when it opens (or the next one in a chain opens) those it stages walk to spots in its room, a little
@@ -469,9 +469,9 @@ function stageScene(people, ph, t, open) {
   if (!stage) return;
   const r = roomAt(stage.room), cast = stage.ids.map(id => people.find(q => q.id === id)).filter(Boolean), n = cast.length;
   const seats = SEATS[stage.room] || [], from = Math.floor((seats.length - n) / 2);  // the room's seats when there are enough, the middle ones (#925)
-  const spots = n <= seats.length ? seats.slice(from, from + n).map(f => r.x0 + r.w * f) : cast.map((_, i) => Math.max(r.x0 + 0.01, Math.min(r.x1 - 0.01, r.mid + (i - (n - 1) / 2) * 0.03))), mid = spots.reduce((a, b) => a + b, 0) / n;
+  const spots = n <= seats.length ? seats.slice(from, from + n).map(f => r.x0 + r.w * f) : cast.map((_, i) => Math.max(r.x0 + 0.01 * CUT_K, Math.min(r.x1 - 0.01 * CUT_K, r.mid + (i - (n - 1) / 2) * 0.03 * CUT_K))), mid = spots.reduce((a, b) => a + b, 0) / n;
   cast.forEach((p, i) => { Object.assign(p, { staged: stage.room, room: stage.room, tdk: r.deck, tx: spots[i], at: undefined, relief: undefined, errand: false }); p.faceTo = Math.sign(mid - spots[i]) || Math.sign(spots[0] - spots[i]) || 1; });
-  t.stageSpan = { room: stage.room, deck: r.deck, lo: spots[0] - 0.03, hi: spots[n - 1] + 0.03, sent: {} };  // where they gather: kept clear (stepAside)
+  t.stageSpan = { room: stage.room, deck: r.deck, lo: spots[0] - 0.03 * CUT_K, hi: spots[n - 1] + 0.03 * CUT_K, sent: {} };  // where they gather: kept clear (stepAside)
 }
 
 // Anyone standing or heading where a scene's people gather, who is not in it, leaves for their next-favourite room, to a spot a little apart from
@@ -481,8 +481,17 @@ function stepAside(p, span) {
   const at = p.tx !== null ? p.tx : p.x;  // where they are, or where they are going in that room
   if (at <= span.lo || at >= span.hi) return;
   const alt = Object.entries(HAUNTS[p.role] || HAUNTS.passenger).filter(([id]) => id !== span.room).sort((a, b) => b[1] - a[1])[0][0], r = roomAt(alt), k = (span.sent[alt] = (span.sent[alt] || 0) + 1) - 1;
-  Object.assign(p, { room: alt, tdk: r.deck, tx: Math.min(r.x1 - 0.01, r.x0 + r.w * 0.3 + 0.02 * k), aside: true, at: undefined, errand: false });
+  Object.assign(p, { room: alt, tdk: r.deck, tx: Math.min(r.x1 - 0.01 * CUT_K, r.x0 + r.w * 0.3 + 0.02 * CUT_K * k), aside: true, at: undefined, errand: false });
 }
+
+// Up or down the ladder: decks a second at deck dk going dir (+1 toward the drive), a deck and its plate in two thirds of a second, so the
+// climb through the tube in the water tank (the plant deck's floor to the drive deck's) takes as long as its height (#972).
+function climbRate(lay, dk, dir) {
+  const lo = Math.max(0, Math.min(lay.decks.length - 2, dir > 0 ? Math.floor(dk) : Math.ceil(dk) - 1));
+  return 1.5 * (HULL.deck + HULL.plate) / (deckFloor(lay, lo + 1) - deckFloor(lay, lo));
+}
+// A frame's climb from dk toward the deck tdk.
+const climbStep = (dk, tdk, dt) => { const v = dt * climbRate(LAYOUTS.freighter, dk, Math.sign(tdk - dk)); return dk + Math.max(-v, Math.min(v, tdk - dk)); };
 
 function lifeTick(dt) {
   syncLifeButtons();
@@ -506,38 +515,38 @@ function lifeTick(dt) {
     }
   }
   for (const p of people) {
-    const atCouch = ph === 'couch' && Math.abs(p.x - p.seat) < 0.004 && Math.abs(p.dk) < 0.05;  // a crash couch unfolds out of the deck under its person in the hard burn, and folds away after (#925)
+    const atCouch = ph === 'couch' && Math.abs(p.x - p.seat) < 0.004 * CUT_K && Math.abs(p.dk - p.seatDk) < 0.05;  // a crash couch unfolds out of the deck under its person in the hard burn, and folds away after (#925)
     p.couch = Settings.reduceMotion ? +atCouch : Math.max(0, Math.min(1, (p.couch || 0) + (atCouch ? 1 : -1) * dt * 1.5));
     if (ph === 'secure' || ph === 'float') {  // strap in where they are; someone on the ladder finishes onto a deck
       p.tx = null; p.tdk = Math.round(p.dk); p.block = undefined; p.relief = undefined;  // strapped in: under way again, the timetable sends them on
-      p.dk = Math.abs(p.tdk - p.dk) < 0.01 ? p.tdk : p.dk + Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
+      p.dk = Math.abs(p.tdk - p.dk) < 0.01 ? p.tdk : climbStep(p.dk, p.tdk, dt);
       continue;
     }
     if (ph !== 'move' && inBed(p)) continue;  // a patient stays on the cot through the hard burn (#976)
-    if (ph !== 'move') { p.block = undefined; p.relief = undefined; const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
+    if (ph !== 'move') { p.block = undefined; p.relief = undefined; const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (p.seatDk - p.dk) * k; p.tx = null; p.tdk = p.seatDk; continue; }
     stepAside(p, G.transit.stageSpan);
     if (!p.staged && p.block !== block && p.block !== 'activity' && p.block !== 'linger' && !p.errand) routineGo(p, block, people, dark, lifeRnd, state);  // the timetable: a new block, or back to it
     if (p.relief && !p.staged) { handOver(p, people, dt, block, lifeRnd); continue; }
     if (p.leave > 0 && !p.staged && p.tx !== null) { p.leave -= dt; continue; }  // their own moment to set off (#924)
     p.go = Math.min(1, (p.go || 0) + dt * 4);  // easing into the stride over a quarter of a second
     const pace = p.staged ? 1 : 0.85 + 0.3 * personShare(p, 2);  // their own pace, a little either side of the ship's
-    const step = (p.staged ? 0.09 : 0.06) * pace * p.go * (p.role === 'you' && state.you ? 2 / 3 : 1) * dt;  // to a scene a little faster; you, hurt, slower
+    const step = (p.staged ? 0.09 : 0.06) * CUT_K * pace * p.go * (p.role === 'you' && state.you ? 2 / 3 : 1) * dt;  // to a scene a little faster; you, hurt, slower
     const before = p.x;
     // Where they are walking to on this deck (the ladder first, to change deck), and anyone walking the same way just in front of them, kept
     // a body's width behind and not walked through (#924); two who set off from the same spot are told apart by their own share.
     const dest = q => (q.dk !== q.tdk ? LADDER : q.tx), dir = Math.sign(dest(p) - p.x) || p.face;
     const front = q => { const d = q.x - p.x; return Math.abs(d) < 1e-4 ? personShare(q, 3) > personShare(p, 3) : Math.sign(d) === dir; };
-    const ahead = people.filter(q => q !== p && q.role !== 'cat' && Math.abs(q.dk - p.dk) < 0.1 && q.tx !== null && Math.abs(dest(q) - q.x) > 0.002 && Math.sign(dest(q) - q.x) === dir && front(q) && Math.abs(q.x - p.x) < 0.02);
-    const room = ahead.length ? Math.max(0, Math.min(...ahead.map(q => Math.abs(q.x - p.x))) - 0.015) : Infinity;
+    const ahead = people.filter(q => q !== p && q.role !== 'cat' && Math.abs(q.dk - p.dk) < 0.1 && q.tx !== null && Math.abs(dest(q) - q.x) > 0.002 * CUT_K && Math.sign(dest(q) - q.x) === dir && front(q) && Math.abs(q.x - p.x) < 0.02 * CUT_K);
+    const room = ahead.length ? Math.max(0, Math.min(...ahead.map(q => Math.abs(q.x - p.x))) - 0.015 * CUT_K) : Infinity;
     if (p.dk !== p.tdk) {  // to the ladder, then up or down it
-      if (Math.abs(LADDER - p.x) > 0.003) { p.face = dir; const s2 = Math.min(step, room); p.x += Math.max(-s2, Math.min(s2, LADDER - p.x)); }
-      else p.dk += Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
+      if (Math.abs(LADDER - p.x) > 0.003 * CUT_K) { p.face = dir; const s2 = Math.min(step, room); p.x += Math.max(-s2, Math.min(s2, LADDER - p.x)); }
+      else p.dk = climbStep(p.dk, p.tdk, dt);
     } else if (p.tx !== null) {
       p.face = dir;
-      const ease = Math.min(1, 0.35 + Math.abs(p.tx - p.x) / 0.01);  // and ease out of the stride at the end
+      const ease = Math.min(1, 0.35 + Math.abs(p.tx - p.x) / (0.01 * CUT_K));  // and ease out of the stride at the end
       const s2 = Math.min(step * ease, room);
       p.x += Math.max(-s2, Math.min(s2, p.tx - p.x));
-      if (Math.abs(p.tx - p.x) < 0.002) {
+      if (Math.abs(p.tx - p.x) < 0.002 * CUT_K) {
         p.tx = null; p.go = 0;
         if (p.staged) { p.face = p.faceTo || p.face; continue; }  // in place for the scene, facing the others: no draw of the game's dice
         p.wait = p.errand ? lifeRand(1.5, 3) : lifeRand(5, 12);  // an errand is in and out

@@ -16,7 +16,7 @@ const STATIONS = [
   { id: 'ops', name: 'Operations', short: 'Ops' },
 ];
 // The console each room of the cutaway opens in a burn (#323): the same sheets as the key bar's keys, so a tap on a room and a press of its key are one thing.
-const ROOM_SHEETS = { bridge: 'nav', gunnery: 'weapons', engine: 'eng', berths: 'interior', medbay: 'interior', galley: 'interior', hold: 'ops' };
+const ROOM_SHEETS = { bridge: 'nav', gunnery: 'weapons', engine: 'eng', berths: 'interior', medbay: 'interior', galley: 'interior', hold: 'ops', head: 'interior', airlock: 'interior', workshop: 'eng', lifesupport: 'eng' };
 const roomSheet = id => ROOM_SHEETS[id];
 
 const tabReady = (p, id) => (!role().mayTab(id) || (scopeOff('owner') && id === 'company')) ? false : id === 'trade' ? p.services.includes('trade')
