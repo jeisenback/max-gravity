@@ -8,7 +8,7 @@
 // planets. Every function takes the state it reads. Loaded after orbits.js and before game.js; runs under tests/nodecontext.js.
 
 const SITE_KINDS = { ice: { word: 'an ice rock', color: '#8a8478' } };
-const ICE_SITES = 3, ICE_AU = [3.4, 4.2];  // ice rocks a run has, and how far out: past the Belt, as the ice run says
+const ICE_SITES = 3, ICE_AU = [3.0, 3.8];  // ice rocks a run has, and how far out: the outer Belt (nearer than the first 3.4 to 4.2, which made a run from the inner system too long for its pay: the soak, 2026-11-08)
 
 const isSite = id => typeof id === 'string' && id.startsWith('site:');
 // The seed: who the hand signed on with and when, which a run has from its first hour; a save with no hand seeds from the word alone.

@@ -59,7 +59,7 @@ const ICE_STAGES = [
           'pace. The anchors bite on the first try.')], lose: [-1, 0.06, 'The roll catches you out by a few degrees and a spur of rock clips the hull. The anchors hold, in the end.'] },
       { label: 'Go in fast, and brake hard', bold: true, odds: 0.4, win: [3, 0, ('You go in faster than anyone likes and brake at the last moment. ' +
           'You\'re on the ice with an hour in hand.')], lose: [-1, 0.12, 'You come in too fast, and brake too late, and the hull takes a hit from the rock that rings every deck.'] },
-      { label: 'Send a line across first', odds: 0.7, win: [1, 0, 'The line goes across and holds. You haul the ship in on it, a meter at a time, and no one has to be clever.'], lose: [0, 0, 'The line parts on the first haul. You spend two hours getting it across again.'] },
+      { label: 'Send a line across first', odds: 0.7, win: [1, 0, 'The line goes across and holds. You haul the ship in on it, a meter at a time, and no one has to be clever.'], lose: [-1, 0, 'The line parts on the first haul. You spend two hours getting it across again, and the cutters start late.'] },
     ],
     post: {
       pilot: { label: 'Fly the approach by hand', win: [2, 0, ('You fly it by hand, with the drive cold, on the thrusters alone, in the shadow of the ' +

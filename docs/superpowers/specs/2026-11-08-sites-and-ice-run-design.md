@@ -21,7 +21,7 @@ Chapter 2 wants rocks and wrecks off the lanes that the ship flies to, stops at 
 
 - A site is `{ id, kind, name, au, angle, found }`: `id` is `site:<kind>-<n>` (`site:ice-1`), `kind` is `ice` for now (`wreck` and `rock` come with chapter 2), `name` is a designation the crews use (`KX-41`: two letters and two digits drawn from the id), `au` and `angle` are its orbit as a system has them, `found` is the day it was found or `null`.
 - Sites live on the save as `st.sites`, an object by id, created lazily by `sites(st)` on first use (`st.sites = st.sites || seedSites(st)`), so no old save changes shape and a save from before gets its sites the first time anything asks. They are seeded by `hash` of facts already on the save (the hired captain's id and the sign-on day, `h.captain` and `h.since`), with no draw of the game's, so no other outcome moves (`shape.md`: each system rolls its own dice).
-- Chapter 1 seeds three ice rocks at 3.4 to 4.2 AU, angles spread round the circle, "past the Belt" as the ice run already says. Only ice rocks exist until chapter 2's step adds kinds.
+- Chapter 1 seeds three ice rocks at 3.0 to 3.8 AU, the outer Belt, angles spread round the circle (the first build put them at 3.4 to 4.2, "past the Belt" as the ice run said; the pacing soak had a captain's pay a day fall to 70 percent of his rate on the longer runs from the inner system, so the owner moved them nearer, 2026-11-08). Only ice rocks exist until chapter 2's step adds kinds.
 - `placeOf(id, st)` (in `js/orbits.js`, since the orbit math is the first reader) returns `SYSTEMS[id]` or the site, and `orbitPeriod`, `orbitPos` and so `distAU`, `travelDays`, `burnFuel`, `bestWindow` and `inRange` read it. A site has what they read (`au`, `angle`), a `name`, and `gov: 'Independent'` and `services: []` for the readers that ask a place its government or its services (the world's unrest, the storylets' conditions, the rail); it has no `planets` and no `pirates`, and the readers that need those (the flight view, the dock) never see a site. Nothing is added to `SYSTEMS`, so every loop over it is untouched.
 - `isSite(id)` is the one test (`/^site:/`). `atSite(st)` says whether the ship is at one (`isSite(st.systemId)`).
 - `findSite(st, id, day)` sets `found`. The captain knows her rock, so the planner finds it when it plans the run.
@@ -69,7 +69,7 @@ Chapter 2 wants rocks and wrecks off the lanes that the ship flies to, stops at 
 
 ## Assumptions
 
-- Three ice rocks past the Belt are enough for chapter 1; which one the captain picks is the nearest in range, and she finds it by knowing it.
+- Three ice rocks in the outer Belt are enough for chapter 1; which one the captain picks is the nearest in range, and she finds it by knowing it.
 - Three shifts is the stop; the cutting scene is the first shift's and the other two pass with only the day's events.
 - A site's arrival fires `onStation` and not `landed`, which is the single gate that keeps every port hook out.
 - The ice run's words, odds and loads are unchanged; only where and when the scenes play moves.

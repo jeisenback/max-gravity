@@ -40,7 +40,7 @@
 - Test: `tests/sites.test.js` (new), `tests/orbits.test.js`
 
 **Interfaces:**
-- Produces, `js/sites.js`: `SITE_KINDS = { ice: { word: 'an ice rock', color: '#8a8478' } }`; `ICE_SITES = 3`, `ICE_AU = [3.4, 4.2]`; `isSite(id)` (`/^site:/`); `siteKey(st)` (`hash` of `'sites|' + hired captain id + '|' + sign-on day`, from `st.hired`, else `'sites|'`); `seedSites(key)` returns `{ [id]: site }` with `ICE_SITES` ice sites `site:ice-1..3`, each `{ id, kind: 'ice', name, au, angle, found: null, gov: 'Independent', services: [], color, site: true }`, `au` within `ICE_AU`, `angle` in `[0, 360)`, `name` two capital letters, a hyphen and two digits (`KX-41`), all from the key; `sites(st)` (`st.sites = st.sites || seedSites(siteKey(st))`); `siteOf(st, id)` (the site or `null`); `atSite(st)` (`isSite(st.systemId)`); `findSite(st, id, day)` sets `found = day` and returns the site; `foundSites(st)` (the found ones' ids).
+- Produces, `js/sites.js`: `SITE_KINDS = { ice: { word: 'an ice rock', color: '#8a8478' } }`; `ICE_SITES = 3`, `ICE_AU = [3.0, 3.8]`; `isSite(id)` (`/^site:/`); `siteKey(st)` (`hash` of `'sites|' + hired captain id + '|' + sign-on day`, from `st.hired`, else `'sites|'`); `seedSites(key)` returns `{ [id]: site }` with `ICE_SITES` ice sites `site:ice-1..3`, each `{ id, kind: 'ice', name, au, angle, found: null, gov: 'Independent', services: [], color, site: true }`, `au` within `ICE_AU`, `angle` in `[0, 360)`, `name` two capital letters, a hyphen and two digits (`KX-41`), all from the key; `sites(st)` (`st.sites = st.sites || seedSites(siteKey(st))`); `siteOf(st, id)` (the site or `null`); `atSite(st)` (`isSite(st.systemId)`); `findSite(st, id, day)` sets `found = day` and returns the site; `foundSites(st)` (the found ones' ids).
 - Produces, `js/orbits.js`: `placeOf(id, st = G.state)` returns `SYSTEMS[id] || siteOf(st, id) || undefined`.
 
 - [ ] **Step 1: Write the failing node tests**
@@ -53,7 +53,7 @@ test('a run seeds three ice rocks past the Belt, the same for the same save and 
   assert.deepEqual(a, b); assert.notDeepEqual(a, c);
   const list = Object.values(a);
   assert.equal(list.length, 3);
-  for (const s of list) { assert.ok(s.au >= 3.4 && s.au <= 4.2); assert.ok(s.angle >= 0 && s.angle < 360); assert.match(s.name, /^[A-Z]{2}-\d{2}$/); assert.equal(s.kind, 'ice'); assert.equal(s.found, null); assert.equal(s.gov, 'Independent'); assert.deepEqual(s.services, []); assert.ok(isSite(s.id)); }
+  for (const s of list) { assert.ok(s.au >= 3.0 && s.au <= 3.8); assert.ok(s.angle >= 0 && s.angle < 360); assert.match(s.name, /^[A-Z]{2}-\d{2}$/); assert.equal(s.kind, 'ice'); assert.equal(s.found, null); assert.equal(s.gov, 'Independent'); assert.deepEqual(s.services, []); assert.ok(isSite(s.id)); }
 });
 test('sites are made once on the save, placeOf finds a site or a system, and a found site is listed', () => {
   const { G, sites, placeOf, siteOf, findSite, foundSites, atSite } = setup();

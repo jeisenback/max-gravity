@@ -17,14 +17,14 @@ function setup({ day = 40, fuel = 300 } = {}) {
   return { G, ...api };
 }
 
-test('a run seeds three ice rocks past the Belt, the same for the same save and different for another', () => {
+test('a run seeds three ice rocks in the outer Belt, the same for the same save and different for another', () => {
   const { seedSites, isSite } = setup();
   const a = seedSites(12345), b = seedSites(12345), c = seedSites(54321);
   assert.deepEqual(a, b); assert.notDeepEqual(a, c);
   const list = Object.values(a);
   assert.equal(list.length, 3);
   for (const s of list) {
-    assert.ok(s.au >= 3.4 && s.au <= 4.2, `past the Belt: ${s.au}`); assert.ok(s.angle >= 0 && s.angle < 360);
+    assert.ok(s.au >= 3.0 && s.au <= 3.8, `the outer Belt: ${s.au}`); assert.ok(s.angle >= 0 && s.angle < 360);
     assert.match(s.name, /^[A-Z]{2}-\d{2}$/); assert.equal(s.kind, 'ice'); assert.equal(s.found, null);
     assert.equal(s.gov, 'Independent'); assert.equal(s.services.length, 0); assert.ok(isSite(s.id)); assert.equal(a[s.id], s);
   }
