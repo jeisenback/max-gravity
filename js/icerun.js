@@ -14,26 +14,28 @@ const ICE_HAZARD = 2;        // the wage, for the days it takes
 const ICE_PREMIUM = 2.5;     // what the domes pay for water on a contract, against the board price
 const ICE_SHIFTS = 3, ICE_SHIFTS_WORD = 'three';  // the shifts the ship spends on the rock (sites.js), and the word for the departure line (transit.js)
 
-// The two legs of an ice run, pure (tests/sites.test.js): the found ice rock in sites(st), else the nearest one in range, then the
-// trading port whose water is dear (ICE_WATER_PRICE) and pays most, with the tank covering both legs, since there is no refuel at a
-// rock. Null when no pair fits. `fns` are the game's price, travelDays and burnFuel.
+// The two legs of an ice run, pure (tests/sites.test.js): among the ice rocks the tank reaches from here, the found one, else the nearest; then the
+// trading port whose water is dear (ICE_WATER_PRICE) and pays most, with the tank covering both legs, the leg home priced on the day it burns
+// (out plus the shifts), since there is no refuel at a rock. Null when no pair fits. `fns` are the game's price, travelDays and burnFuel.
 function icePick(st, from, fuel, { price, travelDays, burnFuel }) {
-  const all = sites(st), ice = Object.keys(all).filter(id => all[id].kind === 'ice');
-  const rock = ice.find(id => all[id].found !== null) || ice.filter(id => burnFuel(from, id) <= fuel).sort((a, b) => travelDays(from, a) - travelDays(from, b))[0];
-  if (!rock || burnFuel(from, rock) > fuel) return null;
+  const all = sites(st), ice = Object.keys(all).filter(id => all[id].kind === 'ice' && burnFuel(from, id) <= fuel);
+  const rock = ice.find(id => all[id].found !== null) || ice.sort((a, b) => travelDays(from, a) - travelDays(from, b))[0];
+  if (!rock) return null;
+  const out = travelDays(from, rock), homeDay = st.day + out + ICE_SHIFTS;
   let best = null;
   for (const [sid, sys] of Object.entries(SYSTEMS)) {
-    if (burnFuel(from, rock) + burnFuel(rock, sid) > fuel) continue;
+    const homeFuel = burnFuel(rock, sid, homeDay);
+    if (burnFuel(from, rock) + homeFuel > fuel) continue;
     for (const pl of sys.planets.filter(x => x.services.includes('trade'))) {
       const sell = price(pl, 'water');
-      if (sell !== null && sell >= ICE_WATER_PRICE && (!best || sell > best.sell)) best = { site: rock, sid, planet: pl.name, yard: pl.services.includes('shipyard'), sell };
+      if (sell !== null && sell >= ICE_WATER_PRICE && (!best || sell > best.sell)) best = { site: rock, sid, planet: pl.name, yard: pl.services.includes('shipyard'), sell, homeFuel };
     }
   }
-  return best && { ...best, days: travelDays(from, rock) + ICE_SHIFTS + travelDays(rock, best.sid) };
+  return best && { ...best, days: out + ICE_SHIFTS + travelDays(rock, best.sid, homeDay) };
 }
 
 // The run the planner takes when it is due: out to the rock, the shifts, and home to the port that pays most for water, the whole hold, no cost.
-function iceOption(here, from, reach, free) {
+function iceOption(from, free) {
   const h = hired(), st = G.state;
   if (!h || (h.iceAt !== undefined && st.day - h.iceAt < ICE_GAP) || st.day - h.since < 12 || free < 10) return null;
   const pick = icePick(st, from, st.fuel, { price, travelDays, burnFuel });

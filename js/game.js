@@ -168,7 +168,7 @@ function dropMissingModContent(st) {
   if (!SHIPS[st.shipId]) st.shipId = 'shuttle';
   for (const id of Object.keys(st.outfits)) if (!OUTFITS[id]) delete st.outfits[id];
   for (const id of Object.keys(st.cargo)) if (!COMMODITIES.some(c => c.id === id)) delete st.cargo[id];
-  st.missions = st.missions.filter(m => SYSTEMS[m.destSystem || m.targetSystem || st.systemId]);
+  st.missions = st.missions.filter(m => placeOf(m.destSystem || m.targetSystem || st.systemId, st));
 }
 
 function resetWorld() {
@@ -1145,7 +1145,7 @@ function drawMap(W, H) {
   }
   // A hired hand's map shows the captain's plan, from the same source as the Port tab, and in a burn the course she is on.
   const hand = hired() && chapterOf(st) === 1;  // the captain's map is chapter one's; the co-op plots its own (#891)
-  const plan = hand && !G.transit ? currentPlan() : null, bound = hand ? (G.transit ? G.transit.to : plan && plan.sid) : st.dest;
+  const plan = hand && !G.transit ? currentPlan() : null, bound = hand ? (G.transit ? G.transit.to : plan && (plan.site || plan.sid)) : st.dest;  // an ice run's first leg is to the rock (#979)
   if (bound && bound !== from) {
     ctx.strokeStyle = '#5fd35f';
     line(from, bound);

@@ -51,10 +51,10 @@ function landAtSite(site, notes = []) {
   st.systemId = site.id; st.planet = site.name;
   if (G.player) st.armor = Math.max(1, Math.round(G.player.armor));
   G.transit = null; G.mode = 'landed'; G.shots = []; G.flash = 0;
-  save();
   UI.openLanded(site, notes, 'site');
   Mods.emit('onStation', site);
   siteArrival(st);  // the ice run's stay and its approach scene (icerun.js)
+  save();  // after the stay has begun and the approach is marked, so a reload keeps the shifts and plays no second approach (#979)
 }
 
 // The header's second line at a site: what it is and how far out.
