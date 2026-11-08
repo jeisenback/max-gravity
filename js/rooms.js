@@ -229,14 +229,25 @@ function roomGalley(ctx, r, s, X, W) {
     if (w.burn > 0.5) { ctx.strokeStyle = 'rgba(140,170,200,0.5)'; ctx.lineWidth = 0.8; for (let x = tx + 22; x < tx + tw - 22; x += 6) roomSeg(ctx, [[x, F - 14], [x + 6, F]]); }
   }
   if (W >= 240) {
-    const cx = X(0.74), cw = Math.min(100, W * 0.24);
-    roomBox(ctx, cx, F - 40, cw, 6, '#24405e'); roomBox(ctx, cx + 4, F - 34, cw - 8, 34, '#18304a'); roomBox(ctx, cx + 8, F - 30, cw / 2 - 12, 26, '#132538'); roomBox(ctx, cx + cw / 2 + 2, F - 30, cw / 2 - 12, 26, '#132538');
-    roomBox(ctx, cx + 10, F - 58, 16, 18, '#9aa8b6'); roomBox(ctx, cx + 26, F - 54, 6, 4, '#9aa8b6'); roomBox(ctx, cx + 8, F - 46, 20, 3, '#5a6672');
+    // The stove (#933): two burners on its top (the kettle on one, the ring lit while it steams in cruise), the oven door with its window and
+    // knobs, a cupboard beside it, and a hood over the burners with its duct to the ceiling; the pans hang on a rail past the hood.
+    const cx = X(0.74), cw = Math.min(100, W * 0.24), sw = cw * 0.55;
+    roomBox(ctx, cx, F - 40, cw, 6, '#24405e'); roomBox(ctx, cx + 4, F - 34, cw - 8, 34, '#18304a');
+    roomBox(ctx, cx + 8, F - 30, sw - 12, 26, '#132538'); roomFlat(ctx, cx + 12, F - 24, sw - 20, 12, '#2a1a10'); roomFlat(ctx, cx + 12, F - 28, sw - 20, 2, '#9aa8b6');
+    for (let k = 0; k < 3; k++) roomDot(ctx, cx + 14 + k * (sw - 20) / 2, F - 37, 1.4, '#9aa8b6');
+    roomBox(ctx, cx + sw + 2, F - 30, cw - sw - 10, 26, '#132538');
+    for (const bx of [cx + 6, cx + sw / 2 + 4]) { roomFlat(ctx, bx, F - 42, sw / 2 - 6, 2, '#0b1520'); if (bx === cx + 6 && w.cruise > 0.05) roomFlat(ctx, bx + 2, F - 42, sw / 2 - 10, 1, `rgba(255,122,58,${0.8 * w.cruise})`); }
+    roomBox(ctx, cx + 10, F - 58, 16, 16, '#9aa8b6'); roomBox(ctx, cx + 26, F - 54, 6, 4, '#9aa8b6'); roomFlat(ctx, cx + 12, F - 61, 12, 3, '#5a6672');
     if (W >= 290) roomPlant(ctx, cx + cw - 6, F - 50, w, time, s.still);
+    {  // the hood, low enough to clear the thrust sign over the galley's forward end (shiplife.js)
+      ctx.fillStyle = '#56708c'; ctx.beginPath(); ctx.moveTo(cx - 2, F - 64); ctx.lineTo(cx + sw + 2, F - 64); ctx.lineTo(cx + sw - 6, F - 75); ctx.lineTo(cx + 6, F - 75); ctx.closePath(); ctx.fill();
+      roomFlat(ctx, cx - 2, F - 64, sw + 4, 2, '#3d5a7a'); roomBox(ctx, cx + sw / 2 - 8, r.top, 16, F - 75 - r.top, '#2c4c6e');
+      for (let k = 0; k < 4; k++) roomFlat(ctx, cx + 10 + k * (sw - 16) / 4, F - 71, (sw - 16) / 4 - 3, 1.5, '#2c4c6e');  // the vent slots
+    }
     if (W >= 320) {
-      roomBox(ctx, cx, F - 96, cw, 3, '#3d5a7a');
-      [[0.2, 14, 7], [0.5, 20, 9], [0.82, 12, 6]].forEach(([f, l, rad], k) => {
-        const ax = cx + cw * f, [ex, ey] = hangEnd(ax, F - 93, l, k * 1.7, w, time, s.still);
+      roomBox(ctx, cx + sw + 6, F - 96, cw - sw - 6, 3, '#3d5a7a');
+      [[0.3, 12, 7], [0.75, 17, 8]].forEach(([f, l, rad], k) => {
+        const ax = cx + sw + 6 + (cw - sw - 6) * f, [ex, ey] = hangEnd(ax, F - 93, l, k * 1.7, w, time, s.still);
         ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1.2; roomSeg(ctx, [[ax, F - 93], [ex, ey]]); roomDot(ctx, ex, ey + rad * 0.6, rad, '#4a5662'); roomDot(ctx, ex, ey + rad * 0.6, rad - 2, '#2e3842');
       });
     }
