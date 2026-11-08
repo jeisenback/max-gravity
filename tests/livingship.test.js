@@ -380,3 +380,27 @@ test('the medbay has a supply cabinet, its doors and the supplies on it (#933)',
   const fills = c => calls.filter(k => k[0] === 'fillStyle' && k[1] === c).length;
   assert.ok(fills('#8a96a2') >= 1, 'the cabinet, the seam between its doors'); assert.ok(fills('#9aa8b6') >= 2, 'a handle on each door'); assert.ok(fills('#7fb8c8') >= 2, 'bottles on its top');
 });
+
+// Review Focus 5 (#972): at the hard burn someone off their couch's deck takes the ladder in the well to it, never through the floors.
+test('the couch phase takes the ladder to a couch on another deck, and the couch unfolds once they are on it (#972)', () => {
+  const G2 = { mode: 'transit' };
+  const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], {
+    G: G2, Mods: { filter: (n, v) => v, emit() {}, register() {} }, Settings: { reduceMotion: false }, document: { getElementById: () => null },
+    comm() {}, ship: () => ({ armor: 100 }), roleHolder: () => null, handHurt: () => false,
+  }, ['lifeTick', 'roomAt', 'LADDER']);
+  const berths = api.roomAt('berths'), seat = berths.x0 + berths.w * 0.2;
+  const eng = { name: 'Tomas', role: 'engineer', id: 'e', room: 'engine', x: 0.24, dk: 6, tdk: 6, tx: null, seat, seatDk: berths.deck, couch: 0, wait: 3 };
+  const you = { name: 'You', role: 'you', id: 'you', room: 'bridge', x: 0.5, dk: 0, tdk: 0, tx: null, seat: 0.5, seatDk: 0, couch: 0, wait: 3 };
+  G2.state = { day: 3, crew: ['e'], armor: 100, people: {}, injured: {} };
+  G2.transit = { total: 100, left: 3, elapsed: 0, to: 'mars', days: 3, aboard: [you, eng], dark: false };  // pr 0.97: the hard burn in
+  let offLadder = 0, unfolded = false;
+  for (let i = 0; i < 1200; i++) {
+    api.lifeTick(1 / 30);
+    if (eng.dk !== Math.round(eng.dk) && Math.abs(eng.x - api.LADDER) > 0.01) offLadder++;
+    if (eng.couch > 0 && eng.dk !== berths.deck) unfolded = true;
+  }
+  assert.equal(offLadder, 0, 'between decks only in the well');
+  assert.equal(eng.dk, berths.deck, 'on the berths deck'); assert.ok(Math.abs(eng.x - seat) < 0.005, `at the couch (${eng.x} for ${seat})`);
+  assert.ok(eng.couch > 0.9, 'the couch unfolded under them'); assert.ok(!unfolded, 'and not before they were on its deck');
+  assert.equal(you.dk, 0); assert.ok(you.couch > 0.9, 'someone on their couch\'s deck eases onto it as before');
+});

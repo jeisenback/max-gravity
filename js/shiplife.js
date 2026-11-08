@@ -523,9 +523,13 @@ function lifeTick(dt) {
       continue;
     }
     if (ph !== 'move' && inBed(p)) continue;  // a patient stays on the cot through the hard burn (#976)
-    if (ph !== 'move') { p.block = undefined; p.relief = undefined; const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (p.seatDk - p.dk) * k; p.tx = null; p.tdk = p.seatDk; continue; }
-    stepAside(p, G.transit.stageSpan);
-    if (!p.staged && p.block !== block && p.block !== 'activity' && p.block !== 'linger' && !p.errand) routineGo(p, block, people, dark, lifeRnd, state);  // the timetable: a new block, or back to it
+    if (ph !== 'move') {  // to the couch: on its deck, eased onto it; from another deck, a walk like any other, by the ladder in the well (#972)
+      p.block = undefined; p.relief = undefined;
+      if (p.dk === p.seatDk) { const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.tx = null; p.tdk = p.seatDk; continue; }
+      Object.assign(p, { tdk: p.seatDk, tx: p.seat, leave: 0, room: layoutRoomAt(LAYOUTS.freighter, p.seatDk, p.seat * LAYOUTS.freighter.width) || p.room });
+    }
+    if (ph === 'move') stepAside(p, G.transit.stageSpan);
+    if (ph === 'move' && !p.staged && p.block !== block && p.block !== 'activity' && p.block !== 'linger' && !p.errand) routineGo(p, block, people, dark, lifeRnd, state);  // the timetable: a new block, or back to it
     if (p.relief && !p.staged) { handOver(p, people, dt, block, lifeRnd); continue; }
     if (p.leave > 0 && !p.staged && p.tx !== null) { p.leave -= dt; continue; }  // their own moment to set off (#924)
     p.go = Math.min(1, (p.go || 0) + dt * 4);  // easing into the stride over a quarter of a second
@@ -549,6 +553,7 @@ function lifeTick(dt) {
       if (Math.abs(p.tx - p.x) < 0.002 * CUT_K) {
         p.tx = null; p.go = 0;
         if (p.staged) { p.face = p.faceTo || p.face; continue; }  // in place for the scene, facing the others: no draw of the game's dice
+        if (ph !== 'move') continue;  // at the couch: no wait, and nothing said
         p.wait = p.errand ? lifeRand(1.5, 3) : lifeRand(5, 12);  // an errand is in and out
         if (p.role !== 'you' && lifeRnd() < 0.18 && !lifeHushed(lifeState())) {
           const line = lifeLine(p, people, lifeRnd);
