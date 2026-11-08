@@ -1,6 +1,6 @@
 # Sites, and the Ice Run as Two Legs
 
-Status: approved by the owner on 2026-11-08 (#948). The first step of exploration and salvage; the later steps are listed at the end and in `ROADMAP.md`.
+Status: approved by the owner on 2026-11-08 (#948); built the same day (`docs/superpowers/plans/2026-11-08-sites-and-ice-run.md`). The first step of exploration and salvage; the later steps are listed at the end and in `ROADMAP.md`.
 
 ## Why
 
@@ -20,9 +20,9 @@ Chapter 2 wants rocks and wrecks off the lanes that the ship flies to, stops at 
 ### Sites (`js/sites.js`, loaded after `orbits.js` and before `game.js`)
 
 - A site is `{ id, kind, name, au, angle, found }`: `id` is `site:<kind>-<n>` (`site:ice-1`), `kind` is `ice` for now (`wreck` and `rock` come with chapter 2), `name` is a designation the crews use (`KX-41`: two letters and two digits drawn from the id), `au` and `angle` are its orbit as a system has them, `found` is the day it was found or `null`.
-- Sites live on the save as `st.sites`, an object by id, created lazily by `sites(st)` on first use (`st.sites = st.sites || seedSites(st)`), so no old save changes shape and a save from before gets its sites the first time anything asks. They are seeded by `hash` of facts already on the save (the player's name, the hired captain's id and the sign-on day, `h.captain` and `h.since`), with no draw of the game's, so no other outcome moves (`shape.md`: each system rolls its own dice).
+- Sites live on the save as `st.sites`, an object by id, created lazily by `sites(st)` on first use (`st.sites = st.sites || seedSites(st)`), so no old save changes shape and a save from before gets its sites the first time anything asks. They are seeded by `hash` of facts already on the save (the hired captain's id and the sign-on day, `h.captain` and `h.since`), with no draw of the game's, so no other outcome moves (`shape.md`: each system rolls its own dice).
 - Chapter 1 seeds three ice rocks at 3.4 to 4.2 AU, angles spread round the circle, "past the Belt" as the ice run already says. Only ice rocks exist until chapter 2's step adds kinds.
-- `placeOf(id, st)` (in `js/orbits.js`, since the orbit math is the first reader) returns `SYSTEMS[id]` or the site, and `orbitPeriod`, `orbitPos` and so `distAU`, `travelDays`, `burnFuel`, `bestWindow` and `inRange` read it. A site has what they read (`au`, `angle`) and a `name`; nothing else of a system's shape (no `planets`, `gov`, `pirates`) is faked. Nothing is added to `SYSTEMS`, so every loop over it is untouched.
+- `placeOf(id, st)` (in `js/orbits.js`, since the orbit math is the first reader) returns `SYSTEMS[id]` or the site, and `orbitPeriod`, `orbitPos` and so `distAU`, `travelDays`, `burnFuel`, `bestWindow` and `inRange` read it. A site has what they read (`au`, `angle`), a `name`, and `gov: 'Independent'` and `services: []` for the readers that ask a place its government or its services (the world's unrest, the storylets' conditions, the rail); it has no `planets` and no `pirates`, and the readers that need those (the flight view, the dock) never see a site. Nothing is added to `SYSTEMS`, so every loop over it is untouched.
 - `isSite(id)` is the one test (`/^site:/`). `atSite(st)` says whether the ship is at one (`isSite(st.systemId)`).
 - `findSite(st, id, day)` sets `found`. The captain knows her rock, so the planner finds it when it plans the run.
 
