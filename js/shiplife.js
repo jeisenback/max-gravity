@@ -328,8 +328,8 @@ function shipPeople() {
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
   people.forEach((p, i) => { const dk = couchDk(i); Object.assign(p, { room: i === 0 ? 'bridge' : 'berths', x: couchX(i, people.length), dk, tdk: dk, seatDk: dk, tx: null, wait: lifeRand(1, 4), seat: couchX(i, people.length), couch: 1 }); });
-  // A hand's captain is aboard too, strapped in on the bridge beside the hand's couch: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
-  const cap = hiredCaptain(), bx = roomAt('bridge').mid + 0.025 * CUT_K, bd = roomAt('bridge').deck;
+  // A hand's captain is aboard too, strapped in on the bridge across the well from the hand's couch: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
+  const cap = hiredCaptain(), bx = couchX(0, people.length, 'captain'), bd = roomAt('bridge').deck;
   if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: bd, tdk: bd, seatDk: bd, tx: null, wait: 3, seat: bx, couch: 1 });
   return (t.aboard = people);
 }
@@ -349,8 +349,18 @@ function clearOf(p, x, people = []) {
   return x;
 }
 
-// Crash couches: yours at the bridge's middle, the rest spread across the berths; couchDk the deck each is on.
-const couchX = (i, n) => (i === 0 ? roomAt('bridge').mid : roomAt('berths').x0 + 0.02 * CUT_K + (roomAt('berths').w - 0.04 * CUT_K) * (i / Math.max(1, n - 1)));
+// Crash couches (#972): yours (i 0) and the captain's at two of the bridge's posts either side of the well; the rest (i 1 to n - 1) spread
+// across both halves of the berths, the first half of them left of the well. A couch is COUCH_LEN long (rooms.js roomCouchFlat), and none
+// lies on another or over the well's band widened by half a couch. couchDk is the deck each is on.
+const COUCH_LEN = 60;
+function couchX(i, n, role) {
+  const lay = LAYOUTS.freighter, W = lay.width;
+  if (i === 0 || role === 'captain') { const b = roomAt('bridge'); return b.x0 + b.w * SEATS.bridge[role === 'captain' ? 2 : 1]; }
+  const r = roomAt('berths'), m = Math.max(1, n - 1), k = i - 1, left = Math.ceil(m / 2), right = k >= left;
+  const edge = (COUCH_LEN / 2 + 8) / W, wellL = lay.well.x - lay.well.w / 2 - COUCH_LEN / 2 / W, wellR = lay.well.x + lay.well.w / 2 + COUCH_LEN / 2 / W;
+  const a = right ? wellR + edge : r.x0 + edge, b = right ? r.x1 - edge : wellL - edge, c = right ? m - left : left, j = right ? k - left : k;
+  return c > 1 ? a + (b - a) * j / (c - 1) : (a + b) / 2;
+}
 const couchDk = i => roomAt(i === 0 ? 'bridge' : 'berths').deck;
 
 // Sent somewhere by a downtime activity you chose: the timetable takes them back when they have been there a while (lifeTick).
@@ -445,8 +455,8 @@ function posture(p, ph, time, asleep) {
   else if (ph === 'couch') name = (p.couch || 0) >= 0.6 ? 'couch' : Math.abs(p.x - p.seat) > 0.004 * CUT_K ? 'walk' : 'stand';  // on the couch once it has unfolded under them (#925)
   else if (ph === 'secure') name = 'strap';
   else if (ph === 'float') name = p.role === 'engineer' ? 'tether' : 'strap';
-  else if (p.dk !== p.tdk) name = 'climb';
-  else if (p.tx !== null) name = 'walk';
+  else if (p.dk !== p.tdk && (Math.abs(p.x - LADDER) <= 0.003 * CUT_K || p.dk !== Math.round(p.dk))) name = 'climb';  // on the ladder in the well, or between decks (#972)
+  else if (p.tx !== null || p.dk !== p.tdk) name = 'walk';  // along a deck, to the well too
   else if (p.staged) name = p.staged === 'berths' || ((p.staged === 'galley' || (p.role === 'captain' && SEATED_STATIONS.includes(p.staged))) && onSeat(p)) ? 'sit' : 'stand';  // on a seat at the table, a bunk's edge; the captain at the station
   else if (!p.staged && !p.errand && ((p.block === 'shift' && ['post', 'aid', 'repair'].includes(p.at)) || p.at === 'stove')) name = p.at === 'post' && (p.room === 'bridge' || p.room === 'gunnery') && onSeat(p) ? 'work-sit' : 'work';  // at work: seated at the bridge and the guns, where there is a seat
   else name = p.at === 'alone' || (p.at !== 'stove' && onSeat(p)) ? 'sit' : 'stand';  // on a seat; someone alone sits on a bunk's edge; anyone else stands (#925)
