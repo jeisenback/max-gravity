@@ -521,7 +521,7 @@ test('the deck starts with the attackers in the lock and the defenders spread, t
   const st = deck({ side: true, cover: [1, 2, 3] });
   assert.deepEqual(plain([st.sections.length, st.sections[3].cover, st.hand, st.began, st.turn, st.used, st.kind]), [4, 0, 2, 3, 0, {}, 'deck'], 'three crew over four sections are all on the bridge, and the hand starts with them (R34)');
   assert.deepEqual(plain(st.sections.map(s => s.cover)), [1, 2, 3, 0]);
-  assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4]], SIDEARM_REACH_LEVEL: 2, WAVE_TURN: 2, CREW_HIT: [0, 2], CHARGE: [1, 1], BREAK: 0.15, FULL: 4, CORSAIR_LESS: 2, FULL_PAIR: 2, SUIT: 0.2, CASUALTY: 0.3, TURNS: 8,
+  assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4], [3, 5], [4, 5]], SIDEARM_REACH_LEVEL: 2, WAVE_TURN: 2, CREW_HIT: [0, 2], CHARGE: [1, 1], BREAK: 0.15, FULL: 4, CORSAIR_LESS: 2, FULL_PAIR: 2, SUIT: 0.2, CASUALTY: 0.3, TURNS: 8,
     ASSAULT: { BREAK: 0.2, FULL: 5, CREW_HIT: [0, 1], CASUALTY: 0.5 }, NAVY_TURNS: 5, NAVY_STANDING: 2 });
   assert.equal(deck({ crew: 3 }).hand, 0, 'with one of ours in the lock the hand starts there');
   assert.deepEqual(plain(deck({ assault: true, hers: [1, 0, 1] }).sections.map(x => [x.cover, x.hers])), [[0, 1], [0, 0], [0, 1]], 'her cover is kept apart from ours');
@@ -1255,4 +1255,13 @@ test('a push takes the unwounded first and leaves the wounded behind; a wave lan
   wounded.sections[0] = { mine: 0, theirs: 3, theirsHurt: 3, cover: 0 };
   const w = resolveDeckTurn(wounded, { stand: 2, act: null, order: null }, { kind: 'push', from: 0, to: 1, n: 2, feint: false }, () => 0).state.sections;
   assert.deepEqual([w[0].theirsHurt, w[1].theirsHurt], [1, 2], 'with only the wounded left, they go');
+});
+
+// The ladder reaches level 5 (#963): the deck fight's sidearm table covers every level the hand can hold, and a level past it reads the last row.
+test('the sidearm table covers five levels, and a level past the table takes its last row', () => {
+  const { DECK, sidearmOf } = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['DECK', 'sidearmOf']);
+  assert.ok(DECK.SIDEARM_BY_LEVEL.length >= 6, `rows for levels 0 to 5: ${DECK.SIDEARM_BY_LEVEL.length}`);
+  for (let l = 0; l <= 5; l++) { const [lo, hi] = sidearmOf({ level: l }); assert.ok(lo >= 1 && hi >= lo, `level ${l}: ${lo} to ${hi}`); }
+  assert.deepEqual([...sidearmOf({ level: 9 })], [...DECK.SIDEARM_BY_LEVEL[DECK.SIDEARM_BY_LEVEL.length - 1]]);
+  const rows = DECK.SIDEARM_BY_LEVEL; for (let l = 1; l < rows.length; l++) assert.ok(rows[l][1] >= rows[l - 1][1], 'a higher level shoots no worse');
 });

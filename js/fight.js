@@ -229,7 +229,7 @@ function shipEnd(st) {
 // apart, and each cuts only its own side's losses (R31). Loaded after boarders.js, for REPEL_HURT.
 const DECK = {
   SECTIONS: ['lock', 'corridor', 'bridge'],
-  SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4]],  // heads the hand's shot takes, by the level of the fight (sidearmOf): each downs a wounded head there, else wounds one
+  SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4], [3, 5], [4, 5]],  // heads the hand's shot takes, by the level of the fight, 0 to 5 (sidearmOf): each downs a wounded head there, else wounds one
   SIDEARM_REACH_LEVEL: 2,  // from this level the shot may be aimed at a section next to the hand's as well as its own
   WAVE_TURN: 2,      // the turn at whose end the second wave of a repel lands in the lock
   CREW_HIT: [0, 2],  // heads one opposing head takes in a section where both stand (a roll a head); a side's own cover cuts its total, never below one hit
@@ -471,7 +471,7 @@ function deckEnd(st) {
   return deckCapped(st) ? (st.assault ? 'taken' : 'won') : null;
 }
 const deckRule = (st, key) => (st.assault && key in DECK.ASSAULT ? DECK.ASSAULT : DECK)[key];  // a DECK number, or boarding her its DECK.ASSAULT one
-const sidearmOf = st => DECK.SIDEARM_BY_LEVEL[st.level];  // [lo, hi] heads the hand's shot takes at this fight's level
+const sidearmOf = st => DECK.SIDEARM_BY_LEVEL[Math.min(st.level, DECK.SIDEARM_BY_LEVEL.length - 1)];  // [lo, hi] heads the hand's shot takes at this fight's level
 const pendingWave = st => (st.wave ? st.wave.n : 0);  // the heads still to land, 0 once landed
 const deckCap = st => (navyBoarding(st) ? DECK.NAVY_TURNS : DECK.TURNS);  // the turn the attackers withdraw at: a navy party's own, or the deck's
 // A navy party on our deck, the only deck it boards (a navy hull boarded, in the owner's game, fights as her crew): each of them put down costs standing, holding

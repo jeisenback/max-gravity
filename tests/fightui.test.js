@@ -846,7 +846,7 @@ test('the tester panel drops a hired hand into each kind of fight, early and lat
   assert.ok(r.navy.gov && /The boarding party/.test(r.navy.read) && /Turn 1 of 5/.test(r.navy.read) && /standing with/.test(r.navy.text), r.navy.read);
   assert.equal(r.dead, 'Dead in Space');
   assert.deepEqual([r.assault.kind, r.assault.assault], ['deck', true]); assert.equal(r.assault.stated, r.assault.began, 'the count she states is the fight that opens');
-  assert.deepEqual(r.late, { grade: 1, skill: 4, level: 3, sighted: true, kit: ['valve-keys'], friends: true }, 'the late hand: level 3 and boresighted (skill 4 in the fight), the keys, friends aboard, and a raider a grade better');
+  assert.deepEqual(r.late, { grade: 1, skill: 6, level: 5, sighted: true, kit: ['valve-keys'], friends: true }, 'the late hand: the top of the ladder, level 5, and boresighted (skill 6 in the fight), the keys, friends aboard, and a raider a grade better');
   assert.equal(r.lateRepel, 2);
   assert.deepEqual(r.lateIds, ['late-fight-raider', 'late-fight-pack', 'late-fight-veteran', 'late-fight-patrol', 'late-deck-repel', 'late-deck-navy', 'late-deck-assault']);
   await done();

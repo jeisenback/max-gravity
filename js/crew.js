@@ -14,7 +14,12 @@ const roleHolder = role => { const up = G.state.crew.filter(id => !(G.state.inju
   return held || (role === 'medic' ? up.find(c => c && c.cast && CAST[c.cast] && CAST[c.cast].firstAid) : undefined); };
 // A transponder spoofer outfit stands in for a skill-1 slicer.
 // Bad news from home (family.js) costs a skill level until it lifts.
-const roleSkill = role => { const h = roleHolder(role); return Math.max(h ? h.skill - (moodLow(h) ? 1 : 0) : 0, role === 'slicer' && ship().spoofer ? 1 : 0); };
+// The hand's own post, worked by hand (stations.js postMode), gives the ship the post's perk at the hand's level (picks.js, #963): a gunner hand is the extra gun.
+const roleSkill = role => {
+  const hand = hired(), own = !!hand && POSTS[hand.post].role === role && postMode(hand.post) === 'manual';
+  const h = own ? null : roleHolder(role);
+  return Math.max(own ? skillLevel(hand.post) : h ? h.skill - (moodLow(h) ? 1 : 0) : 0, role === 'slicer' && ship().spoofer ? 1 : 0);
+};
 const roleName = role => (roleHolder(role) || { first: 'Your spoofer' }).first;
 const paxAboard = () => G.state.missions.filter(m => m.type === 'passenger');
 const berthsUsed = () => G.state.crew.length + paxAboard().reduce((t, m) => t + m.pax, 0);

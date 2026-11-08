@@ -901,3 +901,38 @@ test('the ladder has five levels ending at 400 points, and the level note says a
   assert.match(r.note, /A pick waits on your page\.$/);
   await done();
 });
+
+// #963: the ship's perk at the hand's post is the hand's level when nobody else holds the post, and a taken edge pick moves the hand's rolls of its kind.
+test('the ship\'s perk at the hand\'s post is the hand\'s level when nobody else holds it, and the holder\'s when someone does', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), out = {}; st.tutorial = null; st.story.next = 1e9;
+    out.start = { holder: !!postHolder('gunner'), skill: roleSkill('gunner'), level: skillLevel('gunner') };
+    career().skill.gunner = 45;  // level 2
+    out.level2 = { skill: roleSkill('gunner'), guns: playerGuns(), shipGuns: ship().guns };
+    const npc = makeCrewCandidate(st.systemId); npc.role = 'gunner'; npc.skill = 3; st.people[npc.id] = npc; st.crew.push(npc.id);
+    out.crewed = { mode: postMode('gunner'), skill: roleSkill('gunner') };
+    st.crew = st.crew.filter(id => id !== npc.id); h.post = 'pilot';
+    out.swapped = { gunner: roleSkill('gunner'), pilot: roleSkill('pilot'), ines: roleHolder('pilot') && roleHolder('pilot').skill };
+    return out;
+  });
+  assert.equal(r.start.holder, false, 'the hand is the gunner'); assert.equal(r.start.skill, r.start.level, 'the ship reads the hand\'s level');
+  assert.equal(r.level2.skill, 2); assert.equal(r.level2.guns, r.level2.shipGuns + 1, 'a gunner aboard is the extra gun');
+  assert.equal(r.crewed.mode, 'crewed'); assert.equal(r.crewed.skill, 3, 'with someone in the chair, theirs');
+  assert.equal(r.swapped.gunner, 0, 'the chair the hand left is empty'); assert.equal(r.swapped.pilot, r.swapped.ines, 'Ines holds the helm');
+  await done();
+});
+
+test('a taken edge pick moves the hand\'s rolls of its kind and no other', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const before = { post: postOdds('gunner'), solo: soloOdds('gunner') };
+    takePick(career(), 'steady-eye');
+    return { before, after: { post: postOdds('gunner'), solo: soloOdds('gunner') } };
+  });
+  assert.ok(Math.abs(r.after.post - r.before.post - 0.05) < 1e-9, `the post's roll is a twentieth better (${r.before.post} to ${r.after.post})`);
+  assert.equal(r.after.solo, r.before.solo, 'a bold call is unchanged');
+  await done();
+});
