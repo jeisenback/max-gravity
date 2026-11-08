@@ -89,6 +89,12 @@ test('the phases of a run, with the crew securing either side of the flip', () =
   assert.deepEqual([0.03, 0.2, 0.45, 0.5, 0.55, 0.8, 0.97].map(at), ['couch', 'move', 'secure', 'float', 'secure', 'move', 'couch']);
 });
 
+test('a patient in the medbay bed stays on the cot in every phase, strapped down at the straps and the float (#976)', () => {
+  const bed = { role: 'gunner', room: 'medbay', at: 'bed', x: 0.5, dk: 1, tdk: 1, tx: null, seat: 0.3, couch: 0 };
+  for (const ph of ['move', 'couch', 'secure', 'float']) assert.equal(posture({ ...bed }, ph, 0, false).name, 'bunk', `${ph}: on the cot`);
+  assert.ok(posture({ ...bed }, 'float', 0, false).strapped, 'strapped down at the float'); assert.ok(!posture({ ...bed }, 'move', 0, false).strapped);
+  assert.equal(posture({ ...bed, tx: 0.55 }, 'couch', 0, false).name !== 'bunk', true, 'not lying down while still on the way to it');
+});
 test('a posture for everyone in every phase, from the list the sprites are drawn to', () => {
   const seat = roomAt('galley').x0 + roomAt('galley').w * SEATS.galley[0];  // on one of the galley's seats (#925)
   const p = (o) => ({ role: 'gunner', room: 'galley', x: seat, dk: 0, tdk: 0, tx: null, seat, couch: 1, ...o });

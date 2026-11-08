@@ -434,11 +434,14 @@ function phase() {
   return 'move';
 }
 
+// A patient lying in the medbay bed: they stay on the cot through the hard burn and are strapped down on it at the flip, as sleepers are in
+// their bunks (#976); someone still on the way to it, or stopped short of the medbay by the straps, is not lying down.
+const inBed = p => { const m = roomAt('medbay'); return p.at === 'bed' && p.room === 'medbay' && p.tx === null && p.dk === p.tdk && !p.staged && p.dk === m.deck && p.x >= m.x0 && p.x <= m.x1; };
 // What a person is doing, by name from POSTURES (js/figures.js), for the sprite to be drawn: where, which way, and which frame.
 function posture(p, ph, time, asleep) {
   let name;
   if (p.role === 'cat') name = ph === 'float' ? 'cat-float' : ph !== 'move' ? 'cat-sleep' : p.tx !== null ? 'cat-walk' : 'cat-sit';
-  else if (asleep || (ph === 'move' && p.at === 'bed' && p.tx === null && p.dk === p.tdk && !p.staged)) name = 'bunk';  // asleep, or a patient in the medbay
+  else if (asleep || inBed(p)) name = 'bunk';  // asleep, or a patient in the medbay (on the cot in every phase, #976)
   else if (ph === 'couch') name = (p.couch || 0) >= 0.6 ? 'couch' : Math.abs(p.x - p.seat) > 0.004 ? 'walk' : 'stand';  // on the couch once it has unfolded under them (#925)
   else if (ph === 'secure') name = 'strap';
   else if (ph === 'float') name = p.role === 'engineer' ? 'tether' : 'strap';
@@ -509,6 +512,7 @@ function lifeTick(dt) {
       p.dk = Math.abs(p.tdk - p.dk) < 0.01 ? p.tdk : p.dk + Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
       continue;
     }
+    if (ph !== 'move' && inBed(p)) continue;  // a patient stays on the cot through the hard burn (#976)
     if (ph !== 'move') { p.block = undefined; p.relief = undefined; const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
     stepAside(p, G.transit.stageSpan);
     if (!p.staged && p.block !== block && p.block !== 'activity' && p.block !== 'linger' && !p.errand) routineGo(p, block, people, dark, lifeRnd, state);  // the timetable: a new block, or back to it
