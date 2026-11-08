@@ -295,3 +295,10 @@ test('the galley has a stove, its burners and oven door, under a hood (#933)', (
   const fills = c => calls.filter(k => k[0] === 'fillStyle' && k[1] === c).length;
   assert.ok(fills('#0b1520') >= 2, 'two burners'); assert.ok(fills('#2a1a10') >= 1, 'the oven door\'s window'); assert.ok(fills('#56708c') >= 1, 'the hood');
 });
+test('the medbay has a supply cabinet, its doors and the supplies on it (#933)', () => {
+  const r = { x0: 0, x1: 300, top: 0, floor: 100 }, s = { w: { burn: 0, cruise: 1, flip: 0 }, time: 1, zoom: 1, spin: 0, still: false, night: 0, berths: 6, cargo: 0, fuel: 1, asleep: 0, damage: { marks: new Set(), severe: false }, patient: false };
+  const { ctx, calls } = recorder();
+  drawRoom(ctx, 'medbay', r, s);
+  const fills = c => calls.filter(k => k[0] === 'fillStyle' && k[1] === c).length;
+  assert.ok(fills('#8a96a2') >= 1, 'the cabinet, the seam between its doors'); assert.ok(fills('#9aa8b6') >= 2, 'a handle on each door'); assert.ok(fills('#7fb8c8') >= 2, 'bottles on its top');
+});
