@@ -18,23 +18,30 @@ const helpers = () => {
   window.take = (sc, re) => { G.dialog = { event: sc, choices: sc.choices }; return chooseEvent(sc.choices.findIndex(c => re.test(c.label))); };
 };
 
-test('the planner takes an ice run when water is dear, the hold is free, and one is due; and then not until the gap is up', async () => {
+test('the planner takes an ice run when water is dear, the hold is free, and one is due, as two legs to a rock it finds; and then not until the gap is up', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const st = setup(), h = hired(), here = currentPlanet(), reach = [['mars', SYSTEMS.mars]], real = window.price, out = {};
-    window.price = () => 1200;
-    const o = iceOption(here, st.systemId, reach, 40); out.opt = o && { ice: o.ice, good: o.good, cost: o.cost, tons: o.tons, longRun: o.days >= 8, sid: o.sid };
+    st.fuel = 1000;  // a tank that covers both legs from Earth
+    window.price = (pl, g) => (g === 'water' && pl.name === 'Mars' ? 1200 : 500);
+    const o = iceOption(here, st.systemId, reach, 40);
+    out.opt = o && { ice: o.ice, good: o.good, cost: o.cost, tons: o.tons, sid: o.sid, planet: o.planet, site: o.site };
+    out.found = o && st.sites[o.site].found; out.days = o && o.days; out.legs = o && travelDays(st.systemId, o.site) + 3 + travelDays(o.site, 'mars');
+    out.word = o && runWord(o); out.plotted = o && placeOf(o.site).name;
     window.price = () => 500; out.cheap = iceOption(here, st.systemId, reach, 40);
-    window.price = () => 1200; out.full = iceOption(here, st.systemId, reach, 5);
+    window.price = (pl, g) => (g === 'water' && pl.name === 'Mars' ? 1200 : 500); out.full = iceOption(here, st.systemId, reach, 5);
     h.iceAt = st.day - ICE_GAP / 2; out.soon = iceOption(here, st.systemId, reach, 40);
     h.iceAt = st.day - ICE_GAP - 1; out.later = !!iceOption(here, st.systemId, reach, 40);
     h.iceAt = undefined; h.since = st.day - 3; out.green = iceOption(here, st.systemId, reach, 40);  // not in the first days aboard
+    h.since = 1; h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: { ice: true, sid: 'mars', planet: 'Mars' } }; out.stale = planStale(h);  // a plan from before the rock was a place
     window.price = real;
     return out;
   });
-  assert.deepEqual(r.opt, { ice: true, good: 'water', cost: 0, tons: 40, longRun: true, sid: 'mars' });
-  assert.equal(r.cheap, null); assert.equal(r.full, null); assert.equal(r.soon, null); assert.ok(r.later); assert.equal(r.green, null);
+  assert.deepEqual(r.opt, { ice: true, good: 'water', cost: 0, tons: 40, sid: 'mars', planet: 'Mars', site: r.opt.site }); assert.match(r.opt.site, /^site:ice-/);
+  assert.ok(r.found !== null, 'the captain finds her rock when she plans'); assert.equal(r.days, r.legs, 'out, three shifts, home');
+  assert.equal(r.word, `the ice run to ${r.plotted} and home to Mars`);
+  assert.equal(r.cheap, null); assert.equal(r.full, null); assert.equal(r.soon, null); assert.ok(r.later); assert.equal(r.green, null); assert.equal(r.stale, true);
   await done();
 });
 

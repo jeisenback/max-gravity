@@ -7,7 +7,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const NAMES = ['SYSTEMS', 'seedSites', 'sites', 'siteOf', 'isSite', 'atSite', 'findSite', 'foundSites', 'placeOf', 'orbitPeriod', 'orbitPos', 'travelDays', 'burnFuel'];
+const NAMES = ['SYSTEMS', 'seedSites', 'sites', 'siteOf', 'isSite', 'atSite', 'findSite', 'foundSites', 'placeOf', 'orbitPeriod', 'orbitPos', 'travelDays', 'burnFuel', 'icePick'];
 
 // A fresh state for each test: a hand signed on with Hester on day 1, the ship at Ceres with a tank of `fuel`.
 function setup({ day = 40, fuel = 300 } = {}) {
@@ -37,4 +37,17 @@ test('sites are made once on the save, placeOf finds a site or a system, and a f
   assert.equal(placeOf(id), first[id]); assert.equal(placeOf('mars').name, 'Mars'); assert.equal(placeOf('nowhere'), undefined); assert.equal(siteOf(G.state, 'mars'), null);
   assert.equal(foundSites(G.state).length, 0); findSite(G.state, id, 40); assert.equal(first[id].found, 40); assert.equal(foundSites(G.state).join(), id);
   assert.equal(atSite(G.state), false); G.state.systemId = id; assert.equal(atSite(G.state), true);
+});
+
+test('the pick takes the found rock, else the nearest, and a water port the tank reaches from it, both legs counted', () => {
+  const { G, sites, icePick, findSite, travelDays, burnFuel } = setup({ fuel: 400 });
+  const st = G.state, ids = Object.keys(sites(st)), price = (pl, g) => (g === 'water' && pl.name === 'Mars' ? 1200 : 500);
+  const fns = { price, travelDays, burnFuel };
+  const nearest = ids.slice().sort((a, b) => travelDays('ceres', a) - travelDays('ceres', b))[0];
+  const p = icePick(st, 'ceres', 400, fns);
+  assert.equal(p.site, nearest); assert.equal(p.sid, 'mars'); assert.equal(p.planet, 'Mars');
+  assert.equal(p.days, travelDays('ceres', p.site) + 3 + travelDays(p.site, 'mars'));
+  findSite(st, ids[2], 1); assert.equal(icePick(st, 'ceres', 400, fns).site, ids[2], 'a found rock is the pick');
+  assert.equal(icePick(st, 'ceres', burnFuel('ceres', ids[2]) + 1, fns), null, 'the tank must cover the leg home too');
+  assert.equal(icePick(st, 'ceres', 400, { ...fns, price: () => 500 }), null, 'no port dear enough, no run');
 });

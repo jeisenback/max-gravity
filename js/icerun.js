@@ -1,9 +1,9 @@
 'use strict';
 
-// Ice runs: the long ones. When water is dear at a port in reach and the hold is empty, the captain takes the ship out past the
-// Belt to a rock of ice, cuts a hold of it, and brings it home to sell. It is a run like any other (a planned run, a wage, a share,
-// settled where she docks), but it takes a long time, pays double the wage for the hazard and the water at a contract price, and has three scenes on the way
-// that are the hand's to play: the approach, the cutting, the haul home. Each is a choice of how to meet it, or the job of your
+// Ice runs: the long ones. When water is dear at a port the tank reaches and the hold is empty, the captain takes the ship out past the
+// Belt to a rock of ice (a site, sites.js, #948), spends ICE_SHIFTS shifts on it cutting a hold of ice, and brings it home to sell. It is a run
+// like any other (a planned run, a wage, a share, settled where she docks), but it is two burns with a stop, pays double the wage for the hazard
+// and the water at a contract price, and has three scenes that are the hand's to play: the approach on arrival, the cutting on the first shift, the haul home on the burn back. Each is a choice of how to meet it, or the job of your
 // own post, and each is a chance of going your way (+1 or +2 on a running count) or not (-1 or -2). The count decides how much ice
 // comes aboard, and a bad one can cost hull or hurt someone. The scenes are occasions of the burn (family.js), so a hand's burn and
 // the sims play them like the birthdays. Loaded after engagements.js; only called into at runtime.
@@ -14,21 +14,33 @@ const ICE_HAZARD = 2;        // the wage, for the days it takes
 const ICE_PREMIUM = 2.5;     // what the domes pay for water on a contract, against the board price
 const ICE_AT = [0.3, 0.5, 0.78];  // how far into the burn each scene falls
 const ICE_SHIFTS = 3, ICE_SHIFTS_WORD = 'three';  // the shifts the ship spends on the rock (sites.js), and the word for the departure line (transit.js)
-const iceDays = days => Math.max(8, Math.ceil(1.5 * days) + 3);
 
-// The run the planner takes when it is due: the port that pays most for water, the whole hold, no cost.
+// The two legs of an ice run, pure (tests/sites.test.js): the found ice rock in sites(st), else the nearest one in range, then the
+// trading port whose water is dear (ICE_WATER_PRICE) and pays most, with the tank covering both legs, since there is no refuel at a
+// rock. Null when no pair fits. `fns` are the game's price, travelDays and burnFuel.
+function icePick(st, from, fuel, { price, travelDays, burnFuel }) {
+  const all = sites(st), ice = Object.keys(all).filter(id => all[id].kind === 'ice');
+  const rock = ice.find(id => all[id].found !== null) || ice.filter(id => burnFuel(from, id) <= fuel).sort((a, b) => travelDays(from, a) - travelDays(from, b))[0];
+  if (!rock || burnFuel(from, rock) > fuel) return null;
+  let best = null;
+  for (const [sid, sys] of Object.entries(SYSTEMS)) {
+    if (burnFuel(from, rock) + burnFuel(rock, sid) > fuel) continue;
+    for (const pl of sys.planets.filter(x => x.services.includes('trade'))) {
+      const sell = price(pl, 'water');
+      if (sell !== null && sell >= ICE_WATER_PRICE && (!best || sell > best.sell)) best = { site: rock, sid, planet: pl.name, yard: pl.services.includes('shipyard'), sell };
+    }
+  }
+  return best && { ...best, days: travelDays(from, rock) + ICE_SHIFTS + travelDays(rock, best.sid) };
+}
+
+// The run the planner takes when it is due: out to the rock, the shifts, and home to the port that pays most for water, the whole hold, no cost.
 function iceOption(here, from, reach, free) {
   const h = hired(), st = G.state;
   if (!h || (h.iceAt !== undefined && st.day - h.iceAt < ICE_GAP) || st.day - h.since < 12 || free < 10) return null;
-  let best = null;
-  for (const [sid, sys] of reach) {
-    for (const pl of sys.planets.filter(x => x.services.includes('trade'))) {
-      const sell = price(pl, 'water');
-      if (sell !== null && sell >= ICE_WATER_PRICE && (!best || sell > best.sell)) best = { sid, planet: pl.name, yard: pl.services.includes('shipyard'), sell, days: iceDays(Math.max(1, travelDays(from, sid))) };
-    }
-  }
-  if (!best) return null;
-  return { sid: best.sid, planet: best.planet, yard: best.yard, good: 'water', tons: free, cost: 0, profit: Math.round(best.sell * free * ICE_PREMIUM), days: best.days, ice: true, ballast: false };
+  const pick = icePick(st, from, st.fuel, { price, travelDays, burnFuel });
+  if (!pick) return null;
+  findSite(st, pick.site, st.day);  // the captain knows her rock, so it is on the map from the departure
+  return { site: pick.site, sid: pick.sid, planet: pick.planet, yard: pick.yard, good: 'water', tons: free, cost: 0, profit: Math.round(pick.sell * free * ICE_PREMIUM), days: pick.days, ice: true, ballast: false };
 }
 
 // ---------- the three scenes ----------
