@@ -89,6 +89,18 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
   await done();
 });
 
+test('setting a gun\'s target keeps the panel where it was scrolled (#970)', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 1280, height: 600 } });
+  await ev(helpers);
+  await ev(() => { fightGame('gunner'); battle(); document.querySelector(`[data-action="choose"][data-arg="${pickAt('gun2', 'Weapons')}"]`).scrollIntoView({ block: 'center' }); });  // the second gun's row in view, as a player scrolls to it
+  const before = await ev(() => document.getElementById('panel').scrollTop);
+  await page.click(`[data-action="choose"][data-arg="${await ev(() => pickAt('gun2', 'Weapons'))}"]`);
+  const r = await ev(() => ({ at: document.getElementById('panel').scrollTop, picked: rowsShown()[1][1] }));
+  assert.ok(before > 0, 'the scene is longer than a short window');
+  assert.deepEqual(r, { at: before, picked: ['Weapons'] }, 'the pick is drawn in place, with the rows where they were');
+  await done();
+});
+
 test('setting a gun\'s target redraws in place; Fire resolves a turn and the log gains a line', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
