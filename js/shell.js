@@ -16,11 +16,12 @@ const RAIL = [
   { id: 'crew', label: 'Crew', group: 'ship', tab: 'crew', ready: p => tabReady(p, 'crew') || 'Not available here' },
   { id: 'bonds', label: 'Bonds', group: 'ship', tab: 'web', ready: p => tabReady(p, 'web') || 'Not available here' },
   { id: 'journal', label: 'Journal', group: 'ship', tab: 'journal', ready: p => tabReady(p, 'journal') || 'Not available here' },
-  { id: 'port', label: 'Port', group: 'ashore', tab: 'port', ready: p => tabReady(p, 'port') || 'Not available here' },
-  { id: 'missions', label: 'Missions', group: 'ashore', tab: 'missions', ready: p => tabReady(p, 'missions') || 'No work board here' },
-  { id: 'bar', label: 'Bar', group: 'ashore', tab: 'bar', ready: p => tabReady(p, 'bar') || 'No bar here' },
-  { id: 'exchange', label: 'Exchange', group: 'ashore', tab: 'trade', shown: () => role().mayTab('trade'), ready: p => tabReady(p, 'trade') || 'No exchange at this port' },
-  { id: 'company', label: 'Company', group: 'ashore', tab: 'company', shown: () => role().mayTab('company') && !scopeOff('owner'), ready: p => tabReady(p, 'company') || 'Not available here' },
+  { id: 'port', label: 'Port', group: 'ashore', tab: 'port', shown: () => !atSite(G.state), ready: p => tabReady(p, 'port') || 'Not available here' },
+  { id: 'missions', label: 'Missions', group: 'ashore', tab: 'missions', shown: () => !atSite(G.state), ready: p => tabReady(p, 'missions') || 'No work board here' },
+  { id: 'bar', label: 'Bar', group: 'ashore', tab: 'bar', shown: () => !atSite(G.state), ready: p => tabReady(p, 'bar') || 'No bar here' },
+  { id: 'exchange', label: 'Exchange', group: 'ashore', tab: 'trade', shown: () => !atSite(G.state) && role().mayTab('trade'), ready: p => tabReady(p, 'trade') || 'No exchange at this port' },
+  { id: 'site', label: 'The Rock', group: 'ashore', tab: 'site', shown: () => atSite(G.state), ready: () => true },  // on station at a site, the one Ashore page (sites.js, #948)
+  { id: 'company', label: 'Company', group: 'ashore', tab: 'company', shown: () => !atSite(G.state) && role().mayTab('company') && !scopeOff('owner'), ready: p => tabReady(p, 'company') || 'Not available here' },
 ];
 const railEntries = p => RAIL.filter(e => !e.shown || e.shown(p));
 const RAIL_GROUPS = [['ship', 'Ship'], ['ashore', 'Ashore']];
@@ -28,7 +29,7 @@ const RAIL_GROUPS = [['ship', 'Ship'], ['ashore', 'Ashore']];
 // The pages the shell can show. `under` names the rail entry a page without an entry of its own belongs to: the
 // character screen is opened from a name on the crew list, and keeps Crew lit.
 const SHELL_PAGES = {
-  nav: {}, comms: {}, weapons: {}, shipyard: {}, crew: {}, web: {}, journal: {}, port: {}, missions: {}, bar: {}, trade: {}, company: {},
+  nav: {}, comms: {}, weapons: {}, shipyard: {}, crew: {}, web: {}, journal: {}, port: {}, missions: {}, bar: {}, trade: {}, company: {}, site: {},
   person: { under: 'crew' },
 };
 
@@ -57,7 +58,9 @@ function railHtml(p, tab) {
 function shellHtml(ui, p) {
   ui.tab = shellTab(ui.tab);
   return `${ui.headerHtml(p)}${stripHtml()}
-    <canvas id="vs" class="vs${ui.tab === 'port' ? ' port' : ''}" aria-hidden="true"></canvas>
+    <canvas id="vs" class="vs${ui.tab === 'port' || ui.tab === 'site' ? ' port' : ''}" aria-hidden="true"></canvas>
     ${Mods.filter('portBanner', '')}
     <div class="shell">${railHtml(p, ui.tab)}<div class="body" tabindex="-1" role="region" aria-label="${esc(shellRoom(ui.tab))}">${ui.views[ui.tab].call(ui)}</div></div>${ui.dockHtml()}`;
 }
+
+UI.views.site = () => sitePageHtml(G.state, currentPlanet(), hired() && hired().run);  // the site's page (sites.js)

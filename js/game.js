@@ -156,6 +156,7 @@ function loadGame() {
   dropMissingModContent(G.state);
   resetWorld();
   if (finishedSave()) { G.mode = 'landed'; UI.openLanded(currentPlanet(), []); openEvent(chapterOverScene()); return; }  // chapter one is finished (hired.js, #882) and chapter two not yet begun: its end, with no landing played
+  if (atSite(G.state)) return landAtSite(currentPlanet(), ['Save loaded. Welcome back.']);  // a save written on station (sites.js)
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
 }
 
@@ -618,6 +619,7 @@ function arrive() {
   }
   payCrew(days);
   st.rumors = st.rumors.filter(r => r.until >= st.day);
+  if (isSite(G.transit.to)) return landAtSite(siteOf(st, G.transit.to));  // a site has no flight and no dock: the ship is on station (sites.js)
   G.transit = null;
   p.x = -Math.cos(a) * 1100; p.y = -Math.sin(a) * 1100;
   p.vx = Math.cos(a) * s.maxSpeed; p.vy = Math.sin(a) * s.maxSpeed;
@@ -843,6 +845,7 @@ function drawBrackets(x, y, r, color) {
 
 function drawWorld(W, H) {
   const viewW = W - G.hudW, p = G.player;
+  if (atSite(G.state)) return drawStars({ x: 0, y: 0 }, viewW, H, { x: 0, y: 0 });  // on station at a site there is no local space to draw; the rock is the vista (sites.js)
   const cam = p || currentPlanet();
   const toScreen = o => [o.x - cam.x + viewW / 2, o.y - cam.y + H / 2];
 

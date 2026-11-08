@@ -64,6 +64,30 @@ test('a burn can be plotted to a site: the departure line names the rock, the HU
   await done();
 });
 
+test('arrival at the rock lands on station: no landing hooks, the rail shows The Rock, the header and vista are the rock\'s, and a reload comes back there', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), h = hired(), id = Object.keys(sites(st))[0], out = {}, fired = [];
+    const realEmit = Mods.emit; Mods.emit = function (name, ...a) { if (['landed', 'onStation', 'arrive'].includes(name)) fired.push(name); return realEmit.call(this, name, ...a); };
+    h.run = { ice: { edge: 0 }, site: id, good: 'water', tons: 40, cost: 0, planet: 'Mars', sid: 'mars', day: st.day, from: 'Earth' };
+    st.dest = id; enterTransit(); const day0 = st.day; G.transit.left = 0; updateTransit(0.01);
+    out.fired = fired.slice(); out.mode = G.mode; out.at = st.systemId; out.planet = st.planet; out.days = st.day - day0;
+    out.dialog = G.dialog && G.dialog.event.title; if (G.dialog) { chooseEvent(0); finishEvent(); }  // the approach plays over the shell; the shell is behind it
+    out.html = UI.el.innerHTML; out.tab = UI.tab; out.rail = [...UI.el.querySelectorAll('.rail button')].map(b => b.textContent);
+    drawViewscreen(0);  // paints without a throw
+    G.dialog = null; loadGame(); out.reload = { at: G.state.systemId, tab: UI.tab, mode: G.mode };
+    Mods.emit = realEmit;
+    return out;
+  });
+  assert.deepEqual(r.fired, ['onStation']); assert.equal(r.mode, 'landed'); assert.match(r.at, /^site:ice-/); assert.ok(r.days >= 1);
+  assert.equal(r.tab, 'site'); assert.deepEqual(r.rail.slice(-1), ['The Rock']); assert.ok(!r.rail.includes('Port') && !r.rail.includes('Bar') && !r.rail.includes('Missions'));
+  assert.match(r.html, /On station/); assert.match(r.html, /an ice rock at \d\.\d AU/); assert.doesNotMatch(r.html, /undefined/);
+  assert.equal(r.dialog, 'The Rock', 'the approach plays on arrival');
+  assert.equal(r.reload.at, r.at); assert.equal(r.reload.tab, 'site'); assert.equal(r.reload.mode, 'landed');
+  await done();
+});
+
 test('the burn is long, and the three scenes fall on it in order', { skip: 'rewritten in Task 5 of docs/superpowers/plans/2026-11-08-sites-and-ice-run.md' }, async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);

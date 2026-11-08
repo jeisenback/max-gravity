@@ -28,7 +28,7 @@ const HAUL_TONS = [20, 40];
 function worldOf(sid) {
   const st = G.state;
   st.world = st.world || {};
-  return (st.world[sid] = st.world[sid] || { unrest: SYSTEMS[sid].pirates });
+  return (st.world[sid] = st.world[sid] || { unrest: placeOf(sid).pirates || 0 });  // a site (sites.js) has no pirates of its own
 }
 
 // How dangerous a location is right now; pirates spawn and arm by this.
@@ -48,7 +48,7 @@ const FLARE_NEWS = [
 ];
 
 // Unrest beyond what is normal there, which is what drives NPC shipping away.
-const excessUnrest = sid => Math.max(0, danger(sid) - SYSTEMS[sid].pirates - 0.08);
+const excessUnrest = sid => Math.max(0, danger(sid) - (placeOf(sid).pirates || 0) - 0.08);
 
 const newsSay = (key, vars) => sceneSay('scene:world-news', key, vars);  // the news of the world is in the text layer ('scene:world-news', js/hiredscenes.js)
 
@@ -151,7 +151,7 @@ const inbound = (pl, cid) => haul().filter(v => v.to === pl.name && v.cid === ci
 
 // What a captain would hear about a location: raids, quiet lanes, shortages, gluts.
 function conditions(sid) {
-  const sys = SYSTEMS[sid], out = factionConditions(sys.gov), excess = excessUnrest(sid);
+  const sys = placeOf(sid), out = factionConditions(sys.gov), excess = excessUnrest(sid);
   // Each condition has an id the code reads (the bar's room lines, the trouble ahead), so a change to its words changes nothing else.
   if (excess > 0.2) out.push({ id: 'raids', bad: true, text: `Heavy pirate activity around ${sys.name}` });
   else if (excess > 0.05) out.push({ id: 'raids', bad: true, text: `Pirate raids around ${sys.name}` });

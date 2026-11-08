@@ -20,7 +20,7 @@ const CONDITIONS = {
   before: v => G.state.day < v,
   at: v => [].concat(v).includes(sidNow()),
   planet: v => G.mode === 'landed' && [].concat(v).includes(G.state.planet),
-  gov: v => [].concat(v).includes(SYSTEMS[sidNow()].gov),
+  gov: v => [].concat(v).includes(placeOf(sidNow()).gov),
   standing: v => all(v, (g, n) => repOf(g) >= n),
   standingBelow: v => all(v, (g, n) => repOf(g) < n),
   credits: v => G.state.credits >= v,
@@ -190,7 +190,7 @@ function fill(text = '') {
   if (Array.isArray(text)) {
     text = text.map(p => (typeof p === 'string' ? p : meets(p.when) ? p.text : p.else || '')).filter(Boolean).join(' ');
   }
-  return text.replace(/\{planet\}/g, G.state.planet).replace(/\{system\}/g, SYSTEMS[sidNow()].name)
+  return text.replace(/\{planet\}/g, G.state.planet).replace(/\{system\}/g, placeOf(sidNow()).name)
     .replace(/\{crew:(\w+)\}/g, (_, role) => roleName(role))
     .replace(/\{captain\}/g, () => { const c = hired() && person(hired().captain); return c ? `Captain ${c.last}` : 'the captain'; })
     .replace(/\{thread:(\w+)\}/g, (_, key) => { const p = threadPerson(key); return p ? p.first : 'a shipmate'; })

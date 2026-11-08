@@ -274,6 +274,7 @@ function drawViewscreen(time) {
   g.setTransform(d, 0, 0, d, 0, 0);
   g.fillStyle = '#03070a'; g.fillRect(0, 0, w, h);
   if (!p) return;  // a save whose port is unknown: the sky alone
+  if (p.site) { const r = sunLight(); return drawSiteVista(g, w, h, p, { angle: Math.sin(r.angle) > 0 ? -r.angle : r.angle, strength: r.strength }); }  // on station: the rock (sites.js)
   const img = vistaImage(p.name);
   if (img) {  // cover the strip, centred
     const k = Math.max(w / img.naturalWidth, h / img.naturalHeight), iw = img.naturalWidth * k, ih = img.naturalHeight * k;
