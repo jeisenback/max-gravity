@@ -36,6 +36,7 @@ test('an ability that works thins them or makes cover and the exchange stands; o
   assert.equal(abilityStep('steady', true, { ...s, boarders: 0 }).boarders, 0, 'and there are never fewer than none');
   const made = abilityStep('cover', true, s); assert.deepEqual([made.result, made.press, [...made.extra]], ['tie', false, [0, COVER_MADE, 0]]); assert.deepEqual([...s.extra], [0, 0, 0], 'the fight\'s own list is not changed in place');
   const coverMiss = abilityStep('cover', false, s); assert.deepEqual([coverMiss.result, coverMiss.press, [...coverMiss.extra]], ['tie', true, [0, 0, 0]]);
+  assert.deepEqual([...abilityStep('cover', true, s, 3).extra], [0, 3, 0], 'the points made are the caller\'s (cover-eye makes three)');
 });
 
 test('a rush is drawn through the section it passes, and the heads still to land are a line under the deck', () => {

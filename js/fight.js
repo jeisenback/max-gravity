@@ -173,7 +173,7 @@ function resolveShipTurn(state, orders, moves, rand, known = [], roll = () => tr
       return;
     }
     if (!m || !m.target || foe.armor <= 0 || foe.parts.weapons.hp <= 0 || spoofed) return;  // a broadside, a pin, or the volley she fires as she closes; none at a spoofed transponder
-    const dmg = dealDamage(st.me, m.target, rollIn(m.dmg, held ? 1 - FIGHT.PDC_HOLD : 1, rand));
+    const dmg = dealDamage(st.me, m.target, rollIn(m.dmg, held ? 1 - (st.me.pdcHold || FIGHT.PDC_HOLD) : 1, rand));  // pdcHold: the side's own cut, when the panel set one (pd-watch)
     events.push({ who: 'foe', foe: i, part: m.target, dmg });
   });
   if (st.foes.some((foe, i) => foe.armor > 0 && foe.parts.lock.hp > 0 && st.band === KNIFE && mv.foe[i] && mv.foe[i].kind === 'board')) st.boarded = true;
@@ -318,7 +318,7 @@ const dealt = (n, lo, hi, rand) => Math.min(n, lo + Math.floor(rand() * (hi - lo
 const rollsOf = (k, [lo, hi], rand) => { let t = 0; for (let i = 0; i < k; i++) t += lo + Math.floor(rand() * (hi - lo + 1)); return t; };  // k rolls in a range, summed
 
 // `cover` is ours by section and `hers` hers. A repel brings half of the boarders to the lock and the rest as a wave (`wave`, null in an assault, where her crew are already aboard). The hand starts in `hand` (the lock), or with the nearest of our heads when none of ours is there (R34).
-function deckFight({ boarders, crew, hand = LOCK, cover, hers = [], grade = 0, assault = false, side = false, party = 'raider', level = 2 }) {
+function deckFight({ boarders, crew, hand = LOCK, cover, hers = [], grade = 0, assault = false, side = false, party = 'raider', level = 2, coverMade = COVER_MADE }) {  // coverMade: what a worked cover order makes (cover-eye: 3)
   const names = side ? [...DECK.SECTIONS, 'cargo'] : DECK.SECTIONS;
   const sections = names.map((_, i) => ({ mine: 0, theirs: 0, mineHurt: 0, theirsHurt: 0, cover: cover[i] || 0, hers: hers[i] || 0 }));
   const [atk, def] = assault ? ['mine', 'theirs'] : ['theirs', 'mine'];
@@ -327,7 +327,7 @@ function deckFight({ boarders, crew, hand = LOCK, cover, hers = [], grade = 0, a
   sections[LOCK][atk] = assault ? crew : first;
   sections.forEach((s, i) => { s[def] = each + (i === BRIDGE ? n - each * sections.length : 0); });  // the remainder holds the bridge, so it is never left empty
   const start = sections[hand].mine ? hand : sections.map((_, i) => i).filter(i => sections[i].mine).sort((a, b) => Math.abs(REACH[a] - REACH[hand]) - Math.abs(REACH[b] - REACH[hand]))[0];
-  return { kind: 'deck', sections, hand: start === undefined ? hand : start, began: boarders, party, level, wave: !assault && boarders > first ? { n: boarders - first, turn: DECK.WAVE_TURN } : null, grade, assault, side, used: {}, turn: 0, charged: null, log: [],  // charged: the turn of the last charge
+  return { kind: 'deck', sections, hand: start === undefined ? hand : start, began: boarders, party, level, coverMade, wave: !assault && boarders > first ? { n: boarders - first, turn: DECK.WAVE_TURN } : null, grade, assault, side, used: {}, turn: 0, charged: null, log: [],  // charged: the turn of the last charge
     ...(party === 'navy' && !assault ? { navyDown: 0 } : {}) };  // navyDown: the heads of a navy party put down so far, which the settle charges in standing
 }
 
@@ -388,7 +388,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
     if (a.kind === 'cover') st.used.cover = true;
     if (a.kind === 'steady' && !hatch && !S[at].theirs) { events.push({ kind: a.kind, nobody: true }); return; }
     const worked = rand() < a.odds;
-    const r = abilityStep(a.kind, worked, { pos: at, boarders: S[at].theirs, extra });
+    const r = abilityStep(a.kind, worked, { pos: at, boarders: S[at].theirs, extra }, st.coverMade);
     down += S[at].theirs - r.boarders;
     S[at].theirs = r.boarders; S[at].theirsHurt = Math.min(hurtOf(S[at], 'theirs'), r.boarders);
     r.extra.forEach((n, i) => { extra[i] = n; });

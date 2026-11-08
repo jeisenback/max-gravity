@@ -7,7 +7,7 @@
 // (tests/handtohand.test.js). Loaded before boarders.js.
 
 const ABILITY_EDGE = { steady: -0.1, cover: 0.05 };  // what the check gains over the post's own move: the cover one is an easier gamble for a smaller prize; the steady one a harder one, since the last of them going down, or the few left breaking, wins the fight
-const COVER_BASE = 1, COVER_MAX = 3, COVER_MADE = 2;  // a worked cover ability makes two points where the fight is
+const COVER_BASE = 1, COVER_MAX = 3, COVER_MADE = 2;  // a worked cover ability makes two points where the fight is (three with the gunner's cover-eye pick, picks.js)
 
 // The abilities of each post, in the words of both fights (the assault and the repel use the same lines: they name the section and the front, not who is who).
 const FIGHT_ABILITY = {
@@ -77,10 +77,10 @@ const fightCover = ({ size, kit, extra }) => [0, 1, 2].map(pos => Math.min(COVER
 // What an ability does. It costs the exchange and wins no ground: when it works the steady one thins them and the cover one makes cover in the section where the fight is, and the
 // exchange stands (a tie); when it misses the ground holds too, but they get a shot at someone (`press`: a casualty is rolled as for a lost exchange). Returns the result, whether
 // they press, the new count of them and the new cover made.
-function abilityStep(kind, worked, { pos, boarders, extra }) {
+function abilityStep(kind, worked, { pos, boarders, extra }, made = COVER_MADE) {  // made: the points a worked cover makes
   if (!worked) return { result: 'tie', press: true, boarders, extra };
   if (kind === 'steady') return { result: 'tie', press: false, boarders: Math.max(0, boarders - 1), extra };
-  return { result: 'tie', press: false, boarders, extra: extra.map((n, i) => (i === pos ? n + COVER_MADE : n)) };
+  return { result: 'tie', press: false, boarders, extra: extra.map((n, i) => (i === pos ? n + made : n)) };
 }
 
 // The deck drawn (#786): a cell a section, with both sides' heads in it (ours on the left, theirs on the right, a hollow count beside each for the wounded among them), its cover as pips and the hand where they stand (beside the pips, clear of the counts), and

@@ -931,6 +931,20 @@ test('lead at close or knife has no range penalty to take off: not spent, nothin
   }
 });
 
+// The fight perks of the post ladders (picks.js): the engine reads them as figures on the state the panel builds.
+test('a held turret cuts her volley by the side\'s own pdcHold when it has one, else by PDC_HOLD', () => {
+  const st = fight({ stats: { guns: 1, pdc: true } }), v = me => resolveShipTurn({ ...st, me: { ...st.me, ...me } }, orders(fire(1), { pdc: 'hold' }), { foe: [HULL], captain: hold }, HIGH).events.find(e => e.who === 'foe').dmg;
+  assert.equal(v({}), Math.round(14 * (1 - FIGHT.PDC_HOLD)));
+  assert.equal(v({ pdcHold: 0.5 }), Math.round(14 * 0.5), 'pd-watch: half off');
+  assert.ok(v({ pdcHold: 0.5 }) < v({}));
+});
+
+test('a worked cover order makes the deck state\'s coverMade points, COVER_MADE unless the state says more (cover-eye)', () => {
+  const made = (o = {}) => { const st = deckFight({ boarders: 3, crew: 3, cover: [0, 0, 0], ...o }); st.sections[0].theirs = 0; st.sections[1].theirs = 3; return resolveDeckTurn(st, { stand: 0, act: { kind: 'cover', odds: 1 }, order: null }, { kind: 'hold' }, LOW).state.sections[0].cover; };
+  assert.equal(made(), 2); assert.equal(made({ coverMade: 3 }), 3);
+  assert.equal(deckFight({ boarders: 3, crew: 3, cover: [0, 0, 0] }).coverMade, 2, 'the state carries it');
+});
+
 // The eight moves of the post ladders (docs/superpowers/specs/2026-11-08-post-ladders-design.md), each once a fight, spent as the gunner's three are.
 test('a called shot takes no aim penalty and rolls the top of its range, on the named gun only', () => {
   const st = fight({ stats: { guns: 2 } }, {}, L), aimed = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }];

@@ -852,6 +852,27 @@ test('the tester panel drops a hired hand into each kind of fight, early and lat
   await done();
 });
 
+// ---------- the fight perks (picks.js, #963): marksman, pd-watch and cover-eye for a gunner, brace and lane-sense for a pilot ----------
+
+test('the fight perks read the picks taken: a level more at the guns, half off her volley, three points of cover, a tenth more on a run, ten km more at contact', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    fightGame('gunner'); const g0 = battle(), repel = () => repelStart({ foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0, init: 'foe' }, 'half').state.coverMade;
+    out.before = { skill: g0.state.me.skill, hold: g0.state.me.pdcHold, made: repel() }; out.pdcHold = FIGHT.PDC_HOLD;
+    takePick(career(), 'marksman'); takePick(career(), 'pd-watch'); takePick(career(), 'cover-eye'); const g1 = battle();
+    out.after = { skill: g1.state.me.skill, hold: g1.state.me.pdcHold, made: repel(), perks: [handPerk('marksman'), handPerk('trim')] };
+    fightGame('pilot', 'cutter'); const flee0 = fleeOdds(), band0 = RANGE_BANDS[battle().state.band];
+    takePick(career(), 'brace'); takePick(career(), 'lane-sense');
+    out.pilot = { flee: Math.round((fleeOdds() - flee0) * 100), band0, band1: RANGE_BANDS[battle().state.band] };
+    return out;
+  });
+  assert.deepEqual([r.after.skill - r.before.skill, r.before.hold, r.after.hold, r.before.made, r.after.made, r.after.perks], [1, r.pdcHold, 0.5, 2, 3, [true, false]]);
+  assert.deepEqual(r.pilot, { flee: 10, band0: 'mid', band1: 'long' }, 'brace and lane-sense: a cutter is met with guns at 30 km, 40 with the pick');
+  await done();
+});
+
 // ---------- the gunner moves on the panel (docs/superpowers/specs/2026-10-23-gunner-moves-design.md, section 3) ----------
 
 test('a known move shows on the panel, applies on Fire, and shows spent after', async () => {
