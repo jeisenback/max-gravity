@@ -41,10 +41,10 @@ New rooms: head and shower, workshop, airlock, life support. The gunnery moves o
 
 ## On screen and in a burn
 
-- **Camera:** a wide window shows about three decks. The camera pans up and down to follow the hand as it pans across today, and zooms out for the whole tower.
+- **Camera:** a wide window shows about three decks, the tower filling the box's width. The camera pans up and down to follow the hand as it pans across today, in every phase: it stays close in the hard burn and the flip too, since the whole tower in the burn box (480px high on a 1600px window) leaves people about 8px tall. The outline in the corner shows the whole tower and where the view is. (Owner's call, 2026-11-08, from the framing mockup.)
 - **Moving:** people walk along a deck and climb the well between decks; the climb pose becomes the common way between rooms. The engine room is down the tube through the tank: a longer climb, a real errand.
 - **The hard burn:** the crash couches lie flat on the floor and people lie on their backs, face up toward the nose.
-- **The flip:** the tower turns end over end in the view, with the float at the midpoint as today. After the flip the drive points the other way and "down" is still the drive.
+- **The flip:** the tower stays upright and the stars swing half a turn around her, with the float at the midpoint, as the burn view does today. The decks stay floors throughout: after the flip the drive points the other way and "down" is still the drive. (Owner's call, 2026-11-08, over turning the tower on screen.)
 - **Cruise:** low thrust, ordinary life on the decks.
 - The hull's skin, its thickness and the nose (#961) are drawn as part of the tower's outline.
 
