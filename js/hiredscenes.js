@@ -406,6 +406,7 @@ const SCENE_LINES = {
     'coop.leave.alone': 'Signing on means leaving Captain {first} {last} and the crew behind, and nobody on the crew knows you well enough to come.',
     'coop.heading': 'The captain knows you have the buy-in, and is heading for Ceres. ',
     'torps.restock': 'The captain has the magazine filled at the yard, {n} bought for {cost} cr from the ship\'s fund.',
+    'torps.kept': 'the captain keeps {n} aboard, and buys {n} at a time from the ship\'s fund',  // the Gunnery page's count on a captain's ship (#956)
     'practise.label': 'Practice at your post', 'practise.none': 'There\'s nothing to practice.', 'practise.learn': '(+{n} experience at the {post} post.)',
     'practise.pilot': 'You run the flip drill on the sim: cut the drive, swing the ship end over end, and light it again on the new heading, smoothly enough that nothing loose aboard moves. That is what the sim scores. The first flip puts a tool roll and two bulbs of coffee into the air on the sim\'s deck plan. After that most of the ship stays put, and the sim flags the restart as two seconds late every time.',
     'practise.gunner': 'You spend a watch on the range sim, tracking and leading targets: two hundred rounds, the first sixty of them spent on where the target was. The sim gives you a score and a lane-by-lane breakdown. Your worst lane is the curved one, which is the one a real raider takes.',

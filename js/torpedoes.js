@@ -9,6 +9,10 @@
 // torpedoes of their own. Loaded before game.js; only calls into it at runtime.
 
 const TORP_MAX = 6, TORP_PRICE = 4000;
+// What a readout says of the torpedoes: the count of a six-round magazine for a player who fits and fills the ship, the bare count on a
+// captain's ship, where the magazine's size is hers to fill and the hand sees what she carries (#956).
+const torpsText = (have, magazine) => (magazine ? `${have}/${TORP_MAX}` : `${have}`);
+const torpsShown = () => torpsText(Math.min(TORP_MAX, G.state.torpedoes || 0), role().canTrade);
 const TORP = { accel: 520, maxSpeed: 540, turn: 2.8, life: 7, playerDmg: 60, npcDmg: 45 };
 const NPC_TORPS = { corsair: 1, cutter: 1, destroyer: 3, gunship: 2 };
 const PD_RANGE = 300, PD_SPEED = 1100, PD_SPREAD = 0.12, PD_RATE = 0.25;  // tuned so one turret stops about two torpedoes in three
