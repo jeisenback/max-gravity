@@ -336,6 +336,7 @@ const SCENE_LINES = {
     'standing': 'Your standing with the {who} is now {word}.',
     'auto.control': 'You take the controls.', 'auto.contact': '{pilot}: Contact, and they\'re not friendly. She\'s yours, captain.',
     'auto.stuck': '{pilot}: I can\'t get us settled. Your ship, captain.', 'auto.dock': '{pilot} brings us in to {planet}.',
+    'auto.standin': '{pilot} is in the medbay. {stand} brings us in to {planet}.', 'auto.nobody': 'Nobody aboard can fly her with {pilot} in the medbay. You have the stick.',
     'escort.fuel': 'The "{name}" can\'t fuel up for that burn; it\'ll wait for you at {at}.', 'escort.range': 'The "{name}" can\'t make that burn on one tank; it\'ll wait for you at {at}.',
     'escort.lost': 'Your escort {name} is destroyed. Capt. {captain} ejects safely.',
     'reactor.scram': 'Reactor scram. The drive drops to {drive}% while the coolant catches up, and the hull takes a knock from the shock.',

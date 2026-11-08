@@ -277,7 +277,7 @@ function sail() {
   st.dest = plan.sid;
   st.route = { dock: plan.planet, go: true };
   // A crewed pilot flies her out and in; if you are the pilot, you do.
-  if (postMode('pilot') === 'crewed') ORDERS.pilot.find(o => o.id === 'depart').run(); else takeOff();
+  if (pilotFlier(st)) ORDERS.pilot.find(o => o.id === 'depart').run(); else { takeOff(); const told = nobodyFlies(st); if (told) msg(told); }  // the pilot, or a stand-in with the pilot hurt (#953)
   return true;
 }
 

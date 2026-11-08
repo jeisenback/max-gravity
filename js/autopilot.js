@@ -10,8 +10,22 @@
 const AUTO_HAIL_RANGE = 1500;  // a hostile this close ends the autopilot
 const AUTO_LIMIT = 120;        // seconds; a leg that takes longer is handed back
 
-const pilotName = () => { const h = postHolder('pilot'); return h ? h.first || h.name : 'The pilot'; };
-const pilotCare = () => 0.6 + 0.1 * roleSkill('pilot');  // a better pilot brakes later and lands sooner
+// Who flies the local legs (#953): the pilot; or, with the ship's pilot aboard but in the medbay, the best of the rest at the helm (pilot skill 1 or
+// more; the hand is not crew, and an injury is never theirs to fly through). Null when nobody can: the controls are yours. st: the game state.
+// Returns { who, skill, hurt } (hurt: the pilot in the medbay, when someone stands in) or null.
+function pilotFlier(st) {
+  if (postState('pilot').manual) return null;
+  const h = postHolder('pilot');
+  if (h) return { who: h, skill: roleSkill('pilot'), hurt: null };
+  const crew = st.crew.map(person), hurt = crew.find(c => c.role === 'pilot' && (st.injured || {})[c.id]);
+  if (!hurt) return null;
+  const best = crew.filter(c => !(st.injured || {})[c.id] && c.skills && c.skills.pilot >= 1).sort((a, b) => b.skills.pilot - a.skills.pilot)[0];
+  return best ? { who: best, skill: best.skills.pilot, hurt } : null;
+}
+// The pilot in the medbay with nobody to stand in: the hand is told the stick is theirs (#953). Null when that is not so.
+const nobodyFlies = st => { const hurt = !postHolder('pilot') && st.crew.map(person).find(c => c.role === 'pilot' && (st.injured || {})[c.id]); return hurt && !pilotFlier(st) ? sceneSay('scene:systems-notes', 'auto.nobody', { pilot: hurt.first }) : null; };
+const pilotName = () => { const f = pilotFlier(G.state); return f ? f.who.first || f.who.name : 'The pilot'; };
+const pilotCare = () => 0.6 + 0.1 * (pilotFlier(G.state) || { skill: 0 }).skill;  // a better pilot brakes later and lands sooner
 
 // The planet to dock at: the one chosen on the Navigation station if it is in this system
 // (or, at port, in the destination), otherwise the first.
@@ -29,7 +43,7 @@ function autoOff(text, taken) {
 function updateAutopilot(dt) {
   const p = G.player, a = G.auto, s = ship(), k = G.keys, st = G.state;
   if (!hired() && (k.left || k.right || k.thrust || k.reverse || k.fire)) { autoOff(sceneSay('scene:systems-notes', 'auto.control'), true); return updatePlayer(dt); }  // an owner takes the stick; a hand is not the pilot, and the pilot flies her out (#692)
-  if (postMode('pilot') !== 'crewed') { autoOff(); return updatePlayer(dt); }
+  if (!pilotFlier(st)) { autoOff(nobodyFlies(st)); return updatePlayer(dt); }
   if (G.npcs.some(n => n.hostile && !n.dead && dist(n, p) < AUTO_HAIL_RANGE)) { autoOff(sceneSay('scene:systems-notes', 'auto.contact', { pilot: pilotName() })); return updatePlayer(dt); }
   if ((a.t += dt) > AUTO_LIMIT) { autoOff(sceneSay('scene:systems-notes', 'auto.stuck', { pilot: pilotName() })); return updatePlayer(dt); }
   if (a.kind === 'out') {
@@ -57,7 +71,7 @@ function captainCallsBurn() {
 
 const canDepart = () => {
   const st = G.state;
-  return (!hired() || chapterOf(st) > 1) && G.mode === 'landed' && !G.dialog && postMode('pilot') === 'crewed' && !!st.dest && st.dest !== st.systemId && st.fuel >= burnFuel(st.systemId, st.dest);
+  return (!hired() || chapterOf(st) > 1) && G.mode === 'landed' && !G.dialog && !!pilotFlier(st) && !!st.dest && st.dest !== st.systemId && st.fuel >= burnFuel(st.systemId, st.dest);
 };
 
 ORDERS.pilot = [{
@@ -86,8 +100,11 @@ Mods.register({
   init(M) {
     M.action('routeDock', name => { G.state.route = { ...G.state.route, dock: name }; });
     M.on('arrive', () => {
-      if (postMode('pilot') !== 'crewed' || !(G.state.route && G.state.route.go)) return;
-      G.auto = { kind: 'dock', t: 0, care: pilotCare(), say: sceneSay('scene:systems-notes', 'auto.dock', { pilot: pilotName(), planet: dockTarget(G.state.systemId).name }) };  // said with the arrival line (arriveLine, game.js)
+      const st = G.state, f = pilotFlier(st);
+      if (!(st.route && st.route.go)) return;
+      if (!f) { const told = nobodyFlies(st); if (told) msg(told); return; }
+      const planet = dockTarget(st.systemId).name;
+      G.auto = { kind: 'dock', t: 0, care: pilotCare(), say: f.hurt ? sceneSay('scene:systems-notes', 'auto.standin', { pilot: f.hurt.first, stand: f.who.first, planet }) : sceneSay('scene:systems-notes', 'auto.dock', { pilot: pilotName(), planet }) };  // said with the arrival line (arriveLine, game.js)
     });
     for (const e of ['landed', 'stateReady']) M.on(e, () => { G.auto = null; if (G.state.route) G.state.route.go = false; });
     M.on('drawOverlay', W => {

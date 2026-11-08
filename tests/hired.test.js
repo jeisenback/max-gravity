@@ -837,3 +837,35 @@ test('a crew scene is the hand\'s own affair: the Galley Duty bet is paid from t
   assert.ok(r.credits === 8000 || r.credits === 2000, `the bet moves the savings by 3,000 (now ${r.credits})`);
   await done();
 });
+
+// #953: with the pilot in the medbay, the best of the rest at the helm (pilot skill 1 or more) flies the local legs, and the arrival line says so;
+// with nobody who can fly, the hand is told the stick is theirs. A hand who is the pilot flies as before.
+test('with the pilot hurt, the best of the rest at the helm flies her in, or the hand is told the stick is theirs', async () => {
+  const { ev, done } = await open({});
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); const st = G.state, crew = st.crew.map(person), out = {};
+    const pilot = crew.find(c => c.role === 'pilot');
+    const fliers = crew.filter(c => c !== pilot && c.skills && c.skills.pilot >= 1).sort((a, b) => b.skills.pilot - a.skills.pilot);
+    out.pilot = pilot.first; out.stand = fliers[0] && fliers[0].first;
+    const arrive = () => {
+      G.auto = null; G.messages = []; st.systemId = 'mars'; G.transit = null; G.mode = 'flight'; st.route = { dock: 'Mars', go: true };
+      G.player = makeShip(st.shipId, -1100, 0, 0); Mods.emit('arrive', 'mars');
+      return { auto: G.auto && G.auto.kind, say: (G.auto && G.auto.say) || '', told: G.messages.map(m => m.text).join(' ') };
+    };
+    st.injured = { [pilot.id]: true };
+    out.standIn = arrive();
+    for (const c of fliers) st.injured[c.id] = true;
+    out.nobody = arrive();
+    st.injured = {};
+    out.well = arrive();
+    return out;
+  });
+  assert.ok(r.stand, `someone aboard can fly at all (${JSON.stringify(r)})`);
+  assert.equal(r.standIn.auto, 'dock', 'the stand-in brings her in');
+  assert.match(r.standIn.say, new RegExp(`${r.pilot}.*medbay.*${r.stand}`), 'the line says the pilot is hurt and who flies');
+  assert.equal(r.nobody.auto, null, 'nobody can fly: the controls stay with the hand');
+  assert.match(r.nobody.told, new RegExp(`${r.pilot}.*stick`), 'and the hand is told why');
+  assert.equal(r.well.auto, 'dock'); assert.match(r.well.say, new RegExp(`^${r.pilot} brings us in`), 'the pilot well again flies as before');
+  await done();
+});

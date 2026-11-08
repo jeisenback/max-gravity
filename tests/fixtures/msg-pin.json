@@ -560,6 +560,20 @@
   "credits": 0
  },
  {
+  "key": "auto:standin",
+  "text": [
+   "Arrived at Earth (Arcology Compact). 9 Jun 2214. Mara is in the medbay. Oren brings us in to Earth."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "auto:nobody",
+  "text": [
+   "Nobody aboard can fly her with Mara in the medbay. You have the stick."
+  ],
+  "credits": 0
+ },
+ {
   "key": "escort:fuel",
   "text": [
    "The \"Lucky Promise\" can't fuel up for that burn; it'll wait for you at Earth."
