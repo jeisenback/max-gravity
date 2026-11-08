@@ -302,7 +302,7 @@ test('words kept for the deck fights\' abilities and orders under the old rows m
 });
 
 test('a gunner move plays in the preview by the line typed: its teacher\'s button, and the words when it is taken', async () => {
-  await reload(); await select('scene:gunner-moves');
+  await reload(); await select('scene:moves');
   for (const [id, who] of [['vent', 'Tomas'], ['lead', 'Ines'], ['split', 'Cato']]) {
     await page.fill(`textarea[data-path="part.${id}.text"]`, `Typed ${id}.text, {first}.`);
     const f = await play();

@@ -14,7 +14,7 @@
   'js/company.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/hulldetail.js', 'js/familytext.js', 'js/family.js', 'js/room.js', 'js/calendar.js', 'js/social.js',
   'js/bar.js', 'js/bartopics.js', 'js/outpost.js', 'js/legacy.js', 'js/torpedoes.js', 'js/boarding.js', 'js/engage.js', 'js/fightladder.js',
   'js/duel.js', 'js/console.js', 'js/stations.js', 'js/autopilot.js', 'js/engineering.js', 'js/comms.js', 'js/journal.js',
-  'js/web.js', 'js/wear.js', 'js/projects.js', 'js/programs.js', 'js/hired.js', 'js/gunnermoves.js', 'js/role.js', 'js/readouts.js', 'js/ownerboard.js', 'js/chaptertwo.js', 'js/dayashore.js', 'js/shippers.js', 'js/arcs.js', 'js/suggest.js', 'js/repairs.js', 'js/jobs.js',
+  'js/web.js', 'js/wear.js', 'js/projects.js', 'js/programs.js', 'js/hired.js', 'js/moves.js', 'js/role.js', 'js/readouts.js', 'js/ownerboard.js', 'js/chaptertwo.js', 'js/dayashore.js', 'js/shippers.js', 'js/arcs.js', 'js/suggest.js', 'js/repairs.js', 'js/jobs.js',
   'js/awayjobs.js', 'js/stay.js', 'js/losses.js', 'js/hiredeventstext.js', 'js/hiredevents.js', 'js/bridge.js', 'js/shell.js',
   'js/character.js', 'js/interview.js', 'js/cast.js', 'js/captains.js', 'js/stakes.js', 'js/handtohand.js', 'js/boarders.js', 'js/engagements.js', 'js/fightui.js',
   'js/shipcombat.js', 'js/fight.js', 'js/yardoffice.js', 'js/icerun.js', 'js/ties.js', 'js/captains/hester.js', 'js/captains/cato.js',
@@ -351,9 +351,9 @@
     useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
     if (reg && FIGHT_ROWS.includes(reg.id) && m.fight) return playFight(m);
     const repair = !!reg && reg.id === 'scene:shiplife' && /^repair\./.test(m.line || '');  // the repair is offered to a hand at the engineer post, with the armor down
-    const teach = !!reg && reg.id === 'scene:gunner-moves';  // a move is taught to a hand at the gunner post
+    const teachId = !!reg && reg.id === 'scene:moves' ? (String(m.line || '').match(/^(vent|lead|split|redline|hot-start|parley)\./) || [])[1] || 'vent' : null;  // the taught move whose line was typed (else vent): the hand works the post of its pick
     const contactPost = !!reg && reg.id === 'scene:contact' && ((String(m.line || '').match(/^move\.(pilot|gunner|engineer)\./) || [])[1] || (m.line === 'spoof.own' ? 'comms' : null));  // a hand's own move at a contact is played at its post
-    const o = repair ? { ...m.setup, post: 'engineer' } : teach ? { ...m.setup, post: 'gunner' } : contactPost ? { ...m.setup, post: contactPost } : m.setup || {};
+    const o = repair ? { ...m.setup, post: 'engineer' } : teachId ? { ...m.setup, post: Object.values(PICKS).find(p => p.move === teachId).post } : contactPost ? { ...m.setup, post: contactPost } : m.setup || {};
     const place = planetNamed(o.place) ? o.place : 'Earth', at = planetNamed(place);
     const meeting = !!reg && reg.kind === 'cast' && reg.name === 'meet';  // an owner meets a main character at a port bar; a hired hand never does
     beginGame(meeting || pe ? { ...o, as: 'owner' } : o, !!reg && !meeting);
@@ -455,11 +455,11 @@
           'scene:war-call': () => tiesPreview(() => warCallScene(currentPlanet()), 'member', true),
           'scene:downtime': () => { if (!crew.length) { const m = makeCrewCandidate(st.systemId); registerPerson(m); st.crew.push(m.id); } return { title: 'Downtime', text: 'What a hired hand can add to the downtime menu:', personal: true, choices: HAND_DOWNTIME.map(d => ({ label: d.label, run: d.run })) }; },
           'scene:shiplife': () => { if (repair) { st.armor = Math.min(st.armor, ship().armor - 10); standIn = 'The hand is at the engineer post and the armor is down, so the repair is offered.'; } return downtimeEvent(true); },
-          'scene:gunner-moves': () => {  // the move whose line was typed (else vent), with the moves before it known, the gunner level it needs and its teacher trusting the hand
-            const ids = Object.keys(MOVE_TEACH), id = (String(m.line || '').match(/^(vent|lead|split)\./) || [])[1] || 'vent';
-            hired().moves = ids.slice(0, ids.indexOf(id)); hired().skill = { ...hired().skill, gunner: Math.max(skillXp('gunner'), SKILL_STEPS[MOVE_TEACH[id].level]) };
-            for (const t of ids.map(moveTeacher)) if (t) t.opinion = Math.max(t.opinion, OPINION.TRUSTED);
-            standIn = `The hand is at the gunner post${hired().moves.length ? ` and knows ${hired().moves.join(' and ')}` : ''}, and the crew who teach trust them, so ${id} is offered. The idle button shows only when no move is due.`;
+          'scene:moves': () => {  // the taught move whose line was typed (else vent): its pick taken on the hand's ladder, the moves before it known and its teacher trusting the hand
+            const pick = Object.values(PICKS).find(p => p.move === teachId), before = Object.values(PICKS).filter(p => p.move in MOVE_TEACH && p.post === pick.post && p.level < pick.level).map(p => p.move);
+            hired().picks = [pick.id]; hired().moves = before;
+            for (const t of Object.keys(MOVE_TEACH).map(moveTeacher)) if (t) t.opinion = Math.max(t.opinion, OPINION.TRUSTED);
+            standIn = `The hand is at the ${pick.post} post with the ${pick.name} pick taken${before.length ? ` and knows ${before.join(' and ')}` : ''}, and the crew who teach trust them, so ${teachId} is offered. The idle button shows only when no move is due.`;
             return downtimeEvent(true);
           },
           'scene:bar-round': () => { fillBar(currentPlanet()); st.credits = Math.max(st.credits, 50000); Mods.actions.barRound.fn(); return { title: 'A Round for the House', text: G.barState.note, personal: true, choices: [{ label: sceneSay('scene:bar-round', 'label.done'), run: () => '' }] }; },

@@ -288,7 +288,7 @@ A hired gunner learns three moves from the crew (`FIGHT_MOVES` in `js/fight.js`,
 each ordered beside the guns and used once a fight: **vent** (the engineer teaches it) takes the heat to 0 and the locks off before
 the shots; **lead** (the pilot) takes the range penalty off one gun's aimed shot; **split** (the first officer) lets the turret
 held back for her salvo fire anyway. A move with nothing to act on is not spent. Each is taught on a burn as a downtime choice
-(`MOVE_TEACH` in `js/gunnermoves.js`): vent and lead at gunner level 1, split at level 2, once the teacher trusts the hand
+(`MOVE_TEACH` in `js/moves.js`): vent and lead at gunner level 1, split at level 2, once the teacher trusts the hand
 (`OPINION.TRUSTED`) and is aboard and unhurt. An owner is taught none.
 
 A hired hand can also meet a distress call on a burn through unsettled space (pirates 0.25 or more at either end, at most once

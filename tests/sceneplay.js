@@ -206,10 +206,10 @@ const playScenes = () => {
   run('hand:restock', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => restockTorps(G.state, hired(), currentPlanet(), ship().launcher) }] }), { prep() { G.state.torpedoes = 0; hired().fund = 100000; } });
   run('hand:torps-kept', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => fightCard().replace(/<[^>]+>/g, ' ') }] }));  // the Gunnery page's torpedo count on a captain's ship (#956)
   run('hand:practise:owner', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.practise.run()) }] }));
-  // a gunner move taught on a burn (gunnermoves.js): each by its teacher, trusted, with the moves before it known; and the button with nothing due
-  for (const [id, known, xp] of [['vent', [], 12], ['lead', ['vent'], 12], ['split', ['vent', 'lead'], 45]]) {
-    run(`hand:teach:${id}`, {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => String(ACTIVITIES.teach.run()) }] }),
-      { prep() { hired().moves = [...known]; hired().skill = { ...hired().skill, gunner: xp }; for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = OPINION.TRUSTED; }, extra: () => ({ moves: hired().moves, gunner: hired().skill.gunner }) });
+  // a taught move shown on a burn (moves.js): each by its teacher, trusted, with its pick taken and the moves before it known
+  for (const [id, post, known] of [['vent', 'gunner', []], ['lead', 'gunner', ['vent']], ['split', 'gunner', ['vent', 'lead']], ['redline', 'pilot', []], ['hot-start', 'engineer', []], ['parley', 'comms', []]]) {
+    run(`hand:teach:${id}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => String(ACTIVITIES.teach.run()) }] }),
+      { prep() { hired().moves = [...known]; hired().picks = [id]; for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) if (p) p.opinion = OPINION.TRUSTED; }, extra: () => ({ moves: hired().moves, [post]: hired().skill[post] }) });
   }
   run('hand:teach:none', {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => ACTIVITIES.teach.run() }] }));  // nothing due: the button teaches nothing and says nothing (text '')
   // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
