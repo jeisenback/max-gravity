@@ -938,6 +938,24 @@ test('with no first-aid giver up, nobody waits by the bunks', async () => {
   assert.equal(r.left, null, 'the only one with first aid is the one hurt'); assert.deepEqual(r.aiding, [], 'nobody by the bunks');
 });
 
+test('a patient stays on the medbay cot through the hard burn and the flip, and is not walked to a couch (#976)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    const t = stageBurn(0.3), pose = p => posture(p, phase(), 0, isAsleep(p)), pt = shipPeople().find(p => p.id && G.state.crew.includes(p.id));
+    (G.state.injured = G.state.injured || {})[pt.id] = true; tickFor(60);
+    const at = () => ({ inBed: inRoom(pt, 'medbay') && pt.at === 'bed', pose: pose(pt).name, strapped: !!pose(pt).strapped });
+    const out = { before: at() };
+    t.left = t.total * (1 - 0.97); tickFor(3); out.burn = at();
+    t.left = t.total * (1 - 0.5); tickFor(2); out.flip = at();
+    return out;
+  });
+  await done();
+  assert.deepEqual(r.before, { inBed: true, pose: 'bunk', strapped: false }, 'in bed in the cruise');
+  assert.deepEqual(r.burn, { inBed: true, pose: 'bunk', strapped: false }, 'still on the cot in the hard burn');
+  assert.deepEqual(r.flip, { inBed: true, pose: 'bunk', strapped: true }, 'strapped down on the cot at the flip');
+});
+
 test('a burn with half its armor draws its two marked rooms without an error', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);

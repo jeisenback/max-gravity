@@ -213,12 +213,140 @@ function figCat(ctx, name, frame, frames) {
   return { x: 0, y: c.y };
 }
 
+// ---- Seen from the front and from the back (#978) ----
+// Standing, sitting and at work, a person can face you or the wall, not only left or right: the same lengths, hair styles, faces and moods as
+// in profile. The frame: the feet's middle at the origin, up -y, the person's left on -x. Limbs are drawn as one stroked line each, the
+// outline first, so the joints do not show.
+const FIG_VIEW = { shoulder: 8.6, waist: 6.2, hip: 6.6, legGap: 3.3, seatHip: 23.5 };
+const FIG_FACING = ['stand', 'sit', 'work', 'work-sit'];  // the poses that can face you or the wall; the rest are always side-on
+const FIG_VIEW_ARMS = {  // each arm: [side, the upper arm's angle out from straight down, the forearm's, length scale]; a negative angle turns in
+  stand: [[-1, 0.16, 0.02], [1, 0.16, 0.02]],
+  sit: [[-1, 0.22, -1.25, 0.9], [1, 0.22, -1.25, 0.9]],  // the forearms in, on the table
+  work: [[-1, 0.45, -2.3, 0.85], [1, 0.45, -2.3, 0.85]],  // from behind: the hands on the panel at chest height
+};
+function figViewLimb(ctx, pts, ws, col) {
+  for (const [c, add] of [[FIG_LINE, 1.8], [col, 0]]) for (let i = 1; i < pts.length; i++) { ctx.strokeStyle = c; ctx.lineWidth = ws[i - 1] + add; figSeg(ctx, [pts[i - 1], pts[i]]); }
+}
+function figFrontHead(ctx, cx, cy, look, st) {
+  const r = FIG_LEN.head, skin = look.skin || '#c9a98a', hair = look.hair || '#3a2f28', mood = look.mood, rx = r * 0.86, ry = r * 1.04;
+  ctx.save(); ctx.translate(cx, cy + (mood === 'low' ? 1.2 : 0)); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE;
+  ctx.fillStyle = hair;  // long hair behind the head
+  if (st.style === 'loose') { ctx.beginPath(); ctx.roundRect(-rx - 1.6, -ry * 0.6, rx * 2 + 3.2, ry * 1.9, 3); ctx.fill(); ctx.stroke(); }
+  if (st.style === 'tail') { ctx.beginPath(); ctx.ellipse(0, -0.5, rx + 1.2, ry + 0.6, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+  for (const sx of [-1, 1]) { ctx.fillStyle = figShade(skin, 0.85); ctx.beginPath(); ctx.ellipse(sx * rx, 0.6, 1.4, 2, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }  // the ears
+  ctx.fillStyle = skin; ctx.beginPath(); ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(0,0,0,0.08)'; ctx.beginPath(); ctx.ellipse(-rx * 0.5, 0.5, rx * 0.45, ry * 0.85, 0, 0, Math.PI * 2); ctx.fill();  // the shaded side
+  ctx.fillStyle = hair;
+  if (['crop', 'tail', 'loose', 'bun'].includes(st.style)) {  // the crown and the fringe
+    ctx.beginPath(); ctx.ellipse(0, -ry * 0.42, rx + 0.7, ry * 0.72, 0, Math.PI, Math.PI * 2); ctx.lineTo(rx + 0.6, -1.2);
+    ctx.quadraticCurveTo(rx * 0.3, -ry * 0.55, -rx * 0.2, -ry * 0.5); ctx.quadraticCurveTo(-rx * 0.7, -ry * 0.45, -rx - 0.6, -1); ctx.closePath(); ctx.fill(); ctx.stroke();
+  }
+  if (st.style === 'bun') { ctx.beginPath(); ctx.arc(0, -ry - 2.2, 3.2, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+  if (st.style === 'curls') for (let a = Math.PI * 0.95; a <= Math.PI * 2.05; a += Math.PI / 7) { ctx.beginPath(); ctx.arc(Math.cos(a) * (rx + 0.6), -1 + Math.sin(a) * (ry + 0.4), 2.7, 0, Math.PI * 2); ctx.fill(); }
+  if (st.style === 'buzz') { ctx.save(); ctx.globalAlpha = 0.7; ctx.beginPath(); ctx.ellipse(0, -ry * 0.35, rx + 0.2, ry * 0.68, 0, Math.PI, Math.PI * 2); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  if (st.style === 'bald') { ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.beginPath(); ctx.ellipse(1.2, -ry * 0.62, 2.2, 1, -0.2, 0, Math.PI * 2); ctx.fill(); }
+  ctx.fillStyle = hair;  // facial hair
+  if (st.face === 'beard') { ctx.beginPath(); ctx.moveTo(-rx, 1); ctx.quadraticCurveTo(-rx, ry + 1.6, 0, ry + 1.4); ctx.quadraticCurveTo(rx, ry + 1.6, rx, 1); ctx.lineTo(rx * 0.7, 2.4); ctx.quadraticCurveTo(0, 6.2, -rx * 0.7, 2.4); ctx.closePath(); ctx.fill(); }
+  if (st.face === 'beard' || st.face === 'moustache') { ctx.beginPath(); ctx.ellipse(0, 3.1, 2.6, 0.9, 0, 0, Math.PI * 2); ctx.fill(); }
+  if (st.face === 'stubble') { ctx.save(); ctx.globalAlpha = 0.3; ctx.beginPath(); ctx.ellipse(0, 3.4, rx * 0.85, ry * 0.6, 0, 0, Math.PI); ctx.fill(); ctx.restore(); }
+  ctx.strokeStyle = figShade(skin, 0.7); ctx.lineWidth = 0.8; figSeg(ctx, [[0.4, -0.6], [0.8, 1.4 + st.nose * 0.4], [-0.3, 1.6 + st.nose * 0.4]]);  // the nose, longer as the profile's is bigger
+  ctx.lineCap = 'round';
+  for (const sx of [-1, 1]) {  // the eyes and brows by mood, as in profile, mirrored
+    const ex = sx * 2.6, ey = -1.2, bin = sx * 1.2, bout = sx * 4;
+    ctx.fillStyle = '#14171c'; ctx.strokeStyle = '#14171c';
+    if (mood === 'hurt') { ctx.lineWidth = 0.8; figSeg(ctx, [[ex - sx * 0.9, ey - 0.5], [ex + sx * 0.3, ey], [ex - sx * 0.9, ey + 0.5]]); }
+    else if (mood === 'good') { ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(ex, ey + 0.5, 0.9, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke(); }
+    else { ctx.beginPath(); ctx.ellipse(ex, ey, 0.75, 0.95, 0, 0, Math.PI * 2); ctx.fill(); if (mood === 'low') { ctx.fillStyle = figShade(skin, 0.85); ctx.fillRect(ex - 1.1, ey - 1.3, 2.2, 1.2); } }
+    ctx.strokeStyle = figShade(hair, 0.9); ctx.lineWidth = st.brow; ctx.beginPath();
+    if (mood === 'low') { ctx.moveTo(bin, -3.3); ctx.lineTo(bout, -2.6); } else if (mood === 'hurt') { ctx.moveTo(bin, -2.4); ctx.lineTo(bout, -3.1); }
+    else if (mood === 'good') { ctx.moveTo(bin, -2.9); ctx.quadraticCurveTo((bin + bout) / 2, -3.5, bout, -2.8); } else { ctx.moveTo(bin, -2.8); ctx.lineTo(bout, -2.8); }
+    ctx.stroke();
+  }
+  if (st.face !== 'beard') {  // the mouth
+    const my = 4.1; ctx.strokeStyle = '#3a1f1a'; ctx.lineWidth = 0.8; ctx.beginPath();
+    if (mood === 'good') { ctx.moveTo(-2.2, my - 0.6); ctx.quadraticCurveTo(0, my + 1.6, 2.2, my - 0.6); ctx.stroke(); }
+    else if (mood === 'low') { ctx.moveTo(-1.8, my + 0.6); ctx.quadraticCurveTo(0, my - 0.7, 1.8, my + 0.6); ctx.stroke(); }
+    else if (mood === 'hurt') { ctx.fillStyle = '#3a1f1a'; ctx.beginPath(); ctx.roundRect(-2.2, my - 0.8, 4.4, 1.8, 0.6); ctx.fill(); ctx.fillStyle = '#e9e4da'; ctx.fillRect(-1.8, my - 0.3, 3.6, 0.6); }
+    else { ctx.moveTo(-1.6, my); ctx.lineTo(1.6, my); ctx.stroke(); }
+  }
+  ctx.restore();
+}
+// From behind the hair covers the head: curls, a bun, a tail tied with a band, loose hair to the shoulders; the ears either side.
+function figBackHead(ctx, cx, cy, look, st) {
+  const r = FIG_LEN.head, skin = look.skin || '#c9a98a', hair = look.hair || '#3a2f28', rx = r * 0.86, ry = r * 1.04;
+  ctx.save(); ctx.translate(cx, cy); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE;
+  for (const sx of [-1, 1]) { ctx.fillStyle = figShade(skin, 0.85); ctx.beginPath(); ctx.ellipse(sx * rx, 0.6, 1.4, 2, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+  ctx.fillStyle = skin; ctx.beginPath(); ctx.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = hair;
+  if (st.style === 'curls') for (let a = 0; a < Math.PI * 2; a += Math.PI / 6) { ctx.beginPath(); ctx.arc(Math.cos(a) * rx * 0.7, -1.4 + Math.sin(a) * ry * 0.7, 3, 0, Math.PI * 2); ctx.fill(); }
+  else if (st.style !== 'bald') {
+    ctx.save(); if (st.style === 'buzz') ctx.globalAlpha = 0.7;
+    ctx.beginPath(); ctx.ellipse(0, -0.8, rx + 0.6, ry + 0.2, 0, Math.PI * 0.95, Math.PI * 2.05); ctx.quadraticCurveTo(0, ry * 0.75, -rx - 0.6, 1); ctx.closePath(); ctx.fill(); if (st.style !== 'buzz') ctx.stroke(); ctx.restore();
+  }
+  if (st.style === 'bun') { ctx.beginPath(); ctx.arc(0, -ry + 0.5, 3.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
+  if (st.style === 'tail') { ctx.beginPath(); ctx.moveTo(-1.6, 1); ctx.quadraticCurveTo(-2.4, 8, 0, 12); ctx.quadraticCurveTo(2.4, 8, 1.6, 1); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#c84a3a'; ctx.fillRect(-1.5, 1.5, 3, 1.1); }
+  if (st.style === 'loose') { ctx.beginPath(); ctx.roundRect(-rx - 1, -1, rx * 2 + 2, ry * 1.6, 2.5); ctx.fill(); ctx.stroke(); }
+  ctx.restore();
+}
+// The torso face-on, the hip's middle at (0, -hipH): from the front the zip, buckle, pocket and the collar's V; from the back the collar and
+// a name strip across the shoulders.
+function figViewTorso(ctx, hipH, col, build, back) {
+  const T = FIG_LEN.torso, S = FIG_VIEW.shoulder * build, W = FIG_VIEW.waist * build, H = FIG_VIEW.hip * build, y0 = -hipH, yT = y0 - T;
+  const d = `M ${-H} ${y0 + 2} C ${-W - 0.6} ${y0 - 8} ${-W - 0.4} ${y0 - 14} ${-S + 0.4} ${yT + 5} C ${-S} ${yT + 1} ${-S + 2} ${yT - 0.6} -4 ${yT - 0.8} L 4 ${yT - 0.8} C ${S - 2} ${yT - 0.6} ${S} ${yT + 1} ${S - 0.4} ${yT + 5} C ${W + 0.4} ${y0 - 14} ${W + 0.6} ${y0 - 8} ${H} ${y0 + 2} Z`;
+  figPath(ctx, d); ctx.fillStyle = col; ctx.fill();
+  ctx.save(); ctx.clip();
+  ctx.fillStyle = figShade(col, 0.8); ctx.fillRect(-S - 1, yT - 2, 3.4, T + 6);  // the shaded side
+  ctx.fillStyle = figShade(col, 1.12); ctx.fillRect(S - 3, yT + 4, 2.2, T - 10);
+  ctx.fillStyle = figShade(col, 0.5); ctx.fillRect(-S - 1, y0 - 1.2, S * 2 + 2, 2.6);  // the belt
+  if (!back) {
+    ctx.fillStyle = '#9aa3ad'; ctx.fillRect(-1.3, y0 - 1.1, 2.6, 2.4);
+    ctx.strokeStyle = figShade(col, 0.62); ctx.lineWidth = 0.7; figSeg(ctx, [[0.3, yT + 2], [0.3, y0 - 1.4]]); figSeg(ctx, [[1.8, yT + 12], [5.2, yT + 12]]);
+    ctx.fillStyle = figShade(col, 0.72); figPath(ctx, `M -3.6 ${yT - 0.8} L 0 ${yT + 4} L 3.6 ${yT - 0.8} Z`); ctx.fill();
+  } else { ctx.fillStyle = figShade(col, 0.72); ctx.fillRect(-3.8, yT - 0.8, 7.6, 2.2); ctx.fillStyle = figShade(col, 0.66); ctx.fillRect(-4, yT + 7, 8, 3); }
+  ctx.restore();
+  figPath(ctx, d); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
+}
+function figViewLegs(ctx, hipH, col, boot, build, seated) {
+  for (const sx of [-1, 1]) {
+    const hx = sx * FIG_VIEW.legGap * build, fx = hx * (seated ? 1.15 : 1.08), knee = seated ? [fx, -hipH + 4] : [hx * 1.05, -hipH + FIG_LEN.thigh];
+    figViewLimb(ctx, [[hx, -hipH], knee, [fx, -3.8]], [(seated ? 8.2 : 7.6) * build, 5.4 * build], col);  // seated, the thigh comes toward you, short
+    figPath(ctx, `M ${fx - 2.8} -4.4 L ${fx + 2.8} -4.4 L ${fx + 3.6} 0 L ${fx - 3.6} 0 Z`); ctx.fillStyle = boot; ctx.fill(); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
+  }
+}
+function figViewArms(ctx, hipH, col, glove, build, arms, back, wave) {
+  const y = -hipH - FIG_LEN.torso + 3, at = (p, a, l) => [p[0] + Math.sin(a) * l, p[1] + Math.cos(a) * l];
+  for (const [sx, a1, a2, k = 1] of arms) {
+    const sh = [sx * (FIG_VIEW.shoulder * build - 1.6), y], el = at(sh, sx * a1, FIG_LEN.upperArm * k), wr = at(el, sx * (a2 + wave * sx * 0.12), FIG_LEN.foreArm * k);
+    figViewLimb(ctx, [sh, el, wr], [5.4 * build, 4.4 * build], (back ? sx > 0 : sx < 0) ? figShade(col, 0.88) : col);
+    ctx.fillStyle = glove; ctx.beginPath(); ctx.ellipse(wr[0], wr[1] + 1, 2.2, 2.6, 0, 0, Math.PI * 2); ctx.fill(); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
+  }
+}
+// A person facing you ('front') or the wall ('back'), standing, seated, or at work (the hands at the panel, seated or not). Returns the tap
+// point, the head and the foot in the person's own frame.
+function figView(ctx, pose, look, frames) {
+  const st = figStyle(look), b = st.build, col = look.color, seated = pose.name === 'sit' || pose.name === 'work-sit', back = pose.view === 'back';
+  const hipH = seated ? FIG_VIEW.seatHip : FIG_LEN.thigh + FIG_LEN.shin + FIG_LEN.ankle, neck = -hipH - FIG_LEN.torso, headY = neck - FIG_LEN.neck - FIG_LEN.head;
+  const arms = FIG_VIEW_ARMS[pose.name.startsWith('work') ? 'work' : pose.name === 'sit' ? 'sit' : 'stand'], wave = pose.name.startsWith('work') ? Math.sin(Math.PI * 2 * pose.frame / frames) : 0;
+  ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+  ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0, 0, 12, 2.4, 0, 0, Math.PI * 2); ctx.fill();  // a shadow on the deck
+  figViewLegs(ctx, hipH, figShade(col, 0.92), '#262b33', b, seated);
+  if (back) figViewArms(ctx, hipH, col, '#2c3139', b, arms, true, wave);  // from behind, the hands at the panel are on the far side of the body
+  figViewTorso(ctx, hipH, col, b, back);
+  ctx.fillStyle = figShade(look.skin || '#c9a98a', 0.82); ctx.fillRect(-2.2, neck - FIG_LEN.neck - 1, 4.4, FIG_LEN.neck + 2);
+  if (back) figBackHead(ctx, 0, headY, look, st);
+  else { figViewArms(ctx, hipH, col, '#2c3139', b, arms, false, wave); figFrontHead(ctx, 0, headY, look, st); }
+  return { tap: { x: 0, y: -hipH - FIG_LEN.torso / 2 }, head: { x: 0, y: headY }, foot: { x: 0, y: 0 } };
+}
+
 function drawPerson(ctx, pose, x, y, look) {
   const frames = POSTURES[pose.name].frames, face = pose.face < 0 && pose.name !== 'bunk' && pose.name !== 'couch' ? -1 : 1;  // a sleeper lies head to the left; a crash couch's back is on the left (#949)
   ctx.save(); ctx.translate(x, y); ctx.scale(face, 1);
   let tap, head, foot;
   if (pose.name.startsWith('cat')) head = foot = tap = figCat(ctx, pose.name, pose.frame, frames);
-  else {
+  else if ((pose.view === 'front' || pose.view === 'back') && FIG_FACING.includes(pose.name)) {  // facing you or the wall (#978)
+    const k = FIG_SCALE; ctx.scale(k, k); ({ tap, head, foot } = figView(ctx, pose, look, frames));
+    for (const p of [tap, head, foot]) { p.x *= k; p.y *= k; }
+  } else {
     const k = FIG_SCALE, q = figPose(pose.name, pose.frame, frames, +look.floating || 0), j = figJoints(q), col = look.color, st = figStyle(look), b = st.build;
     ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     const boot = '#262b33', glove = '#2c3139';
