@@ -362,6 +362,14 @@ function roomMedbay(ctx, r, s, X, W) {
     const mx = X(0.7), mw = Math.min(64, W * 0.2); roomBox(ctx, mx, F - 92, mw, 34, '#04101a'); ctx.strokeStyle = s.patient ? '#ffb030' : '#7fd8a0'; ctx.lineWidth = 1.2; ctx.beginPath();  // amber and quicker with a patient
     for (let x = 0; x < mw - 4; x++) { const u = (x + time * (s.patient ? 60 : 30)) % 30, y = u > 12 && u < 15 ? (u < 13.5 ? -12 : 8) : 0; if (x) ctx.lineTo(mx + 2 + x, F - 75 + y); else ctx.moveTo(mx + 2, F - 75 + y); } ctx.stroke();
   }
+  if (W >= 240) {  // the supply cabinet under the monitor (#933): two doors with handles, a cross on one; bottles and a kit on its top
+    const cx = X(0.76), cw = X(0.97) - cx;
+    roomBox(ctx, cx + 2, F - 38, cw - 4, 38, '#c9d3dc'); roomBox(ctx, cx, F - 42, cw, 4, '#dde4ea'); roomFlat(ctx, cx + cw / 2 - 0.5, F - 35, 1, 32, '#8a96a2');
+    for (const hx of [cx + cw / 2 - 5, cx + cw / 2 + 3]) roomFlat(ctx, hx, F - 24, 2, 6, '#9aa8b6');
+    roomFlat(ctx, cx + 9, F - 28, 6, 2, '#c03a30'); roomFlat(ctx, cx + 11, F - 30, 2, 6, '#c03a30');
+    for (const bx of [cx + 5, cx + 12]) { roomBox(ctx, bx, F - 52, 5, 10, '#7fb8c8'); roomFlat(ctx, bx + 1, F - 54, 3, 2, '#dde4ea'); }
+    roomBox(ctx, cx + cw - 22, F - 52, 18, 10, '#eef2f6'); roomFlat(ctx, cx + cw - 14, F - 51, 2, 8, '#c03a30'); roomFlat(ctx, cx + cw - 17, F - 48, 8, 2, '#c03a30');
+  }
   if (W >= 300) { const cx = X(0.04); roomBox(ctx, cx, F - 92, 40, 40, '#d8dde4'); roomBox(ctx, cx + 17, F - 85, 7, 24, '#c03a30'); roomBox(ctx, cx + 9, F - 77, 23, 8, '#c03a30'); }
 }
 
