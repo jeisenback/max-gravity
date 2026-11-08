@@ -83,6 +83,8 @@ const handStat = stat => { const c = career(); return c && c.sheet ? c.sheet[sta
 const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, DIFFICULTY[kind], edge + kitEdge(career() && career().kit, kind) + pickEdge(takenPicks(career()), kind));  // the kit's edge and the picks' (picks.js)
 // Whether the hand has taken a perk pick (picks.js): the one reader every perk's hook calls; false with no hand.
 const handPerk = id => hasPerk(takenPicks(career()), id);
+// Who would show the hand a taught move pick (picks.js): the post's holder, or the first officer, with the injured left out (stations.js, crew.js).
+const pickTeacher = p => (p.teacher.post ? postHolder(p.teacher.post) : roleHolder(p.teacher.role));
 const soloOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'solo');
 // The job of your own post in a fight, an ice run or a contact: half a chance at the base, a tenth better for each level.
 const postOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'post');
@@ -737,6 +739,12 @@ Mods.register({
     M_NOTE = text => M.note(text);
     M.action('sail', () => { if (hired() && chapterOf(G.state) === 1 && !sideBeforeSail()) sail(); });  // the captain's sail is chapter one's; the co-op takes off (#891)  // a side on the paper is a scene at the lock first (shippers.js)
     M.action('swapPost', post => askSwap(post));
+    M.action('pick', id => {  // a pick on the ladder, taken at the port on the hand's own page (picks.js, #963)
+      const c = career(), p = PICKS[id];
+      if (!hired() || !c || !p || G.mode !== 'landed' || G.dialog) return;
+      if (pickDue(c, skillLevel(c.post)) !== p.level || pickOpen(p, c, { teacher: pickTeacher, opinionOf: x => x.opinion || 0 }) !== true) return;
+      takePick(c, id); UI.render();
+    });
     M.action('askCaptain', () => askCaptain());  // the captain's next scene, now (#954)
     M.action('buyInAsk', id => {
       if (!hired() || !canBuyIn(id, currentPlanet())) return;

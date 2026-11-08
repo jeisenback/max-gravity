@@ -95,3 +95,24 @@ function takePick(c, id) {
 // The edge the taken picks give a kind of roll (sheet.js check's last argument, beside kitEdge), and whether a perk is taken.
 const pickEdge = (picks, kind) => (picks || []).reduce((n, id) => n + (((PICKS[id] || {}).adds || {})[kind] || 0), 0);
 const hasPerk = (picks, id) => (picks || []).some(x => (PICKS[x] || {}).perk === id);
+
+// The Ladder card's rows (views.js helpers, #963): the post's five rungs; a rung with its pick taken names it (a taught move not yet shown reads
+// "being learned"); the due rung offers its two picks to take, each shut with its reason when `open(pick)` is a string; a rung reached but behind
+// the due one waits; the rungs beyond name their two picks. Pure: the career, the level and the gate are passed in.
+function ladderHtml(c, level, open) {
+  const taken = takenPicks(c).map(id => PICKS[id]).filter(p => p && p.post === c.post), due = pickDue(c, level), rows = [];
+  for (let l = 1; l <= PICK_LEVELS; l++) {
+    const got = taken.find(p => p.level === l), two = picksFor(c.post, l);
+    if (got) {
+      const learning = got.kind === 'move' && got.teacher && !(c.moves || []).includes(got.move);
+      rows.push(h`<div class="con-part ladder-rung done"><span>Level ${l}</span><b>${got.name}${learning ? ' (being learned)' : ''}</b></div>`);
+    } else if (l === due) {
+      rows.push(h`<div class="con-part ladder-rung due"><span>Level ${l}</span><b class="eyebrow">A pick waits</b></div>${listHtml(two, p => {
+        const ok = open(p);
+        return h`<div class="row ladder-pick"><span><b>${p.name}</b> <span class="hint">${p.text}</span>${ok === true ? '' : h`<br><span class="rail-why">${ok}</span>`}</span><button data-action="pick" data-arg="${p.id}"${ok === true ? '' : raw(' disabled')}>Take</button></div>`;
+      })}`);
+    } else if (l <= level) rows.push(h`<div class="con-part ladder-rung waits"><span>Level ${l}</span><b class="hint">A pick waits, after level ${due}'s</b></div>`);
+    else rows.push(h`<div class="con-part ladder-rung ahead"><span>Level ${l}</span><b class="hint">${two.map(p => p.name).join(' or ')}</b></div>`);
+  }
+  return rows.map(String).join('');
+}
