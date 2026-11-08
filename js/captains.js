@@ -72,7 +72,7 @@ const BEAT_WEIGHT = 2, BEAT_RAMP = 3;
 const spineSeen = h => !castAboard().some(c => c.cast === 'tomas') || !!(h.flags && h.flags.sawHull);
 const captainBeatsDone = h => {
   const d = captainEntry();
-  return !d || !d.scenes || ((h.beats || 0) >= CAPTAIN_BEATS.length && runTotals(h).runs - (h.beatRun || 0) >= 2 && spineSeen(h));
+  return !d || !d.scenes || ((h.beats || 0) >= CAPTAIN_BEATS.length && (h.askedCoop || runTotals(h).runs - (h.beatRun || 0) >= 2) && spineSeen(h));  // a hand who asked waits no runs (#954)
 };
 // A first officer with a walk-through (cato.js) takes a new hand round the ship on the first burn. That burn gets a happening more
 // for it (transit.js), so the introductions that would have played then still do.
@@ -155,6 +155,17 @@ function captainBeat() {
   const name = CAPTAIN_BEATS[h.beats || 0];
   return name && d.scenes[name] && G.state.day - h.since >= CAPTAIN_BEAT_DAYS[name] ? name : null;
 }
+// A due scene of the captain's is drawn among the rest (tier 1); with the money for the co-op's offer it is certain on the burn (tier 0, #954).
+const beatTier = st => (st.credits >= USED_OFFER_AT ? 0 : 1);
+// The hand asks the captain about the co-op (#954): her next scene plays now, whatever its day; after the last, the offer waits no runs.
+function askCaptain() {
+  const h = hired(), name = CAPTAIN_BEATS[h.beats || 0];
+  if (!canAskCaptain()) return;
+  h.beats = (h.beats || 0) + 1; h.beatRun = runTotals(h).runs; h.beatWait = 0;
+  if (h.beats >= CAPTAIN_BEATS.length) h.askedCoop = true;
+  openEvent(captainScene(name));
+}
+const canAskCaptain = () => { const h = hired(), d = captainEntry(); return !!(h && d && d.scenes && !h.deal && G.mode === 'landed' && !G.dialog && G.state.credits >= USED_OFFER_AT && d.scenes[CAPTAIN_BEATS[h.beats || 0]]); };
 function captainScene(name) {
   const d = captainEntry(), sc = d.scenes[name], cap = hiredCaptain();
   const s = name === 'secret' ? (cap.opinion >= SECRET_TRUST ? sc.confide : sc.found) : sc;
@@ -218,7 +229,7 @@ Mods.register({
       if (!name) return list;
       const h = hired(), missed = h.beatWait || 0;
       h.beatWait = missed + 1;  // a miss unless make() runs and clears it
-      return list.concat([{ tier: 1, weight: BEAT_WEIGHT + BEAT_RAMP * missed, via: 'crew', make() { h.beats = (h.beats || 0) + 1; h.beatRun = runTotals(h).runs; h.beatWait = 0; return captainScene(name); } }]);
+      return list.concat([{ tier: beatTier(G.state), weight: BEAT_WEIGHT + BEAT_RAMP * missed, via: 'crew', make() { h.beats = (h.beats || 0) + 1; h.beatRun = runTotals(h).runs; h.beatWait = 0; return captainScene(name); } }]);
     });
   },
 });

@@ -37,7 +37,8 @@ const OLD_BOND_SCALE = 0.3;  // what a save from before (#879) owes the hall, sc
 const ratingTerms = h => ({ share: 0, wage: ((CAPTAINS[h.captainKey] || {}).wage || HIRED_WAGE) + (h.reason === 'money' ? SIGN_WAGE_UP : 0), debt: Math.round((h.debt || 0) * OLD_BOND_SCALE / 1000) * 1000 });
 // The captain heads for Ceres when the co-op's share can be had: at the offer's threshold until it is offered, then at the buy-in it
 // was offered at (#882).
-const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? (captainBeatsDone(h) ? USED_OFFER_AT : HIRED_TARGET) : dealOpen() ? h.deal.price : HIRED_TARGET); };
+// Before the offer, only once it can come (#954): with the captain's scenes still to play, a yard has nothing for the hand.
+const wantsYard = () => { const h = hired(); return h.deal ? G.state.credits >= h.deal.price : captainBeatsDone(h) && G.state.credits >= USED_OFFER_AT; };
 const hired = () => (G.state && G.state.hired) || null;
 // The hand's sheet, kit and standing, which outlive the buy (#685): the hand's own record while there is one, else the career it left (st.career, made at the buy by careerOf, sheet.js).
 // The same field names as the hand's record, so a reader of a sheet, a kit or a shipper's regard asks this and not hired().
@@ -669,8 +670,16 @@ const runTerms = r => `${r.days} days, ${fmt(r.pay !== undefined ? r.pay : r.pro
 // only while she is offered (the day-0 text does not give the deal away); otherwise it is the yard's cheapest.
 const goalLine = (st, hd) => {
   const ship = dealOpen() ? `The co-op's buy-in for you is ${fmt(hd.deal.price)} cr` : `A co-op buy-in on a plain vote is ${fmt(BUY_IN.mid)} cr`;  // the goal is the share (#882)
-  return `${hd.debt > 0 ? `Owed to the hall: ${fmt(hd.debt)} cr. ` : ''}${ship}, and you have ${fmt(st.credits)} cr.`;
+  return `${hd.debt > 0 ? `Owed to the hall: ${fmt(hd.debt)} cr. ` : ''}${ship}, and you have ${fmt(st.credits)} cr.${coopWait(st, hd)}`;
 };
+// What the co-op's offer still waits for, once the savings are there (#954): the captain's scenes, or the runs after them.
+function coopWait(st, hd) {
+  if (hd.deal || st.credits < USED_OFFER_AT || captainBeatsDone(hd)) return '';
+  const cap = hiredCaptain();
+  if ((hd.beats || 0) < CAPTAIN_BEATS.length) return ` The co-op won't talk to you yet: Captain ${cap.first} ${cap.last} has something to tell you first.`;
+  const left = 2 - (runTotals(hd).runs - (hd.beatRun || 0));
+  return left > 0 ? ` The co-op will offer you a berth after ${left === 1 ? 'one more run' : 'two more runs'}.` : '';
+}
 const runHtml = () => {
   const hd = G.state.hired, plan = currentPlan(), led = hd.ledger.slice(0, 5), name = goodName;
   return String(h`<div class="post"><div class="eyebrow">${hiredCaptain() ? h`<span class="nowrap">Captain ${raw(personLink(hiredCaptain()))}'s</span> run` : 'The captain\'s run'}</div>
@@ -678,7 +687,7 @@ const runHtml = () => {
       : plan.ballast ? h`Nothing on the board here.${closedHere() ? ' The shipper here has closed its board to the ship.' : ''} The captain will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
       : plan.contract ? h`The captain has a contract from ${plan.shipper}${shipperWord(standingOf(hd, plan.shipper)) ? `, ${shipperWord(standingOf(hd, plan.shipper))}` : ''}: ${plan.tons}t of ${name(plan.good)} to ${plan.planet}, ${SYSTEMS[plan.sid].name}, due by ${dateOf(plan.due)}: ${runTerms(plan)}.${plan.hazard ? ' The lane has raids on it.' : ''}`
       : h`The captain will take the ${plan.tons}t of ${name(plan.good)} aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${runTerms(plan)}.`}</p>
-    <p class="hint">${goalLine(G.state, hd)}</p>
+    <p class="hint">${goalLine(G.state, hd)}</p>${canAskCaptain() ? raw('<div class="row"><button data-action="askCaptain">Ask the captain about the co-op</button></div>') : ''}
     ${raw(swayHtml())}
     ${led.length ? h`<div class="eyebrow">Captain's log</div>${raw(logRowsHtml(led, 5))}` : ''}
   </div>`);
@@ -725,6 +734,7 @@ Mods.register({
     M_NOTE = text => M.note(text);
     M.action('sail', () => { if (hired() && chapterOf(G.state) === 1 && !sideBeforeSail()) sail(); });  // the captain's sail is chapter one's; the co-op takes off (#891)  // a side on the paper is a scene at the lock first (shippers.js)
     M.action('swapPost', post => askSwap(post));
+    M.action('askCaptain', () => askCaptain());  // the captain's next scene, now (#954)
     M.action('buyInAsk', id => {
       if (!hired() || !canBuyIn(id, currentPlanet())) return;
       if (id === USED_ID || (hired().haggle && hired().haggle.id === id)) hired().confirm = id;  // the share's buy-in is the vote's, with nothing to haggle; another ship already settled at the yard office
