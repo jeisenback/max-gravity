@@ -370,7 +370,7 @@ function planOccasions() {
     }
   }
   t.occasions = out.map(o => ({ ...o, at: (o.day - st.day - 0.5) / t.days }));
-  if (hired() && hired().run && hired().run.ice) ICE_AT.forEach((at, stage) => t.occasions.push({ kind: 'ice', stage, at }));  // the ice run's three scenes (icerun.js)
+  if (hired() && hired().run && hired().run.ice && isSite(G.state.systemId)) t.occasions.push({ kind: 'ice', stage: 2, at: 0.5 });  // the haul home, on the burn back from the rock (icerun.js)
 }
 
 // A dated occasion plays once, whatever plans it again (the play-through saw a birthday and the ice run's scenes twice in one burn, #854): the key is

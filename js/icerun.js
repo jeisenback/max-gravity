@@ -12,7 +12,6 @@ const ICE_GAP = 60;          // days between ice runs
 const ICE_WATER_PRICE = 960;  // water at a port this dear makes an ice run worth the trip (800 is the base price)
 const ICE_HAZARD = 2;        // the wage, for the days it takes
 const ICE_PREMIUM = 2.5;     // what the domes pay for water on a contract, against the board price
-const ICE_AT = [0.3, 0.5, 0.78];  // how far into the burn each scene falls
 const ICE_SHIFTS = 3, ICE_SHIFTS_WORD = 'three';  // the shifts the ship spends on the rock (sites.js), and the word for the departure line (transit.js)
 
 // The two legs of an ice run, pure (tests/sites.test.js): the found ice rock in sites(st), else the nearest one in range, then the
@@ -196,4 +195,38 @@ function iceFinish() {
   const run = (hired() || {}).run;
   if (!run || !run.ice || run.ice.loaded) return;
   iceLoad(true);
+}
+
+// ---------- on station ----------
+// The ice run's scenes play once each: the approach on arrival, the cutting on the first shift, the haul home on the burn back
+// (family.js keys an ice occasion by its stage and the run's iceAt).
+const iceOnce = stage => { const o = { kind: 'ice', stage }; if (occasionPlayed(o)) return false; markOccasion(o); return true; };
+// Arrival at the rock (sites.js landAtSite): the stay of the shifts begins and the approach plays.
+function siteArrival(st) {
+  const h = hired();
+  if (!h || !h.run || !h.run.ice || !iceOnce(0)) return;
+  beginStay(h, ICE_SHIFTS, 'ice');
+  openEvent(iceStageScene(0));
+}
+// A shift on the rock (stay.js passNight hands over here): the day turns, the stay shortens, and the cutting plays on the first.
+// No bar fills and no port happening comes to the dock: there is no port.
+function passShift(st) {
+  const h = hired(), stay = stayOf(h);
+  if (!stay || G.mode !== 'landed' || G.dialog) return false;
+  st.day++; Mods.emit('newDay', st.day);
+  stay.left--;
+  if (!stay.left) delete h.stay;
+  if (h.run && h.run.ice && iceOnce(1)) openEvent(iceStageScene(1));
+  return true;
+}
+// The run home from the rock, the plan at a site (hired.js currentPlan): the port the run was planned for, from its record.
+const homeRun = h => ({ sid: h.run.sid, planet: h.run.planet, good: 'water', tons: h.run.tons, cost: 0, profit: h.run.profit, days: travelDays(G.state.systemId, h.run.sid), ice: true, site: h.run.site, home: true });
+// Sailing from the rock (hired.js sail): no takeoff and no local space, straight into the burn, with the run record kept as it is.
+function sailHome() {
+  const st = G.state, run = hired().run;
+  st.dest = run.sid; st.route = { dock: run.planet, go: true };
+  const from = orbitPos(st.systemId), to = orbitPos(st.dest);
+  G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
+  enterTransit();
+  return true;
 }

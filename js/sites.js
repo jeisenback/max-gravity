@@ -54,7 +54,7 @@ function landAtSite(site, notes = []) {
   save();
   UI.openLanded(site, notes, 'site');
   Mods.emit('onStation', site);
-  if (hired() && hired().run && hired().run.ice) openEvent(iceStageScene(0));  // the approach (icerun.js)
+  siteArrival(st);  // the ice run's stay and its approach scene (icerun.js)
 }
 
 // The header's second line at a site: what it is and how far out.

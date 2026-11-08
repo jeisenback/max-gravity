@@ -88,21 +88,29 @@ test('arrival at the rock lands on station: no landing hooks, the rail shows The
   await done();
 });
 
-test('the burn is long, and the three scenes fall on it in order', { skip: 'rewritten in Task 5 of docs/superpowers/plans/2026-11-08-sites-and-ice-run.md' }, async () => {
+test('three shifts on the rock: the cutting plays once on the first, the button then says home, the home burn carries the third scene, and the run sails home', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = setup(), h = hired(), out = {};
-    const plain = travelDays(st.systemId, 'mars');
-    h.run = { ice: { edge: 0 }, good: 'water', tons: 40, cost: 0, planet: SYSTEMS.mars.planets[0].name, sid: 'mars', day: st.day, from: 'X' };
-    st.dest = 'mars'; enterTransit();
-    out.days = G.transit.days; out.plain = plain; out.happenings = G.transit.times.length;
-    planOccasions();
-    out.ice = G.transit.occasions.filter(o => o.kind === 'ice').map(o => [o.stage, o.at]);
-    out.title = occasionEvent(G.transit.occasions.find(o => o.kind === 'ice')).title;
+    const st = setup(), h = hired(), id = Object.keys(sites(st))[0], out = {}; st.cargo = {}; st.paid = {};
+    h.run = { ice: { edge: 0 }, site: id, good: 'water', tons: 40, cost: 0, profit: 1, planet: 'Mars', sid: 'mars', day: st.day, from: 'Earth' };
+    st.dest = id; enterTransit(); G.transit.left = 0; G.transit.times = []; updateTransit(0.01);
+    out.approach = G.dialog && G.dialog.event.title; take(G.dialog.event, /Match the roll/); finishEvent();
+    out.stay = { left: h.stay && h.stay.left, why: h.stay && h.stay.why, button: UI.dockHtml(), noSail: sail() === false };
+    const day0 = st.day; passNight(); out.cut = G.dialog && G.dialog.event.title; take(G.dialog.event, /Cut small/); finishEvent();
+    out.loaded = st.cargo.water; passNight(); out.again = G.dialog && G.dialog.event.title; passNight();
+    out.end = { stay: !!stayOf(h), days: st.day - day0, button: UI.dockHtml(), plan: currentPlan().home };
+    out.sailed = sail(); out.to = G.transit && G.transit.to; out.mode = G.mode; out.edge = h.run.ice.edge; out.kept = h.run.site === id;
+    planOccasions(); out.ice = G.transit.occasions.filter(o => o.kind === 'ice').map(o => [o.stage, o.at]);
+    out.third = occasionEvent(G.transit.occasions.find(o => o.kind === 'ice')).title;
     return out;
   });
-  assert.equal(r.days, Math.max(8, Math.ceil(1.5 * r.plain) + 3)); assert.ok(r.happenings >= 5); assert.deepEqual(r.ice, [[0, 0.3], [1, 0.5], [2, 0.78]]); assert.equal(r.title, 'The Rock');
+  assert.equal(r.approach, 'The Rock'); assert.equal(r.stay.left, 3); assert.equal(r.stay.why, 'ice'); assert.ok(r.stay.noSail);
+  assert.match(r.stay.button, /data-action="night"[^>]*>Work the ice \(3 more shifts\)/);
+  assert.equal(r.cut, 'Cutting Ice'); assert.ok(r.loaded >= 8 && r.loaded <= 40, `the cutting loads the hold (${r.loaded})`); assert.equal(r.again, null, 'the cutting plays once');
+  assert.equal(r.end.stay, false); assert.equal(r.end.days, 3); assert.equal(r.end.plan, true); assert.match(r.end.button, /data-action="sail"[^>]*>Burn for Mars/);
+  assert.ok(r.sailed); assert.equal(r.to, 'mars'); assert.equal(r.mode, 'transit'); assert.ok(r.kept && r.edge !== 0, 'the run record and its haul are kept through the burn home');
+  assert.deepEqual(r.ice, [[2, 0.5]]); assert.equal(r.third, 'Home With the Ice');
   await done();
 });
 

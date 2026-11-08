@@ -94,3 +94,20 @@ test('a night can bring something to the dock, and the T key passes the night wh
   assert.equal(r.scene, 'Night Test'); assert.equal(r.day, 1); assert.equal(r.left, 1); assert.equal(r.busy, false);
   await done();
 });
+
+// On station at an ice rock (sites.js, icerun.js): the stay is the shifts, and a shift is not a night in port.
+test('a shift on the rock turns the day and shortens the stay, and fills no bar', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), h = hired(), id = Object.keys(sites(st))[0], site = st.sites[id], out = {};
+    h.run = { ice: { edge: 0, round: 2 }, site: id, good: 'water', tons: 40, cost: 0, planet: 'Mars', sid: 'mars', day: st.day, from: 'Earth' };
+    st.systemId = id; st.planet = site.name; UI.openLanded(currentPlanet(), [], 'site'); beginStay(h, 3, 'ice');
+    st.occasionsPlayed = { [`ice:1:${h.iceAt}`]: st.day };  // the cutting already played, so the shift is a plain one
+    out.label = nightLabel(stayOf(h)); const day0 = st.day, patrons0 = G.patrons;
+    out.passed = passNight(); out.day = st.day - day0; out.left = h.stay.left; out.samePatrons = G.patrons === patrons0; out.dialog = !!G.dialog;
+    return out;
+  });
+  assert.equal(r.label, 'Work the ice (3 more shifts)'); assert.ok(r.passed); assert.equal(r.day, 1); assert.equal(r.left, 2); assert.ok(r.samePatrons, 'no bar fills at a rock'); assert.equal(r.dialog, false);
+  await done();
+});
