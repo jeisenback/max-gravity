@@ -936,3 +936,21 @@ test('a taken edge pick moves the hand\'s rolls of its kind and no other', async
   assert.equal(r.after.solo, r.before.solo, 'a bold call is unchanged');
   await done();
 });
+
+test('cool-loop raises the reactor\'s heat limit by five, and long-ear keeps a market rumor a week longer', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'engineer', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, out = {}, h = hired(); st.story.next = 1e9;
+    out.limit0 = heatLimit(); takePick(h, 'cool-loop'); out.limit1 = heatLimit();
+    uatBurn('Earth', 'mars'); G.transit.comms = []; st.rumors = [];
+    const real = Math.random; Math.random = () => 0;
+    addRumor(); out.days0 = st.rumors[0].until - st.day;
+    h.picks.push('long-ear'); st.rumors = []; addRumor(); out.days1 = st.rumors[0].until - st.day;  // a comms pick, put on the engineer's record to read the hook
+    Math.random = real;
+    return out;
+  });
+  assert.equal(r.limit1 - r.limit0, 5);
+  assert.deepEqual([r.days0, r.days1], [12, 19], 'the shortest rumor, and a week more');
+  await done();
+});

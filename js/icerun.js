@@ -165,7 +165,8 @@ function iceStep(n, c, post) {
   ice.edge += edge; ice.round = (ice.round || 0) + 1;
   if (c.bold) boldWithCaptain(won);  // the captain's nerve (captains.js)
   let out = text;
-  if (hull) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won &&
+  const soft = !won && n === 0 && post === 'pilot' && perkOn('soft-hands');  // soft-hands (picks.js): the approach the pilot flies costs no hull on a lost roll
+  if (hull && !soft) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won &&
     Math.random() < CASUALTY_ODDS) { const c2 = hurtCrew(true); if (c2) out += c2.dead ? ` ${c2.first} is dead.` :
     ` ${c2.first} is hurt.${hurtWarning(c2)}`; } }
   if (post) gainSkill(post, won ? 4 : 1); else gainSkill(h.post, 1);
@@ -186,10 +187,11 @@ function iceLoad(thin) {
 }
 // How it ends: a clean run is remembered, a bad one is paid for less.
 function iceHome(edge) {
-  const h = hired(), cap = person(h.captain);
-  if (edge >= 3) { like(cap, 1, sceneSay('scene:memories', 'ice.clean.memory')); captainFlag('iceClean'); delete h.flags.iceBad; return ' The captain writes it in the log: a clean haul.'; }
-  if (edge <= -2) { like(cap, -1, sceneSay('scene:memories', 'ice.bad.memory')); captainFlag('iceBad'); delete h.flags.iceClean; return ' The captain doesn\'t write anything in the log.'; }
-  return '';
+  const h = hired(), cap = person(h.captain), st = G.state;
+  const melt = perkOn('melt-return') ? (st.fuel = Math.min(ship().fuel, st.fuel + 20), ' The melt goes to the tanks: 20 reaction mass.') : '';  // melt-return (picks.js)
+  if (edge >= 3) { like(cap, 1, sceneSay('scene:memories', 'ice.clean.memory')); captainFlag('iceClean'); delete h.flags.iceBad; return ` The captain writes it in the log: a clean haul.${melt}`; }
+  if (edge <= -2) { like(cap, -1, sceneSay('scene:memories', 'ice.bad.memory')); captainFlag('iceBad'); delete h.flags.iceClean; return ` The captain doesn\'t write anything in the log.${melt}`; }
+  return melt;
 }
 
 // A burn that did not play the scenes (cut short, or no happening drew them): the hold fills thin, and she goes on.
