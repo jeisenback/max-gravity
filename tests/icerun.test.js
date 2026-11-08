@@ -114,6 +114,23 @@ test('three shifts on the rock: the cutting plays once on the first, the button 
   await done();
 });
 
+test('the map draws a found rock as a grey dot with its name, and not an unfound one', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), ids = Object.keys(sites(st)), out = {}, texts = [];
+    const real = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (t, ...a) { texts.push(String(t)); return real.call(this, t, ...a); };
+    try {
+      openMap(); G.mapZoom = 2; drawMap(1280, 800); out.before = texts.slice(); texts.length = 0;
+      findSite(st, ids[0], st.day); drawMap(1280, 800); out.after = texts.slice(); out.pos = G.mapPos(ids[0]);
+    } finally { CanvasRenderingContext2D.prototype.fillText = real; closeMap(); }
+    out.name = st.sites[ids[0]].name;
+    return out;
+  });
+  assert.ok(!r.before.includes(r.name), 'an unfound rock is not on the map'); assert.ok(r.after.includes(r.name), 'a found rock is'); assert.ok(Array.isArray(r.pos) && r.pos.length === 2);
+  await done();
+});
+
 test('each scene offers three ways and your post\'s own, a good run fills the hold and a bad one does not, and the wage is doubled', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);

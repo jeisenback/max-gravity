@@ -1095,7 +1095,7 @@ const seenNote = (st, sid) => { const ages = SYSTEMS[sid].planets.map(pl => (st.
 function drawMap(W, H) {
   ctx.fillStyle = '#050a12';
   ctx.fillRect(0, 0, W, H);
-  const ids = Object.keys(SYSTEMS), st = G.state;
+  const st = G.state, ids = [...Object.keys(SYSTEMS), ...foundSites(st)];  // the systems, and the sites that have been found (sites.js)
   const from = G.transit ? G.transit.to : st.systemId;
 
   // True scale. The zoom level sets how many AU the map's radius spans; places
@@ -1103,7 +1103,7 @@ function drawMap(W, H) {
   const narrow = W < 700, span = MAP_ZOOMS[G.mapZoom];
   const cx = W / 2, cy = H / 2 + (narrow ? 20 : 10), R = Math.min(W, H) / 2 - (narrow ? 44 : 70), sc = R / span;
   const P = id => {
-    const o = orbitPos(id), a = Math.atan2(o.y, o.x), r = Math.min(R, SYSTEMS[id].au * sc);
+    const o = orbitPos(id), a = Math.atan2(o.y, o.x), r = Math.min(R, placeOf(id).au * sc);
     return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
   };
   G.mapPos = P;
@@ -1119,7 +1119,7 @@ function drawMap(W, H) {
   ctx.beginPath(); ctx.arc(cx, cy, (Math.min(R, 2.2 * sc) + Math.min(R, 3.3 * sc)) / 2, 0, Math.PI * 2); ctx.stroke();
   ctx.strokeStyle = '#14243a';
   ctx.lineWidth = 1;
-  for (const au of new Set(ids.map(id => SYSTEMS[id].au))) {
+  for (const au of new Set(ids.filter(id => !isSite(id)).map(id => placeOf(id).au))) {  // a site draws no orbit ring
     if (au > span) continue;
     ctx.beginPath(); ctx.arc(cx, cy, au * sc, 0, Math.PI * 2); ctx.stroke();
   }
@@ -1158,10 +1158,12 @@ function drawMap(W, H) {
   const free = (x, y, w, h) => x > 4 && x + w < W - 4 && !placed.some(b => x < b.x + b.w && x + w > b.x && y < b.y + b.h && y + h > b.y);
   const order = [from, st.dest, ...ids].filter((id, i, a) => id && a.indexOf(id) === i);
   for (const id of order) {
-    const [x, y] = P(id), sys = SYSTEMS[id], rim = sys.au > span;
+    const [x, y] = P(id), sys = placeOf(id), rim = sys.au > span;
     ctx.globalAlpha = hand || inRange(from, id) ? 1 : 0.35;
-    ctx.fillStyle = GOV_COLORS[sys.gov];
-    if (rim) {
+    ctx.fillStyle = sys.site ? sys.color : GOV_COLORS[sys.gov];
+    if (sys.site && !rim) {  // a found site: a small grey dot, no faction ring (sites.js)
+      ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+    } else if (rim) {
       // Off the edge of this zoom: a pointer on the rim.
       const a = Math.atan2(y - cy, x - cx);
       ctx.beginPath();
