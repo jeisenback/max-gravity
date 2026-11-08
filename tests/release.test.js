@@ -14,6 +14,16 @@ test('the test workflow asks for read-only access to the repository', () => {
   assert.doesNotMatch(yml, /(write|admin)\b/, 'and no write access anywhere');
 });
 
+// #945: a merge to main does not run the suite again (the pull request's run just passed on the same code); the suite runs on every pull request and by
+// hand, and coverage still runs on main (#754).
+test('the suite runs on a pull request and by hand, not again on main after a merge; coverage still runs on main', () => {
+  const yml = fs.readFileSync(path.resolve(__dirname, '..', '.github', 'workflows', 'test.yml'), 'utf8');
+  const job = name => (yml.match(new RegExp(`^  ${name}:\\n([\\s\\S]*?)(?=^  [\\w-]+:\\n|(?![\\s\\S]))`, 'm')) || [])[1] || '';
+  assert.match(yml, /^\s+workflow_dispatch:/m, 'it can be run by hand');
+  for (const name of ['shard', 'test']) assert.match(job(name), /^\s+if:.*github\.event_name != 'push'/m, `${name} skips a push to main`);
+  for (const name of ['changes', 'coverage-shard', 'coverage']) assert.doesNotMatch(job(name), /event_name != 'push'/, `${name} still runs on main`);
+});
+
 test('the page carries a Content Security Policy and no inline event handlers', () => {
   const root = path.resolve(__dirname, '..');
   const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
