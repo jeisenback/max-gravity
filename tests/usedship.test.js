@@ -66,3 +66,45 @@ test('the captain heads for a yard when the used Ore Runner can be had', async (
   assert.deepEqual(r, { beforeOffer: false, atOffer: true, goodBelow: false, good: true });
   await done();
 });
+
+// #954: with the money for the co-op's offer and Captain Hester's two scenes still to come, the captain does not sail for a yard, the run card
+// says what the co-op waits for, a due scene is certain on the next burn, and the hand can ask the captain: her scenes play then and there, in
+// order, and having asked, the offer does not wait the two runs after them.
+test('with the money there and the captain\'s scenes to come: no yard, the card says why, and asking plays them and opens the offer (#954)', async () => {
+  const { r, done } = await run(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), out = {}; st.story.next = 1e9; h.flags = { ...(h.flags || {}), sawHull: true };
+    st.credits = 60000; G.mode = 'landed';
+    out.yard = wantsYard();
+    out.card = goalLine(st, h); out.button = /data-action="askCaptain"/.test(runHtml());
+    out.certain = beatTier(st) === 0; st.credits = 1000; out.poor = beatTier(st) === 0; st.credits = 60000;
+    st.day = h.since + 1;  // asking does not wait for the scenes' days (15 and 40)
+    const ask = () => { Mods.act('askCaptain'); const title = G.dialog && G.dialog.event.title; G.nextEvent = null; while (G.dialog) finishEvent(); return title; };
+    out.first = ask(); out.beats1 = h.beats; out.second = ask(); out.beats2 = h.beats;
+    out.after = { yard: wantsYard(), button: /data-action="askCaptain"/.test(runHtml()), card: goalLine(st, h) };
+    out.offer = dock(60000); out.deal = !!h.deal;
+    return { ...out, offer: out.offer && out.offer.title };
+  });
+  assert.equal(r.yard, false, 'she does not sail for a yard while the offer cannot come');
+  assert.match(r.card, /co-op won't talk to you yet.*Hester Vance has something to tell you first/, r.card);
+  assert.equal(r.button, true, 'the hand can ask the captain');
+  assert.deepEqual([r.certain, r.poor], [true, false], 'a due scene is certain on the next burn with the money there, and drawn as before without it');
+  assert.ok(r.first && r.second && r.first !== r.second, `two scenes, one after the other: ${r.first}, ${r.second}`);
+  assert.deepEqual([r.beats1, r.beats2], [1, 2]);
+  assert.deepEqual({ yard: r.after.yard, button: r.after.button }, { yard: true, button: false }, 'now she heads for a yard, and there is nothing left to ask');
+  assert.doesNotMatch(r.after.card, /won't talk/, r.after.card);
+  assert.ok(r.offer && r.deal, `the offer at the next yard, with no runs to wait: ${r.offer}`);
+  await done();
+});
+
+test('with the captain\'s scenes played and runs still to go, the card counts them', async () => {
+  const { r, done } = await run(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(); st.story.next = 1e9; st.credits = 60000;
+    Object.assign(h, { beats: 2, beatRun: runTotals(h).runs, flags: { ...(h.flags || {}), sawHull: true } });
+    return { card: goalLine(st, h), yard: wantsYard() };
+  });
+  assert.match(r.card, /co-op will offer you a berth after two more runs/, r.card);
+  assert.equal(r.yard, false);
+  await done();
+});
