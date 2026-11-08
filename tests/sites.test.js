@@ -46,8 +46,22 @@ test('the pick takes the found rock, else the nearest, and a water port the tank
   const nearest = ids.slice().sort((a, b) => travelDays('ceres', a) - travelDays('ceres', b))[0];
   const p = icePick(st, 'ceres', 400, fns);
   assert.equal(p.site, nearest); assert.equal(p.sid, 'mars'); assert.equal(p.planet, 'Mars');
-  assert.equal(p.days, travelDays('ceres', p.site) + 3 + travelDays(p.site, 'mars'));
+  assert.equal(p.days, travelDays('ceres', p.site) + 3 + travelDays(p.site, 'mars', st.day + travelDays('ceres', p.site) + 3), 'out, the shifts, and home on the day it burns');
   findSite(st, ids[2], 1); assert.equal(icePick(st, 'ceres', 400, fns).site, ids[2], 'a found rock is the pick');
-  assert.equal(icePick(st, 'ceres', burnFuel('ceres', ids[2]) + 1, fns), null, 'the tank must cover the leg home too');
+  const short = icePick(st, 'ceres', burnFuel('ceres', ids[2]) + 1, fns); assert.ok(!short || short.site !== ids[2], 'the tank must cover the leg home too, or the pick is another rock');
   assert.equal(icePick(st, 'ceres', 400, { ...fns, price: () => 500 }), null, 'no port dear enough, no run');
+});
+
+// #979: a found rock out of range falls back to the nearest in range, and the leg home is judged on the day it burns. The fuel and the days are
+// stubbed, since the real geometry from the Belt leaves no tank that reaches one rock both ways and not another.
+test('a found rock out of range gives way to the nearest in range, and the home leg\'s fuel is counted on the day it burns', () => {
+  const { G, sites, icePick, findSite } = setup({ fuel: 400 });
+  const st = G.state, ids = Object.keys(sites(st)), [far, near, other] = ids, price = (pl, g) => (g === 'water' && pl.name === 'Mars' ? 1200 : 500);
+  const travelDays = (a, b) => (b === near || a === near ? 4 : 6), burnFuel = (a, b, day) => (b === far || a === far ? 500 : 50 + (day === undefined ? 0 : day));
+  findSite(st, far, 1);
+  const p = icePick(st, 'ceres', 400, { price, travelDays, burnFuel });
+  assert.ok(p, 'a pick'); assert.notEqual(p.site, far, 'the found rock out of range is not the pick'); assert.equal(p.site, near, 'the nearest in range is');
+  assert.equal(p.homeFuel, 50 + st.day + 4 + 3, 'the leg home is priced on its own day: out plus the shifts');
+  assert.equal(p.days, 4 + 3 + 4);
+  void other;
 });

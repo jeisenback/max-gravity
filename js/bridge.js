@@ -59,7 +59,7 @@ function burnReads() {
 // The Navigation station as a console: the route on the display, the course beside it, and the helm along the bottom.
 function navigationPanel() {
   const st = G.state, t = G.transit, plan = hired() && !t ? currentPlan() : null;
-  const to = t ? t.to : hired() ? (plan && plan.sid) : (st.dest && st.dest !== st.systemId ? st.dest : null);
+  const to = t ? t.to : hired() ? (plan && (plan.site || plan.sid)) : (st.dest && st.dest !== st.systemId ? st.dest : null);  // an ice run's first leg is to the rock (#979)
   const progress = t ? Math.round(Math.min(1, 1 - t.left / t.total) * 100) / 100 : 0;
   const helm = notYours('pilot') ? `${roleHolder('pilot') ? roleName('pilot') : 'The helm'} has the helm`
     : postMode('pilot') === 'manual' ? 'You have the helm' : `${roleName('pilot')} has the helm`;

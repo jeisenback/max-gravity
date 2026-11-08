@@ -25,15 +25,15 @@ test('the planner takes an ice run when water is dear, the hold is free, and one
     const st = setup(), h = hired(), here = currentPlanet(), reach = [['mars', SYSTEMS.mars]], real = window.price, out = {};
     st.fuel = 1000;  // a tank that covers both legs from Earth
     window.price = (pl, g) => (g === 'water' && pl.name === 'Mars' ? 1200 : 500);
-    const o = iceOption(here, st.systemId, reach, 40);
+    const o = iceOption(st.systemId, 40);
     out.opt = o && { ice: o.ice, good: o.good, cost: o.cost, tons: o.tons, sid: o.sid, planet: o.planet, site: o.site };
     out.found = o && st.sites[o.site].found; out.days = o && o.days; out.legs = o && travelDays(st.systemId, o.site) + 3 + travelDays(o.site, 'mars');
     out.word = o && runWord(o); out.plotted = o && placeOf(o.site).name;
-    window.price = () => 500; out.cheap = iceOption(here, st.systemId, reach, 40);
-    window.price = (pl, g) => (g === 'water' && pl.name === 'Mars' ? 1200 : 500); out.full = iceOption(here, st.systemId, reach, 5);
-    h.iceAt = st.day - ICE_GAP / 2; out.soon = iceOption(here, st.systemId, reach, 40);
-    h.iceAt = st.day - ICE_GAP - 1; out.later = !!iceOption(here, st.systemId, reach, 40);
-    h.iceAt = undefined; h.since = st.day - 3; out.green = iceOption(here, st.systemId, reach, 40);  // not in the first days aboard
+    window.price = () => 500; out.cheap = iceOption(st.systemId, 40);
+    window.price = (pl, g) => (g === 'water' && pl.name === 'Mars' ? 1200 : 500); out.full = iceOption(st.systemId, 5);
+    h.iceAt = st.day - ICE_GAP / 2; out.soon = iceOption(st.systemId, 40);
+    h.iceAt = st.day - ICE_GAP - 1; out.later = !!iceOption(st.systemId, 40);
+    h.iceAt = undefined; h.since = st.day - 3; out.green = iceOption(st.systemId, 40);  // not in the first days aboard
     h.since = 1; h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: { ice: true, sid: 'mars', planet: 'Mars' } }; out.stale = planStale(h);  // a plan from before the rock was a place
     window.price = real;
     return out;
@@ -217,5 +217,33 @@ test('the map draws at the rock and on the burn to it, and a save reloaded at th
   assert.equal(r.mapInBurn, 'ok'); assert.equal(r.mapAtRock, 'ok');
   assert.match(r.reloaded.at, /^site:ice-/); assert.ok(r.sailed);
   assert.deepEqual(r.home, { mode: 'flight', at: 'mars', player: true });
+  await done();
+});
+
+// #979: the review's minors. A reload on station keeps the stay and does not replay the approach; before departure the course names the rock;
+// a mission with no destination survives a site save; the captain is on station, not docked.
+test('a reload at the rock keeps the shifts and plays no second approach, the course before departure names the rock, and a site save keeps its missions', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), h = hired(), id = Object.keys(sites(st))[0], out = {};
+    h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: { ice: true, site: id, good: 'water', tons: 40, cost: 0, profit: 1, planet: 'Mars', sid: 'mars', days: 15, ballast: false }, alts: [] };
+    out.navBefore = navigationPanel().includes(st.sites[id].name);
+    const texts = []; const real = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (s, ...a) { texts.push(String(s)); return real.call(this, s, ...a); };
+    try { openMap(); drawMap(1280, 800); } finally { CanvasRenderingContext2D.prototype.fillText = real; closeMap(); }
+    out.mapBefore = texts.some(s => s.includes(`to ${st.sites[id].name}`));
+    sail(); G.player.x = BURN_DIST + 40; G.player.y = 0; tryBurn(); if (!G.transit) enterTransit();
+    G.transit.left = 0; G.transit.times = []; updateTransit(0.01);
+    out.approach = G.dialog && G.dialog.event.title; take(G.dialog.event, /Match the roll/); finishEvent();
+    passNight(); while (G.dialog) { chooseEvent(0); finishEvent(); }  // one shift worked
+    st.missions.push({ type: 'errand', title: 'Errand: carry a note to Mars', pay: 100, cut: 0, deadline: st.day + 30 });  // a mission with no destination fields
+    save(); loadGame(); out.afterLoad = { dialog: G.dialog && G.dialog.event.title, left: h.stay && h.stay.left, stayLeft: hired().stay && hired().stay.left, missions: G.state.missions.length, at: G.state.systemId };
+    out.captain = whereIs(person(hired().captain));
+    return out;
+  });
+  assert.ok(r.navBefore, 'the Navigation console names the rock before departure'); assert.ok(r.mapBefore, 'the map\'s status names the rock before departure');
+  assert.equal(r.approach, 'The Rock');
+  assert.equal(r.afterLoad.dialog, null, 'no second approach on a reload'); assert.equal(r.afterLoad.stayLeft, 2, 'the shifts worked are kept'); assert.equal(r.afterLoad.missions, 1, 'the mission survives'); assert.match(r.afterLoad.at, /^site:/);
+  assert.match(r.captain, /on station at/);
   await done();
 });

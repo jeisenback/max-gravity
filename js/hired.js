@@ -236,7 +236,7 @@ function planRun() {
   const st = G.state, here = currentPlanet(), free = cargoFree(), from = st.systemId;
   const reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid));
   const wantYard = wantsYard();  // once your savings would take up the share, she heads for the co-op's office at Ceres when she can
-  const ice = iceOption(here, from, reach, free);
+  const ice = iceOption(from, free);
   if (ice) return ice;
   const { best, ranked } = pickContract(here.services.includes('trade') ? contractBoard(st, here) : [], { free, wantYard, risk: laneRisk, picks: captainEntry() ? TRADE_PICKS[captainEntry().captain.trade] : 1, goal: c => wantYard && c.planet === COOP_PORT });
   planAlts = ranked.slice(0, 4).map(asRun); planRanked = ranked;
