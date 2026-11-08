@@ -16,8 +16,9 @@ const pilotCare = () => 0.6 + 0.1 * roleSkill('pilot');  // a better pilot brake
 // The planet to dock at: the one chosen on the Navigation station if it is in this system
 // (or, at port, in the destination), otherwise the first.
 function dockTarget(sysId) {
-  const st = G.state, planets = SYSTEMS[sysId].planets, want = st.route && st.route.dock;
-  return planets.find(p => p.name === want) || planets[0];
+  const st = G.state, place = placeOf(sysId), want = st.route && st.route.dock;
+  if (place.site) return place;  // a site is its own dock (sites.js)
+  return place.planets.find(p => p.name === want) || place.planets[0];
 }
 
 function autoOff(text, taken) {

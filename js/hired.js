@@ -275,8 +275,8 @@ function sail() {
   h.run = { ...plan, cost, day: st.day, from: st.planet };
   if (plan.ice) { h.run.ice = { edge: 0 }; h.iceAt = st.day; h.iceRuns = (h.iceRuns || 0) + 1; }  // the ice is cut on the way, not bought
   h.plan = null;
-  st.dest = plan.sid;
-  st.route = { dock: plan.planet, go: true };
+  st.dest = plan.ice && plan.site ? plan.site : plan.sid;  // an ice run's first leg is to the rock (icerun.js); the burn home is sailHome's
+  st.route = plan.ice && plan.site ? null : { dock: plan.planet, go: true };
   // A crewed pilot flies her out and in; if you are the pilot, you do.
   if (postMode('pilot') === 'crewed') ORDERS.pilot.find(o => o.id === 'depart').run(); else takeOff();
   return true;

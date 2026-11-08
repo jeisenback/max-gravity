@@ -93,8 +93,10 @@ test('three shifts on the rock: the cutting plays once on the first, the button 
   await ev(helpers);
   const r = await ev(() => {
     const st = setup(), h = hired(), id = Object.keys(sites(st))[0], out = {}; st.cargo = {}; st.paid = {};
-    h.run = { ice: { edge: 0 }, site: id, good: 'water', tons: 40, cost: 0, profit: 1, planet: 'Mars', sid: 'mars', day: st.day, from: 'Earth' };
-    st.dest = id; enterTransit(); G.transit.left = 0; G.transit.times = []; updateTransit(0.01);
+    h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: { ice: true, site: id, good: 'water', tons: 40, cost: 0, profit: 1, planet: 'Mars', sid: 'mars', days: 15, ballast: false } };
+    out.sailedOut = sail(); out.out = { dest: st.dest, mode: G.mode, route: st.route };  // the captain sails for the rock, not the port (the soak found the burn going to the port, 2026-11-08)
+    G.player.x = BURN_DIST + 40; G.player.y = 0; tryBurn(); if (!G.transit) enterTransit();
+    G.transit.left = 0; G.transit.times = []; updateTransit(0.01);
     out.approach = G.dialog && G.dialog.event.title; take(G.dialog.event, /Match the roll/); finishEvent();
     out.stay = { left: h.stay && h.stay.left, why: h.stay && h.stay.why, button: UI.dockHtml(), noSail: sail() === false };
     const day0 = st.day; passNight(); out.cut = G.dialog && G.dialog.event.title; take(G.dialog.event, /Cut small/); finishEvent();
@@ -105,6 +107,7 @@ test('three shifts on the rock: the cutting plays once on the first, the button 
     out.third = occasionEvent(G.transit.occasions.find(o => o.kind === 'ice')).title;
     return out;
   });
+  assert.ok(r.sailedOut); assert.match(r.out.dest, /^site:ice-/, 'the burn is for the rock'); assert.equal(r.out.mode, 'flight');
   assert.equal(r.approach, 'The Rock'); assert.equal(r.stay.left, 3); assert.equal(r.stay.why, 'ice'); assert.ok(r.stay.noSail);
   assert.match(r.stay.button, /data-action="night"[^>]*>Work the ice \(3 more shifts\)/);
   assert.equal(r.cut, 'Cutting Ice'); assert.ok(r.loaded >= 8 && r.loaded <= 40, `the cutting loads the hold (${r.loaded})`); assert.equal(r.again, null, 'the cutting plays once');
