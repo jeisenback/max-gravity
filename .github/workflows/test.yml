@@ -1,10 +1,11 @@
 name: Tests
 # A pull request runs once per push (not once for the push and again for the pull request), and a newer push cancels the run it replaces. The default branch runs on every push
-# and is never cancelled.
+# and is never cancelled; there only coverage runs, not the suite (#945: the pull request's run just passed on the same code). Run it all by hand from the Actions page.
 on:
   pull_request:
   push:
     branches: [main]
+  workflow_dispatch:
 concurrency:
   group: tests-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
@@ -15,6 +16,7 @@ permissions:
 jobs:
   # The suite in four parts (node --test --test-shard), each on its own runner: the test files are separate processes, so a part needs nothing from the others.
   shard:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     strategy:
@@ -30,7 +32,7 @@ jobs:
   # One check for the four parts, under the name the suite has always had here, so a rule that requires "test" still has a check to wait for.
   test:
     needs: shard
-    if: always()
+    if: always() && github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
