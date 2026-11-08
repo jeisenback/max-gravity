@@ -464,6 +464,17 @@ const playScenes = () => {
         for (const move of ['vent', 'lead', 'split']) { s.state.heat = 3; s.state.spent = []; turn(s, orders({ guns, pdc: 'hold', move, gun: 0 }), broadside); }
         s.state.spent = ['vent', 'lead', 'split']; panel(shipFightEvent(s, orders({ guns, pdc: 'hold' })));  // all three spent
       }
+      // the post ladders' eight moves (#963): each as an order at the long band with something to act on, each used in a turn; redline and a parley, landed and not, end the fight
+      { const EIGHT = ['called-shot', 'break-intercept', 'redline', 'patch', 'hot-start', 'bypass', 'spoof', 'parley'], guns = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'hull' }], broadside = { kind: 'broadside', target: 'hull', dmg: [10, 10] };
+        const eight = () => { const s = start('raider').fight; hired().moves = [...EIGHT]; s.known = [...EIGHT]; s.state.band = RANGE_BANDS.indexOf('long'); s.state.me.armor -= 5; s.state.me.parts.drive.hp = 1; s.shown = { foe: [broadside], captain: { kind: 'hold' } }; return s; };
+        let s = eight(); panel(shipFightEvent(s, orders({ guns })));
+        for (const move of EIGHT) panel(shipFightEvent(s, orders({ guns, move, gun: 0 })));
+        s.state.spent = [...EIGHT]; panel(shipFightEvent(s, orders({ guns }))); s.state.spent = [];  // all eight spent
+        for (const move of ['called-shot', 'break-intercept', 'patch', 'hot-start', 'bypass', 'spoof']) { s = eight(); turn(s, orders({ guns, move, gun: 0 }), broadside); }
+        s = eight(); turn(s, orders({ guns, move: 'redline' }), broadside);  // away
+        s = eight(); seq([0]); turn(s, orders({ guns, move: 'parley' }), broadside);  // the word taken: she breaks off
+        s = eight(); seq([0.99]); turn(s, orders({ guns, move: 'parley' }), broadside);  // and not
+      }
       { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // the hull gone with cargo aboard: she takes a share (#809)
       { const s = start('raider', {}, 'patrol').fight; G.state.cargo = { water: 30 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // and a navy ship takes it as part of the levy
       { const s = start('raider').fight; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }

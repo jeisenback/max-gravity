@@ -881,7 +881,7 @@ test('a known move shows on the panel, applies on Fire, and shows spent after', 
   await done();
 });
 
-test('no move is offered to a hand who knows none, to a non-gunner, or on a save without moves', async () => {
+test('no move is offered to a hand who knows none or on a save without moves, and a hand at another post is offered the ones they know', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -893,7 +893,9 @@ test('no move is offered to a hand who knows none, to a non-gunner, or on a save
     };
     return { none: offered('gunner', []), nonGunner: offered('engineer', ['vent', 'lead', 'split']), absent: offered('gunner', null), pure: [knownMoves(null), knownMoves({}), knownMoves({ moves: ['lead'] })] };
   });
-  for (const k of ['none', 'nonGunner', 'absent']) { assert.equal(r[k].threw, null, k); assert.deepEqual(r[k].moves, [], k); assert.deepEqual(r[k].known, [], k); }
+  for (const k of ['none', 'nonGunner', 'absent']) assert.equal(r[k].threw, null, k);
+  for (const k of ['none', 'absent']) { assert.deepEqual(r[k].moves, [], k); assert.deepEqual(r[k].known, [], k); }
+  assert.deepEqual(r.nonGunner.known, ['vent', 'lead', 'split']); assert.equal(r.nonGunner.moves.length, 3, 'an engineer who knows them is offered them (the picks are the post\'s, so only in a test)');
   assert.deepEqual(r.pure, [[], [], ['lead']]);
   await done();
 });

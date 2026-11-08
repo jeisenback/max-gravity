@@ -196,7 +196,7 @@ test('resolveShipTurn does not change the state it was given', () => {
 });
 
 test('the constants are the ones the design names', () => {
-  assert.deepEqual(plain(FIGHT), { GUN_DMG: [8, 14], FOE_DMG: [7, 18], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.4, long: 0.25 }, PART_HP: { weapons: 63, drive: 34, lock: 7, launcher: 10 }, TORP_DMG: [12, 18], SALVO_DMG: [20, 30], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 2, PDC_SALVO: 0.6, TURNS: 8, POOL: 0.45, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2, LOST_CARGO: 0.3 });
+  assert.deepEqual(plain(FIGHT), { GUN_DMG: [8, 14], FOE_DMG: [7, 18], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.4, long: 0.25 }, PART_HP: { weapons: 63, drive: 34, lock: 7, launcher: 10 }, TORP_DMG: [12, 18], SALVO_DMG: [20, 30], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 2, PDC_SALVO: 0.6, TURNS: 8, POOL: 0.45, BREAK: 0.3, HAND_HURT: 0.35, PATCH: 0.1, HEAVY_HIT: 0.2, LOST_CARGO: 0.3 });
 });
 
 test('the turret and heavy rounds outfits reach a side: the extra gun, the turret flag and the heavy multiplier', () => {
@@ -813,7 +813,7 @@ test('with no torpedoes left she does not arm, and with one she arms for one', (
 });
 
 test('vent clears the heat and unlocks the guns, once a fight', () => {
-  assert.deepEqual(Object.keys(FIGHT_MOVES), ['vent', 'lead', 'split']);
+  assert.deepEqual(Object.keys(FIGHT_MOVES), ['vent', 'lead', 'split', 'called-shot', 'break-intercept', 'redline', 'patch', 'hot-start', 'bypass', 'spoof', 'parley']);
   const hot = { ...fight({ stats: { guns: 3 } }), heat: 5, locked: [0] };
   assert.equal(gunsReady(hot), 2);
   const r = resolveShipTurn(hot, orders(fire(3), { move: 'vent' }), quiet, LOW, ['vent']);
@@ -929,6 +929,111 @@ test('lead at close or knife has no range penalty to take off: not spent, nothin
     assert.deepEqual(plain(r), plain(b), band);
     assert.deepEqual(plain(r.state.spent), [], band);
   }
+});
+
+// The eight moves of the post ladders (docs/superpowers/specs/2026-11-08-post-ladders-design.md), each once a fight, spent as the gunner's three are.
+test('a called shot takes no aim penalty and rolls the top of its range, on the named gun only', () => {
+  const st = fight({ stats: { guns: 2 } }, {}, L), aimed = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }];
+  assert.equal(canUse(st, orders(aimed, { gun: 0 }), 'called-shot', ['called-shot']), true);
+  assert.equal(canUse(st, orders(aimed, { gun: 2 }), 'called-shot', ['called-shot']), false, 'no such gun');
+  assert.equal(canUse(st, orders([null, null], { gun: 0 }), 'called-shot', ['called-shot']), false, 'the gun must fire');
+  assert.equal(canUse(st, orders(fire(2), { gun: 0 }), 'called-shot', ['called-shot']), true, 'a hull shot is called too');
+  const r = resolveShipTurn(st, orders(aimed, { move: 'called-shot', gun: 0 }), quiet, LOW, ['called-shot']), base = sh(resolveShipTurn(st, orders(aimed), quiet, LOW));
+  assert.equal(sh(r)[0].dmg, Math.round(FIGHT.GUN_DMG[1] * FIGHT.BAND_MULT.long), 'the top of the range, the band and no aim factor');
+  assert.equal(sh(r)[1].dmg, base[1].dmg, 'the other gun as before');
+  assert.deepEqual(plain(r.state.spent), ['called-shot']);
+});
+
+test('break the intercept: your vote to open stands this turn whatever her speed, and the flag does not outlive the turn', () => {
+  const st = fight({}, { stats: { accel: 2 } }, M), closing = { foe: [{ kind: 'close', target: 'hull', dmg: [1, 2] }], captain: hold };
+  assert.ok(st.foes[0].speed > st.me.speed);
+  assert.equal(resolveShipTurn(st, orders(fire(2)), closing, LOW).state.band, M - 1, 'she is faster: she closes');
+  assert.equal(canUse(st, orders(fire(2)), 'break-intercept', ['break-intercept']), true);
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'break-intercept' }), closing, LOW, ['break-intercept']);
+  assert.equal(r.state.band, M + 1, 'the range opens on your vote');
+  assert.deepEqual(plain(r.state.spent), ['break-intercept']); assert.equal('forceOpen' in r.state, false);
+  const dead = fight({}, {}, M); dead.me.parts.drive.hp = 0;
+  assert.equal(canUse(dead, orders(fire(2)), 'break-intercept', ['break-intercept']), false, 'no drive, no vote');
+  assert.equal(canUse({ ...st, band: RANGE_BANDS.length }, orders(fire(2)), 'break-intercept', ['break-intercept']), false, 'already away');
+});
+
+test('redline at the long band takes the ship away this turn, after the guns have fired', () => {
+  const st = fight({}, {}, L);
+  assert.equal(canUse(st, orders(fire(2)), 'redline', ['redline']), true);
+  assert.equal(canUse(fight({}, {}, M), orders(fire(2)), 'redline', ['redline']), false, 'not from mid');
+  const dead = fight({}, {}, L); dead.me.parts.drive.hp = 0;
+  assert.equal(canUse(dead, orders(fire(2)), 'redline', ['redline']), false, 'no drive');
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'redline' }), { foe: [HULL], captain: hold }, HIGH, ['redline']);
+  assert.equal(r.state.band, RANGE_BANDS.length); assert.equal(shipEnd(r.state), 'escaped');
+  assert.ok(sh(r).length === 2 && sh(r).every(e => e.dmg > 0), 'your shots went out as you ran');
+  assert.deepEqual(plain(r.state.spent), ['redline']);
+});
+
+test('patch gives a tenth of the pooled armor back, never over the maximum, and has nothing to do at full', () => {
+  const st = fight(); const max = st.me.maxArmor;
+  assert.equal(canUse(st, orders(fire(2)), 'patch', ['patch']), false, 'whole');
+  st.me.armor = max - 20;
+  assert.equal(canUse(st, orders(fire(2)), 'patch', ['patch']), true);
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'patch' }), quiet, LOW, ['patch']);
+  assert.equal(r.state.me.armor, max - 20 + Math.round(max * FIGHT.PATCH));
+  const near = { ...st, me: { ...st.me, armor: max - 1 } };
+  assert.equal(resolveShipTurn(near, orders(fire(2), { move: 'patch' }), quiet, LOW, ['patch']).state.me.armor, max, 'capped');
+  assert.deepEqual(plain(r.state.spent), ['patch']);
+});
+
+test('a hot start overcharges every shot this turn at a plain shot\'s heat', () => {
+  const st = fight({ stats: { guns: 2 } });
+  assert.equal(canUse(st, orders(fire(2)), 'hot-start', ['hot-start']), true);
+  assert.equal(canUse(st, orders([null, null]), 'hot-start', ['hot-start']), false, 'no shot to charge');
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'hot-start' }), quiet, HIGH, ['hot-start']);
+  const over = resolveShipTurn(st, orders(fire(2).map(o => ({ ...o, over: true }))), quiet, HIGH);
+  assert.deepEqual(sh(r).map(e => e.dmg), sh(over).map(e => e.dmg), 'each shot rolls as an overcharged one');
+  assert.equal(r.state.heat, Math.max(0, 2 - FIGHT.HEAT_VENT), 'two shots of heat 1'); assert.equal(over.state.heat, 2 * FIGHT.OVER_HEAT - FIGHT.HEAT_VENT);
+  assert.deepEqual(plain(r.state.spent), ['hot-start']);
+});
+
+test('bypass puts the drive back to full, so a pinned drive votes on the range again this turn', () => {
+  const st = fight({}, { stats: { accel: 0.5 } }); st.me.parts.drive.hp = 0;
+  assert.equal(canUse(fight(), orders(fire(2)), 'bypass', ['bypass']), false, 'the drive is whole');
+  assert.equal(canUse(st, orders(fire(2)), 'bypass', ['bypass']), true);
+  const opening = { foe: [hold], captain: { kind: 'open' } };
+  assert.equal(resolveShipTurn(st, orders(fire(2)), opening, LOW).state.band, CLOSE, 'no drive, no vote');
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'bypass' }), opening, LOW, ['bypass']);
+  assert.equal(r.state.me.parts.drive.hp, r.state.me.parts.drive.max); assert.equal(r.state.band, CLOSE + 1, 'the faster ship opens the range');
+  assert.deepEqual(plain(r.state.spent), ['bypass']);
+});
+
+test('spoof: she fires no volley and no salvo this turn, keeps her torpedoes, and has nothing to fool when no foe is up', () => {
+  const st = fight({ stats: { guns: 2 } });
+  assert.equal(canUse(st, orders(fire(2)), 'spoof', ['spoof']), true);
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'spoof' }), { foe: [HULL], captain: hold }, HIGH, ['spoof']);
+  assert.equal(r.events.filter(e => e.who === 'foe').length, 0); assert.deepEqual([r.state.me.shields, r.state.me.armor], [st.me.shields, st.me.armor]);
+  assert.equal(sh(r).length, 2, 'your guns fire');
+  const armed = { ...fight({}, { opts: { launcher: true, torps: 4 } }), armed: [true] };
+  const s = resolveShipTurn(armed, orders(fire(2), { move: 'spoof' }), { foe: [{ kind: 'salvo', target: 'hull', n: 2, dmg: [40, 60] }], captain: hold }, HIGH, ['spoof']);
+  assert.equal(s.events.filter(e => e.who === 'foe').length, 0); assert.equal(s.state.foes[0].torps, 4, 'her salvo was not fired'); assert.equal(s.state.armed[0], false);
+  const down = fight(); down.foes[0].armor = 0;
+  assert.equal(canUse(down, orders(fire(2)), 'spoof', ['spoof']), false);
+  assert.deepEqual(plain(r.state.spent), ['spoof']);
+});
+
+test('parley at mid or long is a roll: landed, every foe up breaks off and the fight ends broke; failed, it is spent and she fires', () => {
+  const st = fight({}, {}, M);
+  assert.equal(canUse(st, orders(fire(2)), 'parley', ['parley']), true);
+  assert.equal(canUse(fight({}, {}, L), orders(fire(2)), 'parley', ['parley']), true);
+  assert.equal(canUse(fight(), orders(fire(2)), 'parley', ['parley']), false, 'not at close');
+  const down = fight({}, {}, M); down.foes[0].armor = 0;
+  assert.equal(canUse(down, orders(fire(2)), 'parley', ['parley']), false, 'nobody to talk to');
+  const shown = { foe: [HULL], captain: hold };
+  const won = resolveShipTurn(st, orders(fire(2), { move: 'parley' }), shown, HIGH, ['parley'], () => true);
+  assert.equal(won.state.moves.foe[0].kind, 'break'); assert.equal(shipEnd(won.state), 'broke');
+  assert.equal(won.events.filter(e => e.who === 'foe').length, 0, 'she does not fire as she goes');
+  assert.ok(won.events.some(e => e.move === 'parley' && e.landed === true));
+  const lost = resolveShipTurn(st, orders(fire(2), { move: 'parley' }), shown, HIGH, ['parley'], () => false);
+  assert.equal(lost.state.moves.foe[0].kind, 'broadside'); assert.equal(shipEnd(lost.state), null);
+  assert.equal(lost.events.filter(e => e.who === 'foe').length, 1, 'her volley lands');
+  assert.deepEqual(plain(lost.state.spent), ['parley']); assert.ok(lost.events.some(e => e.move === 'parley' && e.landed === false));
+  assert.equal(shipEnd(resolveShipTurn(st, orders(fire(2), { move: 'parley' }), shown, HIGH, ['parley']).state), 'broke', 'the roll defaults to landed');
 });
 
 // The raider's rush: through a thinly held section in one turn. Our heads are off the lock (a head there would hold the push) and a lone one holds the corridor.
