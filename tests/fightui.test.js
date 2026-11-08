@@ -238,6 +238,19 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   await done();
 });
 
+test('the deck panel pins Fight in view in a short window, its other choices in the flow with the scene (#991)', async () => {
+  const { ev, done } = await open({ viewport: { width: 1280, height: 600 } });
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    fightGame('gunner'); boarded();
+    const b = [...document.querySelectorAll('#panel [data-action="choose"]')].find(x => x.textContent === 'Fight'), box = b.getBoundingClientRect();
+    return { flow: !!b.closest('.choices.flow'), top: document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2) === b };
+  });
+  assert.equal(r.flow, false, 'Fight is in the pinned block, as a ship fight\'s Fire is (#846)');
+  assert.equal(r.top, true, 'Fight can be clicked where it is drawn, with nothing over it and no list to scroll');
+  await done();
+});
+
 test('the panel words a raider\'s rush, the second wave at the lock on the turn at whose end it lands, and the hatch by section', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(deckHelpers);
