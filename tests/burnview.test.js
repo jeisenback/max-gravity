@@ -1067,3 +1067,37 @@ test('a crash couch is a plate in the deck that unfolds as its person reaches it
   assert.ok(r.end.open && r.end.lying, `once at their couches, they unfold and everyone lies on one ${JSON.stringify(r.end)}`);
   await done();
 });
+
+// #927: at the flip someone asleep stays in their bunk, strapped, and everyone strapped in sits in a jump seat that folds down from the wall.
+test('at the flip a sleeper stays in the bunk, and every strapped person has a jump seat under them (#927)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit;
+    for (let f = 0; f < 1 && !isDark(); f += 0.01) t.elapsed = f * SHIP_DAY;  // a night
+    const b = roomAt('berths'), sleeper = shipPeople().find(p => p.role !== 'cat' && !NIGHT_WATCH.includes(p.role));
+    Object.assign(sleeper, { room: 'berths', x: b.mid, dk: 0, tdk: 0, tx: null, staged: undefined, at: undefined });
+    t.left = t.total * (1 - 0.3); const moving = isAsleep(sleeper);
+    t.left = t.total * (1 - 0.46); const securing = [isAsleep(sleeper), posture(sleeper, phase(), 0, isAsleep(sleeper)).name];
+    t.left = t.total * (1 - 0.5); const floating = [isAsleep(sleeper), posture(sleeper, phase(), 0, isAsleep(sleeper)).name];
+    // and the jump seats: one drawn for each person drawn strapped in, at the flip and while securing
+    const counts = [];
+    for (const pr of [0.46, 0.5]) {
+      t.left = t.total * (1 - pr);
+      for (const p of shipPeople()) if (p !== sleeper && p.role !== 'cat') Object.assign(p, { room: 'galley', x: roomAt('galley').x0 + roomAt('galley').w * 0.1, dk: 0, tdk: 0, tx: null });
+      G.cam = null;
+      let seats = 0, strapped = 0; const realSeat = window.roomJumpSeat, realPerson = window.drawPerson;
+      window.roomJumpSeat = (...a) => { seats++; return realSeat(...a); };
+      window.drawPerson = (c, pose, ...a) => { if (pose.name === 'strap') strapped++; return realPerson(c, pose, ...a); };
+      drawTransit(innerWidth, innerHeight);
+      window.roomJumpSeat = realSeat; window.drawPerson = realPerson;
+      counts.push([seats, strapped]);
+    }
+    return { moving, securing, floating, counts };
+  });
+  assert.equal(r.moving, true, 'asleep at night under way');
+  assert.deepEqual(r.securing, [true, 'bunk'], 'still asleep in the bunk while the crew straps in');
+  assert.deepEqual(r.floating, [true, 'bunk'], 'and through the float');
+  for (const [seats, strapped] of r.counts) { assert.ok(strapped > 0, 'someone strapped in is drawn'); assert.equal(seats, strapped, 'a jump seat for each'); }
+  await done();
+});

@@ -50,6 +50,15 @@ function roomCouchFold(ctx, x, F, d) {
   if (d > 0.5) { roomBox(ctx, x + 22, F - 24 * d, 8, 12 * d, '#23405e'); roomBox(ctx, x + 4, F - 12 * d, 6, 12 * d, '#1a3048'); }
   ctx.save(); ctx.translate(x, F - 14 - 4 * d); ctx.rotate(-Math.PI / 2 + (Math.PI / 2 - 0.9) * d); roomBox(ctx, -11, -62, 9, 66, '#23405e'); roomBox(ctx, -12, -66, 10, 8, '#2c4c6e'); ctx.restore();
 }
+// A jump seat at x on the deck F, for someone strapped in at the flip (#927): the rail on the wall behind them (face: the way they face), and
+// the seat and its back folded down from it by d (0 to 1, the flip's weight).
+function roomJumpSeat(ctx, x, F, face, d) {
+  const bx = x - face * 14;
+  roomBox(ctx, bx - 3, F - 60, 6, 60, '#1d3550');
+  if (d <= 0) return;
+  const pan = 24 * d;
+  roomBox(ctx, face > 0 ? bx : bx - pan, F - 20, pan, 4, '#2a4664'); roomBox(ctx, bx - 2, F - 20 - 34 * d, 4, 34 * d, '#2a4664');
+}
 // The galley's bench (#925): one long seat from x0 to x1 in front of the mess table, on legs, where the table's places are (SEATS, shiplife.js).
 function roomBench(ctx, x0, x1, F) {
   roomBox(ctx, x0, F - 19, x1 - x0, 5, '#2a4664'); roomBox(ctx, x0 + 2, F - 14, x1 - x0 - 4, 2, '#1c3249');
