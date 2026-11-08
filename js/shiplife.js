@@ -568,40 +568,63 @@ function lifeTick(dt) {
 }
 
 // ---------- the cutaway ----------
-// The drive plume off the stern: its length as a share of the hull (growing with the burn's peak), the flicker in world units, and the
-// halo and each bell's cone half-width as shares of the hull's height.
-const PLUME = { base: 0.28, gain: 0.32, flicker: 14, halo: 0.7, cone: 0.16 };
-// The two drive bells on the stern (the top and bottom of each, world units), and the room the camera may show aft of the hull for them.
-const CUT_BELLS = [[28, 72], [140, 184]], CUT_STERN = 120;
-// The tanks in the lower nose (drawn as a room of their own by rooms.js).
-const CUT_TANKS = { x0: 0.66, x1: 0.9, deck: 1 };
-// The bulkheads of each deck as shares of the length: those with a hatch at the floor, and the nose's end wall.
-const CUT_WALLS = [{ dk: 0, hatch: [0.17, 0.44, 0.66, 0.78], end: 0.92 }, { dk: 1, hatch: [0.17, 0.4, 0.66], end: 0.9 }];
+// The drive plume down from the bell: its length as a share of the tower's height (growing with the burn's peak), the flicker in world units,
+// and the halo and the cone's half-width as shares of the tower's width.
+const PLUME = { base: 0.28, gain: 0.32, flicker: 14, halo: 0.2, cone: 0.08 };
+// The drive bell under the drive deck (#972): its throat and mouth widths and its height, world units.
+const TOWER_BELL = { throat: 70, mouth: 150, h: 70 };
 
-// A room's box in world units: the engine room is the full height of the stern; the lower deck's ceiling is under the upper deck's plate.
-const cutRect = (r, len) => ({ x0: r.x0 * len, x1: r.x1 * len, top: r.tall || r.deck === 0 ? 0 : floorY(0) + HULL.plate, floor: floorY(r.tall ? 1 : r.deck) });
+// The world y of a fractional deck dk: a deck's floor, linear between two floors, so a climber in the tube through the tank is drawn inside it.
+function towerDeckY(lay, dk) {
+  const a = Math.floor(dk), b = Math.ceil(dk), ya = deckFloor(lay, a);
+  return a === b ? ya : ya + (deckFloor(lay, b) - ya) * (dk - a);
+}
+// The tower's skin as a box in world units (its outer edges, HULL.skin thick round the rooms), the top of the nose's cap over the flight deck,
+// and the tank's band between the plant deck's plate and the drive deck's ceiling.
+function towerOutline(lay) {
+  const sk = HULL.skin, top = -sk;
+  return { x0: -sk, x1: lay.width + sk, top, bottom: towerHeight(lay) + HULL.plate + sk, noseTop: top - 60,
+    tank: { top: deckFloor(lay, lay.tankAfter) + HULL.plate, bottom: deckFloor(lay, lay.tankAfter + 1) - HULL.deck } };
+}
+// A bulkhead at x from top to the floor F, with a hatch at the floor if it has one.
 function cutBulkhead(ctx, x, top, F, hatch) {
   ctx.fillStyle = '#1a3048'; ctx.fillRect(x - 6, top, 12, F - top);
   if (hatch) { ctx.fillStyle = '#060d16'; ctx.fillRect(x - 4, F - 92, 8, 92); ctx.fillStyle = '#2a4664'; ctx.fillRect(x - 6, F - 96, 12, 4); ctx.fillStyle = '#c9a227'; ctx.fillRect(x - 4, F - 4, 4, 4); }
 }
+// The water tank in cutaway (#972): its ribs, the water up to her reaction mass (fuel, 0 to 1) lying toward the drive, and the tube
+// through it for the ladder.
+function towerTank(ctx, lay, tk, fuel, s) {
+  const W = lay.width, h = tk.bottom - tk.top, lvl = tk.bottom - h * Math.max(0, Math.min(1, fuel)), wx = lay.well.x * W, tw = lay.well.w * W / 2;
+  ctx.fillStyle = '#0a1622'; ctx.fillRect(0, tk.top, W, h);
+  const water = ctx.createLinearGradient(0, lvl, 0, tk.bottom);
+  water.addColorStop(0, 'rgba(70,140,190,0.55)'); water.addColorStop(1, 'rgba(30,70,120,0.75)');
+  ctx.fillStyle = water; ctx.fillRect(0, lvl, W, tk.bottom - lvl);
+  const ripple = s.still ? 0 : (1.5 * s.w.cruise + 5 * s.w.flip) * Math.sin(s.time * 1.3);
+  ctx.strokeStyle = 'rgba(160,210,240,0.7)'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(0, lvl); ctx.quadraticCurveTo(W / 2, lvl + ripple, W, lvl); ctx.stroke();
+  ctx.fillStyle = '#16283a'; for (let x = 110; x < W; x += 110) if (Math.abs(x - wx) > tw + 10) ctx.fillRect(x - 3, tk.top, 6, h);  // the ribs
+  ctx.fillStyle = '#060d16'; ctx.fillRect(wx - tw, tk.top, tw * 2, h);  // the tube
+  ctx.fillStyle = '#2a4664'; ctx.fillRect(wx - tw - 4, tk.top, 4, h); ctx.fillRect(wx + tw, tk.top, 4, h);
+  worldText(ctx, s.zoom, 'WATER', 16, tk.top + 30, 13, '#7f97b0');
+}
 
-// The cutaway in the screen box { x, y, w, h }: a camera close in on the hand, both decks high, and the outline of the whole hull in the
-// corner. The nose is to the right through the flip; the turn shows in the stars, the windows, the thrusters and the outline.
+// The cutaway in the screen box { x, y, w, h }: the tower in world units (x from 0 to the layout's width, y down from the flight deck's
+// ceiling, the nose up), a camera close in on the hand, and the outline of the whole ship in the corner. The turn shows in the stars, the
+// windows, the thrusters and the outline.
 // Leaves G.cutRooms (the rooms in view, screen boxes clipped to the box), G.cutHits (the people in view), G.cutRack (the comms rack in view) and
 // G.cutOutline for a tap (game.js).
 function drawCutaway(box, clear = box) {
   const t = G.transit, st = G.state, people = shipPeople(), ph = phase(), still = Settings.reduceMotion, time = still ? 0 : G.time;
-  const len = hullLength(SHIPS[st.shipId].size), view = viewOf(box), zoom = view.zoom, half = view.span / 2;
+  const lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay), view = viewOf(box), zoom = view.zoom, half = view.span / 2;
   const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = phaseWeights(pr);
   // The camera eases after the hand, keeping them in the middle of the part of the box a docked dialog leaves clear (all of it with
-  // none): it steps in that part's own terms, its centre and its span, offset from the box's centre by off. It may look a little aft of
-  // the stern, at the bells.
-  const off = (box.x + box.w / 2 - (clear.x + clear.w / 2)) / zoom, held = G.cam && G.cam.x - off + CUT_STERN;
-  const camX = camStep(held, people[0].x * len + CUT_STERN, G.cam ? Math.max(0, G.time - G.cam.t) : 0, clear.w / zoom, len + CUT_STERN) - CUT_STERN + off;
+  // none): it steps in that part's own terms, its centre and its span, offset from the box's centre by off.
+  const off = (box.x + box.w / 2 - (clear.x + clear.w / 2)) / zoom, held = G.cam && G.cam.x - off;
+  const camX = camStep(held, people[0].x * W, G.cam ? Math.max(0, G.time - G.cam.t) : 0, clear.w / zoom, W) + off;
   G.cam = { x: camX, t: G.time };
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
   const turn = -Math.sin(t.angle), spin = t.angle + Math.PI / 2;  // turn: 1 before the flip, -1 after, 0 mid-turn; spin: the ship's turn, 0 to pi
-  const X = f => f * len, top = -12, H = 236, cy = top + H / 2;
+  const X = f => f * W, H = towerHeight(lay), deck = i => { const floor = deckFloor(lay, i); return { top: floor - HULL.deck, floor }; };
   const bcx = box.x + box.w / 2, bcy = box.y + box.h / 2, toScreen = (x, y) => ({ x: bcx + (x - camX) * zoom, y: bcy + (y - view.y) * zoom });
   const speed = 0.05 + Math.sin(Math.PI * pr) * 0.6, shake = !still && !t.event && speed > 0.2 ? speed * 0.9 : 0;
   const seen = (a, b) => b >= camX - half && a <= camX + half;
@@ -611,89 +634,91 @@ function drawCutaway(box, clear = box) {
   ctx.translate(bcx + Math.sin(G.time * 53) * 0.5 * shake, bcy + Math.sin(G.time * 71 + 1) * 0.8 * shake);  // a shiver, not a random draw: the game's random is seeded in the tests
   ctx.scale(zoom, zoom); ctx.translate(-camX, -view.y);
 
-  // The drive plume from the two bells, and the thrusters puffing at nose and stern while the ship turns.
+  // The drive plume down from the bell, and the thrusters puffing at the nose and the drive while the ship turns.
+  const mid = W / 2, mouth = o.bottom + TOWER_BELL.h;
   if (burning && w.flip < 1) {  // it fades with the flip
-    const pl = (len * (PLUME.base + PLUME.gain * Math.sin(Math.PI * pr)) + Math.sin(time * 23) * PLUME.flicker) * (1 - w.flip), mouth = -46, hr = H * PLUME.halo;
+    const pl = (H * (PLUME.base + PLUME.gain * Math.sin(Math.PI * pr)) + Math.sin(time * 23) * PLUME.flicker) * (1 - w.flip), hr = W * PLUME.halo, c = W * PLUME.cone;
     ctx.save(); ctx.globalAlpha = 1 - w.flip;
-    const halo = ctx.createRadialGradient(mouth, cy, 0, mouth, cy, hr);
+    const halo = ctx.createRadialGradient(mid, mouth, 0, mid, mouth, hr);
     halo.addColorStop(0, 'rgba(140,190,255,0.3)'); halo.addColorStop(1, 'rgba(60,90,255,0)');
-    ctx.fillStyle = halo; ctx.fillRect(mouth - hr, cy - hr, hr * 2, hr * 2);
-    for (const [a, b] of CUT_BELLS) {
-      const m = (a + b) / 2, c = H * PLUME.cone, g = ctx.createLinearGradient(mouth, 0, mouth - pl, 0);  // white-hot for the first 40 units, then blue fading out
-      g.addColorStop(0, 'rgba(255,255,255,0.95)'); g.addColorStop(Math.min(0.5, 40 / pl), 'rgba(140,190,255,0.75)'); g.addColorStop(1, 'rgba(60,90,255,0)');
-      ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(mouth, m - c); ctx.quadraticCurveTo(mouth - pl * 0.25, m - c * 0.4, mouth - pl, m); ctx.quadraticCurveTo(mouth - pl * 0.25, m + c * 0.4, mouth, m + c); ctx.fill();
-    }
+    ctx.fillStyle = halo; ctx.fillRect(mid - hr, mouth - hr, hr * 2, hr * 2);
+    const g = ctx.createLinearGradient(0, mouth, 0, mouth + pl);  // white-hot for the first 40 units, then blue fading out
+    g.addColorStop(0, 'rgba(255,255,255,0.95)'); g.addColorStop(Math.min(0.5, 40 / pl), 'rgba(140,190,255,0.75)'); g.addColorStop(1, 'rgba(60,90,255,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(mid - c, mouth); ctx.quadraticCurveTo(mid - c * 0.4, mouth + pl * 0.25, mid, mouth + pl); ctx.quadraticCurveTo(mid + c * 0.4, mouth + pl * 0.25, mid + c, mouth); ctx.fill();
     ctx.restore();
   } else if (!burning && !t.event) {
-    const on = Math.sin(time * 3) > 0, a = 0.5 + 0.5 * Math.abs(Math.sin(time * 9));
+    const on = Math.sin(time * 3) > 0, a = 0.5 + 0.5 * Math.abs(Math.sin(time * 9)), ny = o.top + 20, dy = o.bottom - 40;
     ctx.fillStyle = `rgba(230,240,255,${a})`;
-    for (const [x, y] of on ? [[X(0.955) + 14, 80], [-14, 206]] : [[X(0.955) + 14, 132], [-14, 6]]) { ctx.beginPath(); ctx.ellipse(x, y, 14, 6, 0, 0, Math.PI * 2); ctx.fill(); }
+    for (const [x, y] of on ? [[o.x1 + 14, ny], [o.x0 - 14, dy]] : [[o.x0 - 14, ny], [o.x1 + 14, dy]]) { ctx.beginPath(); ctx.ellipse(x, y, 14, 6, 0, 0, Math.PI * 2); ctx.fill(); }
   }
   ctx.fillStyle = '#16283a';
-  for (const [a, b] of CUT_BELLS) { ctx.beginPath(); ctx.moveTo(0, a + 4); ctx.lineTo(-46, a - 16); ctx.lineTo(-46, b + 16); ctx.lineTo(0, b - 4); ctx.fill(); }
+  ctx.beginPath(); ctx.moveTo(mid - TOWER_BELL.throat / 2, o.bottom); ctx.lineTo(mid + TOWER_BELL.throat / 2, o.bottom); ctx.lineTo(mid + TOWER_BELL.mouth / 2, mouth); ctx.lineTo(mid - TOWER_BELL.mouth / 2, mouth); ctx.fill();
 
-  // The hull, with a rounded nose, lit from above; everything inside is clipped to it.
-  const shade = ctx.createLinearGradient(0, top, 0, top + H);
+  // The hull: the skin round the decks and the tank, the nose's cap over the flight deck, lit from above; everything inside is clipped to it.
+  const shade = ctx.createLinearGradient(0, o.noseTop, 0, o.bottom);
   shade.addColorStop(0, '#132338'); shade.addColorStop(1, '#08111c');
   ctx.fillStyle = shade; ctx.strokeStyle = '#3d5f82'; ctx.lineWidth = 2;
   ctx.beginPath();
-  ctx.moveTo(X(0), top + 6); ctx.lineTo(X(0.9), top);
-  ctx.quadraticCurveTo(X(1.02), cy, X(0.9), top + H);
-  ctx.lineTo(X(0), top + H - 6); ctx.closePath();
+  ctx.moveTo(o.x0, o.bottom); ctx.lineTo(o.x0, o.top);
+  ctx.quadraticCurveTo(o.x0, o.noseTop, o.x0 + 160, o.noseTop); ctx.lineTo(o.x1 - 160, o.noseTop); ctx.quadraticCurveTo(o.x1, o.noseTop, o.x1, o.top);
+  ctx.lineTo(o.x1, o.bottom); ctx.closePath();
   ctx.fill(); ctx.stroke();
   ctx.save();
   ctx.clip();
+  ctx.strokeStyle = 'rgba(61,95,130,0.55)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(W, 0); ctx.stroke();  // the seam where the cap meets the flight deck
 
-  // The rooms, the ladder well, the ladder through the upper deck's plate, and the bulkheads.
+  // The rooms, the tank, the ladder well and its ladder full height (the tube through the tank), and the bulkheads beside the well.
   const cap = ship().cargo, nb = Math.min(12, ship().berths), slots = new Map();
   for (const p of people) if (slots.size < nb && isAsleep(p)) slots.set(p, slots.size);  // whoever is turned in lies on a bunk
   const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt() };  // the marks lifeTick keeps (shipState)
-  for (const [id, r] of [...ROOMS.map(r => [r.id, r]), ['tanks', CUT_TANKS]]) {
-    const q = cutRect(r, len);
-    if (seen(q.x0, q.x1)) drawRoom(ctx, id, q, s);
+  for (const r of ROOMS) {
+    const q = layoutBox(lay, r.id);
+    if (seen(q.x0, q.x1)) drawRoom(ctx, r.id, q, s);
   }
-  roomWalls(ctx, cutRect({ x0: roomAt('medbay').x1, x1: CUT_TANKS.x0, deck: 1 }, len), w, time, still);  // the ladder well, between the medbay and the tanks
-  const lx = X(LADDER);
-  ctx.fillStyle = '#060d16'; ctx.fillRect(lx - 14, floorY(0), 28, HULL.plate);
+  towerTank(ctx, lay, o.tank, s.fuel, s);
+  const lx = X(LADDER), ww = lay.well.w * W / 2, last = lay.decks.length - 1;
+  for (let i = 0; i <= last; i++) {
+    const d = deck(i);
+    if (!layoutRoomAt(lay, i, lx)) {  // a deck split by the well: the shaft between its rooms, and a hatch through each wall into it
+      roomWalls(ctx, { x0: lx - ww, x1: lx + ww, top: d.top, floor: d.floor }, w, time, still);
+      for (const x of [lx - ww, lx + ww]) cutBulkhead(ctx, x, d.top, d.floor, true);
+    }
+    if (i < last) { ctx.fillStyle = '#060d16'; ctx.fillRect(lx - 14, d.floor, 28, HULL.plate); }  // the opening in the floor plate
+  }
   ctx.strokeStyle = '#4a6a8a'; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(lx - 8, floorY(0)); ctx.lineTo(lx - 8, floorY(1)); ctx.moveTo(lx + 8, floorY(0)); ctx.lineTo(lx + 8, floorY(1)); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(lx - 8, deckFloor(lay, 0)); ctx.lineTo(lx - 8, deckFloor(lay, last)); ctx.moveTo(lx + 8, deckFloor(lay, 0)); ctx.lineTo(lx + 8, deckFloor(lay, last)); ctx.stroke();
   ctx.lineWidth = 1.5; ctx.beginPath();
-  for (let y = floorY(0) + 8; y < floorY(1); y += 14) { ctx.moveTo(lx - 8, y); ctx.lineTo(lx + 8, y); }
+  for (let y = deckFloor(lay, 0) + 8; y < deckFloor(lay, last); y += 14) { ctx.moveTo(lx - 8, y); ctx.lineTo(lx + 8, y); }
   ctx.stroke();
-  for (const d of CUT_WALLS) {
-    const q = cutRect({ x0: 0, x1: 0, deck: d.dk }, len);
-    for (const f of d.hatch) cutBulkhead(ctx, X(f), q.top, q.floor, true);
-    cutBulkhead(ctx, X(d.end), q.top, q.floor, false);
-  }
   ctx.font = `600 13px ${roomFont}`;
   for (const r of ROOMS) {  // each name at 13px on a dark plate, so it reads over the props behind it
-    const name = r.name.toUpperCase(), nx = X(r.x0) + 12, ny = cutRect(r, len).top + 34, fs = 13 / zoom, pad = 4 / zoom;
+    const name = r.name.toUpperCase(), nx = X(r.x0) + 12, ny = layoutBox(lay, r.id).top + 34, fs = 13 / zoom, pad = 4 / zoom;
     ctx.fillStyle = 'rgba(6,13,22,0.8)'; ctx.fillRect(nx - pad, ny - fs, ctx.measureText(name).width / zoom + pad * 2, fs * 1.3);
     worldText(ctx, zoom, name, nx, ny, fs, '#7f97b0');
   }
-  // The thrust sign over the galley's forward hatch, on the galley's side (clear of the gunnery's name), scaled up where the camera is far
-  // enough out that its text would be under 12px; kept whole inside the view's edges when the galley is partly or wholly out of it.
-  const sk = Math.max(1, 1.05 / zoom), signHalf = 56 * sk + 4, signX = Math.min(camX + half - signHalf, Math.max(camX - half + signHalf, X(roomAt('galley').x1) - 6 - 56 * sk));
-  ctx.save(); ctx.translate(signX, 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, burnState().g, w, time, zoom * sk); ctx.restore();
+  // The thrust sign over the galley's right end on the mess deck, scaled up where the camera is far enough out that its text would be under
+  // 12px; kept whole inside the view's edges when the galley is partly or wholly out of it.
+  const galley = layoutBox(lay, 'galley'), sk = Math.max(1, 1.05 / zoom), signHalf = 56 * sk + 4, signX = Math.min(camX + half - signHalf, Math.max(camX - half + signHalf, galley.x1 - 6 - 56 * sk));
+  ctx.save(); ctx.translate(signX, galley.top + 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, burnState().g, w, time, zoom * sk); ctx.restore();
 
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
   ctx.font = `600 12px ${roomFont}`;
-  const berths = cutRect(roomAt('berths'), len), labels = [], dots = [], hits = [];
+  const berths = layoutBox(lay, 'berths'), labels = [], dots = [], hits = [];
   const floatW = burnRamp(pr, 0.47, 0.49) - burnRamp(pr, 0.51, 0.53);  // how far the float has built at the flip, 0 to 1 and back (#927)
   const youHurt = handHurt();
-  for (const p of people) if (p.role !== 'cat' && p.seat !== undefined && seen(X(p.seat) - 40, X(p.seat) + 40)) roomCouchFold(ctx, X(p.seat), floorY(0), p.couch || 0);  // each crash couch, folded into the deck or out (#925)
+  for (const p of people) if (p.role !== 'cat' && p.seat !== undefined && seen(X(p.seat) - 40, X(p.seat) + 40)) roomCouchFlat(ctx, X(p.seat), deckFloor(lay, p.seatDk), p.couch || 0);  // each crash couch, folded into its deck or out flat (#925, #972)
   for (const p of people) {
     const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p));
     const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
-    const x = bunk ? bunk.x + Math.min(44, bunk.w * 0.62) : X(p.x), y = bunk ? bunk.y - 5 : floorY(p.dk) - (cot ? 36 : 0), dk = Math.round(p.dk);
+    const x = bunk ? bunk.x + Math.min(44, bunk.w * 0.62) : X(p.x), y = bunk ? bunk.y - 5 : towerDeckY(lay, p.dk) - (cot ? 36 : 0), dk = Math.round(p.dk);
     dots.push({ x: X(p.x), deck: p.dk, color: ROLE_COLORS[p.role] });
     if (Math.abs(x - camX) > half + 60) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = Math.abs(x - camX) <= half;
     if (pose.name === 'strap') roomJumpSeat(ctx, x, y, pose.face, w.flip);  // a jump seat folded down from the wall behind them (#927)
     const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float' ? floatW : 0, ...(p.role === 'cat' ? {} : { ...portraitLook({ id: p.id, name: p.name }), mood: figureMood(st, p.id, youHurt) }) });
-    if (pose.name === 'tether') {  // a line to a ring on the nearest bulkhead
-      const d = CUT_WALLS[dk], bx = X([...d.hatch, d.end].reduce((a, b) => (Math.abs(b - p.x) < Math.abs(a - p.x) ? b : a))), rx = bx + Math.sign(x - bx) * 6, ry = floorY(dk) - 60;
+    if (pose.name === 'tether') {  // a line to a ring on the nearest room wall on their deck
+      const walls = ROOMS.filter(r => r.deck === dk).flatMap(r => [X(r.x0), X(r.x1)]), bx = walls.reduce((a, b) => (Math.abs(b - x) < Math.abs(a - x) ? b : a)), rx = bx + Math.sign(x - bx) * 6, ry = deckFloor(lay, dk) - 60;
       ctx.strokeStyle = 'rgba(201,162,39,0.9)'; ctx.lineWidth = 1.4;
       ctx.beginPath(); ctx.moveTo(tap.x, tap.y); ctx.quadraticCurveTo((tap.x + rx) / 2, Math.max(tap.y, ry) + 12 + Math.sin(time) * 6, rx, ry); ctx.stroke();
       ctx.beginPath(); ctx.arc(rx, ry, 3, 0, Math.PI * 2); ctx.stroke();
@@ -704,17 +729,17 @@ function drawCutaway(box, clear = box) {
       const nw = ctx.measureText(p.name).width / zoom;
       if (!labels.some(b => b.dk === dk && Math.abs(b.x - x) < (b.w + nw) / 2 + 4 / zoom)) {
         labels.push({ x, w: nw, dk });
-        worldText(ctx, zoom, p.name, x, (bunk ? floorY(0) : y) + 10, 12 / zoom, '#9fb4c9', 'center');
+        worldText(ctx, zoom, p.name, x, (bunk ? berths.floor : y) + 10, 12 / zoom, '#9fb4c9', 'center');
       }
     }
   }
-  { const g = cutRect(roomAt('galley'), len); if (seen(g.x0, g.x1)) roomMessTable(ctx, g, s); }  // the mess table in front of those sitting at it (#978)
-  hullSeams(X, top, H, 1);  // plating, rivets and scars (hulldetail.js)
+  if (seen(galley.x0, galley.x1)) roomMessTable(ctx, galley, s);  // the mess table in front of those sitting at it (#978)
+  hullSeams(o);  // plating, rivets and scars (hulldetail.js)
   ctx.restore();
-  hullFittings(X, top, H, len, 1, cy);  // mast, fins and turrets
+  hullFittings(o, deck);  // mast, fins, turrets and the airlock's door
   if (time % 1.6 < 0.2) {  // running lights, blinking
-    ctx.fillStyle = '#ff5a5a'; ctx.fillRect(X(0.45) - 2, top - 4, 4, 4);
-    ctx.fillStyle = '#5aff8a'; ctx.fillRect(X(0.45) - 2, top + H, 4, 4);
+    ctx.fillStyle = '#ff5a5a'; ctx.fillRect(o.x0 - 4, o.top + 2, 4, 4);
+    ctx.fillStyle = '#5aff8a'; ctx.fillRect(o.x1, o.top + 2, 4, 4);
   }
   ctx.restore();
 
@@ -722,16 +747,16 @@ function drawCutaway(box, clear = box) {
   // under a dialog belongs to the dialog.
   const cx0 = Math.max(box.x, clear.x), cy0 = Math.max(box.y, clear.y), cx1 = Math.min(box.x + box.w, clear.x + clear.w), cy1 = Math.min(box.y + box.h, clear.y + clear.h);
   G.cutRooms = ROOMS.map(r => {
-    const q = cutRect(r, len), a = toScreen(q.x0, q.top), b = toScreen(q.x1, q.floor);
+    const q = layoutBox(lay, r.id), a = toScreen(q.x0, q.top), b = toScreen(q.x1, q.floor);
     const x0 = Math.max(cx0, a.x), y0 = Math.max(cy0, a.y), x1 = Math.min(cx1, b.x), y1 = Math.min(cy1, b.y);
     return { id: r.id, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
   }).filter(b => b.w > 0 && b.h > 0);
   G.cutHits = hits.filter(h => h.x >= cx0 && h.x <= cx1 && h.y >= cy0 && h.y <= cy1);
-  const rack = commsRackBox(cutRect(roomAt('bridge'), len)), ra = toScreen(rack.x, rack.y), rb = toScreen(rack.x + rack.w, rack.y + rack.h);  // the comms rack, whole in the clear part or not at all
+  const rack = commsRackBox(layoutBox(lay, 'bridge')), ra = toScreen(rack.x, rack.y), rb = toScreen(rack.x + rack.w, rack.y + rack.h);  // the comms rack, whole in the clear part or not at all
   G.cutRack = ra.x >= cx0 && rb.x <= cx1 && ra.y >= cy0 && rb.y <= cy1 ? { x: ra.x, y: ra.y, w: rb.x - ra.x, h: rb.y - ra.y } : null;
   const seenPart = { x: camX - off, span: clear.w / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers
-  G.cutOutline = { ...outlineLayout(box, len), ids: people.filter(p => p.id).map(p => p.id), squeeze: Math.abs(turn), view: seenPart };
-  drawOutline(ctx, G.cutOutline, dots, seenPart.x, seenPart.span, len, turn);
+  G.cutOutline = { ...outlineLayout(box, W), ids: people.filter(p => p.id).map(p => p.id), squeeze: Math.abs(turn), view: seenPart };
+  drawOutline(ctx, G.cutOutline, dots, seenPart.x, seenPart.span, W, turn);
 }
 
 // ---------- downtime activities ----------

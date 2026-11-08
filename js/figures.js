@@ -165,7 +165,7 @@ function figPose(name, frame, frames, float = 0) {  // float: how far the flip's
   const ph = Math.PI * 2 * frame / frames, S = Math.sin, wave = S(ph);
   const base = { hip: 36, rot: 0, arms: [0.1, 0.15, -0.1, 0.05], legs: [0.04, 0, -0.04, 0], head: 0, squash: 1, strap: 0 };
   switch (name) {
-    case 'couch': return { ...base, hip: 20, rot: -0.9, arms: [0.6, 1.4, 0.4, 1.3], legs: [1.9, 0.6, 1.8, 0.65], squash: 0.9, strap: 1 };
+    case 'couch': return { ...base, hip: 10, rot: -1.57, arms: [1.3, 2.3, 1.2, 2.2], legs: [1.57, 1.57, 1.52, 1.6], squash: 0.95, strap: 1 };  // flat on the back on the couch's pad, face up toward the nose, the head to the left (#972)
     case 'stand': return { ...base, arms: [0.1 + wave * 0.05, 0.2, -0.1 - wave * 0.05, 0.1], squash: 1 + wave * 0.01 };
     case 'walk': return { ...base, rot: 0.05, arms: [-wave * 0.45, -wave * 0.45 + 0.45, wave * 0.45, wave * 0.45 + 0.45], legs: [wave * 0.42, wave * 0.42 - 0.75 * Math.max(0, S(ph + 1.5)), -wave * 0.42, -wave * 0.42 - 0.75 * Math.max(0, S(ph + 4.6))], hip: 35 - Math.abs(wave) * 1.2 };  // a short stride, the knee bending as the foot comes through
     case 'climb': return { ...base, arms: [2.55 + wave * 0.4, 3.0 + wave * 0.2, 2.55 - wave * 0.4, 3.0 - wave * 0.2], legs: [0.35 + wave * 0.45, -0.25 + wave * 0.35, 0.35 - wave * 0.45, -0.25 - wave * 0.35], hip: 36 + wave * 2 };  // hand over hand on the rungs, a knee up as the other reaches
@@ -339,7 +339,7 @@ function figView(ctx, pose, look, frames) {
 }
 
 function drawPerson(ctx, pose, x, y, look) {
-  const frames = POSTURES[pose.name].frames, face = pose.face < 0 && pose.name !== 'bunk' && pose.name !== 'couch' ? -1 : 1;  // a sleeper lies head to the left; a crash couch's back is on the left (#949)
+  const frames = POSTURES[pose.name].frames, face = pose.face < 0 && pose.name !== 'bunk' && pose.name !== 'couch' ? -1 : 1;  // a sleeper lies head to the left; so does someone on a crash couch, its head end on the left (#949, #972)
   ctx.save(); ctx.translate(x, y); ctx.scale(face, 1);
   let tap, head, foot;
   if (pose.name.startsWith('cat')) head = foot = tap = figCat(ctx, pose.name, pose.frame, frames);

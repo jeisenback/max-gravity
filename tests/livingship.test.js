@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS']);
+const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS, towerDeckY, deckFloor, layoutBox } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS', 'towerDeckY', 'deckFloor', 'layoutBox']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = [], styles = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'styles' ? styles : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); if (k === 'fillStyle' || k === 'strokeStyle') styles.push(String(v).toLowerCase()); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -56,11 +56,17 @@ test('the face shows the mood: hurt over low, low over high spirits, and you whe
   assert.equal(figureMood(st, 'd', false), undefined, 'a mood that has passed'); assert.equal(figureMood(st, 'e', false), undefined);
   assert.equal(figureMood(st, 'you', true), 'hurt'); assert.equal(figureMood(st, 'you', false), undefined);
 });
-test('someone on a crash couch lies back the way the couch does, whichever way they faced (#949)', () => {
+test('on a crash couch a person lies flat on their back (#972)', () => {
   for (const face of [1, -1]) {
-    const at = drawPerson(fakeCtx(), { name: 'couch', x: 0.5, deck: 0, face, frame: 0 }, 400, 100, { color: '#ffb347' });
-    assert.ok(at.head.x < 400, `face ${face}: the head toward the couch's back, on the left`);
+    const at = drawPerson(fakeCtx(), { name: 'couch', face, frame: 0 }, 400, 100, { color: '#ffb347' });
+    assert.ok(Math.abs(at.head.y - at.foot.y) <= 12, `face ${face}: flat, head ${at.head.y} and foot ${at.foot.y}`);
+    assert.ok(at.head.x < 400, `face ${face}: the head toward the couch's head end, on the left`);
   }
+});
+test('a climber is drawn inside the tube through the tank (#972)', () => {
+  const lay = LAYOUTS.freighter, y = towerDeckY(lay, 5.5);
+  assert.ok(y > deckFloor(lay, 5) && y < deckFloor(lay, 6), `${y} between the plant and the drive decks`);
+  assert.equal(towerDeckY(lay, 2), deckFloor(lay, 2));
 });
 // #978: a person seen from the front or the back, not only in profile.
 test('standing, sitting and at work draw from the front and the back in every style and mood, with a tap point on the body (#978)', () => {
@@ -165,9 +171,9 @@ test('the outline draws balanced, squeezed by the turn, with no text', () => {
 
 const RS = (o) => ({ w: phaseWeights(0.3), time: 3, zoom: 1.24, spin: 0, still: false, berths: 6, cargo: 0.5, fuel: 0.5, burning: true, night: 0, asleep: 0, ...o });
 const RR = { x0: 300, x1: 700, top: 0, floor: 100 };
-test('every room draws in every phase, and its text is 12px on screen or not drawn', () => {
-  for (const id of [...ROOMS.map(r => r.id), 'tanks']) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.8, 1.24]) {
-    const c = fakeCtx(); drawRoom(c, id, RR, RS({ w: phaseWeights(pr), zoom }));
+test('every room of the tower draws in every phase, with every save restored', () => {
+  for (const id of ROOMS.map(r => r.id)) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.8, 1.24]) {
+    const c = fakeCtx(); drawRoom(c, id, layoutBox(LAYOUTS.freighter, id), RS({ w: phaseWeights(pr), zoom }));
     assert.ok(c.calls.length > 10, `${id} drew`); assert.equal(c.depth, 0, `${id}: every save is restored`);
     for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${id}: ${f}`);
   }
@@ -191,7 +197,7 @@ test('the phase light and the thrust sign', () => {
 });
 test('with reduced motion the flip holds still: a room drawn at two times is the same', () => {
   const moving = [];
-  for (const id of [...ROOMS.map(r => r.id), 'tanks']) {
+  for (const id of ROOMS.map(r => r.id)) {
     const at = (time, still) => { const c = fakeCtx(); drawRoom(c, id, RR, RS({ w: phaseWeights(0.5), time, still })); return c.args.join('|'); };
     assert.equal(at(1.3, true), at(4.9, true), id);
     if (at(1.3, false) !== at(4.9, false)) moving.push(id);
@@ -358,11 +364,11 @@ test('the bridge and the guns are stations: screens and controls, and chairs wit
   }
 });
 test('the engine room has gauges whose needles read the thrust, valve wheels and pipes with joints (#933)', () => {
-  const r = { x0: 0, x1: 300, top: 0, floor: 224 }, s = { w: { burn: 0, cruise: 1, flip: 0 }, time: 1, zoom: 1, spin: 0, still: false, night: 0, berths: 6, cargo: 0, fuel: 1, asleep: 0, damage: { marks: new Set(), severe: false }, patient: false, burning: false };
+  const r = { x0: 0, x1: 300, top: 0, floor: 100 }, s = { w: { burn: 0, cruise: 1, flip: 0 }, time: 1, zoom: 1, spin: 0, still: false, night: 0, berths: 6, cargo: 0, fuel: 1, asleep: 0, damage: { marks: new Set(), severe: false }, patient: false, burning: false };
   const { ctx, calls } = recorder();
   drawRoom(ctx, 'engine', r, s);
   const fills = c => calls.filter(k => k[0] === 'fillStyle' && k[1] === c).length, strokes = c => calls.filter(k => k[0] === 'strokeStyle' && k[1] === c).length;
-  assert.ok(fills('#e6dfc9') >= 2, 'gauge faces'); assert.ok(strokes('#c0392b') >= 2, 'valve wheels'); assert.ok(fills('#4f6f8f') >= 4, 'joints on the pipes');
+  assert.ok(fills('#e6dfc9') >= 1, 'a gauge face on the feed (the upper deck\'s gauges went with it, #972)'); assert.ok(strokes('#c0392b') >= 2, 'valve wheels'); assert.ok(fills('#4f6f8f') >= 4, 'joints on the pipes');
   assert.ok(gaugeNeedle({ burn: 1, cruise: 0, flip: 0 }, 0, 0) > gaugeNeedle({ burn: 0, cruise: 1, flip: 0 }, 0, 0), 'the needle swings up in the hard burn');
   assert.ok(gaugeNeedle({ burn: 0, cruise: 1, flip: 0 }, 0, 0) > gaugeNeedle({ burn: 0, cruise: 0, flip: 1 }, 0, 0), 'and drops at the flip, the drive off');
 });
