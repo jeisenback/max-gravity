@@ -505,7 +505,7 @@ test('the ice run and the work events say what an option can cost, from what it 
     // the ice run: every general choice and the post's own, against its declared lost-roll hull and bold flag
     ICE_STAGES.forEach((stage, n) => {
       const labels = iceStageScene(n).choices.map(c => text(c.label)), specs = [...stage.general, stage.post.gunner];
-      specs.forEach((c, i) => out.ice.push({ label: labels[i], hull: (c.lose || c.win)[1] > 0, bold: !!c.bold }));
+      specs.forEach((c, i) => out.ice.push({ label: labels[i], hull: (c.lose || c.win)[1] > 0, haul: (c.lose || c.win)[0] < 0, bold: !!c.bold }));  // haul: a lost roll that takes from the haul (#854, #926)
     });
     // the work events: the careful option has no stake, the quick one is bold and pays less on a miss
     for (const d of WORK_EVENTS) { const e = workEvent(d); out.work.push(e.choices.map(c => text(c.label))); }
@@ -515,7 +515,8 @@ test('the ice run and the work events say what an option can cost, from what it 
   for (const x of r.ice) {
     assert.equal(x.label.includes('hull damage, a crew casualty'), x.hull, `${x.label}: hull cost matches`);
     assert.equal(x.label.includes('the captain marks it'), x.bold, `${x.label}: a bold call is marked`);
-    assert.equal(x.label.includes('if it fails:'), x.hull || x.bold, `${x.label}: nothing at stake, no cost`);
+    assert.equal(x.label.includes('a thinner haul'), x.haul, `${x.label}: a haul cost matches`);
+    assert.equal(x.label.includes('if it fails:'), x.hull || x.bold || x.haul, `${x.label}: nothing at stake, no cost`);
     assert.match(x.label, /\[\d+%/, `${x.label}: every ice choice is a roll, and says its odds`);
   }
   assert.ok(r.ice.some(x => !x.hull && !x.bold) && r.ice.some(x => x.hull && !x.bold) && r.ice.some(x => x.hull && x.bold), 'the run has each kind');

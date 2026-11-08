@@ -11,7 +11,7 @@
 // Loaded after awayjobs.js; only calls into the game at runtime.
 
 const RESUPPLY_WAIT = 3, WORTH_THE_FUEL = 10000;  // days she waits; the profit a day to the ship she sails for (set from the soak's plans, ROADMAP.md)
-const STAY_WHY = { yard: 'the hull is in the yard', market: 'the captain is waiting for a market worth the fuel' };
+const STAY_WHY = { yard: 'the hull is in the yard', market: 'the captain is waiting for a market worth the fuel', ice: 'working the ice' };
 
 const stayOf = h => (h && h.stay && h.stay.left > 0 ? h.stay : null);
 // A longer stay takes over a shorter one; a stay never shortens another.
@@ -19,11 +19,12 @@ function beginStay(h, days, why) { if (days > 0 && days > (stayOf(h) ? h.stay.le
 // Whether the captain waits here for a shipper: a port that trades, no contract worth the fuel, no yard to head for, and not the port she signed
 // the hand on at (the first run sails whatever the board, so the opening is not a wait).
 const marketWait = (h, planet, plan) => (h.runsDone || 0) > 0 && planet.services.includes('trade') && (!plan || plan.ballast || plan.profit / Math.max(1, plan.days) < WORTH_THE_FUEL) && !wantsYard();
-const nightLabel = s => `Pass the night (${STAY_WHY[s.why] || s.why}, ${s.left} more day${s.left === 1 ? '' : 's'})`;
+const nightLabel = s => (atSite(G.state) ? `Work the ice (${s.left} more shift${s.left === 1 ? '' : 's'})` : `Pass the night (${STAY_WHY[s.why] || s.why}, ${s.left} more day${s.left === 1 ? '' : 's'})`);  // on station the stay is the shifts (icerun.js)
 
 // One night of a stay: the day turns, the stay shortens, and the port is new again.
 function passNight() {
   const st = G.state, h = hired(), stay = stayOf(h);
+  if (atSite(st)) return passShift(st);  // a shift on the rock, not a night in port (icerun.js)
   if (!stay || G.mode !== 'landed' || G.dialog) return false;
   st.day++; Mods.emit('newDay', st.day);
   stay.left--;

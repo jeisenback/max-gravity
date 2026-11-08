@@ -28,7 +28,7 @@ test('the full build reaches every page it reached before, through the rail (#32
   await ev(helpers);
   const owner = await ev(() => { start({ mode: 'owner', post: undefined }); return { shell: !!document.querySelector('.shell'), rail: [...document.querySelectorAll('.rail [data-action=tab]')].map(b => b.dataset.arg), views: Object.keys(UI.views) }; });
   assert.equal(owner.shell, true, 'the full build draws the shell');
-  for (const v of owner.views.filter(v => v !== 'person')) assert.ok(owner.rail.includes(v), `${v} is on the owner's rail: ${owner.rail}`);
+  for (const v of owner.views.filter(v => v !== 'person' && v !== 'site')) assert.ok(owner.rail.includes(v), `${v} is on the owner's rail: ${owner.rail}`);  // the site page is on the rail only on station (sites.js)
   const hand = await ev(() => { start(); return [...document.querySelectorAll('.rail [data-action=tab]')].map(b => b.dataset.arg); });
   assert.ok(!hand.includes('trade') && !hand.includes('company'), 'a hired hand has no owner pages');
   await done();
@@ -258,5 +258,27 @@ test('at desktop width the rail sits beside the page', async () => {
   assert.equal(r.railLeftOfBody, true, 'the rail is to the left of the page');
   assert.equal(r.noSideScroll, true);
   assert.equal(r.buttonsOnScreen, true);
+  await done();
+});
+
+// On station at a site (sites.js, #948): the ship's pages and one Ashore entry, The Rock, whose page is the golden tests/fixtures/site.html.
+test('at a site the rail has the ship\'s pages and The Rock, and no port pages, and the page renders its golden markup', async () => {
+  const fs = require('node:fs');
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(([fn]) => {
+    const st = start({ captainKey: 'hester' }); st.tutorial = null;
+    const id = Object.keys(sites(st))[0], site = st.sites[id];
+    hired().run = { ice: { edge: 1 }, site: id, good: 'water', tons: 40, cost: 0, planet: 'Mars', sid: 'mars', day: st.day, from: 'Earth' };
+    st.systemId = id; st.planet = site.name; beginStay(hired(), 3, 'ice');
+    UI.openLanded(currentPlanet(), [], 'site');
+    const out = (0, eval)(`(${fn})`)(); out.html = document.querySelector('.shell .body').innerHTML.replace(site.name, 'KX-00').replace(/at \d\.\d AU/, 'at 0.0 AU'); return out;  // the rock's designation and orbit differ by seed
+  }, [railState.toString()]);
+  assert.deepEqual(r.names, ['Bridge', 'Comms', 'Gunnery', 'Engine', 'Crew', 'Bonds', 'Journal', 'The Rock']);
+  assert.deepEqual(r.groups, ['Ship', 'Ship', 'Ship', 'Ship', 'Ship', 'Ship', 'Ship', 'Ashore']);
+  assert.equal(r.active, 'site'); assert.equal(r.tab, 'site');
+  const file = 'tests/fixtures/site.html';
+  if (process.env.UPDATE_GOLDEN || !fs.existsSync(file)) fs.writeFileSync(file, r.html + '\n');
+  assert.equal(r.html + '\n', fs.readFileSync(file, 'utf8'), `site: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
   await done();
 });

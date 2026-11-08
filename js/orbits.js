@@ -8,9 +8,11 @@
 // Everything orbits the Sun at its real period (Kepler: years = au^1.5), so the
 // distance between two places, and the burn, changes over the months. `angle` is
 // where a location sits on day 0.
-const orbitPeriod = id => 365.25 * Math.pow(SYSTEMS[id].au, 1.5);
+// A place by id: a system, or a site on the save (sites.js), so a burn, the map and the window math read a site as they read a system.
+const placeOf = (id, st = G.state) => SYSTEMS[id] || siteOf(st, id) || undefined;
+const orbitPeriod = id => 365.25 * Math.pow(placeOf(id).au, 1.5);
 function orbitPos(id, day = G.state.day) {
-  const s = SYSTEMS[id], a = (s.angle + 360 * day / orbitPeriod(id)) * Math.PI / 180;
+  const s = placeOf(id), a = (s.angle + 360 * day / orbitPeriod(id)) * Math.PI / 180;
   return { x: Math.cos(a) * s.au, y: Math.sin(a) * s.au };
 }
 

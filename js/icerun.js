@@ -1,9 +1,9 @@
 'use strict';
 
-// Ice runs: the long ones. When water is dear at a port in reach and the hold is empty, the captain takes the ship out past the
-// Belt to a rock of ice, cuts a hold of it, and brings it home to sell. It is a run like any other (a planned run, a wage, a share,
-// settled where she docks), but it takes a long time, pays double the wage for the hazard and the water at a contract price, and has three scenes on the way
-// that are the hand's to play: the approach, the cutting, the haul home. Each is a choice of how to meet it, or the job of your
+// Ice runs: the long ones. When water is dear at a port the tank reaches and the hold is empty, the captain takes the ship out past the
+// Belt to a rock of ice (a site, sites.js, #948), spends ICE_SHIFTS shifts on it cutting a hold of ice, and brings it home to sell. It is a run
+// like any other (a planned run, a wage, a share, settled where she docks), but it is two burns with a stop, pays double the wage for the hazard
+// and the water at a contract price, and has three scenes that are the hand's to play: the approach on arrival, the cutting on the first shift, the haul home on the burn back. Each is a choice of how to meet it, or the job of your
 // own post, and each is a chance of going your way (+1 or +2 on a running count) or not (-1 or -2). The count decides how much ice
 // comes aboard, and a bad one can cost hull or hurt someone. The scenes are occasions of the burn (family.js), so a hand's burn and
 // the sims play them like the birthdays. Loaded after engagements.js; only called into at runtime.
@@ -12,22 +12,34 @@ const ICE_GAP = 60;          // days between ice runs
 const ICE_WATER_PRICE = 960;  // water at a port this dear makes an ice run worth the trip (800 is the base price)
 const ICE_HAZARD = 2;        // the wage, for the days it takes
 const ICE_PREMIUM = 2.5;     // what the domes pay for water on a contract, against the board price
-const ICE_AT = [0.3, 0.5, 0.78];  // how far into the burn each scene falls
-const iceDays = days => Math.max(8, Math.ceil(1.5 * days) + 3);
+const ICE_SHIFTS = 3, ICE_SHIFTS_WORD = 'three';  // the shifts the ship spends on the rock (sites.js), and the word for the departure line (transit.js)
 
-// The run the planner takes when it is due: the port that pays most for water, the whole hold, no cost.
+// The two legs of an ice run, pure (tests/sites.test.js): the found ice rock in sites(st), else the nearest one in range, then the
+// trading port whose water is dear (ICE_WATER_PRICE) and pays most, with the tank covering both legs, since there is no refuel at a
+// rock. Null when no pair fits. `fns` are the game's price, travelDays and burnFuel.
+function icePick(st, from, fuel, { price, travelDays, burnFuel }) {
+  const all = sites(st), ice = Object.keys(all).filter(id => all[id].kind === 'ice');
+  const rock = ice.find(id => all[id].found !== null) || ice.filter(id => burnFuel(from, id) <= fuel).sort((a, b) => travelDays(from, a) - travelDays(from, b))[0];
+  if (!rock || burnFuel(from, rock) > fuel) return null;
+  let best = null;
+  for (const [sid, sys] of Object.entries(SYSTEMS)) {
+    if (burnFuel(from, rock) + burnFuel(rock, sid) > fuel) continue;
+    for (const pl of sys.planets.filter(x => x.services.includes('trade'))) {
+      const sell = price(pl, 'water');
+      if (sell !== null && sell >= ICE_WATER_PRICE && (!best || sell > best.sell)) best = { site: rock, sid, planet: pl.name, yard: pl.services.includes('shipyard'), sell };
+    }
+  }
+  return best && { ...best, days: travelDays(from, rock) + ICE_SHIFTS + travelDays(rock, best.sid) };
+}
+
+// The run the planner takes when it is due: out to the rock, the shifts, and home to the port that pays most for water, the whole hold, no cost.
 function iceOption(here, from, reach, free) {
   const h = hired(), st = G.state;
   if (!h || (h.iceAt !== undefined && st.day - h.iceAt < ICE_GAP) || st.day - h.since < 12 || free < 10) return null;
-  let best = null;
-  for (const [sid, sys] of reach) {
-    for (const pl of sys.planets.filter(x => x.services.includes('trade'))) {
-      const sell = price(pl, 'water');
-      if (sell !== null && sell >= ICE_WATER_PRICE && (!best || sell > best.sell)) best = { sid, planet: pl.name, yard: pl.services.includes('shipyard'), sell, days: iceDays(Math.max(1, travelDays(from, sid))) };
-    }
-  }
-  if (!best) return null;
-  return { sid: best.sid, planet: best.planet, yard: best.yard, good: 'water', tons: free, cost: 0, profit: Math.round(best.sell * free * ICE_PREMIUM), days: best.days, ice: true, ballast: false };
+  const pick = icePick(st, from, st.fuel, { price, travelDays, burnFuel });
+  if (!pick) return null;
+  findSite(st, pick.site, st.day);  // the captain knows her rock, so it is on the map from the departure
+  return { site: pick.site, sid: pick.sid, planet: pick.planet, yard: pick.yard, good: 'water', tons: free, cost: 0, profit: Math.round(pick.sell * free * ICE_PREMIUM), days: pick.days, ice: true, ballast: false };
 }
 
 // ---------- the three scenes ----------
@@ -47,7 +59,7 @@ const ICE_STAGES = [
           'pace. The anchors bite on the first try.')], lose: [-1, 0.06, 'The roll catches you out by a few degrees and a spur of rock clips the hull. The anchors hold, in the end.'] },
       { label: 'Go in fast, and brake hard', bold: true, odds: 0.4, win: [3, 0, ('You go in faster than anyone likes and brake at the last moment. ' +
           'You\'re on the ice with an hour in hand.')], lose: [-1, 0.12, 'You come in too fast, and brake too late, and the hull takes a hit from the rock that rings every deck.'] },
-      { label: 'Send a line across first', odds: 0.7, win: [1, 0, 'The line goes across and holds. You haul the ship in on it, a meter at a time, and no one has to be clever.'], lose: [0, 0, 'The line parts on the first haul. You spend two hours getting it across again.'] },
+      { label: 'Send a line across first', odds: 0.8, win: [1, 0, 'The line goes across and holds. You haul the ship in on it, a meter at a time, and no one has to be clever.'], lose: [-1, 0, 'The line parts on the first haul. You spend two hours getting it across again, and the cutters start late.'] },
     ],
     post: {
       pilot: { label: 'Fly the approach by hand', win: [2, 0, ('You fly it by hand, with the drive cold, on the thrusters alone, in the shadow of the ' +
@@ -183,4 +195,39 @@ function iceFinish() {
   const run = (hired() || {}).run;
   if (!run || !run.ice || run.ice.loaded) return;
   iceLoad(true);
+}
+
+// ---------- on station ----------
+// The ice run's scenes play once each: the approach on arrival, the cutting on the first shift, the haul home on the burn back
+// (family.js keys an ice occasion by its stage and the run's iceAt).
+const iceOnce = stage => { const o = { kind: 'ice', stage }; if (occasionPlayed(o)) return false; markOccasion(o); return true; };
+// Arrival at the rock (sites.js landAtSite): the stay of the shifts begins and the approach plays.
+function siteArrival(st) {
+  const h = hired();
+  if (!h || !h.run || !h.run.ice || !iceOnce(0)) return;
+  beginStay(h, ICE_SHIFTS, 'ice');
+  openEvent(iceStageScene(0));
+}
+// A shift on the rock (stay.js passNight hands over here): the day turns, the stay shortens, and the cutting plays on the first.
+// No bar fills and no port happening comes to the dock: there is no port.
+function passShift(st) {
+  const h = hired(), stay = stayOf(h);
+  if (!stay || G.mode !== 'landed' || G.dialog) return false;
+  st.day++; Mods.emit('newDay', st.day);
+  stay.left--;
+  if (!stay.left) delete h.stay;
+  if (h.run && h.run.ice && iceOnce(1)) openEvent(iceStageScene(1));
+  return true;
+}
+// The run home from the rock, the plan at a site (hired.js currentPlan): the port the run was planned for, from its record.
+const homeRun = h => ({ sid: h.run.sid, planet: h.run.planet, good: 'water', tons: h.run.tons, cost: 0, profit: h.run.profit, days: travelDays(G.state.systemId, h.run.sid), ice: true, site: h.run.site, home: true });
+// Sailing from the rock (hired.js sail): no takeoff and no local space, straight into the burn, with the run record kept as it is.
+function sailHome() {
+  const st = G.state, run = hired().run;
+  st.dest = run.sid; st.route = { dock: run.planet, go: true };
+  const from = orbitPos(st.systemId), to = orbitPos(st.dest);
+  G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
+  UI.hide();  // as the takeoff does at a port
+  enterTransit();
+  return true;
 }

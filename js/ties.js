@@ -247,7 +247,7 @@ Mods.register({
       if (!hired() || G.state.day - hired().since < 3) return list;
       if (where === 'port' && planet && warCallable().length) list = list.concat({ tier: 1, weight: 4, via: 'crew', make: () => warCallScene(planet) });
       if (where === 'transit' && G.transit) {  // a patrol stops a burn in or out of a faction's space
-        const to = SYSTEMS[G.transit.to], gov = [to.gov, system().gov].find(g => isFaction(g) && g !== 'Pirate' && dockPeople(g, 'wanted').concat(dockPeople(g, 'exile')).length);
+        const to = placeOf(G.transit.to), gov = [to.gov, system().gov].find(g => isFaction(g) && g !== 'Pirate' && dockPeople(g, 'wanted').concat(dockPeople(g, 'exile')).length);
         if (gov && customsDue(true)) list = list.concat({ tier: 1, weight: 3, via: 'ship', make: () => lieutenantScene(gov, to) });
         return list;
       }

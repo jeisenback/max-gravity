@@ -18,7 +18,7 @@ function planIntercept() {
   t.interceptPlanned = true;
   let spec = null;
   const bounty = st.missions.find(m => m.type === 'bounty' && [from, to].includes(m.targetSystem));
-  const hostileGov = [SYSTEMS[to].gov, SYSTEMS[from].gov].find(g => PATROL_NAMES[g] && repOf(g) <= -15);
+  const hostileGov = [placeOf(to).gov, placeOf(from).gov].find(g => PATROL_NAMES[g] && repOf(g) <= -15);
   if (bounty) spec = { kind: 'bounty', mission: bounty };
   else if (G.revenge) { spec = { kind: 'hunter', person: G.revenge }; G.revenge = null; }
   else if (hostileGov && Math.random() < 0.6) spec = { kind: 'patrol', gov: hostileGov };

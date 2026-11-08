@@ -251,10 +251,10 @@ function planRun() {
 // The plan is made once a day in port and kept, unless the hold has changed since (a plan to sell cargo that is gone). A run the captain
 // agreed to (a pitched job, awayjobs.js) stands through the remaking; any other change of run is said, so the stated run is the one she flies (#848).
 const planStale = h => !h.plan || h.plan.day !== G.state.day || h.plan.at !== G.state.planet
-  || h.plan.cargo !== JSON.stringify(G.state.cargo);
-const sameRun = (a, b) => !!a && !!b && a.sid === b.sid && a.planet === b.planet && a.good === b.good && !!a.ice === !!b.ice;
-const runWord = r => (r.ice ? `the ice run to ${r.planet}` : r.ballast ? `a light run to ${r.planet}` : `${r.tons}t of ${goodName(r.good).toLowerCase()} to ${r.planet}`);
-const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const was = h.plan && h.plan.at === G.state.planet ? h.plan.run : null, run = planRun(); h.plan = {
+  || h.plan.cargo !== JSON.stringify(G.state.cargo) || !!(h.plan.run && h.plan.run.ice && !h.plan.run.site);  // an ice plan from before the rock was a place (#948)
+const sameRun = (a, b) => !!a && !!b && a.sid === b.sid && a.planet === b.planet && a.good === b.good && !!a.ice === !!b.ice && a.site === b.site;
+const runWord = r => (r.ice ? (r.site ? `the ice run to ${placeOf(r.site).name} and home to ${r.planet}` : `the ice run to ${r.planet}`) : r.ballast ? `a light run to ${r.planet}` : `${r.tons}t of ${goodName(r.good).toLowerCase()} to ${r.planet}`);
+const currentPlan = () => { const h = G.state.hired; if (atSite(G.state)) return homeRun(h); if (planStale(h)) { const was = h.plan && h.plan.at === G.state.planet ? h.plan.run : null, run = planRun(); h.plan = {
   day: G.state.day,
   at: G.state.planet,
   cargo: JSON.stringify(G.state.cargo),
@@ -270,13 +270,14 @@ const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const w
 function sail() {
   const st = G.state, h = st.hired, plan = currentPlan(), here = currentPlanet();
   if (!plan || G.mode !== 'landed' || G.dialog || stayOf(h)) return false;  // a stay in port passes as nights first (stay.js)
+  if (atSite(st)) return sailHome();  // from the rock, straight into the burn home (icerun.js)
   const cost = 0;
   if (plan.contract) st.cargo[plan.good] = (st.cargo[plan.good] || 0) + plan.tons;  // the shipper's cargo, loaded at no cost (contracts.js)
   h.run = { ...plan, cost, day: st.day, from: st.planet };
   if (plan.ice) { h.run.ice = { edge: 0 }; h.iceAt = st.day; h.iceRuns = (h.iceRuns || 0) + 1; }  // the ice is cut on the way, not bought
   h.plan = null;
-  st.dest = plan.sid;
-  st.route = { dock: plan.planet, go: true };
+  st.dest = plan.ice && plan.site ? plan.site : plan.sid;  // an ice run's first leg is to the rock (icerun.js); the burn home is sailHome's
+  st.route = plan.ice && plan.site ? null : { dock: plan.planet, go: true };
   // A crewed pilot flies her out and in; if you are the pilot, you do.
   if (pilotFlier(st)) ORDERS.pilot.find(o => o.id === 'depart').run(); else { takeOff(); const told = nobodyFlies(st); if (told) msg(told); }  // the pilot, or a stand-in with the pilot hurt (#953)
   return true;

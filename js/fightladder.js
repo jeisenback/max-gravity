@@ -5,7 +5,7 @@
 // fight starts (startShipFight), or, for the cutter, when the ship heaves to. A scene shown and run from leaves it due. Pure: the hand's record and the burn come in as parameters. Loaded after engage.js; only called into at runtime.
 
 const LADDER_RANDOM = 0.5;  // a hand's random pirate contacts come at this share of the rate engage.js gives them, and only once a type is met
-const ladderGov = (st, to) => [SYSTEMS[st.systemId].gov, SYSTEMS[to].gov].find(g => PATROL_NAMES[g]);  // the system the burn leaves, then the one it goes to
+const ladderGov = (st, to) => [placeOf(st.systemId, st).gov, placeOf(to, st).gov].find(g => PATROL_NAMES[g]);  // the system the burn leaves, then the one it goes to
 const FIGHT_LADDER = [
   { id: 'raider', spec: { kind: 'pirate', shipId: 'raider', grade: 0, pack: false }, due: h => runTotals(h).runs >= 1 },
   { id: 'corsair', spec: { kind: 'pirate', shipId: 'corsair', grade: 0, pack: false }, due: h => runTotals(h).runs >= 3 },

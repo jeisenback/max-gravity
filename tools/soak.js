@@ -141,19 +141,19 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
     const since = hired().since;
     while (runs < maxLegs && stuck < 5 && !reached && !ending.v && !(H && H.done())) {
       try {
-        UI.tab = 'bar'; UI.render();
-        const talk = async () => { if (G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); await answer(); } };
+        UI.tab = atSite(st) ? 'site' : 'bar'; UI.render();  // on station at a rock there is no bar (sites.js)
+        const talk = async () => { if (!atSite(st) && G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); await answer(); } };
         await talk();
-        while (stayOf(hired()) && !ending.v) { if (!passNight()) break; nights++; await answer(); await talk(); }  // a stay in port (the yard, a wait for the market): each night, the bar again and what the dock brings
+        while (stayOf(hired()) && !ending.v) { if (!passNight()) break; nights++; await answer(); await talk(); }  // a stay in port (the yard, a wait for the market) or the shifts on a rock (icerun.js)  // a stay in port (the yard, a wait for the market): each night, the bar again and what the dock brings
         if (order) Object.assign(power(), POWER_PRESETS[order].to);  // the order, before every sail
         const armor0 = st.armor;
         if (!sail()) { stuck++; st.day += 1; continue; }
         const to = hired().run.sid, runPlanet = hired().run.planet, creditsBefore = st.credits;
         const dayOut = st.day, lostOut = fr.lost;  // the burn's days as sailed are the days from here to the arrival, less those a run added
-        plans.push({ perDay: Math.round(hired().run.profit / Math.max(1, hired().run.days)), expected: hired().run.profit, days: hired().run.days, ice: !!hired().run.ice, light: !!hired().run.ballast });
+        if (!atSite(st)) plans.push({ perDay: Math.round(hired().run.profit / Math.max(1, hired().run.days)), expected: hired().run.profit, days: hired().run.days, ice: !!hired().run.ice, light: !!hired().run.ballast });  // the leg home from a rock is the same plan
         await answer();
-        G.player.x = BURN_DIST + 40; G.player.y = 0;  // clear of local traffic, as the autopilot leaves her (autopilot.js)
-        tryBurn(); enterTransit(); const drawAt = G.transit.times.slice(), draws = drawAt.length; if (!live) G.transit.times = [];  // as many draws as the burn would make (live: left on the burn's clock)
+        if (!G.transit) { G.player.x = BURN_DIST + 40; G.player.y = 0; tryBurn(); enterTransit(); }  // clear of local traffic, as the autopilot leaves her (autopilot.js); from a rock, sail() is already in the burn (icerun.js sailHome)
+        const drawAt = G.transit.times.slice(), draws = drawAt.length; if (!live) G.transit.times = [];  // as many draws as the burn would make (live: left on the burn's clock)
         if (H) await H.burn(G.transit, runPlanet);
         planOccasions();
         if (play) {  // the burn's own contact, planned and seen only if the drive is hot enough (engage.js), then answered at random
@@ -204,10 +204,11 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         }
         if (G.state !== st) { ending.v = ending.v || { day: st.day - since, title: 'a new game' }; break; }  // the chapter ended in a scene the titles above do not name: never read the new game as the old
         tally();
+        if (plans.length) plans[plans.length - 1].sailed = (plans[plans.length - 1].sailed || 0) + st.day - dayOut - (fr.lost - lostOut);  // the burn's days as sailed, against the days planned (shorter with a hot drive, --frames); the days a run added are left out; both legs of an ice run
+        if (atSite(st)) continue;  // on station at the rock (sites.js): an ice run is two legs with a stop, one run, counted and paid when it lands at its port
         runs++;
         paid.push(st.credits - creditsBefore);
         { const led = hired().ledger[0]; if (led && plans.length && led.day === st.day) { plans[plans.length - 1].realized = led.profit; if (led.shipper) { freight.taken++; if (led.late) freight.late++; if (!led.tons) freight.lost++; } } }  // what the run cleared against what she planned on
-        if (plans.length) plans[plans.length - 1].sailed = st.day - dayOut - (fr.lost - lostOut);  // the burn's days as sailed, against the days planned (shorter with a hot drive, --frames); the days a run added are left out
         if (hired().deal && offerDay === null) offerDay = hired().deal.day - hired().since;
         const xoKey = CAPTAINS[hired().captainKey] && CAPTAINS[hired().captainKey].xo;
         while (xoKey && xoDays.length < (castRec(xoKey).arc || 0)) xoDays.push(st.day - hired().since);

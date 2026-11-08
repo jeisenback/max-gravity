@@ -8,12 +8,12 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const NAMES = ['SYSTEMS', 'orbitPeriod', 'orbitPos', 'distAU', 'baseDays', 'travelDays', 'burnFuel', 'bestWindow', 'inRange'];
+const NAMES = ['SYSTEMS', 'orbitPeriod', 'orbitPos', 'distAU', 'baseDays', 'travelDays', 'burnFuel', 'bestWindow', 'inRange', 'sites'];
 
 // A fresh game state and crew for each test. `skill` is what roleSkill(role) answers; `fuel` is the player's full tank.
 function setup({ day = 1, skill = {}, flags = {}, fuel = 300 } = {}) {
   const G = { state: { day, flags, systemId: 'earth', market: {}, rumors: [], missions: [], cargo: {} } };
-  const api = load(['js/data.js', 'js/util.js', 'js/orbits.js'], { G, roleSkill: role => skill[role] || 0, ship: () => ({ fuel, cargo: 100 }) }, NAMES);
+  const api = load(['js/data.js', 'js/util.js', 'js/orbits.js', 'js/sites.js'], { G, roleSkill: role => skill[role] || 0, ship: () => ({ fuel, cargo: 100 }) }, NAMES);
   return { G, ...api, ids: Object.keys(api.SYSTEMS) };
 }
 
@@ -92,4 +92,12 @@ test('a place is in range when a full tank covers the burn', () => {
   assert.ok(setup({ fuel: need }).inRange('earth', 'mars'), 'exactly enough');
   assert.ok(!setup({ fuel: need - 1 }).inRange('earth', 'mars'), 'a unit short');
   assert.ok(setup({ fuel: 0 }).inRange('earth', 'earth'), 'staying put needs no mass');
+});
+
+test('a site orbits at its period like a place, and the burn math reads it', () => {
+  const { G, sites, orbitPeriod, orbitPos, travelDays, burnFuel } = setup();
+  const id = Object.keys(sites(G.state))[0], au = G.state.sites[id].au, p = orbitPeriod(id);
+  assert.ok(near(p, 365.25 * Math.pow(au, 1.5), 1e-9));
+  const a = orbitPos(id, 0), b = orbitPos(id, p); assert.ok(near(a.x, b.x, 1e-6) && near(a.y, b.y, 1e-6));
+  assert.ok(travelDays('ceres', id) >= 1 && burnFuel('ceres', id) > 0);
 });

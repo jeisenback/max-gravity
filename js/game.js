@@ -73,10 +73,10 @@ function pickFresh(lines, rnd = Math.random) {
   if (typeof line === 'string') { recent.push(line); if (recent.length > 30) recent.shift(); }
   return line;
 }
-const system = (id = G.state.systemId) => SYSTEMS[id];
+const system = (id = G.state.systemId) => placeOf(id);  // a system, or a site (sites.js)
 const ship = () => shipStats(G.state.shipId);  // the player's ship, outfits included
 const statsOf = o => (o === G.player ? ship() : SHIPS[o.shipId]);
-const currentPlanet = () => system().planets.find(p => p.name === G.state.planet);
+const currentPlanet = () => { const s = system(); return s && s.site ? s : s.planets.find(p => p.name === G.state.planet); };  // at a site, the site is its own port
 
 // The one-line notes of flight and the dock are in the text layer ('scene:flight-notes', js/hiredscenes.js); this reads one.
 const flySay = (key, vars) => sceneSay('scene:flight-notes', key, vars);
@@ -156,14 +156,15 @@ function loadGame() {
   dropMissingModContent(G.state);
   resetWorld();
   if (finishedSave()) { G.mode = 'landed'; UI.openLanded(currentPlanet(), []); openEvent(chapterOverScene()); return; }  // chapter one is finished (hired.js, #882) and chapter two not yet begun: its end, with no landing played
+  if (atSite(G.state)) return landAtSite(currentPlanet(), ['Save loaded. Welcome back.']);  // a save written on station (sites.js)
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
 }
 
 // A save can name content from a mod that has since been removed. Fall back to
 // built-in content rather than crash.
 function dropMissingModContent(st) {
-  if (!SYSTEMS[st.systemId] || !currentPlanet()) Object.assign(st, { systemId: 'earth', planet: 'Earth' });
-  if (st.dest && !SYSTEMS[st.dest]) st.dest = null;
+  if (!placeOf(st.systemId, st) || !currentPlanet()) Object.assign(st, { systemId: 'earth', planet: 'Earth' });
+  if (st.dest && !placeOf(st.dest, st)) st.dest = null;
   if (!SHIPS[st.shipId]) st.shipId = 'shuttle';
   for (const id of Object.keys(st.outfits)) if (!OUTFITS[id]) delete st.outfits[id];
   for (const id of Object.keys(st.cargo)) if (!COMMODITIES.some(c => c.id === id)) delete st.cargo[id];
@@ -588,7 +589,7 @@ function tryBurn() {
   G.departTimer = 1.2;
   G.mode = 'departing';
   Mods.emit('burnStart', st.dest);
-  msg(flySay('burn.go', { system: SYSTEMS[st.dest].name }));
+  msg(flySay('burn.go', { system: placeOf(st.dest).name }));
 }
 
 function updateDeparture(dt) {
@@ -618,6 +619,7 @@ function arrive() {
   }
   payCrew(days);
   st.rumors = st.rumors.filter(r => r.until >= st.day);
+  if (isSite(G.transit.to)) return landAtSite(siteOf(st, G.transit.to));  // a site has no flight and no dock: the ship is on station (sites.js)
   G.transit = null;
   p.x = -Math.cos(a) * 1100; p.y = -Math.sin(a) * 1100;
   p.vx = Math.cos(a) * s.maxSpeed; p.vy = Math.sin(a) * s.maxSpeed;
@@ -639,7 +641,7 @@ function openMap() {
   G.mode = 'map';
   // Start zoomed to fit where you are and where you are headed.
   const st = G.state, here = G.transit ? G.transit.to : st.systemId;
-  const far = Math.max(SYSTEMS[here].au, st.dest ? SYSTEMS[st.dest].au : 0) * 1.1;
+  const far = Math.max(placeOf(here).au, st.dest ? placeOf(st.dest).au : 0) * 1.1;
   G.mapZoom = MAP_ZOOMS.findIndex(z => z >= far);
   if (G.mapZoom < 0) G.mapZoom = MAP_ZOOMS.length - 1;
   UI.hide();
@@ -843,6 +845,7 @@ function drawBrackets(x, y, r, color) {
 
 function drawWorld(W, H) {
   const viewW = W - G.hudW, p = G.player;
+  if (atSite(G.state)) return drawStars({ x: 0, y: 0 }, viewW, H, { x: 0, y: 0 });  // on station at a site there is no local space to draw; the rock is the vista (sites.js)
   const cam = p || currentPlanet();
   const toScreen = o => [o.x - cam.x + viewW / 2, o.y - cam.y + H / 2];
 
@@ -961,7 +964,7 @@ function drawHudCompact(W) {
   ctx.textAlign = 'left';
   ctx.font = `600 15px ${LABEL_FONT}`;
   ctx.fillStyle = inTransit ? '#7fb4ff' : GOV_COLORS[sys.gov];
-  ctx.fillText(inTransit ? `To ${SYSTEMS[G.transit.to].name}` : sys.name, x, 17);
+  ctx.fillText(inTransit ? `To ${placeOf(G.transit.to).name}` : sys.name, x, 17);
   ctx.font = '11px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.textAlign = 'right';
@@ -976,7 +979,7 @@ function drawHudCompact(W) {
   ctx.font = '11px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#cfe3ff';
   const from = G.transit ? G.transit.to : st.systemId;
-  const burn = st.dest ? ` · Burn ${SYSTEMS[st.dest].name} ${travelDays(from, st.dest)}d/${burnFuel(from, st.dest)}rm` : '';
+  const burn = st.dest ? ` · Burn ${placeOf(st.dest).name} ${travelDays(from, st.dest)}d/${burnFuel(from, st.dest)}rm` : '';
   if (hired()) { ctx.fillText(wrapText(stripText(['Hull', 'Savings']), w)[0], x, 72); G.hudStrip = { x, y: 62, w, h: 14 }; }  // the hull and the savings are the bar and the figure above (readouts.js)
   else ctx.fillText(wrapText(`Cargo ${cargoUsed()}/${s.cargo}t${s.launcher ? ` · Torp ${st.torpedoes || 0}` : ''}${burn}`, w)[0], x, 72);
   if (G.target && p && !inTransit) {
@@ -1014,7 +1017,7 @@ function drawHud(W, H) {
   ctx.fillText(inTransit ? 'In transit' : sys.name, x, y);
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(inTransit ? `To ${SYSTEMS[G.transit.to].name}` : `${sys.gov}`, x, y += 16);
+  ctx.fillText(inTransit ? `To ${placeOf(G.transit.to).name}` : `${sys.gov}`, x, y += 16);
   ctx.fillText(dateOf(), x, y += 16);
   if (hired() && hiredCaptain()) ctx.fillText(`Capt. ${hiredCaptain().first} ${hiredCaptain().last}`, x, y += 16);
 
@@ -1044,7 +1047,7 @@ function drawHud(W, H) {
   const nav = G.navPlanet !== null && p ? system().planets[G.navPlanet] : null;
   if (!calm) ctx.fillText(nav ? `${nav.name} (${Math.round(dist(nav, p))})` : 'none (L)', x, y += 16);
   const from = G.transit ? G.transit.to : st.systemId;
-  ctx.fillText(st.dest ? `Burn: ${SYSTEMS[st.dest].name}` : hired() ? 'Burn: the captain\'s call' : 'Burn: none (M)', x, y += 16);
+  ctx.fillText(st.dest ? `Burn: ${placeOf(st.dest).name}` : hired() ? 'Burn: the captain\'s call' : 'Burn: none (M)', x, y += 16);
   if (st.dest) {
     const need = burnFuel(from, st.dest);
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#9ab';
@@ -1092,7 +1095,7 @@ const seenNote = (st, sid) => { const ages = SYSTEMS[sid].planets.map(pl => (st.
 function drawMap(W, H) {
   ctx.fillStyle = '#050a12';
   ctx.fillRect(0, 0, W, H);
-  const ids = Object.keys(SYSTEMS), st = G.state;
+  const st = G.state, ids = [...Object.keys(SYSTEMS), ...foundSites(st)];  // the systems, and the sites that have been found (sites.js)
   const from = G.transit ? G.transit.to : st.systemId;
 
   // True scale. The zoom level sets how many AU the map's radius spans; places
@@ -1100,7 +1103,7 @@ function drawMap(W, H) {
   const narrow = W < 700, span = MAP_ZOOMS[G.mapZoom];
   const cx = W / 2, cy = H / 2 + (narrow ? 20 : 10), R = Math.min(W, H) / 2 - (narrow ? 44 : 70), sc = R / span;
   const P = id => {
-    const o = orbitPos(id), a = Math.atan2(o.y, o.x), r = Math.min(R, SYSTEMS[id].au * sc);
+    const o = orbitPos(id), a = Math.atan2(o.y, o.x), r = Math.min(R, placeOf(id).au * sc);
     return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
   };
   G.mapPos = P;
@@ -1116,7 +1119,7 @@ function drawMap(W, H) {
   ctx.beginPath(); ctx.arc(cx, cy, (Math.min(R, 2.2 * sc) + Math.min(R, 3.3 * sc)) / 2, 0, Math.PI * 2); ctx.stroke();
   ctx.strokeStyle = '#14243a';
   ctx.lineWidth = 1;
-  for (const au of new Set(ids.map(id => SYSTEMS[id].au))) {
+  for (const au of new Set(ids.filter(id => !isSite(id)).map(id => placeOf(id).au))) {  // a site draws no orbit ring
     if (au > span) continue;
     ctx.beginPath(); ctx.arc(cx, cy, au * sc, 0, Math.PI * 2); ctx.stroke();
   }
@@ -1155,10 +1158,12 @@ function drawMap(W, H) {
   const free = (x, y, w, h) => x > 4 && x + w < W - 4 && !placed.some(b => x < b.x + b.w && x + w > b.x && y < b.y + b.h && y + h > b.y);
   const order = [from, st.dest, ...ids].filter((id, i, a) => id && a.indexOf(id) === i);
   for (const id of order) {
-    const [x, y] = P(id), sys = SYSTEMS[id], rim = sys.au > span;
+    const [x, y] = P(id), sys = placeOf(id), rim = sys.au > span;
     ctx.globalAlpha = hand || inRange(from, id) ? 1 : 0.35;
-    ctx.fillStyle = GOV_COLORS[sys.gov];
-    if (rim) {
+    ctx.fillStyle = sys.site ? sys.color : GOV_COLORS[sys.gov];
+    if (sys.site && !rim) {  // a found site: a small grey dot, no faction ring (sites.js)
+      ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fill();
+    } else if (rim) {
       // Off the edge of this zoom: a pointer on the rim.
       const a = Math.atan2(y - cy, x - cx);
       ctx.beginPath();
@@ -1233,7 +1238,7 @@ function drawMap(W, H) {
     const need = burnFuel(from, st.dest);
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#5fd35f';
     const now = travelDays(from, st.dest), w = bestWindow(from, st.dest);
-    status = `Burn to ${SYSTEMS[st.dest].name}: ${now} days, ${need} reaction mass (you have ${st.fuel}). `
+    status = `Burn to ${placeOf(st.dest).name}: ${now} days, ${need} reaction mass (you have ${st.fuel}). `
       + (w.wait ? `Best window: ${w.days} days, in ${w.wait} days.` : 'Near the best window for this route.')
       + seenNote(st, st.dest);
   }

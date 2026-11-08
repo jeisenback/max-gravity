@@ -35,10 +35,10 @@ const UI = {
   planet: null,
   notes: [],
 
-  openLanded(planet, notes) {
+  openLanded(planet, notes, tab = 'port') {
     this.planet = planet;
     this.notes = notes || [];
-    this.tab = 'port';
+    this.tab = tab;
     this.tradeNote = null;
     this.show();
   },
@@ -136,9 +136,9 @@ const UI = {
     return String(h`
       <div class="hdr">
         <div>
-          <div class="eyebrow">Docked &middot; ${sys.name}</div>
+          <div class="eyebrow">${p.site ? 'On station' : h`Docked &middot; ${sys.name}`}</div>
           <h1>${p.name}</h1>
-          <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.gov}</div>
+          <div class="sub" style="color:${p.site ? '#9ab' : GOV_COLORS[sys.gov]}">${p.site ? siteHeader(p) : sys.gov}</div>
         </div>
         <div class="stats">
           <span class="ln">${dateOf()} &middot; ${shipTitle()}, ${s.name}${cap ? h` &middot; <span class="nowrap">Capt. ${cap.first} ${cap.last}</span>` : ''}</span>
@@ -154,7 +154,7 @@ const UI = {
       <div class="dock">
         ${Mods.filter('dockButtons', '')}
         <button data-action="map">System map</button>
-        ${hired() && chapterOf(G.state) === 1 ? (stayOf(hired()) ? `<button data-action="night" class="primary">${nightLabel(stayOf(hired()))} (T)</button>` : `<button data-action="sail" class="primary">Sail with the captain (T)</button>`) : `<button data-action="takeoff" class="primary">Take off (T)</button>`}
+        ${hired() && chapterOf(G.state) === 1 ? (stayOf(hired()) ? `<button data-action="night" class="primary">${nightLabel(stayOf(hired()))} (T)</button>` : `<button data-action="sail" class="primary">${atSite(G.state) && hired().run ? `Burn for ${hired().run.planet}` : 'Sail with the captain'} (T)</button>`) : `<button data-action="takeoff" class="primary">Take off (T)</button>`}
       </div>`;
   },
 

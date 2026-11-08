@@ -45,6 +45,8 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 18. `chapter-2.md`: chapter two, the co-op's view: the player flies, trades and fights the Ore Runner under the members' vote, paying the share down, the lender's squeeze from an owners' war, and the last vote (#891).
 19. `the-belt.md`: the Belt between the named places: the kinds of settlement, the three zones of law, what holds it together, the work on its boards, and the war landing there (#891).
 20. `the-fuel-war.md`: the owners' war over the Vesta depot (Kaur Enrichment against Tycho Yard Holdings, with Ballast Security's guns and Van Leeuwen & Co.'s money): rumbling in chapter two, breaking out in chapter three, ending differently each run (#891).
+21. `later-chapters.md`: a draft of chapters 4 to 7 (more hulls, a place, alliances, a threat), where fleets, outposts and the blocs arrive, and what chapter 2 should keep in mind for them.
+22. `progression.md`: how a hand grows over a run: the sheet, the skill lines, the picks, traits, papers and standing, each earned differently and all read by the one check rule; what each chapter adds.
 
 ## Where the game must change to fit
 

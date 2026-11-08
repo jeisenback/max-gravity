@@ -302,11 +302,10 @@ function transitSeconds(days) {
 
 function enterTransit() {
   const st = G.state, to = st.dest;
-  const iceRun = !!(hired() && hired().run && hired().run.ice);  // the long run out to the ice and back (icerun.js)
-  const days = iceRun ? iceDays(travelDays(st.systemId, to)) : travelDays(st.systemId, to), total = transitSeconds(days), fuelCost = burnFuel(st.systemId, to);
+  const days = travelDays(st.systemId, to), total = transitSeconds(days), fuelCost = burnFuel(st.systemId, to);
   st.fuel -= fuelCost;
   st.dest = null;
-  const count = Math.max(iceRun ? 5 : 0, 1 + Math.floor(total / 40)) + (walkPending() ? 1 : 0);  // 2 to 4 happenings per burn, one more for the first officer's walk-through (captains.js)
+  const count = 1 + Math.floor(total / 40) + (walkPending() ? 1 : 0);  // 2 to 4 happenings per burn, one more for the first officer's walk-through (captains.js)
   G.transit = {
     to, days, total, fuelCost, slots: lifeSlotCount(days), left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
     times: Array.from({ length: count }, (_, i) => total * (i + rand(0.3, 0.8)) / count),
@@ -316,7 +315,8 @@ function enterTransit() {
   G.cam = null;  // each burn starts with the camera snapped to the hand
   G.npcs = []; G.shots = []; G.target = null;
   if (!G.transitStars) G.transitStars = Array.from({ length: 150 }, () => ({ x: Math.random(), y: Math.random(), z: rand(0.2, 1) }));
-  comm(`Burn plotted for ${SYSTEMS[to].name}: ${days} days. Crash couches ready.`);
+  const run = hired() && hired().run;  // an ice run's first leg says what the run is, once, at the start (icerun.js, #948)
+  comm(`Burn plotted for ${placeOf(to).name}: ${days} days. ${run && run.ice && !atSite(st) ? `An ice run: ${ICE_SHIFTS_WORD} shifts on the rock, then home to ${placeOf(run.sid).name} with the hold full.` : 'Crash couches ready.'}`);
   const qm = roleHolder('quartermaster');
   if (qm) {
     const lead = linedText('lines:market-rumors', RUMORS).lead;
@@ -455,7 +455,7 @@ function transitPanel(x, y, w, h, title) {
 function drawRoute(cx, y, barW, progress, arrive = null) {
   const t = G.transit, bx = cx - barW / 2;
   const dot = (x, sid) => {
-    ctx.fillStyle = SYSTEMS[sid].planets[0].color;
+    const place = placeOf(sid); ctx.fillStyle = place.site ? place.color : place.planets[0].color;  // a site has no planets (sites.js)
     ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
     ctx.strokeStyle = 'rgba(207,227,255,0.5)'; ctx.stroke();
   };
@@ -524,7 +524,7 @@ function drawBurnBar(b, dates, progress) {
   glassPanel(b.x, b.y, b.w, b.h);
   const title = `${shipTitle().toUpperCase()} IN TRANSIT`;
   const local = t.to === st.systemId && st.route && st.route.dock;  // a run inside one system (Earth to Luna) names the ports, not the system twice (#854)
-  const route = local ? `${st.planet}  >  ${st.route.dock}` : `${system().name}  >  ${SYSTEMS[t.to].name}`;
+  const route = local ? `${st.planet}  >  ${st.route.dock}` : `${system().name}  >  ${placeOf(t.to).name}`;
   const pull = s.phase === 'FLIP' ? 'FLIP: drive off, weightless' : `${s.phase}: ${s.g.toFixed(2)} g thrust`, hot = Math.min(1, s.v / s.peak || 0);
   const speedColor = `rgb(${Math.round(150 + 90 * hot)},${Math.round(200 + 40 * hot)},255)`;
   const secs = Math.max(0, Math.ceil(t.left)), mss = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
@@ -654,7 +654,7 @@ function drawTransit(W, H) {
   // behind the nose, drawn first so the hull covers it. Not on a narrow screen, where the ship takes the box's width.
   let destBox = null;
   if (!narrow) {
-    const dest = SYSTEMS[t.to].planets[0], dx = shipBox.x + shipBox.w - 56, dy = shipBox.y + 44, k = (8 + 32 * progress) / 40;
+    const place = placeOf(t.to), dest = place.site ? siteBody(place, 40) : place.planets[0], dx = shipBox.x + shipBox.w - 56, dy = shipBox.y + 44, k = (8 + 32 * progress) / 40;  // a site is drawn as its rock (sites.js)
     ctx.save(); ctx.translate(dx, dy); ctx.scale(k, k);
     drawBody({ name: dest.name, color: dest.color, r: 40 }, 0, 0, { sun: { angle: Math.PI, strength: 1 } });
     ctx.restore();
