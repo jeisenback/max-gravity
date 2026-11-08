@@ -48,9 +48,9 @@ const hiredCaptain = () => (hired() ? G.state.people[hired().captain] : null);
 const notYours = post => !!hired() && hired().post !== post;
 
 // ---------- skill at each post ----------
-// Experience points per post, kept when you swap. Levels come at 0, 12, 45 and 110 points: about 0.7 a day, so a chapter of a hundred
-// days ends at the second level, and the third is for someone who works at it (or the chapters after).
-const SKILL_STEPS = [0, 12, 45, 110];
+// Experience points per post, kept when you swap. Levels come at 12, 45, 110, 220 and 400 points: about 0.7 a day, so a chapter of a hundred
+// days ends at the second level, and the third is for someone who works at it (or the chapters after). Each level offers a pick (picks.js).
+const SKILL_STEPS = [0, 12, 45, 110, 220, 400];  // five levels (#963): the first three as they were, 220 a hand who works at it through chapter two, 400 the later chapters
 // Runs with the captain and what they paid you, over the whole chapter. A save from before these were kept counts what its ledger holds.
 const runTotals = h => ({
   runs: h.runsDone !== undefined ? h.runsDone : h.ledger.length,
@@ -71,7 +71,7 @@ function gainSkill(post, n) {
 // One plain line when the hand's own post reaches a new level, on the port screen when docked and in the flight log on a burn (as Mods' note).
 function levelNote(post, level) {
   const name = POSTS[post].name, text = role().canTrade ? `Your work at the ${name.toLowerCase()} post is level ${level} now. When you take it yourself it works a tenth more often.`  // an owner's post: taken by hand at the station (stations.js)
-    : `Your work at the ${name.toLowerCase()} post is level ${level} now. ${post === 'gunner' ? 'Your shots in a ship fight hit harder, and your' : 'Your'} two abilities in a deck fight work more often${level >= 2 ? `. The choices marked [${name} ${level}] are open to you` : ''}.`;
+    : `Your work at the ${name.toLowerCase()} post is level ${level} now. ${post === 'gunner' ? 'Your shots in a ship fight hit harder, and your' : 'Your'} two abilities in a deck fight work more often${level >= 2 ? `. The choices marked [${name} ${level}] are open to you` : ''}.${pickDue(career(), level) ? ' A pick waits on your page.' : ''}`;  // the ladder's pick (picks.js, #963)
   if (G.mode !== 'landed') return msg(text);
   UI.notes.push(text);
   if (!G.dialog) UI.render();
@@ -80,7 +80,9 @@ function levelNote(post, level) {
 const handStat = stat => { const c = career(); return c && c.sheet ? c.sheet[stat] : STAT_BASE; };
 // Doing a job yourself: the odds are worse than a crew member's, and get better as you learn the post.
 // A roll of the hand's: the sheet's rule (sheet.js) with the stat named, the level, the kind of roll (DIFFICULTY's keys) and an edge, and what the kit adds to that kind.
-const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, DIFFICULTY[kind], edge + kitEdge(career() && career().kit, kind));
+const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, DIFFICULTY[kind], edge + kitEdge(career() && career().kit, kind) + pickEdge(takenPicks(career()), kind));  // the kit's edge and the picks' (picks.js)
+// Whether the hand has taken a perk pick (picks.js): the one reader every perk's hook calls; false with no hand.
+const handPerk = id => hasPerk(takenPicks(career()), id);
 const soloOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'solo');
 // The job of your own post in a fight, an ice run or a contact: half a chance at the base, a tenth better for each level.
 const postOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'post');

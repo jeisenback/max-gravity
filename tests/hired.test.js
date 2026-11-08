@@ -887,3 +887,17 @@ test('on a hired ship the torpedoes read as the captain\'s two, with her reason,
   assert.match(r.hud, /^Torps:\s+2 \(F\)$/); assert.equal(r.owner, '2/6'); assert.equal(r.hand, '2');
   await done();
 });
+
+// The post ladders (#963): five levels, and the level note says when a pick waits on the hand's page.
+test('the ladder has five levels ending at 400 points, and the level note says a pick waits', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(); st.tutorial = null; st.story.next = 1e9; G.mode = 'landed'; UI.notes = [];
+    gainSkill('gunner', 45);  // the second level lands (a hand signs on at the first)
+    return { steps: SKILL_STEPS, note: UI.notes.find(n => /level 2 now/.test(n)) || '', picks: h.picks };
+  });
+  assert.deepEqual(r.steps, [0, 12, 45, 110, 220, 400]);
+  assert.match(r.note, /A pick waits on your page\.$/);
+  await done();
+});
