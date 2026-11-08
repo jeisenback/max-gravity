@@ -70,14 +70,14 @@ function canUse(st, orders, id, known = []) {
   const held = !!(st.me.pdc && orders.pdc === 'hold');
   if (id === 'vent') return st.heat > 0 || st.locked.length > 0;
   if (id === 'split') return held && gunsReady(st) > 0 && turnShots(st, orders, true).length >= gunsReady(st);  // the held turret must really cost a shot
-  const drive = st.me.parts.drive.hp > 0, foeUp = st.foes.some(up), band = RANGE_BANDS[st.band];
-  if (id === 'break-intercept') return drive && st.band < RANGE_BANDS.length;
-  if (id === 'redline') return drive && band === 'long';
+  const drive = () => st.me.parts.drive.hp > 0, foeUp = () => st.foes.some(up), band = RANGE_BANDS[st.band];  // read only by the move that asks (a test's bare state may lack the parts)
+  if (id === 'break-intercept') return drive() && st.band < RANGE_BANDS.length;
+  if (id === 'redline') return drive() && band === 'long';
   if (id === 'patch') return st.me.armor < st.me.maxArmor;
   if (id === 'hot-start') return turnShots(st, orders).length > 0;
   if (id === 'bypass') return st.me.parts.drive.hp < st.me.parts.drive.max;
-  if (id === 'spoof') return foeUp;
-  if (id === 'parley') return foeUp && (band === 'mid' || band === 'long');
+  if (id === 'spoof') return foeUp();
+  if (id === 'parley') return foeUp() && (band === 'mid' || band === 'long');
   const shot = turnShots(st, orders).find(x => x.i === orders.gun);  // the named gun must fire
   if (id === 'called-shot') return !!shot;
   const part = shot && st.foes[shot.o.foe] && st.foes[shot.o.foe].parts[shot.o.part];

@@ -8555,8 +8555,8 @@
   "v": {
    "pilot:true": 0.45,
    "pilot:false": 0.45,
-   "gunner:true": 0.5,
-   "gunner:false": 0.5,
+   "gunner:true": 0.6,
+   "gunner:false": 0.6,
    "engineer:true": 0.45,
    "engineer:false": 0.45,
    "comms:true": 0.5,
@@ -8571,7 +8571,7 @@
    "labels": [
     "Cut the manual release [Engineer, 45%; if it fails: you may be hurt]",
     "Talk the controller into an override [Comms, 50%; if it fails: the captain marks it]",
-    "Put your shoulder to the wheel [Gunner, 45%; if it fails: you may be hurt]",
+    "Put your shoulder to the wheel [Gunner, 55%; if it fails: you may be hurt]",
     "Fetch the dockmaster the crew chief and stay out of it"
    ]
   }
@@ -8820,7 +8820,7 @@
    "title": "Escort on the Lower Decks",
    "text": "The courier is a thin man in a good coat who keeps both hands on a case. \"It's not far,\" he says. \"Three decks down, a lock, and a door with a lamp over it. There are people who'd like what's in this case, and I'd like them not to have it.\" He looks at your boots. \"I pay for people who walk quietly.\"",
    "labels": [
-    "Walk the lower decks ahead of him [Gunner, 50%; if it fails: you may be hurt]",
+    "Walk the lower decks ahead of him [Gunner, 60%; if it fails: you may be hurt]",
     "Take him down a service route [Pilot, 45%; if it fails: your standing here]",
     "Tell him you won't go down there tonight"
    ]
@@ -8962,7 +8962,7 @@
    "text": "The line for the day's water runs around the corner and back, and at the head of it two families are shouting at the clerk, and at each other, over a ration chit that was issued twice. The warden catches your sleeve. \"You're not from here,\" she says, \"which is what I need. Somebody they both won't mind listening to.\"",
    "labels": [
     "Talk them down [Comms, 50%; if it fails: you may be hurt]",
-    "Step between them [Gunner, 45%; if it fails: you may be hurt]",
+    "Step between them [Gunner, 55%; if it fails: you may be hurt]",
     "Get the warden and let her handle it"
    ]
   }
@@ -9044,7 +9044,7 @@
    "text": "The contact is waiting at the dock gate on Ironheart, a man in a long coat who looks at your ship before he looks at you. He's not the one Mrs. Adeyemi described. He's too easy, too well dressed, and he knows your name. \"I'll take that off your hands,\" he says, and holds out both of them.",
    "labels": [
     "Ask him what Mrs. Adeyemi said to say [Comms, 50%; if it fails: your standing here]",
-    "Walk him to a crowded place before you hand it over [Gunner, 50%; if it fails: you may be hurt]",
+    "Walk him to a crowded place before you hand it over [Gunner, 60%; if it fails: you may be hurt]",
     "Hand it over and take the fee"
    ],
    "blurb": "{who} has a sealed package for a contact on {dest}, and doesn't trust the post."
@@ -9333,7 +9333,7 @@
    "title": "A Witness on Ironheart",
    "text": "The dockworker is waiting in the back room of a noodle stall on Ironheart, a small woman with her coat buttoned to the neck and her hands flat on the table. \"Mrs. Adeyemi said you'd come,\" she says. \"The office is four streets away. I've been told, twice, that I wouldn't make it there.\" She looks at you. \"I'd like to make it there.\"",
    "labels": [
-    "Walk her through the streets [Gunner, 50%; if it fails: you may be hurt]",
+    "Walk her through the streets [Gunner, 60%; if it fails: you may be hurt]",
     "Arrange a quiet meeting by relay instead [Comms, 50%; if it fails: your standing here]",
     "Tell her you can't do this"
    ],

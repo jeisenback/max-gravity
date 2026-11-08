@@ -748,7 +748,7 @@ const ACTIVITIES = {
       G.state.armor = Math.min(max, before + amount);
       for (const p of shipPeople()) toActivity(p, p.role === 'passenger' ? 'galley' : p.role === 'captain' ? 'bridge' : lifePick(['engine', 'hold']));
       const day = G.state.day;  // the result and its tail are one version, taken by the day
-      return `${lifeSay(tellingOn('repair.result', day), { before, after: G.state.armor, max })} ${roleSkill('engineer') ? lifeSay(tellingOn('repair.skilled', day), { name: roleName('engineer') }) : lifeSay(tellingOn('repair.alone', day))}`;
+      return `${lifeSay(tellingOn('repair.result', day), { before, after: G.state.armor, max })} ${roleHolder('engineer') && roleSkill('engineer') ? lifeSay(tellingOn('repair.skilled', day), { name: roleName('engineer') }) : lifeSay(tellingOn('repair.alone', day))}`;  // a crewmate engineer's hand on it; a hand at that post works alone
     },
   },
   visit: {

@@ -109,7 +109,7 @@ function boardingEvent(n) {
         `The ${prize.name} is still spaceworthy, ` +
         `barely.${resists ? (
         ` Boarding against resistance: about ${Math.round(boardOdds() * 100)}% to carry ` +
-        `it${roleSkill('gunner') ? `, with ${roleName('gunner')} leading` : ''}.`) : ''}`),
+        `it${roleSkill('gunner') ? `, with ${roleHolder('gunner') ? roleName('gunner') : 'you'} leading` : ''}.`) : ''}`),  // a hand at the gunner post leads the party themselves
     choices: [
       { label: n.kind === 'pirate' ? 'Board and take what they have' : 'Board and strip the cargo',
         ...gated(notYet(() => n.disabled === 'stripped', 'She has been stripped already.'), [() => n.kind === 'pirate' || cargoFree() > 0, () => 'There is no room in the hold.']),
