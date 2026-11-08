@@ -195,3 +195,27 @@ test('a later ice run opens each scene with its own words, and its first scene n
   assert.ok(!/last haul/.test(r.first[0]) && !/last haul/.test(r.second[1]), 'only the second run\'s first scene speaks of the last haul');
   await done();
 });
+
+// The whole-branch review of #968 (2026-11-08): two one-click paths crashed at the rock.
+test('the map draws at the rock and on the burn to it, and a save reloaded at the rock sails home and docks', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), h = hired(), id = Object.keys(sites(st))[0], out = {};
+    h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: { ice: true, site: id, good: 'water', tons: 40, cost: 0, profit: 1, planet: 'Mars', sid: 'mars', days: 15, ballast: false } };
+    sail(); G.player.x = BURN_DIST + 40; G.player.y = 0; tryBurn(); if (!G.transit) enterTransit();
+    try { openMap(); drawMap(1280, 800); closeMap(); out.mapInBurn = 'ok'; } catch (e) { out.mapInBurn = String(e.message); closeMap(); }
+    G.transit.left = 0; G.transit.times = []; updateTransit(0.01); while (G.dialog) { chooseEvent(0); finishEvent(); }
+    try { openMap(); drawMap(1280, 800); closeMap(); out.mapAtRock = 'ok'; } catch (e) { out.mapAtRock = String(e.message); closeMap(); }
+    loadGame(); while (G.dialog) { chooseEvent(0); finishEvent(); }  // the save written on station
+    out.reloaded = { at: G.state.systemId, player: !!G.player };
+    const h2 = hired(); while (stayOf(h2)) { passNight(); while (G.dialog) { chooseEvent(0); finishEvent(); } }
+    out.sailed = sail(); G.transit.times = []; G.transit.left = 0;
+    try { updateTransit(0.01); out.home = { mode: G.mode, at: G.state.systemId, player: !!G.player }; } catch (e) { out.home = String(e.message); }
+    return out;
+  });
+  assert.equal(r.mapInBurn, 'ok'); assert.equal(r.mapAtRock, 'ok');
+  assert.match(r.reloaded.at, /^site:ice-/); assert.ok(r.sailed);
+  assert.deepEqual(r.home, { mode: 'flight', at: 'mars', player: true });
+  await done();
+});
