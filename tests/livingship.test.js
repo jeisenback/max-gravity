@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, roomBox, roomWalls, roomScreen, gaugeNeedle } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle']);
+const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomBox, roomWalls, roomScreen, gaugeNeedle } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = [], styles = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'styles' ? styles : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); if (k === 'fillStyle' || k === 'strokeStyle') styles.push(String(v).toLowerCase()); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -31,6 +31,35 @@ test('every posture draws, faced either way, and gives a point to tap; the head 
     const c = fakeCtx(), at = drawPerson(c, { name, x: 0.5, deck: 0, face, frame }, 400, 100, { color: '#ffb347', skin: '#c08a68', hair: '#2a1d18' });
     assert.ok(c.calls.length > 0, `${name} drew`); assert.equal(c.depth, 0, `${name}: every save is restored`); assert.ok(at.y < 100 && at.y > 100 - 80, `${name}: a tap point on the body`);
     assert.ok(!c.calls.includes('drawImage'), `${name}: no portrait in the cutaway`);
+  }
+});
+// #958: the figure is drawn from parts, and people differ: the hair follows the portrait's cut, and the face shows the mood.
+test('every posture draws in every hair style and mood, with every save restored (#958)', () => {
+  for (const name of Object.keys(POSTURES).filter(n => !n.startsWith('cat'))) for (let v = 0; v < 12; v++) for (const mood of [undefined, 'good', 'low', 'hurt']) for (const floating of [0, 1]) {
+    const c = fakeCtx(), at = drawPerson(c, { name, x: 0.5, deck: 0, face: 1, frame: 0 }, 400, 100, { color: '#ffb347', skin: '#c08a68', hair: '#2a1d18', cut: v % 3, v: v * 37, mood, floating });
+    assert.equal(c.depth, 0, `${name} v${v} ${mood}: every save is restored`); assert.ok(at.y < 100 && at.y > 20, `${name}: a tap point on the body`);
+  }
+});
+test('the hair style follows the portrait\'s cut, and the rest varies by person (#958)', () => {
+  const styles = cut => new Set(Array.from({ length: 64 }, (_, v) => figStyle({ cut, v }).style));
+  assert.deepEqual([...styles(0)].sort(), ['crop', 'curls'], 'cut 0 is short');
+  assert.deepEqual([...styles(1)].sort(), ['bun', 'loose', 'tail'], 'cut 1 is long');
+  assert.deepEqual([...styles(2)].sort(), ['bald', 'buzz'], 'cut 2 is close');
+  const all = Array.from({ length: 2048 }, (_, v) => figStyle({ cut: 0, v }));
+  for (const k of ['face', 'nose', 'build', 'brow']) assert.ok(new Set(all.map(s => s[k])).size > 1, `${k} varies`);
+  assert.ok(Array.from({ length: 2048 }, (_, v) => figStyle({ cut: 1, v })).every(s => s.face === 'none'), 'no beard with long hair');
+  assert.deepEqual(figStyle({ cut: 2, v: 99 }), figStyle({ cut: 2, v: 99 }), 'the same person looks the same every time');
+});
+test('the face shows the mood: hurt over low, low over high spirits, and you when you are hurt (#958)', () => {
+  const st = { day: 10, injured: { a: true }, people: { a: { mood: { kind: 'low', until: 20 } }, b: { mood: { kind: 'low', until: 20 } }, c: { mood: { kind: 'high', until: 20 } }, d: { mood: { kind: 'low', until: 5 } }, e: {} } };
+  assert.equal(figureMood(st, 'a', false), 'hurt'); assert.equal(figureMood(st, 'b', false), 'low'); assert.equal(figureMood(st, 'c', false), 'good');
+  assert.equal(figureMood(st, 'd', false), undefined, 'a mood that has passed'); assert.equal(figureMood(st, 'e', false), undefined);
+  assert.equal(figureMood(st, 'you', true), 'hurt'); assert.equal(figureMood(st, 'you', false), undefined);
+});
+test('someone on a crash couch lies back the way the couch does, whichever way they faced (#949)', () => {
+  for (const face of [1, -1]) {
+    const at = drawPerson(fakeCtx(), { name: 'couch', x: 0.5, deck: 0, face, frame: 0 }, 400, 100, { color: '#ffb347' });
+    assert.ok(at.head.x < 400, `face ${face}: the head toward the couch's back, on the left`);
   }
 });
 test('a sleeper lies with the head to the left whichever way they last faced', () => {

@@ -120,6 +120,14 @@ function repairsFor(people, state) {
   }
   return out;
 }
+// How a person's face reads in the cutaway (figures.js figHead, #958): hurt while injured, else low or in good spirits while a mood lasts
+// (family.js moodLow, moodHigh); you are hurt when the game says so (handHurt), given as youHurt.
+function figureMood(st, id, youHurt) {
+  if (id === 'you') return youHurt ? 'hurt' : undefined;
+  if ((st.injured || {})[id]) return 'hurt';
+  const m = ((st.people || {})[id] || {}).mood;
+  return m && m.until > st.day ? { low: 'low', high: 'good' }[m.kind] : undefined;
+}
 // `who` is what the game decides elsewhere: { aid } the first-aid giver's id (roleHolder('medic')) and { you } whether you are hurt (handHurt).
 function shipState(st, t, maxArmor, rnd, who) {
   const crew = st.crew.map(id => (st.people || {})[id]).filter(Boolean), hurt = crew.filter(c => (st.injured || {})[c.id]).map(c => c.id);
@@ -654,6 +662,7 @@ function drawCutaway(box, clear = box) {
   ctx.font = `600 12px ${roomFont}`;
   const berths = cutRect(roomAt('berths'), len), labels = [], dots = [], hits = [];
   const floatW = burnRamp(pr, 0.47, 0.49) - burnRamp(pr, 0.51, 0.53);  // how far the float has built at the flip, 0 to 1 and back (#927)
+  const youHurt = handHurt();
   for (const p of people) if (p.role !== 'cat' && p.seat !== undefined && seen(X(p.seat) - 40, X(p.seat) + 40)) roomCouchFold(ctx, X(p.seat), floorY(0), p.couch || 0);  // each crash couch, folded into the deck or out (#925)
   for (const p of people) {
     const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p));
@@ -663,7 +672,7 @@ function drawCutaway(box, clear = box) {
     if (Math.abs(x - camX) > half + 60) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = Math.abs(x - camX) <= half;
     if (pose.name === 'strap') roomJumpSeat(ctx, x, y, pose.face, w.flip);  // a jump seat folded down from the wall behind them (#927)
-    const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float' ? floatW : 0, ...(p.role === 'cat' ? {} : portraitLook({ id: p.id, name: p.name })) });
+    const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float' ? floatW : 0, ...(p.role === 'cat' ? {} : { ...portraitLook({ id: p.id, name: p.name }), mood: figureMood(st, p.id, youHurt) }) });
     if (pose.name === 'tether') {  // a line to a ring on the nearest bulkhead
       const d = CUT_WALLS[dk], bx = X([...d.hatch, d.end].reduce((a, b) => (Math.abs(b - p.x) < Math.abs(a - p.x) ? b : a))), rx = bx + Math.sign(x - bx) * 6, ry = floorY(dk) - 60;
       ctx.strokeStyle = 'rgba(201,162,39,0.9)'; ctx.lineWidth = 1.4;
