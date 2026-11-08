@@ -11,7 +11,7 @@ const POSTURES = {
   work: { frames: 4, fps: 3 },  // at a panel, the hands moving (shiplife.js: at a post in a shift, the cook at the stove)
   'work-sit': { frames: 4, fps: 3 },  // seated at the controls, the hands moving (the bridge and the guns)
   bunk: { frames: 1, fps: 0 },
-  strap: { frames: 2, fps: 1 },
+  strap: { frames: 8, fps: 2 },  // strapped into a jump seat; the float drifts the arms and the legs (#927)
   tether: { frames: 8, fps: 4 },
   'cat-walk': { frames: 6, fps: 8 },
   'cat-sit': { frames: 2, fps: 1 },
@@ -57,7 +57,7 @@ const FIG_GROUNDED = ['stand', 'walk', 'sit', 'strap', 'work', 'work-sit'];  // 
 
 // The joint angles of a person's posture at a frame, for a figure facing right (a figure facing left is the same drawn mirrored).
 // hip is how high the hip is above the floor; rot leans the whole body (0 upright, negative back, -pi/2 lying with the head to the left).
-function figPose(name, frame, frames) {
+function figPose(name, frame, frames, float = 0) {  // float: how far the flip's float has built, 0 to 1 (the strap pose)
   const ph = Math.PI * 2 * frame / frames, S = Math.sin, wave = S(ph);
   const base = { hip: 36, rot: 0, arms: [0.1, 0.15, -0.1, 0.05], legs: [0.04, 0, -0.04, 0], head: 0, squash: 1, strap: 0 };
   switch (name) {
@@ -69,7 +69,11 @@ function figPose(name, frame, frames) {
     case 'work': return { ...base, arms: [1.25 + wave * 0.12, 1.75 + wave * 0.25, 1.1 - wave * 0.12, 1.6 - S(ph + 1) * 0.25], head: 0.08 };  // the forearms on the panel, working
     case 'work-sit': return { ...base, hip: 18, rot: -0.04, arms: [1.3 + wave * 0.1, 1.7 + wave * 0.2, 1.2 - wave * 0.1, 1.6 - S(ph + 1) * 0.2], legs: [1.57, 0, 1.5, -0.05], head: 0.12 };
     case 'bunk': return { ...base, hip: 5, rot: -1.57, arms: [1.4, 1.5, 1.3, 1.5], legs: [1.57, 1.57, 1.5, 1.62], head: 0 };
-    case 'strap': return { ...base, hip: 19, rot: 0.08 * (1 - 2 * frame), arms: [1.2, 1.6, 0.3, -0.2], legs: [1.6 + wave * 0.08, 0.3 + wave * 0.1, 1.5, 0.2], head: 0.1, strap: 1 };
+    case 'strap': {  // seated in a jump seat, the hands on the harness; as the float builds the arms and the legs lift and drift against the straps (#927)
+      const f = float, d = wave * f;
+      return { ...base, hip: 18 + f * 2 + d * 1.5, rot: -0.06, arms: [0.5 + f * 1.8 + d * 0.25, 1.2 + f * 1.4 - d * 0.2, 0.4 + f * 1.6 - d * 0.2, 1.1 + f * 1.3 + d * 0.15],
+        legs: [1.57 - f * 0.6 + d * 0.1, -0.1 + f * 0.4, 1.5 - f * 0.5 - d * 0.1, -0.1 + f * 0.3], head: 0.1 - f * 0.15, strap: 1 };
+    }
     case 'tether': return { ...base, hip: 70 + wave * 3, rot: 1.25, arms: [2.1, 1.4, 1.0, 1.6], legs: [-1.4 + wave * 0.25, -1.6 + S(ph + 1) * 0.3, -1.2 + S(ph + 2) * 0.25, -1.0 + S(ph * 2) * 0.3], head: 0.1 };
   }
   return null;
@@ -106,7 +110,7 @@ function drawPerson(ctx, pose, x, y, look) {
   let tap, head, foot;
   if (pose.name.startsWith('cat')) head = foot = tap = figCat(ctx, pose.name, pose.frame, frames);
   else {
-    const k = FIG_SCALE, q = figPose(pose.name, pose.frame, frames), j = figJoints(q), S = Math.sin, col = look.color;
+    const k = FIG_SCALE, q = figPose(pose.name, pose.frame, frames, +look.floating || 0), j = figJoints(q), S = Math.sin, col = look.color;
     ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     const skin = look.skin || '#c9a98a', hair = look.hair || '#3a2f28', boot = '#20242b', glove = '#2c3139', back = figShade(col, 0.62);
     if (!look.floating && FIG_GROUNDED.includes(pose.name)) { ctx.fillStyle = 'rgba(0,0,0,0.32)'; ctx.beginPath(); ctx.ellipse(2, 0, 17, 3.2, 0, 0, Math.PI * 2); ctx.fill(); }  // a shadow on the deck
@@ -114,7 +118,7 @@ function drawPerson(ctx, pose, x, y, look) {
     figLimb(ctx, j.armB, 5, 4, figShade(col, 0.55)); figDot(ctx, j.armB[2][0], j.armB[2][1], 2.5, glove);
     figLimb(ctx, j.legF, 6.4, 5, col); figBoot(ctx, j.legF, figShade(boot, 1.15));
     figTorso(ctx, j, col);
-    if (q.strap > 0) {  // the straps across the chest, and the buckle
+    if (q.strap > 0 || pose.strapped) {  // the straps across the chest, and the buckle (a sleeper is strapped into the bunk at the flip)
       ctx.strokeStyle = 'rgba(18,22,28,1)'; ctx.lineWidth = 2.2;
       const n = j.neck, h = j.hip, px = j.perp[0] * 5, py = j.perp[1] * 5;
       figSeg(ctx, [[n[0] - px, n[1] - py], [h[0] + px, h[1] + py]]); figSeg(ctx, [[n[0] + px, n[1] + py], [h[0] - px, h[1] - py]]);
@@ -123,9 +127,14 @@ function drawPerson(ctx, pose, x, y, look) {
     const hx = j.head[0], hy = j.head[1], ph = Math.PI * 2 * pose.frame / frames, up = Math.atan2(hy - j.neck[1], hx - j.neck[0]);
     ctx.strokeStyle = figShade(skin, 0.85); ctx.lineWidth = 4.5; figSeg(ctx, [j.neck, [j.neck[0] + Math.cos(up) * 3, j.neck[1] + Math.sin(up) * 3]]);  // the neck
     figLimb(ctx, j.armF, 5, 4, col); figDot(ctx, j.armF[2][0], j.armF[2][1], 2.6, glove);
-    if (look.floating) {  // three strands of hair rising
-      ctx.strokeStyle = hair; ctx.lineWidth = 1.6;
-      for (let i = -1; i <= 1; i++) { ctx.beginPath(); ctx.moveTo(hx + i * 4, hy - 8); ctx.quadraticCurveTo(hx + i * 7 + S(ph + i) * 4, hy - 17, hx + i * 5 + S(ph * 0.75 + i) * 6, hy - 22); ctx.stroke(); }
+    if (look.floating) {  // the hair lifts off the head and sways, as far as the float has built: its own mass and two soft locks, not strands (#927)
+      const f = +look.floating, sway = S(ph) * 0.25 * f;
+      ctx.save(); ctx.translate(hx, hy); ctx.rotate(up + Math.PI / 2 + sway);  // -y is the head's up
+      ctx.fillStyle = hair;  // a soft cloud over the crown: one mass, and two smaller ones drifting either way
+      for (const [cx, cy, rx, ry, rot] of [[-2, -7 - 2 * f, 10.5, 4 + 3 * f, 0], [-6 + sway * 4, -10 - 4 * f, 6, 3 + 2.5 * f, -0.3], [3 - sway * 4, -11 - 4 * f, 5, 2.5 + 2 * f, 0.3]]) {
+        ctx.beginPath(); ctx.ellipse(cx, cy, rx, ry, rot, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
     }
     figHead(ctx, hx, hy, up, skin, hair);
     tap = { x: j.mid[0] * k, y: j.mid[1] * k }; head = { x: j.head[0] * k, y: j.head[1] * k }; foot = { x: j.legF[2][0] * k, y: j.legF[2][1] * k };
