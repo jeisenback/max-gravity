@@ -7,8 +7,8 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const world = { runs: 0, beats: false };
-const { FIGHT_LADDER, LADDER_RANDOM, ladderNext, ladderDone, ladderMet, ladderPirate, ladderPack } = load(['js/data.js', 'js/fightladder.js'], {
-  runTotals: h => ({ runs: world.runs }), captainBeatsDone: () => world.beats,
+const { FIGHT_LADDER, LADDER_RANDOM, ladderNext, ladderDone, ladderMet, ladderPirate, ladderPack } = load(['js/data.js', 'js/util.js', 'js/orbits.js', 'js/sites.js', 'js/fightladder.js'], {  // the ladder reads a place through placeOf (orbits.js, sites.js)
+  runTotals: h => ({ runs: world.runs }), captainBeatsDone: () => world.beats, G: { state: { day: 50 } }, roleSkill: () => 0, ship: () => ({ fuel: 300 }),
 }, ['FIGHT_LADDER', 'LADDER_RANDOM', 'ladderNext', 'ladderDone', 'ladderMet', 'ladderPirate', 'ladderPack']);
 const plain = x => JSON.parse(JSON.stringify(x));  // out of the context's realm
 const st = { systemId: 'ceres', day: 50, credits: 0 };
