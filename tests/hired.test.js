@@ -374,6 +374,7 @@ test('once you can afford a ship, the captain heads for a port with a yard', asy
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, h = st.hired, out = {};
     out.yardsInReach = Object.entries(SYSTEMS).filter(([sid]) => sid !== st.systemId && inRange(st.systemId, sid)).some(([, s]) => s.planets.some(p => p.services.includes('shipyard') && p.services.includes('trade')));
+    Object.assign(h, { beats: 2, beatRun: -2, flags: { ...(h.flags || {}), sawHull: true } });  // the captain's scenes played, so the co-op's offer can come (#954)
     st.credits = 200000; h.plan = null; const rich = currentPlan();
     out.rich = { yard: rich.yard, planet: rich.planet };
     st.credits = 3000; h.plan = null; const poor = currentPlan();
