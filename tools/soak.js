@@ -141,10 +141,10 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
     const since = hired().since;
     while (runs < maxLegs && stuck < 5 && !reached && !ending.v && !(H && H.done())) {
       try {
-        UI.tab = 'bar'; UI.render();
-        const talk = async () => { if (G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); await answer(); } };
+        UI.tab = atSite(st) ? 'site' : 'bar'; UI.render();  // on station at a rock there is no bar (sites.js)
+        const talk = async () => { if (!atSite(st) && G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); await answer(); } };
         await talk();
-        while (stayOf(hired()) && !ending.v) { if (!passNight()) break; nights++; await answer(); await talk(); }  // a stay in port (the yard, a wait for the market): each night, the bar again and what the dock brings
+        while (stayOf(hired()) && !ending.v) { if (!passNight()) break; nights++; await answer(); await talk(); }  // a stay in port (the yard, a wait for the market) or the shifts on a rock (icerun.js)  // a stay in port (the yard, a wait for the market): each night, the bar again and what the dock brings
         if (order) Object.assign(power(), POWER_PRESETS[order].to);  // the order, before every sail
         const armor0 = st.armor;
         if (!sail()) { stuck++; st.day += 1; continue; }
@@ -152,8 +152,8 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         const dayOut = st.day, lostOut = fr.lost;  // the burn's days as sailed are the days from here to the arrival, less those a run added
         plans.push({ perDay: Math.round(hired().run.profit / Math.max(1, hired().run.days)), expected: hired().run.profit, days: hired().run.days, ice: !!hired().run.ice, light: !!hired().run.ballast });
         await answer();
-        G.player.x = BURN_DIST + 40; G.player.y = 0;  // clear of local traffic, as the autopilot leaves her (autopilot.js)
-        tryBurn(); enterTransit(); const drawAt = G.transit.times.slice(), draws = drawAt.length; if (!live) G.transit.times = [];  // as many draws as the burn would make (live: left on the burn's clock)
+        if (!G.transit) { G.player.x = BURN_DIST + 40; G.player.y = 0; tryBurn(); enterTransit(); }  // clear of local traffic, as the autopilot leaves her (autopilot.js); from a rock, sail() is already in the burn (icerun.js sailHome)
+        const drawAt = G.transit.times.slice(), draws = drawAt.length; if (!live) G.transit.times = [];  // as many draws as the burn would make (live: left on the burn's clock)
         if (H) await H.burn(G.transit, runPlanet);
         planOccasions();
         if (play) {  // the burn's own contact, planned and seen only if the drive is hot enough (engage.js), then answered at random

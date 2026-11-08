@@ -227,6 +227,7 @@ function sailHome() {
   st.dest = run.sid; st.route = { dock: run.planet, go: true };
   const from = orbitPos(st.systemId), to = orbitPos(st.dest);
   G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
+  UI.hide();  // as the takeoff does at a port
   enterTransit();
   return true;
 }

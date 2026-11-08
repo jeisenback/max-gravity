@@ -100,7 +100,7 @@ test('three shifts on the rock: the cutting plays once on the first, the button 
     const day0 = st.day; passNight(); out.cut = G.dialog && G.dialog.event.title; take(G.dialog.event, /Cut small/); finishEvent();
     out.loaded = st.cargo.water; passNight(); out.again = G.dialog && G.dialog.event.title; passNight();
     out.end = { stay: !!stayOf(h), days: st.day - day0, button: UI.dockHtml(), plan: currentPlan().home };
-    out.sailed = sail(); out.to = G.transit && G.transit.to; out.mode = G.mode; out.edge = h.run.ice.edge; out.kept = h.run.site === id;
+    out.sailed = sail(); out.to = G.transit && G.transit.to; out.mode = G.mode; out.edge = h.run.ice.edge; out.kept = h.run.site === id; out.hidden = UI.el.classList.contains('hidden');
     planOccasions(); out.ice = G.transit.occasions.filter(o => o.kind === 'ice').map(o => [o.stage, o.at]);
     out.third = occasionEvent(G.transit.occasions.find(o => o.kind === 'ice')).title;
     return out;
@@ -109,7 +109,7 @@ test('three shifts on the rock: the cutting plays once on the first, the button 
   assert.match(r.stay.button, /data-action="night"[^>]*>Work the ice \(3 more shifts\)/);
   assert.equal(r.cut, 'Cutting Ice'); assert.ok(r.loaded >= 8 && r.loaded <= 40, `the cutting loads the hold (${r.loaded})`); assert.equal(r.again, null, 'the cutting plays once');
   assert.equal(r.end.stay, false); assert.equal(r.end.days, 3); assert.equal(r.end.plan, true); assert.match(r.end.button, /data-action="sail"[^>]*>Burn for Mars/);
-  assert.ok(r.sailed); assert.equal(r.to, 'mars'); assert.equal(r.mode, 'transit'); assert.ok(r.kept && r.edge !== 0, 'the run record and its haul are kept through the burn home');
+  assert.ok(r.sailed); assert.equal(r.to, 'mars'); assert.equal(r.mode, 'transit'); assert.ok(r.hidden, 'the landed panel is hidden for the burn'); assert.ok(r.kept && r.edge !== 0, 'the run record and its haul are kept through the burn home');
   assert.deepEqual(r.ice, [[2, 0.5]]); assert.equal(r.third, 'Home With the Ice');
   await done();
 });
