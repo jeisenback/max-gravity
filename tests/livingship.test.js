@@ -243,3 +243,15 @@ test('the float lifts the arms and the legs as it builds, from strapped in to dr
   assert.ok(Math.abs(at(0.02).arms[0] - a0.arms[0]) < 0.08, 'a little float lifts it a little');
   assert.ok(a1.legs[0] < a0.legs[0], 'the legs come up off the deck');
 });
+
+// #924: the camera holds while the hand moves about the middle third of the view, and the walk's legs follow the ground covered.
+test('the camera holds still while the hand moves within the middle of the view, and follows once they leave it (#924)', () => {
+  assert.equal(camStep(800, 850, 0.1, 600, 1600), 800, 'inside the middle third: no slide');
+  assert.equal(camStep(800, 700, 0.1, 600, 1600), 800);
+  const out = camStep(800, 1000, 0.1, 600, 1600); assert.ok(out > 800 && out < 900, `past it: eases toward keeping them at its edge (${out})`);
+});
+test('the walk\'s legs follow the ground covered, not the clock (#924)', () => {
+  const p = o => ({ role: 'gunner', room: 'galley', x: 0.5, dk: 0, tdk: 0, tx: 0.6, ...o });
+  assert.equal(posture(p({ walked: 0.01 }), 'move', 0, false).frame, posture(p({ walked: 0.01 }), 'move', 3.7, false).frame, 'the same ground, the same stride, whatever the time');
+  assert.notEqual(posture(p({ walked: 0 }), 'move', 0, false).frame, posture(p({ walked: 0.02 }), 'move', 0, false).frame, 'more ground, the stride moves on');
+});
