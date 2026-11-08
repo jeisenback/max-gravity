@@ -20,6 +20,7 @@ const ROLES = {
     // The call on an event is the player's if the event says so ('you'), or it is the call of the post they work. The rest are the captain's or the first officer's (hired.js hiredCall).
     decides: (ev, post) => { const owner = ev.owner || (ev.via === 'ship' ? 'captain' : 'you'); return owner === 'you' || owner === post; },
     paysFrom: () => 'fund',
+    purse: 'your own savings',  // what the player's own credits are called: a job ashore pays into it (jobs.js)
     // Downtime on a burn (shiplife.js ACTIVITIES): practising their own post, and not the captain's drills or rounds of the berths; the hull is the engineer's.
     mayDowntime: (id, a, post) => !!a.hiredOnly || (!['drills', 'visit'].includes(id) && (id !== 'repair' || post === 'engineer')),
     canDie: true,  // a fight can end the hand's story (stakes.js)
@@ -34,6 +35,7 @@ const ROLES = {
     mayAct: action => !COOP_BARRED.includes(action),
     decides: () => true,
     paysFrom: () => 'credits',
+    purse: 'the co-op\'s fund',
     mayDowntime: (id, a, post) => ROLES.hand.mayDowntime(id, a, post),
     canDie: true,
   },
@@ -45,6 +47,7 @@ const ROLES = {
     mayAct: () => true,
     decides: () => true,
     paysFrom: () => 'credits',
+    purse: 'your credits',
     mayDowntime: (id, a) => !a.hiredOnly,  // all of it but a hand's practice of a post
     canDie: false,  // the owner is hurt and laid up, and the game goes on
   },

@@ -44,7 +44,7 @@ const overhaulCost = part => Math.round((100 - condition()[part]) * 80);
 
 // The Engineering station's list of systems, and (docked) the yard's price to overhaul each.
 function wearHtml() {
-  const c = condition(), docked = G.mode === 'landed' && !hired();  // the captain pays for a yard overhaul
+  const c = condition(), docked = G.mode === 'landed' && role().mayAct('overhaul');  // whoever pays for the ship pays for a yard overhaul: the owner, the co-op (#906)
   return `${wearRate() ? '' : '<p class="hint">Wear is off.</p>'}<div class="con-parts">
     ${Object.entries(SHIP_PARTS).map(([k, p]) => `<div class="con-part"><span>${p.name}</span>${conBar(c[k], condColor(c[k]))}<b>${Math.round(c[k])}</b></div>
       ${docked && c[k] < 99 ? `<div class="con-yard"><span class="hint">Yard overhaul</span><button data-action="overhaul" data-arg="${k}" ${G.state.credits >= overhaulCost(k) ? '' : 'disabled'}>${fmt(overhaulCost(k))} cr</button></div>` : ''}`).join('')}
@@ -94,7 +94,7 @@ Mods.register({
     M.on('damage', (o, shieldHit) => { if (o === G.player && shieldHit) wear('shields', 0.3); });
     M.action('overhaul', part => {
       const cost = overhaulCost(part);
-      if (G.mode !== 'landed' || hired() || G.state.credits < cost) return;
+      if (G.mode !== 'landed' || !role().mayAct('overhaul') || G.state.credits < cost) return;
       G.state.credits -= cost;
       condition()[part] = 100;
     });

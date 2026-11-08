@@ -870,3 +870,20 @@ test('with the pilot hurt, the best of the rest at the helm flies her in, or the
   assert.equal(r.well.auto, 'dock'); assert.match(r.well.say, new RegExp(`^${r.pilot} brings us in`), 'the pilot well again flies as before');
   await done();
 });
+
+// #956: on the captain's ship the torpedo readouts say what she carries, not two of a six-round magazine she does not fill.
+test('on a hired ship the torpedoes read as the captain\'s two, with her reason, and not as two of six', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; const out = {};
+    UI.tab = 'weapons'; UI.render(); out.page = document.querySelector('.shell .body').textContent.replace(/\s+/g, ' ');
+    const texts = []; const real = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (s, ...a) { texts.push(String(s)); return real.call(this, s, ...a); };
+    try { G.mode = 'flight'; G.player = makeShip(st.shipId, 0, 0, 0); drawHud(G.W || 1280, G.H || 800); } finally { CanvasRenderingContext2D.prototype.fillText = real; G.mode = 'landed'; }
+    out.hud = texts.find(s => /^Torps:/.test(s)); out.owner = torpsText(2, true); out.hand = torpsText(2, false);
+    return out;
+  });
+  assert.match(r.page, /TORPEDOES 2\b/); assert.doesNotMatch(r.page, /TORPEDOES 2\/6|2 of 6/); assert.match(r.page, /keeps 2 aboard/i);
+  assert.match(r.hud, /^Torps:\s+2 \(F\)$/); assert.equal(r.owner, '2/6'); assert.equal(r.hand, '2');
+  await done();
+});

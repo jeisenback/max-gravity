@@ -1033,7 +1033,7 @@ function drawHud(W, H) {
   ctx.fillStyle = '#cfe3ff';
   if (!hired()) { ctx.fillText(`Credits: ${fmt(st.credits)}`, x, y); y += 18; }  // a hand's money is the strip's Fund and Savings, below
   ctx.fillText(`Cargo:   ${cargoUsed()}/${s.cargo}t`, x, y);
-  if (s.launcher) ctx.fillText(`Torps:   ${st.torpedoes || 0}/${TORP_MAX} (F)`, x, y += 18);
+  if (s.launcher) ctx.fillText(`Torps:   ${torpsShown()} (F)`, x, y += 18);  // the magazine's size is the owner's (#956)
   if (hired()) {  // the hand's readouts (readouts.js): the hull is the bar above
     const y0 = y + 6;
     for (const [k, v] of stripNow().filter(([k]) => k !== 'Hull')) for (const l of wrapText(`${k}: ${v}`, w)) ctx.fillText(l, x, y += 18);
@@ -1047,7 +1047,7 @@ function drawHud(W, H) {
   const nav = G.navPlanet !== null && p ? system().planets[G.navPlanet] : null;
   if (!calm) ctx.fillText(nav ? `${nav.name} (${Math.round(dist(nav, p))})` : 'none (L)', x, y += 16);
   const from = G.transit ? G.transit.to : st.systemId;
-  ctx.fillText(st.dest ? `Burn: ${placeOf(st.dest).name}` : hired() ? 'Burn: the captain\'s call' : 'Burn: none (M)', x, y += 16);
+  ctx.fillText(st.dest ? `Burn: ${placeOf(st.dest).name}` : role().mayAct('burn') ? 'Burn: none (M)' : 'Burn: the captain\'s call', x, y += 16);  // the co-op plots its own (#906)
   if (st.dest) {
     const need = burnFuel(from, st.dest);
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#9ab';

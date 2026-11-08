@@ -204,6 +204,7 @@ const playScenes = () => {
     run(`hand:practise:${post}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.practise.label, run: () => String(ACTIVITIES.practise.run()) }] }), { extra: () => hired().skill });
   }
   run('hand:restock', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => restockTorps(G.state, hired(), currentPlanet(), ship().launcher) }] }), { prep() { G.state.torpedoes = 0; hired().fund = 100000; } });
+  run('hand:torps-kept', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => fightCard().replace(/<[^>]+>/g, ' ') }] }));  // the Gunnery page's torpedo count on a captain's ship (#956)
   run('hand:practise:owner', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.practise.run()) }] }));
   // a gunner move taught on a burn (gunnermoves.js): each by its teacher, trusted, with the moves before it known; and the button with nothing due
   for (const [id, known, xp] of [['vent', [], 12], ['lead', ['vent'], 12], ['split', ['vent', 'lead'], 45]]) {

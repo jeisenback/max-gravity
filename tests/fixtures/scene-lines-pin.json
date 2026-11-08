@@ -9792,6 +9792,22 @@
   ]
  },
  {
+  "id": "hand:torps-kept",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "  The fight   Guns  2, aimed at her weapons, drive, lock or hull    Heat  a shot adds 1, overcharged 2; over 4 a gun locks for a turn    Torpedoes  2, the captain keeps 2 aboard, and buys 2 at a time from the ship's fund    Turret  held back, it takes 40% off her volley and 60% off a salvo, for a gun's shot    Moves  none yet: the crew teach them on a burn   ",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
   "id": "hand:practise:owner",
   "plays": [
    {
