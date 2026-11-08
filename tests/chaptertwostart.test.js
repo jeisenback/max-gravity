@@ -298,3 +298,25 @@ test('#905: nothing outside the hand\'s own code touches the captain\'s fund dir
   }
   assert.deepEqual(found, []);
 });
+
+// #906: the wording and the options the co-op's role left behind. The co-op plots its own burns, the jobs pay its fund, and it may buy a yard overhaul.
+test('the co-op\'s HUD says no burn is plotted, the jobs say they pay the fund, and the yard overhaul is for sale', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    toShare(); goOnAndPick(0); while (G.dialog) finishEvent();
+    const st = G.state, out = { role: role().id };
+    const texts = []; const real = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (s, ...a) { texts.push(String(s)); return real.call(this, s, ...a); };
+    try { G.player = makeShip(st.shipId, 0, 0, 0); G.mode = 'flight'; st.dest = null; drawHud(G.W || 1280, G.H || 800); } finally { CanvasRenderingContext2D.prototype.fillText = real; G.mode = 'landed'; }
+    out.burn = texts.find(s => /^Burn:/.test(s));
+    out.jobs = jobsHtml().replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');
+    const wear = wearHtml(); out.overhaul = /data-action="overhaul" data-arg="fire"/.test(wear);
+    st.credits = 1e6; const fire0 = condition().fire, credits0 = st.credits; Mods.act('overhaul', 'fire'); out.fire = [fire0, condition().fire]; out.paid = credits0 - st.credits;
+    return out;
+  });
+  assert.equal(r.role, 'coop');
+  assert.equal(r.burn, 'Burn: none (M)', 'the co-op plots its own burns');
+  assert.match(r.jobs, /for the co-op's fund/); assert.doesNotMatch(r.jobs, /your own savings|the pay is yours/);
+  assert.ok(r.overhaul, 'the yard overhaul is offered'); assert.ok(r.fire[0] < 100 && r.fire[1] === 100, `the overhaul mends the fire control: ${r.fire}`); assert.ok(r.paid > 0, 'and the co-op pays for it');
+  await done();
+});

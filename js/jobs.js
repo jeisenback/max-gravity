@@ -154,10 +154,10 @@ const jobTermsLine = job => { const t = jobTerms(job), who = t.posts.length > 1 
 
 function jobsHtml() {
   const h = hired(), board = jobBoard();
-  return `<div class="post"><div class="eyebrow">Jobs on the station &middot; for your own savings</div>
+  return `<div class="post"><div class="eyebrow">Jobs on the station &middot; for ${esc(role().purse)}</div>
     ${board.ids.map(id => { const j = JOBS.find(x => x.id === id); return `<div class="row"><span><b>${esc(jobTitle(j))}</b> <span class="hint">${esc(jobBlurb(j))}</span><br><span class="hint terms">${esc(jobTermsLine(j))}</span></span>
       <button data-action="takeJob" data-arg="${id}" ${board.done ? 'disabled' : ''}>Take it</button></div>`; }).join('')}
-    <p class="hint">${board.done ? 'You have worked a job here today.' : 'One job a day. It takes the day, and the pay is yours.'}</p></div>`;
+    <p class="hint">${board.done ? 'You have worked a job here today.' : `One job a day. It takes the day, and the pay goes to ${esc(role().purse)}.`}</p></div>`;
 }
 
 const jobsMissionsView = UI.views.missions;

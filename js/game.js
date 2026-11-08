@@ -1047,7 +1047,7 @@ function drawHud(W, H) {
   const nav = G.navPlanet !== null && p ? system().planets[G.navPlanet] : null;
   if (!calm) ctx.fillText(nav ? `${nav.name} (${Math.round(dist(nav, p))})` : 'none (L)', x, y += 16);
   const from = G.transit ? G.transit.to : st.systemId;
-  ctx.fillText(st.dest ? `Burn: ${placeOf(st.dest).name}` : hired() ? 'Burn: the captain\'s call' : 'Burn: none (M)', x, y += 16);
+  ctx.fillText(st.dest ? `Burn: ${placeOf(st.dest).name}` : role().mayAct('burn') ? 'Burn: none (M)' : 'Burn: the captain\'s call', x, y += 16);  // the co-op plots its own (#906)
   if (st.dest) {
     const need = burnFuel(from, st.dest);
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#9ab';
