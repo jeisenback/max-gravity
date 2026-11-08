@@ -130,7 +130,7 @@ test('selling a ship, or losing an escort, brings a main character back to your 
 });
 
 test('the company tab offers them, and their screen says what ship they command', async () => {
-  const { page, ev, done } = await open({ scope: 'full', viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   await ev(() => { setup(); UI.render(); });
   await page.click('[data-action=tab][data-arg=company]');
@@ -141,6 +141,6 @@ test('the company tab offers them, and their screen says what ship they command'
   await page.click('#panel [data-action=person][data-arg="c:ines"]');
   assert.match(await page.innerText('#panel'), /captain of the .*, docked at/i);
   assert.match(await page.innerText('#panel'), /Ready to captain\s*skill 3 of 2, 0 of 60 days/i, 'skill is enough, the days are not');
-  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
   await done();
 });

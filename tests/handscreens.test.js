@@ -75,7 +75,7 @@ test('a suggested run reads in the captain\'s terms, and the deck plan draws a f
   assert.ok(r.captain.includes(r.terms) && r.alt.includes(r.terms), 'the same terms, from one formula');
   assert.match(r.alt, /cr wage to you, less .* cr for your kit/);  // a rating's pay (#879)
   const n = await ev(() => { G.mode = 'landed'; UI.render(); return crewMembers().length + 2; });
-  for (const [w, h] of [[1280, 800], [390, 844]]) {
+  for (const [w, h] of [[1280, 800], [1000, 640]]) {
     await page.setViewportSize({ width: w, height: h });
     await goTo(page, 'crew');
     const faces = await page.$$eval('#panel .con-plant circle.person', c => c.length), portraits = await page.$$eval('#panel .con-plant .face svg.char-portrait', c => c.length);
@@ -151,8 +151,8 @@ test('the person page puts where you stand first, and explains the Ties card', a
   await done();
 });
 
-test('a hired pilot on a touch screen has the burn called once the ship is clear of local space', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+test('a hired pilot has the burn called once the ship is clear of local space', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const out = {}, go = (post, far) => {
@@ -176,9 +176,9 @@ test('a hired pilot on a touch screen has the burn called once the ship is clear
 });
 
 test('a long scene says it continues, the Port heading keeps one case, and a shut order says why', async () => {
-  const { page, ev, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1000, height: 640 } });
   await ev(helpers);
-  // Signing On at 390 by 844: the choices stay pinned, and the dialog says the text continues until it is read to the end.
+  // Signing On on the smallest window: the choices stay pinned, and the dialog says the text continues until it is read to the end.
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'engineer', captainKey: 'hester' }); });
   const cue = () => page.evaluate(() => ({ more: document.querySelector('#panel').classList.contains('more'), text: getComputedStyle(document.querySelector('#panel .choices'), '::before').content }));
   const first = await cue();

@@ -53,7 +53,7 @@ const apart = (a, b) => a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y
 const inside = (p, b) => p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h;
 
 test('with a scene open, the dialog sits in the dock, clear of the outline, and the hand is drawn in the clear part', async () => {
-  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['small', { width: 1000, height: 640 }, false]]) {
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     await ev(() => { burn(); G.transit.left = G.transit.total * 0.5; scene(); });
@@ -77,7 +77,7 @@ test('with a scene open, the dialog sits in the dock, clear of the outline, and 
 });
 
 test('a scene taller than the dock scrolls inside it, and the dialog stays the dock', async () => {
-  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['small', { width: 1000, height: 640 }, false]]) {
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     await ev(() => { burn(); scene(Array(30).fill('The drive hums and the long night goes on, and someone down the passage is singing.').join(' ')); });
@@ -96,12 +96,12 @@ test('a resize with a scene open moves the dialog into the new dock, and closing
   await frames(page, 3);
   const wide = await ev(dockState);
   assert.ok(inDock(wide.rect, wide.dock), 'wide: the dialog is in the dock');
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.waitForFunction(() => G.W === 390);
+  await page.setViewportSize({ width: 1000, height: 640 });
+  await page.waitForFunction(() => G.W === 1000);
   await frames(page, 2);
-  const phone = await ev(dockState);
-  assert.ok(phone.dock.w > wide.dock.w || phone.dock.x < wide.dock.x, 'the dock is the phone\'s');
-  assert.ok(inDock(phone.rect, phone.dock), `phone: the dialog ${JSON.stringify(phone.rect)} is in the new dock ${JSON.stringify(phone.dock)}`);
+  const small = await ev(dockState);
+  assert.ok(small.dock.w !== wide.dock.w || small.dock.x !== wide.dock.x, 'the dock is the smaller window\'s');
+  assert.ok(inDock(small.rect, small.dock), `small: the dialog ${JSON.stringify(small.rect)} is in the new dock ${JSON.stringify(small.dock)}`);
   await ev(() => finishEvent());
   await frames(page, 2);
   const after = await ev(() => { const el = document.querySelector('#panel'); return { docked: el.classList.contains('docked'), x: el.style.getPropertyValue('--dock-x'), dock: G.burnBoxes.dock, clear: G.burnBoxes.clear }; });
@@ -157,7 +157,7 @@ test('crew who die on a burn leave the cutaway, and are not drawn again after th
 });
 
 // The burn view's canvas blocks, at the three screen sizes (#262): none overlaps another, and each is inside the view.
-const BURN_SIZES = [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true], ['short', { width: 1280, height: 600 }, false]];
+const BURN_SIZES = [['desktop', { width: 1280, height: 800 }, false], ['small', { width: 1000, height: 640 }, false], ['wide', { width: 1920, height: 1080 }, false], ['short', { width: 1280, height: 600 }, false]];
 
 test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)', async () => {
   for (const [name, viewport, mobile] of BURN_SIZES) {
@@ -269,8 +269,8 @@ test('the rooms in view have boxes inside the window that do not overlap, and th
   await done();
 });
 
-test('a tap at the centre of each room finds that room, on every ship, both ways round, wide and phone', async () => {
-  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+test('a tap at the centre of each room finds that room, on every ship, both ways round, wide and small', async () => {
+  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['small', { width: 1000, height: 640 }, false]]) {
     const { ev, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     const r = await ev(() => {
@@ -608,7 +608,7 @@ test('shipLogLines: the carried contract, its due date and whether the ship is o
   await done();
 });
 
-test('the ship\'s log is in the HUD on a wide screen and at the top of Comms on a phone', async () => {
+test('the ship\'s log is in the HUD', async () => {
   const wide = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
   await wide.ev(helpers);
   await wide.ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [`() => { const drawn = [], fill = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (t, x, ...a) { drawn.push([String(t), x]); return fill.call(this, t, x, ...a); }; return () => { CanvasRenderingContext2D.prototype.fillText = fill; return drawn; }; }`]);
@@ -620,19 +620,6 @@ test('the ship\'s log is in the HUD on a wide screen and at the top of Comms on 
   assert.ok(w.hudW > 0 && w.lines.length > 0 && w.label, 'a wide screen draws the log label');
   for (const l of w.lines) assert.ok(w.drawn.some(d => d[0] === l && d[1] >= w.x0), `HUD line: ${l}`);
   await wide.done();
-  const narrow = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
-  await narrow.ev(helpers);
-  const n = await narrow.ev(() => {
-    burn(); G.state.inbox = [{ day: 1, n: 1, via: 'message', text: 'INBOXMARK' }];
-    const html = commsPanel(), lines = burnShipLog();
-    return { hudW: G.hudW, html, lines, inbox: html.indexOf('INBOXMARK') };
-  });
-  assert.equal(n.hudW, 0);
-  assert.ok(n.lines.length > 0);
-  for (const l of n.lines) { const i = n.html.indexOf(l.replace(/&/g, '&amp;')); assert.ok(i >= 0 && i < n.inbox, `Comms line: ${l}`); }
-  const off = await narrow.ev(() => { const t = G.transit; G.transit = null; const r = commsPanel().includes("Ship's log"); G.transit = t; return r; });
-  assert.ok(!off, 'no log outside a burn');
-  await narrow.done();
 });
 
 test('a whole burn of ship life draws none of the game\'s dice', async () => {

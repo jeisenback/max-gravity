@@ -419,7 +419,7 @@
  {
   "key": "boarding:disabled:touch",
   "text": [
-   "Wren is disabled and drifting. Close in and tap Hail to board."
+   "Wren is disabled and drifting. Close in and hail it (H) to board."
   ],
   "credits": 0
  },

@@ -1,7 +1,7 @@
 'use strict';
 
 // Tester tools for acceptance testing: jump straight into any feature without playing
-// up to it. Open with Shift+U, or tap the date in the port header five times (phones),
+// up to it. Open with Shift+U,
 // or add #uat to the address. Each checklist item sets up a fresh game in the right
 // situation and says what to check; Pass/Fail and a note are kept in this browser and
 // can be copied as a report. General tools cover money, time, places, ships, and
@@ -351,14 +351,6 @@ Mods.register({
   init(M) {
     if (/uat/i.test(location.hash) || /[?&]uat\b/i.test(location.search)) setTimeout(uatEnable, 0);
     window.addEventListener('keydown', e => { if (e.shiftKey && e.code === 'KeyU' && !e.repeat) uatEnable(); });
-    // Phones: five quick taps on the date in the port header.
-    let taps = [];
-    document.addEventListener('click', e => {
-      if (!e.target.closest('.stats')) return;
-      const now = Date.now();
-      taps = taps.filter(t => now - t < 2000).concat(now);
-      if (taps.length >= 5) { taps = []; uatEnable(); }
-    });
     uatButton();
   },
 });

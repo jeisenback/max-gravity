@@ -326,7 +326,7 @@ const SCENE_LINES = {
   },
   'scene:crew-notes': {  // the notes about the crew's wages and wounds (js/crew.js, js/boarding.js, js/fate.js)
     'wages': 'Crew wages for {days} days: {total} cr.', 'quits': '{name} quits over unpaid wages.',
-    'disabled.key': '{name} is disabled and drifting. Close in and hail it (H) to board.', 'disabled.tap': '{name} is disabled and drifting. Close in and tap Hail to board.',
+    'disabled.key': '{name} is disabled and drifting. Close in and hail it (H) to board.',
     'hurt': '{name} is hurt. Their {role} work will suffer until they\'re treated.{warning}', 'hurt.warning': 'Another hit like that could kill {first}.',
     'dead': '{name} is dead.', 'accident': 'Killed in an accident near {system}.',
   },

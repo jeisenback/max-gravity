@@ -174,12 +174,6 @@ canvas { display: block; touch-action: none; }
 .sub { font-size: 12px; margin-top: 2px; }
 .stats { font-size: 12px; line-height: 1.6; font-variant-numeric: tabular-nums; color: var(--muted); }
 .stats .ln { display: block; }
-@media (max-width: 699px) {  /* a phone: the stats run on as one line, and the hold's figures, which a hand does not act on, are left to the pages (#852) */
-  .hdr { padding: 8px 16px; }
-  .stats .ln { display: inline; }
-  .stats .ln + .ln::before { content: ' \00b7  '; }
-  .stats .ln.hold { display: none; }
-}
 .stats b { color: var(--text); font-weight: 600; }
 @media (min-width: 700px) {
   .hdr { padding: 14px 18px; }
@@ -269,7 +263,6 @@ button.active { background: color-mix(in srgb, var(--accent) 22%, var(--panel-2)
 button.primary { background: color-mix(in srgb, var(--good) 22%, var(--panel-2)); border-color: var(--good); color: #eaffea; }
 button.primary:hover { background: color-mix(in srgb, var(--good) 34%, var(--panel-2)); }
 button.link { background: none; border: none; clip-path: none; color: var(--muted); text-decoration: underline; }
-@media (pointer: coarse) { button { min-height: 40px; } }
 
 /* Wide tables (shipyard) scroll inside their own box. */
 .scroll { overflow-x: auto; }
@@ -346,61 +339,10 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .dead h1 { color: var(--bad); font-family: var(--font-label); font-weight: 600; font-size: 30px; letter-spacing: 0.04em; }
 .dead p { line-height: 1.6; max-width: 480px; margin: 16px auto 24px; }
 
-/* ---------- touch controls ---------- */
+/* ---------- the map's buttons (mapbuttons.js) ---------- */
 
-#touch {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 210px;
-  padding-bottom: env(safe-area-inset-bottom, 0px);
-  pointer-events: none;
-  touch-action: none;
-  user-select: none;
-  -webkit-user-select: none;
-}
-#touch[hidden], .tfloat[hidden] { display: none; }
-#touch > * { pointer-events: auto; }
-
-#stick {
-  position: absolute;
-  left: 16px;
-  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-  width: 130px;
-  height: 130px;
-  border-radius: 50%;
-  border: 2px solid rgba(127, 180, 255, 0.35);
-  background: rgba(20, 40, 70, 0.35);
-  touch-action: none;
-}
-#knob {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 54px;
-  height: 54px;
-  margin: -27px 0 0 -27px;
-  border-radius: 50%;
-  background: rgba(127, 180, 255, 0.45);
-  border: 2px solid rgba(200, 225, 255, 0.7);
-}
-
-.tbtns {
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  top: 0;
-  display: flex;
-  justify-content: flex-end;
-  gap: 6px;
-}
-/* Six buttons (with Torp) on a phone: tighter spacing so the row fits. */
-@media (max-width: 420px) {
-  .tbtns { left: 8px; right: 8px; gap: 4px; }
-  .tbtns button { padding: 0 6px; font-size: 12px; letter-spacing: 0.02em; }
-}
-.tbtns button, .thold, .tfloat {
+.tfloat[hidden] { display: none; }
+.tfloat {
   background: rgba(16, 26, 40, 0.82);
   border: 1px solid rgba(111, 176, 255, 0.5);
   color: var(--text);
@@ -410,28 +352,6 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
   font-size: 13px;
   min-height: 40px;
   padding: 0 10px;
-  touch-action: none;
-}
-.thold {
-  position: absolute;
-  border-radius: 50%;
-  clip-path: none;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
-.thold.on { background: rgba(127, 180, 255, 0.45); }
-#fire {
-  right: 16px;
-  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
-  width: 88px;
-  height: 88px;
-  border-color: rgba(255, 110, 90, 0.8);
-}
-#brake {
-  right: 116px;
-  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
-  width: 62px;
-  height: 62px;
 }
 
 /* Map and Close buttons over the transit screen and the system map. */
@@ -510,7 +430,6 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .menu input[type=text], .menu textarea { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); font: inherit; padding: 6px 8px; min-height: 36px; width: 100%; }
 .menu textarea { font-size: 12px; }
 #menuBtn { position: fixed; top: 10px; left: 10px; z-index: 50; font-size: 12px; min-height: 30px; padding: 3px 12px; opacity: 0.85; }
-@media (max-width: 699px) { #menuBtn { top: 86px; } }
 /* The burn (burnlayout.js): Menu and System map at the two ends of the row of downtime buttons, over the bridge keys and clear of the
    bar, the ship and the ticker. On a narrow screen they are the second of its two rows; in a short window the row folds to one. */
 #menuBtn.burn { top: auto; left: 16px; bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }
@@ -520,8 +439,7 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 /* ---------- the bridge (bridge.js) ---------- */
 /* Viewscreen strip at the top of a landed screen, then the station keys. */
 .vs { display: block; width: 100%; height: 92px; flex-shrink: 0; background: #03070a; border-bottom: 1px solid var(--line); }
-@media (min-width: 700px) { .vs { height: 150px; } }  /* room for the port's limb and sky; a phone keeps its height */
-@media (max-width: 699px) { .vs:not(.port) { display: none; } }  /* a phone shows the planet on Port only, for room on the other pages (#852) */
+@media (min-width: 700px) { .vs { height: 150px; } }  /* room for the port's limb and sky */
 /* In a burn: station keys along the bottom, and a status sheet above them. */
 #bkeys {
   position: fixed;
@@ -701,3 +619,13 @@ svg.board { display: block; width: 100%; max-width: 360px; height: auto; margin:
 #bsheet { display: flex; flex-direction: column; overflow: hidden; padding-top: 26px; }  /* the body scrolls inside; a thin band on top holds Close (#913) */
 #bsheet .bsheet-body { overflow-y: auto; min-height: 0; flex: 1 1 auto; }
 #bsheet .bsheet-close { position: absolute; top: 3px; right: 8px; z-index: 2; margin: 0; font-size: 11px; padding: 1px 10px; min-height: 0; line-height: 18px; }
+
+/* Desktop only (#937): a window narrower than the game's minimum shows this notice in place of the game. The game's own page only: the
+   scene editor's preview (editor-preview.html) plays the game in a narrower frame. */
+#narrow { display: none; }
+@media (max-width: 999px) {
+  body.game-page > *:not(#narrow) { display: none !important; }
+  #narrow { display: flex; position: fixed; inset: 0; align-items: center; justify-content: center; padding: 24px; background: var(--void); color: var(--text); text-align: center; }
+  #narrow div { max-width: 420px; line-height: 1.6; }
+  #narrow h1 { font-family: var(--font-label); font-weight: 600; font-size: 22px; letter-spacing: 0.04em; margin: 0 0 12px; }
+}
