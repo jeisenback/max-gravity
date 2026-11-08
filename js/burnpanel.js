@@ -19,7 +19,7 @@ function gReading(pr, accel) {
 }
 function burnState() {
   const t = G.transit, p = Math.min(1, Math.max(0, 1 - t.left / t.total));
-  const dist = Math.max(0.15, Math.abs(SYSTEMS[t.to].au - SYSTEMS[G.state.systemId].au)) * AU_KM, secs = Math.max(1, t.days) * 86400;
+  const dist = Math.max(0.15, Math.abs(placeOf(t.to).au - placeOf(G.state.systemId).au)) * AU_KM, secs = Math.max(1, t.days) * 86400;
   const peak = (2 * dist) / secs, v = peak * (1 - Math.abs(2 * p - 1)), accel = (peak / (secs / 2)) / G_KMS2;
   const phase = Math.abs(p - 0.5) < 0.03 ? 'FLIP' : p < 0.5 ? 'BURN' : 'BRAKE';
   return { p, peak, v, g: gReading(p, accel), phase, covered: dist * (p < 0.5 ? 2 * p * p : 1 - 2 * (1 - p) * (1 - p)), dist };

@@ -23,7 +23,7 @@ const reportText = html => (new DOMParser().parseFromString(String(html || '').r
 function reportSnapshot(st, g, build) {
   if (!st) return [`Version: ${build.version} (${build.scope})`, 'No game is running.'];
   const h = st.hired, d = g.dialog, f = d && d.event && d.event.fight && d.event.fight.state;
-  const where = g.transit ? `in transit to ${SYSTEMS[g.transit.to] ? SYSTEMS[g.transit.to].name : g.transit.to}` : `${st.planet || '?'} (${st.systemId})`;
+  const where = g.transit ? `in transit to ${placeOf(g.transit.to) ? placeOf(g.transit.to).name : g.transit.to}` : `${st.planet || '?'} (${st.systemId})`;
   const lines = [
     `Version: ${build.version} (${build.scope})`,
     `Day: ${st.day}`,

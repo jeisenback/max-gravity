@@ -39,3 +39,6 @@ function findSite(st, id, day) {
   return s;
 }
 const foundSites = st => Object.keys(sites(st)).filter(id => st.sites[id].found !== null);
+
+// A site as a body for the painter (art.js drawBody): a grey rock with craters and no lights, at radius r.
+const siteBody = (site, r) => ({ name: site.name, color: site.color, r, art: { type: 'asteroid', base: [site.color, '#1a1d22'], craters: 6 } });

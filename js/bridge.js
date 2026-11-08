@@ -29,20 +29,21 @@ const tabReady = (p, id) => (!role().mayTab(id) || (scopeOff('owner') && id === 
 // The route on a top-down plot of the system, zoomed to what the route spans (and a little more), radii on a square-root scale.
 // The ship's mark moves along the line by the burn's progress, rounded so the sheet is not rebuilt every frame.
 function routeSvg(from, to, progress, flipped) {
-  const reach = Math.max(2, 1.3 * Math.max(SYSTEMS[from].au, to ? SYSTEMS[to].au : 0)), ids = Object.keys(SYSTEMS).filter(id => SYSTEMS[id].au <= reach), K = 135 / Math.sqrt(reach);
-  const P = id => { const o = orbitPos(id), a = Math.atan2(o.y, o.x), r = Math.sqrt(SYSTEMS[id].au) * K; return [320 + Math.cos(a) * r, 150 + Math.sin(a) * r]; };
-  const rings = [...new Set(ids.map(id => SYSTEMS[id].au))].map(au => `<circle cx="320" cy="150" r="${(Math.sqrt(au) * K).toFixed(1)}" fill="none" stroke="#14243a"/>`).join('');
+  const reach = Math.max(2, 1.3 * Math.max(placeOf(from).au, to ? placeOf(to).au : 0)), K = 135 / Math.sqrt(reach);
+  const ids = [...Object.keys(SYSTEMS).filter(id => placeOf(id).au <= reach), ...[from, to].filter(id => isSite(id))];  // a site on the route is plotted too (sites.js)
+  const P = id => { const o = orbitPos(id), a = Math.atan2(o.y, o.x), r = Math.sqrt(placeOf(id).au) * K; return [320 + Math.cos(a) * r, 150 + Math.sin(a) * r]; };
+  const rings = [...new Set(ids.filter(id => !isSite(id)).map(id => placeOf(id).au))].map(au => `<circle cx="320" cy="150" r="${(Math.sqrt(au) * K).toFixed(1)}" fill="none" stroke="#14243a"/>`).join('');
   const dots = ids.map(id => { const [x, y] = P(id); return (`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" ` +
-      `fill="#7f95ab"/>${id === from || id === to ? '' : `<text class="lbl" x="${(x + 6).toFixed(1)}" y="${(y + 3).toFixed(1)}" fill="#4b617a" font-size="13">${SYSTEMS[id].name}</text>`}`); }).join('');
+      `fill="#7f95ab"/>${id === from || id === to ? '' : `<text class="lbl" x="${(x + 6).toFixed(1)}" y="${(y + 3).toFixed(1)}" fill="#4b617a" font-size="13">${placeOf(id).name}</text>`}`); }).join('');
   let course = '';
   const [fx, fy] = P(from);
-  course += `<circle cx="${fx.toFixed(1)}" cy="${fy.toFixed(1)}" r="6" fill="none" stroke="#5fd35f" stroke-width="2"/><text x="${(fx + 9).toFixed(1)}" y="${(fy - 8).toFixed(1)}" fill="#d4e4f5" font-size="16">${SYSTEMS[from].name}</text>`;
+  course += `<circle cx="${fx.toFixed(1)}" cy="${fy.toFixed(1)}" r="6" fill="none" stroke="#5fd35f" stroke-width="2"/><text x="${(fx + 9).toFixed(1)}" y="${(fy - 8).toFixed(1)}" fill="#d4e4f5" font-size="16">${placeOf(from).name}</text>`;
   if (to && to !== from) {
     const [tx, ty] = P(to), sx = fx + (tx - fx) * progress, sy = fy + (ty - fy) * progress, mx = (fx + tx) / 2, my = (fy + ty) / 2;
     course += `<line x1="${fx.toFixed(1)}" y1="${fy.toFixed(1)}" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}" stroke="#6fb0ff" stroke-dasharray="5 5" opacity=".6"/>
       ${progress > 0 ? `<line x1="${fx.toFixed(1)}" y1="${fy.toFixed(1)}" x2="${sx.toFixed(1)}" y2="${sy.toFixed(1)}" stroke="#6fb0ff" stroke-width="2"/>` : ''}
       <circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="2.5" fill="${flipped ? '#ff9a3c' : '#4b617a'}"/>
-      <circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="8" fill="none" stroke="#6fb0ff" stroke-width="2"/><text x="${(tx + 11).toFixed(1)}" y="${(ty - 9).toFixed(1)}" fill="#d4e4f5" font-size="16">${SYSTEMS[to].name}</text>
+      <circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="8" fill="none" stroke="#6fb0ff" stroke-width="2"/><text x="${(tx + 11).toFixed(1)}" y="${(ty - 9).toFixed(1)}" fill="#d4e4f5" font-size="16">${placeOf(to).name}</text>
       ${progress > 0 ? `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="4" fill="#d4e4f5"/>` : ''}`;
   }
   return `<rect width="640" height="300" fill="#050a11"/>${rings}<circle cx="320" cy="150" r="5" fill="#e8d17a"/>${dots}${course}
@@ -63,8 +64,8 @@ function navigationPanel() {
   const helm = notYours('pilot') ? `${roleHolder('pilot') ? roleName('pilot') : 'The helm'} has the helm`
     : postMode('pilot') === 'manual' ? 'You have the helm' : `${roleName('pilot')} has the helm`;
   const course = t
-    ? conRead('Destination', SYSTEMS[t.to].name) + conRead('Burn', `${Math.round(progress * 100)}%, ${t.flipped ? 'braking' : 'accelerating'}`) + burnReads() + conRead('Arrival', dateOf(transitEta(t))) + conRead('Reaction mass', `${st.fuel}/${ship().fuel}`)
-    : to ? conRead('Destination', SYSTEMS[to].name) + conRead('Distance', `${distAU(st.systemId, to).toFixed(2)} AU`) + conRead('Burn', `${travelDays(st.systemId, to)} days`)
+    ? conRead('Destination', placeOf(t.to).name) + conRead('Burn', `${Math.round(progress * 100)}%, ${t.flipped ? 'braking' : 'accelerating'}`) + burnReads() + conRead('Arrival', dateOf(transitEta(t))) + conRead('Reaction mass', `${st.fuel}/${ship().fuel}`)
+    : to ? conRead('Destination', placeOf(to).name) + conRead('Distance', `${distAU(st.systemId, to).toFixed(2)} AU`) + conRead('Burn', `${travelDays(st.systemId, to)} days`)
         + (hired() ? '' : conRead('Reaction mass', `${burnFuel(st.systemId, to)} of ${st.fuel}`))
     : '<p class="hint">No course set.</p>';
   return consoleHtml({

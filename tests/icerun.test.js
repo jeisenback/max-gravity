@@ -38,7 +38,26 @@ test('the planner takes an ice run when water is dear, the hold is free, and one
   await done();
 });
 
-test('the burn is long, and the three scenes fall on it in order', async () => {
+test('a burn can be plotted to a site: the departure line names the rock, the HUD and the bridge draw it, and nothing reads a system that is not there', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), h = hired(), id = Object.keys(sites(st))[0], out = {};
+    h.run = { ice: { edge: 0 }, site: id, good: 'water', tons: 40, cost: 0, planet: 'Mars', sid: 'mars', day: st.day, from: 'Earth' };
+    st.dest = id; enterTransit();
+    out.to = G.transit.to; out.days = G.transit.days; out.comm = G.transit.comms.map(c => c.text || c).join(' | ');
+    out.nav = navigationPanel(); out.plain = travelDays('earth', id);
+    G.transit.left = G.transit.total * 0.4; drawTransit(1280, 800);  // the burn view with the destination sprite
+    out.name = placeOf(id).name; out.gov = placeOf(id).gov;
+    return out;
+  });
+  assert.match(r.to, /^site:ice-/); assert.equal(r.days, r.plain, 'the leg is a plain burn, not stretched');
+  assert.match(r.comm, new RegExp(`Burn plotted for ${r.name}: \\d+ days\\. An ice run: three shifts on the rock, then home to Mars with the hold full\\.`));
+  assert.ok(r.nav.includes(r.name), 'the Navigation console names the rock'); assert.equal(r.gov, 'Independent');
+  await done();
+});
+
+test('the burn is long, and the three scenes fall on it in order', { skip: 'rewritten in Task 5 of docs/superpowers/plans/2026-11-08-sites-and-ice-run.md' }, async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {

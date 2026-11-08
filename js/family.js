@@ -169,7 +169,7 @@ const goesOn = (p, key, id = talkLines(p, 'goeson')) => {
   const subjects = ['port', 'ship', 'last', ...(hired() ? ['captain'] : []), ...(ROLE_NAMES[p.role] ? ['work'] : [])];  // the captain is a hand's subject; a post is a crew member's
   const k = key || pick(subjects.filter(s => s !== p.turn));
   p.turn = k;
-  const cap = hiredCaptain(), vars = { n, port: t ? SYSTEMS[t.to].name : st.planet, cap: cap ? cap.last : '', ship: shipTitle(), post: (ROLE_NAMES[p.role] || '').toLowerCase() };
+  const cap = hiredCaptain(), vars = { n, port: t ? placeOf(t.to).name : st.planet, cap: cap ? cap.last : '', ship: shipTitle(), post: (ROLE_NAMES[p.role] || '').toLowerCase() };
   const owed = !t || t.flipped, offer = say(`${k}.c0.label${k !== 'captain' && owed ? '.owed' : ''}`, vars);
   const spend = () => { if (k === 'captain') like(cap, -1, null); else if (owed) st.watchOwed = { n }; else spendLife(t, 'after'); };
   const result = c => () => say(`${k}.${c}.result.${pick(variants(id, `${k}.${c}.result`))}`, vars);

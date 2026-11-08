@@ -73,10 +73,10 @@ function pickFresh(lines, rnd = Math.random) {
   if (typeof line === 'string') { recent.push(line); if (recent.length > 30) recent.shift(); }
   return line;
 }
-const system = (id = G.state.systemId) => SYSTEMS[id];
+const system = (id = G.state.systemId) => placeOf(id);  // a system, or a site (sites.js)
 const ship = () => shipStats(G.state.shipId);  // the player's ship, outfits included
 const statsOf = o => (o === G.player ? ship() : SHIPS[o.shipId]);
-const currentPlanet = () => system().planets.find(p => p.name === G.state.planet);
+const currentPlanet = () => { const s = system(); return s && s.site ? s : s.planets.find(p => p.name === G.state.planet); };  // at a site, the site is its own port
 
 // The one-line notes of flight and the dock are in the text layer ('scene:flight-notes', js/hiredscenes.js); this reads one.
 const flySay = (key, vars) => sceneSay('scene:flight-notes', key, vars);
@@ -162,8 +162,8 @@ function loadGame() {
 // A save can name content from a mod that has since been removed. Fall back to
 // built-in content rather than crash.
 function dropMissingModContent(st) {
-  if (!SYSTEMS[st.systemId] || !currentPlanet()) Object.assign(st, { systemId: 'earth', planet: 'Earth' });
-  if (st.dest && !SYSTEMS[st.dest]) st.dest = null;
+  if (!placeOf(st.systemId, st) || !currentPlanet()) Object.assign(st, { systemId: 'earth', planet: 'Earth' });
+  if (st.dest && !placeOf(st.dest, st)) st.dest = null;
   if (!SHIPS[st.shipId]) st.shipId = 'shuttle';
   for (const id of Object.keys(st.outfits)) if (!OUTFITS[id]) delete st.outfits[id];
   for (const id of Object.keys(st.cargo)) if (!COMMODITIES.some(c => c.id === id)) delete st.cargo[id];
@@ -588,7 +588,7 @@ function tryBurn() {
   G.departTimer = 1.2;
   G.mode = 'departing';
   Mods.emit('burnStart', st.dest);
-  msg(flySay('burn.go', { system: SYSTEMS[st.dest].name }));
+  msg(flySay('burn.go', { system: placeOf(st.dest).name }));
 }
 
 function updateDeparture(dt) {
@@ -639,7 +639,7 @@ function openMap() {
   G.mode = 'map';
   // Start zoomed to fit where you are and where you are headed.
   const st = G.state, here = G.transit ? G.transit.to : st.systemId;
-  const far = Math.max(SYSTEMS[here].au, st.dest ? SYSTEMS[st.dest].au : 0) * 1.1;
+  const far = Math.max(placeOf(here).au, st.dest ? placeOf(st.dest).au : 0) * 1.1;
   G.mapZoom = MAP_ZOOMS.findIndex(z => z >= far);
   if (G.mapZoom < 0) G.mapZoom = MAP_ZOOMS.length - 1;
   UI.hide();
@@ -961,7 +961,7 @@ function drawHudCompact(W) {
   ctx.textAlign = 'left';
   ctx.font = `600 15px ${LABEL_FONT}`;
   ctx.fillStyle = inTransit ? '#7fb4ff' : GOV_COLORS[sys.gov];
-  ctx.fillText(inTransit ? `To ${SYSTEMS[G.transit.to].name}` : sys.name, x, 17);
+  ctx.fillText(inTransit ? `To ${placeOf(G.transit.to).name}` : sys.name, x, 17);
   ctx.font = '11px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.textAlign = 'right';
@@ -976,7 +976,7 @@ function drawHudCompact(W) {
   ctx.font = '11px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#cfe3ff';
   const from = G.transit ? G.transit.to : st.systemId;
-  const burn = st.dest ? ` · Burn ${SYSTEMS[st.dest].name} ${travelDays(from, st.dest)}d/${burnFuel(from, st.dest)}rm` : '';
+  const burn = st.dest ? ` · Burn ${placeOf(st.dest).name} ${travelDays(from, st.dest)}d/${burnFuel(from, st.dest)}rm` : '';
   if (hired()) { ctx.fillText(wrapText(stripText(['Hull', 'Savings']), w)[0], x, 72); G.hudStrip = { x, y: 62, w, h: 14 }; }  // the hull and the savings are the bar and the figure above (readouts.js)
   else ctx.fillText(wrapText(`Cargo ${cargoUsed()}/${s.cargo}t${s.launcher ? ` · Torp ${st.torpedoes || 0}` : ''}${burn}`, w)[0], x, 72);
   if (G.target && p && !inTransit) {
@@ -1014,7 +1014,7 @@ function drawHud(W, H) {
   ctx.fillText(inTransit ? 'In transit' : sys.name, x, y);
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(inTransit ? `To ${SYSTEMS[G.transit.to].name}` : `${sys.gov}`, x, y += 16);
+  ctx.fillText(inTransit ? `To ${placeOf(G.transit.to).name}` : `${sys.gov}`, x, y += 16);
   ctx.fillText(dateOf(), x, y += 16);
   if (hired() && hiredCaptain()) ctx.fillText(`Capt. ${hiredCaptain().first} ${hiredCaptain().last}`, x, y += 16);
 
@@ -1044,7 +1044,7 @@ function drawHud(W, H) {
   const nav = G.navPlanet !== null && p ? system().planets[G.navPlanet] : null;
   if (!calm) ctx.fillText(nav ? `${nav.name} (${Math.round(dist(nav, p))})` : 'none (L)', x, y += 16);
   const from = G.transit ? G.transit.to : st.systemId;
-  ctx.fillText(st.dest ? `Burn: ${SYSTEMS[st.dest].name}` : hired() ? 'Burn: the captain\'s call' : 'Burn: none (M)', x, y += 16);
+  ctx.fillText(st.dest ? `Burn: ${placeOf(st.dest).name}` : hired() ? 'Burn: the captain\'s call' : 'Burn: none (M)', x, y += 16);
   if (st.dest) {
     const need = burnFuel(from, st.dest);
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#9ab';
@@ -1233,7 +1233,7 @@ function drawMap(W, H) {
     const need = burnFuel(from, st.dest);
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#5fd35f';
     const now = travelDays(from, st.dest), w = bestWindow(from, st.dest);
-    status = `Burn to ${SYSTEMS[st.dest].name}: ${now} days, ${need} reaction mass (you have ${st.fuel}). `
+    status = `Burn to ${placeOf(st.dest).name}: ${now} days, ${need} reaction mass (you have ${st.fuel}). `
       + (w.wait ? `Best window: ${w.days} days, in ${w.wait} days.` : 'Near the best window for this route.')
       + seenNote(st, st.dest);
   }

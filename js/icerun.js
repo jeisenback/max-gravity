@@ -13,6 +13,7 @@ const ICE_WATER_PRICE = 960;  // water at a port this dear makes an ice run wort
 const ICE_HAZARD = 2;        // the wage, for the days it takes
 const ICE_PREMIUM = 2.5;     // what the domes pay for water on a contract, against the board price
 const ICE_AT = [0.3, 0.5, 0.78];  // how far into the burn each scene falls
+const ICE_SHIFTS = 3, ICE_SHIFTS_WORD = 'three';  // the shifts the ship spends on the rock (sites.js), and the word for the departure line (transit.js)
 const iceDays = days => Math.max(8, Math.ceil(1.5 * days) + 3);
 
 // The run the planner takes when it is due: the port that pays most for water, the whole hold, no cost.
