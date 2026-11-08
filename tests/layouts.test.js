@@ -7,7 +7,8 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const { LAYOUTS, layoutOf, layoutRooms, layoutRoom, deckFloor, layoutBox, towerHeight } = load(['js/camera.js', 'js/layouts.js'], {}, ['LAYOUTS', 'layoutOf', 'layoutRooms', 'layoutRoom', 'deckFloor', 'layoutBox', 'towerHeight']);
+const { LAYOUTS, layoutOf, layoutRooms, layoutRoom, deckFloor, layoutBox, towerHeight, seatX, layoutRoomAt, walkPath } = load(['js/camera.js', 'js/layouts.js'], {}, ['LAYOUTS', 'layoutOf', 'layoutRooms', 'layoutRoom', 'deckFloor', 'layoutBox', 'towerHeight', 'seatX', 'layoutRoomAt', 'walkPath']);
+const plain = v => JSON.parse(JSON.stringify(v));  // out of the vm context, so deepEqual compares plain objects
 
 test('every hull has a layout, its own or the Ice Hauler\'s', () => {
   assert.equal(layoutOf('freighter'), LAYOUTS.freighter);
@@ -37,4 +38,25 @@ test('the decks run nose to drive, a deck 100 high on a 12 plate, the tank betwe
   assert.equal(b.x0, 0); assert.ok(Math.abs(b.x1 - 0.48 * 880) < 1e-9); assert.equal(b.top, 112); assert.equal(b.floor, 212);
   assert.equal(layoutBox(lay, 'kitchen'), undefined);
   assert.equal(towerHeight(lay), deckFloor(lay, 6));
+});
+test('seats sit in their room and never in the well', () => {
+  const lay = LAYOUTS.freighter, w = lay.width, w0 = (lay.well.x - lay.well.w / 2) * w, w1 = (lay.well.x + lay.well.w / 2) * w;
+  for (const [id, shares] of Object.entries(lay.seats)) shares.forEach((_, k) => {
+    const x = seatX(lay, id, k), b = layoutBox(lay, id);
+    assert.ok(x > b.x0 && x < b.x1, `${id} seat ${k} in the room`); assert.ok(x < w0 || x > w1, `${id} seat ${k} clear of the well`);
+  });
+  assert.ok(Math.abs(seatX(lay, 'galley', 0) - 0.28 * 0.48 * 880) < 1e-9);
+  assert.equal(seatX(lay, 'galley', 9), undefined); assert.equal(seatX(lay, 'kitchen', 0), undefined);
+});
+test('the room at a point: the room on that deck, none in the well of a split deck', () => {
+  const lay = LAYOUTS.freighter;
+  assert.equal(layoutRoomAt(lay, 1, 100), 'galley'); assert.equal(layoutRoomAt(lay, 1, 800), 'head');
+  assert.equal(layoutRoomAt(lay, 1, 440), null, 'the well'); assert.equal(layoutRoomAt(lay, 2, 440), 'berths', 'a full-width deck');
+  assert.equal(layoutRoomAt(lay, 9, 100), null); assert.equal(layoutRoomAt(lay, 1, -5), null);
+});
+test('a walk stays on its deck, or goes by the well and climbs once, the tank included', () => {
+  const lay = LAYOUTS.freighter;
+  assert.deepEqual(plain(walkPath(lay, { deck: 1, x: 100 }, { deck: 1, x: 800 })), [{ deck: 1, x: 800 }], 'no detour on one deck');
+  assert.deepEqual(plain(walkPath(lay, { deck: 1, x: 100 }, { deck: 6, x: 700 })), [{ deck: 1, x: 440 }, { deck: 6, x: 440 }, { deck: 6, x: 700 }], 'down the well and the tube to the drive deck');
+  assert.deepEqual(plain(walkPath(lay, { deck: 3, x: 440 }, { deck: 3, x: 440 })), [{ deck: 3, x: 440 }]);
 });

@@ -38,3 +38,20 @@ function layoutBox(lay, id) {
 }
 // From the flight deck's ceiling to the drive deck's floor.
 const towerHeight = lay => deckFloor(lay, lay.decks.length - 1);
+// A room's k-th seat, as a world x: undefined if the room or the seat is not there.
+function seatX(lay, id, k) {
+  const b = layoutBox(lay, id), f = (lay.seats[id] || [])[k];
+  return b && f !== undefined ? b.x0 + (b.x1 - b.x0) * f : undefined;
+}
+// The room on a deck holding world x, or null: in the well on a split deck, off the deck's ends, or off the decks.
+function layoutRoomAt(lay, deck, x) {
+  const d = lay.decks[deck], s = x / lay.width, r = d && d.rooms.find(q => s >= q.x0 && s <= q.x1);
+  return r ? r.id : null;
+}
+// The places a person passes on the way from one place to another, after where they start: straight along the deck on the same deck, else
+// to the well, up or down it (through the tube in the tank to the drive deck), and along the deck they reach.
+function walkPath(lay, from, to) {
+  if (from.deck === to.deck) return [{ deck: to.deck, x: to.x }];
+  const wx = lay.well.x * lay.width;
+  return [{ deck: from.deck, x: wx }, { deck: to.deck, x: wx }, { deck: to.deck, x: to.x }];
+}
