@@ -10,8 +10,9 @@ const PORTRAIT_SKIN = ['#f1c9a5', '#d9a77a', '#b98156', '#8d5a3b', '#5e3b27'];
 const PORTRAIT_HAIR = ['#1a1210', '#2a1d18', '#5a3b22', '#8a6a3a', '#9aa3ab'];
 const ROLE_COLLAR = { pilot: '#1d3a5c', gunner: '#5c2a1d', engineer: '#5c4a1d', slicer: '#3a1d5c', quartermaster: '#1d5c3a', medic: '#1d5c5c', captain: '#34506e' };
 
-// A person's skin, hair and its cut, from their id: the portrait's, and the figure's in the burn view (shiplife.js).
-const portraitLook = c => { const h = Math.abs(hash(String(c.id || c.name || 'x'))); return { skin: PORTRAIT_SKIN[h % 5], hair: PORTRAIT_HAIR[(h >> 3) % 5], cut: (h >> 6) % 3 }; };
+// A person's skin, hair and its cut, from their id: the portrait's, and the figure's in the burn view (shiplife.js), where v picks the rest of
+// their look (figures.js figStyle: the hair style within the cut, facial hair, nose, build, brows).
+const portraitLook = c => { const h = Math.abs(hash(String(c.id || c.name || 'x'))); return { skin: PORTRAIT_SKIN[h % 5], hair: PORTRAIT_HAIR[(h >> 3) % 5], cut: (h >> 6) % 3, v: h }; };
 // A bust in the person's colors: skin, hair and its cut come from their id, the collar from their role.
 function portraitSvg(c) {
   const { skin, hair, cut } = portraitLook(c), collar = ROLE_COLLAR[c.role] || '#34506e';
