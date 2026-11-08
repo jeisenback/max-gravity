@@ -470,7 +470,7 @@
   "labels": [
    "Match the roll and go in slow [60%; if it fails: hull damage, a crew casualty, a thinner haul]",
    "Go in fast, and brake hard [40%; if it fails: hull damage, a crew casualty, a thinner haul, and the captain marks it]",
-   "Send a line across first [70%]",
+   "Send a line across first [80%; if it fails: a thinner haul]",
    "[Pilot] Fly the approach by hand [65%; if it fails: hull damage, a crew casualty, a thinner haul]"
   ],
   "plays": [
@@ -507,7 +507,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "The line parts on the first haul. You spend two hours getting it across again.",
+    "text": "The line parts on the first haul. You spend two hours getting it across again, and the cutters start late.",
     "xp": 1
    },
    {
@@ -535,7 +535,7 @@
   "labels": [
    "Match the roll and go in slow [60%; if it fails: hull damage, a crew casualty, a thinner haul]",
    "Go in fast, and brake hard [40%; if it fails: hull damage, a crew casualty, a thinner haul, and the captain marks it]",
-   "Send a line across first [70%]",
+   "Send a line across first [80%; if it fails: a thinner haul]",
    "[Engineer] Set the anchors yourself [65%; if it fails: hull damage, a crew casualty, a thinner haul]"
   ],
   "plays": [
@@ -564,7 +564,7 @@
   "labels": [
    "Match the roll and go in slow [60%; if it fails: hull damage, a crew casualty, a thinner haul]",
    "Go in fast, and brake hard [40%; if it fails: hull damage, a crew casualty, a thinner haul, and the captain marks it]",
-   "Send a line across first [70%]",
+   "Send a line across first [80%; if it fails: a thinner haul]",
    "[Gunner] Blast a ledge to land on [65%; if it fails: hull damage, a crew casualty, a thinner haul]"
   ],
   "plays": [
@@ -593,7 +593,7 @@
   "labels": [
    "Match the roll and go in slow [60%; if it fails: hull damage, a crew casualty, a thinner haul]",
    "Go in fast, and brake hard [40%; if it fails: hull damage, a crew casualty, a thinner haul, and the captain marks it]",
-   "Send a line across first [70%]",
+   "Send a line across first [80%; if it fails: a thinner haul]",
    "[Comms] Scan for the stable face [70%; if it fails: hull damage, a crew casualty, a thinner haul]"
   ],
   "plays": [
