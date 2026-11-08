@@ -216,18 +216,23 @@ function roomBerths(ctx, r, s, X, W) {
   }
 }
 
+// The galley's mess table (#925), the length of its bench, at seated height: drawn after the people (shiplife.js), so those sitting at it
+// facing you are behind it, their laps under the top (#978). The plates and the mug on it; the lashings under it in the hard burn.
+function roomMessTable(ctx, r, s) {
+  const W = r.x1 - r.x0, X = sh => r.x0 + W * sh, F = r.floor, { w } = s, time = s.still ? 0 : s.time;
+  if (W < 200) return;
+  const tx = X(0.25), tw = X(0.73) - tx;
+  roomBox(ctx, tx, F - 31, tw, 5, '#2c4c6e'); roomBox(ctx, tx + 8, F - 26, 4, 26, '#20384f'); roomBox(ctx, tx + tw - 12, F - 26, 4, 26, '#20384f');
+  roomBox(ctx, tx + tw * 0.3, F - 34, 8, 3, '#ddd6c8'); roomBox(ctx, tx + tw * 0.45, F - 34, 8, 3, '#ddd6c8'); roomBox(ctx, tx + tw * 0.45 + 2, F - 34, 3, 3, '#b8483a');
+  roomMug(ctx, tx + tw * 0.75, F - 34, w, time);
+  if (w.burn > 0.5) { ctx.strokeStyle = 'rgba(140,170,200,0.5)'; ctx.lineWidth = 0.8; for (let x = tx + 22; x < tx + tw - 22; x += 6) roomSeg(ctx, [[x, F - 14], [x + 6, F]]); }
+}
+
 function roomGalley(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, lw = Math.min(130, W * 0.3);
   roomBox(ctx, X(0.02), F - 98, lw, 22, '#1c3249'); for (const dx of [4, lw / 2 + 2]) roomBox(ctx, X(0.02) + dx, F - 95, lw / 2 - 8, 16, '#16293d');
   worldText(ctx, s.zoom, 'MUGS', X(0.02) + 8, F - 83, 9, '#c7b48a');
   roomPorthole(ctx, X(0.34), F - 66, 13, s.spin);
-  if (W >= 200) {
-    const tx = X(0.25), tw = X(0.73) - tx;  // the mess table, the length of its bench (#925)
-    roomBox(ctx, tx, F - 40, tw, 5, '#2c4c6e'); roomBox(ctx, tx + 8, F - 35, 4, 35, '#20384f'); roomBox(ctx, tx + tw - 12, F - 35, 4, 35, '#20384f');
-    roomBox(ctx, tx + tw * 0.3, F - 43, 8, 3, '#ddd6c8'); roomBox(ctx, tx + tw * 0.45, F - 43, 8, 3, '#ddd6c8'); roomBox(ctx, tx + tw * 0.45 + 2, F - 43, 3, 3, '#b8483a');
-    roomMug(ctx, tx + tw * 0.75, F - 43, w, time);
-    if (w.burn > 0.5) { ctx.strokeStyle = 'rgba(140,170,200,0.5)'; ctx.lineWidth = 0.8; for (let x = tx + 22; x < tx + tw - 22; x += 6) roomSeg(ctx, [[x, F - 14], [x + 6, F]]); }
-  }
   if (W >= 240) {
     // The stove (#933): two burners on its top (the kettle on one, the ring lit while it steams in cruise), the oven door with its window and
     // knobs, a cupboard beside it, and a hood over the burners with its duct to the ceiling; the pans hang on a rail past the hood.

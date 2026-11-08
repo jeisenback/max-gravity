@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomBox, roomWalls, roomScreen, gaugeNeedle } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle']);
+const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = [], styles = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'styles' ? styles : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); if (k === 'fillStyle' || k === 'strokeStyle') styles.push(String(v).toLowerCase()); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -61,6 +61,24 @@ test('someone on a crash couch lies back the way the couch does, whichever way t
     const at = drawPerson(fakeCtx(), { name: 'couch', x: 0.5, deck: 0, face, frame: 0 }, 400, 100, { color: '#ffb347' });
     assert.ok(at.head.x < 400, `face ${face}: the head toward the couch's back, on the left`);
   }
+});
+// #978: a person seen from the front or the back, not only in profile.
+test('standing, sitting and at work draw from the front and the back in every style and mood, with a tap point on the body (#978)', () => {
+  for (const view of ['front', 'back']) for (const name of ['stand', 'sit', 'work', 'work-sit']) for (let v = 0; v < 12; v++) for (const mood of [undefined, 'good', 'low', 'hurt']) {
+    const c = fakeCtx(), at = drawPerson(c, { name, view, x: 0.5, deck: 0, face: 1, frame: 1 }, 400, 100, { color: '#ffb347', skin: '#c08a68', hair: '#2a1d18', cut: v % 3, v: v * 37, mood });
+    assert.equal(c.depth, 0, `${view} ${name}: every save is restored`);
+    assert.ok(Math.abs(at.x - 400) < 1 && at.y < 100 && at.y > 40, `${view} ${name}: the tap point on the body's middle`);
+    assert.ok(at.head.y < at.y && at.foot.y >= at.y, `${view} ${name}: the head above it, the feet below`);
+  }
+});
+test('the view: facing you to stand and sit, your back to the panel at work, side-on on the move and in the burn (#978)', () => {
+  const seat = roomAt('galley').x0 + roomAt('galley').w * SEATS.galley[0];
+  const p = o => ({ role: 'gunner', room: 'galley', x: seat, dk: 0, tdk: 0, tx: null, seat, couch: 1, ...o });
+  assert.equal(posture(p({ x: seat + 0.01 }), 'move', 0, false).view, 'front', 'standing about');
+  assert.equal(posture(p({ at: 'table' }), 'move', 0, false).view, 'front', 'at the table');
+  assert.equal(posture(p({ block: 'shift', at: 'post', room: 'engine', x: 0.05, seat: 0.3 }), 'move', 0, false).view, 'back', 'at a panel');
+  assert.equal(posture(p({ tx: 0.6 }), 'move', 0, false).view, 'side', 'walking');
+  for (const ph of ['couch', 'secure', 'float']) assert.equal(posture(p(), ph, 0, false).view, 'side', `${ph}: side-on`);
 });
 test('a sleeper lies with the head to the left whichever way they last faced', () => {
   for (const face of [1, -1]) {
@@ -181,7 +199,7 @@ test('with reduced motion the flip holds still: a room drawn at two times is the
   assert.ok(moving.length > 0, 'without reduced motion the flip does move');
 });
 test('a mug sits in its holder: steaming and free in cruise, clipped in at the flip', () => {
-  const draw = pr => { const c = fakeCtx(); drawRoom(c, 'galley', RR, RS({ w: phaseWeights(pr) })); return c; };
+  const draw = pr => { const c = fakeCtx(); roomMessTable(c, RR, RS({ w: phaseWeights(pr) })); return c; };  // the mug is on the mess table, drawn over the people (#978)
   assert.ok(draw(0.3).calls.filter(k => k === 'quadraticCurveTo').length > draw(0.5).calls.filter(k => k === 'quadraticCurveTo').length, 'steam in cruise only');
 });
 
