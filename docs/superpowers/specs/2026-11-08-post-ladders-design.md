@@ -34,7 +34,7 @@ A level at a post adds a tenth to the post's rolls and opens a few marked choice
 
 ### The table
 
-Two a rung, twenty a post. The first word of each is its id. Moves marked (taught) play their teaching scene on a burn as the gunner's do; the others take effect when taken.
+Two a rung, ten a post. The first word of each is its id. Moves marked (taught) play their teaching scene on a burn as the gunner's do and are known after it; the others are known when taken. Every move is a move of the turn-based ship fight (`js/fight.js`, `FIGHT_MOVES`), once a fight, offered beside the guns as the gunner's three are (`fightui.js` `moveChoices`); the fights' hooks named below are that engine's (the owner approved the table on 2026-11-08 with the old raid's words in some hooks; they are corrected here to the fights that exist).
 
 **Gunner** (eye)
 
@@ -47,8 +47,8 @@ Two a rung, twenty a post. The first word of each is its id. Moves marked (taugh
 | 3 | split | move (taught by the first officer) | Split the turret, as now |
 | 3 | marksman | perk | Your ship-fight gunnery counts a level higher (`fightui.js`, where the boresight adds one) |
 | 4 | eye | stat | Eye up one |
-| 4 | pd-watch | perk | The point defense answer in a raid never falls below even odds (`engagements.js`) |
-| 5 | called-shot | move (taught by nobody: taken, it is known) | Once a raid, your own move is made at the rule's best odds |
+| 4 | pd-watch | perk | A held turret takes half off her volley, not two fifths (`FIGHT.PDC_HOLD` for your side) |
+| 5 | called-shot | move | Once a fight, the named gun's shot takes no aim penalty and rolls the top of its range (names a gun, as lead does) |
 | 5 | nerve | stat | Nerve up one |
 
 **Pilot** (nerve)
@@ -57,13 +57,13 @@ Two a rung, twenty a post. The first word of each is its id. Moves marked (taugh
 |---|---|---|---|
 | 1 | cool-hand | edge solo 0.05 | A bold call of your own lands a twentieth more often |
 | 1 | trim | perk | A burn you fly costs a twentieth less reaction mass (`burnFuel`) |
-| 2 | break-intercept | move | Once a raid, the turn away opens the range by 20 km with no roll (`range.js`) |
-| 2 | soft-hands | perk | An approach you fly costs no hull on a lost roll (the ice run's first scene, `iceStep`) |
-| 3 | lane-sense | perk | A contact's plume is read one beat sooner: the raid opens 10 km farther out (`engage.js`) |
+| 2 | break-intercept | move | Once a fight, your vote to open the range stands this turn whatever her speed (`nextBand`) |
+| 2 | soft-hands | perk | The ice run's approach costs no hull on a lost roll when you fly it (`iceStep`, the first scene, the pilot's choice) |
+| 3 | lane-sense | perk | A contact's plume is read sooner: the fight starts 10 km farther out (`engage.js`, the range at contact) |
 | 3 | long-legs | perk | Burns you fly are shorter by another twentieth (`travelDays`, on top of the post's perk) |
 | 4 | nerve | stat | Nerve up one |
-| 4 | brace | perk | A flee from a contact gets away a tenth more often (`fleeOdds`) |
-| 5 | redline | move (taught by the engineer) | Once a fight, the drive past the redline: the range opens and she loses a pass |
+| 4 | brace | perk | A run from a contact gets away a tenth more often (`fleeOdds`, `fightui.js`) |
+| 5 | redline | move (taught by the engineer) | Once a fight, at the long band, the drive past the redline: the ship is away this turn (the `escaped` end) |
 | 5 | eye | stat | Eye up one |
 
 **Engineer** (hands)
@@ -72,13 +72,13 @@ Two a rung, twenty a post. The first word of each is its id. Moves marked (taugh
 |---|---|---|---|
 | 1 | sure-hands | edge job 0.05 | A job of your post ashore or aboard lands a twentieth more often |
 | 1 | cool-loop | perk | The reactor's heat limit is 5 higher (`heatLimit`) |
-| 2 | hear-it-coming | perk | A part about to fail is named in the ship's log a day before its breakdown (`wear.js`) |
-| 2 | patch | move | Once a fight, five points of armor back between passes |
-| 3 | melt-return | perk | The ice run's melt goes to the tanks on every haul (the engineer's win in the third scene, always) |
-| 3 | hot-start | move (taught by the pilot) | Once a raid, the hot drive opens the range by 20 km, not 10 |
+| 2 | hear-it-coming | perk | A part worn under the breakdown line is named in the ship's log the day it crosses it (`wear.js`, `BREAKDOWN_BELOW`) |
+| 2 | patch | move | Once a fight, your armor back by a tenth of the fight's pooled maximum |
+| 3 | melt-return | perk | Every haul home puts the melt in the tanks: 20 reaction mass at the home port (`iceHome`) |
+| 3 | hot-start | move (taught by the pilot) | Once a fight, every shot this turn is overcharged at a plain shot's heat |
 | 4 | hands | stat | Hands up one |
-| 4 | yard-eye | perk | The yard's estimate is a tenth less when you stand over the work (`repairs.js`) |
-| 5 | bypass | move | Once a fight, a system the fight has knocked out comes back |
+| 4 | yard-eye | perk | The yard's estimate is a tenth less when you stand over the work (`repairPlan`, `repairs.js`) |
+| 5 | bypass | move | Once a fight, your drive's part is back to full, so a pinned drive votes on the range again |
 | 5 | wit | stat | Wit up one |
 
 **Comms** (wit)
@@ -86,17 +86,17 @@ Two a rung, twenty a post. The first word of each is its id. Moves marked (taugh
 | Level | Pick | Kind | What it does |
 |---|---|---|---|
 | 1 | quick-word | edge word 0.05 | A word with the captain or an agent lands a twentieth more often |
-| 1 | long-ear | perk | A burn's market rumor comes a day earlier and lasts a week longer (`addRumor`) |
-| 2 | read-her | perk | The sensor board names her style on the contact, not the first pass (`board.js`) |
-| 2 | spoof | move | Once a raid, a false transponder: she stands off a pass |
-| 3 | far-price | perk | The port the captain plans for shows its real price at the planning, not a rumor's (`contracts.js`, the run panel) |
+| 1 | long-ear | perk | A market rumor you hear lasts a week longer (`addRumor`) |
+| 2 | fair-copy | perk | A contract's dock for lateness is half when you kept the paper (`latePay`, `LATE_DOCK`) |
+| 2 | spoof | move | Once a fight, a false transponder: she fires no volley and no salvo this turn |
+| 3 | clear-copy | perk | The dock broker's skim never lands on a run whose paper you kept (`skimOf`) |
 | 3 | fair-hearing | edge brawl 0.05 | A bar fight with nobody at your back goes your way a twentieth more often |
 | 4 | wit | stat | Wit up one |
 | 4 | open-board | perk | A shipper that knows the ship draws its board as for one it trusts (`boardStanding`) |
-| 5 | parley | move (taught by the first officer) | Once a raid, a hail that ends it: she breaks off if the roll lands |
+| 5 | parley | move (taught by the first officer) | Once a fight, at the mid or long band, a word on wit: landed, every foe breaks off (the `broke` end) |
 | 5 | hands | stat | Hands up one |
 
-The words are a first draft for the owner to edit, as every line is. A move named here that the raid does not have yet (break-intercept, redline, patch, hot-start, bypass, spoof, parley, called-shot) is a new beat choice on the raid or the lock fight at its post, built in this piece as the gunner's three were built for the ship fight, each as one choice with a check and a win and a lose line; `COMBAT.md` gets a line each.
+The words are a first draft for the owner to edit, as every line is. The eight moves the fight does not have yet (called-shot, break-intercept, redline, patch, hot-start, bypass, spoof, parley) are new entries in `FIGHT_MOVES`, each with its `canUse` condition and its effect in `resolveShipTurn`, offered as the gunner's three are; parley is the one with a roll (`handCheck('wit', skillLevel('comms'), 'post')`), the rest are sure once usable. `COMBAT.md` gets a line each, and `npm run fights` can give the random player any of them.
 
 ### The ship's perk is the hand's (`js/crew.js`)
 
@@ -113,7 +113,7 @@ The words are a first draft for the owner to edit, as every line is. A move name
 ### Moves (`js/gunnermoves.js` becomes `js/moves.js`)
 
 - `MOVE_TEACH` is read from the `PICKS` table (`teacher`), not its own table. `moveDue(career, levels, teacher, opinionOf)` returns the first taken move pick not yet known whose teacher trusts the hand; the teaching scenes are the gunner's three as they are, and one new scene each for redline, hot-start and parley (the pilot's, the engineer's, the first officer's), as scene lines in `js/hiredscenes.js`. A move with no teacher is known when taken.
-- The ship fight reads `career().moves` as now. The raid and the lock fight read it for the new moves: a known move is one more choice on the beat it belongs to, labelled `[Gunner move] Called shot`, usable once a fight (`spent` on the fight's state, as the ship fight keeps).
+- The ship fight reads `career().moves` as now for all eleven; `moveChoices` gains a label and a condition for each new one, and the engine spends it as it spends the three.
 
 ### Not in this piece
 
@@ -129,8 +129,8 @@ The words are a first draft for the owner to edit, as every line is. A move name
 - `tests/hired.test.js`: `SKILL_STEPS` to 400; the level note says a pick waits; `roleSkill` is the hand's level at the hand's post when nobody holds it and the holder's otherwise.
 - `tests/ladder.test.js` (browser): the card at level 0, at a level reached with a pick waiting, after a take; a shut pick's reason; the golden markup; the action does nothing in a burn.
 - `tests/moves.test.js`: `moveDue` over the picks; a move with no teacher is known when taken; a new move is offered once on its beat and spent.
-- One browser test per perk kind on the function it reads (trim on `burnFuel`, cool-loop on `heatLimit`, cover-eye on the lock fight, pd-watch on the raid, long-ear on the rumor, open-board on the board), each asserting the figure moved by the pick's amount and only with the pick.
-- `npm run fights` and `tests/distribution/fights.test.js` with the new moves in the random player's hand: the targets in `COMBAT.md` hold, or the owner is told by how much they moved.
+- One test per perk on the function it reads (trim and long-legs on `burnFuel` and `travelDays`, cool-loop on `heatLimit`, cover-eye on the lock fight's cover, marksman on the fight's skill, pd-watch on the turret's cut, lane-sense on the range at contact, brace on `fleeOdds`, soft-hands and melt-return on the ice run, hear-it-coming on the wear log, yard-eye on `repairPlan`, long-ear on the rumor's days, fair-copy on `latePay`, clear-copy on `skimOf`, open-board on `boardStanding`), each asserting the figure moved by the pick's amount and only with the pick.
+- `tests/fight.test.js`: each new move's `canUse` and effect in `resolveShipTurn`, pure. `npm run fights --moves` with the new moves in the random player's hand: the targets in `COMBAT.md` hold, or the owner is told by how much they moved.
 - The pins that play a hand at a post move where `roleSkill` now reads the hand: re-pinned once, the diff read.
 - `npm run coverage -- --check`: `js/picks.js` and `js/moves.js` on the floor.
 
@@ -139,5 +139,5 @@ The words are a first draft for the owner to edit, as every line is. A move name
 - Five levels at 0, 12, 45, 110, 220 and 400 points.
 - Two picks a rung, one taken, no respec; stat picks cap at 5.
 - The ship's perks read the hand's level when the hand holds the post and nobody else does.
-- The gunner's three moves are picks with the teaching scenes as they are; eight new moves are new beat choices on the raid or the lock fight, three of them taught.
+- The gunner's three moves are picks with the teaching scenes as they are; eight new moves are ship-fight moves in the same engine, three of them taught.
 - The table's names and words are the owner's to edit; the effects and their hooks are the design.
