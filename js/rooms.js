@@ -128,6 +128,26 @@ function roomWalls(ctx, r, w, time, still) {
   ctx.strokeStyle = '#3a2f22'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x0 + 6, top + 10); ctx.quadraticCurveTo((x0 + x1) / 2, top + 10 + sag * 0.7, x1 - 6, top + 10); ctx.stroke();
 }
 
+// The engine room's fittings (#933). A gauge's reading, 0 to 1: up in the hard burn, low in cruise, near nothing at the flip with the drive off,
+// and a tremble while the drive runs (k: which gauge).
+const gaugeNeedle = (w, time, k) => Math.min(1, 0.05 * w.flip + 0.35 * w.cruise + 0.85 * w.burn + 0.03 * Math.sin(time * 5 + k * 1.9) * (1 - w.flip));
+function roomGauge(ctx, x, y, rad, v) {
+  roomDot(ctx, x, y, rad + 2, '#3d5a7a'); roomDot(ctx, x, y, rad, '#e6dfc9');
+  ctx.strokeStyle = '#b0322a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, rad - 2, -Math.PI / 2 + 0.45 * Math.PI, -Math.PI / 2 + 0.75 * Math.PI); ctx.stroke();  // the red band at the top of the scale
+  const a = -Math.PI / 2 + (v - 0.5) * Math.PI * 1.5; ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 1.2; roomSeg(ctx, [[x, y], [x + Math.cos(a) * (rad - 2), y + Math.sin(a) * (rad - 2)]]); roomDot(ctx, x, y, 1.3, '#1a1a1a');
+}
+function roomValve(ctx, x, y, rad) {
+  ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.stroke();
+  for (let k = 0; k < 4; k++) roomSeg(ctx, [[x, y], [x + Math.cos(k * Math.PI / 2 + 0.4) * rad, y + Math.sin(k * Math.PI / 2 + 0.4) * rad]]);
+  roomDot(ctx, x, y, 2.2, '#7a2a22');
+}
+// A pipe from a to b, horizontal or vertical, with a joint (a flange) every step.
+function roomPipe(ctx, [ax, ay], [bx, by], step) {
+  ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 6; roomSeg(ctx, [[ax, ay], [bx, by]]);
+  const len = Math.hypot(bx - ax, by - ay), across = ax === bx;
+  for (let d = step / 2; d < len; d += step) { const x = ax + (bx - ax) * d / len, y = ay + (by - ay) * d / len; roomFlat(ctx, across ? x - 5 : x - 1.5, across ? y - 1.5 : y - 5, across ? 10 : 3, across ? 3 : 10, '#4f6f8f'); }
+}
+
 // Each room: (ctx, r, s, X, W) with X(share) the world x at that share of the width. A prop that does not fit the width is dropped, last listed first.
 function roomEngine(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, top = r.top, deckY = F - (HULL.deck + HULL.plate), rx = X(0.5);
@@ -138,6 +158,14 @@ function roomEngine(ctx, r, s, X, W) {
   roomBox(ctx, rx - 12, top + 40, 24, F - top - 80, `rgba(${core},${0.35 + 0.5 * hot})`); roomBox(ctx, rx - 16, top + 36, 32, 4, '#3d5a7a'); roomBox(ctx, rx - 16, F - 40, 32, 4, '#3d5a7a');
   ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(rx + 40, top + 30); ctx.quadraticCurveTo(rx + 94, top + 30, X(0.98), top + 16); ctx.stroke();
   worldText(ctx, s.zoom, 'REACTOR', rx - 36, F - 14, 10, '#c9a227');
+  const lx = X(0.07); roomPipe(ctx, [lx, top + 8], [lx, F], 40); roomValve(ctx, lx, F - 100, 8);  // the coolant riser on the aft wall, its valve
+  const gx = X(0.2), gy = deckY - 34; roomBox(ctx, gx - 14, gy - 14, W >= 200 ? 54 : 28, 28, '#1d3550');
+  roomGauge(ctx, gx, gy, 10, gaugeNeedle(w, time, 0)); if (W >= 200) roomGauge(ctx, gx + 26, gy, 10, gaugeNeedle(w, time, 1));
+  if (W >= 240) {  // the feed from the reactor to the drive, low on the forward side: its gauge on a stem and its valve
+    const py = F - 80; roomPipe(ctx, [rx + 40, py], [X(0.98), py], 30);
+    const sx = X(0.7); ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 2; roomSeg(ctx, [[sx, py], [sx, py + 16]]); roomGauge(ctx, sx, py + 26, 9, gaugeNeedle(w, time, 2));
+    roomValve(ctx, X(0.86), py, 9);
+  }
   if (W >= 200) {
     const cx = X(0.62), cw = W * 0.34;
     roomBox(ctx, cx, deckY, cw, 5, '#2a4664'); ctx.fillStyle = '#0c1826'; for (let x = cx + 4; x < cx + cw - 4; x += 8) ctx.fillRect(x, deckY + 1, 4, 3);
