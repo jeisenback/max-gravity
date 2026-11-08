@@ -1232,7 +1232,7 @@ function drawMap(W, H) {
   let status = 'No burn plotted.';
   ctx.fillStyle = '#9ab';
   if (hand) {
-    status = bound ? (G.transit ? `The ship is bound for ${SYSTEMS[bound].name}.` : `The captain's run: ${SYSTEMS[from].name} to ${SYSTEMS[bound].name}, ${plan.days} days.`)
+    status = bound ? (G.transit ? `The ship is bound for ${placeOf(bound).name}.` : `The captain's run: ${placeOf(from).name} to ${placeOf(bound).name}, ${plan.days} days.`)  // a site, on an ice run (sites.js)
       : 'The captain is waiting for a market worth the fuel.';
   } else if (st.dest) {
     const need = burnFuel(from, st.dest);

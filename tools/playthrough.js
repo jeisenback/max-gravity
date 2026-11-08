@@ -112,7 +112,7 @@ function setup([policySrc, answerSrc, o]) {
   const slug = t => String(t).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 40) || 'scene';
   const since = () => (hired() ? hired().since : P.since || 0);
   const day = () => G.state.day - since();
-  const where = () => (G.mode === 'transit' && G.transit ? `in transit to ${SYSTEMS[G.transit.to].name}` : G.state.planet === SYSTEMS[G.state.systemId].name ? G.state.planet : `${G.state.planet}, ${SYSTEMS[G.state.systemId].name}`);
+  const where = () => (G.mode === 'transit' && G.transit ? `in transit to ${placeOf(G.transit.to).name}` : G.state.planet === placeOf(G.state.systemId).name ? G.state.planet : `${G.state.planet}, ${placeOf(G.state.systemId).name}`);
   const nameOf = id => { const p = person(id); return p ? `${p.first} ${p.last}` : id; };
   const snap = () => {
     const st = G.state, h = hired();
@@ -154,7 +154,7 @@ function setup([policySrc, answerSrc, o]) {
   // the landing, as she docks (the autopilot or the chapter lands her: game.js land), before the scenes it opens are answered
   { const real = window.land; window.land = function () { const out = real.apply(this, arguments), st = G.state; if (!hired()) return out;
     P.burnRec = null; P.landShot = true;
-    push({ k: 'land', day: day(), date: dateOf(st.day), planet: st.planet, system: SYSTEMS[st.systemId].name, credits: st.credits, fund: hired().fund, armor: st.armor, notes: (UI.notes || []).map(plain) });
+    push({ k: 'land', day: day(), date: dateOf(st.day), planet: st.planet, system: placeOf(st.systemId).name, credits: st.credits, fund: hired().fund, armor: st.armor, notes: (UI.notes || []).map(plain) });
     return out; }; }
   const bars = s => {
     const f = s.state;
@@ -202,7 +202,7 @@ function setup([policySrc, answerSrc, o]) {
     },
     async burn(t, planet) {
       begin();
-      P.burnRec = push({ k: 'burn', day: day(), from: SYSTEMS[G.state.systemId].name, to: SYSTEMS[t.to].name, planet, days: t.days, events: [] });
+      P.burnRec = push({ k: 'burn', day: day(), from: placeOf(G.state.systemId).name, to: placeOf(t.to).name, planet, days: t.days, events: [] });
       P.ticker = { t: null, n: 1, k: 0 };
     },
     async tick(kind, t) {

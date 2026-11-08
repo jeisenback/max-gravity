@@ -224,6 +224,7 @@ const homeRun = h => ({ sid: h.run.sid, planet: h.run.planet, good: 'water', ton
 // Sailing from the rock (hired.js sail): no takeoff and no local space, straight into the burn, with the run record kept as it is.
 function sailHome() {
   const st = G.state, run = hired().run;
+  if (!G.player) { G.player = makeShip(st.shipId, 0, 0, 0); const s = ship(); Object.assign(G.player, { armor: st.armor, maxArmor: s.armor, shields: s.shields }); }  // a save reloaded on station has no ship yet (the takeoff makes one at a port)
   st.dest = run.sid; st.route = { dock: run.planet, go: true };
   const from = orbitPos(st.systemId), to = orbitPos(st.dest);
   G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
