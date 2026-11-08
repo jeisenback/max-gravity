@@ -7,7 +7,38 @@
 
 const roomFont = '"Chakra Petch", ui-sans-serif, sans-serif';
 const roomStars = Array.from({ length: 14 }, (_, k) => [Math.sin(k * 12.9898) * 0.5 + 0.5, Math.sin(k * 78.233) * 0.5 + 0.5, (k % 3) * 0.4 + 0.6]);
-const roomBox = (ctx, x, y, w, h, col) => { ctx.fillStyle = col; ctx.fillRect(x, y, w, h); };
+// A prop (#933): its body a step brighter than the wall, its top edge catching the ceiling's light, its underside in shade, and a dark outline, so it
+// stands off the wall behind it. A small detail (under 6 units either way) or a colour not written as #rrggbb is a plain fill.
+const roomFlat = (ctx, x, y, w, h, col) => { ctx.fillStyle = col; ctx.fillRect(x, y, w, h); };
+const roomBox = (ctx, x, y, w, h, col) => {
+  if (Math.abs(w) < 6 || Math.abs(h) < 6 || !/^#[0-9a-f]{6}$/i.test(col)) { roomFlat(ctx, x, y, w, h, col); return; }
+  const x0 = Math.min(x, x + w), y0 = Math.min(y, y + h), W = Math.abs(w), H = Math.abs(h), e = Math.min(1.5, H / 6);
+  roomFlat(ctx, x0, y0, W, H, figShade(col, 1.18));
+  roomFlat(ctx, x0, y0, W, e, figShade(col, 1.6)); roomFlat(ctx, x0, y0 + H - e, W, e, figShade(col, 0.62));
+  ctx.strokeStyle = 'rgba(3,7,12,0.85)'; ctx.lineWidth = 1; ctx.strokeRect(x0 + 0.5, y0 + 0.5, W - 1, H - 1);
+};
+// A station's screen (#933): a bezel, the glass, and what it shows. kind: 'plot' (the course, the ship moving along it), 'status' (the ship's
+// readings as bars), 'scope' (a ranging circle, crosshairs and a sweep) or 'bars' (the guns' charge). hot: the hard burn's red.
+function roomScreen(ctx, x, y, w, h, kind, time, hot = false) {
+  roomBox(ctx, x - 3, y - 3, w + 6, h + 6, '#1b2f45'); roomFlat(ctx, x, y, w, h, '#03121c');
+  const lit = hot ? '#ff7a5a' : '#6fb0ff', soft = hot ? 'rgba(255,122,90,0.45)' : 'rgba(111,176,255,0.45)', cx = x + w / 2, cy = y + h / 2;
+  ctx.lineWidth = 1;
+  if (kind === 'plot') {
+    ctx.strokeStyle = soft; ctx.setLineDash([2, 2]); ctx.beginPath(); ctx.moveTo(x + 3, y + h - 4); ctx.quadraticCurveTo(cx, y + 2, x + w - 3, y + h - 5); ctx.stroke(); ctx.setLineDash([]);
+    const t = (time * 0.08) % 1, px = (1 - t) * (1 - t) * (x + 3) + 2 * (1 - t) * t * cx + t * t * (x + w - 3), py = (1 - t) * (1 - t) * (y + h - 4) + 2 * (1 - t) * t * (y + 2) + t * t * (y + h - 5);
+    roomDot(ctx, px, py, 1.6, '#ffd9a8'); roomDot(ctx, x + w - 3, y + h - 5, 1.6, '#5fd35f');
+  } else if (kind === 'status') {
+    for (let k = 0; k < 3; k++) { roomFlat(ctx, x + 3, y + 3 + k * (h / 3), w - 6, 2, '#0f2a3e'); roomFlat(ctx, x + 3, y + 3 + k * (h / 3), (w - 6) * (0.45 + 0.4 * Math.abs(Math.sin(time * 0.3 + k * 1.7))), 2, k === 1 ? '#ffb347' : lit); }
+  } else if (kind === 'scope') {
+    const rr = Math.min(w, h) / 2 - 3;
+    ctx.strokeStyle = soft; ctx.beginPath(); ctx.arc(cx, cy, rr, 0, Math.PI * 2); ctx.stroke(); ctx.beginPath(); ctx.arc(cx, cy, rr / 2, 0, Math.PI * 2); ctx.stroke();
+    roomSeg(ctx, [[cx - rr, cy], [cx + rr, cy]]); roomSeg(ctx, [[cx, cy - rr], [cx, cy + rr]]);
+    ctx.strokeStyle = hot ? 'rgba(255,150,110,0.9)' : 'rgba(111,255,176,0.85)'; roomSeg(ctx, [[cx, cy], [cx + Math.cos(time * 2) * rr, cy + Math.sin(time * 2) * rr]]);
+    roomDot(ctx, cx + rr * 0.45, cy - rr * 0.4, 1.4, '#ff8a6a');
+  } else {
+    for (let k = 0; k < 4; k++) { const hgt = Math.max(2, (h - 6) * (0.25 + 0.7 * Math.abs(Math.sin(time * 1.5 + k)))); roomFlat(ctx, x + 3 + k * ((w - 6) / 4), y + h - 3 - hgt, (w - 6) / 4 - 1.5, hgt, lit); }
+  }
+}
 const roomDot = (ctx, x, y, r, col) => { ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); };
 const roomSeg = (ctx, pts) => { ctx.beginPath(); ctx.moveTo(...pts[0]); for (const p of pts.slice(1)) ctx.lineTo(...p); ctx.stroke(); };
 const roomMix = (cols, w) => { const out = [0, 0, 0]; cols.forEach((c, i) => c.forEach((v, j) => { out[j] += v * w[i]; })); return out.map(Math.round); };
@@ -65,9 +96,9 @@ function roomBench(ctx, x0, x1, F) {
   const legs = Math.max(2, Math.round((x1 - x0) / 60) + 1);
   for (let k = 0; k < legs; k++) roomBox(ctx, x0 + 4 + (x1 - x0 - 12) * (k / (legs - 1)), F - 14, 4, 14, '#1c3249');
 }
-function roomStool(ctx, x, F, back) {
-  roomBox(ctx, x - 10, F - 18, 20, 4, '#2a4664'); roomBox(ctx, x - 2, F - 14, 4, 14, '#1c3249'); roomBox(ctx, x - 8, F - 3, 16, 3, '#1c3249');
-  if (back) roomBox(ctx, x - 14 * back, F - 54, 5 * back, 38, '#2a4664');
+function roomStool(ctx, x, F, back) {  // back: a chair's back on the left (1) or the right (-1) of the seat, for a station's chair (#933); none on a stool
+  if (back) { const bx = back > 0 ? x - 12 : x + 7; roomBox(ctx, bx, F - 50, 6, 34, '#2a4664'); roomFlat(ctx, bx + 1, F - 46, 4, 12, '#203a55'); }
+  roomBox(ctx, x - 10, F - 19, 20, 6, '#2a4664'); roomFlat(ctx, x - 2, F - 13, 4, 13, '#1c3249'); roomFlat(ctx, x - 8, F - 3, 16, 3, '#1c3249');
 }
 // A mug in a holder ring on the table: free in cruise (it steams), clipped in at the flip (no steam), in the ring in the burn.
 function roomMug(ctx, x, y, w, time) {
@@ -88,10 +119,10 @@ function roomPlant(ctx, x, y, w, time, still) {
 // Walls, seams, the deck plate and the cable run (it sags under thrust, less in cruise, and floats at the flip).
 function roomWalls(ctx, r, w, time, still) {
   const { x0, x1, top, floor: F } = r;
-  roomBox(ctx, x0, top, x1 - x0, F - top, '#0c1826');
+  roomFlat(ctx, x0, top, x1 - x0, F - top, '#0c1826');
   ctx.fillStyle = '#0e1c2c'; for (let x = x0; x < x1 - 40; x += 48) ctx.fillRect(x + 2, top + 14, 44, F - top - 34);
-  for (let x = x0; x < x1; x += 48) { roomBox(ctx, x, top, 2, F - top, '#132538'); roomDot(ctx, x + 5, top + 16, 0.9, '#21384f'); roomDot(ctx, x + 5, F - 22, 0.9, '#21384f'); }
-  roomBox(ctx, x0, F, x1 - x0, HULL.plate, '#132438'); ctx.fillStyle = '#1b3047'; for (let x = x0 + 4; x < x1 - 4; x += 10) ctx.fillRect(x, F + 2, 5, 2);
+  for (let x = x0; x < x1; x += 48) { roomFlat(ctx, x, top, 2, F - top, '#132538'); roomDot(ctx, x + 5, top + 16, 0.9, '#21384f'); roomDot(ctx, x + 5, F - 22, 0.9, '#21384f'); }
+  roomFlat(ctx, x0, F, x1 - x0, HULL.plate, '#132438'); ctx.fillStyle = '#1b3047'; for (let x = x0 + 4; x < x1 - 4; x += 10) ctx.fillRect(x, F + 2, 5, 2);
   const sag = 9 * w.burn + 4 * w.cruise + (still ? -2 : -2 + Math.sin(time * 0.9 + x0) * 3) * w.flip;
   ctx.strokeStyle = '#2b4462'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(x0 + 6, top + 6); ctx.quadraticCurveTo((x0 + x1) / 2, top + 6 + sag, x1 - 6, top + 6); ctx.stroke();
   ctx.strokeStyle = '#3a2f22'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x0 + 6, top + 10); ctx.quadraticCurveTo((x0 + x1) / 2, top + 10 + sag * 0.7, x1 - 6, top + 10); ctx.stroke();
@@ -187,13 +218,17 @@ function roomGalley(ctx, r, s, X, W) {
 
 function roomGunnery(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, cx = X(0.04);
-  roomBox(ctx, cx, F - 40, 96, 6, '#2c4c6e'); roomBox(ctx, cx + 6, F - 34, 84, 34, '#1f3a56');
-  roomBox(ctx, cx + 10, F - 94, 76, 52, '#16293d'); roomBox(ctx, cx + 14, F - 90, 34, 44, '#04101a'); roomBox(ctx, cx + 52, F - 90, 30, 44, '#04101a');
-  const rx = cx + 31, ry = F - 68; ctx.strokeStyle = 'rgba(111,176,255,0.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(rx, ry, 14, 0, Math.PI * 2); ctx.stroke();
-  ctx.strokeStyle = 'rgba(111,255,176,0.8)'; roomSeg(ctx, [[rx, ry], [rx + Math.cos(time * 2) * 14, ry + Math.sin(time * 2) * 14]]); roomDot(ctx, rx + 6, ry - 6, 1.4, '#ff8a6a');
-  if (w.flip > 0.5) { ctx.save(); ctx.translate(cx + 67, F - 68); ctx.rotate(s.spin * 0.5); ctx.fillStyle = '#ffb030'; ctx.beginPath(); ctx.moveTo(0, -10); ctx.lineTo(5, 8); ctx.lineTo(-5, 8); ctx.fill(); ctx.restore(); }
-  else for (let k = 0; k < 4; k++) { const hgt = Math.min(40, 6 + Math.abs(Math.sin(time * 1.5 + k)) * 26 * (w.burn > 0.5 ? 1.4 : 1)); roomBox(ctx, cx + 55 + k * 6.5, F - 48 - hgt, 4.5, hgt, w.burn > 0.5 ? '#ff7a5a' : '#6fb0ff'); }
-  for (let k = 0; k < 6; k++) roomDot(ctx, cx + 14 + k * 8, F - 37, 1.2, (Math.floor(time * 3 + k * 1.7) % 3) ? '#2f5577' : '#7fd8a0');
+  // The fire-control station (#933): a desk with a sloped front, the targeting scope and the guns' charge on a raised panel, the two gun
+  // grips on the desk, and the rounds left as a row of lit pips.
+  const hot = w.burn > 0.5;
+  roomBox(ctx, cx + 6, F - 34, 84, 34, '#1f3a56'); roomBox(ctx, cx, F - 42, 96, 8, '#2c4c6e');
+  roomBox(ctx, cx + 8, F - 98, 80, 54, '#16293d'); roomFlat(ctx, cx + 8, F - 98, 80, 3, '#2c4c6e');
+  roomScreen(ctx, cx + 14, F - 92, 34, 42, 'scope', time, hot);
+  if (w.flip > 0.5) { roomScreen(ctx, cx + 54, F - 92, 28, 42, 'status', time); ctx.save(); ctx.translate(cx + 68, F - 71); ctx.rotate(s.spin * 0.5); ctx.fillStyle = '#ffb030'; ctx.beginPath(); ctx.moveTo(0, -10); ctx.lineTo(5, 8); ctx.lineTo(-5, 8); ctx.fill(); ctx.restore(); }
+  else roomScreen(ctx, cx + 54, F - 92, 28, 42, 'bars', time, hot);
+  for (const gx of [cx + 30, cx + 66]) { roomFlat(ctx, gx - 1, F - 50, 3, 8, '#5a6672'); roomBox(ctx, gx - 4, F - 58, 8, 9, '#3a4450'); roomFlat(ctx, gx - 2, F - 57, 4, 2, '#c0392b'); }  // the gun grips, a red trigger on each
+  for (let k = 0; k < 8; k++) roomDot(ctx, cx + 14 + k * 9, F - 38, 1.4, k < 6 ? (hot ? '#ffb347' : '#7fd8a0') : '#2f5577');  // the rounds left
+  for (let k = 0; k < 6; k++) roomDot(ctx, cx + 20 + k * 11, F - 24, 1.2, (Math.floor(time * 3 + k * 1.7) % 3) ? '#2f5577' : '#7fd8a0');
   if (W >= 150) {
     const ax = X(0.8); roomBox(ctx, ax, F - 96, 30, 96, '#1a2e44');
     for (let a = 0; a < 3; a++) for (let b = 0; b < 2; b++) { const x = ax + 3 + b * 13, y = F - 90 + a * 30; roomBox(ctx, x, y + 6, 9, 18, '#b8903a'); ctx.fillStyle = '#d8b060'; ctx.beginPath(); ctx.arc(x + 4.5, y + 6, 4.5, Math.PI, 0); ctx.fill(); }
@@ -235,10 +270,16 @@ function roomBridge(ctx, r, s, X, W) {
   const px = wr - 14 + Math.sin(spin) * 40, pg = ctx.createRadialGradient(px, F - 66, 2, px, F - 66, 24); pg.addColorStop(0, '#c98a5a'); pg.addColorStop(1, 'rgba(120,70,40,0)'); ctx.fillStyle = pg; ctx.fillRect(wl, F - 100, wr - wl, 60);
   ctx.restore(); ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 3; pane(); ctx.stroke(); roomSeg(ctx, [[mx, F - 92], [mx + 2, F - 54]]);
   if (W >= 150) {
-    const cx = X(0.52), cw = Math.min(130, W * 0.45);
-    roomBox(ctx, cx, F - 40, cw, 6, '#2c4c6e'); roomBox(ctx, cx + 6, F - 34, cw - 12, 34, '#1f3a56');
-    roomBox(ctx, cx + cw - 42, F - 54, 32, 14, '#04101a'); ctx.strokeStyle = '#6fb0ff'; ctx.lineWidth = 1; roomSeg(ctx, [[cx + cw - 38, F - 44], [cx + cw - 28, F - 50], [cx + cw - 14, F - 46]]); roomDot(ctx, cx + cw - 38 + ((time * 2) % 24), F - 46, 1.4, '#ffd9a8');
-    roomBox(ctx, cx + cw - 56, F - 52, 6, 12, '#7a8a7a');
+    // The pilot's station (#933): a desk with a sloped top, the course plot and the ship's status on it, rows of keys, the throttle, and a
+    // panel overhead.
+    const cx = X(0.52), cw = Math.min(140, W * 0.46), top = F - 44;
+    roomBox(ctx, cx + 6, F - 34, cw - 12, 34, '#1f3a56');
+    ctx.fillStyle = figShade('#2c4c6e', 1.18); ctx.beginPath(); ctx.moveTo(cx, F - 34); ctx.lineTo(cx + 12, top); ctx.lineTo(cx + cw, top); ctx.lineTo(cx + cw, F - 34); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = figShade('#2c4c6e', 1.7); ctx.lineWidth = 1.5; roomSeg(ctx, [[cx + 12, top], [cx + cw, top]]);
+    roomScreen(ctx, cx + 18, top - 22, 36, 19, 'plot', time); roomScreen(ctx, cx + 62, top - 22, 30, 19, 'status', time);
+    for (let k = 0; k < 7; k++) roomDot(ctx, cx + 18 + k * 7, F - 38, 1.3, (Math.floor(time * 2 + k * 2.3) % 4) ? '#2f5577' : '#ffb347');
+    const tx = cx + cw - 16, lean = -0.3 + 0.4 * w.burn; ctx.strokeStyle = '#9aa8b6'; ctx.lineWidth = 2; roomSeg(ctx, [[tx, top], [tx + Math.sin(lean) * 16, top - Math.cos(lean) * 16]]); roomDot(ctx, tx + Math.sin(lean) * 16, top - Math.cos(lean) * 16, 2.6, '#ff8a6a');  // the throttle, forward in the burn
+    roomBox(ctx, cx + 24, r.top + 4, Math.max(20, cw - 48), 9, '#1d3550'); for (let k = 0; k < 4; k++) roomDot(ctx, cx + 30 + k * 8, r.top + 8.5, 1.1, k % 2 ? '#5fd35f' : '#2f5577');
   }
   if (W >= 180) { const bob = Math.sin(time * 6) * (2 * w.cruise + 4 * w.flip) - 1.5 * w.burn, bx = X(0.5); roomBox(ctx, bx, F - 46, 6, 6, '#ffb347'); roomDot(ctx, bx + 3, F - 50 + bob, 4, '#e0b48e'); }
   if (W >= 200) {  // the master's certificate, framed under the room's name: a seal and lines, no word (it would be wider than the frame at 12px)
@@ -345,7 +386,7 @@ function drawRoom(ctx, id, r, s) {
   ROOM_DRAW[id](ctx, r, s, sh => r.x0 + W * sh, W);
   const seats = SEATS[id] || [];  // its seats (shiplife.js), where people sit (#925): the galley's on one bench along the mess table, a stool anywhere else
   if (id === 'galley' && seats.length) roomBench(ctx, r.x0 + W * seats[0] - 14, r.x0 + W * seats[seats.length - 1] + 14, r.floor);
-  else for (const f of seats) roomStool(ctx, r.x0 + W * f, r.floor);
+  else for (const f of seats) roomStool(ctx, r.x0 + W * f, r.floor, { bridge: 1, gunnery: -1 }[id] || 0);  // a station's chair faces its console (#933)
   const marked = !!(s.damage && s.damage.marks.has(id));
   if (marked) drawDamage(ctx, r, s);
   if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine');  // severe damage: the lamp flickers
