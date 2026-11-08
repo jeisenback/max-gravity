@@ -640,7 +640,7 @@ test('a whole burn of ship life draws none of the game\'s dice', async () => {
 test('ship life on a burn from an old save starts its own dice and runs', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
-  const r = await ev(() => { const t = stageBurn(); delete t.lifeRng; tickFor(5); return typeof t.lifeRng; });
+  const r = await ev(() => { const t = stageBurn(); delete t.lifeRng; tickFor(15); return typeof t.lifeRng; });  // long enough for someone to reach the table (#924: the crew set off one by one)
   await done();
   assert.equal(r, 'number', 'the dice started themselves');
 });
@@ -677,8 +677,8 @@ test('in a shift the crew are at their posts, you on rounds, and a scene ends ba
     for (let i = 0; i < 40 * 30; i++) { lifeTick(1 / 30); out.frames++; if (inRoom(eng, 'engine')) out.engine++; if (inRoom(pilot, 'bridge')) out.bridge++; if (you.tx === null) out.rooms.add(you.room); }
     out.rooms = out.rooms.size;
     sayScene(`With ${eng.name}`, `${eng.name} is at the table with a mug.`); tickFor(12);
-    out.staged = eng.staged; G.dialog = null; t.event = null; tickFor(20);
-    out.back = inRoom(eng, 'engine');
+    out.staged = eng.staged; G.dialog = null; t.event = null;
+    out.back = false; for (let i = 0; i < 20 * 30; i++) { lifeTick(1 / 30); out.back = out.back || inRoom(eng, 'engine'); }  // reaches the post within the stretch (a short errand from it may follow)
     return out;
   }, dayAt.toString());
   await done();
@@ -872,7 +872,9 @@ test('with damage the engineer works at a marked room in a shift, keeps the driv
     G.state.armor = Math.round(ship().armor * 0.6);  // 0.4 lost: two marks
     t.elapsed = dayAt(0.15); tickFor(30); out.marks = [...(t.marks || [])]; out.shift = [out.marks.includes(eng.room) && eng.tx === null, pose(eng)];
     t.elapsed = dayAt(0.7); tickFor(30); out.night = inRoom(eng, 'engine');
-    t.elapsed = dayAt(0.15); tickFor(30); G.state.armor = ship().armor; tickFor(30); out.mended = [t.marks.length, inRoom(eng, 'engine')];
+    t.elapsed = dayAt(0.15); tickFor(30); G.state.armor = ship().armor;
+    let back = false; for (let i = 0; i < 30 * 30; i++) { lifeTick(1 / 30); back = back || inRoom(eng, 'engine'); }  // reaches the drive within the half minute (a short errand from it may follow)
+    out.mended = [t.marks.length, back];
     return out;
   }, dayAt.toString());
   await done();
@@ -911,11 +913,11 @@ test('you, hurt, sleep in the medbay and walk slower', async () => {
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(), you = aboardBy('you'), mate = shipPeople().find(p => p.role === 'pilot');
-    const pace = p => { Object.assign(p, { room: 'galley', x: 0.45, dk: 0, tdk: 0, tx: 0.65, staged: undefined, block: 'x', wait: 99 }); const b = shipDay(t.elapsed).block; p.block = b; const x0 = p.x; lifeTick(0.5); return p.x - x0; };
+    const pace = p => { Object.assign(p, { room: 'galley', x: 0.45, dk: 0, tdk: 0, tx: 0.65, staged: undefined, block: 'x', wait: 99, leave: 0, go: 1 }); const b = shipDay(t.elapsed).block; p.block = b; const x0 = p.x; lifeTick(0.5); return p.x - x0; };  // under way, at their own pace (#924)
     career().hurtUntil = G.state.day + 5;
     t.elapsed = dayAt(0.7); tickFor(35);
     const out = { bed: inRoom(you, 'medbay'), pose: posture(you, phase(), 0, isAsleep(you)).name };
-    t.elapsed = dayAt(0.15); out.paces = [pace(you), pace(mate)];
+    t.elapsed = dayAt(0.15); out.paces = [pace(you)]; career().hurtUntil = 0; out.paces.push(pace(you));  // hurt, then well: the same person's two paces
     return out;
   }, dayAt.toString());
   await done();
@@ -1099,5 +1101,30 @@ test('at the flip a sleeper stays in the bunk, and every strapped person has a j
   assert.deepEqual(r.securing, [true, 'bunk'], 'still asleep in the bunk while the crew straps in');
   assert.deepEqual(r.floating, [true, 'bunk'], 'and through the float');
   for (const [seats, strapped] of r.counts) { assert.ok(strapped > 0, 'someone strapped in is drawn'); assert.equal(seats, strapped, 'a jump seat for each'); }
+  await done();
+});
+
+// #924: the crew set off one by one when the day moves on, each at their own pace, and stop clear of one another.
+test('crew sent to the same place set off one by one, and stop apart (#924)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    const t = stageBurn(); const crew = shipPeople().filter(p => p.role !== 'cat' && p.role !== 'captain');
+    const h = roomAt('hold'), g = roomAt('galley');
+    for (const p of crew) Object.assign(p, { room: 'galley', x: g.mid, dk: 0, tdk: 0, tx: null, wait: 999, block: 'shift', staged: undefined, errand: false, aside: false });
+    const start = crew.map(p => p.x);
+    for (const p of crew) { routineGo(p, 'meal', crew, false, () => 0.5, shipState(G.state, t, ship().armor, () => 0.5, {})); p.block = 'meal'; }  // all sent to the table at once
+    for (let i = 0; i < 15; i++) lifeTick(1 / 30);  // half a second
+    const moved = crew.map((p, i) => Math.abs(p.x - start[i]) > 0.001);
+    // three sent to the same spot in the hold
+    const three = crew.slice(0, 3);
+    for (const p of three) { Object.assign(p, { block: 'activity', errand: false, wait: 999, leave: 0 }); goTo(p, 'hold', () => 0.5, three); }
+    for (let i = 0; i < 40 * 30 && three.some(p => p.tx !== null); i++) lifeTick(1 / 30);
+    const xs = three.map(p => p.x), gaps = [Math.abs(xs[0] - xs[1]), Math.abs(xs[0] - xs[2]), Math.abs(xs[1] - xs[2])];
+    return { moved, arrived: three.every(p => p.tx === null && p.room === 'hold'), gaps, inHold: xs.every(x => x >= h.x0 && x <= h.x1) };
+  });
+  assert.ok(r.moved.some(Boolean) && r.moved.some(m => !m), `half a second in, some have set off and some not yet: ${r.moved}`);
+  assert.ok(r.arrived && r.inHold, 'the three got to the hold');
+  assert.ok(Math.min(...r.gaps) >= 0.009, `and stand apart: ${r.gaps.map(g => g.toFixed(3))}`);
   await done();
 });

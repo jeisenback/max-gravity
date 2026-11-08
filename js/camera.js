@@ -19,8 +19,11 @@ function viewOf(box) {
 function camStep(camX, target, dt, span, len) {
   const max = len * 1.02;
   if (span >= max) return len * 0.51;
-  const to = Math.max(span / 2, Math.min(max - span / 2, target));
-  return camX === null ? to : camX + (to - camX) * Math.min(1, dt * 2.5);
+  const clamp = x => Math.max(span / 2, Math.min(max - span / 2, x));
+  if (camX === null) return clamp(target);
+  // the camera holds while the target is in the middle third of the view, and past it eases to keep them at its edge (#924): no slide under every step
+  const dead = span / 6, off = target - camX, want = clamp(Math.abs(off) <= dead ? camX : target - Math.sign(off) * dead);
+  return camX + (want - camX) * Math.min(1, dt * 1.5);
 }
 
 // The outline's boxes in screen units, in the top left corner of the view box. Each room is mapped by its shares and its deck.

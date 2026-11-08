@@ -328,6 +328,21 @@ function shipPeople() {
   return (t.aboard = people);
 }
 
+// A share from 0 to 1 that is the person's own (#924): the same each time for the same person and salt, with no draw of any dice. It gives
+// each their own moment to set off when the day moves on, and their own pace.
+const personShare = (p, salt) => { let h = 2166136261 ^ salt; for (const c of String(p.id || p.name || p.role)) h = Math.imul(h ^ c.charCodeAt(0), 16777619); return (h >>> 0) / 4294967296; };
+// Where someone heading to x in their room stops so as not to stand on anyone (#924): x, or a step either side of it, clear of where the others
+// in the room stand or are going.
+function clearOf(p, x, people = []) {
+  const r = roomAt(p.room);
+  for (const o of [0, 0.014, -0.014, 0.028, -0.028]) {
+    const c = x + o;
+    if (c < r.x0 + 0.005 || c > r.x1 - 0.005) continue;
+    if (!people.some(q => q !== p && q.role !== 'cat' && q.room === p.room && q.tdk === p.tdk && Math.abs((q.tx !== null ? q.tx : q.x) - c) < 0.01)) return c;
+  }
+  return x;
+}
+
 // Crash couches: along the berths and bridge.
 const couchX = (i, n) => (i === 0 ? roomAt('bridge').mid : roomAt('berths').x0 + 0.02 + (roomAt('berths').w - 0.04) * (i / Math.max(1, n - 1)));
 
@@ -354,12 +369,14 @@ function routineGo(p, block, people, dark, rnd, state) {
     const w = people.find(q => NIGHT_WATCH.includes(q.role) && postOf(q.role) === p.room && !q.staged);
     if (w) { Object.assign(p, { block, relief: w.id, reliefT: 0 }); return; }
   }
-  const spot = routineSpot(p, block, state);
-  Object.assign(p, { block, errand: false, at: spot.at });
-  if (spot.rounds) { goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd); return; }
+  const spot = routineSpot(p, block, state), moved = !!p.block && p.block !== block && p.block !== 'activity' && p.block !== 'linger';  // the day moved on: each sets off in their own moment, not all at once (#924)
+  Object.assign(p, { block, errand: false, at: spot.at, leave: moved ? personShare(p, 1) * 3 : 0 });
+  if (spot.rounds) { goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd, people); return; }
   const holds = q => (s => s.at === 'post' && s.room === spot.room)(routineSpot(q, 'shift'));  // a post's places are numbered by who holds it in a shift, the same in every block
   const r = roomAt(spot.room), mates = spot.at === 'table' || spot.at === 'bed' ? people.filter(q => routineSpot(q, block, state).at === spot.at) : spot.at === 'post' ? people.filter(holds) : [];  // who shares the table or the post
-  Object.assign(p, { room: spot.room, tdk: r.deck, tx: routineTarget(p, spot, r, mates.indexOf(p), mates.length, rnd) });
+  const tx = routineTarget(p, spot, r, mates.indexOf(p), mates.length, rnd), placed = ['table', 'post', 'bed', 'stove'].includes(spot.at);  // a seat, a cot or the stove is its own place
+  Object.assign(p, { room: spot.room, tdk: r.deck });
+  p.tx = placed ? tx : clearOf(p, tx, people);
 }
 // When a wait at a place runs out: in a shift someone at their post now and then goes on a short errand to a room near it on its deck, and from it back to the
 // post; someone let go by a scene or done with an activity goes back to the timetable; the rounds go on; at the table, the stove or a bunk they stay.
@@ -385,11 +402,11 @@ function handOver(p, people, dt, block, rnd) {
   if ((p.reliefT += dt) >= 2) { p.relief = undefined; p.at = undefined; Object.assign(p, { block, room: 'berths', tdk: roomAt('berths').deck, tx: routineTarget(p, { at: 'bunk' }, roomAt('berths'), 0, 1, rnd) }); }
 }
 
-function goTo(p, roomId, rnd = lifeRnd) {
+function goTo(p, roomId, rnd = lifeRnd, people = (G.transit && G.transit.aboard) || []) {
   const r = roomAt(roomId);
   p.room = roomId;
   p.tdk = r.deck;
-  p.tx = r.x0 + r.w * (p.role === 'captain' ? 0.6 : 0.25 + 0.5 * rnd());
+  p.tx = clearOf(p, r.x0 + r.w * (p.role === 'captain' ? 0.6 : 0.25 + 0.5 * rnd()), people);  // clear of anyone already there (#924)
 }
 
 function weighted(table, rnd = Math.random) {
@@ -423,7 +440,8 @@ function posture(p, ph, time, asleep) {
   else if (!p.staged && !p.errand && ((p.block === 'shift' && ['post', 'aid', 'repair'].includes(p.at)) || p.at === 'stove')) name = p.at === 'post' && (p.room === 'bridge' || p.room === 'gunnery') && onSeat(p) ? 'work-sit' : 'work';  // at work: seated at the bridge and the guns, where there is a seat
   else name = p.at === 'alone' || (p.at !== 'stove' && onSeat(p)) ? 'sit' : 'stand';  // on a seat; someone alone sits on a bunk's edge; anyone else stands (#925)
   const { frames, fps } = POSTURES[name];
-  return { name, x: p.x, deck: p.dk, face: p.face || 1, frame: fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
+  // a walking stride by the ground covered, so the feet do not slide (#924)
+  return { name, x: p.x, deck: p.dk, face: p.face || 1, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
 }
 
 // The scene open in a burn, acted out: when it opens (or the next one in a chain opens) those it stages walk to spots in its room, a little
@@ -487,15 +505,27 @@ function lifeTick(dt) {
     stepAside(p, G.transit.stageSpan);
     if (!p.staged && p.block !== block && p.block !== 'activity' && p.block !== 'linger' && !p.errand) routineGo(p, block, people, dark, lifeRnd, state);  // the timetable: a new block, or back to it
     if (p.relief && !p.staged) { handOver(p, people, dt, block, lifeRnd); continue; }
-    const step = (p.staged ? 0.09 : 0.06) * (p.role === 'you' && state.you ? 2 / 3 : 1) * dt;  // to a scene a little faster; you, hurt, slower
+    if (p.leave > 0 && !p.staged && p.tx !== null) { p.leave -= dt; continue; }  // their own moment to set off (#924)
+    p.go = Math.min(1, (p.go || 0) + dt * 4);  // easing into the stride over a quarter of a second
+    const pace = p.staged ? 1 : 0.85 + 0.3 * personShare(p, 2);  // their own pace, a little either side of the ship's
+    const step = (p.staged ? 0.09 : 0.06) * pace * p.go * (p.role === 'you' && state.you ? 2 / 3 : 1) * dt;  // to a scene a little faster; you, hurt, slower
+    const before = p.x;
+    // Where they are walking to on this deck (the ladder first, to change deck), and anyone walking the same way just in front of them, kept
+    // a body's width behind and not walked through (#924); two who set off from the same spot are told apart by their own share.
+    const dest = q => (q.dk !== q.tdk ? LADDER : q.tx), dir = Math.sign(dest(p) - p.x) || p.face;
+    const front = q => { const d = q.x - p.x; return Math.abs(d) < 1e-4 ? personShare(q, 3) > personShare(p, 3) : Math.sign(d) === dir; };
+    const ahead = people.filter(q => q !== p && q.role !== 'cat' && Math.abs(q.dk - p.dk) < 0.1 && q.tx !== null && Math.abs(dest(q) - q.x) > 0.002 && Math.sign(dest(q) - q.x) === dir && front(q) && Math.abs(q.x - p.x) < 0.02);
+    const room = ahead.length ? Math.max(0, Math.min(...ahead.map(q => Math.abs(q.x - p.x))) - 0.015) : Infinity;
     if (p.dk !== p.tdk) {  // to the ladder, then up or down it
-      if (Math.abs(LADDER - p.x) > 0.003) { p.face = Math.sign(LADDER - p.x) || p.face; p.x += Math.max(-step, Math.min(step, LADDER - p.x)); }
+      if (Math.abs(LADDER - p.x) > 0.003) { p.face = dir; const s2 = Math.min(step, room); p.x += Math.max(-s2, Math.min(s2, LADDER - p.x)); }
       else p.dk += Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
     } else if (p.tx !== null) {
-      p.face = Math.sign(p.tx - p.x) || p.face;
-      p.x += Math.max(-step, Math.min(step, p.tx - p.x));
+      p.face = dir;
+      const ease = Math.min(1, 0.35 + Math.abs(p.tx - p.x) / 0.01);  // and ease out of the stride at the end
+      const s2 = Math.min(step * ease, room);
+      p.x += Math.max(-s2, Math.min(s2, p.tx - p.x));
       if (Math.abs(p.tx - p.x) < 0.002) {
-        p.tx = null;
+        p.tx = null; p.go = 0;
         if (p.staged) { p.face = p.faceTo || p.face; continue; }  // in place for the scene, facing the others: no draw of the game's dice
         p.wait = p.errand ? lifeRand(1.5, 3) : lifeRand(5, 12);  // an errand is in and out
         if (p.role !== 'you' && lifeRnd() < 0.18 && !lifeHushed(lifeState())) {
@@ -506,6 +536,7 @@ function lifeTick(dt) {
     } else if (!p.staged && (p.wait -= dt) <= 0) {
       routineWait(p, block, dark, lifeRnd, state);
     }
+    p.walked = (p.walked || 0) + Math.abs(p.x - before);  // the ground covered, for the stride (posture)
   }
 }
 
