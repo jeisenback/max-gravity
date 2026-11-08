@@ -563,7 +563,7 @@ test('on the page, the board\'s header, its reach label and its sun marker do no
 });
 
 test('the fight panel shows her move and the captain\'s above the pinned orders without scrolling, at the three screen sizes (#734)', async () => {
-  for (const [name, viewport, mobile] of [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+  for (const [name, viewport, mobile] of [['desktop', { width: 1280, height: 800 }, false], ['small', { width: 1000, height: 768 }, false], ['wide', { width: 1920, height: 1080 }, false]]) {
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     await ev(() => { raid('gunner'); startDuel({ kind: 'pirate' }, false); begin(); });

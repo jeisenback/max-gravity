@@ -55,7 +55,7 @@ test('the vista paints every port in the full build: sky above, the body below',
 });
 
 test('the vista paints at device pixel ratio 3, and holds still with reduce motion', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true, init: () => Object.defineProperty(window, 'devicePixelRatio', { get: () => 3 }) });
+  const { ev, done } = await open({ scope: 'earth-hired', init: () => Object.defineProperty(window, 'devicePixelRatio', { get: () => 3 }) });
   const r = await ev(() => {
     Settings.reduceMotion = true; drawViewscreen(0); const c = document.getElementById('vs');
     const a = c.toDataURL(); drawViewscreen(5000); return { same: a === c.toDataURL(), ratio: c.height / c.clientHeight };
@@ -125,7 +125,7 @@ const burnHelper = () => {
   window.burn = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.transit.event = null; G.dialog = null; };
 };
 
-test('the burn view paints the destination ahead on a wide screen, growing, from one cached sprite; a phone leaves it out', async () => {
+test('the burn view paints the destination ahead, growing, from one cached sprite', async () => {
   const wide = await open({ scope: 'earth-hired' });
   await wide.ev(burnHelper);
   const r = await wide.ev(() => {
@@ -137,10 +137,6 @@ test('the burn view paints the destination ahead on a wide screen, growing, from
   assert.ok(r.keys.includes(r.allowed[0]) && r.keys.every(k => r.allowed.includes(k)), `one 40px sprite, not one per frame: ${r.keys}`);
   assert.deepEqual([r.box.w, r.box.h], [80, 80]);
   await wide.done();
-  const phone = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
-  await phone.ev(burnHelper);
-  assert.equal(await phone.ev(() => { burn(); drawTransit(innerWidth, innerHeight); return G.burnBoxes.dest; }), undefined);
-  await phone.done();
 });
 
 test('a scene is glass lit from the sun\'s side, and its markup is unchanged', async () => {

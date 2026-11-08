@@ -85,7 +85,7 @@ test('all twelve scenes are complete, every choice runs, and the effects are the
 });
 
 test('the bar shows them as aboard with you, the talk opens their scene, and a round for the house leaves them out', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open();
   await ev(helpers);
   await ev(() => { start(); G.state.day += 6; G.state.credits = 10000; fillBar(currentPlanet()); UI.render(); });
   await goTo(page, 'port');
@@ -96,7 +96,7 @@ test('the bar shows them as aboard with you, the talk opens their scene, and a r
   const who = await ev(() => G.patrons.findIndex(x => x.cast === 'ines'));
   await page.click(`#panel [data-action=barTalk][data-arg="${who}"]`);
   assert.equal(await ev(() => G.dialog.event.title), 'Third Approach');
-  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
   await done();
 });
 

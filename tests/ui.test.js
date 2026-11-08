@@ -1,7 +1,7 @@
 'use strict';
 
-// The screens: the tutorial from the first trade to the first sale, touch
-// controls on a phone, and every screen at five sizes without sideways overflow.
+// The screens: the tutorial from the first trade to the first sale, and every screen at the desktop sizes
+// without sideways overflow (desktop only, #937).
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -46,41 +46,8 @@ test('the tutorial walks a first trade run', async () => {
   await done();
 });
 
-test('touch controls on a phone', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
-  await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.render(); });
-  assert.ok(await ev(() => Touch.on));
-  await page.tap('[data-action=takeoff]');
-  await page.waitForSelector('#stick', { state: 'visible' });  // shown on the next frame
-  assert.ok(await page.isVisible('#fire'));
-  // Drag the stick right: the ship turns that way and thrusts.
-  const box = await page.locator('#stick').boundingBox();
-  const cx = box.x + box.width / 2, cy = box.y + box.height / 2;
-  await page.mouse.move(cx, cy); await page.mouse.down(); await page.mouse.move(cx + 60, cy, { steps: 3 });
-  await page.waitForTimeout(1200);
-  const a = await ev(() => ({ angle: Math.atan2(Math.sin(G.player.angle), Math.cos(G.player.angle)), vx: G.player.vx }));
-  await page.mouse.up();
-  assert.ok(Math.abs(a.angle) < 0.5 && a.vx > 0, `stick steers (${JSON.stringify(a)})`);
-  assert.equal(await ev(() => Touch.stick), null, 'released');
-  // Tap a ship to target it, then hail it with the button.
-  const at = await ev(() => { G.npcs = []; const n = spawnNpc('trader', false, true); Object.assign(n, { x: G.player.x + 60, y: G.player.y - 120, vx: 0, vy: 0 }); window.N = n; return { x: G.W / 2 + 60, y: G.H / 2 - 120 }; });
-  await page.touchscreen.tap(at.x, at.y);
-  assert.ok(await ev(() => G.target === N), 'tapped target');
-  await page.tap('[data-tap=hail]');
-  assert.equal(await ev(() => G.mode), 'hail');
-  await ev(() => finishEvent());
-  // Pick a destination on the map by tapping.
-  await page.tap('[data-tap=map]');
-  await page.waitForFunction(() => G.mapPos);
-  const [mx, my] = await ev(() => G.mapPos('mars'));
-  await page.touchscreen.tap(mx, my);
-  assert.equal(await ev(() => G.state.dest), 'mars');
-  assert.ok(await ev(() => document.documentElement.scrollWidth <= 391), 'no sideways scroll');
-  await done();
-});
-
-test('no screen overflows sideways at phone, landscape, and tablet sizes', async () => {
-  const sizes = [[360, 640], [390, 844], [414, 896], [844, 390], [768, 1024]];
+test('no screen overflows sideways at the desktop sizes, the smallest window the game takes among them', async () => {
+  const sizes = [[1000, 640], [1024, 768], [1280, 800], [1440, 900], [1920, 1080]];
   const screens = {
     title: () => {},
     newgame: () => { Menu.view = 'new'; Menu.render(); },
@@ -105,14 +72,14 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
   };
   const problems = [];
   for (const [w, h] of sizes) {
-    const { page, done } = await open({ title: true, viewport: { width: w, height: h }, mobile: w < 700 || h < 500 });
+    const { page, done } = await open({ title: true, viewport: { width: w, height: h } });
     for (const [id, fn] of Object.entries(screens)) {
       await page.evaluate(`(${fn.toString()})()`);
       await frames(page);
       const bad = await page.evaluate(W => {
         const out = [];
         if (document.documentElement.scrollWidth > W + 1) out.push(`page ${document.documentElement.scrollWidth}px wide`);
-        for (const el of document.querySelectorAll('#panel *, #uat *, #touch *, #menuBtn, #tlife *, #bkeys *, #bsheet *')) {
+        for (const el of document.querySelectorAll('#panel *, #uat *, #menuBtn, #tlife *, #bkeys *, #bsheet *')) {
           if (!el.offsetParent || el.closest('.tabs') || el.closest('.scroll')) continue;
           const r = el.getBoundingClientRect();
           if (r.width && (r.right > W + 1 || r.left < -1)) out.push(`${el.tagName.toLowerCase()} "${(el.textContent || '').trim().slice(0, 30)}"`);
@@ -147,8 +114,8 @@ test('keyboard focus survives the panel being rebuilt', async () => {
   await done();
 });
 
-test('the largest text size still fits a small phone', async () => {
-  const { page, ev, done } = await open({ title: true, viewport: { width: 360, height: 640 }, mobile: true });
+test('the largest text size still fits the smallest window', async () => {
+  const { page, ev, done } = await open({ title: true, viewport: { width: 1000, height: 640 } });
   await ev(() => { Settings.textScale = 1.3; applySettings(); startGame({ slot: 1, background: 'belt', captain: 'Ines Okafor-Achterberg', ship: 'Tuesday Forever and Always' }); G.state.tutorial = null; while (G.dialog) finishEvent(); });
   const bad = [];
   for (const tab of ['port', 'trade', 'missions', 'shipyard', 'bar', 'crew', 'company']) {
@@ -219,10 +186,10 @@ test('the rail at port reaches each room, and a key bar with status sheets in a 
   await done();
 });
 
-test('the burn key bar shows all six keys, and the sheet stays clear of the HUD, at phone sizes', async () => {
+test('the burn key bar shows all six keys, and the sheet stays clear of the HUD, at the smaller window sizes', async () => {
   const problems = [];
-  for (const [w, h] of [[360, 640], [390, 844], [414, 896], [844, 390], [768, 1024]]) {
-    const { page, ev, done } = await open({ viewport: { width: w, height: h }, mobile: true });
+  for (const [w, h] of [[1000, 640], [1024, 600], [1280, 800]]) {
+    const { page, ev, done } = await open({ viewport: { width: w, height: h } });
     await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
     await page.waitForSelector('#bkeys', { state: 'visible' });
     await page.click('[data-bst=eng]');
@@ -241,10 +208,10 @@ test('the burn key bar shows all six keys, and the sheet stays clear of the HUD,
   assert.deepEqual(problems, []);
 });
 
-test('the menus scroll on a phone, and Start on the New game screen is always in reach', async () => {
+test('the menus scroll on a short window, and Start on the New game screen is always in reach', async () => {
   const problems = [];
-  for (const [w, h] of [[360, 640], [390, 844], [844, 390]]) {
-    const { page, ev, done } = await open({ title: true, viewport: { width: w, height: h }, mobile: true });
+  for (const [w, h] of [[1000, 560], [1024, 600], [1280, 800]]) {
+    const { page, ev, done } = await open({ title: true, viewport: { width: w, height: h } });
     await page.click('[data-action=menuView][data-arg=new]');
     const start = await page.evaluate(() => {
       const b = document.querySelector('[data-action=menuStart]'), r = b.getBoundingClientRect(), at = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
@@ -264,10 +231,10 @@ test('the menus scroll on a phone, and Start on the New game screen is always in
       if (r.tall && !r.scrolls) problems.push(`${w}x${h} ${view}: taller than the screen and cannot scroll`);
       if (!r.reach) problems.push(`${w}x${h} ${view}: the last button cannot be reached`);
     }
-    // Tapping Start from the first screen works.
+    // Clicking Start from the first screen works.
     await ev(() => { Menu.view = 'new'; Menu.render(); });
-    await page.tap('[data-action=menuStart]');
-    if (await ev(() => G.mode) !== 'landed') problems.push(`${w}x${h}: tapping Start did not start a game`);
+    await page.click('[data-action=menuStart]');
+    if (await ev(() => G.mode) !== 'landed') problems.push(`${w}x${h}: clicking Start did not start a game`);
     await done();
   }
   assert.deepEqual(problems, []);
@@ -374,23 +341,23 @@ test('the landed panel uses a tall window, and keeps its old size in a short one
   assert.ok(sizes.short.panel <= sizes.short.win * 0.94 + 1, `short panel ${sizes.short.panel} fits ${sizes.short.win}`);
 });
 
-test('on a phone, the choices of a long scene stay in view and the dialog clears the HUD', async () => {
-  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+test('on the smallest window, the choices of a long scene stay in view and the dialog clears the HUD', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1000, height: 640 } });
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' }); });
   await frames(page);
   const r = await page.evaluate(() => {
     const p = document.querySelector('#panel').getBoundingClientRect(), btns = [...document.querySelectorAll('#panel .choices button')].map(b => b.getBoundingClientRect());
-    return { top: p.top, bottom: p.bottom, h: innerHeight, long: document.querySelector('#panel').scrollHeight > document.querySelector('#panel').clientHeight, choices: btns.map(b => [b.top, b.bottom]) };
+    return { top: p.top, bottom: p.bottom, right: p.right, w: innerWidth, hud: G.hudW, h: innerHeight, long: document.querySelector('#panel').scrollHeight > document.querySelector('#panel').clientHeight, choices: btns.map(b => [b.top, b.bottom]) };
   });
   assert.ok(r.long, 'the sign-on text is longer than the dialog');
-  assert.ok(r.top >= 80, `the dialog starts below the HUD strip: ${r.top}`);
+  assert.ok(r.right <= r.w - r.hud + 1, `the dialog stays clear of the HUD sidebar: ${r.right} in ${r.w - r.hud}`);
   assert.ok(r.choices.length >= 2);
   for (const [t, b] of r.choices) assert.ok(t >= r.top && b <= r.bottom && b <= r.h, `a choice is in view: ${t}-${b} in ${r.top}-${r.bottom}`);
   await done();
 });
 
 test('the cue that a scene continues shows on a long scene and a long result, and not on a short result that follows a long scene (#732)', async () => {
-  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1000, height: 640 } });
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' }); while (G.dialog) finishEvent(); });
   const longText = Array.from({ length: 14 }, (_, i) => `<p>Paragraph ${i}: the lock cycles, the deck rings, and somebody says something that takes a line or two to say.</p>`).join('');
   const show = (shortResult) => page.evaluate(([text, res]) => {
@@ -411,47 +378,27 @@ test('the cue that a scene continues shows on a long scene and a long result, an
   await done();
 });
 
-test('the burn view\'s Comms ticker keeps two lines where there is room, one on a short window, and none on a landscape phone', async () => {
+test('the burn view\'s Comms ticker keeps two lines where there is room, and one on a short window', async () => {
   const { ev, done } = await open();
   const r = await ev(() => ({
     wide: burnLayout(1280, 800, 220, false, null).tickerLines,
-    tablet: burnLayout(768, 1024, 0, true, null).tickerLines,
     short: burnLayout(1280, 600, 220, false, null).tickerLines,
-    landscape: burnLayout(844, 390, 0, true, null).tickerLines,
   }));
-  assert.deepEqual(r, { wide: 2, tablet: 2, short: 1, landscape: 0 });
+  assert.deepEqual(r, { wide: 2, short: 1 });
   await done();
 });
 
-test('the touch Burn button is hidden for a hired hand and shown for an owner', async () => {
-  const state = {};
-  for (const [name, hand] of [['hand', true], ['owner', false]]) {
-    const { ev, done } = await open();
-    state[name] = await ev(hand => {
-      while (G.dialog) finishEvent();
-      if (hand) { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot' }); while (G.dialog) finishEvent(); }
-      takeOff(); Touch.on = true; Touch.sync();
-      return { burn: document.querySelector('#touch [data-tap=burn]').hidden, target: document.querySelector('#touch [data-tap=target]').hidden };
-    }, hand);
-    await done();
-  }
-  assert.equal(state.hand.burn, true);
-  assert.equal(state.owner.burn, false);
-  assert.equal(state.hand.target, false);
-});
-
-test('the port scene banner is 150px on desktop and 92px on a phone, and still draws', async () => {
+test('the port scene banner is 150px, and still draws', async () => {
   const out = {};
-  for (const [name, viewport, mobile] of [['desktop', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
-    const { ev, page, done } = await open({ viewport, mobile });
+  for (const [name, viewport] of [['desktop', { width: 1280, height: 800 }]]) {
+    const { ev, page, done } = await open({ viewport });
     await ev(() => { while (G.dialog) finishEvent(); UI.render(); });
     await frames(page);
     out[name] = await page.evaluate(() => { const c = document.getElementById('vs'), g = c.getContext('2d'), d = g.getImageData(0, 0, c.width, c.height).data; let lit = 0; for (let i = 0; i < d.length; i += 4) if (d[i] + d[i + 1] + d[i + 2] > 60) lit++; return { h: c.getBoundingClientRect().height, lit }; });
     await done();
   }
   assert.equal(out.desktop.h, 150);
-  assert.equal(out.phone.h, 92);
-  assert.ok(out.desktop.lit > 50 && out.phone.lit > 50, `the scene has lit pixels: ${JSON.stringify(out)}`);
+  assert.ok(out.desktop.lit > 50, `the scene has lit pixels: ${JSON.stringify(out)}`);
 });
 
 test('the sign-on dialog keeps its choices on screen at 1280x800, and a hand sees the captain\'s run before the hold', async () => {
@@ -654,7 +601,7 @@ test('day one: the journal keeps the feeds to a line, the bonds legend is swatch
 const drawnText = () => { const drawn = [], fill = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (t, ...a) { drawn.push(String(t)); return fill.call(this, t, ...a); }; return () => { CanvasRenderingContext2D.prototype.fillText = fill; return drawn; }; };
 
 // #692: while the crewed pilot flies her out, a hand is shown no flight controls and a key does not strand the ship.
-test('a hand whose pilot flies her out sees no autopilot banner, key list or touch controls, and a key does not take the stick', async () => {
+test('a hand whose pilot flies her out sees no autopilot banner or key list, and a key does not take the stick', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
   await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
   const r = await ev(() => {
@@ -664,14 +611,12 @@ test('a hand whose pilot flies her out sees no autopilot banner, key list or tou
     let stop = drawnText(); drawHud(G.W, G.H); Mods.emit('drawOverlay', G.W); out.text = stop();
     G.keys.left = true; G.keys.thrust = true; update(1 / 30); G.keys.left = G.keys.thrust = false;
     out.afterKey = { auto: G.auto && G.auto.kind, mode: G.mode };
-    Touch.on = true; Touch.shown = null; Touch.sync(); out.touchHidden = document.getElementById('touch').hidden;
     return out;
   });
   assert.equal(r.mode, 'flight'); assert.equal(r.auto, 'out'); assert.ok(r.calm, 'the sidebar is the calm one');
   assert.ok(!r.text.some(t => /AUTOPILOT|FLIGHT KEY/.test(t)), `no banner: ${r.text.join('|')}`);
   assert.ok(!r.text.some(t => /^Arrows\/WASD|^Space\s+fire/.test(t)), 'no key list');
   assert.deepEqual(r.afterKey, { auto: 'out', mode: 'flight' }, 'a key does not take the stick from the pilot');
-  assert.ok(r.touchHidden, 'no stick or fire button');
   await done();
 });
 
@@ -702,7 +647,7 @@ test('the bar draws its patrons in a room: a token each, tapped to talk, open to
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.tutorial = null; UI.tab = 'bar'; UI.render(); });
   const r = await ev(() => ({ patrons: G.patrons.length, tokens: document.querySelectorAll('.bar-room .room-patron').length, talk: document.querySelectorAll('.body button[data-action=barTalk]').length, label: document.querySelector('.bar-room .room-patron').getAttribute('aria-label'), first: `${G.patrons[0].p.first} ${G.patrons[0].p.last}` }));
-  assert.ok(r.patrons >= 2); assert.equal(r.tokens, r.patrons, 'a token for every patron'); assert.equal(r.talk, r.patrons, 'the list and its Talk buttons are kept: the way in for a phone and a reader');
+  assert.ok(r.patrons >= 2); assert.equal(r.tokens, r.patrons, 'a token for every patron'); assert.equal(r.talk, r.patrons, 'the list and its Talk buttons are kept: the way in for a reader');
   assert.equal(r.label, `Talk to ${r.first}`);
   await page.click('.bar-room .room-patron >> nth=0');
   assert.equal(await ev(() => !!G.dialog && /^The .*: /.test(G.dialog.event.title)), true, 'a tap opens the talk'); assert.match(await ev(() => G.dialog.event.title), new RegExp(r.first));
@@ -752,9 +697,9 @@ test('on a burn with a contract the bar says the due date and the log says the l
 });
 
 // The burn's time remaining is on the bar at every size: in the dates line, clock first, or beside the speed where there is no room for it.
-test('the time remaining is drawn on the burn bar on a phone, a tablet, a desktop, a landscape phone and a short window with the prompt', async () => {
-  for (const [W, H, mobile, prompt] of [[390, 844, true], [768, 1024, false], [1280, 800, false], [844, 390, true], [1280, 600, false, true]]) {
-    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: W, height: H }, mobile });
+test('the time remaining is drawn on the burn bar on the smallest window, a desktop, and a short window with the prompt', async () => {
+  for (const [W, H, prompt] of [[1000, 640], [1280, 800], [1280, 600, true]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: W, height: H } });
     await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
     const r = await ev(prompt => {
       startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
@@ -769,11 +714,10 @@ test('the time remaining is drawn on the burn bar on a phone, a tablet, a deskto
   }
 });
 
-// The arrival date on a narrow screen: a phone says it beside the clock where it fits, or under the strip's far end when there is no
-// due date there; a tablet's dates line says it before today's date, so a cut takes today's (which the HUD strip shows).
-test('the arrival date is drawn on the burn bar on a phone without a contract, and first in a tablet\'s dates line', async () => {
-  for (const [W, H, mobile] of [[390, 844, true], [768, 1024, false]]) {
-    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: W, height: H }, mobile });
+// The arrival date on the smallest window: the burn bar's dates line has room for it whole.
+test('the arrival date is drawn in the burn bar\'s dates line on the smallest window', async () => {
+  for (const [W, H] of [[1000, 640]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: W, height: H } });
     await ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [drawnText.toString()]);
     const r = await ev(() => {
       startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
@@ -782,11 +726,8 @@ test('the arrival date is drawn on the burn bar on a phone without a contract, a
       G.transit.left = G.transit.total * 0.7;
       const stop = drawnText(); drawTransit(innerWidth, innerHeight); return { eta: dateOf(transitEta(G.transit)), today: dateOf(transitNow(G.transit)), text: stop() };
     });
-    if (W === 390) assert.ok(r.text.includes(`arr. ${r.eta}`), `${W}x${H}: arr. ${r.eta} is drawn: ${r.text.join('|')}`);
-    else {
-      const line = r.text.find(t => t.includes('arriving'));
-      assert.ok(line && line.includes(`arriving ${r.eta}`) && (!line.includes(r.today) || line.indexOf(r.today) > line.indexOf('arriving')), `${W}x${H}: the arrival comes before today's date: ${line}`);
-    }
+    const line = r.text.find(t => t.includes('arriving'));
+    assert.ok(line && line.includes(`arriving ${r.eta}`), `${W}x${H}: the arrival date is drawn whole: ${line}`);
     await done();
   }
 });

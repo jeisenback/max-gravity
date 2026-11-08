@@ -28,7 +28,7 @@ function autoOff(text, taken) {
 
 function updateAutopilot(dt) {
   const p = G.player, a = G.auto, s = ship(), k = G.keys, st = G.state;
-  if (!hired() && (k.left || k.right || k.thrust || k.reverse || k.fire || Touch.stick)) { autoOff(sceneSay('scene:systems-notes', 'auto.control'), true); return updatePlayer(dt); }  // an owner takes the stick; a hand is not the pilot, and the pilot flies her out (#692)
+  if (!hired() && (k.left || k.right || k.thrust || k.reverse || k.fire)) { autoOff(sceneSay('scene:systems-notes', 'auto.control'), true); return updatePlayer(dt); }  // an owner takes the stick; a hand is not the pilot, and the pilot flies her out (#692)
   if (postMode('pilot') !== 'crewed') { autoOff(); return updatePlayer(dt); }
   if (G.npcs.some(n => n.hostile && !n.dead && dist(n, p) < AUTO_HAIL_RANGE)) { autoOff(sceneSay('scene:systems-notes', 'auto.contact', { pilot: pilotName() })); return updatePlayer(dt); }
   if ((a.t += dt) > AUTO_LIMIT) { autoOff(sceneSay('scene:systems-notes', 'auto.stuck', { pilot: pilotName() })); return updatePlayer(dt); }

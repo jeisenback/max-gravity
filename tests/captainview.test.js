@@ -12,7 +12,7 @@ after(closeBrowser);
 const startHired = (bg = 'earth', post = 'gunner') => { startGame({ slot: 1, background: bg, captain: 'Sam Rowe', mode: 'hired', post }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; st.flags.classicCombat = true; };
 
 test('a hired hand sees the captain on Interior, the header, Operations and Navigation', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open();
   await ev(`(${startHired})`);
   const cap = await ev(() => { const c = hiredCaptain(); return { id: c.id, name: `${c.first} ${c.last}`, wage: hired().wage, share: Math.round(hired().share * 100) }; });
   assert.match(await page.innerText('#panel .hdr, .hdr'), new RegExp(`Capt\\. ${cap.name}`), 'the port header says whose ship it is');
@@ -29,7 +29,7 @@ test('a hired hand sees the captain on Interior, the header, Operations and Navi
   assert.ok(await page.$(`#panel .eyebrow [data-action=person][data-arg="${cap.id}"]`), 'the run is the captain\'s, named and linked');
   await goTo(page, 'nav');
   assert.ok(!/ run\b/.test(await page.innerText('#panel .con-ctl .eyebrow')) && !await page.$('#panel [data-action=person]'), 'the bridge shows the course, not the run: that is on Port');
-  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
   await done();
 });
 

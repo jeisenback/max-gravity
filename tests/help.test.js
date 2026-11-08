@@ -91,19 +91,14 @@ test('a hired hand\'s "Fights during burns" describes the fight as it plays, not
   await done();
 });
 
-test('Controls has no burn-fight keys, leads with Touch on a touch device, and says the captain calls the burn', async () => {
+test('Controls has no burn-fight keys and no touch section, and says the captain calls the burn', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
-  const r = await ev(() => {
-    const out = {};
-    for (const on of [false, true]) { Touch.on = on; out[on ? 'touch' : 'keys'] = Menu.views.controls.call(Menu); }
-    return out;
-  });
+  const r = await ev(() => ({ keys: Menu.views.controls.call(Menu) }));
   for (const [k, html] of Object.entries(r)) {
     assert.doesNotMatch(html, /Fights during burns|retrograde|less or more thrust/, `${k}: no burn-fight section`);
     assert.match(html, /captain calls the burn/i, `${k}: a hand is told who calls the burn`);
   }
-  assert.ok(r.touch.indexOf('<h3>Touch</h3>') < r.touch.indexOf('<h3>Flying</h3>'), 'Touch comes first on a touch device');
-  assert.ok(r.keys.indexOf('<h3>Flying</h3>') < r.keys.indexOf('<h3>Touch</h3>'), 'the keys come first with a keyboard');
+  assert.doesNotMatch(r.keys, /<h3>Touch<\/h3>/, 'no touch section'); assert.match(r.keys, /<h3>Flying<\/h3>/);
   await done();
 });
 

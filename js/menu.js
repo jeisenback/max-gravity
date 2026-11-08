@@ -257,9 +257,8 @@ const Menu = {
         'launch a torpedo')}${row('Tab', 'next target')}${row('H', 'hail your target')}${row('L', 'land at the nearest port')}${row('M', 'system map')}${row('J',
         'start a burn')}${row('N', 'sound on or off')}${row('Esc', 'pause menu')}${row('F8', 'report a problem')}`;
       const fights = hand ? '' : `<h3>Fights during burns</h3>${row('W', 'burn at your set thrust')}${row('Q / E', 'less or more thrust')}${row('S', 'point retrograde against the enemy')}${row('Space', 'guns')}${row('F', 'torpedo')}${row('H', 'hail, or board a disabled ship')}`;
-      const touch = `<h3>Touch</h3><div class="hint">The stick steers and burns (push further for more thrust), Fire and Brake are held, and the buttons above them tap.</div>`;
       const note = hand ? '<div class="hint">The captain calls the burn. You work your post.</div>' : '';
-      return `<h2>Controls</h2>${note}${Touch.on ? touch + flying : flying + fights + touch}
+      return `<h2>Controls</h2>${note}${flying}${fights}
         <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`;
     },
     credits() {

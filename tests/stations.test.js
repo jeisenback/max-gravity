@@ -395,21 +395,20 @@ test('engineer: sliders for a manual engineer, bars for a crewed one, and a shee
   await done();
 });
 
-test('the engineering console shows wear in its colors, and fits a phone without scrolling sideways', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+test('the engineering console shows wear in its colors, and fits without scrolling sideways', async () => {
+  const { page, ev, done } = await open();
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; G.state.crew = []; G.state.condition = { drive: 95, fire: 20, shields: 55, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'shipyard');
   const colors = await page.$$eval('#panel .con-part', rows => rows.map(r => r.querySelector('.con-bar i').style.backgroundColor));
   assert.deepEqual(colors, ['rgb(95, 211, 95)', 'rgb(255, 106, 74)', 'rgb(255, 154, 60)', 'rgb(95, 211, 95)', 'rgb(95, 211, 95)'], 'good, failing, worn, good, good');
   assert.ok(await page.$('#panel [data-gauge=heat]') && await page.$('#panel [data-plant]'), 'the heat gauge and the plant schematic are on the display');
-  assert.equal(await page.$eval('#panel .con-plant .lbl', el => getComputedStyle(el).display), 'none', 'the diagram drops its labels when narrow');
-  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
   await done();
 });
 
 test('the weapons console shows the armament and the fire deck from the ship, at port and in a burn', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open();
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.outfits = { pdc: 2, launcher: 1 }; st.torpedoes = 4; st.condition = { drive: 100, fire: 20, shields: 100, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'weapons');
@@ -421,7 +420,7 @@ test('the weapons console shows the armament and the fire deck from the ship, at
   const row = (root, label) => page.$$eval(`${root} .con-read`, (rows, l) => { const r = rows.find(x => x.firstElementChild.textContent === l); return r && r.lastElementChild.textContent; }, label);
   assert.equal(await row('#panel', 'Gun run'), String(want.deck.gun), 'the fire deck is the duel deck');
   assert.equal(await row('#panel', 'Torpedo'), String(want.deck.torp));
-  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=weapons]');
@@ -431,7 +430,7 @@ test('the weapons console shows the armament and the fire deck from the ship, at
 });
 
 test('the navigation console plots the course at port and the burn in flight', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open();
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; G.state.crew = []; while (G.dialog) finishEvent(); G.state.dest = 'mars'; UI.render(); });
   await goTo(page, 'nav');
@@ -442,7 +441,7 @@ test('the navigation console plots the course at port and the burn in flight', a
   assert.equal(await page.$$eval('#panel .con-plant circle[r="3"]', n => n.length), want.n, 'a dot for every place the plot spans');
   assert.equal(await page.$$eval('#panel .con-plant line[stroke-dasharray]', n => n.length), 1, 'the planned course is a dashed line');
   assert.ok(await page.$('#panel [data-action=map]'), 'the system map is a control');
-  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.left = G.transit.total * 0.6; });
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=nav]');
@@ -453,7 +452,7 @@ test('the navigation console plots the course at port and the burn in flight', a
 });
 
 test('the interior console puts the crew at their posts, with how they are doing, and the downtime button in a burn', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open();
   await ev(helpers);
   const want = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
@@ -474,7 +473,7 @@ test('the interior console puts the crew at their posts, with how they are doing
   assert.deepEqual(rings.sort(), ['#5fd35f', '#5fd35f', '#6fb0ff', '#ff9a3c', '#ff9a3c'].sort(), 'you in the engine room and on the bridge, the well pilot, the gunner with a hard time, the hurt engineer');
   assert.equal(await page.$$eval('#panel .con-plant rect[width="24"][fill="#1d3a5c"]', n => n.length), Math.min(want.used, 6), 'a bunk filled for each berth used');
   assert.ok(await page.$('#panel [data-action=dismiss]'), 'the crew list and its hiring controls follow the console');
-  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=interior]');
@@ -484,7 +483,7 @@ test('the interior console puts the crew at their posts, with how they are doing
 });
 
 test('the comms console shows the inbox as a feed and the tips in force, at port and in a burn', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open();
   await ev(helpers);
   const want = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; st.inbox = []; st.rumors = []; while (G.dialog) finishEvent();
@@ -498,7 +497,7 @@ test('the comms console shows the inbox as a feed and the tips in force, at port
   assert.match(await page.innerText('#panel'), /Market tips in force/i);
   assert.equal(await page.$$eval('#panel .con-card', cards => cards.find(c => /Market tips in force/i.test(c.textContent)).querySelectorAll('.hint').length), want.tips, 'a line for each tip in force');
   assert.ok(await page.$('#panel [data-action=postOrder][data-arg="comms:listen"], #panel .post'), 'the comms post is on the console');
-  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=comms]');
@@ -507,7 +506,7 @@ test('the comms console shows the inbox as a feed and the tips in force, at port
 });
 
 test('the operations console shows the cargo bay and the manifest, at port and in a burn', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open();
   await ev(helpers);
   const want = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
@@ -521,7 +520,7 @@ test('the operations console shows the cargo bay and the manifest, at port and i
   assert.match(await page.innerText('#panel .con'), /Water\s*5t/);
   assert.match(await page.innerText('#panel .con'), /Refined Metals\s*3t/);
   assert.ok(await page.$$eval('.rail [data-action=tab]', b => b.length) >= 5, 'the rail is still there');
-  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=ops]');
@@ -531,7 +530,7 @@ test('the operations console shows the cargo bay and the manifest, at port and i
 });
 
 test('the character screen opens from the crew list and the posts, shows what we know, and goes back', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open();
   await ev(helpers);
   const who = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
@@ -550,7 +549,7 @@ test('the character screen opens from the crew list and the posts, shows what we
   assert.match(await page.innerText('#panel'), /having a hard time/);
   assert.match(await page.innerText('#panel'), /friendly/);
   assert.match(await page.innerText('#panel'), /You stood up for me/, 'what they remember');
-  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
   await page.click('#panel [data-action=personBack]');
   assert.equal(await ev(() => UI.tab), 'crew', 'back to where you were');
   // You are a person too: the posts you hold are links to your own screen.

@@ -5,29 +5,26 @@
 // (the step index, or null when finished or skipped; older saves have none).
 // Loaded before game.js; only calls into it at runtime.
 
-const tutKey = (touch, keyboard) => (Touch.on ? touch : keyboard);
-
 const TUTORIAL = [
   { text: () => 'Open the Exchange page and buy Electronics with Max. Earth makes them cheap; Mars pays well.',
     done: st => (st.cargo.equipment || 0) > 0 },
-  { text: () => `Take off${tutKey('', ' (T)')}.`,
+  { text: () => 'Take off (T).',
     done: () => G.mode === 'flight' },
-  { text: () => tutKey('Drag the joystick toward where you want to fly. Push it far out to thrust; hold BRAKE to turn around.',
-    'Turn with Left and Right, thrust with Up. Down turns you around to brake.'),
+  { text: () => 'Turn with Left and Right, thrust with Up. Down turns you around to brake.',
     done: () => G.tutThrust > 1.5 },
-  { text: () => `Open the system map (${tutKey('Map', 'M')}) and ${tutKey('tap', 'click')} Mars to plot a burn.`,
+  { text: () => 'Open the system map (M) and click Mars to plot a burn.',
     done: st => !!(st.dest || G.transit) },
-  { text: () => `Fly well clear of Earth, then start the burn (${tutKey('Burn', 'J')}).`,
+  { text: () => 'Fly well clear of Earth, then start the burn (J).',
     done: () => !!G.transit },
   { text: () => 'The burn takes days of ship time. Answer anything that comes up on the way.',
     done: st => st.day > 1 && !G.transit },
-  { text: () => `${tutKey('Tap Land', 'Press L')} to pick Mars, fly onto it, slow down, and ${tutKey('tap Land', 'press L')} again.`,
+  { text: () => 'Press L to pick Mars, fly onto it, slow down, and press L again.',
     done: () => G.mode === 'landed' },
   { text: () => 'Open the Exchange and sell your Electronics.',
     done: st => G.mode === 'landed' && !st.cargo.equipment },
   { text: () => (`That is the trade loop. The Missions page pays for deliveries and passengers, and the Port page tracks your standing with each ` +
       `faction. Before you head into the Belt, where pirates fly heavier ships, fit a Close-defense turret at an outfitter. If you are outgunned, hail ` +
-      `the pirate (${tutKey('Hail', 'H')}) and pay them off. Good luck, captain.`),
+      `the pirate (H) and pay them off. Good luck, captain.`),
     done: () => false, last: true },
 ];
 

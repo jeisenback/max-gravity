@@ -154,7 +154,7 @@ const UI = {
       <div class="dock">
         ${Mods.filter('dockButtons', '')}
         <button data-action="map">System map</button>
-        ${hired() && chapterOf(G.state) === 1 ? (stayOf(hired()) ? `<button data-action="night" class="primary">${nightLabel(stayOf(hired()))}${Touch.on ? '' : ' (T)'}</button>` : `<button data-action="sail" class="primary">Sail with the captain${Touch.on ? '' : ' (T)'}</button>`) : `<button data-action="takeoff" class="primary">Take off${Touch.on ? '' : ' (T)'}</button>`}
+        ${hired() && chapterOf(G.state) === 1 ? (stayOf(hired()) ? `<button data-action="night" class="primary">${nightLabel(stayOf(hired()))} (T)</button>` : `<button data-action="sail" class="primary">Sail with the captain (T)</button>`) : `<button data-action="takeoff" class="primary">Take off (T)</button>`}
       </div>`;
   },
 

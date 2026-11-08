@@ -76,7 +76,7 @@ Progress is saved automatically in your browser's localStorage whenever you land
 
 ## Controls
 
-On phones and tablets: drag the joystick (bottom left) toward where you want to fly; push it far out to thrust. Hold FIRE and BRAKE on the right. The button row gives Target, Hail, Land, Map, and Burn. Tap a ship to target it, or a planet to set it as your nav target. Landed screens keep Sound, System map, and Take off at the bottom.
+Max Gravity is played on a desktop or laptop, with a mouse and keyboard, in a window at least 1000 pixels wide (#937); a narrower window shows a notice instead of the game.
 
 On a keyboard:
 
@@ -110,7 +110,7 @@ On a keyboard:
 - `js/factions.js` - faction standing, patrols, and fines
 - `js/hail.js` - hailing ships in flight
 - `js/story.js` - the Cold Water plot's machinery: story state, the recovery ship, the blockade, the endings and epilogue
-- `js/touch.js` - touch controls (joystick, hold and tap buttons)
+- `js/mapbuttons.js` - the System map, Close map and zoom buttons over the burn view and the map
 - `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, shield flashes, explosions, smoke, and the HUD gauges and labels
 - `js/mods.js` - the mod API (see Modding below)
 - `mods/` - mods; `example-vesta.js` is a working example to copy
@@ -206,7 +206,7 @@ npm test
 
 ## Testing without playing a full game
 
-Tester tools jump straight into any feature. Open them with Shift+U, by tapping the date in the port header five times (phones), or by adding `#uat` to the address; after that a small UAT button stays in the corner. The panel has a checklist grouped by area (basics, life aboard, ports, combat, the frontier, Cold Water, the campaigns, community): Set up starts a fresh game in exactly the right situation (mid-burn with crew, a burn fight, a disabled ship to board, a grown outpost, the Cold Water finale, each campaign's first scene) and says what to check. Mark each Pass or Fail with a note; the Report box gathers everything to copy. General tools add credits, refuel, skip ten days, fill the hold, switch combat modes, land anywhere, switch ship, start a transit happening or pirate contact, arrive at once, or play any scene by id. Opening the panel from your own game backs it up, and Restore my game brings it back.
+Tester tools jump straight into any feature. Open them with Shift+U, or by adding `#uat` to the address; after that a small UAT button stays in the corner. The panel has a checklist grouped by area (basics, life aboard, ports, combat, the frontier, Cold Water, the campaigns, community): Set up starts a fresh game in exactly the right situation (mid-burn with crew, a burn fight, a disabled ship to board, a grown outpost, the Cold Water finale, each campaign's first scene) and says what to check. Mark each Pass or Fail with a note; the Report box gathers everything to copy. General tools add credits, refuel, skip ten days, fill the hold, switch combat modes, land anywhere, switch ship, start a transit happening or pirate contact, arrive at once, or play any scene by id. Opening the panel from your own game backs it up, and Restore my game brings it back.
 
 See [ROADMAP.md](ROADMAP.md) for the long-term milestones.
 

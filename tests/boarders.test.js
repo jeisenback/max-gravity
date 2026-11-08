@@ -463,7 +463,7 @@ test('the deck panel offers one order to a named crewmate who has a post, best f
 });
 
 test('the orders have a heading of their own, a cue says more choices follow below the pinned block, and no button is cut short, at the three screen sizes (#737)', async () => {
-  for (const [name, viewport, mobile] of [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+  for (const [name, viewport, mobile] of [['desktop', { width: 1280, height: 800 }, false], ['small', { width: 1000, height: 768 }, false], ['wide', { width: 1920, height: 1080 }, false]]) {
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     await ev(() => { fight(); openEvent(deckFightEvent(repelStart(G.duel, 'full'))); });

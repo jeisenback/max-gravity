@@ -19,7 +19,7 @@ function onDamage(o, shieldHit, byPlayer, hull) {
   if (byPlayer && o !== G.player && !o.disabled && canBeDisabled(o) && o.armor > 0 && o.armor < o.maxArmor * DISABLE_AT) {
     o.disabled = true;
     o.thrusting = false;
-    msg(sceneSay('scene:crew-notes', Touch.on ? 'disabled.tap' : 'disabled.key', { name: o.name }));
+    msg(sceneSay('scene:crew-notes', 'disabled.key', { name: o.name }));
   }
   // A hard hit on your hull can hurt someone aboard.
   if (o === G.player && hull > 0 && Math.random() < 0.04) hurtCrew();

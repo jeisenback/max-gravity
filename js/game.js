@@ -720,7 +720,6 @@ function updatePlayer(dt) {
   if (k.right) p.angle += s.turn * dt;
   if (k.reverse && Math.hypot(p.vx, p.vy) > 5) turnToward(p, Math.atan2(-p.vy, -p.vx), dt);
   p.thrusting = !!k.thrust;
-  Touch.steer(p, dt);
   if (k.fire) fire(p);
   physics(p, dt);
 }
@@ -897,10 +896,10 @@ function drawWorld(W, H) {
     }
   }
 
-  // Message log, bottom-left, above the touch controls when they are showing.
+  // Message log, bottom-left.
   ctx.font = '13px "IBM Plex Mono", monospace';
   ctx.textAlign = 'left';
-  const bottom = H - 16 - (Touch.on && G.mode === 'flight' ? 220 : 0);
+  const bottom = H - 16;
   const lines = G.messages.filter(m => G.time - m.t < 10).slice(-6)
     .flatMap(m => wrapText(m.text, viewW - 28).map(l => ({ l, m }))).slice(-8);
   lines.forEach(({ l, m }, i) => {
@@ -1081,7 +1080,7 @@ function drawHud(W, H) {
     }
   }
 
-  if (Touch.on || calm) return;
+  if (calm) return;
   ctx.fillStyle = '#56687a';
   ctx.font = '11px "IBM Plex Mono", monospace';
   const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'H  hail target', 'L  select / land', 'M  system map', 'J  burn', 'N  sound'];
@@ -1220,9 +1219,9 @@ function drawMap(W, H) {
   ctx.fillText('SYSTEM MAP', 16, 36);
   ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  const zoom = `True scale, ${span} AU to the rim${Touch.on ? '' : ' (scroll or +/- to zoom)'}.`, close = Touch.on ? '' : ' M or Esc to close.';
+  const zoom = `True scale, ${span} AU to the rim (scroll or +/- to zoom).`, close = ' M or Esc to close.';
   const help = hand ? `${zoom} The captain picks where she goes. Look around; you can't plot a burn.${close} White ring: you. Green ring: where she's going. Orange: mission. Red: pirate raids.`
-    : `${zoom} ${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${close} White ring: you. Orange: mission. Red: pirate raids. Dim: beyond a full tank.`;
+    : `${zoom} Click a destination to plot a burn.${close} White ring: you. Orange: mission. Red: pirate raids. Dim: beyond a full tank.`;
   let y = 42;
   for (const l of wrapText(help, W - 150)) ctx.fillText(l, 16, y += 16);  // clear of the Close and zoom buttons
   let status = 'No burn plotted.';
@@ -1323,7 +1322,7 @@ canvas.addEventListener('click', e => {
     if (tk && e.clientX >= tk.x && e.clientX <= tk.x + tk.w && e.clientY >= tk.y && e.clientY <= tk.y + tk.h) {  // the ticker opens Comms, as its key does
       G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); return;
     }
-    const reach = Touch.on ? 24 : 14, outlined = G.cutOutline && outlineRoomAt(G.cutOutline, e.clientX, e.clientY);  // the outline is over the view: it comes first
+    const reach = 14, outlined = G.cutOutline && outlineRoomAt(G.cutOutline, e.clientX, e.clientY);  // the outline is over the view: it comes first
     const near = !outlined && (G.cutHits || []).map(h => ({ h, d: tapToBody(e.clientX, e.clientY, h) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
     const rk = !outlined && !near && G.cutRack, onRack = rk && e.clientX >= rk.x && e.clientX <= rk.x + rk.w && e.clientY >= rk.y && e.clientY <= rk.y + rk.h;
     if (near) Mods.act('person', near.h.id);
@@ -1337,7 +1336,7 @@ canvas.addEventListener('click', e => {
   if (G.mode !== 'map' || !G.mapPos) return;
   for (const id of Object.keys(SYSTEMS)) {
     const [x, y] = G.mapPos(id);
-    if (Math.hypot(e.clientX - x, e.clientY - y) < (Touch.on ? 26 : 16)) {
+    if (Math.hypot(e.clientX - x, e.clientY - y) < 16) {
       if (!role().mayAct('plot')) { msg(flySay('picks')); return; }  // the map is for looking, to a hired hand
       G.state.dest = id === (G.transit ? G.transit.to : G.state.systemId) ? null : id;
       return;
@@ -1364,14 +1363,14 @@ function frame(now) {
   render();
   const docked = G.mode === 'transit' && G.transit && G.transit.event && G.burnBoxes ? G.burnBoxes.dock : null;  // a scene's dialog in the burn view's dock, out of it otherwise
   if (dockEventPanel(UI.el, docked)) UI.moreCue();
-  Touch.sync();
+  MapButtons.sync();
   if (G.mode !== 'title') Mods.emit('frame', G.paused ? 0 : dt);  // paused: time stands still
   requestAnimationFrame(frame);
 }
 
 resize();
 initStars();
-Touch.build();
+MapButtons.build();
 // Mods loaded by link (community.js) register before the game starts.
 // Players start at the title screen; automated test runs go straight into the last game.
 Community.loadMods().then(() => {

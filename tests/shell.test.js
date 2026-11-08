@@ -134,9 +134,9 @@ test('an entry for a service this port lacks is shut and says why', async () => 
   await done();
 });
 
-test('the captain\'s name and run label do not split or gap, at 390 and 1280', async () => {
-  for (const [name, viewport, mobile] of [['phone', { width: 390, height: 844 }, true], ['wide', { width: 1280, height: 800 }, false]]) {
-    const { ev, done } = await open({ scope: 'earth-hired', viewport, mobile });
+test('the captain\'s name and run label do not split or gap, at 1000 and 1280', async () => {
+  for (const [name, viewport] of [['small', { width: 1000, height: 640 }], ['wide', { width: 1280, height: 800 }]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport });
     await ev(helpers);
     const r = await ev(() => {
       start({ captainKey: 'hester' });
@@ -159,8 +159,8 @@ const smallText = () => [...document.querySelectorAll('#panel *')].filter(el => 
   && [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && parseFloat(getComputedStyle(el).fontSize) < 12)
   .map(el => `${el.tagName.toLowerCase()}.${String(el.className).trim().replace(/\s+/g, '.')} ${getComputedStyle(el).fontSize}`);
 
-test('no visible text on a shell page is under 12px at 390px', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+test('no visible text on a shell page is under 12px on the smallest window', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 1000, height: 640 } });
   await ev(helpers);
   await ev(() => { start(); });
   const tabs = await ev(() => [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg));
@@ -173,16 +173,16 @@ test('no visible text on a shell page is under 12px at 390px', async () => {
   await done();
 });
 
-test('the rail fits at 360px', async () => {
-  const { ev, done } = await open({ viewport: { width: 360, height: 740 }, mobile: true });
+test('the rail fits on the smallest window', async () => {
+  const { ev, done } = await open({ viewport: { width: 1000, height: 640 } });
   await ev(helpers);
   const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
   assert.equal(r.noSideScroll, true, 'the page does not scroll sideways'); assert.equal(r.buttonsOnScreen, true, 'every entry is on screen');
   await done();
 });
 
-test('the last item can be scrolled clear of the dock at 390px', async () => {
-  const { ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+test('the last item can be scrolled clear of the dock on the smallest window', async () => {
+  const { ev, done } = await open({ viewport: { width: 1000, height: 640 } });
   await ev(helpers);
   const r = await ev(() => {
     start(); UI.tab = 'port'; UI.render();
@@ -196,9 +196,9 @@ test('the last item can be scrolled clear of the dock at 390px', async () => {
   await done();
 });
 
-test('the Suggest buttons line up at 1280px and stack at 390px', async () => {
-  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
-    const { ev, done } = await open({ scope: 'earth-hired', viewport, mobile });
+test('the Suggest buttons line up, at 1000px and 1280px', async () => {
+  for (const [name, viewport] of [['wide', { width: 1280, height: 800 }], ['small', { width: 1000, height: 640 }]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport });
     await ev(helpers);
     const r = await ev(() => {
       start({ captainKey: 'hester' });
@@ -211,8 +211,7 @@ test('the Suggest buttons line up at 1280px and stack at 390px', async () => {
         below: rows.map(row => row.querySelector('button').getBoundingClientRect().top >= row.querySelector('.hint').getBoundingClientRect().bottom - 1) };
     });
     assert.ok(r.n >= 2, `${name}: the alternatives are shown (${r.n})`);
-    if (name === 'wide') assert.ok(r.lefts.every(l => Math.abs(l - r.lefts[0]) <= 1), `wide: the buttons share a left edge: ${r.lefts}`);
-    else { assert.ok(r.widths.every(([b, w]) => b >= w - 2), `phone: each button is as wide as its row: ${JSON.stringify(r.widths)}`); assert.ok(r.below.every(Boolean), 'phone: each button sits below its text'); }
+    assert.ok(r.lefts.every(l => Math.abs(l - r.lefts[0]) <= 1), `${name}: the buttons share a left edge: ${r.lefts}`);
     await done();
   }
 });
@@ -231,7 +230,7 @@ const layout = () => {
   const rail = document.querySelector('.rail').getBoundingClientRect(), body = document.querySelector('.shell .body').getBoundingClientRect();
   const buttons = [...document.querySelectorAll('.rail button')].map(b => b.getBoundingClientRect());
   return {
-    railLeftOfBody: rail.right <= body.left + 1, railBelowBody: rail.top >= body.bottom - 1,
+    railLeftOfBody: rail.right <= body.left + 1,
     noSideScroll: document.documentElement.scrollWidth <= window.innerWidth,
     buttonsOnScreen: buttons.every(r => r.left >= 0 && r.right <= window.innerWidth && r.width > 0),
   };
@@ -259,15 +258,5 @@ test('at desktop width the rail sits beside the page', async () => {
   assert.equal(r.railLeftOfBody, true, 'the rail is to the left of the page');
   assert.equal(r.noSideScroll, true);
   assert.equal(r.buttonsOnScreen, true);
-  await done();
-});
-
-test('a phone has no horizontal scroll, the rail is a grid below the page, and every entry is on screen', async () => {
-  const { ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
-  await ev(helpers);
-  const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
-  assert.equal(r.railBelowBody, true, 'the rail is below the page');
-  assert.equal(r.noSideScroll, true, 'the page does not scroll sideways');
-  assert.equal(r.buttonsOnScreen, true, 'every rail entry is inside the screen width');
   await done();
 });
