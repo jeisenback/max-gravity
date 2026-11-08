@@ -3910,7 +3910,7 @@ const PEOPLE_LINES = {
     title: 'With Ines',
     'text.0': 'Ines is in the galley at the end of her watch, eating rehydrated eggs out of the pouch with a spoon. You ask about Lisbon. "Crowded," she says. "It\'s an arcology, it\'s all crowded." She scrapes the corner of the pouch. "My mum\'s still there, on the tier I grew up on. My brother\'s two tiers down with his wife and the baby. He fixes lifts, which in an arcology is basically being a doctor."',
     'c0.label': 'Ask why she left',
-    'c0.result.0': '"You know why." She doesn\'t look up. "It was on the feeds for a week." She folds the pouch flat and puts it in the recycler. "I\'d still be on the ferry. Nine years. Platform to orbit and back, most days."',
+    'c0.result.0': '"Both engines, on the way down to the platform. Forty-one aboard." She doesn\'t look up. "The tower said ditch in the sea, clear of the platform. That\'s the insurer\'s rule, a ticket caps what a passenger costs them and a runway doesn\'t. I put her down on the closed runway." She folds the pouch flat and puts it in the recycler. "Everyone walked off. The board took my licence for the order, and the operator\'s suing me for the runway. I\'d still be on the ferry. Nine years. Platform to orbit and back, most days."',  // the dead-stick landing (docs/bible/lisbon.md, people/ines.md; #930)
     'c1.label': 'Tell her where you\'re from',
     'c1.result.0': 'She listens to the whole thing, eating. "Did your building have a lift?" You tell her. "Did it work?"',
   },
