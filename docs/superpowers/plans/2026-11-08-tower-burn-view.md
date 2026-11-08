@@ -81,7 +81,7 @@ Decisions:
 **Interfaces:**
 - Consumes: `ROOMS`, `CUT_K`, `p.seatDk` (Task 1); `layoutBox`, `deckFloor`, `towerHeight` (`js/layouts.js`).
 - Produces:
-  - `deckY(lay, dk) -> number`: world y of a fractional deck `dk`, linear between `deckFloor(lay, floor(dk))` and `deckFloor(lay, ceil(dk))` (so a climber in the tube is drawn inside it).
+  - `towerDeckY(lay, dk) -> number`: world y of a fractional deck `dk`, linear between `deckFloor(lay, floor(dk))` and `deckFloor(lay, ceil(dk))` (so a climber in the tube is drawn inside it).
   - `towerOutline(lay) -> { x0, x1, top, bottom, noseTop, tank: { top, bottom } }`: the skin's box in world units, the nose's cap above the flight deck (60 high), the tank's band.
   - `roomCouchFlat(ctx, x, F, d)`: a couch pad unfolding flat out of the deck by `d` (0 to 1), 60 long.
 
@@ -91,10 +91,10 @@ Decisions:
 - The drive bell under the drive deck, the plume down from it while burning (its length a share of the tower's height in place of the hull's length).
 - The engine room is one deck now: `roomEngine` keeps its core, gauges and pipes inside `top..F` and drops the catwalk and the upper-deck gauges.
 - Hull fittings on the tower: the mast on the nose; fins at the drive deck's sides; the turrets on the gun deck's sides (the barrels out); the airlock's outer door on the lock deck's left side, in place of the belly hatches; seams and rivets down both sides.
-- People: `y = deckY(lay, p.dk)`; sleepers via `berthBunk` in the berths' box; the cot as now (`inBed`); couches via `roomCouchFlat` at each person's seat on `p.seatDk`; the tether to the nearest room wall on their deck.
+- People: `y = towerDeckY(lay, p.dk)`; sleepers via `berthBunk` in the berths' box; the cot as now (`inBed`); couches via `roomCouchFlat` at each person's seat on `p.seatDk`; the tether to the nearest room wall on their deck.
 
 - [ ] **Step 1: Write the failing tests**
-  - `'a climber is drawn inside the tube through the tank (#972)'`: `deckY(LAYOUTS.freighter, 5.5)` is between `deckFloor(lay, 5)` and `deckFloor(lay, 6)`, and `deckY(lay, 2) === deckFloor(lay, 2)`.
+  - `'a climber is drawn inside the tube through the tank (#972)'`: `towerDeckY(LAYOUTS.freighter, 5.5)` is between `deckFloor(lay, 5)` and `deckFloor(lay, 6)`, and `towerDeckY(lay, 2) === deckFloor(lay, 2)`.
   - `'every room of the tower draws in every phase, with every save restored'`: the existing room loop over `ROOMS` ids (no `'tanks'`), boxes from `layoutBox`.
   - `'on a crash couch a person lies flat on their back (#972)'`: `drawPerson(fakeCtx(), { name: 'couch', face, frame: 0 }, 400, 100, look)` for face 1 and -1 gives `head.y` within 12 of `foot.y` and `head.x < 400`.
 - [ ] **Step 2: Run** `node --test tests/livingship.test.js`. Expected: FAIL on those.
@@ -116,7 +116,7 @@ Decisions:
   - `camStep(cam, target, dt, span, len)`: unchanged logic, now over y (`len = towerHeight(lay) + 90`, the nose's cap and the bell).
   - `G.cam = { y, t }`.
 
-Decisions: the tower centred across the clear part of the box (a docked dialog's offset `off` moves to x only, as a centring shift); the camera follows `deckY(lay, people[0].dk)`, the hand's deck; the plume shows only when the drive deck is in view. Stars keep swinging with `t.angle` as now.
+Decisions: the tower centred across the clear part of the box (a docked dialog's offset `off` moves to x only, as a centring shift); the camera follows `towerDeckY(lay, people[0].dk)`, the hand's deck; the plume shows only when the drive deck is in view. Stars keep swinging with `t.angle` as now.
 
 - [ ] **Step 1: Write the failing tests** (replacing the three camera tests the map lists): `'the zoom fits about three decks and the tower across (#972)'`: for a 1360 by 480 box `viewOf(...).zoom === 480 / 360`; for 760 by 480, `760 / 960`. `'the camera snaps first, then eases, and stays inside the tower'`: `camStep(null, 0, 0, 360, towerHeight(lay) + 90) === 180`; a target past the bottom is held at `towerHeight + 90 - 180`.
 - [ ] **Step 2: Run** `node --test tests/livingship.test.js`. Expected: FAIL.
@@ -137,7 +137,7 @@ Decisions: the tower centred across the clear part of the box (a docked dialog's
 - Produces:
   - `outlineLayout(box, lay) -> { x, y, w, h, rooms: [{ id, x, y, w, h }] }`: a tall strip in the box's top left, `h = min(170, box.h - 16)`, `w = h * (lay.width + 120) / (towerHeight(lay) + 150)`, each room at its `layoutBox` scaled.
   - `outlineRoomAt(outline, x, y)`: the plain box test (no squeeze: the ship no longer turns on screen).
-  - `drawOutline(ctx, outline, dots, camY, span, lay)`: dots `{ x, dk }` placed by `deckY`; the view's frame across the full width from `camY - span / 2` to `camY + span / 2`.
+  - `drawOutline(ctx, outline, dots, camY, span, lay)`: dots `{ x, dk }` placed by `towerDeckY`; the view's frame across the full width from `camY - span / 2` to `camY + span / 2`.
   - `deckSvg`: the tower, nose up, each deck a row of its rooms, the tank as a band, the ladder down the middle, tokens in their rooms as now; the svg 640 wide and as tall as the tower needs.
 
 - [ ] **Step 1: Write the failing tests**: `'the outline is the tower: every room, and a tap finds it (#972)'`: `outlineLayout({ x: 0, y: 0, w: 1360, h: 480 }, lay).rooms.length === ROOMS.length`, and `outlineRoomAt` at each room's centre returns its id. Rewrite the browser tests the map lists under Tasks 1 to 4 (section 4 of the map) to the tower: `inRoom` by `p.dk === r.deck` with the share bounds as now; literal positions converted by deck (old deck 0 rooms: berths 2, galley 1, gunnery 3, bridge 0; old deck 1: engine 6, hold 6, medbay 4) and by `CUT_K` for distances; `'the camera goes with the hand'` asserting `G.cam.y` near the galley's floor; `SEATS_EXPECTED.bridge` to `[0.12, 0.3]`; the tap tests' "free point" taken outside the tower's skin at the box's left edge.
