@@ -1128,3 +1128,21 @@ test('crew sent to the same place set off one by one, and stop apart (#924)', as
   assert.ok(Math.min(...r.gaps) >= 0.009, `and stand apart: ${r.gaps.map(g => g.toFixed(3))}`);
   await done();
 });
+
+// #946: the burn view's "today" moves with the burn (transitNow), and the HUD beside it printed the departure day until the arrival.
+test('in a burn the HUD\'s date is the burn\'s today, the same date the burn bar prints', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, st = G.state;
+    t.days = Math.max(6, t.days); t.elapsed = t.total * 0.6; t.left = t.total * 0.4;  // well past the midpoint, so today is days on from the departure
+    const texts = []; const real = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (s, ...a) { texts.push(String(s)); return real.call(this, s, ...a); };
+    try { render(); } finally { CanvasRenderingContext2D.prototype.fillText = real; }
+    const departure = dateOf(st.day), today = dateOf(transitNow(t));
+    return { departure, today, hudDates: texts.filter(s => s === departure || s === today || s.startsWith(`${departure}  `) || s.startsWith(`${today}  `)), bar: texts.find(s => s.includes('arriving')) };
+  });
+  assert.notEqual(r.today, r.departure, 'the burn has moved the date on');
+  assert.ok(r.bar && r.bar.includes(r.today), `the burn bar prints today: ${r.bar}`);
+  assert.ok(r.hudDates.length >= 1 && r.hudDates.every(s => s.startsWith(r.today)), `every date on the HUD is the burn's today, not the departure: ${r.hudDates}`);
+  await done();
+});

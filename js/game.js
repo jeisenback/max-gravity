@@ -968,7 +968,7 @@ function drawHudCompact(W) {
   ctx.font = '11px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.textAlign = 'right';
-  ctx.fillText(`${dateOf()}  ${fmt(st.credits)} cr`, x + w, 17);
+  ctx.fillText(`${dateOf(inTransit ? transitNow(G.transit) : st.day)}  ${fmt(st.credits)} cr`, x + w, 17);  // in a burn, the burn's today, as the burn bar prints it (#946)
   ctx.textAlign = 'left';
   const bars = [['SHD', p ? p.shields : s.shields, s.shields, '#4aa3ff'], ['ARM', p ? p.armor : st.armor, p ? p.maxArmor : s.armor, '#ff9a3c'], ['RM', st.fuel, s.fuel, '#5fd35f']];
   bars.forEach(([label, v, max, color], i) => {
@@ -1018,7 +1018,7 @@ function drawHud(W, H) {
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.fillText(inTransit ? `To ${placeOf(G.transit.to).name}` : `${sys.gov}`, x, y += 16);
-  ctx.fillText(dateOf(), x, y += 16);
+  ctx.fillText(dateOf(inTransit ? transitNow(G.transit) : st.day), x, y += 16);  // the burn's today, not the departure (#946)
   if (hired() && hiredCaptain()) ctx.fillText(`Capt. ${hiredCaptain().first} ${hiredCaptain().last}`, x, y += 16);
 
   y += 26;
