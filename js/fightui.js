@@ -312,7 +312,7 @@ function deckFightEvent(s, plan = {}) {
     choices.push({ order: true, group: fightSay('deck.orders'), label: order ? fightSay('deck.order', { first: order.first, does: does(order) }) : fightSay('deck.order.none'), keep: true, run: redo({ order: next([null, ...orders.map(o => o.id)], order && order.id) }) });
     if (order && isHatch(order)) choices.push({ label: fightSay('deck.order.at', { at: deckAt(s, there) }), keep: true, run: redo({ at: next(f.sections.map((_, i) => i), there) }) });
   }
-  choices.push({ label: fightSay('deck.fight'), keep: true, run: () => deckTurn(s, { ...p, order: order && order.id }) });
+  choices.push({ label: fightSay('deck.fight'), keep: true, pin: true, primary: true, run: () => deckTurn(s, { ...p, order: order && order.id }) });  // pinned in view as Fire is; the plan flows with the scene (ui.js, #991)
   const who = fightSay(`deck.who.${s.assault ? 'assault' : f.party === 'navy' ? 'navy' : 'repel'}`), feint = mayFeint(f, m) ? ` ${fightSay('deck.feint')}` : '';
   const standing = navyBoarding(f) ? [fightSay('deck.navy.down', { gov: s.d.foe.gov, n: DECK.NAVY_STANDING * f.navyDown })] : [];  // what the heads of a navy party put down have cost so far (repelSettle)
   return {
