@@ -28,6 +28,7 @@ const roomAt = id => ROOMS.find(r => r.id === id);
 const SCENE_ROOM_WORDS = {
   galley: /\b(galley|the mess|the table)\b/i, bridge: /\b(bridge|cockpit)\b/i, engine: /\b(engine room|the drive)\b/i, hold: /\b(the hold|cargo bay)\b/i,
   medbay: /\b(medbay|clinic bunk)\b/i, berths: /\b(berths?|bunks?)\b/i, gunnery: /\b(gunnery|the guns)\b/i,
+  head: /\b(the head(?! of\b)|the shower)\b/i, workshop: /\bworkshop\b/i, airlock: /\b(airlock|the lock)\b/i, lifesupport: /\b(life support|the recycler)\b/i,  // the tower's rooms (#973); the head of something is not the head
 };
 function sceneStage(ev, aboard, staged) {
   if (!ev || ev.board) return null;
@@ -92,7 +93,7 @@ const SHIP_TIMETABLE = [
 ];
 function shipDay(elapsed) {
   const f = (((elapsed || 0) + 6) / SHIP_DAY) % 1;
-  return { block: SHIP_TIMETABLE.find(b => f >= b.from && f < b.to).block, f };
+  return { block: SHIP_TIMETABLE.find(b => f >= b.from && f < b.to).block, f, day: Math.floor(((elapsed || 0) + 6) / SHIP_DAY) };  // day: the ship's days since the burn began
 }
 const postOf = role => (role === 'captain' ? 'bridge' : Object.entries(HAUNTS[role] || HAUNTS.passenger).sort((a, b) => b[1] - a[1])[0][0]);
 // The ship's state (docs/superpowers/specs/2026-11-06-ship-state-design.md): the hull's damage marked on one to three rooms (the share of armor lost: up
@@ -142,6 +143,7 @@ function routineSpot(p, block, state) {
     if (role === 'you' && state.you && (block === 'night' || block === 'handover')) return { room: 'medbay', at: 'bed' };
     if (block === 'shift' && id && id === state.aid && state.hurt.length) return { room: 'medbay', at: 'aid' };
     if (block === 'shift' && id && state.repairs && state.repairs[id]) return { room: state.repairs[id], at: 'repair' };
+    if (block === 'wake' && state.morning !== undefined && p.washed !== state.morning && washesToday(p, state.morning)) return { room: 'head', at: 'head' };
     const plain = routineSpot(p, block);
     if (id && state.low.includes(id) && (plain.at === 'table' || (block === 'handover' && plain.at === 'bunk'))) return { room: 'berths', at: 'alone' };
     return plain;
@@ -150,6 +152,35 @@ function routineSpot(p, block, state) {
   if (['wake', 'breakfast', 'meal', 'supper'].includes(block)) return role === 'cook' ? { room: 'galley', at: 'stove' } : { room: 'galley', at: 'table' };
   if (block === 'shift') return role === 'you' || role === 'passenger' ? { rounds: true } : role === 'cook' ? { room: 'galley', at: 'stove' } : { room: postOf(role), at: 'post' };
   return NIGHT_WATCH.includes(role) ? { room: postOf(role), at: 'post' } : { room: 'berths', at: 'bunk' };  // the handover and the night
+}
+// The head in the morning (#973): in the wake block about half the crew use it, a different half each day, by their own share and the morning's
+// number (the game's day and the ship's days into the burn: `state.morning`), with no draw of any dice. Not the cook, at the stove, nor the night
+// watch, nor you, the passengers or the captain. Once washed (`p.washed`, the morning) they go on to the galley.
+const HEAD_SKIPS = ['you', 'passenger', 'captain', 'cat', 'cook', ...NIGHT_WATCH];
+function washesToday(p, morning) {
+  if (HEAD_SKIPS.includes(p.role)) return false;
+  let h = (personShare(p, 4) * 4294967296) ^ Math.imul(morning + 1, 0x9E3779B1);  // their share and the morning, mixed (murmur's finish) so each day's half is drawn anew
+  h = Math.imul(h ^ (h >>> 16), 0x85EBCA6B); h = Math.imul(h ^ (h >>> 13), 0xC2B2AE35); h ^= h >>> 16;
+  return (h >>> 0) / 4294967296 < 0.5;
+}
+// The head holds one at a time, in its middle. Someone come to it (`p.queue` unset) goes in when nobody is in it or waiting; else waits by the door,
+// a spot just inside its galley-side edge, while fewer than HEAD_WAIT wait there; else goes without. Someone waiting goes in when it is free and
+// nobody has waited longer (`p.ticket`); someone in it is done when their wait runs out. `first`: the first in this morning (the hot water).
+const HEAD_WAIT = 2, HEAD_STAGGER = 4.5;
+const headDoorX = k => { const r = roomAt('head'); return r.x0 + r.w * (0.1 + 0.06 * k); };
+function headTurn(p, people, morning) {
+  const here = people.filter(o => o !== p && o.room === 'head' && o.at === 'head'), door = here.filter(o => o.queue === 'door'), taken = here.some(o => o.queue === 'inside');
+  const goIn = () => Object.assign(p, { queue: 'inside', tx: roomAt('head').mid, first: !people.some(o => o !== p && o.washed === morning) });
+  const done = () => Object.assign(p, { washed: morning, queue: undefined, block: undefined, at: undefined, first: false });
+  if (p.queue === 'inside') return done();
+  if (p.queue === 'door') {
+    if (!taken && door.every(o => o.ticket > p.ticket)) return goIn();
+    p.wait = 0.4; return;
+  }
+  if (!taken && !door.length) return goIn();
+  if (door.length >= HEAD_WAIT) return done();
+  const k = [...Array(HEAD_WAIT).keys()].find(i => !door.some(o => o.doorAt === i));
+  Object.assign(p, { queue: 'door', doorAt: k, ticket: Math.max(0, ...door.map(o => o.ticket)) + 1, tx: headDoorX(k) });
 }
 const nightHaunts = role => NIGHT_WATCH.includes(role) ? HAUNTS[role] : role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 };
 const isAsleep = p => !p.staged && p.at !== 'alone' && isDark() && p.room === 'berths' && p.tx === null && p.dk === roomAt('berths').deck && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role) && phase() !== 'couch';  // asleep through the straps and the float too: strapped into the bunk (#927)
@@ -290,9 +321,25 @@ const LIFE_LINES = {
       '{n} is reading the nav chart upside down from the jump seat.',
       '{n} is checking the date on the watch bill against the board.',
       '{n} is holding a mug against the console rail with a hand over the top.'] },
+  // the tower's rooms (#973); `first` in the head is for the first one in it on a morning (headTurn)
+  head: { first: ['{n} is first in the shower, while there\'s still hot water.', '{n} is first in the shower and out again in three minutes, leaving the hot water for the next one.'],
+    any: ['{n} is shaving at the mirror over the basin, one cheek at a time.', '{n} is brushing their teeth with the tap off between rinses.', '{n} is wiping the steam off the mirror with a sleeve.',
+      '{n} is rinsing a pair of socks in the basin and hanging them on the rail.', '{n} is adding soap to the stores list on the back of the door.', '{n} is in the shower with one eye on the timer.'] },
+  workshop: { engineer: ['{n} has a valve in pieces on the bench, laid out in the order it came apart.', '{n} is checking a pump bearing on the bench and writing the wear on its tag.',
+      '{n} is testing a relay on the bench. It fails, and goes in the box for the next yard.', '{n} is weighing the fabricator\'s stock spool and writing the figure on the side.'],
+    gunner: ['{n} is cleaning a pistol on the bench, the parts in a row on a rag.', '{n} is checking the spare feed tray for the turret against the parts list.',
+      '{n} is trying to print a firing pin on the fabricator. It wants a licence code.', '{n} is sharpening a knife on the bench stone.'],
+    any: ['{n} is sorting bolts from a tin into the drawers by size.', '{n} is at the fabricator, reading the time left on a print.', '{n} is filing the burr off a bracket at the vice.',
+      '{n} is signing a torque wrench out on the tool board.', '{n} is sweeping filings off the bench into a cup.'] },
+  airlock: { any: ['{n} is sitting on the bench by the airlock, lacing a boot.', '{n} is running a finger round the seal of the inner door and looking at it.', '{n} is reading the pressure on both sides of the inner door.',
+    '{n} is counting the suits on the rack and checking the date on each tag.', '{n} is wiping the window in the inner door with a sleeve.'] },
+  lifesupport: { engineer: ['{n} is swapping a scrubber cartridge in the air recycler and writing the date on the new one.', '{n} is reading the air recycler\'s log back a week, fan by fan.',
+      '{n} is tightening the clamp on the condensate line under the recycler.', '{n} is counting the spare scrubber cartridges. Four. The last yard wanted ninety apiece.'],
+    any: ['{n} is reading the carbon dioxide figure off the panel by the air recycler.', '{n} is standing by the air recycler with a hand on the casing.', '{n} is changing a dust filter on the air intake and bagging the old one.',
+      '{n} is listening to the fans in the ducts, one after another.', '{n} is writing the cabin pressure on the slate by the hatch.'] },
 };
 
-// What someone is seen doing in a room with no lines of its own yet (the tower's head, workshop, airlock and life support; their own are step 3, #973).
+// What someone is seen doing in a room with no lines of its own (every room of the tower has its own since #973: the fallback for a new one).
 const LIFE_ANY = { any: ['{n} is passing through.', '{n} stops to check something on the wall, and moves on.', '{n} is here for a minute, then gone again.'] };
 
 // The lights going down and coming up, a line each, in the ship's log of the burn.
@@ -308,7 +355,7 @@ function lifeState() {
 
 // The pools are read through the editor's words (lines:ship-life, lines:ship-lights; js/linetables.js).
 function lifeLine(p, crowd, rnd = Math.random) {  // rnd: ship life's dice in a burn (lifeTick)
-  const room = linedText('lines:ship-life', LIFE_LINES)[p.room] || LIFE_ANY, pool = room[p.role] || room.any;  // a room with no lines of its own: the generic ones
+  const room = linedText('lines:ship-life', LIFE_LINES)[p.room] || LIFE_ANY, pool = (p.first && p.queue === 'inside' && room.first) || room[p.role] || room.any;  // a room with no lines of its own: the generic ones; the first in the head that morning, its own (#973)
   if (!pool) return null;
   const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you' && o.role !== 'cat');
   const line = pickFresh(pool.filter(l => !l.includes('{m}') || others.length), rnd);
@@ -389,28 +436,32 @@ function routineGo(p, block, people, dark, rnd, state) {
     if (w) { Object.assign(p, { block, relief: w.id, reliefT: 0 }); return; }
   }
   const spot = routineSpot(p, block, state), moved = !!p.block && p.block !== block && p.block !== 'activity' && p.block !== 'linger';  // the day moved on: each sets off in their own moment, not all at once (#924)
-  Object.assign(p, { block, errand: false, at: spot.at, leave: moved ? personShare(p, 1) * 3 : 0 });
+  Object.assign(p, { block, errand: false, at: spot.at, queue: undefined, leave: moved ? personShare(p, spot.room === 'head' ? 4 : 1) * (spot.room === 'head' ? HEAD_STAGGER : 3) : 0 });  // to the head at their own moment in the wake block (#973)
   if (spot.rounds) { goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd, people); return; }
   const holds = q => (s => s.at === 'post' && s.room === spot.room)(routineSpot(q, 'shift'));  // a post's places are numbered by who holds it in a shift, the same in every block
-  const r = roomAt(spot.room), mates = spot.at === 'table' || spot.at === 'bed' ? people.filter(q => routineSpot(q, block, state).at === spot.at) : spot.at === 'post' ? people.filter(holds) : [];  // who shares the table or the post
-  const tx = routineTarget(p, spot, r, mates.indexOf(p), mates.length, rnd), placed = ['table', 'post', 'bed', 'stove'].includes(spot.at);  // a seat, a cot or the stove is its own place
+  const seated = state && { ...state, morning: undefined };  // a seat at the table is kept for anyone in the head first (#973)
+  const r = roomAt(spot.room), mates = spot.at === 'table' || spot.at === 'bed' ? people.filter(q => routineSpot(q, block, seated).at === spot.at) : spot.at === 'post' ? people.filter(holds) : [];  // who shares the table or the post
+  const tx = spot.at === 'head' ? headDoorX(0) : routineTarget(p, spot, r, mates.indexOf(p), mates.length, rnd), placed = ['table', 'post', 'bed', 'stove'].includes(spot.at);  // a seat, a cot or the stove is its own place
   Object.assign(p, { room: spot.room, tdk: r.deck });
   p.tx = placed ? tx : clearOf(p, tx, people);
 }
 // A shift's errand from the post: the chance at each wait, and the share of it for an errand on another deck, which takes the ladder (#972).
 const ERRAND = { chance: 0.25, ladder: 0.5 };
+// The rounds (#973): the rooms a role's errands go to, in place of the two nearest the post. The airlock is left idle: no errand goes there (#940).
+const ROUNDS = { engineer: ['lifesupport', 'workshop'], gunner: ['workshop'] }, IDLE_ROOMS = ['airlock'];
 // When a wait at a place runs out: in a shift someone at their post now and then goes on a short errand to a room near it, and from it back to the
 // post; someone let go by a scene or done with an activity goes back to the timetable; the rounds go on; at the table, the stove or a bunk they stay.
-function routineWait(p, block, dark, rnd, state) {
+function routineWait(p, block, dark, rnd, state, people = []) {
   if (p.block === 'activity' || p.block === 'linger' || p.errand) { p.block = undefined; p.errand = false; return; }  // the next frame takes them back
   if (p.aside) { p.wait = 5 + 7 * rnd(); return; }  // out of a scene's way until it closes (stageScene)
+  if (p.at === 'head' && block === 'wake' && state) return headTurn(p, people, state.morning);  // in the head, or waiting for it (#973)
   const spot = routineSpot(p, block, state);
   if (spot.rounds) goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd);
   else if (block === 'shift' && spot.at === 'post') {
     const u = rnd();
     if (u < ERRAND.chance) {
       const post = roomAt(spot.room), far = r => Math.abs(r.deck - post.deck) + Math.abs(r.mid - post.mid);
-      const near = ROOMS.filter(r => r.id !== spot.room).sort((a, b) => far(a) - far(b)).slice(0, 2);  // a short errand: one of the two rooms nearest the post, by decks and across, so a deck of one room finds them on the decks either side
+      const near = ROUNDS[p.role] ? ROUNDS[p.role].map(roomAt) : ROOMS.filter(r => r.id !== spot.room && !IDLE_ROOMS.includes(r.id)).sort((a, b) => far(a) - far(b)).slice(0, 2);  // the rounds, else a short errand: one of the two rooms nearest the post, by decks and across, so a deck of one room finds them on the decks either side
       const to = near.length && near[Math.floor(rnd() * near.length)];
       if (to && (to.deck === post.deck || u < ERRAND.chance * ERRAND.ladder)) { goTo(p, to.id, rnd); p.errand = true; p.at = undefined; }  // one up or down the ladder half as often: it keeps them from the post a while (#972)
     }
@@ -522,7 +573,7 @@ function lifeTick(dt) {
   }
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
   const block = shipDay(G.transit.elapsed).block, state = shipState(G.state, G.transit, ship().armor, lifeRnd, { aid: (roleHolder('medic') || {}).id, you: handHurt() });
-  state.repairs = repairsFor(people, state);
+  state.repairs = repairsFor(people, state); state.morning = G.state.day + shipDay(G.transit.elapsed).day;
   const key = JSON.stringify([state.marks, state.hurt, state.low, state.you, state.aid, state.repairs]);
   if (key !== G.transit.stateKey) {  // the ship's state changed: whoever's place moved with it goes there
     G.transit.stateKey = key;
@@ -572,14 +623,15 @@ function lifeTick(dt) {
         p.tx = null; p.go = 0;
         if (p.staged) { p.face = p.faceTo || p.face; continue; }  // in place for the scene, facing the others: no draw of the game's dice
         if (ph !== 'move') continue;  // at the couch: no wait, and nothing said
-        p.wait = p.errand ? lifeRand(1.5, 3) : lifeRand(5, 12);  // an errand is in and out
+        if (p.at === 'head' && p.queue !== 'inside' && block === 'wake') { headTurn(p, people, state.morning); continue; }  // at the head's door: in, or wait, or go without; nothing said (#973)
+        p.wait = p.errand ? lifeRand(1.5, 3) : p.at === 'head' ? lifeRand(2, 3) : lifeRand(5, 12);  // an errand is in and out, and so is the head
         if (p.role !== 'you' && lifeRnd() < 0.18 && !lifeHushed(lifeState())) {
           const line = lifeLine(p, people, lifeRnd);
           if (line) comm(`[Ship] ${line}`);
         }
       }
     } else if (!p.staged && (p.wait -= dt) <= 0) {
-      routineWait(p, block, dark, lifeRnd, state);
+      routineWait(p, block, dark, lifeRnd, state, people);
     }
     p.walked = (p.walked || 0) + Math.abs(p.x - before);  // the ground covered, for the stride (posture)
   }

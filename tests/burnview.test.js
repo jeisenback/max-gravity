@@ -826,6 +826,44 @@ test('at breakfast the crew are at the galley table, seated, the cook at the sto
   assert.equal(r.cook.length, 1, 'a cook aboard'); for (const c of r.cook) { assert.ok(c.in && Math.abs(c.x - (r.g[0] + 0.15 * r.g[2])) < 0.003 * r.k, 'the cook at the stove'); assert.equal(c.pose, 'work', 'working at it'); }
 });
 
+test('in the wake block some of the crew queue for the head, one inside at a time, and go on to breakfast (#973)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(dayAtSrc => {
+    const dayAt = eval(dayAtSrc), t = stageBurn(), st = G.state, deck = roomAt('berths').deck;
+    ['quartermaster', 'icehand', 'icehand', 'medic', 'xo', 'slicer'].forEach((role, i) => { const id = `p:h${i}`; st.crew.push(id); st.people[id] = { id, first: `H${i}`, role, skill: 1, traits: [] }; shipPeople().push({ name: `H${i}`, role, id, room: 'berths', x: 0.2 + 0.05 * i, dk: deck, tdk: deck, seatDk: deck, tx: null, wait: 1, seat: 0.3, block: 'night' }); });
+    t.elapsed = dayAt(0.91);
+    const going = () => shipPeople().filter(p => routineSpot(p, 'wake', { marks: [], hurt: [], low: [], repairs: {}, morning: st.day + shipDay(t.elapsed).day }).room === 'head');
+    for (let k = 0; going().length < 4 && k < 200; k++) st.day++;  // a morning with four going
+    const out = { block: shipDay(t.elapsed).block, going: going().map(p => p.id), inside: 0, door: 0, wentIn: new Set(), waited: new Set(), firsts: 0 };
+    for (let i = 0; i < 40 * 30; i++) {
+      lifeTick(1 / 30);
+      const head = shipPeople().filter(p => p.room === 'head' && p.at === 'head'), r = roomAt('head');
+      const inside = head.filter(p => p.queue === 'inside'), door = head.filter(p => p.queue === 'door' && p.tx === null);
+      out.inside = Math.max(out.inside, inside.length); out.door = Math.max(out.door, door.length);
+      inside.forEach(p => { if (p.tx === null) out.wentIn.add(p.id); }); door.forEach(p => { out.waited.add(p.id); if (p.x < r.x0 || p.x > r.x0 + r.w * 0.25) out.doorOut = p.x; });
+      out.firsts = Math.max(out.firsts, inside.filter(p => p.first).length);
+    }
+    out.wentIn = [...out.wentIn]; out.waited = [...out.waited];
+    out.others = shipPeople().filter(p => p.role !== 'cat' && !out.going.includes(p.id) && p.room === 'head').map(p => p.id);
+    out.galley = shipPeople().filter(p => out.wentIn.includes(p.id)).map(p => p.room);
+    t.elapsed = dayAt(0.02); tickFor(20);
+    out.breakfast = shipPeople().filter(p => p.role !== 'cat' && p.role !== 'captain').map(p => `${p.id}:${inRoom(p, 'galley')}`);
+    return out;
+  }, dayAt.toString());
+  await done();
+  assert.equal(r.block, 'wake'); assert.ok(r.going.length >= 4, `four going this morning (${r.going})`);
+  assert.ok(r.wentIn.length >= 2, `some went in (${r.wentIn} of ${r.going})`);
+  assert.ok(r.wentIn.every(id => r.going.includes(id)), 'only those going today');
+  assert.equal(r.inside, 1, 'one inside at a time');
+  assert.ok(r.door <= 2, `at most two at the door (${r.door})`);
+  assert.equal(r.doorOut, undefined, 'waiting by the door, in the head');
+  assert.equal(r.firsts, 1, 'the first in is marked');
+  assert.deepEqual(r.others, [], 'nobody else goes');
+  assert.ok(r.galley.every(room => room === 'galley'), `once done, to the galley (${r.galley})`);
+  assert.deepEqual(r.breakfast.filter(s => s.endsWith('false')), [], 'and all at breakfast');
+});
+
 test('in a shift the crew are at their posts, you on rounds, and a scene ends back at the post', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
