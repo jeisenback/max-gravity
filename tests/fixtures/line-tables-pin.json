@@ -3748,6 +3748,146 @@
   "text": "Cass is holding a mug against the console rail with a hand over the top."
  },
  {
+  "key": "life:head:first:0",
+  "text": "Cass is first in the shower, while there's still hot water."
+ },
+ {
+  "key": "life:head:first:1",
+  "text": "Cass is first in the shower, and has the hot water off again in three minutes."
+ },
+ {
+  "key": "life:head:any:0",
+  "text": "Cass is shaving at the mirror over the basin, one cheek at a time."
+ },
+ {
+  "key": "life:head:any:1",
+  "text": "Cass is wiping the steam off the mirror with a sleeve."
+ },
+ {
+  "key": "life:head:any:2",
+  "text": "Cass is rinsing a pair of socks in the basin and hanging them on the rail."
+ },
+ {
+  "key": "life:head:any:3",
+  "text": "Cass is adding soap to the stores list on the back of the door."
+ },
+ {
+  "key": "life:head:any:4",
+  "text": "Cass is in the shower, and the timer on the door is counting down."
+ },
+ {
+  "key": "life:head:any:5",
+  "text": "Cass is wiping the steam off the mirror with a sleeve."
+ },
+ {
+  "key": "life:workshop:engineer:0",
+  "text": "Cass has a valve in pieces on the bench, laid out in the order it came apart."
+ },
+ {
+  "key": "life:workshop:engineer:1",
+  "text": "Cass is testing a relay on the bench. It fails, and goes in the box for the next yard."
+ },
+ {
+  "key": "life:workshop:engineer:2",
+  "text": "Cass is weighing the fabricator's stock spool and writing the figure on the side."
+ },
+ {
+  "key": "life:workshop:engineer:3",
+  "text": "Cass is checking a pump bearing on the bench and writing the wear on its tag."
+ },
+ {
+  "key": "life:workshop:gunner:0",
+  "text": "Cass is cleaning a pistol on the bench, the parts in a row on a rag."
+ },
+ {
+  "key": "life:workshop:gunner:1",
+  "text": "Cass is trying to print a firing pin on the fabricator. It wants a licence code."
+ },
+ {
+  "key": "life:workshop:gunner:2",
+  "text": "Cass is sharpening a knife on the bench stone."
+ },
+ {
+  "key": "life:workshop:gunner:3",
+  "text": "Cass is checking the spare feed tray for the turret against the parts list."
+ },
+ {
+  "key": "life:workshop:any:0",
+  "text": "Cass is sorting bolts from a tin into the drawers by size."
+ },
+ {
+  "key": "life:workshop:any:1",
+  "text": "Cass is filing the burr off a bracket at the vice."
+ },
+ {
+  "key": "life:workshop:any:2",
+  "text": "Cass is signing a torque wrench out on the tool board."
+ },
+ {
+  "key": "life:workshop:any:3",
+  "text": "Cass is sweeping filings off the bench into a cup."
+ },
+ {
+  "key": "life:workshop:any:4",
+  "text": "Cass is at the fabricator, reading the time left on a print."
+ },
+ {
+  "key": "life:airlock:any:0",
+  "text": "Cass is sitting on the bench by the airlock, lacing a boot."
+ },
+ {
+  "key": "life:airlock:any:1",
+  "text": "Cass is reading the pressure on both sides of the inner door."
+ },
+ {
+  "key": "life:airlock:any:2",
+  "text": "Cass is counting the suits on the rack and checking the date on each tag."
+ },
+ {
+  "key": "life:airlock:any:3",
+  "text": "Cass is wiping the window in the inner door with a cloth from the suit rack."
+ },
+ {
+  "key": "life:airlock:any:4",
+  "text": "Cass is running a finger round the seal of the inner door and checking it for grit."
+ },
+ {
+  "key": "life:lifesupport:engineer:0",
+  "text": "Cass is swapping a scrubber cartridge in the air recycler and writing the date on the new one."
+ },
+ {
+  "key": "life:lifesupport:engineer:1",
+  "text": "Cass is tightening the clamp on the condensate line under the recycler."
+ },
+ {
+  "key": "life:lifesupport:engineer:2",
+  "text": "Cass is counting the spare scrubber cartridges. Four. The last yard wanted ninety apiece."
+ },
+ {
+  "key": "life:lifesupport:engineer:3",
+  "text": "Cass is reading the air recycler's log back a week, fan by fan."
+ },
+ {
+  "key": "life:lifesupport:any:0",
+  "text": "Cass is reading the carbon dioxide figure off the panel by the air recycler."
+ },
+ {
+  "key": "life:lifesupport:any:1",
+  "text": "Cass is changing a dust filter on the air intake and bagging the old one."
+ },
+ {
+  "key": "life:lifesupport:any:2",
+  "text": "Cass is listening to the fans in the ducts, one after another."
+ },
+ {
+  "key": "life:lifesupport:any:3",
+  "text": "Cass is writing the cabin pressure on the slate by the hatch."
+ },
+ {
+  "key": "life:lifesupport:any:4",
+  "text": "Cass is standing by the air recycler with a hand on the casing."
+ },
+ {
   "key": "lights:dusk",
   "text": "[Ship] The lights go down for the night."
  },

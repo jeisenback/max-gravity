@@ -339,14 +339,14 @@ test('an errand finds two rooms on a deck with one (#972)', () => {
 test('an errand that takes the ladder comes half as often as one on the post\'s own deck (#972)', () => {
   const seq = vals => { let i = 0; return () => vals[i++ % vals.length]; };  // the dice: the errand's chance, then which of the two rooms, then the wait
   const at = (role, room, dice) => { const r = roomAt(room), p = { role, block: 'shift', at: 'post', room, x: r.mid, dk: r.deck, tdk: r.deck, tx: null, wait: 0 }; routineWait(p, 'shift', false, seq(dice)); return p.errand ? p.room : null; };
-  // the engineer's two nearest rooms: the hold on the drive deck, life support up the ladder
-  assert.equal(at('engineer', 'engine', [0.2, 0, 0.5]), 'hold', 'on the post\'s deck at a quarter');
-  assert.equal(at('engineer', 'engine', [0.2, 0.9, 0.5]), null, 'up the ladder, not at a quarter');
-  assert.equal(at('engineer', 'engine', [0.1, 0.9, 0.5]), 'lifesupport', 'up the ladder at an eighth');
+  // the quartermaster's two nearest rooms: the engine room on the drive deck, life support up the ladder (the engineer has rounds of their own, #973)
+  assert.equal(at('quartermaster', 'hold', [0.2, 0, 0.5]), 'engine', 'on the post\'s deck at a quarter');
+  assert.equal(at('quartermaster', 'hold', [0.2, 0.9, 0.5]), null, 'up the ladder, not at a quarter');
+  assert.equal(at('quartermaster', 'hold', [0.1, 0.9, 0.5]), 'lifesupport', 'up the ladder at an eighth');
   assert.equal(at('pilot', 'bridge', [0.2, 0, 0.5]), null, 'the bridge\'s nearest rooms are down the ladder: not at a quarter');
   assert.ok(['galley', 'head'].includes(at('pilot', 'bridge', [0.1, 0, 0.5])), 'at an eighth');
-  const n = 400, rate = room => { let k = 0; for (let i = 0; i < n; i++) for (const pick of [0.25, 0.75]) if (at('engineer', 'engine', [(i + 0.5) / n, pick, 0.5]) === room) k++; return k / n; };
-  assert.ok(Math.abs(rate('lifesupport') - rate('hold') / 2) < 1e-9, `the ladder's errand half as often (${rate('lifesupport')} against ${rate('hold')})`);
+  const n = 400, rate = room => { let k = 0; for (let i = 0; i < n; i++) for (const pick of [0.25, 0.75]) if (at('quartermaster', 'hold', [(i + 0.5) / n, pick, 0.5]) === room) k++; return k / n; };
+  assert.ok(Math.abs(rate('lifesupport') - rate('engine') / 2) < 1e-9, `the ladder's errand half as often (${rate('lifesupport')} against ${rate('engine')})`);
 });
 test('the ship\'s damage marks one to three rooms, kept through the burn, cleared last-first, never the medbay', () => {
   const rnd = (n => () => (n = (n * 16807) % 2147483647) / 2147483647)(7), t = {};
