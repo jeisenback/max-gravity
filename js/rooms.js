@@ -366,49 +366,102 @@ function roomGunnery(ctx, r, s, X, W) {
   }
 }
 
-// The comms rack at the back of the bridge (#919): the room's own box r (layoutBox), the rack's box in the same world units. A tap on it opens
-// Comms (game.js), as a tap on a room opens its console; the cutaway records where it was drawn (G.cutRack, shiplife.js).
-const commsRackBox = r => ({ x: r.x0 + 8, y: r.floor - 46, w: 30, h: 46 });  // against the aft bulkhead, under the certificate, clear of the couches
+// The comms station (#919, #933): the rack of radios on the console at the bridge's aft post, where the slicer sits (POST_SEAT, shiplife.js); the
+// rack's box (the radios and the screen under them) in the room's own world units, r its box (layoutBox). A tap on it opens Comms (game.js), as a
+// tap on a room opens its console; the cutaway records where it was drawn (G.cutRack, shiplife.js).
+const commsRackBox = r => ({ x: Math.round((r.x0 + (r.x1 - r.x0) * LAYOUTS.freighter.seats.bridge[0]) * 100) / 100 + 32, y: r.floor - 80, w: 34, h: 38 });
 function roomCommsRack(ctx, r, s) {
   const b = commsRackBox(r);
-  roomBox(ctx, b.x, b.y, b.w, b.h, '#1b2f45'); roomBox(ctx, b.x + 3, b.y + 14, b.w - 6, b.h - 17, '#0c1826');
-  for (let row = 0; row < 4; row++) for (let col = 0; col < 3; col++) {  // the status lights, blinking on the clock (still under reduced motion: s.time is 0)
-    const on = Math.sin(s.time * (1.3 + row * 0.7) + col * 2.1 + row) > -0.2;
-    roomDot(ctx, b.x + 9 + col * 6, b.y + 20 + row * 6, 1.4, on ? (row === 0 ? '#ffcf7f' : '#6fd08f') : '#24384c');
+  roomPart(ctx, roomRound(b.x, b.y, b.w, 23, 1.5), '#1b2f45', { top: 1, side: 1.2 });  // the rack, on the console's top
+  for (let row = 0; row < 3; row++) {  // three radios, each a faceplate with a tuning knob and its lights, blinking on the clock (still under reduced motion: s.time is 0)
+    const y = b.y + 2.5 + row * 6.5;
+    roomPart(ctx, roomRound(b.x + 2.5, y, b.w - 5, 5, 0.6), '#0c1826', { top: 0 });
+    roomDot(ctx, b.x + 6.5, y + 2.5, 1.5, '#3a5470');
+    for (let col = 0; col < 3; col++) { const on = Math.sin(s.time * (1.3 + row * 0.7) + col * 2.1 + row) > -0.2; roomDot(ctx, b.x + 14 + col * 5, y + 2.5, 1.1, on ? (row === 0 ? '#c8903a' : '#4f9a5f') : '#24384c'); }
+    roomDot(ctx, b.x + b.w - 4, y + 2.5, 0.6, '#56708c');  // a screw
   }
-  ctx.font = `600 12px ${roomFont}`;  // the label at 12px on a dark plate, as the rooms' names are; it may be wider than the rack
-  const lw = ctx.measureText('COMMS').width / s.zoom, fs = 12 / s.zoom, pad = 3 / s.zoom, cx = b.x + b.w / 2;
-  ctx.fillStyle = 'rgba(6,13,22,0.85)'; ctx.fillRect(cx - lw / 2 - pad, b.y + 1, lw + pad * 2, fs * 1.25);
-  worldText(ctx, s.zoom, 'COMMS', cx, b.y + 1 + fs, fs, '#9fb4c9', 'center');
+  ctx.font = `600 12px ${roomFont}`;  // the label at 12px on a dark plate over the rack, under the ceiling, as the rooms' names are; it may be wider than the rack
+  const lw = ctx.measureText('COMMS').width / s.zoom, fs = 12 / s.zoom, pad = 3 / s.zoom, cx = b.x + b.w / 2, ly = Math.max(r.top + 1, b.y - fs * 1.25 - 1);
+  ctx.fillStyle = 'rgba(6,13,22,0.85)'; ctx.fillRect(cx - lw / 2 - pad, ly, lw + pad * 2, fs * 1.25);
+  worldText(ctx, s.zoom, 'COMMS', cx, ly + fs, fs, '#9fb4c9', 'center');
 }
 
+// The bridge's forward window (#933): the glass, a clear rectangle high on the wall over the consoles' screens, where the destination can be
+// shown (#936); the frame and its struts are drawn round it and over it.
+const bridgeGlass = r => { const W = r.x1 - r.x0; return { x: r.x0 + W * 0.56, y: r.floor - 92, w: W * 0.41, h: 28 }; };
+// A pilot's seat at a post of the bridge (#933), facing forward (SEAT_FACE): its pan at the seated hip (23) on a pedestal bolted to the deck, the
+// back behind it with a headrest at the seated head, and the harness, slack on the back when no one is strapped in.
+function roomBridgeSeat(ctx, x, F) {
+  roomPart(ctx, roomRound(x - 9, F - 2.5, 18, 2.5, 1), '#1c3249', { top: 0.6 });
+  roomDot(ctx, x - 6.5, F - 1.2, 0.6, '#56708c'); roomDot(ctx, x + 6.5, F - 1.2, 0.6, '#56708c');  // its bolts
+  roomPart(ctx, `M ${x - 2} ${F - 19} L ${x + 2} ${F - 19} L ${x + 2.5} ${F - 2.5} L ${x - 2.5} ${F - 2.5} Z`, '#1c3249', { top: 0, side: 1.2 });
+  roomPart(ctx, roomRound(x - 11, F - 52, 2.5, 4, 0.8), '#1c3249', { top: 0 });  // the headrest's stem
+  roomPart(ctx, `M ${x - 13} ${F - 20} L ${x - 8} ${F - 20} L ${x - 6.5} ${F - 49} L ${x - 11.5} ${F - 49} Z`, '#284664', { top: 1, side: -1.5 });
+  roomPart(ctx, roomRound(x - 14, F - 59, 8, 8, 2.5), '#284664', { top: 1, side: -1.5 });
+  roomPart(ctx, roomRound(x - 11, F - 23, 22, 5, 2), '#2e4a68', { top: 1, under: 1 });
+  ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3;  // the harness: a shoulder strap down the back to its buckle, and the lap belt
+  ctx.beginPath(); ctx.moveTo(x - 7.5, F - 47); ctx.quadraticCurveTo(x - 10.5, F - 36, x - 9, F - 24); ctx.moveTo(x - 9, F - 22); ctx.lineTo(x - 3, F - 21); ctx.stroke();
+  roomFlat(ctx, x - 10.5, F - 35, 2.5, 2, '#7a8794');
+}
+// The bridge (#933): a console at waist height in front of each post (the seats are drawn by drawRoom), a screen on each, keys on its sloped top
+// and a grab handle on its front; the comms station's rack on the aft post's console (the first); the throttle at the pilot's (the second),
+// forward in the burn, and the bobblehead on the pilot's screen; the overhead panel along the ceiling with its switches and lights (the thrust
+// light lit in the burn), a grab rail under it, and grab bars either side of the ladder's opening; the forward window with struts in its frame;
+// and the master's certificate framed between the first two posts. The top left is kept clear for the room's name (shiplife.js), down to the
+// smallest window (#937).
 function roomBridge(ctx, r, s, X, W) {
-  const { w, time, spin } = s, F = r.floor, wl = X(0.55), wr = X(0.97);
-  const pane = () => { ctx.beginPath(); ctx.moveTo(wl, F - 92); ctx.lineTo(wr - 6, F - 92); ctx.lineTo(wr, F - 54); ctx.lineTo(wl, F - 54); ctx.closePath(); };
-  ctx.save(); pane(); ctx.clip(); roomBox(ctx, wl - 10, F - 100, wr - wl + 20, 60, '#01040a');
-  const cs = Math.cos(spin), sn = Math.sin(spin), mx = (wl + wr) / 2;
-  for (const [a, b, sz] of roomStars) { const sx = (a - 0.5) * (wr - wl) * 1.4, sy = (b - 0.5) * 100; roomDot(ctx, mx + sx * cs - sy * sn, F - 73 + sx * sn + sy * cs, sz, '#cfe3ff'); }
-  const px = wr - 14 + Math.sin(spin) * 40, pg = ctx.createRadialGradient(px, F - 66, 2, px, F - 66, 24); pg.addColorStop(0, '#c98a5a'); pg.addColorStop(1, 'rgba(120,70,40,0)'); ctx.fillStyle = pg; ctx.fillRect(wl, F - 100, wr - wl, 60);
-  ctx.restore(); ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 3; pane(); ctx.stroke(); roomSeg(ctx, [[mx, F - 92], [mx + 2, F - 54]]);
-  if (W >= 150) {
-    // The pilot's station (#933): a desk with a sloped top, the course plot and the ship's status on it, rows of keys, the throttle, and a
-    // panel overhead.
-    const cx = X(0.52), cw = Math.min(140, W * 0.46), top = F - 44;
-    roomBox(ctx, cx + 6, F - 34, cw - 12, 34, '#1f3a56');
-    ctx.fillStyle = figShade('#2c4c6e', 1.18); ctx.beginPath(); ctx.moveTo(cx, F - 34); ctx.lineTo(cx + 12, top); ctx.lineTo(cx + cw, top); ctx.lineTo(cx + cw, F - 34); ctx.closePath(); ctx.fill();
-    ctx.strokeStyle = figShade('#2c4c6e', 1.7); ctx.lineWidth = 1.5; roomSeg(ctx, [[cx + 12, top], [cx + cw, top]]);
-    roomScreen(ctx, cx + 18, top - 22, 36, 19, 'plot', time); roomScreen(ctx, cx + 62, top - 22, 30, 19, 'status', time);
-    for (let k = 0; k < 7; k++) roomDot(ctx, cx + 18 + k * 7, F - 38, 1.3, (Math.floor(time * 2 + k * 2.3) % 4) ? '#2f5577' : '#ffb347');
-    const tx = cx + cw - 16, lean = -0.3 + 0.4 * w.burn; ctx.strokeStyle = '#9aa8b6'; ctx.lineWidth = 2; roomSeg(ctx, [[tx, top], [tx + Math.sin(lean) * 16, top - Math.cos(lean) * 16]]); roomDot(ctx, tx + Math.sin(lean) * 16, top - Math.cos(lean) * 16, 2.6, '#ff8a6a');  // the throttle, forward in the burn
-    roomBox(ctx, cx + 24, r.top + 4, Math.max(20, cw - 48), 9, '#1d3550'); for (let k = 0; k < 4; k++) roomDot(ctx, cx + 30 + k * 8, r.top + 8.5, 1.1, k % 2 ? '#5fd35f' : '#2f5577');
+  const { w, time, spin } = s, F = r.floor, g = bridgeGlass(r), n = v => Math.round(v * 100) / 100;
+  roomPart(ctx, roomRound(g.x - 4, g.y - 4, g.w + 8, g.h + 7, 2.5), '#2a4560', { top: 1, under: 1.5 });  // the window's frame
+  ctx.save(); ctx.beginPath(); ctx.rect(g.x, g.y, g.w, g.h); ctx.clip(); roomFlat(ctx, g.x, g.y, g.w, g.h, '#01040a');
+  const cs = Math.cos(spin), sn = Math.sin(spin), mx = g.x + g.w / 2, my = g.y + g.h / 2;
+  for (const [a, b, sz] of roomStars) { const sx = (a - 0.5) * g.w * 1.4, sy = (b - 0.5) * g.h * 1.6; roomDot(ctx, mx + sx * cs - sy * sn, my + sx * sn + sy * cs, sz, '#cfe3ff'); }
+  const px = g.x + g.w - 14 + Math.sin(spin) * 40, pg = ctx.createRadialGradient(px, my + 6, 2, px, my + 6, 24); pg.addColorStop(0, '#c98a5a'); pg.addColorStop(1, 'rgba(120,70,40,0)'); ctx.fillStyle = pg; ctx.fillRect(g.x, g.y, g.w, g.h);
+  roomFlat(ctx, g.x, g.y, g.w * 0.3, g.h, 'rgba(160,200,255,0.05)'); ctx.restore();
+  ctx.strokeStyle = '#132538'; ctx.lineWidth = 1; ctx.strokeRect(g.x - 0.5, g.y - 0.5, g.w + 1, g.h + 1);  // the gasket
+  for (let k = 1; k < 4; k++) {  // the struts
+    const sx = n(g.x + g.w * k / 4);
+    roomPart(ctx, roomRound(sx - 2, g.y - 1, 4, g.h + 2, 0.8), '#2a4560', { top: 0, side: 1.2 }); roomDot(ctx, sx, g.y + 2, 0.7, '#56708c'); roomDot(ctx, sx, g.y + g.h - 2, 0.7, '#56708c');
   }
-  if (W >= 180) { const bob = Math.sin(time * 6) * (2 * w.cruise + 4 * w.flip) - 1.5 * w.burn, bx = X(0.5); roomBox(ctx, bx, F - 46, 6, 6, '#ffb347'); roomDot(ctx, bx + 3, F - 50 + bob, 4, '#e0b48e'); }
-  if (W >= 200) {  // the master's certificate, framed under the room's name: a seal and lines, no word (it would be wider than the frame at 12px)
-    const lx = X(0.04), ly = F - 72; roomBox(ctx, lx, ly, 34, 26, '#2a2016'); roomBox(ctx, lx + 3, ly + 3, 28, 20, '#e8e0c8');
-    for (const dy of [7, 11, 15]) roomBox(ctx, lx + 7, ly + dy, dy === 7 ? 20 : 14, 1.2, '#8a8070');
-    roomDot(ctx, lx + 25, ly + 17, 3, '#b0322a');
+  // the overhead panel: a row of toggle switches, its lights at the end (the drive's, the thrust light in the burn, the flip's), a grab rail under it
+  const o0 = n(X(0.23)), o1 = n(X(0.45)), T = r.top;
+  roomPart(ctx, roomRound(o0, T + 3, o1 - o0, 10, 2), '#1d3550', { top: 0, under: 1.5 });
+  for (let x = o0 + 8; x < o1 - 40; x += 9) { roomFlat(ctx, x, T + 7, 1.2, 3.5, '#8796a5'); roomDot(ctx, x + 0.6, T + 7, 0.8, '#56708c'); }
+  [w.burn + w.cruise > 0.5 ? '#4f9a5f' : '#2f3f50', w.burn > 0.5 ? '#c8604a' : '#2f3f50', w.flip > 0.5 ? '#c8903a' : '#2f3f50', Math.floor(time * 1.5) % 2 ? '#4f8ab0' : '#2f3f50']
+    .forEach((col, k) => roomDot(ctx, o1 - 32 + k * 7, T + 8, 1.6, col));
+  for (const x of [o0 + 3, o1 - 3]) roomDot(ctx, x, T + 8, 0.7, '#56708c');
+  for (let k = 0; k < 4; k++) roomFlat(ctx, o0 + 14 + k * (o1 - o0 - 30) / 3, T + 13, 1.5, 4, '#2a3e54');
+  roomPart(ctx, roomRound(o0 + 10, T + 16.5, o1 - o0 - 20, 2, 1), '#3a5470', { top: 0.6 });
+  for (const gx of [n(X(0.48) - 7), n(X(0.52) + 4)]) {  // grab bars either side of the ladder's opening, for coming up it in zero g
+    roomFlat(ctx, gx - 1, F - 62, 5, 1.5, '#2a3e54'); roomFlat(ctx, gx - 1, F - 16.5, 5, 1.5, '#2a3e54');
+    roomPart(ctx, roomRound(gx, F - 64, 3, 50, 1.5), '#3a5470', { top: 0.6, side: 1 });
   }
-  roomCommsRack(ctx, r, s);
+  const lx = n(X(0.222));  // the master's certificate: a seal and lines, no word (it would be wider than the frame at 12px)
+  roomPart(ctx, roomRound(lx, F - 74, 34, 26, 1.5), '#3a2c20', { top: 1, side: 1.5 }); roomPart(ctx, roomRound(lx + 3, F - 71, 28, 20, 0.5), '#a39b84', { top: 0 });
+  for (const dy of [5, 9, 13]) roomFlat(ctx, lx + 7, F - 71 + dy, dy === 5 ? 20 : 14, 1.2, '#6e6656');
+  roomDot(ctx, lx + 25, F - 56, 2.6, '#8e3a32'); for (const sx of [lx + 2, lx + 32]) roomDot(ctx, sx, F - 72, 0.6, '#56708c');
+  SEATS.bridge.forEach((f, i) => {  // the consoles, each in front of its post
+    const x = n(X(f)), x1 = x + 70, slope = u => F - 36 - 6 * (u - x - 17) / 53;
+    roomPart(ctx, `M ${x + 24} ${F - 33} L ${x1 - 2} ${F - 33} L ${x1 - 2} ${F - 1} L ${x + 30} ${F - 1} L ${x + 30} ${F - 9} L ${x + 24} ${F - 12} Z`, '#1f3a56', { top: 0, side: 3 });
+    roomPart(ctx, roomRound(x + 35, F - 29, 24, 19, 1.2), '#22405c', { top: 0.8, side: 1.2 });  // its access panel, screwed shut, and a vent
+    for (const [sx, sy] of [[x + 37, F - 27], [x + 57, F - 27], [x + 37, F - 12], [x + 57, F - 12]]) roomDot(ctx, sx, sy, 0.6, '#56708c');
+    for (let k = 0; k < 4; k++) roomFlat(ctx, x + 40 + k * 4, F - 6, 2.5, 1, '#0f1d2c');
+    for (let k = 0; k < 3; k++) { roomFlat(ctx, x + 27, F - 29 + k * 5, 3, 1.2, '#2a3e54'); roomFlat(ctx, x + 28, F - 30.5 + k * 5, 1, 2, '#8796a5'); }  // the switches
+    roomPart(ctx, roomRound(x + 21, F - 30, 2, 13, 1), '#3a5470', { top: 0.5 });  // a grab handle
+    roomPart(ctx, `M ${x + 17} ${F - 33} L ${x + 17} ${F - 36} L ${x1} ${F - 42} L ${x1} ${F - 33} Z`, '#2c4c6e', { top: 0, under: 1 });
+    ctx.strokeStyle = figShade('#2c4c6e', 1.5); ctx.lineWidth = 1; roomSeg(ctx, [[x + 17.5, F - 35.5], [x1 - 0.5, F - 41.5]]);  // its lit edge
+    for (let k = 0; k < 5; k++) { const kx = x + 34 + k * 6; roomFlat(ctx, kx, slope(kx) + 1.6, 3, 1.2, (Math.floor(time * 2 + k * 2.3 + i) % 4) ? '#2f5577' : '#c8903a'); }  // the keys
+    roomScreen(ctx, x + 36, F - 56, 26, 11, i % 2 ? 'status' : 'plot', time);
+    if (i === 0) roomCommsRack(ctx, r, s);
+    if (i === 1) {
+      const tx = x + 27, ty = n(slope(tx)), lean = -0.35 + 0.5 * w.burn;  // the throttle, forward in the burn
+      roomPart(ctx, roomRound(tx - 3.5, ty - 2, 7, 2.5, 1), '#3a4a5a', { top: 0.6 });
+      ctx.strokeStyle = '#7d8a98'; ctx.lineWidth = 1.8; roomSeg(ctx, [[tx, ty - 1], [tx + Math.sin(lean) * 11, ty - 1 - Math.cos(lean) * 11]]);
+      roomDot(ctx, tx + Math.sin(lean) * 11, ty - 1 - Math.cos(lean) * 11, 2.2, '#a8584a'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
+      const bx = x + 56, bob = Math.sin(time * 6) * (2 * w.cruise + 4 * w.flip) - 1.5 * w.burn;  // the bobblehead on the pilot's screen, nodding
+      roomPart(ctx, roomRound(bx - 2.5, F - 63, 5, 4, 1), '#6a5a44', { top: 0.6 });
+      ctx.save(); ctx.translate(0, bob); roomDot(ctx, bx, F - 66, 3, '#8a7660'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); ctx.restore();
+    }
+  });
 }
 
 function roomHold(ctx, r, s, X, W) {
@@ -510,8 +563,9 @@ function drawRoom(ctx, id, r, s) {
   const W = r.x1 - r.x0;
   roomWalls(ctx, r, s.w, s.time, s.still);
   ROOM_DRAW[id](ctx, r, s, sh => r.x0 + W * sh, W);
-  const seats = SEATS[id] || [];  // its seats (shiplife.js), where people sit (#925): the galley's on one bench along the mess table, a stool anywhere else
+  const seats = SEATS[id] || [];  // its seats (shiplife.js), where people sit (#925): the galley's on one bench along the mess table, a pilot's seat at each post of the bridge, a stool anywhere else
   if (id === 'galley' && seats.length) roomBench(ctx, r.x0 + W * seats[0] - 14, r.x0 + W * seats[seats.length - 1] + 14, r.floor);
+  else if (id === 'bridge') for (const f of seats) roomBridgeSeat(ctx, Math.round((r.x0 + W * f) * 100) / 100, r.floor);  // a pilot's seat at each post (#933)
   else for (const f of seats) roomStool(ctx, r.x0 + W * f, r.floor, id === 'medbay' ? 0 : SEAT_FACE[id] || 0);  // a station's chair faces its console (#933); the medbay's is a stool
   const marked = !!(s.damage && s.damage.marks.has(id));
   if (marked) drawDamage(ctx, r, s);

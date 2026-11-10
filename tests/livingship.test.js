@@ -604,3 +604,93 @@ test('the galley answers the phase: the stove\'s ring lit only in cruise, the ta
     for (const x of l) assert.ok(rings.some(rx => Math.abs(rx - x) < 0.01), `a lashing from a ring (${x})`);
   }
 });
+
+// #933, the bridge: what it drew, apart from its walls and its lamp, and each filled path with its colour and whether it was outlined like the figures.
+const { bridgeGlass, commsRackBox } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['bridgeGlass', 'commsRackBox']);
+const roomOwn = (id, r, s) => {
+  const all = fakeCtx(); drawRoom(all, id, r, s);
+  const base = fakeCtx(); roomWalls(base, r, s.w, s.time, s.still); drawPhaseLight(base, r, s.w, s.time, s.night, true);
+  const left = [...all.args]; for (const a of base.args) { const i = left.indexOf(a); if (i >= 0) left.splice(i, 1); }
+  return left.map(a => { const [k, ...v] = a.split(/(?<=[a-zA-Z])(?=-?\d)|,/); return { k, v: v.map(Number) }; });
+};
+const filledParts = calls => {
+  const out = []; let pts = [], fill = null, stroke = null, last = null;
+  for (const [k, ...a] of calls) {
+    if (k === 'fillStyle') fill = a[0]; else if (k === 'strokeStyle') stroke = a[0];
+    else if (k === 'beginPath') { pts = []; last = null; } else if (k === 'moveTo' || k === 'lineTo') pts.push(a); else if (k === 'quadraticCurveTo') pts.push(a.slice(2));
+    else if (k === 'fill') { last = { col: String(fill).toLowerCase(), pts: [...pts], outlined: false }; out.push(last); } else if (k === 'stroke' && last && stroke === FIG_OUTLINE) last.outlined = true;
+  }
+  return out;
+};
+const BRIDGE_PROPS = [['#2a4560', 'the window\'s frame and its struts'], ['#1d3550', 'the overhead panel'], ['#3a5470', 'the grab rails'], ['#3a2c20', 'the certificate\'s frame'], ['#a39b84', 'the certificate'],
+  ['#1f3a56', 'the consoles'], ['#2c4c6e', 'the consoles\' sloped tops'], ['#2e4a68', 'the seats\' pans'], ['#284664', 'the seats\' backs and headrests'], ['#03121c', 'the screens'], ['#1b2f45', 'the comms station\'s rack']];
+test('the bridge is drawn to the figures\' standard in every phase: its props outlined and a step below the people, its name on clear wall (#933)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'bridge'), F = r.floor, W = r.x1 - r.x0;
+  for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.66, 0.96, 1.24]) {  // the burn view's zoom in a window 1000, 1280 and 1600 wide
+    const s = RS({ w: phaseWeights(pr), zoom, damage: { marks: new Set(), severe: false } });
+    const c = fakeCtx(); drawRoom(c, 'bridge', r, s); assert.equal(c.depth, 0, `${pr}: every save restored`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'bridge', r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of BRIDGE_PROPS) assert.ok(fills(col) >= 1, `${pr}: ${what} (${col})`);
+    const parts = filledParts(calls), outlined = parts.filter(p => p.outlined);
+    assert.ok(outlined.length >= 40, `${pr}: the props outlined like the figures (${outlined.length})`);
+    for (const { col } of outlined.filter(p => /^#[0-9a-f]{6}$/.test(p.col))) {
+      const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${pr}: ${col} is near-white or saturated, brighter than the people`);
+    }
+    for (const col of ['#e8e0c8', '#e0b48e', '#ffb347']) assert.ok(!outlined.some(p => p.col === col), `${pr}: no ${col} block`);
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v } of roomOwn('bridge', r, s)) {
+      const pts = k === 'fillRect' ? [[v[0], v[1]], [v[0] + v[2], v[1]], [v[0], v[1] + v[3]], [v[0] + v[2], v[1] + v[3]], [v[0] + v[2] / 2, v[1] + v[3] / 2]] : /^(moveTo|lineTo)$/.test(k) ? [v] : k === 'quadraticCurveTo' ? [v.slice(2)] : [];
+      for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${pr} ${zoom}: ${k} ${v} under the room's name`);
+    }
+    // sized to a person: a seat's pan at the seated hip (23) at each of the posts, and the consoles' tops at about the waist
+    const pans = parts.filter(p => p.col === '#2e4a68' && p.outlined);
+    for (const f of SEATS.bridge) {
+      const x = r.x0 + W * f, pan = pans.find(p => { const xs = p.pts.map(q => q[0]); return Math.abs((Math.min(...xs) + Math.max(...xs)) / 2 - x) < 1; });
+      assert.ok(pan, `${pr}: a seat at the post ${f} (${x})`);
+      assert.ok(Math.abs(F - Math.min(...pan.pts.map(q => q[1])) - 23) <= 0.5, `${pr}: the seat at ${f} at 23 (${F - Math.min(...pan.pts.map(q => q[1]))})`);
+    }
+    const tops = parts.filter(p => p.col === '#2c4c6e' && p.outlined).map(p => F - Math.min(...p.pts.map(q => q[1])));
+    assert.equal(tops.length, SEATS.bridge.length, `${pr}: a console at each post`); for (const t of tops) assert.ok(t >= 36 && t <= 44, `${pr}: a console's top at the waist (${t})`);
+    calls.forEach((k, i) => { if (k[0] === 'fillStyle' && k[1] === 'rgba(6,13,22,0.85)' && calls[i + 1][0] === 'fillRect') assert.ok(calls[i + 1][2] >= r.top, `${pr} ${zoom}: the COMMS label (${calls[i + 1].slice(1)}) inside the room`); });
+    // the forward window: a clear rectangle the code names (for the destination, #936), wide, high on the wall, over the screens and clear of the name
+    const g = bridgeGlass(r);
+    assert.ok(g.w >= 300 && g.h >= 25 && g.x >= r.x0 && g.x + g.w <= r.x1 && g.y > r.top && g.x > name.x1, `${pr}: the window ${JSON.stringify(g)}`);
+    calls.forEach((k, i) => { if (k[0] === 'fillStyle' && k[1] === '#03121c' && calls[i + 1][0] === 'fillRect') assert.ok(calls[i + 1][2] - 3 >= g.y + g.h + 3 || calls[i + 1][1] > g.x + g.w || calls[i + 1][1] + calls[i + 1][3] < g.x, `${pr}: a screen (${calls[i + 1].slice(1)}) under the window`); });
+  }
+});
+test('the bridge\'s seats have headrests and harnesses, the pilot\'s post a throttle that goes forward in the burn, and the comms rack on the aft post\'s console (#933)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'bridge'), F = r.floor, W = r.x1 - r.x0;
+  const draw = pr => { const { ctx, calls } = recorder(); drawRoom(ctx, 'bridge', r, RS({ w: phaseWeights(pr), damage: { marks: new Set(), severe: false } })); return calls; };
+  const calls = draw(0.3), parts = filledParts(calls);
+  const heads = parts.filter(p => p.col === '#284664' && p.outlined && F - Math.min(...p.pts.map(q => q[1])) >= 55);
+  assert.equal(heads.length, SEATS.bridge.length, 'a headrest on each seat, at the seated head');
+  for (const p of heads) { const xs = p.pts.map(q => q[0]), seat = SEATS.bridge.map(f => r.x0 + W * f).find(x => Math.max(...xs) <= x && Math.max(...xs) > x - 12); assert.ok(seat, `the headrest at ${xs} behind a seat, which faces forward (#985)`); }
+  assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === '#5a4e3a').length >= SEATS.bridge.length, 'a harness on each seat');
+  const throttle = calls => { const i = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === '#7d8a98'), m = calls.slice(i).find(k => k[0] === 'moveTo'), l = calls.slice(i).find(k => k[0] === 'lineTo'); return [m[1], l[1]]; };
+  const [base, cruise] = throttle(calls), burn = throttle(draw(0.02))[1], pilot = r.x0 + W * SEATS.bridge[1];
+  assert.ok(base > pilot && base < pilot + 60, `the throttle (${base}) on the pilot's console, in front of the seat at ${pilot}`);
+  assert.ok(burn > cruise + 2, `forward in the hard burn (${burn} against ${cruise})`);
+  const rk = commsRackBox(r), aft = r.x0 + W * SEATS.bridge[0];
+  assert.ok(rk.x > aft && rk.x + rk.w < aft + 70, `the comms rack (${JSON.stringify(rk)}) on the console in front of the aft seat at ${aft}`);
+  assert.ok(F - (rk.y + rk.h) >= 36 && F - (rk.y + rk.h) <= 44 && rk.y >= r.top + 19, `on the console's top, under the overhead panel (${JSON.stringify(rk)})`);
+  assert.ok(calls.some(k => k[0] === 'fillStyle' && k[1] === '#1b2f45') && rk.w >= 30 && rk.h >= 30, 'drawn, and big enough to click');
+});
+
+test('the slicer sits at the comms station and the pilot at the helm, whoever holds the bridge with them (#933)', () => {
+  const { postSeat } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['postSeat']);
+  const seats = roles => roles.map((_, k) => postSeat('bridge', roles, k));
+  assert.deepEqual(seats(['captain', 'pilot', 'xo', 'slicer']), [2, 1, 3, 0], 'the stations kept, the rest in order');
+  assert.deepEqual(seats(['slicer', 'pilot']), [0, 1]);
+  assert.deepEqual(seats(['captain', 'pilot']), [0, 1], 'no slicer aboard: the comms station is free for another');
+  assert.deepEqual(seats(['pilot', 'pilot', 'captain']), [1, 0, 2], 'a second pilot takes a free post');
+  assert.deepEqual(seats(['engineer']), [0], 'a room without stations: in order');
+  assert.equal(postSeat('bridge', ['pilot'], -1), -1, 'not among them');
+  const five = seats(['you', 'xo', 'captain', 'pilot', 'slicer']);
+  assert.equal(new Set(five).size, 5, `five on the bridge, each in their own place (${five})`); assert.deepEqual(five.slice(3), [1, 0]);
+  const br = roomAt('bridge'), on = ['captain', 'slicer', 'pilot'].map((role, i) => ({ role, id: role, x: 0.5, dk: 0, tdk: 0, tx: null, room: 'galley' }));
+  for (const p of on) routineGo(p, 'shift', on, false, () => 0.5);
+  assert.deepEqual(on.map(p => Math.round((p.tx - br.x0) / br.w * 100) / 100), [0.7, 0.12, 0.3], 'the shift seats them so');
+});

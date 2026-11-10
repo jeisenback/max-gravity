@@ -1007,8 +1007,8 @@ test('after the straps at the flip, everyone goes on to their place in the same 
     const eng = shipPeople().find(p => p.role === 'engineer');
     Object.assign(eng, { room: 'engine', x: roomAt('galley').mid, dk: roomAt('galley').deck, tdk: roomAt('engine').deck, tx: roomAt('engine').mid, errand: false, wait: 999 });  // on the mess deck on the way down to the drive, with no errand to rescue them
     t.left = t.total * (1 - securePr(t)); tickFor(2);  // strapped in where they are
-    t.left = t.total * (1 - 0.6); tickFor(25);  // under way again, the same shift
-    return inRoom(eng, 'engine');
+    t.left = t.total * (1 - 0.6); let got = false; for (let k = 0; k < 25 && !got; k++) { tickFor(1); got = inRoom(eng, 'engine'); }  // under way again, the same shift: at the drive (from where the shift's errands may take them on, #973)
+    return got && (inRoom(eng, 'engine') || eng.errand);  // and still there, or gone on an errand from it
   }, dayAt.toString());
   await done();
   assert.ok(r, 'the engineer got to the drive');
@@ -1252,13 +1252,14 @@ test('people sit only on a seat the cutaway draws, and the table and the posts a
     out.post = [0, 1].map(i => routineTarget({}, { at: 'post', room: 'bridge' }, b, i, 2, () => 0.5)).map(x => +((x - b.x0) / b.w).toFixed(2));
     out.workOff = posture({ ...base, room: 'bridge', x: b.x0 + b.w * 0.56, at: 'post', block: 'shift' }, 'move', 0, false).name;  // between two of its seats
     out.workOn = posture({ ...base, room: 'bridge', x: b.x0 + b.w * SEATS.bridge[0], at: 'post', block: 'shift' }, 'move', 0, false).name;
-    // and the cutaway draws a seat at each: a stool, or in the galley one bench the length of the table's places
-    const drawn = [], benches = [], real = window.roomStool, realBench = window.roomBench;
+    // and the cutaway draws a seat at each: a stool, a pilot's seat on the bridge (#933), or in the galley one bench the length of the table's places
+    const drawn = [], benches = [], real = window.roomStool, realBench = window.roomBench, realPilot = window.roomBridgeSeat;
     window.roomStool = (c, x, F, ...a) => { drawn.push([Math.round(x), Math.round(F)]); return real(c, x, F, ...a); };
+    window.roomBridgeSeat = (c, x, F) => { drawn.push([Math.round(x), Math.round(F)]); return realPilot(c, x, F); };
     window.roomBench = (c, x0, x1, F) => { benches.push([x0, x1]); return realBench(c, x0, x1, F); };
     const lay = LAYOUTS.freighter;
     for (const room of Object.keys(SEATS)) { G.cam = { y: layoutBox(lay, room).floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); }  // the camera held on the room's deck
-    window.roomStool = real; window.roomBench = realBench;
+    window.roomStool = real; window.roomBench = realBench; window.roomBridgeSeat = realPilot;
     const len = lay.width, seatAt = (room, f) => (roomAt(room).x0 + roomAt(room).w * f) * len, on = (room, f) => drawn.some(([x, F]) => Math.abs(x - seatAt(room, f)) <= 1 && F === Math.round(deckFloor(lay, roomAt(room).deck)));  // the place and its deck
     out.missing = Object.entries(SEATS).filter(([room]) => room !== 'galley').flatMap(([room, fs]) => fs.filter(f => !on(room, f)).map(f => [room, f]));
     out.bench = SEATS.galley.every(f => benches.some(([a, b]) => seatAt('galley', f) > a && seatAt('galley', f) < b));
