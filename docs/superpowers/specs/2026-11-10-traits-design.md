@@ -1,6 +1,6 @@
 # Traits: What the Record Makes of the Hand
 
-Status: draft for the owner's review, 2026-11-10 (#964). The second piece of `docs/bible/progression.md` (layer 4), after the post ladders (`2026-11-08-post-ladders-design.md`). Builds on the hand's record (`js/hired.js`, the flags in `js/captains.js`), the one check rule (`js/sheet.js`), the scene choices with their marks and odds (`js/engage.js`, `js/icerun.js`, `js/bartopics.js`, `js/engagements.js` costNote), and the people's opinions (`js/people.js`).
+Status: approved by the owner and built, 2026-11-10 (#964). The second piece of `docs/bible/progression.md` (layer 4), after the post ladders (`2026-11-08-post-ladders-design.md`). Builds on the hand's record (`js/hired.js`, the flags in `js/captains.js`), the one check rule (`js/sheet.js`), the scene choices with their marks and odds (`js/engage.js`, `js/icerun.js`, `js/bartopics.js`, `js/engagements.js` costNote), and the people's opinions (`js/people.js`).
 
 ## Why
 
