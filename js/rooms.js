@@ -174,24 +174,30 @@ function roomEngine(ctx, r, s, X, W) {
   }
 }
 
-// Bunk k of n in the berths room r, in two tiers: its left end x, its width w, and y the bottom of its frame (the mattress lies on it, 5 deep).
-// The berths draw their bunks here, and the cutaway lays its sleepers on them (shiplife.js). The bottom tier fills from the left and the top one
-// from the right, so the top bunk at the left, under the room's name plate, is the last one taken.
-function berthBunk(r, n, k) {
-  const cols = Math.max(1, Math.ceil(n / 2)), w = Math.min(70, (r.x1 - r.x0) * 0.5 / cols), col = k % 2 ? Math.floor(n / 2) - 1 - Math.floor(k / 2) : Math.floor(k / 2);
-  return { x: r.x0 + (r.x1 - r.x0) * 0.02 + col * w, w, y: k % 2 ? r.floor - 56 : r.floor - 8 };
+// Bunk k of n in the berths room r, in two tiers, a person long (BUNK, #972): its left end x, its length w, and y the bottom of its frame (the
+// mattress lies on it, 5 deep). The columns stand either side of the ladder well (well: its band in world x, the room's middle by default), the
+// left ones from the room's left wall and the right ones from its right wall. The berths draw their bunks here, and the cutaway lays its sleepers
+// on them (shiplife.js). The bottom tier fills from the left and the top one from the right, so the top bunk at the left, under the room's
+// name plate, is the last one taken.
+const BUNK = 90;
+function berthBunk(r, n, k, well = { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }) {
+  const cols = Math.max(1, Math.ceil(n / 2)), left = Math.ceil(cols / 2), m = (r.x1 - r.x0) * 0.02;
+  const w = Math.min(BUNK, (well.x0 - r.x0 - m) / left), col = k % 2 ? Math.floor(n / 2) - 1 - Math.floor(k / 2) : Math.floor(k / 2);
+  return { x: col < left ? r.x0 + m + col * w : r.x1 - m - (cols - col) * w, w, y: k % 2 ? r.floor - 56 : r.floor - 8 };
 }
+// Where the cutaway lays a sleeper on bunk b (berthBunk): the hip, the head on the pillow at its left end, and the mattress under them.
+const berthSleeper = b => ({ x: b.x + b.w / 2, y: b.y - 5 });
 
 function roomBerths(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), cols = Math.max(1, Math.ceil(n / 2)), { x: bx0, w: cw } = berthBunk(r, n, 0);
-  for (let c = 0; c <= cols; c++) roomBox(ctx, bx0 + c * cw - 2, F - 96, 4, 96, '#2a4664');
+  const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), { w: cw } = berthBunk(r, n, 0, s.well);
+  for (let k = 0; k < n; k += 2) { const { x } = berthBunk(r, n, k, s.well); for (const px of [x, x + cw]) roomBox(ctx, px - 2, F - 96, 4, 96, '#2a4664'); }  // the posts at each column's ends
   for (let k = 0; k < n; k++) {
-    const { x: bx, y } = berthBunk(r, n, k);
+    const { x: bx, y } = berthBunk(r, n, k, s.well);
     roomBox(ctx, bx, y, cw, 8, '#1f3a56'); roomBox(ctx, bx + 2, y - 5, cw - 4, 5, '#3a4a5e'); roomBox(ctx, bx + 3, y - 9, 12, 4, '#d8d2c4');
     if (k < s.asleep) roomBox(ctx, bx + 16, y - 9, cw - 20, 5, '#334560');
   }
   if (W >= 220 && n >= 3) {
-    const bx = bx0 + cw; roomBox(ctx, bx + 3, F - 50, cw - 6, 42, '#4a3a5a'); for (const sx of [bx + 10, bx + cw - 12]) roomBox(ctx, sx, F - 50, 3, 42, '#1a1a1a');
+    const bx = berthBunk(r, n, 2, s.well).x; roomBox(ctx, bx + 3, F - 50, cw - 6, 42, '#4a3a5a'); for (const sx of [bx + 10, bx + cw - 12]) roomBox(ctx, sx, F - 50, 3, 42, '#1a1a1a');
     if (s.asleep > 0 && w.cruise > 0.5) worldText(ctx, s.zoom, Math.floor(time) % 2 ? 'z z' : 'z', bx + cw - 18, F - 54, 12, '#9fb4c9');
   }
   const lx = X(0.58);

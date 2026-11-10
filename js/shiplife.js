@@ -636,11 +636,15 @@ function drawCutaway(box, clear = box) {
   // The tower stands across the middle of the part of the box a docked dialog leaves clear (all of it with none) right of the outline's
   // strip, and the camera pans up and down it after the hand's deck (camTarget): it steps in that part's own terms, its centre and its
   // height, down the run from the top of the nose's cap to the first of the plume (camRun), offset from the box's centre by offX and offY.
+  // Where a docked dialog leaves the part narrower than the tower (its width and 40 each side, as viewOf fits it), the camera pans across
+  // too, as camStep does down, to keep the hand and the scene's people in the part (#972); with none open it stays on the tower's middle.
   // Reduced motion snaps.
   const rx0 = Math.max(clear.x, box.x + left), offX = (box.x + box.w / 2 - (rx0 + clear.x + clear.w) / 2) / zoom, offY = (box.y + box.h / 2 - (clear.y + clear.h / 2)) / zoom, run = camRun(lay);
-  const held = G.cam && !still ? G.cam.y - offY - run.top : null, target = camTarget(lay, people[0].dk);
-  const camY = camStep(held, target, G.cam ? Math.max(0, G.time - G.cam.t) : 0, clear.h / zoom, run.len) + run.top + offY, camX = W / 2 + offX;
-  G.cam = { y: camY, t: G.time };
+  const held = G.cam && !still ? G.cam.y - offY - run.top : null, target = camTarget(lay, people[0].dk), dt = G.cam ? Math.max(0, G.time - G.cam.t) : 0;
+  const camY = camStep(held, target, dt, clear.h / zoom, run.len) + run.top + offY;
+  const seenX = people.filter((p, i) => i === 0 || p.staged).map(p => p.x * W), focusX = (Math.min(...seenX) + Math.max(...seenX)) / 2;
+  const partX = camStep(G.cam && G.cam.x !== undefined && !still ? G.cam.x + 40 : null, focusX + 40, dt, (clear.x + clear.w - rx0) / zoom, W + 80) - 40, camX = partX + offX;
+  G.cam = { x: partX, y: camY, t: G.time };
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
   const spin = t.angle + Math.PI / 2;  // the ship's turn, 0 to pi
   const X = f => f * W, H = towerHeight(lay), deck = i => { const floor = deckFloor(lay, i); return { top: floor - HULL.deck, floor }; };
@@ -689,7 +693,7 @@ function drawCutaway(box, clear = box) {
   // The rooms, the tank, the ladder well and its ladder full height (the tube through the tank), and the bulkheads beside the well.
   const cap = ship().cargo, nb = Math.min(12, ship().berths), slots = new Map();
   for (const p of people) if (slots.size < nb && isAsleep(p)) slots.set(p, slots.size);  // whoever is turned in lies on a bunk
-  const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
+  const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt() };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);
@@ -728,9 +732,9 @@ function drawCutaway(box, clear = box) {
   const youHurt = handHurt();
   for (const p of people) if (p.role !== 'cat' && p.seat !== undefined && seen(deckFloor(lay, p.seatDk) - 20, deckFloor(lay, p.seatDk) + 10)) roomCouchFlat(ctx, X(p.seat), deckFloor(lay, p.seatDk), p.couch || 0);  // each crash couch, folded into its deck or out flat (#925, #972)
   for (const p of people) {
-    const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p));
+    const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p), s.well);
     const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
-    const x = bunk ? bunk.x + Math.min(44, bunk.w * 0.62) : X(p.x), y = bunk ? bunk.y - 5 : towerDeckY(lay, p.dk) - (cot ? 36 : 0), dk = Math.round(p.dk);
+    const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? 36 : 0), dk = Math.round(p.dk);
     dots.push({ x: X(p.x), dk: p.dk, color: ROLE_COLORS[p.role] });
     if (!seen(y - 160, y + 60)) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = seen(y - 60, y);

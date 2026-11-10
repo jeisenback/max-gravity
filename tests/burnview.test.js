@@ -476,6 +476,43 @@ test('a scene during a burn brings the people in it and you to its room, facing 
   assert.deepEqual(r.poses, ['sit', 'sit'], 'seated at the galley table'); assert.ok(r.released, 'let go when it closes');
 });
 
+// Beside a docked scene the tower is wider than the clear part, and the camera pans across to keep the scene's people and the hand in it, the
+// way the old side view panned along the ship (#972); with none open the tower stands across the middle of the box right of the outline.
+test('beside a docked scene the camera pans across to the scene, and with none the tower stands where it did (#972)', async () => {
+  {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+    await ev(helpers); await ev(stageHelpers);
+    const r = await ev(() => {
+      const t = stageBurn(), mate = person(G.state.crew[0]); t.angle = -Math.PI / 2; t.flipped = false;
+      sayScene(`With ${mate.first}`, `${mate.first} is in the galley with a cup going cold.`); tickFor(20);
+      const ids = shipPeople().filter(p => p.staged || p.id === 'you').map(p => p.id), out = { ids, outside: [] };
+      for (const held of [null, 'centre']) {  // snapped, and eased from the tower's middle
+        G.cam = held ? { x: LAYOUTS.freighter.width / 2, y: G.cam.y, t: G.time - 5 } : null; drawTransit(innerWidth, innerHeight);
+        const box = G.burnBoxes.ship, clear = G.burnBoxes.clear, x0 = Math.max(clear.x, box.x + outlineLeft(box, G.cutOutline)), x1 = clear.x + clear.w;
+        out.docked = !!G.burnBoxes.dock;
+        for (const id of ids) { const h = G.cutHits.find(q => q.id === id); if (!h) { out.outside.push(`${held}: ${id} not drawn`); continue; } for (const q of [h, h.head, h.foot]) if (q.x < x0 || q.x > x1) out.outside.push(`${held}: ${id} at ${Math.round(q.x)} outside ${Math.round(x0)} to ${Math.round(x1)}`); }
+      }
+      return out;
+    });
+    assert.ok(r.docked, 'the scene is docked'); assert.ok(r.ids.length >= 2, `the scene's people and you (${r.ids})`);
+    assert.deepEqual(r.outside, [], 'everyone in the scene is in the clear part');
+    await done();
+  }
+  {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1600, height: 900 } });
+    await ev(helpers);
+    const r = await ev(() => {
+      burn(); const t = G.transit, you = shipPeople()[0]; t.left = t.total * 0.7; t.angle = -Math.PI / 2; t.flipped = false;
+      Object.assign(you, { x: LADDER, dk: 0, tdk: 0, tx: null, wait: 999 }); G.cam = null; drawTransit(innerWidth, innerHeight);
+      const box = G.burnBoxes.ship;
+      return { camX: G.cam.x, W: LAYOUTS.freighter.width, hand: G.cutHits[0].x, mid: box.x + (outlineLeft(box, G.cutOutline) + box.w) / 2 };
+    });
+    assert.equal(r.camX, r.W / 2, 'the camera on the tower\'s middle');
+    assert.ok(Math.abs(r.hand - r.mid) < 1, `the well across the middle right of the outline (${r.hand} against ${r.mid})`);
+    await done();
+  }
+});
+
 test('someone on the ladder when a scene opens finishes onto a deck and comes', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
