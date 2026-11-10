@@ -954,3 +954,16 @@ test('cool-loop raises the reactor\'s heat limit by five, and long-ear keeps a m
   assert.deepEqual([r.days0, r.days1], [12, 19], 'the shortest rumor, and a week more');
   await done();
 });
+
+test('a perk counts only at the post of its pick: a pilot\'s trim stops at the guns and is back at the helm', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const h = hired(), out = {}; takePick(h, 'trim');
+    out.pilot = handPerk('trim'); h.post = 'gunner'; out.gunner = handPerk('trim'); h.post = 'pilot'; out.back = handPerk('trim');
+    out.none = handPerk('long-legs');
+    return out;
+  });
+  assert.deepEqual(r, { pilot: true, gunner: false, back: true, none: false });
+  await done();
+});

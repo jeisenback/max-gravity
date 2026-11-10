@@ -41,7 +41,7 @@ ACTIVITIES.teach = {
     if (!id) return '';
     const c = career(), who = moveTeacher(id);
     c.moves = [...(c.moves || []), id];
-    gainSkill(c.post, 2);
+    gainSkill(Object.values(PICKS).find(p => p.move === id).post, 2);  // the pick's post: a move picked at the guns pays the gunner ladder, whatever post the hand works now
     return teachSay(`${id}.text`, { first: who.first });
   },
 };

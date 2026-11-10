@@ -82,7 +82,7 @@ const handStat = stat => { const c = career(); return c && c.sheet ? c.sheet[sta
 // A roll of the hand's: the sheet's rule (sheet.js) with the stat named, the level, the kind of roll (DIFFICULTY's keys) and an edge, and what the kit adds to that kind.
 const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, DIFFICULTY[kind], edge + kitEdge(career() && career().kit, kind) + pickEdge(takenPicks(career()), kind));  // the kit's edge and the picks' (picks.js)
 // Whether the hand has taken a perk pick (picks.js): the one reader every perk's hook calls; false with no hand.
-const handPerk = id => hasPerk(takenPicks(career()), id);
+const handPerk = id => { const c = career(); return !!c && !!PICKS[id] && PICKS[id].post === c.post && hasPerk(takenPicks(c), id); };  // a perk counts at the post of its pick: a burn you fly, your gunnery; a hand who swapped posts leaves it in the chair
 // Who would show the hand a taught move pick (picks.js): the post's holder, or the first officer, with the injured left out (stations.js, crew.js).
 const pickTeacher = p => (p.teacher.post ? postHolder(p.teacher.post) : roleHolder(p.teacher.role));
 const soloOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'solo');
