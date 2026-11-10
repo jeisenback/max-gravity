@@ -275,8 +275,9 @@ function roomBunk(ctx, b, F, slept, shut, low) {
 }
 
 // The berths (#933): the bunks in their columns on posts from the deck to the ceiling, either side of the well (roomBunk), the curtain shut on the
-// third one ("z z" behind it at night in cruise); beside the well a shelf with its books strapped down and a reading lamp (its glow in cruise),
-// the towel swinging on its hook and the guitar lashed to the wall. The top left is kept clear for the room's name (berthBunk).
+// third one ("z z" behind it at night in cruise); beside the well the crew's corner (berthCorner): the wall unit with its books, photo, plant,
+// mug and reading lamp (its glow in cruise), the pinboard where it fits, the towel swinging on its hook and the guitar lashed to the wall. The top
+// left is kept clear for the room's name (berthBunk).
 function roomBerths(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), well = s.well || { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }, { w: cw } = berthBunk(r, n, 0, well);
   const shut = W >= 220 && n >= 3 ? 2 : -1, r2 = v => Math.round(v * 100) / 100;
@@ -288,32 +289,90 @@ function roomBerths(ctx, r, s, X, W) {
     roomFlat(ctx, px - 3.5, F - 2, 7, 2, '#20384f'); for (const sy of [F - 90, F - 40]) roomDot(ctx, px, sy, 0.6, '#56708c');
   }
   if (shut >= 0 && s.asleep > 0 && w.cruise > 0.5) { const b = berthBunk(r, n, shut, well); worldText(ctx, s.zoom, Math.floor(time) % 2 ? 'z z' : 'z', b.x + cw - 24, b.y - 12, 12, '#9fb4c9'); }
-  const sx = r2(well.x1 + 40), lx = sx + 14;  // the shelf
-  if (W >= 300) {
-    roomPart(ctx, roomRound(sx - 22, F - 64, 44, 3, 1), '#284a68', { top: 0.8, under: 1 });
-    for (const bx of [sx - 18, sx + 16]) roomPart(ctx, `M ${r2(bx)} ${r2(F - 61)} L ${r2(bx + 2)} ${r2(F - 61)} L ${r2(bx + 2)} ${r2(F - 55)} Z`, '#20384f', { top: 0 });  // its brackets
-    [[-19, 4, 9, '#8f8a7c'], [-14.5, 5, 10, '#4f7090'], [-9, 4, 8, '#8a7c5e'], [-4.5, 5, 9.5, '#5a6e5a']].forEach(([dx, bw, bh, col]) => roomPart(ctx, roomRound(sx + dx, F - 64 - bh, bw, bh, 0.6), col, { top: 0.6, side: 1 }));
-    ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1; roomSeg(ctx, [[sx - 20, F - 69], [sx + 1, F - 69]]);  // the strap over the books
-    roomPart(ctx, roomRound(lx - 4, F - 66, 8, 2, 0.8), '#3a4a5a', { top: 0.5 }); ctx.strokeStyle = '#56708c'; roomSeg(ctx, [[lx, F - 66], [lx + 2, F - 74]]);  // the lamp
-    roomPart(ctx, `M ${r2(lx - 1)} ${r2(F - 77)} L ${r2(lx + 5)} ${r2(F - 77)} L ${r2(lx + 7)} ${r2(F - 72)} L ${r2(lx - 3)} ${r2(F - 72)} Z`, '#4a5a6a', { top: 0.6, side: 1 });
-    roomDot(ctx, lx + 2, F - 71.5, 1.2, w.cruise > 0.05 ? '#e0c890' : '#6a6048');
-    if (w.cruise > 0.05) { const g = ctx.createRadialGradient(lx + 2, F - 70, 1, lx + 2, F - 70, 50); g.addColorStop(0, `rgba(255,220,160,${0.35 * w.cruise})`); g.addColorStop(1, 'rgba(255,220,160,0)'); ctx.fillStyle = g; ctx.fillRect(lx - 48, F - 100, 100, 100); }
-  }
-  if (W >= 240) {  // the guitar, hung on its hook and lashed to the wall at the neck and the body
-    const gx = r2(well.x1 + 112);
-    roomFlat(ctx, gx - 2, F - 94, 4, 2, '#3a4a5a');
-    roomPart(ctx, roomRound(gx - 1.8, F - 86, 3.6, 26, 1), '#4a3020', { top: 0, side: 1 });
-    roomPart(ctx, roomRound(gx - 2.8, F - 92, 5.6, 7, 1.2), '#4a3020', { top: 0.6, side: 1 });
-    for (const py of [F - 91, F - 89, F - 87]) for (const px of [gx - 3.6, gx + 2.8]) roomFlat(ctx, px, py, 0.8, 0.8, '#8796a5');  // the pegs
-    roomPart(ctx, `M ${r2(gx)} ${r2(F - 25)} Q ${r2(gx + 9.5)} ${r2(F - 25)} ${r2(gx + 9)} ${r2(F - 36)} Q ${r2(gx + 8.5)} ${r2(F - 45)} ${r2(gx + 5)} ${r2(F - 46.5)} Q ${r2(gx + 7.5)} ${r2(F - 50)} ${r2(gx + 7)} ${r2(F - 54)} Q ${r2(gx + 6.5)} ${r2(F - 62)} ${r2(gx)} ${r2(F - 62)} Q ${r2(gx - 6.5)} ${r2(F - 62)} ${r2(gx - 7)} ${r2(F - 54)} Q ${r2(gx - 7.5)} ${r2(F - 50)} ${r2(gx - 5)} ${r2(F - 46.5)} Q ${r2(gx - 8.5)} ${r2(F - 45)} ${r2(gx - 9)} ${r2(F - 36)} Q ${r2(gx - 9.5)} ${r2(F - 25)} ${r2(gx)} ${r2(F - 25)} Z`, '#8a5e36', { top: 1, side: 2.5 });
-    roomDot(ctx, gx, F - 44, 2.6, '#2a1a10'); roomFlat(ctx, gx - 3.5, F - 33, 7, 1.6, '#3a2414');
-    ctx.strokeStyle = 'rgba(200,190,170,0.45)'; ctx.lineWidth = 0.4; for (const dx of [-0.8, 0, 0.8]) roomSeg(ctx, [[gx + dx, F - 85], [gx + dx, F - 33]]);
-    for (const [y, half] of [[F - 70, 4], [F - 31, 9.5]]) roomPart(ctx, roomRound(gx - half, y, half * 2, 1.6, 0.6), '#3a3a40', { top: 0 });  // the lashings
-  }
-  if (W >= 260) {  // the towel on its hook: it swings, moved, not redrawn (a path given to roomPart is fixed per layout)
-    const hx = r2(well.x1 + 84), [ex, ey] = hangEnd(hx, F - 60, 10, 1.3, w, time, s.still);
+  const c = berthCorner(r, n, well), open = c.x1 - c.x0;  // the crew's corner beside the well
+  if (W >= 300 && open >= 70) roomWallUnit(ctx, c.x0 + 2, F, w, time, s.still);
+  const pw = Math.min(84, open - 126); if (W >= 300 && pw >= 60) roomPinboard(ctx, c.x0 + 126, F, pw);
+  if (W >= 260 && open >= 82) {  // the towel on its hook: it swings, moved, not redrawn (a path given to roomPart is fixed per layout)
+    const hx = c.x0 + 74, [ex, ey] = hangEnd(hx, F - 60, 10, 1.3, w, time, s.still);
     roomFlat(ctx, hx - 1.5, F - 62, 3, 3, '#3a4a5a'); ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1; roomSeg(ctx, [[hx, F - 60], [ex, ey]]);
     ctx.save(); ctx.translate(ex, ey); roomPart(ctx, roomRound(-3.5, 0, 7, 11, 1.2), '#8a4a40', { top: 0.6, side: 1.5 }); roomFlat(ctx, -3, 7.5, 6, 1.2, '#6a3a32'); ctx.restore();
+  }
+  if (W >= 240 && open >= 118) roomGuitar(ctx, c.x0 + 104, F);
+}
+
+// The crew's corner of the berths (#933): the open wall between the well and the first bunk right of it, in world x, a step clear of each.
+function berthCorner(r, n, well) {
+  const right = Array.from({ length: n }, (_, k) => berthBunk(r, n, k, well).x).filter(x => x >= well.x1), m = (r.x1 - r.x0) * 0.02;
+  const r2 = v => Math.round(v * 100) / 100;
+  return { x0: r2(well.x1 + 8), x1: r2((right.length ? Math.min(...right) : r.x1 - m) - 6) };
+}
+// The wall unit at x (62 wide) on the deck F: two shelves with a lip for zero g; on the lower one books of many heights strapped in and a mug
+// in its holder, on the upper one a framed photo, a plant with its pot clipped down and the reading lamp (its glow in cruise).
+function roomWallUnit(ctx, x, F, w, time, still) {
+  const n = v => Math.round(v * 100) / 100;
+  for (const ux of [x, x + 59]) roomPart(ctx, roomRound(ux, F - 90, 3, 36, 0.8), '#22405c', { top: 0, side: 1.2 });
+  let bx = x + 4;  // the books, their spines in many colours, the last one leaning
+  [[4, 10, '#8f8a7c'], [5, 12, '#4f7090'], [3.5, 9, '#7a4a44'], [4.5, 11, '#8a7c5e'], [3, 8.5, '#5a6e5a'], [5, 12.5, '#6a6a8a'], [4, 10, '#8a8070']].forEach(([bw, bh, col]) => {
+    roomPart(ctx, roomRound(bx, F - 58 - bh, bw, bh, 0.6), col, { top: 0.6, side: 1 }); roomFlat(ctx, bx + 0.8, F - 58 - bh * 0.7, bw - 1.6, 0.8, figShade(col, 0.7)); bx += bw + 0.3;
+  });
+  roomPart(ctx, `M ${n(bx + 0.5)} ${F - 58} L ${n(bx + 4.5)} ${F - 58} L ${n(bx + 8.5)} ${F - 67.5} L ${n(bx + 4.5)} ${F - 67.5} Z`, '#4a5a70', { top: 0, side: 1 });
+  ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.2; roomSeg(ctx, [[x + 3, F - 64], [bx + 6, F - 64]]); roomFlat(ctx, x + 18, F - 65.2, 3, 2.4, '#8796a5');  // the strap and its buckle
+  const mx = x + 48;  // the mug in its holder
+  roomPart(ctx, roomRound(mx, F - 67, 8, 9, 1.2), '#7d8a98', { top: 1, side: 2 }); ctx.strokeStyle = '#7d8a98'; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.arc(mx + 9, F - 63, 2.3, -Math.PI / 2, Math.PI / 2); ctx.stroke();
+  roomPart(ctx, roomRound(mx - 1, F - 61.5, 10, 3.5, 0.8), '#3a4a5a', { top: 0.5 });
+  roomPart(ctx, roomRound(x + 6, F - 93, 12, 13, 1), '#3a2c20', { top: 0.8, side: 1.2 });  // the photo in its frame: two people against a sky
+  roomFlat(ctx, x + 7.5, F - 91.5, 9, 10, '#3e5a6a'); roomFlat(ctx, x + 7.5, F - 85, 9, 3.5, '#2e4450');
+  for (const [px, col] of [[x + 10, '#8a7a6a'], [x + 14, '#6a5a4a']]) { roomDot(ctx, px, F - 88, 1.4, col); roomFlat(ctx, px - 1.8, F - 86.5, 3.6, 3, col); }
+  roomPlant(ctx, x + 30, F - 86, w, time, still, 0.6); roomFlat(ctx, x + 26, F - 84, 8, 1.2, '#8796a5');  // the plant, its pot clipped to the shelf
+  const lx = x + 50;  // the reading lamp
+  roomPart(ctx, roomRound(lx - 5, F - 82, 10, 2, 0.8), '#3a4a5a', { top: 0.5 }); ctx.strokeStyle = '#56708c'; ctx.lineWidth = 1; roomSeg(ctx, [[lx - 2, F - 82], [lx, F - 88]]);
+  roomPart(ctx, `M ${n(lx - 3)} ${F - 92} L ${n(lx + 3)} ${F - 92} L ${n(lx + 5)} ${F - 87.5} L ${n(lx - 5)} ${F - 87.5} Z`, '#4a5a6a', { top: 0.6, side: 1 });
+  roomDot(ctx, lx, F - 87, 1.2, w.cruise > 0.05 ? '#e0c890' : '#6a6048');
+  for (const sy of [F - 80, F - 58]) {  // the shelves and their lips, over the feet of what stands on them
+    roomPart(ctx, roomRound(x, sy, 62, 3, 1), '#284a68', { top: 0.8, under: 1 }); roomPart(ctx, roomRound(x + 1, sy - 1.6, 60, 1.6, 0.6), '#2c4c6e', { top: 0.5 });
+  }
+  if (w.cruise > 0.05) { const g = ctx.createRadialGradient(lx, F - 86, 1, lx, F - 86, 50); g.addColorStop(0, `rgba(255,220,160,${0.35 * w.cruise})`); g.addColorStop(1, 'rgba(255,220,160,0)'); ctx.fillStyle = g; ctx.fillRect(lx - 46, F - 100, 96, 100); }
+}
+// The guitar at gx, its foot at F - 13 (#933): the body with its lit top face over the darker side, the sound hole and its rosette, the
+// pickguard and the bridge, the neck with its frets, the headstock and its tuners, six strings and the strap; hung on a hook and lashed to the
+// wall at the neck and the body for the burn.
+function roomGuitar(ctx, gx, F) {
+  const n = v => Math.round(v * 100) / 100, body = d => {
+    const p = (dx, dy) => `${n(gx + dx + d)} ${n(F - dy + d / 2.5)}`;
+    return `M ${p(0, 13)} Q ${p(13.5, 13)} ${p(13, 28)} Q ${p(12.5, 39)} ${p(8.5, 43)} Q ${p(10.5, 46.5)} ${p(10, 52)} Q ${p(9.5, 60)} ${p(0, 60)} Q ${p(-9.5, 60)} ${p(-10, 52)} Q ${p(-10.5, 46.5)} ${p(-8.5, 43)} Q ${p(-12.5, 39)} ${p(-13, 28)} Q ${p(-13.5, 13)} ${p(0, 13)} Z`;
+  };
+  roomFlat(ctx, gx - 1.5, F - 96, 3, 3, '#3a4a5a');  // the hook
+  ctx.strokeStyle = '#5a4030'; ctx.lineWidth = 2.4; ctx.beginPath(); ctx.moveTo(gx - 1, F - 14); ctx.quadraticCurveTo(gx - 26, F - 36, gx - 2.5, F - 62); ctx.stroke();  // the strap
+  roomPart(ctx, body(2.5), '#5a3a20', { top: 0, side: 1.5 });  // the side, in shade
+  roomPart(ctx, body(0), '#9a6c40', { top: 1.2, side: 1.5 });
+  ctx.strokeStyle = '#b0a078'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(gx, F - 42, 5.4, 0, Math.PI * 2); ctx.stroke();  // the rosette
+  roomDot(ctx, gx, F - 42, 4, '#1e140c');
+  roomPart(ctx, `M ${n(gx + 3.5)} ${F - 37} Q ${n(gx + 10)} ${F - 37.5} ${n(gx + 9)} ${F - 31} Q ${n(gx + 6.5)} ${F - 27.5} ${n(gx + 3.5)} ${F - 31} Z`, '#4a2e1c', { top: 0 });  // the pickguard
+  roomPart(ctx, roomRound(gx - 6.5, F - 26, 13, 3, 1), '#3a2414', { top: 0.6 }); roomFlat(ctx, gx - 4, F - 26.6, 8, 0.8, '#a89c84');  // the bridge, its saddle
+  roomPart(ctx, roomRound(gx - 2.8, F - 85, 5.6, 26, 1), '#4a3020', { top: 0, side: 1.2 });  // the neck and the fretboard
+  roomFlat(ctx, gx - 2.1, F - 85, 4.2, 24, '#2e1e14'); for (let y = F - 82; y < F - 62; y += 3.6) roomFlat(ctx, gx - 2.1, y, 4.2, 0.5, '#8a8070');
+  roomPart(ctx, `M ${n(gx - 3)} ${F - 85} L ${n(gx + 3)} ${F - 85} L ${n(gx + 4.2)} ${F - 93} L ${n(gx - 4.2)} ${F - 93} Z`, '#3a2618', { top: 0.6, side: 1 });  // the headstock
+  for (const y of [F - 91.5, F - 89, F - 86.5]) for (const sd of [-1, 1]) { roomFlat(ctx, sd < 0 ? gx - 6.6 : gx + 4.6, y - 0.7, 2, 1.4, '#8796a5'); roomDot(ctx, gx + sd * 2.2, y, 0.6, '#a8a090'); }  // the tuners
+  ctx.strokeStyle = 'rgba(214,206,190,0.75)'; ctx.lineWidth = 0.5; for (let k = 0; k < 6; k++) { const sx = gx - 1.75 + k * 0.7; roomSeg(ctx, [[sx, F - 85], [sx, F - 25]]); }  // the strings
+  for (const [y, half] of [[F - 74, 5.5], [F - 20, 12]]) {  // the lashings to rings in the wall
+    roomPart(ctx, roomRound(gx - half, y, half * 2, 1.8, 0.6), '#3a3a40', { top: 0 });
+    for (const sd of [-1, 1]) roomDot(ctx, gx + sd * (half + 1.2), y + 0.9, 1, '#56708c');
+  }
+}
+// The pinboard at x, pw wide, on the deck F: a framed cork board with notes and photos pinned on it, a little askew; no words on them.
+function roomPinboard(ctx, x, F, pw) {
+  const n = v => Math.round(v * 100) / 100, cx = x + 3, cy = F - 81;
+  roomPart(ctx, roomRound(x, F - 84, pw, 38, 1.5), '#3a2c20', { top: 1, side: 2, under: 1 });
+  roomPart(ctx, roomRound(cx, cy, pw - 6, 32, 0.8), '#7a6446', { top: 0 });
+  for (let k = 0; k < 9; k++) roomFlat(ctx, cx + 3 + ((k * 17) % (pw - 12)), cy + 3 + ((k * 11) % 26), 1, 1, '#6a563a');
+  const items = [[4, 3, 14, 12, 'note', 0.8], [22, 2, 12, 14, 'photo', -0.6], [40, 5, 13, 11, 'note', -0.5], [57, 3, 12, 14, 'photo', 0.7], [8, 18, 12, 11, 'note', -0.6], [28, 18.5, 15, 11, 'photo', 0.5], [50, 19, 15, 10, 'note', -0.7]];
+  for (const [dx, dy, iw, ih, kind, tilt] of items) {
+    if (dx + iw > pw - 7) continue;
+    const a = cx + dx, b = cy + dy;
+    roomPart(ctx, `M ${n(a + tilt)} ${n(b)} L ${n(a + iw + tilt)} ${n(b + tilt * 0.6)} L ${n(a + iw - tilt)} ${n(b + ih)} L ${n(a - tilt)} ${n(b + ih - tilt * 0.6)} Z`, kind === 'note' ? (dx % 3 ? '#9a9480' : '#8a9478') : '#a09a8c', { top: 0, side: 1 });
+    if (kind === 'note') for (let l = 0; l < 3; l++) roomFlat(ctx, a + 2.5, b + 3 + l * 2.6, iw - 5 - (l % 2) * 3, 0.6, '#5a5448');
+    else { roomFlat(ctx, a + 1.8, b + 1.8, iw - 3.6, ih - 5, '#4a6a7a'); roomFlat(ctx, a + 1.8, b + ih - 5.5, iw - 3.6, 2.2, '#3e5244'); roomDot(ctx, a + iw / 2, b + ih / 2 - 1, 1.3, '#8a7a6a'); }
+    roomDot(ctx, a + iw / 2, b + 1.4, 1, '#9a4a3e');  // its pin
   }
 }
 

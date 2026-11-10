@@ -698,10 +698,10 @@ test('the slicer sits at the comms station and the pilot at the helm, whoever ho
 // #933, the berths: the bunks either side of the well, each with its mattress, pillow, blanket, curtain rail, reading lamp and lockers under,
 // and a clear place for its owner's one thing (#934); the shelf, the guitar and the towel beside the well. Drawn at the burn view's zoom in
 // a window 1000, 1280 and 1600 wide, with 4, 8 and 12 bunks.
-const { roomBerths, berthKeep } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomBerths', 'berthKeep']);
+const { roomBerths, berthKeep, berthCorner } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomBerths', 'berthKeep', 'berthCorner']);
 const BERTH_PROPS = [['#2a4664', 'the posts'], ['#1f3a56', 'the frames'], ['#3a4a5e', 'the mattresses'], ['#9a968a', 'the pillows'], ['#334560', 'a blanket over a sleeper'],
   ['#3e4f6e', 'a blanket folded on an empty bunk'], ['#3a5470', 'the curtain rails and grab rails'], ['#4a3a5a', 'the curtains'], ['#4a5a6a', 'the reading lamps'], ['#1c3349', 'the lockers\' doors'],
-  ['#284a68', 'the shelf'], ['#8a5e36', 'the guitar'], ['#8a4a40', 'the towel']];
+  ['#284a68', 'the shelves'], ['#9a6c40', 'the guitar'], ['#8a4a40', 'the towel']];
 const berthCase = (n, pr, zoom) => {
   const lay = LAYOUTS.freighter, r = layoutBox(lay, 'berths'), well = { x0: (lay.well.x - lay.well.w / 2) * lay.width, x1: (lay.well.x + lay.well.w / 2) * lay.width };
   return { r, well, s: RS({ w: phaseWeights(pr), zoom, berths: n, asleep: Math.min(n - 2, 5), well, damage: { marks: new Set(), severe: false } }), bunks: Array.from({ length: n }, (_, k) => berthBunk(r, n, k, well)) };
@@ -772,4 +772,39 @@ test('each bunk keeps a clear place for its owner\'s one thing, inside the bunk 
       for (const q of rects) assert.ok(!meet(q, box), `${at}: clear of a rect ${JSON.stringify(q)}`);
     });
   }
+});
+
+// The crew's corner beside the well: the wall unit, the pinboard where it fits, the towel and the guitar, spread across the open wall, clear of
+// the well and the bunks, each part outlined and a step below the people.
+const CORNER_PROPS = [['#22405c', 'the wall unit\'s sides'], ['#284a68', 'its two shelves'], ['#2c4c6e', 'their lips'], ['#7d8a98', 'the mug'], ['#5e4434', 'the plant\'s pot'],
+  ['#3a2c20', 'the photo\'s frame'], ['#4a5a6a', 'the reading lamp'], ['#9a6c40', 'the guitar\'s top'], ['#5a3a20', 'its side, in shade'], ['#4a2e1c', 'its pickguard'], ['#3a2414', 'its bridge'],
+  ['#3a2618', 'its headstock'], ['#3a3a40', 'its lashings']];
+test('the crew\'s corner fills the open wall beside the well: a wall unit, a pinboard, the towel and a guitar, clear of the bunks (#933)', () => {
+  for (const [n, board] of [[4, true], [8, true], [10, true], [12, false]]) for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s, well, bunks } = berthCase(n, pr, 0.66), c = berthCorner(r, n, well), X = sh => r.x0 + (r.x1 - r.x0) * sh, at = `${n} bunks, ${pr}`;
+    assert.ok(c.x0 >= well.x1 + 6 && bunks.every(b => b.x + b.w <= well.x0 || b.x >= c.x1 + 4), `${at}: the corner ${JSON.stringify(c)} between the well and the bunks`);
+    const { ctx, calls } = recorder(); roomBerths(ctx, r, s, X, r.x1 - r.x0);
+    const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), mine = parts.filter(p => p.x0 >= c.x0 - 1 && p.x1 <= c.x1 + 2);
+    for (const [col, what] of CORNER_PROPS) assert.ok(mine.some(p => p.col === col), `${at}: ${what} (${col}) in the corner`);
+    assert.ok(calls.some(k => k[0] === 'translate' && k[1] > c.x0 && k[1] < c.x1), `${at}: the towel swinging in the corner (its path at the origin, moved)`);
+    assert.ok(mine.filter(p => p.y1 <= r.floor - 58 && p.y0 >= r.floor - 72 && p.x1 - p.x0 <= 9).length >= 7, `${at}: books of many heights on the lower shelf`);
+    for (const { col } of mine.filter(p => /^#[0-9a-f]{6}$/.test(p.col))) {
+      const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated`);
+    }
+    const guitar = parts.filter(p => /^#(9a6c40|3a2618)$/.test(p.col)), gy0 = Math.min(...guitar.map(p => p.y0)), gy1 = Math.max(...guitar.map(p => p.y1)), body = parts.find(p => p.col === '#9a6c40');
+    assert.ok(gy1 - gy0 >= 78 && body.x1 - body.x0 >= 25, `${at}: the guitar bigger than it was (${gy1 - gy0} tall, its body ${body.x1 - body.x0} wide)`);
+    assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === 'rgba(214,206,190,0.75)').length >= 1 && calls.some(k => k[0] === 'arc' && k[3] === 5.4), `${at}: its strings and the rosette`);
+    const notes = mine.filter(p => /^#(9a9480|8a9478|a09a8c)$/.test(p.col));
+    assert.equal(notes.length >= 4, board, `${at}: the pinboard with its notes and photos where it fits (${notes.length})`);
+    if (board) assert.ok(mine.some(p => p.col === '#7a6446'), `${at}: the cork`);
+  }
+  const stillAt = t => { const { r, s } = berthCase(10, 0.5, 0.96), c = fakeCtx(); drawRoom(c, 'berths', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('someone eating alone sits on the edge of the first bunk (#933)', () => {
+  const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['routineTarget', 'roomAt']);
+  const ra = api.roomAt('berths'), x = api.routineTarget({}, { at: 'alone' }, ra, 0, 1, () => 0.5), { r, well } = berthCase(10, 0.3, 1), b = berthBunk(r, 10, 0, well);
+  const wx = r.x0 + (x - ra.x0) / ra.w * (r.x1 - r.x0);
+  assert.ok(wx > b.x + 4 && wx < b.x + b.w / 2, `at ${wx}, on the first bunk (${b.x} to ${b.x + b.w})`);
 });
