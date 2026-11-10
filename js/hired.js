@@ -150,6 +150,8 @@ function setupHired(o) {
   },
     sheet: newSheet(st.background, post),  // the hand's stats (sheet.js)
     standing: {},  // each shipper's regard for the ship, by name (shippers.js)
+    record: {},  // the counts a trait is earned from (traits.js), and the traits whose moment has played
+    traitsTold: [],
     kit: [],  // what the hand carries, by id (KIT_ITEMS, sheet.js)
     off: null,  // a delivery that was late, short or lost, for the agent at the dock to meet (shippers.js)
     asked: 0,
