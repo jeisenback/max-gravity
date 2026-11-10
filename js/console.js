@@ -13,8 +13,8 @@ const condColor = c => c >= 70 ? '#5fd35f' : c >= 40 ? '#ff9a3c' : '#ff6a4a';  /
 function consoleHtml({ title, status = '', screen, side = '', controls = '', note = '' }) {
   return String(h`<div class="con"><div class="con-bezel">
     <div class="con-head"><b>${title}</b><span>${status}</span></div>
-    <div class="con-grid"><div class="con-screen">${raw(screen)}</div>${side ? h`<div class="con-side">${raw(side)}</div>` : ''}</div>
-    ${controls ? h`<div class="con-ctl">${raw(controls)}</div>` : ''}${raw(note)}
+    ${controls ? h`<div class="con-ctl">${raw(controls)}</div>` : ''}
+    <div class="con-grid"><div class="con-screen">${raw(screen)}</div>${side ? h`<div class="con-side">${raw(side)}</div>` : ''}</div>${raw(note)}
   </div></div>`);
 }
 

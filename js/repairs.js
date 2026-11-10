@@ -16,7 +16,7 @@ function repairPlan(planet) {
   const parts = held ? 0 : stocked ? Math.round(tradeTotal(planet, 'metal', tons, 1) * 1.3) : 0;  // the yard's markup
   const wait = held || stocked ? 0 : REPAIR_WAIT;
   const labor = (days + wait) * (yard ? REPAIR_LABOR.yard : REPAIR_LABOR.field);
-  return { lost, yard, days, tons, held, stocked, parts, wait, labor, total: parts + labor };
+  return { lost, yard, days, tons, held, stocked, parts, wait, labor, total: Math.round((parts + labor) * (handPerk('yard-eye') ? 0.9 : 1)) };  // yard-eye (picks.js): the estimate a tenth less
 }
 
 // Days that pass in port at once, with the same new-day events as a burn (a job ashore, jobs.js). The yard's own days pass as nights (stay.js).

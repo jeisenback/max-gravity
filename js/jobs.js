@@ -8,8 +8,8 @@
 // An outcome: { text, pay?, rep?, xp?, hurt?, cost?, opinion?, next? (a stage to go to) }. Loaded after repairs.js.
 
 const JOB_DAYS = 1, JOB_BOARD = 2;
-// The check's post gives the stat; the hand's level counts on their own post only; a crew member who works the post helps.
-const jobOdds = ck => { const h = hired(); return handCheck(POST_STAT[ck.post], h.post === ck.post ? skillLevel(h.post) : 0, 'job', (roleSkill(POSTS[ck.post].role) ? 0.1 : 0) + (ck.bonus || 0)); };
+// The check's post gives the stat; the hand's level counts on their own post only, once, as the level; a crew member who works the post (not the hand in the chair) helps.
+const jobOdds = ck => { const h = hired(); return handCheck(POST_STAT[ck.post], h.post === ck.post ? skillLevel(h.post) : 0, 'job', (postMode(ck.post) === 'crewed' && roleSkill(POSTS[ck.post].role) ? 0.1 : 0) + (ck.bonus || 0)); };
 
 const JOBS = [
   { id: 'lock', title: 'A Jammed Freight Lock', blurb: 'A cargo lock has stuck half open with a loader crew behind it. The dockmaster will pay for hands that know a lock.',

@@ -16,6 +16,8 @@
     "js/ui.js",
     "js/game.js",
     "js/icerun.js",
+    "js/picks.js",
+    "js/moves.js",
     "js/sites.js",
     "js/jobs.js",
     "js/suggest.js",

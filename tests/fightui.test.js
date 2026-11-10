@@ -89,6 +89,18 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
   await done();
 });
 
+test('setting a gun\'s target keeps the panel where it was scrolled (#970)', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 1280, height: 600 } });
+  await ev(helpers);
+  await ev(() => { fightGame('gunner'); battle(); document.querySelector(`[data-action="choose"][data-arg="${pickAt('gun2', 'Weapons')}"]`).scrollIntoView({ block: 'center' }); });  // the second gun's row in view, as a player scrolls to it
+  const before = await ev(() => document.getElementById('panel').scrollTop);
+  await page.click(`[data-action="choose"][data-arg="${await ev(() => pickAt('gun2', 'Weapons'))}"]`);
+  const r = await ev(() => ({ at: document.getElementById('panel').scrollTop, picked: rowsShown()[1][1] }));
+  assert.ok(before > 0, 'the scene is longer than a short window');
+  assert.deepEqual(r, { at: before, picked: ['Weapons'] }, 'the pick is drawn in place, with the rows where they were');
+  await done();
+});
+
 test('setting a gun\'s target redraws in place; Fire resolves a turn and the log gains a line', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
@@ -235,6 +247,19 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   assert.equal(t.result, false, 'no result page between turns'); assert.equal(t.turn, 1);
   assert.match(t.last, /^Turn 1: /, t.last);
   assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'Shoot: hits 1 to 2 of them', 'and the act goes back to the sidearm');
+  await done();
+});
+
+test('the deck panel pins Fight in view in a short window, its other choices in the flow with the scene (#991)', async () => {
+  const { ev, done } = await open({ viewport: { width: 1280, height: 600 } });
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    fightGame('gunner'); boarded();
+    const b = [...document.querySelectorAll('#panel [data-action="choose"]')].find(x => x.textContent === 'Fight'), box = b.getBoundingClientRect();
+    return { flow: !!b.closest('.choices.flow'), top: document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2) === b };
+  });
+  assert.equal(r.flow, false, 'Fight is in the pinned block, as a ship fight\'s Fire is (#846)');
+  assert.equal(r.top, true, 'Fight can be clicked where it is drawn, with nothing over it and no list to scroll');
   await done();
 });
 
@@ -846,9 +871,30 @@ test('the tester panel drops a hired hand into each kind of fight, early and lat
   assert.ok(r.navy.gov && /The boarding party/.test(r.navy.read) && /Turn 1 of 5/.test(r.navy.read) && /standing with/.test(r.navy.text), r.navy.read);
   assert.equal(r.dead, 'Dead in Space');
   assert.deepEqual([r.assault.kind, r.assault.assault], ['deck', true]); assert.equal(r.assault.stated, r.assault.began, 'the count she states is the fight that opens');
-  assert.deepEqual(r.late, { grade: 1, skill: 4, level: 3, sighted: true, kit: ['valve-keys'], friends: true }, 'the late hand: level 3 and boresighted (skill 4 in the fight), the keys, friends aboard, and a raider a grade better');
+  assert.deepEqual(r.late, { grade: 1, skill: 6, level: 5, sighted: true, kit: ['valve-keys'], friends: true }, 'the late hand: the top of the ladder, level 5, and boresighted (skill 6 in the fight), the keys, friends aboard, and a raider a grade better');
   assert.equal(r.lateRepel, 2);
   assert.deepEqual(r.lateIds, ['late-fight-raider', 'late-fight-pack', 'late-fight-veteran', 'late-fight-patrol', 'late-deck-repel', 'late-deck-navy', 'late-deck-assault']);
+  await done();
+});
+
+// ---------- the fight perks (picks.js, #963): marksman, pd-watch and cover-eye for a gunner, brace and lane-sense for a pilot ----------
+
+test('the fight perks read the picks taken: a level more at the guns, half off her volley, three points of cover, a tenth more on a run, ten km more at contact', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    fightGame('gunner'); const g0 = battle(), repel = () => repelStart({ foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0, init: 'foe' }, 'half').state.coverMade;
+    out.before = { skill: g0.state.me.skill, hold: g0.state.me.pdcHold, made: repel() }; out.pdcHold = FIGHT.PDC_HOLD;
+    takePick(career(), 'marksman'); takePick(career(), 'pd-watch'); takePick(career(), 'cover-eye'); const g1 = battle();
+    out.after = { skill: g1.state.me.skill, hold: g1.state.me.pdcHold, made: repel(), perks: [handPerk('marksman'), handPerk('trim')] };
+    fightGame('pilot', 'cutter'); const flee0 = fleeOdds(), band0 = RANGE_BANDS[battle().state.band];
+    takePick(career(), 'brace'); takePick(career(), 'lane-sense');
+    out.pilot = { flee: Math.round((fleeOdds() - flee0) * 100), band0, band1: RANGE_BANDS[battle().state.band] };
+    return out;
+  });
+  assert.deepEqual([r.after.skill - r.before.skill, r.before.hold, r.after.hold, r.before.made, r.after.made, r.after.perks], [1, r.pdcHold, 0.5, 2, 3, [true, false]]);
+  assert.deepEqual(r.pilot, { flee: 10, band0: 'mid', band1: 'long' }, 'brace and lane-sense: a cutter is met with guns at 30 km, 40 with the pick');
   await done();
 });
 
@@ -881,7 +927,7 @@ test('a known move shows on the panel, applies on Fire, and shows spent after', 
   await done();
 });
 
-test('no move is offered to a hand who knows none, to a non-gunner, or on a save without moves', async () => {
+test('no move is offered to a hand who knows none or on a save without moves, and a hand at another post is offered the ones they know', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -893,7 +939,9 @@ test('no move is offered to a hand who knows none, to a non-gunner, or on a save
     };
     return { none: offered('gunner', []), nonGunner: offered('engineer', ['vent', 'lead', 'split']), absent: offered('gunner', null), pure: [knownMoves(null), knownMoves({}), knownMoves({ moves: ['lead'] })] };
   });
-  for (const k of ['none', 'nonGunner', 'absent']) { assert.equal(r[k].threw, null, k); assert.deepEqual(r[k].moves, [], k); assert.deepEqual(r[k].known, [], k); }
+  for (const k of ['none', 'nonGunner', 'absent']) assert.equal(r[k].threw, null, k);
+  for (const k of ['none', 'absent']) { assert.deepEqual(r[k].moves, [], k); assert.deepEqual(r[k].known, [], k); }
+  assert.deepEqual(r.nonGunner.known, ['vent', 'lead', 'split']); assert.equal(r.nonGunner.moves.length, 3, 'an engineer who knows them is offered them (the picks are the post\'s, so only in a test)');
   assert.deepEqual(r.pure, [[], [], ['lead']]);
   await done();
 });

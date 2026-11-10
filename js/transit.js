@@ -117,7 +117,7 @@ function delay(seconds) {
 }
 
 function addRumor() {
-  const st = G.state, days = randInt(12, 30);
+  const st = G.state, days = randInt(12, 30) + (handPerk('long-ear') ? 7 : 0);  // long-ear (picks.js): a week longer
   let sid, p, cid, up, text;
   const plot = storyRumor();  // once the story starts, some shortages are sabotage
   if (plot) {

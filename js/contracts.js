@@ -31,7 +31,7 @@ const officeOf = shipper => Object.keys(SHIPPERS.gov).find(g => g !== 'Pirate' &
 // the ship, half as often to one that does, and never to one that trusts it. The roll is the delivery's own, from its port and day, so no other draw in the game moves.
 const SKIMMER = SHIPPERS.other, SKIM_CHANCE = 0.25, SKIM_CUT = 0.15;
 const skimOf = (run, pay, standing) => {
-  if (run.shipper !== SKIMMER) return 0;
+  if (run.shipper !== SKIMMER || perkOn('clear-copy')) return 0;  // clear-copy (picks.js): the skim never lands on a run whose paper the hand kept
   const chance = Math.max(0, SKIM_CHANCE * (1 - Math.max(0, standing) / STANDING_GOOD));
   return Math.abs(hash(`${run.shipper}|${run.planet}|${run.day}`)) % 100 < chance * 100 ? Math.round(pay * SKIM_CUT) : 0;
 };
@@ -96,7 +96,7 @@ function pickContract(list, { free, goal = () => false, risk, picks }) {
 }
 
 // A shipper that reads an item in the kit (sheet.js kitBoards: the Compact's carrier license) draws its board for a ship it already knows (regard 1) as for one it trusts: more on the board, and a tenth more pay.
-const boardStanding = (standing, shipper, kit) => (standing >= 1 && kitBoards(kit, shipper) ? Math.max(standing, STANDING_GOOD) : standing);
+const boardStanding = (standing, shipper, kit) => (standing >= 1 && (kitBoards(kit, shipper) || perkOn('open-board')) ? Math.max(standing, STANDING_GOOD) : standing);  // open-board (picks.js): as the kit's board, for every shipper
 
 // A shipper's regard for the ship (st.hired.standing, and st.career.standing after the buy; by the shipper's name; older saves have none, which is 0). A delivery moves it: on the day and whole, up one;
 // each day-late fault down one, a short load down one and a lost load down two. The word is for the run panel; the shipper is named before it, so it takes no verb.
@@ -112,4 +112,4 @@ function deliveryOff(run, sold, day, cut = 0, owed = 0) {
 }
 
 // What a late delivery pays: docked a tenth a day, never below half.
-const latePay = (pay, due, day) => Math.round(pay * Math.max(LATE_FLOOR, 1 - LATE_DOCK * Math.max(0, day - due)));
+const latePay = (pay, due, day) => Math.round(pay * Math.max(LATE_FLOOR, 1 - LATE_DOCK * (perkOn('fair-copy') ? 0.5 : 1) * Math.max(0, day - due)));  // fair-copy (picks.js): half the dock

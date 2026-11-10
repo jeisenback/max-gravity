@@ -1346,3 +1346,17 @@ test('in a burn the HUD\'s date is the burn\'s today, the same date the burn bar
   assert.ok(r.hudDates.length >= 1 && r.hudDates.every(s => s.startsWith(r.today)), `every date on the HUD is the burn's today, not the departure: ${r.hudDates}`);
   await done();
 });
+
+test('the Gunnery sheet opens with the post\'s orders in view, above the diagram (#975)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); G.bridgeOpen = 'weapons'; syncBridge(true);
+    const body = document.querySelector('#bsheet .bsheet-body'), b = document.querySelector('#bsheet [data-action="postOrder"][data-arg="gunner:boresight"]');
+    return { scrolled: body.scrollTop, inView: b.getBoundingClientRect().bottom <= body.getBoundingClientRect().bottom, first: !!(b.compareDocumentPosition(document.querySelector('#bsheet .con-grid')) & Node.DOCUMENT_POSITION_FOLLOWING) };
+  });
+  assert.equal(r.scrolled, 0);
+  assert.equal(r.inView, true, 'Boresight the guns can be pressed without scrolling the sheet');
+  assert.ok(r.first, 'the orders come before the diagram and the readouts');
+  await done();
+});

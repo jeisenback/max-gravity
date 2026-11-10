@@ -108,3 +108,19 @@ test('each card on the board says the posts a job tests and the most it pays, re
   function jobLine(t) { return `${t.posts.slice(0, -1).join(', ')}${t.posts.length > 1 ? ' or ' : ''}${t.posts[t.posts.length - 1]} · up to ${t.pay} cr`; }
   await done();
 });
+
+test('a crew member who works the post helps a job by a tenth; the hand\'s own level at the post counts once, as the level', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup('engineer'), h = hired(), out = {};
+    h.skill = { ...h.skill, engineer: 45 };  // level 2 at the hand's own post, nobody else at it
+    out.mode = postMode('engineer'); out.own = jobOdds({ post: 'engineer' }); out.plain = handCheck(POST_STAT.engineer, skillLevel('engineer'), 'job', 0);
+    st.crew = []; out.alone = jobOdds({ post: 'engineer' });
+    return out;
+  });
+  assert.equal(r.mode, 'manual');
+  assert.equal(r.own, r.plain, 'no helper tenth for the hand\'s own level at the post');
+  assert.equal(r.alone, r.own, 'with nobody else aboard the figure is the same');
+  await done();
+});

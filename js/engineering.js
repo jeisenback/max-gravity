@@ -53,7 +53,7 @@ const transitNow = t => G.state.day + Math.floor(t.days * (t.elapsed || 0) / t.t
 const transitEta = t => G.state.day + (t.lost || 0) + Math.max(1, Math.round(t.days * ((t.elapsed || 0) + Math.max(0, t.left) / burnSpeed()) / t.total));
 
 const heat = () => G.state.heat || 0;
-const heatLimit = () => 75 + 5 * roleSkill('engineer');
+const heatLimit = () => 75 + 5 * roleSkill('engineer') + (handPerk('cool-loop') ? 5 : 0);  // cool-loop (picks.js)
 
 function overload() {
   const st = G.state, p = power();

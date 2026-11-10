@@ -87,6 +87,17 @@ const UI = {
     trapDialog(opener);
   },
 
+  // A keep choice's event drawn in place: the same scene (a fight's next plan or turn) stays where it was scrolled, rather than jump to the top or to its first choice (#970).
+  redraw(ev) {
+    const was = G.dialog.event, same = ev.fight ? ev.fight === was.fight : ev.title === was.title, pinned = () => this.el.querySelector('.choices:not(.flow)');
+    const at = this.el.scrollTop, list = pinned() ? pinned().scrollTop : 0;
+    openEvent(ev);
+    if (!same) return;
+    this.el.scrollTop = at;
+    if (pinned()) pinned().scrollTop = list;
+    this.moreCue();
+  },
+
   // Whether text of the scene remains below the dialog's fold (style.css shows the cue).
   moreCue() {
     const el = this.el;
@@ -354,7 +365,7 @@ const UI = {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
       case 'choose': { const title = G.dialog.event.title, before = G.state, kept = G.dialog.choices[Number(arg)].keep; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts;
         G.shifts = null; if (G.state !== before || G.mode === 'title') return;  /* a new game began (stakes.js): its first scene is up; or the choice went to the title (hired.js chapterOverScene) */
-        if (kept) { if (text) openEvent(text); else finishEvent(); return; }  // keep: the choice returned the event to show next, drawn in place of this one
+        if (kept) { if (text) this.redraw(text); else finishEvent(); return; }  // keep: the choice returned the event to show next, drawn in place of this one
         if (text == null && G.nextEvent) { finishEvent(); return; }  // nothing to show, and a scene to go on to: it opens at once (the picker of Sit with someone)
         this.showEventResult(title, text, shifts); return; }
       case 'continue': finishEvent(); return;

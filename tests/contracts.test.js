@@ -11,10 +11,10 @@ const NAMES = ['SYSTEMS', 'PRICE_MULT', 'CONTRACT_RATE', 'CONTRACT_FEE', 'haulRa
 
 // A game state at Earth on day 10. `danger` is the world's unrest by system; `dice` gives the rolls in order, then 0.5.
 const dice = (rolls = []) => { const seq = [...rolls]; return () => (seq.length ? seq.shift() : 0.5); };
-function setup({ day = 10, rumors = [], danger = {}, rolls = [], hold = 120 } = {}) {
+function setup({ day = 10, rumors = [], danger = {}, rolls = [], hold = 120, perks = [] } = {}) {  // perks: the hand's picks (handPerk, hired.js)
   const G = { state: { day, flags: {}, systemId: 'earth', planet: 'Earth', market: {}, rumors, missions: [], cargo: {}, hired: { since: 1, captain: 'cap1' } } };
   const api = load(['js/data.js', 'js/util.js', 'js/sheet.js', 'js/orbits.js', 'js/market.js', 'js/contracts.js'],
-    { G, Mods: { filter: (n, v) => v, emit() {} }, career: () => G.state.hired, roleSkill: () => 0, ship: () => ({ fuel: 450, cargo: hold }), danger: sid => danger[sid] || 0, pick: l => l[Math.floor(Math.random() * l.length)] }, NAMES);
+    { G, Mods: { filter: (n, v) => v, emit() {} }, career: () => G.state.hired, roleSkill: () => 0, ship: () => ({ fuel: 450, cargo: hold }), danger: sid => danger[sid] || 0, handPerk: id => perks.includes(id), pick: l => l[Math.floor(Math.random() * l.length)] }, NAMES);
   const earth = api.SYSTEMS.earth.planets.find(p => p.name === 'Earth');
   const reach = Object.entries(api.SYSTEMS).filter(([sid]) => sid !== 'earth' && api.inRange('earth', sid));
   return { G, st: G.state, earth, reach, rnd: dice(rolls), ...api };
@@ -199,4 +199,15 @@ test('the Compact\'s carrier license makes its freight office draw the board for
   const draw = (kit, standing) => { st.hired = { since: 1, captain: 'cap1', kit, standing: { [office]: standing } }; delete st.hired.freight; return contractBoard(st, earth).reduce((n, c) => n + c.pay, 0); };
   let plain = 0, licensed = 0; for (let day = 1; day <= 60; day++) { st.day = day; plain += draw([], 1); licensed += draw(['carrier-license'], 1); }
   assert.ok(licensed > plain, `the licensed board pays more over sixty days (${licensed} against ${plain})`);
+});
+
+test('the comms picks: fair-copy halves the dock for a late day, clear-copy stops the skim, open-board draws a board a shipper that knows the ship as one that trusts it', () => {
+  const plain = setup(), picked = setup({ perks: ['fair-copy', 'clear-copy', 'open-board'] });
+  assert.equal(plain.latePay(1000, 10, 12), 800); assert.equal(picked.latePay(1000, 10, 12), 900, 'two days late: a tenth a day, halved');
+  assert.equal(picked.latePay(1000, 10, 10), 1000, 'on time is on time');
+  const skimmed = (api, day) => api.skimOf({ shipper: api.SHIPPERS.other, planet: 'Earth', day }, 1000, 0);
+  const hit = [...Array(60).keys()].find(day => skimmed(plain, day) > 0);
+  assert.notEqual(hit, undefined, 'a day the broker skims the plain hand'); assert.equal(skimmed(picked, hit), 0, 'and not the hand who kept the paper');
+  assert.equal(plain.boardStanding(1, plain.SHIPPERS.other, []), 1); assert.equal(picked.boardStanding(1, picked.SHIPPERS.other, []), picked.STANDING_GOOD);
+  assert.equal(picked.boardStanding(0, picked.SHIPPERS.other, []), 0, 'a shipper that does not know the ship is not moved');
 });
