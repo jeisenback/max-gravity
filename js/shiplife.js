@@ -445,7 +445,8 @@ function posture(p, ph, time, asleep) {
   else if (ph === 'couch') name = (p.couch || 0) >= 0.6 ? 'couch' : Math.abs(p.x - p.seat) > 0.004 ? 'walk' : 'stand';  // on the couch once it has unfolded under them (#925)
   else if (ph === 'secure') name = 'strap';
   else if (ph === 'float') name = p.role === 'engineer' ? 'tether' : 'strap';
-  else if (p.dk !== p.tdk) name = 'climb';
+  else if (p.dk !== p.tdk && (Math.abs(LADDER - p.x) <= 0.003 || p.dk !== Math.round(p.dk))) name = 'climb';  // on the rungs; the way along the deck to them is a walk (#986)
+  else if (p.dk !== p.tdk) name = 'walk';
   else if (p.tx !== null) name = 'walk';
   else if (p.staged) name = p.staged === 'berths' || ((p.staged === 'galley' || (p.role === 'captain' && SEATED_STATIONS.includes(p.staged))) && onSeat(p)) ? 'sit' : 'stand';  // on a seat at the table, a bunk's edge; the captain at the station
   else if (!p.staged && !p.errand && ((p.block === 'shift' && ['post', 'aid', 'repair'].includes(p.at)) || p.at === 'stove')) name = p.at === 'post' && (p.room === 'bridge' || p.room === 'gunnery') && onSeat(p) ? 'work-sit' : 'work';  // at work: seated at the bridge and the guns, where there is a seat
