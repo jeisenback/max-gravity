@@ -30,6 +30,7 @@ const FIGHT = {
                      // in 6.2 turns, 32% of them at the cap (97% at 1.0); random play loses 38% and 19% of the real hull a fight; a lone raider falls to hull fire (COMBAT.md)
   BREAK: 0.3,        // her hull share (shields and armor) under which she breaks off, if her drive can take her away
   HAND_HURT: 0.35,   // the hand's own hurt roll on a turn of a heavy hit (fightui.js); it was a lost bold call's in the raid
+  PATCH: 0.1,        // the share of the pooled maximum armor a patch (the engineer's move) gives back
   HEAVY_HIT: 0.2     // a turn is a heavy hit when the damage done to your hull (fight-scale, not pooled: the foe's damage is not scaled by FIGHT.POOL) is over this share of your real maximum armor, about 44% of the hull you have in the fight (fightui.js); a fifth, so that the hand is rarely
                      // killed: on the Ice Hauler only her salvo unanswered reaches it (SALVO_DMG), and the soak holds the hurts a chapter (tests/distribution/stakes-fights.test.js)
 };
@@ -41,12 +42,22 @@ const AIMED = ['drive', 'lock', 'launcher'];
 const shotMult = (st, o, lead = false) => st.me.dmgMult * bandMultOf(st.band) * (o.over ? FIGHT.OVER_MULT : 1) * (AIMED.includes(o.part) && !lead ? FIGHT.AIM_MULT[RANGE_BANDS[st.band]] || 0 : 1);
 // The [lo, hi] a gun order would roll, for the panel to show.
 const shotRange = (st, o, lead = false) => [FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]].map(d => Math.round(d * shotMult(st, o, lead)));
-// The gunner's moves (docs/superpowers/specs/2026-10-23-gunner-moves-design.md), each once a fight, ordered as orders.move (lead names orders.gun).
+// The hand's moves (docs/superpowers/specs/2026-10-23-gunner-moves-design.md, and the post ladders' eight, docs/superpowers/specs/2026-11-08-post-ladders-design.md),
+// each once a fight, ordered as orders.move (lead and called-shot name orders.gun).
 const FIGHT_MOVES = {
   vent: {},   // heat to 0 and the locks off before the shots, so every gun fires; needs heat or a lock
   lead: {},   // the named gun's aimed shot takes no AIM_MULT; needs that gun ready and aimed at a part
-  split: {}   // the held turret still fires: no shot lost to it; her volley and salvo cut stay; needs the turret held
+  split: {},  // the held turret still fires: no shot lost to it; her volley and salvo cut stay; needs the turret held
+  'called-shot': {},      // the named gun's shot takes no AIM_MULT and rolls the top of its range; needs that gun firing
+  'break-intercept': {},  // your vote to open the range stands this turn whatever her speed; needs a drive and a band to open
+  redline: {},            // at the long band, the ship is away this turn (escaped), after the guns fire; needs a drive
+  patch: {},              // FIGHT.PATCH of the pooled maximum armor back; needs armor lost
+  'hot-start': {},        // every shot this turn is overcharged at a plain shot's heat; needs a shot
+  bypass: {},             // the drive's part back to full; needs it hurt
+  spoof: {},              // she fires no volley and no salvo this turn; needs a foe up
+  parley: {}              // at mid or long, a roll: landed, every foe up breaks off; needs a foe up
 };
+const GUN_MOVES = ['lead', 'called-shot'];  // the moves that name a gun
 // The shots a turn fires, each { o, i } with its gun's index: the ready guns' orders that have a foe, less the one a held turret costs (none under split).
 // The engine fires these and the panel counts their heat, so the two cannot disagree.
 function turnShots(st, orders, split = false) {
@@ -59,7 +70,16 @@ function canUse(st, orders, id, known = []) {
   const held = !!(st.me.pdc && orders.pdc === 'hold');
   if (id === 'vent') return st.heat > 0 || st.locked.length > 0;
   if (id === 'split') return held && gunsReady(st) > 0 && turnShots(st, orders, true).length >= gunsReady(st);  // the held turret must really cost a shot
+  const drive = () => st.me.parts.drive.hp > 0, foeUp = () => st.foes.some(up), band = RANGE_BANDS[st.band];  // read only by the move that asks (a test's bare state may lack the parts)
+  if (id === 'break-intercept') return drive() && st.band < RANGE_BANDS.length;
+  if (id === 'redline') return drive() && band === 'long';
+  if (id === 'patch') return st.me.armor < st.me.maxArmor;
+  if (id === 'hot-start') return turnShots(st, orders).length > 0;
+  if (id === 'bypass') return st.me.parts.drive.hp < st.me.parts.drive.max;
+  if (id === 'spoof') return foeUp();
+  if (id === 'parley') return foeUp() && (band === 'mid' || band === 'long');
   const shot = turnShots(st, orders).find(x => x.i === orders.gun);  // the named gun must fire
+  if (id === 'called-shot') return !!shot;
   const part = shot && st.foes[shot.o.foe] && st.foes[shot.o.foe].parts[shot.o.part];
   return !!shot && AIMED.includes(shot.o.part) && !!part && part.hp > 0 && (FIGHT.AIM_MULT[RANGE_BANDS[st.band]] || 0) < 1;  // a band with no aim penalty, or a part already shot away, has nothing to take off
 }
@@ -107,20 +127,29 @@ function dealDamage(side, part, dmg) {
   return took;
 }
 
-function resolveShipTurn(state, orders, moves, rand, known = []) {
-  const st = copyOf(state), events = [];
+// `roll` is parley's word on wit (fightui.js hands the hand's check); the other moves are sure once usable.
+function resolveShipTurn(state, orders, moves, rand, known = [], roll = () => true) {
+  const st = copyOf(state), events = [], mv = copyOf(moves);  // mv: the moves as this turn plays them, after break-intercept and parley have had their say
   const held = st.me.pdc && orders.pdc === 'hold';
   const move = canUse(st, orders, orders.move, known) ? orders.move : null;
   if (move) {
     st.spent = [...(st.spent || []), move];
-    events.push({ who: 'me', move });
+    const landed = move === 'parley' ? !!roll() : undefined;
+    events.push({ who: 'me', move, ...(landed === undefined ? {} : { landed }) });
     if (move === 'vent') { st.heat = 0; st.locked = []; }
+    if (move === 'patch') st.me.armor = Math.min(st.me.maxArmor, st.me.armor + Math.round(st.me.maxArmor * FIGHT.PATCH));
+    if (move === 'bypass') st.me.parts.drive.hp = st.me.parts.drive.max;
+    if (move === 'break-intercept') { mv.captain = { kind: 'open' }; st.forceOpen = true; }
+    if (landed) st.foes.forEach((foe, i) => { if (up(foe)) mv.foe[i] = { kind: 'break' }; });
   }
+  const hot = move === 'hot-start', spoofed = move === 'spoof';
 
   // A turret held back is not firing, so it costs a shot.
   const shots = turnShots(st, orders, move === 'split');  // split: the held turret costs no shot
   for (const { o, i } of shots) {
-    const dmg = dealDamage(st.foes[o.foe], o.part, rollIn([FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]], shotMult(st, o, move === 'lead' && i === orders.gun), rand));
+    const shot = hot ? { ...o, over: true } : o, called = move === 'called-shot' && i === orders.gun;
+    const mult = shotMult(st, shot, called || (move === 'lead' && i === orders.gun));
+    const dmg = dealDamage(st.foes[o.foe], o.part, called ? Math.round(FIGHT.GUN_DMG[1] * mult) : rollIn([FIGHT.GUN_DMG[0] + FIGHT.SKILL_DMG * st.me.skill, FIGHT.GUN_DMG[1]], mult, rand));
     events.push({ who: 'me', foe: o.foe, part: o.part, dmg });
   }
   if (orders.torp && st.me.launcher && st.me.torps > 0 && st.foes[orders.torp.foe]) {
@@ -130,26 +159,29 @@ function resolveShipTurn(state, orders, moves, rand, known = []) {
     events.push({ who: 'me', foe: orders.torp.foe, part: orders.torp.part, dmg, torp: true });
   }
 
-  st.moves = copyOf(moves);
+  st.moves = copyOf(mv);
   st.foes.forEach((foe, i) => {
-    const m = moves.foe[i];
+    const m = mv.foe[i];
     if (m && m.kind === 'arm') { if (foe.armor > 0 && foe.parts.launcher && foe.parts.launcher.hp > 0) st.armed[i] = true; return; }
     if (m && m.kind === 'salvo') {
       st.armed[i] = false;
+      if (spoofed) return;  // fired at the false echo: her torpedoes are kept for a later salvo
       if (foe.armor <= 0 || !foe.parts.launcher || foe.parts.launcher.hp <= 0 || foe.torps < m.n) return;  // a launcher shot away takes the salvo with it
       foe.torps -= m.n;
       const dmg = dealDamage(st.me, 'hull', rollIn(m.dmg, st.me.pdc && orders.pdc === 'hold' ? 1 - FIGHT.PDC_SALVO : 1, rand));
       events.push({ who: 'foe', foe: i, part: 'hull', dmg, salvo: true });
       return;
     }
-    if (!m || !m.target || foe.armor <= 0 || foe.parts.weapons.hp <= 0) return;  // a broadside, a pin, or the volley she fires as she closes
-    const dmg = dealDamage(st.me, m.target, rollIn(m.dmg, held ? 1 - FIGHT.PDC_HOLD : 1, rand));
+    if (!m || !m.target || foe.armor <= 0 || foe.parts.weapons.hp <= 0 || spoofed) return;  // a broadside, a pin, or the volley she fires as she closes; none at a spoofed transponder
+    const dmg = dealDamage(st.me, m.target, rollIn(m.dmg, held ? 1 - (st.me.pdcHold || FIGHT.PDC_HOLD) : 1, rand));  // pdcHold: the side's own cut, when the panel set one (pd-watch)
     events.push({ who: 'foe', foe: i, part: m.target, dmg });
   });
-  if (st.foes.some((foe, i) => foe.armor > 0 && foe.parts.lock.hp > 0 && st.band === KNIFE && moves.foe[i] && moves.foe[i].kind === 'board')) st.boarded = true;
-  st.band = nextBand(st, moves);
+  if (st.foes.some((foe, i) => foe.armor > 0 && foe.parts.lock.hp > 0 && st.band === KNIFE && mv.foe[i] && mv.foe[i].kind === 'board')) st.boarded = true;
+  if (move === 'redline') st.band = RANGE_BANDS.length;  // past the long band: away, with the shots of both sides already fired
+  st.band = nextBand(st, mv);
+  delete st.forceOpen;
 
-  const heat = st.heat + shots.reduce((h, { o }) => h + (o.over ? FIGHT.OVER_HEAT : 1), 0);
+  const heat = st.heat + shots.reduce((h, { o }) => h + (o.over && !hot ? FIGHT.OVER_HEAT : 1), 0);
   st.locked = heat > FIGHT.HEAT_CAP ? [0] : [];
   st.heat = Math.max(0, heat - FIGHT.HEAT_VENT);
   for (const side of [st.me, ...st.foes]) side.shields = Math.min(side.maxShields, side.shields + Math.round(side.regen * side.maxShields));
@@ -205,6 +237,7 @@ function nextBand(st, moves) {
   if (foeVote === null || meVote === null) step = foeVote === null ? meVote || 0 : foeVote;
   else if (foeVote === meVote) step = foeVote;
   else step = st.me.speed > pack.f.speed ? meVote : st.me.speed < pack.f.speed ? foeVote : 0;
+  if (st.forceOpen && meVote !== null) step = meVote;  // break-intercept: your vote stands whatever her speed
   return Math.max(0, Math.min(RANGE_BANDS.length, st.band + step));
 }
 
@@ -229,7 +262,7 @@ function shipEnd(st) {
 // apart, and each cuts only its own side's losses (R31). Loaded after boarders.js, for REPEL_HURT.
 const DECK = {
   SECTIONS: ['lock', 'corridor', 'bridge'],
-  SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4]],  // heads the hand's shot takes, by the level of the fight (sidearmOf): each downs a wounded head there, else wounds one
+  SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4], [3, 5], [4, 5]],  // heads the hand's shot takes, by the level of the fight, 0 to 5 (sidearmOf): each downs a wounded head there, else wounds one
   SIDEARM_REACH_LEVEL: 2,  // from this level the shot may be aimed at a section next to the hand's as well as its own
   WAVE_TURN: 2,      // the turn at whose end the second wave of a repel lands in the lock
   CREW_HIT: [0, 2],  // heads one opposing head takes in a section where both stand (a roll a head); a side's own cover cuts its total, never below one hit
@@ -285,7 +318,7 @@ const dealt = (n, lo, hi, rand) => Math.min(n, lo + Math.floor(rand() * (hi - lo
 const rollsOf = (k, [lo, hi], rand) => { let t = 0; for (let i = 0; i < k; i++) t += lo + Math.floor(rand() * (hi - lo + 1)); return t; };  // k rolls in a range, summed
 
 // `cover` is ours by section and `hers` hers. A repel brings half of the boarders to the lock and the rest as a wave (`wave`, null in an assault, where her crew are already aboard). The hand starts in `hand` (the lock), or with the nearest of our heads when none of ours is there (R34).
-function deckFight({ boarders, crew, hand = LOCK, cover, hers = [], grade = 0, assault = false, side = false, party = 'raider', level = 2 }) {
+function deckFight({ boarders, crew, hand = LOCK, cover, hers = [], grade = 0, assault = false, side = false, party = 'raider', level = 2, coverMade = COVER_MADE }) {  // coverMade: what a worked cover order makes (cover-eye: 3)
   const names = side ? [...DECK.SECTIONS, 'cargo'] : DECK.SECTIONS;
   const sections = names.map((_, i) => ({ mine: 0, theirs: 0, mineHurt: 0, theirsHurt: 0, cover: cover[i] || 0, hers: hers[i] || 0 }));
   const [atk, def] = assault ? ['mine', 'theirs'] : ['theirs', 'mine'];
@@ -294,7 +327,7 @@ function deckFight({ boarders, crew, hand = LOCK, cover, hers = [], grade = 0, a
   sections[LOCK][atk] = assault ? crew : first;
   sections.forEach((s, i) => { s[def] = each + (i === BRIDGE ? n - each * sections.length : 0); });  // the remainder holds the bridge, so it is never left empty
   const start = sections[hand].mine ? hand : sections.map((_, i) => i).filter(i => sections[i].mine).sort((a, b) => Math.abs(REACH[a] - REACH[hand]) - Math.abs(REACH[b] - REACH[hand]))[0];
-  return { kind: 'deck', sections, hand: start === undefined ? hand : start, began: boarders, party, level, wave: !assault && boarders > first ? { n: boarders - first, turn: DECK.WAVE_TURN } : null, grade, assault, side, used: {}, turn: 0, charged: null, log: [],  // charged: the turn of the last charge
+  return { kind: 'deck', sections, hand: start === undefined ? hand : start, began: boarders, party, level, coverMade, wave: !assault && boarders > first ? { n: boarders - first, turn: DECK.WAVE_TURN } : null, grade, assault, side, used: {}, turn: 0, charged: null, log: [],  // charged: the turn of the last charge
     ...(party === 'navy' && !assault ? { navyDown: 0 } : {}) };  // navyDown: the heads of a navy party put down so far, which the settle charges in standing
 }
 
@@ -355,7 +388,7 @@ function resolveDeckTurn(state, { stand, act, order }, shown, rand) {
     if (a.kind === 'cover') st.used.cover = true;
     if (a.kind === 'steady' && !hatch && !S[at].theirs) { events.push({ kind: a.kind, nobody: true }); return; }
     const worked = rand() < a.odds;
-    const r = abilityStep(a.kind, worked, { pos: at, boarders: S[at].theirs, extra });
+    const r = abilityStep(a.kind, worked, { pos: at, boarders: S[at].theirs, extra }, st.coverMade);
     down += S[at].theirs - r.boarders;
     S[at].theirs = r.boarders; S[at].theirsHurt = Math.min(hurtOf(S[at], 'theirs'), r.boarders);
     r.extra.forEach((n, i) => { extra[i] = n; });
@@ -471,7 +504,7 @@ function deckEnd(st) {
   return deckCapped(st) ? (st.assault ? 'taken' : 'won') : null;
 }
 const deckRule = (st, key) => (st.assault && key in DECK.ASSAULT ? DECK.ASSAULT : DECK)[key];  // a DECK number, or boarding her its DECK.ASSAULT one
-const sidearmOf = st => DECK.SIDEARM_BY_LEVEL[st.level];  // [lo, hi] heads the hand's shot takes at this fight's level
+const sidearmOf = st => DECK.SIDEARM_BY_LEVEL[Math.min(st.level, DECK.SIDEARM_BY_LEVEL.length - 1)];  // [lo, hi] heads the hand's shot takes at this fight's level
 const pendingWave = st => (st.wave ? st.wave.n : 0);  // the heads still to land, 0 once landed
 const deckCap = st => (navyBoarding(st) ? DECK.NAVY_TURNS : DECK.TURNS);  // the turn the attackers withdraw at: a navy party's own, or the deck's
 // A navy party on our deck, the only deck it boards (a navy hull boarded, in the owner's game, fights as her crew): each of them put down costs standing, holding

@@ -82,3 +82,16 @@ test('the choices of the yard scene all work, and helping is faster, and rest me
   assert.equal(r['Rest and let'].hurt, false); assert.equal(r['Stand by'].hurt, true);
   await done();
 });
+
+test('yard-eye: the yard\'s estimate is a tenth less for a hand with the pick', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    setup(); const p = dock(60); G.dialog = null; G.nextEvent = null;
+    const plain = repairPlan(p); hired().picks = ['yard-eye']; hired().post = 'engineer'; const eyed = repairPlan(p);  // an engineer's pick: the hand reads as an engineer from here
+    return { plain: plain.total, eyed: eyed.total, parts: [plain.parts, eyed.parts], labor: [plain.labor, eyed.labor] };
+  });
+  assert.ok(r.plain > 0); assert.equal(r.eyed, Math.round(r.plain * 0.9));
+  assert.deepEqual(r.parts[0], r.parts[1]); assert.deepEqual(r.labor[0], r.labor[1], 'the parts and the labor read as before; the total is the estimate');
+  await done();
+});

@@ -59,11 +59,11 @@ test('the career a hand takes into the next chapter is a copy of their sheet, ki
   const h = { sheet: { hands: 4, eye: 3, nerve: 3, wit: 5 }, kit: ['valve-keys'], standing: { 'the League Freight Hall': 2 }, post: 'gunner', skill: { gunner: 40 }, fund: 900, since: 3, captain: 'p7', moves: ['vent'] };
   const c = api.careerOf(h);
   assert.deepEqual({ ...c.sheet }, h.sheet); assert.deepEqual([...c.kit], ['valve-keys']); assert.deepEqual({ ...c.standing }, h.standing);
-  assert.deepEqual(Object.keys(c).sort(), ['captain', 'kit', 'moves', 'post', 'sheet', 'since', 'skill', 'standing'], 'only the sheet, the kit, the regard and the moves go on, with the day and the captain that seed the board'); assert.deepEqual([c.since, c.captain, c.post], [3, 'p7', 'gunner']); assert.deepEqual({ ...c.skill }, { gunner: 40 }); assert.deepEqual([...c.moves], ['vent']);
+  assert.deepEqual(Object.keys(c).sort(), ['captain', 'kit', 'moves', 'picks', 'post', 'sheet', 'since', 'skill', 'standing'], 'only the sheet, the kit, the regard, the moves and the picks go on, with the day and the captain that seed the board'); assert.deepEqual([c.since, c.captain, c.post], [3, 'p7', 'gunner']); assert.deepEqual({ ...c.skill }, { gunner: 40 }); assert.deepEqual([...c.moves], ['vent']);
   c.kit.push('audit-seal'); c.standing['the League Freight Hall'] = 3; c.sheet.hands = 5; c.skill.gunner = 99; c.moves.push('lead');
   assert.deepEqual([...h.kit], ['valve-keys']); assert.equal(h.standing['the League Freight Hall'], 2); assert.equal(h.sheet.hands, 4); assert.equal(h.skill.gunner, 40); assert.deepEqual([...h.moves], ['vent']);
   const old = api.careerOf({});
-  assert.equal(old.sheet, null); assert.deepEqual([...old.kit], []); assert.deepEqual({ ...old.standing }, {}); assert.deepEqual([...old.moves], []);
+  assert.equal(old.sheet, null); assert.deepEqual([...old.kit], []); assert.deepEqual({ ...old.standing }, {}); assert.deepEqual([...old.moves], []); assert.deepEqual([...old.picks], []);
 });
 
 test('an item in the kit can be read by a shipper: the carrier license by the Compact Freight Office, and no other item or shipper', () => {

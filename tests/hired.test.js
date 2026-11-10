@@ -887,3 +887,83 @@ test('on a hired ship the torpedoes read as the captain\'s two, with her reason,
   assert.match(r.hud, /^Torps:\s+2 \(F\)$/); assert.equal(r.owner, '2/6'); assert.equal(r.hand, '2');
   await done();
 });
+
+// The post ladders (#963): five levels, and the level note says when a pick waits on the hand's page.
+test('the ladder has five levels ending at 400 points, and the level note says a pick waits', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(); st.tutorial = null; st.story.next = 1e9; G.mode = 'landed'; UI.notes = [];
+    gainSkill('gunner', 45);  // the second level lands (a hand signs on at the first)
+    return { steps: SKILL_STEPS, note: UI.notes.find(n => /level 2 now/.test(n)) || '', picks: h.picks };
+  });
+  assert.deepEqual(r.steps, [0, 12, 45, 110, 220, 400]);
+  assert.match(r.note, /A pick waits on your page\.$/);
+  await done();
+});
+
+// #963: the ship's perk at the hand's post is the hand's level when nobody else holds the post, and a taken edge pick moves the hand's rolls of its kind.
+test('the ship\'s perk at the hand\'s post is the hand\'s level when nobody else holds it, and the holder\'s when someone does', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), out = {}; st.tutorial = null; st.story.next = 1e9;
+    out.start = { holder: !!postHolder('gunner'), skill: roleSkill('gunner'), level: skillLevel('gunner') };
+    career().skill.gunner = 45;  // level 2
+    out.level2 = { skill: roleSkill('gunner'), guns: playerGuns(), shipGuns: ship().guns };
+    const npc = makeCrewCandidate(st.systemId); npc.role = 'gunner'; npc.skill = 3; st.people[npc.id] = npc; st.crew.push(npc.id);
+    out.crewed = { mode: postMode('gunner'), skill: roleSkill('gunner') };
+    st.crew = st.crew.filter(id => id !== npc.id); h.post = 'pilot';
+    out.swapped = { gunner: roleSkill('gunner'), pilot: roleSkill('pilot'), ines: roleHolder('pilot') && roleHolder('pilot').skill };
+    return out;
+  });
+  assert.equal(r.start.holder, false, 'the hand is the gunner'); assert.equal(r.start.skill, r.start.level, 'the ship reads the hand\'s level');
+  assert.equal(r.level2.skill, 2); assert.equal(r.level2.guns, r.level2.shipGuns + 1, 'a gunner aboard is the extra gun');
+  assert.equal(r.crewed.mode, 'crewed'); assert.equal(r.crewed.skill, 3, 'with someone in the chair, theirs');
+  assert.equal(r.swapped.gunner, 0, 'the chair the hand left is empty'); assert.equal(r.swapped.pilot, r.swapped.ines, 'Ines holds the helm');
+  await done();
+});
+
+test('a taken edge pick moves the hand\'s rolls of its kind and no other', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const before = { post: postOdds('gunner'), solo: soloOdds('gunner') };
+    takePick(career(), 'steady-eye');
+    return { before, after: { post: postOdds('gunner'), solo: soloOdds('gunner') } };
+  });
+  assert.ok(Math.abs(r.after.post - r.before.post - 0.05) < 1e-9, `the post's roll is a twentieth better (${r.before.post} to ${r.after.post})`);
+  assert.equal(r.after.solo, r.before.solo, 'a bold call is unchanged');
+  await done();
+});
+
+test('cool-loop raises the reactor\'s heat limit by five, and long-ear keeps a market rumor a week longer', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'engineer', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, out = {}, h = hired(); st.story.next = 1e9;
+    out.limit0 = heatLimit(); takePick(h, 'cool-loop'); out.limit1 = heatLimit();
+    uatBurn('Earth', 'mars'); G.transit.comms = []; st.rumors = [];
+    const real = Math.random; Math.random = () => 0;
+    addRumor(); out.days0 = st.rumors[0].until - st.day;
+    h.picks.push('long-ear'); h.post = 'comms'; st.rumors = []; addRumor(); out.days1 = st.rumors[0].until - st.day;  // a comms pick: the hand reads as a comms hand from here
+    Math.random = real;
+    return out;
+  });
+  assert.equal(r.limit1 - r.limit0, 5);
+  assert.deepEqual([r.days0, r.days1], [12, 19], 'the shortest rumor, and a week more');
+  await done();
+});
+
+test('a perk counts only at the post of its pick: a pilot\'s trim stops at the guns and is back at the helm', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const h = hired(), out = {}; takePick(h, 'trim');
+    out.pilot = handPerk('trim'); h.post = 'gunner'; out.gunner = handPerk('trim'); h.post = 'pilot'; out.back = handPerk('trim');
+    out.none = handPerk('long-legs');
+    return out;
+  });
+  assert.deepEqual(r, { pilot: true, gunner: false, back: true, none: false });
+  await done();
+});

@@ -14,3 +14,6 @@ function hash(str) {
   for (const c of str) h = (h * 31 + c.charCodeAt(0)) | 0;
   return h;
 }
+
+// A perk of the hired hand's post ladder (picks.js) where the reader may not be loaded: handPerk is hired.js's, and a module run in plain Node has none.
+const perkOn = id => typeof handPerk === 'function' && handPerk(id);

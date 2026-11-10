@@ -145,7 +145,7 @@ function setup([policySrc, answerSrc, o]) {
   };
   // the pay of the chapter: what the wage and the share put in the hand's savings at each arrival (game.js payCrew, hired.js settleRun)
   for (const name of ['payCrew', 'settleRun']) { const real = window[name]; window[name] = function () { const c0 = G.state.credits, out = real.apply(this, arguments); P.pay += Math.max(0, G.state.credits - c0); return out; }; }
-  // the gunner moves: each taught on a burn (gunnermoves.js), and each use in a fight, as the engine applies it (fight.js resolveShipTurn, a move event)
+  // the gunner moves: each taught on a burn (moves.js), and each use in a fight, as the engine applies it (fight.js resolveShipTurn, a move event)
   { const real = ACTIVITIES.teach.run; ACTIVITIES.teach.run = function () { const out = real.apply(this, arguments), m = (career() || {}).moves || []; if (out) P.taught.push({ id: m[m.length - 1], day: day() }); return out; }; }
   { const real = window.resolveShipTurn; window.resolveShipTurn = function () { const r = real.apply(this, arguments); for (const e of r.events) if (e.move) P.used[e.move] = (P.used[e.move] || 0) + 1; return r; }; }
   // how each fight ended (fightui.js): the ship fight's end, and the deck fight's

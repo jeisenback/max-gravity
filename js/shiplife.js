@@ -748,7 +748,7 @@ const ACTIVITIES = {
       G.state.armor = Math.min(max, before + amount);
       for (const p of shipPeople()) toActivity(p, p.role === 'passenger' ? 'galley' : p.role === 'captain' ? 'bridge' : lifePick(['engine', 'hold']));
       const day = G.state.day;  // the result and its tail are one version, taken by the day
-      return `${lifeSay(tellingOn('repair.result', day), { before, after: G.state.armor, max })} ${roleSkill('engineer') ? lifeSay(tellingOn('repair.skilled', day), { name: roleName('engineer') }) : lifeSay(tellingOn('repair.alone', day))}`;
+      return `${lifeSay(tellingOn('repair.result', day), { before, after: G.state.armor, max })} ${roleHolder('engineer') && roleSkill('engineer') ? lifeSay(tellingOn('repair.skilled', day), { name: roleName('engineer') }) : lifeSay(tellingOn('repair.alone', day))}`;  // a crewmate engineer's hand on it; a hand at that post works alone
     },
   },
   visit: {
@@ -797,7 +797,7 @@ function downtimeFive() {
   const kept = (t.lifeShown[half] || []).map(l => every.find(a => activityLabel(a) === l)).filter(Boolean);
   if (kept.length) return kept;
   const turn = st.lifeTurn = (st.lifeTurn || 0) + 1;
-  const due = lanes[0].find(a => a === ACTIVITIES.teach);  // a move the crew would show you (gunnermoves.js) is never left out of the five: the rotation could hide it for a chapter (#850)
+  const due = lanes[0].find(a => a === ACTIVITIES.teach);  // a move the crew would show you (moves.js) is never left out of the five: the rotation could hide it for a chapter (#850)
   const out = due ? [due, ...menuFive(lanes.map(l => l.filter(a => a !== due)), turn)].slice(0, MENU_SHOWN) : menuFive(lanes, turn);
   t.lifeShown[half] = out.map(activityLabel);
   return out;
@@ -810,7 +810,7 @@ function downtimeEvent(all) {
     title: lifeSay('title'), personal: true,  // a hand's savings are their own, not the ship's purse
     text: lifeSay(hired() ? 'text.hired' : 'text', { when: lifeSay(t.flipped ? 'when.after' : 'when.before') }),
     choices: [
-      ...(all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive()).map(a => (what => ({  // what: the label as drawn, handed to can and run, so a teaching does the move it named (gunnermoves.js)
+      ...(all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive()).map(a => (what => ({  // what: the label as drawn, handed to can and run, so a teaching does the move it named (moves.js)
         label: what, can: a.can && (() => a.can(what)),
         run() {
           spendLife(t);

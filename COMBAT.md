@@ -287,9 +287,18 @@ the guns are a race too.
 A hired gunner learns three moves from the crew (`FIGHT_MOVES` in `js/fight.js`, `docs/superpowers/specs/2026-10-23-gunner-moves-design.md`),
 each ordered beside the guns and used once a fight: **vent** (the engineer teaches it) takes the heat to 0 and the locks off before
 the shots; **lead** (the pilot) takes the range penalty off one gun's aimed shot; **split** (the first officer) lets the turret
-held back for her salvo fire anyway. A move with nothing to act on is not spent. Each is taught on a burn as a downtime choice
-(`MOVE_TEACH` in `js/gunnermoves.js`): vent and lead at gunner level 1, split at level 2, once the teacher trusts the hand
-(`OPINION.TRUSTED`) and is aboard and unhurt. An owner is taught none.
+held back for her salvo fire anyway. A move with nothing to act on is not spent. Each is a pick on the gunner's ladder (`js/picks.js`,
+`docs/superpowers/specs/2026-11-08-post-ladders-design.md`: vent at level 1, lead at 2, split at 3) and is then taught on a burn as a
+downtime choice (`MOVE_TEACH` in `js/moves.js`), once the teacher trusts the hand (`OPINION.TRUSTED`) and is aboard and unhurt. An owner is taught none.
+
+The ladders add eight more moves, each a pick at its post and used once a fight like the three (#963): **called shot** (gunner 5) puts the
+named gun's shot at the top of its range with no aim penalty; **break the intercept** (pilot 2) makes the captain's vote to open the range
+stand this turn whatever her speed; **redline** (pilot 5, the engineer teaches it) takes the ship away from the long band this turn, after the
+guns fire; **patch** (engineer 2) gives back a tenth of the fight's pooled armor (`FIGHT.PATCH`); **hot start** (engineer 3, the pilot) overcharges
+every shot this turn at a plain shot's heat; **bypass** (engineer 5) puts the drive's part back to full, so a pinned drive votes on the range
+again; **spoof** (comms 2) is a false transponder: she fires no volley and no salvo this turn, and keeps her torpedoes; **parley** (comms 5, the
+first officer) is a word on wit at mid or long range, `handCheck('wit', comms level, 'post')`: landed, every foe still up breaks off, and the
+fight ends `broke`; failed, the move is spent and she fires. A hand's fight offers the moves the hand knows, at whatever post.
 
 A hired hand can also meet a distress call on a burn through unsettled space (pirates 0.25 or more at either end, at most once
 in 60 days): seven in ten are a trap, and the rest are a real freighter that pays the ship's fund 500 cr. Each post has its own
@@ -456,6 +465,14 @@ the run that wrote this section (after the final review's tune, #808):
   | a cutter | 100% / 0.0% / 5.32 / 0% | 100% / 0.0% / 4.88 / 0% | vent: 100% / 0.0% / 4.91 / 0% |
   | a raider pair | 94% / 7.0% / 7.92 / 62% | 98% / 2.3% / 7.73 / 60% | lead: 98% / 2.4% / 7.74 / 66% |
   | over every type | 99% / 3.2% / 6.21 / 11% | 100% / 1.9% / 5.53 / 10% | |
+
+  The post ladders' eight (#963; `node tools/fights.js --seeds 1,2,3 --n 100 --ship-only --moves called-shot,patch,spoof,parley`, 3 seeds
+  of 100): `answer` orders none of them, so its rows are the no-move rows again (a raider 100% / 0.4% / 4.77 / 0%, a corsair 100% / 4.3% /
+  7.44 / 5%, a cutter 100% / 0.0% / 5.31 / 0%, a raider pair 96% / 5.8% / 7.91 / 50%), and the same run with `--moves` (the gunner's three)
+  gives the table above to the digit, so the engine's new moves moved nothing for the old ones. For a player who does not read her move
+  they are worth more than the three: `randmove` with the four has 50% good ends over every type (24% with the three) and loses 8.4% of
+  the hull a fight (26.8%), since a parley or a spoof ends or empties a turn whatever the aim; it still loses 31% of its fights. `eager` with
+  the four has 18% good ends (0%), the corsair and the pair broken off by a parley at its first chance.
 
   Split against a corsair ends the fight sooner (7.4 to 6.6 turns, none at the cap); lead against a pair wins more (94% to 98%)
   and loses a third as much hull (7.0% to 2.4%); lead also cripples a corsair more often (19% to 42% of her ends), at a cost: alone it raises answer's hull lost against a corsair (5.6% to 6.3%). Vent against a cutter turns

@@ -247,3 +247,23 @@ test('a reload at the rock keeps the shifts and plays no second approach, the co
   assert.match(r.captain, /on station at/);
   await done();
 });
+
+test('the ice run perks: soft-hands spares the hull on a lost approach the pilot flies, melt-return puts twenty of mass in the tanks at home', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup('pilot'), h = hired(), out = {}, pilot = ICE_STAGES[0].post.pilot, max = ship().armor;
+    h.run = { ice: { edge: 0 }, tons: 20 }; const c = { ...pilot, odds: 0.5 };
+    rolls([0.99]); st.armor = max; iceStep(0, c, 'pilot'); out.plain = max - st.armor;
+    takePick(h, 'soft-hands'); rolls([0.99]); st.armor = max; const text = iceStep(0, c, 'pilot'); out.spared = max - st.armor; out.noArmorNote = !/Armor -/.test(text);
+    rolls([0.99]); st.armor = max; iceStep(0, { ...ICE_STAGES[0].general[0], odds: 0.5 }, null); out.general = max - st.armor;
+    st.fuel = 100; out.homePlain = { text: iceHome(0), fuel: st.fuel };
+    h.picks.push('melt-return'); h.post = 'engineer'; out.home = { text: iceHome(0), fuel: st.fuel };  // an engineer's pick: the hand reads as an engineer from here
+    st.fuel = ship().fuel - 5; iceHome(0); out.capped = st.fuel === ship().fuel;
+    return out;
+  });
+  assert.ok(r.plain > 0, 'a lost approach costs hull'); assert.equal(r.spared, 0, 'not with soft hands'); assert.ok(r.noArmorNote);
+  assert.ok(r.general > 0, 'a general choice lost still costs hull');
+  assert.deepEqual(r.homePlain, { text: '', fuel: 100 }); assert.equal(r.home.fuel, 120); assert.match(r.home.text, /20/); assert.ok(r.capped, 'never over the tank');
+  await done();
+});

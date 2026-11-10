@@ -196,7 +196,7 @@ test('resolveShipTurn does not change the state it was given', () => {
 });
 
 test('the constants are the ones the design names', () => {
-  assert.deepEqual(plain(FIGHT), { GUN_DMG: [8, 14], FOE_DMG: [7, 18], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.4, long: 0.25 }, PART_HP: { weapons: 63, drive: 34, lock: 7, launcher: 10 }, TORP_DMG: [12, 18], SALVO_DMG: [20, 30], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 2, PDC_SALVO: 0.6, TURNS: 8, POOL: 0.45, BREAK: 0.3, HAND_HURT: 0.35, HEAVY_HIT: 0.2, LOST_CARGO: 0.3 });
+  assert.deepEqual(plain(FIGHT), { GUN_DMG: [8, 14], FOE_DMG: [7, 18], HEAVY: 1.4, SKILL_DMG: 1, BAND_MULT: { knife: 1.1, close: 1, mid: 0.85, long: 0.8 }, HEAT_CAP: 4, HEAT_VENT: 2, OVER_MULT: 1.5, OVER_HEAT: 2, AIM_MULT: { knife: 1, close: 1, mid: 0.4, long: 0.25 }, PART_HP: { weapons: 63, drive: 34, lock: 7, launcher: 10 }, TORP_DMG: [12, 18], SALVO_DMG: [20, 30], PDC_HOLD: 0.4, SALVO: 2, SALVO_EVERY: 2, PDC_SALVO: 0.6, TURNS: 8, POOL: 0.45, BREAK: 0.3, HAND_HURT: 0.35, PATCH: 0.1, HEAVY_HIT: 0.2, LOST_CARGO: 0.3 });
 });
 
 test('the turret and heavy rounds outfits reach a side: the extra gun, the turret flag and the heavy multiplier', () => {
@@ -521,7 +521,7 @@ test('the deck starts with the attackers in the lock and the defenders spread, t
   const st = deck({ side: true, cover: [1, 2, 3] });
   assert.deepEqual(plain([st.sections.length, st.sections[3].cover, st.hand, st.began, st.turn, st.used, st.kind]), [4, 0, 2, 3, 0, {}, 'deck'], 'three crew over four sections are all on the bridge, and the hand starts with them (R34)');
   assert.deepEqual(plain(st.sections.map(s => s.cover)), [1, 2, 3, 0]);
-  assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4]], SIDEARM_REACH_LEVEL: 2, WAVE_TURN: 2, CREW_HIT: [0, 2], CHARGE: [1, 1], BREAK: 0.15, FULL: 4, CORSAIR_LESS: 2, FULL_PAIR: 2, SUIT: 0.2, CASUALTY: 0.3, TURNS: 8,
+  assert.deepEqual(plain(DECK), { SECTIONS: ['lock', 'corridor', 'bridge'], SIDEARM_BY_LEVEL: [[1, 2], [1, 2], [2, 3], [3, 4], [3, 5], [4, 5]], SIDEARM_REACH_LEVEL: 2, WAVE_TURN: 2, CREW_HIT: [0, 2], CHARGE: [1, 1], BREAK: 0.15, FULL: 4, CORSAIR_LESS: 2, FULL_PAIR: 2, SUIT: 0.2, CASUALTY: 0.3, TURNS: 8,
     ASSAULT: { BREAK: 0.2, FULL: 5, CREW_HIT: [0, 1], CASUALTY: 0.5 }, NAVY_TURNS: 5, NAVY_STANDING: 2 });
   assert.equal(deck({ crew: 3 }).hand, 0, 'with one of ours in the lock the hand starts there');
   assert.deepEqual(plain(deck({ assault: true, hers: [1, 0, 1] }).sections.map(x => [x.cover, x.hers])), [[0, 1], [0, 0], [0, 1]], 'her cover is kept apart from ours');
@@ -813,7 +813,7 @@ test('with no torpedoes left she does not arm, and with one she arms for one', (
 });
 
 test('vent clears the heat and unlocks the guns, once a fight', () => {
-  assert.deepEqual(Object.keys(FIGHT_MOVES), ['vent', 'lead', 'split']);
+  assert.deepEqual(Object.keys(FIGHT_MOVES), ['vent', 'lead', 'split', 'called-shot', 'break-intercept', 'redline', 'patch', 'hot-start', 'bypass', 'spoof', 'parley']);
   const hot = { ...fight({ stats: { guns: 3 } }), heat: 5, locked: [0] };
   assert.equal(gunsReady(hot), 2);
   const r = resolveShipTurn(hot, orders(fire(3), { move: 'vent' }), quiet, LOW, ['vent']);
@@ -929,6 +929,125 @@ test('lead at close or knife has no range penalty to take off: not spent, nothin
     assert.deepEqual(plain(r), plain(b), band);
     assert.deepEqual(plain(r.state.spent), [], band);
   }
+});
+
+// The fight perks of the post ladders (picks.js): the engine reads them as figures on the state the panel builds.
+test('a held turret cuts her volley by the side\'s own pdcHold when it has one, else by PDC_HOLD', () => {
+  const st = fight({ stats: { guns: 1, pdc: true } }), v = me => resolveShipTurn({ ...st, me: { ...st.me, ...me } }, orders(fire(1), { pdc: 'hold' }), { foe: [HULL], captain: hold }, HIGH).events.find(e => e.who === 'foe').dmg;
+  assert.equal(v({}), Math.round(14 * (1 - FIGHT.PDC_HOLD)));
+  assert.equal(v({ pdcHold: 0.5 }), Math.round(14 * 0.5), 'pd-watch: half off');
+  assert.ok(v({ pdcHold: 0.5 }) < v({}));
+});
+
+test('a worked cover order makes the deck state\'s coverMade points, COVER_MADE unless the state says more (cover-eye)', () => {
+  const made = (o = {}) => { const st = deckFight({ boarders: 3, crew: 3, cover: [0, 0, 0], ...o }); st.sections[0].theirs = 0; st.sections[1].theirs = 3; return resolveDeckTurn(st, { stand: 0, act: { kind: 'cover', odds: 1 }, order: null }, { kind: 'hold' }, LOW).state.sections[0].cover; };
+  assert.equal(made(), 2); assert.equal(made({ coverMade: 3 }), 3);
+  assert.equal(deckFight({ boarders: 3, crew: 3, cover: [0, 0, 0] }).coverMade, 2, 'the state carries it');
+});
+
+// The eight moves of the post ladders (docs/superpowers/specs/2026-11-08-post-ladders-design.md), each once a fight, spent as the gunner's three are.
+test('a called shot takes no aim penalty and rolls the top of its range, on the named gun only', () => {
+  const st = fight({ stats: { guns: 2 } }, {}, L), aimed = [{ foe: 0, part: 'drive' }, { foe: 0, part: 'drive' }];
+  assert.equal(canUse(st, orders(aimed, { gun: 0 }), 'called-shot', ['called-shot']), true);
+  assert.equal(canUse(st, orders(aimed, { gun: 2 }), 'called-shot', ['called-shot']), false, 'no such gun');
+  assert.equal(canUse(st, orders([null, null], { gun: 0 }), 'called-shot', ['called-shot']), false, 'the gun must fire');
+  assert.equal(canUse(st, orders(fire(2), { gun: 0 }), 'called-shot', ['called-shot']), true, 'a hull shot is called too');
+  const r = resolveShipTurn(st, orders(aimed, { move: 'called-shot', gun: 0 }), quiet, LOW, ['called-shot']), base = sh(resolveShipTurn(st, orders(aimed), quiet, LOW));
+  assert.equal(sh(r)[0].dmg, Math.round(FIGHT.GUN_DMG[1] * FIGHT.BAND_MULT.long), 'the top of the range, the band and no aim factor');
+  assert.equal(sh(r)[1].dmg, base[1].dmg, 'the other gun as before');
+  assert.deepEqual(plain(r.state.spent), ['called-shot']);
+});
+
+test('break the intercept: your vote to open stands this turn whatever her speed, and the flag does not outlive the turn', () => {
+  const st = fight({}, { stats: { accel: 2 } }, M), closing = { foe: [{ kind: 'close', target: 'hull', dmg: [1, 2] }], captain: hold };
+  assert.ok(st.foes[0].speed > st.me.speed);
+  assert.equal(resolveShipTurn(st, orders(fire(2)), closing, LOW).state.band, M - 1, 'she is faster: she closes');
+  assert.equal(canUse(st, orders(fire(2)), 'break-intercept', ['break-intercept']), true);
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'break-intercept' }), closing, LOW, ['break-intercept']);
+  assert.equal(r.state.band, M + 1, 'the range opens on your vote');
+  assert.deepEqual(plain(r.state.spent), ['break-intercept']); assert.equal('forceOpen' in r.state, false);
+  const dead = fight({}, {}, M); dead.me.parts.drive.hp = 0;
+  assert.equal(canUse(dead, orders(fire(2)), 'break-intercept', ['break-intercept']), false, 'no drive, no vote');
+  assert.equal(canUse({ ...st, band: RANGE_BANDS.length }, orders(fire(2)), 'break-intercept', ['break-intercept']), false, 'already away');
+});
+
+test('redline at the long band takes the ship away this turn, after the guns have fired', () => {
+  const st = fight({}, {}, L);
+  assert.equal(canUse(st, orders(fire(2)), 'redline', ['redline']), true);
+  assert.equal(canUse(fight({}, {}, M), orders(fire(2)), 'redline', ['redline']), false, 'not from mid');
+  const dead = fight({}, {}, L); dead.me.parts.drive.hp = 0;
+  assert.equal(canUse(dead, orders(fire(2)), 'redline', ['redline']), false, 'no drive');
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'redline' }), { foe: [HULL], captain: hold }, HIGH, ['redline']);
+  assert.equal(r.state.band, RANGE_BANDS.length); assert.equal(shipEnd(r.state), 'escaped');
+  assert.ok(sh(r).length === 2 && sh(r).every(e => e.dmg > 0), 'your shots went out as you ran');
+  assert.deepEqual(plain(r.state.spent), ['redline']);
+});
+
+test('patch gives a tenth of the pooled armor back, never over the maximum, and has nothing to do at full', () => {
+  const st = fight(); const max = st.me.maxArmor;
+  assert.equal(canUse(st, orders(fire(2)), 'patch', ['patch']), false, 'whole');
+  st.me.armor = max - 20;
+  assert.equal(canUse(st, orders(fire(2)), 'patch', ['patch']), true);
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'patch' }), quiet, LOW, ['patch']);
+  assert.equal(r.state.me.armor, max - 20 + Math.round(max * FIGHT.PATCH));
+  const near = { ...st, me: { ...st.me, armor: max - 1 } };
+  assert.equal(resolveShipTurn(near, orders(fire(2), { move: 'patch' }), quiet, LOW, ['patch']).state.me.armor, max, 'capped');
+  assert.deepEqual(plain(r.state.spent), ['patch']);
+});
+
+test('a hot start overcharges every shot this turn at a plain shot\'s heat', () => {
+  const st = fight({ stats: { guns: 2 } });
+  assert.equal(canUse(st, orders(fire(2)), 'hot-start', ['hot-start']), true);
+  assert.equal(canUse(st, orders([null, null]), 'hot-start', ['hot-start']), false, 'no shot to charge');
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'hot-start' }), quiet, HIGH, ['hot-start']);
+  const over = resolveShipTurn(st, orders(fire(2).map(o => ({ ...o, over: true }))), quiet, HIGH);
+  assert.deepEqual(sh(r).map(e => e.dmg), sh(over).map(e => e.dmg), 'each shot rolls as an overcharged one');
+  assert.equal(r.state.heat, Math.max(0, 2 - FIGHT.HEAT_VENT), 'two shots of heat 1'); assert.equal(over.state.heat, 2 * FIGHT.OVER_HEAT - FIGHT.HEAT_VENT);
+  assert.deepEqual(plain(r.state.spent), ['hot-start']);
+});
+
+test('bypass puts the drive back to full, so a pinned drive votes on the range again this turn', () => {
+  const st = fight({}, { stats: { accel: 0.5 } }); st.me.parts.drive.hp = 0;
+  assert.equal(canUse(fight(), orders(fire(2)), 'bypass', ['bypass']), false, 'the drive is whole');
+  assert.equal(canUse(st, orders(fire(2)), 'bypass', ['bypass']), true);
+  const opening = { foe: [hold], captain: { kind: 'open' } };
+  assert.equal(resolveShipTurn(st, orders(fire(2)), opening, LOW).state.band, CLOSE, 'no drive, no vote');
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'bypass' }), opening, LOW, ['bypass']);
+  assert.equal(r.state.me.parts.drive.hp, r.state.me.parts.drive.max); assert.equal(r.state.band, CLOSE + 1, 'the faster ship opens the range');
+  assert.deepEqual(plain(r.state.spent), ['bypass']);
+});
+
+test('spoof: she fires no volley and no salvo this turn, keeps her torpedoes, and has nothing to fool when no foe is up', () => {
+  const st = fight({ stats: { guns: 2 } });
+  assert.equal(canUse(st, orders(fire(2)), 'spoof', ['spoof']), true);
+  const r = resolveShipTurn(st, orders(fire(2), { move: 'spoof' }), { foe: [HULL], captain: hold }, HIGH, ['spoof']);
+  assert.equal(r.events.filter(e => e.who === 'foe').length, 0); assert.deepEqual([r.state.me.shields, r.state.me.armor], [st.me.shields, st.me.armor]);
+  assert.equal(sh(r).length, 2, 'your guns fire');
+  const armed = { ...fight({}, { opts: { launcher: true, torps: 4 } }), armed: [true] };
+  const s = resolveShipTurn(armed, orders(fire(2), { move: 'spoof' }), { foe: [{ kind: 'salvo', target: 'hull', n: 2, dmg: [40, 60] }], captain: hold }, HIGH, ['spoof']);
+  assert.equal(s.events.filter(e => e.who === 'foe').length, 0); assert.equal(s.state.foes[0].torps, 4, 'her salvo was not fired'); assert.equal(s.state.armed[0], false);
+  const down = fight(); down.foes[0].armor = 0;
+  assert.equal(canUse(down, orders(fire(2)), 'spoof', ['spoof']), false);
+  assert.deepEqual(plain(r.state.spent), ['spoof']);
+});
+
+test('parley at mid or long is a roll: landed, every foe up breaks off and the fight ends broke; failed, it is spent and she fires', () => {
+  const st = fight({}, {}, M);
+  assert.equal(canUse(st, orders(fire(2)), 'parley', ['parley']), true);
+  assert.equal(canUse(fight({}, {}, L), orders(fire(2)), 'parley', ['parley']), true);
+  assert.equal(canUse(fight(), orders(fire(2)), 'parley', ['parley']), false, 'not at close');
+  const down = fight({}, {}, M); down.foes[0].armor = 0;
+  assert.equal(canUse(down, orders(fire(2)), 'parley', ['parley']), false, 'nobody to talk to');
+  const shown = { foe: [HULL], captain: hold };
+  const won = resolveShipTurn(st, orders(fire(2), { move: 'parley' }), shown, HIGH, ['parley'], () => true);
+  assert.equal(won.state.moves.foe[0].kind, 'break'); assert.equal(shipEnd(won.state), 'broke');
+  assert.equal(won.events.filter(e => e.who === 'foe').length, 0, 'she does not fire as she goes');
+  assert.ok(won.events.some(e => e.move === 'parley' && e.landed === true));
+  const lost = resolveShipTurn(st, orders(fire(2), { move: 'parley' }), shown, HIGH, ['parley'], () => false);
+  assert.equal(lost.state.moves.foe[0].kind, 'broadside'); assert.equal(shipEnd(lost.state), null);
+  assert.equal(lost.events.filter(e => e.who === 'foe').length, 1, 'her volley lands');
+  assert.deepEqual(plain(lost.state.spent), ['parley']); assert.ok(lost.events.some(e => e.move === 'parley' && e.landed === false));
+  assert.equal(shipEnd(resolveShipTurn(st, orders(fire(2), { move: 'parley' }), shown, HIGH, ['parley']).state), 'broke', 'the roll defaults to landed');
 });
 
 // The raider's rush: through a thinly held section in one turn. Our heads are off the lock (a head there would hold the push) and a lone one holds the corridor.
@@ -1255,4 +1374,13 @@ test('a push takes the unwounded first and leaves the wounded behind; a wave lan
   wounded.sections[0] = { mine: 0, theirs: 3, theirsHurt: 3, cover: 0 };
   const w = resolveDeckTurn(wounded, { stand: 2, act: null, order: null }, { kind: 'push', from: 0, to: 1, n: 2, feint: false }, () => 0).state.sections;
   assert.deepEqual([w[0].theirsHurt, w[1].theirsHurt], [1, 2], 'with only the wounded left, they go');
+});
+
+// The ladder reaches level 5 (#963): the deck fight's sidearm table covers every level the hand can hold, and a level past it reads the last row.
+test('the sidearm table covers five levels, and a level past the table takes its last row', () => {
+  const { DECK, sidearmOf } = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['DECK', 'sidearmOf']);
+  assert.ok(DECK.SIDEARM_BY_LEVEL.length >= 6, `rows for levels 0 to 5: ${DECK.SIDEARM_BY_LEVEL.length}`);
+  for (let l = 0; l <= 5; l++) { const [lo, hi] = sidearmOf({ level: l }); assert.ok(lo >= 1 && hi >= lo, `level ${l}: ${lo} to ${hi}`); }
+  assert.deepEqual([...sidearmOf({ level: 9 })], [...DECK.SIDEARM_BY_LEVEL[DECK.SIDEARM_BY_LEVEL.length - 1]]);
+  const rows = DECK.SIDEARM_BY_LEVEL; for (let l = 1; l < rows.length; l++) assert.ok(rows[l][1] >= rows[l - 1][1], 'a higher level shoots no worse');
 });
