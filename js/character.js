@@ -54,6 +54,15 @@ function ladderCard() {
   return conCard('Ladder', ladderHtml(c, skillLevel(c.post), p => pickOpen(p, c, { teacher: pickTeacher, opinionOf: x => x.opinion || 0 })));
 }
 
+// What the record makes of the hand (traits.js, #964): each trait earned with its reason, and the counts in words; an empty line before any.
+function recordCard() {
+  const c = hired();
+  if (!c) return '';
+  const traits = handTraits(c).map(id => HAND_TRAITS.find(t => t.id === id)), words = recordWords(c.record || {});
+  if (!traits.length && !words) return conCard('Record', String(h`<div class="hint">${traitSay('empty')}</div>`));
+  return conCard('Record', traits.map(t => String(h`<div class="con-part record-trait"><b>${t.name}</b><span class="hint">${traitSay(`${t.id}.reason`)}</span></div>`)).join('') + (words ? String(h`<div class="hint record-words">${words}</div>`) : ''));
+}
+
 function statsCard() {
   const h = hired(), rows = sheetRows(h.sheet, h.kit);
   return conCard('Stats', rows.stats.map(r => `<div class="con-part char-cap"><span>${r.stat[0].toUpperCase()}${r.stat.slice(1)}</span>${conBar(r.value / STAT_MAX * 100, '#6fb0ff')}<b>${r.value} / ${STAT_MAX}</b></div><div class="hint char-on">${r.posts.map(p => esc(POSTS[p].name)).join(', ')}</div>`).join(''))
@@ -148,7 +157,7 @@ function characterPanel() {
   const isCaptain = c.role === 'captain', hand = hired();
   const sub = [isCaptain ? 'Captain' : c.role && ROLE_NAMES[c.role] ? ROLE_NAMES[c.role] : c.job, c.age ? `${c.age}` : '', c.home ? `from ${c.home}` : ''].filter(Boolean).join(', ');
   const grade = c.captain && c.cast ? captainGrade(c) : null;
-  const cap = (c.you && hired() ? statsCard() + ladderCard() + onTheShipCard() + crewOpinionsCard() : '') + (c.captain ? conCard('Captain', ['trade', 'nerve', 'thrift'].map(k => (
+  const cap = (c.you && hired() ? statsCard() + ladderCard() + recordCard() + onTheShipCard() + crewOpinionsCard() : '') + (c.captain ? conCard('Captain', ['trade', 'nerve', 'thrift'].map(k => (
       `<div class="con-part char-cap"><span>${k[0].toUpperCase() + k.slice(1)}</span>${conBar(c.captain[k] / 5 * 100, '#6fb0ff')}<b>${c.captain[k]} / ` +
       `5</b></div>`)).join('') + (grade ? conRead('Ready to captain', grade.ready ? 'yes' : `skill ${grade.skill} of ${CAPTAIN_SKILL}, ${grade.days} of ${CAPTAIN_DAYS} days`) : '')) : '');
   const standing = c.memories ? conCard('Standing with you', `${conRead('Opinion', opinionWord(c.opinion))}${conBar(Math.max(0, Math.min(10, c.opinion + 5)) * 10, c.opinion >= 0 ? '#5fd35f' : '#ff6a4a')}
