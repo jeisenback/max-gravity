@@ -17,6 +17,28 @@ const roomBox = (ctx, x, y, w, h, col) => {
   roomFlat(ctx, x0, y0, W, e, figShade(col, 1.6)); roomFlat(ctx, x0, y0 + H - e, W, e, figShade(col, 0.62));
   ctx.strokeStyle = 'rgba(3,7,12,0.85)'; ctx.lineWidth = 1; ctx.strokeRect(x0 + 0.5, y0 + 0.5, W - 1, H - 1);
 };
+// A prop's part drawn to the figures' standard (#933): a path in SVG syntax (figPath's, figures.js, so it draws without a browser) filled with
+// its colour as its front, a band along its top lit by the ceiling's lamps, a band down one side (o.side units: on the right, or the left when
+// negative) and along its underside (o.under) in shade, and the figures' outline round it. A colour not written as #rrggbb is filled flat.
+function roomPart(ctx, d, col, o = {}) {
+  const { top = 1.5, side = 0, under = 0 } = o;
+  figPath(ctx, d); ctx.fillStyle = col; ctx.fill();
+  if (/^#[0-9a-f]{6}$/i.test(col) && (top || side || under)) {
+    const v = figTokens[d].filter(t => !/[A-Z]/.test(t)).map(Number), xs = v.filter((_, i) => i % 2 === 0), ys = v.filter((_, i) => i % 2 === 1);
+    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+    ctx.save(); ctx.clip();
+    if (top) roomFlat(ctx, x0, y0, x1 - x0, top, figShade(col, 1.4));
+    if (side) roomFlat(ctx, side > 0 ? x1 - side : x0, y0, Math.abs(side), y1 - y0, figShade(col, 0.72));
+    if (under) roomFlat(ctx, x0, y1 - under, x1 - x0, under, figShade(col, 0.62));
+    ctx.restore();  // fillRect leaves the path as it was, so the outline follows it
+  }
+  ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
+}
+// A box with its corners rounded by rad, as a path for roomPart.
+const roomRound = (x, y, w, h, rad) => {
+  const n = v => Math.round(v * 100) / 100, a = n(x), b = n(y), c = n(x + w), e = n(y + h), q = n(Math.min(rad, w / 2, h / 2));
+  return `M ${n(a + q)} ${b} L ${n(c - q)} ${b} Q ${c} ${b} ${c} ${n(b + q)} L ${c} ${n(e - q)} Q ${c} ${e} ${n(c - q)} ${e} L ${n(a + q)} ${e} Q ${a} ${e} ${a} ${n(e - q)} L ${a} ${n(b + q)} Q ${a} ${b} ${n(a + q)} ${b} Z`;
+};
 // A station's screen (#933): a bezel, the glass, and what it shows. kind: 'plot' (the course, the ship moving along it), 'status' (the ship's
 // readings as bars), 'scope' (a ranging circle, crosshairs and a sweep) or 'bars' (the guns' charge). hot: the hard burn's red.
 function roomScreen(ctx, x, y, w, h, kind, time, hot = false) {
@@ -62,13 +84,17 @@ function worldText(ctx, zoom, text, x, y, worldPx, color, align) {
   return true;
 }
 
+// A porthole (#933): the glass and the stars wheeling past it, in a frame with a lit upper rim, a shaded lower one and its bolts.
 function roomPorthole(ctx, x, y, rad, spin) {
-  ctx.fillStyle = '#2a405a'; ctx.beginPath(); ctx.arc(x, y, rad + 4, 0, Math.PI * 2); ctx.fill();
-  ctx.save(); ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.clip(); roomBox(ctx, x - rad, y - rad, rad * 2, rad * 2, '#01040a');
+  ctx.fillStyle = '#2f4a66'; ctx.beginPath(); ctx.arc(x, y, rad + 6, 0, Math.PI * 2); ctx.fill(); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
+  ctx.lineWidth = 2; ctx.strokeStyle = figShade('#2f4a66', 1.4); ctx.beginPath(); ctx.arc(x, y, rad + 4.5, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
+  ctx.strokeStyle = figShade('#2f4a66', 0.65); ctx.beginPath(); ctx.arc(x, y, rad + 4.5, Math.PI * 0.1, Math.PI * 0.9); ctx.stroke();
+  ctx.save(); ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.clip(); roomFlat(ctx, x - rad, y - rad, rad * 2, rad * 2, '#01040a');
   const cs = Math.cos(spin), sn = Math.sin(spin);
   for (const [a, b, sz] of roomStars) { const sx = (a - 0.5) * rad * 2.4, sy = (b - 0.5) * rad * 2.4; roomDot(ctx, x + sx * cs - sy * sn, y + sx * sn + sy * cs, sz, '#cfe3ff'); }
-  roomBox(ctx, x - rad, y - rad, rad, rad * 2, 'rgba(160,200,255,0.08)'); ctx.restore();
-  for (let k = 0; k < 8; k++) roomDot(ctx, x + Math.cos(k * Math.PI / 4) * (rad + 2), y + Math.sin(k * Math.PI / 4) * (rad + 2), 1.1, '#4a6a8a');
+  roomFlat(ctx, x - rad, y - rad, rad, rad * 2, 'rgba(160,200,255,0.08)'); ctx.restore();
+  ctx.lineWidth = 1.2; ctx.strokeStyle = '#132538'; ctx.beginPath(); ctx.arc(x, y, rad + 0.6, 0, Math.PI * 2); ctx.stroke();  // the gasket
+  for (let k = 0; k < 8; k++) roomDot(ctx, x + Math.cos(k * Math.PI / 4 + Math.PI / 8) * (rad + 3.2), y + Math.sin(k * Math.PI / 4 + Math.PI / 8) * (rad + 3.2), 1, '#56708c');
 }
 
 // A crash couch at x on the deck F, unfolded by d (0 to 1, #925): at 0 only its plate in the deck shows; the pad rises flat out of it, 60 long,
@@ -88,11 +114,19 @@ function roomJumpSeat(ctx, x, F, face, d) {
   const pan = 24 * d;
   roomBox(ctx, face > 0 ? bx : bx - pan, F - 20, pan, 4, '#2a4664'); roomBox(ctx, bx - 2, F - 20 - 34 * d, 4, 34 * d, '#2a4664');
 }
-// The galley's bench (#925): one long seat from x0 to x1 in front of the mess table, on legs, where the table's places are (SEATS, shiplife.js).
+// The galley's bench (#925): one long seat from x0 to x1 in front of the mess table, where the table's places are (SEATS, shiplife.js): its pad at
+// the seated hip (23, #933), on a frame and legs with a foot bar, and a tie-down ring at each foot.
 function roomBench(ctx, x0, x1, F) {
-  roomBox(ctx, x0, F - 19, x1 - x0, 5, '#2a4664'); roomBox(ctx, x0 + 2, F - 14, x1 - x0 - 4, 2, '#1c3249');
-  const legs = Math.max(2, Math.round((x1 - x0) / 60) + 1);
-  for (let k = 0; k < legs; k++) roomBox(ctx, x0 + 4 + (x1 - x0 - 12) * (k / (legs - 1)), F - 14, 4, 14, '#1c3249');
+  const legs = Math.max(2, Math.round((x1 - x0) / 60) + 1), lx = k => x0 + 4 + (x1 - x0 - 12) * (k / (legs - 1));
+  roomPart(ctx, roomRound(x0 + 6, F - 7, x1 - x0 - 12, 2, 1), '#1c3249', { top: 0.6 });  // the foot bar
+  for (let k = 0; k < legs; k++) {
+    const x = lx(k);
+    roomPart(ctx, `M ${x} ${F - 17} L ${x + 4} ${F - 17} L ${x + 3.4} ${F - 1.5} L ${x + 0.6} ${F - 1.5} Z`, '#1c3249', { top: 0, side: 1.2 });
+    roomPart(ctx, roomRound(x - 2, F - 1.8, 8, 1.8, 0.8), '#20384f', { top: 0.5 });
+    ctx.strokeStyle = '#4a6680'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(x + 2, F - 3, 1.3, 0, Math.PI * 2); ctx.stroke();
+  }
+  roomPart(ctx, roomRound(x0 + 2, F - 19, x1 - x0 - 4, 2.5, 0.8), '#1c3249', { top: 0.6 });  // the frame under the pad
+  roomPart(ctx, roomRound(x0, F - 23, x1 - x0, 4.5, 2), '#33506e', { top: 1, under: 1 });
 }
 function roomStool(ctx, x, F, back) {  // back: a chair's back on the left (1) or the right (-1) of the seat, for a station's chair (#933); none on a stool
   if (back) { const bx = back > 0 ? x - 12 : x + 7; roomBox(ctx, bx, F - 50, 6, 34, '#2a4664'); roomFlat(ctx, bx + 1, F - 46, 4, 12, '#203a55'); }
@@ -102,15 +136,15 @@ function roomStool(ctx, x, F, back) {  // back: a chair's back on the left (1) o
 function roomMug(ctx, x, y, w, time) {
   const free = w.cruise, lift = 3 * free;
   ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1.5; ctx.strokeRect(x - 6, y - 4, 12, 4);
-  roomBox(ctx, x - 4, y - 9 - lift, 8, 9, '#cfe3ff'); ctx.strokeStyle = '#cfe3ff'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x + 5, y - 5 - lift, 2.5, -Math.PI / 2, Math.PI / 2); ctx.stroke();
+  ctx.save(); ctx.translate(0, -lift); roomPart(ctx, roomRound(x - 4, y - 9, 8, 9, 1.2), '#a9b8c6', { top: 1, side: 2 }); ctx.restore();  // moved, not redrawn, as it lifts: figPath keeps each path it reads ctx.strokeStyle = '#a9b8c6'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x + 5, y - 5 - lift, 2.5, -Math.PI / 2, Math.PI / 2); ctx.stroke();
   if (w.flip > 0.5) roomBox(ctx, x - 6, y - 7, 12, 2, '#7a8a9a');
   if (free > 0.05) { ctx.strokeStyle = `rgba(220,230,240,${0.35 * free})`; ctx.lineWidth = 1; for (let k = 0; k < 2; k++) { const y0 = y - 12 - lift, ph = time * 2 + k * 2; ctx.beginPath(); ctx.moveTo(x - 2 + k * 4, y0); ctx.quadraticCurveTo(x + Math.sin(ph) * 3, y0 - 6, x - 1 + k * 3 + Math.sin(ph + 1) * 3, y0 - 12); ctx.stroke(); } }
 }
-function roomPlant(ctx, x, y, w, time, still) {
-  roomBox(ctx, x - 6, y, 12, 10, '#8a5a3a'); const droop = w.burn * 0.9 - w.flip * 0.5; ctx.strokeStyle = '#5fae5a'; ctx.lineWidth = 1.8;
-  for (const [a, l, sd] of [[-0.9, 11, 0], [-0.3, 14, 1], [0.35, 13, 2], [0.95, 10, 3]]) {
+function roomPlant(ctx, x, y, w, time, still, k = 1) {  // its pot's top at y, drawn at the scale k
+  roomPart(ctx, `M ${x - 6 * k} ${y} L ${x + 6 * k} ${y} L ${x + 4.5 * k} ${y + 10 * k} L ${x - 4.5 * k} ${y + 10 * k} Z`, '#5e4434', { top: 1.2, side: 2 * k }); const droop = w.burn * 0.9 - w.flip * 0.5; ctx.strokeStyle = '#5fae5a'; ctx.lineWidth = 1.8 * k;
+  for (const [a, l, sd] of [[-0.9, 11 * k, 0], [-0.3, 14 * k, 1], [0.35, 13 * k, 2], [0.95, 10 * k, 3]]) {
     const ang = a * (1 - w.burn * 0.3) + (still ? 0 : Math.sin(time * 1.1 + sd) * 0.25 * w.flip);
-    ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x + Math.sin(ang) * l * 0.4, y - l * 0.7, x + Math.sin(ang) * l, y - Math.cos(ang) * l * (1 - droop * 0.7) + droop * 6); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x + Math.sin(ang) * l * 0.4, y - l * 0.7, x + Math.sin(ang) * l, y - Math.cos(ang) * l * (1 - droop * 0.7) + droop * 6 * k); ctx.stroke();
   }
 }
 
@@ -215,47 +249,86 @@ function roomBerths(ctx, r, s, X, W) {
 }
 
 // The galley's mess table (#925), the length of its bench, at seated height: drawn after the people (shiplife.js), so those sitting at it
-// facing you are behind it, their laps under the top (#978). The plates and the mug on it; the lashings under it in the hard burn.
+// facing you are behind it, their laps under the top (#978). Its top on two pedestal legs, a tie-down rail along its front with rings for the
+// lashings (#933); the plates and the mug on it; the lashings from its rings to the deck in the hard burn.
 function roomMessTable(ctx, r, s) {
   const W = r.x1 - r.x0, X = sh => r.x0 + W * sh, F = r.floor, { w } = s, time = s.still ? 0 : s.time;
   if (W < 200) return;
-  const tx = X(0.25), tw = X(0.73) - tx;
-  roomBox(ctx, tx, F - 31, tw, 5, '#2c4c6e'); roomBox(ctx, tx + 8, F - 26, 4, 26, '#20384f'); roomBox(ctx, tx + tw - 12, F - 26, 4, 26, '#20384f');
-  roomBox(ctx, tx + tw * 0.3, F - 34, 8, 3, '#ddd6c8'); roomBox(ctx, tx + tw * 0.45, F - 34, 8, 3, '#ddd6c8'); roomBox(ctx, tx + tw * 0.45 + 2, F - 34, 3, 3, '#b8483a');
+  const tx = X(0.25), tw = X(0.73) - tx, rings = Array.from({ length: 6 }, (_, k) => tx + 14 + (tw - 28) * k / 5);
+  for (const lx of [tx + 8, tx + tw - 13]) {
+    roomPart(ctx, `M ${lx} ${F - 27} L ${lx + 5} ${F - 27} L ${lx + 4.2} ${F - 2.5} L ${lx + 0.8} ${F - 2.5} Z`, '#20384f', { top: 0, side: 1.6 });
+    roomPart(ctx, roomRound(lx - 3.5, F - 2.8, 12, 2.8, 1), '#24405e', { top: 0.7 }); roomDot(ctx, lx - 1.5, F - 1.4, 0.6, '#56708c'); roomDot(ctx, lx + 6.5, F - 1.4, 0.6, '#56708c');
+  }
+  roomPart(ctx, roomRound(tx, F - 32, tw, 5, 1.5), '#2c4c6e', { top: 1.2, under: 1.2 });
+  roomPart(ctx, roomRound(tx + 6, F - 27.6, tw - 12, 2.2, 1), '#4a6680', { top: 0.6 });  // the tie-down rail
+  ctx.strokeStyle = '#6a8098'; ctx.lineWidth = 0.8; for (const x of rings) { ctx.beginPath(); ctx.arc(x, F - 24.4, 1.4, 0, Math.PI * 2); ctx.stroke(); }
+  for (const f of [0.3, 0.45]) roomPart(ctx, roomRound(tx + tw * f - 1, F - 34.4, 10, 2.4, 1.1), '#aaa395', { top: 0 });
+  roomDot(ctx, tx + tw * 0.45 + 3.5, F - 35, 1.6, '#8e4a3c');
   roomMug(ctx, tx + tw * 0.75, F - 34, w, time);
-  if (w.burn > 0.5) { ctx.strokeStyle = 'rgba(140,170,200,0.5)'; ctx.lineWidth = 0.8; for (let x = tx + 22; x < tx + tw - 22; x += 6) roomSeg(ctx, [[x, F - 14], [x + 6, F]]); }
+  if (w.burn > 0.5) { ctx.strokeStyle = 'rgba(140,170,200,0.5)'; ctx.lineWidth = 0.8; for (const x of rings) roomSeg(ctx, [[x, F - 23], [x + 5, F]]); }
 }
 
+// The galley (#933): a counter at the waist with its cupboards, latched, the knife strip over it and a pot plant on it, where the cook works
+// (routineSpot); a water dispenser on the wall; latched cupboards at head height either side of the framed porthole, a grab rail under them;
+// the stove under its hood at the far end, the pans on a rail. The top left is kept clear for the room's name and the top right for the thrust
+// sign (both shiplife.js), down to the smallest window (#937).
 function roomGalley(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, lw = Math.min(130, W * 0.3);
-  roomBox(ctx, X(0.02), F - 98, lw, 22, '#1c3249'); for (const dx of [4, lw / 2 + 2]) roomBox(ctx, X(0.02) + dx, F - 95, lw / 2 - 8, 16, '#16293d');
-  worldText(ctx, s.zoom, 'MUGS', X(0.02) + 8, F - 83, 9, '#c7b48a');
-  roomPorthole(ctx, X(0.34), F - 66, 13, s.spin);
+  const { w, time } = s, F = r.floor, latch = (x, y) => { roomFlat(ctx, x, y, 2, 4, '#8796a5'); roomDot(ctx, x + 1, y - 1.2, 0.5, '#56708c'); };
+  const cupboards = (x0, x1, top, bottom) => {  // a wall cupboard of two doors, each with its latch where they meet
+    roomPart(ctx, roomRound(x0, top, x1 - x0, bottom - top, 1.5), '#22405c', { top: 1.2, side: 2.5, under: 1.5 });
+    const dw = (x1 - x0 - 6) / 2;
+    for (const k of [0, 1]) { const dx = x0 + 2 + k * (dw + 2); roomPart(ctx, roomRound(dx, top + 2, dw, bottom - top - 5, 1.2), '#284a68', { top: 0.8, side: 1.2 }); latch(k ? dx + 2 : dx + dw - 4, bottom - 10); }
+  };
+  if (W >= 300) {
+    const c0 = X(0.02), c1 = X(0.205);
+    roomPart(ctx, roomRound(c0, F - 37, c1 - c0, 33, 1.5), '#1f3852', { top: 0, side: 3, under: 1.5 }); roomFlat(ctx, c0 + 2, F - 4, c1 - c0 - 4, 4, '#0f1d2c');
+    const dw = (c1 - c0 - 9) / 2;
+    for (const k of [0, 1]) { const dx = c0 + 3 + k * (dw + 3); roomPart(ctx, roomRound(dx, F - 34, dw, 27, 1.2), '#24405e', { top: 0.8, side: 1.4 }); latch(k ? dx + 2 : dx + dw - 4, F - 27); }
+    roomPart(ctx, roomRound(c0 - 1.5, F - 41, c1 - c0 + 3, 4, 1.2), '#2c4c6e', { top: 1, under: 0.8 });  // the worktop, at the waist
+    const k0 = X(0.075), k1 = X(0.155);  // the knife strip, its knives hung by their blades, handles down
+    [[0.12, 5.5], [0.32, 4.5], [0.55, 6], [0.78, 3.8]].forEach(([f, len]) => {
+      const x = k0 + (k1 - k0) * f;
+      roomPart(ctx, `M ${x} ${F - 52} L ${x + 2.2} ${F - 52} L ${x + 2.2} ${F - 50 - len} L ${x} ${F - 52 - len} Z`, '#7d8995', { top: 0 });
+      roomPart(ctx, roomRound(x - 0.2, F - 52, 2.6, 5.5, 0.9), '#3a2c24', { top: 0 });
+    });
+    roomPart(ctx, roomRound(k0, F - 55, k1 - k0, 3, 1), '#2a3a4a', { top: 0.8 });
+    roomPlant(ctx, X(0.04), F - 47, w, time, s.still, 0.6);  // small, under the room's name
+    const d0 = X(0.21), d1 = X(0.245), dm = (d0 + d1) / 2;  // the water dispenser: its bottle, the tap and the drip tray
+    roomPart(ctx, roomRound(d0, F - 49, d1 - d0, 6, 1.2), '#2a4664', { top: 0.8, side: 1.5 });
+    roomPart(ctx, roomRound(d0 + 1.5, F - 57.5, d1 - d0 - 3, 9, 2.2), '#3d6a86', { top: 1, side: 1.8 });
+    roomFlat(ctx, d0 + 2.5, F - 53, d1 - d0 - 5, 0.8, '#6a9ab4');  // the water line
+    roomFlat(ctx, dm - 1, F - 43, 2, 2.5, '#8796a5'); roomPart(ctx, roomRound(d0 + 1, F - 39.5, d1 - d0 - 2, 2, 0.8), '#2a4664', { top: 0.5 });
+  }
+  cupboards(X(0.25), X(0.39), F - 96, F - 74);
+  worldText(ctx, s.zoom, 'MUGS', X(0.25) + 8, F - 79, 9, '#a8987a');
+  roomPart(ctx, roomRound(X(0.25), F - 71.5, X(0.39) - X(0.25), 2, 1), '#3a5470', { top: 0.6 });  // a grab rail for zero g
+  roomPorthole(ctx, X(0.47), F - 68, 13, s.spin);
+  if (W >= 340) cupboards(X(0.55), X(0.63), F - 96, F - 74);
   if (W >= 240) {
-    // The stove (#933): two burners on its top (the kettle on one, the ring lit while it steams in cruise), the oven door with its window and
-    // knobs, a cupboard beside it, and a hood over the burners with its duct to the ceiling; the pans hang on a rail past the hood.
+    // The stove (#933): two burners on its top (the kettle on one, the ring lit while it steams in cruise), the oven door with its window, handle
+    // and knobs, a cupboard beside it, and a hood over the burners; the pans hang on a rail past the hood, under the thrust sign (shiplife.js).
     const cx = X(0.74), cw = Math.min(100, W * 0.24), sw = cw * 0.55;
-    roomBox(ctx, cx, F - 40, cw, 6, '#24405e'); roomBox(ctx, cx + 4, F - 34, cw - 8, 34, '#18304a');
-    roomBox(ctx, cx + 8, F - 30, sw - 12, 26, '#132538'); roomFlat(ctx, cx + 12, F - 24, sw - 20, 12, '#2a1a10'); roomFlat(ctx, cx + 12, F - 28, sw - 20, 2, '#9aa8b6');
-    for (let k = 0; k < 3; k++) roomDot(ctx, cx + 14 + k * (sw - 20) / 2, F - 37, 1.4, '#9aa8b6');
-    roomBox(ctx, cx + sw + 2, F - 30, cw - sw - 10, 26, '#132538');
-    for (const bx of [cx + 6, cx + sw / 2 + 4]) { roomFlat(ctx, bx, F - 42, sw / 2 - 6, 2, '#0b1520'); if (bx === cx + 6 && w.cruise > 0.05) roomFlat(ctx, bx + 2, F - 42, sw / 2 - 10, 1, `rgba(255,122,58,${0.8 * w.cruise})`); }
-    roomBox(ctx, cx + 10, F - 58, 16, 16, '#9aa8b6'); roomBox(ctx, cx + 26, F - 54, 6, 4, '#9aa8b6'); roomFlat(ctx, cx + 12, F - 61, 12, 3, '#5a6672');
-    if (W >= 290) roomPlant(ctx, cx + cw - 6, F - 50, w, time, s.still);
-    {  // the hood, low enough to clear the thrust sign over the galley's forward end (shiplife.js)
-      ctx.fillStyle = '#56708c'; ctx.beginPath(); ctx.moveTo(cx - 2, F - 64); ctx.lineTo(cx + sw + 2, F - 64); ctx.lineTo(cx + sw - 6, F - 75); ctx.lineTo(cx + 6, F - 75); ctx.closePath(); ctx.fill();
-      roomFlat(ctx, cx - 2, F - 64, sw + 4, 2, '#3d5a7a'); roomBox(ctx, cx + sw / 2 - 8, r.top, 16, F - 75 - r.top, '#2c4c6e');
-      for (let k = 0; k < 4; k++) roomFlat(ctx, cx + 10 + k * (sw - 16) / 4, F - 71, (sw - 16) / 4 - 3, 1.5, '#2c4c6e');  // the vent slots
-    }
+    roomPart(ctx, roomRound(cx + 3, F - 36, cw - 6, 32, 1.5), '#1b3550', { top: 0, side: 3 }); roomFlat(ctx, cx + 5, F - 4, cw - 10, 4, '#0f1d2c');
+    roomPart(ctx, roomRound(cx + 8, F - 31, sw - 12, 25, 1.5), '#132538', { top: 1 }); roomFlat(ctx, cx + 12, F - 24, sw - 20, 12, '#2a1a10');
+    roomPart(ctx, roomRound(cx + 11, F - 29, sw - 18, 2, 1), '#7a8794', { top: 0 });
+    for (let k = 0; k < 3; k++) roomDot(ctx, cx + 14 + k * (sw - 20) / 2, F - 33.5, 1.2, '#7a8794');
+    roomPart(ctx, roomRound(cx + sw + 2, F - 31, cw - sw - 10, 25, 1.5), '#132538', { top: 1, side: 1.5 }); latch(cx + sw + 5, F - 22);
+    roomPart(ctx, roomRound(cx - 1, F - 41, cw + 2, 5, 1.2), '#2c4c6e', { top: 1.2, under: 1 });
+    for (const bx of [cx + 6, cx + sw / 2 + 4]) { roomFlat(ctx, bx, F - 43, sw / 2 - 6, 2, '#0b1520'); if (bx === cx + 6 && w.cruise > 0.05) roomFlat(ctx, bx + 2, F - 43, sw / 2 - 10, 1, `rgba(255,122,58,${0.8 * w.cruise})`); }
+    roomPart(ctx, `M ${cx + 26} ${F - 51} L ${cx + 31} ${F - 54} L ${cx + 32} ${F - 52.5} L ${cx + 26} ${F - 47} Z`, '#7d8a98', { top: 0 });  // the kettle's spout
+    roomPart(ctx, roomRound(cx + 10, F - 55, 16, 12, 3.5), '#7d8a98', { top: 1, side: 3 }); roomPart(ctx, roomRound(cx + 15, F - 57, 6, 2, 0.8), '#4a5662', { top: 0 });
+    roomPart(ctx, `M ${cx - 2} ${F - 61} L ${cx + sw + 2} ${F - 61} L ${cx + sw - 6} ${F - 71} L ${cx + 6} ${F - 71} Z`, '#56708c', { top: 1, under: 1.5 });
+    for (let k = 0; k < 4; k++) roomFlat(ctx, cx + 9 + k * (sw - 14) / 4, F - 66.5, (sw - 14) / 4 - 3, 1.5, '#2c4c6e');  // the filter's slots
     if (W >= 320) {
-      roomBox(ctx, cx + sw + 6, F - 96, cw - sw - 6, 3, '#3d5a7a');
-      [[0.3, 12, 7], [0.75, 17, 8]].forEach(([f, l, rad], k) => {
-        const ax = cx + sw + 6 + (cw - sw - 6) * f, [ex, ey] = hangEnd(ax, F - 93, l, k * 1.7, w, time, s.still);
-        ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1.2; roomSeg(ctx, [[ax, F - 93], [ex, ey]]); roomDot(ctx, ex, ey + rad * 0.6, rad, '#4a5662'); roomDot(ctx, ex, ey + rad * 0.6, rad - 2, '#2e3842');
+      const p0 = cx + sw + 6, p1 = cx + cw - 2;
+      roomPart(ctx, roomRound(p0, F - 64, p1 - p0, 2.5, 1), '#3d5a7a', { top: 0.8 });
+      [[0.3, 6, 6], [0.75, 9, 7]].forEach(([f, l, rad], k) => {
+        const ax = p0 + (p1 - p0) * f, [ex, ey] = hangEnd(ax, F - 61.5, l, k * 1.7, w, time, s.still);
+        ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1.2; roomSeg(ctx, [[ax, F - 61.5], [ex, ey]]); roomDot(ctx, ex, ey + rad * 0.6, rad, '#4a5662');
+        ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); roomDot(ctx, ex, ey + rad * 0.6, rad - 2, '#2e3842');
       });
     }
   }
-  if (W >= 340) { const kx = X(0.1); roomBox(ctx, kx, F - 72, 26, 30, '#d8d2c4'); roomBox(ctx, kx, F - 72, 26, 7, '#b8483a'); ctx.strokeStyle = '#7a2a22'; ctx.lineWidth = 1; for (let k = 0; k < 8; k++) roomSeg(ctx, [[kx + 3 + (k % 4) * 5, F - 62 + Math.floor(k / 4) * 8], [kx + 7 + (k % 4) * 5, F - 56 + Math.floor(k / 4) * 8]]); }
 }
 
 function roomGunnery(ctx, r, s, X, W) {
@@ -390,11 +463,15 @@ function drawPhaseLight(ctx, r, w, time, night, keepsLights) {
   roomBox(ctx, r.x0, r.top, W, r.floor - r.top, `rgba(${lamp},${(0.05 + w.burn * 0.05) * dim})`); ctx.restore();
 }
 
-// The thrust sign: the phase and the g reading, centred on x with its top at y (FLIP SECURE alternates with FLIP every two seconds).
+// The thrust sign: the phase and the g reading, centred on x with its top at y (FLIP SECURE alternates with FLIP every two seconds), on a
+// plate screwed to the wall (#933): a bevelled frame, lit along its top, the dark face the reading is lit on, and a screw at each corner.
 function drawThrustSign(ctx, x, y, g, w, time, zoom) {
   const ph = w.flip > 0.5 ? 'flip' : w.burn > 0.5 ? 'burn' : 'cruise';
   const txt = ph === 'flip' && Math.floor(time) % 4 < 2 ? 'FLIP SECURE' : (ph === 'burn' ? 'THRUST ' : ph === 'cruise' ? 'CRUISE ' : 'FLIP ') + g.toFixed(2) + ' G';
-  const bw = 112; roomBox(ctx, x - bw / 2, y, bw, 18, '#081019'); ctx.strokeStyle = '#2a4664'; ctx.lineWidth = 1; ctx.strokeRect(x - bw / 2 + 0.5, y + 0.5, bw - 1, 17);
+  const bw = 112, l = x - bw / 2, rr = x + bw / 2;
+  roomPart(ctx, `M ${l + 3} ${y} L ${rr - 3} ${y} L ${rr} ${y + 3} L ${rr} ${y + 15} L ${rr - 3} ${y + 18} L ${l + 3} ${y + 18} L ${l} ${y + 15} L ${l} ${y + 3} Z`, '#1f3449', { top: 1, under: 1 });
+  roomPart(ctx, roomRound(l + 6, y + 2.5, bw - 12, 13, 1), '#081019', { top: 0 });
+  for (const [sx, sy] of [[l + 3, y + 3.5], [rr - 3, y + 3.5], [l + 3, y + 14.5], [rr - 3, y + 14.5]]) roomDot(ctx, sx, sy, 0.9, '#56708c');
   worldText(ctx, zoom, txt, x, y + 13, 12, { burn: '#ff6a52', cruise: '#9fe0b0', flip: '#ffb030' }[ph], 'center');
 }
 
