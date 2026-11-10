@@ -3753,7 +3753,7 @@
  },
  {
   "key": "life:head:first:1",
-  "text": "Cass is first in the shower and out again in three minutes, leaving the hot water for the next one."
+  "text": "Cass is first in the shower, and has the hot water off again in three minutes."
  },
  {
   "key": "life:head:any:0",
@@ -3773,7 +3773,7 @@
  },
  {
   "key": "life:head:any:4",
-  "text": "Cass is in the shower with one eye on the timer."
+  "text": "Cass is in the shower, and the timer on the door is counting down."
  },
  {
   "key": "life:head:any:5",
@@ -3845,11 +3845,11 @@
  },
  {
   "key": "life:airlock:any:3",
-  "text": "Cass is wiping the window in the inner door with a sleeve."
+  "text": "Cass is wiping the window in the inner door with a cloth from the suit rack."
  },
  {
   "key": "life:airlock:any:4",
-  "text": "Cass is running a finger round the seal of the inner door and looking at it."
+  "text": "Cass is running a finger round the seal of the inner door and checking it for grit."
  },
  {
   "key": "life:lifesupport:engineer:0",

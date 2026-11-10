@@ -28,7 +28,7 @@ const roomAt = id => ROOMS.find(r => r.id === id);
 const SCENE_ROOM_WORDS = {
   galley: /\b(galley|the mess|the table)\b/i, bridge: /\b(bridge|cockpit)\b/i, engine: /\b(engine room|the drive)\b/i, hold: /\b(the hold|cargo bay)\b/i,
   medbay: /\b(medbay|clinic bunk)\b/i, berths: /\b(berths?|bunks?)\b/i, gunnery: /\b(gunnery|the guns)\b/i,
-  head: /\b(the head(?! of\b)|the shower)\b/i, workshop: /\bworkshop\b/i, airlock: /\b(airlock|the lock)\b/i, lifesupport: /\b(life support|the recycler)\b/i,  // the tower's rooms (#973); the head of something is not the head
+  head: /\bthe head\b(?! of\b)/i, workshop: /\bworkshop\b/i, airlock: /\b(airlock|the lock)\b/i, lifesupport: /\b(life support|air recycler|the scrubbers)\b/i,  // the tower's rooms (#973): the head of something is not the head, and the galley's water recycler is not life support
 };
 function sceneStage(ev, aboard, staged) {
   if (!ev || ev.board) return null;
@@ -157,12 +157,13 @@ function routineSpot(p, block, state) {
 // number (the game's day and the ship's days into the burn: `state.morning`), with no draw of any dice. Not the cook, at the stove, nor the night
 // watch, nor you, the passengers or the captain. Once washed (`p.washed`, the morning) they go on to the galley.
 const HEAD_SKIPS = ['you', 'passenger', 'captain', 'cat', 'cook', ...NIGHT_WATCH];
-function washesToday(p, morning) {
-  if (HEAD_SKIPS.includes(p.role)) return false;
-  let h = (personShare(p, 4) * 4294967296) ^ Math.imul(morning + 1, 0x9E3779B1);  // their share and the morning, mixed (murmur's finish) so each day's half is drawn anew
+// A person's own share for a morning (salt: what it is for), mixed with the morning (murmur's finish) so it is drawn anew each day, with no dice.
+function morningShare(p, morning, salt) {
+  let h = (personShare(p, salt) * 4294967296) ^ Math.imul(morning + 1, 0x9E3779B1);
   h = Math.imul(h ^ (h >>> 16), 0x85EBCA6B); h = Math.imul(h ^ (h >>> 13), 0xC2B2AE35); h ^= h >>> 16;
-  return (h >>> 0) / 4294967296 < 0.5;
+  return (h >>> 0) / 4294967296;
 }
+const washesToday = (p, morning) => !HEAD_SKIPS.includes(p.role) && morningShare(p, morning, 4) < 0.5;
 // The head holds one at a time, in its middle. Someone come to it (`p.queue` unset) goes in when nobody is in it or waiting; else waits by the door,
 // a spot just inside its galley-side edge, while fewer than HEAD_WAIT wait there; else goes without. Someone waiting goes in when it is free and
 // nobody has waited longer (`p.ticket`); someone in it is done when their wait runs out. `first`: the first in this morning (the hot water).
@@ -322,17 +323,17 @@ const LIFE_LINES = {
       '{n} is checking the date on the watch bill against the board.',
       '{n} is holding a mug against the console rail with a hand over the top.'] },
   // the tower's rooms (#973); `first` in the head is for the first one in it on a morning (headTurn)
-  head: { first: ['{n} is first in the shower, while there\'s still hot water.', '{n} is first in the shower and out again in three minutes, leaving the hot water for the next one.'],
+  head: { first: ['{n} is first in the shower, while there\'s still hot water.', '{n} is first in the shower, and has the hot water off again in three minutes.'],
     any: ['{n} is shaving at the mirror over the basin, one cheek at a time.', '{n} is brushing their teeth with the tap off between rinses.', '{n} is wiping the steam off the mirror with a sleeve.',
-      '{n} is rinsing a pair of socks in the basin and hanging them on the rail.', '{n} is adding soap to the stores list on the back of the door.', '{n} is in the shower with one eye on the timer.'] },
+      '{n} is rinsing a pair of socks in the basin and hanging them on the rail.', '{n} is adding soap to the stores list on the back of the door.', '{n} is in the shower, and the timer on the door is counting down.'] },
   workshop: { engineer: ['{n} has a valve in pieces on the bench, laid out in the order it came apart.', '{n} is checking a pump bearing on the bench and writing the wear on its tag.',
       '{n} is testing a relay on the bench. It fails, and goes in the box for the next yard.', '{n} is weighing the fabricator\'s stock spool and writing the figure on the side.'],
     gunner: ['{n} is cleaning a pistol on the bench, the parts in a row on a rag.', '{n} is checking the spare feed tray for the turret against the parts list.',
       '{n} is trying to print a firing pin on the fabricator. It wants a licence code.', '{n} is sharpening a knife on the bench stone.'],
     any: ['{n} is sorting bolts from a tin into the drawers by size.', '{n} is at the fabricator, reading the time left on a print.', '{n} is filing the burr off a bracket at the vice.',
       '{n} is signing a torque wrench out on the tool board.', '{n} is sweeping filings off the bench into a cup.'] },
-  airlock: { any: ['{n} is sitting on the bench by the airlock, lacing a boot.', '{n} is running a finger round the seal of the inner door and looking at it.', '{n} is reading the pressure on both sides of the inner door.',
-    '{n} is counting the suits on the rack and checking the date on each tag.', '{n} is wiping the window in the inner door with a sleeve.'] },
+  airlock: { any: ['{n} is sitting on the bench by the airlock, lacing a boot.', '{n} is running a finger round the seal of the inner door and checking it for grit.', '{n} is reading the pressure on both sides of the inner door.',
+    '{n} is counting the suits on the rack and checking the date on each tag.', '{n} is wiping the window in the inner door with a cloth from the suit rack.'] },
   lifesupport: { engineer: ['{n} is swapping a scrubber cartridge in the air recycler and writing the date on the new one.', '{n} is reading the air recycler\'s log back a week, fan by fan.',
       '{n} is tightening the clamp on the condensate line under the recycler.', '{n} is counting the spare scrubber cartridges. Four. The last yard wanted ninety apiece.'],
     any: ['{n} is reading the carbon dioxide figure off the panel by the air recycler.', '{n} is standing by the air recycler with a hand on the casing.', '{n} is changing a dust filter on the air intake and bagging the old one.',
@@ -436,7 +437,7 @@ function routineGo(p, block, people, dark, rnd, state) {
     if (w) { Object.assign(p, { block, relief: w.id, reliefT: 0 }); return; }
   }
   const spot = routineSpot(p, block, state), moved = !!p.block && p.block !== block && p.block !== 'activity' && p.block !== 'linger';  // the day moved on: each sets off in their own moment, not all at once (#924)
-  Object.assign(p, { block, errand: false, at: spot.at, queue: undefined, leave: moved ? personShare(p, spot.room === 'head' ? 4 : 1) * (spot.room === 'head' ? HEAD_STAGGER : 3) : 0 });  // to the head at their own moment in the wake block (#973)
+  Object.assign(p, { block, errand: false, at: spot.at, queue: undefined, leave: !moved ? 0 : spot.room === 'head' ? morningShare(p, state.morning, 5) * HEAD_STAGGER : personShare(p, 1) * 3 });  // to the head at their own moment that morning, in the wake block (#973)
   if (spot.rounds) { goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd, people); return; }
   const holds = q => (s => s.at === 'post' && s.room === spot.room)(routineSpot(q, 'shift'));  // a post's places are numbered by who holds it in a shift, the same in every block
   const seated = state && { ...state, morning: undefined };  // a seat at the table is kept for anyone in the head first (#973)

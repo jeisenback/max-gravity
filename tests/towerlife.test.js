@@ -57,6 +57,21 @@ test('those going set off at their own moments in the wake block, to the head\'s
   }
 });
 
+test('the order they set off in for the head changes from morning to morning (#973)', () => {
+  const people = crowd(), orders = new Map(), firsts = new Set();
+  for (let d = 0; d < 60; d++) {
+    const goers = people.filter(p => toHead(p, d));
+    for (const p of people) Object.assign(p, { room: 'berths', x: 0.2, dk: 2, tdk: 2, tx: null, block: 'night', washed: undefined });
+    for (const p of goers) routineGo(p, 'wake', people, true, () => 0.5, { ...plain, morning: d });
+    if (goers.length) firsts.add(goers.reduce((a, b) => (b.leave < a.leave ? b : a)).id);
+    for (const a of goers) for (const b of goers) if (a.id < b.id) { const k = `${a.id}|${b.id}`; (orders.get(k) || orders.set(k, new Set()).get(k)).add(a.leave < b.leave); }
+  }
+  assert.ok([...orders.values()].some(o => o.size === 2), 'two who both go set off in either order on different mornings');
+  assert.ok(firsts.size >= 4, `the first to set off is not always the same (${[...firsts]})`);
+  const p = people.find(q => toHead(q, 5)), again = () => { Object.assign(p, { block: 'night' }); routineGo(p, 'wake', people, true, () => 0.5, { ...plain, morning: 5 }); return p.leave; };
+  assert.equal(again(), again(), 'the same morning, the same moment');
+});
+
 test('the head holds one at a time, one or two wait by the door, and the rest go on to breakfast (#973)', () => {
   const r = roomAt('head'), d = 7, mk = i => ({ role: 'gunner', id: `g${i}`, name: `G${i}`, room: 'head', at: 'head', block: 'wake', x: r.x0 + 0.05, dk: r.deck, tdk: r.deck, tx: null, wait: 0 });
   const people = [0, 1, 2, 3].map(mk), [a, b, c, e] = people;
@@ -140,13 +155,15 @@ test('a scene that names a new room is staged there, by whole words (#973)', () 
   const aboard = [{ id: 'you', role: 'you' }, { id: 'c:tomas', role: 'engineer' }];
   const room = text => sceneStage({ title: 'With Tomas', text }, aboard, ['c:tomas']).room;
   assert.equal(room('He is waiting outside the head with a towel.'), 'head');
-  assert.equal(room('She is in the shower.'), 'head');
+  assert.equal(room('{n} keeps their rating card in a sealed pouch on a cord round their neck, even in the shower.'), 'galley', 'a shower in passing is not the head');
   assert.equal(room('He has the part on the bench in the workshop.'), 'workshop');
   assert.equal(room('She is sitting by the airlock.'), 'airlock');
   assert.equal(room('They check the seals on the lock.'), 'airlock');
   assert.equal(room('He has the panel off in life support.'), 'lifesupport');
-  assert.equal(room('The recycler is groaning.'), 'lifesupport');
+  assert.equal(room('He is complaining about the air recycler.'), 'lifesupport');
+  assert.equal(room('The scrubbers are running flat out.'), 'lifesupport');
+  assert.equal(room('They draw two waters at the tap and talk about the ration, and the recycler.'), 'galley', 'the galley\'s water recycler is not life support');
   assert.equal(room('He shakes the headache off, and the padlock, and the lockers, and the showers of sparks.'), 'galley', 'not inside longer words');
   assert.equal(room('The head of the table is empty.'), 'galley', 'the head of something is not the head');
-  assert.equal(room('She shows him the shower, then the galley.'), 'head', 'the first named');
+  assert.equal(room('She shows him the head, then the galley.'), 'head', 'the first named');
 });
