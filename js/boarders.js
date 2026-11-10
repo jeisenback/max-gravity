@@ -135,6 +135,7 @@ function hurtHand(s) {
   c.hurtUntil = st.day + (again ? 18 : 12);
   s.youHurt = true; s.hits = (s.hits || 0) + 1;  // hits: how many times this fight (fightui.js fightTook)
   captainFlag('hurt');  // kept for the goodbye (captains.js)
+  recordHand('hurts');  // the record (traits.js)
   if (!s.ashore && role().canDie && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return hurtSay(again ? 'hurt.you.down' : 'hurt.you.hit'); }
   const bill = roleHolder('medic') ? 0 : handPays(HAND_CLINIC);  // the hand's own savings, also in a fight that a burn event started (hired.js hiredFunds)
   const pay = bill ? ` ${hurtSay('hurt.clinic', { cr: fmt(bill) })}` : '';
@@ -157,18 +158,18 @@ function repelCasualty(s, only) {  // `only`: the one it falls on, when the exch
   const c = person(who);
   if (s.hurt.has(who) || secondStrike(c)) {  // hurt twice in a fight, or marked before and hit again: the second strike
     if (loseCrew(c, killedHow(s)) === 'marked') {  // a floor held them (the full build)
-      s.marked.push(c);
+      s.marked.push(c); recordHand('matesHurt');
       return hurtSay('hit.again.marked', { first: c.first });
     }
-    s.dead.push(c);
+    s.dead.push(c); recordHand('matesLost');
     return hurtSay('hit.again.dead', { first: c.first });
   }
   if (Math.random() < lossOdds(c, true)) {  // a hard hit that does not stop at hurt (losses.js)
-    if (loseCrew(c, killedHow(s)) === 'dead') { s.dead.push(c); return `${cover}${hurtSay('hit.dead', { first: c.first })}`; }
-    s.marked.push(c); return `${cover}${hurtSay('hit.marked', { first: c.first })}`;
+    if (loseCrew(c, killedHow(s)) === 'dead') { s.dead.push(c); recordHand('matesLost'); return `${cover}${hurtSay('hit.dead', { first: c.first })}`; }
+    s.marked.push(c); recordHand('matesHurt'); return `${cover}${hurtSay('hit.marked', { first: c.first })}`;
   }
   (st.injured = st.injured || {})[who] = true;
-  s.hurt.add(who);
+  s.hurt.add(who); recordHand('matesHurt');
   return `${cover}${hurtSay('hit.hurt', { first: c.first })}${hurtWarning(c)}`;
 }
 
@@ -194,6 +195,7 @@ function repelSettle(s) {
   const st = G.state, h = hired(), cap = h && person(h.captain), d = s.d, repelled = s.won;  // an owner has no captain
   const lost = deadNote(s);
   if (s.assault) return assaultSettle(s, repelled, lost);
+  recordHand(repelled ? 'repelsHeld' : 'repelsLost');  // the record (traits.js)
   if (navyBoarding(s.state)) changeRep(d.foe.gov, -DECK.NAVY_STANDING * s.state.navyDown);
   const cited = repelled && navyBoarding(s.state) && deckWithdrew(s.state) ? citation() : '';  // a withdrawn inspection still files its citation (#828)
   if (repelled) {
@@ -209,7 +211,7 @@ function repelSettle(s) {
 // A navy party that withdrew at its cap: the citation stands, and the ship pays the heave-to's fine. No regard lost, and the standing is not reset.
 function citation() {
   const fine = heaveToFine();
-  moveMoney(-fine);
+  moveMoney(-fine); recordHand('fines');
   return ` ${sceneSay('scene:fight', 'deck.end.cited', { fine: fmt(fine) })}`;
 }
 
@@ -249,6 +251,7 @@ function shipTaken(s) {
 // Boarding her ends with her bridge taken (her strongbox goes into the ship's fund) or you driven back to your own lock.
 function assaultSettle(s, won, lost) {
   const st = G.state, h = hired(), cap = h && person(h.captain), foe = s.d.foe, post = lockPost();
+  recordHand(won ? 'boardingsWon' : 'boardingsLost');  // the record (traits.js)
   if (won) {
     const take = lootFor(foe).credits || randInt(10, 30) * 1000;
     moveMoney(take);

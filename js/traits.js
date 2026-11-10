@@ -21,7 +21,7 @@ const HAND_TRAITS = [
   { id: 'jonah', name: 'Jonah', by: null, earned: r => count(r, 'matesLost') >= 2 },
 ];
 
-const handTraits = h => { const r = recordOf(h); return HAND_TRAITS.filter(t => t.earned(r)).map(t => t.id); };
+function handTraits(h) { const r = recordOf(h); return HAND_TRAITS.filter(t => t.earned(r)).map(t => t.id); }  // a declaration: the scene registry names it (hiredscenes.js)
 const hasTrait = (h, id) => handTraits(h).includes(id);
 
 // Adds n to the count (a late delivery starts the on-time count again) and returns the traits this add earned and the record did not hold before.

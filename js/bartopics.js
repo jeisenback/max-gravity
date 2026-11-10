@@ -193,7 +193,8 @@ const BAR_TOPICS = [
   }); } },
   { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c), gunner = !!roleHolder('gunner') && roleSkill('gunner') > 0, odds = gunner ? 1 : handCheck('hands', 0, 'brawl');  /* gunner: a crewmate at the guns steps in; a hand's own gunnery is a hand check like anyone's */ return ({ label: `${say('label')}${costNote({ cost: 1500 }, odds)}`, ...gated(notYet(() => pat.fought, say('gate'))), run() {
     pat.fought = true; met(pat); like(p, -2, say('memory'));
-    if (odds >= 1 || Math.random() < odds) return say('win', { step: gunner ? `${say('win.step', { gunner: roleName('gunner') })} ` : '' });
+    const won = odds >= 1 || Math.random() < odds; recordHand(won ? 'barWon' : 'barLost');  // the record (traits.js)
+    if (won) return say('win', { step: gunner ? `${say('win.step', { gunner: roleName('gunner') })} ` : '' });
     c.st.credits = Math.max(0, c.st.credits - 1500);
     return say('lose');
   } }); } },

@@ -23,6 +23,7 @@ function startShipFight(spec, flee, o = {}) {
   if (spec.kind === 'patrol' && !flee) changeRep(spec.gov, -8);  // firing on a navy ship is not forgotten
   let text = o.text || fightSay('start.text', { ship: theShip(foe) });
   if (flee) {
+    recordHand('fled'); if (spec.kind === 'patrol') recordHand('ranFromNavy');  // the record (traits.js): a run, got away or not
     if (Math.random() < fleeOdds()) return `${fightSay('flee.away', { helm: helmName() })}${runCost()}`;
     st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.08));
     s.edge = -1;
@@ -238,6 +239,7 @@ const fightBoarded = s => deckOpen(repelStart({ foe: s.foe, foeHp: 0, init: 'foe
 // and Stand down goes on to whatever the close queued (the captain lost on the bridge, the hand's ending).
 function shipFightEnd(s, end) {
   const st = G.state, post = lockPost(), cap = raidCap();
+  if (['crippled', 'broke', 'away'].includes(end)) recordHand('fightsWon'); else if (['ran', 'escaped'].includes(end)) recordHand('fightsRan');  // the record (traits.js)
   const lead = (ev, line) => ({ ...ev, text: `${line}</p><p>${ev.text}` });
   const close = (text, next = null) => {
     G.nextEvent = { ...shipFightEvent(s, { guns: [], torp: null, pdc: 'fire' }, true), text: `${s.state.log.slice(-2).join('</p><p>')}</p><p>${text}`,

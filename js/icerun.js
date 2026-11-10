@@ -40,7 +40,8 @@ function iceOption(from, free) {
   if (!h || (h.iceAt !== undefined && st.day - h.iceAt < ICE_GAP) || st.day - h.since < 12 || free < 10) return null;
   const pick = icePick(st, from, st.fuel, { price, travelDays, burnFuel });
   if (!pick) return null;
-  findSite(st, pick.site, st.day);  // the captain knows her rock, so it is on the map from the departure
+  const rock = findSite(st, pick.site, st.day);  // the captain knows her rock, so it is on the map from the departure
+  if (rock && rock.found === st.day) recordHand('rocksFound');  // the record (traits.js)
   return { site: pick.site, sid: pick.sid, planet: pick.planet, yard: pick.yard, good: 'water', tons: free, cost: 0, profit: Math.round(pick.sell * free * ICE_PREMIUM), days: pick.days, ice: true, ballast: false };
 }
 
@@ -167,7 +168,7 @@ function iceStep(n, c, post) {
   let out = text;
   const soft = !won && n === 0 && post === 'pilot' && perkOn('soft-hands');  // soft-hands (picks.js): the approach the pilot flies costs no hull on a lost roll
   if (hull && !soft) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won &&
-    Math.random() < CASUALTY_ODDS) { const c2 = hurtCrew(true); if (c2) out += c2.dead ? ` ${c2.first} is dead.` :
+    Math.random() < CASUALTY_ODDS) { const c2 = hurtCrew(true); if (c2) recordHand(c2.dead ? 'matesLost' : 'matesHurt'); if (c2) out += c2.dead ? ` ${c2.first} is dead.` :
     ` ${c2.first} is hurt.${hurtWarning(c2)}`; } }
   if (post) gainSkill(post, won ? 4 : 1); else gainSkill(h.post, 1);
   if (n === 1) out += iceLoad(false);       // the cutting fills the hold
@@ -188,6 +189,7 @@ function iceLoad(thin) {
 // How it ends: a clean run is remembered, a bad one is paid for less.
 function iceHome(edge) {
   const h = hired(), cap = person(h.captain), st = G.state;
+  if (edge >= 3) recordHand('haulsClean'); else if (edge <= -2) recordHand('haulsBad');  // the record (traits.js)
   const melt = perkOn('melt-return') ? (st.fuel = Math.min(ship().fuel, st.fuel + 20), ' The melt goes to the tanks: 20 reaction mass.') : '';  // melt-return (picks.js)
   if (edge >= 3) { like(cap, 1, sceneSay('scene:memories', 'ice.clean.memory')); captainFlag('iceClean'); delete h.flags.iceBad; return ` The captain writes it in the log: a clean haul.${melt}`; }
   if (edge <= -2) { like(cap, -1, sceneSay('scene:memories', 'ice.bad.memory')); captainFlag('iceBad'); delete h.flags.iceClean; return ` The captain doesn\'t write anything in the log.${melt}`; }

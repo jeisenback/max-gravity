@@ -116,7 +116,7 @@ function contactEvent(spec) {
   if (spec.kind === 'patrol' && hired()) choices.push({ label: contactSay('heave.label'), cost: true, run() {  // a hired hand has no 40,000 cr: the ship pays a quarter of its fund
     const fine = heaveToFine();  // the navy's fine, the one a search charges (boarders.js)
     if (spec.ladder) ladderDone(hired(), spec.ladder);  // the ladder's cutter is a papers check: complying answers it, so the fine is paid once (fightladder.js)
-    moveMoney(-fine);
+    moveMoney(-fine); recordHand('fines');  // the record (traits.js)
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     like(person(hired().captain), -1, sceneSay('scene:memories', 'patrol-fine.memory'));
     return contactSay('heave.result', { fine: fmt(fine) });

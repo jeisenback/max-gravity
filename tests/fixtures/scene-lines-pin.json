@@ -9975,6 +9975,150 @@
   ]
  },
  {
+  "id": "trait:cool-head",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Hester watches the lock cycle shut behind the last of them. \"You don't rattle,\" Hester says, and writes the time in the log. Two boardings held.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "trait:salvager",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Tomas reads the haul off the board and looks at you over it. \"The ice likes you. Two in a row.\" The ice comes in clean.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "trait:marked",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Hester has the fine on the board before the cutter is out of range. \"They had the name ready. Not mine. Yours.\" The navy has your name.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "trait:reliable",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": " Five deliveries on the day.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "trait:scarred",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Tomas looks at the dressing and then at the gauges. \"You're still here,\" Tomas says, and hands you the coffee. Hurt twice, and back at the post.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "trait:hard-case",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Hester counts the holds on her manifest and adds a line at the foot. \"Two of theirs carried. The yards will hear about that.\" Two of her ships carried.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "trait:runner",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Hester brings the throttle back to cruise and does not look round. \"You know where it is, at least.\" Three fights not fought.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "trait:jonah",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": " Two shipmates lost.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "trait:inbox",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "A note from the shipper's office at the dock: five runs on the day. They will put the ship first on the next board. Nothing on the record yet.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
   "id": "memory:patrol-fine",
   "plays": [
    {

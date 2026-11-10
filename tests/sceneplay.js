@@ -211,7 +211,10 @@ const playScenes = () => {
     run(`hand:teach:${id}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => String(ACTIVITIES.teach.run()) }] }),
       { prep() { hired().moves = [...known]; hired().picks = [id]; for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) if (p) p.opinion = OPINION.TRUSTED; }, extra: () => ({ moves: hired().moves, [post]: hired().skill[post] }) });
   }
-  run('hand:teach:none', {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => ACTIVITIES.teach.run() }] }));  // nothing due: the button teaches nothing and says nothing (text '')
+  run('hand:teach:none', {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.teach.label, run: () => ACTIVITIES.teach.run() }] }));
+  // what the record makes of the hand (traits.js): each trait's moment (said through traitNote in a burn, by its speaker) and its reason, the shipper's note and the empty card
+  for (const t of HAND_TRAITS) run(`trait:${t.id}`, {}, () => ({ ...alone(), choices: [{ label: 'x', run() { const h = hired(); h.traitsTold = []; G.messages = []; G.mode = 'transit'; traitNote(t.id); return `${(G.messages[0] || {}).text || ''} ${traitSay(`${t.id}.reason`)}`; } }] }));
+  run('trait:inbox', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => `${traitSay('inbox.reliable')} ${traitSay('empty')}` }] }));  // nothing due: the button teaches nothing and says nothing (text '')
   // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
   run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.slice(-1) }; });  // the heave-to, last of a hired hand's choices at a navy stop
   run('memory:landing', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { land(currentPlanet()); G.dialog = null; G.nextEvent = null; return ''; } }] }), { prep() { G.state.crew = []; G.player = G.player || { armor: ship().armor, x: 0, y: 0, vx: 0, vy: 0 }; uatPassenger('earth', G.state.planet); } });
