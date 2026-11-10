@@ -23,7 +23,7 @@ const helpers = () => {
   // One burn's worth of frames, at the current power and wear setting.
   window.wearBurn = () => { const t = G.transit; for (let i = 0; i < 90; i++) { t.event = null; G.dialog = null; Mods.emit('frame', 1); } };
   // Frames of a burn that can see projects.
-  window.burnFrames = n => { const t = G.transit; for (let i = 0; i < n; i++) { t.event = null; G.dialog = null; Mods.emit('frame', 1); } };
+  window.burnFrames = n => { const t = G.transit; for (let i = 0; i < n; i++) { t.event = null; G.dialog = null; Mods.emit('frame', 1 / t.pace); } };  // a second of today's burn a frame (#992)
   // Runs the game a frame at a time, with nobody else in the sky.
   window.fly = (until, max = 6000) => { let i = 0; while (!until() && i++ < max) { G.npcs = []; G.spawnTimer = 99; update(1 / 30); } return i; };
 };
@@ -321,12 +321,12 @@ test('engineer: a manual engineer can scram the reactor; a crewed one keeps it c
   const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
-    const st = G.state, run = (secs) => { for (let i = 0; i < secs; i++) { G.transit.event = null; Mods.emit('frame', 1); } };
+    const st = G.state, run = (secs) => { for (let i = 0; i < secs; i++) { G.transit.event = null; Mods.emit('frame', 1 / G.transit.pace); } };  // seconds of today's burn (#992)
     st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
     const go = () => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.heat = 0; st.fuel = ship().fuel; st.armor = ship().armor; Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', 80); G.transit.comms = []; };
     go(); run(30); const warm = st.heat;
     run(40); const scrammed = { drive: power().drive, heat: st.heat, armor: st.armor < ship().armor, comm: G.transit.comms.some(c => /Reactor scram/.test(c)) };
-    const cool = (skill) => { go(); st.crew = []; hire('engineer', skill); let peak = 0; for (let i = 0; i < 200; i++) { G.transit.event = null; Mods.emit('frame', 1); peak = Math.max(peak, st.heat); } return { peak, drive: power().drive, armor: st.armor === ship().armor, comm: G.transit.comms.some(c => /eases the drive/.test(c)) }; };
+    const cool = (skill) => { go(); st.crew = []; hire('engineer', skill); let peak = 0; for (let i = 0; i < 200; i++) { G.transit.event = null; Mods.emit('frame', 1 / G.transit.pace); peak = Math.max(peak, st.heat); } return { peak, drive: power().drive, armor: st.armor === ship().armor, comm: G.transit.comms.some(c => /eases the drive/.test(c)) }; };
     const c1 = cool(1), c3 = cool(3);
     // Landing cools everything.
     st.heat = 70; Mods.emit('landed', currentPlanet());
@@ -577,7 +577,7 @@ test('drive power sets the burn: speed, days, reaction mass, and how easily pira
       uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.times = []; t.interceptPlanned = true;
       Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', drive);
       st.fuel = Math.round(ship().fuel * 0.6); const fuel0 = st.fuel, day0 = st.day, cost = t.fuelCost;
-      let frames = 0;
+      let frames = 0; G.speed = 16;  // the whole burn at the top speed (#992)
       while (G.mode === 'transit' && frames++ < 600) { t.event = null; G.dialog = null; st.heat = 0; update(1); if (G.mode === 'transit') Mods.emit('frame', 1); }
       return { frames, days: st.day - day0, used: fuel0 - st.fuel, cost, base: t.days };
     };

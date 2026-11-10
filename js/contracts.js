@@ -100,7 +100,7 @@ const boardStanding = (standing, shipper, kit) => (standing >= 1 && (kitBoards(k
 
 // A shipper's regard for the ship (st.hired.standing, and st.career.standing after the buy; by the shipper's name; older saves have none, which is 0). A delivery moves it: on the day and whole, up one;
 // each day-late fault down one, a short load down one and a lost load down two. The word is for the run panel; the shipper is named before it, so it takes no verb.
-const standingOf = (h, shipper) => (h.standing || {})[shipper] || 0;
+const standingOf = (h, shipper) => { const s = (h.standing || {})[shipper]; return s !== undefined ? s : hasTrait(h, 'reliable') ? 1 : 0; };  // Reliable (traits.js): a shipper that does not know the ship starts at 1
 const standingDelta = (run, sold, day) => { const late = day > run.due, lost = sold <= 0, short = sold < run.tons; return !late && !short ? 1 : -((late ? 1 : 0) + (lost ? 2 : short ? 1 : 0)); };
 const nextStanding = (n, d) => Math.max(-STANDING_MAX, Math.min(STANDING_MAX, n + d));
 const shipperWord = n => (n >= STANDING_GOOD ? 'a shipper that trusts the ship' : n >= 1 ? 'a shipper that knows the ship' : n <= -1 ? 'a shipper that is wary of the ship' : '');

@@ -497,11 +497,8 @@ function weighted(table, rnd = Math.random) {
 // Hard burn at each end (on the couches), strapped in at a station either side of the flip (secure), weightless at the flip, free to move
 // otherwise.
 function phase() {
-  const t = G.transit, pr = 1 - t.left / t.total;
-  if (pr < 0.06 || pr > 0.94) return 'couch';
-  if (Math.abs(pr - 0.5) < 0.03) return 'float';
-  if ((pr >= 0.44 && pr < 0.47) || (pr > 0.53 && pr <= 0.56)) return 'secure';
-  return 'move';
+  const t = G.transit;
+  return stageAt(t.days, 1 - t.left / t.total);  // the stages in ship time (burnspeed.js, #992)
 }
 
 // A patient lying in the medbay bed: they stay on the cot through the hard burn and are strapped down on it at the flip, as sleepers are in
@@ -522,8 +519,9 @@ function posture(p, ph, time, asleep) {
   else name = p.at === 'alone' || (p.at !== 'stove' && onSeat(p)) ? 'sit' : 'stand';  // on a seat; someone alone sits on a bunk's edge; anyone else stands (#925)
   const { frames, fps } = POSTURES[name];
   // a walking stride by the ground covered, so the feet do not slide (#924)
-  const view = ph === 'move' && FIG_FACING.includes(name) ? (name.startsWith('work') ? 'back' : 'front') : 'side';  // facing you to stand and sit, the wall at work; side-on on the move and in the burn (#978)
-  return { name, view, x: p.x, deck: p.dk, face: p.face || 1, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160 / CUT_K) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
+  const chair = (name === 'sit' || name === 'work-sit') && p.room !== 'galley' && onSeat(p) ? SEAT_FACE[p.room] : 0;  // on a chair: side-on, the way the chair faces (rooms.js, #985)
+  const view = chair ? 'side' : ph === 'move' && FIG_FACING.includes(name) ? (name.startsWith('work') ? 'back' : 'front') : 'side';  // facing you to stand and sit, the wall at work; side-on on the move and in the burn (#978)
+  return { name, view, x: p.x, deck: p.dk, face: chair || p.face || 1, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160 / CUT_K) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
 }
 
 // The scene open in a burn, acted out: when it opens (or the next one in a chain opens) those it stages walk to spots in its room, a little
@@ -687,7 +685,7 @@ function towerTank(ctx, lay, tk, fuel, s) {
 function drawCutaway(box, clear = box) {
   const t = G.transit, st = G.state, people = shipPeople(), ph = phase(), still = Settings.reduceMotion, time = still ? 0 : G.time;
   const lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay), ol = outlineLayout(box, lay), left = outlineLeft(box, ol), view = viewOf(box, lay, left), zoom = view.zoom, half = view.span / 2;
-  const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = phaseWeights(pr);
+  const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = phaseWeights(pr, burnStages(t.days));  // the stages in ship time (#992)
   // The tower stands across the middle of the part of the box a docked dialog leaves clear (all of it with none) right of the outline's
   // strip, and the camera pans up and down it after the hand's deck (camTarget): it steps in that part's own terms, its centre and its
   // height, down the run from the top of the nose's cap to the first of the plume (camRun), offset from the box's centre by offX and offY.
@@ -783,7 +781,7 @@ function drawCutaway(box, clear = box) {
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
   ctx.font = `600 12px ${roomFont}`;
   const berths = layoutBox(lay, 'berths'), labels = [], dots = [], hits = [];
-  const floatW = burnRamp(pr, 0.47, 0.49) - burnRamp(pr, 0.51, 0.53);  // how far the float has built at the flip, 0 to 1 and back (#927)
+  const fl = burnStages(t.days).float, floatW = burnRamp(pr, 0.5 - fl, 0.5 - fl / 3) - burnRamp(pr, 0.5 + fl / 3, 0.5 + fl);  // how far the float has built at the flip, 0 to 1 and back (#927), in ship time (#992)
   const youHurt = handHurt();
   for (const p of people) if (p.role !== 'cat' && p.seat !== undefined && seen(deckFloor(lay, p.seatDk) - 20, deckFloor(lay, p.seatDk) + 10)) roomCouchFlat(ctx, X(p.seat), deckFloor(lay, p.seatDk), p.couch || 0);  // each crash couch, folded into its deck or out flat (#925, #972)
   for (const p of people) {
@@ -974,7 +972,7 @@ Mods.register({
   id: 'shiplife', name: 'Life aboard', builtin: true,
   init(M) {
     buildLifeButtons();
-    M.on('frame', lifeTick);
+    M.on('frame', dt => lifeTick(lifeDt(dt)));  // at the burn's speed (burnspeed.js, #992)
     M.on('landed', () => { const el = document.getElementById('tlife'); if (el) el.hidden = true; });
   },
 });

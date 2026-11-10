@@ -84,6 +84,8 @@ function breakdownEvent(part) {
 function wearTick(dt) {
   const t = G.transit;
   if (!dt || G.mode !== 'transit' || !t || t.event || G.dialog) return;
+  dt = paceDt(dt);  // today's wear a trip, at any speed; none paused (burnspeed.js, #992)
+  if (!dt) return;
   const p = power();
   wear('drive', dt * (0.03 * (1 + Math.max(0, p.drive - 40) / 40) + (heat() > 75 ? 0.05 : 0)));
   wear('life', dt * 0.01);

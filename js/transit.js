@@ -4,7 +4,6 @@
 // events, market rumors, and comms chatter. Loaded before game.js; only calls into
 // it at runtime.
 
-const TRANSIT_MIN = 60, LIFE_SECS = 30;  // real seconds per burn: at least the minimum, else a downtime slot's worth for each (shiplife.js lifeSlotCount, a pick every couple of days of the leg)
 const CHATTER_PER_BURN = 3;  // lines of the crew's chatter in one burn, spread over it; the plotted and midpoint lines are not counted
 
 const CHATTER = [
@@ -111,9 +110,13 @@ function loseCargo(frac) {
 }
 
 function delay(seconds) {
-  seconds = Math.max(seconds, 1 - G.transit.left);  // shortening can never skip past arrival
-  G.transit.left += seconds;
-  G.transit.total += seconds;
+  const t = G.transit, sec = burnStages(t.days).secure;
+  seconds = seconds / (t.pace || 1);  // seconds of today's burn, the same share of the longer one (burnspeed.js, #992)
+  const q = 0.5 - sec - 1e-6;  // the share left at the flip's last instant, a hair past it
+  if (t.flipped && seconds > 0) seconds = Math.min(seconds, Math.max(0, (q * t.total - t.left) / (1 - q)));  // past the flip it stays past it
+  seconds = Math.max(seconds, 1 - t.left);  // shortening can never skip past arrival
+  t.left += seconds;
+  t.total += seconds;
 }
 
 function addRumor() {
@@ -297,7 +300,7 @@ function comm(text) {
 }
 
 function transitSeconds(days) {
-  return Math.max(TRANSIT_MIN, lifeSlotCount(days) * LIFE_SECS);
+  return days * SHIP_DAY;  // a cutaway day for each ship day (#992, burnspeed.js)
 }
 
 function enterTransit() {
@@ -305,13 +308,13 @@ function enterTransit() {
   const days = travelDays(st.systemId, to), total = transitSeconds(days), fuelCost = burnFuel(st.systemId, to);
   st.fuel -= fuelCost;
   st.dest = null;
-  const count = 1 + Math.floor(total / 40) + (walkPending() ? 1 : 0);  // 2 to 4 happenings per burn, one more for the first officer's walk-through (captains.js)
+  const count = burnSceneCount(days) + (walkPending() ? 1 : 0);  // 2 to 4 happenings per burn, as many as on today's shorter burn (#992), one more for the first officer's walk-through (captains.js)
   G.transit = {
-    to, days, total, fuelCost, slots: lifeSlotCount(days), left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
+    to, days, total, pace: oldBurnSeconds(days) / total, fuelCost, slots: lifeSlotCount(days), left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
     times: Array.from({ length: count }, (_, i) => total * (i + rand(0.3, 0.8)) / count),
     chatter: rand(5, 10), chattered: 0,
   };
-  G.mode = 'transit';
+  G.mode = 'transit'; G.speed = G.speedBefore = 1;  // each burn starts at normal speed, and a pause on it resumes there (#992)
   G.cam = null;  // each burn starts with the camera snapped to the hand
   G.npcs = []; G.shots = []; G.target = null;
   if (!G.transitStars) G.transitStars = Array.from({ length: 150 }, () => ({ x: Math.random(), y: Math.random(), z: rand(0.2, 1) }));
@@ -327,26 +330,27 @@ function enterTransit() {
 
 function updateTransit(dt) {
   const t = G.transit;
-  const progress = 1 - t.left / t.total;
+  const progress = 1 - t.left / t.total, r = burnRate(t, G.speed, burnSpeed());  // burn seconds per real second: the chosen speed, or the flip's slow motion (#992)
 
   // Stars stream past faster toward the midpoint, then slow as we decelerate.
   const speed = 0.05 + Math.sin(Math.PI * Math.min(1, progress)) * 0.6;
   for (const s of G.transitStars) {
-    s.x -= speed * s.z * dt;  // streaming past the cutaway, bow to the right
+    s.x -= speed * s.z * dt * Math.min(r, 16);  // streaming past the cutaway, bow to the right; still when paused
     if (s.x < 0) { s.x += 1; s.y = Math.random(); }
   }
   const want = t.flipped ? Math.PI / 2 : -Math.PI / 2;
-  t.angle += Math.sign(want - t.angle) * Math.min(Math.abs(want - t.angle), 1.5 * dt);
+  if (G.speed) t.angle += Math.sign(want - t.angle) * Math.min(Math.abs(want - t.angle), 1.5 * dt);
 
   if (t.event) return;  // timer waits for the player's decision
 
-  t.left -= dt * burnSpeed();  // the drive's power sets how fast the burn goes (engineering.js)
-  t.elapsed = (t.elapsed || 0) + dt;
+  const step = burnStep(t, G.speed, burnSpeed(), dt);  // burn seconds this frame, held at the start of the flip (burnspeed.js)
+  t.left -= step * burnSpeed();  // the drive's power sets how fast the burn goes (engineering.js)
+  t.elapsed = (t.elapsed || 0) + step;
   if (!t.flipped && progress >= 0.5) {
     t.flipped = true;
     comm('Midpoint. Flip and burn: cutting the drive, rotating, and decelerating.');
   }
-  if (t.chattered < CHATTER_PER_BURN && (t.chatter -= dt) <= 0) {
+  if (t.chattered < CHATTER_PER_BURN && (t.chatter -= dt * r) <= 0) {
     t.chattered++;
     t.chatter = rand(0.7, 1.3) * (t.left / burnSpeed()) / (CHATTER_PER_BURN - t.chattered + 2);  // the next one, a share of what is left of the burn
     const fill = (line, c) => line.replace('{first}', c.first).replace('{home}', c.home);
@@ -527,8 +531,9 @@ function drawBurnBar(b, dates, progress) {
   const route = local ? `${st.planet}  >  ${st.route.dock}` : `${system().name}  >  ${placeOf(t.to).name}`;
   const pull = s.phase === 'FLIP' ? 'FLIP: drive off, weightless' : `${s.phase}: ${s.g.toFixed(2)} g thrust`, hot = Math.min(1, s.v / s.peak || 0);
   const speedColor = `rgb(${Math.round(150 + 90 * hot)},${Math.round(200 + 40 * hot)},255)`;
-  const secs = Math.max(0, Math.ceil(t.left)), mss = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
-  const clock = `${mss} remaining${t.event ? ' (paused)' : ''}`, short = `${mss}${t.event ? ' paused' : ''}`;  // the short one beside the speed on a phone
+  const secs = Math.max(0, Math.ceil(realLeft(t, G.speed, burnSpeed()))), mss = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;  // real time left at the chosen speed (#992)
+  const pace = !G.speed ? 'paused' : burnRate(t, G.speed, burnSpeed()) !== G.speed ? 'flip' : G.speed > 1 ? `${G.speed}x` : '';  // the speed, or the flip's slow motion
+  const clock = `${mss} remaining${t.event ? ' (paused)' : pace ? ` ${pace}` : ''}`, short = `${mss}${t.event ? ' paused' : pace ? ` ${pace}` : ''}`;  // the short one beside the speed on a phone
   const L = b.x + 14, R = b.x + b.w - 14;
   if (b.w >= 560) {
     const leftW = Math.min(b.w * 0.28, Math.max(width(route, label(18)), width(title, label(12))));

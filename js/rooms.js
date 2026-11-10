@@ -502,6 +502,9 @@ const roomPlain = () => {};
 const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay,
   head: roomPlain, workshop: roomPlain, airlock: roomPlain, lifesupport: roomPlain };
 // A room, r = { x0, x1, top, floor } in world units, drawn for the state s (w, time, zoom, spin, still, berths, cargo, fuel, burning, night, asleep): walls, props, then its lamp.
+// Which way someone on a room's chair faces (#985): the bridge's and the guns' toward their consoles, the chair's back behind them (#933), the
+// medbay's stool toward the cot. The galley's bench is not here: at the mess table people face you.
+const SEAT_FACE = { bridge: 1, gunnery: -1, medbay: -1 };
 function drawRoom(ctx, id, r, s) {
   if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses
   const W = r.x1 - r.x0;
@@ -509,7 +512,7 @@ function drawRoom(ctx, id, r, s) {
   ROOM_DRAW[id](ctx, r, s, sh => r.x0 + W * sh, W);
   const seats = SEATS[id] || [];  // its seats (shiplife.js), where people sit (#925): the galley's on one bench along the mess table, a stool anywhere else
   if (id === 'galley' && seats.length) roomBench(ctx, r.x0 + W * seats[0] - 14, r.x0 + W * seats[seats.length - 1] + 14, r.floor);
-  else for (const f of seats) roomStool(ctx, r.x0 + W * f, r.floor, { bridge: 1, gunnery: -1 }[id] || 0);  // a station's chair faces its console (#933)
+  else for (const f of seats) roomStool(ctx, r.x0 + W * f, r.floor, id === 'medbay' ? 0 : SEAT_FACE[id] || 0);  // a station's chair faces its console (#933); the medbay's is a stool
   const marked = !!(s.damage && s.damage.marks.has(id));
   if (marked) drawDamage(ctx, r, s);
   if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine');  // severe damage: the lamp flickers

@@ -63,7 +63,7 @@ test('downtime from the transit screen', async () => {
     takeOff(); st.dest = 'mars'; G.player.x = 6000; G.player.y = 0; tryBurn();
   });
   await page.waitForFunction(() => G.mode === 'transit');
-  await ev(() => { G.transit.times = []; });
+  await ev(() => { G.transit.times = []; G.transit.left = G.transit.total * 0.9; });  // off the couches, which take six ship hours (#992)
   await page.waitForSelector('#tlife button:not([disabled])', { timeout: 10000 });
   await page.click('#tlife button');
   const labels = await page.$$eval('[data-action=choose]', b => b.map(x => x.textContent));

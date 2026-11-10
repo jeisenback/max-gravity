@@ -164,6 +164,7 @@
  "scene:downtime",
  "scene:shiplife",
  "scene:moves",
+ "scene:traits",
  "scene:bar-round",
  "scene:cast-join",
  "scene:ship-log",

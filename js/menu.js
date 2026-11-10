@@ -256,9 +256,10 @@ const Menu = {
       const flying = `<h3>Flying</h3>${row('W / Up', 'thrust')}${row('A D / Left Right', 'turn')}${row('S / Down', 'turn to brake')}${row('Space', 'fire')}${row('F',
         'launch a torpedo')}${row('Tab', 'next target')}${row('H', 'hail your target')}${row('L', 'land at the nearest port')}${row('M', 'system map')}${row('J',
         'start a burn')}${row('N', 'sound on or off')}${row('Esc', 'pause menu')}${row('F8', 'report a problem')}`;
+      const burns = `<h3>Burns</h3>${row('Space', 'pause or resume the burn')}${row('1 / 2 / 3', 'normal, 4x, 16x')}`;  // the burn's speed (burnspeed.js, #992)
       const fights = hand ? '' : `<h3>Fights during burns</h3>${row('W', 'burn at your set thrust')}${row('Q / E', 'less or more thrust')}${row('S', 'point retrograde against the enemy')}${row('Space', 'guns')}${row('F', 'torpedo')}${row('H', 'hail, or board a disabled ship')}`;
       const note = hand ? '<div class="hint">The captain calls the burn. You work your post.</div>' : '';
-      return `<h2>Controls</h2>${note}${flying}${fights}
+      return `<h2>Controls</h2>${note}${flying}${burns}${fights}
         <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`;
     },
     credits() {

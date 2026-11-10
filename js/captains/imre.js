@@ -135,6 +135,7 @@ CAPTAINS.imre = {
     warm: 'Captain Sato is at the foot of the ramp in the same jacket, with a paper folded in four. It\'s your reference, in their own hand, entered and stamped. "You\'ll want this," they say. "It\'s accurate."',
     neutral: 'Captain Sato meets you at the foot of the ramp with the final pay slip, countersigned, and the log page for your last watch. It\'s in order.',
     cold: 'Captain Sato is at the foot of the ramp with the papers, and the log, and the red tag from the gap you left in it. "The record is complete," they say. "It won\'t be amended."',
+    jonah: '"Two entries," Captain Sato says, and taps the log where they are. "Neither is yours to carry. The log carries them."',  // two shipmates lost on the hand's record (traits.js)
     crew: '{names} will go with you. Captain Sato enters it. "It\'s noted," they say. A beat later: "It\'s regretted."',
     secret: 'They don\'t mention the discharge, and neither do you. Their hand goes, once, to the left sleeve of the jacket. "I keep a clean record," they say. "I intend to go on."',
     xoDead: 'There\'s a line struck through in the watch bill, in Captain Sato\'s hand, and next to it, in a different ink, a date. "I amended the record," they say. "I\'ve entered her as a casualty of the service. She\'d have found that very funny."',

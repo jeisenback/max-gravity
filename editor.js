@@ -8,10 +8,10 @@
 (function () {
   // index.html's scripts, in its order, without game.js; tests/editor.test.js checks the two lists agree.
   const SCRIPTS = [
-  'js/build.js', 'js/data.js', 'js/util.js', 'js/sheet.js', 'js/picks.js', 'js/range.js', 'js/board.js', 'js/gates.js', 'js/orbits.js', 'js/sites.js', 'js/market.js', 'js/contracts.js', 'js/mods.js', 'js/ui.js',
+  'js/build.js', 'js/data.js', 'js/util.js', 'js/sheet.js', 'js/picks.js', 'js/traits.js', 'js/range.js', 'js/board.js', 'js/gates.js', 'js/orbits.js', 'js/sites.js', 'js/market.js', 'js/contracts.js', 'js/mods.js', 'js/ui.js',
   'js/views.js', 'js/factions.js', 'js/transit.js', 'js/burnlayout.js', 'js/burnpanel.js', 'js/crew.js', 'js/peopletext.js', 'js/people.js',
   'js/hail.js', 'js/story.js', 'js/mapbuttons.js', 'js/art.js', 'js/audio.js', 'js/music.js', 'js/tutorial.js', 'js/world.js',
-  'js/company.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/hulldetail.js', 'js/familytext.js', 'js/family.js', 'js/room.js', 'js/calendar.js', 'js/social.js',
+  'js/company.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js', 'js/hulldetail.js', 'js/familytext.js', 'js/family.js', 'js/room.js', 'js/calendar.js', 'js/social.js',
   'js/bar.js', 'js/bartopics.js', 'js/outpost.js', 'js/legacy.js', 'js/torpedoes.js', 'js/boarding.js', 'js/engage.js', 'js/fightladder.js',
   'js/duel.js', 'js/console.js', 'js/stations.js', 'js/autopilot.js', 'js/engineering.js', 'js/comms.js', 'js/journal.js',
   'js/web.js', 'js/wear.js', 'js/projects.js', 'js/programs.js', 'js/hired.js', 'js/moves.js', 'js/role.js', 'js/readouts.js', 'js/ownerboard.js', 'js/chaptertwo.js', 'js/dayashore.js', 'js/shippers.js', 'js/arcs.js', 'js/suggest.js', 'js/repairs.js', 'js/jobs.js',

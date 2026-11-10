@@ -57,6 +57,8 @@ function finishProject(id) {
 function projectsTick(dt) {
   const t = G.transit;
   if (!dt || G.mode !== 'transit' || !t || t.event || G.dialog) return;
+  dt = paceDt(dt);  // as far a trip as before, at any speed; none paused (burnspeed.js, #992)
+  if (!dt) return;
   for (const p of Object.values(projectsOf())) if ((p.left -= dt) <= 0) finishProject(p.id);
 }
 

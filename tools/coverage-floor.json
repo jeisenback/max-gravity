@@ -18,6 +18,7 @@
     "js/icerun.js",
     "js/picks.js",
     "js/moves.js",
+    "js/traits.js",
     "js/sites.js",
     "js/jobs.js",
     "js/suggest.js",

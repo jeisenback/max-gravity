@@ -13,7 +13,7 @@ const NAMES = ['SYSTEMS', 'PRICE_MULT', 'CONTRACT_RATE', 'CONTRACT_FEE', 'haulRa
 const dice = (rolls = []) => { const seq = [...rolls]; return () => (seq.length ? seq.shift() : 0.5); };
 function setup({ day = 10, rumors = [], danger = {}, rolls = [], hold = 120, perks = [] } = {}) {  // perks: the hand's picks (handPerk, hired.js)
   const G = { state: { day, flags: {}, systemId: 'earth', planet: 'Earth', market: {}, rumors, missions: [], cargo: {}, hired: { since: 1, captain: 'cap1' } } };
-  const api = load(['js/data.js', 'js/util.js', 'js/sheet.js', 'js/orbits.js', 'js/market.js', 'js/contracts.js'],
+  const api = load(['js/data.js', 'js/util.js', 'js/sheet.js', 'js/traits.js', 'js/orbits.js', 'js/market.js', 'js/contracts.js'],
     { G, Mods: { filter: (n, v) => v, emit() {} }, career: () => G.state.hired, roleSkill: () => 0, ship: () => ({ fuel: 450, cargo: hold }), danger: sid => danger[sid] || 0, handPerk: id => perks.includes(id), pick: l => l[Math.floor(Math.random() * l.length)] }, NAMES);
   const earth = api.SYSTEMS.earth.planets.find(p => p.name === 'Earth');
   const reach = Object.entries(api.SYSTEMS).filter(([sid]) => sid !== 'earth' && api.inRange('earth', sid));
@@ -132,6 +132,7 @@ test('a shipper\'s regard: a delivery on the day and whole raises it, each fault
   assert.equal(standingDelta(run, 60, 25), -2, 'short and late'); assert.equal(standingDelta(run, 0, 25), -3, 'lost and late');
   assert.equal(nextStanding(STANDING_MAX, 1), STANDING_MAX); assert.equal(nextStanding(-STANDING_MAX, -2), -STANDING_MAX); assert.equal(nextStanding(1, -2), -1);
   assert.equal(standingOf({}, 'the Rook'), 0, 'a save from before has none'); assert.equal(standingOf({ standing: { 'the Rook': 2 } }, 'the Rook'), 2);
+  assert.equal(standingOf({ record: { onTime: 5 } }, 'the Rook'), 1, 'Reliable (traits.js): a shipper that does not know the ship starts at 1'); assert.equal(standingOf({ record: { onTime: 5 }, standing: { 'the Rook': -1 } }, 'the Rook'), -1, 'one that does keeps its view');
 });
 
 test('the word for a shipper\'s regard takes no verb, so it follows any shipper\'s name, and says nothing of a stranger', () => {

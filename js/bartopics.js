@@ -191,9 +191,11 @@ const BAR_TOPICS = [
     ...gated(notYet(() => pat.blessed, say('gate'))),
     run() { pat.blessed = true; met(pat); like(p, 1, say('memory')); return barSays(pick(barLines('bless')), p); }
   }); } },
-  { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c), gunner = !!roleHolder('gunner') && roleSkill('gunner') > 0, odds = gunner ? 1 : handCheck('hands', 0, 'brawl');  /* gunner: a crewmate at the guns steps in; a hand's own gunnery is a hand check like anyone's */ return ({ label: `${say('label')}${costNote({ cost: 1500 }, odds)}`, ...gated(notYet(() => pat.fought, say('gate'))), run() {
+  { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c), gunner = !!roleHolder('gunner') && roleSkill('gunner') > 0, scarred = hasTrait(hired(), 'scarred'), odds = gunner || scarred ? 1 : handCheck('hands', 0, 'brawl');  /* gunner: a crewmate at the guns steps in; scarred: the trait's door (traits.js), the patron backs down; a hand's own gunnery is a hand check like anyone's */ return ({ label: scarred ? `[Scarred] ${traitSay('door.scarred.label')}` : `${say('label')}${costNote({ cost: 1500 }, odds)}`, ...gated(notYet(() => pat.fought, say('gate'))), run() {
     pat.fought = true; met(pat); like(p, -2, say('memory'));
-    if (odds >= 1 || Math.random() < odds) return say('win', { step: gunner ? `${say('win.step', { gunner: roleName('gunner') })} ` : '' });
+    if (scarred) return traitSay('door.scarred.text', { first: p.first });
+    const won = odds >= 1 || Math.random() < odds; recordHand(won ? 'barWon' : 'barLost');  // the record (traits.js)
+    if (won) return say('win', { step: gunner ? `${say('win.step', { gunner: roleName('gunner') })} ` : '' });
     c.st.credits = Math.max(0, c.st.credits - 1500);
     return say('lose');
   } }); } },

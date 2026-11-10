@@ -143,6 +143,7 @@ function iceStageScene(n) {
   const spec = worded(stage.post[post], stage.general.length + Object.keys(stage.post).indexOf(post));
   const own = { odds: postOdds(post), win: spec.win, lose: spec.lose };
   choices.push({ label: `[${POSTS[post].name}] ${spec.label}${iceCostNote(own)}`, run: () => iceStep(n, own, post) });
+  if (n === 0 && hasTrait(h, 'salvager')) choices.push({ label: `[Salvager] ${traitSay('door.salvager.label')}`, run: () => iceStep(0, { odds: 1, win: [2, 0, traitSay('door.salvager.text')] }, null) });  // the trait's door (traits.js): a sure approach
   const runNo = h.iceRuns || 1, opening = runNo < 2 ? [line(o.text, stage.open[0]), line(o.text2, stage.open[1])] : null;  // the editor's openings are the first run's
   return { title: o.title || stage.title, personal: true, via: 'crew', owner: 'you', text: `${opening ? opening[ice.round % 2 || 0] : iceOpening(stage, n, ice.round, runNo, h.flags || {})}</p><p>The haul so far, which sets what the ice fetches: ${iceHaulWord(ice.edge)}. Armor ${st.armor}/${ship().armor}.`, choices };
 }
@@ -167,7 +168,7 @@ function iceStep(n, c, post) {
   let out = text;
   const soft = !won && n === 0 && post === 'pilot' && perkOn('soft-hands');  // soft-hands (picks.js): the approach the pilot flies costs no hull on a lost roll
   if (hull && !soft) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won &&
-    Math.random() < CASUALTY_ODDS) { const c2 = hurtCrew(true); if (c2) out += c2.dead ? ` ${c2.first} is dead.` :
+    Math.random() < CASUALTY_ODDS) { const c2 = hurtCrew(true); if (c2) recordHand(c2.dead ? 'matesLost' : 'matesHurt'); if (c2) out += c2.dead ? ` ${c2.first} is dead.` :
     ` ${c2.first} is hurt.${hurtWarning(c2)}`; } }
   if (post) gainSkill(post, won ? 4 : 1); else gainSkill(h.post, 1);
   if (n === 1) out += iceLoad(false);       // the cutting fills the hold
@@ -188,6 +189,7 @@ function iceLoad(thin) {
 // How it ends: a clean run is remembered, a bad one is paid for less.
 function iceHome(edge) {
   const h = hired(), cap = person(h.captain), st = G.state;
+  if (edge >= 3) recordHand('haulsClean'); else if (edge <= -2) recordHand('haulsBad');  // the record (traits.js)
   const melt = perkOn('melt-return') ? (st.fuel = Math.min(ship().fuel, st.fuel + 20), ' The melt goes to the tanks: 20 reaction mass.') : '';  // melt-return (picks.js)
   if (edge >= 3) { like(cap, 1, sceneSay('scene:memories', 'ice.clean.memory')); captainFlag('iceClean'); delete h.flags.iceBad; return ` The captain writes it in the log: a clean haul.${melt}`; }
   if (edge <= -2) { like(cap, -1, sceneSay('scene:memories', 'ice.bad.memory')); captainFlag('iceBad'); delete h.flags.iceClean; return ` The captain doesn\'t write anything in the log.${melt}`; }
@@ -209,6 +211,7 @@ const iceOnce = stage => { const o = { kind: 'ice', stage }; if (occasionPlayed(
 function siteArrival(st) {
   const h = hired();
   if (!h || !h.run || !h.run.ice || !iceOnce(0)) return;
+  recordHand('rocksFound');  // the record (traits.js): once a run, at the rock, never from the plan (which the map's draw remakes)
   beginStay(h, ICE_SHIFTS, 'ice');
   openEvent(iceStageScene(0));
 }
