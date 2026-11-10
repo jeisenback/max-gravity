@@ -1316,3 +1316,26 @@ test('the controls page lists the burn\'s keys (#992)', async () => {
   assert.match(text, /Space: pause or resume the burn/); assert.match(text, /1 \/ 2 \/ 3: normal, 4x, 16x/);
   await done();
 });
+
+test('a delay costs the same share of the burn as before, and one just after the flip does not play the flip again (#992)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, total = t.total; t.left = t.total * 0.7; delay(15);
+    const share = (t.total - total) * t.pace;
+    const sec = burnStages(t.days).secure; t.left = t.total * (0.5 - sec - 0.001); t.flipped = true; delay(20);
+    return { share, after: 1 - t.left / t.total >= 0.5 + sec, stage: phase(), rate: burnRate(t, 16, burnSpeed()) };
+  });
+  await done();
+  assert.ok(Math.abs(r.share - 15) < 1e-9, `the delay is today's 15 s of the burn's share: ${r.share}`);
+  assert.deepEqual([r.after, r.stage, r.rate], [true, 'move', 16], 'past the flip it stays past it');
+});
+
+test('a new burn starts at 1x, and a pause on it resumes at 1x whatever the last burn ran at (#992)', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { burn(); setBurnSpeed(16); G.transit = null; G.mode = 'landed'; burn(); G.transit.left = G.transit.total * 0.7; });
+  await page.keyboard.press('Space'); await page.keyboard.press('Space');
+  assert.equal(await ev(() => G.speed), 1);
+  await done();
+});

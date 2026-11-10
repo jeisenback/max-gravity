@@ -110,9 +110,13 @@ function loseCargo(frac) {
 }
 
 function delay(seconds) {
-  seconds = Math.max(seconds, 1 - G.transit.left);  // shortening can never skip past arrival
-  G.transit.left += seconds;
-  G.transit.total += seconds;
+  const t = G.transit, sec = burnStages(t.days).secure;
+  seconds = seconds / (t.pace || 1);  // seconds of today's burn, the same share of the longer one (burnspeed.js, #992)
+  const q = 0.5 - sec - 1e-6;  // the share left at the flip's last instant, a hair past it
+  if (t.flipped && seconds > 0) seconds = Math.min(seconds, Math.max(0, (q * t.total - t.left) / (1 - q)));  // past the flip it stays past it
+  seconds = Math.max(seconds, 1 - t.left);  // shortening can never skip past arrival
+  t.left += seconds;
+  t.total += seconds;
 }
 
 function addRumor() {
@@ -310,7 +314,7 @@ function enterTransit() {
     times: Array.from({ length: count }, (_, i) => total * (i + rand(0.3, 0.8)) / count),
     chatter: rand(5, 10), chattered: 0,
   };
-  G.mode = 'transit'; G.speed = 1;  // each burn starts at normal speed (#992)
+  G.mode = 'transit'; G.speed = G.speedBefore = 1;  // each burn starts at normal speed, and a pause on it resumes there (#992)
   G.cam = null;  // each burn starts with the camera snapped to the hand
   G.npcs = []; G.shots = []; G.target = null;
   if (!G.transitStars) G.transitStars = Array.from({ length: 150 }, () => ({ x: Math.random(), y: Math.random(), z: rand(0.2, 1) }));
