@@ -625,28 +625,30 @@ function towerTank(ctx, lay, tk, fuel, s) {
 // G.cutOutline for a tap (game.js).
 function drawCutaway(box, clear = box) {
   const t = G.transit, st = G.state, people = shipPeople(), ph = phase(), still = Settings.reduceMotion, time = still ? 0 : G.time;
-  const lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay), view = viewOf(box), zoom = view.zoom, half = view.span / 2;
+  const lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay), view = viewOf(box, lay), zoom = view.zoom, half = view.span / 2;
   const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = phaseWeights(pr);
-  // The camera eases after the hand, keeping them in the middle of the part of the box a docked dialog leaves clear (all of it with
-  // none): it steps in that part's own terms, its centre and its span, offset from the box's centre by off.
-  const off = (box.x + box.w / 2 - (clear.x + clear.w / 2)) / zoom, held = G.cam && G.cam.x - off;
-  const camX = camStep(held, people[0].x * W, G.cam ? Math.max(0, G.time - G.cam.t) : 0, clear.w / zoom, W) + off;
-  G.cam = { x: camX, t: G.time };
+  // The tower stands across the middle of the part of the box a docked dialog leaves clear (all of it with none), and the camera pans up
+  // and down it after the middle of the hand's deck: it steps in that part's own terms, its centre and its height, down the run from the
+  // top of the nose's cap (CAM_RUN / 2 over the flight deck's ceiling), offset from the box's centre by offX and offY. Reduced motion snaps.
+  const offX = (box.x + box.w / 2 - (clear.x + clear.w / 2)) / zoom, offY = (box.y + box.h / 2 - (clear.y + clear.h / 2)) / zoom, runTop = -CAM_RUN / 2;
+  const held = G.cam && !still ? G.cam.y - offY - runTop : null, target = towerDeckY(lay, people[0].dk) - HULL.deck / 2 - runTop;
+  const camY = camStep(held, target, G.cam ? Math.max(0, G.time - G.cam.t) : 0, clear.h / zoom, towerHeight(lay) + CAM_RUN) + runTop + offY, camX = W / 2 + offX;
+  G.cam = { y: camY, t: G.time };
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
   const turn = -Math.sin(t.angle), spin = t.angle + Math.PI / 2;  // turn: 1 before the flip, -1 after, 0 mid-turn; spin: the ship's turn, 0 to pi
   const X = f => f * W, H = towerHeight(lay), deck = i => { const floor = deckFloor(lay, i); return { top: floor - HULL.deck, floor }; };
-  const bcx = box.x + box.w / 2, bcy = box.y + box.h / 2, toScreen = (x, y) => ({ x: bcx + (x - camX) * zoom, y: bcy + (y - view.y) * zoom });
+  const bcx = box.x + box.w / 2, bcy = box.y + box.h / 2, toScreen = (x, y) => ({ x: bcx + (x - camX) * zoom, y: bcy + (y - camY) * zoom });
   const speed = 0.05 + Math.sin(Math.PI * pr) * 0.6, shake = !still && !t.event && speed > 0.2 ? speed * 0.9 : 0;
-  const seen = (a, b) => b >= camX - half && a <= camX + half;
+  const seen = (a, b) => b >= camY - half && a <= camY + half;  // a span of world y in view
 
   ctx.save();
   ctx.beginPath(); ctx.rect(box.x, box.y, box.w, box.h); ctx.clip();
   ctx.translate(bcx + Math.sin(G.time * 53) * 0.5 * shake, bcy + Math.sin(G.time * 71 + 1) * 0.8 * shake);  // a shiver, not a random draw: the game's random is seeded in the tests
-  ctx.scale(zoom, zoom); ctx.translate(-camX, -view.y);
+  ctx.scale(zoom, zoom); ctx.translate(-camX, -camY);
 
-  // The drive plume down from the bell, and the thrusters puffing at the nose and the drive while the ship turns.
+  // The drive plume down from the bell while the drive deck is in view, and the thrusters puffing at the nose and the drive while the ship turns.
   const mid = W / 2, mouth = o.bottom + TOWER_BELL.h;
-  if (burning && w.flip < 1) {  // it fades with the flip
+  if (burning && w.flip < 1 && seen(deck(lay.decks.length - 1).top, mouth)) {  // it fades with the flip
     const pl = (H * (PLUME.base + PLUME.gain * Math.sin(Math.PI * pr)) + Math.sin(time * 23) * PLUME.flicker) * (1 - w.flip), hr = W * PLUME.halo, c = W * PLUME.cone;
     ctx.save(); ctx.globalAlpha = 1 - w.flip;
     const halo = ctx.createRadialGradient(mid, mouth, 0, mid, mouth, hr);
@@ -684,7 +686,7 @@ function drawCutaway(box, clear = box) {
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt() };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);
-    if (seen(q.x0, q.x1)) drawRoom(ctx, r.id, q, s);
+    if (seen(q.top, q.floor)) drawRoom(ctx, r.id, q, s);
   }
   towerTank(ctx, lay, o.tank, s.fuel, s);
   const lx = X(LADDER), ww = lay.well.w * W / 2, last = lay.decks.length - 1;
@@ -708,8 +710,8 @@ function drawCutaway(box, clear = box) {
     worldText(ctx, zoom, name, nx, ny, fs, '#7f97b0');
   }
   // The thrust sign over the galley's right end on the mess deck, scaled up where the camera is far enough out that its text would be under
-  // 12px; kept whole inside the view's edges when the galley is partly or wholly out of it.
-  const galley = layoutBox(lay, 'galley'), sk = Math.max(1, 1.05 / zoom), signHalf = 56 * sk + 4, signX = Math.min(camX + half - signHalf, Math.max(camX - half + signHalf, galley.x1 - 6 - 56 * sk));
+  // 12px; kept whole inside the clear part's edges when a docked dialog covers the galley's end.
+  const galley = layoutBox(lay, 'galley'), sk = Math.max(1, 1.05 / zoom), signHalf = 56 * sk + 4, halfW = clear.w / zoom / 2, signX = Math.min(camX - offX + halfW - signHalf, Math.max(camX - offX - halfW + signHalf, galley.x1 - 6 - 56 * sk));
   ctx.save(); ctx.translate(signX, galley.top + 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, burnState().g, w, time, zoom * sk); ctx.restore();
 
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
@@ -717,14 +719,14 @@ function drawCutaway(box, clear = box) {
   const berths = layoutBox(lay, 'berths'), labels = [], dots = [], hits = [];
   const floatW = burnRamp(pr, 0.47, 0.49) - burnRamp(pr, 0.51, 0.53);  // how far the float has built at the flip, 0 to 1 and back (#927)
   const youHurt = handHurt();
-  for (const p of people) if (p.role !== 'cat' && p.seat !== undefined && seen(X(p.seat) - 40, X(p.seat) + 40)) roomCouchFlat(ctx, X(p.seat), deckFloor(lay, p.seatDk), p.couch || 0);  // each crash couch, folded into its deck or out flat (#925, #972)
+  for (const p of people) if (p.role !== 'cat' && p.seat !== undefined && seen(deckFloor(lay, p.seatDk) - 20, deckFloor(lay, p.seatDk) + 10)) roomCouchFlat(ctx, X(p.seat), deckFloor(lay, p.seatDk), p.couch || 0);  // each crash couch, folded into its deck or out flat (#925, #972)
   for (const p of people) {
     const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p));
     const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
     const x = bunk ? bunk.x + Math.min(44, bunk.w * 0.62) : X(p.x), y = bunk ? bunk.y - 5 : towerDeckY(lay, p.dk) - (cot ? 36 : 0), dk = Math.round(p.dk);
     dots.push({ x: X(p.x), deck: p.dk, color: ROLE_COLORS[p.role] });
-    if (Math.abs(x - camX) > half + 60) continue;  // out of view (a little margin, so no one pops in at the edge)
-    const inView = Math.abs(x - camX) <= half;
+    if (!seen(y - 160, y + 60)) continue;  // out of view (a little margin, so no one pops in at the edge)
+    const inView = seen(y - 60, y);
     if (pose.name === 'strap') roomJumpSeat(ctx, x, y, pose.face, w.flip);  // a jump seat folded down from the wall behind them (#927)
     const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float' ? floatW : 0, ...(p.role === 'cat' ? {} : { ...portraitLook({ id: p.id, name: p.name }), mood: figureMood(st, p.id, youHurt) }) });
     if (pose.name === 'tether') {  // a line to a ring on the nearest room wall on their deck
@@ -764,9 +766,9 @@ function drawCutaway(box, clear = box) {
   G.cutHits = hits.filter(h => h.x >= cx0 && h.x <= cx1 && h.y >= cy0 && h.y <= cy1);
   const rack = commsRackBox(layoutBox(lay, 'bridge')), ra = toScreen(rack.x, rack.y), rb = toScreen(rack.x + rack.w, rack.y + rack.h);  // the comms rack, whole in the clear part or not at all
   G.cutRack = ra.x >= cx0 && rb.x <= cx1 && ra.y >= cy0 && rb.y <= cy1 ? { x: ra.x, y: ra.y, w: rb.x - ra.x, h: rb.y - ra.y } : null;
-  const seenPart = { x: camX - off, span: clear.w / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers
+  const seenPart = { y: camY - offY, span: clear.h / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers
   G.cutOutline = { ...outlineLayout(box, W), ids: people.filter(p => p.id).map(p => p.id), squeeze: Math.abs(turn), view: seenPart };
-  drawOutline(ctx, G.cutOutline, dots, seenPart.x, seenPart.span, W, turn);
+  drawOutline(ctx, G.cutOutline, dots, W / 2, W, W, turn);  // the frame is the whole width until the outline is the tower's (Task 4)
 }
 
 // ---------- downtime activities ----------

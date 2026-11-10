@@ -1,29 +1,28 @@
 'use strict';
 
 // The burn view's camera and the outline of the hull in the corner of it (#living-ship).
-// The camera is close in on the ship and follows the hand; the outline shows the whole hull, and a tap on a room of it opens that room.
+// The camera is close in on the tower and pans up and down it after the hand; the outline shows the whole hull, and a tap on a room of it opens that room.
 
-const HULL = { deck: 100, plate: 12, length: 1600, skin: 12 };  // world units: the height of a deck, a floor plate, the length of the largest hull, the skin
-const hullLength = size => HULL.length * Math.min(1, 0.6 + 0.4 * (size - 10) / 8);  // size 18 and up is the full length, size 10 is 0.6 of it
-const floorY = dk => HULL.deck + dk * (HULL.deck + HULL.plate);  // the floor of deck 0 is 100, of deck 1 is 212, linear between
+const HULL = { deck: 100, plate: 12, skin: 12 };  // world units: the height of a deck, a floor plate, the skin
+const CAM_RUN = 90;  // world units the camera's run adds to the tower's height: half above the flight deck's ceiling (the nose's cap), half under the drive deck's floor (the bell)
 
-// The box is 290 world units high: the hull (-12 to 224) in the lower part, and a band of 50 above it that holds the outline. The width
-// then says how much of the ship is in view; y is the world y at the box's centre.
-function viewOf(box) {
-  const zoom = box.h / 290;
-  return { zoom, span: box.w / zoom, y: 228 - 145 };
+// The zoom shows about three decks of the tower in the box's height (360 world units), and never less than the whole tower across
+// (its width and 40 each side). span is the world height in view.
+function viewOf(box, lay) {
+  const zoom = Math.min(box.h / 360, box.w / (lay.width + 80));
+  return { zoom, span: box.h / zoom };
 }
 
-// One step of the camera toward a target x, held where the view stays inside the hull. A null camera snaps; a hull shorter than the
-// view sits in the middle; a camera left outside (the view grew as a dialog closed) eases back in.
-function camStep(camX, target, dt, span, len) {
-  const max = len * 1.02;
-  if (span >= max) return len * 0.51;
-  const clamp = x => Math.max(span / 2, Math.min(max - span / 2, x));
-  if (camX === null) return clamp(target);
+// One step of the camera toward a target, down the tower's run (0 at the top of the nose's cap, len under the drive), held where the
+// view stays inside it. A null camera snaps; a run shorter than the view sits in the middle; a camera left outside (the view grew as a
+// dialog closed) eases back in.
+function camStep(cam, target, dt, span, len) {
+  if (span >= len) return len / 2;
+  const clamp = y => Math.max(span / 2, Math.min(len - span / 2, y));
+  if (cam === null) return clamp(target);
   // the camera holds while the target is in the middle third of the view, and past it eases to keep them at its edge (#924): no slide under every step
-  const dead = span / 6, off = target - camX, want = clamp(Math.abs(off) <= dead ? camX : target - Math.sign(off) * dead);
-  return camX + (want - camX) * Math.min(1, dt * 1.5);
+  const dead = span / 6, off = target - cam, want = clamp(Math.abs(off) <= dead ? cam : target - Math.sign(off) * dead);
+  return cam + (want - cam) * Math.min(1, dt * 1.5);
 }
 
 // The outline's boxes in screen units, in the top left corner of the view box. Each room is mapped by its shares and its deck.

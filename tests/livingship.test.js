@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, floorY, hullLength, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS, towerDeckY, deckFloor, layoutBox, couchX } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'floorY', 'hullLength', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS', 'towerDeckY', 'deckFloor', 'layoutBox', 'couchX']);
+const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS, towerDeckY, deckFloor, layoutBox, couchX, towerHeight } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS', 'towerDeckY', 'deckFloor', 'layoutBox', 'couchX', 'towerHeight']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = [], styles = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'styles' ? styles : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); if (k === 'fillStyle' || k === 'strokeStyle') styles.push(String(v).toLowerCase()); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -155,22 +155,26 @@ test('a posture for everyone in every phase, from the list the sprites are drawn
   for (const ph of ['couch', 'secure', 'float', 'move']) { const q = posture(p(), ph, 7.3, false); assert.ok(POSTURES[q.name] && q.frame >= 0 && q.frame < POSTURES[q.name].frames); }
   assert.equal(posture(p({ face: -1 }), 'move', 0, false).face, -1);
 });
-test('the camera snaps first, then eases, and stays inside the hull', () => {
-  assert.equal(camStep(null, 800, 0.1, 600, 1600), 800);
-  const x = camStep(800, 1000, 0.1, 600, 1600); assert.ok(x > 800 && x < 1000);
-  assert.equal(camStep(800, 0, 1, 600, 1600), 300); assert.equal(camStep(800, 5000, 1, 600, 1600), 1632 - 300);
-  // a camera left outside the hull (a dialog closed, and the view is the whole box again) eases back in, not in one jump
-  const back = camStep(1500, 5000, 0.1, 600, 1600); assert.ok(back < 1500 && back > 1632 - 300, `eased to ${back}`);
+test('the camera snaps first, then eases, and stays inside the tower', () => {
+  const lay = LAYOUTS.freighter, len = towerHeight(lay) + 90;
+  assert.equal(camStep(null, 0, 0, 360, len), 180);
+  assert.equal(camStep(null, 600, 0, 360, len), 600);
+  const y = camStep(600, 800, 0.1, 360, len); assert.ok(y > 600 && y < 800);
+  assert.equal(camStep(null, 5000, 0, 360, len), len - 180, 'a target past the bottom is held at the bottom');
+  assert.equal(camStep(600, 5000, 1, 360, len), len - 180);
+  // a camera left outside the tower (a dialog closed, and the view is the whole box again) eases back in, not in one jump
+  const back = camStep(len, 5000, 0.1, 360, len); assert.ok(back < len && back > len - 180, `eased to ${back}`);
 });
-test('a hull shorter than the view sits in the middle and does not jitter', () => {
-  const a = camStep(null, 100, 0.1, 1200, 960), b = camStep(a, 900, 0.1, 1200, 960); assert.equal(a, 960 * 0.51); assert.equal(b, a);
+test('the zoom fits about three decks and the tower across (#972)', () => {
+  const lay = LAYOUTS.freighter;
+  assert.equal(viewOf({ x: 0, y: 0, w: 1360, h: 480 }, lay).zoom, 480 / 360);
+  assert.equal(viewOf({ x: 0, y: 0, w: 760, h: 480 }, lay).zoom, 760 / 960);
+  const v = viewOf({ x: 0, y: 0, w: 760, h: 480 }, lay); assert.ok(Math.abs(v.span - 480 / v.zoom) < 1e-9);
 });
-test('the zoom fits both decks in the box; the outline finds every room, and nothing outside it', () => {
-  const v = viewOf({ x: 0, y: 0, w: 864, h: 311 }); assert.ok(Math.abs(v.zoom - 311 / 290) < 1e-9); assert.equal(v.y, 83); assert.ok(Math.abs(v.span - 864 / v.zoom) < 1e-9);
+test('the outline finds every room, and nothing outside it', () => {
   const o = outlineLayout({ x: 100, y: 50, w: 864, h: 311 }, 1600);
   for (const r of o.rooms) assert.equal(outlineRoomAt(o, r.x + r.w / 2, r.y + r.h / 2), r.id);
   assert.equal(o.rooms.length, ROOMS.length); assert.equal(outlineRoomAt(o, o.x - 4, o.y - 4), null);
-  assert.equal(floorY(0), 100); assert.equal(floorY(1), 212); assert.equal(hullLength(18), 1600); assert.equal(hullLength(10), 960); assert.equal(hullLength(20), 1600);
 });
 test('a tap on the outline mid-turn finds the room where it is drawn, squeezed', () => {
   const o = outlineLayout({ x: 0, y: 0, w: 864, h: 311 }, 1600), cx = o.x + o.w / 2, sq = 0.5, half = { ...o, squeeze: sq };
