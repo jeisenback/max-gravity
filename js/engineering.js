@@ -68,8 +68,9 @@ function overload() {
 function engineeringTick(dt) {
   const st = G.state, t = G.transit;
   if (!dt || G.mode !== 'transit' || !t || t.event || G.dialog) return;
-  const p = power();
-  st.heat = Math.max(0, heat() + dt * (p.drive - 45) * 0.06 * (p.drive > 45 ? 2 - perf('drive') : 1));  // a worn drive runs hotter
+  const p = power(), pace = paceDt(dt), step = burnDt(dt);  // the heat at today's pace a trip, the reaction mass by the burn's own time (burnspeed.js, #992)
+  if (!step) return;  // paused
+  st.heat = Math.max(0, heat() + pace * (p.drive - 45) * 0.06 * (p.drive > 45 ? 2 - perf('drive') : 1));  // a worn drive runs hotter
   if (postMode('engineer') === 'crewed' && st.heat > heatLimit() && p.drive > 40) {  // 40 is where the reactor stops heating
     setPower('drive', 40);
     comm(`[Engineering] ${roleName('engineer')} eases the drive back to ${p.drive}% to let the reactor cool.`);
@@ -77,7 +78,7 @@ function engineeringTick(dt) {
   if (st.heat >= 100) overload();
   // A hot drive burns more reaction mass per distance, a cool one less. Dry tanks throttle it back.
   if (t.fuelCost) {
-    t.fuelOwed = (t.fuelOwed || 0) + t.fuelCost * (p.drive - 40) / 100 * dt * burnSpeed() / t.total;  // settled in whole units
+    t.fuelOwed = (t.fuelOwed || 0) + t.fuelCost * (p.drive - 40) / 100 * step * burnSpeed() / t.total;  // settled in whole units
     const whole = Math.trunc(t.fuelOwed);
     t.fuelOwed -= whole;
     st.fuel = Math.max(0, Math.min(ship().fuel, st.fuel - whole));

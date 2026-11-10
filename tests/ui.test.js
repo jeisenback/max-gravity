@@ -705,7 +705,7 @@ test('the time remaining is drawn on the burn bar on the smallest window, a desk
       startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
       G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null; G.transit.event = null;
       if (prompt) G.state.tutorial = tutorialSteps().findIndex(s => /Work your post/.test(s.text()));
-      G.transit.left = G.transit.total * 0.7; const secs = Math.ceil(G.transit.left), mss = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
+      G.transit.left = G.transit.total * 0.7; const secs = Math.ceil(realLeft(G.transit, G.speed, burnSpeed())), mss = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')}`;
       const stop = drawnText(); drawTransit(innerWidth, innerHeight); return { mss, text: stop(), tut: !!(G.burnBoxes && G.burnBoxes.tutorial) };
     }, !!prompt);
     assert.ok(r.text.some(t => t.includes(r.mss)), `${W}x${H}: ${r.mss} is drawn: ${r.text.join('|')}`);

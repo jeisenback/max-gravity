@@ -73,8 +73,8 @@ function fireProgram(r) {
 function programsTick(dt) {
   const t = G.transit;
   if (!dt || G.mode !== 'transit' || !t || t.event || G.dialog) return;
-  const p = programs();
-  if (p.writing && (p.writing.left -= dt) <= 0) finishWriting();
+  const p = programs(), pace = paceDt(dt);  // written as far a trip as before; none paused (burnspeed.js, #992)
+  if (p.writing && (p.writing.left -= pace) <= 0) finishWriting();
   for (const r of p.rules) {
     const c = PROGRAM_CONDITIONS[r.cond];
     if (!c.test) continue;
