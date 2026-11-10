@@ -602,7 +602,7 @@ test('"Another time" closes the walk-through at once', async () => {
 test('the first burn has a happening more for the walk-through, and later burns do not', async () => {
   const r = await run(() => {
     start();
-    const burn = () => { sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); const n = G.transit.times.length, total = G.transit.total; G.transit.times = []; return n - (1 + Math.floor(total / 40)); };
+    const burn = () => { sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); const n = G.transit.times.length, days = G.transit.days; G.transit.times = []; return n - burnSceneCount(days); };
     const first = burn();
     hired().walked = true; G.transit = null; G.state.dest = null; G.mode = 'landed';
     return { first, spare: walkPending() };

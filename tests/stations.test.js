@@ -577,7 +577,7 @@ test('drive power sets the burn: speed, days, reaction mass, and how easily pira
       uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.times = []; t.interceptPlanned = true;
       Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', drive);
       st.fuel = Math.round(ship().fuel * 0.6); const fuel0 = st.fuel, day0 = st.day, cost = t.fuelCost;
-      let frames = 0;
+      let frames = 0; G.speed = 16;  // the whole burn at the top speed (#992)
       while (G.mode === 'transit' && frames++ < 600) { t.event = null; G.dialog = null; st.heat = 0; update(1); if (G.mode === 'transit') Mods.emit('frame', 1); }
       return { frames, days: st.day - day0, used: fuel0 - st.fuel, cost, base: t.days };
     };

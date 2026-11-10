@@ -47,7 +47,7 @@ test('a long burn runs longer and has a pick for each slot, one opening as the b
     out.a = slot(0.1); out.free = note(); t.lifeUsed[out.a] = true; out.spent = note(); out.c = slot(0.3); out.next = note(); t.lifeUsed[out.c] = true; out.d = slot(0.3);
     out.last = slot(0.8); t.lifeUsed.after = true; out.done = note();
     return out; });
-  assert.deepEqual(r.secs, [60, 90, 150, 150].map((n, i) => (i === 0 ? 60 : n)), 'a short leg keeps the minimum, a long one has thirty seconds a slot');
+  assert.deepEqual(r.secs, [240, 480, 800, 1200], 'a cutaway day for each ship day (#992)');
   assert.deepEqual([r.a, r.c, r.d, r.last], ['before', 'm1', 'm1', 'after']);
   assert.deepEqual([r.free, r.spent, r.next, r.done].map(x => x[1]), [false, true, false, true], 'the button is shut once the slot is taken and open when the next one opens');
   assert.deepEqual([r.spent[2], r.done[2]], ['Next in a day or two', 'Done for this burn']);

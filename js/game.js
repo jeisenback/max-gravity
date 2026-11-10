@@ -47,6 +47,7 @@ const G = {
   duel: null,         // the console fight in progress, see duel.js
   torps: [],          // torpedoes in flight, see torpedoes.js
   bridgeOpen: null,   // which sheet of the burn view is open ('person', a station), see bridge.js
+  speed: 1,           // the burn's chosen speed, one of BURN_SPEEDS (0 is paused); a new burn starts at 1, see burnspeed.js
   barState: null,     // the bar being visited ({ round, name, planet, ... }), see bar.js
   patrons: null,      // who is at the bar now, filled on arrival; null until a bar is opened, see bar.js
   tutThrust: 0,       // seconds of thrust the tutorial has seen, see tutorial.js

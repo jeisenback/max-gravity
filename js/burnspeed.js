@@ -30,7 +30,14 @@ function stageAt(days, pr) {
 function burnRate(t, speed, drive) {
   if (!speed) return 0;
   const sec = burnStages(t.days).secure;
-  return Math.abs(1 - t.left / t.total - 0.5) < sec ? 2 * sec * t.total / (FLIP_REAL * drive) : speed;
+  return Math.abs(1 - t.left / t.total - 0.5) <= sec + 1e-9 ? 2 * sec * t.total / (FLIP_REAL * drive) : speed;  // the first instant in, give or take a float
+}
+
+// Burn seconds a frame of `dt` real seconds moves the burn on: dt at its rate, except that a step from before the flip stops at its first
+// instant, so none of the flip goes by at speed. The burn's `left` falls by this times `drive`.
+function burnStep(t, speed, drive, dt) {
+  const step = dt * burnRate(t, speed, drive), start = (0.5 - burnStages(t.days).secure) * t.total, done = t.total - t.left;
+  return done < start ? Math.min(step, (start - done) / drive) : step;
 }
 
 // Real seconds to arrival at `speed` (the time at 1x when paused): the cruise at the speed, and what is still ahead of the flip at FLIP_REAL.
@@ -43,3 +50,10 @@ function realLeft(t, speed, drive) {
 // Today's length of a burn, before #992: what the number of scenes and the ship's wear, heat and projects per trip are kept at.
 const oldBurnSeconds = days => Math.max(60, lifeSlotCount(days) * 30);
 const burnSceneCount = days => 1 + Math.floor(oldBurnSeconds(days) / 40);
+
+// A frame's time on the burn, for the callers that read G: burn seconds on the burn's clock (none while a scene holds it), the ship's
+// per-trip ticks at today's pace (wear, heat, projects, programs), and ship life, which goes on at normal speed under a scene so the crew
+// can walk to it.
+const burnDt = dt => { const t = G.transit; return !t || t.event || G.dialog ? 0 : burnStep(t, G.speed, burnSpeed(), dt); };
+const paceDt = dt => (G.transit ? burnDt(dt) * G.transit.pace : 0);
+const lifeDt = dt => { const t = G.transit; return !t ? dt : t.event || G.dialog ? dt : dt * burnRate(t, G.speed, burnSpeed()); };

@@ -8,7 +8,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const B = load(['js/burnspeed.js'], { SHIP_DAY: 80, lifeSlotCount: d => Math.max(2, Math.min(5, Math.round(d / 2))) },
-  ['BURN_SPEEDS', 'FLIP_REAL', 'burnStages', 'stageAt', 'burnRate', 'realLeft', 'oldBurnSeconds', 'burnSceneCount']);
+  ['BURN_SPEEDS', 'FLIP_REAL', 'burnStages', 'stageAt', 'burnRate', 'burnStep', 'realLeft', 'oldBurnSeconds', 'burnSceneCount']);
 const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} against ${b}`);
 const burnAt = (days, pr) => { const total = days * 80; return { days, total, left: total * (1 - pr) }; };
 
@@ -51,4 +51,14 @@ test('the clock counts the real time left at the chosen speed, the flip ahead at
 test('a burn keeps today\'s number of scenes', () => {
   assert.equal(B.oldBurnSeconds(5), 90); assert.equal(B.oldBurnSeconds(11), 150);
   assert.deepEqual([5, 11, 37].map(d => B.burnSceneCount(d)), [3, 4, 4]);
+});
+
+test('a fast step stops at the start of the flip, so none of it goes by at speed (#992)', () => {
+  const t = burnAt(11, 0.5 - B.burnStages(11).secure - 1e-5), start = (0.5 - B.burnStages(11).secure) * t.total;
+  const step = B.burnStep(t, 16, 1.25, 1 / 30);
+  near(t.total - t.left + step * 1.25, start, 'it ends on the flip\'s first instant');
+  assert.equal(B.burnRate({ ...t, left: t.total - start }, 16, 1.25), B.burnRate(burnAt(11, 0.5), 16, 1.25), 'which is in the flip');
+  const edge = { days: 8, total: 640, left: 640 * (0.5 + B.burnStages(8).secure) };  // the flip's first instant, as a float lands on it
+  assert.equal(B.burnRate(edge, 16, 1), B.burnRate(burnAt(8, 0.5), 16, 1), 'the first instant, give or take a float, is in the flip');
+  const cruise = burnAt(11, 0.3); assert.equal(B.burnStep(cruise, 4, 1, 0.5), 2, 'elsewhere it is dt times the rate');
 });

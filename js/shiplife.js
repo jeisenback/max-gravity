@@ -427,11 +427,8 @@ function weighted(table, rnd = Math.random) {
 // Hard burn at each end (on the couches), strapped in at a station either side of the flip (secure), weightless at the flip, free to move
 // otherwise.
 function phase() {
-  const t = G.transit, pr = 1 - t.left / t.total;
-  if (pr < 0.06 || pr > 0.94) return 'couch';
-  if (Math.abs(pr - 0.5) < 0.03) return 'float';
-  if ((pr >= 0.44 && pr < 0.47) || (pr > 0.53 && pr <= 0.56)) return 'secure';
-  return 'move';
+  const t = G.transit;
+  return stageAt(t.days, 1 - t.left / t.total);  // the stages in ship time (burnspeed.js, #992)
 }
 
 // A patient lying in the medbay bed: they stay on the cot through the hard burn and are strapped down on it at the flip, as sleepers are in
@@ -857,7 +854,7 @@ Mods.register({
   id: 'shiplife', name: 'Life aboard', builtin: true,
   init(M) {
     buildLifeButtons();
-    M.on('frame', lifeTick);
+    M.on('frame', dt => lifeTick(lifeDt(dt)));  // at the burn's speed (burnspeed.js, #992)
     M.on('landed', () => { const el = document.getElementById('tlife'); if (el) el.hidden = true; });
   },
 });

@@ -16,6 +16,7 @@ const helpers = () => {
     sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.transit.event = null; G.dialog = null;
     return st;
   };
+  window.securePr = t => { const s = burnStages(t.days); return 0.5 - (s.secure + s.float) / 2; };  // strapped in before the float, in ship time (#992)
   window.scene = (text = 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she is not answering. The captain says it is your call.') => {
     for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
     openEvent({ title: 'Distress Call', text, choices: [{ label: 'See how it goes', run: () => 'Done.' }] });
@@ -561,7 +562,7 @@ test('when the crew secure for the flip they strap in where they are, and someon
     burn(); const t = G.transit; t.left = t.total * 0.7; updateTransit(0.1);
     const ps = shipPeople(), a = ps[0], b = ps[1];
     a.x = 0.5; a.room = 'galley'; a.tx = null; b.x = LADDER; b.dk = 0.4; b.tdk = 1;
-    t.left = t.total * (1 - 0.455); for (let i = 0; i < 40; i++) lifeTick(0.1);
+    const sg = burnStages(t.days); t.left = t.total * (0.5 + (sg.secure + sg.float) / 2); for (let i = 0; i < 40; i++) lifeTick(0.1);  // strapped in before the float (#992)
     return { phase: phase(), ax: a.x, bdk: b.dk, btx: b.tx };
   });
   assert.equal(r.phase, 'secure'); assert.equal(r.ax, 0.5, 'stays where they were'); assert.ok(r.bdk === 0 || r.bdk === 1, `on a deck: ${r.bdk}`); assert.equal(r.btx, null);
@@ -791,7 +792,7 @@ test('after the straps at the flip, everyone goes on to their place in the same 
     const dayAt = eval(dayAtSrc), t = stageBurn(0.3); t.elapsed = dayAt(0.15); tickFor(25);
     const eng = shipPeople().find(p => p.role === 'engineer');
     Object.assign(eng, { room: 'engine', x: 0.5, dk: 0, tdk: 1, tx: roomAt('engine').mid, errand: false, wait: 999 });  // on the way to the drive, with no errand to rescue them
-    t.left = t.total * (1 - 0.45); tickFor(2);  // strapped in where they are
+    t.left = t.total * (1 - securePr(t)); tickFor(2);  // strapped in where they are
     t.left = t.total * (1 - 0.6); tickFor(25);  // under way again, the same shift
     return inRoom(eng, 'engine');
   }, dayAt.toString());
@@ -977,7 +978,7 @@ test('someone having a hard time sits up alone in the dusk, the wounded stay in 
     sayScene(`With ${mate.name}`, `${mate.name} is in the medbay, by the cot.`); tickFor(15);
     out.scene = [pilot.room, inRoom(pilot, 'medbay'), pose(pilot)]; G.dialog = null; t.event = null; tickFor(5);
     delete G.state.injured[pilot.id]; tickFor(2); (G.state.injured)[pilot.id] = true; Object.assign(pilot, { room: 'galley', x: 0.5, dk: 0, tdk: 0, tx: 0.55, block: undefined });
-    lifeTick(1 / 30); t.left = t.total * (1 - 0.45); tickFor(1); out.strapped = pose(pilot);
+    lifeTick(1 / 30); t.left = t.total * (1 - securePr(t)); tickFor(1); out.strapped = pose(pilot);
     return out;
   }, dayAt.toString());
   await done();
@@ -1098,11 +1099,11 @@ test('at the flip a sleeper stays in the bunk, and every strapped person has a j
     const b = roomAt('berths'), sleeper = shipPeople().find(p => p.role !== 'cat' && !NIGHT_WATCH.includes(p.role));
     Object.assign(sleeper, { room: 'berths', x: b.mid, dk: 0, tdk: 0, tx: null, staged: undefined, at: undefined });
     t.left = t.total * (1 - 0.3); const moving = isAsleep(sleeper);
-    t.left = t.total * (1 - 0.46); const securing = [isAsleep(sleeper), posture(sleeper, phase(), 0, isAsleep(sleeper)).name];
+    t.left = t.total * (1 - securePr(t)); const securing = [isAsleep(sleeper), posture(sleeper, phase(), 0, isAsleep(sleeper)).name];
     t.left = t.total * (1 - 0.5); const floating = [isAsleep(sleeper), posture(sleeper, phase(), 0, isAsleep(sleeper)).name];
     // and the jump seats: one drawn for each person drawn strapped in, at the flip and while securing
     const counts = [];
-    for (const pr of [0.46, 0.5]) {
+    for (const pr of [securePr(t), 0.5]) {
       t.left = t.total * (1 - pr);
       for (const p of shipPeople()) if (p !== sleeper && p.role !== 'cat') Object.assign(p, { room: 'galley', x: roomAt('galley').x0 + roomAt('galley').w * 0.1, dk: 0, tdk: 0, tx: null });
       G.cam = null;
@@ -1177,4 +1178,76 @@ test('the Gunnery sheet opens with the post\'s orders in view, above the diagram
   assert.equal(r.inView, true, 'Boresight the guns can be pressed without scrolling the sheet');
   assert.ok(r.first, 'the orders come before the diagram and the readouts');
   await done();
+});
+
+// ---------- the burn at its own pace (#992, docs/superpowers/specs/2026-11-10-burn-speed-design.md) ----------
+
+test('a burn takes a cutaway day for each ship day, starts at 1x and keeps today\'s number of scenes (#992)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const real = enterTransit; window.enterTransit = () => { real(); window.entered = { times: G.transit.times.length, walk: walkPending() }; };
+    try { burn(); } finally { window.enterTransit = real; }
+    const t = G.transit;
+    return { eleven: transitSeconds(11), total: t.total, days: t.days, speed: G.speed, pace: t.pace, oldPace: oldBurnSeconds(t.days) / t.total, times: entered.times, want: burnSceneCount(t.days) + (entered.walk ? 1 : 0) };
+  });
+  await done();
+  assert.equal(r.eleven, 880); assert.equal(r.total, r.days * 80);
+  assert.equal(r.speed, 1); assert.equal(r.pace, r.oldPace); assert.equal(r.times, r.want);
+});
+
+test('the burn moves on at the chosen speed, stands still paused, and plays the flip in 25 real seconds at 16x (#992)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, out = {}, at = pr => { t.left = t.total * (1 - pr); t.elapsed = 0; };
+    for (const s of [1, 4, 0]) { at(0.3); G.speed = s; const left = t.left; updateTransit(1); out[s] = { fell: left - t.left, elapsed: t.elapsed, drive: burnSpeed() }; }
+    const sec = burnStages(t.days).secure; at(0.5 - sec); G.speed = 16; t.times = []; let secs = 0;
+    while (1 - t.left / t.total <= 0.5 + sec && secs < 100) { updateTransit(1 / 30); secs += 1 / 30; }
+    out.flip = secs;
+    at(0.5 - 15 / (1440 * t.days)); out.secure = phase(); at(0.01); out.couch = phase();
+    return out;
+  });
+  await done();
+  assert.ok(Math.abs(r[1].fell - r[1].drive) < 1e-9 && r[1].elapsed === 1, JSON.stringify(r[1]));
+  assert.ok(Math.abs(r[4].fell - 4 * r[4].drive) < 1e-9 && r[4].elapsed === 4, JSON.stringify(r[4]));
+  assert.deepEqual([r[0].fell, r[0].elapsed], [0, 0], 'paused');
+  assert.ok(Math.abs(r.flip - 25) < 0.1, `the flip took ${r.flip} s at 16x`);
+  assert.equal(r.secure, 'secure'); assert.equal(r.couch, 'couch');
+});
+
+test('paused, the crew stands still; a scene stops time and the speed carries on after it (#992)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit; t.left = t.total * 0.7; t.times = []; G.speed = 1;
+    for (let i = 0; i < 120; i++) Mods.emit('frame', 1 / 30);
+    const xs = () => shipPeople().map(p => [p.x, p.dk]);
+    G.speed = 0; const before = JSON.stringify(xs()); for (let i = 0; i < 60; i++) Mods.emit('frame', 1 / 30);
+    const still = JSON.stringify(xs()) === before;
+    G.speed = 16; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); const left = t.left; updateTransit(1);
+    const stopped = t.left === left; finishEvent();
+    return { still, stopped, after: G.speed };
+  });
+  await done();
+  assert.equal(r.still, true, 'nobody moves while paused'); assert.equal(r.stopped, true, 'a scene stops time'); assert.equal(r.after, 16);
+});
+
+test('the burn bar shows the real time left at the chosen speed, and the speed or the flip beside it (#992)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit; t.left = t.total * 0.7; t.times = [];
+    const bar = () => { const texts = [], real = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (s, ...a) { texts.push(String(s)); return real.call(this, s, ...a); }; try { render(); } finally { CanvasRenderingContext2D.prototype.fillText = real; } return texts.find(s => s.includes('remaining')); };
+    const mss = s => { s = Math.ceil(s); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
+    const out = {};
+    for (const s of [1, 4, 0]) { G.speed = s; out[s] = { bar: bar(), want: mss(realLeft(t, s, burnSpeed())) }; }
+    G.speed = 16; t.left = t.total * 0.5; out.flip = bar();
+    return out;
+  });
+  await done();
+  assert.ok(r[1].bar.startsWith(`${r[1].want} remaining -`), r[1].bar);
+  assert.ok(r[4].bar.startsWith(`${r[4].want} remaining 4x`), r[4].bar);
+  assert.ok(r[0].bar.startsWith(`${r[0].want} remaining paused`), r[0].bar);
+  assert.match(r.flip, /remaining flip/);
 });
