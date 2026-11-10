@@ -1274,3 +1274,45 @@ test('a burn wears the ship, runs a project and burns the drive\'s fuel as much 
     assert.equal(r[k].still, true, `${k}: nothing moves while paused`);
   }
 });
+
+test('in a burn Space pauses and resumes, and 1, 2 and 3 pick the speed; the buttons by the burn bar do the same (#992)', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; });
+  const speed = () => ev(() => G.speed), seen = [];
+  for (const k of ['Space', 'Space', 'Digit2', 'Digit3', 'Digit1']) { await page.keyboard.press(k); seen.push(await speed()); }
+  assert.deepEqual(seen, [0, 1, 4, 16, 1]);
+  await page.waitForSelector('#bspeed:not([hidden])');
+  await page.click('#bspeed [data-speed="16"]');
+  const r = await ev(() => ({ speed: G.speed, lit: [...document.querySelectorAll('#bspeed button.active')].map(b => b.dataset.speed), labels: [...document.querySelectorAll('#bspeed button')].map(b => b.textContent) }));
+  assert.deepEqual(r, { speed: 16, lit: ['16'], labels: ['Pause', '1x', '4x', '16x'] });
+  await page.click('#bspeed [data-speed="0"]');
+  assert.equal(await speed(), 0);
+  await ev(() => { G.speed = 4; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', keep: true, run: () => ({ title: 'T', text: 'pressed', choices: [] }) }] }); });
+  await page.keyboard.press('Space'); await page.keyboard.press('Digit3');
+  assert.equal(await ev(() => G.speed), 4, 'under a scene the speed is left alone');
+  await done();
+});
+
+test('paused, a screen opens and works, and nothing in it runs on; landed, the keys and the buttons do nothing (#992)', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const st = G.state; G.transit.left = G.transit.total * 0.7; G.transit.times = []; setPower('drive', 80); st.heat = 10; G.speed = 0;
+    G.bridgeOpen = 'weapons'; syncBridge(true);
+    for (let i = 0; i < 60; i++) { update(1 / 30); Mods.emit('frame', 1 / 30); }
+    return { sheet: !document.getElementById('bsheet').hidden, heat: st.heat };
+  });
+  assert.deepEqual(r, { sheet: true, heat: 10 });
+  await ev(() => { G.transit = null; G.mode = 'landed'; G.speed = 1; Mods.emit('frame', 1 / 30); });
+  for (const k of ['Space', 'Digit3']) await page.keyboard.press(k);
+  assert.deepEqual(await ev(() => [G.speed, document.getElementById('bspeed').hidden]), [1, true]);
+  await done();
+});
+
+test('the controls page lists the burn\'s keys (#992)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const text = await ev(() => { Menu.view = 'controls'; Menu.render(); return document.getElementById('panel').textContent; });
+  assert.match(text, /Space: pause or resume the burn/); assert.match(text, /1 \/ 2 \/ 3: normal, 4x, 16x/);
+  await done();
+});

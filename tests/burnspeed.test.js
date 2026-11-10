@@ -7,7 +7,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const B = load(['js/burnspeed.js'], { SHIP_DAY: 80, lifeSlotCount: d => Math.max(2, Math.min(5, Math.round(d / 2))) },
+const B = load(['js/burnspeed.js'], { Mods: { register() {} }, SHIP_DAY: 80, lifeSlotCount: d => Math.max(2, Math.min(5, Math.round(d / 2))) },
   ['BURN_SPEEDS', 'FLIP_REAL', 'burnStages', 'stageAt', 'burnRate', 'burnStep', 'realLeft', 'oldBurnSeconds', 'burnSceneCount']);
 const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} against ${b}`);
 const burnAt = (days, pr) => { const total = days * 80; return { days, total, left: total * (1 - pr) }; };

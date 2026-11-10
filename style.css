@@ -453,7 +453,10 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
   overflow-x: auto;
   z-index: 3;
 }
-#bkeys[hidden], #bsheet[hidden] { display: none; }
+#bkeys[hidden], #bsheet[hidden], #bspeed[hidden] { display: none; }
+#bspeed { position: fixed; display: flex; gap: 4px; z-index: 3; }  /* the burn's speed, under the burn bar's right end (burnspeed.js, #992) */
+#bspeed button { min-height: 28px; padding: 2px 10px; font-family: var(--font-label); font-size: 12px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+#bspeed button.active { color: var(--accent, #6fb0ff); outline: 1px solid var(--accent, #6fb0ff); }
 #bkeys button {
   flex: 1 0 auto;
   min-height: 36px;

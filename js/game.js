@@ -48,6 +48,7 @@ const G = {
   torps: [],          // torpedoes in flight, see torpedoes.js
   bridgeOpen: null,   // which sheet of the burn view is open ('person', a station), see bridge.js
   speed: 1,           // the burn's chosen speed, one of BURN_SPEEDS (0 is paused); a new burn starts at 1, see burnspeed.js
+  speedBefore: 1,     // the speed a pause will resume at, see burnspeed.js
   barState: null,     // the bar being visited ({ round, name, planet, ... }), see bar.js
   patrons: null,      // who is at the bar now, filled on arrival; null until a bar is opened, see bar.js
   tutThrust: 0,       // seconds of thrust the tutorial has seen, see tutorial.js
@@ -1287,6 +1288,8 @@ window.addEventListener('keydown', e => {
     else if (e.code === 'Tab') { e.preventDefault(); cycleTarget(); }
   } else if (G.mode === 'transit') {
     if (e.code === 'KeyM' && !G.transit.event) openMap();
+    else if (e.code === 'Space' && !G.dialog) { e.preventDefault(); toggleBurnPause(); }  // the burn's speed (burnspeed.js, #992); under a scene Space presses its choice
+    else if (BURN_KEYS[e.code] !== undefined && !G.dialog) setBurnSpeed(BURN_KEYS[e.code]);
   } else if (G.mode === 'hail') {
     if (e.code === 'Escape') finishEvent();
   } else if (G.mode === 'map') {

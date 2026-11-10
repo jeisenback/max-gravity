@@ -57,3 +57,34 @@ const burnSceneCount = days => 1 + Math.floor(oldBurnSeconds(days) / 40);
 const burnDt = dt => { const t = G.transit; return !t || t.event || G.dialog ? 0 : burnStep(t, G.speed, burnSpeed(), dt); };
 const paceDt = dt => (G.transit ? burnDt(dt) * G.transit.pace : 0);
 const lifeDt = dt => { const t = G.transit; return !t ? dt : t.event || G.dialog ? dt : dt * burnRate(t, G.speed, burnSpeed()); };
+
+// ---------- the controls: Space, 1, 2 and 3 in a burn (game.js), and a button for each speed under the burn bar ----------
+const BURN_KEYS = { Digit1: 1, Digit2: 4, Digit3: 16 };
+const BURN_LABELS = { 0: 'Pause', 1: '1x', 4: '4x', 16: '16x' };
+function setBurnSpeed(s) {
+  if (!BURN_SPEEDS.includes(s)) return;
+  if (s) G.speedBefore = s;
+  G.speed = s;
+}
+const toggleBurnPause = () => setBurnSpeed(G.speed ? 0 : G.speedBefore || 1);
+// Shown when the burn's station keys are (bridge.js syncBridge), at the right end of the burn bar and under it; the chosen speed lit.
+function syncBurnSpeed() {
+  const el = document.getElementById('bspeed');
+  if (!el) return;
+  const box = G.burnBoxes && G.burnBoxes.bar, show = G.mode === 'transit' && !!G.transit && !G.transit.event && !G.dialog && !G.paused && !!box;
+  el.hidden = !show;
+  if (!show) return;
+  el.style.top = `${box.y + box.h + 6}px`; el.style.left = `${box.x + box.w - el.offsetWidth}px`;
+  el.querySelectorAll('button').forEach(b => b.classList.toggle('active', Number(b.dataset.speed) === G.speed));
+}
+
+Mods.register({
+  id: 'burnspeed', name: 'Burn speed', builtin: true,
+  init(M) {
+    const el = Object.assign(document.createElement('div'), { id: 'bspeed', hidden: true });
+    el.innerHTML = BURN_SPEEDS.map(s => `<button data-speed="${s}">${BURN_LABELS[s]}</button>`).join('');
+    el.addEventListener('click', e => { const b = e.target.closest('[data-speed]'); if (b) { Sfx.click(); setBurnSpeed(Number(b.dataset.speed)); b.blur(); } });  // blurred, so Space toggles the pause and does not press it again
+    document.body.appendChild(el);
+    M.on('frame', syncBurnSpeed);
+  },
+});
