@@ -628,11 +628,11 @@ function drawCutaway(box, clear = box) {
   const lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay), view = viewOf(box, lay), zoom = view.zoom, half = view.span / 2;
   const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = phaseWeights(pr);
   // The tower stands across the middle of the part of the box a docked dialog leaves clear (all of it with none), and the camera pans up
-  // and down it after the middle of the hand's deck: it steps in that part's own terms, its centre and its height, down the run from the
-  // top of the nose's cap (CAM_RUN / 2 over the flight deck's ceiling), offset from the box's centre by offX and offY. Reduced motion snaps.
-  const offX = (box.x + box.w / 2 - (clear.x + clear.w / 2)) / zoom, offY = (box.y + box.h / 2 - (clear.y + clear.h / 2)) / zoom, runTop = -CAM_RUN / 2;
-  const held = G.cam && !still ? G.cam.y - offY - runTop : null, target = towerDeckY(lay, people[0].dk) - HULL.deck / 2 - runTop;
-  const camY = camStep(held, target, G.cam ? Math.max(0, G.time - G.cam.t) : 0, clear.h / zoom, towerHeight(lay) + CAM_RUN) + runTop + offY, camX = W / 2 + offX;
+  // and down it after the hand's deck (camTarget): it steps in that part's own terms, its centre and its height, down the run from the
+  // top of the nose's cap to the first of the plume (camRun), offset from the box's centre by offX and offY. Reduced motion snaps.
+  const offX = (box.x + box.w / 2 - (clear.x + clear.w / 2)) / zoom, offY = (box.y + box.h / 2 - (clear.y + clear.h / 2)) / zoom, run = camRun(lay);
+  const held = G.cam && !still ? G.cam.y - offY - run.top : null, target = camTarget(lay, people[0].dk);
+  const camY = camStep(held, target, G.cam ? Math.max(0, G.time - G.cam.t) : 0, clear.h / zoom, run.len) + run.top + offY, camX = W / 2 + offX;
   G.cam = { y: camY, t: G.time };
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
   const turn = -Math.sin(t.angle), spin = t.angle + Math.PI / 2;  // turn: 1 before the flip, -1 after, 0 mid-turn; spin: the ship's turn, 0 to pi

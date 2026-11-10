@@ -4,7 +4,11 @@
 // The camera is close in on the tower and pans up and down it after the hand; the outline shows the whole hull, and a tap on a room of it opens that room.
 
 const HULL = { deck: 100, plate: 12, skin: 12 };  // world units: the height of a deck, a floor plate, the skin
-const CAM_RUN = 90;  // world units the camera's run adds to the tower's height: half above the flight deck's ceiling (the nose's cap), half under the drive deck's floor (the bell)
+const CAM_RUN = { above: 45, plume: 150 };  // world units: how far over the flight deck's ceiling the camera's run starts (the nose's cap), and how much of the plume under the bell's mouth it reaches
+
+// The camera's run down the tower in world y: top, from the nose's cap, and len, down past the drive deck's floor plate, the skin and the
+// bell (TOWER_BELL, shiplife.js) to the first of the plume.
+const camRun = lay => ({ top: -CAM_RUN.above, len: CAM_RUN.above + towerHeight(lay) + HULL.plate + HULL.skin + TOWER_BELL.h + CAM_RUN.plume });
 
 // The zoom shows about three decks of the tower in the box's height (360 world units), and never less than the whole tower across
 // (its width and 40 each side). span is the world height in view.
@@ -13,7 +17,11 @@ function viewOf(box, lay) {
   return { zoom, span: box.h / zoom };
 }
 
-// One step of the camera toward a target, down the tower's run (0 at the top of the nose's cap, len under the drive), held where the
+// Where the camera aims for the hand on deck dk (fractional), in the run's terms: the middle of their deck, and on the drive deck the
+// bottom of the run, so the bell and the plume come into view past the dead zone (camStep) that would hold the camera short of them.
+const camTarget = (lay, dk) => (Math.round(dk) >= lay.decks.length - 1 ? camRun(lay).len : towerDeckY(lay, dk) - HULL.deck / 2 - camRun(lay).top);
+
+// One step of the camera toward a target, down the tower's run (0 at the top of the nose's cap, len past the bell, camRun), held where the
 // view stays inside it. A null camera snaps; a run shorter than the view sits in the middle; a camera left outside (the view grew as a
 // dialog closed) eases back in.
 function camStep(cam, target, dt, span, len) {
