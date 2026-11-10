@@ -157,6 +157,16 @@ test('a patient in the medbay bed stays on the cot in every phase, strapped down
   assert.ok(posture({ ...bed }, 'float', 0, false).strapped, 'strapped down at the float'); assert.ok(!posture({ ...bed }, 'move', 0, false).strapped);
   assert.equal(posture({ ...bed, tx: 0.55 }, 'couch', 0, false).name !== 'bunk', true, 'not lying down while still on the way to it');
 });
+test('seated on a chair, a person is side-on and faces the way the chair does; on the galley bench they face you (#985)', () => {
+  const at = (room, k, o = {}) => { const r = roomAt(room), x = r.x0 + r.w * SEATS[room][k]; return { role: 'gunner', room, x, dk: r.deck, tdk: r.deck, tx: null, seat: x, couch: 0, face: -9, ...o }; };
+  const pose = (p, staged) => { const q = posture({ ...p, ...(staged ? { staged } : {}) }, 'move', 0, false); return [q.name, q.view, q.face]; };
+  assert.deepEqual(pose(at('bridge', 0, { role: 'captain' }), 'bridge'), ['sit', 'side', 1], 'the bridge chairs face forward, the back behind');
+  assert.deepEqual(pose(at('bridge', 1, { role: 'pilot', block: 'shift', at: 'post' })), ['work-sit', 'side', 1], 'at the helm, side-on');
+  assert.deepEqual(pose(at('gunnery', 0, { block: 'shift', at: 'post' })), ['work-sit', 'side', -1], 'the guns face the other way');
+  assert.deepEqual(pose(at('medbay', 0, { role: 'captain' }), 'medbay'), ['sit', 'side', -1], 'the medbay stool faces the cot');
+  assert.deepEqual(pose(at('galley', 2), 'galley').slice(0, 2), ['sit', 'front'], 'at the mess table, facing you');
+});
+
 test('a posture for everyone in every phase, from the list the sprites are drawn to', () => {
   const seat = roomAt('galley').x0 + roomAt('galley').w * SEATS.galley[0];  // on one of the galley's seats (#925)
   const p = (o) => ({ role: 'gunner', room: 'galley', x: seat, dk: 1, tdk: 1, tx: null, seat, couch: 1, ...o });
