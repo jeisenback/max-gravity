@@ -15,8 +15,8 @@ const burnAt = (days, pr) => { const total = days * 80; return { days, total, le
 test('the stages are spans of ship time: six hours of couches, twenty minutes strapping each side of six weightless', () => {
   const s = B.burnStages(11);
   near(s.couch, 6 / (24 * 11), 'couch'); near(s.float, 3 / (1440 * 11), 'float'); near(s.secure, 23 / (1440 * 11), 'secure');
-  assert.deepEqual(B.burnStages(0.05), { couch: 0.06, secure: 0.06, float: 0.03 }, 'clamped to the shares of today on a burn too short for them');
-  assert.deepEqual(B.BURN_SPEEDS, [0, 1, 4, 16]);
+  assert.deepEqual({ ...B.burnStages(0.05) }, { couch: 0.06, secure: 0.06, float: 0.03 }, 'clamped to the shares of today on a burn too short for them');
+  assert.deepEqual([...B.BURN_SPEEDS], [0, 1, 4, 16]);
 });
 
 test('stageAt reads the stage at a share of the burn', () => {
@@ -50,5 +50,5 @@ test('the clock counts the real time left at the chosen speed, the flip ahead at
 
 test('a burn keeps today\'s number of scenes', () => {
   assert.equal(B.oldBurnSeconds(5), 90); assert.equal(B.oldBurnSeconds(11), 150);
-  assert.deepEqual([5, 11, 37].map(B.burnSceneCount), [3, 4, 4]);
+  assert.deepEqual([5, 11, 37].map(d => B.burnSceneCount(d)), [3, 4, 4]);
 });
