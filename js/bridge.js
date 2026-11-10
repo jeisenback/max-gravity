@@ -249,7 +249,7 @@ function operationsPanel() {
 }
 
 const portView = UI.views.port;
-UI.views.port = function () { return (hired() && chapterOf(G.state) === 1 ? runHtml() : '') + operationsPanel() + portView.call(this); };  // a hand's first question is what the captain will do next, so the run leads; the co-op's runs are its own (#891)
+UI.views.port = function () { return (hired() && chapterOf(G.state) === 1 ? (forShare() ? buyInHtml() : '') + runHtml() : '') + operationsPanel() + portView.call(this); };  // a hand's first question is what the captain will do next, so the run leads, after the co-op's Sign on at Ceres while the berth is held (#994); the co-op's runs are its own (#891)
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;
