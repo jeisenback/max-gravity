@@ -654,6 +654,7 @@ test('the bridge is drawn to the figures\' standard in every phase: its props ou
     }
     const tops = parts.filter(p => p.col === '#2c4c6e' && p.outlined).map(p => F - Math.min(...p.pts.map(q => q[1])));
     assert.equal(tops.length, SEATS.bridge.length, `${pr}: a console at each post`); for (const t of tops) assert.ok(t >= 36 && t <= 44, `${pr}: a console's top at the waist (${t})`);
+    calls.forEach((k, i) => { if (k[0] === 'fillStyle' && k[1] === 'rgba(6,13,22,0.85)' && calls[i + 1][0] === 'fillRect') assert.ok(calls[i + 1][2] >= r.top, `${pr} ${zoom}: the COMMS label (${calls[i + 1].slice(1)}) inside the room`); });
     // the forward window: a clear rectangle the code names (for the destination, #936), wide, high on the wall, over the screens and clear of the name
     const g = bridgeGlass(r);
     assert.ok(g.w >= 300 && g.h >= 25 && g.x >= r.x0 && g.x + g.w <= r.x1 && g.y > r.top && g.x > name.x1, `${pr}: the window ${JSON.stringify(g)}`);
@@ -687,6 +688,8 @@ test('the slicer sits at the comms station and the pilot at the helm, whoever ho
   assert.deepEqual(seats(['pilot', 'pilot', 'captain']), [1, 0, 2], 'a second pilot takes a free post');
   assert.deepEqual(seats(['engineer']), [0], 'a room without stations: in order');
   assert.equal(postSeat('bridge', ['pilot'], -1), -1, 'not among them');
+  const five = seats(['you', 'xo', 'captain', 'pilot', 'slicer']);
+  assert.equal(new Set(five).size, 5, `five on the bridge, each in their own place (${five})`); assert.deepEqual(five.slice(3), [1, 0]);
   const br = roomAt('bridge'), on = ['captain', 'slicer', 'pilot'].map((role, i) => ({ role, id: role, x: 0.5, dk: 0, tdk: 0, tx: null, room: 'galley' }));
   for (const p of on) routineGo(p, 'shift', on, false, () => 0.5);
   assert.deepEqual(on.map(p => Math.round((p.tx - br.x0) / br.w * 100) / 100), [0.7, 0.12, 0.3], 'the shift seats them so');

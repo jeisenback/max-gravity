@@ -432,13 +432,13 @@ function routineTarget(p, spot, r, i, n, rnd) {
 // The posts a role keeps in a room (#933): on the bridge the slicer at the comms station (the aft post), the pilot at the helm (the next, with the
 // throttle). Whoever else holds the room takes the posts left, in order, and a station whose role is not aboard is free for them.
 const POST_SEAT = { bridge: { slicer: 0, pilot: 1 } };
-// Which of a room's seats the k-th of `roles` (who hold its post, in order) sits at; past the seats, k as before.
+// Which of a room's seats the k-th of `roles` (who hold its post, in order) sits at; when the seats run out, a place past them (routineTarget).
 function postSeat(room, roles, k) {
   const st = POST_SEAT[room] || {}, n = (SEATS[room] || []).length, own = (x, i) => x in st && roles.indexOf(x) === i;  // the first of a role keeps its station
   if (k < 0) return k;
   if (own(roles[k], k)) return st[roles[k]];
   const taken = roles.filter(own).map(x => st[x]), free = [...Array(n).keys()].filter(i => !taken.includes(i)), j = roles.slice(0, k).filter((x, i) => !own(x, i)).length;
-  return j < free.length ? free[j] : k;
+  return j < free.length ? free[j] : n + j - free.length;  // past the seats: placed along the room, apart
 }
 // To where the timetable has `p` in `block`: their place in it, or the rounds (a room they like, as before the timetable).
 function routineGo(p, block, people, dark, rnd, state) {

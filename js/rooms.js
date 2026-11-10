@@ -381,7 +381,7 @@ function roomCommsRack(ctx, r, s) {
     roomDot(ctx, b.x + b.w - 4, y + 2.5, 0.6, '#56708c');  // a screw
   }
   ctx.font = `600 12px ${roomFont}`;  // the label at 12px on a dark plate over the rack, under the ceiling, as the rooms' names are; it may be wider than the rack
-  const lw = ctx.measureText('COMMS').width / s.zoom, fs = 12 / s.zoom, pad = 3 / s.zoom, cx = b.x + b.w / 2, ly = b.y - fs * 1.25 - 1;
+  const lw = ctx.measureText('COMMS').width / s.zoom, fs = 12 / s.zoom, pad = 3 / s.zoom, cx = b.x + b.w / 2, ly = Math.max(r.top + 1, b.y - fs * 1.25 - 1);
   ctx.fillStyle = 'rgba(6,13,22,0.85)'; ctx.fillRect(cx - lw / 2 - pad, ly, lw + pad * 2, fs * 1.25);
   worldText(ctx, s.zoom, 'COMMS', cx, ly + fs, fs, '#9fb4c9', 'center');
 }
@@ -423,7 +423,7 @@ function roomBridge(ctx, r, s, X, W) {
     roomPart(ctx, roomRound(sx - 2, g.y - 1, 4, g.h + 2, 0.8), '#2a4560', { top: 0, side: 1.2 }); roomDot(ctx, sx, g.y + 2, 0.7, '#56708c'); roomDot(ctx, sx, g.y + g.h - 2, 0.7, '#56708c');
   }
   // the overhead panel: a row of toggle switches, its lights at the end (the drive's, the thrust light in the burn, the flip's), a grab rail under it
-  const o0 = n(X(0.2)), o1 = n(X(0.45)), T = r.top;
+  const o0 = n(X(0.23)), o1 = n(X(0.45)), T = r.top;
   roomPart(ctx, roomRound(o0, T + 3, o1 - o0, 10, 2), '#1d3550', { top: 0, under: 1.5 });
   for (let x = o0 + 8; x < o1 - 40; x += 9) { roomFlat(ctx, x, T + 7, 1.2, 3.5, '#8796a5'); roomDot(ctx, x + 0.6, T + 7, 0.8, '#56708c'); }
   [w.burn + w.cruise > 0.5 ? '#4f9a5f' : '#2f3f50', w.burn > 0.5 ? '#c8604a' : '#2f3f50', w.flip > 0.5 ? '#c8903a' : '#2f3f50', Math.floor(time * 1.5) % 2 ? '#4f8ab0' : '#2f3f50']
