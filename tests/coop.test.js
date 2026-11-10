@@ -32,6 +32,23 @@ const withDeal = () => {
   window.at = (sid, planet) => { const st = G.state; st.systemId = sid; st.planet = planet; G.mode = 'landed'; return currentPlanet(); };
 };
 
+test('docked at Ceres with the berth held, the Port page leads with the co-op\'s Sign on; elsewhere it does not (#994)', async () => {
+  const { ev, done } = await open();
+  await ev(withDeal);
+  const r = await ev(() => {
+    handWithDeal(); UI.tab = 'port';
+    const signs = () => { UI.render(); const p = document.getElementById('panel'), b = p.querySelector('[data-action="buyInAsk"]'), run = p.querySelector('.post'); return b ? { first: run.contains(b), shown: b.getBoundingClientRect().top < innerHeight } : null; };
+    const earth = signs();
+    at('ceres', 'Ceres Station'); const ceres = signs();
+    hired().deal = null; const none = signs();
+    return { earth, ceres, none };
+  });
+  await done();
+  assert.equal(r.earth, null, 'the share is not signed at another port');
+  assert.deepEqual(r.ceres, { first: true, shown: true }, 'at Ceres the first block of the Port page has Sign on, in view');
+  assert.equal(r.none, null, 'no button before the berth is offered');
+});
+
 test('the share is signed at Ceres only: another yard shows the notice and no button', async () => {
   const { ev, done } = await open();
   await ev(withDeal);
