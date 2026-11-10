@@ -633,6 +633,47 @@ test('the camera goes with the hand to an activity\'s room', async () => {
   await done();
 });
 
+// Under reduced motion the camera holds on a deck: one cut as the hand reaches the next, and still in between (#972).
+test('under reduced motion the camera cuts from deck to deck on a climb, and holds between (#972)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, you = shipPeople()[0], at = {}, seen = new Set();
+    t.left = t.total * 0.3; t.angle = -Math.PI / 2; t.flipped = false; Settings.reduceMotion = true;
+    try {
+      for (const d of [1, 2, 3]) { Object.assign(you, { x: LADDER, dk: d, tdk: d, tx: null, wait: 999 }); drawTransit(innerWidth, innerHeight); at[d] = Math.round(G.cam.y * 100) / 100; }
+      for (let k = 0; k <= 40; k++) { Object.assign(you, { x: LADDER, dk: 1 + k / 20, tdk: 3 }); G.time += 0.1; drawTransit(innerWidth, innerHeight); seen.add(Math.round(G.cam.y * 100) / 100); }
+    } finally { Settings.reduceMotion = false; }
+    return { at, seen: [...seen] };
+  });
+  const decks = Object.values(r.at);
+  assert.equal(new Set(decks).size, 3, `a place for each deck: ${decks}`);
+  assert.deepEqual(r.seen.filter(y => !decks.includes(y)), [], `only the decks' places (${decks}) on the climb: ${r.seen}`);
+  await done();
+});
+
+// The mess table is drawn while the galley is in view, and not when the camera is decks away from it (#972).
+test('the mess table is drawn with the galley in view, and not when it is out of view (#972)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, lay = LAYOUTS.freighter, real = window.roomMessTable, out = {};
+    t.left = t.total * 0.3; t.angle = -Math.PI / 2; t.flipped = false;
+    let n = 0; window.roomMessTable = (...a) => { n++; return real(...a); };
+    try {
+      for (const id of ['galley', 'medbay', 'engine']) {
+        n = 0; G.cam = { y: layoutBox(lay, id).floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight);
+        const g = layoutBox(lay, 'galley'), half = viewOf(G.burnBoxes.ship, lay, outlineLeft(G.burnBoxes.ship, G.cutOutline)).span / 2;
+        out[id] = { drawn: n > 0, inView: g.floor >= G.cam.y - half && g.top <= G.cam.y + half };
+      }
+    } finally { window.roomMessTable = real; }
+    return out;
+  });
+  assert.deepEqual(r.galley, { drawn: true, inView: true }, 'on the galley\'s deck');
+  for (const id of ['medbay', 'engine']) assert.deepEqual(r[id], { drawn: false, inView: false }, `the camera on the ${id}'s deck`);
+  await done();
+});
+
 test('a tap on the outline opens the outline\'s room even with a person behind it', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);

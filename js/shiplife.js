@@ -340,10 +340,12 @@ const personShare = (p, salt) => { let h = 2166136261 ^ salt; for (const c of St
 // Where someone heading to x in their room stops so as not to stand on anyone (#924): x, or a step either side of it, clear of where the others
 // in the room stand or are going.
 function clearOf(p, x, people = []) {
-  const r = roomAt(p.room);
+  const r = roomAt(p.room), well = LAYOUTS.freighter.well, half = well.w / 2 + 12 / LAYOUTS.freighter.width;  // the well's opening, widened by half a person
+  const inWell = c => r.x0 < well.x && r.x1 > well.x && Math.abs(c - well.x) < half;
+  if (inWell(x)) x = x < well.x ? well.x - half : well.x + half;  // not on the hole: to its nearer side (#972)
   for (const o of [0, 0.014, -0.014, 0.028, -0.028]) {
     const c = x + o * CUT_K;
-    if (c < r.x0 + 0.005 * CUT_K || c > r.x1 - 0.005 * CUT_K) continue;
+    if (c < r.x0 + 0.005 * CUT_K || c > r.x1 - 0.005 * CUT_K || inWell(c)) continue;
     if (!people.some(q => q !== p && q.role !== 'cat' && q.room === p.room && q.tdk === p.tdk && Math.abs((q.tx !== null ? q.tx : q.x) - c) < 0.01 * CUT_K)) return c;
   }
   return x;
@@ -423,7 +425,7 @@ function handOver(p, people, dt, block, rnd) {
   if (!w || block !== 'handover') { p.relief = undefined; return; }
   if (w.room !== p.room || w.tx !== null || w.dk !== w.tdk) return;
   p.face = Math.sign(w.x - p.x) || p.face; w.face = Math.sign(p.x - w.x) || w.face;
-  if ((p.reliefT += dt) >= 2) { p.relief = undefined; p.at = undefined; Object.assign(p, { block, room: 'berths', tdk: roomAt('berths').deck, tx: routineTarget(p, { at: 'bunk' }, roomAt('berths'), 0, 1, rnd) }); }
+  if ((p.reliefT += dt) >= 2) { p.relief = undefined; p.at = undefined; Object.assign(p, { block, room: 'berths', tdk: roomAt('berths').deck }); p.tx = clearOf(p, routineTarget(p, { at: 'bunk' }, roomAt('berths'), 0, 1, rnd), people); }
 }
 
 function goTo(p, roomId, rnd = lifeRnd, people = (G.transit && G.transit.aboard) || []) {
@@ -458,10 +460,10 @@ function posture(p, ph, time, asleep) {
   let name;
   if (p.role === 'cat') name = ph === 'float' ? 'cat-float' : ph !== 'move' ? 'cat-sleep' : p.tx !== null ? 'cat-walk' : 'cat-sit';
   else if (asleep || inBed(p)) name = 'bunk';  // asleep, or a patient in the medbay (on the cot in every phase, #976)
+  else if ((ph === 'couch' || ph === 'move') && p.dk !== p.tdk && (Math.abs(p.x - LADDER) <= 0.003 * CUT_K || p.dk !== Math.round(p.dk))) name = 'climb';  // on the ladder in the well, or between decks, on the way to a couch too (#972)
   else if (ph === 'couch') name = (p.couch || 0) >= 0.6 ? 'couch' : Math.abs(p.x - p.seat) > 0.004 * CUT_K ? 'walk' : 'stand';  // on the couch once it has unfolded under them (#925)
   else if (ph === 'secure') name = 'strap';
   else if (ph === 'float') name = p.role === 'engineer' ? 'tether' : 'strap';
-  else if (p.dk !== p.tdk && (Math.abs(p.x - LADDER) <= 0.003 * CUT_K || p.dk !== Math.round(p.dk))) name = 'climb';  // on the ladder in the well, or between decks (#972)
   else if (p.tx !== null || p.dk !== p.tdk) name = 'walk';  // along a deck, to the well too
   else if (p.staged) name = p.staged === 'berths' || ((p.staged === 'galley' || (p.role === 'captain' && SEATED_STATIONS.includes(p.staged))) && onSeat(p)) ? 'sit' : 'stand';  // on a seat at the table, a bunk's edge; the captain at the station
   else if (!p.staged && !p.errand && ((p.block === 'shift' && ['post', 'aid', 'repair'].includes(p.at)) || p.at === 'stove')) name = p.at === 'post' && (p.room === 'bridge' || p.room === 'gunnery') && onSeat(p) ? 'work-sit' : 'work';  // at work: seated at the bridge and the guns, where there is a seat
@@ -638,9 +640,9 @@ function drawCutaway(box, clear = box) {
   // height, down the run from the top of the nose's cap to the first of the plume (camRun), offset from the box's centre by offX and offY.
   // Where a docked dialog leaves the part narrower than the tower (its width and 40 each side, as viewOf fits it), the camera pans across
   // too, as camStep does down, to keep the hand and the scene's people in the part (#972); with none open it stays on the tower's middle.
-  // Reduced motion snaps.
+  // Reduced motion snaps, and holds on a deck: one cut as the hand reaches the next, still on the ladder between.
   const rx0 = Math.max(clear.x, box.x + left), offX = (box.x + box.w / 2 - (rx0 + clear.x + clear.w) / 2) / zoom, offY = (box.y + box.h / 2 - (clear.y + clear.h / 2)) / zoom, run = camRun(lay);
-  const held = G.cam && !still ? G.cam.y - offY - run.top : null, target = camTarget(lay, people[0].dk), dt = G.cam ? Math.max(0, G.time - G.cam.t) : 0;
+  const held = G.cam && !still ? G.cam.y - offY - run.top : null, target = camTarget(lay, still ? Math.round(people[0].dk) : people[0].dk), dt = G.cam ? Math.max(0, G.time - G.cam.t) : 0;
   const camY = camStep(held, target, dt, clear.h / zoom, run.len) + run.top + offY;
   const seenX = people.filter((p, i) => i === 0 || p.staged).map(p => p.x * W), focusX = (Math.min(...seenX) + Math.max(...seenX)) / 2;
   const partX = camStep(G.cam && G.cam.x !== undefined && !still ? G.cam.x + 40 : null, focusX + 40, dt, (clear.x + clear.w - rx0) / zoom, W + 80) - 40, camX = partX + offX;
@@ -756,7 +758,7 @@ function drawCutaway(box, clear = box) {
       }
     }
   }
-  if (seen(galley.x0, galley.x1)) roomMessTable(ctx, galley, s);  // the mess table in front of those sitting at it (#978)
+  if (seen(galley.top, galley.floor)) roomMessTable(ctx, galley, s);  // the mess table in front of those sitting at it (#978)
   hullSeams(o);  // plating, rivets and scars (hulldetail.js)
   ctx.restore();
   hullFittings(o, deck);  // mast, fins, turrets and the airlock's door

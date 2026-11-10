@@ -55,7 +55,7 @@ The captain decides and the crew flies: piloting and real-time fighting are the 
 - **Shared news** (done, on claude.ai): other players' deeds show up as news and chatter in your game, for captains who opt in.
 
 ## 7. The crew and the ship as a place
-The game leans toward role-playing: people, what they think of you, and a ship you live in. Built so far: the two-deck cutaway and the Interior deck plan drawn from it, a page for each crew member (what they have told you, their bonds, their mood), portrait cards, your own page, and faces in scenes. Next, in rough order:
+The game leans toward role-playing: people, what they think of you, and a ship you live in. Built so far: the cutaway of the ship as a tower of decks stacked across the thrust (the water tank between the habitat and the drive, the stars swinging past at the flip) and the Interior deck plan drawn from it, a page for each crew member (what they have told you, their bonds, their mood), portrait cards, your own page, and faces in scenes. Next, in rough order:
 - **Consequence notes after a choice** (done, #281): the result screen says what the choice did to how people feel ("Ines thinks better of you", "Mara and Ines are further apart"). It reports after the fact, since most outcomes are not known in advance.
 - **Click a person in the burn view** (done, #323; `js/game.js` finds the person under a tap in the cutaway, `js/character.js` opens their page): a tap on a person comes before the room under them, and does nothing while a scene is open (`tests/burnview.test.js`).
 - **A chapter recap at the buy-in** (done: "Looking Back", #275): runs and earnings, who you got close to, marks and memories, and favours done or left undone, from what the game already keeps.

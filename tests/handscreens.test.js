@@ -84,6 +84,17 @@ test('a suggested run reads in the captain\'s terms, and the deck plan draws a f
   await done();
 });
 
+test('the deck plan names its rooms at 12 px or more (#972)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const small = await ev(() => {
+    startHand(); const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.innerHTML = deckSvg();
+    return [...svg.querySelectorAll('text.lbl')].filter(t => +t.getAttribute('font-size') < 12).map(t => `${t.textContent} ${t.getAttribute('font-size')}`);
+  });
+  assert.deepEqual(small, []);
+  await done();
+});
+
 test('a hired hand\'s map says what it is for and shows the captain\'s plan; an owner\'s map is unchanged', async () => {
   const hand = await open({ scope: 'earth-hired' });
   await hand.ev(helpers);

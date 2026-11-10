@@ -22,10 +22,10 @@ function viewOf(box, lay, left = 0) {
 const camTarget = (lay, dk) => (Math.round(dk) >= lay.decks.length - 1 ? camRun(lay).len : towerDeckY(lay, dk) - HULL.deck / 2 - camRun(lay).top);
 
 // One step of the camera toward a target, down the tower's run (0 at the top of the nose's cap, len past the bell, camRun), held where the
-// view stays inside it. A null camera snaps; a run shorter than the view sits in the middle; a camera left outside (the view grew as a
-// dialog closed) eases back in.
+// view stays inside it. A null camera snaps; a run shorter than the view sits in the middle, eased to it as a scene closes; a camera left
+// outside (the view grew as a dialog closed) eases back in.
 function camStep(cam, target, dt, span, len) {
-  if (span >= len) return len / 2;
+  if (span >= len) return cam === null ? len / 2 : cam + (len / 2 - cam) * Math.min(1, dt * 1.5);
   const clamp = y => Math.max(span / 2, Math.min(len - span / 2, y));
   if (cam === null) return clamp(target);
   // the camera holds while the target is in the middle third of the view, and past it eases to keep them at its edge (#924): no slide under every step

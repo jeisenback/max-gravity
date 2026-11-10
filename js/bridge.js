@@ -163,7 +163,7 @@ function deckSvg() {
   const rooms = ROOMS.map(r => {
     const y0 = rowY(r.deck), y1 = y0 + P.row, floor = y1 - 14, w = (r.x1 - r.x0) * 580, across = r.x0 < LADDER && r.x1 > LADDER;
     const cx0 = across ? X((r.x0 + LADDER) / 2) : X(r.mid), room = across ? (LADDER - r.x0) * 580 : w;  // a room the well runs through keeps its people in its left half
-    let out = `<rect x="${X(r.x0) + 1}" y="${y0}" width="${w - 2}" height="${P.row}" rx="4" fill="#0a1320" stroke="#34506e"/><text class="lbl" x="${X(r.x0) + 6}" y="${y0 + 13}" fill="#7f95ab" font-size="11" letter-spacing="1">${r.name.toUpperCase()}</text>`;
+    let out = `<rect x="${X(r.x0) + 1}" y="${y0}" width="${w - 2}" height="${P.row}" rx="4" fill="#0a1320" stroke="#34506e"/><text class="lbl" x="${X(r.x0) + 6}" y="${y0 + 13}" fill="#7f95ab" font-size="12" letter-spacing="1">${r.name.toUpperCase()}</text>`;
     if (r.id === 'berths') {  // the bunks in its right half
       const n = Math.min(6, ship().berths), used = berthsUsed(), cols = Math.ceil(n / 2), bx = X(LADDER) + 12, bw = X(r.x1) - 12 - bx;
       out += Array.from({ length: n }, (_, i) => `<rect x="${(bx + bw * (Math.floor(i / 2) + 0.5) / cols - 12).toFixed(1)}" y="${y0 + 18 + (i % 2) * 16}" width="24" height="12" rx="2" fill="${i < used ? '#1d3a5c' : 'none'}" stroke="#34506e"/>`).join('');
