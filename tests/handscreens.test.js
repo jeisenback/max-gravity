@@ -84,6 +84,17 @@ test('a suggested run reads in the captain\'s terms, and the deck plan draws a f
   await done();
 });
 
+test('the deck plan names its rooms at 12 px or more (#972)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const small = await ev(() => {
+    startHand(); const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.innerHTML = deckSvg();
+    return [...svg.querySelectorAll('text.lbl')].filter(t => +t.getAttribute('font-size') < 12).map(t => `${t.textContent} ${t.getAttribute('font-size')}`);
+  });
+  assert.deepEqual(small, []);
+  await done();
+});
+
 test('a hired hand\'s map says what it is for and shows the captain\'s plan; an owner\'s map is unchanged', async () => {
   const hand = await open({ scope: 'earth-hired' });
   await hand.ev(helpers);
@@ -255,10 +266,10 @@ test('a hand is told once when their post reaches a new level, and an injury say
     return out;
   });
   const N = r.name.toLowerCase();
-  assert.deepEqual(r.to12, [`Your work at the ${N} post is level 1 now. Your shots in a ship fight hit harder, and your two abilities in a deck fight work more often.`]);
+  assert.deepEqual(r.to12, [`Your work at the ${N} post is level 1 now. Your shots in a ship fight hit harder, and your two abilities in a deck fight work more often. A pick waits on your page.`]);
   assert.deepEqual(r.to45, []); assert.deepEqual(r.inside, []); assert.equal(r.twice, 0);
-  assert.deepEqual(r.cross45, [`Your work at the ${N} post is level 2 now. Your shots in a ship fight hit harder, and your two abilities in a deck fight work more often. The choices marked [${r.name} 2] are open to you.`]);
-  assert.match(r.cross110[0], /level 3 now.*\[.* 3\] are open to you\.$/);
+  assert.deepEqual(r.cross45, [`Your work at the ${N} post is level 2 now. Your shots in a ship fight hit harder, and your two abilities in a deck fight work more often. The choices marked [${r.name} 2] are open to you. A pick waits on your page.`]);
+  assert.match(r.cross110[0], /level 3 now.*\[.* 3\] are open to you\. A pick waits on your page\.$/);
   assert.deepEqual(r.hurt, []); assert.deepEqual(r.healed, []); assert.deepEqual(r.other, []);
   assert.equal(r.log.length, 1); assert.equal(r.notesInFlight, 0);
   await done();

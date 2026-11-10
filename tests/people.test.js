@@ -277,7 +277,9 @@ test('what people are seen doing on the ship: every room and role has lines that
       for (const p of people) {
         if (p.role === 'you') continue;
         p.room = room;
-        for (let i = 0; i < 20; i++) { const l = lifeLine(p, people); if (l) { seen++; if (/[{}]|undefined/.test(l)) bad.push(`${room}/${p.role}: ${l}`); } }
+        let some = false;
+        for (let i = 0; i < 20; i++) { const l = lifeLine(p, people); if (l) { seen++; some = true; if (/[{}]|undefined/.test(l)) bad.push(`${room}/${p.role}: ${l}`); } }
+        if (!some) bad.push(`${room}/${p.role}: no line`);  // a room with no lines of its own has the generic ones (LIFE_ANY, #972)
       }
     }
     return { seen, bad, roles: people.map(p => p.role) };

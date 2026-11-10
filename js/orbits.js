@@ -19,11 +19,11 @@ function orbitPos(id, day = G.state.day) {
 // Travel time and reaction mass grow with distance at departure, but less than
 // linearly, so the outer planets stay reachable.
 const distAU = (a, b, day) => dist(orbitPos(a, day), orbitPos(b, day));
-// Crew perks: a pilot shortens burns, an engineer (and Rosa's drive tuning) saves mass.
+// Crew perks: a pilot shortens burns, an engineer (and Rosa's drive tuning) saves mass; the hand's picks trim a twentieth more off each (picks.js: trim, long-legs).
 const baseDays = (a, b, day) => Math.round(2 + 3 * Math.pow(distAU(a, b, day), 0.7));
-const travelDays = (a, b, day) => Math.max(1, Math.round(baseDays(a, b, day) * (1 - 0.07 * roleSkill('pilot'))));
+const travelDays = (a, b, day) => Math.max(1, Math.round(baseDays(a, b, day) * (1 - 0.07 * roleSkill('pilot')) * (perkOn('long-legs') ? 0.95 : 1)));
 const burnFuel = (a, b, day) => Math.round((30 + 60 * Math.sqrt(distAU(a, b, day)))
-  * (1 - 0.05 * roleSkill('engineer')) * (G.state.flags.rosaTuned ? 0.9 : 1));
+  * (1 - 0.05 * roleSkill('engineer')) * (G.state.flags.rosaTuned ? 0.9 : 1) * (perkOn('trim') ? 0.95 : 1));
 
 // The shortest this burn gets over the next two years, and when.
 function bestWindow(a, b) {

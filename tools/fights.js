@@ -5,7 +5,7 @@
 // Each trial answers the scenes from a stated policy, then the game state is put back.
 //   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider] [--owner] [--ship-only | --deck-only] [--groups party,grade] [--moves [vent,lead,split]]
 // `--owner` plays them as an owner who kept the post (the same ship and crew, bought with a hand's savings), to put beside the hand's (#721).
-// `--moves` gives the hand all three gunner moves (vent, lead, split) for the ship fights, or the ones listed after it; without it she knows none, and the numbers are the ones before the moves.
+// `--moves` gives the hand the gunner's three moves (vent, lead, split) for the ship fights, or the ones listed after it (any of FIGHT_MOVES, the post ladders' eight among them); without it she knows none, and the numbers are the ones before the moves.
 // `--deck-only` leaves the ship fights out, so the deck fights are played on the same draws as the deck test (tests/distribution/fights.test.js).
 // With them come two more gun policies that use the moves without reading her move for it (randmove, eager: below).
 //   npm run fights
@@ -95,7 +95,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     // With the moves (--moves), two policies that use them without reading her move for it, to show a move is a choice and not a free win: 'randmove' is
     // 'random' with a random usable move each turn (lead on a random gun it applies to), and 'eager' aims at her lock and then her weapons (shots lead can
     // help), holds the turret on her salvo (hullhold's rule, for split), and orders the first usable move, vent, lead or split, at its first chance.
-    const usable = (s, o) => ['vent', 'lead', 'split'].flatMap(id => (id === 'lead' ? o.guns.map((_, gun) => ({ move: id, gun })) : [{ move: id }]).filter(m => canUse(s.state, { ...o, ...m }, id, s.known || [])));
+    const usable = (s, o) => Object.keys(FIGHT_MOVES).flatMap(id => (GUN_MOVES.includes(id) ? o.guns.map((_, gun) => ({ move: id, gun })) : [{ move: id }]).filter(m => canUse(s.state, { ...o, ...m }, id, s.known || [])));  // every move the engine has, lead and called-shot on each gun
     const withMove = (base, take) => s => { const o = base(s), ms = usable(s, o); return ms.length ? { ...o, ...take(ms) } : o; };
     if (withMoves) Object.assign(POLICY_SHIP, {
       randmove: withMove(POLICY_SHIP.random, ms => ms[Math.floor(Math.random() * ms.length)]),
@@ -235,14 +235,14 @@ if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
   const seeds = (arg('seeds') || '1,2,3').split(',').map(Number), n = Number(arg('n') || 100), post = arg('post') || 'gunner', ship = arg('ship') || 'raider', owner = process.argv.includes('--owner');
   const asked = arg('moves');
-  if (process.argv.includes('--moves') && /^[a-z,]+$/.test(asked || '')) {
+  if (process.argv.includes('--moves') && /^[a-z,-]+$/.test(asked || '')) {  // the ids are lower case, some with a hyphen
     const { FIGHT_MOVES } = load(['js/data.js', 'js/range.js', 'js/sheet.js', 'js/handtohand.js', 'js/boarders.js', 'js/shipcombat.js', 'js/fight.js'], { Mods: { register() {} } }, ['FIGHT_MOVES']), bad = asked.split(',').filter(id => !FIGHT_MOVES[id]);
     if (bad.length) { console.error(`--moves: unknown move ${bad.join(', ')} (known: ${Object.keys(FIGHT_MOVES).join(', ')})`); process.exit(1); }
   }
   (async () => {
     const runs = [];
     for (const seed of seeds) {
-      const r = await fights({ seed, n, post, ship, owner, lock: !process.argv.includes('--ship-only'), raid: !process.argv.includes('--deck-only'), groups: arg('groups') ? arg('groups').split(',') : null, moves: !process.argv.includes('--moves') ? false : /^[a-z,]+$/.test(arg('moves') || '') ? arg('moves').split(',') : true });
+      const r = await fights({ seed, n, post, ship, owner, lock: !process.argv.includes('--ship-only'), raid: !process.argv.includes('--deck-only'), groups: arg('groups') ? arg('groups').split(',') : null, moves: !process.argv.includes('--moves') ? false : /^[a-z,-]+$/.test(arg('moves') || '') ? arg('moves').split(',') : true });
       if (r.errors.length) console.log(`seed ${seed}: ${r.errors.length} page errors, first: ${r.errors[0]}`);
       runs.push(r);
     }

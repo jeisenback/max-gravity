@@ -871,9 +871,30 @@ test('the tester panel drops a hired hand into each kind of fight, early and lat
   assert.ok(r.navy.gov && /The boarding party/.test(r.navy.read) && /Turn 1 of 5/.test(r.navy.read) && /standing with/.test(r.navy.text), r.navy.read);
   assert.equal(r.dead, 'Dead in Space');
   assert.deepEqual([r.assault.kind, r.assault.assault], ['deck', true]); assert.equal(r.assault.stated, r.assault.began, 'the count she states is the fight that opens');
-  assert.deepEqual(r.late, { grade: 1, skill: 4, level: 3, sighted: true, kit: ['valve-keys'], friends: true }, 'the late hand: level 3 and boresighted (skill 4 in the fight), the keys, friends aboard, and a raider a grade better');
+  assert.deepEqual(r.late, { grade: 1, skill: 6, level: 5, sighted: true, kit: ['valve-keys'], friends: true }, 'the late hand: the top of the ladder, level 5, and boresighted (skill 6 in the fight), the keys, friends aboard, and a raider a grade better');
   assert.equal(r.lateRepel, 2);
   assert.deepEqual(r.lateIds, ['late-fight-raider', 'late-fight-pack', 'late-fight-veteran', 'late-fight-patrol', 'late-deck-repel', 'late-deck-navy', 'late-deck-assault']);
+  await done();
+});
+
+// ---------- the fight perks (picks.js, #963): marksman, pd-watch and cover-eye for a gunner, brace and lane-sense for a pilot ----------
+
+test('the fight perks read the picks taken: a level more at the guns, half off her volley, three points of cover, a tenth more on a run, ten km more at contact', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    fightGame('gunner'); const g0 = battle(), repel = () => repelStart({ foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0, init: 'foe' }, 'half').state.coverMade;
+    out.before = { skill: g0.state.me.skill, hold: g0.state.me.pdcHold, made: repel() }; out.pdcHold = FIGHT.PDC_HOLD;
+    takePick(career(), 'marksman'); takePick(career(), 'pd-watch'); takePick(career(), 'cover-eye'); const g1 = battle();
+    out.after = { skill: g1.state.me.skill, hold: g1.state.me.pdcHold, made: repel(), perks: [handPerk('marksman'), handPerk('trim')] };
+    fightGame('pilot', 'cutter'); const flee0 = fleeOdds(), band0 = RANGE_BANDS[battle().state.band];
+    takePick(career(), 'brace'); takePick(career(), 'lane-sense');
+    out.pilot = { flee: Math.round((fleeOdds() - flee0) * 100), band0, band1: RANGE_BANDS[battle().state.band] };
+    return out;
+  });
+  assert.deepEqual([r.after.skill - r.before.skill, r.before.hold, r.after.hold, r.before.made, r.after.made, r.after.perks], [1, r.pdcHold, 0.5, 2, 3, [true, false]]);
+  assert.deepEqual(r.pilot, { flee: 10, band0: 'mid', band1: 'long' }, 'brace and lane-sense: a cutter is met with guns at 30 km, 40 with the pick');
   await done();
 });
 
@@ -906,7 +927,7 @@ test('a known move shows on the panel, applies on Fire, and shows spent after', 
   await done();
 });
 
-test('no move is offered to a hand who knows none, to a non-gunner, or on a save without moves', async () => {
+test('no move is offered to a hand who knows none or on a save without moves, and a hand at another post is offered the ones they know', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -918,7 +939,9 @@ test('no move is offered to a hand who knows none, to a non-gunner, or on a save
     };
     return { none: offered('gunner', []), nonGunner: offered('engineer', ['vent', 'lead', 'split']), absent: offered('gunner', null), pure: [knownMoves(null), knownMoves({}), knownMoves({ moves: ['lead'] })] };
   });
-  for (const k of ['none', 'nonGunner', 'absent']) { assert.equal(r[k].threw, null, k); assert.deepEqual(r[k].moves, [], k); assert.deepEqual(r[k].known, [], k); }
+  for (const k of ['none', 'nonGunner', 'absent']) assert.equal(r[k].threw, null, k);
+  for (const k of ['none', 'absent']) { assert.deepEqual(r[k].moves, [], k); assert.deepEqual(r[k].known, [], k); }
+  assert.deepEqual(r.nonGunner.known, ['vent', 'lead', 'split']); assert.equal(r.nonGunner.moves.length, 3, 'an engineer who knows them is offered them (the picks are the post\'s, so only in a test)');
   assert.deepEqual(r.pure, [[], [], ['lead']]);
   await done();
 });

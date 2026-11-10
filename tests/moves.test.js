@@ -1,7 +1,7 @@
 'use strict';
 
-// The crew teach the hired hand's gunner moves on a burn (docs/superpowers/specs/2026-10-23-gunner-moves-design.md, section 2): the due rule (moveDue) in plain
-// Node, and the downtime activity (ACTIVITIES.teach) in a page.
+// The crew teach the hired hand's moves on a burn (docs/superpowers/specs/2026-11-08-post-ladders-design.md, the taught picks; before it the gunner's three,
+// docs/superpowers/specs/2026-10-23-gunner-moves-design.md section 2): the due rule (moveDue) in plain Node, and the downtime activity (ACTIVITIES.teach) in a page.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -10,32 +10,35 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { MOVE_TEACH, moveDue } = load(['js/gunnermoves.js'], { OPINION: { TRUSTED: 3 }, ACTIVITIES: {} }, ['MOVE_TEACH', 'moveDue']);
+const { MOVE_TEACH, moveDue } = load(['js/data.js', 'js/util.js', 'js/sheet.js', 'js/picks.js', 'js/moves.js'], { OPINION: { TRUSTED: 3 }, ACTIVITIES: {} }, ['MOVE_TEACH', 'moveDue']);
 const TOMAS = { first: 'Tomas', opinion: 3 }, INES = { first: 'Ines', opinion: 3 }, CATO = { first: 'Cato', opinion: 3 };
-const crew = (o = {}) => id => ({ vent: TOMAS, lead: INES, split: CATO, ...o })[id];
+const crew = (o = {}) => id => ({ vent: TOMAS, lead: INES, split: CATO, redline: TOMAS, 'hot-start': INES, parley: CATO, ...o })[id];
 const trust = p => p.opinion;
 
-test('moves are due in order, each at its level and the teacher\'s trust', () => {
-  assert.deepEqual(JSON.parse(JSON.stringify(MOVE_TEACH)), { vent: { post: 'engineer', level: 1 }, lead: { post: 'pilot', level: 1 }, split: { role: 'xo', level: 2 } });
-  const hand = moves => ({ post: 'gunner', moves });
-  assert.equal(moveDue(hand([]), 1, crew(), trust), 'vent');
-  assert.equal(moveDue(hand(['vent']), 1, crew(), trust), 'lead');
-  assert.equal(moveDue(hand(['vent', 'lead']), 1, crew(), trust), null, 'split waits for level 2');
-  assert.equal(moveDue(hand(['vent', 'lead']), 2, crew(), trust), 'split');
-  assert.equal(moveDue(hand([]), 0, crew(), trust), null, 'nothing at level 0');
-  assert.equal(moveDue(hand([]), 1, crew({ vent: { first: 'Tomas', opinion: 2 } }), trust), 'lead', 'an engineer short of trust passes to the next');
-  assert.equal(moveDue(hand(['lead']), 2, crew(), trust), 'vent', 'the order is vent, lead, split');
+test('a taught move is due once its pick is taken, in table order, while its teacher trusts the hand; the table is read from the picks', () => {
+  assert.deepEqual(JSON.parse(JSON.stringify(MOVE_TEACH)), { vent: { post: 'engineer', level: 1 }, lead: { post: 'pilot', level: 2 }, split: { role: 'xo', level: 3 }, redline: { post: 'engineer', level: 5 }, 'hot-start': { post: 'pilot', level: 3 }, parley: { role: 'xo', level: 5 } });
+  const hand = (picks, moves = [], post = 'gunner') => ({ post, picks, moves });
+  assert.equal(moveDue(hand([]), crew(), trust), null, 'no pick taken, nothing to teach');
+  assert.equal(moveDue(hand(['vent']), crew(), trust), 'vent');
+  assert.equal(moveDue(hand(['vent'], ['vent']), crew(), trust), null, 'known: not again');
+  assert.equal(moveDue(hand(['lead', 'vent']), crew(), trust), 'vent', 'table order, not the order taken');
+  assert.equal(moveDue(hand(['vent', 'lead']), crew({ vent: { first: 'Tomas', opinion: 2 } }), trust), 'lead', 'an engineer short of trust passes to the next');
+  assert.equal(moveDue(hand(['vent', 'called-shot']), crew(), trust), 'vent', 'an untaught move pick is not a lesson');
+  assert.equal(moveDue(hand(['hot-start'], [], 'engineer'), crew(), trust), 'hot-start', 'an engineer hand is taught by the pilot');
+  assert.equal(moveDue(hand(['redline'], [], 'pilot'), crew({ redline: undefined }), trust), null, 'nobody at the engineer post');
+  assert.equal(moveDue({ post: 'gunner', picks: ['vent'] }, crew(), trust), 'vent', 'a save without moves');
+  assert.equal(moveDue(null, crew(), trust), null);
 });
 
 test('a hurt, missing or untrusting teacher teaches nothing, and a move already known is not offered again', async () => {
-  assert.equal(moveDue({ post: 'gunner', moves: [] }, 2, crew({ vent: undefined, lead: undefined, split: undefined }), trust), null, 'nobody at the posts');
-  assert.equal(moveDue({ post: 'gunner', moves: ['vent', 'lead', 'split'] }, 3, crew(), trust), null, 'all three known');
+  assert.equal(moveDue({ post: 'gunner', picks: ['vent', 'lead', 'split'], moves: [] }, crew({ vent: undefined, lead: undefined, split: undefined }), trust), null, 'nobody at the posts');
+  assert.equal(moveDue({ post: 'gunner', picks: ['vent', 'lead', 'split'], moves: ['vent', 'lead', 'split'] }, crew(), trust), null, 'all three known');
   const { ev, done } = await open();
   const r = await ev(() => {
     __seed(1);
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
     const st = G.state, tomas = postHolder('engineer'), ines = postHolder('pilot');
-    tomas.opinion = 3; ines.opinion = 3;
+    tomas.opinion = 3; ines.opinion = 3; hired().picks = ['vent', 'lead'];
     const due = () => ({ can: ACTIVITIES.teach.can(), label: ACTIVITIES.teach.label });
     const out = { trusted: due() };
     st.injured = { [tomas.id]: true }; out.hurt = due();
@@ -56,13 +59,12 @@ test('a hurt, missing or untrusting teacher teaches nothing, and a move already 
   assert.match(r.known.label, /Ines/, 'vent known: not offered again');
 });
 
-test('a save without moves is offered the first move and nothing throws', async () => {
-  assert.equal(moveDue({ post: 'gunner' }, 1, crew(), trust), 'vent');
+test('a save without moves is offered the move picked and nothing throws', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
     __seed(1);
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
-    delete hired().moves; postHolder('engineer').opinion = 3;
+    delete hired().moves; hired().picks = ['vent']; postHolder('engineer').opinion = 3;
     const can = ACTIVITIES.teach.can(), label = ACTIVITIES.teach.label, text = ACTIVITIES.teach.run();
     return { can, label, text, moves: hired().moves };
   });
@@ -71,13 +73,14 @@ test('a save without moves is offered the first move and nothing throws', async 
   assert.deepEqual(r.moves, ['vent']);
 });
 
-test('the activity teaches the move and a few gunner points, and a burn without it leaves it due', async () => {
+test('the activity teaches the move and a few points at the post, and a burn without it leaves it due', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
     __seed(1);
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
     G.state.tutorial = null;
     for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = 3;
+    hired().picks = ['vent', 'lead'];
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const menu = () => { G.transit.lifeUsed = {}; return downtimeEvent(true); };
     const label = ACTIVITIES.teach.label, offered = menu().choices.some(c => c.label === label && c.can());
@@ -96,7 +99,7 @@ test('the activity teaches the move and a few gunner points, and a burn without 
   assert.deepEqual(r.after.moves, ['vent']); assert.equal(r.after.gained, 2);
   assert.match(r.after.next, /Ines/, 'lead is next');
   assert.ok(r.after.log.includes(r.label), 'Comms names what was taught, not what is due now');
-  assert.deepEqual(r.two.moves, ['vent', 'lead']); assert.equal(r.two.can, false, 'split waits for level 2');
+  assert.deepEqual(r.two.moves, ['vent', 'lead']); assert.equal(r.two.can, false, 'split waits for its pick');
 });
 
 test('the move taught is the one the menu showed: a teacher hurt after it was drawn shuts the choice, and teaching resumes when he is back', async () => {
@@ -106,6 +109,7 @@ test('the move taught is the one the menu showed: a teacher hurt after it was dr
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
     G.state.tutorial = null;
     for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = 3;
+    hired().picks = ['vent', 'lead'];
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const tomas = postHolder('engineer'), label = ACTIVITIES.teach.label, choice = downtimeEvent(true).choices.find(c => c.label === label);
     G.state.injured = { [tomas.id]: true };  // hurt between the menu and the click: lead (Ines) is due now
@@ -125,25 +129,24 @@ test('the move taught is the one the menu showed: a teacher hurt after it was dr
   assert.deepEqual(r.moves, ['vent']);
 });
 
-test('no move is taught to an owner or a non-gunner', async () => {
-  assert.equal(moveDue({ post: 'engineer', moves: [] }, 3, crew(), trust), null);
-  assert.equal(moveDue(null, 3, crew(), trust), null);
+test('a hand at another post is taught the move picked there, and no move is taught to an owner', async () => {
   const { ev, done } = await open({ scope: 'full' });
   const r = await ev(() => {
     __seed(1);
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'engineer', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
     for (const id of G.state.crew) person(id).opinion = 3;
-    G.state.hired.skill = { ...G.state.hired.skill, gunner: 200 };
-    const engineer = ACTIVITIES.teach.can();
+    hired().picks = ['hot-start'];
+    const engineer = { can: ACTIVITIES.teach.can(), label: ACTIVITIES.teach.label, text: ACTIVITIES.teach.run(), moves: [...hired().moves], xp: skillXp('engineer') };
     startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent();
     for (const id of G.state.crew) person(id).opinion = 3;
-    G.state.career = { post: 'gunner', moves: [], skill: { gunner: 200 } };  // a hand who bought the ship
+    G.state.career = { post: 'gunner', moves: [], picks: ['vent'], skill: { gunner: 200 } };  // a hand who bought the ship
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const owner = ACTIVITIES.teach.can(), menu = downtimeEvent(true).choices.map(c => c.label);
     return { engineer, owner, menu, label: ACTIVITIES.teach.label };
   });
   await done();
-  assert.equal(r.engineer, false);
+  assert.equal(r.engineer.can, true); assert.match(r.engineer.label, /Ines/, 'the pilot shows the engineer a hot start'); assert.match(r.engineer.text, /Ines/);
+  assert.deepEqual(r.engineer.moves, ['hot-start']); assert.ok(r.engineer.xp >= 2, 'engineer points, not gunner');
   assert.equal(r.owner, false);
   assert.ok(!r.menu.includes(r.label), 'not on an owner\'s menu');
 });
@@ -155,6 +158,7 @@ test('a move that is due is on every downtime menu of five, however the menu tur
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
     G.state.tutorial = null;
     for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = 3;
+    hired().picks = ['vent'];
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const label = ACTIVITIES.teach.label, menus = [];
     for (let i = 0; i < 12; i++) { G.transit.lifeUsed = {}; G.transit.lifeShown = {}; menus.push(downtimeEvent().choices.map(c => c.label)); }
@@ -163,4 +167,18 @@ test('a move that is due is on every downtime menu of five, however the menu tur
   await done();
   assert.ok(r.menus.every(m => m.length <= 6), 'still five, and Not now');
   assert.ok(r.menus.every(m => m.includes(r.label)), `the move is on each: ${JSON.stringify(r.menus.find(m => !m.includes(r.label)))}`);
+});
+
+test('a move taught after a post swap pays its points to the pick\'s post, not the post the hand works now', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    __seed(1);
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
+    const h = hired(); postHolder('engineer').opinion = 3; takePick(h, 'vent'); h.post = 'pilot';
+    const gunner0 = skillXp('gunner'), pilot0 = skillXp('pilot'), can = ACTIVITIES.teach.can(), text = ACTIVITIES.teach.run();
+    return { can, text, gunner: skillXp('gunner') - gunner0, pilot: skillXp('pilot') - pilot0, moves: [...h.moves] };
+  });
+  await done();
+  assert.equal(r.can, true); assert.match(r.text, /Tomas/);
+  assert.deepEqual([r.gunner, r.pilot, r.moves], [2, 0, ['vent']]);
 });

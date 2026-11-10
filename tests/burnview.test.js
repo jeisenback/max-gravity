@@ -44,7 +44,7 @@ test('the instruments follow the burn: from rest up to a peak at the flip, then 
 const dockState = () => {
   const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), el = document.querySelector('#panel.event');
   return { rect: { x: d.left - c.left, y: d.top - c.top, w: d.width, h: d.height }, dock: G.burnBoxes.dock, clear: G.burnBoxes.clear, outline: G.cutOutline, hand: G.cutHits[0], handId: shipPeople()[0].id,
-    frame: G.cutOutline.view, zoom: G.burnBoxes.ship.h / 290, tutorial: G.burnBoxes.tutorial || null, ticker: G.burnBoxes.ticker || null, scrolls: el.scrollHeight - el.clientHeight > 1, docked: el.classList.contains('docked') };
+    frame: G.cutOutline.view, zoom: viewOf(G.burnBoxes.ship, LAYOUTS.freighter, outlineLeft(G.burnBoxes.ship, G.cutOutline)).zoom, tutorial: G.burnBoxes.tutorial || null, ticker: G.burnBoxes.ticker || null, scrolls: el.scrollHeight - el.clientHeight > 1, docked: el.classList.contains('docked') };
 };
 const near = (a, b) => ['x', 'y', 'w', 'h'].every(k => Math.abs(a[k] - b[k]) <= 1);
 // In the dock: at its x, y and width (as the page rounds them to px), and as tall as the scene up to the dock's height.
@@ -66,7 +66,7 @@ test('with a scene open, the dialog sits in the dock, clear of the outline, and 
       assert.ok(inDock(r.rect, r.dock), `${name}: the dialog ${JSON.stringify(r.rect)} is in the dock ${JSON.stringify(r.dock)}`);
       assert.ok(apart(r.rect, r.outline), `${name}: the dialog keeps off the outline ${JSON.stringify(r.outline)}`);
       assert.ok(r.hand && r.hand.id === r.handId && inside(r.hand, r.clear), `${name}: the hand ${JSON.stringify(r.hand)} is in the clear part ${JSON.stringify(r.clear)}`);
-      assert.ok(Math.abs(r.frame.span * r.zoom - r.clear.w) < 1, `${name}: the outline's frame is the clear part's width (${r.frame.span * r.zoom} against ${r.clear.w})`);
+      assert.ok(Math.abs(r.frame.span * r.zoom - r.clear.h) < 1, `${name}: the outline's frame is the clear part's height (${r.frame.span * r.zoom} against ${r.clear.h})`);
       assert.equal(r.tutorial, null, `${name}: the tutorial's prompt is hidden while a scene is open`);
       if (name === 'wide') assert.ok(r.ticker && apart(r.ticker, r.dock), `${name}: the ticker is drawn beside the dock`);
       assert.ok(!r.scrolls, `${name}: the short scene does not scroll`);
@@ -283,14 +283,71 @@ test('a tap at the centre of each room finds that room, on every ship, both ways
             const hit = roomAtPoint(b.x + b.w / 2, b.y + b.h / 2);
             if (hit !== b.id) out.wrong.push(`${shipId} (${where}): ${b.id} found ${hit}`);
           }
-          // A point above the hull, past the outline (which ends left of the box's middle), and above every room in view.
-          const box = G.burnBoxes.ship, px = box.x + box.w * 0.6, py = box.y + 4;
-          if (py >= Math.min(...G.cutRooms.map(b => b.y)) || outlineRoomAt(G.cutOutline, px, py) !== null || roomAtPoint(px, py) !== null) out.gap.push(shipId);
+          // A point outside the tower's skin at the box's left edge, under the outline (in the box's top left), and left of every room in view.
+          const box = G.burnBoxes.ship, px = box.x + 4, py = box.y + box.h - 8;
+          if (px >= Math.min(...G.cutRooms.map(b => b.x)) || outlineRoomAt(G.cutOutline, px, py) !== null || roomAtPoint(px, py) !== null) out.gap.push(shipId);
         }
       }
       return out;
     });
-    assert.deepEqual(r.wrong, [], `${name}: wrong rooms`); assert.deepEqual(r.gap, [], `${name}: a point above the hull finds a room`);
+    assert.deepEqual(r.wrong, [], `${name}: wrong rooms`); assert.deepEqual(r.gap, [], `${name}: a point outside the tower finds a room`);
+    await done();
+  }
+});
+
+// The outline in the corner is over the view: nobody, and no room's name, is drawn under it (#972).
+test('the outline covers no one and no room\'s name, wide and small (#972)', async () => {
+  for (const [name, viewport] of [['small', { width: 1000, height: 640 }], ['wide', { width: 1280, height: 800 }]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport });
+    await ev(helpers);
+    const r = await ev(() => {
+      burn(); const t = G.transit, lay = LAYOUTS.freighter, out = { under: [], hits: 0, plates: 0 }, names = new Set(ROOMS.map(x => x.name.toUpperCase()));
+      t.left = t.total * 0.7; t.angle = -Math.PI / 2; t.flipped = false;
+      const real = window.worldText, plates = [];
+      window.worldText = (c, zoom, text, x, y, size, ...a) => { if (names.has(text)) { const m = c.getTransform(); plates.push({ text, at: m.transformPoint(new DOMPoint(x - 4 / zoom, y - size)), foot: m.transformPoint(new DOMPoint(x - 4 / zoom, y + size * 0.3)) }); } return real(c, zoom, text, x, y, size, ...a); };
+      try {
+        for (const room of ['bridge', 'galley', 'berths', 'gunnery', 'engine']) {  // everyone at the far left of a room, the camera on its deck
+          const rm = roomAt(room); for (const p of shipPeople()) Object.assign(p, { room, x: rm.x0 + 0.02, dk: rm.deck, tdk: rm.deck, tx: null, wait: 999, staged: undefined });
+          G.cam = { y: layoutBox(lay, room).floor - HULL.deck / 2, t: G.time }; plates.length = 0; drawTransit(innerWidth, innerHeight);
+          const o = G.cutOutline, x0 = o.x - 4, x1 = o.x + o.w + 4, y0 = o.y - 4, y1 = o.y + o.h + 4, inside = q => q.x >= x0 && q.x <= x1 && q.y >= y0 && q.y <= y1;
+          for (const h of G.cutHits) { out.hits++; for (const q of [h, h.head, h.foot]) if (inside(q)) out.under.push(`${room}: ${h.id} at ${Math.round(q.x)},${Math.round(q.y)}`); }
+          for (const pl of plates) { out.plates++; if (!(pl.at.x > x1 || pl.at.y > y1) || inside(pl.foot)) out.under.push(`${room}: the ${pl.text} plate at ${Math.round(pl.at.x)},${Math.round(pl.at.y)}`); }
+        }
+      } finally { window.worldText = real; }
+      return out;
+    });
+    assert.ok(r.hits > 10 && r.plates > 5, `${name}: people and names in view (${r.hits}, ${r.plates})`);
+    assert.deepEqual(r.under, [], `${name}: under the outline`);
+    await done();
+  }
+});
+
+// At night the ship's sleepers lie on the bunks, and the berths' name plate stays clear of them, wide and small: the top bunk under the plate is
+// the last one taken.
+test('the sleepers on the bunks leave the berths\' name clear, wide and small (#972)', async () => {
+  for (const [name, viewport] of [['small', { width: 1000, height: 700 }], ['wide', { width: 1600, height: 900 }]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport });
+    await ev(helpers);
+    const r = await ev(() => {
+      burn(); const t = G.transit, lay = LAYOUTS.freighter, b = roomAt('berths'), out = { over: [], sleepers: 0, plate: null };
+      t.left = t.total * 0.7; t.angle = -Math.PI / 2; t.flipped = false; t.elapsed = 50; t.dark = true;  // night, the lights down
+      shipPeople().forEach((p, i) => Object.assign(p, { room: 'berths', x: b.x0 + (0.05 + i * 0.05) * CUT_K, dk: b.deck, tdk: b.deck, tx: null, wait: 999, staged: undefined }));
+      const real = window.worldText;
+      window.worldText = (c, zoom, text, x, y, size, ...a) => {
+        if (text === 'BERTHS') { const m = c.getTransform(), w = c.measureText(text).width / zoom; out.plate = { a: m.transformPoint(new DOMPoint(x - 4 / zoom, y - size)), b: m.transformPoint(new DOMPoint(x + w + 4 / zoom, y + size * 0.3)) }; }
+        return real(c, zoom, text, x, y, size, ...a);
+      };
+      try { G.cam = { y: layoutBox(lay, 'berths').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); } finally { window.worldText = real; }
+      const pl = out.plate, inPlate = q => q.x >= pl.a.x - 2 && q.x <= pl.b.x + 2 && q.y >= pl.a.y - 2 && q.y <= pl.b.y + 2;
+      for (const p of shipPeople().filter(isAsleep)) {
+        const h = G.cutHits.find(q => q.id === p.id); if (!h) continue; out.sleepers++;
+        for (let s = 0; s <= 10; s++) { const q = { x: h.head.x + (h.foot.x - h.head.x) * s / 10, y: h.head.y + (h.foot.y - h.head.y) * s / 10 }; if (inPlate(q)) { out.over.push(`${p.name} at ${Math.round(q.x)},${Math.round(q.y)}`); break; } }
+      }
+      return out;
+    });
+    assert.ok(r.plate, `${name}: the berths' name is drawn`);
+    assert.ok(r.sleepers >= 5, `${name}: five asleep on the bunks (${r.sleepers})`);
+    assert.deepEqual(r.over, [], `${name}: sleepers over the berths' name ${JSON.stringify(r.plate)}`);
     await done();
   }
 });
@@ -432,6 +489,43 @@ test('a scene during a burn brings the people in it and you to its room, facing 
   assert.deepEqual(r.poses, ['sit', 'sit'], 'seated at the galley table'); assert.ok(r.released, 'let go when it closes');
 });
 
+// Beside a docked scene the tower is wider than the clear part, and the camera pans across to keep the scene's people and the hand in it, the
+// way the old side view panned along the ship (#972); with none open the tower stands across the middle of the box right of the outline.
+test('beside a docked scene the camera pans across to the scene, and with none the tower stands where it did (#972)', async () => {
+  {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+    await ev(helpers); await ev(stageHelpers);
+    const r = await ev(() => {
+      const t = stageBurn(), mate = person(G.state.crew[0]); t.angle = -Math.PI / 2; t.flipped = false;
+      sayScene(`With ${mate.first}`, `${mate.first} is in the galley with a cup going cold.`); tickFor(20);
+      const ids = shipPeople().filter(p => p.staged || p.id === 'you').map(p => p.id), out = { ids, outside: [] };
+      for (const held of [null, 'centre']) {  // snapped, and eased from the tower's middle
+        G.cam = held ? { x: LAYOUTS.freighter.width / 2, y: G.cam.y, t: G.time - 5 } : null; drawTransit(innerWidth, innerHeight);
+        const box = G.burnBoxes.ship, clear = G.burnBoxes.clear, x0 = Math.max(clear.x, box.x + outlineLeft(box, G.cutOutline)), x1 = clear.x + clear.w;
+        out.docked = !!G.burnBoxes.dock;
+        for (const id of ids) { const h = G.cutHits.find(q => q.id === id); if (!h) { out.outside.push(`${held}: ${id} not drawn`); continue; } for (const q of [h, h.head, h.foot]) if (q.x < x0 || q.x > x1) out.outside.push(`${held}: ${id} at ${Math.round(q.x)} outside ${Math.round(x0)} to ${Math.round(x1)}`); }
+      }
+      return out;
+    });
+    assert.ok(r.docked, 'the scene is docked'); assert.ok(r.ids.length >= 2, `the scene's people and you (${r.ids})`);
+    assert.deepEqual(r.outside, [], 'everyone in the scene is in the clear part');
+    await done();
+  }
+  {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1600, height: 900 } });
+    await ev(helpers);
+    const r = await ev(() => {
+      burn(); const t = G.transit, you = shipPeople()[0]; t.left = t.total * 0.7; t.angle = -Math.PI / 2; t.flipped = false;
+      Object.assign(you, { x: LADDER, dk: 0, tdk: 0, tx: null, wait: 999 }); G.cam = null; drawTransit(innerWidth, innerHeight);
+      const box = G.burnBoxes.ship;
+      return { camX: G.cam.x, W: LAYOUTS.freighter.width, hand: G.cutHits[0].x, mid: box.x + (outlineLeft(box, G.cutOutline) + box.w) / 2 };
+    });
+    assert.equal(r.camX, r.W / 2, 'the camera on the tower\'s middle');
+    assert.ok(Math.abs(r.hand - r.mid) < 1, `the well across the middle right of the outline (${r.hand} against ${r.mid})`);
+    await done();
+  }
+});
+
 test('someone on the ladder when a scene opens finishes onto a deck and comes', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
@@ -452,7 +546,7 @@ test('a scene at night wakes the one it is about, and the rest sleep on', async 
     const t = stageBurn(); t.elapsed = 50; t.dark = true;  // night, the lights already down
     const sleepers = shipPeople().filter(p => p.id && p.id !== 'you' && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role)).slice(0, 2);
     const b = ROOMS.find(x => x.id === 'berths');
-    sleepers.forEach((p, i) => Object.assign(p, { room: 'berths', x: b.x0 + 0.05 + i * 0.05, dk: 0, tdk: 0, tx: null, wait: 999 }));
+    sleepers.forEach((p, i) => Object.assign(p, { room: 'berths', x: b.x0 + (0.05 + i * 0.05) * CUT_K, dk: b.deck, tdk: b.deck, tx: null, wait: 999 }));
     const [one, other] = sleepers;
     sayScene(`With ${one.name}`, `${one.name} is in the galley, unable to sleep.`); tickFor(25);
     return { dark: isDark(), came: inRoom(one, 'galley'), slept: isAsleep(other), n: sleepers.length };
@@ -480,7 +574,7 @@ test('someone in the way of a scene, who is not in it, leaves for their next roo
   const r = await ev(() => {
     stageBurn(); const cap = hiredCaptain(), b = ROOMS.find(x => x.id === 'bridge');
     const other = shipPeople().find(p => p.id && p.id !== 'you' && p.role !== 'captain' && p.role !== 'cat');
-    Object.assign(other, { room: 'bridge', x: b.mid, dk: 0, tdk: 0, tx: null, wait: 999 });
+    Object.assign(other, { room: 'bridge', x: b.mid, dk: b.deck, tdk: b.deck, tx: null, wait: 999 });
     sayScene('The Captain', `${cap.first} wants a word.`); tickFor(25);
     return { left: !inRoom(other, 'bridge') && other.room !== 'bridge', cap: inRoom(aboardBy(cap.id), 'bridge') };
   });
@@ -494,12 +588,12 @@ test('a scene in the berths at night does not get the sleepers up, and arriving 
   const r = await ev(() => {
     const t = stageBurn(); t.elapsed = 50; t.dark = true;  // night, the lights already down
     const b = ROOMS.find(x => x.id === 'berths'), sleeper = shipPeople().find(p => p.id && p.id !== 'you' && p.role !== 'cat' && p.role !== 'captain' && !NIGHT_WATCH.includes(p.role));
-    Object.assign(sleeper, { room: 'berths', x: b.mid, dk: 0, tdk: 0, tx: null, wait: 999, block: shipDay(t.elapsed).block, at: 'bunk' });  // in their bunk for the night
+    Object.assign(sleeper, { room: 'berths', x: b.x0 + b.w * 0.3, dk: b.deck, tdk: b.deck, tx: null, wait: 999, block: shipDay(t.elapsed).block, at: 'bunk' });  // in their bunk for the night (off the well, which runs through the berths' middle)
     const mate = shipPeople().find(p => p.id && p.id !== 'you' && p !== sleeper && p.role !== 'cat' && p.role !== 'captain');
     sayScene(`With ${mate.name}`, `${mate.name} is sitting on a bunk, awake.`); tickFor(25);
     const real = Math.random; let draws = 0; Math.random = () => { draws++; return real(); };
-    const you = aboardBy('you'); Object.assign(you, { tx: you.x + 0.001 }); lifeTick(1 / 30); Math.random = real;  // arriving at the spot
-    return { asleep: isAsleep(sleeper), x: sleeper.x, mid: b.mid, staged: !!mate.staged, draws };
+    const you = aboardBy('you'); Object.assign(you, { tx: you.x + 0.001 * CUT_K }); lifeTick(1 / 30); Math.random = real;  // arriving at the spot
+    return { asleep: isAsleep(sleeper), x: sleeper.x, mid: b.x0 + b.w * 0.3, staged: !!mate.staged, draws };
   });
   await done();
   assert.ok(r.staged, 'the scene is staged in the berths'); assert.ok(r.asleep && Math.abs(r.x - r.mid) < 1e-6, 'the sleeper sleeps on where they lie');
@@ -512,7 +606,7 @@ test('a scene at the couches moves nobody', async () => {
   const r = await ev(() => {
     stageBurn(0.02); const mate = person(G.state.crew[0]); tickFor(5);
     sayScene(`With ${mate.first}`, `${mate.first} is in the galley.`); tickFor(20);
-    return shipPeople().every(p => Math.abs(p.x - p.seat) < 1e-6 && !p.staged);
+    return shipPeople().every(p => Math.abs(p.x - p.seat) < 1e-6 && p.dk === p.seatDk && !p.staged);
   });
   await done();
   assert.ok(r, 'everyone at their couch, nobody staged');
@@ -538,15 +632,58 @@ test('the camera goes with the hand to an activity\'s room', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    burn(); const t = G.transit, W = innerWidth, H = innerHeight, len = hullLength(SHIPS[G.state.shipId].size), gal = roomAt('galley');
-    t.left = t.total * 0.3; drawTransit(W, H); const from = G.cam.x;
+    burn(); const t = G.transit, W = innerWidth, H = innerHeight, lay = LAYOUTS.freighter, gal = roomAt('galley'), eng = roomAt('engine'), you = shipPeople()[0];
+    t.left = t.total * 0.3; Object.assign(you, { room: 'engine', x: eng.mid, dk: eng.deck, tdk: eng.deck, tx: null, wait: 999 }); G.cam = null; drawTransit(W, H);  // the hand at the drive, six decks down
+    const from = G.cam.y, span = viewOf(G.burnBoxes.ship, lay, outlineLeft(G.burnBoxes.ship, G.cutOutline)).span, floor = deckFloor(lay, gal.deck);
     ACTIVITIES.meal.run();
     let steps = 0;
-    for (; steps < 600 && !(G.cam.x >= gal.x0 * len && G.cam.x <= gal.x1 * len); steps++) { lifeTick(0.1); G.time += 0.1; drawTransit(W, H); }
-    return { from, to: G.cam.x, steps, galley: [gal.x0 * len, gal.x1 * len] };
+    for (; steps < 900 && !(you.dk === gal.deck && Math.abs(G.cam.y - (floor - HULL.deck / 2)) <= span / 6 + 1); steps++) { lifeTick(0.1); G.time += 0.1; drawTransit(W, H); }
+    return { from, to: G.cam.y, steps, floor, span, top: floor - HULL.deck };
   });
-  assert.ok(r.from > r.galley[1], `the camera starts on the bridge (${Math.round(r.from)})`);
-  assert.ok(r.to >= r.galley[0] && r.to <= r.galley[1], `the camera is in the galley ${JSON.stringify(r.galley)}: ${Math.round(r.to)} after ${r.steps} steps`);
+  assert.ok(r.from > r.floor + r.span / 2, `the camera starts at the drive, the galley out of view (${Math.round(r.from)})`);
+  assert.ok(Math.abs(r.to - r.floor) < r.span / 6, `the camera is near the galley's floor (${Math.round(r.floor)}): ${Math.round(r.to)} after ${r.steps} steps`);
+  assert.ok(r.to - r.span / 2 <= r.top && r.to + r.span / 2 >= r.floor, 'with the mess deck in view');
+  await done();
+});
+
+// Under reduced motion the camera holds on a deck: one cut as the hand reaches the next, and still in between (#972).
+test('under reduced motion the camera cuts from deck to deck on a climb, and holds between (#972)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, you = shipPeople()[0], at = {}, seen = new Set();
+    t.left = t.total * 0.3; t.angle = -Math.PI / 2; t.flipped = false; Settings.reduceMotion = true;
+    try {
+      for (const d of [1, 2, 3]) { Object.assign(you, { x: LADDER, dk: d, tdk: d, tx: null, wait: 999 }); drawTransit(innerWidth, innerHeight); at[d] = Math.round(G.cam.y * 100) / 100; }
+      for (let k = 0; k <= 40; k++) { Object.assign(you, { x: LADDER, dk: 1 + k / 20, tdk: 3 }); G.time += 0.1; drawTransit(innerWidth, innerHeight); seen.add(Math.round(G.cam.y * 100) / 100); }
+    } finally { Settings.reduceMotion = false; }
+    return { at, seen: [...seen] };
+  });
+  const decks = Object.values(r.at);
+  assert.equal(new Set(decks).size, 3, `a place for each deck: ${decks}`);
+  assert.deepEqual(r.seen.filter(y => !decks.includes(y)), [], `only the decks' places (${decks}) on the climb: ${r.seen}`);
+  await done();
+});
+
+// The mess table is drawn while the galley is in view, and not when the camera is decks away from it (#972).
+test('the mess table is drawn with the galley in view, and not when it is out of view (#972)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, lay = LAYOUTS.freighter, real = window.roomMessTable, out = {};
+    t.left = t.total * 0.3; t.angle = -Math.PI / 2; t.flipped = false;
+    let n = 0; window.roomMessTable = (...a) => { n++; return real(...a); };
+    try {
+      for (const id of ['galley', 'medbay', 'engine']) {
+        n = 0; G.cam = { y: layoutBox(lay, id).floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight);
+        const g = layoutBox(lay, 'galley'), half = viewOf(G.burnBoxes.ship, lay, outlineLeft(G.burnBoxes.ship, G.cutOutline)).span / 2;
+        out[id] = { drawn: n > 0, inView: g.floor >= G.cam.y - half && g.top <= G.cam.y + half };
+      }
+    } finally { window.roomMessTable = real; }
+    return out;
+  });
+  assert.deepEqual(r.galley, { drawn: true, inView: true }, 'on the galley\'s deck');
+  for (const id of ['medbay', 'engine']) assert.deepEqual(r[id], { drawn: false, inView: false }, `the camera on the ${id}'s deck`);
   await done();
 });
 
@@ -572,12 +709,34 @@ test('when the crew secure for the flip they strap in where they are, and someon
   await ev(helpers);
   const r = await ev(() => {
     burn(); const t = G.transit; t.left = t.total * 0.7; updateTransit(0.1);
-    const ps = shipPeople(), a = ps[0], b = ps[1];
-    a.x = 0.5; a.room = 'galley'; a.tx = null; b.x = LADDER; b.dk = 0.4; b.tdk = 1;
+    const ps = shipPeople(), [a, b, c, d] = ps, g = roomAt('galley');
+    Object.assign(a, { x: g.mid, room: 'galley', dk: g.deck, tdk: g.deck, tx: null }); Object.assign(b, { x: LADDER, dk: 0.4, tdk: 1 });
+    Object.assign(c, { x: LADDER, dk: 5.4, tdk: 6, tx: roomAt('engine').mid }); Object.assign(d, { x: LADDER, dk: 5.6, tdk: 5, tx: 0.2 });  // in the tube through the tank (#972): short of its middle going down, past it going up
     t.left = t.total * (1 - 0.455); for (let i = 0; i < 40; i++) lifeTick(0.1);
-    return { phase: phase(), ax: a.x, bdk: b.dk, btx: b.tx };
+    return { phase: phase(), ax: a.x, gx: g.mid, bdk: b.dk, btx: b.tx, tube: [c, d].map(p => ({ dk: p.dk, tx: p.tx, y: towerDeckY(LAYOUTS.freighter, p.dk), floor: deckFloor(LAYOUTS.freighter, Math.round(p.dk)) })), decks: LAYOUTS.freighter.decks.length };
   });
-  assert.equal(r.phase, 'secure'); assert.equal(r.ax, 0.5, 'stays where they were'); assert.ok(r.bdk === 0 || r.bdk === 1, `on a deck: ${r.bdk}`); assert.equal(r.btx, null);
+  assert.equal(r.phase, 'secure'); assert.equal(r.ax, r.gx, 'stays where they were'); assert.ok(r.bdk === 0 || r.bdk === 1, `on a deck: ${r.bdk}`); assert.equal(r.btx, null);
+  for (const p of r.tube) { assert.ok(Number.isInteger(p.dk) && p.dk >= 0 && p.dk < r.decks, `out of the tube onto a whole deck that exists: ${p.dk}`); assert.equal(p.y, p.floor, 'standing on its floor'); assert.equal(p.tx, null); }
+  assert.deepEqual(r.tube.map(p => p.dk), [5, 6], 'the plant deck short of the tank\'s middle, the drive deck past it');
+  await done();
+});
+
+test('a climber in the tube through the tank is drawn inside it (#972)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay); t.left = t.total * 0.3; t.angle = -Math.PI / 2; t.flipped = false;
+    const mate = shipPeople().find(p => p.id && p.id !== 'you' && p.role !== 'cat');
+    Object.assign(mate, { x: LADDER, dk: 5.5, tdk: 6, tx: roomAt('engine').mid, wait: 999, staged: undefined });  // halfway down the tube
+    G.cam = { y: towerDeckY(lay, 5.5) - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight);
+    const hit = G.cutHits.find(h => h.id === mate.id), box = G.burnBoxes.ship, left = outlineLeft(box, G.cutOutline), zoom = viewOf(box, lay, left).zoom, sx = x => box.x + (left + box.w) / 2 + (x - W / 2) * zoom, sy = y => box.y + box.h / 2 + (y - G.cam.y) * zoom;
+    const half = lay.well.w * W / 2;
+    return { hit, pose: posture(mate, phase(), 0, false).name, tube: [sx(LADDER * W - half), sx(LADDER * W + half)], tank: [sy(o.tank.top), sy(o.tank.bottom)] };
+  });
+  assert.equal(r.pose, 'climb', 'on the ladder');
+  assert.ok(r.hit, 'the climber is drawn in view');
+  assert.ok(r.hit.x >= r.tube[0] && r.hit.x <= r.tube[1], `inside the tube's width on screen: ${r.hit.x.toFixed(1)} in ${r.tube.map(v => v.toFixed(1))}`);
+  assert.ok(r.hit.y >= r.tank[0] && r.hit.y <= r.tank[1], `and between the tank's top and bottom: ${r.hit.y.toFixed(1)} in ${r.tank.map(v => v.toFixed(1))}`);
   await done();
 });
 
@@ -666,18 +825,18 @@ test('at breakfast the crew are at the galley table, seated, the cook at the sto
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.04);
-    G.state.crew.push('p:cook'); G.state.people['p:cook'] = { id: 'p:cook', first: 'Cook', role: 'cook', skill: 1, traits: [] }; shipPeople().push({ name: 'Cook', role: 'cook', id: 'p:cook', room: 'berths', x: 0.3, dk: 0, tdk: 0, tx: null, wait: 1, seat: 0.3 });  // the narrow build's crew has no cook
-    for (let i = 0; shipPeople().filter(p => p.role !== 'cat').length < 8; i++) shipPeople().push({ name: `P${i}`, role: 'passenger', id: `p:t${i}`, room: 'berths', x: 0.3, dk: 0, tdk: 0, tx: null, wait: 1, seat: 0.3 });
+    G.state.crew.push('p:cook'); G.state.people['p:cook'] = { id: 'p:cook', first: 'Cook', role: 'cook', skill: 1, traits: [] }; shipPeople().push({ name: 'Cook', role: 'cook', id: 'p:cook', room: 'berths', x: 0.3, dk: roomAt('berths').deck, tdk: roomAt('berths').deck, seatDk: roomAt('berths').deck, tx: null, wait: 1, seat: 0.3 });  // the narrow build's crew has no cook
+    for (let i = 0; shipPeople().filter(p => p.role !== 'cat').length < 8; i++) shipPeople().push({ name: `P${i}`, role: 'passenger', id: `p:t${i}`, room: 'berths', x: 0.3, dk: roomAt('berths').deck, tdk: roomAt('berths').deck, seatDk: roomAt('berths').deck, tx: null, wait: 1, seat: 0.3 });
     tickFor(30);
     const g = ROOMS.find(x => x.id === 'galley'), at = shipPeople().filter(p => p.role !== 'cat');
-    return { block: shipDay(t.elapsed).block, n: at.length, g: [g.x0, g.x1, g.w],
+    return { block: shipDay(t.elapsed).block, n: at.length, g: [g.x0, g.x1, g.w], k: CUT_K,
       eat: at.filter(p => p.role !== 'cook').map(p => ({ id: p.id, in: inRoom(p, 'galley'), pose: posture(p, phase(), 0, isAsleep(p)).name, x: p.x })),
       cook: at.filter(p => p.role === 'cook').map(p => ({ in: inRoom(p, 'galley'), x: p.x, pose: posture(p, phase(), 0, isAsleep(p)).name })) };
   }, dayAt.toString());
   await done();
   assert.equal(r.block, 'breakfast'); assert.ok(r.n >= 8, 'eight aboard');
   for (const p of r.eat) { assert.ok(p.in, `${p.id} at the table`); assert.equal(p.pose, 'sit', `${p.id} seated`); assert.ok(p.x > r.g[0] && p.x < r.g[1], `${p.id} inside the galley`); }
-  assert.equal(r.cook.length, 1, 'a cook aboard'); for (const c of r.cook) { assert.ok(c.in && Math.abs(c.x - (r.g[0] + 0.15 * r.g[2])) < 0.003, 'the cook at the stove'); assert.equal(c.pose, 'work', 'working at it'); }
+  assert.equal(r.cook.length, 1, 'a cook aboard'); for (const c of r.cook) { assert.ok(c.in && Math.abs(c.x - (r.g[0] + 0.15 * r.g[2])) < 0.003 * r.k, 'the cook at the stove'); assert.equal(c.pose, 'work', 'working at it'); }
 });
 
 test('in a shift the crew are at their posts, you on rounds, and a scene ends back at the post', async () => {
@@ -687,7 +846,7 @@ test('in a shift the crew are at their posts, you on rounds, and a scene ends ba
     const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.15);
     tickFor(25);
     const eng = shipPeople().find(p => p.role === 'engineer'), pilot = shipPeople().find(p => p.role === 'pilot'), you = aboardBy('you'), out = { block: shipDay(t.elapsed).block, engine: 0, bridge: 0, frames: 0, rooms: new Set() };
-    for (let i = 0; i < 40 * 30; i++) { lifeTick(1 / 30); out.frames++; if (inRoom(eng, 'engine')) out.engine++; if (inRoom(pilot, 'bridge')) out.bridge++; if (you.tx === null) out.rooms.add(you.room); }
+    for (let i = 0; i < 200 * 30; i++) { lifeTick(1 / 30); out.frames++; if (inRoom(eng, 'engine')) out.engine++; if (inRoom(pilot, 'bridge')) out.bridge++; if (you.tx === null) out.rooms.add(you.room); }
     out.rooms = out.rooms.size;
     sayScene(`With ${eng.name}`, `${eng.name} is at the table with a mug.`); tickFor(12);
     out.staged = eng.staged; G.dialog = null; t.event = null;
@@ -708,12 +867,12 @@ test('a block that changes while someone is on the ladder takes them to the new 
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.45); tickFor(25);
     const eng = shipPeople().find(p => p.role === 'engineer');
-    Object.assign(eng, { x: LADDER, dk: 0.5, tdk: 1 });  // halfway up the ladder from the engine deck, on the way back down
+    Object.assign(eng, { x: LADDER, dk: 5.5, tdk: 6 });  // halfway up the tube through the tank from the engine deck, on the way back down
     t.elapsed = dayAt(0.5); tickFor(25);  // supper
-    return { in: inRoom(eng, 'galley'), dk: eng.dk };
+    return { in: inRoom(eng, 'galley'), dk: eng.dk, galley: roomAt('galley').deck };
   }, dayAt.toString());
   await done();
-  assert.ok(r.in, 'at the table for supper'); assert.equal(r.dk, 0, 'up on the galley deck');
+  assert.ok(r.in, 'at the table for supper'); assert.equal(r.dk, r.galley, 'up on the galley deck');
 });
 
 test('in a shift the engineer works at the drive and the pilot at the controls', async () => {
@@ -789,9 +948,13 @@ test('people who share a post each have their own place in the room, and at dusk
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.15); tickFor(25);
-    const on = shipPeople().filter(p => p.block === 'shift' && p.at === 'post' && p.tx === null && !p.errand), clash = [];
-    for (const a of on) for (const b of on) if (a !== b && a.room === b.room && Math.abs(a.x - b.x) < 0.02) clash.push(`${a.name}/${b.name} in ${a.room}`);
-    return { clash, bridge: on.filter(p => p.room === 'bridge').length };
+    const clash = new Set(); let bridge = 0;
+    for (let s = 0; s < 60; s++) {  // a second at a time through a minute of the shift: the errands up and down the ladder take people off their posts a while (#972)
+      const on = shipPeople().filter(p => p.block === 'shift' && p.at === 'post' && p.tx === null && !p.errand && p.dk === p.tdk);
+      for (const a of on) for (const b of on) if (a !== b && a.room === b.room && Math.abs(a.x - b.x) < 0.02 * CUT_K) clash.add(`${a.name}/${b.name} in ${a.room}`);
+      bridge = Math.max(bridge, on.filter(p => p.room === 'bridge').length); tickFor(1);
+    }
+    return { clash: [...clash], bridge };
   }, dayAt.toString());
   await done();
   assert.ok(r.bridge >= 2, 'two at the bridge'); assert.deepEqual(r.clash, [], 'no two in one place');
@@ -803,7 +966,7 @@ test('after the straps at the flip, everyone goes on to their place in the same 
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(0.3); t.elapsed = dayAt(0.15); tickFor(25);
     const eng = shipPeople().find(p => p.role === 'engineer');
-    Object.assign(eng, { room: 'engine', x: 0.5, dk: 0, tdk: 1, tx: roomAt('engine').mid, errand: false, wait: 999 });  // on the way to the drive, with no errand to rescue them
+    Object.assign(eng, { room: 'engine', x: roomAt('galley').mid, dk: roomAt('galley').deck, tdk: roomAt('engine').deck, tx: roomAt('engine').mid, errand: false, wait: 999 });  // on the mess deck on the way down to the drive, with no errand to rescue them
     t.left = t.total * (1 - 0.45); tickFor(2);  // strapped in where they are
     t.left = t.total * (1 - 0.6); tickFor(25);  // under way again, the same shift
     return inRoom(eng, 'engine');
@@ -835,7 +998,7 @@ test('a captain waiting at dusk for the pilot goes to a scene that needs them', 
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.5); tickFor(25);
     const cap = shipPeople().find(p => p.role === 'captain'), pilot = shipPeople().find(p => p.role === 'pilot');
-    Object.assign(pilot, { block: 'handover', room: 'galley', x: roomAt('galley').mid, tx: null, dk: 0, tdk: 0, wait: 999 });  // the pilot dawdles at the table
+    Object.assign(pilot, { block: 'handover', room: 'galley', x: roomAt('galley').mid, tx: null, dk: roomAt('galley').deck, tdk: roomAt('galley').deck, wait: 999 });  // the pilot dawdles at the table
     t.elapsed = dayAt(0.56); tickFor(1);
     const waiting = !!cap.relief;
     sayScene(`With ${cap.name}`, `${cap.name} is at the table with a mug.`); tickFor(15);
@@ -850,7 +1013,7 @@ test('the cook sent on a drill does not work at the stove from the hold', async 
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(); t.elapsed = dayAt(0.15);
-    G.state.crew.push('p:cook'); G.state.people['p:cook'] = { id: 'p:cook', first: 'Cook', role: 'cook', skill: 1, traits: [] }; shipPeople().push({ name: 'Cook', role: 'cook', id: 'p:cook', room: 'berths', x: 0.3, dk: 0, tdk: 0, tx: null, wait: 1, seat: 0.3 });
+    G.state.crew.push('p:cook'); G.state.people['p:cook'] = { id: 'p:cook', first: 'Cook', role: 'cook', skill: 1, traits: [] }; shipPeople().push({ name: 'Cook', role: 'cook', id: 'p:cook', room: 'berths', x: 0.3, dk: roomAt('berths').deck, tdk: roomAt('berths').deck, seatDk: roomAt('berths').deck, tx: null, wait: 1, seat: 0.3 });
     tickFor(25); const cook = shipPeople().find(p => p.role === 'cook'); toActivity(cook, 'hold');
     const out = { reached: false, worked: false };  // through the visit, frame by frame: the timetable may take them back to the stove before it ends
     for (let i = 0; i < 20 * 30; i++) { lifeTick(1 / 30); if (inRoom(cook, 'hold')) { out.reached = true; if (posture(cook, phase(), 0, isAsleep(cook)).name === 'work') out.worked = true; } }
@@ -926,7 +1089,7 @@ test('you, hurt, sleep in the medbay and walk slower', async () => {
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(), you = aboardBy('you'), mate = shipPeople().find(p => p.role === 'pilot');
-    const pace = p => { Object.assign(p, { room: 'galley', x: 0.45, dk: 0, tdk: 0, tx: 0.65, staged: undefined, block: 'x', wait: 99, leave: 0, go: 1 }); const b = shipDay(t.elapsed).block; p.block = b; const x0 = p.x; lifeTick(0.5); return p.x - x0; };  // under way, at their own pace (#924)
+    const pace = p => { Object.assign(p, { room: 'galley', x: 0.05, dk: roomAt('galley').deck, tdk: roomAt('galley').deck, tx: 0.05 + 0.2 * CUT_K, staged: undefined, block: 'x', wait: 99, leave: 0, go: 1 }); const b = shipDay(t.elapsed).block; p.block = b; const x0 = p.x; lifeTick(0.5); return p.x - x0; };  // under way, at their own pace (#924)
     career().hurtUntil = G.state.day + 5;
     t.elapsed = dayAt(0.7); tickFor(35);
     const out = { bed: inRoom(you, 'medbay'), pose: posture(you, phase(), 0, isAsleep(you)).name };
@@ -989,7 +1152,7 @@ test('someone having a hard time sits up alone in the dusk, the wounded stay in 
     (G.state.injured = G.state.injured || {})[pilot.id] = true; t.elapsed = dayAt(0.15); tickFor(30);
     sayScene(`With ${mate.name}`, `${mate.name} is in the medbay, by the cot.`); tickFor(15);
     out.scene = [pilot.room, inRoom(pilot, 'medbay'), pose(pilot)]; G.dialog = null; t.event = null; tickFor(5);
-    delete G.state.injured[pilot.id]; tickFor(2); (G.state.injured)[pilot.id] = true; Object.assign(pilot, { room: 'galley', x: 0.5, dk: 0, tdk: 0, tx: 0.55, block: undefined });
+    delete G.state.injured[pilot.id]; tickFor(2); (G.state.injured)[pilot.id] = true; Object.assign(pilot, { room: 'galley', x: 0.2, dk: roomAt('galley').deck, tdk: roomAt('galley').deck, tx: 0.2 + 0.05 * CUT_K, block: undefined });
     lifeTick(1 / 30); t.left = t.total * (1 - 0.45); tickFor(1); out.strapped = pose(pilot);
     return out;
   }, dayAt.toString());
@@ -1038,7 +1201,7 @@ test('people sit only on a seat the cutaway draws, and the table and the posts a
   await ev(helpers);
   const r = await ev(() => {
     burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false;
-    const out = { rooms: {} }, base = { role: 'engineer', dk: 0, tdk: 0, tx: null, block: 'linger' };
+    const out = { rooms: {} }, base = { role: 'engineer', dk: roomAt('bridge').deck, tdk: roomAt('bridge').deck, tx: null, block: 'linger' };
     for (const room of ['galley', 'gunnery', 'bridge', 'medbay']) {
       const rm = roomAt(room), seats = SEATS[room].map(f => rm.x0 + rm.w * f);
       const at = x => posture({ ...base, room, x, dk: rm.deck, tdk: rm.deck }, 'move', 0, false).name;
@@ -1054,9 +1217,10 @@ test('people sit only on a seat the cutaway draws, and the table and the posts a
     const drawn = [], benches = [], real = window.roomStool, realBench = window.roomBench;
     window.roomStool = (c, x, F, ...a) => { drawn.push([Math.round(x), Math.round(F)]); return real(c, x, F, ...a); };
     window.roomBench = (c, x0, x1, F) => { benches.push([x0, x1]); return realBench(c, x0, x1, F); };
-    for (const room of Object.keys(SEATS)) { const rm = roomAt(room); G.cam = { x: (rm.x0 + rm.w / 2) * hullLength(SHIPS[G.state.shipId].size), t: G.time }; drawTransit(innerWidth, innerHeight); }
+    const lay = LAYOUTS.freighter;
+    for (const room of Object.keys(SEATS)) { G.cam = { y: layoutBox(lay, room).floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); }  // the camera held on the room's deck
     window.roomStool = real; window.roomBench = realBench;
-    const len = hullLength(SHIPS[G.state.shipId].size), seatAt = (room, f) => (roomAt(room).x0 + roomAt(room).w * f) * len, on = (room, f) => drawn.some(([x, F]) => Math.abs(x - seatAt(room, f)) <= 1 && F === Math.round(floorY(roomAt(room).deck)));  // the place and its deck
+    const len = lay.width, seatAt = (room, f) => (roomAt(room).x0 + roomAt(room).w * f) * len, on = (room, f) => drawn.some(([x, F]) => Math.abs(x - seatAt(room, f)) <= 1 && F === Math.round(deckFloor(lay, roomAt(room).deck)));  // the place and its deck
     out.missing = Object.entries(SEATS).filter(([room]) => room !== 'galley').flatMap(([room, fs]) => fs.filter(f => !on(room, f)).map(f => [room, f]));
     out.bench = SEATS.galley.every(f => benches.some(([a, b]) => seatAt('galley', f) > a && seatAt('galley', f) < b));
     out.galleyStools = SEATS.galley.filter(f => on('galley', f)).length;
@@ -1072,32 +1236,50 @@ test('people sit only on a seat the cutaway draws, and the table and the posts a
   assert.deepEqual(r.missing, [], 'every seat is drawn'); assert.ok(r.bench, 'the galley\'s places are one bench'); assert.equal(r.galleyStools, 0, 'not a row of stools');
   await done();
 });
-const SEATS_EXPECTED = { galley: [0.28, 0.35, 0.42, 0.49], bridge: [0.3, 0.46] };
+const SEATS_EXPECTED = { galley: [0.28, 0.35, 0.42, 0.49], bridge: [0.12, 0.3] };
 
 test('a crash couch is a plate in the deck that unfolds as its person reaches it in the hard burn, and folds away after (#925)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    burn(); const t = G.transit, people = shipPeople().filter(p => p.role !== 'cat');
-    const folds = () => { const seen = []; const real = window.roomCouchFold; window.roomCouchFold = (c, x, F, d) => { seen.push(d); return real(c, x, F, d); }; drawTransit(innerWidth, innerHeight); window.roomCouchFold = real; return seen; };
+    burn(); const t = G.transit, people = shipPeople().filter(p => p.role !== 'cat'), lay = LAYOUTS.freighter;
+    // the couches drawn (rooms.js roomCouchFlat: x, the deck's floor, how far unfolded), with the camera held on the bridge and on the berths
+    const folds = () => { const seen = []; const real = window.roomCouchFlat; window.roomCouchFlat = (c, x, F, d) => { seen.push([x, F, d]); return real(c, x, F, d); };
+      for (const id of ['bridge', 'berths']) { G.cam = { y: layoutBox(lay, id).floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); }
+      window.roomCouchFlat = real; return seen; };
+    const own = seen => people.every(p => seen.some(([x, F]) => Math.abs(x - p.seat * lay.width) < 1e-6 && F === deckFloor(lay, p.seatDk)));  // each couch under its person's seat, on their couch's deck
     const run = s => { for (let k = 0; k < s * 20; k++) lifeTick(0.05); };
     const out = {};
     t.left = t.total * 0.99; run(2);  // the burn out: everyone on their couch
-    out.start = { open: people.every(p => p.couch > 0.95), lying: people.every(p => posture(p, phase(), 0, false).name === 'couch'), drawn: folds().length };
+    const start = folds();
+    out.start = { open: people.every(p => p.couch > 0.95), lying: people.every(p => posture(p, phase(), 0, false).name === 'couch'), drawn: start.length, own: own(start) };
     t.left = t.total * 0.5 - t.total * 0.1; run(3);  // under way: folded away
-    out.cruise = { shut: people.every(p => p.couch === 0), drawn: folds() };
-    for (const p of people) { p.x = p.seat + 0.1; p.tx = null; }  // the hard burn in: they start away from their couches
+    out.cruise = { shut: people.every(p => p.couch === 0), drawn: folds().map(c => c[2]) };
+    // the hard burn in: they start away from their couches, on the couch's deck, toward the middle; and one from the berths up on the bridge
+    for (const p of people) Object.assign(p, { x: p.seat + (p.seat < 0.5 ? 1 : -1) * 0.1 * CUT_K, dk: p.seatDk, tdk: p.seatDk, tx: null });
+    const up = people.find(p => p.seatDk === roomAt('berths').deck); Object.assign(up, { x: 0.2, dk: roomAt('bridge').deck, tdk: roomAt('bridge').deck });
+    out.decks = [...new Set(people.map(p => p.seatDk))].sort();
     t.left = t.total * 0.03; lifeTick(0.05);
     out.away = { shut: people.every(p => p.couch < 0.2), lying: people.filter(p => posture(p, phase(), 0, false).name === 'couch').length };
-    run(4);
-    out.end = { open: people.every(p => p.couch > 0.95), lying: people.every(p => posture(p, phase(), 0, false).name === 'couch') };
+    out.floors = [];  // nobody passes through a floor: a deck changes only on the ladder in the well (#972)
+    for (let k = 0; k < 12 * 20; k++) {
+      const was = people.map(p => p.dk); lifeTick(0.05);
+      people.forEach((p, i) => { if (p.dk !== was[i] && Math.abs(p.x - LADDER) > 0.003 * CUT_K) out.floors.push(`${p.name} at ${p.x.toFixed(3)}: ${was[i]} to ${p.dk}`); });
+    }
+    const end = folds();
+    out.end = { open: people.every(p => p.couch > 0.95), lying: people.every(p => posture(p, phase(), 0, false).name === 'couch'), on: people.every(p => p.dk === p.seatDk), own: own(end), upOn: up.dk === up.seatDk };
     out.n = people.length;
     return out;
   });
   assert.ok(r.start.open && r.start.lying, `the burn out: couches open and everyone on one ${JSON.stringify(r.start)}`);
+  assert.ok(r.start.own, 'each couch drawn under its person, on its own deck');
   assert.ok(r.cruise.shut, 'under way the couches fold away'); assert.ok(r.cruise.drawn.length >= 1 && r.cruise.drawn.every(d => d === 0), 'and are still drawn, folded into the deck');
+  assert.deepEqual(r.decks, [0, 2], 'couches on the bridge and in the berths');
   assert.ok(r.away.shut, 'at the start of the hard burn the couches are still folded'); assert.equal(r.away.lying, 0, 'and nobody lies back on the air');
-  assert.ok(r.end.open && r.end.lying, `once at their couches, they unfold and everyone lies on one ${JSON.stringify(r.end)}`);
+  assert.deepEqual(r.floors, [], 'nobody passes through a floor on the way to a couch');
+  assert.ok(r.end.upOn, 'the one on the wrong deck took the ladder down to their couch');
+  assert.ok(r.end.open && r.end.lying && r.end.on, `once at their couches, they unfold and everyone lies on one ${JSON.stringify(r.end)}`);
+  assert.ok(r.end.own, 'and each unfolds on its own deck');
   await done();
 });
 
@@ -1109,7 +1291,7 @@ test('at the flip a sleeper stays in the bunk, and every strapped person has a j
     burn(); const t = G.transit;
     for (let f = 0; f < 1 && !isDark(); f += 0.01) t.elapsed = f * SHIP_DAY;  // a night
     const b = roomAt('berths'), sleeper = shipPeople().find(p => p.role !== 'cat' && !NIGHT_WATCH.includes(p.role));
-    Object.assign(sleeper, { room: 'berths', x: b.mid, dk: 0, tdk: 0, tx: null, staged: undefined, at: undefined });
+    Object.assign(sleeper, { room: 'berths', x: b.x0 + b.w * 0.3, dk: b.deck, tdk: b.deck, tx: null, staged: undefined, at: undefined });
     t.left = t.total * (1 - 0.3); const moving = isAsleep(sleeper);
     t.left = t.total * (1 - 0.46); const securing = [isAsleep(sleeper), posture(sleeper, phase(), 0, isAsleep(sleeper)).name];
     t.left = t.total * (1 - 0.5); const floating = [isAsleep(sleeper), posture(sleeper, phase(), 0, isAsleep(sleeper)).name];
@@ -1117,7 +1299,7 @@ test('at the flip a sleeper stays in the bunk, and every strapped person has a j
     const counts = [];
     for (const pr of [0.46, 0.5]) {
       t.left = t.total * (1 - pr);
-      for (const p of shipPeople()) if (p !== sleeper && p.role !== 'cat') Object.assign(p, { room: 'galley', x: roomAt('galley').x0 + roomAt('galley').w * 0.1, dk: 0, tdk: 0, tx: null });
+      for (const p of shipPeople()) if (p !== sleeper && p.role !== 'cat') Object.assign(p, { room: 'galley', x: roomAt('galley').x0 + roomAt('galley').w * 0.1, dk: roomAt('galley').deck, tdk: roomAt('galley').deck, tx: null });
       G.cam = null;
       let seats = 0, strapped = 0; const realSeat = window.roomJumpSeat, realPerson = window.drawPerson;
       window.roomJumpSeat = (...a) => { seats++; return realSeat(...a); };
@@ -1142,21 +1324,21 @@ test('crew sent to the same place set off one by one, and stop apart (#924)', as
   const r = await ev(() => {
     const t = stageBurn(); const crew = shipPeople().filter(p => p.role !== 'cat' && p.role !== 'captain');
     const h = roomAt('hold'), g = roomAt('galley');
-    for (const p of crew) Object.assign(p, { room: 'galley', x: g.mid, dk: 0, tdk: 0, tx: null, wait: 999, block: 'shift', staged: undefined, errand: false, aside: false });
+    for (const p of crew) Object.assign(p, { room: 'galley', x: g.mid, dk: g.deck, tdk: g.deck, tx: null, wait: 999, block: 'shift', staged: undefined, errand: false, aside: false });
     const start = crew.map(p => p.x);
     for (const p of crew) { routineGo(p, 'meal', crew, false, () => 0.5, shipState(G.state, t, ship().armor, () => 0.5, {})); p.block = 'meal'; }  // all sent to the table at once
     for (let i = 0; i < 15; i++) lifeTick(1 / 30);  // half a second
-    const moved = crew.map((p, i) => Math.abs(p.x - start[i]) > 0.001);
+    const moved = crew.map((p, i) => Math.abs(p.x - start[i]) > 0.001 * CUT_K);
     // three sent to the same spot in the hold
     const three = crew.slice(0, 3);
     for (const p of three) { Object.assign(p, { block: 'activity', errand: false, wait: 999, leave: 0 }); goTo(p, 'hold', () => 0.5, three); }
     for (let i = 0; i < 40 * 30 && three.some(p => p.tx !== null); i++) lifeTick(1 / 30);
     const xs = three.map(p => p.x), gaps = [Math.abs(xs[0] - xs[1]), Math.abs(xs[0] - xs[2]), Math.abs(xs[1] - xs[2])];
-    return { moved, arrived: three.every(p => p.tx === null && p.room === 'hold'), gaps, inHold: xs.every(x => x >= h.x0 && x <= h.x1) };
+    return { moved, arrived: three.every(p => p.tx === null && p.room === 'hold' && p.dk === h.deck), gaps, inHold: xs.every(x => x >= h.x0 && x <= h.x1), k: CUT_K };
   });
   assert.ok(r.moved.some(Boolean) && r.moved.some(m => !m), `half a second in, some have set off and some not yet: ${r.moved}`);
   assert.ok(r.arrived && r.inHold, 'the three got to the hold');
-  assert.ok(Math.min(...r.gaps) >= 0.009, `and stand apart: ${r.gaps.map(g => g.toFixed(3))}`);
+  assert.ok(Math.min(...r.gaps) >= 0.009 * r.k, `and stand apart: ${r.gaps.map(g => g.toFixed(3))}`);
   await done();
 });
 

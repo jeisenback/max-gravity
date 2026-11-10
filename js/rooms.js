@@ -71,15 +71,13 @@ function roomPorthole(ctx, x, y, rad, spin) {
   for (let k = 0; k < 8; k++) roomDot(ctx, x + Math.cos(k * Math.PI / 4) * (rad + 2), y + Math.sin(k * Math.PI / 4) * (rad + 2), 1.1, '#4a6a8a');
 }
 
-// A crash couch: deployed (lies back on the floor) or stowed as a slab on the wall.
-// A crash couch at x on the deck F, unfolded by d (0 to 1, #925): at 0 only its plate in the deck shows; the seat rises out of it and the back
-// swings up from the deck as it opens.
-function roomCouchFold(ctx, x, F, d) {
-  roomBox(ctx, x - 10, F - 3, 40, 3, '#1a3048');
+// A crash couch at x on the deck F, unfolded by d (0 to 1, #925): at 0 only its plate in the deck shows; the pad rises flat out of it, 60 long,
+// its headrest at the head end on the left, where the person on it lies on their back (#972).
+function roomCouchFlat(ctx, x, F, d) {
+  roomBox(ctx, x - 32, F - 3, 60, 3, '#1a3048');
   if (d <= 0) return;
-  roomBox(ctx, x - 8, F - 19 * d, 34, Math.min(7, 19 * d), '#23405e');
-  if (d > 0.5) { roomBox(ctx, x + 22, F - 24 * d, 8, 12 * d, '#23405e'); roomBox(ctx, x + 4, F - 12 * d, 6, 12 * d, '#1a3048'); }
-  ctx.save(); ctx.translate(x, F - 14 - 4 * d); ctx.rotate(-Math.PI / 2 + (Math.PI / 2 - 0.9) * d); roomBox(ctx, -11, -62, 9, 66, '#23405e'); roomBox(ctx, -12, -66, 10, 8, '#2c4c6e'); ctx.restore();
+  roomBox(ctx, x - 32, F - 7 * d, 60, 7 * d, '#23405e');
+  roomBox(ctx, x - 34, F - 11 * d, 12, 4 * d, '#2c4c6e');
 }
 // A jump seat at x on the deck F, for someone strapped in at the flip (#927): the rail on the wall behind them (face: the way they face), and
 // the seat and its back folded down from it by d (0 to 1, the flip's weight).
@@ -150,7 +148,7 @@ function roomPipe(ctx, [ax, ay], [bx, by], step) {
 
 // Each room: (ctx, r, s, X, W) with X(share) the world x at that share of the width. A prop that does not fit the width is dropped, last listed first.
 function roomEngine(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, top = r.top, deckY = F - (HULL.deck + HULL.plate), rx = X(0.5);
+  const { w, time } = s, F = r.floor, top = r.top, rx = X(0.5);
   const hot = (s.burning ? 0.55 : 0.25) + 0.45 * w.burn + 0.1 * Math.sin(time * 4) * w.burn;
   const core = w.burn > 0.5 ? '255,140,60' : w.flip > 0.5 ? '255,176,48' : '90,150,220';
   roomBox(ctx, rx - 40, top + 6, 80, F - top - 6, '#22384e'); for (let y = top + 20; y < F; y += 40) roomBox(ctx, rx - 40, y, 80, 5, '#2c4c6e');
@@ -158,18 +156,11 @@ function roomEngine(ctx, r, s, X, W) {
   roomBox(ctx, rx - 12, top + 40, 24, F - top - 80, `rgba(${core},${0.35 + 0.5 * hot})`); roomBox(ctx, rx - 16, top + 36, 32, 4, '#3d5a7a'); roomBox(ctx, rx - 16, F - 40, 32, 4, '#3d5a7a');
   ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(rx + 40, top + 30); ctx.quadraticCurveTo(rx + 94, top + 30, X(0.98), top + 16); ctx.stroke();
   worldText(ctx, s.zoom, 'REACTOR', rx - 36, F - 14, 10, '#c9a227');
-  const lx = X(0.07); roomPipe(ctx, [lx, top + 8], [lx, F], 40); roomValve(ctx, lx, F - 100, 8);  // the coolant riser on the aft wall, its valve
-  const gx = X(0.2), gy = deckY - 34; roomBox(ctx, gx - 14, gy - 14, W >= 200 ? 54 : 28, 28, '#1d3550');
-  roomGauge(ctx, gx, gy, 10, gaugeNeedle(w, time, 0)); if (W >= 200) roomGauge(ctx, gx + 26, gy, 10, gaugeNeedle(w, time, 1));
-  if (W >= 240) {  // the feed from the reactor to the drive, low on the forward side: its gauge on a stem and its valve
-    const py = F - 80; roomPipe(ctx, [rx + 40, py], [X(0.98), py], 30);
-    const sx = X(0.7); ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 2; roomSeg(ctx, [[sx, py], [sx, py + 16]]); roomGauge(ctx, sx, py + 26, 9, gaugeNeedle(w, time, 2));
-    roomValve(ctx, X(0.86), py, 9);
-  }
-  if (W >= 200) {
-    const cx = X(0.62), cw = W * 0.34;
-    roomBox(ctx, cx, deckY, cw, 5, '#2a4664'); ctx.fillStyle = '#0c1826'; for (let x = cx + 4; x < cx + cw - 4; x += 8) ctx.fillRect(x, deckY + 1, 4, 3);
-    ctx.strokeStyle = '#4a6a8a'; ctx.lineWidth = 1.5; roomSeg(ctx, [[cx + 2, deckY - 26], [cx + cw, deckY - 26]]); for (const x of [cx + 2, cx + cw / 2, cx + cw]) roomSeg(ctx, [[x, deckY - 26], [x, deckY]]);
+  const lx = X(0.07); roomPipe(ctx, [lx, top + 8], [lx, F], 40); roomValve(ctx, lx, F - 30, 8);  // the coolant riser on the wall, its valve
+  if (W >= 240) {  // the feed from the reactor to the drive, low along the deck: its gauge on a stem above it and its valve
+    const py = F - 10; roomPipe(ctx, [rx + 40, py], [X(0.98), py], 30);
+    const sx = X(0.62); ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 2; roomSeg(ctx, [[sx, py], [sx, py - 16]]); roomGauge(ctx, sx, py - 26, 9, gaugeNeedle(w, time, 2));
+    roomValve(ctx, X(0.9), py, 9);
   }
   if (W >= 240) {
     const bx = X(0.7);
@@ -183,23 +174,30 @@ function roomEngine(ctx, r, s, X, W) {
   }
 }
 
-// Bunk k of n in the berths room r, in two tiers: its left end x, its width w, and y the bottom of its frame (the mattress lies on it, 5 deep).
-// The berths draw their bunks here, and the cutaway lays its sleepers on them (shiplife.js).
-function berthBunk(r, n, k) {
-  const cols = Math.max(1, Math.ceil(n / 2)), w = Math.min(70, (r.x1 - r.x0) * 0.5 / cols);
-  return { x: r.x0 + (r.x1 - r.x0) * 0.02 + Math.floor(k / 2) * w, w, y: k % 2 ? r.floor - 56 : r.floor - 8 };
+// Bunk k of n in the berths room r, in two tiers, a person long (BUNK, #972): its left end x, its length w, and y the bottom of its frame (the
+// mattress lies on it, 5 deep). The columns stand either side of the ladder well (well: its band in world x, the room's middle by default), the
+// left ones from the room's left wall and the right ones from its right wall. The berths draw their bunks here, and the cutaway lays its sleepers
+// on them (shiplife.js). The bottom tier fills from the left and the top one from the right, so the top bunk at the left, under the room's
+// name plate, is the last one taken.
+const BUNK = 90;
+function berthBunk(r, n, k, well = { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }) {
+  const cols = Math.max(1, Math.ceil(n / 2)), left = Math.ceil(cols / 2), m = (r.x1 - r.x0) * 0.02;
+  const w = Math.min(BUNK, (well.x0 - r.x0 - m) / left), col = k % 2 ? Math.floor(n / 2) - 1 - Math.floor(k / 2) : Math.floor(k / 2);
+  return { x: col < left ? r.x0 + m + col * w : r.x1 - m - (cols - col) * w, w, y: k % 2 ? r.floor - 56 : r.floor - 8 };
 }
+// Where the cutaway lays a sleeper on bunk b (berthBunk): the hip, the head on the pillow at its left end, and the mattress under them.
+const berthSleeper = b => ({ x: b.x + b.w / 2, y: b.y - 5 });
 
 function roomBerths(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), cols = Math.max(1, Math.ceil(n / 2)), { x: bx0, w: cw } = berthBunk(r, n, 0);
-  for (let c = 0; c <= cols; c++) roomBox(ctx, bx0 + c * cw - 2, F - 96, 4, 96, '#2a4664');
+  const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), { w: cw } = berthBunk(r, n, 0, s.well);
+  for (let k = 0; k < n; k += 2) { const { x } = berthBunk(r, n, k, s.well); for (const px of [x, x + cw]) roomBox(ctx, px - 2, F - 96, 4, 96, '#2a4664'); }  // the posts at each column's ends
   for (let k = 0; k < n; k++) {
-    const { x: bx, y } = berthBunk(r, n, k);
+    const { x: bx, y } = berthBunk(r, n, k, s.well);
     roomBox(ctx, bx, y, cw, 8, '#1f3a56'); roomBox(ctx, bx + 2, y - 5, cw - 4, 5, '#3a4a5e'); roomBox(ctx, bx + 3, y - 9, 12, 4, '#d8d2c4');
     if (k < s.asleep) roomBox(ctx, bx + 16, y - 9, cw - 20, 5, '#334560');
   }
   if (W >= 220 && n >= 3) {
-    const bx = bx0 + cw; roomBox(ctx, bx + 3, F - 50, cw - 6, 42, '#4a3a5a'); for (const sx of [bx + 10, bx + cw - 12]) roomBox(ctx, sx, F - 50, 3, 42, '#1a1a1a');
+    const bx = berthBunk(r, n, 2, s.well).x; roomBox(ctx, bx + 3, F - 50, cw - 6, 42, '#4a3a5a'); for (const sx of [bx + 10, bx + cw - 12]) roomBox(ctx, sx, F - 50, 3, 42, '#1a1a1a');
     if (s.asleep > 0 && w.cruise > 0.5) worldText(ctx, s.zoom, Math.floor(time) % 2 ? 'z z' : 'z', bx + cw - 18, F - 54, 12, '#9fb4c9');
   }
   const lx = X(0.58);
@@ -289,7 +287,7 @@ function roomGunnery(ctx, r, s, X, W) {
   }
 }
 
-// The comms rack at the back of the bridge (#919): the room's own box r (cutRect), the rack's box in the same world units. A tap on it opens
+// The comms rack at the back of the bridge (#919): the room's own box r (layoutBox), the rack's box in the same world units. A tap on it opens
 // Comms (game.js), as a tap on a room opens its console; the cutaway records where it was drawn (G.cutRack, shiplife.js).
 const commsRackBox = r => ({ x: r.x0 + 8, y: r.floor - 46, w: 30, h: 46 });  // against the aft bulkhead, under the certificate, clear of the couches
 function roomCommsRack(ctx, r, s) {
@@ -378,19 +376,6 @@ function roomMedbay(ctx, r, s, X, W) {
   if (W >= 300) { const cx = X(0.04); roomBox(ctx, cx, F - 92, 40, 40, '#d8dde4'); roomBox(ctx, cx + 17, F - 85, 7, 24, '#c03a30'); roomBox(ctx, cx + 9, F - 77, 23, 8, '#c03a30'); }
 }
 
-function roomTanks(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, tw = Math.min(220, W * 0.6), tx = X(0.05), fuel = Math.max(0, Math.min(1, s.fuel));
-  for (const y of [F - 90, F - 44]) {
-    roomBox(ctx, tx, y, tw, 40, '#2a4664'); roomBox(ctx, tx + 2, y + 2, tw - 4, 36, '#0e1c2c'); roomBox(ctx, tx + 2, y + 38 - 36 * fuel, tw - 4, 36 * fuel, '#d8943a');
-    roomBox(ctx, tx, y + 4, tw, 3, '#3d5a7a'); roomDot(ctx, tx, y + 20, 20, '#2a4664'); roomDot(ctx, tx + tw, y + 20, 20, '#2a4664');
-    worldText(ctx, s.zoom, 'H2', tx + tw / 2 - 8, y + 26, 12, '#9fb4c9');
-  }
-  const lx = X(0.74);
-  if (W >= 150) for (let k = 0; k < 3; k++) { const x = lx + k * 30; if (x + 28 > r.x1) break; roomBox(ctx, x, F - 96, 26, 96, '#1c3249'); for (let v = 0; v < 4; v++) roomBox(ctx, x + 4, F - 88 + v * 4, 18, 2, '#12233a'); }
-  ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 4; roomSeg(ctx, [[tx + tw + 24, F - 70], [lx - 8, F - 70], [lx - 8, F - 10]]); ctx.strokeStyle = '#b83a30'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(lx - 8, F - 40, 6, 0, Math.PI * 2); ctx.stroke();
-  if (W >= 260) { const mx = X(0.7); roomBox(ctx, mx, F - 20, 22, 20, '#5a6a7a'); ctx.save(); ctx.translate(mx + 16, F - 20); ctx.rotate(0.35 - (s.still ? 0 : w.flip * 0.3 * Math.sin(time))); roomBox(ctx, -1.5, -66, 3, 68, '#9a7a4a'); roomBox(ctx, -7, -6, 14, 10, '#c8c0a8'); ctx.restore(); }
-}
-
 // The lamp: a pool of light mixing red (burn), warm (cruise) and a pulsing amber (flip), dimmed at night unless the room keeps its lights.
 function drawPhaseLight(ctx, r, w, time, night, keepsLights) {
   const lamp = roomMix([[255, 90, 70], [255, 226, 184], [255, 176, 48]], [w.burn, w.cruise, w.flip]);
@@ -429,7 +414,10 @@ function drawDamage(ctx, r, s) {
   }
 }
 
-const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay, tanks: roomTanks };
+// The tower's rooms with no fittings yet (#972; their own are step 3, #973): the walls drawRoom gives every room, and the name the cutaway puts on each.
+const roomPlain = () => {};
+const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay,
+  head: roomPlain, workshop: roomPlain, airlock: roomPlain, lifesupport: roomPlain };
 // A room, r = { x0, x1, top, floor } in world units, drawn for the state s (w, time, zoom, spin, still, berths, cargo, fuel, burning, night, asleep): walls, props, then its lamp.
 function drawRoom(ctx, id, r, s) {
   if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses

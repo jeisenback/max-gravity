@@ -1,6 +1,6 @@
 # Post Ladders: Levels, Picks and the Ship's Perks
 
-Status: draft for the owner's review, 2026-11-08. The first piece of `docs/bible/progression.md` (layers 2 and 3 for the four posts). Builds on the sheet and the one check rule (`js/sheet.js`, #679), the post points (`js/hired.js`), the kit (#683) and the gunner's moves (`docs/superpowers/specs/2026-10-23-gunner-moves-design.md`).
+Status: approved by the owner and built, 2026-11-08 (#963; the table's hooks were corrected to the turn-based ship fight before planning). The first piece of `docs/bible/progression.md` (layers 2 and 3 for the four posts). Builds on the sheet and the one check rule (`js/sheet.js`, #679), the post points (`js/hired.js`), the kit (#683) and the gunner's moves (`docs/superpowers/specs/2026-10-23-gunner-moves-design.md`).
 
 ## Why
 
