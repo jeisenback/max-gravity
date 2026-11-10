@@ -1,63 +1,65 @@
 'use strict';
 
-// What the hull looks like in the cutaway (shiplife.js drawCutaway): plating seams and rivets, scorch marks that grow with the
-// damage the ship has taken, and fittings outside it: a mast with a dish, radiator fins at the stern, and a dorsal turret for each
-// gun the ship carries. Everything is placed by share of the length, so it follows the hull when it turns end over end. Loaded
-// after shiplife.js; only called into at runtime.
+// What the hull looks like in the cutaway (shiplife.js drawCutaway): plating seams and rivets down the tower's sides, scorch marks that grow
+// with the damage the ship has taken, and fittings outside it: a mast with a dish on the nose, radiator fins at the drive deck's sides, a
+// turret on the gun deck's sides for each gun the ship carries, and the airlock's outer door. o is the tower's outline (shiplife.js
+// towerOutline) in world units, and deck(i) a deck's { top, floor } (#972). Loaded after shiplife.js; only called into at runtime.
 
-// Inside the hull's clip: seams along the top and bottom plating, a lighter inner edge, and the scars of damage.
-function hullSeams(X, top, H, turn) {
+// Inside the hull's clip: seams across the skin down both sides, a lighter inner edge, and the scars of damage.
+function hullSeams(o) {
+  const sk = HULL.skin, sides = [o.x0, o.x1 - sk];
   ctx.lineWidth = 1;
   ctx.strokeStyle = 'rgba(61,95,130,0.55)';
   ctx.beginPath();
-  for (let f = 0.06; f < 0.9; f += 0.075) { ctx.moveTo(X(f), top); ctx.lineTo(X(f), top + 5); ctx.moveTo(X(f), top + H - 5); ctx.lineTo(X(f), top + H); }
+  for (let y = o.top + 40; y < o.bottom; y += 66) for (const x of sides) { ctx.moveTo(x, y); ctx.lineTo(x + sk, y); }
   ctx.stroke();
   ctx.strokeStyle = 'rgba(130,170,210,0.22)';
-  ctx.beginPath(); ctx.moveTo(X(0.02), top + 3); ctx.lineTo(X(0.9), top + 3); ctx.moveTo(X(0.02), top + H - 3); ctx.lineTo(X(0.9), top + H - 3); ctx.stroke();
+  ctx.beginPath(); for (const x of [o.x0 + 3, o.x1 - 3]) { ctx.moveTo(x, o.top + 4); ctx.lineTo(x, o.bottom - 4); } ctx.stroke();
   ctx.fillStyle = 'rgba(150,190,230,0.35)';
-  for (let f = 0.06; f < 0.9; f += 0.075) for (const dx of [0.012, 0.024, 0.036]) { ctx.fillRect(X(f + dx), top + 1.5, 1, 1); ctx.fillRect(X(f + dx), top + H - 2.5, 1, 1); }
-  // Scars: a scorch for each eighth of the armor lost, in the same places every frame.
+  for (let y = o.top + 40; y < o.bottom; y += 66) for (const dy of [14, 28, 42]) for (const x of sides) ctx.fillRect(x + sk / 2 - 0.5, y + dy, 1, 1);
+  // Scars: a scorch for each eighth of the armor lost, in the same places every frame, on either side.
   const lost = Math.max(0, 1 - G.state.armor / ship().armor), n = Math.floor(lost * 8);
   for (let i = 0; i < n; i++) {
-    const f = 0.1 + ((i * 0.37) % 0.78), edge = i % 2 ? top + H - 3 : top + 3, w = Math.abs(turn) * (12 + (i % 3) * 6);
-    const g = ctx.createRadialGradient(X(f), edge, 0, X(f), edge, w);
+    const y = o.top + (0.1 + ((i * 0.37) % 0.78)) * (o.bottom - o.top), edge = i % 2 ? o.x1 - sk / 2 : o.x0 + sk / 2, w = 18 + (i % 3) * 9;
+    const g = ctx.createRadialGradient(edge, y, 0, edge, y, w);
     g.addColorStop(0, 'rgba(0,0,0,0.55)'); g.addColorStop(0.7, 'rgba(60,30,10,0.25)'); g.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = g; ctx.fillRect(X(f) - w, edge - w, w * 2, w * 2);
+    ctx.fillStyle = g; ctx.fillRect(edge - w, y - w, w * 2, w * 2);
   }
 }
 
-// Where the fittings sit, as a share of the hull's length from the stern (`at`), and how big they are in pixels at full scale
-// (`sc` in hullFittings scales them down for a short ship).
-const HULL_MAST = { at: 0.56, height: 15, dish: 5, light: 17 };
-const HULL_FINS = { at: [0.03, 0.065, 0.1], length: 8, width: 4 };
-const HULL_TURRET = { at: 0.64, step: 0.075, radius: 4.5, barrel: 2.4, barrelRise: 0.9, base: 0.6, most: 3 };
-const HULL_HATCH = { at: [0.22, 0.3, 0.38], depth: 3 };
+// Where the fittings sit and how big they are, in world units: the mast at a share of the width on the nose; the fins and the turrets at
+// shares of their deck's height from its ceiling; the airlock's door on the lock deck's side.
+const HULL_MAST = { at: 0.3, height: 40, dish: 12, light: 44 };
+const HULL_FINS = { at: [0.2, 0.5, 0.8], length: 22, width: 9 };
+const HULL_TURRET = { at: [0.35, 0.75], radius: 12, barrel: 2.2, barrelRise: 0.7, base: 0.3, most: 3 };
+const HULL_HATCH = { height: 88, depth: 4 };
 
-// Outside the hull: the mast and dish, radiator fins, and a turret for each gun.
-function hullFittings(X, top, H, L, turn, cy) {
-  const sc = Math.max(0.6, L / 640), dir = Math.sign(turn || 1), bottom = top + H;
-  ctx.lineWidth = 1;
-  // Mast with a dish and a blinking light.
-  const mx = X(HULL_MAST.at);
+// Outside the hull: the mast and dish, radiator fins, a turret for each gun, and the airlock's outer door.
+function hullFittings(o, deck) {
+  ctx.lineWidth = 2;
+  // Mast with a dish and a blinking light, on the nose.
+  const mx = o.x0 + (o.x1 - o.x0) * HULL_MAST.at, my = o.noseTop + (o.top - o.noseTop) * 0.35;
   ctx.strokeStyle = '#4a6a8c';
-  ctx.beginPath(); ctx.moveTo(mx, top); ctx.lineTo(mx, top - HULL_MAST.height * sc); ctx.stroke();
-  ctx.beginPath(); ctx.arc(mx, top - HULL_MAST.height * sc, HULL_MAST.dish * sc, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
-  if (G.time % 2 < 0.25) { ctx.fillStyle = '#ffd36a'; ctx.fillRect(mx - 1, top - HULL_MAST.light * sc, 2, 2); }
-  // Radiator fins at the stern, top and bottom.
-  ctx.fillStyle = '#10213a'; ctx.strokeStyle = '#3d5f82';
-  for (const f of HULL_FINS.at) for (const [y, h] of [[top - HULL_FINS.length * sc, HULL_FINS.length * sc], [bottom, HULL_FINS.length * sc]]) {
-    const x = X(f) - HULL_FINS.width / 2 * sc, w = HULL_FINS.width * sc;  // thin fins
-    ctx.fillRect(x, y, w, h); ctx.strokeRect(x, y, w, h);
+  ctx.beginPath(); ctx.moveTo(mx, my); ctx.lineTo(mx, my - HULL_MAST.height); ctx.stroke();
+  ctx.beginPath(); ctx.arc(mx, my - HULL_MAST.height, HULL_MAST.dish, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
+  if (G.time % 2 < 0.25) { ctx.fillStyle = '#ffd36a'; ctx.fillRect(mx - 2, my - HULL_MAST.light - 2, 4, 4); }
+  // Radiator fins out from both sides of the drive deck.
+  const dd = deck(roomAt('engine').deck);
+  ctx.fillStyle = '#10213a'; ctx.strokeStyle = '#3d5f82'; ctx.lineWidth = 1;
+  for (const f of HULL_FINS.at) for (const x of [o.x0 - HULL_FINS.length, o.x1]) {
+    const y = dd.top + (dd.floor - dd.top) * f - HULL_FINS.width / 2;
+    ctx.fillRect(x, y, HULL_FINS.length, HULL_FINS.width); ctx.strokeRect(x, y, HULL_FINS.length, HULL_FINS.width);
   }
-  // A dorsal turret for each gun.
-  const guns = Math.min(HULL_TURRET.most, SHIPS[G.state.shipId].guns || 1);
+  // A turret for each gun on the gun deck's sides, left and right in turn, the barrel out and up toward the nose.
+  const gd = deck(roomAt('gunnery').deck), guns = Math.min(HULL_TURRET.most, SHIPS[G.state.shipId].guns || 1);
   for (let i = 0; i < guns; i++) {
-    const tx = X(HULL_TURRET.at + i * HULL_TURRET.step), r = HULL_TURRET.radius * sc;
-    ctx.fillStyle = '#15283f'; ctx.strokeStyle = '#4a6a8c';
-    ctx.beginPath(); ctx.arc(tx, top, r, Math.PI, 0); ctx.fill(); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(tx, top - r * HULL_TURRET.base); ctx.lineTo(tx + dir * r * HULL_TURRET.barrel, top - r * HULL_TURRET.barrelRise); ctx.stroke();
+    const side = i % 2 ? 1 : -1, tx = side > 0 ? o.x1 : o.x0, ty = gd.top + (gd.floor - gd.top) * HULL_TURRET.at[Math.floor(i / 2)], r = HULL_TURRET.radius;
+    ctx.fillStyle = '#15283f'; ctx.strokeStyle = '#4a6a8c'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(tx, ty, r, side > 0 ? -Math.PI / 2 : Math.PI / 2, side > 0 ? Math.PI / 2 : Math.PI * 1.5); ctx.fill(); ctx.stroke();
+    ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(tx + side * r * HULL_TURRET.base, ty); ctx.lineTo(tx + side * r * HULL_TURRET.barrel, ty - r * HULL_TURRET.barrelRise); ctx.stroke();
   }
-  // Cargo hatch seams along the belly.
-  ctx.strokeStyle = '#2a4561';
-  ctx.beginPath(); for (const f of HULL_HATCH.at) { ctx.moveTo(X(f), bottom); ctx.lineTo(X(f), bottom + HULL_HATCH.depth * sc); } ctx.stroke();
+  // The airlock's outer door, in the skin on the lock deck's left side.
+  const ld = deck(roomAt('airlock').deck), dy = ld.floor - HULL_HATCH.height;
+  ctx.strokeStyle = '#2a4561'; ctx.lineWidth = 1.5; ctx.strokeRect(o.x0 - HULL_HATCH.depth + 0.5, dy, HULL.skin + HULL_HATCH.depth - 1, HULL_HATCH.height);
+  ctx.fillStyle = '#c9a227'; ctx.fillRect(o.x0 - HULL_HATCH.depth, dy + HULL_HATCH.height / 2 - 3, 3, 6);
 }

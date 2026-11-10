@@ -10,7 +10,7 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { lifeSlotCount, lifeSlotKeys, lifeSlotOf, lifeFree, spendLife } = load(['js/shiplife.js'], { Mods: { register() {} } }, ['lifeSlotCount', 'lifeSlotKeys', 'lifeSlotOf', 'lifeFree', 'spendLife']);
+const { lifeSlotCount, lifeSlotKeys, lifeSlotOf, lifeFree, spendLife } = load(['js/camera.js', 'js/layouts.js', 'js/shiplife.js'], { Mods: { register() {} } }, ['lifeSlotCount', 'lifeSlotKeys', 'lifeSlotOf', 'lifeFree', 'spendLife']);
 const at = (slots, p, used = {}, flipped = p >= 0.5) => lifeSlotOf({ slots, total: 100, left: 100 * (1 - p), flipped, lifeUsed: used });
 
 test('a leg of a few days has two slots and a long one five, and the keys run before, the middle ones, after', () => {
