@@ -1251,3 +1251,26 @@ test('the burn bar shows the real time left at the chosen speed, and the speed o
   assert.ok(r[0].bar.startsWith(`${r[0].want} remaining paused`), r[0].bar);
   assert.match(r.flip, /remaining flip/);
 });
+
+test('a burn wears the ship, runs a project and burns the drive\'s fuel as much as before, at any speed, and none of it while paused (#992)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const run = (speed, dt) => {
+      burn(); const t = G.transit, st = G.state; t.interceptPlanned = true; Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', 60);
+      condition().life = 100; st.projects = { x: { id: 'x', left: 1e6 } }; t.fuelOwed = 0; const fuel0 = st.fuel; G.speed = speed;
+      for (let n = 0; 1 - t.left / t.total < 0.98 && n < 20000; n++) { t.times = []; t.event = null; G.dialog = null; st.heat = 0; update(dt); Mods.emit('frame', dt); }
+      const got = { life: 100 - condition().life, project: 1e6 - st.projects.x.left, fuel: fuel0 - st.fuel + t.fuelOwed };
+      const secs = 0.98 * oldBurnSeconds(t.days) / burnSpeed(), want = { life: 0.01 * wearRate() * secs, project: secs, fuel: 0.98 * t.fuelCost * 0.2 };
+      G.speed = 0; const still = JSON.stringify([condition().life, st.projects.x.left, st.fuel, t.fuelOwed]);
+      for (let i = 0; i < 60; i++) { update(dt); Mods.emit('frame', dt); }
+      return { got, want, still: still === JSON.stringify([condition().life, st.projects.x.left, st.fuel, t.fuelOwed]) };
+    };
+    return { one: run(1, 0.25), top: run(16, 1 / 30) };
+  });
+  await done();
+  for (const k of ['one', 'top']) {
+    for (const f of ['life', 'project', 'fuel']) assert.ok(Math.abs(r[k].got[f] / r[k].want[f] - 1) < 0.02, `${k} ${f}: ${r[k].got[f]} against ${r[k].want[f]}`);
+    assert.equal(r[k].still, true, `${k}: nothing moves while paused`);
+  }
+});
