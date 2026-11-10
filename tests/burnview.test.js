@@ -1007,8 +1007,8 @@ test('after the straps at the flip, everyone goes on to their place in the same 
     const eng = shipPeople().find(p => p.role === 'engineer');
     Object.assign(eng, { room: 'engine', x: roomAt('galley').mid, dk: roomAt('galley').deck, tdk: roomAt('engine').deck, tx: roomAt('engine').mid, errand: false, wait: 999 });  // on the mess deck on the way down to the drive, with no errand to rescue them
     t.left = t.total * (1 - securePr(t)); tickFor(2);  // strapped in where they are
-    t.left = t.total * (1 - 0.6); tickFor(25);  // under way again, the same shift
-    return inRoom(eng, 'engine');
+    t.left = t.total * (1 - 0.6); let got = false; for (let k = 0; k < 25 && !got; k++) { tickFor(1); got = inRoom(eng, 'engine'); }  // under way again, the same shift: at the drive (from where the shift's errands may take them on, #973)
+    return got;
   }, dayAt.toString());
   await done();
   assert.ok(r, 'the engineer got to the drive');

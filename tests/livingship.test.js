@@ -623,7 +623,7 @@ const filledParts = calls => {
   return out;
 };
 const BRIDGE_PROPS = [['#2a4560', 'the window\'s frame and its struts'], ['#1d3550', 'the overhead panel'], ['#3a5470', 'the grab rails'], ['#3a2c20', 'the certificate\'s frame'], ['#a39b84', 'the certificate'],
-  ['#1f3a56', 'the consoles'], ['#2c4c6e', 'the consoles\' sloped tops'], ['#2e4a68', 'the seats\' pans'], ['#284664', 'the seats\' backs and headrests'], ['#03121c', 'the screens']];
+  ['#1f3a56', 'the consoles'], ['#2c4c6e', 'the consoles\' sloped tops'], ['#2e4a68', 'the seats\' pans'], ['#284664', 'the seats\' backs and headrests'], ['#03121c', 'the screens'], ['#1b2f45', 'the comms station\'s rack']];
 test('the bridge is drawn to the figures\' standard in every phase: its props outlined and a step below the people, its name on clear wall (#933)', () => {
   const r = layoutBox(LAYOUTS.freighter, 'bridge'), F = r.floor, W = r.x1 - r.x0;
   for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.66, 0.96, 1.24]) {  // the burn view's zoom in a window 1000, 1280 and 1600 wide
@@ -660,7 +660,7 @@ test('the bridge is drawn to the figures\' standard in every phase: its props ou
     calls.forEach((k, i) => { if (k[0] === 'fillStyle' && k[1] === '#03121c' && calls[i + 1][0] === 'fillRect') assert.ok(calls[i + 1][2] - 3 >= g.y + g.h + 3 || calls[i + 1][1] > g.x + g.w || calls[i + 1][1] + calls[i + 1][3] < g.x, `${pr}: a screen (${calls[i + 1].slice(1)}) under the window`); });
   }
 });
-test('the bridge\'s seats have headrests and harnesses, the pilot\'s post a throttle that goes forward in the burn, and the comms rack stays where it is clicked (#933)', () => {
+test('the bridge\'s seats have headrests and harnesses, the pilot\'s post a throttle that goes forward in the burn, and the comms rack on the aft post\'s console (#933)', () => {
   const r = layoutBox(LAYOUTS.freighter, 'bridge'), F = r.floor, W = r.x1 - r.x0;
   const draw = pr => { const { ctx, calls } = recorder(); drawRoom(ctx, 'bridge', r, RS({ w: phaseWeights(pr), damage: { marks: new Set(), severe: false } })); return calls; };
   const calls = draw(0.3), parts = filledParts(calls);
@@ -669,8 +669,25 @@ test('the bridge\'s seats have headrests and harnesses, the pilot\'s post a thro
   for (const p of heads) { const xs = p.pts.map(q => q[0]), seat = SEATS.bridge.map(f => r.x0 + W * f).find(x => Math.max(...xs) <= x && Math.max(...xs) > x - 12); assert.ok(seat, `the headrest at ${xs} behind a seat, which faces forward (#985)`); }
   assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === '#5a4e3a').length >= SEATS.bridge.length, 'a harness on each seat');
   const throttle = calls => { const i = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === '#7d8a98'), m = calls.slice(i).find(k => k[0] === 'moveTo'), l = calls.slice(i).find(k => k[0] === 'lineTo'); return [m[1], l[1]]; };
-  const [base, cruise] = throttle(calls), burn = throttle(draw(0.02))[1], pilot = r.x0 + W * SEATS.bridge[0];
+  const [base, cruise] = throttle(calls), burn = throttle(draw(0.02))[1], pilot = r.x0 + W * SEATS.bridge[1];
   assert.ok(base > pilot && base < pilot + 60, `the throttle (${base}) on the pilot's console, in front of the seat at ${pilot}`);
   assert.ok(burn > cruise + 2, `forward in the hard burn (${burn} against ${cruise})`);
-  assert.deepEqual({ ...commsRackBox(r) }, { x: r.x0 + 8, y: F - 46, w: 30, h: 46 }, 'the comms rack\'s click box unchanged');
+  const rk = commsRackBox(r), aft = r.x0 + W * SEATS.bridge[0];
+  assert.ok(rk.x > aft && rk.x + rk.w < aft + 70, `the comms rack (${JSON.stringify(rk)}) on the console in front of the aft seat at ${aft}`);
+  assert.ok(F - (rk.y + rk.h) >= 36 && F - (rk.y + rk.h) <= 44 && rk.y >= r.top + 19, `on the console's top, under the overhead panel (${JSON.stringify(rk)})`);
+  assert.ok(calls.some(k => k[0] === 'fillStyle' && k[1] === '#1b2f45') && rk.w >= 30 && rk.h >= 30, 'drawn, and big enough to click');
+});
+
+test('the slicer sits at the comms station and the pilot at the helm, whoever holds the bridge with them (#933)', () => {
+  const { postSeat } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['postSeat']);
+  const seats = roles => roles.map((_, k) => postSeat('bridge', roles, k));
+  assert.deepEqual(seats(['captain', 'pilot', 'xo', 'slicer']), [2, 1, 3, 0], 'the stations kept, the rest in order');
+  assert.deepEqual(seats(['slicer', 'pilot']), [0, 1]);
+  assert.deepEqual(seats(['captain', 'pilot']), [0, 1], 'no slicer aboard: the comms station is free for another');
+  assert.deepEqual(seats(['pilot', 'pilot', 'captain']), [1, 0, 2], 'a second pilot takes a free post');
+  assert.deepEqual(seats(['engineer']), [0], 'a room without stations: in order');
+  assert.equal(postSeat('bridge', ['pilot'], -1), -1, 'not among them');
+  const br = roomAt('bridge'), on = ['captain', 'slicer', 'pilot'].map((role, i) => ({ role, id: role, x: 0.5, dk: 0, tdk: 0, tx: null, room: 'galley' }));
+  for (const p of on) routineGo(p, 'shift', on, false, () => 0.5);
+  assert.deepEqual(on.map(p => Math.round((p.tx - br.x0) / br.w * 100) / 100), [0.7, 0.12, 0.3], 'the shift seats them so');
 });

@@ -429,6 +429,17 @@ function routineTarget(p, spot, r, i, n, rnd) {
   if (spot.at === 'table') return Math.max(r.x0 + 0.01 * CUT_K, Math.min(r.x1 - 0.01 * CUT_K, r.x0 + r.w * (0.3 + 0.6 * (n > 1 ? i / (n - 1) : 0.5))));
   return r.x0 + r.w * (0.25 + 0.5 * rnd());  // a bunk
 }
+// The posts a role keeps in a room (#933): on the bridge the slicer at the comms station (the aft post), the pilot at the helm (the next, with the
+// throttle). Whoever else holds the room takes the posts left, in order, and a station whose role is not aboard is free for them.
+const POST_SEAT = { bridge: { slicer: 0, pilot: 1 } };
+// Which of a room's seats the k-th of `roles` (who hold its post, in order) sits at; past the seats, k as before.
+function postSeat(room, roles, k) {
+  const st = POST_SEAT[room] || {}, n = (SEATS[room] || []).length, own = (x, i) => x in st && roles.indexOf(x) === i;  // the first of a role keeps its station
+  if (k < 0) return k;
+  if (own(roles[k], k)) return st[roles[k]];
+  const taken = roles.filter(own).map(x => st[x]), free = [...Array(n).keys()].filter(i => !taken.includes(i)), j = roles.slice(0, k).filter((x, i) => !own(x, i)).length;
+  return j < free.length ? free[j] : k;
+}
 // To where the timetable has `p` in `block`: their place in it, or the rounds (a room they like, as before the timetable).
 function routineGo(p, block, people, dark, rnd, state) {
   p.relief = undefined;
@@ -442,7 +453,7 @@ function routineGo(p, block, people, dark, rnd, state) {
   const holds = q => (s => s.at === 'post' && s.room === spot.room)(routineSpot(q, 'shift'));  // a post's places are numbered by who holds it in a shift, the same in every block
   const seated = state && { ...state, morning: undefined };  // a seat at the table is kept for anyone in the head first (#973)
   const r = roomAt(spot.room), mates = spot.at === 'table' || spot.at === 'bed' ? people.filter(q => routineSpot(q, block, seated).at === spot.at) : spot.at === 'post' ? people.filter(holds) : [];  // who shares the table or the post
-  const tx = spot.at === 'head' ? headDoorX(0) : routineTarget(p, spot, r, mates.indexOf(p), mates.length, rnd), placed = ['table', 'post', 'bed', 'stove'].includes(spot.at);  // a seat, a cot or the stove is its own place
+  const tx = spot.at === 'head' ? headDoorX(0) : routineTarget(p, spot, r, spot.at === 'post' ? postSeat(spot.room, mates.map(q => q.role), mates.indexOf(p)) : mates.indexOf(p), mates.length, rnd), placed = ['table', 'post', 'bed', 'stove'].includes(spot.at);  // a seat, a cot or the stove is its own place
   Object.assign(p, { room: spot.room, tdk: r.deck });
   p.tx = placed ? tx : clearOf(p, tx, people);
 }
