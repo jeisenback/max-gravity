@@ -96,7 +96,7 @@ const FOE_TYPES = {
 };
 
 // A ship's side in a fight: her shields and armor scaled by FIGHT.POOL, her parts by FIGHT.PART_HP.
-function shipSide(stats, { grade = 0, skill = 0, torps = 0, regen = 0, launcher = stats.launcher }) {
+function shipSide(stats, { grade = 0, skill = 0, torps = 0, regen = 0, launcher = stats.launcher, breakAt }) {  // breakAt: her own break-off share, when the hand's record gives her one (Hard Case, traits.js)
   const armor = Math.round(stats.armor * (1 + GRADE_HULL * grade) * FIGHT.POOL), shields = Math.round(stats.shields * FIGHT.POOL);
   const part = key => ({ hp: FIGHT.PART_HP[key], max: FIGHT.PART_HP[key] });
   const weapons = FIGHT.PART_HP.weapons * stats.guns;
@@ -105,7 +105,7 @@ function shipSide(stats, { grade = 0, skill = 0, torps = 0, regen = 0, launcher 
     parts: { weapons: { hp: weapons, max: weapons }, drive: part('drive'), lock: part('lock'), ...(launcher ? { launcher: part('launcher') } : {}) },
     guns: stats.guns, dmgMult: stats.dmgMult * (1 + GRADE_PUNCH * grade), skill,
     speed: stats.accel * stats.turn,  // who wins the say on the range
-    launcher: !!launcher, pdc: !!stats.pdc, torps, regen
+    launcher: !!launcher, pdc: !!stats.pdc, torps, regen, ...(breakAt ? { breakAt } : {})
   };
 }
 
@@ -205,7 +205,7 @@ function foeVolley(st, i) {
 // it cannot; else a broadside, at your guns while they fire and then at your hull. A lock at 0 only takes the boarding away (R20).
 function foeMove(st, i) {
   const foe = st.foes[i], armed = foe.parts.weapons.hp > 0, lock = foe.parts.lock.hp > 0, drive = foe.parts.drive.hp > 0;
-  if (drive && (hullShare(foe) < FIGHT.BREAK || !armed)) return { kind: 'break' };
+  if (drive && (hullShare(foe) < (foe.breakAt || FIGHT.BREAK) || !armed)) return { kind: 'break' };
   if (!armed) return { kind: 'hold' };  // no guns and no drive: she is out, and the fight has ended on her
   const launcher = foe.launcher && foe.parts.launcher.hp > 0;
   if (launcher && st.armed[i]) return { kind: 'salvo', target: 'hull', n: Math.min(FIGHT.SALVO, foe.torps), dmg: FIGHT.SALVO_DMG.map(d => d * Math.min(FIGHT.SALVO, foe.torps)) };
@@ -250,7 +250,7 @@ function shipEnd(st) {
   if (st.me.armor <= 0) return 'lost';
   if (st.boarded) return 'boarded';
   if (st.foes.every(out)) return 'crippled';
-  if (broke && st.foes.every((f, i) => out(f) || (f.parts.weapons.hp <= 0 && hullShare(f) >= FIGHT.BREAK))) return 'away';
+  if (broke && st.foes.every((f, i) => out(f) || (f.parts.weapons.hp <= 0 && hullShare(f) >= (f.breakAt || FIGHT.BREAK)))) return 'away';
   if (broke) return 'broke';
   if (st.band >= RANGE_BANDS.length) return 'escaped';
   if (st.turn < FIGHT.TURNS) return null;

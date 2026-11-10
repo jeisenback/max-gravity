@@ -35,7 +35,7 @@ Nothing on the sheet is bought with credits. That is the rule that stays. The ol
 ## Order of building
 
 1. Layers 2 and 3 for the four posts, with the crew perks as the automatic passives and the gunner's three moves folded in as picks (`2026-11-08-post-ladders-design.md`).
-2. Traits, read from the record that exists.
+2. Traits, read from a record of counts the hand keeps (`2026-11-10-traits-design.md`, built).
 3. Each later line and the papers with the chapter that brings them; standing as the alliances' currency in chapter 6.
 
 ## Assumptions to confirm

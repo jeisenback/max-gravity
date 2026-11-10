@@ -8,7 +8,7 @@
 (function () {
   // index.html's scripts, in its order, without game.js; tests/editor.test.js checks the two lists agree.
   const SCRIPTS = [
-  'js/build.js', 'js/data.js', 'js/util.js', 'js/sheet.js', 'js/picks.js', 'js/range.js', 'js/board.js', 'js/gates.js', 'js/orbits.js', 'js/sites.js', 'js/market.js', 'js/contracts.js', 'js/mods.js', 'js/ui.js',
+  'js/build.js', 'js/data.js', 'js/util.js', 'js/sheet.js', 'js/picks.js', 'js/traits.js', 'js/range.js', 'js/board.js', 'js/gates.js', 'js/orbits.js', 'js/sites.js', 'js/market.js', 'js/contracts.js', 'js/mods.js', 'js/ui.js',
   'js/views.js', 'js/factions.js', 'js/transit.js', 'js/burnlayout.js', 'js/burnpanel.js', 'js/crew.js', 'js/peopletext.js', 'js/people.js',
   'js/hail.js', 'js/story.js', 'js/mapbuttons.js', 'js/art.js', 'js/audio.js', 'js/music.js', 'js/tutorial.js', 'js/world.js',
   'js/company.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js', 'js/hulldetail.js', 'js/familytext.js', 'js/family.js', 'js/room.js', 'js/calendar.js', 'js/social.js',

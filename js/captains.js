@@ -203,6 +203,7 @@ function captainGoodbye() {
   const facts = goodbyeFacts(flags).slice(0, 2);
   if (facts.length) parts.push(facts.map(f => f.line).join(' '));
   if (flags.lent && g.repaid) parts.push(say('repaid'));
+  if (hasTrait(hired(), 'jonah') && g.jonah) parts.push(say('jonah'));  // Jonah (traits.js): the captain names it
   if (castDead(d.xo)) parts.push(say('xoDead')); else if (hiredXo() && g.xo) parts.push(say('xo'));
   parts.push(say('parting'));
   return {

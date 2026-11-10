@@ -63,7 +63,7 @@ const fundHeld = () => role().paysFrom() === 'fund' && !handPurse;
 const purse = () => (fundHeld() ? hired().fund : G.state.credits);
 const moveMoney = n => { if (fundHeld()) hired().fund += n; else G.state.credits += n; };
 // The navy's fine: a quarter of the purse. The heave-to pays it (engage.js contactEvent), and so does a search, when a navy party holds our bridge (repelSettle).
-const heaveToFine = () => Math.round(purse() * 0.25);
+const heaveToFine = () => Math.round(purse() * (hasTrait(hired(), 'marked') ? 0.3 : 0.25));  // Marked (traits.js): a fifth more
 
 // Who stands with you. A crew member who cannot stand you keeps to their berth, and of two who are at each other's throats
 // (the bond at which a split is on the cards, stakes.js) the one who thinks less of you will not stand in the same section.
@@ -136,6 +136,7 @@ function hurtHand(s) {
   s.youHurt = true; s.hits = (s.hits || 0) + 1;  // hits: how many times this fight (fightui.js fightTook)
   captainFlag('hurt');  // kept for the goodbye (captains.js)
   if (!s.ashore && role().canDie && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return hurtSay(again ? 'hurt.you.down' : 'hurt.you.hit'); }
+  recordHand('hurts');  // the record (traits.js), after the death roll: a dead hand gets no moment
   const bill = roleHolder('medic') ? 0 : handPays(HAND_CLINIC);  // the hand's own savings, also in a fight that a burn event started (hired.js hiredFunds)
   const pay = bill ? ` ${hurtSay('hurt.clinic', { cr: fmt(bill) })}` : '';
   return `${hurtSay(again ? 'hurt.you.again' : 'hurt.you')}${pay}`;
@@ -157,18 +158,18 @@ function repelCasualty(s, only) {  // `only`: the one it falls on, when the exch
   const c = person(who);
   if (s.hurt.has(who) || secondStrike(c)) {  // hurt twice in a fight, or marked before and hit again: the second strike
     if (loseCrew(c, killedHow(s)) === 'marked') {  // a floor held them (the full build)
-      s.marked.push(c);
+      s.marked.push(c); recordHand('matesHurt');
       return hurtSay('hit.again.marked', { first: c.first });
     }
-    s.dead.push(c);
+    s.dead.push(c); recordHand('matesLost');
     return hurtSay('hit.again.dead', { first: c.first });
   }
   if (Math.random() < lossOdds(c, true)) {  // a hard hit that does not stop at hurt (losses.js)
-    if (loseCrew(c, killedHow(s)) === 'dead') { s.dead.push(c); return `${cover}${hurtSay('hit.dead', { first: c.first })}`; }
-    s.marked.push(c); return `${cover}${hurtSay('hit.marked', { first: c.first })}`;
+    if (loseCrew(c, killedHow(s)) === 'dead') { s.dead.push(c); recordHand('matesLost'); return `${cover}${hurtSay('hit.dead', { first: c.first })}`; }
+    s.marked.push(c); recordHand('matesHurt'); return `${cover}${hurtSay('hit.marked', { first: c.first })}`;
   }
   (st.injured = st.injured || {})[who] = true;
-  s.hurt.add(who);
+  s.hurt.add(who); recordHand('matesHurt');
   return `${cover}${hurtSay('hit.hurt', { first: c.first })}${hurtWarning(c)}`;
 }
 
@@ -194,6 +195,7 @@ function repelSettle(s) {
   const st = G.state, h = hired(), cap = h && person(h.captain), d = s.d, repelled = s.won;  // an owner has no captain
   const lost = deadNote(s);
   if (s.assault) return assaultSettle(s, repelled, lost);
+  recordHand(repelled ? 'repelsHeld' : 'repelsLost');  // the record (traits.js)
   if (navyBoarding(s.state)) changeRep(d.foe.gov, -DECK.NAVY_STANDING * s.state.navyDown);
   const cited = repelled && navyBoarding(s.state) && deckWithdrew(s.state) ? citation() : '';  // a withdrawn inspection still files its citation (#828)
   if (repelled) {
@@ -209,7 +211,7 @@ function repelSettle(s) {
 // A navy party that withdrew at its cap: the citation stands, and the ship pays the heave-to's fine. No regard lost, and the standing is not reset.
 function citation() {
   const fine = heaveToFine();
-  moveMoney(-fine);
+  moveMoney(-fine); recordHand('fines');
   return ` ${sceneSay('scene:fight', 'deck.end.cited', { fine: fmt(fine) })}`;
 }
 
@@ -217,7 +219,7 @@ function citation() {
 // not reset as the heave-to resets it, since we fought them.
 function shipSearched(s) {
   const h = hired(), cap = h && person(h.captain), fine = heaveToFine();
-  moveMoney(-fine);
+  moveMoney(-fine); recordHand('fines');  // the record (traits.js): a search's fine is a fine
   if (cap) like(cap, -1, sceneSay('scene:fight', 'memory.searched'));
   s.d.foeHp = -1; G.duel = null; G.nextEvent = null;
   return `${sceneSay('scene:fight', 'deck.end.searched', { fine: fmt(fine) })}${deadNote(s)}`;
@@ -249,6 +251,7 @@ function shipTaken(s) {
 // Boarding her ends with her bridge taken (her strongbox goes into the ship's fund) or you driven back to your own lock.
 function assaultSettle(s, won, lost) {
   const st = G.state, h = hired(), cap = h && person(h.captain), foe = s.d.foe, post = lockPost();
+  recordHand(won ? 'boardingsWon' : 'boardingsLost');  // the record (traits.js)
   if (won) {
     const take = lootFor(foe).credits || randInt(10, 30) * 1000;
     moveMoney(take);

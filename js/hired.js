@@ -76,6 +76,22 @@ function levelNote(post, level) {
   UI.notes.push(text);
   if (!G.dialog) UI.render();
 }
+// What the record makes of the hand (traits.js): recordHand is the one line every site calls (an owner has no record), and traitNote says a trait's
+// moment once, by the person who would notice (the trait's `by`: a post's holder aboard and unhurt, else the captain), as a message in a burn and a
+// note at a port, as the level note is; the shipper's is a note in the inbox, and Jonah's is said by nobody.
+const traitSay = (key, vars) => sceneSay('scene:traits', key, vars);
+function recordHand(key, n = 1) { const h = hired(); if (!h) return; for (const id of recordAdd(h, key, n)) traitNote(id); }
+function traitNote(id) {
+  const h = hired(), t = HAND_TRAITS.find(x => x.id === id);
+  if (!h || !t || (h.traitsTold || []).includes(id)) return;
+  h.traitsTold = [...(h.traitsTold || []), id];
+  if (!t.by) return;
+  if (t.by === 'shipper') { noteInbox('station', traitSay('inbox.reliable'), null, 'market'); return; }
+  const who = (t.by === 'captain' ? null : postHolder(t.by)) || person(h.captain), text = traitSay(`${id}.moment`, { first: who.first });
+  if (G.mode !== 'landed') return msg(text);
+  UI.notes.push(text);
+  if (!G.dialog) UI.render();
+}
 // A stat of the hand's sheet (sheet.js): the base for an owner, and for a hand from before the sheet was kept.
 const handStat = stat => { const c = career(); return c && c.sheet ? c.sheet[stat] : STAT_BASE; };
 // Doing a job yourself: the odds are worse than a crew member's, and get better as you learn the post.
@@ -150,6 +166,8 @@ function setupHired(o) {
   },
     sheet: newSheet(st.background, post),  // the hand's stats (sheet.js)
     standing: {},  // each shipper's regard for the ship, by name (shippers.js)
+    record: {},  // the counts a trait is earned from (traits.js), and the traits whose moment has played
+    traitsTold: [],
     kit: [],  // what the hand carries, by id (KIT_ITEMS, sheet.js)
     off: null,  // a delivery that was late, short or lost, for the agent at the dock to meet (shippers.js)
     asked: 0,
@@ -299,6 +317,7 @@ function settleRun(planet) {
     paper = revenue; cut = skimOf(run, revenue, standingOf(h, run.shipper)); revenue -= cut;  // a shipper that skims pays less than the paper (contracts.js)
     if (have < run.tons) captainFlag(have ? 'contractShort' : 'contractLost');
     if (st.day > run.due) captainFlag('late');
+    recordHand(st.day > run.due ? 'late' : 'onTime');  // the record (traits.js)
     shipperSettled(run, have, st.day, cut, paper);  // the shipper's regard, and a word with the agent if it was off (shippers.js)
     if (st.cargo[run.good] > have) st.cargo[run.good] -= have; else { delete st.cargo[run.good]; delete st.paid[run.good]; }
     h.fund += revenue;

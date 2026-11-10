@@ -17,6 +17,7 @@ const helpers = () => {
     return st;
   };
   window.page = () => { G.viewPerson = 'you'; UI.tab = 'person'; UI.render(); return document.querySelector('.shell .body'); };
+  window.cardNamed = name => { const b = page(); return [...b.querySelectorAll('.con-card')].find(c => new RegExp(name).test(c.querySelector('.eyebrow') ? c.querySelector('.eyebrow').textContent : '')); };
   window.ladder = () => { const b = page(); const card = [...b.querySelectorAll('.con-card')].find(c => /Ladder/.test(c.querySelector('.eyebrow') ? c.querySelector('.eyebrow').textContent : '')); return card; };
 };
 
@@ -52,5 +53,31 @@ test('the Ladder card renders its golden markup at level 2 with one pick taken',
   const file = 'tests/fixtures/ladder.html';
   if (process.env.UPDATE_GOLDEN || !fs.existsSync(file)) fs.writeFileSync(file, html + '\n');
   assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `ladder: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+  await done();
+});
+
+// The Record card (js/traits.js, js/character.js recordCard, #964): the traits earned with their reasons, and the counts in words.
+test('the Record card says the record is empty, then names each trait earned with its reason and the counts in words', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    setup(); const out = {}, empty = cardNamed('Record'); out.empty = { card: !!empty, text: empty ? empty.textContent : '' };
+    recordHand('repelsHeld'); recordHand('repelsHeld'); recordHand('haulsClean'); UI.notes.length = 0;
+    const card = cardNamed('Record'); out.card = { text: card.textContent, traits: [...card.querySelectorAll('.record-trait')].map(e => e.textContent), words: card.querySelector('.record-words').textContent };
+    return out;
+  });
+  assert.equal(r.empty.card, true); assert.match(r.empty.text, /Nothing on the record yet/);
+  assert.equal(r.card.traits.length, 1); assert.match(r.card.traits[0], /Cool Head/); assert.match(r.card.traits[0], /Two boardings held/);
+  assert.equal(r.card.words, 'One haul clean. Two boardings held.');
+  await done();
+});
+
+test('the Record card renders its golden markup with one trait earned', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const html = await ev(() => { setup(); recordHand('repelsHeld'); recordHand('repelsHeld'); recordHand('haulsClean'); UI.notes.length = 0; return cardNamed('Record').outerHTML; });
+  const file = 'tests/fixtures/record.html';
+  if (process.env.UPDATE_GOLDEN || !fs.existsSync(file)) fs.writeFileSync(file, html + '\n');
+  assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `record: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
   await done();
 });
