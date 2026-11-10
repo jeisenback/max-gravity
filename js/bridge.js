@@ -186,7 +186,7 @@ function deckSvg() {
   const lx = X(LADDER), ly0 = rowY(0) + 6, ly1 = rowY(last) + P.row - 4;
   const ladder = `<line x1="${lx - 5}" y1="${ly0}" x2="${lx - 5}" y2="${ly1}" stroke="#4a6a8c"/><line x1="${lx + 5}" y1="${ly0}" x2="${lx + 5}" y2="${ly1}" stroke="#4a6a8c"/>` +
     Array.from({ length: Math.floor((ly1 - ly0) / 11) + 1 }, (_, i) => `<line x1="${lx - 5}" y1="${ly0 + i * 11}" x2="${lx + 5}" y2="${ly0 + i * 11}" stroke="#4a6a8c"/>`).join('');
-  const tank = `<rect x="${X(0) + 1}" y="${tankY}" width="578" height="${P.tank - 4}" rx="4" fill="#12304a" stroke="#34506e"/><text class="lbl" x="${X(0) + 6}" y="${tankY + 17}" fill="#7f95ab" font-size="11" letter-spacing="1">WATER</text>`;
+  const tank = `<rect x="${X(0) + 1}" y="${tankY}" width="578" height="${P.tank - 4}" rx="4" fill="#12304a" stroke="#34506e"/><text class="lbl" x="${X(0) + 6}" y="${tankY + 17}" fill="#7f95ab" font-size="12" letter-spacing="1">WATER</text>`;
   return `<rect x="0" y="0" width="640" height="${H}" fill="#050a11"/>
     <path d="M${X(0) - 6} ${bottom} L${X(0) - 6} ${P.top - 2} Q${X(0) - 6} 34 ${X(0.2)} 34 L${X(0.8)} 34 Q${X(1) + 6} 34 ${X(1) + 6} ${P.top - 2} L${X(1) + 6} ${bottom} Z" fill="#0e1826" stroke="#34506e" stroke-width="2"/>${tank}${rooms}${ladder}
     <text x="30" y="26" fill="#7f95ab" font-size="11" letter-spacing="2">DECK PLAN</text>`;

@@ -11,9 +11,9 @@ const CAM_RUN = { above: 45, plume: 150 };  // world units: how far over the fli
 const camRun = lay => ({ top: -CAM_RUN.above, len: CAM_RUN.above + towerHeight(lay) + HULL.plate + HULL.skin + TOWER_BELL.h + CAM_RUN.plume });
 
 // The zoom shows about three decks of the tower in the box's height (360 world units), and never less than the whole tower across
-// (its width and 40 each side). span is the world height in view.
-function viewOf(box, lay) {
-  const zoom = Math.min(box.h / 360, box.w / (lay.width + 80));
+// (its width and 40 each side) in the box right of a strip `left` px wide (the outline's: outlineLeft). span is the world height in view.
+function viewOf(box, lay, left = 0) {
+  const zoom = Math.min(box.h / 360, (box.w - left) / (lay.width + 80));
   return { zoom, span: box.h / zoom };
 }
 
@@ -34,15 +34,17 @@ function camStep(cam, target, dt, span, len) {
 }
 
 // The outline of the whole tower in screen units (#972): a tall strip in the top left corner of the view box, the tower nose up, 60 world
-// units of space each side and 75 over the nose's cap and under the drive deck (the bell's throat), scaled by k (screen px a world unit) from
+// units of space each side and 75 over the nose's cap and under the drive deck (the bell's throat), at most 120 px tall, scaled by k (screen px a world unit) from
 // the world origin at ox, oy. Each room is its layoutBox scaled.
-const OUTLINE = { maxH: 170, side: 60, end: 75 };
+const OUTLINE = { maxH: 120, side: 60, end: 75, gap: 8 };
 function outlineLayout(box, lay) {
   const h = Math.min(OUTLINE.maxH, box.h - 16), w = h * (lay.width + 2 * OUTLINE.side) / (towerHeight(lay) + 2 * OUTLINE.end), x = box.x + 8, y = box.y + 8;
   const k = h / (towerHeight(lay) + 2 * OUTLINE.end), ox = x + OUTLINE.side * k, oy = y + OUTLINE.end * k;
   const rooms = layoutRooms(lay).map(r => { const q = layoutBox(lay, r.id); return { id: r.id, x: ox + q.x0 * k, y: oy + q.top * k, w: (q.x1 - q.x0) * k, h: (q.floor - q.top) * k }; });
   return { x, y, w, h, k, ox, oy, rooms };
 }
+// The strip of the box the outline keeps for itself, from the box's left edge to the outline's right and a gap: the tower stands right of it.
+const outlineLeft = (box, o) => o.x + o.w + OUTLINE.gap - box.x;
 // A world point (x across the tower, y down from the flight deck's ceiling) on the outline, in screen units.
 const outlineAt = (o, wx, wy) => ({ x: o.ox + wx * o.k, y: o.oy + wy * o.k });
 

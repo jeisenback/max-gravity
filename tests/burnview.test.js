@@ -44,7 +44,7 @@ test('the instruments follow the burn: from rest up to a peak at the flip, then 
 const dockState = () => {
   const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), el = document.querySelector('#panel.event');
   return { rect: { x: d.left - c.left, y: d.top - c.top, w: d.width, h: d.height }, dock: G.burnBoxes.dock, clear: G.burnBoxes.clear, outline: G.cutOutline, hand: G.cutHits[0], handId: shipPeople()[0].id,
-    frame: G.cutOutline.view, zoom: viewOf(G.burnBoxes.ship, LAYOUTS.freighter).zoom, tutorial: G.burnBoxes.tutorial || null, ticker: G.burnBoxes.ticker || null, scrolls: el.scrollHeight - el.clientHeight > 1, docked: el.classList.contains('docked') };
+    frame: G.cutOutline.view, zoom: viewOf(G.burnBoxes.ship, LAYOUTS.freighter, outlineLeft(G.burnBoxes.ship, G.cutOutline)).zoom, tutorial: G.burnBoxes.tutorial || null, ticker: G.burnBoxes.ticker || null, scrolls: el.scrollHeight - el.clientHeight > 1, docked: el.classList.contains('docked') };
 };
 const near = (a, b) => ['x', 'y', 'w', 'h'].every(k => Math.abs(a[k] - b[k]) <= 1);
 // In the dock: at its x, y and width (as the page rounds them to px), and as tall as the scene up to the dock's height.
@@ -295,6 +295,33 @@ test('a tap at the centre of each room finds that room, on every ship, both ways
   }
 });
 
+// The outline in the corner is over the view: nobody, and no room's name, is drawn under it (#972).
+test('the outline covers no one and no room\'s name, wide and small (#972)', async () => {
+  for (const [name, viewport] of [['small', { width: 1000, height: 640 }], ['wide', { width: 1280, height: 800 }]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport });
+    await ev(helpers);
+    const r = await ev(() => {
+      burn(); const t = G.transit, lay = LAYOUTS.freighter, out = { under: [], hits: 0, plates: 0 }, names = new Set(ROOMS.map(x => x.name.toUpperCase()));
+      t.left = t.total * 0.7; t.angle = -Math.PI / 2; t.flipped = false;
+      const real = window.worldText, plates = [];
+      window.worldText = (c, zoom, text, x, y, size, ...a) => { if (names.has(text)) { const m = c.getTransform(); plates.push({ text, at: m.transformPoint(new DOMPoint(x - 4 / zoom, y - size)), foot: m.transformPoint(new DOMPoint(x - 4 / zoom, y + size * 0.3)) }); } return real(c, zoom, text, x, y, size, ...a); };
+      try {
+        for (const room of ['bridge', 'galley', 'berths', 'gunnery', 'engine']) {  // everyone at the far left of a room, the camera on its deck
+          const rm = roomAt(room); for (const p of shipPeople()) Object.assign(p, { room, x: rm.x0 + 0.02, dk: rm.deck, tdk: rm.deck, tx: null, wait: 999, staged: undefined });
+          G.cam = { y: layoutBox(lay, room).floor - HULL.deck / 2, t: G.time }; plates.length = 0; drawTransit(innerWidth, innerHeight);
+          const o = G.cutOutline, x0 = o.x - 4, x1 = o.x + o.w + 4, y0 = o.y - 4, y1 = o.y + o.h + 4, inside = q => q.x >= x0 && q.x <= x1 && q.y >= y0 && q.y <= y1;
+          for (const h of G.cutHits) { out.hits++; for (const q of [h, h.head, h.foot]) if (inside(q)) out.under.push(`${room}: ${h.id} at ${Math.round(q.x)},${Math.round(q.y)}`); }
+          for (const pl of plates) { out.plates++; if (!(pl.at.x > x1 || pl.at.y > y1) || inside(pl.foot)) out.under.push(`${room}: the ${pl.text} plate at ${Math.round(pl.at.x)},${Math.round(pl.at.y)}`); }
+        }
+      } finally { window.worldText = real; }
+      return out;
+    });
+    assert.ok(r.hits > 10 && r.plates > 5, `${name}: people and names in view (${r.hits}, ${r.plates})`);
+    assert.deepEqual(r.under, [], `${name}: under the outline`);
+    await done();
+  }
+});
+
 // A tap on a room opens its console as a sheet (#323, step 5 task 3).
 test('every room has a sheet, and every sheet is a station', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
@@ -527,7 +554,7 @@ test('the camera goes with the hand to an activity\'s room', async () => {
   const r = await ev(() => {
     burn(); const t = G.transit, W = innerWidth, H = innerHeight, lay = LAYOUTS.freighter, gal = roomAt('galley'), eng = roomAt('engine'), you = shipPeople()[0];
     t.left = t.total * 0.3; Object.assign(you, { room: 'engine', x: eng.mid, dk: eng.deck, tdk: eng.deck, tx: null, wait: 999 }); G.cam = null; drawTransit(W, H);  // the hand at the drive, six decks down
-    const from = G.cam.y, span = viewOf(G.burnBoxes.ship, lay).span, floor = deckFloor(lay, gal.deck);
+    const from = G.cam.y, span = viewOf(G.burnBoxes.ship, lay, outlineLeft(G.burnBoxes.ship, G.cutOutline)).span, floor = deckFloor(lay, gal.deck);
     ACTIVITIES.meal.run();
     let steps = 0;
     for (; steps < 900 && !(you.dk === gal.deck && Math.abs(G.cam.y - (floor - HULL.deck / 2)) <= span / 6 + 1); steps++) { lifeTick(0.1); G.time += 0.1; drawTransit(W, H); }
@@ -581,7 +608,7 @@ test('a climber in the tube through the tank is drawn inside it (#972)', async (
     const mate = shipPeople().find(p => p.id && p.id !== 'you' && p.role !== 'cat');
     Object.assign(mate, { x: LADDER, dk: 5.5, tdk: 6, tx: roomAt('engine').mid, wait: 999, staged: undefined });  // halfway down the tube
     G.cam = { y: towerDeckY(lay, 5.5) - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight);
-    const hit = G.cutHits.find(h => h.id === mate.id), box = G.burnBoxes.ship, zoom = viewOf(box, lay).zoom, sx = x => box.x + box.w / 2 + (x - W / 2) * zoom, sy = y => box.y + box.h / 2 + (y - G.cam.y) * zoom;
+    const hit = G.cutHits.find(h => h.id === mate.id), box = G.burnBoxes.ship, left = outlineLeft(box, G.cutOutline), zoom = viewOf(box, lay, left).zoom, sx = x => box.x + (left + box.w) / 2 + (x - W / 2) * zoom, sy = y => box.y + box.h / 2 + (y - G.cam.y) * zoom;
     const half = lay.well.w * W / 2;
     return { hit, pose: posture(mate, phase(), 0, false).name, tube: [sx(LADDER * W - half), sx(LADDER * W + half)], tank: [sy(o.tank.top), sy(o.tank.bottom)] };
   });

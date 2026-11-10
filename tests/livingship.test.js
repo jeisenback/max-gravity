@@ -176,17 +176,22 @@ test('the camera reaches down past the drive\'s bell to the first of the plume (
   assert.ok(cam + run.top + span / 2 >= mouth + 150 - 0.01, `followed to ${cam + run.top + span / 2}`);
   assert.equal(camTarget(lay, 2), towerDeckY(lay, 2) - 50 + 45, 'on any other deck, the middle of it');
 });
-test('the zoom fits about three decks and the tower across (#972)', () => {
+test('the zoom fits about three decks and the tower across, right of the outline (#972)', () => {
   const lay = LAYOUTS.freighter;
-  assert.equal(viewOf({ x: 0, y: 0, w: 1360, h: 480 }, lay).zoom, 480 / 360);
-  assert.equal(viewOf({ x: 0, y: 0, w: 760, h: 480 }, lay).zoom, 760 / 960);
-  const v = viewOf({ x: 0, y: 0, w: 760, h: 480 }, lay); assert.ok(Math.abs(v.span - 480 / v.zoom) < 1e-9);
+  assert.equal(viewOf({ x: 0, y: 0, w: 1360, h: 480 }, lay).zoom, 480 / 360, 'with no strip left of it, the height fit');
+  assert.equal(viewOf({ x: 0, y: 0, w: 760, h: 480 }, lay).zoom, 760 / 960, 'and the width fit');
+  // the outline's strip (8 in from the box's edge, its width, and an 8 gap) is left out of the width the tower fits across
+  const left = box => outlineLayout(box, lay).w + 16, wide = { x: 0, y: 0, w: 1360, h: 480 }, narrow = { x: 0, y: 0, w: 760, h: 480 };
+  assert.equal(viewOf(wide, lay, left(wide)).zoom, (1360 - left(wide)) / 960, 'a wide box: now the width fit less the strip');
+  assert.equal(viewOf(narrow, lay, left(narrow)).zoom, (760 - left(narrow)) / 960);
+  assert.equal(viewOf({ x: 0, y: 0, w: 1800, h: 480 }, lay, left(wide)).zoom, 480 / 360, 'a box wide enough keeps the height fit');
+  const v = viewOf(narrow, lay, left(narrow)); assert.ok(Math.abs(v.span - 480 / v.zoom) < 1e-9);
 });
 test('the outline is the tower: every room, and a tap finds it (#972)', () => {
   const lay = LAYOUTS.freighter, o = outlineLayout({ x: 0, y: 0, w: 1360, h: 480 }, lay);
   assert.equal(o.rooms.length, ROOMS.length);
   for (const r of o.rooms) assert.equal(outlineRoomAt(o, r.x + r.w / 2, r.y + r.h / 2), r.id, `${r.id} at its centre`);
-  assert.equal(o.h, 170, 'a strip 170 tall'); assert.ok(Math.abs(o.w - 170 * (lay.width + 120) / (towerHeight(lay) + 150)) < 1e-9, 'as wide as the tower is to its height');
+  assert.equal(o.h, 120, 'a strip 120 tall'); assert.ok(Math.abs(o.w - 120 * (lay.width + 120) / (towerHeight(lay) + 150)) < 1e-9, 'as wide as the tower is to its height');
   assert.equal(outlineRoomAt(o, o.x - 4, o.y - 4), null, 'nothing outside it');
   const tank = (o.rooms.find(r => r.id === 'lifesupport').y + o.rooms.find(r => r.id === 'lifesupport').h + o.rooms.find(r => r.id === 'engine').y) / 2;
   assert.equal(outlineRoomAt(o, o.x + o.w * 0.25, tank), null, 'nor in the tank');
@@ -195,7 +200,7 @@ test('the outline is the tower: every room, and a tap finds it (#972)', () => {
     assert.ok(Math.abs(b.w / b.h - (q.x1 - q.x0) / (q.floor - q.top)) < 1e-9, `${r.id} keeps its shape`);
   }
   assert.ok(o.rooms.find(r => r.id === 'bridge').y < o.rooms.find(r => r.id === 'galley').y && o.rooms.find(r => r.id === 'galley').x < o.rooms.find(r => r.id === 'head').x);
-  assert.equal(outlineLayout({ x: 0, y: 0, w: 760, h: 150 }, lay).h, 134, 'a short box: its height less 16');
+  assert.equal(outlineLayout({ x: 0, y: 0, w: 760, h: 110 }, lay).h, 94, 'a short box: its height less 16');
 });
 test('the outline draws balanced, with no text, and a dot on the ladder between the decks (#972)', () => {
   const lay = LAYOUTS.freighter, o = outlineLayout({ x: 0, y: 0, w: 1360, h: 480 }, lay);
@@ -308,6 +313,18 @@ test('an errand finds two rooms on a deck with one (#972)', () => {
   } finally { delete HAUNTS.plantsman; }
 });
 
+test('an errand that takes the ladder comes half as often as one on the post\'s own deck (#972)', () => {
+  const seq = vals => { let i = 0; return () => vals[i++ % vals.length]; };  // the dice: the errand's chance, then which of the two rooms, then the wait
+  const at = (role, room, dice) => { const r = roomAt(room), p = { role, block: 'shift', at: 'post', room, x: r.mid, dk: r.deck, tdk: r.deck, tx: null, wait: 0 }; routineWait(p, 'shift', false, seq(dice)); return p.errand ? p.room : null; };
+  // the engineer's two nearest rooms: the hold on the drive deck, life support up the ladder
+  assert.equal(at('engineer', 'engine', [0.2, 0, 0.5]), 'hold', 'on the post\'s deck at a quarter');
+  assert.equal(at('engineer', 'engine', [0.2, 0.9, 0.5]), null, 'up the ladder, not at a quarter');
+  assert.equal(at('engineer', 'engine', [0.1, 0.9, 0.5]), 'lifesupport', 'up the ladder at an eighth');
+  assert.equal(at('pilot', 'bridge', [0.2, 0, 0.5]), null, 'the bridge\'s nearest rooms are down the ladder: not at a quarter');
+  assert.ok(['galley', 'head'].includes(at('pilot', 'bridge', [0.1, 0, 0.5])), 'at an eighth');
+  const n = 400, rate = room => { let k = 0; for (let i = 0; i < n; i++) for (const pick of [0.25, 0.75]) if (at('engineer', 'engine', [(i + 0.5) / n, pick, 0.5]) === room) k++; return k / n; };
+  assert.ok(Math.abs(rate('lifesupport') - rate('hold') / 2) < 1e-9, `the ladder's errand half as often (${rate('lifesupport')} against ${rate('hold')})`);
+});
 test('the ship\'s damage marks one to three rooms, kept through the burn, cleared last-first, never the medbay', () => {
   const rnd = (n => () => (n = (n * 16807) % 2147483647) / 2147483647)(7), t = {};
   const m = d => JSON.parse(JSON.stringify(marksFor(t, d, rnd)));

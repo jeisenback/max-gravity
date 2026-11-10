@@ -395,6 +395,8 @@ function routineGo(p, block, people, dark, rnd, state) {
   Object.assign(p, { room: spot.room, tdk: r.deck });
   p.tx = placed ? tx : clearOf(p, tx, people);
 }
+// A shift's errand from the post: the chance at each wait, and the share of it for an errand on another deck, which takes the ladder (#972).
+const ERRAND = { chance: 0.25, ladder: 0.5 };
 // When a wait at a place runs out: in a shift someone at their post now and then goes on a short errand to a room near it, and from it back to the
 // post; someone let go by a scene or done with an activity goes back to the timetable; the rounds go on; at the table, the stove or a bunk they stay.
 function routineWait(p, block, dark, rnd, state) {
@@ -402,10 +404,14 @@ function routineWait(p, block, dark, rnd, state) {
   if (p.aside) { p.wait = 5 + 7 * rnd(); return; }  // out of a scene's way until it closes (stageScene)
   const spot = routineSpot(p, block, state);
   if (spot.rounds) goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role], rnd), rnd);
-  else if (block === 'shift' && spot.at === 'post' && rnd() < 0.25) {
-    const post = roomAt(spot.room), far = r => Math.abs(r.deck - post.deck) + Math.abs(r.mid - post.mid);
-    const near = ROOMS.filter(r => r.id !== spot.room).sort((a, b) => far(a) - far(b)).slice(0, 2).map(r => r.id);  // a short errand: one of the two rooms nearest the post, by decks and across, so a deck of one room finds them on the decks either side
-    if (near.length) { goTo(p, near[Math.floor(rnd() * near.length)], rnd); p.errand = true; p.at = undefined; }
+  else if (block === 'shift' && spot.at === 'post') {
+    const u = rnd();
+    if (u < ERRAND.chance) {
+      const post = roomAt(spot.room), far = r => Math.abs(r.deck - post.deck) + Math.abs(r.mid - post.mid);
+      const near = ROOMS.filter(r => r.id !== spot.room).sort((a, b) => far(a) - far(b)).slice(0, 2);  // a short errand: one of the two rooms nearest the post, by decks and across, so a deck of one room finds them on the decks either side
+      const to = near.length && near[Math.floor(rnd() * near.length)];
+      if (to && (to.deck === post.deck || u < ERRAND.chance * ERRAND.ladder)) { goTo(p, to.id, rnd); p.errand = true; p.at = undefined; }  // one up or down the ladder half as often: it keeps them from the post a while (#972)
+    }
   }
   p.wait = 5 + 7 * rnd();
 }
@@ -625,12 +631,13 @@ function towerTank(ctx, lay, tk, fuel, s) {
 // G.cutOutline for a tap (game.js).
 function drawCutaway(box, clear = box) {
   const t = G.transit, st = G.state, people = shipPeople(), ph = phase(), still = Settings.reduceMotion, time = still ? 0 : G.time;
-  const lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay), view = viewOf(box, lay), zoom = view.zoom, half = view.span / 2;
+  const lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay), ol = outlineLayout(box, lay), left = outlineLeft(box, ol), view = viewOf(box, lay, left), zoom = view.zoom, half = view.span / 2;
   const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = phaseWeights(pr);
-  // The tower stands across the middle of the part of the box a docked dialog leaves clear (all of it with none), and the camera pans up
-  // and down it after the hand's deck (camTarget): it steps in that part's own terms, its centre and its height, down the run from the
-  // top of the nose's cap to the first of the plume (camRun), offset from the box's centre by offX and offY. Reduced motion snaps.
-  const offX = (box.x + box.w / 2 - (clear.x + clear.w / 2)) / zoom, offY = (box.y + box.h / 2 - (clear.y + clear.h / 2)) / zoom, run = camRun(lay);
+  // The tower stands across the middle of the part of the box a docked dialog leaves clear (all of it with none) right of the outline's
+  // strip, and the camera pans up and down it after the hand's deck (camTarget): it steps in that part's own terms, its centre and its
+  // height, down the run from the top of the nose's cap to the first of the plume (camRun), offset from the box's centre by offX and offY.
+  // Reduced motion snaps.
+  const rx0 = Math.max(clear.x, box.x + left), offX = (box.x + box.w / 2 - (rx0 + clear.x + clear.w) / 2) / zoom, offY = (box.y + box.h / 2 - (clear.y + clear.h / 2)) / zoom, run = camRun(lay);
   const held = G.cam && !still ? G.cam.y - offY - run.top : null, target = camTarget(lay, people[0].dk);
   const camY = camStep(held, target, G.cam ? Math.max(0, G.time - G.cam.t) : 0, clear.h / zoom, run.len) + run.top + offY, camX = W / 2 + offX;
   G.cam = { y: camY, t: G.time };
@@ -711,7 +718,7 @@ function drawCutaway(box, clear = box) {
   }
   // The thrust sign over the galley's right end on the mess deck, scaled up where the camera is far enough out that its text would be under
   // 12px; kept whole inside the clear part's edges when a docked dialog covers the galley's end.
-  const galley = layoutBox(lay, 'galley'), sk = Math.max(1, 1.05 / zoom), signHalf = 56 * sk + 4, halfW = clear.w / zoom / 2, signX = Math.min(camX - offX + halfW - signHalf, Math.max(camX - offX - halfW + signHalf, galley.x1 - 6 - 56 * sk));
+  const galley = layoutBox(lay, 'galley'), sk = Math.max(1, 1.05 / zoom), signHalf = 56 * sk + 4, toWorldX = sx => camX + (sx - bcx) / zoom, signX = Math.min(toWorldX(clear.x + clear.w) - signHalf, Math.max(toWorldX(rx0) + signHalf, galley.x1 - 6 - 56 * sk));
   ctx.save(); ctx.translate(signX, galley.top + 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, burnState().g, w, time, zoom * sk); ctx.restore();
 
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
@@ -767,7 +774,7 @@ function drawCutaway(box, clear = box) {
   const rack = commsRackBox(layoutBox(lay, 'bridge')), ra = toScreen(rack.x, rack.y), rb = toScreen(rack.x + rack.w, rack.y + rack.h);  // the comms rack, whole in the clear part or not at all
   G.cutRack = ra.x >= cx0 && rb.x <= cx1 && ra.y >= cy0 && rb.y <= cy1 ? { x: ra.x, y: ra.y, w: rb.x - ra.x, h: rb.y - ra.y } : null;
   const seenPart = { y: camY - offY, span: clear.h / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers
-  G.cutOutline = { ...outlineLayout(box, lay), ids: people.filter(p => p.id).map(p => p.id), view: seenPart };
+  G.cutOutline = { ...ol, ids: people.filter(p => p.id).map(p => p.id), view: seenPart };
   drawOutline(ctx, G.cutOutline, dots, seenPart.y, seenPart.span, lay);
 }
 
