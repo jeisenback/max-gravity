@@ -475,6 +475,74 @@ test('the medbay has a supply cabinet, its doors and the supplies on it (#933)',
   assert.ok(fills('#8a96a2') >= 1, 'the cabinet, the seam between its doors'); assert.ok(fills('#9aa8b6') >= 2, 'a handle on each door'); assert.ok(fills('#7fb8c8') >= 2, 'bottles on its top');
 });
 
+// #933, the figures' standard: a prop part is a path with the figures' outline, lit on its top and shaded on its side.
+const { roomPart, roomRound, roomBench } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomPart', 'roomRound', 'roomBench']);
+const FIG_OUTLINE = 'rgba(10,13,18,0.85)';
+test('a prop part is a closed path, filled, lit on top, shaded on its side and outlined like the figures (#933)', () => {
+  const d = roomRound(10, 20, 40, 30, 3);
+  assert.match(d, /^M .* Z$/, 'a rounded box is a closed path'); assert.ok((d.match(/Q/g) || []).length === 4, 'its four corners rounded');
+  const c = fakeCtx(), { ctx, calls } = recorder();
+  for (const x of [c, ctx]) roomPart(x, d, '#2c4c6e', { side: 5 });
+  assert.equal(c.depth, 0, 'every save restored'); assert.ok(c.calls.includes('closePath'), 'closed'); assert.ok(c.calls.includes('clip'), 'the shading kept inside it');
+  const fills = calls.filter(k => k[0] === 'fillStyle').map(k => k[1]), strokes = calls.filter(k => k[0] === 'strokeStyle').map(k => k[1]);
+  assert.ok(fills.includes('#2c4c6e'), 'its front in its own colour');
+  const lum = s => { const [r, g, b] = /\d+,\d+,\d+/.exec(s)[0].split(',').map(Number); return r + g + b; }, base = 0x2c + 0x4c + 0x6e;
+  assert.ok(fills.some(f => f.startsWith('rgb') && lum(f) > base), 'a lit top'); assert.ok(fills.some(f => f.startsWith('rgb') && lum(f) < base), 'a side in shade');
+  assert.deepEqual(strokes, [FIG_OUTLINE], 'the figures\' outline'); assert.ok(calls.some(k => k[0] === 'stroke'));
+  assert.equal(calls.filter(k => k[0] === 'save').length, calls.filter(k => k[0] === 'restore').length);
+  const plain = recorder(); roomPart(plain.ctx, d, 'rgba(1,2,3,0.5)');
+  assert.ok(plain.calls.some(k => k[0] === 'fill') && plain.calls.some(k => k[0] === 'stroke'), 'a colour it cannot shade is filled and outlined');
+});
+// What the galley drew, apart from its walls and its lamp (the multiset of recorded points and rects less theirs).
+const galleyOwn = (r, s) => {
+  const all = fakeCtx(); drawRoom(all, 'galley', r, s);
+  const base = fakeCtx(); roomWalls(base, r, s.w, s.time, s.still); drawPhaseLight(base, r, s.w, s.time, s.night, false);
+  const left = [...all.args]; for (const a of base.args) { const i = left.indexOf(a); if (i >= 0) left.splice(i, 1); }
+  return left.map(a => { const [k, ...v] = a.split(/(?<=[a-zA-Z])(?=-?\d)|,/); return { k, v: v.map(Number) }; });
+};
+test('the galley is drawn to the figures\' standard in every phase: its props outlined, the name and the sign on clear wall (#933)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'galley'), F = r.floor;
+  for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.66, 0.96, 1.24]) {  // the burn view's zoom in a window 1000, 1280 and 1600 wide
+    const s = RS({ w: phaseWeights(pr), zoom, damage: { marks: new Set(), severe: false } });
+    const c = fakeCtx(); drawRoom(c, 'galley', r, s); roomMessTable(c, r, s);
+    assert.equal(c.depth, 0, `${pr}: every save restored`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'galley', r, s); roomMessTable(ctx, r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of [['#1f3852', 'the counter and its cupboards'], ['#22405c', 'the cupboards on the wall'], ['#8796a5', 'latches on the cupboards'], ['#3d6a86', 'the water dispenser'], ['#7d8995', 'knives on the strip'],
+      ['#2f4a66', 'the porthole\'s frame'], ['#33506e', 'the bench\'s pad'], ['#4a6680', 'the table\'s tie-down rail'], ['#56708c', 'the hood'], ['#0b1520', 'the burners']]) assert.ok(fills(col) >= 1, `${pr}: ${what}`);
+    assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === FIG_OUTLINE).length >= 20, `${pr}: the props outlined like the figures`);
+    for (const col of ['#d8d2c4', '#ddd6c8', '#9aa8b6', '#8a5a3a']) assert.equal(fills(col), 0, `${pr}: no near-white or orange block (${col}), the props a step below the people`);
+    // the room's name (shiplife.js: 13px on a plate at its top left) and the thrust sign (its right end, over the hood) on clear wall; in the
+    // smallest window the sign is scaled up to keep its text at 12px and covers the hood's top, as it is drawn over the room
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, sk = zoom < 0.9 ? 0 : Math.max(1, 1.05 / zoom);
+    const sign = { x0: r.x1 - 6 - 112 * sk, x1: r.x1 - 6, y0: r.top + 8, y1: r.top + 8 + 18 * sk };
+    const hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v } of galleyOwn(r, s)) {
+      const pts = k === 'fillRect' ? [[v[0], v[1]], [v[0] + v[2], v[1]], [v[0], v[1] + v[3]], [v[0] + v[2], v[1] + v[3]], [v[0] + v[2] / 2, v[1] + v[3] / 2]] : /^(moveTo|lineTo)$/.test(k) ? [v] : k === 'quadraticCurveTo' ? [v.slice(2)] : [];
+      for (const [x, y] of pts) { assert.ok(!hit(name, x, y), `${pr} ${zoom}: ${k} ${v} under the room's name`); assert.ok(!hit(sign, x, y), `${pr} ${zoom}: ${k} ${v} under the thrust sign`); }
+    }
+  }
+  // sized to a person: the bench at the seated hip, the counter at the waist
+  const b = fakeCtx(); roomBench(b, 100, 300, 100);
+  const ys = b.args.filter(a => /^(moveTo|lineTo)/.test(a)).map(a => Number(a.split(',')[1]));
+  assert.ok(Math.abs(100 - Math.min(...ys) - 23) <= 1.5, `the bench's seat at about 23 (${100 - Math.min(...ys)})`);
+});
+test('the mess table has legs and a tie-down rail, its plates and the mug on it, in every phase (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.45, 0.5]) {
+    const c = fakeCtx(); roomMessTable(c, RR, RS({ w: phaseWeights(pr) })); assert.equal(c.depth, 0);
+    const { ctx, calls } = recorder(); roomMessTable(ctx, RR, RS({ w: phaseWeights(pr) }));
+    assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === FIG_OUTLINE).length >= 5, `${pr}: the top, two legs and the rail outlined`);
+    assert.ok(calls.filter(k => k[0] === 'fillStyle' && k[1] === '#4a6680').length >= 1, `${pr}: the tie-down rail`);
+    assert.ok(calls.filter(k => k[0] === 'arc').length >= 4, `${pr}: the rail's tie-down rings`);
+    assert.ok(!calls.some(k => k[0] === 'fillStyle' && k[1] === '#cfe3ff'), `${pr}: the mug a step below white`);
+  }
+});
+test('the thrust sign is a plate screwed to the wall, still reading the phase and the g (#933)', () => {
+  const { ctx, calls } = recorder(); drawThrustSign(ctx, 0, 0, 2.7, phaseWeights(0.3), 1, 1.5);
+  assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === FIG_OUTLINE), 'outlined like the figures'); assert.ok(calls.some(k => k[0] === 'closePath'), 'a drawn plate');
+  assert.ok(calls.filter(k => k[0] === 'arc').length >= 4, 'a screw at each corner');
+});
+
 // Review Focus 5 (#972): at the hard burn someone off their couch's deck takes the ladder in the well to it, never through the floors.
 test('the couch phase takes the ladder to a couch on another deck, and the couch unfolds once they are on it (#972)', () => {
   const G2 = { mode: 'transit' };
@@ -514,5 +582,25 @@ test('the bunks are a person long, either side of the well, and a sleeper lies o
       assert.ok(fig.foot.x + 5 <= b.x + b.w, `n ${n}, bunk ${k}: the feet (${fig.foot.x}) on the bunk, to ${b.x + b.w}`);
     });
     assert.ok(bunks.some(b => b.x >= well.x1) || n < 4, `n ${n}: bunks on both sides of the well`);
+  }
+});
+
+test('the mug has its handle in every phase, lifted with it (#933)', () => {
+  const tx = RR.x0 + (RR.x1 - RR.x0) * 0.25, mx = tx + (RR.x0 + (RR.x1 - RR.x0) * 0.73 - tx) * 0.75;
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { ctx, calls } = recorder(); roomMessTable(ctx, RR, RS({ w: phaseWeights(pr) }));
+    assert.ok(calls.some(k => k[0] === 'arc' && Math.abs(k[1] - (mx + 5)) < 0.5 && k[3] === 2.5), `${pr}: the handle at the mug's side`);
+  }
+});
+test('the galley answers the phase: the stove\'s ring lit only in cruise, the table lashed to its rings only in the hard burn (#933)', () => {
+  const r = { x0: 0, x1: 420, top: 0, floor: 100 }, W = 420, tx = W * 0.25, tw = W * 0.73 - tx, rings = Array.from({ length: 6 }, (_, k) => tx + 14 + (tw - 28) * k / 5);
+  const draw = w => { const { ctx, calls } = recorder(); const s = RS({ w, damage: { marks: new Set(), severe: false } }); drawRoom(ctx, 'galley', r, s); roomMessTable(ctx, r, s); return calls; };
+  const lit = calls => calls.some(k => k[0] === 'fillStyle' && String(k[1]).startsWith('rgba(255,122,58'));
+  const lashings = calls => { const out = []; calls.forEach((k, i) => { if (k[0] === 'strokeStyle' && k[1] === 'rgba(140,170,200,0.5)') for (let j = i + 1; j < calls.length && calls[j][0] !== 'strokeStyle'; j++) if (calls[j][0] === 'moveTo') out.push(calls[j][1]); }); return out; };
+  for (const [w, ring, lashed] of [[{ burn: 0, cruise: 1, flip: 0 }, true, false], [{ burn: 0.96, cruise: 0.04, flip: 0 }, false, true], [{ burn: 0, cruise: 0.04, flip: 0.96 }, false, false], [{ burn: 0.5, cruise: 0.5, flip: 0 }, true, false]]) {
+    const calls = draw(w), l = lashings(calls);
+    assert.equal(lit(calls), ring, `ring lit at ${JSON.stringify(w)}`);
+    assert.equal(l.length > 0, lashed, `lashings at ${JSON.stringify(w)}`);
+    for (const x of l) assert.ok(rings.some(rx => Math.abs(rx - x) < 0.01), `a lashing from a ring (${x})`);
   }
 });
