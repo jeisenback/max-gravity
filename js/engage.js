@@ -93,7 +93,7 @@ function contactEvent(spec) {
   if (spec.kind === 'pirate' && hasTrait(hired(), 'runner')) choices.push({ label: `[Runner] ${traitSay('door.runner.label')}${costNote({ sent: 'hull damage, and the fight anyway' }, fleeOdds() + 0.15)}`, run: () => startShipFight(spec, true, { flee: 0.15 }) });  // the trait's door: the run, fifteen points better
   if (spec.kind === 'pirate') {
     choices.push({ label: contactSay('pay.label'), cost: true, ...gated(needCr(5000)), run() {
-      const c = Math.max(5000, Math.round(st.credits * 0.1));
+      const c = Math.round(Math.max(5000, Math.round(st.credits * 0.1)) * (hasTrait(hired(), 'marked') ? 0.5 : 1));  // Marked (traits.js): they know the name, and ask half
       st.credits -= c;
       return `${contactSay('pay.result', { cr: fmt(c) })}${runCost()}`;
     } });
@@ -123,6 +123,7 @@ function contactEvent(spec) {
     if (spec.ladder) ladderDone(hired(), spec.ladder);  // the ladder's cutter is a papers check: complying answers it, so the fine is paid once (fightladder.js)
     moveMoney(-fine); recordHand('fines');  // the record (traits.js)
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
+    if (hasTrait(hired(), 'hard-case')) changeRep(spec.gov, -2);  // Hard Case (traits.js): the boardings are known, and a stop costs standing
     like(person(hired().captain), -1, sceneSay('scene:memories', 'patrol-fine.memory'));
     return contactSay('heave.result', { fine: fmt(fine) });
   } });

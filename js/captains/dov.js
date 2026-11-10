@@ -128,6 +128,7 @@ CAPTAINS.dov = {
     warm: 'Captain Adair is at the foot of the ramp with a paper bag that smells of bread. "I didn\'t know what to give you," he says. "So it\'s food. It\'s always food."',
     neutral: 'Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.',
     cold: 'Captain Adair is at the foot of the ramp. He doesn\'t tell a story. He shakes your hand and says he\'s sorry it went the way it did.',
+    jonah: 'He doesn\'t tell the story about the two of them. "Some ships are like that for a while," he says. "It isn\'t you." He says it twice.',  // two shipmates lost on the hand's record (traits.js)
     crew: '{names} will go with you. "I\'m glad they\'re going with you," he says. "They like you. I could see it from the first week."',
     secret: 'The book he keeps is out of sight. "Look after your own fund," he says. "Not like mine."',
     repay: 3300,

@@ -63,7 +63,7 @@ const fundHeld = () => role().paysFrom() === 'fund' && !handPurse;
 const purse = () => (fundHeld() ? hired().fund : G.state.credits);
 const moveMoney = n => { if (fundHeld()) hired().fund += n; else G.state.credits += n; };
 // The navy's fine: a quarter of the purse. The heave-to pays it (engage.js contactEvent), and so does a search, when a navy party holds our bridge (repelSettle).
-const heaveToFine = () => Math.round(purse() * 0.25);
+const heaveToFine = () => Math.round(purse() * (hasTrait(hired(), 'marked') ? 0.3 : 0.25));  // Marked (traits.js): a fifth more
 
 // Who stands with you. A crew member who cannot stand you keeps to their berth, and of two who are at each other's throats
 // (the bond at which a split is on the cards, stakes.js) the one who thinks less of you will not stand in the same section.

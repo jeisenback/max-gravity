@@ -146,6 +146,7 @@ function makeCrewCandidate(systemId) {
   p.wage = Math.round(ROLE_WAGE[p.role] * (0.6 + 0.3 * p.skill));
   p.fee = p.wage * 30;
   p.job = ROLE_NAMES[p.role].toLowerCase();
+  if (hasTrait(hired(), 'jonah')) p.opinion = -1;  // Jonah (traits.js): the name went round before the berth was offered
   return p;
 }
 

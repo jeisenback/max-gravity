@@ -191,3 +191,40 @@ test('Salvager reads the seam on the rock, and Scarred ends a bar fight with no 
   assert.deepEqual(r.owner, []);
   await done();
 });
+
+// ---------- the readings (one line at a knob that exists) ----------
+
+test('Marked halves a pirate\'s pay-off and raises the heave-to fine; Hard Case costs two more points at a stop; Runner meets a raider ten km nearer', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(doorHelpers);
+  const r = await ev(() => {
+    const st = setup(), h = hired(), out = {}, gov = 'Arcology Compact'; burn(); fixEnemy();
+    const pay = () => { const c = contactEvent({ kind: 'pirate' }).choices.find(x => /pay|Pay/.test(x.label) && x.cost); const cr = st.credits; c.run(); return cr - st.credits; };
+    st.credits = 200000; const plainPay = pay(); st.credits = 200000; const plainFine = heaveToFine();
+    h.record = { fines: 2 }; st.credits = 200000; out.pay = [plainPay, pay()]; st.credits = 200000; out.fine = [plainFine, heaveToFine()];
+    const stop = () => { const rep0 = repOf(gov); contactEvent({ kind: 'patrol', gov }).choices.find(c => /Heave to/.test(c.label)).run(); return repOf(gov) - rep0; };
+    h.record = {}; st.rep[gov] = 0; h.fund = 100000; const plainRep = stop(); h.record = { boardingsWon: 2 }; st.rep[gov] = 0; h.fund = 100000; out.rep = [plainRep, stop()];
+    const band = () => { startDuel({ kind: 'pirate' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
+    h.record = {}; const plainBand = band(); h.record = { fightsRan: 3 }; out.band = [plainBand, band()];
+    return out;
+  });
+  assert.ok(r.pay[0] > 0 && r.pay[1] === Math.round(r.pay[0] / 2), `the pay-off ${r.pay}`);
+  assert.equal(r.fine[1], Math.round(r.fine[0] * 1.2), `the fine ${r.fine}`);
+  assert.equal(r.rep[1], r.rep[0] - 2, `the standing ${r.rep}`);
+  assert.deepEqual(r.band, ['long', 'mid'], 'a raider at 40 km, 30 with Runner');
+  await done();
+});
+
+test('Jonah is named in the captain\'s goodbye, and a crew member made for the ship starts at opinion minus one', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), h = hired(), out = {}, g = captainEntry().goodbye;
+    out.line = typeof g.jonah; out.plain = { goodbye: captainGoodbye().text.includes(g.jonah), opinion: makeCrewCandidate(st.systemId).opinion };
+    h.record = { matesLost: 2 }; out.jonah = { goodbye: captainGoodbye().text.includes(g.jonah), opinion: makeCrewCandidate(st.systemId).opinion };
+    return out;
+  });
+  assert.equal(r.line, 'string', 'the captain has a line for it');
+  assert.deepEqual(r.plain, { goodbye: false, opinion: 0 }); assert.deepEqual(r.jonah, { goodbye: true, opinion: -1 });
+  await done();
+});

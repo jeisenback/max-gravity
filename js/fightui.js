@@ -33,12 +33,12 @@ function startShipFight(spec, flee, o = {}) {
   captainFlag('raided');  // fought, not outrun: kept for the goodbye (captains.js)
   rateFoe(s);
   const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
-  const me = ship(), entry = captainEntry(), side = () => shipSide({ dmgMult: 1, ...SHIPS[foe.shipId], armor: foe.maxArmor }, { grade: s.grade, ...FOE_TYPES[foe.shipId], torps: (FOE_TYPES[foe.shipId] || {}).torps || 0 });
+  const me = ship(), entry = captainEntry(), side = () => shipSide({ dmgMult: 1, ...SHIPS[foe.shipId], armor: foe.maxArmor }, { grade: s.grade, ...FOE_TYPES[foe.shipId], torps: (FOE_TYPES[foe.shipId] || {}).torps || 0, breakAt: hasTrait(hired(), 'hard-case') ? FIGHT.BREAK + 0.1 : undefined });  // Hard Case (traits.js): she breaks off a tenth sooner
   const mine = shipSide(me, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0) + (handPerk('marksman') ? 1 : 0), launcher: me.launcher, torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
   mine.pdcHold = handPerk('pd-watch') ? 0.5 : FIGHT.PDC_HOLD;  // what a held turret takes off her volley (the fight perks, picks.js)
   mine.armor = Math.min(mine.maxArmor, Math.max(1, Math.round(st.armor * FIGHT.POOL)));  // at least 1: a ship at its last armor still fights
   s.armor0 = { real: st.armor, fight: mine.armor };  // what fightTook measures the real loss from
-  s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0) + (handPerk('lane-sense') ? 10 : 0))) });  // lane-sense: her plume read ten km sooner
+  s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0) + (handPerk('lane-sense') ? 10 : 0) - (hasTrait(hired(), 'runner') ? 10 : 0))) });  // lane-sense: her plume read ten km sooner; Runner (traits.js): pirates close ten km faster
   s.state.log = [o.open || fightSay(`open.${style}.${st.day % 2}`)];
   if (s.edge) {
     const r = headStart(s.state, s.edge, Math.random);

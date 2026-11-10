@@ -931,6 +931,16 @@ test('lead at close or knife has no range penalty to take off: not spent, nothin
   }
 });
 
+// Hard Case (traits.js): a foe's side may carry its own break-off share, read where FIGHT.BREAK is.
+test('a foe side breaks off at its own breakAt when it has one, else at FIGHT.BREAK, and shipEnd reads the same share', () => {
+  const side = breakAt => shipSide({ shields: 50, armor: 100, guns: 1, dmgMult: 1, accel: 1, turn: 1 }, breakAt ? { breakAt } : {});
+  assert.equal('breakAt' in side(), false, 'none unless given'); assert.equal(side(0.4).breakAt, 0.4);
+  const at = (foe, share) => { const st = fight(); st.foes = [foe]; foe.shields = 0; foe.armor = Math.round((foe.maxShields + foe.maxArmor) * share); return foeMove(st, 0).kind; };
+  assert.equal(at(side(), 0.35), 'close', 'above FIGHT.BREAK she comes on'); assert.equal(at(side(0.4), 0.35), 'break', 'under her own share she breaks off');
+  const away = (foe, share) => { const st = fight(); st.foes = [foe]; foe.shields = 0; foe.armor = Math.round((foe.maxShields + foe.maxArmor) * share); foe.parts.weapons.hp = 0; st.moves = { foe: [{ kind: 'break' }], captain: hold }; return shipEnd(st); };
+  assert.equal(away(side(), 0.35), 'away', 'her guns gone and her hull whole by FIGHT.BREAK: she got away with nothing'); assert.equal(away(side(0.4), 0.35), 'broke', 'by her own share she did not');
+});
+
 // The fight perks of the post ladders (picks.js): the engine reads them as figures on the state the panel builds.
 test('a held turret cuts her volley by the side\'s own pdcHold when it has one, else by PDC_HOLD', () => {
   const st = fight({ stats: { guns: 1, pdc: true } }), v = me => resolveShipTurn({ ...st, me: { ...st.me, ...me } }, orders(fire(1), { pdc: 'hold' }), { foe: [HULL], captain: hold }, HIGH).events.find(e => e.who === 'foe').dmg;

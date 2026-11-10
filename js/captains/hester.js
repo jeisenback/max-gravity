@@ -142,6 +142,7 @@ CAPTAINS.hester = {
     warm: 'Captain Vance is waiting at the foot of the ramp when you come down, with the notebook under one arm. "I have your account," she says. "It\'s correct. I\'d like you to check it anyway."',
     neutral: 'Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.',
     cold: 'Captain Vance is at the foot of the ramp, and she has the papers ready. She doesn\'t offer her hand. "Your account is correct," she says. "Sign here, and here."',
+    jonah: 'She has the two names on the page before yours, in her own hand. "I don\'t hold it against you," she says, and does not say what.',  // two shipmates lost on the hand's record (traits.js)
     crew: '{names} will go with you. She runs a finger down the crew list. "That\'s a column I\'ll have to fill again," she says.',
     secret: 'She doesn\'t mention the house. "The first of the month," she says, "and the first after that. I\'ll be there for them."',
     repay: 4100,
