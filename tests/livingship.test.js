@@ -574,3 +574,23 @@ test('the bunks are a person long, either side of the well, and a sleeper lies o
     assert.ok(bunks.some(b => b.x >= well.x1) || n < 4, `n ${n}: bunks on both sides of the well`);
   }
 });
+
+test('the mug has its handle in every phase, lifted with it (#933)', () => {
+  const tx = RR.x0 + (RR.x1 - RR.x0) * 0.25, mx = tx + (RR.x0 + (RR.x1 - RR.x0) * 0.73 - tx) * 0.75;
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { ctx, calls } = recorder(); roomMessTable(ctx, RR, RS({ w: phaseWeights(pr) }));
+    assert.ok(calls.some(k => k[0] === 'arc' && Math.abs(k[1] - (mx + 5)) < 0.5 && k[3] === 2.5), `${pr}: the handle at the mug's side`);
+  }
+});
+test('the galley answers the phase: the stove\'s ring lit only in cruise, the table lashed to its rings only in the hard burn (#933)', () => {
+  const r = { x0: 0, x1: 420, top: 0, floor: 100 }, W = 420, tx = W * 0.25, tw = W * 0.73 - tx, rings = Array.from({ length: 6 }, (_, k) => tx + 14 + (tw - 28) * k / 5);
+  const draw = w => { const { ctx, calls } = recorder(); const s = RS({ w, damage: { marks: new Set(), severe: false } }); drawRoom(ctx, 'galley', r, s); roomMessTable(ctx, r, s); return calls; };
+  const lit = calls => calls.some(k => k[0] === 'fillStyle' && String(k[1]).startsWith('rgba(255,122,58'));
+  const lashings = calls => { const out = []; calls.forEach((k, i) => { if (k[0] === 'strokeStyle' && k[1] === 'rgba(140,170,200,0.5)') for (let j = i + 1; j < calls.length && calls[j][0] !== 'strokeStyle'; j++) if (calls[j][0] === 'moveTo') out.push(calls[j][1]); }); return out; };
+  for (const [w, ring, lashed] of [[{ burn: 0, cruise: 1, flip: 0 }, true, false], [{ burn: 0.96, cruise: 0.04, flip: 0 }, false, true], [{ burn: 0, cruise: 0.04, flip: 0.96 }, false, false], [{ burn: 0.5, cruise: 0.5, flip: 0 }, true, false]]) {
+    const calls = draw(w), l = lashings(calls);
+    assert.equal(lit(calls), ring, `ring lit at ${JSON.stringify(w)}`);
+    assert.equal(l.length > 0, lashed, `lashings at ${JSON.stringify(w)}`);
+    for (const x of l) assert.ok(rings.some(rx => Math.abs(rx - x) < 0.01), `a lashing from a ring (${x})`);
+  }
+});

@@ -20,12 +20,16 @@ const roomBox = (ctx, x, y, w, h, col) => {
 // A prop's part drawn to the figures' standard (#933): a path in SVG syntax (figPath's, figures.js, so it draws without a browser) filled with
 // its colour as its front, a band along its top lit by the ceiling's lamps, a band down one side (o.side units: on the right, or the left when
 // negative) and along its underside (o.under) in shade, and the figures' outline round it. A colour not written as #rrggbb is filled flat.
+// figPath keeps every path string it reads (and roomPart its bounds), so a path given here is fixed per layout: built from the room's box, W,
+// X() and constants, never from s.time, the zoom or anything that changes frame to frame (move such a part with ctx.translate instead).
+const roomBounds = {};
 function roomPart(ctx, d, col, o = {}) {
   const { top = 1.5, side = 0, under = 0 } = o;
   figPath(ctx, d); ctx.fillStyle = col; ctx.fill();
   if (/^#[0-9a-f]{6}$/i.test(col) && (top || side || under)) {
-    const v = figTokens[d].filter(t => !/[A-Z]/.test(t)).map(Number), xs = v.filter((_, i) => i % 2 === 0), ys = v.filter((_, i) => i % 2 === 1);
-    const x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+    const [x0, y0, x1, y1] = roomBounds[d] || (roomBounds[d] = figTokens[d].filter(t => !/[A-Z]/.test(t)).reduce((b, t, i) => {
+      const v = Number(t), k = i % 2; b[k] = Math.min(b[k], v); b[k + 2] = Math.max(b[k + 2], v); return b;
+    }, [Infinity, Infinity, -Infinity, -Infinity]));
     ctx.save(); ctx.clip();
     if (top) roomFlat(ctx, x0, y0, x1 - x0, top, figShade(col, 1.4));
     if (side) roomFlat(ctx, side > 0 ? x1 - side : x0, y0, Math.abs(side), y1 - y0, figShade(col, 0.72));
@@ -34,7 +38,7 @@ function roomPart(ctx, d, col, o = {}) {
   }
   ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
 }
-// A box with its corners rounded by rad, as a path for roomPart.
+// A box with its corners rounded by rad, as a path for roomPart, its numbers rounded to hundredths (short keys, never an exponent).
 const roomRound = (x, y, w, h, rad) => {
   const n = v => Math.round(v * 100) / 100, a = n(x), b = n(y), c = n(x + w), e = n(y + h), q = n(Math.min(rad, w / 2, h / 2));
   return `M ${n(a + q)} ${b} L ${n(c - q)} ${b} Q ${c} ${b} ${c} ${n(b + q)} L ${c} ${n(e - q)} Q ${c} ${e} ${n(c - q)} ${e} L ${n(a + q)} ${e} Q ${a} ${e} ${a} ${n(e - q)} L ${a} ${n(b + q)} Q ${a} ${b} ${n(a + q)} ${b} Z`;
@@ -136,7 +140,9 @@ function roomStool(ctx, x, F, back) {  // back: a chair's back on the left (1) o
 function roomMug(ctx, x, y, w, time) {
   const free = w.cruise, lift = 3 * free;
   ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1.5; ctx.strokeRect(x - 6, y - 4, 12, 4);
-  ctx.save(); ctx.translate(0, -lift); roomPart(ctx, roomRound(x - 4, y - 9, 8, 9, 1.2), '#a9b8c6', { top: 1, side: 2 }); ctx.restore();  // moved, not redrawn, as it lifts: figPath keeps each path it reads ctx.strokeStyle = '#a9b8c6'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x + 5, y - 5 - lift, 2.5, -Math.PI / 2, Math.PI / 2); ctx.stroke();
+  // moved, not redrawn, as it lifts (a path given to roomPart is fixed per layout)
+  ctx.save(); ctx.translate(0, -lift); roomPart(ctx, roomRound(x - 4, y - 9, 8, 9, 1.2), '#a9b8c6', { top: 1, side: 2 });
+  ctx.strokeStyle = '#a9b8c6'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(x + 5, y - 5, 2.5, -Math.PI / 2, Math.PI / 2); ctx.stroke(); ctx.restore();
   if (w.flip > 0.5) roomBox(ctx, x - 6, y - 7, 12, 2, '#7a8a9a');
   if (free > 0.05) { ctx.strokeStyle = `rgba(220,230,240,${0.35 * free})`; ctx.lineWidth = 1; for (let k = 0; k < 2; k++) { const y0 = y - 12 - lift, ph = time * 2 + k * 2; ctx.beginPath(); ctx.moveTo(x - 2 + k * 4, y0); ctx.quadraticCurveTo(x + Math.sin(ph) * 3, y0 - 6, x - 1 + k * 3 + Math.sin(ph + 1) * 3, y0 - 12); ctx.stroke(); } }
 }
