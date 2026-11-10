@@ -24,7 +24,7 @@ function startShipFight(spec, flee, o = {}) {
   let text = o.text || fightSay('start.text', { ship: theShip(foe) });
   if (flee) {
     recordHand('fled'); if (spec.kind === 'patrol') recordHand('ranFromNavy');  // the record (traits.js): a run, got away or not
-    if (Math.random() < fleeOdds()) return `${fightSay('flee.away', { helm: helmName() })}${runCost()}`;
+    if (Math.random() < fleeOdds() + (o.flee || 0)) return `${fightSay('flee.away', { helm: helmName() })}${runCost()}`;  // o.flee: Runner's door adds to the odds (engage.js)
     st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.08));
     s.edge = -1;
     text = fightSay('flee.caught', { helm: helmName(), ship: theShip(foe).replace(/^The/, 'the') });

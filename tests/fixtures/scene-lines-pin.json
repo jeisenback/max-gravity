@@ -10119,6 +10119,100 @@
   ]
  },
  {
+  "id": "trait:door:cool-head",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You give her the ship's name and the guns' bearing on the open band, and nothing else. There is a long pause with her plume steady in it, and then the plume swings away.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "She lets you finish. Her first volley comes in while you are still on the band.",
+    "next": {
+     "title": "The Guns Hatch",
+     "text": "Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. \"Look at the top of the board,\" he says. \"That's what she means to do next, and under it what the captain will do with the helm. You don't guess either.\"</p><p>He points at the guns. \"Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and she can't board us. If she hits us hard, someone gets hurt, maybe you, and your work counts a level lower for some days. I had it in the hold. I wore a glove for eleven days.\"</p><p>He taps the gauge over the breech. \"Every shot puts heat in the guns, and past that mark one locks for a turn. An overcharged shot hits harder and runs hotter. The turret up top fires with the guns, or you hold it back and it takes the edge off what she throws at us, torpedoes most of all. Holding it costs you a gun. When she opens her bay doors, you have one turn to choose. We carry a few torpedoes of our own. They hit hard, and when they're gone they're gone.\"",
+     "labels": [
+      "Take your post"
+     ]
+    },
+    "nextPlays": [
+     {
+      "j": 0,
+      "roll": 0,
+      "text": "He lets go of the hatch frame. \"Choose what you'd choose,\" he says. \"I'll be behind you.\""
+     },
+     {
+      "j": 0,
+      "roll": 0.99,
+      "text": "He lets go of the hatch frame. \"Choose what you'd choose,\" he says. \"I'll be behind you.\""
+     }
+    ]
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,420 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "[Cool Head] Hail her and hold the guns [45%; if it fails: she fires first]"
+  ]
+ },
+ {
+  "id": "trait:door:runner",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Ines winds the drive past the redline and opens the range. Their plume fades.",
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,420 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "[Runner] Break early [91%; if it fails: hull damage, and the fight anyway]"
+  ]
+ },
+ {
+  "id": "trait:door:salvager",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You read the seam from three kilometers, the way the ice lies under the dust, and bring her in on the shadow side where it is thickest. The anchors go in clean and the cutting starts an hour early.",
+    "next": null
+   }
+  ],
+  "title": "The Rock",
+  "text": "She's a dark lump on the board for three days, and then she's a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There's no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you can't dock with something that's tumbling.</p><p>The haul so far, which sets what the ice fetches: even. Armor 260/260.",
+  "labels": [
+   "[Salvager] Read the seam first"
+  ]
+ },
+ {
+  "id": "trait:door:scarred",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Diego looks at your face, and at the dressing, and finds something to do at the other end of the bar.",
+    "mem": [
+     "9 Jul 2214: The captain started a fight with me."
+    ],
+    "fx": {
+     "p6": -2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "[Scarred] Let them look at you"
+  ]
+ },
+ {
   "id": "memory:patrol-fine",
   "plays": [
    {
@@ -11064,7 +11158,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A cold snap on Pallas Refinery has made Electronics the only thing anyone wants to talk about. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
+    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A trade fair on Boneyard has brought in a great many merchants, and Medical Supplies is going for a song. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
     "mem": [
      "25 Dec 2214: You bought a round, and the bartender talked."
     ],
@@ -22115,7 +22209,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "Mateo takes the bag from under the bunk and goes down the ramp without looking at the slate. Agent Singh strikes the name and starts the loaders. Sofia signs on for the berth.",
+    "text": "Mateo takes the bag from under the bunk and goes down the ramp without looking at the slate. Agent Singh strikes the name and starts the loaders. Diego signs on for the berth.",
     "mem": [
      "9 Jul 2214: You put me ashore to clear a manifest.",
      "9 Jul 2214: You put Mateo ashore for a freight paper."
@@ -22130,7 +22224,7 @@
    {
     "i": 3,
     "roll": 0.99,
-    "text": "Mateo takes the bag from under the bunk and goes down the ramp without looking at the slate. Agent Singh strikes the name and starts the loaders. Lolo signs on for the berth.",
+    "text": "Mateo takes the bag from under the bunk and goes down the ramp without looking at the slate. Agent Singh strikes the name and starts the loaders. Diego signs on for the berth.",
     "mem": [
      "9 Jul 2214: You put me ashore to clear a manifest.",
      "9 Jul 2214: You put Mateo ashore for a freight paper."
@@ -22201,8 +22295,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Ask about the posting",
-      "Sit with Diego and say nothing",
+      "Play Diego at cards (2000 cr) [50%]",
+      "Ask what they've heard",
       "Leave them to their drink"
      ]
     },
@@ -22218,20 +22312,20 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "You ask, and Diego puts down the glass."
+      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "mem": [
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
-      "mem": [
-       "9 Jul 2214: The captain asked about my work and listened."
-      ]
+      "text": "You ask, and Diego puts down the glass."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
      }
     ]
    },
@@ -22275,8 +22369,8 @@
      "text": "Kwame Achebe nods at you. Since you were last here, Kwame is asking every captain who comes in whether they have a berth, and keeps a bag packed under the stool.",
      "labels": [
       "Ask Kwame about their work",
-      "Buy Kwame a drink (200 cr)",
-      "Ask what's wrong",
+      "Ask what they've heard",
+      "Sit with Kwame and say nothing",
       "Leave them to their drink"
      ]
     },
@@ -22292,17 +22386,23 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "You ask, and Kwame puts down the glass."
+      "text": "Kwame draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Kwame says. \"That is where I will be, one day.\"",
+      "mem": [
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "You ask, and Kwame puts down the glass."
+      "text": "Kwame takes out a creased photograph of Hermes Foundry and lays it between you under the bar light, the way they would lay out a chart, and neither of you mentions it. You look at it for a while. Kwame goes quiet, and then smiles, the first since the last burn.",
+      "mem": [
+       "9 Jul 2214: The captain sat with me and didn't make me talk."
+      ]
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"Next time, bring a bigger hold,\" Kwame says, \"and a bigger purse.\""
      }
     ]
    },
@@ -22346,8 +22446,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Ask what they've heard",
-      "Buy Diego a drink (200 cr)",
+      "Ask about Hermes Foundry",
+      "Ask about the posting",
       "Leave them to their drink"
      ]
     },
@@ -22363,17 +22463,23 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Diego takes out a creased photograph of Hermes Foundry and lays it between you under the bar light, the way they would lay out a chart, and neither of you mentions it. You look at it for a while. Diego talks over the answer and goes back to the story about the tug."
+      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "mem": [
+       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
+      ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Diego plays well, for someone whose mind is on Hermes Foundry. 2,000 cr, and a smile. You finish the glass."
+      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "mem": [
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
      }
     ]
    },
@@ -22417,8 +22523,8 @@
      "text": "Ravi Achebe nods at you.",
      "labels": [
       "Ask Ravi about their work",
-      "Sit with Ravi and say nothing",
-      "Buy Ravi a drink (200 cr)",
+      "Play Ravi at cards (2000 cr) [50%]",
+      "Ask what they've heard",
       "Leave them to their drink"
      ]
     },
@@ -22434,18 +22540,12 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Ravi watches you not talking with open interest, and then tries it. They last four minutes. Ravi lets out a breath, and for the first time since the lock sits back.",
-      "mem": [
-       "9 Jul 2214: The captain sat with me and didn't make me talk."
-      ]
+      "text": "Ravi plays carefully and with tiny, exact movements, and wins, and looks at the pressure door before they pick up the 2,000 cr. You finish the glass."
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Ravi asks about your ship, your cargo, your last port and the best thing you have eaten on a long burn, and writes none of it down, and does not forget any of it.",
-      "mem": [
-       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
-      ]
+      "text": "Ravi says they are traveling for reasons, and leaves it there, and orders another. Ravi thinks about it, then says: \"A big contract on Eros Old Town has swallowed the whole local supply of Refined Metals, and the bidding has gone wild.\" Ravi adds, before you can answer: \"Three haulers just unloaded Luxury Goods on Eros Old Town. Prices there are collapsing.\""
      },
      {
       "j": 3,
@@ -22494,8 +22594,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Ask Diego about their work",
       "Ask about Hermes Foundry",
+      "Buy Diego a drink (200 cr)",
       "Leave them to their drink"
      ]
     },
@@ -22511,17 +22611,20 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Diego lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Diego talks over the answer and goes back to the story about the tug."
+      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "mem": [
+       "12 Jul 2214: The captain bought me a drink at The Heat Sink."
+      ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Diego lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Diego talks over the answer and goes back to the story about the tug."
+      "text": "Diego takes out a creased photograph of Hermes Foundry and lays it between you under the bar light, the way they would lay out a chart, and neither of you mentions it. You look at it for a while. Diego talks over the answer and goes back to the story about the tug."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
      }
     ]
    },
@@ -22594,8 +22697,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Sit with Diego and say nothing",
-      "Ask Diego about their work",
+      "Ask about Hermes Foundry",
+      "Ask what they've heard",
       "Leave them to their drink"
      ]
     },
@@ -22619,7 +22722,7 @@
      {
       "j": 2,
       "roll": 0.5,
-      "text": "You ask, and Diego puts down the glass."
+      "text": "Diego has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Diego thinks about it, then says: \"A cold snap on Triton Outpost has made Refined Metals the only thing anyone wants to talk about.\" Diego adds, before you can answer: \"A fire in a warehouse on Juno Commons took most of the local stock of Luxury Goods, and nobody's saying how it started.\""
      },
      {
       "j": 3,
@@ -22697,8 +22800,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Ask about Hermes Foundry",
-      "Buy Diego a drink (200 cr)",
+      "Ask what they've heard",
+      "Ask about the posting",
       "Leave them to their drink"
      ]
     },
@@ -22714,7 +22817,10 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Diego lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Diego talks over the answer and goes back to the story about the tug."
+      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "20 Jul 2214: The captain asked about my work and listened."
+      ]
      },
      {
       "j": 2,
@@ -22778,8 +22884,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Sit with Diego and say nothing",
       "Ask what they've heard",
+      "Ask about Hermes Foundry",
       "Leave them to their drink"
      ]
     },
@@ -22795,17 +22901,20 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "You ask, and Diego puts down the glass."
+      "text": "Diego has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Diego thinks about it, then says: \"A strike ended on Pallas Refinery, and every dock in town is suddenly flooded with Refined Metals.\" Diego adds, before you can answer: \"A fire in a warehouse on Hermes Foundry took most of the local stock of Food, and nobody's saying how it started.\""
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Diego talks about the pilotage fee on Hermes Foundry, you talk back, and somewhere in it 2,000 cr leaves your pocket. You finish the glass."
+      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "mem": [
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
+      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
      }
     ]
    },
@@ -22849,8 +22958,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Ask about the posting",
-      "Ask about Hermes Foundry",
+      "Buy Diego a drink (200 cr)",
+      "Ask Diego about their work",
       "Leave them to their drink"
      ]
     },
@@ -22866,15 +22975,12 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
-      "mem": [
-       "6 Jan 2215: The captain bought me a drink at The Heat Sink."
-      ]
+      "text": "You ask, and Diego puts down the glass."
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "You ask, and Diego puts down the glass."
+      "text": "Diego fans the last cards with a flourish you have seen before, in another port. 2,000 cr. You finish the glass."
      },
      {
       "j": 3,
@@ -22923,8 +23029,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
+      "Ask about Hermes Foundry",
       "Sit with Diego and say nothing",
-      "Play Diego at cards (2000 cr) [50%]",
       "Leave them to their drink"
      ]
     },
@@ -22940,7 +23046,10 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Diego takes out a creased photograph of Hermes Foundry and lays it between you under the bar light, the way they would lay out a chart, and neither of you mentions it. You look at it for a while. Diego talks over the answer and goes back to the story about the tug."
+      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "mem": [
+       "16 Aug 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 2,
@@ -22994,8 +23103,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Sit with Diego and say nothing",
-      "Ask about the posting",
+      "Ask about Hermes Foundry",
+      "Ask what they've heard",
       "Leave them to their drink"
      ]
     },
@@ -23011,15 +23120,18 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
       "mem": [
-       "9 Jul 2214: The captain asked about my work and listened."
+       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
       ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Diego has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Diego thinks about it, then says: \"Dockworkers on Enceladus have gone on strike. Refined Metals is suddenly scarce there.\" Diego adds, before you can answer: \"Warehouses on Enceladus are overflowing with Food. Sellers are dumping it cheap.\""
+      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "mem": [
+       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+      ]
      },
      {
       "j": 3,
@@ -23107,12 +23219,12 @@
    {
     "i": 2,
     "roll": 0.5,
-    "text": "Mate2 hands you a helmet lamp that cuts out whenever it's tilted, and tilts it to show you. \"Every time I look down at a bolt.\" You take it apart on the lid of a ration tin and find a hair across the contact. You put the lens back on. Mate2 tilts the lamp at the deck ten times and it stays lit. 500 cr comes across, and Mate2 takes the hair away on a strip of tape, to show someone.",
+    "text": "Mate2 hands you a helmet lamp that cuts out whenever it's tilted, and tilts it to show you. \"Every time I look down at a bolt.\" You take it apart on the lid of a ration tin and find a hair across the contact. You put the lens back on. Mate2 tilts the lamp at the deck ten times and it stays lit. 300 cr comes across, and Mate2 takes the hair away on a strip of tape, to show someone.",
     "mem": [
      "10 Jul 2214: You mended my gear."
     ],
     "fx": {
-     "credits": 500,
+     "credits": 300,
      "p8": 1
     },
     "next": null
@@ -23384,7 +23496,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Hana is on the corridor deck that night with a bucket, at the plate where the fight was. The new slicer, Daniel, comes aboard with the hiring slip still in hand and has to step over the bucket.",
+    "text": "Mateo signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Hana is on the corridor deck that night with a bucket, at the plate where the fight was. The new slicer, Leila, comes aboard with the hiring slip still in hand and has to step over the bucket.",
     "mem": [
      "10 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "10 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -23452,7 +23564,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Hana is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new slicer, Oliver, has signed on for the berth.",
+    "text": "Mateo is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Hana is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new slicer, Samuel, has signed on for the berth.",
     "mem": [
      "11 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "11 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -23473,7 +23585,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Mateo is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new deckhand, Diego, has signed on for the berth.",
+    "text": "Hana is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Mateo is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new deckhand, Priya, has signed on for the berth.",
     "mem": [
      "11 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "11 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
@@ -25437,10 +25549,10 @@
     "mem": []
    },
    {
-    "log": "Turn 1: your word is taken and she breaks off, you hit her drive for 2, you hit her hull for 11.",
+    "log": "Turn 1: your word is taken and she breaks off, you hit her drive for 2, you hit her hull for 10.",
     "next": {
      "title": "Battle Stations",
-     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is taken and she breaks off, you hit her drive for 2, you hit her hull for 11.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+     "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is taken and she breaks off, you hit her drive for 2, you hit her hull for 10.</p><p>She breaks off with her grapple arms folded, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
      "labels": [
       "Stand down"
      ]
@@ -25450,14 +25562,14 @@
     ]
    },
    {
-    "log": "Turn 1: your word is not taken, you hit her drive for 2, you hit her hull for 8, she hits your hull for 10.",
+    "log": "Turn 1: your word is not taken, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.",
     "next": null,
     "mem": []
    },
    {
     "title": "Battle Stations",
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is not taken, you hit her drive for 2, you hit her hull for 8, she hits your hull for 10.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is not taken, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.",
     "labels": [
      "Gun 1: a hit does 2 to 3: Hull",
      "Weapons",
@@ -26437,13 +26549,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Pirate \"Silent Grin\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Bitter Hook\" made the intercept.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Rusted Hook\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Silent Knife\" made the intercept.",
     "next": null
    },
    {
@@ -26455,7 +26567,7 @@
    {
     "i": 1,
     "roll": 0.99,
-    "text": "Mate1 runs, but the Pirate \"Black Grin\" gets a burst in first. Battle stations.",
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
     "next": null
    },
    {
@@ -26485,13 +26597,13 @@
    {
     "i": 3,
     "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Hungry Grin\" made the intercept.",
+    "text": "They see through it. Battle stations. The Pirate \"Hungry Debt\" made the intercept.",
     "next": null
    },
    {
     "i": 4,
     "roll": 0,
-    "text": "The burst crosses her bow at a kilometer. She comes off her line, and on the open band a voice asks whether you are always this friendly. Her guns are still warm. Battle stations. Her crew have done this before.",
+    "text": "The burst crosses her bow at a kilometer. She comes off her line, and on the open band a voice asks whether you are always this friendly. Her guns are still warm. Battle stations.",
     "next": null
    },
    {
@@ -26517,13 +26629,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Pirate \"Black Hook\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Crimson Knife\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Black Widow\" made the intercept. Her crew have done this before.",
+    "text": "Battle stations. The Pirate \"Hungry Vulture\" made the intercept.",
     "next": null
    },
    {
@@ -26536,86 +26648,6 @@
     "i": 1,
     "roll": 0.99,
     "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0,
-    "text": "You transfer 5,000 cr. Their plume swings away.",
-    "fx": {
-     "credits": -5000
-    },
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0.99,
-    "text": "You transfer 5,000 cr. Their plume swings away.",
-    "fx": {
-     "credits": -5000
-    },
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0,
-    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Crimson Grin\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0,
-    "text": "You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations.",
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0.99,
-    "text": "You put the ship across her line a second late. She is already inside the turn, and her first burst takes the aft plating before the range opens enough to matter. Battle stations. Armor -21.",
-    "next": null
-   }
-  ],
-  "title": "Contact",
-  "text": "Sensors: a drive plume at 3,600 km, on an intercept course. No transponder. The plume signature says pirate.",
-  "labels": [
-   "Battle stations (you take the guns)",
-   "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
-   "Pay them off (10% of your credits, at least 5,000)",
-   "[{crew}] Spoof a pirate transponder",
-   "[Pilot] Take the helm and break her intercept [65%; opens the range; if it fails: hull damage, a crew casualty]"
-  ]
- },
- {
-  "id": "scene:contact:pirate:engineer",
-  "plays": [
-   {
-    "i": 0,
-    "roll": 0,
-    "text": "Battle stations. The Pirate \"Silent Vulture\" made the intercept. Her crew have done this before.",
-    "next": null
-   },
-   {
-    "i": 0,
-    "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Silent Grin\" made the intercept.",
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0,
-    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0.99,
-    "text": "Mate1 runs, but the Pirate \"Black Hook\" gets a burst in first. Battle stations.",
     "next": null
    },
    {
@@ -26651,13 +26683,13 @@
    {
     "i": 4,
     "roll": 0,
-    "text": "You pull the drive down to a cold idle and the plume goes out. The ship coasts with the lights on emergency, and she overshoots your heading by eight kilometers before her sensors pick you up again. Battle stations.",
+    "text": "You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations.",
     "next": null
    },
    {
     "i": 4,
     "roll": 0.99,
-    "text": "You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations. Armor -21.",
+    "text": "You put the ship across her line a second late. She is already inside the turn, and her first burst takes the aft plating before the range opens enough to matter. Battle stations. Armor -21.",
     "next": null
    }
   ],
@@ -26668,11 +26700,11 @@
    "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
    "Pay them off (10% of your credits, at least 5,000)",
    "[{crew}] Spoof a pirate transponder",
-   "[Engineer] Cut the drive and go dark [65%; opens the range; if it fails: hull damage, a crew casualty]"
+   "[Pilot] Take the helm and break her intercept [65%; opens the range; if it fails: hull damage, a crew casualty]"
   ]
  },
  {
-  "id": "scene:contact:pirate:comms",
+  "id": "scene:contact:pirate:engineer",
   "plays": [
    {
     "i": 0,
@@ -26719,13 +26751,93 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "Your fake transponder reads as one of their own. The plume swings away.",
+    "text": "{crew}'s fake transponder reads as one of their own. The plume swings away.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.99,
     "text": "They see through it. Battle stations. The Pirate \"Rusted Widow\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You pull the drive down to a cold idle and the plume goes out. The ship coasts with the lights on emergency, and she overshoots your heading by eight kilometers before her sensors pick you up again. Battle stations.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.99,
+    "text": "You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations. Armor -21.",
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,600 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them [52%; if it fails: hull damage, and the fight anyway]",
+   "Pay them off (10% of your credits, at least 5,000)",
+   "[{crew}] Spoof a pirate transponder",
+   "[Engineer] Cut the drive and go dark [65%; opens the range; if it fails: hull damage, a crew casualty]"
+  ]
+ },
+ {
+  "id": "scene:contact:pirate:comms",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Battle stations. The Pirate \"Silent Tooth\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Battle stations. The Pirate \"Hungry Debt\" made the intercept.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Mate1 runs, but the Pirate \"Rusted Knife\" gets a burst in first. Battle stations.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Mate1 runs, but the Pirate \"Hungry Vulture\" gets a burst in first. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You transfer 5,000 cr. Their plume swings away.",
+    "fx": {
+     "credits": -5000
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "Your fake transponder reads as one of their own. The plume swings away.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.99,
+    "text": "They see through it. Battle stations. The Pirate \"Silent Knife\" made the intercept.",
     "next": null
    }
   ],
@@ -26744,7 +26856,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Compact cutter \"Restless Anvil\" made the intercept.",
+    "text": "Battle stations. The Compact cutter \"Lucky Anvil\" made the intercept.",
     "mem": [
      "9 Jul 2214: You set yourself against the Compact.",
      "9 Jul 2214: You set yourself against the Compact.",
@@ -26760,7 +26872,7 @@
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Compact cutter \"Stubborn Pilgrim\" made the intercept.",
+    "text": "Battle stations. The Compact cutter \"Stubborn Comet\" made the intercept.",
     "mem": [
      "9 Jul 2214: You set yourself against the Compact.",
      "9 Jul 2214: You set yourself against the Compact.",
@@ -26776,13 +26888,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Ines runs, but the Compact cutter \"Quiet Tortoise\" gets a burst in first. Battle stations.",
+    "text": "Ines runs, but the Compact cutter \"Lucky Bargain\" gets a burst in first. Battle stations.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.99,
-    "text": "Ines winds the drive past the redline and opens the range. Their plume fades.",
+    "text": "Ines runs, but the Compact cutter \"Brave Comet\" gets a burst in first. Battle stations.",
     "next": null
    },
    {
@@ -26846,25 +26958,25 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Rusted Knife\" made the intercept. Her crew have done this before.",
+    "text": "Battle stations. The Pirate \"Crimson Widow\" made the intercept. Her crew have done this before.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Silent Debt\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "text": "Battle stations. The Pirate \"Silent Grin\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Black Debt\" made the intercept. There are two of them, running in company.",
+    "text": "Battle stations. The Pirate \"Bitter Knife\" made the intercept. There are two of them, running in company.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Silent Widow\" made the intercept. She is flown by a hard crew, with a captain who has done it for years. There are two of them, running in company.",
+    "text": "Battle stations. The Pirate \"Silent Knife\" made the intercept. She is flown by a hard crew, with a captain who has done it for years. There are two of them, running in company.",
     "next": null
    }
   ],
@@ -27242,9 +27354,9 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You go aboard in suits, through a tangle of cold, dark passages, past frozen coffee bulbs and a child's drawing pinned to a bulkhead, and cut out the nav core and a crate of spare parts, worth 10,000 cr to the right buyer. On the way out, you don't look at the drawing. You almost make it.",
+    "text": "You go aboard in suits, through a tangle of cold, dark passages, past frozen coffee bulbs and a child's drawing pinned to a bulkhead, and cut out the nav core and a crate of spare parts, worth 29,000 cr to the right buyer. On the way out, you don't look at the drawing. You almost make it.",
     "fx": {
-     "credits": 10000
+     "credits": 29000
     },
     "next": {
      "title": "The Drawing",

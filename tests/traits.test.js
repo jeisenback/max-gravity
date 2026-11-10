@@ -138,3 +138,56 @@ test('each site writes its count: the repel, the assault, the fight\'s end, the 
   assert.deepEqual(r.fled, [1, 1]); assert.deepEqual(r.hauls, [1, 1]); assert.equal(r.heave, 1); assert.equal(r.cited, 2); assert.equal(r.hurt, 1); assert.equal(r.mate, 1);
   await done();
 });
+
+// ---------- the doors (engage.js, icerun.js, bartopics.js): a marked choice only the trait opens ----------
+
+const doorHelpers = () => {
+  window.fixEnemy = () => { if (!window.realMakeEnemy) window.realMakeEnemy = makeEnemy; const spare = window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }); window.makeEnemy = () => spare; };  // a constant random hangs the generators
+  window.labels = ev => ev.choices.map(c => c.label);
+  window.oddsOf = label => Number((label.match(/(\d+)%/) || [])[1]);
+};
+
+test('Cool Head and Runner open marked choices at a pirate contact: a word that sends her off or costs the first volley, and a run with better odds', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(doorHelpers);
+  const r = await ev(() => {
+    const st = setup(), h = hired(), out = {}; burn(); fixEnemy();
+    out.plain = labels(contactEvent({ kind: 'pirate' })).filter(l => /\[Cool Head\]|\[Runner\]/.test(l));
+    h.record = { repelsHeld: 2, fightsRan: 3 };
+    const ev1 = contactEvent({ kind: 'pirate' }), cool = ev1.choices.find(c => /^\[Cool Head\]/.test(c.label)), runner = ev1.choices.find(c => /^\[Runner\]/.test(c.label)), run = ev1.choices.find(c => /^Burn hard to outrun/.test(c.label));
+    out.doors = [!!cool, !!runner]; out.odds = { runner: oddsOf(runner.label), run: oddsOf(run.label) };
+    const real = Math.random; Math.random = () => 0; G.nextEvent = null; out.won = { text: cool.run(), fight: !!(G.nextEvent && G.nextEvent.fight) };
+    Math.random = () => 0.99; G.nextEvent = null; out.lost = { text: cool.run(), fight: !!(G.nextEvent && G.nextEvent.fight), edge: G.nextEvent && G.nextEvent.fight ? G.nextEvent.fight.edge : null };
+    G.nextEvent = null; const fled0 = h.record.fled || 0; out.runner = { text: runner.run(), fight: !!(G.nextEvent && G.nextEvent.fight), fled: (h.record.fled || 0) - fled0 }; Math.random = real;
+    return out;
+  });
+  assert.deepEqual(r.plain, [], 'no door without the trait');
+  assert.deepEqual(r.doors, [true, true]); assert.equal(r.odds.runner, r.odds.run + 15, `the run's ${r.odds.run}, Runner's ${r.odds.runner}`);
+  assert.equal(r.won.fight, false); assert.ok(r.won.text.length > 0, 'the word landed: she breaks off');
+  assert.deepEqual([r.lost.fight, r.lost.edge], [true, -1], 'the word failed: she fires first');
+  assert.deepEqual([r.runner.fight, r.runner.fled], [true, 1], 'the run failed on 0.99: the fight, and the run counted');
+  await done();
+});
+
+test('Salvager reads the seam on the rock, and Scarred ends a bar fight with no roll and no bill; an owner has no door', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(helpers); await ev(doorHelpers);
+  const r = await ev(() => {
+    const st = setup('pilot'), h = hired(), out = {}; burn(); fixEnemy();
+    h.run = { ice: { edge: 0 }, tons: 20 }; out.rockPlain = labels(iceStageScene(0)).filter(l => /Salvager/.test(l));
+    h.record = { haulsClean: 2 }; const rock = iceStageScene(0), seam = rock.choices.find(c => /^\[Salvager\]/.test(c.label)); st.armor = ship().armor;
+    out.seam = { label: seam.label, text: seam.run(), edge: h.run.ice.edge, armor: st.armor === ship().armor };
+    const p = makePerson('earth'); registerPerson(p); p.traits = ['rude']; const topic = id => BAR_TOPICS.find(t => t.id === id);
+    out.barPlain = topic('fight').make(p, { p, known: false }, { st, bar: 'Bar' }).label;
+    h.record = { hurts: 2 }; const door = topic('fight').make(p, { p, known: false }, { st, bar: 'Bar' }), cr = st.credits, real = Math.random; Math.random = () => 0.99;
+    const pat = { p, known: false }; out.bar = { label: door.label, text: door.run(), credits: st.credits === cr, opinion: p.opinion }; Math.random = real;
+    startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent(); uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.dialog = null; fixEnemy();
+    G.state.career = { post: 'gunner', moves: [], picks: [], skill: { gunner: 200 }, record: { repelsHeld: 5, fightsRan: 5 } };
+    out.owner = labels(contactEvent({ kind: 'pirate' })).filter(l => /\[Cool Head\]|\[Runner\]/.test(l));
+    return out;
+  });
+  assert.deepEqual(r.rockPlain, []); assert.match(r.seam.label, /^\[Salvager\]/); assert.equal(r.seam.edge, 2); assert.equal(r.seam.armor, true); assert.ok(r.seam.text.length > 0);
+  assert.doesNotMatch(r.barPlain, /Scarred/); assert.match(r.bar.label, /^\[Scarred\]/); assert.equal(r.bar.credits, true, 'no bill'); assert.equal(r.bar.opinion, -2, 'the memory as a won fight\'s'); assert.ok(r.bar.text.length > 0);
+  assert.deepEqual(r.owner, []);
+  await done();
+});

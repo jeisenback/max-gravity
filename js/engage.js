@@ -86,6 +86,11 @@ function contactEvent(spec) {
     { label: contactSay('fight.label', { gunner: gunnerLabel() }), fight: true, run: () => startDuel(spec, false) },
     { label: `${contactSay('run.label')}${lockPost() && ['pirate', 'patrol'].includes(spec.kind) ? costNote({ sent: 'hull damage, and the fight anyway' }, fleeOdds()) : ''}`, run: () => startDuel(spec, true) },  // the odds and the cost of the turn-based fight's run (fightui.js, #854)
   ];
+  if (spec.kind === 'pirate' && hasTrait(hired(), 'cool-head')) {  // the trait's door (traits.js): a word on nerve, and she breaks off; failed, she fires first
+    const odds = handCheck('nerve', skillLevel(hired().post), 'word');
+    choices.push({ label: `[Cool Head] ${traitSay('door.cool-head.label')}${costNote({ sent: 'she fires first' }, odds)}`, run: () => (Math.random() < odds ? `${traitSay('door.cool-head.win')}${runCost()}` : startShipFight(spec, false, { edge: -1, text: traitSay('door.cool-head.lose') })) });
+  }
+  if (spec.kind === 'pirate' && hasTrait(hired(), 'runner')) choices.push({ label: `[Runner] ${traitSay('door.runner.label')}${costNote({ sent: 'hull damage, and the fight anyway' }, fleeOdds() + 0.15)}`, run: () => startShipFight(spec, true, { flee: 0.15 }) });  // the trait's door: the run, fifteen points better
   if (spec.kind === 'pirate') {
     choices.push({ label: contactSay('pay.label'), cost: true, ...gated(needCr(5000)), run() {
       const c = Math.max(5000, Math.round(st.credits * 0.1));

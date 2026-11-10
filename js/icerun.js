@@ -144,6 +144,7 @@ function iceStageScene(n) {
   const spec = worded(stage.post[post], stage.general.length + Object.keys(stage.post).indexOf(post));
   const own = { odds: postOdds(post), win: spec.win, lose: spec.lose };
   choices.push({ label: `[${POSTS[post].name}] ${spec.label}${iceCostNote(own)}`, run: () => iceStep(n, own, post) });
+  if (n === 0 && hasTrait(h, 'salvager')) choices.push({ label: `[Salvager] ${traitSay('door.salvager.label')}`, run: () => iceStep(0, { odds: 1, win: [2, 0, traitSay('door.salvager.text')] }, null) });  // the trait's door (traits.js): a sure approach
   const runNo = h.iceRuns || 1, opening = runNo < 2 ? [line(o.text, stage.open[0]), line(o.text2, stage.open[1])] : null;  // the editor's openings are the first run's
   return { title: o.title || stage.title, personal: true, via: 'crew', owner: 'you', text: `${opening ? opening[ice.round % 2 || 0] : iceOpening(stage, n, ice.round, runNo, h.flags || {})}</p><p>The haul so far, which sets what the ice fetches: ${iceHaulWord(ice.edge)}. Armor ${st.armor}/${ship().armor}.`, choices };
 }

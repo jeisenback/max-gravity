@@ -446,6 +446,15 @@ const SCENE_LINES = {
     'runner.reason': 'Three fights not fought.',
     'jonah.reason': 'Two shipmates lost.',
     empty: 'Nothing on the record yet.',
+    // the doors: a marked choice only the trait opens (engage.js, icerun.js, bartopics.js)
+    'door.cool-head.label': 'Hail her and hold the guns',
+    'door.cool-head.win': 'You give her the ship\'s name and the guns\' bearing on the open band, and nothing else. There is a long pause with her plume steady in it, and then the plume swings away.',
+    'door.cool-head.lose': 'She lets you finish. Her first volley comes in while you are still on the band.',
+    'door.runner.label': 'Break early',
+    'door.salvager.label': 'Read the seam first',
+    'door.salvager.text': 'You read the seam from three kilometers, the way the ice lies under the dust, and bring her in on the shadow side where it is thickest. The anchors go in clean and the cutting starts an hour early.',
+    'door.scarred.label': 'Let them look at you',
+    'door.scarred.text': '{first} looks at your face, and at the dressing, and finds something to do at the other end of the bar.',
   },
   'scene:memories': {  // the memories that play leaves with people, for the places that have no scene of their own (engage.js, game.js, icerun.js, losses.js, repairs.js, stations.js, boarding.js)
     'patrol-fine.memory': 'We were stopped by a patrol and it cost the fund.',
