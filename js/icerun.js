@@ -40,8 +40,7 @@ function iceOption(from, free) {
   if (!h || (h.iceAt !== undefined && st.day - h.iceAt < ICE_GAP) || st.day - h.since < 12 || free < 10) return null;
   const pick = icePick(st, from, st.fuel, { price, travelDays, burnFuel });
   if (!pick) return null;
-  const rock = findSite(st, pick.site, st.day);  // the captain knows her rock, so it is on the map from the departure
-  if (rock && rock.found === st.day) recordHand('rocksFound');  // the record (traits.js)
+  findSite(st, pick.site, st.day);  // the captain knows her rock, so it is on the map from the departure
   return { site: pick.site, sid: pick.sid, planet: pick.planet, yard: pick.yard, good: 'water', tons: free, cost: 0, profit: Math.round(pick.sell * free * ICE_PREMIUM), days: pick.days, ice: true, ballast: false };
 }
 
@@ -212,6 +211,7 @@ const iceOnce = stage => { const o = { kind: 'ice', stage }; if (occasionPlayed(
 function siteArrival(st) {
   const h = hired();
   if (!h || !h.run || !h.run.ice || !iceOnce(0)) return;
+  recordHand('rocksFound');  // the record (traits.js): once a run, at the rock, never from the plan (which the map's draw remakes)
   beginStay(h, ICE_SHIFTS, 'ice');
   openEvent(iceStageScene(0));
 }

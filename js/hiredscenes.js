@@ -434,7 +434,7 @@ const SCENE_LINES = {
     'cool-head.reason': 'Two boardings held.',
     'salvager.moment': '{first} reads the haul off the board and looks at you over it. "The ice likes you. Two in a row."',
     'salvager.reason': 'The ice comes in clean.',
-    'marked.moment': '{first} has the fine on the board before the cutter is out of range. "They had the name ready. Not mine. Yours."',
+    'marked.moment': '{first} has the name on the board before the cutter is out of range. "They had it ready. Not mine. Yours."',
     'marked.reason': 'The navy has your name.',
     'inbox.reliable': 'A note from the shipper\'s office at the dock: five runs on the day. They will put the ship first on the next board.',
     'reliable.reason': 'Five deliveries on the day.',

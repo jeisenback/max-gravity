@@ -135,8 +135,8 @@ function hurtHand(s) {
   c.hurtUntil = st.day + (again ? 18 : 12);
   s.youHurt = true; s.hits = (s.hits || 0) + 1;  // hits: how many times this fight (fightui.js fightTook)
   captainFlag('hurt');  // kept for the goodbye (captains.js)
-  recordHand('hurts');  // the record (traits.js)
   if (!s.ashore && role().canDie && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return hurtSay(again ? 'hurt.you.down' : 'hurt.you.hit'); }
+  recordHand('hurts');  // the record (traits.js), after the death roll: a dead hand gets no moment
   const bill = roleHolder('medic') ? 0 : handPays(HAND_CLINIC);  // the hand's own savings, also in a fight that a burn event started (hired.js hiredFunds)
   const pay = bill ? ` ${hurtSay('hurt.clinic', { cr: fmt(bill) })}` : '';
   return `${hurtSay(again ? 'hurt.you.again' : 'hurt.you')}${pay}`;
@@ -219,7 +219,7 @@ function citation() {
 // not reset as the heave-to resets it, since we fought them.
 function shipSearched(s) {
   const h = hired(), cap = h && person(h.captain), fine = heaveToFine();
-  moveMoney(-fine);
+  moveMoney(-fine); recordHand('fines');  // the record (traits.js): a search's fine is a fine
   if (cap) like(cap, -1, sceneSay('scene:fight', 'memory.searched'));
   s.d.foeHp = -1; G.duel = null; G.nextEvent = null;
   return `${sceneSay('scene:fight', 'deck.end.searched', { fine: fmt(fine) })}${deadNote(s)}`;

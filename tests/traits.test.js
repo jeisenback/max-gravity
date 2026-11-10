@@ -228,3 +228,29 @@ test('Jonah is named in the captain\'s goodbye, and a crew member made for the s
   assert.deepEqual(r.plain, { goodbye: false, opinion: 0 }); assert.deepEqual(r.jonah, { goodbye: true, opinion: -1 });
   await done();
 });
+
+// ---------- the review's fix pass ----------
+
+test('a hurt that kills the hand says no moment, the search\'s fine is on the record, and a rock is counted at the arrival, not in the plan', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(doorHelpers);
+  const r = await ev(() => {
+    const st = setup(), h = hired(), out = {}; burn(); fixEnemy();
+    const s = repelStart({ foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0, init: 'foe' }, 'half');
+    shipSearched(s); out.searched = h.record.fines || 0;
+    st.fuel = 1000; const real = window.price; window.price = (pl, g) => (g === 'water' && pl.name === 'Mars' ? 1200 : 500);
+    const o = iceOption(st.systemId, 40); iceOption(st.systemId, 40); window.price = real;
+    out.planned = { option: !!o, rocks: h.record.rocksFound || 0 };
+    h.run = { ice: { edge: 0 }, tons: 20, site: o && o.site }; h.stay = null; G.mode = 'landed'; G.dialog = null; siteArrival(st); out.arrived = h.record.rocksFound || 0; G.dialog = null;
+    h.record = { ...h.record, hurts: 1 }; h.traitsTold = [];
+    const f = { hurt: new Set(), dead: [], marked: [], ashore: false, d: { foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0 }, state: { kind: 'ship' }, spec: { kind: 'pirate' } };  // made before the stub: the foe's maker draws
+    const rnd = Math.random; let first = true; Math.random = () => { if (first) { first = false; return 0; } return rnd(); };  // the death roll lands; a constant random would hang the ending's generators
+    hurtHand(f); Math.random = rnd; out.death = { told: [...h.traitsTold], died: !!h.died };
+    return out;
+  });
+  assert.equal(r.searched, 1, 'the search charges the fine, and it counts');
+  assert.deepEqual(r.planned, { option: true, rocks: 0 }, 'planning twice on one day counts nothing');
+  assert.equal(r.arrived, 1, 'the arrival counts the rock');
+  assert.deepEqual(r.death, { told: [], died: true }, 'a dead hand gets no moment');
+  await done();
+});
