@@ -10,7 +10,7 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { menuFive, ashoreOpen, walkKind } = load(['js/shiplife.js', 'js/dayashore.js'], { Mods: { register() {} } }, ['menuFive', 'ashoreOpen', 'walkKind']);
+const { menuFive, ashoreOpen, walkKind } = load(['js/camera.js', 'js/layouts.js', 'js/shiplife.js', 'js/dayashore.js'], { Mods: { register() {} } }, ['menuFive', 'ashoreOpen', 'walkKind']);
 const lane = (tag, n) => Array.from({ length: n }, (_, i) => `${tag}${i}`);
 
 test('the menu is five at most, one from each lane in turn, started at the day\'s place in each lane; fewer than five are all shown; the days turn it', () => {
