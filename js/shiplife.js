@@ -470,8 +470,9 @@ function posture(p, ph, time, asleep) {
   else name = p.at === 'alone' || (p.at !== 'stove' && onSeat(p)) ? 'sit' : 'stand';  // on a seat; someone alone sits on a bunk's edge; anyone else stands (#925)
   const { frames, fps } = POSTURES[name];
   // a walking stride by the ground covered, so the feet do not slide (#924)
-  const view = ph === 'move' && FIG_FACING.includes(name) ? (name.startsWith('work') ? 'back' : 'front') : 'side';  // facing you to stand and sit, the wall at work; side-on on the move and in the burn (#978)
-  return { name, view, x: p.x, deck: p.dk, face: p.face || 1, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160 / CUT_K) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
+  const chair = (name === 'sit' || name === 'work-sit') && p.room !== 'galley' && onSeat(p) ? SEAT_FACE[p.room] : 0;  // on a chair: side-on, the way the chair faces (rooms.js, #985)
+  const view = chair ? 'side' : ph === 'move' && FIG_FACING.includes(name) ? (name.startsWith('work') ? 'back' : 'front') : 'side';  // facing you to stand and sit, the wall at work; side-on on the move and in the burn (#978)
+  return { name, view, x: p.x, deck: p.dk, face: chair || p.face || 1, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160 / CUT_K) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
 }
 
 // The scene open in a burn, acted out: when it opens (or the next one in a chain opens) those it stages walk to spots in its room, a little
