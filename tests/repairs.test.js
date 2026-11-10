@@ -88,7 +88,7 @@ test('yard-eye: the yard\'s estimate is a tenth less for a hand with the pick', 
   await ev(helpers);
   const r = await ev(() => {
     setup(); const p = dock(60); G.dialog = null; G.nextEvent = null;
-    const plain = repairPlan(p); hired().picks = ['yard-eye']; const eyed = repairPlan(p);  // an engineer's pick, put on the gunner's record to read the hook
+    const plain = repairPlan(p); hired().picks = ['yard-eye']; hired().post = 'engineer'; const eyed = repairPlan(p);  // an engineer's pick: the hand reads as an engineer from here
     return { plain: plain.total, eyed: eyed.total, parts: [plain.parts, eyed.parts], labor: [plain.labor, eyed.labor] };
   });
   assert.ok(r.plain > 0); assert.equal(r.eyed, Math.round(r.plain * 0.9));

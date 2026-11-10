@@ -258,7 +258,7 @@ test('the ice run perks: soft-hands spares the hull on a lost approach the pilot
     takePick(h, 'soft-hands'); rolls([0.99]); st.armor = max; const text = iceStep(0, c, 'pilot'); out.spared = max - st.armor; out.noArmorNote = !/Armor -/.test(text);
     rolls([0.99]); st.armor = max; iceStep(0, { ...ICE_STAGES[0].general[0], odds: 0.5 }, null); out.general = max - st.armor;
     st.fuel = 100; out.homePlain = { text: iceHome(0), fuel: st.fuel };
-    h.picks.push('melt-return'); out.home = { text: iceHome(0), fuel: st.fuel };  // an engineer's pick, put on the pilot's record to read the hook
+    h.picks.push('melt-return'); h.post = 'engineer'; out.home = { text: iceHome(0), fuel: st.fuel };  // an engineer's pick: the hand reads as an engineer from here
     st.fuel = ship().fuel - 5; iceHome(0); out.capped = st.fuel === ship().fuel;
     return out;
   });

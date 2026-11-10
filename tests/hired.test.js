@@ -946,7 +946,7 @@ test('cool-loop raises the reactor\'s heat limit by five, and long-ear keeps a m
     uatBurn('Earth', 'mars'); G.transit.comms = []; st.rumors = [];
     const real = Math.random; Math.random = () => 0;
     addRumor(); out.days0 = st.rumors[0].until - st.day;
-    h.picks.push('long-ear'); st.rumors = []; addRumor(); out.days1 = st.rumors[0].until - st.day;  // a comms pick, put on the engineer's record to read the hook
+    h.picks.push('long-ear'); h.post = 'comms'; st.rumors = []; addRumor(); out.days1 = st.rumors[0].until - st.day;  // a comms pick: the hand reads as a comms hand from here
     Math.random = real;
     return out;
   });
