@@ -89,6 +89,18 @@ test('battle stations opens the fight panel with both sides\' bars, her move and
   await done();
 });
 
+test('setting a gun\'s target keeps the panel where it was scrolled (#970)', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 1280, height: 600 } });
+  await ev(helpers);
+  await ev(() => { fightGame('gunner'); battle(); document.querySelector(`[data-action="choose"][data-arg="${pickAt('gun2', 'Weapons')}"]`).scrollIntoView({ block: 'center' }); });  // the second gun's row in view, as a player scrolls to it
+  const before = await ev(() => document.getElementById('panel').scrollTop);
+  await page.click(`[data-action="choose"][data-arg="${await ev(() => pickAt('gun2', 'Weapons'))}"]`);
+  const r = await ev(() => ({ at: document.getElementById('panel').scrollTop, picked: rowsShown()[1][1] }));
+  assert.ok(before > 0, 'the scene is longer than a short window');
+  assert.deepEqual(r, { at: before, picked: ['Weapons'] }, 'the pick is drawn in place, with the rows where they were');
+  await done();
+});
+
 test('setting a gun\'s target redraws in place; Fire resolves a turn and the log gains a line', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
@@ -235,6 +247,19 @@ test('being boarded opens the deck panel: heads and cover by section, the hand\'
   assert.equal(t.result, false, 'no result page between turns'); assert.equal(t.turn, 1);
   assert.match(t.last, /^Turn 1: /, t.last);
   assert.equal(t.used, true, 'the cover is spent'); assert.equal(t.acts, 'Shoot: hits 1 to 2 of them', 'and the act goes back to the sidearm');
+  await done();
+});
+
+test('the deck panel pins Fight in view in a short window, its other choices in the flow with the scene (#991)', async () => {
+  const { ev, done } = await open({ viewport: { width: 1280, height: 600 } });
+  await ev(helpers); await ev(deckHelpers);
+  const r = await ev(() => {
+    fightGame('gunner'); boarded();
+    const b = [...document.querySelectorAll('#panel [data-action="choose"]')].find(x => x.textContent === 'Fight'), box = b.getBoundingClientRect();
+    return { flow: !!b.closest('.choices.flow'), top: document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2) === b };
+  });
+  assert.equal(r.flow, false, 'Fight is in the pinned block, as a ship fight\'s Fire is (#846)');
+  assert.equal(r.top, true, 'Fight can be clicked where it is drawn, with nothing over it and no list to scroll');
   await done();
 });
 
