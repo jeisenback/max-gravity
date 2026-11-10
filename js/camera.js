@@ -33,34 +33,42 @@ function camStep(cam, target, dt, span, len) {
   return cam + (want - cam) * Math.min(1, dt * 1.5);
 }
 
-// The outline's boxes in screen units, in the top left corner of the view box. Each room is mapped by its shares and its deck.
-function outlineLayout(box, len) {
-  const w = Math.min(180, box.w * 0.32), h = w * 0.16, x = box.x + 8, y = box.y + 8;
-  const rooms = ROOMS.map(r => ({ id: r.id, x: x + r.x0 * w, y: r.tall ? y : y + r.deck * h / 2, w: (r.x1 - r.x0) * w, h: r.tall ? h : h / 2 }));
-  return { x, y, w, h, rooms };
+// The outline of the whole tower in screen units (#972): a tall strip in the top left corner of the view box, the tower nose up, 60 world
+// units of space each side and 75 over the nose's cap and under the drive deck (the bell's throat), scaled by k (screen px a world unit) from
+// the world origin at ox, oy. Each room is its layoutBox scaled.
+const OUTLINE = { maxH: 170, side: 60, end: 75 };
+function outlineLayout(box, lay) {
+  const h = Math.min(OUTLINE.maxH, box.h - 16), w = h * (lay.width + 2 * OUTLINE.side) / (towerHeight(lay) + 2 * OUTLINE.end), x = box.x + 8, y = box.y + 8;
+  const k = h / (towerHeight(lay) + 2 * OUTLINE.end), ox = x + OUTLINE.side * k, oy = y + OUTLINE.end * k;
+  const rooms = layoutRooms(lay).map(r => { const q = layoutBox(lay, r.id); return { id: r.id, x: ox + q.x0 * k, y: oy + q.top * k, w: (q.x1 - q.x0) * k, h: (q.floor - q.top) * k }; });
+  return { x, y, w, h, k, ox, oy, rooms };
 }
+// A world point (x across the tower, y down from the flight deck's ceiling) on the outline, in screen units.
+const outlineAt = (o, wx, wy) => ({ x: o.ox + wx * o.k, y: o.oy + wy * o.k });
 
-// The room under a point, or null. outline.squeeze (abs(turn), as drawOutline draws it; 1 if not set) maps the point back across the
-// squeezed outline to the full-width boxes.
+// The room under a point, or null: the plain box test.
 function outlineRoomAt(outline, x, y) {
-  const sq = Math.max(0.05, outline.squeeze === undefined ? 1 : outline.squeeze), cx = outline.x + outline.w / 2;
-  x = cx + (x - cx) / sq;
   const r = outline.rooms.find(q => x >= q.x && x <= q.x + q.w && y >= q.y && y <= q.y + q.h);
   return r ? r.id : null;
 }
 
-// The outline: a dark panel, the hull, the rooms, a dot per person (dots: [{ x, deck, color }], x in world units) and the frame of the view.
-// It is squeezed across by abs(turn) while the ship turns.
-function drawOutline(ctx, outline, dots, camX, span, len, turn) {
-  const o = outline, sq = Math.max(0.05, Math.abs(turn)), cx = o.x + o.w / 2, px = wx => o.x + wx / len * o.w;
+// The outline: a dark panel, the tower's skin and nose, the tank's band and the well down the middle, the rooms, a dot per person (dots:
+// [{ x, dk, color }], x in world units, dk a fractional deck, placed by towerDeckY so a climber in the tube is in the tank's band) and the
+// view's frame across the full width, from camY - span / 2 to camY + span / 2, held inside the strip.
+function drawOutline(ctx, outline, dots, camY, span, lay) {
+  const o = outline, sk = towerOutline(lay), at = (x, y) => outlineAt(o, x, y), a = at(sk.x0, sk.top), b = at(sk.x1, sk.bottom), nose = at(0, sk.noseTop).y;
+  const tk = at(0, sk.tank.top).y, tb = at(0, sk.tank.bottom).y, wx = at(lay.well.x * lay.width, 0).x;
   ctx.save();
-  ctx.translate(cx, 0); ctx.scale(sq, 1); ctx.translate(-cx, 0);
   ctx.fillStyle = 'rgba(5,10,17,0.8)'; ctx.fillRect(o.x - 4, o.y - 4, o.w + 8, o.h + 8);
-  ctx.strokeStyle = '#4a6a8a'; ctx.lineWidth = 1; ctx.strokeRect(o.x + 0.5, o.y + 0.5, o.w - 1, o.h - 1);
+  ctx.fillStyle = '#0e1826'; ctx.strokeStyle = '#4a6a8a'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(a.x, b.y); ctx.lineTo(a.x, a.y); ctx.quadraticCurveTo(a.x, nose, (a.x + b.x) / 2, nose); ctx.quadraticCurveTo(b.x, nose, b.x, a.y); ctx.lineTo(b.x, b.y); ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(50,100,150,0.45)'; ctx.fillRect(a.x + 1, tk, b.x - a.x - 2, tb - tk);  // the water tank
   ctx.strokeStyle = '#2a4664';
   for (const r of o.rooms) ctx.strokeRect(r.x + 0.5, r.y + 0.5, r.w - 1, r.h - 1);
-  for (const d of dots) { ctx.fillStyle = d.color; ctx.beginPath(); ctx.arc(px(d.x), o.y + (d.deck + 0.5) * o.h / 2, 2, 0, Math.PI * 2); ctx.fill(); }
-  const a = Math.max(o.x, px(camX - span / 2)), b = Math.min(o.x + o.w, px(camX + span / 2));
-  ctx.strokeStyle = '#d6e4f5'; ctx.lineWidth = 1.2; ctx.strokeRect(a, o.y - 2, Math.max(0, b - a), o.h + 4);
+  ctx.beginPath(); ctx.moveTo(wx, at(0, 0).y); ctx.lineTo(wx, at(0, towerHeight(lay)).y); ctx.stroke();  // the ladder well, through the tube
+  for (const d of dots) { const p = at(d.x, towerDeckY(lay, d.dk) - HULL.deck / 3); ctx.fillStyle = d.color; ctx.beginPath(); ctx.arc(p.x, p.y, 2, 0, Math.PI * 2); ctx.fill(); }
+  const y0 = Math.max(o.y, at(0, camY - span / 2).y), y1 = Math.min(o.y + o.h, at(0, camY + span / 2).y);
+  ctx.strokeStyle = '#d6e4f5'; ctx.lineWidth = 1.2; ctx.strokeRect(o.x - 2, y0, o.w + 4, Math.max(0, y1 - y0));
   ctx.restore();
 }

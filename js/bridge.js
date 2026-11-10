@@ -145,27 +145,33 @@ function postOccupant(id) {
   return postMode(id) === 'crewed' ? { who: h } : { you: true };
 }
 
-// A deck plan of the cutaway's ship (shiplife.js): the same two decks and rooms, with each person in the room they spend
-// their time in, and the posts nobody holds left empty. A ring shows how someone is doing: blue is well, amber is having a
-// hard time or hurt (an injured hand holds no post).
+// A deck plan of the cutaway's tower (shiplife.js, #972): nose up, each deck a row of its rooms, the water tank a band over the drive deck and
+// the ladder down the middle, with each person in the room they spend their time in, and the posts nobody holds left empty. A ring shows
+// how someone is doing: blue is well, amber is having a hard time or hurt (an injured hand holds no post). In svg units: the plan 640 wide,
+// a deck's row 50 tall at a step of 54 from the first at top, the tank's band 30.
+const DECK_PLAN = { top: 48, row: 50, step: 54, tank: 30 };
+const deckPlanH = lay => DECK_PLAN.top + lay.decks.length * DECK_PLAN.step + DECK_PLAN.tank + 12;
 function deckSvg() {
-  const ring = c => moodLow(c) || (G.state.injured || {})[c.id] ? '#ff9a3c' : '#6fb0ff', X = f => 30 + f * 580, top = 40, mid = 130, bottom = 220;
+  const lay = LAYOUTS.freighter, P = DECK_PLAN, H = deckPlanH(lay), last = lay.decks.length - 1, X = f => 30 + f * 580;
+  const rowY = i => P.top + i * P.step + (i > lay.tankAfter ? P.tank : 0), tankY = rowY(lay.tankAfter) + P.row + 2, bottom = rowY(last) + P.row + 4;
+  const ring = c => moodLow(c) || (G.state.injured || {})[c.id] ? '#ff9a3c' : '#6fb0ff';
   const homeRoom = role => HAUNTS[role] ? Object.entries(HAUNTS[role]).sort((a, b) => b[1] - a[1])[0][0] : 'berths';
   const placed = Object.keys(POSTS).map(id => ({ room: homeRoom(POSTS[id].role), o: postOccupant(id) }));
   placed.push({ room: 'bridge', o: hired() ? { who: hiredCaptain() } : { you: true } });  // the captain's place is the bridge
   const holders = new Set(Object.keys(POSTS).map(postHolder).filter(Boolean));
   for (const c of crewMembers()) if (!holders.has(c)) placed.push({ room: homeRoom(c.role), o: { who: c } });
   const rooms = ROOMS.map(r => {
-    const y0 = r.deck === 0 ? top + 4 : r.tall ? top + 4 : mid + 4, y1 = r.deck === 0 ? mid - 4 : bottom - 4, floor = r.deck === 0 ? mid - 12 : bottom - 12, w = (r.x1 - r.x0) * 580;
-    let out = `<rect x="${X(r.x0) + 1}" y="${y0}" width="${w - 2}" height="${y1 - y0}" rx="4" fill="#0a1320" stroke="#34506e"/><text class="lbl" x="${X(r.x0) + 6}" y="${y0 + 13}" fill="#7f95ab" font-size="11" letter-spacing="1">${r.name.toUpperCase()}</text>`;
-    if (r.id === 'berths') {
-      const n = Math.min(6, ship().berths), used = berthsUsed(), cols = Math.ceil(n / 2);
-      out += Array.from({ length: n }, (_, i) => `<rect x="${(X(r.x0) + (X(r.x1) - X(r.x0)) * (Math.floor(i / 2) + 0.5) / cols - 12).toFixed(1)}" y="${y0 + 22 + (i % 2) * 20}" width="24" height="12" rx="2" fill="${i < used ? '#1d3a5c' : 'none'}" stroke="#34506e"/>`).join('');
+    const y0 = rowY(r.deck), y1 = y0 + P.row, floor = y1 - 14, w = (r.x1 - r.x0) * 580, across = r.x0 < LADDER && r.x1 > LADDER;
+    const cx0 = across ? X((r.x0 + LADDER) / 2) : X(r.mid), room = across ? (LADDER - r.x0) * 580 : w;  // a room the well runs through keeps its people in its left half
+    let out = `<rect x="${X(r.x0) + 1}" y="${y0}" width="${w - 2}" height="${P.row}" rx="4" fill="#0a1320" stroke="#34506e"/><text class="lbl" x="${X(r.x0) + 6}" y="${y0 + 13}" fill="#7f95ab" font-size="11" letter-spacing="1">${r.name.toUpperCase()}</text>`;
+    if (r.id === 'berths') {  // the bunks in its right half
+      const n = Math.min(6, ship().berths), used = berthsUsed(), cols = Math.ceil(n / 2), bx = X(LADDER) + 12, bw = X(r.x1) - 12 - bx;
+      out += Array.from({ length: n }, (_, i) => `<rect x="${(bx + bw * (Math.floor(i / 2) + 0.5) / cols - 12).toFixed(1)}" y="${y0 + 18 + (i % 2) * 16}" width="24" height="12" rx="2" fill="${i < used ? '#1d3a5c' : 'none'}" stroke="#34506e"/>`).join('');
     }
     const here = placed.filter(q => q.room === r.id), seen = new Set(), who = here.filter(q => { const k = q.o && q.o.you ? 'you' : null; return !k || !seen.has(k) && seen.add(k); });
-    const perRow = Math.max(1, Math.floor((w - 8) / 24));  // a crowded room stacks its people in rows
+    const perRow = Math.max(1, Math.floor((room - 8) / 24));  // a crowded room stacks its people in rows
     return out + who.map((q, i) => {
-      const row = Math.floor(i / perRow), inRow = Math.min(perRow, who.length - row * perRow), cx = (X(r.mid) + ((i % perRow) - (inRow - 1) / 2) * 24).toFixed(1), cy = floor - row * 24;
+      const row = Math.floor(i / perRow), inRow = Math.min(perRow, who.length - row * perRow), cx = (cx0 + ((i % perRow) - (inRow - 1) / 2) * 24).toFixed(1), cy = floor - row * 24;
       if (!q.o) return `<circle cx="${cx}" cy="${cy}" r="10" fill="none" stroke="#4b617a" stroke-dasharray="4 4"/>`;
       if (q.o.you) return `<circle class="person" cx="${cx}" cy="${cy}" r="10" fill="#12202f" stroke="#5fd35f" stroke-width="3"/><text x="${cx}" y="${cy + 3}" fill="#d4e4f5" font-size="11" text-anchor="middle">YOU</text>`;
       const c = q.o.who;
@@ -177,9 +183,12 @@ function deckSvg() {
           `class="person" cx="${cx}" cy="${cy}" r="10" fill="none" stroke="${ring(c)}" stroke-width="3"/>`);
     }).join('');
   }).join('');
-  const ladder = Array.from({ length: 8 }, (_, i) => `<line x1="${X(LADDER) - 5}" y1="${mid - 4 + i * 11}" x2="${X(LADDER) + 5}" y2="${mid - 4 + i * 11}" stroke="#4a6a8c"/>`).join('');
-  return `<rect x="0" y="0" width="640" height="250" fill="#050a11"/>
-    <path d="M${X(0)} ${top + 6} L${X(0.9)} ${top} Q${X(1.02)} ${mid} ${X(0.9)} ${bottom} L${X(0)} ${bottom - 6} Z" fill="#0e1826" stroke="#34506e" stroke-width="2"/>${rooms}${ladder}
+  const lx = X(LADDER), ly0 = rowY(0) + 6, ly1 = rowY(last) + P.row - 4;
+  const ladder = `<line x1="${lx - 5}" y1="${ly0}" x2="${lx - 5}" y2="${ly1}" stroke="#4a6a8c"/><line x1="${lx + 5}" y1="${ly0}" x2="${lx + 5}" y2="${ly1}" stroke="#4a6a8c"/>` +
+    Array.from({ length: Math.floor((ly1 - ly0) / 11) + 1 }, (_, i) => `<line x1="${lx - 5}" y1="${ly0 + i * 11}" x2="${lx + 5}" y2="${ly0 + i * 11}" stroke="#4a6a8c"/>`).join('');
+  const tank = `<rect x="${X(0) + 1}" y="${tankY}" width="578" height="${P.tank - 4}" rx="4" fill="#12304a" stroke="#34506e"/><text class="lbl" x="${X(0) + 6}" y="${tankY + 17}" fill="#7f95ab" font-size="11" letter-spacing="1">WATER</text>`;
+  return `<rect x="0" y="0" width="640" height="${H}" fill="#050a11"/>
+    <path d="M${X(0) - 6} ${bottom} L${X(0) - 6} ${P.top - 2} Q${X(0) - 6} 34 ${X(0.2)} 34 L${X(0.8)} 34 Q${X(1) + 6} 34 ${X(1) + 6} ${P.top - 2} L${X(1) + 6} ${bottom} Z" fill="#0e1826" stroke="#34506e" stroke-width="2"/>${tank}${rooms}${ladder}
     <text x="30" y="26" fill="#7f95ab" font-size="11" letter-spacing="2">DECK PLAN</text>`;
 }
 
@@ -198,7 +207,7 @@ function interiorPanel() {
   const free = t && phase() === 'move' && lifeFree(t);
   return consoleHtml({
     title: 'Interior', status: `${crew.length} crew, ${berthsUsed()}/${ship().berths} berths`,
-    screen: `<svg class="con-plant" viewBox="20 14 620 222" role="img" aria-label="Deck plan">${deckSvg()}</svg>`,
+    screen: `<svg class="con-plant" viewBox="18 14 604 ${deckPlanH(LAYOUTS.freighter) - 14}" role="img" aria-label="Deck plan">${deckSvg()}</svg>`,
     side: conCard('Posts', posts) + (off ? conCard('Off post', off) : ''),
     controls: t ? `<div class="row"><button data-bdown ${free ? '' : 'disabled'}>Spend some downtime</button></div>` : '',
   });

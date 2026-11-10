@@ -619,8 +619,8 @@ function towerTank(ctx, lay, tk, fuel, s) {
 }
 
 // The cutaway in the screen box { x, y, w, h }: the tower in world units (x from 0 to the layout's width, y down from the flight deck's
-// ceiling, the nose up), a camera close in on the hand, and the outline of the whole ship in the corner. The turn shows in the stars, the
-// windows, the thrusters and the outline.
+// ceiling, the nose up), a camera close in on the hand, and the outline of the whole tower in the corner. The turn shows in the stars, the
+// windows and the thrusters.
 // Leaves G.cutRooms (the rooms in view, screen boxes clipped to the box), G.cutHits (the people in view), G.cutRack (the comms rack in view) and
 // G.cutOutline for a tap (game.js).
 function drawCutaway(box, clear = box) {
@@ -635,7 +635,7 @@ function drawCutaway(box, clear = box) {
   const camY = camStep(held, target, G.cam ? Math.max(0, G.time - G.cam.t) : 0, clear.h / zoom, run.len) + run.top + offY, camX = W / 2 + offX;
   G.cam = { y: camY, t: G.time };
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
-  const turn = -Math.sin(t.angle), spin = t.angle + Math.PI / 2;  // turn: 1 before the flip, -1 after, 0 mid-turn; spin: the ship's turn, 0 to pi
+  const spin = t.angle + Math.PI / 2;  // the ship's turn, 0 to pi
   const X = f => f * W, H = towerHeight(lay), deck = i => { const floor = deckFloor(lay, i); return { top: floor - HULL.deck, floor }; };
   const bcx = box.x + box.w / 2, bcy = box.y + box.h / 2, toScreen = (x, y) => ({ x: bcx + (x - camX) * zoom, y: bcy + (y - camY) * zoom });
   const speed = 0.05 + Math.sin(Math.PI * pr) * 0.6, shake = !still && !t.event && speed > 0.2 ? speed * 0.9 : 0;
@@ -724,7 +724,7 @@ function drawCutaway(box, clear = box) {
     const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p));
     const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
     const x = bunk ? bunk.x + Math.min(44, bunk.w * 0.62) : X(p.x), y = bunk ? bunk.y - 5 : towerDeckY(lay, p.dk) - (cot ? 36 : 0), dk = Math.round(p.dk);
-    dots.push({ x: X(p.x), deck: p.dk, color: ROLE_COLORS[p.role] });
+    dots.push({ x: X(p.x), dk: p.dk, color: ROLE_COLORS[p.role] });
     if (!seen(y - 160, y + 60)) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = seen(y - 60, y);
     if (pose.name === 'strap') roomJumpSeat(ctx, x, y, pose.face, w.flip);  // a jump seat folded down from the wall behind them (#927)
@@ -767,8 +767,8 @@ function drawCutaway(box, clear = box) {
   const rack = commsRackBox(layoutBox(lay, 'bridge')), ra = toScreen(rack.x, rack.y), rb = toScreen(rack.x + rack.w, rack.y + rack.h);  // the comms rack, whole in the clear part or not at all
   G.cutRack = ra.x >= cx0 && rb.x <= cx1 && ra.y >= cy0 && rb.y <= cy1 ? { x: ra.x, y: ra.y, w: rb.x - ra.x, h: rb.y - ra.y } : null;
   const seenPart = { y: camY - offY, span: clear.h / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers
-  G.cutOutline = { ...outlineLayout(box, W), ids: people.filter(p => p.id).map(p => p.id), squeeze: Math.abs(turn), view: seenPart };
-  drawOutline(ctx, G.cutOutline, dots, W / 2, W, W, turn);  // the frame is the whole width until the outline is the tower's (Task 4)
+  G.cutOutline = { ...outlineLayout(box, lay), ids: people.filter(p => p.id).map(p => p.id), view: seenPart };
+  drawOutline(ctx, G.cutOutline, dots, seenPart.y, seenPart.span, lay);
 }
 
 // ---------- downtime activities ----------

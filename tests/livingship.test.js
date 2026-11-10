@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS, towerDeckY, deckFloor, layoutBox, couchX, towerHeight, camRun, camTarget, towerOutline, TOWER_BELL } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS', 'towerDeckY', 'deckFloor', 'layoutBox', 'couchX', 'towerHeight', 'camRun', 'camTarget', 'towerOutline', 'TOWER_BELL']);
+const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS, towerDeckY, deckFloor, layoutBox, couchX, towerHeight, camRun, camTarget, towerOutline, TOWER_BELL, outlineAt } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS', 'towerDeckY', 'deckFloor', 'layoutBox', 'couchX', 'towerHeight', 'camRun', 'camTarget', 'towerOutline', 'TOWER_BELL', 'outlineAt']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = [], styles = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'styles' ? styles : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); if (k === 'fillStyle' || k === 'strokeStyle') styles.push(String(v).toLowerCase()); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -182,21 +182,29 @@ test('the zoom fits about three decks and the tower across (#972)', () => {
   assert.equal(viewOf({ x: 0, y: 0, w: 760, h: 480 }, lay).zoom, 760 / 960);
   const v = viewOf({ x: 0, y: 0, w: 760, h: 480 }, lay); assert.ok(Math.abs(v.span - 480 / v.zoom) < 1e-9);
 });
-test('the outline finds every room, and nothing outside it', () => {
-  const o = outlineLayout({ x: 100, y: 50, w: 864, h: 311 }, 1600);
-  for (const r of o.rooms) assert.equal(outlineRoomAt(o, r.x + r.w / 2, r.y + r.h / 2), r.id);
-  assert.equal(o.rooms.length, ROOMS.length); assert.equal(outlineRoomAt(o, o.x - 4, o.y - 4), null);
+test('the outline is the tower: every room, and a tap finds it (#972)', () => {
+  const lay = LAYOUTS.freighter, o = outlineLayout({ x: 0, y: 0, w: 1360, h: 480 }, lay);
+  assert.equal(o.rooms.length, ROOMS.length);
+  for (const r of o.rooms) assert.equal(outlineRoomAt(o, r.x + r.w / 2, r.y + r.h / 2), r.id, `${r.id} at its centre`);
+  assert.equal(o.h, 170, 'a strip 170 tall'); assert.ok(Math.abs(o.w - 170 * (lay.width + 120) / (towerHeight(lay) + 150)) < 1e-9, 'as wide as the tower is to its height');
+  assert.equal(outlineRoomAt(o, o.x - 4, o.y - 4), null, 'nothing outside it');
+  const tank = (o.rooms.find(r => r.id === 'lifesupport').y + o.rooms.find(r => r.id === 'lifesupport').h + o.rooms.find(r => r.id === 'engine').y) / 2;
+  assert.equal(outlineRoomAt(o, o.x + o.w * 0.25, tank), null, 'nor in the tank');
+  for (const r of ROOMS) {  // each room at its layoutBox, scaled: the galley left of the head on the mess deck, the decks in order down the strip
+    const b = o.rooms.find(q => q.id === r.id), q = layoutBox(lay, r.id);
+    assert.ok(Math.abs(b.w / b.h - (q.x1 - q.x0) / (q.floor - q.top)) < 1e-9, `${r.id} keeps its shape`);
+  }
+  assert.ok(o.rooms.find(r => r.id === 'bridge').y < o.rooms.find(r => r.id === 'galley').y && o.rooms.find(r => r.id === 'galley').x < o.rooms.find(r => r.id === 'head').x);
+  assert.equal(outlineLayout({ x: 0, y: 0, w: 760, h: 150 }, lay).h, 134, 'a short box: its height less 16');
 });
-test('a tap on the outline mid-turn finds the room where it is drawn, squeezed', () => {
-  const o = outlineLayout({ x: 0, y: 0, w: 864, h: 311 }, 1600), cx = o.x + o.w / 2, sq = 0.5, half = { ...o, squeeze: sq };
-  for (const r of o.rooms) assert.equal(outlineRoomAt(half, cx + (r.x + r.w / 2 - cx) * sq, r.y + r.h / 2), r.id, `${r.id} where it is drawn`);
-  const galley = o.rooms.find(r => r.id === 'galley');  // a room off the middle (the bridge spans the tower's width, #972)
-  assert.equal(outlineRoomAt(half, galley.x + galley.w / 2, galley.y + galley.h / 2), null, 'not where the full-width box would be');
-  assert.equal(outlineRoomAt({ ...o, squeeze: 1 }, galley.x + galley.w / 2, galley.y + galley.h / 2), 'galley');
-});
-test('the outline draws balanced, squeezed by the turn, with no text', () => {
-  const o = outlineLayout({ x: 0, y: 0, w: 864, h: 311 }, 1600);
-  for (const turn of [1, -1, 0.3]) { const c = fakeCtx(); drawOutline(c, o, [{ x: 800, deck: 0, color: '#ffb347' }], 800, 694, 1600, turn); assert.equal(c.depth, 0); assert.ok(c.calls.length > 0); assert.ok(!c.calls.includes('fillText')); }
+test('the outline draws balanced, with no text, and a dot on the ladder between the decks (#972)', () => {
+  const lay = LAYOUTS.freighter, o = outlineLayout({ x: 0, y: 0, w: 1360, h: 480 }, lay);
+  for (const [dots, camY] of [[[{ x: 440, dk: 0, color: '#ffb347' }], 200], [[{ x: 440, dk: 5.5, color: '#ffb347' }, { x: 100, dk: 6, color: '#9fe' }], 1000]]) {
+    const c = fakeCtx(); drawOutline(c, o, dots, camY, 360, lay); assert.equal(c.depth, 0); assert.ok(c.calls.length > 0); assert.ok(!c.calls.includes('fillText'));
+  }
+  const at = outlineAt(o, 440, towerDeckY(lay, 5.5));
+  assert.ok(at.y > o.rooms.find(r => r.id === 'lifesupport').y + o.rooms.find(r => r.id === 'lifesupport').h && at.y < o.rooms.find(r => r.id === 'engine').y, 'a climber in the tube is in the tank\'s band');
+  assert.ok(Math.abs(at.x - (o.x + o.w / 2)) < 1e-9, 'the well down the middle');
 });
 
 const RS = (o) => ({ w: phaseWeights(0.3), time: 3, zoom: 1.24, spin: 0, still: false, berths: 6, cargo: 0.5, fuel: 0.5, burning: true, night: 0, asleep: 0, ...o });
