@@ -457,6 +457,19 @@ const stageHelpers = () => {
   window.aboardBy = id => shipPeople().find(p => p.id === id);
 };
 
+test('someone bound for another deck walks to the ladder, and climbs only on it (#986)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(stageHelpers);
+  const r = await ev(() => {
+    stageBurn(); const p = { ...shipPeople().find(x => x.role !== 'cat'), staged: undefined, at: undefined, tdk: 1, tx: 0.3 }, pose = o => posture({ ...p, ...o }, phase(), 0, false).name;
+    return { phase: phase(), toLadder: pose({ x: 0.2, dk: 0 }), atLadder: pose({ x: LADDER, dk: 0 }), between: pose({ x: LADDER, dk: 0.5 }) };
+  });
+  await done();
+  assert.equal(r.phase, 'move');
+  assert.equal(r.toLadder, 'walk', 'along the deck to the ladder, a walk, not the arms up on rungs that are not there');
+  assert.equal(r.atLadder, 'climb'); assert.equal(r.between, 'climb', 'on the ladder between decks');
+});
+
 test('a scene during a burn brings the people in it and you to its room, facing each other, and closing it lets them go', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
