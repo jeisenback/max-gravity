@@ -12,7 +12,7 @@ const IDS = ['cool-head', 'salvager', 'marked', 'reliable', 'scarred', 'hard-cas
 const hand = record => ({ record });
 
 test('the table has the eight traits in order, each with a name, a speaker and a rule; the record has nineteen keys', () => {
-  assert.deepEqual(HAND_TRAITS.map(t => t.id), IDS);
+  assert.deepEqual([...HAND_TRAITS.map(t => t.id)], IDS);
   for (const t of HAND_TRAITS) { assert.ok(t.name, t.id); assert.ok(['captain', 'engineer', 'shipper', null].includes(t.by), `${t.id}: ${t.by}`); assert.equal(typeof t.earned, 'function'); }
   assert.equal(RECORD_KEYS.length, 19);
 });
