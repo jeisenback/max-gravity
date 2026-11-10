@@ -175,10 +175,11 @@ function roomEngine(ctx, r, s, X, W) {
 }
 
 // Bunk k of n in the berths room r, in two tiers: its left end x, its width w, and y the bottom of its frame (the mattress lies on it, 5 deep).
-// The berths draw their bunks here, and the cutaway lays its sleepers on them (shiplife.js).
+// The berths draw their bunks here, and the cutaway lays its sleepers on them (shiplife.js). The bottom tier fills from the left and the top one
+// from the right, so the top bunk at the left, under the room's name plate, is the last one taken.
 function berthBunk(r, n, k) {
-  const cols = Math.max(1, Math.ceil(n / 2)), w = Math.min(70, (r.x1 - r.x0) * 0.5 / cols);
-  return { x: r.x0 + (r.x1 - r.x0) * 0.02 + Math.floor(k / 2) * w, w, y: k % 2 ? r.floor - 56 : r.floor - 8 };
+  const cols = Math.max(1, Math.ceil(n / 2)), w = Math.min(70, (r.x1 - r.x0) * 0.5 / cols), col = k % 2 ? Math.floor(n / 2) - 1 - Math.floor(k / 2) : Math.floor(k / 2);
+  return { x: r.x0 + (r.x1 - r.x0) * 0.02 + col * w, w, y: k % 2 ? r.floor - 56 : r.floor - 8 };
 }
 
 function roomBerths(ctx, r, s, X, W) {

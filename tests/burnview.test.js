@@ -322,6 +322,36 @@ test('the outline covers no one and no room\'s name, wide and small (#972)', asy
   }
 });
 
+// At night the ship's sleepers lie on the bunks, and the berths' name plate stays clear of them, wide and small: the top bunk under the plate is
+// the last one taken.
+test('the sleepers on the bunks leave the berths\' name clear, wide and small (#972)', async () => {
+  for (const [name, viewport] of [['small', { width: 1000, height: 700 }], ['wide', { width: 1600, height: 900 }]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport });
+    await ev(helpers);
+    const r = await ev(() => {
+      burn(); const t = G.transit, lay = LAYOUTS.freighter, b = roomAt('berths'), out = { over: [], sleepers: 0, plate: null };
+      t.left = t.total * 0.7; t.angle = -Math.PI / 2; t.flipped = false; t.elapsed = 50; t.dark = true;  // night, the lights down
+      shipPeople().forEach((p, i) => Object.assign(p, { room: 'berths', x: b.x0 + (0.05 + i * 0.05) * CUT_K, dk: b.deck, tdk: b.deck, tx: null, wait: 999, staged: undefined }));
+      const real = window.worldText;
+      window.worldText = (c, zoom, text, x, y, size, ...a) => {
+        if (text === 'BERTHS') { const m = c.getTransform(), w = c.measureText(text).width / zoom; out.plate = { a: m.transformPoint(new DOMPoint(x - 4 / zoom, y - size)), b: m.transformPoint(new DOMPoint(x + w + 4 / zoom, y + size * 0.3)) }; }
+        return real(c, zoom, text, x, y, size, ...a);
+      };
+      try { G.cam = { y: layoutBox(lay, 'berths').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); } finally { window.worldText = real; }
+      const pl = out.plate, inPlate = q => q.x >= pl.a.x - 2 && q.x <= pl.b.x + 2 && q.y >= pl.a.y - 2 && q.y <= pl.b.y + 2;
+      for (const p of shipPeople().filter(isAsleep)) {
+        const h = G.cutHits.find(q => q.id === p.id); if (!h) continue; out.sleepers++;
+        for (let s = 0; s <= 10; s++) { const q = { x: h.head.x + (h.foot.x - h.head.x) * s / 10, y: h.head.y + (h.foot.y - h.head.y) * s / 10 }; if (inPlate(q)) { out.over.push(`${p.name} at ${Math.round(q.x)},${Math.round(q.y)}`); break; } }
+      }
+      return out;
+    });
+    assert.ok(r.plate, `${name}: the berths' name is drawn`);
+    assert.ok(r.sleepers >= 5, `${name}: five asleep on the bunks (${r.sleepers})`);
+    assert.deepEqual(r.over, [], `${name}: sleepers over the berths' name ${JSON.stringify(r.plate)}`);
+    await done();
+  }
+});
+
 // A tap on a room opens its console as a sheet (#323, step 5 task 3).
 test('every room has a sheet, and every sheet is a station', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
