@@ -1310,15 +1310,15 @@ function roomMedbay(ctx, r, s, X, W) {
 // just past where the morning's queue waits by it (shiplife.js headDoorX, at 0.1 and 0.16 of the room): the partition runs from the cut back to
 // the back wall, and the cutaway shows its face toward the eye, the inside of the door, so the one inside is seen, as every room is. On the
 // door its slide latch, its hinges and the stores list pinned on its back (a line has someone adding soap to it); the occupied lamp on its frame
-// at the cut, by the latch (the drawing reads no state, so the lamp is unlit). Past it, from the partition in: the toilet, for zero g (its seat
+// at the cut, by the latch, lit while someone is in (s.headIn, drawCutaway). Past it, from the partition in: the toilet, for zero g (its seat
 // at the seat's height on a newer pedestal on the old plinth with fresh bolts, the lid up, the thigh bar over the seat, the foot hold with a
 // printed bracket tagged temporary, the funnel in its clip on its hose, the suction line down through the deck with a cable tied along it); a
 // grab rail over it and one in the passage where the queue waits. From the right wall in: two lockers for wash kit (vents, number plates,
 // handles, one newer in another finish); the shower stall on its tray, its door with frosted glass, the rose and its flow restrictor seen
 // through it, the handle and the hot water's timer counting the ration. In the middle, where the one inside stands, the basin hung off the
 // back wall at the waist with its push tap, and on the wall over it the mirror (taped over a crack) at the eye, the shelf under it with a
-// mug, and the towel rail. The room's name is long: its plate covers the left half of the room from 61 to 82 over the floor at the smallest
-// zoom, so everything on the wall there is under 61 and the mirror is past it. Its lamp is a fitting (LAMP_FITTED), over the basin.
+// mug, and the towel rail. The room's name (roomNameAt) is short and high, clear of the door. Its lamp is a fitting (LAMP_FITTED), over the basin.
+const HEAD_LAMP_LIT = '#a07848', HEAD_LAMP_OFF = '#4a2a26';  // the occupied lamp, lit (muted amber) and dark
 function roomHead(ctx, r, s, X) {
   const F = r.floor, T = r.top, n = v => Math.round(v * 100) / 100, e = roomEye(r), I = (x, y, d) => roomInto(e, x, y, d).map(n);
   const at = (d, px, py, fn) => {  // fn draws round (ax, ay), which lands at (px, py) at the depth d (1: on the back wall, in the wall tone)
@@ -1362,7 +1362,8 @@ function roomHead(ctx, r, s, X) {
   for (let l = 0; l < 3; l++) { const [lx, ly] = I(P, F - 52 + l * 2.6, 0.45); roomFlat(ctx, lx, ly, 2.2 - (l % 2) * 0.8, 0.5, '#5a5648'); }
   { const [lx, ly] = I(P, F - 42, 0.16); roomFlat(ctx, lx, ly - 1.2, 3, 2.4, '#8796a5'); roomFlat(ctx, lx + 0.2, ly - 5, 2, 1.2, '#5a6a78'); }  // the slide latch, the paint worn over it
   roomFlat(ctx, P - 1, T, 2, F - T, '#04080d');
-  roomPart(ctx, roomRound(P - 3, F - 57, 6, 8, 1.2), '#263a50', { top: 0.5, under: 0.8 }); roomDot(ctx, P, F - 53, 1.6, '#4a2a26');
+  roomPart(ctx, roomRound(P - 3, F - 57, 6, 8, 1.2), '#263a50', { top: 0.5, under: 0.8 });
+  if (s.headIn) { roomDot(ctx, P, F - 53, 3, 'rgba(160,120,72,0.25)'); roomDot(ctx, P, F - 53, 1.6, HEAD_LAMP_LIT); } else roomDot(ctx, P, F - 53, 1.6, HEAD_LAMP_OFF);  // lit while someone is in
   // The toilet: its plinth with fresh bolts, the suction line down through the deck, a cable tied along it; the pedestal, the lid up, the seat,
   // the thigh bar over it on its arms, the funnel in its clip on its hose, and the foot hold with its printed bracket and its tag.
   roomPart(ctx, roomRound(tx - 15, F - 3, 30, 3, 0.8), '#24384c', { top: 0.5, solid: 0.5 });
@@ -1478,6 +1479,11 @@ function drawDamage(ctx, r, s) {
   }
 }
 
+// Where a room's name is written (#933): 13px on its plate (shiplife.js), 12 in from its left wall, the plate's top 8 under the ceiling, clear of
+// the lamps' fittings over it and over the head of anyone standing in the room where the plate is short enough. x and y are the text's start and
+// baseline, in world units at the zoom.
+const ROOM_NAME_TOP = 8;
+const roomNameAt = (r, zoom) => ({ x: r.x0 + 12, y: r.top + ROOM_NAME_TOP + 13 / zoom });
 // The tower's rooms with no fittings yet (#972; their own are step 3, #973): the walls drawRoom gives every room, and the name the cutaway puts on each.
 const roomPlain = () => {};
 const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay,

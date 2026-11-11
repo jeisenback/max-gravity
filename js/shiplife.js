@@ -188,6 +188,8 @@ const washesToday = (p, morning) => !HEAD_SKIPS.includes(p.role) && morningShare
 // nobody has waited longer (`p.ticket`); someone in it is done when their wait runs out. `first`: the first in this morning (the hot water).
 const HEAD_WAIT = 2, HEAD_STAGGER = 4.5;
 const headDoorX = k => { const r = roomAt('head'); return r.x0 + r.w * (0.1 + 0.06 * k); };
+// Whether someone is in the head, at its middle (headTurn's inside, arrived): the head's door lamp lights for them (rooms.js roomHead).
+const headTaken = people => people.some(p => p.room === 'head' && p.queue === 'inside' && p.tx === null);
 function headTurn(p, people, morning) {
   const here = people.filter(o => o !== p && o.room === 'head' && o.at === 'head'), door = here.filter(o => o.queue === 'door'), taken = here.some(o => o.queue === 'inside');
   const goIn = () => Object.assign(p, { queue: 'inside', tx: roomAt('head').mid, first: !people.some(o => o !== p && o.washed === morning) });
@@ -837,7 +839,7 @@ function drawCutaway(box, clear = box) {
   const cap = ship().cargo, nb = Math.min(12, ship().berths), slots = new Map();
   for (const p of people) if (slots.size < nb && isAsleep(p)) slots.set(p, slots.size);  // whoever is turned in lies on a bunk
   const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
-    damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt() };  // the marks lifeTick keeps (shipState)
+    damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);
     if (seen(q.top, q.floor + HULL.plate)) drawRoom(ctx, r.id, q, s);  // with its cut, as the shaft is (#1024)
@@ -859,7 +861,7 @@ function drawCutaway(box, clear = box) {
   ctx.stroke();
   ctx.font = `600 13px ${roomFont}`;
   for (const r of ROOMS) {  // each name at 13px on a dark plate, so it reads over the props behind it
-    const name = r.name.toUpperCase(), nx = X(r.x0) + 12, ny = layoutBox(lay, r.id).top + 34, fs = 13 / zoom, pad = 4 / zoom;
+    const name = r.name.toUpperCase(), { x: nx, y: ny } = roomNameAt(layoutBox(lay, r.id), zoom), fs = 13 / zoom, pad = 4 / zoom;
     ctx.fillStyle = 'rgba(6,13,22,0.8)'; ctx.fillRect(nx - pad, ny - fs, ctx.measureText(name).width / zoom + pad * 2, fs * 1.3);
     worldText(ctx, zoom, name, nx, ny, fs, '#7f97b0');
   }

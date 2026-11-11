@@ -640,7 +640,7 @@ test('the galley is drawn to the figures\' standard in every phase: its props ou
     for (const col of ['#d8d2c4', '#ddd6c8', '#9aa8b6', '#8a5a3a']) assert.equal(fills(col), 0, `${pr}: no near-white or orange block (${col}), the props a step below the people`);
     // the room's name (shiplife.js: 13px on a plate at its top left) and the thrust sign (its right end, over the hood) on clear wall; in the
     // smallest window the sign is scaled up to keep its text at 12px and covers the hood's top, as it is drawn over the room
-    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, sk = zoom < 0.9 ? 0 : Math.max(1, 1.05 / zoom);
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 8 - 1 / zoom, y1: r.top + 8 + 17 / zoom }, sk = zoom < 0.9 ? 0 : Math.max(1, 1.05 / zoom);
     const sign = { x0: r.x1 - 6 - 112 * sk, x1: r.x1 - 6, y0: r.top + 8, y1: r.top + 8 + 18 * sk };
     const hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
     for (const { k, v } of galleyOwn(r, s)) {
@@ -822,7 +822,7 @@ test('the bridge is drawn to the figures\' standard in every phase: its props ou
     }
     for (const col of ['#e8e0c8', '#e0b48e', '#ffb347']) assert.ok(!outlined.some(p => p.col === col), `${pr}: no ${col} block`);
     // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall
-    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 8 - 1 / zoom, y1: r.top + 8 + 17 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
     for (const { k, v } of roomOwn('bridge', r, s)) {
       const pts = k === 'fillRect' ? [[v[0], v[1]], [v[0] + v[2], v[1]], [v[0], v[1] + v[3]], [v[0] + v[2], v[1] + v[3]], [v[0] + v[2] / 2, v[1] + v[3] / 2]] : /^(moveTo|lineTo)$/.test(k) ? [v] : k === 'quadraticCurveTo' ? [v.slice(2)] : [];
       for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${pr} ${zoom}: ${k} ${v} under the room's name`);
@@ -922,7 +922,7 @@ test('the berths are drawn to the figures\' standard in every phase: their props
     for (const p of outlined.filter(q => q.col !== wallTone('#8a4a40') && !fitting(partBox(q)))) assert.ok(partBox(p).y0 >= r.top + 6,  // the towel's path is at the origin, moved by ctx.translate as it swings
       `${at}: a ${p.col} part (${JSON.stringify(partBox(p))}) under the ceiling`);
     // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall
-    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 8 - 1 / zoom, y1: r.top + 8 + 17 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
     for (const { k, v } of roomOwn('berths', r, s)) {
       const pts = k === 'fillRect' ? [[v[0], v[1]], [v[0] + v[2], v[1]], [v[0], v[1] + v[3]], [v[0] + v[2], v[1] + v[3]], [v[0] + v[2] / 2, v[1] + v[3] / 2]] : /^(moveTo|lineTo)$/.test(k) ? [v] : k === 'quadraticCurveTo' ? [v.slice(2)] : [];
       for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} under the room's name`);
@@ -1170,7 +1170,7 @@ test('the medbay is drawn to the figures\' standard in every phase: its props ou
     for (const col of ['#dde4ea', '#eef2f6', '#c9d3dc', '#d8dde4', '#c03a30', '#1a1a1a', '#8aa4c0']) assert.equal(fills(col), 0, `${at}: no near-white, saturated or black block (${col})`);
     assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === (patient ? '#ffb030' : '#7fd8a0')), `${at}: the monitor's trace, amber with a patient`);
     // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn (the wall's things moved onto it)
-    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 8 - 1 / zoom, y1: r.top + 8 + 17 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
     for (const { k, v, pts } of roomOwnPlaced('medbay', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
   }
   const stillAt = t => { const { r, s } = medCase(0.5, 1.17, true), c = fakeCtx(); drawRoom(c, 'medbay', r, { ...s, still: true, time: t }); return c.args.join('|'); };
@@ -1299,7 +1299,7 @@ test('the hold is drawn to the figures\' standard in every phase: its props outl
     for (const [col, what] of [...(n ? [['#3e3426', 'the pallets']] : []), ['#7a6a34', 'the jack\'s forks'], ['#8a7a3a', 'its pump']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
     assert.equal(fills('#3e4c5a'), 0, `${at}: the scuffs on the wall, not in their own colour`); assert.ok(fills(wallTone('#3e4c5a')) >= 2, `${at}: the scuffs on the wall`);
     // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn
-    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 8 - 1 / zoom, y1: r.top + 8 + 17 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
     for (const { k, v, pts } of roomOwnPlaced('hold', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
   }
   const stillAt = t => { const { r, s } = holdCase(0.5, 1.17, 1), c = fakeCtx(); drawRoom(c, 'hold', r, { ...s, still: true, time: t }); return c.args.join('|'); };
@@ -1310,7 +1310,7 @@ test('the hold\'s crates come from the cargo, in stacks of three, each with its 
     const { r, s } = holdCase(0.3, zoom, cargo), n = Math.round(12 * cargo), at = `cargo ${cargo}, ${zoom}`, { calls, parts } = holdParts(r, s);
     const bodies = parts.filter(p => HOLD_WOOD.includes(p.col) && p.x1 - p.x0 > 30);
     assert.equal(bodies.length, n, `${at}: ${n} crates (${bodies.length})`);
-    const name = { x1: r.x0 + 12 + 60 / zoom, y1: r.top + 34 + 4 / zoom };
+    const name = { x1: r.x0 + 12 + 60 / zoom, y1: r.top + 8 + 17 / zoom };
     for (let k = 0; k < n; k++) {
       const c = holdCrate(r, k), b = holdLabel(r, k);
       assert.ok(bodies.some(p => Math.abs(p.x0 - c.x) < 0.01 && Math.abs(p.y0 - c.y) < 0.01), `${at}: crate ${k} drawn where holdCrate puts it`);
@@ -1549,7 +1549,7 @@ test('the gunnery is drawn to the figures\' standard in every phase: its props o
     }
     for (const col of ['#b8903a', '#d8b060', '#c9b98f', '#c9a227', '#ffb030']) assert.equal(fills(col), 0, `${at}: no bright block (${col})`);
     // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn (the wall's things moved onto it)
-    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 8 - 1 / zoom, y1: r.top + 8 + 17 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
     for (const { k, v, pts } of roomOwnPlaced('gunnery', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
     // what is on the wall is on the back wall, where it is drawn
     const wall = backWall(r), placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) }));
@@ -1726,7 +1726,7 @@ test('the engine room is drawn to the figures\' standard in every phase: its pro
     }
     for (const col of ['#e6dfc9', '#c0392b', '#c9a227', '#ffe2b8', '#ff8a6a']) assert.equal(fills(col), 0, `${at}: no bright block (${col})`);
     // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn (the wall's things moved onto it)
-    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 8 - 1 / zoom, y1: r.top + 8 + 17 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
     for (const { k, v, pts } of roomOwnPlaced('engine', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
     // what is on the wall is on the back wall, where it is drawn
     const wall = backWall(r), placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) }));
@@ -1875,7 +1875,7 @@ const HEAD_PROPS = [['#2a3c50', 'the door\'s frame'], ['#30465c', 'the door'], [
 const HEAD_WALL = ['#34506a', '#3b566e', '#22405c', '#5a6e84', '#7a3a34', '#3a5a7a', '#3a5470'];
 const headCase = (pr, zoom, o = {}) => ({ r: layoutBox(LAYOUTS.freighter, 'head'), s: RS({ w: phaseWeights(pr), zoom, well: FW, damage: { marks: new Set(), severe: false }, ...o }) });
 const headParts = (r, s) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'head', r, s); return { calls, parts: filledParts(calls).filter(p => p.outlined && p.pts.length).map(p => ({ col: p.col, ...partBox(p) })), placed: placedParts(calls).filter(p => p.pts.length).map(p => ({ col: p.col, ...partBox({ pts: p.pts.map(q => q.slice(0, 2)) }) })) }; };
-const headName = (r, zoom) => ({ x0: r.x0 + 12 - 4 / zoom, x1: r.x0 + 12 + 134 / zoom, y0: r.top + 34 - 13 / zoom, y1: r.top + 34 + 3.9 / zoom });  // the name's plate: 13px text about 130px wide
+const headName = (r, zoom) => ({ x0: r.x0 + 12 - 4 / zoom, x1: r.x0 + 12 + 46 / zoom, y0: r.top + 8, y1: r.top + 8 + 16.9 / zoom });  // the name's plate (roomNameAt): HEAD, 13px, about 38px wide
 const headX = k => headDoorX(k) * LAYOUTS.freighter.width;  // where the queue waits by the door, in world units
 test('the head is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
   for (const marked of [false, true]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
@@ -2024,5 +2024,28 @@ test('the head\'s ceiling lamp is a fitting over the one at the basin (#1024)', 
     assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${pr}: its plate on the sliver`);
     assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${pr}: its housing hung from the ceiling`);
     assert.ok(rec.calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${pr}: the guard over its lens`);
+  }
+});
+test('the head\'s occupied lamp is lit while someone is in (s.headIn) and dark when it is free (#933, #973)', () => {
+  for (const zoom of [0.82, 1.17, 1.45]) for (const headIn of [false, true]) {
+    const { r, s } = headCase(0.3, zoom, { headIn }), { calls, parts } = headParts(r, s), F = r.floor, lamp = parts.find(p => p.col === '#263a50');
+    const lens = col => filledParts(calls).filter(p => p.col === col).length + calls.filter((k, i) => k[0] === 'fillStyle' && k[1] === col && calls.slice(i + 1, i + 4).some(q => q[0] === 'arc' && q[1] >= lamp.x0 && q[1] <= lamp.x1 && q[2] >= lamp.y0 && q[2] <= lamp.y1)).length;
+    assert.equal(lens('#a07848') > 0, headIn, `${zoom}: the lamp ${headIn ? 'lit' : 'not lit'}`);
+    assert.equal(lens('#4a2a26') > 0, !headIn, `${zoom}: the lens ${headIn ? 'not dark' : 'dark'}`);
+    const v = rgbOf('#a07848'); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, 'lit in a muted colour, a step below the people');
+    assert.ok(F - lamp.y0 <= 60, `${zoom}: the lamp by the latch`);
+  }
+});
+const { roomNameAt, ROOM_NAME_TOP } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomNameAt', 'ROOM_NAME_TOP']);
+test('every room\'s name sits high on its wall, under the lamps\' fittings; the head\'s short name is clear of its door (#933)', () => {
+  assert.ok(LAYOUTS.freighter.decks.flatMap(d => d.rooms).some(q => q.id === 'head' && q.name === 'Head'), 'the head is named the head');
+  for (const zoom of [0.82, 1.17, 1.45]) for (const id of ['bridge', 'galley', 'head', 'berths', 'gunnery', 'medbay', 'hold', 'engine']) {
+    const r = layoutBox(LAYOUTS.freighter, id), at = roomNameAt(r, zoom), top = at.y - 13 / zoom;
+    assert.ok(near(at.x, r.x0 + 12) && near(top, r.top + ROOM_NAME_TOP), `${id}, ${zoom}: 12 in, its plate's top ${ROOM_NAME_TOP} under the ceiling`);
+    assert.ok(top > r.top + 6.4, `${id}, ${zoom}: under the lamps' fittings (6.4 deep)`);
+  }
+  for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = headCase(0.3, zoom), { parts } = headParts(r, s), frame = parts.find(p => p.col === '#2a3c50');
+    assert.ok(headName(r, zoom).x1 < frame.x0, `${zoom}: the head's plate ends before its door's frame`);
   }
 });

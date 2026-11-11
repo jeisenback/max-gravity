@@ -8,9 +8,9 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const G = {};
-const { routineSpot, routineGo, routineWait, headTurn, ROOMS, roomAt, HAUNTS, LIFE_LINES, lifeLine, sceneStage, shipDay, SHIP_DAY, NIGHT_WATCH } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'],
+const { routineSpot, routineGo, routineWait, headTurn, headTaken, ROOMS, roomAt, HAUNTS, LIFE_LINES, lifeLine, sceneStage, shipDay, SHIP_DAY, NIGHT_WATCH } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'],
   { G, Mods: { filter: (n, v) => v, emit() {}, register() {} }, linedText: (id, t) => t, pickFresh: (lines, rnd) => lines[Math.floor(rnd() * lines.length)] },
-  ['routineSpot', 'routineGo', 'routineWait', 'headTurn', 'ROOMS', 'roomAt', 'HAUNTS', 'LIFE_LINES', 'lifeLine', 'sceneStage', 'shipDay', 'SHIP_DAY', 'NIGHT_WATCH']);
+  ['routineSpot', 'routineGo', 'routineWait', 'headTurn', 'headTaken', 'ROOMS', 'roomAt', 'HAUNTS', 'LIFE_LINES', 'lifeLine', 'sceneStage', 'shipDay', 'SHIP_DAY', 'NIGHT_WATCH']);
 
 const ROLES = ['engineer', 'pilot', 'gunner', 'quartermaster', 'slicer', 'medic', 'xo', 'cook', 'icehand'];
 const plain = { marks: [], severe: false, hurt: [], low: [], you: false, aid: null, repairs: {} };
@@ -166,4 +166,16 @@ test('a scene that names a new room is staged there, by whole words (#973)', () 
   assert.equal(room('He shakes the headache off, and the padlock, and the lockers, and the showers of sparks.'), 'galley', 'not inside longer words');
   assert.equal(room('The head of the table is empty.'), 'galley', 'the head of something is not the head');
   assert.equal(room('She shows him the head, then the galley.'), 'head', 'the first named');
+});
+
+test('the head is taken while someone is in at its middle, not on the way in nor waiting at the door (#933, #973)', () => {
+  const r = roomAt('head'), mk = (o) => ({ role: 'gunner', room: 'head', at: 'head', block: 'wake', x: r.mid, dk: r.deck, tdk: r.deck, tx: null, ...o });
+  assert.equal(headTaken([]), false, 'nobody aboard');
+  assert.equal(headTaken([mk({ queue: 'door' }), mk({ queue: 'door' })]), false, 'two waiting at the door');
+  assert.equal(headTaken([mk({ queue: 'inside', tx: r.mid, x: r.x0 })]), false, 'on the way in');
+  assert.equal(headTaken([mk({ queue: 'door' }), mk({ queue: 'inside' })]), true, 'one in, one waiting');
+  assert.equal(headTaken([mk({ queue: 'inside', room: 'galley' })]), false, 'only in the head');
+  const people = [0, 1].map(i => mk({ id: `g${i}`, x: r.x0 + 0.05, queue: undefined }));
+  headTurn(people[0], people, 3); assert.equal(headTaken(people), false, 'gone in, not there yet');
+  people[0].tx = null; assert.equal(headTaken(people), true, 'there');
 });
