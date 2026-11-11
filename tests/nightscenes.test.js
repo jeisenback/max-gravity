@@ -39,20 +39,20 @@ test('the night condition holds on a burn while the lights are down, and not by 
   await done();
 });
 
-test('the night scenes play at night with their post filled, and not by day or without it', async () => {
+test('the night scenes play at night with their watch kept, and not by day or without it', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = burn(), t = G.transit, out = {}; st.day = 30;
+    const st = burn(), t = G.transit, out = {}; st.day = 32;  // the watch bill's first night: the pilot on the bridge, the engineer in the engine room (#1034)
     const staff = role => { st.crew = st.crew.filter(id => person(id).role !== role); const p = makePerson('earth'); p.role = role; p.skill = 1; registerPerson(p); st.crew.push(p.id); return p; };
-    t.elapsed = 50; for (const role of ['pilot', 'engineer', 'cook']) st.crew = st.crew.filter(id => person(id).role !== role);
+    t.elapsed = 50; for (const role of ['pilot', 'slicer', 'xo', 'engineer', 'icehand', 'cook']) st.crew = st.crew.filter(id => person(id).role !== role);  // nobody but the hand could keep a watch
     out.empty = NIGHT_IDS.map(holds);
     staff('pilot'); staff('engineer'); staff('cook');
     out.night = NIGHT_IDS.map(holds);
     t.elapsed = 5; out.day = NIGHT_IDS.map(holds);
     return out;
   });
-  assert.deepEqual(r.empty, [false, false, false], 'a night scene needs its post filled');
+  assert.deepEqual(r.empty, [false, false, false], 'a night scene needs its watch kept by someone else (the hand has the bridge, nobody the engine room) or, for the bread, a cook');
   assert.deepEqual(r.night, [true, true, true]);
   assert.deepEqual(r.day, [false, false, false], 'by day none of them plays');
   await done();
@@ -62,7 +62,7 @@ test('every choice of the night scenes reads whole, names the person on the post
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = burn(), out = { bad: [], names: {}, xp: {} };
+    const st = burn(), out = { bad: [], names: {}, xp: {} }; st.day = 32; G.transit.elapsed = 50;  // the pilot's and the engineer's night on the watch bill (#1034)
     const who = {};
     for (const role of ['pilot', 'engineer', 'cook']) { st.crew = st.crew.filter(id => person(id).role !== role); const p = makePerson('earth'); p.role = role; p.skill = 1; registerPerson(p); st.crew.push(p.id); who[role] = p.first; }
     const role = { 'road-night-watch': 'pilot', 'road-night-pump': 'engineer', 'road-night-bread': 'cook' };

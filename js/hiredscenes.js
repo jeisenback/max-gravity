@@ -13,6 +13,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:warning', fn: 'warningScene', file: 'js/stakes.js', title: 'A Warning', where: 'transit', when: 'Once, when the captain\'s opinion of you falls to -2.' },
   { id: 'scene:pitch', fn: 'pitchScene', file: 'js/awayjobs.js', title: 'Putting It to the Captain', where: 'port', when: 'When you put work further away to the captain, from the Missions page.' },
   { id: 'scene:inspection', fn: 'inspectionScene', file: 'js/inspection.js', title: 'The Inspector', where: 'port', when: 'Landing at an Arcology Pact, Dome Pact or Federation port with bad standing there, or with a good that owner licenses for import (#993).' },
+  { id: 'scene:watch-bill', fn: 'billLine', file: 'js/shiplife.js', title: 'The Watch Bill', where: 'transit', when: 'On a burn: the handover line naming who has the bridge and the engine room tonight, and the Watch bill card on the hand\'s page (#1034).' },
   { id: 'scene:customs', fn: 'customsScene', file: 'js/ties.js', title: 'Customs and Patrols', where: 'port', when: 'A crew member a faction wants, at a port in its space (customs) or on a burn in or out of it (a patrol cutter).' },
   { id: 'scene:dock-friend', fn: 'dockFriendScene', file: 'js/ties.js', title: 'A Friend at the Dock', where: 'port', when: 'A crew member who\'s an officer of the faction whose port this is.' },
   { id: 'scene:war-call', fn: 'warCallScene', file: 'js/ties.js', title: 'Word From Home', where: 'port', when: 'A member or officer aboard whose side has gone to war is called home.' },
@@ -202,6 +203,13 @@ const SCENE_LINES = {
     'keep.result': 'You stay out of it. The ship pays {paid} cr, the junior seals the hold, and the clamps come off.',
     'pay.result': 'You pay {paid} cr. The junior seals the hold, and the clamps come off.',
     clean: 'Customs logs the ship through.',
+  },
+  'scene:watch-bill': {  // the rotating watch bill (shiplife.js watchBill, #1034): the handover line, and the card on the hand's page
+    tonight: 'The watch tonight: {bridge} on the bridge, {engine} in the engine room.',
+    'tonight.bridge': 'The watch tonight: {bridge} on the bridge.',
+    'tonight.engine': 'The watch tonight: {engine} in the engine room.',
+    'card.title': 'Watch bill', 'card.tonight': 'Tonight', 'card.night': 'Night {n}', 'card.mine': '(yours)', 'card.none': 'nobody',
+    'card.row': '{bridge} on the bridge, {engine} in the engine room',
   },
   'scene:dock-friend': {  // an officer aboard, and the harbor master who served under them (ties.js)
     title: 'A Friend at the Dock',
@@ -666,6 +674,7 @@ const SCENE_LINES = {
   'scene:contact': {  // a contact on a burn (engage.js contactEvent): {km} is her range, {who} the line for who she is (or a ladder step's, scene:fight-entry), {gunner} who fights the guns, {crew} the crew member who spoofs, {cr} the payoff, {fine} the heave-to's fine; a run's days are said after (run.days of scene:fight)
     title: 'Contact',
     text: 'Sensors: a drive plume at {km} km, on an intercept course. {who}',
+    onwatch: 'You have the watch when the board lights up.',  // a contact at night on the hand's watch (#1034)
     'who.pirate': 'No transponder. The plume signature says pirate.',
     'who.patrol': 'Transponder: {gov} navy. You are wanted in their space.',
     'who.bounty': 'Transponder spoofed, but the plume matches: {target}, the ship you are hunting.',

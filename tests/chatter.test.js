@@ -50,7 +50,7 @@ test('a crew member is heard only saying what fits the room they are in, and a c
     const own = chatterAt(CAST.tomas.chatter, 'engine'), lines = crewChatter();
     Object.assign(p, { room: 'galley', dk: roomAt('galley').deck, tdk: roomAt('galley').deck, at: 'table' });
     const inGalley = []; for (let i = 0; i < 30; i++) inGalley.push(...crewChatter().filter(l => /Tomas/.test(l)));
-    const sleeper = t.aboard.find(q => q.id && q.id !== 'you' && q.role !== 'captain' && !NIGHT_WATCH.includes(q.role));  // the night watch is never asleep
+    const sleeper = t.aboard.find(q => q.id && q.id !== 'you' && q.role !== 'captain' && !onWatchTonight(q, nightState()));  // the night watch is never asleep
     return { inGalley, lines: lines.filter(l => /Tomas/.test(l)), own, sleeperRoom: chatterRoom(sleeper.id), dark: isDark(), stranger: chatterRoom('nobody-aboard') };
   });
   await done();
@@ -109,7 +109,7 @@ test('a crew member rewatching a show "in their bunk" is only said to be when th
   const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
-    const t = onBurn(), q = t.aboard.find(p => p.id && p.id !== 'you' && p.role !== 'captain' && !NIGHT_WATCH.includes(p.role));
+    const t = onBurn(), q = t.aboard.find(p => p.id && p.id !== 'you' && p.role !== 'captain' && !onWatchTonight(p, nightState()));
     const show = { genre: 'soap', title: 'The Long Haul', finale: false, ep: 1 };
     const realAiring = window.airing, realTastes = window.tastes;
     window.airing = () => [show]; window.tastes = () => ({ genre: 'soap', team: null });

@@ -122,7 +122,7 @@ function contactEvent(spec) {
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     return 'They take your money and log your ship as settled. For now.';
   } });
-  return { title: contactSay('title'), via: 'ship', ...(mine ? { owner: post } : {}), text: contactSay('text', { km: d, who }), choices };
+  return { title: contactSay('title'), via: 'ship', ...(mine ? { owner: post } : {}), text: `${handWatchPost() ? `${contactSay('onwatch')} ` : ''}${contactSay('text', { km: d, who })}`, choices };  // on the hand's watch they are there for it (#1034)
 }
 
 Mods.register({

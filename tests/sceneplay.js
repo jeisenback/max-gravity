@@ -134,6 +134,18 @@ const playScenes = () => {
       if (last) G.state.customs.met = { [gov]: { q: PATROL_LT[gov].asks[0], answer: last, day: 0 } };
     }, () => lieutenantScene(gov, currentPlanet()));
   }
+  // a contact at night on the hand's watch (engage.js, #1034): the burn's night that the bill gives the hand the bridge
+  // its range drawn at the middle, so the record repeats; its words only, since the choices are the contact's, played by its own case
+  run('scene:contact:onwatch', {}, () => { const r = Math.random; Math.random = () => 0.5; try { return contactEvent({ kind: 'pirate' }); } finally { Math.random = r; } }, { skip: [0, 1, 2, 3, 4, 5, 6, 7], prep() {
+    uatBurn('Earth', 'mars'); const t = G.transit; t.times = []; let d = 0; while ((G.state.day + d) % 4 !== 2) d++; t.elapsed = (d + 0.75) * SHIP_DAY - 6;
+  } });
+  G.transit = null; G.mode = 'landed';  // the burn ends with its case: the cases after play at a port, as before
+  // the watch bill (shiplife.js, #1034): the handover line, both watches, one, and the other, and the card's words
+  run('scene:watch-bill', {}, () => {
+    const names = { a: 'Mateo', b: 'Hana', you: 'you' }, w = k => sceneSay('scene:watch-bill', k, { n: 2 });
+    return { title: w('card.title'), text: [billLine({ bridge: 'a', engine: 'b' }, names), billLine({ bridge: 'you', engine: null }, names), billLine({ bridge: null, engine: 'b' }, names),
+      w('card.tonight'), w('card.night'), w('card.mine'), w('card.none'), sceneSay('scene:watch-bill', 'card.row', { bridge: 'Mateo', engine: 'Hana' })].join(' | '), choices: [] };
+  });
   // the port inspector (inspection.js): each cause alone and both together, for a Comms hand (the papers) and a gunner (speaking up), and the owner's one choice
   for (const [name, cargo, rep, post] of [['good', { water: 50 }, 0, 'comms'], ['standing', {}, -22, 'gunner'], ['both', { water: 50 }, -22, 'comms']]) {
     run(`scene:inspection:${name}`, { post }, () => inspectionScene(inspectionCause(cargo, 'Dome Pact', rep, false), currentPlanet()), { rolls: [0, 0.999] });
