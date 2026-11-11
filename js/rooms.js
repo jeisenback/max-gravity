@@ -344,11 +344,13 @@ function roomBunk(ctx, b, F, slept, shut) {
   roomPart(ctx, roomRound(x + 4, y - 9.5, 18, 4.5, 2), '#9a968a', { top: 0.8, side: 1.5 });
   if (slept) roomPart(ctx, roomRound(x + 20, y - 6.5, w - 24, 2.5, 1), '#334560', { top: 0.6 });
   else { roomPart(ctx, roomRound(x + w - 30, y - 9, 20, 4, 1.5), '#3e4f6e', { top: 1, side: 2 }); roomFlat(ctx, x + w - 29, y - 7.2, 18, 0.6, '#2c3a52'); }
-  roomFlat(ctx, x + 2.5, y - 25, 2, 4, '#2a3e54'); ctx.strokeStyle = '#56708c'; ctx.lineWidth = 1; roomSeg(ctx, [[x + 3.5, y - 24], [x + 9, y - 23]]);  // the reading lamp
-  roomPart(ctx, `M ${n(x + 6)} ${n(y - 23)} L ${n(x + 12)} ${n(y - 23)} L ${n(x + 14)} ${n(y - 19)} L ${n(x + 4)} ${n(y - 19)} Z`, '#4a5a6a', { top: 0.6, side: 1 });
-  roomDot(ctx, x + 9, y - 18.6, 1, '#6a6048');
   for (const bx of [x + 2, x + w - 3.5]) roomFlat(ctx, bx, yr - 1, 1.5, 3, '#2a3e54');  // the curtain rail on its brackets
   roomPart(ctx, roomRound(x + 2, yr, w - 4, 1.6, 0.8), '#3a5470', { top: 0.5 });
+  // the reading lamp, a fitting under the rail (#1024, look.md rule 5): its clamp round the rail, a short stem, the shade and the bulb in it
+  roomPart(ctx, roomRound(x + 6.5, yr - 0.4, 5, 2.4, 0.6), '#2a3e54', { top: 0 }); roomDot(ctx, x + 9, yr + 0.8, 0.5, '#56708c');
+  roomFlat(ctx, x + 8.4, y - 24.6, 1.2, 1.6, '#2a3e54');
+  roomPart(ctx, `M ${n(x + 6)} ${n(y - 23)} L ${n(x + 12)} ${n(y - 23)} L ${n(x + 14)} ${n(y - 19)} L ${n(x + 4)} ${n(y - 19)} Z`, '#4a5a6a', { top: 0.6, side: 1 });
+  roomDot(ctx, x + 9, y - 18.6, 1, '#6a6048');
   ctx.strokeStyle = '#3a2d48'; ctx.lineWidth = 0.8;
   if (shut) {  // drawn across the bunk, its folds hanging to a wavy hem
     let d = `M ${n(x + 3)} ${n(yr + 1.6)} L ${n(x + w - 3)} ${n(yr + 1.6)} L ${n(x + w - 3)} ${n(y - 1)}`;
@@ -392,8 +394,10 @@ function roomBerths(ctx, r, s, X, W) {
   for (const x of [...cols.keys()].sort((a, b) => off(b) - off(a))) {  // the columns farthest from their eye first, so a nearer one covers its side
     const e = eyeOf(x), px = !e ? null : x + cw < e.vx ? r2(x + cw) : x > e.vx ? x : null;
     if (px !== null) {  // its back post on the side toward the eye, the depth of a bunk back, a step darker
-      const [bx, by0] = roomInto(e, px, posts.get(px), BUNK_DEPTH), by1 = roomInto(e, px, F, BUNK_DEPTH)[1];
-      roomPart(ctx, roomRound(r2(bx - 2), r2(by0), 4, r2(by1 - by0), 1), figShade('#2a4664', 0.72));
+      // joined to the front post by a rail at its top, as the frames' sides join them at each tier: the column's end is one frame in depth
+      const top = posts.get(px), [bx, by0] = roomInto(e, px, top, BUNK_DEPTH), by1 = roomInto(e, px, F, BUNK_DEPTH)[1], col = figShade('#2a4664', 0.72);
+      roomPart(ctx, roomRound(r2(bx - 2), r2(by0), 4, r2(by1 - by0), 1), col);
+      roomPart(ctx, `M ${r2(px)} ${r2(top)} L ${r2(bx)} ${r2(by0)} L ${r2(bx)} ${r2(by0 + 3)} L ${r2(px)} ${r2(top + 3)} Z`, col);
     }
     for (const [b, k] of cols.get(x)) roomBunk(ctx, b, F, k < s.asleep, k === shut);
   }
@@ -432,8 +436,13 @@ function roomWallUnit(ctx, x, F, w, time, still) {
   roomPart(ctx, roomRound(lx - 5, F - 82, 10, 2, 0.8), '#3a4a5a', { top: 0.5 }); ctx.strokeStyle = roomTint('#56708c'); ctx.lineWidth = 1; roomSeg(ctx, [[lx - 2, F - 82], [lx, F - 88]]);
   roomPart(ctx, `M ${n(lx - 3)} ${F - 92} L ${n(lx + 3)} ${F - 92} L ${n(lx + 5)} ${F - 87.5} L ${n(lx - 5)} ${F - 87.5} Z`, '#4a5a6a', { top: 0.6, side: 1 });
   roomDot(ctx, lx, F - 87, 1.2, w.cruise > 0.05 ? '#e0c890' : '#6a6048');
-  for (const sy of [F - 80, F - 58]) {  // the shelves and their lips, over the feet of what stands on them
+  for (const sy of [F - 80, F - 58]) {  // the shelves and their lips, over the feet of what stands on them, each on two brackets screwed to the wall
     roomPart(ctx, roomRound(x, sy, 62, 3, 1), '#284a68', { top: 0.8, under: 1 }); roomPart(ctx, roomRound(x + 1, sy - 1.6, 60, 1.6, 0.6), '#2c4c6e', { top: 0.5 });
+    for (const bx of [x + 10, x + 50]) {  // a bracket: its plate on the wall and the gusset up to the shelf's underside
+      roomPart(ctx, `M ${n(bx)} ${n(sy + 3)} L ${n(bx + 2)} ${n(sy + 3)} L ${n(bx + 2)} ${n(sy + 8)} L ${n(bx)} ${n(sy + 8)} Z`, '#2a3e54', { top: 0 });
+      roomPart(ctx, `M ${n(bx + 2)} ${n(sy + 3)} L ${n(bx + 6)} ${n(sy + 3)} L ${n(bx + 2)} ${n(sy + 7)} Z`, '#2a3e54', { top: 0 });
+      roomDot(ctx, bx + 1, sy + 6.5, 0.5, '#56708c');
+    }
   }
   if (w.cruise > 0.05) { const g = ctx.createRadialGradient(lx, F - 86, 1, lx, F - 86, 50); g.addColorStop(0, `rgba(255,220,160,${0.35 * w.cruise})`); g.addColorStop(1, 'rgba(255,220,160,0)'); ctx.fillStyle = g; ctx.fillRect(lx - 46, F - 100, 96, 100); }
 }
@@ -1009,14 +1018,27 @@ function roomMedbay(ctx, r, s, X, W) {
 }
 
 // The lamp: a pool of light mixing red (burn), warm (cruise) and a pulsing amber (flip), dimmed at night unless the room keeps its lights.
-function drawPhaseLight(ctx, r, w, time, night, keepsLights) {
+// A ceiling lamp's fitting (#1024, look.md rule 5): its base plate on the ceiling's sliver from the cut back to the wall (e, the bay's eye), the
+// housing hung from it at the cut, the lens lit in the lamp's colour (lit) and a wire guard over the lens.
+function roomLampFitting(ctx, x, top, lit, e) {
+  const a = roomInto(e, x - 9, top), b = roomInto(e, x + 9, top);
+  ctx.beginPath(); ctx.moveTo(x - 12, top); ctx.lineTo(x + 12, top); ctx.lineTo(b[0], b[1]); ctx.lineTo(a[0], a[1]); ctx.closePath(); ctx.fillStyle = '#22364c'; ctx.fill();
+  roomPart(ctx, roomRound(x - 12, top, 24, 3, 1), '#3a4a5a', { top: 0, under: 1 });
+  roomFlat(ctx, x - 10, top + 3, 20, 2.5, lit);
+  ctx.strokeStyle = '#6a7a8a'; ctx.lineWidth = 0.6; ctx.strokeRect(x - 10.5, top + 3, 21, 3.4);
+  ctx.beginPath(); for (const gx of [x - 5, x, x + 5]) { ctx.moveTo(gx, top + 3); ctx.lineTo(gx, top + 6.4); } ctx.stroke();
+  for (const sx of [x - 10, x + 10]) roomDot(ctx, sx, top + 1.5, 0.6, '#56708c');
+}
+// fitted: the bays of a room whose lamps are drawn as fittings (roomLampFitting) rather than plain strips.
+function drawPhaseLight(ctx, r, w, time, night, keepsLights, fitted = null) {
   const lamp = roomMix([[255, 90, 70], [255, 226, 184], [255, 176, 48]], [w.burn, w.cruise, w.flip]);
   const pulse = 1 - w.flip * 0.35 * (0.5 + 0.5 * Math.sin(time * 6)), dim = keepsLights ? 1 : 1 - 0.7 * night, W = r.x1 - r.x0, n = W > 380 ? 2 : 1;
   ctx.save(); ctx.beginPath(); ctx.rect(r.x0, r.top, W, r.floor - r.top); ctx.clip();
   for (let k = 0; k < n; k++) {
     const x = r.x0 + W * (k + 1) / (n + 1), g = ctx.createRadialGradient(x, r.top, 2, x, r.top, 160);
     g.addColorStop(0, `rgba(${lamp},${0.2 * pulse * dim})`); g.addColorStop(1, `rgba(${lamp},0)`); ctx.fillStyle = g; ctx.fillRect(x - 160, r.top, 320, r.floor - r.top);
-    roomBox(ctx, x - 12, r.top, 24, 3, `rgba(${lamp},${0.4 + 0.6 * dim})`);
+    const lit = `rgba(${lamp},${0.4 + 0.6 * dim})`, bay = fitted && fitted.find(q => x >= q.x0 && x <= q.x1);
+    if (bay) roomLampFitting(ctx, x, r.top, lit, roomEye(bay)); else roomBox(ctx, x - 12, r.top, 24, 3, lit);
     if (w.flip > 0.05) roomDot(ctx, x, r.top + 3, 3, `rgba(255,176,48,${0.4 + 0.6 * w.flip * (0.5 + 0.5 * Math.sin(time * 6))})`);
   }
   roomBox(ctx, r.x0, r.top, W, r.floor - r.top, `rgba(${lamp},${(0.05 + w.burn * 0.05) * dim})`); ctx.restore();
@@ -1059,6 +1081,7 @@ const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, 
 // Which way someone on a room's chair faces (#985): the bridge's and the guns' toward their consoles, the chair's back behind them (#933), the
 // medbay's stool toward the cot. The galley's bench is not here: at the mess table people face you.
 const SEAT_FACE = { bridge: 1, gunnery: -1, medbay: -1 };
+const LAMP_FITTED = ['bridge', 'berths'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
 function drawRoom(ctx, id, r, s) {
   if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses
   const W = r.x1 - r.x0;
@@ -1072,5 +1095,5 @@ function drawRoom(ctx, id, r, s) {
   });
   const marked = !!(s.damage && s.damage.marks.has(id));
   if (marked) drawDamage(ctx, r, s);
-  if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine');  // severe damage: the lamp flickers
+  if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine', LAMP_FITTED.includes(id) ? roomBays(r, s.well) : null);  // severe damage: the lamp flickers
 }

@@ -923,7 +923,8 @@ test('the berths are drawn to the figures\' standard in every phase: their props
       assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
     }
     for (const col of ['#d8d2c4', '#c84a3a', '#ddd']) assert.equal(fills(col), 0, `${at}: no near-white or saturated block (${col})`);
-    for (const p of outlined.filter(q => q.col !== wallTone('#8a4a40'))) assert.ok(partBox(p).y0 >= r.top + 6,  // the towel's path is at the origin, moved by ctx.translate as it swings
+    const W = r.x1 - r.x0, lamps = [1, 2].map(k => r.x0 + W * k / 3), fitting = b => lamps.some(x => b.x0 >= x - 12 && b.x1 <= x + 12) && b.y1 <= r.top + 7;  // the ceiling lamps' fittings, mounted to it (#1024)
+    for (const p of outlined.filter(q => q.col !== wallTone('#8a4a40') && !fitting(partBox(q)))) assert.ok(partBox(p).y0 >= r.top + 6,  // the towel's path is at the origin, moved by ctx.translate as it swings
       `${at}: a ${p.col} part (${JSON.stringify(partBox(p))}) under the ceiling`);
     // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall
     const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
@@ -949,6 +950,9 @@ test('each bunk is a person long, with its mattress, the pillow under the sleepe
       const pillow = parts.find(p => p.col === '#9a968a' && within(p, b) && p.y1 <= b.y - 5 + 0.01 && p.y0 >= b.y - 11);
       assert.ok(pillow && head.x >= pillow.x0 && head.x <= pillow.x1, `${at}: the pillow (${JSON.stringify(pillow)}) under the head at ${head.x}`);
       assert.ok(parts.some(p => p.col === '#4a5a6a' && p.x0 >= b.x && p.x1 <= b.x + b.w / 3 && p.y1 <= b.y - 19 && p.y0 >= b.y - 32), `${at}: a reading lamp at the head end, over the sleeper's head`);
+      // a fitting (#1024): clamped round the curtain rail (its underside at the bunk's top - 25) over the shade, not standing free
+      const shade = parts.find(p => p.col === '#4a5a6a' && p.x0 >= b.x && p.x1 <= b.x + b.w / 3 && p.y0 >= b.y - 32), clamp = parts.find(p => p.col === '#2a3e54' && p.x0 >= b.x && p.x1 <= b.x + b.w / 3 && p.y0 < b.y - 26.6 && p.y1 > b.y - 25);
+      assert.ok(clamp && clamp.x0 < (shade.x0 + shade.x1) / 2 && clamp.x1 > (shade.x0 + shade.x1) / 2, `${at}: the reading lamp's clamp round the rail, over its shade (${JSON.stringify(clamp)})`);
       assert.ok(parts.some(p => p.col === '#3a5470' && within(p, b) && p.x1 - p.x0 >= b.w - 6 && p.y1 <= berthKeep(b).y), `${at}: a curtain rail over it, and over its owner's place`);
       const over = bunks.find(t => t.y < b.y && Math.abs(t.x - b.x) < 0.01);
       if (over) assert.ok(over.y + 2.8 <= sl.y - 13 - 4, `${at}: the sleeper (${sl.y - 13}) clear of the bunk over it (${over.y + 2.8})`);
@@ -1032,6 +1036,53 @@ test('the crew\'s corner fills the open wall beside the well: a wall unit, a pin
   }
   const stillAt = t => { const { r, s } = berthCase(10, 0.5, 1.17), c = fakeCtx(); drawRoom(c, 'berths', r, { ...s, still: true, time: t }); return c.args.join('|'); };
   assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('the wall unit\'s shelves stand on brackets screwed to the back wall (#1024, look.md rule 5)', () => {
+  for (const n of [4, 12]) {
+    const { r, s, well } = berthCase(n, 0.3, 1.17), c = berthCorner(r, n, well), x = c.x0 + 2, F = r.floor, { ctx, calls } = recorder(); berthsIn(ctx, r, s);
+    const placed = placedParts(calls), raw = p => p.pts.map(q => [q[0] - p.at[0], q[1] - p.at[1]]), bx = p => partBox({ pts: raw(p) });
+    const shelf = placed.find(p => p.col === wallTone('#284a68'));
+    for (const sy of [F - 80, F - 58]) {
+      const br = placed.filter(p => p.col === wallTone('#2a3e54') && Math.abs(bx(p).y0 - (sy + 3)) < 0.01 && bx(p).x0 >= x && bx(p).x1 <= x + 62);
+      assert.ok(br.length >= 4, `${n} bunks: two brackets (plate and gusset) under the shelf at ${sy} (${br.length} parts)`);
+      for (const b of br) assert.ok(b.at[0] === shelf.at[0] && b.at[1] === shelf.at[1] && (b.at[0] || b.at[1]), `${n} bunks: a bracket moved onto the wall with its shelf`);
+      assert.ok(new Set(br.map(b => Math.round(bx(b).x0))).size >= 2 && br.some(b => bx(b).x0 < x + 31) && br.some(b => bx(b).x0 > x + 31), `${n} bunks: one toward each end of the shelf`);
+    }
+  }
+});
+test('each bunk column\'s end toward the eye is one frame in depth: its back post joined to the front one, none standing free (#1024)', () => {
+  for (const n of [4, 8, 12]) {
+    const { r, s, well, bunks } = berthCase(n, 0.3, 1.17), F = r.floor, { ctx, calls } = recorder(); berthsIn(ctx, r, s);
+    const parts = filledParts(calls).map(p => ({ col: p.col, pts: p.pts, ...partBox(p) })), back = box.figShade('#2a4664', 0.72);
+    const posts = parts.filter(p => p.col === back && Math.abs(p.x1 - p.x0 - 4) < 0.02), rails = parts.filter(p => p.col === back && !posts.includes(p));
+    const cols = [...new Set(bunks.map(b => b.x))], bays = berthBays(r, well), w = bunks[0].w;
+    const ends = cols.map(x => { const bay = bays.find(q => x >= q.x0 && x <= q.x1), e = box.roomEye(bay); return x + w < e.vx ? [x + w, e] : x > e.vx ? [x, e] : null; }).filter(Boolean);
+    assert.equal(posts.length, new Set(ends.map(([px]) => Math.round(px * 100))).size, `n ${n}: a back post at each column end toward the eye, none for a column across the eye`);
+    for (const p of posts) {
+      const mid = (p.x0 + p.x1) / 2, [px, e] = ends.find(([q, e]) => Math.abs(box.roomInto(e, q, F, 0.6)[0] - mid) < 0.02) || [];
+      assert.ok(px !== undefined, `n ${n}: the back post at ${mid} behind a front post`);
+      assert.ok(rails.some(q => q.pts.some(t => Math.abs(t[0] - px) < 0.02) && q.pts.some(t => Math.abs(t[0] - mid) < 0.02 && Math.abs(t[1] - p.y0) < 0.02) && q.y1 - q.y0 < 12),
+        `n ${n}: the back post at ${mid} joined to the front post at ${px} by a rail at its top`);
+      const side = box.figShade('#1f3a56', 0.62), tiers = bunks.filter(b => Math.abs(b.x - px) < 0.02 || Math.abs(b.x + w - px) < 0.02);
+      for (const b of tiers) assert.ok(parts.some(q => q.col === side && q.pts.some(t => Math.abs(t[0] - px) < 0.02 && Math.abs(t[1] - b.y) < 0.02) && q.pts.some(t => Math.abs(t[0] - mid) < 0.02)), `n ${n}: the tier at ${b.y} joins them by its frame's side`);
+    }
+  }
+});
+test('the bridge\'s and the berths\' ceiling lamps are fittings: a plate on the ceiling\'s sliver, the housing, the lit lens and its guard (#1024)', () => {
+  for (const id of ['bridge', 'berths']) for (const pr of [0.02, 0.3, 0.5]) {
+    const r = layoutBox(LAYOUTS.freighter, id), W = r.x1 - r.x0, { ctx, calls } = recorder();
+    drawRoom(ctx, id, r, RS({ w: phaseWeights(pr), well: FW, berths: 8, damage: { marks: new Set(), severe: false } }));
+    const parts = filledParts(calls);
+    for (const x of [r.x0 + W / 3, r.x0 + W * 2 / 3]) {
+      const bay = box.roomBays(r, FW).find(q => x >= q.x0 && x <= q.x1), e = box.roomEye(bay), back = r.top + (bay.floor - 80 - r.top) * 0.2;
+      assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${id} ${pr}: the lamp at ${x}: its plate on the sliver, from the cut to the wall`);
+      assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${id} ${pr}: its housing hung from the ceiling`);
+      assert.ok(calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${id} ${pr}: the guard over its lens`);
+      assert.ok(calls.some((k, i) => k[0] === 'fillRect' && near(k[1], x - 10) && near(k[2], r.top + 3) && String(calls[i - 1][1]).startsWith('rgba(')), `${id} ${pr}: its lens lit in the lamp's colour`);
+    }
+  }
+  const { ctx, calls } = recorder(); drawRoom(ctx, 'galley', layoutBox(LAYOUTS.freighter, 'galley'), RS({ well: FW, damage: { marks: new Set(), severe: false } }));
+  assert.ok(!calls.some(k => k[0] === 'strokeRect' && k[3] === 21), 'not yet in the rooms still to come');
 });
 test('someone eating alone sits on the edge of the first bunk (#933)', () => {
   const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['routineTarget', 'roomAt', 'posture']);
