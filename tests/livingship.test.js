@@ -579,12 +579,7 @@ test('the bridge and the guns are stations: screens and controls, and chairs wit
     assert.ok(glass >= kinds.length, `${id}: a screen for each of ${kinds} (${glass})`);
   }
 });
-test('the engine room has gauges whose needles read the thrust, valve wheels and pipes with joints (#933)', () => {
-  const r = { x0: 0, x1: 300, top: 0, floor: 100 }, s = { w: { burn: 0, cruise: 1, flip: 0 }, time: 1, zoom: 1, spin: 0, still: false, night: 0, berths: 6, cargo: 0, fuel: 1, asleep: 0, damage: { marks: new Set(), severe: false }, patient: false, burning: false };
-  const { ctx, calls } = recorder();
-  drawRoom(ctx, 'engine', r, s);
-  const fills = c => calls.filter(k => k[0] === 'fillStyle' && k[1] === c).length, strokes = c => calls.filter(k => k[0] === 'strokeStyle' && k[1] === c).length;
-  assert.ok(fills('#e6dfc9') >= 1, 'a gauge face on the feed (the upper deck\'s gauges went with it, #972)'); assert.ok(strokes('#c0392b') >= 2, 'valve wheels'); assert.ok(fills('#4f6f8f') >= 4, 'joints on the pipes');
+test('the engine room\'s gauges read the thrust: up in the hard burn, down at the flip with the drive off (#933)', () => {
   assert.ok(gaugeNeedle({ burn: 1, cruise: 0, flip: 0 }, 0, 0) > gaugeNeedle({ burn: 0, cruise: 1, flip: 0 }, 0, 0), 'the needle swings up in the hard burn');
   assert.ok(gaugeNeedle({ burn: 0, cruise: 1, flip: 0 }, 0, 0) > gaugeNeedle({ burn: 0, cruise: 0, flip: 1 }, 0, 0), 'and drops at the flip, the drive off');
 });
@@ -1688,5 +1683,179 @@ test('the gunnery\'s ceiling lamp is a fitting, clear of the turret\'s mount; th
     assert.ok(x + 12 <= mount.x0 || x - 12 >= mount.x1, `${pr}: clear of the turret's mount`);
     if (pr === 0.5) assert.ok(filledParts(calls).some(p => p.col === '#c8903a') && calls.some(k => k[0] === 'rotate'), `${pr}: the heading arrow turning at the flip`);
     else assert.ok(!calls.some(k => k[0] === 'rotate'), `${pr}: no heading arrow off the flip`);
+  }
+});
+// #933, the engine room on the drive deck: the reactor housing (bands, bolted panels, the maintenance hatch with its wheel and latches, the
+// injector cover, the core's sight port, the telltales, warning marks, the drive's lines down through the deck, the coolant up into the
+// ceiling); the drive's fuel, deuterium (docs/bible/technology.md), in two cryo bottles in their rack with bands, valves and warning marks;
+// the reaction mass's feed down from the tank, its pump, and the level gauge on the wall reading the tank (s.fuel); the gauges at eye height,
+// the wall slate, the pipes along the wall and the ceiling, the valve wheels; the tool board over the bench, one tool out; the bench at the
+// waist with the engineer's terminal. Old and patched (point 6). Drawn at the burn view's zoom in a window 1000, 1280 and 1600 wide.
+const ENGINE_PROPS = [['#2c4258', 'the reactor housing'], ['#3a5268', 'its bands'], ['#30485f', 'its hatch'], ['#33495f', 'the injector cover'], ['#1a2c40', 'the core\'s sight port'],
+  ['#34485c', 'the drive\'s lines'], ['#4a5a50', 'the old fuel bottle'], ['#5a6470', 'the newer one'], ['#2e3a36', 'the bottles\' bands'], ['#24384c', 'their rack'], ['#3a4a56', 'the feed pump'],
+  ['#3d5a7a', 'the pipes'], ['#4f6f8f', 'their flanges'], ['#3a4048', 'the bench'], ['#03121c', 'the terminal\'s screen'], ['#7a7058', 'the warning plate'],
+  [wallTone('#22384e'), 'the gauge panel, on the wall'], [wallTone('#a8a28e'), 'the gauges\' faces, on the wall'], [wallTone('#4a4234'), 'the tool board, on the wall'],
+  [wallTone('#6a7078'), 'the tools, on the wall'], [wallTone('#1e2a2c'), 'the wall slate'], [wallTone('#2a3a4c'), 'the level gauge\'s frame, on the wall'], [wallTone('#0c1620'), 'its glass'],
+  [wallTone('#3d5a7a'), 'the pipe along the wall']];
+const ENGINE_WALL = ['#22384e', '#a8a28e', '#4a4234', '#6a7078', '#1e2a2c', '#2a3a4c', '#0c1620'];
+const ENGINE_WATER = 'rgba(70,140,190,0.6)', ENGINE_VALVE = '#8a3a30';
+const engCase = (pr, zoom, fuel = 0.5, burning = true) => ({ r: layoutBox(LAYOUTS.freighter, 'engine'), s: RS({ w: phaseWeights(pr), zoom, fuel, burning, well: FW, damage: { marks: new Set(), severe: false } }) });
+const engParts = (r, s) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'engine', r, s); return { calls, parts: filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })) }; };
+test('the engine room is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
+  for (const fuel of [0, 0.5, 1]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = engCase(pr, zoom, fuel), at = `fuel ${fuel}, ${pr}, ${zoom}`;
+    const c = fakeCtx(); drawRoom(c, 'engine', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    assert.ok(!c.calls.includes('fillText'), `${at}: no text in the room (the stencils are marks)`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'engine', r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of ENGINE_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    for (const col of ENGINE_WALL) assert.equal(fills(col), 0, `${at}: nothing on the wall in its own colour (${col})`);
+    assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === ENGINE_VALVE).length + calls.filter(k => k[0] === 'strokeStyle' && k[1] === wallTone(ENGINE_VALVE)).length >= 3, `${at}: valve wheels`);
+    // in the box (#1024): the bottles, the pump and the bench solid, their tops and their sides toward the eye showing; the housing, which
+    // straddles the eye, and the rest stand with contact shadows on the strip
+    for (const [col, what] of [['#4a5a50', 'the old bottle'], ['#5a6470', 'the newer bottle'], ['#3a4a56', 'the pump'], ['#4a5058', 'the bench\'s top']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
+    for (const [col, what] of [['#4a5a50', 'the old bottle'], ['#5a6470', 'the newer bottle'], ['#3a4a56', 'the pump'], ['#3a4048', 'the bench']]) assert.ok(fills(solidSide(col)) >= 1, `${at}: ${what}'s side toward the eye`);
+    assert.equal(fills(solidSide('#2c4258')), 0, `${at}: the housing straddles the eye, no side`);
+    assert.ok(fills(SHADOW) >= 5, `${at}: contact shadows on the strip (${fills(SHADOW)})`);
+    const outlined = filledParts(calls).filter(p => p.outlined);
+    assert.ok(outlined.length >= 80, `${at}: the props outlined like the figures (${outlined.length})`);
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
+    }
+    for (const col of ['#e6dfc9', '#c0392b', '#c9a227', '#ffe2b8', '#ff8a6a']) assert.equal(fills(col), 0, `${at}: no bright block (${col})`);
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn (the wall's things moved onto it)
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v, pts } of roomOwnPlaced('engine', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
+    // what is on the wall is on the back wall, where it is drawn
+    const wall = backWall(r), placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) }));
+    for (const col of ENGINE_WALL) for (const p of placed.filter(q => q.col === wallTone(col))) assert.ok(p.x0 >= wall.x0 && p.x1 <= wall.x1 && p.y0 >= wall.y0 && p.y1 <= wall.y1 && (p.at[0] || p.at[1]), `${at}: ${col} (${JSON.stringify(p)}) on the back wall`);
+  }
+  const stillAt = t => { const { r, s } = engCase(0.5, 1.17), c = fakeCtx(); drawRoom(c, 'engine', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('the engine room\'s level gauge reads the reaction mass in the tank over it (s.fuel): empty, half and full (#933)', () => {
+  for (const zoom of [0.82, 1.17, 1.45]) {
+    const read = fuel => {
+      const { r, s } = engCase(0.3, zoom, fuel), { ctx, calls } = recorder(); drawRoom(ctx, 'engine', r, s);
+      const glass = placedParts(calls).filter(p => p.col === wallTone('#0c1620')).map(partBox), water = placedRects(calls).filter(q => q.col === ENGINE_WATER);
+      return { glass, water, r };
+    };
+    for (const fuel of [0, 0.5, 1]) {
+      const { glass, water, r } = read(fuel), at = `${fuel}, ${zoom}`;
+      assert.equal(glass.length, 1, `${at}: one level gauge`);
+      const g = glass[0], inner = g.y1 - g.y0 - 2;
+      assert.ok(g.y1 - g.y0 >= 30 && g.x1 - g.x0 <= 8, `${at}: a tall narrow glass (${JSON.stringify(g)})`);
+      assert.ok(r.floor - (g.y0 + g.y1) / 2 >= 40 && r.floor - g.y0 <= 84, `${at}: read standing, under the eye (${r.floor - g.y0})`);
+      if (fuel === 0) { assert.ok(water.every(q => q.h <= 0.01), `${at}: an empty glass`); continue; }
+      assert.equal(water.length, 1, `${at}: the water in the glass`);
+      const q = water[0];
+      assert.ok(q.x >= g.x0 && q.x + q.w <= g.x1, `${at}: in the glass`);
+      assert.ok(near(q.y + q.h, g.y1 - 1) && Math.abs(q.h - inner * fuel) < 0.01, `${at}: filled to ${fuel} (${q.h} of ${inner})`);
+    }
+  }
+});
+test('the engine room is sized to a person: the housing the one big thing under the ceiling, the bottles under the shoulder, the bench at the waist, the gauges at the eye (#933, #960)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = engCase(pr, 1.17), F = r.floor, W = r.x1 - r.x0, at = `${pr}`, { calls, parts } = engParts(r, s);
+    const housing = parts.find(p => p.col === '#2c4258' && p.x1 - p.x0 > 60);
+    assert.ok(housing, `${at}: the housing`);
+    assert.ok(F - housing.y0 >= FIG_TALL - 2 && F - housing.y0 <= 92 && housing.y1 >= F - 1 && housing.x1 - housing.x0 <= 100, `${at}: the housing a little over a person, under the ceiling (${JSON.stringify(housing)})`);
+    assert.ok(Math.abs((housing.x0 + housing.x1) / 2 - (r.x0 + W / 2)) < 1, `${at}: the housing in the middle of the room, under its lamp`);
+    for (const p of parts.filter(q => q.x1 - q.x0 > 40 && q.y1 - q.y0 > 40 && q.col !== '#2c4258')) assert.ok(p.x1 - p.x0 < housing.x1 - housing.x0 || p.y1 - p.y0 < housing.y1 - housing.y0, `${at}: nothing as big as the housing (${JSON.stringify(p)})`);
+    const bottles = parts.filter(p => /^#(4a5a50|5a6470)$/.test(p.col) && p.y1 - p.y0 > 30);
+    assert.equal(bottles.length, 2, `${at}: two fuel bottles`);
+    for (const b of bottles) assert.ok(F - b.y0 >= 40 && F - b.y0 <= 60 && b.x1 - b.x0 <= 26 && b.y1 >= F - 6, `${at}: a bottle (${JSON.stringify(b)}) under the shoulder, two can lift it empty`);
+    const bands = parts.filter(p => p.col === '#2e3a36');
+    assert.ok(bottles.every(b => bands.filter(q => q.x0 <= b.x0 + 1 && q.x1 >= b.x1 - 1 && q.y0 >= b.y0 && q.y1 <= b.y1).length >= 2), `${at}: two bands on each bottle`);
+    const bench = parts.find(p => p.col === '#4a5058' && p.x1 - p.x0 > 60);
+    assert.ok(bench && F - bench.y0 >= 38 && F - bench.y0 <= 42, `${at}: the bench's top at the waist (${bench && F - bench.y0})`);
+    assert.ok(bench.x0 > housing.x1 && bench.x1 <= r.x1 - 4, `${at}: the bench beside the housing, in the room`);
+    const pump = parts.find(p => p.col === '#3a4a56' && p.x1 - p.x0 > 30);
+    assert.ok(pump && F - pump.y0 <= 34 && pump.x1 < housing.x0 && pump.x0 > Math.max(...bottles.map(b => b.x1)), `${at}: the pump low, between the bottles and the housing`);
+    // the wall's things where they are drawn: the gauges at the eye, the tool board over the bench, the slate beside the gauge
+    const placed = placedParts(calls).map(p => ({ col: p.col, ...partBox(p) })), faces = placed.filter(p => p.col === wallTone('#a8a28e') && p.x1 - p.x0 >= 8);
+    assert.ok(faces.length >= 3, `${at}: three gauges on the panel (${faces.length})`);
+    for (const g of faces) assert.ok(Math.abs(F - (g.y0 + g.y1) / 2 - 77) <= 4, `${at}: a gauge at eye height (${F - (g.y0 + g.y1) / 2})`);
+    const board = placed.find(p => p.col === wallTone('#4a4234'));
+    assert.ok(board && board.x0 >= bench.x0 - 30 && board.x1 <= bench.x1 && board.y1 <= bench.y0 - 8 && F - board.y0 <= 90, `${at}: the tool board on the wall over the bench (${JSON.stringify(board)})`);
+    const valves = strokePts(calls, ENGINE_VALVE).concat(strokePts(calls, wallTone(ENGINE_VALVE)));
+    assert.ok(valves.every(([, y]) => F - y >= 20 && F - y <= 85), `${at}: the valve wheels in reach`);
+    assert.ok(F - Math.max(...bottles.map(b => b.y0)) <= 60, `${at}: the bottles under the room's name`);
+  }
+});
+test('the engine room\'s reactor housing: bands, bolted panels, the hatch with its wheel and latches, warning marks, the drive\'s lines down through the deck, the coolant up into the ceiling (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = engCase(pr, 1.17), F = r.floor, T = r.top, at = `${pr}`, { calls, parts } = engParts(r, s);
+    const housing = parts.find(p => p.col === '#2c4258' && p.x1 - p.x0 > 60), inH = p => p.x0 >= housing.x0 - 2 && p.x1 <= housing.x1 + 2 && p.y0 >= housing.y0 - 2 && p.y1 <= housing.y1 + 2;
+    assert.ok(parts.filter(p => p.col === '#3a5268' && inH(p) && p.x1 - p.x0 >= housing.x1 - housing.x0 - 1).length >= 2, `${at}: bands round the housing`);
+    const hatch = parts.find(p => p.col === '#30485f');
+    assert.ok(hatch && inH(hatch) && hatch.x1 - hatch.x0 >= 20 && hatch.x1 - hatch.x0 <= 34, `${at}: a maintenance hatch a person fits through, on the housing`);
+    assert.ok(calls.some(k => k[0] === 'arc' && k[1] > hatch.x0 && k[1] < hatch.x1 && k[2] > hatch.y0 && k[2] < hatch.y1), `${at}: the hatch's wheel`);
+    assert.ok(placedRects(calls).filter(q => q.col === '#56708c' || q.col === '#8796a5').length + calls.filter(k => k[0] === 'fillStyle' && k[1] === '#56708c').length >= 8, `${at}: bolts and latches`);
+    const plate = parts.find(p => p.col === '#7a7058');
+    assert.ok(plate && inH(plate) && plate.x1 - plate.x0 <= 14, `${at}: a warning plate on the housing, a pictogram`);
+    const lines = parts.filter(p => p.col === '#34485c');
+    assert.ok(lines.length >= 2 && lines.every(p => p.y1 >= F + 8 && p.y0 <= F), `${at}: the drive's lines down through the deck (${JSON.stringify(lines)})`);
+    const ups = parts.filter(p => p.col === '#3d5a7a' && p.y0 <= T + 0.5 && p.y1 >= housing.y0 - 0.5 && p.x0 >= housing.x0 && p.x1 <= housing.x1);
+    assert.ok(ups.length >= 2, `${at}: the coolant up from the housing into the ceiling`);
+    const [lamp] = box.roomLamps('engine', r);
+    assert.ok(ups.every(p => p.x1 <= lamp - 12 || p.x0 >= lamp + 12), `${at}: clear of the lamp`);
+    const port = parts.find(p => p.col === '#1a2c40');
+    assert.ok(port && inH(port), `${at}: the core's sight port in the housing`);
+  }
+  // the drive working: the core's glow up while burning, and in the burn's red
+  const glow = (pr, burning) => { const { r, s } = engCase(pr, 1.17, 0.5, burning), { calls } = engParts(r, s); return calls.filter(k => k[0] === 'fillStyle' && /^rgba\(255,140,60,/.test(String(k[1]))).map(k => parseFloat(String(k[1]).split(',')[3])); };
+  assert.ok(Math.max(...glow(0.02, true)) > Math.max(...glow(0.02, false)), 'the core brighter while the drive burns');
+  assert.equal(glow(0.3, true).length, 0, 'no burn\'s red in cruise');
+});
+test('the engine room\'s fuel is deuterium in cryo bottles, in a rack with bands, valves and warning marks; the tool board has one outline empty (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = engCase(pr, 1.17), F = r.floor, at = `${pr}`, { calls, parts } = engParts(r, s);
+    const bottles = parts.filter(p => /^#(4a5a50|5a6470)$/.test(p.col) && p.y1 - p.y0 > 30), base = parts.find(p => p.col === '#24384c' && p.x1 - p.x0 > 40);
+    assert.ok(base && bottles.every(b => b.x0 >= base.x0 && b.x1 <= base.x1 && b.y1 <= base.y0 + 0.5), `${at}: the bottles stand in their rack`);
+    for (const b of bottles) {
+      assert.ok(calls.some(k => k[0] === 'arc' && Math.abs(k[1] - (b.x0 + b.x1) / 2) < 3 && k[2] < b.y0 && k[2] > b.y0 - 8), `${at}: a valve on top of the bottle at ${b.x0}`);
+      assert.ok(parts.some(p => p.col === '#8a7a40' && p.x0 >= b.x0 && p.x1 <= b.x1 && p.y0 >= b.y0 && p.y1 <= b.y1 && p.x1 - p.x0 <= 10), `${at}: a warning diamond on the bottle at ${b.x0}`);
+    }
+    const placed = placedParts(calls).map(p => ({ col: p.col, ...partBox(p) })), board = placed.find(p => p.col === wallTone('#4a4234'));
+    const marks = placed.filter(p => p.col === wallTone('#5e5646') && p.x0 >= board.x0 && p.x1 <= board.x1 && p.y0 >= board.y0 && p.y1 <= board.y1);
+    const tools = placed.filter(p => /^rgb/.test(p.col) && [wallTone('#6a7078'), wallTone('#6a4a34'), wallTone('#3a5a6a')].includes(p.col) && p.x0 >= board.x0 && p.x1 <= board.x1 && p.y0 >= board.y0 && p.y1 <= board.y1);
+    const over = (a, b) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
+    assert.ok(marks.length >= 4, `${at}: the tools' outlines painted on the board (${marks.length})`);
+    assert.equal(marks.filter(m => !tools.some(t => over(m, t))).length, 1, `${at}: one outline empty, its tool out`);
+  }
+});
+test('the engine room reads old and patched: a newer bottle in an older rack with fresh bolts, a replacement panel, a printed handle tagged temporary, tape and cable ties, wear where hands go (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = engCase(pr, 1.17), at = `${pr}`, { calls, parts } = engParts(r, s);
+    const rects = col => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+    const inside = ([x, y, w, h], b) => x >= b.x0 - 0.01 && x + w <= b.x1 + 0.01 && y >= b.y0 - 0.01 && y + h <= b.y1 + 0.01;
+    const bottles = parts.filter(p => /^#(4a5a50|5a6470)$/.test(p.col) && p.y1 - p.y0 > 30), base = parts.find(p => p.col === '#24384c' && p.x1 - p.x0 > 40);
+    assert.equal(new Set(bottles.map(b => b.col)).size, 2, `${at}: one bottle newer, in another finish`);
+    assert.ok(rects('#8a929a').filter(b => inside(b, base)).length >= 2, `${at}: fresh bolts in the old rack`);
+    const housing = parts.find(p => p.col === '#2c4258' && p.x1 - p.x0 > 60), patch = parts.find(p => p.col === '#40545e');
+    assert.ok(patch && patch.x0 >= housing.x0 && patch.x1 <= housing.x1, `${at}: a replacement panel on the housing, in another shade`);
+    const handle = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050');
+    assert.ok(handle && tag && tag.y0 >= handle.y0 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: a printed handle and its temporary tag`);
+    assert.ok(rects('#6a5038').filter(q => inside(q, handle)).length >= 2, `${at}: the printed handle's layers`);
+    const pipes = parts.filter(p => p.col === '#3d5a7a'), tape = parts.filter(p => p.col === '#7a7462');
+    assert.ok(tape.some(t => pipes.some(c => t.x0 < c.x1 && t.x1 > c.x0 && t.y0 < c.y1 && t.y1 > c.y0)), `${at}: tape round a pipe`);
+    const ties = placedRects(calls).filter(q => q.col === '#1e2a36');
+    assert.ok(ties.length >= 2 && ties.every(t => pipes.some(c => t.x < c.x1 && t.x + t.w > c.x0 && t.y < c.y1 && t.y + t.h > c.y0)), `${at}: cable ties holding a cable to a pipe`);
+    const bench = parts.find(p => p.col === '#4a5058' && p.x1 - p.x0 > 60);
+    assert.ok(rects('#7e8a94').filter(q => inside(q, { ...bench, y0: bench.y0 - 1, y1: bench.y1 + 1 })).length >= 2, `${at}: paint worn off the bench's edge where hands rest`);
+    const hatch = parts.find(p => p.col === '#30485f');
+    assert.ok(rects('#5a6a78').filter(q => inside(q, hatch)).length >= 1, `${at}: the hatch worn where it is opened`);
+  }
+});
+test('the engine room\'s ceiling lamp is a fitting over the housing (#1024)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = engCase(pr, 1.17), rec = recorder(); drawRoom(rec.ctx, 'engine', r, s);
+    const parts = filledParts(rec.calls), [x] = box.roomLamps('engine', r), e = box.roomEye(r), back = r.top + (r.floor - 80 - r.top) * 0.2;
+    assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${pr}: its plate on the sliver`);
+    assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${pr}: its housing hung from the ceiling`);
+    assert.ok(rec.calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${pr}: the guard over its lens`);
   }
 });
