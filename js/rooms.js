@@ -287,48 +287,169 @@ function roomWalls(ctx, r, w, time, still, well, shell = roomShell) {
 // The engine room's fittings (#933). A gauge's reading, 0 to 1: up in the hard burn, low in cruise, near nothing at the flip with the drive off,
 // and a tremble while the drive runs (k: which gauge).
 const gaugeNeedle = (w, time, k) => Math.min(1, 0.05 * w.flip + 0.35 * w.cruise + 0.85 * w.burn + 0.03 * Math.sin(time * 5 + k * 1.9) * (1 - w.flip));
-function roomGauge(ctx, x, y, rad, v) {
-  roomDot(ctx, x, y, rad + 2, '#3d5a7a'); roomDot(ctx, x, y, rad, '#e6dfc9');
-  ctx.strokeStyle = '#b0322a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, rad - 2, -Math.PI / 2 + 0.45 * Math.PI, -Math.PI / 2 + 0.75 * Math.PI); ctx.stroke();  // the red band at the top of the scale
-  const a = -Math.PI / 2 + (v - 0.5) * Math.PI * 1.5; ctx.strokeStyle = '#1a1a1a'; ctx.lineWidth = 1.2; roomSeg(ctx, [[x, y], [x + Math.cos(a) * (rad - 2), y + Math.sin(a) * (rad - 2)]]); roomDot(ctx, x, y, 1.3, '#1a1a1a');
+// A dial at (x, y): its bezel and its face (face: the face's colour), the red band at the top of the scale, the needle at v (0 to 1).
+function roomGauge(ctx, x, y, rad, v, face = '#a8a28e') {
+  roomPart(ctx, roomRound(x - rad - 1.6, y - rad - 1.6, 2 * rad + 3.2, 2 * rad + 3.2, rad + 1.6), '#2e3e4e', { top: 0.6 });
+  roomPart(ctx, roomRound(x - rad, y - rad, 2 * rad, 2 * rad, rad), face, { top: 0 });
+  ctx.strokeStyle = roomTint('#7a3a32'); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(x, y, rad - 1.4, -Math.PI / 2 + 0.45 * Math.PI, -Math.PI / 2 + 0.75 * Math.PI); ctx.stroke();
+  const a = -Math.PI / 2 + (v - 0.5) * Math.PI * 1.5; ctx.strokeStyle = roomTint('#1a1a1a'); ctx.lineWidth = 0.8; roomSeg(ctx, [[x, y], [x + Math.cos(a) * (rad - 1.4), y + Math.sin(a) * (rad - 1.4)]]); roomDot(ctx, x, y, 0.8, '#1a1a1a');
 }
+// A valve's hand wheel at (x, y): its rim, four spokes and the hub, toned down from a signal red.
+const ENGINE_VALVE = '#8a3a30';
 function roomValve(ctx, x, y, rad) {
-  ctx.strokeStyle = '#c0392b'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.stroke();
+  ctx.strokeStyle = roomTint(ENGINE_VALVE); ctx.lineWidth = Math.min(1.6, rad / 3); ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.stroke();
   for (let k = 0; k < 4; k++) roomSeg(ctx, [[x, y], [x + Math.cos(k * Math.PI / 2 + 0.4) * rad, y + Math.sin(k * Math.PI / 2 + 0.4) * rad]]);
-  roomDot(ctx, x, y, 2.2, '#7a2a22');
+  roomDot(ctx, x, y, Math.min(1.6, rad / 3), '#5a2a24');
 }
-// A pipe from a to b, horizontal or vertical, with a joint (a flange) every step.
-function roomPipe(ctx, [ax, ay], [bx, by], step) {
-  ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 6; roomSeg(ctx, [[ax, ay], [bx, by]]);
-  const len = Math.hypot(bx - ax, by - ay), across = ax === bx;
-  for (let d = step / 2; d < len; d += step) { const x = ax + (bx - ax) * d / len, y = ay + (by - ay) * d / len; roomFlat(ctx, across ? x - 5 : x - 1.5, across ? y - 1.5 : y - 5, across ? 10 : 3, across ? 3 : 10, '#4f6f8f'); }
+// A pipe from a to b, level or upright, th thick, drawn as a prop: lit along its top (or shaded down one side), and a flange every step.
+function roomPipe(ctx, [ax, ay], [bx, by], step, th = 5) {
+  const n = v => Math.round(v * 100) / 100, up = ax === bx, x0 = Math.min(ax, bx), y0 = Math.min(ay, by), len = Math.abs(up ? by - ay : bx - ax);
+  roomPart(ctx, up ? roomRound(n(x0 - th / 2), y0, th, len, 1) : roomRound(x0, n(y0 - th / 2), len, th, 1), '#3d5a7a', up ? { top: 0, side: 1.2 } : { top: 1, under: 1 });
+  for (let d = step / 2; d < len; d += step) roomPart(ctx, up ? roomRound(n(x0 - th / 2 - 1.5), n(y0 + d - 1.2), th + 3, 2.4, 0.6) : roomRound(n(x0 + d - 1.2), n(y0 - th / 2 - 1.5), 2.4, th + 3, 0.6), '#4f6f8f', { top: 0.5 });
 }
-
 // Each room: (ctx, r, s, X, W) with X(share) the world x at that share of the width. A prop that does not fit the width is dropped, last listed first.
-function roomEngine(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, top = r.top, rx = X(0.5);
+// The engine room (#933), on the drive deck under the water tank, the engineer's post. In the box (#1024): on the back wall the pipe along it
+// and down its right side with a valve, the wall slate (the reactor log in chalk), the level gauge reading the reaction mass in the tank over the
+// ceiling (s.fuel; the tank shows the same water, shiplife.js towerTank), the gauge panel at eye height and the tool board over the bench, each
+// tool in its painted outline and one outline empty (a tool is out). On the floor from the left wall in: the drive's fuel, deuterium (the torch
+// burns it, docs/bible/technology.md), in two cryo bottles in their rack, the older one in service and the newer in another finish on the old
+// rack with fresh bolts, each with its bands, its valve, its gauge and a warning diamond; the feed pump; from the right wall in, the bench at
+// the waist, its terminal (the engineer's console), the manuals and a mug. In the middle the reactor housing, the one big thing, a little over
+// a person: its bands, bolted panels (one a replacement in another shade), the injector cover and the telltales on it, the core's sight port
+// lit by the drive, the maintenance hatch with its wheel and dogs, worn where it is opened, and a warning plate as a pictogram. At the front
+// the reaction mass's feed down from the ceiling into the pump, its valve's handle printed and tagged temporary, tape and a cable tied along
+// it; the pump's line into the housing; the coolant up from the housing into the ceiling and along it, clear of the lamp; the drive's lines
+// down through the deck. No words: the stencils are marks. Nothing under the room's name. Its lamp is a fitting (LAMP_FITTED).
+function roomEngine(ctx, r, s, X) {
+  const { w, time } = s, F = r.floor, T = r.top, n = v => Math.round(v * 100) / 100, a = r.x0, vx = n(X(0.5)), e = roomEye(r);
+  const wall = (px, py, fn) => { const ax = n(e.vx + (px - e.vx) / e.k), ay = n(e.vy + (py - e.vy) / e.k); roomOnWall(ctx, ax, ay, () => fn(ax, ay)); };  // fn draws round (ax, ay), which lands at (px, py)
   const hot = (s.burning ? 0.55 : 0.25) + 0.45 * w.burn + 0.1 * Math.sin(time * 4) * w.burn;
   const core = w.burn > 0.5 ? '255,140,60' : w.flip > 0.5 ? '255,176,48' : '90,150,220';
-  roomBox(ctx, rx - 40, top + 6, 80, F - top - 6, '#22384e'); for (let y = top + 20; y < F; y += 40) roomBox(ctx, rx - 40, y, 80, 5, '#2c4c6e');
-  const g = ctx.createRadialGradient(rx, (top + F) / 2, 4, rx, (top + F) / 2, 120); g.addColorStop(0, `rgba(${core},${0.35 * hot})`); g.addColorStop(1, `rgba(${core},0)`); ctx.fillStyle = g; ctx.fillRect(rx - 120, top + 8, 240, F - top - 8);
-  roomBox(ctx, rx - 12, top + 40, 24, F - top - 80, `rgba(${core},${0.35 + 0.5 * hot})`); roomBox(ctx, rx - 16, top + 36, 32, 4, '#3d5a7a'); roomBox(ctx, rx - 16, F - 40, 32, 4, '#3d5a7a');
-  ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(rx + 40, top + 30); ctx.quadraticCurveTo(rx + 94, top + 30, X(0.98), top + 16); ctx.stroke();
-  worldText(ctx, s.zoom, 'REACTOR', rx - 36, F - 14, 10, '#c9a227');
-  const lx = X(0.07); roomPipe(ctx, [lx, top + 8], [lx, F], 40); roomValve(ctx, lx, F - 30, 8);  // the coolant riser on the wall, its valve
-  if (W >= 240) {  // the feed from the reactor to the drive, low along the deck: its gauge on a stem above it and its valve
-    const py = F - 10; roomPipe(ctx, [rx + 40, py], [X(0.98), py], 30);
-    const sx = X(0.62); ctx.strokeStyle = '#3d5a7a'; ctx.lineWidth = 2; roomSeg(ctx, [[sx, py], [sx, py - 16]]); roomGauge(ctx, sx, py - 26, 9, gaugeNeedle(w, time, 2));
-    roomValve(ctx, X(0.9), py, 9);
+  // On the wall: the pipe along its top and down its right side, its valve.
+  wall(199, F - 92, (x, y) => {
+    roomPipe(ctx, [x - 107, y], [x + 107, y], 36, 4); roomPipe(ctx, [x + 107, y + 2], [x + 107, y + 68], 30, 4);
+    roomValve(ctx, x + 107, y + 32, 5);
+  });
+  wall(106, F - 74, (x, y) => {  // the wall slate, the reactor log chalked on it
+    roomPart(ctx, roomRound(x - 10, y - 8, 20, 16, 1), '#1e2a2c', { top: 0.6, under: 0.8 });
+    for (let l = 0; l < 4; l++) roomFlat(ctx, x - 7, y - 5 + l * 3, 14 - (l % 2) * 4, 0.6, '#7a8080');
+    roomDot(ctx, x - 9, y - 7, 0.6, '#56708c'); roomDot(ctx, x + 9, y - 7, 0.6, '#56708c');
+  });
+  wall(124, F - 58, (x, y) => {  // the level gauge: the tank's water in a glass, its marks every quarter
+    roomPart(ctx, roomRound(x - 4.5, y - 23, 9, 46, 1.2), '#2a3a4c', { top: 0.6, side: 1 });
+    roomPart(ctx, roomRound(x - 2.5, y - 20, 5, 40, 1.5), '#0c1620', { top: 0 });
+    const f = Math.max(0, Math.min(1, s.fuel || 0)), lv = 38 * f;
+    if (lv > 0) { roomFlat(ctx, x - 2, y + 19 - lv, 4, lv, 'rgba(70,140,190,0.6)'); roomFlat(ctx, x - 2, y + 19 - lv, 4, 0.8, 'rgba(160,210,240,0.7)'); }
+    for (let k = 0; k <= 4; k++) roomFlat(ctx, x + 2.5, y + 19 - 9.5 * k - 0.3, 1.6, 0.6, '#6a7a8a');
+    for (const dy of [-21.5, 21.5]) roomDot(ctx, x, y + dy, 0.6, '#56708c');
+  });
+  wall(236, F - 77, (x, y) => {  // the gauge panel at eye height: the coolant's pressure and temperature, and the drive
+    roomPart(ctx, roomRound(x - 18, y - 8, 36, 16, 1.2), '#22384e', { top: 0.8, under: 1 });
+    [-11, 0, 11].forEach((dx, k) => roomGauge(ctx, x + dx, y, 5, gaugeNeedle(w, time, k)));
+    for (const [sx, sy] of [[x - 16.5, y - 6.5], [x + 16.5, y - 6.5], [x - 16.5, y + 6.5], [x + 16.5, y + 6.5]]) roomDot(ctx, sx, sy, 0.5, '#56708c');
+  });
+  wall(279, F - 70, (x, y) => {  // the tool board, each tool in its painted outline, the pliers out
+    const bx = x - 20, by = y - 15;
+    roomPart(ctx, roomRound(bx, by, 40, 30, 1), '#4a4234', { top: 0.8, under: 1 });
+    ctx.fillStyle = roomTint('#2e2a22'); ctx.beginPath();  // its peg holes, one path
+    for (let i = 0; i < 6; i++) for (let j = 0; j < 4; j++) { ctx.moveTo(bx + 3.9 + i * 6.6, by + 4 + j * 7.4); ctx.arc(bx + 3.5 + i * 6.6, by + 4 + j * 7.4, 0.4, 0, Math.PI * 2); }
+    ctx.fill();
+    const mark = d => roomPart(ctx, d, '#5e5646', { top: 0 });
+    mark(roomRound(bx + 3.4, by + 3.4, 5.2, 23.2, 1.5));  // the spanner
+    mark(`M ${bx + 8.4} ${by + 3.4} L ${bx + 18.6} ${by + 3.4} L ${bx + 18.6} ${by + 8.6} L ${bx + 15.6} ${by + 8.6} L ${bx + 15.6} ${by + 26.6} L ${bx + 11.4} ${by + 26.6} L ${bx + 11.4} ${by + 8.6} L ${bx + 8.4} ${by + 8.6} Z`);  // the hammer
+    mark(roomRound(bx + 20.4, by + 3.4, 4.2, 21.2, 1.5));  // the screwdriver
+    mark(`M ${bx + 27.4} ${by + 3.4} L ${bx + 33.6} ${by + 3.4} L ${bx + 32.6} ${by + 12} L ${bx + 34} ${by + 24.6} L ${bx + 31.6} ${by + 24.6} L ${bx + 30.5} ${by + 14} L ${bx + 29.4} ${by + 24.6} L ${bx + 27} ${by + 24.6} L ${bx + 28.4} ${by + 12} Z`);  // the pliers' outline, empty
+    mark(roomRound(bx + 34.9, by + 3.4, 3.7, 19.2, 1.2));  // the long spanner
+    roomPart(ctx, `M ${bx + 4} ${by + 4} L ${bx + 8} ${by + 4} L ${bx + 7} ${by + 8} L ${bx + 6.6} ${by + 26} L ${bx + 5.4} ${by + 26} L ${bx + 5} ${by + 8} Z`, '#6a7078', { top: 0.5, side: 0.6 });
+    roomPart(ctx, roomRound(bx + 12, by + 8, 3, 18, 1), '#6a4a34', { top: 0, side: 0.8 }); roomPart(ctx, roomRound(bx + 9, by + 4, 9, 4, 0.8), '#6a7078', { top: 0.6, under: 0.6 });
+    roomPart(ctx, roomRound(bx + 21, by + 4, 3, 8, 1), '#3a5a6a', { top: 0.5 }); roomPart(ctx, roomRound(bx + 22, by + 12, 1, 12, 0.4), '#6a7078', { top: 0 });
+    roomPart(ctx, roomRound(bx + 35.5, by + 4, 2.5, 18, 1), '#6a7078', { top: 0.5, side: 0.6 });
+  });
+  // On the floor, from the left wall in: the fuel's rack and its bottles, the pump.
+  for (const px of [a + 6, a + 65]) roomPart(ctx, roomRound(px, F - 50, 3, 46, 0.8), '#2e4864', { top: 0, side: 0.8 });  // the rack's frame
+  roomPart(ctx, roomRound(a + 6, F - 4, 62, 4, 1), '#24384c', { top: 0.6, solid: 0.6 });
+  for (const bx of [a + 8, a + 65]) roomFlat(ctx, bx, F - 2.6, 1.2, 1.2, '#8a929a');  // fresh bolts in the old rack, for the newer bottle
+  for (let k = 0; k < 2; k++) {
+    const x = a + 10 + 28 * k, col = k ? '#5a6470' : '#4a5a50';
+    roomPart(ctx, roomRound(x, F - 52, 24, 48, 7), col, { top: 1.2, side: 3, under: 1, solid: 0.3, shadow: false });  // round, so it shows little depth
+    for (const by of [F - 44, F - 15]) { roomPart(ctx, roomRound(x - 0.5, by, 25, 3, 0.8), '#2e3a36', { top: 0.5 }); roomDot(ctx, x + 22.5, by + 1.5, 0.5, '#56708c'); }
+    roomPart(ctx, roomRound(x + 9, F - 55, 6, 3.5, 0.8), '#3a4440', { top: 0.5, side: 0.8 });  // its neck and valve
+    roomValve(ctx, x + 12, F - 57, 2.4);
+    roomPart(ctx, `M ${x + 12} ${F - 38} L ${x + 16} ${F - 34} L ${x + 12} ${F - 30} L ${x + 8} ${F - 34} Z`, '#8a7a40', { top: 0 });  // the warning diamond, its mark
+    roomFlat(ctx, x + 11.4, F - 36, 1.2, 3.2, '#2a2620'); roomFlat(ctx, x + 10.4, F - 33.4, 3.2, 1, '#2a2620');
+    for (let i = 0; i < 5; i++) roomFlat(ctx, x + 5 + i * 3, F - 25, 2, 2.4, k ? '#3a424c' : '#2e3a34');  // the bottle's code, stencilled as marks
+    roomGauge(ctx, x + 18, F - 50, 2.6, k ? 0.92 : 0.36, '#9a9682');  // its pressure: the older in service, the newer full
   }
-  if (W >= 240) {
-    const bx = X(0.7);
-    roomBox(ctx, bx, top + 38, 70, 46, '#1a2c40'); ctx.strokeStyle = '#8aa4c0'; ctx.lineWidth = 1.5;
-    [[8, 26], [20, 20], [34, 30], [48, 16], [60, 24]].forEach(([dx, l]) => roomSeg(ctx, [[bx + dx, top + 46], [bx + dx, top + 46 + l]]));
-    ctx.fillStyle = '#c9a227'; ctx.beginPath(); ctx.moveTo(bx - 20, top + 64); ctx.lineTo(bx - 10, top + 46); ctx.lineTo(bx, top + 64); ctx.fill();
+  roomPart(ctx, roomRound(a + 74, F - 3, 50, 3, 0.8), '#22344a', { top: 0.5, solid: 0.45 });  // the pump's plinth
+  roomPart(ctx, roomRound(a + 76, F - 28, 46, 25, 2), '#3a4a56', { top: 1, side: 2, under: 1, solid: 0.45, shadow: false });
+  roomPart(ctx, roomRound(a + 79, F - 24, 22, 15, 4), '#46525c', { top: 0.8, under: 1 });  // its motor, finned
+  for (let k = 0; k < 4; k++) roomFlat(ctx, a + 83 + k * 4.5, F - 22, 1, 11, '#2e3a44');
+  roomDot(ctx, a + 111, F - 16, 5, '#34424e'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); roomDot(ctx, a + 111, F - 16, 1.4, '#56708c');  // the volute
+  for (const [sx, sy, sw] of [[a + 82, F - 6, 6], [a + 104, F - 7, 5]]) roomFlat(ctx, sx, sy, sw, 0.8, '#5a6670');  // scuffs, where boots go
+  // From the right wall in: the bench's cabinet and its leg, its top, and what is on it.
+  roomPart(ctx, roomRound(a + 288, F - 36, 40, 36, 1), '#3a4048', { top: 0, side: 1.5, solid: 0.45 });
+  for (const dy of [3, 14]) { roomPart(ctx, roomRound(a + 291, F - 36 + dy, 34, 9, 0.8), '#424a52', { top: 0.6, under: 0.6 }); roomFlat(ctx, a + 304, F - 36 + dy + 4, 8, 1.4, '#8796a5'); }
+  roomPart(ctx, roomRound(a + 236, F - 36, 5, 36, 1), '#3a4048', { top: 0, side: 1, solid: 0.45 });
+  roomPart(ctx, roomRound(a + 241, F - 14, 47, 3, 0.8), '#343a42', { top: 0.6 });  // the shelf, the tool box on it
+  roomPart(ctx, roomRound(a + 252, F - 24, 22, 10, 1), '#6a4434', { top: 0.8, side: 1.2 }); roomFlat(ctx, a + 259, F - 26, 8, 2, '#3a2a22');
+  roomPart(ctx, roomRound(a + 232, F - 40, 100, 4, 1), '#4a5058', { top: 0.8, under: 0.8, solid: 0.5, shadow: false });
+  for (const [x, cw] of [[a + 246, 3], [a + 280, 2.4], [a + 312, 2]]) roomFlat(ctx, x, F - 37.4, cw, 0.9, '#7e8a94');  // paint worn off its edge where hands rest
+  roomAtDepth(ctx, a + 250, F - 40, 0.3, () => {  // the terminal, the engineer's console: its foot, its arm and its screen
+    roomPart(ctx, roomRound(a + 243, F - 43, 14, 3, 0.8), '#2a3c50', { top: 0.5 });
+    roomPart(ctx, roomRound(a + 248.5, F - 49, 3, 6, 0.6), '#2a3c50', { top: 0, side: 0.8 });
+    roomScreen(ctx, a + 239, F - 63, 22, 13, w.flip > 0.5 ? 'status' : 'bars', time, w.burn > 0.5);
+  });
+  roomAtDepth(ctx, a + 300, F - 40, 0.35, () => {  // the manuals, stacked, and a mug of tea gone cold, its handle
+    roomPart(ctx, roomRound(a + 292, F - 43, 18, 3, 0.6), '#4a3a30', { top: 0.6 }); roomPart(ctx, roomRound(a + 294, F - 46, 15, 3, 0.6), '#34485a', { top: 0.6 });
+    ctx.strokeStyle = roomTint('#6a5a4a'); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.arc(a + 323.5, F - 44, 2, -Math.PI / 2, Math.PI / 2); ctx.stroke();
+    roomPart(ctx, roomRound(a + 316, F - 48, 7, 8, 1.2), '#6a5a4a', { top: 0.8, side: 1.2 });
+  });
+  // In the middle, the reactor housing.
+  const hx0 = n(vx - 42), hx1 = n(vx + 42);
+  roomPart(ctx, `M ${hx0} ${F} L ${hx0} ${F - 82} Q ${hx0} ${F - 90} ${n(hx0 + 8)} ${F - 90} L ${n(hx1 - 8)} ${F - 90} Q ${hx1} ${F - 90} ${hx1} ${F - 82} L ${hx1} ${F} Z`, '#2c4258', { top: 1.5, side: 3, solid: 0.6 });
+  roomPart(ctx, roomRound(n(hx0 + 4), F - 76, 18, 58, 1.5), '#2f465c', { top: 0.6, side: 0.8 });  // its bolted panels, the right one a replacement
+  roomPart(ctx, roomRound(n(hx1 - 22), F - 76, 18, 58, 1.5), '#40545e', { top: 0.6, side: 0.8 });
+  for (const [px, col] of [[hx0 + 6, '#56708c'], [hx0 + 20, '#56708c'], [hx1 - 20, '#8a929a'], [hx1 - 6, '#8a929a']]) for (const py of [F - 73, F - 21]) roomDot(ctx, px, py, 0.7, col);
+  roomPart(ctx, roomRound(n(hx0 + 7), F - 72, 12, 12, 1), '#7a7058', { top: 0.6 });  // the warning plate: the trefoil, as a mark
+  ctx.fillStyle = roomTint('#2a2620'); ctx.beginPath();
+  for (let k = 0; k < 3; k++) { const a0 = -Math.PI / 2 + k * 2 * Math.PI / 3 - 0.5; ctx.moveTo(hx0 + 13, F - 66); ctx.arc(hx0 + 13, F - 66, 4.6, a0, a0 + 1); ctx.closePath(); }
+  ctx.fill(); roomDot(ctx, hx0 + 13, F - 66, 1, '#2a2620');
+  for (let k = 0; k < 4; k++) roomFlat(ctx, hx0 + 7.5 + k * 3, F - 57, 1.5, 2.4, '#8a7a40');  // a hazard band under it
+  roomPart(ctx, roomRound(n(vx - 16), F - 82, 32, 10, 1.5), '#33495f', { top: 0.8, under: 0.8 });  // the injector cover, its bolts, the telltales on it
+  for (const px of [vx - 14, vx + 14]) for (const py of [F - 80, F - 74]) roomDot(ctx, px, py, 0.6, '#56708c');
+  for (let k = 0; k < 4; k++) roomDot(ctx, vx - 6 + 4 * k, F - 77, 1, (Math.floor(time * 2 + k) % 3) ? '#2f5577' : '#c8703a');
+  roomPart(ctx, roomRound(n(vx - 8), F - 69, 16, 10, 2), '#1a2c40', { top: 0.6 });  // the core's sight port, lit by the drive
+  roomFlat(ctx, vx - 6, F - 67, 12, 6, `rgba(${core},${n(0.35 + 0.5 * hot)})`);
+  roomPart(ctx, roomRound(n(vx - 16), F - 58, 32, 32, 16), '#26394d', { top: 0.6 });  // the maintenance hatch: its ring, its door, its dogs, its wheel
+  roomPart(ctx, roomRound(n(vx - 14), F - 56, 28, 28, 14), '#30485f', { top: 1, under: 1 });
+  for (const [dx, dy, dw, dh] of [[-1, -15.5, 2, 3], [-1, 12.5, 2, 3], [-15.5, -1, 3, 2], [12.5, -1, 3, 2]]) roomFlat(ctx, vx + dx, F - 42 + dy, dw, dh, '#8796a5');
+  roomFlat(ctx, vx + 5, F - 36, 3, 1.4, '#5a6a78'); roomFlat(ctx, vx - 8, F - 47, 2.4, 1.2, '#5a6a78');  // worn where it is opened
+  ctx.strokeStyle = '#6a7480'; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(vx, F - 42, 8, 0, Math.PI * 2); ctx.stroke();
+  ctx.lineWidth = 1; for (let k = 0; k < 3; k++) roomSeg(ctx, [[vx, F - 42], [vx + Math.cos(k * 2.094 + 0.3) * 8, F - 42 + Math.sin(k * 2.094 + 0.3) * 8]]);
+  roomDot(ctx, vx, F - 42, 1.8, '#56708c');
+  for (const by of [F - 86, F - 12]) roomPart(ctx, roomRound(n(hx0 - 1.5), by, 87, 5, 1), '#3a5268', { top: 0.8, under: 0.8 });  // its bands
+  for (let k = 0; k < 9; k++) roomFlat(ctx, hx0 + 2 + k * 9, F - 10.6, 4.5, 2.2, k % 2 ? '#2a2620' : '#6a6038');  // the lower band's hazard marks
+  // At the front: the feed down from the tank into the pump, its valve and the printed handle, tape, a cable tied along it; the pump's line
+  // into the housing; the coolant up into the ceiling and along it; the drive's lines down through the deck.
+  ctx.strokeStyle = '#3a3a40'; ctx.lineWidth = 0.9; roomSeg(ctx, [[a + 95.6, T + 6], [a + 95.6, F - 30]]);
+  roomPipe(ctx, [a + 91, T], [a + 91, F - 28], 34, 6);
+  roomPart(ctx, roomRound(a + 87, F - 72, 8, 4, 0.8), '#7a7462', { top: 0 });  // tape over a weep
+  for (const ty of [F - 82, F - 38]) roomFlat(ctx, a + 87.5, ty, 9, 1.2, '#1e2a36');  // the cable ties
+  roomValve(ctx, a + 91, F - 50, 6);
+  roomPart(ctx, roomRound(a + 96, F - 54, 4.5, 4.5, 1), '#8a6a48', { top: 0.5, side: 0.6 });  // the printed handle, its layers, its tag
+  for (const ly of [F - 52.8, F - 51.4]) roomFlat(ctx, a + 96.5, ly, 3.5, 0.4, '#6a5038');
+  ctx.strokeStyle = '#7a7462'; ctx.lineWidth = 0.5; roomSeg(ctx, [[a + 98.2, F - 49.5], [a + 98.6, F - 47]]);
+  roomPart(ctx, roomRound(a + 96.5, F - 47, 4, 5, 0.6), '#9a9050', { top: 0.5 }); roomDot(ctx, a + 98.5, F - 46, 0.5, '#4a4436');
+  roomPipe(ctx, [a + 122, F - 15], [hx0, F - 15], 12, 5);
+  roomPipe(ctx, [a + 91, T + 3], [n(vx - 30), T + 3], 26, 5); roomPipe(ctx, [n(vx + 24), T + 3], [a + 336, T + 3], 30, 5);
+  for (const px of [n(vx - 30), n(vx + 24)]) roomPipe(ctx, [px, T], [px, F - 89], 40, 6);
+  for (const px of [n(vx - 30), n(vx + 22)]) {
+    roomPart(ctx, roomRound(px, F - 4, 8, 16, 1), '#34485c', { top: 0, side: 1.5 });
+    roomPart(ctx, roomRound(n(px - 2), F - 1.5, 12, 3, 0.8), '#4a6078', { top: 0.6 });
   }
-  if (W >= 270) {
-    const px = X(0.14); roomBox(ctx, px - 6, F - 64, 12, 34, '#2c4c6e');
-    for (let k = 0; k < 3; k++) roomDot(ctx, px, F - 58 + k * 10, 1.6, (Math.floor(time * 2 + k) % 3) ? '#2f5577' : '#ff8a6a');
+  if (w.flip < 1) {  // the drive's heat, a glow on the housing while it runs
+    const gy = F - 50, g = ctx.createRadialGradient(vx, gy, 4, vx, gy, 70); g.addColorStop(0, `rgba(${core},${n(0.18 * hot * (1 - w.flip))})`); g.addColorStop(1, `rgba(${core},0)`);
+    ctx.fillStyle = g; ctx.fillRect(vx - 70, F - 92, 140, 92);
   }
 }
 
@@ -1253,7 +1374,7 @@ const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, 
 // Which way someone on a room's chair faces (#985): the bridge's and the guns' toward their consoles, the chair's back behind them (#933), the
 // medbay's stool toward the cot. The galley's bench is not here: at the mess table people face you.
 const SEAT_FACE = { bridge: 1, gunnery: -1, medbay: -1 };
-const LAMP_FITTED = ['bridge', 'berths', 'medbay', 'hold', 'gunnery'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
+const LAMP_FITTED = ['bridge', 'berths', 'medbay', 'hold', 'gunnery', 'engine'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
 function drawRoom(ctx, id, r, s) {
   if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses
   const W = r.x1 - r.x0;
