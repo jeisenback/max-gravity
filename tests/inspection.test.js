@@ -33,3 +33,142 @@ test('what the inspector finds: nothing at a port that does not inspect, nothing
   assert.equal(I.inspectionCause({ industrial: 20 }, 'Charter League', -15, false).sum, 12000, 'both causes, one sum');
   assert.equal(I.inspectionCause({ industrial: 20 }, 'Charter League', -15, true).sum, 14400, 'Marked: a fifth more');
 });
+
+// ---------- the scene on arrival (js/inspection.js inspectionScene, inspectAtLanding) ----------
+
+const { open, closeBrowser } = require('./helpers');
+const { after } = require('node:test');
+after(closeBrowser);
+
+// A hired hand at their post, landed at a port with nothing else open; cargo and standing as the case wants.
+const helpers = () => {
+  window.handAt = (post, port, o = {}) => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.story.next = 1e9; st.tutorial = null;
+    uatLand(port); G.dialog = null; G.nextEvent = null; UI.notes = [];
+    st.cargo = { ...(o.cargo || {}) }; if (o.rep !== undefined) st.rep[system().gov] = o.rep;
+    if (o.fund !== undefined) { if (fundHeld()) hired().fund = o.fund; else st.credits = o.fund; }
+    return st;
+  };
+  window.labels = () => G.dialog ? G.dialog.choices.map(c => c.label) : null;
+  window.capRegard = () => person(hired().captain).opinion;
+  window.finesOf = () => (hired().record || {}).fines || 0;
+};
+
+test('landing at a Concord port with water opens the inspector, who names the cause and the sum; the move is the hand\'s by post (#1015)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    handAt('comms', 'Mars', { cargo: { water: 50 }, rep: 0 }); inspectAtLanding(currentPlanet());
+    out.comms = { title: G.dialog && G.dialog.event.title, text: G.dialog && G.dialog.event.text, labels: labels() };
+    handAt('gunner', 'Mars', { cargo: { water: 50 }, rep: 0 }); inspectAtLanding(currentPlanet());
+    out.gunner = labels();
+    return out;
+  });
+  await done();
+  assert.equal(r.comms.title, 'The Inspector');
+  assert.match(r.comms.text, /Water/); assert.match(r.comms.text, /50t/); assert.match(r.comms.text, /6,000/);
+  assert.equal(r.comms.labels.length, 2); assert.match(r.comms.labels[0], /papers/i); assert.match(r.comms.labels[1], /Keep out/);
+  assert.equal(r.gunner.length, 2); assert.match(r.gunner[0], /Speak up/); assert.match(r.gunner[1], /Keep out/);
+});
+
+test('a success halves the sum; a failure pays it all and costs a point of the captain\'s regard; keeping out pays it all; the hand\'s savings never move (#1015)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const run = (roll, k) => {
+      handAt('comms', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 100000 }); inspectAtLanding(currentPlanet());
+      const savings = fundHeld() ? G.state.credits : null, regard = capRegard(), fines = finesOf();
+      const real = Math.random; Math.random = () => roll; try { chooseEvent(k); } finally { Math.random = real; }
+      return { paid: 100000 - purse(), regard: capRegard() - regard, fines: finesOf() - fines, savings: savings === null ? 'n/a' : G.state.credits - savings };
+    };
+    return { win: run(0.01, 0), lose: run(0.99, 0), out: run(0.5, 1) };
+  });
+  await done();
+  assert.deepEqual(r.win, { paid: 3000, regard: 0, fines: 1, savings: r.win.savings });
+  assert.deepEqual(r.lose, { paid: 6000, regard: -1, fines: 1, savings: r.lose.savings });
+  assert.deepEqual(r.out, { paid: 6000, regard: 0, fines: 1, savings: r.out.savings });
+  for (const k of ['win', 'lose', 'out']) assert.ok(r[k].savings === 'n/a' || r[k].savings === 0, `${k}: the hand's savings are not touched`);
+});
+
+test('a sum larger than the purse takes what is there (#1015)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const left = await ev(() => { handAt('comms', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 1000 }); inspectAtLanding(currentPlanet()); chooseEvent(1); return purse(); });
+  await done();
+  assert.equal(left, 0);
+});
+
+test('a clean ship at an inspecting port gets one note and no scene; an independent port, neither (#1015)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    handAt('comms', 'Ceres Station', { rep: 0 }); inspectAtLanding(currentPlanet());
+    const league = { dialog: !!G.dialog, notes: [...UI.notes] };
+    const indie = SYSTEMS[Object.keys(SYSTEMS).find(id => SYSTEMS[id].gov === 'Independent')].planets[0].name;
+    handAt('comms', indie, { cargo: { water: 50 }, rep: -40 }); inspectAtLanding(currentPlanet());
+    return { league, indie: { dialog: !!G.dialog, notes: [...UI.notes] } };
+  });
+  await done();
+  assert.equal(r.league.dialog, false); assert.ok(r.league.notes.includes('Customs logs the ship through.'), r.league.notes.join(' | '));
+  assert.equal(r.indie.dialog, false); assert.ok(!r.indie.notes.includes('Customs logs the ship through.'));
+});
+
+test('with another scene already open, the inspection comes first and the other follows it (#1015)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    handAt('comms', 'Mars', { cargo: { water: 50 }, rep: 0 });
+    openEvent({ title: 'Other', text: 'x', choices: [{ label: 'A', run: () => 'a' }] });
+    inspectAtLanding(currentPlanet());
+    const first = G.dialog.event.title; chooseEvent(1); finishEvent();
+    return { first, then: G.dialog && G.dialog.event.title };
+  });
+  await done();
+  assert.deepEqual(r, { first: 'The Inspector', then: 'Other' });
+});
+
+test('at the landing itself the inspection opens (the landed hook) (#1015)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const title = await ev(() => {
+    const st = handAt('comms', 'Ceres Station', { rep: 0 }); st.cargo = { water: 50 }; st.rep['Dome Concord'] = 0;
+    const at = planetNamed('Mars'); st.systemId = at.sid; st.planet = at.pl.name; resetWorld(); landAt(at.pl, []);
+    return G.dialog && G.dialog.event.title;
+  });
+  await done();
+  assert.equal(title, 'The Inspector');
+});
+
+test('in chapter two the co-op\'s purse pays, and the master is the captain whose regard a failure costs (#1015)', async () => {
+  const { ev, done } = await open();
+  const src = require('fs').readFileSync(require('path').join(__dirname, 'chaptertwostart.test.js'), 'utf8'), start = src.indexOf('const helpers = () => {');
+  await ev(new Function(src.slice(start + 'const helpers = () => {'.length, src.indexOf('\n};\n', start))));
+  await ev(helpers);
+  const r = await ev(() => {
+    toShare(); goOnAndPick(0); while (G.dialog) finishEvent();
+    const st = G.state; st.cargo = { water: 50 }; st.rep['Dome Concord'] = 0; st.credits = 20000;
+    const fund = hired().fund, regard = capRegard();
+    const at = planetNamed('Mars'); st.systemId = at.sid; st.planet = at.pl.name; G.mode = 'landed'; inspectAtLanding(at.pl);
+    const title = G.dialog && G.dialog.event.title;
+    const real = Math.random; Math.random = () => 0.99; try { chooseEvent(0); } finally { Math.random = real; }
+    return { title, role: role().id, paid: 20000 - st.credits, fund: hired().fund - fund, regard: capRegard() - regard };
+  });
+  await done();
+  assert.deepEqual(r, { title: 'The Inspector', role: 'coop', paid: 6000, fund: 0, regard: -1 });
+});
+
+test('in the parked owner game the inspector is paid from the owner\'s credits, the one choice there is (#1015)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+    const st = G.state; st.story.next = 1e9; st.cargo = { water: 50 }; st.rep['Dome Concord'] = 0; st.credits = 20000;
+    const at = planetNamed('Mars'); st.systemId = at.sid; st.planet = at.pl.name; G.mode = 'landed'; G.dialog = null; inspectAtLanding(at.pl);
+    const ev0 = G.dialog && G.dialog.event, labels = ev0 ? ev0.choices.map(c => c.label) : null;
+    chooseEvent(0);
+    return { title: ev0 && ev0.title, labels, paid: 20000 - st.credits };
+  });
+  await done();
+  assert.equal(r.title, 'The Inspector'); assert.equal(r.labels.length, 1); assert.match(r.labels[0], /Pay the inspector/); assert.equal(r.paid, 6000);
+});

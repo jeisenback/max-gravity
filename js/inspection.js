@@ -24,3 +24,39 @@ function inspectionCause(cargo, gov, rep, marked) {
   const sum = marked ? to100((duty + fine) * 1.2) : duty + fine;
   return { gov, standing: fine ? rep : null, good: duty ? good : null, tons: duty ? tons : 0, duty, fine, sum };
 }
+
+// The inspector's scene for `cause` at `planet`: the cause named, the sum, and the hand's one move by post (Comms takes the papers, any other post speaks up),
+// or keeping out of it. The sum leaves the ship's purse (never the hand's savings); a failed move pays it all and costs a point of the captain's regard.
+// With no post to work (the parked owner game) the only choice is to pay.
+function inspectionScene(cause, planet) {
+  const cap = hiredCaptain(), post = career() && career().post;
+  const say = (key, vars) => sceneSay('scene:inspection', key, { planet: planet.name, gov: cause.gov, cap: cap ? cap.last : '', sum: fmt(cause.sum), ...vars });
+  const causes = [cause.good ? say('cause.good', { good: goodName(cause.good), tons: cause.tons, duty: fmt(cause.duty) }) : '', cause.fine ? say('cause.standing', { fine: fmt(cause.fine) }) : ''].filter(Boolean).join(' ');
+  const pay = n => { const paid = Math.min(purse(), n); moveMoney(-paid); recordHand('fines'); return fmt(paid); };
+  const choices = [];
+  if (post) {
+    const papers = post === 'comms', odds = papers ? soloOdds('comms') : handCheck(POST_STAT[post], skillLevel(post), 'word');
+    choices.push({ label: `${say(papers ? 'papers.label' : 'speak.label')} [${oddsWord(odds)}; ${say('move.stakes')}]`, run() {
+      if (Math.random() < odds) return say('win', { paid: pay(to100(cause.sum / 2)) });
+      like(cap, -1, say('lose.memory'));  // a hand always has a captain (the master, in chapter two)
+      return say('lose', { paid: pay(cause.sum) });
+    } });
+  }
+  choices.push({ label: say(post ? 'keep.label' : 'pay.label'), run: () => say(post ? 'keep.result' : 'pay.result', { paid: pay(cause.sum) }) });
+  return { title: say('title'), via: 'ship', owner: 'you', text: [say('text', { causes }), cap ? say('captain') : ''].filter(Boolean).join(' '), choices };
+}
+
+// The landed hook's body (`note` is the hook's M.note; a test reads UI.notes): at an inspecting port, the inspector's scene opens first (ahead of a scene already open), or a clean ship gets one note line.
+function inspectAtLanding(planet, note = text => UI.notes.push(text)) {
+  const st = G.state, gov = system().gov;
+  if (atSite(st) || !INSPECTING.includes(gov)) return;
+  const c = career(), cause = inspectionCause(st.cargo, gov, repOf(gov), !!c && hasTrait(c, 'marked'));
+  if (!cause) { note(sceneSay('scene:inspection', 'clean')); return; }
+  const scene = inspectionScene(cause, planet);
+  openEvent(G.dialog ? chainEvents([scene, G.dialog.event]) : scene);
+}
+
+Mods.register({
+  id: 'inspection', name: 'Port inspections', builtin: true,
+  init(M) { M.on('landed', planet => inspectAtLanding(planet, M.note)); },
+});

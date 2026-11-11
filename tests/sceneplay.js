@@ -134,6 +134,11 @@ const playScenes = () => {
       if (last) G.state.customs.met = { [gov]: { q: PATROL_LT[gov].asks[0], answer: last, day: 0 } };
     }, () => lieutenantScene(gov, currentPlanet()));
   }
+  // the port inspector (inspection.js): each cause alone and both together, for a Comms hand (the papers) and a gunner (speaking up), and the owner's one choice
+  for (const [name, cargo, rep, post] of [['good', { water: 50 }, 0, 'comms'], ['standing', {}, -22, 'gunner'], ['both', { water: 50 }, -22, 'comms']]) {
+    run(`scene:inspection:${name}`, { post }, () => inspectionScene(inspectionCause(cargo, 'Dome Concord', rep, false), currentPlanet()), { rolls: [0, 0.999] });
+  }
+  run('scene:inspection:owner', { mode: 'owner' }, () => inspectionScene(inspectionCause({ water: 50 }, 'Dome Concord', 0, false), currentPlanet()));  // the parked owner game: only the pay choice
   tiesCase('scene:dock-friend', () => { mateOf('Sam'); stubTies({ Sam: { aff: GOV, status: { [GOV]: 'officer' } } }); }, () => dockFriendScene(GOV, currentPlanet()));
   for (const [name, status, opinion] of [['officer', 'officer', 0], ['member:close', 'member', OPINION.CLOSE], ['member:far', 'member', 0]]) {
     tiesCase(`scene:war-call:${name}`, () => {
