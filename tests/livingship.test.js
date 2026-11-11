@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS, towerDeckY, deckFloor, layoutBox, couchX, towerHeight, camRun, camTarget, towerOutline, TOWER_BELL, outlineAt, berthBunk, berthSleeper, goTo, routineGo, handOver } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS', 'towerDeckY', 'deckFloor', 'layoutBox', 'couchX', 'towerHeight', 'camRun', 'camTarget', 'towerOutline', 'TOWER_BELL', 'outlineAt', 'berthBunk', 'berthSleeper', 'goTo', 'routineGo', 'handOver']);
+const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS, towerDeckY, deckFloor, layoutBox, couchX, towerHeight, camRun, camTarget, towerOutline, TOWER_BELL, outlineAt, berthBunk, berthSleeper, goTo, routineGo, handOver, couchDk, layoutRoomAt } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS', 'towerDeckY', 'deckFloor', 'layoutBox', 'couchX', 'towerHeight', 'camRun', 'camTarget', 'towerOutline', 'TOWER_BELL', 'outlineAt', 'berthBunk', 'berthSleeper', 'goTo', 'routineGo', 'handOver', 'couchDk', 'layoutRoomAt']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = [], styles = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'styles' ? styles : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); if (k === 'fillStyle' || k === 'strokeStyle') styles.push(String(v).toLowerCase()); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -63,7 +63,7 @@ test('on a crash couch a person lies flat on their back (#972)', () => {
     assert.ok(at.head.x < 400, `face ${face}: the head toward the couch's head end, on the left`);
   }
 });
-test('one couch each, 60 apart on a deck and clear of the well (#972)', () => {
+test('one couch each, 60 apart on a deck and clear of the well, the overflow on the mess deck (#972, #1023)', () => {
   const lay = LAYOUTS.freighter, W = lay.width, band = [(lay.well.x - lay.well.w / 2) * W - 30, (lay.well.x + lay.well.w / 2) * W + 30];
   const check = (xs, what) => {
     const s = xs.map(x => x * W).sort((a, b) => a - b);
@@ -71,7 +71,20 @@ test('one couch each, 60 apart on a deck and clear of the well (#972)', () => {
     for (const x of s) assert.ok(x < band[0] || x > band[1], `${what}: a couch at ${x} over the well's band ${band}`);
   };
   check([couchX(0, 2), couchX(0, 2, 'captain')], 'the bridge');
-  for (let n = 2; n <= 9; n++) check(Array.from({ length: n - 1 }, (_, k) => couchX(k + 1, n)), `the berths, ${n} aboard`);
+  // up to 13 (12 aboard and the cat): eight fit the berths, four a side of the well; the rest go up to the mess deck, the head first, then the
+  // galley's end clear of the bench and the mess table (#1023). On each deck none overlaps another or the well, and each is in a room on it.
+  const berths = roomAt('berths').deck, mess = roomAt('galley').deck, g = layoutBox(lay, 'galley'), benchX0 = g.x0 + (g.x1 - g.x0) * SEATS.galley[0] - 14;
+  for (let n = 2; n <= 13; n++) {
+    const all = Array.from({ length: n - 1 }, (_, k) => ({ x: couchX(k + 1, n), dk: couchDk(k + 1) }));
+    assert.equal(all.filter(c => c.dk === berths).length, Math.min(n - 1, 8), `${n} aboard: the berths take up to eight`);
+    assert.ok(all.every(c => c.dk === berths || c.dk === mess), `${n} aboard: on the crew deck or the mess deck`);
+    for (const dk of [berths, mess]) check(all.filter(c => c.dk === dk).map(c => c.x), `${n} aboard, deck ${dk}`);
+    for (const c of all) {
+      assert.ok(layoutRoomAt(lay, c.dk, (c.x * W) - 34) && layoutRoomAt(lay, c.dk, (c.x * W) + 28) === layoutRoomAt(lay, c.dk, (c.x * W) - 34), `${n} aboard: the couch at ${c.x * W} on deck ${c.dk} inside one room`);
+      if (c.dk === mess && c.x * W < lay.well.x * W) assert.ok(c.x * W + 28 <= benchX0, `${n} aboard: the galley's couch at ${c.x * W} clear of the bench and the table (from ${benchX0})`);
+    }
+  }
+  assert.equal(couchDk(0), roomAt('bridge').deck, 'yours on the bridge');
 });
 test('someone on their way to the well walks; only on the ladder do they climb (#972)', () => {
   const p = o => ({ role: 'gunner', room: 'galley', x: 0.2, dk: 1, tdk: 3, tx: 0.3, seat: 0.3, couch: 0, ...o });
@@ -772,6 +785,9 @@ test('the frame stands only as high as its bunks: no column with an empty tier, 
     for (const ex of edges) {
       const post = posts.find(p => Math.abs((p.x0 + p.x1) / 2 - ex) < 0.01), want = Math.min(...cols.filter(col => Math.abs(col[0].x - ex) < 0.01 || Math.abs(col[0].x + w - ex) < 0.01).map(height));
       assert.ok(post && Math.abs(post.y0 - want) < 0.01, `n ${n}: the post at ${ex} up to ${want} (${post && post.y0})`);
+      const bolts = calls.filter(k => k[0] === 'arc' && Math.abs(k[1] - ex) < 0.01 && k[3] === 0.6);
+      assert.ok(bolts.length >= 1, `n ${n}: the post at ${ex} bolted`);
+      for (const b of bolts) assert.ok(b[2] > post.y0 && b[2] < F, `n ${n}: a bolt at ${b[2]} on the post at ${ex} (${post.y0} to ${F}), not over it`);
     }
   }
 });

@@ -375,7 +375,7 @@ function shipPeople() {
   }
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
-  people.forEach((p, i) => { const dk = couchDk(i); Object.assign(p, { room: i === 0 ? 'bridge' : 'berths', x: couchX(i, people.length), dk, tdk: dk, seatDk: dk, tx: null, wait: lifeRand(1, 4), seat: couchX(i, people.length), couch: 1 }); });
+  people.forEach((p, i) => { const dk = couchDk(i), x = couchX(i, people.length); Object.assign(p, { room: layoutRoomAt(LAYOUTS.freighter, dk, x * LAYOUTS.freighter.width) || 'berths', x, dk, tdk: dk, seatDk: dk, tx: null, wait: lifeRand(1, 4), seat: x, couch: 1 }); });
   // A hand's captain is aboard too, strapped in on the bridge across the well from the hand's couch: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
   const cap = hiredCaptain(), bx = couchX(0, people.length, 'captain'), bd = roomAt('bridge').deck;
   if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: bd, tdk: bd, seatDk: bd, tx: null, wait: 3, seat: bx, couch: 1 });
@@ -400,18 +400,29 @@ function clearOf(p, x, people = []) {
 }
 
 // Crash couches (#972): yours (i 0) and the captain's at two of the bridge's posts either side of the well; the rest (i 1 to n - 1) spread
-// across both halves of the berths, the first half of them left of the well. A couch is COUCH_LEN long (rooms.js roomCouchFlat), and none
-// lies on another or over the well's band widened by half a couch. couchDk is the deck each is on.
+// across both halves of the berths, the first half of them left of the well, as many as fit a side a couch apart (four at 720); any more go up
+// to the mess deck (#1023), spread across the head and then one at the galley's end, short of the bench and the mess table. A couch is
+// COUCH_LEN long (rooms.js roomCouchFlat), and none lies on another or over the well's band widened by half a couch. couchDk is the deck each
+// is on.
 const COUCH_LEN = 60;
+function couchSpots() {
+  const lay = LAYOUTS.freighter, W = lay.width, edge = (COUCH_LEN / 2 + 8) / W, wellL = lay.well.x - lay.well.w / 2 - COUCH_LEN / 2 / W, wellR = lay.well.x + lay.well.w / 2 + COUCH_LEN / 2 / W;
+  const r = roomAt('berths'), h = roomAt('head'), g = roomAt('galley'), fit = (a, b) => Math.floor((b - a) * W / COUCH_LEN + 1e-9) + 1;
+  const side = Math.min(fit(r.x0 + edge, wellL - edge), fit(wellR + edge, r.x1 - edge)), head = [Math.max(h.x0, wellR) + edge, h.x1 - edge];
+  return { edge, wellL, wellR, side, head, headFit: fit(...head), galley: g.x0 + edge };
+}
 function couchX(i, n, role) {
-  const lay = LAYOUTS.freighter, W = lay.width;
   if (i === 0 || role === 'captain') { const b = roomAt('bridge'); return b.x0 + b.w * SEATS.bridge[role === 'captain' ? 2 : 1]; }
-  const r = roomAt('berths'), m = Math.max(1, n - 1), k = i - 1, left = Math.ceil(m / 2), right = k >= left;
-  const edge = (COUCH_LEN / 2 + 8) / W, wellL = lay.well.x - lay.well.w / 2 - COUCH_LEN / 2 / W, wellR = lay.well.x + lay.well.w / 2 + COUCH_LEN / 2 / W;
-  const a = right ? wellR + edge : r.x0 + edge, b = right ? r.x1 - edge : wellL - edge, c = right ? m - left : left, j = right ? k - left : k;
+  const c0 = couchSpots(), all = Math.max(1, n - 1), m = Math.min(all, 2 * c0.side), k = i - 1;
+  if (k >= m) {  // on the mess deck: the head, then the galley's end
+    const j = k - m, o = Math.min(all - m, c0.headFit), [a, b] = c0.head;
+    return j < o ? (o > 1 ? a + (b - a) * j / (o - 1) : (a + b) / 2) : c0.galley;
+  }
+  const r = roomAt('berths'), left = Math.ceil(m / 2), right = k >= left;
+  const a = right ? c0.wellR + c0.edge : r.x0 + c0.edge, b = right ? r.x1 - c0.edge : c0.wellL - c0.edge, c = right ? m - left : left, j = right ? k - left : k;
   return c > 1 ? a + (b - a) * j / (c - 1) : (a + b) / 2;
 }
-const couchDk = i => roomAt(i === 0 ? 'bridge' : 'berths').deck;
+const couchDk = i => roomAt(i === 0 ? 'bridge' : i - 1 >= 2 * couchSpots().side ? 'galley' : 'berths').deck;
 
 // Sent somewhere by a downtime activity you chose: the timetable takes them back when they have been there a while (lifeTick).
 const toActivity = (p, roomId) => { goTo(p, roomId); Object.assign(p, { block: 'activity', errand: false, at: undefined, relief: undefined }); };

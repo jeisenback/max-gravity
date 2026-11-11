@@ -281,7 +281,7 @@ function roomBerths(ctx, r, s, X, W) {
   }
   for (const [px, top] of posts) {  // the posts at each column's ends, bolted to the deck, and the ceiling where they reach it
     roomPart(ctx, roomRound(px - 2, top, 4, F - top, 1), '#2a4664', { top: 0, side: 1.2 });
-    roomFlat(ctx, px - 3.5, F - 2, 7, 2, '#20384f'); for (const sy of [top + 2, F - 40]) if (sy < F - 4) roomDot(ctx, px, sy, 0.6, '#56708c');
+    roomFlat(ctx, px - 3.5, F - 2, 7, 2, '#20384f'); for (const sy of [top + 2, F - 40]) if (sy > top && sy < F - 4) roomDot(ctx, px, sy, 0.6, '#56708c');  // only on the post
   }
   if (shut >= 0 && s.asleep > 0 && w.cruise > 0.5) { const b = berthBunk(r, n, shut, well); worldText(ctx, s.zoom, Math.floor(time) % 2 ? 'z z' : 'z', b.x + cw - 24, b.y - 12, 12, '#9fb4c9'); }
   const c = berthCorner(r, n, well), open = c.x1 - c.x0;  // the crew's corner beside the well
