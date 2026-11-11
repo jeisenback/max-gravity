@@ -101,7 +101,7 @@ test('the water dispute, with the Refinery: not speaking and the count for the r
     return out;
   });
   assert.match(r.back, /The ledger is not read\. The count comes out for the refinery, three hundred and fourteen to two hundred and ninety\./); assert.equal(r.q.leagueSide, -1);
-  assert.equal(r.coda.title, 'The Courier Rate'); assert.deepEqual(r.coda.labels, ['Take the envelope (4,000 cr)', 'Leave it on the table']);
+  assert.equal(r.coda.title, 'The Courier Rate'); assert.deepEqual(r.coda.labels, ['Take the envelope (4,000 cr)', 'Put the envelope in the ship\'s fund (4,000 cr)', 'Leave it on the table']);
   assert.equal(r.credits, 4000); assert.match(r.fee, /The envelope is thinner than the sum on it/); assert.deepEqual(r.kit, []);
   assert.ok(r.marit >= 3 && r.wen < 0, `Marit warm (${r.marit}), Wen cooler (${r.wen})`); assert.notEqual(r.hollows, 'The Pump Crew\'s Keys', 'the Hollows have nothing for a ship that stood aside');
 });
@@ -169,7 +169,7 @@ test('the air audit, the other ways: waiting at the ship, the lie about the vent
     return out;
   });
   assert.equal(r.wait.next, false); assert.match(r.wait.text, /Then I count alone/); assert.equal(r.wait.q.concord, 1); assert.equal(r.wait.q.concordSide || 0, 0);
-  assert.equal(r.coda.title, 'The Steward\'s Fee'); assert.deepEqual(r.coda.labels, ['Take the envelope (3,000 cr)', 'Leave it with him']);
+  assert.equal(r.coda.title, 'The Steward\'s Fee'); assert.deepEqual(r.coda.labels, ['Take the envelope (3,000 cr)', 'Put the envelope in the ship\'s fund (3,000 cr)', 'Leave it with him']);
   assert.equal(r.credits, 3000); assert.match(r.fee, /Pressure's holding/); assert.deepEqual(r.kit, []);
   assert.ok(r.hob >= 2 && r.odile < 0, `Hob warm (${r.hob}), Odile cooler (${r.odile})`); assert.notEqual(r.mars, 'The Air Levy Meeting', 'the Fleet has nothing for a ship that stood aside');
 });
@@ -234,7 +234,7 @@ test('the license inspection, the other ways: leaving, the lie about the bay and
     return out;
   });
   assert.equal(r.leave.next, false); assert.match(r.leave.text, /Delivered, then/); assert.equal(r.leave.q.compact, 1); assert.equal(r.leave.q.compactSide || 0, 0);
-  assert.equal(r.coda.title, 'The Riggers\' Collection'); assert.deepEqual(r.coda.labels, ['Take the roll (3,500 cr)', 'Give it back to the row']);
+  assert.equal(r.coda.title, 'The Riggers\' Collection'); assert.deepEqual(r.coda.labels, ['Take the roll (3,500 cr)', 'Put the roll in the ship\'s fund (3,500 cr)', 'Give it back to the row']);
   assert.equal(r.credits, 3500); assert.match(r.fee, /hull still has opinions/); assert.deepEqual(r.kit, []);
   assert.ok(r.dag >= 1, `Dag warmer for the fee (${r.dag})`); assert.notEqual(r.earth, 'The Carrier License', 'the Office has nothing for a ship that did not speak');
 });
@@ -316,4 +316,20 @@ test('a price effect names a port, a good and a share no larger than the market 
     EFFECT_SHAPES.price(['The Hollows']),
   ]);
   assert.equal(r[0], ''); assert.match(r[1], /Nowhere is not a port/); assert.match(r[2], /gold is not a good/); assert.match(r[3], /water: a share between/); assert.match(r[4], /needs/);
+});
+
+test('each arc\'s fee can go in the ship\'s fund instead: the captain\'s regard rises by two, and the hand is no richer (#1060)', async () => {
+  const r = await runWith(marks, () => {
+    const out = {}, cap = () => opinionOf('captain');
+    const fee = (name, toEnd, label) => {
+      start(); const h = hired(); toEnd(); cap().opinion = 0; const fund = h.fund, credits = G.state.credits;
+      const e = G.dialog && G.dialog.event; out[name] = { title: e && e.title, res: pick1(e, label).text, fund: h.fund - fund, credits: G.state.credits - credits, regard: cap().opinion };
+    };
+    fee('league', () => { const count = leagueTo('Say the Hall\'s name is the Hall\'s to give', 'Tell her what was in it'); pick1(count, 'Stay at the back'); days(5); land('pallas', 'Pallas Refinery'); }, 'Put the envelope in the ship\'s fund');
+    fee('concord', () => { const h = hired(); h.standing = { 'the Dome Pact Freight Office': 1 }; h.away = [{ tpl: 'arc:concord', arc: 'concord', ctx: { dest: 'Eros Old Town', who: 'Agent X' }, sid: 'eros', planet: 'Eros Old Town', days: 8, until: G.state.day + 40, pitched: null }];
+      pick1(land('eros', 'Eros Old Town'), 'Wait at the ship'); days(5); land('eros', 'Eros Old Town'); }, 'Put the envelope in the ship\'s fund');
+    return out;
+  });
+  assert.deepEqual([r.league.title, r.league.fund, r.league.credits, r.league.regard], ['The Courier Rate', 4000, 0, 2]); assert.match(r.league.res, /as the ship's, with the guild's name/);
+  assert.deepEqual([r.concord.title, r.concord.fund, r.concord.credits, r.concord.regard], ['The Steward\'s Fee', 3000, 0, 2]); assert.match(r.concord.res, /as the ship's, under the air fund's name/);
 });

@@ -126,6 +126,8 @@ Mods.register({
       choices: [
         { label: 'Take the envelope (4,000 cr)', effects: { credits: 4000, do: ['league-fee', 'You took the courier rate and said nothing against the count.', 'You took the refinery\'s fee after the count.'], log: 'Took the Refinery guild\'s courier rate after the water vote.' },
           result: 'The envelope is thinner than the sum on it. Marit watches you count and writes the day in the margin of the slate. "That is the last I will ask you to carry," she says. "Unless it is the Hall\'s."' },
+        { label: 'Put the envelope in the ship\'s fund (4,000 cr)', effects: { purse: 4000, captainLike: { n: 2, memory: 'You put the guild\'s courier rate in the ship\'s fund.' }, do: ['league-fee', 'You took the courier rate and said nothing against the count.', 'You took the refinery\'s fee after the count.'], log: 'Took the Refinery guild\'s courier rate after the water vote, for the ship\'s fund.' },
+          result: 'Marit watches you hand the envelope to the captain unopened, and writes that in the margin too. Captain Vance counts it at the galley table, twice, and enters it in the notebook as the ship\'s, with the guild\'s name beside it.' },
         { label: 'Leave it on the table', effects: { do: ['arcLike', 'marit', -1, 'You would not take the guild\'s courier rate.'], log: 'Left the Refinery guild\'s courier rate on the table.' },
           result: 'Marit looks at the envelope, and at you, and puts it back in the jacket without a word. The clerks at the table have stopped eating. One of them starts again.' },
       ],

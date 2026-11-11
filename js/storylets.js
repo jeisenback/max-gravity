@@ -148,6 +148,9 @@ const EFFECTS = {
   news: text => worldNews(fill(text)),
   log: text => journal(fill(text)),
   unrest: v => { for (const [sid, n] of Object.entries(v)) worldOf(sid).unrest = Math.max(0, Math.min(1, worldOf(sid).unrest + n)); },
+  // The ship's purse (#1060): n credits into it (or out, below 0), the captain's fund in chapter one and the co-op's in chapter two (boarders.js moveMoney), where
+  // `credits` is the hand's own savings.
+  purse: n => { moveMoney(n); },
   // A price that moves at a port for a stretch (#1044): { 'Port name': { good: pressure } }, a share of the price up (dearer) or down, pushed into the
   // port's market as trade pushes it (world.js nudge), and worn back by the port's own use and the haulers over the days that follow.
   price: v => { for (const [name, goods] of Object.entries(v)) { const at = planetNamed(name); if (at) for (const [cid, dp] of Object.entries(goods)) nudge(at.pl, cid, dp); } },
@@ -401,6 +404,7 @@ const EFFECT_SHAPES = {
   captainFlag: v => ([].concat(v).every(f => typeof f === 'string' && f.trim()) ? '' : 'needs a name, or a list of names'),
   mateLike: v => (!isPlain(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : typeof v.memory !== 'string' || !v.memory.trim() ? 'memory must be some text' : ''),
   remember: v => (typeof v === 'string' && v.trim() ? '' : 'needs a name'),
+  purse: v => (Number.isFinite(v) ? '' : 'needs a number of credits'),
   price: v => (!isPlain(v) ? "needs { 'Port name': { good: share } }" : Object.entries(v).map(([name, goods]) => (!planetNamed(name) ? `${name} is not a port`
     : !isPlain(goods) ? `${name} needs { good: share }` : Object.entries(goods).map(([cid, dp]) => (!COMMODITIES.some(c => c.id === cid) ? `${cid} is not a good` : !Number.isFinite(dp) || Math.abs(dp) > MARKET_CAP ? `${cid}: a share between -${MARKET_CAP} and ${MARKET_CAP}` : '')).find(Boolean) || '')).find(Boolean) || ''),
 };

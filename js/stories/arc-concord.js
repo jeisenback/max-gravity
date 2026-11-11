@@ -94,6 +94,8 @@ Mods.register({
       choices: [
         { label: 'Take the envelope (3,000 cr)', effects: { credits: 3000, do: ['concord-fee', 'You took the town\'s fee and said nothing of the vents.', 'You took the town\'s money after the count.'], log: 'Took the Old Town air fund\'s fee after the audit.' },
           result: 'The envelope is mostly small coin, counted twice. Hob reads it the way he reads a gauge. "Pressure\'s holding," he says. "Mind the ninth corridor."' },
+        { label: 'Put the envelope in the ship\'s fund (3,000 cr)', effects: { purse: 3000, captainLike: { n: 2, memory: 'You put the Old Town air fund\'s fee in the ship\'s fund.' }, do: ['concord-fee', 'You took the town\'s fee and said nothing of the vents.', 'You took the town\'s money after the count.'], log: 'Took the Old Town air fund\'s fee after the audit, for the ship\'s fund.' },
+          result: 'Hob reads the envelope going into the captain\'s hands the way he reads a gauge. Captain Vance counts the small coin into stacks on the galley table and writes it in the notebook as the ship\'s, under the air fund\'s name.' },
         { label: 'Leave it with him', effects: { do: ['arcLike', 'hob', 1, 'You would not take the town\'s money.'], log: 'Left the Old Town air fund\'s fee with the steward.' },
           result: 'Hob turns the envelope over and puts it in the apron. He says nothing until the apron is tied. "Then the cisterns get it," he says. "Come in out of the cold."' },
       ],

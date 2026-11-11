@@ -110,3 +110,22 @@ test('the end plays at a Belt dock when the month is out: the end the roll and t
     assert.notEqual(e.again, 'The Guild Calls the Hulls In', 'once');
   }
 });
+
+test('a captain who kept the ship off the ice has a stake in the end: the win raises her regard by two, the break lowers it by one (#1060)', async () => {
+  const r = await run(() => {
+    const out = [];
+    for (const [weight, hold] of [[5, 1], [-3, 1], [0, 1], [5, 0]]) {
+      const st = start(); pick1(scene('strike-broadcast'), 'Let the batch run on'); st.qualities.strike = weight; st.qualities.strikeHold = hold;
+      st.day = st.qualities['due:strike-end']; const cap = opinionOf('captain'); cap.opinion = 0;
+      const e = land('pallas', 'Pallas Refinery'), res = pick1(e, 'Listen').text;
+      out.push({ hold, want: strikeEnd(strikeRoll(hired()), weight), regard: cap.opinion, res, kept: q().strikeHold });
+    }
+    return out;
+  });
+  for (const e of r) {
+    const n = !e.hold ? 0 : e.want === 'won' ? 2 : e.want === 'broke' ? -1 : 0;
+    assert.equal(e.regard, n, `${e.want}, held ${e.hold}: her regard`);
+    assert.equal(/Captain Vance writes/.test(e.res), n !== 0, 'her words only when it moved her');
+    assert.equal(e.kept, 0, 'the hold ends with the strike');
+  }
+});
