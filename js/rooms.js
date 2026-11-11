@@ -1029,13 +1029,16 @@ function roomLampFitting(ctx, x, top, lit, e) {
   ctx.beginPath(); for (const gx of [x - 5, x, x + 5]) { ctx.moveTo(gx, top + 3); ctx.lineTo(gx, top + 6.4); } ctx.stroke();
   for (const sx of [x - 10, x + 10]) roomDot(ctx, sx, top + 1.5, 0.6, '#56708c');
 }
-// fitted: the bays of a room whose lamps are drawn as fittings (roomLampFitting) rather than plain strips.
-function drawPhaseLight(ctx, r, w, time, night, keepsLights, fitted = null) {
+// fitted: the bays of a room whose lamps are drawn as fittings (roomLampFitting) rather than plain strips; at: where its lamps are (roomLamps).
+// Where a room's ceiling lamps are, in world x: a third and two thirds of the way across a wide room, its middle in a narrow one; the bridge's
+// aft lamp over the aft post, clear of the overhead panel and the COMMS label (#1024).
+const roomLamps = (id, r) => { const W = r.x1 - r.x0; return (id === 'bridge' && W > 380 ? [0.11, 2 / 3] : W > 380 ? [1 / 3, 2 / 3] : [1 / 2]).map(f => r.x0 + W * f); };
+function drawPhaseLight(ctx, r, w, time, night, keepsLights, fitted = null, at = roomLamps('', r)) {
   const lamp = roomMix([[255, 90, 70], [255, 226, 184], [255, 176, 48]], [w.burn, w.cruise, w.flip]);
-  const pulse = 1 - w.flip * 0.35 * (0.5 + 0.5 * Math.sin(time * 6)), dim = keepsLights ? 1 : 1 - 0.7 * night, W = r.x1 - r.x0, n = W > 380 ? 2 : 1;
+  const pulse = 1 - w.flip * 0.35 * (0.5 + 0.5 * Math.sin(time * 6)), dim = keepsLights ? 1 : 1 - 0.7 * night, W = r.x1 - r.x0;
   ctx.save(); ctx.beginPath(); ctx.rect(r.x0, r.top, W, r.floor - r.top); ctx.clip();
-  for (let k = 0; k < n; k++) {
-    const x = r.x0 + W * (k + 1) / (n + 1), g = ctx.createRadialGradient(x, r.top, 2, x, r.top, 160);
+  for (const x of at) {
+    const g = ctx.createRadialGradient(x, r.top, 2, x, r.top, 160);
     g.addColorStop(0, `rgba(${lamp},${0.2 * pulse * dim})`); g.addColorStop(1, `rgba(${lamp},0)`); ctx.fillStyle = g; ctx.fillRect(x - 160, r.top, 320, r.floor - r.top);
     const lit = `rgba(${lamp},${0.4 + 0.6 * dim})`, bay = fitted && fitted.find(q => x >= q.x0 && x <= q.x1);
     if (bay) roomLampFitting(ctx, x, r.top, lit, roomEye(bay)); else roomBox(ctx, x - 12, r.top, 24, 3, lit);
@@ -1095,5 +1098,5 @@ function drawRoom(ctx, id, r, s) {
   });
   const marked = !!(s.damage && s.damage.marks.has(id));
   if (marked) drawDamage(ctx, r, s);
-  if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine', LAMP_FITTED.includes(id) ? roomBays(r, s.well) : null);  // severe damage: the lamp flickers
+  if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine', LAMP_FITTED.includes(id) ? roomBays(r, s.well) : null, roomLamps(id, r));  // severe damage: the lamp flickers
 }

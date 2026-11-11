@@ -508,7 +508,7 @@ test('a person\'s shadow lies on the floor strip behind the feet, not across the
 // #1024 step 2, the helper: a solid part (o.solid, its depth as a share of the strip) draws behind its front its top if the top is under the eye,
 // the side toward the eye (none when it straddles it), and a contact shadow on the strip if its foot is on the floor. Things on the wall are moved
 // rigidly onto the back wall and drawn a step darker (WALL_TONE); a small thing on a top is moved to its depth.
-const box = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomPart', 'roomRound', 'roomIn', 'roomOnWall', 'roomAtDepth', 'roomFlat', 'roomInto', 'roomEye', 'roomBays', 'roomHatchBars', 'WALL_TONE', 'figShade']);
+const box = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomPart', 'roomRound', 'roomIn', 'roomOnWall', 'roomAtDepth', 'roomFlat', 'roomInto', 'roomEye', 'roomBays', 'roomHatchBars', 'roomLamps', 'WALL_TONE', 'figShade']);
 test('a solid part shows its top only under the eye, its side toward the eye and none when it straddles it, and a shadow only on the floor (#1024)', () => {
   const bay = { x0: 0, x1: 400, top: 0, floor: 100 }, e = box.roomEye(bay), col = '#1f3852', d = 0.45, P = (x, y) => box.roomInto(e, x, y, d);
   const key = pts => pts.map(q => q.map(v => Math.round(v * 1000) / 1000).join()).sort().join(' ');
@@ -1072,8 +1072,10 @@ test('the bridge\'s and the berths\' ceiling lamps are fittings: a plate on the 
   for (const id of ['bridge', 'berths']) for (const pr of [0.02, 0.3, 0.5]) {
     const r = layoutBox(LAYOUTS.freighter, id), W = r.x1 - r.x0, { ctx, calls } = recorder();
     drawRoom(ctx, id, r, RS({ w: phaseWeights(pr), well: FW, berths: 8, damage: { marks: new Set(), severe: false } }));
-    const parts = filledParts(calls);
-    for (const x of [r.x0 + W / 3, r.x0 + W * 2 / 3]) {
+    const parts = filledParts(calls), lamps = box.roomLamps(id, r);
+    assert.equal(lamps.length, 2, `${id}: a lamp in each bay`);
+    for (const x of lamps) {
+      assert.equal(box.roomBays(r, FW).filter(q => x - 12 >= q.x0 && x + 12 <= q.x1).length, 1, `${id}: the lamp at ${x} inside one bay, lighting it`);
       const bay = box.roomBays(r, FW).find(q => x >= q.x0 && x <= q.x1), e = box.roomEye(bay), back = r.top + (bay.floor - 80 - r.top) * 0.2;
       assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${id} ${pr}: the lamp at ${x}: its plate on the sliver, from the cut to the wall`);
       assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${id} ${pr}: its housing hung from the ceiling`);
@@ -1083,6 +1085,20 @@ test('the bridge\'s and the berths\' ceiling lamps are fittings: a plate on the 
   }
   const { ctx, calls } = recorder(); drawRoom(ctx, 'galley', layoutBox(LAYOUTS.freighter, 'galley'), RS({ well: FW, damage: { marks: new Set(), severe: false } }));
   assert.ok(!calls.some(k => k[0] === 'strokeRect' && k[3] === 21), 'not yet in the rooms still to come');
+  // on the bridge, no fitting over the overhead panel or the COMMS label; the lamp's light drawn from where its fitting is
+  const r = layoutBox(LAYOUTS.freighter, 'bridge');
+  for (const zoom of [0.82, 1.17, 1.45]) {
+    const { ctx: c, calls: k } = recorder(); drawRoom(c, 'bridge', r, RS({ zoom, well: FW, damage: { marks: new Set(), severe: false } }));
+    const panel = partBox(filledParts(k).find(p => p.col === '#1d3550'));
+    const label = k.map((q, i) => q[0] === 'fillStyle' && q[1] === 'rgba(6,13,22,0.85)' && k[i + 1][0] === 'fillRect' ? k[i + 1] : null).find(Boolean);
+    for (const x of box.roomLamps('bridge', r)) {
+      assert.ok(x + 12 <= panel.x0 || x - 12 >= panel.x1, `${zoom}: the fitting at ${x} (to 12 either side) clear of the overhead panel (${panel.x0} to ${panel.x1})`);
+      assert.ok(x + 12 <= label[1] || x - 12 >= label[1] + label[3], `${zoom}: the fitting at ${x} clear of the COMMS label (${label[1]} to ${label[1] + label[3]})`);
+    }
+  }
+  const lights = recorder(); drawPhaseLight(lights.ctx, r, phaseWeights(0.3), 3, 0, true, box.roomBays(r, FW), box.roomLamps('bridge', r));
+  const glow = lights.calls.filter(q => q[0] === 'fillRect' && q[3] === 320).map(q => q[1] + 160), guards = lights.calls.filter(q => q[0] === 'strokeRect' && q[3] === 21).map(q => q[1] + 10.5);
+  assert.deepEqual(glow.map(Math.round), Array.from(box.roomLamps('bridge', r), Math.round), 'each lamp\'s light from where its fitting is'); assert.deepEqual(guards.map(Math.round), glow.map(Math.round), 'and its fitting there');
 });
 test('someone eating alone sits on the edge of the first bunk (#933)', () => {
   const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['routineTarget', 'roomAt', 'posture']);
