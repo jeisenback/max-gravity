@@ -444,14 +444,66 @@ test('the walk\'s legs follow the ground covered, not the clock (#924)', () => {
 // #933: a prop is drawn with a lit top edge, a shaded underside and an outline, so it stands off the wall; the walls stay flat. The bridge and
 // the guns are stations: screens, controls and chairs with backs.
 const recorder = () => { const calls = []; const ctx = new Proxy({}, { get: (t, k) => (k in t ? t[k] : String(k).startsWith('create') ? () => ({ addColorStop() {} }) : String(k) === 'measureText' ? () => ({ width: 10 }) : (...a) => calls.push([k, ...a])), set: (t, k, v) => { t[k] = v; if (k === 'fillStyle' || k === 'strokeStyle') calls.push([k, v]); return true; } }); return { ctx, calls }; };
+const FW = (lay => ({ x0: (lay.well.x - lay.well.w / 2) * lay.width, x1: (lay.well.x + lay.well.w / 2) * lay.width }))(LAYOUTS.freighter);  // the well (#1024)
+const FIG_LINE_WALL = 'rgba(10,13,18,0.85)';
 test('a prop has a lit top edge, a shaded underside and an outline; the room\'s walls stay flat (#933)', () => {
   const a = recorder(); roomBox(a.ctx, 10, 10, 40, 30, '#2c4c6e');
   assert.ok(a.calls.filter(c => c[0] === 'fillRect').length >= 3, 'the body, the top edge and the underside');
   assert.ok(a.calls.some(c => c[0] === 'strokeRect'), 'and an outline');
   const small = recorder(); roomBox(small.ctx, 0, 0, 3, 3, '#2c4c6e');
   assert.equal(small.calls.filter(c => c[0] === 'fillRect').length, 1, 'a small detail is a plain fill'); assert.ok(!small.calls.some(c => c[0] === 'strokeRect'));
-  const w = recorder(); roomWalls(w.ctx, { x0: 0, x1: 200, top: 0, floor: 100 }, { burn: 0, cruise: 1, flip: 0 }, 0, true);
-  assert.ok(!w.calls.some(c => c[0] === 'strokeRect'), 'the walls have no outlines');
+  for (const well of [undefined, FW]) {  // one bay, and a full-width room's two either side of the well (#1024)
+    const w = recorder(); roomWalls(w.ctx, { x0: 0, x1: 720, top: 0, floor: 100 }, { burn: 0, cruise: 1, flip: 0 }, 0, true, well);
+    assert.ok(!w.calls.some(c => c[0] === 'strokeRect'), 'the walls have no outlines');
+    assert.ok(!w.calls.some(c => c[0] === 'strokeStyle' && c[1] === FIG_LINE_WALL), 'nor the props\' outline');
+    assert.equal(w.calls.filter(c => c[0] === 'save').length, w.calls.filter(c => c[0] === 'restore').length);
+  }
+});
+
+// #1024, the room box: the room's box is the cut, its back wall the same box scaled by k toward the eye, 80 over the floor at the bay's centre;
+// between them the ceiling's sliver, the floor's strip and the side walls. A full-width room is two bays, one either side of the well.
+const { roomBays, roomEye, roomShell } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomBays', 'roomEye', 'roomShell']);
+const near = (a, b) => Math.abs(a - b) < 1e-6;
+test('a bay\'s eye is at its centre, 80 over its floor, and its back wall is the box scaled by k: a sliver of 4, a strip of 16 (#1024)', () => {
+  const bay = { x0: 374.4, x1: 720, top: 112, floor: 212 }, e = roomEye(bay);
+  assert.ok(near(e.vx, (374.4 + 720) / 2) && near(e.vy, 212 - 80) && near(e.k, 0.8), JSON.stringify(e));
+  const back = (x, y) => [e.vx + (x - e.vx) * e.k, e.vy + (y - e.vy) * e.k], [bx0, by0] = back(bay.x0, bay.top), [bx1, by1] = back(bay.x1, bay.floor);
+  assert.ok(near(by0 - bay.top, 4), `the ceiling's sliver (${by0 - bay.top})`); assert.ok(near(bay.floor - by1, 16), `the floor's strip (${bay.floor - by1})`);
+  assert.ok(near(by1 - by0, 80) && near(bx1 - bx0, (bay.x1 - bay.x0) * 0.8), 'the back wall 80 tall, four fifths of the bay across');
+  // the shell draws those faces: each a closed path with its corners where k puts them
+  const { ctx, calls } = recorder(); roomShell(ctx, bay);
+  const faces = filledParts(calls).map(p => p.pts.map(q => q.map(v => Math.round(v * 1000) / 1000).join()).sort().join(' '));
+  const face = pts => pts.map(q => q.map(v => Math.round(v * 1000) / 1000).join()).sort().join(' ');
+  assert.ok(faces.includes(face([[bx0, by0], [bx1, by0], [bx1, by1], [bx0, by1]])), 'the back wall');
+  assert.ok(faces.includes(face([[bay.x0, bay.top], [bay.x1, bay.top], [bx1, by0], [bx0, by0]])), 'the ceiling\'s sliver');
+  assert.ok(faces.includes(face([[bay.x0, bay.floor], [bay.x1, bay.floor], [bx1, by1], [bx0, by1]])), 'the floor\'s strip');
+  assert.ok(faces.includes(face([[bay.x0, bay.top], [bx0, by0], [bx0, by1], [bay.x0, bay.floor]])) && faces.includes(face([[bay.x1, bay.top], [bx1, by0], [bx1, by1], [bay.x1, bay.floor]])), 'the side walls');
+  const c = fakeCtx(); roomShell(c, bay); assert.equal(c.depth, 0, 'every save restored'); assert.equal(c.fonts.length, 0, 'no text');
+  // the cut under it, the deck plate, from the floor down
+  assert.ok(calls.some((k, i) => k[0] === 'fillRect' && near(k[1], bay.x0) && near(k[2], bay.floor) && near(k[3], bay.x1 - bay.x0) && k[4] === 12), 'the cut, the plate\'s depth under the floor');
+});
+test('a room on a split deck is one bay; a full-width room is two, either side of the well, each with its own eye (#1024)', () => {
+  const lay = LAYOUTS.freighter;
+  for (const id of ['galley', 'head', 'gunnery', 'workshop', 'airlock', 'medbay', 'engine', 'hold']) {
+    const r = layoutBox(lay, id); assert.deepEqual(JSON.parse(JSON.stringify(roomBays(r, FW))), [JSON.parse(JSON.stringify(r))], id);
+  }
+  for (const id of ['bridge', 'berths', 'lifesupport']) {
+    const r = JSON.parse(JSON.stringify(layoutBox(lay, id))), bays = JSON.parse(JSON.stringify(roomBays(r, FW)));
+    assert.deepEqual(bays, [{ ...r, x1: FW.x0 }, { ...r, x0: FW.x1 }], id);
+    const [a, b] = bays.map(roomEye);
+    assert.ok(near(a.vx, FW.x0 / 2) && near(b.vx, (FW.x1 + lay.width) / 2) && near(a.vy, r.floor - 80), `${id}: an eye in each bay, none on the ladder`);
+  }
+  assert.equal(roomBays(layoutBox(lay, 'bridge')).length, 1, 'with no well given, one bay');
+  // the room draws its bays through the shell it is given (the burn view's cache), once each
+  for (const [id, n] of [['galley', 1], ['bridge', 2], ['berths', 2]]) {
+    const got = []; drawRoom(fakeCtx(), id, layoutBox(lay, id), RS({ well: FW, damage: { marks: new Set(), severe: false }, shell: (c, bay) => got.push(bay) }));
+    assert.equal(got.length, n, `${id}: ${n} bays`);
+  }
+});
+test('a person\'s shadow lies on the floor strip behind the feet, not across the cut (#1024)', () => {
+  const { ctx, calls } = recorder(); drawPerson(ctx, { name: 'walk', face: 1, frame: 0 }, 100, 200, { color: '#ffb347' });
+  const i = calls.findIndex(k => k[0] === 'fillStyle' && k[1] === 'rgba(0,0,0,0.32)'), el = calls.slice(i).find(k => k[0] === 'ellipse');
+  assert.ok(el, 'a shadow'); assert.ok(near(el[6], Math.PI) && near(el[7], Math.PI * 2), `a half-ellipse above the floor line (${el.slice(6)})`);
 });
 test('the bridge and the guns are stations: screens and controls, and chairs with backs at their seats (#933)', () => {
   const api = { drawRoom, roomScreen };
@@ -509,7 +561,7 @@ test('a prop part is a closed path, filled, lit on top, shaded on its side and o
 // What the galley drew, apart from its walls and its lamp (the multiset of recorded points and rects less theirs).
 const galleyOwn = (r, s) => {
   const all = fakeCtx(); drawRoom(all, 'galley', r, s);
-  const base = fakeCtx(); roomWalls(base, r, s.w, s.time, s.still); drawPhaseLight(base, r, s.w, s.time, s.night, false);
+  const base = fakeCtx(); roomWalls(base, r, s.w, s.time, s.still, s.well); drawPhaseLight(base, r, s.w, s.time, s.night, false);
   const left = [...all.args]; for (const a of base.args) { const i = left.indexOf(a); if (i >= 0) left.splice(i, 1); }
   return left.map(a => { const [k, ...v] = a.split(/(?<=[a-zA-Z])(?=-?\d)|,/); return { k, v: v.map(Number) }; });
 };
@@ -627,7 +679,7 @@ test('the galley answers the phase: the stove\'s ring lit only in cruise, the ta
 const { bridgeGlass, commsRackBox } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['bridgeGlass', 'commsRackBox']);
 const roomOwn = (id, r, s) => {
   const all = fakeCtx(); drawRoom(all, id, r, s);
-  const base = fakeCtx(); roomWalls(base, r, s.w, s.time, s.still); drawPhaseLight(base, r, s.w, s.time, s.night, true);
+  const base = fakeCtx(); roomWalls(base, r, s.w, s.time, s.still, s.well); drawPhaseLight(base, r, s.w, s.time, s.night, true);
   const left = [...all.args]; for (const a of base.args) { const i = left.indexOf(a); if (i >= 0) left.splice(i, 1); }
   return left.map(a => { const [k, ...v] = a.split(/(?<=[a-zA-Z])(?=-?\d)|,/); return { k, v: v.map(Number) }; });
 };
@@ -645,7 +697,7 @@ const BRIDGE_PROPS = [['#2a4560', 'the window\'s frame and its struts'], ['#1d35
 test('the bridge is drawn to the figures\' standard in every phase: its props outlined and a step below the people, its name on clear wall (#933)', () => {
   const r = layoutBox(LAYOUTS.freighter, 'bridge'), F = r.floor, W = r.x1 - r.x0;
   for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {  // the burn view's zoom in a window 1000, 1280 and 1600 wide
-    const s = RS({ w: phaseWeights(pr), zoom, damage: { marks: new Set(), severe: false } });
+    const s = RS({ w: phaseWeights(pr), zoom, well: FW, damage: { marks: new Set(), severe: false } });  // two bays, as the burn view draws it (#1024)
     const c = fakeCtx(); drawRoom(c, 'bridge', r, s); assert.equal(c.depth, 0, `${pr}: every save restored`);
     const { ctx, calls } = recorder(); drawRoom(ctx, 'bridge', r, s);
     const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
@@ -1105,4 +1157,12 @@ test('the hold reads old and cared for: crates of different ages, a replacement 
     const jack = parts.find(p => p.col === '#7a6a34');
     assert.ok(rects('#3e4c5a').filter(c => c[1] > F - 14 && c[0] >= jack.x0 - 2 && c[0] <= jack.x1 + 10).length >= 2, `${at}: scuffs low on the wall where the jack is parked`);
   }
+});
+
+test('the bridge\'s grab bars beside the ladder stand clear of the shaft\'s bulkheads (#1024)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'bridge'), { ctx, calls } = recorder();
+  drawRoom(ctx, 'bridge', r, RS({ w: phaseWeights(0.3), well: FW, damage: { marks: new Set(), severe: false } }));
+  const bars = filledParts(calls).filter(p => p.col === '#3a5470' && p.outlined).map(p => { const xs = p.pts.map(q => q[0]), ys = p.pts.map(q => q[1]); return { x0: Math.min(...xs), x1: Math.max(...xs), h: Math.max(...ys) - Math.min(...ys) }; }).filter(b => b.h > 40 && b.x1 - b.x0 < 5);
+  assert.equal(bars.length, 2, 'a grab bar either side of the ladder');
+  for (const b of bars) for (const e of [FW.x0, FW.x1]) assert.ok(b.x1 <= e - 6 || b.x0 >= e + 6, `a bar (${b.x0} to ${b.x1}) clear of the bulkhead at ${e} (6 either side)`);
 });

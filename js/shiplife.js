@@ -683,6 +683,31 @@ function cutBulkhead(ctx, x, top, F, hatch) {
   ctx.fillStyle = '#1a3048'; ctx.fillRect(x - 6, top, 12, F - top);
   if (hatch) { ctx.fillStyle = '#060d16'; ctx.fillRect(x - 4, F - 92, 8, 92); ctx.fillStyle = '#2a4664'; ctx.fillRect(x - 6, F - 96, 12, 4); ctx.fillStyle = '#c9a227'; ctx.fillRect(x - 4, F - 4, 4, 4); }
 }
+// The ladder well on a deck, x0 to x1 from top to the floor F (#1024): a shaft too narrow for a box, its back wall darker than a room's, a
+// bulkhead each side with a hatch at the floor, and the cut under it.
+function cutShaft(ctx, x0, x1, top, F) {
+  ctx.fillStyle = '#060c14'; ctx.fillRect(x0, top, x1 - x0, F - top);
+  ctx.fillStyle = '#0b1622'; for (const x of [x0 + 7, x1 - 9]) ctx.fillRect(x, top, 2, F - top);
+  roomCut(ctx, x0, x1, F);
+  for (const x of [x0, x1]) cutBulkhead(ctx, x, top, F, true);
+}
+// Each bay's shell (rooms.js roomShell) drawn once into an offscreen canvas at the zoom and the device's pixel ratio, then as one image every
+// frame after (#1024): the burn view redraws every frame. A new zoom or pixel ratio starts the cache again; a new layout gives new bays.
+const SHELLS = { scale: 0, bays: new Map() };
+function cachedShell(zoom) {
+  const px = zoom * (window.devicePixelRatio || 1);
+  if (SHELLS.scale !== px) { SHELLS.scale = px; SHELLS.bays.clear(); }
+  return (ctx, bay) => {
+    const id = `${bay.x0},${bay.x1},${bay.top},${bay.floor}`;
+    let c = SHELLS.bays.get(id);
+    if (!c) {
+      c = document.createElement('canvas'); c.width = Math.ceil((bay.x1 - bay.x0) * px); c.height = Math.ceil((bay.floor + HULL.plate - bay.top) * px);
+      const g = c.getContext('2d', { alpha: false }); g.setTransform(px, 0, 0, px, -bay.x0 * px, -bay.top * px); roomShell(g, bay);  // opaque: it covers its bay, and draws faster
+      SHELLS.bays.set(id, c);
+    }
+    ctx.drawImage(c, bay.x0, bay.top, c.width / px, c.height / px);
+  };
+}
 // The water tank in cutaway (#972): its ribs, the water up to her reaction mass (fuel, 0 to 1) lying toward the drive, and the tube
 // through it for the ladder.
 function towerTank(ctx, lay, tk, fuel, s) {
@@ -769,20 +794,17 @@ function drawCutaway(box, clear = box) {
   // The rooms, the tank, the ladder well and its ladder full height (the tube through the tank), and the bulkheads beside the well.
   const cap = ship().cargo, nb = Math.min(12, ship().berths), slots = new Map();
   for (const p of people) if (slots.size < nb && isAsleep(p)) slots.set(p, slots.size);  // whoever is turned in lies on a bunk
-  const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
+  const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt() };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);
-    if (seen(q.top, q.floor)) drawRoom(ctx, r.id, q, s);
+    if (seen(q.top, q.floor + HULL.plate)) drawRoom(ctx, r.id, q, s);  // with its cut, as the shaft is (#1024)
   }
   towerTank(ctx, lay, o.tank, s.fuel, s);
   const lx = X(LADDER), ww = lay.well.w * W / 2, last = lay.decks.length - 1;
   for (let i = 0; i <= last; i++) {
     const d = deck(i);
-    if (!layoutRoomAt(lay, i, lx)) {  // a deck split by the well: the shaft between its rooms, and a hatch through each wall into it
-      roomWalls(ctx, { x0: lx - ww, x1: lx + ww, top: d.top, floor: d.floor }, w, time, still);
-      for (const x of [lx - ww, lx + ww]) cutBulkhead(ctx, x, d.top, d.floor, true);
-    }
+    if (seen(d.top, d.floor + HULL.plate)) cutShaft(ctx, lx - ww, lx + ww, d.top, d.floor);  // the shaft on every deck, between its rooms or its bays, and a hatch through each wall into it (#1024)
     if (i < last) { ctx.fillStyle = '#060d16'; ctx.fillRect(lx - 14, d.floor, 28, HULL.plate); }  // the opening in the floor plate
   }
   ctx.strokeStyle = '#4a6a8a'; ctx.lineWidth = 2;

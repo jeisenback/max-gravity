@@ -360,7 +360,7 @@ function drawPerson(ctx, pose, x, y, look) {
     const k = FIG_SCALE, low = figLowHip(pose), q0 = figPose(pose.name, pose.frame, frames, +look.floating || 0), q = low === null ? q0 : figSitLow(q0, low), j = figJoints(q), col = look.color, st = figStyle(look), b = st.build;
     ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     const boot = '#262b33', glove = '#2c3139';
-    if (!look.floating && FIG_GROUNDED.includes(pose.name)) { ctx.fillStyle = 'rgba(0,0,0,0.32)'; ctx.beginPath(); ctx.ellipse(2, 0, 15, 2.8, 0, 0, Math.PI * 2); ctx.fill(); }  // a shadow on the deck
+    if (!look.floating && FIG_GROUNDED.includes(pose.name)) { ctx.fillStyle = 'rgba(0,0,0,0.32)'; ctx.beginPath(); ctx.ellipse(2, 0, 15, 2.8, 0, Math.PI, Math.PI * 2); ctx.fill(); }  // a shadow on the floor's strip, behind the feet (#1024)
     figLeg(ctx, j.legB, figShade(col, 0.66), figShade(boot, 0.85), b);
     figArm(ctx, j.armB, figShade(col, 0.6), figShade(glove, 0.85), b);
     figLeg(ctx, j.legF, col, boot, b);
