@@ -798,7 +798,7 @@ function drawCutaway(box, clear = box) {
   for (const p of people) {
     const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p), s.well);
     const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
-    const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? 36 : 0), dk = Math.round(p.dk);
+    const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? MED_COT : 0), dk = Math.round(p.dk);
     dots.push({ x: X(p.x), dk: p.dk, color: ROLE_COLORS[p.role] });
     if (!seen(y - 160, y + 60)) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = seen(y - 60, y);

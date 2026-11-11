@@ -808,3 +808,72 @@ test('someone eating alone sits on the edge of the first bunk (#933)', () => {
   const wx = r.x0 + (x - ra.x0) / ra.w * (r.x1 - r.x0);
   assert.ok(wx > b.x + 4 && wx < b.x + b.w / 2, `at ${wx}, on the first bunk (${b.x} to ${b.x + b.w})`);
 });
+
+// #933, the medbay on the lock deck: the cot with its rails, straps, legs on braked casters, mattress and pillow; the IV pole bolted to the deck,
+// its bag swinging and its line to the cot; the scanner arm from the ceiling over the cot; the monitor at eye height; the supply cabinet at the
+// counter, down from white; the first-aid box on the wall under the room's name. Drawn at the burn view's zoom in a window 1000, 1280 and 1600 wide.
+const { MED_COT } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['MED_COT']);
+const MED_PROPS = [['#2a4664', 'the cot\'s frame'], ['#1c3249', 'its legs'], ['#1a2430', 'its casters'], ['#2e4a68', 'its head and foot boards'], ['#3a5470', 'its rail and the grab rails'], ['#56667a', 'the mattress'],
+  ['#9a968a', 'the pillow'], ['#4a4436', 'the straps'], ['#4a5e74', 'the IV pole'], ['#6a8494', 'the IV bag'], ['#2c4560', 'the scanner arm'], ['#3a5068', 'the scanner\'s head'], ['#1f3a56', 'the monitor'],
+  ['#4e5e6e', 'the cabinet'], ['#64748a', 'its doors'], ['#6e7e8e', 'its top'], ['#8e3a32', 'the red crosses'], ['#4e6a78', 'the bottles'], ['#7a8692', 'the kit'], ['#5a6876', 'the first-aid box']];
+const MED_LINE = 'rgba(150,178,196,0.7)';
+const medCase = (pr, zoom, patient) => ({ r: layoutBox(LAYOUTS.freighter, 'medbay'), s: RS({ w: phaseWeights(pr), zoom, patient, damage: { marks: new Set(), severe: false } }) });
+test('the medbay is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
+  for (const patient of [false, true]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.66, 0.96, 1.24]) {
+    const { r, s } = medCase(pr, zoom, patient), at = `${patient ? 'a patient' : 'empty'}, ${pr}, ${zoom}`;
+    const c = fakeCtx(); drawRoom(c, 'medbay', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of MED_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    const outlined = filledParts(calls).filter(p => p.outlined);
+    assert.ok(outlined.length >= 30, `${at}: the props outlined like the figures (${outlined.length})`);
+    for (const { col } of outlined.filter(p => /^#[0-9a-f]{6}$/.test(p.col))) {
+      const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
+    }
+    for (const col of ['#dde4ea', '#eef2f6', '#c9d3dc', '#d8dde4', '#c03a30', '#1a1a1a', '#8aa4c0']) assert.equal(fills(col), 0, `${at}: no near-white, saturated or black block (${col})`);
+    assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === (patient ? '#ffb030' : '#7fd8a0')), `${at}: the monitor's trace, amber with a patient`);
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v } of roomOwn('medbay', r, s)) {
+      const pts = k === 'fillRect' ? [[v[0], v[1]], [v[0] + v[2], v[1]], [v[0], v[1] + v[3]], [v[0] + v[2], v[1] + v[3]], [v[0] + v[2] / 2, v[1] + v[3] / 2]] : /^(moveTo|lineTo)$/.test(k) ? [v] : k === 'quadraticCurveTo' ? [v.slice(2)] : [];
+      for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} under the room's name`);
+    }
+  }
+  const stillAt = t => { const { r, s } = medCase(0.5, 0.96, true), c = fakeCtx(); drawRoom(c, 'medbay', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('the medbay\'s props are sized to a person: the cot\'s mattress under the patient, the IV at head height, the monitor at the eye, the cabinet at the counter (#933)', () => {
+  const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['routineTarget', 'roomAt']);
+  const ra = api.roomAt('medbay'), { r } = medCase(0.3, 1.24, true), F = r.floor, W = r.x1 - r.x0, X = sh => r.x0 + W * sh;
+  const bed = api.routineTarget({}, { at: 'bed' }, ra, 0, 1, () => 0.5), bx = r.x0 + (bed - ra.x0) / ra.w * W, head = drawPerson(fakeCtx(), { name: 'bunk', face: 1, frame: 0 }, bx, F - MED_COT, { color: '#ffb347' }).head;
+  assert.ok(MED_COT >= 28 && MED_COT <= 32, `the patient lies at about 30, between the knee and the hip (${MED_COT})`);
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { s } = medCase(pr, 1.24, true), { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
+    const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), at = `${pr}`;
+    const bedPart = parts.find(p => p.col === '#56667a');
+    assert.ok(bedPart && Math.abs(bedPart.y0 - (F - MED_COT)) < 0.01, `${at}: the mattress's top at the patient (${bedPart && F - bedPart.y0})`);
+    assert.ok(bedPart.x0 <= X(0.21) && bedPart.x1 >= X(0.53) && bedPart.x0 < bx - 40 && bedPart.x1 > bx + 40, `${at}: the cot (${bedPart.x0} to ${bedPart.x1}) from 0.2 to 0.54, under the patient at ${bx}`);
+    const pillow = parts.find(p => p.col === '#9a968a');
+    assert.ok(pillow && head.x >= pillow.x0 && head.x <= pillow.x1 && Math.abs(pillow.y1 - (F - MED_COT)) < 0.01, `${at}: the pillow (${JSON.stringify(pillow)}) under the patient's head at ${head.x}`);
+    assert.ok(parts.filter(p => p.col === '#4a4436' && p.x0 > bedPart.x0 && p.x1 < bedPart.x1).length >= 2, `${at}: straps to hold the hurt down in the burn`);
+    assert.ok(parts.filter(p => p.col === '#2e4a68').every(p => F - p.y0 >= MED_COT && F - p.y0 <= 45), `${at}: the head and foot boards a little over the mattress`);
+    const pole = parts.find(p => p.col === '#4a5e74' && p.y1 - p.y0 > 60);
+    assert.ok(pole && F - pole.y0 >= 85 && F - pole.y0 <= 92 && pole.y1 >= F - 3, `${at}: the IV pole from the deck to about head height (${pole && F - pole.y0})`);
+    const fi = calls.findIndex(k => k[0] === 'fillStyle' && k[1] === '#6a8494'), bi = calls.slice(0, fi).map(k => k[0]).lastIndexOf('translate'), [, tx, ty] = calls[bi];
+    const bag = parts.find(p => p.col === '#6a8494'), mid = F - (ty + (bag.y0 + bag.y1) / 2);
+    assert.ok(bi >= 0 && mid >= 74 && mid <= 84 && Math.abs(tx - pole.x1) < 12, `${at}: the bag hung from the pole at about 80 (${mid}), moved as it swings`);
+    const li = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === MED_LINE), m = calls.slice(li).find(k => k[0] === 'moveTo'), q = calls.slice(li).find(k => k[0] === 'quadraticCurveTo');
+    assert.ok(li >= 0 && Math.abs(m[1] - tx) < 3 && m[2] >= ty + bag.y1 - 0.01 && m[2] <= ty + bag.y1 + 5, `${at}: the IV line from the bag's foot (${m && m.slice(1)})`);
+    assert.ok(q[3] > bedPart.x0 && q[3] < bedPart.x1 && Math.abs(q[4] - (F - MED_COT)) <= 2, `${at}: to the cot (${q.slice(3)})`);
+    const mon = parts.find(p => p.col === '#1f3a56'), my = F - (mon.y0 + mon.y1) / 2;
+    assert.ok(my >= 70 && my <= 85 && mon.x1 - mon.x0 >= 30, `${at}: the monitor at eye height (${my})`);
+    const top = parts.find(p => p.col === '#6e7e8e');
+    assert.ok(F - top.y0 >= 36 && F - top.y0 <= 44, `${at}: the cabinet at counter height (${F - top.y0})`);
+    const arm = parts.filter(p => /^#(2c4560|3a5068)$/.test(p.col)), sh = parts.find(p => p.col === '#3a5068');
+    assert.ok(Math.min(...arm.map(p => p.y0)) <= r.top + 5 && sh.x0 > bedPart.x0 && sh.x1 < bedPart.x1 && F - sh.y1 >= MED_COT + 20, `${at}: the scanner arm from the ceiling, its head over the cot clear of the patient`);
+    const box = parts.find(p => p.col === '#5a6876');
+    assert.ok(box && box.x1 < bedPart.x0 && F - box.y0 <= 60, `${at}: the first-aid box on the wall left of the cot, under the name`);
+  }
+});

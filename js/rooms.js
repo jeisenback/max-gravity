@@ -608,28 +608,121 @@ function roomHold(ctx, r, s, X, W) {
   if (w.flip > 0.05 && !s.still) { ctx.save(); ctx.globalAlpha = w.flip; ctx.translate(X(0.6) + Math.sin(time * 0.4) * 24, F - 80 + Math.cos(time * 0.5) * 8); ctx.rotate(time * 0.6); roomBox(ctx, -5, -4, 10, 8, '#c9a227'); roomBox(ctx, -5, -8, 3, 5, '#c9a227'); ctx.restore(); }
 }
 
+// The medbay (#933). The cot's mattress top over the deck (about 30, between a person's knee and hip), where the cutaway lays a patient (shiplife.js).
+const MED_COT = 30;
+// The cot from 0.2 to 0.54 of the room, where the hurt lie (shiplife.js routineTarget 'bed'): its frame on two legs on casters with their brakes set,
+// a cross bar and a stencil, the head and foot boards, a rail along its far side, the mattress, the pillow under the head of a patient at the bed
+// spot (head to the left), and two straps with buckles hanging down its front, to hold the hurt down in the burn.
+function roomMedCot(ctx, X, F) {
+  const n = v => Math.round(v * 100) / 100, x = n(X(0.2)), x1 = n(X(0.54)), w = n(x1 - x), T = F - MED_COT, hx = n(X(0.34) - 32);
+  for (const lx of [n(x + 10), n(x1 - 14)]) {
+    roomPart(ctx, `M ${lx} ${T + 9} L ${n(lx + 4)} ${T + 9} L ${n(lx + 3.4)} ${F - 6} L ${n(lx + 0.6)} ${F - 6} Z`, '#1c3249', { top: 0, side: 1.2 });
+    roomPart(ctx, roomRound(lx - 2, F - 7, 8, 2, 0.8), '#20384f', { top: 0.5 });  // the caster's fork
+    roomDot(ctx, lx + 2, F - 2.6, 2.6, '#1a2430'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); roomDot(ctx, lx + 2, F - 2.6, 0.8, '#56708c');
+    roomFlat(ctx, lx + 5, F - 5.6, 3.5, 1.4, '#7a3a30');  // its brake, set
+  }
+  roomPart(ctx, roomRound(x + 12, F - 17, w - 24, 2, 1), '#1c3249', { top: 0.6 });  // the cross bar
+  ctx.strokeStyle = '#4a6680'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(x + w / 2, F - 2, 1.3, 0, Math.PI * 2); ctx.stroke();  // a tie-down ring
+  for (const ux of [x + 30, x1 - 32]) roomFlat(ctx, ux, T - 8, 1.5, 8, '#2a3e54');  // the rail's uprights
+  roomPart(ctx, roomRound(x + 26, T - 10, w - 52, 2, 1), '#3a5470', { top: 0.6 });
+  roomPart(ctx, roomRound(x, T + 4, w, 5, 1), '#2a4664', { top: 1, under: 1.2 });  // the frame
+  for (const sx of [x + 3, x1 - 3]) roomDot(ctx, sx, T + 6.5, 0.6, '#56708c');
+  roomFlat(ctx, x + w / 2 - 8, T + 5.4, 16, 2.6, '#4a4436'); roomFlat(ctx, x + w / 2 - 6.5, T + 6.2, 3, 1, '#2a261e'); roomFlat(ctx, x + w / 2 - 2, T + 6.2, 6, 1, '#2a261e');  // the stencil
+  roomPart(ctx, roomRound(x - 1, T - 12, 4, 21, 1.2), '#2e4a68', { top: 1, side: 1 });  // the head board
+  roomPart(ctx, roomRound(x1 - 3, T - 8, 4, 17, 1.2), '#2e4a68', { top: 1, side: 1 });  // the foot board
+  roomPart(ctx, roomRound(x + 3, T, w - 6, 4.5, 2), '#56667a', { top: 1, under: 0.8 });
+  roomPart(ctx, roomRound(hx - 8, T - 4.5, 20, 4.5, 2), '#9a968a', { top: 0.8, side: 1.5 });
+  for (const f of [0.42, 0.72]) {  // the straps, a buckle on each
+    const sx = n(x + w * f);
+    roomPart(ctx, roomRound(sx, T - 0.5, 3.5, 12, 0.8), '#4a4436', { top: 0 }); roomFlat(ctx, sx - 0.5, T + 6.5, 4.5, 2.2, '#8796a5');
+  }
+}
+// The IV pole at the cot's head end, bolted to the deck, about a person's height; the bag on its hook (it swings: moved, not redrawn, as a path given
+// to roomPart is fixed per layout), its drip chamber, and the line from it to the patient's arm on the cot. Drawn in two parts: the pole behind the
+// cot, the bag and its line in front.
+function roomMedPole(ctx, X, F) {
+  const px = Math.round(X(0.25) * 100) / 100;
+  roomPart(ctx, roomRound(px - 7, F - 2.5, 14, 2.5, 1), '#20384f', { top: 0.5 });  // its foot
+  for (const bx of [px - 5, px + 5]) roomDot(ctx, bx, F - 1.2, 0.6, '#56708c');
+  roomPart(ctx, roomRound(px - 1.2, F - 88, 2.4, 86, 1), '#4a5e74', { top: 0, side: 0.8 });
+  roomPart(ctx, roomRound(px - 1, F - 88, 9, 1.6, 0.8), '#4a5e74', { top: 0 });  // the hook's arm
+  return px;
+}
+function roomMedBag(ctx, px, X, F, s) {
+  const [ix, iy] = hangEnd(px + 7, F - 88, 4, 3.1, s.w, s.time, s.still);
+  ctx.strokeStyle = 'rgba(150,178,196,0.7)'; ctx.lineWidth = 0.8;
+  ctx.beginPath(); ctx.moveTo(ix, iy + 15); ctx.quadraticCurveTo(ix + 3, F - 48, X(0.3), F - MED_COT - 1); ctx.stroke();
+  ctx.save(); ctx.translate(ix, iy);
+  roomFlat(ctx, -0.5, -1, 1, 1.5, '#7a8e9c');  // its loop on the hook
+  roomPart(ctx, roomRound(-4, 0.5, 8, 12, 2.5), '#6a8494', { top: 0.6, side: 1.2 }); roomFlat(ctx, -2.8, 5.5, 5.6, 6, '#8aa8b8'); roomFlat(ctx, -2.2, 2.5, 4.4, 1, '#4a5e6c');  // the fluid and its label
+  roomFlat(ctx, -1, 12.5, 2, 2.5, '#7a8e9c'); ctx.restore();  // the drip chamber
+}
+// The scanner arm from the ceiling: its mount, the upper arm down to the elbow and the forearm out over the cot, jointed, to the scanner's head
+// over the patient's chest, clear of whoever lies there, its lamp lit while it has one.
+function roomMedScanner(ctx, r, s, X) {
+  const n = v => Math.round(v * 100) / 100, F = r.floor, T = r.top, mx = n(X(0.44)), ex = n(X(0.42)), hx = n(X(0.315));
+  roomPart(ctx, roomRound(mx - 8, T + 1, 16, 3.5, 1), '#20384f', { top: 0, under: 1 });
+  for (const bx of [mx - 5.5, mx + 5.5]) roomDot(ctx, bx, T + 2.8, 0.6, '#56708c');
+  roomPart(ctx, `M ${n(mx - 1.8)} ${T + 4} L ${n(mx + 1.8)} ${T + 4} L ${n(ex + 1.8)} ${F - 74} L ${n(ex - 1.8)} ${F - 74} Z`, '#2c4560', { top: 0, side: 1 });
+  roomPart(ctx, `M ${ex} ${F - 76} L ${n(hx + 2)} ${F - 65.5} L ${hx} ${F - 62.5} L ${n(ex - 1)} ${F - 72.5} Z`, '#2c4560', { top: 0, under: 1 });
+  for (const [jx, jy, jr] of [[mx, T + 5, 2.4], [ex, F - 74, 2.6]]) { roomDot(ctx, jx, jy, jr, '#3a5470'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); roomDot(ctx, jx, jy, 0.7, '#56708c'); }
+  roomPart(ctx, `M ${n(hx - 13)} ${F - 63} L ${n(hx + 13)} ${F - 63} L ${n(hx + 11)} ${F - 57} L ${n(hx - 11)} ${F - 57} Z`, '#3a5068', { top: 1, under: 1 });
+  roomFlat(ctx, hx - 8, F - 57.2, 16, 1, s.patient ? '#4f8ab0' : '#2f3f50');
+}
+// The supply cabinet (#933) from 0.76 to 0.97, its top at the counter: two doors with hinges, handles and a latch, a cross on one, a kick plate; on
+// its top a rail to keep things in place in zero g, two bottles and a kit with a cross.
+function roomMedCabinet(ctx, X, F) {
+  const n = v => Math.round(v * 100) / 100, cx = n(X(0.76)), cw = n(X(0.97) - cx), c1 = n(cx + cw), mid = n(cx + cw / 2), dw = n(cw / 2 - 4.8);
+  roomPart(ctx, roomRound(cx + 2, F - 38, cw - 4, 38, 1), '#4e5e6e', { top: 0, side: 2.5 });
+  roomFlat(ctx, cx + 4, F - 3.5, cw - 8, 2.5, '#2a3846');  // the kick plate
+  for (const j of [0, 1]) {
+    const dx = j ? n(mid + 0.8) : n(cx + 4);
+    roomPart(ctx, roomRound(dx, F - 35, dw, 30, 1), '#64748a', { top: 0.8, side: j ? 1.2 : -1.2 });
+    for (const hy of [F - 32, F - 9]) roomFlat(ctx, j ? dx + dw - 1.5 : dx, hy, 1.5, 3, '#3a4a5a');  // its hinges
+  }
+  roomFlat(ctx, mid - 0.5, F - 35, 1, 30, '#8a96a2');  // the seam between its doors
+  for (const hx of [mid - 5, mid + 3]) roomFlat(ctx, hx, F - 24, 2, 6, '#9aa8b6');
+  roomFlat(ctx, mid - 1.5, F - 33.5, 3, 2, '#2a3e54');  // the latch
+  const kx = n(cx + 4 + dw / 2);
+  roomFlat(ctx, kx - 4, F - 26, 8, 2.4, '#8e3a32'); roomFlat(ctx, kx - 1.2, F - 29, 2.4, 8.4, '#8e3a32');  // the cross
+  roomFlat(ctx, kx - 6, F - 12, 12, 2, '#3a4436'); roomFlat(ctx, kx - 5, F - 11.4, 4, 0.8, '#2a261e'); roomFlat(ctx, kx, F - 11.4, 4, 0.8, '#2a261e');  // the stencil
+  for (const bx of [cx + 5, cx + 12]) {  // the bottles, their caps
+    roomPart(ctx, roomRound(bx, F - 51, 5, 10, 1.5), '#4e6a78', { top: 0.6, side: 1 }); roomFlat(ctx, bx + 1, F - 47, 3, 5, '#7fb8c8'); roomFlat(ctx, bx + 1, F - 53, 3, 2, '#8796a5');
+  }
+  roomPart(ctx, roomRound(c1 - 22, F - 52, 18, 11, 1.5), '#7a8692', { top: 1, side: 1.5 });
+  roomFlat(ctx, c1 - 15, F - 50, 4, 7, '#8e3a32'); roomFlat(ctx, c1 - 16.5, F - 48, 7, 3, '#8e3a32'); roomFlat(ctx, c1 - 16, F - 53.5, 6, 1.5, '#2a3e54');  // its cross and handle
+  roomPart(ctx, roomRound(cx, F - 41, cw, 3.5, 1), '#6e7e8e', { top: 1, under: 1 });
+  for (const rx of [cx + 2, c1 - 3.5]) roomFlat(ctx, rx, F - 45, 1.5, 4, '#2a3e54');  // the rail's posts
+  roomPart(ctx, roomRound(cx + 1, F - 46, cw - 2, 1.4, 0.7), '#3a5470', { top: 0.5 });
+}
+// The medbay (#933), beside the airlock: the first-aid box on the wall under the room's name, the IV pole behind the cot (roomMedCot), the scanner
+// arm over it, the bag and its line, the monitor at eye height on its bracket (its trace amber and quicker with a patient), a grab rail for zero g,
+// and the supply cabinet (roomMedCabinet). The medic's stool is drawn by drawRoom; nothing stands under the room's name at its top left.
 function roomMedbay(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, bx = X(0.2), bw = Math.min(112, W * 0.34);
-  roomBox(ctx, bx, F - 30, bw, 6, '#3a4a5e'); roomBox(ctx, bx, F - 36, bw, 7, '#dde4ea'); roomBox(ctx, bx + 2, F - 42, 22, 7, '#eef2f6');
-  for (const f of [0.38, 0.72]) roomBox(ctx, bx + bw * f, F - 37, 4, 9, '#1a1a1a');
-  roomBox(ctx, bx + 8, F - 24, 4, 24, '#2a4664'); roomBox(ctx, bx + bw - 12, F - 24, 4, 24, '#2a4664');
-  if (W >= 200) {
-    const px = X(0.62); roomBox(ctx, px, F - 96, 3, 96, '#8aa4c0'); const [ix, iy] = hangEnd(px + 2, F - 94, 8, 3.1, w, time, s.still);
-    roomBox(ctx, ix - 5, iy, 10, 14, 'rgba(200,230,255,0.75)'); ctx.strokeStyle = 'rgba(200,230,255,0.5)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(ix, iy + 14); ctx.quadraticCurveTo(px - 20, F - 50, bx + bw - 14, F - 38); ctx.stroke();
+  const { time } = s, F = r.floor, n = v => Math.round(v * 100) / 100;
+  if (W >= 300) {
+    const bx = n(X(0.03));
+    roomPart(ctx, roomRound(bx, F - 56, 30, 22, 2), '#5a6876', { top: 1, side: 1.5 });
+    roomFlat(ctx, bx + 11, F - 50, 8, 2.6, '#8e3a32'); roomFlat(ctx, bx + 13.7, F - 53, 2.6, 8.6, '#8e3a32'); roomFlat(ctx, bx + 26, F - 47, 1.5, 4, '#2a3e54');  // its cross and latch
+    for (const [sx, sy] of [[bx + 2.5, F - 53.5], [bx + 27.5, F - 36.5]]) roomDot(ctx, sx, sy, 0.6, '#56708c');
   }
+  const px = W >= 200 ? roomMedPole(ctx, X, F) : null;
+  roomMedCot(ctx, X, F);
+  roomMedScanner(ctx, r, s, X);
+  if (px !== null) roomMedBag(ctx, px, X, F, s);
   if (W >= 260) {
-    const mx = X(0.7), mw = Math.min(64, W * 0.2); roomBox(ctx, mx, F - 92, mw, 34, '#04101a'); ctx.strokeStyle = s.patient ? '#ffb030' : '#7fd8a0'; ctx.lineWidth = 1.2; ctx.beginPath();  // amber and quicker with a patient
-    for (let x = 0; x < mw - 4; x++) { const u = (x + time * (s.patient ? 60 : 30)) % 30, y = u > 12 && u < 15 ? (u < 13.5 ? -12 : 8) : 0; if (x) ctx.lineTo(mx + 2 + x, F - 75 + y); else ctx.moveTo(mx + 2, F - 75 + y); } ctx.stroke();
+    const mx = n(X(0.66)), my = F - 89, mw = 44, mh = 24;
+    roomFlat(ctx, mx + mw / 2 - 3, my + mh, 6, 4, '#2a3e54');  // its bracket
+    roomPart(ctx, roomRound(mx, my, mw, mh, 2), '#1f3a56', { top: 1, under: 1 }); roomFlat(ctx, mx + 3, my + 3, mw - 6, mh - 6, '#04101a');
+    for (const [sx, sy] of [[mx + 1.5, my + 1.5], [mx + mw - 1.5, my + 1.5]]) roomDot(ctx, sx, sy, 0.5, '#56708c');
+    ctx.strokeStyle = s.patient ? '#ffb030' : '#7fd8a0'; ctx.lineWidth = 1; ctx.beginPath();  // amber and quicker with a patient
+    for (let x = 0; x < mw - 8; x++) { const u = (x + time * (s.patient ? 60 : 30)) % 30, y = u > 12 && u < 15 ? (u < 13.5 ? -7 : 4) : 0; if (x) ctx.lineTo(mx + 4 + x, my + 14 + y); else ctx.moveTo(mx + 4, my + 14 + y); }
+    ctx.stroke();
+    const g0 = n(X(0.8)), g1 = n(X(0.94));  // a grab rail on the wall over the cabinet, for zero g
+    for (const gx of [g0 + 2, g1 - 4]) roomFlat(ctx, gx, F - 66, 2, 4.5, '#2a3e54');
+    roomPart(ctx, roomRound(g0, F - 64, g1 - g0, 3, 1.5), '#3a5470', { top: 0.6, under: 0.8 });
   }
-  if (W >= 240) {  // the supply cabinet under the monitor (#933): two doors with handles, a cross on one; bottles and a kit on its top
-    const cx = X(0.76), cw = X(0.97) - cx;
-    roomBox(ctx, cx + 2, F - 38, cw - 4, 38, '#c9d3dc'); roomBox(ctx, cx, F - 42, cw, 4, '#dde4ea'); roomFlat(ctx, cx + cw / 2 - 0.5, F - 35, 1, 32, '#8a96a2');
-    for (const hx of [cx + cw / 2 - 5, cx + cw / 2 + 3]) roomFlat(ctx, hx, F - 24, 2, 6, '#9aa8b6');
-    roomFlat(ctx, cx + 9, F - 28, 6, 2, '#c03a30'); roomFlat(ctx, cx + 11, F - 30, 2, 6, '#c03a30');
-    for (const bx of [cx + 5, cx + 12]) { roomBox(ctx, bx, F - 52, 5, 10, '#7fb8c8'); roomFlat(ctx, bx + 1, F - 54, 3, 2, '#dde4ea'); }
-    roomBox(ctx, cx + cw - 22, F - 52, 18, 10, '#eef2f6'); roomFlat(ctx, cx + cw - 14, F - 51, 2, 8, '#c03a30'); roomFlat(ctx, cx + cw - 17, F - 48, 8, 2, '#c03a30');
-  }
-  if (W >= 300) { const cx = X(0.04); roomBox(ctx, cx, F - 92, 40, 40, '#d8dde4'); roomBox(ctx, cx + 17, F - 85, 7, 24, '#c03a30'); roomBox(ctx, cx + 9, F - 77, 23, 8, '#c03a30'); }
+  if (W >= 240) roomMedCabinet(ctx, X, F);
 }
 
 // The lamp: a pool of light mixing red (burn), warm (cruise) and a pulsing amber (flip), dimmed at night unless the room keeps its lights.
