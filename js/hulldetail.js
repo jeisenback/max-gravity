@@ -32,7 +32,7 @@ function hullSeams(o) {
 const HULL_MAST = { at: 0.3, height: 40, dish: 12, light: 44 };
 const HULL_FINS = { at: [0.2, 0.5, 0.8], length: 22, width: 9 };
 const HULL_TURRET = { at: [0.35, 0.75], radius: 12, barrel: 2.2, barrelRise: 0.7, base: 0.3, most: 3 };
-const HULL_HATCH = { height: 88, depth: 4 };
+const HULL_HATCH = { height: LOCK_OUTER + 2, depth: 4 };  // the outer door's height, as the airlock draws it inside (rooms.js, #933)
 
 // Outside the hull: the mast and dish, radiator fins, a turret for each gun, and the airlock's outer door.
 function hullFittings(o, deck) {
