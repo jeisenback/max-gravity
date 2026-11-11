@@ -73,7 +73,7 @@ test('landing at a Dome Pact port with water opens the inspector, who names the 
   assert.equal(r.gunner.length, 2); assert.match(r.gunner[0], /Speak up/); assert.match(r.gunner[1], /Keep out/);
 });
 
-test('a success halves the sum; a failure pays it all and costs a point of the captain\'s regard; keeping out pays it all; the hand\'s savings never move (#1015)', async () => {
+test('a success halves the sum and wins a point of the captain\'s regard (#1059); a failure pays it all and costs one; keeping out pays it all; the hand\'s savings never move (#1015)', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -86,7 +86,7 @@ test('a success halves the sum; a failure pays it all and costs a point of the c
     return { win: run(0.01, 0), lose: run(0.99, 0), out: run(0.5, 1) };
   });
   await done();
-  assert.deepEqual(r.win, { paid: 3000, regard: 0, fines: 1, savings: r.win.savings });
+  assert.deepEqual(r.win, { paid: 3000, regard: 1, fines: 1, savings: r.win.savings });
   assert.deepEqual(r.lose, { paid: 6000, regard: -1, fines: 1, savings: r.lose.savings });
   assert.deepEqual(r.out, { paid: 6000, regard: 0, fines: 1, savings: r.out.savings });
   for (const k of ['win', 'lose', 'out']) assert.ok(r[k].savings === 'n/a' || r[k].savings === 0, `${k}: the hand's savings are not touched`);

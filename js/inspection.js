@@ -26,7 +26,8 @@ function inspectionCause(cargo, gov, rep, marked) {
 }
 
 // The inspector's scene for `cause` at `planet`: the cause named, the sum, and the hand's one move by post (Comms takes the papers, any other post speaks up),
-// or keeping out of it. The sum leaves the ship's purse (never the hand's savings); a failed move pays it all and costs a point of the captain's regard.
+// or keeping out of it. The sum leaves the ship's purse (never the hand's savings); a landed move halves it and wins a point of the captain's regard, and a failed move
+// pays it all and costs one.
 // With no post to work (the parked owner game) the only choice is to pay.
 function inspectionScene(cause, planet) {
   const cap = hiredCaptain(), post = cap && career() && career().post;  // the move is argued past the captain: an owner, even one who kept a post, only pays
@@ -37,7 +38,7 @@ function inspectionScene(cause, planet) {
   if (post) {
     const papers = post === 'comms', odds = papers ? soloOdds('comms') : handCheck(POST_STAT[post], skillLevel(post), 'word');
     choices.push({ label: `${say(papers ? 'papers.label' : 'speak.label')} [${oddsWord(odds)}; ${say('move.stakes')}]`, run() {
-      if (Math.random() < odds) return say('win', { paid: pay(to100(cause.sum / 2)) });
+      if (Math.random() < odds) { like(cap, 1, say('win.memory')); return say('win', { paid: pay(to100(cause.sum / 2)) }); }  // she pays the fines: half of one is worth her noticing (#1059)
       like(cap, -1, say('lose.memory'));  // a hand always has a captain (the master, in chapter two)
       return say('lose', { paid: pay(cause.sum) });
     } });

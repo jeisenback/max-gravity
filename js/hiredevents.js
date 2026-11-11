@@ -110,6 +110,14 @@ const HAND_EVENTS = [
       } },
     ]); } },
 
+  // A short month (#1059): the payment is due and the fund is short, and she asks the hand to take some of their pay a port late, written down with interest.
+  { id: 'cap-short', group: 'captain', when: () => shortMonthDue(G.state, hired()), make: c => { const h = hired(), say = (key, vars) => eventSay('cap-short', key, { last: c.cap.last, sum: fmt(SHORT_PAY), back: fmt(SHORT_PAY + SHORT_BACK), ...vars });
+    h.shortAsked = monthKey(G.state.day);
+    return handEvent(say('title'), say('text'), [
+      { label: say('c0.label'), ...gated(needCr(SHORT_PAY)), run() { G.state.credits -= SHORT_PAY; h.heldPay = (h.heldPay || 0) + SHORT_PAY + SHORT_BACK; capLike(c, 1, say('c0.memory')); return say('c0.result'); } },
+      { label: say('c1.label'), run() { capLike(c, 0, say('c1.memory')); return say('c1.result'); } },
+    ]); } },
+
   { id: 'cap-favour', group: 'captain', make: c => { const say = (key, vars) => eventSay('cap-favour', key, { last: c.cap.last, ...vars }); return handEvent(say('title'),
     say('text'), [
       { label: say('c0.label'), run() { setLater('h-favour-back', 9, say('c0.log')); capLike(c, 2, say('c0.memory')); EFFECTS.standWatch({ stands: 'you', post: 'engine', relieved: 'engineer', relievedAt: 'bunk' }); return `${say('stand')}${learn(2)}`; } },  // the engineer's night watch, so they sleep (#951)
