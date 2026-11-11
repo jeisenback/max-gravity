@@ -71,7 +71,7 @@ function gainSkill(post, n) {
 // One plain line when the hand's own post reaches a new level, on the port screen when docked and in the flight log on a burn (as Mods' note).
 function levelNote(post, level) {
   const name = POSTS[post].name, text = role().canTrade ? `Your work at the ${name.toLowerCase()} post is level ${level} now. When you take it yourself it works a tenth more often.`  // an owner's post: taken by hand at the station (stations.js)
-    : `Your work at the ${name.toLowerCase()} post is level ${level} now. ${post === 'gunner' ? 'Your shots in a ship fight hit harder, and your' : 'Your'} two abilities in a deck fight work more often${level >= 2 ? `. The choices marked [${name} ${level}] are open to you` : ''}.${pickDue(career(), level) ? ' A pick waits on your page.' : ''}`;  // the ladder's pick (picks.js, #963)
+    : `Your work at the ${name.toLowerCase()} post is level ${level} now. ${post === 'gunner' ? 'Your shots in a ship fight hit harder, and your' : 'Your'} two abilities in a deck fight work more often${level >= 2 ? `. The choices marked [${name} ${level}] are open to you` : ''}.${pickDue(career(), skillLevel(post)) ? ' A pick waits on your page.' : ''}`;  // the ladder's pick (picks.js, #963)
   if (G.mode !== 'landed') return msg(text);
   UI.notes.push(text);
   if (!G.dialog) UI.render();
@@ -100,7 +100,7 @@ const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, 
 // Whether the hand has taken a perk pick (picks.js): the one reader every perk's hook calls; false with no hand.
 const handPerk = id => { const c = career(); return !!c && !!PICKS[id] && PICKS[id].post === c.post && hasPerk(takenPicks(c), id); };  // a perk counts at the post of its pick: a burn you fly, your gunnery; a hand who swapped posts leaves it in the chair
 // Who would show the hand a taught move pick (picks.js): the post's holder, or the first officer, with the injured left out (stations.js, crew.js).
-const pickTeacher = p => (p.teacher.post ? postHolder(p.teacher.post) : roleHolder(p.teacher.role));
+const pickTeacher = p => teacherAboard(p.teacher);  // moves.js
 const soloOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'solo');
 // The job of your own post in a fight, an ice run or a contact: half a chance at the base, a tenth better for each level.
 const postOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'post');

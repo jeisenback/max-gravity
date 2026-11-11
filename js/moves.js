@@ -23,7 +23,8 @@ function moveDue(c, teacher, opinionOf) {
 }
 
 // The person who would teach a move: the post's holder, or the first officer, with the injured left out (stations.js, crew.js).
-const moveTeacher = id => (MOVE_TEACH[id].post ? postHolder(MOVE_TEACH[id].post) : roleHolder(MOVE_TEACH[id].role));
+const teacherAboard = t => (t.post ? postHolder(t.post) : roleHolder(t.role));  // the one aboard who shows a move: { post } or { role } (picks.js), as hired.js pickTeacher asks too
+const moveTeacher = id => teacherAboard(MOVE_TEACH[id]);
 const moveNow = () => (hired() ? moveDue(career(), moveTeacher, p => p.opinion || 0) : null);  // a hired hand's only: no move is taught to an owner
 const teachSay = (key, vars) => sceneSay('scene:moves', key, vars);
 
