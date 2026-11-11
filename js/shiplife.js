@@ -804,7 +804,10 @@ function drawCutaway(box, clear = box) {
   const lx = X(LADDER), ww = lay.well.w * W / 2, last = lay.decks.length - 1;
   for (let i = 0; i <= last; i++) {
     const d = deck(i);
-    if (seen(d.top, d.floor + HULL.plate)) cutShaft(ctx, lx - ww, lx + ww, d.top, d.floor);  // the shaft on every deck, between its rooms or its bays, and a hatch through each wall into it (#1024)
+    if (seen(d.top, d.floor + HULL.plate)) {
+      cutShaft(ctx, lx - ww, lx + ww, d.top, d.floor);  // the shaft on every deck, between its rooms or its bays, and a hatch through each wall into it (#1024)
+      if (i === roomAt('bridge').deck) roomHatchBars(ctx, lx - ww, lx + ww, d.floor);  // the bridge's grab bars on its bulkheads, beside the ladder's opening
+    }
     if (i < last) { ctx.fillStyle = '#060d16'; ctx.fillRect(lx - 14, d.floor, 28, HULL.plate); }  // the opening in the floor plate
   }
   ctx.strokeStyle = '#4a6a8a'; ctx.lineWidth = 2;
