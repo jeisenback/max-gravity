@@ -23,10 +23,6 @@ This is the world the game's writing comes from. It is built from the base up: w
 
 The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ordinary speech; Brechtian distance in the narration, where who owns, charges and pays is stated flatly and never commented on; extraction shown by setting facts side by side; no villains, only the system working as it was built to, for extracting wealth; every detail technically and socially plausible.
 
-## The look
-
-How the ship is drawn is in `docs/bible/look.md`. In short: everything sized against a person, the people brightest, shapes rather than boxes, the ship old and cared for, and writing on things drawn as marks unless it can be read at 12 pixels.
-
 ## Sections
 
 1. `economy.md`: ownership, concentration, money, where things go, the rivalry.
