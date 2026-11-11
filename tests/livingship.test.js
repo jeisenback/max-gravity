@@ -1122,9 +1122,34 @@ test('someone eating alone sits on the edge of the first bunk (#933)', () => {
 // its bag swinging and its line to the cot; the scanner arm from the ceiling over the cot; the monitor at eye height; the supply cabinet at the
 // counter, down from white; the first-aid box on the wall under the room's name. Drawn at the burn view's zoom in a window 1000, 1280 and 1600 wide.
 const { MED_COT } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['MED_COT']);
-const MED_PROPS = [['#2a4664', 'the cot\'s frame'], ['#1c3249', 'its legs'], ['#1a2430', 'its casters'], ['#2e4a68', 'its head and foot boards'], ['#3a5470', 'its rail and the grab rails'], ['#56667a', 'the mattress'],
-  ['#9a968a', 'the pillow'], ['#4a4436', 'the straps'], ['#4a5e74', 'the IV pole'], ['#6a8494', 'the IV bag'], ['#6a6a66', 'the scanner arm'], ['#7a7870', 'the scanner\'s head'], ['#1f3a56', 'the monitor'],
-  ['#4e5e6e', 'the cabinet'], ['#64748a', 'its doors'], ['#6e7e8e', 'its top'], ['#8e3a32', 'the red crosses'], ['#4e6a78', 'the bottles'], ['#7a8692', 'the kit'], ['#5a6876', 'the first-aid box']];
+const MED_PROPS = [['#2a4664', 'the cot\'s frame'], ['#1c3249', 'its legs'], ['#1a2430', 'its casters'], ['#2e4a68', 'its head and foot boards'], ['#3a5470', 'its rail'], ['#56667a', 'the mattress'],
+  ['#9a968a', 'the pillow'], ['#4a4436', 'the straps'], ['#4a5e74', 'the IV pole'], ['#6a8494', 'the IV bag'], ['#6a6a66', 'the scanner arm'], ['#7a7870', 'the scanner\'s head'], [wallTone('#1f3a56'), 'the monitor, on the wall'],
+  ['#4e5e6e', 'the cabinet'], ['#64748a', 'its doors'], ['#6e7e8e', 'its top'], ['#8e3a32', 'the red crosses'], ['#4e6a78', 'the bottles'], ['#7a8692', 'the kit'], [wallTone('#5a6876'), 'the first-aid box, on the wall'],
+  [wallTone('#3a5470'), 'the grab rail, on the wall'], [wallTone('#7a7462'), 'the tape on the monitor\'s bezel']];
+// The medbay's and the hold's solids (#1024): a solid's top a step lighter, but never brighter or more saturated than the people (#959), as the
+// helper draws it; its side a step darker; its contact shadow on the strip.
+const solidTop = col => { const v = rgbOf(col), mx = Math.max(...v), mn = Math.min(...v); return box.figShade(col, Math.min(1.3, 0xb0 / mx, 0x60 / (mx - mn || 1))); };
+const solidSide = col => box.figShade(col, 0.62), SHADOW = 'rgba(2,5,9,0.5)';
+// Every point the room drew where it lands on the screen (the moves it was drawn under applied), apart from its walls and its lamps' light: what
+// roomOwn reads, placed, so a thing moved onto the back wall is checked where it is drawn.
+const placedOps = calls => {
+  const out = [], stack = []; let dx = 0, dy = 0;
+  for (const [k, ...a] of calls) {
+    if (k === 'save') stack.push([dx, dy]); else if (k === 'restore') [dx, dy] = stack.pop(); else if (k === 'translate') { dx += a[0]; dy += a[1]; }
+    else if (k === 'fillRect') out.push({ k, v: a, pts: [[a[0], a[1]], [a[0] + a[2], a[1]], [a[0], a[1] + a[3]], [a[0] + a[2], a[1] + a[3]], [a[0] + a[2] / 2, a[1] + a[3] / 2]].map(([x, y]) => [x + dx, y + dy]) });
+    else if (k === 'moveTo' || k === 'lineTo') out.push({ k, v: a, pts: [[a[0] + dx, a[1] + dy]] }); else if (k === 'quadraticCurveTo') out.push({ k, v: a, pts: [[a[2] + dx, a[3] + dy]] });
+  }
+  return out;
+};
+const roomOwnPlaced = (id, r, s) => {
+  const all = recorder(); drawRoom(all.ctx, id, r, s);
+  const base = recorder(); roomWalls(base.ctx, r, s.w, s.time, s.still, s.well); drawPhaseLight(base.ctx, r, s.w, s.time, s.night, true);
+  const key = o => o.k + o.pts.map(q => q.map(v => Math.round(v * 1000) / 1000).join()).join(), left = placedOps(all.calls);
+  for (const o of placedOps(base.calls)) { const i = left.findIndex(q => key(q) === key(o)); if (i >= 0) left.splice(i, 1); }
+  return left;
+};
+// The back wall of a one-bay room: where roomOnWall puts a thing.
+const backWall = r => { const e = box.roomEye(r), [x0, y0] = box.roomInto(e, r.x0, r.top), [x1, y1] = box.roomInto(e, r.x1, r.floor); return { x0, y0, x1, y1, e }; };
 const MED_LINE = 'rgba(150,178,196,0.7)';
 const medCase = (pr, zoom, patient) => ({ r: layoutBox(LAYOUTS.freighter, 'medbay'), s: RS({ w: phaseWeights(pr), zoom, patient, damage: { marks: new Set(), severe: false } }) });
 test('the medbay is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
@@ -1135,20 +1160,23 @@ test('the medbay is drawn to the figures\' standard in every phase: its props ou
     const { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
     const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
     for (const [col, what] of MED_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    for (const col of ['#1f3a56', '#5a6876', '#7a7462']) assert.equal(fills(col), 0, `${at}: nothing on the wall in its own colour (${col})`);
+    // in the box (#1024): the cot, its boards, the mattress, the cabinet and its top solid, their tops showing (the IV pole has no faces); the
+    // cabinet's side toward the eye; a shadow under the cot, the pole's foot and the cabinet
+    for (const [col, what] of [['#2a4664', 'the cot\'s frame'], ['#2e4a68', 'its boards'], ['#56667a', 'the mattress'], ['#4e5e6e', 'the cabinet'], ['#6e7e8e', 'its top']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, its top showing`);
+    for (const [col, what] of [['#4e5e6e', 'the cabinet'], ['#2e4a68', 'the cot\'s head board']]) assert.ok(fills(solidSide(col)) >= 1, `${at}: ${what}'s side toward the eye`);
+    assert.ok(fills(SHADOW) >= 3, `${at}: contact shadows on the strip (${fills(SHADOW)})`);
     const outlined = filledParts(calls).filter(p => p.outlined);
     assert.ok(outlined.length >= 30, `${at}: the props outlined like the figures (${outlined.length})`);
-    for (const { col } of outlined.filter(p => /^#[0-9a-f]{6}$/.test(p.col))) {
-      const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
       assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
     }
     for (const col of ['#dde4ea', '#eef2f6', '#c9d3dc', '#d8dde4', '#c03a30', '#1a1a1a', '#8aa4c0']) assert.equal(fills(col), 0, `${at}: no near-white, saturated or black block (${col})`);
     assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === (patient ? '#ffb030' : '#7fd8a0')), `${at}: the monitor's trace, amber with a patient`);
-    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn (the wall's things moved onto it)
     const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
-    for (const { k, v } of roomOwn('medbay', r, s)) {
-      const pts = k === 'fillRect' ? [[v[0], v[1]], [v[0] + v[2], v[1]], [v[0], v[1] + v[3]], [v[0] + v[2], v[1] + v[3]], [v[0] + v[2] / 2, v[1] + v[3] / 2]] : /^(moveTo|lineTo)$/.test(k) ? [v] : k === 'quadraticCurveTo' ? [v.slice(2)] : [];
-      for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} under the room's name`);
-    }
+    for (const { k, v, pts } of roomOwnPlaced('medbay', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
   }
   const stillAt = t => { const { r, s } = medCase(0.5, 1.17, true), c = fakeCtx(); drawRoom(c, 'medbay', r, { ...s, still: true, time: t }); return c.args.join('|'); };
   assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
@@ -1166,6 +1194,9 @@ test('the medbay\'s props are sized to a person: the cot\'s mattress under the p
     const frame = parts.find(p => p.col === '#2a4664'), lying = drawPerson(fakeCtx(), { name: 'bunk', face: 1, frame: 0 }, bx, F - MED_COT, { color: '#ffb347' });
     assert.ok(frame.x1 - frame.x0 >= 105 && frame.x1 - frame.x0 <= 110 && frame.y1 - frame.y0 <= 4, `${at}: the cot a person long with a little to spare (${frame.x1 - frame.x0} long, its frame ${frame.y1 - frame.y0} deep)`);
     assert.ok(bedPart.x0 < head.x - 8 && bedPart.x1 > lying.foot.x + 4, `${at}: the mattress (${bedPart.x0} to ${bedPart.x1}) under the whole patient (${head.x} to ${lying.foot.x})`);
+    // in the box (#1024): the mattress's top runs back from its front edge, where the patient lies, under the whole of them
+    const bedTop = filledParts(calls).find(p => p.col === solidTop('#56667a') && p.pts.some(q => near(q[0], bedPart.x0) && near(q[1], F - MED_COT)) && p.pts.some(q => near(q[0], bedPart.x1) && near(q[1], F - MED_COT)));
+    assert.ok(bedTop && Math.max(...bedTop.pts.map(q => q[1])) === F - MED_COT && Math.min(...bedTop.pts.map(q => q[1])) < F - MED_COT - 1, `${at}: the mattress's top behind the patient, its front edge at ${F - MED_COT}`);
     const pillow = parts.find(p => p.col === '#9a968a');
     assert.ok(pillow && head.x >= pillow.x0 && head.x <= pillow.x1 && Math.abs(pillow.y1 - (F - MED_COT)) < 0.01, `${at}: the pillow (${JSON.stringify(pillow)}) under the patient's head at ${head.x}`);
     assert.ok(parts.filter(p => p.col === '#4a4436' && p.x0 > bedPart.x0 && p.x1 < bedPart.x1).length >= 2, `${at}: straps to hold the hurt down in the burn`);
@@ -1178,7 +1209,13 @@ test('the medbay\'s props are sized to a person: the cot\'s mattress under the p
     const li = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === MED_LINE), lj = li + calls.slice(li).findIndex(k => k[0] === 'stroke'), m = calls.slice(li, lj).find(k => k[0] === 'moveTo'), q = calls.slice(li, lj).filter(k => k[0] === 'quadraticCurveTo').pop();
     assert.ok(li >= 0 && Math.abs(m[1] - tx) < 3 && m[2] >= ty + bag.y1 - 0.01 && m[2] <= ty + bag.y1 + 5, `${at}: the IV line from the bag's foot (${m && m.slice(1)})`);
     assert.ok(q[3] > bedPart.x0 && q[3] < bedPart.x1 && Math.abs(q[4] - (F - MED_COT)) <= 2, `${at}: to the cot (${q.slice(3)})`);
-    const mon = parts.find(p => p.col === '#1f3a56'), my = F - (mon.y0 + mon.y1) / 2;
+    // the monitor, the first-aid box and the grab rail on the back wall (#1024), each checked where it is drawn
+    const placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) })), wall = backWall(r), onWall = p => p.x0 >= wall.x0 && p.x1 <= wall.x1 && p.y0 >= wall.y0 && p.y1 <= wall.y1 && (p.at[0] || p.at[1]);
+    for (const [col, what] of [['#1f3a56', 'the monitor'], ['#5a6876', 'the first-aid box'], ['#3a5470', 'the grab rail']]) {
+      const p = placed.find(q => q.col === wallTone(col));
+      assert.ok(p && onWall(p), `${at}: ${what} (${JSON.stringify(p)}) moved onto the back wall (${JSON.stringify(wall)})`);
+    }
+    const mon = placed.find(p => p.col === wallTone('#1f3a56')), my = F - (mon.y0 + mon.y1) / 2;
     assert.ok(my >= 72 && my <= 82 && mon.x1 - mon.x0 >= 28 && mon.x1 - mon.x0 <= 32 && mon.y1 - mon.y0 <= 18, `${at}: the monitor, small, at eye height (${my}, ${mon.x1 - mon.x0} by ${mon.y1 - mon.y0})`);
     assert.ok(mon.x0 > bedPart.x0 && mon.x0 < bedPart.x1, `${at}: the monitor (${mon.x0} to ${mon.x1}) over the cot, where someone at its side reads it`);
     const meet = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
@@ -1188,8 +1225,10 @@ test('the medbay\'s props are sized to a person: the cot\'s mattress under the p
     assert.ok(F - top.y0 >= 36 && F - top.y0 <= 44, `${at}: the cabinet at counter height (${F - top.y0})`);
     const arm = parts.filter(p => /^#(5a5e60|6a6a66|7a7870)$/.test(p.col)), sh = parts.find(p => p.col === '#7a7870');
     assert.ok(Math.min(...arm.map(p => p.y0)) <= r.top + 5 && sh.x0 > bedPart.x0 && sh.x1 < bedPart.x1 && F - sh.y1 >= MED_COT + 20, `${at}: the scanner arm from the ceiling, its head over the cot clear of the patient`);
-    const box = parts.find(p => p.col === '#5a6876');
-    assert.ok(box && box.x1 < bedPart.x0 && F - box.y0 <= 60, `${at}: the first-aid box on the wall left of the cot, under the name`);
+    const box = placed.find(p => p.col === wallTone('#5a6876'));
+    assert.ok(box && box.x1 < bedPart.x0 && F - box.y0 <= 60, `${at}: the first-aid box on the wall left of the cot, under the name (${JSON.stringify(box)})`);
+    const rail = placed.find(p => p.col === wallTone('#3a5470')), cab = parts.find(p => p.col === '#4e5e6e');
+    assert.ok(rail.x0 > cab.x0 - (cab.x0 - wall.e.vx) * 0.2 - 1 && rail.y1 < cab.y0 - 15, `${at}: the grab rail on the wall over the cabinet (${JSON.stringify(rail)})`);
   }
 });
 test('the medbay reads old and cared for: a newer scanner bolted on, wear at fixed places, a replacement door, a printed part tagged temporary, tape and cable ties (#933)', () => {
@@ -1214,7 +1253,7 @@ test('the medbay reads old and cared for: a newer scanner bolted on, wear at fix
     assert.ok(clamp && clamp.x0 < pole.x0 && clamp.x1 > pole.x1 && clamp.y0 > pole.y0 && clamp.y1 < pole.y1, `${at}: the printed clamp round the pole`);
     assert.ok(tag && Math.abs(tag.y0 - clamp.y1) < 3 && tag.x1 <= clamp.x0 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its tag hung from it (${JSON.stringify(tag)})`);
     // tape over a corner of the monitor's bezel, and cable ties holding the IV line to the pole
-    const mon = one('#1f3a56'), tape = one('#7a7462');
+    const mon = one(wallTone('#1f3a56')), tape = one(wallTone('#7a7462'));  // on the back wall, moved together (#1024)
     assert.ok(tape && tape.x0 < mon.x1 && tape.x1 > mon.x1 - 1 && tape.y0 < mon.y0 + 1 && tape.y1 > mon.y0 && tape.x1 - tape.x0 <= 8, `${at}: tape over a corner of the monitor (${JSON.stringify(tape)})`);
     const ties = rects('#1e2a36').filter(t => t[0] <= pole.x0 && t[0] + t[2] >= pole.x1);
     assert.ok(ties.length >= 2, `${at}: cable ties round the pole`);
@@ -1254,17 +1293,19 @@ test('the hold is drawn to the figures\' standard in every phase: its props outl
     assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === HOLD_RING), `${at}: the floor rings`);
     const outlined = filledParts(calls).filter(p => p.outlined);
     assert.ok(outlined.length >= 8 + 3 * Math.round(12 * cargo) + 4 * Math.ceil(Math.round(12 * cargo) / 3), `${at}: the props outlined like the figures (${outlined.length})`);
-    for (const { col } of outlined.filter(p => /^#[0-9a-f]{6}$/.test(p.col))) {
-      const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
       assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
     }
     for (const col of ['#c9a227', '#ffe2b8', '#222']) assert.equal(fills(col), 0, `${at}: no bright or black block (${col})`);
-    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall
+    // in the box (#1024): the crates, the pallets and the jack's forks and pump solid, their tops showing; the scuffs where the jack parks on the wall
+    const n = Math.round(12 * cargo), kinds = [...new Set(Array.from({ length: n }, (_, k) => HOLD_WOOD[(k * 7 + Math.floor(k / 3)) % HOLD_WOOD.length]))];
+    for (const col of kinds) assert.ok(fills(solidTop(col)) >= 1, `${at}: the ${col} crates solid, their tops showing`);
+    for (const [col, what] of [...(n ? [['#3e3426', 'the pallets']] : []), ['#7a6a34', 'the jack\'s forks'], ['#8a7a3a', 'its pump']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
+    assert.equal(fills('#3e4c5a'), 0, `${at}: the scuffs on the wall, not in their own colour`); assert.ok(fills(wallTone('#3e4c5a')) >= 2, `${at}: the scuffs on the wall`);
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn
     const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
-    for (const { k, v } of roomOwn('hold', r, s)) {
-      const pts = k === 'fillRect' ? [[v[0], v[1]], [v[0] + v[2], v[1]], [v[0], v[1] + v[3]], [v[0] + v[2], v[1] + v[3]], [v[0] + v[2] / 2, v[1] + v[3] / 2]] : /^(moveTo|lineTo)$/.test(k) ? [v] : k === 'quadraticCurveTo' ? [v.slice(2)] : [];
-      for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} under the room's name`);
-    }
+    for (const { k, v, pts } of roomOwnPlaced('hold', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
   }
   const stillAt = t => { const { r, s } = holdCase(0.5, 1.17, 1), c = fakeCtx(); drawRoom(c, 'hold', r, { ...s, still: true, time: t }); return c.args.join('|'); };
   assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
@@ -1278,6 +1319,7 @@ test('the hold\'s crates come from the cargo, in stacks of three, each with its 
     for (let k = 0; k < n; k++) {
       const c = holdCrate(r, k), b = holdLabel(r, k);
       assert.ok(bodies.some(p => Math.abs(p.x0 - c.x) < 0.01 && Math.abs(p.y0 - c.y) < 0.01), `${at}: crate ${k} drawn where holdCrate puts it`);
+      assert.ok(placedParts(calls).some(p => HOLD_WOOD.includes(p.col) && !p.at[0] && !p.at[1] && near(partBox(p).x0, c.x) && near(partBox(p).y0, c.y)), `${at}: crate ${k}'s front at the cut, unmoved, so its label box is where it is named (#1024)`);
       if (k % 3) assert.ok(Math.abs(c.x - holdCrate(r, k - 1).x) < 0.01 && Math.abs(c.y + c.h - holdCrate(r, k - 1).y) < 0.01, `${at}: crate ${k} on the one under it`);
       else assert.ok(c.y + c.h <= r.floor - 3 && c.y + c.h >= r.floor - 6 && (k === 0 || c.x > holdCrate(r, k - 1).x + c.w), `${at}: crate ${k} on a pallet at the foot of the next stack`);
       assert.ok(c.x > name.x1 && c.x + c.w < r.x1, `${at}: crate ${k} in the room, clear of the name`);
@@ -1364,8 +1406,99 @@ test('the hold reads old and cared for: crates of different ages, a replacement 
     const grip = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050'), handle = parts.filter(p => p.col === '#5e646a');
     assert.ok(grip && handle.some(h => h.y0 <= grip.y1 && h.x1 >= grip.x0), `${at}: a printed grip on the jack's handle`);
     assert.ok(tag && tag.y0 >= grip.y1 - 1 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its temporary tag hung from it (${JSON.stringify(tag)})`);
-    const jack = parts.find(p => p.col === '#7a6a34');
-    assert.ok(rects('#3e4c5a').filter(c => c[1] > F - 14 && c[0] >= jack.x0 - 2 && c[0] <= jack.x1 + 10).length >= 2, `${at}: scuffs low on the wall where the jack is parked`);
+    // scuffs low on the back wall behind where the jack is parked (#1024: on the wall, where it is drawn)
+    const jack = parts.find(p => p.col === '#7a6a34'), wall = backWall(r), behind = x => box.roomInto(wall.e, x, F)[0];
+    const scuffs = placedRects(calls).filter(c => c.col === wallTone('#3e4c5a') && c.y >= wall.y0 && c.y + c.h <= wall.y1 && c.y > wall.y1 - 14 && c.x >= behind(jack.x0) - 2 && c.x <= behind(jack.x1) + 10);
+    assert.ok(scuffs.length >= 2, `${at}: scuffs low on the wall where the jack is parked (${scuffs.length})`);
+  }
+});
+
+test('in the box the hold\'s stacks stand solid on their pallets, drawn from the walls in toward the eye; the jack on the floor; the straps, the net and the rings at the front (#1024)', () => {
+  for (const cargo of [0.25, 0.5, 1]) for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = holdCase(pr, 1.17, cargo), F = r.floor, n = Math.round(12 * cargo), stacks = Math.ceil(n / 3), at = `cargo ${cargo}, ${pr}`, { calls } = holdParts(r, s);
+    const e = box.roomEye(r), parts = filledParts(calls), first = col => parts.findIndex(p => p.col === col), all = placedParts(calls);
+    const body = k => parts.findIndex(p => HOLD_WOOD.includes(p.col) && p.pts.some(q => near(q[0], holdCrate(r, k).x + 1.2) && near(q[1], holdCrate(r, k).y)));
+    for (let c = 0; c < stacks; c++) {
+      const x0 = holdCrate(r, 3 * c).x, x1 = x0 + holdCrate(r, 3 * c).w, side = x1 < e.vx ? x1 : x0 > e.vx ? x0 : null;
+      for (let k = 3 * c; k < Math.min(n, 3 * c + 3); k++) {
+        const col = parts[body(k)].col, y = holdCrate(r, k).y, faces = parts.filter(p => p.col === solidSide(col) && p.pts.some(q => near(q[1], y)));
+        if (side === null) assert.ok(!faces.some(p => p.pts.some(q => q[0] > x0 && q[0] < x1 && near(q[1], y))), `${at}: crate ${k} across the eye shows no side`);
+        else assert.ok(faces.some(p => p.pts.filter(q => near(q[0], side)).length === 2 && p.pts.some(q => Math.abs(q[0] - e.vx) < Math.abs(side - e.vx))), `${at}: crate ${k}'s side toward the eye, at ${side}`);
+        if (k % 3) assert.ok(body(k) > body(k - 1), `${at}: crate ${k} drawn over the one under it`);
+      }
+      assert.ok(parts.some(p => p.col === SHADOW && p.pts.some(q => near(q[0], x0 + 2 - 5) && near(q[1], F))), `${at}: a shadow under the stack's pallet at ${x0}`);
+    }
+    const off = c => Math.abs(holdCrate(r, 3 * c).x + 20 - e.vx), order = Array.from({ length: stacks }, (_, c) => c).sort((a, b) => body(3 * a) - body(3 * b));
+    for (let i = 1; i < order.length; i++) assert.ok(off(order[i]) <= off(order[i - 1]), `${at}: the stacks drawn from the walls in (${order})`);
+    assert.equal(parts.filter(p => p.col === SHADOW).length, stacks + 1, `${at}: a shadow under each pallet and the jack's forks, none under a crate resting on another`);
+    const lastCrate = Math.max(...Array.from({ length: n }, (_, k) => body(k))), forks = first('#7a6a34');
+    assert.ok(forks < Math.min(...Array.from({ length: n }, (_, k) => body(k))), `${at}: the jack, farther from the eye, drawn before the stacks`);
+    assert.ok(parts.findIndex(p => p.col === '#4a4436' && p.pts.length >= 9) > lastCrate, `${at}: the straps over the stacks, at the front`);
+    const ringAt = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === HOLD_RING), crateAt = calls.findIndex(k => k[0] === 'fillStyle' && HOLD_WOOD.includes(k[1]));
+    assert.ok(ringAt > crateAt, `${at}: the rings in the deck drawn over the stacks' shadows`);
+    for (const p of all.filter(q => ['#4a4436', '#3e3426'].includes(q.col))) assert.deepEqual(p.at, [0, 0], `${at}: the straps and the pallets at the front, unmoved`);
+  }
+});
+test('in the box the medbay\'s cot stands on four legs with a shadow under it, the IV pole on its foot plate behind it, the cabinet solid, its supplies on its top (#1024)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) for (const patient of [false, true]) {
+    const { r, s } = medCase(pr, 1.17, patient), F = r.floor, W = r.x1 - r.x0, X = sh => r.x0 + W * sh, at = `${patient ? 'a patient' : 'empty'}, ${pr}`, { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
+    const parts = filledParts(calls), placed = placedParts(calls), e = box.roomEye(r), n2 = v => Math.round(v * 100) / 100, cot = { x0: n2(X(0.34) - 46), x1: n2(n2(X(0.34) - 46) + 108) };
+    // the shadow under the cot first, its footprint widened 5 each side, half the strip deep; then the legs at its back edge, then the pole, then the cot's front
+    const sh = parts.findIndex(p => p.col === SHADOW && p.pts.some(q => near(q[0], cot.x0 - 5) && near(q[1], F)) && p.pts.some(q => near(q[0], cot.x1 + 5) && near(q[1], F)));
+    assert.ok(sh >= 0, `${at}: a shadow under the cot`);
+    assert.ok(parts.find(p => p === parts[sh]).pts.some(q => near(q[1], box.roomInto(e, cot.x0, F, 0.5)[1])), `${at}: the shadow as deep as the cot`);
+    const legs = placed.filter(p => p.col === '#1c3249' && p.pts.length === 4 && partBox(p).y1 - partBox(p).y0 > 15);
+    const back = legs.filter(p => p.at[0] || p.at[1]), front = legs.filter(p => !p.at[0] && !p.at[1]);
+    assert.equal(front.length, 2, `${at}: two legs at the front`); assert.equal(back.length, 2, `${at}: and two at the back`);
+    for (const p of back) {  // moved to the cot's back edge, half the strip deep: up by that, and in toward the eye
+      const raw = partBox(p).x0 - p.at[0];
+      assert.ok(near(p.at[1], box.roomInto(e, 0, F, 0.5)[1] - F) && Math.sign(p.at[0]) === Math.sign(e.vx - raw) && Math.abs(Math.abs(p.at[0]) - Math.abs(e.vx - raw) * 0.1) < 0.5, `${at}: a back leg at ${raw} moved to the cot's back edge (${p.at})`);
+    }
+    const pole = parts.findIndex(p => p.col === '#4a5e74'), frame = parts.findIndex(p => p.col === '#2a4664');
+    assert.ok(sh < pole && parts.indexOf(parts.find(p => p.col === '#1c3249')) < pole && pole < frame, `${at}: the pole between the cot's back and its front`);
+    const foot = parts.find(p => p.col === '#20384f' && partBox(p).y1 >= F - 0.01), px = (partBox(foot).x0 + partBox(foot).x1) / 2;
+    assert.ok(parts.some(p => p.col === SHADOW && p.pts.some(q => near(q[0], partBox(foot).x0 - 5) && near(q[1], F))), `${at}: a shadow under the pole's foot plate`);
+    assert.ok(!parts.some(p => p.col === solidSide('#20384f')) && !parts.some(p => p.col === solidTop('#20384f')), `${at}: the pole's foot plate has no faces, only its shadow (spec section 5)`);
+    // the rail along the cot's far side, at its back edge, its posts down to the mattress's back
+    const rail = placed.find(p => p.col === '#3a5470' && partBox(p).x1 - partBox(p).x0 > 50);
+    assert.ok(rail && near(rail.at[1], box.roomInto(e, 0, F - MED_COT, 0.5)[1] - (F - MED_COT)), `${at}: the rail moved to the cot's far side (${rail && rail.at})`);
+    // the cabinet: its body and top solid, its side toward the eye; the bottles and the kit stood on its top, a little back from its front
+    const cab = partBox(parts.find(p => p.col === '#4e5e6e')), top = parts.findIndex(p => p.col === '#6e7e8e');
+    assert.ok(parts.some(p => p.col === solidSide('#4e5e6e') && p.pts.filter(q => near(q[0], cab.x0)).length === 2), `${at}: the cabinet's left side, toward the eye`);
+    for (const col of ['#4e6a78', '#7a8692']) {
+      const things = placed.filter(p => p.col === col), i = parts.findIndex(p => p.col === col);
+      assert.ok(things.length && things.every(p => p.at[1] < 0 && p.at[1] > -4) && i > top, `${at}: the ${col} things on the top, drawn after it and a little back (${things.map(p => p.at)})`);
+    }
+  }
+});
+test('the medbay\'s and the hold\'s ceiling lamps are fittings too, the medbay\'s clear of the scanner arm\'s mount (#1024)', () => {
+  for (const id of ['medbay', 'hold']) for (const pr of [0.02, 0.3, 0.5]) {
+    const r = layoutBox(LAYOUTS.freighter, id), { ctx, calls } = recorder();
+    drawRoom(ctx, id, r, RS({ w: phaseWeights(pr), well: FW, patient: true, cargo: 1, damage: { marks: new Set(), severe: false } }));
+    const parts = filledParts(calls), lamps = box.roomLamps(id, r), e = box.roomEye(r), back = r.top + (r.floor - 80 - r.top) * 0.2;
+    assert.equal(lamps.length, 1, `${id}: one lamp`);
+    for (const x of lamps) {
+      assert.ok(x - 12 >= r.x0 && x + 12 <= r.x1, `${id}: the lamp at ${x} in the room`);
+      assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${id} ${pr}: the lamp at ${x}: its plate on the sliver, from the cut to the wall`);
+      assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${id} ${pr}: its housing hung from the ceiling`);
+      assert.ok(calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${id} ${pr}: the guard over its lens`);
+      assert.ok(calls.some((k, i) => k[0] === 'fillRect' && near(k[1], x - 10) && near(k[2], r.top + 3) && String(calls[i - 1][1]).startsWith('rgba(')), `${id} ${pr}: its lens lit in the lamp's colour`);
+      if (id === 'medbay') for (const col of ['#5a5e60', '#20384f']) {
+        const mount = parts.filter(p => p.col === col && p.outlined).map(partBox).filter(b => b.y0 <= r.top + 5);
+        assert.ok(mount.length && mount.every(b => x + 12 <= b.x0 || x - 12 >= b.x1), `${id}: the fitting at ${x} clear of the scanner's mount (${JSON.stringify(mount)})`);
+      }
+    }
+  }
+});
+test('a solid\'s top is a step lighter, but never brighter or more saturated than the people (#1024, #959)', () => {
+  const bay = { x0: 0, x1: 400, top: 0, floor: 100 };
+  for (const col of ['#1f3852', '#6e7e8e', '#8a7a3a', '#7a6a34']) {
+    const { ctx, calls } = recorder(); box.roomIn([bay], () => box.roomPart(ctx, box.roomRound(20, 60, 60, 40, 1), col, { solid: 0.45 }));
+    const top = filledParts(calls).find(p => p.pts.some(q => near(q[1], 60)) && p.pts.length === 4 && p.col !== col && !p.col.startsWith('rgba') && p.col !== solidSide(col));
+    const v = rgbOf(top.col), f = rgbOf(col);
+    assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${col}: its top ${top.col} under the people`);
+    assert.ok(v.every((c, i) => c >= f[i]) && v.some((c, i) => c > f[i]), `${col}: its top ${top.col} lighter than its front`);
+    if (col === '#1f3852') assert.equal(top.col, box.figShade(col, 1.3), 'a dark part\'s top a step lighter, as before');
   }
 });
 
