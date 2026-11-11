@@ -1516,3 +1516,177 @@ test('the bridge\'s grab bars beside the ladder are on the shaft\'s bulkheads, b
     assert.ok(b.y0 >= r.floor - 92 && b.y1 <= r.floor, 'beside the hatch, inside its height');
   }
 });
+
+// #933, the gunnery on the gun deck: the fire-control console at each seat (the gunner faces it, side-on, SEAT_FACE), the gun station's grips and
+// triggers, its ready lamp and the targeting scope, the status screen, the range finder and the range tables taped over it; the torpedo rack's six
+// cradles holding what the ship carries (s.torpedoes, #956), each torpedo with its fins, clamps and a safety pin with its tag, the count chalked on
+// the rack; the ammunition locker and the weapons locker, latched; the close-defense turret's mount in the ceiling, its lock pin, the feed chute
+// and the tray with a belt of rounds; the cable conduit on the wall; the recoil plate; and the shared stool, solid. Old and patched (point 6).
+// Drawn at the burn view's zoom in a window 1000, 1280 and 1600 wide.
+const gun = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['gunCradle', 'GUN_CRADLES', 'roomStool', 'roomIn', 'roomBays', 'FIG_SEAT']);
+const GUN_PROPS = [['#1e3852', 'the consoles'], ['#2a4a6a', 'their sloped tops'], ['#3a4450', 'the gun grips'], ['#263a50', 'the ready lamp\'s housing'], ['#03121c', 'the screens'], ['#505650', 'the range finder'],
+  ['#2e5468', 'its glass'], ['#16283a', 'the torpedo rack'], ['#2e4864', 'its posts'], ['#3a5068', 'its cradles'], ['#2a3a4c', 'the rack\'s header, where the count is chalked'], ['#3a4a3e', 'the ammunition locker'],
+  ['#4a5058', 'the weapons locker'], ['#2c4058', 'the turret\'s mount'], ['#33475c', 'the feed chute'], ['#3e5068', 'the feed tray'], ['#8a7a50', 'the belt\'s rounds'], ['#2a4664', 'the stools'],
+  [wallTone('#2e4458'), 'the cable conduit, on the wall'], [wallTone('#8a8676'), 'the range tables, on the wall'], [wallTone('#7a7058'), 'the recoil plate, on the wall']];
+const GUN_WALL = ['#2e4458', '#8a8676', '#7a7058'];
+const gunCase = (pr, zoom, torpedoes = 2) => ({ r: layoutBox(LAYOUTS.freighter, 'gunnery'), s: RS({ w: phaseWeights(pr), zoom, torpedoes, damage: { marks: new Set(), severe: false } }) });
+const gunParts = (r, s) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'gunnery', r, s); return { calls, parts: filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })) }; };
+test('the gunnery is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
+  for (const torpedoes of [0, 2, 6]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = gunCase(pr, zoom, torpedoes), at = `${torpedoes} torpedoes, ${pr}, ${zoom}`;
+    const c = fakeCtx(); drawRoom(c, 'gunnery', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    assert.ok(!c.calls.includes('fillText'), `${at}: no text in the room (the recoil plate is marks)`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'gunnery', r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of GUN_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    for (const col of GUN_WALL) assert.equal(fills(col), 0, `${at}: nothing on the wall in its own colour (${col})`);
+    // in the box (#1024): the consoles' tops, the ammunition locker and the stools' pads solid, their tops showing; the rack, the lockers and the
+    // consoles show their side toward the eye; a contact shadow under each console, the rack, each locker and each stool's foot
+    for (const [col, what] of [['#2a4a6a', 'the consoles\' tops'], ['#3a4a3e', 'the ammunition locker'], ['#2a4664', 'the stools\' pads']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
+    for (const [col, what] of [['#1e3852', 'the consoles'], ['#16283a', 'the rack'], ['#3a4a3e', 'the ammunition locker'], ['#4a5058', 'the weapons locker']]) assert.ok(fills(solidSide(col)) >= 1, `${at}: ${what}' side toward the eye`);
+    assert.ok(fills(SHADOW) >= 7, `${at}: contact shadows on the strip (${fills(SHADOW)})`);
+    const outlined = filledParts(calls).filter(p => p.outlined);
+    assert.ok(outlined.length >= 60 + 5 * torpedoes, `${at}: the props outlined like the figures (${outlined.length})`);
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
+    }
+    for (const col of ['#b8903a', '#d8b060', '#c9b98f', '#c9a227', '#ffb030']) assert.equal(fills(col), 0, `${at}: no bright block (${col})`);
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn (the wall's things moved onto it)
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v, pts } of roomOwnPlaced('gunnery', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
+    // what is on the wall is on the back wall, where it is drawn
+    const wall = backWall(r), placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) }));
+    for (const col of GUN_WALL) for (const p of placed.filter(q => q.col === wallTone(col))) assert.ok(p.x0 >= wall.x0 && p.x1 <= wall.x1 && p.y0 >= wall.y0 - 4.5 && p.y1 <= wall.y1 && (p.at[0] || p.at[1]), `${at}: ${col} (${JSON.stringify(p)}) on the back wall`);
+  }
+  const stillAt = t => { const { r, s } = gunCase(0.5, 1.17), c = fakeCtx(); drawRoom(c, 'gunnery', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('the gunnery\'s torpedo rack holds what the ship carries: that many torpedoes in its six cradles, the rest empty, the count chalked on it (#933, #956)', () => {
+  assert.equal(gun.GUN_CRADLES, 6, 'six cradles, the magazine\'s six (TORP_MAX, torpedoes.js)');
+  for (const n of [0, 1, 2, 5, 6]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = gunCase(0.3, zoom, n), F = r.floor, at = `${n}, ${zoom}`, { calls, parts } = gunParts(r, s);
+    const bodies = parts.filter(p => p.col === '#5a6458');
+    assert.equal(bodies.length, n, `${at}: ${n} torpedoes (${bodies.length})`);
+    for (let k = 0; k < gun.GUN_CRADLES; k++) {
+      const c = gun.gunCradle(r, k), on = bodies.filter(p => near(p.x0, c.x) && near(p.y0, c.y) && near(p.x1, c.x + c.w) && near(p.y1, c.y + c.h));
+      assert.equal(on.length, k < n ? 1 : 0, `${at}: cradle ${k} ${k < n ? 'holds a torpedo' : 'empty'}`);
+      assert.ok(c.y + c.h <= F - 4 && c.y >= F - 84 && c.w >= 44 && c.w <= 60 && c.h <= 9, `${at}: cradle ${k} (${JSON.stringify(c)}) in the rack, a torpedo a person can lift with a hand (#960)`);
+      if (k) assert.ok(gun.gunCradle(r, k - 1).y - c.y >= 12, `${at}: cradle ${k} over cradle ${k - 1}, room for the fins`);
+      assert.equal(parts.filter(p => p.col === '#3a5068' && p.y0 >= c.y + c.h - 2 && p.y1 <= c.y + c.h + 2 && p.x0 >= c.x - 1 && p.x1 <= c.x + c.w + 1).length, 2, `${at}: cradle ${k} on two saddles`);
+      const clamps = parts.filter(p => p.col === '#6a7480' && p.x0 >= c.x && p.x1 <= c.x + c.w && p.y1 > c.y - 2 && p.y0 < c.y + c.h + 1);
+      if (k < n) assert.ok(clamps.filter(p => p.y0 <= c.y && p.y1 >= c.y + c.h).length === 2, `${at}: torpedo ${k} held by two clamps closed over it`);
+      else assert.ok(clamps.length === 2 && clamps.every(p => p.y1 <= c.y + c.h && p.y1 - p.y0 < c.h), `${at}: cradle ${k}'s clamps open`);
+    }
+    assert.equal(parts.filter(p => p.col === '#454c44').length, 3 * n, `${at}: each torpedo's tail and two fins`);
+    const tags = parts.filter(p => p.col === '#8e3a32');
+    assert.equal(tags.length, n, `${at}: a safety pin's tag on each torpedo`);
+    for (const t of tags) assert.ok(t.x1 - t.x0 <= 5 && t.y1 - t.y0 <= 6 && bodies.some(b => t.x0 >= b.x0 && t.x1 <= b.x1 && t.y0 >= b.y1 - 1 && t.y0 <= b.y1 + 2), `${at}: a tag (${JSON.stringify(t)}) hung under its torpedo`);
+    // the count chalked on the rack's header: one mark a torpedo, marks not text
+    const head = parts.find(p => p.col === '#2a3a4c'), chalk = calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === '#a09c8e' && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+    assert.equal(chalk.length, n, `${at}: ${n} chalk marks (${chalk.length})`);
+    for (const [x, y, w, h] of chalk) assert.ok(x >= head.x0 && x + w <= head.x1 && y >= head.y0 && y + h <= head.y1 && w <= 1 && h <= 5, `${at}: a chalk mark on the header`);
+    assert.equal(calls.filter(k => k[0] === 'fillText').length, 0, `${at}: no text`);
+  }
+});
+test('the gunnery is sized to a person: a console at the waist in front of each seat, its screens at the seated eye, the lockers and the rack under the head, the stool at the seat (#933, #1041)', () => {
+  const { r } = gunCase(0.3, 1.45), F = r.floor, W = r.x1 - r.x0;
+  const sitter = drawPerson(fakeCtx(), { name: 'work-sit', face: -1, frame: 0, view: 'side' }, 0, F, { color: '#ffb347' });
+  assert.ok(Math.abs(F - sitter.head.y - 50.71) < 0.01, `the seated figure's head where it was (${F - sitter.head.y})`);
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { s } = gunCase(pr, 1.45, 6), { calls, parts } = gunParts(r, s), at = `${pr}`;
+    const tops = parts.filter(p => p.col === '#2a4a6a'), glass = placedRects(calls).filter(q => q.col === '#03121c');
+    for (const f of SEATS.gunnery) {
+      const x = r.x0 + W * f, top = tops.find(p => p.x1 <= x - 10 && p.x1 >= x - 24);
+      assert.ok(top, `${at}: a console in front of the seat at ${f}, the way it faces (SEAT_FACE -1)`);
+      assert.ok(F - top.y0 >= 36 && F - top.y0 <= 44 && F - top.y1 >= 30, `${at}: its top at the waist (${F - top.y0})`);
+      const g = glass.find(q => q.x >= top.x0 - 1 && q.x + q.w <= top.x1 + 1);
+      assert.ok(g, `${at}: a screen on the console at ${f}`);
+      assert.ok(Math.abs(F - (g.y + g.h / 2) - (F - sitter.head.y)) <= 4 && g.y + g.h <= top.y0, `${at}: the screen at ${f} at the seated gunner's eye (${F - (g.y + g.h / 2)}), on the console`);
+    }
+    const grips = parts.filter(p => /^#(3a4450|4a4640)$/.test(p.col) && p.y1 - p.y0 >= 6), seat0 = r.x0 + W * SEATS.gunnery[0];
+    assert.equal(grips.length, 2, `${at}: two grips`);
+    for (const g of grips) assert.ok(g.x1 <= seat0 - 14 && g.x0 >= seat0 - 40 && F - g.y0 >= 42 && F - g.y0 <= 54, `${at}: a grip (${JSON.stringify(g)}) at the seated gunner's hands`);
+    const triggers = calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === '#8e3a32' && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+    assert.ok(grips.every(g => triggers.some(([x, y, w, h]) => x + w <= g.x0 + 0.5 && x + w >= g.x0 - 1 && y >= g.y0 && y + h <= g.y1)), `${at}: a trigger on the front of each grip`);
+    const weap = parts.find(p => p.col === '#4a5058' && p.y1 - p.y0 > 60), ammo = parts.find(p => p.col === '#3a4a3e' && p.x1 - p.x0 > 20);
+    assert.ok(weap && F - weap.y0 >= 84 && F - weap.y0 <= 92 && weap.y1 >= F - 4, `${at}: the weapons locker at head height (${weap && F - weap.y0})`);
+    assert.ok(ammo && F - ammo.y0 >= 36 && F - ammo.y0 <= 48 && ammo.y1 >= F - 1, `${at}: the ammunition locker at the waist (${ammo && F - ammo.y0})`);
+    const rack = parts.find(p => p.col === '#16283a');
+    assert.ok(rack && F - rack.y0 <= FIG_TALL - 4 && rack.x0 > seat0 && rack.x1 < weap.x0 && rack.x1 < ammo.x0, `${at}: the rack (${JSON.stringify(rack)}) under a person's head, beside the lockers`);
+    assert.ok(weap.x1 <= r.x1 - 4 && rack.x0 > r.x0 + W * SEATS.gunnery[1] + 14, `${at}: the rack and the lockers clear of the second seat's chair, in the room`);
+    // the turret's feed tray over the ammunition locker, the belt in it and down into the locker; the lock pin through the turret's mount
+    const tray = parts.find(p => p.col === '#3e5068'), mount = parts.find(p => p.col === '#2c4058'), chute = parts.find(p => p.col === '#33475c');
+    assert.ok(mount.y0 <= r.top + 0.5 && chute.y0 <= mount.y1 + 0.5 && chute.y1 >= tray.y0 - 0.5, `${at}: the chute from the turret's mount in the ceiling down to the tray`);
+    assert.ok(tray.x0 >= ammo.x0 - 4 && tray.x1 <= ammo.x1 + 4 && tray.y1 < ammo.y0 - 8 && F - tray.y0 <= 72, `${at}: the tray over the ammunition locker, in reach`);
+    const rounds = parts.filter(p => p.col === '#8a7a50');
+    assert.ok(rounds.filter(p => p.y1 <= tray.y1 + 1 && p.y0 >= tray.y0 - 5).length >= 5 && rounds.some(p => p.y0 > tray.y1 && p.y1 <= ammo.y0 + 1), `${at}: a belt of rounds in the tray and down to the locker`);
+    for (const p of rounds) assert.ok(p.x1 - p.x0 <= 3 && p.y1 - p.y0 <= 6, `${at}: a round, small`);
+    // the stools, solid on the floor, at the seat's height, each with its back behind the gunner and a harness on it
+    const pads = parts.filter(p => p.col === '#2a4664' && p.x1 - p.x0 >= 16);
+    assert.equal(pads.length, SEATS.gunnery.length, `${at}: a stool at each seat`);
+    for (const f of SEATS.gunnery) {
+      const x = r.x0 + W * f, pad = pads.find(p => Math.abs((p.x0 + p.x1) / 2 - x) < 0.6);
+      assert.ok(pad && Math.abs(F - pad.y0 - gun.FIG_SEAT) <= 0.01, `${at}: the stool at ${f} at the seat's height, ${gun.FIG_SEAT} (${pad && F - pad.y0})`);
+      assert.ok(parts.some(p => p.col === '#2a4664' && p.y1 - p.y0 > 20 && p.x0 > x + 4 && p.x1 < x + 16), `${at}: its back on the right, behind someone facing left`);
+      assert.ok(calls.some(k => k[0] === 'fillStyle' && k[1] === SHADOW) && filledParts(calls).some(p => p.col === SHADOW && p.pts.some(q => near(q[1], F) && q[0] < x - 8 && q[0] > x - 20)), `${at}: its shadow on the strip`);
+    }
+  }
+});
+test('the shared stool stands solid, at the seat\'s height, with its shadow; the medbay\'s has no back (#1041)', () => {
+  const bay = { x0: 0, x1: 400, top: 0, floor: 100 };
+  for (const back of [0, 1, -1]) for (const x of [60, 340]) {
+    const { ctx, calls } = recorder(); gun.roomIn([bay], () => gun.roomStool(ctx, x, 100, back));
+    const parts = filledParts(calls), at = `back ${back} at ${x}`;
+    assert.equal(calls.filter(k => k[0] === 'save').length, calls.filter(k => k[0] === 'restore').length);
+    const pad = parts.find(p => p.col === '#2a4664' && p.outlined && partBox(p).x1 - partBox(p).x0 >= 16);
+    assert.ok(pad && near(100 - partBox(pad).y0, gun.FIG_SEAT), `${at}: its pad at ${gun.FIG_SEAT}`);
+    assert.ok(parts.some(p => p.col === solidTop('#2a4664')), `${at}: the pad's top showing`);
+    assert.ok(parts.some(p => p.col === solidSide('#2a4664') && p.pts.filter(q => near(q[0], x < 200 ? partBox(pad).x1 : partBox(pad).x0)).length === 2), `${at}: its side toward the eye`);
+    assert.equal(parts.filter(p => p.col === SHADOW).length, 1, `${at}: one contact shadow, under its foot`);
+    const shadow = partBox(parts.find(p => p.col === SHADOW));
+    assert.ok(near(shadow.y1, 100) && shadow.x0 < x - 8 && shadow.x1 > x + 8, `${at}: the shadow under its foot`);
+    const backs = parts.filter(p => p.col === '#2a4664' && p.outlined && partBox(p).y1 - partBox(p).y0 > 20);
+    if (!back) assert.equal(backs.length, 0, `${at}: a stool, no back`);
+    else assert.ok(backs.length === 1 && (back > 0 ? partBox(backs[0]).x1 < x - 6 : partBox(backs[0]).x0 > x + 6), `${at}: the back behind the sitter`);
+  }
+});
+test('the gunnery reads old and patched: a newer locker bolted on an older plinth, a grip replaced, wear where hands go, a printed mount tagged temporary, tape and cable ties (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = gunCase(pr, 1.17, 2), at = `${pr}`, { calls, parts } = gunParts(r, s);
+    const rects = col => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+    const inside = ([x, y, w, h], b) => x >= b.x0 - 0.01 && x + w <= b.x1 + 0.01 && y >= b.y0 - 0.01 && y + h <= b.y1 + 0.01;
+    const weap = parts.find(p => p.col === '#4a5058' && p.y1 - p.y0 > 60), plinth = parts.find(p => p.col === '#24384c');
+    assert.ok(plinth && plinth.y0 >= weap.y1 - 0.5 && plinth.x0 <= weap.x0 + 1 && plinth.x1 >= weap.x1 - 1, `${at}: the weapons locker, newer, on an older plinth`);
+    assert.ok(rects('#8a929a').filter(b => b[1] >= plinth.y0 - 0.5).length >= 2, `${at}: fresh bolts in the plinth`);
+    const grips = parts.filter(p => /^#(3a4450|4a4640)$/.test(p.col) && p.y1 - p.y0 >= 6);
+    assert.ok(new Set(grips.map(p => p.col)).size === 2, `${at}: one grip a replacement in another finish`);
+    const top = parts.filter(p => p.col === '#2a4a6a').sort((a, b) => a.x0 - b.x0)[0];
+    assert.ok(rects('#7e8a94').filter(c => inside(c, { ...top, y0: top.y0 - 1, y1: top.y1 + 1 }) && c[0] >= grips[0].x0 - 14).length >= 2, `${at}: paint worn off the console's edge by the grips`);
+    assert.ok(rects('#4e5a50').length >= 2 && rects('#4e5a50').every(c => inside(c, parts.find(p => p.col === '#3a4a3e' && p.x1 - p.x0 > 20))), `${at}: scuffs on the ammunition locker`);
+    const clamp = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050'), finder = parts.find(p => p.col === '#505650');
+    assert.ok(clamp && finder && clamp.y0 >= finder.y1 - 1.5 && clamp.x0 < finder.x1 && clamp.x1 > finder.x0, `${at}: the range finder on a printed mount`);
+    assert.ok(tag && tag.y0 >= clamp.y0 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its temporary tag (${JSON.stringify(tag)})`);
+    const placed = placedParts(calls).map(p => ({ col: p.col, ...partBox(p) })), conduit = placed.filter(p => p.col === wallTone('#2e4458'));
+    const tape = placed.filter(p => p.col === wallTone('#7a7462')), ties = placedRects(calls).filter(q => q.col === wallTone('#1e2a36'));
+    assert.ok(tape.some(t => conduit.some(c => t.x0 < c.x1 && t.x1 > c.x0 && t.y0 < c.y1 && t.y1 > c.y0)), `${at}: tape round the conduit`);
+    assert.ok(ties.length >= 2 && ties.every(t => conduit.some(c => t.x < c.x1 && t.x + t.w > c.x0 && t.y < c.y1 && t.y + t.h > c.y0)), `${at}: cable ties on the conduit`);
+    assert.ok(rects('#5a6a4e').length >= 3, `${at}: the stencil on the ammunition locker, marks`);
+    // the turret's lock pin, its ring and its tag on a lanyard
+    const mount = parts.find(p => p.col === '#2c4058'), lock = rects('#9aa4ae'), ltag = parts.find(p => p.col === '#8a4436');
+    assert.ok(lock.some(([x, y, w]) => y >= mount.y0 && y <= mount.y1 && x < mount.x1 && x + w > mount.x1), `${at}: the lock pin through the turret's mount`);
+    assert.ok(ltag && ltag.y0 > mount.y1 && ltag.x1 - ltag.x0 <= 6, `${at}: its tag hung on a lanyard`);
+  }
+});
+test('the gunnery\'s ceiling lamp is a fitting, clear of the turret\'s mount; the screens show the phase, the flip its heading (#1024, #933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const r = layoutBox(LAYOUTS.freighter, 'gunnery'), { calls, parts } = gunParts(r, RS({ w: phaseWeights(pr), well: FW, torpedoes: 2, damage: { marks: new Set(), severe: false } })), [x] = box.roomLamps('gunnery', r);
+    assert.ok(parts.some(p => p.col === '#3a4a5a' && near(p.x0, x - 12) && near(p.y0, r.top)), `${pr}: the lamp's housing hung from the ceiling at ${x}`);
+    assert.ok(calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${pr}: the guard over its lens`);
+    const mount = parts.find(p => p.col === '#2c4058');
+    assert.ok(x + 12 <= mount.x0 || x - 12 >= mount.x1, `${pr}: clear of the turret's mount`);
+    if (pr === 0.5) assert.ok(filledParts(calls).some(p => p.col === '#c8903a') && calls.some(k => k[0] === 'rotate'), `${pr}: the heading arrow turning at the flip`);
+    else assert.ok(!calls.some(k => k[0] === 'rotate'), `${pr}: no heading arrow off the flip`);
+  }
+});
