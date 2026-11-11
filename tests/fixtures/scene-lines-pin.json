@@ -10168,7 +10168,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Tomas reads the haul off the board and looks at you over it. \"The ice likes you. Two in a row.\" The ice comes in clean.",
+    "text": "Tomas looks at you over the board. \"The ice likes you.\" The ice comes in clean.",
     "next": null
    }
   ],
@@ -10280,7 +10280,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "A note from the shipper's office at the dock: five runs on the day. They will put the ship first on the next board. Nothing on the record yet.",
+    "text": "A note from the shipper's office at the dock: five runs on the day. They know the name now. Nothing on the record yet.",
     "next": null
    }
   ],

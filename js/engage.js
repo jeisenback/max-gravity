@@ -90,8 +90,9 @@ function contactEvent(spec) {
   }
   if (spec.kind === 'pirate' && hasTrait(hired(), 'runner')) choices.push({ label: `[Runner] ${traitSay('door.runner.label')}${costNote({ sent: 'hull damage, and the fight anyway' }, fleeOdds() + 0.15)}`, run: () => startShipFight(spec, true, { flee: 0.15 }) });  // the trait's door: the run, fifteen points better
   if (spec.kind === 'pirate') {
-    choices.push({ label: contactSay('pay.label'), cost: true, ...gated(needCr(5000)), run() {
-      const c = Math.round(Math.max(5000, Math.round(st.credits * 0.1)) * (hasTrait(hired(), 'marked') ? 0.5 : 1));  // Marked (traits.js): they know the name, and ask half
+    const payOff = () => Math.round(Math.max(5000, Math.round(st.credits * 0.1)) * (hasTrait(hired(), 'marked') ? 0.5 : 1));  // Marked (traits.js): they know the name, and ask half
+    choices.push({ label: contactSay('pay.label'), cost: true, ...gated(needCr(payOff())), run() {
+      const c = payOff();
       st.credits -= c;
       return `${contactSay('pay.result', { cr: fmt(c) })}${runCost()}`;
     } });

@@ -134,7 +134,7 @@ CAPTAINS.zoya = {
     warm: 'Captain Pell is on the ramp, not at the foot of it, leaning on the rail with her boots crossed. "I don\'t do goodbyes," she says. "I do wagers. I bet you do well. I bet you come back. I\'ll take either side."',
     neutral: 'Captain Pell meets you at the foot of the ramp and counts your last pay into your hand, fast, in notes, and then counts it again, slower, because she\'s not sure she did it right the first time.',
     cold: 'Captain Pell is at the foot of the ramp with your papers and a smile. "Fair winds," she says.',
-    jonah: 'She looks past you at the lock for a moment. "Two," she says. "That\'s not on you. I\'m the captain. That\'s on me." She doesn\'t say it like she believes it.',  // two shipmates lost on the hand's record (traits.js)
+    jonah: 'She looks past you at the lock for a moment. "Two," she says. "That\'s not on you. I\'m the captain. That\'s on me."',  // two shipmates lost on the hand's record (traits.js)
     crew: '{names} will go with you. She whistles, one low note. "I bet you\'ll do better by them than I did," she says. "I\'m not even joking. That\'s not a bet. That\'s a fact."',
     secret: 'The deck is in her coat pocket. "One good run," she says, "and I\'ll send you a postcard from somewhere with a beach. If I don\'t, it\'s because it wasn\'t good enough." She has said it for six years.',
     repay: 1250,

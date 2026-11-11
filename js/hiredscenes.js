@@ -449,11 +449,11 @@ const SCENE_LINES = {
   'scene:traits': {  // what the record makes of the hand (traits.js): the moment said once when a trait lands ({first} is the speaker), the reason on the Record card, the shipper's note, the empty card. Drafted for the owner to edit
     'cool-head.moment': '{first} watches the lock cycle shut behind the last of them. "You don\'t rattle," {first} says, and writes the time in the log.',
     'cool-head.reason': 'Two boardings held.',
-    'salvager.moment': '{first} reads the haul off the board and looks at you over it. "The ice likes you. Two in a row."',
+    'salvager.moment': '{first} looks at you over the board. "The ice likes you."',  // earned by two clean hauls or three rocks found, so it names neither
     'salvager.reason': 'The ice comes in clean.',
     'marked.moment': '{first} has the name on the board before the cutter is out of range. "They had it ready. Not mine. Yours."',
     'marked.reason': 'The navy has your name.',
-    'inbox.reliable': 'A note from the shipper\'s office at the dock: five runs on the day. They will put the ship first on the next board.',
+    'inbox.reliable': 'A note from the shipper\'s office at the dock: five runs on the day. They know the name now.',
     'reliable.reason': 'Five deliveries on the day.',
     'scarred.moment': '{first} looks at the dressing and then at the gauges. "You\'re still here," {first} says, and hands you the coffee.',
     'scarred.reason': 'Hurt twice, and back at the post.',

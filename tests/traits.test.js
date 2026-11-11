@@ -128,6 +128,8 @@ test('each site writes its count: the repel, the assault, the fight\'s end, the 
     startDuel({ kind: 'pirate' }, false); f = G.nextEvent.fight; G.nextEvent = null; shipFightEnd(f, 'ran'); out.ran = rec().fightsRan; G.nextEvent = null; G.dialog = null;
     const real = Math.random; startShipFight({ kind: 'patrol', gov: 'Arcology Compact' }, true); out.fled = [rec().fled, rec().ranFromNavy]; G.nextEvent = null; G.dialog = null;  // counted before the roll, got away or not
     h.run = { ice: { edge: 3 }, tons: 20 }; iceHome(3); iceHome(-2); out.hauls = [rec().haulsClean, rec().haulsBad];
+    const here = currentPlanet(), run = due => ({ contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 10, from: 'X', planet: here.name, sid: st.systemId, pay: 30000, day: st.day - 6, days: 6, due, cost: 0, profit: 30000 });
+    st.cargo.water = 10; h.run = run(st.day + 5); settleRun(here); st.cargo.water = 10; h.run = run(st.day - 1); settleRun(here); out.delivered = [rec().onTime, rec().late];  // the delivery, on the day and late (hired.js settleRun)
     const inspect = inspectionScene(inspectionCause({ water: 50 }, 'Dome Concord', 0, false), currentPlanet()); inspect.choices[inspect.choices.length - 1].run(); out.heave = rec().fines;  // keeping out of it (inspection.js)
     citation(); out.cited = rec().fines;
     hurtHand({ hurt: new Set() }); out.hurt = rec().hurts;
@@ -135,7 +137,7 @@ test('each site writes its count: the repel, the assault, the fight\'s end, the 
     return out;
   });
   assert.deepEqual([r.held, r.lost, r.carried, r.won, r.ran], [1, 1, 1, 1, 1]);
-  assert.deepEqual(r.fled, [1, 1]); assert.deepEqual(r.hauls, [1, 1]); assert.equal(r.heave, 1); assert.equal(r.cited, 2); assert.equal(r.hurt, 1); assert.equal(r.mate, 1);
+  assert.deepEqual(r.fled, [1, 1]); assert.deepEqual(r.hauls, [1, 1]); assert.deepEqual(r.delivered, [0, 1], 'one on the day, then one late, which resets the run of days'); assert.equal(r.heave, 1); assert.equal(r.cited, 2); assert.equal(r.hurt, 1); assert.equal(r.mate, 1);
   await done();
 });
 
@@ -204,11 +206,17 @@ test('Marked halves a pirate\'s pay-off and raises the search\'s fine; Runner me
     h.record = { fines: 2 }; st.credits = 200000; out.pay = [plainPay, pay()]; st.credits = 200000; out.fine = [plainFine, heaveToFine()];
     const band = () => { startDuel({ kind: 'pirate' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
     h.record = {}; const plainBand = band(); h.record = { fightsRan: 3 }; out.band = [plainBand, band()];
+    const navyBand = () => { startDuel({ kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
+    h.record = {}; const plainNavy = navyBand(); h.record = { fightsRan: 3 }; out.navy = [plainNavy, navyBand()];
+    const payGate = () => !contactEvent({ kind: 'pirate' }).choices.find(x => /pay|Pay/.test(x.label) && x.cost).can();
+    st.credits = 3000; h.record = {}; out.gate = [payGate()]; h.record = { fines: 2 }; out.gate.push(payGate());
     return out;
   });
   assert.ok(r.pay[0] > 0 && r.pay[1] === Math.round(r.pay[0] / 2), `the pay-off ${r.pay}`);
   assert.equal(r.fine[1], Math.round(r.fine[0] * 1.2), `the fine ${r.fine}`);
   assert.deepEqual(r.band, ['long', 'mid'], 'a raider at 40 km, 30 with Runner');
+  assert.equal(r.navy[1], r.navy[0], 'Runner: pirates close faster, a patrol does not (#1010)');
+  assert.deepEqual(r.gate.map(Boolean), [true, false], 'with 3,000 cr: the pay-off of 5,000 is closed, and Marked\'s 2,500 is open (#1010)');
   await done();
 });
 
