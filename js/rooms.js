@@ -154,16 +154,73 @@ function roomPlant(ctx, x, y, w, time, still, k = 1) {  // its pot's top at y, d
   }
 }
 
-// Walls, seams, the deck plate and the cable run (it sags under thrust, less in cruise, and floats at the flip).
-function roomWalls(ctx, r, w, time, still) {
-  const { x0, x1, top, floor: F } = r;
-  roomFlat(ctx, x0, top, x1 - x0, F - top, '#0c1826');
-  ctx.fillStyle = '#0e1c2c'; for (let x = x0; x < x1 - 40; x += 48) ctx.fillRect(x + 2, top + 14, 44, F - top - 34);
-  for (let x = x0; x < x1; x += 48) { roomFlat(ctx, x, top, 2, F - top, '#132538'); roomDot(ctx, x + 5, top + 16, 0.9, '#21384f'); roomDot(ctx, x + 5, F - 22, 0.9, '#21384f'); }
-  roomFlat(ctx, x0, F, x1 - x0, HULL.plate, '#132438'); ctx.fillStyle = '#1b3047'; for (let x = x0 + 4; x < x1 - 4; x += 10) ctx.fillRect(x, F + 2, 5, 2);
-  const sag = 9 * w.burn + 4 * w.cruise + (still ? -2 : -2 + Math.sin(time * 0.9 + x0) * 3) * w.flip;
-  ctx.strokeStyle = '#2b4462'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(x0 + 6, top + 6); ctx.quadraticCurveTo((x0 + x1) / 2, top + 6 + sag, x1 - 6, top + 6); ctx.stroke();
-  ctx.strokeStyle = '#3a2f22'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(x0 + 6, top + 10); ctx.quadraticCurveTo((x0 + x1) / 2, top + 10 + sag * 0.7, x1 - 6, top + 10); ctx.stroke();
+// The room box (#1024, docs/superpowers/specs/2026-11-11-room-box-design.md): the room's box r is the cut, its front; its back wall is the
+// same box scaled toward the eye by k, and between them are the ceiling's sliver, the floor's strip and the side walls, angled in to the
+// eye. The eye is at a standing person's eye height over the floor; the strip is ROOM_DEPTH deep, so k = 1 - ROOM_DEPTH / ROOM_EYE.
+const ROOM_EYE = 80, ROOM_DEPTH = 16;
+// The bays a room is drawn as: one, or for a full-width room two, one either side of the ladder well (well: { x0, x1 }), sharing its name,
+// its lamps and its tap box.
+const roomBays = (r, well) => {
+  const { x0, x1, top, floor } = r;
+  return well && x0 < well.x0 && x1 > well.x1 ? [{ x0, x1: well.x0, top, floor }, { x0: well.x1, x1, top, floor }] : [{ x0, x1, top, floor }];
+};
+// A bay's eye: the vanishing point at its centre at eye height, and k, the scale of its back wall.
+const roomEye = bay => ({ vx: (bay.x0 + bay.x1) / 2, vy: bay.floor - ROOM_EYE, k: 1 - ROOM_DEPTH / ROOM_EYE });
+// The point (x, y) carried toward a bay's eye by d of the depth (0 at the cut, 1 on the back wall).
+const roomInto = (e, x, y, d = 1) => { const q = 1 - d * (1 - e.k); return [e.vx + (x - e.vx) * q, e.vy + (y - e.vy) * q]; };
+// The cut: the deck plate under x0 to x1, the nearest thing and the darkest, a near-black fill hatched as a section, its top edge the frame's line.
+function roomCut(ctx, x0, x1, F) {
+  const h = HULL.plate;
+  roomFlat(ctx, x0, F, x1 - x0, h, '#04080d');
+  ctx.save(); ctx.beginPath(); ctx.rect(x0, F, x1 - x0, h); ctx.clip();
+  ctx.strokeStyle = 'rgba(52,84,118,0.55)'; ctx.lineWidth = 0.8; ctx.beginPath();
+  for (let x = x0 - h; x < x1; x += 5) { ctx.moveTo(x, F + h); ctx.lineTo(x + h, F); }
+  ctx.stroke(); ctx.restore();
+  roomFlat(ctx, x0, F, x1 - x0, 1, '#4a6f94');
+}
+// One bay's shell, still (the burn view draws it once into its cache, shiplife.js): the back wall shaded as the far side of the hull's
+// cylinder (#988), lightest in the middle, its seams at equal turns of the hull; the side walls, the curve turning toward you, darkest at the
+// front, their seams running to the eye; the ceiling's sliver, plain; the floor's strip, its joints running to the eye and two across it;
+// the box's edges a faint line; and the cut under it.
+function roomShell(ctx, bay) {
+  const { x0, x1, top, floor: F } = bay, e = roomEye(bay), P = (x, y, d) => roomInto(e, x, y, d), [bx0, by0] = P(x0, top), [bx1, by1] = P(x1, F), half = (bx1 - bx0) / 2;
+  const face = (pts, fill) => { ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for (const q of pts.slice(1)) ctx.lineTo(q[0], q[1]); ctx.closePath(); ctx.fillStyle = fill; ctx.fill(); };
+  const seg = (a, b) => { ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); };
+  const g = ctx.createLinearGradient(bx0, 0, bx1, 0);
+  g.addColorStop(0, '#070f19'); g.addColorStop(0.5, '#132438'); g.addColorStop(1, '#070f19');
+  face([[bx0, by0], [bx1, by0], [bx1, by1], [bx0, by1]], g);
+  ctx.strokeStyle = 'rgba(30,52,76,0.9)'; ctx.lineWidth = 0.8; ctx.beginPath();
+  for (let a = -75; a <= 75; a += 15) { const sx = e.vx + half * Math.sin(a * Math.PI / 180); seg([sx, by0 + 12], [sx, by1]); }
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(30,52,76,0.7)'; ctx.beginPath(); for (const y of [by0 + 12, F - 46]) seg([bx0, y], [bx1, y]); ctx.stroke();
+  for (const [fx, bx] of [[x0, bx0], [x1, bx1]]) {
+    const sg = ctx.createLinearGradient(fx, 0, bx, 0); sg.addColorStop(0, '#04080e'); sg.addColorStop(1, '#0a1522');
+    face([[fx, top], [bx, by0], [bx, by1], [fx, F]], sg);
+    ctx.strokeStyle = 'rgba(30,52,76,0.6)'; ctx.lineWidth = 0.7; ctx.beginPath(); for (const y of [F - 46, top + 12]) seg([fx, y], P(fx, y)); ctx.stroke();
+  }
+  face([[x0, top], [x1, top], [bx1, by0], [bx0, by0]], '#091320');
+  const fg = ctx.createLinearGradient(0, by1, 0, F); fg.addColorStop(0, '#0f1b29'); fg.addColorStop(1, '#1a2b3f');
+  face([[x0, F], [x1, F], [bx1, by1], [bx0, by1]], fg);
+  ctx.strokeStyle = 'rgba(48,74,102,0.55)'; ctx.lineWidth = 0.6; ctx.beginPath();
+  for (let x = x0 + 24; x < x1; x += 24) seg([x, F], P(x, F));
+  for (const d of [0.4, 0.75]) seg(P(x0, F, d), P(x1, F, d));
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(40,64,90,0.9)'; ctx.lineWidth = 0.8; ctx.beginPath();
+  seg([x0, top], [bx0, by0]); seg([bx0, by0], [bx1, by0]); seg([bx1, by0], [x1, top]); seg([x0, F], [bx0, by1]); seg([bx0, by1], [bx1, by1]); seg([bx1, by1], [x1, F]);
+  seg([bx0, by0], [bx0, by1]); seg([bx1, by0], [bx1, by1]);
+  ctx.stroke();
+  roomCut(ctx, x0, x1, F);
+}
+// A room's walls: each bay's shell (drawn by shell, the burn view's cache, or roomShell), and along the top of each back wall the cable run
+// (it sags under thrust, less in cruise, and floats at the flip).
+function roomWalls(ctx, r, w, time, still, well, shell = roomShell) {
+  const sag = x0 => 9 * w.burn + 4 * w.cruise + (still ? -2 : -2 + Math.sin(time * 0.9 + x0) * 3) * w.flip;
+  for (const bay of roomBays(r, well)) {
+    shell(ctx, bay);
+    const e = roomEye(bay), [bx0, by0] = roomInto(e, bay.x0, bay.top), bx1 = 2 * e.vx - bx0, s = sag(bay.x0);
+    ctx.strokeStyle = '#2b4462'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(bx0 + 6, by0 + 6); ctx.quadraticCurveTo(e.vx, by0 + 6 + s, bx1 - 6, by0 + 6); ctx.stroke();
+    ctx.strokeStyle = '#3a2f22'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(bx0 + 6, by0 + 10); ctx.quadraticCurveTo(e.vx, by0 + 10 + s * 0.7, bx1 - 6, by0 + 10); ctx.stroke();
+  }
 }
 
 // The engine room's fittings (#933). A gauge's reading, 0 to 1: up in the hard burn, low in cruise, near nothing at the flip with the drive off,
@@ -892,14 +949,15 @@ function drawDamage(ctx, r, s) {
 const roomPlain = () => {};
 const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay,
   head: roomPlain, workshop: roomPlain, airlock: roomPlain, lifesupport: roomPlain };
-// A room, r = { x0, x1, top, floor } in world units, drawn for the state s (w, time, zoom, spin, still, berths, cargo, fuel, burning, night, asleep): walls, props, then its lamp.
+// A room, r = { x0, x1, top, floor } in world units, drawn for the state s (w, time, zoom, spin, still, berths, cargo, fuel, burning, night, asleep,
+// well, and shell: how a bay's shell is drawn, the burn view's cache): walls, props, then its lamp.
 // Which way someone on a room's chair faces (#985): the bridge's and the guns' toward their consoles, the chair's back behind them (#933), the
 // medbay's stool toward the cot. The galley's bench is not here: at the mess table people face you.
 const SEAT_FACE = { bridge: 1, gunnery: -1, medbay: -1 };
 function drawRoom(ctx, id, r, s) {
   if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses
   const W = r.x1 - r.x0;
-  roomWalls(ctx, r, s.w, s.time, s.still);
+  roomWalls(ctx, r, s.w, s.time, s.still, s.well, s.shell);
   ROOM_DRAW[id](ctx, r, s, sh => r.x0 + W * sh, W);
   const seats = SEATS[id] || [];  // its seats (shiplife.js), where people sit (#925): the galley's on one bench along the mess table, a pilot's seat at each post of the bridge, a stool anywhere else
   if (id === 'galley' && seats.length) roomBench(ctx, r.x0 + W * seats[0] - 14, r.x0 + W * seats[seats.length - 1] + 14, r.floor);
