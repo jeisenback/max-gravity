@@ -250,3 +250,70 @@ test('the bay lie costs the inspector\'s regard but does not issue the license',
   });
   assert.match(r.lie, /Idle/); assert.equal(r.q.compactSide, 1); assert.equal(r.coda, 'The Riggers\' Collection'); assert.notEqual(r.earth, 'The Carrier License'); assert.ok(r.petra < 3, `Petra cooler (${r.petra})`);
 });
+
+// The marks the counts leave on the world (#1044, docs/bible/chapter-1.md): the news, the port's unrest, the water price at whichever side goes short, and who remembers.
+const runWith = async (extra, fn) => { const t = await open(); await t.ev(helpers); await t.ev(extra); const r = await t.ev(fn); await t.done(); return r; };
+const marks = () => {
+  window.markOf = (sid, port, fn) => {
+    const pl = planetNamed(port).pl, key = `${pl.name}|water`; delete G.state.market[key];
+    const unrest = worldOf(sid).unrest, news = (G.state.news || []).length && G.state.news[0].text;
+    fn();
+    const q = G.state.qualities;
+    return { unrest: +(worldOf(sid).unrest - unrest).toFixed(3), water: +pressure(pl, 'water').toFixed(3), news: G.state.news && G.state.news[0] && G.state.news[0].text !== news ? G.state.news[0].text : null,
+      hollows: q.markHollows || 0, refinery: q.markRefinery || 0, closed: q.markClosedHalf || 0, auditors: q.markAuditors || 0 };
+  };
+  window.leagueTo = (crate, floorPick) => {
+    const st = G.state, h = hired();
+    h.standing = { 'the Federation Freight Hall': 1 }; h.away = [{ tpl: 'arc:league', arc: 'league', ctx: { dest: 'The Hollows', who: 'Agent X' }, sid: 'pallas', planet: 'The Hollows', days: 3, until: st.day + 40, pitched: null }];
+    pick1(land('pallas', 'The Hollows'), crate); days(6);
+    const f = pick1(land('pallas', 'Pallas Refinery'), floorPick); G.nextEvent = f.next; return f.next;
+  };
+};
+
+test('the water count marks Pallas: the Hollows carried cut the refinery\'s draw, and the refinery carried leaves the Hollows short', async () => {
+  const r = await runWith(marks, () => {
+    const out = {};
+    start(); let count = leagueTo('Say you will, at the vote', 'Tell her it was sealed');
+    out.spoke = markOf('pallas', 'Pallas Refinery', () => pick1(count, 'Speak'));
+    start(); count = leagueTo('Say you will, at the vote', 'Tell her you will speak at the vote');
+    out.backHollows = markOf('pallas', 'Pallas Refinery', () => pick1(count, 'Stay at the back'));
+    start(); count = leagueTo('Say the Hall\'s name is the Hall\'s to give', 'Tell her what was in it');
+    out.backRefinery = markOf('pallas', 'The Hollows', () => pick1(count, 'Stay at the back'));
+    return out;
+  });
+  for (const k of ['spoke', 'backHollows']) {
+    const m = r[k];
+    assert.equal(m.unrest, -0.1, `${k}: Pallas calmer`); assert.equal(m.water, 0.15, `${k}: water dearer at the refinery`);
+    assert.match(m.news, /the refinery's water draw is cut by a fifth/); assert.deepEqual([m.hollows, m.refinery], [1, -1], `${k}: the Hollows remember the ship well`);
+  }
+  const m = r.backRefinery;
+  assert.equal(m.unrest, 0.1, 'Pallas less settled'); assert.equal(m.water, 0.15, 'water dearer at the Hollows');
+  assert.match(m.news, /the refinery keeps its water draw/); assert.deepEqual([m.hollows, m.refinery], [-1, 1], 'the refinery remembers the ship well');
+});
+
+test('the air count marks Eros: an audit that stands is in the news and cuts the sealed half\'s air, and one that does not is in none', async () => {
+  const r = await runWith(marks, () => {
+    const out = {}, arc = () => { const st = G.state, h = hired(); h.standing = { 'the Dome Pact Freight Office': 1 }; h.away = [{ tpl: 'arc:concord', arc: 'concord', ctx: { dest: 'Eros Old Town', who: 'Agent X' }, sid: 'eros', planet: 'Eros Old Town', days: 8, until: st.day + 40, pitched: null }]; };
+    for (const [k, pick] of [['signed', 'Sign the count'], ['lie', 'Say the vents were open'], ['carried', 'Say you only carried her']]) {
+      start(); arc(); const w = pick1(land('eros', 'Eros Old Town'), 'Walk the corridors with her'); G.nextEvent = w.next;
+      out[k] = markOf('eros', 'Eros Old Town', () => pick1(w.next, pick));
+    }
+    start(); arc(); out.waited = markOf('eros', 'Eros Old Town', () => pick1(land('eros', 'Eros Old Town'), 'Wait at the ship'));
+    return out;
+  });
+  assert.equal(r.signed.unrest, 0.1, 'Eros less settled'); assert.match(r.signed.news, /stops paying for the air of fourteen sealed corridors/);
+  assert.deepEqual([r.signed.closed, r.signed.auditors], [-1, 1], 'the sealed half remembers, and so do the auditors');
+  for (const k of ['lie', 'carried']) { assert.equal(r[k].unrest, 0, k); assert.equal(r[k].news, null, `${k}: nothing in the news`); assert.equal(r[k].closed, 1, `${k}: the sealed half remembers the ship well`); }
+  assert.deepEqual([r.waited.unrest, r.waited.news, r.waited.closed], [0, null, 0], 'a ship that waited is no part of it');
+});
+
+test('a price effect names a port, a good and a share no larger than the market moves, or the scene is refused', async () => {
+  const r = await run(() => [
+    EFFECT_SHAPES.price({ 'Pallas Refinery': { water: 0.15 } }),
+    EFFECT_SHAPES.price({ 'Nowhere': { water: 0.1 } }),
+    EFFECT_SHAPES.price({ 'The Hollows': { gold: 0.1 } }),
+    EFFECT_SHAPES.price({ 'The Hollows': { water: 2 } }),
+    EFFECT_SHAPES.price(['The Hollows']),
+  ]);
+  assert.equal(r[0], ''); assert.match(r[1], /Nowhere is not a port/); assert.match(r[2], /gold is not a good/); assert.match(r[3], /water: a share between/); assert.match(r[4], /needs/);
+});
