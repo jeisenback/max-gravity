@@ -2039,7 +2039,7 @@ test('the head\'s occupied lamp is lit while someone is in (s.headIn) and dark w
 const { roomNameAt, ROOM_NAME_TOP } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomNameAt', 'ROOM_NAME_TOP']);
 test('every room\'s name sits high on its wall, under the lamps\' fittings; the head\'s short name is clear of its door (#933)', () => {
   assert.ok(LAYOUTS.freighter.decks.flatMap(d => d.rooms).some(q => q.id === 'head' && q.name === 'Head'), 'the head is named the head');
-  for (const zoom of [0.82, 1.17, 1.45]) for (const id of ['bridge', 'galley', 'head', 'berths', 'gunnery', 'medbay', 'hold', 'engine']) {
+  for (const zoom of [0.82, 1.17, 1.45]) for (const id of ['bridge', 'galley', 'head', 'berths', 'gunnery', 'workshop', 'medbay', 'hold', 'engine']) {
     const r = layoutBox(LAYOUTS.freighter, id), at = roomNameAt(r, zoom), top = at.y - 13 / zoom;
     assert.ok(near(at.x, r.x0 + 12) && near(top, r.top + ROOM_NAME_TOP), `${id}, ${zoom}: 12 in, its plate's top ${ROOM_NAME_TOP} under the ceiling`);
     assert.ok(top > r.top + 6.4, `${id}, ${zoom}: under the lamps' fittings (6.4 deep)`);
@@ -2047,5 +2047,162 @@ test('every room\'s name sits high on its wall, under the lamps\' fittings; the 
   for (const zoom of [0.82, 1.17, 1.45]) {
     const { r, s } = headCase(0.3, zoom), { parts } = headParts(r, s), frame = parts.find(p => p.col === '#2a3c50');
     assert.ok(headName(r, zoom).x1 < frame.x0, `${zoom}: the head's plate ends before its door's frame`);
+  }
+});
+// #933, the workshop on the gun deck, beside the gunnery across the well, where the engineer's and the gunner's rounds bring them (ROUNDS,
+// shiplife.js; goTo puts them a quarter to three quarters of the way across): from the left wall in, the fabricator (the ship's printer, a newer
+// unit bolted on an older stand, a printed part on its bed, a spool of stock on its side, its cable taped and tied), then the bench at the waist
+// with its vice and a breech from the gunnery's guns in pieces by its parts tray, the tool board on the wall over it (each tool on its hook in its
+// painted outline, one out and signed for) and the small-parts drawers; at the right wall the spares rack, its shelves strapped for zero g, boxed
+// spares stencilled, loose ones, the stock spools, one shelf a replacement on printed brackets tagged temporary. Old and patched (point 6). Drawn
+// at the burn view's zoom in a window 1000, 1280 and 1600 wide.
+const { LAMP_FITTED: WS_FITTED } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['LAMP_FITTED']);
+const WS_PROPS = [['#2a3a48', 'the fabricator\'s stand'], ['#4a5866', 'its enclosure'], ['#0e1a24', 'its window'], ['#3a4048', 'its bed'], ['#8a6a48', 'the printed parts'], ['#3a6a70', 'the stock spools'],
+  ['#46505a', 'the bench\'s top'], ['#2c3c4c', 'the bench\'s cabinet'], ['#2a3644', 'its leg'], ['#4a5a4e', 'the vice'], ['#6a6e70', 'its jaws'], ['#3e444a', 'the breech\'s housing'], ['#5a5e62', 'the breech block'],
+  ['#2e3a44', 'the parts tray'], ['#1c2a36', 'the spares rack'], ['#2e3e4c', 'its posts'], ['#34485a', 'its shelves'], ['#4a4e44', 'the replacement shelf'], ['#4e4434', 'the boxed spares'], ['#3e4a40', 'the other boxes'],
+  ['#5a5040', 'the straps'], ['#4a5560', 'the spare pump'], ['#3e5068', 'the turret\'s spare feed tray'],
+  [wallTone('#2e3a40'), 'the tool board, on the wall'], [wallTone('#5a6a58'), 'the tools\' painted outlines'], [wallTone('#707a82'), 'the spanners'], [wallTone('#3a4652'), 'the small-parts drawers'], [wallTone('#8a8676'), 'the sign-out card']];
+const WS_WALL = ['#2e3a40', '#5a6a58', '#707a82', '#3a4652', '#8a8676'];
+const WS_TOOLS = ['#707a82', '#606870', '#7a4438', '#3a5878', '#5e666e', '#4a5c74'].map(wallTone);
+const wsCase = (pr, zoom, o = {}) => ({ r: layoutBox(LAYOUTS.freighter, 'workshop'), s: RS({ w: phaseWeights(pr), zoom, well: FW, damage: { marks: new Set(), severe: false }, ...o }) });
+const wsParts = (r, s) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'workshop', r, s); return { calls, parts: filledParts(calls).filter(p => p.outlined && p.pts.length).map(p => ({ col: p.col, ...partBox(p) })), placed: placedParts(calls).filter(p => p.pts.length).map(p => ({ col: p.col, outlined: false, ...partBox({ pts: p.pts.map(q => q.slice(0, 2)) }) })) }; };
+const wsName = (r, zoom) => ({ x0: r.x0 + 12 - 4 / zoom, x1: r.x0 + 12 + 85 / zoom, y0: r.top + 8, y1: r.top + 8 + 16.9 / zoom });  // the name's plate (roomNameAt): WORKSHOP, 13px, about 77px wide
+const wsRects = (calls, col) => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+test('the workshop is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
+  assert.ok(WS_FITTED.includes('workshop'), 'its lamp a fitting');
+  for (const marked of [false, true]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = wsCase(pr, zoom, marked ? { damage: { marks: new Set(['workshop']), severe: true }, night: 1 } : {}), at = `${marked ? 'damaged at night, ' : ''}${pr}, ${zoom}`;
+    const c = fakeCtx(); drawRoom(c, 'workshop', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    assert.ok(!c.calls.includes('fillText'), `${at}: no text in the room (the stencils, the card and the screen are marks)`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'workshop', r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of WS_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    for (const col of WS_WALL) assert.equal(fills(col), 0, `${at}: nothing on the wall in its own colour (${col})`);
+    // in the box (#1024): the bench's top and the fabricator solid, their tops showing; the fabricator, the bench's cabinet and the rack show their
+    // side toward the eye; a contact shadow under the stand, the cabinet, the leg and the rack
+    for (const [col, what] of [['#46505a', 'the bench\'s top'], ['#4a5866', 'the fabricator\'s enclosure']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
+    for (const [col, what] of [['#2a3a48', 'the fabricator\'s stand'], ['#4a5866', 'its enclosure'], ['#2c3c4c', 'the bench\'s cabinet'], ['#1c2a36', 'the spares rack']]) assert.ok(fills(solidSide(col)) >= 1, `${at}: ${what}'s side toward the eye`);
+    assert.ok(fills(SHADOW) >= 4, `${at}: contact shadows on the strip (${fills(SHADOW)})`);
+    const outlined = filledParts(calls).filter(p => p.outlined);
+    assert.ok(outlined.length >= 70, `${at}: the props outlined like the figures (${outlined.length})`);
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
+    }
+    for (const col of ['#e6dfc9', '#c0392b', '#c9a227', '#ffe2b8', '#ff8a6a', '#ffffff', '#ffb030']) assert.equal(fills(col), 0, `${at}: no bright block (${col})`);
+    // the room's name on clear wall, where each thing is drawn (the wall's things moved onto it)
+    const name = wsName(r, zoom), hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v, pts } of roomOwnPlaced('workshop', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
+    // what is on the wall is on the back wall, where it is drawn, and clear of the name's plate
+    const wall = backWall(r), placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) }));
+    for (const col of WS_WALL) for (const p of placed.filter(q => q.col === wallTone(col))) {
+      assert.ok(p.x0 >= wall.x0 && p.x1 <= wall.x1 && p.y0 >= wall.y0 && p.y1 <= wall.y1 && (p.at[0] || p.at[1]), `${at}: ${col} (${JSON.stringify(p)}) on the back wall`);
+      assert.ok(p.x1 <= name.x0 || p.x0 >= name.x1 || p.y1 <= name.y0 || p.y0 >= name.y1, `${at}: ${col} (${JSON.stringify(p)}) clear of the name's plate`);
+    }
+  }
+  const stillAt = t => { const { r, s } = wsCase(0.5, 1.17), c = fakeCtx(); drawRoom(c, 'workshop', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('whoever is at work in the workshop stands at the bench or the fabricator, never inside a fixture (#933, #973)', () => {
+  for (const zoom of [0.82, 1.17, 1.45]) for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = wsCase(pr, zoom), F = r.floor, W = r.x1 - r.x0, at = `${pr}, ${zoom}`, { parts } = wsParts(r, s);
+    const b0 = r.x0 + 0.25 * W, b1 = r.x0 + 0.75 * W;  // where an errand puts them (goTo, shiplife.js)
+    const onFloor = parts.filter(p => p.y1 >= F - 6 && p.y1 <= F + 0.5 && /^#/.test(p.col));  // the fronts at the cut, where people stand (a solid's faces run back from it, behind them)
+    assert.ok(onFloor.length >= 4, `${at}: things standing on the floor (${onFloor.length})`);
+    for (const p of onFloor.filter(q => q.x1 > b0 - 12 && q.x0 < b1 + 12)) assert.ok(F - p.y0 <= 46, `${at}: ${p.col} (${JSON.stringify(p)}) standing higher than the waist where someone stands at work`);
+    const top = parts.find(p => p.col === '#46505a'), fab = parts.find(p => p.col === '#4a5866');
+    for (let x = b0; x <= b1 + 1e-9; x += W / 40) assert.ok((x >= top.x0 + 4 && x <= top.x1 - 4) || (x - fab.x1 >= 8 && x - fab.x1 <= 30), `${at}: someone at ${x} is at the bench (${top.x0} to ${top.x1}) or at the fabricator (to ${fab.x1})`);
+    const [lx] = box.roomLamps('workshop', r);
+    assert.ok(lx > top.x0 + 20 && lx < top.x1 - 20, `${at}: the lamp over the bench`);
+  }
+});
+test('the workshop is sized to a person: the bench at the waist with its vice, the tool board at reach, the fabricator under the name, the rack under the head (#933, #960)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = wsCase(pr, 1.17), F = r.floor, at = `${pr}`, { parts, placed } = wsParts(r, s);
+    const top = parts.find(p => p.col === '#46505a'), vice = parts.filter(p => p.col === '#4a5a4e'), jaws = parts.filter(p => p.col === '#6a6e70');
+    assert.ok(F - top.y0 >= 36 && F - top.y0 <= 44 && top.y1 - top.y0 <= 6, `${at}: the bench's top at the waist (${F - top.y0})`);
+    assert.ok(top.x1 - top.x0 >= 120 && top.x1 - top.x0 <= 200, `${at}: a bench a few people long (${top.x1 - top.x0})`);
+    assert.ok(vice.length >= 1 && jaws.length >= 2, `${at}: the vice and its two jaws`);
+    for (const p of [...vice, ...jaws]) assert.ok(p.x0 >= top.x0 && p.x1 <= top.x1 + 2 && p.y1 <= top.y0 + 0.5 && F - p.y0 <= 56, `${at}: the vice (${JSON.stringify(p)}) on the bench's top, a hand high`);
+    const board = placed.find(p => p.col === wallTone('#2e3a40'));
+    assert.ok(board && F - board.y0 <= 90 && F - board.y1 >= 46 && board.x0 >= top.x0 - 4 && board.x1 <= top.x1 + 4, `${at}: the tool board (${JSON.stringify(board)}) over the bench, at reach`);
+    const fab = parts.find(p => p.col === '#4a5866'), stand = parts.find(p => p.col === '#2a3a48' && p.y1 >= F - 1);
+    assert.ok(F - fab.y0 <= 70 && F - fab.y0 >= 55 && stand.y1 >= F - 0.5 && Math.abs(stand.y0 - fab.y1) <= 1, `${at}: the fabricator on its stand, at the chest (${F - fab.y0})`);
+    const rack = parts.find(p => p.col === '#1c2a36');
+    assert.ok(F - rack.y0 <= FIG_TALL - 3 && F - rack.y0 >= 70 && rack.y1 >= F - 0.5 && rack.x1 <= r.x1 - 4 && rack.x0 >= top.x1, `${at}: the rack (${JSON.stringify(rack)}) under a person's head, past the bench`);
+    for (const p of parts) assert.ok(p.y0 >= r.top - 0.5 && p.x0 >= r.x0 && p.x1 <= r.x1 && (p.x1 - p.x0) * (p.y1 - p.y0) <= (rack.x1 - rack.x0) * (rack.y1 - rack.y0) + 0.01, `${at}: ${p.col} (${JSON.stringify(p)}) in the room, nothing bigger than the rack`);
+  }
+});
+test('the workshop has what it is for: a breech in pieces on the bench by its parts tray, tools in their outlines (one out, signed for), the fabricator printing, spares strapped on the rack (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = wsCase(pr, 1.17), F = r.floor, at = `${pr}`, { calls, parts, placed } = wsParts(r, s);
+    const top = parts.find(p => p.col === '#46505a'), onTop = p => p.x0 >= top.x0 && p.x1 <= top.x1 && Math.abs(p.y1 - top.y0) <= 1;
+    const gun = parts.filter(p => /^#(3e444a|5a5e62)$/.test(p.col)), tray = parts.find(p => p.col === '#2e3a44');
+    assert.ok(gun.length >= 2 && gun.every(onTop), `${at}: the breech's housing and its block, apart, on the bench`);
+    for (const p of gun) assert.ok(p.x1 - p.x0 <= 26 && F - p.y0 <= 50, `${at}: a gun's part (${JSON.stringify(p)}), small`);
+    assert.ok(tray && onTop(tray), `${at}: the parts tray on the bench`);
+    assert.ok(wsRects(calls, '#8e969e').filter(([x, y, w, h]) => x >= tray.x0 && x + w <= tray.x1 && y >= tray.y0 - 2 && y + h <= tray.y1).length >= 3, `${at}: pins and screws in the tray`);
+    assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === '#7a8288'), `${at}: the breech's spring`);
+    // the tool board: each tool on its hook over its painted outline, one outline empty, the card for the one out hung by it
+    const outlines = placed.filter(p => p.col === wallTone('#5a6a58')), tools = placedParts(calls).filter(p => p.pts.length && WS_TOOLS.includes(p.col)).map(p => partBox(p));
+    const inO = (t, o) => (t.x0 + t.x1) / 2 >= o.x0 && (t.x0 + t.x1) / 2 <= o.x1 && (t.y0 + t.y1) / 2 >= o.y0 && (t.y0 + t.y1) / 2 <= o.y1;
+    assert.ok(tools.length >= 6, `${at}: tools on the board (${tools.length})`);
+    for (const t of tools) assert.ok(outlines.some(o => inO(t, o)), `${at}: a tool (${JSON.stringify(t)}) over its outline`);
+    const empty = outlines.filter(o => !tools.some(t => inO(t, o)));
+    assert.equal(empty.length, 1, `${at}: one tool out (${empty.length})`);
+    const card = placed.find(p => p.col === wallTone('#8a8676'));
+    assert.ok(card && card.x0 < empty[0].x1 + 6 && card.x1 > empty[0].x0 - 6 && card.x1 - card.x0 <= 8, `${at}: the sign-out card hung by the empty outline`);
+    assert.ok(placed.filter(p => p.col === wallTone('#44525e')).length >= 6, `${at}: the small-parts drawers`);
+    // the fabricator: its window, the bed in it, a printed part on the bed, its screen, the spool on its side feeding it
+    const fab = parts.find(p => p.col === '#4a5866'), win = parts.find(p => p.col === '#0e1a24'), bed = parts.find(p => p.col === '#3a4048');
+    const inside = (p, b) => p.x0 >= b.x0 - 0.01 && p.x1 <= b.x1 + 0.01 && p.y0 >= b.y0 - 0.01 && p.y1 <= b.y1 + 0.01;
+    assert.ok(inside(win, fab) && inside(bed, win), `${at}: the bed in the fabricator's window`);
+    const printed = parts.filter(p => p.col === '#8a6a48'), onBed = printed.find(p => inside(p, win) && Math.abs(p.y1 - bed.y0) <= 0.6);
+    assert.ok(onBed && onBed.x1 - onBed.x0 <= 14, `${at}: a printed part on the bed (${JSON.stringify(onBed)})`);
+    assert.ok(placedRects(calls).some(q => q.col === '#03121c' && q.x >= fab.x0 && q.x + q.w <= fab.x1 && q.y >= fab.y0), `${at}: its screen, the time left as a bar`);
+    const spools = parts.filter(p => p.col === '#3a6a70');
+    assert.ok(spools.some(p => p.x0 >= fab.x1 - 8 && p.y1 < fab.y1 && p.x1 - p.x0 <= 16), `${at}: a spool of stock on the fabricator's side`);
+    // the rack: three shelves, the boxes stencilled, the straps across each shelf for zero g, loose spares, the stock spools
+    const rack = parts.find(p => p.col === '#1c2a36'), inR = p => inside(p, { ...rack, y0: rack.y0 - 1 });
+    assert.ok(parts.filter(p => /^#(34485a|4a4e44)$/.test(p.col) && inR(p) && p.x1 - p.x0 >= 0.8 * (rack.x1 - rack.x0)).length >= 3, `${at}: three shelves`);
+    const boxes = parts.filter(p => /^#(4e4434|3e4a40)$/.test(p.col) && inR(p));
+    assert.ok(boxes.length >= 3, `${at}: boxed spares (${boxes.length})`);
+    assert.ok(wsRects(calls, '#7e7660').filter(([x, y, w, h]) => boxes.some(b => x >= b.x0 && x + w <= b.x1 && y >= b.y0 && y + h <= b.y1) && h <= 4).length >= 6, `${at}: stencils on the boxes, marks`);
+    const straps = parts.filter(p => p.col === '#5a5040' && inR(p));
+    assert.ok(straps.length >= 3 && straps.every(p => p.x1 - p.x0 >= 0.7 * (rack.x1 - rack.x0)), `${at}: a strap across each shelf`);
+    assert.ok(parts.some(p => p.col === '#4a5560' && inR(p)) && parts.some(p => p.col === '#3e5068' && inR(p)) && spools.some(inR), `${at}: loose spares, the turret's spare feed tray, the stock`);
+  }
+});
+test('the workshop reads old and patched: a newer fabricator on an older stand, a replacement shelf on printed brackets tagged temporary, tape and cable ties, wear where hands go (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = wsCase(pr, 1.17), F = r.floor, at = `${pr}`, { calls, parts } = wsParts(r, s);
+    const inside = ([x, y, w, h], b) => x >= b.x0 - 0.01 && x + w <= b.x1 + 0.01 && y >= b.y0 - 0.01 && y + h <= b.y1 + 0.01;
+    const fab = parts.find(p => p.col === '#4a5866'), stand = parts.find(p => p.col === '#2a3a48' && p.y1 >= F - 1);
+    assert.ok(stand.x0 <= fab.x0 && stand.x1 >= fab.x1, `${at}: the fabricator, newer, on an older stand`);
+    assert.ok(wsRects(calls, '#8a929a').filter(([x, y]) => Math.abs(y - stand.y0) <= 2 && x >= stand.x0 && x <= stand.x1).length >= 2, `${at}: fresh bolts holding it to the stand`);
+    const rack = parts.find(p => p.col === '#1c2a36'), shelf = parts.find(p => p.col === '#4a4e44');
+    assert.ok(shelf && shelf.x0 >= rack.x0 - 1 && shelf.x1 <= rack.x1 + 1, `${at}: one shelf a replacement, in another shade`);
+    const brackets = parts.filter(p => p.col === '#8a6a48' && p.y0 >= shelf.y1 - 0.5 && p.y0 <= shelf.y1 + 2), tag = parts.find(p => p.col === '#9a9050');
+    assert.ok(brackets.length >= 2 && brackets.every(p => p.x1 - p.x0 <= 6), `${at}: printed brackets under the replacement shelf`);
+    assert.ok(tag && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6 && tag.y0 >= shelf.y1 && tag.y0 <= shelf.y1 + 10, `${at}: the temporary tag hung from a bracket (${JSON.stringify(tag)})`);
+    assert.ok(wsRects(calls, '#6a5038').filter(q => brackets.some(b => inside(q, b))).length >= 2, `${at}: a bracket's printed layers`);
+    assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === '#3a3a40'), `${at}: the fabricator's cable`);
+    const ties = wsRects(calls, '#1e2a36'), tape = parts.find(p => p.col === '#7a7462');
+    assert.ok(ties.length >= 2 && ties.every(([x, y]) => x < fab.x0 + 2 && y > fab.y0 && y < F + 4), `${at}: cable ties on its cable, down the stand`);
+    assert.ok(tape && tape.x1 <= fab.x0 + 3 && tape.x1 - tape.x0 <= 6, `${at}: a wrap of tape on the cable`);
+    const top = parts.find(p => p.col === '#46505a'), vice = parts.find(p => p.col === '#4a5a4e');
+    const wear = wsRects(calls, '#6a747c').filter(q => inside(q, { ...top, y0: top.y0 - 1, y1: top.y1 + 1 }));
+    assert.ok(wear.length >= 2 && wear.some(([x, , w]) => x + w > vice.x0 - 20 && x < vice.x1 + 6), `${at}: paint worn off the bench's edge, by the vice`);
+    assert.ok(wsRects(calls, '#3e4c5a').filter(([x, y]) => y >= F - 10 && x >= rack.x0 - 1 && x <= rack.x1).length >= 2, `${at}: scuffs low on the rack, where boots go`);
+  }
+});
+test('the workshop\'s ceiling lamp is a fitting over the bench (#1024)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = wsCase(pr, 1.17), rec = recorder(); drawRoom(rec.ctx, 'workshop', r, s);
+    const parts = filledParts(rec.calls), [x] = box.roomLamps('workshop', r), e = box.roomEye(r), back = r.top + (r.floor - 80 - r.top) * 0.2;
+    assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${pr}: its plate on the sliver`);
+    assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${pr}: its housing hung from the ceiling`);
+    assert.ok(rec.calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${pr}: the guard over its lens`);
   }
 });
