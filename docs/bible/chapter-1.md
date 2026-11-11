@@ -1,6 +1,6 @@
 # Chapter 1: the hand
 
-Status: draft for the owner's review, 2026-11-11. Most of it records the chapter as built (the code wins, `README.md`); the section "Where the hand reaches the world" is new, the owner's choice of 2026-11-11, and not built. Built on `shape.md`, `work.md`, `ship.md`, `ceres-coop.md`, `owners.md` and the people sheets.
+Status: approved by the owner on 2026-11-11. Most of it records the chapter as built (the code wins, `README.md`); the section "Where the hand reaches the world" is new, the owner's choice of 2026-11-11, and not built yet. Built on `shape.md`, `work.md`, `ship.md`, `ceres-coop.md`, `owners.md` and the people sheets.
 
 ## What it is
 
