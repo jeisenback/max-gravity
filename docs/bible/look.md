@@ -47,9 +47,8 @@ Before a change to the burn view ships, look at a screenshot at 1280x800 next to
 
 ## What this asks of the game
 
-None of these changes is made by this page. Each is its own decision, for the owner, before the passes that would draw it:
+The owner decided all four on 2026-11-11. Each is its own piece of work:
 
-- **A narrower hull.** The Ice Hauler's layout is 880 units wide (`LAYOUTS.freighter`, `js/layouts.js`); the frame uses 720. Rooms, seats and routines are laid out in shares of the width, so the change is mostly in the data, but every burn view pin and screenshot moves.
-- **Bunks three high.** Today two high (`berthBunk`, `js/rooms.js`), and a sleeper is laid out on the bunk they sleep in.
-- **The room box in depth.** Each room's floor, ceiling and side walls in perspective, and solid faces on its furniture. This is a change to how `js/rooms.js` draws every room.
-- **The occupants' things.** Each crew member's bunk filled from their sheet (#934).
+- **A narrower hull, and bunks three high (#1023).** The Ice Hauler's layout narrows from 880 units to 720 (`LAYOUTS.freighter`, `js/layouts.js`). Rooms, seats and routines are laid out in shares of the width, so the change is mostly in the data, but every burn view pin and screenshot moves. The crew's bunks stack three high instead of two (`berthBunk`, `js/rooms.js`), each sleeper in their own tier and each bunk at least 80 long (#976).
+- **The room box in depth (#1024).** Each room's floor, ceiling and side walls in perspective, and solid faces on its furniture. This is a change to how `js/rooms.js` draws every room, with a spec first. It goes with the lighting pass (#932) and the detail pass (#933).
+- **The occupants' things (#934).** Each crew member's bunk is filled from their sheet in `people/`, by the bunk's plan.
