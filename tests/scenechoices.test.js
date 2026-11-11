@@ -100,19 +100,19 @@ test('the captain\'s terms, the split, customs and the friend at the dock', asyn
       addBond(a, b, -9); st.feuds = { [bondKey(a, b)]: 1 }; st.relAt = {};
       return splitScene();
     }, 'split');
-    // Customs: someone the port's faction wants (Ines is an exile from the Compact), and the ship's papers, an officer aboard, a patrol.
-    playBuilt(() => { const st = start(), ines = castPerson('ines'); if (!st.crew.includes(ines.id)) st.crew.push(ines.id); st.customs = {}; return customsScene('Arcology Compact', currentPlanet()); }, 'customs');
-    playBuilt(() => { const st = start(); find(t => t.status['Arcology Compact'] === 'wanted'); st.customs = {}; return customsScene('Arcology Compact', currentPlanet(), true); }, 'customs.patrol');
+    // Customs: someone the port's faction wants (Ines is an exile from the Arcology Pact), and the ship's papers, an officer aboard, a patrol.
+    playBuilt(() => { const st = start(), ines = castPerson('ines'); if (!st.crew.includes(ines.id)) st.crew.push(ines.id); st.customs = {}; return customsScene('Arcology Pact', currentPlanet()); }, 'customs');
+    playBuilt(() => { const st = start(); find(t => t.status['Arcology Pact'] === 'wanted'); st.customs = {}; return customsScene('Arcology Pact', currentPlanet(), true); }, 'customs.patrol');
     playBuilt(() => {
-      const st = start(); find(t => t.status['Arcology Compact'] === 'officer'); find(t => t.status['Arcology Compact'] === 'wanted'); st.customs = {};
-      return customsScene('Arcology Compact', currentPlanet(), true);
+      const st = start(); find(t => t.status['Arcology Pact'] === 'officer'); find(t => t.status['Arcology Pact'] === 'wanted'); st.customs = {};
+      return customsScene('Arcology Pact', currentPlanet(), true);
     }, 'customs.officer');
-    playBuilt(() => { const st = start(); find(t => t.status['Arcology Compact'] === 'officer'); return dockFriendScene('Arcology Compact', currentPlanet()); }, 'dock friend');
+    playBuilt(() => { const st = start(); find(t => t.status['Arcology Pact'] === 'officer'); return dockFriendScene('Arcology Pact', currentPlanet()); }, 'dock friend');
     // Word from home: a war, and one of the crew a member or an officer of a side in it, as the port offers it.
     for (const status of ['member', 'officer']) {
       playBuilt(() => {
-        const st = start(); st.day += 5; find(t => t.status['Arcology Compact'] === status);
-        factionState().war = { a: 'Arcology Compact', b: 'Dome Concord', start: st.day, until: st.day + 40, score: { 'Arcology Compact': 0, 'Dome Concord': 0 } };
+        const st = start(); st.day += 5; find(t => t.status['Arcology Pact'] === status);
+        factionState().war = { a: 'Arcology Pact', b: 'Dome Pact', start: st.day, until: st.day + 40, score: { 'Arcology Pact': 0, 'Dome Pact': 0 } };
         for (const c of Mods.filter('happenings', [], 'port', currentPlanet())) { const e = typeof c.make === 'function' && c.make(); if (e && e.title === 'Word From Home') return e; }
         return null;
       }, `war call.${status}`);
@@ -229,7 +229,7 @@ test('every tradition has its lines, the dock says whose ship you were put off, 
     for (const t of carried) if (typeof t !== 'string' || !t.length || /undefined|NaN|\{[a-z]+\}/.test(t)) bad.push(`carried: ${t}`);
     // The scenes the faction ties offer, as the port and the burn draw them (a faction's wanted aboard, an officer on the dock).
     const ines = castPerson('ines'); if (!st.crew.includes(ines.id)) st.crew.push(ines.id);
-    find(t => t.status['Arcology Compact'] === 'officer');
+    find(t => t.status['Arcology Pact'] === 'officer');
     st.day += 5; st.customs = {};
     const offered = [];
     for (const where of ['port', 'transit']) {

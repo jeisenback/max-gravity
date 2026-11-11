@@ -1,12 +1,12 @@
 'use strict';
 
 // Port inspections (#993, docs/superpowers/specs/2026-11-10-port-inspection-design.md). Open space is policed by nobody (docs/bible/jurisdictions.md):
-// a port inspects a ship on arrival under its owner's rules. The Compact, the Concord and the League inspect; independent and pirate ports do not.
+// a port inspects a ship on arrival under its owner's rules. The Arcology Pact, the Dome Pact and the Federation inspect; independent and pirate ports do not.
 // Two causes: the ship's standing with the port's owner at -15 or worse, and a good that owner licenses for import, landed without its licence (a
 // licence cannot be had yet, so a ship never holds one). These take what they read and return a value.
 
 // The good each inspecting owner licenses for import.
-const LICENSED = { 'Arcology Compact': 'medical', 'Dome Concord': 'water', 'Charter League': 'industrial' };
+const LICENSED = { 'Arcology Pact': 'medical', 'Dome Pact': 'water', 'Guild Federation': 'industrial' };
 const INSPECTING = Object.keys(LICENSED);
 const to100 = n => Math.round(n / 100) * 100;
 

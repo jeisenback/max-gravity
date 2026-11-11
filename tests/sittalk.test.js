@@ -62,10 +62,10 @@ test('a war, a grudge, a close friend, or something you did last time each give 
     st.bonds = {}; addBond(f(p), f(other), 7); out.close = talkTopics(p).some(t => t.choices[1].label === 'Say you can tell');
     st.bonds = {};
     // a war between the two states, for someone of one of them
-    let q = null; for (let i = 0; i < 400 && !(q && tiesOf(q).aff === 'Arcology Compact'); i++) { q = makePerson('earth'); q.memories = []; }
+    let q = null; for (let i = 0; i < 400 && !(q && tiesOf(q).aff === 'Arcology Pact'); i++) { q = makePerson('earth'); q.memories = []; }
     registerPerson(q); st.crew.push(q.id);
     out.noWar = talkTopics(q).some(t => t.choices[2] && t.choices[2].label === 'Change the subject');
-    factionState().war = { a: 'Arcology Compact', b: 'Dome Concord', start: st.day, until: st.day + 40, score: { 'Arcology Compact': 0, 'Dome Concord': 0 } };
+    factionState().war = { a: 'Arcology Pact', b: 'Dome Pact', start: st.day, until: st.day + 40, score: { 'Arcology Pact': 0, 'Dome Pact': 0 } };
     out.war = talkTopics(q).some(t => t.choices[2] && t.choices[2].label === 'Change the subject');
     // what you did last time
     p.memories.push('Day 3: You bought me a drink.');

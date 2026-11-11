@@ -126,11 +126,11 @@ test('each site writes its count: the repel, the assault, the fight\'s end, the 
     s = assaultStart(makeEnemy({ kind: 'pirate', shipId: 'raider' })); assaultSettle(s, true, ''); out.carried = rec().boardingsWon;
     startDuel({ kind: 'pirate' }, false); let f = G.nextEvent.fight; G.nextEvent = null; shipFightEnd(f, 'broke'); out.won = rec().fightsWon;
     startDuel({ kind: 'pirate' }, false); f = G.nextEvent.fight; G.nextEvent = null; shipFightEnd(f, 'ran'); out.ran = rec().fightsRan; G.nextEvent = null; G.dialog = null;
-    const real = Math.random; startShipFight({ kind: 'patrol', gov: 'Arcology Compact' }, true); out.fled = [rec().fled, rec().ranFromNavy]; G.nextEvent = null; G.dialog = null;  // counted before the roll, got away or not
+    const real = Math.random; startShipFight({ kind: 'patrol', gov: 'Arcology Pact' }, true); out.fled = [rec().fled, rec().ranFromNavy]; G.nextEvent = null; G.dialog = null;  // counted before the roll, got away or not
     h.run = { ice: { edge: 3 }, tons: 20 }; iceHome(3); iceHome(-2); out.hauls = [rec().haulsClean, rec().haulsBad];
-    const here = currentPlanet(), run = due => ({ contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 10, from: 'X', planet: here.name, sid: st.systemId, pay: 30000, day: st.day - 6, days: 6, due, cost: 0, profit: 30000 });
+    const here = currentPlanet(), run = due => ({ contract: true, shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 10, from: 'X', planet: here.name, sid: st.systemId, pay: 30000, day: st.day - 6, days: 6, due, cost: 0, profit: 30000 });
     st.cargo.water = 10; h.run = run(st.day + 5); settleRun(here); st.cargo.water = 10; h.run = run(st.day - 1); settleRun(here); out.delivered = [rec().onTime, rec().late];  // the delivery, on the day and late (hired.js settleRun)
-    const inspect = inspectionScene(inspectionCause({ water: 50 }, 'Dome Concord', 0, false), currentPlanet()); inspect.choices[inspect.choices.length - 1].run(); out.heave = rec().fines;  // keeping out of it (inspection.js)
+    const inspect = inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()); inspect.choices[inspect.choices.length - 1].run(); out.heave = rec().fines;  // keeping out of it (inspection.js)
     citation(); out.cited = rec().fines;
     hurtHand({ hurt: new Set() }); out.hurt = rec().hurts;
     const c = repelStart(foe(), 'half'); c.covered = true; c.hurt = new Set(); c.dead = []; c.marked = []; Math.random = () => 0.99; repelCasualty(c, st.crew[0]); Math.random = real; out.mate = rec().matesHurt;
@@ -206,7 +206,7 @@ test('Marked halves a pirate\'s pay-off and raises the search\'s fine; Runner me
     h.record = { fines: 2 }; st.credits = 200000; out.pay = [plainPay, pay()]; st.credits = 200000; out.fine = [plainFine, heaveToFine()];
     const band = () => { startDuel({ kind: 'pirate' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
     h.record = {}; const plainBand = band(); h.record = { fightsRan: 3 }; out.band = [plainBand, band()];
-    const navyBand = () => { startDuel({ kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
+    const navyBand = () => { startDuel({ kind: 'patrol', gov: 'Arcology Pact', shipId: 'cutter' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
     h.record = {}; const plainNavy = navyBand(); h.record = { fightsRan: 3 }; out.navy = [plainNavy, navyBand()];
     const payGate = () => !contactEvent({ kind: 'pirate' }).choices.find(x => /pay|Pay/.test(x.label) && x.cost).can();
     st.credits = 3000; h.record = {}; out.gate = [payGate()]; h.record = { fines: 2 }; out.gate.push(payGate());

@@ -21,7 +21,7 @@ const run = async (fn, o) => { const t = await open(o); await t.ev(helpers); con
 
 test('a shipper that knows the ship offers its arc on the Missions page, once, at its own port, to a ship with room on the board', async () => {
   const r = await run(() => {
-    const st = start(), h = hired(), hall = 'the League Freight Hall', out = {};
+    const st = start(), h = hired(), hall = 'the Federation Freight Hall', out = {};
     h.away = []; goTo('ceres', 'Ceres Station'); Mods.emit('landed', currentPlanet()); out.stranger = h.away.filter(a => a.arc).length;
     h.standing = { [hall]: 1 }; goTo('ceres', 'Ceres Station'); Mods.emit('landed', currentPlanet());
     out.offer = h.away.filter(a => a.arc).map(a => ({ arc: a.arc, planet: a.planet, sid: a.sid, who: a.ctx.who, days: a.days })); out.note = UI.notes.join(' ');
@@ -34,13 +34,13 @@ test('a shipper that knows the ship offers its arc on the Missions page, once, a
   assert.equal(r.stranger, 0, 'a shipper that does not know the ship offers nothing'); assert.equal(r.offer.length, 1);
   assert.deepEqual([r.offer[0].arc, r.offer[0].planet, r.offer[0].sid], ['league', 'The Hollows', 'pallas']); assert.match(r.offer[0].who, /^Agent \S+$/);
   assert.match(r.note, /has something for the ship that is not freight\. It is on the Missions page\./);
-  assert.equal(r.again, 1, 'one at a time'); assert.equal(r.elsewhere, 0, 'not at another port of the League'); assert.equal(r.full, 0, 'not onto a full board');
+  assert.equal(r.again, 1, 'one at a time'); assert.equal(r.elsewhere, 0, 'not at another port of the Federation'); assert.equal(r.full, 0, 'not onto a full board');
   assert.match(r.page, /A Crate for The Hollows/); assert.match(r.page, /a sealed crate for the Hollows that the Hall will not put on a bill of lading/); assert.match(r.page, /Put it to the captain/);
 });
 
 test('the offer goes to the captain through the pitch, and at the far end the arc\'s first scene plays', async () => {
   const r = await run(() => {
-    const st = start(), h = hired(), hall = 'the League Freight Hall', out = {};
+    const st = start(), h = hired(), hall = 'the Federation Freight Hall', out = {};
     h.standing = { [hall]: 1 }; h.away = []; goTo('ceres', 'Ceres Station'); Mods.emit('landed', currentPlanet()); const a = h.away[0];
     const real = Math.random, ev = pitchScene(a); out.labels = ev.choices.map(c => c.label.replace(/ \[.*$/, '')); out.text = ev.text;
     Math.random = () => 0; const text = ev.choices[0].run(); Math.random = real; out.booked = a.booked; out.text2 = text;
@@ -56,7 +56,7 @@ test('the offer goes to the captain through the pitch, and at the far end the ar
 
 test('the water dispute, with the Hollows: the crate, the floor, the count and the pump crew\'s keys, which join the kit and sharpen a job', async () => {
   const r = await run(() => {
-    const st = start(), h = hired(), hall = 'the League Freight Hall', out = {};
+    const st = start(), h = hired(), hall = 'the Federation Freight Hall', out = {};
     h.standing = { [hall]: 1 }; h.away = [{ tpl: 'arc:league', arc: 'league', ctx: { dest: 'The Hollows', who: 'Agent X' }, sid: 'pallas', planet: 'The Hollows', days: 3, until: st.day + 40, pitched: null }];
     const first = land('pallas', 'The Hollows'); out.c1 = pick1(first, 'Say you will, at the vote').text; out.q1 = { ...G.state.qualities };
     out.early = (land('pallas', 'Pallas Refinery') || {}).title; days(6);
@@ -89,7 +89,7 @@ test('the water dispute, with the Hollows: the crate, the floor, the count and t
 
 test('the water dispute, with the Refinery: not speaking and the count for the refinery end in a fee and Marit, and the keys stay with the Hollows', async () => {
   const r = await run(() => {
-    const st = start(), h = hired(), hall = 'the League Freight Hall', out = {};
+    const st = start(), h = hired(), hall = 'the Federation Freight Hall', out = {};
     h.standing = { [hall]: 1 }; h.away = [{ tpl: 'arc:league', arc: 'league', ctx: { dest: 'The Hollows', who: 'Agent X' }, sid: 'pallas', planet: 'The Hollows', days: 3, until: st.day + 40, pitched: null }];
     pick1(land('pallas', 'The Hollows'), 'Say the Hall\'s name is the Hall\'s to give'); days(6);
     const floor = land('pallas', 'Pallas Refinery'), f = pick1(floor, 'Tell her what was in it'); G.nextEvent = f.next;
@@ -119,11 +119,11 @@ test('the arcs\' people are the same people each time, stay off the bar\'s stool
   assert.equal(r.kept, true, 'kept however full the registry gets'); assert.equal(r.stillSame, true); assert.equal(r.bar, false);
 });
 
-test('the Concord office offers its passenger at Mars to a ship it knows, and the auditor arrives at Old Town', async () => {
+test('the Dome Pact office offers its passenger at Mars to a ship it knows, and the auditor arrives at Old Town', async () => {
   const r = await run(() => {
     const st = start(), h = hired(), out = {};
     h.away = []; goTo('mars', 'Mars'); Mods.emit('landed', currentPlanet()); out.stranger = h.away.filter(a => a.arc).length;
-    h.standing = { 'the Concord Freight Office': 1 }; goTo('mars', 'Mars'); Mods.emit('landed', currentPlanet());
+    h.standing = { 'the Dome Pact Freight Office': 1 }; goTo('mars', 'Mars'); Mods.emit('landed', currentPlanet());
     out.offer = h.away.filter(a => a.arc).map(a => ({ arc: a.arc, planet: a.planet, sid: a.sid })); out.title = arcJob(h.away.find(a => a.arc)).title.replace('{dest}', 'Eros Old Town');
     h.away = []; goTo('mars', 'Phobos Yards'); Mods.emit('landed', currentPlanet()); out.elsewhere = h.away.filter(a => a.arc).length;
     h.away = [{ tpl: 'arc:concord', arc: 'concord', ctx: { dest: 'Eros Old Town', who: 'Agent X' }, sid: 'eros', planet: 'Eros Old Town', days: 8, until: st.day + 40, pitched: null }];
@@ -137,12 +137,12 @@ test('the Concord office offers its passenger at Mars to a ship it knows, and th
 test('the air audit, signed: the corridors, the count and the auditor\'s seal at Mars, which joins the kit and sharpens a word with the captain', async () => {
   const r = await run(() => {
     const st = start(), h = hired(), out = {};
-    h.standing = { 'the Concord Freight Office': 1 }; h.away = [{ tpl: 'arc:concord', arc: 'concord', ctx: { dest: 'Eros Old Town', who: 'Agent X' }, sid: 'eros', planet: 'Eros Old Town', days: 8, until: st.day + 40, pitched: null }];
+    h.standing = { 'the Dome Pact Freight Office': 1 }; h.away = [{ tpl: 'arc:concord', arc: 'concord', ctx: { dest: 'Eros Old Town', who: 'Agent X' }, sid: 'eros', planet: 'Eros Old Town', days: 8, until: st.day + 40, pitched: null }];
     const first = land('eros', 'Eros Old Town'), w = pick1(first, 'Walk the corridors with her'); out.walk = w.text; out.nextTitle = w.next.title; G.nextEvent = w.next;
     out.dark = w.next.choices.map(c => c.label); const s = pick1(w.next, 'Sign the count'); out.signed = s.text; out.q = { ...G.state.qualities }; days(5);
     out.hob = (land('eros', 'Eros Old Town') || {}).title;
     out.before = kitEdge(h.kit, 'word'); const coda = land('mars', 'Mars'); out.coda = { title: coda.title, labels: coda.choices.map(c => c.label) };
-    const k = pick1(coda, 'Take the seal'); out.seal = k.text; out.kit = [...h.kit]; out.after = kitEdge(h.kit, 'word'); out.office = h.standing['the Concord Freight Office']; out.again = (land('mars', 'Mars') || {}).title;
+    const k = pick1(coda, 'Take the seal'); out.seal = k.text; out.kit = [...h.kit]; out.after = kitEdge(h.kit, 'word'); out.office = h.standing['the Dome Pact Freight Office']; out.again = (land('mars', 'Mars') || {}).title;
     const odile = Object.values(G.state.people).find(p => p.arcPerson === 'odile'), hob = Object.values(G.state.people).find(p => p.arcPerson === 'hob');
     out.odile = odile && { name: `${odile.first} ${odile.last}`, opinion: odile.opinion, at: odile.location }; out.hobOpinion = hob && hob.opinion;
     out.log = (G.state.journal || []).map(j => j.text);
@@ -160,7 +160,7 @@ test('the air audit, signed: the corridors, the count and the auditor\'s seal at
 
 test('the air audit, the other ways: waiting at the ship, the lie about the vents and the fee at Old Town', async () => {
   const r = await run(() => {
-    const st = start(), h = hired(), out = {}, arc = () => { h.standing = { 'the Concord Freight Office': 1 }; h.away = [{ tpl: 'arc:concord', arc: 'concord', ctx: { dest: 'Eros Old Town', who: 'Agent X' }, sid: 'eros', planet: 'Eros Old Town', days: 8, until: st.day + 40, pitched: null }]; };
+    const st = start(), h = hired(), out = {}, arc = () => { h.standing = { 'the Dome Pact Freight Office': 1 }; h.away = [{ tpl: 'arc:concord', arc: 'concord', ctx: { dest: 'Eros Old Town', who: 'Agent X' }, sid: 'eros', planet: 'Eros Old Town', days: 8, until: st.day + 40, pitched: null }]; };
     arc(); const first = land('eros', 'Eros Old Town'); const w = pick1(first, 'Wait at the ship'); out.wait = { text: w.text, next: !!w.next, q: { ...G.state.qualities } }; days(5);
     const coda = land('eros', 'Eros Old Town'); out.coda = { title: coda.title, labels: coda.choices.map(c => c.label) };
     const c0 = G.state.credits, k = pick1(coda, 'Take the envelope'); out.fee = k.text; out.credits = G.state.credits - c0; out.kit = [...(h.kit || [])];
@@ -177,7 +177,7 @@ test('the air audit, the other ways: waiting at the ship, the lie about the vent
 test('the vents lie costs the auditor\'s regard but does not stand the audit', async () => {
   const r = await run(() => {
     const st = start(), h = hired(), out = {};
-    h.standing = { 'the Concord Freight Office': 1 }; h.away = [{ tpl: 'arc:concord', arc: 'concord', ctx: { dest: 'Eros Old Town', who: 'Agent X' }, sid: 'eros', planet: 'Eros Old Town', days: 8, until: st.day + 40, pitched: null }];
+    h.standing = { 'the Dome Pact Freight Office': 1 }; h.away = [{ tpl: 'arc:concord', arc: 'concord', ctx: { dest: 'Eros Old Town', who: 'Agent X' }, sid: 'eros', planet: 'Eros Old Town', days: 8, until: st.day + 40, pitched: null }];
     const w = pick1(land('eros', 'Eros Old Town'), 'Walk the corridors with her'); G.nextEvent = w.next; const s = pick1(w.next, 'Say the vents were open'); out.lie = s.text; out.q = { ...G.state.qualities }; days(5);
     out.coda = (land('eros', 'Eros Old Town') || {}).title; out.mars = (land('mars', 'Mars') || {}).title;
     out.odile = Object.values(G.state.people).find(p => p.arcPerson === 'odile').opinion;
@@ -186,11 +186,11 @@ test('the vents lie costs the auditor\'s regard but does not stand the audit', a
   assert.match(r.lie, /All fourteen/); assert.equal(r.q.concordSide, 1); assert.equal(r.coda, 'The Steward\'s Fee'); assert.notEqual(r.mars, 'The Air Levy Meeting'); assert.ok(r.odile < 3, `Odile cooler (${r.odile})`);
 });
 
-test('the Compact office offers its notice at Earth to a ship it knows, and the rigger takes it at Luna', async () => {
+test('the Arcology Pact office offers its notice at Earth to a ship it knows, and the rigger takes it at Luna', async () => {
   const r = await run(() => {
     const st = start(), h = hired(), out = {};
     h.away = []; goTo('earth', 'Earth'); Mods.emit('landed', currentPlanet()); out.stranger = h.away.filter(a => a.arc).length;
-    h.standing = { 'the Compact Freight Office': 1 }; goTo('earth', 'Earth'); Mods.emit('landed', currentPlanet());
+    h.standing = { 'the Arcology Pact Freight Office': 1 }; goTo('earth', 'Earth'); Mods.emit('landed', currentPlanet());
     out.offer = h.away.filter(a => a.arc).map(a => ({ arc: a.arc, planet: a.planet, sid: a.sid, days: a.days })); out.title = arcJob(h.away.find(a => a.arc)).title.replace('{dest}', 'Luna');
     h.away = []; goTo('earth', 'Luna'); Mods.emit('landed', currentPlanet()); out.elsewhere = h.away.filter(a => a.arc).length;
     h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }];
@@ -204,12 +204,12 @@ test('the Compact office offers its notice at Earth to a ship it knows, and the 
 test('the license inspection, told: the carrier license at Earth joins the kit and sharpens a bold call', async () => {
   const r = await run(() => {
     const st = start(), h = hired(), out = {};
-    h.standing = { 'the Compact Freight Office': 1 }; h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }];
+    h.standing = { 'the Arcology Pact Freight Office': 1 }; h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }];
     const w = pick1(land('earth', 'Luna'), 'Stay for the inspection'); out.nextTitle = w.next.title; G.nextEvent = w.next;
     out.bay = w.next.choices.map(c => c.label); const s = pick1(w.next, 'Say what you saw'); out.said = s.text; out.q = { ...G.state.qualities }; days(5);
     out.dag = (land('earth', 'Luna') || {}).title;
     out.before = kitEdge(h.kit, 'solo'); const coda = land('earth', 'Earth'); out.coda = { title: coda.title, labels: coda.choices.map(c => c.label) };
-    const k = pick1(coda, 'Take the license'); out.license = k.text; out.kit = [...h.kit]; out.after = kitEdge(h.kit, 'solo'); out.office = h.standing['the Compact Freight Office']; out.again = (land('earth', 'Earth') || {}).title;
+    const k = pick1(coda, 'Take the license'); out.license = k.text; out.kit = [...h.kit]; out.after = kitEdge(h.kit, 'solo'); out.office = h.standing['the Arcology Pact Freight Office']; out.again = (land('earth', 'Earth') || {}).title;
     const petra = Object.values(G.state.people).find(p => p.arcPerson === 'petra'), dag = Object.values(G.state.people).find(p => p.arcPerson === 'dag');
     out.petra = petra && { name: `${petra.first} ${petra.last}`, opinion: petra.opinion, at: petra.location }; out.dagOpinion = dag && dag.opinion; out.log = (G.state.journal || []).map(j => j.text);
     return out;
@@ -218,15 +218,15 @@ test('the license inspection, told: the carrier license at Earth joins the kit a
   assert.match(r.said, /That is very clear/); assert.equal(r.q.compact, 1); assert.equal(r.q.compactSide, 2); assert.ok(r.q['due:compact-end'] > 0);
   assert.notEqual(r.dag, 'The Riggers\' Collection', 'the riggers have nothing for a ship that told');
   assert.equal(r.coda.title, 'The Carrier License'); assert.deepEqual(r.coda.labels, ['Take the license', 'Say the license belongs to the Office']);
-  assert.match(r.license, /Do keep it dry/); assert.match(r.license, /You carry a Compact carrier license now\./); assert.deepEqual(r.kit, ['carrier-license']);
+  assert.match(r.license, /Do keep it dry/); assert.match(r.license, /You carry an Arcology Pact carrier license now\./); assert.deepEqual(r.kit, ['carrier-license']);
   assert.ok(Math.abs(r.after - r.before - 0.05) < 1e-9, 'the license adds five points to a bold call'); assert.equal(r.office, 2); assert.notEqual(r.again, 'The Carrier License', 'it plays once');
   assert.deepEqual([r.petra.name, r.petra.at], ['Petra Lindqvist', 'Earth']); assert.ok(r.petra.opinion >= 2, `Petra thinks well of the ship (${r.petra.opinion})`); assert.ok(r.dagOpinion < 0);
-  assert.ok(r.log.some(l => /Told the Compact's licensing officer what the rigger's bay had worked on/.test(l)) && r.log.some(l => /carrier license/.test(l)));
+  assert.ok(r.log.some(l => /Told the Arcology Pact's licensing officer what the rigger's bay had worked on/.test(l)) && r.log.some(l => /carrier license/.test(l)));
 });
 
 test('the license inspection, the other ways: leaving, the lie about the bay and the riggers\' collection at Luna', async () => {
   const r = await run(() => {
-    const st = start(), h = hired(), out = {}, arc = () => { h.standing = { 'the Compact Freight Office': 1 }; h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }]; };
+    const st = start(), h = hired(), out = {}, arc = () => { h.standing = { 'the Arcology Pact Freight Office': 1 }; h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }]; };
     arc(); const w = pick1(land('earth', 'Luna'), 'Leave him the page and go'); out.leave = { text: w.text, next: !!w.next, q: { ...G.state.qualities } }; days(5);
     const coda = land('earth', 'Luna'); out.coda = { title: coda.title, labels: coda.choices.map(c => c.label) };
     const c0 = G.state.credits, k = pick1(coda, 'Take the roll'); out.fee = k.text; out.credits = G.state.credits - c0; out.kit = [...(h.kit || [])];
@@ -242,11 +242,78 @@ test('the license inspection, the other ways: leaving, the lie about the bay and
 test('the bay lie costs the inspector\'s regard but does not issue the license', async () => {
   const r = await run(() => {
     const st = start(), h = hired(), out = {};
-    h.standing = { 'the Compact Freight Office': 1 }; h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }];
+    h.standing = { 'the Arcology Pact Freight Office': 1 }; h.away = [{ tpl: 'arc:compact', arc: 'compact', ctx: { dest: 'Luna', who: 'Agent X' }, sid: 'earth', planet: 'Luna', days: 1, until: st.day + 40, pitched: null }];
     const w = pick1(land('earth', 'Luna'), 'Stay for the inspection'); G.nextEvent = w.next; const s = pick1(w.next, 'Say the bay was idle'); out.lie = s.text; out.q = { ...G.state.qualities }; days(5);
     out.coda = (land('earth', 'Luna') || {}).title; out.earth = (land('earth', 'Earth') || {}).title;
     out.petra = Object.values(G.state.people).find(p => p.arcPerson === 'petra').opinion;
     return out;
   });
   assert.match(r.lie, /Idle/); assert.equal(r.q.compactSide, 1); assert.equal(r.coda, 'The Riggers\' Collection'); assert.notEqual(r.earth, 'The Carrier License'); assert.ok(r.petra < 3, `Petra cooler (${r.petra})`);
+});
+
+// The marks the counts leave on the world (#1044, docs/bible/chapter-1.md): the news, the port's unrest, the water price at whichever side goes short, and who remembers.
+const runWith = async (extra, fn) => { const t = await open(); await t.ev(helpers); await t.ev(extra); const r = await t.ev(fn); await t.done(); return r; };
+const marks = () => {
+  window.markOf = (sid, port, fn) => {
+    const pl = planetNamed(port).pl, key = `${pl.name}|water`; delete G.state.market[key];
+    const unrest = worldOf(sid).unrest, news = (G.state.news || []).length && G.state.news[0].text;
+    fn();
+    const q = G.state.qualities;
+    return { unrest: +(worldOf(sid).unrest - unrest).toFixed(3), water: +pressure(pl, 'water').toFixed(3), news: G.state.news && G.state.news[0] && G.state.news[0].text !== news ? G.state.news[0].text : null,
+      hollows: q.markHollows || 0, refinery: q.markRefinery || 0, closed: q.markClosedHalf || 0, auditors: q.markAuditors || 0 };
+  };
+  window.leagueTo = (crate, floorPick) => {
+    const st = G.state, h = hired();
+    h.standing = { 'the Federation Freight Hall': 1 }; h.away = [{ tpl: 'arc:league', arc: 'league', ctx: { dest: 'The Hollows', who: 'Agent X' }, sid: 'pallas', planet: 'The Hollows', days: 3, until: st.day + 40, pitched: null }];
+    pick1(land('pallas', 'The Hollows'), crate); days(6);
+    const f = pick1(land('pallas', 'Pallas Refinery'), floorPick); G.nextEvent = f.next; return f.next;
+  };
+};
+
+test('the water count marks Pallas: the Hollows carried cut the refinery\'s draw, and the refinery carried leaves the Hollows short', async () => {
+  const r = await runWith(marks, () => {
+    const out = {};
+    start(); let count = leagueTo('Say you will, at the vote', 'Tell her it was sealed');
+    out.spoke = markOf('pallas', 'Pallas Refinery', () => pick1(count, 'Speak'));
+    start(); count = leagueTo('Say you will, at the vote', 'Tell her you will speak at the vote');
+    out.backHollows = markOf('pallas', 'Pallas Refinery', () => pick1(count, 'Stay at the back'));
+    start(); count = leagueTo('Say the Hall\'s name is the Hall\'s to give', 'Tell her what was in it');
+    out.backRefinery = markOf('pallas', 'The Hollows', () => pick1(count, 'Stay at the back'));
+    return out;
+  });
+  for (const k of ['spoke', 'backHollows']) {
+    const m = r[k];
+    assert.equal(m.unrest, -0.1, `${k}: Pallas calmer`); assert.equal(m.water, 0.15, `${k}: water dearer at the refinery`);
+    assert.match(m.news, /the refinery's water draw is cut by a fifth/); assert.deepEqual([m.hollows, m.refinery], [1, -1], `${k}: the Hollows remember the ship well`);
+  }
+  const m = r.backRefinery;
+  assert.equal(m.unrest, 0.1, 'Pallas less settled'); assert.equal(m.water, 0.15, 'water dearer at the Hollows');
+  assert.match(m.news, /the refinery keeps its water draw/); assert.deepEqual([m.hollows, m.refinery], [-1, 1], 'the refinery remembers the ship well');
+});
+
+test('the air count marks Eros: an audit that stands is in the news and cuts the sealed half\'s air, and one that does not is in none', async () => {
+  const r = await runWith(marks, () => {
+    const out = {}, arc = () => { const st = G.state, h = hired(); h.standing = { 'the Dome Pact Freight Office': 1 }; h.away = [{ tpl: 'arc:concord', arc: 'concord', ctx: { dest: 'Eros Old Town', who: 'Agent X' }, sid: 'eros', planet: 'Eros Old Town', days: 8, until: st.day + 40, pitched: null }]; };
+    for (const [k, pick] of [['signed', 'Sign the count'], ['lie', 'Say the vents were open'], ['carried', 'Say you only carried her']]) {
+      start(); arc(); const w = pick1(land('eros', 'Eros Old Town'), 'Walk the corridors with her'); G.nextEvent = w.next;
+      out[k] = markOf('eros', 'Eros Old Town', () => pick1(w.next, pick));
+    }
+    start(); arc(); out.waited = markOf('eros', 'Eros Old Town', () => pick1(land('eros', 'Eros Old Town'), 'Wait at the ship'));
+    return out;
+  });
+  assert.equal(r.signed.unrest, 0.1, 'Eros less settled'); assert.match(r.signed.news, /stops paying for the air of fourteen sealed corridors/);
+  assert.deepEqual([r.signed.closed, r.signed.auditors], [-1, 1], 'the sealed half remembers, and so do the auditors');
+  for (const k of ['lie', 'carried']) { assert.equal(r[k].unrest, 0, k); assert.equal(r[k].news, null, `${k}: nothing in the news`); assert.equal(r[k].closed, 1, `${k}: the sealed half remembers the ship well`); }
+  assert.deepEqual([r.waited.unrest, r.waited.news, r.waited.closed], [0, null, 0], 'a ship that waited is no part of it');
+});
+
+test('a price effect names a port, a good and a share no larger than the market moves, or the scene is refused', async () => {
+  const r = await run(() => [
+    EFFECT_SHAPES.price({ 'Pallas Refinery': { water: 0.15 } }),
+    EFFECT_SHAPES.price({ 'Nowhere': { water: 0.1 } }),
+    EFFECT_SHAPES.price({ 'The Hollows': { gold: 0.1 } }),
+    EFFECT_SHAPES.price({ 'The Hollows': { water: 2 } }),
+    EFFECT_SHAPES.price(['The Hollows']),
+  ]);
+  assert.equal(r[0], ''); assert.match(r[1], /Nowhere is not a port/); assert.match(r[2], /gold is not a good/); assert.match(r[3], /water: a share between/); assert.match(r[4], /needs/);
 });

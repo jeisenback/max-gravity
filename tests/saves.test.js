@@ -39,6 +39,8 @@ for (const scope of ['earth-hired', 'full']) {
         out[name] = {
           refused, mode: G.mode,
           chapter,
+          oldNames: (JSON.stringify(st).match(/Arcology Compact|Dome Concord|Charter League/g) || []).length,  // the three powers' old names are gone (#1043)
+          powers: { rep: st.rep, tension: Object.keys((st.factions || {}).tension || {}) },
           missing: Object.keys(want).filter(k => st[k] === undefined || own[k] === undefined),
           wrongType: Object.keys(want).filter(k => want[k] !== null && (typeof st[k] !== typeof want[k] || Array.isArray(st[k]) !== Array.isArray(want[k]))),
         };
@@ -57,6 +59,11 @@ for (const scope of ['earth-hired', 'full']) {
       aboard: ['ines', 'tomas', 'slicer', 'cato', 'quartermaster', 'medic', 'cook', 'icehand', 'icehand'], cast: ['ines', 'tomas', 'cato'], injured: [] });  // Tomas is hurt in the file (checked below); the port's clinic treats him when the save lands
     assert.deepEqual(Object.keys(JSON.parse(FIXTURES.find(f => f.name === 'v3-hired-save.json').text).injured), ['c:tomas'], 'the fixture holds a hurt crew member');
     assert.equal(results['empty-save.json'].chapter, null, 'an owner save has no chapter');
+    // The three powers became the blocs (#1043): the fixture's standing and the world's economies and tension carry over under the new names, the tension keys sorted again.
+    for (const { name } of FIXTURES) assert.equal(results[name].oldNames, 0, `${name}: no old power's name is left`);
+    const powers = results['v3-hired-save.json'].powers;
+    assert.equal(powers.rep['Dome Pact'], 1, 'the standing with the Dome Concord is the Dome Pact\'s');
+    assert.deepEqual(powers.tension.sort(), ['Arcology Pact|Dome Pact', 'Arcology Pact|Guild Federation', 'Dome Pact|Guild Federation']);
     await done();
   });
 }

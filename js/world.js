@@ -178,7 +178,7 @@ function conditions(sid) {
 // space, and their markets want medical supplies, machine parts, and metal. The side
 // that wins more battles (your kills and war goods count) takes the peace.
 
-const STATE_FACTIONS = ['Arcology Compact', 'Dome Concord', 'Charter League'];
+const STATE_FACTIONS = ['Arcology Pact', 'Dome Pact', 'Guild Federation'];
 const BOOM = 0.75, BUST = 0.25, WAR_GOODS = ['medical', 'industrial', 'metal'];
 const INCIDENTS = [
   'The {a} and the {b} trade accusations after a patrol standoff near {s}.',

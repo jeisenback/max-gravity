@@ -46,7 +46,7 @@ test('the news of the world has its lines in the form, the pools of news are tab
   await page.fill('textarea[data-path="part.war"]', 'War has come: {a} against {b}.');
   const f = await play();
   const seen = await f.evaluate(() => G.dialog.event.text);
-  assert.ok(seen.includes('War has come: Arcology Compact against Charter League.') && seen.includes('never arrived'), seen.slice(0, 300));
+  assert.ok(seen.includes('War has come: Arcology Pact against Guild Federation.') && seen.includes('never arrived'), seen.slice(0, 300));
   await select('lines:world-flares');
   const flares = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
   assert.ok(flares.length >= 4 && flares.every(k => k.startsWith('part.')), flares.join());

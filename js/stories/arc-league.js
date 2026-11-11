@@ -1,9 +1,11 @@
 'use strict';
 
-// The water dispute at Pallas (#683): a mission arc hung on the League Freight Hall (js/arcs.js). The Hall has a sealed crate it will not put on a bill of lading, for Wen
+// The water dispute at Pallas (#683): a mission arc hung on the Federation Freight Hall (js/arcs.js). The Hall has a sealed crate it will not put on a bill of lading, for Wen
 // Haraldsen at the Hollows: its own ledger of the water the refinery has drawn beyond its share, four months of it. The vote on the draw is at the Refinery in six days.
 // Qualities: `league` (begun), `leagueSide` (where the hand has put their weight: from 2, the Hollows carry the vote), `league-open` (said they would speak). The crate and the
 // floor lead into the count on the same landing; the end plays at the Hollows or the Refinery when the hand next comes, and gives a person, an item or a fee.
+// The count leaves its mark on Pallas (#1044, docs/bible/chapter-1.md): the news, the unrest, the water price at whichever side goes short, and who remembers the ship
+// (`markHollows`, `markRefinery`: 1 for a friend, -1 for the other way).
 // Marit Okafor, the refinery guild's clerk, speaks in figures and the rule and never raises her voice; Wen speaks in households, tea and who is owed.
 
 Mods.register({
@@ -11,9 +13,10 @@ Mods.register({
   init(M) {
     // The words each action keeps for a person are the scene's, passed in from the data below.
     // The hand who stays back had said they would speak: Wen minds that.
-    M.addAction('league-back', memory => { if (quality('league-open')) like(arcPerson('wen'), -2, memory); return ''; });
+    // And the count goes as the weight already put in says (`leagueSide`): the mark of the side that carried it, both written in the data below.
+    M.addAction('league-back', (memory, hollows, refinery) => { if (quality('league-open')) like(arcPerson('wen'), -2, memory); applyEffects(quality('leagueSide') >= 2 ? hollows : refinery); return ''; });
     // The keys: a person, a regard and an item.
-    M.addAction('league-keys', memory => { like(arcPerson('wen'), 2, memory); moveStanding('the League Freight Hall', 1); return addKit('valve-keys'); });
+    M.addAction('league-keys', memory => { like(arcPerson('wen'), 2, memory); moveStanding('the Federation Freight Hall', 1); return addKit('valve-keys'); });
     // The fee: Marit warms, and the Hollows cool.
     M.addAction('league-fee', (forMarit, forWen) => { like(arcPerson('marit'), 2, forMarit); like(arcPerson('wen'), -1, forWen); return ''; });
 
@@ -28,12 +31,12 @@ Mods.register({
       choices: [
         { label: 'Say you will, at the vote',
           effects: { q: { league: 1, leagueSide: 1, 'league-open': 1 }, later: { 'league-vote': 6 }, do: ['arcLike', 'wen', 2, 'You said you would speak at the vote.'],
-            log: 'Carried the League Freight Hall\'s sealed crate to Wen Haraldsen at the Hollows, and said I would speak at the vote.' },
+            log: 'Carried the Federation Freight Hall\'s sealed crate to Wen Haraldsen at the Hollows, and said I would speak at the vote.' },
           result: ('Wen writes the ship\'s name on the lid of your flask with a grease pencil, the day under it, and pushes it back across the table. "Six days," she says. ' +
               '"Bring that."') },
         { label: 'Say the Hall\'s name is the Hall\'s to give',
           effects: { q: { league: 1 }, later: { 'league-vote': 6 }, do: ['arcLike', 'wen', -1, 'You would not say where the crate came from.'],
-            log: 'Carried the League Freight Hall\'s sealed crate to Wen Haraldsen at the Hollows, and kept the Hall\'s name out of it.' },
+            log: 'Carried the Federation Freight Hall\'s sealed crate to Wen Haraldsen at the Hollows, and kept the Hall\'s name out of it.' },
           result: ('Wen takes it like a price she expected, and finishes her tea first. "Then it fell off a sled in a corridor," she says, "and I found it. Mind yourself on ' +
               'the Refinery side."') },
       ],
@@ -74,12 +77,18 @@ Mods.register({
           'breathes loudly. Then she looks up from the slate, at the edge of the platform, where a speaker would stand.'),
       choices: [
         { label: 'Speak', when: { q: { 'league-open': 1 } },
-          effects: { q: { leagueSide: 2 }, later: { 'league-end': 5 }, do: ['arcLike', 'wen', 2, 'You spoke at the vote.'], log: 'Spoke at the Pallas vote on the water draw, and said where the Hall\'s crate came from.' },
+          effects: { q: { leagueSide: 2, markHollows: 1, markRefinery: -1 }, later: { 'league-end': 5 }, do: ['arcLike', 'wen', 2, 'You spoke at the vote.'], unrest: { pallas: -0.1 },
+            price: { 'Pallas Refinery': { water: 0.15 } }, news: 'Pallas: the refinery\'s water draw is cut by a fifth, on a count of the shift carried by the Hollows families.',
+            log: 'Spoke at the Pallas vote on the water draw, and said where the Hall\'s crate came from.' },
           result: ('You climb onto the sled and say it plainly, to the whole shift: the crate, the Hall\'s seal, the ledger, the day it came aboard. Your voice carries worse than ' +
               'you hoped. Marit does not look at you while you say it, and writes all of it down. The count comes out for the Hollows, three hundred and four to two hundred and ' +
               'ninety-one. Nobody cheers. A foreman in the front row says a number under his breath, and then the same number again.') },
         { label: 'Stay at the back',
-          effects: { later: { 'league-end': 5 }, do: ['league-back', 'You said you would speak at the vote and you did not.'], log: 'Stood at the back of the Pallas vote on the water draw.' },
+          effects: { later: { 'league-end': 5 }, do: ['league-back', 'You said you would speak at the vote and you did not.',
+            { unrest: { pallas: -0.1 }, price: { 'Pallas Refinery': { water: 0.15 } }, q: { markHollows: 1, markRefinery: -1 },
+            news: 'Pallas: the refinery\'s water draw is cut by a fifth, on a count of the shift carried by the Hollows families.' },
+            { unrest: { pallas: 0.1 }, price: { 'The Hollows': { water: 0.15 } }, q: { markHollows: -1, markRefinery: 1 },
+            news: 'Pallas: the refinery keeps its water draw on a count of the shift. The Hollows cisterns stay on the short rota.' }], log: 'Stood at the back of the Pallas vote on the water draw.' },
           result: [
             'You stay at the back with the strangers, where the sleds hide the platform, and hear the count as everyone does.',
             { when: { q: { leagueSide: 2 } }, text: ('Wen reads the ledger from the sled herself, and says where it came from: "a ship out of Ceres, that would rather not be named." Heads turn along the ' +

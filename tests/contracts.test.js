@@ -69,7 +69,7 @@ test('a big port draws none, one or two a day by its odds, a small one none or o
 test('a contract names its shipper, pays a fee and tons by days by the rate, more on word of a shortage and on a dangerous lane, and is due after the burn', () => {
   const { st, earth, reach, drawContracts, CONTRACT_RATE, CONTRACT_FEE, RUMOR_PREMIUM, HAZARD_PREMIUM, haulRate, travelDays, SHIPPERS } = setup();
   const [c] = drawContracts(st, earth, 'earth', reach, 120, 10, dice([0.9]));
-  assert.equal(c.shipper, SHIPPERS.gov['Arcology Compact']); assert.equal(c.from, 'Earth');
+  assert.equal(c.shipper, SHIPPERS.gov['Arcology Pact']); assert.equal(c.from, 'Earth');
   assert.equal(c.days, Math.max(1, travelDays('earth', c.sid))); assert.ok(c.tons >= 40 && c.tons <= 120 && c.tons % 10 === 0);
   assert.equal(c.pay, Math.round(CONTRACT_FEE + c.tons * c.days * CONTRACT_RATE * haulRate(c.days))); assert.ok(!c.rumor && !c.hazard);
   assert.ok(c.due >= 10 + Math.ceil(c.days * 1.5) + 2 && c.due <= 10 + Math.ceil(c.days * 1.5) + 6);
@@ -85,8 +85,8 @@ test('a contract names its shipper, pays a fee and tons by days by the rate, mor
 test('a port\'s own people ship from it, else the government\'s office, else a broker', () => {
   const { SYSTEMS, shipperOf, SHIPPERS } = setup();
   const titan = SYSTEMS.saturn.planets.find(p => p.name === 'Titan'), mars = SYSTEMS.mars.planets.find(p => p.name === 'Mars'), phobos = SYSTEMS.mars.planets.find(p => p.name === 'Phobos Yards');
-  assert.equal(shipperOf(titan, 'Charter League'), 'the Tethys Shipping Consortium'); assert.equal(shipperOf(mars, 'Dome Concord'), SHIPPERS.gov['Dome Concord']);
-  assert.equal(shipperOf(phobos, 'Dome Concord'), SHIPPERS.gov['Dome Concord']); assert.equal(shipperOf({ name: 'Nowhere' }, 'Independent'), SHIPPERS.other);
+  assert.equal(shipperOf(titan, 'Guild Federation'), 'the Tethys Shipping Consortium'); assert.equal(shipperOf(mars, 'Dome Pact'), SHIPPERS.gov['Dome Pact']);
+  assert.equal(shipperOf(phobos, 'Dome Pact'), SHIPPERS.gov['Dome Pact']); assert.equal(shipperOf({ name: 'Nowhere' }, 'Independent'), SHIPPERS.other);
 });
 
 test('the board is drawn once a day at a port with dice of its own, the same for the port, the day and the game, and drawn again another day', () => {
@@ -113,7 +113,7 @@ test('the captain picks what pays the ship most a day among what her hold can fi
   assert.equal(pickContract(list, { ...deps, free: 100 }).best.planet, 'Mars', 'the hold cannot take the Ceres load');
   assert.equal(pickContract(list, { ...deps, free: 100, goal: c => c.planet === 'Ceres Station' }).best.planet, 'Mars', 'the goal is not among what fits');
   assert.equal(pickContract(list, { ...deps, risk: sid => (sid === 'ceres' ? 0.5 : 1), goal: c => c.planet === 'Ceres Station' }).best.planet, 'Ceres Station', 'the goal counts four times over (#882)');
-  assert.equal(pickContract(list, { ...deps, risk: sid => (sid === 'ceres' ? 0.5 : 1) }).best.planet, 'Mars', 'a cautious captain marks the League lane down');
+  assert.equal(pickContract(list, { ...deps, risk: sid => (sid === 'ceres' ? 0.5 : 1) }).best.planet, 'Mars', 'a cautious captain marks the Federation lane down');
   assert.deepEqual(pickContract(list, deps).ranked.map(c => c.planet), ['Ceres Station', 'Mars', 'Eros Old Town']);
   assert.equal(pickContract([], deps).best, null); assert.equal(pickContract(list, { ...deps, free: 30 }).best, null, 'nothing fits');
 });
@@ -172,12 +172,12 @@ test('the dock broker sometimes pays less than the paper: a share of the pay, in
   const hit = days.find(day => skimOf({ shipper: SKIMMER, planet: 'Ganymede', day }, 10000, 0) > 0);
   assert.equal(skimOf({ shipper: SKIMMER, planet: 'Ganymede', day: hit }, 10000, 0), Math.round(10000 * SKIM_CUT), 'a share of the pay');
   assert.equal(skimOf({ shipper: SKIMMER, planet: 'Ganymede', day: hit }, 10000, 0), skimOf({ shipper: SKIMMER, planet: 'Ganymede', day: hit }, 10000, 0), 'the same delivery skims the same');
-  assert.equal(skimOf({ shipper: SHIPPERS.gov['Arcology Compact'], planet: 'Earth', day: hit }, 10000, 0), 0, 'no other shipper does');
+  assert.equal(skimOf({ shipper: SHIPPERS.gov['Arcology Pact'], planet: 'Earth', day: hit }, 10000, 0), 0, 'no other shipper does');
 });
 
 test('a freight office is a state\'s: the three states\' offices have one, a port\'s own shipper and the Rook have none', () => {
   const { officeOf, SHIPPERS } = setup();
-  assert.equal(officeOf(SHIPPERS.gov['Arcology Compact']), 'Arcology Compact'); assert.equal(officeOf(SHIPPERS.gov['Dome Concord']), 'Dome Concord'); assert.equal(officeOf(SHIPPERS.gov['Charter League']), 'Charter League');
+  assert.equal(officeOf(SHIPPERS.gov['Arcology Pact']), 'Arcology Pact'); assert.equal(officeOf(SHIPPERS.gov['Dome Pact']), 'Dome Pact'); assert.equal(officeOf(SHIPPERS.gov['Guild Federation']), 'Guild Federation');
   assert.equal(officeOf('the Rook'), null); assert.equal(officeOf('a dock broker'), null); assert.equal(officeOf('Aquilon'), null);
 });
 
@@ -189,9 +189,9 @@ test('a pay cut is the worst of a delivery after a lost or short load, and the r
   assert.equal(deliveryOff(run, 90, 20, 0, 6000), null, 'no cut, whole and on the day');
 });
 
-test('the Compact\'s carrier license makes its freight office draw the board for a ship it knows as for one it trusts, and no other shipper reads it (#685)', () => {
+test('the Arcology Pact\'s carrier license makes its freight office draw the board for a ship it knows as for one it trusts, and no other shipper reads it (#685)', () => {
   const { boardStanding, STANDING_GOOD, SHIPPERS, contractBoard, st, earth } = setup();
-  const office = SHIPPERS.gov['Arcology Compact'], league = SHIPPERS.gov['Charter League'];
+  const office = SHIPPERS.gov['Arcology Pact'], league = SHIPPERS.gov['Guild Federation'];
   assert.equal(boardStanding(1, office, ['carrier-license']), STANDING_GOOD, 'known, with the license: trusted');
   assert.equal(boardStanding(0, office, ['carrier-license']), 0, 'a stranger gets nothing from a license');
   assert.equal(boardStanding(1, office, []), 1, 'known, without it: as before'); assert.equal(boardStanding(1, office, undefined), 1);

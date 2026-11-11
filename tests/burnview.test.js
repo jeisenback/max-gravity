@@ -815,6 +815,7 @@ test('the ship\'s log is in the HUD', async () => {
   await wide.ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [`() => { const drawn = [], fill = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (t, x, ...a) { drawn.push([String(t), x]); return fill.call(this, t, x, ...a); }; return () => { CanvasRenderingContext2D.prototype.fillText = fill; return drawn; }; }`]);
   const w = await wide.ev(() => {
     burn(); G.transit.left = G.transit.total * 0.5;
+    ctx.font = '12px "IBM Plex Mono", monospace';  // the log's own font, so the lines break where the HUD breaks them
     const lines = burnShipLog().flatMap(l => wrapText(l, HUD_W - 28)), stop = drawnText(); drawHud(G.W, G.H); const drawn = stop();
     return { lines, drawn, x0: G.W - HUD_W, hudW: G.hudW, label: drawn.some(d => d[0] === "SHIP'S LOG") };
   });
@@ -1305,6 +1306,26 @@ test('people sit only on a seat the cutaway draws, and the table and the posts a
   await done();
 });
 const SEATS_EXPECTED = { galley: [0.28, 0.35, 0.42, 0.49], bridge: [0.12, 0.3] };
+
+// #933, #956: the gunnery's rack holds the torpedoes the ship carries, so the cutaway hands the rooms that count, clamped to the rack's six cradles.
+test('the cutaway hands the rooms the torpedoes aboard, clamped to the rack\'s cradles, the magazine\'s six (#933)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); G.transit.left = G.transit.total * 0.7;
+    const seen = {}, real = window.drawRoom;
+    window.drawRoom = (c, id, q, s) => { if (id === 'gunnery') seen.n = s.torpedoes; return real(c, id, q, s); };
+    const out = { carried: G.state.torpedoes, cradles: GUN_CRADLES, max: TORP_MAX, at: {} };
+    G.cam = { y: layoutBox(LAYOUTS.freighter, 'gunnery').floor - HULL.deck / 2, t: G.time };
+    for (const n of [undefined, -1, 0, 2, 6, 9]) { G.state.torpedoes = n; seen.n = 'none'; drawTransit(innerWidth, innerHeight); out.at[String(n)] = seen.n; }
+    window.drawRoom = real;
+    return out;
+  });
+  assert.equal(r.carried, 2, 'Hester\'s ship carries two (HAND_TORPS, #956)');
+  assert.equal(r.cradles, r.max, 'the rack\'s cradles are the magazine\'s six');
+  assert.deepEqual(r.at, { undefined: 0, '-1': 0, 0: 0, 2: 2, 6: 6, 9: 6 }, 'the count the rooms are given');
+  await done();
+});
 
 test('a crash couch is a plate in the deck that unfolds as its person reaches it in the hard burn, and folds away after (#925)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });

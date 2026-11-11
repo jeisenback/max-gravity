@@ -1,6 +1,6 @@
 # The chapter's goal: a member's share in a Belt co-op ship (#882, scope A)
 
-Status: draft for the owner's review, 2026-11-02.
+Status: built (#882).
 
 ## Goal
 

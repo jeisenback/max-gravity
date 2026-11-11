@@ -172,10 +172,10 @@ test('the report shows what the fight changed since Play, the armor, the fund, t
     return { a: `${a.first} ${a.last}`, b: `${b.first} ${b.last}` };
   });
   let shown = await choose(f, 0);  // a gun's target: the panel is drawn again
-  for (const want of [/standing with Arcology Compact: \S+ to \S+ \(-8\)/, /armor: \d+ to \d+ \(-5\)/, /ship's fund: \S+ to \S+ \(\+100\)/, /torpedoes: \S+ to \S+ \(\+2\)/,
+  for (const want of [/standing with Arcology Pact: \S+ to \S+ \(-8\)/, /armor: \d+ to \d+ \(-5\)/, /ship's fund: \S+ to \S+ \(\+100\)/, /torpedoes: \S+ to \S+ \(\+2\)/,
     new RegExp(`${names.a}: fit to hurt`), new RegExp(`${names.b}: fit to dead`), /you: fit to hurt/, /experience at the gunner post: \S+ to \S+ \(\+2\)/]) assert.match(shown, want);
   shown = await choose(f, 0);  // another click: still everything since Play, not only what this one changed
-  assert.match(shown, /standing with Arcology Compact: \S+ to \S+ \(-8\)/);
+  assert.match(shown, /standing with Arcology Pact: \S+ to \S+ \(-8\)/);
   assert.match(shown, /armor: \d+ to \d+ \(-5\)/);
   assert.match(shown, /since Play/);
 });

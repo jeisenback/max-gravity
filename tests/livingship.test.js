@@ -579,12 +579,7 @@ test('the bridge and the guns are stations: screens and controls, and chairs wit
     assert.ok(glass >= kinds.length, `${id}: a screen for each of ${kinds} (${glass})`);
   }
 });
-test('the engine room has gauges whose needles read the thrust, valve wheels and pipes with joints (#933)', () => {
-  const r = { x0: 0, x1: 300, top: 0, floor: 100 }, s = { w: { burn: 0, cruise: 1, flip: 0 }, time: 1, zoom: 1, spin: 0, still: false, night: 0, berths: 6, cargo: 0, fuel: 1, asleep: 0, damage: { marks: new Set(), severe: false }, patient: false, burning: false };
-  const { ctx, calls } = recorder();
-  drawRoom(ctx, 'engine', r, s);
-  const fills = c => calls.filter(k => k[0] === 'fillStyle' && k[1] === c).length, strokes = c => calls.filter(k => k[0] === 'strokeStyle' && k[1] === c).length;
-  assert.ok(fills('#e6dfc9') >= 1, 'a gauge face on the feed (the upper deck\'s gauges went with it, #972)'); assert.ok(strokes('#c0392b') >= 2, 'valve wheels'); assert.ok(fills('#4f6f8f') >= 4, 'joints on the pipes');
+test('the engine room\'s gauges read the thrust: up in the hard burn, down at the flip with the drive off (#933)', () => {
   assert.ok(gaugeNeedle({ burn: 1, cruise: 0, flip: 0 }, 0, 0) > gaugeNeedle({ burn: 0, cruise: 1, flip: 0 }, 0, 0), 'the needle swings up in the hard burn');
   assert.ok(gaugeNeedle({ burn: 0, cruise: 1, flip: 0 }, 0, 0) > gaugeNeedle({ burn: 0, cruise: 0, flip: 1 }, 0, 0), 'and drops at the flip, the drive off');
 });
@@ -1122,9 +1117,34 @@ test('someone eating alone sits on the edge of the first bunk (#933)', () => {
 // its bag swinging and its line to the cot; the scanner arm from the ceiling over the cot; the monitor at eye height; the supply cabinet at the
 // counter, down from white; the first-aid box on the wall under the room's name. Drawn at the burn view's zoom in a window 1000, 1280 and 1600 wide.
 const { MED_COT } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['MED_COT']);
-const MED_PROPS = [['#2a4664', 'the cot\'s frame'], ['#1c3249', 'its legs'], ['#1a2430', 'its casters'], ['#2e4a68', 'its head and foot boards'], ['#3a5470', 'its rail and the grab rails'], ['#56667a', 'the mattress'],
-  ['#9a968a', 'the pillow'], ['#4a4436', 'the straps'], ['#4a5e74', 'the IV pole'], ['#6a8494', 'the IV bag'], ['#6a6a66', 'the scanner arm'], ['#7a7870', 'the scanner\'s head'], ['#1f3a56', 'the monitor'],
-  ['#4e5e6e', 'the cabinet'], ['#64748a', 'its doors'], ['#6e7e8e', 'its top'], ['#8e3a32', 'the red crosses'], ['#4e6a78', 'the bottles'], ['#7a8692', 'the kit'], ['#5a6876', 'the first-aid box']];
+const MED_PROPS = [['#2a4664', 'the cot\'s frame'], ['#1c3249', 'its legs'], ['#1a2430', 'its casters'], ['#2e4a68', 'its head and foot boards'], ['#3a5470', 'its rail'], ['#56667a', 'the mattress'],
+  ['#9a968a', 'the pillow'], ['#4a4436', 'the straps'], ['#4a5e74', 'the IV pole'], ['#6a8494', 'the IV bag'], ['#6a6a66', 'the scanner arm'], ['#7a7870', 'the scanner\'s head'], [wallTone('#1f3a56'), 'the monitor, on the wall'],
+  ['#4e5e6e', 'the cabinet'], ['#64748a', 'its doors'], ['#6e7e8e', 'its top'], ['#8e3a32', 'the red crosses'], ['#4e6a78', 'the bottles'], ['#7a8692', 'the kit'], [wallTone('#5a6876'), 'the first-aid box, on the wall'],
+  [wallTone('#3a5470'), 'the grab rail, on the wall'], [wallTone('#7a7462'), 'the tape on the monitor\'s bezel']];
+// The medbay's and the hold's solids (#1024): a solid's top a step lighter, but never brighter or more saturated than the people (#959), as the
+// helper draws it; its side a step darker; its contact shadow on the strip.
+const solidTop = col => { const v = rgbOf(col), mx = Math.max(...v), mn = Math.min(...v); return box.figShade(col, Math.min(1.3, 0xb0 / mx, 0x60 / (mx - mn || 1))); };
+const solidSide = col => box.figShade(col, 0.62), SHADOW = 'rgba(2,5,9,0.5)';
+// Every point the room drew where it lands on the screen (the moves it was drawn under applied), apart from its walls and its lamps' light: what
+// roomOwn reads, placed, so a thing moved onto the back wall is checked where it is drawn.
+const placedOps = calls => {
+  const out = [], stack = []; let dx = 0, dy = 0;
+  for (const [k, ...a] of calls) {
+    if (k === 'save') stack.push([dx, dy]); else if (k === 'restore') [dx, dy] = stack.pop(); else if (k === 'translate') { dx += a[0]; dy += a[1]; }
+    else if (k === 'fillRect') out.push({ k, v: a, pts: [[a[0], a[1]], [a[0] + a[2], a[1]], [a[0], a[1] + a[3]], [a[0] + a[2], a[1] + a[3]], [a[0] + a[2] / 2, a[1] + a[3] / 2]].map(([x, y]) => [x + dx, y + dy]) });
+    else if (k === 'moveTo' || k === 'lineTo') out.push({ k, v: a, pts: [[a[0] + dx, a[1] + dy]] }); else if (k === 'quadraticCurveTo') out.push({ k, v: a, pts: [[a[2] + dx, a[3] + dy]] });
+  }
+  return out;
+};
+const roomOwnPlaced = (id, r, s) => {
+  const all = recorder(); drawRoom(all.ctx, id, r, s);
+  const base = recorder(); roomWalls(base.ctx, r, s.w, s.time, s.still, s.well); drawPhaseLight(base.ctx, r, s.w, s.time, s.night, true);
+  const key = o => o.k + o.pts.map(q => q.map(v => Math.round(v * 1000) / 1000).join()).join(), left = placedOps(all.calls);
+  for (const o of placedOps(base.calls)) { const i = left.findIndex(q => key(q) === key(o)); if (i >= 0) left.splice(i, 1); }
+  return left;
+};
+// The back wall of a one-bay room: where roomOnWall puts a thing.
+const backWall = r => { const e = box.roomEye(r), [x0, y0] = box.roomInto(e, r.x0, r.top), [x1, y1] = box.roomInto(e, r.x1, r.floor); return { x0, y0, x1, y1, e }; };
 const MED_LINE = 'rgba(150,178,196,0.7)';
 const medCase = (pr, zoom, patient) => ({ r: layoutBox(LAYOUTS.freighter, 'medbay'), s: RS({ w: phaseWeights(pr), zoom, patient, damage: { marks: new Set(), severe: false } }) });
 test('the medbay is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
@@ -1135,20 +1155,23 @@ test('the medbay is drawn to the figures\' standard in every phase: its props ou
     const { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
     const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
     for (const [col, what] of MED_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    for (const col of ['#1f3a56', '#5a6876', '#7a7462']) assert.equal(fills(col), 0, `${at}: nothing on the wall in its own colour (${col})`);
+    // in the box (#1024): the cot, its boards, the mattress, the cabinet and its top solid, their tops showing (the IV pole has no faces); the
+    // cabinet's side toward the eye; a shadow under the cot, the pole's foot and the cabinet
+    for (const [col, what] of [['#2a4664', 'the cot\'s frame'], ['#2e4a68', 'its boards'], ['#56667a', 'the mattress'], ['#4e5e6e', 'the cabinet'], ['#6e7e8e', 'its top']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, its top showing`);
+    for (const [col, what] of [['#4e5e6e', 'the cabinet'], ['#2e4a68', 'the cot\'s head board']]) assert.ok(fills(solidSide(col)) >= 1, `${at}: ${what}'s side toward the eye`);
+    assert.ok(fills(SHADOW) >= 3, `${at}: contact shadows on the strip (${fills(SHADOW)})`);
     const outlined = filledParts(calls).filter(p => p.outlined);
     assert.ok(outlined.length >= 30, `${at}: the props outlined like the figures (${outlined.length})`);
-    for (const { col } of outlined.filter(p => /^#[0-9a-f]{6}$/.test(p.col))) {
-      const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
       assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
     }
     for (const col of ['#dde4ea', '#eef2f6', '#c9d3dc', '#d8dde4', '#c03a30', '#1a1a1a', '#8aa4c0']) assert.equal(fills(col), 0, `${at}: no near-white, saturated or black block (${col})`);
     assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === (patient ? '#ffb030' : '#7fd8a0')), `${at}: the monitor's trace, amber with a patient`);
-    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn (the wall's things moved onto it)
     const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
-    for (const { k, v } of roomOwn('medbay', r, s)) {
-      const pts = k === 'fillRect' ? [[v[0], v[1]], [v[0] + v[2], v[1]], [v[0], v[1] + v[3]], [v[0] + v[2], v[1] + v[3]], [v[0] + v[2] / 2, v[1] + v[3] / 2]] : /^(moveTo|lineTo)$/.test(k) ? [v] : k === 'quadraticCurveTo' ? [v.slice(2)] : [];
-      for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} under the room's name`);
-    }
+    for (const { k, v, pts } of roomOwnPlaced('medbay', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
   }
   const stillAt = t => { const { r, s } = medCase(0.5, 1.17, true), c = fakeCtx(); drawRoom(c, 'medbay', r, { ...s, still: true, time: t }); return c.args.join('|'); };
   assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
@@ -1166,6 +1189,9 @@ test('the medbay\'s props are sized to a person: the cot\'s mattress under the p
     const frame = parts.find(p => p.col === '#2a4664'), lying = drawPerson(fakeCtx(), { name: 'bunk', face: 1, frame: 0 }, bx, F - MED_COT, { color: '#ffb347' });
     assert.ok(frame.x1 - frame.x0 >= 105 && frame.x1 - frame.x0 <= 110 && frame.y1 - frame.y0 <= 4, `${at}: the cot a person long with a little to spare (${frame.x1 - frame.x0} long, its frame ${frame.y1 - frame.y0} deep)`);
     assert.ok(bedPart.x0 < head.x - 8 && bedPart.x1 > lying.foot.x + 4, `${at}: the mattress (${bedPart.x0} to ${bedPart.x1}) under the whole patient (${head.x} to ${lying.foot.x})`);
+    // in the box (#1024): the mattress's top runs back from its front edge, where the patient lies, under the whole of them
+    const bedTop = filledParts(calls).find(p => p.col === solidTop('#56667a') && p.pts.some(q => near(q[0], bedPart.x0) && near(q[1], F - MED_COT)) && p.pts.some(q => near(q[0], bedPart.x1) && near(q[1], F - MED_COT)));
+    assert.ok(bedTop && Math.max(...bedTop.pts.map(q => q[1])) === F - MED_COT && Math.min(...bedTop.pts.map(q => q[1])) < F - MED_COT - 1, `${at}: the mattress's top behind the patient, its front edge at ${F - MED_COT}`);
     const pillow = parts.find(p => p.col === '#9a968a');
     assert.ok(pillow && head.x >= pillow.x0 && head.x <= pillow.x1 && Math.abs(pillow.y1 - (F - MED_COT)) < 0.01, `${at}: the pillow (${JSON.stringify(pillow)}) under the patient's head at ${head.x}`);
     assert.ok(parts.filter(p => p.col === '#4a4436' && p.x0 > bedPart.x0 && p.x1 < bedPart.x1).length >= 2, `${at}: straps to hold the hurt down in the burn`);
@@ -1178,7 +1204,13 @@ test('the medbay\'s props are sized to a person: the cot\'s mattress under the p
     const li = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === MED_LINE), lj = li + calls.slice(li).findIndex(k => k[0] === 'stroke'), m = calls.slice(li, lj).find(k => k[0] === 'moveTo'), q = calls.slice(li, lj).filter(k => k[0] === 'quadraticCurveTo').pop();
     assert.ok(li >= 0 && Math.abs(m[1] - tx) < 3 && m[2] >= ty + bag.y1 - 0.01 && m[2] <= ty + bag.y1 + 5, `${at}: the IV line from the bag's foot (${m && m.slice(1)})`);
     assert.ok(q[3] > bedPart.x0 && q[3] < bedPart.x1 && Math.abs(q[4] - (F - MED_COT)) <= 2, `${at}: to the cot (${q.slice(3)})`);
-    const mon = parts.find(p => p.col === '#1f3a56'), my = F - (mon.y0 + mon.y1) / 2;
+    // the monitor, the first-aid box and the grab rail on the back wall (#1024), each checked where it is drawn
+    const placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) })), wall = backWall(r), onWall = p => p.x0 >= wall.x0 && p.x1 <= wall.x1 && p.y0 >= wall.y0 && p.y1 <= wall.y1 && (p.at[0] || p.at[1]);
+    for (const [col, what] of [['#1f3a56', 'the monitor'], ['#5a6876', 'the first-aid box'], ['#3a5470', 'the grab rail']]) {
+      const p = placed.find(q => q.col === wallTone(col));
+      assert.ok(p && onWall(p), `${at}: ${what} (${JSON.stringify(p)}) moved onto the back wall (${JSON.stringify(wall)})`);
+    }
+    const mon = placed.find(p => p.col === wallTone('#1f3a56')), my = F - (mon.y0 + mon.y1) / 2;
     assert.ok(my >= 72 && my <= 82 && mon.x1 - mon.x0 >= 28 && mon.x1 - mon.x0 <= 32 && mon.y1 - mon.y0 <= 18, `${at}: the monitor, small, at eye height (${my}, ${mon.x1 - mon.x0} by ${mon.y1 - mon.y0})`);
     assert.ok(mon.x0 > bedPart.x0 && mon.x0 < bedPart.x1, `${at}: the monitor (${mon.x0} to ${mon.x1}) over the cot, where someone at its side reads it`);
     const meet = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
@@ -1188,8 +1220,10 @@ test('the medbay\'s props are sized to a person: the cot\'s mattress under the p
     assert.ok(F - top.y0 >= 36 && F - top.y0 <= 44, `${at}: the cabinet at counter height (${F - top.y0})`);
     const arm = parts.filter(p => /^#(5a5e60|6a6a66|7a7870)$/.test(p.col)), sh = parts.find(p => p.col === '#7a7870');
     assert.ok(Math.min(...arm.map(p => p.y0)) <= r.top + 5 && sh.x0 > bedPart.x0 && sh.x1 < bedPart.x1 && F - sh.y1 >= MED_COT + 20, `${at}: the scanner arm from the ceiling, its head over the cot clear of the patient`);
-    const box = parts.find(p => p.col === '#5a6876');
-    assert.ok(box && box.x1 < bedPart.x0 && F - box.y0 <= 60, `${at}: the first-aid box on the wall left of the cot, under the name`);
+    const box = placed.find(p => p.col === wallTone('#5a6876'));
+    assert.ok(box && box.x1 < bedPart.x0 && F - box.y0 <= 60, `${at}: the first-aid box on the wall left of the cot, under the name (${JSON.stringify(box)})`);
+    const rail = placed.find(p => p.col === wallTone('#3a5470')), cab = parts.find(p => p.col === '#4e5e6e');
+    assert.ok(rail.x0 > cab.x0 - (cab.x0 - wall.e.vx) * 0.2 - 1 && rail.y1 < cab.y0 - 15, `${at}: the grab rail on the wall over the cabinet (${JSON.stringify(rail)})`);
   }
 });
 test('the medbay reads old and cared for: a newer scanner bolted on, wear at fixed places, a replacement door, a printed part tagged temporary, tape and cable ties (#933)', () => {
@@ -1214,7 +1248,7 @@ test('the medbay reads old and cared for: a newer scanner bolted on, wear at fix
     assert.ok(clamp && clamp.x0 < pole.x0 && clamp.x1 > pole.x1 && clamp.y0 > pole.y0 && clamp.y1 < pole.y1, `${at}: the printed clamp round the pole`);
     assert.ok(tag && Math.abs(tag.y0 - clamp.y1) < 3 && tag.x1 <= clamp.x0 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its tag hung from it (${JSON.stringify(tag)})`);
     // tape over a corner of the monitor's bezel, and cable ties holding the IV line to the pole
-    const mon = one('#1f3a56'), tape = one('#7a7462');
+    const mon = one(wallTone('#1f3a56')), tape = one(wallTone('#7a7462'));  // on the back wall, moved together (#1024)
     assert.ok(tape && tape.x0 < mon.x1 && tape.x1 > mon.x1 - 1 && tape.y0 < mon.y0 + 1 && tape.y1 > mon.y0 && tape.x1 - tape.x0 <= 8, `${at}: tape over a corner of the monitor (${JSON.stringify(tape)})`);
     const ties = rects('#1e2a36').filter(t => t[0] <= pole.x0 && t[0] + t[2] >= pole.x1);
     assert.ok(ties.length >= 2, `${at}: cable ties round the pole`);
@@ -1254,17 +1288,19 @@ test('the hold is drawn to the figures\' standard in every phase: its props outl
     assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === HOLD_RING), `${at}: the floor rings`);
     const outlined = filledParts(calls).filter(p => p.outlined);
     assert.ok(outlined.length >= 8 + 3 * Math.round(12 * cargo) + 4 * Math.ceil(Math.round(12 * cargo) / 3), `${at}: the props outlined like the figures (${outlined.length})`);
-    for (const { col } of outlined.filter(p => /^#[0-9a-f]{6}$/.test(p.col))) {
-      const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
       assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
     }
     for (const col of ['#c9a227', '#ffe2b8', '#222']) assert.equal(fills(col), 0, `${at}: no bright or black block (${col})`);
-    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall
+    // in the box (#1024): the crates, the pallets and the jack's forks and pump solid, their tops showing; the scuffs where the jack parks on the wall
+    const n = Math.round(12 * cargo), kinds = [...new Set(Array.from({ length: n }, (_, k) => HOLD_WOOD[(k * 7 + Math.floor(k / 3)) % HOLD_WOOD.length]))];
+    for (const col of kinds) assert.ok(fills(solidTop(col)) >= 1, `${at}: the ${col} crates solid, their tops showing`);
+    for (const [col, what] of [...(n ? [['#3e3426', 'the pallets']] : []), ['#7a6a34', 'the jack\'s forks'], ['#8a7a3a', 'its pump']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
+    assert.equal(fills('#3e4c5a'), 0, `${at}: the scuffs on the wall, not in their own colour`); assert.ok(fills(wallTone('#3e4c5a')) >= 2, `${at}: the scuffs on the wall`);
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn
     const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
-    for (const { k, v } of roomOwn('hold', r, s)) {
-      const pts = k === 'fillRect' ? [[v[0], v[1]], [v[0] + v[2], v[1]], [v[0], v[1] + v[3]], [v[0] + v[2], v[1] + v[3]], [v[0] + v[2] / 2, v[1] + v[3] / 2]] : /^(moveTo|lineTo)$/.test(k) ? [v] : k === 'quadraticCurveTo' ? [v.slice(2)] : [];
-      for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} under the room's name`);
-    }
+    for (const { k, v, pts } of roomOwnPlaced('hold', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
   }
   const stillAt = t => { const { r, s } = holdCase(0.5, 1.17, 1), c = fakeCtx(); drawRoom(c, 'hold', r, { ...s, still: true, time: t }); return c.args.join('|'); };
   assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
@@ -1278,6 +1314,7 @@ test('the hold\'s crates come from the cargo, in stacks of three, each with its 
     for (let k = 0; k < n; k++) {
       const c = holdCrate(r, k), b = holdLabel(r, k);
       assert.ok(bodies.some(p => Math.abs(p.x0 - c.x) < 0.01 && Math.abs(p.y0 - c.y) < 0.01), `${at}: crate ${k} drawn where holdCrate puts it`);
+      assert.ok(placedParts(calls).some(p => HOLD_WOOD.includes(p.col) && !p.at[0] && !p.at[1] && near(partBox(p).x0, c.x) && near(partBox(p).y0, c.y)), `${at}: crate ${k}'s front at the cut, unmoved, so its label box is where it is named (#1024)`);
       if (k % 3) assert.ok(Math.abs(c.x - holdCrate(r, k - 1).x) < 0.01 && Math.abs(c.y + c.h - holdCrate(r, k - 1).y) < 0.01, `${at}: crate ${k} on the one under it`);
       else assert.ok(c.y + c.h <= r.floor - 3 && c.y + c.h >= r.floor - 6 && (k === 0 || c.x > holdCrate(r, k - 1).x + c.w), `${at}: crate ${k} on a pallet at the foot of the next stack`);
       assert.ok(c.x > name.x1 && c.x + c.w < r.x1, `${at}: crate ${k} in the room, clear of the name`);
@@ -1364,8 +1401,99 @@ test('the hold reads old and cared for: crates of different ages, a replacement 
     const grip = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050'), handle = parts.filter(p => p.col === '#5e646a');
     assert.ok(grip && handle.some(h => h.y0 <= grip.y1 && h.x1 >= grip.x0), `${at}: a printed grip on the jack's handle`);
     assert.ok(tag && tag.y0 >= grip.y1 - 1 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its temporary tag hung from it (${JSON.stringify(tag)})`);
-    const jack = parts.find(p => p.col === '#7a6a34');
-    assert.ok(rects('#3e4c5a').filter(c => c[1] > F - 14 && c[0] >= jack.x0 - 2 && c[0] <= jack.x1 + 10).length >= 2, `${at}: scuffs low on the wall where the jack is parked`);
+    // scuffs low on the back wall behind where the jack is parked (#1024: on the wall, where it is drawn)
+    const jack = parts.find(p => p.col === '#7a6a34'), wall = backWall(r), behind = x => box.roomInto(wall.e, x, F)[0];
+    const scuffs = placedRects(calls).filter(c => c.col === wallTone('#3e4c5a') && c.y >= wall.y0 && c.y + c.h <= wall.y1 && c.y > wall.y1 - 14 && c.x >= behind(jack.x0) - 2 && c.x <= behind(jack.x1) + 10);
+    assert.ok(scuffs.length >= 2, `${at}: scuffs low on the wall where the jack is parked (${scuffs.length})`);
+  }
+});
+
+test('in the box the hold\'s stacks stand solid on their pallets, drawn from the walls in toward the eye; the jack on the floor; the straps, the net and the rings at the front (#1024)', () => {
+  for (const cargo of [0.25, 0.5, 1]) for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = holdCase(pr, 1.17, cargo), F = r.floor, n = Math.round(12 * cargo), stacks = Math.ceil(n / 3), at = `cargo ${cargo}, ${pr}`, { calls } = holdParts(r, s);
+    const e = box.roomEye(r), parts = filledParts(calls), first = col => parts.findIndex(p => p.col === col), all = placedParts(calls);
+    const body = k => parts.findIndex(p => HOLD_WOOD.includes(p.col) && p.pts.some(q => near(q[0], holdCrate(r, k).x + 1.2) && near(q[1], holdCrate(r, k).y)));
+    for (let c = 0; c < stacks; c++) {
+      const x0 = holdCrate(r, 3 * c).x, x1 = x0 + holdCrate(r, 3 * c).w, side = x1 < e.vx ? x1 : x0 > e.vx ? x0 : null;
+      for (let k = 3 * c; k < Math.min(n, 3 * c + 3); k++) {
+        const col = parts[body(k)].col, y = holdCrate(r, k).y, faces = parts.filter(p => p.col === solidSide(col) && p.pts.some(q => near(q[1], y)));
+        if (side === null) assert.ok(!faces.some(p => p.pts.some(q => q[0] > x0 && q[0] < x1 && near(q[1], y))), `${at}: crate ${k} across the eye shows no side`);
+        else assert.ok(faces.some(p => p.pts.filter(q => near(q[0], side)).length === 2 && p.pts.some(q => Math.abs(q[0] - e.vx) < Math.abs(side - e.vx))), `${at}: crate ${k}'s side toward the eye, at ${side}`);
+        if (k % 3) assert.ok(body(k) > body(k - 1), `${at}: crate ${k} drawn over the one under it`);
+      }
+      assert.ok(parts.some(p => p.col === SHADOW && p.pts.some(q => near(q[0], x0 + 2 - 5) && near(q[1], F))), `${at}: a shadow under the stack's pallet at ${x0}`);
+    }
+    const off = c => Math.abs(holdCrate(r, 3 * c).x + 20 - e.vx), order = Array.from({ length: stacks }, (_, c) => c).sort((a, b) => body(3 * a) - body(3 * b));
+    for (let i = 1; i < order.length; i++) assert.ok(off(order[i]) <= off(order[i - 1]), `${at}: the stacks drawn from the walls in (${order})`);
+    assert.equal(parts.filter(p => p.col === SHADOW).length, stacks + 1, `${at}: a shadow under each pallet and the jack's forks, none under a crate resting on another`);
+    const lastCrate = Math.max(...Array.from({ length: n }, (_, k) => body(k))), forks = first('#7a6a34');
+    assert.ok(forks < Math.min(...Array.from({ length: n }, (_, k) => body(k))), `${at}: the jack, farther from the eye, drawn before the stacks`);
+    assert.ok(parts.findIndex(p => p.col === '#4a4436' && p.pts.length >= 9) > lastCrate, `${at}: the straps over the stacks, at the front`);
+    const ringAt = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === HOLD_RING), crateAt = calls.findIndex(k => k[0] === 'fillStyle' && HOLD_WOOD.includes(k[1]));
+    assert.ok(ringAt > crateAt, `${at}: the rings in the deck drawn over the stacks' shadows`);
+    for (const p of all.filter(q => ['#4a4436', '#3e3426'].includes(q.col))) assert.deepEqual(p.at, [0, 0], `${at}: the straps and the pallets at the front, unmoved`);
+  }
+});
+test('in the box the medbay\'s cot stands on four legs with a shadow under it, the IV pole on its foot plate behind it, the cabinet solid, its supplies on its top (#1024)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) for (const patient of [false, true]) {
+    const { r, s } = medCase(pr, 1.17, patient), F = r.floor, W = r.x1 - r.x0, X = sh => r.x0 + W * sh, at = `${patient ? 'a patient' : 'empty'}, ${pr}`, { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
+    const parts = filledParts(calls), placed = placedParts(calls), e = box.roomEye(r), n2 = v => Math.round(v * 100) / 100, cot = { x0: n2(X(0.34) - 46), x1: n2(n2(X(0.34) - 46) + 108) };
+    // the shadow under the cot first, its footprint widened 5 each side, half the strip deep; then the legs at its back edge, then the pole, then the cot's front
+    const sh = parts.findIndex(p => p.col === SHADOW && p.pts.some(q => near(q[0], cot.x0 - 5) && near(q[1], F)) && p.pts.some(q => near(q[0], cot.x1 + 5) && near(q[1], F)));
+    assert.ok(sh >= 0, `${at}: a shadow under the cot`);
+    assert.ok(parts.find(p => p === parts[sh]).pts.some(q => near(q[1], box.roomInto(e, cot.x0, F, 0.5)[1])), `${at}: the shadow as deep as the cot`);
+    const legs = placed.filter(p => p.col === '#1c3249' && p.pts.length === 4 && partBox(p).y1 - partBox(p).y0 > 15);
+    const back = legs.filter(p => p.at[0] || p.at[1]), front = legs.filter(p => !p.at[0] && !p.at[1]);
+    assert.equal(front.length, 2, `${at}: two legs at the front`); assert.equal(back.length, 2, `${at}: and two at the back`);
+    for (const p of back) {  // moved to the cot's back edge, half the strip deep: up by that, and in toward the eye
+      const raw = partBox(p).x0 - p.at[0];
+      assert.ok(near(p.at[1], box.roomInto(e, 0, F, 0.5)[1] - F) && Math.sign(p.at[0]) === Math.sign(e.vx - raw) && Math.abs(Math.abs(p.at[0]) - Math.abs(e.vx - raw) * 0.1) < 0.5, `${at}: a back leg at ${raw} moved to the cot's back edge (${p.at})`);
+    }
+    const pole = parts.findIndex(p => p.col === '#4a5e74'), frame = parts.findIndex(p => p.col === '#2a4664');
+    assert.ok(sh < pole && parts.indexOf(parts.find(p => p.col === '#1c3249')) < pole && pole < frame, `${at}: the pole between the cot's back and its front`);
+    const foot = parts.find(p => p.col === '#20384f' && partBox(p).y1 >= F - 0.01), px = (partBox(foot).x0 + partBox(foot).x1) / 2;
+    assert.ok(parts.some(p => p.col === SHADOW && p.pts.some(q => near(q[0], partBox(foot).x0 - 5) && near(q[1], F))), `${at}: a shadow under the pole's foot plate`);
+    assert.ok(!parts.some(p => p.col === solidSide('#20384f')) && !parts.some(p => p.col === solidTop('#20384f')), `${at}: the pole's foot plate has no faces, only its shadow (spec section 5)`);
+    // the rail along the cot's far side, at its back edge, its posts down to the mattress's back
+    const rail = placed.find(p => p.col === '#3a5470' && partBox(p).x1 - partBox(p).x0 > 50);
+    assert.ok(rail && near(rail.at[1], box.roomInto(e, 0, F - MED_COT, 0.5)[1] - (F - MED_COT)), `${at}: the rail moved to the cot's far side (${rail && rail.at})`);
+    // the cabinet: its body and top solid, its side toward the eye; the bottles and the kit stood on its top, a little back from its front
+    const cab = partBox(parts.find(p => p.col === '#4e5e6e')), top = parts.findIndex(p => p.col === '#6e7e8e');
+    assert.ok(parts.some(p => p.col === solidSide('#4e5e6e') && p.pts.filter(q => near(q[0], cab.x0)).length === 2), `${at}: the cabinet's left side, toward the eye`);
+    for (const col of ['#4e6a78', '#7a8692']) {
+      const things = placed.filter(p => p.col === col), i = parts.findIndex(p => p.col === col);
+      assert.ok(things.length && things.every(p => p.at[1] < 0 && p.at[1] > -4) && i > top, `${at}: the ${col} things on the top, drawn after it and a little back (${things.map(p => p.at)})`);
+    }
+  }
+});
+test('the medbay\'s and the hold\'s ceiling lamps are fittings too, the medbay\'s clear of the scanner arm\'s mount (#1024)', () => {
+  for (const id of ['medbay', 'hold']) for (const pr of [0.02, 0.3, 0.5]) {
+    const r = layoutBox(LAYOUTS.freighter, id), { ctx, calls } = recorder();
+    drawRoom(ctx, id, r, RS({ w: phaseWeights(pr), well: FW, patient: true, cargo: 1, damage: { marks: new Set(), severe: false } }));
+    const parts = filledParts(calls), lamps = box.roomLamps(id, r), e = box.roomEye(r), back = r.top + (r.floor - 80 - r.top) * 0.2;
+    assert.equal(lamps.length, 1, `${id}: one lamp`);
+    for (const x of lamps) {
+      assert.ok(x - 12 >= r.x0 && x + 12 <= r.x1, `${id}: the lamp at ${x} in the room`);
+      assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${id} ${pr}: the lamp at ${x}: its plate on the sliver, from the cut to the wall`);
+      assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${id} ${pr}: its housing hung from the ceiling`);
+      assert.ok(calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${id} ${pr}: the guard over its lens`);
+      assert.ok(calls.some((k, i) => k[0] === 'fillRect' && near(k[1], x - 10) && near(k[2], r.top + 3) && String(calls[i - 1][1]).startsWith('rgba(')), `${id} ${pr}: its lens lit in the lamp's colour`);
+      if (id === 'medbay') for (const col of ['#5a5e60', '#20384f']) {
+        const mount = parts.filter(p => p.col === col && p.outlined).map(partBox).filter(b => b.y0 <= r.top + 5);
+        assert.ok(mount.length && mount.every(b => x + 12 <= b.x0 || x - 12 >= b.x1), `${id}: the fitting at ${x} clear of the scanner's mount (${JSON.stringify(mount)})`);
+      }
+    }
+  }
+});
+test('a solid\'s top is a step lighter, but never brighter or more saturated than the people (#1024, #959)', () => {
+  const bay = { x0: 0, x1: 400, top: 0, floor: 100 };
+  for (const col of ['#1f3852', '#6e7e8e', '#8a7a3a', '#7a6a34']) {
+    const { ctx, calls } = recorder(); box.roomIn([bay], () => box.roomPart(ctx, box.roomRound(20, 60, 60, 40, 1), col, { solid: 0.45 }));
+    const top = filledParts(calls).find(p => p.pts.some(q => near(q[1], 60)) && p.pts.length === 4 && p.col !== col && !p.col.startsWith('rgba') && p.col !== solidSide(col));
+    const v = rgbOf(top.col), f = rgbOf(col);
+    assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${col}: its top ${top.col} under the people`);
+    assert.ok(v.every((c, i) => c >= f[i]) && v.some((c, i) => c > f[i]), `${col}: its top ${top.col} lighter than its front`);
+    if (col === '#1f3852') assert.equal(top.col, box.figShade(col, 1.3), 'a dark part\'s top a step lighter, as before');
   }
 });
 
@@ -1381,5 +1509,353 @@ test('the bridge\'s grab bars beside the ladder are on the shaft\'s bulkheads, b
     assert.ok(b && b.x0 >= e - 6 && b.x1 <= e + 6, `a bar (${b && b.x0} to ${b && b.x1}) on the bulkhead at ${e}`);
     assert.ok(side < 0 ? b.x0 < e - 4 : b.x1 > e + 4, `at the hatch's room side (${b.x0} to ${b.x1})`);
     assert.ok(b.y0 >= r.floor - 92 && b.y1 <= r.floor, 'beside the hatch, inside its height');
+  }
+});
+
+// #933, the gunnery on the gun deck: the fire-control console at each seat (the gunner faces it, side-on, SEAT_FACE), the gun station's grips and
+// triggers, its ready lamp and the targeting scope, the status screen, the range finder and the range tables taped over it; the torpedo rack's six
+// cradles holding what the ship carries (s.torpedoes, #956), each torpedo with its fins, clamps and a safety pin with its tag, the count chalked on
+// the rack; the ammunition locker and the weapons locker, latched; the close-defense turret's mount in the ceiling, its lock pin, the feed chute
+// and the tray with a belt of rounds; the cable conduit on the wall; the recoil plate; and the shared stool, solid. Old and patched (point 6).
+// Drawn at the burn view's zoom in a window 1000, 1280 and 1600 wide.
+const gun = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['gunCradle', 'GUN_CRADLES', 'roomStool', 'roomIn', 'roomBays', 'FIG_SEAT']);
+const GUN_PROPS = [['#1e3852', 'the consoles'], ['#2a4a6a', 'their sloped tops'], ['#3a4450', 'the gun grips'], ['#263a50', 'the ready lamp\'s housing'], ['#03121c', 'the screens'], ['#505650', 'the range finder'],
+  ['#2e5468', 'its glass'], ['#16283a', 'the torpedo rack'], ['#2e4864', 'its posts'], ['#3a5068', 'its cradles'], ['#2a3a4c', 'the rack\'s header, where the count is chalked'], ['#3a4a3e', 'the ammunition locker'],
+  ['#4a5058', 'the weapons locker'], ['#2c4058', 'the turret\'s mount'], ['#33475c', 'the feed chute'], ['#3e5068', 'the feed tray'], ['#8a7a50', 'the belt\'s rounds'], ['#2a4664', 'the stools'],
+  [wallTone('#2e4458'), 'the cable conduit, on the wall'], [wallTone('#8a8676'), 'the range tables, on the wall'], [wallTone('#7a7058'), 'the recoil plate, on the wall']];
+const GUN_WALL = ['#2e4458', '#8a8676', '#7a7058'];
+const gunCase = (pr, zoom, torpedoes = 2) => ({ r: layoutBox(LAYOUTS.freighter, 'gunnery'), s: RS({ w: phaseWeights(pr), zoom, torpedoes, damage: { marks: new Set(), severe: false } }) });
+const gunParts = (r, s) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'gunnery', r, s); return { calls, parts: filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })) }; };
+test('the gunnery is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
+  for (const torpedoes of [0, 2, 6]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = gunCase(pr, zoom, torpedoes), at = `${torpedoes} torpedoes, ${pr}, ${zoom}`;
+    const c = fakeCtx(); drawRoom(c, 'gunnery', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    assert.ok(!c.calls.includes('fillText'), `${at}: no text in the room (the recoil plate is marks)`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'gunnery', r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of GUN_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    for (const col of GUN_WALL) assert.equal(fills(col), 0, `${at}: nothing on the wall in its own colour (${col})`);
+    // in the box (#1024): the consoles' tops, the ammunition locker and the stools' pads solid, their tops showing; the rack, the lockers and the
+    // consoles show their side toward the eye; a contact shadow under each console, the rack, each locker and each stool's foot
+    for (const [col, what] of [['#2a4a6a', 'the consoles\' tops'], ['#3a4a3e', 'the ammunition locker'], ['#2a4664', 'the stools\' pads']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
+    for (const [col, what] of [['#1e3852', 'the consoles'], ['#16283a', 'the rack'], ['#3a4a3e', 'the ammunition locker'], ['#4a5058', 'the weapons locker']]) assert.ok(fills(solidSide(col)) >= 1, `${at}: ${what}' side toward the eye`);
+    assert.ok(fills(SHADOW) >= 7, `${at}: contact shadows on the strip (${fills(SHADOW)})`);
+    const outlined = filledParts(calls).filter(p => p.outlined);
+    assert.ok(outlined.length >= 60 + 5 * torpedoes, `${at}: the props outlined like the figures (${outlined.length})`);
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
+    }
+    for (const col of ['#b8903a', '#d8b060', '#c9b98f', '#c9a227', '#ffb030']) assert.equal(fills(col), 0, `${at}: no bright block (${col})`);
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn (the wall's things moved onto it)
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v, pts } of roomOwnPlaced('gunnery', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
+    // what is on the wall is on the back wall, where it is drawn
+    const wall = backWall(r), placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) }));
+    for (const col of GUN_WALL) for (const p of placed.filter(q => q.col === wallTone(col))) assert.ok(p.x0 >= wall.x0 && p.x1 <= wall.x1 && p.y0 >= wall.y0 - 4.5 && p.y1 <= wall.y1 && (p.at[0] || p.at[1]), `${at}: ${col} (${JSON.stringify(p)}) on the back wall`);
+  }
+  const stillAt = t => { const { r, s } = gunCase(0.5, 1.17), c = fakeCtx(); drawRoom(c, 'gunnery', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('the gunnery\'s torpedo rack holds what the ship carries: that many torpedoes in its six cradles, the rest empty, the count chalked on it (#933, #956)', () => {
+  assert.equal(gun.GUN_CRADLES, 6, 'six cradles, the magazine\'s six (TORP_MAX, torpedoes.js)');
+  for (const n of [0, 1, 2, 5, 6]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = gunCase(0.3, zoom, n), F = r.floor, at = `${n}, ${zoom}`, { calls, parts } = gunParts(r, s);
+    const bodies = parts.filter(p => p.col === '#5a6458');
+    assert.equal(bodies.length, n, `${at}: ${n} torpedoes (${bodies.length})`);
+    for (let k = 0; k < gun.GUN_CRADLES; k++) {
+      const c = gun.gunCradle(r, k), on = bodies.filter(p => near(p.x0, c.x) && near(p.y0, c.y) && near(p.x1, c.x + c.w) && near(p.y1, c.y + c.h));
+      assert.equal(on.length, k < n ? 1 : 0, `${at}: cradle ${k} ${k < n ? 'holds a torpedo' : 'empty'}`);
+      assert.ok(c.y + c.h <= F - 4 && c.y >= F - 84 && c.w >= 44 && c.w <= 60 && c.h <= 9, `${at}: cradle ${k} (${JSON.stringify(c)}) in the rack, a torpedo a person can lift with a hand (#960)`);
+      if (k) assert.ok(gun.gunCradle(r, k - 1).y - c.y >= 12, `${at}: cradle ${k} over cradle ${k - 1}, room for the fins`);
+      assert.equal(parts.filter(p => p.col === '#3a5068' && p.y0 >= c.y + c.h - 2 && p.y1 <= c.y + c.h + 2 && p.x0 >= c.x - 1 && p.x1 <= c.x + c.w + 1).length, 2, `${at}: cradle ${k} on two saddles`);
+      const clamps = parts.filter(p => p.col === '#6a7480' && p.x0 >= c.x && p.x1 <= c.x + c.w && p.y1 > c.y - 2 && p.y0 < c.y + c.h + 1);
+      if (k < n) assert.ok(clamps.filter(p => p.y0 <= c.y && p.y1 >= c.y + c.h).length === 2, `${at}: torpedo ${k} held by two clamps closed over it`);
+      else assert.ok(clamps.length === 2 && clamps.every(p => p.y1 <= c.y + c.h && p.y1 - p.y0 < c.h), `${at}: cradle ${k}'s clamps open`);
+    }
+    assert.equal(parts.filter(p => p.col === '#454c44').length, 3 * n, `${at}: each torpedo's tail and two fins`);
+    const tags = parts.filter(p => p.col === '#8e3a32');
+    assert.equal(tags.length, n, `${at}: a safety pin's tag on each torpedo`);
+    for (const t of tags) assert.ok(t.x1 - t.x0 <= 5 && t.y1 - t.y0 <= 6 && bodies.some(b => t.x0 >= b.x0 && t.x1 <= b.x1 && t.y0 >= b.y1 - 1 && t.y0 <= b.y1 + 2), `${at}: a tag (${JSON.stringify(t)}) hung under its torpedo`);
+    // the count chalked on the rack's header: one mark a torpedo, marks not text
+    const head = parts.find(p => p.col === '#2a3a4c'), chalk = calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === '#a09c8e' && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+    assert.equal(chalk.length, n, `${at}: ${n} chalk marks (${chalk.length})`);
+    for (const [x, y, w, h] of chalk) assert.ok(x >= head.x0 && x + w <= head.x1 && y >= head.y0 && y + h <= head.y1 && w <= 1 && h <= 5, `${at}: a chalk mark on the header`);
+    assert.equal(calls.filter(k => k[0] === 'fillText').length, 0, `${at}: no text`);
+  }
+});
+test('the gunnery is sized to a person: a console at the waist in front of each seat, its screens at the seated eye, the lockers and the rack under the head, the stool at the seat (#933, #1041)', () => {
+  const { r } = gunCase(0.3, 1.45), F = r.floor, W = r.x1 - r.x0;
+  const sitter = drawPerson(fakeCtx(), { name: 'work-sit', face: -1, frame: 0, view: 'side' }, 0, F, { color: '#ffb347' });
+  assert.ok(Math.abs(F - sitter.head.y - 50.71) < 0.01, `the seated figure's head where it was (${F - sitter.head.y})`);
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { s } = gunCase(pr, 1.45, 6), { calls, parts } = gunParts(r, s), at = `${pr}`;
+    const tops = parts.filter(p => p.col === '#2a4a6a'), glass = placedRects(calls).filter(q => q.col === '#03121c');
+    for (const f of SEATS.gunnery) {
+      const x = r.x0 + W * f, top = tops.find(p => p.x1 <= x - 10 && p.x1 >= x - 24);
+      assert.ok(top, `${at}: a console in front of the seat at ${f}, the way it faces (SEAT_FACE -1)`);
+      assert.ok(F - top.y0 >= 36 && F - top.y0 <= 44 && F - top.y1 >= 30, `${at}: its top at the waist (${F - top.y0})`);
+      const g = glass.find(q => q.x >= top.x0 - 1 && q.x + q.w <= top.x1 + 1);
+      assert.ok(g, `${at}: a screen on the console at ${f}`);
+      assert.ok(Math.abs(F - (g.y + g.h / 2) - (F - sitter.head.y)) <= 4 && g.y + g.h <= top.y0, `${at}: the screen at ${f} at the seated gunner's eye (${F - (g.y + g.h / 2)}), on the console`);
+    }
+    const grips = parts.filter(p => /^#(3a4450|4a4640)$/.test(p.col) && p.y1 - p.y0 >= 6), seat0 = r.x0 + W * SEATS.gunnery[0];
+    assert.equal(grips.length, 2, `${at}: two grips`);
+    for (const g of grips) assert.ok(g.x1 <= seat0 - 14 && g.x0 >= seat0 - 40 && F - g.y0 >= 42 && F - g.y0 <= 54, `${at}: a grip (${JSON.stringify(g)}) at the seated gunner's hands`);
+    const triggers = calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === '#8e3a32' && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+    assert.ok(grips.every(g => triggers.some(([x, y, w, h]) => x + w <= g.x0 + 0.5 && x + w >= g.x0 - 1 && y >= g.y0 && y + h <= g.y1)), `${at}: a trigger on the front of each grip`);
+    const weap = parts.find(p => p.col === '#4a5058' && p.y1 - p.y0 > 60), ammo = parts.find(p => p.col === '#3a4a3e' && p.x1 - p.x0 > 20);
+    assert.ok(weap && F - weap.y0 >= 84 && F - weap.y0 <= 92 && weap.y1 >= F - 4, `${at}: the weapons locker at head height (${weap && F - weap.y0})`);
+    assert.ok(ammo && F - ammo.y0 >= 36 && F - ammo.y0 <= 48 && ammo.y1 >= F - 1, `${at}: the ammunition locker at the waist (${ammo && F - ammo.y0})`);
+    const rack = parts.find(p => p.col === '#16283a');
+    assert.ok(rack && F - rack.y0 <= FIG_TALL - 4 && rack.x0 > seat0 && rack.x1 < weap.x0 && rack.x1 < ammo.x0, `${at}: the rack (${JSON.stringify(rack)}) under a person's head, beside the lockers`);
+    assert.ok(weap.x1 <= r.x1 - 4 && rack.x0 > r.x0 + W * SEATS.gunnery[1] + 14, `${at}: the rack and the lockers clear of the second seat's chair, in the room`);
+    // the turret's feed tray over the ammunition locker, the belt in it and down into the locker; the lock pin through the turret's mount
+    const tray = parts.find(p => p.col === '#3e5068'), mount = parts.find(p => p.col === '#2c4058'), chute = parts.find(p => p.col === '#33475c');
+    assert.ok(mount.y0 <= r.top + 0.5 && chute.y0 <= mount.y1 + 0.5 && chute.y1 >= tray.y0 - 0.5, `${at}: the chute from the turret's mount in the ceiling down to the tray`);
+    assert.ok(tray.x0 >= ammo.x0 - 4 && tray.x1 <= ammo.x1 + 4 && tray.y1 < ammo.y0 - 8 && F - tray.y0 <= 72, `${at}: the tray over the ammunition locker, in reach`);
+    const rounds = parts.filter(p => p.col === '#8a7a50');
+    assert.ok(rounds.filter(p => p.y1 <= tray.y1 + 1 && p.y0 >= tray.y0 - 5).length >= 5 && rounds.some(p => p.y0 > tray.y1 && p.y1 <= ammo.y0 + 1), `${at}: a belt of rounds in the tray and down to the locker`);
+    for (const p of rounds) assert.ok(p.x1 - p.x0 <= 3 && p.y1 - p.y0 <= 6, `${at}: a round, small`);
+    // the stools, solid on the floor, at the seat's height, each with its back behind the gunner and a harness on it
+    const pads = parts.filter(p => p.col === '#2a4664' && p.x1 - p.x0 >= 16);
+    assert.equal(pads.length, SEATS.gunnery.length, `${at}: a stool at each seat`);
+    for (const f of SEATS.gunnery) {
+      const x = r.x0 + W * f, pad = pads.find(p => Math.abs((p.x0 + p.x1) / 2 - x) < 0.6);
+      assert.ok(pad && Math.abs(F - pad.y0 - gun.FIG_SEAT) <= 0.01, `${at}: the stool at ${f} at the seat's height, ${gun.FIG_SEAT} (${pad && F - pad.y0})`);
+      assert.ok(parts.some(p => p.col === '#2a4664' && p.y1 - p.y0 > 20 && p.x0 > x + 4 && p.x1 < x + 16), `${at}: its back on the right, behind someone facing left`);
+      assert.ok(calls.some(k => k[0] === 'fillStyle' && k[1] === SHADOW) && filledParts(calls).some(p => p.col === SHADOW && p.pts.some(q => near(q[1], F) && q[0] < x - 8 && q[0] > x - 20)), `${at}: its shadow on the strip`);
+    }
+  }
+});
+test('the shared stool stands solid, at the seat\'s height, with its shadow; the medbay\'s has no back (#1041)', () => {
+  const bay = { x0: 0, x1: 400, top: 0, floor: 100 };
+  for (const back of [0, 1, -1]) for (const x of [60, 340]) {
+    const { ctx, calls } = recorder(); gun.roomIn([bay], () => gun.roomStool(ctx, x, 100, back));
+    const parts = filledParts(calls), at = `back ${back} at ${x}`;
+    assert.equal(calls.filter(k => k[0] === 'save').length, calls.filter(k => k[0] === 'restore').length);
+    const pad = parts.find(p => p.col === '#2a4664' && p.outlined && partBox(p).x1 - partBox(p).x0 >= 16);
+    assert.ok(pad && near(100 - partBox(pad).y0, gun.FIG_SEAT), `${at}: its pad at ${gun.FIG_SEAT}`);
+    assert.ok(parts.some(p => p.col === solidTop('#2a4664')), `${at}: the pad's top showing`);
+    assert.ok(parts.some(p => p.col === solidSide('#2a4664') && p.pts.filter(q => near(q[0], x < 200 ? partBox(pad).x1 : partBox(pad).x0)).length === 2), `${at}: its side toward the eye`);
+    assert.equal(parts.filter(p => p.col === SHADOW).length, 1, `${at}: one contact shadow, under its foot`);
+    const shadow = partBox(parts.find(p => p.col === SHADOW));
+    assert.ok(near(shadow.y1, 100) && shadow.x0 < x - 8 && shadow.x1 > x + 8, `${at}: the shadow under its foot`);
+    const backs = parts.filter(p => p.col === '#2a4664' && p.outlined && partBox(p).y1 - partBox(p).y0 > 20);
+    if (!back) assert.equal(backs.length, 0, `${at}: a stool, no back`);
+    else assert.ok(backs.length === 1 && (back > 0 ? partBox(backs[0]).x1 < x - 6 : partBox(backs[0]).x0 > x + 6), `${at}: the back behind the sitter`);
+  }
+});
+test('the gunnery reads old and patched: a newer locker bolted on an older plinth, a grip replaced, wear where hands go, a printed mount tagged temporary, tape and cable ties (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = gunCase(pr, 1.17, 2), at = `${pr}`, { calls, parts } = gunParts(r, s);
+    const rects = col => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+    const inside = ([x, y, w, h], b) => x >= b.x0 - 0.01 && x + w <= b.x1 + 0.01 && y >= b.y0 - 0.01 && y + h <= b.y1 + 0.01;
+    const weap = parts.find(p => p.col === '#4a5058' && p.y1 - p.y0 > 60), plinth = parts.find(p => p.col === '#24384c');
+    assert.ok(plinth && plinth.y0 >= weap.y1 - 0.5 && plinth.x0 <= weap.x0 + 1 && plinth.x1 >= weap.x1 - 1, `${at}: the weapons locker, newer, on an older plinth`);
+    assert.ok(rects('#8a929a').filter(b => b[1] >= plinth.y0 - 0.5).length >= 2, `${at}: fresh bolts in the plinth`);
+    const grips = parts.filter(p => /^#(3a4450|4a4640)$/.test(p.col) && p.y1 - p.y0 >= 6);
+    assert.ok(new Set(grips.map(p => p.col)).size === 2, `${at}: one grip a replacement in another finish`);
+    const top = parts.filter(p => p.col === '#2a4a6a').sort((a, b) => a.x0 - b.x0)[0];
+    assert.ok(rects('#7e8a94').filter(c => inside(c, { ...top, y0: top.y0 - 1, y1: top.y1 + 1 }) && c[0] >= grips[0].x0 - 14).length >= 2, `${at}: paint worn off the console's edge by the grips`);
+    assert.ok(rects('#4e5a50').length >= 2 && rects('#4e5a50').every(c => inside(c, parts.find(p => p.col === '#3a4a3e' && p.x1 - p.x0 > 20))), `${at}: scuffs on the ammunition locker`);
+    const clamp = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050'), finder = parts.find(p => p.col === '#505650');
+    assert.ok(clamp && finder && clamp.y0 >= finder.y1 - 1.5 && clamp.x0 < finder.x1 && clamp.x1 > finder.x0, `${at}: the range finder on a printed mount`);
+    assert.ok(tag && tag.y0 >= clamp.y0 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its temporary tag (${JSON.stringify(tag)})`);
+    const placed = placedParts(calls).map(p => ({ col: p.col, ...partBox(p) })), conduit = placed.filter(p => p.col === wallTone('#2e4458'));
+    const tape = placed.filter(p => p.col === wallTone('#7a7462')), ties = placedRects(calls).filter(q => q.col === wallTone('#1e2a36'));
+    assert.ok(tape.some(t => conduit.some(c => t.x0 < c.x1 && t.x1 > c.x0 && t.y0 < c.y1 && t.y1 > c.y0)), `${at}: tape round the conduit`);
+    assert.ok(ties.length >= 2 && ties.every(t => conduit.some(c => t.x < c.x1 && t.x + t.w > c.x0 && t.y < c.y1 && t.y + t.h > c.y0)), `${at}: cable ties on the conduit`);
+    assert.ok(rects('#5a6a4e').length >= 3, `${at}: the stencil on the ammunition locker, marks`);
+    // the turret's lock pin, its ring and its tag on a lanyard
+    const mount = parts.find(p => p.col === '#2c4058'), lock = rects('#9aa4ae'), ltag = parts.find(p => p.col === '#8a4436');
+    assert.ok(lock.some(([x, y, w]) => y >= mount.y0 && y <= mount.y1 && x < mount.x1 && x + w > mount.x1), `${at}: the lock pin through the turret's mount`);
+    assert.ok(ltag && ltag.y0 > mount.y1 && ltag.x1 - ltag.x0 <= 6, `${at}: its tag hung on a lanyard`);
+  }
+});
+test('the gunnery\'s ceiling lamp is a fitting, clear of the turret\'s mount; the screens show the phase, the flip its heading (#1024, #933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const r = layoutBox(LAYOUTS.freighter, 'gunnery'), { calls, parts } = gunParts(r, RS({ w: phaseWeights(pr), well: FW, torpedoes: 2, damage: { marks: new Set(), severe: false } })), [x] = box.roomLamps('gunnery', r);
+    assert.ok(parts.some(p => p.col === '#3a4a5a' && near(p.x0, x - 12) && near(p.y0, r.top)), `${pr}: the lamp's housing hung from the ceiling at ${x}`);
+    assert.ok(calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${pr}: the guard over its lens`);
+    const mount = parts.find(p => p.col === '#2c4058');
+    assert.ok(x + 12 <= mount.x0 || x - 12 >= mount.x1, `${pr}: clear of the turret's mount`);
+    if (pr === 0.5) assert.ok(filledParts(calls).some(p => p.col === '#c8903a') && calls.some(k => k[0] === 'rotate'), `${pr}: the heading arrow turning at the flip`);
+    else assert.ok(!calls.some(k => k[0] === 'rotate'), `${pr}: no heading arrow off the flip`);
+  }
+});
+// #933, the engine room on the drive deck: the reactor housing (bands, bolted panels, the maintenance hatch with its wheel and latches, the
+// injector cover, the core's sight port, the telltales, warning marks, the drive's lines down through the deck, the coolant up into the
+// ceiling); the drive's fuel, deuterium (docs/bible/technology.md), in two cryo bottles in their rack with bands, valves and warning marks;
+// the reaction mass's feed down from the tank, its pump, and the level gauge on the wall reading the tank (s.fuel); the gauges at eye height,
+// the wall slate, the pipes along the wall and the ceiling, the valve wheels; the tool board over the bench, one tool out; the bench at the
+// waist with the engineer's terminal. Old and patched (point 6). Drawn at the burn view's zoom in a window 1000, 1280 and 1600 wide.
+const ENGINE_PROPS = [['#2c4258', 'the reactor housing'], ['#3a5268', 'its bands'], ['#30485f', 'its hatch'], ['#33495f', 'the injector cover'], ['#1a2c40', 'the core\'s sight port'],
+  ['#34485c', 'the drive\'s lines'], ['#4a5a50', 'the old fuel bottle'], ['#5a6470', 'the newer one'], ['#2e3a36', 'the bottles\' bands'], ['#24384c', 'their rack'], ['#3a4a56', 'the feed pump'],
+  ['#3d5a7a', 'the pipes'], ['#4f6f8f', 'their flanges'], ['#3a4048', 'the bench'], ['#03121c', 'the terminal\'s screen'], ['#7a7058', 'the warning plate'],
+  [wallTone('#22384e'), 'the gauge panel, on the wall'], [wallTone('#a8a28e'), 'the gauges\' faces, on the wall'], [wallTone('#4a4234'), 'the tool board, on the wall'],
+  [wallTone('#6a7078'), 'the tools, on the wall'], [wallTone('#1e2a2c'), 'the wall slate'], [wallTone('#2a3a4c'), 'the level gauge\'s frame, on the wall'], [wallTone('#0c1620'), 'its glass'],
+  [wallTone('#3d5a7a'), 'the pipe along the wall']];
+const ENGINE_WALL = ['#22384e', '#a8a28e', '#4a4234', '#6a7078', '#1e2a2c', '#2a3a4c', '#0c1620'];
+const ENGINE_WATER = 'rgba(70,140,190,0.6)', ENGINE_VALVE = '#8a3a30';
+const engCase = (pr, zoom, fuel = 0.5, burning = true) => ({ r: layoutBox(LAYOUTS.freighter, 'engine'), s: RS({ w: phaseWeights(pr), zoom, fuel, burning, well: FW, damage: { marks: new Set(), severe: false } }) });
+const engParts = (r, s) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'engine', r, s); return { calls, parts: filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })) }; };
+test('the engine room is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
+  for (const fuel of [0, 0.5, 1]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = engCase(pr, zoom, fuel), at = `fuel ${fuel}, ${pr}, ${zoom}`;
+    const c = fakeCtx(); drawRoom(c, 'engine', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    assert.ok(!c.calls.includes('fillText'), `${at}: no text in the room (the stencils are marks)`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'engine', r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of ENGINE_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    for (const col of ENGINE_WALL) assert.equal(fills(col), 0, `${at}: nothing on the wall in its own colour (${col})`);
+    assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === ENGINE_VALVE).length + calls.filter(k => k[0] === 'strokeStyle' && k[1] === wallTone(ENGINE_VALVE)).length >= 3, `${at}: valve wheels`);
+    // in the box (#1024): the bottles, the pump and the bench solid, their tops and their sides toward the eye showing; the housing, which
+    // straddles the eye, and the rest stand with contact shadows on the strip
+    for (const [col, what] of [['#4a5a50', 'the old bottle'], ['#5a6470', 'the newer bottle'], ['#3a4a56', 'the pump'], ['#4a5058', 'the bench\'s top']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
+    for (const [col, what] of [['#4a5a50', 'the old bottle'], ['#5a6470', 'the newer bottle'], ['#3a4a56', 'the pump'], ['#3a4048', 'the bench']]) assert.ok(fills(solidSide(col)) >= 1, `${at}: ${what}'s side toward the eye`);
+    assert.equal(fills(solidSide('#2c4258')), 0, `${at}: the housing straddles the eye, no side`);
+    assert.ok(fills(SHADOW) >= 5, `${at}: contact shadows on the strip (${fills(SHADOW)})`);
+    const outlined = filledParts(calls).filter(p => p.outlined);
+    assert.ok(outlined.length >= 80, `${at}: the props outlined like the figures (${outlined.length})`);
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
+    }
+    for (const col of ['#e6dfc9', '#c0392b', '#c9a227', '#ffe2b8', '#ff8a6a']) assert.equal(fills(col), 0, `${at}: no bright block (${col})`);
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn (the wall's things moved onto it)
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v, pts } of roomOwnPlaced('engine', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
+    // what is on the wall is on the back wall, where it is drawn
+    const wall = backWall(r), placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) }));
+    for (const col of ENGINE_WALL) for (const p of placed.filter(q => q.col === wallTone(col))) assert.ok(p.x0 >= wall.x0 && p.x1 <= wall.x1 && p.y0 >= wall.y0 && p.y1 <= wall.y1 && (p.at[0] || p.at[1]), `${at}: ${col} (${JSON.stringify(p)}) on the back wall`);
+  }
+  const stillAt = t => { const { r, s } = engCase(0.5, 1.17), c = fakeCtx(); drawRoom(c, 'engine', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('the engine room\'s level gauge reads the reaction mass in the tank over it (s.fuel): empty, half and full (#933)', () => {
+  for (const zoom of [0.82, 1.17, 1.45]) {
+    const read = fuel => {
+      const { r, s } = engCase(0.3, zoom, fuel), { ctx, calls } = recorder(); drawRoom(ctx, 'engine', r, s);
+      const glass = placedParts(calls).filter(p => p.col === wallTone('#0c1620')).map(partBox), water = placedRects(calls).filter(q => q.col === ENGINE_WATER);
+      return { glass, water, r };
+    };
+    for (const fuel of [0, 0.5, 1]) {
+      const { glass, water, r } = read(fuel), at = `${fuel}, ${zoom}`;
+      assert.equal(glass.length, 1, `${at}: one level gauge`);
+      const g = glass[0], inner = g.y1 - g.y0 - 2;
+      assert.ok(g.y1 - g.y0 >= 30 && g.x1 - g.x0 <= 8, `${at}: a tall narrow glass (${JSON.stringify(g)})`);
+      assert.ok(r.floor - (g.y0 + g.y1) / 2 >= 40 && r.floor - g.y0 <= 84, `${at}: read standing, under the eye (${r.floor - g.y0})`);
+      if (fuel === 0) { assert.ok(water.every(q => q.h <= 0.01), `${at}: an empty glass`); continue; }
+      assert.equal(water.length, 1, `${at}: the water in the glass`);
+      const q = water[0];
+      assert.ok(q.x >= g.x0 && q.x + q.w <= g.x1, `${at}: in the glass`);
+      assert.ok(near(q.y + q.h, g.y1 - 1) && Math.abs(q.h - inner * fuel) < 0.01, `${at}: filled to ${fuel} (${q.h} of ${inner})`);
+    }
+  }
+});
+test('the engine room is sized to a person: the housing the one big thing under the ceiling, the bottles under the shoulder, the bench at the waist, the gauges at the eye (#933, #960)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = engCase(pr, 1.17), F = r.floor, W = r.x1 - r.x0, at = `${pr}`, { calls, parts } = engParts(r, s);
+    const housing = parts.find(p => p.col === '#2c4258' && p.x1 - p.x0 > 60);
+    assert.ok(housing, `${at}: the housing`);
+    assert.ok(F - housing.y0 >= FIG_TALL - 2 && F - housing.y0 <= 92 && housing.y1 >= F - 1 && housing.x1 - housing.x0 <= 100, `${at}: the housing a little over a person, under the ceiling (${JSON.stringify(housing)})`);
+    assert.ok(Math.abs((housing.x0 + housing.x1) / 2 - (r.x0 + W / 2)) < 1, `${at}: the housing in the middle of the room, under its lamp`);
+    for (const p of parts.filter(q => q.x1 - q.x0 > 40 && q.y1 - q.y0 > 40 && q.col !== '#2c4258')) assert.ok(p.x1 - p.x0 < housing.x1 - housing.x0 || p.y1 - p.y0 < housing.y1 - housing.y0, `${at}: nothing as big as the housing (${JSON.stringify(p)})`);
+    const bottles = parts.filter(p => /^#(4a5a50|5a6470)$/.test(p.col) && p.y1 - p.y0 > 30);
+    assert.equal(bottles.length, 2, `${at}: two fuel bottles`);
+    for (const b of bottles) assert.ok(F - b.y0 >= 40 && F - b.y0 <= 60 && b.x1 - b.x0 <= 26 && b.y1 >= F - 6, `${at}: a bottle (${JSON.stringify(b)}) under the shoulder, two can lift it empty`);
+    const bands = parts.filter(p => p.col === '#2e3a36');
+    assert.ok(bottles.every(b => bands.filter(q => q.x0 <= b.x0 + 1 && q.x1 >= b.x1 - 1 && q.y0 >= b.y0 && q.y1 <= b.y1).length >= 2), `${at}: two bands on each bottle`);
+    const bench = parts.find(p => p.col === '#4a5058' && p.x1 - p.x0 > 60);
+    assert.ok(bench && F - bench.y0 >= 38 && F - bench.y0 <= 42, `${at}: the bench's top at the waist (${bench && F - bench.y0})`);
+    assert.ok(bench.x0 > housing.x1 && bench.x1 <= r.x1 - 4, `${at}: the bench beside the housing, in the room`);
+    const pump = parts.find(p => p.col === '#3a4a56' && p.x1 - p.x0 > 30);
+    assert.ok(pump && F - pump.y0 <= 34 && pump.x1 < housing.x0 && pump.x0 > Math.max(...bottles.map(b => b.x1)), `${at}: the pump low, between the bottles and the housing`);
+    // the wall's things where they are drawn: the gauges at the eye, the tool board over the bench, the slate beside the gauge
+    const placed = placedParts(calls).map(p => ({ col: p.col, ...partBox(p) })), faces = placed.filter(p => p.col === wallTone('#a8a28e') && p.x1 - p.x0 >= 8);
+    assert.ok(faces.length >= 3, `${at}: three gauges on the panel (${faces.length})`);
+    for (const g of faces) assert.ok(Math.abs(F - (g.y0 + g.y1) / 2 - 77) <= 4, `${at}: a gauge at eye height (${F - (g.y0 + g.y1) / 2})`);
+    const board = placed.find(p => p.col === wallTone('#4a4234'));
+    assert.ok(board && board.x0 >= bench.x0 - 30 && board.x1 <= bench.x1 && board.y1 <= bench.y0 - 8 && F - board.y0 <= 90, `${at}: the tool board on the wall over the bench (${JSON.stringify(board)})`);
+    const valves = strokePts(calls, ENGINE_VALVE).concat(strokePts(calls, wallTone(ENGINE_VALVE)));
+    assert.ok(valves.every(([, y]) => F - y >= 20 && F - y <= 85), `${at}: the valve wheels in reach`);
+    assert.ok(F - Math.max(...bottles.map(b => b.y0)) <= 60, `${at}: the bottles under the room's name`);
+  }
+});
+test('the engine room\'s reactor housing: bands, bolted panels, the hatch with its wheel and latches, warning marks, the drive\'s lines down through the deck, the coolant up into the ceiling (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = engCase(pr, 1.17), F = r.floor, T = r.top, at = `${pr}`, { calls, parts } = engParts(r, s);
+    const housing = parts.find(p => p.col === '#2c4258' && p.x1 - p.x0 > 60), inH = p => p.x0 >= housing.x0 - 2 && p.x1 <= housing.x1 + 2 && p.y0 >= housing.y0 - 2 && p.y1 <= housing.y1 + 2;
+    assert.ok(parts.filter(p => p.col === '#3a5268' && inH(p) && p.x1 - p.x0 >= housing.x1 - housing.x0 - 1).length >= 2, `${at}: bands round the housing`);
+    const hatch = parts.find(p => p.col === '#30485f');
+    assert.ok(hatch && inH(hatch) && hatch.x1 - hatch.x0 >= 20 && hatch.x1 - hatch.x0 <= 34, `${at}: a maintenance hatch a person fits through, on the housing`);
+    assert.ok(calls.some(k => k[0] === 'arc' && k[1] > hatch.x0 && k[1] < hatch.x1 && k[2] > hatch.y0 && k[2] < hatch.y1), `${at}: the hatch's wheel`);
+    assert.ok(placedRects(calls).filter(q => q.col === '#56708c' || q.col === '#8796a5').length + calls.filter(k => k[0] === 'fillStyle' && k[1] === '#56708c').length >= 8, `${at}: bolts and latches`);
+    const plate = parts.find(p => p.col === '#7a7058');
+    assert.ok(plate && inH(plate) && plate.x1 - plate.x0 <= 14, `${at}: a warning plate on the housing, a pictogram`);
+    const lines = parts.filter(p => p.col === '#34485c');
+    assert.ok(lines.length >= 2 && lines.every(p => p.y1 >= F + 8 && p.y0 <= F), `${at}: the drive's lines down through the deck (${JSON.stringify(lines)})`);
+    const ups = parts.filter(p => p.col === '#3d5a7a' && p.y0 <= T + 0.5 && p.y1 >= housing.y0 - 0.5 && p.x0 >= housing.x0 && p.x1 <= housing.x1);
+    assert.ok(ups.length >= 2, `${at}: the coolant up from the housing into the ceiling`);
+    const [lamp] = box.roomLamps('engine', r);
+    assert.ok(ups.every(p => p.x1 <= lamp - 12 || p.x0 >= lamp + 12), `${at}: clear of the lamp`);
+    const port = parts.find(p => p.col === '#1a2c40');
+    assert.ok(port && inH(port), `${at}: the core's sight port in the housing`);
+  }
+  // the drive working: the core's glow up while burning, and in the burn's red
+  const glow = (pr, burning) => { const { r, s } = engCase(pr, 1.17, 0.5, burning), { calls } = engParts(r, s); return calls.filter(k => k[0] === 'fillStyle' && /^rgba\(255,140,60,/.test(String(k[1]))).map(k => parseFloat(String(k[1]).split(',')[3])); };
+  assert.ok(Math.max(...glow(0.02, true)) > Math.max(...glow(0.02, false)), 'the core brighter while the drive burns');
+  assert.equal(glow(0.3, true).length, 0, 'no burn\'s red in cruise');
+});
+test('the engine room\'s fuel is deuterium in cryo bottles, in a rack with bands, valves and warning marks; the tool board has one outline empty (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = engCase(pr, 1.17), F = r.floor, at = `${pr}`, { calls, parts } = engParts(r, s);
+    const bottles = parts.filter(p => /^#(4a5a50|5a6470)$/.test(p.col) && p.y1 - p.y0 > 30), base = parts.find(p => p.col === '#24384c' && p.x1 - p.x0 > 40);
+    assert.ok(base && bottles.every(b => b.x0 >= base.x0 && b.x1 <= base.x1 && b.y1 <= base.y0 + 0.5), `${at}: the bottles stand in their rack`);
+    for (const b of bottles) {
+      assert.ok(calls.some(k => k[0] === 'arc' && Math.abs(k[1] - (b.x0 + b.x1) / 2) < 3 && k[2] < b.y0 && k[2] > b.y0 - 8), `${at}: a valve on top of the bottle at ${b.x0}`);
+      assert.ok(parts.some(p => p.col === '#8a7a40' && p.x0 >= b.x0 && p.x1 <= b.x1 && p.y0 >= b.y0 && p.y1 <= b.y1 && p.x1 - p.x0 <= 10), `${at}: a warning diamond on the bottle at ${b.x0}`);
+    }
+    const placed = placedParts(calls).map(p => ({ col: p.col, ...partBox(p) })), board = placed.find(p => p.col === wallTone('#4a4234'));
+    const marks = placed.filter(p => p.col === wallTone('#5e5646') && p.x0 >= board.x0 && p.x1 <= board.x1 && p.y0 >= board.y0 && p.y1 <= board.y1);
+    const tools = placed.filter(p => /^rgb/.test(p.col) && [wallTone('#6a7078'), wallTone('#6a4a34'), wallTone('#3a5a6a')].includes(p.col) && p.x0 >= board.x0 && p.x1 <= board.x1 && p.y0 >= board.y0 && p.y1 <= board.y1);
+    const over = (a, b) => a.x0 < b.x1 && a.x1 > b.x0 && a.y0 < b.y1 && a.y1 > b.y0;
+    assert.ok(marks.length >= 4, `${at}: the tools' outlines painted on the board (${marks.length})`);
+    assert.equal(marks.filter(m => !tools.some(t => over(m, t))).length, 1, `${at}: one outline empty, its tool out`);
+  }
+});
+test('the engine room reads old and patched: a newer bottle in an older rack with fresh bolts, a replacement panel, a printed handle tagged temporary, tape and cable ties, wear where hands go (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = engCase(pr, 1.17), at = `${pr}`, { calls, parts } = engParts(r, s);
+    const rects = col => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+    const inside = ([x, y, w, h], b) => x >= b.x0 - 0.01 && x + w <= b.x1 + 0.01 && y >= b.y0 - 0.01 && y + h <= b.y1 + 0.01;
+    const bottles = parts.filter(p => /^#(4a5a50|5a6470)$/.test(p.col) && p.y1 - p.y0 > 30), base = parts.find(p => p.col === '#24384c' && p.x1 - p.x0 > 40);
+    assert.equal(new Set(bottles.map(b => b.col)).size, 2, `${at}: one bottle newer, in another finish`);
+    assert.ok(rects('#8a929a').filter(b => inside(b, base)).length >= 2, `${at}: fresh bolts in the old rack`);
+    const housing = parts.find(p => p.col === '#2c4258' && p.x1 - p.x0 > 60), patch = parts.find(p => p.col === '#40545e');
+    assert.ok(patch && patch.x0 >= housing.x0 && patch.x1 <= housing.x1, `${at}: a replacement panel on the housing, in another shade`);
+    const handle = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050');
+    assert.ok(handle && tag && tag.y0 >= handle.y0 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: a printed handle and its temporary tag`);
+    assert.ok(rects('#6a5038').filter(q => inside(q, handle)).length >= 2, `${at}: the printed handle's layers`);
+    const pipes = parts.filter(p => p.col === '#3d5a7a'), tape = parts.filter(p => p.col === '#7a7462');
+    assert.ok(tape.some(t => pipes.some(c => t.x0 < c.x1 && t.x1 > c.x0 && t.y0 < c.y1 && t.y1 > c.y0)), `${at}: tape round a pipe`);
+    const ties = placedRects(calls).filter(q => q.col === '#1e2a36');
+    assert.ok(ties.length >= 2 && ties.every(t => pipes.some(c => t.x < c.x1 && t.x + t.w > c.x0 && t.y < c.y1 && t.y + t.h > c.y0)), `${at}: cable ties holding a cable to a pipe`);
+    const bench = parts.find(p => p.col === '#4a5058' && p.x1 - p.x0 > 60);
+    assert.ok(rects('#7e8a94').filter(q => inside(q, { ...bench, y0: bench.y0 - 1, y1: bench.y1 + 1 })).length >= 2, `${at}: paint worn off the bench's edge where hands rest`);
+    const hatch = parts.find(p => p.col === '#30485f');
+    assert.ok(rects('#5a6a78').filter(q => inside(q, hatch)).length >= 1, `${at}: the hatch worn where it is opened`);
+  }
+});
+test('the engine room\'s ceiling lamp is a fitting over the housing (#1024)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = engCase(pr, 1.17), rec = recorder(); drawRoom(rec.ctx, 'engine', r, s);
+    const parts = filledParts(rec.calls), [x] = box.roomLamps('engine', r), e = box.roomEye(r), back = r.top + (r.floor - 80 - r.top) * 0.2;
+    assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${pr}: its plate on the sliver`);
+    assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${pr}: its housing hung from the ceiling`);
+    assert.ok(rec.calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${pr}: the guard over its lens`);
   }
 });

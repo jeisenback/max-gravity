@@ -38,7 +38,7 @@ const playMessages = () => {
   says('kill:story', 1, null, () => settleKill({ name: 'Voight', kind: 'story', story: true }, true));
   says('kill:bounty', 1, st => { const m = mission(st, { type: 'bounty', pay: 12000, issuer: localGov(), targetName: 'Harlan Voss' }); return m; }, (st, m) => settleKill({ name: 'Harlan Voss', kind: 'pirate', bountyId: m.id }, true));
   for (const [i, r] of [0, 0.5, 0.99].entries()) says(`kill:pirate:${i}`, 1, null, () => { seq([r]); settleKill({ name: 'Rook', kind: 'pirate' }, true); });
-  says('kill:patrol', 1, null, () => settleKill({ name: 'Patrol 4', kind: 'patrol', gov: 'Compact' }, true));
+  says('kill:patrol', 1, null, () => settleKill({ name: 'Patrol 4', kind: 'patrol', gov: 'Independent' }, true));  // a gov that is no power, so no standing moves (it was 'Compact', never a power's name, before #1043)
   says('kill:trader', 1, null, () => settleKill({ name: 'Wren', kind: 'trader' }, true));
 
   // ---------- landing ----------
@@ -48,7 +48,7 @@ const playMessages = () => {
 
   // ---------- deliveries ----------
   const dock = (key, setup, extra = {}) => says(key, 1, st => { setup(st); return null; }, st => land(here(st)));
-  says('dock:inspected-clean', 1, null, st => land(here(st)), true, () => [...UI.notes]);  // a clean ship at an inspecting port (Earth, the Compact's): the note line (inspection.js)
+  says('dock:inspected-clean', 1, null, st => land(here(st)), true, () => [...UI.notes]);  // a clean ship at an inspecting port (Earth, the Arcology Pact's): the note line (inspection.js)
   dock('dock:errand', st => mission(st, { type: 'errand', title: 'Errand: carry a sealed case to Ceres Station', pay: 3000 }));
   dock('dock:delivery', st => mission(st, { type: 'delivery', tons: 12, good: 'water ice', pay: 9000 }));
   dock('dock:pax1', st => mission(st, { type: 'passenger', who: 'a pilgrim', pax: 1, bonus: 0, pay: 5000 }));
@@ -103,9 +103,9 @@ const playMessages = () => {
   says('torp:notarget', 1, st => { armed(st, 2); G.target = null; }, () => fireTorpedo());
   says('torp:away', 1, st => { armed(st, 2); G.target = foeNear(); G.player.torpCd = 0; }, () => fireTorpedo());
   says('torp:incoming', 1, () => { const n = foeNear(); Object.assign(n, { torps: 1, torpCd: 0, shipId: 'corsair' }); }, () => npcLaunches(0.016));
-  for (const [gov, by] of [['Arcology Compact', -60], ['Arcology Compact', 90], ['Pirate', -60]]) says(`standing:${gov}:${by}`, 1, null, () => changeRep(gov, by));
+  for (const [gov, by] of [['Arcology Pact', -60], ['Arcology Pact', 90], ['Pirate', -60]]) says(`standing:${gov}:${by}`, 1, null, () => changeRep(gov, by));
   says('hail:blockade', 1, null, () => blockadeWarning({ name: 'Picket', hailed: false }));
-  says('hail:wanted', 1, null, () => patrolWarning({ name: 'Cutter', gov: 'Arcology Compact', hailed: false }));
+  says('hail:wanted', 1, null, () => patrolWarning({ name: 'Cutter', gov: 'Arcology Pact', hailed: false }));
   const pilot = st => { crewman(st, 'pilot'); G.auto = { kind: 'dock', t: 0, care: 1 }; };
   says('auto:control', 1, st => { pilot(st); G.keys.left = true; }, () => { updateAutopilot(0.016); G.keys.left = false; });
   says('auto:contact', 1, st => { pilot(st); foeNear(); }, () => updateAutopilot(0.016));
@@ -121,12 +121,12 @@ const playMessages = () => {
   says('escort:lost', 1, st => escort(st, 1e9), () => escortLost({ fleetId: fleet()[0].id, name: 'Wren' }));
   says('escort:lost-unknown', 1, st => { escort(st, 1e9); delete st.people[fleet()[0].captain.pid]; }, () => escortLost({ fleetId: fleet()[0].id, name: 'Wren' }));
   says('reactor:scram', 1, null, () => overload());
-  says('war', 1, st => { factionState().war = { a: 'Arcology Compact', b: 'Charter League', until: st.day + 10, score: {} }; }, () => warSkirmish());
+  says('war', 1, st => { factionState().war = { a: 'Arcology Pact', b: 'Guild Federation', until: st.day + 10, score: {} }; }, () => warSkirmish());
   // ---------- the world's news ----------
   const first = Object.keys(SYSTEMS).find(id => SYSTEMS[id].pirates > 0);
   for (let k = 0; k < 4; k++) says(`news:flare:${k}`, 1, () => {}, () => { seq([0, (k + 0.5) / 4]); worldTick(); });
   says('news:hauler', 1, st => { const v = { ship: 'Lark', tons: 12, cid: COMMODITIES[0].id, to: 'Mars' }; st.haul = [v]; return v; }, (st, v) => loseVoyage({ voyage: v }));
-  const Z = 'Arcology Compact', C = 'Charter League';
+  const Z = 'Arcology Pact', C = 'Guild Federation';
   const prosper = (st, v) => { factionState().prosperity[Z] = v; };
   says('news:slump', 1, st => { prosper(st, 0.2505); factionState().war = { a: Z, b: C, start: st.day, until: st.day + 50, score: { [Z]: 0, [C]: 0 } }; }, () => factionTick());
   says('news:normal:from-boom', 1, st => prosper(st, 0.7501), () => factionTick());

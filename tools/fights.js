@@ -33,7 +33,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
       if (level !== null) h.skill[postKey] = SKILL_STEPS[level];
       return st;
     };
-    const NAVY_GOV = 'Arcology Compact';
+    const NAVY_GOV = 'Arcology Pact';
     const foeOf = (party = 'raider') => (party === 'navy' ? makeEnemy({ kind: 'patrol', gov: NAVY_GOV, shipId: 'cutter' })  // a patrol's cutter, with her government
       : Object.assign(makeEnemy({ kind: 'pirate' }), { shipId: { raider: shipId, corsair: 'corsair' }[party] }));  // the party comes from her type (fight.js DECK_PARTY)
     // The deck fight's policies: the hand's plan each turn ({ stand, act, order, at }, fightui.js deckFightEvent). 'random' draws each part of it from what the panel offers;
@@ -135,8 +135,8 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
         t.hull += hull; t.hurt += c.hurt; t.dead += c.dead; t.hand += c.hand; if (c.hurt || c.dead || c.hand) t.anyHurt++;
         tally(policy, s ? (s.pack ? 'raider pair' : s.foe.shipId) : 'none', trial);
       }
-      if (cutter) for (let i = 0; i < trials / 2; i++) tally(policy, 'cutter', shipTrial(policy, { kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }));
-      if (cutter) for (let i = 0; i < trials / 2; i++) tally(policy, 'destroyer', shipTrial(policy, { kind: 'patrol', gov: 'Arcology Compact', shipId: 'destroyer' }));  // the navy's other ship, three stops in ten (engage.js makeEnemy): a ship to heave to for (#833)
+      if (cutter) for (let i = 0; i < trials / 2; i++) tally(policy, 'cutter', shipTrial(policy, { kind: 'patrol', gov: 'Arcology Pact', shipId: 'cutter' }));
+      if (cutter) for (let i = 0; i < trials / 2; i++) tally(policy, 'destroyer', shipTrial(policy, { kind: 'patrol', gov: 'Arcology Pact', shipId: 'destroyer' }));  // the navy's other ship, three stops in ten (engage.js makeEnemy): a ship to heave to for (#833)
     }
 
     // The deck fights, started directly: kind 'repel' (they board you) or 'assault' (you board her), against the party from her type.

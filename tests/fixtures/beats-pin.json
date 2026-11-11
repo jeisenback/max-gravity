@@ -553,7 +553,7 @@
   ],
   "end": {
    "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Compact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
    "labels": [
     "Stand: The Lock",
     "Shoot: hits 1 to 2 of them",
@@ -606,7 +606,7 @@
   ],
   "end": {
    "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Compact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
    "labels": [
     "Stand: The Lock",
     "Shoot: hits 1 to 2 of them",
@@ -659,7 +659,7 @@
   ],
   "end": {
    "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Compact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
    "labels": [
     "Stand: The Lock",
     "Shoot: hits 1 to 2 of them",
@@ -712,7 +712,7 @@
   ],
   "end": {
    "title": "The Lock",
-   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Compact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
+   "text": "She comes alongside, and a boarding party in navy gray cuts in at the lock.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Each of them you put down costs standing with Arcology Pact. 0 lost so far.</p><p>Turn 1 of 5. The boarding party: holding where they are.",
    "labels": [
     "Stand: The Lock",
     "Shoot: hits 1 to 2 of them",
@@ -4283,7 +4283,7 @@
  },
  {
   "id": "settle:taken:navy",
-  "text": "They're on the bridge. Captain Vance surrenders the ship to the Arcology Compact Navy, and the boarding officer writes a levy of 36,000 cr against the ship's fund, which is collected on the spot. The cutter lets you go, with a citation.",
+  "text": "They're on the bridge. Captain Vance surrenders the ship to the Arcology Pact Navy, and the boarding officer writes a levy of 36,000 cr against the ship's fund, which is collected on the spot. The cutter lets you go, with a citation.",
   "next": null,
   "mem": [
    "9 Jul 2214: The bridge was taken on your watch."

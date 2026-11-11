@@ -12,8 +12,8 @@ const I = load(['js/data.js', 'js/inspection.js'], { Mods: { register() {}, filt
 const plain = o => (o ? { ...o } : o);
 
 test('the owners that inspect, and the good each licenses', () => {
-  assert.deepEqual({ ...I.LICENSED }, { 'Arcology Compact': 'medical', 'Dome Concord': 'water', 'Charter League': 'industrial' });
-  assert.deepEqual([...I.INSPECTING], ['Arcology Compact', 'Dome Concord', 'Charter League']);
+  assert.deepEqual({ ...I.LICENSED }, { 'Arcology Pact': 'medical', 'Dome Pact': 'water', 'Guild Federation': 'industrial' });
+  assert.deepEqual([...I.INSPECTING], ['Arcology Pact', 'Dome Pact', 'Guild Federation']);
 });
 
 test('a fine for bad standing: none above -15, then 6,000 and 2,000 more for each five points, up to 14,000', () => {
@@ -27,11 +27,11 @@ test('the duty on a licensed good is 15% of its value, to the nearest 100', () =
 
 test('what the inspector finds: nothing at a port that does not inspect, nothing on a clean ship, else the cause and one sum', () => {
   assert.equal(I.inspectionCause({ water: 50 }, 'Independent', -40, false), null);
-  assert.equal(I.inspectionCause({ food: 10 }, 'Charter League', 0, false), null);
-  assert.deepEqual(plain(I.inspectionCause({ water: 50 }, 'Dome Concord', 0, false)), { gov: 'Dome Concord', standing: null, good: 'water', tons: 50, duty: 6000, fine: 0, sum: 6000 });
-  assert.deepEqual(plain(I.inspectionCause({}, 'Charter League', -22, false)), { gov: 'Charter League', standing: -22, good: null, tons: 0, duty: 0, fine: 8000, sum: 8000 });
-  assert.equal(I.inspectionCause({ industrial: 20 }, 'Charter League', -15, false).sum, 12000, 'both causes, one sum');
-  assert.equal(I.inspectionCause({ industrial: 20 }, 'Charter League', -15, true).sum, 14400, 'Marked: a fifth more');
+  assert.equal(I.inspectionCause({ food: 10 }, 'Guild Federation', 0, false), null);
+  assert.deepEqual(plain(I.inspectionCause({ water: 50 }, 'Dome Pact', 0, false)), { gov: 'Dome Pact', standing: null, good: 'water', tons: 50, duty: 6000, fine: 0, sum: 6000 });
+  assert.deepEqual(plain(I.inspectionCause({}, 'Guild Federation', -22, false)), { gov: 'Guild Federation', standing: -22, good: null, tons: 0, duty: 0, fine: 8000, sum: 8000 });
+  assert.equal(I.inspectionCause({ industrial: 20 }, 'Guild Federation', -15, false).sum, 12000, 'both causes, one sum');
+  assert.equal(I.inspectionCause({ industrial: 20 }, 'Guild Federation', -15, true).sum, 14400, 'Marked: a fifth more');
 });
 
 // ---------- the scene on arrival (js/inspection.js inspectionScene, inspectAtLanding) ----------
@@ -55,7 +55,7 @@ const helpers = () => {
   window.finesOf = () => (hired().record || {}).fines || 0;
 };
 
-test('landing at a Concord port with water opens the inspector, who names the cause and the sum; the move is the hand\'s by post (#1015)', async () => {
+test('landing at a Dome Pact port with water opens the inspector, who names the cause and the sum; the move is the hand\'s by post (#1015)', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -133,7 +133,7 @@ test('at the landing itself the inspection opens (the landed hook) (#1015)', asy
   const { ev, done } = await open();
   await ev(helpers);
   const title = await ev(() => {
-    const st = handAt('comms', 'Ceres Station', { rep: 0 }); st.cargo = { water: 50 }; st.rep['Dome Concord'] = 0;
+    const st = handAt('comms', 'Ceres Station', { rep: 0 }); st.cargo = { water: 50 }; st.rep['Dome Pact'] = 0;
     const at = planetNamed('Mars'); st.systemId = at.sid; st.planet = at.pl.name; resetWorld(); landAt(at.pl, []);
     return G.dialog && G.dialog.event.title;
   });
@@ -148,7 +148,7 @@ test('in chapter two the co-op\'s purse pays, and the master is the captain whos
   await ev(helpers);
   const r = await ev(() => {
     toShare(); goOnAndPick(0); while (G.dialog) finishEvent();
-    const st = G.state; st.cargo = { water: 50 }; st.rep['Dome Concord'] = 0; st.credits = 20000;
+    const st = G.state; st.cargo = { water: 50 }; st.rep['Dome Pact'] = 0; st.credits = 20000;
     const fund = hired().fund, regard = capRegard();
     const at = planetNamed('Mars'); st.systemId = at.sid; st.planet = at.pl.name; G.mode = 'landed'; inspectAtLanding(at.pl);
     const title = G.dialog && G.dialog.event.title;
@@ -163,7 +163,7 @@ test('in the parked owner game the inspector is paid from the owner\'s credits, 
   const { ev, done } = await open({ scope: 'full' });
   const r = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
-    const st = G.state; st.story.next = 1e9; st.cargo = { water: 50 }; st.rep['Dome Concord'] = 0; st.credits = 20000;
+    const st = G.state; st.story.next = 1e9; st.cargo = { water: 50 }; st.rep['Dome Pact'] = 0; st.credits = 20000;
     const at = planetNamed('Mars'); st.systemId = at.sid; st.planet = at.pl.name; G.mode = 'landed'; G.dialog = null; inspectAtLanding(at.pl);
     const ev0 = G.dialog && G.dialog.event, labels = ev0 ? ev0.choices.map(c => c.label) : null;
     chooseEvent(0);
@@ -179,7 +179,7 @@ test('the inspector reads the hold as it came in, before the captain\'s run is s
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    const st = handAt('comms', 'Ceres Station', { rep: 0 }); st.rep['Dome Concord'] = 0; st.cargo = { water: 50 };
+    const st = handAt('comms', 'Ceres Station', { rep: 0 }); st.rep['Dome Pact'] = 0; st.cargo = { water: 50 };
     const h = hired(), at = planetNamed('Mars');
     h.run = { planet: at.pl.name, sid: at.sid, good: 'water', tons: 50, cost: 0, day: st.day, from: 'Ceres Station' };
     st.systemId = at.sid; st.planet = at.pl.name; resetWorld(); landAt(at.pl, []);
@@ -194,7 +194,7 @@ test('loading a save is no second arrival: no inspection and no customs note (#9
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    const st = handAt('comms', 'Ceres Station', { rep: 0 }); st.rep['Charter League'] = -20;
+    const st = handAt('comms', 'Ceres Station', { rep: 0 }); st.rep['Guild Federation'] = -20;
     save(); loadGame();
     const titles = []; for (let g = 10; G.dialog && g--; finishEvent()) titles.push(G.dialog.event.title);
     return { titles, notes: [...UI.notes] };
@@ -225,7 +225,7 @@ test('an owner who kept a post has no captain to argue past: only the pay choice
   const r = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
     const st = G.state; st.career = { post: 'gunner', skill: {}, kit: [], picks: [] };
-    const e = inspectionScene(inspectionCause({ water: 50 }, 'Dome Concord', 0, false), currentPlanet());
+    const e = inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet());
     return e.choices.map(c => c.label);
   });
   await done();

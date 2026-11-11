@@ -3,7 +3,8 @@
 Design notes for rebuilding the gunner console duel (`js/duel.js`) on the model of
 Wind in the Rushes: hidden plays, a deck built from what you carry, and an AI that
 counts cards from public information. Boarding becomes its own duel. The base ship
-duel is built (#42); the rest isn't yet. Numbers are starting values to be tuned by
+duel is built (#42) and belongs to the parked owner game (`ROADMAP.md`); Hardcore mode below is not
+planned (`ROADMAP.md`, 4). A hired hand's fights are the turn-based ones further down. Numbers are starting values to be tuned by
 simulation (#45).
 
 ## Future state

@@ -2,7 +2,7 @@
 
 ## The ship
 
-A fifty-year-old fast cargo ship, built to carry parcels, perishables and passengers in a small hold. She is chartered on hire-purchase from a finance house, registered at a small Belt station, and insured with that registry's mutual, which the better ports don't recognise. Two decks: berths, galley and bridge above; the engine, the hold and the tanks below, joined by a ladder. She has had four owners and three names.
+A fifty-year-old Ice Hauler: a crew module of six decks stacked across the thrust, bolted to the water tank she carries, with the drive deck under the tank and a ladder well through every deck (`LAYOUTS.freighter`, `js/layouts.js`). From the nose down: the bridge; the galley and the head; the berths; the gunnery and the workshop; the airlock and the medbay; life support; the tank; the engine room and the hold. She carries contract freight that can't wait, and between contracts cuts ice at the outer Belt's rocks and sells the water where a port is short of it. She is chartered on hire-purchase from a finance house, registered at a small Belt station, and insured with that registry's mutual, which the better ports don't recognise. She has had four owners and three names.
 
 Ownership aboard:
 
@@ -46,5 +46,5 @@ On a run with a high-value consignment, the shipper may send a **supercargo**: t
 
 ## Assumptions to confirm
 
-- The ship is a small fast cargo hull, not an ice hauler (see the conflicts list in `README.md`).
+- The ship is the Ice Hauler, a tower over her water tank, and she runs ice between contracts (the code wins, 2026-11-11; conflict 4 in `README.md`).
 - The ship's default name is still to be chosen.

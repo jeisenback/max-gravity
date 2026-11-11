@@ -37,9 +37,9 @@ const playTalk = () => {
   play('talk:low:news', (p, s) => { p.mood = { kind: 'low', until: s.day + 40, text: 'their mother is ill' }; }, first);
   play('talk:low:plain', (p, s) => { p.mood = { kind: 'low', until: s.day + 40, text: '' }; }, first);
   play('talk:hurt', (p, s) => { s.injured = { [p.id]: true }; }, first);
-  thisWar('Mars Republic', 'Arcology Compact');
+  thisWar('Mars Republic', 'Arcology Pact');
   play('talk:war', () => {}, first);
-  play('talk:war:other', () => { thisWar('Arcology Compact', 'Mars Republic'); }, first);
+  play('talk:war:other', () => { thisWar('Arcology Pact', 'Mars Republic'); }, first);
   calm();
   play('talk:rift', (p, s) => { const o = mk('Ana'); s.crew.push(o.id); addBond({ id: p.id, p }, { id: o.id, p: o }, -4); }, first);
   play('talk:friend', (p, s) => { const o = mk('Ben'); s.crew.push(o.id); for (let i = 0; i < 12; i++) addBond({ id: p.id, p }, { id: o.id, p: o }, 4); }, first);

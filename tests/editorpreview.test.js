@@ -85,12 +85,12 @@ test('the state asked for is the state the game starts in', async () => {
   await reset(); await select('port-mars-sky');
   await page.selectOption('[data-pv=post]', 'engineer'); await page.selectOption('[data-pv=captain]', 'dov'); await page.selectOption('[data-pv=start]', 'mars');
   await page.fill('[data-pv=day]', '40'); await page.fill('[data-pv=credits]', '1234');
-  await page.fill('[data-pv-rep="Dome Concord"]', '5'); await page.fill('[data-pv-rep="Pirate"]', '-3');
+  await page.fill('[data-pv-rep="Dome Pact"]', '5'); await page.fill('[data-pv-rep="Pirate"]', '-3');
   await page.fill('[data-pv=qualities]', 'strike-day=3\nsome-flag\nnot a number=x');
   await play();
   const r = await frame().evaluate(() => ({
     post: hired().post, key: hired().captainKey, aboard: castAboard().map(c => c.cast).sort(), day: G.state.day, credits: G.state.credits,
-    dome: repOf('Dome Concord'), pirate: repOf('Pirate'), q: G.state.qualities,
+    dome: repOf('Dome Pact'), pirate: repOf('Pirate'), q: G.state.qualities,
   }));
   assert.equal(r.post, 'engineer');
   assert.equal(r.key, 'dov');
@@ -159,13 +159,13 @@ test('a choice the state shuts is reported with the condition that shuts it', as
 
 test('picking a choice shows what it changed', async () => {
   await reset(); await select('port-mars-sky');
-  await page.fill('[data-pv=day]', '10'); await page.fill('[data-pv-rep="Dome Concord"]', '2');
+  await page.fill('[data-pv=day]', '10'); await page.fill('[data-pv-rep="Dome Pact"]', '2');
   await play();
   await frame().click('[data-action="choose"][data-arg="0"]');
   await page.waitForFunction(() => document.querySelector('#pv-effects').textContent.length > 0);
   const effects = await page.textContent('#pv-effects');
   assert.match(effects, /You chose: Side with the veteran/);
-  assert.match(effects, /standing with Dome Concord: 2 to 3 \(\+1\)/);
+  assert.match(effects, /standing with Dome Pact: 2 to 3 \(\+1\)/);
   assert.ok(!/seen:/.test(effects), 'the scene\'s own bookkeeping is not an effect');
   // The result is in the game's dialog, as the player sees it.
   assert.match(await frame().textContent('#event-result'), /There,/);

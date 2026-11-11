@@ -79,7 +79,7 @@
  {
   "key": "land:denied",
   "text": [
-   "Docking denied. The Arcology Compact won't let your ship land."
+   "Docking denied. The Arcology Pact won't let your ship land."
   ],
   "credits": 0
  },
@@ -196,7 +196,7 @@
   ],
   "credits": 0,
   "news": [
-   "A survey ship of the Charter League is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts.",
+   "A survey ship of the Guild Federation is turned away from Earth by Arcology Pact patrols. Both sides release very different accounts.",
    "A string of pirate attacks near Juno has haulers taking the long way round.",
    "Traffic control at Ceres is routing ships around a stretch of lane that has lost three this month."
   ]
@@ -505,16 +505,16 @@
   "credits": 0
  },
  {
-  "key": "standing:Arcology Compact:-60",
+  "key": "standing:Arcology Pact:-60",
   "text": [
-   "Your standing with the Arcology Compact is now Hostile."
+   "Your standing with the Arcology Pact is now Hostile."
   ],
   "credits": 0
  },
  {
-  "key": "standing:Arcology Compact:90",
+  "key": "standing:Arcology Pact:90",
   "text": [
-   "Your standing with the Arcology Compact is now Honored."
+   "Your standing with the Arcology Pact is now Honored."
   ],
   "credits": 0
  },
@@ -535,7 +535,7 @@
  {
   "key": "hail:wanted",
   "text": [
-   "Cutter: \"You're wanted in Arcology Compact space. Cut your drive and pay your fine.\" (H to answer)"
+   "Cutter: \"You're wanted in Arcology Pact space. Cut your drive and pay your fine.\" (H to answer)"
   ],
   "credits": 0
  },
@@ -563,14 +563,14 @@
  {
   "key": "auto:dock",
   "text": [
-   "Arrived at Earth (Arcology Compact). 9 Jun 2214. Mara brings us in to Earth."
+   "Arrived at Earth (Arcology Pact). 9 Jun 2214. Mara brings us in to Earth."
   ],
   "credits": 0
  },
  {
   "key": "auto:standin",
   "text": [
-   "Arrived at Earth (Arcology Compact). 9 Jun 2214. Mara is in the medbay. Oren brings us in to Earth."
+   "Arrived at Earth (Arcology Pact). 9 Jun 2214. Mara is in the medbay. Oren brings us in to Earth."
   ],
   "credits": 0
  },
@@ -619,7 +619,7 @@
  {
   "key": "war",
   "text": [
-   "Warning: Charter League warships are engaging Arcology Compact patrols in local space."
+   "Warning: Guild Federation warships are engaging Arcology Pact patrols in local space."
   ],
   "credits": 0
  },
@@ -672,7 +672,7 @@
   "text": [],
   "credits": 0,
   "news": [
-   "The Arcology Compact economy is in a slump."
+   "The Arcology Pact economy is in a slump."
   ]
  },
  {
@@ -680,8 +680,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle.",
-   "The Arcology Compact economy is back to normal."
+   "Feeds in both the Guild Federation and the Arcology Pact are running clips of the standoff near Earth, and each is, of course, shot from a different angle.",
+   "The Arcology Pact economy is back to normal."
   ]
  },
  {
@@ -689,8 +689,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle.",
-   "The Arcology Compact economy is back to normal."
+   "Feeds in both the Guild Federation and the Arcology Pact are running clips of the standoff near Earth, and each is, of course, shot from a different angle.",
+   "The Arcology Pact economy is back to normal."
   ]
  },
  {
@@ -698,8 +698,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle.",
-   "The Arcology Compact economy is booming."
+   "Feeds in both the Guild Federation and the Arcology Pact are running clips of the standoff near Earth, and each is, of course, shot from a different angle.",
+   "The Arcology Pact economy is booming."
   ]
  },
  {
@@ -707,8 +707,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "The Arcology Compact and the Dome Concord trade accusations after a patrol standoff near Mars."
+   "Feeds in both the Guild Federation and the Dome Pact are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
+   "The Arcology Pact and the Dome Pact trade accusations after a patrol standoff near Mars."
   ]
  },
  {
@@ -716,8 +716,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "The Dome Concord impounds a freighter flagged to the Arcology Compact. Diplomats are recalled."
+   "Feeds in both the Guild Federation and the Dome Pact are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
+   "The Dome Pact impounds a freighter flagged to the Arcology Pact. Diplomats are recalled."
   ]
  },
  {
@@ -725,8 +725,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "The Dome Concord accuses the Arcology Compact of arming pirates. The Arcology Compact denies it."
+   "Feeds in both the Guild Federation and the Dome Pact are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
+   "The Dome Pact accuses the Arcology Pact of arming pirates. The Arcology Pact denies it."
   ]
  },
  {
@@ -734,8 +734,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "Shots fired between Arcology Compact and Dome Concord patrols near Mars. Nobody admits to firing first."
+   "Feeds in both the Guild Federation and the Dome Pact are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
+   "Shots fired between Arcology Pact and Dome Pact patrols near Mars. Nobody admits to firing first."
   ]
  },
  {
@@ -743,8 +743,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "The Arcology Compact closes a lane near Mars to Dome Concord shipping, citing \"security concerns\". The Dome Concord calls it an act of hostility."
+   "Feeds in both the Guild Federation and the Dome Pact are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
+   "The Arcology Pact closes a lane near Mars to Dome Pact shipping, citing \"security concerns\". The Dome Pact calls it an act of hostility."
   ]
  },
  {
@@ -752,8 +752,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "A survey ship of the Dome Concord is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts."
+   "Feeds in both the Guild Federation and the Dome Pact are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
+   "A survey ship of the Dome Pact is turned away from Earth by Arcology Pact patrols. Both sides release very different accounts."
   ]
  },
  {
@@ -761,8 +761,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "The Arcology Compact expels three Dome Concord traders from Earth on charges of smuggling. The Dome Concord calls it a fabrication."
+   "Feeds in both the Guild Federation and the Dome Pact are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
+   "The Arcology Pact expels three Dome Pact traders from Earth on charges of smuggling. The Dome Pact calls it a fabrication."
   ]
  },
  {
@@ -770,8 +770,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "An envoy of the Dome Concord walks out of talks with the Arcology Compact at Earth, and refuses to say why."
+   "Feeds in both the Guild Federation and the Dome Pact are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
+   "An envoy of the Dome Pact walks out of talks with the Arcology Pact at Earth, and refuses to say why."
   ]
  },
  {
@@ -779,8 +779,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "A cutter of the Arcology Compact is found drifting near Earth, its crew unharmed and very quiet. The Dome Concord says it knows nothing."
+   "Feeds in both the Guild Federation and the Dome Pact are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
+   "A cutter of the Arcology Pact is found drifting near Earth, its crew unharmed and very quiet. The Dome Pact says it knows nothing."
   ]
  },
  {
@@ -788,8 +788,8 @@
   "text": [],
   "credits": 0,
   "news": [
-   "A cutter of the Dome Concord is found drifting near Mars, its crew unharmed and very quiet. The Charter League says it knows nothing.",
-   "Feeds in both the Dome Concord and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle."
+   "A cutter of the Dome Pact is found drifting near Mars, its crew unharmed and very quiet. The Guild Federation says it knows nothing.",
+   "Feeds in both the Dome Pact and the Arcology Pact are running clips of the standoff near Earth, and each is, of course, shot from a different angle."
   ]
  },
  {
@@ -797,7 +797,7 @@
   "text": [],
   "credits": 0,
   "news": [
-   "War: the Arcology Compact and the Charter League are fighting. Their navies are raiding each other's space."
+   "War: the Arcology Pact and the Guild Federation are fighting. Their navies are raiding each other's space."
   ]
  },
  {
@@ -805,7 +805,7 @@
   "text": [],
   "credits": 0,
   "news": [
-   "Ceasefire. The Arcology Compact came out ahead; the Charter League is counting its losses."
+   "Ceasefire. The Arcology Pact came out ahead; the Guild Federation is counting its losses."
   ]
  },
  {
@@ -1298,7 +1298,7 @@
    "lines": [
     "Nav: trajectory nominal, drift within tolerance.",
     "Ice hauler \"Mule's Promise\" to all ships: anyone got a spare coolant pump?",
-    "Compact Navy picket: routine sweep, no contacts.",
+    "Arcology Pact Navy picket: routine sweep, no contacts.",
     "Somebody's broadcasting polka on the emergency band again.",
     "Crash couch: anti-g drip reservoir at 80 percent.",
     "\"...and that's why you never play cards with a Pallas refinery crew.\" [laughter]",
@@ -1306,13 +1306,13 @@
     "Courier \"Swift Dispatch\": running a hard burn, clear the approach please.",
     "Life support: CO2 scrubbers cycling.",
     "Unknown ship: \"Anyone else see that drive plume? No transponder? Just me?\"",
-    "Dome Concord Navy: all vessels, maintain transponders in Martian space.",
+    "Dome Pact Navy: all vessels, maintain transponders in Martian space.",
     "Belt pirate radio: static, then a laugh, then static again.",
     "Reactor: output steady. Drive plume stable.",
     "Freighter \"Second Wind\" to nobody in particular: \"Forty days out and I've run out of things to say to the cat.\"",
     "An old recorded voice, on an old beacon: \"This lane is maintained by the Ceres Water Authority. Please burn responsibly.\"",
     "Hauler \"Long Odds\": \"Anybody running to Titan? I've got a spare berth and a very bad sense of direction.\"",
-    "Compact traffic control: reminder that lane fees are due on the first, and that \"I forgot\" isn't a payment method.",
+    "Arcology Pact traffic control: reminder that lane fees are due on the first, and that \"I forgot\" isn't a payment method.",
     "A child, on an open band: \"This is Captain Pip of the good ship Blanket Fort. Do you copy?\"",
     "Ceres Water Authority relay: \"Reminder to all vessels, water isn't a right, but it's a courtesy. Thank you for your understanding.\"",
     "Belt trader on the band: \"Fresh onions! Real onions! Meet me at the flip, and bring your own bags!\"",
@@ -1375,7 +1375,7 @@
    ],
    [
     "delivery",
-    "Arcology Compact contract: deliver 15t of scientific samples to Mars",
+    "Arcology Pact contract: deliver 15t of scientific samples to Mars",
     "scientific samples"
    ],
    [
@@ -1397,7 +1397,7 @@
   "x": [
    [
     "delivery",
-    "Arcology Compact contract: deliver 13t of prefab habitat panels to The Hollows",
+    "Arcology Pact contract: deliver 13t of prefab habitat panels to The Hollows",
     "prefab habitat panels"
    ],
    [
@@ -1434,7 +1434,7 @@
    ],
    [
     "delivery",
-    "Arcology Compact contract: deliver 13t of medical crates to The Rook",
+    "Arcology Pact contract: deliver 13t of medical crates to The Rook",
     "medical crates"
    ],
    [

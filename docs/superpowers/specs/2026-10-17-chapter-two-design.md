@@ -1,6 +1,6 @@
 # Chapter two: the owner's role, and the crew who came along
 
-Status: proposed 2026-10-17, for #685. The scope, the first ship item and the opening are settled by the owner (thin slice; the valve keys and the carrier license both change something; chapter two opens straight from the buy). What is open is at the end. Part of the next-chapters design (`2026-10-17-next-chapters-design.md`).
+Status: built, and superseded as the shipped chapter two by the co-op (`docs/bible/chapter-2.md`, `2026-11-07-chapter-two-start-design.md`); it stays as the parked owner game's. Proposed 2026-10-17, for #685. The scope, the first ship item and the opening are settled by the owner (thin slice; the valve keys and the carrier license both change something; chapter two opens straight from the buy). What is open is at the end. Part of the next-chapters design (`2026-10-17-next-chapters-design.md`).
 
 ## What chapter one leaves
 

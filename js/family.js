@@ -319,7 +319,7 @@ const asTalk = t => ({ title: t.title, text: t.open, choices: t.choices });
 const FAMILY_SCENES = {
   mood: p => { p.mood = { kind: 'low', until: G.state.day + 30, text: 'a message from home' }; return asTalk(moodTopic(p)); },
   hurt: p => asTalk(hurtTopic(p)),
-  war: p => asTalk(warTopic(p, 'Mars Republic', 'Arcology Compact')),
+  war: p => asTalk(warTopic(p, 'Mars Republic', 'Arcology Pact')),
   rift: p => asTalk(riftTopic(p, { first: 'Ana' })),
   friend: p => asTalk(friendTopic(p, { first: 'Ben' })),
   memory: p => asTalk(memoryTopic(p, 'You sat with me when it was hard.')),

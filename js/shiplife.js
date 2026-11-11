@@ -911,7 +911,7 @@ function drawCutaway(box, clear = box) {
   // The rooms, the tank, the ladder well and its ladder full height (the tube through the tank), and the bulkheads beside the well.
   const cap = ship().cargo, nb = Math.min(12, ship().berths), slots = new Map();
   for (const p of people) if (slots.size < nb && isAsleep(p)) slots.set(p, slots.size);  // whoever is turned in lies on a bunk
-  const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
+  const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt() };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);

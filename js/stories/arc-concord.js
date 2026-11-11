@@ -1,10 +1,12 @@
 'use strict';
 
-// The air audit at Eros (#683): a mission arc hung on the Concord Freight Office (js/arcs.js). Odile Marchetti, a Fleet auditor, needs a berth from Mars to Eros Old Town
+// The air audit at Eros (#683): a mission arc hung on the Dome Pact Freight Office (js/arcs.js). Odile Marchetti, a Fleet auditor, needs a berth from Mars to Eros Old Town
 // without her name on the manifest: the domes' air levy has been paying for the air of the sealed half of the town, fourteen corridors, and she thinks nobody breathes it. Hob Strand,
 // the town's air steward, has been sending that air to the cisterns of the living half. Qualities: `concord` (begun), `concordSide` (from 2 the audit stands: the hand walked
 // the corridors and signed the count as it is). The arrival leads into the corridors if the hand goes; the end plays at Mars (the audit stood: the auditor's seal) or at Eros Old
 // Town (it did not: the steward's fee) when the hand next comes.
+// The count leaves its mark on Eros (#1044, docs/bible/chapter-1.md): an audit that stands is in the news and cuts the sealed half's air, and Eros's unrest rises; one that
+// does not is in no news. Who remembers the ship: `markClosedHalf` (the families in the sealed corridors) and `markAuditors` (the Dome Pact's auditors).
 // Odile speaks in line items and dry asides and wants it written down; Hob speaks in pressures, valves and what a door has done, a few words at a time.
 
 Mods.register({
@@ -14,7 +16,7 @@ Mods.register({
     // The hand who signed for the vents being open: the auditor minds that.
     M.addAction('concord-lie', memory => { like(arcPerson('odile'), -2, memory); return ''; });
     // The seal: a person, a regard and an item.
-    M.addAction('concord-seal', memory => { like(arcPerson('odile'), 2, memory); moveStanding('the Concord Freight Office', 1); return addKit('audit-seal'); });
+    M.addAction('concord-seal', memory => { like(arcPerson('odile'), 2, memory); moveStanding('the Dome Pact Freight Office', 1); return addKit('audit-seal'); });
     // The fee: Hob warms, and the Fleet cools.
     M.addAction('concord-fee', (forHob, forOdile) => { like(arcPerson('hob'), 2, forHob); like(arcPerson('odile'), -1, forOdile); return ''; });
 
@@ -47,17 +49,18 @@ Mods.register({
           'right on the dial." Hob Strand has been the town\'s air steward since before the doors were sealed. He does not get up.'),
       choices: [
         { label: 'Sign the count as it stands',
-          effects: { q: { concordSide: 1 }, later: { 'concord-end': 5 }, do: ['arcLike', 'hob', -2, 'You signed the count of the vents as it stood.'],
+          effects: { q: { concordSide: 1, markClosedHalf: -1, markAuditors: 1 }, later: { 'concord-end': 5 }, do: ['arcLike', 'hob', -2, 'You signed the count of the vents as it stood.'],
+            unrest: { eros: 0.1 }, news: 'Eros Old Town: the domes\' levy stops paying for the air of fourteen sealed corridors, after a Fleet audit. The town trust closes the ninth.',
             log: 'Signed the Fleet auditor\'s count of the sealed corridors at Eros, as it stood.' },
           result: ('Odile turns the ledger for you and you sign under her name. Hob watches the pen all the way down. "Nine years," he says. "Nobody asked where it went. ' +
               'They asked if it was drawn." He winds the hose over his arm and goes up the corridor ahead of you with the lamp, and does not look back at the vents.') },
         { label: 'Say the vents were open when you came',
-          effects: { later: { 'concord-end': 5 }, do: ['concord-lie', 'You said the vents were open and they were not.', 'You said the vents were open when you came.'],
+          effects: { q: { markClosedHalf: 1 }, later: { 'concord-end': 5 }, do: ['concord-lie', 'You said the vents were open and they were not.', 'You said the vents were open when you came.'],
             log: 'Told the Fleet auditor the vents in the sealed corridors were open, and let her count stand on it.' },
           result: ('Odile writes it down, slowly, and looks at the dust under the vent, and at you. "Open," she says. "All fourteen." She closes the ledger on her pen. Hob ' +
               'says nothing at all, and stands to put the hose back on its hook.') },
         { label: 'Say you only carried her',
-          effects: { later: { 'concord-end': 5 }, do: ['arcLike', 'odile', -1, 'You would not sign the count.'],
+          effects: { q: { markClosedHalf: 1 }, later: { 'concord-end': 5 }, do: ['arcLike', 'odile', -1, 'You would not sign the count.'],
             log: 'Left the count of the sealed corridors at Eros to the auditor.' },
           result: ('"Then I\'ll sign for myself," Odile says, and does, and the lamp swings on her wrist while she does it. Hob lets out a breath through his nose. It is the ' +
               'first sound he has made since the ninth door.') },
