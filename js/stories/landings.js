@@ -20,7 +20,7 @@ Mods.register({
     M.addAction('localRep', n => { if (isFaction(localGov())) changeRep(localGov(), n); });
 
     scene({
-      id: 'land-customs', when: { gov: ['Arcology Compact', 'Dome Concord'], cargo: { luxury: 1 } },
+      id: 'land-customs', when: { gov: ['Arcology Pact', 'Dome Pact'], cargo: { luxury: 1 } },
       title: 'Random Inspection', text: ('Two customs officers are waiting at your cargo lock with a scanner and a clipboard. The young one is new and eager. The other is ' +
           '{official}, who has worked this lock for years, and who keeps glancing at your hold. "Routine," {official} says, before you\'ve asked.'),
       choices: [
@@ -68,7 +68,7 @@ Mods.register({
           effects: {
           cargo: { water: -5 },
           credits: 3000,
-          rep: { 'Charter League': 3 },
+          rep: { 'Guild Federation': 3 },
           log: 'Handed out water to a crowd on {planet}.'
         },
           result: ('It goes in twenty minutes, drum by drum, along a line that snakes around the concourse. Nobody pushes. The angry dockers unfold ' +
@@ -95,7 +95,7 @@ Mods.register({
           when: { credits: 2000 },
           effects: {
           credits: -2000,
-          rep: { 'Charter League': 2 },
+          rep: { 'Guild Federation': 2 },
           log: 'Danced at a wedding on {planet}.'
         },
           result: ('You press the gift into the groom\'s hands and are swept into a dance you don\'t know, led by a grandmother. You dance badly, eat ' +
@@ -120,7 +120,7 @@ Mods.register({
           when: { credits: 3000 },
           effects: {
           credits: -3000,
-          rep: { 'Charter League': 2 }
+          rep: { 'Guild Federation': 2 }
         },
           result: ('You put the credits into the box at the head of the line, a battered ore canister with a slot cut in the lid. A woman in a heat ' +
               'suit, one of the families, stops and takes your hand in both of hers without a word. Her hands are burned and rough and shaking. She ' +
@@ -139,7 +139,7 @@ Mods.register({
       choices: [
         {
           label: 'Walk them home',
-          effects: { rep: { 'Charter League': 1 } },
+          effects: { rep: { 'Guild Federation': 1 } },
           result: ('You walk them home, through three corridors and a market, without speaking. Their mother meets you at the door of a crowded ' +
               'cabin. She cries, then shouts, then cries again, with her hands on the kid\'s face. The kid won\'t look at you. You stand there a ' +
               'moment. The mother, still crying, presses a fried dumpling into your hand, and you go.')
@@ -204,7 +204,7 @@ Mods.register({
     });
 
     scene({
-      id: 'land-recruiters', when: { war: true, gov: ['Arcology Compact', 'Dome Concord', 'Charter League'] },
+      id: 'land-recruiters', when: { war: true, gov: ['Arcology Pact', 'Dome Pact', 'Guild Federation'] },
       title: 'Recruiters',
       text: ('Navy recruiters have set up a table at the dock under a banner that says your system needs you, in tall red letters, with a photograph ' +
           'of a very young sailor. There\'s a bowl of hard candy, a stack of pamphlets, and a sergeant with a friendly smile. They look at your ' +
@@ -270,9 +270,9 @@ Mods.register({
           effects: {
           cargo: { medical: -2 },
           rep: {
-          'Charter League': 2,
-          'Arcology Compact': 1,
-          'Dome Concord': 1
+          'Guild Federation': 2,
+          'Arcology Pact': 1,
+          'Dome Pact': 1
         },
           log: 'Gave medical supplies to raid survivors on {planet}.'
         },
@@ -283,7 +283,7 @@ Mods.register({
     });
 
     scene({
-      id: 'land-surcharge', when: { bust: 'Charter League', gov: 'Charter League' },
+      id: 'land-surcharge', when: { bust: 'Guild Federation', gov: 'Guild Federation' },
       title: 'Slump Surcharge',
       text: ('{official} has a new form on official pink paper, three pages long: a "temporary economic stabilization surcharge" of 2,000 cr on ' +
           'every visiting ship, and slides it across the counter without meeting your eye. Behind the counter a hand-lettered sign has been taped over the old ' +
@@ -299,7 +299,7 @@ Mods.register({
         },
         {
           label: 'Argue',
-          effects: { rep: { 'Charter League': -1 }, do: ['official', -1, 'You argued the surcharge in front of the whole line.'] },
+          effects: { rep: { 'Guild Federation': -1 }, do: ['official', -1, 'You argued the surcharge in front of the whole line.'] },
           result: ('You argue, at length, with citations, and a rising voice. {official} gives in at last and stamps the form PAID. You win. Behind ' +
               'you the line of tired captains hasn\'t moved, and {official} is writing your ship\'s name on the back of the form.')
         },
@@ -321,7 +321,7 @@ Mods.register({
     }, 0.05);
 
     scene({
-      id: 'land-festival', when: { boom: 'Charter League', planet: BELT },
+      id: 'land-festival', when: { boom: 'Guild Federation', planet: BELT },
       title: 'Payday',
       text: ('The ore prices are up and it\'s payday on {planet}. The corridors are full of music, food stalls with hissing griddles, and people ' +
           'spending money they didn\'t have last month, arm in arm, laughing, in their best jackets. A ring toss has set up under a gantry. A man is ' +
@@ -356,7 +356,7 @@ Mods.register({
         {
           label: '"Goal."',
           result: ('You say it with the gravity of a judge, and half the kids erupt in a shrieking cheer and throw their jerseys in the air. The ' +
-              'other half stand in silence, and then someone calls you a Compact spy, and the chant spreads. For the next hour you can\'t walk the ' +
+              'other half stand in silence, and then someone calls you an Arcology Pact spy, and the chant spreads. For the next hour you can\'t walk the ' +
               'corridor without a delegation of children explaining your mistake.')
         },
         { label: '"No goal."', result: 'You say it firmly, and the other half of the kids erupt, and the cheer echoes down the corridor. The half that lost stare at you. One of them, a girl with a missing front tooth, says clearly, "You\'re a traitor," and stalks off.' },
@@ -365,7 +365,7 @@ Mods.register({
           when: { credits: 500 },
           effects: {
           credits: -500,
-          rep: { 'Charter League': 1 }
+          rep: { 'Guild Federation': 1 }
         },
           result: ('You duck into the nearest shop and come back with a fresh orange ball that smells of new rubber. The old one, you see, was mostly ' +
               'tape, layers of it, wound by generations of hands. The argument is forgotten. They swarm you, shouting thanks, and within a ' +
@@ -379,7 +379,7 @@ Mods.register({
       title: 'Salvage Auction',
       text: ('The Boneyard auctions sealed containers pulled from wrecks, unopened, on the dock, from a rickety stage made of an old cargo lift. The ' +
           'auctioneer, a tall woman in a faded flight jacket and a top hat, works the crowd like a preacher. The next lot is a two-ton crate with a ' +
-          'Compact stencil, dented and scarred, still with a scrap of burned rope on one handle. "Sealed," she cries, rapping the crate. "Untouched! ' +
+          'Arcology Pact stencil, dented and scarred, still with a scrap of burned rope on one handle. "Sealed," she cries, rapping the crate. "Untouched! ' +
           'Who knows what riches lie within! Bidding starts at 800."'),
       choices: [
         {
@@ -394,7 +394,7 @@ Mods.register({
           0.55,
           { cargo: { equipment: 8 } },
           'You crack it open on the dock, with a borrowed crowbar, while the crowd leans in: eight tons of electronics, still in their packing, gleaming and pristine. A cheer goes up, and the auctioneer tips her hat.',
-          'You crack it open on the dock, with a borrowed crowbar, while the crowd leans in: two tons of Compact paperwork, in triplicate, bound in soft gray folders. A groan goes up. The auctioneer tips her hat in sympathy.'
+          'You crack it open on the dock, with a borrowed crowbar, while the crowd leans in: two tons of Arcology Pact paperwork, in triplicate, bound in soft gray folders. A groan goes up. The auctioneer tips her hat in sympathy.'
         ] },
           result: ''
         },
@@ -458,21 +458,21 @@ Mods.register({
           label: 'Tell them how it really is out there',
           effects: {
           rep: {
-          'Charter League': 2,
-          'Arcology Compact': -1
+          'Guild Federation': 2,
+          'Arcology Pact': -1
         },
           news: 'A feed segment on life in the Belt is getting attention on Earth: rationing, raids, and the ships that keep it running.'
         },
           result: ('You tell her about the rationing lines, and the crews who go without, and the ships that keep it running on hope and sealant, and ' +
               'the way the water is counted, drop by drop. Halfway through she stops smiling, lowers the microphone, and listens. The segment runs ' +
-              'that night, and half of Earth watches. The Compact press office isn\'t pleased. The next morning a package of very good coffee ' +
+              'that night, and half of Earth watches. The Arcology Pact press office isn\'t pleased. The next morning a package of very good coffee ' +
               'arrives at your ship, with no name on it.')
         },
         {
-          label: 'Talk up the Compact\'s work in the Belt',
+          label: 'Talk up the Arcology Pact\'s work in the Belt',
           effects: { rep: {
-          'Arcology Compact': 2,
-          'Charter League': -1
+          'Arcology Pact': 2,
+          'Guild Federation': -1
         } },
           result: ('You say all the right things: the relief convoys, the medical shipments, the tireless dockers, the great cooperation between ' +
               'planets. You have a good, clear, sincere voice, and it sounds even better on camera. It plays well on Earth, and gets shared a thousand ' +
@@ -496,7 +496,7 @@ Mods.register({
       choices: [
         {
           label: 'Join the moment of silence',
-          effects: { rep: { 'Dome Concord': 1 } },
+          effects: { rep: { 'Dome Pact': 1 } },
           result: 'You stand with the others, head bowed, hands folded, for the full two minutes, as the bugle plays and the wreaths are laid. When it ends, an old woman in a faded MRN jacket, with a chest full of tarnished medals, comes over and touches your sleeve once. She doesn\'t say a word.'
         },
         {

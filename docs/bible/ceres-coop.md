@@ -14,7 +14,7 @@ A finance house lent it the money for its hulls, against the hulls themselves. T
 
 ## Where it stands
 
-It rents an office and a berth in the yard from the station's owner (the Charter League, in the game's present factions), like everyone else who works there. The office is two rooms up a stair from the yard floor: a counter, a board with the hulls and where each is, and a back room where the members meet when enough of them are in port.
+It rents an office and a berth in the yard from the station's owner (the Guild Federation's guilds, `owners.md`), like everyone else who works there. The office is two rooms up a stair from the yard floor: a counter, a board with the hulls and where each is, and a back room where the members meet when enough of them are in port.
 
 ## The Ore Runner
 

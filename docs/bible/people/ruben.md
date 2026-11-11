@@ -36,7 +36,7 @@ He likes: a quiet band at night, with the rocks checking in; a long talk; strong
 Not aboard the Ore Runner. The co-op meets him at a freehold or on the band.
 
 - **Cato** he would talk to for hours.
-- **The master** he would judge by whose side they lean to; Saran he would not trust, for his wife's job.
+- **The lender's masters** he would judge by whose side they lean to; Saran he would not trust, for his wife's job.
 - **Pax** he would see as a Warren kid, and give work to.
 - **The hand** he meets as a voice on the band, and then in person, and asks for a run: a relay to a rock, or a message nobody else will carry.
 

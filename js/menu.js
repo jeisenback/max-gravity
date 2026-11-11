@@ -62,7 +62,22 @@ const played = s => `${Math.floor(s / 3600)}h ${String(Math.floor(s / 60) % 60).
 
 // Older saves get the fields later versions expect: every top-level field of stateDefaults() (game.js) that a save lacks or holds as the wrong kind of thing. Add a
 // field there, not here; add a step here (and a version in the save to tell old from new) only when an old value has to be rewritten, not just filled in.
+// The three powers became the blocs (#1043, docs/bible/owners.md): an older save has the old names (OLD_NAMES, data.js) in its keys (standing, the shippers' regard, the
+// world's economies, ties) and in its words (the news, the logs), and gets the new ones. The world's tension is kept by a pair of names sorted together, so those keys are
+// sorted again. A save with no old name in it is returned as it is, so the step needs no version.
+function renamePowers(st) {
+  const old = new RegExp(OLD_NAMES.map(([a]) => a).join('|'), 'g'), to = Object.fromEntries(OLD_NAMES);
+  if (!old.test(JSON.stringify(st))) return st;
+  const name = s => s.replace(old, a => to[a]);
+  const walk = v => (typeof v === 'string' ? name(v) : Array.isArray(v) ? v.map(walk)
+    : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [name(k), walk(x)])) : v);
+  const out = walk(st), tension = out.factions && out.factions.tension;
+  if (tension && typeof tension === 'object') out.factions.tension = Object.fromEntries(Object.entries(tension).map(([k, t]) => [k.split('|').sort().join('|'), t]));
+  return out;
+}
+
 function migrate(st) {
+  st = renamePowers(st);
   const defaults = stateDefaults(st.shipId);
   // A field that is missing, or present as a different kind of thing than its default (a string where a list goes, a number where an object goes), gets the default: a slot that crashes on
   // landing can never be opened again. A default of null stands for anything.
@@ -87,9 +102,9 @@ function migrate(st) {
 // ---------- starting out ----------
 const BACKGROUNDS = {
   earth: { name: 'Earth', text: 'Start on Earth with 120,000 credits and a patched-up Dust Skiff. The tutorial walks you through your first trade run.', at: ['earth', 'Earth'], credits: 120000 },
-  mars: { name: 'Mars', text: 'Grew up under the Tharsis domes. Start on Mars with 100,000 credits and friends in the Dome Concord.', at: ['mars', 'Mars'], credits: 100000, rep: { 'Dome Concord': 10 },
+  mars: { name: 'Mars', text: 'Grew up under the Tharsis domes. Start on Mars with 100,000 credits and friends in the Dome Pact.', at: ['mars', 'Mars'], credits: 100000, rep: { 'Dome Pact': 10 },
     intro: () => ['You grew up under the domes of Tharsis, where everyone argues about the future. Now you have a Dust Skiff, 100,000 credits, and a way off the planet.', 'Mars pays well for Electronics from Earth, and sells Refined Metals cheap.'] },
-  belt: { name: 'The Belt', text: 'Born in the Warren, where a water share is the first thing you inherit. Start on Ceres Station with 90,000 credits and friends in the Charter League.', at: ['ceres', 'Ceres Station'], credits: 90000, rep: { 'Charter League': 10 },
+  belt: { name: 'The Belt', text: 'Born in the Warren, where a water share is the first thing you inherit. Start on Ceres Station with 90,000 credits and friends in the Guild Federation.', at: ['ceres', 'Ceres Station'], credits: 90000, rep: { 'Guild Federation': 10 },
     intro: () => ['You were born in the Ceres Warren, and you know what water is worth. Now you have a Dust Skiff, 90,000 credits, and the whole Belt to work.', 'Ceres is always short of water and food. Europa and Ganymede, at Jupiter, sell both cheap.'] },
 };
 

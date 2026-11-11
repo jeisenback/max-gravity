@@ -52,7 +52,7 @@ test('the play-through\'s player orders the gunner move the move rule chooses', 
     resolveShipTurn = (st, o, ...rest) => { sent.push({ move: o.move || null, gun: o.move === 'lead' ? o.gun : null }); return real(st, o, ...rest); };
     const out = { turns: 0, used: {}, wrong: [], stuck: 0, gaveUp: 0 };
     window.__pt = { stuck: () => { out.gaveUp++; } };  // the player's 40 clicks on a turn without its orders taking
-    const SPECS = [{ kind: 'pirate' }, { kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }];
+    const SPECS = [{ kind: 'pirate' }, { kind: 'patrol', gov: 'Arcology Pact', shipId: 'cutter' }];
     try {
       for (let k = 0; k < 40 && !(out.used.vent && out.used.lead && out.used.split); k++) {
         G.state = JSON.parse(snap); G.dialog = null; G.nextEvent = null; G.duel = null; career().moves = ['vent', 'lead', 'split'];

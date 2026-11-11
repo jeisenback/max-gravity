@@ -21,7 +21,7 @@ const STANDING_MAX = 3, STANDING_GOOD = 2, STANDING_BAD = -2, TRUSTED_PAY = 0.1;
 const SHIPPERS = {
   port: { 'Hermes Foundry': 'Aquilon', Titan: 'the Tethys Shipping Consortium', Ironheart: 'the Ironheart co-op', 'Juno Commons': 'the Juno Commons families', 'The Hollows': 'the Hollows families',
     Boneyard: 'the Boneyard salvagers', 'Ring Nine': 'the Ring Nine kitchens', 'The Rook': 'the Rook', 'Eros Old Town': 'the Old Town traders', Europa: 'the Europa ice works', Enceladus: 'the Geyser Bar', 'Triton Outpost': 'the Outpost council' },
-  gov: { 'Arcology Compact': 'the Compact Freight Office', 'Dome Concord': 'the Concord Freight Office', 'Charter League': 'the League Freight Hall', Pirate: 'the Rook' },
+  gov: { 'Arcology Pact': 'the Arcology Pact Freight Office', 'Dome Pact': 'the Dome Pact Freight Office', 'Guild Federation': 'the Federation Freight Hall', Pirate: 'the Rook' },
   other: 'a dock broker',
 };
 const shipperOf = (planet, gov) => SHIPPERS.port[planet.name] || SHIPPERS.gov[gov] || SHIPPERS.other;
@@ -95,7 +95,7 @@ function pickContract(list, { free, goal = () => false, risk, picks }) {
   return { best: top.length > 1 ? pick(top) : top[0] || null, ranked };
 }
 
-// A shipper that reads an item in the kit (sheet.js kitBoards: the Compact's carrier license) draws its board for a ship it already knows (regard 1) as for one it trusts: more on the board, and a tenth more pay.
+// A shipper that reads an item in the kit (sheet.js kitBoards: the Arcology Pact's carrier license) draws its board for a ship it already knows (regard 1) as for one it trusts: more on the board, and a tenth more pay.
 const boardStanding = (standing, shipper, kit) => (standing >= 1 && (kitBoards(kit, shipper) || perkOn('open-board')) ? Math.max(standing, STANDING_GOOD) : standing);  // open-board (picks.js): as the kit's board, for every shipper
 
 // A shipper's regard for the ship (st.hired.standing, and st.career.standing after the buy; by the shipper's name; older saves have none, which is 0). A delivery moves it: on the day and whole, up one;

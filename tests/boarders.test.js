@@ -572,7 +572,7 @@ test('the last of them going down wins the fight with its line, and so few left 
 // settle, whether repelled, withdrawn or searched; holding our bridge is a search, which costs the heave-to's fine (heaveToFine, a quarter of the purse) and a point of the captain's regard,
 // and the ship is kept.
 const navyHelpers = () => {
-  window.GOV = 'Arcology Compact';
+  window.GOV = 'Arcology Pact';
   window.navy = () => { const d = { foe: makeEnemy({ kind: 'patrol', gov: GOV, shipId: 'cutter' }), foeHp: 0, init: 'foe' }; return repelStart(d, 'half'); };
 };
 

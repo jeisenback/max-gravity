@@ -1,6 +1,6 @@
 'use strict';
 
-// The license inspection at Luna (#683): a mission arc hung on the Compact Freight Office (js/arcs.js). The Office has a notice of inspection for Dag Ibarra, a master rigger who has
+// The license inspection at Luna (#683): a mission arc hung on the Arcology Pact Freight Office (js/arcs.js). The Office has a notice of inspection for Dag Ibarra, a master rigger who has
 // worked Bay Nine at the Luna yards on a license that lapsed in the spring, and would rather it did not go by the relay, where the whole yard would read it. Petra Lindqvist, the
 // licensing officer, comes down for the inspection herself. Qualities: `compact` (begun), `compactSide` (from 2 the hand told the inspector what they saw: the license is issued).
 // The notice leads into the inspection if the hand stays for it; the end plays at Earth (the hand spoke: the carrier license) or at Luna (not: the riggers' fee) when the hand next comes.
@@ -13,7 +13,7 @@ Mods.register({
     // The hand who said the bay was idle: the inspector minds that.
     M.addAction('compact-lie', memory => { like(arcPerson('petra'), -2, memory); return ''; });
     // The license: a person, a regard and an item.
-    M.addAction('compact-license', memory => { like(arcPerson('petra'), 2, memory); moveStanding('the Compact Freight Office', 1); return addKit('carrier-license'); });
+    M.addAction('compact-license', memory => { like(arcPerson('petra'), 2, memory); moveStanding('the Arcology Pact Freight Office', 1); return addKit('carrier-license'); });
     // The fee: Dag warms, and the Office cools.
     M.addAction('compact-fee', (forDag, forPetra) => { like(arcPerson('dag'), 2, forDag); like(arcPerson('petra'), -1, forPetra); return ''; });
 
@@ -27,11 +27,11 @@ Mods.register({
       choices: [
         { label: 'Stay for the inspection', next: 'compact-bay',
           effects: { q: { compact: 1, compactSide: 1 }, do: ['arcLike', 'dag', 1, 'You stayed for the inspection.'],
-            log: 'Carried the Compact Freight Office\'s notice of inspection to Dag Ibarra on Luna, and stayed for the inspection.' },
+            log: 'Carried the Arcology Pact Freight Office\'s notice of inspection to Dag Ibarra on Luna, and stayed for the inspection.' },
           result: 'Dag finds you a crate to sit on at the end of the gantry and a tin cup of something that was once coffee. "Don\'t touch the hull," he says. "It has opinions."' },
         { label: 'Leave him the page and go',
           effects: { q: { compact: 1 }, later: { 'compact-end': 5 }, do: ['arcLike', 'dag', -1, 'You would not stay for the inspection.'],
-            log: 'Carried the Compact Freight Office\'s notice of inspection to Dag Ibarra on Luna, and did not stay.' },
+            log: 'Carried the Arcology Pact Freight Office\'s notice of inspection to Dag Ibarra on Luna, and did not stay.' },
           result: ('"Delivered, then," Dag says, and puts the page under the torch\'s casing, where it will stay. He is back under the hull before you reach the end of the ' +
               'gantry, and you hear him laughing at something down there that was not funny.') },
       ],
@@ -40,24 +40,24 @@ Mods.register({
     M.addStorylet({
       id: 'compact-bay', where: 'port', chained: true, priority: 1,
       title: 'The Inspection',
-      text: ('Petra Lindqvist comes down the row with a clerk a pace behind her, in a pressed Compact grey with the license insignia on the collar, and she is the most ' +
+      text: ('Petra Lindqvist comes down the row with a clerk a pace behind her, in a pressed Arcology Pact grey with the license insignia on the collar, and she is the most ' +
           'pleasant person you have seen on Luna. She shakes Dag\'s hand and admires the gantry. She asks after the hauler and after the coffee. She walks the whole of Bay Nine ' +
           'with the clerk writing, and at the end of it she stops beside you, with the air of a woman who has only just thought of it. "You were here the whole of last month, I believe," she says. ' +
-          '"The Office would be so grateful to know whether the bay worked on Compact hulls in that time, without the license."'),
+          '"The Office would be so grateful to know whether the bay worked on Arcology Pact hulls in that time, without the license."'),
       choices: [
         { label: 'Say what you saw',
           effects: { q: { compactSide: 1 }, later: { 'compact-end': 5 }, do: ['arcLike', 'dag', -2, 'You told the inspector what the bay worked on.'],
-            log: 'Told the Compact\'s licensing officer what the rigger\'s bay had worked on, at the Luna inspection.' },
+            log: 'Told the Arcology Pact\'s licensing officer what the rigger\'s bay had worked on, at the Luna inspection.' },
           result: ('"That is very clear," Petra says, and the clerk writes it as you say it. "I do thank you." Dag holds the torch out at arm\'s length and does not say ' +
               'one word, which on Luna is a sound that carries from end to end of the row.') },
         { label: 'Say the bay was idle',
           effects: { later: { 'compact-end': 5 }, do: ['compact-lie', 'You said the bay was idle and it was not.', 'You said the bay was idle all month.'],
-            log: 'Told the Compact\'s licensing officer the rigger\'s bay had been idle, at the Luna inspection.' },
+            log: 'Told the Arcology Pact\'s licensing officer the rigger\'s bay had been idle, at the Luna inspection.' },
           result: ('"Idle," Petra says, in the same pleasant voice. "All month." She looks at the hull in the cradle, and the welds on its plates, and the date stamped in the ' +
               'frame. "I do so appreciate your being plain about it." Dag turns his head away and coughs into his sleeve twice.') },
         { label: 'Say you only carried the page',
           effects: { later: { 'compact-end': 5 }, do: ['arcLike', 'petra', -1, 'You would not say what the bay worked on.'],
-            log: 'Left the Compact\'s licensing officer to find out for herself what the bay had worked on.' },
+            log: 'Left the Arcology Pact\'s licensing officer to find out for herself what the bay had worked on.' },
           result: '"Then the Office will find out another way," Petra says, not unkindly. "It always does." She goes on up the row with the clerk behind her, and does not hurry.' },
       ],
     });
@@ -70,9 +70,9 @@ Mods.register({
           'come out to meet you. She has a card in a clear sleeve in her hand. "The Office has been so helpful to the yard," she says, "and the yard to the Office, at last. ' +
           'This is the Office\'s carrier license, for the ship, with the hand\'s name on it. It will be convenient for a good many doors." She turns it so the stamp catches the light.'),
       choices: [
-        { label: 'Take the license', effects: { do: ['compact-license', 'You took the Office\'s carrier license and said it would be used.'], log: 'The Compact Freight Office gave the ship a carrier license, after the inspection at Luna.' },
+        { label: 'Take the license', effects: { do: ['compact-license', 'You took the Office\'s carrier license and said it would be used.'], log: 'The Arcology Pact Freight Office gave the ship a carrier license, after the inspection at Luna.' },
           result: 'The sleeve is warm from her hand. "Do keep it dry," Petra says. "The Office would be so sorry to have to issue another."' },
-        { label: 'Say the license belongs to the Office', effects: { do: ['arcLike', 'petra', 3, 'You gave the carrier license back.'], log: 'Gave the Compact Freight Office\'s carrier license back to the licensing officer.' },
+        { label: 'Say the license belongs to the Office', effects: { do: ['arcLike', 'petra', 3, 'You gave the carrier license back.'], log: 'Gave the Arcology Pact Freight Office\'s carrier license back to the licensing officer.' },
           result: ('Petra slides the card back into its sleeve and the sleeve into her jacket, with the care of someone putting away a letter. "How very proper," she says. "The Office ' +
               'will remember it. I will see that it does."') },
       ],

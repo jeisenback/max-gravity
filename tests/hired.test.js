@@ -467,7 +467,7 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
     out.mine = { minePaid, fundMoved };
     // The contact (a patrol: no option fits a pilot, as a pirate's would): the captain answers, and pays from the ship's purse.
     h.fund = 200000; let contactMine = 0;
-    for (let i = 0; i < 40; i++) { G.dialog = null; t.event = null; G.nextEvent = null; G.duel = null; const c0 = st.credits; st.armor = ship().armor; openEvent(contactEvent({ kind: 'patrol', gov: 'Arcology Compact' })); const e = G.dialog.event; chooseEvent(0); contactMine += st.credits - c0; finishEvent(); for (let n = 0; G.dialog && n < 30 && !/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title); n++) { chooseEvent(0); finishEvent(); }  /* the captain's pick is measured; the boarding that may follow is the scenes' own */ if (i === 0) out.contact = { decided: e.decided, labels: e.choices.map(c => c.label) }; }
+    for (let i = 0; i < 40; i++) { G.dialog = null; t.event = null; G.nextEvent = null; G.duel = null; const c0 = st.credits; st.armor = ship().armor; openEvent(contactEvent({ kind: 'patrol', gov: 'Arcology Pact' })); const e = G.dialog.event; chooseEvent(0); contactMine += st.credits - c0; finishEvent(); for (let n = 0; G.dialog && n < 30 && !/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title); n++) { chooseEvent(0); finishEvent(); }  /* the captain's pick is measured; the boarding that may follow is the scenes' own */ if (i === 0) out.contact = { decided: e.decided, labels: e.choices.map(c => c.label) }; }
     out.contactMine = contactMine;
     // Your own post's event is yours; another post's is the captain's.
     G.dialog = null; t.event = null; openEvent(coolant); out.coolantPilot = { decided: !!G.dialog.event.decided, n: G.dialog.choices.length };
@@ -695,7 +695,7 @@ test('a ladder step that is due takes the burn, bad standing or not', async () =
   const r = await ev(() => {
     startHired('gunner'); const st = G.state, h = hired(); h.runsDone = 1; st.flags.classicCombat = true;
     const out = {};
-    st.rep['Dome Concord'] = -40;
+    st.rep['Dome Pact'] = -40;
     const hostile = []; for (let i = 0; i < 30; i++) hostile.push(ladderBurn('mars'));
     out.patrol = hostile.some(s => s && s.kind === 'patrol');
     out.step = hostile[0];
@@ -743,7 +743,7 @@ test('a ladder fight opens with its own entry line, and a random one with the se
       ladderDone(h, step.id);  // the scene does not meet it (the fight does, startShipFight); the walk moves on to the next step
       return { id: step.id, text: e.text, want: sceneSay('scene:fight-entry', `${step.id}.text`, vars), labels: labels(e), plainLabels: labels(plain) };
     });
-    return { steps, done: h.fights.done.slice(), pirate: contactEvent({ kind: 'pirate', shipId: 'raider' }).text, patrol: contactEvent({ kind: 'patrol', gov: 'Dome Concord', shipId: 'cutter' }).text };
+    return { steps, done: h.fights.done.slice(), pirate: contactEvent({ kind: 'pirate', shipId: 'raider' }).text, patrol: contactEvent({ kind: 'patrol', gov: 'Dome Pact', shipId: 'cutter' }).text };
   });
   assert.deepEqual(r.steps.map(s => s && s.id), ['raider', 'corsair', 'setpiece'], 'the three, in order');
   assert.deepEqual(r.done, ['raider', 'corsair', 'setpiece']);
@@ -757,7 +757,7 @@ test('a ladder fight opens with its own entry line, and a random one with the se
   const by = Object.fromEntries(r.steps.map(s => [s.id, s.text]));
   assert.ok(by.setpiece.includes('1,000 cr'), by.setpiece); assert.ok(by.raider.includes('Captain Vance'), by.raider);
   assert.ok(r.pirate.endsWith('No transponder. The plume signature says pirate.'), r.pirate);
-  assert.ok(r.patrol.endsWith('Transponder: Dome Concord navy. You are wanted in their space.'), r.patrol);
+  assert.ok(r.patrol.endsWith('Transponder: Dome Pact navy. You are wanted in their space.'), r.patrol);
   await done();
 });
 
@@ -770,7 +770,7 @@ test('random contacts for a hand come only once a type is met, and only of the t
     const draws = n => { const out = []; for (let i = 0; i < n; i++) { const s = ladderBurn('mars'); if (s) out.push(s); } return out; };
     const none = draws(300).filter(s => s.kind === 'pirate').length;
     h.runsDone = 1; h.fights = { done: ['raider'] };
-    st.rep['Dome Concord'] = 0;
+    st.rep['Dome Pact'] = 0;
     const met = draws(600).filter(s => s.kind === 'pirate'), scene = scenePirate().pack;
     h.fights.done.push('corsair', 'cutter', 'pair');  // the ladder's pair met: the lane rolls a random raider's pack again
     const after = draws(600).filter(s => s.kind === 'pirate');

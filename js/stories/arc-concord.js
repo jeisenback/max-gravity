@@ -1,6 +1,6 @@
 'use strict';
 
-// The air audit at Eros (#683): a mission arc hung on the Concord Freight Office (js/arcs.js). Odile Marchetti, a Fleet auditor, needs a berth from Mars to Eros Old Town
+// The air audit at Eros (#683): a mission arc hung on the Dome Pact Freight Office (js/arcs.js). Odile Marchetti, a Fleet auditor, needs a berth from Mars to Eros Old Town
 // without her name on the manifest: the domes' air levy has been paying for the air of the sealed half of the town, fourteen corridors, and she thinks nobody breathes it. Hob Strand,
 // the town's air steward, has been sending that air to the cisterns of the living half. Qualities: `concord` (begun), `concordSide` (from 2 the audit stands: the hand walked
 // the corridors and signed the count as it is). The arrival leads into the corridors if the hand goes; the end plays at Mars (the audit stood: the auditor's seal) or at Eros Old
@@ -14,7 +14,7 @@ Mods.register({
     // The hand who signed for the vents being open: the auditor minds that.
     M.addAction('concord-lie', memory => { like(arcPerson('odile'), -2, memory); return ''; });
     // The seal: a person, a regard and an item.
-    M.addAction('concord-seal', memory => { like(arcPerson('odile'), 2, memory); moveStanding('the Concord Freight Office', 1); return addKit('audit-seal'); });
+    M.addAction('concord-seal', memory => { like(arcPerson('odile'), 2, memory); moveStanding('the Dome Pact Freight Office', 1); return addKit('audit-seal'); });
     // The fee: Hob warms, and the Fleet cools.
     M.addAction('concord-fee', (forHob, forOdile) => { like(arcPerson('hob'), 2, forHob); like(arcPerson('odile'), -1, forOdile); return ''; });
 

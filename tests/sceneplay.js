@@ -57,7 +57,7 @@ const playScenes = () => {
   run('scene:warning', {}, () => warningScene());
   // The freight agent at the far end (shippers.js): late, short and lost, each choice with the case held and not held; the shipper's regard is what the extra records.
   for (const [kind, o] of [['late', { tons: 90, got: 90, late: 2 }], ['short', { tons: 90, got: 60, late: 0 }], ['lost', { tons: 90, got: 0, late: 3 }], ['skim', { tons: 90, got: 90, late: 0, cut: 30000, owed: 200000 }]]) {
-    run(`scene:freight-agent:${kind}`, {}, () => agentScene({ kind, shipper: 'the Compact Freight Office', good: 'water', due: G.state.day - o.late, cut: 0, owed: 0, ...o }, freightAgent(currentPlanet())),
+    run(`scene:freight-agent:${kind}`, {}, () => agentScene({ kind, shipper: 'the Arcology Pact Freight Office', good: 'water', due: G.state.day - o.late, cut: 0, owed: 0, ...o }, freightAgent(currentPlanet())),
       { rolls: [0, 0.99], extra: () => ({ standing: hired().standing, fund: hired().fund }) });
   }
   run('scene:put-ashore:plain', {}, () => putAshoreScene(), { skip: [0] });
@@ -136,9 +136,9 @@ const playScenes = () => {
   }
   // the port inspector (inspection.js): each cause alone and both together, for a Comms hand (the papers) and a gunner (speaking up), and the owner's one choice
   for (const [name, cargo, rep, post] of [['good', { water: 50 }, 0, 'comms'], ['standing', {}, -22, 'gunner'], ['both', { water: 50 }, -22, 'comms']]) {
-    run(`scene:inspection:${name}`, { post }, () => inspectionScene(inspectionCause(cargo, 'Dome Concord', rep, false), currentPlanet()), { rolls: [0, 0.999] });
+    run(`scene:inspection:${name}`, { post }, () => inspectionScene(inspectionCause(cargo, 'Dome Pact', rep, false), currentPlanet()), { rolls: [0, 0.999] });
   }
-  run('scene:inspection:owner', { mode: 'owner' }, () => inspectionScene(inspectionCause({ water: 50 }, 'Dome Concord', 0, false), currentPlanet()));  // the parked owner game: only the pay choice
+  run('scene:inspection:owner', { mode: 'owner' }, () => inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()));  // the parked owner game: only the pay choice
   tiesCase('scene:dock-friend', () => { mateOf('Sam'); stubTies({ Sam: { aff: GOV, status: { [GOV]: 'officer' } } }); }, () => dockFriendScene(GOV, currentPlanet()));
   for (const [name, status, opinion] of [['officer', 'officer', 0], ['member:close', 'member', OPINION.CLOSE], ['member:far', 'member', 0]]) {
     tiesCase(`scene:war-call:${name}`, () => {
@@ -361,14 +361,14 @@ const playScenes = () => {
     run(`hired:${id}:low`, {}, () => { const c = handContext(); c.cap.opinion = -3; return d.make(c); }, { rolls: [0, 0.999], extra: () => (G.state.journal || []).map(j => j.text) });
   }
   Math.random = real;
-  // The freight office's side on the paper (shippers.js): a crew member the Compact wants, and the Earth hand's own papers, so every way out is there. Last, because putting
+  // The freight office's side on the paper (shippers.js): a crew member the Arcology Pact wants, and the Earth hand's own papers, so every way out is there. Last, because putting
   // the crew member ashore signs a replacement on, whose name takes one from the names the cases after it would draw.
   {
-    const gov = 'Arcology Compact', realTies = tiesOf;
+    const gov = 'Arcology Pact', realTies = tiesOf;
     run('scene:freight-side', {}, () => {
       const st = G.state, h = hired(), here = currentPlanet(), target = st.crew.map(person).find(p => !p.cast);
       window.tiesOf = p => (p.id === target.id ? { ...realTies(p), status: { ...realTies(p).status, [gov]: 'wanted' } } : realTies(p)); h.runsDone = 1;  // the first run is guided and has no side
-      const run0 = { contract: true, shipper: 'the Compact Freight Office', good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false };
+      const run0 = { contract: true, shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 50, from: here.name, planet: 'Mars', sid: 'mars', pay: 90000, days: 4, due: st.day + 8, cost: 0, yard: false };
       h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: run0, alts: [] }; h.freight = { key: `${here.name}@${st.day}`, list: [run0] }; st.customs = {};
       return sideScene(run0, sideDue(run0), freightAgent(here));
     }, { rolls: [0, 0.99], extra: () => ({ board: hired().freight.list.length, crew: G.state.crew.length, standing: hired().standing, fund: hired().fund }) });
@@ -407,7 +407,7 @@ const playScenes = () => {
   // ---------- the entry lines of chapter 1's ladder of fights (engage.js contactEvent, #810): each step's contact as it opens; its choices are the contact's, played above ----------
   for (const step of FIGHT_LADDER) run(`scene:fight-entry:${step.id}`, {}, () => {
     hired().deal = { price: 170000, day: G.state.day, until: G.state.day + 20, broker: false };  // the Ore Runner's price, which the set piece names
-    const ev = contactEvent({ ...step.spec, ...(step.gov ? { gov: 'Arcology Compact' } : {}), ladder: step.id });
+    const ev = contactEvent({ ...step.spec, ...(step.gov ? { gov: 'Arcology Pact' } : {}), ladder: step.id });
     return { ...ev, choices: [] };
   });
   // ---------- the ship fight (fightui.js): its panels, a move of each kind, every order, and each end, from states set by hand; last, so the
@@ -417,7 +417,7 @@ const playScenes = () => {
     try {
       const panel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: labelsOf(ev), group: ev.choices.map(c => c.group).filter(Boolean) });  // the orders' heading too (#846), as the deck panel's
       const orders = (o = {}) => ({ guns: [{ foe: 0, part: 'weapons' }], torp: null, pdc: 'fire', ...o });
-      const start = (shipId, o = {}, kind = 'pirate') => { fresh(); hired().raidTold = true; G.state.day += o.day || 0; G.nextEvent = null; startShipFight({ kind, gov: 'Arcology Compact', shipId }, false, o); const ev = G.nextEvent; G.nextEvent = null; return ev; };
+      const start = (shipId, o = {}, kind = 'pirate') => { fresh(); hired().raidTold = true; G.state.day += o.day || 0; G.nextEvent = null; startShipFight({ kind, gov: 'Arcology Pact', shipId }, false, o); const ev = G.nextEvent; G.nextEvent = null; return ev; };
       const turn = (s, o, foe, captain = { kind: 'hold' }) => {  // one Fire with the moves set; what it shows next, or the scene it queued and what it left
         const cap = person(hired().captain), m0 = (cap.memories || []).length;
         s.shown = { foe: s.state.foes.map(() => foe), captain }; G.nextEvent = null;
@@ -539,13 +539,13 @@ const playScenes = () => {
         }
       }
       // the navy's party (Task 6): the panel names it, with its own cap, and says the standing its heads put down have cost; a turn of hold fire; holding our bridge is a search, with its fine, and the captain's memory of it
-      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Compact'; s.state.navyDown = 1; s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
-      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Compact'; deckLog(s, { act: 'holdfire' }, { kind: 'hold', from: 0, to: 0, n: 0 }); }  // a turn of hold fire, the hand standing ready
-      { const s = deck(false, { party: 'navy' }), S = s.state.sections, cap = person(hired().captain), m0 = (cap.memories || []).length; s.d.foe.gov = 'Arcology Compact'; hired().fund = 20000;
+      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Pact'; s.state.navyDown = 1; s.shown = { kind: 'push', from: 0, to: 1, n: 2, feint: false }; deckPanel(deckFightEvent(s)); }
+      { const s = deck(false, { party: 'navy' }); s.d.foe.gov = 'Arcology Pact'; deckLog(s, { act: 'holdfire' }, { kind: 'hold', from: 0, to: 0, n: 0 }); }  // a turn of hold fire, the hand standing ready
+      { const s = deck(false, { party: 'navy' }), S = s.state.sections, cap = person(hired().captain), m0 = (cap.memories || []).length; s.d.foe.gov = 'Arcology Pact'; hired().fund = 20000;
         S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].mine = 1; S[2].theirs = 2; s.state.hand = 0; s.state.began = 4; s.state.wave = null;
         deckLog(s, {}, { kind: 'hold', from: 2, to: 2, n: 0 }); rec.plays.push({ mem: (cap.memories || []).slice(m0) }); }
       // a navy party that withdraws at its cap still files its citation: the close names the fine
-      { const s = deck(false, { party: 'navy' }), S = s.state.sections; s.d.foe.gov = 'Arcology Compact'; hired().fund = 20000;
+      { const s = deck(false, { party: 'navy' }), S = s.state.sections; s.d.foe.gov = 'Arcology Pact'; hired().fund = 20000;
         S.forEach(x => { x.mine = 0; x.theirs = 0; }); S[0].mine = 1; S[1].theirs = 2; s.state.hand = 0; s.state.began = 4; s.state.wave = null; s.state.turn = DECK.NAVY_TURNS - 1;
         deckLog(s, {}, { kind: 'hold', from: 1, to: 1, n: 0 }); }
     } catch (err) { rec.error = String(err && err.stack || err); }

@@ -32,7 +32,7 @@ test('the same official every landing, titled by the government, made with no dr
     return out;
   });
   assert.ok(r.noDraw, 'making the official draws nothing from the game\'s dice'); assert.ok(r.again && r.registered);
-  assert.equal(r.title, { 'Arcology Compact': 'Officer', 'Dome Concord': 'Officer', 'Charter League': 'Dockmaster', Pirate: 'Collector' }[r.gov] || 'Dockmaster'); assert.ok(r.job.length > 3);
+  assert.equal(r.title, { 'Arcology Pact': 'Officer', 'Dome Pact': 'Officer', 'Guild Federation': 'Dockmaster', Pirate: 'Collector' }[r.gov] || 'Dockmaster'); assert.ok(r.job.length > 3);
   assert.equal(r.filled, `At the lock, ${r.name} waits.`); assert.equal(r.atBar, false, 'the official is at the dock, not on a stool');
   assert.ok(r.sameFace, 'the same port has the same official in every game');
   await done();
@@ -43,7 +43,7 @@ test('the dock scenes name the official, move their regard with a memory in thei
   await ev(helpers);
   const r = await ev(() => {
     const { st, planet } = setup(), out = {};
-    st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();  // a Charter League port, for the surcharge
+    st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent();  // a Guild Federation port, for the surcharge
     const p = dockOfficial(currentPlanet()), s = STORYLETS.find(x => x.id === 'land-surcharge');
     out.problems = storyletProblems(s, { duplicate: false });
     let e = storyletEvent(s); out.named = e.text.includes(officialName(currentPlanet()));

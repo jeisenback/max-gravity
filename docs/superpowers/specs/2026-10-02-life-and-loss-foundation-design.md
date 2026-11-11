@@ -1,6 +1,6 @@
 # Life and loss foundation (narrative step 1)
 
-Status: draft for review. Branch `ccr-56b9a0c9-x4nelr`.
+Status: built (`js/fate.js`; `ROADMAP.md`, Life and loss). The floor was set to 0 in the narrow build afterwards (`2026-10-07-death-and-departure.md`).
 
 ## Context
 

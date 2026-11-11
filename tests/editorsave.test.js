@@ -135,7 +135,7 @@ test('an exported file imports back to the same changes, only after it is confir
   await select('land-customs'); await page.selectOption('[data-add="when"]', 'before'); await page.fill(rule('when', 'before'), '20');
   await page.click('[data-action="new-scene"]');
   await page.fill('#n-id', 'rt-new'); await page.fill('#n-title', 'RT'); await page.fill('#n-text', 'T.'); await page.fill('#n-l0', 'Go');
-  await page.selectOption('[data-add="c0.effects"]', 'rep'); await page.fill(rule('c0.effects', 'rep'), 'Dome Concord=2');
+  await page.selectOption('[data-add="c0.effects"]', 'rep'); await page.fill(rule('c0.effects', 'rep'), 'Dome Pact=2');
   const want = await fileOf();
   const out = await exported();
   await fresh();

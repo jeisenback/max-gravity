@@ -481,7 +481,7 @@ const CAST = {
     skills: { slicer: 3, engineer: 1, gunner: 1, pilot: 0 }, captain: { trade: 5, nerve: 1, thrift: 3 },
     ambition: 'Wants every dome on Mars on one open band before he retires.',
     bio: ('He ran the Valles dome network for twenty-five years, and knows what every dome is short of this week, who\'s lying about it, and what ' +
-        'they\'d pay. When the Concord closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
+        'they\'d pay. When the Dome Pact closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
         'let go for it.'),
     chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
       any: [
