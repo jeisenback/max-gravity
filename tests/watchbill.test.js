@@ -217,3 +217,24 @@ test('the card says which watch is which', async () => {
   await done();
   assert.match(r[0], /bridge/); assert.match(r[0], /engine room/);
 });
+
+test('a hurt hand with a scene\'s watch does not keep it: no "You have the watch", not on the card or the line (#1052)', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurnAtNight(1); t.elapsed += SHIP_DAY * 0.25;
+    career().hurtUntil = G.state.day + 5;
+    t.watch = { night: shipDay(t.elapsed).day, stands: 'you', post: 'gunnery', relieved: null, relievedAt: 'bunk' };  // a scene's watch at the guns
+    const guns = { post: handWatchPost(), opens: /You have the watch/.test(contactEvent({ kind: 'pirate' }).text) };
+    EFFECTS.standWatch({ stands: 'you', post: 'engine', relieved: 'icehand', relievedAt: 'bunk' });
+    const div = document.createElement('div'); div.innerHTML = watchBillCard();
+    const b = billOn(0);
+    return { guns, engine: b.engine, line: billLine(b, billNames(t.aboard)), tonight: div.querySelector('.watch-night').textContent, onWatch: meets({ onWatch: true }) };
+  });
+  await done();
+  assert.equal(r.guns.post, null); assert.equal(r.guns.opens, false);
+  assert.ok(r.engine && r.engine !== 'you', `someone else has the engine room: ${r.engine}`);
+  assert.doesNotMatch(r.line, /\byou\b/, r.line);
+  assert.doesNotMatch(r.tonight, /yours/, r.tonight);
+  assert.equal(r.onWatch, false);
+});
