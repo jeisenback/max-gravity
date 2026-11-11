@@ -39,7 +39,7 @@ function startShipFight(spec, flee, o = {}) {
   mine.pdcHold = handPerk('pd-watch') ? 0.5 : FIGHT.PDC_HOLD;  // what a held turret takes off her volley (the fight perks, picks.js)
   mine.armor = Math.min(mine.maxArmor, Math.max(1, Math.round(st.armor * FIGHT.POOL)));  // at least 1: a ship at its last armor still fights
   s.armor0 = { real: st.armor, fight: mine.armor };  // what fightTook measures the real loss from
-  s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0) + (handPerk('lane-sense') ? 10 : 0) - (hasTrait(hired(), 'runner') ? 10 : 0))) });  // lane-sense: her plume read ten km sooner; Runner (traits.js): pirates close ten km faster
+  s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0) + (handPerk('lane-sense') ? 10 : 0) - (spec.kind === 'pirate' && hasTrait(hired(), 'runner') ? 10 : 0))) });  // lane-sense: her plume read ten km sooner; Runner (traits.js): pirates close ten km faster, a patrol does not
   s.state.log = [o.open || fightSay(`open.${style}.${st.day % 2}`)];
   if (s.edge) {
     const r = headStart(s.state, s.edge, Math.random);
