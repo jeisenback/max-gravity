@@ -945,10 +945,10 @@ function roomMedCot(ctx, X, F, behind = () => {}) {
 // The IV pole at the cot's head end, bolted to the deck, about a person's height, with a clamp printed on the ship's fabricator and tagged as
 // temporary (docs/bible/technology.md); the bag on its hook (it swings: moved, not redrawn, as a path given to roomPart is fixed per layout), its
 // drip chamber, and the line from it down the pole, held by two cable ties, to the patient's arm on the cot. Drawn in two parts: the pole behind
-// the cot, the bag and its line in front. In the box (#1024) its foot plate is solid, a shadow under it; the pole has no faces.
+// the cot, the bag and its line in front. In the box (#1024) it stands with a contact shadow and no faces.
 function roomMedPole(ctx, X, F) {
   const px = Math.round(X(0.25) * 100) / 100;
-  roomPart(ctx, roomRound(px - 7, F - 2.5, 14, 2.5, 1), '#20384f', { top: 0.5, solid: 0.25 });  // its foot
+  roomShadow(ctx, px - 7, px + 7, 0.25); roomPart(ctx, roomRound(px - 7, F - 2.5, 14, 2.5, 1), '#20384f', { top: 0.5 });  // its foot, a contact shadow and no faces (spec section 5)
   for (const bx of [px - 5, px + 5]) roomDot(ctx, bx, F - 1.2, 0.6, '#56708c');
   roomPart(ctx, roomRound(px - 1.2, F - 88, 2.4, 86, 1), '#4a5e74', { top: 0, side: 0.8 });
   roomPart(ctx, roomRound(px - 1, F - 88, 9, 1.6, 0.8), '#4a5e74', { top: 0 });  // the hook's arm

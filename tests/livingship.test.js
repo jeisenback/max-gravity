@@ -1161,9 +1161,9 @@ test('the medbay is drawn to the figures\' standard in every phase: its props ou
     const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
     for (const [col, what] of MED_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
     for (const col of ['#1f3a56', '#5a6876', '#7a7462']) assert.equal(fills(col), 0, `${at}: nothing on the wall in its own colour (${col})`);
-    // in the box (#1024): the cot, its boards, the mattress, the cabinet and its top, and the IV pole's foot plate solid, their tops showing; the
+    // in the box (#1024): the cot, its boards, the mattress, the cabinet and its top solid, their tops showing (the IV pole has no faces); the
     // cabinet's side toward the eye; a shadow under the cot, the pole's foot and the cabinet
-    for (const [col, what] of [['#2a4664', 'the cot\'s frame'], ['#2e4a68', 'its boards'], ['#56667a', 'the mattress'], ['#4e5e6e', 'the cabinet'], ['#6e7e8e', 'its top'], ['#20384f', 'the IV pole\'s foot plate']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, its top showing`);
+    for (const [col, what] of [['#2a4664', 'the cot\'s frame'], ['#2e4a68', 'its boards'], ['#56667a', 'the mattress'], ['#4e5e6e', 'the cabinet'], ['#6e7e8e', 'its top']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, its top showing`);
     for (const [col, what] of [['#4e5e6e', 'the cabinet'], ['#2e4a68', 'the cot\'s head board']]) assert.ok(fills(solidSide(col)) >= 1, `${at}: ${what}'s side toward the eye`);
     assert.ok(fills(SHADOW) >= 3, `${at}: contact shadows on the strip (${fills(SHADOW)})`);
     const outlined = filledParts(calls).filter(p => p.outlined);
@@ -1458,7 +1458,7 @@ test('in the box the medbay\'s cot stands on four legs with a shadow under it, t
     assert.ok(sh < pole && parts.indexOf(parts.find(p => p.col === '#1c3249')) < pole && pole < frame, `${at}: the pole between the cot's back and its front`);
     const foot = parts.find(p => p.col === '#20384f' && partBox(p).y1 >= F - 0.01), px = (partBox(foot).x0 + partBox(foot).x1) / 2;
     assert.ok(parts.some(p => p.col === SHADOW && p.pts.some(q => near(q[0], partBox(foot).x0 - 5) && near(q[1], F))), `${at}: a shadow under the pole's foot plate`);
-    assert.ok(parts.some(p => p.col === solidSide('#20384f') && p.pts.some(q => near(q[0], px + 7))), `${at}: its foot plate's side toward the eye`);
+    assert.ok(!parts.some(p => p.col === solidSide('#20384f')) && !parts.some(p => p.col === solidTop('#20384f')), `${at}: the pole's foot plate has no faces, only its shadow (spec section 5)`);
     // the rail along the cot's far side, at its back edge, its posts down to the mattress's back
     const rail = placed.find(p => p.col === '#3a5470' && partBox(p).x1 - partBox(p).x0 > 50);
     assert.ok(rail && near(rail.at[1], box.roomInto(e, 0, F - MED_COT, 0.5)[1] - (F - MED_COT)), `${at}: the rail moved to the cot's far side (${rail && rail.at})`);
