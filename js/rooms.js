@@ -333,30 +333,32 @@ function roomWallUnit(ctx, x, F, w, time, still) {
   }
   if (w.cruise > 0.05) { const g = ctx.createRadialGradient(lx, F - 86, 1, lx, F - 86, 50); g.addColorStop(0, `rgba(255,220,160,${0.35 * w.cruise})`); g.addColorStop(1, 'rgba(255,220,160,0)'); ctx.fillStyle = g; ctx.fillRect(lx - 46, F - 100, 96, 100); }
 }
-// The guitar at gx, its foot at F - 13 (#933): the body with its lit top face over the darker side, the sound hole and its rosette, the
-// pickguard and the bridge, the neck with its frets, the headstock and its tuners, six strings and the strap; hung on a hook and lashed to the
-// wall at the neck and the body for the burn.
+// The guitar at gx (#933), a person's guitar (about 50 units, a person 89): its foot GUITAR_FOOT above the deck, the body with its lit top
+// face over the darker side, the sound hole and its rosette, the pickguard and the bridge, the neck with its frets, the headstock and its
+// tuners, six strings and the strap; hung on a hook and lashed to the wall at the neck and the body for the burn. Drawn from its full-size
+// measures (h, the height above its foot's old place at 13) scaled by GUITAR_K.
+const GUITAR_K = 0.62, GUITAR_FOOT = 30;
 function roomGuitar(ctx, gx, F) {
-  const n = v => Math.round(v * 100) / 100, body = d => {
-    const p = (dx, dy) => `${n(gx + dx + d)} ${n(F - dy + d / 2.5)}`;
+  const k = GUITAR_K, n = v => Math.round(v * 100) / 100, X = dx => n(gx + dx * k), Y = h => n(F - GUITAR_FOOT - (h - 13) * k), body = d => {
+    const p = (dx, dy) => `${n(gx + (dx + d) * k)} ${n(F - GUITAR_FOOT - (dy - 13 - d / 2.5) * k)}`;
     return `M ${p(0, 13)} Q ${p(13.5, 13)} ${p(13, 28)} Q ${p(12.5, 39)} ${p(8.5, 43)} Q ${p(10.5, 46.5)} ${p(10, 52)} Q ${p(9.5, 60)} ${p(0, 60)} Q ${p(-9.5, 60)} ${p(-10, 52)} Q ${p(-10.5, 46.5)} ${p(-8.5, 43)} Q ${p(-12.5, 39)} ${p(-13, 28)} Q ${p(-13.5, 13)} ${p(0, 13)} Z`;
   };
-  roomFlat(ctx, gx - 1.5, F - 96, 3, 3, '#3a4a5a');  // the hook
-  ctx.strokeStyle = '#5a4030'; ctx.lineWidth = 2.4; ctx.beginPath(); ctx.moveTo(gx - 1, F - 14); ctx.quadraticCurveTo(gx - 26, F - 36, gx - 2.5, F - 62); ctx.stroke();  // the strap
+  roomFlat(ctx, gx - 1.5, Y(96), 3, 3, '#3a4a5a');  // the hook
+  ctx.strokeStyle = '#5a4030'; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.moveTo(X(-1), Y(14)); ctx.quadraticCurveTo(X(-26), Y(36), X(-2.5), Y(62)); ctx.stroke();  // the strap
   roomPart(ctx, body(2.5), '#5a3a20', { top: 0, side: 1.5 });  // the side, in shade
   roomPart(ctx, body(0), '#9a6c40', { top: 1.2, side: 1.5 });
-  ctx.strokeStyle = '#b0a078'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(gx, F - 42, 5.4, 0, Math.PI * 2); ctx.stroke();  // the rosette
-  roomDot(ctx, gx, F - 42, 4, '#1e140c');
-  roomPart(ctx, `M ${n(gx + 3.5)} ${F - 37} Q ${n(gx + 10)} ${F - 37.5} ${n(gx + 9)} ${F - 31} Q ${n(gx + 6.5)} ${F - 27.5} ${n(gx + 3.5)} ${F - 31} Z`, '#4a2e1c', { top: 0 });  // the pickguard
-  roomPart(ctx, roomRound(gx - 6.5, F - 26, 13, 3, 1), '#3a2414', { top: 0.6 }); roomFlat(ctx, gx - 4, F - 26.6, 8, 0.8, '#a89c84');  // the bridge, its saddle
-  roomPart(ctx, roomRound(gx - 2.8, F - 85, 5.6, 26, 1), '#4a3020', { top: 0, side: 1.2 });  // the neck and the fretboard
-  roomFlat(ctx, gx - 2.1, F - 85, 4.2, 24, '#2e1e14'); for (let y = F - 82; y < F - 62; y += 3.6) roomFlat(ctx, gx - 2.1, y, 4.2, 0.5, '#8a8070');
-  roomPart(ctx, `M ${n(gx - 3)} ${F - 85} L ${n(gx + 3)} ${F - 85} L ${n(gx + 4.2)} ${F - 93} L ${n(gx - 4.2)} ${F - 93} Z`, '#3a2618', { top: 0.6, side: 1 });  // the headstock
-  for (const y of [F - 91.5, F - 89, F - 86.5]) for (const sd of [-1, 1]) { roomFlat(ctx, sd < 0 ? gx - 6.6 : gx + 4.6, y - 0.7, 2, 1.4, '#8796a5'); roomDot(ctx, gx + sd * 2.2, y, 0.6, '#a8a090'); }  // the tuners
-  ctx.strokeStyle = 'rgba(214,206,190,0.75)'; ctx.lineWidth = 0.5; for (let k = 0; k < 6; k++) { const sx = gx - 1.75 + k * 0.7; roomSeg(ctx, [[sx, F - 85], [sx, F - 25]]); }  // the strings
-  for (const [y, half] of [[F - 74, 5.5], [F - 20, 12]]) {  // the lashings to rings in the wall
-    roomPart(ctx, roomRound(gx - half, y, half * 2, 1.8, 0.6), '#3a3a40', { top: 0 });
-    for (const sd of [-1, 1]) roomDot(ctx, gx + sd * (half + 1.2), y + 0.9, 1, '#56708c');
+  ctx.strokeStyle = '#b0a078'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(gx, Y(42), 5.4 * k, 0, Math.PI * 2); ctx.stroke();  // the rosette
+  roomDot(ctx, gx, Y(42), 4 * k, '#1e140c');
+  roomPart(ctx, `M ${X(3.5)} ${Y(37)} Q ${X(10)} ${Y(37.5)} ${X(9)} ${Y(31)} Q ${X(6.5)} ${Y(27.5)} ${X(3.5)} ${Y(31)} Z`, '#4a2e1c', { top: 0 });  // the pickguard
+  roomPart(ctx, roomRound(X(-6.5), Y(26), 13 * k, 3 * k, 0.8), '#3a2414', { top: 0.6 }); roomFlat(ctx, X(-4), Y(26.6), 8 * k, 0.6, '#a89c84');  // the bridge, its saddle
+  roomPart(ctx, roomRound(X(-2.8), Y(85), 5.6 * k, 26 * k, 0.8), '#4a3020', { top: 0, side: 1.2 });  // the neck and the fretboard
+  roomFlat(ctx, X(-2.1), Y(85), 4.2 * k, 24 * k, '#2e1e14'); for (let h = 82; h > 62; h -= 3.6) roomFlat(ctx, X(-2.1), Y(h), 4.2 * k, 0.4, '#8a8070');
+  roomPart(ctx, `M ${X(-3)} ${Y(85)} L ${X(3)} ${Y(85)} L ${X(4.2)} ${Y(93)} L ${X(-4.2)} ${Y(93)} Z`, '#3a2618', { top: 0.6, side: 1 });  // the headstock
+  for (const h of [91.5, 89, 86.5]) for (const sd of [-1, 1]) { roomFlat(ctx, sd < 0 ? X(-6.6) : X(4.6), Y(h) - 0.5, 2 * k, 1, '#8796a5'); roomDot(ctx, X(sd * 2.2), Y(h), 0.5, '#a8a090'); }  // the tuners
+  ctx.strokeStyle = 'rgba(214,206,190,0.75)'; ctx.lineWidth = 0.35; for (let s = 0; s < 6; s++) { const sx = X(-1.75 + s * 0.7); roomSeg(ctx, [[sx, Y(85)], [sx, Y(25)]]); }  // the strings
+  for (const [h, half] of [[74, 5.5], [20, 12]]) {  // the lashings to rings in the wall
+    roomPart(ctx, roomRound(X(-half), Y(h), 2 * half * k, 1.6, 0.6), '#3a3a40', { top: 0 });
+    for (const sd of [-1, 1]) roomDot(ctx, X(sd * (half + 1.2)), Y(h) + 0.8, 0.9, '#56708c');
   }
 }
 // The pinboard at x, pw wide, on the deck F: a framed cork board with notes and photos pinned on it, a little askew; no words on them.

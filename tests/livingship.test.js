@@ -793,8 +793,8 @@ test('the crew\'s corner fills the open wall beside the well: a wall unit, a pin
       assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated`);
     }
     const guitar = parts.filter(p => /^#(9a6c40|3a2618)$/.test(p.col)), gy0 = Math.min(...guitar.map(p => p.y0)), gy1 = Math.max(...guitar.map(p => p.y1)), body = parts.find(p => p.col === '#9a6c40');
-    assert.ok(gy1 - gy0 >= 78 && body.x1 - body.x0 >= 25, `${at}: the guitar bigger than it was (${gy1 - gy0} tall, its body ${body.x1 - body.x0} wide)`);
-    assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === 'rgba(214,206,190,0.75)').length >= 1 && calls.some(k => k[0] === 'arc' && k[3] === 5.4), `${at}: its strings and the rosette`);
+    assert.ok(gy1 - gy0 >= 45 && gy1 - gy0 <= 55 && body.x1 - body.x0 >= 14 && body.x1 - body.x0 <= 20, `${at}: a person's guitar, about 50 tall against a person's 89 (${gy1 - gy0} tall, its body ${body.x1 - body.x0} wide)`);
+    assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === 'rgba(214,206,190,0.75)').length >= 1 && calls.some(k => k[0] === 'arc' && Math.abs(k[3] - 5.4 * 0.62) < 0.01), `${at}: its strings and the rosette`);
     const notes = mine.filter(p => /^#(9a9480|8a9478|a09a8c)$/.test(p.col));
     assert.equal(notes.length >= 4, board, `${at}: the pinboard with its notes and photos where it fits (${notes.length})`);
     if (board) assert.ok(mine.some(p => p.col === '#7a6446'), `${at}: the cork`);
