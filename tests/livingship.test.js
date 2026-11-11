@@ -2380,3 +2380,196 @@ test('the airlock\'s ceiling lamp is a fitting over the bench (#1024)', () => {
     assert.ok(rec.calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${pr}: the guard over its lens`);
   }
 });
+// #933, life support on the plant deck over the water tank, full width, two bays either side of the well, where the engineer's rounds bring them
+// (ROUNDS, shiplife.js; goTo puts them a quarter to three quarters of the way across, clear of the well). What the game says of it (LIFE_LINES,
+// the scenes): the air recycler holds the scrubber cartridges in a stack (one swapped and dated, four spares counted), its fans logged one by one,
+// the carbon dioxide figure read off the panel by it, the condensate line under it with its clamp, the dust filter on the air intake, the fans in
+// the ducts, and the slate by the hatch. Left bay: the water recycler under the room's name, its pipes down through the deck into the tank, its
+// sight glass, gauge and valves; the bench at the waist with the four spares in the rack under it. Right bay: the air recycler, its fan row at the
+// waist and the scrubber stack at the hull wall, one bay empty and its cartridge out on the fan row; the panel at the eye over the fans with its
+// alarm lamp dark. The main air duct along both back walls. Old and patched (point 6). Drawn at the burn view's zoom in a window 1000, 1280 and 1600 wide.
+const { HULL: LS_HULL } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js'], { G: {} }, ['HULL']);
+const LS_PROPS = [['#3a4a52', 'the water recycler'], ['#4a5a62', 'its newer filter canister'], ['#0e1a24', 'its sight glass'], ['#44505a', 'its replacement panel'], ['#36506a', 'the water pipes'],
+  ['#4f6f8f', 'the pipes\' collars at the deck'], ['#46525a', 'the bench\'s top'], ['#2c3a46', 'its cabinet'], ['#34485a', 'the rack\'s shelves'], ['#4e5a50', 'the scrubber cartridges'], ['#5a5040', 'the straps'],
+  ['#5a5e56', 'the bagged filter'], ['#34424e', 'the scrubber stack'], ['#3c4a56', 'its service panel'], ['#0e161c', 'the empty bay'], ['#8a8676', 'the date tags'], ['#3a4652', 'the fan row'], ['#4a5660', 'the newer fan'],
+  ['#6a6e70', 'the condensate line\'s clamp'], ['#8a6a48', 'the printed handle'],
+  [wallTone('#2e4458'), 'the main air duct, on the wall'], [wallTone('#3a4440'), 'the air intake'], [wallTone('#6a6a5a'), 'its dust filter'], [wallTone('#2a3844'), 'the control panel'],
+  [wallTone('#0c161e'), 'its readouts'], [wallTone('#263a50'), 'the alarm lamp'], [wallTone('#2a302c'), 'the slate'], [wallTone('#3d5a7a'), 'the grey water line']];
+const LS_WALL = ['#2e4458', '#3a5266', '#3a4440', '#6a6a5a', '#2a3844', '#0c161e', '#263a50', '#2a302c', '#7a7c74', '#3d5a7a'];
+const lsCase = (pr, zoom, o = {}) => ({ r: layoutBox(LAYOUTS.freighter, 'lifesupport'), s: RS({ w: phaseWeights(pr), zoom, well: FW, damage: { marks: new Set(), severe: false }, ...o }) });
+const lsParts = (r, s) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'lifesupport', r, s); return { calls, parts: filledParts(calls).filter(p => p.outlined && p.pts.length).map(p => ({ col: p.col, ...partBox(p) })), placed: placedParts(calls).filter(p => p.pts.length).map(p => ({ col: p.col, ...partBox({ pts: p.pts.map(q => q.slice(0, 2)) }) })) }; };
+const lsName = (r, zoom) => ({ x0: r.x0 + 12 - 4 / zoom, x1: r.x0 + 12 + 96 / zoom, y0: r.top + 8, y1: r.top + 8 + 16.9 / zoom });  // the name's plate (roomNameAt): LIFE SUPPORT, 13px, about 92px wide
+const lsRects = (calls, col) => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+const lsBays = r => box.roomBays(r, FW).map(b => backWall(b));
+const lsIn = (p, b) => p.x0 >= b.x0 - 0.01 && p.x1 <= b.x1 + 0.01 && p.y0 >= b.y0 - 0.01 && p.y1 <= b.y1 + 0.01;
+test('life support is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall, the well clear (#933)', () => {
+  assert.ok(WS_FITTED.includes('lifesupport'), 'its lamps fittings');
+  for (const marked of [false, true]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = lsCase(pr, zoom, marked ? { damage: { marks: new Set(['lifesupport']), severe: true }, night: 1 } : {}), at = `${marked ? 'damaged at night, ' : ''}${pr}, ${zoom}`;
+    const c = fakeCtx(); drawRoom(c, 'lifesupport', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    assert.ok(!c.calls.includes('fillText'), `${at}: no text in the room (the readouts, the tags and the slate are marks)`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'lifesupport', r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of LS_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    for (const col of LS_WALL) assert.equal(fills(col), 0, `${at}: nothing on the wall in its own colour (${col})`);
+    // in the box (#1024): the water recycler, the bench's top and the fans solid, their tops showing; the recycler, the stack and the first fan show
+    // their sides toward the eye; contact shadows under the recycler, the rack, the cabinet, the fan row and the stack
+    for (const [col, what] of [['#3a4a52', 'the water recycler'], ['#46525a', 'the bench\'s top'], ['#3a4652', 'the fans']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
+    for (const [col, what] of [['#3a4a52', 'the water recycler'], ['#34424e', 'the scrubber stack'], ['#3a4652', 'the first fan']]) assert.ok(fills(solidSide(col)) >= 1, `${at}: ${what}'s side toward the eye`);
+    assert.ok(fills(SHADOW) >= 5, `${at}: contact shadows on the strip (${fills(SHADOW)})`);
+    const outlined = filledParts(calls).filter(p => p.outlined);
+    assert.ok(outlined.length >= 90, `${at}: the props outlined like the figures (${outlined.length})`);
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
+    }
+    for (const col of ['#e6dfc9', '#c0392b', '#c9a227', '#ffe2b8', '#ff8a6a', '#ffffff', '#ffb030']) assert.equal(fills(col), 0, `${at}: no bright block (${col})`);
+    // the room's name on clear wall, and nothing in the ladder well, where each thing is drawn (the wall's things moved onto it)
+    const name = lsName(r, zoom), hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v, pts } of roomOwnPlaced('lifesupport', r, s)) for (const [x, y] of pts) {
+      assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
+      assert.ok(!(x > FW.x0 + 0.01 && x < FW.x1 - 0.01), `${at}: ${k} ${v} at ${x}, ${y} in the ladder well`);
+    }
+    // what is on the wall is on the back wall of its bay, where it is drawn, and clear of the name's plate
+    const bays = lsBays(r), placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) }));
+    for (const col of LS_WALL) for (const p of placed.filter(q => q.col === wallTone(col))) {
+      assert.ok(bays.some(b => lsIn(p, b)) && (p.at[0] || p.at[1]), `${at}: ${col} (${JSON.stringify(p)}) on a back wall`);
+      assert.ok(p.x1 <= name.x0 || p.x0 >= name.x1 || p.y1 <= name.y0 || p.y0 >= name.y1, `${at}: ${col} (${JSON.stringify(p)}) clear of the name's plate`);
+    }
+  }
+  const stillAt = t => { const { r, s } = lsCase(0.5, 1.17), c = fakeCtx(); drawRoom(c, 'lifesupport', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('whoever is at work in life support stands at the bench or at the air recycler\'s fans, never inside a fixture (#933, #973)', () => {
+  const lay = LAYOUTS.freighter, half = lay.well.w / 2 * lay.width + 12, wx = lay.well.x * lay.width;
+  for (const zoom of [0.82, 1.17, 1.45]) for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = lsCase(pr, zoom), F = r.floor, W = r.x1 - r.x0, at = `${pr}, ${zoom}`, { parts } = lsParts(r, s);
+    const spots = [];  // where an errand puts them (goTo, shiplife.js): a quarter to three quarters across, and off the well to its nearer side (clearOf)
+    for (let x = r.x0 + 0.25 * W; x <= r.x0 + 0.75 * W + 1e-9; x += W / 80) spots.push(Math.abs(x - wx) < half ? (x < wx ? wx - half : wx + half) : x);
+    const onFloor = parts.filter(p => p.y1 >= F - 6 && p.y1 <= F + 0.5 && /^#/.test(p.col));  // the fronts at the cut, where people stand
+    assert.ok(onFloor.length >= 5, `${at}: things standing on the floor (${onFloor.length})`);
+    const lo = Math.min(...spots), hi = Math.max(...spots);
+    for (const p of onFloor.filter(q => q.x1 > lo - 12 && q.x0 < hi + 12)) assert.ok(F - p.y0 <= 46, `${at}: ${p.col} (${JSON.stringify(p)}) standing higher than the waist where someone stands at work`);
+    const tops = parts.filter(p => (p.col === '#46525a' || (/^#(3a4652|4a5660)$/.test(p.col) && p.y1 - p.y0 >= 30)) && F - p.y0 >= 38 && F - p.y0 <= 46);
+    const runs = [...tops].sort((a, b) => a.x0 - b.x0).reduce((o, t) => { const l = o[o.length - 1]; if (l && t.x0 <= l.x1 + 0.5) l.x1 = Math.max(l.x1, t.x1); else o.push({ x0: t.x0, x1: t.x1 }); return o; }, []);  // the fans side by side are one row
+    for (const x of spots) assert.ok(runs.some(t => x >= t.x0 + 3 && x <= t.x1 - 3), `${at}: someone at ${x} is at the bench or the fans (${JSON.stringify(runs)})`);
+    const lamps = box.roomLamps('lifesupport', r), bench = parts.find(p => p.col === '#46525a'), fans = tops.filter(t => t.col !== '#46525a');
+    assert.ok(lamps[0] > bench.x0 + 20 && lamps[0] < bench.x1 - 20, `${at}: a lamp over the bench`);
+    assert.ok(lamps[1] > Math.min(...fans.map(f => f.x0)) && lamps[1] < Math.max(...fans.map(f => f.x1)), `${at}: a lamp over the fans`);
+  }
+});
+test('life support is sized to a person: the water recycler under the name, the stack under a person\'s head, the bench and the fans at the waist, the panel at the eye (#933, #960)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = lsCase(pr, 1.17), F = r.floor, at = `${pr}`, { parts, placed } = lsParts(r, s);
+    const rec = parts.find(p => p.col === '#3a4a52');
+    assert.ok(F - rec.y0 >= 50 && F - rec.y0 <= 64 && rec.x1 - rec.x0 >= 80 && rec.x1 - rec.x0 <= 120 && rec.x0 >= r.x0 + 4, `${at}: the water recycler (${JSON.stringify(rec)}) a unit a person services, chest high`);
+    const stack = parts.find(p => p.col === '#34424e');
+    assert.ok(F - stack.y0 >= 80 && F - stack.y0 <= FIG_TALL - 3 && stack.x1 - stack.x0 >= 90 && stack.x1 - stack.x0 <= 120 && stack.x1 <= r.x1 - 6, `${at}: the scrubber stack (${JSON.stringify(stack)}) under a person's head`);
+    const bench = parts.find(p => p.col === '#46525a');
+    assert.ok(F - bench.y0 >= 38 && F - bench.y0 <= 44 && bench.y1 - bench.y0 <= 6, `${at}: the bench's top at the waist (${F - bench.y0})`);
+    const fans = parts.filter(p => /^#(3a4652|4a5660)$/.test(p.col) && p.y1 - p.y0 >= 30);
+    assert.equal(fans.length, 3, `${at}: three fans in a row`);
+    for (const f of fans) assert.ok(F - f.y0 >= 40 && F - f.y0 <= 46 && f.x1 - f.x0 >= 60 && f.x1 - f.x0 <= 76, `${at}: a fan (${JSON.stringify(f)}) at the waist`);
+    const carts = parts.filter(p => p.col === '#4e5a50');
+    assert.ok(carts.length >= 10, `${at}: the cartridges (${carts.length})`);
+    for (const c of carts) assert.ok(c.x1 - c.x0 >= 36 && c.x1 - c.x0 <= 42 && c.y1 - c.y0 >= 12 && c.y1 - c.y0 <= 16, `${at}: a cartridge (${JSON.stringify(c)}) the size of a forearm's length, all alike`);
+    const panel = placed.find(p => p.col === wallTone('#2a3844'));
+    assert.ok(panel && F - panel.y0 <= 77 && F - panel.y1 >= 40, `${at}: the panel (${JSON.stringify(panel)}) at the eye`);
+    for (const p of parts.filter(q => q.col !== '#3a4a5a' && q.col !== '#36506a' && q.col !== '#4f6f8f')) assert.ok(p.y0 >= r.top + 3 && p.x0 >= r.x0 && p.x1 <= r.x1 && p.y1 <= F + 0.5 && (p.x1 - p.x0) * (p.y1 - p.y0) <= (stack.x1 - stack.x0) * (stack.y1 - stack.y0) + 0.01, `${at}: ${p.col} (${JSON.stringify(p)}) in the room, nothing bigger than the stack`);
+  }
+});
+test('the water recycler\'s pipes run down through the deck to the tank\'s top under the cut; it has its sight glass, gauge and valves (#933)', () => {
+  for (const zoom of [0.82, 1.17, 1.45]) for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = lsCase(pr, zoom), F = r.floor, at = `${pr}, ${zoom}`, { calls, parts } = lsParts(r, s), tank = F + LS_HULL.plate;
+    const rec = parts.find(p => p.col === '#3a4a52'), pipes = parts.filter(p => p.col === '#36506a');
+    const down = pipes.filter(p => p.y1 >= tank - 0.5 && p.y1 <= tank + 0.5 && p.y0 < F - 20 && p.x0 >= rec.x1 - 1 && p.x1 <= rec.x1 + 30 && p.x1 - p.x0 <= 6);
+    assert.ok(down.length >= 2, `${at}: two pipes from the recycler down through the deck to the tank's top (${JSON.stringify(pipes)})`);
+    for (const p of down) {
+      assert.ok(pipes.some(q => q.y1 - q.y0 <= 6 && q.x0 <= rec.x1 + 0.5 && q.x1 >= p.x0 && q.y0 >= p.y0 - 1 && q.y1 <= p.y0 + 7), `${at}: the pipe at ${p.x0} leaves the recycler's side`);
+      assert.ok(parts.some(q => q.col === '#4f6f8f' && q.x0 <= p.x0 && q.x1 >= p.x1 && q.y0 <= F && q.y1 >= F), `${at}: a collar where it goes through the deck`);
+    }
+    assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === ENGINE_VALVE).length >= 1, `${at}: a valve wheel`);
+    const glass = parts.find(p => p.col === '#0e1a24');
+    assert.ok(glass && lsIn(glass, rec) && glass.y1 - glass.y0 >= 24, `${at}: the sight glass on the recycler`);
+    assert.ok(placedRects(calls).some(q => q.col === 'rgba(70,140,190,0.6)' && q.x >= glass.x0 && q.x + q.w <= glass.x1 && q.y >= glass.y0 && q.y + q.h <= glass.y1 + 0.01), `${at}: water in the glass`);
+    assert.ok(parts.some(p => p.col === '#a8a28e' && lsIn(p, rec)), `${at}: a gauge on the recycler`);
+    // the condensate line under the air recycler, down through the deck, its clamp
+    const fans = parts.filter(p => /^#(3a4652|4a5660)$/.test(p.col) && p.y1 - p.y0 >= 30), f0 = Math.min(...fans.map(f => f.x0)), f1 = Math.max(...fans.map(f => f.x1));
+    const cond = pipes.find(p => p.x0 >= f0 && p.x1 <= f1 && p.y1 >= tank - 0.5 && p.y0 >= F - 20);
+    assert.ok(cond, `${at}: the condensate line under the fans, down to the tank`);
+    assert.ok(parts.some(p => p.col === '#6a6e70' && p.x0 <= cond.x0 && p.x1 >= cond.x1 && p.y1 - p.y0 <= 4), `${at}: its clamp`);
+  }
+});
+test('the air recycler has what the ship says of it: the cartridges stacked, one out and dated, four spares strapped in the rack, the fans with their grilles, the panel and its dark alarm lamp, the intake\'s filter, the slate by the hatch (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = lsCase(pr, 1.17), F = r.floor, at = `${pr}`, { calls, parts, placed } = lsParts(r, s), [lb, rb] = lsBays(r);
+    const stack = parts.find(p => p.col === '#34424e'), carts = parts.filter(p => p.col === '#4e5a50');
+    const inStack = carts.filter(c => lsIn(c, stack)), empty = parts.filter(p => p.col === '#0e161c' && lsIn(p, stack));
+    assert.equal(inStack.length + empty.length, 6, `${at}: six bays in the stack`);
+    assert.equal(empty.length, 1, `${at}: one bay empty, its cartridge out`);
+    const fans = parts.filter(p => /^#(3a4652|4a5660)$/.test(p.col) && p.y1 - p.y0 >= 30), last = fans.reduce((a, b) => (a.x1 > b.x1 ? a : b));
+    const out = carts.find(c => c.x0 >= last.x0 - 0.5 && c.x1 <= last.x1 + 0.5 && Math.abs(c.y1 - last.y0) <= 2);
+    assert.ok(out && stack.x0 - out.x1 <= 12, `${at}: the cartridge out lies on the fan beside the stack (${JSON.stringify(out)})`);
+    assert.ok(parts.some(p => p.col === '#8a8676' && lsIn(p, { ...out, y0: out.y0 - 1 })), `${at}: the date on it`);
+    assert.ok(inStack.every(c => parts.some(p => p.col === '#8a8676' && lsIn(p, c))), `${at}: a date tag on each in the stack`);
+    const bench = parts.find(p => p.col === '#46525a'), spares = carts.filter(c => c.x0 >= bench.x0 && c.x1 <= bench.x1 && c.y0 > bench.y1);
+    assert.equal(spares.length, 4, `${at}: four spares under the bench`);
+    assert.ok(parts.filter(p => p.col === '#5a5040' && spares.some(c => p.x0 <= c.x0 && p.x1 >= c.x1)).length >= 2, `${at}: strapped for zero g`);
+    for (const f of fans) {
+      const rings = calls.filter((k, i) => k[0] === 'strokeStyle' && k[1] === '#26323c' && calls.slice(i + 1, i + 5).some(q => q[0] === 'arc' && q[1] > f.x0 && q[1] < f.x1 && q[2] > f.y0 && q[2] < f.y1));
+      assert.ok(rings.length >= 1, `${at}: a grille on the fan at ${f.x0}`);
+    }
+    const panel = placed.find(p => p.col === wallTone('#2a3844'));
+    assert.ok(panel && lsIn(panel, rb) && panel.x0 >= Math.min(...fans.map(f => f.x0)) && panel.x1 <= stack.x0, `${at}: the panel by the air recycler, over its fans`);
+    const inP = p => lsIn(p, { x0: panel.x0 - 0.5, x1: panel.x1 + 0.5, y0: panel.y0 - 0.5, y1: panel.y1 + 0.5 });
+    assert.ok(placed.filter(p => p.col === wallTone('#0c161e') && inP(p)).length >= 3, `${at}: readouts on the panel`);
+    const lamp = placed.find(p => p.col === wallTone('#263a50'));
+    assert.ok(lamp && inP(lamp), `${at}: the alarm lamp on the panel`);
+    const lens = calls.filter((k, i) => k[0] === 'fillStyle' && k[1] === wallTone('#3e2a26') && calls.slice(i + 1, i + 4).some(q => q[0] === 'arc'));
+    assert.ok(lens.length >= 1, `${at}: its lens dark, all well`);
+    const duct = placed.filter(p => p.col === wallTone('#2e4458') && p.x1 - p.x0 >= 150);
+    assert.ok(duct.some(d => lsIn(d, lb)) && duct.some(d => lsIn(d, rb)), `${at}: the main air duct along both back walls`);
+    for (const d of duct) assert.ok(d.y0 - r.top <= 20, `${at}: along the top, under the ceiling`);
+    const intake = placed.find(p => p.col === wallTone('#3a4440')), filter = placed.find(p => p.col === wallTone('#6a6a5a'));
+    assert.ok(intake && filter && lsIn(filter, intake) && lsIn(intake, lb), `${at}: the dust filter in the air intake`);
+    const slate = placed.find(p => p.col === wallTone('#2a302c'));
+    assert.ok(slate && lsIn(slate, lb) && FW.x0 - slate.x1 <= 45, `${at}: the slate by the hatch`);
+  }
+});
+test('life support reads old and patched: a newer fan in the old row and a newer canister on the old recycler with fresh bolts, a printed handle tagged temporary, tape, cable ties, wear (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = lsCase(pr, 1.17), F = r.floor, at = `${pr}`, { calls, parts, placed } = lsParts(r, s);
+    const bolts = b => lsRects(calls, '#8a929a').filter(([x, y, w, h]) => lsIn({ x0: x, x1: x + w, y0: y, y1: y + h }, { x0: b.x0 - 1, x1: b.x1 + 1, y0: b.y0 - 1, y1: b.y1 + 1 })).length;
+    const newer = parts.filter(p => p.col === '#4a5660' && p.y1 - p.y0 >= 30);
+    assert.equal(newer.length, 1, `${at}: one fan newer, in another finish`);
+    assert.ok(bolts(newer[0]) >= 4, `${at}: fresh bolts on the newer fan`);
+    const rec = parts.find(p => p.col === '#3a4a52'), can = parts.find(p => p.col === '#4a5a62');
+    assert.ok(can && lsIn(can, rec) && bolts(can) >= 2, `${at}: a newer canister bolted onto the older recycler`);
+    const handle = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050');
+    assert.ok(handle && handle.x1 - handle.x0 <= 12, `${at}: a printed handle on a valve`);
+    assert.ok(tag && tag.x1 - tag.x0 <= 6 && tag.y0 >= handle.y0 - 2 && tag.y0 <= handle.y1 + 8, `${at}: its temporary tag`);
+    assert.ok(lsRects(calls, '#6a5038').filter(([x, y, w, h]) => lsIn({ x0: x, x1: x + w, y0: y, y1: y + h }, handle)).length >= 2, `${at}: its printed layers`);
+    assert.ok(parts.some(p => p.col === '#7a7462') && placed.some(p => p.col === wallTone('#7a7462')), `${at}: tape on a pipe and on the duct`);
+    const stack = parts.find(p => p.col === '#34424e');
+    assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === '#3a3a40'), `${at}: a cable`);
+    assert.ok(lsRects(calls, '#1e2a36').filter(([x]) => x >= stack.x0 - 4 && x <= stack.x1 + 4).length >= 2, `${at}: cable ties on the stack's cable`);
+    assert.ok(lsRects(calls, '#6a747c').length >= 4, `${at}: the paint worn where hands go (the handles, the bench's edge)`);
+    assert.ok(lsRects(calls, '#3e4c5a').filter(([x, y]) => y >= F - 8 && x >= stack.x0 - 1 && x <= stack.x1).length >= 2, `${at}: scuffs low on the stack, where boots go`);
+    assert.ok(parts.some(p => p.col === '#44505a' && lsIn(p, rec)), `${at}: a replacement panel in another shade`);
+  }
+});
+test('life support\'s ceiling lamps are fittings, one in each bay (#1024)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = lsCase(pr, 1.17), rec = recorder(); drawRoom(rec.ctx, 'lifesupport', r, s);
+    const parts = filledParts(rec.calls), lamps = box.roomLamps('lifesupport', r), bays = box.roomBays(r, FW), back = r.top + (r.floor - 80 - r.top) * 0.2;
+    assert.equal(lamps.length, 2, 'two lamps');
+    lamps.forEach((x, k) => {
+      const bay = bays.find(b => x > b.x0 + 12 && x < b.x1 - 12), e = box.roomEye(bay);
+      assert.ok(bay && bays.indexOf(bay) === k, `${pr}: the lamp at ${x} in its own bay`);
+      assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${pr}: its plate on the sliver`);
+      assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${pr}: its housing hung from the ceiling`);
+      assert.ok(rec.calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${pr}: the guard over its lens`);
+    });
+  }
+});
