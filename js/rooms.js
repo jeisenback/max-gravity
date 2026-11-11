@@ -588,24 +588,121 @@ function roomBridge(ctx, r, s, X, W) {
   });
 }
 
+// The hold (#933), on the drive deck beside the engine room. A crate is 40 by 24, a load two people lift or the jack moves, and the crates stand
+// in stacks of three on pallets, filled from the bottom of the first stack, which starts clear of the room's name at its top left. holdCrate: crate
+// k's box; holdLabel: the stencilled box on its front where its label goes (one day the contract's good, #936), kept clear of everything else;
+// holdTag: its label for now, one of a fixed few. The kit is of different ages: wooden crates of more than one batch and a newer moulded one.
+const HOLD_W = 40, HOLD_H = 24, HOLD_GAP = 8, HOLD_FROM = 112;
+const HOLD_KIT = [['#5a4a34', 'ICE'], ['#54462f', 'MED'], ['#4a5a5e', 'FRAG'], ['#5e4e36', 'GEAR'], ['#4e4230', 'ORE']];  // the third the moulded one
+const holdKind = k => (k * 7 + Math.floor(k / 3)) % HOLD_KIT.length;
+const holdCrate = (r, k) => ({ x: r.x0 + HOLD_FROM + Math.floor(k / 3) * (HOLD_W + HOLD_GAP), y: r.floor - 4 - HOLD_H * (k % 3 + 1), w: HOLD_W, h: HOLD_H });
+const holdLabel = (r, k) => { const c = holdCrate(r, k); return { x: c.x + 4, y: c.y + 7, w: 32, h: 10 }; };
+const holdTag = k => HOLD_KIT[holdKind(k)][1];
+// A crate's label, stencilled in its box at 10 world units: drawn only at 12px or more on the screen and where it fits the box.
+function holdStencil(ctx, zoom, text, b) {
+  const px = Math.round(10 * zoom * 100) / 100;
+  if (px < 12) return false;
+  ctx.save(); ctx.font = `600 ${px}px ${roomFont}`; const fit = ctx.measureText(text).width <= b.w * zoom; ctx.restore();
+  return fit && worldText(ctx, zoom, text, b.x + b.w / 2, b.y + b.h - 1.5, 10, 'rgba(138,126,98,0.8)', 'center');
+}
+// A tie-down ring in the deck at x, on its plate.
+function holdRing(ctx, x, F) {
+  roomFlat(ctx, x - 2.5, F - 1, 5, 1, '#20384f');
+  ctx.strokeStyle = '#4a6680'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(x, F - 2.4, 1.3, 0, Math.PI * 2); ctx.stroke();
+}
+// Crate k: its boards and the gaps between them, the battens at its corners nailed on, the stencil's plate and its label; worn at fixed places
+// (bare wood at its corners), a board replaced in fresher wood on one, tape over a split corner on another.
+function roomHoldCrate(ctx, r, k, zoom) {
+  const n = v => Math.round(v * 100) / 100, c = holdCrate(r, k), x = n(c.x), y = n(c.y), w = c.w, h = c.h, kind = holdKind(k), b = holdLabel(r, k);
+  roomPart(ctx, roomRound(x, y, w, h, 1.2), HOLD_KIT[kind][0], { top: 1, side: 2.5, under: 1 });
+  if (k % 4 === 1 && kind !== 2) roomFlat(ctx, x + 4.5, y + 1, w - 9, 4.6, '#6e5c40');  // a board replaced in fresher wood
+  for (const gy of [y + 6, y + 17.6]) roomFlat(ctx, x + 4, gy, w - 8, 0.8, '#2a2218');  // the gaps between its boards
+  for (const bx of [x + 0.8, x + w - 4]) roomPart(ctx, roomRound(bx, y + 0.8, 3.2, h - 1.6, 0.6), kind === 2 ? '#56686c' : '#6a583c', { top: 0.5, side: 0.8 });
+  for (const [nx, ny] of [[x + 2.4, y + 3], [x + 2.4, y + h - 3], [x + w - 2.4, y + 3], [x + w - 2.4, y + h - 3]]) roomDot(ctx, nx, ny, 0.5, '#2a2218');  // the nails
+  if (k % 2 === 0 && kind !== 2) for (const [cx, cy, cw, ch] of [[x + w - 3.6, y + h - 2.8, 2.2, 1.4], [x + 1.2, y + 1.2, 1.8, 1.2]]) roomFlat(ctx, cx, cy, cw, ch, '#7a6a50');  // worn corners
+  roomFlat(ctx, b.x, b.y, b.w, b.h, '#3a3226');  // the stencil's plate
+  holdStencil(ctx, zoom, holdTag(k), b);
+  if (k % 6 === 4) roomPart(ctx, `M ${n(x + w - 8)} ${n(y - 0.5)} L ${n(x + w - 3)} ${n(y - 0.5)} L ${n(x + w + 0.5)} ${n(y + 2.5)} L ${n(x + w + 0.5)} ${n(y + 6)} Z`, '#7a7462', { top: 0 });  // tape
+}
+// A stack's pallet at x, its fork pockets, and once loaded the straps over the stack's top (at y) and down its sides to the rings at its foot, a
+// ratchet on one.
+function roomHoldPallet(ctx, x, F) {
+  roomPart(ctx, roomRound(x + 2, F - 4, HOLD_W - 4, 4, 0.6), '#3e3426', { top: 0.6 });
+  for (const px of [x + 8, x + HOLD_W - 14]) roomFlat(ctx, px, F - 3, 6, 2.2, '#1a1610');
+}
+function roomHoldStraps(ctx, x, y, F) {
+  const n = v => Math.round(v * 100) / 100;
+  for (const sx of [x - 0.5, x + HOLD_W - 2]) roomPart(ctx, roomRound(n(sx), n(y - 1), 2.5, n(F - 3.5 - y + 1), 0.8), '#4a4436', { top: 0 });
+  roomPart(ctx, roomRound(n(x - 0.5), n(y - 1.5), HOLD_W + 1, 2, 0.8), '#4a4436', { top: 0.5 });
+  roomFlat(ctx, x + HOLD_W - 3, F - 18, 4.5, 5, '#6a7480'); roomFlat(ctx, x + HOLD_W - 2.5, F - 17, 3.5, 1, '#3a4a5a');  // its ratchet
+}
+// The cargo net over the stacks' tops (n crates), clear of their labels, its ends tied down to rings in the deck; it lifts off the stacks at the
+// flip, most in the middle of the run. Mended once over the first stack, in another cord. Cords, not parts, so drawn from s.time as it moves.
+function roomHoldNet(ctx, r, n, s) {
+  const F = r.floor, stacks = Math.ceil(n / 3), bulge = s.w.flip * (s.still ? 3 : 3 + Math.sin(s.time) * 2), top = [];
+  for (let c = 0; c < stacks; c++) {
+    const { x } = holdCrate(r, 3 * c), y = holdCrate(r, Math.min(n - 1, 3 * c + 2)).y, lift = bulge * (1 + Math.sin(Math.PI * (c + 0.5) / stacks));
+    top.push([x - 1, y - 2 - lift], [x + HOLD_W + 1, y - 2 - lift]);
+  }
+  const a = top[0], b = top[top.length - 1], e0 = a[0] - 3, e1 = b[0] + 3, low = top.map(([x, y]) => [x, y + 5]);
+  const at = (line, x) => { for (let i = 1; i < line.length; i++) if (x <= line[i][0]) { const [p, q] = [line[i - 1], line[i]], t = (x - p[0]) / (q[0] - p[0] || 1); return p[1] + (q[1] - p[1]) * t; } return line[line.length - 1][1]; };
+  holdRing(ctx, e0, F); holdRing(ctx, e1, F);
+  ctx.strokeStyle = '#8a7e62'; ctx.lineWidth = 0.8;
+  roomSeg(ctx, [[e0, F - 2.4], ...top, [e1, F - 2.4]]); roomSeg(ctx, [[e0 + 2, F - 2.4], ...low, [e1 - 2, F - 2.4]]);
+  for (const ph of [0, 1]) {  // the mesh, two zigzags crossing between the cords
+    const pts = [];
+    for (let x = a[0], i = ph; x <= b[0]; x += 5, i++) pts.push([x, at(i % 2 ? low : top, x)]);
+    roomSeg(ctx, pts);
+  }
+  for (const [ex, sx] of [[e0, a], [e1, b]]) for (const t of [0.3, 0.6]) roomSeg(ctx, [[sx[0] + (ex - sx[0]) * t, sx[1] + (F - 2.4 - sx[1]) * t], [sx[0] + (ex + (ex < sx[0] ? 2 : -2) - sx[0]) * t, sx[1] + 5 + (F - 2.4 - sx[1] - 5) * t]]);
+  const m0 = holdCrate(r, 0).x + 12, m1 = m0 + 12;  // the mend
+  ctx.strokeStyle = '#5e6a50'; ctx.lineWidth = 1.2; roomSeg(ctx, [[m0, at(top, m0)], [m1, at(top, m1)]]);
+  for (const kx of [m0, m1]) roomDot(ctx, kx, at(top, kx), 1, '#5e6a50');
+}
+// The pallet jack parked with its forks at jx, toned down from a bright yellow: the forks a pallet long, the load roller, the pump over the steer
+// wheel, and the handle (a replacement in bare steel) up to its grip at the waist, the grip printed on the ship's fabricator and tagged as
+// temporary (docs/bible/technology.md). Scuffs on the wall behind it, where it is parked.
+function roomHoldJack(ctx, jx, F) {
+  const n = v => Math.round(v * 100) / 100, x = n(jx);
+  for (const [sx, sy, sw] of [[x + 10, F - 8, 6], [x + 30, F - 11, 4], [x + 42, F - 7, 5]]) roomFlat(ctx, sx, sy, sw, 0.8, '#3e4c5a');
+  roomPart(ctx, `M ${n(x + 53)} ${F - 13} L ${n(x + 56)} ${F - 14} L ${n(x + 64)} ${F - 43} L ${n(x + 61.6)} ${F - 43.6} Z`, '#5e646a', { top: 0, side: 1 });
+  roomPart(ctx, roomRound(x + 57, F - 47, 11, 4.2, 1.8), '#8a6a48', { top: 0.6, side: 0.8 });  // the printed grip, its layers
+  for (const ly of [F - 45.6, F - 44.4]) roomFlat(ctx, x + 58, ly, 9, 0.4, '#6a5038');
+  ctx.strokeStyle = '#7a7462'; ctx.lineWidth = 0.5; roomSeg(ctx, [[x + 66, F - 42.8], [x + 67.5, F - 40]]);  // the tag on its thread
+  roomPart(ctx, roomRound(x + 65.5, F - 40, 4.5, 5, 0.8), '#9a9050', { top: 0.5 }); roomDot(ctx, x + 67.75, F - 39, 0.5, '#4a4436');
+  roomPart(ctx, roomRound(x, F - 5, 50, 3, 0.8), '#7a6a34', { top: 0.6, under: 0.6 });  // the forks
+  roomDot(ctx, x + 4, F - 1.4, 1.4, '#1a2430'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();  // the load roller
+  roomPart(ctx, `M ${n(x + 47)} ${F - 6} L ${n(x + 47)} ${F - 12} Q ${n(x + 47)} ${F - 15} ${n(x + 50)} ${F - 15} L ${n(x + 58)} ${F - 15} L ${n(x + 59)} ${F - 6} Z`, '#8a7a3a', { top: 1, side: 1.5 });
+  roomFlat(ctx, x + 49, F - 11, 5, 1.2, '#4a4436');  // its stencil
+  roomDot(ctx, x + 54, F - 3, 3, '#1a2430'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); roomDot(ctx, x + 54, F - 3, 1, '#56708c');  // the steer wheel
+}
+// The hold (#933): the rings in the deck, the crates by the cargo (s.cargo, 0 to 1, up to twelve) on their pallets, strapped down under the net
+// (roomHoldCrate, roomHoldStraps, roomHoldNet); the pallet jack (roomHoldJack); the lamp swinging on its cable (moved, not redrawn, as a path given
+// to roomPart is fixed per layout); and at the flip the hold log, slipped from its clip, floating. Nothing under the room's name at its top left.
 function roomHold(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, n = Math.round(12 * s.cargo), cw = Math.min(50, W * 0.14), top = F - 90;
-  const cols = [['#2f4f6f', 'ICE'], ['#6a3a34', 'MED'], ['#5a5030', 'FRAG'], ['#3f5a3a', 'PARTS'], ['#4a4a5a', '']];
-  for (let k = 0; k < n; k++) {
-    const x = X(0.03) + Math.floor(k / 3) * (cw + 2), tier = k % 3, y = F - 30 * (tier + 1), [col, lab] = cols[(k * 7 + Math.floor(k / 3)) % cols.length];
-    roomBox(ctx, x, y, cw, 30, col); ctx.strokeStyle = 'rgba(0,0,0,0.3)'; ctx.lineWidth = 1; ctx.strokeRect(x + 3.5, y + 3.5, cw - 7, 23); if (lab && tier === 0) worldText(ctx, s.zoom, lab, x + 5, y + 20, 10, 'rgba(230,220,190,0.7)');
-  }
-  if (n > 0) {
-    const a = X(0.02), b = X(0.03) + Math.ceil(n / 3) * (cw + 2) + 2, bulge = w.flip * (s.still ? 3 : 3 + Math.sin(time) * 2), nt = F - 30 * Math.min(3, n) - 4;
-    ctx.strokeStyle = 'rgba(180,170,140,0.55)'; ctx.lineWidth = 1;
-    for (let x = a; x <= b; x += 10) { ctx.beginPath(); ctx.moveTo(x, nt - bulge); ctx.lineTo(x + 6, F); ctx.stroke(); }
-    ctx.beginPath(); ctx.moveTo(a, nt - bulge); ctx.quadraticCurveTo((a + b) / 2, nt - bulge * 2, b, nt - bulge); ctx.stroke();
-  }
+  const { w, time } = s, F = r.floor, n = Math.min(12, Math.round(12 * s.cargo)), stacks = Math.ceil(n / 3), sx = c => Math.round(holdCrate(r, 3 * c).x * 100) / 100;
+  for (let c = 0; c < 4; c++) for (const ex of [sx(c) + 0.75, sx(c) + HOLD_W - 0.75]) holdRing(ctx, ex, F);
+  for (let c = 0; c < stacks; c++) roomHoldPallet(ctx, sx(c), F);
+  for (let k = 0; k < n; k++) roomHoldCrate(ctx, r, k, s.zoom);
+  for (let c = 0; c < stacks; c++) roomHoldStraps(ctx, sx(c), holdCrate(r, Math.min(n - 1, 3 * c + 2)).y, F);
+  if (n > 0) roomHoldNet(ctx, r, n, s);
   if (W >= 300) {
-    const jx = X(0.7); roomBox(ctx, jx, F - 10, 50, 6, '#c9a227'); roomBox(ctx, jx + 44, F - 40, 4, 32, '#c9a227'); roomDot(ctx, jx + 8, F - 2, 3, '#222'); roomDot(ctx, jx + 40, F - 2, 3, '#222');
-    const lx = X(0.84), [ex, ey] = hangEnd(lx, top + 6, 16, 0.7, w, time, s.still); ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1; roomSeg(ctx, [[lx, top + 6], [ex, ey]]); roomBox(ctx, ex - 5, ey, 10, 6, '#ffe2b8');
+    roomHoldJack(ctx, X(0.76), F);
+    const lx = X(0.9), [ex, ey] = hangEnd(lx, r.top + 6, 16, 0.7, w, time, s.still);
+    ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1; roomSeg(ctx, [[lx, r.top + 6], [ex, ey]]);
+    ctx.save(); ctx.translate(ex, ey);
+    roomFlat(ctx, -1.5, -0.5, 3, 2.5, '#3a4a5a');  // its cap
+    roomPart(ctx, 'M -4 2 L 4 2 L 6.5 7 L -6.5 7 Z', '#5a6470', { top: 0.6, side: 1 });  // the shade
+    roomPart(ctx, roomRound(-4, 7, 8, 3, 1.4), '#a89a78', { top: 0 });  // the glass
+    ctx.strokeStyle = '#3a4a5a'; ctx.lineWidth = 0.6; roomSeg(ctx, [[-2, 7], [-2, 10]]); roomSeg(ctx, [[2, 7], [2, 10]]);  // its cage
+    ctx.restore();
   }
-  if (w.flip > 0.05 && !s.still) { ctx.save(); ctx.globalAlpha = w.flip; ctx.translate(X(0.6) + Math.sin(time * 0.4) * 24, F - 80 + Math.cos(time * 0.5) * 8); ctx.rotate(time * 0.6); roomBox(ctx, -5, -4, 10, 8, '#c9a227'); roomBox(ctx, -5, -8, 3, 5, '#c9a227'); ctx.restore(); }
+  if (w.flip > 0.05 && !s.still) {
+    ctx.save(); ctx.globalAlpha = w.flip; ctx.translate(X(0.6) + Math.sin(time * 0.4) * 24, F - 84 + Math.cos(time * 0.5) * 4); ctx.rotate(time * 0.6);
+    roomPart(ctx, roomRound(-5, -6.5, 10, 13, 1), '#5e4e36', { top: 0.6, side: 1 }); roomFlat(ctx, -3.5, -4.5, 7, 9, '#8a8678');
+    for (let k = 0; k < 3; k++) roomFlat(ctx, -2.5, -2.5 + 2.2 * k, 5, 0.5, '#4a4436');
+    roomFlat(ctx, -2, -7.5, 4, 2.5, '#6a7480'); ctx.restore();
+  }
 }
 
 // The medbay (#933). The cot's mattress top over the deck (about 30, between a person's knee and hip), where the cutaway lays a patient (shiplife.js).
