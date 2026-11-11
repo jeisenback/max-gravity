@@ -72,7 +72,7 @@ test('the burn HUD names the captain, and the chatter gives the captain their ow
     const r0 = Math.random;
     culture();  // the year's culture draws names until they differ: build it before the random is pinned
     Math.random = () => 0.1; out.authored = Mods.filter('chatter', ['the crew']);
-    out.entry = captainEntry().chatter.length;
+    out.entry = chatterAt(captainEntry().chatter, undefined).length;  // grouped by room (#987): every line, off a burn
     delete hired().captainKey;  // a generated captain: eight habits and a line for each trait
     out.lines = Mods.filter('chatter', ['the crew']);
     Math.random = () => 0.9; out.pool = Mods.filter('chatter', ['the crew']);

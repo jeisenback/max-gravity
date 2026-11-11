@@ -124,6 +124,14 @@ const EFFECTS = {
   castXp: v => castXp(v.who, v.role, v.n),
   captainLike: v => captainLike(v.n, v.memory),
   captainFlag: v => { for (const f of [].concat(v)) captainFlag(f); },
+  // A watch for one night of the burn (#951, shiplife.js standWatch): who stands it ('you', a main character's key or a post's role), the room,
+  // who is relieved (the same, or null for an extra watch) and where they go ('bunk' or a room). Nothing at a port, with no burn to show it.
+  standWatch: v => {
+    const t = G.transit;
+    if (!t) return;
+    const id = x => (x === 'you' ? 'you' : !x ? null : CAST[x] ? castPerson(x).id : (roleHolder(x) || {}).id || null);
+    standWatch(t, shipDay(t.elapsed).day, id(v.stands), v.post, id(v.relieved), v.relievedAt || 'bunk');
+  },
   // A main character joins the crew, or is put off for eight days (the meeting scenes of js/cast.js, #461): the key of the person. The words are the choice's result.
   castJoin: key => { castJoin(key); },
   castLater: key => { castLater(key); },
@@ -386,6 +394,8 @@ const EFFECT_SHAPES = {
   mateLike: v => (!isPlain(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : typeof v.memory !== 'string' || !v.memory.trim() ? 'memory must be some text' : ''),
   remember: v => (typeof v === 'string' && v.trim() ? '' : 'needs a name'),
 };
+EFFECT_SHAPES.standWatch = v => (!isPlain(v) ? 'needs { stands, post, relieved, relievedAt }' : !(v.stands === 'you' || CAST[v.stands] || HIRED_POSTS.includes(v.stands)) ? `${v.stands} is not 'you', a main character or a post`
+  : !ROOMS.some(r => r.id === v.post) ? `${v.post} is not a room` : v.relievedAt && v.relievedAt !== 'bunk' && !ROOMS.some(r => r.id === v.relievedAt) ? `${v.relievedAt} is not 'bunk' or a room` : '');
 EFFECT_SHAPES.castJoin = EFFECT_SHAPES.castLater = v => (typeof v !== 'string' || !CAST[v] ? `needs the key of a main character` : '');
 EFFECT_SHAPES.gainSkill = v => (!isPlain(v) ? 'needs { post, n }' : !HIRED_POSTS.includes(v.post) ? `${v.post} is not a post` : !Number.isFinite(v.n) ? 'n must be a number' : '');
 // The shape each condition takes, where it is more than a number or a name: '' if the value is right, else what is wrong.

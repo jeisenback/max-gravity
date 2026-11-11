@@ -728,18 +728,25 @@ const CAPTAIN_CHATTER = [
   '{cap} is asleep in the captain\'s chair with the log open on the captain\'s chest.',
   '{cap}: "We make port on the day, or I owe somebody an explanation. I hate owing explanations."',
 ];
+// A captain's own lines with their `post` group (said where the hand works: "stopped by the {post} station") moved to the hand's post room (#987).
+function captainLinesByRoom(lines) {
+  if (Array.isArray(lines) || !lines.post) return lines;
+  const room = postOf(POSTS[hired().post].role), out = { ...lines, [room]: [...(lines[room] || []), ...lines.post] };
+  delete out.post;
+  return out;
+}
 function captainChatter() {
   const c = hiredCaptain(), name = `Captain ${c.last}`, d = captainEntry();
-  if (d && d.chatter) return d.chatter.map(l => l.replace(/\{post\}/g, POSTS[hired().post].name.toLowerCase()));  // their own lines, and no trait chatter
+  if (d && d.chatter) return chatterAt(captainLinesByRoom(d.chatter), chatterRoom('captain')).map(l => l.replace(/\{post\}/g, POSTS[hired().post].name.toLowerCase()));  // their own lines where the cutaway has her (#987), and no trait chatter
   const lines = linedText('lines:captain-chatter', CAPTAIN_CHATTER).map(l => l.replace('{cap}', name).replace('{post}', POSTS[hired().post].name.toLowerCase()));
-  for (const t of c.traits) lines.push(pick(traitChatter(t)).replace('{first}', name).replace('{home}', c.home));
+  for (const t of c.traits) { const said = chatterAt(traitChatter(t), chatterRoom('captain')); if (said.length) lines.push(pick(said).replace('{first}', name).replace('{home}', c.home)); }  // where the cutaway has them (#987)
   return lines;
 }
 
 Mods.register({
   id: 'hired', name: 'Hired hand', builtin: true,
   init(M) {
-    M.filter('chatter', pool => (hired() && hiredCaptain() && Math.random() < 0.2 ? captainChatter() : pool));
+    M.filter('chatter', pool => { if (!hired() || !hiredCaptain() || Math.random() >= 0.2) return pool; const own = captainChatter(); return own.length ? own : pool; });  // none where she is: the pool stands (#987)
     // The captain pays for fuel and repairs: a hired ship is topped up whenever she docks somewhere that sells them.
     M.on('landed', planet => {
       if (!hired() || chapterOf(G.state) > 1 || !planet.services.includes('refuel')) return;  // the captain's; the co-op buys its own (#891)

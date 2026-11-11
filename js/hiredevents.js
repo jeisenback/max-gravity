@@ -112,7 +112,7 @@ const HAND_EVENTS = [
 
   { id: 'cap-favour', group: 'captain', make: c => { const say = (key, vars) => eventSay('cap-favour', key, { last: c.cap.last, ...vars }); return handEvent(say('title'),
     say('text'), [
-      { label: say('c0.label'), run() { setLater('h-favour-back', 9, say('c0.log')); capLike(c, 2, say('c0.memory')); return `${say('stand')}${learn(2)}`; } },
+      { label: say('c0.label'), run() { setLater('h-favour-back', 9, say('c0.log')); capLike(c, 2, say('c0.memory')); EFFECTS.standWatch({ stands: 'you', post: 'engine', relieved: 'engineer', relievedAt: 'bunk' }); return `${say('stand')}${learn(2)}`; } },  // the engineer's night watch, so they sleep (#951)
       { label: say('c1.label'), run() { G.state.credits += 400; capLike(c, 0, say('c1.memory')); return say('fee'); } },
       { label: say('c2.label'), run() { setLater('h-favour-cold', 5, say('c2.log')); capLike(c, -1, say('c2.memory')); return say('beg'); } },
     ]); } },
