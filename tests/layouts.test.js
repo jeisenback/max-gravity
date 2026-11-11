@@ -35,7 +35,7 @@ test('the decks run nose to drive, a deck 100 high on a 12 plate, the tank betwe
   assert.equal(deckFloor(lay, 0), 100); assert.equal(deckFloor(lay, 1), 212); assert.equal(deckFloor(lay, 5), 660);
   assert.equal(deckFloor(lay, 6), 660 + 112 + 260, 'the tank under the plant deck');
   const b = layoutBox(lay, 'galley');
-  assert.equal(b.x0, 0); assert.ok(Math.abs(b.x1 - 0.48 * 880) < 1e-9); assert.equal(b.top, 112); assert.equal(b.floor, 212);
+  assert.equal(b.x0, 0); assert.ok(Math.abs(b.x1 - 0.48 * 720) < 1e-9); assert.equal(b.top, 112); assert.equal(b.floor, 212);
   assert.equal(layoutBox(lay, 'kitchen'), undefined);
   assert.equal(towerHeight(lay), deckFloor(lay, 6));
 });
@@ -45,18 +45,18 @@ test('seats sit in their room and never in the well', () => {
     const x = seatX(lay, id, k), b = layoutBox(lay, id);
     assert.ok(x > b.x0 && x < b.x1, `${id} seat ${k} in the room`); assert.ok(x < w0 || x > w1, `${id} seat ${k} clear of the well`);
   });
-  assert.ok(Math.abs(seatX(lay, 'galley', 0) - 0.28 * 0.48 * 880) < 1e-9);
+  assert.ok(Math.abs(seatX(lay, 'galley', 0) - 0.28 * 0.48 * 720) < 1e-9);
   assert.equal(seatX(lay, 'galley', 9), undefined); assert.equal(seatX(lay, 'kitchen', 0), undefined);
 });
 test('the room at a point: the room on that deck, none in the well of a split deck', () => {
   const lay = LAYOUTS.freighter;
-  assert.equal(layoutRoomAt(lay, 1, 100), 'galley'); assert.equal(layoutRoomAt(lay, 1, 800), 'head');
-  assert.equal(layoutRoomAt(lay, 1, 440), null, 'the well'); assert.equal(layoutRoomAt(lay, 2, 440), 'berths', 'a full-width deck');
+  assert.equal(layoutRoomAt(lay, 1, 100), 'galley'); assert.equal(layoutRoomAt(lay, 1, 650), 'head'); assert.equal(layoutRoomAt(lay, 1, 730), null, 'past the hull');
+  assert.equal(layoutRoomAt(lay, 1, 360), null, 'the well'); assert.equal(layoutRoomAt(lay, 2, 360), 'berths', 'a full-width deck');
   assert.equal(layoutRoomAt(lay, 9, 100), null); assert.equal(layoutRoomAt(lay, 1, -5), null);
 });
 test('a walk stays on its deck, or goes by the well and climbs once, the tank included', () => {
   const lay = LAYOUTS.freighter;
-  assert.deepEqual(plain(walkPath(lay, { deck: 1, x: 100 }, { deck: 1, x: 800 })), [{ deck: 1, x: 800 }], 'no detour on one deck');
-  assert.deepEqual(plain(walkPath(lay, { deck: 1, x: 100 }, { deck: 6, x: 700 })), [{ deck: 1, x: 440 }, { deck: 6, x: 440 }, { deck: 6, x: 700 }], 'down the well and the tube to the drive deck');
-  assert.deepEqual(plain(walkPath(lay, { deck: 3, x: 440 }, { deck: 3, x: 440 })), [{ deck: 3, x: 440 }]);
+  assert.deepEqual(plain(walkPath(lay, { deck: 1, x: 100 }, { deck: 1, x: 650 })), [{ deck: 1, x: 650 }], 'no detour on one deck');
+  assert.deepEqual(plain(walkPath(lay, { deck: 1, x: 100 }, { deck: 6, x: 650 })), [{ deck: 1, x: 360 }, { deck: 6, x: 360 }, { deck: 6, x: 650 }], 'down the well and the tube to the drive deck');
+  assert.deepEqual(plain(walkPath(lay, { deck: 3, x: 360 }, { deck: 3, x: 360 })), [{ deck: 3, x: 360 }]);
 });

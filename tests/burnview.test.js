@@ -353,6 +353,34 @@ test('the sleepers on the bunks leave the berths\' name clear, wide and small (#
   }
 });
 
+// The bunks stack three high (#1023): each sleeper is drawn lying on the mattress of the bunk they are assigned (the slot the cutaway gives them,
+// in the order aboard), one to a bunk, and the five asleep fill all three tiers.
+test('each sleeper lies in the bunk they are assigned, in every tier (#1023)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, lay = LAYOUTS.freighter, b = roomAt('berths'), drawn = [];
+    t.left = t.total * 0.7; t.angle = -Math.PI / 2; t.flipped = false; t.elapsed = 50; t.dark = true;  // night, the lights down
+    shipPeople().forEach((p, i) => Object.assign(p, { room: 'berths', x: b.x0 + (0.05 + i * 0.05) * CUT_K, dk: b.deck, tdk: b.deck, tx: null, wait: 999, staged: undefined }));
+    const real = window.drawPerson;
+    window.drawPerson = (c, pose, x, y, look) => { drawn.push({ v: look.v, pose: pose.name, x, y }); return real(c, pose, x, y, look); };
+    try { G.cam = { y: layoutBox(lay, 'berths').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); } finally { window.drawPerson = real; }
+    const box = layoutBox(lay, 'berths'), W = lay.width, well = { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, nb = Math.min(12, ship().berths);
+    return shipPeople().filter(isAsleep).map((p, k) => {
+      const bunk = berthBunk(box, nb, k, well), d = drawn.find(q => q.v === portraitLook({ id: p.id, name: p.name }).v);
+      return { name: p.name, k, bunk, d };
+    });
+  });
+  await done();
+  assert.ok(r.length >= 5, `five asleep (${r.length})`);
+  for (const { name, k, bunk, d } of r) {
+    assert.ok(d && d.pose === 'bunk', `${name} drawn lying down (${d && d.pose})`);
+    assert.ok(d.x > bunk.x && d.x < bunk.x + bunk.w && Math.abs(d.y - (bunk.y - 5)) < 1e-9, `${name} on bunk ${k}'s mattress (${bunk.x} to ${bunk.x + bunk.w}, ${bunk.y - 5}): at ${d.x}, ${d.y}`);
+  }
+  assert.equal(new Set(r.map(q => `${q.bunk.x},${q.bunk.y}`)).size, r.length, 'one sleeper to a bunk');
+  assert.equal(new Set(r.map(q => q.bunk.y)).size, 3, 'sleepers in all three tiers');
+});
+
 // A tap on a room opens its console as a sheet (#323, step 5 task 3).
 test('every room has a sheet, and every sheet is a station', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });

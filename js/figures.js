@@ -183,6 +183,16 @@ function figPose(name, frame, frames, float = 0) {  // float: how far the flip's
   return null;
 }
 
+// Sitting low (#1023): pose.seat is the height of what a seated person sits on, in world units over the deck, when it is under the seat the sit
+// pose is drawn for (FIG_SEAT, the bench's and a chair's), as the bottom bunk's mattress is. The hip goes down by the difference, the knees come
+// up and the feet are drawn back under them, still on the deck. figLowHip: the hip's height in the figure's units, or null for an ordinary seat.
+const FIG_SEAT = 23;
+const figLowHip = pose => (pose.name === 'sit' && pose.seat !== undefined && pose.seat < FIG_SEAT ? Math.max(2, FIG_VIEW.seatHip - (FIG_SEAT - pose.seat) / FIG_SCALE) : null);
+function figSitLow(q, hip) {
+  const leg = a1 => { const knee = hip - Math.cos(a1) * FIG_LEN.thigh; return [a1, -Math.acos(Math.max(-1, Math.min(1, (knee - 4.5) / FIG_LEN.shin)))]; };  // the foot as high as on a bench
+  return { ...q, hip, legs: [...leg(2.5), ...leg(2.4)] };  // under 10, figJoints leaves the hip where it is
+}
+
 // The joints of a pose. A standing pose's hip is measured on the old 36-unit legs, so it is moved up by what the longer legs add; a seated
 // one (hip between 10 and 30) is raised 5.5 to sit the longer thigh on the seat; a sleeper's stays on the mattress.
 function figJoints(q) {
@@ -306,9 +316,9 @@ function figViewTorso(ctx, hipH, col, build, back) {
   ctx.restore();
   figPath(ctx, d); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
 }
-function figViewLegs(ctx, hipH, col, boot, build, seated) {
+function figViewLegs(ctx, hipH, col, boot, build, seated, low) {  // low: on a low seat, the knees up over the hip (figLowHip)
   for (const sx of [-1, 1]) {
-    const hx = sx * FIG_VIEW.legGap * build, fx = hx * (seated ? 1.15 : 1.08), knee = seated ? [fx, -hipH + 4] : [hx * 1.05, -hipH + FIG_LEN.thigh];
+    const hx = sx * FIG_VIEW.legGap * build, fx = hx * (seated ? 1.15 : 1.08), knee = low ? [hx * 1.4, -hipH - 10] : seated ? [fx, -hipH + 4] : [hx * 1.05, -hipH + FIG_LEN.thigh];
     figViewLimb(ctx, [[hx, -hipH], knee, [fx, -3.8]], [(seated ? 8.2 : 7.6) * build, 5.4 * build], col);  // seated, the thigh comes toward you, short
     figPath(ctx, `M ${fx - 2.8} -4.4 L ${fx + 2.8} -4.4 L ${fx + 3.6} 0 L ${fx - 3.6} 0 Z`); ctx.fillStyle = boot; ctx.fill(); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
   }
@@ -325,11 +335,11 @@ function figViewArms(ctx, hipH, col, glove, build, arms, back, wave) {
 // point, the head and the foot in the person's own frame.
 function figView(ctx, pose, look, frames) {
   const st = figStyle(look), b = st.build, col = look.color, seated = pose.name === 'sit' || pose.name === 'work-sit', back = pose.view === 'back';
-  const hipH = seated ? FIG_VIEW.seatHip : FIG_LEN.thigh + FIG_LEN.shin + FIG_LEN.ankle, neck = -hipH - FIG_LEN.torso, headY = neck - FIG_LEN.neck - FIG_LEN.head;
+  const low = figLowHip(pose), hipH = low !== null ? low : seated ? FIG_VIEW.seatHip : FIG_LEN.thigh + FIG_LEN.shin + FIG_LEN.ankle, neck = -hipH - FIG_LEN.torso, headY = neck - FIG_LEN.neck - FIG_LEN.head;
   const arms = FIG_VIEW_ARMS[pose.name.startsWith('work') ? 'work' : pose.name === 'sit' ? 'sit' : 'stand'], wave = pose.name.startsWith('work') ? Math.sin(Math.PI * 2 * pose.frame / frames) : 0;
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0, 0, 12, 2.4, 0, 0, Math.PI * 2); ctx.fill();  // a shadow on the deck
-  figViewLegs(ctx, hipH, figShade(col, 0.92), '#262b33', b, seated);
+  figViewLegs(ctx, hipH, figShade(col, 0.92), '#262b33', b, seated, low !== null);
   if (back) figViewArms(ctx, hipH, col, '#2c3139', b, arms, true, wave);  // from behind, the hands at the panel are on the far side of the body
   figViewTorso(ctx, hipH, col, b, back);
   ctx.fillStyle = figShade(look.skin || '#c9a98a', 0.82); ctx.fillRect(-2.2, neck - FIG_LEN.neck - 1, 4.4, FIG_LEN.neck + 2);
@@ -347,7 +357,7 @@ function drawPerson(ctx, pose, x, y, look) {
     const k = FIG_SCALE; ctx.scale(k, k); ({ tap, head, foot } = figView(ctx, pose, look, frames));
     for (const p of [tap, head, foot]) { p.x *= k; p.y *= k; }
   } else {
-    const k = FIG_SCALE, q = figPose(pose.name, pose.frame, frames, +look.floating || 0), j = figJoints(q), col = look.color, st = figStyle(look), b = st.build;
+    const k = FIG_SCALE, low = figLowHip(pose), q0 = figPose(pose.name, pose.frame, frames, +look.floating || 0), q = low === null ? q0 : figSitLow(q0, low), j = figJoints(q), col = look.color, st = figStyle(look), b = st.build;
     ctx.scale(k, k); ctx.lineCap = 'round'; ctx.lineJoin = 'round';
     const boot = '#262b33', glove = '#2c3139';
     if (!look.floating && FIG_GROUNDED.includes(pose.name)) { ctx.fillStyle = 'rgba(0,0,0,0.32)'; ctx.beginPath(); ctx.ellipse(2, 0, 15, 2.8, 0, 0, Math.PI * 2); ctx.fill(); }  // a shadow on the deck
