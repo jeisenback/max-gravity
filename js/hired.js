@@ -246,6 +246,37 @@ function hiredCall(ev) {
 const practiceSay = (key, vars) => sceneSay('scene:screens', key, vars);  // the words are the lines of scene:screens (hiredscenes.js)
 ACTIVITIES.practise = { hiredOnly: true, get label() { return practiceSay('practise.label'); }, can: () => !!hired(), run() { if (!hired()) return practiceSay('practise.none'); const n = 3; gainSkill(hired().post, n); return `${practiceSay(`practise.${hired().post}`)} ${practiceSay('practise.learn', { n, post: POSTS[hired().post].name.toLowerCase() })}`; } };
 
+// The captain's figures (#1059, docs/bible/chapter-1.md, Hester's regard): a captain who keeps a notebook (her entry's `notebook`) lets the hand go over it against
+// the house's accounts, every FIGURES_GAP days at most. A word on wit: landed, she thinks better of the hand; a good landing finds the house's software wrong, and the
+// fund is the better for it. Failed, it costs the watch.
+const FIGURES_GAP = 15, FIGURES_FIND = 300, FIGURES_FOUND = 0.3;  // the days between, what an error found is worth to the fund, and the share of landings that find one
+const figuresDue = (st, h) => { const d = captainEntry(); return !!(h && d && d.notebook && (h.figuresAt === undefined || st.day - h.figuresAt >= FIGURES_GAP)); };
+ACTIVITIES.figures = {
+  hiredOnly: true, get label() { return practiceSay('figures.label'); }, can: () => figuresDue(G.state, hired()),
+  run() {
+    const st = G.state, h = hired(), last = hiredCaptain().last;
+    if (!figuresDue(st, h)) return '';
+    h.figuresAt = st.day;
+    const odds = handCheck('wit', 0, 'word'), roll = Math.random();
+    if (roll >= odds) return practiceSay('figures.missed', { last });
+    const found = roll < odds * FIGURES_FOUND;
+    if (found) h.fund += FIGURES_FIND;
+    captainLike(1, practiceSay(found ? 'figures.found.memory' : 'figures.memory'));
+    return practiceSay(found ? 'figures.found' : 'figures.landed', { last, sum: fmt(FIGURES_FIND) });
+  },
+};
+
+// A run in on the captain's figure (#1059): delivered on its day with the whole load and the hull as it left. A captain who keeps a notebook notes each, and says so
+// every ON_FIGURE_EVERY of them.
+const ON_FIGURE_EVERY = 4;
+const onFigure = (run, have, day, armor, full) => !!run.contract && have >= run.tons && day <= run.due && armor >= full;
+
+// Waiting for your pay (#1059): a captain whose payment falls on the first (her entry's `shortMonth`) asks, on a short month after her own first-of-the-month scene,
+// whether the hand will take SHORT_PAY of their pay at the next port instead. Held, it is paid back on landing with SHORT_BACK on top. Once a month at most.
+const SHORT_FUND = 6000, SHORT_PAY = 1000, SHORT_BACK = 30;
+const monthKey = day => { const c = calOf(day); return c.y * 12 + c.m; };
+const shortMonthDue = (st, h) => { const d = captainEntry(); return !!(h && d && d.shortMonth && (h.beats || 0) >= 1 && h.fund < SHORT_FUND && h.shortAsked !== monthKey(st.day)); };
+
 // ---------- the captain's runs ----------
 
 // The captain's run: the ice run when it is due (icerun.js), else the contract on the board she picks (contracts.js), else a light run to the
@@ -318,6 +349,9 @@ function settleRun(planet) {
     if (have < run.tons) captainFlag(have ? 'contractShort' : 'contractLost');
     if (st.day > run.due) captainFlag('late');
     recordHand(st.day > run.due ? 'late' : 'onTime');  // the record (traits.js)
+    if (captainEntry() && captainEntry().notebook && onFigure(run, have, st.day, st.armor, ship().armor) && (h.onFigure = (h.onFigure || 0) + 1) % ON_FIGURE_EVERY === 0) {
+      captainLike(1, sceneSay('scene:screens', 'figure.memory')); h.figureSaid = true;
+    }
     shipperSettled(run, have, st.day, cut, paper);  // the shipper's regard, and a word with the agent if it was off (shippers.js)
     if (st.cargo[run.good] > have) st.cargo[run.good] -= have; else { delete st.cargo[run.good]; delete st.paid[run.good]; }
     h.fund += revenue;
@@ -350,6 +384,7 @@ function settleRun(planet) {
   if (settling) return;
   // The figures are the captain's log's (readouts.js); the note says what was off, then the pay.
   const off = [];
+  if (h.figureSaid) { off.push(sceneSay('scene:screens', 'figure.said', { last: st.people[h.captain].last })); delete h.figureSaid; }  // in on her figure (#1059)
   if (run.contract && sold < run.tons) off.push(sold ? `Short: ${run.tons - sold}t of the ${name.toLowerCase()} did not arrive, and ${run.shipper} paid for what did.` : `The load for ${run.shipper} was lost on the way, and there is no pay.`);
   if (run.contract && st.day > run.due) off.push(`${st.day - run.due} day${st.day - run.due === 1 ? '' : 's'} late, and the pay docked.`);
   if (profit < 0) off.push(`The run lost ${fmt(-profit)} cr.`);
@@ -761,6 +796,7 @@ Mods.register({
     M.on('landed', planet => { if (chapterOf(G.state) > 1) return; hullNote(); dealCheck(planet); });  // the share's offer is chapter one's
     M.on('landed', planet => { const h = hired(), line = h && chapterOf(G.state) === 1 && restockTorps(G.state, h, planet, ship().launcher); if (line) M.note(line); });  // the captain restocks hers; the co-op buys its own
     M.on('landed', planet => { if (hired() && chapterOf(G.state) === 1) G.offers = errandsFor(planet); });
+    M.on('landed', () => { const h = hired(); if (!h || !h.heldPay) return; G.state.credits += h.heldPay; M.note(eventSay('cap-short', 'repaid', { sum: fmt(h.heldPay) })); h.heldPay = 0; });  // the pay held a port (#1059)
     M.on('landed', planet => { if (chapterOf(G.state) > 1 && planet.services.includes('trade')) seenPrices(G.state, planet, G.state.day, price); });  // the co-op remembers each exchange it docks at (market.js, #891)  // a hand's board has errands, not contracts; the co-op's has the contracts (ownerboard.js)
     M_NOTE = text => M.note(text);
     M.action('sail', () => { if (hired() && chapterOf(G.state) === 1 && !sideBeforeSail()) sail(); });  // the captain's sail is chapter one's; the co-op takes off (#891)  // a side on the paper is a scene at the lock first (shippers.js)

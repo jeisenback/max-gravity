@@ -9,6 +9,8 @@ CAPTAINS.hester = {
   bio: 'An agency rating on ore haulers for twenty years, and now eleven years into a fifteen-year hire-purchase charter on this ship, from a Rotterdam finance house. The house can read the ship\'s accounts, so she keeps her own in a notebook, and can tell you the cost of a watch to the credit.',
   wants: 'To make the last payment and own the ship.', fears: 'A third missed payment, and being a rating again.',
   captain: { trade: 4, nerve: 1, thrift: 5 }, wage: 500, hears: 1, bonus: 3, talk: 0.7,
+  notebook: true,  // she keeps the ship's figures in a paper notebook: the hand can check them with her, and she notes a run that comes in on her figure (#1059)
+  shortMonth: true,  // the charter falls due on the first: a short month, she asks the hand to wait for their pay (#1059)
   xo: 'cato', xoTitle: 'Bosun', xoPerk: 'Runs the ratings and the rota, and holds the first-aid rating.',  // Cato is the bosun (docs/bible/people/cato.md); the post stays the xo slot until #879
 
   // The sign-on paragraph's last lines, in place of "whom the crew describe as ...".

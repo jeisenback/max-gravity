@@ -220,6 +220,18 @@ const playScenes = () => {
   for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
     run(`hand:practise:${post}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.practise.label, run: () => String(ACTIVITIES.practise.run()) }] }), { extra: () => hired().skill });
   }
+  // the captain's figures (#1059): an error found, a landing and a miss, and the row when they are not due
+  run('hand:figures', {}, () => ({ ...alone(), choices: [{ label: ACTIVITIES.figures.label, run: () => String(ACTIVITIES.figures.run()) }] }), { rolls: [0.01, 0.2, 0.99], extra: () => ({ fund: hired().fund, at: hired().figuresAt }) });
+  run('hand:figures:none', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.figures.can()) }] }), { prep() { hired().figuresAt = G.state.day; } });
+  // a run in on her figure (#1059): the fourth on its day, whole and with the hull as it left
+  run('hand:on-figure', {}, () => ({ ...alone(), choices: [{ label: 'x', run() {
+    const st = G.state, h = hired(), pl = currentPlanet();
+    h.runsDone = 3; h.onFigure = 3; st.armor = ship().armor; st.cargo = { water: 10 };
+    h.run = { contract: true, shipper: 'a dock broker', good: 'water', tons: 10, sid: st.systemId, planet: pl.name, pay: 5000, due: st.day + 5, day: st.day - 5, cost: 0, profit: 5000, from: 'Mars' };
+    return settleRun(pl);
+  } }] }), { extra: () => hired().onFigure });
+  // the pay held a short month, paid back with its interest on landing (#1059)
+  run('hand:short-repaid', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => eventSay('cap-short', 'repaid', { sum: fmt(SHORT_PAY + SHORT_BACK) }) }] }));
   run('hand:restock', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => restockTorps(G.state, hired(), currentPlanet(), ship().launcher) }] }), { prep() { G.state.torpedoes = 0; hired().fund = 100000; } });
   run('hand:torps-kept', {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => fightCard().replace(/<[^>]+>/g, ' ') }] }));  // the Gunnery page's torpedo count on a captain's ship (#956)
   run('hand:practise:owner', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.practise.run()) }] }));
@@ -372,6 +384,8 @@ const playScenes = () => {
     const d = HAND_EVENTS.find(x => x.id === id);
     run(`hired:${id}:low`, {}, () => { const c = handContext(); c.cap.opinion = -3; return d.make(c); }, { rolls: [0, 0.999], extra: () => (G.state.journal || []).map(j => j.text) });
   }
+  // a short month (#1059): Hester's, whose payment falls on the first
+  run('hired:cap-short:hester', {}, () => HAND_EVENTS.find(x => x.id === 'cap-short').make(handContext()), { extra: () => ({ held: hired().heldPay || 0, asked: hired().shortAsked }) });
   Math.random = real;
   // The freight office's side on the paper (shippers.js): a crew member the Arcology Pact wants, and the Earth hand's own papers, so every way out is there. Last, because putting
   // the crew member ashore signs a replacement on, whose name takes one from the names the cases after it would draw.

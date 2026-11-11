@@ -7754,8 +7754,12 @@
     "i": 0,
     "roll": 0,
     "text": "You go through it line by line with the inspector: the dates, the seals, the code the last port put on the manifest. Halfway down the junior stops filling in the form. The inspector crosses out the sum and writes a smaller one under it. The ship pays 3,000 cr.",
+    "mem": [
+     "9 Jul 2214: You talked the inspector at Earth down to half, and it came out of the ship's fund, not mine."
+    ],
     "fx": {
-     "fund": -3000
+     "fund": -3000,
+     "p1": 1
     },
     "next": null
    },
@@ -7805,8 +7809,12 @@
     "i": 0,
     "roll": 0,
     "text": "You go through it line by line with the inspector: the dates, the seals, the code the last port put on the manifest. Halfway down the junior stops filling in the form. The inspector crosses out the sum and writes a smaller one under it. The ship pays 4,000 cr.",
+    "mem": [
+     "9 Jul 2214: You talked the inspector at Earth down to half, and it came out of the ship's fund, not mine."
+    ],
     "fx": {
-     "fund": -4000
+     "fund": -4000,
+     "p1": 1
     },
     "next": null
    },
@@ -7856,8 +7864,12 @@
     "i": 0,
     "roll": 0,
     "text": "You go through it line by line with the inspector: the dates, the seals, the code the last port put on the manifest. Halfway down the junior stops filling in the form. The inspector crosses out the sum and writes a smaller one under it. The ship pays 7,000 cr.",
+    "mem": [
+     "9 Jul 2214: You talked the inspector at Earth down to half, and it came out of the ship's fund, not mine."
+    ],
     "fx": {
-     "fund": -7000
+     "fund": -7000,
+     "p1": 1
     },
     "next": null
    },
@@ -9962,6 +9974,117 @@
   "text": "",
   "labels": [
    "Practice at your post"
+  ]
+ },
+ {
+  "id": "hand:figures",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.01,
+    "text": "You sit with Captain Vance and the notebook, and read her figures against the house's accounts, line by line. Three pages in, the software has billed a dock fee twice. She writes the correction in the margin and sends it to the house. \"300,\" she says. \"That's the fund's.\"",
+    "mem": [
+     "9 Jul 2214: You found the house's software billing us twice."
+    ],
+    "fx": {
+     "fund": 300,
+     "p1": 1
+    },
+    "x": {
+     "fund": 120300,
+     "at": 31
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.2,
+    "text": "You sit with Captain Vance and the notebook, and read her figures against the house's accounts, line by line. They agree, to the credit. She checks the last page twice anyway, and then lets you close it.",
+    "mem": [
+     "9 Jul 2214: You went over my figures with me, and kept up."
+    ],
+    "fx": {
+     "p1": 1
+    },
+    "x": {
+     "fund": 120000,
+     "at": 31
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "You sit with Captain Vance and the notebook for a watch, and lose the column halfway down the second page. She takes it back without a word and finds your place for you.",
+    "x": {
+     "fund": 120000,
+     "at": 31
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Go over the captain's figures with her"
+  ]
+ },
+ {
+  "id": "hand:figures:none",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "false",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "hand:on-figure",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Captain Vance writes the run in the notebook, on the line under her estimate, and the two figures are the same. \"On the figure,\" she says. Your pay: 2,500 cr wage, less 150 cr for your kit.",
+    "mem": [
+     "9 Jul 2214: You brought another run in on my figure.",
+     "9 Jul 2214: Good run. You pull your weight."
+    ],
+    "fx": {
+     "credits": 2350,
+     "fund": 5000,
+     "p1": 2
+    },
+    "x": 4,
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "hand:short-repaid",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Captain Vance pays back the 1,030 she held, with the interest, as written.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
   ]
  },
  {
@@ -22280,6 +22403,43 @@
    "Take it modestly",
    "Ask if it's worth a bonus",
    "[Gunner 3] Ask for the bonus, with the week's figures"
+  ]
+ },
+ {
+  "id": "hired:cap-short:hester",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "She writes it under the last one: 1,000, the date, and 1,030 beside it. \"The next port,\" she says, and closes the notebook on the pencil.",
+    "mem": [
+     "9 Jul 2214: You waited for your pay again when the fund was short."
+    ],
+    "fx": {
+     "credits": -1000,
+     "p1": 1
+    },
+    "x": {
+     "held": 1030,
+     "asked": 26575
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "\"Then you have it,\" she says, and turns the page back. She finds the money somewhere else. You do not see where.",
+    "mem": [
+     "9 Jul 2214: You needed your pay when the fund was short."
+    ],
+    "next": null
+   }
+  ],
+  "title": "Short on the First",
+  "text": "Captain Vance has the notebook open on the galley table when you come off watch. \"The first is Thursday,\" she says, \"and the fund is short of it again. Not by much.\" She turns the page so you can see the figure. \"Same as before. 1,000 of your pay at the next port instead of this one. With interest. Written down.\"",
+  "labels": [
+   "Take 1,000 of your pay at the next port",
+   "Say you need it this port"
   ]
  },
  {

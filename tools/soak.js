@@ -215,7 +215,7 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         const d = hired().deal, open = d && dealOpen(), price = open ? d.price : target;  // she is bought when the deal's price is in hand, or the chapter's if it lapsed
         // With the deal open she is bought at a yard, as the game has it: with the price in hand at a port without one she sails on (planRun heads for a yard), and
         // that burn is where the ladder's set piece comes (fightladder.js).
-        if (st.credits >= price && !H && (!open || currentPlanet().services.includes('shipyard'))) reached = { runs, day: st.day, days: st.day - hired().since, credits: st.credits, deal: d ? { price: d.price, offered: d.day, lapsed: !dealOpen() } : null };
+        if (st.credits >= price && !H && (!open || currentPlanet().services.includes('shipyard'))) reached = { runs, day: st.day, days: st.day - hired().since, credits: st.credits, regard: (st.people[hired().captain] || {}).opinion, deal: d ? { price: d.price, offered: d.day, lapsed: !dealOpen() } : null };
         for (const n of UI.notes) if (odd(n)) bad.push('note: ' + n.slice(0, 80));
         if (H && !ending.v) await H.port(answer);  // the day ashore and the buy-in
         if (!hired()) { ending.v = { day: st.day - since, title: 'Bought in', bought: true }; break; }  // the hand bought a ship: the chapter's own close
@@ -245,7 +245,8 @@ function framesReport(runs, label = '') {
   const whole = runs.filter(r => !r.ending), mean = (list, f) => (list.length ? list.reduce((t, r) => t + f(r), 0) / list.length : 0);
   const one = x => Math.round(x * 10) / 10, reached = whole.filter(r => r.reached);
   console.log(`${label}${runs.length} chapters, ${whole.length} whole, ${reached.length} reached the price: runs ${one(mean(whole, r => r.runs))}, days ${one(mean(whole, r => r.days))}, ` +
-    `pay/run ${Math.round(mean(whole, r => r.avgPayPerRun))}, pay/day ${one(mean(whole, r => r.credits / r.days))}, days to the price ${one(mean(reached, r => r.reached.days))} ` +
+    `pay/run ${Math.round(mean(whole, r => r.avgPayPerRun))}, pay/day ${one(mean(whole, r => r.credits / r.days))}, days to the price ${one(mean(reached, r => r.reached.days))}, ` +
+    `the captain trusts the hand at the price in ${reached.filter(r => r.reached.regard >= 3).length} of ${reached.length} (her regard ${one(mean(reached, r => r.reached.regard || 0))} on the mean) ` +  // the vouch (#1059, #1045)
     `| per chapter: raids ${one(mean(runs, r => r.frames.raids))}, scrams ${one(mean(runs, r => r.frames.scrams))}, hull lost ${one(mean(runs, r => r.frames.hull))}, ` +
     `extra reaction mass ${one(mean(runs, r => r.frames.fuel))}, contacts seen ${one(mean(runs, r => r.frames.seen))} of ${one(mean(runs, r => r.frames.planned))}`);
 }

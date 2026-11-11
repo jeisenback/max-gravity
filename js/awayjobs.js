@@ -109,6 +109,7 @@ function pitchOdds(arg, a) {
 // The run to the job's port: the one already planned, one of the runners-up, or a light run if nothing there pays.
 // `plan` is the stop's plan (hired.js currentPlan, which books it again when it is remade).
 function bookRun(a, plan = (currentPlan(), hired().plan)) {
+  if (!plan) return null;  // at a rock the run home is fixed (hired.js currentPlan): the job stays booked, and the next port's plan takes it
   const same = o => o && o.sid === a.sid && o.planet === a.planet;
   if (same(plan.run)) return plan.run;
   const alt = (plan.alts || []).find(same);
