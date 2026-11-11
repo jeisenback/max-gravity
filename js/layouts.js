@@ -12,7 +12,7 @@ const LAYOUTS = {
     width: 720, well: { x: 0.5, w: 0.04 }, tankAfter: 5, tankH: 260,
     decks: [
       { id: 'flight', name: 'Flight deck', rooms: [{ id: 'bridge', name: 'Bridge', x0: 0, x1: 1 }] },
-      { id: 'mess', name: 'Mess deck', rooms: [{ id: 'galley', name: 'Galley', x0: 0, x1: 0.48 }, { id: 'head', name: 'Head and shower', x0: 0.52, x1: 1 }] },
+      { id: 'mess', name: 'Mess deck', rooms: [{ id: 'galley', name: 'Galley', x0: 0, x1: 0.48 }, { id: 'head', name: 'Head', x0: 0.52, x1: 1 }] },
       { id: 'crew', name: 'Crew deck', rooms: [{ id: 'berths', name: 'Berths', x0: 0, x1: 1 }] },
       { id: 'gun', name: 'Gun deck', rooms: [{ id: 'gunnery', name: 'Gunnery', x0: 0, x1: 0.48 }, { id: 'workshop', name: 'Workshop', x0: 0.52, x1: 1 }] },
       { id: 'lock', name: 'Lock deck', rooms: [{ id: 'airlock', name: 'Airlock', x0: 0, x1: 0.48 }, { id: 'medbay', name: 'Medbay', x0: 0.52, x1: 1 }] },
