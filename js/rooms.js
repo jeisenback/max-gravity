@@ -515,7 +515,7 @@ function roomGalley(ctx, r, s, X, W) {
   }
   roomOnWall(ctx, (X(0.25) + X(0.39)) / 2, F - 85, () => {
     cupboards(X(0.25), X(0.39), F - 96, F - 74);
-    worldText(ctx, s.zoom, 'MUGS', X(0.25) + 8, F - 79, 9, '#a8987a');
+    worldText(ctx, s.zoom, 'MUGS', X(0.25) + 8, F - 79, 9, roomTint('#a8987a'));
     roomPart(ctx, roomRound(X(0.25), F - 71.5, X(0.39) - X(0.25), 2, 1), '#3a5470', { top: 0.6 });  // a grab rail for zero g
   });
   roomOnWall(ctx, X(0.47), F - 68, () => roomPorthole(ctx, X(0.47), F - 68, 13, s.spin));
