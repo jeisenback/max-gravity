@@ -25,6 +25,14 @@ function stageAt(days, pr) {
   return pr < s.couch || pr > 1 - s.couch ? 'couch' : off < s.float ? 'float' : off < s.secure ? 'secure' : 'move';
 }
 
+// The star streaks at the flip (#962): a share of their length and light, STREAK_HUSH while the crew are strapped in and weightless (the `secure`
+// span), easing back to 1 over as long again either side, so the view does not pull the eye off the ship when the people in it do the most.
+const STREAK_HUSH = 0.35;
+function streakHush(days, pr) {
+  const sec = burnStages(days).secure, off = Math.abs(pr - 0.5);
+  return off <= sec ? STREAK_HUSH : off >= 2 * sec ? 1 : STREAK_HUSH + (1 - STREAK_HUSH) * (off - sec) / sec;
+}
+
 // Burn seconds per real second, with `speed` from BURN_SPEEDS and `drive` the drive's rate (engineering.js burnSpeed): the speed, or none paused,
 // and in the flip the rate that makes it last FLIP_REAL.
 function burnRate(t, speed, drive) {
