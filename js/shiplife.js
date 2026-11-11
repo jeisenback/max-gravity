@@ -232,6 +232,27 @@ function headTurn(p, people, morning) {
   Object.assign(p, { queue: 'door', doorAt: k, ticket: Math.max(0, ...door.map(o => o.ticket)) + 1, tx: headDoorX(k) });
 }
 const nightHaunts = role => (role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 });
+// The bill for night `night` with a scene's record (#951) on its post put in, as said and shown: { bridge, engine }.
+function billWithWatch(bill, w, night) {
+  const out = { ...bill };
+  if (w && w.night === night && w.post in out) out[w.post] = w.stands;
+  return out;
+}
+// The handover line (#1034): who has the bridge and who the engine room, by `names` (an id to a first name, the hand 'you'). Pure.
+function billLine(bill, names) {
+  const say = (key, vars) => sceneSay('scene:watch-bill', key, vars), n = id => names[id] || id;
+  if (bill.bridge && bill.engine) return say('tonight', { bridge: n(bill.bridge), engine: n(bill.engine) });
+  if (bill.bridge) return say('tonight.bridge', { bridge: n(bill.bridge) });
+  return bill.engine ? say('tonight.engine', { engine: n(bill.engine) }) : '';
+}
+const billNames = people => Object.fromEntries(people.filter(p => p.id).map(p => [p.id, p.role === 'you' ? 'you' : p.name]));
+// The bill on a night of this burn, `ahead` nights after tonight, with a scene's record in (the card, the handover line). Null with no burn.
+function billOn(ahead = 0) {
+  const t = G.transit, s = nightState();
+  if (!t || !s) return null;
+  const night = G.state.day + shipDay(t.elapsed).day + ahead;
+  return billWithWatch(watchBill(rosterOf(t.aboard || [], s), night), t.watch, shipDay(t.elapsed).day + ahead);
+}
 // Tonight's bill and a scene's record, from the burn as it stands, for what reads them outside the frame's ship state (isAsleep, the dusk).
 const nightState = () => { const t = G.transit; if (!t) return null; const st = G.state, hurt = st.crew.filter(id => (st.injured || {})[id]);
   const s = { hurt, you: typeof handHurt === 'function' && handHurt(), watch: watchTonight(t) }; s.bill = watchBill(rosterOf(t.aboard || [], s), st.day + shipDay(t.elapsed).day); return s; };
@@ -669,6 +690,12 @@ function lifeTick(dt) {
     comm(`[Ship] ${lineWords('lines:ship-lights', dark ? 'dusk' : 'dawn', LIFE_NOTES[dark ? 'dusk' : 'dawn'])}`);
     const ns = nightState();
     for (const p of people) if (!onWatchTonight(p, ns)) p.wait = Math.min(p.wait, lifeRand(0.2, 3));
+  }
+  const today = shipDay(G.transit.elapsed);
+  if (today.block === 'handover' && G.transit.billSaid !== today.day) {  // the watch bill, said once as the handover begins (#1034)
+    G.transit.billSaid = today.day;
+    const line = billLine(billOn(0), billNames(people));
+    if (line) comm(`[Ship] ${line}`);
   }
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
   const block = shipDay(G.transit.elapsed).block, state = shipState(G.state, G.transit, ship().armor, lifeRnd, { aid: (roleHolder('medic') || {}).id, you: handHurt() });

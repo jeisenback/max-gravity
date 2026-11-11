@@ -80,3 +80,61 @@ test('on the hand\'s bridge night the cutaway has them on the bridge and the pil
   assert.deepEqual(r.ines, { room: 'berths', at: 'bunk' });
   assert.deepEqual(r.asleep, [true, r.bill.engine !== r.tomas], 'Ines asleep; Tomas asleep unless he has the engine room tonight');
 });
+
+// ---------- seen and said (#1034, task 2) ----------
+
+const burnHelpers = () => {
+  window.onBurnAtNight = (bridgeIndex = 1) => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    G.state.story.next = 1e9; G.state.tutorial = null;
+    uatBurn('Earth', 'mars'); const t = G.transit; t.left = t.total * 0.3; t.times = []; t.chatter = 1e9; t.aboard = null; shipPeople();
+    let d = 0; while ((G.state.day + d) % 4 !== bridgeIndex) d++;
+    t.elapsed = (d + 0.5) * SHIP_DAY - 6;  // supper, before that night's handover
+    return t;
+  };
+};
+
+test('the bill is said in one line: who has the bridge and who the engine room, "you" for the hand', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const names = { 'c:mateo': 'Mateo', 'c:hana': 'Hana', you: 'you' };
+    return [billLine({ bridge: 'c:mateo', engine: 'c:hana' }, names), billLine({ bridge: 'you', engine: 'c:hana' }, names), billLine({ bridge: null, engine: 'c:hana' }, names)];
+  });
+  await done();
+  assert.deepEqual(r, ['The watch tonight: Mateo on the bridge, Hana in the engine room.', 'The watch tonight: you on the bridge, Hana in the engine room.', 'The watch tonight: Hana in the engine room.']);
+});
+
+test('the line is said once as the handover begins, and not again through it; nothing is said at port', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurnAtNight(1), said = () => t.comms.filter(c => /The watch tonight/.test(c.text || c)).length;
+    t.comms = []; G.speed = 1;
+    lifeTick(0.016); const before = said();
+    t.elapsed += SHIP_DAY * 0.06; lifeTick(0.016);  // into the handover
+    const once = said();
+    for (let i = 0; i < 10; i++) { t.elapsed += 0.2; lifeTick(0.016); }
+    const after = said();
+    G.mode = 'landed'; lifeTick(0.016);
+    return { before, once, after, port: said() };
+  });
+  await done();
+  assert.deepEqual(r, { before: 0, once: 1, after: 1, port: 1 });
+});
+
+test('the Watch bill card shows tonight and the next three nights on a burn, the hand\'s marked, and is not shown at port', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    onBurnAtNight(2); const html = watchBillCard(), div = document.createElement('div'); div.innerHTML = html;
+    const rows = [...div.querySelectorAll('.watch-night')].map(x => x.textContent);
+    G.transit = null; G.mode = 'landed';
+    return { title: /Watch bill/.test(div.textContent), rows, port: watchBillCard() };
+  });
+  await done();
+  assert.equal(r.title, true);
+  assert.equal(r.rows.length, 4);
+  assert.match(r.rows[0], /\(yours\)/, 'tonight is the hand\'s bridge night');
+  assert.equal(r.rows.filter(x => /\(yours\)/.test(x)).length, 1, 'once in four nights');
+  assert.equal(r.port, '');
+});

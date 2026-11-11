@@ -7728,6 +7728,13 @@
   ]
  },
  {
+  "id": "scene:watch-bill",
+  "plays": [],
+  "title": "Watch bill",
+  "text": "The watch tonight: Mateo on the bridge, Hana in the engine room. | The watch tonight: you on the bridge. | The watch tonight: Hana in the engine room. | Tonight | Night 2 | (yours) | nobody",
+  "labels": []
+ },
+ {
   "id": "scene:inspection:good",
   "plays": [
    {
