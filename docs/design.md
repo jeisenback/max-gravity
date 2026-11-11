@@ -106,7 +106,7 @@ The rule here is the repo's rule: write what the next work needs, nothing extra.
 
 ### Needed before chapter two goes on
 
-1. **The powers (`docs/bible/owners.md`), drafted 2026-11-11 for review.** Two layers: the blocs (the Arcology Pact, the Dome Pact, the Guild Federation) as each region's law, and the major owners (Tycho, Kaur, Van Leeuwen, Ballast) inside them. The page lists what the code changes, in order: the names, then the wars, then the owners' standing, then the war. It unblocks chapter two pieces 2 and 5, and standing as a currency (`progression.md` layer 6).
+1. **The powers (`docs/bible/owners.md`), drafted 2026-11-11 for review.** Two layers: the blocs (the Arcology Pact, the Dome Pact, the Guild Federation) as each region's law, and the powers inside them in two tiers: nine major powers (four in play from chapter 2, five coming in with chapters 2 and 3) and the minor powers the bible already has, with the blocs of chapter 6 to come and one entry shape for adding more. It also sets how far the player reaches, a ring of powers a chapter. It lists what the code changes, in order, and unblocks chapter two pieces 2 and 5, and standing as a currency (`progression.md` layer 6).
 2. **The hand as captain, built.** The bible has it (`chapter-2.md`); the code still picks a master. It comes before pieces 2 to 6, since each of them reads who holds the bridge.
 3. **Chapter two's pieces in the bible.** No more specs are written (the owner, 2026-11-11): a piece's design goes into the bible's pages, and the code follows them. `chapter-2.md` has the outline. The meeting and the vote (piece 3) is the one new kind of system, and its rule (who votes how, and what moves a member) is stated once, in `chapter-2.md` or a page of its own, so pieces 5 and 6 read it rather than restate it.
 
@@ -125,7 +125,7 @@ These are a save-format page, a standalone storylet schema guide, ship-customiza
 
 1. Read the amended `chapter-2.md` and the masters' sheets, or say what changes.
 2. Approve `progression.md` and `later-chapters.md`, or say what changes. Both are built on, and both are still drafts.
-3. Read `owners.md`: the two layers, the names and the four major owners.
+3. Read `owners.md`: the two layers, the names, the major and minor powers, and the player's reach by chapter.
 
 ## Assumptions to confirm
 

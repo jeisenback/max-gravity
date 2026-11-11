@@ -48,7 +48,7 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 21. `later-chapters.md`: a draft of chapters 4 to 7 (more hulls, a place, alliances, a threat), where fleets, outposts and the blocs arrive, and what chapter 2 should keep in mind for them.
 22. `progression.md`: how a hand grows over a run: the sheet, the skill lines, the picks, traits, papers and standing, each earned differently and all read by the one check rule; what each chapter adds.
 23. `look.md`: how the burn view looks: a clean frame around a worn, cramped ship, rooms as boxes in perspective, bunks that each belong to someone, warm light in a cold hull (approved 2026-11-11), with its reference frame `look-target.png`.
-24. `owners.md`: the powers, in two layers: the blocs that are the law of each region (the Arcology Pact, the Dome Pact, the Guild Federation) where the code's three powers sat, and the owners inside them (Tycho, Kaur, Van Leeuwen, Ballast) who own, compete and fight the war (draft, 2026-11-11).
+24. `owners.md`: the powers, in two layers: the blocs that are the law of each region (the Arcology Pact, the Dome Pact, the Guild Federation) where the code's three powers sat, and the powers inside them in two tiers, major (Tycho, Kaur, Van Leeuwen, Ballast and five more to come) and minor (the places, co-ops, trades and havens), with how far the player can move them, chapter by chapter (draft, 2026-11-11).
 
 ## Where the game must change to fit
 

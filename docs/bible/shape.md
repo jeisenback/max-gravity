@@ -43,6 +43,8 @@ As the world opens, the player can take part in its big events, steer between th
 
 None of these is the right way. Each has its own people, risks and endings.
 
+How far the player can move the world widens with what they hold: a ring of powers a chapter, from their shipmates in chapter 1 to a bloc in chapter 6 (`owners.md`, How far the player reaches).
+
 ## Events in the world
 
 The world has events that run whether or not the player joins them. The first is an **owners' war**: two large owners fighting over something both need (a port, a fuel depot, the lift off Earth), with convoys, blockades, hired guns, seized cargo and insurance rates going up across the system. It rumbles through chapter 2, and is the reason for the lender's squeeze in its second half; it breaks out in chapter 3. It is the fuel war (`the-fuel-war.md`).
