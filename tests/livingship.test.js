@@ -914,3 +914,148 @@ test('the medbay reads old and cared for: a newer scanner bolted on, wear at fix
     assert.ok(run.length >= 1 && ties.every(t => calls.slice(li, lj).some(k => /^(lineTo|quadraticCurveTo)$/.test(k[0]) && k[k.length - 1] >= t[1])), `${at}: the IV line runs down the pole through the ties`);
   }
 });
+
+// #933, the hold on the drive deck: slatted crates on pallets in stacks of three, each with its serial stencilled as marks in a box the code names
+// (holdLabel, for the contract's good, #936), strapped to rings in the deck under a cargo net that bulges at the flip; the pallet jack, toned down, its
+// handle at the waist; the lamp swinging on its cable; the hold log floating at the flip. Drawn at the burn view's zoom in a window 1000, 1280
+// and 1600 wide, empty, half full and full.
+const { holdCrate, holdLabel, FIG_TALL } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['holdCrate', 'holdLabel', 'FIG_TALL']);
+const HOLD_PROPS = [['#8a7a3a', 'the pallet jack\'s body'], ['#7a6a34', 'its forks'], ['#5e646a', 'its handle'], ['#1a2430', 'its wheels'], ['#5a6470', 'the lamp\'s shade'], ['#a89a78', 'the lamp\'s glass']];
+const HOLD_CRATE_PROPS = [['#3e3426', 'the pallets'], ['#4a4436', 'the straps'], ['#6a583c', 'the crates\' battens']];
+const HOLD_INK = ['#7a6c50', '#6a7a7a'], HOLD_NET = '#8a7e62', HOLD_RING = '#4a6680', HOLD_WOOD = ['#5a4a34', '#54462f', '#4a5a5e', '#5e4e36', '#4e4230'];
+const holdCase = (pr, zoom, cargo) => ({ r: layoutBox(LAYOUTS.freighter, 'hold'), s: RS({ w: phaseWeights(pr), zoom, cargo, damage: { marks: new Set(), severe: false } }) });
+const holdParts = (r, s) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'hold', r, s); return { calls, parts: filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })) }; };
+// every point a stroke of the colour col went through, in world units
+const strokePts = (calls, col) => {
+  const out = []; let pts = [], stroke = null;
+  for (const [k, ...a] of calls) {
+    if (k === 'strokeStyle') stroke = a[0]; else if (k === 'beginPath') pts = []; else if (k === 'moveTo' || k === 'lineTo') pts.push(a); else if (k === 'quadraticCurveTo') pts.push(a.slice(2));
+    else if (k === 'stroke' && stroke === col) out.push(...pts);
+  }
+  return out;
+};
+test('the hold is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
+  for (const cargo of [0, 0.5, 1]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.66, 0.96, 1.24]) {
+    const { r, s } = holdCase(pr, zoom, cargo), at = `cargo ${cargo}, ${pr}, ${zoom}`;
+    const c = fakeCtx(); drawRoom(c, 'hold', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'hold', r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of [...HOLD_PROPS, ...(cargo ? HOLD_CRATE_PROPS : [])]) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === HOLD_RING), `${at}: the floor rings`);
+    const outlined = filledParts(calls).filter(p => p.outlined);
+    assert.ok(outlined.length >= 8 + 3 * Math.round(12 * cargo) + 4 * Math.ceil(Math.round(12 * cargo) / 3), `${at}: the props outlined like the figures (${outlined.length})`);
+    for (const { col } of outlined.filter(p => /^#[0-9a-f]{6}$/.test(p.col))) {
+      const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
+    }
+    for (const col of ['#c9a227', '#ffe2b8', '#222']) assert.equal(fills(col), 0, `${at}: no bright or black block (${col})`);
+    // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall
+    const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 34 - 14 / zoom, y1: r.top + 34 + 4 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v } of roomOwn('hold', r, s)) {
+      const pts = k === 'fillRect' ? [[v[0], v[1]], [v[0] + v[2], v[1]], [v[0], v[1] + v[3]], [v[0] + v[2], v[1] + v[3]], [v[0] + v[2] / 2, v[1] + v[3] / 2]] : /^(moveTo|lineTo)$/.test(k) ? [v] : k === 'quadraticCurveTo' ? [v.slice(2)] : [];
+      for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} under the room's name`);
+    }
+  }
+  const stillAt = t => { const { r, s } = holdCase(0.5, 0.96, 1), c = fakeCtx(); drawRoom(c, 'hold', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('the hold\'s crates come from the cargo, in stacks of three, each with its serial in a clear, named box (#933, #936)', () => {
+  for (const cargo of [0, 1 / 12, 0.5, 7 / 12, 1]) for (const zoom of [0.66, 0.96, 1.24]) {
+    const { r, s } = holdCase(0.3, zoom, cargo), n = Math.round(12 * cargo), at = `cargo ${cargo}, ${zoom}`, { calls, parts } = holdParts(r, s);
+    const bodies = parts.filter(p => HOLD_WOOD.includes(p.col) && p.x1 - p.x0 > 30);
+    assert.equal(bodies.length, n, `${at}: ${n} crates (${bodies.length})`);
+    const name = { x1: r.x0 + 12 + 60 / zoom, y1: r.top + 34 + 4 / zoom };
+    for (let k = 0; k < n; k++) {
+      const c = holdCrate(r, k), b = holdLabel(r, k);
+      assert.ok(bodies.some(p => Math.abs(p.x0 - c.x) < 0.01 && Math.abs(p.y0 - c.y) < 0.01), `${at}: crate ${k} drawn where holdCrate puts it`);
+      if (k % 3) assert.ok(Math.abs(c.x - holdCrate(r, k - 1).x) < 0.01 && Math.abs(c.y + c.h - holdCrate(r, k - 1).y) < 0.01, `${at}: crate ${k} on the one under it`);
+      else assert.ok(c.y + c.h <= r.floor - 3 && c.y + c.h >= r.floor - 6 && (k === 0 || c.x > holdCrate(r, k - 1).x + c.w), `${at}: crate ${k} on a pallet at the foot of the next stack`);
+      assert.ok(c.x > name.x1 && c.x + c.w < r.x1, `${at}: crate ${k} in the room, clear of the name`);
+      assert.ok(b.x >= c.x + 4 && b.x + b.w <= c.x + c.w - 4 && b.y >= c.y + 6 && b.y + b.h <= c.y + c.h - 6 && b.w >= 28 && b.h >= 9, `${at}: crate ${k}'s label box ${JSON.stringify(b)} on its front`);
+      // its serial: marks, not text, in paint near the wood's own tone, inside the box, and nothing drawn over the box after them
+      const inside = (x, y) => x > b.x + 0.01 && x < b.x + b.w - 0.01 && y > b.y + 0.01 && y < b.y + b.h - 0.01;
+      const marks = calls.flatMap((q, i) => q[0] === 'fillRect' && i > 0 && calls[i - 1][0] === 'fillStyle' && HOLD_INK.includes(calls[i - 1][1]) && inside(q[1] + q[3] / 2, q[2] + q[4] / 2) ? [i] : []);
+      assert.ok(marks.length >= 6, `${at}: crate ${k}'s serial marks (${marks.length})`);
+      for (const i of marks) { const q = calls[i]; assert.ok(q[1] >= b.x && q[1] + q[3] <= b.x + b.w && q[2] >= b.y && q[2] + q[4] <= b.y + b.h && q[3] <= 2 && q[4] <= 3, `${at}: a mark ${q.slice(1)} small, in crate ${k}'s box`); }
+      const last = calls.reduce((m, q, i) => q[0] === 'fillRect' && i > 0 && [...HOLD_INK, '#5e5a48', '#3a3226'].includes(calls[i - 1][1]) && inside(q[1] + q[3] / 2, q[2] + q[4] / 2) ? i : m, -1);  // the serial and its handling plate
+      let tf = 0;
+      for (const q of calls.slice(last + 1)) {
+        if (q[0] === 'save') tf++; else if (q[0] === 'restore') tf--;
+        if (tf) continue;  // a part moved by ctx.translate (the lamp, the hold log)
+        const pts = q[0] === 'fillRect' ? [[q[1] + q[3] / 2, q[2] + q[4] / 2], [q[1], q[2]], [q[1] + q[3], q[2] + q[4]]] : /^(moveTo|lineTo)$/.test(q[0]) ? [q.slice(1)] : q[0] === 'quadraticCurveTo' ? [q.slice(3)] : q[0] === 'arc' ? [q.slice(1, 3)] : [];
+        for (const [x, y] of pts) assert.ok(!inside(x, y), `${at}: ${q[0]} ${q.slice(1)} over crate ${k}'s label box`);
+      }
+    }
+    const serials = Array.from({ length: n }, (_, k) => calls.filter((q, i) => q[0] === 'fillRect' && i > 0 && HOLD_INK.includes(calls[i - 1][1]) && (b => q[1] >= b.x && q[1] < b.x + b.w && q[2] >= b.y && q[2] < b.y + b.h)(holdLabel(r, k))).map(q => q.slice(1).map(v => Math.round((v - holdLabel(r, k).x) * 10)).join()).join('|'));
+    assert.ok(n < 2 || new Set(serials).size >= Math.min(n, 4), `${at}: serials varied by crate`);
+    assert.equal(calls.filter(q => q[0] === 'fillText').length, 0, `${at}: no text on the crates`);
+    for (const col of [...HOLD_INK, '#5e5a48']) {
+      const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
+      assert.ok(Math.max(...v) <= 0x80 && Math.max(...v) - Math.min(...v) <= 0x30, `${col}: the serial's paint low in contrast`);
+    }
+    if (n >= 2) assert.ok(calls.some((q, i) => q[0] === 'fillStyle' && q[1] === '#5e5a48' && calls[i + 1][0] === 'fillRect' && (b => calls[i + 1][1] >= b.x && calls[i + 1][1] + calls[i + 1][3] <= b.x + b.w)(holdLabel(r, 1))), `${at}: a handling plate in crate 1's box`);
+  }
+});
+test('the hold\'s props are sized to a person: a crate two can lift, stacks under the head, the jack\'s handle at the waist (#933)', () => {
+  const { r } = holdCase(0.3, 1.24, 1), F = r.floor;
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { s } = holdCase(pr, 1.24, 1), { parts } = holdParts(r, s), at = `${pr}`;
+    for (const p of parts.filter(q => HOLD_WOOD.includes(q.col) && q.x1 - q.x0 > 30)) assert.ok(p.x1 - p.x0 >= 36 && p.x1 - p.x0 <= 44 && p.y1 - p.y0 >= 20 && p.y1 - p.y0 <= 28, `${at}: a crate (${p.x1 - p.x0} by ${p.y1 - p.y0}) two people can lift`);
+    assert.ok(F - holdCrate(r, 2).y <= FIG_TALL - 8, `${at}: a stack of three (${F - holdCrate(r, 2).y}) under a person's head (${FIG_TALL})`);
+    const pallets = parts.filter(q => q.col === '#3e3426');
+    assert.equal(pallets.length, 4, `${at}: a pallet under each stack`); for (const p of pallets) assert.ok(p.y1 >= F - 0.01 && p.y1 - p.y0 <= 5, `${at}: a pallet on the deck`);
+    const forks = parts.find(q => q.col === '#7a6a34'), body = parts.find(q => q.col === '#8a7a3a'), handle = parts.filter(q => q.col === '#5e646a'), grip = parts.find(q => q.col === '#8a6a48');
+    assert.ok(forks && forks.x1 - forks.x0 >= 44 && forks.x1 - forks.x0 <= 60 && forks.y1 - forks.y0 <= 4 && forks.y1 >= F - 3, `${at}: the forks, low and a pallet long (${forks && forks.x1 - forks.x0})`);
+    assert.ok(body && F - body.y0 <= 18 && body.x0 >= forks.x1 - 6, `${at}: the pump at the forks' heel, under the knee`);
+    assert.ok(handle.length && grip && F - grip.y0 >= 38 && F - grip.y0 <= 50, `${at}: the handle's grip at the waist (${grip && F - grip.y0})`);
+    assert.ok(forks.x0 > holdCrate(r, 11).x + 40 && grip.x1 < r.x1, `${at}: the jack clear of the stacks, in the room`);
+    const shade = parts.find(q => q.col === '#5a6470');
+    assert.ok(shade && shade.x1 - shade.x0 <= 16, `${at}: the lamp, small`);
+  }
+  for (const cargo of [0, 0.5]) { const { s } = holdCase(0.3, 1.24, cargo), { parts } = holdParts(r, s); assert.equal(parts.filter(q => q.col === '#3e3426').length, Math.ceil(Math.round(12 * cargo) / 3), `cargo ${cargo}: a pallet under each stack there is`); }
+});
+test('the hold\'s stacks are strapped to rings in the deck, under a cargo net that bulges at the flip (#933)', () => {
+  const { r } = holdCase(0.3, 0.96, 1), F = r.floor, top = pr => { const { s } = holdCase(pr, 0.96, 1), { calls } = holdParts(r, s); return Math.min(...strokePts(calls, HOLD_NET).map(p => p[1])); };
+  for (const cargo of [0, 0.25, 7 / 12, 1]) for (const pr of [0.02, 0.3, 0.5]) {
+    const { s } = holdCase(pr, 0.96, cargo), n = Math.round(12 * cargo), at = `cargo ${cargo}, ${pr}`, { calls, parts } = holdParts(r, s);
+    const rings = calls.filter((q, i) => q[0] === 'arc' && (calls.slice(0, i).filter(p => p[0] === 'strokeStyle').pop() || [])[1] === HOLD_RING);
+    assert.ok(rings.length >= 8 && rings.every(q => q[2] >= F - 4 && q[2] <= F), `${at}: rings in the deck (${rings.length})`);
+    const net = strokePts(calls, HOLD_NET);
+    if (!n) { assert.equal(net.length, 0, `${at}: no net over an empty hold`); continue; }
+    const stacks = Array.from({ length: Math.ceil(n / 3) }, (_, c) => ({ x0: holdCrate(r, 3 * c).x, x1: holdCrate(r, 3 * c).x + holdCrate(r, 3 * c).w, top: holdCrate(r, Math.min(n - 1, 3 * c + 2)).y }));
+    for (const st of stacks) {
+      assert.ok(net.some(([x, y]) => x > st.x0 && x < st.x1 && y <= st.top), `${at}: the net over the stack at ${st.x0}`);
+      const straps = parts.filter(p => p.col === '#4a4436' && p.x0 >= st.x0 - 1 && p.x1 <= st.x1 + 1);
+      assert.ok(straps.some(p => p.x1 - p.x0 >= 30 && p.y0 <= st.top), `${at}: a strap over the stack at ${st.x0}`);
+      for (const ex of [st.x0, st.x1]) {
+        assert.ok(straps.some(p => Math.abs((p.x0 + p.x1) / 2 - ex) < 2 && p.y1 >= F - 4.5 && p.y0 <= st.top), `${at}: a strap down the stack's side at ${ex} to the deck`);
+        assert.ok(rings.some(q => Math.abs(q[1] - ex) < 2.5), `${at}: a ring at its foot (${ex})`);
+      }
+    }
+    assert.ok(net.every(([x]) => x >= stacks[0].x0 - 7 && x <= stacks[stacks.length - 1].x1 + 7), `${at}: the net on the stacks`);
+    assert.ok(net.some(([x, y]) => x < stacks[0].x0 && y >= F - 4) && net.some(([x, y]) => x > stacks[stacks.length - 1].x1 && y >= F - 4), `${at}: tied down at both ends`);
+  }
+  assert.ok(top(0.5) <= top(0.3) - 2 && top(0.02) === top(0.3), `the net lifts off the stacks at the flip (${top(0.5)}, ${top(0.3)})`);
+});
+test('the hold reads old and cared for: crates of different ages, a replacement board, worn corners, tape, a mended net, a printed grip tagged temporary (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = holdCase(pr, 0.96, 1), F = r.floor, at = `${pr}`, { calls, parts } = holdParts(r, s);
+    const rects = col => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+    const inside = ([x, y, w, h], b) => x >= b.x0 - 0.01 && x + w <= b.x1 + 0.01 && y >= b.y0 - 0.01 && y + h <= b.y1 + 0.01;
+    const bodies = parts.filter(p => HOLD_WOOD.includes(p.col) && p.x1 - p.x0 > 30), cols = new Set(bodies.map(p => p.col));
+    assert.ok(cols.size >= 3 && cols.has('#4a5a5e'), `${at}: wooden crates of more than one age, and a newer moulded one`);
+    assert.ok(rects('#6e5c40').some(c => bodies.some(b => inside(c, b))), `${at}: a crate with a replacement board in fresher wood`);
+    const chips = rects('#7a6a50');
+    assert.ok(new Set(chips.map(c => bodies.findIndex(b => inside(c, b))).filter(i => i >= 0)).size >= 3, `${at}: worn corners on several crates`);
+    const tape = parts.find(p => p.col === '#7a7462');
+    assert.ok(tape && tape.x1 - tape.x0 <= 10 && bodies.some(b => tape.x0 < b.x1 && tape.x1 > b.x1 - 1 && tape.y0 < b.y0 + 1), `${at}: tape over a crate's corner (${JSON.stringify(tape)})`);
+    const net = strokePts(calls, HOLD_NET), mend = strokePts(calls, '#5e6a50');
+    assert.ok(mend.length >= 2 && mend.every(([x]) => x >= Math.min(...net.map(p => p[0])) && x <= Math.max(...net.map(p => p[0]))), `${at}: a mend in the net in another cord`);
+    const grip = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050'), handle = parts.filter(p => p.col === '#5e646a');
+    assert.ok(grip && handle.some(h => h.y0 <= grip.y1 && h.x1 >= grip.x0), `${at}: a printed grip on the jack's handle`);
+    assert.ok(tag && tag.y0 >= grip.y1 - 1 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its temporary tag hung from it (${JSON.stringify(tag)})`);
+    const jack = parts.find(p => p.col === '#7a6a34');
+    assert.ok(rects('#3e4c5a').filter(c => c[1] > F - 14 && c[0] >= jack.x0 - 2 && c[0] <= jack.x1 + 10).length >= 2, `${at}: scuffs low on the wall where the jack is parked`);
+  }
+});
