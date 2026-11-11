@@ -151,7 +151,7 @@ function roomStool(ctx, x, F, back) {
     const b0 = back > 0 ? n(sx - 13) : n(sx + 8), b1 = n(b0 + 5), lean = back > 0 ? 1.5 : -1.5;
     roomPart(ctx, `M ${b0} ${F - 20} L ${b1} ${F - 20} L ${n(b1 + lean)} ${F - 49} L ${n(b0 + lean)} ${F - 49} Z`, '#2a4664', { top: 1, side: back > 0 ? -1.5 : 1.5 });
     const hx = back > 0 ? b1 : b0;  // the harness: a shoulder strap down the back's front to its buckle, and the lap belt
-    ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.moveTo(hx + lean, F - 47); ctx.quadraticCurveTo(hx - 2 * back, F - 36, hx - back, F - 24); ctx.lineTo(hx - 6 * back, F - 22); ctx.stroke();
+    ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.moveTo(hx + lean, F - 47); ctx.quadraticCurveTo(hx - 2 * back, F - 36, hx - back, F - 24); ctx.lineTo(hx + 6 * back, F - 22); ctx.stroke();
     roomFlat(ctx, hx - back - 1.25, F - 35, 2.5, 2, '#7a8794');
   }
   roomPart(ctx, roomRound(sx - 10, F - FIG_SEAT, 20, 4.5, 2), '#2a4664', { top: 1, under: 1, solid: 0.25 });
