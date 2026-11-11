@@ -1306,6 +1306,119 @@ function roomMedbay(ctx, r, s, X, W) {
   if (px !== null) roomMedBag(ctx, px, X, F, s);
 }
 
+// The head and shower on the mess deck (#933), across the well from the galley. The head's door is shut in a partition on the galley side,
+// just past where the morning's queue waits by it (shiplife.js headDoorX, at 0.1 and 0.16 of the room): the partition runs from the cut back to
+// the back wall, and the cutaway shows its face toward the eye, the inside of the door, so the one inside is seen, as every room is. On the
+// door its slide latch, its hinges and the stores list pinned on its back (a line has someone adding soap to it); the occupied lamp on its frame
+// at the cut, by the latch (the drawing reads no state, so the lamp is unlit). Past it, from the partition in: the toilet, for zero g (its seat
+// at the seat's height on a newer pedestal on the old plinth with fresh bolts, the lid up, the thigh bar over the seat, the foot hold with a
+// printed bracket tagged temporary, the funnel in its clip on its hose, the suction line down through the deck with a cable tied along it); a
+// grab rail over it and one in the passage where the queue waits. From the right wall in: two lockers for wash kit (vents, number plates,
+// handles, one newer in another finish); the shower stall on its tray, its door with frosted glass, the rose and its flow restrictor seen
+// through it, the handle and the hot water's timer counting the ration. In the middle, where the one inside stands, the basin hung off the
+// back wall at the waist with its push tap, and on the wall over it the mirror (taped over a crack) at the eye, the shelf under it with a
+// mug, and the towel rail. The room's name is long: its plate covers the left half of the room from 61 to 82 over the floor at the smallest
+// zoom, so everything on the wall there is under 61 and the mirror is past it. Its lamp is a fitting (LAMP_FITTED), over the basin.
+function roomHead(ctx, r, s, X) {
+  const F = r.floor, T = r.top, n = v => Math.round(v * 100) / 100, e = roomEye(r), I = (x, y, d) => roomInto(e, x, y, d).map(n);
+  const at = (d, px, py, fn) => {  // fn draws round (ax, ay), which lands at (px, py) at the depth d (1: on the back wall, in the wall tone)
+    const q = 1 - d * (1 - e.k), ax = n(e.vx + (px - e.vx) / q), ay = n(e.vy + (py - e.vy) / q);
+    if (d === 1) roomOnWall(ctx, ax, ay, () => fn(ax, ay)); else roomAtDepth(ctx, ax, ay, d, () => fn(ax, ay));
+  };
+  const rail = (x, y, w) => {  // a grab rail on two brackets, centred on x
+    for (const bx of [x - w / 2 + 2, x + w / 2 - 4]) roomFlat(ctx, bx, y - 2, 2, 4.5, '#2a3e54');
+    roomPart(ctx, roomRound(n(x - w / 2), n(y - 1.5), w, 3, 1.5), '#3a5470', { top: 0.6, under: 0.8 });
+  };
+  const P = n(X(0.205)), tx = n(X(0.32)), B = n(X(0.56)), S0 = n(X(0.69)), L1 = n(X(0.985));
+  // On the wall: the grab rails, in the passage and over the toilet; the mirror at the eye over the basin, the shelf under it; the towel rail.
+  at(1, n(P - 22), F - 50, (x, y) => rail(x, y, 26));
+  at(1, tx, F - 52, (x, y) => rail(x, y, 26));
+  at(1, B, F - 77, (x, y) => {
+    roomPart(ctx, roomRound(x - 10, y - 8, 20, 16, 1.2), '#34506a', { top: 0.8, under: 1 });
+    roomFlat(ctx, x - 8, y - 6, 16, 12, '#3b566e'); roomFlat(ctx, x - 8, y - 6, 5, 12, 'rgba(170,200,230,0.1)');
+    roomPart(ctx, `M ${n(x + 4)} ${n(y - 6)} L ${n(x + 8)} ${n(y - 6)} L ${n(x + 8)} ${n(y - 2)} Z`, '#7a7462', { top: 0 });  // tape over a crack in its corner
+    for (const [sx, sy] of [[x - 9, y - 7], [x + 9, y - 7], [x - 9, y + 7], [x + 9, y + 7]]) roomDot(ctx, sx, sy, 0.5, '#56708c');
+  });
+  at(1, B, F - 66, (x, y) => {  // the shelf, a mug on it with a toothbrush
+    roomPart(ctx, roomRound(x - 11, y, 22, 2.5, 0.8), '#22405c', { top: 0.6, under: 0.6 });
+    roomPart(ctx, roomRound(x + 3, y - 5, 5, 5, 1), '#5a6a7a', { top: 0.6, side: 0.8 }); roomFlat(ctx, x + 5, y - 8, 1, 3.5, '#6a8a7a');
+  });
+  at(1, n(X(0.627)), F - 62, (x, y) => {  // the towel rail, two towels on it
+    for (const bx of [x - 12, x + 10]) roomFlat(ctx, bx, y - 1, 2, 4, '#2a3e54');
+    roomPart(ctx, roomRound(x - 12, y, 24, 2, 1), '#5a6e84', { top: 0.6 });
+    [['#7a3a34', -11], ['#3a5a7a', 0.5]].forEach(([col, dx]) => {
+      roomPart(ctx, `M ${n(x + dx)} ${y} L ${n(x + dx + 10.5)} ${y} L ${n(x + dx + 10)} ${y + 25} Q ${n(x + dx + 5.2)} ${y + 26.4} ${n(x + dx + 0.5)} ${y + 25} Z`, col, { top: 1, side: 1.2 });
+      roomFlat(ctx, x + dx + 1, y + 21, 8.5, 1, figShade(col, 0.7));
+    });
+  });
+  // The partition from the cut back to the back wall, its face toward the eye; the door's frame and the door shut in it, its latch, hinges and
+  // the stores list; the frame's edge at the cut, and the occupied lamp on it.
+  roomFace(ctx, [[P, T], [P, F], I(P, F, 1), I(P, T, 1)], '#0e1b28', true);
+  const quad = (d0, d1, h0, h1) => { const p = [I(P, F - h1, d0), I(P, F - h1, d1), I(P, F - h0, d1), I(P, F - h0, d0)]; return `M ${p[0].join(' ')} L ${p[1].join(' ')} L ${p[2].join(' ')} L ${p[3].join(' ')} Z`; };
+  roomPart(ctx, quad(0, 0.9, 0, 91), '#2a3c50', { top: 0 });
+  roomPart(ctx, quad(0.1, 0.85, 0, 88), '#30465c', { top: 0.6 });
+  for (const h of [10, 52]) { const [hx, hy] = I(P, F - h, 0.83); roomFlat(ctx, hx - 0.6, hy - 2, 1.2, 4, '#56708c'); }  // the hinges
+  roomPart(ctx, quad(0.4, 0.62, 44, 55), '#8a8676', { top: 0 });  // the stores list, pinned up
+  for (let l = 0; l < 3; l++) { const [lx, ly] = I(P, F - 52 + l * 2.6, 0.45); roomFlat(ctx, lx, ly, 2.2 - (l % 2) * 0.8, 0.5, '#5a5648'); }
+  { const [lx, ly] = I(P, F - 42, 0.16); roomFlat(ctx, lx, ly - 1.2, 3, 2.4, '#8796a5'); roomFlat(ctx, lx + 0.2, ly - 5, 2, 1.2, '#5a6a78'); }  // the slide latch, the paint worn over it
+  roomFlat(ctx, P - 1, T, 2, F - T, '#04080d');
+  roomPart(ctx, roomRound(P - 3, F - 57, 6, 8, 1.2), '#263a50', { top: 0.5, under: 0.8 }); roomDot(ctx, P, F - 53, 1.6, '#4a2a26');
+  // The toilet: its plinth with fresh bolts, the suction line down through the deck, a cable tied along it; the pedestal, the lid up, the seat,
+  // the thigh bar over it on its arms, the funnel in its clip on its hose, and the foot hold with its printed bracket and its tag.
+  roomPart(ctx, roomRound(tx - 15, F - 3, 30, 3, 0.8), '#24384c', { top: 0.5, solid: 0.5 });
+  for (const bx of [tx - 13, tx + 11.8]) roomFlat(ctx, bx, F - 2.2, 1.2, 1.2, '#8a929a');
+  roomPart(ctx, roomRound(tx - 22, F - 16, 5, 24, 1), '#34444f', { top: 0, side: 1 });
+  roomPart(ctx, roomRound(tx - 22, F - 16, 12, 4, 1.5), '#34444f', { top: 0.5 });
+  ctx.strokeStyle = roomTint('#3a3a40'); ctx.lineWidth = 0.9; roomSeg(ctx, [[tx - 23.5, F - 30], [tx - 23.5, F + 6]]);
+  for (const ty of [F - 12, F - 4]) roomFlat(ctx, tx - 24, ty, 7, 1.2, '#1e2a36');
+  roomPart(ctx, roomRound(tx - 9, F - 41, 18, 17, 3), '#46545f', { top: 0.6, side: 1 });
+  roomPart(ctx, `M ${tx - 10} ${F - 3} L ${tx - 11} ${F - 20} L ${tx + 11} ${F - 20} L ${tx + 10} ${F - 3} Z`, '#4e5e6e', { top: 0.8, side: 1.2, solid: 0.45, shadow: false });
+  roomPart(ctx, roomRound(tx - 4, F - 16, 8, 4, 0.8), '#3e4c58', { top: 0.4 });  // the flush and suction switch
+  roomPart(ctx, roomRound(tx - 13, F - 23, 26, 3, 1.2), '#3a4a58', { top: 0.6, solid: 0.5, shadow: false });
+  for (const ax of [tx - 14, tx + 12.4]) roomFlat(ctx, ax, F - 31, 1.6, 9, '#3a4652');
+  roomPart(ctx, roomRound(tx - 15, F - 33, 30, 3.5, 1.5), '#2e3a46', { top: 0.6 });
+  ctx.strokeStyle = roomTint('#2a3440'); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(tx + 15.5, F - 20); ctx.quadraticCurveTo(tx + 20, F - 9, tx + 10, F - 8); ctx.stroke();
+  roomFlat(ctx, tx + 11, F - 25, 2, 3, '#3a4652');
+  roomPart(ctx, `M ${tx + 12} ${F - 27} L ${tx + 19} ${F - 27} L ${tx + 17} ${F - 20} L ${tx + 14} ${F - 20} Z`, '#5a6470', { top: 0.5 });
+  for (const px of [tx - 14, tx + 12]) roomFlat(ctx, px, F - 4, 2, 4, '#34404c');
+  roomPart(ctx, roomRound(tx - 16, F - 6.5, 32, 2.5, 1), '#3a4a5e', { top: 0.5 });
+  roomPart(ctx, roomRound(tx + 14, F - 9, 4.5, 4.5, 1), '#8a6a48', { top: 0.5, side: 0.6 });
+  for (const ly of [F - 7.8, F - 6.4]) roomFlat(ctx, tx + 14.5, ly, 3.5, 0.4, '#6a5038');
+  roomPart(ctx, roomRound(tx + 15, F - 4, 3.5, 3.5, 0.6), '#9a9050', { top: 0.5 }); roomDot(ctx, tx + 16.75, F - 3, 0.5, '#4a4436');
+  for (const [sx, sw] of [[tx - 8, 5], [tx + 5, 4]]) roomFlat(ctx, sx, F - 2.4, sw, 0.8, '#5a6670');  // scuffs, where boots go
+  // From the right wall in: the lockers, the newer one in another finish; then the shower stall.
+  [['#24425e', 0], ['#2a3e4e', 1]].forEach(([col, k]) => {
+    const lx = n(L1 - 22 * (k + 1));
+    roomPart(ctx, roomRound(lx, F - 88, 22, 88, 1.2), col, { top: 1, side: -1, solid: 0.45 });
+    for (let v = 0; v < 4; v++) roomFlat(ctx, lx + 5, F - 82 + v * 2.4, 12, 1, '#0f1f30');
+    roomPart(ctx, roomRound(lx + 6, F - 70, 10, 5, 0.8), '#8a8270', { top: 0 }); roomFlat(ctx, lx + 8, F - 68, 2.5, 1, '#4a4436'); roomFlat(ctx, lx + 11.5, F - 68, 2.5, 1, '#4a4436');
+    roomFlat(ctx, lx + 16, F - 50, 2.5, 8, '#8796a5');
+    for (let v = 0; v < 4; v++) roomFlat(ctx, lx + 5, F - 14 + v * 2.4, 12, 1, '#0f1f30');
+  });
+  roomPart(ctx, roomRound(S0 - 2, F - 5, 52, 5, 1), '#24405e', { top: 1, solid: 0.65 });
+  roomPart(ctx, roomRound(S0, F - 92, 48, 87, 1.5), '#1e3a54', { top: 1, solid: 0.6, shadow: false });
+  roomFlat(ctx, S0 + 3, F - 89, 42, 83, '#132a3c');
+  ctx.strokeStyle = roomTint('#3d5a7a'); ctx.lineWidth = 1.6; roomSeg(ctx, [[S0 + 12, F - 58], [S0 + 12, F - 84], [S0 + 18, F - 84]]);
+  roomFlat(ctx, S0 + 10.5, F - 74, 3, 3, '#5a6a5e');  // the flow restrictor on the pipe, the water ration
+  roomPart(ctx, roomRound(S0 + 16, F - 87, 9, 4, 1.5), '#6a7a8a', { top: 0.5, under: 0.6 });
+  roomFlat(ctx, S0 + 7, F - 85, 34, 61, 'rgba(150,190,220,0.14)');  // the glass, frosted
+  for (const [dx, dy, dw, dh] of [[3, 89, 4, 83], [41, 89, 4, 83], [3, 89, 42, 4], [3, 24, 42, 18]]) roomPart(ctx, roomRound(S0 + dx, F - dy, dw, dh, 1), '#2e4a62', { top: 0.6, under: 0.6 });
+  roomPart(ctx, roomRound(S0 + 36, F - 56, 2.5, 14, 1), '#7a8a98', { top: 0, side: 0.6 });
+  roomPart(ctx, roomRound(S0 + 31, F - 74, 8, 7, 1), '#28384a', { top: 0.5 });  // the hot water's timer, its count lit, a push to start
+  for (let k = 0; k < 3; k++) roomFlat(ctx, S0 + 32.5 + k * 1.9, F - 72, 1.2, 2.4, k < 2 ? '#7fd8a0' : '#2e4a3a');
+  roomDot(ctx, S0 + 35, F - 68.8, 0.8, '#4a6a5a');
+  for (const [sx, sy, sw] of [[S0 + 8, F - 21, 4], [S0 + 30, F - 12, 5]]) roomFlat(ctx, sx, sy, sw, 0.8, '#3e5a76');  // chips in the door's kick panel
+  // In the middle, hung off the back wall: the basin at the waist, its push tap, the bracket and the trap under it.
+  at(0.7, B, F - 40, (x, y) => {
+    roomPart(ctx, roomRound(x - 3, y + 8, 6, 9, 1), '#36485a', { top: 0, side: 0.8 });
+    ctx.strokeStyle = roomTint('#3a4652'); ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(x + 2, y + 9); ctx.quadraticCurveTo(x + 7, y + 16, x + 2, y + 20); ctx.stroke();
+    roomPart(ctx, `M ${n(x - 14)} ${y} L ${n(x + 14)} ${y} L ${n(x + 12)} ${n(y + 5)} Q ${n(x + 8)} ${n(y + 10)} ${x} ${n(y + 10)} Q ${n(x - 8)} ${n(y + 10)} ${n(x - 12)} ${n(y + 5)} Z`, '#6e7e8e', { top: 0, under: 1 });
+    ctx.fillStyle = roomTint('#7a8a98'); ctx.beginPath(); ctx.ellipse(x, y, 14, 3, 0, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = roomTint('#2e3c4a'); ctx.beginPath(); ctx.ellipse(x, y + 0.3, 11, 2, 0, 0, Math.PI * 2); ctx.fill();
+    roomFlat(ctx, x + 5, y - 7, 2, 6, '#8796a5'); roomFlat(ctx, x, y - 7, 6, 1.6, '#8796a5'); roomDot(ctx, x + 6, y - 7.8, 1, '#56708c');
+  });
+}
+
 // The lamp: a pool of light mixing red (burn), warm (cruise) and a pulsing amber (flip), dimmed at night unless the room keeps its lights.
 // A ceiling lamp's fitting (#1024, look.md rule 5): its base plate on the ceiling's sliver from the cut back to the wall (e, the bay's eye), the
 // housing hung from it at the cut, the lens lit in the lamp's colour (lit) and a wire guard over the lens.
@@ -1368,13 +1481,13 @@ function drawDamage(ctx, r, s) {
 // The tower's rooms with no fittings yet (#972; their own are step 3, #973): the walls drawRoom gives every room, and the name the cutaway puts on each.
 const roomPlain = () => {};
 const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay,
-  head: roomPlain, workshop: roomPlain, airlock: roomPlain, lifesupport: roomPlain };
+  head: roomHead, workshop: roomPlain, airlock: roomPlain, lifesupport: roomPlain };
 // A room, r = { x0, x1, top, floor } in world units, drawn for the state s (w, time, zoom, spin, still, berths, cargo, torpedoes, fuel, burning, night,
 // asleep, well, and shell: how a bay's shell is drawn, the burn view's cache): walls, props, then its lamp.
 // Which way someone on a room's chair faces (#985): the bridge's and the guns' toward their consoles, the chair's back behind them (#933), the
 // medbay's stool toward the cot. The galley's bench is not here: at the mess table people face you.
 const SEAT_FACE = { bridge: 1, gunnery: -1, medbay: -1 };
-const LAMP_FITTED = ['bridge', 'berths', 'medbay', 'hold', 'gunnery', 'engine'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
+const LAMP_FITTED = ['bridge', 'berths', 'medbay', 'hold', 'gunnery', 'engine', 'head'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
 function drawRoom(ctx, id, r, s) {
   if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses
   const W = r.x1 - r.x0;
