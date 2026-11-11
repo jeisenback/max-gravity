@@ -115,7 +115,7 @@ test('a moment over a fight panel goes to the comms and leaves the panel; an own
   await done();
 });
 
-test('each site writes its count: the repel, the assault, the fight\'s end, the run, the ice home, the delivery, the heave-to, the citation, the rock, the hand hurt, a casualty', async () => {
+test('each site writes its count: the repel, the assault, the fight\'s end, the run, the ice home, the delivery, the inspection, the citation, the rock, the hand hurt, a casualty', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -128,7 +128,7 @@ test('each site writes its count: the repel, the assault, the fight\'s end, the 
     startDuel({ kind: 'pirate' }, false); f = G.nextEvent.fight; G.nextEvent = null; shipFightEnd(f, 'ran'); out.ran = rec().fightsRan; G.nextEvent = null; G.dialog = null;
     const real = Math.random; startShipFight({ kind: 'patrol', gov: 'Arcology Compact' }, true); out.fled = [rec().fled, rec().ranFromNavy]; G.nextEvent = null; G.dialog = null;  // counted before the roll, got away or not
     h.run = { ice: { edge: 3 }, tons: 20 }; iceHome(3); iceHome(-2); out.hauls = [rec().haulsClean, rec().haulsBad];
-    const stop = contactEvent({ kind: 'patrol', gov: 'Arcology Compact' }); stop.choices.find(c => /heave|Cut your drive/i.test(c.label)).run(); out.heave = rec().fines;
+    const inspect = inspectionScene(inspectionCause({ water: 50 }, 'Dome Concord', 0, false), currentPlanet()); inspect.choices[inspect.choices.length - 1].run(); out.heave = rec().fines;  // keeping out of it (inspection.js)
     citation(); out.cited = rec().fines;
     hurtHand({ hurt: new Set() }); out.hurt = rec().hurts;
     const c = repelStart(foe(), 'half'); c.covered = true; c.hurt = new Set(); c.dead = []; c.marked = []; Math.random = () => 0.99; repelCasualty(c, st.crew[0]); Math.random = real; out.mate = rec().matesHurt;
@@ -194,23 +194,20 @@ test('Salvager reads the seam on the rock, and Scarred ends a bar fight with no 
 
 // ---------- the readings (one line at a knob that exists) ----------
 
-test('Marked halves a pirate\'s pay-off and raises the heave-to fine; Hard Case costs two more points at a stop; Runner meets a raider ten km nearer', async () => {
+test('Marked halves a pirate\'s pay-off and raises the search\'s fine; Runner meets a raider ten km nearer', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(doorHelpers);
   const r = await ev(() => {
-    const st = setup(), h = hired(), out = {}, gov = 'Arcology Compact'; burn(); fixEnemy();
+    const st = setup(), h = hired(), out = {}; burn(); fixEnemy();
     const pay = () => { const c = contactEvent({ kind: 'pirate' }).choices.find(x => /pay|Pay/.test(x.label) && x.cost); const cr = st.credits; c.run(); return cr - st.credits; };
     st.credits = 200000; const plainPay = pay(); st.credits = 200000; const plainFine = heaveToFine();
     h.record = { fines: 2 }; st.credits = 200000; out.pay = [plainPay, pay()]; st.credits = 200000; out.fine = [plainFine, heaveToFine()];
-    const stop = () => { const rep0 = repOf(gov); contactEvent({ kind: 'patrol', gov }).choices.find(c => /Heave to/.test(c.label)).run(); return repOf(gov) - rep0; };
-    h.record = {}; st.rep[gov] = 0; h.fund = 100000; const plainRep = stop(); h.record = { boardingsWon: 2 }; st.rep[gov] = 0; h.fund = 100000; out.rep = [plainRep, stop()];
     const band = () => { startDuel({ kind: 'pirate' }, false); const f = G.nextEvent.fight; G.nextEvent = null; return RANGE_BANDS[f.state.band]; };
     h.record = {}; const plainBand = band(); h.record = { fightsRan: 3 }; out.band = [plainBand, band()];
     return out;
   });
   assert.ok(r.pay[0] > 0 && r.pay[1] === Math.round(r.pay[0] / 2), `the pay-off ${r.pay}`);
   assert.equal(r.fine[1], Math.round(r.fine[0] * 1.2), `the fine ${r.fine}`);
-  assert.equal(r.rep[1], r.rep[0] - 2, `the standing ${r.rep}`);
   assert.deepEqual(r.band, ['long', 'mid'], 'a raider at 40 km, 30 with Runner');
   await done();
 });

@@ -288,21 +288,6 @@ test('a hostile patrol is a navy stop for a hired hand: the same fight with guns
   await done();
 });
 
-test('a hired hand can heave to and let the ship pay a quarter of its fund, instead of fighting', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
-  await ev(helpers);
-  const r = await ev(() => {
-    const st = raid('gunner'), h = hired(), gov = 'Arcology Compact', cap = person(h.captain), op = cap.opinion;
-    st.rep[gov] = -30; h.fund = 20000;
-    const e = contactEvent({ kind: 'patrol', gov }), i = e.choices.findIndex(c => /Heave to/.test(c.label));
-    G.dialog = { event: e, choices: e.choices };
-    const t = chooseEvent(i);
-    return { i, fund: h.fund, rep: st.rep[gov], opinion: cap.opinion - op, text: /5,000 cr/.test(t) };
-  });
-  assert.ok(r.i >= 0); assert.equal(r.fund, 15000); assert.equal(r.rep, -10); assert.equal(r.opinion, -1); assert.ok(r.text);
-  await done();
-});
-
 test('a patrol that boards a hired hand\'s ship and holds the bridge searches it, fining the fund the heave-to\'s quarter, and does not rob it', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
@@ -770,20 +755,5 @@ test('a contract due on the arrival day is late after a run', async () => {
     return { before, lateBy, day: st.day, late: h.ledger[0] && h.ledger[0].late, due };
   });
   assert.equal(r.before, false); assert.equal(r.lateBy, 2); assert.equal(r.late, 2, 'delivered two days late');
-  await done();
-});
-
-test('heaving to on the ladder cutter meets the step, and the next burn brings the set piece, not the cutter again (the pair is parked)', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
-  await ev(helpers);
-  const r = await ev(() => {
-    const st = raid('pilot'), h = hired(); ladderDone(h, 'raider'); ladderDone(h, 'corsair'); h.deal = { price: 1000, day: st.day, until: st.day + 50, broker: false }; st.credits = Math.max(st.credits, 1000);
-    const spec = { kind: 'patrol', shipId: 'cutter', gov: 'Arcology Compact', ladder: 'cutter' }; h.fund = 20000;
-    const e = contactEvent(spec), shown = h.fights.done.slice(); G.dialog = { event: e, choices: e.choices };
-    chooseEvent(e.choices.findIndex(c => /^Heave to/.test(c.label)));
-    return { shown, done: h.fights.done.slice(), paid: 20000 - h.fund, next: (ladderNext(h, st, 'mars') || {}).id };
-  });
-  assert.deepEqual(r.shown, ['raider', 'corsair']); assert.deepEqual(r.done, ['raider', 'corsair', 'cutter']); assert.ok(r.paid > 0);
-  assert.equal(r.next, 'setpiece');
   await done();
 });

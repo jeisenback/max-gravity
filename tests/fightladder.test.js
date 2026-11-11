@@ -17,16 +17,13 @@ const walk = h => { const n = next(h); if (n) ladderDone(h, n.id); return n && n
 
 test('the steps come in order, each when its condition holds, and the parked pair never comes', () => {
   const h = {};
-  assert.deepEqual(plain(FIGHT_LADDER.map(s => s.id)), ['raider', 'corsair', 'cutter', 'pair', 'setpiece']);
+  assert.deepEqual(plain(FIGHT_LADDER.map(s => s.id)), ['raider', 'corsair', 'pair', 'setpiece'], 'no cutter: a navy stop is a port\'s inspection now (#993)');
   world.runs = 0; world.beats = false;
   assert.equal(next(h), null, 'nothing before the first run');
   world.runs = 1; assert.equal(walk(h), 'raider');
   assert.equal(next(h), null, 'the corsair waits for the third run');
   world.runs = 3; assert.equal(walk(h), 'corsair');
-  assert.equal(next(h), null, 'the cutter waits for the captain\'s scenes');
-  world.beats = true; const c = next(h);
-  assert.deepEqual(c.spec, { kind: 'patrol', shipId: 'cutter', gov: 'Charter League', ladder: 'cutter' }, 'the gov of the system the burn leaves');
-  assert.equal(walk(h), 'cutter');
+  world.beats = true; assert.equal(next(h), null, 'nothing between the corsair and the set piece');
   assert.ok(FIGHT_LADDER.find(s => s.id === 'pair').parked, 'the pair is parked: chapter two\'s, not chapter one\'s');
   h.deal = { price: 90000, until: 80 };
   assert.equal(next(h), null, 'the parked pair is passed over, and the set piece waits for the money');
@@ -36,18 +33,20 @@ test('the steps come in order, each when its condition holds, and the parked pai
   assert.equal(next(h, rich), null, 'the chapter is done; the ladder is empty and nothing throws');
 });
 
-test('the cutter takes the other end\'s gov, or waits', () => {
-  const h = { fights: { done: ['raider', 'corsair'] } }; world.runs = 3; world.beats = true;
-  assert.equal(next(h, { ...st, systemId: 'mercury' }, 'mars').spec.gov, 'Dome Concord');
-  assert.equal(next(h, { ...st, systemId: 'earth' }, 'mars').spec.gov, 'Arcology Compact');
-  assert.equal(next(h, { ...st, systemId: 'mercury' }, 'mercury'), null, 'no navy at either end: the cutter waits');
+test('a later step never comes ahead of an earlier one not done, even when its own condition holds', () => {
+  world.runs = 1; world.beats = true;
+  const h = { fights: { done: ['raider'] }, deal: { price: 90000, until: 80 } }, rich = { ...st, credits: 90000 };  // the set piece's condition holds; the corsair is next
+  assert.equal(next(h, rich), null, 'the corsair waits for the third run, and the set piece behind her');
+  world.runs = 3; assert.equal(next(h, rich).id, 'corsair');
 });
 
-test('a later step never comes ahead of an earlier one not done, even when its own condition holds', () => {
+test('a save with the old cutter step done or pending passes over it, and the next step comes due as before (#993)', () => {
   world.runs = 3; world.beats = true;
-  const h = { fights: { done: ['raider', 'corsair'] }, deal: { price: 90000, until: 80 } };  // the pair's condition holds; the cutter is next
-  assert.equal(next(h, { ...st, systemId: 'psyche' }, 'eros'), null, 'no navy at either end: the cutter waits, and the pair waits behind her');
-  assert.equal(next(h, { ...st, systemId: 'earth' }, 'mars').id, 'cutter');
+  const rich = { ...st, credits: 90000 }, deal = { price: 90000, until: 80 };
+  assert.equal(next({ fights: { done: ['raider', 'corsair', 'cutter'] }, deal }, rich).id, 'setpiece', 'done: the set piece next');
+  assert.equal(next({ fights: { done: ['raider', 'corsair'] }, deal }, rich).id, 'setpiece', 'pending: the set piece next');
+  assert.equal(next({ fights: { done: ['raider', 'corsair'] } }, rich), null, 'pending, with no deal: nothing due, no error');
+  assert.deepEqual(plain(ladderMet({ fights: { done: ['raider', 'corsair', 'cutter'] } })), ['raider', 'corsair'], 'the cutter is no step, so not met');
 });
 
 test('a random pirate comes alone until the ladder\'s pair has been met, and after, the lane rolls it', () => {
@@ -70,15 +69,15 @@ test('what is met is the ship ids of the steps done, and random contacts draw on
   assert.deepEqual(plain(ladderMet(h)), ['raider']);
   for (let i = 0; i < 200; i++) assert.equal(ladderPirate(h, Math.random()), 'raider');
   h.fights.done.push('corsair', 'cutter', 'pair');
-  assert.deepEqual(plain(ladderMet(h)), ['raider', 'corsair', 'cutter'], 'each once');
+  assert.deepEqual(plain(ladderMet(h)), ['raider', 'corsair'], 'each once; the pair is a raider');
   const seen = new Set(); for (let i = 0; i < 200; i++) seen.add(ladderPirate(h, i / 200));
-  assert.deepEqual([...seen].sort(), ['corsair', 'raider'], 'the cutter is met only as a patrol');
+  assert.deepEqual([...seen].sort(), ['corsair', 'raider']);
   assert.equal(ladderPirate({ fights: { done: ['cutter'] } }, 0.5), null);
 });
 
 test('after the chapter ends with steps left, nothing throws', () => {
   world.runs = 4; world.beats = true;
-  const h = { fights: { done: ['raider'] }, deal: { price: 90000, until: 60 } };  // the corsair, cutter, pair and set piece undone, and the money not in hand
+  const h = { fights: { done: ['raider'] }, deal: { price: 90000, until: 60 } };  // the corsair, pair and set piece undone, and the money not in hand
   assert.equal(next(h, { ...st, day: 200 }).id, 'corsair', 'a step left is still just a step');
   assert.doesNotThrow(() => { ladderNext(null, st, 'mars'); ladderMet(null); ladderPirate(null, 0.5); ladderMet({}); ladderNext({ deal: null, fights: { done: [] } }, { ...st, day: 999 }, 'earth'); });
   assert.equal(ladderNext(null, st, 'mars'), null, 'the hand has gone ashore: no ladder');

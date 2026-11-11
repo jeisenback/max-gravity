@@ -12,6 +12,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:sign-on', fn: 'signOnEvent', file: 'js/signon.js', title: 'Signing On', where: 'port', when: 'Opens a hired game: why you signed on.' },
   { id: 'scene:warning', fn: 'warningScene', file: 'js/stakes.js', title: 'A Warning', where: 'transit', when: 'Once, when the captain\'s opinion of you falls to -2.' },
   { id: 'scene:pitch', fn: 'pitchScene', file: 'js/awayjobs.js', title: 'Putting It to the Captain', where: 'port', when: 'When you put work further away to the captain, from the Missions page.' },
+  { id: 'scene:inspection', fn: 'inspectionScene', file: 'js/inspection.js', title: 'The Inspector', where: 'port', when: 'Landing at a Compact, Concord or League port with bad standing there, or with a good that owner licenses for import (#993).' },
   { id: 'scene:customs', fn: 'customsScene', file: 'js/ties.js', title: 'Customs and Patrols', where: 'port', when: 'A crew member a faction wants, at a port in its space (customs) or on a burn in or out of it (a patrol cutter).' },
   { id: 'scene:dock-friend', fn: 'dockFriendScene', file: 'js/ties.js', title: 'A Friend at the Dock', where: 'port', when: 'A crew member who\'s an officer of the faction whose port this is.' },
   { id: 'scene:war-call', fn: 'warCallScene', file: 'js/ties.js', title: 'Word From Home', where: 'port', when: 'A member or officer aboard whose side has gone to war is called home.' },
@@ -56,7 +57,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:settling-up', fn: 'arrivalScene', file: 'js/captains.js', title: 'Settling Up', where: 'port', when: 'Once, at the port the first run ends at: the first officer shows you the captain\'s page of the run (the cargo, your wage and share, the hall bond) and you go ashore. The first officer\'s own words are theirs (Cato\'s in this game).' },
   { id: 'scene:arc-offers', plain: true, fn: 'arcOffer', file: 'js/arcs.js', title: 'Mission Arc Offers', where: 'port', when: 'On the Missions page, when a freight office that knows the ship has work that is not freight (a sealed crate, a passenger, a notice): the offer\'s title and what it says.' },
   { id: 'scene:fight', fn: 'shipFightEvent', file: 'js/fightui.js', title: 'Battle Stations', where: 'transit', when: 'A pirate contact or a navy stop, fought turn by turn on the sensor board: the opening, her move and the captain\'s, the orders to the guns, a line a turn, and how it ends.' },
-  { id: 'scene:contact', fn: 'contactEvent', file: 'js/engage.js', title: 'Contact', where: 'transit', when: 'A pirate or a navy ship on an intercept course on a burn: what the sensors show of her, the ways out (fight, run, pay her off, spoof her, heave to for the navy), and the hand\'s own move at a pirate from the post.' },
+  { id: 'scene:contact', fn: 'contactEvent', file: 'js/engage.js', title: 'Contact', where: 'transit', when: 'A pirate or a navy ship on an intercept course on a burn: what the sensors show of her, the ways out (fight, run, pay her off, spoof her, or for an owner pay the navy\'s fine), and the hand\'s own move at a pirate from the post.' },
   { id: 'scene:fight-entry', fn: 'contactEvent', file: 'js/engage.js', title: 'Who Comes to Fight', where: 'transit', when: 'The contacts of chapter 1\'s ladder of fights, in order: a lone raider, a corsair who knows of the payment the ship is carrying, a navy patrol checking papers, and the corsair who knows the Ore Runner\'s price. The fifth, two raiders who heard the crew asking a yard about a hull, is parked for chapter 2 and kept here. Each opens with its own line in place of the sensor\'s; the choices are the contact\'s.' },
   { id: 'beats:dead-in-space', fn: 'deadInSpaceScene', file: 'js/engagements.js', title: 'Dead in Space', where: 'transit', when: 'After a ship fight, when her drive and guns are gone and she drifts beside you.' },
   { id: 'beats:ambush', fn: 'ambushScene', file: 'js/engagements.js', title: 'An Ambush', where: 'transit', when: 'On a dangerous lane, every 60 days at most.' },
@@ -185,6 +186,22 @@ const SCENE_LINES = {
     'gunner.memory': 'You held a patrol off me with the guns.',
     'gunner.lose.memory': 'You pointed the guns at a patrol and it cost the ship.',
     'reacts.for.memory': 'You stood with {faction}.', 'reacts.against.memory': 'You set yourself against {faction}.',  // what the crew remember of what you did with a faction (crewReacts)
+  },
+  'scene:inspection': {  // a port's inspector on arrival (inspection.js, #993): the cause or causes, one sum, the hand's one move; `clean` is the note a clean ship gets
+    title: 'The Inspector',
+    text: 'The inspector at {planet} comes up the ramp with a slate and a junior carrying the seal gun. {causes} "{sum} credits," the inspector says. "Before the clamps come off."',
+    'cause.good': '{gov} licenses {good} for import. The junior counts {tons}t of it against the manifest, and the ship has no licence on file, so the duty is {duty} cr.',
+    'cause.standing': 'The ship\'s name comes up on the {gov} register with a mark against it, and the mark carries a fine of {fine} cr.',
+    captain: 'Captain {cap} reads the slate over the inspector\'s shoulder and doesn\'t say anything.',
+    'papers.label': 'Take the papers to the inspector', 'speak.label': 'Speak up for the ship',
+    'move.stakes': 'if it fails: the full sum, and the captain hears about it',
+    'keep.label': 'Keep out of it (the ship pays {sum} cr)', 'pay.label': 'Pay the inspector ({sum} cr)',
+    win: 'You go through it line by line with the inspector: the dates, the seals, the code the last port put on the manifest. Halfway down the junior stops filling in the form. The inspector crosses out the sum and writes a smaller one under it. The ship pays {paid} cr.',
+    lose: 'You go through it with the inspector line by line. The inspector lets you finish, then turns the slate round so you can see the sum hasn\'t changed. The ship pays {paid} cr. Captain {cap} signs for it and doesn\'t look at you.',
+    'lose.memory': 'You argued with the inspector at {planet}, and the ship paid the full sum anyway.',
+    'keep.result': 'You stay out of it. The ship pays {paid} cr, the junior seals the hold, and the clamps come off.',
+    'pay.result': 'You pay {paid} cr. The junior seals the hold, and the clamps come off.',
+    clean: 'Customs logs the ship through.',
   },
   'scene:dock-friend': {  // an officer aboard, and the harbor master who served under them (ties.js)
     title: 'A Friend at the Dock',
@@ -457,7 +474,6 @@ const SCENE_LINES = {
     'door.scarred.text': '{first} looks at your face, and at the dressing, and finds something to do at the other end of the bar.',
   },
   'scene:memories': {  // the memories that play leaves with people, for the places that have no scene of their own (engage.js, game.js, icerun.js, losses.js, repairs.js, stations.js, boarding.js)
-    'patrol-fine.memory': 'We were stopped by a patrol and it cost the fund.',
     'landing.memory': 'You got me to {planet}.', 'lapsed.memory': 'You never got me where I was going.',
     'ice.clean.memory': 'You brought the ice in.', 'ice.bad.memory': 'You made a mess of the ice.',
     'mourn.honored.memory': 'The captain marked {first}\'s death the way {first} deserved.', 'mourn.slighted.memory': 'The captain didn\'t give {first} their due.', 'mourn.wrote.memory': 'You wrote to {first}\'s family.',
@@ -669,13 +685,10 @@ const SCENE_LINES = {
     'move.engineer.label': 'Cut the drive and go dark',
     'move.engineer.win': 'You pull the drive down to a cold idle and the plume goes out. The ship coasts with the lights on emergency, and she overshoots your heading by eight kilometers before her sensors pick you up again. Battle stations.',
     'move.engineer.lose': 'You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations.',
-    'heave.label': 'Heave to and take the fine from the ship\'s fund',  // a navy stop, for a hired hand: the ship pays a quarter of its fund
-    'heave.result': 'You cut the drive and the cutter closes. The boarding officer reads the citation, and {fine} cr goes out of the ship\'s fund. The ship is logged as settled. For now.',
   },
-  'scene:fight-entry': {  // the line a contact of chapter 1's ladder opens with in place of the sensor's (engage.js contactEvent, fightladder.js), by step: {cap} is the captain, {patrol} the patrol as the game names her (PATROL_NAMES), {price} the Ore Runner's
+  'scene:fight-entry': {  // the line a contact of chapter 1's ladder opens with in place of the sensor's (engage.js contactEvent, fightladder.js), by step: {cap} is the captain, {price} the Ore Runner's
     'raider.text': 'No transponder, and one plume, with nothing else on the board behind her. A raider who works alone picks a hauler with no escort, since one grapple crew can take a ship this size and nobody has to share. "Two guns on this ship, and she hasn\'t changed her line for either of them," {cap} says.',
     'corsair.text': 'A corsair, with her transponder off and her launcher bay open. On the open band she reads out the ship\'s name and the payment this ship is carrying, due on the first, and asks for it before the first comes. "Somebody at the last berth can count," {cap} says, and cuts the band.',
-    'cutter.text': 'Transponder: {patrol}, with a stop order for the ship\'s registry. Her hail reads it as a check of papers at the lock, and whatever is out of order on them is cited and fined from the ship\'s fund on the spot. A ship that burns away from a check is fired on, the hail says, and it says so twice.',
     'pair.text': 'It\'s two raiders and not one, lying off the lane, and only the first has lit her drive. Word goes round a dock when a crew has been asking a yard about a hull, and the raiders who hear it hunt in pairs, one to pin the drive and one to board. The second plume lights as the first one turns.',
     'setpiece.text': 'A corsair comes off the yard\'s own beacon with her drive already lit. Her hail names the Ore Runner and the price on the yard list, {price} cr. "The bank sells the names of who\'s asking after its ships, eighty credits a name," the voice says, "and yours was on it this week."',
   },

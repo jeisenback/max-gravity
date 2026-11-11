@@ -158,6 +158,7 @@
  "scene:sign-on",
  "scene:warning",
  "scene:pitch",
+ "scene:inspection",
  "scene:customs",
  "scene:dock-friend",
  "scene:war-call",

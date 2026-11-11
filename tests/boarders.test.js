@@ -642,20 +642,19 @@ test('the standing charged is DECK.NAVY_STANDING a head of theirs put down, whic
   await done();
 });
 
-test('the heave-to and the search charge the same fine, a quarter of the same purse', async () => {
+test('a search charges a quarter of the ship\'s fund, and a hand has no heave-to on a contact any more (#993)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(navyHelpers);
   const r = await ev(() => {
     const st = fight(), h = hired(); G.duel = null; G.nextEvent = null;
     h.fund = 20000; const fine = heaveToFine(), purse0 = purse();
     const e = contactEvent({ kind: 'patrol', gov: GOV }); G.dialog = { event: e, choices: e.choices };
-    chooseEvent(e.choices.findIndex(c => /^Heave to/.test(c.label))); G.dialog = null;
-    const heave = 20000 - h.fund;
+    const heave = e.choices.some(c => /^Heave to/.test(c.label)); G.dialog = null;
     h.fund = 20000; const s = navy(); s.won = false; s.searched = true; rolls([]); repelSettle(s); G.nextEvent = null;
     return { fine, purse0, heave, search: 20000 - h.fund };
   });
   assert.equal(r.purse0, 20000, 'the purse is the ship\'s fund'); assert.equal(r.fine, 5000);
-  assert.equal(r.heave, 5000); assert.equal(r.search, 5000);
+  assert.equal(r.heave, false); assert.equal(r.search, 5000);
   await done();
 });
 

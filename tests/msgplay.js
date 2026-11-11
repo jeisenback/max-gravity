@@ -48,6 +48,7 @@ const playMessages = () => {
 
   // ---------- deliveries ----------
   const dock = (key, setup, extra = {}) => says(key, 1, st => { setup(st); return null; }, st => land(here(st)));
+  says('dock:inspected-clean', 1, null, st => land(here(st)), true, () => [...UI.notes]);  // a clean ship at an inspecting port (Earth, the Compact's): the note line (inspection.js)
   dock('dock:errand', st => mission(st, { type: 'errand', title: 'Errand: carry a sealed case to Ceres Station', pay: 3000 }));
   dock('dock:delivery', st => mission(st, { type: 'delivery', tons: 12, good: 'water ice', pay: 9000 }));
   dock('dock:pax1', st => mission(st, { type: 'passenger', who: 'a pilgrim', pax: 1, bonus: 0, pay: 5000 }));

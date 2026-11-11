@@ -84,6 +84,14 @@
   "credits": 0
  },
  {
+  "key": "dock:inspected-clean",
+  "text": [],
+  "credits": 0,
+  "x": [
+   "Customs logs the ship through."
+  ]
+ },
+ {
   "key": "dock:errand",
   "text": [
    "Errand done: a sealed case handed over. Fee 3,000 cr."

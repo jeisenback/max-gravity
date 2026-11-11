@@ -225,18 +225,18 @@ test('the pitch for work further away has its lines in the form and plays in the
 test('the entry lines of the ladder\'s fights are in the form, and the step whose line was typed plays in the preview (#810)', async () => {
   await reload(); await select('scene:fight-entry');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['raider', 'corsair', 'cutter', 'pair', 'setpiece']) assert.ok(paths.includes(`part.${k}.text`), `${k} in ${paths.join()}`);
-  await page.fill('textarea[data-path="part.cutter.text"]', 'The {patrol}, edited.');
+  for (const k of ['raider', 'corsair', 'pair', 'setpiece']) assert.ok(paths.includes(`part.${k}.text`), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.corsair.text"]', 'A corsair, edited.');
   const f = await play();
   const seen = await f.evaluate(() => ({ title: G.dialog.event.title, text: G.dialog.event.text }));  // the captain takes the call on a contact (hiredCall), so the choices are hers
   assert.equal(seen.title, 'Contact');
-  assert.match(seen.text, /^Sensors: a drive plume at [\d,]+ km, on an intercept course\. The (Compact cutter|Concord frigate|League militia), edited\. /, seen.text);
+  assert.match(seen.text, /^Sensors: a drive plume at [\d,]+ km, on an intercept course\. A corsair, edited\./, seen.text);
 });
 
 test('the contact on a burn has its lines in the form, and a hand\'s own move plays at its post in the preview (#796)', async () => {
   await reload(); await select('scene:contact');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['text', 'who.pirate', 'who.patrol', 'fight.label', 'pay.result', 'spoof.own', 'move.pilot.win', 'heave.result']) assert.ok(paths.includes(`part.${k}`), `${k} in ${paths.join()}`);
+  for (const k of ['text', 'who.pirate', 'who.patrol', 'fight.label', 'pay.result', 'spoof.own', 'move.pilot.win']) assert.ok(paths.includes(`part.${k}`), `${k} in ${paths.join()}`);
   await page.fill('textarea[data-path="part.who.pirate"]', 'A pirate, edited.');
   await page.fill('textarea[data-path="part.move.engineer.label"]', 'Go dark, edited');
   const f = await play();

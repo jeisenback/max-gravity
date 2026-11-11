@@ -134,6 +134,11 @@ const playScenes = () => {
       if (last) G.state.customs.met = { [gov]: { q: PATROL_LT[gov].asks[0], answer: last, day: 0 } };
     }, () => lieutenantScene(gov, currentPlanet()));
   }
+  // the port inspector (inspection.js): each cause alone and both together, for a Comms hand (the papers) and a gunner (speaking up), and the owner's one choice
+  for (const [name, cargo, rep, post] of [['good', { water: 50 }, 0, 'comms'], ['standing', {}, -22, 'gunner'], ['both', { water: 50 }, -22, 'comms']]) {
+    run(`scene:inspection:${name}`, { post }, () => inspectionScene(inspectionCause(cargo, 'Dome Concord', rep, false), currentPlanet()), { rolls: [0, 0.999] });
+  }
+  run('scene:inspection:owner', { mode: 'owner' }, () => inspectionScene(inspectionCause({ water: 50 }, 'Dome Concord', 0, false), currentPlanet()));  // the parked owner game: only the pay choice
   tiesCase('scene:dock-friend', () => { mateOf('Sam'); stubTies({ Sam: { aff: GOV, status: { [GOV]: 'officer' } } }); }, () => dockFriendScene(GOV, currentPlanet()));
   for (const [name, status, opinion] of [['officer', 'officer', 0], ['member:close', 'member', OPINION.CLOSE], ['member:far', 'member', 0]]) {
     tiesCase(`scene:war-call:${name}`, () => {
@@ -221,7 +226,6 @@ const playScenes = () => {
   run('trait:door:salvager', { post: 'pilot' }, () => { const ev = iceStageScene(0); return { ...ev, choices: ev.choices.filter(c => /^\[Salvager\]/.test(c.label)) }; }, { prep() { hired().record = { haulsClean: 2 }; hired().run = { ice: { edge: 0 }, tons: 20 }; } });
   run('trait:door:scarred', {}, () => { const p = makePerson('earth'); registerPerson(p); p.traits = ['rude']; const o = BAR_TOPICS.find(t => t.id === 'fight').make(p, { p, known: false }, { st: G.state, bar: 'Bar' }); return { ...alone(), choices: [{ label: o.label, run: o.run }] }; }, { prep() { hired().record = { hurts: 2 }; } });  // nothing due: the button teaches nothing and says nothing (text '')
   // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
-  run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.slice(-1) }; });  // the heave-to, last of a hired hand's choices at a navy stop
   run('memory:landing', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { land(currentPlanet()); G.dialog = null; G.nextEvent = null; return ''; } }] }), { prep() { G.state.crew = []; G.player = G.player || { armor: ship().armor, x: 0, y: 0, vx: 0, vy: 0 }; uatPassenger('earth', G.state.planet); } });
   run('memory:lapsed', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { expireMissions(); return ''; } }] }), { prep() { uatPassenger('mars', 'Mars'); G.state.missions[0].deadline = G.state.day - 1; } });
   for (const edge of [3, -2, 0]) run(`memory:ice:${edge}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => iceHome(edge) }] }));
