@@ -71,7 +71,7 @@ const contactSay = (key, vars) => sceneSay('scene:contact', key, vars);
 const entryLine = (spec, cap, deal) => sceneSay('scene:fight-entry', `${spec.ladder}.text`,
   { cap: cap ? `Captain ${cap.last}` : 'The captain', price: deal ? fmt(deal.price) : '' });
 // Running from a contact (outrunning it, spoofing it, paying it off) costs RUN_DAYS on the burn: they are added to the burn's length (transitDays and transitEta, engineering.js)
-// so the arrival day moves by them, and said in the contact's own scene. Fighting costs none, and heaving to for a patrol is not running.
+// so the arrival day moves by them, and said in the contact's own scene. Fighting costs none.
 const RUN_DAYS = 2;
 function loseBurnDays(t, n) { t.lost = (t.lost || 0) + n; return n; }
 const runCost = () => (G.transit ? ` ${sceneSay('scene:fight', 'run.days', { days: dayWord(loseBurnDays(G.transit, RUN_DAYS)) })}` : '');

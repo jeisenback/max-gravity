@@ -68,7 +68,7 @@ test('landing at a Concord port with water opens the inspector, who names the ca
   });
   await done();
   assert.equal(r.comms.title, 'The Inspector');
-  assert.match(r.comms.text, /licenses water/); assert.match(r.comms.text, /50t/); assert.match(r.comms.text, /6,000/);
+  assert.match(r.comms.text, /50t of water/); assert.match(r.comms.text, /50t/); assert.match(r.comms.text, /6,000/);
   assert.equal(r.comms.labels.length, 2); assert.match(r.comms.labels[0], /papers/i); assert.match(r.comms.labels[1], /Keep out/);
   assert.equal(r.gunner.length, 2); assert.match(r.gunner[0], /Speak up/); assert.match(r.gunner[1], /Keep out/);
 });
@@ -230,4 +230,12 @@ test('an owner who kept a post has no captain to argue past: only the pay choice
   });
   await done();
   assert.equal(r.length, 1); assert.match(r[0], /Pay the inspector/);
+});
+
+test('an empty purse pays nothing, and nothing is written on the record (#993)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => { handAt('comms', 'Mars', { cargo: { water: 50 }, rep: 0, fund: 0 }); inspectAtLanding(currentPlanet()); const f = finesOf(); chooseEvent(1); return { fines: finesOf() - f, purse: purse() }; });
+  await done();
+  assert.deepEqual(r, { fines: 0, purse: 0 });
 });

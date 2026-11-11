@@ -32,7 +32,7 @@ function inspectionScene(cause, planet) {
   const cap = hiredCaptain(), post = cap && career() && career().post;  // the move is argued past the captain: an owner, even one who kept a post, only pays
   const say = (key, vars) => sceneSay('scene:inspection', key, { planet: planet.name, gov: cause.gov, cap: cap ? cap.last : '', sum: fmt(cause.sum), ...vars });
   const causes = [cause.good ? say('cause.good', { good: goodName(cause.good).toLowerCase(), tons: cause.tons, duty: fmt(cause.duty) }) : '', cause.fine ? say('cause.standing', { fine: fmt(cause.fine) }) : ''].filter(Boolean).join(' ');
-  const pay = n => { const paid = Math.min(purse(), n); moveMoney(-paid); recordHand('fines'); return fmt(paid); };
+  const pay = n => { const paid = Math.min(purse(), n); moveMoney(-paid); if (paid) recordHand('fines'); return fmt(paid); };  // an empty purse pays nothing, and nothing goes on the record
   const choices = [];
   if (post) {
     const papers = post === 'comms', odds = papers ? soloOdds('comms') : handCheck(POST_STAT[post], skillLevel(post), 'word');
