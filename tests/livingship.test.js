@@ -758,6 +758,23 @@ test('each bunk is a person long, with its mattress, the pillow under the sleepe
     });
   }
 });
+test('the frame stands only as high as its bunks: no column with an empty tier, from 1 to 12 berths (#1023)', () => {
+  for (let n = 1; n <= 12; n++) {
+    const { r, s, bunks } = berthCase(n, 0.3, 1.45), F = r.floor, { ctx, calls } = recorder(); drawRoom(ctx, 'berths', r, s);
+    const posts = filledParts(calls).filter(p => p.col === '#2a4664').map(partBox).filter(p => Math.abs(p.x1 - p.x0 - 4) < 0.01 && Math.abs(p.y1 - F) < 0.01);
+    const cols = [...new Set(bunks.map(b => b.x))].map(x => bunks.filter(b => b.x === x)), w = bunks[0].w;
+    // a column's own height: to the ceiling when it is three high, else to the brackets of its top bunk's curtain rail
+    const height = col => (col.length === 3 ? F - 92 : Math.min(...col.map(b => b.y)) - 27.6);
+    cols.forEach(col => assert.ok(col.every((b, i) => col.some(a => Math.abs(a.y - (F - 2.8 - 29.5 * i)) < 1e-9)), `n ${n}: the column at ${col[0].x} filled from the bottom, no tier missing`));
+    assert.equal(cols.filter(col => col.length < 3).length, n % 3 ? 1 : 0, `n ${n}: at most one short column`);
+    const edges = [...new Set(cols.flatMap(col => [col[0].x, col[0].x + w]).map(x => Math.round(x * 100) / 100))];
+    assert.equal(posts.length, edges.length, `n ${n}: a post at each column's ends (${posts.length} for ${edges.length})`);
+    for (const ex of edges) {
+      const post = posts.find(p => Math.abs((p.x0 + p.x1) / 2 - ex) < 0.01), want = Math.min(...cols.filter(col => Math.abs(col[0].x - ex) < 0.01 || Math.abs(col[0].x + w - ex) < 0.01).map(height));
+      assert.ok(post && Math.abs(post.y0 - want) < 0.01, `n ${n}: the post at ${ex} up to ${want} (${post && post.y0})`);
+    }
+  }
+});
 test('each bunk keeps a clear place for its owner\'s one thing, inside the bunk over the sleeper (#933, #934)', () => {
   for (const n of [4, 8, 12]) for (const pr of [0.02, 0.3, 0.5]) {
     const { r, s, bunks } = berthCase(n, pr, 1.45), X = sh => r.x0 + (r.x1 - r.x0) * sh, { ctx, calls } = recorder(); roomBerths(ctx, r, s, X, r.x1 - r.x0);
@@ -806,10 +823,21 @@ test('the crew\'s corner fills the open wall beside the well: a wall unit, a pin
   assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
 });
 test('someone eating alone sits on the edge of the first bunk (#933)', () => {
-  const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['routineTarget', 'roomAt']);
+  const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['routineTarget', 'roomAt', 'posture']);
   const ra = api.roomAt('berths'), x = api.routineTarget({}, { at: 'alone' }, ra, 0, 1, () => 0.5), { r, well } = berthCase(10, 0.3, 1), b = berthBunk(r, 10, 0, well);
   const wx = r.x0 + (x - ra.x0) / ra.w * (r.x1 - r.x0);
   assert.ok(wx > b.x + 4 && wx < b.x + b.w / 2, `at ${wx}, on the first bunk (${b.x} to ${b.x + b.w})`);
+  // on its edge at the mattress's height (#1023): the bottom bunk's mattress is low, so they sit lower than on the bench (its seat at 23) by the
+  // difference, the knees up and the feet on the deck, facing you or side-on
+  const p = { role: 'xo', at: 'alone', room: 'berths', x, dk: ra.deck, tdk: ra.deck, tx: null, block: 'meal', face: 1 }, mat = r.floor - berthSleeper(b).y;
+  const seated = api.posture(p, 'move', 0, false);
+  assert.equal(seated.name, 'sit', 'sitting'); assert.equal(seated.view, 'front', 'facing you'); assert.ok(Math.abs(seated.seat - mat) < 1e-9, `on the mattress, ${mat} over the deck (${seated.seat})`);
+  for (const view of ['front', 'side']) {
+    const pose = { ...seated, view }, ph = view;
+    const low = drawPerson(fakeCtx(), pose, 0, 100, { color: '#ffb347' }), bench = drawPerson(fakeCtx(), { ...pose, seat: undefined }, 0, 100, { color: '#ffb347' });
+    assert.ok(Math.abs(low.head.y - bench.head.y - (23 - mat)) < 0.01, `${ph} (${pose.view}): the head ${low.head.y - bench.head.y} lower than on the bench, by ${23 - mat}`);
+    assert.ok(low.foot.y <= 100 && low.foot.y >= 94, `${ph}: the feet on the deck (${low.foot.y})`);
+  }
 });
 
 // #933, the medbay on the lock deck: the cot with its rails, straps, legs on braked casters, mattress and pillow; the IV pole bolted to the deck,

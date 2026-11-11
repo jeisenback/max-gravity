@@ -532,7 +532,8 @@ function posture(p, ph, time, asleep) {
   // a walking stride by the ground covered, so the feet do not slide (#924)
   const chair = (name === 'sit' || name === 'work-sit') && p.room !== 'galley' && onSeat(p) ? SEAT_FACE[p.room] : 0;  // on a chair: side-on, the way the chair faces (rooms.js, #985)
   const view = chair ? 'side' : ph === 'move' && FIG_FACING.includes(name) ? (name.startsWith('work') ? 'back' : 'front') : 'side';  // facing you to stand and sit, the wall at work; side-on on the move and in the burn (#978)
-  return { name, view, x: p.x, deck: p.dk, face: chair || p.face || 1, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160 / CUT_K) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
+  const seat = name === 'sit' && p.at === 'alone' && p.room === 'berths' && !p.staged ? { seat: BERTH_FRAME + 5 } : {};  // on the bottom bunk's edge, its mattress (rooms.js berthBunk) under the bench's height (figures.js figLowHip, #1023)
+  return { name, view, x: p.x, deck: p.dk, face: chair || p.face || 1, ...seat, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160 / CUT_K) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
 }
 
 // The scene open in a burn, acted out: when it opens (or the next one in a chain opens) those it stages walk to spots in its room, a little

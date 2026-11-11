@@ -220,7 +220,7 @@ function roomEngine(ctx, r, s, X, W) {
 // down to the smallest window, #937), and the right ones from its right wall. The tiers are BERTH_TIER apart: the bottom one's frame on the deck,
 // the top one under the ceiling, and over each sleeper the place for their thing (berthKeep) under the curtain rail and the bunk over it. The
 // berths draw their bunks here, and the cutaway lays its sleepers on them (shiplife.js). The bottom tier fills from the left and the two over it
-// from the right, so the bunks over the left column are the last ones taken.
+// from the right, so every column is full but the left one, a short column of what is left over, and its bunks are the last ones taken.
 const BUNK = 90, BERTH_NAME = 116, BERTH_TIER = 29.5, BERTH_FRAME = 2.8;
 function berthBunk(r, n, k, well = { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }) {
   const cols = Math.max(1, Math.ceil(n / 3)), left = Math.ceil(cols / 2), m = (r.x1 - r.x0) * 0.02, lm = Math.max(m, BERTH_NAME);
@@ -264,19 +264,24 @@ function roomBunk(ctx, b, F, slept, shut) {
   }
 }
 
-// The berths (#933): the bunks in their columns of three on posts from the deck to the ceiling, either side of the well (roomBunk), the curtain
-// shut on the third one ("z z" behind it at night in cruise); beside the well the crew's corner (berthCorner): the wall unit with its books, photo, plant,
-// mug and reading lamp (its glow in cruise), the pinboard where it fits, the towel swinging on its hook and the guitar lashed to the wall. The top
-// left is kept clear for the room's name (berthBunk).
+// The berths (#933): the bunks in their columns of three on posts from the deck to the ceiling, either side of the well (roomBunk), and the odd
+// one or two in a short column at the left, its posts only as high as its bunks (#1023); the curtain shut on the third one ("z z" behind it at
+// night in cruise); beside the well the crew's corner (berthCorner): the wall unit with its books, photo, plant, mug and reading lamp (its glow
+// in cruise), the pinboard where it fits, the towel swinging on its hook and the guitar lashed to the wall. The top left is kept clear for the
+// room's name (berthBunk).
 function roomBerths(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), well = s.well || { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }, { w: cw } = berthBunk(r, n, 0, well);
   const shut = W >= 220 && n >= 3 ? 2 : -1, r2 = v => Math.round(v * 100) / 100;
   for (let k = 0; k < n; k++) roomBunk(ctx, berthBunk(r, n, k, well), F, k < s.asleep, k === shut);
-  const posts = new Set();
-  for (let k = 0; k < n; k += 3) { const { x } = berthBunk(r, n, k, well); posts.add(r2(x)); posts.add(r2(x + cw)); }  // each column's bottom bunk
-  for (const px of posts) {  // the posts at each column's ends, bolted to the deck and the ceiling
-    roomPart(ctx, roomRound(px - 2, F - 92, 4, 92, 1), '#2a4664', { top: 0, side: 1.2 });
-    roomFlat(ctx, px - 3.5, F - 2, 7, 2, '#20384f'); for (const sy of [F - 90, F - 40]) roomDot(ctx, px, sy, 0.6, '#56708c');
+  const posts = new Map(), cols = new Map();  // each column's bunks by its left end; each post's x and how high it stands
+  for (let k = 0; k < n; k++) { const b = berthBunk(r, n, k, well), x = r2(b.x); cols.set(x, [...(cols.get(x) || []), b]); }
+  for (const [x, col] of cols) {  // a column three high stands to the ceiling; a short one only to the curtain rail of its top bunk, no empty tier
+    const top = col.length === 3 ? F - 92 : r2(Math.min(...col.map(b => b.y)) - 27.6);
+    for (const px of [x, r2(x + cw)]) posts.set(px, Math.min(top, posts.has(px) ? posts.get(px) : Infinity));
+  }
+  for (const [px, top] of posts) {  // the posts at each column's ends, bolted to the deck, and the ceiling where they reach it
+    roomPart(ctx, roomRound(px - 2, top, 4, F - top, 1), '#2a4664', { top: 0, side: 1.2 });
+    roomFlat(ctx, px - 3.5, F - 2, 7, 2, '#20384f'); for (const sy of [top + 2, F - 40]) if (sy < F - 4) roomDot(ctx, px, sy, 0.6, '#56708c');
   }
   if (shut >= 0 && s.asleep > 0 && w.cruise > 0.5) { const b = berthBunk(r, n, shut, well); worldText(ctx, s.zoom, Math.floor(time) % 2 ? 'z z' : 'z', b.x + cw - 24, b.y - 12, 12, '#9fb4c9'); }
   const c = berthCorner(r, n, well), open = c.x1 - c.x0;  // the crew's corner beside the well
