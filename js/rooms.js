@@ -1667,6 +1667,156 @@ function roomAirlock(ctx, r) {
   roomPart(ctx, roomRound(u(181), F - 23, 6, 4.5, 0.6), '#7a7462', { top: 0 });
 }
 
+// Life support (#933), the plant deck over the water tank, full width: two bays either side of the well, where the engineer's rounds bring them
+// (ROUNDS, shiplife.js). Drawn from what the ship says of it (LIFE_LINES, the scenes): the air recycler holds the scrubber cartridges in a stack,
+// its fans are logged one by one, the carbon dioxide figure is read off the panel by it, the condensate line runs under it, the dust filter is on
+// the air intake, the fans are heard in the ducts, and the cabin pressure is written on the slate by the hatch. On the walls: the main air duct
+// along the top of both, its risers down to the fans; in the left bay the drop to the air intake with its dust filter, the grey water line down
+// from the decks over into the water recycler, the slate by the hatch with the cabin pressure gauge by it; in the right bay the panel over the
+// fans at the eye, its readouts as marks and its alarm lamp, dark while all is well. Left bay from the hull wall in: the water recycler under the
+// room's name, older, a newer filter canister bolted on, a replacement panel in another shade, its sight glass with the water in it and its
+// gauge; its two pipes out of its side and down through the deck to the tank's top under the cut, each with its collar at the deck, one valve a
+// wheel and the other a printed handle tagged temporary, tape on a joint. Then the bench at the waist, its cabinet, and the rack under it with the
+// four spare cartridges strapped in; on its top the old dust filter, bagged. Right bay: the air recycler. From the well in its fan row at the
+// waist, three fans with their grilles turning, the middle one newer in another finish on fresh bolts; at the hull wall the scrubber stack under a
+// person's head, six cartridges in two columns, each dated, the handles worn, one bay empty and its cartridge out on the last fan, dated; its
+// cable up into the ceiling, tied; scuffs at its foot; the condensate line under the fans, down through the deck, clamped. No words: the
+// readouts, the tags and the slate are marks. Its lamps are fittings, one in each bay (LAMP_FITTED). Nothing under the room's name.
+const LS_ALARM = '#3e2a26', LS_WATER = 'rgba(70,140,190,0.6)';  // the alarm lamp's lens, dark; the water in the sight glass, as the tank's
+function roomLifeSupport(ctx, r, s) {
+  const F = r.floor, T = r.top, n = v => Math.round(v * 100) / 100, plate = HULL.plate;
+  const wall = (px, py, fn) => { const e = roomEyeAt(px) || roomEye(r), ax = n(e.vx + (px - e.vx) / e.k), ay = n(e.vy + (py - e.vy) / e.k); roomOnWall(ctx, ax, ay, () => fn(ax, ay)); };  // fn draws round (ax, ay), which lands at (px, py)
+  const pipe = (x, y0, y1, th = 4) => roomPart(ctx, roomRound(n(x - th / 2), y0, th, n(y1 - y0), 1), '#36506a', { top: 0, side: 1 });
+  const run = (x0, x1, y, th = 4) => roomPart(ctx, roomRound(x0, n(y - th / 2), n(x1 - x0), th, 1), '#36506a', { top: 0.8, under: 0.8 });
+  const cart = (x, y, dated = true) => {  // a scrubber cartridge, 40 by 14: its end caps, its pull handle worn bright, its date tag
+    roomPart(ctx, roomRound(x, y, 40, 14, 1.5), '#4e5a50', { top: 0.8, under: 0.8 });
+    for (const cx of [x + 1, x + 36]) roomPart(ctx, roomRound(cx, y + 1, 3, 12, 0.8), '#3a423c', { top: 0 });
+    roomPart(ctx, roomRound(x + 14, y + 5.5, 12, 3, 1), '#5e666e', { top: 0.5 }); roomFlat(ctx, x + 15, y + 6, 2, 1.2, '#6a747c');
+    if (dated) { roomPart(ctx, roomRound(x + 29, y + 3, 5, 4, 0.4), '#8a8676', { top: 0 }); roomFlat(ctx, x + 29.6, y + 4.5, 3.6, 0.5, '#5a5648'); }
+  };
+  // On the left bay's wall: the main air duct along the top, its flanges, tape on a joint, the drop to the air intake and its dust filter.
+  wall(225, F - 80, (x, y) => {
+    roomPart(ctx, roomRound(x - 85, y - 5, 169, 10, 2), '#2e4458', { top: 1, under: 1.2 });
+    for (let k = 0; k < 5; k++) roomPart(ctx, roomRound(x - 84 + k * 41, y - 6, 2.4, 12, 0.6), '#3a5266', { top: 0.5 });
+    roomPart(ctx, roomRound(x + 38.5, y - 5.5, 6, 11, 0.5), '#7a7462', { top: 0 });
+    roomPart(ctx, roomRound(x - 31, y + 5, 12, 10, 1), '#2e4458', { top: 0, side: 1 });
+    roomPart(ctx, roomRound(x - 37, y + 14, 24, 14, 1.2), '#3a4440', { top: 0.8, under: 0.8 });
+    roomPart(ctx, roomRound(x - 35, y + 16.5, 20, 9, 0.5), '#6a6a5a', { top: 0 });
+    for (let k = 0; k < 6; k++) roomFlat(ctx, x - 33.5 + k * 3.2, y + 17.5, 0.6, 7, '#4e4e42');
+    roomFlat(ctx, x - 26, y + 25.5, 4, 1.4, '#4e4e42');  // its pull tab
+  });
+  // The grey water line down from the decks over, along the wall and into the water recycler's back.
+  wall(160, F - 66, (x, y) => {
+    roomPipe(ctx, [x, y - 29], [x, y + 2], 14, 4); roomPipe(ctx, [x - 90, y], [x + 2, y], 30, 4); roomPipe(ctx, [x - 90, y - 2], [x - 90, y + 4], 10, 4);
+  });
+  // The slate by the hatch, the cabin pressure written on it in chalk; the cabin pressure gauge beside it.
+  wall(298, F - 58, (x, y) => {
+    roomPart(ctx, roomRound(x - 9, y - 11, 18, 22, 1), '#2a302c', { top: 0.6, under: 0.6 });
+    for (let k = 0; k < 4; k++) roomFlat(ctx, x - 6, y - 7 + k * 4.5, 8 - (k % 2) * 3, 0.8, '#7a7c74');
+    roomGauge(ctx, x - 17, y - 6, 3.5, 0.5);
+  });
+  // On the right bay's wall: the main duct, its flanges, the risers down to the first two fans; the panel over the fans with its readouts and the
+  // alarm lamp, dark.
+  wall(548, F - 80, (x, y) => {
+    roomPart(ctx, roomRound(x - 136, y - 5, 271, 10, 2), '#2e4458', { top: 1, under: 1.2 });
+    for (let k = 0; k < 7; k++) roomPart(ctx, roomRound(x - 134 + k * 44.5, y - 6, 2.4, 12, 0.6), '#3a5266', { top: 0.5 });
+    for (const rx of [x - 111, x - 55]) { roomPart(ctx, roomRound(rx, y + 5, 10, 25, 1), '#2e4458', { top: 0, side: 1.2 }); roomPart(ctx, roomRound(rx - 1, y + 14, 12, 2.4, 0.6), '#3a5266', { top: 0.5 }); }
+  });
+  wall(470, F - 62, (x, y) => {
+    roomPart(ctx, roomRound(x - 19, y - 12, 38, 25, 1), '#2a3844', { top: 0.8, under: 0.8 });
+    for (const [sx, sy] of [[x - 17, y - 10], [x + 17, y - 10], [x - 17, y + 11], [x + 17, y + 11]]) roomDot(ctx, sx, sy, 0.6, '#56708c');
+    roomPart(ctx, roomRound(x - 15, y - 9, 22, 7, 0.6), '#0c161e', { top: 0 });  // the carbon dioxide figure, as marks
+    for (let k = 0; k < 3; k++) roomFlat(ctx, x - 13 + k * 4.5, y - 7.5, 3, 4, '#3e6a48');
+    roomPart(ctx, roomRound(x - 15, y + 0, 10, 9, 0.6), '#0c161e', { top: 0 }); roomPart(ctx, roomRound(x - 3, y + 0, 10, 9, 0.6), '#0c161e', { top: 0 });  // the fans, the water
+    roomFlat(ctx, x - 13.5, y + 4, 7, 3.5, '#3e6a48'); roomFlat(ctx, x - 1.5, y + 2.5, 7, 5, '#3a5a72');
+    roomPart(ctx, roomRound(x + 9.5, y - 9.5, 7, 7, 2), '#263a50', { top: 0.5, under: 0.8 }); roomDot(ctx, x + 13, y - 6, 2, LS_ALARM);  // the alarm lamp, dark
+    for (const kx of [x + 10.5, x + 15.5]) roomDot(ctx, kx, y + 4.5, 1, '#5a6a78');
+  });
+  // The left bay, from the hull wall in: the water recycler on its plinth, its sight glass, its gauge, the replacement panel, its vents, the newer
+  // canister bolted on; its pipes out of its side and down through the deck, collared, one valve a wheel, the other a printed handle, tagged.
+  roomPart(ctx, roomRound(14, F - 5, 106, 5, 1), '#24323e', { top: 0.6, solid: 0.45 });
+  roomPart(ctx, roomRound(12, F - 62, 110, 57, 2), '#3a4a52', { top: 1.2, side: 1.5, solid: 0.45, shadow: false });
+  roomPart(ctx, roomRound(21, F - 56, 10, 46, 2), '#2a3640', { top: 0.5 });
+  roomPart(ctx, roomRound(23.5, F - 53, 5, 40, 1.5), '#0e1a24', { top: 0 });
+  roomFlat(ctx, 24, F - 34, 4, 20.5, LS_WATER);
+  for (let k = 0; k < 4; k++) roomFlat(ctx, 29, F - 50 + k * 10, 1.6, 0.5, '#8796a5');
+  roomGauge(ctx, 44, F - 48, 4.5, 0.55);
+  roomPart(ctx, roomRound(54, F - 52, 34, 30, 1), '#44505a', { top: 0.6, side: 0.8 });
+  for (const [sx, sy] of [[56, F - 50], [86, F - 50], [56, F - 24], [86, F - 24]]) roomDot(ctx, sx, sy, 0.6, '#8796a5');
+  roomPart(ctx, roomRound(60, F - 46, 12, 6, 0.6), '#8a8676', { top: 0 }); for (let k = 0; k < 2; k++) roomFlat(ctx, 61.5, F - 44.5 + k * 2, 8, 0.5, '#5a5648');
+  for (let k = 0; k < 4; k++) roomFlat(ctx, 38, F - 18 + k * 2.6, 46, 1, '#1c262e');
+  roomPart(ctx, roomRound(93, F - 58, 4, 40, 0.8), '#2a3640', { top: 0 });  // the canister's bracket, its fresh bolts, the canister
+  roomPart(ctx, roomRound(97, F - 56, 20, 36, 5), '#4a5a62', { top: 1, side: 1.2 });
+  for (const by of [F - 50, F - 26]) { roomPart(ctx, roomRound(96, by, 22, 3, 0.8), '#3a4852', { top: 0.4 }); for (const bx of [96.6, 116.2]) roomFlat(ctx, bx, by + 0.9, 1.2, 1.2, '#8a929a'); }  // its straps, bolted fresh
+  run(121, 134, F - 30); pipe(132, F - 32, F + plate);
+  run(121, 146, F - 46); pipe(144, F - 48, F + plate);
+  for (const x of [132, 144]) roomPart(ctx, roomRound(x - 4, F - 2, 8, 3, 0.8), '#4f6f8f', { top: 0.5 });
+  roomValve(ctx, 132, F - 18, 4);
+  roomFlat(ctx, 143, F - 34, 2, 3, '#56626e');  // the drain's valve: the stem, the printed handle with its layers, its tag on a tie
+  roomPart(ctx, roomRound(141, F - 39, 11, 5, 1), '#8a6a48', { top: 0.5 });
+  for (const lx of [F - 37.6, F - 36]) roomFlat(ctx, 142, lx, 9, 0.4, '#6a5038');
+  ctx.strokeStyle = roomTint('#6a6458'); ctx.lineWidth = 0.5; roomSeg(ctx, [[151, F - 34], [151.5, F - 32]]);
+  roomPart(ctx, roomRound(149.5, F - 32, 4, 5, 0.6), '#9a9050', { top: 0.5 }); roomDot(ctx, 151.5, F - 31, 0.5, '#4a4436');
+  roomPart(ctx, roomRound(129.5, F - 12, 5, 4, 0.5), '#7a7462', { top: 0 });  // tape on a joint
+  // The bench at the waist: the rack under its right end, its shelves, the four spares strapped in; its cabinet; its top, the bagged filter on it.
+  roomPart(ctx, roomRound(244, F - 4, 92, 4, 1), '#2a3846', { top: 0.5, solid: 0.45 });
+  for (const px of [244, 332]) roomPart(ctx, roomRound(px, F - 38, 4, 34, 0.8), '#2a3644', { top: 0, side: 1 });
+  roomPart(ctx, roomRound(246, F - 21, 88, 2.4, 0.6), '#34485a', { top: 0.5 });
+  for (const [cx, cy] of [[248, F - 18], [290, F - 18], [248, F - 35.4], [290, F - 35.4]]) cart(cx, cy);
+  for (const sy of [F - 12, F - 29.4]) roomPart(ctx, roomRound(246, sy, 88, 2, 0.6), '#5a5040', { top: 0 });
+  roomPart(ctx, roomRound(170, F - 38, 72, 38, 1.2), '#2c3a46', { top: 0, side: 1.2, solid: 0.45 });
+  for (let k = 0; k < 2; k++) { roomPart(ctx, roomRound(174, F - 34 + k * 16, 64, 13, 1), '#34465a', { top: 0.6, side: 1 }); roomFlat(ctx, 200, F - 29 + k * 16, 12, 1.4, '#8796a5'); }
+  roomPart(ctx, roomRound(166, F - 42, 172, 4, 1), '#46525a', { top: 0.8, solid: 0.5, shadow: false });
+  for (const [wx, ww] of [[214, 6], [262, 4], [300, 5]]) roomFlat(ctx, wx, F - 42, ww, 0.8, '#6a747c');  // the paint worn off its edge
+  roomAtDepth(ctx, 190, F - 42, 0.3, () => {
+    roomPart(ctx, `M 178 ${F - 42} L 179 ${F - 47} Q 186 ${F - 50} 196 ${F - 48} L 203 ${F - 47} L 202 ${F - 42} Z`, '#5a5e56', { top: 0.6 });
+    roomFlat(ctx, 200.5, F - 48.5, 1.4, 3, '#3a3a34');
+  });
+  // The right bay: the air recycler. Its fan row from the well in, on an old base rail: the first two fans, then from the hull wall in the
+  // scrubber stack, then the fan by the eye joined to the stack; the condensate line under it; the cartridge out on it.
+  const fan = (x, col, k) => {
+    roomPart(ctx, roomRound(x, F - 44, 70, 38, 1.5), col, { top: 1, side: 1.2, solid: 0.45, shadow: false });
+    const cx = x + 26, cy = F - 25;
+    roomDot(ctx, cx, cy, 12, '#141c22');
+    ctx.strokeStyle = roomTint('#4a5662'); ctx.lineWidth = 3;
+    for (let b = 0; b < 3; b++) { const a = s.time * (7 + k) + k + b * 2.094; roomSeg(ctx, [[cx, cy], [cx + Math.cos(a) * 9.5, cy + Math.sin(a) * 9.5]]); }
+    ctx.strokeStyle = roomTint('#56626e'); ctx.lineWidth = 0.6; ctx.beginPath();
+    for (const g of [-8, -4, 0, 4, 8]) { const h = Math.sqrt(144 - g * g); ctx.moveTo(cx + g, cy - h); ctx.lineTo(cx + g, cy + h); }
+    ctx.stroke();
+    ctx.strokeStyle = roomTint('#26323c'); ctx.lineWidth = 1.8; ctx.beginPath(); ctx.arc(cx, cy, 12, 0, Math.PI * 2); ctx.stroke();
+    roomDot(ctx, cx, cy, 1.8, '#3a4652');
+    roomPart(ctx, roomRound(x + 44, F - 40, 22, 28, 1), '#2e3a46', { top: 0.5 });  // its service plate, its log card, its run lamp
+    for (const [sx, sy] of [[x + 46, F - 38], [x + 64, F - 38], [x + 46, F - 14], [x + 64, F - 14]]) roomDot(ctx, sx, sy, 0.5, '#56708c');
+    roomFlat(ctx, x + 48, F - 34, 14, 1, '#5a6a78'); roomFlat(ctx, x + 48, F - 31, 10, 1, '#5a6a78');
+    roomDot(ctx, x + 55, F - 20, 1.3, '#3e6a48');
+    if (col === '#4a5660') for (const [bx, by] of [[x + 1.5, F - 42.5], [x + 67, F - 42.5], [x + 1.5, F - 9], [x + 67, F - 9]]) roomFlat(ctx, bx, by, 1.4, 1.4, '#8a929a');  // the newer one's fresh bolts
+  };
+  roomPart(ctx, roomRound(381, F - 6, 211, 6, 1), '#24323e', { top: 0.6, solid: 0.45 });
+  for (const bx of [384, 450, 520, 586]) roomDot(ctx, bx, F - 3, 0.7, '#56708c');
+  fan(381, '#3a4652', 0); fan(451, '#4a5660', 1);
+  roomPart(ctx, roomRound(598, F - 5, 106, 5, 1), '#24323e', { top: 0.6, solid: 0.5 });
+  roomPart(ctx, roomRound(596, F - 86, 110, 81, 2), '#34424e', { top: 1, side: -1.5, solid: 0.5, shadow: false });
+  roomPart(ctx, roomRound(602, F - 83, 98, 16, 1), '#3c4a56', { top: 0.6, under: 0.6 });
+  for (let k = 0; k < 8; k++) roomFlat(ctx, 608 + k * 11, F - 79, 6, 1, '#1c262e');
+  for (let k = 0; k < 8; k++) roomFlat(ctx, 608 + k * 11, F - 74, 6, 1, '#1c262e');
+  for (const [sx, sy] of [[604, F - 81], [698, F - 81], [604, F - 69], [698, F - 69]]) roomDot(ctx, sx, sy, 0.6, '#8796a5');
+  [[0, 0], [1, 0], [0, 1], [1, 1], [0, 2], [1, 2]].forEach(([c, row]) => {
+    const bx = 603 + c * 50, by = F - 65 + row * 19;
+    roomPart(ctx, roomRound(bx - 2, by - 1.5, 44, 17, 1), '#2a3640', { top: 0 });
+    if (c === 0 && row === 0) { roomPart(ctx, roomRound(bx, by, 40, 14, 1), '#0e161c', { top: 0 }); for (const ry of [by + 3, by + 10]) roomFlat(ctx, bx + 2, ry, 36, 0.8, '#3a4652'); }  // the empty bay, its rails
+    else { cart(bx, by); roomFlat(ctx, bx + 13, by + 5, 2, 1, '#6a747c'); }
+  });
+  ctx.strokeStyle = roomTint('#3a3a40'); ctx.lineWidth = 1.2; roomSeg(ctx, [[702, F - 86], [702, F - 92], [709, F - 96], [709, T + 1]]);  // its cable up into the ceiling, tied
+  for (const ty of [F - 90.5, T + 6]) roomFlat(ctx, 700.5, ty, 3, 1, '#1e2a36');
+  roomFlat(ctx, 707.5, T + 9, 3, 1, '#1e2a36');
+  for (const [sx, sw] of [[606, 5], [624, 4], [668, 6]]) roomFlat(ctx, sx, F - 7, sw, 0.8, '#3e4c5a');  // scuffs where boots go
+  fan(521, '#3a4652', 2);
+  roomPart(ctx, roomRound(590, F - 36, 8, 14, 1), '#2e4256', { top: 0.5, under: 0.6 });  // the fan's duct into the stack
+  pipe(566, F - 14, F + plate, 3.5);  // the condensate line under it, down through the deck, its clamp
+  roomPart(ctx, roomRound(563, F - 2.5, 6, 3, 0.6), '#6a6e70', { top: 0.4 });
+  roomAtDepth(ctx, 566, F - 44, 0.15, () => cart(549, F - 58));  // the cartridge out, on the last fan, the date on it
+}
+
 // The lamp: a pool of light mixing red (burn), warm (cruise) and a pulsing amber (flip), dimmed at night unless the room keeps its lights.
 // A ceiling lamp's fitting (#1024, look.md rule 5): its base plate on the ceiling's sliver from the cut back to the wall (e, the bay's eye), the
 // housing hung from it at the cut, the lens lit in the lamp's colour (lit) and a wire guard over the lens.
@@ -1731,16 +1881,14 @@ function drawDamage(ctx, r, s) {
 // baseline, in world units at the zoom.
 const ROOM_NAME_TOP = 8;
 const roomNameAt = (r, zoom) => ({ x: r.x0 + 12, y: r.top + ROOM_NAME_TOP + 13 / zoom });
-// The tower's rooms with no fittings yet (#972; their own are step 3, #973): the walls drawRoom gives every room, and the name the cutaway puts on each.
-const roomPlain = () => {};
 const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay,
-  head: roomHead, workshop: roomWorkshop, airlock: roomAirlock, lifesupport: roomPlain };
+  head: roomHead, workshop: roomWorkshop, airlock: roomAirlock, lifesupport: roomLifeSupport };
 // A room, r = { x0, x1, top, floor } in world units, drawn for the state s (w, time, zoom, spin, still, berths, cargo, torpedoes, fuel, burning, night,
 // asleep, well, and shell: how a bay's shell is drawn, the burn view's cache): walls, props, then its lamp.
 // Which way someone on a room's chair faces (#985): the bridge's and the guns' toward their consoles, the chair's back behind them (#933), the
 // medbay's stool toward the cot. The galley's bench is not here: at the mess table people face you.
 const SEAT_FACE = { bridge: 1, gunnery: -1, medbay: -1 };
-const LAMP_FITTED = ['bridge', 'berths', 'medbay', 'hold', 'gunnery', 'engine', 'head', 'workshop', 'airlock'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
+const LAMP_FITTED = ['bridge', 'berths', 'medbay', 'hold', 'gunnery', 'engine', 'head', 'workshop', 'airlock', 'lifesupport'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
 function drawRoom(ctx, id, r, s) {
   if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses
   const W = r.x1 - r.x0;
