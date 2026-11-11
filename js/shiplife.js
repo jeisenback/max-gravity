@@ -425,7 +425,7 @@ function routineTarget(p, spot, r, i, n, rnd) {
   if (spot.at === 'bed') return r.x0 + r.w * (0.34 + 0.16 * (n > 1 ? i / (n - 1) : 0));  // on the medbay's cot (0.2 to 0.54 of the room), the head toward its pillow end
   if (spot.at === 'aid') return r.x0 + r.w * 0.6;
   if (spot.at === 'repair') return r.x0 + r.w * 0.5;
-  if (spot.at === 'alone') return r.x0 + r.w * 0.12;  // on the edge of the first bunk
+  if (spot.at === 'alone') return r.x0 + r.w * (BERTH_NAME + 14) / LAYOUTS.freighter.width;  // on the edge of the first bunk, at its head end (rooms.js berthBunk)
   if (spot.at === 'table') return Math.max(r.x0 + 0.01 * CUT_K, Math.min(r.x1 - 0.01 * CUT_K, r.x0 + r.w * (0.3 + 0.6 * (n > 1 ? i / (n - 1) : 0.5))));
   return r.x0 + r.w * (0.25 + 0.5 * rnd());  // a bunk
 }
