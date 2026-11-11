@@ -1,6 +1,6 @@
 # Every room as a box in perspective (#1024)
 
-Status: draft, with the owner; three choices open (full-width rooms as two bays, where people stand, look.md rule 3's wording). Part of #931. From `docs/bible/look.md` rules 2 to 6, approved by the owner on 2026-11-11, and its reference frame `look-target.png`. Spec first: the owner approves it before any code. A throwaway mockup of the mess deck in the box (the galley and the head and shower, the crew at breakfast, 1280x800) went with it.
+Status: approved by the owner on 2026-11-11, with the recommended choice in each case: full-width rooms as two bays, people on the front edge of the floor strip, and the side toward the centre (look.md rule 3 corrected to match). Part of #931. From `docs/bible/look.md` rules 2 to 6, approved by the owner on 2026-11-11, and its reference frame `look-target.png`. Spec first: the owner approves it before any code. A throwaway mockup of the mess deck in the box (the galley and the head and shower, the crew at breakfast, 1280x800) went with it.
 
 ## Why
 
@@ -33,7 +33,7 @@ The ladder well is a shaft on every deck, as `look-target.png` shows it: flat (2
 
 `roomBays(r, well)` returns the bays, and `roomEye(bay)` returns `{ vx, vy, k }`. Both are pure functions of the box, tested in Node.
 
-*The owner's choice:* bays (recommended: as the target draws the berths; the side walls are half as deep; no vanishing point sits on the ladder). The alternative is one box per room, its point on the well, with side walls about 70 deep on a full-width deck.
+*Decided (the owner, 2026-11-11):* bays, as the target draws the berths; the side walls are half as deep and no vanishing point sits on the ladder.
 
 ## 2. Where people stand
 
@@ -44,7 +44,7 @@ What follows from it:
 - `G.cutHits` (body, head and foot), `G.cutRooms` (the layout box, so a tap on the shaft of a full-width deck still opens that room) and `G.cutRack` (the rack sits on its console, at the front) do not move. Clicks on people and rooms work as now.
 - The figure's own deck shadow (`drawPerson`, `js/figures.js`) moves up onto the strip, a half-ellipse behind the feet instead of across the plate. That is one line.
 
-*The owner's choice:* the front edge (recommended: nothing measured moves). The alternative is a stand line 4 units in, with the feet visibly on the floor; then every person, seat, couch and hit moves 4 up and those tests are re-taken.
+*Decided (the owner, 2026-11-11):* the front edge, so nothing measured moves.
 
 ## 3. Solid furniture (rule 3)
 
@@ -69,7 +69,7 @@ What follows from it:
 
 The eye comes from the bay being drawn: `drawRoom` sets it for the room's call and clears it after (`roomMessTable` sets its own). Only the outer body of a prop is solid. Its doors, latches and stencils stay flat on its front, so no prop draws its depth twice.
 
-*The side shown.* One-point perspective shows the side facing the vanishing point: a locker right of centre shows its left side, as the target's locker does. The bible says "the side away from the centre". The spec draws the side toward the centre, and asks the owner to confirm and correct that word in `look.md`.
+*The side shown.* One-point perspective shows the side facing the vanishing point: a locker right of centre shows its left side, as the target's locker does. The owner confirmed the side toward the centre on 2026-11-11, and `look.md` rule 3 says so.
 
 **Things on the wall.** These are cupboards, the porthole, screens, shelves, the pinboard, the knife strip, the hood, rails, the certificate, the mirror and the towels. They get no depth faces (their thickness is the bevel `roomPart` gives today) and are one step darker (`WALL_TONE = 0.85`, applied by the helper). They are drawn through `roomOnWall(ctx, ax, ay, fn)`:
 - the group is moved, rigidly and at full size, so its anchor lands on the back wall (the anchor scaled toward the point by `k`);
