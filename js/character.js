@@ -69,7 +69,8 @@ function watchBillCard() {
   if (!G.transit || !hired()) return '';
   const say = key => sceneSay('scene:watch-bill', key), people = G.transit.aboard || shipPeople(), names = billNames(people);
   const who = id => (id ? names[id] || id : say('card.none'));
-  const rows = [0, 1, 2, 3].map(k => {
+  const t = G.transit, ahead = nightsAhead(t.elapsed || 0, (t.elapsed || 0) + Math.max(0, t.left) / burnSpeed());  // only the nights before arrival (#1053)
+  const rows = [...Array(ahead + 1).keys()].map(k => {
     const b = billOn(k), mine = b.bridge === 'you' || b.engine === 'you';
     return String(h`<div class="con-read watch-night"><span>${k ? sceneSay('scene:watch-bill', 'card.night', { n: k + 1 }) : say('card.tonight')}</span><b>${sceneSay('scene:watch-bill', 'card.row', { bridge: who(b.bridge), engine: who(b.engine) })}${mine ? ` ${say('card.mine')}` : ''}</b></div>`);
   });
