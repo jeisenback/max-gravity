@@ -581,7 +581,7 @@ test('the turn cap ends it by who is worse hurt, whatever the range: she breaks 
   await done();
 });
 
-test('an owner who kept a post meets a pirate or a patrol in the ship fight (#721): the helm takes the captain\'s part, a hurt lays them up and never kills, and the close goes in the log; one who never was a hand keeps the card duel', async () => {
+test('an owner who kept a post meets a pirate or a patrol in the ship fight (#721): the range is the owner\'s order (#1045), a hurt lays them up and never kills, and the close goes in the log; one who never was a hand keeps the card duel', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -594,7 +594,7 @@ test('an owner who kept a post meets a pirate or a patrol in the ship fight (#72
     const real = Math.random;  // a foe is made with the dice back: people are drawn until they differ
     window.rateFoe = f => { f.grade = 0; f.pack = false; return f; };  // an ordinary foe, whatever the seed draws
     const fresh = kind => { Math.random = real; st.armor = ship().armor; G.duel = null; G.nextEvent = null; const text = startDuel({ kind, gov: 'Arcology Pact' }, false); begin(); return text; };
-    out.text = fresh('pirate'); out.title = G.dialog.event.title; out.duel = !!G.duel; out.read = G.dialog.event.read;
+    out.text = fresh('pirate'); out.title = G.dialog.event.title; out.duel = !!G.duel; out.read = G.dialog.event.read; out.range = G.dialog.event.choices.filter(c => c.row === 'range').map(c => c.label);
     // a heavy hit, and the hurt that follows it (the dice are set after the foe is made)
     const xp = skillXp('gunner'); fightNow().state.me.shields = 0; shownMoves({ kind: 'broadside', target: 'hull', dmg: [30, 30] });
     rolls([0.5, 0.5, 0.99, 0.01, 0.01]);  // our shot, her volley, no casualty, the hand's roll, and the roll that would kill a hand
@@ -607,7 +607,7 @@ test('an owner who kept a post meets a pirate or a patrol in the ship fight (#72
     return out;
   });
   assert.ok(r.owner); assert.match(r.text, /Battle stations/); assert.equal(r.title, 'Battle Stations'); assert.equal(r.duel, false, 'no card duel');
-  assert.match(r.read, /: (holding|closing|opening) the range\.$/); assert.doesNotMatch(r.read, /Captain/, 'there is no captain: the helm');
+  assert.doesNotMatch(r.read, /the range\.|Captain/, 'there is no captain: the range is the owner\'s order'); assert.equal(r.range.length, 3); assert.match(r.range[1], /^Hold \(/);
   assert.match(r.lost, /You are hurt/); assert.ok(r.hurtUntil >= 12, 'laid up'); assert.ok(r.alive, 'and the fight goes on');
   assert.match(r.off, /breaks off/); assert.match(r.off, /You write it in the log and nothing else/); assert.doesNotMatch(r.off, /Captain/); assert.ok(r.xp >= 3, 'the post learns from a stand');
   assert.equal(r.patrol, 'Battle Stations'); assert.equal(r.patrolDuel, false);

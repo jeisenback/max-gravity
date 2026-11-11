@@ -1,7 +1,7 @@
 'use strict';
 
-// Chapter two's start (#891, docs/superpowers/specs/2026-11-07-chapter-two-start-design.md): a finished chapter one goes on, the lender sends three
-// masters and the player picks one, and the co-op's Ore Runner is landed at Ceres with the crew who came, Bexa and Pax.
+// Chapter two's start (#891, #1045, docs/superpowers/specs/2026-11-11-hand-captain-design.md): a finished chapter one goes on, the members vote the hand
+// to the bridge on the registry's endorsement (paid for, or vouched by Hester), and the co-op's Ore Runner is landed at Ceres with the crew who came, Bexa and Pax.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -24,30 +24,31 @@ const helpers = () => {
     while (G.dialog && G.dialog.event.title !== 'The End of Chapter One' && guard--) { titles.push(G.dialog.event.title); chooseEvent(0); finishEvent(); }
     return titles;
   };
-  window.goOnAndPick = (i = 0) => {
+  window.goOnToBridge = () => {
     UI.act('choose', '0');  // Go on
-    const start = G.dialog && G.dialog.event, names = start ? start.choices.map(c => c.label) : [];
-    UI.act('choose', String(i)); finishEvent();
-    return { title: start && start.title, names };
+    const start = G.dialog && G.dialog.event, names = start ? start.choices.map(c => c.label) : [], text = start && start.text;
+    const result = start ? chooseEvent(0) : null; finishEvent();
+    return { title: start && start.title, names, text, result };
   };
   window.chapterTwoView = () => {
     const st = G.state, h = st.hired, cap = hiredCaptain();
-    return { chapter: chapterOf(st), role: role().id, masters: h && h.masters, key: cap && cap.captainKey, ship: st.shipId, planet: st.planet, mode: G.mode,
+    return { chapter: chapterOf(st), role: role().id, captain: role().captain, cap: !!cap, bridge: !!(h && h.bridge), papers: h && h.papers, masters: h && h.masters, ship: st.shipId, planet: st.planet, mode: G.mode,
       crew: st.crew.map(person).map(p => ({ cast: p.cast, role: p.role })), gunner: postHolder('gunner') === null || (postHolder('gunner') && postHolder('gunner').role === 'you'),
       dialog: !!G.dialog, condition: st.condition, armor: st.armor === ship().armor };
   };
 };
 
-test('signing the share and going on: three masters, one picked, the Ore Runner landed at Ceres with Bexa and Pax', async () => {
+test('signing the share and going on: the hand takes the bridge, and the Ore Runner is landed at Ceres with Bexa and Pax', async () => {
   const { ev, done } = await open();
   await ev(helpers);
-  const r = await ev(() => { toShare(); const over = G.dialog && G.dialog.event; const label = over && over.choices[0].label; const pick = goOnAndPick(0); return { label, pick, v: chapterTwoView() }; });
+  const r = await ev(() => { toShare(); const over = G.dialog && G.dialog.event; const label = over && over.choices[0].label; const pick = goOnToBridge(); return { label, pick, v: chapterTwoView() }; });
   await done();
   assert.equal(r.label, 'Go on');
-  assert.equal(r.pick.title, 'Three Names');
-  assert.equal(r.pick.names.length, 3);
-  assert.equal(r.v.chapter, 2); assert.equal(r.v.role, 'coop');
-  assert.equal(r.v.masters.length, 3); assert.equal(r.v.key, r.v.masters[0]);
+  assert.equal(r.pick.title, 'The Bridge');
+  assert.deepEqual(r.pick.names, ['Take the bridge']);
+  assert.equal(r.v.chapter, 2); assert.equal(r.v.role, 'coop'); assert.equal(r.v.captain, 'you');
+  assert.equal(r.v.cap, false, 'no captain person'); assert.equal(r.v.bridge, true); assert.equal(r.v.masters, undefined, 'the lender sends no masters');
+  assert.equal(r.v.papers.length, 1); assert.match(r.v.papers[0], /^endorsement/);
   assert.equal(r.v.ship, 'lightfreighter'); assert.equal(r.v.planet, 'Ceres Station'); assert.equal(r.v.mode, 'landed'); assert.equal(r.v.dialog, false);
   assert.deepEqual(r.v.condition, { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 }); assert.equal(r.v.armor, true);
   assert.ok(r.v.crew.some(c => c.cast === 'bexa' && c.role === 'icehand'), JSON.stringify(r.v.crew));
@@ -55,21 +56,37 @@ test('signing the share and going on: three masters, one picked, the Ore Runner 
   assert.ok(r.v.crew.some(c => c.cast === 'cato'), 'Cato came');
 });
 
-test('a hand who came alone starts with Bexa, Pax and the master, and can take off with no pilot', async () => {
+test('a hand who came alone starts with Bexa and Pax, and can take off with no pilot', async () => {
   const { ev, done } = await open();
   await ev(helpers);
-  const r = await ev(() => { toShare({ alone: true }); goOnAndPick(1); const v = chapterTwoView(); let err = null; try { takeOff(); } catch (e) { err = String(e); } return { v, pilot: !!roleHolder('pilot'), err, mode: G.mode }; });
+  const r = await ev(() => { toShare({ alone: true }); goOnToBridge(); const v = chapterTwoView(); let err = null; try { takeOff(); } catch (e) { err = String(e); } return { v, pilot: !!roleHolder('pilot'), err, mode: G.mode }; });
   await done();
   assert.deepEqual(r.v.crew.map(c => c.cast).sort(), ['bexa', 'pax']);
   assert.equal(r.pilot, false); assert.equal(r.err, null); assert.equal(r.mode, 'flight');
 });
 
-test('a chapter-two save reloads as chapter two, the master aboard and nothing open', async () => {
+test('a chapter-two save reloads as chapter two, the hand on the bridge and nothing open', async () => {
   const { ev, done } = await open();
   await ev(helpers);
-  const r = await ev(() => { toShare(); goOnAndPick(2); const key = hiredCaptain().captainKey; save(); loadGame(); while (G.dialog && G.dialog.event.title !== 'The End of Chapter One' && G.dialog.event.title !== 'Three Names') finishEvent(); return { key, v: chapterTwoView(), title: G.dialog && G.dialog.event.title }; });
+  const r = await ev(() => { toShare(); goOnToBridge(); save(); loadGame(); while (G.dialog && G.dialog.event.title !== 'The End of Chapter One' && G.dialog.event.title !== 'The Bridge') finishEvent(); return { v: chapterTwoView(), title: G.dialog && G.dialog.event.title }; });
   await done();
-  assert.equal(r.title, null); assert.equal(r.v.role, 'coop'); assert.equal(r.v.key, r.key);
+  assert.equal(r.title, null); assert.equal(r.v.role, 'coop'); assert.equal(r.v.bridge, true); assert.equal(r.v.cap, false);
+});
+
+test('a save from piece 1 with a master on the bridge loads with the hand on it, and the master ashore at Ceres', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    toShare(); goOnToBridge(); const h = hired(), m = captainPerson('saran'); m.role = 'captain'; m.job = 'master';
+    Object.assign(h, { captainKey: 'saran', captain: m.id, masters: ['saran', 'kessler', 'mensah'] }); delete h.bridge; delete h.papers;
+    save(); loadGame(); while (G.dialog && !/The Bridge|End of Chapter One/.test(G.dialog.event.title)) finishEvent();
+    const p = G.state.people[m.id];
+    return { v: chapterTwoView(), title: G.dialog && G.dialog.event.title, key: hired().captainKey, master: p && { role: p.role, location: p.location, last: p.last } };
+  });
+  await done();
+  assert.equal(r.title, null, 'it goes on, with no start to play again'); assert.equal(r.v.bridge, true); assert.deepEqual(r.v.papers, ['endorsement']);
+  assert.equal(r.v.cap, false); assert.equal(r.key, undefined); assert.equal(r.v.masters, undefined);
+  assert.deepEqual(r.master, { role: null, location: 'Ceres Station', last: 'Saran' }, 'a person ashore');
 });
 
 test('a finished save from before chapter two goes on the same way', async () => {
@@ -79,11 +96,11 @@ test('a finished save from before chapter two goes on the same way', async () =>
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state; st.career = { ...careerOf(hired()), came: [castPerson('cato').id], signed: st.day, share: { coop: 'Ceres Station', buyIn: 57000, owed: 93000 }, finished: true };
     st.crew = [castPerson('cato').id]; st.hired = null; save(); loadGame();
-    const over = G.dialog && G.dialog.event.title, pick = goOnAndPick(0);
+    const over = G.dialog && G.dialog.event.title, pick = goOnToBridge();
     return { over, pick, v: chapterTwoView(), share: hired() && hired().share };
   });
   await done();
-  assert.equal(r.over, 'The End of Chapter One'); assert.equal(r.pick.names.length, 3);
+  assert.equal(r.over, 'The End of Chapter One'); assert.equal(r.pick.names.length, 1);
   assert.equal(r.v.chapter, 2); assert.equal(r.v.ship, 'lightfreighter');
   assert.deepEqual(r.share, { coop: 'Ceres Station', buyIn: 57000, owed: 93000 });
   assert.ok(r.v.crew.some(c => c.cast === 'cato'));
@@ -92,7 +109,7 @@ test('a finished save from before chapter two goes on the same way', async () =>
 // ---------- Task 4: the co-op's board and exchange, and nothing of chapter one's own ----------
 
 const started = () => {
-  window.coopAt = (i = 0) => { toShare(); goOnAndPick(i); const st = G.state; st.story.next = 1e9; G.dialog = null; G.nextEvent = null; UI.notes.length = 0; return st; };
+  window.coopAt = (i = 0) => { toShare(); goOnToBridge(); const st = G.state; st.story.next = 1e9; G.dialog = null; G.nextEvent = null; UI.notes.length = 0; return st; };
   window.contract = (o = {}) => ({ shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 20, from: 'Ceres Station', sid: 'mars', planet: 'Mars', yard: false, days: 5, pay: 12000, due: G.state.day + 9, hazard: false, rumor: false, ...o });
   window.landAtPort = (sid, planet) => { const st = G.state; G.transit = null; st.systemId = sid; st.planet = planet; G.mode = 'landed'; G.dialog = null; G.nextEvent = null; st.customs = { ...(st.customs || {}), last: st.day };
     const titles = []; Mods.emit('landed', currentPlanet()); let guard = 10; while (G.dialog && guard--) { titles.push(G.dialog.event.title); chooseEvent(0); finishEvent(); } return titles; };
@@ -158,13 +175,50 @@ test('the co-op\'s shipyard refuels, repairs and fits out, sells no ship, and th
   assert.doesNotMatch(r.port, /member's share|buy-in|your savings/i, r.port.slice(0, 400));
 });
 
-test('a fight that ends the hand\'s life in chapter two ends the run as in chapter one, naming the master', async () => {
+test('a fight that ends the hand\'s life in chapter two ends the run as in chapter one, with no captain to say it', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(started);
-  const r = await ev(() => { const st = coopAt(); const cap = hiredCaptain(); handDies({}, 'first'); const e = G.nextEvent; return { canDie: role().canDie, title: e && e.title, text: e && e.text, choices: e && e.choices.map(c => c.label), last: cap.last }; });
+  const r = await ev(() => { coopAt(); handDies({}, 'first'); const e = G.nextEvent; return { canDie: role().canDie, title: e && e.title, text: e && e.text, choices: e && e.choices.map(c => c.label) }; });
   await done();
   assert.equal(r.canDie, true); assert.equal(r.title, 'The Last Run'); assert.deepEqual(r.choices, ['Begin again']);
-  assert.ok(r.text.includes(r.last), 'the master says it'); assert.doesNotMatch(r.text, /undefined|NaN|Hester/);
+  assert.doesNotMatch(r.text, /undefined|NaN|Hester|Captain/);
+});
+
+// ---------- #1045: chapter one's stories stop at the signing, and the range is the hand's order ----------
+
+test('chapter one\'s stories stop at the signing: the chapter condition, the strike\'s scenes on Hester\'s ship, and the mission arcs\' offers', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt(), h = hired(), when = id => STORYLETS.find(x => x.id === id).when || {};
+    const out = { shape: conditionProblems({ chapter: 'one' }), two: [meets({ chapter: 2 }), meets({ chapter: 1 })],
+      strike: ['strike-broadcast', 'strike-ceres', 'strike-captain', 'strike-tarp', 'strike-landed', 'strike-end'].map(id => when(id).chapter || null) };
+    h.standing = Object.fromEntries(Object.values(MISSION_ARCS).map(a => [a.shipper, 99])); h.away = [];
+    landAtPort('ceres', 'Ceres Station'); out.arcs = h.away.filter(a => a.arc).length; out.would = !!arcOffer(MISSION_ARCS.league, 'league', currentPlanet());
+    return out;
+  });
+  await done();
+  assert.deepEqual(r.shape, ['condition chapter needs a chapter number']); assert.deepEqual(r.two, [true, false]);
+  assert.deepEqual(r.strike, [1, 1, 1, 1, null, null], 'Hester\'s ship\'s part of the strike is chapter one\'s; the crates landed and the end read no captain');
+  assert.equal(r.would, true, 'the Hall has one for the ship'); assert.equal(r.arcs, 0, 'and none is offered to a hand on their own bridge');
+});
+
+test('the range orders: shown on the hand\'s own bridge with Hold first chosen, and the order is the range Fire plays; not in chapter one', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const fight = () => { hired().raidTold = true; G.nextEvent = null; startShipFight({ kind: 'pirate', gov: 'Arcology Pact', shipId: 'raider' }, false); const e = G.nextEvent; G.nextEvent = null; return e; };
+    coopAt(); const e = fight(); const s = e.fight, rows = e.choices.filter(c => c.row === 'range');
+    const shown = rows.map(c => ({ label: c.label, on: c.on }));
+    s.state.me.speed = 1e6; s.state.band = 2; s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 1] }], captain: { kind: 'hold' } };
+    fireTurn(s, { guns: [null], torp: null, pdc: 'fire', range: 'open' }); const opened = s.state.band;
+    return { shown, opened };
+  });
+  const one = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.story.next = 1e9; hired().raidTold = true; G.nextEvent = null; startShipFight({ kind: 'pirate', gov: 'Arcology Pact', shipId: 'raider' }, false); const e = G.nextEvent; G.nextEvent = null; return { rows: e.choices.filter(c => c.row === 'range').length, read: e.read }; });
+  await done();
+  assert.equal(r.shown.length, 3); assert.deepEqual(r.shown.map(x => x.on), [false, true, false], 'Hold, until the player orders another');
+  assert.match(r.shown[0].label, /^Close \(/); assert.equal(r.opened, 3, 'Open, faster than her: the range opens');
+  assert.equal(one.rows, 0, 'chapter one: the range is the captain\'s'); assert.match(one.read, /Captain Vance: (holding|closing|opening) the range\./);
 });
 
 // ---------- Task 5: last-seen prices ----------
@@ -192,25 +246,39 @@ test('an old finished save goes on with chapter one\'s fights behind it, so pira
   const r = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state; st.career = { ...careerOf(hired()), came: [], signed: st.day, share: { coop: 'Ceres Station', buyIn: 57000, owed: 93000 }, finished: true };
-    st.hired = null; save(); loadGame(); goOnAndPick(0);
+    st.hired = null; save(); loadGame(); goOnToBridge();
     return { met: ladderPirate(hired(), 0) };
   });
   await done();
   assert.ok(r.met, 'a pirate type is met');
 });
 
-test('the lender\'s three names differ from game to game, not only by the day the share was signed', async () => {
+test('the endorsement: a fee out of the savings, or onto what is owed when they are short; a captain who trusts the hand vouches, waives it and eases the share', async () => {
   const { ev, done } = await open();
   await ev(helpers);
-  const r = await ev(() => { const firsts = new Set(); for (let s = 1; s <= 8; s++) { __seed(s); toShare(); goOnAndPick(0); firsts.add(hiredCaptain().captainKey); } return [...firsts]; });
+  const r = await ev(() => {
+    const out = {}, go = (regard, credits) => {
+      toShare(); const h = hired(); h.vouched = regard >= OPINION.TRUSTED; G.state.credits = credits; const owed = h.share.owed, c0 = G.state.credits;
+      const s = goOnToBridge(); return { page: onTheShipCard().replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' '), text: s.text, result: s.result, papers: h.papers, owedUp: h.share.owed - owed, paid: c0 - G.state.credits, owed, now: h.share.owed };
+    };
+    out.paid = go(0, 10000); out.short = go(0, 100); out.vouched = go(3, 10000);
+    toShare(); out.signed = hired().vouched; out.fee = ENDORSEMENT_FEE;
+    return out;
+  });
   await done();
-  assert.ok(r.length >= 2, `the first name sent: ${r.join(', ')}`);
+  assert.equal(r.signed, false, 'the signing reads her regard: a fresh hand is not trusted');
+  assert.match(r.paid.text, /wants 2,500 for the endorsement/); assert.deepEqual(r.paid.papers, ['endorsement']); assert.equal(r.paid.paid, r.fee); assert.equal(r.paid.owedUp, 0);
+  assert.match(r.paid.result, /comes out of your savings/);
+  assert.match(r.paid.page, /Captain you, in command Papers a master's endorsement, the Belt registry's Post/, 'the hand\'s page names it'); assert.match(r.vouched.page, /vouched for by Hester Vance/);
+  assert.equal(r.short.paid, 0); assert.equal(r.short.owedUp, r.fee); assert.match(r.short.result, /adds it to what you owe/);
+  assert.match(r.vouched.text, /Hester Vance/); assert.deepEqual(r.vouched.papers, ['endorsement:vouched']); assert.equal(r.vouched.paid, 0);
+  assert.equal(r.vouched.now, Math.round(r.vouched.owed * 0.95), 'a twentieth off what is owed'); assert.match(r.vouched.result, /waives its fee/);
 });
 
-test('the master cannot put a member ashore: the captain\'s patience is chapter one\'s', async () => {
+test('nobody puts a member ashore: the captain\'s patience is chapter one\'s', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(started);
-  const r = await ev(() => { coopAt(); const h = hired(); hiredCaptain().opinion = -5; h.warned = true; const a = Mods.filter('happenings', [], 'port').map(x => x.make); h.warned = false; const b = Mods.filter('happenings', [], 'port').map(x => x.make); return { ashore: a.includes(putAshoreScene), warned: b.includes(warningScene) }; });
+  const r = await ev(() => { coopAt(); const h = hired(); h.warned = true; const a = Mods.filter('happenings', [], 'port').map(x => x.make); h.warned = false; const b = Mods.filter('happenings', [], 'port').map(x => x.make); return { ashore: a.includes(putAshoreScene), warned: b.includes(warningScene) }; });
   await done();
   assert.equal(r.ashore, false); assert.equal(r.warned, false);
 });
@@ -242,18 +310,18 @@ test('review: a burn in chapter two never draws the captain\'s pay events', asyn
   assert.ok(!r.includes('money'), r.join(','));
 });
 
-test('review: the tutorial ends at the share, the start is saved at the pick, and the board and Ceres\'s prices are there at once', async () => {
+test('review: the tutorial ends at the share, the start is saved at the bridge, and the board and Ceres\'s prices are there at once', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     toShare({ keepTutorial: true }); const had = window.tutorialAtSigning; UI.act('choose', '0'); UI.act('choose', '0'); finishEvent();
     const st = G.state, after = { had, tutorial: st.tutorial, errands: (G.offers || []).filter(o => o.errand).length, seen: !!(st.seen || {})['Ceres Station'] };
-    loadGame(); while (G.dialog && !/Three Names|End of Chapter One/.test(G.dialog.event.title)) finishEvent();
-    return { ...after, reloaded: { chapter: chapterOf(G.state), master: !!MASTER_CAPTAINS[hired().captainKey], title: G.dialog && G.dialog.event.title } };
+    loadGame(); while (G.dialog && !/The Bridge|End of Chapter One/.test(G.dialog.event.title)) finishEvent();
+    return { ...after, reloaded: { chapter: chapterOf(G.state), bridge: !!hired().bridge, title: G.dialog && G.dialog.event.title } };
   });
   await done();
   assert.equal(r.had, true, 'the hand\'s tutorial was on'); assert.equal(r.tutorial, null); assert.equal(r.errands, 0); assert.equal(r.seen, true);
-  assert.deepEqual(r.reloaded, { chapter: 2, master: true, title: null });
+  assert.deepEqual(r.reloaded, { chapter: 2, bridge: true, title: null });
 });
 
 test('review: the co-op\'s money is one Fund, its own, in the strip', async () => {
@@ -304,7 +372,7 @@ test('the co-op\'s HUD says no burn is plotted, the jobs say they pay the fund, 
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    toShare(); goOnAndPick(0); while (G.dialog) finishEvent();
+    toShare(); goOnToBridge(); while (G.dialog) finishEvent();
     const st = G.state, out = { role: role().id };
     const texts = []; const real = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (s, ...a) { texts.push(String(s)); return real.call(this, s, ...a); };
     try { G.player = makeShip(st.shipId, 0, 0, 0); G.mode = 'flight'; st.dest = null; drawHud(G.W || 1280, G.H || 800); } finally { CanvasRenderingContext2D.prototype.fillText = real; G.mode = 'landed'; }

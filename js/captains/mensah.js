@@ -9,7 +9,7 @@ MASTER_CAPTAINS.mensah = {
   bio: 'Ten years on Kaur Enrichment\'s tankers out of Vesta, out to the small rocks off the lanes. He left when Kaur cut the small runs to save money. He knows the rocks by name, and most of them know him.',
   wants: 'To fly the Belt\'s small runs, and keep the rocks alive.', fears: 'A rock going dry that he could have reached.',
   captain: { trade: 2, nerve: 5, thrift: 2 }, wage: 750, hears: 2, bonus: 1, talk: 1.4,
-  master: true, leans: 'kaur',
+  master: true, leans: 'kaur', at: 'ceres',  // at: where chapter two puts them (#1045)
 
   intro: () => ('Tavi Mensah shakes everyone\'s hand, twice in Cato\'s case, and knows Bexa\'s tug by name. "Ten years on Kaur\'s tankers," he says. "Good ' +
       'people. Bad firm. You\'d like the people. I know a rock two days off the lane that\'ll pay double for whatever you\'ve got. Vote however you like. ' +

@@ -89,6 +89,12 @@ function migrate(st) {
   // The fields stateDefaults() leaves out (a save may not have them) are dropped when they are the wrong kind of thing, so a pasted save code cannot throw here (#749).
   const isObj = v => v !== null && typeof v === 'object' && !Array.isArray(v);
   if (isObj(st.hired) && st.hired.share > 0) Object.assign(st.hired, ratingTerms(st.hired));  // signed for a share, before a rating's pay (#879)
+  // A chapter two save from before #1045 had a master on the bridge: the master goes ashore at Ceres, a person in the war, and the hand has the bridge on the endorsement.
+  if (isObj(st.hired) && st.hired.chapter === 2 && MASTER_CAPTAINS[st.hired.captainKey]) {
+    const h = st.hired, m = st.people[h.captain];
+    if (m) Object.assign(m, { role: null, location: COOP_PORT });
+    Object.assign(h, { bridge: true, papers: ['endorsement'] }); delete h.captainKey; delete h.captain; delete h.masters;
+  }
   for (const key of ['captain', 'home', 'outpost']) if (st[key] != null && !isObj(st[key])) delete st[key];
   for (const key of ['captains', 'memorial']) if (st[key] != null) { if (Array.isArray(st[key])) st[key] = st[key].filter(isObj); else delete st[key]; }
   if (st.captain) st.captain.name = cleanName(st.captain.name);

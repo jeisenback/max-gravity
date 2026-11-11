@@ -83,10 +83,12 @@ function statsCard() {
     + conCard('Kit', rows.kit.length ? rows.kit.map(k => conRead(k.name, k.adds)).join('') : '<p class="hint">Nothing yet. What a job leaves you is carried here.</p>');
 }
 
+const PAPER_NAMES = { endorsement: 'a master\'s endorsement, the Belt registry\'s', 'endorsement:vouched': 'a master\'s endorsement, the Belt registry\'s, vouched for by Hester Vance' };
 // A hired hand's place on the ship: whose, which post, how long, what it pays.
 function onTheShipCard() {
   const h = hired(), cap = person(h.captain), days = G.state.day - h.since;
-  return conCard('On the ship', `${conRead('Captain', cap ? raw(personLink(cap)) : 'none')}${conRead('Post', POSTS[h.post].name)}${conRead('Aboard',
+  const papers = (h.papers || []).map(k => PAPER_NAMES[k] || k).join(', ');  // the hand's papers (#1045, progression.md layer 5)
+  return conCard('On the ship', `${conRead('Captain', cap ? raw(personLink(cap)) : 'you, in command')}${papers ? conRead('Papers', papers) : ''}${conRead('Post', POSTS[h.post].name)}${conRead('Aboard',
     `${days} day${days === 1 ? '' : 's'}`)}${handHurt() ? conRead('Condition', `hurt, ${h.hurtUntil - G.state.day} days`) : ''}${conRead('Pay',
     `${fmt(h.wage)} cr/day, less ${fmt(KIT_DEDUCTION)} cr/day for kit`)}${conRead('Savings', `${fmt(G.state.credits)} cr`)}`);
 }

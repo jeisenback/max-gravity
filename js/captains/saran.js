@@ -9,7 +9,7 @@ MASTER_CAPTAINS.saran = {
   bio: 'Fifteen years commanding freighters for Luna owners, until his last bridge was sold out from under him and the crew at a day\'s notice to pay an owner\'s debt. He spent a year ashore, and took the co-op\'s job because a members\' vote is at least something he can read.',
   wants: 'A bridge that cannot be sold out from under him, and his daughter clear of his debts.', fears: 'Losing a ship to a man he never met, again.',
   captain: { trade: 3, nerve: 3, thrift: 4 }, wage: 800, hears: 1, bonus: 2, talk: 0.8,
-  master: true, leans: 'tycho',
+  master: true, leans: 'tycho', at: 'tycho-charter',  // at: where chapter two puts them (#1045)
 
   intro: () => ('Aron Saran stands a little apart from the other two, in a jacket pressed for the occasion. "I commanded freighters out of Luna for fifteen ' +
       'years," he says. "My last one was sold to pay a man\'s debt, with the crew still aboard. On my bridge, I decide. In your meeting, you do. I\'ll keep ' +

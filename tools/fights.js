@@ -5,6 +5,7 @@
 // Each trial answers the scenes from a stated policy, then the game state is put back.
 //   node tools/fights.js --seeds 1,2,3 --n 100 [--post gunner] [--ship raider] [--owner] [--ship-only | --deck-only] [--groups party,grade] [--moves [vent,lead,split]]
 // `--owner` plays them as an owner who kept the post (the same ship and crew, bought with a hand's savings), to put beside the hand's (#721).
+// `--captain you` plays them with the range the player's order (a hand on their own bridge, chapter two, #1045): the policies' range is answer.js's rule, Hold for the rest.
 // `--moves` gives the hand the gunner's three moves (vent, lead, split) for the ship fights, or the ones listed after it (any of FIGHT_MOVES, the post ladders' eight among them); without it she knows none, and the numbers are the ones before the moves.
 // `--deck-only` leaves the ship fights out, so the deck fights are played on the same draws as the deck test (tests/distribution/fights.test.js).
 // With them come two more gun policies that use the moves without reading her move for it (randmove, eager: below).
@@ -17,11 +18,12 @@ const { answerOrders, answerDeck } = require('./answer');
 const { load } = require('../tests/nodecontext');
 
 // One seed's trials. Returns raw tallies, so the seeds can be summed.
-async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, raid = true, lock = true, cutter = true, groups = null, moves = false } = {}) {  // raid: false leaves out the ship fights; lock: false the deck fights started directly; cutter: false the navy stop's trials (a cutter and a destroyer); groups: only these groups of deck fights
+async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', owner = false, raid = true, lock = true, cutter = true, groups = null, moves = false, captainYou = false } = {}) {  // raid: false leaves out the ship fights; lock: false the deck fights started directly; cutter: false the navy stop's trials (a cutter and a destroyer); groups: only these groups of deck fights
   const { ev, errors, ctx } = await open({ scope: 'earth-hired', seed, debt: true, stall: 0 });
-  const r = await ev(([trials, postKey, shipId, asOwner, raidFights, lockFights, cutter, groups, answerSrc, withMoves, deckSrc, runSeed]) => {
+  const r = await ev(([trials, postKey, shipId, asOwner, raidFights, lockFights, cutter, groups, answerSrc, withMoves, deckSrc, runSeed, ownBridge]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: 'hester' }); while (G.dialog) finishEvent();
-    const st0 = G.state; st0.story.next = 1e9; st0.day += 30; hired().raidTold = true;  // the first raid is explained once; these are the raids after it
+    const st0 = G.state; st0.story.next = 1e9; st0.day += 30; hired().raidTold = true;
+    if (ownBridge) Object.assign(hired(), { chapter: 2, bridge: true });  // the role is the co-op's: the range is the player's order  // the first raid is explained once; these are the raids after it
     if (asOwner) { const crew0 = [...st0.crew], fit = { ...st0.outfits }, torps = st0.torpedoes; hired().debt = 0; st0.credits = buyInPrice(st0.shipId); buyIn(st0.shipId); while (G.dialog) finishEvent(); st0.crew = crew0; st0.outfits = fit; st0.torpedoes = torps; st0.armor = ship().armor; if (hired()) throw new Error('the buy did not make an owner'); }  // the same ship, fitting and crew: the buy took a friend and cleared the captain's outfits (buyIn), and the rest are put back
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     const snap = JSON.stringify(G.state), crewAll = [...G.state.crew], maxArmor = ship().armor;
@@ -189,7 +191,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider', own
     UI.showEvent = show;
     out.crewAboard = crewAll.length;
     return out;
-  }, [n, post, ship, owner, raid, lock, cutter, groups, answerOrders.toString(), moves, answerDeck.toString(), seed]);
+  }, [n, post, ship, owner, raid, lock, cutter, groups, answerOrders.toString(), moves, answerDeck.toString(), seed, captainYou]);
   await ctx.close();
   return { seed, owner, post, ...r, errors };
 }
@@ -242,7 +244,7 @@ if (require.main === module) {
   (async () => {
     const runs = [];
     for (const seed of seeds) {
-      const r = await fights({ seed, n, post, ship, owner, lock: !process.argv.includes('--ship-only'), raid: !process.argv.includes('--deck-only'), groups: arg('groups') ? arg('groups').split(',') : null, moves: !process.argv.includes('--moves') ? false : /^[a-z,-]+$/.test(arg('moves') || '') ? arg('moves').split(',') : true });
+      const r = await fights({ seed, n, post, ship, owner, lock: !process.argv.includes('--ship-only'), raid: !process.argv.includes('--deck-only'), groups: arg('groups') ? arg('groups').split(',') : null, captainYou: arg('captain') === 'you', moves: !process.argv.includes('--moves') ? false : /^[a-z,-]+$/.test(arg('moves') || '') ? arg('moves').split(',') : true });
       if (r.errors.length) console.log(`seed ${seed}: ${r.errors.length} page errors, first: ${r.errors[0]}`);
       runs.push(r);
     }

@@ -44,7 +44,7 @@ const hired = () => (G.state && G.state.hired) || null;
 // The same field names as the hand's record, so a reader of a sheet, a kit or a shipper's regard asks this and not hired().
 const career = () => hired() || (G.state && G.state.career) || null;
 // A hired hand works one post. The others are the crew's, and the captain's to command.
-const hiredCaptain = () => (hired() ? G.state.people[hired().captain] : null);
+const hiredCaptain = () => (hired() && G.state.people[hired().captain]) || null;  // none on the hand's own bridge (#1045)
 const notYours = post => !!hired() && hired().post !== post;
 
 // ---------- skill at each post ----------
@@ -557,13 +557,14 @@ function signOn(id) {
   const cap = st.people[h.captain], friends = buyInCompanions(), price = buyInPrice(id), oldName = home().name, say = (key, vars) => sceneSay('scene:screens', key, vars);
   st.credits -= price;
   h.haggle = null;
+  h.vouched = cap.opinion >= OPINION.TRUSTED;  // a captain who trusts the hand vouches for them to the registry (#1045), read before her goodbye's warmth
   Object.assign(cap, { ship: { name: oldName, shipId: st.shipId, kind: 'trader' }, haunt: st.systemId, location: planet.name });
   like(cap, 2, say('coop.captain.memory'));
   for (const c of st.crew.map(person)) if (!friends.includes(c)) c.location = planet.name;  // the rest stay with her
   st.crew = friends.map(c => c.id);
   for (const f of friends) like(f, 2, say('coop.friend.memory', { ship: oldName }));
   // The record carries on into chapter two (#891): the hand is a member now, with the share, who came and the day. The captain on it stays Hester
-  // until the player goes on and picks the master (goOn, pickMaster): the end of chapter one is still read with her name.
+  // until the player goes on and takes the bridge (goOn, takeBridge): the end of chapter one is still read with her name.
   Object.assign(h, { chapter: 2, share: { coop: COOP_PORT, buyIn: price, owed: SHARE_PRICE - price }, came: friends.map(c => c.id), signed: st.day, run: null, deal: null, confirm: null });
   st.tutorial = null;  // the hand's first run is long done
   return say('coop.result', { price: fmt(price), old: oldName, first: cap.first, last: cap.last, owed: fmt(SHARE_PRICE - price),
@@ -573,21 +574,20 @@ function signOn(id) {
 // The end of chapter one (#882): after the close. Its one choice goes on into chapter two (#891); a save between the two reopens on it.
 const overSay = key => sceneSay('scene:chapter-over', key);
 function chapterOverScene() { return { title: overSay('title'), personal: true, text: overSay('text'), choices: [{ label: overSay('label'), run() { G.nextEvent = goOn(G.state); return null; } }] }; }
-// A save at the end of chapter one: one from before chapter two (the record cleared, the career finished), or a member's record with no master picked yet.
-const masterPicked = h => !!(h && MASTER_CAPTAINS[h.captainKey]);
-const finishedSave = () => { const st = G.state || {}; return (!st.hired && !!(st.career || {}).finished) || (chapterOf(st) === 2 && !masterPicked(st.hired)); };
+// A save at the end of chapter one: one from before chapter two (the record cleared, the career finished), or a member's record whose hand has not taken the bridge.
+const bridgeTaken = h => !!(h && h.bridge);
+const finishedSave = () => { const st = G.state || {}; return (!st.hired && !!(st.career || {}).finished) || (chapterOf(st) === 2 && !bridgeTaken(st.hired)); };
 
 // ---------- chapter two's start (#891, docs/superpowers/specs/2026-11-07-chapter-two-start-design.md) ----------
 
-// Going on: a save from before chapter two has its record rebuilt from the career; then the lender sends three masters, and the start scene opens.
+// Going on: a save from before chapter two has its record rebuilt from the career; then the start scene opens.
 function goOn(st) {
   if (!st.hired && st.career) {
     const c = st.career;
     st.hired = { ...c, chapter: 2, share: c.share, came: c.came || [], signed: c.signed === undefined ? st.day : c.signed, fund: 0, debt: 0, flags: {}, wage: 0, ledger: [], run: null, off: null, asked: 0, raidTold: true, deckTold: true, fights: { done: FIGHT_LADDER.filter(x => !x.parked).map(x => x.id) } };  // the fields a hand's record has (setupHired); the briefings were given and the ladder's fights fought in chapter one
     delete c.finished;
   }
-  const h = st.hired;
-  if (!h.masters) h.masters = masterDraw(coopRand(st));
+  delete st.hired.masters;  // a save from before #1045 held the three masters the lender sent
   return chapterTwoStartScene();
 }
 
@@ -600,7 +600,7 @@ function chapterTwoShip(st) {
 }
 
 // Who is aboard: who came, with their posts; Bexa on the deck and Pax at the gun beside the hand. A berth left by someone who did not come stays
-// empty until the members vote on who joins. The master is not crew, as a captain is not. Returns the crew's ids.
+// empty until the members vote on who joins. The hand is the captain (#1045). Returns the crew's ids.
 function chapterTwoCrew(st, h) {
   const ids = (h.came || []).filter(id => st.people[id] && !st.people[id].dead);
   for (const [key, role] of [['bexa', 'icehand'], ['pax', 'gunner']]) {
@@ -611,22 +611,33 @@ function chapterTwoCrew(st, h) {
   return ids;
 }
 
-// The start: the members at the ramp, the lender's letter, a choice for each master. The pick puts the master on the bridge and the co-op at Ceres.
+// The start (#1045, docs/bible/chapter-2.md): the members at the ramp, the lender's letter (a licensed master, or a registry its insurer accepts), and the
+// members' vote that puts the hand on the bridge on the master's endorsement of the registry Hester's ship sails under. The registry sells the endorsement for
+// ENDORSEMENT_FEE, out of the hand's savings or onto what they owe on the share; a captain who trusted the hand at the signing (`h.vouched`) vouches instead,
+// the fee is waived, and the lender, reading a vouched captain, takes VOUCH_OFF of what the hand owes.
+const ENDORSEMENT_FEE = 2500, VOUCH_OFF = 0.05;
 const twoSay = (key, vars) => sceneSay('scene:chapter-two-start', key, vars);
 function chapterTwoStartScene() {
   const h = G.state.hired, came = (h.came || []).map(id => G.state.people[id]).filter(p => p && !p.dead), names = came.map(p => p.first);
   const members = names.length ? twoSay('members', { names: namesOf(came) }) : twoSay('members.alone');
-  const intros = h.masters.map(k => MASTER_CAPTAINS[k].intro()).join('</p><p>');
   return {
     title: twoSay('title'), personal: true,
-    text: [twoSay('ramp'), members, twoSay('letter'), intros].join('</p><p>'),
-    choices: h.masters.map(k => ({ label: `${MASTER_CAPTAINS[k].first} ${MASTER_CAPTAINS[k].last}`, run() { return pickMaster(G.state, k); } })),
+    text: [twoSay('ramp'), members, twoSay('letter'), twoSay(h.vouched ? 'vouched' : 'fee', { fee: fmt(ENDORSEMENT_FEE) })].join('</p><p>'),
+    choices: [{ label: twoSay('label'), run() { return takeBridge(G.state); } }],
   };
 }
-function pickMaster(st, key) {
-  const h = st.hired, cap = captainPerson(key);
-  cap.role = 'captain'; cap.job = 'master';
-  Object.assign(h, { captainKey: key, captain: cap.id });
+// The bridge taken: no captain person; the endorsement, paid for or vouched; the ship, the crew and the landing at Ceres.
+function takeBridge(st) {
+  const h = st.hired, share = h.share || { owed: 0 };
+  delete h.captainKey; delete h.captain;
+  h.bridge = true;
+  let paid = '';
+  if (h.vouched) { h.papers = ['endorsement:vouched']; share.owed = Math.round(share.owed * (1 - VOUCH_OFF)); paid = twoSay('vouched.result', { owed: fmt(share.owed) }); }
+  else {
+    h.papers = ['endorsement'];
+    if (st.credits >= ENDORSEMENT_FEE) { st.credits -= ENDORSEMENT_FEE; paid = twoSay('fee.paid', { fee: fmt(ENDORSEMENT_FEE) }); }
+    else { share.owed += ENDORSEMENT_FEE; paid = twoSay('fee.owed', { fee: fmt(ENDORSEMENT_FEE), owed: fmt(share.owed) }); }
+  }
   chapterTwoShip(st);
   st.crew = chapterTwoCrew(st, h);
   st.systemId = 'ceres'; st.planet = COOP_PORT; G.mode = 'landed';
@@ -635,7 +646,7 @@ function pickMaster(st, key) {
   if (port.services.includes('trade')) seenPrices(st, port, st.day, price);
   save();  // the start is kept: a reload before the first landing reopens in chapter two
   const ines = st.crew.map(id => st.people[id]).find(p => p && p.cast === 'ines');
-  return [twoSay('picked', { first: cap.first, last: cap.last }), ines ? twoSay('ines') : twoSay('noines')].join(' ');
+  return [twoSay('taken'), paid, ines ? twoSay('ines') : twoSay('noines')].join(' ');
 }
 
 // The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp, read before buyIn takes the
@@ -678,7 +689,7 @@ function chapterRecap() {
   const list = names => names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
   const t = runTotals(h), days = st.day - h.since;
   const runs = lookSay(t.runs === 1 ? 'runs.one' : 'runs.many', { n: t.runs }), post = POSTS[h.post].name.toLowerCase(), level = skillLevel(h.post);
-  const work = lookSay('work', { days, ship: esc(shipTitle()), runs, captain: cap.last, earned: fmt(t.earned), post, level }), sheet = h.sheet ? [lookSay('sheet', h.sheet), ...((h.kit || []).length ? [lookSay('kit', { list: h.kit.map(id => (KIT_ITEMS[id] || { name: id }).name).join(', ') })] : [])].join(' ') : '';
+  const work = lookSay(cap ? 'work' : 'work.own', { days, ship: esc(shipTitle()), runs, captain: cap ? cap.last : '', earned: fmt(t.earned), post, level }), sheet = h.sheet ? [lookSay('sheet', h.sheet), ...((h.kit || []).length ? [lookSay('kit', { list: h.kit.map(id => (KIT_ITEMS[id] || { name: id }).name).join(', ') })] : [])].join(' ') : '';
   const why = { money: lookSay('why.money', { savings: fmt(HIRED_SAVINGS), credits: fmt(st.credits) }), learn: lookSay('why.learn', { post, level, runs }),
     away: lookSay('why.away', { days, runs }) }[h.reason] || '';
   const near = [...(cap && cap.memories ? [{ c: cap, name: lookSay('near.captain', { last: cap.last }) }] : []), ...crew.map(c => ({ c, name: c.first }))]

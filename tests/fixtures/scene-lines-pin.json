@@ -405,6 +405,33 @@
   ]
  },
  {
+  "id": "scene:hand-death:hurt:own",
+  "plays": [],
+  "title": "The Last Run",
+  "text": "The first hurt isn't mended when the second one comes. It hits the same side, and you go down on the deck plating with a bolt head under your shoulder blade. The crew are saying your name, and somebody takes the med kit off its rack with both hands, and you're dead before the latches are undone.</p><p>The members write it in the log, because somebody has to: the day, the place, your name, and that you died on a run, in command of a ship you part owned.</p><p>30 days aboard the Iron Anvil. 0 runs, the last of them in command, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.",
+  "labels": [
+   "Begin again"
+  ]
+ },
+ {
+  "id": "scene:hand-death:first:own",
+  "plays": [],
+  "title": "The Last Run",
+  "text": "You don't see what hits you. It comes from the side, and then you're sitting against the closer with one hand pressed to your ribs and the hand coming away wet. The crew are on you before the lock has cycled, and somebody who knows how works on you while the lights go from amber to white. Nobody speaks. Somebody takes your other hand off the deck and holds it, and you're dead before the lights are done.</p><p>The members write it in the log, because somebody has to: the day, the place, your name, and that you died on a run, in command of a ship you part owned.</p><p>30 days aboard the Iron Anvil. 0 runs, the last of them in command, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.",
+  "labels": [
+   "Begin again"
+  ]
+ },
+ {
+  "id": "scene:hand-death:bridge:own",
+  "plays": [],
+  "title": "The Last Run",
+  "text": "You're laid up against the corridor wall, where the first hit left you, when they come through the last hatch. You try to stand once, and you're dead before the lock cycles. Somebody gives them the code to the strongbox, and the crew carry you below.</p><p>The members write it in the log, because somebody has to: the day, the place, your name, and that you died on a run, in command of a ship you part owned.</p><p>30 days aboard the Iron Anvil. 0 runs, the last of them in command, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Hands 3, eye 4, nerve 3, wit 4.</p><p>Nobody aboard was a friend yet.",
+  "labels": [
+   "Begin again"
+  ]
+ },
+ {
   "id": "scene:captain-lost",
   "plays": [],
   "title": "Without a Captain",
@@ -7932,6 +7959,53 @@
   ]
  },
  {
+  "id": "scene:inspection:own",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You go through it line by line with the inspector: the dates, the seals, the code the last port put on the manifest. Halfway down the junior stops filling in the form. The inspector crosses out the sum and writes a smaller one under it. The ship pays 3,000 cr.",
+    "fx": {
+     "credits": -3000
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You go through it with the inspector line by line. The inspector lets you finish, then turns the slate round so you can see the sum hasn't changed. The ship pays 6,000 cr, and you sign for it.",
+    "fx": {
+     "credits": -6000
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You stay out of it. The ship pays 6,000 cr, the junior seals the hold, and the clamps come off.",
+    "fx": {
+     "credits": -6000
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You stay out of it. The ship pays 6,000 cr, the junior seals the hold, and the clamps come off.",
+    "fx": {
+     "credits": -6000
+    },
+    "next": null
+   }
+  ],
+  "title": "The Inspector",
+  "text": "The inspector at Earth comes up the ramp with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" the inspector says. \"Before the clamps come off.\"",
+  "labels": [
+   "Speak up for the ship [50%; if it fails: the full sum]",
+   "Keep out of it (the ship pays 6,000 cr)"
+  ]
+ },
+ {
   "id": "scene:dock-friend",
   "plays": [
    {
@@ -12364,43 +12438,19 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Aron Saran signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. Ines is already in the pilot's seat, with the panel open and her endorsement taped to the console.",
+    "text": "You sign the endorsement in the yard office, under the registry's seal, and go up to the bridge. The seat is still warm from the yard's survey. The 2,500 comes out of your savings. Ines is already in the pilot's seat, with the panel open and her endorsement taped to the console. It is the same registry's, and good on this hull now.",
     "fx": {
-     "p6": 0,
-     "c:bexa": 0,
-     "c:pax": 0
-    },
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0.5,
-    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Noor Belanger signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. Ines is already in the pilot's seat, with the panel open and her endorsement taped to the console.",
-    "fx": {
-     "p6": 0,
-     "c:bexa": 0,
-     "c:pax": 0
-    },
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0.5,
-    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Ama Kessler signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. Ines is already in the pilot's seat, with the panel open and her endorsement taped to the console.",
-    "fx": {
-     "p6": 0,
+     "credits": -2500,
      "c:bexa": 0,
      "c:pax": 0
     },
     "next": null
    }
   ],
-  "title": "Three Names",
-  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Cato Rahman and Ines Ferreira came up from Hester's ship with you, and stand with the others as if they had always been here.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master on her that the house approves, and it has sent three names. The three are waiting in the yard office, and come down one at a time.</p><p>Aron Saran stands a little apart from the other two, in a jacket pressed for the occasion. \"I commanded freighters out of Luna for fifteen years,\" he says. \"My last one was sold to pay a man's debt, with the crew still aboard. On my bridge, I decide. In your meeting, you do. I'll keep the two apart if you will. And you should know my wife works for Tycho. I'd rather you heard it from me.\"</p><p>Noor Belanger answers the question before anyone asks it. \"Yes, I was the master. Yes, three died. Ask what you want to ask.\" Nobody does. \"I'm cheap because of the mark,\" she says. \"You're getting a bargain. Don't make me prove it.\"</p><p>Ama Kessler has a folder under her arm and the rain of somewhere else still on her coat. \"I write to the house every Sunday,\" she says. \"The log, the cargo, the minutes. Nothing you'd not show them yourselves. You may read it first, if you like. Most crews stop asking by the third. I've been on eleven hulls, and nine still fly. I'd like this to be the tenth.\"",
+  "title": "The Bridge",
+  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Cato Rahman and Ines Ferreira came up from Hester's ship with you, and stand with the others as if they had always been here.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry Hester's ship sails under is on the insurer's list, near the bottom. It sells a master's endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.</p><p>The registry's office wants 2,500 for the endorsement.",
   "labels": [
-   "Aron Saran",
-   "Noor Belanger",
-   "Ama Kessler"
+   "Take the bridge"
   ]
  },
  {
@@ -12409,43 +12459,38 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Aron Saran signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. The pilot's seat is empty. Somebody will have to fly her.",
+    "text": "You sign the endorsement in the yard office, under the registry's seal, and go up to the bridge. The seat is still warm from the yard's survey. Your savings do not cover the 2,500, and the clerk adds it to what you owe on the share, 95,500 now. The pilot's seat is empty. Somebody will have to fly her.",
     "fx": {
-     "p6": 0,
-     "c:bexa": 0,
-     "c:pax": 0
-    },
-    "next": null
-   },
-   {
-    "i": 1,
-    "roll": 0.5,
-    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Noor Belanger signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. The pilot's seat is empty. Somebody will have to fly her.",
-    "fx": {
-     "p6": 0,
-     "c:bexa": 0,
-     "c:pax": 0
-    },
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0.5,
-    "text": "The members talk it over at the foot of the ramp, and the choice is put to you. Ama Kessler signs the hull's papers in the yard office, reads them twice, and goes up to the bridge. The pilot's seat is empty. Somebody will have to fly her.",
-    "fx": {
-     "p6": 0,
      "c:bexa": 0,
      "c:pax": 0
     },
     "next": null
    }
   ],
-  "title": "Three Names",
-  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Nobody came up from Hester's ship with you. Bexa and Pax look at you, and then at each other, and make room.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master on her that the house approves, and it has sent three names. The three are waiting in the yard office, and come down one at a time.</p><p>Aron Saran stands a little apart from the other two, in a jacket pressed for the occasion. \"I commanded freighters out of Luna for fifteen years,\" he says. \"My last one was sold to pay a man's debt, with the crew still aboard. On my bridge, I decide. In your meeting, you do. I'll keep the two apart if you will. And you should know my wife works for Tycho. I'd rather you heard it from me.\"</p><p>Noor Belanger answers the question before anyone asks it. \"Yes, I was the master. Yes, three died. Ask what you want to ask.\" Nobody does. \"I'm cheap because of the mark,\" she says. \"You're getting a bargain. Don't make me prove it.\"</p><p>Ama Kessler has a folder under her arm and the rain of somewhere else still on her coat. \"I write to the house every Sunday,\" she says. \"The log, the cargo, the minutes. Nothing you'd not show them yourselves. You may read it first, if you like. Most crews stop asking by the third. I've been on eleven hulls, and nine still fly. I'd like this to be the tenth.\"",
+  "title": "The Bridge",
+  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Nobody came up from Hester's ship with you. Bexa and Pax look at you, and then at each other, and make room.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry Hester's ship sails under is on the insurer's list, near the bottom. It sells a master's endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.</p><p>The registry's office wants 2,500 for the endorsement.",
   "labels": [
-   "Aron Saran",
-   "Noor Belanger",
-   "Ama Kessler"
+   "Take the bridge"
+  ]
+ },
+ {
+  "id": "chaptertwo:start:vouched",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You sign the endorsement in the yard office, under the registry's seal, and go up to the bridge. The seat is still warm from the yard's survey. The registry waives its fee on Hester's word, and the lender, reading a vouched captain, takes a twentieth off what you owe on the share. It is 88,350 now. The pilot's seat is empty. Somebody will have to fly her.",
+    "fx": {
+     "c:bexa": 0,
+     "c:pax": 0
+    },
+    "next": null
+   }
+  ],
+  "title": "The Bridge",
+  "text": "The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.</p><p>Cato Rahman came up from Hester's ship with you, and stand with the others as if they had always been here.</p><p>The co-op's clerk brings the lender's letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry Hester's ship sails under is on the insurer's list, near the bottom. It sells a master's endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.</p><p>There is a second letter under the first, from Hester Vance. She has written to the registry that you have stood a watch on her ship and she would put you on any bridge she knew of.",
+  "labels": [
+   "Take the bridge"
   ]
  },
  {
@@ -25962,6 +26007,112 @@
     },
     "mem": [
      "9 Jul 2214: The bridge was taken on your watch."
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: a hit does 10 to 15: Hull",
+     "Weapons",
+     "Drive",
+     "Lock",
+     "Hold",
+     "Gun 1: normal charge",
+     "Torpedo, 2 left: Hull",
+     "Weapons",
+     "Drive",
+     "Lock",
+     "Hold",
+     "Turret: fire with the guns",
+     "Range: Close (knife range next turn)",
+     "Hold (knife range next turn)",
+     "Open (close next turn)",
+     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns",
+     "Orders to the bridge"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: a hit does 7 to 11: Hull",
+     "Weapons",
+     "Drive",
+     "Lock",
+     "Hold",
+     "Gun 1: normal charge",
+     "Torpedo, 2 left: Hull",
+     "Weapons",
+     "Drive",
+     "Lock",
+     "Hold",
+     "Turret: fire with the guns",
+     "Range: Close (medium next turn)",
+     "Hold (long next turn)",
+     "Open (out of reach next turn)",
+     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns",
+     "Orders to the bridge"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: a hit does 7 to 11: Hull",
+     "Weapons",
+     "Drive",
+     "Lock",
+     "Hold",
+     "Gun 1: normal charge",
+     "Torpedo, 2 left: Hull",
+     "Weapons",
+     "Drive",
+     "Lock",
+     "Hold",
+     "Turret: fire with the guns",
+     "Range: Close (medium next turn)",
+     "Hold (long next turn)",
+     "Open (out of reach next turn)",
+     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns",
+     "Orders to the bridge"
+    ]
+   },
+   {
+    "title": "Battle Stations",
+    "read": "The Pirate \"Bitter Grin\": broadside at your hull, 10 to 10 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.",
+    "labels": [
+     "Gun 1: a hit does 7 to 11: Hull",
+     "Weapons",
+     "Drive",
+     "Lock",
+     "Hold",
+     "Gun 1: normal charge",
+     "Torpedo, 2 left: Hull",
+     "Weapons",
+     "Drive",
+     "Lock",
+     "Hold",
+     "Turret: fire with the guns",
+     "Range: the drive is down, and the range is hers",
+     "Fire: gun 1 at her weapons, torpedo held, heat 1 of 4"
+    ],
+    "group": [
+     "Orders to the guns",
+     "Orders to the bridge"
     ]
    },
    {

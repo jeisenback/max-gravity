@@ -31,7 +31,7 @@ Mods.register({
 
     M.addStorylet({
       id: 'strike-broadcast', where: 'transit', priority: 1,
-      when: { day: 20, gov: 'Guild Federation', hired: true, qBelow: { strikeOn: 1 }, chance: 0.5 },
+      when: { day: 20, gov: 'Guild Federation', hired: true, chapter: 1, qBelow: { strikeOn: 1 }, chance: 0.5 },
       title: 'On the Band',
       text: ('The relay batch comes in at the change of watch, and in it, under the freight notices, is a recording off the open band. It is the Ice Haulers\' Guild. ' +
           'A woman reads it in a flat Ceres voice, the way the freight rates are read. "The buyers at Ceres pay what they paid a tonne four years ago. Fuel is up a ' +
@@ -49,7 +49,7 @@ Mods.register({
 
     M.addStorylet({
       id: 'strike-ceres', where: 'port', priority: 2,
-      when: { planet: 'Ceres Station', hired: true, q: { strikeOn: 1 }, qBelow: { strikeAsked: 1, strikeDone: 1 } },
+      when: { planet: 'Ceres Station', hired: true, chapter: 1, q: { strikeOn: 1 }, qBelow: { strikeAsked: 1, strikeDone: 1 } },
       title: 'Mirela Sandoval',
       text: ('Mirela Sandoval is at the foot of the ramp before the lock has finished cycling, a short woman in a Guild jacket with the cuffs gone through. She has ' +
           'the ship\'s registry on her slate and the ice it has hauled this year under it. "Your captain runs ice between contracts," she says. "So you know what ' +
@@ -74,7 +74,7 @@ Mods.register({
     });
 
     M.addStorylet({
-      id: 'strike-captain', where: 'port', chained: true, priority: 2,
+      id: 'strike-captain', where: 'port', chained: true, priority: 2, when: { chapter: 1 },
       title: 'In Figures',
       text: ('The captain has the paper notebook open on the galley table, and she does not close it. "Ice is a third of what we clear this quarter," she says. "The ' +
           'charter is due on the first, whatever the buyers pay. A month off the ice is a payment I make out of the next quarter, and the house reads the books." ' +
@@ -100,7 +100,7 @@ Mods.register({
 
     M.addStorylet({
       id: 'strike-tarp', where: 'transit', priority: 2,
-      when: { hired: true, q: { strikeCarry: 1 }, qBelow: { strikeCarried: 1, strikeFound: 1, strikeDone: 1 }, chance: 0.35 },
+      when: { hired: true, chapter: 1, q: { strikeCarry: 1 }, qBelow: { strikeCarried: 1, strikeFound: 1, strikeDone: 1 }, chance: 0.35 },
       title: 'The Mass at Undock',
       text: ('The captain comes up the ladder from the hold with the manifest on her slate and the tarp folded over her arm. "Two point three tonnes over at ' +
           'undock," she says. "I wondered where." She puts the tarp on the galley table, square. "The insurer does not cover cargo that is not on the manifest. ' +

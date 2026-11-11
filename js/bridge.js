@@ -157,7 +157,7 @@ function deckSvg() {
   const ring = c => moodLow(c) || (G.state.injured || {})[c.id] ? '#ff9a3c' : '#6fb0ff';
   const homeRoom = role => HAUNTS[role] ? Object.entries(HAUNTS[role]).sort((a, b) => b[1] - a[1])[0][0] : 'berths';
   const placed = Object.keys(POSTS).map(id => ({ room: homeRoom(POSTS[id].role), o: postOccupant(id) }));
-  placed.push({ room: 'bridge', o: hired() ? { who: hiredCaptain() } : { you: true } });  // the captain's place is the bridge
+  placed.push({ room: 'bridge', o: role().captain === 'npc' ? { who: hiredCaptain() } : { you: true } });  // the captain's place is the bridge: the hand's, on their own (#1045)
   const holders = new Set(Object.keys(POSTS).map(postHolder).filter(Boolean));
   for (const c of crewMembers()) if (!holders.has(c)) placed.push({ room: homeRoom(c.role), o: { who: c } });
   const rooms = ROOMS.map(r => {
@@ -195,7 +195,7 @@ function deckSvg() {
 // The Interior station as a console: the deck plan, who has which post, and the downtime button along the bottom (in a burn).
 function interiorPanel() {
   const st = G.state, t = G.transit, crew = crewMembers();
-  const captainRow = conRead('Captain', raw(hired() ? personLink(hiredCaptain()) : `${youLink()}, in command`));
+  const captainRow = conRead('Captain', raw(role().captain === 'npc' ? personLink(hiredCaptain()) : `${youLink()}, in command`));
   const posts = captainRow + Object.keys(POSTS).map(id => {
     const o = postOccupant(id), h = postHolder(id);
     const mood = h && ((st.injured || {})[h.id] ? ', injured' : moodLow(h) ? ', having a hard time' : '');

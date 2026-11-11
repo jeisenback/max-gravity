@@ -30,17 +30,17 @@ function inspectionCause(cargo, gov, rep, marked) {
 // pays it all and costs one.
 // With no post to work (the parked owner game) the only choice is to pay.
 function inspectionScene(cause, planet) {
-  const cap = hiredCaptain(), post = cap && career() && career().post;  // the move is argued past the captain: an owner, even one who kept a post, only pays
+  const cap = role().captain === 'npc' ? hiredCaptain() : null, post = role().hatch && career() && career().post;  // the hand argues by their post, past the captain or on their own bridge (#1045); an owner, even one who kept a post, only pays
   const say = (key, vars) => sceneSay('scene:inspection', key, { planet: planet.name, gov: cause.gov, cap: cap ? cap.last : '', sum: fmt(cause.sum), ...vars });
   const causes = [cause.good ? say('cause.good', { good: goodName(cause.good).toLowerCase(), tons: cause.tons, duty: fmt(cause.duty) }) : '', cause.fine ? say('cause.standing', { fine: fmt(cause.fine) }) : ''].filter(Boolean).join(' ');
   const pay = n => { const paid = Math.min(purse(), n); moveMoney(-paid); if (paid) recordHand('fines'); return fmt(paid); };  // an empty purse pays nothing, and nothing goes on the record
   const choices = [];
   if (post) {
     const papers = post === 'comms', odds = papers ? soloOdds('comms') : handCheck(POST_STAT[post], skillLevel(post), 'word');
-    choices.push({ label: `${say(papers ? 'papers.label' : 'speak.label')} [${oddsWord(odds)}; ${say('move.stakes')}]`, run() {
-      if (Math.random() < odds) { like(cap, 1, say('win.memory')); return say('win', { paid: pay(to100(cause.sum / 2)) }); }  // she pays the fines: half of one is worth her noticing (#1059)
-      like(cap, -1, say('lose.memory'));  // a hand always has a captain (the master, in chapter two)
-      return say('lose', { paid: pay(cause.sum) });
+    choices.push({ label: `${say(papers ? 'papers.label' : 'speak.label')} [${oddsWord(odds)}; ${say(cap ? 'move.stakes' : 'move.stakes.own')}]`, run() {
+      if (Math.random() < odds) { if (cap) like(cap, 1, say('win.memory')); return say('win', { paid: pay(to100(cause.sum / 2)) }); }  // she pays the fines: half of one is worth her noticing (#1059)
+      if (cap) like(cap, -1, say('lose.memory'));  // on the hand's own bridge there is nobody to think less of them
+      return say(cap ? 'lose' : 'lose.own', { paid: pay(cause.sum) });
     } });
   }
   choices.push({ label: say(post ? 'keep.label' : 'pay.label'), run: () => say(post ? 'keep.result' : 'pay.result', { paid: pay(cause.sum) }) });

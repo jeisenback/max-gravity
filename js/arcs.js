@@ -67,7 +67,7 @@ Mods.register({
   init(M) {
     M.on('landed', planet => {
       const h = hired();
-      if (!h) return;
+      if (!h || role().captain !== 'npc') return;  // the pitch is to the captain (awayjobs.js): offered in chapter one only; one begun plays out (#1045)
       h.away = h.away || [];
       for (const [id, arc] of Object.entries(MISSION_ARCS)) {
         const o = arcOffer(arc, id, planet);

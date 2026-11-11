@@ -1,7 +1,7 @@
 'use strict';
 
-// Chapter two's soak (#891, docs/superpowers/specs/2026-11-07-chapter-two-start-design.md): a hand signs the share, goes on, takes the first master the
-// lender sends, and flies the co-op's Ore Runner on the board's contracts for a stretch of days, buying its own fuel and repairs, with the burn's contact
+// Chapter two's soak (#891, docs/superpowers/specs/2026-11-07-chapter-two-start-design.md): a hand signs the share, goes on, takes the bridge (#1045),
+// and flies the co-op's Ore Runner on the board's contracts for a stretch of days, buying its own fuel and repairs, with the burn's contact
 // answered as chapter one's soak answers it (a fight fought with the orders as they stand, anything else at random). It reports the pay a day into the
 // co-op's fund, the runs, the raids, the hull lost and who was lost. Not part of `npm test`: tests/distribution/fights.test.js and pacing.test.js read it.
 //   node tools/soaktwo.js --seeds 1,2,3 --days 60
@@ -21,7 +21,7 @@ async function soakTwo({ seed = 1, days = 60 } = {}) {
 async function chapterTwo([days]) {
   const ENDINGS = /^(The Last Run|Without a Captain|Put Ashore)$/;
   const pickOf = ok => ok[Math.floor(Math.random() * ok.length)];
-  const answer = (first = false) => {  // first: the start's chain is taken on its first choice (Go on, the first master)
+  const answer = (first = false) => {  // first: the start's chain is taken on its first choice (Go on, Take the bridge)
     for (let k = 0; G.dialog && k < 60; k++) {
       const d = G.dialog;
       if (ENDINGS.test(d.event.title)) return d.event.title;
@@ -44,7 +44,7 @@ async function chapterTwo([days]) {
   st.systemId = 'ceres'; st.planet = 'Ceres Station'; G.mode = 'landed';
   h.confirm = USED_ID; Mods.act('buyInGo', USED_ID);
   answer(true);
-  if (chapterOf(st) !== 2 || !MASTER_CAPTAINS[hired().captainKey]) return { bad: ['the start did not reach chapter two'] };
+  if (chapterOf(st) !== 2 || !hired().bridge) return { bad: ['the start did not reach chapter two'] };
   let raids = 0; { const real = window.startShipFight; window.startShipFight = function (...a) { raids++; return real.apply(this, a); }; }
   const start = st.day, credits0 = st.credits, crew0 = st.crew.length, bad = [];
   let runs = 0, idle = 0, hull = 0, ending = null;
@@ -73,7 +73,7 @@ async function chapterTwo([days]) {
     } catch (e) { bad.push(`threw: ${String(e).slice(0, 160)}`); break; }
   }
   const sailed = Math.max(1, st.day - start);
-  return { days: sailed, runs, raids, hull, perDay: Math.round((st.credits - credits0) / sailed), crewLost: crew0 - st.crew.length, ending, bad, master: hired() && hired().captainKey };
+  return { days: sailed, runs, raids, hull, perDay: Math.round((st.credits - credits0) / sailed), crewLost: crew0 - st.crew.length, ending, bad };
 }
 
 async function soaksTwo(seeds, opts = {}, width = 4) {
