@@ -82,7 +82,7 @@ The world decides what happens; the player tips it (`shape.md`). How far the pla
 
 | Chapter | The player holds | The powers they can move | What a choice can change |
 |---|---|---|---|
-| 1, the hand | a post, savings, people's regard | none; their captain, their shipmates, the shippers who know the ship | who lives, who comes with them, a shipper's regard, the captain's opinion |
+| 1, the hand | a post, savings, people's regard | their captain, their shipmates, the shippers who know the ship; and in three places one minor power (`chapter-1.md`) | who lives, who comes with them, a shipper's regard, the captain's opinion; the water at Pallas, the air at Eros, the ice haulers' strike |
 | 2, the co-op | a vote of five and the bridge | the co-op itself, the minor powers they trade with, the lender's patience | the co-op's runs and members; a freehold supplied or not; whether the co-op holds, charters or sells |
 | 3 | a path: the organiser's, the master's or outside | one side of the war, through what they carry and fight | how the blockade goes on the lanes they work; a minor power drawn to a side |
 | 4, more hulls | several hulls | a convoy's weight in the war | which owner's convoys get through |

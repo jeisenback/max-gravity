@@ -41,7 +41,7 @@ The tool documents (`docs/editor.md`, `docs/pins.md`) govern their tools only.
 
 | Chapter | Where the player stands | Governing doc | Status |
 |---|---|---|---|
-| 1, the hand | a rating on Hester's ship, saving for a member's share | `shape.md`, `work.md`, `ship.md`; specs `hired-chapter`, `coop-share` | Built and tuned (about 160 days to the share, `ROADMAP.md`). |
+| 1, the hand | a rating on Hester's ship, saving for a member's share | `chapter-1.md`, `shape.md`, `work.md`, `ship.md`; specs `hired-chapter`, `coop-share` | Built and tuned (about 160 days to the share, `ROADMAP.md`). Not built: the three places where the hand reaches the world (`chapter-1.md`). |
 | 2, the co-op | a member of the Ceres co-op and the Ore Runner's captain, under the members' vote | `chapter-2.md`, `ceres-coop.md`, `the-fuel-war.md`; spec `chapter-two-start` | Piece 1 of 6 built (the start, a picked master, the co-op's role). The bible now has the hand as captain and the masters in the war (2026-11-11); the code still picks a master. Pieces 2 to 6 are not built: the work and the law, the meeting, the books and the share, the squeeze, the last vote. |
 | 3 | organiser, master or outside, set by chapter 2's last vote | `shape.md`, `the-fuel-war.md` | Paths sketched. No chapter page. |
 | 4 to 7 | more hulls, a place, alliances, a threat | `later-chapters.md` (draft) | Draft. The chapter 7 threat is not chosen. |
@@ -110,12 +110,14 @@ The rule here is the repo's rule: write what the next work needs, nothing extra.
 2. **The hand as captain, built.** The bible has it (`chapter-2.md`); the code still picks a master. It comes before pieces 2 to 6, since each of them reads who holds the bridge.
 3. **Chapter two's pieces in the bible.** No more specs are written (the owner, 2026-11-11): a piece's design goes into the bible's pages, and the code follows them. `chapter-2.md` has the outline. The meeting and the vote (piece 3) is the one new kind of system, and its rule (who votes how, and what moves a member) is stated once, in `chapter-2.md` or a page of its own, so pieces 5 and 6 read it rather than restate it.
 
+4. **Chapter one's reach, built** (`chapter-1.md`, What the game changes to fit): the marks on the League and Concord arcs, the strike for the hand, the record, and the soak. It can go before or beside the hand as captain, since it touches only chapter one.
+
 ### Worth a page when the work comes
 
-4. **A rules reference (`docs/rules.md`).** The numbers that the specs and `ROADMAP.md` hold, gathered as tables and not systems: the check rule and its terms, `SKILL_STEPS`, the pay and deductions, the share figures, the fines and duty, and the soak's target bands with where each is tested. It is not a second source of truth. It names the constant and its file, so a writer or a reviewer can read the game's arithmetic in one place. Write it when chapter two's books (piece 4) start, because that is where the hand's money and the co-op's money first have to be read side by side.
-5. **The record and the endings.** `shape.md` says endings read the run's record. `traits.js` keeps counts, `fate.js` keeps the memorial, the captain flags keep the rest, and four endings wait in `endings-parked.md`. A short page should say what the record holds and which endings read it. Write it with chapter two's last vote (piece 6), the first ending since chapter one's close.
-6. **The interface's look.** `look.md` covers the burn view only and says the interface, the ports and the portraits come later. Write it when a port or page pass is next. Until then the specs `ship-interface` and `painted-world` stand.
-7. **The bible's own "still to write"**: everyday life, history before day 1, start backgrounds, customs aboard, the posts aboard. These feed writing, not systems. Write each when the scenes that need it are written. The posts aboard can be short, because `progression.md` and `js/picks.js` already hold the ladders.
+5. **A rules reference (`docs/rules.md`).** The numbers that the specs and `ROADMAP.md` hold, gathered as tables and not systems: the check rule and its terms, `SKILL_STEPS`, the pay and deductions, the share figures, the fines and duty, and the soak's target bands with where each is tested. It is not a second source of truth. It names the constant and its file, so a writer or a reviewer can read the game's arithmetic in one place. Write it when chapter two's books (piece 4) start, because that is where the hand's money and the co-op's money first have to be read side by side.
+6. **The record and the endings.** `shape.md` says endings read the run's record. `traits.js` keeps counts, `fate.js` keeps the memorial, the captain flags keep the rest, and four endings wait in `endings-parked.md`. A short page should say what the record holds and which endings read it. Write it with chapter two's last vote (piece 6), the first ending since chapter one's close.
+7. **The interface's look.** `look.md` covers the burn view only and says the interface, the ports and the portraits come later. Write it when a port or page pass is next. Until then the specs `ship-interface` and `painted-world` stand.
+8. **The bible's own "still to write"**: everyday life, history before day 1, start backgrounds, customs aboard, the posts aboard. These feed writing, not systems. Write each when the scenes that need it are written. The posts aboard can be short, because `progression.md` and `js/picks.js` already hold the ladders.
 
 ### Not needed now
 
