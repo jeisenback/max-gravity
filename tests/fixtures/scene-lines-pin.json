@@ -7728,6 +7728,26 @@
   ]
  },
  {
+  "id": "scene:contact:onwatch",
+  "plays": [],
+  "title": "Contact",
+  "text": "You have the watch when the board lights up. Sensors: a drive plume at 3,500 km, on an intercept course. No transponder. The plume signature says pirate.",
+  "labels": [
+   "Battle stations (you take the guns)",
+   "Burn hard to outrun them [76%; if it fails: hull damage, and the fight anyway]",
+   "Pay them off (10% of your credits, at least 5,000)",
+   "[{crew}] Spoof a pirate transponder",
+   "[Gunner] Put a burst across her bow [65%; opens the range]"
+  ]
+ },
+ {
+  "id": "scene:watch-bill",
+  "plays": [],
+  "title": "Watch bill",
+  "text": "The watch tonight: Mateo on the bridge, Hana in the engine room. | The watch tonight: you on the bridge. | The watch tonight: Hana in the engine room. | Tonight | Night 2 | (yours) | nobody | Mateo on the bridge, Hana in the engine room",
+  "labels": []
+ },
+ {
   "id": "scene:inspection:good",
   "plays": [
    {

@@ -36,7 +36,7 @@ function sceneStage(ev, aboard, staged) {
   if (!named.length) return null;
   const words = `${ev.title || ''} ${ev.text || ''}`, said = Object.entries(SCENE_ROOM_WORDS).map(([room, re]) => [room, words.search(re)]).filter(([, at]) => at >= 0).sort((a, b) => a[1] - b[1]);
   const has = role => named.some(id => by.get(id).role === role);
-  const room = (ev.room && roomAt(ev.room) && ev.room) || (said[0] && said[0][0]) || (has('captain') ? 'bridge' : has('passenger') ? 'berths' : 'galley');
+  const room = (ev.room && roomAt(ev.room) && ev.room) || (said[0] && said[0][0]) || (G.transit && handWatchPost()) || (has('captain') ? 'bridge' : has('passenger') ? 'berths' : 'galley');  // at night on the hand's watch, where they keep it (#1034)
   return { room, ids: ['you', ...named] };
 }
 // The room under a point on the screen: the outline's first, then the rooms in view, from what the last cutaway drawing recorded.
@@ -65,7 +65,38 @@ const ROLE_COLORS = { you: '#d9d4cc', captain: '#b9c4d0', engineer: '#ffa24a', p
 
 // The ship's day: every SHIP_DAY seconds of a burn the lights go down for a night, and everyone who is not on watch turns in.
 // 0 in the day, 1 at night, and a ramp at dusk and dawn. A burn starts in the morning.
-const SHIP_DAY = 80, NIGHT_WATCH = ['pilot', 'engineer'];
+const SHIP_DAY = 80;
+// The watch bill (#1034, docs/superpowers/specs/2026-11-11-watch-bill-design.md): two watches a night, the bridge and the engine room, each going
+// round its roles one a night. 'you' is the hand, whatever their post; the captain is not on it.
+const WATCH_ORDER = { bridge: ['pilot', 'slicer', 'you', 'xo'], engine: ['engineer', 'icehand'] };
+// Who stands each watch on night `night` (the game's day plus the ship's days into the burn), from `roster` ([{ id, role, hurt }], in crew order):
+// round each watch's roles from night % its length, the first role with an able holder, and of a role its first. Nobody able: null.
+function watchBill(roster, night) {
+  const out = {};
+  for (const [post, order] of Object.entries(WATCH_ORDER)) {
+    out[post] = null;
+    for (let k = 0; k < order.length && !out[post]; k++) {
+      const role = order[(night + k) % order.length], p = roster.find(q => q.role === role && !q.hurt);
+      if (p) out[post] = p.id;
+    }
+  }
+  return out;
+}
+// The bill's people: the hand and the crew, from the game's state (not the cutaway's people, which a scene's conditions are read before).
+const crewRoster = st => [{ id: 'you', role: 'you' }, ...st.crew.map(id => (st.people || {})[id]).filter(Boolean).map(p => ({ id: p.id, role: p.role }))];
+// The bill for `night` with the ship's state `s` ({ hurt, you, watch }): whoever a scene's record puts on watch tonight is left off the rota,
+// so the next in order covers the post they would have kept (#1034 review).
+const billFor = (st, s, night) => watchBill(rosterOf(crewRoster(st), s).filter(r => !(s.watch && r.id === s.watch.stands)), night);
+// The roster for the bill: the hurt from the ship's state (`hurt`, and `you` for the hand).
+const rosterOf = (people, state) => people.filter(p => p.id && p.role !== 'cat').map(p => ({ id: p.id, role: p.role, hurt: p.role === 'you' ? !!state.you : (state.hurt || []).includes(p.id) }));
+// Whether `p` stands a watch tonight, by the bill or a scene's record (#951) on that watch's room: 'bridge', 'engine', or null. A record on
+// another room (the guns) leaves the bill as it is.
+function onWatchTonight(p, state) {
+  if (!p.id || !state) return null;
+  const w = state.watch, b = state.bill || {};
+  for (const post of Object.keys(WATCH_ORDER)) if ((w && w.post === post ? w.stands : b[post]) === p.id) return post;
+  return null;
+}
 function nightLevel() {
   const t = G.transit;
   if (!t) return 0;
@@ -143,7 +174,9 @@ function shipState(st, t, maxArmor, rnd, who) {
   const crew = st.crew.map(id => (st.people || {})[id]).filter(Boolean), hurt = crew.filter(c => (st.injured || {})[c.id]).map(c => c.id);
   const low = crew.filter(c => !hurt.includes(c.id) && c.mood && c.mood.kind === 'low' && c.mood.until > st.day).map(c => c.id);  // as moodLow
   const d = maxArmor > 0 ? 1 - st.armor / maxArmor : 0;
-  return { marks: marksFor(t, d, rnd), severe: d > 2 / 3, hurt, low, you: !!who.you, aid: who.aid || null, watch: watchTonight(t) };
+  const out = { marks: marksFor(t, d, rnd), severe: d > 2 / 3, hurt, low, you: !!who.you, aid: who.aid || null, watch: watchTonight(t) };
+  out.bill = billFor(st, out, st.day + shipDay(t.elapsed).day);  // tonight's watch bill (#1034)
+  return out;
 }
 
 // With the ship's state (shipState, and `repairs`: who works at which mark), ahead of the timetable: the hurt in a medbay bed, you hurt there at night,
@@ -160,9 +193,10 @@ function routineSpot(p, block, state) {
       if (id && id === w.stands) return { room: w.post, at: 'post' };
       if (id && id === w.relieved) return w.relievedAt === 'bunk' ? { room: 'berths', at: 'bunk' } : { room: w.relievedAt, at: w.relievedAt === 'galley' ? 'table' : 'post' };
     }
+    if (block === 'handover' || block === 'night') { const on = onWatchTonight(p, state); if (on) return { room: on, at: 'post' }; }  // tonight's watch bill (#1034)
     if (block === 'shift' && id && id === state.aid && state.hurt.length) return { room: 'medbay', at: 'aid' };
     if (block === 'shift' && id && state.repairs && state.repairs[id]) return { room: state.repairs[id], at: 'repair' };
-    if (block === 'wake' && state.morning !== undefined && p.washed !== state.morning && washesToday(p, state.morning)) return { room: 'head', at: 'head' };
+    if (block === 'wake' && state.morning !== undefined && p.washed !== state.morning && !onWatchTonight(p, state) && washesToday(p, state.morning)) return { room: 'head', at: 'head' };  // last night's watch goes without
     const plain = routineSpot(p, block);
     if (id && state.low.includes(id) && (plain.at === 'table' || (block === 'handover' && plain.at === 'bunk'))) return { room: 'berths', at: 'alone' };
     return plain;
@@ -170,12 +204,12 @@ function routineSpot(p, block, state) {
   if (block === 'supper' && role === 'captain') return { room: 'bridge', at: 'post' };  // the bridge is not left empty: the captain eats there, for the watch to take it
   if (['wake', 'breakfast', 'meal', 'supper'].includes(block)) return role === 'cook' ? { room: 'galley', at: 'stove' } : { room: 'galley', at: 'table' };
   if (block === 'shift') return role === 'you' || role === 'passenger' ? { rounds: true } : role === 'cook' ? { room: 'galley', at: 'stove' } : { room: postOf(role), at: 'post' };
-  return NIGHT_WATCH.includes(role) ? { room: postOf(role), at: 'post' } : { room: 'berths', at: 'bunk' };  // the handover and the night
+  return { room: 'berths', at: 'bunk' };  // the handover and the night: the watch is the bill's (#1034, with the ship's state above)
 }
 // The head in the morning (#973): in the wake block about half the crew use it, a different half each day, by their own share and the morning's
 // number (the game's day and the ship's days into the burn: `state.morning`), with no draw of any dice. Not the cook, at the stove, nor the night
-// watch, nor you, the passengers or the captain. Once washed (`p.washed`, the morning) they go on to the galley.
-const HEAD_SKIPS = ['you', 'passenger', 'captain', 'cat', 'cook', ...NIGHT_WATCH];
+// watch (the bill's, with the ship's state), nor you, the passengers or the captain. Once washed (`p.washed`, the morning) they go on to the galley.
+const HEAD_SKIPS = ['you', 'passenger', 'captain', 'cat', 'cook'];
 // A person's own share for a morning (salt: what it is for), mixed with the morning (murmur's finish) so it is drawn anew each day, with no dice.
 function morningShare(p, morning, salt) {
   let h = (personShare(p, salt) * 4294967296) ^ Math.imul(morning + 1, 0x9E3779B1);
@@ -202,9 +236,40 @@ function headTurn(p, people, morning) {
   const k = [...Array(HEAD_WAIT).keys()].find(i => !door.some(o => o.doorAt === i));
   Object.assign(p, { queue: 'door', doorAt: k, ticket: Math.max(0, ...door.map(o => o.ticket)) + 1, tx: headDoorX(k) });
 }
-const nightHaunts = role => NIGHT_WATCH.includes(role) ? HAUNTS[role] : role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 };
-const relievedTonight = p => { const w = G.transit && watchTonight(G.transit); return !!w && !!p.id && w.relieved === p.id; };  // a night watch a scene sent to bed (#951)
-const isAsleep = p => !p.staged && p.at !== 'alone' && isDark() && p.room === 'berths' && p.tx === null && p.dk === roomAt('berths').deck && p.role !== 'cat' && (!NIGHT_WATCH.includes(p.role) || relievedTonight(p)) && phase() !== 'couch';  // asleep through the straps and the float too: strapped into the bunk (#927)
+const nightHaunts = role => (role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 });
+// The bill for night `night` with a scene's record (#951) on its post put in, as said and shown: { bridge, engine }.
+function billWithWatch(bill, w, night) {
+  const out = { ...bill };
+  if (w && w.night === night && w.post in out) out[w.post] = w.stands;
+  return out;
+}
+// The handover line (#1034): who has the bridge and who the engine room, by `names` (an id to a first name, the hand 'you'). Pure.
+function billLine(bill, names) {
+  const say = (key, vars) => sceneSay('scene:watch-bill', key, vars), n = id => names[id] || id;
+  if (bill.bridge && bill.engine) return say('tonight', { bridge: n(bill.bridge), engine: n(bill.engine) });
+  if (bill.bridge) return say('tonight.bridge', { bridge: n(bill.bridge) });
+  return bill.engine ? say('tonight.engine', { engine: n(bill.engine) }) : '';
+}
+const billNames = people => Object.fromEntries(people.filter(p => p.id).map(p => [p.id, p.role === 'you' ? 'you' : p.name]));
+// The bill on a night of this burn, `ahead` nights after tonight, with a scene's record in (the card, the handover line). Null with no burn.
+function billOn(ahead = 0) {
+  const t = G.transit, s = nightState();
+  if (!t || !s) return null;
+  const night = G.state.day + shipDay(t.elapsed).day + ahead;
+  return billWithWatch(billFor(G.state, ahead ? { ...s, watch: null } : s, night), t.watch, shipDay(t.elapsed).day + ahead);  // later nights: tonight's hurt, as a forecast
+}
+// Where the hand keeps a watch tonight, by the bill or a scene's record (#951), with the lights down: a room, or null.
+function handWatchPost() {
+  const t = G.transit;
+  if (!t || !isDark()) return null;
+  const w = watchTonight(t);
+  if (w && w.stands === 'you') return w.post;
+  return onWatchTonight({ id: 'you', role: 'you' }, nightState());
+}
+// Tonight's bill and a scene's record, from the burn as it stands, for what reads them outside the frame's ship state (isAsleep, the dusk).
+const nightState = () => { const t = G.transit; if (!t) return null; const st = G.state, hurt = st.crew.filter(id => (st.injured || {})[id]);
+  const s = { hurt, you: typeof handHurt === 'function' && handHurt(), watch: watchTonight(t) }; s.bill = billFor(st, s, st.day + shipDay(t.elapsed).day); return s; };
+const isAsleep = p => !p.staged && p.at !== 'alone' && isDark() && p.room === 'berths' && p.tx === null && p.dk === roomAt('berths').deck && p.role !== 'cat' && !onWatchTonight(p, nightState()) && phase() !== 'couch';  // asleep through the straps and the float too: strapped into the bunk (#927)
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {
@@ -491,8 +556,8 @@ function postSeat(room, roles, k) {
 // To where the timetable has `p` in `block`: their place in it, or the rounds (a room they like, as before the timetable).
 function routineGo(p, block, people, dark, rnd, state) {
   p.relief = undefined;
-  if (block === 'handover' && !NIGHT_WATCH.includes(p.role) && p.at === 'post' && p.tx === null && !p.errand) {  // at a post the watch keeps: wait to hand it over
-    const w = people.find(q => NIGHT_WATCH.includes(q.role) && postOf(q.role) === p.room && !q.staged);
+  if (block === 'handover' && state && !onWatchTonight(p, state) && p.at === 'post' && p.tx === null && !p.errand) {  // at a post tonight's watch keeps: wait to hand it over
+    const w = people.find(q => q !== p && onWatchTonight(q, state) === p.room && !q.staged);
     if (w) { Object.assign(p, { block, relief: w.id, reliefT: 0 }); return; }
   }
   const spot = routineSpot(p, block, state), moved = !!p.block && p.block !== block && p.block !== 'activity' && p.block !== 'linger';  // the day moved on: each sets off in their own moment, not all at once (#924)
@@ -501,9 +566,12 @@ function routineGo(p, block, people, dark, rnd, state) {
   const holds = q => (s => s.at === 'post' && s.room === spot.room)(routineSpot(q, 'shift'));  // a post's places are numbered by who holds it in a shift, the same in every block
   const seated = state && { ...state, morning: undefined };  // a seat at the table is kept for anyone in the head first (#973)
   const r = roomAt(spot.room), mates = spot.at === 'table' || spot.at === 'bed' ? people.filter(q => routineSpot(q, block, seated).at === spot.at) : spot.at === 'post' ? people.filter(holds) : [];  // who shares the table or the post
-  const w = state && state.watch;
-  if (spot.at === 'post' && w && p.id === w.stands && !mates.includes(p)) {  // the watch a scene handed out (#951): the relieved one's place, else the next
-    const k = mates.findIndex(q => q.id === w.relieved);
+  const w = state && state.watch, standing = state && (block === 'handover' || block === 'night') && ((w && p.id === w.stands) || onWatchTonight(p, state));
+  if (spot.at === 'post' && standing && !mates.includes(p)) {  // a watch kept by someone who does not hold the post (#951, #1034): the relieved one's seat, else the pilot's if off, else any off
+    const off = q => !onWatchTonight(q, state) && !(w && q.id === w.stands);
+    let k = w && p.id === w.stands ? mates.findIndex(q => q.id === w.relieved) : -1;
+    if (k < 0) k = mates.findIndex(q => off(q) && q.role === 'pilot');
+    if (k < 0) k = mates.findIndex(off);
     if (k >= 0) mates[k] = p; else mates.push(p);
   }
   const tx = spot.at === 'head' ? headDoorX(0) : routineTarget(p, spot, r, spot.at === 'post' ? postSeat(spot.room, mates.map(q => q.role), mates.indexOf(p)) : mates.indexOf(p), mates.length, rnd), placed = ['table', 'post', 'bed', 'stove'].includes(spot.at);  // a seat, a cot or the stove is its own place
@@ -633,7 +701,14 @@ function lifeTick(dt) {
   if (dark !== !!G.transit.dark) {  // dusk or dawn
     G.transit.dark = dark;
     comm(`[Ship] ${lineWords('lines:ship-lights', dark ? 'dusk' : 'dawn', LIFE_NOTES[dark ? 'dusk' : 'dawn'])}`);
-    for (const p of people) if (!NIGHT_WATCH.includes(p.role)) p.wait = Math.min(p.wait, lifeRand(0.2, 3));
+    const ns = nightState();
+    for (const p of people) if (!onWatchTonight(p, ns)) p.wait = Math.min(p.wait, lifeRand(0.2, 3));
+  }
+  const today = shipDay(G.transit.elapsed);
+  if (today.block === 'handover' && G.transit.billSaid !== today.day) {  // the watch bill, said once as the handover begins (#1034)
+    G.transit.billSaid = today.day;
+    const line = billLine(billOn(0), billNames(people));
+    if (line) comm(`[Ship] ${line}`);
   }
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
   const block = shipDay(G.transit.elapsed).block, state = shipState(G.state, G.transit, ship().armor, lifeRnd, { aid: (roleHolder('medic') || {}).id, you: handHurt() });

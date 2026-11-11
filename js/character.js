@@ -63,6 +63,19 @@ function recordCard() {
   return conCard('Record', traits.map(t => String(h`<div class="con-part record-trait"><b>${t.name}</b><span class="hint">${traitSay(`${t.id}.reason`)}</span></div>`)).join('') + (words ? String(h`<div class="hint record-words">${words}</div>`) : ''));
 }
 
+// The watch bill (shiplife.js, #1034): tonight and the next three nights of the burn, who has the bridge and who the engine room, the hand's
+// nights marked. Only on a burn: at port the next burn's nights are not known.
+function watchBillCard() {
+  if (!G.transit || !hired()) return '';
+  const say = key => sceneSay('scene:watch-bill', key), people = G.transit.aboard || shipPeople(), names = billNames(people);
+  const who = id => (id ? names[id] || id : say('card.none'));
+  const rows = [0, 1, 2, 3].map(k => {
+    const b = billOn(k), mine = b.bridge === 'you' || b.engine === 'you';
+    return String(h`<div class="con-read watch-night"><span>${k ? sceneSay('scene:watch-bill', 'card.night', { n: k + 1 }) : say('card.tonight')}</span><b>${sceneSay('scene:watch-bill', 'card.row', { bridge: who(b.bridge), engine: who(b.engine) })}${mine ? ` ${say('card.mine')}` : ''}</b></div>`);
+  });
+  return conCard(say('card.title'), rows.join(''));
+}
+
 function statsCard() {
   const h = hired(), rows = sheetRows(h.sheet, h.kit);
   return conCard('Stats', rows.stats.map(r => `<div class="con-part char-cap"><span>${r.stat[0].toUpperCase()}${r.stat.slice(1)}</span>${conBar(r.value / STAT_MAX * 100, '#6fb0ff')}<b>${r.value} / ${STAT_MAX}</b></div><div class="hint char-on">${r.posts.map(p => esc(POSTS[p].name)).join(', ')}</div>`).join(''))
@@ -157,7 +170,7 @@ function characterPanel() {
   const isCaptain = c.role === 'captain', hand = hired();
   const sub = [isCaptain ? 'Captain' : c.role && ROLE_NAMES[c.role] ? ROLE_NAMES[c.role] : c.job, c.age ? `${c.age}` : '', c.home ? `from ${c.home}` : ''].filter(Boolean).join(', ');
   const grade = c.captain && c.cast ? captainGrade(c) : null;
-  const cap = (c.you && hired() ? statsCard() + ladderCard() + recordCard() + onTheShipCard() + crewOpinionsCard() : '') + (c.captain ? conCard('Captain', ['trade', 'nerve', 'thrift'].map(k => (
+  const cap = (c.you && hired() ? statsCard() + ladderCard() + recordCard() + watchBillCard() + onTheShipCard() + crewOpinionsCard() : '') + (c.captain ? conCard('Captain', ['trade', 'nerve', 'thrift'].map(k => (
       `<div class="con-part char-cap"><span>${k[0].toUpperCase() + k.slice(1)}</span>${conBar(c.captain[k] / 5 * 100, '#6fb0ff')}<b>${c.captain[k]} / ` +
       `5</b></div>`)).join('') + (grade ? conRead('Ready to captain', grade.ready ? 'yes' : `skill ${grade.skill} of ${CAPTAIN_SKILL}, ${grade.days} of ${CAPTAIN_DAYS} days`) : '')) : '');
   const standing = c.memories ? conCard('Standing with you', `${conRead('Opinion', opinionWord(c.opinion))}${conBar(Math.max(0, Math.min(10, c.opinion + 5)) * 10, c.opinion >= 0 ? '#5fd35f' : '#ff6a4a')}

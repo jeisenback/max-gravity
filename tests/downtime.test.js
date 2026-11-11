@@ -83,7 +83,7 @@ test('the ship has a night: the lights go down and whoever is off watch turns in
     lifeTick(0.5);
     const noted = t.comms.some(c => /lights go down/.test(c));  // the comms keep only the last ten lines
     for (let i = 0; i < 200; i++) lifeTick(0.5);
-    const off = shipPeople().filter(p => p.role !== 'cat' && !NIGHT_WATCH.includes(p.role)).map(p => p.room);
+    const off = shipPeople().filter(p => p.role !== 'cat' && !onWatchTonight(p, nightState())).map(p => p.room);
     t.elapsed = 5;
     lifeTick(0.5);
     return { levels, off, noted, up: t.comms.some(c => /lights come up/.test(c)) };

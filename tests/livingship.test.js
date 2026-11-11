@@ -314,7 +314,7 @@ test('the ship\'s day runs to a timetable, and each person has a place in it', (
   assert.ok(Math.abs(shipDay(at(0.3)).f - 0.3) < 0.001, 'and how far into the day');
   const spot = (role, block) => JSON.parse(JSON.stringify(routineSpot({ role }, block)));
   assert.deepEqual(spot('engineer', 'shift'), { room: 'engine', at: 'post' });
-  assert.deepEqual(spot('pilot', 'night'), { room: 'bridge', at: 'post' }, 'the watch at night');
+  assert.deepEqual(spot('pilot', 'night'), { room: 'berths', at: 'bunk' }, 'with no watch bill (the ship\'s state) nobody keeps a watch: the bill is tested in watchbill.test.js (#1034)');
   assert.deepEqual(spot('cook', 'meal'), { room: 'galley', at: 'stove' });
   assert.deepEqual(spot('captain', 'shift'), { room: 'bridge', at: 'post' });
   assert.deepEqual(spot('captain', 'handover'), { room: 'berths', at: 'bunk' });
@@ -394,7 +394,7 @@ test('the ship\'s state gives the hurt a bed, first aid its patients, the hands 
   assert.deepEqual(spot(medic, 'shift', state({ hurt: ['e'], aid: 'm' })), { room: 'medbay', at: 'aid' }, 'first aid by the patient');
   assert.deepEqual(spot(medic, 'shift', state({ aid: 'm' })), { room: 'bridge', at: 'post' }, 'with nobody hurt, the post');
   assert.deepEqual(spot(eng, 'shift', state({ marks: ['hold'], repairs: { e: 'hold' } })), { room: 'hold', at: 'repair' }, 'at the damage');
-  assert.deepEqual(spot(eng, 'night', state({ marks: ['hold'], repairs: { e: 'hold' } })), { room: 'engine', at: 'post' }, 'the watch keeps the drive at night');
+  assert.deepEqual(spot(eng, 'night', state({ marks: ['hold'], repairs: { e: 'hold' }, bill: { bridge: null, engine: 'e' } })), { room: 'engine', at: 'post' }, 'the watch keeps the drive at night (the bill names them, #1034)');
   assert.deepEqual(spot(gun, 'meal', state({ low: ['g'] })), { room: 'berths', at: 'alone' }, 'someone low eats alone');
   assert.deepEqual(spot(gun, 'handover', state({ low: ['g'] })), { room: 'berths', at: 'alone' }, 'and sits apart in the evening');
   assert.deepEqual(spot(cook, 'meal', state({ low: ['c'] })), { room: 'galley', at: 'stove' }, 'the cook still cooks');
