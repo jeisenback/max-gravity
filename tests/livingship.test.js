@@ -2039,7 +2039,7 @@ test('the head\'s occupied lamp is lit while someone is in (s.headIn) and dark w
 const { roomNameAt, ROOM_NAME_TOP } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomNameAt', 'ROOM_NAME_TOP']);
 test('every room\'s name sits high on its wall, under the lamps\' fittings; the head\'s short name is clear of its door (#933)', () => {
   assert.ok(LAYOUTS.freighter.decks.flatMap(d => d.rooms).some(q => q.id === 'head' && q.name === 'Head'), 'the head is named the head');
-  for (const zoom of [0.82, 1.17, 1.45]) for (const id of ['bridge', 'galley', 'head', 'berths', 'gunnery', 'workshop', 'medbay', 'hold', 'engine']) {
+  for (const zoom of [0.82, 1.17, 1.45]) for (const id of ['bridge', 'galley', 'head', 'berths', 'gunnery', 'workshop', 'airlock', 'medbay', 'hold', 'engine']) {
     const r = layoutBox(LAYOUTS.freighter, id), at = roomNameAt(r, zoom), top = at.y - 13 / zoom;
     assert.ok(near(at.x, r.x0 + 12) && near(top, r.top + ROOM_NAME_TOP), `${id}, ${zoom}: 12 in, its plate's top ${ROOM_NAME_TOP} under the ceiling`);
     assert.ok(top > r.top + 6.4, `${id}, ${zoom}: under the lamps' fittings (6.4 deep)`);
@@ -2201,6 +2201,180 @@ test('the workshop\'s ceiling lamp is a fitting over the bench (#1024)', () => {
   for (const pr of [0.02, 0.3, 0.5]) {
     const { r, s } = wsCase(pr, 1.17), rec = recorder(); drawRoom(rec.ctx, 'workshop', r, s);
     const parts = filledParts(rec.calls), [x] = box.roomLamps('workshop', r), e = box.roomEye(r), back = r.top + (r.floor - 80 - r.top) * 0.2;
+    assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${pr}: its plate on the sliver`);
+    assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${pr}: its housing hung from the ceiling`);
+    assert.ok(rec.calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${pr}: the guard over its lens`);
+  }
+});
+// #933, the airlock on the lock deck, beside the medbay across the well, where #940's inspector and junior come aboard: from the hull wall in,
+// the lock's chamber, the outer door in the hull (a heavy hatch, dogged shut, its wheel, its seal ring and warning marks) and the inner door in
+// the partition on the room side, the cycle lamp and its panel on the wall beside it (the pressure on both sides, the cycle lever in its guard);
+// the floor in front of the inner door clear; then the bench by the airlock at the seated hip, the suits on their rack with their helmets on the
+// shelf over them, their boots under them and a tether, and the lockers for suit spares at the well's wall. Old and patched (point 6). No routine
+// sends anyone here (#973), so the drawing only has to leave room for #940. Drawn at the burn view's zoom in a window 1000, 1280 and 1600 wide.
+const AL_PROPS = [['#5e5434', 'the warning marks round the outer door'], ['#3a4450', 'the outer door\'s seal ring'], ['#4a5462', 'the outer door'], ['#1a1e22', 'the seals'], ['#0e1b28', 'the partition'],
+  ['#2c3a48', 'the inner door\'s frame'], ['#3a4856', 'the inner door'], ['#0e1a24', 'its window'], ['#24384c', 'the suit rack\'s boot tray'], ['#2e3e4c', 'its posts'], ['#34485a', 'its helmet shelf'],
+  ['#56626e', 'its hanger rail'], ['#505c68', 'the suits'], ['#605642', 'the older suit'], ['#5a6470', 'the helmets'], ['#1a2a36', 'their visors'], ['#2e3438', 'the boots'], ['#8a8676', 'the suits\' tags'],
+  ['#33506e', 'the bench'], ['#24425e', 'the older locker'], ['#2a3e4e', 'the newer locker'], ['#8a8270', 'the lockers\' number plates'],
+  [wallTone('#2e3a44'), 'the cycle panel, on the wall'], [wallTone('#3e4a54'), 'its newer unit'], [wallTone('#a8a28e'), 'its pressure gauges'], [wallTone('#263a50'), 'the cycle lamp'],
+  [wallTone('#5e666e'), 'the cycle lever'], [wallTone('#8a6a48'), 'its guard'], [wallTone('#3a5470'), 'the grab rails']];
+const AL_WALL = ['#2e3a44', '#3e4a54', '#a8a28e', '#263a50', '#5e666e', '#8a6a48', '#9a9050', '#3a5470'];
+const alCase = (pr, zoom, o = {}) => ({ r: layoutBox(LAYOUTS.freighter, 'airlock'), s: RS({ w: phaseWeights(pr), zoom, well: FW, damage: { marks: new Set(), severe: false }, ...o }) });
+const alParts = (r, s) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'airlock', r, s); return { calls, parts: filledParts(calls).filter(p => p.outlined && p.pts.length).map(p => ({ col: p.col, ...partBox(p) })), placed: placedParts(calls).filter(p => p.pts.length).map(p => ({ col: p.col, ...partBox({ pts: p.pts.map(q => q.slice(0, 2)) }) })) }; };
+const alName = (r, zoom) => ({ x0: r.x0 + 12 - 4 / zoom, x1: r.x0 + 12 + 66 / zoom, y0: r.top + 8, y1: r.top + 8 + 16.9 / zoom });  // the name's plate (roomNameAt): AIRLOCK, 13px, about 58px wide
+const alRects = (calls, col) => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+// the inner door's partition: its front edge at the cut and its back edge on the back wall
+const alPartition = (r, parts) => { const e = box.roomEye(r), leaf = parts.find(p => p.col === '#3a4856'), P = parts.find(p => p.col === '#2c3a48').x0; return { P, back: box.roomInto(e, P, r.top)[0], leaf }; };
+test('the airlock is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
+  assert.ok(WS_FITTED.includes('airlock'), 'its lamp a fitting');
+  for (const marked of [false, true]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = alCase(pr, zoom, marked ? { damage: { marks: new Set(['airlock']), severe: true }, night: 1 } : {}), at = `${marked ? 'damaged at night, ' : ''}${pr}, ${zoom}`;
+    const c = fakeCtx(); drawRoom(c, 'airlock', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    assert.ok(!c.calls.includes('fillText'), `${at}: no text in the room (the warning marks, the tags and the plates are marks)`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'airlock', r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    for (const [col, what] of AL_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
+    for (const col of AL_WALL) assert.equal(fills(col), 0, `${at}: nothing on the wall in its own colour (${col})`);
+    // in the box (#1024): the bench's pad and the rack's tray solid, their tops showing; the lockers and the tray show their side toward the eye;
+    // contact shadows under the bench, the tray and the lockers
+    for (const [col, what] of [['#33506e', 'the bench\'s pad'], ['#24384c', 'the rack\'s boot tray']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
+    for (const [col, what] of [['#24384c', 'the rack\'s tray'], ['#24425e', 'the older locker'], ['#2a3e4e', 'the newer locker']]) assert.ok(fills(solidSide(col)) >= 1, `${at}: ${what}'s side toward the eye`);
+    assert.ok(fills(SHADOW) >= 4, `${at}: contact shadows on the strip (${fills(SHADOW)})`);
+    const outlined = filledParts(calls).filter(p => p.outlined);
+    assert.ok(outlined.length >= 70, `${at}: the props outlined like the figures (${outlined.length})`);
+    for (const { col } of outlined.filter(p => rgbOf(p.col))) {
+      const v = rgbOf(col);
+      assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
+    }
+    for (const col of ['#e6dfc9', '#c0392b', '#c9a227', '#ffe2b8', '#ff8a6a', '#ffffff', '#ffb030']) assert.equal(fills(col), 0, `${at}: no bright block (${col})`);
+    // the room's name on clear wall, where each thing is drawn (the wall's things moved onto it)
+    const name = alName(r, zoom), hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
+    for (const { k, v, pts } of roomOwnPlaced('airlock', r, s)) for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} at ${x}, ${y} under the room's name`);
+    // what is on the wall is on the back wall, where it is drawn, and clear of the name's plate
+    const wall = backWall(r), placed = placedParts(calls).map(p => ({ col: p.col, at: p.at, ...partBox(p) }));
+    for (const col of AL_WALL) for (const p of placed.filter(q => q.col === wallTone(col))) {
+      assert.ok(p.x0 >= wall.x0 && p.x1 <= wall.x1 && p.y0 >= wall.y0 && p.y1 <= wall.y1 && (p.at[0] || p.at[1]), `${at}: ${col} (${JSON.stringify(p)}) on the back wall`);
+      assert.ok(p.x1 <= name.x0 || p.x0 >= name.x1 || p.y1 <= name.y0 || p.y0 >= name.y1, `${at}: ${col} (${JSON.stringify(p)}) clear of the name's plate`);
+    }
+  }
+  const stillAt = t => { const { r, s } = alCase(0.5, 1.17), c = fakeCtx(); drawRoom(c, 'airlock', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
+});
+test('the airlock reads as two doors with a chamber between: the outer door in the hull wall, the inner door in the partition beside it, the cycle lamp and panel by it (#933, #940)', () => {
+  for (const zoom of [0.82, 1.17, 1.45]) for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = alCase(pr, zoom), F = r.floor, at = `${pr}, ${zoom}`, { calls, parts, placed } = alParts(r, s), wall = backWall(r);
+    // the outer door: in the hull's wall (the room's left side wall, from the cut back to the back wall), a hatch a person stoops through,
+    // dogged shut: its seal ring, the door in it with its wheel and dogs, the warning marks round it
+    const ring = parts.find(p => p.col === '#3a4450'), outer = parts.find(p => p.col === '#4a5462'), band = parts.find(p => p.col === '#5e5434' && p.x1 <= wall.x0 + 0.01);
+    assert.ok(ring && ring.x0 >= r.x0 - 0.01 && ring.x1 <= wall.x0 + 0.01, `${at}: the outer door's ring (${JSON.stringify(ring)}) in the hull's side wall`);
+    assert.ok(ring.y1 >= F - 3 && F - ring.y0 >= 60 && F - ring.y0 <= 72, `${at}: a hatch a person stoops through, from the floor (${F - ring.y0})`);
+    assert.ok(outer && outer.x0 >= ring.x0 && outer.x1 <= ring.x1 && outer.y0 >= ring.y0 && outer.y1 <= ring.y1, `${at}: the door in its ring`);
+    assert.ok(band && band.x0 <= ring.x0 && band.x1 >= ring.x1 && band.y0 <= ring.y0, `${at}: the warning marks round it`);
+    assert.ok(calls.filter(k => k[0] === 'fillStyle' && k[1] === '#22201a').length >= 4, `${at}: the warning marks striped`);
+    const wheel = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === '#6a6e70');
+    const el = calls.slice(wheel).find(k => k[0] === 'ellipse');
+    assert.ok(wheel >= 0 && el && el[1] > outer.x0 && el[1] < outer.x1 && el[2] > outer.y0 && el[2] < outer.y1, `${at}: its wheel on the door`);
+    assert.ok(alRects(calls, '#7a7e82').filter(([x, y, w, h]) => x >= ring.x0 - 0.5 && x + w <= ring.x1 + 0.5 && y >= ring.y0 && y + h <= ring.y1).length >= 4, `${at}: dogged shut, its dogs`);
+    // the inner door, in the partition from the cut back to the back wall, its face toward the room, the chamber between the two doors
+    const { P, back, leaf } = alPartition(r, parts);
+    assert.ok(filledParts(calls).some(p => p.pts.some(q => near(q[0], P) && near(q[1], r.top)) && p.pts.some(q => near(q[0], P) && near(q[1], F)) && p.pts.some(q => near(q[0], back))), `${at}: the partition from the cut to the back wall`);
+    assert.equal(parts.filter(p => p.col === '#3a4856').length, 1, `${at}: one inner door`);
+    assert.ok(P - r.x0 >= 80 && P - r.x0 <= 110, `${at}: a chamber two people can stand in between the doors (${P - r.x0})`);
+    assert.ok(leaf.x0 >= P && leaf.x1 <= back && leaf.x1 - leaf.x0 >= 0.7 * (back - P), `${at}: the inner door fills its opening, shut (${leaf.x1 - leaf.x0} of ${back - P})`);
+    assert.ok(F - leaf.y0 >= 80 && F - leaf.y0 <= 90 && leaf.y1 >= F - 4, `${at}: the inner door a person high, from the floor (${F - leaf.y0})`);
+    const win = parts.find(p => p.col === '#0e1a24');
+    assert.ok(win && win.x0 >= leaf.x0 && win.x1 <= leaf.x1 && F - win.y0 <= 76 && F - win.y1 >= 54, `${at}: its window at the eye (${JSON.stringify(win)})`);
+    // the cycle lamp and panel on the wall beside the inner door, at the hand; the lamp dark, idle
+    const panel = placed.find(p => p.col === wallTone('#2e3a44'));
+    assert.ok(panel && panel.x0 >= back - 0.5 && panel.x0 <= back + 12 && F - panel.y0 <= 80 && F - panel.y1 >= 36, `${at}: the panel (${JSON.stringify(panel)}) beside the inner door, at the hand`);
+    const inP = p => p.x0 >= panel.x0 - 0.5 && p.x1 <= panel.x1 + 0.5 && p.y0 >= panel.y0 - 0.5 && p.y1 <= panel.y1 + 0.5;
+    assert.equal(placed.filter(p => p.col === wallTone('#a8a28e') && inP(p)).length, 2, `${at}: the pressure on both sides of the inner door, a gauge each`);
+    const lamp = placed.find(p => p.col === wallTone('#263a50')), lever = placed.find(p => p.col === wallTone('#5e666e')), guard = placed.find(p => p.col === wallTone('#8a6a48') && p.x1 - p.x0 >= 8);
+    assert.ok(lamp && lamp.y1 <= panel.y0 + 1 && lamp.x0 >= panel.x0 && lamp.x1 <= panel.x1 && lamp.x1 - lamp.x0 <= 9, `${at}: the cycle lamp over the panel`);
+    const lens = calls.filter((k, i) => k[0] === 'fillStyle' && calls[i + 3] && calls.slice(i + 1, i + 4).some(q => q[0] === 'arc')).map(k => k[1]).filter(c => c === wallTone('#3e2a26'));
+    assert.ok(lens.length >= 1, `${at}: its lens, dark while the lock is idle`);
+    const v = rgbOf(wallTone('#3e2a26')); assert.ok(Math.max(...v) <= 0x50 && Math.max(...v) - Math.min(...v) <= 0x30, 'dark, never saturated');
+    assert.ok(lever && guard && inP(lever) && guard.x0 <= lever.x0 && guard.x1 >= lever.x1 && guard.y1 >= lever.y1, `${at}: the cycle lever in its guard`);
+  }
+});
+test('the floor in front of the inner door is clear for #940\'s boarders, and the chamber\'s floor between the doors (#933, #940)', () => {
+  for (const zoom of [0.82, 1.17, 1.45]) for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = alCase(pr, zoom), F = r.floor, at = `${pr}, ${zoom}`, { calls, parts } = alParts(r, s), { P } = alPartition(r, parts), wall = backWall(r);
+    const standing = parts.filter(p => p.y1 >= F - 6 && p.y1 <= F + 0.5 && F - p.y0 > 4 && p.col !== '#0e1b28');
+    assert.ok(standing.length >= 4, `${at}: things standing on the floor (${standing.length})`);
+    const { back } = alPartition(r, parts);  // the outer door is in the hull's side wall and the inner door in its partition; nothing else stands short of P + 44
+    for (const p of standing) assert.ok(p.x1 <= wall.x0 + 0.01 || (p.x0 >= P - 0.5 && p.x1 <= back + 0.5) || p.x0 >= P + 44, `${at}: ${p.col} (${JSON.stringify(p)}) on the floor in front of the inner door or in the chamber`);
+    const shadows = filledParts(calls).filter(p => p.col === SHADOW).map(partBox);
+    for (const sh of shadows) assert.ok(sh.x0 >= P + 40, `${at}: no shadow (${JSON.stringify(sh)}) in front of the inner door`);
+  }
+});
+test('the airlock is sized to a person: the suits a person\'s size on their rack, the helmets on the shelf over them, the bench at the seated hip, the lockers at the head (#933, #960)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = alCase(pr, 1.17), F = r.floor, at = `${pr}`, { calls, parts } = alParts(r, s);
+    const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
+    const suits = parts.filter(p => /^#(505c68|605642)$/.test(p.col) && p.x1 - p.x0 >= 16 && p.y1 >= F - 30).sort((a, b) => a.x0 - b.x0);
+    assert.equal(suits.length, 3, `${at}: three suits`);
+    for (const p of suits) {
+      assert.ok(F - p.y0 >= 72 && F - p.y0 <= 80 && F - p.y1 >= 10 && F - p.y1 <= 18, `${at}: a suit (${JSON.stringify(p)}) hung at a person's height, collar to ankle`);
+      assert.ok(p.x1 - p.x0 >= 18 && p.x1 - p.x0 <= 26, `${at}: a suit a person wide (${p.x1 - p.x0})`);
+    }
+    for (let k = 1; k < 3; k++) assert.ok(suits[k].x0 >= suits[k - 1].x1, `${at}: the suits side by side`);
+    const rail = parts.find(p => p.col === '#56626e' && p.x1 - p.x0 >= 60);
+    for (const p of suits) assert.ok(rail && rail.x0 <= p.x0 && rail.x1 >= p.x1 && p.y0 - rail.y1 <= 3 && p.y0 >= rail.y0, `${at}: hung from the rail`);
+    const shelf = parts.find(p => p.col === '#34485a'), helmets = parts.filter(p => /^#(5a6470|605642)$/.test(p.col) && p.y1 <= shelf.y0 + 0.6);
+    assert.equal(helmets.length, 3, `${at}: three helmets on the shelf`);
+    for (const h of helmets) {
+      assert.ok(h.x1 - h.x0 >= 12 && h.x1 - h.x0 <= 16 && h.y1 - h.y0 >= 10 && h.y1 - h.y0 <= 14, `${at}: a helmet (${JSON.stringify(h)}) a head's size`);
+      assert.ok(Math.abs(h.y1 - shelf.y0) <= 0.6 && h.y0 >= r.top + 2, `${at}: on the shelf, under the ceiling`);
+    }
+    assert.ok(shelf.y1 <= rail.y0 + 0.5, `${at}: the shelf over the suits`);
+    const tray = parts.find(p => p.col === '#24384c'), boots = parts.filter(p => p.col === '#2e3438');
+    assert.ok(boots.length >= 6 && boots.every(b => Math.abs(b.y1 - tray.y0) <= 0.6 && suits.some(p => b.x0 >= p.x0 - 3 && b.x1 <= p.x1 + 3) && b.y1 - b.y0 <= 8), `${at}: a pair of boots under each suit, on the tray`);
+    const pad = parts.find(p => p.col === '#33506e');
+    assert.ok(Math.abs(F - pad.y0 - 23) <= 1.5 && pad.x1 - pad.x0 >= 40 && pad.x1 - pad.x0 <= 70, `${at}: the bench at the seated hip, two people long (${F - pad.y0}, ${pad.x1 - pad.x0})`);
+    assert.ok(fills(solidTop('#33506e')) >= 1, `${at}: the bench solid`);
+    for (const col of ['#24425e', '#2a3e4e']) {
+      const l = parts.find(p => p.col === col);
+      assert.ok(F - l.y0 >= 82 && F - l.y0 <= 92 && l.y1 >= F - 0.5 && l.x1 <= r.x1, `${at}: a locker (${JSON.stringify(l)}) at a person's head`);
+    }
+    const [lx] = box.roomLamps('airlock', r);
+    assert.ok(lx > pad.x0 && lx < pad.x1, `${at}: the lamp over the bench`);
+    for (const p of parts.filter(q => q.col !== '#0e1b28' && q.col !== '#3a4a5a')) assert.ok(p.y0 >= r.top + 3 && p.x0 >= r.x0 - 0.01 && p.x1 <= r.x1, `${at}: ${p.col} (${JSON.stringify(p)}) in the room, under the ceiling`);
+  }
+});
+test('the airlock has what it is for and reads old and patched: tethers and tags on the suits, an older suit patched, a newer unit on an older panel, a printed guard tagged temporary, tape, cable ties, wear (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = alCase(pr, 1.17), F = r.floor, at = `${pr}`, { calls, parts, placed } = alParts(r, s);
+    const inside = ([x, y, w, h], b) => x >= b.x0 - 0.01 && x + w <= b.x1 + 0.01 && y >= b.y0 - 0.01 && y + h <= b.y1 + 0.01;
+    const inBox = (p, b) => p.x0 >= b.x0 - 0.01 && p.x1 <= b.x1 + 0.01 && p.y0 >= b.y0 - 0.01 && p.y1 <= b.y1 + 0.01;
+    const suits = parts.filter(p => /^#(505c68|605642)$/.test(p.col) && p.x1 - p.x0 >= 16 && p.y1 >= F - 30), older = suits.filter(p => p.col === '#605642');
+    assert.equal(older.length, 1, `${at}: one suit older, in another finish`);
+    const tags = parts.filter(p => p.col === '#8a8676' && suits.some(q => inBox(p, q)));
+    assert.equal(tags.length, 3, `${at}: a tag on each suit, its date`);
+    assert.ok(parts.some(p => p.col === '#4e5a4a' && inBox(p, older[0])), `${at}: a patch on the older suit`);
+    assert.ok(parts.some(p => p.col === '#7a7462' && p.x0 >= older[0].x0 - 6 && p.x1 <= older[0].x1 + 6 && p.y0 >= older[0].y0), `${at}: tape on the older suit`);
+    assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === '#7a6a3e'), `${at}: a tether, coiled`);
+    const pad = parts.find(p => p.col === '#33506e');
+    assert.ok(parts.some(p => p.col === '#7a7462' && p.x0 >= pad.x0 && p.x1 <= pad.x1 && p.y0 >= pad.y0 - 1 && p.y1 <= pad.y1 + 1), `${at}: tape over a split in the bench's pad`);
+    const panel = placed.find(p => p.col === wallTone('#2e3a44')), unit = placed.find(p => p.col === wallTone('#3e4a54'));
+    assert.ok(unit && inBox(unit, panel), `${at}: a newer unit on the older panel`);
+    assert.ok(placedRects(calls).filter(q => q.col === wallTone('#8a929a') && inside([q.x, q.y, q.w, q.h], { ...unit, x0: unit.x0 - 1, x1: unit.x1 + 1, y0: unit.y0 - 1, y1: unit.y1 + 1 })).length >= 4, `${at}: fresh bolts holding it on`);
+    const guard = placed.find(p => p.col === wallTone('#8a6a48') && p.x1 - p.x0 >= 8), tag = placed.find(p => p.col === wallTone('#9a9050'));
+    assert.ok(tag && tag.x1 - tag.x0 <= 6 && tag.y0 >= guard.y0 && tag.y0 <= guard.y1 + 8, `${at}: the printed guard's temporary tag`);
+    assert.ok(placedRects(calls).filter(q => q.col === wallTone('#6a5038') && inside([q.x, q.y, q.w, q.h], guard)).length >= 2, `${at}: the guard's printed layers`);
+    assert.ok(placedRects(calls).filter(q => q.col === wallTone('#1e2a36') && q.y >= panel.y1).length >= 2, `${at}: cable ties on the panel's conduit`);
+    const { leaf } = alPartition(r, parts);
+    assert.ok(alRects(calls, '#56626e').filter(([x, y, w, h]) => x >= leaf.x0 - 0.5 && x + w <= leaf.x1 + 0.5 && F - y >= 36 && F - y - h <= 52).length >= 2, `${at}: the paint worn round the inner door's handle, where hands go`);
+    const ring = parts.find(p => p.col === '#3a4450');
+    assert.ok(alRects(calls, '#4a4a40').filter(([x, y]) => y >= F - 6 && x <= ring.x1 + 2).length >= 2, `${at}: scuffs at the outer door's sill, where boots go`);
+    assert.ok(calls.filter(k => k[0] === 'strokeStyle' && k[1] === '#4a6680').length >= 3, `${at}: tie-down rings in the deck`);
+  }
+});
+test('the airlock\'s ceiling lamp is a fitting over the bench (#1024)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s } = alCase(pr, 1.17), rec = recorder(); drawRoom(rec.ctx, 'airlock', r, s);
+    const parts = filledParts(rec.calls), [x] = box.roomLamps('airlock', r), e = box.roomEye(r), back = r.top + (r.floor - 80 - r.top) * 0.2;
     assert.ok(parts.some(p => p.pts.some(q => near(q[0], x - 12) && near(q[1], r.top)) && p.pts.some(q => near(q[1], back) && near(q[0], box.roomInto(e, x + 9, r.top)[0]))), `${pr}: its plate on the sliver`);
     assert.ok(parts.some(p => p.col === '#3a4a5a' && p.outlined && near(Math.min(...p.pts.map(q => q[0])), x - 12) && near(Math.min(...p.pts.map(q => q[1])), r.top)), `${pr}: its housing hung from the ceiling`);
     assert.ok(rec.calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && near(k[2], r.top + 3)), `${pr}: the guard over its lens`);
