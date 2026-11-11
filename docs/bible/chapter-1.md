@@ -22,7 +22,7 @@ Seven, on Hester's Ice Hauler (`ship.md`):
 3. **The hull on the apron.** From the second run Tomas walks past the Ore Runner, the hull he rebuilt three times, with her name painted over.
 4. **The captain's two scenes.** Hester's trouble, then her secret, which the hand learns by trust or by accident.
 5. **The offer.** When the hand's savings reach about half the buy-in, after the captain's scenes, Tomas says the Ceres co-op has bought her and is taking members, and that he will speak for you. The buy-in is set by the vote: 51,000 when a member speaks for you, 57,000 on a plain vote, 63,000 when nobody does. The offer stays open 84 days.
-6. **Signing at Ceres.** The share is signed only at the co-op's office at Ceres. Cato signs on with you if he is aboard and alive; the others who think well of you come too.
+6. **Signing at Ceres.** The share is signed only at the co-op's office at Ceres. Cato signs on with you if he is aboard and alive; the others who think well of you come too. A captain who trusts the hand vouches for them to the registry, and the lender reads it (Hester's regard, below).
 7. **The close.** "A Member's Share", the look back, and the end of the chapter, which goes on into chapter two (`chapter-2.md`).
 
 ## What the hand does
@@ -37,6 +37,24 @@ Seven, on Hester's Ice Hauler (`ship.md`):
 ## What it can cost
 
 A fight can hurt the hand, kill a shipmate, or end the hand's story (the floor is 0 in the shipped build, `docs/superpowers/specs/2026-10-07-death-and-departure.md`). The captain can put the hand ashore. A shipmate who comes to dislike the hand walks off. The memorial keeps the dead.
+
+## Hester's regard
+
+Hester's opinion of the hand moves a great deal already, but almost all of it is a side effect: a fight held or run from, a job ashore, a clean or bad ice haul, a fine she pays, the hand's own scenes. Few things are a lever the player can choose to pull. And it matters past the chapter: a captain who trusts the hand at the close (regard 3, trusted) vouches for them when they take the co-op's bridge, and the lender eases the co-op's terms on a vouched captain (`chapter-2.md`).
+
+She counts everything, keeps a paper notebook beside the house's software because they do not always agree, does not like surprises or anyone who rounds a number, and lives by the payment on the first (`people/hester.md`). The levers are things she would notice, each chosen by the hand, each with a cost or a roll:
+
+- **Check her figures.** A downtime activity on a burn: go over the notebook against the house's accounts with her. A check on wit. Landed, her regard rises by one; on a good landing it finds a real error in the house's figures, and the fund is a few hundred the better for it. It comes round every few burns, not every one. Failed, it costs nothing but the watch.
+- **Save her the fine.** At a port inspection, the hand's move halves the sum when it lands (`js/inspection.js`). Today a success leaves her regard where it was; it raises it by one, since she pays the fines.
+- **Wait for your pay.** Her trouble scene, "The First of the Month", already asks once, for 3. It comes round again on any first of the month that finds the fund short of the payment, and taking the pay a port late raises her regard by one after the first time. It delays the hand's savings, written down with interest.
+- **Bring the run in on the figure.** A run that comes in on or under her estimate (delivered on its day with the whole load, and no repair bill from the burn) is a run she notes. Every few such runs she says so, once, and her regard rises by one. It rewards careful play over bold play, and pairs with the Reliable trait.
+
+And the plots now in chapter one give her a stake in them:
+
+- **The arcs' fees.** The League arc's courier rate (4,000), the Old Town air fund's fee (3,000) and the riggers' fee at Luna each gain a choice to put it in the ship's fund instead of the hand's savings. Her regard rises by two. The hand is that much further from the share.
+- **The strike's end.** If she kept the ship off the ice and the Guild wins, the price rises on her ice, and her regard rises by two: it paid. If it breaks, the month cost her for nothing, and her regard falls by one. A hand who crossed it is not her concern.
+
+Each is small, and none is free. Over the chapter, a hand who pulls them with care reaches trusted by the close; one who never does, and runs from fights, does not.
 
 ## How the hand grows
 
@@ -112,3 +130,5 @@ In order, each its own piece of work:
 - Three places where the hand reaches the world: the water at Pallas, the air at Eros, and the strike; each moves one minor power, is decided in part by the hand's own actions and in part by the world, shows its mark, pays no windfall, and is read in chapter two.
 - The strike is against the ice buyers at Ceres, Kaur's office first among them; it comes after about day 20 and lasts about a month.
 - The Compact's licence arc stays a personal one, with no mark on the world.
+- Hester's levers: check her figures (a wit check on a burn, every few burns), save her the fine (a landed inspection move), wait for your pay (the first of a short month, after her trouble scene), bring the run in on the figure (every few careful runs), the arcs' fees put in the fund, and the strike's end for a ship she kept off the ice. One point each, two for the fees and a strike won.
+- A captain who trusts the hand (regard 3) at the close vouches for them to the registry.
