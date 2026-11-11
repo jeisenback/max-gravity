@@ -85,7 +85,8 @@ test('a scene of conditional parts reads as plain text that says which parts are
 });
 
 test('scenes the narrow build leaves out are listed and marked off', () => {
-  assert.equal(row('strike-broadcast').off, true, 'a storyline');
+  assert.equal(row('navy-recruit').off, true, 'a storyline');
+  assert.equal(row('strike-broadcast').off, false, 'the haulers\' strike, which the hand plays (#1044)');
   assert.equal(row('land-customs').off, false, 'a landing scene');
   assert.equal(row('cast:ines:mid1').off, false, 'a main character of the Earth start');
   assert.equal(row('cast:yelena:mid1').off, true, 'a main character of another start');
@@ -134,7 +135,7 @@ test('the page shows the rows, opens a scene to read it, and filters as you type
   await page.selectOption('#kind', 'code');
   assert.match(await page.textContent('#list'), /No scene matches/);
   await page.selectOption('#kind', '');
-  await page.fill('#q', 'strike-broadcast');
+  await page.fill('#q', 'navy-recruit');
   assert.match(await page.textContent('#list'), /off in the narrow build/);
   await page.fill('#q', '');
 });

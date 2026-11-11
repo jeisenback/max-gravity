@@ -170,25 +170,7 @@ test('Cold Water act 3: each side reaches its ending at Ceres', async () => {
   await done();
 });
 
-test("the Ice Haulers' Strike plays to its end", async () => {
-  const { ev, done } = await open({ scope: 'full' });
-  await ev(helpers);
-  const r = await ev(() => {
-    S.reset(); const st = G.state; st.day = 12; st.story.next = 1e9; st.credits = 300000; st.shipId = 'shuttle';
-    S.slicer('earth');
-    S.burn('ceres');
-    let s = null; for (let i = 0; i < 60 && !s; i++) { const x = pickStorylet('transit'); if (x && x.id.startsWith('strike')) s = x; }
-    openEvent(storyletEvent(s)); const first = G.dialog.event.title; S.choose('Send 20,000');
-    S.arrive('Ceres Station'); const ceres = G.dialog && G.dialog.event.title; S.choose('Carry them (8t');
-    S.burn('pallas'); startHappening(); if (G.dialog) S.choose(G.dialog.choices[0].label);
-    S.arrive('Pallas Refinery'); if (G.dialog) S.choose(G.dialog.choices[G.dialog.choices.length - 1].label);
-    return { first, ceres, done: quality('strikeDone'), journal: st.journal.length };
-  });
-  assert.equal(r.first, 'Picket Line on the Band');
-  assert.ok(r.ceres, 'a scene at Ceres');
-  assert.ok(r.done, `strike finished (${JSON.stringify(r)})`);
-  await done();
-});
+// The Ice Haulers' Strike is the hand's now (#1044): tests/icestrike.test.js.
 
 test('the Mars Navy commission runs start to finish', async () => {
   const { ev, done } = await open({ scope: 'full' });
@@ -301,17 +283,17 @@ test('a story scene comes before anything else at a landing, and the cat waits',
   await ev(helpers);
   const r = await ev(() => {
     S.reset(); const st = G.state; st.day = 12; st.story.next = 1e9; st.shipId = 'shuttle';
-    st.qualities = { strike: 1 };  // the Ceres strike scene is ready
+    st.qualities = { crown: 1 };  // the Rook's smuggling scene is ready
     home().cat = null;             // and the cat is about to come aboard
     const first = [];
     for (let i = 0; i < 100; i++) {
-      while (G.dialog) finishEvent(); G.nextEvent = null; delete st.qualities['seen:strike-ceres'];
-      S.land('ceres', 'Ceres Station');
+      while (G.dialog) finishEvent(); G.nextEvent = null; delete st.qualities['seen:rook-smuggle'];
+      S.land('hygiea', 'The Rook');
       first.push(G.dialog && G.dialog.event.title);
     }
     return { first, cat: !!home().cat };
   });
-  assert.ok(r.first.every(t => t && t !== 'Stowaway'), `the strike scene always came first (${[...new Set(r.first)]})`);
+  assert.ok(r.first.every(t => t && t !== 'Stowaway'), `the story scene always came first (${[...new Set(r.first)]})`);
   assert.equal(r.cat, false, 'the cat did not squeeze in');
   await done();
 });

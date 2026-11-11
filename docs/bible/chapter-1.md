@@ -1,6 +1,6 @@
 # Chapter 1: the hand
 
-Status: approved by the owner on 2026-11-11. Most of it records the chapter as built (the code wins, `README.md`); the section "Where the hand reaches the world" is new, the owner's choice of 2026-11-11, and not built yet. Built on `shape.md`, `work.md`, `ship.md`, `ceres-coop.md`, `owners.md` and the people sheets.
+Status: approved by the owner on 2026-11-11. Most of it records the chapter as built (the code wins, `README.md`); the section "Where the hand reaches the world" is the owner's choice of 2026-11-11, built in #1044. Built on `shape.md`, `work.md`, `ship.md`, `ceres-coop.md`, `owners.md` and the people sheets.
 
 ## What it is
 
@@ -95,16 +95,16 @@ How it ends is the world's, tipped by the hand: the strike's own dice, how many 
 
 Who remembers: the Ice Haulers' Guild (a minor power, one of the trades), the strikers' families in the Warren (where Pax's family rents, `people/pax.md`), and Kaur's buying office, which notices a ship's name and nothing more in chapter one. In chapter two the Guild is the first union the co-op meets, and Kaur's office is the first major power that knows the ship.
 
-The old strike (`js/stories/ice-strike.js`, full build) is the source to check, not to copy. It was written for an owner with a ship and a fund, paid 30,000 to 80,000 cr, used a customs cutter mid-burn that the world no longer has, and ended on the old powers' wars. Its organiser's name is taken by two other people in the bible, and is chosen again.
+The old strike (the owner's, in git history before #1044) was the source to check, not to copy. It was written for an owner with a ship and a fund, paid 30,000 to 80,000 cr, used a customs cutter mid-burn that the world no longer has, and ended on the old powers' wars. Its organiser's name is taken by two other people in the bible, and is chosen again.
 
 ## What the game changes to fit
 
 In order, each its own piece of work:
 
-1. **The two arcs' marks.** Effect lines on the end scenes of the League and Concord arcs (`js/stories/arc-league.js`, `arc-concord.js`): `unrest`, `news`, a price that moves for a stretch at the port, and a quality for what is remembered. The effects exist in the storylet engine except the price, which needs one.
-2. **The strike for the hand.** Its scenes rewritten for a rating on Hester's ship, in the voice; the four choices above; the supplies in the hand's own space, with Hester's finding out as one of the stakes (`js/stakes.js`); the three ends without the wars; no windfall. Switched on in the shipped build (it is a storyline today, off in the narrow scope).
-3. **The record.** Each mark kept on the hand's record as a quality now, and read as the minor power's standing once `owners.md` step 3 is built.
-4. **The soak.** The chapter's length and pay held to their bands with the three in play (`npm run soak`).
+1. **The two arcs' marks.** Effect lines on the end scenes of the League and Concord arcs (`js/stories/arc-league.js`, `arc-concord.js`): `unrest`, `news`, a price that moves for a stretch at the port, and a quality for what is remembered. The effects exist in the storylet engine except the price, which needs one. Built (#1044): the counts' ends at the count and the audit, with a `price` effect for storylets.
+2. **The strike for the hand.** Its scenes rewritten for a rating on Hester's ship, in the voice; the four choices above; the supplies in the hand's own space, with Hester's finding out as one of the stakes (`js/stakes.js`); the three ends without the wars; no windfall. Switched on in the shipped build (it is a storyline today, off in the narrow scope). Built (#1044): the organiser is Mirela Sandoval; the end is `strikeEnd` in `js/stories/ice-strike.js`, and the captain's month off the ice is `iceHeld` in `js/icerun.js`.
+3. **The record.** Each mark kept on the hand's record as a quality now, and read as the minor power's standing once `owners.md` step 3 is built. Built (#1044): `markHollows`, `markRefinery`, `markClosedHalf`, `markAuditors`, `markGuild` and `markKaur`.
+4. **The soak.** The chapter's length and pay held to their bands with the three in play (`npm run soak`). Checked (#1044): Hester's chapter reaches the share at a median of day 111 over eight seeds, against 112 before.
 
 ## Assumptions to confirm
 

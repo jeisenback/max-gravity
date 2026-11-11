@@ -43,7 +43,7 @@ function captainPerson(key) {
 
 // ---------- what a captain does and says ----------
 let leavingCaptain = null;  // the captain a goodbye is with: the hired game is over by the time its choice is made
-const captainLike = (n, memory) => like(leavingCaptain || hiredCaptain(), n, memory);
+const captainLike = (n, memory) => { const cap = leavingCaptain || hiredCaptain(); return cap ? like(cap, n, memory) : undefined; };  // no captain (an owner's game): nobody to think less of you
 const captainFlag = name => { const h = hired(); if (h) (h.flags = h.flags || {})[name] = true; };  // (an owner has no captain to remember)
 const hiredPostName = () => POSTS[hired().post].name.toLowerCase();
 
