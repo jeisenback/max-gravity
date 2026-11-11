@@ -8,9 +8,9 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const G = {};
-const { routineSpot, routineGo, routineWait, headTurn, ROOMS, roomAt, HAUNTS, LIFE_LINES, lifeLine, sceneStage, shipDay, SHIP_DAY, NIGHT_WATCH } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'],
+const { routineSpot, routineGo, routineWait, headTurn, ROOMS, roomAt, HAUNTS, LIFE_LINES, lifeLine, sceneStage, shipDay, SHIP_DAY } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'],
   { G, Mods: { filter: (n, v) => v, emit() {}, register() {} }, linedText: (id, t) => t, pickFresh: (lines, rnd) => lines[Math.floor(rnd() * lines.length)] },
-  ['routineSpot', 'routineGo', 'routineWait', 'headTurn', 'ROOMS', 'roomAt', 'HAUNTS', 'LIFE_LINES', 'lifeLine', 'sceneStage', 'shipDay', 'SHIP_DAY', 'NIGHT_WATCH']);
+  ['routineSpot', 'routineGo', 'routineWait', 'headTurn', 'ROOMS', 'roomAt', 'HAUNTS', 'LIFE_LINES', 'lifeLine', 'sceneStage', 'shipDay', 'SHIP_DAY']);
 
 const ROLES = ['engineer', 'pilot', 'gunner', 'quartermaster', 'slicer', 'medic', 'xo', 'cook', 'icehand'];
 const plain = { marks: [], severe: false, hurt: [], low: [], you: false, aid: null, repairs: {} };
@@ -23,7 +23,7 @@ test('the morning\'s day is counted in the burn, one a ship\'s day', () => {
 });
 
 test('about half the crew use the head in the morning, a different half each day, the same half for the same day (#973)', () => {
-  const people = crowd(), may = people.filter(p => !['you', 'passenger', 'captain', 'cat', 'cook', ...NIGHT_WATCH].includes(p.role));
+  const people = crowd(), may = people.filter(p => !['you', 'passenger', 'captain', 'cat', 'cook'].includes(p.role));  // no watch bill in this state: nobody stood a watch last night (#1034)
   let went = 0, seen = new Set();
   for (let d = 0; d < 400; d++) {
     const set = people.filter(p => toHead(p, d)).map(p => p.id);

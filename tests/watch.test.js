@@ -48,6 +48,7 @@ const helpers = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     G.state.story.next = 1e9; G.state.tutorial = null;
     const y = castPerson('yelena'); if (!G.state.crew.includes(y.id)) G.state.crew.push(y.id);
+    while ((G.state.day + 1) % 4 !== 0) G.state.day++;  // the first night of the burn (atBlock's day 1) is the pilot's on the bridge (#1034), not the hand's
     uatBurn('Earth', 'mars'); const t = G.transit; t.left = t.total * 0.3; t.times = []; t.aboard = null; shipPeople();
     return t;
   };

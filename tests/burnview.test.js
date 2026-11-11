@@ -479,7 +479,7 @@ test('the hired captain is aboard in the cutaway, and spends the day on the brid
 
 // Scenes staged (docs/superpowers/specs/2026-11-05-scenes-staged-design.md): a burn in the move phase, a scene opened, and the ship's life ticked on.
 const stageHelpers = () => {
-  window.stageBurn = (at = 0.7) => { burn(); const t = G.transit; t.left = t.total * (1 - at); t.elapsed = 0; shipPeople(); return t; };
+  window.stageBurn = (at = 0.7) => { burn(); while (G.state.day % 4) G.state.day++; const t = G.transit; t.left = t.total * (1 - at); t.elapsed = 0; shipPeople(); return t; };  // the burn's first night is the pilot's and the engineer's on the watch bill (#1034)
   window.tickFor = secs => { for (let i = 0; i < secs * 30; i++) lifeTick(1 / 30); };
   window.sayScene = (title, text) => openEvent({ title, text, choices: [{ label: 'Go on', run: () => 'Done.' }] });
   window.inRoom = (p, id) => { const r = ROOMS.find(x => x.id === id); return p.dk === r.deck && p.x >= r.x0 && p.x <= r.x1 && p.tx === null; };
@@ -573,7 +573,7 @@ test('a scene at night wakes the one it is about, and the rest sleep on', async 
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(() => {
     const t = stageBurn(); t.elapsed = 50; t.dark = true;  // night, the lights already down
-    const sleepers = shipPeople().filter(p => p.id && p.id !== 'you' && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role)).slice(0, 2);
+    const sleepers = shipPeople().filter(p => p.id && p.id !== 'you' && p.role !== 'cat' && !onWatchTonight(p, nightState())).slice(0, 2);
     const b = ROOMS.find(x => x.id === 'berths');
     sleepers.forEach((p, i) => Object.assign(p, { room: 'berths', x: b.x0 + (0.05 + i * 0.05) * CUT_K, dk: b.deck, tdk: b.deck, tx: null, wait: 999 }));
     const [one, other] = sleepers;
@@ -616,7 +616,7 @@ test('a scene in the berths at night does not get the sleepers up, and arriving 
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(() => {
     const t = stageBurn(); t.elapsed = 50; t.dark = true;  // night, the lights already down
-    const b = ROOMS.find(x => x.id === 'berths'), sleeper = shipPeople().find(p => p.id && p.id !== 'you' && p.role !== 'cat' && p.role !== 'captain' && !NIGHT_WATCH.includes(p.role));
+    const b = ROOMS.find(x => x.id === 'berths'), sleeper = shipPeople().find(p => p.id && p.id !== 'you' && p.role !== 'cat' && p.role !== 'captain' && !onWatchTonight(p, nightState()));
     Object.assign(sleeper, { room: 'berths', x: b.x0 + b.w * 0.3, dk: b.deck, tdk: b.deck, tx: null, wait: 999, block: shipDay(t.elapsed).block, at: 'bunk' });  // in their bunk for the night (off the well, which runs through the berths' middle)
     const mate = shipPeople().find(p => p.id && p.id !== 'you' && p !== sleeper && p.role !== 'cat' && p.role !== 'captain');
     sayScene(`With ${mate.name}`, `${mate.name} is sitting on a bunk, awake.`); tickFor(25);
@@ -987,7 +987,7 @@ test('with no night watch aboard nobody waits at dusk', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
-    const dayAt = eval(dayAtSrc), t = stageBurn(); t.aboard = t.aboard.filter(p => !NIGHT_WATCH.includes(p.role));
+    const dayAt = eval(dayAtSrc), t = stageBurn(); t.aboard = t.aboard.filter(p => !Object.values(WATCH_ORDER).flat().includes(p.role));  // nobody aboard who could keep a watch (#1034)
     t.elapsed = dayAt(0.5); tickFor(25); t.elapsed = dayAt(0.56); tickFor(1);
     const cap = shipPeople().find(p => p.role === 'captain');
     return { room: cap.room, going: cap.tx !== null || cap.dk !== cap.tdk };
@@ -1141,7 +1141,7 @@ test('someone having a hard time eats alone in the berths', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
-    const dayAt = eval(dayAtSrc), t = stageBurn(), gun = shipPeople().find(p => p.id && p.role !== 'you' && p.role !== 'captain' && !NIGHT_WATCH.includes(p.role) && G.state.crew.includes(p.id) && p.role !== 'cook');
+    const dayAt = eval(dayAtSrc), t = stageBurn(), gun = shipPeople().find(p => p.id && p.role !== 'you' && p.role !== 'captain' && !onWatchTonight(p, nightState()) && G.state.crew.includes(p.id) && p.role !== 'cook');
     person(gun.id).mood = { kind: 'low', until: G.state.day + 10, text: '' };
     t.elapsed = dayAt(0.33); tickFor(30);
     const others = shipPeople().filter(p => p !== gun && p.role !== 'cat' && G.state.crew.includes(p.id) && p.role !== 'cook');
@@ -1212,7 +1212,7 @@ test('someone having a hard time sits up alone in the dusk, the wounded stay in 
   await ev(helpers); await ev(stageHelpers);
   const r = await ev(dayAtSrc => {
     const dayAt = eval(dayAtSrc), t = stageBurn(), pose = p => posture(p, phase(), 0, isAsleep(p)).name, out = {};
-    const low = shipPeople().find(p => p.id && G.state.crew.includes(p.id) && !NIGHT_WATCH.includes(p.role) && p.role !== 'cook' && p.role !== 'xo');
+    const low = shipPeople().find(p => p.id && G.state.crew.includes(p.id) && !onWatchTonight(p, nightState()) && p.role !== 'cook' && p.role !== 'xo');
     person(low.id).mood = { kind: 'low', until: G.state.day + 10, text: '' };
     t.elapsed = dayAt(0.6); tickFor(25); out.dusk = [isAsleep(low), pose(low)];
     const pilot = shipPeople().find(p => p.role === 'pilot'), mate = shipPeople().find(p => p.role === 'engineer');
@@ -1358,7 +1358,7 @@ test('at the flip a sleeper stays in the bunk, and every strapped person has a j
   const r = await ev(() => {
     burn(); const t = G.transit;
     for (let f = 0; f < 1 && !isDark(); f += 0.01) t.elapsed = f * SHIP_DAY;  // a night
-    const b = roomAt('berths'), sleeper = shipPeople().find(p => p.role !== 'cat' && !NIGHT_WATCH.includes(p.role));
+    const b = roomAt('berths'), sleeper = shipPeople().find(p => p.role !== 'cat' && !onWatchTonight(p, nightState()));
     Object.assign(sleeper, { room: 'berths', x: b.x0 + b.w * 0.3, dk: b.deck, tdk: b.deck, tx: null, staged: undefined, at: undefined });
     t.left = t.total * (1 - 0.3); const moving = isAsleep(sleeper);
     t.left = t.total * (1 - securePr(t)); const securing = [isAsleep(sleeper), posture(sleeper, phase(), 0, isAsleep(sleeper)).name];
