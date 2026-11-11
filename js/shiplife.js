@@ -422,7 +422,7 @@ function routineTarget(p, spot, r, i, n, rnd) {
   if ((spot.at === 'post' || spot.at === 'table') && i >= 0 && i < seats.length) return r.x0 + r.w * seats[i];  // a seat, while there are seats (#925)
   if (spot.at === 'post') return r.x0 + r.w * (0.15 + 0.7 * (n > 1 ? i / (n - 1) : 0.5));  // place i of the n whose post is this room
   if (spot.at === 'stove') return r.x0 + r.w * 0.15;
-  if (spot.at === 'bed') return r.x0 + r.w * (0.34 + 0.16 * (n > 1 ? i / (n - 1) : 0));  // on the medbay's cot (0.2 to 0.54 of the room), the head toward its pillow end
+  if (spot.at === 'bed') return r.x0 + r.w * (0.34 + 0.16 * (n > 1 ? i / (n - 1) : 0));  // on the medbay's cot (rooms.js roomMedCot: from 46 before 0.34 of the room, 108 long), the head toward its pillow end; a second patient lies at 0.5, past its foot
   if (spot.at === 'aid') return r.x0 + r.w * 0.6;
   if (spot.at === 'repair') return r.x0 + r.w * 0.5;
   if (spot.at === 'alone') return r.x0 + r.w * (BERTH_NAME + 14) / LAYOUTS.freighter.width;  // on the edge of the first bunk, at its head end (rooms.js berthBunk)
@@ -798,7 +798,7 @@ function drawCutaway(box, clear = box) {
   for (const p of people) {
     const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p), s.well);
     const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
-    const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? 36 : 0), dk = Math.round(p.dk);
+    const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? MED_COT : 0), dk = Math.round(p.dk);
     dots.push({ x: X(p.x), dk: p.dk, color: ROLE_COLORS[p.role] });
     if (!seen(y - 160, y + 60)) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = seen(y - 60, y);
