@@ -199,26 +199,26 @@ Mods.register({
       ],
     }, 0.35, 75);
 
-    // The ship's night (shiplife.js): scenes for the hours when the lights are down and only the pilot and engineer are up. `night` holds only then.
+    // The ship's night (shiplife.js): scenes for the hours when the lights are down and only tonight's watch is up (the watch bill, #1034). `night` holds only then.
     road({
-      id: 'road-night-watch', when: { night: true, crew: 'pilot' },
+      id: 'road-night-watch', when: { night: true, onWatch: false, watchStood: 'bridge' },
       title: 'The Middle Watch',
-      text: 'It\'s the third hour of the night, and the bridge is lit by the board alone. {crew:pilot} has the helm with one boot up on the rail and is talking to the nav screen in a low voice, as {crew:pilot} does. The drift numbers haven\'t changed in forty minutes. "Come in," {crew:pilot} says, without turning. "Don\'t touch the cup on the left. It\'s been there since the flip, and it\'s mine."',
+      text: 'It\'s the third hour of the night, and the bridge is lit by the board alone. {watch:bridge} has the helm with one boot up on the rail and is talking to the nav screen in a low voice, as {watch:bridge} does. The drift numbers haven\'t changed in forty minutes. "Come in," {watch:bridge} says, without turning. "Don\'t touch the cup on the left. It\'s been there since the flip, and it\'s mine."',
       choices: [
-        { label: 'Sit the rest of the watch', effects: { learn: 1 }, result: 'You take the second seat. {crew:pilot} tells you which star the board is flying on, and something about the plume\'s color that you can\'t check. Near the end of the hour the numbers move one digit, and {crew:pilot} writes it on the back of a hand.' },
-        { label: 'Take the cup down and wash it', result: 'It takes you twenty minutes to find where it lives. When you come back, {crew:pilot} has moved the other cup to the left.' },
+        { label: 'Sit the rest of the watch', effects: { learn: 1 }, result: 'You take the second seat. {watch:bridge} tells you which star the board is flying on, and something about the plume\'s color that you can\'t check. Near the end of the hour the numbers move one digit, and {watch:bridge} writes it on the back of a hand.' },
+        { label: 'Take the cup down and wash it', result: 'It takes you twenty minutes to find where it lives. When you come back, {watch:bridge} has moved the other cup to the left.' },
         { label: 'Leave them to it', result: 'The hatch hisses behind you. The talking starts again before it\'s closed.' },
       ],
     }, 0.35, 90);
 
     road({
-      id: 'road-night-pump', when: { night: true, crew: 'engineer' },
+      id: 'road-night-pump', when: { night: true, watchStood: 'engine' },
       title: 'The Number Two Pump',
-      text: 'The cover is off the number two coolant pump, and {crew:engineer} has a flashlight in their teeth. "It\'s ticking," {crew:engineer} says around it. "Has been for six hours. Nobody who isn\'t me can hear it."',
+      text: 'The cover is off the number two coolant pump, and {watch:engine} has a flashlight in their teeth. "It\'s ticking," {watch:engine} says around it. "Has been for six hours. Nobody who isn\'t me can hear it."',
       choices: [
-        { label: 'Hold the light', effects: { learn: 1 }, result: 'It\'s a worn bearing, and there\'s a spare in the locker. You hold the flashlight for an hour and a half, and {crew:engineer} names every part before touching it.' },
-        { label: 'Listen at the housing', result: 'You press your ear to it. It ticks, and you can\'t tell it from your pulse. {crew:engineer} watches you do it and doesn\'t say anything.' },
-        { label: 'Tell them to log it and sleep', result: '"I\'ll log it after I\'ve found it," {crew:engineer} says, and puts the flashlight back in their mouth.' },
+        { label: 'Hold the light', effects: { learn: 1 }, result: 'It\'s a worn bearing, and there\'s a spare in the locker. You hold the flashlight for an hour and a half, and {watch:engine} names every part before touching it.' },
+        { label: 'Listen at the housing', result: 'You press your ear to it. It ticks, and you can\'t tell it from your pulse. {watch:engine} watches you do it and doesn\'t say anything.' },
+        { label: 'Tell them to log it and sleep', result: '"I\'ll log it after I\'ve found it," {watch:engine} says, and puts the flashlight back in their mouth.' },
       ],
     }, 0.35, 90);
 

@@ -182,7 +182,7 @@
     places: Object.entries(SYSTEMS).flatMap(([sid, s]) => s.planets.map(p => ({ name: p.name, sid }))),
     // The tables the forms are built from, read as they are now, so a condition or effect the game gains has a form with no change here.
     conditions: Object.keys(CONDITIONS), effects: Object.keys(EFFECTS), systems: Object.keys(SYSTEMS), govs: [...new Set([...FACTIONS, ...Object.values(SYSTEMS).map(s => s.gov)])],
-    goods: COMMODITIES.map(c => c.id), ships: Object.keys(SHIPS), actions: Object.keys(Mods.storyActions), cast: Object.keys(CAST), rooms: ROOMS.map(r => r.id),
+    goods: COMMODITIES.map(c => c.id), ships: Object.keys(SHIPS), actions: Object.keys(Mods.storyActions), cast: Object.keys(CAST), rooms: ROOMS.map(r => r.id), watches: Object.keys(WATCH_ORDER),
     fights: UAT_FIGHTS.map(f => ({ id: f.id, title: f.title })),  // the tester panel's fights (js/uat.js), for the fight rows' picker (#795)
   });
 
@@ -627,7 +627,7 @@
     day: 'number', before: 'number', at: 'list:systems', planet: 'list:planets', gov: 'list:govs', standing: 'map:govs', standingBelow: 'map:govs',
     credits: 'number', space: 'number', fleet: 'number', stake: 'map:planets', cargo: 'map:goods', crew: 'text', q: 'map', qBelow: 'map', war: 'flagOr:govs',
     peace: 'flagOr:govs', boom: 'one:govs', bust: 'one:govs', raid: 'flagOr:systems', berths: 'number', story: 'json', storyDay: 'map', aboard: 'text',
-    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', night: 'flag', due: 'list', opinion: 'shape:opinion', captainFlag: 'text', official: 'number',
+    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', night: 'flag', onWatch: 'flag', watchStood: 'one:watches', due: 'list', opinion: 'shape:opinion', captainFlag: 'text', official: 'number',
   };
   const EFFECT_SPEC = {
     credits: 'number', story: 'json', storyLog: 'text', storyAdd: 'map', storyDays: 'map', delay: 'number', passenger: 'json', do: 'action', rep: 'map:govs',

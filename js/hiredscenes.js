@@ -673,6 +673,7 @@ const SCENE_LINES = {
   'scene:contact': {  // a contact on a burn (engage.js contactEvent): {km} is her range, {who} the line for who she is (or a ladder step's, scene:fight-entry), {gunner} who fights the guns, {crew} the crew member who spoofs, {cr} the payoff, {fine} the heave-to's fine; a run's days are said after (run.days of scene:fight)
     title: 'Contact',
     text: 'Sensors: a drive plume at {km} km, on an intercept course. {who}',
+    onwatch: 'You have the watch when the board lights up.',  // a contact at night on the hand's watch (#1034)
     'who.pirate': 'No transponder. The plume signature says pirate.',
     'who.patrol': 'Transponder: {gov} navy. You are wanted in their space.',
     'who.bounty': 'Transponder spoofed, but the plume matches: {target}, the ship you are hunting.',

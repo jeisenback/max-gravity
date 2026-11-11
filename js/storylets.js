@@ -45,6 +45,8 @@ const CONDITIONS = {
   // A story passenger aboard, by role in the story (older saves' Mira has none).
   aboard: v => paxAboard().some(m => m.story && (m.storyWho || 'mira-europa') === v),
   night: v => !!G.transit && isDark() === !!v,  // the ship's night (shiplife.js): the lights are down on a burn
+  onWatch: v => !!G.transit && isDark() && !!handWatchPost() === !!v,  // the hand keeps tonight's watch, by the bill or a scene (shiplife.js, #1034); only at night
+  watchStood: post => !!G.transit && !!(billOn(0) || {})[post],  // tonight's 'bridge' or 'engine' watch has someone on it (#1034)
   chance: v => Math.random() < v,
   post: v => !!hired() && [].concat(v).includes(hired().post),  // a hired hand's own post
   skill: v => !!hired() && skillLevel(hired().post) >= v,  // and the level they have there
@@ -202,6 +204,7 @@ function fill(text = '') {
   }
   return text.replace(/\{planet\}/g, G.state.planet).replace(/\{system\}/g, placeOf(sidNow()).name)
     .replace(/\{crew:(\w+)\}/g, (_, role) => roleName(role))
+    .replace(/\{watch:(bridge|engine)\}/g, (_, post) => { const b = billOn(0), id = b && b[post]; return !id ? '' : id === 'you' ? 'you' : (person(id) || {}).first || ''; })  // tonight's watch (#1034)
     .replace(/\{captain\}/g, () => { const c = hired() && person(hired().captain); return c ? `Captain ${c.last}` : 'the captain'; })
     .replace(/\{thread:(\w+)\}/g, (_, key) => { const p = threadPerson(key); return p ? p.first : 'a shipmate'; })
     .replace(/\{official\}/g, () => officialName(currentPlanet()));  // the port's own official (official.js)
@@ -209,7 +212,7 @@ function fill(text = '') {
 
 // ---------- the scene editor's changes (js/overrides.js, #336) ----------
 // {planet}, {system}, {captain}, {crew}, {crew:role} and {thread:key}: what fill() and the dialog replace. Any other {word} is left as typed.
-const PLACEHOLDER = /^\{(?:planet|system|captain|crew|mate|names|official|crew:(\w+)|thread:\w+)\}$/;  // {mate} is filled by a hired event written as data (hiredevents.js), for the shipmate it is about; {names} by a captain's goodbye (captains.js), for who goes with you
+const PLACEHOLDER = /^\{(?:planet|system|captain|crew|mate|names|official|crew:(\w+)|thread:\w+|watch:(?:bridge|engine))\}$/;  // {mate} is filled by a hired event written as data (hiredevents.js), for the shipmate it is about; {names} by a captain's goodbye (captains.js), for who goes with you
 const unknownPlaceholders = text => (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = PLACEHOLDER.exec(t); return !m || !!(m[1] && !ROLE_NAMES[m[1]]); });
 
 // The scene as the file changes it: its conditions, and each choice's conditions, effects and `next` link, where the file names them. The

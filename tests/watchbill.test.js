@@ -86,7 +86,7 @@ test('on the hand\'s bridge night the cutaway has them on the bridge and the pil
 const burnHelpers = () => {
   window.onBurnAtNight = (bridgeIndex = 1) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
-    G.state.story.next = 1e9; G.state.tutorial = null;
+    G.state.story.next = 1e9; G.state.tutorial = null; G.state.day += 8;  // past the road scenes' first days, at the same place in the rota
     uatBurn('Earth', 'mars'); const t = G.transit; t.left = t.total * 0.3; t.times = []; t.chatter = 1e9; t.aboard = null; shipPeople();
     let d = 0; while ((G.state.day + d) % 4 !== bridgeIndex) d++;
     t.elapsed = (d + 0.5) * SHIP_DAY - 6;  // supper, before that night's handover
@@ -137,4 +137,43 @@ test('the Watch bill card shows tonight and the next three nights on a burn, the
   assert.match(r.rows[0], /\(yours\)/, 'tonight is the hand\'s bridge night');
   assert.equal(r.rows.filter(x => /\(yours\)/.test(x)).length, 1, 'once in four nights');
   assert.equal(r.port, '');
+});
+
+// ---------- the hand's nights (#1034, task 3) ----------
+
+test('the night scenes follow the bill: the Middle Watch names tonight\'s bridge and not on the hand\'s night, the pump names the engine room', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurnAtNight(1); t.elapsed += SHIP_DAY * 0.25;  // Mateo's bridge night, Hana's engine room, in the night
+    const scene = id => STORYLETS.find(s => s.id === id), holds = id => { const w = { ...sceneView(scene(id)).when }; delete w.chance; return meets(w); };
+    const out = { dark: isDark(), mid: holds('road-night-watch'), midText: fill(scene('road-night-watch').text), pumpText: fill(scene('road-night-pump').text),
+      stood: [meets({ watchStood: 'bridge' }), meets({ watchStood: 'engine' })], onWatch: meets({ onWatch: true }) };
+    t.elapsed += SHIP_DAY;  // the next night: the hand's bridge
+    out.mine = { mid: holds('road-night-watch'), onWatch: meets({ onWatch: true }), off: meets({ onWatch: false }) };
+    t.elapsed -= SHIP_DAY * 0.5; out.byDay = meets({ onWatch: true });
+    return out;
+  });
+  await done();
+  assert.equal(r.dark, true);
+  assert.equal(r.mid, true); assert.match(r.midText, /Mateo/); assert.match(r.pumpText, /Hana/);
+  assert.deepEqual(r.stood, [true, true]); assert.equal(r.onWatch, false);
+  assert.deepEqual(r.mine, { mid: false, onWatch: true, off: false });
+  assert.equal(r.byDay, false, 'onWatch holds only with the lights down');
+});
+
+test('a contact on the hand\'s watch opens with them there; on another\'s night it does not; a scene at night on the hand\'s watch is staged at their post', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurnAtNight(2); t.elapsed += SHIP_DAY * 0.25;
+    const opens = () => /^Sensors[^.]*\.[^]*?You have the watch when the board lights up\.|^You have the watch when the board lights up\./.test(contactEvent({ kind: 'pirate' }).text);
+    const mine = opens(), cato = castPerson('cato').id, stage = sceneStage({ title: 'A Word', text: 'Nothing about a room.' }, t.aboard, [cato]);
+    t.elapsed += SHIP_DAY;  // Cato's bridge night
+    return { mine, other: opens(), stage: stage && stage.room, otherStage: (sceneStage({ title: 'A Word', text: 'Nothing about a room.' }, t.aboard, [cato]) || {}).room };
+  });
+  await done();
+  assert.equal(r.mine, true); assert.equal(r.other, false);
+  assert.equal(r.stage, 'bridge', 'staged where the hand keeps the watch');
+  assert.equal(r.otherStage, 'galley', 'otherwise as before');
 });

@@ -36,7 +36,7 @@ function sceneStage(ev, aboard, staged) {
   if (!named.length) return null;
   const words = `${ev.title || ''} ${ev.text || ''}`, said = Object.entries(SCENE_ROOM_WORDS).map(([room, re]) => [room, words.search(re)]).filter(([, at]) => at >= 0).sort((a, b) => a[1] - b[1]);
   const has = role => named.some(id => by.get(id).role === role);
-  const room = (ev.room && roomAt(ev.room) && ev.room) || (said[0] && said[0][0]) || (has('captain') ? 'bridge' : has('passenger') ? 'berths' : 'galley');
+  const room = (ev.room && roomAt(ev.room) && ev.room) || (said[0] && said[0][0]) || (G.transit && handWatchPost()) || (has('captain') ? 'bridge' : has('passenger') ? 'berths' : 'galley');  // at night on the hand's watch, where they keep it (#1034)
   return { room, ids: ['you', ...named] };
 }
 // The room under a point on the screen: the outline's first, then the rooms in view, from what the last cutaway drawing recorded.
@@ -82,7 +82,9 @@ function watchBill(roster, night) {
   }
   return out;
 }
-// The roster for the bill from the burn's people: the hurt from the ship's state (`hurt`, and `you` for the hand).
+// The bill's people: the hand and the crew, from the game's state (not the cutaway's people, which a scene's conditions are read before).
+const crewRoster = st => [{ id: 'you', role: 'you' }, ...st.crew.map(id => (st.people || {})[id]).filter(Boolean).map(p => ({ id: p.id, role: p.role }))];
+// The roster for the bill: the hurt from the ship's state (`hurt`, and `you` for the hand).
 const rosterOf = (people, state) => people.filter(p => p.id && p.role !== 'cat').map(p => ({ id: p.id, role: p.role, hurt: p.role === 'you' ? !!state.you : (state.hurt || []).includes(p.id) }));
 // Whether `p` stands a watch tonight, by the bill or a scene's record (#951) on that watch's room: 'bridge', 'engine', or null. A record on
 // another room (the guns) leaves the bill as it is.
@@ -170,7 +172,7 @@ function shipState(st, t, maxArmor, rnd, who) {
   const low = crew.filter(c => !hurt.includes(c.id) && c.mood && c.mood.kind === 'low' && c.mood.until > st.day).map(c => c.id);  // as moodLow
   const d = maxArmor > 0 ? 1 - st.armor / maxArmor : 0;
   const out = { marks: marksFor(t, d, rnd), severe: d > 2 / 3, hurt, low, you: !!who.you, aid: who.aid || null, watch: watchTonight(t) };
-  out.bill = watchBill(rosterOf(t.aboard || [], out), st.day + shipDay(t.elapsed).day);  // tonight's watch bill (#1034)
+  out.bill = watchBill(rosterOf(crewRoster(st), out), st.day + shipDay(t.elapsed).day);  // tonight's watch bill (#1034)
   return out;
 }
 
@@ -251,11 +253,19 @@ function billOn(ahead = 0) {
   const t = G.transit, s = nightState();
   if (!t || !s) return null;
   const night = G.state.day + shipDay(t.elapsed).day + ahead;
-  return billWithWatch(watchBill(rosterOf(t.aboard || [], s), night), t.watch, shipDay(t.elapsed).day + ahead);
+  return billWithWatch(watchBill(rosterOf(crewRoster(G.state), s), night), t.watch, shipDay(t.elapsed).day + ahead);
+}
+// Where the hand keeps a watch tonight, by the bill or a scene's record (#951), with the lights down: a room, or null.
+function handWatchPost() {
+  const t = G.transit;
+  if (!t || !isDark()) return null;
+  const w = watchTonight(t);
+  if (w && w.stands === 'you') return w.post;
+  return onWatchTonight({ id: 'you', role: 'you' }, nightState());
 }
 // Tonight's bill and a scene's record, from the burn as it stands, for what reads them outside the frame's ship state (isAsleep, the dusk).
 const nightState = () => { const t = G.transit; if (!t) return null; const st = G.state, hurt = st.crew.filter(id => (st.injured || {})[id]);
-  const s = { hurt, you: typeof handHurt === 'function' && handHurt(), watch: watchTonight(t) }; s.bill = watchBill(rosterOf(t.aboard || [], s), st.day + shipDay(t.elapsed).day); return s; };
+  const s = { hurt, you: typeof handHurt === 'function' && handHurt(), watch: watchTonight(t) }; s.bill = watchBill(rosterOf(crewRoster(st), s), st.day + shipDay(t.elapsed).day); return s; };
 const isAsleep = p => !p.staged && p.at !== 'alone' && isDark() && p.room === 'berths' && p.tx === null && p.dk === roomAt('berths').deck && p.role !== 'cat' && !onWatchTonight(p, nightState()) && phase() !== 'couch';  // asleep through the straps and the float too: strapped into the bunk (#927)
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
