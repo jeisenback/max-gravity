@@ -281,8 +281,10 @@ test('what the editor writes for a hired scene is a file the game takes, and a b
 test('the editor\'s checks of the hired effects are the game\'s', async () => {
   const samples = [{ who: 'ilsa', n: 1, memory: 'm' }, { who: 'nobody', n: 1, memory: 'm' }, { who: 'ilsa', n: 'x', memory: 'm' }, { who: 'ilsa', n: 1, memory: ' ' }, 'oops', null,
     { who: 'ilsa', flag: 'f' }, { who: 'ilsa', flag: '' }, { who: 'ilsa', role: 'engineer', n: 2 }, { who: 'ilsa', role: '', n: 2 }, { n: 2, memory: 'm' }, { n: 'x' }, 'a', ['a', 'b'], [1], '', 'ilsa', 'ines',
-    { post: 'engineer', n: 3 }, { post: 'nobody', n: 3 }, { post: 'gunner', n: 'x' }, { who: 'captain', min: 3 }, { who: 'xo', min: 1 }, { who: 'ilsa', min: 2 }, { who: 'nobody', min: 1 }, { who: 'captain', min: 'x' }];
-  const names = ['castLike', 'castFlag', 'castXp', 'captainLike', 'captainFlag', 'mateLike', 'remember', 'gainSkill', 'castJoin', 'castLater', 'opinion'];
+    { post: 'engineer', n: 3 }, { post: 'nobody', n: 3 }, { post: 'gunner', n: 'x' }, { who: 'captain', min: 3 }, { who: 'xo', min: 1 }, { who: 'ilsa', min: 2 }, { who: 'nobody', min: 1 }, { who: 'captain', min: 'x' },
+    { stands: 'you', post: 'gunnery', relieved: 'yelena', relievedAt: 'galley' }, { stands: 'you', post: 'gunnery', relieved: 'nobody' }, { stands: 'comms', post: 'bridge', relieved: null },
+    { stands: 'slicer', post: 'bridge' }, { stands: 'yelena', post: 'nowhere' }, { stands: 'you', post: 'engine', relieved: 'engineer', relievedAt: 'bunk' }, { stands: 'you', post: 'engine', relievedAt: 'roof' }];
+  const names = ['castLike', 'castFlag', 'castXp', 'captainLike', 'captainFlag', 'mateLike', 'remember', 'gainSkill', 'castJoin', 'castLater', 'opinion', 'standWatch'];
   const here = await page.evaluate(([s, names]) => names.map(k => s.map(v => { const kind = SceneIndex.kindOf(`shape:${k}`); return !kind.parse(JSON.stringify(v === undefined ? null : v)).error; })), [samples, names]);
   const g = await open({ scope: 'full' });
   const there = await g.ev(([s, names]) => names.map(k => s.map(v => !(EFFECT_SHAPES[k] || CONDITION_SHAPES[k])(v))), [samples, names]);

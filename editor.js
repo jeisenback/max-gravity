@@ -182,7 +182,7 @@
     places: Object.entries(SYSTEMS).flatMap(([sid, s]) => s.planets.map(p => ({ name: p.name, sid }))),
     // The tables the forms are built from, read as they are now, so a condition or effect the game gains has a form with no change here.
     conditions: Object.keys(CONDITIONS), effects: Object.keys(EFFECTS), systems: Object.keys(SYSTEMS), govs: [...new Set([...FACTIONS, ...Object.values(SYSTEMS).map(s => s.gov)])],
-    goods: COMMODITIES.map(c => c.id), ships: Object.keys(SHIPS), actions: Object.keys(Mods.storyActions), cast: Object.keys(CAST),
+    goods: COMMODITIES.map(c => c.id), ships: Object.keys(SHIPS), actions: Object.keys(Mods.storyActions), cast: Object.keys(CAST), rooms: ROOMS.map(r => r.id),
     fights: UAT_FIGHTS.map(f => ({ id: f.id, title: f.title })),  // the tester panel's fights (js/uat.js), for the fight rows' picker (#795)
   });
 
@@ -635,6 +635,7 @@
     bounty: 'json', companyShip: 'one:ships', mission: 'json',
     castLike: 'shape:castLike', castFlag: 'shape:castFlag', castXp: 'shape:castXp', captainLike: 'shape:captainLike', captainFlag: 'shape:captainFlag',
     mateLike: 'shape:mateLike', remember: 'shape:remember', gainSkill: 'shape:gainSkill', castJoin: 'shape:castJoin', castLater: 'shape:castLater',
+    standWatch: 'shape:standWatch',
   };
   let lists = {};  // the names the games' lists hold: systems, planets, factions, govs, goods, ships, posts, actions, conditions, effects, scenes
   const ok = value => ({ value }), no = error => ({ error });
@@ -654,6 +655,12 @@
     remember: v => (textOf(v) ? '' : 'needs a name'),
     castJoin: v => (typeof v !== 'string' || !(lists.cast || []).includes(v) ? 'needs the key of a main character' : ''),
     castLater: v => (typeof v !== 'string' || !(lists.cast || []).includes(v) ? 'needs the key of a main character' : ''),
+    standWatch: v => {  // as the game's (storylets.js EFFECT_SHAPES.standWatch, #1036)
+      const who = x => x === 'you' || (lists.cast || []).includes(x) || (lists.posts || []).includes(x), room = x => (lists.rooms || []).includes(x);
+      return !isObj(v) ? 'needs { stands, post, relieved, relievedAt }' : !who(v.stands) ? `${v.stands} is not 'you', a main character or a post`
+        : v.relieved != null && !who(v.relieved) ? `${v.relieved} is not 'you', a main character or a post` : !room(v.post) ? `${v.post} is not a room`
+        : v.relievedAt != null && v.relievedAt !== 'bunk' && !room(v.relievedAt) ? `${v.relievedAt} is not 'bunk' or a room` : '';
+    },
     gainSkill: v => (!isObj(v) ? 'needs { post, n }' : !(lists.posts || []).includes(v.post) ? `${v.post} is not a post` : !Number.isFinite(v.n) ? 'n must be a number' : ''),
     opinion: v => (!isObj(v) ? 'needs { who, min }' : !['captain', 'xo', ...(lists.cast || [])].includes(v.who) ? `${v.who} is not the captain, the first officer or a main character` : !Number.isFinite(v.min) ? 'min must be a number' : ''),
   };

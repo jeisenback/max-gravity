@@ -157,7 +157,7 @@ function routineSpot(p, block, state) {
     if (role === 'you' && state.you && (block === 'night' || block === 'handover')) return { room: 'medbay', at: 'bed' };
     const w = state.watch;
     if (w && (block === 'handover' || block === 'night')) {  // the watch a scene handed out (#951)
-      if (id === w.stands) return { room: w.post, at: 'post' };
+      if (id && id === w.stands) return { room: w.post, at: 'post' };
       if (id && id === w.relieved) return w.relievedAt === 'bunk' ? { room: 'berths', at: 'bunk' } : { room: w.relievedAt, at: w.relievedAt === 'galley' ? 'table' : 'post' };
     }
     if (block === 'shift' && id && id === state.aid && state.hurt.length) return { room: 'medbay', at: 'aid' };
