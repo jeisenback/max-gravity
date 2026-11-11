@@ -38,7 +38,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:day-ashore', fn: 'dayAshoreEvent', file: 'js/dayashore.js', title: 'A Day Ashore', where: 'port', when: 'The hand\'s own hour at a port, once a landing: a menu of five from the port\'s own (the regulars\' table, a walk through the port), the hand\'s (an errand with a crew member, the room) and what is on (the match, the broadcast, the show at the bar), and Not now.' },
   { id: 'scene:chapter-two-end', fn: 'chapterTwoEnd', file: 'js/chaptertwo.js', title: 'The Crew Who Came', where: 'port', when: 'On the first landing 90 days after you buy your own ship: the close of chapter two, by who of the crew who came along is still aboard (all of them, some who have left, some who have died, or nobody came).' },
   { id: 'scene:chapter-end', fn: 'chapterEnd', file: 'js/hired.js', title: 'A Member\'s Share', where: 'port', when: 'When you sign on for the co-op\'s share (or, in the full build, buy your own ship): the close of the hired-hand chapter, by what the chapter held (those lost, who comes with you, a promise kept, a quiet fortune).' },
-  { id: 'scene:chapter-two-start', fn: 'chapterTwoStartScene', file: 'js/hired.js', title: 'Three Names', where: 'port', when: 'When you go on from the end of chapter one: the members at the Ore Runner\'s ramp, the lender\'s three masters, and the pick (#891).' },
+  { id: 'scene:chapter-two-start', fn: 'chapterTwoStartScene', file: 'js/hired.js', title: 'The Bridge', where: 'port', when: 'When you go on from the end of chapter one: the members at the Ore Runner\'s ramp, the lender\'s letter, and the vote that puts you on the bridge on the registry\'s endorsement, paid for or vouched by Hester (#891, #1045).' },
   { id: 'scene:chapter-over', fn: 'chapterOverScene', file: 'js/hired.js', title: 'The End of Chapter One', where: 'port', when: 'After the close, when you sign on for the co-op\'s share, and when a finished save is opened (#882).' },
   { id: 'scene:put-ashore', fn: 'putAshoreScene', file: 'js/stakes.js', title: 'Put Ashore', where: 'port', when: 'When the captain\'s opinion of you falls to -3, at a later port.' },
   { id: 'scene:hand-death', fn: 'handDeathScene', file: 'js/stakes.js', title: 'The Last Run', where: 'transit', when: 'When the hand is lost in a fight.' },
@@ -196,9 +196,11 @@ const SCENE_LINES = {
     captain: 'Captain {cap} reads the slate over the inspector\'s shoulder and doesn\'t say anything.',
     'papers.label': 'Take the papers to the inspector', 'speak.label': 'Speak up for the ship',
     'move.stakes': 'if it fails: the full sum, and the captain hears about it',
+    'move.stakes.own': 'if it fails: the full sum',  // on the hand's own bridge (#1045)
     'keep.label': 'Keep out of it (the ship pays {sum} cr)', 'pay.label': 'Pay the inspector ({sum} cr)',
     win: 'You go through it line by line with the inspector: the dates, the seals, the code the last port put on the manifest. Halfway down the junior stops filling in the form. The inspector crosses out the sum and writes a smaller one under it. The ship pays {paid} cr.',
     lose: 'You go through it with the inspector line by line. The inspector lets you finish, then turns the slate round so you can see the sum hasn\'t changed. The ship pays {paid} cr. Captain {cap} signs for it and doesn\'t look at you.',
+    'lose.own': 'You go through it with the inspector line by line. The inspector lets you finish, then turns the slate round so you can see the sum hasn\'t changed. The ship pays {paid} cr, and you sign for it.',  // on the hand's own bridge (#1045)
     'lose.memory': 'You argued with the inspector at {planet}, and the ship paid the full sum anyway.',
     'win.memory': 'You talked the inspector at {planet} down to half, and it came out of the ship\'s fund, not mine.',
     'keep.result': 'You stay out of it. The ship pays {paid} cr, the junior seals the hold, and the clamps come off.',
@@ -373,6 +375,7 @@ const SCENE_LINES = {
     'title': 'Looking Back', 'label': 'Go on', 'result': 'You close the ledger.',
     'runs.one': '{n} run', 'runs.many': '{n} runs',
     'work': '{days} days aboard {ship}. {runs} with Captain {captain}, and {earned} cr earned in wage and share. You worked the {post} and reached level {level}.',
+    'work.own': '{days} days aboard {ship}. {runs}, the last of them in command, and {earned} cr earned in wage and share. You worked the {post} and reached level {level}.',  // no captain above the hand (#1045)
     'sheet': 'Hands {hands}, eye {eye}, nerve {nerve}, wit {wit}.', 'kit': 'You carry {list}.',
     'why.money': 'You signed on for the money. You came with {savings} cr and have {credits} cr now.',
     'why.learn': 'You signed on to learn the work. The {post} post is at level {level}, {runs} in.',
@@ -526,14 +529,20 @@ const SCENE_LINES = {
     text: 'You hold a member\'s share in a co-op hull, a vote, and a berth nobody can sell out from under you. What comes of it is chapter two.',
     label: 'Go on',
   },
-  'scene:chapter-two-start': {  // chapter two's start (hired.js chapterTwoStartScene, #891): the ramp at the Ceres yard, the lender's three masters, the pick
-    title: 'Three Names',
+  'scene:chapter-two-start': {  // chapter two's start (hired.js chapterTwoStartScene, #891, #1045): the ramp at the Ceres yard, the lender's letter, the vote that puts the hand on the bridge
+    title: 'The Bridge',
     ramp: 'The Ore Runner is on her cradle in the Ceres yard with her name still painted over, and the members are at the foot of her ramp. Bexa has her hand flat on the hull. Pax is reading the maintenance tags aloud, all of them.',
     members: '{names} came up from Hester\'s ship with you, and stand with the others as if they had always been here.',
     'members.alone': 'Nobody came up from Hester\'s ship with you. Bexa and Pax look at you, and then at each other, and make room.',
-    letter: 'The co-op\'s clerk brings the lender\'s letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master on her that the house approves, and it has sent three names. The three are waiting in the yard office, and come down one at a time.',
-    picked: 'The members talk it over at the foot of the ramp, and the choice is put to you. {first} {last} signs the hull\'s papers in the yard office, reads them twice, and goes up to the bridge.',
-    ines: 'Ines is already in the pilot\'s seat, with the panel open and her endorsement taped to the console.',
+    letter: 'The co-op\'s clerk brings the lender\'s letter down from the office. Van Leeuwen & Co. will not lend against a hull without a licensed master the house approves, or a registry its insurer accepts. The small Belt station registry Hester\'s ship sails under is on the insurer\'s list, near the bottom. It sells a master\'s endorsement to anyone who asks. The members vote at the foot of the ramp, and it is you.',
+    fee: 'The registry\'s office wants {fee} for the endorsement.',
+    vouched: 'There is a second letter under the first, from Hester Vance. She has written to the registry that you have stood a watch on her ship and she would put you on any bridge she knew of.',
+    label: 'Take the bridge',
+    taken: 'You sign the endorsement in the yard office, under the registry\'s seal, and go up to the bridge. The seat is still warm from the yard\'s survey.',
+    'fee.paid': 'The {fee} comes out of your savings.',
+    'fee.owed': 'Your savings do not cover the {fee}, and the clerk adds it to what you owe on the share, {owed} now.',
+    'vouched.result': 'The registry waives its fee on Hester\'s word, and the lender, reading a vouched captain, takes a twentieth off what you owe on the share. It is {owed} now.',
+    ines: 'Ines is already in the pilot\'s seat, with the panel open and her endorsement taped to the console. It is the same registry\'s, and good on this hull now.',
     noines: 'The pilot\'s seat is empty. Somebody will have to fly her.',
   },
   'scene:day-ashore': {  // the hand's hour at a port (dayashore.js): the menu and what each of its own entries comes to; the regulars' scene, the errand and the room's return are theirs
@@ -595,6 +604,10 @@ const SCENE_LINES = {
     'hint.arm.launcher': 'Her torpedoes come next turn: aim at her launcher now.', 'hint.board': 'Hit her lock and she can\'t board.',
     'hint.volley': 'Holding the turret back takes {volley} percent off her volley, for one gun\'s shot.',
     'cap.close': '{cap}: closing the range.', 'cap.hold': '{cap}: holding the range.', 'cap.open': '{cap}: opening the range.',
+    // the range orders on the hand's own bridge (fightui.js rangeChoices, #1045): {band} is where the range will be next turn with her move as shown
+    'range.orders': 'Orders to the bridge', 'range.row': 'Range', 'range.close': 'Close ({band} next turn)', 'range.hold': 'Hold ({band} next turn)', 'range.open': 'Open ({band} next turn)',
+    'range.shut': 'Range: the drive is down, and the range is hers',
+    'band.knife': 'knife range', 'band.close': 'close', 'band.mid': 'medium', 'band.long': 'long', 'band.away': 'out of reach',
     'part.weapons': 'weapons', 'part.drive': 'drive', 'part.lock': 'lock', 'part.launcher': 'launcher', 'part.hull': 'hull',
     'gun.row': 'Gun {n}: a hit does {lo} to {hi}', 'gun.row.hold': 'Gun {n}: holding fire', 'torp.row': 'Torpedo, {left} left',
     'aim.hull': 'Hull', 'aim.weapons': 'Weapons', 'aim.drive': 'Drive', 'aim.lock': 'Lock', 'aim.launcher': 'Launcher', 'aim.hold': 'Hold',
@@ -842,6 +855,11 @@ const SCENE_LINES = {
     'text.first': 'You don\'t see what hits you. It comes from the side, and then you\'re sitting against the closer with one hand pressed to your ribs and the hand coming away wet. Captain {last} is at the hatch saying your name. The crew are on you before the lock has cycled, and somebody who knows how works on you while the lights go from amber to white. Nobody speaks. The captain takes your other hand off the deck and holds it, and you\'re dead before the lights are done.',
     'text.bridge': 'You\'re laid up against the corridor wall, where the first hit left you, when they come through the last hatch. You try to stand once, and you\'re dead before the lock cycles. Captain {last} gives them the code to the strongbox, and the crew carry you below.',
     log: 'Captain {last} writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.',
+    // the same, when the hand held the bridge (#1045): nobody above them to say it
+    'text.hurt.own': 'The first hurt isn\'t mended when the second one comes. It hits the same side, and you go down on the deck plating with a bolt head under your shoulder blade. The crew are saying your name, and somebody takes the med kit off its rack with both hands, and you\'re dead before the latches are undone.',
+    'text.first.own': 'You don\'t see what hits you. It comes from the side, and then you\'re sitting against the closer with one hand pressed to your ribs and the hand coming away wet. The crew are on you before the lock has cycled, and somebody who knows how works on you while the lights go from amber to white. Nobody speaks. Somebody takes your other hand off the deck and holds it, and you\'re dead before the lights are done.',
+    'text.bridge.own': 'You\'re laid up against the corridor wall, where the first hit left you, when they come through the last hatch. You try to stand once, and you\'re dead before the lock cycles. Somebody gives them the code to the strongbox, and the crew carry you below.',
+    'log.own': 'The members write it in the log, because somebody has to: the day, the place, your name, and that you died on a run, in command of a ship you part owned.',
     'c0.label': 'Begin again',
   },
   'scene:captain-lost': {

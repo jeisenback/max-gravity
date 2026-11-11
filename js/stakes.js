@@ -47,16 +47,17 @@ function carriedLine(flags, last) {
 
 // The hand's death (#357), the ending of the chapter: what happened, the look back (hired.js, which reads the record), and a new game.
 function handDeathScene(how) {
-  const cap = person(hired().captain), say = key => sceneSay('scene:hand-death', key, { last: cap.last });
+  const cap = role().captain === 'npc' ? person(hired().captain) : null, say = key => sceneSay('scene:hand-death', key, { last: cap ? cap.last : '' });
+  const own = cap ? '' : '.own';  // the hand held the bridge (#1045): no captain to say it or to write the log
   return {
     title: say('title'), personal: true,
-    text: [say(`text.${how}`), say('log'), chapterRecap().text].join('</p><p>'),
+    text: [say(`text.${how}${own}`), say(`log${own}`), chapterRecap().text].join('</p><p>'),
     choices: [{ label: say('c0.label'), run: beginAgain }],
   };
 }
 // A new hand, in the same slot and under the same name, with another captain if there is one and nothing carried but a line on the dock.
 function beginAgain() {
-  const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey);
+  const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey), lost = cap ? `the hand on Captain ${cap.last}'s ship` : `the captain of the ${home().name}`;
   startGame({
     slot: Saves.current,
     background: st.background,
@@ -64,7 +65,7 @@ function beginAgain() {
     mode: 'hired',
     post: h.post,
     captainKey: others.length ? pick(others) : undefined,
-    carried: `On the dock they say the hand on Captain ${cap.last}'s ship didn't come back.`,
+    carried: `On the dock they say ${lost} didn't come back.`,
   });
   return null;
 }

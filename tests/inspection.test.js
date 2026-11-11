@@ -141,22 +141,23 @@ test('at the landing itself the inspection opens (the landed hook) (#1015)', asy
   assert.equal(title, 'The Inspector');
 });
 
-test('in chapter two the co-op\'s purse pays, and the master is the captain whose regard a failure costs (#1015)', async () => {
+test('in chapter two the co-op\'s purse pays, and the hand argues at the hatch on their own bridge, with no captain to sign or to think less of them (#1015, #1045)', async () => {
   const { ev, done } = await open();
   const src = require('fs').readFileSync(require('path').join(__dirname, 'chaptertwostart.test.js'), 'utf8'), start = src.indexOf('const helpers = () => {');
   await ev(new Function(src.slice(start + 'const helpers = () => {'.length, src.indexOf('\n};\n', start))));
   await ev(helpers);
   const r = await ev(() => {
-    toShare(); goOnAndPick(0); while (G.dialog) finishEvent();
+    toShare(); goOnToBridge(); while (G.dialog) finishEvent();
     const st = G.state; st.cargo = { water: 50 }; st.rep['Dome Pact'] = 0; st.credits = 20000;
-    const fund = hired().fund, regard = capRegard();
+    const fund = hired().fund;
     const at = planetNamed('Mars'); st.systemId = at.sid; st.planet = at.pl.name; G.mode = 'landed'; inspectAtLanding(at.pl);
-    const title = G.dialog && G.dialog.event.title;
-    const real = Math.random; Math.random = () => 0.99; try { chooseEvent(0); } finally { Math.random = real; }
-    return { title, role: role().id, paid: 20000 - st.credits, fund: hired().fund - fund, regard: capRegard() - regard };
+    const e = G.dialog && G.dialog.event, title = e && e.title, labels = e ? e.choices.map(c => c.label) : [], text = e && e.text;
+    const real = Math.random; Math.random = () => 0.99; let res; try { res = chooseEvent(0); } finally { Math.random = real; }
+    return { title, role: role().id, paid: 20000 - st.credits, fund: hired().fund - fund, moves: labels.length, text, res };
   });
   await done();
-  assert.deepEqual(r, { title: 'The Inspector', role: 'coop', paid: 6000, fund: 0, regard: -1 });
+  assert.deepEqual({ title: r.title, role: r.role, paid: r.paid, fund: r.fund, moves: r.moves }, { title: 'The Inspector', role: 'coop', paid: 6000, fund: 0, moves: 2 });
+  assert.doesNotMatch(r.text, /Captain/); assert.doesNotMatch(r.res, /Captain/); assert.match(r.res, /you sign for it/);
 });
 
 test('in the parked owner game the inspector is paid from the owner\'s credits, the one choice there is (#1015)', async () => {

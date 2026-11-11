@@ -42,7 +42,7 @@ The tool documents (`docs/editor.md`, `docs/pins.md`) govern their tools only.
 | Chapter | Where the player stands | Governing doc | Status |
 |---|---|---|---|
 | 1, the hand | a rating on Hester's ship, saving for a member's share | `chapter-1.md`, `shape.md`, `work.md`, `ship.md`; specs `hired-chapter`, `coop-share` | Built and tuned (about 160 days to the share, `ROADMAP.md`). Not built: the three places where the hand reaches the world (`chapter-1.md`). |
-| 2, the co-op | a member of the Ceres co-op and the Ore Runner's captain, under the members' vote | `chapter-2.md`, `ceres-coop.md`, `the-fuel-war.md`; spec `chapter-two-start` | Piece 1 of 6 built (the start, a picked master, the co-op's role). The bible now has the hand as captain and the masters in the war (2026-11-11); the code still picks a master. Pieces 2 to 6 are not built: the work and the law, the meeting, the books and the share, the squeeze, the last vote. |
+| 2, the co-op | a member of the Ceres co-op and the Ore Runner's captain, under the members' vote | `chapter-2.md`, `ceres-coop.md`, `the-fuel-war.md`; spec `chapter-two-start` | Piece 1 of 6 built (the start, the co-op's role), with the hand as captain on the registry's endorsement and the masters in the war (#1045). Pieces 2 to 6 are not built: the work and the law, the meeting, the books and the share, the squeeze, the last vote. |
 | 3 | organiser, master or outside, set by chapter 2's last vote | `shape.md`, `the-fuel-war.md` | Paths sketched. No chapter page. |
 | 4 to 7 | more hulls, a place, alliances, a threat | `later-chapters.md` (draft) | Draft. The chapter 7 threat is not chosen. |
 
@@ -107,7 +107,7 @@ The rule here is the repo's rule: write what the next work needs, nothing extra.
 ### Needed before chapter two goes on
 
 1. **The powers (`docs/bible/owners.md`), drafted 2026-11-11 for review.** Two layers: the blocs (the Arcology Pact, the Dome Pact, the Guild Federation) as each region's law, and the powers inside them in two tiers: nine major powers (four in play from chapter 2, five coming in with chapters 2 and 3) and the minor powers the bible already has, with the blocs of chapter 6 to come and one entry shape for adding more. It also sets how far the player reaches, a ring of powers a chapter. It lists what the code changes, in order, and unblocks chapter two pieces 2 and 5, and standing as a currency (`progression.md` layer 6).
-2. **The hand as captain, built.** The bible has it (`chapter-2.md`); the code still picks a master. It comes before pieces 2 to 6, since each of them reads who holds the bridge.
+2. **The hand as captain, built** (#1045). `role().captain` says who holds the bridge, which pieces 2 to 6 read.
 3. **Chapter two's pieces in the bible.** No more specs are written (the owner, 2026-11-11): a piece's design goes into the bible's pages, and the code follows them. `chapter-2.md` has the outline. The meeting and the vote (piece 3) is the one new kind of system, and its rule (who votes how, and what moves a member) is stated once, in `chapter-2.md` or a page of its own, so pieces 5 and 6 read it rather than restate it.
 
 4. **Chapter one's reach, built** (`chapter-1.md`, What the game changes to fit): the marks on the League and Concord arcs, the strike for the hand, the record, and the soak. It can go before or beside the hand as captain, since it touches only chapter one.

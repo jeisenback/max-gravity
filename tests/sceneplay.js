@@ -65,6 +65,9 @@ const playScenes = () => {
   run('scene:hand-death:hurt', {}, () => handDeathScene('hurt'), { skip: [0] });
   run('scene:hand-death:first', {}, () => handDeathScene('first'), { skip: [0] });
   run('scene:hand-death:bridge', {}, () => handDeathScene('bridge'), { skip: [0] });
+  // the same on the hand's own bridge (#1045): no captain to say it
+  const ownBridge = () => { const h = hired(); Object.assign(h, { chapter: 2, bridge: true }); delete h.captain; delete h.captainKey; };
+  for (const how of ['hurt', 'first', 'bridge']) run(`scene:hand-death:${how}:own`, {}, () => { ownBridge(); return handDeathScene(how); }, { skip: [0] });
   run('scene:captain-lost', {}, () => captainLostScene(), { skip: [0] });
   run('scene:split', {}, () => {
     const st = G.state, crew = folk().filter(f => f.crew && !f.p.cast), [a, b] = crew;
@@ -151,6 +154,7 @@ const playScenes = () => {
     run(`scene:inspection:${name}`, { post }, () => inspectionScene(inspectionCause(cargo, 'Dome Pact', rep, false), currentPlanet()), { rolls: [0, 0.999] });
   }
   run('scene:inspection:owner', { mode: 'owner' }, () => inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()));  // the parked owner game: only the pay choice
+  run('scene:inspection:own', { post: 'gunner' }, () => { ownBridge(); return inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()); }, { rolls: [0, 0.999] });  // the hand at the hatch of their own ship (#1045)
   tiesCase('scene:dock-friend', () => { mateOf('Sam'); stubTies({ Sam: { aff: GOV, status: { [GOV]: 'officer' } } }); }, () => dockFriendScene(GOV, currentPlanet()));
   for (const [name, status, opinion] of [['officer', 'officer', 0], ['member:close', 'member', OPINION.CLOSE], ['member:far', 'member', 0]]) {
     tiesCase(`scene:war-call:${name}`, () => {
@@ -319,9 +323,9 @@ const playScenes = () => {
     run('chapterend:share:nobody', {}, () => { const real = window.buyInCompanions, scope = BUILD.scope, st = G.state; hired().deal = { price: BUY_IN.mid, day: st.day };
       window.buyInCompanions = () => []; BUILD.scope = 'earth-hired'; try { return chapterEnd(USED_ID); } finally { window.buyInCompanions = real; BUILD.scope = scope; } });
     run('chapter-over', {}, () => ({ ...chapterOverScene(), choices: chapterOverScene().choices.map(c => ({ ...c, run: () => '' })) }));  // its choice goes to the title, which the player does not follow
-    // chapter two's start (#891): the members with the hand, or nobody came; Ines in the pilot's seat or not; each master picked
-    for (const [name, came] of [['with', ['cato', 'ines']], ['alone', []]]) {
-      run(`chaptertwo:start:${name}`, {}, () => { const st = G.state, h = hired(); Object.assign(h, { chapter: 2, signed: st.day, share: { coop: COOP_PORT, buyIn: BUY_IN.mid, owed: SHARE_PRICE - BUY_IN.mid }, came: came.map(k => castPerson(k).id) }); return goOn(st); });
+    // chapter two's start (#891, #1045): the members with the hand, or nobody came; Ines in the pilot's seat or not; the endorsement paid, put on what is owed, or vouched
+    for (const [name, came, credits, vouched] of [['with', ['cato', 'ines'], 50000, false], ['alone', [], 0, false], ['vouched', ['cato'], 50000, true]]) {
+      run(`chaptertwo:start:${name}`, {}, () => { const st = G.state, h = hired(); st.credits = credits; Object.assign(h, { chapter: 2, signed: st.day, vouched, share: { coop: COOP_PORT, buyIn: BUY_IN.mid, owed: SHARE_PRICE - BUY_IN.mid }, came: came.map(k => castPerson(k).id) }); return goOn(st); });
     }
     run('hand:signon', { credits: 100000 }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; hired().deal = { price: BUY_IN.mid, day: st.day }; hired().debt = 0; return String(signOn(USED_ID)); } }] }));
   }
@@ -516,6 +520,11 @@ const playScenes = () => {
       { const s = start('raider').fight; G.state.cargo = { water: 30 }; G.state.paid = { water: 300 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // the hull gone with cargo aboard: she takes a share (#809)
       { const s = start('raider', {}, 'patrol').fight; G.state.cargo = { water: 30 }; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }  // and a navy ship takes it as part of the levy
       { const s = start('raider').fight; s.state.me.shields = 0; s.state.me.armor = 1; turn(s, orders({ guns: [null] }), { kind: 'broadside', target: 'hull', dmg: [10, 10] }); }
+      // the range orders on the hand's own bridge (#1045): Close, Hold and Open with where each puts the range, at the knife and at long range (faster than her), one ordered, and shut with the drive down
+      { const s = start('raider').fight; Object.assign(hired(), { chapter: 2, bridge: true }); s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [10, 10] }], captain: { kind: 'hold' } }; s.state.me.speed = 1e6;
+        for (const band of [0, RANGE_BANDS.length - 1]) { s.state.band = band; panel(shipFightEvent(s, orders())); }
+        panel(shipFightEvent(s, orders({ range: 'open' })));
+        s.state.me.parts.drive.hp = 0; panel(shipFightEvent(s, orders())); }
       // the deck fight (deckFightEvent, #786): on our deck and hers, each with the cargo bay, the hand in each section and their move into each; a hold, a way round
       // and a veteran's feint; every choice it offers; and a turn of each kind of line, from states set by hand
       const deckPanel = ev => rec.plays.push({ title: ev.title, read: ev.read, text: ev.text, labels: labelsOf(ev), group: ev.choices.map(c => c.group).filter(Boolean), strip: ((ev.board || '').match(/aria-label="([^"]*)"/) || [])[1], legend: ev.legend });  // the strip's words: their move through a section, and the wave

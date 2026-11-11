@@ -51,6 +51,7 @@ const CONDITIONS = {
   post: v => !!hired() && [].concat(v).includes(hired().post),  // a hired hand's own post
   skill: v => !!hired() && skillLevel(hired().post) >= v,  // and the level they have there
   hired: v => !!hired() === !!v,  // follow-ups of a hired hand's choices stop when they buy a ship of their own
+  chapter: v => chapterOf(G.state) === v,  // the hand's chapter (#1045): chapter one's scenes that name Hester's ship stop at the signing
   // A fact the hired hand's record holds (the flags captainFlag sets: the secret learned, a loan lent), by name (#476).
   captainFlag: name => !!(hired() && (hired().flags || {})[name]),
   // Someone's regard for the hand (#460): { who: 'captain' | 'xo' | a main character's key, min: a cutoff from OPINION }. With nobody in that place it does not hold.
@@ -417,6 +418,7 @@ EFFECT_SHAPES.gainSkill = v => (!isPlain(v) ? 'needs { post, n }' : !HIRED_POSTS
 // The shape each condition takes, where it is more than a number or a name: '' if the value is right, else what is wrong.
 const CONDITION_SHAPES = {
   captainFlag: v => (typeof v === 'string' && v.trim() ? '' : 'needs a name'),
+  chapter: v => (Number.isInteger(v) && v >= 1 ? '' : 'needs a chapter number'),
   opinion: v => (!isPlain(v) ? 'needs { who, min }' : !['captain', 'xo'].includes(v.who) && !CAST[v.who] ? `${v.who} is not the captain, the first officer or a main character` : !Number.isFinite(v.min) ? 'min must be a number' : ''),
 };
 const conditionProblems = when => Object.entries(when || {}).flatMap(([k, v]) => (!CONDITIONS[k] ? [`unknown condition "${k}"`] : CONDITION_SHAPES[k] && CONDITION_SHAPES[k](v) ? [`condition ${k} ${CONDITION_SHAPES[k](v)}`] : []));

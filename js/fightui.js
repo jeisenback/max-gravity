@@ -67,7 +67,16 @@ function headStart(state, edge, rand) {
   return { state: st, events };
 }
 
-const fightMoves = st => ({ foe: st.foes.map((_, i) => foeMove(st, i)), captain: captainMove(st) });
+// The range is the captain's call, from her card (captainMove); on the hand's own bridge (#1045) it is the player's order, `range`, Hold unless they give another.
+const ownRange = () => role().captain === 'you';
+const fightMoves = (st, range) => ({ foe: st.foes.map((_, i) => foeMove(st, i)), captain: ownRange() ? { kind: range || 'hold' } : captainMove(st) });
+// The range orders: Close, Hold and Open, each saying where the range will be next turn with her move as shown (nextBand); shut while the drive is down, which has no vote.
+function rangeChoices(f, shown, orders, redo) {
+  const group = fightSay('range.orders');
+  if (f.me.parts.drive.hp <= 0) return [{ label: fightSay('range.shut'), group, keep: true, can: () => false, run: redo({}) }];
+  const band = kind => fightSay(`band.${RANGE_BANDS[nextBand(f, { ...shown, captain: { kind } })] || 'away'}`);
+  return ['close', 'hold', 'open'].map((kind, i) => ({ row: 'range', rowLabel: fightSay('range.row'), ...(i ? {} : { group }), label: fightSay(`range.${kind}`, { band: band(kind) }), on: (orders.range || 'hold') === kind, keep: true, run: redo({ range: kind }) }));
+}
 const fightUp = foe => foe.armor > 0 && (foe.parts.weapons.hp > 0 || foe.parts.drive.hp > 0);
 const fightFoeName = (s, i) => (i ? fightSay('consort') : theShip(s.foe));
 const fightHit = e => (e.move ? fightSay(e.landed === false ? 'move.failed.parley' : `move.used.${e.move}`) : fightSay(!e.dmg ? 'log.spent' : e.who === 'foe' ? 'log.hers' : `${e.torp ? 'log.torp' : 'log.mine'}${e.foe ? '.consort' : ''}`, { part: fightSay(`part.${e.part}`), dmg: e.dmg }));  // a used move has no part or damage; a hit on a part already gone does nothing; a hit on her consort names it
@@ -145,7 +154,7 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
   const ready = gunsReady(vent ? { ...f, locked: [] } : f);  // a vent ordered unlocks the guns before the shots
   const hot = orders.move === 'hot-start' && canUse(f, hit, 'hot-start', known);  // a hot start charges every shot at a plain shot's heat
   const say = (m, i) => fightSay(`foe.${m.kind}`, { ship: fightFoeName(s, i), ...(m.n ? { n: m.n } : {}), ...(m.target ? { part: fightSay(`part.${m.target}`), lo: m.dmg[0], hi: m.dmg[1] } : {}) });
-  const read = over ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), ...moveHints(f, s.shown), fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })].join(' ');
+  const read = over ? '' : [...f.foes.map((foe, i) => (fightUp(foe) ? say(s.shown.foe[i], i) : '')).filter(Boolean), ...moveHints(f, s.shown), ...(ownRange() ? [] : [fightSay(`cap.${s.shown.captain.kind}`, { cap: cap ? `Captain ${cap.last}` : helmName() })])].join(' ');  // on the hand's own bridge the range is their order, below
   const aims = FIGHT_AIM.filter(p => p !== 'launcher' || f.foes.some(foe => foe.launcher));
   const redo = change => () => shipFightEvent(s, { ...orders, ...change });
   const setGun = (i, g) => redo({ guns: orders.guns.map((x, j) => (j === i ? g : x)) });
@@ -160,6 +169,7 @@ function shipFightEvent(s, orders, over = false) {  // over: the close, with no 
   });
   if (torp) choices.push(...targets('torp', fightSay('torp.row', { left: f.me.torps }), orders.torp, o => redo({ torp: o })));
   if (f.me.pdc) choices.push({ label: fightSay(orders.pdc === 'hold' ? 'pdc.hold' : 'pdc.fire'), keep: true, run: redo({ pdc: orders.pdc === 'hold' ? 'fire' : 'hold' }) });
+  if (ownRange() && !over) choices.push(...rangeChoices(f, s.shown, orders, redo));
   choices.push(...moveChoices(f, hit, known, redo));
   const split = orders.move === 'split' && canUse(f, hit, 'split', known);
   const heat = (vent ? 0 : f.heat) + turnShots(vent ? { ...f, locked: [] } : f, hit, split).reduce((h, { o }) => h + (o.over && !hot ? FIGHT.OVER_HEAT : 1), 0);  // the engine's own count of the shots
@@ -222,16 +232,16 @@ function retargeted(foes, orders) {
 // Fire: the turn is resolved with the moves that were shown, what it cost is counted, and the panel is drawn again; at an end the panel gives way
 // to the scene the end leads to (G.nextEvent), and this returns nothing.
 function fireTurn(s, orders) {
-  const aimed = retargeted(s.state.foes, orders);
-  const r = resolveShipTurn(s.state, aimed, s.shown, Math.random, s.known || [], () => Math.random() < handCheck('wit', skillLevel('comms'), 'post'));  // the roll is parley's word
+  const aimed = retargeted(s.state.foes, orders), shown = ownRange() ? { ...s.shown, captain: { kind: orders.range || 'hold' } } : s.shown;  // the range as ordered at Fire
+  const r = resolveShipTurn(s.state, aimed, shown, Math.random, s.known || [], () => Math.random() < handCheck('wit', skillLevel('comms'), 'post'));  // the roll is parley's word
   s.before = s.state; s.state = r.state;  // the state before the turn, for the bars' losses
   s.state.log.push(fightSay('log.turn', { n: s.state.turn, hits: fightHits(r.events) }));
   fightTook(s, r.events);
   if (s.handDied) return null;  // the hand is dead: the ending is queued (boarders.js)
   const end = shipEnd(s.state);
   if (end) { shipFightEnd(s, end); return null; }
-  s.shown = fightMoves(s.state);
-  return shipFightEvent(s, { ...orders, move: null });  // a move is ordered for one turn
+  s.shown = fightMoves(s.state, orders.range);
+  return shipFightEvent(s, { ...orders, move: null });  // a move is ordered for one turn; the range order stands until it is changed
 }
 
 // Being boarded: the deck fight (below), a raider's whole run or a short one.
