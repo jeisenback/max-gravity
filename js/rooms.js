@@ -607,7 +607,7 @@ function roomBridge(ctx, r, s, X, W) {
   for (const x of [o0 + 3, o1 - 3]) roomDot(ctx, x, T + 8, 0.7, '#56708c');
   for (let k = 0; k < 4; k++) roomFlat(ctx, o0 + 14 + k * (o1 - o0 - 30) / 3, T + 13, 1.5, 4, '#2a3e54');
   roomPart(ctx, roomRound(o0 + 10, T + 16.5, o1 - o0 - 20, 2, 1), '#3a5470', { top: 0.6 });
-  for (const gx of [n(X(0.48) - 7), n(X(0.52) + 4)]) {  // grab bars either side of the ladder's opening, for coming up it in zero g
+  for (const gx of [n(X(0.48) - 10), n(X(0.52) + 7)]) {  // grab bars either side of the ladder's opening, for coming up it in zero g, clear of the shaft's bulkheads (#1024)
     roomFlat(ctx, gx - 1, F - 62, 5, 1.5, '#2a3e54'); roomFlat(ctx, gx - 1, F - 16.5, 5, 1.5, '#2a3e54');
     roomPart(ctx, roomRound(gx, F - 64, 3, 50, 1.5), '#3a5470', { top: 0.6, side: 1 });
   }

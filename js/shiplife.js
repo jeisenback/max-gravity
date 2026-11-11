@@ -798,7 +798,7 @@ function drawCutaway(box, clear = box) {
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt() };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);
-    if (seen(q.top, q.floor)) drawRoom(ctx, r.id, q, s);
+    if (seen(q.top, q.floor + HULL.plate)) drawRoom(ctx, r.id, q, s);  // with its cut, as the shaft is (#1024)
   }
   towerTank(ctx, lay, o.tank, s.fuel, s);
   const lx = X(LADDER), ww = lay.well.w * W / 2, last = lay.decks.length - 1;

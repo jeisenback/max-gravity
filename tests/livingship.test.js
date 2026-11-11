@@ -1158,3 +1158,11 @@ test('the hold reads old and cared for: crates of different ages, a replacement 
     assert.ok(rects('#3e4c5a').filter(c => c[1] > F - 14 && c[0] >= jack.x0 - 2 && c[0] <= jack.x1 + 10).length >= 2, `${at}: scuffs low on the wall where the jack is parked`);
   }
 });
+
+test('the bridge\'s grab bars beside the ladder stand clear of the shaft\'s bulkheads (#1024)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'bridge'), { ctx, calls } = recorder();
+  drawRoom(ctx, 'bridge', r, RS({ w: phaseWeights(0.3), well: FW, damage: { marks: new Set(), severe: false } }));
+  const bars = filledParts(calls).filter(p => p.col === '#3a5470' && p.outlined).map(p => { const xs = p.pts.map(q => q[0]), ys = p.pts.map(q => q[1]); return { x0: Math.min(...xs), x1: Math.max(...xs), h: Math.max(...ys) - Math.min(...ys) }; }).filter(b => b.h > 40 && b.x1 - b.x0 < 5);
+  assert.equal(bars.length, 2, 'a grab bar either side of the ladder');
+  for (const b of bars) for (const e of [FW.x0, FW.x1]) assert.ok(b.x1 <= e - 6 || b.x0 >= e + 6, `a bar (${b.x0} to ${b.x1}) clear of the bulkhead at ${e} (6 either side)`);
+});
