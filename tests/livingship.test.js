@@ -915,14 +915,14 @@ test('the medbay reads old and cared for: a newer scanner bolted on, wear at fix
   }
 });
 
-// #933, the hold on the drive deck: slatted crates on pallets in stacks of three, each with a stencilled label in a box the code names (holdLabel,
-// for the contract's good, #936), strapped to rings in the deck under a cargo net that bulges at the flip; the pallet jack, toned down, its
+// #933, the hold on the drive deck: slatted crates on pallets in stacks of three, each with its serial stencilled as marks in a box the code names
+// (holdLabel, for the contract's good, #936), strapped to rings in the deck under a cargo net that bulges at the flip; the pallet jack, toned down, its
 // handle at the waist; the lamp swinging on its cable; the hold log floating at the flip. Drawn at the burn view's zoom in a window 1000, 1280
 // and 1600 wide, empty, half full and full.
-const { holdCrate, holdLabel, holdTag, FIG_TALL } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['holdCrate', 'holdLabel', 'holdTag', 'FIG_TALL']);
+const { holdCrate, holdLabel, FIG_TALL } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['holdCrate', 'holdLabel', 'FIG_TALL']);
 const HOLD_PROPS = [['#8a7a3a', 'the pallet jack\'s body'], ['#7a6a34', 'its forks'], ['#5e646a', 'its handle'], ['#1a2430', 'its wheels'], ['#5a6470', 'the lamp\'s shade'], ['#a89a78', 'the lamp\'s glass']];
 const HOLD_CRATE_PROPS = [['#3e3426', 'the pallets'], ['#4a4436', 'the straps'], ['#6a583c', 'the crates\' battens']];
-const HOLD_NET = '#8a7e62', HOLD_RING = '#4a6680', HOLD_WOOD = ['#5a4a34', '#54462f', '#4a5a5e', '#5e4e36', '#4e4230'];
+const HOLD_INK = ['#7a6c50', '#6a7a7a'], HOLD_NET = '#8a7e62', HOLD_RING = '#4a6680', HOLD_WOOD = ['#5a4a34', '#54462f', '#4a5a5e', '#5e4e36', '#4e4230'];
 const holdCase = (pr, zoom, cargo) => ({ r: layoutBox(LAYOUTS.freighter, 'hold'), s: RS({ w: phaseWeights(pr), zoom, cargo, damage: { marks: new Set(), severe: false } }) });
 const holdParts = (r, s) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'hold', r, s); return { calls, parts: filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })) }; };
 // every point a stroke of the colour col went through, in world units
@@ -960,7 +960,7 @@ test('the hold is drawn to the figures\' standard in every phase: its props outl
   const stillAt = t => { const { r, s } = holdCase(0.5, 0.96, 1), c = fakeCtx(); drawRoom(c, 'hold', r, { ...s, still: true, time: t }); return c.args.join('|'); };
   assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
 });
-test('the hold\'s crates come from the cargo, in stacks of three, each with its label in a clear box (#933, #936)', () => {
+test('the hold\'s crates come from the cargo, in stacks of three, each with its serial in a clear, named box (#933, #936)', () => {
   for (const cargo of [0, 1 / 12, 0.5, 7 / 12, 1]) for (const zoom of [0.66, 0.96, 1.24]) {
     const { r, s } = holdCase(0.3, zoom, cargo), n = Math.round(12 * cargo), at = `cargo ${cargo}, ${zoom}`, { calls, parts } = holdParts(r, s);
     const bodies = parts.filter(p => HOLD_WOOD.includes(p.col) && p.x1 - p.x0 > 30);
@@ -973,23 +973,28 @@ test('the hold\'s crates come from the cargo, in stacks of three, each with its 
       else assert.ok(c.y + c.h <= r.floor - 3 && c.y + c.h >= r.floor - 6 && (k === 0 || c.x > holdCrate(r, k - 1).x + c.w), `${at}: crate ${k} on a pallet at the foot of the next stack`);
       assert.ok(c.x > name.x1 && c.x + c.w < r.x1, `${at}: crate ${k} in the room, clear of the name`);
       assert.ok(b.x >= c.x + 4 && b.x + b.w <= c.x + c.w - 4 && b.y >= c.y + 6 && b.y + b.h <= c.y + c.h - 6 && b.w >= 28 && b.h >= 9, `${at}: crate ${k}'s label box ${JSON.stringify(b)} on its front`);
-      assert.ok(/^[A-Z0-9]{2,5}$/.test(holdTag(k)), `${at}: a short label for crate ${k}`);
-      // nothing drawn over the label's box after its plate, except the label
-      const pi = calls.findIndex((q, i) => q[0] === 'fillRect' && Math.abs(q[1] - b.x) < 0.01 && Math.abs(q[2] - b.y) < 0.01 && Math.abs(q[3] - b.w) < 0.01 && calls[i - 1][0] === 'fillStyle');
-      assert.ok(pi > 0, `${at}: crate ${k}'s label plate`);
+      // its serial: marks, not text, in paint near the wood's own tone, inside the box, and nothing drawn over the box after them
       const inside = (x, y) => x > b.x + 0.01 && x < b.x + b.w - 0.01 && y > b.y + 0.01 && y < b.y + b.h - 0.01;
+      const marks = calls.flatMap((q, i) => q[0] === 'fillRect' && i > 0 && calls[i - 1][0] === 'fillStyle' && HOLD_INK.includes(calls[i - 1][1]) && inside(q[1] + q[3] / 2, q[2] + q[4] / 2) ? [i] : []);
+      assert.ok(marks.length >= 6, `${at}: crate ${k}'s serial marks (${marks.length})`);
+      for (const i of marks) { const q = calls[i]; assert.ok(q[1] >= b.x && q[1] + q[3] <= b.x + b.w && q[2] >= b.y && q[2] + q[4] <= b.y + b.h && q[3] <= 2 && q[4] <= 3, `${at}: a mark ${q.slice(1)} small, in crate ${k}'s box`); }
+      const last = calls.reduce((m, q, i) => q[0] === 'fillRect' && i > 0 && [...HOLD_INK, '#5e5a48', '#3a3226'].includes(calls[i - 1][1]) && inside(q[1] + q[3] / 2, q[2] + q[4] / 2) ? i : m, -1);  // the serial and its handling plate
       let tf = 0;
-      for (const q of calls.slice(pi + 1)) {
+      for (const q of calls.slice(last + 1)) {
         if (q[0] === 'save') tf++; else if (q[0] === 'restore') tf--;
-        if (tf) continue;  // a part moved by ctx.translate (the lamp, the hold log) or the label itself
+        if (tf) continue;  // a part moved by ctx.translate (the lamp, the hold log)
         const pts = q[0] === 'fillRect' ? [[q[1] + q[3] / 2, q[2] + q[4] / 2], [q[1], q[2]], [q[1] + q[3], q[2] + q[4]]] : /^(moveTo|lineTo)$/.test(q[0]) ? [q.slice(1)] : q[0] === 'quadraticCurveTo' ? [q.slice(3)] : q[0] === 'arc' ? [q.slice(1, 3)] : [];
-        for (const [x, y] of pts) assert.ok(!inside(x, y), `${at}: ${q[0]} ${q.slice(1)} over crate ${k}'s label`);
+        for (const [x, y] of pts) assert.ok(!inside(x, y), `${at}: ${q[0]} ${q.slice(1)} over crate ${k}'s label box`);
       }
     }
-    // the labels drawn at 12px or more where they fit, left off where they do not
-    const texts = calls.filter(q => q[0] === 'fillText');
-    if (zoom * 10 >= 12) assert.equal(texts.length, n, `${at}: a label on each crate`); else assert.equal(texts.length, 0, `${at}: no label under 12px`);
-    calls.forEach((q, i) => { if (q[0] === 'fillText') { const t = calls.slice(0, i).filter(p => p[0] === 'translate').pop(), k = texts.indexOf(q), b = holdLabel(r, k); assert.ok(t[1] >= b.x && t[1] < b.x + b.w && t[2] > b.y && t[2] <= b.y + b.h, `${at}: label ${k} (${q[1]}) in its box`); assert.equal(q[1], holdTag(k)); } });
+    const serials = Array.from({ length: n }, (_, k) => calls.filter((q, i) => q[0] === 'fillRect' && i > 0 && HOLD_INK.includes(calls[i - 1][1]) && (b => q[1] >= b.x && q[1] < b.x + b.w && q[2] >= b.y && q[2] < b.y + b.h)(holdLabel(r, k))).map(q => q.slice(1).map(v => Math.round((v - holdLabel(r, k).x) * 10)).join()).join('|'));
+    assert.ok(n < 2 || new Set(serials).size >= Math.min(n, 4), `${at}: serials varied by crate`);
+    assert.equal(calls.filter(q => q[0] === 'fillText').length, 0, `${at}: no text on the crates`);
+    for (const col of [...HOLD_INK, '#5e5a48']) {
+      const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
+      assert.ok(Math.max(...v) <= 0x80 && Math.max(...v) - Math.min(...v) <= 0x30, `${col}: the serial's paint low in contrast`);
+    }
+    if (n >= 2) assert.ok(calls.some((q, i) => q[0] === 'fillStyle' && q[1] === '#5e5a48' && calls[i + 1][0] === 'fillRect' && (b => calls[i + 1][1] >= b.x && calls[i + 1][1] + calls[i + 1][3] <= b.x + b.w)(holdLabel(r, 1))), `${at}: a handling plate in crate 1's box`);
   }
 });
 test('the hold\'s props are sized to a person: a crate two can lift, stacks under the head, the jack\'s handle at the waist (#933)', () => {

@@ -590,38 +590,49 @@ function roomBridge(ctx, r, s, X, W) {
 
 // The hold (#933), on the drive deck beside the engine room. A crate is 40 by 24, a load two people lift or the jack moves, and the crates stand
 // in stacks of three on pallets, filled from the bottom of the first stack, which starts clear of the room's name at its top left. holdCrate: crate
-// k's box; holdLabel: the stencilled box on its front where its label goes (one day the contract's good, #936), kept clear of everything else;
-// holdTag: its label for now, one of a fixed few. The kit is of different ages: wooden crates of more than one batch and a newer moulded one.
+// k's box; holdLabel: the box on its front where its label goes (one day the contract's good, #936), kept clear of everything else, showing for now
+// the crate's serial (holdSerial). The kit is of different ages: wooden crates of more than one batch and a newer moulded one.
 const HOLD_W = 40, HOLD_H = 24, HOLD_GAP = 8, HOLD_FROM = 112;
-const HOLD_KIT = [['#5a4a34', 'ICE'], ['#54462f', 'MED'], ['#4a5a5e', 'FRAG'], ['#5e4e36', 'GEAR'], ['#4e4230', 'ORE']];  // the third the moulded one
+const HOLD_KIT = ['#5a4a34', '#54462f', '#4a5a5e', '#5e4e36', '#4e4230'];  // the third the moulded one
 const holdKind = k => (k * 7 + Math.floor(k / 3)) % HOLD_KIT.length;
 const holdCrate = (r, k) => ({ x: r.x0 + HOLD_FROM + Math.floor(k / 3) * (HOLD_W + HOLD_GAP), y: r.floor - 4 - HOLD_H * (k % 3 + 1), w: HOLD_W, h: HOLD_H });
 const holdLabel = (r, k) => { const c = holdCrate(r, k); return { x: c.x + 4, y: c.y + 7, w: 32, h: 10 }; };
-const holdTag = k => HOLD_KIT[holdKind(k)][1];
-// A crate's label, stencilled in its box at 10 world units: drawn only at 12px or more on the screen and where it fits the box.
-function holdStencil(ctx, zoom, text, b) {
-  const px = Math.round(10 * zoom * 100) / 100;
-  if (px < 12) return false;
-  ctx.save(); ctx.font = `600 ${px}px ${roomFont}`; const fit = ctx.measureText(text).width <= b.w * zoom; ctx.restore();
-  return fit && worldText(ctx, zoom, text, b.x + b.w / 2, b.y + b.h - 1.5, 10, 'rgba(138,126,98,0.8)', 'center');
+// Crate k's serial, stencilled in its label box b as marks, not text (no words under 12px): a row of six glyphs (a block, a split block, a bar or
+// a pair of dashes, varied per crate and fixed), a dash after the second, in paint a little paler than the crate; on every third crate a small
+// handling plate beside it, a this-way-up arrow on it.
+function holdSerial(ctx, k, b, moulded) {
+  const ink = moulded ? '#6a7a7a' : '#7a6c50', y = b.y + 3.5;
+  let x = b.x + 2;
+  for (let i = 0; i < 6; i++) {
+    const g = (k * 37 + 11 + i * (k + 3) * 7) % 4;
+    if (g === 0) roomFlat(ctx, x, y, 1.6, 3, ink);
+    else if (g === 1) { roomFlat(ctx, x, y, 1.6, 1.2, ink); roomFlat(ctx, x, y + 1.8, 1.6, 1.2, ink); }
+    else if (g === 2) roomFlat(ctx, x + 0.45, y, 0.7, 3, ink);
+    else { roomFlat(ctx, x, y, 1.6, 0.7, ink); roomFlat(ctx, x, y + 2.3, 1.6, 0.7, ink); }
+    x += 2.4;
+    if (i === 1) { roomFlat(ctx, x, y + 1.2, 1.4, 0.6, ink); x += 2.2; }
+  }
+  if (k % 3 === 1) {
+    roomFlat(ctx, b.x + 22, b.y + 2, 6, 5, '#5e5a48');
+    roomFlat(ctx, b.x + 24.6, b.y + 3.6, 0.8, 2.6, '#3a3226'); roomFlat(ctx, b.x + 24, b.y + 3.2, 2, 0.6, '#3a3226');
+  }
 }
 // A tie-down ring in the deck at x, on its plate.
 function holdRing(ctx, x, F) {
   roomFlat(ctx, x - 2.5, F - 1, 5, 1, '#20384f');
   ctx.strokeStyle = '#4a6680'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(x, F - 2.4, 1.3, 0, Math.PI * 2); ctx.stroke();
 }
-// Crate k: its boards and the gaps between them, the battens at its corners nailed on, the stencil's plate and its label; worn at fixed places
+// Crate k: its boards and the gaps between them, the battens at its corners nailed on, its serial (holdSerial); worn at fixed places
 // (bare wood at its corners), a board replaced in fresher wood on one, tape over a split corner on another.
-function roomHoldCrate(ctx, r, k, zoom) {
+function roomHoldCrate(ctx, r, k) {
   const n = v => Math.round(v * 100) / 100, c = holdCrate(r, k), x = n(c.x), y = n(c.y), w = c.w, h = c.h, kind = holdKind(k), b = holdLabel(r, k);
-  roomPart(ctx, roomRound(x, y, w, h, 1.2), HOLD_KIT[kind][0], { top: 1, side: 2.5, under: 1 });
+  roomPart(ctx, roomRound(x, y, w, h, 1.2), HOLD_KIT[kind], { top: 1, side: 2.5, under: 1 });
   if (k % 4 === 1 && kind !== 2) roomFlat(ctx, x + 4.5, y + 1, w - 9, 4.6, '#6e5c40');  // a board replaced in fresher wood
   for (const gy of [y + 6, y + 17.6]) roomFlat(ctx, x + 4, gy, w - 8, 0.8, '#2a2218');  // the gaps between its boards
   for (const bx of [x + 0.8, x + w - 4]) roomPart(ctx, roomRound(bx, y + 0.8, 3.2, h - 1.6, 0.6), kind === 2 ? '#56686c' : '#6a583c', { top: 0.5, side: 0.8 });
   for (const [nx, ny] of [[x + 2.4, y + 3], [x + 2.4, y + h - 3], [x + w - 2.4, y + 3], [x + w - 2.4, y + h - 3]]) roomDot(ctx, nx, ny, 0.5, '#2a2218');  // the nails
   if (k % 2 === 0 && kind !== 2) for (const [cx, cy, cw, ch] of [[x + w - 3.6, y + h - 2.8, 2.2, 1.4], [x + 1.2, y + 1.2, 1.8, 1.2]]) roomFlat(ctx, cx, cy, cw, ch, '#7a6a50');  // worn corners
-  roomFlat(ctx, b.x, b.y, b.w, b.h, '#3a3226');  // the stencil's plate
-  holdStencil(ctx, zoom, holdTag(k), b);
+  holdSerial(ctx, k, b, kind === 2);
   if (k % 6 === 4) roomPart(ctx, `M ${n(x + w - 8)} ${n(y - 0.5)} L ${n(x + w - 3)} ${n(y - 0.5)} L ${n(x + w + 0.5)} ${n(y + 2.5)} L ${n(x + w + 0.5)} ${n(y + 6)} Z`, '#7a7462', { top: 0 });  // tape
 }
 // A stack's pallet at x, its fork pockets, and once loaded the straps over the stack's top (at y) and down its sides to the rings at its foot, a
@@ -683,7 +694,7 @@ function roomHold(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, n = Math.min(12, Math.round(12 * s.cargo)), stacks = Math.ceil(n / 3), sx = c => Math.round(holdCrate(r, 3 * c).x * 100) / 100;
   for (let c = 0; c < 4; c++) for (const ex of [sx(c) + 0.75, sx(c) + HOLD_W - 0.75]) holdRing(ctx, ex, F);
   for (let c = 0; c < stacks; c++) roomHoldPallet(ctx, sx(c), F);
-  for (let k = 0; k < n; k++) roomHoldCrate(ctx, r, k, s.zoom);
+  for (let k = 0; k < n; k++) roomHoldCrate(ctx, r, k);
   for (let c = 0; c < stacks; c++) roomHoldStraps(ctx, sx(c), holdCrate(r, Math.min(n - 1, 3 * c + 2)).y, F);
   if (n > 0) roomHoldNet(ctx, r, n, s);
   if (W >= 300) {
