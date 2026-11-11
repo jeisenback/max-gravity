@@ -815,6 +815,7 @@ test('the ship\'s log is in the HUD', async () => {
   await wide.ev(([src]) => { window.drawnText = (0, eval)(`(${src})`); }, [`() => { const drawn = [], fill = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (t, x, ...a) { drawn.push([String(t), x]); return fill.call(this, t, x, ...a); }; return () => { CanvasRenderingContext2D.prototype.fillText = fill; return drawn; }; }`]);
   const w = await wide.ev(() => {
     burn(); G.transit.left = G.transit.total * 0.5;
+    ctx.font = '12px "IBM Plex Mono", monospace';  // the log's own font, so the lines break where the HUD breaks them
     const lines = burnShipLog().flatMap(l => wrapText(l, HUD_W - 28)), stop = drawnText(); drawHud(G.W, G.H); const drawn = stop();
     return { lines, drawn, x0: G.W - HUD_W, hudW: G.hudW, label: drawn.some(d => d[0] === "SHIP'S LOG") };
   });

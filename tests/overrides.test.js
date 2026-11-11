@@ -27,8 +27,8 @@ test('an override replaces the title, text, label and result of the scene it nam
     const s = STORYLETS.find(x => x.id === 'port-mars-sky');
     const play = i => {
       G.state.credits = 1000;
-      const rep = repOf('Dome Concord'), ev = storyletEvent(s), text = ev.choices[i].run();  // standing and credits as the choice moved them
-      return { title: ev.title, text: ev.text, labels: ev.choices.map(c => c.label), result: text, rep: repOf('Dome Concord') - rep, credits: G.state.credits, qualities: JSON.stringify(G.state.qualities) };
+      const rep = repOf('Dome Pact'), ev = storyletEvent(s), text = ev.choices[i].run();  // standing and credits as the choice moved them
+      return { title: ev.title, text: ev.text, labels: ev.choices.map(c => c.label), result: text, rep: repOf('Dome Pact') - rep, credits: G.state.credits, qualities: JSON.stringify(G.state.qualities) };
     };
     const shipped = play(0);
     useOverrides({ 'port-mars-sky': { title: 'New Title', text: 'New text.', choices: { 0: { label: 'New label', result: 'New result.' } } } });
@@ -201,9 +201,9 @@ test('an override can change what a choice does and who can take it, and the sce
     const s = STORYLETS.find(x => x.id === 'port-mars-sky'), before = JSON.stringify(s.choices[0]);
     useOverrides({ 'port-mars-sky': { choices: { 0: { effects: { credits: 500 } }, 1: { when: { credits: 99999999 } } } } });
     G.state.credits = 1000;
-    const rep = repOf('Dome Concord'), ev = storyletEvent(s);
+    const rep = repOf('Dome Pact'), ev = storyletEvent(s);
     ev.choices[0].run();
-    return { credits: G.state.credits, rep: repOf('Dome Concord') - rep, shut: ev.choices[1].can(), open: !ev.choices[2].can, untouched: JSON.stringify(s.choices[0]) === before };
+    return { credits: G.state.credits, rep: repOf('Dome Pact') - rep, shut: ev.choices[1].can(), open: !ev.choices[2].can, untouched: JSON.stringify(s.choices[0]) === before };
   });
   await g.done();
   assert.deepEqual(r, { credits: 1500, rep: 0, shut: false, open: true, untouched: true });
@@ -235,7 +235,7 @@ test('conditions, effects and links the game would refuse are left out together,
     const clean = cleanOverrides({
       'port-mars-sky': { title: 'Kept', when: { nonsense: 1 }, choices: { 0: { effects: { credits: 5 } }, 1: { next: 'no-such-scene', label: 'Also kept' } } },
       'port-mars-front': { choices: { 0: { effects: { mission: { to: 'Mars', onDone: { nope: 1 } } } } } },
-      'land-customs': { when: { day: 4 }, choices: { 1: { effects: { rep: { 'Dome Concord': 1 } }, when: { credits: 10 }, next: 'port-mars-sky' } } },
+      'land-customs': { when: { day: 4 }, choices: { 1: { effects: { rep: { 'Dome Pact': 1 } }, when: { credits: 10 }, next: 'port-mars-sky' } } },
     });
     console.warn = real;
     return { clean, warnings };
@@ -243,7 +243,7 @@ test('conditions, effects and links the game would refuse are left out together,
   await g.done();
   assert.deepEqual(r.clean, {
     'port-mars-sky': { title: 'Kept', choices: { 1: { label: 'Also kept' } } },
-    'land-customs': { when: { day: 4 }, choices: { 1: { effects: { rep: { 'Dome Concord': 1 } }, when: { credits: 10 }, next: 'port-mars-sky' } } },
+    'land-customs': { when: { day: 4 }, choices: { 1: { effects: { rep: { 'Dome Pact': 1 } }, when: { credits: 10 }, next: 'port-mars-sky' } } },
   });
   assert.equal(r.warnings.length, 1);
   for (const part of ['unknown condition "nonsense"', 'leads to a scene that is not there', 'unknown effect "nope"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);

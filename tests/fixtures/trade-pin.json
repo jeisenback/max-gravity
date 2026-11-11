@@ -6226,7 +6226,7 @@
     "type": "bounty",
     "targetSystem": "mars",
     "targetName": "The Widow Kade",
-    "issuer": "Dome Concord",
+    "issuer": "Dome Pact",
     "title": "Bounty: destroy The Widow Kade near Mars",
     "pay": 130000,
     "deadline": 13
@@ -7990,7 +7990,7 @@
     "type": "bounty",
     "targetSystem": "pallas",
     "targetName": "Old Iron Tess",
-    "issuer": "Arcology Compact",
+    "issuer": "Arcology Pact",
     "title": "Bounty: destroy Old Iron Tess near Pallas",
     "pay": 150000,
     "deadline": 27
@@ -7999,7 +7999,7 @@
     "type": "bounty",
     "targetSystem": "jupiter",
     "targetName": "Captain Ruin",
-    "issuer": "Arcology Compact",
+    "issuer": "Arcology Pact",
     "title": "Bounty: destroy Captain Ruin near Jupiter",
     "pay": 130000,
     "deadline": 33
@@ -8075,7 +8075,7 @@
     "tons": 15,
     "destSystem": "mars",
     "destPlanet": "Mars",
-    "title": "Arcology Compact contract: deliver 15t of scientific samples to Mars",
+    "title": "Arcology Pact contract: deliver 15t of scientific samples to Mars",
     "pay": 68000,
     "deadline": 11,
     "contract": true
@@ -8151,7 +8151,7 @@
     "tons": 13,
     "destSystem": "pallas",
     "destPlanet": "The Hollows",
-    "title": "Arcology Compact contract: deliver 13t of prefab habitat panels to The Hollows",
+    "title": "Arcology Pact contract: deliver 13t of prefab habitat panels to The Hollows",
     "pay": 81600,
     "deadline": 17,
     "contract": true
@@ -8217,7 +8217,7 @@
     "type": "bounty",
     "targetSystem": "pallas",
     "targetName": "The Widow Kade",
-    "issuer": "Arcology Compact",
+    "issuer": "Arcology Pact",
     "title": "Bounty: destroy The Widow Kade near Pallas",
     "pay": 130000,
     "deadline": 27
@@ -8258,7 +8258,7 @@
     "tons": 13,
     "destSystem": "hygiea",
     "destPlanet": "The Rook",
-    "title": "Arcology Compact contract: deliver 13t of medical crates to The Rook",
+    "title": "Arcology Pact contract: deliver 13t of medical crates to The Rook",
     "pay": 92800,
     "deadline": 20,
     "contract": true
@@ -8714,7 +8714,7 @@
    "text": "The dockmaster writes your ship's name in a book behind the counter. \"Berth discount,\" she says, \"and a second look when you want to lift in a hurry.\" It's not cash, and it'll be worth something.",
    "credits": 0,
    "rep": {
-    "Charter League": 4
+    "Guild Federation": 4
    },
    "xp": false,
    "mem": [],
@@ -8727,7 +8727,7 @@
    "text": "The dockmaster writes your ship's name in a book behind the counter. \"Berth discount,\" she says, \"and a second look when you want to lift in a hurry.\" It's not cash, and it'll be worth something.",
    "credits": 0,
    "rep": {
-    "Charter League": 4
+    "Guild Federation": 4
    },
    "xp": false,
    "mem": [],
@@ -8763,7 +8763,7 @@
    "text": "The packet is flagged at the relay for a malformed header. A customs clerk reads it before you can pull it back, and there's a visit to your ship the next morning, polite and thorough. Nothing's found, and nothing's forgotten. (-600 cr)",
    "credits": -600,
    "rep": {
-    "Charter League": -4
+    "Guild Federation": -4
    },
    "xp": false,
    "mem": [],
@@ -8871,7 +8871,7 @@
    "text": "The service route is blocked by a pallet somebody has left across it, and the detour puts you in the open on the wrong deck. You get him out, but not unseen, and the pay is smaller for it. (+1,100 cr)",
    "credits": 1100,
    "rep": {
-    "Charter League": -2
+    "Guild Federation": -2
    },
    "xp": false,
    "mem": [],
@@ -8973,7 +8973,7 @@
    "text": "You find out whose chit it's by asking whose child is whose, and the thing falls apart into a conversation about names. By the end both families are sharing a bench and the clerk is stamping new chits as fast as she can. (+1,900 cr)",
    "credits": 1900,
    "rep": {
-    "Charter League": 3
+    "Guild Federation": 3
    },
    "xp": false,
    "mem": [],
@@ -8997,7 +8997,7 @@
    "text": "You put yourself in the gap with your hands open and don't move. For a while nobody does. Then the louder of the two men looks at you, and at the child on his hip, and steps back, and the line breathes out. (+1,700 cr)",
    "credits": 1700,
    "rep": {
-    "Charter League": 2
+    "Guild Federation": 2
    },
    "xp": false,
    "mem": [],
@@ -9070,7 +9070,7 @@
    "text": "You ask, and he answers well enough, and you hand it over. It's not until the evening, when the real contact asks where it is, that you know the answer was a good guess. You're paid a fee for the trip, and nothing for the package. (+1,700 cr)",
    "credits": 1700,
    "rep": {
-    "Charter League": -2
+    "Guild Federation": -2
    },
    "xp": false,
    "mem": [],
@@ -9163,7 +9163,7 @@
    "text": "She writes it on a scrap, and a street, and a time of day. \"Tell them I sent you,\" she says. It's not cash, but you won't forget where it leads.",
    "credits": 0,
    "rep": {
-    "Charter League": 3
+    "Guild Federation": 3
    },
    "xp": false,
    "mem": [],
@@ -9176,7 +9176,7 @@
    "text": "She writes it on a scrap, and a street, and a time of day. \"Tell them I sent you,\" she says. It's not cash, but you won't forget where it leads.",
    "credits": 0,
    "rep": {
-    "Charter League": 3
+    "Guild Federation": 3
    },
    "xp": false,
    "mem": [],
@@ -9307,7 +9307,7 @@
    "text": "He shakes your hand on it. You can't spend it, and you don't need to. A hauler's captain with a standing offer is worth more on the lanes than the credits would have been.",
    "credits": 0,
    "rep": {
-    "Charter League": 4
+    "Guild Federation": 4
    },
    "xp": false,
    "mem": [],
@@ -9320,7 +9320,7 @@
    "text": "He shakes your hand on it. You can't spend it, and you don't need to. A hauler's captain with a standing offer is worth more on the lanes than the credits would have been.",
    "credits": 0,
    "rep": {
-    "Charter League": 4
+    "Guild Federation": 4
    },
    "xp": false,
    "mem": [],
@@ -9385,7 +9385,7 @@
    "text": "The call goes through somebody else's relay. By the time the officer arrives, there's a man across the street with a good view of the stall, and the dockworker has gone out the back and hasn't come back. You get a fee for the trouble, and a lasting dislike of relays. (+1,700 cr)",
    "credits": 1700,
    "rep": {
-    "Charter League": -3
+    "Guild Federation": -3
    },
    "xp": false,
    "mem": [],
@@ -9453,7 +9453,7 @@
    "text": "You give her back the key and say it should stay for whoever comes. She puts it in her pocket with the look of someone who was going to say the same.",
    "credits": 0,
    "rep": {
-    "Charter League": 3
+    "Guild Federation": 3
    },
    "xp": false,
    "mem": [],
@@ -9466,7 +9466,7 @@
    "text": "You give her back the key and say it should stay for whoever comes. She puts it in her pocket with the look of someone who was going to say the same.",
    "credits": 0,
    "rep": {
-    "Charter League": 3
+    "Guild Federation": 3
    },
    "xp": false,
    "mem": [],

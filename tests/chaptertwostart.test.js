@@ -93,7 +93,7 @@ test('a finished save from before chapter two goes on the same way', async () =>
 
 const started = () => {
   window.coopAt = (i = 0) => { toShare(); goOnAndPick(i); const st = G.state; st.story.next = 1e9; G.dialog = null; G.nextEvent = null; UI.notes.length = 0; return st; };
-  window.contract = (o = {}) => ({ shipper: 'the Compact Freight Office', good: 'water', tons: 20, from: 'Ceres Station', sid: 'mars', planet: 'Mars', yard: false, days: 5, pay: 12000, due: G.state.day + 9, hazard: false, rumor: false, ...o });
+  window.contract = (o = {}) => ({ shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 20, from: 'Ceres Station', sid: 'mars', planet: 'Mars', yard: false, days: 5, pay: 12000, due: G.state.day + 9, hazard: false, rumor: false, ...o });
   window.landAtPort = (sid, planet) => { const st = G.state; G.transit = null; st.systemId = sid; st.planet = planet; G.mode = 'landed'; G.dialog = null; G.nextEvent = null; st.customs = { ...(st.customs || {}), last: st.day };
     const titles = []; Mods.emit('landed', currentPlanet()); let guard = 10; while (G.dialog && guard--) { titles.push(G.dialog.event.title); chooseEvent(0); finishEvent(); } return titles; };
 };

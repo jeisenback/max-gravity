@@ -124,7 +124,7 @@ const UAT_ITEMS = [
     setup() { uatFresh(); Object.assign(G.state.story, { stage: 3 }); uatLand('Mars'); uatScene('cw-mira-contact'); } },
   { group: 'Cold Water', id: 'cw-europa', title: 'Europa reveal', check: 'The core is decrypted on Europa and Act 1 ends.',
     setup() { uatFresh(); Object.assign(G.state.story, { stage: 4 }); storyPassenger('Mira Castellane', 1, 'jupiter', 'Europa', 30000, 'mira-europa'); uatLand('Europa'); uatScene('cw-europa'); } },
-  { group: 'Cold Water', id: 'cw-contacts', title: 'Act 2: who gets the proof', check: 'At Ceres Station the League contact offers to take the proof.',
+  { group: 'Cold Water', id: 'cw-contacts', title: 'Act 2: who gets the proof', check: 'At Ceres Station the Federation contact offers to take the proof.',
     setup() { uatFresh(); Object.assign(G.state.story, { stage: 5 }); uatLand('Ceres Station'); uatScene('cw-contact-ceres'); } },
   { group: 'Cold Water', id: 'cw-blockade', title: 'Act 3: the blockade', check: 'Arriving at Ceres, the blockade fleet engages; allies help; landing is allowed.',
     setup() { uatFresh({
@@ -141,7 +141,7 @@ const UAT_ITEMS = [
   { group: 'Campaigns', id: 'strike', title: 'Ice Haulers\' Strike', check: 'The Guild broadcast opens on a burn into the Belt.',
     setup() { uatFresh(); G.state.day = 15; uatBurn('Mars', 'ceres'); uatScene('strike-broadcast'); } },
   { group: 'Campaigns', id: 'navy', title: 'Reserve Commission', check: 'The Mars Navy offers a commission.',
-    setup() { uatFresh(); G.state.rep['Dome Concord'] = 30; uatLand('Mars'); uatScene('navy-recruit'); } },
+    setup() { uatFresh(); G.state.rep['Dome Pact'] = 30; uatLand('Mars'); uatScene('navy-recruit'); } },
   { group: 'Campaigns', id: 'rook', title: 'The Rook\'s Crown', check: 'Hollis Mbeki invites you to fly under the Rook\'s colors.',
     setup() { uatFresh(); G.state.day = 25; uatLand('The Rook'); uatScene('rook-invite'); } },
   { group: 'Campaigns', id: 'tethys', title: 'The Partner\'s Chair', check: 'The Tethys Consortium invites you once you own a company ship.',
@@ -206,11 +206,11 @@ const UAT_FIGHTS = [
     prep: () => { const st = G.state; st.outfits.launcher = 1; st.torpedoes = 6; },  // the loadout, before the fight (prep: what the hand brings to it)
     run: g => uatShipFight({ kind: 'pirate' }, { ship: 'corsair', grade: g }) },
   { id: 'fight-patrol', title: 'A navy stop', check: 'Firing on her costs standing with her government. She is never boarded, and crippled she calls the stop off.', grade: null,
-    run: () => uatShipFight({ kind: 'patrol', gov: 'Arcology Compact' }) },
+    run: () => uatShipFight({ kind: 'patrol', gov: 'Arcology Pact' }) },
   { id: 'deck-repel', title: 'Being boarded', check: 'The deck cutaway shows heads and cover by section, where you stand, their next move (a push marked may feint above grade 0) and Turn n of 8. Stand or move, shoot, steady, cover once, and one crew order all work; it ends repelled or taken through the usual scenes.', grade: 1,
     run: g => openEvent(repelEvent({ foe: uatRaider(), foeHp: 0, init: 'foe', grade: g, pack: false }, 'full')) },
   { id: 'deck-navy', title: 'Boarded by a navy patrol', check: 'The deck names the boarding party, with Turn n of 5, and the standing line under it (what each head put down costs with her government). Hold fire is an order. They never feint, rush or charge. At turn 5 they withdraw and the citation (the heave-to\'s fine) is charged; if you let them take the bridge they search the ship and fine it.', grade: 1,
-    run: g => openEvent(repelEvent({ foe: makeEnemy({ kind: 'patrol', gov: 'Arcology Compact', shipId: 'cutter' }), foeHp: 0, init: 'foe', grade: g, pack: false }, 'half')) },
+    run: g => openEvent(repelEvent({ foe: makeEnemy({ kind: 'patrol', gov: 'Arcology Pact', shipId: 'cutter' }), foeHp: 0, init: 'foe', grade: g, pack: false }, 'half')) },
   { id: 'deck-assault', title: 'Boarding a crippled ship', check: 'Dead in space gives her count, and Board her opens a fight of that count. On her deck your crew push from her lock to her bridge, and her cover is hers.',
     run: g => openEvent(deadInSpaceScene({ spec: { kind: 'pirate' }, foe: uatRaider(), grade: g, pack: false })) },
 ];

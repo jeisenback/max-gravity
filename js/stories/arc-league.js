@@ -1,6 +1,6 @@
 'use strict';
 
-// The water dispute at Pallas (#683): a mission arc hung on the League Freight Hall (js/arcs.js). The Hall has a sealed crate it will not put on a bill of lading, for Wen
+// The water dispute at Pallas (#683): a mission arc hung on the Federation Freight Hall (js/arcs.js). The Hall has a sealed crate it will not put on a bill of lading, for Wen
 // Haraldsen at the Hollows: its own ledger of the water the refinery has drawn beyond its share, four months of it. The vote on the draw is at the Refinery in six days.
 // Qualities: `league` (begun), `leagueSide` (where the hand has put their weight: from 2, the Hollows carry the vote), `league-open` (said they would speak). The crate and the
 // floor lead into the count on the same landing; the end plays at the Hollows or the Refinery when the hand next comes, and gives a person, an item or a fee.
@@ -13,7 +13,7 @@ Mods.register({
     // The hand who stays back had said they would speak: Wen minds that.
     M.addAction('league-back', memory => { if (quality('league-open')) like(arcPerson('wen'), -2, memory); return ''; });
     // The keys: a person, a regard and an item.
-    M.addAction('league-keys', memory => { like(arcPerson('wen'), 2, memory); moveStanding('the League Freight Hall', 1); return addKit('valve-keys'); });
+    M.addAction('league-keys', memory => { like(arcPerson('wen'), 2, memory); moveStanding('the Federation Freight Hall', 1); return addKit('valve-keys'); });
     // The fee: Marit warms, and the Hollows cool.
     M.addAction('league-fee', (forMarit, forWen) => { like(arcPerson('marit'), 2, forMarit); like(arcPerson('wen'), -1, forWen); return ''; });
 
@@ -28,12 +28,12 @@ Mods.register({
       choices: [
         { label: 'Say you will, at the vote',
           effects: { q: { league: 1, leagueSide: 1, 'league-open': 1 }, later: { 'league-vote': 6 }, do: ['arcLike', 'wen', 2, 'You said you would speak at the vote.'],
-            log: 'Carried the League Freight Hall\'s sealed crate to Wen Haraldsen at the Hollows, and said I would speak at the vote.' },
+            log: 'Carried the Federation Freight Hall\'s sealed crate to Wen Haraldsen at the Hollows, and said I would speak at the vote.' },
           result: ('Wen writes the ship\'s name on the lid of your flask with a grease pencil, the day under it, and pushes it back across the table. "Six days," she says. ' +
               '"Bring that."') },
         { label: 'Say the Hall\'s name is the Hall\'s to give',
           effects: { q: { league: 1 }, later: { 'league-vote': 6 }, do: ['arcLike', 'wen', -1, 'You would not say where the crate came from.'],
-            log: 'Carried the League Freight Hall\'s sealed crate to Wen Haraldsen at the Hollows, and kept the Hall\'s name out of it.' },
+            log: 'Carried the Federation Freight Hall\'s sealed crate to Wen Haraldsen at the Hollows, and kept the Hall\'s name out of it.' },
           result: ('Wen takes it like a price she expected, and finishes her tea first. "Then it fell off a sled in a corridor," she says, "and I found it. Mind yourself on ' +
               'the Refinery side."') },
       ],

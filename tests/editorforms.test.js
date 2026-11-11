@@ -84,7 +84,7 @@ test('adding, changing and removing a condition changes the scene\'s conditions,
   await page.fill(rule('when', 'chance'), '0.5');
   await page.click('button[data-drop="when"][data-dkey="cargo"]');
   const o = (await changes())['land-customs'];
-  assert.deepEqual(o.when, { day: 3, gov: ['Arcology Compact', 'Dome Concord'], chance: 0.5, before: 12 });
+  assert.deepEqual(o.when, { day: 3, gov: ['Arcology Pact', 'Dome Pact'], chance: 0.5, before: 12 });
   const g = await open({ scope: 'full' });
   const r = await g.ev(file => {
     const warnings = [], real = console.warn; console.warn = m => warnings.push(m);
@@ -105,14 +105,14 @@ test('a value that does not fit is flagged beside its field and left out until i
   await reload(); await select('land-customs');
   await page.selectOption('[data-add="c1.effects"]', 'rep');
   assert.match(await warn('c1.effects', 'rep'), /needs at least one name=number/);
-  await page.fill(rule('c1.effects', 'rep'), 'Dome Concord=2, Nobody=1');
+  await page.fill(rule('c1.effects', 'rep'), 'Dome Pact=2, Nobody=1');
   assert.match(await warn('c1.effects', 'rep'), /Nobody is not a government or faction/);
   assert.match(await page.textContent('#problems'), /Left out of the changes until fixed: c1\.effects: rep Nobody is not a government or faction/);
   assert.equal(JSON.stringify(await changes()), '{}', 'a bad field is not in the changes');
-  await page.fill(rule('c1.effects', 'rep'), 'Dome Concord=2');
+  await page.fill(rule('c1.effects', 'rep'), 'Dome Pact=2');
   assert.equal(await warn('c1.effects', 'rep'), '');
   assert.equal(await page.textContent('#problems'), '');
-  assert.deepEqual((await changes())['land-customs'].choices[1].effects, { credits: -3000, do: ['official', 1, 'You paid the processing fee and said nothing about it.'], rep: { 'Dome Concord': 2 } });
+  assert.deepEqual((await changes())['land-customs'].choices[1].effects, { credits: -3000, do: ['official', 1, 'You paid the processing fee and said nothing about it.'], rep: { 'Dome Pact': 2 } });
   // The kinds check what they should.
   const k = await page.evaluate(() => {
     const p = (spec, d) => SceneIndex.kindOf(spec).parse(d);

@@ -9,11 +9,11 @@
 
 const ARC_STANDING = 1;  // the regard a shipper must have for the ship before it offers its arc
 const MISSION_ARCS = {
-  league: { shipper: 'the League Freight Hall', at: ['Ceres Station'], sid: 'pallas', dest: 'The Hollows', first: 'league-crate',
+  league: { shipper: 'the Federation Freight Hall', at: ['Ceres Station'], sid: 'pallas', dest: 'The Hollows', first: 'league-crate',
     title: 'A Crate for {dest}', blurb: '{who} has a sealed crate for the Hollows that the Hall will not put on a bill of lading. It has no weight to speak of, and a day on it.' },
-  concord: { shipper: 'the Concord Freight Office', at: ['Mars'], sid: 'eros', dest: 'Eros Old Town', first: 'concord-auditor',
+  concord: { shipper: 'the Dome Pact Freight Office', at: ['Mars'], sid: 'eros', dest: 'Eros Old Town', first: 'concord-auditor',
     title: 'A Passenger for {dest}', blurb: '{who} has a Fleet auditor who needs a berth to Old Town and does not want her name on the manifest. She travels light and pays on arrival.' },
-  compact: { shipper: 'the Compact Freight Office', at: ['Earth'], sid: 'earth', dest: 'Luna', first: 'compact-notice',
+  compact: { shipper: 'the Arcology Pact Freight Office', at: ['Earth'], sid: 'earth', dest: 'Luna', first: 'compact-notice',
     title: 'A Notice for {dest}', blurb: '{who} has a notice of inspection for a rigger on Luna that the Office would rather not send by the relay. It is one page, and wants a signature.' },
 };
 const ARC_PEOPLE = {

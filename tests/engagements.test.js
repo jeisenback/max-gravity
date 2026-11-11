@@ -269,7 +269,7 @@ test('a hostile patrol is a navy stop for a hired hand: the same fight with guns
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = raid('gunner'), gov = 'Arcology Compact', before = repOf(gov);
+    const st = raid('gunner'), gov = 'Arcology Pact', before = repOf(gov);
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
     const text = startDuel({ kind: 'patrol', gov }, false); begin();
     const out = { duel: !!G.duel, title: G.dialog.event.title, open: /navy ship/.test(G.dialog.event.text), rep: repOf(gov) - before, text: /Battle stations/.test(text), band: RANGE_BANDS[fightNow().state.band] };
@@ -292,7 +292,7 @@ test('a patrol that boards a hired hand\'s ship and holds the bridge searches it
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = raid('gunner'), h = hired(), gov = 'Arcology Compact';
+    const st = raid('gunner'), h = hired(), gov = 'Arcology Pact';
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); Object.assign(spare, { shipId: 'cutter' });
     h.fund = 10000;
     const d = { foe: spare, foeHp: 0, init: 'foe' }, s = repelStart(d, 'full');
@@ -439,7 +439,7 @@ test('each hand makes the call in a pirate contact, rolled on their own skill, a
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
-    const contact = (post, kind = 'pirate') => { raid(post); G.dialog = null; openEvent(contactEvent({ kind, gov: 'Arcology Compact' })); const d = G.dialog; return { decided: !!d.event.decided, labels: d.choices.map(c => c.label), text: d.event.text }; };
+    const contact = (post, kind = 'pirate') => { raid(post); G.dialog = null; openEvent(contactEvent({ kind, gov: 'Arcology Pact' })); const d = G.dialog; return { decided: !!d.event.decided, labels: d.choices.map(c => c.label), text: d.event.text }; };
     for (const post of ['comms', 'pilot', 'gunner', 'engineer']) out[post] = contact(post);
     out.patrols = ['comms', 'pilot', 'gunner', 'engineer'].map(post => contact(post, 'patrol').decided);
     const spoof = (level, roll) => {
@@ -593,7 +593,7 @@ test('an owner who kept a post meets a pirate or a patrol in the ship fight (#72
     out.owner = !hired() && lockPost() === 'gunner';
     const real = Math.random;  // a foe is made with the dice back: people are drawn until they differ
     window.rateFoe = f => { f.grade = 0; f.pack = false; return f; };  // an ordinary foe, whatever the seed draws
-    const fresh = kind => { Math.random = real; st.armor = ship().armor; G.duel = null; G.nextEvent = null; const text = startDuel({ kind, gov: 'Arcology Compact' }, false); begin(); return text; };
+    const fresh = kind => { Math.random = real; st.armor = ship().armor; G.duel = null; G.nextEvent = null; const text = startDuel({ kind, gov: 'Arcology Pact' }, false); begin(); return text; };
     out.text = fresh('pirate'); out.title = G.dialog.event.title; out.duel = !!G.duel; out.read = G.dialog.event.read;
     // a heavy hit, and the hurt that follows it (the dice are set after the foe is made)
     const xp = skillXp('gunner'); fightNow().state.me.shields = 0; shownMoves({ kind: 'broadside', target: 'hull', dmg: [30, 30] });
@@ -666,7 +666,7 @@ test('what the captain remembers says what happened: a raider let drift, and a n
     fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.parts.drive.hp = 0; }); shownMoves({ kind: 'hold' }); fireOrders();
     choose('Let her drift'); out.drift = cap.memories[cap.memories.length - 1];
     raid('gunner'); cap = person(hired().captain);
-    const gov = 'Arcology Compact', spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
+    const gov = 'Arcology Pact', spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter', armor: SHIPS.cutter.armor, maxArmor: SHIPS.cutter.armor });
     startDuel({ kind: 'patrol', gov }, false); begin();
     fightNow().state.foes.forEach(foe => { foe.parts.weapons.hp = 0; foe.shields = 0; foe.armor = 5; }); shownMoves({ kind: 'break' }); fireOrders();  // hurt as well as unarmed: she breaks off, and does not just get away
     out.navy = cap.memories[cap.memories.length - 1];

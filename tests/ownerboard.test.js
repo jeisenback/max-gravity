@@ -13,12 +13,12 @@ const helpers = () => {
   // A game that has bought its ship: the hand's record is gone and the career is left, docked at a port that trades.
   window.owner = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
-    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.credits = 1000000; hired().kit = ['valve-keys']; hired().standing = { 'the League Freight Hall': 1 };
+    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.credits = 1000000; hired().kit = ['valve-keys']; hired().standing = { 'the Federation Freight Hall': 1 };
     buyIn('courier'); while (G.dialog) finishEvent();
     G.transit = null; G.mode = 'landed'; st.dest = null; st.systemId = 'earth'; st.planet = 'Earth'; G.dialog = null; G.nextEvent = null; UI.notes.length = 0;
     return st;
   };
-  window.contract = (o = {}) => ({ shipper: 'the Compact Freight Office', good: 'water', tons: 30, from: 'Earth', sid: 'mars', planet: 'Mars', yard: false, days: 5, pay: 12000, due: G.state.day + 9, hazard: false, rumor: false, ...o });
+  window.contract = (o = {}) => ({ shipper: 'the Arcology Pact Freight Office', good: 'water', tons: 30, from: 'Earth', sid: 'mars', planet: 'Mars', yard: false, days: 5, pay: 12000, due: G.state.day + 9, hazard: false, rumor: false, ...o });
   window.board = list => { const st = G.state; career().freight = { key: `${currentPlanet().name}@${st.day}`, list }; };
 };
 const run = async fn => { const t = await open(); await t.ev(helpers); const r = await t.ev(fn); await t.done(); return r; };
@@ -34,7 +34,7 @@ test('the Port page of a ship the player owns lists the day\'s contracts with a 
     return out;
   });
   assert.ok(!/Contracts/.test(r.hand), 'a hand\'s page has no board');
-  assert.match(r.page, /Contracts the Compact Freight Office: 30t of water to Mars \(Mars, 5 days\), due in 9 days\. Pays 12,000 cr\./); assert.deepEqual(r.buttons, [false, true], 'a load too big for the hold is shut');
+  assert.match(r.page, /Contracts the Arcology Pact Freight Office: 30t of water to Mars \(Mars, 5 days\), due in 9 days\. Pays 12,000 cr\./); assert.deepEqual(r.buttons, [false, true], 'a load too big for the hold is shut');
   assert.match(r.empty, /Nothing on the board today\./);
 });
 
@@ -47,12 +47,12 @@ test('taking a contract loads the shipper\'s cargo for nothing, sets the course,
   });
   assert.match(r.text, /are aboard, and the course is set for Mars\. Take off when you are ready\.|takes her out\./); assert.equal(r.cargo.water, 30); assert.equal(r.credits, 0);
   assert.deepEqual(r.run, { planet: 'Mars', tons: 30, contract: true, from: 'Earth' }); assert.equal(r.dest, 'mars'); assert.deepEqual(r.left, ['Luna']); assert.equal(r.second, '', 'one contract at a time');
-  assert.match(r.page, /Contracts\s*30t of water for the Compact Freight Office, to Mars, due in 9 days\./);
+  assert.match(r.page, /Contracts\s*30t of water for the Arcology Pact Freight Office, to Mars, due in 9 days\./);
 });
 
 test('the landing at the contract\'s port pays the player\'s credits and moves the shipper\'s regard: whole and on the day, up; late, short or lost, down and docked', async () => {
   const r = await run(() => {
-    const st = owner(), out = {}, hall = 'the Compact Freight Office', land = (o, have, late) => {
+    const st = owner(), out = {}, hall = 'the Arcology Pact Freight Office', land = (o, have, late) => {
       board([contract(o)]); takeContract(0); st.cargo.water = have; st.day += late ? 20 : 3; st.systemId = 'mars'; st.planet = 'Mars'; const c0 = st.credits, s0 = standingOf(career(), hall);
       const x0 = skillXp(career().post), text = settleContract(currentPlanet()); st.systemId = 'earth'; st.planet = 'Earth';
       return { text, pay: st.credits - c0, standing: standingOf(career(), hall) - s0, run: career().run, water: st.cargo.water, xp: skillXp(career().post) - x0 };

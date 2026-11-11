@@ -99,7 +99,7 @@ Two rules hold at every step:
 
 In order, each its own piece of work:
 
-1. **The names.** `FACTIONS`, `STATE_FACTIONS`, every system's `gov` and `LICENSED` take the blocs' names. The mission arcs move with them: the League's water dispute becomes the Federation's, the Concord's audit the Dome Pact's, the Compact's licence the Arcology Pact's. Saves migrate their standing by name. Nothing plays differently.
+1. **The names.** `FACTIONS`, `STATE_FACTIONS`, every system's `gov` and `LICENSED` take the blocs' names. The mission arcs move with them: the League's water dispute becomes the Federation's, the Concord's audit the Dome Pact's, the Compact's licence the Arcology Pact's. Saves migrate their standing by name. Nothing plays differently. Done (#1043): the old names are kept in one table (`OLD_NAMES`, `js/data.js`), for old saves and for the dice that draw a person's ties from a power's name.
 2. **The wars.** The world's wars between powers (`js/world.js`) stop. The economies stay, per bloc. The faction war that recalls crew home (`js/ties.js`) waits for the owners' war.
 3. **The powers' standing.** The powers are one table (the entry above), and standing is kept by a power's name beside the shippers' (`js/shippers.js`): system-wide for a major power, by place for a minor one. Chapter two's squeeze reads Tycho's, Kaur's and the lender's; the others come in with their chapters.
 4. **The war.** The fuel war's rumblings in chapter two and its blockade in chapter three, read from the world's state (`the-fuel-war.md`).

@@ -46,7 +46,7 @@ test('every choice in every port scene works for every post, with clean text, an
   await ev(helpers);
   const r = await ev(() => {
     const st = setup(), out = { bad: [], counts: {} };
-    factionState().war = { a: 'Dome Concord', b: 'Arcology Compact', start: st.day, until: st.day + 40, score: { 'Dome Concord': 0, 'Arcology Compact': 0 } };
+    factionState().war = { a: 'Dome Pact', b: 'Arcology Pact', start: st.day, until: st.day + 40, score: { 'Dome Pact': 0, 'Arcology Pact': 0 } };
     for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
       for (const s of portScenes()) {
         hired().post = post; st.credits = 50000; st.planet = [].concat(s.when.planet)[0]; st.systemId = { Mars: 'mars', Ganymede: 'jupiter', 'Hermes Foundry': 'mercury', Earth: 'earth', 'Ceres Station': 'ceres', 'Juno Commons': 'juno' }[st.planet]; G.mode = 'landed';

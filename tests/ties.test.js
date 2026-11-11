@@ -24,14 +24,14 @@ test('ties are drawn from the person, the same each time, and the main character
     const affs = {}, status = {};
     for (const p of people) { const t = tiesOf(p); affs[t.aff] = (affs[t.aff] || 0) + 1; const s = t.aff && t.status[t.aff]; status[s] = (status[s] || 0) + 1; for (const f of FACTIONS) if (t.regard[f] < -3 || t.regard[f] > 3) return { bad: true }; }
     return {
-      same: JSON.stringify(t0) === JSON.stringify(again), coalition: affs['Arcology Compact'] / 300, pirate: !!affs.Pirate, none: !!affs.null, exile: !!status.exile, wanted: !!status.wanted, officer: !!status.officer,
-      ines: tiesOf(castPerson('ines')).status['Arcology Compact'], tomas: tiesOf(castPerson('tomas')).status['Arcology Compact'], ruben: tiesOf(castPerson('ruben')).status['Dome Concord'], pax: tiesOf(castPerson('pax')).aff,
+      same: JSON.stringify(t0) === JSON.stringify(again), coalition: affs['Arcology Pact'] / 300, pirate: !!affs.Pirate, none: !!affs.null, exile: !!status.exile, wanted: !!status.wanted, officer: !!status.officer,
+      ines: tiesOf(castPerson('ines')).status['Arcology Pact'], tomas: tiesOf(castPerson('tomas')).status['Arcology Pact'], ruben: tiesOf(castPerson('ruben')).status['Dome Pact'], pax: tiesOf(castPerson('pax')).aff,
     };
   });
   assert.ok(!r.bad, 'regard stays in -3 to 3'); assert.ok(r.same);
-  assert.ok(r.coalition > 0.5 && r.coalition < 0.85, `most are Compact (${r.coalition})`);
+  assert.ok(r.coalition > 0.5 && r.coalition < 0.85, `most are Arcology Pact (${r.coalition})`);
   assert.ok(r.pirate && r.none && r.exile && r.wanted && r.officer, 'and the rest are drawn too');
-  assert.equal(r.ines, 'exile'); assert.equal(r.tomas, 'member'); assert.equal(r.ruben, 'officer'); assert.equal(r.pax, 'Charter League');
+  assert.equal(r.ines, 'exile'); assert.equal(r.tomas, 'member'); assert.equal(r.ruben, 'officer'); assert.equal(r.pax, 'Guild Federation');
   await done();
 });
 
@@ -40,7 +40,7 @@ test('the same faction draws two people together, and a faction one holds agains
   await ev(helpers);
   const r = await ev(() => {
     start();
-    const a = find(t => t.aff === 'Arcology Compact'), b = find(t => t.aff === 'Arcology Compact'), c = find(t => t.aff === 'Charter League' && t.regard['Arcology Compact'] <= -2), d = find(t => t.aff === 'Arcology Compact');
+    const a = find(t => t.aff === 'Arcology Pact'), b = find(t => t.aff === 'Arcology Pact'), c = find(t => t.aff === 'Guild Federation' && t.regard['Arcology Pact'] <= -2), d = find(t => t.aff === 'Arcology Pact');
     return { same: factionPull(a, b), apart: factionPull(c, d), reasonSame: factionReason(a, b), reasonApart: factionReason(c, d) };
   });
   assert.ok(r.same > 0, `${r.same}`); assert.ok(r.apart < 0, `${r.apart}`);
@@ -70,19 +70,19 @@ test('a crew member the port\'s faction wants is a customs matter, and your own 
   await ev(helpers);
   const r = await ev(() => {
     const st = start(), h = hired(), planet = currentPlanet(), gov = system().gov, out = { gov };
-    const p = find(t => t.status[gov] === 'wanted' || t.status['Arcology Compact'] === 'wanted'); 
+    const p = find(t => t.status[gov] === 'wanted' || t.status['Arcology Pact'] === 'wanted'); 
     st.day += 5; out.offered = Mods.filter('happenings', [], 'port', planet).some(c => c.tier === 1);
-    const e = customsScene('Arcology Compact', planet);
+    const e = customsScene('Arcology Pact', planet);
     out.labels = e.choices.map(c => c.label); out.title = e.title;
-    out.again = customsScene('Arcology Compact', planet);  // the ship is stopped once in 120 days
-    st.day += 121; out.later = !!customsScene('Arcology Compact', planet); st.day -= 121;
+    out.again = customsScene('Arcology Pact', planet);  // the ship is stopped once in 120 days
+    st.day += 121; out.later = !!customsScene('Arcology Pact', planet); st.day -= 121;
     const op = p.opinion; G.dialog = { event: e, choices: e.choices };
     const i = e.choices.findIndex(c => /papers/.test(c.label)); const text = chooseEvent(i);
     out.papers = /manifest is stamped/.test(text); out.opinion = p.opinion - op; out.stays = st.crew.includes(p.id);
     return out;
   });
-  assert.equal(r.gov, 'Arcology Compact'); assert.equal(r.title, 'The Customs Officer'); assert.ok(r.offered, 'offered at the port');
-  assert.ok(r.labels.some(l => /^\[Your Arcology Compact papers\]/.test(l)), 'you are Compact, so you have papers');
+  assert.equal(r.gov, 'Arcology Pact'); assert.equal(r.title, 'The Customs Officer'); assert.ok(r.offered, 'offered at the port');
+  assert.ok(r.labels.some(l => /^\[Your Arcology Pact papers\]/.test(l)), 'you are Arcology Pact, so you have papers');
   assert.ok(r.labels.length >= 4); assert.equal(r.again, null); assert.ok(r.later, 'and again after the cooldown');
   assert.ok(r.papers && r.opinion === 2 && r.stays);
   await done();
@@ -93,8 +93,8 @@ test('putting them ashore, or being caught, costs you the crew member, and a rep
   await ev(helpers);
   const r = await ev(() => {
     const st = start(), h = hired(), planet = currentPlanet(), out = {};
-    const p = find(t => t.status['Arcology Compact'] === 'wanted'), n = st.crew.length;
-    const e = customsScene('Arcology Compact', planet), i = e.choices.findIndex(c => /ashore/.test(c.label)), op = p.opinion;
+    const p = find(t => t.status['Arcology Pact'] === 'wanted'), n = st.crew.length;
+    const e = customsScene('Arcology Pact', planet), i = e.choices.findIndex(c => /ashore/.test(c.label)), op = p.opinion;
     G.dialog = { event: e, choices: e.choices }; const text = chooseEvent(i);
     out.gone = !st.crew.includes(p.id); out.size = st.crew.length === n; out.opinion = p.opinion - op; out.text = /signs on for the berth/.test(text);
     return out;
@@ -110,7 +110,7 @@ test('a main character is not put ashore at customs: the choice is not offered, 
     const st = start(), h = hired(), planet = currentPlanet(), ines = castPerson('ines');
     st.customs = {};  // the first landing may already have used it
     if (!st.crew.includes(ines.id)) st.crew.push(ines.id);
-    const e = customsScene('Arcology Compact', planet);  // Ines is an exile from the Compact
+    const e = customsScene('Arcology Pact', planet);  // Ines is an exile from the Arcology Pact
     const labels = e.choices.map(c => c.label), i = e.choices.findIndex(c => /Say nothing/.test(c.label)), fund = h.fund;
     G.dialog = { event: e, choices: e.choices };
     const text = (() => { const real = Math.random; Math.random = () => 0.99; try { return chooseEvent(i); } finally { Math.random = real; } })();
@@ -125,10 +125,10 @@ test('an officer of the port\'s faction has a friend on the dock, and a small sa
   await ev(helpers);
   const r = await ev(() => {
     const st = start(), h = hired(), planet = currentPlanet();
-    const p = find(t => t.status['Arcology Compact'] === 'officer');
-    const e = dockFriendScene('Arcology Compact', planet), fund = h.fund, op = p.opinion;
+    const p = find(t => t.status['Arcology Pact'] === 'officer');
+    const e = dockFriendScene('Arcology Pact', planet), fund = h.fund, op = p.opinion;
     G.dialog = { event: e, choices: e.choices }; chooseEvent(0);
-    return { title: e.title, fund: h.fund - fund, opinion: p.opinion - op, again: dockFriendScene('Arcology Compact', planet) };
+    return { title: e.title, fund: h.fund - fund, opinion: p.opinion - op, again: dockFriendScene('Arcology Pact', planet) };
   });
   assert.equal(r.title, 'A Friend at the Dock'); assert.equal(r.fund, 1500); assert.equal(r.opinion, 1); assert.equal(r.again, null);
   await done();
@@ -137,12 +137,12 @@ test('an officer of the port\'s faction has a friend on the dock, and a small sa
 test('the person page shows their ties, and yours shows what each faction thinks of you', async () => {
   const { page, ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
-  await ev(() => { const st = start(); st.rep['Charter League'] = -30; G.viewPerson = 'c:ines'; UI.tab = 'person'; UI.render(); });
+  await ev(() => { const st = start(); st.rep['Guild Federation'] = -30; G.viewPerson = 'c:ines'; UI.tab = 'person'; UI.render(); });
   let text = await page.innerText('#panel');
-  assert.match(text, /Affiliation\s+Arcology Compact \(exile\)/); assert.match(text, /Pirates\s+(hostile|cool|neutral|warm|loyal)/);
+  assert.match(text, /Affiliation\s+Arcology Pact \(exile\)/); assert.match(text, /Pirates\s+(hostile|cool|neutral|warm|loyal)/);
   await ev(() => { G.viewPerson = 'you'; UI.render(); });
   text = await page.innerText('#panel');
-  assert.match(text, /YOUR TIES/i); assert.match(text, /Affiliation\s+Arcology Compact \(member\)/); assert.match(text, /Charter League\s+regards you as distrusted/);
+  assert.match(text, /YOUR TIES/i); assert.match(text, /Affiliation\s+Arcology Pact \(member\)/); assert.match(text, /Guild Federation\s+regards you as distrusted/);
   await done();
 });
 
@@ -201,8 +201,8 @@ test('a patrol stop weighs on the faction: a hand-over helps, being caught or po
     s = scene(); withRandom(0.999, () => chooseEvent(s.pick(/Say nothing/))); out.caughtRep = st.rep[gov];
     s = scene(); withRandom(0, () => chooseEvent(s.pick(/Say nothing/))); out.clearRep = st.rep[gov];
     s = scene(); h.fund = 10000; withRandom(0, () => chooseEvent(s.pick(/Pay the officer/))); out.payRep = st.rep[gov];
-    const ines = castPerson('ines'); st.crew = st.crew.filter(id => id !== ines.id && tiesOf(person(id)).status['Arcology Compact'] !== 'wanted' && tiesOf(person(id)).status['Arcology Compact'] !== 'exile'); st.crew.push(ines.id); st.customs = {}; st.rep['Arcology Compact'] = 0;
-    const e = customsScene('Arcology Compact', system(), true); G.dialog = { event: e, choices: e.choices };
+    const ines = castPerson('ines'); st.crew = st.crew.filter(id => id !== ines.id && tiesOf(person(id)).status['Arcology Pact'] !== 'wanted' && tiesOf(person(id)).status['Arcology Pact'] !== 'exile'); st.crew.push(ines.id); st.customs = {}; st.rep['Arcology Pact'] = 0;
+    const e = customsScene('Arcology Pact', system(), true); G.dialog = { event: e, choices: e.choices };
     out.cast = withRandom(0.999, () => chooseEvent(e.choices.findIndex(c => /Gunner 2/.test(c.label)))); out.castHere = st.crew.includes(ines.id);
     return out;
   });
@@ -219,7 +219,7 @@ test('a patrol cutter\'s lieutenant asks one question first, remembers how it wa
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = start(), h = hired(), out = {}, GOVS = ['Arcology Compact', 'Dome Concord', 'Charter League'];
+    const st = start(), h = hired(), out = {}, GOVS = ['Arcology Pact', 'Dome Pact', 'Guild Federation'];
     const withRandom = (v, f) => { const real = Math.random; let first = true; Math.random = () => { if (!first) return real(); first = false; return v; }; try { return f(); } finally { Math.random = real; } };
     const begin = (gov, again) => {  // a wanted hand for the faction, and a stop that is due; `again` keeps what the journal holds
       st.crew = st.crew.filter(id => GOVS.every(g => !['wanted', 'exile', 'officer'].includes(tiesOf(person(id)).status[g])));
@@ -227,30 +227,30 @@ test('a patrol cutter\'s lieutenant asks one question first, remembers how it wa
       const p = find(t => t.status[gov] === 'wanted'); return { p, e: lieutenantScene(gov, system()) };
     };
     const play = (e, i) => { G.dialog = { event: e, choices: e.choices }; return chooseEvent(i); };
-    out.first = {}; out.second = {}; out.pure = [lieutenantQuestion(null, 'Charter League'), lieutenantQuestion({ q: 'A' }, 'Charter League'), lieutenantQuestion({ q: 'S' }, 'Charter League'), lieutenantQuestion({ q: 'W' }, 'Dome Concord')];
+    out.first = {}; out.second = {}; out.pure = [lieutenantQuestion(null, 'Guild Federation'), lieutenantQuestion({ q: 'A' }, 'Guild Federation'), lieutenantQuestion({ q: 'S' }, 'Guild Federation'), lieutenantQuestion({ q: 'W' }, 'Dome Pact')];
     for (const gov of GOVS) {
       let s = begin(gov); out.first[gov] = s.e.text; out.labels = s.e.choices.length;
       play(s.e, 0); out.straightRep = st.rep[gov]; out.stop = G.nextEvent && G.nextEvent.title; out.stopChoices = G.nextEvent && G.nextEvent.choices.length; out.met = st.customs.met[gov].answer;
       s = begin(gov, true); out.second[gov] = s.e.text;
     }
     // the gap makes saying nothing clear less often: the same roll clears after a straight answer and not after a gap
-    const silent = (answer) => { const s = begin('Charter League'); play(s.e, answer); const stop = G.nextEvent; G.dialog = { event: stop, choices: stop.choices }; return withRandom(0.5, () => chooseEvent(stop.choices.findIndex(c => /Say nothing/.test(c.label)))); };
+    const silent = (answer) => { const s = begin('Guild Federation'); play(s.e, answer); const stop = G.nextEvent; G.dialog = { event: stop, choices: stop.choices }; return withRandom(0.5, () => chooseEvent(stop.choices.findIndex(c => /Say nothing/.test(c.label)))); };
     out.afterStraight = /comes up from the engine room/.test(silent(0)); out.afterGap = /comes up from the engine room/.test(silent(1));
     // "Who's asking?": a win ends the stop with the list unread; a loss costs regard and goes on
-    let s = begin('Dome Concord'); const fund = h.fund;
-    out.win = withRandom(0, () => play(s.e, 2)); out.winNext = G.nextEvent; out.winDue = customsDue(true); out.winStays = st.crew.includes(s.p.id); out.winRep = st.rep['Dome Concord'];
-    s = begin('Dome Concord'); out.lose = withRandom(0.999, () => play(s.e, 2)); out.loseNext = !!G.nextEvent; out.loseRep = st.rep['Dome Concord']; out.loseDue = customsDue(true);
-    s = begin('Arcology Compact', true); out.againText = s.e.text; out.metLoss = st.customs.met;
+    let s = begin('Dome Pact'); const fund = h.fund;
+    out.win = withRandom(0, () => play(s.e, 2)); out.winNext = G.nextEvent; out.winDue = customsDue(true); out.winStays = st.crew.includes(s.p.id); out.winRep = st.rep['Dome Pact'];
+    s = begin('Dome Pact'); out.lose = withRandom(0.999, () => play(s.e, 2)); out.loseNext = !!G.nextEvent; out.loseRep = st.rep['Dome Pact']; out.loseDue = customsDue(true);
+    s = begin('Arcology Pact', true); out.againText = s.e.text; out.metLoss = st.customs.met;
     return out;
   });
-  assert.match(r.first['Charter League'], /TEAGUE/); assert.match(r.first['Charter League'], /Ship's articles/);
-  assert.match(r.first['Dome Concord'], /Varga/); assert.match(r.first['Dome Concord'], /Who signed/);
-  assert.match(r.first['Arcology Compact'], /Osei/); assert.match(r.first['Arcology Compact'], /seals/);
+  assert.match(r.first['Guild Federation'], /TEAGUE/); assert.match(r.first['Guild Federation'], /Ship's articles/);
+  assert.match(r.first['Dome Pact'], /Varga/); assert.match(r.first['Dome Pact'], /Who signed/);
+  assert.match(r.first['Arcology Pact'], /Osei/); assert.match(r.first['Arcology Pact'], /seals/);
   assert.deepEqual(r.pure, ['A', 'S', 'A', 'A']);
   assert.equal(r.labels, 3); assert.equal(r.straightRep, 1); assert.equal(r.stop, 'A Patrol Cutter'); assert.ok(r.stopChoices >= 3); assert.equal(r.met, 'straight');
-  assert.match(r.second['Charter League'], /We've met/); assert.match(r.second['Charter League'], /Cargo seals/);
-  assert.match(r.second['Dome Concord'], /remembers you/); assert.match(r.second['Dome Concord'], /articles, please/);
-  assert.match(r.second['Arcology Compact'], /hello again/); assert.match(r.second['Arcology Compact'], /Who signed/);
+  assert.match(r.second['Guild Federation'], /We've met/); assert.match(r.second['Guild Federation'], /Cargo seals/);
+  assert.match(r.second['Dome Pact'], /remembers you/); assert.match(r.second['Dome Pact'], /articles, please/);
+  assert.match(r.second['Arcology Pact'], /hello again/); assert.match(r.second['Arcology Pact'], /Who signed/);
   assert.ok(r.afterStraight && !r.afterGap, 'a gap makes saying nothing clear less often');
   assert.match(r.win, /Varga does not ask for the crew list/); assert.equal(r.winNext, null); assert.ok(!r.winDue && r.winStays && r.winRep === 0);
   assert.match(r.lose, /transcript/); assert.ok(r.loseNext); assert.equal(r.loseRep, -1); assert.equal(r.loseDue, false, 'the stop that follows is counted');
@@ -263,10 +263,10 @@ test('a war puts the two sides at odds and each side together, once, and the cal
   const r = await ev(() => {
     const st = start(), planet = currentPlanet(), out = {};
     st.crew = []; st.bonds = {};
-    const e1 = find(t => t.aff === 'Arcology Compact' && t.status['Arcology Compact'] === 'member'), e2 = find(t => t.aff === 'Arcology Compact' && t.status['Arcology Compact'] === 'member'), m1 = find(t => t.aff === 'Dome Concord' && t.status['Dome Concord'] === 'member');
+    const e1 = find(t => t.aff === 'Arcology Pact' && t.status['Arcology Pact'] === 'member'), e2 = find(t => t.aff === 'Arcology Pact' && t.status['Arcology Pact'] === 'member'), m1 = find(t => t.aff === 'Dome Pact' && t.status['Dome Pact'] === 'member');
     const port = () => Mods.filter('happenings', [], 'port', planet).filter(c => c.tier === 1).length;
     const n0 = port();
-    factionState().war = { a: 'Arcology Compact', b: 'Dome Concord', start: st.day, until: st.day + 40, score: { 'Arcology Compact': 0, 'Dome Concord': 0 } };
+    factionState().war = { a: 'Arcology Pact', b: 'Dome Pact', start: st.day, until: st.day + 40, score: { 'Arcology Pact': 0, 'Dome Pact': 0 } };
     warBonds(); warBonds();  // once
     const f = x => ({ id: x.id, p: x });
     out.apart = bond(f(e1), f(m1)); out.together = bond(f(e1), f(e2));
@@ -285,33 +285,33 @@ test('a member who asks for leave goes if you let them, or stays if they like yo
   await ev(helpers);
   const r = await ev(() => {
     const st = start(), planet = currentPlanet(), out = {};
-    const war = () => { factionState().war = { a: 'Arcology Compact', b: 'Dome Concord', start: st.day, until: st.day + 40, score: { 'Arcology Compact': 0, 'Dome Concord': 0 } }; };
+    const war = () => { factionState().war = { a: 'Arcology Pact', b: 'Dome Pact', start: st.day, until: st.day + 40, score: { 'Arcology Pact': 0, 'Dome Pact': 0 } }; };
     const go = (sc, re) => { G.dialog = { event: sc, choices: sc.choices }; return chooseEvent(sc.choices.findIndex(c => re.test(c.label))); };
     // a member, let go
     st.crew = []; war();
-    let m = find(t => t.aff === 'Arcology Compact' && t.status['Arcology Compact'] === 'member'), op = m.opinion, n = st.crew.length;
+    let m = find(t => t.aff === 'Arcology Pact' && t.status['Arcology Pact'] === 'member'), op = m.opinion, n = st.crew.length;
     let t = go(warCallScene(planet), /^Let /);
     out.go = { left: !st.crew.includes(m.id), same: st.crew.length === n, liked: m.opinion - op, text: /signs on/.test(t) };
     // a member who likes you, asked to stay
     st.crew = []; st.warCalled = {}; war();
-    m = find(t => t.aff === 'Arcology Compact' && t.status['Arcology Compact'] === 'member'); m.opinion = OPINION.CLOSE; op = m.opinion;
+    m = find(t => t.aff === 'Arcology Pact' && t.status['Arcology Pact'] === 'member'); m.opinion = OPINION.CLOSE; op = m.opinion;
     t = go(warCallScene(planet), /^Ask /);
     out.stay = { here: st.crew.includes(m.id), liked: m.opinion - op };
     // one who does not, asked to stay, goes anyway and minds
     st.crew = []; st.warCalled = {}; war();
-    m = find(t => t.aff === 'Arcology Compact' && t.status['Arcology Compact'] === 'member'); m.opinion = -1; op = m.opinion;
+    m = find(t => t.aff === 'Arcology Pact' && t.status['Arcology Pact'] === 'member'); m.opinion = -1; op = m.opinion;
     t = go(warCallScene(planet), /^Ask /);
     out.minds = { left: !st.crew.includes(m.id), liked: m.opinion - op };
     // an officer, refused
-    st.crew = []; st.warCalled = {}; war(); const before = repOf('Arcology Compact');
-    m = find(t => t.aff === 'Arcology Compact' && t.status['Arcology Compact'] === 'officer'); op = m.opinion;
+    st.crew = []; st.warCalled = {}; war(); const before = repOf('Arcology Pact');
+    m = find(t => t.aff === 'Arcology Pact' && t.status['Arcology Pact'] === 'officer'); op = m.opinion;
     const sc = warCallScene(planet); out.officerLabels = sc.choices.map(c => c.label);
     t = go(sc, /^Refuse /);
-    out.refused = { here: st.crew.includes(m.id), liked: m.opinion - op, rep: repOf('Arcology Compact') - before };
+    out.refused = { here: st.crew.includes(m.id), liked: m.opinion - op, rep: repOf('Arcology Pact') - before };
     // an officer, released: the faction thanks you
-    st.crew = []; st.warCalled = {}; war(); const b2 = repOf('Arcology Compact');
-    m = find(t => t.aff === 'Arcology Compact' && t.status['Arcology Compact'] === 'officer');
-    go(warCallScene(planet), /^Let /); out.released = { left: !st.crew.includes(m.id), rep: repOf('Arcology Compact') - b2 };
+    st.crew = []; st.warCalled = {}; war(); const b2 = repOf('Arcology Pact');
+    m = find(t => t.aff === 'Arcology Pact' && t.status['Arcology Pact'] === 'officer');
+    go(warCallScene(planet), /^Let /); out.released = { left: !st.crew.includes(m.id), rep: repOf('Arcology Pact') - b2 };
     return out;
   });
   assert.deepEqual(r.go, { left: true, same: true, liked: 2, text: true });
