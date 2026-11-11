@@ -11,9 +11,9 @@
 // x0 and x1 shares of the tower's width. A person's x is a share of the width and their dk a deck index, fractional on the ladder in the well.
 const ROOMS = layoutRooms(LAYOUTS.freighter);
 const LADDER = LAYOUTS.freighter.well.x;
-// A share of the old lengthwise hull (1600 units) as a share of the tower's width (880), the same distance in world units: every distance
-// below written in shares is `share * CUT_K`.
-const CUT_K = 1600 / 880;
+// A share of the old lengthwise hull (1600 units) as a share of the tower's width, the same distance in world units: every distance below
+// written in shares is `share * CUT_K`, so a step, a gap between two people and a walking pace stay a person's size however wide the hull.
+const CUT_K = 1600 / LAYOUTS.freighter.width;
 // Seats (#925): where a room has something to sit on, as fractions of the room. rooms.js draws a stool at each, the table and the posts at the
 // bridge and the guns are these places (routineTarget), and a seated pose needs one under it (posture): anyone stopped elsewhere stands.
 const SEATS = LAYOUTS.freighter.seats;  // the table seats seven; the bridge its four posts

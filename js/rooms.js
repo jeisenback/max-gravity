@@ -214,51 +214,41 @@ function roomEngine(ctx, r, s, X, W) {
   }
 }
 
-// Bunk k of n in the berths room r, in two tiers, a person long (BUNK, #972): its left end x, its length w, and y the top of its frame (the
-// mattress lies on it, 5 deep). The columns stand either side of the ladder well (well: its band in world x, the room's middle by default), the
-// left ones from BERTH_NAME in from the room's left wall, which is kept clear for the room's name plate (shiplife.js, 13px down to the smallest
-// window, #937), and the right ones from its right wall. The bottom tier stands on its lockers, its mattress near the seated hip, and the top
-// tier under the ceiling with room for a sleeper over each (#933). The berths draw their bunks here, and the cutaway lays its sleepers on them
-// (shiplife.js). The bottom tier fills from the left and the top one from the right, so the top bunk at the left is the last one taken.
-const BUNK = 90, BERTH_NAME = 116;
+// Bunk k of n in the berths room r, three tiers high (look.md, rule 1, #1023), a person long (BUNK, #972): its left end x, its length w, and y
+// the top of its frame (the mattress lies on it, 5 deep). The columns stand either side of the ladder well (well: its band in world x, the room's
+// middle by default), the left ones from BERTH_NAME in from the room's left wall, which is kept clear for the room's name plate (shiplife.js, 13px
+// down to the smallest window, #937), and the right ones from its right wall. The tiers are BERTH_TIER apart: the bottom one's frame on the deck,
+// the top one under the ceiling, and over each sleeper the place for their thing (berthKeep) under the curtain rail and the bunk over it. The
+// berths draw their bunks here, and the cutaway lays its sleepers on them (shiplife.js). The bottom tier fills from the left and the two over it
+// from the right, so the bunks over the left column are the last ones taken.
+const BUNK = 90, BERTH_NAME = 116, BERTH_TIER = 29.5, BERTH_FRAME = 2.8;
 function berthBunk(r, n, k, well = { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }) {
-  const cols = Math.max(1, Math.ceil(n / 2)), left = Math.ceil(cols / 2), m = (r.x1 - r.x0) * 0.02, lm = Math.max(m, BERTH_NAME);
-  const w = Math.min(BUNK, (well.x0 - r.x0 - lm) / left), col = k % 2 ? Math.floor(n / 2) - 1 - Math.floor(k / 2) : Math.floor(k / 2);
-  return { x: col < left ? r.x0 + lm + col * w : r.x1 - m - (cols - col) * w, w, y: k % 2 ? r.floor - 58 : r.floor - 22 };
+  const cols = Math.max(1, Math.ceil(n / 3)), left = Math.ceil(cols / 2), m = (r.x1 - r.x0) * 0.02, lm = Math.max(m, BERTH_NAME);
+  const w = Math.min(BUNK, (well.x0 - r.x0 - lm) / left), tier = k % 3, col = tier ? cols - 1 - Math.floor(k / 3) : Math.floor(k / 3);
+  return { x: col < left ? r.x0 + lm + col * w : r.x1 - m - (cols - col) * w, w, y: r.floor - BERTH_FRAME - tier * BERTH_TIER };
 }
 // Where the cutaway lays a sleeper on bunk b (berthBunk): the hip, the head on the pillow at its left end, and the mattress under them.
 const berthSleeper = b => ({ x: b.x + b.w / 2, y: b.y - 5 });
 // The place on bunk b kept for its owner's one thing (#934): a box on the wall over the foot half of the mattress, above the sleeper and under
 // the curtain rail, clear of the bunk's own fittings, so the thing is drawn there without redrawing the bunk.
-const berthKeep = b => ({ x: b.x + b.w - 34, y: b.y - 27, w: 16, h: 8 });
+const berthKeep = b => ({ x: b.x + b.w - 34, y: b.y - 25, w: 16, h: 7 });
 
-// A bunk of the berths (#933) at b (berthBunk), the frame with screws and a grab rail on its front, the mattress, the pillow under the
-// sleeper's head, the blanket (spread over a sleeper, folded at the foot of an empty bunk), the curtain rail, the curtain (drawn back to the
-// foot, or across the bunk: shut), the reading lamp over the pillow and, under the bottom tier, two locker doors latched shut with a vent and
-// a stencilled plate. The place for its owner's thing (berthKeep) is left clear.
-function roomBunk(ctx, b, F, slept, shut, low) {
-  const n = v => Math.round(v * 100) / 100, x = n(b.x), w = n(b.w), y = n(b.y), yr = n(y - 30);
-  if (low) {
-    roomPart(ctx, roomRound(x + 1, y + 6, w - 2, F - y - 6, 1), '#182c40', { top: 0, side: 2 }); roomFlat(ctx, x + 3, F - 2, w - 6, 2, '#0f1d2c');
-    const dw = n((w - 8) / 2);
-    for (const j of [0, 1]) {
-      const dx = n(x + 3 + j * (dw + 2));
-      roomPart(ctx, roomRound(dx, y + 7.5, dw, F - y - 10.5, 1), '#1c3349', { top: 0.8, side: 1.2 });
-      roomFlat(ctx, j ? dx + 2 : dx + dw - 4, y + 11, 2, 3.5, '#8796a5'); roomDot(ctx, j ? dx + 3 : dx + dw - 3, y + 10.2, 0.5, '#56708c');  // the latch
-      for (let v = 0; v < 3; v++) roomFlat(ctx, dx + dw / 2 - 5 + v * 4, F - 6, 3, 0.8, '#0f1d2c');  // the vent
-      if (!j) { roomFlat(ctx, dx + 4, y + 10, 8, 3, '#4a4436'); roomFlat(ctx, dx + 5, y + 11, 2, 1, '#2a261e'); roomFlat(ctx, dx + 8, y + 11, 3, 1, '#2a261e'); }  // the stencil
-    }
-  }
-  roomPart(ctx, roomRound(x, y, w, 6, 1), '#1f3a56', { top: 1.2, under: 1.2 });
-  roomPart(ctx, roomRound(x + w / 2 - 14, y + 2.2, 28, 1.6, 0.8), '#3a5470', { top: 0.5 });  // a grab rail for zero g
-  for (const sx of [x + 3, x + w - 3]) roomDot(ctx, sx, y + 3, 0.6, '#56708c');
+// A bunk of the berths (#933) at b (berthBunk), the frame (BERTH_FRAME deep) with screws and a grab rail on its front, the mattress, the pillow
+// under the sleeper's head, the blanket (spread over a sleeper, folded at the foot of an empty bunk), the curtain rail on its brackets under the
+// bunk over it, the curtain (drawn back to the foot, or across the bunk: shut) and the reading lamp hung from the rail over the pillow. The place
+// for its owner's thing (berthKeep) is left clear.
+function roomBunk(ctx, b, F, slept, shut) {
+  const n = v => Math.round(v * 100) / 100, x = n(b.x), w = n(b.w), y = n(b.y), yr = n(y - 26.6);
+  roomPart(ctx, roomRound(x, y, w, BERTH_FRAME, 1), '#1f3a56', { top: 0.8, under: 0.8 });
+  roomPart(ctx, roomRound(x + w / 2 - 14, y + 0.7, 28, 1.6, 0.8), '#3a5470', { top: 0.5 });  // a grab rail for zero g
+  for (const sx of [x + 3, x + w - 3]) roomDot(ctx, sx, y + 1.4, 0.6, '#56708c');
   roomPart(ctx, roomRound(x + 2, y - 5, w - 4, 5, 2), '#3a4a5e', { top: 1, under: 0.8 });
   roomPart(ctx, roomRound(x + 4, y - 9.5, 18, 4.5, 2), '#9a968a', { top: 0.8, side: 1.5 });
   if (slept) roomPart(ctx, roomRound(x + 20, y - 6.5, w - 24, 2.5, 1), '#334560', { top: 0.6 });
   else { roomPart(ctx, roomRound(x + w - 30, y - 9, 20, 4, 1.5), '#3e4f6e', { top: 1, side: 2 }); roomFlat(ctx, x + w - 29, y - 7.2, 18, 0.6, '#2c3a52'); }
-  roomFlat(ctx, x + 2.5, y - 28, 2, 4, '#2a3e54'); ctx.strokeStyle = '#56708c'; ctx.lineWidth = 1; roomSeg(ctx, [[x + 3.5, y - 27], [x + 9, y - 26]]);  // the reading lamp
-  roomPart(ctx, `M ${n(x + 6)} ${n(y - 26)} L ${n(x + 12)} ${n(y - 26)} L ${n(x + 14)} ${n(y - 22)} L ${n(x + 4)} ${n(y - 22)} Z`, '#4a5a6a', { top: 0.6, side: 1 });
-  roomDot(ctx, x + 9, y - 21.6, 1, '#6a6048');
+  roomFlat(ctx, x + 2.5, y - 25, 2, 4, '#2a3e54'); ctx.strokeStyle = '#56708c'; ctx.lineWidth = 1; roomSeg(ctx, [[x + 3.5, y - 24], [x + 9, y - 23]]);  // the reading lamp
+  roomPart(ctx, `M ${n(x + 6)} ${n(y - 23)} L ${n(x + 12)} ${n(y - 23)} L ${n(x + 14)} ${n(y - 19)} L ${n(x + 4)} ${n(y - 19)} Z`, '#4a5a6a', { top: 0.6, side: 1 });
+  roomDot(ctx, x + 9, y - 18.6, 1, '#6a6048');
   for (const bx of [x + 2, x + w - 3.5]) roomFlat(ctx, bx, yr - 1, 1.5, 3, '#2a3e54');  // the curtain rail on its brackets
   roomPart(ctx, roomRound(x + 2, yr, w - 4, 1.6, 0.8), '#3a5470', { top: 0.5 });
   ctx.strokeStyle = '#3a2d48'; ctx.lineWidth = 0.8;
@@ -274,16 +264,16 @@ function roomBunk(ctx, b, F, slept, shut, low) {
   }
 }
 
-// The berths (#933): the bunks in their columns on posts from the deck to the ceiling, either side of the well (roomBunk), the curtain shut on the
-// third one ("z z" behind it at night in cruise); beside the well the crew's corner (berthCorner): the wall unit with its books, photo, plant,
+// The berths (#933): the bunks in their columns of three on posts from the deck to the ceiling, either side of the well (roomBunk), the curtain
+// shut on the third one ("z z" behind it at night in cruise); beside the well the crew's corner (berthCorner): the wall unit with its books, photo, plant,
 // mug and reading lamp (its glow in cruise), the pinboard where it fits, the towel swinging on its hook and the guitar lashed to the wall. The top
 // left is kept clear for the room's name (berthBunk).
 function roomBerths(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), well = s.well || { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }, { w: cw } = berthBunk(r, n, 0, well);
   const shut = W >= 220 && n >= 3 ? 2 : -1, r2 = v => Math.round(v * 100) / 100;
-  for (let k = 0; k < n; k++) roomBunk(ctx, berthBunk(r, n, k, well), F, k < s.asleep, k === shut, k % 2 === 0);
+  for (let k = 0; k < n; k++) roomBunk(ctx, berthBunk(r, n, k, well), F, k < s.asleep, k === shut);
   const posts = new Set();
-  for (let k = 0; k < n; k += 2) { const { x } = berthBunk(r, n, k, well); posts.add(r2(x)); posts.add(r2(x + cw)); }
+  for (let k = 0; k < n; k += 3) { const { x } = berthBunk(r, n, k, well); posts.add(r2(x)); posts.add(r2(x + cw)); }  // each column's bottom bunk
   for (const px of posts) {  // the posts at each column's ends, bolted to the deck and the ceiling
     roomPart(ctx, roomRound(px - 2, F - 92, 4, 92, 1), '#2a4664', { top: 0, side: 1.2 });
     roomFlat(ctx, px - 3.5, F - 2, 7, 2, '#20384f'); for (const sy of [F - 90, F - 40]) roomDot(ctx, px, sy, 0.6, '#56708c');
@@ -512,7 +502,7 @@ function roomCommsRack(ctx, r, s) {
 
 // The bridge's forward window (#933): the glass, a clear rectangle high on the wall over the consoles' screens, where the destination can be
 // shown (#936); the frame and its struts are drawn round it and over it.
-const bridgeGlass = r => { const W = r.x1 - r.x0; return { x: r.x0 + W * 0.56, y: r.floor - 92, w: W * 0.41, h: 28 }; };
+const bridgeGlass = r => { const W = r.x1 - r.x0; return { x: r.x0 + W * 0.55, y: r.floor - 92, w: W * 0.42, h: 28 }; };
 // A pilot's seat at a post of the bridge (#933), facing forward (SEAT_FACE): its pan at the seated hip (23) on a pedestal bolted to the deck, the
 // back behind it with a headrest at the seated head, and the harness, slack on the back when no one is strapped in.
 function roomBridgeSeat(ctx, x, F) {
@@ -591,8 +581,9 @@ function roomBridge(ctx, r, s, X, W) {
 // The hold (#933), on the drive deck beside the engine room. A crate is 40 by 24, a load two people lift or the jack moves, and the crates stand
 // in stacks of three on pallets, filled from the bottom of the first stack, which starts clear of the room's name at its top left. holdCrate: crate
 // k's box; holdLabel: the box on its front where its label goes (one day the contract's good, #936), kept clear of everything else, showing for now
-// the crate's serial (holdSerial). The kit is of different ages: wooden crates of more than one batch and a newer moulded one.
-const HOLD_W = 40, HOLD_H = 24, HOLD_GAP = 8, HOLD_FROM = 112;
+// the crate's serial (holdSerial). The jack stands past the fourth stack. The kit is of different ages: wooden crates of more than one batch and
+// a newer moulded one.
+const HOLD_W = 40, HOLD_H = 24, HOLD_GAP = 6, HOLD_FROM = 92;  // the four stacks and the jack past them fit the hull's 720 (#1023)
 const HOLD_KIT = ['#5a4a34', '#54462f', '#4a5a5e', '#5e4e36', '#4e4230'];  // the third the moulded one
 const holdKind = k => (k * 7 + Math.floor(k / 3)) % HOLD_KIT.length;
 const holdCrate = (r, k) => ({ x: r.x0 + HOLD_FROM + Math.floor(k / 3) * (HOLD_W + HOLD_GAP), y: r.floor - 4 - HOLD_H * (k % 3 + 1), w: HOLD_W, h: HOLD_H });
@@ -698,7 +689,7 @@ function roomHold(ctx, r, s, X, W) {
   for (let c = 0; c < stacks; c++) roomHoldStraps(ctx, sx(c), holdCrate(r, Math.min(n - 1, 3 * c + 2)).y, F);
   if (n > 0) roomHoldNet(ctx, r, n, s);
   if (W >= 300) {
-    roomHoldJack(ctx, X(0.76), F);
+    roomHoldJack(ctx, r.x0 + HOLD_FROM + 4 * (HOLD_W + HOLD_GAP) - HOLD_GAP + 2, F);  // at the foot of the last stack
     const lx = X(0.9), [ex, ey] = hangEnd(lx, r.top + 6, 16, 0.7, w, time, s.still);
     ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1; roomSeg(ctx, [[lx, r.top + 6], [ex, ey]]);
     ctx.save(); ctx.translate(ex, ey);

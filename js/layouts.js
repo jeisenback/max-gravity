@@ -9,7 +9,7 @@
 
 const LAYOUTS = {
   freighter: {  // the Ice Hauler: a habitat of six decks over her water tank, the drive deck under it
-    width: 880, well: { x: 0.5, w: 0.04 }, tankAfter: 5, tankH: 260,
+    width: 720, well: { x: 0.5, w: 0.04 }, tankAfter: 5, tankH: 260,
     decks: [
       { id: 'flight', name: 'Flight deck', rooms: [{ id: 'bridge', name: 'Bridge', x0: 0, x1: 1 }] },
       { id: 'mess', name: 'Mess deck', rooms: [{ id: 'galley', name: 'Galley', x0: 0, x1: 0.48 }, { id: 'head', name: 'Head and shower', x0: 0.52, x1: 1 }] },

@@ -212,11 +212,11 @@ test('the camera reaches down past the drive\'s bell to the first of the plume (
 test('the zoom fits about three decks and the tower across, right of the outline (#972)', () => {
   const lay = LAYOUTS.freighter;
   assert.equal(viewOf({ x: 0, y: 0, w: 1360, h: 480 }, lay).zoom, 480 / 360, 'with no strip left of it, the height fit');
-  assert.equal(viewOf({ x: 0, y: 0, w: 760, h: 480 }, lay).zoom, 760 / 960, 'and the width fit');
+  assert.equal(viewOf({ x: 0, y: 0, w: 760, h: 480 }, lay).zoom, 760 / 800, 'and the width fit (the tower 720 across and 40 each side)');
   // the outline's strip (8 in from the box's edge, its width, and an 8 gap) is left out of the width the tower fits across
-  const left = box => outlineLayout(box, lay).w + 16, wide = { x: 0, y: 0, w: 1360, h: 480 }, narrow = { x: 0, y: 0, w: 760, h: 480 };
-  assert.equal(viewOf(wide, lay, left(wide)).zoom, (1360 - left(wide)) / 960, 'a wide box: now the width fit less the strip');
-  assert.equal(viewOf(narrow, lay, left(narrow)).zoom, (760 - left(narrow)) / 960);
+  const left = box => outlineLayout(box, lay).w + 16, wide = { x: 0, y: 0, w: 1100, h: 480 }, narrow = { x: 0, y: 0, w: 760, h: 480 };
+  assert.equal(viewOf(wide, lay, left(wide)).zoom, (1100 - left(wide)) / 800, 'a wide box: now the width fit less the strip');
+  assert.equal(viewOf(narrow, lay, left(narrow)).zoom, (760 - left(narrow)) / 800);
   assert.equal(viewOf({ x: 0, y: 0, w: 1800, h: 480 }, lay, left(wide)).zoom, 480 / 360, 'a box wide enough keeps the height fit');
   const v = viewOf(narrow, lay, left(narrow)); assert.ok(Math.abs(v.span - 480 / v.zoom) < 1e-9);
 });
@@ -237,18 +237,18 @@ test('the outline is the tower: every room, and a tap finds it (#972)', () => {
 });
 test('the outline draws balanced, with no text, and a dot on the ladder between the decks (#972)', () => {
   const lay = LAYOUTS.freighter, o = outlineLayout({ x: 0, y: 0, w: 1360, h: 480 }, lay);
-  for (const [dots, camY] of [[[{ x: 440, dk: 0, color: '#ffb347' }], 200], [[{ x: 440, dk: 5.5, color: '#ffb347' }, { x: 100, dk: 6, color: '#9fe' }], 1000]]) {
+  for (const [dots, camY] of [[[{ x: 360, dk: 0, color: '#ffb347' }], 200], [[{ x: 360, dk: 5.5, color: '#ffb347' }, { x: 100, dk: 6, color: '#9fe' }], 1000]]) {
     const c = fakeCtx(); drawOutline(c, o, dots, camY, 360, lay); assert.equal(c.depth, 0); assert.ok(c.calls.length > 0); assert.ok(!c.calls.includes('fillText'));
   }
-  const at = outlineAt(o, 440, towerDeckY(lay, 5.5));
+  const at = outlineAt(o, 360, towerDeckY(lay, 5.5));
   assert.ok(at.y > o.rooms.find(r => r.id === 'lifesupport').y + o.rooms.find(r => r.id === 'lifesupport').h && at.y < o.rooms.find(r => r.id === 'engine').y, 'a climber in the tube is in the tank\'s band');
   assert.ok(Math.abs(at.x - (o.x + o.w / 2)) < 1e-9, 'the well down the middle');
 });
 
-const RS = (o) => ({ w: phaseWeights(0.3), time: 3, zoom: 1.24, spin: 0, still: false, berths: 6, cargo: 0.5, fuel: 0.5, burning: true, night: 0, asleep: 0, ...o });
+const RS = (o) => ({ w: phaseWeights(0.3), time: 3, zoom: 1.45, spin: 0, still: false, berths: 6, cargo: 0.5, fuel: 0.5, burning: true, night: 0, asleep: 0, ...o });
 const RR = { x0: 300, x1: 700, top: 0, floor: 100 };
 test('every room of the tower draws in every phase, with every save restored', () => {
-  for (const id of ROOMS.map(r => r.id)) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.8, 1.24]) {
+  for (const id of ROOMS.map(r => r.id)) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.8, 1.45]) {
     const c = fakeCtx(); drawRoom(c, id, layoutBox(LAYOUTS.freighter, id), RS({ w: phaseWeights(pr), zoom }));
     assert.ok(c.calls.length > 10, `${id} drew`); assert.equal(c.depth, 0, `${id}: every save is restored`);
     for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${id}: ${f}`);
@@ -502,7 +502,7 @@ const galleyOwn = (r, s) => {
 };
 test('the galley is drawn to the figures\' standard in every phase: its props outlined, the name and the sign on clear wall (#933)', () => {
   const r = layoutBox(LAYOUTS.freighter, 'galley'), F = r.floor;
-  for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.66, 0.96, 1.24]) {  // the burn view's zoom in a window 1000, 1280 and 1600 wide
+  for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {  // the burn view's zoom in a window 1000, 1280 and 1600 wide
     const s = RS({ w: phaseWeights(pr), zoom, damage: { marks: new Set(), severe: false } });
     const c = fakeCtx(); drawRoom(c, 'galley', r, s); roomMessTable(c, r, s);
     assert.equal(c.depth, 0, `${pr}: every save restored`);
@@ -568,7 +568,7 @@ test('the couch phase takes the ladder to a couch on another deck, and the couch
 });
 
 // The berths on the tower (#972): the crew deck's full width with the well up its middle, the bunks either side of it, one sleeper to a bunk.
-test('the bunks are a person long, either side of the well, and a sleeper lies on one with the head on the pillow (#972)', () => {
+test('the bunks are a person long, three high either side of the well, and a sleeper lies on one with the head on the pillow (#972, #1023)', () => {
   const lay = LAYOUTS.freighter, r = layoutBox(lay, 'berths'), well = { x0: (lay.well.x - lay.well.w / 2) * lay.width, x1: (lay.well.x + lay.well.w / 2) * lay.width };
   for (let n = 2; n <= 12; n++) {
     const bunks = Array.from({ length: n }, (_, k) => berthBunk(r, n, k, well));
@@ -582,6 +582,11 @@ test('the bunks are a person long, either side of the well, and a sleeper lies o
       assert.ok(fig.foot.x + 5 <= b.x + b.w, `n ${n}, bunk ${k}: the feet (${fig.foot.x}) on the bunk, to ${b.x + b.w}`);
     });
     assert.ok(bunks.some(b => b.x >= well.x1) || n < 4, `n ${n}: bunks on both sides of the well`);
+    // three high (#1023): the bottom tier's frame (2.8 deep) on the deck, the tiers 29.5 apart, each bunk in a column over a bottom one
+    const tiers = [...new Set(bunks.map(b => b.y))].sort((a, b) => b - a);
+    assert.equal(tiers.length, Math.min(n, 3), `n ${n}: ${tiers.length} tiers`);
+    tiers.forEach((y, t) => assert.ok(Math.abs(y - (r.floor - 2.8 - 29.5 * t)) < 1e-9, `n ${n}: tier ${t} at ${y}`));
+    assert.ok(bunks.filter(b => b.y === tiers[0]).length === Math.ceil(n / 3) && bunks.every(b => bunks.some(a => a.y === tiers[0] && a.x === b.x)), `n ${n}: every bunk over a bottom one`);
   }
 });
 
@@ -626,7 +631,7 @@ const BRIDGE_PROPS = [['#2a4560', 'the window\'s frame and its struts'], ['#1d35
   ['#1f3a56', 'the consoles'], ['#2c4c6e', 'the consoles\' sloped tops'], ['#2e4a68', 'the seats\' pans'], ['#284664', 'the seats\' backs and headrests'], ['#03121c', 'the screens'], ['#1b2f45', 'the comms station\'s rack']];
 test('the bridge is drawn to the figures\' standard in every phase: its props outlined and a step below the people, its name on clear wall (#933)', () => {
   const r = layoutBox(LAYOUTS.freighter, 'bridge'), F = r.floor, W = r.x1 - r.x0;
-  for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.66, 0.96, 1.24]) {  // the burn view's zoom in a window 1000, 1280 and 1600 wide
+  for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {  // the burn view's zoom in a window 1000, 1280 and 1600 wide
     const s = RS({ w: phaseWeights(pr), zoom, damage: { marks: new Set(), severe: false } });
     const c = fakeCtx(); drawRoom(c, 'bridge', r, s); assert.equal(c.depth, 0, `${pr}: every save restored`);
     const { ctx, calls } = recorder(); drawRoom(ctx, 'bridge', r, s);
@@ -695,12 +700,12 @@ test('the slicer sits at the comms station and the pilot at the helm, whoever ho
   assert.deepEqual(on.map(p => Math.round((p.tx - br.x0) / br.w * 100) / 100), [0.7, 0.12, 0.3], 'the shift seats them so');
 });
 
-// #933, the berths: the bunks either side of the well, each with its mattress, pillow, blanket, curtain rail, reading lamp and lockers under,
+// #933, the berths: the bunks three high either side of the well (#1023), each with its mattress, pillow, blanket, curtain rail and reading lamp,
 // and a clear place for its owner's one thing (#934); the shelf, the guitar and the towel beside the well. Drawn at the burn view's zoom in
 // a window 1000, 1280 and 1600 wide, with 4, 8 and 12 bunks.
 const { roomBerths, berthKeep, berthCorner } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomBerths', 'berthKeep', 'berthCorner']);
 const BERTH_PROPS = [['#2a4664', 'the posts'], ['#1f3a56', 'the frames'], ['#3a4a5e', 'the mattresses'], ['#9a968a', 'the pillows'], ['#334560', 'a blanket over a sleeper'],
-  ['#3e4f6e', 'a blanket folded on an empty bunk'], ['#3a5470', 'the curtain rails and grab rails'], ['#4a3a5a', 'the curtains'], ['#4a5a6a', 'the reading lamps'], ['#1c3349', 'the lockers\' doors'],
+  ['#3e4f6e', 'a blanket folded on an empty bunk'], ['#3a5470', 'the curtain rails and grab rails'], ['#4a3a5a', 'the curtains'], ['#4a5a6a', 'the reading lamps'],
   ['#284a68', 'the shelves'], ['#9a6c40', 'the guitar'], ['#8a4a40', 'the towel']];
 const berthCase = (n, pr, zoom) => {
   const lay = LAYOUTS.freighter, r = layoutBox(lay, 'berths'), well = { x0: (lay.well.x - lay.well.w / 2) * lay.width, x1: (lay.well.x + lay.well.w / 2) * lay.width };
@@ -708,7 +713,7 @@ const berthCase = (n, pr, zoom) => {
 };
 const partBox = p => { const xs = p.pts.map(q => q[0]), ys = p.pts.map(q => q[1]); return { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) }; };
 test('the berths are drawn to the figures\' standard in every phase: their props outlined and a step below the people, the name on clear wall (#933)', () => {
-  for (const n of [4, 8, 12]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.66, 0.96, 1.24]) {
+  for (const n of [4, 8, 12]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
     const { r, s } = berthCase(n, pr, zoom), at = `${n} bunks, ${pr}, ${zoom}`;
     const c = fakeCtx(); drawRoom(c, 'berths', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
     for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
@@ -716,7 +721,7 @@ test('the berths are drawn to the figures\' standard in every phase: their props
     const fills = col => calls.filter(k => k[0] === 'fillStyle' && k[1] === col).length;
     for (const [col, what] of BERTH_PROPS) assert.ok(fills(col) >= 1, `${at}: ${what} (${col})`);
     const parts = filledParts(calls), outlined = parts.filter(p => p.outlined);
-    assert.ok(outlined.length >= 9 * n + 10, `${at}: the props outlined like the figures (${outlined.length})`);
+    assert.ok(outlined.length >= 8 * n + 10, `${at}: the props outlined like the figures (${outlined.length})`);  // eight parts to a bunk, and the corner's
     for (const { col } of outlined.filter(p => /^#[0-9a-f]{6}$/.test(p.col))) {
       const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
       assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} is near-white or saturated, brighter than the people`);
@@ -732,9 +737,9 @@ test('the berths are drawn to the figures\' standard in every phase: their props
     }
   }
 });
-test('each bunk is a person long, with its mattress, the pillow under the sleeper\'s head, a reading lamp over it and lockers under the bottom tier (#933)', () => {
+test('each bunk is a person long, with its mattress, the pillow under the sleeper\'s head, a reading lamp over it, in its own tier (#933, #1023)', () => {
   for (const n of [4, 8, 12]) {
-    const { r, s, bunks } = berthCase(n, 0.3, 1.24), F = r.floor, { ctx, calls } = recorder(); drawRoom(ctx, 'berths', r, s);
+    const { r, s, bunks } = berthCase(n, 0.3, 1.45), F = r.floor, { ctx, calls } = recorder(); drawRoom(ctx, 'berths', r, s);
     const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), within = (p, b) => p.x0 >= b.x - 0.01 && p.x1 <= b.x + b.w + 0.01;
     bunks.forEach((b, k) => {
       const at = `${n} bunks, bunk ${k} (${b.x} to ${b.x + b.w} at ${b.y})`;
@@ -745,19 +750,17 @@ test('each bunk is a person long, with its mattress, the pillow under the sleepe
       const pillow = parts.find(p => p.col === '#9a968a' && within(p, b) && p.y1 <= b.y - 5 + 0.01 && p.y0 >= b.y - 11);
       assert.ok(pillow && head.x >= pillow.x0 && head.x <= pillow.x1, `${at}: the pillow (${JSON.stringify(pillow)}) under the head at ${head.x}`);
       assert.ok(parts.some(p => p.col === '#4a5a6a' && p.x0 >= b.x && p.x1 <= b.x + b.w / 3 && p.y1 <= b.y - 19 && p.y0 >= b.y - 32), `${at}: a reading lamp at the head end, over the sleeper's head`);
-      assert.ok(parts.some(p => p.col === '#3a5470' && within(p, b) && p.x1 - p.x0 >= b.w - 6 && p.y1 <= b.y - 26), `${at}: a curtain rail over it`);
-      if (k % 2 === 0) {
-        const doors = parts.filter(p => p.col === '#1c3349' && within(p, b) && p.y0 > b.y && p.y1 <= F);
-        assert.ok(doors.length >= 2, `${at}: lockers under the bottom tier (${doors.length})`);
-        const over = bunks.find(t => t.y < b.y && Math.abs(t.x - b.x) < 0.01);
-        if (over) assert.ok(over.y + 6 <= sl.y - 13 - 4, `${at}: the sleeper (${sl.y - 13}) clear of the bunk over it (${over.y + 6})`);
-      } else assert.ok(b.y - 5 - 13 >= r.top + 20, `${at}: the top tier's sleeper under the ceiling`);
+      assert.ok(parts.some(p => p.col === '#3a5470' && within(p, b) && p.x1 - p.x0 >= b.w - 6 && p.y1 <= berthKeep(b).y), `${at}: a curtain rail over it, and over its owner's place`);
+      const over = bunks.find(t => t.y < b.y && Math.abs(t.x - b.x) < 0.01);
+      if (over) assert.ok(over.y + 2.8 <= sl.y - 13 - 4, `${at}: the sleeper (${sl.y - 13}) clear of the bunk over it (${over.y + 2.8})`);
+      else assert.ok(b.y - 5 - 13 >= r.top + 20, `${at}: the top tier's sleeper under the ceiling`);
+      if (k % 3 === 0) assert.ok(Math.abs(b.y + 2.8 - F) < 1e-9, `${at}: the bottom tier's frame on the deck`);
     });
   }
 });
 test('each bunk keeps a clear place for its owner\'s one thing, inside the bunk over the sleeper (#933, #934)', () => {
   for (const n of [4, 8, 12]) for (const pr of [0.02, 0.3, 0.5]) {
-    const { r, s, bunks } = berthCase(n, pr, 1.24), X = sh => r.x0 + (r.x1 - r.x0) * sh, { ctx, calls } = recorder(); roomBerths(ctx, r, s, X, r.x1 - r.x0);
+    const { r, s, bunks } = berthCase(n, pr, 1.45), X = sh => r.x0 + (r.x1 - r.x0) * sh, { ctx, calls } = recorder(); roomBerths(ctx, r, s, X, r.x1 - r.x0);
     const parts = filledParts(calls).map(p => ({ col: p.col, ...partBox(p) })), rects = calls.filter(k => k[0] === 'fillRect').map(([, x, y, w, h]) => ({ x0: Math.min(x, x + w), x1: Math.max(x, x + w), y0: Math.min(y, y + h), y1: Math.max(y, y + h) }));
     const meet = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
     bunks.forEach((b, k) => {
@@ -766,7 +769,7 @@ test('each bunk keeps a clear place for its owner\'s one thing, inside the bunk 
       assert.ok(box.x0 >= b.x + b.w / 2 && box.x1 <= b.x + b.w, `${at}: inside the bunk, at its foot half`);
       assert.ok(box.y1 <= b.y - 5 - 13, `${at}: over the sleeper`);
       const over = bunks.find(t => t.y < b.y && Math.abs(t.x - b.x) < 0.01);
-      assert.ok(box.y0 >= (over ? over.y + 6 : r.top + 10), `${at}: under the bunk over it or the ceiling`);
+      assert.ok(box.y0 >= (over ? over.y + 2.8 : r.top + 10), `${at}: under the bunk over it or the ceiling`);
       if (k === 2) return;  // the curtain drawn across the third bunk covers its place, as it covers its sleeper
       for (const p of parts) assert.ok(!meet(p, box), `${at}: clear of a ${p.col} part ${JSON.stringify(p)}`);
       for (const q of rects) assert.ok(!meet(q, box), `${at}: clear of a rect ${JSON.stringify(q)}`);
@@ -780,8 +783,8 @@ const CORNER_PROPS = [['#22405c', 'the wall unit\'s sides'], ['#284a68', 'its tw
   ['#3a2c20', 'the photo\'s frame'], ['#4a5a6a', 'the reading lamp'], ['#9a6c40', 'the guitar\'s top'], ['#5a3a20', 'its side, in shade'], ['#4a2e1c', 'its pickguard'], ['#3a2414', 'its bridge'],
   ['#3a2618', 'its headstock'], ['#3a3a40', 'its lashings']];
 test('the crew\'s corner fills the open wall beside the well: a wall unit, a pinboard, the towel and a guitar, clear of the bunks (#933)', () => {
-  for (const [n, board] of [[4, true], [8, true], [10, true], [12, false]]) for (const pr of [0.02, 0.3, 0.5]) {
-    const { r, s, well, bunks } = berthCase(n, pr, 0.66), c = berthCorner(r, n, well), X = sh => r.x0 + (r.x1 - r.x0) * sh, at = `${n} bunks, ${pr}`;
+  for (const [n, board] of [[4, true], [8, true], [9, true], [10, false], [12, false]]) for (const pr of [0.02, 0.3, 0.5]) {
+    const { r, s, well, bunks } = berthCase(n, pr, 0.82), c = berthCorner(r, n, well), X = sh => r.x0 + (r.x1 - r.x0) * sh, at = `${n} bunks, ${pr}`;
     assert.ok(c.x0 >= well.x1 + 6 && bunks.every(b => b.x + b.w <= well.x0 || b.x >= c.x1 + 4), `${at}: the corner ${JSON.stringify(c)} between the well and the bunks`);
     const { ctx, calls } = recorder(); roomBerths(ctx, r, s, X, r.x1 - r.x0);
     const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), mine = parts.filter(p => p.x0 >= c.x0 - 1 && p.x1 <= c.x1 + 2);
@@ -799,7 +802,7 @@ test('the crew\'s corner fills the open wall beside the well: a wall unit, a pin
     assert.equal(notes.length >= 4, board, `${at}: the pinboard with its notes and photos where it fits (${notes.length})`);
     if (board) assert.ok(mine.some(p => p.col === '#7a6446'), `${at}: the cork`);
   }
-  const stillAt = t => { const { r, s } = berthCase(10, 0.5, 0.96), c = fakeCtx(); drawRoom(c, 'berths', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  const stillAt = t => { const { r, s } = berthCase(10, 0.5, 1.17), c = fakeCtx(); drawRoom(c, 'berths', r, { ...s, still: true, time: t }); return c.args.join('|'); };
   assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
 });
 test('someone eating alone sits on the edge of the first bunk (#933)', () => {
@@ -819,7 +822,7 @@ const MED_PROPS = [['#2a4664', 'the cot\'s frame'], ['#1c3249', 'its legs'], ['#
 const MED_LINE = 'rgba(150,178,196,0.7)';
 const medCase = (pr, zoom, patient) => ({ r: layoutBox(LAYOUTS.freighter, 'medbay'), s: RS({ w: phaseWeights(pr), zoom, patient, damage: { marks: new Set(), severe: false } }) });
 test('the medbay is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
-  for (const patient of [false, true]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.66, 0.96, 1.24]) {
+  for (const patient of [false, true]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
     const { r, s } = medCase(pr, zoom, patient), at = `${patient ? 'a patient' : 'empty'}, ${pr}, ${zoom}`;
     const c = fakeCtx(); drawRoom(c, 'medbay', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
     for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
@@ -841,16 +844,16 @@ test('the medbay is drawn to the figures\' standard in every phase: its props ou
       for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} under the room's name`);
     }
   }
-  const stillAt = t => { const { r, s } = medCase(0.5, 0.96, true), c = fakeCtx(); drawRoom(c, 'medbay', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  const stillAt = t => { const { r, s } = medCase(0.5, 1.17, true), c = fakeCtx(); drawRoom(c, 'medbay', r, { ...s, still: true, time: t }); return c.args.join('|'); };
   assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
 });
 test('the medbay\'s props are sized to a person: the cot\'s mattress under the patient, the IV at head height, the monitor at the eye, the cabinet at the counter (#933)', () => {
   const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['routineTarget', 'roomAt']);
-  const ra = api.roomAt('medbay'), { r } = medCase(0.3, 1.24, true), F = r.floor, W = r.x1 - r.x0, X = sh => r.x0 + W * sh;
+  const ra = api.roomAt('medbay'), { r } = medCase(0.3, 1.45, true), F = r.floor, W = r.x1 - r.x0, X = sh => r.x0 + W * sh;
   const bed = api.routineTarget({}, { at: 'bed' }, ra, 0, 1, () => 0.5), bx = r.x0 + (bed - ra.x0) / ra.w * W, head = drawPerson(fakeCtx(), { name: 'bunk', face: 1, frame: 0 }, bx, F - MED_COT, { color: '#ffb347' }).head;
   assert.ok(MED_COT >= 28 && MED_COT <= 32, `the patient lies at about 30, between the knee and the hip (${MED_COT})`);
   for (const pr of [0.02, 0.3, 0.5]) {
-    const { s } = medCase(pr, 1.24, true), { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
+    const { s } = medCase(pr, 1.45, true), { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
     const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), at = `${pr}`;
     const bedPart = parts.find(p => p.col === '#56667a');
     assert.ok(bedPart && Math.abs(bedPart.y0 - (F - MED_COT)) < 0.01, `${at}: the mattress's top at the patient (${bedPart && F - bedPart.y0})`);
@@ -885,7 +888,7 @@ test('the medbay\'s props are sized to a person: the cot\'s mattress under the p
 });
 test('the medbay reads old and cared for: a newer scanner bolted on, wear at fixed places, a replacement door, a printed part tagged temporary, tape and cable ties (#933)', () => {
   for (const pr of [0.02, 0.3, 0.5]) for (const patient of [false, true]) {
-    const { r, s } = medCase(pr, 0.96, patient), F = r.floor, at = `${patient ? 'a patient' : 'empty'}, ${pr}`, { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
+    const { r, s } = medCase(pr, 1.17, patient), F = r.floor, at = `${patient ? 'a patient' : 'empty'}, ${pr}`, { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
     const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), one = col => parts.find(p => p.col === col);
     const rects = col => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
     const inside = ([x, y, w, h], b, pad = 0) => x >= b.x0 - pad && x + w <= b.x1 + pad && y >= b.y0 - pad && y + h <= b.y1 + pad;
@@ -935,7 +938,7 @@ const strokePts = (calls, col) => {
   return out;
 };
 test('the hold is drawn to the figures\' standard in every phase: its props outlined and a step below the people, the name on clear wall (#933)', () => {
-  for (const cargo of [0, 0.5, 1]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.66, 0.96, 1.24]) {
+  for (const cargo of [0, 0.5, 1]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
     const { r, s } = holdCase(pr, zoom, cargo), at = `cargo ${cargo}, ${pr}, ${zoom}`;
     const c = fakeCtx(); drawRoom(c, 'hold', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
     for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
@@ -957,11 +960,11 @@ test('the hold is drawn to the figures\' standard in every phase: its props outl
       for (const [x, y] of pts) assert.ok(!hit(name, x, y), `${at}: ${k} ${v} under the room's name`);
     }
   }
-  const stillAt = t => { const { r, s } = holdCase(0.5, 0.96, 1), c = fakeCtx(); drawRoom(c, 'hold', r, { ...s, still: true, time: t }); return c.args.join('|'); };
+  const stillAt = t => { const { r, s } = holdCase(0.5, 1.17, 1), c = fakeCtx(); drawRoom(c, 'hold', r, { ...s, still: true, time: t }); return c.args.join('|'); };
   assert.equal(stillAt(1.3), stillAt(4.9), 'the same frame at any time under reduced motion');
 });
 test('the hold\'s crates come from the cargo, in stacks of three, each with its serial in a clear, named box (#933, #936)', () => {
-  for (const cargo of [0, 1 / 12, 0.5, 7 / 12, 1]) for (const zoom of [0.66, 0.96, 1.24]) {
+  for (const cargo of [0, 1 / 12, 0.5, 7 / 12, 1]) for (const zoom of [0.82, 1.17, 1.45]) {
     const { r, s } = holdCase(0.3, zoom, cargo), n = Math.round(12 * cargo), at = `cargo ${cargo}, ${zoom}`, { calls, parts } = holdParts(r, s);
     const bodies = parts.filter(p => HOLD_WOOD.includes(p.col) && p.x1 - p.x0 > 30);
     assert.equal(bodies.length, n, `${at}: ${n} crates (${bodies.length})`);
@@ -998,9 +1001,9 @@ test('the hold\'s crates come from the cargo, in stacks of three, each with its 
   }
 });
 test('the hold\'s props are sized to a person: a crate two can lift, stacks under the head, the jack\'s handle at the waist (#933)', () => {
-  const { r } = holdCase(0.3, 1.24, 1), F = r.floor;
+  const { r } = holdCase(0.3, 1.45, 1), F = r.floor;
   for (const pr of [0.02, 0.3, 0.5]) {
-    const { s } = holdCase(pr, 1.24, 1), { parts } = holdParts(r, s), at = `${pr}`;
+    const { s } = holdCase(pr, 1.45, 1), { parts } = holdParts(r, s), at = `${pr}`;
     for (const p of parts.filter(q => HOLD_WOOD.includes(q.col) && q.x1 - q.x0 > 30)) assert.ok(p.x1 - p.x0 >= 36 && p.x1 - p.x0 <= 44 && p.y1 - p.y0 >= 20 && p.y1 - p.y0 <= 28, `${at}: a crate (${p.x1 - p.x0} by ${p.y1 - p.y0}) two people can lift`);
     assert.ok(F - holdCrate(r, 2).y <= FIG_TALL - 8, `${at}: a stack of three (${F - holdCrate(r, 2).y}) under a person's head (${FIG_TALL})`);
     const pallets = parts.filter(q => q.col === '#3e3426');
@@ -1013,12 +1016,12 @@ test('the hold\'s props are sized to a person: a crate two can lift, stacks unde
     const shade = parts.find(q => q.col === '#5a6470');
     assert.ok(shade && shade.x1 - shade.x0 <= 16, `${at}: the lamp, small`);
   }
-  for (const cargo of [0, 0.5]) { const { s } = holdCase(0.3, 1.24, cargo), { parts } = holdParts(r, s); assert.equal(parts.filter(q => q.col === '#3e3426').length, Math.ceil(Math.round(12 * cargo) / 3), `cargo ${cargo}: a pallet under each stack there is`); }
+  for (const cargo of [0, 0.5]) { const { s } = holdCase(0.3, 1.45, cargo), { parts } = holdParts(r, s); assert.equal(parts.filter(q => q.col === '#3e3426').length, Math.ceil(Math.round(12 * cargo) / 3), `cargo ${cargo}: a pallet under each stack there is`); }
 });
 test('the hold\'s stacks are strapped to rings in the deck, under a cargo net that bulges at the flip (#933)', () => {
-  const { r } = holdCase(0.3, 0.96, 1), F = r.floor, top = pr => { const { s } = holdCase(pr, 0.96, 1), { calls } = holdParts(r, s); return Math.min(...strokePts(calls, HOLD_NET).map(p => p[1])); };
+  const { r } = holdCase(0.3, 1.17, 1), F = r.floor, top = pr => { const { s } = holdCase(pr, 1.17, 1), { calls } = holdParts(r, s); return Math.min(...strokePts(calls, HOLD_NET).map(p => p[1])); };
   for (const cargo of [0, 0.25, 7 / 12, 1]) for (const pr of [0.02, 0.3, 0.5]) {
-    const { s } = holdCase(pr, 0.96, cargo), n = Math.round(12 * cargo), at = `cargo ${cargo}, ${pr}`, { calls, parts } = holdParts(r, s);
+    const { s } = holdCase(pr, 1.17, cargo), n = Math.round(12 * cargo), at = `cargo ${cargo}, ${pr}`, { calls, parts } = holdParts(r, s);
     const rings = calls.filter((q, i) => q[0] === 'arc' && (calls.slice(0, i).filter(p => p[0] === 'strokeStyle').pop() || [])[1] === HOLD_RING);
     assert.ok(rings.length >= 8 && rings.every(q => q[2] >= F - 4 && q[2] <= F), `${at}: rings in the deck (${rings.length})`);
     const net = strokePts(calls, HOLD_NET);
@@ -1040,7 +1043,7 @@ test('the hold\'s stacks are strapped to rings in the deck, under a cargo net th
 });
 test('the hold reads old and cared for: crates of different ages, a replacement board, worn corners, tape, a mended net, a printed grip tagged temporary (#933)', () => {
   for (const pr of [0.02, 0.3, 0.5]) {
-    const { r, s } = holdCase(pr, 0.96, 1), F = r.floor, at = `${pr}`, { calls, parts } = holdParts(r, s);
+    const { r, s } = holdCase(pr, 1.17, 1), F = r.floor, at = `${pr}`, { calls, parts } = holdParts(r, s);
     const rects = col => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
     const inside = ([x, y, w, h], b) => x >= b.x0 - 0.01 && x + w <= b.x1 + 0.01 && y >= b.y0 - 0.01 && y + h <= b.y1 + 0.01;
     const bodies = parts.filter(p => HOLD_WOOD.includes(p.col) && p.x1 - p.x0 > 30), cols = new Set(bodies.map(p => p.col));
