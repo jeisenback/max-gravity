@@ -128,3 +128,36 @@ test('the one standing the watch takes a seat at the post: the relieved one\'s, 
   const extra = at([{ id: 'you', role: 'you' }], { night: 0, stands: 'you', post: 'gunnery', relieved: null, relievedAt: 'bunk' });
   assert.ok(seats.includes(extra), 'an extra watch with nobody to relieve: a free seat');
 });
+
+// ---------- the effect's checks (#1036) ----------
+
+test('a watch nobody stands sends nobody to the post: a person with no id is not the stander (#1036)', () => {
+  const pax = { id: null, role: 'passenger' };
+  assert.notDeepEqual(plain(routineSpot(pax, 'night', state({ night: 0, stands: null, post: 'gunnery', relieved: null, relievedAt: 'bunk' }))), { room: 'gunnery', at: 'post' });
+});
+
+test('the effect checks who stands and who is relieved, takes a post for its role, and never makes a character (#1036)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const t = burnWithYelena(), out = {};
+    out.shapes = [
+      EFFECT_SHAPES.standWatch({ stands: 'you', post: 'gunnery', relieved: 'yelena', relievedAt: 'galley' }),
+      EFFECT_SHAPES.standWatch({ stands: 'you', post: 'gunnery', relieved: 'nobody', relievedAt: 'galley' }),
+      EFFECT_SHAPES.standWatch({ stands: 'you', post: 'gunnery', relieved: null }),
+      EFFECT_SHAPES.standWatch({ stands: 'comms', post: 'bridge', relieved: null }),
+      EFFECT_SHAPES.standWatch({ stands: 'slicer', post: 'bridge', relieved: null }),
+    ].map(Boolean);
+    const comms = roleHolder('slicer');
+    delete t.watch; atBlock(0.3); EFFECTS.standWatch({ stands: 'comms', post: 'bridge', relieved: null, relievedAt: 'bunk' });
+    out.comms = { holder: comms ? comms.id : null, stands: t.watch ? t.watch.stands : 'none' };
+    delete t.watch; const had = !!(G.state.cast || {}).bexa;
+    EFFECTS.standWatch({ stands: 'bexa', post: 'bridge', relieved: null, relievedAt: 'bunk' });
+    out.absent = { record: t.watch === undefined ? 'none' : t.watch, made: !had && !!(G.state.cast || {}).bexa };
+    return out;
+  });
+  await done();
+  assert.deepEqual(r.shapes, [false, true, false, false, true], 'yelena and null pass; a typo in relieved and a role name in place of a post fail');
+  assert.equal(r.comms.stands, r.comms.holder || 'none', 'comms is the slicer\'s post: its holder stands it, or there is no record');
+  assert.deepEqual(r.absent, { record: 'none', made: false }, 'a character not met: no record, and no character made');
+});
