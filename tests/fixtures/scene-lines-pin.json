@@ -10385,29 +10385,6 @@
   ]
  },
  {
-  "id": "memory:patrol-fine",
-  "plays": [
-   {
-    "i": 0,
-    "roll": 0.5,
-    "text": "You cut the drive and the cutter closes. The boarding officer reads the citation, and 30,000 cr goes out of the ship's fund. The ship is logged as settled. For now.",
-    "mem": [
-     "9 Jul 2214: We were stopped by a patrol and it cost the fund."
-    ],
-    "fx": {
-     "fund": -30000,
-     "p1": -1
-    },
-    "next": null
-   }
-  ],
-  "title": "Contact",
-  "text": "Sensors: a drive plume at 3,420 km, on an intercept course. Transponder: Arcology Compact navy. You are wanted in their space.",
-  "labels": [
-   "Heave to and take the fine from the ship's fund"
-  ]
- },
- {
   "id": "memory:landing",
   "plays": [
    {
@@ -23813,13 +23790,6 @@
   "labels": []
  },
  {
-  "id": "scene:fight-entry:cutter",
-  "plays": [],
-  "title": "Contact",
-  "text": "Sensors: a drive plume at 3,420 km, on an intercept course. Transponder: Compact cutter, with a stop order for the ship's registry. Her hail reads it as a check of papers at the lock, and whatever is out of order on them is cited and fined from the ship's fund on the spot. A ship that burns away from a check is fired on, the hail says, and it says so twice.",
-  "labels": []
- },
- {
   "id": "scene:fight-entry:pair",
   "plays": [],
   "title": "Contact",
@@ -27068,40 +27038,13 @@
     "roll": 0.99,
     "text": "Ines runs, but the Compact cutter \"Brave Comet\" gets a burst in first. Battle stations.",
     "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0,
-    "text": "You cut the drive and the cutter closes. The boarding officer reads the citation, and 30,000 cr goes out of the ship's fund. The ship is logged as settled. For now.",
-    "mem": [
-     "9 Jul 2214: We were stopped by a patrol and it cost the fund."
-    ],
-    "fx": {
-     "fund": -30000,
-     "p1": -1
-    },
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0.99,
-    "text": "You cut the drive and the cutter closes. The boarding officer reads the citation, and 30,000 cr goes out of the ship's fund. The ship is logged as settled. For now.",
-    "mem": [
-     "9 Jul 2214: We were stopped by a patrol and it cost the fund."
-    ],
-    "fx": {
-     "fund": -30000,
-     "p1": -1
-    },
-    "next": null
    }
   ],
   "title": "Contact",
   "text": "Sensors: a drive plume at 3,420 km, on an intercept course. Transponder: Arcology Compact navy. You are wanted in their space.",
   "labels": [
    "Battle stations (you take the guns)",
-   "Burn hard to outrun them [76%; if it fails: hull damage, and the fight anyway]",
-   "Heave to and take the fine from the ship's fund"
+   "Burn hard to outrun them [76%; if it fails: hull damage, and the fight anyway]"
   ]
  },
  {

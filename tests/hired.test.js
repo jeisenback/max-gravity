@@ -468,7 +468,7 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
     // The contact (a patrol: no option fits a pilot, as a pirate's would): the captain answers, and pays from the ship's purse.
     h.fund = 200000; let contactMine = 0;
     for (let i = 0; i < 40; i++) { G.dialog = null; t.event = null; G.nextEvent = null; G.duel = null; const c0 = st.credits; st.armor = ship().armor; openEvent(contactEvent({ kind: 'patrol', gov: 'Arcology Compact' })); const e = G.dialog.event; chooseEvent(0); contactMine += st.credits - c0; finishEvent(); for (let n = 0; G.dialog && n < 30 && !/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title); n++) { chooseEvent(0); finishEvent(); }  /* the captain's pick is measured; the boarding that may follow is the scenes' own */ if (i === 0) out.contact = { decided: e.decided, labels: e.choices.map(c => c.label) }; }
-    out.contactMine = contactMine; out.contactFund = h.fund !== 200000;
+    out.contactMine = contactMine;
     // Your own post's event is yours; another post's is the captain's.
     G.dialog = null; t.event = null; openEvent(coolant); out.coolantPilot = { decided: !!G.dialog.event.decided, n: G.dialog.choices.length };
     st.hired.post = 'engineer'; G.dialog = null; t.event = null; openEvent(coolant); out.coolantEngineer = { decided: !!G.dialog.event.decided, n: G.dialog.choices.length };
@@ -476,7 +476,7 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
   });
   assert.deepEqual(r.shown.labels, ['See how it goes']); assert.match(r.shown.text, /takes the call/); assert.ok(r.shown.decided);
   assert.equal(r.mine.minePaid, 0, 'none of it came out of, or went into, your savings'); assert.ok(r.mine.fundMoved, 'it was the ship\'s money');
-  assert.ok(r.contact.decided); assert.equal(r.contactMine, 0); assert.ok(r.contactFund, 'a fight and a bounty or a fine, in the ship\'s purse');
+  assert.ok(r.contact.decided); assert.equal(r.contactMine, 0, 'the contact leaves your savings alone');  // with the heave-to gone (#993) the captain fights a patrol, so the fund need not move
   assert.deepEqual(r.coolantPilot, { decided: true, n: 1 }, 'the engineer\'s leak is not the pilot\'s to decide');
   assert.equal(r.coolantEngineer.decided, false, 'but it is yours when you are the engineer'); assert.ok(r.coolantEngineer.n >= 2);
   await done();
@@ -689,7 +689,7 @@ const ladderHelpers = () => {
   window.ladderBurn = (to = 'mars') => { const prev = G.transit; G.transit = { to, total: 100, left: 100, times: [] }; planIntercept(); const spec = G.transit.intercept && JSON.parse(JSON.stringify(G.transit.intercept.spec)); G.transit = prev; return spec; };
 };
 
-test('a ladder step that is due waits for a burn with no other intercept', async () => {
+test('a ladder step that is due takes the burn, bad standing or not', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(hiredHelpers); await ev(ladderHelpers);
   const r = await ev(() => {
@@ -697,15 +697,12 @@ test('a ladder step that is due waits for a burn with no other intercept', async
     const out = {};
     st.rep['Dome Concord'] = -40;
     const hostile = []; for (let i = 0; i < 30; i++) hostile.push(ladderBurn('mars'));
-    out.patrolFirst = hostile.some(s => s && s.kind === 'patrol' && !s.ladder);
-    out.laddered = hostile.filter(s => s && s.ladder).length;
-    st.rep['Dome Concord'] = 0;
-    out.step = ladderBurn('mars');
+    out.patrol = hostile.some(s => s && s.kind === 'patrol');
+    out.step = hostile[0];
     out.doneBefore = (h.fights || { done: [] }).done.slice();
     return out;
   });
-  assert.ok(r.patrolFirst, 'a wanted patrol still takes the burn');
-  assert.ok(r.laddered > 0, 'the ladder takes the burns the patrol did not');
+  assert.equal(r.patrol, false, 'bad standing brings no patrol on a burn: the port inspects (#993)');
   assert.equal(r.step.ladder, 'raider'); assert.equal(r.step.shipId, 'raider'); assert.equal(r.step.kind, 'pirate');
   assert.deepEqual(r.doneBefore, [], 'planned is not met');
   await done();
@@ -734,10 +731,10 @@ test('a ladder fight opens with its own entry line, and a random one with the se
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('gunner'); const st = G.state, h = hired();
-    const vars = { cap: 'Captain Vance', patrol: 'Compact cutter', price: '1,000' };  // the narrow build's captain, the patrol of Earth's space (the burn leaves it), the deal below
+    const vars = { cap: 'Captain Vance', price: '1,000' };  // the narrow build's captain, the deal below
     const labels = e => e.choices.map(c => String(c.label));
-    // each step's condition made to hold in turn, so the walk meets the four of chapter one in the ladder's order (the pair is parked for chapter two)
-    const preps = [() => { h.runsDone = 1; }, () => { h.runsDone = 3; }, () => { h.beats = CAPTAIN_BEATS.length; h.beatRun = 0; h.flags = { ...(h.flags || {}), sawHull: true }; },
+    // each step's condition made to hold in turn, so the walk meets the three of chapter one in the ladder's order (the pair is parked for chapter two)
+    const preps = [() => { h.runsDone = 1; }, () => { h.runsDone = 3; },
       () => { h.deal = { price: 1000, day: st.day, until: st.day + 50, broker: false }; st.credits = Math.max(st.credits, 1000); }];
     const steps = preps.map(prep => {
       prep(); const step = ladderNext(h, st, 'mars');
@@ -748,17 +745,17 @@ test('a ladder fight opens with its own entry line, and a random one with the se
     });
     return { steps, done: h.fights.done.slice(), pirate: contactEvent({ kind: 'pirate', shipId: 'raider' }).text, patrol: contactEvent({ kind: 'patrol', gov: 'Dome Concord', shipId: 'cutter' }).text };
   });
-  assert.deepEqual(r.steps.map(s => s && s.id), ['raider', 'corsair', 'cutter', 'setpiece'], 'the four, in order');
-  assert.deepEqual(r.done, ['raider', 'corsair', 'cutter', 'setpiece']);
+  assert.deepEqual(r.steps.map(s => s && s.id), ['raider', 'corsair', 'setpiece'], 'the three, in order');
+  assert.deepEqual(r.done, ['raider', 'corsair', 'setpiece']);
   for (const s of r.steps) {
     assert.match(s.text, /^Sensors: a drive plume at [\d,]+ km, on an intercept course\. /, `${s.id}: the range is kept`);
     assert.ok(s.text.endsWith(` ${s.want}`), `${s.id} opens with its own line: ${s.text}`);
     assert.doesNotMatch(s.text, /No transponder\. The plume signature says pirate\.|You are wanted in their space\.|\{\w+\}/, `${s.id}: no sensor line and no slot left unfilled`);
     assert.deepEqual(s.labels, s.plainLabels, `${s.id}: the choices are the contact's own`);
   }
-  assert.equal(new Set(r.steps.map(s => s.want)).size, 4, 'four different lines');
+  assert.equal(new Set(r.steps.map(s => s.want)).size, 3, 'three different lines');
   const by = Object.fromEntries(r.steps.map(s => [s.id, s.text]));
-  assert.ok(by.cutter.includes('Transponder: Compact cutter, with'), by.cutter); assert.ok(by.setpiece.includes('1,000 cr'), by.setpiece); assert.ok(by.raider.includes('Captain Vance'), by.raider);
+  assert.ok(by.setpiece.includes('1,000 cr'), by.setpiece); assert.ok(by.raider.includes('Captain Vance'), by.raider);
   assert.ok(r.pirate.endsWith('No transponder. The plume signature says pirate.'), r.pirate);
   assert.ok(r.patrol.endsWith('Transponder: Dome Concord navy. You are wanted in their space.'), r.patrol);
   await done();

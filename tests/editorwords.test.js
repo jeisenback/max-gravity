@@ -108,7 +108,7 @@ test('the notes and memories at the port and the hand\'s screens have their line
 test('the memories play leaves where no scene is its own have their lines in the form and play in the preview (#508)', async () => {
   await reload(); await select('scene:memories');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['part.patrol-fine.memory', 'part.landing.memory', 'part.ice.clean.memory', 'part.mourn.wrote.memory', 'part.strain.memory']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  for (const k of ['part.landing.memory', 'part.ice.clean.memory', 'part.mourn.wrote.memory', 'part.strain.memory']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
   await page.fill('textarea[data-path="part.landing.memory"]', 'You brought me to {planet}.');
   const f = await play();
   const seen = await f.evaluate(() => G.dialog.event.text);

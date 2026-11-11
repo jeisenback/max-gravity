@@ -58,11 +58,11 @@ const deckWords = (key, shipped) => lineWords('beats:deck', key, shipped);
 const lockPost = () => { const c = career(); return c && c.post ? c.post : null; };
 const handHurt = () => { const c = career(); return !!(c && c.hurtUntil > G.state.day); };
 // The money a fight moves is the ship's fund for a hand and the player's credits for an owner (role.js paysFrom). Inside a burn event's choice (hired.js hiredFunds,
-// a contact's heave-to) the fund is held in the credits until the choice is done, so it is read and paid there.
+// a contact's choice) the fund is held in the credits until the choice is done, so it is read and paid there.
 const fundHeld = () => role().paysFrom() === 'fund' && !handPurse;
 const purse = () => (fundHeld() ? hired().fund : G.state.credits);
 const moveMoney = n => { if (fundHeld()) hired().fund += n; else G.state.credits += n; };
-// The navy's fine: a quarter of the purse. The heave-to pays it (engage.js contactEvent), and so does a search, when a navy party holds our bridge (repelSettle).
+// The navy's fine: a quarter of the purse. A search pays it, when a navy party holds our bridge (repelSettle), and so does a citation.
 const heaveToFine = () => Math.round(purse() * (hasTrait(hired(), 'marked') ? 0.3 : 0.25));  // Marked (traits.js): a fifth more
 
 // Who stands with you. A crew member who cannot stand you keeps to their berth, and of two who are at each other's throats
@@ -208,15 +208,15 @@ function repelSettle(s) {
   return s.searched ? shipSearched(s) : shipTaken(s);
 }
 
-// A navy party that withdrew at its cap: the citation stands, and the ship pays the heave-to's fine. No regard lost, and the standing is not reset.
+// A navy party that withdrew at its cap: the citation stands, and the ship pays the navy's fine. No regard lost, and the standing is not reset.
 function citation() {
   const fine = heaveToFine();
   moveMoney(-fine); recordHand('fines');
   return ` ${sceneSay('scene:fight', 'deck.end.cited', { fine: fmt(fine) })}`;
 }
 
-// A navy party on our bridge: the ship is searched and fined the heave-to's fine, the captain thinks a point less of the hand, and the ship is kept. The standing is
-// not reset as the heave-to resets it, since we fought them.
+// A navy party on our bridge: the ship is searched and fined the navy's fine, the captain thinks a point less of the hand, and the ship is kept. The standing is
+// not reset, since we fought them.
 function shipSearched(s) {
   const h = hired(), cap = h && person(h.captain), fine = heaveToFine();
   moveMoney(-fine); recordHand('fines');  // the record (traits.js): a search's fine is a fine

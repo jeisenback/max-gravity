@@ -77,11 +77,12 @@ test('bounties intercept and pay; beaten pirates can be boarded; local space sta
     out.boardChoices = G.nextEvent.choices.map(c => c.label);
     G.nextEvent = null;
 
-    st.rep['Arcology Compact'] = -40;
+    st.rep['Arcology Compact'] = -40; st.rep['Dome Concord'] = -40;  // both ends
     burnTo('mars', 'Mars', 'earth');
     let patrols = 0;
-    for (let i = 0; i < 40; i++) { G.transit.interceptPlanned = false; G.transit.intercept = null; planIntercept(); if (G.transit.intercept && G.transit.intercept.spec.kind === 'patrol') patrols++; }
-    out.patrols = patrols;
+    const real = Math.random; Math.random = () => 0.01;
+    for (let i = 0; i < 50; i++) { G.transit.interceptPlanned = false; G.transit.intercept = null; planIntercept(); if (G.transit.intercept && G.transit.intercept.spec.kind === 'patrol') patrols++; }
+    Math.random = real; out.patrols = patrols;
 
     G.transit = null; st.systemId = 'hygiea'; st.planet = 'The Rook'; G.player = makeShip('shuttle', 0, 0, 0); G.mode = 'flight';
     let pirates = 0;
@@ -97,7 +98,7 @@ test('bounties intercept and pay; beaten pirates can be boarded; local space sta
   assert.match(r.pirateText, /dead in space/);
   assert.deepEqual(r.driftChoices, ['Close in and board', 'Finish her', 'Leave her drifting']);
   assert.ok(r.boardChoices.some(l => /^Board/.test(l)), `board offered (${r.boardChoices})`);
-  assert.ok(r.patrols > 10, 'wanted captains meet patrols');
+  assert.equal(r.patrols, 0, 'bad standing brings no patrol on a burn: the port inspects instead (#993)');
   assert.equal(r.pirates, 0, 'pirates come for you in burns, not in local space');
   await done();
 });

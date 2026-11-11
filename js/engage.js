@@ -18,10 +18,8 @@ function planIntercept() {
   t.interceptPlanned = true;
   let spec = null;
   const bounty = st.missions.find(m => m.type === 'bounty' && [from, to].includes(m.targetSystem));
-  const hostileGov = [placeOf(to).gov, placeOf(from).gov].find(g => PATROL_NAMES[g] && repOf(g) <= -15);
   if (bounty) spec = { kind: 'bounty', mission: bounty };
   else if (G.revenge) { spec = { kind: 'hunter', person: G.revenge }; G.revenge = null; }
-  else if (hostileGov && Math.random() < 0.6) spec = { kind: 'patrol', gov: hostileGov };
   else if (hired()) spec = handIntercept(hired(), st, to, Math.max(danger(from), danger(to)));
   else if (Math.random() < Math.min(0.55, 0.05 + 0.6 * Math.max(danger(from), danger(to))) * SCAN_MAX) spec = { kind: 'pirate' };  // they get a second look when the drive runs cool (below)
   if (spec) t.intercept = { spec, at: t.total * rand(0.25, 0.7) };
@@ -71,7 +69,7 @@ const contactSay = (key, vars) => sceneSay('scene:contact', key, vars);
 // The line a ladder contact opens with in place of the sensor's (#810): the step's reason for coming, from the lines of 'scene:fight-entry'. `cap` is the
 // hand's captain and `deal` the used Ore Runner on offer (h.deal), for the set piece's price.
 const entryLine = (spec, cap, deal) => sceneSay('scene:fight-entry', `${spec.ladder}.text`,
-  { cap: cap ? `Captain ${cap.last}` : 'The captain', patrol: spec.gov ? PATROL_NAMES[spec.gov] : '', price: deal ? fmt(deal.price) : '' });
+  { cap: cap ? `Captain ${cap.last}` : 'The captain', price: deal ? fmt(deal.price) : '' });
 // Running from a contact (outrunning it, spoofing it, paying it off) costs RUN_DAYS on the burn: they are added to the burn's length (transitDays and transitEta, engineering.js)
 // so the arrival day moves by them, and said in the contact's own scene. Fighting costs none, and heaving to for a patrol is not running.
 const RUN_DAYS = 2;
@@ -118,16 +116,7 @@ function contactEvent(spec) {
       ? `${contactSay('spoof.own')}${runCost()}`
       : `${contactSay('spoof.lose')} ${startDuel(spec, false)}`;
   }
-  if (spec.kind === 'patrol' && hired()) choices.push({ label: contactSay('heave.label'), cost: true, run() {  // a hired hand has no 40,000 cr: the ship pays a quarter of its fund
-    const fine = heaveToFine();  // the navy's fine, the one a search charges (boarders.js)
-    if (spec.ladder) ladderDone(hired(), spec.ladder);  // the ladder's cutter is a papers check: complying answers it, so the fine is paid once (fightladder.js)
-    moveMoney(-fine); recordHand('fines');  // the record (traits.js)
-    st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
-    if (hasTrait(hired(), 'hard-case')) changeRep(spec.gov, -2);  // Hard Case (traits.js): the boardings are known, and a stop costs standing
-    like(person(hired().captain), -1, sceneSay('scene:memories', 'patrol-fine.memory'));
-    return contactSay('heave.result', { fine: fmt(fine) });
-  } });
-  else if (spec.kind === 'patrol') choices.push({ label: 'Cut your drive and pay the fine (40,000 cr)', cost: true, ...gated(needCr(40000)), run() {  // the owner's: the money is theirs
+  if (spec.kind === 'patrol' && role().id === 'owner') choices.push({ label: 'Cut your drive and pay the fine (40,000 cr)', cost: true, ...gated(needCr(40000)), run() {  // the owner's: the money is theirs (a hand's heave-to went with the navy stops, #993)
     st.credits -= 40000;
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     return 'They take your money and log your ship as settled. For now.';
