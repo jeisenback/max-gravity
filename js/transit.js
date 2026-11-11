@@ -353,11 +353,7 @@ function updateTransit(dt) {
   if (t.chattered < CHATTER_PER_BURN && (t.chatter -= dt * r) <= 0) {
     t.chattered++;
     t.chatter = rand(0.7, 1.3) * (t.left / burnSpeed()) / (CHATTER_PER_BURN - t.chattered + 2);  // the next one, a share of what is left of the burn
-    const fill = (line, c) => line.replace('{first}', c.first).replace('{home}', c.home);
-    const aboard = [
-      ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(pick(traitChatter(t)), c))),
-      ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(pick(traitChatter(t)), p)}`)),
-    ];
+    const aboard = crewChatter();
     const line = pickFresh(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : linedText('lines:comms-chatter', CHATTER)));
     if (!Settings.quiet.chatter) comm(line);
   }
@@ -366,6 +362,21 @@ function updateTransit(dt) {
     startHappening();
   }
   if (t.left <= 0) arrive();
+}
+
+// The crew's and the passengers' chatter that fits where the cutaway shows each of them (#987, shiplife.js chatterAt, chatterRoom): their own lines
+// (a main character's, or the owner crew's), else a line of each of their traits; nothing from anyone asleep or strapped in.
+function crewChatter() {
+  const fill = (line, c) => line.replace('{first}', c.first).replace('{home}', c.home);
+  const said = (c, room) => {
+    const own = c.cast ? CAST[c.cast].chatter : c.chatter;
+    if (own) return chatterAt(own, room);
+    return c.traits.flatMap(t => { const lines = chatterAt(traitChatter(t), room); return lines.length ? [fill(pick(lines), c)] : []; });
+  };
+  return [
+    ...crewMembers().flatMap(c => said(c, chatterRoom(c.id))),
+    ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => said(p, chatterRoom(p.id)).map(l => `(passenger) ${l}`)),
+  ];
 }
 
 // What happens on this burn is decided by pickHappening (happenings.js); a quiet

@@ -354,6 +354,23 @@ function lifeState() {
   return { injured: st.crew.filter(id => (st.injured || {})[id]).length, handHurt: handHurt(), lostDay: lost.length ? Math.max(...lost) : null, day: st.day, iceEdge: h && h.run && h.run.ice ? h.run.ice.edge : 0 };
 }
 
+// Chatter by place (#987): a list of chatter is plain (said anywhere) or grouped by room, { any: [...], <room>: [...] }, as LIFE_LINES are. The
+// lines a speaker may say in `room` (a ROOMS id), none with `room` null (asleep, or strapped in), and all of them with `room` undefined (no
+// burn, so no cutaway to contradict: a preview, or a test).
+function chatterAt(lines, room) {
+  if (!lines || room === null) return [];
+  if (Array.isArray(lines)) return lines;
+  return room === undefined ? Object.values(lines).flat() : [...(lines.any || []), ...(lines[room] || [])];
+}
+// Where the cutaway shows the person with this id (the captain by 'captain'), for their chatter: undefined with no burn; null with no such
+// person aboard, outside the move phase (the couches and the flip), or asleep.
+function chatterRoom(id) {
+  const t = G.transit;
+  if (!t) return undefined;
+  const p = (t.aboard || []).find(q => (id === 'captain' ? q.role === 'captain' : q.id === id));
+  return !p || phase() !== 'move' || isAsleep(p) ? null : p.room;
+}
+
 // The pools are read through the editor's words (lines:ship-life, lines:ship-lights; js/linetables.js).
 function lifeLine(p, crowd, rnd = Math.random) {  // rnd: ship life's dice in a burn (lifeTick)
   const room = linedText('lines:ship-life', LIFE_LINES)[p.room] || LIFE_ANY, pool = (p.first && p.queue === 'inside' && room.first) || room[p.role] || room.any;  // a room with no lines of its own: the generic ones; the first in the head that morning, its own (#973)
