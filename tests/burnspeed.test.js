@@ -8,7 +8,7 @@ const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
 const B = load(['js/burnspeed.js'], { Mods: { register() {} }, SHIP_DAY: 80, lifeSlotCount: d => Math.max(2, Math.min(5, Math.round(d / 2))) },
-  ['BURN_SPEEDS', 'FLIP_REAL', 'burnStages', 'stageAt', 'burnRate', 'burnStep', 'realLeft', 'oldBurnSeconds', 'burnSceneCount']);
+  ['BURN_SPEEDS', 'FLIP_REAL', 'STREAK_HUSH', 'streakHush', 'burnStages', 'stageAt', 'burnRate', 'burnStep', 'realLeft', 'oldBurnSeconds', 'burnSceneCount']);
 const near = (a, b, msg) => assert.ok(Math.abs(a - b) < 1e-9, `${msg}: ${a} against ${b}`);
 const burnAt = (days, pr) => { const total = days * 80; return { days, total, left: total * (1 - pr) }; };
 
@@ -61,4 +61,12 @@ test('a fast step stops at the start of the flip, so none of it goes by at speed
   const edge = { days: 8, total: 640, left: 640 * (0.5 + B.burnStages(8).secure) };  // the flip's first instant, as a float lands on it
   assert.equal(B.burnRate(edge, 16, 1), B.burnRate(burnAt(8, 0.5), 16, 1), 'the first instant, give or take a float, is in the flip');
   const cruise = burnAt(11, 0.3); assert.equal(B.burnStep(cruise, 4, 1, 0.5), 2, 'elsewhere it is dt times the rate');
+});
+
+test('the star streaks settle at the flip: a third of their length and light while the crew are strapped and floating, easing back over as long again either side (#962)', () => {
+  const days = 5, sec = B.burnStages(days).secure;
+  near(B.STREAK_HUSH, 0.35, 'the hush');
+  near(B.streakHush(days, 0.5), 0.35, 'the midpoint'); near(B.streakHush(days, 0.5 + sec), 0.35, 'the edge of the strapping');
+  near(B.streakHush(days, 0.5 - sec * 1.5), 0.675, 'halfway back'); near(B.streakHush(days, 0.5 + sec * 2), 1, 'back to full');
+  near(B.streakHush(days, 0.2), 1, 'the run of the burn'); near(B.streakHush(days, 0), 1, 'the start');
 });

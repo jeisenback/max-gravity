@@ -635,23 +635,26 @@ function drawTransit(W, H) {
 
   // Stars streak with our speed: longest at the midpoint, with a fading tail, and a few long lines when we are really moving. They turn
   // with the ship about the cutaway's centre (0 before the flip, half a turn after), wrapped so they fill the view at any angle.
-  const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6, still = Settings.reduceMotion;
+  const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6, still = Settings.reduceMotion, hush = still ? 1 : streakHush(t.days, progress);  // quieter at the flip (burnspeed.js, #962); reduced motion as it was
   const a = t.angle + Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a), ox = shipBox.x + shipBox.w / 2, oy = shipBox.y + shipBox.h / 2, wrap = (v, m) => ((v % m) + m) % m;
-  const streak = (x, y, draw) => { const dx = x - ox, dy = y - oy; ctx.save(); ctx.translate(wrap(ox + dx * ca - dy * sa, viewW), wrap(oy + dx * sa + dy * ca, H)); ctx.rotate(a); draw(); ctx.restore(); };
+  const behind = (x, y) => x > shipBox.x && x < shipBox.x + shipBox.w && y > shipBox.y && y < shipBox.y + shipBox.h;
+  const streak = (x, y, draw) => {  // draw(dim): dim is how bright a streak is where it passes behind the ship
+    const dx = x - ox, dy = y - oy, px = wrap(ox + dx * ca - dy * sa, viewW), py = wrap(oy + dx * sa + dy * ca, H);
+    ctx.save(); ctx.translate(px, py); ctx.rotate(a); draw(still || !behind(px, py) ? 1 : 0.4); ctx.restore();
+  };
   for (const s of G.transitStars) {
-    const len = Math.max(s.z * 2, speed * s.z * s.z * (still ? 8 : 110)), w = s.z > 0.7 ? 2 : 1, hot = Math.min(1, speed * 1.4);
-    streak(s.x * viewW, s.y * H, () => {
+    const len = Math.max(s.z * 2, speed * s.z * s.z * (still ? 8 : 110) * hush), w = s.z > 0.7 ? 2 : 1, hot = Math.min(1, speed * 1.4);
+    streak(s.x * viewW, s.y * H, dim => {
       for (let i = 0; i < 3; i++) {  // head, body and a fainter tail
-        ctx.fillStyle = `rgba(${200 + 40 * hot * (1 - i / 3)},${215 + 30 * hot * (1 - i / 3)},255,${s.z * (0.85 - i * 0.28)})`;
+        ctx.fillStyle = `rgba(${200 + 40 * hot * (1 - i / 3)},${215 + 30 * hot * (1 - i / 3)},255,${s.z * (0.85 - i * 0.28) * hush * dim})`;
         ctx.fillRect((len * i) / 3, 0, len / 3 + 1, w);
       }
     });
   }
   if (!still && speed > 0.2) {
     for (let i = 0; i < 26; i++) {
-      const lane = (i * 0.618033) % 1, rate = 0.5 + (i % 5) * 0.22, phase = (i * 0.37 + G.time * speed * 0.35 * rate) % 1, len = speed * (120 + (i % 4) * 70);
-      ctx.fillStyle = `rgba(150,195,255,${Math.min(0.3, (speed - 0.2) * 0.5)})`;
-      streak(viewW * (1 - phase), shipBox.y + lane * shipBox.h, () => ctx.fillRect(0, 0, len, 1));  // across the ship's band, clear of the bar and the keys
+      const lane = (i * 0.618033) % 1, rate = 0.5 + (i % 5) * 0.22, phase = (i * 0.37 + G.time * speed * 0.35 * rate) % 1, len = speed * (120 + (i % 4) * 70) * hush;
+      streak(viewW * (1 - phase), shipBox.y + lane * shipBox.h, dim => { ctx.fillStyle = `rgba(150,195,255,${Math.min(0.3, (speed - 0.2) * 0.5) * hush * dim})`; ctx.fillRect(0, 0, len, 1); });  // across the ship's band, clear of the bar and the keys
     }
   }
 
