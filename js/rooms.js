@@ -1420,6 +1420,129 @@ function roomHead(ctx, r, s, X) {
   });
 }
 
+// The workshop (#933), on the gun deck beside the gunnery across the well, where the engineer's and the gunner's rounds bring them (ROUNDS,
+// shiplife.js) to stand a quarter to three quarters of the way across (goTo): so nothing there stands higher than the waist, and whoever is at
+// work is at the bench or, at its left end, at the fabricator. From the left wall in: the fabricator, the ship's printer (docs/bible/technology.md),
+// a newer unit bolted with fresh bolts onto an older stand of stock drawers, a part printing on its bed behind the window, the time left as a
+// bar on its screen, a spool of stock on its side with its weight written on it, and its cable taped and tied down the stand. The bench at the
+// waist, a few people long: its cabinet, its legs and the shelf under it with the box for the next yard; on its top a breech from the gunnery's
+// guns in pieces (the housing, the block, the spring, the pins in the parts tray), and the vice at its right end with a bracket in its jaws, the
+// paint worn off the edge where hands go. On the wall over it the tool board, each tool on its hook in its painted outline, the torque wrench out
+// and its card hung in its place; beside it the small-parts drawers. At the right wall the spares rack, at a person's height: boxed spares
+// stencilled, loose ones (a pump, a coil of cable, the turret's spare feed tray), the fabricator's stock, a strap across each shelf for zero g,
+// one shelf a replacement in another shade on printed brackets, one tagged temporary, and scuffs low where boots go. No words: the stencils, the
+// card and the screen are marks. Its lamp is a fitting over the bench (LAMP_FITTED). Nothing under the room's name.
+function roomWorkshop(ctx, r, s) {
+  const F = r.floor, n = v => Math.round(v * 100) / 100, u = v => n(r.x0 + v), e = roomEye(r);
+  const wall = (px, py, fn) => { const ax = n(e.vx + (px - e.vx) / e.k), ay = n(e.vy + (py - e.vy) / e.k); roomOnWall(ctx, ax, ay, () => fn(ax, ay)); };  // fn draws round (ax, ay), which lands at (px, py)
+  const rects = (list, grow = 0) => list.map(([x, y, w, h]) => roomRound(x - grow, y - grow, w + 2 * grow, h + 2 * grow, 0.6)).join(' ');
+  // On the wall: the tool board over the bench, each tool over its painted outline on its hook, the torque wrench out and its card in its place.
+  wall(u(176), F - 68, (x, y) => {
+    const L = x - 54, T = y - 16;
+    roomPart(ctx, roomRound(L, T, 108, 32, 1.2), '#2e3a40', { top: 0.8, under: 0.8 });
+    for (let row = 0; row < 3; row++) for (let k = 0; k < 13; k++) roomFlat(ctx, L + 4 + k * 8.2, T + 4 + row * 11, 0.8, 0.8, '#1a2228');  // its holes
+    for (const [sx, sy] of [[L + 2, T + 2], [L + 106, T + 2], [L + 2, T + 30], [L + 106, T + 30]]) roomDot(ctx, sx, sy, 0.6, '#56708c');
+    const tools = [
+      ['#606870', [[L + 4, T + 5, 9, 3.2], [L + 7.3, T + 8, 2.4, 15]]],  // the hammer
+      ['#707a82', [[L + 17, T + 5, 3.4, 4], [L + 17.6, T + 8.5, 2.2, 15], [L + 16.8, T + 23, 3.8, 3.8]]],  // the spanners, large to small
+      ['#707a82', [[L + 24.3, T + 5, 3, 3.4], [L + 24.8, T + 8, 2, 12], [L + 24.2, T + 19.5, 3.2, 3.2]]],
+      ['#707a82', [[L + 30.5, T + 5, 2.6, 3], [L + 30.9, T + 7.5, 1.8, 10], [L + 30.4, T + 17, 2.8, 2.8]]],
+      [null, [[L + 38, T + 5, 4, 4], [L + 38.6, T + 8.5, 2.8, 20]]],  // the torque wrench, out
+      ['#7a4438', [[L + 48, T + 5, 3.4, 7], [L + 49.2, T + 12, 1, 9]]],  // two screwdrivers
+      ['#3a5878', [[L + 54, T + 5, 3.4, 6], [L + 55.2, T + 11, 1, 8]]],
+      ['#5e666e', [[L + 60.8, T + 5, 4, 7.5], [L + 60.5, T + 12, 1.6, 11], [L + 63.5, T + 12, 1.6, 11]]],  // the pliers
+      ['#4a5c74', [[L + 70, T + 6, 26, 2], [L + 70, T + 6, 2, 9], [L + 94, T + 6, 2, 9], [L + 71, T + 14, 24, 1], [L + 96, T + 8, 5, 9]]],  // the hacksaw
+    ];
+    for (const [col, parts] of tools) {
+      figPath(ctx, rects(parts, 1)); ctx.fillStyle = roomTint('#5a6a58'); ctx.fill();  // its outline, painted on the board
+      roomFlat(ctx, parts[0][0] + parts[0][2] / 2 - 0.6, T + 2.6, 1.2, 1.6, '#8796a5');  // its hook
+      if (col) roomPart(ctx, rects(parts), col, { top: 0 });
+    }
+    roomPart(ctx, roomRound(L + 42.5, T + 6, 5, 7, 0.5), '#8a8676', { top: 0 });  // the card signed for the one out, on its hook
+    for (let l = 0; l < 3; l++) roomFlat(ctx, L + 43.3, T + 8 + l * 1.6, 3.2 - (l % 2), 0.4, '#5a5448');
+  });
+  wall(u(247), F - 72, (x, y) => {  // the small-parts drawers, the bolts by size, each drawer's label a mark
+    roomPart(ctx, roomRound(x - 11, y - 10, 22, 20, 1), '#3a4652', { top: 0.6, side: 1 });
+    for (let row = 0; row < 3; row++) for (let c = 0; c < 3; c++) {
+      const dx = x - 9.5 + c * 6.6, dy = y - 8.2 + row * 6.2;
+      roomPart(ctx, roomRound(dx, dy, 5.6, 5, 0.5), '#44525e', { top: 0 });
+      roomFlat(ctx, dx + 1, dy + 1, 3.4, 1, '#7a7868'); roomFlat(ctx, dx + 2, dy + 3, 1.6, 1, '#8796a5');
+    }
+  });
+  // From the left wall in: the fabricator on its stand, its cable down the stand to the deck; the bench's cabinet.
+  roomPart(ctx, roomRound(u(12), F - 30, 50, 30, 1.2), '#2a3a48', { top: 0, side: 2, solid: 0.45 });
+  for (const k of [0, 1]) {
+    roomPart(ctx, roomRound(u(15), F - 27 + k * 12, 44, 10, 1), '#30404e', { top: 0.6, side: 1 });
+    roomFlat(ctx, u(34), F - 23 + k * 12, 6, 1.4, '#8796a5'); roomFlat(ctx, u(18), F - 25 + k * 12, 6, 3, '#7a7868');
+  }
+  ctx.strokeStyle = roomTint('#3a3a40'); ctx.lineWidth = 1.2; roomSeg(ctx, [[u(14), F - 48], [u(9), F - 44], [u(9), F + 4]]);
+  for (const ty of [F - 30, F - 14]) roomFlat(ctx, u(7.5), ty, 3, 1, '#1e2a36');  // the cable ties
+  roomPart(ctx, roomRound(u(7.6), F - 40, 2.8, 4, 0.6), '#7a7462', { top: 0 });  // a wrap of tape
+  roomPart(ctx, roomRound(u(14), F - 64, 46, 34, 1.5), '#4a5866', { top: 1, side: 2, solid: 0.45, shadow: false });
+  for (const bx of [u(16), u(56.8)]) roomFlat(ctx, bx, F - 31.5, 1.2, 1.2, '#8a929a');  // the fresh bolts holding it to the old stand
+  roomPart(ctx, roomRound(u(17), F - 60, 28, 25, 1), '#0e1a24', { top: 0 });  // the window, the gantry, the head and its nozzle, the bed, the part printing
+  roomFlat(ctx, u(18.5), F - 56, 25, 1.2, '#56626e');
+  roomPart(ctx, roomRound(u(28.5), F - 55, 5, 5.5, 0.8), '#66707a', { top: 0.4 }); roomFlat(ctx, u(30.5), F - 49.5, 1, 3.5, '#8796a5');
+  roomPart(ctx, roomRound(u(19), F - 39, 24, 2.5, 0.6), '#3a4048', { top: 0.5 });
+  roomPart(ctx, roomRound(u(26), F - 45, 10, 6, 0.8), '#8a6a48', { top: 0.6 });
+  for (const ly of [F - 43.5, F - 42]) roomFlat(ctx, u(26.5), ly, 9, 0.4, '#6a5038');
+  roomPart(ctx, roomRound(u(47), F - 59, 11, 8, 0.8), '#263442', { top: 0.5 });  // its screen, the time left as a bar, and its keys
+  roomFlat(ctx, u(48), F - 58, 9, 6, '#03121c'); roomFlat(ctx, u(49), F - 55.5, 7, 1.4, '#24384c'); roomFlat(ctx, u(49), F - 55.5, 4.5, 1.4, '#4f9a5f');
+  for (const kx of [u(49.5), u(53.5)]) roomDot(ctx, kx, F - 47, 1, '#5a6a78');
+  roomFlat(ctx, u(58), F - 52, 4, 1.6, '#34404c');  // the spool on its spindle, its weight written on its side, the stock fed in
+  roomPart(ctx, roomRound(u(60), F - 57, 13, 13, 6.5), '#3a6a70', { top: 0.8, side: 1.2 }); roomPart(ctx, roomRound(u(64.5), F - 52.5, 4, 4, 2), '#2a3440', { top: 0 });
+  for (const wy of [F - 48.4, F - 47.2]) roomFlat(ctx, u(62.5), wy, 3, 0.6, '#a09c8e');
+  ctx.strokeStyle = roomTint('#4a7a80'); ctx.lineWidth = 0.6; roomSeg(ctx, [[u(61), F - 55], [u(59.8), F - 55.6]]);
+  roomPart(ctx, roomRound(u(92), F - 37, 48, 37, 1.2), '#2c3c4c', { top: 0, side: 2, solid: 0.45 });
+  for (let k = 0; k < 3; k++) { roomPart(ctx, roomRound(u(95), F - 34 + k * 11, 42, 9, 1), '#34465a', { top: 0.6, side: 1 }); roomFlat(ctx, u(112), F - 30.5 + k * 11, 8, 1.4, '#8796a5'); }
+  // From the right wall in: the spares rack, its shelves and what is strapped on them; the bench's legs and the shelf under it.
+  roomPart(ctx, roomRound(u(274), F - 86, 64, 86, 1), '#1c2a36', { top: 0, solid: 0.6 });
+  roomPart(ctx, roomRound(u(273), F - 4, 66, 4, 1), '#2e3e4c', { top: 0.5 });
+  for (const [sx, sw] of [[u(282), 5], [u(316), 4]]) roomFlat(ctx, sx, F - 2.8, sw, 0.8, '#3e4c5a');  // scuffs, where boots go
+  for (const px of [u(274), u(334.5)]) roomPart(ctx, roomRound(px, F - 86, 3.5, 86, 1), '#2e3e4c', { top: 0, side: 1 });
+  for (const [y, col] of [[F - 28, '#34485a'], [F - 52, '#4a4e44'], [F - 74, '#34485a']]) roomPart(ctx, roomRound(u(276), y, 60, 3, 0.8), col, { top: 0.6, under: 0.6 });
+  roomPart(ctx, roomRound(u(276), F - 86, 60, 3.5, 0.8), '#34485a', { top: 0.6, under: 0.6 });
+  for (const bx of [u(279), u(329)]) {  // the replacement shelf's printed brackets, their layers, and the tag on one
+    roomPart(ctx, roomRound(bx, F - 49, 4, 4, 0.5), '#8a6a48', { top: 0.4 });
+    for (const ly of [F - 47.8, F - 46.6]) roomFlat(ctx, bx + 0.4, ly, 3.2, 0.4, '#6a5038');
+  }
+  ctx.strokeStyle = '#6a6458'; ctx.lineWidth = 0.5; roomSeg(ctx, [[u(281.5), F - 45], [u(281.7), F - 44]]);
+  roomPart(ctx, roomRound(u(280), F - 44, 3.5, 4.5, 0.6), '#9a9050', { top: 0.5 }); roomDot(ctx, u(281.75), F - 43, 0.5, '#4a4436');
+  const box = (x, y, w, h, col, marks) => {  // a box of spares, its stencil as marks
+    roomPart(ctx, roomRound(u(x), y, w, h, 1), col, { top: 0.8, side: 1.2 });
+    for (let k = 0; k < marks; k++) roomFlat(ctx, u(x + 3 + k * 4), y + h / 2 - 1.5, 2.5, 3, '#7e7660');
+  };
+  const strap = y => { roomPart(ctx, roomRound(u(276), y, 60, 2.2, 0.6), '#5a5040', { top: 0.3 }); roomFlat(ctx, u(303), y - 0.6, 4, 3.4, '#8796a5'); };
+  box(278, F - 22, 26, 18, '#4e4434', 4); box(306, F - 24, 27, 20, '#3e4a40', 3); strap(F - 15);
+  roomPart(ctx, roomRound(u(279), F - 40, 18, 12, 2), '#4a5560', { top: 0.8, side: 1.2 }); roomFlat(ctx, u(296.5), F - 37, 2, 6, '#5a6672');  // the spare pump, its flange
+  roomPart(ctx, roomRound(u(300), F - 37, 10, 9, 4.5), '#2e3036', { top: 0.5 }); roomDot(ctx, u(305), F - 32.5, 2, '#1a1c20');  // a coil of cable
+  roomPart(ctx, `M ${u(313)} ${F - 34} L ${u(334)} ${F - 34} L ${u(332)} ${F - 28} L ${u(315)} ${F - 28} Z`, '#3e5068', { top: 0.6, side: 1 });  // the turret's spare feed tray
+  strap(F - 37);
+  for (const sx of [278, 293]) { roomPart(ctx, roomRound(u(sx), F - 66, 14, 14, 7), '#3a6a70', { top: 0.8, side: 1 }); roomPart(ctx, roomRound(u(sx + 5), F - 61, 4, 4, 2), '#2a3440', { top: 0 }); }
+  box(310, F - 68, 24, 16, '#4e4434', 3); strap(F - 61);
+  box(280, F - 82, 20, 8, '#3e4a40', 2);
+  roomPart(ctx, roomRound(u(262), F - 37, 5, 37, 1), '#2a3644', { top: 0, side: -1, solid: 0.45 });
+  roomPart(ctx, roomRound(u(200), F - 37, 5, 37, 1), '#2a3644', { top: 0, side: -1, solid: 0.45 });
+  roomPart(ctx, roomRound(u(140), F - 12, 124, 2.5, 0.8), '#2a3644', { top: 0.5 });
+  roomPart(ctx, roomRound(u(214), F - 24, 18, 12, 0.8), '#5a4a34', { top: 0.8, side: 1 }); roomFlat(ctx, u(217), F - 20, 8, 1, '#3a3022');  // the box for the next yard
+  // The bench's top at the waist, the paint worn off its edge where hands go; on it the breech in pieces and the parts tray, and the vice.
+  roomPart(ctx, roomRound(u(90), F - 41, 180, 4, 1.2), '#46505a', { top: 1, under: 0.8, solid: 0.5 });
+  for (const [wx, ww] of [[150, 8], [178, 4], [226, 6]]) roomFlat(ctx, u(wx), F - 38.6, ww, 0.8, '#6a747c');
+  roomPart(ctx, roomRound(u(128), F - 49, 24, 8, 2), '#3e444a', { top: 0.8, side: 1.2 });
+  roomDot(ctx, u(132), F - 45, 2.2, '#1a1e22'); for (const lx of [u(140), u(145)]) roomFlat(ctx, lx, F - 49.6, 2.5, 1, '#2e3438');
+  roomPart(ctx, roomRound(u(156), F - 45, 14, 4, 1.6), '#5a5e62', { top: 0.6 }); roomFlat(ctx, u(158), F - 43.6, 4, 0.8, '#3e4246');
+  ctx.strokeStyle = '#7a8288'; ctx.lineWidth = 0.8; roomSeg(ctx, [[u(173), F - 42], [u(174.5), F - 44], [u(176), F - 42], [u(177.5), F - 44], [u(179), F - 42], [u(180.5), F - 44], [u(182), F - 42]]);
+  roomPart(ctx, roomRound(u(186), F - 43.5, 20, 2.5, 0.6), '#2e3a44', { top: 0.4 });
+  for (const [px, py, pw, ph] of [[188, F - 44.2, 3, 0.9], [192.5, F - 44.6, 2.2, 1.2], [196, F - 44.2, 3.5, 0.9], [201, F - 44.5, 1.2, 1.2]]) roomFlat(ctx, u(px), py, pw, ph, '#8e969e');
+  roomPart(ctx, roomRound(u(238), F - 44, 18, 3, 0.8), '#4a5a4e', { top: 0.5 });
+  roomPart(ctx, roomRound(u(239), F - 50, 7, 6, 0.8), '#4a5a4e', { top: 0.6, side: 0.8 });
+  roomPart(ctx, roomRound(u(251), F - 49, 6, 5, 0.8), '#4a5a4e', { top: 0.6, side: 0.8 });
+  roomPart(ctx, `M ${u(247.4)} ${F - 56} L ${u(249.4)} ${F - 56} L ${u(249.4)} ${F - 49} L ${u(247.4)} ${F - 49} Z`, '#7a7e82', { top: 0 });  // the bracket in its jaws
+  for (const jx of [u(245.8), u(249.4)]) roomPart(ctx, roomRound(jx, F - 51, 1.6, 6, 0.4), '#6a6e70', { top: 0 });
+  roomFlat(ctx, u(257), F - 47.5, 6, 1.2, '#8796a5'); roomFlat(ctx, u(262.4), F - 52, 1.2, 10, '#8796a5');  // its screw and its handle
+  for (const ky of [F - 52.5, F - 42.5]) roomDot(ctx, u(263), ky, 1, '#5a6a78');
+}
+
 // The lamp: a pool of light mixing red (burn), warm (cruise) and a pulsing amber (flip), dimmed at night unless the room keeps its lights.
 // A ceiling lamp's fitting (#1024, look.md rule 5): its base plate on the ceiling's sliver from the cut back to the wall (e, the bay's eye), the
 // housing hung from it at the cut, the lens lit in the lamp's colour (lit) and a wire guard over the lens.
@@ -1487,13 +1610,13 @@ const roomNameAt = (r, zoom) => ({ x: r.x0 + 12, y: r.top + ROOM_NAME_TOP + 13 /
 // The tower's rooms with no fittings yet (#972; their own are step 3, #973): the walls drawRoom gives every room, and the name the cutaway puts on each.
 const roomPlain = () => {};
 const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay,
-  head: roomHead, workshop: roomPlain, airlock: roomPlain, lifesupport: roomPlain };
+  head: roomHead, workshop: roomWorkshop, airlock: roomPlain, lifesupport: roomPlain };
 // A room, r = { x0, x1, top, floor } in world units, drawn for the state s (w, time, zoom, spin, still, berths, cargo, torpedoes, fuel, burning, night,
 // asleep, well, and shell: how a bay's shell is drawn, the burn view's cache): walls, props, then its lamp.
 // Which way someone on a room's chair faces (#985): the bridge's and the guns' toward their consoles, the chair's back behind them (#933), the
 // medbay's stool toward the cot. The galley's bench is not here: at the mess table people face you.
 const SEAT_FACE = { bridge: 1, gunnery: -1, medbay: -1 };
-const LAMP_FITTED = ['bridge', 'berths', 'medbay', 'hold', 'gunnery', 'engine', 'head'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
+const LAMP_FITTED = ['bridge', 'berths', 'medbay', 'hold', 'gunnery', 'engine', 'head', 'workshop'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
 function drawRoom(ctx, id, r, s) {
   if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses
   const W = r.x1 - r.x0;
