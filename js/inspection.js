@@ -31,7 +31,7 @@ function inspectionCause(cargo, gov, rep, marked) {
 function inspectionScene(cause, planet) {
   const cap = hiredCaptain(), post = career() && career().post;
   const say = (key, vars) => sceneSay('scene:inspection', key, { planet: planet.name, gov: cause.gov, cap: cap ? cap.last : '', sum: fmt(cause.sum), ...vars });
-  const causes = [cause.good ? say('cause.good', { good: goodName(cause.good), tons: cause.tons, duty: fmt(cause.duty) }) : '', cause.fine ? say('cause.standing', { fine: fmt(cause.fine) }) : ''].filter(Boolean).join(' ');
+  const causes = [cause.good ? say('cause.good', { good: goodName(cause.good).toLowerCase(), tons: cause.tons, duty: fmt(cause.duty) }) : '', cause.fine ? say('cause.standing', { fine: fmt(cause.fine) }) : ''].filter(Boolean).join(' ');
   const pay = n => { const paid = Math.min(purse(), n); moveMoney(-paid); recordHand('fines'); return fmt(paid); };
   const choices = [];
   if (post) {
@@ -43,7 +43,8 @@ function inspectionScene(cause, planet) {
     } });
   }
   choices.push({ label: say(post ? 'keep.label' : 'pay.label'), run: () => say(post ? 'keep.result' : 'pay.result', { paid: pay(cause.sum) }) });
-  return { title: say('title'), via: 'ship', owner: 'you', text: [say('text', { causes }), cap ? say('captain') : ''].filter(Boolean).join(' '), choices };
+  return { title: say('title'), via: 'crew', owner: 'you',  // the inspector comes aboard, as customs does (ties.js)
+    text: [say('text', { causes }), cap ? say('captain') : ''].filter(Boolean).join(' '), choices };
 }
 
 // The landed hook's body (`note` is the hook's M.note; a test reads UI.notes): at an inspecting port, the inspector's scene opens first (ahead of a scene already open), or a clean ship gets one note line.
