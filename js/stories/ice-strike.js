@@ -19,10 +19,14 @@ Mods.register({
   id: 'ice-strike', name: "The Ice Haulers' Strike", builtin: true,
   init(M) {
     // The end (strikeEnd, above): the three ends are written in the data below, each with its effects and its words.
+    // A captain who kept the ship off the ice for it has a stake in how it ends (#1060): her words and her regard, from the end's `kept`, in chapter one only (in
+    // chapter two the captain who kept the ship off the ice is not aboard).
     M.addAction('strike-settle', (won, held, broke) => {
       const end = { won, held, broke }[strikeEnd(strikeRoll(hired()), quality('strike'))];
+      const kept = end.kept && quality('strikeHold') && chapterOf(G.state) === 1 && hiredCaptain() ? end.kept : null;
       applyEffects(end.effects);
-      return end.say;
+      if (kept) applyEffects(kept.effects);
+      return kept ? `${end.say} ${kept.say}` : end.say;
     });
 
     M.addStorylet({
@@ -136,9 +140,11 @@ Mods.register({
           'reads it. She reads it the way she read the call, flat, with the figures first.'),
       choices: [
         { label: 'Listen',
-          effects: { set: { strikeDone: 1, strikeHold: 0 }, do: ['strike-settle',
+          effects: { do: ['strike-settle',
             { effects: { unrest: { ceres: -0.1 }, price: { 'Ceres Station': { water: 0.1 } }, news: 'Ceres: the ice buyers raise the price a tonne by a tenth, and the Ice Haulers\' Guild ends its strike.',
               log: 'The Ice Haulers\' strike won: the buyers at Ceres raised the price a tonne.' },
+              kept: { effects: { captainLike: { n: 2, memory: 'You asked me to keep the ship off the ice for the strike, and the price went up on it.' } },
+                say: 'Captain Vance writes the new price a tonne in the notebook, under the old one, and does the sum for a quarter of ice runs at it. She shows you the figure without saying anything.' },
               say: ('"The buyers have raised the price a tonne by a tenth, from the first," Mirela says. "Guild hulls haul from tomorrow." On the dock nobody cheers. ' +
                 'A hauler by the rail says the new figure under his breath, and then works it out per run, and says that.') },
             { effects: { news: 'Ceres: the Ice Haulers\' Guild goes back to work at the old price, on the buyers\' word of a review.',
@@ -147,9 +153,11 @@ Mods.register({
                 'then she reads the date of the review again, as if somebody might write it down. Somebody does.') },
             { effects: { unrest: { ceres: 0.1 }, news: 'Ceres: the Ice Haulers\' strike ends. Guild hulls go back at a twentieth less a tonne.',
               log: 'The Ice Haulers\' strike broke: the haulers went back for less.' },
+              kept: { effects: { captainLike: { n: -1, memory: 'You asked me to keep the ship off the ice for a strike that broke.' } },
+                say: 'Captain Vance writes the month in the notebook and draws a line through it, and then the new price under it, a twentieth less.' },
               say: ('"Guild hulls haul from tomorrow," Mirela says, "at a twentieth less a tonne, which is what the buyers offered the hulls that went back first." ' +
                 'She reads out the names of those hulls, all of them, at the same pace as the rest.') },
-          ] },
+          ], set: { strikeDone: 1, strikeHold: 0 } },
           result: '' },
       ],
     });
