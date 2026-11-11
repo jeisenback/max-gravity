@@ -144,7 +144,7 @@ const playScenes = () => {
   run('scene:watch-bill', {}, () => {
     const names = { a: 'Mateo', b: 'Hana', you: 'you' }, w = k => sceneSay('scene:watch-bill', k, { n: 2 });
     return { title: w('card.title'), text: [billLine({ bridge: 'a', engine: 'b' }, names), billLine({ bridge: 'you', engine: null }, names), billLine({ bridge: null, engine: 'b' }, names),
-      w('card.tonight'), w('card.night'), w('card.mine'), w('card.none')].join(' | '), choices: [] };
+      w('card.tonight'), w('card.night'), w('card.mine'), w('card.none'), sceneSay('scene:watch-bill', 'card.row', { bridge: 'Mateo', engine: 'Hana' })].join(' | '), choices: [] };
   });
   // the port inspector (inspection.js): each cause alone and both together, for a Comms hand (the papers) and a gunner (speaking up), and the owner's one choice
   for (const [name, cargo, rep, post] of [['good', { water: 50 }, 0, 'comms'], ['standing', {}, -22, 'gunner'], ['both', { water: 50 }, -22, 'comms']]) {

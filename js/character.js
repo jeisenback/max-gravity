@@ -71,7 +71,7 @@ function watchBillCard() {
   const who = id => (id ? names[id] || id : say('card.none'));
   const rows = [0, 1, 2, 3].map(k => {
     const b = billOn(k), mine = b.bridge === 'you' || b.engine === 'you';
-    return String(h`<div class="con-read watch-night"><span>${k ? sceneSay('scene:watch-bill', 'card.night', { n: k + 1 }) : say('card.tonight')}</span><b>${who(b.bridge)} / ${who(b.engine)}${mine ? ` ${say('card.mine')}` : ''}</b></div>`);
+    return String(h`<div class="con-read watch-night"><span>${k ? sceneSay('scene:watch-bill', 'card.night', { n: k + 1 }) : say('card.tonight')}</span><b>${sceneSay('scene:watch-bill', 'card.row', { bridge: who(b.bridge), engine: who(b.engine) })}${mine ? ` ${say('card.mine')}` : ''}</b></div>`);
   });
   return conCard(say('card.title'), rows.join(''));
 }

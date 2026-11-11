@@ -177,3 +177,43 @@ test('a contact on the hand\'s watch opens with them there; on another\'s night 
   assert.equal(r.stage, 'bridge', 'staged where the hand keeps the watch');
   assert.equal(r.otherStage, 'galley', 'otherwise as before');
 });
+
+// ---------- the review's fixes (#1034) ----------
+
+test('a scene that puts the hand elsewhere on their own bridge night leaves the bridge to the next in order, and the line names them once', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurnAtNight(2); t.elapsed += SHIP_DAY * 0.25;
+    EFFECTS.standWatch({ stands: 'you', post: 'engine', relieved: 'engineer', relievedAt: 'bunk' });  // the captain's extra watch
+    const state = shipState(G.state, t, ship().armor, () => 0.5, { aid: null, you: false }), b = billOn(0);
+    const onBridge = t.aboard.filter(p => { const s = routineSpot(p, 'night', state); return s.room === 'bridge' && s.at === 'post'; }).map(p => p.id);
+    return { onBridge, line: billLine(b, billNames(t.aboard)) };
+  });
+  await done();
+  assert.equal(r.onBridge.length, 1, `someone has the bridge: ${r.onBridge}`);
+  assert.notEqual(r.onBridge[0], 'you');
+  assert.equal((r.line.match(/\byou\b/g) || []).length, 1, r.line);
+  assert.match(r.line, /you in the engine room/);
+});
+
+test('the pump is not played on a night the hand keeps the engine room', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurnAtNight(1); t.elapsed += SHIP_DAY * 0.25;
+    EFFECTS.standWatch({ stands: 'you', post: 'engine', relieved: 'icehand', relievedAt: 'bunk' });
+    const w = { ...sceneView(STORYLETS.find(s => s.id === 'road-night-pump')).when }; delete w.chance;
+    return meets(w);
+  });
+  await done();
+  assert.equal(r, false);
+});
+
+test('the card says which watch is which', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => { onBurnAtNight(1); const div = document.createElement('div'); div.innerHTML = watchBillCard(); return [...div.querySelectorAll('.watch-night')].map(x => x.textContent); });
+  await done();
+  assert.match(r[0], /bridge/); assert.match(r[0], /engine room/);
+});

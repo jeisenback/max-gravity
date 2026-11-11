@@ -84,6 +84,9 @@ function watchBill(roster, night) {
 }
 // The bill's people: the hand and the crew, from the game's state (not the cutaway's people, which a scene's conditions are read before).
 const crewRoster = st => [{ id: 'you', role: 'you' }, ...st.crew.map(id => (st.people || {})[id]).filter(Boolean).map(p => ({ id: p.id, role: p.role }))];
+// The bill for `night` with the ship's state `s` ({ hurt, you, watch }): whoever a scene's record puts on watch tonight is left off the rota,
+// so the next in order covers the post they would have kept (#1034 review).
+const billFor = (st, s, night) => watchBill(rosterOf(crewRoster(st), s).filter(r => !(s.watch && r.id === s.watch.stands)), night);
 // The roster for the bill: the hurt from the ship's state (`hurt`, and `you` for the hand).
 const rosterOf = (people, state) => people.filter(p => p.id && p.role !== 'cat').map(p => ({ id: p.id, role: p.role, hurt: p.role === 'you' ? !!state.you : (state.hurt || []).includes(p.id) }));
 // Whether `p` stands a watch tonight, by the bill or a scene's record (#951) on that watch's room: 'bridge', 'engine', or null. A record on
@@ -172,7 +175,7 @@ function shipState(st, t, maxArmor, rnd, who) {
   const low = crew.filter(c => !hurt.includes(c.id) && c.mood && c.mood.kind === 'low' && c.mood.until > st.day).map(c => c.id);  // as moodLow
   const d = maxArmor > 0 ? 1 - st.armor / maxArmor : 0;
   const out = { marks: marksFor(t, d, rnd), severe: d > 2 / 3, hurt, low, you: !!who.you, aid: who.aid || null, watch: watchTonight(t) };
-  out.bill = watchBill(rosterOf(crewRoster(st), out), st.day + shipDay(t.elapsed).day);  // tonight's watch bill (#1034)
+  out.bill = billFor(st, out, st.day + shipDay(t.elapsed).day);  // tonight's watch bill (#1034)
   return out;
 }
 
@@ -253,7 +256,7 @@ function billOn(ahead = 0) {
   const t = G.transit, s = nightState();
   if (!t || !s) return null;
   const night = G.state.day + shipDay(t.elapsed).day + ahead;
-  return billWithWatch(watchBill(rosterOf(crewRoster(G.state), s), night), t.watch, shipDay(t.elapsed).day + ahead);
+  return billWithWatch(billFor(G.state, ahead ? { ...s, watch: null } : s, night), t.watch, shipDay(t.elapsed).day + ahead);  // later nights: tonight's hurt, as a forecast
 }
 // Where the hand keeps a watch tonight, by the bill or a scene's record (#951), with the lights down: a room, or null.
 function handWatchPost() {
@@ -265,7 +268,7 @@ function handWatchPost() {
 }
 // Tonight's bill and a scene's record, from the burn as it stands, for what reads them outside the frame's ship state (isAsleep, the dusk).
 const nightState = () => { const t = G.transit; if (!t) return null; const st = G.state, hurt = st.crew.filter(id => (st.injured || {})[id]);
-  const s = { hurt, you: typeof handHurt === 'function' && handHurt(), watch: watchTonight(t) }; s.bill = watchBill(rosterOf(crewRoster(st), s), st.day + shipDay(t.elapsed).day); return s; };
+  const s = { hurt, you: typeof handHurt === 'function' && handHurt(), watch: watchTonight(t) }; s.bill = billFor(st, s, st.day + shipDay(t.elapsed).day); return s; };
 const isAsleep = p => !p.staged && p.at !== 'alone' && isDark() && p.room === 'berths' && p.tx === null && p.dk === roomAt('berths').deck && p.role !== 'cat' && !onWatchTonight(p, nightState()) && phase() !== 'couch';  // asleep through the straps and the float too: strapped into the bunk (#927)
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.

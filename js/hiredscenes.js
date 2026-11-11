@@ -209,6 +209,7 @@ const SCENE_LINES = {
     'tonight.bridge': 'The watch tonight: {bridge} on the bridge.',
     'tonight.engine': 'The watch tonight: {engine} in the engine room.',
     'card.title': 'Watch bill', 'card.tonight': 'Tonight', 'card.night': 'Night {n}', 'card.mine': '(yours)', 'card.none': 'nobody',
+    'card.row': '{bridge} on the bridge, {engine} in the engine room',
   },
   'scene:dock-friend': {  // an officer aboard, and the harbor master who served under them (ties.js)
     title: 'A Friend at the Dock',

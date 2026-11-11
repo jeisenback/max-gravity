@@ -212,7 +212,7 @@ Mods.register({
     }, 0.35, 90);
 
     road({
-      id: 'road-night-pump', when: { night: true, watchStood: 'engine' },
+      id: 'road-night-pump', when: { night: true, onWatch: false, watchStood: 'engine' },
       title: 'The Number Two Pump',
       text: 'The cover is off the number two coolant pump, and {watch:engine} has a flashlight in their teeth. "It\'s ticking," {watch:engine} says around it. "Has been for six hours. Nobody who isn\'t me can hear it."',
       choices: [
