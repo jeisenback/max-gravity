@@ -649,6 +649,43 @@ test('the galley is drawn to the figures\' standard in every phase: its props ou
   const ys = b.args.filter(a => /^(moveTo|lineTo)/.test(a)).map(a => Number(a.split(',')[1]));
   assert.ok(Math.abs(100 - Math.min(...ys) - 23) <= 1.5, `the bench's seat at about 23 (${100 - Math.min(...ys)})`);
 });
+// Each filled path the galley drew, its points where they land on the screen (the translations it was drawn under applied), and its colour.
+const placedParts = calls => {
+  const out = [], stack = []; let dx = 0, dy = 0, pts = [], fill = null;
+  for (const [k, ...a] of calls) {
+    if (k === 'save') stack.push([dx, dy]); else if (k === 'restore') [dx, dy] = stack.pop(); else if (k === 'translate') { dx += a[0]; dy += a[1]; }
+    else if (k === 'fillStyle') fill = a[0]; else if (k === 'beginPath') pts = [];
+    else if (k === 'moveTo' || k === 'lineTo') pts.push([a[0] + dx, a[1] + dy]); else if (k === 'quadraticCurveTo') pts.push([a[2] + dx, a[3] + dy]);
+    else if (k === 'ellipse') pts.push([a[0] + dx, a[1] + dy, a[2], a[3]]); else if (k === 'arc') pts.push([a[0] + dx, a[1] + dy, a[2], a[2]]);
+    else if (k === 'fill') out.push({ col: String(fill).toLowerCase(), pts: [...pts], at: [dx, dy] });
+  }
+  return out;
+};
+test('in the box the galley\'s hood is over the burners, clear of the pans and the thrust sign, and the dispenser stands on the worktop (#1024)', () => {
+  for (const r of [layoutBox(LAYOUTS.freighter, 'galley'), { x0: 0, x1: 420, top: 0, floor: 100 }]) {
+    const F = r.floor, e = box.roomEye(r), { ctx, calls } = recorder(); drawRoom(ctx, 'galley', r, RS({ w: phaseWeights(0.3), damage: { marks: new Set(), severe: false } }));
+    const parts = placedParts(calls), xs = p => p.pts.map(q => q[0]), ys = p => p.pts.map(q => q[1]), span = p => [Math.min(...xs(p)), Math.max(...xs(p))];
+    const hood = parts.find(p => p.col === box.figShade('#56708c', box.WALL_TONE) && p.pts.length >= 4), [h0, h1] = span(hood);
+    const burners = parts.filter(p => p.col === '#0b1520' && p.pts.length === 1 && p.pts[0][3] === 1.5).map(p => p.pts[0][0]);
+    assert.equal(burners.length, 2, 'two burners');
+    const bc = (burners[0] + burners[1]) / 2;
+    assert.ok(Math.abs((h0 + h1) / 2 - bc) < 2, `the hood (${h0} to ${h1}) centred over the burners (${bc})`);
+    const rail = parts.find(p => p.col === box.figShade('#3d5a7a', box.WALL_TONE)), pans = parts.filter(p => p.col === box.figShade('#4a5662', box.WALL_TONE)).map(p => p.pts[0]);
+    const p0 = Math.min(span(rail)[0], ...pans.map(q => q[0] - q[2])), p1 = Math.max(span(rail)[1], ...pans.map(q => q[0] + q[2]));
+    assert.equal(pans.length, 2, 'two pans');
+    assert.ok(p1 < h0 || p0 > h1, `the pans and their rail (${p0} to ${p1}) clear of the hood (${h0} to ${h1})`);
+    const back = box.roomInto(e, r.x1, F, 1)[0];
+    assert.ok(Math.max(h1, p1) < back, 'on the back wall, not in the side wall');
+    assert.ok(Math.min(...ys(hood)) > r.top + 26, 'under the thrust sign (its bottom at the top + 26)');
+    // the dispenser: every part of it drawn under one move, its foot on the worktop's top at the depth it is moved to, inside the worktop's ends
+    const bottle = parts.find(p => p.col === '#3d6a86'), its = parts.filter(p => p.at[0] === bottle.at[0] && p.at[1] === bottle.at[1]), foot = Math.max(...its.flatMap(ys));
+    const W = r.x1 - r.x0, c0 = r.x0 + W * 0.02 - 1.5, c1 = r.x0 + W * 0.205 + 1.5, cx = (Math.min(...xs(bottle)) + Math.max(...xs(bottle))) / 2;
+    const raw = cx - bottle.at[0], d = bottle.at[0] / ((e.vx - raw) * (1 - e.k)), top = box.roomInto(e, raw, F - 41, d)[1];  // the depth its move puts it at
+    assert.ok(d > 0 && d < 1, `on a top in front of the back wall (${d})`);
+    assert.ok(Math.abs(foot - top) < 0.01, `its foot (${foot}) on the worktop's top (${top})`);
+    assert.ok(Math.min(...its.flatMap(xs)) > box.roomInto(e, c0, F - 41, d)[0] && Math.max(...its.flatMap(xs)) < box.roomInto(e, c1, F - 41, d)[0], 'between the worktop\'s ends');
+  }
+});
 test('the mess table has legs and a tie-down rail, its plates and the mug on it, in every phase (#933)', () => {
   for (const pr of [0.02, 0.3, 0.45, 0.5]) {
     const c = fakeCtx(); roomMessTable(c, RR, RS({ w: phaseWeights(pr) })); assert.equal(c.depth, 0);

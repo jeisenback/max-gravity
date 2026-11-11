@@ -489,7 +489,7 @@ function roomMessTableIn(ctx, r, s) {
 }
 
 // The galley (#933): a counter at the waist with its cupboards, latched, the knife strip over it and a pot plant on it, where the cook works
-// (routineSpot); a water dispenser at the counter's end; latched cupboards at head height either side of the framed porthole, a grab rail under
+// (routineSpot); a water dispenser standing on the worktop; latched cupboards at head height either side of the framed porthole, a grab rail under
 // them; the stove under its hood at the far end, the pans on a rail. The top left is kept clear for the room's name and the top right for the
 // thrust sign (both shiplife.js), down to the smallest window (#937). In the box (#1024): what is on the wall first, moved onto the back wall;
 // then what stands on the floor, solid, from each side wall in toward the eye.
@@ -521,13 +521,18 @@ function roomGalley(ctx, r, s, X, W) {
   roomOnWall(ctx, X(0.47), F - 68, () => roomPorthole(ctx, X(0.47), F - 68, 13, s.spin));
   if (W >= 340) roomOnWall(ctx, (X(0.55) + X(0.63)) / 2, F - 85, () => cupboards(X(0.55), X(0.63), F - 96, F - 74));
   if (W >= 240) {
-    roomOnWall(ctx, cx + sw / 2, F - 66, () => {  // the hood over the burners, its filter's slots
+    // The hood on the wall centred over the burners as they lie on the hob's top (#1024), and the pans on their rail in the gap between it and the
+    // cupboard (or the porthole), clear of the thrust sign (shiplife.js). wallAt: a group whose own centre is c, put on the wall at x = at.
+    const e = roomEye(r), wallAt = (c, y, at, fn) => { const ax = e.vx + (at - e.vx) / e.k; roomOnWall(ctx, ax, y, () => { ctx.translate(ax - c, 0); fn(); }); };
+    const hood = roomInto(e, cx + 5 + sw / 2, F - 41, 0.25)[0], hc = cx + sw / 2;
+    wallAt(hc, F - 66, hood, () => {  // the hood over the burners, its filter's slots
       roomPart(ctx, `M ${cx - 2} ${F - 61} L ${cx + sw + 2} ${F - 61} L ${cx + sw - 6} ${F - 71} L ${cx + 6} ${F - 71} Z`, '#56708c', { top: 1, under: 1.5 });
       for (let k = 0; k < 4; k++) roomFlat(ctx, cx + 9 + k * (sw - 14) / 4, F - 66.5, (sw - 14) / 4 - 3, 1.5, '#2c4c6e');
     });
-    if (W >= 320) {  // the pans on their rail past the hood, under the thrust sign (shiplife.js)
-      const p0 = cx + sw + 6, p1 = cx + cw - 2;
-      roomOnWall(ctx, (p0 + p1) / 2, F - 63, () => {
+    if (W >= 320) {
+      const p0 = cx + sw + 6, p1 = cx + cw - 2, onWallX = (x, c, y) => x + roomInto(e, c, y)[0] - c;
+      const from = W >= 340 ? onWallX(X(0.63), (X(0.55) + X(0.63)) / 2, F - 85) : onWallX(X(0.47) + 19, X(0.47), F - 68);
+      wallAt((p0 + p1) / 2, F - 63, (from + hood - sw / 2 - 2) / 2, () => {
         roomPart(ctx, roomRound(p0, F - 64, p1 - p0, 2.5, 1), '#3d5a7a', { top: 0.8 });
         [[0.3, 6, 6], [0.75, 9, 7]].forEach(([f, l, rad], k) => {
           const ax = p0 + (p1 - p0) * f, [ex, ey] = hangEnd(ax, F - 61.5, l, k * 1.7, w, time, s.still);
@@ -545,11 +550,17 @@ function roomGalley(ctx, r, s, X, W) {
     for (const k of [0, 1]) { const dx = c0 + 3 + k * (dw + 3); roomPart(ctx, roomRound(dx, F - 34, dw, 27, 1.2), '#24405e', { top: 0.8, side: 1.4 }); latch(k ? dx + 2 : dx + dw - 4, F - 27); }
     roomPart(ctx, roomRound(c0 - 1.5, F - 41, c1 - c0 + 3, 4, 1.2), '#2c4c6e', { top: 1, under: 0.8, solid: 0.5 });  // the worktop, at the waist
     roomAtDepth(ctx, X(0.04), F - 41, 0.25, () => roomPlant(ctx, X(0.04), F - 47, w, time, s.still, 0.6));  // small, under the room's name
-    const d0 = X(0.21), d1 = X(0.245), dm = (d0 + d1) / 2;  // the water dispenser: its bottle, the tap and the drip tray
-    roomPart(ctx, roomRound(d0, F - 49, d1 - d0, 6, 1.2), '#2a4664', { top: 0.8, side: 1.5, solid: 0.25 });
-    roomPart(ctx, roomRound(d0 + 1.5, F - 57.5, d1 - d0 - 3, 9, 2.2), '#3d6a86', { top: 1, side: 1.8, solid: 0.25 });
-    roomFlat(ctx, d0 + 2.5, F - 53, d1 - d0 - 5, 0.8, '#6a9ab4');  // the water line
-    roomFlat(ctx, dm - 1, F - 43, 2, 2.5, '#8796a5'); roomPart(ctx, roomRound(d0 + 1, F - 39.5, d1 - d0 - 2, 2, 0.8), '#2a4664', { top: 0.5 });
+    // The water dispenser, standing on the worktop between the plant and the knife strip (look.md rule 5), low enough to stay clear of the room's
+    // name: its foot on the top, the drip tray on it, the tap, the head and the bottle on the head.
+    const d0 = X(0.08), d1 = X(0.115), dm = (d0 + d1) / 2;
+    roomAtDepth(ctx, dm, F - 41, 0.25, () => {
+      roomPart(ctx, roomRound(d0, F - 43, d1 - d0, 2, 0.8), '#2a4664', { top: 0.5 });  // the foot and its drip tray
+      roomFlat(ctx, dm - 1.5, F - 51, 3, 8, '#24405e');  // the column up to the head
+      roomFlat(ctx, dm - 1, F - 47, 2, 2.5, '#8796a5');  // the tap
+      roomPart(ctx, roomRound(d0, F - 52, d1 - d0, 5, 1.2), '#2a4664', { top: 0.8, side: 1.5 });
+      roomPart(ctx, roomRound(d0 + 1.5, F - 59, d1 - d0 - 3, 7, 2.2), '#3d6a86', { top: 1, side: 1.8 });
+      roomFlat(ctx, d0 + 2.5, F - 55, d1 - d0 - 5, 0.8, '#6a9ab4');  // the water line
+    });
   }
   if (W >= 240) {
     // From the right wall in, the stove (#933): two burners as rings on its top (the kettle on one, its ring lit while it steams in cruise), the
