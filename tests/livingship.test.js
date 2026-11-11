@@ -854,11 +854,13 @@ test('the medbay\'s props are sized to a person: the cot\'s mattress under the p
     const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), at = `${pr}`;
     const bedPart = parts.find(p => p.col === '#56667a');
     assert.ok(bedPart && Math.abs(bedPart.y0 - (F - MED_COT)) < 0.01, `${at}: the mattress's top at the patient (${bedPart && F - bedPart.y0})`);
-    assert.ok(bedPart.x0 <= X(0.21) && bedPart.x1 >= X(0.53) && bedPart.x0 < bx - 40 && bedPart.x1 > bx + 40, `${at}: the cot (${bedPart.x0} to ${bedPart.x1}) from 0.2 to 0.54, under the patient at ${bx}`);
+    const frame = parts.find(p => p.col === '#2a4664'), lying = drawPerson(fakeCtx(), { name: 'bunk', face: 1, frame: 0 }, bx, F - MED_COT, { color: '#ffb347' });
+    assert.ok(frame.x1 - frame.x0 >= 105 && frame.x1 - frame.x0 <= 110 && frame.y1 - frame.y0 <= 4, `${at}: the cot a person long with a little to spare (${frame.x1 - frame.x0} long, its frame ${frame.y1 - frame.y0} deep)`);
+    assert.ok(bedPart.x0 < head.x - 8 && bedPart.x1 > lying.foot.x + 4, `${at}: the mattress (${bedPart.x0} to ${bedPart.x1}) under the whole patient (${head.x} to ${lying.foot.x})`);
     const pillow = parts.find(p => p.col === '#9a968a');
     assert.ok(pillow && head.x >= pillow.x0 && head.x <= pillow.x1 && Math.abs(pillow.y1 - (F - MED_COT)) < 0.01, `${at}: the pillow (${JSON.stringify(pillow)}) under the patient's head at ${head.x}`);
     assert.ok(parts.filter(p => p.col === '#4a4436' && p.x0 > bedPart.x0 && p.x1 < bedPart.x1).length >= 2, `${at}: straps to hold the hurt down in the burn`);
-    assert.ok(parts.filter(p => p.col === '#2e4a68').every(p => F - p.y0 >= MED_COT && F - p.y0 <= 45), `${at}: the head and foot boards a little over the mattress`);
+    assert.ok(parts.filter(p => p.col === '#2e4a68').every(p => F - p.y0 >= MED_COT && F - p.y0 <= 42 && p.x1 - p.x0 <= 3), `${at}: the head and foot boards, slim, a little over the mattress`);
     const pole = parts.find(p => p.col === '#4a5e74' && p.y1 - p.y0 > 60);
     assert.ok(pole && F - pole.y0 >= 85 && F - pole.y0 <= 92 && pole.y1 >= F - 3, `${at}: the IV pole from the deck to about head height (${pole && F - pole.y0})`);
     const fi = calls.findIndex(k => k[0] === 'fillStyle' && k[1] === '#6a8494'), bi = calls.slice(0, fi).map(k => k[0]).lastIndexOf('translate'), [, tx, ty] = calls[bi];
@@ -868,7 +870,11 @@ test('the medbay\'s props are sized to a person: the cot\'s mattress under the p
     assert.ok(li >= 0 && Math.abs(m[1] - tx) < 3 && m[2] >= ty + bag.y1 - 0.01 && m[2] <= ty + bag.y1 + 5, `${at}: the IV line from the bag's foot (${m && m.slice(1)})`);
     assert.ok(q[3] > bedPart.x0 && q[3] < bedPart.x1 && Math.abs(q[4] - (F - MED_COT)) <= 2, `${at}: to the cot (${q.slice(3)})`);
     const mon = parts.find(p => p.col === '#1f3a56'), my = F - (mon.y0 + mon.y1) / 2;
-    assert.ok(my >= 70 && my <= 85 && mon.x1 - mon.x0 >= 30, `${at}: the monitor at eye height (${my})`);
+    assert.ok(my >= 72 && my <= 82 && mon.x1 - mon.x0 >= 28 && mon.x1 - mon.x0 <= 32 && mon.y1 - mon.y0 <= 18, `${at}: the monitor, small, at eye height (${my}, ${mon.x1 - mon.x0} by ${mon.y1 - mon.y0})`);
+    assert.ok(mon.x0 > bedPart.x0 && mon.x0 < bedPart.x1, `${at}: the monitor (${mon.x0} to ${mon.x1}) over the cot, where someone at its side reads it`);
+    const meet = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
+    for (const p of parts.filter(q => /^#(2c4560|3a5068|4a5e74|20384f)$/.test(q.col))) assert.ok(!meet(mon, p), `${at}: the monitor clear of the scanner arm and the IV pole (${p.col} ${JSON.stringify(p)})`);
+    assert.ok(mon.x0 > tx + 6, `${at}: and clear of the bag`);
     const top = parts.find(p => p.col === '#6e7e8e');
     assert.ok(F - top.y0 >= 36 && F - top.y0 <= 44, `${at}: the cabinet at counter height (${F - top.y0})`);
     const arm = parts.filter(p => /^#(2c4560|3a5068)$/.test(p.col)), sh = parts.find(p => p.col === '#3a5068');
