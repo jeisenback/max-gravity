@@ -12,6 +12,7 @@ const fightSay = (key, vars) => sceneSay('scene:fight', key, vars);
 // The gunner moves a hand knows (docs/superpowers/specs/2026-10-23-gunner-moves-design.md): the career's list, empty for a save from before. Whether this fight offers them
 // is the caller's gate (a hired hand at the gunner post, startShipFight).
 const knownMoves = c => (c && c.moves) || [];
+const heldCut = () => (handPerk('pd-watch') ? 0.5 : FIGHT.PDC_HOLD);  // what a held turret takes off her volley: half with the pd-watch perk (picks.js); the fight, its read of her volley and the Gunnery readout read it
 
 // The start: the contact's own logic (a patrol's standing, the flee roll, the first fight explained once), then the fight. Returns what to show now
 // and queues the panel. `o.edge` (the contact's move, an ambush) is a free first volley, ours ahead and hers behind; `o.shift` is km that move opened
@@ -36,7 +37,7 @@ function startShipFight(spec, flee, o = {}) {
   const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
   const me = ship(), entry = captainEntry(), side = () => shipSide({ dmgMult: 1, ...SHIPS[foe.shipId], armor: foe.maxArmor }, { grade: s.grade, ...FOE_TYPES[foe.shipId], torps: (FOE_TYPES[foe.shipId] || {}).torps || 0, breakAt: hasTrait(hired(), 'hard-case') ? FIGHT.BREAK + 0.1 : undefined });  // Hard Case (traits.js): she breaks off a tenth sooner
   const mine = shipSide(me, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0) + (handPerk('marksman') ? 1 : 0), launcher: me.launcher, torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
-  mine.pdcHold = handPerk('pd-watch') ? 0.5 : FIGHT.PDC_HOLD;  // what a held turret takes off her volley (the fight perks, picks.js)
+  mine.pdcHold = heldCut();
   mine.armor = Math.min(mine.maxArmor, Math.max(1, Math.round(st.armor * FIGHT.POOL)));  // at least 1: a ship at its last armor still fights
   s.armor0 = { real: st.armor, fight: mine.armor };  // what fightTook measures the real loss from
   s.state = shipFight({ me: mine, foes: s.pack ? [side(), side()] : [side()], nerve: entry ? entry.captain.nerve : 3, band: bandIndex(Math.max(0, rangeAtContact(style) + (o.shift || 0) + (handPerk('lane-sense') ? 10 : 0) - (spec.kind === 'pirate' && hasTrait(hired(), 'runner') ? 10 : 0))) });  // lane-sense: her plume read ten km sooner; Runner (traits.js): pirates close ten km faster, a patrol does not
@@ -124,7 +125,7 @@ function moveHints(f, shown) {
     else if (m.kind === 'board' && foe.parts.lock.hp > 0) keys.add('hint.board');
     else if (['broadside', 'pin', 'close'].includes(m.kind) && f.me.pdc) keys.add('hint.volley');
   });
-  return [...keys].map(k => fightSay(k, { salvo: Math.round(FIGHT.PDC_SALVO * 100), volley: Math.round(FIGHT.PDC_HOLD * 100) }));
+  return [...keys].map(k => fightSay(k, { salvo: Math.round(FIGHT.PDC_SALVO * 100), volley: Math.round(heldCut() * 100) }));
 }
 
 // What Fire will do, in words for its button: the guns by where they aim ("2 guns at her hull", or each gun when they differ), and the torpedo where one is

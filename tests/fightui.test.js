@@ -1073,3 +1073,34 @@ test('the guns start aimed at her hull (the owner, 2026-11-07)', async () => {
   assert.ok(r.length >= 1);
   for (const on of r) assert.equal(on, 'Hull');
 });
+
+test('with two moves known, ordering the second takes the order from the first: one move a turn (#1002)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner'); hired().moves = ['vent', 'split'];
+    const s = battle(); s.state.locked = [0]; s.state.heat = 3; s.shown = { foe: [{ kind: 'broadside', target: 'hull', dmg: [1, 2] }], captain: { kind: 'hold' } };
+    openEvent(shipFightEvent(s, { guns: [{ foe: 0, part: 'weapons' }, { foe: 0, part: 'weapons' }], torp: null, pdc: 'hold' }));
+    const at = re => G.dialog.choices.findIndex(c => re.test(c.label)), label = re => G.dialog.choices[at(re)].label;
+    openEvent(chooseEvent(at(/^Vent the guns/))); const one = [label(/^Vent the guns/), label(/^Split the turret/)];
+    openEvent(chooseEvent(at(/^Split the turret/))); const two = [label(/^Vent the guns/), label(/^Split the turret/)];
+    return { one, two };
+  });
+  await done();
+  assert.match(r.one[0], /\(ordered\)$/); assert.doesNotMatch(r.one[1], /\(ordered\)$/);
+  assert.doesNotMatch(r.two[0], /\(ordered\)$/); assert.match(r.two[1], /\(ordered\)$/);
+});
+
+test('with pd-watch, the turret\'s cut is quoted at 50 percent where the fight applies 50: the read of her volley and the Gunnery card (#1002)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    fightGame('gunner'); const plain = Math.round(heldCut() * 100);
+    hired().picks = ['pd-watch']; const watch = Math.round(heldCut() * 100);
+    const text = fightCard().replace(/<[^>]+>/g, ' ');
+    return { plain, watch, cardAny: (text.match(/takes \d+% off her volley/) || [''])[0] };
+  });
+  await done();
+  assert.deepEqual([r.plain, r.watch], [40, 50]);
+  assert.equal(r.cardAny, 'takes 50% off her volley', r.cardAny);
+});

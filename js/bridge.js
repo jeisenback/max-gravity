@@ -117,7 +117,7 @@ function fightCard() {
     conRead('Guns', `${me.guns}, aimed at her weapons, drive, lock or hull`),
     conRead('Heat', `a shot adds 1, overcharged ${FIGHT.OVER_HEAT}; over ${FIGHT.HEAT_CAP} a gun locks for a turn`),
     ...(me.launcher ? [conRead('Torpedoes', role().canTrade ? `${Math.min(TORP_MAX, G.state.torpedoes || 0)} of ${TORP_MAX}` : `${torpsShown()}, ${sceneSay('scene:screens', 'torps.kept', { n: HAND_TORPS })}`)] : []),  // on a captain's ship, hers (#956)
-    conRead('Turret', me.pdc ? `held back, it takes ${pct(FIGHT.PDC_HOLD)}% off her volley and ${pct(FIGHT.PDC_SALVO)}% off a salvo, for a gun's shot` : 'none fitted'),
+    conRead('Turret', me.pdc ? `held back, it takes ${pct(heldCut())}% off her volley and ${pct(FIGHT.PDC_SALVO)}% off a salvo, for a gun's shot` : 'none fitted'),
     conRead('Moves', moves.length ? moves.map(id => fightSay(`move.name.${id}`)).join(', ') : 'none yet: the crew teach them on a burn'),
   ].join(''));
 }
