@@ -814,7 +814,7 @@ test('someone eating alone sits on the edge of the first bunk (#933)', () => {
 // counter, down from white; the first-aid box on the wall under the room's name. Drawn at the burn view's zoom in a window 1000, 1280 and 1600 wide.
 const { MED_COT } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['MED_COT']);
 const MED_PROPS = [['#2a4664', 'the cot\'s frame'], ['#1c3249', 'its legs'], ['#1a2430', 'its casters'], ['#2e4a68', 'its head and foot boards'], ['#3a5470', 'its rail and the grab rails'], ['#56667a', 'the mattress'],
-  ['#9a968a', 'the pillow'], ['#4a4436', 'the straps'], ['#4a5e74', 'the IV pole'], ['#6a8494', 'the IV bag'], ['#2c4560', 'the scanner arm'], ['#3a5068', 'the scanner\'s head'], ['#1f3a56', 'the monitor'],
+  ['#9a968a', 'the pillow'], ['#4a4436', 'the straps'], ['#4a5e74', 'the IV pole'], ['#6a8494', 'the IV bag'], ['#6a6a66', 'the scanner arm'], ['#7a7870', 'the scanner\'s head'], ['#1f3a56', 'the monitor'],
   ['#4e5e6e', 'the cabinet'], ['#64748a', 'its doors'], ['#6e7e8e', 'its top'], ['#8e3a32', 'the red crosses'], ['#4e6a78', 'the bottles'], ['#7a8692', 'the kit'], ['#5a6876', 'the first-aid box']];
 const MED_LINE = 'rgba(150,178,196,0.7)';
 const medCase = (pr, zoom, patient) => ({ r: layoutBox(LAYOUTS.freighter, 'medbay'), s: RS({ w: phaseWeights(pr), zoom, patient, damage: { marks: new Set(), severe: false } }) });
@@ -866,20 +866,51 @@ test('the medbay\'s props are sized to a person: the cot\'s mattress under the p
     const fi = calls.findIndex(k => k[0] === 'fillStyle' && k[1] === '#6a8494'), bi = calls.slice(0, fi).map(k => k[0]).lastIndexOf('translate'), [, tx, ty] = calls[bi];
     const bag = parts.find(p => p.col === '#6a8494'), mid = F - (ty + (bag.y0 + bag.y1) / 2);
     assert.ok(bi >= 0 && mid >= 74 && mid <= 84 && Math.abs(tx - pole.x1) < 12, `${at}: the bag hung from the pole at about 80 (${mid}), moved as it swings`);
-    const li = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === MED_LINE), m = calls.slice(li).find(k => k[0] === 'moveTo'), q = calls.slice(li).find(k => k[0] === 'quadraticCurveTo');
+    const li = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === MED_LINE), lj = li + calls.slice(li).findIndex(k => k[0] === 'stroke'), m = calls.slice(li, lj).find(k => k[0] === 'moveTo'), q = calls.slice(li, lj).filter(k => k[0] === 'quadraticCurveTo').pop();
     assert.ok(li >= 0 && Math.abs(m[1] - tx) < 3 && m[2] >= ty + bag.y1 - 0.01 && m[2] <= ty + bag.y1 + 5, `${at}: the IV line from the bag's foot (${m && m.slice(1)})`);
     assert.ok(q[3] > bedPart.x0 && q[3] < bedPart.x1 && Math.abs(q[4] - (F - MED_COT)) <= 2, `${at}: to the cot (${q.slice(3)})`);
     const mon = parts.find(p => p.col === '#1f3a56'), my = F - (mon.y0 + mon.y1) / 2;
     assert.ok(my >= 72 && my <= 82 && mon.x1 - mon.x0 >= 28 && mon.x1 - mon.x0 <= 32 && mon.y1 - mon.y0 <= 18, `${at}: the monitor, small, at eye height (${my}, ${mon.x1 - mon.x0} by ${mon.y1 - mon.y0})`);
     assert.ok(mon.x0 > bedPart.x0 && mon.x0 < bedPart.x1, `${at}: the monitor (${mon.x0} to ${mon.x1}) over the cot, where someone at its side reads it`);
     const meet = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
-    for (const p of parts.filter(q => /^#(2c4560|3a5068|4a5e74|20384f)$/.test(q.col))) assert.ok(!meet(mon, p), `${at}: the monitor clear of the scanner arm and the IV pole (${p.col} ${JSON.stringify(p)})`);
+    for (const p of parts.filter(q => /^#(6a6a66|7a7870|5a5e60|4a5e74|20384f)$/.test(q.col))) assert.ok(!meet(mon, p), `${at}: the monitor clear of the scanner arm and the IV pole (${p.col} ${JSON.stringify(p)})`);
     assert.ok(mon.x0 > tx + 6, `${at}: and clear of the bag`);
     const top = parts.find(p => p.col === '#6e7e8e');
     assert.ok(F - top.y0 >= 36 && F - top.y0 <= 44, `${at}: the cabinet at counter height (${F - top.y0})`);
-    const arm = parts.filter(p => /^#(2c4560|3a5068)$/.test(p.col)), sh = parts.find(p => p.col === '#3a5068');
+    const arm = parts.filter(p => /^#(5a5e60|6a6a66|7a7870)$/.test(p.col)), sh = parts.find(p => p.col === '#7a7870');
     assert.ok(Math.min(...arm.map(p => p.y0)) <= r.top + 5 && sh.x0 > bedPart.x0 && sh.x1 < bedPart.x1 && F - sh.y1 >= MED_COT + 20, `${at}: the scanner arm from the ceiling, its head over the cot clear of the patient`);
     const box = parts.find(p => p.col === '#5a6876');
     assert.ok(box && box.x1 < bedPart.x0 && F - box.y0 <= 60, `${at}: the first-aid box on the wall left of the cot, under the name`);
+  }
+});
+test('the medbay reads old and cared for: a newer scanner bolted on, wear at fixed places, a replacement door, a printed part tagged temporary, tape and cable ties (#933)', () => {
+  for (const pr of [0.02, 0.3, 0.5]) for (const patient of [false, true]) {
+    const { r, s } = medCase(pr, 0.96, patient), F = r.floor, at = `${patient ? 'a patient' : 'empty'}, ${pr}`, { ctx, calls } = recorder(); drawRoom(ctx, 'medbay', r, s);
+    const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), one = col => parts.find(p => p.col === col);
+    const rects = col => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+    const inside = ([x, y, w, h], b, pad = 0) => x >= b.x0 - pad && x + w <= b.x1 + pad && y >= b.y0 - pad && y + h <= b.y1 + pad;
+    // the scanner: its own finish, unlike the cot's and the cabinet's, on an adapter plate with fresh bolts under the old mount
+    const plate = one('#5a5e60'), arm = parts.filter(p => p.col === '#6a6a66');
+    assert.ok(plate && arm.length === 2 && plate.y0 <= r.top + 5 && Math.min(...arm.map(p => p.y0)) >= plate.y1 - 0.01, `${at}: the arm hung from an adapter plate on the ceiling`);
+    assert.ok(calls.filter(k => k[0] === 'fillStyle' && k[1] === '#8a929a').length >= 4, `${at}: its fresh bolts`);
+    for (const col of ['#6a6a66', '#7a7870']) assert.ok(!['#2a4664', '#4e5e6e', '#64748a', '#3a5470'].includes(col), 'a finish of its own');
+    // wear at fixed places: chips on the cot's frame and the cabinet's edges, scuffs low on the doors
+    const frame = one('#2a4664'), cab = one('#4e5e6e'), chips = rects('#7e8a94'), scuffs = rects('#3e4c5a');
+    assert.ok(chips.filter(c => inside(c, frame)).length >= 3, `${at}: chipped paint on the cot's frame`);
+    assert.ok(chips.filter(c => inside(c, cab)).length >= 2 && scuffs.filter(c => inside(c, cab) && c[1] > F - 12).length >= 2, `${at}: chips and scuffs on the cabinet, low where feet meet it`);
+    const doors = parts.filter(p => /^#(64748a|6a7480)$/.test(p.col));
+    assert.equal(doors.length, 2, `${at}: two doors`); assert.notEqual(doors[0].col, doors[1].col, `${at}: one a replacement in another shade`);
+    // a printed clamp on the IV pole, tagged temporary, its tag a muted yellow and clear of the name
+    const pole = parts.find(p => p.col === '#4a5e74' && p.y1 - p.y0 > 60), clamp = one('#8a6a48'), tag = one('#9a9050');
+    assert.ok(clamp && clamp.x0 < pole.x0 && clamp.x1 > pole.x1 && clamp.y0 > pole.y0 && clamp.y1 < pole.y1, `${at}: the printed clamp round the pole`);
+    assert.ok(tag && Math.abs(tag.y0 - clamp.y1) < 3 && tag.x1 <= clamp.x0 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its tag hung from it (${JSON.stringify(tag)})`);
+    // tape over a corner of the monitor's bezel, and cable ties holding the IV line to the pole
+    const mon = one('#1f3a56'), tape = one('#7a7462');
+    assert.ok(tape && tape.x0 < mon.x1 && tape.x1 > mon.x1 - 1 && tape.y0 < mon.y0 + 1 && tape.y1 > mon.y0 && tape.x1 - tape.x0 <= 8, `${at}: tape over a corner of the monitor (${JSON.stringify(tape)})`);
+    const ties = rects('#1e2a36').filter(t => t[0] <= pole.x0 && t[0] + t[2] >= pole.x1);
+    assert.ok(ties.length >= 2, `${at}: cable ties round the pole`);
+    const li = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === MED_LINE), lj = li + calls.slice(li).findIndex(k => k[0] === 'stroke');
+    const run = calls.slice(li, lj).filter(k => k[0] === 'lineTo' && Math.abs(k[1] - (pole.x1 + pole.x0) / 2) < 2.5);
+    assert.ok(run.length >= 1 && ties.every(t => calls.slice(li, lj).some(k => /^(lineTo|quadraticCurveTo)$/.test(k[0]) && k[k.length - 1] >= t[1])), `${at}: the IV line runs down the pole through the ties`);
   }
 });
