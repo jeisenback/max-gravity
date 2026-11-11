@@ -501,6 +501,11 @@ function routineGo(p, block, people, dark, rnd, state) {
   const holds = q => (s => s.at === 'post' && s.room === spot.room)(routineSpot(q, 'shift'));  // a post's places are numbered by who holds it in a shift, the same in every block
   const seated = state && { ...state, morning: undefined };  // a seat at the table is kept for anyone in the head first (#973)
   const r = roomAt(spot.room), mates = spot.at === 'table' || spot.at === 'bed' ? people.filter(q => routineSpot(q, block, seated).at === spot.at) : spot.at === 'post' ? people.filter(holds) : [];  // who shares the table or the post
+  const w = state && state.watch;
+  if (spot.at === 'post' && w && p.id === w.stands && !mates.includes(p)) {  // the watch a scene handed out (#951): the relieved one's place, else the next
+    const k = mates.findIndex(q => q.id === w.relieved);
+    if (k >= 0) mates[k] = p; else mates.push(p);
+  }
   const tx = spot.at === 'head' ? headDoorX(0) : routineTarget(p, spot, r, spot.at === 'post' ? postSeat(spot.room, mates.map(q => q.role), mates.indexOf(p)) : mates.indexOf(p), mates.length, rnd), placed = ['table', 'post', 'bed', 'stove'].includes(spot.at);  // a seat, a cot or the stove is its own place
   Object.assign(p, { room: spot.room, tdk: r.deck });
   p.tx = placed ? tx : clearOf(p, tx, people);

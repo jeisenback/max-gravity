@@ -728,9 +728,16 @@ const CAPTAIN_CHATTER = [
   '{cap} is asleep in the captain\'s chair with the log open on the captain\'s chest.',
   '{cap}: "We make port on the day, or I owe somebody an explanation. I hate owing explanations."',
 ];
+// A captain's own lines with their `post` group (said where the hand works: "stopped by the {post} station") moved to the hand's post room (#987).
+function captainLinesByRoom(lines) {
+  if (Array.isArray(lines) || !lines.post) return lines;
+  const room = postOf(POSTS[hired().post].role), out = { ...lines, [room]: [...(lines[room] || []), ...lines.post] };
+  delete out.post;
+  return out;
+}
 function captainChatter() {
   const c = hiredCaptain(), name = `Captain ${c.last}`, d = captainEntry();
-  if (d && d.chatter) return chatterAt(d.chatter, chatterRoom('captain')).map(l => l.replace(/\{post\}/g, POSTS[hired().post].name.toLowerCase()));  // their own lines where the cutaway has her (#987), and no trait chatter
+  if (d && d.chatter) return chatterAt(captainLinesByRoom(d.chatter), chatterRoom('captain')).map(l => l.replace(/\{post\}/g, POSTS[hired().post].name.toLowerCase()));  // their own lines where the cutaway has her (#987), and no trait chatter
   const lines = linedText('lines:captain-chatter', CAPTAIN_CHATTER).map(l => l.replace('{cap}', name).replace('{post}', POSTS[hired().post].name.toLowerCase()));
   for (const t of c.traits) { const said = chatterAt(traitChatter(t), chatterRoom('captain')); if (said.length) lines.push(pick(said).replace('{first}', name).replace('{home}', c.home)); }  // where the cutaway has them (#987)
   return lines;

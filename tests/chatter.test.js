@@ -48,13 +48,17 @@ test('a crew member is heard only saying what fits the room they are in, and a c
     const night = () => { t.elapsed = SHIP_DAY * 0.75 - 6; };  // the night block, when the others are in their bunks
     night();
     const own = chatterAt(CAST.tomas.chatter, 'engine'), lines = crewChatter();
+    Object.assign(p, { room: 'galley', dk: roomAt('galley').deck, tdk: roomAt('galley').deck, at: 'table' });
+    const inGalley = []; for (let i = 0; i < 30; i++) inGalley.push(...crewChatter().filter(l => /Tomas/.test(l)));
     const sleeper = t.aboard.find(q => q.id && q.id !== 'you' && q.role !== 'captain' && !NIGHT_WATCH.includes(q.role));  // the night watch is never asleep
-    return { lines: lines.filter(l => /Tomas/.test(l)), own, sleeperRoom: chatterRoom(sleeper.id), dark: isDark(), stranger: chatterRoom('nobody-aboard') };
+    return { inGalley, lines: lines.filter(l => /Tomas/.test(l)), own, sleeperRoom: chatterRoom(sleeper.id), dark: isDark(), stranger: chatterRoom('nobody-aboard') };
   });
   await done();
   assert.equal(r.dark, true, 'night'); assert.equal(r.sleeperRoom, null, 'a sleeper is nowhere for chatter');
   assert.equal(r.stranger, undefined, 'someone the cutaway does not hold has no place to contradict');
   assert.ok(r.lines.length > 0, 'Tomas has something to say in the engine room');
+  assert.ok(r.lines.some(l => /seized valve/.test(l)), 'in the engine room he can be at the valve');
+  assert.ok(!r.inGalley.some(l => /seized valve/.test(l)), 'at the galley table he is not swearing at a valve (#987)');
   for (const l of r.lines) assert.ok(r.own.includes(l), `said where Tomas is, from his own lines: ${l}`);
 });
 
@@ -76,7 +80,7 @@ test('strapped in on the couches the crew have nothing to say, the chatter is th
 
 // The writing pass (#987): a line that names a room where it happens sits in that room's group. A line in `any` or in a plain list names none,
 // but for the few here that name a room without being in it.
-const ROOM_WORDS = /\b(galley|engine room|bunks?|berths?|bridge|helm|cockpit|the hold|medbay|the guns|gun mount|workshop)\b/i;
+const ROOM_WORDS = /\b(galley|engine room|bunks?|berths?|bridge|helm|cockpit|the hold|medbay|the guns|gun mount|workshop|valve|ring-ball feed|fire control housing|the stick|console|transponder|intercepts|on the range|lashings)\b/i;  // a room named, or a place only one room has (#987 review)
 const ALLOWED = [
   'on the berth of whoever has the cold watch',  // Hester: Cato's blanket, on someone else's berth, not where Cato is
   'jumps at a clank from the engine room',  // nervous: the clank is heard anywhere
@@ -120,4 +124,18 @@ test('a crew member rewatching a show "in their bunk" is only said to be when th
   await done();
   assert.deepEqual(r.inGalley, [], 'not in the berths: no line about their bunk');
   assert.equal(r.inBerths.length, 1, 'in the berths: the line');
+});
+
+test('Captain Vance is heard stopping by the hand\'s station only when she is in the hand\'s post room (#987 review)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const t = onBurn(), cap = t.aboard.find(q => q.role === 'captain'), post = postOf(POSTS[hired().post].role);
+    const put = room => { Object.assign(cap, { room, dk: roomAt(room).deck, tdk: roomAt(room).deck, at: 'post', tx: null }); return captainChatter().filter(l => /station/.test(l)); };
+    return { post, galley: put('galley'), atPost: put(post) };
+  });
+  await done();
+  assert.equal(r.post, 'gunnery');
+  assert.deepEqual(r.galley, [], 'in the galley: not at your station');
+  assert.equal(r.atPost.length, 1, 'in your post room: the line');
 });

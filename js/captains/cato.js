@@ -54,9 +54,9 @@ CAST.cato = {
       'Cato is teaching one of the hands to read a manifest, slowly, one line at a time.',
       'Cato: "She\'s counting, that\'s all. Leave her to it."',
       'Cato has written someone\'s mother\'s name on the back of the watch bill so that he remembers to ask.',
-      'Cato hums a few bars with no tune while he checks the lashings, and stops when he sees you.',
     ],
     hold: [
+      'Cato hums a few bars with no tune while he checks the lashings, and stops when he sees you.',
       'Cato is walking the hold with a mug, checking lashings that are fine.',
     ],
   },

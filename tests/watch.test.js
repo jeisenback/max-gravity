@@ -10,8 +10,8 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { routineSpot, standWatch, shipDay, SHIP_DAY } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
-  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['routineSpot', 'standWatch', 'shipDay', 'SHIP_DAY']);
+const { routineSpot, routineGo, standWatch, shipDay, SHIP_DAY, SEATS, roomAt } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
+  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['routineSpot', 'routineGo', 'standWatch', 'shipDay', 'SHIP_DAY', 'SEATS', 'roomAt']);
 const plain = x => JSON.parse(JSON.stringify(x));
 const state = watch => ({ marks: [], hurt: [], low: [], you: false, aid: null, watch });
 const yelenaWatch = { night: 3, stands: 'you', post: 'gunnery', relieved: 'c:yelena', relievedAt: 'galley' };
@@ -112,4 +112,19 @@ test('a burn with no record, or an old one, keeps the timetable and nothing thro
   assert.equal(r.threw, null);
   assert.deepEqual(r.none, { room: 'berths', at: 'bunk' }); assert.deepEqual(r.old, { room: 'berths', at: 'bunk' });
   assert.equal(r.port, null);
+});
+
+test('the one standing the watch takes a seat at the post: the relieved one\'s, or the next free one; never outside the room (#951 review)', () => {
+  const r = roomAt('gunnery'), seats = SEATS.gunnery.map(f => r.x0 + r.w * f), at = (people, w) => {
+    const s = state(w), p = people.find(q => q.id === 'you');
+    for (const q of people) Object.assign(q, { block: 'night', room: 'berths', x: 0.5, dk: 0, tdk: 0 });
+    routineGo(p, 'night', people, true, () => 0.5, s); return p.tx;
+  };
+  const yw = { night: 0, stands: 'you', post: 'gunnery', relieved: 'c:yelena', relievedAt: 'galley' };
+  assert.ok(seats.includes(at([{ id: 'you', role: 'you' }, { id: 'c:yelena', role: 'gunner' }], yw)), 'Yelena\'s seat');
+  const two = at([{ id: 'you', role: 'you' }, { id: 'c:yelena', role: 'gunner' }, { id: 'c:pax', role: 'gunner' }], yw);
+  assert.ok(two >= r.x0 && two <= r.x1, `in the room with two gunners aboard: ${two} in ${r.x0}..${r.x1}`);
+  assert.ok(seats.includes(two), 'a seat');
+  const extra = at([{ id: 'you', role: 'you' }], { night: 0, stands: 'you', post: 'gunnery', relieved: null, relievedAt: 'bunk' });
+  assert.ok(seats.includes(extra), 'an extra watch with nobody to relieve: a free seat');
 });
