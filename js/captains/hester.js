@@ -16,16 +16,22 @@ CAPTAINS.hester = {
       `notebook before she looks up. "${wage} a day, less your kit," she says. "That's the whole of it. I won't surprise ` +
       `you, and I'd like you not to surprise me."`),
 
-  chatter: [
-    'Captain Vance is working the fuel bill out in her notebook. It doesn\'t come out any better the second time.',
-    'Captain Vance, to nobody: "Four hundred and ten a day for the berth, and we\'re there four days."',
-    'Cato has put a second blanket on the berth of whoever has the cold watch. The captain\'s notebook has a line for blankets. It hasn\'t been filled in.',
-    'Captain Vance checks the manifest against the hold count, and for the third time against the hold.',
-    'Captain Vance is eating standing up at the galley counter, one hand on the notebook, so as not to lose the page.',
-    'Captain Vance has stopped by the {post} station and not said anything. She does that. It means the numbers are fine.',
-    'Captain Vance writes the fuel price from the last depot inside the notebook\'s cover, under the one before it.',
-    'A message comes in from the finance house. Captain Vance reads it in the passage, standing, and puts it in her breast pocket unanswered.',
-  ],
+  chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+    any: [
+      'Captain Vance is working the fuel bill out in her notebook. It doesn\'t come out any better the second time.',
+      'Captain Vance, to nobody: "Four hundred and ten a day for the berth, and we\'re there four days."',
+      'Cato has put a second blanket on the berth of whoever has the cold watch. The captain\'s notebook has a line for blankets. It hasn\'t been filled in.',
+      'Captain Vance has stopped by the {post} station and not said anything. She does that. It means the numbers are fine.',
+      'Captain Vance writes the fuel price from the last depot inside the notebook\'s cover, under the one before it.',
+      'A message comes in from the finance house. Captain Vance reads it in the passage, standing, and puts it in her breast pocket unanswered.',
+    ],
+    hold: [
+      'Captain Vance checks the manifest against the hold count, and for the third time against the hold.',
+    ],
+    galley: [
+      'Captain Vance is eating standing up at the galley counter, one hand on the notebook, so as not to lose the page.',
+    ],
+  },
 
   // Her wording for the four shared events (hiredevents.js). What the choices do stays there; a part left out falls back to the
   // generic text.

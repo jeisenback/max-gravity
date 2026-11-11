@@ -732,7 +732,7 @@ function captainChatter() {
   const c = hiredCaptain(), name = `Captain ${c.last}`, d = captainEntry();
   if (d && d.chatter) return chatterAt(d.chatter, chatterRoom('captain')).map(l => l.replace(/\{post\}/g, POSTS[hired().post].name.toLowerCase()));  // their own lines where the cutaway has her (#987), and no trait chatter
   const lines = linedText('lines:captain-chatter', CAPTAIN_CHATTER).map(l => l.replace('{cap}', name).replace('{post}', POSTS[hired().post].name.toLowerCase()));
-  for (const t of c.traits) lines.push(pick(traitChatter(t)).replace('{first}', name).replace('{home}', c.home));
+  for (const t of c.traits) { const said = chatterAt(traitChatter(t), chatterRoom('captain')); if (said.length) lines.push(pick(said).replace('{first}', name).replace('{home}', c.home)); }  // where the cutaway has them (#987)
   return lines;
 }
 

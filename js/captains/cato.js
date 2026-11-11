@@ -48,14 +48,18 @@ CAST.cato = {
       bad: ['{who} says the lift has been broken for a month', '{who} is ill, and the clinic on {home} has a waiting list', '{who} says the exchange is closing the flats for repairs'],
     },
   },
-  chatter: [
-    'Cato is walking the hold with a mug, checking lashings that are fine.',
-    'Cato has taken the cold watch again. Nobody asked him to.',
-    'Cato is teaching one of the hands to read a manifest, slowly, one line at a time.',
-    'Cato: "She\'s counting, that\'s all. Leave her to it."',
-    'Cato has written someone\'s mother\'s name on the back of the watch bill so that he remembers to ask.',
-    'Cato hums a few bars with no tune while he checks the lashings, and stops when he sees you.',
-  ],
+  chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+    any: [
+      'Cato has taken the cold watch again. Nobody asked him to.',
+      'Cato is teaching one of the hands to read a manifest, slowly, one line at a time.',
+      'Cato: "She\'s counting, that\'s all. Leave her to it."',
+      'Cato has written someone\'s mother\'s name on the back of the watch bill so that he remembers to ask.',
+      'Cato hums a few bars with no tune while he checks the lashings, and stops when he sees you.',
+    ],
+    hold: [
+      'Cato is walking the hold with a mug, checking lashings that are fine.',
+    ],
+  },
   // What he leaves behind when he walks off or dies (fate.js farewellFacts): a flag and its line, in priority order, two at most.
   farewell: {
     walk: 'Cato leaves the watch bill on the galley table, filled in for the next seven days, and takes his mug.',

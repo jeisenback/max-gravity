@@ -362,13 +362,13 @@ function chatterAt(lines, room) {
   if (Array.isArray(lines)) return lines;
   return room === undefined ? Object.values(lines).flat() : [...(lines.any || []), ...(lines[room] || [])];
 }
-// Where the cutaway shows the person with this id (the captain by 'captain'), for their chatter: undefined with no burn; null with no such
-// person aboard, outside the move phase (the couches and the flip), or asleep.
+// Where the cutaway shows the person with this id (the captain by 'captain'), for their chatter: undefined when the cutaway does not hold them
+// (no burn, its people not built yet, or not among them), so there is nothing to contradict; null outside the move phase (the couches and
+// the flip) or asleep.
 function chatterRoom(id) {
-  const t = G.transit;
-  if (!t) return undefined;
-  const p = (t.aboard || []).find(q => (id === 'captain' ? q.role === 'captain' : q.id === id));
-  return !p || phase() !== 'move' || isAsleep(p) ? null : p.room;
+  const t = G.transit, p = t && (t.aboard || []).find(q => (id === 'captain' ? q.role === 'captain' : q.id === id));
+  if (!p) return undefined;
+  return phase() !== 'move' || isAsleep(p) ? null : p.room;
 }
 
 // The pools are read through the editor's words (lines:ship-life, lines:ship-lights; js/linetables.js).

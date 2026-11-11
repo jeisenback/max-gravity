@@ -206,7 +206,8 @@ function socialLines() {
         : say('lost', { n, team: t.team }));
     }
     const fav = on.find(x => x.genre === t.genre), read = books.find(x => x.genre === t.genre);
-    if (fav) out.push(say(fav.finale ? 'fav.finale' : 'fav', { n, title: fav.title }));
+    const room = chatterRoom(f.p.id);
+    if (fav && (room === undefined || room === 'berths')) out.push(say(fav.finale ? 'fav.finale' : 'fav', { n, title: fav.title }));  // "in their bunk": only when the cutaway has them there, on a burn (#987)
     if (read) out.push(say('read', { n, title: read.title }));
   }
   out.push(say('song', { song: c.song.title }));

@@ -49,10 +49,11 @@ test('a crew member is heard only saying what fits the room they are in, and a c
     night();
     const own = chatterAt(CAST.tomas.chatter, 'engine'), lines = crewChatter();
     const sleeper = t.aboard.find(q => q.id && q.id !== 'you' && q.role !== 'captain' && !NIGHT_WATCH.includes(q.role));  // the night watch is never asleep
-    return { lines: lines.filter(l => /Tomas/.test(l)), own, sleeperRoom: chatterRoom(sleeper.id), dark: isDark() };
+    return { lines: lines.filter(l => /Tomas/.test(l)), own, sleeperRoom: chatterRoom(sleeper.id), dark: isDark(), stranger: chatterRoom('nobody-aboard') };
   });
   await done();
   assert.equal(r.dark, true, 'night'); assert.equal(r.sleeperRoom, null, 'a sleeper is nowhere for chatter');
+  assert.equal(r.stranger, undefined, 'someone the cutaway does not hold has no place to contradict');
   assert.ok(r.lines.length > 0, 'Tomas has something to say in the engine room');
   for (const l of r.lines) assert.ok(r.own.includes(l), `said where Tomas is, from his own lines: ${l}`);
 });
@@ -71,4 +72,52 @@ test('strapped in on the couches the crew have nothing to say, the chatter is th
   assert.deepEqual(r.pool, []);
   assert.equal(r.threw, null);
   assert.ok(r.said.length > 0, 'something was said');
+});
+
+// The writing pass (#987): a line that names a room where it happens sits in that room's group. A line in `any` or in a plain list names none,
+// but for the few here that name a room without being in it.
+const ROOM_WORDS = /\b(galley|engine room|bunks?|berths?|bridge|helm|cockpit|the hold|medbay|the guns|gun mount|workshop)\b/i;
+const ALLOWED = [
+  'on the berth of whoever has the cold watch',  // Hester: Cato's blanket, on someone else's berth, not where Cato is
+  'jumps at a clank from the engine room',  // nervous: the clank is heard anywhere
+  'we had a proper berth',  // rude: talk about another ship
+  'The captain is in the galley',  // Ilsa: where her captain is, not where she is
+  'a day for the berth',  // Hester: the berth at a port, its fee
+];
+test('a chatter line that names a room is in that room\'s group (#987)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const sources = await ev(() => [
+    ...Object.entries(CAST).map(([k, c]) => [`CAST.${k}`, c.chatter]),
+    ...Object.entries(TRAITS).map(([k, t]) => [`TRAITS.${k}`, t.chatter]),
+    ['CAPTAINS.hester', CAPTAINS.hester.chatter],
+  ]);
+  await done();
+  const bad = [];
+  for (const [name, l] of sources) {
+    if (!l) continue;
+    const free = Array.isArray(l) ? l : l.any || [];
+    for (const line of free) if (ROOM_WORDS.test(line) && !ALLOWED.some(a => line.includes(a))) bad.push(`${name}: ${line}`);
+  }
+  assert.deepEqual(bad, []);
+});
+
+test('a crew member rewatching a show "in their bunk" is only said to be when the cutaway has them in the berths (#987)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const t = onBurn(), q = t.aboard.find(p => p.id && p.id !== 'you' && p.role !== 'captain' && !NIGHT_WATCH.includes(p.role));
+    const show = { genre: 'soap', title: 'The Long Haul', finale: false, ep: 1 };
+    const realAiring = window.airing, realTastes = window.tastes;
+    window.airing = () => [show]; window.tastes = () => ({ genre: 'soap', team: null });
+    try {
+      const fav = () => socialLines().filter(l => l.includes("The Long Haul") && l.includes(person(q.id).first) && /bunk/.test(l));
+      Object.assign(q, { room: 'galley', dk: roomAt('galley').deck, tdk: roomAt('galley').deck, at: 'table', tx: null }); t.elapsed = SHIP_DAY * 0.2;  // a shift: awake
+      const inGalley = fav();
+      Object.assign(q, { room: 'berths', dk: roomAt('berths').deck, tdk: roomAt('berths').deck, at: 'bunk' });
+      return { inGalley, inBerths: fav() };
+    } finally { window.airing = realAiring; window.tastes = realTastes; }
+  });
+  await done();
+  assert.deepEqual(r.inGalley, [], 'not in the berths: no line about their bunk');
+  assert.equal(r.inBerths.length, 1, 'in the berths: the line');
 });

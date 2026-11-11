@@ -744,13 +744,17 @@ const CAST = {
     skills: { gunner: 3, engineer: 2, pilot: 0, slicer: 0 }, captain: { trade: 4, nerve: 2, thrift: 2 },
     ambition: 'Wants to stop flinching, and run a ship where nobody gets hurt on their watch.',
     bio: 'Pax ran a drill laser on a Ceres ice crew from sixteen, cutting blocks to the gram, until a coupling failed and the crew\'s foreman was hurt with Pax at the controls. It was nobody\'s fault, and nobody has been able to convince Pax of that.',
-    chatter: [
-      'Pax is on the range, again, with a perfect score and a tight jaw.',
-      'Pax: "I know the numbers. The numbers are fine. It\'s the part after the numbers I\'m bad at."',
-      'Pax checks the coupling on the gun mount for the fifth time this watch, and says nothing, and checks again.',
-      'Pax is reading the manual for a fire control system that Pax has already memorized, for comfort.',
-      'Pax: "It\'s funny. I\'m not nervous when it\'s only me and the target. It\'s when there\'s somebody beside me."'
-    ],
+    chatter: {  // by where it happens (#987, shiplife.js chatterAt): anywhere, or in the room named
+      any: [
+        'Pax is on the range, again, with a perfect score and a tight jaw.',
+        'Pax: "I know the numbers. The numbers are fine. It\'s the part after the numbers I\'m bad at."',
+        'Pax is reading the manual for a fire control system that Pax has already memorized, for comfort.',
+        'Pax: "It\'s funny. I\'m not nervous when it\'s only me and the target. It\'s when there\'s somebody beside me."',
+      ],
+      gunnery: [
+        'Pax checks the coupling on the gun mount for the fifth time this watch, and says nothing, and checks again.',
+      ],
+    },
     scenes: {
       meet: {
         title: 'The Kid at the Range',
