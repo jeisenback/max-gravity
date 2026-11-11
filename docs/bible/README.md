@@ -47,6 +47,7 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 20. `the-fuel-war.md`: the owners' war over the Vesta depot (Kaur Enrichment against Tycho Yard Holdings, with Ballast Security's guns and Van Leeuwen & Co.'s money): rumbling in chapter two, breaking out in chapter three, ending differently each run (#891).
 21. `later-chapters.md`: a draft of chapters 4 to 7 (more hulls, a place, alliances, a threat), where fleets, outposts and the blocs arrive, and what chapter 2 should keep in mind for them.
 22. `progression.md`: how a hand grows over a run: the sheet, the skill lines, the picks, traits, papers and standing, each earned differently and all read by the one check rule; what each chapter adds.
+23. `look.md`: how the burn view looks: a clean frame around a worn, cramped ship, rooms as boxes in perspective, bunks that each belong to someone, warm light in a cold hull (approved 2026-11-11), with its reference frame `look-target.png`.
 
 ## Where the game must change to fit
 
