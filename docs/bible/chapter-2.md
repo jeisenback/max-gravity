@@ -1,6 +1,6 @@
 # Chapter 2: the co-op
 
-Status: approved by the owner on 2026-11-07 (#891). Built on `shape.md`, `ceres-coop.md`, `work.md` and `ship.md`.
+Status: approved by the owner on 2026-11-07 (#891). Built on `shape.md`, `ceres-coop.md`, `work.md` and `ship.md`. Amended by the owner on 2026-11-11: the hand is the co-op's captain, on a registry's endorsement, and the four masters are people met in the war, not aboard. What that changes on this page and the masters' sheets is in `docs/superpowers/specs/2026-11-11-hand-captain-design.md`; the text below still reads as before until that is built.
 
 ## What it is
 

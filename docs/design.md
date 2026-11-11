@@ -27,7 +27,7 @@ The shipped build is narrow (`BUILD.scope` `'earth-hired'`, `js/build.js`). It h
 
 ## 2. Which document governs what
 
-Where two documents disagree, the one higher in this list wins. The owner decided on 2026-10-31 that where the bible and the game disagree, the game changes (`docs/bible/README.md`).
+Where the code and a document disagree, the code wins and the document is amended (the owner, 2026-11-11; it replaces the rule of 2026-10-31 that the game changes to fit the bible). Where two documents disagree, the one higher in this list wins.
 
 1. **The bible** (`docs/bible/`): the world, the people, the shape of the game, the voice and the look. Pages marked approved are settled. `later-chapters.md` and `progression.md` are still drafts for review.
 2. **The specs** (`docs/superpowers/specs/`): how a system is built. A spec's own status line and `ROADMAP.md` say whether it is built.
@@ -42,7 +42,7 @@ The tool documents (`docs/editor.md`, `docs/pins.md`) govern their tools only.
 | Chapter | Where the player stands | Governing doc | Status |
 |---|---|---|---|
 | 1, the hand | a rating on Hester's ship, saving for a member's share | `shape.md`, `work.md`, `ship.md`; specs `hired-chapter`, `coop-share` | Built and tuned (about 160 days to the share, `ROADMAP.md`). |
-| 2, the co-op | a member of the Ceres co-op, flying the Ore Runner under the members' vote | `chapter-2.md`, `ceres-coop.md`, `the-fuel-war.md`; spec `chapter-two-start` | Piece 1 of 6 built (the start, the master, the co-op's role). Pieces 2 to 6 are not designed in specs yet: the work and the law, the meeting, the books and the share, the squeeze, the last vote. |
+| 2, the co-op | a member of the Ceres co-op and the Ore Runner's captain, under the members' vote | `chapter-2.md`, `ceres-coop.md`, `the-fuel-war.md`; spec `chapter-two-start` | Piece 1 of 6 built (the start, the master, the co-op's role). Pieces 2 to 6 are not designed in specs yet: the work and the law, the meeting, the books and the share, the squeeze, the last vote. |
 | 3 | organiser, master or outside, set by chapter 2's last vote | `shape.md`, `the-fuel-war.md` | Paths sketched. No chapter page. |
 | 4 to 7 | more hulls, a place, alliances, a threat | `later-chapters.md` (draft) | Draft. The chapter 7 threat is not chosen. |
 
@@ -88,17 +88,17 @@ Status key: **built** means in the narrow build, **full** means full build only,
 
 Each item says which document is right by the order in section 2, and what changes.
 
-1. **Hester's ship.** `ship.md` describes a small fast cargo hull on two decks, and calls her "not an ice hauler" as an assumption. The code, `look.md`, the tower spec and the room-box spec all draw the seven-deck Ice Hauler with a water tank, and chapter one's ice runs are built on her. This is conflict 4 in the bible's README, still open. It is the largest open contradiction, because the look and the burn view were built on the side the bible has not approved. **The owner decides**: amend `ship.md` to the tower and the ice, or plan the change away from them.
-2. **Chapter two in code.** The 2026-10-17 spec `chapter-two-design` built an owner's chapter two (`ROLES.owner`, `ownerboard.js`, `chaptertwo.js`, a close at 90 days). The bible's `chapter-2.md` and the 2026-11-07 spec replace it with the co-op. Both paths are in `js/role.js`. The 10-17 spec should say it is superseded. Piece 6 of the co-op chapter replaces `chaptertwo.js`'s close.
+1. **Hester's ship.** Resolved (2026-11-11, the code wins): she is the Ice Hauler, a tower over her water tank, and the ice runs stand. `ship.md`, the bible README's decision 11 and its conflict 4 are amended.
+2. **Chapter two in code.** The 2026-10-17 spec `chapter-two-design` built an owner's chapter two (`ROLES.owner`, `ownerboard.js`, `chaptertwo.js`, a close at 90 days). The bible's `chapter-2.md` and the 2026-11-07 spec replace it with the co-op. Both paths are in `js/role.js`. The 10-17 spec should say it is superseded. Piece 6 of the co-op chapter replaces `chaptertwo.js`'s close. The co-op chapter is amended in turn: the hand is the co-op's captain, not a hired master (spec `2026-11-11-hand-captain-design.md`, for review).
 3. **The old three powers.** The bible retires the Arcology Compact, the Dome Concord and the Charter League as powers (`jurisdictions.md`, conflict 9). The built code still reads them: the mission arcs, port inspections (`LICENSED` by power), standing (`st.rep`), ties, and the station owner of Ceres. Nothing says what replaces them. See section 6, item 1.
 4. **Stale framing of the later chapters.** `docs/endings-parked.md` and `ROADMAP.md` line 106 say chapter two is the owner's career, chapter three building a company and chapter four outposts. `shape.md` and `later-chapters.md` say otherwise. The chapter one close they name, "Your Own Ship", is now "A Member's Share" (spec `coop-share`).
 5. **`README.md`** still offers Earth, Mars or Belt starts on New Game (narrow: Earth only). It describes factions, Cold Water and the shipping company as the game. It has an empty "Roadmap" heading. It needs a pass that leads with the narrow build and marks the rest as the full build.
 6. **`COMBAT.md`** describes Hardcore mode, which `ROADMAP.md` marks not planned. Its opening says "the rest isn't yet", which is out of date.
 7. **`ROADMAP.md`** has two Ports bullets that disagree on #670 and #675. Contracts step 6 is marked not started in one place and done in another.
-8. **Small bible fixes.** `look.md` rule 1 still says the game's hull is 880 units wide (it is 720, `js/layouts.js`). `shape.md` says chapter two's page is "to come" (it exists). The bible README says the people sheets are drafts (all twelve are marked approved). `chapter-2.md` still names Olympus and Valles domes, which `mars.md` does not have.
+8. **Small bible fixes.** (`look.md` rule 1's hull width is fixed to 720.) `shape.md` says chapter two's page is "to come" (it exists). The bible README says the people sheets are drafts (all twelve are marked approved). `chapter-2.md` still names Olympus and Valles domes, which `mars.md` does not have.
 9. **Specs left at "draft"** that are built: `life-and-loss`, `crew-structure`, `coop-share`, `crew-origins`. `prose-and-world` is superseded by the bible (#869) and should say so.
 
-Items 4 to 9 are clerical and can go in one documentation pass. Items 1 to 3 need the owner.
+Items 4 to 9 are clerical and can go in one documentation pass. Item 3 needs the owner.
 
 ## 6. What needs writing down
 
@@ -107,7 +107,7 @@ The rule here is the repo's rule: write what the next work needs, nothing extra.
 ### Needed before chapter two goes on
 
 1. **The owners (`docs/bible/owners.md`).** This is conflict 9 and the bible's own "still to write". It covers the major and minor owners that replace the three powers: who they are, what each port belongs to, what each bans and taxes (the table in `trade-and-law.md` by kind of port, filled in by name), and how standing with each is kept. `the-fuel-war.md` names four (Kaur, Tycho, Ballast, Van Leeuwen). `jurisdictions.md` says the large corporate spaces' names wait on a count. It unblocks chapter two pieces 2 and 5, the arcs' and inspections' move off the powers, and standing as a currency (`progression.md` layer 6).
-2. **Hester's ship, settled.** This is an amendment to `ship.md` (section 5, item 1), not a new page. A decision and a few lines. It unblocks the Ore Runner's own interior (tower spec, step 5) and any further burn-view work.
+2. **The hand as captain** (`2026-11-11-hand-captain-design.md`), approved and built before pieces 2 to 6, since each of them reads who holds the bridge.
 3. **Chapter two's pieces as specs.** `chapter-2.md` is the design. Pieces 2 to 6 each need a spec, in order, as piece 1 had. That is the normal process and no new bible is needed. The meeting and the vote (piece 3) is the one new kind of system. Its rule (who votes how, and what moves a member) should be stated once in its spec, so pieces 5 and 6 read it rather than restate it.
 
 ### Worth a page when the work comes
@@ -123,13 +123,13 @@ These are a save-format page, a standalone storylet schema guide, ship-customiza
 
 ## 7. Decisions for the owner
 
-1. Hester's ship: the tower Ice Hauler with ice runs, as built, or the fast cargo hull of `ship.md` (section 5, item 1).
+1. Approve the hand-as-captain spec, or say what changes.
 2. Approve `progression.md` and `later-chapters.md`, or say what changes. Both are built on, and both are still drafts.
 3. How many major owners there are, so `owners.md` can be written (section 6, item 1).
 4. Whether the clerical fixes in section 5 (items 4 to 9) go in one pass now.
 
 ## Assumptions to confirm
 
-- The authority order in section 2: bible, then specs, then `COMBAT.md`, then `ROADMAP.md`, then `README.md`.
+- The authority order in section 2: the code, then the bible, the specs, `COMBAT.md`, `ROADMAP.md` and `README.md`.
 - This page stays an index and points to other documents. It is updated when a chapter or a governing document changes, not with every PR.
 - The three items in section 6 under "needed before chapter two goes on" are the next documentation work, in that order.

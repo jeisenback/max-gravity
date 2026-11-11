@@ -16,7 +16,7 @@ This is the world the game's writing comes from. It is built from the base up: w
 8. **Money:** local currencies for wages and rent; one hard trade currency, issued by the largest finance houses, for freight and charters.
 9. **The crew:** officers and ratings. Hester (charter), Ines (pilot) and Tomas (engineer) are officers; Cato is the bosun; the hand and one or two deckhands are agency ratings. A finance-house supercargo rides along on high-value runs.
 10. **Hester's charter** is hire-purchase: she owns the ship after the last payment, and loses everything if she misses enough.
-11. **Freight:** bulk goes slow and cheap; Hester's ship carries what can't wait, for a premium.
+11. **Freight:** bulk goes slow and cheap; Hester's ship carries what can't wait, for a premium, and between contracts cuts ice at the outer Belt's rocks for ports short of water (2026-11-11).
 12. **Ines** flies on a cheap registry's endorsement, legal aboard and worthless in Lisbon.
 
 ## The voice
@@ -51,12 +51,12 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 
 ## Where the game must change to fit
 
-The owner decided (2026-10-31) that where the bible and the game disagree, the game changes, in stages, each as its own project after the writing pilot. Known conflicts:
+The owner decided (2026-11-11) that where the bible and the code disagree, the code wins, and the bible is amended to fit. Before that (2026-10-31) the game changed to fit the bible, and the conflicts marked resolved below were settled that way. Known conflicts:
 
 1. **Crew size and posts.** The code crews Hester's ship with about ten (`CHAPTER_CREW` in `js/hired.js`: the hand's post, a first officer, a quartermaster, a medic, a cook, two ice hands). The bible has five to seven: three officers, a bosun and two or three ratings. Resolved (#879): seven aboard, the bosun, one deckhand and the comms rating with the hand; no quartermaster, medic or cook, and the bosun holds the first aid.
 2. **The hand's post and share.** The hand can sign on as pilot or engineer, licensed posts, and gets a 6 percent share (`HIRED_SHARE`) that the bible gives only to officers. Resolved for the pay (#879): the hand is a rating, on a day rate less a kit deduction, with no share. The posts a hand may sign on to stay as they are (the narrow build offers only the guns).
 3. **Cato** is the first officer (`xo`) in the code, deciding the watch and able to overrule the captain. In the bible he is the bosun. Resolved (#879): he is shown as the bosun on Hester's ship and holds the first aid; the code's slot stays `xo`.
-4. **Ice runs, the ice hold and ice hands.** The bible's ship is a fast cargo hull, and bulk ice goes slow.
+4. **Ice runs, the ice hold and ice hands.** The bible's ship was a fast cargo hull, and bulk ice goes slow. Resolved (2026-11-11, the code wins): Hester's ship is the Ice Hauler, a tower of decks over her water tank (`LAYOUTS.freighter`, `js/layouts.js`), and the ice runs stand; `ship.md` is amended.
 5. **The chapter's goal.** The hand saved to buy a used ship (`HIRED_TARGET`). The bible gives a rating no way to own one outright. Resolved (#882): the goal is a member's share in the Ceres Crew Co-operative's Ore Runner (`ceres-coop.md`), a buy-in set by the members' vote with the rest owed, signed at Ceres; chapter one ends there, and chapter two on a co-op ship is still to come.
 6. **Hester's code entry.** Her bio ("the owner, on paper... the bank owns most of") becomes the hire-purchase charter, and her `greedy` trait goes: her thrift is the charter's cause, not a vice.
 7. **Tomas's hope** to buy his sister's flat is out of reach. It becomes paying off her lease arrears, or a lease on a better tier.
