@@ -24,6 +24,7 @@ const MOD_EVENTS = [
   'damage',       // (ship, shieldHit, byPlayer, hullDamage)
   'destroyed',    // (ship, byPlayer)
   'enterSystem',  // (systemId) the local space was populated, after takeoff or arrival
+  'landing',      // (planet) as landAt begins, before the port is set up: the ship as it came in
   'landed',       // (planet)
   'takeoff',      // (planet)
   'burnStart',    // (destSystemId)

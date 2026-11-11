@@ -535,6 +535,7 @@ function land(planet) {
 }
 
 function landAt(planet, notes) {
+  Mods.emit('landing', planet);  // before the port is set up and before 'landed': the ship as it came in (inspection.js reads the hold before the run is sold)
   G.mode = 'landed';
   G.shots = [];
   G.flash = 0;

@@ -29,7 +29,7 @@ function inspectionCause(cargo, gov, rep, marked) {
 // or keeping out of it. The sum leaves the ship's purse (never the hand's savings); a failed move pays it all and costs a point of the captain's regard.
 // With no post to work (the parked owner game) the only choice is to pay.
 function inspectionScene(cause, planet) {
-  const cap = hiredCaptain(), post = career() && career().post;
+  const cap = hiredCaptain(), post = cap && career() && career().post;  // the move is argued past the captain: an owner, even one who kept a post, only pays
   const say = (key, vars) => sceneSay('scene:inspection', key, { planet: planet.name, gov: cause.gov, cap: cap ? cap.last : '', sum: fmt(cause.sum), ...vars });
   const causes = [cause.good ? say('cause.good', { good: goodName(cause.good).toLowerCase(), tons: cause.tons, duty: fmt(cause.duty) }) : '', cause.fine ? say('cause.standing', { fine: fmt(cause.fine) }) : ''].filter(Boolean).join(' ');
   const pay = n => { const paid = Math.min(purse(), n); moveMoney(-paid); recordHand('fines'); return fmt(paid); };
@@ -47,17 +47,25 @@ function inspectionScene(cause, planet) {
     text: [say('text', { causes }), cap ? say('captain') : ''].filter(Boolean).join(' '), choices };
 }
 
-// The landed hook's body (`note` is the hook's M.note; a test reads UI.notes): at an inspecting port, the inspector's scene opens first (ahead of a scene already open), or a clean ship gets one note line.
-function inspectAtLanding(planet, note = text => UI.notes.push(text)) {
+// The landed hook's body (`note` is the hook's M.note; a test reads UI.notes; `cargo` is the hold as the ship came in, read on 'landing'): at an inspecting
+// port, the inspector's scene opens first, ahead of a scene already open and of one queued behind it, or a clean ship gets one note line.
+function inspectAtLanding(planet, note = text => UI.notes.push(text), cargo = G.state.cargo) {
   const st = G.state, gov = system().gov;
   if (atSite(st) || !INSPECTING.includes(gov)) return;
-  const c = career(), cause = inspectionCause(st.cargo, gov, repOf(gov), !!c && hasTrait(c, 'marked'));
+  const c = career(), cause = inspectionCause(cargo, gov, repOf(gov), !!c && hasTrait(c, 'marked'));
   if (!cause) { note(sceneSay('scene:inspection', 'clean')); return; }
-  const scene = inspectionScene(cause, planet);
-  openEvent(G.dialog ? chainEvents([scene, G.dialog.event]) : scene);
+  const scene = inspectionScene(cause, planet), prev = G.dialog && G.dialog.event;
+  if (prev) scene.choices = scene.choices.map(ch => ({ ...ch, run() { const r = ch.run(), q = G.nextEvent; G.nextEvent = q && q !== prev ? chainEvents([prev, q]) : prev; return r; } }));  // what was open, then what was queued behind it
+  openEvent(scene);
 }
 
+// A landing straight after a new game or a load is no arrival: nothing is inspected, and no note.
 Mods.register({
   id: 'inspection', name: 'Port inspections', builtin: true,
-  init(M) { M.on('landed', planet => inspectAtLanding(planet, M.note)); },
+  init(M) {
+    let fresh = true, hold = null;
+    M.on('stateReady', () => { fresh = true; });
+    M.on('landing', () => { hold = fresh ? null : { ...(G.state.cargo || {}) }; fresh = false; });
+    M.on('landed', planet => { if (hold) inspectAtLanding(planet, M.note, hold); hold = null; });
+  },
 });

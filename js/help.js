@@ -32,7 +32,7 @@ const HELP = [
     'Pirates, a navy patrol that wants the ship, or a raider can come up on you mid-burn. The captain calls battle stations, and the fight plays out turn by turn on the sensor board.',
     'Each turn shows her move and the captain\'s first. You aim each gun at a part of her ship (weapons, drive, lock or hull) or hold it, then Fire. Each shot adds heat, and over the cap a gun locks for a turn. Your guns hit harder as you gain levels.',
     'It ends when she is crippled, breaks off or stands off, when you open the range and lose her, or when she comes alongside and the fight goes to the deck: you stand or move a section, shoot or use one of your post\'s two abilities, and give one crewmate an order.' ], text: [
-    'Pirates, navy patrols that want you, bounty targets, and hired guns can intercept you mid-burn, more often on dangerous lanes. You can fight, burn hard to run, or pay them off.',
+    'Pirates, bounty targets, and hired guns can intercept you mid-burn, more often on dangerous lanes. You can fight, burn hard to run, or pay them off. The navies don\'t stop ships in open space: a Compact, Concord or League port inspects you when you land, for bad standing there or a good they license for import.',
     'The fight is a card duel on the console. The ship with the initiative plays a threat, the other an answer. PDCs stop torpedoes, evasive burns stop gun runs, and crew at the locks stop boarders. A stopped threat passes the initiative.',
     'Your cards come from your ship: torpedoes, close-defense turrets, guns, pilot, power, and crew. A beaten pirate drifts, disabled, and can be boarded.' ] },
   { id: 'crew', title: 'Crew and relationships', hand: [

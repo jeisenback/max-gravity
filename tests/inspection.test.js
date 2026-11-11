@@ -172,3 +172,62 @@ test('in the parked owner game the inspector is paid from the owner\'s credits, 
   await done();
   assert.equal(r.title, 'The Inspector'); assert.equal(r.labels.length, 1); assert.match(r.labels[0], /Pay the inspector/); assert.equal(r.paid, 6000);
 });
+
+// ---------- the final review's findings ----------
+
+test('the inspector reads the hold as it came in, before the captain\'s run is sold at the landing (#993 review)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = handAt('comms', 'Ceres Station', { rep: 0 }); st.rep['Dome Concord'] = 0; st.cargo = { water: 50 };
+    const h = hired(), at = planetNamed('Mars');
+    h.run = { planet: at.pl.name, sid: at.sid, good: 'water', tons: 50, cost: 0, day: st.day, from: 'Ceres Station' };
+    st.systemId = at.sid; st.planet = at.pl.name; resetWorld(); landAt(at.pl, []);
+    let title = null, text = ''; for (let g = 10; G.dialog && g--; finishEvent()) if (G.dialog.event.title === 'The Inspector') { title = G.dialog.event.title; text = G.dialog.event.text; break; }
+    return { title, water: /50t/.test(text), sold: !st.cargo.water };
+  });
+  await done();
+  assert.deepEqual(r, { title: 'The Inspector', water: true, sold: true });
+});
+
+test('loading a save is no second arrival: no inspection and no customs note (#993 review)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = handAt('comms', 'Ceres Station', { rep: 0 }); st.rep['Charter League'] = -20;
+    save(); loadGame();
+    const titles = []; for (let g = 10; G.dialog && g--; finishEvent()) titles.push(G.dialog.event.title);
+    return { titles, notes: [...UI.notes] };
+  });
+  await done();
+  assert.ok(!r.titles.includes('The Inspector'), r.titles.join(' | '));
+  assert.ok(!r.notes.includes('Customs logs the ship through.'), r.notes.join(' | '));
+});
+
+test('a scene already queued behind the open one still shows after the inspection and the open one (#993 review)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    handAt('comms', 'Mars', { cargo: { water: 50 }, rep: 0 });
+    openEvent({ title: 'Other', text: 'x', choices: [{ label: 'A', run: () => 'a' }] });
+    inspectAtLanding(currentPlanet());
+    G.nextEvent = { title: 'Queued', text: 'y', choices: [{ label: 'B', run: () => 'b' }] };  // a handler after the inspection's queued its scene
+    const seen = [G.dialog.event.title];
+    for (let g = 5; G.dialog && g--;) { chooseEvent(G.dialog.event.title === 'The Inspector' ? 1 : 0); finishEvent(); if (G.dialog) seen.push(G.dialog.event.title); }
+    return seen;
+  });
+  await done();
+  assert.deepEqual(r, ['The Inspector', 'Other', 'Queued']);
+});
+
+test('an owner who kept a post has no captain to argue past: only the pay choice (#993 review)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+    const st = G.state; st.career = { post: 'gunner', skill: {}, kit: [], picks: [] };
+    const e = inspectionScene(inspectionCause({ water: 50 }, 'Dome Concord', 0, false), currentPlanet());
+    return e.choices.map(c => c.label);
+  });
+  await done();
+  assert.equal(r.length, 1); assert.match(r[0], /Pay the inspector/);
+});
