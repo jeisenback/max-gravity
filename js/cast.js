@@ -406,7 +406,7 @@ const CAST = {
         choices: [
           {
             label: 'Take her watch',
-            effects: { castLike: { who: 'yelena', n: 3, memory: 'You took my watch on the night of the final.' }, captainLike: { n: -1, memory: 'You took a watch that wasn\'t yours, and didn\'t ask.' } },
+            effects: { castLike: { who: 'yelena', n: 3, memory: 'You took my watch on the night of the final.' }, captainLike: { n: -1, memory: 'You took a watch that wasn\'t yours, and didn\'t ask.' }, standWatch: { stands: 'you', post: 'gunnery', relieved: 'yelena', relievedAt: 'galley' } },
             result: 'You tell her to go. She doesn\'t argue. You hear the roar from the galley, through the deck, from the second quarter on: shouted ' +
               'refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there\'s a ' +
               'small black raven drawn on the back of your hand, in marker, and she doesn\'t mention it. The captain finds your name on Yelena\'s line ' +
@@ -414,7 +414,7 @@ const CAST = {
           },
           {
             label: '"It\'s your watch."',
-            effects: { castLike: { who: 'yelena', n: -1, memory: 'You said it was my watch on the night of the final.' }, captainLike: { n: 1, memory: 'You kept the watch bill as it was written.' }, castXp: { who: 'yelena', role: 'gunner', n: 2 } },
+            effects: { castLike: { who: 'yelena', n: -1, memory: 'You said it was my watch on the night of the final.' }, captainLike: { n: 1, memory: 'You kept the watch bill as it was written.' }, castXp: { who: 'yelena', role: 'gunner', n: 2 }, standWatch: { stands: 'yelena', post: 'gunnery', relieved: null } },
             result: '"Of course," she says. She stands the watch perfectly, to the minute, with the radio turned low, and says nothing at all, then or ' +
               'after. She runs every drill on the board while she\'s up there, twice, faster the second time. When you come to relieve her she\'s at ' +
               'the guns with her chin up.',
