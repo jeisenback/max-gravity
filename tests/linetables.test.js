@@ -89,15 +89,15 @@ test('an override is escaped in a bar line and left plain in the chatter, and a 
     const warned = []; const warn = console.warn; console.warn = m => warned.push(m);
     const clean = cleanOverrides({
       'lines:bar-leave': { parts: { 1: 'A <b>wave</b> & {n} goes.', 0: 'Uses {nothing}.', 9: 'No such line.', 2: '' }, title: 'No', choices: { 0: { label: 'x' } } },
-      'lines:trait-chatter': { parts: { 'talkative.0': '<b>{first}</b> & talks.' } },
+      'lines:trait-chatter': { parts: { 'talkative.any.0': '<b>{first}</b> & talks.' } },
       'lines:nope': { parts: { 0: 'x' } },
     });
     console.warn = warn;
-    useOverrides({ 'lines:bar-leave': { parts: { 1: 'A <b>wave</b> & {n} goes.' } }, 'lines:trait-chatter': { parts: { 'talkative.0': '<b>{first}</b> & talks.' } } });
-    return { clean, warned, bar: barLines('leave')[1], bar2: barLines('leave')[0], chatter: traitChatter('talkative')[0] };
+    useOverrides({ 'lines:bar-leave': { parts: { 1: 'A <b>wave</b> & {n} goes.' } }, 'lines:trait-chatter': { parts: { 'talkative.any.0': '<b>{first}</b> & talks.' } } });
+    return { clean, warned, bar: barLines('leave')[1], bar2: barLines('leave')[0], chatter: traitChatter('talkative').any[0] };
   });
   await g.done();
-  assert.deepEqual(r.clean, { 'lines:bar-leave': { parts: { 1: 'A <b>wave</b> & {n} goes.' } }, 'lines:trait-chatter': { parts: { 'talkative.0': '<b>{first}</b> & talks.' } } });
+  assert.deepEqual(r.clean, { 'lines:bar-leave': { parts: { 1: 'A <b>wave</b> & {n} goes.' } }, 'lines:trait-chatter': { parts: { 'talkative.any.0': '<b>{first}</b> & talks.' } } });
   assert.equal(r.warned.length, 1, 'one warning for the file');
   for (const w of ['parts.0 has {nothing}', 'parts has no "9"', 'parts.2 is not text', 'has no "title"', 'has no choice 0', 'unknown scene "lines:nope"']) assert.ok(r.warned[0].includes(w), `${w} in: ${r.warned[0]}`);
   assert.equal(r.bar, 'A &lt;b&gt;wave&lt;/b&gt; &amp; {n} goes.', 'a bar line is text');

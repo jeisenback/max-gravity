@@ -23,16 +23,18 @@ const roomBox = (ctx, x, y, w, h, col) => {
 // figPath keeps every path string it reads (and roomPart its bounds), so a path given here is fixed per layout: built from the room's box, W,
 // X() and constants, never from s.time, the zoom or anything that changes frame to frame (move such a part with ctx.translate instead).
 // o.solid (#1024): the part stands on the floor at the front and is that deep, as a share of the strip; roomSolid draws its depth behind it.
-// Drawn inside roomOnWall, every colour is a step darker (the wall tone).
+// o.slope: its top edge runs from [the left end's y, the right end's] (a console's sloped top), so its top face runs back from that edge;
+// o.shadow false: it rests on another part (a mattress on its frame) and casts no shadow of its own. Drawn inside roomOnWall, every colour is
+// a step darker (the wall tone).
 const roomBounds = {};
 function roomPart(ctx, d, col, o = {}) {
-  const { top = 1.5, side = 0, under = 0, solid = 0 } = o, t = roomTone;
+  const { top = 1.5, side = 0, under = 0, solid = 0, slope = null, shadow = true } = o, t = roomTone;
   figPath(ctx, d);
   if (/^#[0-9a-f]{6}$/i.test(col) && (top || side || under || solid)) {
     const b = roomBounds[d] || (roomBounds[d] = figTokens[d].filter(t => !/[A-Z]/.test(t)).reduce((b, t, i) => {
       const v = Number(t), k = i % 2; b[k] = Math.min(b[k], v); b[k + 2] = Math.max(b[k + 2], v); return b;
     }, [Infinity, Infinity, -Infinity, -Infinity])), [x0, y0, x1, y1] = b;
-    if (solid && roomView) { roomSolid(ctx, b, col, solid); figPath(ctx, d); }
+    if (solid && roomView) { roomSolid(ctx, b, col, solid, slope, shadow); figPath(ctx, d); }
     ctx.fillStyle = roomTint(col); ctx.fill();
     ctx.save(); ctx.clip();
     if (top) roomFlat(ctx, x0, y0, x1 - x0, top, figShade(col, 1.4 * t));
@@ -151,7 +153,7 @@ function roomMug(ctx, x, y, w, time) {
   if (free > 0.05) { ctx.strokeStyle = `rgba(220,230,240,${0.35 * free})`; ctx.lineWidth = 1; for (let k = 0; k < 2; k++) { const y0 = y - 12 - lift, ph = time * 2 + k * 2; ctx.beginPath(); ctx.moveTo(x - 2 + k * 4, y0); ctx.quadraticCurveTo(x + Math.sin(ph) * 3, y0 - 6, x - 1 + k * 3 + Math.sin(ph + 1) * 3, y0 - 12); ctx.stroke(); } }
 }
 function roomPlant(ctx, x, y, w, time, still, k = 1) {  // its pot's top at y, drawn at the scale k
-  roomPart(ctx, `M ${x - 6 * k} ${y} L ${x + 6 * k} ${y} L ${x + 4.5 * k} ${y + 10 * k} L ${x - 4.5 * k} ${y + 10 * k} Z`, '#5e4434', { top: 1.2, side: 2 * k }); const droop = w.burn * 0.9 - w.flip * 0.5; ctx.strokeStyle = '#5fae5a'; ctx.lineWidth = 1.8 * k;
+  roomPart(ctx, `M ${x - 6 * k} ${y} L ${x + 6 * k} ${y} L ${x + 4.5 * k} ${y + 10 * k} L ${x - 4.5 * k} ${y + 10 * k} Z`, '#5e4434', { top: 1.2, side: 2 * k }); const droop = w.burn * 0.9 - w.flip * 0.5; ctx.strokeStyle = roomTint('#5fae5a'); ctx.lineWidth = 1.8 * k;
   for (const [a, l, sd] of [[-0.9, 11 * k, 0], [-0.3, 14 * k, 1], [0.35, 13 * k, 2], [0.95, 10 * k, 3]]) {
     const ang = a * (1 - w.burn * 0.3) + (still ? 0 : Math.sin(time * 1.1 + sd) * 0.25 * w.flip);
     ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x + Math.sin(ang) * l * 0.4, y - l * 0.7, x + Math.sin(ang) * l, y - Math.cos(ang) * l * (1 - droop * 0.7) + droop * 6 * k); ctx.stroke();
@@ -183,17 +185,18 @@ function roomIn(bays, fn) {
 }
 const roomEyeAt = x => roomView && (roomView.find(b => x >= b.x0 && x <= b.x1) || roomView[0]);
 // A solid part's depth, from its bounds b, behind its front: a contact shadow on the strip if its foot is on the floor (its footprint widened 5
-// each side), the side toward the eye a step darker (none when it straddles the eye), and its top a step lighter if the top is under the eye.
-function roomSolid(ctx, [x0, y0, x1, y1], col, d) {
-  const e = roomEyeAt((x0 + x1) / 2), F = e.floor, t = roomTone, P = (x, y) => roomInto(e, x, y, d);
+// each side) and it does not rest on another part, the side toward the eye a step darker (none when it straddles the eye), and its top a step
+// lighter if the top is under the eye. slope: the top edge's y at its left and right ends, when it is not level.
+function roomSolid(ctx, [x0, y0, x1, y1], col, d, slope = null, shadow = true) {
+  const e = roomEyeAt((x0 + x1) / 2), F = e.floor, t = roomTone, P = (x, y) => roomInto(e, x, y, d), [ya, yb] = slope || [y0, y0];
   const face = (pts, fill, line) => {
     ctx.beginPath(); ctx.moveTo(pts[0][0], pts[0][1]); for (const q of pts.slice(1)) ctx.lineTo(q[0], q[1]); ctx.closePath(); ctx.fillStyle = fill; ctx.fill();
     if (line) { ctx.lineWidth = 0.7; ctx.strokeStyle = FIG_LINE; ctx.stroke(); }
   };
-  if (y1 >= F - ROOM_FOOT) face([[x0 - 5, F], [x1 + 5, F], P(x1 + 5, F), P(x0 - 5, F)], ROOM_SHADOW);
-  const sx = x1 < e.vx ? x1 : x0 > e.vx ? x0 : null;
-  if (sx !== null) face([[sx, y0], [sx, y1], P(sx, y1), P(sx, y0)], figShade(col, 0.62 * t), true);
-  if (y0 > e.vy) face([[x0, y0], [x1, y0], P(x1, y0), P(x0, y0)], figShade(col, 1.3 * t), true);
+  if (shadow && y1 >= F - ROOM_FOOT) face([[x0 - 5, F], [x1 + 5, F], P(x1 + 5, F), P(x0 - 5, F)], ROOM_SHADOW);
+  const sx = x1 < e.vx ? x1 : x0 > e.vx ? x0 : null, sy = sx === x0 ? ya : yb;
+  if (sx !== null) face([[sx, sy], [sx, y1], P(sx, y1), P(sx, sy)], figShade(col, 0.62 * t), true);
+  if (Math.min(ya, yb) > e.vy) face([[x0, ya], [x1, yb], P(x1, yb), P(x0, ya)], figShade(col, 1.3 * t), true);
 }
 // Something at a depth d (1: the back wall) of the bay at its anchor (ax, ay), drawn by fn at full size, moved whole so the anchor lands there:
 // a small thing on a top (the plant on the worktop, the kettle on the hob). roomOnWall: on the back wall, in the wall tone.
@@ -329,21 +332,25 @@ const berthKeep = b => ({ x: b.x + b.w - 34, y: b.y - 25, w: 16, h: 7 });
 // A bunk of the berths (#933) at b (berthBunk), the frame (BERTH_FRAME deep) with screws and a grab rail on its front, the mattress, the pillow
 // under the sleeper's head, the blanket (spread over a sleeper, folded at the foot of an empty bunk), the curtain rail on its brackets under the
 // bunk over it, the curtain (drawn back to the foot, or across the bunk: shut) and the reading lamp hung from the rail over the pillow. The place
-// for its owner's thing (berthKeep) is left clear.
+// for its owner's thing (berthKeep) is left clear. In the box (#1024) the frame is solid, a bunk column deep, and the mattress on it shows its
+// top running back from its front edge, where the sleeper lies.
+const BUNK_DEPTH = 0.6;
 function roomBunk(ctx, b, F, slept, shut) {
   const n = v => Math.round(v * 100) / 100, x = n(b.x), w = n(b.w), y = n(b.y), yr = n(y - 26.6);
-  roomPart(ctx, roomRound(x, y, w, BERTH_FRAME, 1), '#1f3a56', { top: 0.8, under: 0.8 });
+  roomPart(ctx, roomRound(x, y, w, BERTH_FRAME, 1), '#1f3a56', { top: 0.8, under: 0.8, solid: BUNK_DEPTH });
   roomPart(ctx, roomRound(x + w / 2 - 14, y + 0.7, 28, 1.6, 0.8), '#3a5470', { top: 0.5 });  // a grab rail for zero g
   for (const sx of [x + 3, x + w - 3]) roomDot(ctx, sx, y + 1.4, 0.6, '#56708c');
-  roomPart(ctx, roomRound(x + 2, y - 5, w - 4, 5, 2), '#3a4a5e', { top: 1, under: 0.8 });
+  roomPart(ctx, roomRound(x + 2, y - 5, w - 4, 5, 2), '#3a4a5e', { top: 1, under: 0.8, solid: BUNK_DEPTH, shadow: false });
   roomPart(ctx, roomRound(x + 4, y - 9.5, 18, 4.5, 2), '#9a968a', { top: 0.8, side: 1.5 });
   if (slept) roomPart(ctx, roomRound(x + 20, y - 6.5, w - 24, 2.5, 1), '#334560', { top: 0.6 });
   else { roomPart(ctx, roomRound(x + w - 30, y - 9, 20, 4, 1.5), '#3e4f6e', { top: 1, side: 2 }); roomFlat(ctx, x + w - 29, y - 7.2, 18, 0.6, '#2c3a52'); }
-  roomFlat(ctx, x + 2.5, y - 25, 2, 4, '#2a3e54'); ctx.strokeStyle = '#56708c'; ctx.lineWidth = 1; roomSeg(ctx, [[x + 3.5, y - 24], [x + 9, y - 23]]);  // the reading lamp
-  roomPart(ctx, `M ${n(x + 6)} ${n(y - 23)} L ${n(x + 12)} ${n(y - 23)} L ${n(x + 14)} ${n(y - 19)} L ${n(x + 4)} ${n(y - 19)} Z`, '#4a5a6a', { top: 0.6, side: 1 });
-  roomDot(ctx, x + 9, y - 18.6, 1, '#6a6048');
   for (const bx of [x + 2, x + w - 3.5]) roomFlat(ctx, bx, yr - 1, 1.5, 3, '#2a3e54');  // the curtain rail on its brackets
   roomPart(ctx, roomRound(x + 2, yr, w - 4, 1.6, 0.8), '#3a5470', { top: 0.5 });
+  // the reading lamp, a fitting under the rail (#1024, look.md rule 5): its clamp round the rail, a short stem, the shade and the bulb in it
+  roomPart(ctx, roomRound(x + 6.5, yr - 0.4, 5, 2.4, 0.6), '#2a3e54', { top: 0 }); roomDot(ctx, x + 9, yr + 0.8, 0.5, '#56708c');
+  roomFlat(ctx, x + 8.4, y - 24.6, 1.2, 1.6, '#2a3e54');
+  roomPart(ctx, `M ${n(x + 6)} ${n(y - 23)} L ${n(x + 12)} ${n(y - 23)} L ${n(x + 14)} ${n(y - 19)} L ${n(x + 4)} ${n(y - 19)} Z`, '#4a5a6a', { top: 0.6, side: 1 });
+  roomDot(ctx, x + 9, y - 18.6, 1, '#6a6048');
   ctx.strokeStyle = '#3a2d48'; ctx.lineWidth = 0.8;
   if (shut) {  // drawn across the bunk, its folds hanging to a wavy hem
     let d = `M ${n(x + 3)} ${n(yr + 1.6)} L ${n(x + w - 3)} ${n(yr + 1.6)} L ${n(x + w - 3)} ${n(y - 1)}`;
@@ -361,31 +368,44 @@ function roomBunk(ctx, b, F, slept, shut) {
 // one or two in a short column at the left, its posts only as high as its bunks (#1023); the curtain shut on the third one ("z z" behind it at
 // night in cruise); beside the well the crew's corner (berthCorner): the wall unit with its books, photo, plant, mug and reading lamp (its glow
 // in cruise), the pinboard where it fits, the towel swinging on its hook and the guitar lashed to the wall. The top left is kept clear for the
-// room's name (berthBunk).
+// room's name (berthBunk). In the box (#1024): the corner's things first, each moved onto the back wall; then the columns, solid, from each side
+// wall in toward the eye, each with its back posts on its side toward the eye (none when it straddles the eye); then the posts at the front.
 function roomBerths(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), well = s.well || { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }, { w: cw } = berthBunk(r, n, 0, well);
   const shut = W >= 220 && n >= 3 ? 2 : -1, r2 = v => Math.round(v * 100) / 100;
-  for (let k = 0; k < n; k++) roomBunk(ctx, berthBunk(r, n, k, well), F, k < s.asleep, k === shut);
-  const posts = new Map(), cols = new Map();  // each column's bunks by its left end; each post's x and how high it stands
-  for (let k = 0; k < n; k++) { const b = berthBunk(r, n, k, well), x = r2(b.x); cols.set(x, [...(cols.get(x) || []), b]); }
+  const c = berthCorner(r, n, well), open = c.x1 - c.x0;  // the crew's corner beside the well, each thing on the back wall, anchored at its middle
+  if (W >= 300 && open >= 70) roomOnWall(ctx, c.x0 + 33, F - 73, () => roomWallUnit(ctx, c.x0 + 2, F, w, time, s.still));
+  const pw = Math.min(84, open - 126); if (W >= 300 && pw >= 60) roomOnWall(ctx, c.x0 + 126 + pw / 2, F - 65, () => roomPinboard(ctx, c.x0 + 126, F, pw));
+  if (W >= 260 && open >= 82) {  // the towel on its hook, moved with the wall unit it hangs beside: it swings, moved, not redrawn (a path given to roomPart is fixed per layout)
+    const hx = c.x0 + 74, [ex, ey] = hangEnd(hx, F - 60, 10, 1.3, w, time, s.still);
+    roomOnWall(ctx, c.x0 + 33, F - 73, () => {
+      roomFlat(ctx, hx - 1.5, F - 62, 3, 3, '#3a4a5a'); ctx.strokeStyle = roomTint('#7a8a9a'); ctx.lineWidth = 1; roomSeg(ctx, [[hx, F - 60], [ex, ey]]);
+      ctx.save(); ctx.translate(ex, ey); roomPart(ctx, roomRound(-3.5, 0, 7, 11, 1.2), '#8a4a40', { top: 0.6, side: 1.5 }); roomFlat(ctx, -3, 7.5, 6, 1.2, '#6a3a32'); ctx.restore();
+    });
+  }
+  if (W >= 240 && open >= 118) roomOnWall(ctx, c.x0 + 104, F - 56, () => roomGuitar(ctx, c.x0 + 104, F));
+  const posts = new Map(), cols = new Map();  // each column's bunks (and their numbers) by its left end; each post's x and how high it stands
+  for (let k = 0; k < n; k++) { const b = berthBunk(r, n, k, well), x = r2(b.x); cols.set(x, [...(cols.get(x) || []), [b, k]]); }
   for (const [x, col] of cols) {  // a column three high stands to the ceiling; a short one only to the curtain rail of its top bunk, no empty tier
-    const top = col.length === 3 ? F - 92 : r2(Math.min(...col.map(b => b.y)) - 27.6);
+    const top = col.length === 3 ? F - 92 : r2(Math.min(...col.map(([b]) => b.y)) - 27.6);
     for (const px of [x, r2(x + cw)]) posts.set(px, Math.min(top, posts.has(px) ? posts.get(px) : Infinity));
+  }
+  const eyeOf = x => roomEyeAt(x + cw / 2), off = x => { const e = eyeOf(x); return e ? Math.abs(x + cw / 2 - e.vx) : 0; };
+  for (const x of [...cols.keys()].sort((a, b) => off(b) - off(a))) {  // the columns farthest from their eye first, so a nearer one covers its side
+    const e = eyeOf(x), px = !e ? null : x + cw < e.vx ? r2(x + cw) : x > e.vx ? x : null;
+    if (px !== null) {  // its back post on the side toward the eye, the depth of a bunk back, a step darker
+      // joined to the front post by a rail at its top, as the frames' sides join them at each tier: the column's end is one frame in depth
+      const top = posts.get(px), [bx, by0] = roomInto(e, px, top, BUNK_DEPTH), by1 = roomInto(e, px, F, BUNK_DEPTH)[1], col = figShade('#2a4664', 0.72);
+      roomPart(ctx, roomRound(r2(bx - 2), r2(by0), 4, r2(by1 - by0), 1), col);
+      roomPart(ctx, `M ${r2(px)} ${r2(top)} L ${r2(bx)} ${r2(by0)} L ${r2(bx)} ${r2(by0 + 3)} L ${r2(px)} ${r2(top + 3)} Z`, col);
+    }
+    for (const [b, k] of cols.get(x)) roomBunk(ctx, b, F, k < s.asleep, k === shut);
   }
   for (const [px, top] of posts) {  // the posts at each column's ends, bolted to the deck, and the ceiling where they reach it
     roomPart(ctx, roomRound(px - 2, top, 4, F - top, 1), '#2a4664', { top: 0, side: 1.2 });
     roomFlat(ctx, px - 3.5, F - 2, 7, 2, '#20384f'); for (const sy of [top + 2, F - 40]) if (sy > top && sy < F - 4) roomDot(ctx, px, sy, 0.6, '#56708c');  // only on the post
   }
   if (shut >= 0 && s.asleep > 0 && w.cruise > 0.5) { const b = berthBunk(r, n, shut, well); worldText(ctx, s.zoom, Math.floor(time) % 2 ? 'z z' : 'z', b.x + cw - 24, b.y - 12, 12, '#9fb4c9'); }
-  const c = berthCorner(r, n, well), open = c.x1 - c.x0;  // the crew's corner beside the well
-  if (W >= 300 && open >= 70) roomWallUnit(ctx, c.x0 + 2, F, w, time, s.still);
-  const pw = Math.min(84, open - 126); if (W >= 300 && pw >= 60) roomPinboard(ctx, c.x0 + 126, F, pw);
-  if (W >= 260 && open >= 82) {  // the towel on its hook: it swings, moved, not redrawn (a path given to roomPart is fixed per layout)
-    const hx = c.x0 + 74, [ex, ey] = hangEnd(hx, F - 60, 10, 1.3, w, time, s.still);
-    roomFlat(ctx, hx - 1.5, F - 62, 3, 3, '#3a4a5a'); ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1; roomSeg(ctx, [[hx, F - 60], [ex, ey]]);
-    ctx.save(); ctx.translate(ex, ey); roomPart(ctx, roomRound(-3.5, 0, 7, 11, 1.2), '#8a4a40', { top: 0.6, side: 1.5 }); roomFlat(ctx, -3, 7.5, 6, 1.2, '#6a3a32'); ctx.restore();
-  }
-  if (W >= 240 && open >= 118) roomGuitar(ctx, c.x0 + 104, F);
 }
 
 // The crew's corner of the berths (#933): the open wall between the well and the first bunk right of it, in world x, a step clear of each.
@@ -401,23 +421,28 @@ function roomWallUnit(ctx, x, F, w, time, still) {
   for (const ux of [x, x + 59]) roomPart(ctx, roomRound(ux, F - 90, 3, 36, 0.8), '#22405c', { top: 0, side: 1.2 });
   let bx = x + 4;  // the books, their spines in many colours, the last one leaning
   [[4, 10, '#8f8a7c'], [5, 12, '#4f7090'], [3.5, 9, '#7a4a44'], [4.5, 11, '#8a7c5e'], [3, 8.5, '#5a6e5a'], [5, 12.5, '#6a6a8a'], [4, 10, '#8a8070']].forEach(([bw, bh, col]) => {
-    roomPart(ctx, roomRound(bx, F - 58 - bh, bw, bh, 0.6), col, { top: 0.6, side: 1 }); roomFlat(ctx, bx + 0.8, F - 58 - bh * 0.7, bw - 1.6, 0.8, figShade(col, 0.7)); bx += bw + 0.3;
+    roomPart(ctx, roomRound(bx, F - 58 - bh, bw, bh, 0.6), col, { top: 0.6, side: 1 }); roomFlat(ctx, bx + 0.8, F - 58 - bh * 0.7, bw - 1.6, 0.8, figShade(col, 0.7 * roomTone)); bx += bw + 0.3;
   });
   roomPart(ctx, `M ${n(bx + 0.5)} ${F - 58} L ${n(bx + 4.5)} ${F - 58} L ${n(bx + 8.5)} ${F - 67.5} L ${n(bx + 4.5)} ${F - 67.5} Z`, '#4a5a70', { top: 0, side: 1 });
-  ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.2; roomSeg(ctx, [[x + 3, F - 64], [bx + 6, F - 64]]); roomFlat(ctx, x + 18, F - 65.2, 3, 2.4, '#8796a5');  // the strap and its buckle
+  ctx.strokeStyle = roomTint('#5a4e3a'); ctx.lineWidth = 1.2; roomSeg(ctx, [[x + 3, F - 64], [bx + 6, F - 64]]); roomFlat(ctx, x + 18, F - 65.2, 3, 2.4, '#8796a5');  // the strap and its buckle
   const mx = x + 48;  // the mug in its holder
-  roomPart(ctx, roomRound(mx, F - 67, 8, 9, 1.2), '#7d8a98', { top: 1, side: 2 }); ctx.strokeStyle = '#7d8a98'; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.arc(mx + 9, F - 63, 2.3, -Math.PI / 2, Math.PI / 2); ctx.stroke();
+  roomPart(ctx, roomRound(mx, F - 67, 8, 9, 1.2), '#7d8a98', { top: 1, side: 2 }); ctx.strokeStyle = roomTint('#7d8a98'); ctx.lineWidth = 1.3; ctx.beginPath(); ctx.arc(mx + 9, F - 63, 2.3, -Math.PI / 2, Math.PI / 2); ctx.stroke();
   roomPart(ctx, roomRound(mx - 1, F - 61.5, 10, 3.5, 0.8), '#3a4a5a', { top: 0.5 });
   roomPart(ctx, roomRound(x + 6, F - 93, 12, 13, 1), '#3a2c20', { top: 0.8, side: 1.2 });  // the photo in its frame: two people against a sky
   roomFlat(ctx, x + 7.5, F - 91.5, 9, 10, '#3e5a6a'); roomFlat(ctx, x + 7.5, F - 85, 9, 3.5, '#2e4450');
   for (const [px, col] of [[x + 10, '#8a7a6a'], [x + 14, '#6a5a4a']]) { roomDot(ctx, px, F - 88, 1.4, col); roomFlat(ctx, px - 1.8, F - 86.5, 3.6, 3, col); }
   roomPlant(ctx, x + 30, F - 86, w, time, still, 0.6); roomFlat(ctx, x + 26, F - 84, 8, 1.2, '#8796a5');  // the plant, its pot clipped to the shelf
   const lx = x + 50;  // the reading lamp
-  roomPart(ctx, roomRound(lx - 5, F - 82, 10, 2, 0.8), '#3a4a5a', { top: 0.5 }); ctx.strokeStyle = '#56708c'; ctx.lineWidth = 1; roomSeg(ctx, [[lx - 2, F - 82], [lx, F - 88]]);
+  roomPart(ctx, roomRound(lx - 5, F - 82, 10, 2, 0.8), '#3a4a5a', { top: 0.5 }); ctx.strokeStyle = roomTint('#56708c'); ctx.lineWidth = 1; roomSeg(ctx, [[lx - 2, F - 82], [lx, F - 88]]);
   roomPart(ctx, `M ${n(lx - 3)} ${F - 92} L ${n(lx + 3)} ${F - 92} L ${n(lx + 5)} ${F - 87.5} L ${n(lx - 5)} ${F - 87.5} Z`, '#4a5a6a', { top: 0.6, side: 1 });
   roomDot(ctx, lx, F - 87, 1.2, w.cruise > 0.05 ? '#e0c890' : '#6a6048');
-  for (const sy of [F - 80, F - 58]) {  // the shelves and their lips, over the feet of what stands on them
+  for (const sy of [F - 80, F - 58]) {  // the shelves and their lips, over the feet of what stands on them, each on two brackets screwed to the wall
     roomPart(ctx, roomRound(x, sy, 62, 3, 1), '#284a68', { top: 0.8, under: 1 }); roomPart(ctx, roomRound(x + 1, sy - 1.6, 60, 1.6, 0.6), '#2c4c6e', { top: 0.5 });
+    for (const bx of [x + 10, x + 50]) {  // a bracket: its plate on the wall and the gusset up to the shelf's underside
+      roomPart(ctx, `M ${n(bx)} ${n(sy + 3)} L ${n(bx + 2)} ${n(sy + 3)} L ${n(bx + 2)} ${n(sy + 8)} L ${n(bx)} ${n(sy + 8)} Z`, '#2a3e54', { top: 0 });
+      roomPart(ctx, `M ${n(bx + 2)} ${n(sy + 3)} L ${n(bx + 6)} ${n(sy + 3)} L ${n(bx + 2)} ${n(sy + 7)} Z`, '#2a3e54', { top: 0 });
+      roomDot(ctx, bx + 1, sy + 6.5, 0.5, '#56708c');
+    }
   }
   if (w.cruise > 0.05) { const g = ctx.createRadialGradient(lx, F - 86, 1, lx, F - 86, 50); g.addColorStop(0, `rgba(255,220,160,${0.35 * w.cruise})`); g.addColorStop(1, 'rgba(255,220,160,0)'); ctx.fillStyle = g; ctx.fillRect(lx - 46, F - 100, 96, 100); }
 }
@@ -432,10 +457,10 @@ function roomGuitar(ctx, gx, F) {
     return `M ${p(0, 13)} Q ${p(13.5, 13)} ${p(13, 28)} Q ${p(12.5, 39)} ${p(8.5, 43)} Q ${p(10.5, 46.5)} ${p(10, 52)} Q ${p(9.5, 60)} ${p(0, 60)} Q ${p(-9.5, 60)} ${p(-10, 52)} Q ${p(-10.5, 46.5)} ${p(-8.5, 43)} Q ${p(-12.5, 39)} ${p(-13, 28)} Q ${p(-13.5, 13)} ${p(0, 13)} Z`;
   };
   roomFlat(ctx, gx - 1.5, Y(96), 3, 3, '#3a4a5a');  // the hook
-  ctx.strokeStyle = '#5a4030'; ctx.lineWidth = 1.8; ctx.beginPath(); ctx.moveTo(X(-1), Y(14)); ctx.quadraticCurveTo(X(-26), Y(36), X(-2.5), Y(62)); ctx.stroke();  // the strap
+  ctx.strokeStyle = roomTint('#5a4030'); ctx.lineWidth = 1.8; ctx.beginPath(); ctx.moveTo(X(-1), Y(14)); ctx.quadraticCurveTo(X(-26), Y(36), X(-2.5), Y(62)); ctx.stroke();  // the strap
   roomPart(ctx, body(2.5), '#5a3a20', { top: 0, side: 1.5 });  // the side, in shade
   roomPart(ctx, body(0), '#9a6c40', { top: 1.2, side: 1.5 });
-  ctx.strokeStyle = '#b0a078'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(gx, Y(42), 5.4 * k, 0, Math.PI * 2); ctx.stroke();  // the rosette
+  ctx.strokeStyle = roomTint('#b0a078'); ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(gx, Y(42), 5.4 * k, 0, Math.PI * 2); ctx.stroke();  // the rosette
   roomDot(ctx, gx, Y(42), 4 * k, '#1e140c');
   roomPart(ctx, `M ${X(3.5)} ${Y(37)} Q ${X(10)} ${Y(37.5)} ${X(9)} ${Y(31)} Q ${X(6.5)} ${Y(27.5)} ${X(3.5)} ${Y(31)} Z`, '#4a2e1c', { top: 0 });  // the pickguard
   roomPart(ctx, roomRound(X(-6.5), Y(26), 13 * k, 3 * k, 0.8), '#3a2414', { top: 0.6 }); roomFlat(ctx, X(-4), Y(26.6), 8 * k, 0.6, '#a89c84');  // the bridge, its saddle
@@ -633,19 +658,33 @@ function roomCommsRack(ctx, r, s) {
   worldText(ctx, s.zoom, 'COMMS', cx, ly + fs, fs, '#9fb4c9', 'center');
 }
 
-// The bridge's forward window (#933): the glass, a clear rectangle high on the wall over the consoles' screens, where the destination can be
-// shown (#936); the frame and its struts are drawn round it and over it.
-const bridgeGlass = r => { const W = r.x1 - r.x0; return { x: r.x0 + W * 0.55, y: r.floor - 92, w: W * 0.42, h: 28 }; };
+// The grab bars beside the ladder's opening on the bridge's deck (#933), for coming up it in zero g: on the shaft's bulkheads (#1024), each on the
+// room's side of its hatch (cutBulkhead, shiplife.js: the bulkhead 12 wide on its line, the hatch 8 wide in it), on two brackets. x0 to x1: the
+// shaft's band; F: the deck's floor. Drawn after the shaft, over it.
+function roomHatchBars(ctx, x0, x1, F) {
+  for (const gx of [x0 - 6, x1 + 3]) {
+    roomFlat(ctx, gx - 0.5, F - 62, 4, 1.5, '#2a3e54'); roomFlat(ctx, gx - 0.5, F - 16.5, 4, 1.5, '#2a3e54');
+    roomPart(ctx, roomRound(gx, F - 64, 3, 50, 1.5), '#3a5470', { top: 0.6, side: 1 });
+  }
+}
+// The bridge's forward window (#933): the glass, a clear rectangle high on the back wall of the forward bay (the last of roomBays, well: the
+// ladder well) over the consoles' screens, where the destination can be shown (#936); the frame and its struts are drawn round it and over it.
+// In the box (#1024) it is as wide as that wall leaves room for in its frame (up to 0.42 of the room), at its right end, and named where it is
+// drawn: on the wall, not at the cut.
+const bridgeGlass = (r, well) => {
+  const bay = roomBays(r, well).pop(), e = roomEye(bay), x1 = roomInto(e, bay.x1, r.floor)[0] - 7, w = Math.min(x1 - roomInto(e, bay.x0, r.floor)[0] - 7, (r.x1 - r.x0) * 0.42);
+  return { x: x1 - w, y: r.floor - 91, w, h: 28 };
+};
 // A pilot's seat at a post of the bridge (#933), facing forward (SEAT_FACE): its pan at the seated hip (23) on a pedestal bolted to the deck, the
 // back behind it with a headrest at the seated head, and the harness, slack on the back when no one is strapped in.
-function roomBridgeSeat(ctx, x, F) {
-  roomPart(ctx, roomRound(x - 9, F - 2.5, 18, 2.5, 1), '#1c3249', { top: 0.6 });
+function roomBridgeSeat(ctx, x, F) {  // its pad and its foot plate solid in the box (#1024), the plate's shadow on the strip
+  roomPart(ctx, roomRound(x - 9, F - 2.5, 18, 2.5, 1), '#1c3249', { top: 0.6, solid: 0.25 });
   roomDot(ctx, x - 6.5, F - 1.2, 0.6, '#56708c'); roomDot(ctx, x + 6.5, F - 1.2, 0.6, '#56708c');  // its bolts
   roomPart(ctx, `M ${x - 2} ${F - 19} L ${x + 2} ${F - 19} L ${x + 2.5} ${F - 2.5} L ${x - 2.5} ${F - 2.5} Z`, '#1c3249', { top: 0, side: 1.2 });
   roomPart(ctx, roomRound(x - 11, F - 52, 2.5, 4, 0.8), '#1c3249', { top: 0 });  // the headrest's stem
   roomPart(ctx, `M ${x - 13} ${F - 20} L ${x - 8} ${F - 20} L ${x - 6.5} ${F - 49} L ${x - 11.5} ${F - 49} Z`, '#284664', { top: 1, side: -1.5 });
   roomPart(ctx, roomRound(x - 14, F - 59, 8, 8, 2.5), '#284664', { top: 1, side: -1.5 });
-  roomPart(ctx, roomRound(x - 11, F - 23, 22, 5, 2), '#2e4a68', { top: 1, under: 1 });
+  roomPart(ctx, roomRound(x - 11, F - 23, 22, 5, 2), '#2e4a68', { top: 1, under: 1, solid: 0.25 });
   ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3;  // the harness: a shoulder strap down the back to its buckle, and the lap belt
   ctx.beginPath(); ctx.moveTo(x - 7.5, F - 47); ctx.quadraticCurveTo(x - 10.5, F - 36, x - 9, F - 24); ctx.moveTo(x - 9, F - 22); ctx.lineTo(x - 3, F - 21); ctx.stroke();
   roomFlat(ctx, x - 10.5, F - 35, 2.5, 2, '#7a8794');
@@ -653,22 +692,34 @@ function roomBridgeSeat(ctx, x, F) {
 // The bridge (#933): a console at waist height in front of each post (the seats are drawn by drawRoom), a screen on each, keys on its sloped top
 // and a grab handle on its front; the comms station's rack on the aft post's console (the first); the throttle at the pilot's (the second),
 // forward in the burn, and the bobblehead on the pilot's screen; the overhead panel along the ceiling with its switches and lights (the thrust
-// light lit in the burn), a grab rail under it, and grab bars either side of the ladder's opening; the forward window with struts in its frame;
-// and the master's certificate framed between the first two posts. The top left is kept clear for the room's name (shiplife.js), down to the
-// smallest window (#937).
+// light lit in the burn), a grab rail under it; the forward window with struts in its frame; and the master's certificate framed between the
+// first two posts. The grab bars beside the ladder's opening are on the shaft's bulkheads (roomHatchBars). The top left is kept clear for the
+// room's name (shiplife.js), down to the smallest window (#937). In the box (#1024): the window and the certificate on the back wall first; the
+// overhead panel at the cut, under the ceiling; then the consoles standing on the floor, solid (and the seats, drawRoom).
 function roomBridge(ctx, r, s, X, W) {
-  const { w, time, spin } = s, F = r.floor, g = bridgeGlass(r), n = v => Math.round(v * 100) / 100;
-  roomPart(ctx, roomRound(g.x - 4, g.y - 4, g.w + 8, g.h + 7, 2.5), '#2a4560', { top: 1, under: 1.5 });  // the window's frame
+  const { w, time, spin } = s, F = r.floor, g = bridgeGlass(r, s.well), n = v => Math.round(v * 100) / 100;
+  // bridgeGlass names the window where it is on the back wall, so its frame is drawn there as it is: anchored at the eye, which the move onto
+  // the wall leaves where it is, for the wall tone. The glass is the view out, in its own colours.
+  const eye = roomEye(roomBays(r, s.well).pop()), onWall = fn => roomOnWall(ctx, eye.vx, eye.vy, fn);
+  onWall(() => roomPart(ctx, roomRound(g.x - 4, g.y - 4, g.w + 8, g.h + 7, 2.5), '#2a4560', { top: 1, under: 1.5 }));  // the window's frame
   ctx.save(); ctx.beginPath(); ctx.rect(g.x, g.y, g.w, g.h); ctx.clip(); roomFlat(ctx, g.x, g.y, g.w, g.h, '#01040a');
   const cs = Math.cos(spin), sn = Math.sin(spin), mx = g.x + g.w / 2, my = g.y + g.h / 2;
   for (const [a, b, sz] of roomStars) { const sx = (a - 0.5) * g.w * 1.4, sy = (b - 0.5) * g.h * 1.6; roomDot(ctx, mx + sx * cs - sy * sn, my + sx * sn + sy * cs, sz, '#cfe3ff'); }
   const px = g.x + g.w - 14 + Math.sin(spin) * 40, pg = ctx.createRadialGradient(px, my + 6, 2, px, my + 6, 24); pg.addColorStop(0, '#c98a5a'); pg.addColorStop(1, 'rgba(120,70,40,0)'); ctx.fillStyle = pg; ctx.fillRect(g.x, g.y, g.w, g.h);
   roomFlat(ctx, g.x, g.y, g.w * 0.3, g.h, 'rgba(160,200,255,0.05)'); ctx.restore();
-  ctx.strokeStyle = '#132538'; ctx.lineWidth = 1; ctx.strokeRect(g.x - 0.5, g.y - 0.5, g.w + 1, g.h + 1);  // the gasket
-  for (let k = 1; k < 4; k++) {  // the struts
-    const sx = n(g.x + g.w * k / 4);
-    roomPart(ctx, roomRound(sx - 2, g.y - 1, 4, g.h + 2, 0.8), '#2a4560', { top: 0, side: 1.2 }); roomDot(ctx, sx, g.y + 2, 0.7, '#56708c'); roomDot(ctx, sx, g.y + g.h - 2, 0.7, '#56708c');
-  }
+  onWall(() => {
+    ctx.strokeStyle = roomTint('#132538'); ctx.lineWidth = 1; ctx.strokeRect(g.x - 0.5, g.y - 0.5, g.w + 1, g.h + 1);  // the gasket
+    for (let k = 1; k < 4; k++) {  // the struts
+      const sx = n(g.x + g.w * k / 4);
+      roomPart(ctx, roomRound(sx - 2, g.y - 1, 4, g.h + 2, 0.8), '#2a4560', { top: 0, side: 1.2 }); roomDot(ctx, sx, g.y + 2, 0.7, '#56708c'); roomDot(ctx, sx, g.y + g.h - 2, 0.7, '#56708c');
+    }
+  });
+  const lx = n(X(0.222));  // the master's certificate, on the wall: a seal and lines, no word (it would be wider than the frame at 12px)
+  roomOnWall(ctx, lx + 17, F - 61, () => {
+    roomPart(ctx, roomRound(lx, F - 74, 34, 26, 1.5), '#3a2c20', { top: 1, side: 1.5 }); roomPart(ctx, roomRound(lx + 3, F - 71, 28, 20, 0.5), '#a39b84', { top: 0 });
+    for (const dy of [5, 9, 13]) roomFlat(ctx, lx + 7, F - 71 + dy, dy === 5 ? 20 : 14, 1.2, '#6e6656');
+    roomDot(ctx, lx + 25, F - 56, 2.6, '#8e3a32'); for (const sx of [lx + 2, lx + 32]) roomDot(ctx, sx, F - 72, 0.6, '#56708c');
+  });
   // the overhead panel: a row of toggle switches, its lights at the end (the drive's, the thrust light in the burn, the flip's), a grab rail under it
   const o0 = n(X(0.23)), o1 = n(X(0.45)), T = r.top;
   roomPart(ctx, roomRound(o0, T + 3, o1 - o0, 10, 2), '#1d3550', { top: 0, under: 1.5 });
@@ -678,23 +729,15 @@ function roomBridge(ctx, r, s, X, W) {
   for (const x of [o0 + 3, o1 - 3]) roomDot(ctx, x, T + 8, 0.7, '#56708c');
   for (let k = 0; k < 4; k++) roomFlat(ctx, o0 + 14 + k * (o1 - o0 - 30) / 3, T + 13, 1.5, 4, '#2a3e54');
   roomPart(ctx, roomRound(o0 + 10, T + 16.5, o1 - o0 - 20, 2, 1), '#3a5470', { top: 0.6 });
-  for (const gx of [n(X(0.48) - 10), n(X(0.52) + 7)]) {  // grab bars either side of the ladder's opening, for coming up it in zero g, clear of the shaft's bulkheads (#1024)
-    roomFlat(ctx, gx - 1, F - 62, 5, 1.5, '#2a3e54'); roomFlat(ctx, gx - 1, F - 16.5, 5, 1.5, '#2a3e54');
-    roomPart(ctx, roomRound(gx, F - 64, 3, 50, 1.5), '#3a5470', { top: 0.6, side: 1 });
-  }
-  const lx = n(X(0.222));  // the master's certificate: a seal and lines, no word (it would be wider than the frame at 12px)
-  roomPart(ctx, roomRound(lx, F - 74, 34, 26, 1.5), '#3a2c20', { top: 1, side: 1.5 }); roomPart(ctx, roomRound(lx + 3, F - 71, 28, 20, 0.5), '#a39b84', { top: 0 });
-  for (const dy of [5, 9, 13]) roomFlat(ctx, lx + 7, F - 71 + dy, dy === 5 ? 20 : 14, 1.2, '#6e6656');
-  roomDot(ctx, lx + 25, F - 56, 2.6, '#8e3a32'); for (const sx of [lx + 2, lx + 32]) roomDot(ctx, sx, F - 72, 0.6, '#56708c');
-  SEATS.bridge.forEach((f, i) => {  // the consoles, each in front of its post
+  SEATS.bridge.forEach((f, i) => {  // the consoles, each in front of its post, solid: the body and its sloped top (#1024)
     const x = n(X(f)), x1 = x + 70, slope = u => F - 36 - 6 * (u - x - 17) / 53;
-    roomPart(ctx, `M ${x + 24} ${F - 33} L ${x1 - 2} ${F - 33} L ${x1 - 2} ${F - 1} L ${x + 30} ${F - 1} L ${x + 30} ${F - 9} L ${x + 24} ${F - 12} Z`, '#1f3a56', { top: 0, side: 3 });
+    roomPart(ctx, `M ${x + 24} ${F - 33} L ${x1 - 2} ${F - 33} L ${x1 - 2} ${F - 1} L ${x + 30} ${F - 1} L ${x + 30} ${F - 9} L ${x + 24} ${F - 12} Z`, '#1f3a56', { top: 0, side: 3, solid: 0.45 });
     roomPart(ctx, roomRound(x + 35, F - 29, 24, 19, 1.2), '#22405c', { top: 0.8, side: 1.2 });  // its access panel, screwed shut, and a vent
     for (const [sx, sy] of [[x + 37, F - 27], [x + 57, F - 27], [x + 37, F - 12], [x + 57, F - 12]]) roomDot(ctx, sx, sy, 0.6, '#56708c');
     for (let k = 0; k < 4; k++) roomFlat(ctx, x + 40 + k * 4, F - 6, 2.5, 1, '#0f1d2c');
     for (let k = 0; k < 3; k++) { roomFlat(ctx, x + 27, F - 29 + k * 5, 3, 1.2, '#2a3e54'); roomFlat(ctx, x + 28, F - 30.5 + k * 5, 1, 2, '#8796a5'); }  // the switches
     roomPart(ctx, roomRound(x + 21, F - 30, 2, 13, 1), '#3a5470', { top: 0.5 });  // a grab handle
-    roomPart(ctx, `M ${x + 17} ${F - 33} L ${x + 17} ${F - 36} L ${x1} ${F - 42} L ${x1} ${F - 33} Z`, '#2c4c6e', { top: 0, under: 1 });
+    roomPart(ctx, `M ${x + 17} ${F - 33} L ${x + 17} ${F - 36} L ${x1} ${F - 42} L ${x1} ${F - 33} Z`, '#2c4c6e', { top: 0, under: 1, solid: 0.5, slope: [F - 36, F - 42] });
     ctx.strokeStyle = figShade('#2c4c6e', 1.5); ctx.lineWidth = 1; roomSeg(ctx, [[x + 17.5, F - 35.5], [x1 - 0.5, F - 41.5]]);  // its lit edge
     for (let k = 0; k < 5; k++) { const kx = x + 34 + k * 6; roomFlat(ctx, kx, slope(kx) + 1.6, 3, 1.2, (Math.floor(time * 2 + k * 2.3 + i) % 4) ? '#2f5577' : '#c8903a'); }  // the keys
     roomScreen(ctx, x + 36, F - 56, 26, 11, i % 2 ? 'status' : 'plot', time);
@@ -975,14 +1018,30 @@ function roomMedbay(ctx, r, s, X, W) {
 }
 
 // The lamp: a pool of light mixing red (burn), warm (cruise) and a pulsing amber (flip), dimmed at night unless the room keeps its lights.
-function drawPhaseLight(ctx, r, w, time, night, keepsLights) {
+// A ceiling lamp's fitting (#1024, look.md rule 5): its base plate on the ceiling's sliver from the cut back to the wall (e, the bay's eye), the
+// housing hung from it at the cut, the lens lit in the lamp's colour (lit) and a wire guard over the lens.
+function roomLampFitting(ctx, x, top, lit, e) {
+  const a = roomInto(e, x - 9, top), b = roomInto(e, x + 9, top);
+  ctx.beginPath(); ctx.moveTo(x - 12, top); ctx.lineTo(x + 12, top); ctx.lineTo(b[0], b[1]); ctx.lineTo(a[0], a[1]); ctx.closePath(); ctx.fillStyle = '#22364c'; ctx.fill();
+  roomPart(ctx, roomRound(x - 12, top, 24, 3, 1), '#3a4a5a', { top: 0, under: 1 });
+  roomFlat(ctx, x - 10, top + 3, 20, 2.5, lit);
+  ctx.strokeStyle = '#6a7a8a'; ctx.lineWidth = 0.6; ctx.strokeRect(x - 10.5, top + 3, 21, 3.4);
+  ctx.beginPath(); for (const gx of [x - 5, x, x + 5]) { ctx.moveTo(gx, top + 3); ctx.lineTo(gx, top + 6.4); } ctx.stroke();
+  for (const sx of [x - 10, x + 10]) roomDot(ctx, sx, top + 1.5, 0.6, '#56708c');
+}
+// fitted: the bays of a room whose lamps are drawn as fittings (roomLampFitting) rather than plain strips; at: where its lamps are (roomLamps).
+// Where a room's ceiling lamps are, in world x: a third and two thirds of the way across a wide room, its middle in a narrow one; the bridge's
+// aft lamp over the aft post, clear of the overhead panel and the COMMS label (#1024).
+const roomLamps = (id, r) => { const W = r.x1 - r.x0; return (id === 'bridge' && W > 380 ? [0.11, 2 / 3] : W > 380 ? [1 / 3, 2 / 3] : [1 / 2]).map(f => r.x0 + W * f); };
+function drawPhaseLight(ctx, r, w, time, night, keepsLights, fitted = null, at = roomLamps('', r)) {
   const lamp = roomMix([[255, 90, 70], [255, 226, 184], [255, 176, 48]], [w.burn, w.cruise, w.flip]);
-  const pulse = 1 - w.flip * 0.35 * (0.5 + 0.5 * Math.sin(time * 6)), dim = keepsLights ? 1 : 1 - 0.7 * night, W = r.x1 - r.x0, n = W > 380 ? 2 : 1;
+  const pulse = 1 - w.flip * 0.35 * (0.5 + 0.5 * Math.sin(time * 6)), dim = keepsLights ? 1 : 1 - 0.7 * night, W = r.x1 - r.x0;
   ctx.save(); ctx.beginPath(); ctx.rect(r.x0, r.top, W, r.floor - r.top); ctx.clip();
-  for (let k = 0; k < n; k++) {
-    const x = r.x0 + W * (k + 1) / (n + 1), g = ctx.createRadialGradient(x, r.top, 2, x, r.top, 160);
+  for (const x of at) {
+    const g = ctx.createRadialGradient(x, r.top, 2, x, r.top, 160);
     g.addColorStop(0, `rgba(${lamp},${0.2 * pulse * dim})`); g.addColorStop(1, `rgba(${lamp},0)`); ctx.fillStyle = g; ctx.fillRect(x - 160, r.top, 320, r.floor - r.top);
-    roomBox(ctx, x - 12, r.top, 24, 3, `rgba(${lamp},${0.4 + 0.6 * dim})`);
+    const lit = `rgba(${lamp},${0.4 + 0.6 * dim})`, bay = fitted && fitted.find(q => x >= q.x0 && x <= q.x1);
+    if (bay) roomLampFitting(ctx, x, r.top, lit, roomEye(bay)); else roomBox(ctx, x - 12, r.top, 24, 3, lit);
     if (w.flip > 0.05) roomDot(ctx, x, r.top + 3, 3, `rgba(255,176,48,${0.4 + 0.6 * w.flip * (0.5 + 0.5 * Math.sin(time * 6))})`);
   }
   roomBox(ctx, r.x0, r.top, W, r.floor - r.top, `rgba(${lamp},${(0.05 + w.burn * 0.05) * dim})`); ctx.restore();
@@ -1025,6 +1084,7 @@ const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, 
 // Which way someone on a room's chair faces (#985): the bridge's and the guns' toward their consoles, the chair's back behind them (#933), the
 // medbay's stool toward the cot. The galley's bench is not here: at the mess table people face you.
 const SEAT_FACE = { bridge: 1, gunnery: -1, medbay: -1 };
+const LAMP_FITTED = ['bridge', 'berths'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
 function drawRoom(ctx, id, r, s) {
   if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses
   const W = r.x1 - r.x0;
@@ -1038,5 +1098,5 @@ function drawRoom(ctx, id, r, s) {
   });
   const marked = !!(s.damage && s.damage.marks.has(id));
   if (marked) drawDamage(ctx, r, s);
-  if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine');  // severe damage: the lamp flickers
+  if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine', LAMP_FITTED.includes(id) ? roomBays(r, s.well) : null, roomLamps(id, r));  // severe damage: the lamp flickers
 }

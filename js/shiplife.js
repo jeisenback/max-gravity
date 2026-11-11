@@ -124,12 +124,26 @@ function figureMood(st, id, youHurt) {
   const m = ((st.people || {})[id] || {}).mood;
   return m && m.until > st.day ? { low: 'low', high: 'good' }[m.kind] : undefined;
 }
+// The watch a scene hands out (#951): a record for one night of the burn, t.watch = { night, stands, post, relieved, relievedAt }, written by
+// standWatch (the scenes' effect, storylets.js). `day` is the ship's day now (shipDay(t.elapsed).day); its night is its handover and night, so a
+// record made in the wake, when that night is over, is for the next one.
+function standWatch(t, day, stands, post, relieved, relievedAt) {
+  t.watch = { night: shipDay(t.elapsed).block === 'wake' ? day + 1 : day, stands, post, relieved, relievedAt };
+}
+// The record that holds now: tonight's, in the day or the night of its ship's day. Once its night is over (the wake of its day, or a later day)
+// it is dropped.
+function watchTonight(t) {
+  const w = t && t.watch, now = t && shipDay(t.elapsed);
+  if (!w) return null;
+  if (now.day > w.night || (now.day === w.night && now.block === 'wake')) { delete t.watch; return null; }
+  return now.day === w.night ? w : null;
+}
 // `who` is what the game decides elsewhere: { aid } the first-aid giver's id (roleHolder('medic')) and { you } whether you are hurt (handHurt).
 function shipState(st, t, maxArmor, rnd, who) {
   const crew = st.crew.map(id => (st.people || {})[id]).filter(Boolean), hurt = crew.filter(c => (st.injured || {})[c.id]).map(c => c.id);
   const low = crew.filter(c => !hurt.includes(c.id) && c.mood && c.mood.kind === 'low' && c.mood.until > st.day).map(c => c.id);  // as moodLow
   const d = maxArmor > 0 ? 1 - st.armor / maxArmor : 0;
-  return { marks: marksFor(t, d, rnd), severe: d > 2 / 3, hurt, low, you: !!who.you, aid: who.aid || null };
+  return { marks: marksFor(t, d, rnd), severe: d > 2 / 3, hurt, low, you: !!who.you, aid: who.aid || null, watch: watchTonight(t) };
 }
 
 // With the ship's state (shipState, and `repairs`: who works at which mark), ahead of the timetable: the hurt in a medbay bed, you hurt there at night,
@@ -141,6 +155,11 @@ function routineSpot(p, block, state) {
   if (state) {
     if (id && state.hurt.includes(id)) return { room: 'medbay', at: 'bed' };
     if (role === 'you' && state.you && (block === 'night' || block === 'handover')) return { room: 'medbay', at: 'bed' };
+    const w = state.watch;
+    if (w && (block === 'handover' || block === 'night')) {  // the watch a scene handed out (#951)
+      if (id === w.stands) return { room: w.post, at: 'post' };
+      if (id && id === w.relieved) return w.relievedAt === 'bunk' ? { room: 'berths', at: 'bunk' } : { room: w.relievedAt, at: w.relievedAt === 'galley' ? 'table' : 'post' };
+    }
     if (block === 'shift' && id && id === state.aid && state.hurt.length) return { room: 'medbay', at: 'aid' };
     if (block === 'shift' && id && state.repairs && state.repairs[id]) return { room: state.repairs[id], at: 'repair' };
     if (block === 'wake' && state.morning !== undefined && p.washed !== state.morning && washesToday(p, state.morning)) return { room: 'head', at: 'head' };
@@ -184,7 +203,8 @@ function headTurn(p, people, morning) {
   Object.assign(p, { queue: 'door', doorAt: k, ticket: Math.max(0, ...door.map(o => o.ticket)) + 1, tx: headDoorX(k) });
 }
 const nightHaunts = role => NIGHT_WATCH.includes(role) ? HAUNTS[role] : role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 };
-const isAsleep = p => !p.staged && p.at !== 'alone' && isDark() && p.room === 'berths' && p.tx === null && p.dk === roomAt('berths').deck && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role) && phase() !== 'couch';  // asleep through the straps and the float too: strapped into the bunk (#927)
+const relievedTonight = p => { const w = G.transit && watchTonight(G.transit); return !!w && !!p.id && w.relieved === p.id; };  // a night watch a scene sent to bed (#951)
+const isAsleep = p => !p.staged && p.at !== 'alone' && isDark() && p.room === 'berths' && p.tx === null && p.dk === roomAt('berths').deck && p.role !== 'cat' && (!NIGHT_WATCH.includes(p.role) || relievedTonight(p)) && phase() !== 'couch';  // asleep through the straps and the float too: strapped into the bunk (#927)
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {
@@ -354,6 +374,23 @@ function lifeState() {
   return { injured: st.crew.filter(id => (st.injured || {})[id]).length, handHurt: handHurt(), lostDay: lost.length ? Math.max(...lost) : null, day: st.day, iceEdge: h && h.run && h.run.ice ? h.run.ice.edge : 0 };
 }
 
+// Chatter by place (#987): a list of chatter is plain (said anywhere) or grouped by room, { any: [...], <room>: [...] }, as LIFE_LINES are. The
+// lines a speaker may say in `room` (a ROOMS id), none with `room` null (asleep, or strapped in), and all of them with `room` undefined (no
+// burn, so no cutaway to contradict: a preview, or a test).
+function chatterAt(lines, room) {
+  if (!lines || room === null) return [];
+  if (Array.isArray(lines)) return lines;
+  return room === undefined ? Object.values(lines).flat() : [...(lines.any || []), ...(lines[room] || [])];
+}
+// Where the cutaway shows the person with this id (the captain by 'captain'), for their chatter: undefined when the cutaway does not hold them
+// (no burn, its people not built yet, or not among them), so there is nothing to contradict; null outside the move phase (the couches and
+// the flip) or asleep.
+function chatterRoom(id) {
+  const t = G.transit, p = t && (t.aboard || []).find(q => (id === 'captain' ? q.role === 'captain' : q.id === id));
+  if (!p) return undefined;
+  return phase() !== 'move' || isAsleep(p) ? null : p.room;
+}
+
 // The pools are read through the editor's words (lines:ship-life, lines:ship-lights; js/linetables.js).
 function lifeLine(p, crowd, rnd = Math.random) {  // rnd: ship life's dice in a burn (lifeTick)
   const room = linedText('lines:ship-life', LIFE_LINES)[p.room] || LIFE_ANY, pool = (p.first && p.queue === 'inside' && room.first) || room[p.role] || room.any;  // a room with no lines of its own: the generic ones; the first in the head that morning, its own (#973)
@@ -464,6 +501,11 @@ function routineGo(p, block, people, dark, rnd, state) {
   const holds = q => (s => s.at === 'post' && s.room === spot.room)(routineSpot(q, 'shift'));  // a post's places are numbered by who holds it in a shift, the same in every block
   const seated = state && { ...state, morning: undefined };  // a seat at the table is kept for anyone in the head first (#973)
   const r = roomAt(spot.room), mates = spot.at === 'table' || spot.at === 'bed' ? people.filter(q => routineSpot(q, block, seated).at === spot.at) : spot.at === 'post' ? people.filter(holds) : [];  // who shares the table or the post
+  const w = state && state.watch;
+  if (spot.at === 'post' && w && p.id === w.stands && !mates.includes(p)) {  // the watch a scene handed out (#951): the relieved one's place, else the next
+    const k = mates.findIndex(q => q.id === w.relieved);
+    if (k >= 0) mates[k] = p; else mates.push(p);
+  }
   const tx = spot.at === 'head' ? headDoorX(0) : routineTarget(p, spot, r, spot.at === 'post' ? postSeat(spot.room, mates.map(q => q.role), mates.indexOf(p)) : mates.indexOf(p), mates.length, rnd), placed = ['table', 'post', 'bed', 'stove'].includes(spot.at);  // a seat, a cot or the stove is its own place
   Object.assign(p, { room: spot.room, tdk: r.deck });
   p.tx = placed ? tx : clearOf(p, tx, people);
@@ -596,7 +638,7 @@ function lifeTick(dt) {
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
   const block = shipDay(G.transit.elapsed).block, state = shipState(G.state, G.transit, ship().armor, lifeRnd, { aid: (roleHolder('medic') || {}).id, you: handHurt() });
   state.repairs = repairsFor(people, state); state.morning = G.state.day + shipDay(G.transit.elapsed).day;
-  const key = JSON.stringify([state.marks, state.hurt, state.low, state.you, state.aid, state.repairs]);
+  const key = JSON.stringify([state.marks, state.hurt, state.low, state.you, state.aid, state.repairs, state.watch]);
   if (key !== G.transit.stateKey) {  // the ship's state changed: whoever's place moved with it goes there
     G.transit.stateKey = key;
     for (const p of people) {
@@ -804,7 +846,10 @@ function drawCutaway(box, clear = box) {
   const lx = X(LADDER), ww = lay.well.w * W / 2, last = lay.decks.length - 1;
   for (let i = 0; i <= last; i++) {
     const d = deck(i);
-    if (seen(d.top, d.floor + HULL.plate)) cutShaft(ctx, lx - ww, lx + ww, d.top, d.floor);  // the shaft on every deck, between its rooms or its bays, and a hatch through each wall into it (#1024)
+    if (seen(d.top, d.floor + HULL.plate)) {
+      cutShaft(ctx, lx - ww, lx + ww, d.top, d.floor);  // the shaft on every deck, between its rooms or its bays, and a hatch through each wall into it (#1024)
+      if (i === roomAt('bridge').deck) roomHatchBars(ctx, lx - ww, lx + ww, d.floor);  // the bridge's grab bars on its bulkheads, beside the ladder's opening
+    }
     if (i < last) { ctx.fillStyle = '#060d16'; ctx.fillRect(lx - 14, d.floor, 28, HULL.plate); }  // the opening in the floor plate
   }
   ctx.strokeStyle = '#4a6a8a'; ctx.lineWidth = 2;

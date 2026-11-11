@@ -69,7 +69,7 @@ const fillLine = (t, vars) => t.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? var
 const holidayKey = h => h.name.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');  // the key of a holiday's lines: its name ('landing-day')
 const holidayName = h => familyLines('names').holidays[holidayKey(h)];  // the holiday's title
 const holidayLines = () => Object.fromEntries(HOLIDAYS.map(h => [holidayKey(h), { text: h.text, join: h.join }]));
-const traitChatter = trait => [].concat(linedText('lines:trait-chatter', TRAITS[trait].chatter, trait));
+const traitChatter = trait => linedText('lines:trait-chatter', TRAITS[trait].chatter, trait);  // a plain list, or grouped by room (#987, shiplife.js chatterAt)
 
 // The tables as registry scenes, for the override layer and the editor: no title and no choices, only the lines (the shape the beats take, hiredscenes.js).
 function lineTableRegistry() {
