@@ -188,8 +188,9 @@ const washesToday = (p, morning) => !HEAD_SKIPS.includes(p.role) && morningShare
 // nobody has waited longer (`p.ticket`); someone in it is done when their wait runs out. `first`: the first in this morning (the hot water).
 const HEAD_WAIT = 2, HEAD_STAGGER = 4.5;
 const headDoorX = k => { const r = roomAt('head'); return r.x0 + r.w * (0.1 + 0.06 * k); };
-// Whether someone is in the head, at its middle (headTurn's inside, arrived): the head's door lamp lights for them (rooms.js roomHead).
-const headTaken = people => people.some(p => p.room === 'head' && p.queue === 'inside' && p.tx === null);
+// Whether someone is in the head, at its middle (headTurn's inside, arrived there, not staged in a scene): the head's door lamp lights for them
+// (rooms.js roomHead). Arrived means at the middle, not only without a target: the strap-in at the flip clears targets where people stand.
+const headTaken = people => people.some(p => p.room === 'head' && p.at === 'head' && !p.staged && p.queue === 'inside' && p.tx === null && Math.abs(p.x - roomAt('head').mid) < 0.002 * CUT_K);
 function headTurn(p, people, morning) {
   const here = people.filter(o => o !== p && o.room === 'head' && o.at === 'head'), door = here.filter(o => o.queue === 'door'), taken = here.some(o => o.queue === 'inside');
   const goIn = () => Object.assign(p, { queue: 'inside', tx: roomAt('head').mid, first: !people.some(o => o !== p && o.washed === morning) });

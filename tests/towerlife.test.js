@@ -177,5 +177,7 @@ test('the head is taken while someone is in at its middle, not on the way in nor
   assert.equal(headTaken([mk({ queue: 'inside', room: 'galley' })]), false, 'only in the head');
   const people = [0, 1].map(i => mk({ id: `g${i}`, x: r.x0 + 0.05, queue: undefined }));
   headTurn(people[0], people, 3); assert.equal(headTaken(people), false, 'gone in, not there yet');
-  people[0].tx = null; assert.equal(headTaken(people), true, 'there');
+  people[0].tx = null; assert.equal(headTaken(people), false, 'strapped in at the door with no target (the flip): not in');
+  people[0].x = r.mid; assert.equal(headTaken(people), true, 'there');
+  assert.equal(headTaken([mk({ queue: 'inside', staged: 'head', at: undefined })]), false, 'staged in a scene: not the queue\'s');
 });
