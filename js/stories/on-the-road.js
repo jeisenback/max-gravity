@@ -203,11 +203,11 @@ Mods.register({
     road({
       id: 'road-night-watch', when: { night: true, onWatch: false, watchStood: 'bridge' },
       title: 'The Middle Watch',
-      text: 'It\'s the third hour of the night, and the bridge is lit by the board alone. {watch:bridge} has the helm with one boot up on the rail and is talking to the nav screen in a low voice, as {watch:bridge} does. The drift numbers haven\'t changed in forty minutes. "Come in," {watch:bridge} says, without turning. "Don\'t touch the cup on the left. It\'s been there since the flip, and it\'s mine."',
+      text: 'It\'s the third hour of the night, and the bridge is lit by the board alone. {watch:bridge} has the watch chair turned side-on to the board, one foot up on the rail, and is reading the drift numbers off it under their breath. They haven\'t changed in forty minutes. "Come in," {watch:bridge} says, without turning. "Don\'t touch the cup on the left. It\'s been there since the flip, and it\'s mine."',
       choices: [
-        { label: 'Sit the rest of the watch', effects: { learn: 1 }, result: 'You take the second seat. {watch:bridge} tells you which star the board is flying on, and something about the plume\'s color that you can\'t check. Near the end of the hour the numbers move one digit, and {watch:bridge} writes it on the back of a hand.' },
+        { label: 'Sit the rest of the watch', effects: { learn: 1 }, result: 'You take the second seat. {watch:bridge} shows you the watch log: the time, the drift and the plume temperature, every quarter hour, in the same hand back to the flip. Near the end of the hour the numbers move one digit, and {watch:bridge} writes it in.' },
         { label: 'Take the cup down and wash it', result: 'It takes you twenty minutes to find where it lives. When you come back, {watch:bridge} has moved the other cup to the left.' },
-        { label: 'Leave them to it', result: 'The hatch hisses behind you. The talking starts again before it\'s closed.' },
+        { label: 'Leave them to it', result: 'The hatch hisses behind you. {watch:bridge} is reading the numbers again before it\'s closed.' },
       ],
     }, 0.35, 90);
 
