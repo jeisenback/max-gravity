@@ -257,12 +257,20 @@ function billLine(bill, names) {
   return bill.engine ? say('tonight.engine', { engine: n(bill.engine) }) : '';
 }
 const billNames = people => Object.fromEntries(people.filter(p => p.id).map(p => [p.id, p.role === 'you' ? 'you' : p.name]));
+// How many of the next three nights a burn at `elapsed` lasts into, arriving at `arrive` (both in burn seconds): a night counts when its handover
+// begins before arrival (#1053). Pure.
+function nightsAhead(elapsed, arrive) {
+  const day = shipDay(elapsed).day, at = SHIP_TIMETABLE.find(b => b.block === 'handover').from;
+  let k = 0;
+  while (k < 3 && (day + k + 1 + at) * SHIP_DAY - 6 < arrive) k++;
+  return k;
+}
 // The bill on a night of this burn, `ahead` nights after tonight, with a scene's record in (the card, the handover line). Null with no burn.
 function billOn(ahead = 0) {
   const t = G.transit, s = nightState();
   if (!t || !s) return null;
   const night = G.state.day + shipDay(t.elapsed).day + ahead;
-  return billWithWatch(billFor(G.state, ahead ? { ...s, watch: null } : s, night), ableWatch(t.watch, s), shipDay(t.elapsed).day + ahead);  // later nights: tonight's hurt, as a forecast
+  return billWithWatch(billFor(G.state, ahead ? { ...s, watch: null } : s, night), ableWatch(t.watch, s), shipDay(t.elapsed).day + ahead);  // later nights: tonight's hurt, which holds to port (the day moves at arrival, a clinic heals the crew)
 }
 // Where the hand keeps a watch tonight, by the bill or a scene's record (#951), with the lights down: a room, or null.
 function handWatchPost() {

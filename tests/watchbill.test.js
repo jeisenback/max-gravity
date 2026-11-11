@@ -10,8 +10,8 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { watchBill, routineSpot, WATCH_ORDER } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
-  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['watchBill', 'routineSpot', 'WATCH_ORDER']);
+const { watchBill, routineSpot, WATCH_ORDER, nightsAhead, SHIP_DAY } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
+  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['watchBill', 'routineSpot', 'WATCH_ORDER', 'nightsAhead', 'SHIP_DAY']);
 const plain = x => JSON.parse(JSON.stringify(x));
 const crew = (over = {}) => [
   { id: 'you', role: 'you' }, { id: 'p', role: 'pilot' }, { id: 'm', role: 'slicer' }, { id: 'c', role: 'xo' }, { id: 't', role: 'engineer' }, { id: 'h', role: 'icehand' },
@@ -126,7 +126,7 @@ test('the Watch bill card shows tonight and the next three nights on a burn, the
   const { ev, done } = await open();
   await ev(burnHelpers);
   const r = await ev(() => {
-    onBurnAtNight(2); const html = watchBillCard(), div = document.createElement('div'); div.innerHTML = html;
+    onBurnAtNight(2).left = 10 * SHIP_DAY * burnSpeed(); const html = watchBillCard(), div = document.createElement('div'); div.innerHTML = html;
     const rows = [...div.querySelectorAll('.watch-night')].map(x => x.textContent);
     G.transit = null; G.mode = 'landed';
     return { title: /Watch bill/.test(div.textContent), rows, port: watchBillCard() };
@@ -237,4 +237,26 @@ test('a hurt hand with a scene\'s watch does not keep it: no "You have the watch
   assert.doesNotMatch(r.line, /\byou\b/, r.line);
   assert.doesNotMatch(r.tonight, /yours/, r.tonight);
   assert.equal(r.onWatch, false);
+});
+
+test('the nights after tonight that the burn lasts into: a night counts when its handover begins before arrival, three at most (#1053)', () => {
+  const supper = 0.5 * SHIP_DAY - 6;  // ship day 0, before the handover
+  assert.equal(nightsAhead(supper, supper + 10 * SHIP_DAY), 3);
+  assert.equal(nightsAhead(supper, supper + 0.5 * SHIP_DAY), 0, 'arrives before tomorrow\'s handover');
+  assert.equal(nightsAhead(supper, supper + 1.1 * SHIP_DAY), 1);
+  assert.equal(nightsAhead(supper, supper + 2.1 * SHIP_DAY), 2);
+});
+
+test('the card shows only the nights the burn lasts into (#1053)', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurnAtNight(1), rows = () => { const div = document.createElement('div'); div.innerHTML = watchBillCard(); return div.querySelectorAll('.watch-night').length; };
+    t.left = 1.2 * SHIP_DAY * burnSpeed();  // arrives a little after tomorrow's handover
+    const short = rows(); t.left = 0.2 * SHIP_DAY * burnSpeed();
+    return { short, last: rows() };
+  });
+  await done();
+  assert.equal(r.short, 2, 'tonight and tomorrow');
+  assert.equal(r.last, 1, 'tonight only');
 });
