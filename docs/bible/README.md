@@ -1,6 +1,6 @@
 # The world bible
 
-Status: the world and `voice.md` approved by the owner on 2026-10-31. `people/` holds the characters, each a draft until approved. It replaced `docs/world/`, and `voice.md` replaced the old writing guides (#869).
+Status: the world and `voice.md` approved by the owner on 2026-10-31. `people/` holds the characters, each marked approved on its own page. It replaced `docs/world/`, and `voice.md` replaced the old writing guides (#869).
 
 This is the world the game's writing comes from. It is built from the base up: who owns what and who works first, then the jurisdictions and private arrangements that keep that order, then work, technology and everyday life, and only then the people. Characters and dialogue come after it and answer to it.
 
@@ -48,6 +48,7 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 21. `later-chapters.md`: a draft of chapters 4 to 7 (more hulls, a place, alliances, a threat), where fleets, outposts and the blocs arrive, and what chapter 2 should keep in mind for them.
 22. `progression.md`: how a hand grows over a run: the sheet, the skill lines, the picks, traits, papers and standing, each earned differently and all read by the one check rule; what each chapter adds.
 23. `look.md`: how the burn view looks: a clean frame around a worn, cramped ship, rooms as boxes in perspective, bunks that each belong to someone, warm light in a cold hull (approved 2026-11-11), with its reference frame `look-target.png`.
+24. `owners.md`: the powers, in two layers: the blocs that are the law of each region (the Arcology Pact, the Dome Pact, the Guild Federation) where the code's three powers sat, and the owners inside them (Tycho, Kaur, Van Leeuwen, Ballast) who own, compete and fight the war (draft, 2026-11-11).
 
 ## Where the game must change to fit
 
@@ -58,13 +59,13 @@ The owner decided (2026-11-11) that where the bible and the code disagree, the c
 3. **Cato** is the first officer (`xo`) in the code, deciding the watch and able to overrule the captain. In the bible he is the bosun. Resolved (#879): he is shown as the bosun on Hester's ship and holds the first aid; the code's slot stays `xo`.
 4. **Ice runs, the ice hold and ice hands.** The bible's ship was a fast cargo hull, and bulk ice goes slow. Resolved (2026-11-11, the code wins): Hester's ship is the Ice Hauler, a tower of decks over her water tank (`LAYOUTS.freighter`, `js/layouts.js`), and the ice runs stand; `ship.md` is amended.
 5. **The chapter's goal.** The hand saved to buy a used ship (`HIRED_TARGET`). The bible gives a rating no way to own one outright. Resolved (#882): the goal is a member's share in the Ceres Crew Co-operative's Ore Runner (`ceres-coop.md`), a buy-in set by the members' vote with the rest owed, signed at Ceres; chapter one ends there, and chapter two on a co-op ship is still to come.
-6. **Hester's code entry.** Her bio ("the owner, on paper... the bank owns most of") becomes the hire-purchase charter, and her `greedy` trait goes: her thrift is the charter's cause, not a vice.
-7. **Tomas's hope** to buy his sister's flat is out of reach. It becomes paying off her lease arrears, or a lease on a better tier.
-8. **Lagos Ring** is an orbital spin habitat owned by the Lagos Arcology (the code's ring gravity and call delay stand).
-9. **The three powers** (`FACTIONS`) and the faction economies and wars, to be replaced by major and minor owners.
+6. **Hester's code entry.** Her bio ("the owner, on paper... the bank owns most of") becomes the hire-purchase charter, and her `greedy` trait goes: her thrift is the charter's cause, not a vice. Resolved: the code has the charter in her bio and only `secretive` (`js/captains/hester.js`).
+7. **Tomas's hope** to buy his sister's flat is out of reach. It becomes paying off her lease arrears, or a lease on a better tier. Resolved: the code has the arrears and then a repair-shop lease (`js/cast.js`), as his sheet does.
+8. **Lagos Ring** is an orbital spin habitat owned by the Lagos Arcology (the code's ring gravity and call delay stand). Resolved: the code's Lagos Ring is the ring of `lagos.md`, with its own crew origin (`js/peopletext.js`).
+9. **The three powers** (`FACTIONS`) and the faction economies and wars, to be replaced by major and minor owners. Kept the bible's way, since the owner decided (2026-11-11) that the game needs new powers: `owners.md` has them, and what the game changes to fit.
 
 ## Still to write
 
 - Everyday life: fun and media (the code has vids, books and ring-ball), religion, crime, what the news covers, age and health, marriage and children, accents.
-- What replaces the faction economies and wars in the game (a code project).
+- What replaces the faction economies and wars in the game: drafted in `owners.md`, for review.
 - History before day 1 (the old `docs/world/timeline.md`), the player's start backgrounds (`backgrounds.md`), customs aboard (`customs.md`) and the posts aboard (`trades.md`). Those files were retired in #869; they are in git history, written to the old world, and are a source to check, not to copy.

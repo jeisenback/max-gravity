@@ -25,7 +25,7 @@ Each chapter hands the player more of the world. The first is mostly spine: who 
 | 3 | set by chapter 2's last vote | more again, in the direction the player chose |
 | 4 to 7 | drafted in `later-chapters.md`: more hulls, a place, alliances, a threat | a second hull, an outpost, a bloc, and what they built put to the test |
 
-Chapter 2's last vote (on chapter 2's own page, to come; the co-op itself is `ceres-coop.md`) points chapter 3 one of three ways:
+Chapter 2's last vote (`chapter-2.md`; the co-op itself is `ceres-coop.md`) points chapter 3 one of three ways:
 
 - **Hold:** the co-op survives, at a price. Chapter 3 is the **organiser's**: more members, more hulls, a say across ships, standing up to lenders and owners together.
 - **Charter:** the Ore Runner works for a side in the owners' war. Chapter 3 is the **master's**: a licence and a bridge, on someone else's terms.

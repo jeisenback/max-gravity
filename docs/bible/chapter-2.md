@@ -86,4 +86,4 @@ The sheets are in `people/`: the four masters, met in the war (`saran.md`, `kess
 - The chapter ends in one vote on the lender's offer, with three outcomes: hold, charter or sell.
 - Hester's ship is not part of the chapter.
 - Opinion carries over as it stands: goodwill fades to friend without upkeep, grudges stay until mended.
-- Bexa's and Pax's Ceres homes (the station, the Warren) stand; Yelena's and Ruben's Mars domes (Olympus, Valles) are names from the old world, to be checked against `mars.md`.
+- Bexa's and Pax's Ceres homes (the station, the Warren) stand; Yelena's home is a hub dome and Ruben's an outer dome at the edge (`mars.md` names no domes; their sheets say so).

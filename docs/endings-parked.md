@@ -1,6 +1,6 @@
 # Four endings, parked for the game's close (#132, #449)
 
-These four were written for #132, the game's ending framework, and first shipped as the close of chapter one. They are game endings, not chapter closes: the game goes on after the buy-in (chapter two is the owner's career, chapter three building a company, chapter four outposts). Chapter one now always closes on "Your Own Ship" and the recap (`chapterEnd` and `chapterRecap`, `js/hired.js`), which tell the losses and who came in a line each. These wait, whole, for the end of the last chapter, where each should read the record of the whole game, not the first 90 days; the thresholds below were chosen for chapter one and need choosing again.
+These four were written for #132, the game's ending framework, and first shipped as the close of chapter one. They are game endings, not chapter closes: the game goes on after the buy-in (the later chapters follow, as `docs/bible/shape.md` and `later-chapters.md` lay them out). Chapter one always closes on its own scene, now "A Member's Share" (#882), and the recap (`chapterEnd` and `chapterRecap`, `js/hired.js`), which tell the losses and who came in a line each. These wait, whole, for the end of the last chapter, where each should read the record of the whole game, not the first 90 days; the thresholds below were chosen for chapter one and need choosing again.
 
 The rules, as they were (`CHAPTER_ENDINGS` in `js/hired.js`, the first whose condition held, in this priority: loss, then the crew, then the quiet one):
 

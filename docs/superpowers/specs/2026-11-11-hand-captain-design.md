@@ -1,6 +1,6 @@
 # Chapter Two: the Hand as the Co-op's Captain
 
-Status: draft for the owner's review, 2026-11-11. The owner's choices are recorded below. It amends chapter two's piece 1 (`2026-11-07-chapter-two-start-design.md`, built) and the bible's `chapter-2.md`. No code until the owner approves.
+Status: the owner's choices of 2026-11-11, and the code change that follows the amended `chapter-2.md`. It amends chapter two's piece 1 (`2026-11-07-chapter-two-start-design.md`, built).
 
 ## Why
 
@@ -16,16 +16,14 @@ In chapter two as built, the lender sends three of its four masters, the player 
 
 ### The fiction (bible)
 
-- `chapter-2.md`: the master is no longer a lender's term. The lender accepts a member captain because the hull is registered and insured under the registry's mutual, which costs the co-op in where it may berth. Aboard are six: the five members and Ines, the hired pilot. The refit adds a bunk for the pilot. The rule that the master may refuse an unsafe order goes.
-- The four master sheets (`people/saran.md`, `kessler.md`, `mensah.md`, `belanger.md`): "Where they stand" changes from the master's pool to their place in the war. Their money, family and voice stand. Kessler stays the lender's placement master, now on another of the house's hulls, which the co-op meets.
-- The registry gets a name, and a line in `jurisdictions.md` if it needs one. It is Hester's ship's registry, a small Belt station (`ship.md`), unless the owner names another.
+Done in the documents (2026-11-11): `chapter-2.md` and the people sheets have the hand on the bridge on the endorsement of the registry Hester's ship sails under, six aboard, and the masters in the war. Saran commands a freighter on a Tycho charter, Kessler is on another of the co-op's hulls, Mensah is ashore at Ceres between bridges, and Belanger commands Ballast's convoys. The code follows those pages.
 
 ### The start (`js/hired.js`, `scene:chapter-two-start`)
 
 - `goOn` no longer draws masters (`h.masters`, `masterDraw`). `chapterTwoStartScene` becomes the members at the ramp, the lender's letter (a licensed master, or a registry the house's insurer accepts), and the members' vote that puts the hand on the bridge under the endorsement. It has one choice, and its result names the registry.
 - `pickMaster` becomes `takeBridge(st)`: the ship, the crew and the landing as now, with no captain person. `h.captainKey` and `h.captain` are cleared. `h.papers = ['endorsement']` is the first item of the papers layer (`progression.md`, layer 5). Nothing reads it yet but the hand's page, which names it.
 - `finishedSave` and `masterPicked` read "has the hand taken the bridge" (`h.bridge`) in place of a master's key. A save from piece 1 with a master already picked keeps the master as a person ashore and goes on with the hand on the bridge, migrated once in `migrate()` (`js/menu.js`).
-- `MASTERS`, `MASTER_CAPTAINS` and `masterDraw` stay in `js/captains.js` as the four people's entries, for the war's pieces to meet. `tests/masters.test.js` keeps their shape and drops the draw.
+- `MASTER_CAPTAINS` stays in `js/captains.js` as the four people's entries, each with where chapter two puts them (`at: 'tycho-charter' | 'coop-hull' | 'ceres' | 'ballast-convoy'`), for the war's pieces to meet. `masterDraw` goes. `tests/masters.test.js` keeps their shape and drops the draw.
 
 ### No captain person in chapter two (`js/role.js`)
 
@@ -62,8 +60,6 @@ In chapter two as built, the lender sends three of its four masters, the player 
 
 ## Assumptions to confirm
 
-- The registry is Hester's ship's, a small Belt station's.
 - Six aboard in chapter two: the five members and Ines.
-- Kessler is met on another of the house's hulls; the other three through their sides of the war.
 - Hold is the default range order.
 - A piece 1 save keeps its master as a person ashore, not aboard.

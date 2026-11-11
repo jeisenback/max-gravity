@@ -90,7 +90,7 @@ Each item says which document is right by the order in section 2, and what chang
 
 1. **Hester's ship.** Resolved (2026-11-11, the code wins): she is the Ice Hauler, a tower over her water tank, and the ice runs stand. `ship.md`, the bible README's decision 11 and its conflict 4 are amended.
 2. **Chapter two in code.** The 2026-10-17 spec `chapter-two-design` built an owner's chapter two (`ROLES.owner`, `ownerboard.js`, `chaptertwo.js`, a close at 90 days). The bible's `chapter-2.md` and the 2026-11-07 spec replace it with the co-op. Both paths are in `js/role.js`. The 10-17 spec should say it is superseded. Piece 6 of the co-op chapter replaces `chaptertwo.js`'s close. The co-op chapter is amended in turn (2026-11-11): the hand is the co-op's captain on a registry's endorsement, and the four masters are met in the war. `chapter-2.md` and the people sheets say so; the code change is described in `2026-11-11-hand-captain-design.md`, the last spec, written before the owner chose documents over specs.
-3. **The old three powers.** The bible retires the Arcology Compact, the Dome Concord and the Charter League as powers (`jurisdictions.md`, conflict 9). The built code still reads them: the mission arcs, port inspections (`LICENSED` by power), standing (`st.rep`), ties, and the station owner of Ceres. Nothing says what replaces them. See section 6, item 1.
+3. **The old three powers.** The bible retires the Arcology Compact, the Dome Concord and the Charter League as powers (`jurisdictions.md`, conflict 9), and the owner decided (2026-11-11) that the game needs new ones, so the code does not win here. `owners.md` (draft) has them in two layers: a bloc for each region's law where the code's powers sat, and the owners inside them. The built code still reads the old names: the mission arcs, port inspections (`LICENSED`), standing (`st.rep`), ties and the world's economies and wars.
 4. **Stale framing of the later chapters.** `docs/endings-parked.md` and `ROADMAP.md` line 106 say chapter two is the owner's career, chapter three building a company and chapter four outposts. `shape.md` and `later-chapters.md` say otherwise. The chapter one close they name, "Your Own Ship", is now "A Member's Share" (spec `coop-share`).
 5. **`README.md`** still offers Earth, Mars or Belt starts on New Game (narrow: Earth only). It describes factions, Cold Water and the shipping company as the game. It has an empty "Roadmap" heading. It needs a pass that leads with the narrow build and marks the rest as the full build.
 6. **`COMBAT.md`** describes Hardcore mode, which `ROADMAP.md` marks not planned. Its opening says "the rest isn't yet", which is out of date.
@@ -98,7 +98,7 @@ Each item says which document is right by the order in section 2, and what chang
 8. **Small bible fixes.** (`look.md` rule 1's hull width is fixed to 720.) `shape.md` says chapter two's page is "to come" (it exists). The bible README says the people sheets are drafts (all twelve are marked approved). `chapter-2.md` still names Olympus and Valles domes, which `mars.md` does not have.
 9. **Specs left at "draft"** that are built: `life-and-loss`, `crew-structure`, `coop-share`, `crew-origins`. `prose-and-world` is superseded by the bible (#869) and should say so.
 
-Items 4 to 9 are clerical and can go in one documentation pass. Item 3 needs the owner.
+Items 4 to 9 were fixed on 2026-11-11: the stale lines in `README.md`, `COMBAT.md`, `ROADMAP.md`, `endings-parked.md`, `shape.md` and the bible's README, the Mars domes in `chapter-2.md`, and the specs' status lines. Item 3 waits on the owner's review of `owners.md`.
 
 ## 6. What needs writing down
 
@@ -106,7 +106,7 @@ The rule here is the repo's rule: write what the next work needs, nothing extra.
 
 ### Needed before chapter two goes on
 
-1. **The owners (`docs/bible/owners.md`).** This is conflict 9 and the bible's own "still to write". It covers the major and minor owners that replace the three powers: who they are, what each port belongs to, what each bans and taxes (the table in `trade-and-law.md` by kind of port, filled in by name), and how standing with each is kept. `the-fuel-war.md` names four (Kaur, Tycho, Ballast, Van Leeuwen). `jurisdictions.md` says the large corporate spaces' names wait on a count. It unblocks chapter two pieces 2 and 5, the arcs' and inspections' move off the powers, and standing as a currency (`progression.md` layer 6).
+1. **The powers (`docs/bible/owners.md`), drafted 2026-11-11 for review.** Two layers: the blocs (the Arcology Pact, the Dome Pact, the Guild Federation) as each region's law, and the major owners (Tycho, Kaur, Van Leeuwen, Ballast) inside them. The page lists what the code changes, in order: the names, then the wars, then the owners' standing, then the war. It unblocks chapter two pieces 2 and 5, and standing as a currency (`progression.md` layer 6).
 2. **The hand as captain, built.** The bible has it (`chapter-2.md`); the code still picks a master. It comes before pieces 2 to 6, since each of them reads who holds the bridge.
 3. **Chapter two's pieces in the bible.** No more specs are written (the owner, 2026-11-11): a piece's design goes into the bible's pages, and the code follows them. `chapter-2.md` has the outline. The meeting and the vote (piece 3) is the one new kind of system, and its rule (who votes how, and what moves a member) is stated once, in `chapter-2.md` or a page of its own, so pieces 5 and 6 read it rather than restate it.
 
@@ -125,8 +125,7 @@ These are a save-format page, a standalone storylet schema guide, ship-customiza
 
 1. Read the amended `chapter-2.md` and the masters' sheets, or say what changes.
 2. Approve `progression.md` and `later-chapters.md`, or say what changes. Both are built on, and both are still drafts.
-3. How many major owners there are, so `owners.md` can be written (section 6, item 1).
-4. Whether the clerical fixes in section 5 (items 4 to 9) go in one pass now.
+3. Read `owners.md`: the two layers, the names and the four major owners.
 
 ## Assumptions to confirm
 
