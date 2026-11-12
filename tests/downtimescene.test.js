@@ -406,6 +406,7 @@ test('the tags go once a choice is made: none on the result page (#1086)', async
   await ev(burnHelpers);
   const r = await ev(() => {
     const t = onBurn(); t.left = t.total * 0.6; t.lifeBlock = shipDay(t.elapsed).block;
+    shipPeople()[0].x = 0.4;  // the hand off their couch at the bridge's end post (#990), mid-ship: the camera keeps them in the part the scene leaves clear, the galley too
     const real = window.downtimeFive; window.downtimeFive = () => [ACTIVITIES.meal];
     try {
       openEvent(downtimeScene()); render(); const before = (G.burnBoxes.tags || []).length;
