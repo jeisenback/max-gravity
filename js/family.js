@@ -606,9 +606,10 @@ Mods.register({
   id: 'family', name: 'Found family', builtin: true,
   init(M) {
     ACTIVITIES.sit = {
-      label: 'Sit with someone', can: () => procedural().length > 0 || paxAboard().some(m => m.pid),
+      get label() { const w = sitWith(); return w ? familySay('picker')('with', { first: w.p.first }) : 'Sit with someone'; },  // the downtime scene names one person
+      can: () => procedural().length > 0 || paxAboard().some(m => m.pid),
       on: () => familySay('picker')('on', { first: (sitWith() || { p: { first: '' } }).p.first }), where: () => (sitWith() || {}).id,
-      run() { G.nextEvent = sitPicker(); return null; },  // the picker opens at once
+      run() { const w = sitWith(); G.nextEvent = w ? sitBeat(w.p, !w.pax) : sitPicker(); return null; },  // the sitting opens at once
     };
     M.on('newDay', day => {  // a high opinion fades when you do nothing for them (people.js)
       for (const id of [...G.state.crew, (hired() || {}).captain].filter(Boolean)) {

@@ -68,8 +68,8 @@ test('the downtime a hired hand can add has its lines in the form and plays in t
 test('the downtime menu and the ship\'s own activities have their lines in the form and play in the preview (#508)', async () => {
   await reload(); await select('scene:shiplife');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['part.title', 'part.text.hired', 'part.when.after', 'part.none.result', 'part.meal.result.1', 'part.repair.skilled', 'part.visit.memory']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
-  await page.fill('textarea[data-path="part.title"]', 'Time Off');
+  for (const k of ['part.title', 'part.title.supper', 'part.meal.on', 'part.none.result', 'part.meal.result.1', 'part.repair.skilled', 'part.visit.memory']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  for (const k of ['title', 'title.breakfast', 'title.shift', 'title.meal', 'title.supper']) await page.fill(`textarea[data-path="part.${k}"]`, 'Time Off');  // the scene's title is the time of day's
   await page.fill('textarea[data-path="part.none.label"]', 'Skip it');
   const f = await play();
   const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));

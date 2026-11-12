@@ -9212,8 +9212,8 @@
     "next": null
    }
   ],
-  "title": "Downtime",
-  "text": "A long burn and nowhere to go. What do you do with the time before the flip?",
+  "title": "At Breakfast",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Tomas is off watch and on their own. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. There are still people at the galley table, and somebody's telling one. Captain Vance has a few minutes this shift, and has said so. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
    "Not now"
@@ -9251,8 +9251,8 @@
     "next": null
    }
   ],
-  "title": "Downtime",
-  "text": "A long burn and nowhere to go. What do you do with the rest of the trip?",
+  "title": "At Breakfast",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Tomas is off watch and on their own. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. There are still people at the galley table, and somebody's telling one. Captain Vance has a few minutes this shift, and has said so. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
    "Not now"
@@ -9280,8 +9280,8 @@
     "next": null
    }
   ],
-  "title": "Downtime",
-  "text": "A long burn and nowhere to go. What does the ship do with the time before the flip?",
+  "title": "At Breakfast",
+  "text": "There's a pot on in the galley, and somebody has laid the table. The captain wants a drill run this shift, with the alarms. The patch kit is out in the engine room, and there are panels still to do. The passengers are in the berths with nothing to do. Tiko is off watch and on their own. The cards are out on the galley table. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
    "Not now"
@@ -9309,11 +9309,107 @@
     "next": null
    }
   ],
-  "title": "Downtime",
-  "text": "A long burn and nowhere to go. What does the ship do with the rest of the trip?",
+  "title": "At Breakfast",
+  "text": "There's a pot on in the galley, and somebody has laid the table. The captain wants a drill run this shift, with the alarms. The patch kit is out in the engine room, and there are panels still to do. The passengers are in the berths with nothing to do. Tiko is off watch and on their own. The cards are out on the galley table. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
    "Not now"
+  ]
+ },
+ {
+  "id": "downtime:scene:breakfast",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Everyone goes back to their own business.",
+    "next": null
+   }
+  ],
+  "title": "At Breakfast",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Tomas is off watch and on their own. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. There are still people at the galley table, and somebody's telling one. Captain Vance has a few minutes this shift, and has said so. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "labels": [
+   "Not now"
+  ]
+ },
+ {
+  "id": "downtime:scene:shift",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Everyone goes back to their own business.",
+    "next": null
+   }
+  ],
+  "title": "On Shift",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Tomas is off watch and on their own. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. There are still people at the galley table, and somebody's telling one. Captain Vance has a few minutes this shift, and has said so. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "labels": [
+   "Not now"
+  ]
+ },
+ {
+  "id": "downtime:scene:meal",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Everyone goes back to their own business.",
+    "next": null
+   }
+  ],
+  "title": "At the Meal",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Tomas is off watch and on their own. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. There are still people at the galley table, and somebody's telling one. Captain Vance has a few minutes this shift, and has said so. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "labels": [
+   "Not now"
+  ]
+ },
+ {
+  "id": "downtime:scene:supper",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Everyone goes back to their own business.",
+    "next": null
+   }
+  ],
+  "title": "After Supper",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Tomas is off watch and on their own. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. There are still people at the galley table, and somebody's telling one. Captain Vance has a few minutes this shift, and has said so. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "labels": [
+   "Not now"
+  ]
+ },
+ {
+  "id": "downtime:scene:handover",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Everyone goes back to their own business.",
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Tomas is off watch and on their own. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. There are still people at the galley table, and somebody's telling one. Captain Vance has a few minutes this shift, and has said so. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "labels": [
+   "Not now"
+  ]
+ },
+ {
+  "id": "downtime:on",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Captain Vance has a few minutes this shift, and has said so. | Mate1 has the pilot post this shift and doesn't mind company. | Mate3 has been asking how the gunner post works. | There are still people at the galley table, and somebody's telling one. | Ines has the sim warmed up and the left seat empty. | Tomas is going down the coolant loop again. | Yelena has the range sim up and a coffee going. | Ruben has a stack of intercepts to sort and a spare thermos. | Bexa is in the hold with the tether winch. | Pax is setting up the range sim and checking the trigger cable. |  has something to show you, if you've got the time.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
   ]
  },
  {

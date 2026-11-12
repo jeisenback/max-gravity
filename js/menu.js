@@ -150,7 +150,7 @@ const Menu = {
 
   showTitle() {
     G.mode = 'title';
-    for (const id of ['menuBtn', 'tlife']) { const el = document.getElementById(id); if (el) el.hidden = true; }
+    for (const id of ['menuBtn']) { const el = document.getElementById(id); if (el) el.hidden = true; }
     G.paused = false;
     this.pausedFrom = null;
     this.view = 'main';

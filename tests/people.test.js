@@ -53,7 +53,7 @@ test('hiring crew, their perks, and every crew and passenger scene', async () =>
   await done();
 });
 
-test('downtime from the transit screen', async () => {
+test('downtime comes to the transit screen as a scene', async () => {
   const { page, ev, done } = await open({});
   await ev(() => {
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter';
@@ -64,16 +64,16 @@ test('downtime from the transit screen', async () => {
   });
   await page.waitForFunction(() => G.mode === 'transit');
   await ev(() => { G.transit.times = []; G.transit.left = G.transit.total * 0.9; });  // off the couches, which take six ship hours (#992)
-  await page.waitForSelector('#tlife button:not([disabled])', { timeout: 10000 });
-  await page.click('#tlife button');
+  await page.waitForFunction(() => G.dialog && G.dialog.event.downtime, null, { timeout: 30000 });  // downtime comes as a scene at a change of the ship's day (shiplife.js)
   const labels = await page.$$eval('[data-action=choose]', b => b.map(x => x.textContent));
-  assert.ok(labels.length >= 3, `downtime menu (${labels})`);
-  await page.click('[data-action=choose][data-arg="0"]');
+  assert.ok(labels.length >= 3, `downtime scene (${labels})`);
+  const pick = labels.findIndex(l => !/^Sit with /.test(l));  // one that ends in a result, not a sitting
+  await page.click(`[data-action=choose][data-arg="${pick}"]`);
   await page.click('[data-action=continue]');
   assert.ok(await ev(() => G.transit.lifeUsed), 'downtime used up for this leg');
   await ev(() => { G.transit.left = 0.05; });
   await page.waitForFunction(() => G.mode === 'flight' || G.dialog, null, { timeout: 5000 });
-  assert.ok(await ev(() => document.getElementById('tlife').hidden), 'buttons go away on arrival');
+  assert.ok(await ev(() => !(G.dialog && G.dialog.event.downtime)), 'no downtime on arrival');
   await done();
 });
 

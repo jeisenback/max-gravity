@@ -82,7 +82,7 @@ test('the activity teaches the move and a few points at the post, and a burn wit
     for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = 3;
     hired().picks = ['vent', 'lead'];
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
-    const menu = () => { G.transit.lifeUsed = {}; return downtimeEvent(true); };
+    const menu = () => { G.transit.lifeUsed = {}; return downtimeScene(true); };
     const label = ACTIVITIES.teach.label, offered = menu().choices.some(c => c.label === label && c.can());
     const meal = menu(); meal.choices.find(c => c.label === ACTIVITIES.meal.label).run();  // the burn's downtime spent on something else
     const still = { can: ACTIVITIES.teach.can(), label: ACTIVITIES.teach.label };
@@ -111,11 +111,11 @@ test('the move taught is the one the menu showed: a teacher hurt after it was dr
     for (const p of [postHolder('engineer'), postHolder('pilot'), roleHolder('xo')]) p.opinion = 3;
     hired().picks = ['vent', 'lead'];
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
-    const tomas = postHolder('engineer'), label = ACTIVITIES.teach.label, choice = downtimeEvent(true).choices.find(c => c.label === label);
+    const tomas = postHolder('engineer'), label = ACTIVITIES.teach.label, choice = downtimeScene(true).choices.find(c => c.label === label);
     G.state.injured = { [tomas.id]: true };  // hurt between the menu and the click: lead (Ines) is due now
     const shut = { can: choice.can(), dueNow: ACTIVITIES.teach.label, text: choice.run(), moves: [...(hired().moves || [])] };
     G.state.injured = {}; G.transit.lifeUsed = {};
-    const again = downtimeEvent(true).choices.find(c => c.label === label), back = { can: again.can() };
+    const again = downtimeScene(true).choices.find(c => c.label === label), back = { can: again.can() };
     again.run();
     return { label, shut, back, moves: [...hired().moves] };
   });
@@ -141,7 +141,7 @@ test('a hand at another post is taught the move picked there, and no move is tau
     for (const id of G.state.crew) person(id).opinion = 3;
     G.state.career = { post: 'gunner', moves: [], picks: ['vent'], skill: { gunner: 200 } };  // a hand who bought the ship
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
-    const owner = ACTIVITIES.teach.can(), menu = downtimeEvent(true).choices.map(c => c.label);
+    const owner = ACTIVITIES.teach.can(), menu = downtimeScene(true).choices.map(c => c.label);
     return { engineer, owner, menu, label: ACTIVITIES.teach.label };
   });
   await done();
@@ -161,7 +161,7 @@ test('a move that is due is on every downtime menu of five, however the menu tur
     hired().picks = ['vent'];
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const label = ACTIVITIES.teach.label, menus = [];
-    for (let i = 0; i < 12; i++) { G.transit.lifeUsed = {}; G.transit.lifeShown = {}; menus.push(downtimeEvent().choices.map(c => c.label)); }
+    for (let i = 0; i < 12; i++) { G.transit.lifeUsed = {}; G.transit.lifeShown = {}; menus.push(downtimeScene().choices.map(c => c.label)); }
     return { label, menus };
   });
   await done();

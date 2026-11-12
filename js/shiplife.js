@@ -709,7 +709,6 @@ function climbRate(lay, dk, dir) {
 const climbStep = (dk, tdk, dt) => { const v = dt * climbRate(LAYOUTS.freighter, dk, Math.sign(tdk - dk)); return dk + Math.max(-v, Math.min(v, tdk - dk)); };
 
 function lifeTick(dt) {
-  syncLifeButtons();
   if (G.mode !== 'transit' || !G.transit) return;
   const people = shipPeople(), ph = phase(), dark = isDark();
   if (dark !== !!G.transit.dark) {  // dusk or dawn
@@ -725,6 +724,12 @@ function lifeTick(dt) {
     if (line) comm(`[Ship] ${line}`);
   }
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
+  const t = G.transit, now = shipDay(t.elapsed).block, prev = t.lifeBlock;  // the downtime scene, once a slot at a change of the ship's day
+  t.lifeBlock = now;
+  if (prev !== undefined && downtimeDue(t, now, prev) && !isDark() && ph === 'move' && !t.event && !G.dialog) {  // a burn just loaded (no block seen yet) waits for a real change
+    const e = downtimeScene();
+    if (e.able) { (t.lifeOffered = t.lifeOffered || {})[lifeSlotOf(t)] = true; openEvent(e); }
+  }
   const block = shipDay(G.transit.elapsed).block, state = shipState(G.state, G.transit, ship().armor, lifeRnd, { aid: (roleHolder('medic') || {}).id, you: handHurt() });
   state.repairs = repairsFor(people, state); state.morning = G.state.day + shipDay(G.transit.elapsed).day;
   const key = JSON.stringify([state.marks, state.hurt, state.low, state.you, state.aid, state.repairs, state.watch]);
@@ -1115,21 +1120,28 @@ function downtimeFive() {
   return out;
 }
 
-// `all` lists every option instead of five (for tests and the like).
-function downtimeEvent(all) {
-  const t = G.transit;
+// The downtime scene (docs/superpowers/specs/2026-11-12-downtime-scene-design.md): what's on in the ship, one line for each of the slot's five that
+// can run, the five as its choices and then Not now. A choice spends the slot, logs it and sends the hand where it happens; Not now spends nothing.
+// `tags` are where each is happening, for the cutaway; `able` how many can run (none: the scene is not opened). `all` lists every option instead of
+// five (for tests and the editor).
+function downtimeScene(all) {
+  const t = G.transit, five = all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive(), block = shipDay(t.elapsed).block;
+  const able = five.filter(a => !a.can || a.can()), people = shipPeople(), tags = onDeck(able, people);
+  const placeOf = label => { const g = tags.find(x => x.label === label); return g && (g.room || (people.find(p => p.id === g.id) || {}).room); };
   return {
-    title: lifeSay('title'), personal: true,  // a hand's savings are their own, not the ship's purse
-    text: lifeSay(hired() ? 'text.hired' : 'text', { when: lifeSay(t.flipped ? 'when.after' : 'when.before') }),
+    title: lifeSay(DOWNTIME_BLOCKS.includes(block) ? `title.${block}` : 'title'), personal: true,  // a hand's savings are their own, not the ship's purse
+    text: able.map(a => (a.on ? a.on() : '')).filter(Boolean).join(' '),
+    downtime: true, tags, able: able.length,
     choices: [
-      ...(all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive()).map(a => (what => ({  // what: the label as drawn, handed to can and run, so a teaching does the move it named (moves.js)
+      ...five.map(a => (what => ({  // what: the label as drawn, handed to can and run, so a teaching does the move it named (moves.js)
         label: what, can: a.can && (() => a.can(what)),
         run() {
           spendLife(t);
           if (hired()) hired().did = { ...hired().did, downtime: true };  // the first run's steps (tutorial.js)
+          const you = people.find(p => p.role === 'you'), room = placeOf(what);
+          if (you && room) toActivity(you, room);
           const text = a.run(what);
-          // Comms gets one line, what was done and what it taught: it shows eight lines, and the result runs to twelve on a phone (#767). One that leads
-          // straight into a scene (Sit with someone) has nothing to say yet.
+          // Comms gets one line, what was done and what it taught. One that leads straight into a scene (Sit with someone) has nothing to say yet.
           const taught = text && (text.match(/\([^()]*\)$/) || [''])[0];
           if (text) comm(`[Ship] ${lifeSay('log', { what })}${taught ? ` ${taught}` : ''}`);
           return text;
@@ -1140,36 +1152,9 @@ function downtimeEvent(all) {
   };
 }
 
-function syncLifeButtons() {
-  const el = document.getElementById('tlife');
-  if (!el) return;
-  const t = G.transit, show = G.mode === 'transit' && t && !t.event && phase() === 'move';
-  el.hidden = !show;
-  if (!show) return;
-  el.style.top = `${G.lifeY}px`;
-  el.style.left = `${(G.W - G.hudW) / 2}px`;
-  const used = !lifeFree(t), more = lifeSlotKeys(t.slots || 2).slice(-1)[0] !== lifeSlot();
-  el.querySelector('button').disabled = !!used;
-  el.dataset.note = used ? (more ? 'Next in a day or two' : 'Done for this burn') : 'Downtime';
-}
-
-function buildLifeButtons() {
-  const el = Object.assign(document.createElement('div'), { id: 'tlife', hidden: true });
-  el.innerHTML = '<button data-life="menu">Spend some downtime</button>';
-  document.body.appendChild(el);
-  el.addEventListener('click', e => {
-    const b = e.target.closest('[data-life]'), t = G.transit;
-    if (!b || b.disabled || !t || t.event) return;
-    Sfx.click();
-    openEvent(downtimeEvent());
-  });
-}
-
 Mods.register({
   id: 'shiplife', name: 'Life aboard', builtin: true,
   init(M) {
-    buildLifeButtons();
     M.on('frame', dt => lifeTick(lifeDt(dt)));  // at the burn's speed (burnspeed.js, #992)
-    M.on('landed', () => { const el = document.getElementById('tlife'); if (el) el.hidden = true; });
   },
 });

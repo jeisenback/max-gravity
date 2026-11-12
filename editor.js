@@ -455,13 +455,13 @@
           'scene:inspection': () => { standIn = 'The cause is a stand-in: 50 t of water landed at a Dome Pact port without a licence, and standing of -22 there.'; return inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', -22, false), currentPlanet()); },
           'scene:war-call': () => tiesPreview(() => warCallScene(currentPlanet()), 'member', true),
           'scene:downtime': () => { if (!crew.length) { const m = makeCrewCandidate(st.systemId); registerPerson(m); st.crew.push(m.id); } return { title: 'Downtime', text: 'What a hired hand can add to the downtime menu:', personal: true, choices: HAND_DOWNTIME.map(d => ({ label: d.label, run: d.run })) }; },
-          'scene:shiplife': () => { if (repair) { st.armor = Math.min(st.armor, ship().armor - 10); standIn = 'The hand is at the engineer post and the armor is down, so the repair is offered.'; } return downtimeEvent(true); },
+          'scene:shiplife': () => { if (repair) { st.armor = Math.min(st.armor, ship().armor - 10); standIn = 'The hand is at the engineer post and the armor is down, so the repair is offered.'; } return downtimeScene(true); },
           'scene:moves': () => {  // the taught move whose line was typed (else vent): its pick taken on the hand's ladder, the moves before it known and its teacher trusting the hand
             const pick = Object.values(PICKS).find(p => p.move === teachId), before = Object.values(PICKS).filter(p => p.move in MOVE_TEACH && p.post === pick.post && p.level < pick.level).map(p => p.move);
             hired().picks = [pick.id]; hired().moves = before;
             for (const t of Object.keys(MOVE_TEACH).map(moveTeacher)) if (t) t.opinion = Math.max(t.opinion, OPINION.TRUSTED);
             standIn = `The hand is at the ${pick.post} post with the ${pick.name} pick taken${before.length ? ` and knows ${before.join(' and ')}` : ''}, and the crew who teach trust them, so ${teachId} is offered. The idle button shows only when no move is due.`;
-            return downtimeEvent(true);
+            return downtimeScene(true);
           },
           'scene:bar-round': () => { fillBar(currentPlanet()); st.credits = Math.max(st.credits, 50000); Mods.actions.barRound.fn(); return { title: 'A Round for the House', text: G.barState.note, personal: true, choices: [{ label: sceneSay('scene:bar-round', 'label.done'), run: () => '' }] }; },
           'scene:cast-join': () => { const key = Object.keys(CAST)[0], text = castJoin(key, `${castPerson(key).first} comes aboard.`); return { title: 'A Main Character Comes Aboard', text: `${text} ${castPerson(key).memories.slice(-1)[0]} ${home().log.slice(-1)[0].text}`, personal: true, choices: [{ label: 'Welcome aboard', run: () => '' }] }; },

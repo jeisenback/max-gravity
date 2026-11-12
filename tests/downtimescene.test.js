@@ -107,3 +107,142 @@ test('a shadowed or taught mate is the same in the line, the tag and the run', a
   await done();
   for (const k of ['shadow', 'teach']) assert.deepEqual(r[k], { named: true, told: true, liked: true }, k);
 });
+
+// ---------- the scene (task 3) ----------
+
+// Steps the burn as the game loop does (update, then the frame's hooks), closing other scenes and passing on the downtime scene; returns each
+// downtime scene opened, with the slot, the block, the lights and the phase it opened in.
+const runHelpers = () => {
+  window.stepBurn = (dt, n, onDown) => {
+    const seen = [];
+    for (let i = 0; i < n && G.mode === 'transit' && G.transit; i++) {
+      update(dt); Mods.emit('frame', dt);
+      if (!G.dialog) continue;
+      const e = G.dialog.event;
+      if (e && e.downtime) {
+        seen.push({ slot: lifeSlot(), block: shipDay(G.transit.elapsed).block, dark: isDark(), ph: phase() });
+        const pass = e.choices.findIndex(c => c.label === sceneSay('scene:shiplife', 'none.label'));
+        if (onDown) onDown(e); else chooseEvent(pass);
+      }
+      finishEvent();
+    }
+    return seen;
+  };
+};
+
+test('on a burn the downtime scene opens once a slot, at a change of the ship day, at 1x and at 16x', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers); await ev(runHelpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const speed of [1, 16]) {
+      const t = onBurn(); t.left = t.total; t.elapsed = 0; setBurnSpeed(speed);
+      const seen = stepBurn(0.05, 40000);
+      out[speed] = { seen, slots: t.slots, arrived: G.mode !== 'transit' };
+    }
+    return out;
+  });
+  await done();
+  for (const speed of ['1', '16']) {
+    const { seen, slots, arrived } = r[speed];
+    assert.ok(arrived, `${speed}x: the burn ran to arrival`);
+    assert.equal(seen.length, slots, `${speed}x: one a slot (${JSON.stringify(seen)})`);
+    assert.equal(new Set(seen.map(s => s.slot)).size, slots, `${speed}x: each slot once`);
+    for (const s of seen) {
+      assert.ok(['breakfast', 'shift', 'meal', 'supper'].includes(s.block), `${speed}x: at ${s.block}`);
+      assert.equal(s.dark, false); assert.equal(s.ph, 'move');
+    }
+  }
+});
+
+test('choosing an activity runs it, spends the slot, logs it and sends the hand there; Pass spends nothing and it does not come back', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers); await ev(runHelpers);
+  const r = await ev(() => {
+    const t = onBurn(), slot = lifeSlot();
+    openEvent(downtimeScene(true)); const e = G.dialog.event, i = e.choices.findIndex(c => c.label === 'Practice at your post');
+    t.comms = []; chooseEvent(i); finishEvent();
+    const you = shipPeople().find(p => p.role === 'you'), chose = { spent: !lifeFree(t), log: t.comms.some(c => /^\[Ship\] Downtime: Practice/.test(c.text || c)), room: you.room, block: you.block };
+    // a fresh slot: Pass at the change, and the next change in the slot opens nothing
+    const u = onBurn(); u.left = u.total * 0.85; u.elapsed = SHIP_DAY * 0.1; u.lifeBlock = 'breakfast';
+    let d = 0; while (shipDay(u.elapsed).block !== 'shift' && d++ < 200) u.elapsed += 0.5;
+    lifeTick(0.016); const opened = !!(G.dialog && G.dialog.event.downtime);
+    if (opened) { chooseEvent(G.dialog.choices.length - 1); finishEvent(); }
+    d = 0; while (shipDay(u.elapsed).block !== 'meal' && d++ < 400) { u.elapsed += 0.5; lifeTick(0.016); }
+    return { chose, post: postOf(POSTS[hired().post].role), slot, opened, passFree: lifeFree(u), again: !!G.dialog };
+  });
+  await done();
+  assert.equal(r.chose.spent, true); assert.equal(r.chose.log, true);
+  assert.equal(r.chose.room, r.post, 'the hand goes to their post'); assert.equal(r.chose.block, 'activity');
+  assert.equal(r.opened, true, 'the scene opens at the change to a shift');
+  assert.equal(r.passFree, true, 'Pass spends nothing'); assert.equal(r.again, false, 'and it does not come back that slot');
+});
+
+test('Sit with someone names one person, the one having a hard time first, and opens the sitting with them', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    onBurn(); const crew = G.state.crew.map(id => G.state.people[id]).filter(p => p && p.memories);
+    const low = crew[crew.length - 1]; low.mood = { kind: 'low', until: G.state.day + 30, text: 'a message from home' };
+    const e = downtimeScene(true), i = e.choices.findIndex(c => /^Sit with /.test(c.label)), tag = e.tags.find(x => /^Sit with /.test(x.label));
+    G.dialog = { event: e, choices: e.choices }; chooseEvent(i);
+    return { label: e.choices[i].label, first: low.first, id: low.id, tag: tag && tag.id, next: !!G.nextEvent && JSON.stringify(G.nextEvent).includes(low.first) };
+  });
+  await done();
+  assert.equal(r.label, `Sit with ${r.first}`); assert.equal(r.tag, r.id); assert.equal(r.next, true);
+});
+
+test('with a scene already open at the change, the downtime scene waits for the next change in the slot', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const u = onBurn(); u.left = u.total * 0.85; u.elapsed = SHIP_DAY * 0.1; u.lifeBlock = 'breakfast';
+    let d = 0; while (shipDay(u.elapsed).block !== 'shift' && d++ < 200) u.elapsed += 0.5;
+    openEvent({ title: 'Something else', text: 'x', choices: [{ label: 'OK', run: () => '' }] });
+    lifeTick(0.016); const under = G.dialog.event.title;
+    finishEvent(); lifeTick(0.016); const sameBlock = !!G.dialog;
+    d = 0; while (shipDay(u.elapsed).block !== 'meal' && d++ < 400) { u.elapsed += 0.5; lifeTick(0.016); if (G.dialog) break; }
+    return { under, sameBlock, next: !!(G.dialog && G.dialog.event.downtime), block: shipDay(u.elapsed).block };
+  });
+  await done();
+  assert.equal(r.under, 'Something else', 'not stacked on the open scene');
+  assert.equal(r.sameBlock, false, 'not later in the same block');
+  assert.equal(r.next, true, `at the next change (${r.block})`);
+});
+
+test('a slot where nothing can run opens no scene', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const real = window.downtimeFive; window.downtimeFive = () => [{ label: 'Nothing', can: () => false, run: () => '' }];
+    try {
+      const u = onBurn(); u.left = u.total * 0.85; u.elapsed = SHIP_DAY * 0.1; u.lifeBlock = 'breakfast';
+      let d = 0; while (shipDay(u.elapsed).block !== 'shift' && d++ < 200) u.elapsed += 0.5;
+      lifeTick(0.016); return !!G.dialog;
+    } finally { window.downtimeFive = real; }
+  });
+  await done();
+  assert.equal(r, false);
+});
+
+test('a burn from an older save, with no lifeOffered or lifeBlock, still gets its scene and nothing throws', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const u = onBurn(); u.left = u.total * 0.85; u.elapsed = SHIP_DAY * 0.2; delete u.lifeOffered; delete u.lifeBlock;
+    let threw = null, d = 0;
+    try { while (!G.dialog && d++ < 400) { u.elapsed += 0.5; lifeTick(0.016); } } catch (e) { threw = String(e); }
+    return { threw, opened: !!(G.dialog && G.dialog.event.downtime) };
+  });
+  await done();
+  assert.deepEqual(r, { threw: null, opened: true });
+});
+
+test('there is no Spend some downtime button anywhere: not under the ship, not on the Interior sheet', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => { onBurn(); return { tlife: !!document.getElementById('tlife'), sheet: interiorPanel() }; });
+  await done();
+  assert.equal(r.tlife, false);
+  assert.doesNotMatch(r.sheet, /Spend some downtime|data-bdown/);
+});

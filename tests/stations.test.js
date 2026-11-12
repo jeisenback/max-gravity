@@ -478,7 +478,7 @@ test('the interior console puts the crew at their posts, with how they are doing
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=interior]');
   assert.ok(await page.$('#bsheet .con'), 'the console is in the burn sheet too');
-  assert.equal(await page.$$eval('#bsheet button[data-bdown]', b => b.length), 1, 'with the downtime button');
+  assert.equal(await page.$$eval('#bsheet button[data-bdown]', b => b.length), 0, 'no downtime button: downtime comes as a scene (2026-11-12)');
   await done();
 });
 

@@ -18,7 +18,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:dock-friend', fn: 'dockFriendScene', file: 'js/ties.js', title: 'A Friend at the Dock', where: 'port', when: 'A crew member who\'s an officer of the faction whose port this is.' },
   { id: 'scene:war-call', fn: 'warCallScene', file: 'js/ties.js', title: 'Word From Home', where: 'port', when: 'A member or officer aboard whose side has gone to war is called home.' },
   { id: 'scene:downtime', fn: 'handDowntime', file: 'js/hiredevents.js', title: 'Downtime Activities', where: 'transit', when: 'What a hired hand can add to the downtime menu: with the captain, a shipmate or a main character aboard.' },
-  { id: 'scene:shiplife', fn: 'downtimeEvent', file: 'js/shiplife.js', title: 'Downtime on a Burn', where: 'transit', when: 'Every couple of days of the leg, the first before the flip and the last after: the ship\'s own activities (a meal, drills, maintenance, a round of the berths) among the others on the menu.' },
+  { id: 'scene:shiplife', fn: 'downtimeScene', file: 'js/shiplife.js', title: 'Downtime on a Burn', where: 'transit', when: 'Every couple of days of the leg, the first before the flip and the last after: the ship\'s own activities (a meal, drills, maintenance, a round of the berths) among the others on the menu.' },
   { id: 'scene:moves', fn: 'moveDue', file: 'js/moves.js', title: 'A Move Shown', where: 'transit', when: 'On the downtime menu of a burn, once a taught move is picked on the hand\'s ladder: the engineer shows a gunner how to vent the guns and a pilot how to redline the drive, the pilot shows a gunner how to lead a shot and an engineer a hot start, the first officer shows a gunner how to split the turret and a comms hand how to parley, each once they trust you (opinion 3) and are fit to work.' },
   { id: 'scene:traits', fn: 'handTraits', file: 'js/traits.js', title: 'What the Record Makes of You', where: 'transit', when: 'When a run of facts on the record earns a trait (two boardings held, two clean hauls, two fines, five deliveries on the day, hurt twice, two of her ships carried, three fights run from, two shipmates lost): its moment is said once, in a burn as a message and at a port as a note on your page, by the person who would notice; the shipper writes to the inbox; nobody says Jonah. The reason is on your page under Record.' },
   { id: 'scene:bar-round', fn: 'barHtml', file: 'js/bar.js', title: 'A Round for the House', where: 'port', when: 'The button on the bar page: what it says before and after, what the room remembers, and what you\'re told.' },
@@ -293,8 +293,7 @@ const SCENE_LINES = {
   },
   'scene:shiplife': {  // the menu for downtime on a burn and the ship's own activities on it (shiplife.js): the question, each activity's button, what it comes to and the memory it leaves; `meal`, `visit` have two tellings, one of which is drawn
     title: 'Downtime',
-    'text.hired': 'A long burn and nowhere to go. What do you do with {when}?', text: 'A long burn and nowhere to go. What does the ship do with {when}?',
-    'when.before': 'the time before the flip', 'when.after': 'the rest of the trip',
+    'title.breakfast': 'At Breakfast', 'title.shift': 'On Shift', 'title.meal': 'At the Meal', 'title.supper': 'After Supper',
     'none.label': 'Not now', 'none.result': 'Everyone goes back to their own business.', log: 'Downtime: {what}.',
     'meal.label': 'Share a meal', 'meal.crew.memory': 'We shared a meal on a long burn.', 'meal.pax.memory': 'The captain shared a meal with us.',
     'meal.on': 'There\'s a pot on in the galley, and somebody has laid the table.',
