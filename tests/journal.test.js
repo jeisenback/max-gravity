@@ -27,12 +27,14 @@ test('the rail has Crew and Journal, and the Journal holds the journal, standing
   await done();
 });
 
-test('the Port screen no longer carries the journal, standing, feeds or news, but keeps the conditions', async () => {
+test('the Port screen no longer carries the journal, standing, feeds, news or the missions a board holds, but keeps the conditions', async () => {
   const { ev, done } = await open({ scope: 'full' });
   const html = await ev(() => { while (G.dialog) finishEvent(); G.state.journal = [{ day: G.state.day, text: 'A thing happened.' }]; return UI.views.port.call(UI); });
   for (const gone of [/<h3>Journal<\/h3>/, /<h3>Standing<\/h3>/, /<h3>On the feeds<\/h3>/, /<h3>News<\/h3>/, /A thing happened/]) assert.doesNotMatch(html, gone);
   assert.match(html, /<h3>Local conditions<\/h3>/);
-  assert.match(html, /<h3>Active missions<\/h3>/);
+  assert.doesNotMatch(html, /<h3>Active missions<\/h3>/, 'at a port with a board they are on the Missions page (#1098)');
+  const missions = await ev(() => UI.views.missions.call(UI));
+  assert.match(missions, /<h3>Active missions<\/h3>/);
   const journal = await ev(() => UI.views.journal.call(UI));
   assert.match(journal, /A thing happened/);
   await done();
