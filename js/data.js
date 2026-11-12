@@ -33,6 +33,11 @@ const SHIPS = {
   cutter:    { name: 'Patrol Cutter', price: 600000, cargo: 10, fuel: 300, shields: 150, armor: 140, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
   corsair:   { name: 'Corsair', price: 550000, cargo: 20, fuel: 300, shields: 140, armor: 120, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
 };
+// Each hull's registry mark (#936), painted on her nose under her name and kept as marks on the bridge's certificate: the registry's letters
+// and her number. The Ice Hauler sails under a small Belt station registry (hiredscenes.js, the lender's letter), the co-op's Ore Runner
+// under Ceres's. Fixed per ship: the game keeps no registry of its own.
+const SHIP_REGISTRY = { shuttle: 'LR 3092', lightfreighter: 'CR 2208', courier: 'MR 5513', freighter: 'BR 4471', gunship: 'DP 0716', raider: 'XR 0193',
+  destroyer: 'DP 0042', cutter: 'AP 1180', corsair: 'XR 6627' };
 
 const GOV_COLORS = {
   'Arcology Pact': '#5fa8ff',

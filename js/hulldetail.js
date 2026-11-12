@@ -63,3 +63,28 @@ function hullFittings(o, deck) {
   ctx.strokeStyle = '#2a4561'; ctx.lineWidth = 1.5; ctx.strokeRect(o.x0 - HULL_HATCH.depth + 0.5, dy, HULL.skin + HULL_HATCH.depth - 1, HULL_HATCH.height);
   ctx.fillStyle = '#c9a227'; ctx.fillRect(o.x0 - HULL_HATCH.depth, dy + HULL_HATCH.height / 2 - 3, 3, 6);
 }
+
+// Her name (#936): what is painted on the nose's cap for the game state st and her name: the name, her registry (SHIP_REGISTRY, data.js, by
+// her hull) and whether she is the co-op's (chapter two's Ore Runner: the hand's record marked chapter two, as chapterOf reads it, on her hull).
+// Pure.
+const hullPlate = (st, name) => ({ name: String(name || '').toUpperCase(), reg: SHIP_REGISTRY[st.shipId] || null, coop: !!(st.hired && st.hired.chapter === 2) && st.shipId === 'lightfreighter' });
+// The paint on the cap (#936, look.md "a clean frame"): her name and under it her registry, centred on the cap right of the mast, in the
+// frame's cold blue and sized on the screen like the room names (the name 16px, the registry 12px, at any zoom); the co-op's mark beside the
+// name when she is theirs: a ring round three members' dots joined. o: the tower's outline (towerOutline).
+const HULL_NAME = { at: 0.56, col: '#7f97b0' };
+function hullName(ctx, o, zoom, plate) {
+  if (!plate || !plate.name) return;
+  const x = o.x0 + (o.x1 - o.x0) * HULL_NAME.at, cap = o.top - o.noseTop, y = o.noseTop + cap * 0.5 + 4 / zoom;
+  ctx.font = `600 ${16}px ${roomFont}`;
+  worldText(ctx, zoom, plate.name, x, y, 16 / zoom, HULL_NAME.col, 'center');
+  if (plate.reg) worldText(ctx, zoom, plate.reg, x, y + 15 / zoom, 12 / zoom, HULL_NAME.col, 'center');
+  if (plate.coop) {  // the co-op's mark, left of the name
+    const half = ctx.measureText(plate.name).width / zoom / 2, cx = x - half - 16 / zoom, cy = y - 6 / zoom, r = 8 / zoom;
+    ctx.save(); ctx.strokeStyle = HULL_NAME.col; ctx.fillStyle = HULL_NAME.col; ctx.lineWidth = 1.5 / zoom;
+    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+    const pts = [0, 1, 2].map(k => [cx + Math.cos(-Math.PI / 2 + k * 2 * Math.PI / 3) * r * 0.5, cy + Math.sin(-Math.PI / 2 + k * 2 * Math.PI / 3) * r * 0.5]);
+    ctx.beginPath(); ctx.moveTo(...pts[0]); ctx.lineTo(...pts[1]); ctx.lineTo(...pts[2]); ctx.closePath(); ctx.stroke();
+    for (const [px, py] of pts) { ctx.beginPath(); ctx.arc(px, py, 1.8 / zoom, 0, Math.PI * 2); ctx.fill(); }
+    ctx.restore();
+  }
+}
