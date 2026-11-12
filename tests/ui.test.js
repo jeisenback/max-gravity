@@ -378,11 +378,11 @@ test('the cue that a scene continues shows on a long scene and a long result, an
   await done();
 });
 
-test('the port scene banner is 150px, and still draws', async () => {
+test('the painted scene banner is 150px, and still draws (Earth\'s Port page draws the Ring instead, #1101)', async () => {
   const out = {};
   for (const [name, viewport] of [['desktop', { width: 1280, height: 800 }]]) {
     const { ev, page, done } = await open({ viewport });
-    await ev(() => { while (G.dialog) finishEvent(); UI.render(); });
+    await ev(() => { while (G.dialog) finishEvent(); UI.tab = 'bar'; UI.render(); });
     await frames(page);
     out[name] = await page.evaluate(() => { const c = document.getElementById('vs'), g = c.getContext('2d'), d = g.getImageData(0, 0, c.width, c.height).data; let lit = 0; for (let i = 0; i < d.length; i += 4) if (d[i] + d[i + 1] + d[i + 2] > 60) lit++; return { h: c.getBoundingClientRect().height, lit }; });
     await done();
