@@ -82,8 +82,15 @@ While the scene is open, each choice's place is tagged in the cutaway, in a stan
 | Teach a mate | that mate | |
 | A taught move | its teacher | |
 | A cast member's own scene | that cast member | |
-| Sit with someone | | no single person, so no tag; the picker it opens names them |
+| Sit with someone | that person | one person a slot; see below |
 | Visit the passengers | a passenger | |
+
+**Sit with someone** is offered for one named person, not as the picker (`sitPicker`, `js/family.js`):
+- **The label:** "Sit with Ines", with a "what's on" line such as "Ines is at the table on her own."
+- **Who:** of those the picker would list (`procedural()` and the passengers aboard), someone having a hard time (`moodLow`) or hurt comes first. Otherwise the choice turns through them by the game's day.
+- **Choosing it** opens `sitBeat(person, crew)` at once, with the same sitting as today, and spends the slot.
+- **The tag** goes on that person.
+- `sitPicker` stays only if something else still opens it.
 
 `onDeck(five, people)` is a pure function in `js/shiplife.js`. It returns `[{ label, room }]` or `[{ label, id }]` from each activity's `where` (a room id, or a function of the people aboard returning a person's id). An activity with no `where` gets no tag. The cutaway draws the tags while the downtime scene is the open event, and only then.
 
@@ -117,6 +124,9 @@ While the scene is open, each choice's place is tagged in the cutaway, in a stan
   - false for a slot spent or offered;
   - over the shortest slot, at least one change is due.
 - `onDeck`: room activities give rooms; person activities give the person's id; an activity with no `where` gives nothing.
+- The person for Sit with someone: one having a hard time or hurt comes first; otherwise it turns by the day.
+
+**Browser, Sit with someone:** the person offered is the one tagged and the one the sitting is with.
 
 **Browser:**
 - On a burn, the scene opens once a slot, at 1x and at 16x, never at night or on the couches, and not over another scene.
