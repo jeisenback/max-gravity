@@ -1947,16 +1947,19 @@ function roomPools(g, r, L) {
     roomSoft(g, r, x, r.floor - 3, L.spread, 0.12, c, [[0, 0.46 * k], [0.6, 0.18 * k], [1, 0]]);
   }
 }
-// The light (roomDark, then roomPools over it) drawn once per room, light (roomLight) and scale into an offscreen canvas at the screen's pixels,
-// and then as one image a frame (#932: a frame costs about what it did with the one glow). Where there is no canvas (Node), drawn straight.
+// The light drawn once per room, light (roomLight) and scale into an offscreen canvas at the screen's pixels, and then as one image a frame
+// (#932: a frame costs about what it did with the one glow): two layers, the dark (roomDark) and the pools (roomPools) over it, so the flip's
+// pulse dims the pools and not the dark. The light's inputs are rounded (roomLightStep), so a fade or a ramp reuses a few images rather than
+// making one a frame. Where there is no canvas (Node), drawn straight.
 const ROOM_LIGHTS = new Map();
-function roomLightLayer(r, L, px) {
-  const key = [r.x0, r.x1, r.top, r.floor, px, L.at.join(' '), L.dark, L.ends, L.ceiling, L.pool, L.k, L.spread].join('|');
+const roomLightStep = v => Math.round(v * 32) / 32;
+function roomLightLayer(r, L, px, part) {
+  const key = [part, r.x0, r.x1, r.top, r.floor, px, L.at.join(' '), ...(part === 'dark' ? [L.dark, L.ends, L.ceiling] : [L.pool, L.k, L.spread])].join('|');
   let c = ROOM_LIGHTS.get(key);
   if (!c) {
     if (ROOM_LIGHTS.size > 32) ROOM_LIGHTS.clear();
-    c = document.createElement('canvas'); c.width = Math.round((r.x1 - r.x0) * px); c.height = Math.round((r.floor - r.top) * px);
-    const g = c.getContext('2d'); g.setTransform(px, 0, 0, px, -r.x0 * px, -r.top * px); roomDark(g, r, L); roomPools(g, r, L);
+    c = document.createElement('canvas'); c.width = Math.ceil((r.x1 - r.x0) * px); c.height = Math.ceil((r.floor - r.top) * px);
+    const g = c.getContext('2d'); g.setTransform(px, 0, 0, px, -r.x0 * px, -r.top * px); (part === 'dark' ? roomDark : roomPools)(g, r, L);
     ROOM_LIGHTS.set(key, c);
   }
   return c;
@@ -1974,18 +1977,17 @@ function berthReading(r, s) {
   return out;
 }
 function drawPhaseLight(ctx, r, w, time, night, keepsLights, fitted = null, at = roomLamps('', r), o = {}) {
-  const lamp = roomMix([[255, 90, 70], [255, 226, 184], [255, 176, 48]], [w.burn, w.cruise, w.flip]), L = roomLight(r, w, night, keepsLights, at, o.glow);
+  const lamp = roomMix([[255, 90, 70], [255, 226, 184], [255, 176, 48]], [w.burn, w.cruise, w.flip]), L = roomLight(r, { burn: roomLightStep(w.burn), cruise: roomLightStep(w.cruise), flip: roomLightStep(w.flip) }, roomLightStep(night), keepsLights, at, o.glow);
   if (o.off) L.k = 0;
   const pulse = 1 - w.flip * 0.35 * (0.5 + 0.5 * Math.sin(time * 6)), dim = keepsLights ? 1 : 1 - 0.7 * night, W = r.x1 - r.x0, H = r.floor - r.top;
   ctx.save(); ctx.beginPath(); ctx.rect(r.x0, r.top, W, H); ctx.clip();
-  ctx.globalAlpha = pulse;  // the flip's pulse
   if (typeof document === 'object' && ctx.getTransform) {
-    const m = ctx.getTransform(), px = Math.round(m.a * 100) / 100, c = roomLightLayer(r, L, px);  // drawn on whole pixels, unscaled: a copy, not a resample
-    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.imageSmoothingEnabled = false; ctx.drawImage(c, Math.round(m.a * r.x0 + m.e), Math.round(m.d * r.top + m.f)); ctx.restore();
-  } else { roomDark(ctx, r, L); roomPools(ctx, r, L); }
-  ctx.globalAlpha = 1;
+    const m = ctx.getTransform(), px = Math.round(m.a * 1e4) / 1e4, ox = Math.round(m.a * r.x0 + m.e), oy = Math.round(m.d * r.top + m.f);  // drawn on whole pixels, unscaled: a copy, not a resample
+    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(roomLightLayer(r, L, px, 'dark'), ox, oy); ctx.globalAlpha = pulse; ctx.drawImage(roomLightLayer(r, L, px, 'pools'), ox, oy); ctx.restore();  // the flip's pulse on the pools
+  } else { roomDark(ctx, r, L); ctx.globalAlpha = pulse; roomPools(ctx, r, L); ctx.globalAlpha = 1; }
   ctx.globalCompositeOperation = 'screen';
-  for (const p of o.small || []) {  // a reading lamp's pool, inside its bunk
+  for (const p of o.off ? [] : o.small || []) {  // a reading lamp's pool, inside its bunk
     ctx.save(); ctx.beginPath(); ctx.rect(p.at.x, p.at.y, p.at.w, p.at.h); ctx.clip();
     const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 18);
     g.addColorStop(0, `rgba(255,200,128,${0.6 * p.a})`); g.addColorStop(0.5, `rgba(255,190,118,${0.24 * p.a})`); g.addColorStop(1, 'rgba(255,190,118,0)');
