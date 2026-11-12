@@ -306,3 +306,46 @@ test('a person tag at the edge of the clear part is kept inside it', async () =>
   await done();
   assert.equal(r.length, 1); assert.ok(r[0].x + r[0].w <= 1000 && r[0].x >= 0, JSON.stringify(r[0]));
 });
+
+// ---------- comms over the ship (task 5) ----------
+
+test('at 1280x800 the cutaway shows all four decks, and a comms line is drawn over it and gone after six seconds', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurn(); t.lifeOffered = { before: true, m1: true, m2: true, m3: true, after: true }; t.comms = []; t.commsAt = [];
+    comm('[Ship] A line to read.'); render();
+    const now = { comms: G.burnBoxes.comms || null, ship: G.burnBoxes.ship, decks: LAYOUTS.freighter.decks.length, rooms: G.cutRooms.map(x => x.id) };
+    G.time += 6.5; render();
+    return { ...now, later: G.burnBoxes.comms || null, ticker: G.burnBoxes.ticker || null };
+  });
+  await done();
+  assert.ok(r.comms, 'the line is drawn'); assert.ok(r.comms.y >= r.ship.y && r.comms.y + r.comms.h <= r.ship.y + r.ship.h, 'over the ship');
+  assert.equal(r.later, null, 'gone after six seconds'); assert.equal(r.ticker, null, 'no ticker');
+  for (const room of ['gunnery', 'workshop']) assert.ok(r.rooms.includes(room), `${room} in view (${r.rooms})`);
+});
+
+test('the tutorial prompt stays over the ship until its step is done, and is hidden under a scene', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurn(); t.lifeOffered = { before: true, m1: true, m2: true, m3: true, after: true }; G.state.tutorial = 1; render();
+    const shown = G.burnBoxes.tutorial || null, ship = G.burnBoxes.ship;
+    G.time += 30; render(); const still = !!G.burnBoxes.tutorial;
+    openEvent({ title: 'x', text: 'x', choices: [{ label: 'OK', run: () => '' }] }); render(); const under = !!G.burnBoxes.tutorial;
+    finishEvent(); return { shown, ship, still, under };
+  });
+  await done();
+  assert.ok(r.shown && r.shown.y >= r.ship.y && r.shown.y + r.shown.h <= r.ship.y + r.ship.h, 'inside the ship');
+  assert.equal(r.still, true, 'it does not fade'); assert.equal(r.under, false, 'hidden under a scene');
+});
+
+test('tags on people standing side by side do not overlap', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => drawDowntimeTags([{ label: 'Run the range with Pax', id: 'a' }, { label: 'Sit with Tomas', id: 'b' }, { label: 'Card night', room: 'galley' }],
+    [{ id: 'galley', x: 200, y: 180, w: 300, h: 160 }], [{ id: 'a', head: { x: 360, y: 240 } }, { id: 'b', head: { x: 420, y: 240 } }], { x: 0, y: 0, w: 1000, h: 800 }));
+  await done();
+  const meets = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+  assert.equal(r.length, 3);
+  for (let i = 0; i < r.length; i++) for (let j = i + 1; j < r.length; j++) assert.ok(!meets(r[i], r[j]), `${r[i].label} / ${r[j].label}`);
+});

@@ -57,7 +57,6 @@ const G = {
   cam: null, cutOutline: null,  // the burn view's camera ({ x, y, t }: the world x it centres across the clear part, the world y it centres down the tower, and the G.time of its last step; null snaps) and the outline of the tower for a tap ({ ...outlineLayout: its strip, scale and rooms; ids: who it shows; view: the world y and height its frame shows }), see camera.js
   burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, ticker or tutorial, dest, and a scene's dock with the part of the ship it leaves clear), for a tap, the dock and the tests, see transit.js
   hudStrip: null,     // where the HUD drew the hand's readouts (the strip, readouts.js), for the tests
-  lifeY: null,        // the top of the row under the Comms ticker where the downtime buttons sit, see transit.js
 };
 
 // ---------- helpers ----------
@@ -1328,15 +1327,11 @@ canvas.addEventListener('click', e => {
   }
   // On a burn, tap or click someone in the cutaway to open their page, or a room (in view or in the outline) to open its console.
   if (G.mode === 'transit' && G.transit && !G.transit.event) {
-    const tk = G.burnBoxes && G.burnBoxes.ticker;
-    if (tk && e.clientX >= tk.x && e.clientX <= tk.x + tk.w && e.clientY >= tk.y && e.clientY <= tk.y + tk.h) {  // the ticker opens Comms, as its key does
-      G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); return;
-    }
     const reach = 14, outlined = G.cutOutline && outlineRoomAt(G.cutOutline, e.clientX, e.clientY);  // the outline is over the view: it comes first
     const near = !outlined && (G.cutHits || []).map(h => ({ h, d: tapToBody(e.clientX, e.clientY, h) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
     const rk = !outlined && !near && G.cutRack, onRack = rk && e.clientX >= rk.x && e.clientX <= rk.x + rk.w && e.clientY >= rk.y && e.clientY <= rk.y + rk.h;
     if (near) Mods.act('person', near.h.id);
-    else if (onRack) { G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); }  // the comms rack, as the ticker does
+    else if (onRack) { G.bridgeOpen = G.bridgeOpen === 'comms' ? null : 'comms'; Sfx.click(); syncBridge(true); }  // the comms rack opens Comms, as its key does
     else {  // no one there: the room, which opens its console as the key bar's key does (a second tap closes it)
       const room = roomAtPoint(e.clientX, e.clientY), sheet = room && roomSheet(room);
       if (sheet) { G.bridgeOpen = G.bridgeOpen === sheet ? null : sheet; Sfx.click(); syncBridge(true); }

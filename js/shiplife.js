@@ -870,14 +870,22 @@ function towerTank(ctx, lay, tk, fuel, s) {
 // corner opposite the room's name; a person's over their head, when they are drawn in view (`hits`). Returns the boxes drawn, with what each tags.
 const TAG_COLOR = '#e8b84a';
 function drawDowntimeTags(tags, rooms, hits, clear) {  // clear: the part of the ship box a scene's dialog leaves clear, which a person's tag keeps inside
-  const out = [], fs = 12, pad = 4, h = fs + pad * 2, n = {};  // n: how many are already on each room or person; the next stacks under (a room) or over (a person)
+  const out = [], fs = 12, pad = 4, h = fs + pad * 2, step = h + 3;
+  const meets = (x, y, w) => out.some(o => x < o.x + o.w && o.x < x + w && y < o.y + o.h && o.y < y + h);  // one drawn already: the next steps past it
   ctx.save(); ctx.font = `600 ${fs}px ${roomFont}`; ctx.textBaseline = 'middle';
   for (const g of tags) {
-    const w = ctx.measureText(g.label).width + pad * 2, key = g.room || g.id, k = n[key] || 0;
+    const w = ctx.measureText(g.label).width + pad * 2;
     let x, y;
-    if (g.room) { const b = rooms.find(r => r.id === g.room); if (!b || b.w < w + 12 || b.h < (k + 1) * (h + 3) + 12) continue; x = b.x + b.w - w - 6; y = b.y + 6 + k * (h + 3); }
-    else { const p = hits.find(q => q.id === g.id); if (!p) continue; x = Math.max(clear.x + 4, Math.min(clear.x + clear.w - w - 4, p.head.x - w / 2)); y = p.head.y - h - 10 - k * (h + 3); }
-    n[key] = k + 1;
+    if (g.room) {  // stepping down the room, while it fits
+      const b = rooms.find(r => r.id === g.room); if (!b || b.w < w + 12) continue;
+      x = b.x + b.w - w - 6; y = b.y + 6;
+      for (let k = 0; k < 8 && meets(x, y, w); k++) y += step;
+      if (y + h > b.y + b.h - 6 || meets(x, y, w)) continue;
+    } else {  // stepping up over their head
+      const p = hits.find(q => q.id === g.id); if (!p) continue;
+      x = Math.max(clear.x + 4, Math.min(clear.x + clear.w - w - 4, p.head.x - w / 2)); y = p.head.y - h - 10;
+      for (let k = 0; k < 8 && meets(x, y, w); k++) y -= step;
+    }
     ctx.fillStyle = 'rgba(6,13,22,0.85)'; ctx.fillRect(x, y, w, h);
     ctx.strokeStyle = TAG_COLOR; ctx.lineWidth = 1; ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
     ctx.fillStyle = TAG_COLOR; ctx.fillText(g.label, x + pad, y + h / 2);
