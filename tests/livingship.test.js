@@ -2573,3 +2573,119 @@ test('life support\'s ceiling lamps are fittings, one in each bay (#1024)', () =
     });
   }
 });
+
+// #933, point 6 in the rooms drawn before it: the galley, the bridge and the berths read old and cared for, not a wreck. Each touch at a fixed
+// place, the size of a zip or a pocket, inside the brightness limits (#959), clear of the room's name, nothing under 12px, still under reduced motion.
+const p6Rects = (calls, col) => calls.flatMap((k, i) => k[0] === 'fillStyle' && k[1] === col && calls[i + 1][0] === 'fillRect' ? [calls[i + 1].slice(1)] : []);
+const p6In = ([x, y, w, h], b, e = 0.01) => x >= b.x0 - e && x + w <= b.x1 + e && y >= b.y0 - e && y + h <= b.y1 + e;
+const p6Meet = (a, b) => a.x0 < b.x1 && b.x0 < a.x1 && a.y0 < b.y1 && b.y0 < a.y1;
+const p6Name = (r, zoom) => ({ x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 8 - 1 / zoom, y1: r.top + 8 + 17 / zoom });
+// the new touches' colours, outlined, a step below the people, and none of them under the room's name; every save restored, no text under 12px,
+// and the same frame at any time under reduced motion
+const p6Common = (at, draw, r, zoom, cols) => {
+  const c = fakeCtx(); draw(c); assert.equal(c.depth, 0, `${at}: every save restored`);
+  for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+  const { ctx, calls } = recorder(); draw(ctx);
+  const placed = placedParts(calls).map(p => ({ col: p.col, ...partBox({ pts: p.pts.map(q => q.slice(0, 2)) }) })), outlined = filledParts(calls).filter(p => p.outlined).map(p => p.col);
+  for (const col of cols) {
+    assert.ok(outlined.includes(col), `${at}: a ${col} part drawn and outlined`);
+    const v = rgbOf(col); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} a step below the people`);
+    for (const p of placed.filter(q => q.col === col)) assert.ok(!p6Meet(p, p6Name(r, zoom)), `${at}: a ${col} part ${JSON.stringify(p)} under the room's name`);
+  }
+  return { calls, placed };
+};
+const X0 = (r, f) => r.x0 + (r.x1 - r.x0) * f;
+const p6Still = draw => { const at = t => { const c = fakeCtx(); draw(c, t); return c.args.join('|'); }; return at(1.3) === at(4.9); };
+test('the galley reads old and patched: a replacement door, a newer dispenser head on fresh bolts, its line taped and tied, a printed latch tagged temporary, wear where hands and boots go (#933)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'galley'), F = r.floor, W = r.x1 - r.x0;
+  for (const pr of [0.02, 0.3, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const s = RS({ w: phaseWeights(pr), zoom, well: FW, damage: { marks: new Set(), severe: false } }), at = `${pr} ${zoom}`;
+    const draw = c => { drawRoom(c, 'galley', r, s); roomMessTable(c, r, s); };
+    const { calls, placed } = p6Common(at, draw, r, zoom, ['#2e4658', '#4e565e', '#3a4a56', '#7a7462', '#8a6a48', '#9a9050']);
+    const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), rects = col => p6Rects(calls, col);
+    const counter = parts.find(p => p.col === '#1f3852' && p.y1 - p.y0 > 30), doors = parts.filter(p => /^#(24405e|2e4658)$/.test(p.col) && p.y1 - p.y0 > 20);
+    assert.ok(doors.length === 2 && doors.every(d => d.x0 >= counter.x0 && d.x1 <= counter.x1) && new Set(doors.map(d => d.col)).size === 2, `${at}: the counter's two doors, one a replacement in another shade`);
+    assert.ok(rects('#6a747c').length >= 2 && rects(wallTone('#6a747c')).length >= 2, `${at}: the paint worn beside the latches, on the counter and on the wall`);
+    const table = parts.filter(p => p.col === '#2c4c6e').sort((a, b) => (b.x1 - b.x0) - (a.x1 - a.x0))[0];
+    assert.ok(rects('#7e8a94').filter(q => p6In(q, { ...table, y0: table.y0 - 1, y1: table.y1 + 1 })).length >= 3, `${at}: the table's edge worn where hands rest`);
+    // the dispenser, on the worktop under one move: the newer head on the old foot, fresh bolts in the foot, its line taped and tied
+    const head = placed.find(p => p.col === '#4e565e'), foot = placed.find(p => p.col === '#2a4664' && p.y1 - p.y0 <= 2.5 && p.x0 >= head.x0 - 0.01 && p.x1 <= head.x1 + 0.01);
+    assert.ok(head && foot && foot.y0 > head.y1, `${at}: the newer head over the old foot`);
+    const bolts = placedRects(calls).filter(q => q.col === '#8a929a' && p6In([q.x, q.y, q.w, q.h], foot));
+    assert.ok(bolts.length >= 2, `${at}: fresh bolts in the old foot`);
+    const line = placed.find(p => p.col === '#3a4a56' && p.x0 >= head.x0 && p.x1 <= head.x1), tape = placed.find(p => p.col === '#7a7462');
+    assert.ok(line && tape && p6Meet(tape, line) && tape.y0 >= head.y1 - 0.01 && tape.x1 - tape.x0 <= 4, `${at}: tape round the dispenser's line`);
+    assert.ok(placedRects(calls).some(q => q.col === '#1e2a36' && p6Meet({ x0: q.x, x1: q.x + q.w, y0: q.y, y1: q.y + q.h }, line)), `${at}: a cable tie on it`);
+    const latch = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050');
+    assert.ok(latch && latch.x0 > X0(r, 0.7) && latch.y1 <= F - 18, `${at}: the stove cupboard's latch printed (${JSON.stringify(latch)})`);
+    assert.ok(tag && tag.y0 >= latch.y1 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its temporary tag hung under it`);
+    assert.ok(rects('#6a5038').filter(q => p6In(q, latch)).length >= 2, `${at}: its printed layers`);
+    const scuffs = rects('#5a6670').filter(([, y]) => y >= F - 7);
+    assert.ok(scuffs.filter(([x]) => x > X0(r, 0.7)).length >= 2 && scuffs.filter(([x]) => x < X0(r, 0.21)).length >= 2, `${at}: scuffs low on the stove and the counter`);
+    const bench = [r.x0 + W * SEATS.galley[0] - 14, r.x0 + W * SEATS.galley[SEATS.galley.length - 1] + 14];
+    assert.ok(scuffs.filter(([x, y]) => x > bench[0] && x < bench[1] && y < F - 5).length >= 2, `${at}: the bench's foot bar scuffed`);
+  }
+  const r2 = layoutBox(LAYOUTS.freighter, 'galley');
+  assert.ok(p6Still((c, t) => { const s = RS({ still: true, time: t, well: FW, damage: { marks: new Set(), severe: false } }); drawRoom(c, 'galley', r2, s); roomMessTable(c, r2, s); }), 'the same frame at any time under reduced motion');
+});
+test('the bridge reads old and patched: a replacement panel on fresh screws, a newer screen on an adapter plate, a printed switch guard tagged temporary, the comms cables tied and taped, wear where hands and boots go (#933)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'bridge'), F = r.floor, W = r.x1 - r.x0, xs = SEATS.bridge.map(f => Math.round((r.x0 + W * f) * 100) / 100);
+  for (const pr of [0.02, 0.3, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const s = RS({ w: phaseWeights(pr), zoom, well: FW, damage: { marks: new Set(), severe: false } }), at = `${pr} ${zoom}`;
+    const { calls } = p6Common(at, c => drawRoom(c, 'bridge', r, s), r, zoom, ['#34495a', '#4a5058', '#2a3c50', '#8a6a48', '#9a9050', '#7a7462']);
+    const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), rects = col => p6Rects(calls, col);
+    const panels = parts.filter(p => /^#(22405c|34495a)$/.test(p.col) && p.y1 - p.y0 > 15);
+    assert.equal(panels.length, xs.length, `${at}: an access panel on each console`);
+    const odd = panels.filter(p => p.col === '#34495a');
+    assert.ok(odd.length === 1 && odd[0].x0 > xs[2] && odd[0].x1 < xs[2] + 70, `${at}: the third console's panel a replacement in another shade`);
+    assert.ok(calls.filter((k, i) => k[0] === 'fillStyle' && k[1] === '#8a929a' && calls[i + 2] && calls[i + 2][0] === 'arc' && calls[i + 2][1] > odd[0].x0 && calls[i + 2][1] < odd[0].x1).length >= 4, `${at}: on fresh screws`);
+    // the last post's screen: a newer one on the old stand, an adapter plate under it with fresh bolts
+    const glass = p6Rects(calls, '#03121c').filter(([x]) => x > xs[3] && x < xs[3] + 70), plate = parts.find(p => p.col === '#4a5058'), stem = parts.find(p => p.col === '#2a3c50' && p.x0 > xs[3]);
+    assert.ok(glass.length === 1 && plate && plate.x0 > xs[3] && plate.y0 >= glass[0][1] + glass[0][3] && plate.x0 < glass[0][0] + glass[0][2] && plate.x1 > glass[0][0], `${at}: an adapter plate under the last post's screen`);
+    assert.ok(stem && stem.y0 >= plate.y1 - 0.5, `${at}: on the old stand's stem`);
+    assert.ok(rects('#8a929a').filter(q => p6In(q, plate)).length >= 2, `${at}: fresh bolts in the plate`);
+    const guard = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050');
+    assert.ok(guard && guard.x0 > xs[1] + 17 && guard.x1 < xs[1] + 40 && guard.x1 - guard.x0 <= 6, `${at}: a printed guard over a switch on the pilot's console`);
+    assert.ok(tag && tag.y0 >= guard.y1 && tag.x0 >= guard.x1 - 0.01 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its temporary tag`);
+    assert.ok(rects('#6a5038').filter(q => p6In(q, guard)).length >= 2, `${at}: its printed layers`);
+    const rk = commsRackBox(r), near6 = ([x, y, w, h]) => x >= rk.x + rk.w - 4 && x + w <= rk.x + rk.w + 6 && y > rk.y + 20 && y < rk.y + rk.h;
+    assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === '#3a3a40'), `${at}: the comms rack's cables`);
+    assert.ok(rects('#1e2a36').filter(near6).length >= 2, `${at}: cable ties on them`);
+    const tape = parts.find(p => p.col === '#7a7462');
+    assert.ok(tape && near6([tape.x0, tape.y0, tape.x1 - tape.x0, tape.y1 - tape.y0]), `${at}: a wrap of tape on them`);
+    assert.ok(rects('#7e8a94').length >= 2 * xs.length, `${at}: the consoles' edges worn where the hands rest`);
+    assert.ok(rects('#6a747c').length >= 2 * xs.length, `${at}: the grab handles and the headrests worn where hands pull`);
+    assert.ok(rects('#5a6670').filter(([, y]) => y >= F - 5).length >= 3 * xs.length, `${at}: scuffs at the foot plates and the knee recesses`);
+  }
+  const rb = layoutBox(LAYOUTS.freighter, 'bridge');
+  assert.ok(p6Still((c, t) => drawRoom(c, 'bridge', rb, RS({ still: true, time: t, well: FW, damage: { marks: new Set(), severe: false } }))), 'the same frame at any time under reduced motion');
+});
+test('the berths read old and patched on their shared fixtures: lockers with a replacement door, a patched curtain on a printed clip tagged temporary, a newer lamp on fresh bolts, tape, wear; every bunk the same plan (#933)', () => {
+  for (const n of [4, 8, 12]) for (const pr of [0.02, 0.3, 0.5]) for (const zoom of [0.82, 1.45]) {
+    const { r, s, bunks, well } = berthCase(n, pr, zoom), F = r.floor, at = `${n} bunks, ${pr}, ${zoom}`;
+    const { calls, placed } = p6Common(at, c => drawRoom(c, 'berths', r, s), r, zoom, [wallTone('#1f3a52'), wallTone('#22405a'), wallTone('#34444e'), '#5a4a5e', '#8a6a48', '#9a9050', '#7a7462', wallTone('#4a5058'), wallTone('#2e4458')]);
+    const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), rects = col => p6Rects(calls, col);
+    // the lockers on the back wall left of the bunks, under the name, one door a replacement, worn by the handles
+    const body = placed.find(p => p.col === wallTone('#1f3a52')), doors = placed.filter(p => [wallTone('#22405a'), wallTone('#34444e')].includes(p.col));
+    assert.ok(doors.length === 2 && new Set(doors.map(d => d.col)).size === 2 && doors.every(d => d.x0 >= body.x0 && d.x1 <= body.x1), `${at}: two locker doors, one a replacement in another shade`);
+    assert.ok(body.x1 < Math.min(...bunks.map(b => b.x)) && body.y0 > p6Name(r, zoom).y1, `${at}: the lockers (${JSON.stringify(body)}) left of the bunks, under the name`);
+    assert.ok(placedRects(calls).filter(q => q.col === wallTone('#6a747c') && p6In([q.x, q.y, q.w, q.h], body)).length >= 2, `${at}: the paint worn by their handles`);
+    // every bunk's grab rail worn alike in its middle (one plan, look.md rule 7)
+    for (const b of bunks) assert.ok(rects('#6a747c').some(([x, y]) => near(x, b.x + b.w / 2 - 4) && near(y, b.y + 1.1)), `${at}: the grab rail of the bunk at ${b.x},${b.y} worn in its middle`);
+    // the first bunk's curtain, drawn back: patched, held by a printed clip and its tag
+    const b0 = bunks[0], inB0 = p => p.x0 >= b0.x - 6 && p.x1 <= b0.x + b0.w && p.y0 >= b0.y - 30 && p.y1 <= b0.y;
+    const curtain = parts.find(p => p.col === '#4a3a5a' && inB0(p)), patch = parts.find(p => p.col === '#5a4a5e');
+    assert.ok(curtain && patch && inB0(patch) && patch.x0 >= curtain.x0 - 0.5 && patch.x1 <= curtain.x1 + 1, `${at}: a patch sewn on the first bunk's curtain`);
+    const clip = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050');
+    assert.ok(clip && inB0(clip) && clip.x1 - clip.x0 <= 6 && tag && inB0(tag) && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6 && tag.y0 >= clip.y0, `${at}: the printed clip holding it back, its temporary tag`);
+    const tape = parts.find(p => p.col === '#7a7462'), posts = parts.filter(p => p.col === '#2a4664' && Math.abs(p.x1 - p.x0 - 4) < 0.02 && near(p.y1, F));
+    assert.ok(tape && posts.some(q => p6Meet(q, tape)) && tape.x1 - tape.x0 <= 6, `${at}: tape round a post`);
+    assert.ok(rects('#3e4c5a').filter(([, y]) => y >= F - 4).length >= 4, `${at}: the deck scuffed by the bunks`);
+    // the wall unit's lamp: a newer one on an adapter plate on the old base, fresh bolts
+    const plate = placed.find(p => p.col === wallTone('#4a5058')), base = placed.find(p => p.col === wallTone('#2e4458') && p.y1 - p.y0 <= 2.5);
+    assert.ok(plate && base && plate.y1 <= base.y0 + 0.5 && plate.x0 >= base.x0 && plate.x1 <= base.x1 && well.x1 < base.x0, `${at}: the newer lamp's plate on the old base, in the corner`);
+    assert.ok(placedRects(calls).filter(q => q.col === wallTone('#8a929a') && p6Meet({ x0: q.x, x1: q.x + q.w, y0: q.y, y1: q.y + q.h }, base)).length >= 2, `${at}: fresh bolts in it`);
+  }
+  const { r } = berthCase(8, 0.3, 1.17);
+  assert.ok(p6Still((c, t) => drawRoom(c, 'berths', r, { ...berthCase(8, 0.3, 1.17).s, still: true, time: t })), 'the same frame at any time under reduced motion');
+});
