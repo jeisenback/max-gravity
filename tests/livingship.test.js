@@ -9,7 +9,7 @@ const { load } = require('./nodecontext');
 const { phaseWeights: weights, gReading } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights', 'gReading']);
 const phaseWeights = pr => JSON.parse(JSON.stringify(weights(pr)));  // out of the vm context, so plain objects
 const G = {};
-const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS, towerDeckY, deckFloor, layoutBox, couchX, towerHeight, camRun, camTarget, towerOutline, TOWER_BELL, outlineAt, berthBunk, berthSleeper, goTo, routineGo, handOver, couchDk, layoutRoomAt } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS', 'towerDeckY', 'deckFloor', 'layoutBox', 'couchX', 'towerHeight', 'camRun', 'camTarget', 'towerOutline', 'TOWER_BELL', 'outlineAt', 'berthBunk', 'berthSleeper', 'goTo', 'routineGo', 'handOver', 'couchDk', 'layoutRoomAt']);
+const { shipState, marksFor, shipRand, shipDay, routineSpot, routineWait, FIG_GROUNDED, SHIP_DAY, sceneStage, phase, posture, POSTURES, LADDER, drawPerson, camStep, viewOf, outlineLayout, outlineRoomAt, ROOMS, drawOutline, hangEnd, worldText, drawRoom, drawPhaseLight, drawThrustSign, roomAt, SEATS, figPose, figStyle, figureMood, roomMessTable, roomBox, roomWalls, roomScreen, gaugeNeedle, LAYOUTS, layoutRooms, climbRate, HAUNTS, towerDeckY, deckFloor, layoutBox, couchPlace, couchPlan, couchPlaces, COUCH_RACKS, towerHeight, camRun, camTarget, towerOutline, TOWER_BELL, outlineAt, berthBunk, berthSleeper, goTo, routineGo, handOver, layoutRoomAt } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'], { G, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['phase', 'posture', 'POSTURES', 'LADDER', 'drawPerson', 'camStep', 'viewOf', 'outlineLayout', 'outlineRoomAt', 'ROOMS', 'drawOutline', 'hangEnd', 'worldText', 'drawRoom', 'drawPhaseLight', 'drawThrustSign', 'sceneStage', 'shipRand', 'shipDay', 'routineSpot', 'SHIP_DAY', 'routineWait', 'FIG_GROUNDED', 'marksFor', 'shipState', 'figStyle', 'figureMood', 'roomMessTable', 'roomAt', 'SEATS', 'figPose', 'roomBox', 'roomWalls', 'roomScreen', 'gaugeNeedle', 'LAYOUTS', 'layoutRooms', 'climbRate', 'HAUNTS', 'towerDeckY', 'deckFloor', 'layoutBox', 'couchPlace', 'couchPlan', 'couchPlaces', 'COUCH_RACKS', 'towerHeight', 'camRun', 'camTarget', 'towerOutline', 'TOWER_BELL', 'outlineAt', 'berthBunk', 'berthSleeper', 'goTo', 'routineGo', 'handOver', 'layoutRoomAt']);
 
 const fakeCtx = () => { const calls = [], fonts = [], args = [], styles = []; let depth = 0; const c = new Proxy({}, { get: (o, k) => k in o ? o[k] : k === 'calls' ? calls : k === 'depth' ? depth : k === 'save' ? () => { depth++; calls.push(k); } : k === 'restore' ? () => { depth--; calls.push(k); } : k === 'fonts' ? fonts : k === 'args' ? args : k === 'styles' ? styles : k === 'measureText' ? s => ({ width: String(s).length * 6 }) : /Gradient|createPattern/.test(k) ? () => ({ addColorStop() {} }) : (...a) => { calls.push(k); if (/^(moveTo|lineTo|quadraticCurveTo|translate|rotate|fillRect)$/.test(k)) args.push(k + a.map(v => Math.round(v * 1000) / 1000).join()); }, set: (o, k, v) => { if (k === 'font') fonts.push(v); if (k === 'fillStyle' || k === 'strokeStyle') styles.push(String(v).toLowerCase()); o[k] = v; return true; } }); return c; };
 test('a scene is staged where it says, by its words, or by who is in it', () => {
@@ -63,28 +63,69 @@ test('on a crash couch a person lies flat on their back (#972)', () => {
     assert.ok(at.head.x < 400, `face ${face}: the head toward the couch's head end, on the left`);
   }
 });
-test('one couch each, 60 apart on a deck and clear of the well, the overflow on the mess deck (#972, #1023)', () => {
-  const lay = LAYOUTS.freighter, W = lay.width, band = [(lay.well.x - lay.well.w / 2) * W - 30, (lay.well.x + lay.well.w / 2) * W + 30];
-  const check = (xs, what) => {
-    const s = xs.map(x => x * W).sort((a, b) => a - b);
-    for (let k = 1; k < s.length; k++) assert.ok(s[k] - s[k - 1] >= 60, `${what}: couches at ${s[k - 1]} and ${s[k]}`);
-    for (const x of s) assert.ok(x < band[0] || x > band[1], `${what}: a couch at ${x} over the well's band ${band}`);
-  };
-  check([couchX(0, 2), couchX(0, 2, 'captain')], 'the bridge');
-  // up to 13 (12 aboard and the cat): eight fit the berths, four a side of the well; the rest go up to the mess deck, the head first, then the
-  // galley's end clear of the bench and the mess table (#1023). On each deck none overlaps another or the well, and each is in a room on it.
-  const berths = roomAt('berths').deck, mess = roomAt('galley').deck, g = layoutBox(lay, 'galley'), benchX0 = g.x0 + (g.x1 - g.x0) * SEATS.galley[0] - 14;
-  for (let n = 2; n <= 13; n++) {
-    const all = Array.from({ length: n - 1 }, (_, k) => ({ x: couchX(k + 1, n), dk: couchDk(k + 1) }));
-    assert.equal(all.filter(c => c.dk === berths).length, Math.min(n - 1, 8), `${n} aboard: the berths take up to eight`);
-    assert.ok(all.every(c => c.dk === berths || c.dk === mess), `${n} aboard: on the crew deck or the mess deck`);
-    for (const dk of [berths, mess]) check(all.filter(c => c.dk === dk).map(c => c.x), `${n} aboard, deck ${dk}`);
-    for (const c of all) {
-      assert.ok(layoutRoomAt(lay, c.dk, (c.x * W) - 34) && layoutRoomAt(lay, c.dk, (c.x * W) + 28) === layoutRoomAt(lay, c.dk, (c.x * W) - 34), `${n} aboard: the couch at ${c.x * W} on deck ${c.dk} inside one room`);
-      if (c.dk === mess && c.x * W < lay.well.x * W) assert.ok(c.x * W + 28 <= benchX0, `${n} aboard: the galley's couch at ${c.x * W} clear of the bench and the table (from ${benchX0})`);
-    }
+// #990: in the hard burn the bridge's station chairs recline into crash couches (the gunnery's stay upright: no room between its consoles
+// and the torpedo rack to lie down) and the berths keep a rack of them. couchPlan puts each of the company (in bunkOwners' order) on one: a
+// station's own first (its role's post on the bridge, the hand at theirs, else a free bridge post), then the rack in order, then a station
+// left free, then a bunk; no two in one place, up to the largest company the game carries.
+const planKeys = plan => plan.map(q => (q.at === 'station' ? `${q.room}:${q.seat}` : q.at === 'rack' ? `rack ${q.k}` : 'bunk'));
+test('who lies where: a station\'s own on its couch, the rest on the rack in order, then a free station, then a bunk (#990)', () => {
+  const start = ['you', 'captain', 'pilot', 'engineer', 'slicer', 'xo', 'icehand'];
+  assert.equal(planKeys(couchPlan(start, 'gunner')).join(), 'bridge:3,bridge:2,bridge:1,rack 0,bridge:0,rack 1,rack 2', 'the hired start, a gunner hand: the captain, the pilot and the slicer at their posts, the hand at the free one');
+  assert.equal(planKeys(couchPlan(['you', 'captain', 'pilot', 'gunner', 'slicer'], 'engineer'))[0], 'bridge:3', 'a hand whose post has no station: a free bridge post');
+  assert.equal(planKeys(couchPlan(['you', 'captain', 'gunner', 'engineer', 'slicer'], 'pilot')).slice(0, 3).join(), 'bridge:1,bridge:2,rack 0', 'a pilot hand at the helm, a crew gunner on a rack');
+  assert.equal(planKeys(couchPlan(['you', 'pilot'], null)).join(), 'bridge:0,bridge:1', 'an owner (no post): a free bridge post');
+  const many = ['you', 'captain', 'pilot', 'slicer', 'engineer', 'xo', 'icehand', 'passenger', 'passenger', 'passenger', 'passenger', 'engineer', 'cook', 'medic'];
+  const plan = planKeys(couchPlan(many, 'gunner'));
+  assert.equal(plan.slice(7).join(), 'bunk,bunk,bunk,bunk,bunk,bunk,bunk', `past the rack, a bunk (${plan})`);
+  assert.equal(planKeys(couchPlan(['you', 'captain', 'engineer', 'xo', 'icehand', 'cook', 'medic', 'passenger'], 'engineer')).slice(5).join(), 'bridge:1,bridge:3,bunk', 'the rack full, a free station before a bunk');
+  for (const [roles, hand] of [[start, 'gunner'], [many, 'gunner'], [many, 'engineer'], [many, 'pilot'], [many.slice(1), null], [['you', 'gunner', 'gunner', 'pilot', 'pilot'], 'slicer']]) {
+    const p = couchPlan(roles, hand), keys = planKeys(p).filter(k => k !== 'bunk');
+    assert.equal(new Set(keys).size, keys.length, `${roles}: no two on one couch (${keys})`);
+    assert.equal(p.length, roles.length, `${roles}: everyone placed`);
+    const own = { slicer: 'bridge:0', pilot: 'bridge:1', captain: 'bridge:2' };
+    for (const [role, key] of Object.entries(own)) { const i = roles.findIndex(r => (r === 'you' ? hand : r) === role); if (i >= 0) assert.equal(planKeys(p)[i], key, `${roles}: the first ${role} at their post`); }
+    assert.ok(p.filter(q => q.at === 'bunk').length === Math.max(0, roles.length - 7), `${roles}: a bunk only past the seven couches`);
   }
-  assert.equal(couchDk(0), roomAt('bridge').deck, 'yours on the bridge');
+});
+test('past the couches, each straps into their own bunk, or one whose owner is on a couch, and no two into one, on a ship of any size (#990)', () => {
+  const roles = n => ['you', 'captain', 'pilot', 'engineer', 'slicer', 'xo', 'icehand', 'passenger', 'passenger', 'passenger', 'passenger', 'cook', 'medic', 'engineer'].slice(0, n);
+  for (const nb of [4, 5, 6, 10, 12]) for (let n = 1; n <= nb + 2; n++) {
+    const plan = couchPlan(roles(n), 'gunner', nb), bunks = plan.filter(q => q.at === 'bunk').map(q => q.b), at = `${n} aboard, ${nb} berths`;
+    assert.equal(new Set(bunks).size, bunks.length, `${at}: no two in one bunk (${bunks})`);
+    plan.forEach((q, k) => { if (q.at === 'bunk') assert.ok(q.b >= 0 && q.b < nb && (q.b === k || k >= nb || plan[q.b].at !== 'bunk'), `${at}: the ${k}th in bunk ${q.b}, their own or a free one`); });
+    plan.forEach((q, k) => { if (q.at === 'bunk' && k < nb) assert.equal(q.b, k, `${at}: the ${k}th in their own bunk`); });
+    plan.forEach((q, k) => { if (q.at === 'bunk') { const c = couchPlace(q, k, nb); assert.equal(c.bunk, q.b, `${at}: walked to the bunk they strap into`); } });
+  }
+  assert.equal(couchPlan(roles(8), 'gunner', 6).filter(q => q.at === 'bunk').map(q => q.b).join(), '0', 'the gunship (6 berths) with eight aboard: the eighth in the hand\'s bunk, the first free');
+});
+test('each place is in its room: a station couch at its seat, a rack couch on its tier, a bunk in the berths (#990)', () => {
+  const lay = LAYOUTS.freighter, W = lay.width, racks = couchPlaces();
+  assert.equal(racks.length, 3, 'three rack couches, all in the berths'); assert.ok(racks.every(c => c.room === 'berths'));
+  assert.ok(COUCH_RACKS.every(k => k.room === 'berths'), 'no rack on the bridge');
+  const plan = couchPlan(['you', 'captain', 'pilot', 'engineer', 'slicer', 'xo', 'icehand', 'passenger', 'passenger', 'passenger', 'passenger', 'cook', 'medic', 'engineer'], 'gunner');
+  plan.forEach((q, k) => {
+    const c = couchPlace(q, k, 12), at = `${k} (${JSON.stringify(q)})`;
+    if (q.at === 'station') {
+      const r = roomAt(q.room), sx = (r.x0 + r.w * SEATS[q.room][q.seat]) * W;
+      assert.equal([c.room, c.dk, c.station, c.lift].join(), ['bridge', r.deck, q.seat, 23].join(), at);
+      assert.ok(Math.abs(c.x * W - (sx - 20)) < 1e-6, `${at}: the hip behind the seat, toward the headrest (${c.x * W}, the seat ${sx})`);
+    } else if (q.at === 'rack') assert.equal([c.room, c.couchAt, c.lift, c.station, Math.round(c.x * W * 100)].join(), ['berths', q.k, racks[q.k].lift, null, Math.round(racks[q.k].x * 100)].join(), at);
+    else assert.ok(c.room === 'berths' && c.couchAt === null && c.station === null && c.lift === 0 && c.bunk >= 0, at);
+  });
+});
+test('a person on a couch lies on its pad, the head on its headrest: in a rack, or on a station\'s couch reclined (#990)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'berths'), F = r.floor;
+  for (const c of couchPlaces()) {
+    const at = drawPerson(fakeCtx(), { name: 'couch', face: 1, frame: 0 }, c.x, F - c.lift, { color: '#ffb347' }), rack = COUCH_RACKS.find(k => c.x > k.x && c.x < k.x + 84);
+    assert.ok(rack && at.head.x - 8 > rack.x + 3 && at.foot.x + 4 < rack.x + 81, `couch at ${c.x}: the person (${at.head.x} to ${at.foot.x}) between the rack's posts`);
+    assert.ok(at.head.x > c.x - 41 && at.head.x < c.x - 26, `couch at ${c.x}: the head (${at.head.x}) over the headrest`);
+    assert.ok(Math.abs(at.head.y - (F - c.lift - 8)) < 3, `couch at ${c.x}: lying on the pad (${at.head.y})`);
+  }
+  // a bridge station's couch at 400 reclined flat: the headrest's middle 50 behind the seat; the boots short of the console's top, which
+  // overhangs from 17 in front of the seat (rooms.js roomBridge), and of its grab handle, from 21
+  const at = drawPerson(fakeCtx(), { name: 'couch', face: 1, frame: 0 }, 400 - 20, 100 - 23, { color: '#ffb347' });
+  assert.ok(Math.abs(at.head.x - (400 - 50)) < 4, `the head (${at.head.x}) on the headrest`);
+  assert.ok(at.foot.x + 4 < 400 + 17, `the boots (${at.foot.x} and their toe) short of the console's overhang`);
 });
 test('someone on their way to the well walks; only on the ladder do they climb (#972)', () => {
   const p = o => ({ role: 'gunner', room: 'galley', x: 0.2, dk: 1, tdk: 3, tx: 0.3, seat: 0.3, couch: 0, ...o });
@@ -2815,3 +2856,120 @@ test('the lighting pass leaves its saves balanced and writes no text (#932)', ()
   assert.equal(lightApi.berthReading(r, RS({ w: phaseWeights(0.3), night: 0.5, asleep: 1, berths: 12, well: FW })).length, 10, 'the evening: every bunk lit but the one slept in and the one shut');
   assert.equal(lightApi.bunkReading(false, false, phaseWeights(0.02), 0.5), 0, 'nobody reads in the hard burn');
 });
+
+// #990: the crash couches are part of the rooms, drawn in every phase to the room standard: a pad, a headrest, a harness, a frame on posts
+// bolted to the deck, solid in the box with a contact shadow, two tones a step below the people, one pad older and one patched; empty, the
+// harness hangs loose. None of them over a prop, a bunk, a seat, the well or the room's name.
+const couchApi = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['COUCH_RACKS', 'COUCH_W', 'couchPlaces', 'bridgeGlass', 'berthCorner']);
+const couchCase = (id, n, pr, zoom, o = {}) => {
+  const r = layoutBox(LAYOUTS.freighter, id);
+  return { r, s: RS({ w: phaseWeights(pr), zoom, berths: n, asleep: 0, well: FW, damage: { marks: new Set(), severe: false }, ...o }) };
+};
+const couchPads = ['#3e5266', '#4c4e4a'];
+test('the crash couches are drawn in every phase, in the box, two tones a step below the people, old and patched, nothing under 12 px (#990)', () => {
+  const count = id => couchApi.COUCH_RACKS.filter(k => k.room === id).reduce((t, k) => t + k.tiers, 0);
+  for (const id of ['berths']) for (const n of [4, 10, 12]) for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = couchCase(id, n, pr, zoom), at = `${id}, ${n} berths, ${pr}, ${zoom}`;
+    const c = fakeCtx(); drawRoom(c, id, r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, id, r, s);
+    const parts = filledParts(calls).filter(p => p.outlined), pads = parts.filter(p => couchPads.includes(p.col));
+    assert.equal(pads.length, 2 * count(id), `${at}: a pad and a headrest for each of its ${count(id)} couches`);
+    assert.equal(parts.filter(p => p.col === '#4c4e4a').length, 2, `${at}: one couch's pad and headrest older ones`);
+    assert.ok(parts.some(p => p.col === '#4e5a66'), `${at}: one pad patched`);
+    for (const col of ['#24405c', '#3e5266', '#4c4e4a', '#4e5a66', '#1c3249']) { const v = rgbOf(col); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} a step below the people`); }
+    for (const p of parts.filter(q => rgbOf(q.col))) { const v = rgbOf(p.col); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${p.col} brighter than the props may be`); }
+    // in the box: the pads' tops showing, the posts' sides toward the eye, a contact shadow at each post's foot
+    assert.ok(calls.some(k => k[0] === 'fillStyle' && k[1] === box.figShade('#3e5266', 1.3)) || calls.some(k => k[0] === 'fillStyle' && String(k[1]).startsWith('rgb(')), `${at}: the pads solid`);
+    const shadows = filledParts(calls).filter(p => p.col === 'rgba(2,5,9,0.5)').map(partBox);
+    for (const k of couchApi.COUCH_RACKS.filter(q => q.room === id)) for (const px of [k.x, k.x + couchApi.COUCH_W - 3]) assert.ok(shadows.some(b => b.x0 <= px - 4 && b.x1 >= px + 7 && Math.abs(b.y1 - r.floor) < 0.01), `${at}: a contact shadow under the post at ${px}`);
+  }
+});
+test('an empty couch\'s harness hangs loose; with someone strapped in, theirs is on them; the frame the same at any time under reduced motion (#990)', () => {
+  for (const id of ['berths']) {
+    const buckles = couched => { const { r, s } = couchCase(id, 10, 0.02, 1.17, { couched }), { ctx, calls } = recorder(); drawRoom(ctx, id, r, s); return calls.filter(k => k[0] === 'fillStyle' && k[1] === '#7a8794').length; };
+    const mine = couchApi.couchPlaces().map((c, k) => [c, k]).filter(([c]) => c.room === id).map(([, k]) => k);
+    assert.equal(buckles([]) - buckles(mine), mine.length, `${id}: a loose buckle on each empty couch, none on a taken one`);
+    const r = layoutBox(LAYOUTS.freighter, id);
+    assert.ok(p6Still((c, t) => drawRoom(c, id, r, RS({ still: true, time: t, well: FW, berths: 10, couched: mine.slice(1), damage: { marks: new Set(), severe: false } }))), `${id}: the same frame at any time under reduced motion`);
+  }
+});
+test('no couch is over a prop, a bunk, a seat, the well or the room\'s name (#990)', () => {
+  const W = LAYOUTS.freighter.width, places = couchApi.couchPlaces();
+  const span = k => { const top = Math.max(...places.filter(c => c.x > k.x && c.x < k.x + couchApi.COUCH_W).map(c => c.lift)) + 14; return { x0: k.x, x1: k.x + couchApi.COUCH_W, top }; };  // its posts, and the person on its top couch
+  for (const k of couchApi.COUCH_RACKS) {
+    const r = layoutBox(LAYOUTS.freighter, k.room), b = span(k), F = r.floor, at = `the ${k.room}'s rack at ${k.x}`;
+    assert.ok(b.x0 >= r.x0 && b.x1 <= r.x1 && (b.x1 <= FW.x0 - 2 || b.x0 >= FW.x1 + 6), `${at}: in the room, clear of the well (${FW.x0} to ${FW.x1})`);
+    for (const zoom of [0.82, 1.17, 1.45]) { const name = { x1: r.x0 + 12 + 60 / zoom, y1: r.top + 8 + 17 / zoom }; assert.ok(b.x0 >= name.x1 || F - b.top >= name.y1, `${at}: clear of the room's name at ${zoom}`); }
+    assert.ok(F - b.top >= r.top + 10, `${at}: under the ceiling`);
+    if (k.room === 'bridge') {
+      const seats = SEATS.bridge.map(f => r.x0 + (r.x1 - r.x0) * f), g = couchApi.bridgeGlass(r, FW);
+      for (const sx of seats) assert.ok(b.x1 + 10 <= sx - 14 || b.x0 >= sx + 70, `${at}: clear of the seat at ${sx} and its console`);
+      assert.ok(F - b.top > g.y + g.h + 4, `${at}: under the window (${g.y + g.h + 4})`);
+    } else for (let n = 1; n <= 12; n++) {
+      const bunks = Array.from({ length: n }, (_, j) => berthBunk(r, n, j, FW));
+      for (const q of bunks) assert.ok(q.x - 2 >= b.x1 || q.x + q.w + 2 <= b.x0, `${at}, ${n} berths: clear of the bunk at ${q.x}`);
+      assert.ok(couchApi.berthCorner(r, n, FW).x0 <= b.x0 || b.x1 <= FW.x0, `${at}, ${n} berths: in the crew's corner, or left of the well`);
+    }
+  }
+  // the things on the berths' back wall, the lockers and the crew's corner, clear of the couches and their people, whatever swings
+  for (const pr of [0.02, 0.3, 0.5]) for (const time of [0, 1.7, 3.1]) {
+    const r = layoutBox(LAYOUTS.freighter, 'berths'), { ctx, calls } = recorder(); berthsIn(ctx, r, RS({ w: phaseWeights(pr), time, berths: 10, well: FW }));
+    const onWall = placedParts(calls).filter(p => p.at[0] || p.at[1]).map(p => ({ col: p.col, ...partBox({ pts: p.pts.map(q => q.slice(0, 2)) }) }));
+    for (const k of couchApi.COUCH_RACKS.filter(q => q.room === 'berths')) {
+      const b = span(k), x1 = k.x + couchApi.COUCH_W + 8;  // and its side toward the eye, a tenth of the way to it
+      for (const p of onWall) assert.ok(p.x1 <= b.x0 || p.x0 >= x1 || p.y1 <= r.floor - b.top, `${pr} ${time}: a ${p.col} part on the wall ${JSON.stringify(p)} behind the rack at ${k.x}`);
+    }
+  }
+  assert.ok(places.every(c => c.x * 1 > 0 && c.x < W), 'every couch on the hull');
+});
+
+test('the bridge\'s station chairs are crash couches: upright at work, flat in the hard burn, clear of the consoles and the well (#990)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'bridge'), F = r.floor, W = r.x1 - r.x0, xs = SEATS.bridge.map(f => Math.round((r.x0 + W * f) * 100) / 100), bays = box.roomBays(r, FW);
+  for (const [i, x] of xs.entries()) for (const rec of [0, 0.5, 1]) {
+    const at = `seat ${i} at ${x}, reclined ${rec}`, { ctx, calls } = recorder(); box.roomIn(bays, () => couchSeat.roomBridgeSeat(ctx, x, F, rec));
+    const turns = calls.filter(k => k[0] === 'rotate').map(k => k[1]);
+    assert.equal(turns.length, rec ? 2 : 0, `${at}: the back and the leg rest turned only when reclined`);
+    for (const a of turns) assert.ok(near(a, -rec * Math.PI / 2), `${at}: by ${a}`);
+    assert.equal(calls.filter(k => k[0] === 'save').length, calls.filter(k => k[0] === 'restore').length, `${at}: every save restored`);
+    const parts = filledParts(calls).filter(p => p.outlined);
+    for (const col of ['#284664', '#2e4a68', '#2b4766', '#1c3249']) assert.ok(parts.some(p => p.col === col), `${at}: ${col}`);
+    for (const p of parts.filter(q => rgbOf(q.col))) { const v = rgbOf(p.col); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${p.col} a step below the people`); }
+  }
+  // reclined flat, where its parts land (the turns applied): it runs from its headrest, 54 behind the seat, to its leg rest's end; clear of
+  // every other console (each 17 to 70 in front of its seat), of its own console's top (from 17 in front, F - 42 to F - 33) and of its grab
+  // handle (21 to 23 in front, F - 30 to F - 17), in the room and clear of the well's shaft
+  for (const [i, x] of xs.entries()) {
+    const { ctx, calls } = recorder(); box.roomIn(bays, () => couchSeat.roomBridgeSeat(ctx, x, F, 1));
+    const pts = turnedPoints(calls), x0 = Math.min(...pts.map(q => q[0])), x1 = Math.max(...pts.map(q => q[0]));
+    for (const [j, y] of xs.entries()) if (j !== i) assert.ok(x1 <= y + 17 || x0 >= y + 70, `seat ${i}: flat (${x0} to ${x1}) clear of the console at ${y + 17} to ${y + 70}`);
+    for (const [bx0, bx1, by0, by1, what] of [[x + 17, x + 70, F - 42, F - 33, 'the console\'s top'], [x + 21, x + 23, F - 30, F - 17, 'its grab handle']]) {
+      assert.ok(!pts.some(([px, py]) => px > bx0 && px < bx1 && py > by0 && py < by1), `seat ${i}: clear of ${what}`);
+    }
+    assert.ok(x1 < x + 21, `seat ${i}: its leg rest (to ${x1}) short of the grab handle`);
+    assert.ok(x0 > r.x0 + 4 && (x1 < FW.x0 || x0 > FW.x1), `seat ${i}: in the room, clear of the well`);
+  }
+  assert.ok(p6Still((c, t) => drawRoom(c, 'bridge', r, RS({ still: true, time: t, well: FW, recline: [1, 1, 0, 0.5], damage: { marks: new Set(), severe: false } }))), 'the same frame at any time under reduced motion');
+});
+test('the gunnery\'s chairs are crash seats, upright: a headrest and a stowed leg rest; the medbay\'s stool stays a stool (#990)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'gunnery'), F = r.floor;
+  for (const back of [1, -1, 0]) {
+    const { ctx, calls } = recorder(); box.roomIn(box.roomBays(r, FW), () => couchSeat.roomStool(ctx, 100, F, back));
+    const parts = filledParts(calls).filter(p => p.outlined);
+    assert.equal(parts.filter(p => p.col === '#284664').length, back ? 1 : 0, `back ${back}: a headrest on a chair, none on a stool`);
+    assert.equal(parts.filter(p => p.col === '#2b4766').length, back ? 1 : 0, `back ${back}: a leg rest on a chair`);
+    assert.equal(calls.filter(k => k[0] === 'rotate').length, 0, `back ${back}: upright`);
+  }
+});
+// Every point of every path drawn, where it lands on the screen (translations and turns applied).
+const turnedPoints = calls => {
+  const out = [], stack = []; let m = [1, 0, 0, 1, 0, 0];
+  const at = (x, y) => [m[0] * x + m[2] * y + m[4], m[1] * x + m[3] * y + m[5]], mul = (a, b) => [a[0] * b[0] + a[2] * b[1], a[1] * b[0] + a[3] * b[1], a[0] * b[2] + a[2] * b[3], a[1] * b[2] + a[3] * b[3], a[0] * b[4] + a[2] * b[5] + a[4], a[1] * b[4] + a[3] * b[5] + a[5]];
+  for (const [k, ...a] of calls) {
+    if (k === 'save') stack.push(m); else if (k === 'restore') m = stack.pop(); else if (k === 'translate') m = mul(m, [1, 0, 0, 1, a[0], a[1]]);
+    else if (k === 'rotate') m = mul(m, [Math.cos(a[0]), Math.sin(a[0]), -Math.sin(a[0]), Math.cos(a[0]), 0, 0]);
+    else if (k === 'moveTo' || k === 'lineTo') out.push(at(a[0], a[1])); else if (k === 'quadraticCurveTo') out.push(at(a[2], a[3]));
+  }
+  return out;
+};
+const couchSeat = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomBridgeSeat', 'roomStool']);

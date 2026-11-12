@@ -107,13 +107,49 @@ function roomPorthole(ctx, x, y, rad, spin) {
   for (let k = 0; k < 8; k++) roomDot(ctx, x + Math.cos(k * Math.PI / 4 + Math.PI / 8) * (rad + 3.2), y + Math.sin(k * Math.PI / 4 + Math.PI / 8) * (rad + 3.2), 1, '#56708c');
 }
 
-// A crash couch at x on the deck F, unfolded by d (0 to 1, #925): at 0 only its plate in the deck shows; the pad rises flat out of it, 60 long,
-// its headrest at the head end on the left, where the person on it lies on their back (#972).
-function roomCouchFlat(ctx, x, F, d) {
-  roomBox(ctx, x - 32, F - 3, 60, 3, '#1a3048');
-  if (d <= 0) return;
-  roomBox(ctx, x - 32, F - 7 * d, 60, 7 * d, '#23405e');
-  roomBox(ctx, x - 34, F - 11 * d, 12, 4 * d, '#2c4c6e');
+// The crash couches (#990): fixed in the rooms and drawn in every phase. The bridge's station chairs are couches that recline (roomBridgeSeat);
+// the rest are in a rack bolted to the berths' deck, each couch a person long. COUCH_RACKS are the racks: one, three high in the left bay
+// between the lockers under the room's name and the first bunk column, clear of the name down to the smallest window (#937). A rack is COUCH_W
+// wide at x (its left post's left edge), its couches COUCH_TIER apart, the lowest one's pad COUCH_PAD over the deck. couchPlaces: the couches in
+// order, k from 0, each with its room, the hip x of the person who lies on it (world units) and lift, how high its pad is over the deck, where
+// that person lies.
+const COUCH_W = 84, COUCH_TIER = 27, COUCH_PAD = 10, COUCH_DEPTH = 0.5;
+const COUCH_RACKS = [{ room: 'berths', x: 86, tiers: 3 }];
+const couchPlaces = () => COUCH_RACKS.flatMap(k => Array.from({ length: k.tiers }, (_, t) => ({ room: k.room, x: k.x + 44, lift: COUCH_PAD + t * COUCH_TIER })));
+const COUCH_OLD = 1, COUCH_PATCHED = 2;  // old and patched (point 6): one couch's pad an older one in another shade, another's patched
+// A crash couch (#990) for someone lying on their back at hip x, its pad's top at P: the contoured pad, rising a little under the knees, the
+// headrest at the head end on the left, the frame under them bolted to the rack's posts by a bracket at each end, and the harness. k: its
+// number (couchPlaces); on: someone strapped in on it, the figure's own straps over them; empty, the harness hangs loose over the pad's edge.
+function roomCouch(ctx, x, P, k, on) {
+  const n = v => Math.round(v * 100) / 100, pad = k === COUCH_OLD ? '#4c4e4a' : '#3e5266';
+  for (const bx of [x - 44, x + 35]) { roomPart(ctx, roomRound(n(bx), n(P + 3.5), 6, 6, 0.6), '#1c3249', { top: 0.5 }); roomDot(ctx, bx + 3, P + 6.5, 0.6, '#56708c'); }  // the brackets
+  roomPart(ctx, roomRound(n(x - 41), n(P + 5), 78, 3, 1), '#24405c', { top: 0.6, under: 0.6, solid: COUCH_DEPTH, shadow: false });
+  roomPart(ctx, `M ${n(x - 27)} ${n(P)} L ${n(x + 18)} ${n(P)} Q ${n(x + 28)} ${n(P - 3)} ${n(x + 36)} ${n(P - 2)} L ${n(x + 36)} ${n(P + 5)} L ${n(x - 27)} ${n(P + 5)} Z`, pad, { top: 1, under: 0.8, solid: COUCH_DEPTH, shadow: false });
+  for (const sx of [x - 12, x + 4]) roomFlat(ctx, sx, P + 0.8, 0.6, 3.4, figShade(pad, 0.7 * roomTone));  // the pad's quilting seams
+  roomPart(ctx, roomRound(n(x - 41), n(P - 6), 15, 11, 3), pad, { top: 1, side: -1.2, solid: COUCH_DEPTH, shadow: false });
+  if (k === COUCH_PATCHED) {  // a patch on the pad, stitched round
+    roomPart(ctx, roomRound(n(x + 6), n(P + 0.6), 9, 3.6, 0.5), '#4e5a66', { top: 0 });
+    for (let s = 0; s < 4; s++) roomFlat(ctx, x + 6.8 + s * 2.2, P + 0.3, 0.5, 0.6, '#2a3440');
+  }
+  for (const ax of [x - 22, x - 14, x + 4]) roomFlat(ctx, ax - 1, P + 0.5, 2.5, 1.6, '#3a3a34');  // the harness's anchor plates on the pad
+  if (on) return;
+  ctx.strokeStyle = roomTint('#5a4e3a'); ctx.lineWidth = 1.3; ctx.beginPath();  // the harness hanging loose: the shoulder straps and the lap belt, over the pad's front
+  ctx.moveTo(x - 22, P + 1); ctx.quadraticCurveTo(x - 23, P + 6, x - 19, P + 10.5);
+  ctx.moveTo(x - 14, P + 1); ctx.quadraticCurveTo(x - 15, P + 6, x - 11, P + 10);
+  ctx.moveTo(x + 4, P + 1); ctx.quadraticCurveTo(x + 3, P + 6, x + 6, P + 10); ctx.stroke();
+  roomFlat(ctx, x + 4.8, P + 9.5, 2.6, 2, '#7a8794');  // the buckle
+}
+// A rack of COUCH_W at x0 on the deck F, tiers couches high, the first couch's number first: its two posts from the deck to the top couch's
+// headrest, each on a foot plate bolted to the deck, solid in the box with their shadow on the strip, and a couch on each tier (roomCouch).
+// couched: the numbers of the couches someone is strapped into.
+function roomCouchRack(ctx, x0, F, tiers, first, couched = []) {
+  const n = v => Math.round(v * 100) / 100, top = n(F - COUCH_PAD - (tiers - 1) * COUCH_TIER - 6);
+  for (const px of [x0, x0 + COUCH_W - 3]) {
+    roomPart(ctx, roomRound(n(px), top, 3, n(F - top), 0.8), '#24405c', { top: 0, side: 1, solid: COUCH_DEPTH });
+    roomPart(ctx, roomRound(n(px - 2), F - 2, 7, 2, 0.6), '#1c3249', { top: 0.5 });
+    for (const bx of [px - 1, px + 4]) roomDot(ctx, bx, F - 1, 0.5, '#56708c');
+  }
+  for (let t = 0; t < tiers; t++) roomCouch(ctx, x0 + 44, F - COUCH_PAD - t * COUCH_TIER, first + t, couched.includes(first + t));
 }
 // A jump seat at x on the deck F, for someone strapped in at the flip (#927): the rail on the wall behind them (face: the way they face), and
 // the seat and its back folded down from it by d (0 to 1, the flip's weight).
@@ -155,6 +191,8 @@ function roomStool(ctx, x, F, back) {
     const hx = back > 0 ? b1 : b0;  // the harness: a shoulder strap down the back's front to its buckle, and the lap belt
     ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.moveTo(hx + lean, F - 47); ctx.quadraticCurveTo(hx - 2 * back, F - 36, hx - back, F - 24); ctx.lineTo(hx + 6 * back, F - 22); ctx.stroke();
     roomFlat(ctx, hx - back - 1.25, F - 35, 2.5, 2, '#7a8794');
+    roomPart(ctx, roomRound(n(b0 + lean - 1.5), F - 57, 8, 8, 2.5), '#284664', { top: 1, side: back > 0 ? -1.5 : 1.5 });  // a crash seat's headrest (#990)
+    roomPart(ctx, roomRound(back > 0 ? n(sx + 8) : n(sx - 12.5), F - 21, 4.5, 13, 1.5), '#2b4766', { top: 0.6, side: 1 });  // and its leg rest, stowed
   }
   roomPart(ctx, roomRound(sx - 10, F - FIG_SEAT, 20, 4.5, 2), '#2a4664', { top: 1, under: 1, solid: 0.25 });
 }
@@ -457,15 +495,15 @@ function roomEngine(ctx, r, s, X) {
 
 // Bunk k of n in the berths room r, three tiers high (look.md, rule 1, #1023), a person long (BUNK, #972): its left end x, its length w, and y
 // the top of its frame (the mattress lies on it, 5 deep). The columns stand either side of the ladder well (well: its band in world x, the room's
-// middle by default), the left ones from BERTH_NAME in from the room's left wall, which is kept clear for the room's name plate (shiplife.js, 13px
-// down to the smallest window, #937), and the right ones from its right wall. The tiers are BERTH_TIER apart: the bottom one's frame on the deck,
+// middle by default), the left ones from BERTH_NAME in from the room's left wall, past the room's name plate (shiplife.js, 13px down to the
+// smallest window, #937) and the crash couches' rack beside it (COUCH_RACKS, #990), to 2 short of the well, and the right ones from its right wall. The tiers are BERTH_TIER apart: the bottom one's frame on the deck,
 // the top one under the ceiling, and over each sleeper the place for their thing (berthKeep) under the curtain rail and the bunk over it. The
 // berths draw their bunks here, and the cutaway lays its sleepers on them (shiplife.js). The bottom tier fills from the left and the two over it
 // from the right, so every column is full but the left one, a short column of what is left over, and its bunks are the last ones taken.
-const BUNK = 90, BERTH_NAME = 116, BERTH_TIER = 29.5, BERTH_FRAME = 2.8;
+const BUNK = 90, BERTH_NAME = 174, BERTH_TIER = 29.5, BERTH_FRAME = 2.8;
 function berthBunk(r, n, k, well = { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }) {
   const cols = Math.max(1, Math.ceil(n / 3)), left = Math.ceil(cols / 2), m = (r.x1 - r.x0) * 0.02, lm = Math.max(m, BERTH_NAME);
-  const w = Math.min(BUNK, (well.x0 - r.x0 - lm) / left), tier = k % 3, col = tier ? cols - 1 - Math.floor(k / 3) : Math.floor(k / 3);
+  const w = Math.min(BUNK, (well.x0 - 2 - r.x0 - lm) / left), tier = k % 3, col = tier ? cols - 1 - Math.floor(k / 3) : Math.floor(k / 3);
   return { x: col < left ? r.x0 + lm + col * w : r.x1 - m - (cols - col) * w, w, y: r.floor - BERTH_FRAME - tier * BERTH_TIER };
 }
 // Where the cutaway lays a sleeper on bunk b (berthBunk): the hip, the head on the pillow at its left end, and the mattress under them.
@@ -647,7 +685,7 @@ const BUNK_DRAW = {
 // in cruise), the pinboard where it fits, the towel swinging on its hook and the guitar lashed to the wall. The top left is kept clear for the
 // room's name (berthBunk). In the box (#1024): the corner's things first, each moved onto the back wall; then the columns, solid, from each side
 // wall in toward the eye, each with its back posts on its side toward the eye (none when it straddles the eye); then the posts at the front.
-// Old and patched (point 6), on the shared fixtures: the crew's lockers on the back wall left of the bunks, under the name, one door a replacement
+// Old and patched (point 6), on the shared fixtures: the crew's lockers on the back wall left of the couch rack, under the name, one door a replacement
 // in another shade, the paint worn by their handles; the first bunk's curtain patched, held back by a printed clip tagged temporary; tape round
 // the first post; the deck scuffed by the bunks; the grab rails worn (roomBunk) and the wall unit's newer lamp (roomWallUnit). No bunk's own
 // place (berthKeep) is touched. s.bunks (#934): each bunk's owner, { slept, and their kit (bunkKit) }, or null for a spare one; without it the
@@ -655,8 +693,8 @@ const BUNK_DRAW = {
 function roomBerths(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), well = s.well || { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }, { w: cw } = berthBunk(r, n, 0, well);
   const shut = W >= 220 && n >= 3 ? 2 : -1, r2 = v => Math.round(v * 100) / 100;
-  if (W >= 300) roomOnWall(ctx, r.x0 + 60, F - 45, () => {  // the lockers: two doors, their vents, number plates, handles and the paint worn by them
-    const lx = r.x0 + 40;
+  if (W >= 300) roomOnWall(ctx, r.x0 + 36, F - 45, () => {  // the lockers: two doors, their vents, number plates, handles and the paint worn by them
+    const lx = r.x0 + 16;  // on the wall left of the couch rack (#990)
     roomPart(ctx, roomRound(lx, F - 60, 40, 30, 1.2), '#1f3a52', { top: 1, under: 1 });
     [0, 1].forEach(k => {
       const dx = lx + 2 + k * 18.5;
@@ -1117,20 +1155,32 @@ const bridgeGlass = (r, well) => {
 };
 // A pilot's seat at a post of the bridge (#933), facing forward (SEAT_FACE): its pan at the seated hip (23) on a pedestal bolted to the deck, the
 // back behind it with a headrest at the seated head, and the harness, slack on the back when no one is strapped in. Old and patched (point 6):
-// the foot plate scuffed by boots, the paint worn off the headrest's edge where hands pull on it in zero g.
-function roomBridgeSeat(ctx, x, F) {  // its pad and its foot plate solid in the box (#1024), the plate's shadow on the strip
+// the foot plate scuffed by boots, the paint worn off the headrest's edge where hands pull on it in zero g. A crash couch (#990): a short leg
+// rest hangs from the pan's front, and by r (0 upright, 1 flat: the hard burn) the back reclines about the pan's back edge, the headrest rises
+// on its stem as it goes (6 at flat), and the leg rest swings up about the pan's front, so whoever lies on it lies flat at the pan's height,
+// the head on the headrest 50 behind the seat (STATION_LIE: the hip 20 behind it), the boots short of the console's top (17 in front) and the
+// leg rest short of its grab handle (21 in front). Turned, not redrawn: a path given to roomPart is fixed per layout.
+const STATION_LIE = 20, STATION_PAD = 23;
+const roomTurned = (ctx, px, py, a, fn) => { if (!a) { fn(); return; } ctx.save(); ctx.translate(px, py); ctx.rotate(a); ctx.translate(-px, -py); fn(); ctx.restore(); };
+function roomBridgeSeat(ctx, x, F, r = 0) {  // its pad and its foot plate solid in the box (#1024), the plate's shadow on the strip
+  const a = -r * Math.PI / 2;
   roomPart(ctx, roomRound(x - 9, F - 2.5, 18, 2.5, 1), '#1c3249', { top: 0.6, solid: 0.25 });
   roomDot(ctx, x - 6.5, F - 1.2, 0.6, '#56708c'); roomDot(ctx, x + 6.5, F - 1.2, 0.6, '#56708c');  // its bolts
   for (const sx of [x - 4.5, x + 2]) roomFlat(ctx, sx, F - 2.2, 2.6, 0.7, '#5a6670');  // scuffs, where boots go
   roomPart(ctx, `M ${x - 2} ${F - 19} L ${x + 2} ${F - 19} L ${x + 2.5} ${F - 2.5} L ${x - 2.5} ${F - 2.5} Z`, '#1c3249', { top: 0, side: 1.2 });
-  roomPart(ctx, roomRound(x - 11, F - 52, 2.5, 4, 0.8), '#1c3249', { top: 0 });  // the headrest's stem
-  roomPart(ctx, `M ${x - 13} ${F - 20} L ${x - 8} ${F - 20} L ${x - 6.5} ${F - 49} L ${x - 11.5} ${F - 49} Z`, '#284664', { top: 1, side: -1.5 });
-  roomPart(ctx, roomRound(x - 14, F - 59, 8, 8, 2.5), '#284664', { top: 1, side: -1.5 });
-  roomFlat(ctx, x - 13.4, F - 57, 0.9, 3.5, '#6a747c');  // worn where hands pull on it
+  roomTurned(ctx, x + 10, F - 21, a, () => roomPart(ctx, roomRound(x + 8, F - 21, 4.5, 7, 1.5), '#2b4766', { top: 0.6, side: 1 }));  // the leg rest
+  roomTurned(ctx, x - 10, F - 21, a, () => {
+    roomPart(ctx, roomRound(x - 11, F - 58, 2.5, 10, 0.8), '#1c3249', { top: 0 });  // the headrest's stem, drawn out as it rises
+    roomPart(ctx, `M ${x - 13} ${F - 20} L ${x - 8} ${F - 20} L ${x - 6.5} ${F - 49} L ${x - 11.5} ${F - 49} Z`, '#284664', { top: 1, side: -1.5 });
+    ctx.save(); ctx.translate(0, -6 * r);
+    roomPart(ctx, roomRound(x - 14, F - 59, 8, 8, 2.5), '#284664', { top: 1, side: -1.5 });
+    roomFlat(ctx, x - 13.4, F - 57, 0.9, 3.5, '#6a747c');  // worn where hands pull on it
+    ctx.restore();
+    ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3;  // the harness: a shoulder strap down the back to its buckle, and the lap belt
+    ctx.beginPath(); ctx.moveTo(x - 7.5, F - 47); ctx.quadraticCurveTo(x - 10.5, F - 36, x - 9, F - 24); ctx.moveTo(x - 9, F - 22); ctx.lineTo(x - 3, F - 21); ctx.stroke();
+    roomFlat(ctx, x - 10.5, F - 35, 2.5, 2, '#7a8794');
+  });
   roomPart(ctx, roomRound(x - 11, F - 23, 22, 5, 2), '#2e4a68', { top: 1, under: 1, solid: 0.25 });
-  ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3;  // the harness: a shoulder strap down the back to its buckle, and the lap belt
-  ctx.beginPath(); ctx.moveTo(x - 7.5, F - 47); ctx.quadraticCurveTo(x - 10.5, F - 36, x - 9, F - 24); ctx.moveTo(x - 9, F - 22); ctx.lineTo(x - 3, F - 21); ctx.stroke();
-  roomFlat(ctx, x - 10.5, F - 35, 2.5, 2, '#7a8794');
 }
 // The bridge (#933): a console at waist height in front of each post (the seats are drawn by drawRoom), a screen on each, keys on its sloped top
 // and a grab handle on its front; the comms station's rack on the aft post's console (the first); the throttle at the pilot's (the second),
@@ -2190,9 +2240,10 @@ function drawRoom(ctx, id, r, s) {
   roomWalls(ctx, r, s.w, s.time, s.still, s.well, s.shell);
   roomIn(roomBays(r, s.well), () => {  // its props and seats see their bay's eye (#1024)
     ROOM_DRAW[id](ctx, r, s, sh => r.x0 + W * sh, W);
+    let k = 0; for (const c of COUCH_RACKS) { if (c.room === id) roomCouchRack(ctx, c.x, r.floor, c.tiers, k, s.couched); k += c.tiers; }  // its crash couches, in every phase (#990)
     const seats = SEATS[id] || [];  // its seats (shiplife.js), where people sit (#925): the galley's on one bench along the mess table, a pilot's seat at each post of the bridge, a stool anywhere else
     if (id === 'galley' && seats.length) roomBench(ctx, r.x0 + W * seats[0] - 14, r.x0 + W * seats[seats.length - 1] + 14, r.floor, true);
-    else if (id === 'bridge') for (const f of seats) roomBridgeSeat(ctx, Math.round((r.x0 + W * f) * 100) / 100, r.floor);  // a pilot's seat at each post (#933)
+    else if (id === 'bridge') seats.forEach((f, i) => roomBridgeSeat(ctx, Math.round((r.x0 + W * f) * 100) / 100, r.floor, (s.recline || [])[i] || 0));  // a pilot's seat at each post (#933), reclined as a crash couch in the hard burn (#990)
     else for (const f of seats) roomStool(ctx, r.x0 + W * f, r.floor, id === 'medbay' ? 0 : SEAT_FACE[id] || 0);  // a station's chair faces its console (#933); the medbay's is a stool
   });
   const marked = !!(s.damage && s.damage.marks.has(id));

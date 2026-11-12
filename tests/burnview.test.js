@@ -1072,8 +1072,8 @@ test('someone who stepped aside for a scene goes back to their post when it clos
     Object.assign(eng, { room: 'engine', x: e.mid, dk: e.deck, tdk: e.deck, tx: null, errand: false, wait: 999 });  // at the drive, in the middle of the room
     sayScene(`With ${mate.name}`, `${mate.name} is down in the engine room, by the drive.`); tickFor(20);
     const out = { aside: eng.room, pose: posture(eng, phase(), 0, isAsleep(eng)).name };
-    G.dialog = null; t.event = null; tickFor(25);
-    out.back = inRoom(eng, 'engine');
+    G.dialog = null; t.event = null; out.back = false;
+    for (let i = 0; i < 25 * 30 && !out.back; i++) { lifeTick(1 / 30); out.back = inRoom(eng, 'engine'); }  // back at the drive within 25 s (the routine may send them on an errand after, #990)
     return out;
   }, dayAt.toString());
   await done();
@@ -1339,49 +1339,90 @@ test('the cutaway hands the rooms the torpedoes aboard, clamped to the rack\'s c
   await done();
 });
 
-test('a crash couch is a plate in the deck that unfolds as its person reaches it in the hard burn, and folds away after (#925)', async () => {
+test('the crash couches are fixed in the rooms, the bridge\'s station chairs among them, and in the hard burn each of the company lies on their own (#925, #990)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     burn(); const t = G.transit, people = shipPeople().filter(p => p.role !== 'cat'), lay = LAYOUTS.freighter;
-    // the couches drawn (rooms.js roomCouchFlat: x, the deck's floor, how far unfolded), with the camera held on the bridge and on the berths
-    const folds = () => { const seen = []; const real = window.roomCouchFlat; window.roomCouchFlat = (c, x, F, d) => { seen.push([x, F, d]); return real(c, x, F, d); };
+    // the racks drawn (rooms.js roomCouchRack: x, the deck's floor, its tiers, its first couch, the couches taken), the camera on the bridge and on the berths
+    const racks = () => { const seen = []; const real = window.roomCouchRack; window.roomCouchRack = (c, x, F, n, first, on) => { seen.push({ x, F, n, first, on: [...(on || [])] }); return real(c, x, F, n, first, on); };
       for (const id of ['bridge', 'berths']) { G.cam = { y: layoutBox(lay, id).floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); }
-      window.roomCouchFlat = real; return seen; };
-    const own = seen => people.every(p => seen.some(([x, F]) => Math.abs(x - p.seat * lay.width) < 1e-6 && F === deckFloor(lay, p.seatDk)));  // each couch under its person's seat, on their couch's deck
+      window.roomCouchRack = real; return seen; };
     const run = s => { for (let k = 0; k < s * 20; k++) lifeTick(0.05); };
+    const lying = () => people.filter(p => posture(p, phase(), 0, false).name === 'couch');
     const out = {};
     t.left = t.total * 0.99; run(2);  // the burn out: everyone on their couch
-    const start = folds();
-    out.start = { open: people.every(p => p.couch > 0.95), lying: people.every(p => posture(p, phase(), 0, false).name === 'couch'), drawn: start.length, own: own(start) };
-    t.left = t.total * 0.5 - t.total * 0.1; run(3);  // under way: folded away
-    out.cruise = { shut: people.every(p => p.couch === 0), drawn: folds().map(c => c[2]) };
+    const start = racks(), order = bunkOwners(people, people.length), plan = couchPlan(order.map(p => p.role), POSTS[hired().post].role);
+    // the bridge's station couches as drawn (rooms.js roomBridgeSeat: x, the deck's floor, how far reclined)
+    const seats = () => { const seen = []; const real = window.roomBridgeSeat; window.roomBridgeSeat = (c, x, F, rec) => { seen.push(rec); return real(c, x, F, rec); };
+      G.cam = { y: layoutBox(lay, 'bridge').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); window.roomBridgeSeat = real; return seen.join(); };
+    out.start = { lying: lying().length, n: people.length, own: people.map(p => { const q = plan[order.indexOf(p)]; return q.at === 'station' ? p.station === q.seat : p.couchAt === q.k; }), racks: [...new Set(start.map(k => `${k.first}:${k.n}`))].join(' '),
+      on: [...new Set(start.flatMap(k => k.on))].sort((a, b) => a - b).join(), want: people.filter(p => p.couchAt !== null).map(p => p.couchAt).sort((a, b) => a - b).join(),
+      lifted: people.every(p => p.lift === (p.station !== null ? 23 : couchPlaces()[p.couchAt].lift)), bridge: people.filter(p => p.room === 'bridge').map(p => p.role).sort().join(), seats: seats() };
+    t.left = t.total * 0.5 - t.total * 0.1; run(3);  // under way: off the couches, which are still there, their harness loose
+    const cruise = racks(); out.cruise = { racks: [...new Set(cruise.map(k => `${k.first}:${k.n}`))].join(' '), on: cruise.flatMap(k => k.on).length, off: people.every(p => p.couch === 0), seats: seats() };
     // the hard burn in: they start away from their couches, on the couch's deck, toward the middle; and one from the berths up on the bridge
     for (const p of people) Object.assign(p, { x: p.seat + (p.seat < 0.5 ? 1 : -1) * 0.1 * CUT_K, dk: p.seatDk, tdk: p.seatDk, tx: null });
     const up = people.find(p => p.seatDk === roomAt('berths').deck); Object.assign(up, { x: 0.2, dk: roomAt('bridge').deck, tdk: roomAt('bridge').deck });
     out.decks = [...new Set(people.map(p => p.seatDk))].sort();
     t.left = t.total * 0.03; lifeTick(0.05);
-    out.away = { shut: people.every(p => p.couch < 0.2), lying: people.filter(p => posture(p, phase(), 0, false).name === 'couch').length };
+    out.away = lying().length;
     out.floors = [];  // nobody passes through a floor: a deck changes only on the ladder in the well (#972)
     for (let k = 0; k < 12 * 20; k++) {
       const was = people.map(p => p.dk); lifeTick(0.05);
       people.forEach((p, i) => { if (p.dk !== was[i] && Math.abs(p.x - LADDER) > 0.003 * CUT_K) out.floors.push(`${p.name} at ${p.x.toFixed(3)}: ${was[i]} to ${p.dk}`); });
     }
-    const end = folds();
-    out.end = { open: people.every(p => p.couch > 0.95), lying: people.every(p => posture(p, phase(), 0, false).name === 'couch'), on: people.every(p => p.dk === p.seatDk), own: own(end), upOn: up.dk === up.seatDk };
-    out.n = people.length;
+    out.end = { lying: lying().length, on: people.every(p => p.dk === p.seatDk), upOn: up.dk === up.seatDk };
+    // a company larger than the couches: four passengers more, who lie strapped into a bunk
+    for (const k of [1, 2, 3, 4]) G.state.missions.push({ id: 900 + k, type: 'passenger', who: `Pax Nine${k}`, pax: 1, bonus: 0, destSystem: G.state.systemId, destPlanet: 'x', title: 'x', pay: 1, deadline: G.state.day + 60, eventDone: true });
+    t.aboard = null; const more = shipPeople().filter(p => p.role !== 'cat'); t.left = t.total * 0.99; run(2);
+    const seen = [], real = window.drawPerson; window.drawPerson = (c, pose, x, y, o) => { seen.push({ name: pose.name, strapped: !!pose.strapped }); return real(c, pose, x, y, o); };
+    G.cam = { y: layoutBox(lay, 'berths').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); window.drawPerson = real;
+    out.more = { n: more.length, couched: more.filter(p => p.couchAt !== null || p.station !== null).length, bunked: more.filter(p => p.couchAt === null && p.station === null).map(p => p.role).join(), bunks: seen.filter(q => q.name === 'bunk' && q.strapped).length };
     return out;
   });
-  assert.ok(r.start.open && r.start.lying, `the burn out: couches open and everyone on one ${JSON.stringify(r.start)}`);
-  assert.ok(r.start.own, 'each couch drawn under its person, on its own deck');
-  assert.ok(r.cruise.shut, 'under way the couches fold away'); assert.ok(r.cruise.drawn.length >= 1 && r.cruise.drawn.every(d => d === 0), 'and are still drawn, folded into the deck');
+  assert.equal(r.start.lying, r.start.n, `the burn out: everyone on a couch ${JSON.stringify(r.start)}`);
+  assert.ok(r.start.own.every(Boolean), 'the k-th of the company on couch k');
+  assert.ok(r.start.lifted, 'each at their couch\'s height');
+  assert.equal(r.start.bridge, 'captain,pilot,slicer,you', 'the hand, the captain, the pilot and the slicer on the bridge\'s station couches');
+  assert.equal(r.start.seats, '1,1,1,1', 'every station couch reclined flat in the hard burn'); assert.equal(r.cruise.seats, '0,0,0,0', 'and upright under way');
+  assert.equal(r.start.racks, '0:3', 'the berths\' rack');
+  assert.equal(r.start.on, r.start.want, 'each taken rack couch drawn with its person strapped in');
+  assert.equal(r.cruise.racks, r.start.racks, 'under way the couches are still there'); assert.equal(r.cruise.on, 0, 'and empty'); assert.ok(r.cruise.off, 'everyone up');
   assert.deepEqual(r.decks, [0, 2], 'couches on the bridge and in the berths');
-  assert.ok(r.away.shut, 'at the start of the hard burn the couches are still folded'); assert.equal(r.away.lying, 0, 'and nobody lies back on the air');
+  assert.equal(r.away, 0, 'at the start of the hard burn nobody lies back on the air');
   assert.deepEqual(r.floors, [], 'nobody passes through a floor on the way to a couch');
   assert.ok(r.end.upOn, 'the one on the wrong deck took the ladder down to their couch');
-  assert.ok(r.end.open && r.end.lying && r.end.on, `once at their couches, they unfold and everyone lies on one ${JSON.stringify(r.end)}`);
-  assert.ok(r.end.own, 'and each unfolds on its own deck');
+  assert.ok(r.end.on && r.end.lying === r.start.n, `once at their couches, everyone lies on one ${JSON.stringify(r.end)}`);
+  assert.deepEqual([r.more.n, r.more.couched, r.more.bunked, r.more.bunks], [11, 7, 'passenger,passenger,passenger,passenger', 4], `past the couches, strapped into a bunk ${JSON.stringify(r.more)}`);
   await done();
+});
+
+test('on a small ship past the couches each straps into the bunk they walked to, and every name on the rack shows (#990)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn('gunship'); const t = G.transit, lay = LAYOUTS.freighter;
+    for (const k of [1, 2]) G.state.missions.push({ id: 900 + k, type: 'passenger', who: `Pax Nine${k}`, pax: 1, bonus: 0, destSystem: G.state.systemId, destPlanet: 'x', title: 'x', pay: 1, deadline: G.state.day + 60, eventDone: true });
+    t.aboard = null; const people = shipPeople().filter(p => p.role !== 'cat'); t.left = t.total * 0.99;
+    for (let k = 0; k < 2 * 20; k++) lifeTick(0.05);
+    const drawn = [], texts = [], real = window.drawPerson, realText = window.worldText;
+    window.drawPerson = (c, pose, x, y, o) => { drawn.push({ name: pose.name, x }); return real(c, pose, x, y, o); };
+    window.worldText = (c, zoom, text, x, y, px, col, align) => { texts.push({ text, x, y, w: c.measureText(text).width / zoom }); return realText(c, zoom, text, x, y, px, col, align); };
+    G.cam = { y: layoutBox(lay, 'berths').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); window.drawPerson = real; window.worldText = realText;
+    const bunked = people.filter(p => p.couchAt === null && p.station === null), rack = people.filter(p => p.couchAt !== null);
+    return { berths: ship().berths, n: people.length, bunked: bunked.map(p => ({ seat: p.seat * lay.width, bunk: p.bunk, couch: p.couch })), bunks: drawn.filter(q => q.name === 'bunk').map(q => q.x),
+      names: rack.map(p => p.name), labels: texts.filter(q => rack.some(p => p.name === q.text)) };
+  });
+  await done();
+  assert.equal(r.berths, 6, 'the gunship'); assert.equal(r.bunked.length, 2, `two past the couches ${JSON.stringify(r)}`);
+  assert.equal(new Set(r.bunked.map(q => q.bunk)).size, 2, 'in two bunks');
+  for (const q of r.bunked) assert.ok(q.couch >= 0.6 && r.bunks.some(x => Math.abs(x - q.seat) < 0.01), `drawn in the bunk they walked to (${q.seat}; drawn at ${r.bunks})`);
+  assert.equal(r.labels.length, r.names.length, `every name on the rack shows (${r.labels.map(q => q.text)} of ${r.names})`);
+  for (let i = 0; i < r.labels.length; i++) for (let j = i + 1; j < r.labels.length; j++) {
+    const a = r.labels[i], b = r.labels[j];
+    assert.ok(Math.abs(a.x - b.x) >= (a.w + b.w) / 2 || Math.abs(a.y - b.y) >= 10, `${a.text} and ${b.text} apart`);
+  }
 });
 
 // #927: at the flip someone asleep stays in their bunk, strapped, and everyone strapped in sits in a jump seat that folds down from the wall.
