@@ -568,6 +568,9 @@ const benchHand = () => (hired() ? roleHolder('engineer') : null), medicHand = (
 const fixedIds = () => [(medicHand() || {}).id, (watchKeeper() || {}).id].filter(Boolean);
 // The shipmate whose messages from home the hand sits through (#1074): one no other choice names.
 const homeMate = () => slotPick(mates(), [...castIds(), ...fixedIds()], 2);
+// Who covers on a small ship (docs/bible/ship.md, chapter-1.md): the bosun (the first officer, Cato) holds the first aid (roleHolder finds the one best
+// at it) and checks the lashings when there is no quartermaster; the galley goes on a rota when there is no cook, a shipmate a turn.
+const lashingsHand = () => roleHand('quartermaster') || roleHand('xo'), galleyHand = () => roleHand('cook') || slotPick(mates(), [...castIds(), ...fixedIds()], 4);
 // The reply to a message home, at the first dawn of a later burn (shiplife.js lifeTick): a line by the hand's start, turned by the day.
 const homeReply = st => downSay(`reply.${['earth', 'mars', 'belt'].includes(st.background) ? st.background : 'earth'}.${st.day % 3}`);
 const castDowntime = (key, post) => ({
@@ -603,9 +606,9 @@ const HAND_DOWNTIME = [
   downtime('home', () => !!homeMate(),
     () => { const m = homeMate(); like(m, 1, downSay('home.memory')); return downSay(tellingOn('home.result', G.state.day), { first: m.first, home: m.home || 'home' }); },
     () => homeMate().id, () => ({ first: homeMate().first })),
-  ...[['firstaid', 'medic', () => !handHurt()], ['lashings', 'quartermaster'], ['suits', 'icehand'], ['cook', 'cook']].map(([key, role, also = () => true]) => downtime(key, () => !!roleHand(role) && also(),
-    () => { const m = roleHand(role); like(m, 1, downSay(`${key}.memory`)); return downSay(tellingOn(`${key}.result`, G.state.day), { first: m.first }); },
-    () => roleHand(role).id, () => ({ first: roleHand(role).first }))),
+  ...[['firstaid', () => (handHurt() ? null : roleHand('medic'))], ['lashings', lashingsHand], ['suits', () => roleHand('icehand')], ['cook', galleyHand]].map(([key, who]) => downtime(key, () => !!who(),
+    () => { const m = who(); like(m, 1, downSay(`${key}.memory`)); return downSay(tellingOn(`${key}.result`, G.state.day), { first: m.first }); },
+    () => who().id, () => ({ first: who().first }))),
   downtime('scrubbers', () => !!hired(),
     () => { like(person(hired().captain), 1, downSay('scrubbers.memory')); return downSay(tellingOn('scrubbers.result', G.state.day)); }, 'lifesupport'),
   downtime('watch', () => !!watchKeeper(),
