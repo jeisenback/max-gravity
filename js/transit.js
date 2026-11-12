@@ -297,7 +297,7 @@ function comm(text) {
   const t = G.transit;
   // When each line came, in real seconds, to fade it over the ship (burnlayout.js commsShown); kept the length of comms, a line from before
   // (an older save, or comms set by hand) with no time.
-  const keep = t.comms.length, at = keep ? (t.commsAt || []).slice(-keep) : [];
+  const keep = t.comms.length, old = t.commsAt || [], at = keep && old.length <= keep ? old.slice(-keep) : [];  // longer than comms: set by hand, its times are not these lines' (#1089)
   while (at.length < keep) at.unshift(null);
   t.comms.push(text); at.push(G.time); t.commsAt = at;
   if (t.comms.length > 10) { t.comms.shift(); t.commsAt.shift(); }
@@ -586,8 +586,6 @@ function drawBurnBar(b, dates, progress) {
   ctx.textAlign = 'left';
 }
 
-// The Comms ticker under the ship: the last n messages, the newest brighter. On a wide screen one line each, cut to fit; on a narrow
-// one they wrap to fill the box, the newest first to be kept whole.
 // The ship's log for a burn (it was the canvas box at the bottom left; now the HUD sidebar and the Comms sheet draw it): what the owner has on the books, then what is aboard. The
 // carried contract (#686) is the captain's log line: the load, the shipper, the due date, and whether the ship is on time for it. Reads only what it is given.
 function shipLogLines(st, t, carried, crewNames = []) {

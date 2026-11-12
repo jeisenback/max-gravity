@@ -4306,7 +4306,7 @@ const PEOPLE_LINES = {
   },
   'family:picker': {
     title: 'Sit With Someone',
-    on: '{first} is off watch and on their own.',
+    on: '{first} has an hour with nothing to do in it.',
     with: 'Sit with {first}',
     'text.0': 'You make two mugs of coffee. Who could use the company?',
     'text.1': 'The galley is empty, and the kettle has just clicked off. Somebody aboard might like a cup.',

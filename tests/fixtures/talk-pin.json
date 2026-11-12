@@ -1905,7 +1905,7 @@
  },
  {
   "key": "sit:named",
-  "text": "{\"title\":\"x\",\"text\":\"Sam is off watch and on their own.\",\"labels\":[\"Sit with Sam\"],\"opens\":[],\"runs\":[[0,1,\"\",{\"op\":0,\"mem\":null,\"until\":40,\"beat\":0,\"promised\":false,\"loyal\":false,\"credits\":200000,\"missions\":[],\"pressed\":null,\"log\":[]}]]}"
+  "text": "{\"title\":\"x\",\"text\":\"Sam has an hour with nothing to do in it.\",\"labels\":[\"Sit with Sam\"],\"opens\":[],\"runs\":[[0,1,\"\",{\"op\":0,\"mem\":null,\"until\":40,\"beat\":0,\"promised\":false,\"loyal\":false,\"credits\":200000,\"missions\":[],\"pressed\":null,\"log\":[]}]]}"
  },
  {
   "key": "errand:belt:day+1",
