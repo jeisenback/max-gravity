@@ -38,7 +38,7 @@ const HAND_TUTORIAL = [
     done: () => !!G.transit || firstRunOver() },
   { text: () => `${hiredXo() ? hiredXo().first : 'The first officer'} is walking you round the ship. Hear them out.`,
     done: () => !walkPending() && !!G.transit || firstRunOver() },
-  { text: () => 'Work your post: open the Gunnery page and give an order, or spend some downtime, once before the flip and once after, and practice.',
+  { text: () => 'Work your post: open the Gunnery page and give an order, or take up something in downtime when it comes round, once before the flip and once after.',
     done: () => didOnBurn('downtime')() || didOnBurn('order')() },
   { text: () => 'Open the Comms page and sit with someone. The chats happen on the burn, once each half of the trip.',
     done: didOnBurn('chat') },

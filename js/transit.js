@@ -294,8 +294,13 @@ const TRANSIT_EVENTS = [
 function comm(text) {
   if (!G.transit) return;  // rumors can also arrive while docked
   if (isQuiet(text)) return;  // muted on the Comms screen
-  G.transit.comms.push(text);
-  if (G.transit.comms.length > 10) G.transit.comms.shift();
+  const t = G.transit;
+  // When each line came, in real seconds, to fade it over the ship (burnlayout.js commsShown); kept the length of comms, a line from before
+  // (an older save, or comms set by hand) with no time.
+  const keep = t.comms.length, at = keep ? (t.commsAt || []).slice(-keep) : [];
+  while (at.length < keep) at.unshift(null);
+  t.comms.push(text); at.push(G.time); t.commsAt = at;
+  if (t.comms.length > 10) { t.comms.shift(); t.commsAt.shift(); }
   announce(text);
 }
 
@@ -583,23 +588,6 @@ function drawBurnBar(b, dates, progress) {
 
 // The Comms ticker under the ship: the last n messages, the newest brighter. On a wide screen one line each, cut to fit; on a narrow
 // one they wrap to fill the box, the newest first to be kept whole.
-function drawCommsTicker(b, comms, n, wrap) {
-  transitPanel(b.x, b.y, b.w, b.h, G.bridgeOpen === 'comms' ? 'COMMS · tap to close' : 'COMMS · tap to open');  // a tap on the box opens the sheet (game.js), and the box says so (#919)
-  const w = b.w - 24, msgs = comms.slice(-n), color = (m, newest) => (m.startsWith('[Market]') ? '#ffcf7f' : newest ? '#cfe3ff' : '#7d93aa');
-  let rows = [];
-  if (wrap) {
-    const max = Math.max(1, Math.floor((b.h - 30) / 16));
-    for (let i = msgs.length - 1; i >= 0 && rows.length < max; i--) {
-      let lines = wrapText(msgs[i], w);
-      const room = max - rows.length;
-      if (lines.length > room) { lines[room - 1] = fitLine(`${lines[room - 1]} ${lines[room]}`, w); lines = lines.slice(0, room); }  // cut, with an ellipsis
-      rows = lines.map(l => ({ l, c: color(msgs[i], i === msgs.length - 1) })).concat(rows);
-    }
-  } else rows = msgs.map((m, i) => ({ l: fitLine(m, w), c: color(m, i === msgs.length - 1) }));
-  const first = b.y + (b.h >= 60 ? 38 : 32), step = wrap ? 16 : 20;
-  rows.forEach((r, i) => { ctx.fillStyle = r.c; ctx.fillText(r.l, b.x + 12, first + i * step); });
-}
-
 // The ship's log for a burn (it was the canvas box at the bottom left; now the HUD sidebar and the Comms sheet draw it): what the owner has on the books, then what is aboard. The
 // carried contract (#686) is the captain's log line: the load, the shipper, the due date, and whether the ship is on time for it. Reads only what it is given.
 function shipLogLines(st, t, carried, crewNames = []) {
@@ -620,15 +608,15 @@ function shipLogLines(st, t, carried, crewNames = []) {
 // The log for the burn in progress, or none: the one place the lines are read from the game (the HUD and the Comms sheet ask here).
 const burnShipLog = () => (G.transit ? shipLogLines(G.state, G.transit, hired() && heldContract(hired()), crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`)) : []);
 
-// The burn view, laid out by burnLayout (burnlayout.js): the bar of the route and the burn on top, the ship cutaway as the stage, and the
-// Comms ticker under it, or the tutorial's prompt in its place. The downtime buttons (shiplife.js) and the bridge keys are DOM below.
+// The burn view, laid out by burnLayout (burnlayout.js): the bar of the route and the burn on top, the ship cutaway as the stage, and over the
+// ship's bottom left the comms lines, fading, and the tutorial's prompt. The Menu and map buttons and the bridge keys are DOM below.
 function drawTransit(W, H) {
   const viewW = W - G.hudW, cy = H / 2, t = G.transit;
   const narrow = !G.hudW;  // the HUD strip on top
   const progress = Math.min(1, 1 - t.left / t.total);
   const panel = t.event && document.querySelector('#panel.event');
   const dialogSize = panel ? { h: panel.scrollHeight + panel.offsetHeight - panel.clientHeight } : null;  // the content and the panel's border, which max-height includes (border-box)
-  const prompt = tutorialPrompt(viewW - 2 * BURN_GUTTER);  // the tutorial's prompt, at the ticker's width: the layout keeps room for it
+  const prompt = tutorialPrompt(viewW - 2 * BURN_GUTTER - 16);  // the tutorial's prompt, at its box's width inside the ship (burnlayout.js)
   const L = burnLayout(W, H, G.hudW, narrow, dialogSize, prompt ? prompt.h : 0), shipBox = L.ship;
   const bg = ctx.createLinearGradient(0, 0, 0, H);
   bg.addColorStop(0, '#03060f'); bg.addColorStop(1, '#070b18');
@@ -682,23 +670,26 @@ function drawTransit(W, H) {
 
   // Our ship in cutaway, with everyone aboard (shiplife.js), in the box the layout gives it; the camera keeps the hand in the part a
   // docked dialog leaves clear.
-  drawCutaway(shipBox, L.clear);
+  const tags = drawCutaway(shipBox, L.clear);
   G.burnBoxes = { bar: L.bar, ship: shipBox };  // where each block was drawn, for the taps and the tests (#262)
+  if (tags.length) G.burnBoxes.tags = tags;  // the downtime scene's tags in the cutaway (shiplife.js), while it is open
   if (L.dock) Object.assign(G.burnBoxes, { dock: L.dock, clear: L.clear });  // a scene's dock (the frame puts the dialog in it) and the ship it leaves clear
   if (destBox) G.burnBoxes.dest = destBox;
-  G.lifeY = L.life.y;  // the downtime buttons sit in the row of life under the ticker
   drawBurnBar(L.bar, L.datesLine, progress);
 
-  // The ticker, clear of the dock: beside it on a wide screen, under it (so not drawn) on a narrow one. None on a landscape phone.
-  const dock = L.dock;
-  let tick = L.tickerLines ? { ...L.ticker } : null;
-  if (tick && dock && !narrow) tick.w = Math.min(tick.w, dock.x - BURN_GUTTER - tick.x);
-  if (tick && dock && narrow && tick.y + tick.h > dock.y - 4) tick = null;
-  if (!tick || tick.w < 160) return;
-  if (prompt && !dock) {  // drawn by the tutorial (tutorial.js) in the ticker's place (#735); hidden while a scene is open, which is what to read then
-    G.burnBoxes.tutorial = tick;
-    return;
-  }
-  G.burnBoxes.ticker = tick;
-  drawCommsTicker(tick, t.comms, L.tickerLines, narrow);
+  // Over the bottom left of the ship, in the part a scene's dialog leaves clear: the tutorial's prompt (tutorial.js draws it, #735; hidden while a
+  // scene is open, which is what to read then), and above it the newest comms lines, fading (commsShown, burnlayout.js; 2026-11-12).
+  const clear = L.clear;
+  if (prompt && !L.dock) G.burnBoxes.tutorial = L.tutorial;
+  const shown = commsShown(t.comms, t.commsAt, G.time), base = (prompt && !L.dock ? L.tutorial.y : clear.y + clear.h) - 12, lineW = Math.min(clear.w - 24, 760);
+  if (!shown.length || lineW < 160) return;
+  ctx.save(); ctx.font = '13px "IBM Plex Mono", monospace'; ctx.textAlign = 'left'; ctx.shadowColor = '#000'; ctx.shadowBlur = 3;
+  shown.forEach((m, i) => {
+    const line = fitLine(m.text, lineW), y = base - (shown.length - 1 - i) * 18;
+    ctx.globalAlpha = m.alpha; ctx.shadowBlur = 0; ctx.fillStyle = 'rgba(6,13,22,0.7)'; ctx.fillRect(clear.x + 6, y - 13, ctx.measureText(line).width + 12, 18);  // a dark strip, so it reads over any room
+    ctx.shadowBlur = 3; ctx.fillStyle = m.text.startsWith('[Market]') ? '#ffcf7f' : '#d7e2ee';
+    ctx.fillText(line, clear.x + 12, y);
+  });
+  ctx.restore();
+  G.burnBoxes.comms = { x: clear.x + 6, y: base - shown.length * 18 + 5, w: lineW + 12, h: shown.length * 18 };
 }

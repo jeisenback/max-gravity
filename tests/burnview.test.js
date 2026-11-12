@@ -14,6 +14,7 @@ const helpers = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; if (shipId) st.shipId = shipId;
     sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    G.transit.lifeOffered = { before: true, m1: true, m2: true, m3: true, after: true };  // the downtime scene (shiplife.js) does not come into these tests
     return st;
   };
   window.securePr = t => { const s = burnStages(t.days); return 0.5 - (s.secure + s.float) / 2; };  // strapped in before the float, in ship time (#992)
@@ -45,7 +46,7 @@ test('the instruments follow the burn: from rest up to a peak at the flip, then 
 const dockState = () => {
   const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), el = document.querySelector('#panel.event');
   return { rect: { x: d.left - c.left, y: d.top - c.top, w: d.width, h: d.height }, dock: G.burnBoxes.dock, clear: G.burnBoxes.clear, outline: G.cutOutline, hand: G.cutHits[0], handId: shipPeople()[0].id,
-    frame: G.cutOutline.view, zoom: viewOf(G.burnBoxes.ship, LAYOUTS.freighter, outlineLeft(G.burnBoxes.ship, G.cutOutline)).zoom, tutorial: G.burnBoxes.tutorial || null, ticker: G.burnBoxes.ticker || null, scrolls: el.scrollHeight - el.clientHeight > 1, docked: el.classList.contains('docked') };
+    frame: G.cutOutline.view, zoom: viewOf(G.burnBoxes.ship, LAYOUTS.freighter, outlineLeft(G.burnBoxes.ship, G.cutOutline)).zoom, tutorial: G.burnBoxes.tutorial || null, comms: G.burnBoxes.comms || null || null, scrolls: el.scrollHeight - el.clientHeight > 1, docked: el.classList.contains('docked') };
 };
 const near = (a, b) => ['x', 'y', 'w', 'h'].every(k => Math.abs(a[k] - b[k]) <= 1);
 // In the dock: at its x, y and width (as the page rounds them to px), and as tall as the scene up to the dock's height.
@@ -69,7 +70,7 @@ test('with a scene open, the dialog sits in the dock, clear of the outline, and 
       assert.ok(r.hand && r.hand.id === r.handId && inside(r.hand, r.clear), `${name}: the hand ${JSON.stringify(r.hand)} is in the clear part ${JSON.stringify(r.clear)}`);
       assert.ok(Math.abs(r.frame.span * r.zoom - r.clear.h) < 1, `${name}: the outline's frame is the clear part's height (${r.frame.span * r.zoom} against ${r.clear.h})`);
       assert.equal(r.tutorial, null, `${name}: the tutorial's prompt is hidden while a scene is open`);
-      if (name === 'wide') assert.ok(r.ticker && apart(r.ticker, r.dock), `${name}: the ticker is drawn beside the dock`);
+      if (r.comms) assert.ok(apart(r.comms, r.dock), `${name}: the comms lines keep clear of the dock`);
       assert.ok(!r.scrolls, `${name}: the short scene does not scroll`);
       if (name === 'wide') assert.ok(r.rect.h < r.dock.h - 100, `${name}: the short scene's panel is as tall as the scene (${r.rect.h}), not the dock (${r.dock.h})`);
     }
@@ -174,7 +175,7 @@ test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)',
       return { boxes: G.burnBoxes, viewW: innerWidth - G.hudW, H: innerHeight, buttons: { menu: rect(document.getElementById('menuBtn')), map: rect(document.getElementById('tmap')) } };
     });
     assert.ok(r.boxes.tutorial, `${name}: the tutorial box is drawn`);
-    assert.deepEqual(Object.keys(r.boxes).filter(k => k !== 'dest').sort(), ['bar', 'ship', 'tutorial'], `${name}: the blocks drawn`);  // the prompt takes the ticker's place
+    assert.deepEqual(Object.keys(r.boxes).filter(k => !['dest', 'comms'].includes(k)).sort(), ['bar', 'ship', 'tutorial'], `${name}: the blocks drawn`);  // the prompt and the comms lines are over the ship (2026-11-12)
     assert.ok(r.buttons.menu && r.buttons.map, `${name}: the Menu and System map buttons are shown`);
     const names = Object.keys(r.boxes);
     for (const n of names) {
@@ -183,7 +184,7 @@ test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)',
     }
     const all = { ...r.boxes, ...r.buttons }, keys = Object.keys(all);
     for (let i = 0; i < keys.length; i++) for (let j = i + 1; j < keys.length; j++) {
-      if ([keys[i], keys[j]].sort().join() === 'dest,ship') continue;  // the destination is drawn in the ship box's background
+      if (['dest,ship', 'comms,ship', 'ship,tutorial'].includes([keys[i], keys[j]].sort().join())) continue;  // drawn over the ship box: the destination behind, the prompt and the comms lines in front
       const a = all[keys[i]], b = all[keys[j]];
       const apart = a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
       assert.ok(apart, `${name}: ${keys[i]} ${JSON.stringify(a)} overlaps ${keys[j]} ${JSON.stringify(b)}`);
@@ -192,7 +193,7 @@ test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)',
   }
 });
 
-test('without the prompt the ticker is drawn under the ship, clear of the bar, the ship and the buttons, at the three screen sizes', async () => {
+test('without the prompt the comms lines are drawn over the bottom of the ship, clear of the buttons, at the three screen sizes', async () => {
   for (const [name, viewport, mobile] of BURN_SIZES) {
     const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
@@ -202,31 +203,13 @@ test('without the prompt the ticker is drawn under the ship, clear of the bar, t
       const c = canvas.getBoundingClientRect(), rect = el => { const b = el.getBoundingClientRect(); return { x: b.left - c.left, y: b.top - c.top, w: b.width, h: b.height }; };
       return { boxes: G.burnBoxes, buttons: [rect(document.getElementById('menuBtn')), rect(document.getElementById('tmap'))] };
     });
-    const { ticker, ship, bar } = r.boxes;
-    assert.ok(ticker && ticker.h > 0, `${name}: the ticker is drawn`);
+    const { comms, ship } = r.boxes;
+    assert.ok(comms && comms.h > 0, `${name}: the line is drawn`);
     assert.equal(r.boxes.tutorial, undefined, `${name}: no prompt`);
-    assert.ok(bar.y + bar.h <= ship.y && ship.y + ship.h <= ticker.y, `${name}: bar, ship, ticker, top to bottom`);
-    for (const b of r.buttons) assert.ok(b.x + b.w <= ticker.x || ticker.x + ticker.w <= b.x || b.y + b.h <= ticker.y || ticker.y + ticker.h <= b.y, `${name}: a button ${JSON.stringify(b)} is over the ticker`);
+    assert.ok(comms.y >= ship.y && comms.y + comms.h <= ship.y + ship.h, `${name}: over the ship`);
+    for (const b of r.buttons) assert.ok(b.x + b.w <= comms.x || comms.x + comms.w <= b.x || b.y + b.h <= comms.y || comms.y + comms.h <= b.y, `${name}: a button ${JSON.stringify(b)} is over the comms lines`);
     await done();
   }
-});
-
-test('a tap on the ticker opens the Comms sheet, and does nothing while a scene is open', async () => {
-  const { ev, page, done } = await open({ scope: 'earth-hired' });
-  await ev(helpers);
-  await ev(() => { burn(); G.transit.left = G.transit.total * 0.3; comm('A line.'); G.bridgeOpen = null; });
-  await frames(page);
-  const mid = async () => ev(() => { const b = G.burnBoxes.ticker; return { x: b.x + b.w / 2, y: b.y + b.h / 2 }; });
-  let p = await mid();
-  await page.mouse.click(p.x, p.y);
-  await frames(page);
-  assert.equal(await ev(() => G.bridgeOpen), 'comms', 'the Comms sheet is open');
-  await ev(() => { G.bridgeOpen = null; syncBridge(true); openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); });
-  await frames(page);
-  await ev(([x, y]) => canvas.dispatchEvent(new MouseEvent('click', { clientX: x, clientY: y, bubbles: true })), [p.x, p.y]);  // on the canvas, under the scene
-  await frames(page);
-  assert.equal(await ev(() => G.bridgeOpen), null, 'no sheet opens under a scene');
-  await done();
 });
 
 test('canvas text in the burn view is 12px or more (#265)', async () => {
@@ -1232,7 +1215,7 @@ test('someone having a hard time sits up alone in the dusk, the wounded stay in 
 
 // #919: Comms has a place in the ship. A comms rack at the back of the bridge opens the Comms sheet, as a room opens its console; the rest
 // of the bridge still opens the bridge. And the COMMS box under the ship says that a tap opens it.
-test('the comms rack on the bridge opens Comms and the rest of the bridge opens the bridge; the COMMS box says it opens', async () => {
+test('the comms rack on the bridge opens Comms and the rest of the bridge opens the bridge', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   await ev(() => {
@@ -1252,14 +1235,6 @@ test('the comms rack on the bridge opens Comms and the rest of the bridge opens 
   await page.mouse.click(elsewhere.x, elsewhere.y);
   await frames(page);
   assert.equal(await ev(() => G.bridgeOpen), 'nav', 'beside the rack is still the bridge');
-  const titles = await ev(() => {
-    const seen = [], real = ctx.fillText.bind(ctx); ctx.fillText = (s, ...a) => { seen.push(String(s)); return real(s, ...a); };
-    G.bridgeOpen = null; drawTransit(innerWidth, innerHeight); const shut = seen.filter(s => s.startsWith('COMMS'));
-    seen.length = 0; G.bridgeOpen = 'comms'; drawTransit(innerWidth, innerHeight); const shown = seen.filter(s => s.startsWith('COMMS'));
-    ctx.fillText = real; G.bridgeOpen = null; return { shut, shown };
-  });
-  assert.ok(titles.shut.includes('COMMS · tap to open'), JSON.stringify(titles));
-  assert.ok(titles.shown.includes('COMMS · tap to close'), JSON.stringify(titles));
   await done();
 });
 

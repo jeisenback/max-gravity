@@ -204,12 +204,10 @@ function interiorPanel() {
   // Crew who hold no post: the roles without one, a second hand, or someone too hurt to work.
   const holders = new Set(Object.keys(POSTS).map(postHolder).filter(Boolean));
   const off = crew.filter(c => !holders.has(c)).map(c => conRead(raw(personLink(c)), `${ROLE_NAMES[c.role]}${(st.injured || {})[c.id] ? ', injured' : moodLow(c) ? ', having a hard time' : ''}`)).join('');
-  const free = t && phase() === 'move' && lifeFree(t);
   return consoleHtml({
     title: 'Interior', status: `${crew.length} crew, ${berthsUsed()}/${ship().berths} berths`,
     screen: `<svg class="con-plant" viewBox="18 14 604 ${deckPlanH(LAYOUTS.freighter) - 14}" role="img" aria-label="Deck plan">${deckSvg()}</svg>`,
     side: conCard('Posts', posts) + (off ? conCard('Off post', off) : ''),
-    controls: t ? `<div class="row"><button data-bdown ${free ? '' : 'disabled'}>Spend some downtime</button></div>` : '',
   });
 }
 
@@ -339,11 +337,10 @@ function buildBridgeKeys() {
   const sheet = Object.assign(document.createElement('div'), { id: 'bsheet', hidden: true });
   document.body.append(sheet, keys);
   const click = e => {
-    const k = e.target.closest('[data-bst]'), down = e.target.closest('[data-bdown]'), act = e.target.closest('[data-action]'), t = G.transit;
+    const k = e.target.closest('[data-bst]'), act = e.target.closest('[data-action]');
     if (e.target.closest('[data-bclose]')) { Sfx.click(); G.bridgeOpen = null; syncBridge(true); }  // the sheet's own close button (#913)
     else if (act && !act.disabled) { Sfx.click(); Mods.act(act.dataset.action, act.dataset.arg); syncBridge(true); }
     else if (k) { G.bridgeOpen = G.bridgeOpen === k.dataset.bst ? null : k.dataset.bst; Sfx.click(); syncBridge(true); }
-    else if (down && !down.disabled && t && !t.event) { Sfx.click(); G.bridgeOpen = null; openEvent(downtimeEvent()); }
   };
   keys.addEventListener('click', click);
   sheet.addEventListener('click', click);

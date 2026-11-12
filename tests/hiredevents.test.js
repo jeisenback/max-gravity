@@ -220,13 +220,13 @@ test('the main characters appear in a hand\'s events only when they are aboard',
   await done();
 });
 
-test('downtime for a hired hand: a dozen additions, never for an owner, with the main characters when aboard', async () => {
+test('downtime for a hired hand: ten additions, never for an owner, with the main characters when aboard', async () => {
   const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
     const out = {};
     out.defined = HAND_DOWNTIME.length;
-    const menu = () => { G.transit.lifeUsed = {}; G.state.eventSeen = {}; return downtimeEvent(true).choices.map(c => c.label); };
+    const menu = () => { G.transit.lifeUsed = {}; G.state.eventSeen = {}; return downtimeScene(true).choices.map(c => c.label); };
     const extras = labels => labels.filter(l => HAND_DOWNTIME.some(d => d.label === l));
     startGame({ slot: 1, background: 'earth', captain: 'Ines Okafor', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
     G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
@@ -246,7 +246,7 @@ test('downtime for a hired hand: a dozen additions, never for an owner, with the
     out.owner = extras(menu()).length; out.ownerFn = handDowntime().length;
     return out;
   });
-  assert.equal(r.defined, 12);
+  assert.equal(r.defined, 10);  // mend and spare, the paid odd jobs, went with the downtime scene (2026-11-12)
   assert.ok(r.counts.every(n => n >= 1 && n <= 4), `one to four at a time (${r.counts})`);
   assert.ok(r.handSeen.length >= 6, `they come round in turn (${r.handSeen.length})`);
   assert.deepEqual(r.earthCast.sort(), ['Fly a sim with Ines', 'Learn the loop from Tomas']);
@@ -270,7 +270,7 @@ test('hired downtime lands its effects, in savings and not the ship\'s purse', a
         const cap = person(h.captain), mates = crewPeople().map(f => f.p);
         const before = { fund: h.fund, cash: st.credits, cap: cap.opinion, mates: mates.map(m => m.opinion), xp: Object.assign({}, h.skill) };
         G.transit.lifeUsed = {};
-        const e = downtimeEvent(true), i = e.choices.findIndex(c => c.label === label);
+        const e = downtimeScene(true), i = e.choices.findIndex(c => c.label === label);
         if (i < 0) {  // not on the menu today: run it directly
           const text = d.run(); out[`${bg}:${label}`] = { text, cash: st.credits - before.cash, fund: h.fund - before.fund };
           continue;
@@ -288,9 +288,7 @@ test('hired downtime lands its effects, in savings and not the ship\'s purse', a
     assert.doesNotMatch(v.text, /undefined|NaN|\[object|\{[a-z]+\}/, k);
     assert.equal(v.fund, 0, `${k}: never the ship's purse`);
   }
-  assert.ok(r['earth:Stand a spare watch for the captain'].cash === 400, 'the fee reaches your savings');
-  const mend = r['earth:Mend a shipmate\'s gear for pay'];
-  assert.ok(mend.cash >= 300 && mend.cash <= 600 && mend.fund === 0);
+  for (const [k, v] of Object.entries(r)) assert.equal(v.cash, 0, `${k}: no downtime pays any more (the odd jobs went, 2026-11-12)`);
   await done();
 });
 

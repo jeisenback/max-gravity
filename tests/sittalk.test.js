@@ -127,24 +127,22 @@ test('after the first exchange the talk goes on to a second subject, never the s
   await done();
 });
 
-test('from the downtime menu, Sit with someone opens the picker at once, and picking a person opens the sitting at once', async () => {
+test('from the downtime scene, Sit with someone names one person and opens the sitting with them at once', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const { p } = setup(), out = {};
+    setup(); const out = {};
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
-    openEvent(downtimeEvent(true));
-    const i = G.dialog.choices.findIndex(c => c.label === 'Sit with someone');
+    openEvent(downtimeScene(true));
+    const i = G.dialog.choices.findIndex(c => /^Sit with /.test(c.label));
+    out.named = G.dialog.choices[i].label.slice('Sit with '.length);
     UI.act('choose', i);
-    out.picker = G.dialog && G.dialog.event.title; out.pickerButtons = [...UI.el.querySelectorAll('.choices button')].map(b => b.textContent);
-    const j = G.dialog.choices.findIndex(c => c.label.startsWith(p.first));
-    UI.act('choose', j);
-    out.sitting = G.dialog && G.dialog.event.title === `With ${p.first}`; out.sittingButtons = [...UI.el.querySelectorAll('.choices button')].map(b => b.textContent);
+    out.sitting = G.dialog && G.dialog.event.title; out.sittingButtons = [...UI.el.querySelectorAll('.choices button')].map(b => b.textContent);
     out.used = !!(G.transit.lifeUsed || {}).before;
     return out;
   });
-  assert.equal(r.picker, 'Sit With Someone'); assert.ok(!r.pickerButtons.includes('Continue'), `the picker, not a screen before it (${r.pickerButtons})`);
-  assert.ok(r.sitting, 'the sitting is with them'); assert.ok(!r.sittingButtons.includes('Continue'), `the sitting, not a screen before it (${r.sittingButtons})`);
+  assert.equal(r.sitting, `With ${r.named}`, 'the sitting is with the one named');
+  assert.ok(!r.sittingButtons.includes('Continue'), `the sitting, not a screen before it (${r.sittingButtons})`);
   assert.ok(r.used);
   await done();
 });

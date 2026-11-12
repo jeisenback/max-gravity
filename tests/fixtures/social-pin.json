@@ -12332,6 +12332,14 @@
   "none": true
  },
  {
+  "id": "on:activities",
+  "seed": 1,
+  "title": "x",
+  "text": "The galley screen has \"T\" on tonight, episode 2. | The ship's copy of \"B\" is going round the berths. | \"X\" is on the galley screen tonight only. | The Ring-ball League match is coming in on the lagged stream. | The cards are out on the galley table.",
+  "labels": [],
+  "plays": []
+ },
+ {
   "id": "back:plain",
   "seed": 1,
   "title": "Welcome Back",
