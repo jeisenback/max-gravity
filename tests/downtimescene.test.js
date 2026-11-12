@@ -398,3 +398,43 @@ test('a scene does not name the same shipmate in two choices, and Sit with someo
   assert.deepEqual(r.dupes, []);
   assert.ok(r.sits.every(n => n >= 2), `Sit with someone turns within a burn (${r.sits})`);
 });
+
+// ---------- the minors (#1086, #1087, #1089) ----------
+
+test('the tags go once a choice is made: none on the result page (#1086)', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurn(); t.left = t.total * 0.6; t.lifeBlock = shipDay(t.elapsed).block;
+    const real = window.downtimeFive; window.downtimeFive = () => [ACTIVITIES.meal];
+    try {
+      openEvent(downtimeScene()); render(); const before = (G.burnBoxes.tags || []).length;
+      UI.act('choose', 0); render(); const result = !!document.getElementById('event-result'), after = (G.burnBoxes.tags || []).length;
+      finishEvent(); return { before, result, after };
+    } finally { window.downtimeFive = real; }
+  });
+  await done();
+  assert.ok(r.before > 0); assert.equal(r.result, true); assert.equal(r.after, 0);
+});
+
+test('a person tag near the top of the clear part stays inside it (#1087)', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => drawDowntimeTags([{ label: 'Ask the captain', id: 'z' }, { label: 'Go over the figures', id: 'z' }], [], [{ id: 'z', head: { x: 300, y: 112 } }], { x: 0, y: 100, w: 1000, h: 700 }));
+  await done();
+  for (const g of r) assert.ok(g.y >= 100, `${g.label} at ${g.y}`);
+  assert.ok(r.length >= 1, 'at least one still drawn');
+});
+
+test('comms set by hand do not take the times of the lines they replaced (#1089)', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurn(); t.comms = []; t.commsAt = [];
+    for (let i = 0; i < 6; i++) comm(`[Ship] old ${i}`);
+    t.comms = ['[Ship] set by hand'];  // commsAt left as it was: six recent times
+    comm('[Ship] new');
+    return commsShown(t.comms, t.commsAt, G.time).map(x => x.text);
+  });
+  await done();
+  assert.deepEqual(r, ['[Ship] new']);
+});
