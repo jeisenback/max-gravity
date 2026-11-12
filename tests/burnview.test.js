@@ -1499,13 +1499,13 @@ test('the burn bar shows the real time left at the chosen speed, and the speed o
     const bar = () => { const texts = [], real = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (s, ...a) { texts.push(String(s)); return real.call(this, s, ...a); }; try { render(); } finally { CanvasRenderingContext2D.prototype.fillText = real; } return texts.find(s => s.includes('remaining')); };
     const mss = s => { s = Math.ceil(s); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
     const out = {};
-    for (const s of [1, 4, 0]) { G.speed = s; out[s] = { bar: bar(), want: mss(realLeft(t, s, burnSpeed())) }; }
+    for (const s of [1, 2, 0]) { G.speed = s; out[s] = { bar: bar(), want: mss(realLeft(t, s, burnSpeed())) }; }
     G.speed = 16; t.left = t.total * 0.5; out.flip = bar();
     return out;
   });
   await done();
   assert.ok(r[1].bar.startsWith(`${r[1].want} remaining -`), r[1].bar);
-  assert.ok(r[4].bar.startsWith(`${r[4].want} remaining 4x`), r[4].bar);
+  assert.ok(r[2].bar.startsWith(`${r[2].want} remaining 2x`), r[2].bar);
   assert.ok(r[0].bar.startsWith(`${r[0].want} remaining paused`), r[0].bar);
   assert.match(r.flip, /remaining flip/);
 });
@@ -1539,16 +1539,16 @@ test('in a burn Space pauses and resumes, and 1, 2 and 3 pick the speed; the but
   await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; });
   const speed = () => ev(() => G.speed), seen = [];
   for (const k of ['Space', 'Space', 'Digit2', 'Digit3', 'Digit1']) { await page.keyboard.press(k); seen.push(await speed()); }
-  assert.deepEqual(seen, [0, 1, 4, 16, 1]);
+  assert.deepEqual(seen, [0, 1, 2, 16, 1]);
   await page.waitForSelector('#bspeed:not([hidden])');
   await page.click('#bspeed [data-speed="16"]');
   const r = await ev(() => ({ speed: G.speed, lit: [...document.querySelectorAll('#bspeed button.active')].map(b => b.dataset.speed), labels: [...document.querySelectorAll('#bspeed button')].map(b => b.textContent) }));
-  assert.deepEqual(r, { speed: 16, lit: ['16'], labels: ['Pause', '1x', '4x', '16x'] });
+  assert.deepEqual(r, { speed: 16, lit: ['16'], labels: ['Pause', '1x', '2x', '16x'] });
   await page.click('#bspeed [data-speed="0"]');
   assert.equal(await speed(), 0);
-  await ev(() => { G.speed = 4; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', keep: true, run: () => ({ title: 'T', text: 'pressed', choices: [] }) }] }); });
+  await ev(() => { G.speed = 2; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', keep: true, run: () => ({ title: 'T', text: 'pressed', choices: [] }) }] }); });
   await page.keyboard.press('Space'); await page.keyboard.press('Digit3');
-  assert.equal(await ev(() => G.speed), 4, 'under a scene the speed is left alone');
+  assert.equal(await ev(() => G.speed), 2, 'under a scene the speed is left alone');
   await done();
 });
 
@@ -1571,7 +1571,7 @@ test('paused, a screen opens and works, and nothing in it runs on; landed, the k
 test('the controls page lists the burn\'s keys (#992)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const text = await ev(() => { Menu.view = 'controls'; Menu.render(); return document.getElementById('panel').textContent; });
-  assert.match(text, /Space: pause or resume the burn/); assert.match(text, /1 \/ 2 \/ 3: normal, 4x, 16x/);
+  assert.match(text, /Space: pause or resume the burn/); assert.match(text, /1 \/ 2 \/ 3: normal, 2x, 16x/);
   await done();
 });
 
@@ -1610,4 +1610,132 @@ test('the burn bar\'s phase and g, and the float\'s build, follow the flip in sh
   assert.deepEqual(r.strapping, ['secure', 'BURN', true], 'strapped in, still under thrust');
   assert.deepEqual(r.mid, ['float', 'FLIP', false], 'weightless at the midpoint');
   assert.equal(r.weights, 0, 'no flip light before the flip');
+});
+
+// #932, the lighting pass, read from the pixels each room draws on a canvas of its own at twice the world's scale: the light is what the
+// room draws less what it draws with its lamp (drawPhaseLight) taken away.
+const lightKit = () => {
+  const K = 2, lay = LAYOUTS.freighter, W = lay.width, FW = { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W };
+  const S = o => ({ w: phaseWeights(o.pr === undefined ? 0.3 : o.pr), time: o.time || 3, zoom: 1.17, spin: 0, still: !!o.still, berths: 12, cargo: 0.5, torpedoes: 2, fuel: 0.5, burning: true,
+    night: o.night || 0, asleep: o.asleep || 0, well: FW, damage: { marks: new Set(), severe: false }, patient: false, headIn: false });
+  window.lightDraw = (id, o = {}, stub = null) => {
+    const r = layoutBox(lay, id), c = document.createElement('canvas'); c.width = Math.round((r.x1 - r.x0) * K); c.height = Math.round((r.floor - r.top) * K);
+    const g = c.getContext('2d'); g.fillStyle = '#000'; g.fillRect(0, 0, c.width, c.height); g.setTransform(K, 0, 0, K, -r.x0 * K, -r.top * K);
+    const real = stub && window[stub]; if (stub) window[stub] = stub === 'berthReading' ? () => [] : () => {};
+    try { drawRoom(g, id, r, S(o)); } finally { if (stub) window[stub] = real; }
+    const d = g.getImageData(0, 0, c.width, c.height).data;
+    const mean = (x0, y0, x1, y1) => {  // the mean colour over a box in world units
+      const out = [0, 0, 0]; let n = 0;
+      for (let y = Math.round((y0 - r.top) * K); y < Math.round((y1 - r.top) * K); y++) for (let x = Math.round((x0 - r.x0) * K); x < Math.round((x1 - r.x0) * K); x++) { const i = (y * c.width + x) * 4; out[0] += d[i]; out[1] += d[i + 1]; out[2] += d[i + 2]; n++; }
+      return out.map(v => v / n);
+    };
+    return { r, d, cw: c.width, K, mean };
+  };
+  // the light's own colour in a box: what the room draws there less what it draws without its lamp
+  window.lightAt = (id, o, box) => { const a = lightDraw(id, o).mean(...box), b = lightDraw(id, o, 'drawPhaseLight').mean(...box); return { lit: a, d: a.map((v, i) => v - b[i]) }; };
+};
+const luma = c => 0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2];
+
+test('the lamps make pools of warm light on the floor under them, with dark corners away from them, darker at night (#932)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(lightKit);
+  const rooms = await ev(() => ROOMS.map(({ id }) => {
+    const r = layoutBox(LAYOUTS.freighter, id), F = r.floor, lamps = roomLamps(id, r), corners = [[r.x0 + 2, r.top + 2, r.x0 + 24, r.top + 16], [r.x1 - 24, r.top + 2, r.x1 - 2, r.top + 16]].filter(b => lamps.every(x => Math.abs(x - (b[0] + b[2]) / 2) > 100));  // the top corners away from the lamps
+    return { id, under: roomLamps(id, r).map(x => lightAt(id, {}, [x - 10, F - 6, x + 10, F - 1]).d), underLit: roomLamps(id, r).map(x => lightDraw(id, {}).mean(x - 10, F - 6, x + 10, F - 1)), corners: corners.map(b => lightAt(id, {}, b).d),
+      day: corners.map(b => lightDraw(id, {}).mean(...b)), night: corners.map(b => lightDraw(id, { night: 1 }).mean(...b)) };
+  }));
+  for (const { id, under, underLit, corners, day, night } of rooms) {
+    for (const u of under) {
+      assert.ok(luma(u) > 4, `${id}: the floor under each lamp lit (${u.map(Math.round)})`);
+      for (const c of corners) {
+        assert.ok(luma(u) > luma(c), `${id}: brighter under the lamp than in the corner`);
+        assert.ok(u[0] - u[2] > c[0] - c[2] + 4, `${id}: warmer under the lamp (${u.map(Math.round)}) than in the corner (${c.map(Math.round)})`);
+      }
+    }
+    assert.ok(corners.length > 0, `${id}: a corner away from the lamps`);
+    for (const c of day) for (const u of underLit) assert.ok(luma(c) < luma(u), `${id}: the corner (${c.map(Math.round)}) darker than the floor under the lamp (${u.map(Math.round)})`);
+    day.forEach((c, k) => assert.ok(luma(night[k]) < luma(c), `${id}: the corner darker at night (${night[k].map(Math.round)}) than by day (${c.map(Math.round)})`));
+  }
+  await done();
+});
+
+test('the burn\'s light is red, the flip\'s amber, and the galley\'s the warmest in cruise (#932)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(lightKit);
+  const r = await ev(() => ROOMS.map(({ id }) => {
+    const q = layoutBox(LAYOUTS.freighter, id), [x] = roomLamps(id, q), box = [x - 10, q.floor - 6, x + 10, q.floor - 1];
+    return { id, burn: lightAt(id, { pr: 0.02 }, box).d, flip: lightAt(id, { pr: 0.5 }, box).d, cruise: lightAt(id, {}, box).d };
+  }));
+  for (const { id, burn, flip } of r) {
+    assert.ok(burn[0] > 8 && burn[0] > burn[1] + 8 && burn[0] > burn[2] + 8, `${id}: the burn's pool red (${burn.map(Math.round)})`);
+    assert.ok(flip[0] > flip[1] + 4 && flip[1] > flip[2] + 8, `${id}: the flip's pool amber (${flip.map(Math.round)})`);
+  }
+  const warm = c => c[0] - c[2], galley = r.find(q => q.id === 'galley').cruise;
+  for (const { id, cruise } of r) if (id !== 'galley') assert.ok(warm(galley) > warm(cruise) + 4 && luma(galley) > luma(cruise), `the galley's pool (${galley.map(Math.round)}) warmer and stronger than the ${id}'s (${cruise.map(Math.round)})`);
+  await done();
+});
+
+test('a bunk\'s reading lamp lights its pillow end, inside the bunk, in cruise in the evening when nobody sleeps there (#932)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(lightKit);
+  const cases = await ev(() => [{ night: 0.5, asleep: 3 }, { night: 0.2, asleep: 0 }, { night: 0, asleep: 3 }, { night: 1, asleep: 3 }, { night: 0.5, asleep: 3, pr: 0.02 }, { night: 0.5, asleep: 3, pr: 0.5 }].map(o => {
+    const a = lightDraw('berths', o), b = lightDraw('berths', o, 'berthReading'), n = Math.min(12, ship().berths || 12), r = a.r, well = { x0: (LAYOUTS.freighter.well.x - LAYOUTS.freighter.well.w / 2) * LAYOUTS.freighter.width, x1: (LAYOUTS.freighter.well.x + LAYOUTS.freighter.well.w / 2) * LAYOUTS.freighter.width };
+    const bunks = Array.from({ length: 12 }, (_, k) => berthBunk(r, 12, k, well)), lit = bunks.map(() => ({ n: 0, x: 0 })); let outside = 0;
+    for (let i = 0; i < a.d.length; i += 4) {
+      if (Math.abs(a.d[i] - b.d[i]) + Math.abs(a.d[i + 1] - b.d[i + 1]) + Math.abs(a.d[i + 2] - b.d[i + 2]) < 3) continue;
+      const x = r.x0 + ((i / 4) % a.cw) / a.K, y = r.top + Math.floor(i / 4 / a.cw) / a.K, k = bunks.findIndex(q => x >= q.x && x <= q.x + q.w && y >= q.y - 27 && y <= q.y);
+      if (k < 0) outside++; else { lit[k].n++; lit[k].x += (x - bunks[k].x) / bunks[k].w; }
+    }
+    return { o, n, outside, lit: lit.map(q => ({ n: q.n, at: q.n ? q.x / q.n : null })) };
+  }));
+  const [evening, dusk, ...dark] = cases;
+  assert.equal(evening.outside, 0, 'every reading lamp\'s light inside its bunk');
+  evening.lit.forEach((q, k) => {
+    if (k < 3) assert.equal(q.n, 0, `bunk ${k}: its sleeper asleep, its lamp out`);
+    else { assert.ok(q.n > 20, `bunk ${k}: awake in the evening, its lamp lit`); assert.ok(q.at < 0.4, `bunk ${k}: the light on the pillow end (${q.at})`); }
+  });
+  assert.equal(dusk.lit[2].n, 0, 'the bunk with its curtain shut stays dark');
+  assert.ok(dusk.lit[0].n > 20 && dusk.outside === 0, 'at dusk, nobody asleep yet, the lamps lit');
+  for (const c of dark) assert.ok(c.lit.every(q => q.n === 0) && c.outside === 0, `no reading lamp at ${JSON.stringify(c.o)}`);
+  await done();
+});
+
+test('under reduced motion each room\'s light holds still: the flip drawn at two times is the same frame (#932)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(lightKit);
+  const moved = await ev(() => ROOMS.map(({ id }) => id).filter(id => {
+    const a = lightDraw(id, { pr: 0.5, still: true, time: 1 }).d, b = lightDraw(id, { pr: 0.5, still: true, time: 4.3 }).d;
+    for (let i = 0; i < a.length; i++) if (a[i] !== b[i]) return true;
+    return false;
+  }));
+  assert.deepEqual(moved, []);
+  const moving = await ev(() => { const a = lightDraw('galley', { pr: 0.5, time: 1 }).d, b = lightDraw('galley', { pr: 0.5, time: 1.3 }).d; return a.some((v, i) => v !== b[i]); });
+  assert.ok(moving, 'and without it the flip pulses');
+  await done();
+});
+
+test('in time-lapse at 16x a walk is not drawn: the walker fades out of the old place, out of sight between, and fades into the new; at 1x and 2x as they are', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {}; burn(); const t = G.transit;
+    t.left = t.total * 0.3;  // under way, clear of the couches and the flip
+    setBurnSpeed(16); out.on16 = lapseOn(); setBurnSpeed(2); out.on2 = lapseOn(); setBurnSpeed(1); out.on1 = lapseOn();
+    setBurnSpeed(16); scene(); out.scene = lapseOn(); G.dialog = null;
+    const p = { x: 0.1 * CUT_K, dk: 1, tdk: 1, tx: null, at: 'post', room: 'bridge' }, frame = (n = 1) => { for (let i = 0; i < n; i++) lapseTick([p], true, 0.05); return { ...p.lapse }; };
+    out.rest = frame();
+    p.x += 0.005 * CUT_K; out.nudge = frame();  // a small move is followed
+    p.tx = 0.8 * CUT_K; p.x = 0.5 * CUT_K; out.leaving = frame(); out.gone = frame(10);  // walking: fading out where they were, then out of sight
+    p.x = 0.8 * CUT_K; p.tx = null; p.at = 'galley'; out.arrived = frame(); out.back = frame(10);
+    lapseTick([p], false, 0.05); out.off = p.lapse;
+    return out;
+  });
+  await done();
+  assert.deepEqual([r.on16, r.on2, r.on1, r.scene], [true, false, false, false], 'at 16x, and not under a scene');
+  assert.equal(r.rest.a, 1);
+  assert.ok(Math.abs(r.nudge.x - r.rest.x) > 0 && r.nudge.a === 1, 'followed, not faded');
+  assert.equal(r.leaving.x, r.nudge.x, 'drawn where they were'); assert.ok(r.leaving.a < 1 && r.leaving.a > 0, 'fading out');
+  assert.equal(r.gone.a, 0);
+  assert.ok(Math.abs(r.arrived.x - 0.8 * r.rest.x / 0.1) < 1e-6 && r.arrived.at === 'galley', 'there once they rest'); assert.equal(r.back.a, 1, 'and faded in');
+  assert.equal(r.off, null, 'at 1x drawn as they are');
 });

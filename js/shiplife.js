@@ -795,6 +795,25 @@ function lifeTick(dt) {
   }
 }
 
+// Time-lapse under fast-forward: at 16x the crew keep the routine on the burn's clock, but a walk is not drawn. Each is drawn where they last
+// rested (`p.lapse`, with what their posture reads there); one who goes somewhere else fades out of the old place and, once there, into the new, over
+// LAPSE_FADE real seconds each way. A small move (easing onto a seat, a step aside) is followed. At 1x and 2x, in the flip's slow motion and under a scene
+// they are drawn as they are. `dt` is real seconds.
+const LAPSE_FADE = 0.35, LAPSE_NEAR = 0.02, LAPSE_FROM = 2;  // #1083: the fade each way; the fastest rate a walk is drawn at; under this share of the cutaway's width, a move is followed, not faded
+const restOf = p => ({ x: p.x, dk: p.dk, at: p.at, room: p.room, block: p.block, staged: p.staged, errand: p.errand, face: p.face });
+function lapseTick(people, lapse, dt) {
+  const k = Settings.reduceMotion ? 1 : dt / LAPSE_FADE;
+  for (const p of people) {
+    if (!lapse) { p.lapse = null; continue; }
+    const s = p.lapse || (p.lapse = { ...restOf(p), a: 1 }), rest = p.tx === null && p.dk === p.tdk;
+    const far = Math.abs(p.x - s.x) > LAPSE_NEAR * CUT_K || Math.abs(p.dk - s.dk) > 0.05;
+    if (far && s.a > 0) s.a = Math.max(0, s.a - k);  // gone from where they were
+    else if (far) { if (rest) Object.assign(s, restOf(p)); }  // out of sight until they are somewhere, then there
+    else { if (rest || Math.abs(p.x - s.x) > 0) Object.assign(s, rest ? restOf(p) : { x: p.x }); s.a = Math.min(1, s.a + k); }
+  }
+}
+const lapseOn = () => { const t = G.transit; return !!t && !t.event && !G.dialog && burnRate(t, G.speed, burnSpeed()) > LAPSE_FROM; };  // the burn's clock running faster than a walk can be watched
+
 // ---------- the cutaway ----------
 // The drive plume down from the bell: its length as a share of the tower's height (growing with the burn's peak), the flicker in world units,
 // and the halo and the cone's half-width as shares of the tower's width.
@@ -904,11 +923,11 @@ function drawCutaway(box, clear = box) {
   // height, down the run from the top of the nose's cap to the first of the plume (camRun), offset from the box's centre by offX and offY.
   // Where a docked dialog leaves the part narrower than the tower (its width and 40 each side, as viewOf fits it), the camera pans across
   // too, as camStep does down, to keep the hand and the scene's people in the part (#972); with none open it stays on the tower's middle.
-  // Reduced motion snaps, and holds on a deck: one cut as the hand reaches the next, still on the ladder between.
+  // Reduced motion snaps, and holds on a deck: one cut as the hand reaches the next, still on the ladder between. In time-lapse it follows the hand as drawn.
   const rx0 = Math.max(clear.x, box.x + left), offX = (box.x + box.w / 2 - (rx0 + clear.x + clear.w) / 2) / zoom, offY = (box.y + box.h / 2 - (clear.y + clear.h / 2)) / zoom, run = camRun(lay);
-  const held = G.cam && !still ? G.cam.y - offY - run.top : null, target = camTarget(lay, still ? Math.round(people[0].dk) : people[0].dk), dt = G.cam ? Math.max(0, G.time - G.cam.t) : 0;
+  const held = G.cam && !still ? G.cam.y - offY - run.top : null, hand = people[0].lapse || people[0], target = camTarget(lay, still ? Math.round(hand.dk) : hand.dk), dt = G.cam ? Math.max(0, G.time - G.cam.t) : 0;
   const camY = camStep(held, target, dt, clear.h / zoom, run.len) + run.top + offY;
-  const seenX = people.filter((p, i) => i === 0 || p.staged).map(p => p.x * W), focusX = (Math.min(...seenX) + Math.max(...seenX)) / 2;
+  const seenX = people.filter((p, i) => i === 0 || p.staged).map(p => (p.lapse || p).x * W), focusX = (Math.min(...seenX) + Math.max(...seenX)) / 2;
   const partX = camStep(G.cam && G.cam.x !== undefined && !still ? G.cam.x + 40 : null, focusX + 40, dt, (clear.x + clear.w - rx0) / zoom, W + 80) - 40, camX = partX + offX;
   G.cam = { x: partX, y: camY, t: G.time };
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
@@ -997,8 +1016,12 @@ function drawCutaway(box, clear = box) {
   const fl = burnStages(t.days).float, floatW = burnRamp(pr, 0.5 - fl, 0.5 - fl / 3) - burnRamp(pr, 0.5 + fl / 3, 0.5 + fl);  // how far the float has built at the flip, 0 to 1 and back (#927), in ship time (#992)
   const youHurt = handHurt();
   for (const p of people) if (p.role !== 'cat' && p.seat !== undefined && seen(deckFloor(lay, p.seatDk) - 20, deckFloor(lay, p.seatDk) + 10)) roomCouchFlat(ctx, X(p.seat), deckFloor(lay, p.seatDk), p.couch || 0);  // each crash couch, folded into its deck or out flat (#925, #972)
-  for (const p of people) {
-    const asleep = slots.has(p), pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p), s.well);
+  for (const p0 of people) {
+    const asleep = slots.has(p0), lap = p0.lapse;
+    if (lap && lap.a <= 0) continue;  // in time-lapse, between places
+    const p = lap ? { ...p0, ...lap, tx: null, tdk: lap.dk } : p0;  // in time-lapse, as they were where they last rested
+    ctx.globalAlpha = lap ? lap.a : 1;  // fading out of a place or into one (set back after the people)
+    const pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p0), s.well);
     const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
     const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? MED_COT : 0), dk = Math.round(p.dk);
     dots.push({ x: X(p.x), dk: p.dk, color: ROLE_COLORS[p.role] });
@@ -1006,6 +1029,7 @@ function drawCutaway(box, clear = box) {
     const inView = seen(y - 60, y);
     if (pose.name === 'strap') roomJumpSeat(ctx, x, y, pose.face, w.flip);  // a jump seat folded down from the wall behind them (#927)
     const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float' ? floatW : 0, ...(p.role === 'cat' ? {} : { ...portraitLook({ id: p.id, name: p.name }), mood: figureMood(st, p.id, youHurt) }) });
+    if ((p.room === 'bridge' || p.room === 'gunnery') && p.role !== 'cat' && pose.view === 'side' && /sit/.test(pose.name)) roomScreenGlow(ctx, tap.head, pose.face);  // seated at a post, the console's screen on the face (#932)
     if (pose.name === 'tether') {  // a line to a ring on the nearest room wall on their deck
       const walls = ROOMS.filter(r => r.deck === dk).flatMap(r => [X(r.x0), X(r.x1)]), bx = walls.reduce((a, b) => (Math.abs(b - x) < Math.abs(a - x) ? b : a)), rx = bx + Math.sign(x - bx) * 6, ry = deckFloor(lay, dk) - 60;
       ctx.strokeStyle = 'rgba(201,162,39,0.9)'; ctx.lineWidth = 1.4;
@@ -1022,6 +1046,7 @@ function drawCutaway(box, clear = box) {
       }
     }
   }
+  ctx.globalAlpha = 1;
   if (seen(galley.top, galley.floor)) roomMessTable(ctx, galley, s);  // the mess table in front of those sitting at it (#978)
   hullSeams(o);  // plating, rivets and scars (hulldetail.js)
   ctx.restore();
@@ -1188,6 +1213,6 @@ function downtimeScene(all) {
 Mods.register({
   id: 'shiplife', name: 'Life aboard', builtin: true,
   init(M) {
-    M.on('frame', dt => lifeTick(lifeDt(dt)));  // at the burn's speed (burnspeed.js, #992)
+    M.on('frame', dt => { lifeTick(lifeDt(dt)); if (G.mode === 'transit' && G.transit) lapseTick(shipPeople(), lapseOn(), dt); });  // at the burn's speed (burnspeed.js, #992); drawn in time-lapse above 1x
   },
 });
