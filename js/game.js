@@ -55,7 +55,7 @@ const G = {
   cutHits: [], cutRooms: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js
   cutRack: null,     // the comms rack's screen box where the burn view drew it whole, or null; a tap on it opens Comms (#919, shiplife.js)
   cam: null, cutOutline: null,  // the burn view's camera ({ x, y, t }: the world x it centres across the clear part, the world y it centres down the tower, and the G.time of its last step; null snaps) and the outline of the tower for a tap ({ ...outlineLayout: its strip, scale and rooms; ids: who it shows; view: the world y and height its frame shows }), see camera.js
-  burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, ticker or tutorial, dest, and a scene's dock with the part of the ship it leaves clear), for a tap, the dock and the tests, see transit.js
+  burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, tutorial, comms lines, a downtime scene's tags, dest, and a scene's dock with the part of the ship it leaves clear), for a tap, the dock and the tests, see transit.js
   hudStrip: null,     // where the HUD drew the hand's readouts (the strip, readouts.js), for the tests
 };
 

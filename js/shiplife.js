@@ -904,6 +904,11 @@ function drawDowntimeTags(tags, rooms, hits, clear) {  // clear: the part of the
       const p = hits.find(q => q.id === g.id); if (!p) continue;
       x = Math.max(clear.x + 4, Math.min(clear.x + clear.w - w - 4, p.head.x - w / 2)); y = p.head.y - h - 10;
       for (let k = 0; k < 8 && meets(x, y, w); k++) y -= step;
+      if (y < clear.y + 4) {  // no room over them inside the clear part (#1087): at its top, stepping down past the others, never over the burn bar
+        y = clear.y + 4;
+        for (let k = 0; k < 8 && meets(x, y, w); k++) y += step;
+        if (meets(x, y, w)) continue;
+      }
     }
     ctx.fillStyle = 'rgba(6,13,22,0.85)'; ctx.fillRect(x, y, w, h);
     ctx.strokeStyle = TAG_COLOR; ctx.lineWidth = 1; ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
@@ -1066,7 +1071,7 @@ function drawCutaway(box, clear = box) {
     return { id: r.id, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
   }).filter(b => b.w > 0 && b.h > 0);
   G.cutHits = hits.filter(h => h.x >= cx0 && h.x <= cx1 && h.y >= cy0 && h.y <= cy1);
-  const ev = G.dialog && G.dialog.event, tagged = ev && ev.downtime ? drawDowntimeTags(ev.tags || [], G.cutRooms, G.cutHits, { x: cx0, y: cy0, w: cx1 - cx0, h: cy1 - cy0 }) : [];  // the downtime scene's places (2026-11-12)
+  const ev = G.dialog && G.dialog.event, tagged = ev && ev.downtime && !ev.chosen ? drawDowntimeTags(ev.tags || [], G.cutRooms, G.cutHits, { x: cx0, y: cy0, w: cx1 - cx0, h: cy1 - cy0 }) : [];  // the downtime scene's places (2026-11-12)
   const rack = commsRackBox(layoutBox(lay, 'bridge')), ra = toScreen(rack.x, rack.y), rb = toScreen(rack.x + rack.w, rack.y + rack.h);  // the comms rack, whole in the clear part or not at all
   G.cutRack = ra.x >= cx0 && rb.x <= cx1 && ra.y >= cy0 && rb.y <= cy1 ? { x: ra.x, y: ra.y, w: rb.x - ra.x, h: rb.y - ra.y } : null;
   const seenPart = { y: camY - offY, span: clear.h / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers
@@ -1186,7 +1191,7 @@ function downtimeScene(all) {
   const t = G.transit, five = all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive(), block = shipDay(t.elapsed).block;
   const able = five.filter(a => !a.can || a.can()), people = shipPeople(), tags = onDeck(able, people);
   const placeOf = label => { const g = tags.find(x => x.label === label); return g && (g.room || (people.find(p => p.id === g.id) || {}).room); };
-  return {
+  const scene = {
     title: lifeSay(DOWNTIME_BLOCKS.includes(block) ? `title.${block}` : 'title'), personal: true,  // a hand's savings are their own, not the ship's purse
     text: able.map(a => (a.on ? a.on() : '')).filter(Boolean).join(' '),
     downtime: true, tags, able: able.length,
@@ -1194,6 +1199,7 @@ function downtimeScene(all) {
       ...five.map(a => (what => ({  // what: the label as drawn, handed to can and run, so a teaching does the move it named (moves.js)
         label: what, can: a.can && (() => a.can(what)),
         run() {
+          scene.chosen = true;  // the result page: the tags go (#1086)
           spendLife(t);
           if (hired()) hired().did = { ...hired().did, downtime: true };  // the first run's steps (tutorial.js)
           const you = people.find(p => p.role === 'you'), room = placeOf(what);
@@ -1205,9 +1211,10 @@ function downtimeScene(all) {
           return text;
         },
       }))(activityLabel(a))),
-      { label: lifeSay('none.label'), run: () => lifeSay('none.result') },
+      { label: lifeSay('none.label'), run: () => { scene.chosen = true; return lifeSay('none.result'); } },
     ],
   };
+  return scene;
 }
 
 Mods.register({

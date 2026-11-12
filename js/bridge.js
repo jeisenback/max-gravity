@@ -192,7 +192,7 @@ function deckSvg() {
     <text x="30" y="26" fill="#7f95ab" font-size="11" letter-spacing="2">DECK PLAN</text>`;
 }
 
-// The Interior station as a console: the deck plan, who has which post, and the downtime button along the bottom (in a burn).
+// The Interior station as a console: the deck plan and who has which post.
 function interiorPanel() {
   const st = G.state, t = G.transit, crew = crewMembers();
   const captainRow = conRead('Captain', raw(role().captain === 'npc' ? personLink(hiredCaptain()) : `${youLink()}, in command`));
