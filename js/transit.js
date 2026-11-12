@@ -411,6 +411,17 @@ function openEvent(ev) {
   UI.showEvent(ev, choices);
 }
 
+// Scenes waiting their turn (#1096). A landing's handlers hand their scenes to offerScene with a rank instead of opening them; when every handler has
+// run (landAt), they play in rank order, the order offered within a rank, none dropped and none written over. A scene offered while another is open
+// waits in sceneQueue, which finishEvent opens after a scene's own follow-on (G.nextEvent). Not saved, as G.nextEvent is not.
+const SCENE_RANK = { customs: 0, settle: 1, business: 2, people: 3, ambient: 4 };  // the lock first; the run's settling up; the run's own business; people; what the port brings
+let sceneQueue = [], landingScenes = null;
+function queueScene(ev) { if (!ev) return; if (G.dialog) sceneQueue.push(ev); else openEvent(ev); }
+function offerScene(rank, ev) { if (!ev) return; if (landingScenes) landingScenes.push({ rank: SCENE_RANK[rank], ev }); else queueScene(ev); }
+const landingSceneCount = () => (landingScenes ? landingScenes.length : 0);
+function landingScenesOpen() { if (!G.dialog) sceneQueue = []; landingScenes = []; }  // with nothing open, anything still queued is a game before this one's
+function landingScenesPlay() { const list = (landingScenes || []).sort((a, b) => a.rank - b.rank); landingScenes = null; for (const x of list) queueScene(x.ev); }
+
 function chooseEvent(i) {
   const c = G.dialog.choices[i], result = G.dialog.event.personal ? c.run() : hiredFunds(() => c.run());  // a hired hand's burn events spend the ship's money, not theirs; their own affairs, their own
   return c.role && !c.keep ? result.replace(/\{crew\}/g, roleName(c.role)) : result;
@@ -423,6 +434,7 @@ function finishEvent() {
     G.nextEvent = null;
     return openEvent(ev);
   }
+  if (sceneQueue.length) return openEvent(sceneQueue.shift());  // one waiting its turn (#1096)
   if (G.mode === 'landed') return storyNextScene() || UI.show();  // back to the spaceport after a story scene
   if (G.mode === 'hail') G.mode = 'flight';
   else if (G.transit) G.transit.event = null;

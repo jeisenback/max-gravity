@@ -115,18 +115,22 @@ test('a clean ship at an inspecting port gets one note and no scene; an independ
   assert.equal(r.indie.dialog, false); assert.ok(!r.indie.notes.includes('Customs logs the ship through.'));
 });
 
-test('with another scene already open, the inspection comes first and the other follows it (#1015)', async () => {
+test('at a landing the inspection comes first, whatever was offered before it, and the rest follow in their ranks, none dropped (#1015, #1096)', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     handAt('comms', 'Mars', { cargo: { water: 50 }, rep: 0 });
-    openEvent({ title: 'Other', text: 'x', choices: [{ label: 'A', run: () => 'a' }] });
+    landingScenesOpen();
+    offerScene('people', { title: 'Other', text: 'x', choices: [{ label: 'A', run: () => 'a' }] });
+    offerScene('business', { title: 'Queued', text: 'y', choices: [{ label: 'B', run: () => 'b' }] });
     inspectAtLanding(currentPlanet());
-    const first = G.dialog.event.title; chooseEvent(1); finishEvent();
-    return { first, then: G.dialog && G.dialog.event.title };
+    landingScenesPlay();
+    const seen = [G.dialog.event.title];
+    for (let g = 5; G.dialog && g--;) { chooseEvent(G.dialog.event.title === 'The Inspector' ? 1 : 0); finishEvent(); if (G.dialog) seen.push(G.dialog.event.title); }
+    return seen;
   });
   await done();
-  assert.deepEqual(r, { first: 'The Inspector', then: 'Other' });
+  assert.deepEqual(r, ['The Inspector', 'Queued', 'Other']);
 });
 
 test('at the landing itself the inspection opens (the landed hook) (#1015)', async () => {
@@ -205,20 +209,20 @@ test('loading a save is no second arrival: no inspection and no customs note (#9
   assert.ok(!r.notes.includes('Customs logs the ship through.'), r.notes.join(' | '));
 });
 
-test('a scene already queued behind the open one still shows after the inspection and the open one (#993 review)', async () => {
+test('an inspection outside a landing waits behind a scene already open, and nothing queued is lost (#993 review, #1096)', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     handAt('comms', 'Mars', { cargo: { water: 50 }, rep: 0 });
     openEvent({ title: 'Other', text: 'x', choices: [{ label: 'A', run: () => 'a' }] });
+    G.nextEvent = { title: 'Queued', text: 'y', choices: [{ label: 'B', run: () => 'b' }] };
     inspectAtLanding(currentPlanet());
-    G.nextEvent = { title: 'Queued', text: 'y', choices: [{ label: 'B', run: () => 'b' }] };  // a handler after the inspection's queued its scene
     const seen = [G.dialog.event.title];
     for (let g = 5; G.dialog && g--;) { chooseEvent(G.dialog.event.title === 'The Inspector' ? 1 : 0); finishEvent(); if (G.dialog) seen.push(G.dialog.event.title); }
     return seen;
   });
   await done();
-  assert.deepEqual(r, ['The Inspector', 'Other', 'Queued']);
+  assert.deepEqual(r, ['Other', 'Queued', 'The Inspector']);
 });
 
 test('an owner who kept a post has no captain to argue past: only the pay choice (#993 review)', async () => {

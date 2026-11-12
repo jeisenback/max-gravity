@@ -60,9 +60,7 @@ Mods.register({
     M.on('landed', () => {
       const st = G.state;
       if (!hired() || !(st.mourn || []).length) return;
-      if (G.dialog && G.nextEvent) return;  // nowhere to put it yet: it waits for the next port
-      const ev = mournScene(st.mourn.shift());
-      if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+      offerScene('people', mournScene(st.mourn.shift()));
     });
   },
 });

@@ -105,7 +105,7 @@ function boldWithCaptain(won) {
 const crewNamed = role => { const c = roleHolder(role); return c ? c.first : `the ${ROLE_NAMES[role].toLowerCase()}`; };
 
 // The first arrival: settleRun (hired.js) keeps the first run's figures in h.first instead of the one-line note, and the first officer
-// settles up at the port, opened by hired.js's own 'landed' handler (which runs before the others, so before any landing scene or station call). The page's words are the lines of
+// settles up at the port, offered by hired.js's own 'landed' handler as the landing's settling up, after customs and before the rest (transit.js offerScene, #1096). The page's words are the lines of
 // 'scene:settling-up' (hiredscenes.js); the first officer's are the cast entry's `arrival`: open, memory, column (the captain's name is {cap}), pace, which that row lists as theirs. An older save with runs behind it has no h.first, so it never plays.
 const arrivalWanted = () => { const xo = hiredXo(); return !!(xo && CAST[xo.cast].arrival); };
 function arrivalPending(planet) {
