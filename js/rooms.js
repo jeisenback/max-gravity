@@ -2306,7 +2306,7 @@ function drawDamage(ctx, r, s) {
 // where people stand or sit at work there. x: the patch's middle across from the room's left end; y: its middle over the floor, both as drawn on
 // the back wall; w, h: the plate, about a person's forearm across, narrower where the wall is (the engine room's between its bottles and the
 // housing). Every room the marks can land in (shiplife.js marksFor: all but the medbay).
-const PATCH_AT = { bridge: { x: 251, y: 68 }, galley: { x: 133, y: 58 }, head: { x: 134.6, y: 64 }, berths: { x: 201, y: 66 }, gunnery: { x: 113, y: 60 },
+const PATCH_AT = { bridge: { x: 251, y: 68 }, galley: { x: 92, y: 58 }, head: { x: 134.6, y: 64 }, berths: { x: 201, y: 66 }, gunnery: { x: 113, y: 60 },
   workshop: { x: 104.6, y: 66 }, airlock: { x: 163, y: 74 }, lifesupport: { x: 241, y: 64 }, engine: { x: 110, y: 52, w: 10, h: 20 }, hold: { x: 75.6, y: 56, w: 15 } };
 // The box a room's patch takes on its back wall, the scorch beside the plate and the weld bead round it included.
 const patchBox = (id, r) => { const p = PATCH_AT[id], w = (p.w || 17) + 6, h = (p.h || 13) + 2, cx = r.x0 + p.x, cy = r.floor - p.y; return { x0: cx - w / 2, y0: cy - h / 2, x1: cx + w / 2, y1: cy + h / 2 }; };
