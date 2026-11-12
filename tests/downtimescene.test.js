@@ -246,3 +246,63 @@ test('there is no Spend some downtime button anywhere: not under the ship, not o
   assert.equal(r.tlife, false);
   assert.doesNotMatch(r.sheet, /Spend some downtime|data-bdown/);
 });
+
+// ---------- the tags in the cutaway (task 4) ----------
+
+test('while the downtime scene is open its choices are tagged: on the room for a place, over the person for a person; none after', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurn(); t.left = t.total * 0.6; t.lifeBlock = shipDay(t.elapsed).block;
+    const mate = shipPeople().find(p => p.id && p.role !== 'you' && p.role !== 'captain');
+    const real = window.downtimeFive;
+    window.downtimeFive = () => [ACTIVITIES.meal, { label: 'Cards in the galley', on: () => 'x', where: 'galley', run: () => '' },
+      { label: 'Talk to them', on: () => 'x', where: () => mate.id, run: () => '' }, { label: 'And again', on: () => 'x', where: () => mate.id, run: () => '' },
+      { label: 'A long label for whoever stands nearest the edge', on: () => 'x', where: () => window.edgeId, run: () => '' }];
+    try {
+      openEvent(downtimeScene()); render();
+      window.edgeId = G.cutHits.slice().sort((a, b) => b.head.x - a.head.x)[0].id; finishEvent(); openEvent(downtimeScene()); render();
+      const tags = (G.burnBoxes.tags || []).slice(), rooms = G.cutRooms.slice(), hits = G.cutHits.slice(), clear = G.burnBoxes.clear || G.burnBoxes.ship;
+      finishEvent(); render();
+      return { tags, rooms, hits, clear, mate: mate.id, after: (G.burnBoxes.tags || []).length };
+    } finally { window.downtimeFive = real; }
+  });
+  await done();
+  assert.ok(r.tags.length >= 1, 'something is tagged');
+  for (const g of r.tags) {
+    if (g.room) {
+      const b = r.rooms.find(x => x.id === g.room);
+      assert.ok(b && g.x >= b.x && g.x + g.w <= b.x + b.w + 0.5 && g.y >= b.y && g.y + g.h <= b.y + b.h + 0.5, `${g.label} inside the ${g.room}`);
+    } else {
+      const h = r.hits.find(x => x.id === g.id);
+      assert.ok(h && g.y + g.h <= h.head.y && g.x <= h.head.x && g.x + g.w >= h.head.x, `${g.label} over ${g.id}'s head`);
+    }
+  }
+  assert.ok(r.tags.some(g => g.room === 'galley'), 'the meal on the galley');
+  const meets = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+  for (let i = 0; i < r.tags.length; i++) for (let j = i + 1; j < r.tags.length; j++) assert.ok(!meets(r.tags[i], r.tags[j]), `${r.tags[i].label} and ${r.tags[j].label} do not overlap`);
+  assert.equal(r.tags.filter(g => g.room === 'galley').length, 2, 'two on one room, stacked');
+  for (const g of r.tags) assert.ok(g.x >= r.clear.x && g.x + g.w <= r.clear.x + r.clear.w + 0.5, `${g.label} inside the part the scene leaves clear`);
+  if (r.hits.some(h => h.id === r.mate)) assert.ok(r.tags.some(g => g.id === r.mate), 'the person tagged when in view');
+  assert.equal(r.after, 0, 'no tags once the scene is closed');
+});
+
+test('a tagged person out of view gets no tag, and nothing throws', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurn(); t.left = t.total * 0.6; t.lifeBlock = shipDay(t.elapsed).block;
+    const real = window.downtimeFive;
+    window.downtimeFive = () => [ACTIVITIES.meal, { label: 'Nobody', on: () => 'x', where: () => 'c:nobody-aboard', run: () => '' }];
+    try { openEvent(downtimeScene()); let threw = null; try { render(); } catch (e) { threw = String(e); } return { threw, tags: (G.burnBoxes.tags || []).map(g => g.room || g.id) }; } finally { window.downtimeFive = real; finishEvent(); }
+  });
+  await done();
+  assert.equal(r.threw, null); assert.deepEqual(r.tags, ['galley']);
+});
+
+test('a person tag at the edge of the clear part is kept inside it', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => drawDowntimeTags([{ label: 'A long label for someone at the edge', id: 'z' }], [], [{ id: 'z', head: { x: 995, y: 300 } }], { x: 0, y: 0, w: 1000, h: 800 }));
+  await done();
+  assert.equal(r.length, 1); assert.ok(r[0].x + r[0].w <= 1000 && r[0].x >= 0, JSON.stringify(r[0]));
+});

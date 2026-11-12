@@ -14,6 +14,7 @@ const helpers = () => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; if (shipId) st.shipId = shipId;
     sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    G.transit.lifeOffered = { before: true, m1: true, m2: true, m3: true, after: true };  // the downtime scene (shiplife.js) does not come into these tests
     return st;
   };
   window.securePr = t => { const s = burnStages(t.days); return 0.5 - (s.secure + s.float) / 2; };  // strapped in before the float, in ship time (#992)

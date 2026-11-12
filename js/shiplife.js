@@ -866,6 +866,27 @@ function towerTank(ctx, lay, tk, fuel, s) {
 // windows and the thrusters.
 // Leaves G.cutRooms (the rooms in view, screen boxes clipped to the box), G.cutHits (the people in view), G.cutRack (the comms rack in view) and
 // G.cutOutline for a tap (game.js).
+// The downtime scene's tags (docs/superpowers/specs/2026-11-12-downtime-scene-design.md), in screen space: a place's on its room, in the top right
+// corner opposite the room's name; a person's over their head, when they are drawn in view (`hits`). Returns the boxes drawn, with what each tags.
+const TAG_COLOR = '#e8b84a';
+function drawDowntimeTags(tags, rooms, hits, clear) {  // clear: the part of the ship box a scene's dialog leaves clear, which a person's tag keeps inside
+  const out = [], fs = 12, pad = 4, h = fs + pad * 2, n = {};  // n: how many are already on each room or person; the next stacks under (a room) or over (a person)
+  ctx.save(); ctx.font = `600 ${fs}px ${roomFont}`; ctx.textBaseline = 'middle';
+  for (const g of tags) {
+    const w = ctx.measureText(g.label).width + pad * 2, key = g.room || g.id, k = n[key] || 0;
+    let x, y;
+    if (g.room) { const b = rooms.find(r => r.id === g.room); if (!b || b.w < w + 12 || b.h < (k + 1) * (h + 3) + 12) continue; x = b.x + b.w - w - 6; y = b.y + 6 + k * (h + 3); }
+    else { const p = hits.find(q => q.id === g.id); if (!p) continue; x = Math.max(clear.x + 4, Math.min(clear.x + clear.w - w - 4, p.head.x - w / 2)); y = p.head.y - h - 10 - k * (h + 3); }
+    n[key] = k + 1;
+    ctx.fillStyle = 'rgba(6,13,22,0.85)'; ctx.fillRect(x, y, w, h);
+    ctx.strokeStyle = TAG_COLOR; ctx.lineWidth = 1; ctx.strokeRect(x + 0.5, y + 0.5, w - 1, h - 1);
+    ctx.fillStyle = TAG_COLOR; ctx.fillText(g.label, x + pad, y + h / 2);
+    out.push({ ...g, x, y, w, h });
+  }
+  ctx.restore();
+  return out;
+}
+
 function drawCutaway(box, clear = box) {
   const t = G.transit, st = G.state, people = shipPeople(), ph = phase(), still = Settings.reduceMotion, time = still ? 0 : G.time;
   const lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay), ol = outlineLayout(box, lay), left = outlineLeft(box, ol), view = viewOf(box, lay, left), zoom = view.zoom, half = view.span / 2;
@@ -1012,11 +1033,13 @@ function drawCutaway(box, clear = box) {
     return { id: r.id, x: x0, y: y0, w: x1 - x0, h: y1 - y0 };
   }).filter(b => b.w > 0 && b.h > 0);
   G.cutHits = hits.filter(h => h.x >= cx0 && h.x <= cx1 && h.y >= cy0 && h.y <= cy1);
+  const ev = G.dialog && G.dialog.event, tagged = ev && ev.downtime ? drawDowntimeTags(ev.tags || [], G.cutRooms, G.cutHits, { x: cx0, y: cy0, w: cx1 - cx0, h: cy1 - cy0 }) : [];  // the downtime scene's places (2026-11-12)
   const rack = commsRackBox(layoutBox(lay, 'bridge')), ra = toScreen(rack.x, rack.y), rb = toScreen(rack.x + rack.w, rack.y + rack.h);  // the comms rack, whole in the clear part or not at all
   G.cutRack = ra.x >= cx0 && rb.x <= cx1 && ra.y >= cy0 && rb.y <= cy1 ? { x: ra.x, y: ra.y, w: rb.x - ra.x, h: rb.y - ra.y } : null;
   const seenPart = { y: camY - offY, span: clear.h / zoom };  // the outline's frame is what is in view: the clear part, not what a dialog covers
   G.cutOutline = { ...ol, ids: people.filter(p => p.id).map(p => p.id), view: seenPart };
   drawOutline(ctx, G.cutOutline, dots, seenPart.y, seenPart.span, lay);
+  return tagged;
 }
 
 // ---------- downtime activities ----------
