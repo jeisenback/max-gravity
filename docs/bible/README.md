@@ -50,6 +50,7 @@ The voice that uses this world is in `docs/bible/voice.md`. In short: plain, ord
 23. `look.md`: how the burn view looks: a clean frame around a worn, cramped ship, rooms as boxes in perspective, bunks that each belong to someone, warm light in a cold hull (approved 2026-11-11), with its reference frame `look-target.png`.
 24. `owners.md`: the powers, in two layers: the blocs that are the law of each region (the Arcology Pact, the Dome Pact, the Guild Federation) where the code's three powers sat, and the powers inside them in two tiers, major (Tycho, Kaur, Van Leeuwen, Ballast and five more to come) and minor (the places, co-ops, trades and havens), with how far the player can move them, chapter by chapter (draft, 2026-11-11).
 25. `chapter-1.md`: chapter one, the hand: who is aboard, the spine to the member's share, what the hand does and can lose, and the three places where the hand reaches the world (the water at Pallas, the air at Eros, the ice haulers' strike) (approved 2026-11-11).
+26. `ports.md`: what the port view is (a cutaway of the part of a port a crew uses, its people on the place's hours), and Earth's port first: Lagos Ring, where torch ships berth at the hub and the hand signs on (draft, 2026-11-12, #1099).
 
 ## Where the game must change to fit
 
