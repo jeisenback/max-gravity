@@ -68,10 +68,11 @@ const SYSTEMS = {
     planets: [
       { name: 'Earth', x: -150, y: 80, r: 95, color: '#3a7bd5', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'M', food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'H', equipment: 'L' },
-        desc: ('Arcology cities on every coast, each keeping its own sea wall by rota, and the orbital elevator ports never sleep. From the dock you can see the ' +
-            'ribbon of lit cable dropping into a cloud deck the color of old pearls, and the freight climbing it in an endless string. Down there are ' +
-            'oceans, and forests, and lines around the block for a job. Up here it is all customs queues, noodle stalls, and men in good suits looking ' +
-            'for someone to blame.') },
+        // Earth's port is Lagos Ring, where a torch ship berths (docs/bible/ports.md, #1100)
+        desc: ('A torch ship at Earth docks at Lagos Ring: a wheel four hundred metres across in low orbit, owned by Lagos ' +
+            'Arcology. A tug brings the ship in to the hub and takes her out again, and the spaceplanes from the Lagos platform come and go at the far end of ' +
+            'it. Down the spokes the rim holds the market, the yard offices and the bunkrooms, at half a g, on Lagos time. Everything up here was lifted, ' +
+            'and the rent is in Lagos scrip.') },
       { name: 'Luna', x: 380, y: -260, r: 40, color: '#b8b8b8', services: ['missions', 'shipyard', 'outfitter', 'refuel'],
         prices: {},
         desc: ('Arcology Pact shipyards and licensed drydocks under a black sky, spread across the gray plain in long, hard-lit rows. The dust here gets into ' +
