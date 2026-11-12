@@ -2327,6 +2327,29 @@ test('the workshop has what it is for: a breech in pieces on the bench by its pa
     assert.ok(parts.some(p => p.col === '#4a5560' && inR(p)) && parts.some(p => p.col === '#3e5068' && inR(p)) && spools.some(inR), `${at}: loose spares, the turret's spare feed tray, the stock`);
   }
 });
+// #935: the plate stock the patches are cut from, in a rack on the wall under the bench, beside the welding kit.
+const WS_RACK = ['#5a646c', '#606a70', '#525c66', '#4e5a64', '#2e3c4a', '#3a4a58', '#4a4e54'].map(wallTone);
+test('the workshop keeps its plate stock in a rack on the wall under the bench, clear of everything else, beside the welding kit (#935)', () => {
+  for (const pr of [0.02, 0.3, 0.45, 0.5]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const { r, s } = wsCase(pr, zoom), at = `${pr}, ${zoom}`, { ctx, calls } = recorder(); drawRoom(ctx, 'workshop', r, s);
+    const c = fakeCtx(); drawRoom(c, 'workshop', r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    const all = placedParts(calls).filter(p => p.pts.length && /^(#|rgb)/.test(p.col)).map(p => ({ col: p.col, ...partBox({ pts: p.pts.map(q => q.slice(0, 2)) }) }));
+    const rack = all.filter(p => WS_RACK.includes(p.col));
+    for (const col of WS_RACK) assert.ok(rack.some(p => p.col === col), `${at}: ${col} in the rack`);
+    assert.ok(rack.filter(p => p.col !== WS_RACK[4] && p.col !== WS_RACK[5] && p.col !== WS_RACK[6]).length >= 4, `${at}: plates of different sizes standing in it`);
+    const cut = filledParts(calls).find(p => p.col === WS_RACK[3]); assert.ok(cut && cut.pts.length >= 6, `${at}: one with a doubler's shape cut out of it`);
+    const b = { x0: Math.min(...rack.map(p => p.x0)) - 1, y0: Math.min(...rack.map(p => p.y0)) - 1, x1: Math.max(...rack.map(p => p.x1)) + 2.5, y1: Math.max(...rack.map(p => p.y1)) + 2.5 };  // with its brackets, the torch and its lead
+    const wall = backWall(r), name = wsName(r, zoom), ov = q => b.x0 < q.x1 && b.x1 > q.x0 && b.y0 < q.y1 && b.y1 > q.y0;
+    assert.ok(b.x0 >= wall.x0 && b.x1 <= wall.x1 && b.y0 >= wall.y0 && b.y1 <= wall.y1, `${at}: on the back wall (${JSON.stringify(b)})`);
+    assert.ok(!ov(name), `${at}: clear of the name`);
+    const top = all.find(p => p.col === '#46505a'); assert.ok(b.y0 > top.y1 && b.x0 > top.x0 && b.x1 < top.x1, `${at}: under the bench's top, below where hands work`);
+    const [lx] = box.roomLamps('workshop', r); assert.ok(b.y0 > r.top + 40 || b.x1 < lx - 12 || b.x0 > lx + 12, `${at}: clear of the lamp`);
+    const own = new Set([...WS_RACK, wallTone('#2a3e54'), wallTone('#8a6a48'), wallTone('#7a7462'), wallTone('#7a7e82'), wallTone('#8a8676'), wallTone('#6a5038'), wallTone('#8796a5'), wallTone('#56708c')]);
+    for (const p of all.filter(q => !own.has(q.col))) assert.ok(!ov(p), `${at}: the rack (${JSON.stringify(b)}) clear of ${p.col} (${JSON.stringify(p)})`);
+    for (const p of rack) { const v = rgbOf(p.col); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${p.col} inside the brightness limits`); }
+    assert.ok(calls.some(k => k[0] === 'fillStyle' && k[1] === wallTone('#8a6a48')) && calls.some(k => k[0] === 'fillStyle' && k[1] === wallTone('#7a7462')), `${at}: a printed bracket and tape: old and patched`);
+  }
+});
 test('the workshop reads old and patched: a newer fabricator on an older stand, a replacement shelf on printed brackets tagged temporary, tape and cable ties, wear where hands go (#933)', () => {
   for (const pr of [0.02, 0.3, 0.5]) {
     const { r, s } = wsCase(pr, 1.17), F = r.floor, at = `${pr}`, { calls, parts } = wsParts(r, s);

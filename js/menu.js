@@ -96,6 +96,7 @@ function migrate(st) {
     Object.assign(h, { bridge: true, papers: ['endorsement'] }); delete h.captainKey; delete h.captain; delete h.masters;
   }
   for (const key of ['captain', 'home', 'outpost']) if (st[key] != null && !isObj(st[key])) delete st[key];
+  for (const key of ['patches', 'hullMarks']) if (st[key] != null) { if (Array.isArray(st[key]) && st[key].length) st[key] = st[key].filter(id => typeof id === 'string'); else delete st[key]; }  // the hull's patches and marks (shiplife.js, #935)
   for (const key of ['captains', 'memorial']) if (st[key] != null) { if (Array.isArray(st[key])) st[key] = st[key].filter(isObj); else delete st[key]; }
   if (st.captain) st.captain.name = cleanName(st.captain.name);
   for (const c of st.captains || []) { c.name = cleanName(c.name); c.fate = stripTags(c.fate); }
