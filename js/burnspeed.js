@@ -3,9 +3,9 @@
 // The burn at its own pace (#992, docs/superpowers/specs/2026-11-10-burn-speed-design.md). One ship day is SHIP_DAY burn seconds (shiplife.js), so a
 // burn of `days` takes days * SHIP_DAY real seconds at 1x. The stages are spans of ship time: the crash couches at each end, and the flip (strapping
 // in, weightless while she turns, strapping out) round the midpoint, played slowed so it lasts FLIP_REAL real seconds at any speed. The player
-// pauses or runs the burn at 4x or 16x. These take the burn and the speed and return a value; transit.js and shiplife.js read G.
+// pauses or runs the burn at 2x or 16x (#1083: 2x, at which the crew can still be watched walking, in place of 4x). These take the burn and the speed and return a value; transit.js and shiplife.js read G.
 
-const BURN_SPEEDS = [0, 1, 4, 16];  // paused, normal, and the two fast-forwards
+const BURN_SPEEDS = [0, 1, 2, 16];  // paused, normal, and the two fast-forwards
 const COUCH_HOURS = 6, STRAP_MIN = 20, FLOAT_MIN = 6;  // ship time on the couches at each end; strapped in either side of the float; weightless
 const FLIP_REAL = 25;  // real seconds for the whole flip, strap to strap, at any speed
 
@@ -67,8 +67,8 @@ const paceDt = dt => (G.transit ? burnDt(dt) * G.transit.pace : 0);
 const lifeDt = dt => { const t = G.transit; return !t ? dt : t.event || G.dialog ? dt : dt * burnRate(t, G.speed, burnSpeed()); };
 
 // ---------- the controls: Space, 1, 2 and 3 in a burn (game.js), and a button for each speed under the burn bar ----------
-const BURN_KEYS = { Digit1: 1, Digit2: 4, Digit3: 16 };
-const BURN_LABELS = { 0: 'Pause', 1: '1x', 4: '4x', 16: '16x' };
+const BURN_KEYS = { Digit1: 1, Digit2: 2, Digit3: 16 };
+const BURN_LABELS = { 0: 'Pause', 1: '1x', 2: '2x', 16: '16x' };
 function setBurnSpeed(s) {
   if (!BURN_SPEEDS.includes(s)) return;
   if (s) G.speedBefore = s;
