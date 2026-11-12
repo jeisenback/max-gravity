@@ -246,7 +246,7 @@ test('downtime for a hired hand: ten additions, never for an owner, with the mai
     out.owner = extras(menu()).length; out.ownerFn = handDowntime().length;
     return out;
   });
-  assert.equal(r.defined, 10);  // mend and spare, the paid odd jobs, went with the downtime scene (2026-11-12)
+  assert.equal(r.defined, 14);  // mend and spare went with the downtime scene (2026-11-12); a message home, the bench, the medic and the watch came (#1073-#1081)
   assert.ok(r.counts.every(n => n >= 1 && n <= 4), `one to four at a time (${r.counts})`);
   assert.ok(r.handSeen.length >= 6, `they come round in turn (${r.handSeen.length})`);
   assert.deepEqual(r.earthCast.sort(), ['Fly a sim with Ines', 'Learn the loop from Tomas']);
@@ -288,7 +288,7 @@ test('hired downtime lands its effects, in savings and not the ship\'s purse', a
     assert.doesNotMatch(v.text, /undefined|NaN|\[object|\{[a-z]+\}/, k);
     assert.equal(v.fund, 0, `${k}: never the ship's purse`);
   }
-  for (const [k, v] of Object.entries(r)) assert.equal(v.cash, 0, `${k}: no downtime pays any more (the odd jobs went, 2026-11-12)`);
+  for (const [k, v] of Object.entries(r)) assert.equal(v.cash, /Record a message home/.test(k) ? -40 : 0, `${k}: no downtime pays any more (the odd jobs went, 2026-11-12); a message home costs the slot (#1073)`);
   await done();
 });
 

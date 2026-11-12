@@ -728,6 +728,8 @@ function lifeTick(dt) {
   if (dark !== !!G.transit.dark) {  // dusk or dawn
     G.transit.dark = dark;
     comm(`[Ship] ${lineWords('lines:ship-lights', dark ? 'dusk' : 'dawn', LIFE_NOTES[dark ? 'dusk' : 'dawn'])}`);
+    const h = hired();
+    if (!dark && h && h.letter && G.state.day > h.letter.day) { comm(homeReply(G.state)); delete h.letter; }  // the reply to a message home, on a later burn (#1073)
     const ns = nightState();
     for (const p of people) if (!onWatchTonight(p, ns)) p.wait = Math.min(p.wait, lifeRand(0.2, 3));
   }
