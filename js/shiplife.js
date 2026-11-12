@@ -136,6 +136,28 @@ function marksFor(t, d, rnd) {
   while (marks.length < n) { const free = ROOMS.map(r => r.id).filter(id => id !== 'medbay' && !marks.includes(id)); marks.push(free[Math.floor(rnd() * free.length)]); }
   return marks;
 }
+// The hull's patches (#935): a room whose damage mark clears (the armor back, by a repair in flight or the port's patch on a scrape) keeps a
+// welded plate on its wall, one to a room, the oldest first, until a shipyard's repair clears them all. From the patches there were, the marks
+// before and after, and whether it is the yard's repair.
+function patchesFor(patches, was, now, yard) {
+  if (yard) return [];
+  const out = [...(patches || [])];
+  for (const id of was || []) if (!(now || []).includes(id) && !out.includes(id)) out.push(id);
+  return out;
+}
+// The callers' side: the game's state st keeps the patches (st.patches, room ids) and the marks the hull carries (st.hullMarks, so the port's
+// patch on the way in knows where they were once the burn is over), each left off while it is empty, so a save from before them has none.
+function mendHull(st, was, now, yard = false) {
+  const got = patchesFor(st.patches, was, now, yard);
+  if (got.length) st.patches = got; else delete st.patches;
+  if (now.length) st.hullMarks = [...now]; else delete st.hullMarks;
+}
+// Another hull (#935): her patches and marks are not this one's.
+const dropPatches = st => { delete st.patches; delete st.hullMarks; };
+// How old the trip looks (#935): the burn done (total less left, which a delay lengthens both of alike, so it only grows) over the burn's
+// planned length (its days of SHIP_DAY, as transitSeconds), 0 at its start and 1 at its planned end, held there through any delay. Never
+// backwards within a burn: a delay adds to what is left, not to the age. A transit with no days is read against its total.
+const tripAge = t => { const base = t && (t.days > 0 ? t.days * SHIP_DAY : t.total); return base > 0 ? Math.min(1, Math.max(0, (t.total - t.left) / base)) : 0; };
 // Who works at which mark: the repair hands (the engineer and deckhands) not hurt, in the order aboard, each to the free mark nearest their post.
 const REPAIR_HANDS = ['engineer', 'icehand'];
 function repairsFor(people, state) {
@@ -746,7 +768,8 @@ function lifeTick(dt) {
     const e = downtimeScene();
     if (e.able) { (t.lifeOffered = t.lifeOffered || {})[lifeSlotOf(t)] = true; openEvent(e); }
   }
-  const block = shipDay(G.transit.elapsed).block, state = shipState(G.state, G.transit, ship().armor, lifeRnd, { aid: (roleHolder('medic') || {}).id, you: handHurt() });
+  const was = [...(G.transit.marks || [])], block = shipDay(G.transit.elapsed).block, state = shipState(G.state, G.transit, ship().armor, lifeRnd, { aid: (roleHolder('medic') || {}).id, you: handHurt() });
+  mendHull(G.state, was, state.marks);  // a mark the armor came back over leaves its patch (#935)
   state.repairs = repairsFor(people, state); state.morning = G.state.day + shipDay(G.transit.elapsed).day;
   const key = JSON.stringify([state.marks, state.hurt, state.low, state.you, state.aid, state.repairs, state.watch]);
   if (key !== G.transit.stateKey) {  // the ship's state changed: whoever's place moved with it goes there
@@ -1004,7 +1027,7 @@ function drawCutaway(box, clear = box) {
   for (const p of people) if (bunked(p) && p.bunk !== null && p.bunk < nb) slots.set(p, p.bunk);  // the bunk they walked to (couchPlan; nobody sleeps in the hard burn)
   const lain = new Set(slots.values()), bunks = owners.map((p, k) => p && { slept: lain.has(k), ...bunkKit(p.role === 'you' ? { id: 'you', role: job ? POSTS[job.post].role : 'rating', culture: st.background } : { ...((p.id && st.people[p.id]) || p), role: p.role, id: p.id || p.name }) });
   const s = { bunks, w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), screen: galleyScreenOn(shipDay(t.elapsed).block), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, t.recline),
-    damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState)
+    damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3, patches: new Set(G.state.patches || []) }, age: tripAge(G.transit), patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);
     if (seen(q.top, q.floor + HULL.plate)) drawRoom(ctx, r.id, q, s);  // with its cut, as the shaft is (#1024)
