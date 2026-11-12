@@ -7,12 +7,13 @@
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
+const { phaseWeights } = load(['js/burnpanel.js'], { G: {} }, ['phaseWeights']);
 const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
 const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } },
-  ['patchesFor', 'mendHull', 'tripAge', 'galleyClutter', 'GALLEY_CLUTTER', 'drawRoom', 'roomMessTable', 'roomWalls', 'drawPhaseLight', 'LAYOUTS', 'layoutBox', 'SEATS', 'roomEye', 'roomInto', 'roomBays', 'berthCorner', 'figShade', 'WALL_TONE']);
+  ['patchesFor', 'mendHull', 'tripAge', 'galleyClutter', 'GALLEY_CLUTTER', 'PATCH_AT', 'patchBox', 'ROOMS', 'roomLamps', 'ROOM_GLOW', 'berthReading', 'drawRoom', 'roomMessTable', 'roomWalls', 'drawPhaseLight', 'LAYOUTS', 'layoutBox', 'SEATS', 'roomEye', 'roomInto', 'roomBays', 'berthCorner', 'figShade', 'WALL_TONE']);
 const plain = v => JSON.parse(JSON.stringify(v));
 const W = { burn: 0, cruise: 1, flip: 0 };
 const lay = api.LAYOUTS.freighter, FW = { x0: (lay.well.x - lay.well.w / 2) * lay.width, x1: (lay.well.x + lay.well.w / 2) * lay.width };
@@ -111,29 +112,68 @@ test('the berths\' laundry bag fills from flat to full on its peg under the wall
   assert.ok(inLimits(old.col), `and inside the brightness limits (${old.col})`);
 });
 
-test('a patch is drawn on its room\'s back wall where the mark was, clear of the name; a mark over it hides it (#935)', () => {
-  const PLATE = wall('#33404a');
-  for (const id of ['galley', 'hold', 'berths', 'engine', 'bridge', 'medbay']) {
-    const s = RS({ damage: { marks: new Set(), severe: false, patches: new Set([id]) } }), { r, calls } = draw(id, s);
+// The boxes of what a room drew of its own (its walls and its lamps left out, and the light's gradients, which are not things): a filled path's
+// box, each stretch of a stroked line's, each rect's, where it lands on the screen.
+const ownBoxes = (id, r, s) => {
+  const all = recorder(); api.drawRoom(all.ctx, id, r, s);
+  const walls = recorder(); api.roomWalls(walls.ctx, r, s.w, s.time, s.still, s.well);
+  const light = recorder(); api.drawPhaseLight(light.ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine', api.roomBays(r, s.well), api.roomLamps(id, r), { glow: api.ROOM_GLOW[id], small: id === 'berths' ? api.berthReading(r, s) : [], off: false });
+  const own = all.calls.slice(walls.calls.length, all.calls.length - light.calls.length);
+  assert.equal(key(all.calls.slice(all.calls.length - light.calls.length)), key(light.calls), `${id}: the lamps drawn last`);
+  const out = [], stack = []; let dx = 0, dy = 0, pts = [], fs = null;
+  const add = p => { if (p.length) out.push({ x0: Math.min(...p.map(q => q[0])), y0: Math.min(...p.map(q => q[1])), x1: Math.max(...p.map(q => q[0])), y1: Math.max(...p.map(q => q[1])) }); };
+  for (const [k, ...a] of own) {
+    if (k === 'fillStyle') fs = a[0]; else if (k === 'save') stack.push([dx, dy]); else if (k === 'restore') [dx, dy] = stack.pop(); else if (k === 'translate') { dx += a[0]; dy += a[1]; }
+    else if (k === 'beginPath') pts = []; else if (k === 'moveTo' || k === 'lineTo') pts.push([a[0] + dx, a[1] + dy]); else if (k === 'quadraticCurveTo') pts.push([a[0] + dx, a[1] + dy], [a[2] + dx, a[3] + dy]);
+    else if (k === 'arc') pts.push([a[0] - a[2] + dx, a[1] - a[2] + dy], [a[0] + a[2] + dx, a[1] + a[2] + dy]); else if (k === 'ellipse') pts.push([a[0] - a[2] + dx, a[1] - a[3] + dy], [a[0] + a[2] + dx, a[1] + a[3] + dy]);
+    else if (k === 'rect') pts.push([a[0] + dx, a[1] + dy], [a[0] + a[2] + dx, a[1] + a[3] + dy]);
+    else if ((k === 'fillRect' && typeof fs === 'string') || k === 'strokeRect') add([[a[0] + dx, a[1] + dy], [a[0] + a[2] + dx, a[1] + a[3] + dy]]);
+    else if (k === 'fill') { if (typeof fs === 'string') add(pts); } else if (k === 'stroke') { if (pts.length < 3) add(pts); else for (let i = 1; i < pts.length; i++) add([pts[i - 1], pts[i]]); }
+  }
+  return out;
+};
+const MARKABLE = api.ROOMS.map(q => q.id).filter(id => id !== 'medbay');  // where marksFor can put a mark
+test('every room the marks can land in has its patch spot on bare back wall: clear of every prop, the name and the well, in every phase and window (#935)', () => {
+  for (const id of MARKABLE) {
+    assert.ok(api.PATCH_AT[id], `${id}: a spot`);
+    const r = api.layoutBox(lay, id), b = api.patchBox(id, r), ov = q => b.x0 < q.x1 && b.x1 > q.x0 && b.y0 < q.y1 && b.y1 > q.y0;
+    const bay = api.roomBays(r, FW).find(q => b.x0 >= q.x0 && b.x1 <= q.x1); assert.ok(bay, `${id}: inside one bay, clear of the well`);
+    const e = api.roomEye(bay), [bx0, by0] = api.roomInto(e, bay.x0, bay.top), [bx1, by1] = api.roomInto(e, bay.x1, bay.floor);
+    assert.ok(b.x0 > bx0 && b.x1 < bx1 && b.y0 > by0 + 10 && b.y1 < by1, `${id}: on the back wall, under the cable run (${JSON.stringify(b)})`);
+    assert.ok(!ov({ x0: FW.x0, x1: FW.x1, y0: r.top, y1: r.floor }), `${id}: clear of the ladder well`);
+    assert.ok(b.x1 - b.x0 >= 16 && b.y1 - b.y0 >= 15, `${id}: large enough to read`);
+    for (const zoom of [0.82, 1.17, 1.45]) {
+      const n = nameBox(r, zoom); assert.ok(!ov(n), `${id} at ${zoom}: clear of the room's name`);
+      for (const pr of [0.02, 0.3, 0.5]) for (const night of [0, 1]) {
+        const s = RS({ w: phaseWeights(pr), zoom, night, cargo: 1, fuel: 1, torpedoes: 6, patient: true, headIn: true, berths: 10, asleep: 4 });
+        const boxes = ownBoxes(id, r, s); assert.ok(boxes.length > 40, `${id}: its props found (${boxes.length})`);
+        const hit = boxes.find(ov); assert.ok(!hit, `${id} at ${zoom}, ${pr}, night ${night}: the patch (${JSON.stringify(b)}) over a prop (${JSON.stringify(hit)})`);
+      }
+    }
+  }
+});
+test('a patch is drawn at its room\'s spot, in the wall tone, behind the props; another room\'s draws nothing; a mark in the room hides it (#935)', () => {
+  const PLATE = wall('#3e4a50');
+  for (const id of MARKABLE) {
+    const s = RS({ damage: { marks: new Set(), severe: false, patches: new Set([id]) } }), { r, calls } = draw(id, s), b = api.patchBox(id, r);
     const plate = placed(calls).filter(p => p.col === PLATE);
     assert.equal(plate.length, 1, `${id}: one plate`);
-    const bay = api.roomBays(r, FW).find(b => plate[0].pts.every(q => q[0] >= b.x0 && q[0] <= b.x1)); assert.ok(bay, `${id}: inside one bay`);
-    const e = api.roomEye(bay), [bx0, by0] = api.roomInto(e, bay.x0, bay.top), [bx1, by1] = api.roomInto(e, bay.x1, bay.floor);
-    for (const [x, y] of plate[0].pts) assert.ok(x > bx0 && x < bx1 && y > by0 && y < by1, `${id}: on the back wall (${x}, ${y})`);
-    for (const zoom of [0.82, 1.17, 1.45]) for (const q of plate[0].pts) assert.ok(!hits(nameBox(r, zoom), q), `${id}: clear of the name`);
-    const px = r.x0 + (r.x1 - r.x0) * 0.7 + 13, xs = plate[0].pts.map(q => q[0]), mid = (Math.min(...xs) + Math.max(...xs)) / 2;
-    assert.ok(Math.abs(mid - api.roomInto(e, px, 0)[0]) < 0.01, `${id}: where the mark was drawn, carried onto the wall`);
-    assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === wall('#4e4c44')), `${id}: its weld bead`);
-    const other = draw(id, RS({ damage: { marks: new Set(), severe: false, patches: new Set(['workshop']) } }));
+    for (const [x, y] of plate[0].pts) assert.ok(x >= b.x0 && x <= b.x1 && y >= b.y0 && y <= b.y1, `${id}: inside its spot (${x}, ${y})`);
+    assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === wall('#545248')), `${id}: its weld bead`);
+    const plain = draw(id, RS({})).calls, walls = recorder(); api.roomWalls(walls.ctx, r, s.w, s.time, s.still, s.well);
+    const at = calls.findIndex((k, i) => key([k]) !== key([plain[i]]));
+    assert.ok(at >= walls.calls.length && at <= walls.calls.length + 4, `${id}: drawn on the wall first, before the props (${at}, the walls ${walls.calls.length})`);
+    assert.equal(key(calls.slice(calls.length - (plain.length - at))), key(plain.slice(at)), `${id}: and the rest as before`);
+    const other = draw(id, RS({ damage: { marks: new Set(), severe: false, patches: new Set([id === 'workshop' ? 'hold' : 'workshop']) } }));
     assert.equal(key(other.calls), key(draw(id, RS({})).calls), `${id}: another room's patch draws nothing here`);
     const over = draw(id, RS({ damage: { marks: new Set([id]), severe: false, patches: new Set([id]) } }));
-    assert.equal(placed(over.calls).filter(p => p.col === PLATE).length, 0, `${id}: hidden under a new mark`);
+    assert.equal(placed(over.calls).filter(p => p.col === PLATE).length, 0, `${id}: hidden while a mark is in the room`);
     assert.equal(key(over.calls), key(draw(id, RS({ damage: { marks: new Set([id]), severe: false, patches: new Set() } })).calls), `${id}: the mark as it was`);
   }
 });
 
 test('what the trip and the patches add keeps inside the brightness limits, leaves every save restored, writes nothing under 12 px, and draws no dice (#935)', () => {
-  const PROPS = ['#6e7a86', '#8e887a', '#5a4a3a', '#4a3a2e', wall('#5a6450'), wall('#3a4034'), wall('#6a5a6e'), wall('#33404a'), wall('#5e5a4e'), wall('#6a7a88')];
+  const PROPS = ['#6e7a86', '#8e887a', '#5a4a3a', '#4a3a2e', wall('#5a6450'), wall('#3a4034'), wall('#6a5a6e'), wall('#3e4a50'), wall('#605c50'), wall('#6a7a88')];
   for (const id of ['galley', 'berths', 'hold']) for (const age of [0, 0.5, 0.95]) for (const still of [false, true]) {
     const s = RS({ age, still, damage: { marks: new Set(), severe: false, patches: new Set(['galley', 'berths', 'hold']) } }), at = `${id} at ${age}${still ? ', still' : ''}`;
     const a = draw(id, s), b = draw(id, s);

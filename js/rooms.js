@@ -2255,19 +2255,27 @@ function drawDamage(ctx, r, s) {
   }
 }
 
-// A welded patch where a damage mark was (#935, look.md rule 9): a plate of newer metal in another shade over where the panel hung open, a weld
-// bead round it with its tack welds, a rivet at each corner, and the scorch left at its edge; on the back wall, in the wall tone, at the place
-// drawDamage draws the mark. Fixed per room, so a frame is the same each time.
-function roomPatch(ctx, r) {
-  const px = r.x0 + (r.x1 - r.x0) * 0.7, top = r.floor - 90, n = v => Math.round(v * 100) / 100, x0 = n(px - 2), y0 = top - 2, pw = 30, ph = 34;
-  roomOnWall(ctx, px + 13, top + 15, () => {
-    ctx.fillStyle = 'rgba(20,12,8,0.24)'; ctx.beginPath(); ctx.ellipse(x0 - 1, y0 + 22, 6, 12, 0, 0, Math.PI * 2); ctx.fill();  // the scorch, left beside it
-    roomPart(ctx, roomRound(x0, y0, pw, ph, 1), '#33404a', { top: 0.8, side: 1.2, under: 0.8 });
-    ctx.strokeStyle = roomTint('#4e4c44'); ctx.lineWidth = 1.3; ctx.strokeRect(x0 - 0.4, y0 - 0.4, pw + 0.8, ph + 0.8);  // the weld bead
-    for (let k = 1; k < 5; k++) for (const [tx, ty] of [[x0 + pw * k / 5, y0 - 0.4], [x0 + pw * k / 5, y0 + ph + 0.4]]) roomDot(ctx, tx, ty, 0.9, '#5e5a4e');  // tack welds
-    for (let k = 1; k < 6; k++) for (const tx of [x0 - 0.4, x0 + pw + 0.4]) roomDot(ctx, tx, y0 + ph * k / 6, 0.9, '#5e5a4e');
-    for (const [rx, ry] of [[x0 + 3, y0 + 3], [x0 + pw - 3, y0 + 3], [x0 + 3, y0 + ph - 3], [x0 + pw - 3, y0 + ph - 3]]) roomDot(ctx, rx, ry, 0.9, '#6a7a88');
-  });
+// Where each room keeps its patch (#935): a spot of bare back wall, clear of its props, its name, its lamps' fittings and the ladder well, and of
+// where people stand or sit at work there. x: the patch's middle across from the room's left end; y: its middle over the floor, both as drawn on
+// the back wall; w, h: the plate, about a person's forearm across, narrower where the wall is (the engine room's between its bottles and the
+// housing). Every room the marks can land in (shiplife.js marksFor: all but the medbay).
+const PATCH_AT = { bridge: { x: 251, y: 68 }, galley: { x: 133, y: 58 }, head: { x: 134.6, y: 64 }, berths: { x: 201, y: 66 }, gunnery: { x: 113, y: 60 },
+  workshop: { x: 104.6, y: 66 }, airlock: { x: 163, y: 74 }, lifesupport: { x: 241, y: 64 }, engine: { x: 110, y: 52, w: 10, h: 20 }, hold: { x: 75.6, y: 56, w: 15 } };
+// The box a room's patch takes on its back wall, the scorch beside the plate and the weld bead round it included.
+const patchBox = (id, r) => { const p = PATCH_AT[id], w = (p.w || 17) + 6, h = (p.h || 13) + 2, cx = r.x0 + p.x, cy = r.floor - p.y; return { x0: cx - w / 2, y0: cy - h / 2, x1: cx + w / 2, y1: cy + h / 2 }; };
+// A welded patch where a mended mark was (#935, look.md rule 9): a plate of newer metal in another shade, a weld bead round it with its tack welds,
+// a rivet at each corner, and the scorch left at its edge; on the back wall at the room's spot (PATCH_AT), in the wall tone, behind its props.
+function roomPatch(ctx, id, r) {
+  const p = PATCH_AT[id]; if (!p) return;
+  const b = patchBox(id, r), n = v => Math.round(v * 100) / 100, pw = p.w || 17, ph = p.h || 13, x0 = n(b.x0 + 5), y0 = n(b.y0 + 1);
+  roomAtDepth(ctx, x0, y0, 0, () => {
+    ctx.fillStyle = 'rgba(20,12,8,0.24)'; ctx.beginPath(); ctx.ellipse(x0 - 1.5, y0 + ph * 0.6, 3, ph * 0.35, 0, 0, Math.PI * 2); ctx.fill();  // the scorch, left beside it
+    roomPart(ctx, roomRound(x0, y0, pw, ph, 0.8), '#3e4a50', { top: 0.6, side: 1, under: 0.6 });
+    ctx.strokeStyle = roomTint('#545248'); ctx.lineWidth = 1; ctx.strokeRect(x0 - 0.3, y0 - 0.3, pw + 0.6, ph + 0.6);  // the weld bead
+    for (let k = 1; k < 4; k++) for (const ty of [y0 - 0.3, y0 + ph + 0.3]) roomDot(ctx, x0 + pw * k / 4, ty, 0.7, '#605c50');  // tack welds
+    for (let k = 1; k < 3; k++) for (const tx of [x0 - 0.3, x0 + pw + 0.3]) roomDot(ctx, tx, y0 + ph * k / 3, 0.7, '#605c50');
+    for (const [rx, ry] of [[x0 + 2, y0 + 2], [x0 + pw - 2, y0 + 2], [x0 + 2, y0 + ph - 2], [x0 + pw - 2, y0 + ph - 2]]) roomDot(ctx, rx, ry, 0.7, '#6a7a88');
+  }, WALL_TONE);
 }
 
 // Where a room's name is written (#933): 13px on its plate (shiplife.js), 12 in from its left wall, the plate's top 8 under the ceiling, clear of
@@ -2289,6 +2297,7 @@ function drawRoom(ctx, id, r, s) {
   roomWalls(ctx, r, s.w, s.time, s.still, s.well, s.shell);
   const marked = !!(s.damage && s.damage.marks.has(id));
   roomIn(roomBays(r, s.well), () => {  // its props and seats see their bay's eye (#1024)
+    if (!marked && s.damage && s.damage.patches && s.damage.patches.has(id)) roomPatch(ctx, id, r);  // a mended mark's patch on bare back wall, behind the props; a mark in the room hides it (#935)
     ROOM_DRAW[id](ctx, r, s, sh => r.x0 + W * sh, W);
     let k = 0; for (const c of COUCH_RACKS) { if (c.room === id) roomCouchRack(ctx, c.x, r.floor, c.tiers, k, s.couched); k += c.tiers; }  // its crash couches, in every phase (#990)
     const seats = SEATS[id] || [];  // its seats (shiplife.js), where people sit (#925): the galley's on one bench along the mess table, a pilot's seat at each post of the bridge, a stool anywhere else
@@ -2297,7 +2306,6 @@ function drawRoom(ctx, id, r, s) {
     else for (const f of seats) roomStool(ctx, r.x0 + W * f, r.floor, id === 'medbay' ? 0 : SEAT_FACE[id] || 0);  // a station's chair faces its console (#933); the medbay's is a stool
   });
   if (marked) drawDamage(ctx, r, s);
-  else if (s.damage && s.damage.patches && s.damage.patches.has(id)) roomIn(roomBays(r, s.well), () => roomPatch(ctx, r));  // a mended mark's patch where the mark was drawn, carried onto the back wall; a mark over it hides it (#935)
   drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine', LAMP_FITTED.includes(id) ? roomBays(r, s.well) : null, roomLamps(id, r),
     { glow: ROOM_GLOW[id], small: id === 'berths' ? berthReading(r, s) : [], off: marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0 });  // severe damage: the lamp flickers
 }
