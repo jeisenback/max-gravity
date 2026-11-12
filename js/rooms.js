@@ -1753,6 +1753,26 @@ function roomWorkshop(ctx, r, s) {
       roomFlat(ctx, dx + 1, dy + 1, 3.4, 1, '#7a7868'); roomFlat(ctx, dx + 2, dy + 3, 1.6, 1, '#8796a5');
     }
   });
+  // Under the bench on the wall (#935), clear of the fabricator and the tool board and behind where hands work: the plate stock the patches are cut
+  // from, offcuts of different sizes standing in a rack (a trough on two brackets screwed to the wall, a bar across to hold them in zero g), one
+  // with a doubler's shape cut out of it, their sizes chalked on; one bracket a printed replacement, tape round the bar. Beside it the welding
+  // kit: the torch on its hook, its lead coiled under it.
+  wall(u(166), F - 27.5, (x, y) => {
+    for (const [px, w, h, col] of [[x - 17, 11, 12, '#5a646c'], [x + 4, 8, 9.5, '#606a70'], [x + 11, 5, 7, '#525c66']]) {
+      roomPart(ctx, roomRound(px, y + 5 - h, w, h, 0.4), col, { top: 0.5, side: 0.8 }); roomFlat(ctx, px + 1.2, y + 7 - h, w - 3, 0.5, '#8a8676');  // its size, chalked
+    }
+    roomPart(ctx, `M ${n(x - 8)} ${n(y - 6)} L ${n(x - 1)} ${n(y - 6)} L ${n(x - 1)} ${n(y - 1)} L ${n(x + 6)} ${n(y - 1)} L ${n(x + 6)} ${n(y + 5)} L ${n(x - 8)} ${n(y + 5)} Z`, '#4e5a64', { top: 0.5, side: 0.8 });  // the doubler cut from it
+    for (const ux of [x - 20, x + 17.5]) roomPart(ctx, roomRound(ux, y - 6, 2.5, 12, 0.5), '#2e3c4a', { top: 0, side: 0.8 });  // the rack's ends
+    roomPart(ctx, roomRound(x - 20, y - 4, 40, 2, 0.6), '#3a4a58', { top: 0.5 });  // the bar across
+    roomPart(ctx, roomRound(x - 15, y - 4.3, 3, 2.6, 0.4), '#7a7462', { top: 0 });  // tape round it
+    roomPart(ctx, roomRound(x - 20, y + 5, 40, 3.5, 0.8), '#3a4a58', { top: 0.6, under: 0.6 });  // the trough
+    roomPart(ctx, roomRound(x - 16, y + 8.5, 3, 2.5, 0.5), '#2a3e54', { top: 0 }); roomDot(ctx, x - 14.5, y + 9.8, 0.5, '#56708c');  // a bracket and its screw
+    roomPart(ctx, roomRound(x + 13, y + 8.5, 3, 2.5, 0.5), '#8a6a48', { top: 0.4 }); roomFlat(ctx, x + 13.4, y + 9.6, 2.2, 0.4, '#6a5038');  // the printed one
+    roomFlat(ctx, x + 25, y - 7.6, 1.2, 1.4, '#8796a5');  // the welding torch's hook, the torch on it and its lead coiled under
+    roomPart(ctx, `M ${n(x + 24)} ${n(y - 6.4)} L ${n(x + 27)} ${n(y - 6.4)} L ${n(x + 26.4)} ${n(y + 1)} L ${n(x + 24.6)} ${n(y + 1)} Z`, '#4a4e54', { top: 0.4, side: 0.6 });
+    roomPart(ctx, roomRound(x + 24.9, y + 1, 1.2, 3, 0.4), '#7a7e82', { top: 0 });
+    ctx.strokeStyle = roomTint('#2e3036'); ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(x + 25.5, y + 7, 3.5, 2.4, 0, 0, Math.PI * 2); ctx.stroke();
+  });
   // From the left wall in: the fabricator on its stand, its cable down the stand to the deck; the bench's cabinet.
   roomPart(ctx, roomRound(u(12), F - 30, 50, 30, 1.2), '#2a3a48', { top: 0, side: 2, solid: 0.45 });
   for (const k of [0, 1]) {
@@ -2275,6 +2295,12 @@ function roomPatch(ctx, id, r) {
     for (let k = 1; k < 4; k++) for (const ty of [y0 - 0.3, y0 + ph + 0.3]) roomDot(ctx, x0 + pw * k / 4, ty, 0.7, '#605c50');  // tack welds
     for (let k = 1; k < 3; k++) for (const tx of [x0 - 0.3, x0 + pw + 0.3]) roomDot(ctx, tx, y0 + ph * k / 3, 0.7, '#605c50');
     for (const [rx, ry] of [[x0 + 2, y0 + 2], [x0 + pw - 2, y0 + 2], [x0 + 2, y0 + ph - 2], [x0 + pw - 2, y0 + ph - 2]]) roomDot(ctx, rx, ry, 0.7, '#6a7a88');
+    // its label: the ship's printed tag for a temporary part (a doubler cut from ship's stock and welded on in flight, sound but not surveyed, so
+    // logged as temporary until the yard replaces it with rated plating), stuck flat on the plate with no thread; its repair number and date as marks
+    const lx = n(x0 + pw / 2 - 2.5), ly = n(y0 + ph / 2 - 2.6);
+    roomPart(ctx, roomRound(lx, ly, 5, 5.2, 0.6), '#9a9050', { top: 0.5 });
+    for (let k = 0; k < 3; k++) roomFlat(ctx, lx + 1 + k * 1.2, ly + 1.2, 0.6, 1.4, '#4a4436');  // the repair number, as strokes
+    roomFlat(ctx, lx + 1, ly + 3.4, 3, 0.5, '#4a4436');  // the date
   }, WALL_TONE);
 }
 

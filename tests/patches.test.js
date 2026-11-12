@@ -160,6 +160,14 @@ test('a patch is drawn at its room\'s spot, in the wall tone, behind the props; 
     assert.equal(plate.length, 1, `${id}: one plate`);
     for (const [x, y] of plate[0].pts) assert.ok(x >= b.x0 && x <= b.x1 && y >= b.y0 && y <= b.y1, `${id}: inside its spot (${x}, ${y})`);
     assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === wall('#545248')), `${id}: its weld bead`);
+    // its label: the ship's printed temporary tag (#9a9050), stuck flat on the plate with no thread, its number and date as marks, no text
+    const TAG = wall('#9a9050'), tags = cs => placed(cs).filter(p => p.col === TAG), plateBox = { x0: Math.min(...plate[0].pts.map(q => q[0])), x1: Math.max(...plate[0].pts.map(q => q[0])), y0: Math.min(...plate[0].pts.map(q => q[1])), y1: Math.max(...plate[0].pts.map(q => q[1])) };
+    const label = tags(calls).filter(t => t.pts.every(([x, y]) => x > plateBox.x0 && x < plateBox.x1 && y > plateBox.y0 && y < plateBox.y1));
+    assert.equal(label.length, 1, `${id}: one label on the plate`); assert.equal(tags(calls).length, tags(draw(id, RS({})).calls).length + 1, `${id}: and nothing else of it`);
+    const lb = { x0: Math.min(...label[0].pts.map(q => q[0])), x1: Math.max(...label[0].pts.map(q => q[0])), y0: Math.min(...label[0].pts.map(q => q[1])), y1: Math.max(...label[0].pts.map(q => q[1])) };
+    const marks = placed(calls).filter(p => p.col === wall('#4a4436') && p.pts.every(([x, y]) => x >= lb.x0 && x <= lb.x1 && y >= lb.y0 && y <= lb.y1));
+    assert.ok(marks.length >= 4, `${id}: its repair number and date as marks on it (${marks.length})`);
+    const texts = cs => cs.filter(k => k[0] === 'fillText').length; assert.equal(texts(calls), texts(draw(id, RS({})).calls), `${id}: no text on it`);
     const plain = draw(id, RS({})).calls, walls = recorder(); api.roomWalls(walls.ctx, r, s.w, s.time, s.still, s.well);
     const at = calls.findIndex((k, i) => key([k]) !== key([plain[i]]));
     assert.ok(at >= walls.calls.length && at <= walls.calls.length + 4, `${id}: drawn on the wall first, before the props (${at}, the walls ${walls.calls.length})`);
@@ -173,7 +181,7 @@ test('a patch is drawn at its room\'s spot, in the wall tone, behind the props; 
 });
 
 test('what the trip and the patches add keeps inside the brightness limits, leaves every save restored, writes nothing under 12 px, and draws no dice (#935)', () => {
-  const PROPS = ['#6e7a86', '#8e887a', '#5a4a3a', '#4a3a2e', wall('#5a6450'), wall('#3a4034'), wall('#6a5a6e'), wall('#3e4a50'), wall('#605c50'), wall('#6a7a88')];
+  const PROPS = ['#6e7a86', '#8e887a', '#5a4a3a', '#4a3a2e', wall('#5a6450'), wall('#3a4034'), wall('#6a5a6e'), wall('#3e4a50'), wall('#605c50'), wall('#9a9050'), wall('#4a4436'), wall('#6a7a88')];
   for (const id of ['galley', 'berths', 'hold']) for (const age of [0, 0.5, 0.95]) for (const still of [false, true]) {
     const s = RS({ age, still, damage: { marks: new Set(), severe: false, patches: new Set(['galley', 'berths', 'hold']) } }), at = `${id} at ${age}${still ? ', still' : ''}`;
     const a = draw(id, s), b = draw(id, s);
