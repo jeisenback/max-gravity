@@ -900,6 +900,32 @@ function roomMessTableIn(ctx, r, s) {
 // the counter's doors a replacement in another shade, the dispenser's head a newer unit on the old foot with fresh bolts, its water line taped and
 // tied, the stove cupboard's latch printed and tagged temporary, and scuffs low on the stove and the counter where boots go (the table's worn edge
 // and the bench's foot bar are theirs: roomMessTableIn, roomBench).
+// The galley's screen (#1035): on through supper and the handover, when the feeds are watched (s.screen, from the ship's day: shiplife.js).
+const galleyScreenOn = block => block === 'supper' || block === 'handover';
+// The screen on its arm (docs/bible/look.md 4, 5, 10), centred at (x, y): a plate on the bulkhead beside it, under the cupboard's rail and clear of
+// it, its bolts newer than the paint; a jointed arm out from the plate to the screen's back; the screen square, tipped down toward the mess table
+// (a dark lip along its bottom). On: lit glass with a faint flicker, and its cool light on the table under it.
+function roomGalleyScreen(ctx, x, y, on, s) {
+  const hw = 12, hh = 7.5, top = y - hh, px = x - hw - 7;  // the screen's half width and height; the wall plate's centre, left of the screen
+  roomPart(ctx, roomRound(px - 1.5, y - 4.5, 3, 9, 0.6), '#5a7690', { top: 0.6, side: 0.8 });
+  roomDot(ctx, px, y - 3, 0.5, '#b8c4d0'); roomDot(ctx, px, y + 3, 0.5, '#b8c4d0');
+  ctx.strokeStyle = roomTint('#4a6078'); ctx.lineWidth = 1.8; roomSeg(ctx, [[px + 1.5, y], [px + 4, y - 1.5], [x - hw + 3, y - 0.5]]);  // the arm, out to the screen's back
+  roomDot(ctx, px + 4, y - 1.5, 1.1, '#6a7f95'); ctx.lineWidth = 0.7; ctx.strokeStyle = FIG_LINE; ctx.stroke();  // its elbow
+  roomPart(ctx, roomRound(x - hw, top, hw * 2, hh * 2, 1.2), '#1a2430', { top: 0.8, under: 1.6 });  // the bezel, its lower lip the tip toward the table
+  const glass = roomRound(x - hw + 1.6, top + 1.6, hw * 2 - 3.2, hh * 2 - 4, 0.6);
+  if (on) {
+    const flick = s.still ? 1 : 0.93 + 0.07 * Math.sin((s.time || 0) * 11), lit = ctx.createLinearGradient(x, top, x, y + hh);
+    lit.addColorStop(0, '#c4e2fa'); lit.addColorStop(1, '#7fb4e2');  // a picture, not a tile
+    ctx.save(); ctx.globalAlpha = flick; ctx.fillStyle = lit; figPath(ctx, glass); ctx.fill(); ctx.restore();
+    const g = ctx.createRadialGradient(x, y + 22, 2, x, y + 22, 46);  // its cool light on the table and whoever sits there
+    g.addColorStop(0, `rgba(150,200,255,${0.24 * flick})`); g.addColorStop(1, 'rgba(150,200,255,0)');
+    ctx.fillStyle = g; ctx.fillRect(x - 46, y - 24, 92, 92);
+  } else {
+    ctx.fillStyle = roomTint('#0e1820'); figPath(ctx, glass); ctx.fill();
+    ctx.strokeStyle = 'rgba(160,190,220,0.18)'; ctx.lineWidth = 0.8; roomSeg(ctx, [[x - 7, y + 3], [x + 1, y - 4]]);  // a reflection
+  }
+}
+
 function roomGalley(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, latch = (x, y) => { roomFlat(ctx, x, y, 2, 4, '#8796a5'); roomDot(ctx, x + 1, y - 1.2, 0.5, '#56708c'); roomFlat(ctx, x - 1.4, y + 0.6, 1.2, 2.6, '#6a747c'); };  // the paint worn beside it
   const cupboards = (x0, x1, top, bottom) => {  // a wall cupboard of two doors, each with its latch where they meet
@@ -925,6 +951,7 @@ function roomGalley(ctx, r, s, X, W) {
     worldText(ctx, s.zoom, 'MUGS', X(0.25) + 8, F - 79, 9, roomTint('#a8987a'));
     roomPart(ctx, roomRound(X(0.25), F - 71.5, X(0.39) - X(0.25), 2, 1), '#3a5470', { top: 0.6 });  // a grab rail for zero g
   });
+  if (W >= 300) roomOnWall(ctx, X(0.335), F - 52, () => roomGalleyScreen(ctx, X(0.335), F - 52, !!s.screen, s));  // the screen on its arm, over the table's end (#1035)
   roomOnWall(ctx, X(0.47), F - 68, () => roomPorthole(ctx, X(0.47), F - 68, 13, s.spin));
   if (W >= 340) roomOnWall(ctx, (X(0.55) + X(0.63)) / 2, F - 85, () => cupboards(X(0.55), X(0.63), F - 96, F - 74));
   if (W >= 240) {
@@ -2279,7 +2306,7 @@ function drawDamage(ctx, r, s) {
 // where people stand or sit at work there. x: the patch's middle across from the room's left end; y: its middle over the floor, both as drawn on
 // the back wall; w, h: the plate, about a person's forearm across, narrower where the wall is (the engine room's between its bottles and the
 // housing). Every room the marks can land in (shiplife.js marksFor: all but the medbay).
-const PATCH_AT = { bridge: { x: 251, y: 68 }, galley: { x: 133, y: 58 }, head: { x: 134.6, y: 64 }, berths: { x: 201, y: 66 }, gunnery: { x: 113, y: 60 },
+const PATCH_AT = { bridge: { x: 251, y: 68 }, galley: { x: 92, y: 58 }, head: { x: 134.6, y: 64 }, berths: { x: 201, y: 66 }, gunnery: { x: 113, y: 60 },
   workshop: { x: 104.6, y: 66 }, airlock: { x: 163, y: 74 }, lifesupport: { x: 241, y: 64 }, engine: { x: 110, y: 52, w: 10, h: 20 }, hold: { x: 75.6, y: 56, w: 15 } };
 // The box a room's patch takes on its back wall, the scorch beside the plate and the weld bead round it included.
 const patchBox = (id, r) => { const p = PATCH_AT[id], w = (p.w || 17) + 6, h = (p.h || 13) + 2, cx = r.x0 + p.x, cy = r.floor - p.y; return { x0: cx - w / 2, y0: cy - h / 2, x1: cx + w / 2, y1: cy + h / 2 }; };
