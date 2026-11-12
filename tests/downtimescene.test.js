@@ -26,6 +26,14 @@ test('the downtime scene is due at a change to breakfast, a shift, the meal or s
   assert.equal(downtimeDue({ ...t, lifeOffered: { before: true }, left: 40, flipped: true }, 'meal', 'shift'), true, 'the next slot');
 });
 
+test('coming off the couches is a moment too: after the flip, or at the start of the burn (review)', () => {
+  const t = { total: 100, left: 40, slots: 2, flipped: true };
+  assert.equal(downtimeDue(t, 'supper', 'supper', 'move', 'secure'), true);
+  assert.equal(downtimeDue(t, 'supper', 'supper', 'move', 'move'), false, 'no change');
+  assert.equal(downtimeDue(t, 'supper', 'supper', 'move', undefined), false, 'a burn just loaded');
+  assert.equal(downtimeDue({ ...t, lifeOffered: { after: true } }, 'supper', 'supper', 'move', 'secure'), false, 'offered');
+});
+
 test('the shortest slot still has a change that is due', () => {
   // a 2-slot burn of 1.2 ship days: each slot, 0.6 ship days long, holds at least one start of breakfast, a shift, the meal or supper
   for (let start = 0; start < SHIP_DAY; start += 4) {
@@ -348,4 +356,43 @@ test('tags on people standing side by side do not overlap', async () => {
   const meets = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
   assert.equal(r.length, 3);
   for (let i = 0; i < r.length; i++) for (let j = i + 1; j < r.length; j++) assert.ok(!meets(r[i], r[j]), `${r[i].label} / ${r[j].label}`);
+});
+
+// ---------- the final review's fixes ----------
+
+test('a one-day burn on a tuned drive still offers both slots (review: the after slot had no change of the day before the couches)', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers); await ev(runHelpers);
+  const r = await ev(() => {
+    const t = onBurn(); G.state.tuned = true;  // burnSpeed 1.1
+    t.days = 1; t.total = transitSeconds(1); t.left = t.total; t.elapsed = 0; t.slots = lifeSlotCount(1); t.flipped = false; setBurnSpeed(16);
+    const seen = stepBurn(0.05, 40000);
+    return { seen: seen.map(s => s.slot), slots: t.slots, arrived: G.mode !== 'transit', speed: burnSpeed() };
+  });
+  await done();
+  assert.ok(r.arrived); assert.ok(r.speed > 1.05);
+  assert.deepEqual(r.seen, ['before', 'after'], JSON.stringify(r));
+});
+
+test('a scene does not name the same shipmate in two choices, and Sit with someone turns from slot to slot (review)', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const out = { dupes: [], sits: [] };
+    for (let d = 0; d < 6; d++) {
+      const t = onBurn(); G.state.day += d; t.slots = 4; t.flipped = false; const sits = [];
+      for (const p of [0.1, 0.3, 0.6, 0.9]) {
+        t.left = t.total * (1 - p); if (p > 0.5) t.flipped = true;
+        const e = downtimeScene(true), cap = hired().captain, ids = e.tags.filter(g => g.id && g.id !== cap).map(g => g.id);
+        const twice = ids.filter((id, i) => ids.indexOf(id) !== i);
+        if (twice.length) out.dupes.push(`day+${d} ${lifeSlot()}: ${e.tags.filter(g => twice.includes(g.id)).map(g => g.label).join(' / ')}`);
+        sits.push((e.tags.find(g => /^Sit with /.test(g.label)) || {}).id);
+      }
+      out.sits.push(new Set(sits).size);
+    }
+    return out;
+  });
+  await done();
+  assert.deepEqual(r.dupes, []);
+  assert.ok(r.sits.every(n => n >= 2), `Sit with someone turns within a burn (${r.sits})`);
 });

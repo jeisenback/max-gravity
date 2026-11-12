@@ -724,9 +724,9 @@ function lifeTick(dt) {
     if (line) comm(`[Ship] ${line}`);
   }
   stageScene(people, ph, G.transit, (G.dialog && G.dialog.event) || null);
-  const t = G.transit, now = shipDay(t.elapsed).block, prev = t.lifeBlock;  // the downtime scene, once a slot at a change of the ship's day
-  t.lifeBlock = now;
-  if (prev !== undefined && downtimeDue(t, now, prev) && !isDark() && ph === 'move' && !t.event && !G.dialog) {  // a burn just loaded (no block seen yet) waits for a real change
+  const t = G.transit, now = shipDay(t.elapsed).block, prev = t.lifeBlock, prevPh = t.lifePh;  // the downtime scene, once a slot at a change of the ship's day
+  t.lifeBlock = now; t.lifePh = ph;
+  if (prev !== undefined && downtimeDue(t, now, prev, ph, prevPh) && !isDark() && ph === 'move' && !t.event && !G.dialog) {  // a burn just loaded (no block seen yet) waits for a real change
     const e = downtimeScene();
     if (e.able) { (t.lifeOffered = t.lifeOffered || {})[lifeSlotOf(t)] = true; openEvent(e); }
   }
@@ -1106,9 +1106,11 @@ const lifeFree = t => !(t.lifeUsed || {})[lifeSlotOf(t)];
 const spendLife = (t, key = lifeSlotOf(t)) => { (t.lifeUsed = t.lifeUsed || {})[key] = true; };
 
 // Downtime as a scene (docs/superpowers/specs/2026-11-12-downtime-scene-design.md). The scene opens once a slot, at a change of the ship's day to
-// one of these blocks (the caller checks the lights, the couches and any open scene), while the slot is free and not yet offered (t.lifeOffered).
+// one of these blocks, or as the crew come off the couches (phase `ph` back to 'move' from `prevPh`: after the flip, the only moment a one-day
+// burn's second slot can have), while the slot is free and not yet offered (t.lifeOffered). The caller checks the lights and any open scene.
 const DOWNTIME_BLOCKS = ['breakfast', 'shift', 'meal', 'supper'];
-const downtimeDue = (t, block, prevBlock) => block !== prevBlock && DOWNTIME_BLOCKS.includes(block) && lifeFree(t) && !(t.lifeOffered || {})[lifeSlotOf(t)];
+const downtimeDue = (t, block, prevBlock, ph, prevPh) => ((block !== prevBlock && DOWNTIME_BLOCKS.includes(block)) || (ph === 'move' && prevPh !== undefined && prevPh !== 'move'))
+  && lifeFree(t) && !(t.lifeOffered || {})[lifeSlotOf(t)];
 // Who Sit with someone names: of the candidates ([{ id, low, hurt }], in the picker's order) one having a hard time or hurt first, else by the day.
 const sitPerson = (cands, day) => cands.find(c => c.low || c.hurt) || cands[day % cands.length] || null;
 // Where each of the scene's choices is tagged: an activity's `where` is a room id (a tag on the room) or a function of the people aboard

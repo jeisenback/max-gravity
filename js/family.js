@@ -305,8 +305,11 @@ function becomeLoyal(p, memory) {
 
 // Who the hand could sit with: the crew (procedural) and the passengers with a person, in the picker's order.
 const sitAboard = () => [...procedural(), ...paxAboard().filter(m => m.pid && G.state.people[m.pid]).map(m => ({ id: m.pid, p: G.state.people[m.pid], pax: true }))];
-// The one Sit with someone offers in the downtime scene (shiplife.js sitPerson): someone having a hard time or hurt first, else by the day.
-const sitWith = () => sitPerson(sitAboard().map(f => ({ ...f, low: moodLow(f.p), hurt: !!(G.state.injured || {})[f.id] })), G.state.day);
+// The one Sit with someone offers in the downtime scene (shiplife.js sitPerson): someone having a hard time or hurt first, else by the day and the slot.
+const sitWith = () => {
+  const named = namedInDowntime(), rest = sitAboard().filter(f => !named.includes(f.id)).map(f => ({ ...f, low: moodLow(f.p), hurt: !!(G.state.injured || {})[f.id] }));
+  return sitPerson(rest, G.state.day + slotIndex());  // not one another choice names (none left: not offered); turning from slot to slot
+};
 function sitPicker() {
   const say = familySay('picker'), aboard = sitAboard();
   return {
@@ -607,7 +610,7 @@ Mods.register({
   init(M) {
     ACTIVITIES.sit = {
       get label() { const w = sitWith(); return w ? familySay('picker')('with', { first: w.p.first }) : 'Sit with someone'; },  // the downtime scene names one person
-      can: () => procedural().length > 0 || paxAboard().some(m => m.pid),
+      can: () => !!sitWith(),  // someone no other choice of the scene names
       on: () => familySay('picker')('on', { first: (sitWith() || { p: { first: '' } }).p.first }), where: () => (sitWith() || {}).id,
       run() { const w = sitWith(); G.nextEvent = w ? sitBeat(w.p, !w.pax) : sitPicker(); return null; },  // the sitting opens at once
     };
