@@ -108,16 +108,15 @@ function roomPorthole(ctx, x, y, rad, spin) {
 }
 
 // The crash couches (#990): fixed in the rooms and drawn in every phase. The bridge's station chairs are couches that recline (roomBridgeSeat);
-// the rest are in racks bolted to the berths' deck, each couch a person long. COUCH_RACKS are the racks: one three high in the left bay between
-// the lockers under the room's name and the first bunk column, clear of the name down to the smallest window (#937), and one two high in the
-// crew's corner beside the well, on the floor under the wall unit and short of the guitar. A rack is COUCH_W wide at x (its left post's left edge), its couches COUCH_TIER apart, the lowest one's pad COUCH_PAD
-// over the deck. couchPlaces: the couches in order, k from 0, each with its room, the hip x of the person who lies on it (world units) and lift,
-// how high its pad is over the deck, where that person lies.
+// the rest are in a rack bolted to the berths' deck, each couch a person long. COUCH_RACKS are the racks: one, three high in the left bay
+// between the lockers under the room's name and the first bunk column, clear of the name down to the smallest window (#937). A rack is COUCH_W
+// wide at x (its left post's left edge), its couches COUCH_TIER apart, the lowest one's pad COUCH_PAD over the deck. couchPlaces: the couches in
+// order, k from 0, each with its room, the hip x of the person who lies on it (world units) and lift, how high its pad is over the deck, where
+// that person lies.
 const COUCH_W = 84, COUCH_TIER = 27, COUCH_PAD = 10, COUCH_DEPTH = 0.5;
-const COUCH_RIGHT = Math.round(((LAYOUTS.freighter.well.x + LAYOUTS.freighter.well.w / 2) * LAYOUTS.freighter.width + 8) * 100) / 100;  // 8 past the shaft
-const COUCH_RACKS = [{ room: 'berths', x: 86, tiers: 3 }, { room: 'berths', x: COUCH_RIGHT, tiers: 2 }];
+const COUCH_RACKS = [{ room: 'berths', x: 86, tiers: 3 }];
 const couchPlaces = () => COUCH_RACKS.flatMap(k => Array.from({ length: k.tiers }, (_, t) => ({ room: k.room, x: k.x + 44, lift: COUCH_PAD + t * COUCH_TIER })));
-const COUCH_OLD = 1, COUCH_PATCHED = 3;  // old and patched (point 6): one couch's pad an older one in another shade, another's patched
+const COUCH_OLD = 1, COUCH_PATCHED = 2;  // old and patched (point 6): one couch's pad an older one in another shade, another's patched
 // A crash couch (#990) for someone lying on their back at hip x, its pad's top at P: the contoured pad, rising a little under the knees, the
 // headrest at the head end on the left, the frame under them bolted to the rack's posts by a bracket at each end, and the harness. k: its
 // number (couchPlaces); on: someone strapped in on it, the figure's own straps over them; empty, the harness hangs loose over the pad's edge.

@@ -1373,7 +1373,7 @@ test('the crash couches are fixed in the rooms, the bridge\'s station chairs amo
       people.forEach((p, i) => { if (p.dk !== was[i] && Math.abs(p.x - LADDER) > 0.003 * CUT_K) out.floors.push(`${p.name} at ${p.x.toFixed(3)}: ${was[i]} to ${p.dk}`); });
     }
     out.end = { lying: lying().length, on: people.every(p => p.dk === p.seatDk), upOn: up.dk === up.seatDk };
-    // a company larger than the couches: four passengers more, and the last two of the company lie strapped into a bunk
+    // a company larger than the couches: four passengers more, who lie strapped into a bunk
     for (const k of [1, 2, 3, 4]) G.state.missions.push({ id: 900 + k, type: 'passenger', who: `Pax Nine${k}`, pax: 1, bonus: 0, destSystem: G.state.systemId, destPlanet: 'x', title: 'x', pay: 1, deadline: G.state.day + 60, eventDone: true });
     t.aboard = null; const more = shipPeople().filter(p => p.role !== 'cat'); t.left = t.total * 0.99; run(2);
     const seen = [], real = window.drawPerson; window.drawPerson = (c, pose, x, y, o) => { seen.push({ name: pose.name, strapped: !!pose.strapped }); return real(c, pose, x, y, o); };
@@ -1386,7 +1386,7 @@ test('the crash couches are fixed in the rooms, the bridge\'s station chairs amo
   assert.ok(r.start.lifted, 'each at their couch\'s height');
   assert.equal(r.start.bridge, 'captain,pilot,slicer,you', 'the hand, the captain, the pilot and the slicer on the bridge\'s station couches');
   assert.equal(r.start.seats, '1,1,1,1', 'every station couch reclined flat in the hard burn'); assert.equal(r.cruise.seats, '0,0,0,0', 'and upright under way');
-  assert.equal(r.start.racks, '0:3 3:2', 'the berths\' two racks');
+  assert.equal(r.start.racks, '0:3', 'the berths\' rack');
   assert.equal(r.start.on, r.start.want, 'each taken rack couch drawn with its person strapped in');
   assert.equal(r.cruise.racks, r.start.racks, 'under way the couches are still there'); assert.equal(r.cruise.on, 0, 'and empty'); assert.ok(r.cruise.off, 'everyone up');
   assert.deepEqual(r.decks, [0, 2], 'couches on the bridge and in the berths');
@@ -1394,7 +1394,7 @@ test('the crash couches are fixed in the rooms, the bridge\'s station chairs amo
   assert.deepEqual(r.floors, [], 'nobody passes through a floor on the way to a couch');
   assert.ok(r.end.upOn, 'the one on the wrong deck took the ladder down to their couch');
   assert.ok(r.end.on && r.end.lying === r.start.n, `once at their couches, everyone lies on one ${JSON.stringify(r.end)}`);
-  assert.deepEqual([r.more.n, r.more.couched, r.more.bunked, r.more.bunks], [11, 9, 'passenger,passenger', 2], `past the couches, strapped into a bunk ${JSON.stringify(r.more)}`);
+  assert.deepEqual([r.more.n, r.more.couched, r.more.bunked, r.more.bunks], [11, 7, 'passenger,passenger,passenger,passenger', 4], `past the couches, strapped into a bunk ${JSON.stringify(r.more)}`);
   await done();
 });
 

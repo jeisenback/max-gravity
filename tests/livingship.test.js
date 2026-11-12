@@ -64,11 +64,11 @@ test('on a crash couch a person lies flat on their back (#972)', () => {
   }
 });
 // #990: in the hard burn the bridge's station chairs recline into crash couches (the gunnery's stay upright: no room between its consoles
-// and the torpedo rack to lie down) and the berths keep two racks of them. couchPlan puts each of the company (in bunkOwners' order) on one: a
-// station's own first (its role's post on the bridge, the hand at theirs, else a free bridge post), then the racks in order, then a station
+// and the torpedo rack to lie down) and the berths keep a rack of them. couchPlan puts each of the company (in bunkOwners' order) on one: a
+// station's own first (its role's post on the bridge, the hand at theirs, else a free bridge post), then the rack in order, then a station
 // left free, then a bunk; no two in one place, up to the largest company the game carries.
 const planKeys = plan => plan.map(q => (q.at === 'station' ? `${q.room}:${q.seat}` : q.at === 'rack' ? `rack ${q.k}` : 'bunk'));
-test('who lies where: a station\'s own on its couch, the rest on the racks in order, then a free station, then a bunk (#990)', () => {
+test('who lies where: a station\'s own on its couch, the rest on the rack in order, then a free station, then a bunk (#990)', () => {
   const start = ['you', 'captain', 'pilot', 'engineer', 'slicer', 'xo', 'icehand'];
   assert.equal(planKeys(couchPlan(start, 'gunner')).join(), 'bridge:3,bridge:2,bridge:1,rack 0,bridge:0,rack 1,rack 2', 'the hired start, a gunner hand: the captain, the pilot and the slicer at their posts, the hand at the free one');
   assert.equal(planKeys(couchPlan(['you', 'captain', 'pilot', 'gunner', 'slicer'], 'engineer'))[0], 'bridge:3', 'a hand whose post has no station: a free bridge post');
@@ -76,20 +76,20 @@ test('who lies where: a station\'s own on its couch, the rest on the racks in or
   assert.equal(planKeys(couchPlan(['you', 'pilot'], null)).join(), 'bridge:0,bridge:1', 'an owner (no post): a free bridge post');
   const many = ['you', 'captain', 'pilot', 'slicer', 'engineer', 'xo', 'icehand', 'passenger', 'passenger', 'passenger', 'passenger', 'engineer', 'cook', 'medic'];
   const plan = planKeys(couchPlan(many, 'gunner'));
-  assert.equal(plan.slice(7).join(), 'rack 3,rack 4,bunk,bunk,bunk,bunk,bunk', `past the racks, a bunk (${plan})`);
-  assert.equal(planKeys(couchPlan(['you', 'captain', 'engineer', 'xo', 'icehand', 'cook', 'medic', 'passenger'], 'engineer')).slice(6).join(), 'rack 4,bridge:1', 'the racks full, a free station before a bunk');
+  assert.equal(plan.slice(7).join(), 'bunk,bunk,bunk,bunk,bunk,bunk,bunk', `past the rack, a bunk (${plan})`);
+  assert.equal(planKeys(couchPlan(['you', 'captain', 'engineer', 'xo', 'icehand', 'cook', 'medic', 'passenger'], 'engineer')).slice(5).join(), 'bridge:1,bridge:3,bunk', 'the rack full, a free station before a bunk');
   for (const [roles, hand] of [[start, 'gunner'], [many, 'gunner'], [many, 'engineer'], [many, 'pilot'], [many.slice(1), null], [['you', 'gunner', 'gunner', 'pilot', 'pilot'], 'slicer']]) {
     const p = couchPlan(roles, hand), keys = planKeys(p).filter(k => k !== 'bunk');
     assert.equal(new Set(keys).size, keys.length, `${roles}: no two on one couch (${keys})`);
     assert.equal(p.length, roles.length, `${roles}: everyone placed`);
     const own = { slicer: 'bridge:0', pilot: 'bridge:1', captain: 'bridge:2' };
     for (const [role, key] of Object.entries(own)) { const i = roles.findIndex(r => (r === 'you' ? hand : r) === role); if (i >= 0) assert.equal(planKeys(p)[i], key, `${roles}: the first ${role} at their post`); }
-    assert.ok(p.filter(q => q.at === 'bunk').length === Math.max(0, roles.length - 9), `${roles}: a bunk only past the nine couches`);
+    assert.ok(p.filter(q => q.at === 'bunk').length === Math.max(0, roles.length - 7), `${roles}: a bunk only past the seven couches`);
   }
 });
 test('each place is in its room: a station couch at its seat, a rack couch on its tier, a bunk in the berths (#990)', () => {
   const lay = LAYOUTS.freighter, W = lay.width, racks = couchPlaces();
-  assert.equal(racks.length, 5, 'five rack couches, all in the berths'); assert.ok(racks.every(c => c.room === 'berths'));
+  assert.equal(racks.length, 3, 'three rack couches, all in the berths'); assert.ok(racks.every(c => c.room === 'berths'));
   assert.ok(COUCH_RACKS.every(k => k.room === 'berths'), 'no rack on the bridge');
   const plan = couchPlan(['you', 'captain', 'pilot', 'engineer', 'slicer', 'xo', 'icehand', 'passenger', 'passenger', 'passenger', 'passenger', 'cook', 'medic', 'engineer'], 'gunner');
   plan.forEach((q, k) => {

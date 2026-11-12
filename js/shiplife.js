@@ -520,7 +520,7 @@ function clearOf(p, x, people = []) {
 
 // Who lies where in the hard burn (#990), for the ship's company in its standing order (bunkOwners: roles, the hand as 'you', whose post's role
 // is handRole): a bridge station's own on its couch first (the slicer at comms, the pilot at the helm, the captain at the captain's post, the
-// hand at theirs), and the hand with no station there at a free one; then everyone else on the berths' racks in order (rooms.js couchPlaces);
+// hand at theirs), and the hand with no station there at a free one; then everyone else on the berths' rack in order (rooms.js couchPlaces);
 // then a bridge station left free; then a bunk, strapped in as a sleeper is at the flip (#927). The gunnery's posts are crash seats that stay
 // upright (no room to lie one back between its consoles and the torpedo rack), so a gunner is not at the guns. Each place: { at: 'station',
 // room, seat } (SEATS' index), { at: 'rack', k }, or { at: 'bunk' }.
