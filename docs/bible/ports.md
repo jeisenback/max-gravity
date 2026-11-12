@@ -24,6 +24,12 @@ Earth's port, for a torch ship, is Lagos Ring (`lagos.md`). Torch ships do not l
 
 The Ring is about four hundred metres across and turns one and a half times a minute: half a g on the rim, none at the hub. About six thousand people live on it. It belongs to Lagos Arcology's holding company, which charges for the air and the water and sets the rents, in Lagos scrip. Its police and its customs are the arcology's.
 
+### The reference frame
+
+![A slice of Lagos Ring's rim: the bunkrooms, the yard offices and the clinic, the lift, the market's bays and the Gravity Well, with Earth under the outer hull](ports-target.png)
+
+`ports-target.png` is a slice of the rim at 1280x800, drawn with the game's own room and figure drawing in a throwaway mockup, three rounds with the owner (2026-11-12). Treat it as a sketch of the target, as `look-target.png` is for the burn view. What it gets right: three levels of the rim in boxes in depth, the market as bays rented in the wall, the bar's copper counter, the hiring boards, bunks three high, the Ring's own people in their own colours beside a ship's crew, and Earth under the hull. What it leaves for the real drawing: the curve of the rim (true to scale it is a few units over the slice, too little to read), the spoke joining the lift, clothes beyond a colour, and the berth at the hub.
+
 ### What the view cuts through
 
 From the ship's berth down to the rim, in the order a hand walks it:
