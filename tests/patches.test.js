@@ -238,3 +238,36 @@ test('in the game a repair in flight leaves the marks as patches, they stay thro
   assert.equal(r.old, undefined, 'an old save without them loads with none');
   assert.deepEqual(r.bad, [undefined, undefined], 'and the wrong kind of thing is dropped');
 });
+
+test('the trip\'s age never runs backwards within a burn: a delay lengthens what is left, not the age; a shortcut moves it on (#935)', () => {
+  const t = { days: 2, total: 160, left: 80 }, age = () => api.tripAge(t);
+  assert.equal(age(), 0.5, 'halfway');
+  t.left += 20; t.total += 20;  // delay(20), transit.js: the same seconds on both
+  assert.equal(age(), 0.5, 'a delay leaves it where it was');
+  const before = api.galleyClutter(age()).length; assert.equal(before, 3, 'and the mugs where they were');
+  t.left -= 40; assert.ok(age() > 0.5, 'the burn going on ages it again');
+  t.left = 0; assert.equal(age(), 1, 'at most 1, however long the delays made it');
+  const s = { days: 3, total: 240, left: 120 }; const a0 = api.tripAge(s); s.left -= 15; s.total -= 15; s.days = 2;  // the slingshot: delay(-15) and a day saved
+  assert.ok(api.tripAge(s) >= a0, 'a shortcut never takes it back');
+});
+
+test('a field repair welds its own doublers on, so its marks are patches too; only a yard clears them; another hull starts with none (#935)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    const out = {};
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    G.state.tutorial = null; const st = G.state, at = name => { for (const sys of Object.values(SYSTEMS)) { const p = sys.planets.find(q => q.name === name); if (p) return p; } };
+    const fix = name => { st.armor = Math.round(ship().armor * 0.5); st.patches = ['galley']; st.hullMarks = ['engine', 'hold']; const p = at(name); const plan = repairPlan(p); repairScene(p).choices[0].run(); G.dialog = null; return [plan.yard, st.patches, st.hullMarks, st.armor === ship().armor]; };
+    out.field = fix('Ring Nine'); out.yard = fix('Earth');
+    st.patches = ['galley']; st.hullMarks = ['engine']; chapterTwoShip(st); out.coop = [st.patches, st.hullMarks];
+    st.patches = ['galley']; st.hullMarks = ['engine']; st.credits = 1000000; buyIn('courier'); while (G.dialog) finishEvent(); out.bought = [st.patches, st.hullMarks, st.shipId];
+    st.patches = ['galley']; st.hullMarks = ['engine']; st.captain = st.captain || { name: 'Sam Rowe', since: 1 }; st.captains = st.captains || []; succeed('died', 'Jo Heir'); out.skiff = [st.patches, st.hullMarks, st.shipId];
+    return out;
+  });
+  await done();
+  assert.deepEqual(r.field, [false, ['galley', 'engine', 'hold'], undefined, true], 'a field repair: the old patch kept, its marks patched');
+  assert.deepEqual(r.yard, [true, undefined, undefined, true], 'the yard: none');
+  assert.deepEqual(r.coop, [undefined, undefined], 'the co-op\'s Ore Runner: none of the old hull\'s');
+  assert.deepEqual(r.bought, [undefined, undefined, 'courier'], 'a ship bought in: none');
+  assert.deepEqual(r.skiff, [undefined, undefined, 'shuttle'], 'the heir\'s new Dust Skiff: none');
+});

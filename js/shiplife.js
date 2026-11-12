@@ -152,8 +152,12 @@ function mendHull(st, was, now, yard = false) {
   if (got.length) st.patches = got; else delete st.patches;
   if (now.length) st.hullMarks = [...now]; else delete st.hullMarks;
 }
-// The burn's elapsed share, 0 at its start and 1 at its end (#935): how old the trip looks.
-const tripAge = t => (t && t.total > 0 ? Math.min(1, Math.max(0, 1 - t.left / t.total)) : 0);
+// Another hull (#935): her patches and marks are not this one's.
+const dropPatches = st => { delete st.patches; delete st.hullMarks; };
+// How old the trip looks (#935): the burn done (total less left, which a delay lengthens both of alike, so it only grows) over the burn's
+// planned length (its days of SHIP_DAY, as transitSeconds), 0 at its start and 1 at its planned end, held there through any delay. Never
+// backwards within a burn: a delay adds to what is left, not to the age. A transit with no days is read against its total.
+const tripAge = t => { const base = t && (t.days > 0 ? t.days * SHIP_DAY : t.total); return base > 0 ? Math.min(1, Math.max(0, (t.total - t.left) / base)) : 0; };
 // Who works at which mark: the repair hands (the engineer and deckhands) not hurt, in the order aboard, each to the free mark nearest their post.
 const REPAIR_HANDS = ['engineer', 'icehand'];
 function repairsFor(people, state) {

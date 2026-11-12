@@ -530,7 +530,7 @@ function buyIn(id) {
   const price = buyInPrice(id);
   st.credits -= price;
   h.haggle = null;
-  st.shipId = id === USED_ID ? 'lightfreighter' : id; st.fuel = ship().fuel; st.armor = ship().armor;
+  st.shipId = id === USED_ID ? 'lightfreighter' : id; st.fuel = ship().fuel; st.armor = ship().armor; dropPatches(st);  // her hull, not the old one's patches (#935)
   st.cargo = {}; st.paid = {};  // what was in the hold was the captain's
   // The captain stays a contact, and a known captain on the lanes.
   Object.assign(cap, { ship: { name: oldName, shipId: 'freighter', kind: 'trader' }, haunt: st.systemId, location: planet.name });
@@ -593,7 +593,7 @@ function goOn(st) {
 
 // The co-op's hull: the used Ore Runner as she is, tanks and armor full, nothing fitted, an empty hold. Her name waits for the members' first meeting.
 function chapterTwoShip(st) {
-  st.shipId = 'lightfreighter'; st.fuel = SHIPS.lightfreighter.fuel; st.armor = SHIPS.lightfreighter.armor;
+  st.shipId = 'lightfreighter'; st.fuel = SHIPS.lightfreighter.fuel; st.armor = SHIPS.lightfreighter.armor; dropPatches(st);  // (#935)
   st.condition = { ...USED_CONDITION }; st.outfits = {}; st.torpedoes = 0; st.cargo = {}; st.paid = {};
   for (const k of ['refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
   home().name = 'Ore Runner';
