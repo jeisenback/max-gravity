@@ -1636,3 +1636,29 @@ test('the burn bar\'s phase and g, and the float\'s build, follow the flip in sh
   assert.deepEqual(r.mid, ['float', 'FLIP', false], 'weightless at the midpoint');
   assert.equal(r.weights, 0, 'no flip light before the flip');
 });
+
+test('in time-lapse at 4x and 16x a walk is not drawn: the walker fades out of the old place, out of sight between, and fades into the new; at 1x as they are', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {}; burn(); const t = G.transit;
+    t.left = t.total * 0.3;  // under way, clear of the couches and the flip
+    setBurnSpeed(16); out.on16 = lapseOn(); setBurnSpeed(4); out.on4 = lapseOn(); setBurnSpeed(1); out.on1 = lapseOn();
+    setBurnSpeed(16); scene(); out.scene = lapseOn(); G.dialog = null;
+    const p = { x: 0.1 * CUT_K, dk: 1, tdk: 1, tx: null, at: 'post', room: 'bridge' }, frame = (n = 1) => { for (let i = 0; i < n; i++) lapseTick([p], true, 0.05); return { ...p.lapse }; };
+    out.rest = frame();
+    p.x += 0.005 * CUT_K; out.nudge = frame();  // a small move is followed
+    p.tx = 0.8 * CUT_K; p.x = 0.5 * CUT_K; out.leaving = frame(); out.gone = frame(10);  // walking: fading out where they were, then out of sight
+    p.x = 0.8 * CUT_K; p.tx = null; p.at = 'galley'; out.arrived = frame(); out.back = frame(10);
+    lapseTick([p], false, 0.05); out.off = p.lapse;
+    return out;
+  });
+  await done();
+  assert.deepEqual([r.on16, r.on4, r.on1, r.scene], [true, true, false, false], 'above 1x, and not under a scene');
+  assert.equal(r.rest.a, 1);
+  assert.ok(Math.abs(r.nudge.x - r.rest.x) > 0 && r.nudge.a === 1, 'followed, not faded');
+  assert.equal(r.leaving.x, r.nudge.x, 'drawn where they were'); assert.ok(r.leaving.a < 1 && r.leaving.a > 0, 'fading out');
+  assert.equal(r.gone.a, 0);
+  assert.ok(Math.abs(r.arrived.x - 0.8 * r.rest.x / 0.1) < 1e-6 && r.arrived.at === 'galley', 'there once they rest'); assert.equal(r.back.a, 1, 'and faded in');
+  assert.equal(r.off, null, 'at 1x drawn as they are');
+});
