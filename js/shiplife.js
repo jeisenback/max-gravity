@@ -790,11 +790,11 @@ function lifeTick(dt) {
   }
 }
 
-// Time-lapse under fast-forward: at 4x and 16x the crew keep the routine on the burn's clock, but a walk is not drawn. Each is drawn where they last
+// Time-lapse under fast-forward: at 16x the crew keep the routine on the burn's clock, but a walk is not drawn. Each is drawn where they last
 // rested (`p.lapse`, with what their posture reads there); one who goes somewhere else fades out of the old place and, once there, into the new, over
-// LAPSE_FADE real seconds each way. A small move (easing onto a seat, a step aside) is followed. At 1x, in the flip's slow motion and under a scene
+// LAPSE_FADE real seconds each way. A small move (easing onto a seat, a step aside) is followed. At 1x and 2x, in the flip's slow motion and under a scene
 // they are drawn as they are. `dt` is real seconds.
-const LAPSE_FADE = 0.35, LAPSE_NEAR = 0.02;  // #1083: the fade each way; under this share of the cutaway's width, a move is followed, not faded
+const LAPSE_FADE = 0.35, LAPSE_NEAR = 0.02, LAPSE_FROM = 2;  // #1083: the fade each way; the fastest rate a walk is drawn at; under this share of the cutaway's width, a move is followed, not faded
 const restOf = p => ({ x: p.x, dk: p.dk, at: p.at, room: p.room, block: p.block, staged: p.staged, errand: p.errand, face: p.face });
 function lapseTick(people, lapse, dt) {
   const k = Settings.reduceMotion ? 1 : dt / LAPSE_FADE;
@@ -807,7 +807,7 @@ function lapseTick(people, lapse, dt) {
     else { if (rest || Math.abs(p.x - s.x) > 0) Object.assign(s, rest ? restOf(p) : { x: p.x }); s.a = Math.min(1, s.a + k); }
   }
 }
-const lapseOn = () => { const t = G.transit; return !!t && !t.event && !G.dialog && burnRate(t, G.speed, burnSpeed()) > 1; };  // the burn's clock running faster than real time
+const lapseOn = () => { const t = G.transit; return !!t && !t.event && !G.dialog && burnRate(t, G.speed, burnSpeed()) > LAPSE_FROM; };  // the burn's clock running faster than a walk can be watched
 
 // ---------- the cutaway ----------
 // The drive plume down from the bell: its length as a share of the tower's height (growing with the burn's peak), the flicker in world units,
