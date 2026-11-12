@@ -869,26 +869,27 @@ function roomMessTableIn(ctx, r, s) {
 // and the bench's foot bar are theirs: roomMessTableIn, roomBench).
 // The galley's screen (#1035): on through supper and the handover, when the feeds are watched (s.screen, from the ship's day: shiplife.js).
 const galleyScreenOn = block => block === 'supper' || block === 'handover';
-// The screen on its arm (docs/bible/look.md 4, 5, 10), centred at (x, y) on the wall: the plate on the cupboard's underside, its bolts newer than the
-// paint, two joints, and the screen turned a little toward the mess table. On: cool glass with a faint flicker, and its cool light on the table under it.
+// The screen on its arm (docs/bible/look.md 4, 5, 10), centred at (x, y) on the wall: a plate under the cupboard straight over it, its bolts newer than
+// the paint, a short drop to a hinge, and the screen hung square from the hinge, tipped down toward the mess table (a dark lip along its bottom).
+// On: lit glass with a faint flicker, and its cool light on the table under it.
 function roomGalleyScreen(ctx, x, y, on, s) {
-  const px = x + 9, py = y - 12;  // the plate under the cupboard's rail
-  roomFlat(ctx, px - 3, py - 1, 6, 2, '#56708c'); roomDot(ctx, px - 2, py, 0.5, '#b8c4d0'); roomDot(ctx, px + 2, py, 0.5, '#b8c4d0');
-  ctx.strokeStyle = roomTint('#4a6078'); ctx.lineWidth = 1.6; roomSeg(ctx, [[px, py + 1], [px + 2, py + 4], [x + 5, y - 6]]);  // the arm, its two joints
-  roomDot(ctx, px + 2, py + 4, 1, '#6a7f95'); roomDot(ctx, x + 5, y - 6, 1, '#6a7f95');
-  const face = `M ${x - 11} ${y - 6} L ${x + 11} ${y - 7.5} L ${x + 11} ${y + 7.5} L ${x - 11} ${y + 6} Z`;  // turned toward the table
-  roomPart(ctx, face, '#1a2430', { top: 0.6, side: 1.5 });
-  const glass = `M ${x - 9.5} ${y - 4.6} L ${x + 9.5} ${y - 5.9} L ${x + 9.5} ${y + 5.9} L ${x - 9.5} ${y + 4.6} Z`;
+  const hw = 12, hh = 7.5, top = y - hh, py = y - 17;  // the screen's half width and height; the plate under the cupboard's rail, a clear drop above the screen
+  roomPart(ctx, roomRound(x - 4, py - 1.5, 8, 2, 0.6), '#5a7690', { top: 0.6 });
+  roomDot(ctx, x - 2.5, py - 0.5, 0.5, '#b8c4d0'); roomDot(ctx, x + 2.5, py - 0.5, 0.5, '#b8c4d0');
+  roomPart(ctx, roomRound(x - 1, py + 0.5, 2, top - py - 2, 0.5), '#4a6078', { top: 0, side: 0.6 });  // the drop
+  roomDot(ctx, x, top - 1.6, 1.6, '#6a7f95'); ctx.lineWidth = 0.7; ctx.strokeStyle = FIG_LINE; ctx.stroke();  // the hinge
+  roomPart(ctx, roomRound(x - hw, top, hw * 2, hh * 2, 1.2), '#1a2430', { top: 0.8, under: 1.6 });  // the bezel, its lower lip the tip toward the table
+  const glass = roomRound(x - hw + 1.6, top + 1.6, hw * 2 - 3.2, hh * 2 - 4, 0.6);
   if (on) {
-    const flick = s.still ? 1 : 0.93 + 0.07 * Math.sin((s.time || 0) * 11);
-    const lit = ctx.createLinearGradient(x, y - 6, x, y + 6); lit.addColorStop(0, '#c4e2fa'); lit.addColorStop(1, '#7fb4e2');  // a picture, not a tile
+    const flick = s.still ? 1 : 0.93 + 0.07 * Math.sin((s.time || 0) * 11), lit = ctx.createLinearGradient(x, top, x, y + hh);
+    lit.addColorStop(0, '#c4e2fa'); lit.addColorStop(1, '#7fb4e2');  // a picture, not a tile
     ctx.save(); ctx.globalAlpha = flick; ctx.fillStyle = lit; figPath(ctx, glass); ctx.fill(); ctx.restore();
     const g = ctx.createRadialGradient(x, y + 22, 2, x, y + 22, 46);  // its cool light on the table and whoever sits there
     g.addColorStop(0, `rgba(150,200,255,${0.24 * flick})`); g.addColorStop(1, 'rgba(150,200,255,0)');
     ctx.fillStyle = g; ctx.fillRect(x - 46, y - 24, 92, 92);
   } else {
     ctx.fillStyle = roomTint('#0e1820'); figPath(ctx, glass); ctx.fill();
-    ctx.strokeStyle = 'rgba(160,190,220,0.18)'; ctx.lineWidth = 0.8; roomSeg(ctx, [[x - 6, y + 3], [x + 2, y - 4]]);  // a reflection
+    ctx.strokeStyle = 'rgba(160,190,220,0.18)'; ctx.lineWidth = 0.8; roomSeg(ctx, [[x - 7, y + 3], [x + 1, y - 4]]);  // a reflection
   }
 }
 
@@ -917,7 +918,7 @@ function roomGalley(ctx, r, s, X, W) {
     worldText(ctx, s.zoom, 'MUGS', X(0.25) + 8, F - 79, 9, roomTint('#a8987a'));
     roomPart(ctx, roomRound(X(0.25), F - 71.5, X(0.39) - X(0.25), 2, 1), '#3a5470', { top: 0.6 });  // a grab rail for zero g
   });
-  if (W >= 300) roomOnWall(ctx, X(0.335), F - 57, () => roomGalleyScreen(ctx, X(0.335), F - 57, !!s.screen, s));  // the screen on its arm, over the table's end (#1035)
+  if (W >= 300) roomOnWall(ctx, X(0.335), F - 52, () => roomGalleyScreen(ctx, X(0.335), F - 52, !!s.screen, s));  // the screen on its arm, over the table's end (#1035)
   roomOnWall(ctx, X(0.47), F - 68, () => roomPorthole(ctx, X(0.47), F - 68, 13, s.spin));
   if (W >= 340) roomOnWall(ctx, (X(0.55) + X(0.63)) / 2, F - 85, () => cupboards(X(0.55), X(0.63), F - 96, F - 74));
   if (W >= 240) {
