@@ -995,6 +995,106 @@ test('each bunk keeps a clear place for its owner\'s one thing, inside the bunk 
   }
 });
 
+// #934, their own things in the bunks: each of the ship's company has their own bunk, k-th of the company in its standing order on bunk k
+// (bunkOwners), and keeps two or three things of their own there (bunkKit), each in its place in the plan every bunk has (roomBunkPlan).
+const own934 = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['bunkOwners', 'bunkKit', 'BUNK_THINGS', 'BUNK_DRAW']);
+const COMPANY = [{ id: 'you', role: 'you' }, { id: 'c:ines', role: 'pilot' }, { id: 'c:tomas', role: 'engineer' }, { id: 'p7', role: 'gunner' }, { id: 'p8', role: 'passenger' },
+  { name: 'Mog', role: 'cat' }, { id: 'c:cato', role: 'xo' }, { id: 'p9', role: 'icehand' }, { id: 'hc', role: 'captain' }];
+const ownerIds = (people, n) => Array.from(own934.bunkOwners(people, n), p => (p ? p.id : null));
+test('each of the ship\'s company has their own bunk, the k-th in its standing order bunk k, and the rest are spare (#934)', () => {
+  assert.deepEqual(ownerIds(COMPANY, 10), ['you', 'hc', 'c:ines', 'c:tomas', 'p7', 'c:cato', 'p9', 'p8', null, null], 'the hand, the captain, the crew as they signed on, the passengers; not the cat');
+  assert.deepEqual(ownerIds(COMPANY, 10), ownerIds([...COMPANY], 10), 'the same list, the same bunks');
+  assert.deepEqual(ownerIds([...COMPANY].reverse(), 10).slice(0, 2), ['you', 'hc'], 'the hand and the captain first whatever the order they are kept in');
+  assert.deepEqual(ownerIds(COMPANY, 4), ['you', 'hc', 'c:ines', 'c:tomas'], 'as many as there are bunks');
+  const left = COMPANY.filter(p => p.id !== 'c:tomas'), joined = [...left, { id: 'p10', role: 'engineer' }];
+  assert.deepEqual(ownerIds(left, 10), ['you', 'hc', 'c:ines', 'p7', 'c:cato', 'p9', 'p8', null, null, null], 'one leaves: those after move up a bunk');
+  assert.deepEqual(ownerIds(joined, 10), ['you', 'hc', 'c:ines', 'p7', 'c:cato', 'p9', 'p10', 'p8', null, null], 'the next to sign on takes their place in the crew list');
+});
+const PLACES = ['shelf', 'photos', 'screen', 'keep'], kitThings = k => [...k.shelf, ...k.photos, ...(k.screen ? [k.screen] : []), ...(k.keep ? [k.keep] : [])];
+test('everyone\'s bunk has two or three things of their own, a main character\'s from their sheet and anyone else\'s from their post and home (#934)', () => {
+  for (const [key, d] of Object.entries(own934.BUNK_THINGS)) {
+    const k = own934.bunkKit({ cast: key, id: `c:${key}` }), n = kitThings(k).length;
+    assert.ok(n >= 2 && n <= 3, `${key}: two or three things (${n})`);
+    for (const at of Object.keys(d)) assert.ok(PLACES.includes(at), `${key}: ${at} is a place in the plan`);
+    for (const t of kitThings(k)) assert.equal(typeof own934.BUNK_DRAW[t], 'function', `${key}: ${t} is drawn`);
+  }
+  assert.deepEqual(kitThings(own934.bunkKit({ captainKey: 'hester', id: 'p1' })), ['tea', 'notebook'], 'a captain with a sheet, by their key: Hester\'s tea and notebook');
+  assert.equal(own934.bunkKit({ cast: 'ines', id: 'c:ines' }).keep, 'logbook', 'Ines keeps her logbook');
+  for (const role of ['you', 'pilot', 'gunner', 'engineer', 'slicer', 'xo', 'icehand', 'passenger', 'captain', 'cook']) for (const culture of ['earth', 'mars', 'belt', undefined]) for (let i = 0; i < 12; i++) {
+    const p = { id: `p${i}`, role, culture }, k = own934.bunkKit(p), at = `${role} ${culture} ${i}`;
+    assert.equal(kitThings(k).length, 2, `${at}: two things (${JSON.stringify(k)})`);
+    assert.deepEqual(own934.bunkKit({ ...p }), k, `${at}: the same two every time, by the id`);
+    for (const t of kitThings(k)) assert.equal(typeof own934.BUNK_DRAW[t], 'function', `${at}: ${t} is drawn`);
+  }
+  const kits = new Set(Array.from({ length: 20 }, (_, i) => JSON.stringify(kitThings(own934.bunkKit({ id: `p${i}`, role: 'gunner', culture: 'belt' })))));
+  assert.ok(kits.size >= 3, `two ratings at the same post and home keep different things (${[...kits]})`);
+});
+// The berths drawn with the bunks given (s.bunks), the 10 of the Ice Hauler; the calls a bunk's owner adds, against it spare.
+const ownCase = bunks => { const c = berthCase(10, 0.3, 1.17); return { ...c, s: { ...c.s, bunks, asleep: bunks.filter(q => q && q.slept).length } }; };
+const callKey = k => JSON.stringify(k.map(v => (typeof v === 'number' ? Math.round(v * 1000) / 1000 : v)));
+const extraCalls = (a, b) => { const left = new Map(); for (const k of b) left.set(callKey(k), (left.get(callKey(k)) || 0) + 1); return a.filter(k => { const q = callKey(k), m = left.get(q) || 0; if (m) { left.set(q, m - 1); return false; } return true; }); };
+const callPts = k => (k[0] === 'fillRect' ? [[k[1], k[2]], [k[1] + k[3], k[2] + k[4]]] : /^(moveTo|lineTo|arc)$/.test(k[0]) ? [[k[1], k[2]]] : k[0] === 'quadraticCurveTo' ? [[k[1], k[2]], [k[3], k[4]]] : []);
+const drawBerths = s => { const { ctx, calls } = recorder(); drawRoom(ctx, 'berths', berthCase(10, 0.3, 1.17).r, s); return calls; };
+test('each one\'s things are drawn in their own bunk and nowhere else, and a spare bunk is bare (#934)', () => {
+  const kits = [{ cast: 'ines', id: 'c:ines' }, { cast: 'tomas', id: 'c:tomas' }, { cast: 'yelena', id: 'c:yelena' }, { captainKey: 'hester', id: 'p1' }, { id: 'p7', role: 'gunner', culture: 'mars' }].map(own934.bunkKit);
+  const spare = drawBerths(ownCase(Array(10).fill(null)).s);
+  assert.equal(spare.length, drawBerths({ ...berthCase(10, 0.3, 1.17).s, asleep: 0 }).length, 'with every bunk spare the berths are drawn as with none given');
+  for (const kit of kits) for (const k of [0, 1, 3, 9]) for (const slept of [false, true]) {
+    const bunks = Array(10).fill(null); bunks[k] = { slept, ...kit };
+    const { s, bunks: bs } = ownCase(bunks), b = bs[k], extra = extraCalls(drawBerths(s), drawBerths({ ...s, bunks: bunks.map((q, i) => (i === k ? null : q)), asleep: 0 }));
+    const at = `${kitThings(kit)} in bunk ${k}${slept ? ', asleep' : ''}`;
+    assert.ok(extra.length > 10, `${at}: drawn (${extra.length} calls)`);
+    for (const c of extra) for (const [px, py] of callPts(c)) assert.ok(px >= b.x && px <= b.x + b.w && py >= b.y - 27 && py <= b.y + 3, `${at}: ${callKey(c)} inside the bunk (${b.x} to ${b.x + b.w}, ${b.y - 27} to ${b.y + 3})`);
+  }
+});
+test('every bunk has the same plan: the shelf on its brackets, the screen at the foot, the end rail, and a towel over it when someone sleeps there (#934)', () => {
+  const kit = own934.bunkKit({ cast: 'yelena', id: 'c:yelena' }), bunks = Array.from({ length: 10 }, (_, k) => (k < 6 ? { slept: k % 2 === 0, ...kit } : null));
+  const { s, bunks: bs } = ownCase(bunks), { ctx, calls } = recorder(); drawRoom(ctx, 'berths', berthCase(10, 0.3, 1.17).r, s);
+  const parts = filledParts(calls).filter(p => p.outlined).map(p => ({ col: p.col, ...partBox(p) })), rects = calls.filter(k => k[0] === 'fillRect' || k[0] === 'fillStyle');
+  const flats = []; let col = null; for (const k of rects) if (k[0] === 'fillStyle') col = k[1]; else flats.push({ col, x0: k[1], y0: k[2], x1: k[1] + k[3], y1: k[2] + k[4] });
+  bs.forEach((b, k) => {
+    const at = `bunk ${k}${bunks[k] ? '' : ', spare'}`, inside = p => p.x0 >= b.x && p.x1 <= b.x + b.w && p.y0 >= b.y - 27 && p.y1 <= b.y + 3;
+    const shelf = parts.find(p => p.col === '#5a7690' && inside(p));
+    assert.ok(shelf && shelf.x0 < b.x + 30 && shelf.y0 >= b.y - 26.6 + 1.6 && shelf.y1 <= b.y - 18, `${at}: a small shelf at the head end, under the rail and over the sleeper (${JSON.stringify(shelf)})`);
+    const glass = flats.find(p => p.col === '#03121c' && inside(p)), bezel = flats.find(p => p.col === '#1b2f45' && inside(p));
+    assert.ok(glass && bezel && glass.x0 > b.x + b.w - 20 && glass.y1 <= b.y - 18, `${at}: the screen flush on the back wall at the foot end`);
+    assert.ok(parts.some(p => p.col === '#3a5470' && inside(p) && p.x0 > b.x + b.w - 10 && p.y0 > b.y - 9), `${at}: the end rail`);
+    const towel = parts.find(p => p.col === kit.towel && inside(p) && p.x0 > b.x + b.w - 10);
+    if (bunks[k]) assert.ok(towel && towel.y1 > b.y - 2, `${at}: a towel over the end rail, hanging down`);
+    else assert.ok(!parts.some(p => inside(p) && /^#(7a2a3a|9a6040|a09a8a)$/.test(p.col)), `${at}: bare, nothing pinned or on the shelf`);
+    if (bunks[k]) {
+      assert.ok(parts.some(p => p.col === '#7a2a3a' && inside(p) && p.y0 >= b.y - 25 && p.y1 <= b.y - 19), `${at}: the pennant pinned in the row at the eye of someone lying down`);
+      assert.ok(parts.some(p => p.col === '#9a6040' && inside(p) && Math.abs(p.y1 - shelf.y0) < 0.01 && p.x0 >= shelf.x0 && p.x1 <= shelf.x1), `${at}: the ball standing on the shelf`);
+    }
+  });
+});
+test('the things in the bunks keep inside the props\' brightness, leave every save restored and write no text (#934)', () => {
+  const people = [...Object.keys(own934.BUNK_THINGS).map(key => ({ cast: key, id: key })), ...['pilot', 'gunner', 'engineer', 'slicer', 'icehand', 'passenger'].flatMap(role => ['earth', 'mars', 'belt'].map((culture, i) => ({ id: `p${i}${role}`, role, culture })))];
+  for (let i = 0; i < people.length; i += 10) for (const slept of [false, true]) {
+    const bunks = Array.from({ length: 10 }, (_, k) => (people[i + k] ? { slept, ...own934.bunkKit(people[i + k]) } : null)), { s } = ownCase(bunks), at = `from ${i}${slept ? ', asleep' : ''}`;
+    const c = fakeCtx(); drawRoom(c, 'berths', berthCase(10, 0.3, 1.17).r, s); assert.equal(c.depth, 0, `${at}: every save restored`);
+    assert.ok(c.fonts.every(f => Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12), `${at}: nothing written under 12 px (the sleepers' z only)`);
+    assert.ok(c.calls.filter(k => k === 'fillText').length <= 1, `${at}: no words but the z`);
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'berths', berthCase(10, 0.3, 1.17).r, s);
+    for (const { col } of filledParts(calls).filter(p => p.outlined && rgbOf(p.col))) {
+      const v = rgbOf(col); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${col} brighter or more saturated than the props may be`);
+    }
+    for (const k of calls.filter(q => q[0] === 'fillStyle' && /^#[0-9a-f]{6}$/.test(q[1]) && q[1] !== '#9fb4c9')) assert.ok(Math.max(...rgbOf(k[1])) <= 0xb0, `${at}: ${k[1]} brighter than the props may be`);
+  }
+});
+test('after a crew change the leaver\'s things are gone from the berths and the newcomer\'s are in their bunk (#934)', () => {
+  const recs = { you: { id: 'you', role: 'gunner', culture: 'earth' }, hc: { captainKey: 'hester', id: 'hc', role: 'captain' }, 'c:ines': { cast: 'ines', id: 'c:ines', role: 'pilot' }, 'c:tomas': { cast: 'tomas', id: 'c:tomas', role: 'engineer' },
+    'c:cato': { cast: 'cato', id: 'c:cato', role: 'xo' }, 'c:yelena': { cast: 'yelena', id: 'c:yelena', role: 'gunner' } };
+  const bunksOf = people => own934.bunkOwners(people, 10).map(p => p && { slept: false, ...own934.bunkKit(recs[p.id]) });
+  const before = ['you', 'hc', 'c:ines', 'c:tomas', 'c:cato'].map(id => ({ id, role: recs[id].role })), after = [...before.filter(p => p.id !== 'c:tomas'), { id: 'c:yelena', role: 'gunner' }];
+  const a = bunksOf(before), b = bunksOf(after), has = (bunks, what) => bunks.some(q => q && kitThings(q).includes(what));
+  assert.ok(has(a, 'tools') && has(a, 'flask') && !has(a, 'pennant'), 'Tomas\'s tools and flask before');
+  assert.ok(!has(b, 'tools') && !has(b, 'flask') && has(b, 'pennant'), 'gone after he leaves, and Yelena\'s pennant with her');
+  assert.equal(b.findIndex(q => q && q.photos.includes('pennant')), 4, 'in her own bunk, the next in the list');
+  const calls = drawBerths(ownCase(b).s), red = calls.filter(k => k[0] === 'fillStyle' && k[1] === '#7a2a3a').length;
+  assert.equal(red, 1, 'her pennant drawn once, in the berths');
+});
+
 // The crew's corner beside the well: the wall unit, the pinboard where it fits, the towel and the guitar, spread across the open wall, clear of
 // the well and the bunks, each part outlined and a step below the people.
 const CORNER_PROPS = [['#22405c', 'the wall unit\'s sides'], ['#284a68', 'its two shelves'], ['#2c4c6e', 'their lips'], ['#7d8a98', 'the mug'], ['#5e4434', 'the plant\'s pot'],

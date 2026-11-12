@@ -470,9 +470,51 @@ function berthBunk(r, n, k, well = { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 
 }
 // Where the cutaway lays a sleeper on bunk b (berthBunk): the hip, the head on the pillow at its left end, and the mattress under them.
 const berthSleeper = b => ({ x: b.x + b.w / 2, y: b.y - 5 });
-// The place on bunk b kept for its owner's one thing (#934): a box on the wall over the foot half of the mattress, above the sleeper and under
+// The place on bunk b kept for its owner's kept thing (#934): a box on the wall over the foot half of the mattress, above the sleeper and under
 // the curtain rail, clear of the bunk's own fittings, so the thing is drawn there without redrawing the bunk.
 const berthKeep = b => ({ x: b.x + b.w - 34, y: b.y - 25, w: 16, h: 7 });
+
+// What each of the ship's company keeps out in their bunk (#934, look.md rules 7 and 8): two or three things of their own, each named for where
+// it goes in the bunk's plan (roomBunk): on the shelf over the pillow (shelf), pinned in the row on the back wall (photos), what the screen at
+// the foot end shows (screen), or lashed in the place over the foot half (keep, berthKeep). A main character's are from their sheet in
+// docs/bible/people/, by their cast or captain key; anyone else's are drawn from their post and their home (bunkKit).
+const BUNK_THINGS = {
+  ines: { keep: 'logbook', photos: ['child'], shelf: ['mug'] },  // the logbook from the landing; her niece Leonor, from Rui's photos; coffee, a lot of it
+  tomas: { keep: 'tools', shelf: ['flask'], screen: 'match' },  // quick with his hands; the flask (cast.js); the Lagos Orbitals on the ring channel
+  yelena: { photos: ['pennant'], shelf: ['ball'], screen: 'match' },  // the Olympus Dome Ravens; a ring-ball; the feed
+  ruben: { shelf: ['thermos'], screen: 'bands', photos: ['photo'] },  // the thermos he offers everyone; a quiet band at night; Lucia
+  bexa: { photos: ['list', 'photo'], shelf: ['inks'] },  // the list of the crews she found, in a dozen colours of ink; her father Tunde, who taught her the lines
+  pax: { keep: 'slate', screen: 'range', photos: ['photo'] },  // the slate with Dele's message on it, unopened; the range; Femi
+  cato: { shelf: ['tea'], photos: ['rota'], screen: 'match' },  // tea, very sweet; the watch rota with everyone's family on its back; cricket on the relay
+  hester: { keep: 'notebook', shelf: ['tea'] },  // her own books in a paper notebook; strong tea. Plain and private
+  belanger: { photos: ['photo'], shelf: ['mug'] },  // her parents in the hub dome; quiet
+  kessler: { photos: ['photo'], keep: 'notebook' },  // the pilot she married; a balanced book
+  mensah: { photos: ['photo', 'photo'], screen: 'call' },  // a lot of friends, and a call to one of them
+  saran: { photos: ['letter', 'photo'] },  // his daughter's letters; Liv and Lea
+};
+// Anyone with no sheet (a generated rating, a passenger, a captain or first officer with no sheet, and the hand, whose home is their background):
+// one thing from their post and one from their home, each a [place, thing], picked by their id with no draw of any dice.
+const BUNK_POST = {
+  pilot: [['keep', 'logbook'], ['screen', 'vid']], gunner: [['screen', 'range'], ['keep', 'controller']], engineer: [['keep', 'tools'], ['shelf', 'flask']],
+  slicer: [['screen', 'bands'], ['screen', 'game']], xo: [['photos', 'rota'], ['shelf', 'tea']], captain: [['keep', 'notebook'], ['shelf', 'tea']],
+  icehand: [['keep', 'gloves'], ['keep', 'controller']], passenger: [['photos', 'letter'], ['shelf', 'books']], rating: [['shelf', 'mug'], ['shelf', 'books']],
+};
+const BUNK_HOME = {
+  earth: [['photos', 'photo'], ['screen', 'call'], ['photos', 'child']], mars: [['photos', 'drawing'], ['photos', 'photo'], ['screen', 'call']],
+  belt: [['photos', 'child'], ['photos', 'drawing'], ['screen', 'call']],
+};
+const BUNK_TOWELS = ['#5a7a8a', '#7a5a6a', '#6a7a5a', '#8a7a5a', '#5a5a7a'];
+// The kit in someone's bunk: { shelf: [things], photos: [things], screen, keep, towel: its colour }. p: their record (cast or captainKey,
+// role, culture, id).
+function bunkKit(p) {
+  let h = 2166136261; for (const c of String(p.id || p.name || p.role)) h = Math.imul(h ^ c.charCodeAt(0), 16777619) >>> 0;
+  const own = BUNK_THINGS[p.cast || p.captainKey], kit = { shelf: [], photos: [], screen: null, keep: null, towel: BUNK_TOWELS[h % BUNK_TOWELS.length] };
+  if (own) return { ...kit, ...own };
+  const post = BUNK_POST[p.role] || BUNK_POST.rating, a = post[h % post.length];
+  const home = (BUNK_HOME[p.culture] || BUNK_HOME.earth).filter(([at]) => at !== a[0] || at === 'photos' || at === 'shelf'), b = home[(h >>> 8) % home.length];
+  for (const [at, what] of [a, b]) if (at === 'shelf' || at === 'photos') kit[at] = [...kit[at], what]; else kit[at] = what;
+  return kit;
+}
 
 // A bunk of the berths (#933) at b (berthBunk), the frame (BERTH_FRAME deep) with screws and a grab rail on its front, the mattress, the pillow
 // under the sleeper's head, the blanket (spread over a sleeper, folded at the foot of an empty bunk), the curtain rail on its brackets under the
@@ -480,8 +522,9 @@ const berthKeep = b => ({ x: b.x + b.w - 34, y: b.y - 25, w: 16, h: 7 });
 // for its owner's thing (berthKeep) is left clear. In the box (#1024) the frame is solid, a bunk column deep, and the mattress on it shows its
 // top running back from its front edge, where the sleeper lies. Every bunk the same plan: the grab rail worn in its middle where hands go.
 // reading: its reading lamp lit (bunkReading, 0 to 1), its bulb; the pool it casts is the room's light's (berthReading, drawPhaseLight).
+// own: its owner's kit (bunkKit), or none for a spare bunk, which is bare (roomBunkPlan).
 const BUNK_DEPTH = 0.6;
-function roomBunk(ctx, b, F, slept, shut, reading = 0) {
+function roomBunk(ctx, b, F, slept, shut, reading = 0, own = null) {
   const n = v => Math.round(v * 100) / 100, x = n(b.x), w = n(b.w), y = n(b.y), yr = n(y - 26.6);
   roomPart(ctx, roomRound(x, y, w, BERTH_FRAME, 1), '#1f3a56', { top: 0.8, under: 0.8, solid: BUNK_DEPTH });
   roomPart(ctx, roomRound(x + w / 2 - 14, y + 0.7, 28, 1.6, 0.8), '#3a5470', { top: 0.5 });  // a grab rail for zero g, worn in its middle where hands go
@@ -491,6 +534,7 @@ function roomBunk(ctx, b, F, slept, shut, reading = 0) {
   roomPart(ctx, roomRound(x + 4, y - 9.5, 18, 4.5, 2), '#9a968a', { top: 0.8, side: 1.5 });
   if (slept) roomPart(ctx, roomRound(x + 20, y - 6.5, w - 24, 2.5, 1), '#334560', { top: 0.6 });
   else { roomPart(ctx, roomRound(x + w - 30, y - 9, 20, 4, 1.5), '#3e4f6e', { top: 1, side: 2 }); roomFlat(ctx, x + w - 29, y - 7.2, 18, 0.6, '#2c3a52'); }
+  roomBunkPlan(ctx, b, slept, own);
   for (const bx of [x + 2, x + w - 3.5]) roomFlat(ctx, bx, yr - 1, 1.5, 3, '#2a3e54');  // the curtain rail on its brackets
   roomPart(ctx, roomRound(x + 2, yr, w - 4, 1.6, 0.8), '#3a5470', { top: 0.5 });
   // the reading lamp, a fitting under the rail (#1024, look.md rule 5): its clamp round the rail, a short stem, the shade and the bulb in it
@@ -509,7 +553,93 @@ function roomBunk(ctx, b, F, slept, shut, reading = 0) {
     roomPart(ctx, `M ${cx} ${n(yr + 1.6)} L ${n(cx + 5)} ${n(yr + 1.6)} Q ${n(cx + 6.5)} ${n(y - 16)} ${n(cx + 5.5)} ${n(y - 6)} Q ${n(cx + 2.5)} ${n(y - 4.5)} ${n(cx - 0.5)} ${n(y - 6)} Q ${n(cx + 1)} ${n(y - 16)} ${cx} ${n(yr + 1.6)} Z`, '#4a3a5a', { top: 0, side: 1.5 });
     roomSeg(ctx, [[cx + 2.5, yr + 3], [cx + 2.5, y - 7]]);
   }
+  // the end rail at the foot, on its upright from the frame, and the owner's towel hung over it (none on a spare bunk)
+  roomFlat(ctx, x + w - 3.6, y - 7.4, 0.9, 7.4, '#2a3e54');
+  roomPart(ctx, roomRound(x + w - 8.6, y - 8, 6, 1.2, 0.5), '#3a5470', { top: 0.4 });
+  if (own) {
+    roomPart(ctx, `M ${n(x + w - 8.2)} ${n(y - 8.4)} L ${n(x + w - 4.2)} ${n(y - 8.4)} L ${n(x + w - 4)} ${n(y - 1.2)} Q ${n(x + w - 5)} ${n(y - 0.4)} ${n(x + w - 6)} ${n(y - 1)} Q ${n(x + w - 7)} ${n(y - 0.2)} ${n(x + w - 8)} ${n(y - 0.8)} Z`, own.towel, { top: 0.6, side: 0.8 });
+    roomFlat(ctx, x + w - 7.9, y - 2.4, 3.7, 0.5, figShade(own.towel, 0.7));
+  }
 }
+
+// The plan every bunk has (#934, look.md rule 7), behind the curtain: a small shelf on its brackets over the pillow, beside the reading lamp; a
+// row of pins on the back wall at the eye of someone lying down; the screen flush on the back wall at the foot end; and the place for a kept
+// thing between them (berthKeep). Its owner's things fill it (own: bunkKit): the shelf's things standing on it, the pinned ones in the row, the
+// screen showing theirs (dimmed while they sleep), the kept one lashed in its place by two straps. A spare bunk is bare: the shelf empty, no
+// pins, the screen off. All of it over the sleeper, under the curtain rail, with no words.
+const BUNK_SHELF = { x: 15, y: 20.4, w: 15 }, BUNK_PINS = { x: 32, y: 24.9, step: 6.2 }, BUNK_SCREEN = { x: 16.5, y: 24.8, w: 8, h: 6 };
+function roomBunkPlan(ctx, b, slept, own) {
+  const n = v => Math.round(v * 100) / 100, x = n(b.x), y = n(b.y), sy = n(y - BUNK_SHELF.y), sx = n(x + BUNK_SHELF.x);
+  roomPart(ctx, roomRound(sx, sy, BUNK_SHELF.w, 1.1, 0.3), '#5a7690', { top: 0.4 });  // the shelf and its two brackets
+  ctx.fillStyle = roomTint('#4a6680');
+  for (const bx of [sx + 1.5, sx + BUNK_SHELF.w - 1.5]) { ctx.beginPath(); ctx.moveTo(bx - 0.6, sy + 1.1); ctx.lineTo(bx + 1.1, sy + 1.1); ctx.lineTo(bx - 0.6, sy + 2.3); ctx.closePath(); ctx.fill(); }
+  const gx = n(x + b.w - BUNK_SCREEN.x), gy = n(y - BUNK_SCREEN.y), { w: gw, h: gh } = BUNK_SCREEN;  // the screen, flush, its glass
+  roomFlat(ctx, gx, gy, gw, gh, '#1b2f45'); roomFlat(ctx, gx + 0.6, gy + 0.6, gw - 1.2, gh - 1.2, '#03121c');
+  if (!own || !own.screen) roomDot(ctx, gx + gw - 1.2, gy + gh - 1, 0.3, '#5a3a32');  // off, its standby light
+  if (!own) return;  // spare: bare
+  if (own.screen) { BUNK_DRAW[own.screen](ctx, gx + 0.6, gy + 0.6, gw - 1.2, gh - 1.2); if (slept) roomFlat(ctx, gx + 0.6, gy + 0.6, gw - 1.2, gh - 1.2, 'rgba(3,18,28,0.55)'); }
+  own.photos.slice(0, 3).forEach((what, k) => {  // each on its pin
+    const px = x + BUNK_PINS.x + k * BUNK_PINS.step, py = y - BUNK_PINS.y; BUNK_DRAW[what](ctx, px, py, k); roomDot(ctx, px + (what === 'pennant' ? 0.35 : 2.5), py + 0.7, 0.5, '#8a3a32');
+  });
+  own.shelf.slice(0, 2).forEach((what, k) => BUNK_DRAW[what](ctx, sx + 1.6 + k * 6.6, sy));
+  if (own.keep) {
+    const kp = berthKeep(b); BUNK_DRAW[own.keep](ctx, kp.x, kp.y);
+    for (const tx of [kp.x + 1.5, kp.x + kp.w - 2.5]) { roomFlat(ctx, tx, kp.y, 1, kp.h, '#3a4450'); roomFlat(ctx, tx - 0.2, kp.y + kp.h / 2 - 0.5, 1.4, 1, '#6a747c'); }  // the straps, their buckles
+  }
+}
+// How each thing is drawn (#934), at the size of a zip and still the real thing (look.md rule 6), in the props' tones: a shelf thing standing
+// at x on the shelf's top y (under 4 wide and 4.4 high); a pinned one with its top left at x, y (5 wide and 5.4 high, k its place in the row);
+// what a screen shows in its glass x, y, w, h (marks, never words); a kept one in the place at x, y (berthKeep, 16 by 7), under its straps.
+const bunkPaper = (ctx, x, y, col = '#a09a8a') => roomPart(ctx, roomRound(x, y + 0.3, 5, 5.1, 0.2), col, { top: 0 });
+const bunkLines = (ctx, x, y, rows, cols) => { for (let k = 0; k < rows; k++) roomFlat(ctx, x + 0.7, y + 1.3 + k * 0.75, k % 2 ? 2.6 : 3.6, 0.4, cols[k % cols.length]); };
+const BUNK_PHOTO = [['#4a6a8a', '#5a6a4a'], ['#7a6a5a', '#4a4a5a'], ['#5a7a7a', '#6a5a4a'], ['#6a5a7a', '#4a5a4a']];
+const BUNK_DRAW = {
+  // on the shelf
+  mug: (ctx, x, y) => { roomPart(ctx, roomRound(x, y - 3.8, 3.4, 3.8, 0.6), '#6a8a9a', { top: 0.6 }); ctx.strokeStyle = roomTint('#6a8a9a'); ctx.lineWidth = 0.7; ctx.beginPath(); ctx.arc(x + 3.5, y - 2, 1.1, -Math.PI / 2, Math.PI / 2); ctx.stroke(); },
+  tea: (ctx, x, y) => { roomPart(ctx, roomRound(x, y - 4.2, 3.6, 4.2, 0.4), '#7a6a44', { top: 0 }); roomFlat(ctx, x - 0.2, y - 4.6, 4, 0.8, '#9a8a5a'); roomFlat(ctx, x + 0.5, y - 2.8, 2.6, 1.2, '#8a3a32'); },
+  flask: (ctx, x, y) => { roomPart(ctx, roomRound(x, y - 3.8, 3.8, 3.8, 1.1), '#8a9098', { top: 0.6 }); roomFlat(ctx, x + 1.3, y - 4.7, 1.2, 1, '#5a5e64'); roomFlat(ctx, x + 0.6, y - 2.2, 2.6, 0.4, '#6a7078'); },
+  thermos: (ctx, x, y) => { roomPart(ctx, roomRound(x, y - 4.4, 2.6, 4.4, 0.6), '#3a7a64', { top: 0.5 }); roomFlat(ctx, x - 0.2, y - 4.6, 3, 1.2, '#8a9088'); roomFlat(ctx, x + 2.6, y - 3.3, 0.7, 2, '#2a5a48'); },
+  ball: (ctx, x, y) => {
+    roomPart(ctx, roomRound(x, y - 4, 4, 4, 2), '#9a6040', { top: 0.6 }); ctx.strokeStyle = roomTint('#4a2a1a'); ctx.lineWidth = 0.4;
+    ctx.beginPath(); ctx.arc(x + 2, y - 2.2, 1.8, -0.5, 0.5); ctx.moveTo(x + 0.3, y - 2.2); ctx.lineTo(x + 3.7, y - 2.2); ctx.stroke(); roomFlat(ctx, x + 0.4, y - 0.7, 3.2, 0.7, '#4a4e54');  // on its ring stand
+  },
+  inks: (ctx, x, y) => { ['#8a3a3a', '#3a6a8a', '#3a7a4a', '#8a7a3a', '#6a4a8a'].forEach((c, k) => roomFlat(ctx, x + 0.4 + k * 0.55, y - 4.4 + (k % 2) * 0.5, 0.45, 2.4, c)); roomPart(ctx, roomRound(x, y - 2.6, 3.2, 2.6, 0.3), '#56687a', { top: 0 }); },
+  books: (ctx, x, y) => { roomPart(ctx, roomRound(x, y - 4.3, 1.7, 4.3, 0.2), '#7a4a44', { top: 0 }); roomPart(ctx, roomRound(x + 1.8, y - 3.8, 1.6, 3.8, 0.2), '#4a5a8a', { top: 0 }); },
+  // pinned in the row
+  photo: (ctx, x, y, k = 0) => { const [a, g] = BUNK_PHOTO[k % BUNK_PHOTO.length]; bunkPaper(ctx, x, y); roomFlat(ctx, x + 0.6, y + 0.9, 3.8, 2, a); roomFlat(ctx, x + 0.6, y + 2.9, 3.8, 1.8, g); roomDot(ctx, x + 2.5, y + 2.3, 0.65, '#3a2e2a'); roomFlat(ctx, x + 1.6, y + 3, 1.8, 1.7, '#3a3a4a'); },
+  child: (ctx, x, y, k = 0) => {
+    const [a, g] = BUNK_PHOTO[(k + 1) % BUNK_PHOTO.length]; bunkPaper(ctx, x, y); roomFlat(ctx, x + 0.6, y + 0.9, 3.8, 3, a); roomFlat(ctx, x + 0.6, y + 3.9, 3.8, 0.8, g);
+    roomDot(ctx, x + 1.8, y + 2, 0.6, '#3a2e2a'); roomFlat(ctx, x + 1.1, y + 2.6, 1.4, 2.1, '#4a3a4a'); roomDot(ctx, x + 3.4, y + 3, 0.5, '#3a2e2a'); roomFlat(ctx, x + 2.9, y + 3.5, 1, 1.2, '#8a6a3a');  // a grown-up and a child
+  },
+  drawing: (ctx, x, y) => {
+    bunkPaper(ctx, x, y, '#9c9684'); roomDot(ctx, x + 3.8, y + 1.5, 0.7, '#a8903a'); ctx.strokeStyle = roomTint('#8a3a3a'); ctx.lineWidth = 0.45;
+    roomSeg(ctx, [[x + 1, y + 3.4], [x + 2, y + 2.3], [x + 3, y + 3.4], [x + 3, y + 4.6], [x + 1, y + 4.6], [x + 1, y + 3.4]]); roomFlat(ctx, x + 0.4, y + 4.7, 4.2, 0.4, '#3a7a4a');  // a child's: the sun, a house, the grass
+  },
+  pennant: (ctx, x, y) => { const n = v => Math.round(v * 100) / 100; roomPart(ctx, `M ${n(x)} ${n(y + 0.4)} L ${n(x + 6)} ${n(y + 2.6)} L ${n(x)} ${n(y + 4.8)} Z`, '#7a2a3a', { top: 0 }); roomFlat(ctx, x + 0.4, y + 2.2, 3.2, 0.7, '#9a8a5a'); roomFlat(ctx, x, y + 0.4, 0.7, 4.4, '#3a2a2a'); },
+  list: (ctx, x, y) => { bunkPaper(ctx, x, y); bunkLines(ctx, x, y, 6, ['#7a3a3a', '#3a5a7a', '#3a6a4a', '#6a5a2a', '#5a3a6a']); },  // names in many inks
+  rota: (ctx, x, y) => { bunkPaper(ctx, x, y); bunkLines(ctx, x, y, 6, ['#4a4a4a']); roomFlat(ctx, x + 1.8, y + 1, 0.35, 4.2, '#5a5a5a'); },
+  letter: (ctx, x, y) => { bunkPaper(ctx, x, y); bunkLines(ctx, x, y, 5, ['#4a4a5a']); roomFlat(ctx, x, y + 2.9, 5, 0.3, '#6a665a'); },  // folded once
+  // on the screen
+  call: (ctx, x, y, w, h) => { roomFlat(ctx, x, y, w, h, '#2a3a4a'); roomDot(ctx, x + w / 2, y + h * 0.38, h * 0.2, '#8a6a5a'); roomFlat(ctx, x + w / 2 - 1.5, y + h * 0.62, 3, h * 0.38, '#4a5a7a'); roomFlat(ctx, x + w - 1.8, y + 0.4, 1.4, 1, '#5a6a6a'); },
+  match: (ctx, x, y, w, h) => { roomFlat(ctx, x, y, w, h, '#2a5a3a'); roomFlat(ctx, x + w / 2 - 0.15, y, 0.3, h, '#5a8a6a'); for (const [dx, dy, c] of [[0.25, 0.3, '#a08a5a'], [0.35, 0.7, '#a08a5a'], [0.65, 0.4, '#5a7aa0'], [0.8, 0.75, '#5a7aa0']]) roomDot(ctx, x + w * dx, y + h * dy, 0.45, c); roomDot(ctx, x + w * 0.5, y + h * 0.55, 0.35, '#b0b0a8'); },
+  vid: (ctx, x, y, w, h) => { roomFlat(ctx, x, y, w, h, '#1a2230'); roomDot(ctx, x + w * 0.7, y + h * 0.45, h * 0.3, '#a07a4a'); roomFlat(ctx, x + w * 0.25, y + h * 0.3, 0.9, h * 0.7, '#0a0e14'); roomDot(ctx, x + w * 0.25 + 0.45, y + h * 0.25, 0.5, '#0a0e14'); },
+  bands: (ctx, x, y, w, h) => { ctx.strokeStyle = roomTint('#5aa08a'); ctx.lineWidth = 0.4; roomSeg(ctx, Array.from({ length: 9 }, (_, k) => [x + 0.3 + (w - 0.6) * k / 8, y + h / 2 + Math.sin(k * 1.9) * h * 0.3])); roomFlat(ctx, x + 0.3, y + h - 0.6, w - 0.6, 0.3, '#2a5a4a'); },
+  range: (ctx, x, y, w, h) => { const cx = x + w * 0.4, cy = y + h / 2; ctx.strokeStyle = roomTint('#a05a4a'); ctx.lineWidth = 0.35; for (const r of [0.7, 1.6]) { ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke(); } roomDot(ctx, cx + 0.2, cy - 0.1, 0.3, '#a0a090'); for (let k = 0; k < 3; k++) roomFlat(ctx, x + w - 2, y + 0.7 + k * 1.2, 1.4, 0.5, '#5a8a6a'); },
+  game: (ctx, x, y, w, h) => { roomFlat(ctx, x, y, w, h, '#1a1a2a'); for (const [dx, dy, c] of [[0.1, 0.2, '#6a8aa0'], [0.4, 0.5, '#a08a5a'], [0.7, 0.2, '#8a5a7a']]) roomFlat(ctx, x + w * dx, y + h * dy, 1.1, 1.1, c); roomFlat(ctx, x, y + h - 0.7, w, 0.7, '#4a6a4a'); roomDot(ctx, x + w * 0.3, y + h - 1.2, 0.5, '#a0a090'); },
+  // kept, under the straps
+  logbook: (ctx, x, y) => { roomPart(ctx, roomRound(x + 2.8, y + 1, 10.4, 5.4, 0.4), '#56684e', { top: 0.5 }); roomFlat(ctx, x + 3.2, y + 5.8, 9.6, 0.5, '#a09a8a'); roomFlat(ctx, x + 2.8, y + 1, 1.2, 5.4, '#3a4a3a'); roomFlat(ctx, x + 6.4, y + 2.4, 3.4, 1.6, '#8a8678'); },
+  tools: (ctx, x, y) => {
+    roomPart(ctx, roomRound(x + 2.5, y + 1.8, 9, 1.6, 0.6), '#8a9098', { top: 0 }); roomPart(ctx, roomRound(x + 10.6, y + 0.8, 3.6, 3.6, 1.7), '#8a9098', { top: 0 }); roomFlat(ctx, x + 13, y + 2.1, 1.4, 1, '#0c1620');  // a spanner
+    roomPart(ctx, roomRound(x + 2.8, y + 4.4, 4, 1.8, 0.6), '#9a5a40', { top: 0 }); roomFlat(ctx, x + 6.8, y + 5, 6.4, 0.6, '#8a9098');  // a driver
+  },
+  slate: (ctx, x, y) => { roomPart(ctx, roomRound(x + 3, y + 0.9, 10, 5.4, 0.6), '#2e3a48', { top: 0 }); roomFlat(ctx, x + 3.8, y + 1.6, 8.4, 4, '#0a1a26'); roomFlat(ctx, x + 4.6, y + 2.2, 4, 0.45, '#3a5a7a'); roomDot(ctx, x + 11.4, y + 2.4, 0.6, '#b0883a'); },  // a message waiting
+  notebook: (ctx, x, y) => { roomPart(ctx, roomRound(x + 3.5, y + 1, 8.5, 5.4, 0.4), '#6a5440', { top: 0.5 }); roomFlat(ctx, x + 3.9, y + 5.9, 7.7, 0.45, '#a09a8a'); roomFlat(ctx, x + 10, y + 1, 0.6, 5.4, '#2a2420'); },  // its elastic
+  controller: (ctx, x, y) => {
+    roomPart(ctx, roomRound(x + 3, y + 1.6, 10, 4.2, 2), '#56606a', { top: 0.5 }); roomFlat(ctx, x + 4.6, y + 3.3, 2.4, 0.7, '#1a1e24'); roomFlat(ctx, x + 5.45, y + 2.45, 0.7, 2.4, '#1a1e24');
+    for (const [dx, dy, c] of [[10.2, 3, '#8a5a3a'], [11.4, 4, '#3a7a5a']]) roomDot(ctx, x + dx, y + dy, 0.55, c);
+  },
+  gloves: (ctx, x, y) => { for (const gx of [x + 3, x + 8.6]) { roomPart(ctx, roomRound(gx, y + 2.4, 4.4, 4, 0.9), '#8a7650', { top: 0 }); for (let f = 0; f < 3; f++) roomFlat(ctx, gx + 0.4 + f * 1.3, y + 0.8, 1, 1.8, '#7a6644'); } },
+};
 
 // The berths (#933): the bunks in their columns of three on posts from the deck to the ceiling, either side of the well (roomBunk), and the odd
 // one or two in a short column at the left, its posts only as high as its bunks (#1023); the curtain shut on the third one ("z z" behind it at
@@ -520,7 +650,8 @@ function roomBunk(ctx, b, F, slept, shut, reading = 0) {
 // Old and patched (point 6), on the shared fixtures: the crew's lockers on the back wall left of the bunks, under the name, one door a replacement
 // in another shade, the paint worn by their handles; the first bunk's curtain patched, held back by a printed clip tagged temporary; tape round
 // the first post; the deck scuffed by the bunks; the grab rails worn (roomBunk) and the wall unit's newer lamp (roomWallUnit). No bunk's own
-// place (berthKeep) is touched.
+// place (berthKeep) is touched. s.bunks (#934): each bunk's owner, { slept, and their kit (bunkKit) }, or null for a spare one; without it the
+// first s.asleep are slept in and every bunk is bare.
 function roomBerths(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), well = s.well || { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }, { w: cw } = berthBunk(r, n, 0, well);
   const shut = W >= 220 && n >= 3 ? 2 : -1, r2 = v => Math.round(v * 100) / 100;
@@ -563,7 +694,7 @@ function roomBerths(ctx, r, s, X, W) {
       roomPart(ctx, roomRound(r2(bx - 2), r2(by0), 4, r2(by1 - by0), 1), col);
       roomPart(ctx, `M ${r2(px)} ${r2(top)} L ${r2(bx)} ${r2(by0)} L ${r2(bx)} ${r2(by0 + 3)} L ${r2(px)} ${r2(top + 3)} Z`, col);
     }
-    for (const [b, k] of cols.get(x)) roomBunk(ctx, b, F, k < s.asleep, k === shut, bunkReading(k < s.asleep, k === shut, w, s.night));
+    for (const [b, k] of cols.get(x)) roomBunk(ctx, b, F, bunkSlept(s, k), k === shut, bunkReading(bunkSlept(s, k), k === shut, w, s.night), s.bunks ? s.bunks[k] : null);
   }
   if (n) {  // the first bunk's curtain, drawn back: a patch sewn on it, and the printed clip holding it back, its layers and its tag
     const b = berthBunk(r, n, 0, well), cx = r2(b.x + b.w - 8), yr = r2(b.y - 26.6);
@@ -1966,12 +2097,14 @@ function roomLightLayer(r, L, px, part) {
 }
 // A bunk's reading lamp (#932) is lit in cruise as the lights go down and come up, the evening and the morning, when its bunk is not slept in
 // and its curtain is open: nobody reads in the hard burn, or asleep (roomBunk's own slept and shut decide it). 0 to 1.
+// Bunk k slept in: its owner's (s.bunks, the cutaway's: bunkOwners in shiplife.js), or with none given the first s.asleep of them.
+const bunkSlept = (s, k) => (s.bunks ? !!(s.bunks[k] && s.bunks[k].slept) : k < s.asleep);
 const bunkReading = (slept, shut, w, night) => (slept || shut || night <= 0 || night >= 1 ? 0 : w.cruise);
 // The berths' reading lamps lit (bunkReading) for the state s, as small pools: { x, y, at: the bunk's box, a }, the light on the pillow end.
 function berthReading(r, s) {
   const n = Math.min(12, s.berths), well = s.well || { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }, shut = r.x1 - r.x0 >= 220 && n >= 3 ? 2 : -1, out = [];
   for (let k = 0; k < n; k++) {
-    const a = bunkReading(k < s.asleep, k === shut, s.w, s.night); if (!a) continue;
+    const a = bunkReading(bunkSlept(s, k), k === shut, s.w, s.night); if (!a) continue;
     const b = berthBunk(r, n, k, well); out.push({ x: b.x + 11, y: b.y - 9, at: { x: b.x + 1, y: b.y - 26.6, w: b.w - 2, h: 26.6 }, a });
   }
   return out;
