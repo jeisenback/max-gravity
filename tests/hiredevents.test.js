@@ -246,7 +246,7 @@ test('downtime for a hired hand: ten additions, never for an owner, with the mai
     out.owner = extras(menu()).length; out.ownerFn = handDowntime().length;
     return out;
   });
-  assert.equal(r.defined, 14);  // mend and spare went with the downtime scene (2026-11-12); a message home, the bench, the medic and the watch came (#1073-#1081)
+  assert.equal(r.defined, 20);  // mend and spare went with the downtime scene (2026-11-12); ten activities came (#1073-#1082)
   assert.ok(r.counts.every(n => n >= 1 && n <= 4), `one to four at a time (${r.counts})`);
   assert.ok(r.handSeen.length >= 6, `they come round in turn (${r.handSeen.length})`);
   assert.deepEqual(r.earthCast.sort(), ['Fly a sim with Ines', 'Learn the loop from Tomas']);
