@@ -1493,8 +1493,104 @@ test('the hold\'s crates come from the cargo, in stacks of three, each with its 
       const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16));
       assert.ok(Math.max(...v) <= 0x80 && Math.max(...v) - Math.min(...v) <= 0x30, `${col}: the serial's paint low in contrast`);
     }
-    if (n >= 2) assert.ok(calls.some((q, i) => q[0] === 'fillStyle' && q[1] === '#5e5a48' && calls[i + 1][0] === 'fillRect' && (b => calls[i + 1][1] >= b.x && calls[i + 1][1] + calls[i + 1][3] <= b.x + b.w)(holdLabel(r, 1))), `${at}: a handling plate in crate 1's box`);
+    if (n >= 2) assert.ok(calls.some((q, i) => q[0] === 'fillStyle' && q[1] === '#5e5a48' && calls[i + 1][0] === 'fillRect' && (c => calls[i + 1][1] >= c.x + 4 && calls[i + 1][1] + calls[i + 1][3] <= c.x + c.w - 4 && calls[i + 1][2] >= c.y && calls[i + 1][2] + calls[i + 1][4] <= holdLabel(r, 1).y)(holdCrate(r, 1))), `${at}: a handling plate on crate 1's top board, clear of its label box (#936)`);
   }
+});
+// #936, the cargo: each crate reads what the ship carries (holdGoods, from the cargo and the missions' loads), split between the goods by tons
+// (holdCrateGoods), with the mark of its good stencilled beside its serial in its label box (holdPictogram); the windows: the bridge's shows the
+// destination growing and the galley's porthole the place she left shrinking, swapped after the flip turns her nose back (windowView).
+const cargoBox = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['holdGoods', 'holdCrateGoods', 'holdMark', 'HOLD_MARKS', 'windowView', 'viewTone', 'placeColour', 'COMMODITIES', 'SYSTEMS', 'holdPictogram', 'roomViewDisc']);
+const plain = v => JSON.parse(JSON.stringify(v));
+test('every good the game trades has its own stencilled mark, and anything else the generic one (#936)', () => {
+  const marks = cargoBox.COMMODITIES.map(c => cargoBox.holdMark(c.id));
+  assert.equal(marks.length, 7);
+  for (const [i, m] of marks.entries()) assert.ok(m && m !== 'mark', `${cargoBox.COMMODITIES[i].id} has a mark of its own (${m})`);
+  assert.equal(new Set(marks).size, marks.length, 'no two goods share a mark');
+  assert.deepEqual(plain(Object.keys(cargoBox.HOLD_MARKS).sort()), plain(cargoBox.COMMODITIES.map(c => c.id).sort()), 'the table names the goods and nothing else');
+  assert.equal(cargoBox.holdMark('sealed diplomatic pouches'), 'mark'); assert.equal(cargoBox.holdMark(undefined), 'mark');
+  for (const m of [...marks, 'mark']) {  // each drawn inside the label box's right part, clear of the serial, with no text
+    const b = { x: 100, y: 50, w: 32, h: 10 }, c = fakeCtx(); cargoBox.holdPictogram(c, m, b, '#7a6c50', '#5a4a34');
+    assert.equal(c.depth, 0); assert.equal(c.fonts.length, 0, `${m}: no text`);
+    const pts = c.args.map(a => a.split(/(?<=[a-zA-Z])(?=-?\d)|,/)).filter(([k]) => /^(moveTo|lineTo|fillRect)$/.test(k)).map(([, x, y]) => [Number(x), Number(y)]);
+    assert.ok(pts.length >= 1 || c.calls.includes('arc'), `${m} drew`);
+    for (const [x, y] of pts) assert.ok(x >= b.x + 20.5 && x <= b.x + b.w && y >= b.y && y <= b.y + b.h, `${m}: ${x}, ${y} in the box, right of the serial`);
+  }
+});
+test('what the hold carries: the cargo in its order, then the missions\' loads, one entry a good (#936)', () => {
+  assert.deepEqual(plain(cargoBox.holdGoods({ water: 80 }, [])), [{ id: 'water', tons: 80 }]);
+  assert.deepEqual(plain(cargoBox.holdGoods({ food: 10, water: 0, metal: 5 }, [{ good: 'medical crates', tons: 4 }, { good: 'a promise', tons: 0 }, { good: 'metal', tons: 2 }])), [{ id: 'food', tons: 10 }, { id: 'metal', tons: 7 }, { id: 'medical crates', tons: 4 }]);
+  assert.deepEqual(plain(cargoBox.holdGoods({}, [])), []); assert.deepEqual(plain(cargoBox.holdGoods(undefined, undefined)), []);
+});
+test('the crates split between the goods by tons, in the cargo\'s order, the same every time (#936)', () => {
+  const split = (g, n) => plain(cargoBox.holdCrateGoods(g, n));
+  assert.deepEqual(split([{ id: 'water', tons: 80 }], 8), Array(8).fill('water'));
+  assert.deepEqual(split([{ id: 'water', tons: 48 }, { id: 'food', tons: 32 }], 8), ['water', 'water', 'water', 'water', 'water', 'food', 'food', 'food']);
+  assert.deepEqual(split([{ id: 'food', tons: 50 }, { id: 'water', tons: 50 }], 3), ['food', 'food', 'water'], 'a tie to the first in the cargo');
+  assert.deepEqual(split([{ id: 'a', tons: 1 }, { id: 'b', tons: 1 }, { id: 'c', tons: 1 }], 12), ['a', 'a', 'a', 'a', 'b', 'b', 'b', 'b', 'c', 'c', 'c', 'c']);
+  for (let n = 0; n <= 12; n++) for (const g of [[{ id: 'water', tons: 7 }, { id: 'food', tons: 3 }, { id: 'metal', tons: 11 }], [{ id: 'food', tons: 1 }, { id: 'luxury', tons: 99 }]]) {
+    const out = split(g, n), total = g.reduce((a, x) => a + x.tons, 0);
+    assert.equal(out.length, n, `${n} crates`); assert.deepEqual(out, split(g, n), 'the same every time');
+    for (const x of g) assert.ok(Math.abs(out.filter(o => o === x.id).length - x.tons * n / total) < 1, `${x.id}: its share of ${n}`);
+    assert.deepEqual(out, [...out].sort((a, b) => g.findIndex(x => x.id === a) - g.findIndex(x => x.id === b)), 'in the cargo\'s order');
+  }
+  assert.deepEqual(split([], 5), [null, null, null, null, null], 'nothing to name: serials only'); assert.deepEqual(split([{ id: 'water', tons: 0 }], 2), [null, null]);
+  for (const f of [cargoBox.holdCrateGoods, cargoBox.holdGoods, cargoBox.windowView, cargoBox.viewTone]) assert.ok(!/random|rand\(|pick\(/.test(String(f)), 'no dice');
+});
+test('each crate shows its good\'s mark beside its serial; with nothing to name, the serial only, as before; the fill unchanged (#936)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'hold'), draw = (cargo, goods) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'hold', r, RS({ w: phaseWeights(0.3), zoom: 1.17, cargo, goods, damage: { marks: new Set(), severe: false } })); return calls; };
+  const inBox = (calls, k) => { const b = holdLabel(r, k); return calls.filter(q => /^(moveTo|lineTo)$/.test(q[0]) && q[1] > b.x + 20 && q[1] <= b.x + b.w && q[2] >= b.y && q[2] <= b.y + b.h).length; };
+  const bare = draw(0.5), none = draw(0.5, []), two = draw(0.5, [{ id: 'water', tons: 48 }, { id: 'food', tons: 32 }]);
+  assert.equal(JSON.stringify(none), JSON.stringify(bare), 'no goods given and none aboard draw the same');
+  const inks = calls => calls.filter((q, i) => q[0] === 'fill' && HOLD_INK.includes(calls.slice(0, i).filter(p => p[0] === 'fillStyle').pop()[1])).length;
+  assert.equal(inks(bare), 0, 'with nothing to name, the serial only: no mark filled in its paint');
+  for (let k = 0; k < 6; k++) assert.ok(inBox(two, k) >= inBox(bare, k) + 2, `crate ${k}: a mark beside its serial`);
+  assert.ok(inks(two) >= 6, 'the marks in the serial\'s paint');
+  const crates = calls => filledParts(calls).filter(p => p.outlined && HOLD_WOOD.includes(p.col) && partBox(p).x1 - partBox(p).x0 > 30).length;
+  assert.equal(crates(two), crates(bare), 'the same crates stand'); assert.equal(crates(two), 6);
+  for (const col of two.filter(q => q[0] === 'fillStyle' && /^#[0-9a-f]{6}$/.test(q[1])).map(q => q[1])) { const v = rgbOf(col); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${col} inside the props' brightness`); }
+});
+test('the bridge\'s window shows the destination growing and the porthole the place she left shrinking; after the flip they swap (#936)', () => {
+  const V = (pr, spin, at) => plain(cargoBox.windowView(pr, spin, at));
+  assert.equal(V(0.1, 0, 'bridge').place, 'to'); assert.equal(V(0.1, 0, 'porthole').place, 'from');
+  assert.equal(V(0.9, Math.PI, 'bridge').place, 'from', 'the nose turned back at the flip (transit.js)'); assert.equal(V(0.9, Math.PI, 'porthole').place, 'to');
+  assert.equal(V(0.5, Math.PI / 2, 'bridge').a, 0, 'side-on in the turn: stars only'); assert.equal(V(0.2, 0, 'bridge').a, 1);
+  let last = { to: -1, from: 2 };
+  for (let pr = 0; pr <= 1.0001; pr += 0.05) {
+    const to = cargoBox.windowView(pr, 0, 'bridge').k, from = cargoBox.windowView(pr, 0, 'porthole').k;
+    assert.ok(to > last.to && from < last.from, `${pr}: the destination grows, the place she left shrinks`); last = { to, from };
+    assert.equal(cargoBox.windowView(pr, Math.PI, 'porthole').k, to); assert.equal(cargoBox.windowView(pr, Math.PI, 'bridge').k, from);
+  }
+  assert.ok(V(0, 0, 'bridge').k <= 0.1 && V(1, 0, 'bridge').k === 1, 'small at departure, its largest at arrival');
+  assert.equal(V(0.5, 0, 'bridge').k, V(0.5, 0, 'porthole').k, 'the same size either side at the flip');
+  // drawn: a disc on the glass, larger near arrival, under the struts; none without a place
+  const r = layoutBox(LAYOUTS.freighter, 'bridge'), g = bridgeGlass(r, FW), disc = (pr, spin = 0, places = { to: '#8b8378', from: '#3a7bd5' }) => {
+    const { ctx, calls } = recorder(); drawRoom(ctx, 'bridge', r, RS({ w: phaseWeights(pr), pr, spin, places, well: FW, damage: { marks: new Set(), severe: false } }));
+    return calls.filter(q => q[0] === 'arc' && q[1] > g.x && q[1] < g.x + g.w && q[2] > g.y && q[2] < g.y + g.h).map(q => q[3]);
+  };
+  assert.equal(disc(0.95, Math.PI, { to: '#8b8378', from: null }).filter(v => v > 1.45).length, 0, 'no place, no disc (the stars only)');
+  const early = Math.max(...disc(0.05)), late = Math.max(...disc(0.45));
+  assert.ok(early > 0 && late > early * 2, `the destination grows (${early}, ${late})`); assert.ok(late >= g.h * 0.35, 'a good part of the window');
+  const gl = layoutBox(LAYOUTS.freighter, 'galley'), port = (pr) => { const { ctx, calls } = recorder(); drawRoom(ctx, 'galley', gl, RS({ w: phaseWeights(pr), pr, spin: 0, places: { to: '#8b8378', from: '#3a7bd5' }, damage: { marks: new Set(), severe: false } })); return calls; };
+  const radii = calls => calls.filter((q, i) => q[0] === 'arc' && q[3] > 2 && q[3] < 13).map(q => q[3]);
+  assert.ok(Math.max(...radii(port(0.05))) > Math.max(...radii(port(0.45))), 'the place she left shrinks in the porthole');
+});
+test('the windows\' discs keep inside the brightness limits, leave every save restored, write no text and hold still under reduced motion (#936)', () => {
+  const cols = Object.values(cargoBox.SYSTEMS).flatMap(sys => sys.planets.map(p => p.color));
+  assert.ok(cols.length >= 10);
+  for (const col of [...cols, null, '#ffffff', '#ff0000']) for (const t of plain(cargoBox.viewTone(col))) { const v = rgbOf(t); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${col}: ${t}`); }
+  assert.equal(cargoBox.placeColour(cargoBox.SYSTEMS.earth, 'Luna'), '#b8b8b8'); assert.equal(cargoBox.placeColour(cargoBox.SYSTEMS.earth, 'nowhere'), cargoBox.SYSTEMS.earth.planets[0].color);
+  assert.equal(cargoBox.placeColour({ color: '#6b6152' }, 'x'), '#6b6152'); assert.equal(cargoBox.placeColour(undefined), null);
+  for (const id of ['bridge', 'galley']) for (const pr of [0.05, 0.5, 0.95]) for (const spin of [0, Math.PI / 3, Math.PI]) {
+    const r = layoutBox(LAYOUTS.freighter, id), s = RS({ w: phaseWeights(pr), pr, spin, places: { to: '#e0a040', from: '#3a7bd5' }, well: FW, damage: { marks: new Set(), severe: false } });
+    const c = fakeCtx(); drawRoom(c, id, r, s); assert.equal(c.depth, 0, `${id} ${pr}: saves restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${id}: ${f}`);
+    const at = time => { const q = fakeCtx(); drawRoom(q, id, r, { ...s, still: true, time }); return q.args.join('|'); };
+    assert.equal(at(1.3), at(4.9), `${id} ${pr}: the same frame under reduced motion`);
+  }
+  // the struts and the gasket over the glass's disc: drawn after it
+  const r = layoutBox(LAYOUTS.freighter, 'bridge'), { ctx, calls } = recorder(); drawRoom(ctx, 'bridge', r, RS({ w: phaseWeights(0.4), pr: 0.4, spin: 0, places: { to: '#8b8378', from: '#3a7bd5' }, well: FW, damage: { marks: new Set(), severe: false } }));
+  const g = bridgeGlass(r, FW), lastDisc = calls.reduce((m, q, i) => q[0] === 'arc' && q[1] > g.x && q[1] < g.x + g.w && q[2] > g.y && q[2] < g.y + g.h ? i : m, -1);
+  assert.ok(lastDisc > 0 && calls.slice(lastDisc).some(q => q[0] === 'strokeRect'), 'the gasket and the frame drawn over the disc');
 });
 test('the hold\'s props are sized to a person: a crate two can lift, stacks under the head, the jack\'s handle at the waist (#933)', () => {
   const { r } = holdCase(0.3, 1.45, 1), F = r.floor;
