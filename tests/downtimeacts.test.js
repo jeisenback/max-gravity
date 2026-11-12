@@ -99,3 +99,35 @@ test('an hour with tonight\'s watch: offered when someone else has the bridge to
   assert.equal(r.mine, false, 'not on the hand\'s own night');
   assert.equal(r.can, true); assert.equal(r.where, r.keeper); assert.match(r.on, new RegExp(r.first)); assert.equal(r.liked, true);
 });
+
+// ---------- the other six (#1074, #1077, #1078, #1079, #1080, #1082) ----------
+
+test('the other six: each offered when its person or place is there, tagged on them, and leaving them (or the captain) better disposed', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    onBurn(); const out = {}, add = role => { const c = makeCrewCandidate('earth'); c.role = role; c.skill = 2; registerPerson(c); G.state.crew.push(c.id); G.transit.aboard = null; shipPeople(); return c; };
+    const before = p => JSON.stringify([p.opinion, p.memories, p.arc]);
+    const check = (key, p) => { const a = act(key); if (!a.can()) return { can: false }; const w = typeof a.where === 'function' ? a.where(shipPeople()) : a.where, b = before(p), on = a.on(), text = a.run(); return { can: true, where: w, on, text, liked: before(p) !== b }; };
+    const roles = { firstaid: 'medic', lashings: 'quartermaster', suits: 'icehand', cook: 'cook' };
+    out.noneBefore = Object.entries(roles).filter(([, role]) => !roleHolder(role)).map(([k]) => act(k).can());  // those whose person is not aboard on this start
+    const holder = role => roleHolder(role) || add(role), medic = holder('medic'), qm = holder('quartermaster'), ice = holder('icehand'), cook = holder('cook'), cap = person(hired().captain);
+    out.firstaid = { ...check('firstaid', medic), id: medic.id };
+    out.lashings = { ...check('lashings', qm), id: qm.id };
+    out.suits = { ...check('suits', ice), id: ice.id };
+    out.cook = { ...check('cook', cook), id: cook.id };
+    out.scrubbers = check('scrubbers', cap);
+    const mate = person(act('home').where(shipPeople())); out.home = { ...check('home', mate), first: mate.first };
+    career().hurtUntil = G.state.day + 12; out.firstaidHurt = act('firstaid').can();
+    return out;
+  });
+  await done();
+  assert.ok(r.noneBefore.length > 0 && r.noneBefore.every(x => x === false), `not without the person (${r.noneBefore})`);
+  for (const k of ['firstaid', 'lashings', 'suits', 'cook']) {
+    assert.equal(r[k].can, true, k); assert.equal(r[k].where, r[k].id, `${k}: tagged on them`); assert.equal(r[k].liked, true, `${k}: liked`);
+    assert.ok(r[k].on && !/[{}]/.test(r[k].on) && r[k].text && !/[{}]/.test(r[k].text), `${k}: words`);
+  }
+  assert.equal(r.scrubbers.where, 'lifesupport'); assert.equal(r.scrubbers.liked, true, 'the captain notices');
+  assert.equal(r.home.can, true); assert.match(r.home.on, new RegExp(r.home.first)); assert.equal(r.home.liked, true);
+  assert.equal(r.firstaidHurt, false, 'not while hurt: the medic is offered for that');
+});

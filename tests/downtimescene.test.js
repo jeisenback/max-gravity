@@ -192,7 +192,8 @@ test('Sit with someone names one person, the one having a hard time first, and o
   await ev(burnHelpers);
   const r = await ev(() => {
     onBurn(); const named = namedInDowntime(), crew = G.state.crew.map(id => G.state.people[id]).filter(p => p && p.memories && !named.includes(p.id));
-    const low = crew[crew.length - 1];  // one no other choice names (tonight's watch keeper, the teach and shadow picks) low.mood = { kind: 'low', until: G.state.day + 30, text: 'a message from home' };
+    const low = crew[crew.length - 1];  // one no fixed choice names (a main character's own, tonight's watch keeper)
+    low.mood = { kind: 'low', until: G.state.day + 30, text: 'a message from home' };
     const e = downtimeScene(true), i = e.choices.findIndex(c => /^Sit with /.test(c.label)), tag = e.tags.find(x => /^Sit with /.test(x.label));
     G.dialog = { event: e, choices: e.choices }; chooseEvent(i);
     return { label: e.choices[i].label, first: low.first, id: low.id, tag: tag && tag.id, next: !!G.nextEvent && JSON.stringify(G.nextEvent).includes(low.first) };

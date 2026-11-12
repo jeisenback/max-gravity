@@ -166,7 +166,8 @@ const playScenes = () => {
 
   // ---------- the downtime a hired hand can add, and what the crew make of what you do with a faction ----------
   const crewOf = n => { for (let i = 0; i < n; i++) { const c = makeCrewCandidate(G.state.systemId); Object.assign(c, { first: `Mate${i}`, last: 'Vale', role: ['engineer', 'pilot', 'comms', 'slicer'][i % 4], opinion: 0 }); registerPerson(c); G.state.crew.push(c.id); } };
-  const NEW4 = ['message', 'bench', 'medic', 'watch'].map(k => sceneSay('scene:downtime', `${k}.label`)), older = () => HAND_DOWNTIME.filter(d => !NEW4.includes(d.label));  // the four of #1073-#1081 are played below, where they can run
+  const NEW4 = ['message', 'bench', 'medic', 'watch'].map(k => sceneSay('scene:downtime', `${k}.label`)), SIX = ['home', 'firstaid', 'lashings', 'suits', 'scrubbers', 'cook'].map(k => sceneSay('scene:downtime', `${k}.label`));
+  const older = () => HAND_DOWNTIME.filter(d => !NEW4.includes(d.label) && !SIX.includes(d.label));  // the four of #1073-#1081 are played below, where they can run
   run('downtime:hand', {}, () => ({ title: 'Downtime', text: '', choices: older().map(d => ({ label: d.label, run: d.run })) }), { rolls: [0.1, 0.9], prep() { G.state.crew = []; crewOf(4); }, extra: () => hired().skill });
   // the other versions, taken by the day (#771, #775): two days on from the one above, so all three are played
   for (const shift of [1, 2]) run(`downtime:cast:${shift}`, {}, () => ({ title: 'Downtime', text: '', choices: HAND_DOWNTIME.filter(d => d.cast).map(d => ({ label: d.label, run: d.run })) }), { prep() { G.state.crew = []; crewOf(4); G.state.day += shift; }, extra: () => hired().skill });
@@ -197,6 +198,15 @@ const playScenes = () => {
         G.state.crew = []; crewOf(4); const m = makeCrewCandidate(G.state.systemId); Object.assign(m, { first: 'Medic', last: 'Vale', role: 'medic', skill: 2 }); registerPerson(m); G.state.crew.push(m.id);
         G.state.day += shift; uatBurn('Ceres Station', 'pallas'); while (billOn(0).bridge === 'you' || G.state.day % 3 !== shift) G.state.day++;
         career().hurtUntil = G.state.day + 12; condition().drive = 70; G.state.credits = 1000;
+      } });
+  }
+  // the other six (#1074-#1082), with a medic, a quartermaster, an ice hand and a cook aboard and the hand not hurt; each telling by the day
+  for (const shift of [0, 1, 2]) {
+    run(`downtime:six:${shift}`, {}, () => { const six = HAND_DOWNTIME.filter(d => SIX.includes(d.label)); return { title: 'Downtime', text: six.map(d => d.on()).join(' | '), choices: six.map(d => ({ label: d.label, run: d.run })) }; }, {
+      prep() {
+        G.state.crew = []; crewOf(6);
+        for (const role of ['medic', 'quartermaster', 'icehand', 'cook']) { const m = makeCrewCandidate(G.state.systemId); Object.assign(m, { first: `The${role}`, last: 'Vale', role, skill: 2 }); registerPerson(m); G.state.crew.push(m.id); }
+        uatBurn('Ceres Station', 'pallas'); while (G.state.day % 3 !== shift) G.state.day++;
       } });
   }
   run('downtime:reply', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => ['earth', 'mars', 'belt'].flatMap(background => [0, 1, 2].map(day => homeReply({ background, day }))).join(' | ') }] }));

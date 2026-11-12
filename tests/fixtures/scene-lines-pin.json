@@ -8299,32 +8299,32 @@
    {
     "i": 1,
     "roll": 0.1,
-    "text": "Mate1 has the pilot post on a quiet watch and a meal tray on one knee, and gives you the seat. \"You do it. I eat.\" Nothing comes up on the board for an hour, and Mate1 has you run the checks anyway, out loud between mouthfuls, and asks for the third reading again at the end. When the tray is empty Mate1 takes the seat back and hands you the tray to carry to the galley. (+3 experience at the pilot post.)",
+    "text": "Mate3 has the comms post on a quiet watch and a meal tray on one knee, and gives you the seat. \"You do it. I eat.\" Nothing comes up on the board for an hour, and Mate3 has you run the checks anyway, out loud between mouthfuls, and asks for the third reading again at the end. When the tray is empty Mate3 takes the seat back and hands you the tray to carry to the galley. (+3 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You spent a watch at my post to learn it."
     ],
     "fx": {
-     "p7": 1
+     "p9": 1
     },
     "x": {
      "gunner": 12,
-     "pilot": 3
+     "comms": 3
     },
     "next": null
    },
    {
     "i": 1,
     "roll": 0.9,
-    "text": "Mate1 has the pilot post on a quiet watch and a meal tray on one knee, and gives you the seat. \"You do it. I eat.\" Nothing comes up on the board for an hour, and Mate1 has you run the checks anyway, out loud between mouthfuls, and asks for the third reading again at the end. When the tray is empty Mate1 takes the seat back and hands you the tray to carry to the galley. (+3 experience at the pilot post.)",
+    "text": "Mate3 has the comms post on a quiet watch and a meal tray on one knee, and gives you the seat. \"You do it. I eat.\" Nothing comes up on the board for an hour, and Mate3 has you run the checks anyway, out loud between mouthfuls, and asks for the third reading again at the end. When the tray is empty Mate3 takes the seat back and hands you the tray to carry to the galley. (+3 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You spent a watch at my post to learn it."
     ],
     "fx": {
-     "p7": 1
+     "p9": 1
     },
     "x": {
      "gunner": 12,
-     "pilot": 3
+     "comms": 3
     },
     "next": null
    },
@@ -9213,7 +9213,7 @@
    }
   ],
   "title": "At Breakfast",
-  "text": "There's a pot on in the galley, and somebody has laid the table. Vesna has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Mateo is going up to the comms post and doesn't mind company. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Hana has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Mateo is going up to the comms post and doesn't mind company. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
    "Not now"
@@ -9252,7 +9252,7 @@
    }
   ],
   "title": "At Breakfast",
-  "text": "There's a pot on in the galley, and somebody has laid the table. Vesna has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Mateo is going up to the comms post and doesn't mind company. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
    "Not now"
@@ -9281,7 +9281,7 @@
    }
   ],
   "title": "At Breakfast",
-  "text": "There's a pot on in the galley, and somebody has laid the table. The captain wants a drill run before the next watch, with the alarms. The patch kit is out in the engine room, and there are panels still to do. The passengers are in the berths with nothing to do. Tiko has an hour with nothing to do in it. The cards are out on the galley table. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "text": "There's a pot on in the galley, and somebody has laid the table. The captain wants a drill run before the next watch, with the alarms. The patch kit is out in the engine room, and there are panels still to do. The passengers are in the berths with nothing to do. The cards are out on the galley table. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
    "Not now"
@@ -9310,7 +9310,7 @@
    }
   ],
   "title": "At Breakfast",
-  "text": "There's a pot on in the galley, and somebody has laid the table. The captain wants a drill run before the next watch, with the alarms. The patch kit is out in the engine room, and there are panels still to do. The passengers are in the berths with nothing to do. Tiko has an hour with nothing to do in it. The cards are out on the galley table. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "text": "There's a pot on in the galley, and somebody has laid the table. The captain wants a drill run before the next watch, with the alarms. The patch kit is out in the engine room, and there are panels still to do. The passengers are in the berths with nothing to do. The cards are out on the galley table. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Share a meal",
    "Not now"
@@ -9327,7 +9327,7 @@
    }
   ],
   "title": "At Breakfast",
-  "text": "There's a pot on in the galley, and somebody has laid the table. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Mateo is going up to the comms post and doesn't mind company. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Not now"
   ]
@@ -9343,7 +9343,7 @@
    }
   ],
   "title": "On Shift",
-  "text": "There's a pot on in the galley, and somebody has laid the table. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Mateo is going up to the comms post and doesn't mind company. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Not now"
   ]
@@ -9359,7 +9359,7 @@
    }
   ],
   "title": "At the Meal",
-  "text": "There's a pot on in the galley, and somebody has laid the table. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Mateo is going up to the comms post and doesn't mind company. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Not now"
   ]
@@ -9375,7 +9375,7 @@
    }
   ],
   "title": "At Supper",
-  "text": "There's a pot on in the galley, and somebody has laid the table. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Mateo is going up to the comms post and doesn't mind company. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Not now"
   ]
@@ -9391,7 +9391,7 @@
    }
   ],
   "title": "Downtime",
-  "text": "There's a pot on in the galley, and somebody has laid the table. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Mateo is going up to the comms post and doesn't mind company. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
+  "text": "There's a pot on in the galley, and somebody has laid the table. Mateo has an hour with nothing to do in it. The cards are out on the galley table. The gunner post is clear for an hour if you want it. Captain Vance has the notebook out again, open at the accounts. Ines has the sim warmed up and the left seat empty. Tomas is going down the coolant loop again. Hana has been asking how the gunner post works. The galley screen has \"Ice Hauler Diaries\" on tonight, the premiere. The Ring-ball League match is coming in on the lagged stream. The ship's copy of \"Letters to Pallas\" is going round the berths.",
   "labels": [
    "Not now"
   ]
@@ -9402,7 +9402,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Captain Vance has a few minutes, and has said so. | Mate3 is going up to the comms post and doesn't mind company. | Mate2 has been asking how the gunner post works. | There are still people at the galley table, and somebody's telling one. | Ines has the sim warmed up and the left seat empty. | Tomas is going down the coolant loop again. | Yelena has the range sim up and a coffee going. | Ruben has a stack of intercepts to sort and a spare thermos. | Bexa is in the hold with the tether winch. | Pax is setting up the range sim and checking the trigger cable. |  has something to show you, if you've got the time.",
+    "text": "Captain Vance has a few minutes, and has said so. | Mate0 is going up to the engineer post and doesn't mind company. | Mate2 has been asking how the gunner post works. | There are still people at the galley table, and somebody's telling one. | Ines has the sim warmed up and the left seat empty. | Tomas is going down the coolant loop again. | Yelena has the range sim up and a coffee going. | Ruben has a stack of intercepts to sort and a spare thermos. | Bexa is in the hold with the tether winch. | Pax is setting up the range sim and checking the trigger cable. |  has something to show you, if you've got the time.",
     "next": null
    }
   ],
@@ -9584,6 +9584,267 @@
    "Help at the bench in the workshop",
    "Have the medic look at you",
    "Sit an hour with tonight's watch"
+  ]
+ },
+ {
+  "id": "downtime:six:0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Thecook plays them in the order they came. A cousin's new baby, held up to the camera too close. A landlord's notice about The Hollows's water, read out by somebody's aunt. Thecook plays that one twice.",
+    "mem": [
+     "11 Jul 2214: You sat with me through the messages from home."
+    ],
+    "fx": {
+     "p15": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Themedic has you pack a wound on a rolled towel, three times, until the gauze goes in without leaving a gap. \"Again tomorrow,\" Themedic says. \"Until your hands do it.\"",
+    "mem": [
+     "11 Jul 2214: You let me teach you some first aid."
+    ],
+    "fx": {
+     "p12": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You walk the hold with Thequartermaster, strap by strap, against the manifest. Two ratchets have worked loose since the last port. Thequartermaster takes them up a click and writes the time on the strap in marker.",
+    "mem": [
+     "11 Jul 2214: You helped me with the lashings."
+    ],
+    "fx": {
+     "p13": 1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You go over the suits with Theicehand: seals, the scrubber pack, the hours on each. The third one is past its hours for the scrubber. Theicehand logs it and puts it back in the locker. There isn't another.",
+    "mem": [
+     "11 Jul 2214: You helped me go over the suits."
+    ],
+    "fx": {
+     "p14": 1
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.5,
+    "text": "Thecook gives you the onions. They're the dried ones, and Thecook shows you how long to soak them so they're not leather. The meal is rice and the good tin of beans.",
+    "mem": [
+     "11 Jul 2214: You cooked with me."
+    ],
+    "fx": {
+     "p15": 1
+    },
+    "next": null
+   },
+   {
+    "i": 5,
+    "roll": 0.5,
+    "text": "You change the four cartridges in life support and log them. Each one is stamped with its price. The captain initials the log at the end of the watch without saying anything.",
+    "mem": [
+     "11 Jul 2214: You changed the scrubbers without being asked."
+    ],
+    "fx": {
+     "p1": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "Thecook has the batch from home in and is going through it at the comms corner. | Themedic is restocking the first-aid box in the medbay. | Thequartermaster is walking the cargo in the hold with the manifest. | Theicehand has the suits out of their lockers at the airlock. | Thecook is starting the next meal and has a second knife out. | The scrubber cartridges in life support are due for changing.",
+  "labels": [
+   "Listen to a shipmate's messages from home",
+   "Learn first aid from the medic",
+   "Check the lashings in the hold",
+   "Go over the suits at the airlock",
+   "Cook with the cook",
+   "Change the scrubber cartridges"
+  ]
+ },
+ {
+  "id": "downtime:six:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Most of the batch is Thequartermaster's mother, nine messages, a minute each, about Earth: the shift times, the prices at the market, who asked after Thequartermaster. Thequartermaster doesn't say anything until the last one, which is about the dog.",
+    "mem": [
+     "9 Jul 2214: You sat with me through the messages from home."
+    ],
+    "fx": {
+     "p13": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Themedic goes through the box with you, item by item, and what each costs to replace at Ceres. The tourniquet is the cheapest thing in it. \"That's the one you'll use,\" Themedic says.",
+    "mem": [
+     "9 Jul 2214: You let me teach you some first aid."
+    ],
+    "fx": {
+     "p12": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "Thequartermaster reads the manifest out and you find each pallet and read its tag back. One is in the wrong bay. It's the right weight, so Thequartermaster leaves it there and changes the manifest.",
+    "mem": [
+     "9 Jul 2214: You helped me with the lashings."
+    ],
+    "fx": {
+     "p13": 1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "Theicehand has you put a glove on and hold your hand in the test box while the pressure drops. It holds. The other glove doesn't, and Theicehand tapes the seam and marks it.",
+    "mem": [
+     "9 Jul 2214: You helped me go over the suits."
+    ],
+    "fx": {
+     "p14": 1
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.5,
+    "text": "You make the bread with Thecook, which is flour, water and the yeast Thecook keeps in a jar by the stove. Thecook doesn't measure anything and tells you to.",
+    "mem": [
+     "9 Jul 2214: You cooked with me."
+    ],
+    "fx": {
+     "p15": 1
+    },
+    "next": null
+   },
+   {
+    "i": 5,
+    "roll": 0.5,
+    "text": "The old cartridges go in the bin for the port to take, at a fee per kilo. You change the new ones in, check the flow, and log it. The captain reads the log and moves the next change on the rota.",
+    "mem": [
+     "9 Jul 2214: You changed the scrubbers without being asked."
+    ],
+    "fx": {
+     "p1": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "Thequartermaster has the batch from home in and is going through it at the comms corner. | Themedic is restocking the first-aid box in the medbay. | Thequartermaster is walking the cargo in the hold with the manifest. | Theicehand has the suits out of their lockers at the airlock. | Thecook is starting the next meal and has a second knife out. | The scrubber cartridges in life support are due for changing.",
+  "labels": [
+   "Listen to a shipmate's messages from home",
+   "Learn first aid from the medic",
+   "Check the lashings in the hold",
+   "Go over the suits at the airlock",
+   "Cook with the cook",
+   "Change the scrubber cartridges"
+  ]
+ },
+ {
+  "id": "downtime:six:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Theicehand skips the first three. \"Bills.\" The fourth is a friend from Earth at a party, shouting over the music. Theicehand laughs at the end of it and then puts the screen face down on the console.",
+    "mem": [
+     "10 Jul 2214: You sat with me through the messages from home."
+    ],
+    "fx": {
+     "p14": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Themedic puts the scanner on your arm and has you read it back: pulse, oxygen, the line that means bleeding inside. Then Themedic puts it on Themedic's own arm and has you read that.",
+    "mem": [
+     "10 Jul 2214: You let me teach you some first aid."
+    ],
+    "fx": {
+     "p12": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "The load shifted a centimetre in the flip. You can see it in the dust line on the deck. Thequartermaster measures it, says it's inside the shipper's terms, and photographs it anyway.",
+    "mem": [
+     "10 Jul 2214: You helped me with the lashings."
+    ],
+    "fx": {
+     "p13": 1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "Each suit has a name on the collar in marker. Two of the names aren't anyone aboard. \"They came with the ship,\" Theicehand says, and checks those two as carefully as the rest.",
+    "mem": [
+     "10 Jul 2214: You helped me go over the suits."
+    ],
+    "fx": {
+     "p14": 1
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.5,
+    "text": "Thecook has you taste the soup and say what it wants. You say salt. Thecook says salt is what everyone says, and adds vinegar.",
+    "mem": [
+     "10 Jul 2214: You cooked with me."
+    ],
+    "fx": {
+     "p15": 1
+    },
+    "next": null
+   },
+   {
+    "i": 5,
+    "roll": 0.5,
+    "text": "One of the clamps is stiff and takes a wrench. You get all four in and the flow comes up on the panel. The captain stops in the hatch on the way past and reads the panel.",
+    "mem": [
+     "10 Jul 2214: You changed the scrubbers without being asked."
+    ],
+    "fx": {
+     "p1": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "Theicehand has the batch from home in and is going through it at the comms corner. | Themedic is restocking the first-aid box in the medbay. | Thequartermaster is walking the cargo in the hold with the manifest. | Theicehand has the suits out of their lockers at the airlock. | Thecook is starting the next meal and has a second knife out. | The scrubber cartridges in life support are due for changing.",
+  "labels": [
+   "Listen to a shipmate's messages from home",
+   "Learn first aid from the medic",
+   "Check the lashings in the hold",
+   "Go over the suits at the airlock",
+   "Cook with the cook",
+   "Change the scrubber cartridges"
   ]
  },
  {
@@ -23794,16 +24055,16 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "An hour into your watch beside Mate1, a warning comes up amber on the pilot board. Mate1 reads it and goes to stand by the hatch. \"I'm not here.\" You find the fault in the post's manual on the side screen and work it down, and the amber goes out at the ninth step, eleven minutes in. Mate1 comes back, reads the board's record through all nine steps standing up, and copies the eleven minutes into the post's log with your name beside them. (+3 experience at the pilot post.)",
+    "text": "An hour into your watch beside Mate0, a warning comes up amber on the engineer board. Mate0 reads it and goes to stand by the hatch. \"I'm not here.\" You find the fault in the post's manual on the side screen and work it down, and the amber goes out at the ninth step, eleven minutes in. Mate0 comes back, reads the board's record through all nine steps standing up, and copies the eleven minutes into the post's log with your name beside them. (+3 experience at the engineer post.)",
     "mem": [
      "10 Jul 2214: You spent a watch at my post to learn it."
     ],
     "fx": {
-     "p7": 1
+     "p6": 1
     },
     "x": {
      "gunner": 12,
-     "pilot": 3
+     "engineer": 3
     },
     "next": null
    },
@@ -23871,16 +24132,16 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "The rule at the comms post is that you touch nothing, and for the first hour of the watch you touch nothing while Mate3 works. Twice an arm comes across you without asking, and the second time Mate3 says, \"Elbow.\" In the second hour the stool gets pulled closer and one control is put under your hand. \"That one. Not the one beside it.\" You get the one beside it, and Mate3 sets it back. (+3 experience at the comms post.)",
+    "text": "The rule at the pilot post is that you touch nothing, and for the first hour of the watch you touch nothing while Mate1 works. Twice an arm comes across you without asking, and the second time Mate1 says, \"Elbow.\" In the second hour the stool gets pulled closer and one control is put under your hand. \"That one. Not the one beside it.\" You get the one beside it, and Mate1 sets it back. (+3 experience at the pilot post.)",
     "mem": [
      "11 Jul 2214: You spent a watch at my post to learn it."
     ],
     "fx": {
-     "p9": 1
+     "p7": 1
     },
     "x": {
      "gunner": 12,
-     "comms": 3
+     "pilot": 3
     },
     "next": null
    },

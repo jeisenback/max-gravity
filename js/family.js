@@ -308,7 +308,7 @@ const sitAboard = () => [...procedural(), ...paxAboard().filter(m => m.pid && G.
 // The one Sit with someone offers in the downtime scene (shiplife.js sitPerson): someone having a hard time or hurt first, else by the day and the slot.
 const sitWith = () => {
   const named = namedInDowntime(), rest = sitAboard().filter(f => !named.includes(f.id)).map(f => ({ ...f, low: moodLow(f.p), hurt: !!(G.state.injured || {})[f.id] }));
-  return sitPerson(rest, G.state.day + slotIndex());  // not one another choice names (none left: not offered); turning from slot to slot
+  return sitPerson(rest, G.state.day + slotIndex() + 3);  // not a main character with a choice of their own, nor tonight's watch or the medic; turning from slot to slot
 };
 function sitPicker() {
   const say = familySay('picker'), aboard = sitAboard();
