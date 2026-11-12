@@ -94,14 +94,49 @@ function worldText(ctx, zoom, text, x, y, worldPx, color, align) {
   return true;
 }
 
-// A porthole (#933): the glass and the stars wheeling past it, in a frame with a lit upper rim, a shaded lower one and its bolts.
-function roomPorthole(ctx, x, y, rad, spin) {
+// The windows' view (#936): which place a window shows, how big and how clearly, from the burn's progress pr (0 to 1) and the ship's turn spin
+// (0 before the flip, pi after it: transit.js turns her half round at the midpoint, so the nose that faced the destination faces the place she
+// left). Before the flip the bridge's window (at: 'bridge') looks ahead at the destination ('to') and the galley's porthole ('porthole') back at
+// where she left ('from'); after it they swap. k: the disc's size as a share of the window's largest, the destination growing from 0.1 at
+// departure to 1 at arrival and the place she left shrinking the other way, so the two are the same size at the flip; a: how much of it shows,
+// none while she is side-on in the turn (stars only). Pure: the progress and the turn, no dice.
+function windowView(pr, spin, at) {
+  const p = Math.min(1, Math.max(0, pr || 0)), turn = Math.cos(spin || 0), place = (at === 'bridge') === (turn >= 0) ? 'to' : 'from';
+  return { place, k: 0.1 + 0.9 * (place === 'to' ? p : 1 - p), a: Math.round(Math.abs(turn) * 1000) / 1000 };
+}
+// A place's colour as the system map draws it (data.js: a planet's color, a site's): the planet named, else the system's first; null for none.
+const placeColour = (place, name) => (!place ? null : place.planets ? (place.planets.find(p => p.name === name) || place.planets[0] || {}).color || null : place.color || null);
+// A place's colour seen through the glass, inside the props' brightness (#959, below the people): its hue kept, its saturation cut to a spread
+// of 0x5e and its brightest channel to 0x90; [the lit side, the side in shade].
+function viewTone(col) {
+  const hex = v => '#' + v.map(c => Math.max(0, Math.min(255, Math.round(c))).toString(16).padStart(2, '0')).join('');
+  const v = /^#[0-9a-f]{6}$/i.test(col || '') ? [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16)) : [0x70, 0x70, 0x70];
+  const m = (v[0] + v[1] + v[2]) / 3, d = Math.max(...v.map(c => Math.abs(c - m))) || 1, g = v.map(c => m + (c - m) * Math.min(1, 0x2f / d));
+  const lit = g.map(c => c * Math.min(1, 0x90 / (Math.max(...g) || 1)));
+  return [hex(lit), hex(lit.map(c => c * 0.45))];
+}
+// A place seen through a window (#936): a disc at x, y of radius r in its colour (viewTone), lit on the left (the sun behind her, as the burn
+// view's own sprite of the destination is lit, transit.js) with its far side in shade, and a thin rim; a: how much of it shows. Drawn on the
+// glass, under the frame and the struts.
+function roomViewDisc(ctx, x, y, r, col, a) {
+  if (!(a > 0.01) || !(r > 0) || !col) return;
+  const [lit, shade] = viewTone(col);
+  ctx.save(); ctx.globalAlpha = a;
+  roomDot(ctx, x, y, r, shade);
+  ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.clip(); roomDot(ctx, x - r * 0.35, y - r * 0.2, r, lit);
+  ctx.restore();
+  ctx.save(); ctx.globalAlpha = a * 0.8; ctx.strokeStyle = roomTint(lit); ctx.lineWidth = 0.6; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.stroke(); ctx.restore();
+}
+// A porthole (#933): the glass and the stars wheeling past it, in a frame with a lit upper rim, a shaded lower one and its bolts. view: a place
+// seen through it ({ col, r, a }, roomViewDisc, #936), behind the stars' glare; none, stars only.
+function roomPorthole(ctx, x, y, rad, spin, view = null) {
   ctx.fillStyle = roomTint('#2f4a66'); ctx.beginPath(); ctx.arc(x, y, rad + 6, 0, Math.PI * 2); ctx.fill(); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
   ctx.lineWidth = 2; ctx.strokeStyle = figShade('#2f4a66', 1.4 * roomTone); ctx.beginPath(); ctx.arc(x, y, rad + 4.5, Math.PI * 1.1, Math.PI * 1.9); ctx.stroke();
   ctx.strokeStyle = figShade('#2f4a66', 0.65 * roomTone); ctx.beginPath(); ctx.arc(x, y, rad + 4.5, Math.PI * 0.1, Math.PI * 0.9); ctx.stroke();
   ctx.save(); ctx.beginPath(); ctx.arc(x, y, rad, 0, Math.PI * 2); ctx.clip(); roomFlat(ctx, x - rad, y - rad, rad * 2, rad * 2, '#01040a');
   const cs = Math.cos(spin), sn = Math.sin(spin);
   for (const [a, b, sz] of roomStars) { const sx = (a - 0.5) * rad * 2.4, sy = (b - 0.5) * rad * 2.4; roomDot(ctx, x + sx * cs - sy * sn, y + sx * sn + sy * cs, sz, '#cfe3ff'); }
+  if (view) roomViewDisc(ctx, x + rad * 0.3, y + rad * 0.3, view.r, view.col, view.a);
   roomFlat(ctx, x - rad, y - rad, rad, rad * 2, 'rgba(160,200,255,0.08)'); ctx.restore();
   ctx.lineWidth = 1.2; ctx.strokeStyle = roomTint('#132538'); ctx.beginPath(); ctx.arc(x, y, rad + 0.6, 0, Math.PI * 2); ctx.stroke();  // the gasket
   for (let k = 0; k < 8; k++) roomDot(ctx, x + Math.cos(k * Math.PI / 4 + Math.PI / 8) * (rad + 3.2), y + Math.sin(k * Math.PI / 4 + Math.PI / 8) * (rad + 3.2), 1, '#56708c');
@@ -952,7 +987,8 @@ function roomGalley(ctx, r, s, X, W) {
     roomPart(ctx, roomRound(X(0.25), F - 71.5, X(0.39) - X(0.25), 2, 1), '#3a5470', { top: 0.6 });  // a grab rail for zero g
   });
   if (W >= 300) roomOnWall(ctx, X(0.335), F - 52, () => roomGalleyScreen(ctx, X(0.335), F - 52, !!s.screen, s));  // the screen on its arm, over the table's end (#1035)
-  roomOnWall(ctx, X(0.47), F - 68, () => roomPorthole(ctx, X(0.47), F - 68, 13, s.spin));
+  const pv = windowView(s.pr, s.spin, 'porthole'), pc = s.places && s.places[pv.place];  // the place she left falling behind, or after the flip the destination (#936)
+  roomOnWall(ctx, X(0.47), F - 68, () => roomPorthole(ctx, X(0.47), F - 68, 13, s.spin, pc && { col: pc, r: Math.max(1, pv.k * 13 * 0.95), a: pv.a }));
   if (W >= 340) roomOnWall(ctx, (X(0.55) + X(0.63)) / 2, F - 85, () => cupboards(X(0.55), X(0.63), F - 96, F - 74));
   if (W >= 240) {
     // The hood on the wall centred over the burners as they lie on the hob's top (#1024), and the pans on their rail in the gap between it and the
@@ -1207,7 +1243,7 @@ function roomHatchBars(ctx, x0, x1, F) {
   }
 }
 // The bridge's forward window (#933): the glass, a clear rectangle high on the back wall of the forward bay (the last of roomBays, well: the
-// ladder well) over the consoles' screens, where the destination can be shown (#936); the frame and its struts are drawn round it and over it.
+// ladder well) over the consoles' screens, where the destination is shown (#936, windowView); the frame and its struts are drawn round it and over it.
 // In the box (#1024) it is as wide as that wall leaves room for in its frame (up to 0.42 of the room), at its right end, and named where it is
 // drawn: on the wall, not at the cut.
 const bridgeGlass = (r, well) => {
@@ -1262,7 +1298,8 @@ function roomBridge(ctx, r, s, X, W) {
   ctx.save(); ctx.beginPath(); ctx.rect(g.x, g.y, g.w, g.h); ctx.clip(); roomFlat(ctx, g.x, g.y, g.w, g.h, '#01040a');
   const cs = Math.cos(spin), sn = Math.sin(spin), mx = g.x + g.w / 2, my = g.y + g.h / 2;
   for (const [a, b, sz] of roomStars) { const sx = (a - 0.5) * g.w * 1.4, sy = (b - 0.5) * g.h * 1.6; roomDot(ctx, mx + sx * cs - sy * sn, my + sx * sn + sy * cs, sz, '#cfe3ff'); }
-  const px = g.x + g.w - 14 + Math.sin(spin) * 40, pg = ctx.createRadialGradient(px, my + 6, 2, px, my + 6, 24); pg.addColorStop(0, '#c98a5a'); pg.addColorStop(1, 'rgba(120,70,40,0)'); ctx.fillStyle = pg; ctx.fillRect(g.x, g.y, g.w, g.h);
+  const v = windowView(s.pr, spin, 'bridge'), vc = s.places && s.places[v.place];  // the destination growing ahead, or after the flip the place she left (#936)
+  if (vc) roomViewDisc(ctx, g.x + g.w * 0.62, g.y + g.h * 0.55, Math.max(1.5, v.k * g.h * 0.85), vc, v.a);
   roomFlat(ctx, g.x, g.y, g.w * 0.3, g.h, 'rgba(160,200,255,0.05)'); ctx.restore();
   onWall(() => {
     ctx.strokeStyle = roomTint('#132538'); ctx.lineWidth = 1; ctx.strokeRect(g.x - 0.5, g.y - 0.5, g.w + 1, g.h + 1);  // the gasket
@@ -1325,19 +1362,58 @@ function roomBridge(ctx, r, s, X, W) {
 
 // The hold (#933), on the drive deck beside the engine room. A crate is 40 by 24, a load two people lift or the jack moves, and the crates stand
 // in stacks of three on pallets, filled from the bottom of the first stack, which starts clear of the room's name at its top left. holdCrate: crate
-// k's box; holdLabel: the box on its front where its label goes (one day the contract's good, #936), kept clear of everything else, showing for now
-// the crate's serial (holdSerial). The jack stands past the fourth stack. The kit is of different ages: wooden crates of more than one batch and
-// a newer moulded one.
+// k's box; holdLabel: the box on its front where its label goes, kept clear of everything else: the crate's serial (holdSerial) and beside it the
+// stencilled mark of the good it holds (#936, holdPictogram). The jack stands past the fourth stack. The kit is of different ages: wooden crates
+// of more than one batch and a newer moulded one.
 const HOLD_W = 40, HOLD_H = 24, HOLD_GAP = 6, HOLD_FROM = 92;  // the four stacks and the jack past them fit the hull's 720 (#1023)
 const HOLD_KIT = ['#5a4a34', '#54462f', '#4a5a5e', '#5e4e36', '#4e4230'];  // the third the moulded one
 const holdKind = k => (k * 7 + Math.floor(k / 3)) % HOLD_KIT.length;
 const holdCrate = (r, k) => ({ x: r.x0 + HOLD_FROM + Math.floor(k / 3) * (HOLD_W + HOLD_GAP), y: r.floor - 4 - HOLD_H * (k % 3 + 1), w: HOLD_W, h: HOLD_H });
 const holdLabel = (r, k) => { const c = holdCrate(r, k); return { x: c.x + 4, y: c.y + 7, w: 32, h: 10 }; };
+// What the hold carries (#936): the goods aboard as [{ id, tons }], those in the cargo (st.cargo, { good: tons }) in its order and then the
+// missions' loads (as cargoUsed counts them, game.js), one entry for each good. Pure: it reads only what it is given.
+function holdGoods(cargo = {}, missions = []) {
+  const out = [], add = (id, t) => { if (!(t > 0)) return; const g = out.find(o => o.id === id); if (g) g.tons += t; else out.push({ id, tons: t }); };
+  for (const [id, t] of Object.entries(cargo || {})) add(id, t);
+  for (const m of missions || []) add(m.good, m.tons || 0);
+  return out;
+}
+// The good in each of n crates (#936): the crates split between the goods in proportion to their tons (largest remainder, a tie to the one first in
+// the cargo), filled in the cargo's order from crate 0. With nothing aboard to name, every crate null (it shows its serial only). No dice.
+function holdCrateGoods(goods, n) {
+  const total = (goods || []).reduce((a, g) => a + g.tons, 0);
+  if (!total || !n) return Array(n).fill(null);
+  const q = goods.map(g => g.tons * n / total), c = q.map(Math.floor), frac = i => Math.round((q[i] - c[i]) * 1e9);
+  let left = n - c.reduce((a, b) => a + b, 0);
+  for (const i of q.map((_, i) => i).sort((a, b) => frac(b) - frac(a) || a - b)) if (left > 0) { c[i]++; left--; }
+  return goods.flatMap((g, i) => Array(c[i]).fill(g.id));
+}
+// The stencil for each good the game trades (COMMODITIES, data.js), a mark and no word (nothing under 12px): anything else (a mission's load in
+// the full build) the generic mark.
+const HOLD_MARKS = { water: 'drop', food: 'can', industrial: 'cog', medical: 'cross', luxury: 'gem', metal: 'ingot', equipment: 'chip' };
+const holdMark = id => HOLD_MARKS[id] || 'mark';
+// The mark stencilled in the right of the label box b, beside the serial, in the serial's paint, about 8 high (the serial's glyphs are 3): its
+// stencil bridges in the gap colour of the boards, the cog's hub in the crate's own wood.
+function holdPictogram(ctx, mark, b, ink, wood) {
+  const cx = b.x + 25.5, cy = b.y + 5, gap = '#2a2218', P = pts => { ctx.beginPath(); ctx.moveTo(...pts[0]); for (const q of pts.slice(1)) ctx.lineTo(...q); ctx.closePath(); ctx.fill(); };
+  ctx.fillStyle = roomTint(ink);
+  if (mark === 'drop') { ctx.beginPath(); ctx.moveTo(cx, cy - 4); ctx.lineTo(cx + 2.7, cy + 0.4); ctx.arc(cx, cy + 1.3, 2.85, -0.33, Math.PI + 0.33); ctx.closePath(); ctx.fill(); }
+  else if (mark === 'can') { P([[cx - 2.6, cy - 3.4], [cx + 2.6, cy - 3.4], [cx + 2.6, cy + 3.4], [cx - 2.6, cy + 3.4]]); for (const y of [cy - 1.7, cy + 1.1]) roomFlat(ctx, cx - 2.6, y, 5.2, 0.6, gap); }
+  else if (mark === 'cross') P([[cx - 1.2, cy - 3.6], [cx + 1.2, cy - 3.6], [cx + 1.2, cy - 1.2], [cx + 3.6, cy - 1.2], [cx + 3.6, cy + 1.2], [cx + 1.2, cy + 1.2], [cx + 1.2, cy + 3.6], [cx - 1.2, cy + 3.6], [cx - 1.2, cy + 1.2], [cx - 3.6, cy + 1.2], [cx - 3.6, cy - 1.2], [cx - 1.2, cy - 1.2]]);
+  else if (mark === 'cog') { P(Array.from({ length: 32 }, (_, i) => { const a = i * Math.PI / 16, rr = Math.floor((i + 1) / 2) % 2 ? 3.8 : 2.8; return [cx + Math.cos(a) * rr, cy + Math.sin(a) * rr]; })); roomDot(ctx, cx, cy, 1.1, wood); }
+  else if (mark === 'gem') { P([[cx - 2.2, cy - 3], [cx + 2.2, cy - 3], [cx + 3.6, cy - 1], [cx, cy + 3.6], [cx - 3.6, cy - 1]]); roomFlat(ctx, cx - 3.6, cy - 1.3, 7.2, 0.5, gap); }
+  else if (mark === 'ingot') { P([[cx - 2.4, cy - 3.6], [cx + 2.4, cy - 3.6], [cx + 3.2, cy - 0.6], [cx - 3.2, cy - 0.6]]); P([[cx - 3, cy + 0.4], [cx + 3, cy + 0.4], [cx + 3.8, cy + 3.6], [cx - 3.8, cy + 3.6]]); }
+  else if (mark === 'chip') {
+    P([[cx - 2.4, cy - 2.4], [cx + 2.4, cy - 2.4], [cx + 2.4, cy + 2.4], [cx - 2.4, cy + 2.4]]);
+    for (const o of [-1.6, 0, 1.6]) { roomFlat(ctx, cx - 3.6, cy + o - 0.3, 1, 0.6, ink); roomFlat(ctx, cx + 2.6, cy + o - 0.3, 1, 0.6, ink); roomFlat(ctx, cx + o - 0.3, cy - 3.6, 0.6, 1, ink); roomFlat(ctx, cx + o - 0.3, cy + 2.6, 0.6, 1, ink); }
+  } else { ctx.strokeStyle = roomTint(ink); ctx.lineWidth = 1.4; ctx.beginPath(); ctx.arc(cx, cy, 2.8, 0, Math.PI * 2); ctx.stroke(); roomDot(ctx, cx, cy, 0.9, ink); }
+}
 // Crate k's serial, stencilled in its label box b as marks, not text (no words under 12px): a row of six glyphs (a block, a split block, a bar or
-// a pair of dashes, varied per crate and fixed), a dash after the second, in paint a little paler than the crate; on every third crate a small
-// handling plate beside it, a this-way-up arrow on it.
-function holdSerial(ctx, k, b, moulded) {
+// a pair of dashes, varied per crate and fixed), a dash after the second, in paint a little paler than the crate; after the mark of its good
+// (holdPictogram) when it holds one (good: its id, or null for the serial only). wood: the crate's colour.
+function holdSerial(ctx, k, b, moulded, good = null, wood = '#5a4a34') {
   const ink = moulded ? '#6a7a7a' : '#7a6c50', y = b.y + 3.5;
+  if (good) holdPictogram(ctx, holdMark(good), b, ink, wood);
   let x = b.x + 2;
   for (let i = 0; i < 6; i++) {
     const g = (k * 37 + 11 + i * (k + 3) * 7) % 4;
@@ -1348,21 +1424,18 @@ function holdSerial(ctx, k, b, moulded) {
     x += 2.4;
     if (i === 1) { roomFlat(ctx, x, y + 1.2, 1.4, 0.6, ink); x += 2.2; }
   }
-  if (k % 3 === 1) {
-    roomFlat(ctx, b.x + 22, b.y + 2, 6, 5, '#5e5a48');
-    roomFlat(ctx, b.x + 24.6, b.y + 3.6, 0.8, 2.6, '#3a3226'); roomFlat(ctx, b.x + 24, b.y + 3.2, 2, 0.6, '#3a3226');
-  }
 }
 // A tie-down ring in the deck at x, on its plate.
 function holdRing(ctx, x, F) {
   roomFlat(ctx, x - 2.5, F - 1, 5, 1, '#20384f');
   ctx.strokeStyle = '#4a6680'; ctx.lineWidth = 0.8; ctx.beginPath(); ctx.arc(x, F - 2.4, 1.3, 0, Math.PI * 2); ctx.stroke();
 }
-// Crate k: its boards and the gaps between them, the battens at its corners nailed on, its serial (holdSerial); worn at fixed places
+// Crate k: its boards and the gaps between them, the battens at its corners nailed on, its serial and the mark of its good (holdSerial; good: its
+// id or null), on every third crate a handling plate on its top board, a this-way-up arrow on it (moved out of the label box, #936); worn at fixed places
 // (bare wood at its corners), a board replaced in fresher wood on one, tape over a split corner on another. In the box (#1024) it is solid, a
 // crate deep (HOLD_DEPTH), resting on its pallet or the crate under it: its front at the cut, where holdCrate and holdLabel name it.
 const HOLD_DEPTH = 0.5;
-function roomHoldCrate(ctx, r, k) {
+function roomHoldCrate(ctx, r, k, good = null) {
   const n = v => Math.round(v * 100) / 100, c = holdCrate(r, k), x = n(c.x), y = n(c.y), w = c.w, h = c.h, kind = holdKind(k), b = holdLabel(r, k);
   roomPart(ctx, roomRound(x, y, w, h, 1.2), HOLD_KIT[kind], { top: 1, side: 2.5, under: 1, solid: HOLD_DEPTH, shadow: false });
   if (k % 4 === 1 && kind !== 2) roomFlat(ctx, x + 4.5, y + 1, w - 9, 4.6, '#6e5c40');  // a board replaced in fresher wood
@@ -1370,7 +1443,11 @@ function roomHoldCrate(ctx, r, k) {
   for (const bx of [x + 0.8, x + w - 4]) roomPart(ctx, roomRound(bx, y + 0.8, 3.2, h - 1.6, 0.6), kind === 2 ? '#56686c' : '#6a583c', { top: 0.5, side: 0.8 });
   for (const [nx, ny] of [[x + 2.4, y + 3], [x + 2.4, y + h - 3], [x + w - 2.4, y + 3], [x + w - 2.4, y + h - 3]]) roomDot(ctx, nx, ny, 0.5, '#2a2218');  // the nails
   if (k % 2 === 0 && kind !== 2) for (const [cx, cy, cw, ch] of [[x + w - 3.6, y + h - 2.8, 2.2, 1.4], [x + 1.2, y + 1.2, 1.8, 1.2]]) roomFlat(ctx, cx, cy, cw, ch, '#7a6a50');  // worn corners
-  holdSerial(ctx, k, b, kind === 2);
+  if (k % 3 === 1) {  // the handling plate
+    roomFlat(ctx, x + 6, y + 0.8, 6, 5, '#5e5a48');
+    roomFlat(ctx, x + 8.6, y + 2.4, 0.8, 2.6, '#3a3226'); roomFlat(ctx, x + 8, y + 2, 2, 0.6, '#3a3226');
+  }
+  holdSerial(ctx, k, b, kind === 2, good, HOLD_KIT[kind]);
   if (k % 6 === 4) roomPart(ctx, `M ${n(x + w - 8)} ${n(y - 0.5)} L ${n(x + w - 3)} ${n(y - 0.5)} L ${n(x + w + 0.5)} ${n(y + 2.5)} L ${n(x + w + 0.5)} ${n(y + 6)} Z`, '#7a7462', { top: 0 });  // tape
 }
 // A stack's pallet at x, its fork pockets, and once loaded the straps over the stack's top (at y) and down its sides to the rings at its foot, a
@@ -1428,18 +1505,20 @@ function roomHoldJack(ctx, jx, F) {
   roomFlat(ctx, x + 49, F - 11, 5, 1.2, '#4a4436');  // its stencil
   roomDot(ctx, x + 54, F - 3, 3, '#1a2430'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); roomDot(ctx, x + 54, F - 3, 1, '#56708c');  // the steer wheel
 }
-// The hold (#933): the rings in the deck, the crates by the cargo (s.cargo, 0 to 1, up to twelve) on their pallets, strapped down under the net
+// The hold (#933): the rings in the deck, the crates by the cargo (s.cargo, 0 to 1, up to twelve; each marked with its good from s.goods,
+// holdGoods, #936) on their pallets, strapped down under the net
 // (roomHoldCrate, roomHoldStraps, roomHoldNet); the pallet jack (roomHoldJack); the lamp swinging on its cable (moved, not redrawn, as a path given
 // to roomPart is fixed per layout); and at the flip the hold log, slipped from its clip, floating. Nothing under the room's name at its top left.
 // In the box (#1024): the jack first, past the stacks toward the right wall; then the stacks, each on its pallet from the bottom up, from the
 // walls in toward the eye, so a stack nearer it covers its neighbour's side; then at the front the rings in the deck, the straps and the net.
 function roomHold(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, n = Math.min(12, Math.round(12 * s.cargo)), stacks = Math.ceil(n / 3), sx = c => Math.round(holdCrate(r, 3 * c).x * 100) / 100;
+  const goods = holdCrateGoods(s.goods || [], n);  // what each crate holds (#936)
   if (W >= 300) roomHoldJack(ctx, r.x0 + HOLD_FROM + 4 * (HOLD_W + HOLD_GAP) - HOLD_GAP + 2, F);  // at the foot of the last stack
   const off = c => { const e = roomEyeAt(sx(c) + HOLD_W / 2); return e ? Math.abs(sx(c) + HOLD_W / 2 - e.vx) : 0; };
   for (const c of Array.from({ length: stacks }, (_, c) => c).sort((a, b) => off(b) - off(a))) {
     roomHoldPallet(ctx, sx(c), F);
-    for (let k = 3 * c; k < Math.min(n, 3 * c + 3); k++) roomHoldCrate(ctx, r, k);
+    for (let k = 3 * c; k < Math.min(n, 3 * c + 3); k++) roomHoldCrate(ctx, r, k, goods[k]);
   }
   for (let c = 0; c < 4; c++) for (const ex of [sx(c) + 0.75, sx(c) + HOLD_W - 0.75]) holdRing(ctx, ex, F);
   for (let c = 0; c < stacks; c++) roomHoldStraps(ctx, sx(c), holdCrate(r, Math.min(n - 1, 3 * c + 2)).y, F);
