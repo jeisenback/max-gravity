@@ -180,7 +180,7 @@ const TRAITS = {
         '{first} has been talking for an hour, and the galley hot plate has gone cold in sympathy.',
       ],
       bridge: [
-        '{first} is narrating the flip to the empty bridge as it happens.',
+        '{first} is talking the empty bridge through the next flip, step by step, a day early.',
       ],
     }
   },
