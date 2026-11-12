@@ -37,6 +37,8 @@ ACTIVITIES.teach = {
   hiredOnly: true,
   get label() { const id = moveNow(); return id ? teachLabel(id) : teachSay('idle.label'); },
   can: shown => !!teachDue(shown),
+  on: () => { const id = moveNow(); return teachSay('on', { first: id ? moveTeacher(id).first : '' }); },
+  where: () => { const id = moveNow(); return id ? moveTeacher(id).id : null; },
   run(shown) {
     const id = teachDue(shown);
     if (!id) return '';

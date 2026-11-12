@@ -306,7 +306,7 @@ test('a gunner move plays in the preview by the line typed: its teacher\'s butto
   for (const [id, who] of [['vent', 'Tomas'], ['lead', 'Ines'], ['split', 'Cato']]) {
     await page.fill(`textarea[data-path="part.${id}.text"]`, `Typed ${id}.text, {first}.`);
     const f = await play();
-    const i = await f.evaluate(w => G.dialog.choices.findIndex(c => c.label.includes(w) && (!c.can || c.can())), who);
+    const i = await f.evaluate(w => G.dialog.choices.findIndex(c => c.label.startsWith(`Let ${w} show you`) && (!c.can || c.can())), who);  // the move's button, not Sit with them (the downtime scene names one person)
     assert.ok(i >= 0, `${id}: ${who}'s button is on the menu`);
     await f.click(`[data-action="choose"][data-arg="${i}"]`);
     await f.waitForFunction(() => document.querySelector('#event-result') && document.querySelector('#event-result').textContent.length > 0);

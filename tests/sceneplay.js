@@ -180,9 +180,15 @@ const playScenes = () => {
       run(`shiplife:acts:${v}:${engineer ? 'eng' : 'solo'}`, { mode: undefined }, () => ({ title: 'x', text: '', choices: ['meal', 'drills', 'repair', 'visit'].map(id => ({ label: ACTIVITIES[id].label, run() { const keep = Math.random; Math.random = () => (v ? 0.99 : 0); try { return ACTIVITIES[id].run(); } finally { Math.random = keep; } } })) }), { prep: burn(v, { engineer }) });
     }
     for (const [name, opts, flipped] of [['hired', {}, false], ['hired-flipped', {}, true], ['owner', { mode: undefined }, false], ['owner-flipped', { mode: undefined }, true]]) {
-      run(`shiplife:menu:${name}`, opts, () => { const ev = downtimeEvent(true); return { ...ev, choices: ev.choices.filter((c, i, all) => c.label === ACTIVITIES.meal.label || i === all.length - 1).map(c => (c.label === ACTIVITIES.meal.label ? { ...c, run: () => `${c.run()} | ${G.transit.comms[G.transit.comms.length - 1]}` } : c)) }; }, { prep: burn(0, { flipped }) });  // the meal's line in Comms too (#767)
+      run(`shiplife:menu:${name}`, opts, () => { const ev = downtimeScene(true); return { ...ev, choices: ev.choices.filter((c, i, all) => c.label === ACTIVITIES.meal.label || i === all.length - 1).map(c => (c.label === ACTIVITIES.meal.label ? { ...c, run: () => `${c.run()} | ${G.transit.comms[G.transit.comms.length - 1]}` } : c)) }; }, { prep: burn(0, { flipped }) });  // the meal's line in Comms too (#767)
     }
   }
+  // ---------- the downtime scene (2026-11-12): its title by the time of day it opens at (and the plain one outside them), and each activity's "what's on" ----------
+  for (const block of ['breakfast', 'shift', 'meal', 'supper', 'handover']) {
+    run(`downtime:scene:${block}`, {}, () => { const ev = downtimeScene(true); return { ...ev, choices: ev.choices.slice(-1) }; }, {
+      prep() { uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.elapsed = 0; let d = 0; while (shipDay(t.elapsed).block !== block && d++ < 400) t.elapsed += 0.5; } });
+  }
+  run('downtime:on', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => [...HAND_DOWNTIME.map(d => d.on()), ACTIVITIES.teach.on()].join(' | ') }] }), { prep() { G.state.crew = []; crewOf(4); uatBurn('Ceres Station', 'pallas'); } });
   // ---------- the round for the house at the bar, and a main character coming aboard ----------
   { // the button's words before and after, and what the room says and remembers
     const button = () => (barHtml().match(/<button data-action="barRound"[^>]*>([^<]*)<\/button>/) || [])[1];

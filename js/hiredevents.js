@@ -545,25 +545,36 @@ const postOfRole = role => Object.keys(POSTS).find(k => POSTS[k].role === role);
 const shadowable = () => mates().filter(m => postOfRole(m.role) && postOfRole(m.role) !== hired().post);
 const downSay = (key, vars) => sceneSay('scene:downtime', key, vars);  // the words of these are the lines of scene:downtime (hiredscenes.js)
 const learnAt = (post, n) => { gainSkill(post, n); return ` ${downSay('learn', { n, post: POSTS[post].name.toLowerCase() })}`; };
+// The one of `xs` a slot of the burn offers: by the day and the slot, so its "what's on" line, its tag and what it does name the same person (#1073 spec).
+// The slot's place in the burn (0 for the first), so a pick turns from slot to slot as well as from day to day: the game's day stands still on a burn.
+const slotIndex = () => (G.transit ? Math.max(0, lifeSlotKeys(G.transit.slots || 2).indexOf(lifeSlot())) : 0);
+// `skip`: ids a choice of the same scene already names, passed over while anyone else is left (final review: one person in three choices).
+// With nobody left, none: that choice is not offered rather than naming someone twice.
+const slotPick = (xs, skip = []) => { const ys = xs.filter(x => !skip.includes(x.id)); return ys.length ? ys[(G.state.day + slotIndex()) % ys.length] : null; };
+const castIds = () => HAND_DOWNTIME.filter(d => d.cast && d.can()).map(d => d.where());  // the main characters aboard with a choice of their own
+const teachMate = () => slotPick(mates(), castIds()), shadowMate = () => slotPick(shadowable(), [...castIds(), (teachMate() || {}).id]);
+// Who the scene's other choices name, for Sit with someone to pass over (family.js sitWith).
+const namedInDowntime = () => (hired() ? [...castIds(), (teachMate() || {}).id, (shadowMate() || {}).id].filter(Boolean) : []);
 const castDowntime = (key, post) => ({
   cast: true, get label() { return downSay(`${key}.label`); }, can: () => castKeys().includes(key),
+  on: () => downSay(`${key}.on`), where: () => castPerson(key).id,
   run() { castLike(key, 1, downSay('cast.memory')); return downSay(tellingOn(`${key}.result`, G.state.day)) + learnAt(post, 3); },
 });
-const downtime = (key, can, run) => ({ get label() { return downSay(`${key}.label`); }, can, run });
+// Each with what's on (its `on` line, given `vars()`) and where: a room, or a function returning a person's id (downtime scene, shiplife.js).
+const downtime = (key, can, run, where, vars = () => ({})) => ({ get label() { return downSay(`${key}.label`); }, can, run, where, on: () => downSay(`${key}.on`, vars()) });
 
 const HAND_DOWNTIME = [
   downtime('advice', () => !!hired(),
-    () => { const cap = person(hired().captain); like(cap, 1, downSay('advice.memory')); return downSay(tellingOn('advice.result', G.state.day), { cap: cap.last }) + learnAt(hired().post, 2); }),
-  downtime('shadow', () => !!hired() && shadowable().length > 0,
-    () => { const m = pick(shadowable()), post = postOfRole(m.role); like(m, 1, downSay('shadow.memory')); return downSay(tellingOn('shadow.result', G.state.day), { first: m.first, post: POSTS[post].name.toLowerCase() }) + learnAt(post, 3); }),
-  downtime('mend', () => !!hired() && mates().length > 0,
-    () => { const m = pick(mates()), n = randInt(3, 6) * 100; G.state.credits += n; like(m, 1, downSay('mend.memory')); return downSay(tellingOn('mend.result', G.state.day), { first: m.first, n: fmt(n) }); }),
-  downtime('spare', () => !!hired(),
-    () => { const cap = person(hired().captain); G.state.credits += 400; like(cap, 1, downSay('spare.memory')); return downSay(tellingOn('spare.result', G.state.day), { n: fmt(400) }) + learnAt(hired().post, 1); }),
-  downtime('teach', () => !!hired() && mates().length > 0,
-    () => { const m = pick(mates()); like(m, 2, downSay('teach.memory')); return downSay(tellingOn('teach.result', G.state.day), { first: m.first, post: POSTS[hired().post].name.toLowerCase() }) + learnAt(hired().post, 1); }),
+    () => { const cap = person(hired().captain); like(cap, 1, downSay('advice.memory')); return downSay(tellingOn('advice.result', G.state.day), { cap: cap.last }) + learnAt(hired().post, 2); },
+    () => hired().captain, () => ({ cap: person(hired().captain).last })),
+  downtime('shadow', () => !!hired() && !!shadowMate(),
+    () => { const m = shadowMate(), post = postOfRole(m.role); like(m, 1, downSay('shadow.memory')); return downSay(tellingOn('shadow.result', G.state.day), { first: m.first, post: POSTS[post].name.toLowerCase() }) + learnAt(post, 3); },
+    () => shadowMate().id, () => { const m = shadowMate(); return { first: m.first, post: POSTS[postOfRole(m.role)].name.toLowerCase() }; }),
+  downtime('teach', () => !!hired() && !!teachMate(),
+    () => { const m = teachMate(); like(m, 2, downSay('teach.memory')); return downSay(tellingOn('teach.result', G.state.day), { first: m.first, post: POSTS[hired().post].name.toLowerCase() }) + learnAt(hired().post, 1); },
+    () => teachMate().id, () => ({ first: teachMate().first, post: POSTS[hired().post].name.toLowerCase() })),
   downtime('stories', () => !!hired() && mates().length > 0,
-    () => { for (const m of mates()) like(m, 1, downSay('stories.memory')); return downSay(tellingOn('stories.result', G.state.day)); }),
+    () => { for (const m of mates()) like(m, 1, downSay('stories.memory')); return downSay(tellingOn('stories.result', G.state.day)); }, 'galley'),
   castDowntime('ines', 'pilot'),
   castDowntime('tomas', 'engineer'),
   castDowntime('yelena', 'gunner'),

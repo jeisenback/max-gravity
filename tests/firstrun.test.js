@@ -36,7 +36,7 @@ test('the steps advance in order: sail, the walk-through, downtime, a chat, and 
     const st = begin(), h = hired(), seq = [tick()];
     sailOut(); seq.push(tick());
     const walk = pickHappening('transit'); G.dialog = null; seq.push(tick(), walk.title);
-    const down = downtimeEvent(true); openEvent(down); chooseEvent(down.choices.findIndex(c => /Practice/.test(c.label))); G.dialog = null; G.transit.event = null; seq.push(tick());
+    const down = downtimeScene(true); openEvent(down); chooseEvent(down.choices.findIndex(c => /Practice/.test(c.label))); G.dialog = null; G.transit.event = null; seq.push(tick());
     G.transit.lifeUsed = {}; G.transit.flipped = true; G.transit.left = G.transit.total * 0.3;
     const who = G.state.crew.find(id => chatAble(id)); Mods.act('chatWith', who); G.dialog = null; G.transit.event = null; seq.push(tick());
     G.transit = null; h.runsDone = 1; G.mode = 'landed'; seq.push(tick());

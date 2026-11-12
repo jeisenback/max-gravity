@@ -240,7 +240,7 @@ function shareActivity(genre, fanBonus) {
 const watchShow = show => {
   const say = socialSay('watch-show'), when = show.premiere ? say('when.premiere') : show.finale ? say('when.finale') : say('when', { ep: show.ep });
   return {
-  label: say('label', { title: show.title, when }), can: () => folk().length > 0,
+  label: say('label', { title: show.title, when }), can: () => folk().length > 0, on: () => say('on', { title: show.title, when }), where: 'galley',
   run() {
     const { fans, bored, list } = shareActivity(show.genre, 1.5);
     everyone();
@@ -256,7 +256,7 @@ const watchShow = show => {
 const readBook = book => {
   const say = socialSay('read-book');
   return {
-  label: say('label', { title: book.title }), can: () => folk().length > 0,
+  label: say('label', { title: book.title }), can: () => folk().length > 0, on: () => say('on', { title: book.title }), where: 'berths',
   run() {
     const { fans, bored } = shareActivity(book.genre, 2);
     return [say('intro', { title: book.title, author: book.author }),
@@ -270,7 +270,7 @@ const readBook = book => {
 const watchBroadcast = b => {
   const say = socialSay('watch-broadcast');
   return {
-  label: say('label', { title: b.title }), can: () => folk().length > 0,
+  label: say('label', { title: b.title }), can: () => folk().length > 0, on: () => say('on', { title: b.title }), where: 'galley',
   run() {
     const { fans, bored } = shareActivity(b.genre, 1.5);
     everyone();
@@ -284,7 +284,7 @@ const watchBroadcast = b => {
 const streamMatch = l => {
   const say = socialSay('stream-match');
   return {
-  label: say('label', { league: l.name, kind: say({ final: 'kind.final', playoffs: 'kind.playoffs' }[leaguePhase(l, cultureToday())] || 'kind') }), can: () => folk().length > 0,
+  label: say('label', { league: l.name, kind: say({ final: 'kind.final', playoffs: 'kind.playoffs' }[leaguePhase(l, cultureToday())] || 'kind') }), can: () => folk().length > 0, on: () => say('on', { league: l.name, kind: say({ final: 'kind.final', playoffs: 'kind.playoffs' }[leaguePhase(l, cultureToday())] || 'kind') }), where: 'galley',
   run() {
     const list = folk(), mine = [...new Set(list.map(f => tastes(f).team))].filter(t => l.teams.includes(t)), ph = leaguePhase(l, cultureToday());
     const m = ph === 'final' ? playFinal(l) : playMatch(l, ...(ph === 'playoffs' ? topTwo(season(l)) : mine));
@@ -318,7 +318,7 @@ function onNow() {
 const cardSay = (key, vars) => socialSay('card-night')(key, vars);  // read when used: linetables.js loads after this file
 const SOCIAL_ACTIVITIES = {
   cards: {
-    label: () => cardSay('label'), can: () => folk().length > 0,
+    label: () => cardSay('label'), can: () => folk().length > 0, on: () => cardSay('on'), where: 'galley',
     run() {
       const list = folk(), st = G.state;
       for (const [a, b] of pairs(list)) addBond(a, b, 0.7);

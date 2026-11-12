@@ -442,7 +442,7 @@ test('the navigation console plots the course at port and the burn in flight', a
   assert.equal(await page.$$eval('#panel .con-plant line[stroke-dasharray]', n => n.length), 1, 'the planned course is a dashed line');
   assert.ok(await page.$('#panel [data-action=map]'), 'the system map is a control');
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll');
-  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.left = G.transit.total * 0.6; });
+  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.left = G.transit.total * 0.6; G.transit.lifeOffered = { before: true, m1: true, m2: true, m3: true, after: true }; });  // no downtime scene over the sheet
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=nav]');
   assert.equal(await row('#bsheet', 'Destination'), 'Pallas');
@@ -478,7 +478,7 @@ test('the interior console puts the crew at their posts, with how they are doing
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=interior]');
   assert.ok(await page.$('#bsheet .con'), 'the console is in the burn sheet too');
-  assert.equal(await page.$$eval('#bsheet button[data-bdown]', b => b.length), 1, 'with the downtime button');
+  assert.equal(await page.$$eval('#bsheet button[data-bdown]', b => b.length), 0, 'no downtime button: downtime comes as a scene (2026-11-12)');
   await done();
 });
 

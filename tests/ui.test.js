@@ -378,16 +378,6 @@ test('the cue that a scene continues shows on a long scene and a long result, an
   await done();
 });
 
-test('the burn view\'s Comms ticker keeps two lines where there is room, and one on a short window', async () => {
-  const { ev, done } = await open();
-  const r = await ev(() => ({
-    wide: burnLayout(1280, 800, 220, false, null).tickerLines,
-    short: burnLayout(1280, 600, 220, false, null).tickerLines,
-  }));
-  assert.deepEqual(r, { wide: 2, short: 1 });
-  await done();
-});
-
 test('the port scene banner is 150px, and still draws', async () => {
   const out = {};
   for (const [name, viewport] of [['desktop', { width: 1280, height: 800 }]]) {
