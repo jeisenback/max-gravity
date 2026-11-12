@@ -490,12 +490,15 @@ function shipPeople() {
     people.push({ name: p ? p.first : m.who.split(' ').slice(-1)[0], role: 'passenger', pid: m.pid, id: p ? m.pid : null });
   }
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
-  // Everyone starts strapped in for the burn out.
-  people.forEach((p, i) => { const dk = couchDk(i), x = couchX(i, people.length); Object.assign(p, { room: layoutRoomAt(LAYOUTS.freighter, dk, x * LAYOUTS.freighter.width) || 'berths', x, dk, tdk: dk, seatDk: dk, tx: null, wait: lifeRand(1, 4), seat: x, couch: 1 }); });
-  // A hand's captain is aboard too, strapped in on the bridge across the well from the hand's couch: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
-  const cap = hiredCaptain(), bx = couchX(0, people.length, 'captain'), bd = roomAt('bridge').deck;
-  if (cap) people.push({ name: cap.first, role: 'captain', id: cap.id, room: 'bridge', x: bx, dk: bd, tdk: bd, seatDk: bd, tx: null, wait: 3, seat: bx, couch: 1 });
-  return (t.aboard = people);
+  // A hand's captain is aboard too: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
+  const cap = hiredCaptain(), all = cap ? [...people, { name: cap.first, role: 'captain', id: cap.id }] : people;
+  // Everyone starts strapped in for the burn out, the k-th of the company on couch k (couchPlace).
+  const owners = bunkOwners(all, all.length), nb = Math.min(12, ship().berths);
+  for (const p of all) {
+    const c = p.role === 'cat' ? { room: 'berths', x: CAT_SPOT / LAYOUTS.freighter.width, dk: roomAt('berths').deck, lift: 0, couchAt: null } : couchPlace(owners.indexOf(p), nb);
+    Object.assign(p, { room: c.room, x: c.x, dk: c.dk, tdk: c.dk, seatDk: c.dk, tx: null, wait: p.role === 'captain' ? 3 : lifeRand(1, 4), seat: c.x, couch: 1, lift: c.lift, couchAt: c.couchAt });
+  }
+  return (t.aboard = all);
 }
 
 // A share from 0 to 1 that is the person's own (#924): the same each time for the same person and salt, with no draw of any dice. It gives
@@ -515,30 +518,19 @@ function clearOf(p, x, people = []) {
   return x;
 }
 
-// Crash couches (#972): yours (i 0) and the captain's at two of the bridge's posts either side of the well; the rest (i 1 to n - 1) spread
-// across both halves of the berths, the first half of them left of the well, as many as fit a side a couch apart (four at 720); any more go up
-// to the mess deck (#1023), spread across the head and then one at the galley's end, short of the bench and the mess table. A couch is
-// COUCH_LEN long (rooms.js roomCouchFlat), and none lies on another or over the well's band widened by half a couch. couchDk is the deck each
-// is on.
-const COUCH_LEN = 60;
-function couchSpots() {
-  const lay = LAYOUTS.freighter, W = lay.width, edge = (COUCH_LEN / 2 + 8) / W, wellL = lay.well.x - lay.well.w / 2 - COUCH_LEN / 2 / W, wellR = lay.well.x + lay.well.w / 2 + COUCH_LEN / 2 / W;
-  const r = roomAt('berths'), h = roomAt('head'), g = roomAt('galley'), fit = (a, b) => Math.floor((b - a) * W / COUCH_LEN + 1e-9) + 1;
-  const side = Math.min(fit(r.x0 + edge, wellL - edge), fit(wellR + edge, r.x1 - edge)), head = [Math.max(h.x0, wellR) + edge, h.x1 - edge];
-  return { edge, wellL, wellR, side, head, headFit: fit(...head), galley: g.x0 + edge };
+// Where the k-th of the ship's company (bunkOwners' order: the hand, the captain, the crew, the passengers) lies in the hard burn (#990): on
+// couch k of the couches fixed in the rooms (rooms.js couchPlaces), the hand and the captain on the bridge's rack; anyone past the couches
+// (a company larger than they hold) strapped into a bunk, as a sleeper is at the flip (#927): their own, bunk k of the nb, or, past the bunks,
+// the bunk of one who is on a couch (bunkSlots gives it them). room, dk, and x (a share of the width) where they go; lift, how high over the
+// deck they lie; couchAt, the couch's number, null in a bunk, and then bunk, its number.
+function couchPlace(k, nb) {
+  const lay = LAYOUTS.freighter, W = lay.width, c = couchPlaces()[k];
+  if (c) return { room: c.room, x: c.x / W, dk: roomAt(c.room).deck, lift: c.lift, couchAt: k };
+  const n = Math.max(1, nb), well = { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W };
+  const b = (k < n ? k : k - n) % n;
+  return { room: 'berths', x: berthSleeper(berthBunk(layoutBox(lay, 'berths'), n, b, well)).x / W, dk: roomAt('berths').deck, lift: 0, couchAt: null, bunk: b };
 }
-function couchX(i, n, role) {
-  if (i === 0 || role === 'captain') { const b = roomAt('bridge'); return b.x0 + b.w * SEATS.bridge[role === 'captain' ? 2 : 1]; }
-  const c0 = couchSpots(), all = Math.max(1, n - 1), m = Math.min(all, 2 * c0.side), k = i - 1;
-  if (k >= m) {  // on the mess deck: the head, then the galley's end
-    const j = k - m, o = Math.min(all - m, c0.headFit), [a, b] = c0.head;
-    return j < o ? (o > 1 ? a + (b - a) * j / (o - 1) : (a + b) / 2) : c0.galley;
-  }
-  const r = roomAt('berths'), left = Math.ceil(m / 2), right = k >= left;
-  const a = right ? c0.wellR + c0.edge : r.x0 + c0.edge, b = right ? r.x1 - c0.edge : c0.wellL - c0.edge, c = right ? m - left : left, j = right ? k - left : k;
-  return c > 1 ? a + (b - a) * j / (c - 1) : (a + b) / 2;
-}
-const couchDk = i => roomAt(i === 0 ? 'bridge' : i - 1 >= 2 * couchSpots().side ? 'galley' : 'berths').deck;
+const CAT_SPOT = 60;  // where the cat curls up on the berths' deck in the hard burn, under the lockers and clear of the couches
 
 // Sent somewhere by a downtime activity you chose: the timetable takes them back when they have been there a while (lifeTick).
 const toActivity = (p, roomId) => { goTo(p, roomId); Object.assign(p, { block: 'activity', errand: false, at: undefined, relief: undefined }); };
@@ -656,7 +648,7 @@ function posture(p, ph, time, asleep) {
   if (p.role === 'cat') name = ph === 'float' ? 'cat-float' : ph !== 'move' ? 'cat-sleep' : p.tx !== null ? 'cat-walk' : 'cat-sit';
   else if (asleep || inBed(p)) name = 'bunk';  // asleep, or a patient in the medbay (on the cot in every phase, #976)
   else if ((ph === 'couch' || ph === 'move') && p.dk !== p.tdk && (Math.abs(p.x - LADDER) <= 0.003 * CUT_K || p.dk !== Math.round(p.dk))) name = 'climb';  // on the ladder in the well, or between decks, on the way to a couch too (#972)
-  else if (ph === 'couch') name = (p.couch || 0) >= 0.6 ? 'couch' : Math.abs(p.x - p.seat) > 0.004 * CUT_K ? 'walk' : 'stand';  // on the couch once it has unfolded under them (#925)
+  else if (ph === 'couch') name = (p.couch || 0) >= 0.6 ? 'couch' : Math.abs(p.x - p.seat) > 0.004 * CUT_K ? 'walk' : 'stand';  // on the couch once strapped in on it (#925, #990)
   else if (ph === 'secure') name = 'strap';
   else if (ph === 'float') name = p.role === 'engineer' ? 'tether' : 'strap';
   else if (p.tx !== null || p.dk !== p.tdk) name = 'walk';  // along a deck, to the well too
@@ -668,7 +660,7 @@ function posture(p, ph, time, asleep) {
   const chair = (name === 'sit' || name === 'work-sit') && p.room !== 'galley' && onSeat(p) ? SEAT_FACE[p.room] : 0;  // on a chair: side-on, the way the chair faces (rooms.js, #985)
   const view = chair ? 'side' : ph === 'move' && FIG_FACING.includes(name) ? (name.startsWith('work') ? 'back' : 'front') : 'side';  // facing you to stand and sit, the wall at work; side-on on the move and in the burn (#978)
   const seat = name === 'sit' && p.at === 'alone' && p.room === 'berths' && !p.staged ? { seat: BERTH_FRAME + 5 } : {};  // on the bottom bunk's edge, its mattress (rooms.js berthBunk) under the bench's height (figures.js figLowHip, #1023)
-  return { name, view, x: p.x, deck: p.dk, face: chair || p.face || 1, ...seat, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160 / CUT_K) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float') ? { strapped: true } : {}) };
+  return { name, view, x: p.x, deck: p.dk, face: chair || p.face || 1, ...seat, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160 / CUT_K) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float' || (ph === 'couch' && asleep)) ? { strapped: true } : {}) };  // strapped into a bunk in the hard burn too, past the couches (#990)
 }
 
 // The scene open in a burn, acted out: when it opens (or the next one in a chain opens) those it stages walk to spots in its room, a little
@@ -742,7 +734,7 @@ function lifeTick(dt) {
     }
   }
   for (const p of people) {
-    const atCouch = ph === 'couch' && Math.abs(p.x - p.seat) < 0.004 * CUT_K && Math.abs(p.dk - p.seatDk) < 0.05;  // a crash couch unfolds out of the deck under its person in the hard burn, and folds away after (#925)
+    const atCouch = ph === 'couch' && Math.abs(p.x - p.seat) < 0.004 * CUT_K && Math.abs(p.dk - p.seatDk) < 0.05;  // at their couch in the hard burn, they strap in on it, and out after (#925, #990)
     p.couch = Settings.reduceMotion ? +atCouch : Math.max(0, Math.min(1, (p.couch || 0) + (atCouch ? 1 : -1) * dt * 1.5));
     if (ph === 'secure' || ph === 'float') {  // strap in where they are; someone on the ladder finishes onto a deck
       p.tx = null; p.tdk = Math.round(p.dk); p.block = undefined; p.relief = undefined;  // strapped in: under way again, the timetable sends them on
@@ -977,9 +969,10 @@ function drawCutaway(box, clear = box) {
 
   // The rooms, the tank, the ladder well and its ladder full height (the tube through the tank), and the bulkheads beside the well.
   const cap = ship().cargo, nb = Math.min(12, ship().berths), owners = bunkOwners(people, nb), slots = new Map(), job = hired();
-  bunkSlots(people, owners, isAsleep).forEach((k, p) => slots.set(p, k));  // whoever is turned in lies in their own bunk (#934), or a free one
+  const bunked = p => p.role !== 'cat' && p.couchAt === null && ph === 'couch' && (p.couch || 0) >= 0.6;  // past the couches, strapped into a bunk in the hard burn (couchPlace, #990)
+  bunkSlots(people, owners, p => isAsleep(p) || bunked(p)).forEach((k, p) => slots.set(p, k));  // whoever is turned in lies in their own bunk (#934), or a free one
   const bunks = owners.map(p => p && { slept: slots.has(p), ...bunkKit(p.role === 'you' ? { id: 'you', role: job ? POSTS[job.post].role : 'rating', culture: st.background } : { ...((p.id && st.people[p.id]) || p), role: p.role, id: p.id || p.name }) });
-  const s = { bunks, w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
+  const s = { bunks, w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt),
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);
@@ -1016,7 +1009,6 @@ function drawCutaway(box, clear = box) {
   const berths = layoutBox(lay, 'berths'), labels = [], dots = [], hits = [];
   const fl = burnStages(t.days).float, floatW = burnRamp(pr, 0.5 - fl, 0.5 - fl / 3) - burnRamp(pr, 0.5 + fl / 3, 0.5 + fl);  // how far the float has built at the flip, 0 to 1 and back (#927), in ship time (#992)
   const youHurt = handHurt();
-  for (const p of people) if (p.role !== 'cat' && p.seat !== undefined && seen(deckFloor(lay, p.seatDk) - 20, deckFloor(lay, p.seatDk) + 10)) roomCouchFlat(ctx, X(p.seat), deckFloor(lay, p.seatDk), p.couch || 0);  // each crash couch, folded into its deck or out flat (#925, #972)
   for (const p0 of people) {
     const asleep = slots.has(p0), lap = p0.lapse;
     if (lap && lap.a <= 0) continue;  // in time-lapse, between places
@@ -1024,7 +1016,8 @@ function drawCutaway(box, clear = box) {
     ctx.globalAlpha = lap ? lap.a : 1;  // fading out of a place or into one (set back after the people)
     const pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p0), s.well);
     const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
-    const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? MED_COT : 0), dk = Math.round(p.dk);
+    const lift = pose.name === 'couch' ? p.lift || 0 : 0;  // on a couch, as high as its pad (#990)
+    const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? MED_COT : 0) - lift, dk = Math.round(p.dk);
     dots.push({ x: X(p.x), dk: p.dk, color: ROLE_COLORS[p.role] });
     if (!seen(y - 160, y + 60)) continue;  // out of view (a little margin, so no one pops in at the edge)
     const inView = seen(y - 60, y);
@@ -1043,7 +1036,7 @@ function drawCutaway(box, clear = box) {
       const nw = ctx.measureText(p.name).width / zoom;
       if (!labels.some(b => b.dk === dk && Math.abs(b.x - x) < (b.w + nw) / 2 + 4 / zoom)) {
         labels.push({ x, w: nw, dk });
-        worldText(ctx, zoom, p.name, x, (bunk ? berths.floor : y) + 10, 12 / zoom, '#9fb4c9', 'center');
+        worldText(ctx, zoom, p.name, x, (bunk ? berths.floor : y + lift) + 10, 12 / zoom, '#9fb4c9', 'center');
       }
     }
   }
