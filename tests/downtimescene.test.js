@@ -102,7 +102,8 @@ test('a shadowed or taught mate is the same in the line, the tag and the run', a
   const { ev, done } = await open();
   await ev(burnHelpers);
   const r = await ev(() => {
-    onBurn(); const people = shipPeople(), out = {};
+    onBurn(); for (let i = 0; i < 2; i++) { const c = makeCrewCandidate('earth'); c.role = 'slicer'; registerPerson(c); G.state.crew.push(c.id); }  // crew enough for both picks besides tonight's watch
+    G.transit.aboard = null; const people = shipPeople(), out = {};
     for (const key of ['shadow', 'teach']) {
       const a = HAND_DOWNTIME.find(d => activityLabel(d) === sceneSay('scene:downtime', `${key}.label`));
       if (!a.can()) { out[key] = 'cannot'; continue; }
@@ -190,8 +191,8 @@ test('Sit with someone names one person, the one having a hard time first, and o
   const { ev, done } = await open();
   await ev(burnHelpers);
   const r = await ev(() => {
-    onBurn(); const crew = G.state.crew.map(id => G.state.people[id]).filter(p => p && p.memories);
-    const low = crew[crew.length - 1]; low.mood = { kind: 'low', until: G.state.day + 30, text: 'a message from home' };
+    onBurn(); const named = namedInDowntime(), crew = G.state.crew.map(id => G.state.people[id]).filter(p => p && p.memories && !named.includes(p.id));
+    const low = crew[crew.length - 1];  // one no other choice names (tonight's watch keeper, the teach and shadow picks) low.mood = { kind: 'low', until: G.state.day + 30, text: 'a message from home' };
     const e = downtimeScene(true), i = e.choices.findIndex(c => /^Sit with /.test(c.label)), tag = e.tags.find(x => /^Sit with /.test(x.label));
     G.dialog = { event: e, choices: e.choices }; chooseEvent(i);
     return { label: e.choices[i].label, first: low.first, id: low.id, tag: tag && tag.id, next: !!G.nextEvent && JSON.stringify(G.nextEvent).includes(low.first) };
