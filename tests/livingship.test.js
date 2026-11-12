@@ -997,10 +997,21 @@ test('each bunk keeps a clear place for its owner\'s one thing, inside the bunk 
 
 // #934, their own things in the bunks: each of the ship's company has their own bunk, k-th of the company in its standing order on bunk k
 // (bunkOwners), and keeps two or three things of their own there (bunkKit), each in its place in the plan every bunk has (roomBunkPlan).
-const own934 = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['bunkOwners', 'bunkKit', 'BUNK_THINGS', 'BUNK_DRAW']);
+const own934 = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['bunkOwners', 'bunkKit', 'BUNK_THINGS', 'BUNK_DRAW', 'bunkSlots']);
 const COMPANY = [{ id: 'you', role: 'you' }, { id: 'c:ines', role: 'pilot' }, { id: 'c:tomas', role: 'engineer' }, { id: 'p7', role: 'gunner' }, { id: 'p8', role: 'passenger' },
   { name: 'Mog', role: 'cat' }, { id: 'c:cato', role: 'xo' }, { id: 'p9', role: 'icehand' }, { id: 'hc', role: 'captain' }];
 const ownerIds = (people, n) => Array.from(own934.bunkOwners(people, n), p => (p ? p.id : null));
+test('a sleeper with no bunk of their own lies in a free one, a spare first, then one whose owner is up; the cat in none (#934)', () => {
+  const owners = own934.bunkOwners(COMPANY, 6), up = new Set(['c:ines']), asleep = p => !up.has(p.id);
+  const slots = own934.bunkSlots(COMPANY, owners, asleep), at = id => slots.get(COMPANY.find(p => p.id === id));
+  assert.equal(at('you'), 0, 'an owner in their own'); assert.equal(at('c:cato'), 5);
+  assert.equal(at('c:ines'), undefined, 'up, so no bunk');
+  assert.equal(at('p8'), 2, 'the passenger past the bunks, in the bunk whose owner is up');
+  assert.equal(at('p9'), undefined, 'no bunk left for the last'); assert.ok(![...slots.keys()].some(p => p.role === 'cat'), 'not the cat');
+  assert.equal(new Set(slots.values()).size, slots.size, 'one to a bunk');
+  const spare = own934.bunkSlots([...COMPANY, { id: 'p11', role: 'passenger' }], own934.bunkOwners(COMPANY, 10), () => true);
+  assert.equal(spare.get([...spare.keys()].find(p => p.id === 'p11')), 8, 'a spare bunk first');
+});
 test('each of the ship\'s company has their own bunk, the k-th in its standing order bunk k, and the rest are spare (#934)', () => {
   assert.deepEqual(ownerIds(COMPANY, 10), ['you', 'hc', 'c:ines', 'c:tomas', 'p7', 'c:cato', 'p9', 'p8', null, null], 'the hand, the captain, the crew as they signed on, the passengers; not the cat');
   assert.deepEqual(ownerIds(COMPANY, 10), ownerIds([...COMPANY], 10), 'the same list, the same bunks');
