@@ -95,12 +95,12 @@ function sideBeforeSail() {
 Mods.register({
   id: 'shippers', name: 'Shippers', builtin: true,
   init(M) {
-    // After the settlement (hired.js): the agent meets the ship if the delivery was off. A first arrival that already opened its scene (captains.js) keeps the floor; the regard has moved all the same.
+    // After the settlement (hired.js): the agent meets the ship if the delivery was off, after the first officer's settling up (captains.js) if that is this landing's too.
     M.on('landed', planet => {
       const h = hired();
       if (!h || !h.off) return;
       const off = h.off; h.off = null;
-      if (!G.dialog) openEvent(agentScene(off, freightAgent(planet)));
+      offerScene('business', agentScene(off, freightAgent(planet)));
     });
   },
 });

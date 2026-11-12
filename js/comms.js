@@ -109,7 +109,7 @@ UI.views.comms = function () { return commsPanel(); };
 Mods.register({
   id: 'comms', name: 'Comms', builtin: true,
   init(M) {
-    M.on('landed', () => {
+    M.on('arrived', () => {  // after the landing's handlers, so their notes are all in (#1096)
       const st = G.state;
       for (const n of UI.notes) { noteInbox('message', n, NOTE_WHO[n]); delete NOTE_WHO[n]; }
       st.dockMark = { prev: (st.dockMark || {}).cur || 0, cur: st.inboxN || 0 };  // new = arrived since the last time you docked

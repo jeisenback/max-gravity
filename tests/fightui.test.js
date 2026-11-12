@@ -187,7 +187,7 @@ test('a save made mid-raid in an old version loads with no fight open and no err
     // the raid kept nothing of its own in the save: what a raid in an old version left behind is its hull lost, its flag and a hurt hand
     const old = JSON.parse(saved); old.armor = 40; old.hired.flags = { ...(old.hired.flags || {}), raided: true }; old.hired.raidTold = true; old.hired.hurtUntil = old.day + 6;
     const refused = Saves.import(JSON.stringify(old), 2); Saves.use(2); loadGame();
-    const out = { refused, mode: G.mode, dialog: G.dialog && [G.dialog.event.title, !!G.dialog.event.fight], next: G.nextEvent && [G.nextEvent.title, !!G.nextEvent.fight], armor: G.state.armor };
+    const out = { refused, mode: G.mode, dialog: G.dialog && [G.dialog.event.title, !!G.dialog.event.fight], next: sceneQueue[0] && [sceneQueue[0].title, !!sceneQueue[0].fight], armor: G.state.armor };  // the landing's next scene waits its turn (#1096)
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     startDuel({ kind: 'pirate' }, false); out.fight = G.nextEvent && G.nextEvent.title; out.me = G.nextEvent && G.nextEvent.fight.state.me.armor;
     return out;

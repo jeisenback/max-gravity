@@ -49,15 +49,14 @@ function inspectionScene(cause, planet) {
 }
 
 // The landed hook's body (`note` is the hook's M.note; a test reads UI.notes; `cargo` is the hold as the ship came in, read on 'landing'): at an inspecting
-// port, the inspector's scene opens first, ahead of a scene already open and of one queued behind it, or a clean ship gets one note line.
+// port, the inspector's scene is the landing's first (transit.js offerScene), or a clean ship gets one note line.
 function inspectAtLanding(planet, note = text => UI.notes.push(text), cargo = G.state.cargo) {
   const st = G.state, gov = system().gov;
   if (atSite(st) || !INSPECTING.includes(gov)) return;
   const c = career(), cause = inspectionCause(cargo, gov, repOf(gov), !!c && hasTrait(c, 'marked'));
   if (!cause) { note(sceneSay('scene:inspection', 'clean')); return; }
-  const scene = inspectionScene(cause, planet), prev = G.dialog && G.dialog.event;
-  if (prev) scene.choices = scene.choices.map(ch => ({ ...ch, run() { const r = ch.run(), q = G.nextEvent; G.nextEvent = q && q !== prev ? chainEvents([prev, q]) : prev; return r; } }));  // what was open, then what was queued behind it
-  openEvent(scene);
+  const scene = inspectionScene(cause, planet);
+  offerScene('customs', scene);  // the landing's first scene (#1096)
 }
 
 // A landing straight after a new game or a load is no arrival: nothing is inspected, and no note.

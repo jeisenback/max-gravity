@@ -750,6 +750,8 @@ function lifeTick(dt) {
   if (dark !== !!G.transit.dark) {  // dusk or dawn
     G.transit.dark = dark;
     comm(`[Ship] ${lineWords('lines:ship-lights', dark ? 'dusk' : 'dawn', LIFE_NOTES[dark ? 'dusk' : 'dawn'])}`);
+    const h = hired();
+    if (!dark && h && h.letter && G.state.day > h.letter.day) { comm(homeReply(G.state)); delete h.letter; }  // the reply to a message home, on a later burn (#1073)
     const ns = nightState();
     for (const p of people) if (!onWatchTonight(p, ns)) p.wait = Math.min(p.wait, lifeRand(0.2, 3));
   }
@@ -1256,8 +1258,18 @@ function downtimeFive() {
 // `tags` are where each is happening, for the cutaway; `able` how many can run (none: the scene is not opened). `all` lists every option instead of
 // five (for tests and the editor).
 function downtimeScene(all) {
-  const t = G.transit, five = all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive(), block = shipDay(t.elapsed).block;
-  const able = five.filter(a => !a.can || a.can()), people = shipPeople(), tags = onDeck(able, people);
+  const t = G.transit, people = shipPeople(), block = shipDay(t.elapsed).block, cap = hired() && hired().captain, named = new Set();
+  // A choice that would name a shipmate an earlier choice names is left out, so nobody is offered twice (the captain may be: advice and the figures).
+  const once = a => { const g = onDeck([a], people)[0]; if (!g || !g.id || g.id === cap) return true; if (named.has(g.id)) return false; named.add(g.id); return true; };
+  const every = [...baseActivities(), ...handDowntime(), ...onNow()], drawn = all ? every : downtimeFive();
+  const due = drawn.find(a => a === ACTIVITIES.teach && a.can());  // a move the crew would show you keeps its place (#850): its teacher is named first
+  if (due) once(due);
+  const five = drawn.filter(a => a === due || (a.can && !a.can()) || once(a));
+  for (let left = drawn.length - five.length, i = 0; !all && left > 0 && i < every.length; i++) {  // each repeat left out: the next that names nobody twice
+    const a = every[i];
+    if (!drawn.includes(a) && (!a.can || a.can()) && once(a)) { five.push(a); left--; }
+  }
+  const able = five.filter(a => !a.can || a.can()), tags = onDeck(able, people);
   const placeOf = label => { const g = tags.find(x => x.label === label); return g && (g.room || (people.find(p => p.id === g.id) || {}).room); };
   const scene = {
     title: lifeSay(DOWNTIME_BLOCKS.includes(block) ? `title.${block}` : 'title'), personal: true,  // a hand's savings are their own, not the ship's purse

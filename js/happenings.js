@@ -84,10 +84,8 @@ Mods.register({
       return list.concat(out);
     });
     M.on('landed', planet => {
-      if (G.dialog && G.nextEvent) return;  // nowhere to put a scene, and none is used up
-      const ev = pickHappening('port', planet);
-      if (!ev) return;
-      if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+      if (landingSceneCount() >= 2) return;  // a landing with two scenes already has its share: none is drawn, and none used up (#1096)
+      offerScene('ambient', pickHappening('port', planet));
     });
   },
 });

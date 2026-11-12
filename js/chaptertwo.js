@@ -57,9 +57,9 @@ Mods.register({
   init(M) {
     M.on('landed', () => {
       const st = G.state;
-      if (hired() || G.dialog || !chapterTwoDue(career(), st.flags, st.day)) return;
+      if (hired() || !chapterTwoDue(career(), st.flags, st.day)) return;
       st.flags.chapterTwo = true;
-      openEvent(chapterTwoEnd());
+      offerScene('settle', chapterTwoEnd());
     });
   },
 });

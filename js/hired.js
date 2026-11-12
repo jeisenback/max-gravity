@@ -802,7 +802,7 @@ Mods.register({
     M.on('landed', planet => {
       const text = hired() && chapterOf(G.state) === 1 && settleRun(planet);  // the captain's run and the hand's wage; the co-op's contracts settle on its board (ownerboard.js)
       if (text) M.note(text);
-      if (hired() && chapterOf(G.state) === 1 && arrivalPending(planet) && !G.dialog) { hired().arrived = true; openEvent(castScene(hiredXo().cast, arrivalScene())); }  // the first officer settles up (captains.js)
+      if (hired() && chapterOf(G.state) === 1 && arrivalPending(planet)) { hired().arrived = true; offerScene('settle', castScene(hiredXo().cast, arrivalScene())); }  // the first officer settles up (captains.js)
     });
     M.on('landed', planet => { if (chapterOf(G.state) > 1) return; hullNote(); dealCheck(planet); });  // the share's offer is chapter one's
     M.on('landed', planet => { const h = hired(), line = h && chapterOf(G.state) === 1 && restockTorps(G.state, h, planet, ship().launcher); if (line) M.note(line); });  // the captain restocks hers; the co-op buys its own
