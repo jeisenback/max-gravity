@@ -1,6 +1,6 @@
 # The ports
 
-Status: a draft for the owner to correct (#1099), 2026-11-12. Not approved. It covers what the port view is, and Earth's port first, since the game starts there. `look.md` is how the burn view looks; this page is how a port is put together and what it looks like, and it takes the burn view's rules where they fit. Each place's own page in this bible is what fills its port.
+Status: approved by the owner on 2026-11-12 (#1099), with the open questions answered as below. It covers what the port view is, and Earth's port first, since the game starts there. `look.md` is how the burn view looks; this page is how a port is put together and what it looks like, and it takes the burn view's rules where they fit. Each place's own page in this bible is what fills its port.
 
 ## The port view
 
@@ -55,8 +55,8 @@ Each is its own piece of work, once the owner has corrected this page:
 - **The port view for the Ring,** drawn to the rules above, with its people on routines as the crew are on the ship (`js/shiplife.js`).
 - **The port's scenes from its people:** the bar, the day ashore, the jobs and the sign-on start from where someone is on the view.
 
-## Open questions for the owner
+## Settled with the owner
 
-1. Is the berth, the lift and a slice of the rim the right extent for the view, or should it be the rim alone, with the berth only as the way in?
-2. Where does the hand come from before signing on, now that the Earth start is on the Ring: up from an arcology on a spaceplane for the job (a contract hand, like the yard workers), or already on the Ring between contracts?
-3. Should the Gravity Well keep its name and its copper counter, or be written fresh from the Ring?
+1. The view runs from the berth at the hub, down the spoke lift, to a slice of the rim.
+2. The Earth start: the hand grew up in an arcology and comes up to the Ring on a spaceplane for the job, as the yard workers come up for a contract.
+3. The bar keeps its name, the Gravity Well, and its copper counter.
