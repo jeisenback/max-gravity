@@ -2614,7 +2614,7 @@ test('the galley reads old and patched: a replacement door, a newer dispenser he
     const bolts = placedRects(calls).filter(q => q.col === '#8a929a' && p6In([q.x, q.y, q.w, q.h], foot));
     assert.ok(bolts.length >= 2, `${at}: fresh bolts in the old foot`);
     const line = placed.find(p => p.col === '#3a4a56' && p.x0 >= head.x0 && p.x1 <= head.x1), tape = placed.find(p => p.col === '#7a7462');
-    assert.ok(line && tape && p6Meet(tape, line) && tape.x1 - tape.x0 <= 4, `${at}: tape round the dispenser's line`);
+    assert.ok(line && tape && p6Meet(tape, line) && tape.y0 >= head.y1 - 0.01 && tape.x1 - tape.x0 <= 4, `${at}: tape round the dispenser's line`);
     assert.ok(placedRects(calls).some(q => q.col === '#1e2a36' && p6Meet({ x0: q.x, x1: q.x + q.w, y0: q.y, y1: q.y + q.h }, line)), `${at}: a cable tie on it`);
     const latch = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050');
     assert.ok(latch && latch.x0 > X0(r, 0.7) && latch.y1 <= F - 18, `${at}: the stove cupboard's latch printed (${JSON.stringify(latch)})`);
@@ -2646,7 +2646,7 @@ test('the bridge reads old and patched: a replacement panel on fresh screws, a n
     assert.ok(rects('#8a929a').filter(q => p6In(q, plate)).length >= 2, `${at}: fresh bolts in the plate`);
     const guard = parts.find(p => p.col === '#8a6a48'), tag = parts.find(p => p.col === '#9a9050');
     assert.ok(guard && guard.x0 > xs[1] + 17 && guard.x1 < xs[1] + 40 && guard.x1 - guard.x0 <= 6, `${at}: a printed guard over a switch on the pilot's console`);
-    assert.ok(tag && tag.y0 >= guard.y1 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its temporary tag`);
+    assert.ok(tag && tag.y0 >= guard.y1 && tag.x0 >= guard.x1 - 0.01 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its temporary tag`);
     assert.ok(rects('#6a5038').filter(q => p6In(q, guard)).length >= 2, `${at}: its printed layers`);
     const rk = commsRackBox(r), near6 = ([x, y, w, h]) => x >= rk.x + rk.w - 4 && x + w <= rk.x + rk.w + 6 && y > rk.y + 20 && y < rk.y + rk.h;
     assert.ok(calls.some(k => k[0] === 'strokeStyle' && k[1] === '#3a3a40'), `${at}: the comms rack's cables`);

@@ -764,7 +764,7 @@ function roomGalley(ctx, r, s, X, W) {
       roomFlat(ctx, dm - 1.5, F - 51, 3, 8, '#24405e');  // the column up to the head
       roomFlat(ctx, dm - 1, F - 47, 2, 2.5, '#8796a5');  // the tap
       roomPart(ctx, roomRound(d1 - 2.4, F - 50, 1.4, 7, 0.6), '#3a4a56', { top: 0 });  // its water line down to the foot, taped and tied
-      roomPart(ctx, roomRound(d1 - 3, F - 48.6, 2.6, 1.8, 0.5), '#7a7462', { top: 0 }); roomFlat(ctx, d1 - 3, F - 45.4, 2.6, 0.8, '#1e2a36');
+      roomPart(ctx, roomRound(d1 - 3, F - 46.8, 2.6, 1.6, 0.5), '#7a7462', { top: 0 }); roomFlat(ctx, d1 - 3, F - 44.4, 2.6, 0.8, '#1e2a36');  // under the head, where it shows
       roomPart(ctx, roomRound(d0, F - 52, d1 - d0, 5, 1.2), '#4e565e', { top: 0.8, side: 1.5 });  // the head, a newer unit in another finish
       roomPart(ctx, roomRound(d0 + 1.5, F - 59, d1 - d0 - 3, 7, 2.2), '#3d6a86', { top: 1, side: 1.8 });
       roomFlat(ctx, d0 + 2.5, F - 55, d1 - d0 - 5, 0.8, '#6a9ab4');  // the water line
@@ -1053,8 +1053,8 @@ function roomBridge(ctx, r, s, X, W) {
     for (let k = 0; k < 3; k++) { roomFlat(ctx, x + 27, F - 29 + k * 5, 3, 1.2, '#2a3e54'); roomFlat(ctx, x + 28, F - 30.5 + k * 5, 1, 2, '#8796a5'); }  // the switches
     if (i === 1) {  // the pilot's: a printed guard over the middle switch, its layers, its tag hung on a thread
       roomPart(ctx, roomRound(x + 26.2, F - 26.4, 4.6, 4.2, 0.8), '#8a6a48', { top: 0.5, side: 0.6 }); for (const ly of [F - 25, F - 23.6]) roomFlat(ctx, x + 26.8, ly, 3.4, 0.4, '#6a5038');
-      ctx.strokeStyle = '#7a7462'; ctx.lineWidth = 0.5; roomSeg(ctx, [[x + 28.5, F - 22.2], [x + 28.8, F - 20]]);
-      roomPart(ctx, roomRound(x + 26.8, F - 20, 4, 4.5, 0.6), '#9a9050', { top: 0.5 }); roomDot(ctx, x + 28.8, F - 19, 0.5, '#4a4436');
+      ctx.strokeStyle = '#7a7462'; ctx.lineWidth = 0.5; roomSeg(ctx, [[x + 30.6, F - 23.4], [x + 32.6, F - 20]]);  // to the right of the switches, clear of the third
+      roomPart(ctx, roomRound(x + 31.2, F - 20, 3.6, 4.5, 0.6), '#9a9050', { top: 0.5 }); roomDot(ctx, x + 33, F - 19, 0.5, '#4a4436');
     }
     roomPart(ctx, roomRound(x + 21, F - 30, 2, 13, 1), '#3a5470', { top: 0.5 });  // a grab handle, worn where hands go
     roomFlat(ctx, x + 21.5, F - 25, 1, 3, '#6a747c');
