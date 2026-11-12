@@ -1078,8 +1078,8 @@ test('the bridge\'s and the berths\' ceiling lamps are fittings: a plate on the 
       assert.ok(calls.some((k, i) => k[0] === 'fillRect' && near(k[1], x - 10) && near(k[2], r.top + 3) && String(calls[i - 1][1]).startsWith('rgba(')), `${id} ${pr}: its lens lit in the lamp's colour`);
     }
   }
-  const { ctx, calls } = recorder(); drawRoom(ctx, 'galley', layoutBox(LAYOUTS.freighter, 'galley'), RS({ well: FW, damage: { marks: new Set(), severe: false } }));
-  assert.ok(!calls.some(k => k[0] === 'strokeRect' && k[3] === 21), 'not yet in the rooms still to come');
+  const gr = layoutBox(LAYOUTS.freighter, 'galley'), { ctx, calls } = recorder(); drawRoom(ctx, 'galley', gr, RS({ well: FW, damage: { marks: new Set(), severe: false } }));
+  for (const x of box.roomLamps('galley', gr)) assert.ok(calls.some(k => k[0] === 'strokeRect' && near(k[1], x - 10.5) && k[3] === 21), 'the galley\'s lamp a fitting over the mess table too (#932)');
   // on the bridge, no fitting over the overhead panel or the COMMS label; the lamp's light drawn from where its fitting is
   const r = layoutBox(LAYOUTS.freighter, 'bridge');
   for (const zoom of [0.82, 1.17, 1.45]) {
@@ -1091,8 +1091,9 @@ test('the bridge\'s and the berths\' ceiling lamps are fittings: a plate on the 
       assert.ok(x + 12 <= label[1] || x - 12 >= label[1] + label[3], `${zoom}: the fitting at ${x} clear of the COMMS label (${label[1]} to ${label[1] + label[3]})`);
     }
   }
-  const lights = recorder(); drawPhaseLight(lights.ctx, r, phaseWeights(0.3), 3, 0, true, box.roomBays(r, FW), box.roomLamps('bridge', r));
-  const glow = lights.calls.filter(q => q[0] === 'fillRect' && q[3] === 320).map(q => q[1] + 160), guards = lights.calls.filter(q => q[0] === 'strokeRect' && q[3] === 21).map(q => q[1] + 10.5);
+  const lights = recorder(); lights.ctx.createRadialGradient = (...a) => { lights.calls.push(['createRadialGradient', ...a]); return { addColorStop() {} }; };
+  drawPhaseLight(lights.ctx, r, phaseWeights(0.3), 3, 0, true, box.roomBays(r, FW), box.roomLamps('bridge', r));
+  const glow = [...new Set(lights.calls.filter(q => q[0] === 'createRadialGradient').map(q => q[1]))], guards = lights.calls.filter(q => q[0] === 'strokeRect' && q[3] === 21).map(q => q[1] + 10.5);
   assert.deepEqual(glow.map(Math.round), Array.from(box.roomLamps('bridge', r), Math.round), 'each lamp\'s light from where its fitting is'); assert.deepEqual(guards.map(Math.round), glow.map(Math.round), 'and its fitting there');
 });
 test('someone eating alone sits on the edge of the first bunk (#933)', () => {
@@ -2688,4 +2689,18 @@ test('the berths read old and patched on their shared fixtures: lockers with a r
   }
   const { r } = berthCase(8, 0.3, 1.17);
   assert.ok(p6Still((c, t) => drawRoom(c, 'berths', r, { ...berthCase(8, 0.3, 1.17).s, still: true, time: t })), 'the same frame at any time under reduced motion');
+});
+// #932, the lighting pass: the light, the reading lamps and a screen's glow on a face leave every save restored and write nothing.
+const lightApi = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomScreenGlow', 'ROOM_GLOW', 'berthReading', 'bunkReading']);
+test('the lighting pass leaves its saves balanced and writes no text (#932)', () => {
+  const r = layoutBox(LAYOUTS.freighter, 'berths');
+  for (const pr of [0.02, 0.3, 0.5]) for (const night of [0, 0.5, 1]) for (const off of [false, true]) {
+    const s = RS({ w: phaseWeights(pr), night, asleep: 3, berths: 12, well: FW }), small = lightApi.berthReading(r, s), c = fakeCtx();
+    drawPhaseLight(c, r, s.w, 3, night, false, box.roomBays(r, FW), box.roomLamps('berths', r), { glow: lightApi.ROOM_GLOW.galley, small, off });
+    assert.equal(c.depth, 0, `${pr} ${night} ${off}: every save restored`); assert.ok(!c.calls.includes('fillText') && c.fonts.length === 0, 'no text');
+    const d = fakeCtx(); drawRoom(d, 'berths', r, { ...s, damage: { marks: new Set(['berths']), severe: off } }); assert.equal(d.depth, 0);
+  }
+  for (const face of [1, -1]) { const c = fakeCtx(); lightApi.roomScreenGlow(c, { x: 10, y: 20 }, face); assert.equal(c.depth, 0); }
+  assert.equal(lightApi.berthReading(r, RS({ w: phaseWeights(0.3), night: 0.5, asleep: 1, berths: 12, well: FW })).length, 10, 'the evening: every bunk lit but the one slept in and the one shut');
+  assert.equal(lightApi.bunkReading(false, false, phaseWeights(0.02), 0.5), 0, 'nobody reads in the hard burn');
 });

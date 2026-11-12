@@ -995,6 +995,7 @@ function drawCutaway(box, clear = box) {
     const inView = seen(y - 60, y);
     if (pose.name === 'strap') roomJumpSeat(ctx, x, y, pose.face, w.flip);  // a jump seat folded down from the wall behind them (#927)
     const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float' ? floatW : 0, ...(p.role === 'cat' ? {} : { ...portraitLook({ id: p.id, name: p.name }), mood: figureMood(st, p.id, youHurt) }) });
+    if ((p.room === 'bridge' || p.room === 'gunnery') && p.role !== 'cat' && pose.view === 'side' && /sit/.test(pose.name)) roomScreenGlow(ctx, tap.head, pose.face);  // seated at a post, the console's screen on the face (#932)
     if (pose.name === 'tether') {  // a line to a ring on the nearest room wall on their deck
       const walls = ROOMS.filter(r => r.deck === dk).flatMap(r => [X(r.x0), X(r.x1)]), bx = walls.reduce((a, b) => (Math.abs(b - x) < Math.abs(a - x) ? b : a)), rx = bx + Math.sign(x - bx) * 6, ry = deckFloor(lay, dk) - 60;
       ctx.strokeStyle = 'rgba(201,162,39,0.9)'; ctx.lineWidth = 1.4;

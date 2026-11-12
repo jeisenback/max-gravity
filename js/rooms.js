@@ -479,8 +479,9 @@ const berthKeep = b => ({ x: b.x + b.w - 34, y: b.y - 25, w: 16, h: 7 });
 // bunk over it, the curtain (drawn back to the foot, or across the bunk: shut) and the reading lamp hung from the rail over the pillow. The place
 // for its owner's thing (berthKeep) is left clear. In the box (#1024) the frame is solid, a bunk column deep, and the mattress on it shows its
 // top running back from its front edge, where the sleeper lies. Every bunk the same plan: the grab rail worn in its middle where hands go.
+// reading: its reading lamp lit (bunkReading, 0 to 1), its bulb; the pool it casts is the room's light's (berthReading, drawPhaseLight).
 const BUNK_DEPTH = 0.6;
-function roomBunk(ctx, b, F, slept, shut) {
+function roomBunk(ctx, b, F, slept, shut, reading = 0) {
   const n = v => Math.round(v * 100) / 100, x = n(b.x), w = n(b.w), y = n(b.y), yr = n(y - 26.6);
   roomPart(ctx, roomRound(x, y, w, BERTH_FRAME, 1), '#1f3a56', { top: 0.8, under: 0.8, solid: BUNK_DEPTH });
   roomPart(ctx, roomRound(x + w / 2 - 14, y + 0.7, 28, 1.6, 0.8), '#3a5470', { top: 0.5 });  // a grab rail for zero g, worn in its middle where hands go
@@ -496,7 +497,7 @@ function roomBunk(ctx, b, F, slept, shut) {
   roomPart(ctx, roomRound(x + 6.5, yr - 0.4, 5, 2.4, 0.6), '#2a3e54', { top: 0 }); roomDot(ctx, x + 9, yr + 0.8, 0.5, '#56708c');
   roomFlat(ctx, x + 8.4, y - 24.6, 1.2, 1.6, '#2a3e54');
   roomPart(ctx, `M ${n(x + 6)} ${n(y - 23)} L ${n(x + 12)} ${n(y - 23)} L ${n(x + 14)} ${n(y - 19)} L ${n(x + 4)} ${n(y - 19)} Z`, '#4a5a6a', { top: 0.6, side: 1 });
-  roomDot(ctx, x + 9, y - 18.6, 1, '#6a6048');
+  roomDot(ctx, x + 9, y - 18.6, 1, reading ? `rgba(255,214,150,${0.5 + 0.5 * reading})` : '#6a6048');  // its bulb, lit for reading (bunkReading, #932)
   ctx.strokeStyle = '#3a2d48'; ctx.lineWidth = 0.8;
   if (shut) {  // drawn across the bunk, its folds hanging to a wavy hem
     let d = `M ${n(x + 3)} ${n(yr + 1.6)} L ${n(x + w - 3)} ${n(yr + 1.6)} L ${n(x + w - 3)} ${n(y - 1)}`;
@@ -562,7 +563,7 @@ function roomBerths(ctx, r, s, X, W) {
       roomPart(ctx, roomRound(r2(bx - 2), r2(by0), 4, r2(by1 - by0), 1), col);
       roomPart(ctx, `M ${r2(px)} ${r2(top)} L ${r2(bx)} ${r2(by0)} L ${r2(bx)} ${r2(by0 + 3)} L ${r2(px)} ${r2(top + 3)} Z`, col);
     }
-    for (const [b, k] of cols.get(x)) roomBunk(ctx, b, F, k < s.asleep, k === shut);
+    for (const [b, k] of cols.get(x)) roomBunk(ctx, b, F, k < s.asleep, k === shut, bunkReading(k < s.asleep, k === shut, w, s.night));
   }
   if (n) {  // the first bunk's curtain, drawn back: a patch sewn on it, and the printed clip holding it back, its layers and its tag
     const b = berthBunk(r, n, 0, well), cx = r2(b.x + b.w - 8), yr = r2(b.y - 26.6);
@@ -1885,7 +1886,12 @@ function roomLifeSupport(ctx, r, s) {
   roomAtDepth(ctx, 566, F - 44, 0.15, () => cart(549, F - 58));  // the cartridge out, on the last fan, the date on it
 }
 
-// The lamp: a pool of light mixing red (burn), warm (cruise) and a pulsing amber (flip), dimmed at night unless the room keeps its lights.
+// The lamp (#932, look.md rule 10): warm light in a cold hull. Under each ceiling lamp a pool of light in the lamp's colour (warm in cruise, red
+// in the burn, a pulsing amber at the flip, dimmed at night unless the room keeps its lights): a soft wash falling off from the fitting and a
+// soft oval on the floor's strip under it, no cone and no edge. Away from the lamps and toward the ceiling the room goes dark, deeper at night
+// and faintly red in the burn. Drawn over the props and under the people (shiplife.js). The galley's lamp (ROOM_GLOW) is warmer, a little
+// stronger and spread over the mess table. o.small: a bunk's reading lamps (berthReading), each a small pool inside its bunk. o.off: severe
+// damage's flicker, the lamps out for a frame and the dark left.
 // A ceiling lamp's fitting (#1024, look.md rule 5): its base plate on the ceiling's sliver from the cut back to the wall (e, the bay's eye), the
 // housing hung from it at the cut, the lens lit in the lamp's colour (lit) and a wire guard over the lens.
 function roomLampFitting(ctx, x, top, lit, e) {
@@ -1902,18 +1908,106 @@ function roomLampFitting(ctx, x, top, lit, e) {
 // aft lamp over the aft post, clear of the overhead panel and the COMMS label (#1024).
 // The medbay's lamp is over the cot's foot end, clear of the scanner arm's mount on the ceiling.
 const roomLamps = (id, r) => { const W = r.x1 - r.x0; return (id === 'bridge' && W > 380 ? [0.11, 2 / 3] : W > 380 ? [1 / 3, 2 / 3] : id === 'medbay' ? [0.6] : [1 / 2]).map(f => r.x0 + W * f); };
-function drawPhaseLight(ctx, r, w, time, night, keepsLights, fitted = null, at = roomLamps('', r)) {
-  const lamp = roomMix([[255, 90, 70], [255, 226, 184], [255, 176, 48]], [w.burn, w.cruise, w.flip]);
-  const pulse = 1 - w.flip * 0.35 * (0.5 + 0.5 * Math.sin(time * 6)), dim = keepsLights ? 1 : 1 - 0.7 * night, W = r.x1 - r.x0;
-  ctx.save(); ctx.beginPath(); ctx.rect(r.x0, r.top, W, r.floor - r.top); ctx.clip();
-  for (const x of at) {
-    const g = ctx.createRadialGradient(x, r.top, 2, x, r.top, 160);
-    g.addColorStop(0, `rgba(${lamp},${0.2 * pulse * dim})`); g.addColorStop(1, `rgba(${lamp},0)`); ctx.fillStyle = g; ctx.fillRect(x - 160, r.top, 320, r.floor - r.top);
-    const lit = `rgba(${lamp},${0.4 + 0.6 * dim})`, bay = fitted && fitted.find(q => x >= q.x0 && x <= q.x1);
-    if (bay) roomLampFitting(ctx, x, r.top, lit, roomEye(bay)); else roomBox(ctx, x - 12, r.top, 24, 3, lit);
-    if (w.flip > 0.05) roomDot(ctx, x, r.top + 3, 3, `rgba(255,176,48,${0.4 + 0.6 * w.flip * (0.5 + 0.5 * Math.sin(time * 6))})`);
+// A room's lamps that differ from the rest (#932): the galley's, the warmest place on the ship in cruise, its pool warmer, a little stronger and
+// spread over the mess table (roomMessTableIn: a quarter to near three quarters of the way across).
+const ROOM_GLOW = { galley: { gain: 1.3, spread: 0.3, warm: [255, 164, 78] } };
+// The light a room's lamps make (#932), from the phase weights w, the night (0 to 1), whether the room keeps its lights at night, its lamps (at)
+// and its glow (ROOM_GLOW): the dark's colour and how deep it is at the ends and at the ceiling, and the pools' colour, strength and spread.
+function roomLight(r, w, night, keepsLights, at, glow = {}) {
+  const W = r.x1 - r.x0, { gain = 1, spread = 0, warm = [255, 190, 118] } = glow;
+  return {
+    dark: roomMix([[2, 7, 18], [24, 3, 3]], [1 - w.burn, w.burn]), ends: 0.38 + 0.24 * night, ceiling: 0.3 + 0.22 * night,
+    pool: roomMix([[255, 84, 62], warm, [255, 168, 44]], [w.burn, w.cruise, w.flip]), k: gain * (keepsLights ? 1 : 1 - 0.7 * night),
+    spread: spread ? W * spread : Math.min(80, W * 0.3), at,
+  };
+}
+// An ellipse's soft fill over the room's box, centred on (x, cy), rx across and sy times that down, its alpha by stops [[at, a]], in colour col.
+// The fill covers the box whatever the lamp, so what is recorded of it is the box's (the tests read a room's own drawing less its light).
+function roomSoft(g, r, x, cy, rx, sy, col, stops) {
+  g.save(); g.transform(1, 0, 0, sy, 0, cy * (1 - sy));
+  const q = g.createRadialGradient(x, cy, 0, x, cy, rx);
+  for (const [f, a] of stops) q.addColorStop(f, `rgba(${col},${Math.max(0, Math.min(1, a))})`);
+  g.fillStyle = q; g.fillRect(r.x0, (r.top - cy * (1 - sy)) / sy, r.x1 - r.x0, (r.floor - r.top) / sy); g.restore();
+}
+// The dark (L, roomLight) over the room's box: toward each end away from the lamps, and toward the ceiling.
+function roomDark(g, r, L) {
+  const W = r.x1 - r.x0, H = r.floor - r.top, gx = g.createLinearGradient(r.x0, 0, r.x1, 0), near = x => Math.min(...L.at.map(l => Math.abs(x - l))) / (W * 0.4);
+  for (let i = 0; i <= 16; i++) gx.addColorStop(i / 16, `rgba(${L.dark},${L.ends * Math.min(1, near(r.x0 + W * i / 16)) ** 1.5})`);
+  g.fillStyle = gx; g.fillRect(r.x0, r.top, W, H);
+  const gy = g.createLinearGradient(0, r.top, 0, r.floor);
+  gy.addColorStop(0, `rgba(${L.dark},${L.ceiling})`); gy.addColorStop(0.55, `rgba(${L.dark},0)`); g.fillStyle = gy; g.fillRect(r.x0, r.top, W, H);
+}
+// The pools (L, roomLight) over the room's box, as light: from each lamp a wash falling off softly down to the floor, a glow round the fitting,
+// and the oval on the floor's strip under it.
+function roomPools(g, r, L) {
+  const H = r.floor - r.top, k = L.k, c = L.pool;
+  for (const x of L.at) {
+    roomSoft(g, r, x, r.top + 4, L.spread * 1.15, H * 1.05 / (L.spread * 1.15), c, [[0, 0.24 * k], [0.45, 0.1 * k], [1, 0]]);
+    roomSoft(g, r, x, r.top + 5, 30, 1, c, [[0, 0.28 * k], [1, 0]]);
+    roomSoft(g, r, x, r.floor - 3, L.spread, 0.12, c, [[0, 0.46 * k], [0.6, 0.18 * k], [1, 0]]);
   }
-  roomBox(ctx, r.x0, r.top, W, r.floor - r.top, `rgba(${lamp},${(0.05 + w.burn * 0.05) * dim})`); ctx.restore();
+}
+// The light drawn once per room, light (roomLight) and scale into an offscreen canvas at the screen's pixels, and then as one image a frame
+// (#932: a frame costs about what it did with the one glow): two layers, the dark (roomDark) and the pools (roomPools) over it, so the flip's
+// pulse dims the pools and not the dark. The light's inputs are rounded (roomLightStep), so a fade or a ramp reuses a few images rather than
+// making one a frame. Where there is no canvas (Node), drawn straight.
+const ROOM_LIGHTS = new Map();
+const roomLightStep = v => Math.round(v * 32) / 32;
+function roomLightLayer(r, L, px, part) {
+  const key = [part, r.x0, r.x1, r.top, r.floor, px, L.at.join(' '), ...(part === 'dark' ? [L.dark, L.ends, L.ceiling] : [L.pool, L.k, L.spread])].join('|');
+  let c = ROOM_LIGHTS.get(key);
+  if (!c) {
+    if (ROOM_LIGHTS.size > 32) ROOM_LIGHTS.clear();
+    c = document.createElement('canvas'); c.width = Math.ceil((r.x1 - r.x0) * px); c.height = Math.ceil((r.floor - r.top) * px);
+    const g = c.getContext('2d'); g.setTransform(px, 0, 0, px, -r.x0 * px, -r.top * px); (part === 'dark' ? roomDark : roomPools)(g, r, L);
+    ROOM_LIGHTS.set(key, c);
+  }
+  return c;
+}
+// A bunk's reading lamp (#932) is lit in cruise as the lights go down and come up, the evening and the morning, when its bunk is not slept in
+// and its curtain is open: nobody reads in the hard burn, or asleep (roomBunk's own slept and shut decide it). 0 to 1.
+const bunkReading = (slept, shut, w, night) => (slept || shut || night <= 0 || night >= 1 ? 0 : w.cruise);
+// The berths' reading lamps lit (bunkReading) for the state s, as small pools: { x, y, at: the bunk's box, a }, the light on the pillow end.
+function berthReading(r, s) {
+  const n = Math.min(12, s.berths), well = s.well || { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }, shut = r.x1 - r.x0 >= 220 && n >= 3 ? 2 : -1, out = [];
+  for (let k = 0; k < n; k++) {
+    const a = bunkReading(k < s.asleep, k === shut, s.w, s.night); if (!a) continue;
+    const b = berthBunk(r, n, k, well); out.push({ x: b.x + 11, y: b.y - 9, at: { x: b.x + 1, y: b.y - 26.6, w: b.w - 2, h: 26.6 }, a });
+  }
+  return out;
+}
+function drawPhaseLight(ctx, r, w, time, night, keepsLights, fitted = null, at = roomLamps('', r), o = {}) {
+  const lamp = roomMix([[255, 90, 70], [255, 226, 184], [255, 176, 48]], [w.burn, w.cruise, w.flip]), L = roomLight(r, { burn: roomLightStep(w.burn), cruise: roomLightStep(w.cruise), flip: roomLightStep(w.flip) }, roomLightStep(night), keepsLights, at, o.glow);
+  if (o.off) L.k = 0;
+  const pulse = 1 - w.flip * 0.35 * (0.5 + 0.5 * Math.sin(time * 6)), dim = keepsLights ? 1 : 1 - 0.7 * night, W = r.x1 - r.x0, H = r.floor - r.top;
+  ctx.save(); ctx.beginPath(); ctx.rect(r.x0, r.top, W, H); ctx.clip();
+  if (typeof document === 'object' && ctx.getTransform) {
+    const m = ctx.getTransform(), px = Math.round(m.a * 1e4) / 1e4, ox = Math.round(m.a * r.x0 + m.e), oy = Math.round(m.d * r.top + m.f);  // drawn on whole pixels, unscaled: a copy, not a resample
+    ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.imageSmoothingEnabled = false;
+    ctx.drawImage(roomLightLayer(r, L, px, 'dark'), ox, oy); ctx.globalAlpha = pulse; ctx.drawImage(roomLightLayer(r, L, px, 'pools'), ox, oy); ctx.restore();  // the flip's pulse on the pools
+  } else { roomDark(ctx, r, L); ctx.globalAlpha = pulse; roomPools(ctx, r, L); ctx.globalAlpha = 1; }
+  ctx.globalCompositeOperation = 'screen';
+  for (const p of o.off ? [] : o.small || []) {  // a reading lamp's pool, inside its bunk
+    ctx.save(); ctx.beginPath(); ctx.rect(p.at.x, p.at.y, p.at.w, p.at.h); ctx.clip();
+    const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 18);
+    g.addColorStop(0, `rgba(255,200,128,${0.6 * p.a})`); g.addColorStop(0.5, `rgba(255,190,118,${0.24 * p.a})`); g.addColorStop(1, 'rgba(255,190,118,0)');
+    ctx.fillStyle = g; ctx.fillRect(p.at.x, p.at.y, p.at.w, p.at.h); ctx.restore();
+  }
+  ctx.globalCompositeOperation = 'source-over';
+  for (const x of at) {
+    const lit = o.off ? '#4a5560' : `rgba(${lamp},${0.4 + 0.6 * dim})`, bay = fitted && fitted.find(q => x >= q.x0 && x <= q.x1);
+    if (bay) roomLampFitting(ctx, x, r.top, lit, roomEye(bay)); else roomBox(ctx, x - 12, r.top, 24, 3, lit);
+    if (w.flip > 0.05 && !o.off) roomDot(ctx, x, r.top + 3, 3, `rgba(255,176,48,${0.4 + 0.6 * w.flip * (0.5 + 0.5 * Math.sin(time * 6))})`);
+  }
+  ctx.restore();
+}
+// A screen's cool light (#932, look.md rule 10) on the side of a seated face toward it (face 1: the screen is to the right), drawn over the
+// person: the bridge's and the guns' posts, at their consoles.
+function roomScreenGlow(ctx, head, face) {  // on the head's half toward the screen, not the air in front of it
+  ctx.save(); ctx.globalCompositeOperation = 'screen'; ctx.beginPath(); ctx.rect(face > 0 ? head.x - 1 : head.x - 9, head.y - 9, 10, 18); ctx.clip();
+  ctx.beginPath(); ctx.arc(head.x, head.y, 6.5, 0, Math.PI * 2); ctx.clip();
+  const g = ctx.createRadialGradient(head.x + face * 7, head.y, 0, head.x + face * 7, head.y, 10);
+  g.addColorStop(0, 'rgba(120,190,255,0.7)'); g.addColorStop(1, 'rgba(120,190,255,0)'); ctx.fillStyle = g; ctx.fillRect(head.x - 9, head.y - 9, 18, 18); ctx.restore();
 }
 
 // The thrust sign: the phase and the g reading, centred on x with its top at y (FLIP SECURE alternates with FLIP every two seconds), on a
@@ -1956,7 +2050,7 @@ const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, 
 // Which way someone on a room's chair faces (#985): the bridge's and the guns' toward their consoles, the chair's back behind them (#933), the
 // medbay's stool toward the cot. The galley's bench is not here: at the mess table people face you.
 const SEAT_FACE = { bridge: 1, gunnery: -1, medbay: -1 };
-const LAMP_FITTED = ['bridge', 'berths', 'medbay', 'hold', 'gunnery', 'engine', 'head', 'workshop', 'airlock', 'lifesupport'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
+const LAMP_FITTED = ['galley', 'bridge', 'berths', 'medbay', 'hold', 'gunnery', 'engine', 'head', 'workshop', 'airlock', 'lifesupport'];  // the rooms in the box whose ceiling lamps are fittings so far (#1024)
 function drawRoom(ctx, id, r, s) {
   if (s.still) s = { ...s, time: 0 };  // reduced motion: the clock stops, so nothing sways, floats, scrolls or pulses
   const W = r.x1 - r.x0;
@@ -1970,5 +2064,6 @@ function drawRoom(ctx, id, r, s) {
   });
   const marked = !!(s.damage && s.damage.marks.has(id));
   if (marked) drawDamage(ctx, r, s);
-  if (!(marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0)) drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine', LAMP_FITTED.includes(id) ? roomBays(r, s.well) : null, roomLamps(id, r));  // severe damage: the lamp flickers
+  drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine', LAMP_FITTED.includes(id) ? roomBays(r, s.well) : null, roomLamps(id, r),
+    { glow: ROOM_GLOW[id], small: id === 'berths' ? berthReading(r, s) : [], off: marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0 });  // severe damage: the lamp flickers
 }
