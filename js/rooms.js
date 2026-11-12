@@ -107,18 +107,17 @@ function roomPorthole(ctx, x, y, rad, spin) {
   for (let k = 0; k < 8; k++) roomDot(ctx, x + Math.cos(k * Math.PI / 4 + Math.PI / 8) * (rad + 3.2), y + Math.sin(k * Math.PI / 4 + Math.PI / 8) * (rad + 3.2), 1, '#56708c');
 }
 
-// The crash couches (#990): fixed in the rooms and drawn in every phase, in racks bolted to the deck, each couch a person long. COUCH_RACKS
-// are the racks: on the bridge, in its forward bay's clear floor between the shaft and the first post, under the window, two high (the hand's
-// and the captain's, #972); in the berths, one three high in the left bay between the lockers under the room's name and the first bunk column,
-// clear of the name down to the smallest window (#937), and one two high in the crew's corner beside the well, on the floor under the wall unit
-// and short of the guitar. A rack is COUCH_W wide at x (its left post's left edge), its couches COUCH_TIER apart, the lowest one's pad COUCH_PAD
+// The crash couches (#990): fixed in the rooms and drawn in every phase. The bridge's station chairs are couches that recline (roomBridgeSeat);
+// the rest are in racks bolted to the berths' deck, each couch a person long. COUCH_RACKS are the racks: one three high in the left bay between
+// the lockers under the room's name and the first bunk column, clear of the name down to the smallest window (#937), and one two high in the
+// crew's corner beside the well, on the floor under the wall unit and short of the guitar. A rack is COUCH_W wide at x (its left post's left edge), its couches COUCH_TIER apart, the lowest one's pad COUCH_PAD
 // over the deck. couchPlaces: the couches in order, k from 0, each with its room, the hip x of the person who lies on it (world units) and lift,
 // how high its pad is over the deck, where that person lies.
 const COUCH_W = 84, COUCH_TIER = 27, COUCH_PAD = 10, COUCH_DEPTH = 0.5;
 const COUCH_RIGHT = Math.round(((LAYOUTS.freighter.well.x + LAYOUTS.freighter.well.w / 2) * LAYOUTS.freighter.width + 8) * 100) / 100;  // 8 past the shaft
-const COUCH_RACKS = [{ room: 'bridge', x: COUCH_RIGHT, tiers: 2 }, { room: 'berths', x: 86, tiers: 3 }, { room: 'berths', x: COUCH_RIGHT, tiers: 2 }];
+const COUCH_RACKS = [{ room: 'berths', x: 86, tiers: 3 }, { room: 'berths', x: COUCH_RIGHT, tiers: 2 }];
 const couchPlaces = () => COUCH_RACKS.flatMap(k => Array.from({ length: k.tiers }, (_, t) => ({ room: k.room, x: k.x + 44, lift: COUCH_PAD + t * COUCH_TIER })));
-const COUCH_OLD = 3, COUCH_PATCHED = 1;  // old and patched (point 6): one couch's pad an older one in another shade, another's patched
+const COUCH_OLD = 1, COUCH_PATCHED = 3;  // old and patched (point 6): one couch's pad an older one in another shade, another's patched
 // A crash couch (#990) for someone lying on their back at hip x, its pad's top at P: the contoured pad, rising a little under the knees, the
 // headrest at the head end on the left, the frame under them bolted to the rack's posts by a bracket at each end, and the harness. k: its
 // number (couchPlaces); on: someone strapped in on it, the figure's own straps over them; empty, the harness hangs loose over the pad's edge.
@@ -193,6 +192,8 @@ function roomStool(ctx, x, F, back) {
     const hx = back > 0 ? b1 : b0;  // the harness: a shoulder strap down the back's front to its buckle, and the lap belt
     ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3; ctx.beginPath(); ctx.moveTo(hx + lean, F - 47); ctx.quadraticCurveTo(hx - 2 * back, F - 36, hx - back, F - 24); ctx.lineTo(hx + 6 * back, F - 22); ctx.stroke();
     roomFlat(ctx, hx - back - 1.25, F - 35, 2.5, 2, '#7a8794');
+    roomPart(ctx, roomRound(n(b0 + lean - 1.5), F - 57, 8, 8, 2.5), '#284664', { top: 1, side: back > 0 ? -1.5 : 1.5 });  // a crash seat's headrest (#990)
+    roomPart(ctx, roomRound(back > 0 ? n(sx + 8) : n(sx - 12.5), F - 21, 4.5, 13, 1.5), '#2b4766', { top: 0.6, side: 1 });  // and its leg rest, stowed
   }
   roomPart(ctx, roomRound(sx - 10, F - FIG_SEAT, 20, 4.5, 2), '#2a4664', { top: 1, under: 1, solid: 0.25 });
 }
@@ -1155,20 +1156,29 @@ const bridgeGlass = (r, well) => {
 };
 // A pilot's seat at a post of the bridge (#933), facing forward (SEAT_FACE): its pan at the seated hip (23) on a pedestal bolted to the deck, the
 // back behind it with a headrest at the seated head, and the harness, slack on the back when no one is strapped in. Old and patched (point 6):
-// the foot plate scuffed by boots, the paint worn off the headrest's edge where hands pull on it in zero g.
-function roomBridgeSeat(ctx, x, F) {  // its pad and its foot plate solid in the box (#1024), the plate's shadow on the strip
+// the foot plate scuffed by boots, the paint worn off the headrest's edge where hands pull on it in zero g. A crash couch (#990): a leg rest
+// hangs from the pan's front, and by r (0 upright, 1 flat: the hard burn) the back and the headrest recline about the pan's back edge and the
+// leg rest swings up about its front, so whoever lies on it lies flat at the pan's height, the head on the headrest 44 behind the seat
+// (STATION_LIE: the hip 12 behind it). Turned, not redrawn: a path given to roomPart is fixed per layout.
+const STATION_LIE = 12, STATION_PAD = 23;
+const roomTurned = (ctx, px, py, a, fn) => { if (!a) { fn(); return; } ctx.save(); ctx.translate(px, py); ctx.rotate(a); ctx.translate(-px, -py); fn(); ctx.restore(); };
+function roomBridgeSeat(ctx, x, F, r = 0) {  // its pad and its foot plate solid in the box (#1024), the plate's shadow on the strip
+  const a = -r * Math.PI / 2;
   roomPart(ctx, roomRound(x - 9, F - 2.5, 18, 2.5, 1), '#1c3249', { top: 0.6, solid: 0.25 });
   roomDot(ctx, x - 6.5, F - 1.2, 0.6, '#56708c'); roomDot(ctx, x + 6.5, F - 1.2, 0.6, '#56708c');  // its bolts
   for (const sx of [x - 4.5, x + 2]) roomFlat(ctx, sx, F - 2.2, 2.6, 0.7, '#5a6670');  // scuffs, where boots go
   roomPart(ctx, `M ${x - 2} ${F - 19} L ${x + 2} ${F - 19} L ${x + 2.5} ${F - 2.5} L ${x - 2.5} ${F - 2.5} Z`, '#1c3249', { top: 0, side: 1.2 });
-  roomPart(ctx, roomRound(x - 11, F - 52, 2.5, 4, 0.8), '#1c3249', { top: 0 });  // the headrest's stem
-  roomPart(ctx, `M ${x - 13} ${F - 20} L ${x - 8} ${F - 20} L ${x - 6.5} ${F - 49} L ${x - 11.5} ${F - 49} Z`, '#284664', { top: 1, side: -1.5 });
-  roomPart(ctx, roomRound(x - 14, F - 59, 8, 8, 2.5), '#284664', { top: 1, side: -1.5 });
-  roomFlat(ctx, x - 13.4, F - 57, 0.9, 3.5, '#6a747c');  // worn where hands pull on it
+  roomTurned(ctx, x + 10, F - 21, a, () => roomPart(ctx, roomRound(x + 8, F - 21, 4.5, 13, 1.5), '#2b4766', { top: 0.6, side: 1 }));  // the leg rest
+  roomTurned(ctx, x - 10, F - 21, a, () => {
+    roomPart(ctx, roomRound(x - 11, F - 52, 2.5, 4, 0.8), '#1c3249', { top: 0 });  // the headrest's stem
+    roomPart(ctx, `M ${x - 13} ${F - 20} L ${x - 8} ${F - 20} L ${x - 6.5} ${F - 49} L ${x - 11.5} ${F - 49} Z`, '#284664', { top: 1, side: -1.5 });
+    roomPart(ctx, roomRound(x - 14, F - 59, 8, 8, 2.5), '#284664', { top: 1, side: -1.5 });
+    roomFlat(ctx, x - 13.4, F - 57, 0.9, 3.5, '#6a747c');  // worn where hands pull on it
+    ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3;  // the harness: a shoulder strap down the back to its buckle, and the lap belt
+    ctx.beginPath(); ctx.moveTo(x - 7.5, F - 47); ctx.quadraticCurveTo(x - 10.5, F - 36, x - 9, F - 24); ctx.moveTo(x - 9, F - 22); ctx.lineTo(x - 3, F - 21); ctx.stroke();
+    roomFlat(ctx, x - 10.5, F - 35, 2.5, 2, '#7a8794');
+  });
   roomPart(ctx, roomRound(x - 11, F - 23, 22, 5, 2), '#2e4a68', { top: 1, under: 1, solid: 0.25 });
-  ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3;  // the harness: a shoulder strap down the back to its buckle, and the lap belt
-  ctx.beginPath(); ctx.moveTo(x - 7.5, F - 47); ctx.quadraticCurveTo(x - 10.5, F - 36, x - 9, F - 24); ctx.moveTo(x - 9, F - 22); ctx.lineTo(x - 3, F - 21); ctx.stroke();
-  roomFlat(ctx, x - 10.5, F - 35, 2.5, 2, '#7a8794');
 }
 // The bridge (#933): a console at waist height in front of each post (the seats are drawn by drawRoom), a screen on each, keys on its sloped top
 // and a grab handle on its front; the comms station's rack on the aft post's console (the first); the throttle at the pilot's (the second),
@@ -2231,7 +2241,7 @@ function drawRoom(ctx, id, r, s) {
     let k = 0; for (const c of COUCH_RACKS) { if (c.room === id) roomCouchRack(ctx, c.x, r.floor, c.tiers, k, s.couched); k += c.tiers; }  // its crash couches, in every phase (#990)
     const seats = SEATS[id] || [];  // its seats (shiplife.js), where people sit (#925): the galley's on one bench along the mess table, a pilot's seat at each post of the bridge, a stool anywhere else
     if (id === 'galley' && seats.length) roomBench(ctx, r.x0 + W * seats[0] - 14, r.x0 + W * seats[seats.length - 1] + 14, r.floor, true);
-    else if (id === 'bridge') for (const f of seats) roomBridgeSeat(ctx, Math.round((r.x0 + W * f) * 100) / 100, r.floor);  // a pilot's seat at each post (#933)
+    else if (id === 'bridge') seats.forEach((f, i) => roomBridgeSeat(ctx, Math.round((r.x0 + W * f) * 100) / 100, r.floor, (s.recline || [])[i] || 0));  // a pilot's seat at each post (#933), reclined as a crash couch in the hard burn (#990)
     else for (const f of seats) roomStool(ctx, r.x0 + W * f, r.floor, id === 'medbay' ? 0 : SEAT_FACE[id] || 0);  // a station's chair faces its console (#933); the medbay's is a stool
   });
   const marked = !!(s.damage && s.damage.marks.has(id));

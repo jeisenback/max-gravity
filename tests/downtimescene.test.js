@@ -262,6 +262,7 @@ test('while the downtime scene is open its choices are tagged: on the room for a
   await ev(burnHelpers);
   const r = await ev(() => {
     const t = onBurn(); t.left = t.total * 0.6; t.lifeBlock = shipDay(t.elapsed).block;
+    shipPeople()[0].x = 0.4;  // the hand off their couch at the bridge's end post (#990), mid-ship: the camera keeps them in the part the scene leaves clear, the galley too
     const mate = shipPeople().find(p => p.id && p.role !== 'you' && p.role !== 'captain');
     const real = window.downtimeFive;
     window.downtimeFive = () => [ACTIVITIES.meal, { label: 'Cards in the galley', on: () => 'x', where: 'galley', run: () => '' },
@@ -300,6 +301,7 @@ test('a tagged person out of view gets no tag, and nothing throws', async () => 
   await ev(burnHelpers);
   const r = await ev(() => {
     const t = onBurn(); t.left = t.total * 0.6; t.lifeBlock = shipDay(t.elapsed).block;
+    shipPeople()[0].x = 0.4;  // the hand off their couch at the bridge's end post (#990), mid-ship: the camera keeps them in the part the scene leaves clear, the galley too
     const real = window.downtimeFive;
     window.downtimeFive = () => [ACTIVITIES.meal, { label: 'Nobody', on: () => 'x', where: () => 'c:nobody-aboard', run: () => '' }];
     try { openEvent(downtimeScene()); let threw = null; try { render(); } catch (e) { threw = String(e); } return { threw, tags: (G.burnBoxes.tags || []).map(g => g.room || g.id) }; } finally { window.downtimeFive = real; finishEvent(); }

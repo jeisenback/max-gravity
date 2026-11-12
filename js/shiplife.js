@@ -492,11 +492,11 @@ function shipPeople() {
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // A hand's captain is aboard too: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
   const cap = hiredCaptain(), all = cap ? [...people, { name: cap.first, role: 'captain', id: cap.id }] : people;
-  // Everyone starts strapped in for the burn out, the k-th of the company on couch k (couchPlace).
-  const owners = bunkOwners(all, all.length), nb = Math.min(12, ship().berths);
+  // Everyone starts strapped in for the burn out, on their couch (couchPlan).
+  const owners = bunkOwners(all, all.length).filter(Boolean), nb = Math.min(12, ship().berths), job = hired(), plan = couchPlan(owners.map(p => p.role), job ? POSTS[job.post].role : null);
   for (const p of all) {
-    const c = p.role === 'cat' ? { room: 'berths', x: CAT_SPOT / LAYOUTS.freighter.width, dk: roomAt('berths').deck, lift: 0, couchAt: null } : couchPlace(owners.indexOf(p), nb);
-    Object.assign(p, { room: c.room, x: c.x, dk: c.dk, tdk: c.dk, seatDk: c.dk, tx: null, wait: p.role === 'captain' ? 3 : lifeRand(1, 4), seat: c.x, couch: 1, lift: c.lift, couchAt: c.couchAt });
+    const k = owners.indexOf(p), c = k < 0 ? { room: 'berths', x: CAT_SPOT / LAYOUTS.freighter.width, dk: roomAt('berths').deck, lift: 0, couchAt: null, station: null } : couchPlace(plan[k], k, nb);
+    Object.assign(p, { room: c.room, x: c.x, dk: c.dk, tdk: c.dk, seatDk: c.dk, tx: null, wait: p.role === 'captain' ? 3 : lifeRand(1, 4), seat: c.x, couch: 1, lift: c.lift, couchAt: c.couchAt, station: c.station });
   }
   return (t.aboard = all);
 }
@@ -518,18 +518,35 @@ function clearOf(p, x, people = []) {
   return x;
 }
 
-// Where the k-th of the ship's company (bunkOwners' order: the hand, the captain, the crew, the passengers) lies in the hard burn (#990): on
-// couch k of the couches fixed in the rooms (rooms.js couchPlaces), the hand and the captain on the bridge's rack; anyone past the couches
-// (a company larger than they hold) strapped into a bunk, as a sleeper is at the flip (#927): their own, bunk k of the nb, or, past the bunks,
-// the bunk of one who is on a couch (bunkSlots gives it them). room, dk, and x (a share of the width) where they go; lift, how high over the
-// deck they lie; couchAt, the couch's number, null in a bunk, and then bunk, its number.
-function couchPlace(k, nb) {
-  const lay = LAYOUTS.freighter, W = lay.width, c = couchPlaces()[k];
-  if (c) return { room: c.room, x: c.x / W, dk: roomAt(c.room).deck, lift: c.lift, couchAt: k };
-  const n = Math.max(1, nb), well = { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W };
-  const b = (k < n ? k : k - n) % n;
-  return { room: 'berths', x: berthSleeper(berthBunk(layoutBox(lay, 'berths'), n, b, well)).x / W, dk: roomAt('berths').deck, lift: 0, couchAt: null, bunk: b };
+// Who lies where in the hard burn (#990), for the ship's company in its standing order (bunkOwners: roles, the hand as 'you', whose post's role
+// is handRole): a bridge station's own on its couch first (the slicer at comms, the pilot at the helm, the captain at the captain's post, the
+// hand at theirs), and the hand with no station there at a free one; then everyone else on the berths' racks in order (rooms.js couchPlaces);
+// then a bridge station left free; then a bunk, strapped in as a sleeper is at the flip (#927). The gunnery's posts are crash seats that stay
+// upright (no room to lie one back between its consoles and the torpedo rack), so a gunner is not at the guns. Each place: { at: 'station',
+// room, seat } (SEATS' index), { at: 'rack', k }, or { at: 'bunk' }.
+function couchPlan(roles, handRole) {
+  const n = SEATS.bridge.length, racks = couchPlaces().length, taken = new Set(), plan = roles.map(() => null), own = { ...POST_SEAT.bridge, captain: 2 };  // the captain's post, the third (#972)
+  const seat = (i, k) => { taken.add(k); plan[i] = { at: 'station', room: 'bridge', seat: k }; }, free = () => [...Array(n).keys()].find(k => !taken.has(k));
+  roles.forEach((r, i) => { const k = own[r === 'you' ? handRole : r]; if (k !== undefined && !taken.has(k)) seat(i, k); });
+  const hand = roles.indexOf('you');
+  if (hand >= 0 && !plan[hand] && free() !== undefined) seat(hand, free());
+  let k = 0;
+  roles.forEach((r, i) => { if (!plan[i]) { if (k < racks) plan[i] = { at: 'rack', k: k++ }; else if (free() !== undefined) seat(i, free()); else plan[i] = { at: 'bunk' }; } });
+  return plan;
 }
+// Where the place q (couchPlan) of the k-th of the company is: room, dk, and x (a share of the width) where they go; lift, how high over the
+// deck they lie; station, the bridge seat's index, or couchAt, the rack couch's number; in a bunk, bunk k of the nb, or past the bunks the
+// bunk of one who is on a couch (bunkSlots gives it them).
+function couchPlace(q, k, nb) {
+  const lay = LAYOUTS.freighter, W = lay.width, none = { station: null, couchAt: null };
+  if (q.at === 'station') { const r = roomAt(q.room); return { ...none, room: q.room, x: r.x0 + r.w * SEATS[q.room][q.seat] - STATION_LIE / W, dk: r.deck, lift: STATION_PAD, station: q.seat }; }
+  if (q.at === 'rack') { const c = couchPlaces()[q.k]; return { ...none, room: c.room, x: c.x / W, dk: roomAt(c.room).deck, lift: c.lift, couchAt: q.k }; }
+  const n = Math.max(1, nb), well = { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, b = (k < n ? k : k - n) % n;
+  return { ...none, room: 'berths', x: berthSleeper(berthBunk(layoutBox(lay, 'berths'), n, b, well)).x / W, dk: roomAt('berths').deck, lift: 0, bunk: b };
+}
+// How far each bridge station's couch is reclined (#990), by its seat: as far as its person has strapped in on it (p.couch, eased in the hard
+// burn, at once under reduced motion); one with no one on it lies flat through the hard burn and stands up after.
+const stationRecline = (people, ph) => SEATS.bridge.map((f, i) => { const p = people.find(q => q.station === i); return p ? p.couch || 0 : +(ph === 'couch'); });
 const CAT_SPOT = 60;  // where the cat curls up on the berths' deck in the hard burn, under the lockers and clear of the couches
 
 // Sent somewhere by a downtime activity you chose: the timetable takes them back when they have been there a while (lifeTick).
@@ -969,10 +986,10 @@ function drawCutaway(box, clear = box) {
 
   // The rooms, the tank, the ladder well and its ladder full height (the tube through the tank), and the bulkheads beside the well.
   const cap = ship().cargo, nb = Math.min(12, ship().berths), owners = bunkOwners(people, nb), slots = new Map(), job = hired();
-  const bunked = p => p.role !== 'cat' && p.couchAt === null && ph === 'couch' && (p.couch || 0) >= 0.6;  // past the couches, strapped into a bunk in the hard burn (couchPlace, #990)
+  const bunked = p => p.role !== 'cat' && p.couchAt === null && p.station === null && ph === 'couch' && (p.couch || 0) >= 0.6;  // past the couches, strapped into a bunk in the hard burn (couchPlan, #990)
   bunkSlots(people, owners, p => isAsleep(p) || bunked(p)).forEach((k, p) => slots.set(p, k));  // whoever is turned in lies in their own bunk (#934), or a free one
   const bunks = owners.map(p => p && { slept: slots.has(p), ...bunkKit(p.role === 'you' ? { id: 'you', role: job ? POSTS[job.post].role : 'rating', culture: st.background } : { ...((p.id && st.people[p.id]) || p), role: p.role, id: p.id || p.name }) });
-  const s = { bunks, w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt),
+  const s = { bunks, w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, ph),
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);
