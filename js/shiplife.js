@@ -188,14 +188,16 @@ function standWatch(t, day, stands, post, relieved, relievedAt) {
 function watchTonight(t) {
   const w = t && t.watch, now = t && shipDay(t.elapsed);
   if (!w) return null;
-  if (now.day > w.night || (now.day === w.night && now.block === 'wake')) { delete t.watch; return null; }
+  if (now.day > w.night) { delete t.watch; return null; }  // kept through the wake, so the morning excuses who stood it (#1056)
   return now.day === w.night ? w : null;
 }
 // A scene's record with its stander able by the ship's state `s` ({ hurt, you }): one hurt that night keeps no watch, as on the rota (#1052).
 const ableWatch = (w, s) => (w && !(w.stands === 'you' ? s.you : (s.hurt || []).includes(w.stands)) ? w : null);
 // `who` is what the game decides elsewhere: { aid } the first-aid giver's id (roleHolder('medic')) and { you } whether you are hurt (handHurt).
+// The crew who are hurt, by id: those aboard with an injury (the ship's state and tonight's, #1055).
+const crewHurt = st => st.crew.filter(id => (st.people || {})[id] && (st.injured || {})[id]);
 function shipState(st, t, maxArmor, rnd, who) {
-  const crew = st.crew.map(id => (st.people || {})[id]).filter(Boolean), hurt = crew.filter(c => (st.injured || {})[c.id]).map(c => c.id);
+  const crew = st.crew.map(id => (st.people || {})[id]).filter(Boolean), hurt = crewHurt(st);
   const low = crew.filter(c => !hurt.includes(c.id) && c.mood && c.mood.kind === 'low' && c.mood.until > st.day).map(c => c.id);  // as moodLow
   const d = maxArmor > 0 ? 1 - st.armor / maxArmor : 0;
   const out = { marks: marksFor(t, d, rnd), severe: d > 2 / 3, hurt, low, you: !!who.you, aid: who.aid || null };
@@ -287,24 +289,33 @@ function nightsAhead(elapsed, arrive) {
   while (k < 3 && (day + k + 1 + at) * SHIP_DAY - 6 < arrive) k++;
   return k;
 }
-// The bill on a night of this burn, `ahead` nights after tonight, with a scene's record in (the card, the handover line). Null with no burn.
-function billOn(ahead = 0) {
-  const t = G.transit, s = nightState();
+// The bill on a night of this burn, `ahead` nights after tonight, with a scene's record in (the card, the handover line), from the game state `st`,
+// the burn `t` and tonight's ship state `s` (nightStateOf). Null with no burn. Later nights: tonight's hurt, which holds to port (the day moves at
+// arrival, a clinic heals the crew).
+function billOnOf(st, t, s, ahead = 0) {
   if (!t || !s) return null;
-  const night = G.state.day + shipDay(t.elapsed).day + ahead;
-  return billWithWatch(billFor(G.state, ahead ? { ...s, watch: null } : s, night), ableWatch(t.watch, s), shipDay(t.elapsed).day + ahead);  // later nights: tonight's hurt, which holds to port (the day moves at arrival, a clinic heals the crew)
+  const night = st.day + shipDay(t.elapsed).day + ahead;
+  return billWithWatch(billFor(st, ahead ? { ...s, watch: null } : s, night), ableWatch(t.watch, s), shipDay(t.elapsed).day + ahead);
 }
-// Where the hand keeps a watch tonight, by the bill or a scene's record (#951), with the lights down: a room, or null.
-function handWatchPost() {
-  const t = G.transit;
-  if (!t || !isDark()) return null;
-  const s = nightState(), w = s.watch;
+// Where the hand keeps a watch tonight, by the bill or a scene's record (#951), with the lights down (`dark`): a room, or null.
+function handWatchPostOf(t, s, dark) {
+  if (!t || !s || !dark) return null;
+  const w = s.watch;
   if (w && w.stands === 'you') return w.post;
   return onWatchTonight({ id: 'you', role: 'you' }, s);
 }
-// Tonight's bill and a scene's record, from the burn as it stands, for what reads them outside the frame's ship state (isAsleep, the dusk).
-const nightState = () => { const t = G.transit; if (!t) return null; const st = G.state, hurt = st.crew.filter(id => (st.injured || {})[id]);
-  const s = { hurt, you: typeof handHurt === 'function' && handHurt() }; s.watch = ableWatch(watchTonight(t), s); s.bill = billFor(st, s, st.day + shipDay(t.elapsed).day); return s; };
+// Tonight's bill and a scene's record, from the game state, the burn and whether the hand is hurt (`you`), for what reads them outside the frame's
+// ship state (isAsleep, the dusk). Null with no burn.
+function nightStateOf(st, t, you) {
+  if (!t) return null;
+  const s = { hurt: crewHurt(st), you: !!you };
+  s.watch = ableWatch(watchTonight(t), s); s.bill = billFor(st, s, st.day + shipDay(t.elapsed).day);
+  return s;
+}
+// The same, read from the game (G) by their callers (#1055).
+const nightState = () => nightStateOf(G.state, G.transit, typeof handHurt === 'function' && handHurt());
+const billOn = (ahead = 0) => billOnOf(G.state, G.transit, nightState(), ahead);
+const handWatchPost = () => handWatchPostOf(G.transit, nightState(), isDark());
 const isAsleep = p => !p.staged && p.at !== 'alone' && isDark() && p.room === 'berths' && p.tx === null && p.dk === roomAt('berths').deck && p.role !== 'cat' && !onWatchTonight(p, nightState()) && phase() !== 'couch';  // asleep through the straps and the float too: strapped into the bunk (#927)
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.

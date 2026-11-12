@@ -10,8 +10,8 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const { watchBill, routineSpot, WATCH_ORDER, nightsAhead, SHIP_DAY } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
-  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['watchBill', 'routineSpot', 'WATCH_ORDER', 'nightsAhead', 'SHIP_DAY']);
+const { watchBill, routineSpot, WATCH_ORDER, nightsAhead, SHIP_DAY, nightStateOf, billOnOf, handWatchPostOf } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/burnspeed.js'],
+  { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['watchBill', 'routineSpot', 'WATCH_ORDER', 'nightsAhead', 'SHIP_DAY', 'nightStateOf', 'billOnOf', 'handWatchPostOf']);
 const plain = x => JSON.parse(JSON.stringify(x));
 const crew = (over = {}) => [
   { id: 'you', role: 'you' }, { id: 'p', role: 'pilot' }, { id: 'm', role: 'slicer' }, { id: 'c', role: 'xo' }, { id: 't', role: 'engineer' }, { id: 'h', role: 'icehand' },
@@ -259,4 +259,35 @@ test('the card shows only the nights the burn lasts into (#1053)', async () => {
   await done();
   assert.equal(r.short, 2, 'tonight and tomorrow');
   assert.equal(r.last, 1, 'tonight only');
+});
+
+// ---------- #1055, #1056 ----------
+
+test('the readers take their state: tonight\'s ship state, the bill on a night and the hand\'s post, from the game state and the burn given (#1055)', () => {
+  const st = { day: 2, crew: ['p', 's', 'e'], people: { p: { id: 'p', role: 'pilot' }, s: { id: 's', role: 'slicer' }, e: { id: 'e', role: 'engineer' } }, injured: { s: true } };
+  const t = { elapsed: SHIP_DAY * 0.7 - 6 };  // ship day 0, the night: night 2, the bridge's turn index 2 is the hand
+  const s = nightStateOf(st, t, false);
+  assert.deepEqual(plain(s.hurt), ['s']); assert.equal(s.you, false);
+  assert.deepEqual(plain(billOnOf(st, t, s, 0)), { bridge: 'you', engine: 'e' });
+  assert.equal(handWatchPostOf(t, s, true), 'bridge', 'the hand keeps the bridge tonight');
+  assert.equal(handWatchPostOf(t, s, false), null, 'not with the lights up');
+  assert.equal(billOnOf(st, null, s, 0), null, 'no burn, no bill');
+  assert.equal(nightStateOf(st, null, false), null);
+});
+
+test('the morning after a scene\'s watch, its stander is excused from the head, and the one it relieved is not (#1056)', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurnAtNight(1); t.elapsed += SHIP_DAY * 0.25;  // that night
+    EFFECTS.standWatch({ stands: 'you', post: 'engine', relieved: 'engineer', relievedAt: 'bunk' });
+    const rota = billFor(G.state, { hurt: [], you: false }, G.state.day + shipDay(t.elapsed).day).engine;
+    while (shipDay(t.elapsed).block !== 'wake') t.elapsed += 0.5;
+    const state = shipState(G.state, t, ship().armor, () => 0.5, { aid: null, you: false }), you = shipPeople().find(p => p.role === 'you'), relieved = shipPeople().find(p => p.id === rota);
+    return { record: !!watchTonight(t), you: onWatchTonight(you, state), relieved: onWatchTonight(relieved, state) };
+  });
+  await done();
+  assert.equal(r.record, true, 'the record holds through the wake');
+  assert.equal(r.you, 'engine', 'the scene\'s stander kept the night: excused');
+  assert.equal(r.relieved, null, 'the one it relieved slept: not excused');
 });
