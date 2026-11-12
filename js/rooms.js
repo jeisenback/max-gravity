@@ -867,6 +867,31 @@ function roomMessTableIn(ctx, r, s) {
 // the counter's doors a replacement in another shade, the dispenser's head a newer unit on the old foot with fresh bolts, its water line taped and
 // tied, the stove cupboard's latch printed and tagged temporary, and scuffs low on the stove and the counter where boots go (the table's worn edge
 // and the bench's foot bar are theirs: roomMessTableIn, roomBench).
+// The galley's screen (#1035): on through supper and the handover, when the feeds are watched (s.screen, from the ship's day: shiplife.js).
+const galleyScreenOn = block => block === 'supper' || block === 'handover';
+// The screen on its arm (docs/bible/look.md 4, 5, 10), centred at (x, y) on the wall: the plate on the cupboard's underside, its bolts newer than the
+// paint, two joints, and the screen turned a little toward the mess table. On: cool glass with a faint flicker, and its cool light on the table under it.
+function roomGalleyScreen(ctx, x, y, on, s) {
+  const px = x + 9, py = y - 12;  // the plate under the cupboard's rail
+  roomFlat(ctx, px - 3, py - 1, 6, 2, '#56708c'); roomDot(ctx, px - 2, py, 0.5, '#b8c4d0'); roomDot(ctx, px + 2, py, 0.5, '#b8c4d0');
+  ctx.strokeStyle = roomTint('#4a6078'); ctx.lineWidth = 1.6; roomSeg(ctx, [[px, py + 1], [px + 2, py + 4], [x + 5, y - 6]]);  // the arm, its two joints
+  roomDot(ctx, px + 2, py + 4, 1, '#6a7f95'); roomDot(ctx, x + 5, y - 6, 1, '#6a7f95');
+  const face = `M ${x - 11} ${y - 6} L ${x + 11} ${y - 7.5} L ${x + 11} ${y + 7.5} L ${x - 11} ${y + 6} Z`;  // turned toward the table
+  roomPart(ctx, face, '#1a2430', { top: 0.6, side: 1.5 });
+  const glass = `M ${x - 9.5} ${y - 4.6} L ${x + 9.5} ${y - 5.9} L ${x + 9.5} ${y + 5.9} L ${x - 9.5} ${y + 4.6} Z`;
+  if (on) {
+    const flick = s.still ? 1 : 0.93 + 0.07 * Math.sin((s.time || 0) * 11);
+    const lit = ctx.createLinearGradient(x, y - 6, x, y + 6); lit.addColorStop(0, '#c4e2fa'); lit.addColorStop(1, '#7fb4e2');  // a picture, not a tile
+    ctx.save(); ctx.globalAlpha = flick; ctx.fillStyle = lit; figPath(ctx, glass); ctx.fill(); ctx.restore();
+    const g = ctx.createRadialGradient(x, y + 22, 2, x, y + 22, 46);  // its cool light on the table and whoever sits there
+    g.addColorStop(0, `rgba(150,200,255,${0.24 * flick})`); g.addColorStop(1, 'rgba(150,200,255,0)');
+    ctx.fillStyle = g; ctx.fillRect(x - 46, y - 24, 92, 92);
+  } else {
+    ctx.fillStyle = roomTint('#0e1820'); figPath(ctx, glass); ctx.fill();
+    ctx.strokeStyle = 'rgba(160,190,220,0.18)'; ctx.lineWidth = 0.8; roomSeg(ctx, [[x - 6, y + 3], [x + 2, y - 4]]);  // a reflection
+  }
+}
+
 function roomGalley(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, latch = (x, y) => { roomFlat(ctx, x, y, 2, 4, '#8796a5'); roomDot(ctx, x + 1, y - 1.2, 0.5, '#56708c'); roomFlat(ctx, x - 1.4, y + 0.6, 1.2, 2.6, '#6a747c'); };  // the paint worn beside it
   const cupboards = (x0, x1, top, bottom) => {  // a wall cupboard of two doors, each with its latch where they meet
@@ -892,6 +917,7 @@ function roomGalley(ctx, r, s, X, W) {
     worldText(ctx, s.zoom, 'MUGS', X(0.25) + 8, F - 79, 9, roomTint('#a8987a'));
     roomPart(ctx, roomRound(X(0.25), F - 71.5, X(0.39) - X(0.25), 2, 1), '#3a5470', { top: 0.6 });  // a grab rail for zero g
   });
+  if (W >= 300) roomOnWall(ctx, X(0.335), F - 57, () => roomGalleyScreen(ctx, X(0.335), F - 57, !!s.screen, s));  // the screen on its arm, over the table's end (#1035)
   roomOnWall(ctx, X(0.47), F - 68, () => roomPorthole(ctx, X(0.47), F - 68, 13, s.spin));
   if (W >= 340) roomOnWall(ctx, (X(0.55) + X(0.63)) / 2, F - 85, () => cupboards(X(0.55), X(0.63), F - 96, F - 74));
   if (W >= 240) {
