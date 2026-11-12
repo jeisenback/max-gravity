@@ -69,50 +69,50 @@ test('every condition, effect and link of every shipped scene reads into the for
 });
 
 test('untouched forms change nothing, and touching a field without changing it changes nothing', async () => {
-  await reload(); await select('land-customs');
+  await reload(); await select('land-dock-tax');
   assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};\nconst NEW_SCENES = [];');
   await page.fill(rule('when', 'day'), '4');
-  assert.equal((await changes())['land-customs'].when.day, 4);
+  assert.equal((await changes())['land-dock-tax'].when.day, 4);
   await page.fill(rule('when', 'day'), '3');
   assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};\nconst NEW_SCENES = [];');
 });
 
 test('adding, changing and removing a condition changes the scene\'s conditions, and the game takes the result', async () => {
-  await reload(); await select('land-customs');
+  await reload(); await select('land-dock-tax');
   await page.selectOption('[data-add="when"]', 'before');
   await page.fill(rule('when', 'before'), '12');
   await page.fill(rule('when', 'chance'), '0.5');
-  await page.click('button[data-drop="when"][data-dkey="cargo"]');
-  const o = (await changes())['land-customs'];
-  assert.deepEqual(o.when, { day: 3, gov: ['Arcology Pact', 'Dome Pact'], chance: 0.5, before: 12 });
+  await page.click('button[data-drop="when"][data-dkey="standingBelow"]');
+  const o = (await changes())['land-dock-tax'];
+  assert.deepEqual(o.when, { day: 3, planet: 'The Rook', chance: 0.5, before: 12 });
   const g = await open({ scope: 'full' });
   const r = await g.ev(file => {
     const warnings = [], real = console.warn; console.warn = m => warnings.push(m);
     useOverrides(file); console.warn = real;
-    const s = STORYLETS.find(x => x.id === 'land-customs');
+    const s = STORYLETS.find(x => x.id === 'land-dock-tax');
     return { warnings, when: sceneView(s).when, problems: storyletProblems(sceneView(s), { duplicate: false }) };
-  }, { 'land-customs': o });
+  }, { 'land-dock-tax': o });
   await g.done();
   assert.deepEqual(r.warnings, []);
   assert.deepEqual(r.when, o.when);
   assert.deepEqual(r.problems, []);
   // Taking every condition away leaves a scene with none, which is a change like any other.
-  for (const k of ['day', 'gov', 'chance', 'before']) await page.click(`button[data-drop="when"][data-dkey="${k}"]`);
-  assert.deepEqual((await changes())['land-customs'].when, {});
+  for (const k of ['day', 'planet', 'chance', 'before']) await page.click(`button[data-drop="when"][data-dkey="${k}"]`);
+  assert.deepEqual((await changes())['land-dock-tax'].when, {});
 });
 
 test('a value that does not fit is flagged beside its field and left out until it does', async () => {
-  await reload(); await select('land-customs');
-  await page.selectOption('[data-add="c1.effects"]', 'rep');
-  assert.match(await warn('c1.effects', 'rep'), /needs at least one name=number/);
-  await page.fill(rule('c1.effects', 'rep'), 'Dome Pact=2, Nobody=1');
-  assert.match(await warn('c1.effects', 'rep'), /Nobody is not a government or faction/);
-  assert.match(await page.textContent('#problems'), /Left out of the changes until fixed: c1\.effects: rep Nobody is not a government or faction/);
+  await reload(); await select('land-dock-tax');
+  await page.selectOption('[data-add="c0.effects"]', 'rep');
+  assert.match(await warn('c0.effects', 'rep'), /needs at least one name=number/);
+  await page.fill(rule('c0.effects', 'rep'), 'Dome Pact=2, Nobody=1');
+  assert.match(await warn('c0.effects', 'rep'), /Nobody is not a government or faction/);
+  assert.match(await page.textContent('#problems'), /Left out of the changes until fixed: c0\.effects: rep Nobody is not a government or faction/);
   assert.equal(JSON.stringify(await changes()), '{}', 'a bad field is not in the changes');
-  await page.fill(rule('c1.effects', 'rep'), 'Dome Pact=2');
-  assert.equal(await warn('c1.effects', 'rep'), '');
+  await page.fill(rule('c0.effects', 'rep'), 'Dome Pact=2');
+  assert.equal(await warn('c0.effects', 'rep'), '');
   assert.equal(await page.textContent('#problems'), '');
-  assert.deepEqual((await changes())['land-customs'].choices[1].effects, { credits: -3000, do: ['official', 1, 'You paid the processing fee and said nothing about it.'], rep: { 'Dome Pact': 2 } });
+  assert.deepEqual((await changes())['land-dock-tax'].choices[0].effects, { credits: -3000, do: ['official', 1, 'You paid the Rook\'s tax and kept the receipt.'], rep: { 'Dome Pact': 2 } });
   // The kinds check what they should.
   const k = await page.evaluate(() => {
     const p = (spec, d) => SceneIndex.kindOf(spec).parse(d);
@@ -141,25 +141,25 @@ test('a choice can be linked to a scene, and a link to nothing is flagged', asyn
 });
 
 test('what the forms write never produces a scene the game would refuse, whatever is typed', async () => {
-  await reload(); await select('land-customs');
+  await reload(); await select('land-dock-tax');
   await page.selectOption('[data-add="when"]', 'story');
   await page.fill(rule('when', 'story'), '{"stage": 0}');
-  await page.selectOption('[data-add="c0.effects"]', 'mission');
-  await page.fill(rule('c0.effects', 'mission'), '{"to":"Mars","onDone":{"nonsense":1}}');
-  await page.selectOption('[data-add="c0.effects"]', 'credits');
-  await page.fill(rule('c0.effects', 'credits'), '250');
+  await page.selectOption('[data-add="c1.effects"]', 'mission');
+  await page.fill(rule('c1.effects', 'mission'), '{"to":"Mars","onDone":{"nonsense":1}}');
+  await page.selectOption('[data-add="c1.effects"]', 'credits');
+  await page.fill(rule('c1.effects', 'credits'), '250');
   const o = await changes();
-  assert.deepEqual(o['land-customs'].when.story, { stage: 0 });
-  assert.equal(o['land-customs'].choices, undefined, 'the choice\'s effects have a problem, so none of them go in');
-  await page.fill(rule('c0.effects', 'mission'), '{"to":"Mars","tons":2,"good":"x","pay":9,"days":9,"title":"t"}');
-  const fixed = (await changes())['land-customs'];
+  assert.deepEqual(o['land-dock-tax'].when.story, { stage: 0 });
+  assert.equal(o['land-dock-tax'].choices, undefined, 'the choice\'s effects have a problem, so none of them go in');
+  await page.fill(rule('c1.effects', 'mission'), '{"to":"Mars","tons":2,"good":"x","pay":9,"days":9,"title":"t"}');
+  const fixed = (await changes())['land-dock-tax'];
   const g = await open({ scope: 'full' });
   const r = await g.ev(file => {
     const warnings = [], real = console.warn; console.warn = m => warnings.push(m);
     const clean = cleanOverrides(file); console.warn = real;
-    const s = STORYLETS.find(x => x.id === 'land-customs');
-    return { warnings, kept: JSON.stringify(clean) === JSON.stringify(file), problems: storyletProblems({ ...s, when: clean['land-customs'].when, choices: s.choices.map((c, i) => ({ ...c, ...((clean['land-customs'].choices || {})[i] || {}) })) }, { duplicate: false }) };
-  }, { 'land-customs': fixed });
+    const s = STORYLETS.find(x => x.id === 'land-dock-tax');
+    return { warnings, kept: JSON.stringify(clean) === JSON.stringify(file), problems: storyletProblems({ ...s, when: clean['land-dock-tax'].when, choices: s.choices.map((c, i) => ({ ...c, ...((clean['land-dock-tax'].choices || {})[i] || {}) })) }, { duplicate: false }) };
+  }, { 'land-dock-tax': fixed });
   await g.done();
   assert.deepEqual(r.warnings, [], 'the game keeps all of it');
   assert.ok(r.kept && r.problems.length === 0);

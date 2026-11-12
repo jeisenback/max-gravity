@@ -20,43 +20,6 @@ Mods.register({
     M.addAction('localRep', n => { if (isFaction(localGov())) changeRep(localGov(), n); });
 
     scene({
-      id: 'land-customs', when: { gov: ['Arcology Pact', 'Dome Pact'], cargo: { luxury: 1 } },
-      title: 'Random Inspection', text: ('Two customs officers are waiting at your cargo lock with a scanner and a clipboard. The young one is new and eager. The other is ' +
-          '{official}, who has worked this lock for years, and who keeps glancing at your hold. "Routine," {official} says, before you\'ve asked.'),
-      choices: [
-        {
-          label: 'Let them inspect',
-          effects: { cargo: { luxury: -3 } },
-          result: ('The young officer runs the scanner over every crate. After a long silence he finds a "labeling irregularity" and confiscates ' +
-              'three tons of luxury goods. For evidence. {official} signs the form, and they carry the crates out on a sled.')
-        },
-        {
-          label: 'Offer a "processing fee" (3,000 cr)',
-          when: { credits: 3000 },
-          effects: { credits: -3000, do: ['official', 1, 'You paid the processing fee and said nothing about it.'] },
-          result: ('{official} looks at the chit, and at you, and taps the scanner against a palm. "Would you look at that," {official} says. "A ' +
-              'fault." The young one starts to speak and is stepped on. They wish you a pleasant stay and leave. The whole ' +
-              'thing takes less than a minute.')
-        },
-        {
-          label: '[{crew}] Have {crew} fix the manifest first',
-          when: { crew: 'slicer' },
-          effects: { do: ['official', -1, 'Your manifest was too clean to be true, and I remember that.'] },
-          result: ('By the time the officers plug in, {crew} has been through the manifest twice. It\'s spotless, and boring, with the dull, plausible ' +
-              'detail no smuggler would invent. {official} reads it slowly, twice, and looks up, and can\'t find a reason to open a single crate, and ' +
-              'writes the time on the clipboard anyway.')
-        },
-        {
-          label: 'Nod to {official}',
-          when: { official: 2 },
-          effects: { do: ['official', 1, 'You came through my lock like a regular, and I waved you on.'] },
-          result: ('{official} looks at the hold, and at you, and at the clipboard, and writes the time. "You again," {official} says. "Nothing in ' +
-              'there I need to see." The young one opens his mouth and is handed the clipboard. You are through in two minutes, which is a record for this lock.')
-        },
-      ],
-    });
-
-    scene({
       id: 'land-water-crowd', when: { planet: ['Ceres Station', 'Ring Nine', 'Pallas Refinery', 'The Hollows'], cargo: { water: 5 } },
       title: 'Thirsty Crowd',
       text: ('Word got out that your hold has water in it. A crowd is waiting at the dock when the lock opens: families with jugs and buckets and old ' +

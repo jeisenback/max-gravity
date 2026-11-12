@@ -7823,7 +7823,7 @@
    }
   ],
   "title": "The Inspector",
-  "text": "The inspector at Earth comes up the ramp with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" the inspector says. \"Before the clamps come off.\" Captain Vance reads the slate over the inspector's shoulder and doesn't say anything.",
+  "text": "Officer Ferreira comes up the ramp at Earth with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" Officer Ferreira says. \"Before the clamps come off.\" Captain Vance reads the slate over the inspector's shoulder and doesn't say anything.",
   "labels": [
    "Take the papers to the inspector [65%; if it fails: the full sum, and the captain hears about it]",
    "Keep out of it (the ship pays 6,000 cr)"
@@ -7878,7 +7878,7 @@
    }
   ],
   "title": "The Inspector",
-  "text": "The inspector at Earth comes up the ramp with a slate and a junior carrying the seal gun. The ship's name comes up on the Dome Pact register with a mark against it, and the mark carries a fine of 8,000 cr. \"8,000 credits,\" the inspector says. \"Before the clamps come off.\" Captain Vance reads the slate over the inspector's shoulder and doesn't say anything.",
+  "text": "Officer Ferreira comes up the ramp at Earth with a slate and a junior carrying the seal gun. The ship's name comes up on the Dome Pact register with a mark against it, and the mark carries a fine of 8,000 cr. \"8,000 credits,\" Officer Ferreira says. \"Before the clamps come off.\" Captain Vance reads the slate over the inspector's shoulder and doesn't say anything.",
   "labels": [
    "Speak up for the ship [50%; if it fails: the full sum, and the captain hears about it]",
    "Keep out of it (the ship pays 8,000 cr)"
@@ -7933,7 +7933,7 @@
    }
   ],
   "title": "The Inspector",
-  "text": "The inspector at Earth comes up the ramp with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. The ship's name comes up on the Dome Pact register with a mark against it, and the mark carries a fine of 8,000 cr. \"14,000 credits,\" the inspector says. \"Before the clamps come off.\" Captain Vance reads the slate over the inspector's shoulder and doesn't say anything.",
+  "text": "Officer Ferreira comes up the ramp at Earth with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. The ship's name comes up on the Dome Pact register with a mark against it, and the mark carries a fine of 8,000 cr. \"14,000 credits,\" Officer Ferreira says. \"Before the clamps come off.\" Captain Vance reads the slate over the inspector's shoulder and doesn't say anything.",
   "labels": [
    "Take the papers to the inspector [65%; if it fails: the full sum, and the captain hears about it]",
    "Keep out of it (the ship pays 14,000 cr)"
@@ -7953,7 +7953,7 @@
    }
   ],
   "title": "The Inspector",
-  "text": "The inspector at Earth comes up the ramp with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" the inspector says. \"Before the clamps come off.\"",
+  "text": "Officer Ferreira comes up the ramp at Earth with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" Officer Ferreira says. \"Before the clamps come off.\"",
   "labels": [
    "Pay the inspector (6,000 cr)"
   ]
@@ -7999,9 +7999,91 @@
    }
   ],
   "title": "The Inspector",
-  "text": "The inspector at Earth comes up the ramp with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" the inspector says. \"Before the clamps come off.\"",
+  "text": "Officer Ferreira comes up the ramp at Earth with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" Officer Ferreira says. \"Before the clamps come off.\"",
   "labels": [
    "Speak up for the ship [50%; if it fails: the full sum]",
+   "Keep out of it (the ship pays 6,000 cr)"
+  ]
+ },
+ {
+  "id": "scene:inspection:nod",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Officer Ferreira looks at the slate, and at you, and crosses out the sum and writes a smaller one under it. The junior opens his mouth and is handed the seal gun. The ship pays 3,000 cr.",
+    "mem": [
+     "9 Jul 2214: You came through my lock like a regular, and I took half and waved you on."
+    ],
+    "fx": {
+     "fund": -3000,
+     "p6": 1
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Officer Ferreira looks at the slate, and at you, and crosses out the sum and writes a smaller one under it. The junior opens his mouth and is handed the seal gun. The ship pays 3,000 cr.",
+    "mem": [
+     "9 Jul 2214: You came through my lock like a regular, and I took half and waved you on."
+    ],
+    "fx": {
+     "fund": -3000,
+     "p6": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You go through it line by line with the inspector: the dates, the seals, the code the last port put on the manifest. Halfway down the junior stops filling in the form. The inspector crosses out the sum and writes a smaller one under it. The ship pays 3,000 cr.",
+    "mem": [
+     "9 Jul 2214: You talked the inspector at Earth down to half, and it came out of the ship's fund, not mine."
+    ],
+    "fx": {
+     "fund": -3000,
+     "p1": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You go through it with the inspector line by line. The inspector lets you finish, then turns the slate round so you can see the sum hasn't changed. The ship pays 6,000 cr. Captain Vance signs for it and doesn't look at you.",
+    "mem": [
+     "9 Jul 2214: You argued with the inspector at Earth, and the ship paid the full sum anyway."
+    ],
+    "fx": {
+     "fund": -6000,
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You stay out of it. The ship pays 6,000 cr, the junior seals the hold, and the clamps come off.",
+    "fx": {
+     "fund": -6000
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You stay out of it. The ship pays 6,000 cr, the junior seals the hold, and the clamps come off.",
+    "fx": {
+     "fund": -6000
+    },
+    "next": null
+   }
+  ],
+  "title": "The Inspector",
+  "text": "Officer Ferreira comes up the ramp at Earth with a slate and a junior carrying the seal gun. The junior counts 50t of water against the manifest and reads the next line off the slate. \"Import licence for that?\" There isn't one on file. The duty is 6,000 cr. \"6,000 credits,\" Officer Ferreira says. \"Before the clamps come off.\" Captain Vance reads the slate over the inspector's shoulder and doesn't say anything.",
+  "labels": [
+   "Nod to Officer Ferreira (the ship pays 3,000 cr)",
+   "Speak up for the ship [50%; if it fails: the full sum, and the captain hears about it]",
    "Keep out of it (the ship pays 6,000 cr)"
   ]
  },

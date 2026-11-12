@@ -71,7 +71,7 @@ test('a crew member the port\'s faction wants is a customs matter, and your own 
   const r = await ev(() => {
     const st = start(), h = hired(), planet = currentPlanet(), gov = system().gov, out = { gov };
     const p = find(t => t.status[gov] === 'wanted' || t.status['Arcology Pact'] === 'wanted'); 
-    st.day += 5; out.offered = Mods.filter('happenings', [], 'port', planet).some(c => c.tier === 1);
+    st.day += 5; landingScenesOpen(); inspectAtLanding(planet); out.offered = landingSceneCount() === 1; out.notDrawn = !Mods.filter('happenings', [], 'port', planet).some(c => /customs/i.test(String(c.make))); landingScenesPlay(); G.dialog = null; sceneQueue = []; st.customs = {};  // met at the lock, once, not drawn as a happening (#1097)
     const e = customsScene('Arcology Pact', planet);
     out.labels = e.choices.map(c => c.label); out.title = e.title;
     out.again = customsScene('Arcology Pact', planet);  // the ship is stopped once in 120 days
@@ -81,7 +81,7 @@ test('a crew member the port\'s faction wants is a customs matter, and your own 
     out.papers = /manifest is stamped/.test(text); out.opinion = p.opinion - op; out.stays = st.crew.includes(p.id);
     return out;
   });
-  assert.equal(r.gov, 'Arcology Pact'); assert.equal(r.title, 'The Customs Officer'); assert.ok(r.offered, 'offered at the port');
+  assert.equal(r.gov, 'Arcology Pact'); assert.equal(r.title, 'The Customs Officer'); assert.ok(r.offered, 'met at the lock'); assert.ok(r.notDrawn, 'and not drawn as a happening');
   assert.ok(r.labels.some(l => /^\[Your Arcology Pact papers\]/.test(l)), 'you are Arcology Pact, so you have papers');
   assert.ok(r.labels.length >= 4); assert.equal(r.again, null); assert.ok(r.later, 'and again after the cooldown');
   assert.ok(r.papers && r.opinion === 2 && r.stays);
@@ -319,4 +319,19 @@ test('a member who asks for leave goes if you let them, or stays if they like yo
   assert.deepEqual(r.officerLabels.map(l => l.split(' ')[0]), ['Let', 'Refuse']);
   assert.deepEqual(r.refused, { here: true, liked: -4, rep: -4 });  // -3 for the refusal, and -1 more because they love the faction you have just set yourself against (crewReacts) assert.deepEqual(r.released, { left: true, rep: 3 });
   await done();
+});
+
+test('customs meets the ship once a landing: a crewmate the port\'s owner wants first, and the inspection waits for a landing with nobody wanted (#1097)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = start(), planet = currentPlanet(), gov = system().gov; st.cargo = { [LICENSED[gov]]: 50 };  // an unlicensed good: an inspection is due too
+    find(t => t.status[gov] === 'wanted');
+    const titles = () => { landingScenesOpen(); inspectAtLanding(planet); const n = landingSceneCount(); landingScenesPlay(); const t = G.dialog && G.dialog.event.title; G.dialog = null; sceneQueue = []; return { n, t }; };
+    const first = titles(), second = titles();  // the crewmate's stop is counted: the next landing is the inspection's
+    return { first, second };
+  });
+  await done();
+  assert.deepEqual(r.first, { n: 1, t: 'The Customs Officer' });
+  assert.deepEqual(r.second, { n: 1, t: 'The Inspector' });
 });

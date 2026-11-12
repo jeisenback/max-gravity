@@ -87,7 +87,7 @@ test('a scene of conditional parts reads as plain text that says which parts are
 test('scenes the narrow build leaves out are listed and marked off', () => {
   assert.equal(row('navy-recruit').off, true, 'a storyline');
   assert.equal(row('strike-broadcast').off, false, 'the haulers\' strike, which the hand plays (#1044)');
-  assert.equal(row('land-customs').off, false, 'a landing scene');
+  assert.equal(row('land-water-crowd').off, false, 'a landing scene');
   assert.equal(row('cast:ines:mid1').off, false, 'a main character of the Earth start');
   assert.equal(row('cast:yelena:mid1').off, true, 'a main character of another start');
   assert.equal(row('cast:cato:intro').off, false, 'the captain\'s first officer');
@@ -232,7 +232,7 @@ test('what the form writes is what the game reads: the changes, pasted into the 
 });
 
 test('the changes a file already holds are the form\'s starting values, and come back out unchanged', async () => {
-  const file = { 'port-mars-sky': { title: 'T', text: 'X', choices: { 0: { label: 'L', result: 'R' }, 2: { result: 'R2' } } }, 'land-customs': { choices: { 1: { label: 'Pay' } } } };
+  const file = { 'port-mars-sky': { title: 'T', text: 'X', choices: { 0: { label: 'L', result: 'R' }, 2: { result: 'R2' } } }, 'land-dock-tax': { choices: { 1: { label: 'Pay' } } } };
   const out = await page.evaluate(f => SceneIndex.overridesFrom(SceneIndex.rows, SceneIndex.valuesFrom(f)), file);
   assert.deepEqual(out, file);
   assert.deepEqual(await page.evaluate(() => SceneIndex.valuesFrom({ 'port-mars-sky': { choices: { 1: { label: 'L' } } } })), { 'port-mars-sky': { 'c1.label': 'L' } });

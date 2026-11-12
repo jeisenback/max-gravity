@@ -155,6 +155,7 @@ const playScenes = () => {
   }
   run('scene:inspection:owner', { mode: 'owner' }, () => inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()));  // the parked owner game: only the pay choice
   run('scene:inspection:own', { post: 'gunner' }, () => { ownBridge(); return inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()); }, { rolls: [0, 0.999] });  // the hand at the hatch of their own ship (#1045)
+  run('scene:inspection:nod', { post: 'gunner' }, () => { dockOfficial(currentPlanet()).opinion = 2; return inspectionScene(inspectionCause({ water: 50 }, 'Dome Pact', 0, false), currentPlanet()); }, { rolls: [0, 0.999] });  // the port's official knows the ship (#1097)
   tiesCase('scene:dock-friend', () => { mateOf('Sam'); stubTies({ Sam: { aff: GOV, status: { [GOV]: 'officer' } } }); }, () => dockFriendScene(GOV, currentPlanet()));
   for (const [name, status, opinion] of [['officer', 'officer', 0], ['member:close', 'member', OPINION.CLOSE], ['member:far', 'member', 0]]) {
     tiesCase(`scene:war-call:${name}`, () => {
