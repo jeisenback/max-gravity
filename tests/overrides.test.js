@@ -235,7 +235,7 @@ test('conditions, effects and links the game would refuse are left out together,
     const clean = cleanOverrides({
       'port-mars-sky': { title: 'Kept', when: { nonsense: 1 }, choices: { 0: { effects: { credits: 5 } }, 1: { next: 'no-such-scene', label: 'Also kept' } } },
       'port-mars-front': { choices: { 0: { effects: { mission: { to: 'Mars', onDone: { nope: 1 } } } } } },
-      'land-customs': { when: { day: 4 }, choices: { 1: { effects: { rep: { 'Dome Pact': 1 } }, when: { credits: 10 }, next: 'port-mars-sky' } } },
+      'land-dock-tax': { when: { day: 4 }, choices: { 1: { effects: { rep: { 'Dome Pact': 1 } }, when: { credits: 10 }, next: 'port-mars-sky' } } },
     });
     console.warn = real;
     return { clean, warnings };
@@ -243,7 +243,7 @@ test('conditions, effects and links the game would refuse are left out together,
   await g.done();
   assert.deepEqual(r.clean, {
     'port-mars-sky': { title: 'Kept', choices: { 1: { label: 'Also kept' } } },
-    'land-customs': { when: { day: 4 }, choices: { 1: { effects: { rep: { 'Dome Pact': 1 } }, when: { credits: 10 }, next: 'port-mars-sky' } } },
+    'land-dock-tax': { when: { day: 4 }, choices: { 1: { effects: { rep: { 'Dome Pact': 1 } }, when: { credits: 10 }, next: 'port-mars-sky' } } },
   });
   assert.equal(r.warnings.length, 1);
   for (const part of ['unknown condition "nonsense"', 'leads to a scene that is not there', 'unknown effect "nope"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);

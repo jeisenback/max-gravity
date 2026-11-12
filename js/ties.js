@@ -139,7 +139,8 @@ function lieutenantScene(gov, planet) {
 
 // `shade` is how much a gap in the lieutenant's question takes off the chance that saying nothing clears.
 function customsScene(gov, planet, patrol, shade = 0) {
-  const st = G.state, h = hired(), cap = person(h.captain), p = customsDue(patrol) ? wantedAboard(gov) : null;
+  const st = G.state, h = hired(), cap = hiredCaptain(), p = customsDue(patrol) ? wantedAboard(gov) : null;
+  const capLike = (k, m) => { if (cap) like(cap, k, m); };  // on the hand's own bridge (#1045) there is no captain to think less of them
   if (!p) return null;
   markStop(p, gov, patrol);
   const officer = patrol && st.crew.map(person).find(q => q && q !== p && tiesOf(q).status[gov] === 'officer');
@@ -150,10 +151,10 @@ function customsScene(gov, planet, patrol, shade = 0) {
   const choices = [], k = (key, vars) => say(patrol ? key.replace('.', '.patrol.') : key, vars);  // the patrol's own words for a key that names the dock
   if (officer) choices.push({ label: say('officer.label', { officer: officer.first }), run() { like(officer, 1, say('officer.memory')); return say('officer.result', { officer: officer.first }); } });
   if (papers) choices.push({ label: say('papers.label'), run() { like(p, 2, say(patrol ? 'papers.patrol.memory' : 'papers.memory')); return k('papers.result'); } });
-  choices.push({ label: say('pay.label'), ...gated(needFunds(4000)), run() { moveMoney(-4000); like(cap, -1, say('pay.memory')); return k('pay.result'); } });
+  choices.push({ label: say('pay.label'), ...gated(needFunds(4000)), run() { moveMoney(-4000); capLike(-1, say('pay.memory')); return k('pay.result'); } });
   choices.push({ label: say('silent.label'), run() {
     if (Math.random() < weight) return k('silent.clear');
-    const fine = Math.min(purse(), 8000); moveMoney(-fine); like(cap, -1, say('silent.captain.memory')); like(p, -1, say('silent.memory')); changeRep(gov, -2);
+    const fine = Math.min(purse(), 8000); moveMoney(-fine); capLike(-1, say('silent.captain.memory')); like(p, -1, say('silent.memory')); changeRep(gov, -2);
     if (p.cast) return k('silent.stay', { fine: fmt(fine) });  // a main character does not leave
     return k('silent.gone', { fine: fmt(fine) }) + gone();
   } });
@@ -163,7 +164,7 @@ function customsScene(gov, planet, patrol, shade = 0) {
       const won = Math.random() < soloOdds('gunner');
       boldWithCaptain(won);  // the captain's nerve (captains.js)
       if (won) { like(p, 1, say('gunner.memory')); changeRep(gov, -1); return say('gunner.win'); }
-      const fine = Math.min(purse(), 8000); moveMoney(-fine); like(cap, -1, say('gunner.lose.memory')); changeRep(gov, -2);
+      const fine = Math.min(purse(), 8000); moveMoney(-fine); capLike(-1, say('gunner.lose.memory')); changeRep(gov, -2);
       const lost = say('gunner.lose', { fine: fmt(fine) });
       return p.cast ? lost + say('gunner.lose.stay') : lost + say('gunner.lose.gone') + gone();
     },
@@ -256,7 +257,7 @@ Mods.register({
       const gov = system().gov;
       if (!isFaction(gov) || gov === 'Pirate') return list;
       const out = [];
-      if (customsDue() && (dockPeople(gov, 'wanted').length || dockPeople(gov, 'exile').length)) out.push({ tier: 1, weight: 4, via: 'crew', make: () => customsScene(gov, planet) });
+      // a crewmate this port's owner wants is met at the lock, with the inspection (inspection.js inspectAtLanding, #1097), not drawn here
       if (dockPeople(gov, 'officer').length) out.push({ tier: 1, weight: 2, via: 'crew', make: () => dockFriendScene(gov, planet) });
       return list.concat(out);
     });

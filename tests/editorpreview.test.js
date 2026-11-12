@@ -150,11 +150,11 @@ test('a scene whose conditions do not hold is played anyway, and the report says
 });
 
 test('a choice the state shuts is reported with the condition that shuts it', async () => {
-  await reset(); await select('land-customs');
+  await reset(); await select('land-dock-tax');
   await page.fill('[data-pv=credits]', '10');
   await play();
-  assert.match(await report(), /Choice 2 is shut/);
-  assert.match(await report(), /credits: 300/);
+  assert.match(await report(), /Choice 1 is shut/);
+  assert.match(await report(), /credits: 3000/);
 });
 
 test('picking a choice shows what it changed', async () => {
@@ -170,11 +170,11 @@ test('picking a choice shows what it changed', async () => {
   // The result is in the game's dialog, as the player sees it.
   assert.match(await frame().textContent('#event-result'), /There,/);
   // A choice that changes credits and a quality.
-  await select('land-customs');
+  await select('land-dock-tax');
   await page.fill('[data-pv=credits]', '10000');
   await play();
-  await frame().click('[data-action="choose"][data-arg="1"]');
-  await page.waitForFunction(() => /You chose: Offer/.test(document.querySelector('#pv-effects').textContent));
+  await frame().click('[data-action="choose"][data-arg="0"]');
+  await page.waitForFunction(() => /You chose: Pay/.test(document.querySelector('#pv-effects').textContent));
   assert.match(await page.textContent('#pv-effects'), /credits: 10000 to 7000 \(-3000\)/);
 });
 

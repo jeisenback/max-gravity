@@ -2,7 +2,7 @@
  {
   "id": "raid:raider:gunner",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 7 to 19 damage. Her consort: closing, and firing at your hull as she comes, 7 to 19 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -26,34 +26,41 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 10, you hit her hull for 8, she hits your hull for 13.",
+    "text": "Turn 1: you hit her hull for 9, you hit her hull for 10, she hits your hull for 17, she hits your hull for 14.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her hull for 10, you hit her hull for 9, she hits your hull for 14.",
-    "armor": 260,
+    "text": "Turn 2: you hit her hull for 8, you hit her hull for 8, she hits your hull for 10, she hits your hull for 16.",
+    "armor": 238,
     "band": 1
    },
    {
+    "text": "Turn 3: you hit her hull for 11, you hit her hull for 12, she hits your hull for 15, she hits your hull for 14.",
+    "armor": 173,
+    "band": 0
+   },
+   {
     "text": "",
-    "armor": 260,
+    "armor": 173,
     "band": null
    }
   ],
   "end": {
-   "title": "Dead in Space",
-   "text": "Her grapple arms go slack, and she tumbles past your bow with no plume behind her.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
+   "title": "The Lock",
+   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
    "labels": [
-    "Board her",
-    "Let her drift"
+    "Stand: The Lock",
+    "Shoot: hits 1 to 2 of them",
+    "Order: none",
+    "Fight"
    ]
   }
  },
  {
   "id": "raid:raider:pilot",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 7 to 19 damage. Her consort: closing, and firing at your hull as she comes, 7 to 19 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -77,34 +84,41 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 10, you hit her hull for 8, she hits your hull for 13.",
+    "text": "Turn 1: you hit her hull for 9, you hit her hull for 10, she hits your hull for 17, she hits your hull for 14.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her hull for 10, you hit her hull for 9, she hits your hull for 14.",
-    "armor": 260,
+    "text": "Turn 2: you hit her hull for 8, you hit her hull for 8, she hits your hull for 10, she hits your hull for 16.",
+    "armor": 238,
     "band": 1
    },
    {
+    "text": "Turn 3: you hit her hull for 11, you hit her hull for 12, she hits your hull for 15, she hits your hull for 14.",
+    "armor": 173,
+    "band": 0
+   },
+   {
     "text": "",
-    "armor": 260,
+    "armor": 173,
     "band": null
    }
   ],
   "end": {
-   "title": "Dead in Space",
-   "text": "Her grapple arms go slack, and she tumbles past your bow with no plume behind her.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
+   "title": "The Lock",
+   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
    "labels": [
-    "Board her",
-    "Let her drift"
+    "Stand: The Lock",
+    "Shoot: hits 1 to 2 of them",
+    "Order: none",
+    "Fight"
    ]
   }
  },
  {
   "id": "raid:raider:engineer",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 7 to 19 damage. Her consort: closing, and firing at your hull as she comes, 7 to 19 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -128,34 +142,41 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 11, you hit her hull for 8, she hits your hull for 13.",
+    "text": "Turn 1: you hit her hull for 9, you hit her hull for 10, she hits your hull for 17, she hits your hull for 14.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her hull for 10, you hit her hull for 10, she hits your hull for 14.",
-    "armor": 260,
+    "text": "Turn 2: you hit her hull for 9, you hit her hull for 9, she hits your hull for 10, she hits your hull for 16.",
+    "armor": 238,
     "band": 1
    },
    {
+    "text": "Turn 3: you hit her hull for 12, you hit her hull for 12, she hits your hull for 15, she hits your hull for 14.",
+    "armor": 173,
+    "band": 0
+   },
+   {
     "text": "",
-    "armor": 260,
+    "armor": 173,
     "band": null
    }
   ],
   "end": {
-   "title": "Dead in Space",
-   "text": "Her grapple arms go slack, and she tumbles past your bow with no plume behind her.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
+   "title": "The Lock",
+   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
    "labels": [
-    "Board her",
-    "Let her drift"
+    "Stand: The Lock",
+    "Shoot: hits 1 to 2 of them",
+    "Order: none",
+    "Fight"
    ]
   }
  },
  {
   "id": "raid:raider:comms",
   "title": "Battle Stations",
-  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
+  "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>She fires first: she hits your hull for 17, she hits your hull for 17.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 7 to 19 damage. Her consort: closing, and firing at your hull as she comes, 7 to 19 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -179,34 +200,41 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 11, you hit her hull for 8, she hits your hull for 13.",
+    "text": "Turn 1: you hit her hull for 9, you hit her hull for 10, she hits your hull for 17, she hits your hull for 14.",
     "armor": 260,
     "band": 2
    },
    {
-    "text": "Turn 2: you hit her hull for 10, you hit her hull for 10, she hits your hull for 14.",
-    "armor": 260,
+    "text": "Turn 2: you hit her hull for 9, you hit her hull for 9, she hits your hull for 10, she hits your hull for 16.",
+    "armor": 238,
     "band": 1
    },
    {
+    "text": "Turn 3: you hit her hull for 12, you hit her hull for 12, she hits your hull for 15, she hits your hull for 14.",
+    "armor": 173,
+    "band": 0
+   },
+   {
     "text": "",
-    "armor": 260,
+    "armor": 173,
     "band": null
    }
   ],
   "end": {
-   "title": "Dead in Space",
-   "text": "Her grapple arms go slack, and she tumbles past your bow with no plume behind her.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
+   "title": "The Lock",
+   "text": "She's alongside, the grapples bang on the hull in four places, and the lock alarm goes.</p><p>The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.</p><p>Turn 1 of 8. Boarders: holding where they are.",
    "labels": [
-    "Board her",
-    "Let her drift"
+    "Stand: The Lock",
+    "Shoot: hits 1 to 2 of them",
+    "Order: none",
+    "Fight"
    ]
   }
  },
  {
   "id": "raid:corsair:gunner",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Silent Debt\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Hungry Hook\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -233,39 +261,44 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 10, you hit her hull for 10.",
+    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 2: you hit her hull for 8, you hit her hull for 11, she hits your hull for 51.",
+    "text": "Turn 2: you hit her hull for 11, you hit her hull for 9, she hits your hull for 55.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 3: you hit her hull for 9, you hit her hull for 11.",
+    "text": "Turn 3: you hit her hull for 8, you hit her hull for 7.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 4: you hit her hull for 9, you hit her hull for 9, she hits your hull for 47.",
-    "armor": 222,
+    "text": "Turn 4: you hit her hull for 8, you hit her hull for 10, she hits your hull for 50.",
+    "armor": 207,
     "band": 3
    },
    {
-    "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 26.",
-    "armor": 164,
+    "text": "Turn 5: you hit her hull for 9, you hit her hull for 9, she hits your hull for 22.",
+    "armor": 158,
     "band": 2
    },
    {
-    "text": "Turn 6: you hit her hull for 9, you hit her hull for 11.",
-    "armor": 164,
-    "band": 3
+    "text": "Turn 6: you hit her hull for 10, you hit her hull for 11, she hits your hull for 35.",
+    "armor": 80,
+    "band": 1
+   },
+   {
+    "text": "Turn 7: you hit her hull for 9, you hit her hull for 13.",
+    "armor": 80,
+    "band": 2
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 26.</p><p>Turn 6: you hit her hull for 9, you hit her hull for 11.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+   "text": "Turn 6: you hit her hull for 10, you hit her hull for 11, she hits your hull for 35.</p><p>Turn 7: you hit her hull for 9, you hit her hull for 13.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
    "labels": [
     "Stand down"
    ]
@@ -290,7 +323,7 @@
  {
   "id": "raid:corsair:pilot",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Silent Debt\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Hungry Hook\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -317,39 +350,44 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 10, you hit her hull for 10.",
+    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 2: you hit her hull for 8, you hit her hull for 11, she hits your hull for 51.",
+    "text": "Turn 2: you hit her hull for 11, you hit her hull for 9, she hits your hull for 55.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 3: you hit her hull for 9, you hit her hull for 11.",
+    "text": "Turn 3: you hit her hull for 8, you hit her hull for 7.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 4: you hit her hull for 9, you hit her hull for 9, she hits your hull for 47.",
-    "armor": 222,
+    "text": "Turn 4: you hit her hull for 8, you hit her hull for 10, she hits your hull for 50.",
+    "armor": 207,
     "band": 3
    },
    {
-    "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 26.",
-    "armor": 164,
+    "text": "Turn 5: you hit her hull for 9, you hit her hull for 9, she hits your hull for 22.",
+    "armor": 158,
     "band": 2
    },
    {
-    "text": "Turn 6: you hit her hull for 9, you hit her hull for 11.",
-    "armor": 164,
-    "band": 3
+    "text": "Turn 6: you hit her hull for 10, you hit her hull for 11, she hits your hull for 35.",
+    "armor": 80,
+    "band": 1
+   },
+   {
+    "text": "Turn 7: you hit her hull for 9, you hit her hull for 13.",
+    "armor": 80,
+    "band": 2
    }
   ],
   "end": {
    "title": "Battle Stations",
-   "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 26.</p><p>Turn 6: you hit her hull for 9, you hit her hull for 11.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+   "text": "Turn 6: you hit her hull for 10, you hit her hull for 11, she hits your hull for 35.</p><p>Turn 7: you hit her hull for 9, you hit her hull for 13.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
    "labels": [
     "Stand down"
    ]
@@ -374,7 +412,7 @@
  {
   "id": "raid:corsair:engineer",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Silent Debt\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Hungry Hook\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -401,49 +439,69 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 10, you hit her hull for 11.",
+    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 2: you hit her hull for 8, you hit her hull for 11, she hits your hull for 51.",
+    "text": "Turn 2: you hit her hull for 11, you hit her hull for 9, she hits your hull for 55.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 3: you hit her hull for 9, you hit her hull for 11.",
+    "text": "Turn 3: you hit her hull for 9, you hit her hull for 8.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 4: you hit her hull for 10, you hit her hull for 9, she hits your hull for 47.",
-    "armor": 222,
+    "text": "Turn 4: you hit her hull for 9, you hit her hull for 10, she hits your hull for 50.",
+    "armor": 207,
     "band": 3
    },
    {
-    "text": "Turn 5: you hit her hull for 11, you hit her hull for 10, she hits your hull for 26.",
-    "armor": 164,
+    "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 22.",
+    "armor": 158,
     "band": 2
    },
    {
-    "text": "",
-    "armor": 164,
-    "band": null
+    "text": "Turn 6: you hit her hull for 11, you hit her hull for 11, she hits your hull for 35.",
+    "armor": 80,
+    "band": 1
+   },
+   {
+    "text": "Turn 7: you hit her hull for 10, you hit her hull for 14.",
+    "armor": 80,
+    "band": 2
    }
   ],
   "end": {
-   "title": "Dead in Space",
-   "text": "The corsair's drive cone splits, and she coasts on with her bay doors stuck half open.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
+   "title": "Battle Stations",
+   "text": "Turn 6: you hit her hull for 11, you hit her hull for 11, she hits your hull for 35.</p><p>Turn 7: you hit her hull for 10, you hit her hull for 14.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
    "labels": [
-    "Board her",
-    "Let her drift"
+    "Stand down"
    ]
+  },
+  "mem": [
+   "9 Jul 2214: You stood us up to a raid and she broke off.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": -1,
+   "c:cato": -1,
+   "p3": 1
   }
  },
  {
   "id": "raid:corsair:comms",
   "title": "Battle Stations",
-  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Silent Debt\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
+  "text": "A corsair comes up from astern at full burn, and her torpedo bay doors open as the sensors find her.</p><p>The Pirate \"Hungry Hook\" is loading torpedoes: 2 next turn. Her torpedoes come next turn: hold the turret back then, or aim at her launcher now. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -470,49 +528,69 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 10, you hit her hull for 11.",
+    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 2: you hit her hull for 8, you hit her hull for 11, she hits your hull for 51.",
+    "text": "Turn 2: you hit her hull for 11, you hit her hull for 9, she hits your hull for 55.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 3: you hit her hull for 9, you hit her hull for 11.",
+    "text": "Turn 3: you hit her hull for 9, you hit her hull for 8.",
     "armor": 260,
     "band": 3
    },
    {
-    "text": "Turn 4: you hit her hull for 10, you hit her hull for 9, she hits your hull for 47.",
-    "armor": 222,
+    "text": "Turn 4: you hit her hull for 9, you hit her hull for 10, she hits your hull for 50.",
+    "armor": 207,
     "band": 3
    },
    {
-    "text": "Turn 5: you hit her hull for 11, you hit her hull for 10, she hits your hull for 26.",
-    "armor": 164,
+    "text": "Turn 5: you hit her hull for 10, you hit her hull for 9, she hits your hull for 22.",
+    "armor": 158,
     "band": 2
    },
    {
-    "text": "",
-    "armor": 164,
-    "band": null
+    "text": "Turn 6: you hit her hull for 11, you hit her hull for 11, she hits your hull for 35.",
+    "armor": 80,
+    "band": 1
+   },
+   {
+    "text": "Turn 7: you hit her hull for 10, you hit her hull for 14.",
+    "armor": 80,
+    "band": 2
    }
   ],
   "end": {
-   "title": "Dead in Space",
-   "text": "The corsair's drive cone splits, and she coasts on with her bay doors stuck half open.</p><p>The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
+   "title": "Battle Stations",
+   "text": "Turn 6: you hit her hull for 11, you hit her hull for 11, she hits your hull for 35.</p><p>Turn 7: you hit her hull for 10, you hit her hull for 14.</p><p>She closes her bay doors with a torpedo still in the tube and turns away. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
    "labels": [
-    "Board her",
-    "Let her drift"
+    "Stand down"
    ]
+  },
+  "mem": [
+   "9 Jul 2214: You stood us up to a raid and she broke off.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": -1,
+   "c:cato": -1,
+   "p3": 1
   }
  },
  {
   "id": "raid:cutter:gunner",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 15 to 40 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -536,12 +614,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 11, you hit her hull for 11, she hits your hull for 14.",
+    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11, she hits your hull for 37.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her hull for 13, you hit her hull for 12, she hits your hull for 22.",
+    "text": "Turn 2: you hit her hull for 11, you hit her hull for 13, she hits your hull for 42.",
     "armor": 260,
     "band": 0
    },
@@ -565,7 +643,7 @@
  {
   "id": "raid:cutter:pilot",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 15 to 40 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -589,12 +667,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 11, you hit her hull for 11, she hits your hull for 14.",
+    "text": "Turn 1: you hit her hull for 9, you hit her hull for 11, she hits your hull for 37.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her hull for 13, you hit her hull for 12, she hits your hull for 22.",
+    "text": "Turn 2: you hit her hull for 11, you hit her hull for 13, she hits your hull for 42.",
     "armor": 260,
     "band": 0
    },
@@ -618,7 +696,7 @@
  {
   "id": "raid:cutter:engineer",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 15 to 40 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -642,12 +720,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 11, you hit her hull for 11, she hits your hull for 14.",
+    "text": "Turn 1: you hit her hull for 10, you hit her hull for 11, she hits your hull for 37.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her hull for 14, you hit her hull for 12, she hits your hull for 22.",
+    "text": "Turn 2: you hit her hull for 12, you hit her hull for 13, she hits your hull for 42.",
     "armor": 260,
     "band": 0
    },
@@ -671,7 +749,7 @@
  {
   "id": "raid:cutter:comms",
   "title": "Battle Stations",
-  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 12 to 31 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
+  "text": "A navy ship is matching your course from astern with her guns run out. Her hail reads the stop order out by its number.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 15 to 40 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
   "labels": [
    "Hull",
    "Weapons",
@@ -695,12 +773,12 @@
   ],
   "turns": [
    {
-    "text": "Turn 1: you hit her hull for 11, you hit her hull for 11, she hits your hull for 14.",
+    "text": "Turn 1: you hit her hull for 10, you hit her hull for 11, she hits your hull for 37.",
     "armor": 260,
     "band": 1
    },
    {
-    "text": "Turn 2: you hit her hull for 14, you hit her hull for 12, she hits your hull for 22.",
+    "text": "Turn 2: you hit her hull for 12, you hit her hull for 13, she hits your hull for 42.",
     "armor": 260,
     "band": 0
    },
@@ -847,7 +925,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -857,7 +935,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -971,7 +1049,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -981,7 +1059,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1097,7 +1175,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1107,7 +1185,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1221,7 +1299,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1231,7 +1309,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1347,7 +1425,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1357,7 +1435,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1471,7 +1549,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1481,7 +1559,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1597,7 +1675,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1607,7 +1685,7 @@
     "text": "You alter course for her. At forty kilometers the freighter lights a drive that's not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "Battle Stations",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they're inside the range, and your position is already bad.</p><p>She fires first: she hits your hull for 14.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1721,7 +1799,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1731,7 +1809,7 @@
     "text": "You come in hot with the drive cold, and light it at forty kilometers. They're not ready. Battle stations.",
     "next": [
      "Battle Stations",
-     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Silent Debt\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
+     "They're in position behind the freighter, with their drives cold, and they haven't lit them. You have the range, and the first move.</p><p>You fire first: you hit her weapons for 11, you hit her weapons for 11.</p><p>The Pirate \"Hungry Hook\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range."
     ],
     "mem": []
    },
@@ -1764,7 +1842,7 @@
  {
   "id": "dead:raider:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1801,7 +1879,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1810,7 +1888,7 @@
  {
   "id": "dead:raider:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1847,7 +1925,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1856,7 +1934,7 @@
  {
   "id": "dead:raider:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1893,7 +1971,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1902,7 +1980,7 @@
  {
   "id": "dead:raider:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 7 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1939,7 +2017,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 7 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1948,7 +2026,7 @@
  {
   "id": "dead:corsair:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -1985,7 +2063,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -1994,7 +2072,7 @@
  {
   "id": "dead:corsair:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2031,7 +2109,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2040,7 +2118,7 @@
  {
   "id": "dead:corsair:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2077,7 +2155,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2086,7 +2164,7 @@
  {
   "id": "dead:corsair:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 6 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2123,7 +2201,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 6 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2132,7 +2210,7 @@
  {
   "id": "dead:cutter:gunner",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2169,7 +2247,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2178,7 +2256,7 @@
  {
   "id": "dead:cutter:pilot",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2215,7 +2293,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2224,7 +2302,7 @@
  {
   "id": "dead:cutter:engineer",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2261,7 +2339,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2270,7 +2348,7 @@
  {
   "id": "dead:cutter:comms",
   "title": "Dead in Space",
-  "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
+  "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 9 of hers.",
   "labels": [
    "Board her",
    "Let her drift"
@@ -2307,7 +2385,7 @@
    }
   ],
   "none": {
-   "text": "The Pirate \"Silent Debt\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
+   "text": "The Pirate \"Hungry Hook\" is still. Her drive is out and she's turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 0 of yours against 9 of hers. Nobody aboard is fit to go across.",
    "labels": [
     "Let her drift"
    ]
@@ -2315,7 +2393,7 @@
  },
  {
   "id": "settle:repel:gunner:won:1",
-  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2325,7 +2403,7 @@
  },
  {
   "id": "settle:repel:gunner:won:3",
-  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came.",
    "9 Jul 2214: We held the ship together.",
@@ -2367,7 +2445,7 @@
  },
  {
   "id": "settle:repel:engineer:won:1",
-  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came."
   ],
@@ -2377,7 +2455,7 @@
  },
  {
   "id": "settle:repel:engineer:won:3",
-  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
   "mem": [
    "9 Jul 2214: You held the ship when boarders came.",
    "9 Jul 2214: We held the ship together.",
@@ -2928,7 +3006,7 @@
    },
    {
     "act": "end:last",
-    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -2938,7 +3016,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3099,7 +3177,7 @@
    },
    {
     "act": "end:last",
-    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3109,7 +3187,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3270,7 +3348,7 @@
    },
    {
     "act": "end:last",
-    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3280,7 +3358,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3441,7 +3519,7 @@
    },
    {
     "act": "end:last",
-    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground.</p><p>The last of them goes down in the passage, and nobody comes through behind him. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],
@@ -3451,7 +3529,7 @@
    },
    {
     "act": "end:broke",
-    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Silent Debt\" lights, and she breaks away from the hull.",
+    "text": "Turn 1: nobody gives ground. None of them are where you stand.</p><p>Most of them are down, and the rest have had enough. They break and run for the lock, and nobody follows them. The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Hook\" lights, and she breaks away from the hull.",
     "mem": [
      "9 Jul 2214: You held the ship when boarders came."
     ],

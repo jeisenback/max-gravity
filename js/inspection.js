@@ -4,6 +4,8 @@
 // a port inspects a ship on arrival under its owner's rules. The Arcology Pact, the Dome Pact and the Federation inspect; independent and pirate ports do not.
 // Two causes: the ship's standing with the port's owner at -15 or worse, and a good that owner licenses for import, landed without its licence (a
 // licence cannot be had yet, so a ship never holds one). These take what they read and return a value.
+// Customs at the lock is this and the crewmate an owner wants (ties.js customsScene), one stop a landing, decided in inspectAtLanding (#1097); the
+// inspector is the port's official (official.js).
 
 // The good each inspecting owner licenses for import.
 const LICENSED = { 'Arcology Pact': 'medical', 'Dome Pact': 'water', 'Guild Federation': 'industrial' };
@@ -29,12 +31,17 @@ function inspectionCause(cargo, gov, rep, marked) {
 // or keeping out of it. The sum leaves the ship's purse (never the hand's savings); a landed move halves it and wins a point of the captain's regard, and a failed move
 // pays it all and costs one.
 // With no post to work (the parked owner game) the only choice is to pay.
+// The inspector is the port's own official (official.js), the same face every landing (#1097). One who thinks well of the ship (NOD_REGARD) takes a nod for half
+// the sum, with no roll, and thinks a little better of it for not making a thing of it.
+const NOD_REGARD = 2;
 function inspectionScene(cause, planet) {
   const cap = role().captain === 'npc' ? hiredCaptain() : null, post = role().hatch && career() && career().post;  // the hand argues by their post, past the captain or on their own bridge (#1045); an owner, even one who kept a post, only pays
-  const say = (key, vars) => sceneSay('scene:inspection', key, { planet: planet.name, gov: cause.gov, cap: cap ? cap.last : '', sum: fmt(cause.sum), ...vars });
+  const off = dockOfficial(planet);
+  const say = (key, vars) => sceneSay('scene:inspection', key, { planet: planet.name, gov: cause.gov, cap: cap ? cap.last : '', sum: fmt(cause.sum), official: officialName(planet), ...vars });
   const causes = [cause.good ? say('cause.good', { good: goodName(cause.good).toLowerCase(), tons: cause.tons, duty: fmt(cause.duty) }) : '', cause.fine ? say('cause.standing', { fine: fmt(cause.fine) }) : ''].filter(Boolean).join(' ');
   const pay = n => { const paid = Math.min(purse(), n); moveMoney(-paid); if (paid) recordHand('fines'); return fmt(paid); };  // an empty purse pays nothing, and nothing goes on the record
   const choices = [];
+  if (off.opinion >= NOD_REGARD) choices.push({ label: say('nod.label', { half: fmt(to100(cause.sum / 2)) }), run() { like(off, 1, say('nod.memory')); return say('nod.result', { paid: pay(to100(cause.sum / 2)) }); } });
   if (post) {
     const papers = post === 'comms', odds = papers ? soloOdds('comms') : handCheck(POST_STAT[post], skillLevel(post), 'word');
     choices.push({ label: `${say(papers ? 'papers.label' : 'speak.label')} [${oddsWord(odds)}; ${say(cap ? 'move.stakes' : 'move.stakes.own')}]`, run() {
@@ -49,10 +56,13 @@ function inspectionScene(cause, planet) {
 }
 
 // The landed hook's body (`note` is the hook's M.note; a test reads UI.notes; `cargo` is the hold as the ship came in, read on 'landing'): at an inspecting
-// port, the inspector's scene is the landing's first (transit.js offerScene), or a clean ship gets one note line.
+// port, customs meets the ship once (#1097): a crewmate the port's owner wants (ties.js customsScene) if one is due, else the inspector's scene, either as the
+// landing's first (transit.js offerScene); a clean ship gets one note line.
 function inspectAtLanding(planet, note = text => UI.notes.push(text), cargo = G.state.cargo) {
   const st = G.state, gov = system().gov;
   if (atSite(st) || !INSPECTING.includes(gov)) return;
+  const h = hired(), crew = h && st.day - h.since >= 3 && customsDue() && wantedAboard(gov) ? customsScene(gov, planet) : null;
+  if (crew) { offerScene('customs', crew); return; }  // a crewmate this owner wants is the lock's business first, and the only stop this landing (ties.js, #1097)
   const c = career(), cause = inspectionCause(cargo, gov, repOf(gov), !!c && hasTrait(c, 'marked'));
   if (!cause) { note(sceneSay('scene:inspection', 'clean')); return; }
   const scene = inspectionScene(cause, planet);

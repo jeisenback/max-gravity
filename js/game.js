@@ -550,6 +550,7 @@ function landAt(planet, notes) {
 }
 
 function takeOff() {
+  sceneQueue = [];  // a port's scenes stay at the port: none can be waiting in play, as the dock's buttons wait for them, but a scripted takeoff can leave some (#1096)
   const pl = currentPlanet();
   const a = rand(0, Math.PI * 2);
   G.player = makeShip(G.state.shipId, pl.x + Math.cos(a) * pl.r * 0.5, pl.y + Math.sin(a) * pl.r * 0.5, a);

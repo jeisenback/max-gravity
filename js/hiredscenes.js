@@ -190,7 +190,7 @@ const SCENE_LINES = {
   },
   'scene:inspection': {  // a port's inspector on arrival (inspection.js, #993): the cause or causes, one sum, the hand's one move; `clean` is the note a clean ship gets
     title: 'The Inspector',
-    text: 'The inspector at {planet} comes up the ramp with a slate and a junior carrying the seal gun. {causes} "{sum} credits," the inspector says. "Before the clamps come off."',
+    text: '{official} comes up the ramp at {planet} with a slate and a junior carrying the seal gun. {causes} "{sum} credits," {official} says. "Before the clamps come off."',
     'cause.good': 'The junior counts {tons}t of {good} against the manifest and reads the next line off the slate. "Import licence for that?" There isn\'t one on file. The duty is {duty} cr.',
     'cause.standing': 'The ship\'s name comes up on the {gov} register with a mark against it, and the mark carries a fine of {fine} cr.',
     captain: 'Captain {cap} reads the slate over the inspector\'s shoulder and doesn\'t say anything.',
@@ -198,6 +198,10 @@ const SCENE_LINES = {
     'move.stakes': 'if it fails: the full sum, and the captain hears about it',
     'move.stakes.own': 'if it fails: the full sum',  // on the hand's own bridge (#1045)
     'keep.label': 'Keep out of it (the ship pays {sum} cr)', 'pay.label': 'Pay the inspector ({sum} cr)',
+    // the nod (#1097): the port's official, who knows the ship, takes half
+    'nod.label': 'Nod to {official} (the ship pays {half} cr)',
+    'nod.result': '{official} looks at the slate, and at you, and crosses out the sum and writes a smaller one under it. The junior opens his mouth and is handed the seal gun. The ship pays {paid} cr.',
+    'nod.memory': 'You came through my lock like a regular, and I took half and waved you on.',
     win: 'You go through it line by line with the inspector: the dates, the seals, the code the last port put on the manifest. Halfway down the junior stops filling in the form. The inspector crosses out the sum and writes a smaller one under it. The ship pays {paid} cr.',
     lose: 'You go through it with the inspector line by line. The inspector lets you finish, then turns the slate round so you can see the sum hasn\'t changed. The ship pays {paid} cr. Captain {cap} signs for it and doesn\'t look at you.',
     'lose.own': 'You go through it with the inspector line by line. The inspector lets you finish, then turns the slate round so you can see the sum hasn\'t changed. The ship pays {paid} cr, and you sign for it.',  // on the hand's own bridge (#1045)

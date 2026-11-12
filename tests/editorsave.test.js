@@ -47,7 +47,7 @@ test('edits survive a reload of the page, scene by scene, new scenes included', 
   await select('port-mars-sky');
   await page.fill('#f-title', 'Kept Title');
   await page.fill(rule('when', 'chance'), '0.5').catch(() => {});
-  await select('land-customs');
+  await select('land-dock-tax');
   await page.fill('[data-rnext="c0.next"]', 'port-mars-sky');
   await page.click('[data-action="new-scene"]');
   await page.fill('#n-id', 'kept-new'); await page.fill('#n-title', 'Kept New'); await page.fill('#n-text', 'Kept text.'); await page.fill('#n-l0', 'Go');
@@ -132,7 +132,7 @@ test('a problem scene is left out of the export, and the notice says so', async 
 test('an exported file imports back to the same changes, only after it is confirmed', async () => {
   await fresh();
   await select('port-mars-sky'); await page.fill('#f-title', 'Round Trip'); await page.fill('#f-c0\\.result', 'A line.');
-  await select('land-customs'); await page.selectOption('[data-add="when"]', 'before'); await page.fill(rule('when', 'before'), '20');
+  await select('land-dock-tax'); await page.selectOption('[data-add="when"]', 'before'); await page.fill(rule('when', 'before'), '20');
   await page.click('[data-action="new-scene"]');
   await page.fill('#n-id', 'rt-new'); await page.fill('#n-title', 'RT'); await page.fill('#n-text', 'T.'); await page.fill('#n-l0', 'Go');
   await page.selectOption('[data-add="c0.effects"]', 'rep'); await page.fill(rule('c0.effects', 'rep'), 'Dome Pact=2');
@@ -143,7 +143,7 @@ test('an exported file imports back to the same changes, only after it is confir
   await importText(out.text);
   assert.match(await notice(), /What importing this file would do/);
   assert.match(await notice(), /port-mars-sky: title, choice 1 result/);
-  assert.match(await notice(), /land-customs: conditions/);
+  assert.match(await notice(), /land-dock-tax: conditions/);
   assert.match(await notice(), /new scene rt-new/);
   assert.deepEqual((await fileOf()).overrides, {}, 'nothing is applied before it is confirmed');
   await page.click('[data-action="import-apply"]');
@@ -169,7 +169,7 @@ test('a file with bad items is reported item by item, and the rest still imports
     "no-such-scene": { "title": "x" },
     "port-mars-front": "not an object",
     "port-mars-sky": { "title": 42, "text": "Kept words.", "choices": { "9": { "label": "x" }, "1": { "label": "Kept label", "effects": { "nonsense": 1 }, "next": "nowhere" } }, "priority": 3, "when": { "day": "soon" } },
-    "land-customs": { "when": { "day": 6 } }
+    "land-dock-tax": { "when": { "day": 6 } }
   };
   // a comment between the two
   const NEW_SCENES = [
@@ -183,11 +183,11 @@ test('a file with bad items is reported item by item, and the rest still imports
   const text = await notice();
   for (const part of ['no-such-scene: not a scene in the game', 'port-mars-front: is not an object', 'port-mars-sky title: needs some text', 'no choice 9', 'choice 2 effects: has nonsense, which the game does not have',
     'choice 2 next: leads to a scene that is not there', 'port-mars-sky priority: is not something the editor changes', 'port-mars-sky when: day needs a number', 'new scene port-mars-sky: the id port-mars-sky is already a scene',
-    'new scene bad-cond: ', 'a new scene that is not an object', 'port-mars-sky: text, choice 2 label', 'land-customs: conditions', 'new scene good-one']) assert.ok(text.includes(part), `${part} in: ${text}`);
+    'new scene bad-cond: ', 'a new scene that is not an object', 'port-mars-sky: text, choice 2 label', 'land-dock-tax: conditions', 'new scene good-one']) assert.ok(text.includes(part), `${part} in: ${text}`);
   await page.click('[data-action="import-apply"]');
-  await select('land-customs');
+  await select('land-dock-tax');
   const got = await fileOf();
-  assert.deepEqual(got.overrides, { 'port-mars-sky': { text: 'Kept words.', choices: { 1: { label: 'Kept label' } } }, 'land-customs': { when: { day: 6 } } });
+  assert.deepEqual(got.overrides, { 'port-mars-sky': { text: 'Kept words.', choices: { 1: { label: 'Kept label' } } }, 'land-dock-tax': { when: { day: 6 } } });
   assert.deepEqual(got.scenes, [{ id: 'good-one', where: 'port', title: 'Good', text: 'Fine.', priority: 3, choices: [{ label: 'Go' }] }], 'a field the form does not edit is kept');
 });
 
@@ -233,7 +233,7 @@ test('revert everything lists what goes, and takes the new scenes too', async ()
   assert.match(await notice(), /Nothing to revert/);
   await page.click('[data-action="cancel-notice"]');
   await select('port-mars-sky'); await page.fill('#f-title', 'A');
-  await select('land-customs'); await page.fill('[data-rnext="c0.next"]', 'port-mars-sky');
+  await select('land-dock-tax'); await page.fill('[data-rnext="c0.next"]', 'port-mars-sky');
   await page.click('[data-action="new-scene"]'); await page.fill('#n-id', 'doomed');
   await page.click('[data-action="revert-all"]');
   assert.match(await notice(), /2 edited scenes and 1 new scene go/);
