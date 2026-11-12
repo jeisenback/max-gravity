@@ -291,3 +291,20 @@ test('the morning after a scene\'s watch, its stander is excused from the head, 
   assert.equal(r.you, 'engine', 'the scene\'s stander kept the night: excused');
   assert.equal(r.relieved, null, 'the one it relieved slept: not excused');
 });
+
+test('the one a scene relieved from the engine stays asleep in the bunk through the wake while it is still dark (#1048)', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    const t = onBurnAtNight(1); t.elapsed += SHIP_DAY * 0.25;
+    EFFECTS.standWatch({ stands: 'you', post: 'engine', relieved: 'engineer', relievedAt: 'bunk' });
+    const rota = billFor(G.state, { hurt: [], you: false }, G.state.day + shipDay(t.elapsed).day).engine;
+    while (shipDay(t.elapsed).block !== 'wake') t.elapsed += 0.5;
+    const p = shipPeople().find(q => q.id === rota), b = roomAt('berths');
+    Object.assign(p, { room: 'berths', dk: b.deck, tdk: b.deck, tx: null, at: 'bunk', staged: false });
+    return { block: shipDay(t.elapsed).block, dark: isDark(), asleep: isAsleep(p) };
+  });
+  await done();
+  assert.equal(r.block, 'wake'); assert.equal(r.dark, true, 'still dark at the start of the wake');
+  assert.equal(r.asleep, true, 'drawn asleep, not awake in the bunk');
+});
