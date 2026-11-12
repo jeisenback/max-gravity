@@ -661,10 +661,9 @@ Mods.register({
       for (const n of letters(planet)) M.note(n);
       const st = G.state, p = visitDue(st, planet.name, st.favorKept);
       st.favorKept = null;
-      if (!p || (G.dialog && G.nextEvent)) return;  // nowhere to put a scene: it can come at the next landing here
+      if (!p) return;
       p.visitedAt = st.day;
-      const ev = visitEvent(p);
-      if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+      offerScene('people', visitEvent(p));
     });
     M.action('renameShip', () => {
       if (hired()) return;  // her name is the captain's

@@ -71,8 +71,8 @@ Mods.register({
   init(M) {
     M.on('landed', planet => {
       const st = G.state;
-      if (!hired() || G.dialog || !roomDue(st.room, planet.name, st.day) || !st.people[st.room.pid]) return;
-      openEvent(roomReturn(st.people[st.room.pid]));
+      if (!hired() || !roomDue(st.room, planet.name, st.day) || !st.people[st.room.pid]) return;
+      offerScene('people', roomReturn(st.people[st.room.pid]));
     });
   },
 });

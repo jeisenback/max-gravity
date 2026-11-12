@@ -530,7 +530,7 @@ function land(planet) {
     else msg(flySay('walkoff', { name: fullName(c), planet: planet.name }));
   }
   landAt(planet, G.messages.slice(before).map(m => m.text));
-  for (const c of farewells) { const ev = walkOffScene(c, planet); if (G.dialog) G.nextEvent = G.nextEvent || ev; else openEvent(ev); }
+  for (const c of farewells) queueScene(walkOffScene(c, planet));
 }
 
 function landAt(planet, notes) {
@@ -544,7 +544,9 @@ function landAt(planet, notes) {
   notes = notes.concat(meetContacts(planet));
   save();
   UI.openLanded(planet, notes);
-  Mods.emit('landed', planet);
+  landingScenesOpen();
+  try { Mods.emit('landed', planet); } finally { landingScenesPlay(); }  // the handlers offer their scenes; they play in rank order (#1096)
+  Mods.emit('arrived', planet);  // after every handler: their notes are all in (comms.js)
 }
 
 function takeOff() {

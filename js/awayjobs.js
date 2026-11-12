@@ -140,10 +140,10 @@ const fill2 = (t, ctx) => t.replace(/\{(\w+)\}/g, (m, k) => (ctx[k] !== undefine
 const pitchedNow = a => a.pitched === `${G.state.day}@${G.state.planet}`;
 const bookedJob = h => (h.away || []).find(a => a.booked);  // one run agreed at a time: a second pitch waits until it is flown (#848)
 const atJob = a => a.planet === G.state.planet && a.sid === G.state.systemId;
-// The far end: the job's first scene, now or after the one that is open.
+// The far end: the job's first scene, in the landing's queue or now.
 function startAway(h, i) {
   const a = h.away.splice(i, 1)[0], ev = a.arc ? arcBeginning(a) : jobStage(awayJob(a), 0, a.ctx);  // an arc begins with its own first scene (arcs.js)
-  if (G.dialog) G.nextEvent = ev; else openEvent(ev);
+  offerScene('business', ev);  // at a landing, in its turn (#1096); from the Missions page, at once
 }
 
 // ---------- the board and the far end ----------
@@ -180,12 +180,7 @@ Mods.register({
       h.away = (h.away || []).filter(a => { if (a.until >= st.day) return true; UI.notes.push(`The offer of work on ${a.planet} has lapsed.`); return false; });
       // the far end: a job for this port, wherever it was agreed
       const here = h.away.findIndex(a => a.planet === planet.name && a.sid === st.systemId);
-      if (here >= 0) {
-        const a = h.away[here];
-        if (G.dialog && G.nextEvent) { if (a.booked) UI.notes.push(`${a.ctx.who}'s work here is waiting for you on the Missions page.`); return; }  // nowhere to put it yet: a job flown here waits on the page (#848), and the offer keeps until its day
-        startAway(h, here);
-        return;
-      }
+      if (here >= 0) { startAway(h, here); return; }  // in the landing's turn for business (#1096)
       // a contact offers something, now and then, at a port with a board
       if (planet.services.includes('missions') && h.away.length < AWAY_MAX && Math.random() < AWAY_CHANCE) { const o = awayOffer(); if (o) { h.away.push(o); UI.notes.push(`${o.ctx.who} has work for someone who's going to ${o.planet}. It's on the Missions page.`); } }
     });
