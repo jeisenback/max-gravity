@@ -1069,6 +1069,24 @@ const lifeSlot = () => lifeSlotOf(G.transit);
 const lifeFree = t => !(t.lifeUsed || {})[lifeSlotOf(t)];
 const spendLife = (t, key = lifeSlotOf(t)) => { (t.lifeUsed = t.lifeUsed || {})[key] = true; };
 
+// Downtime as a scene (docs/superpowers/specs/2026-11-12-downtime-scene-design.md). The scene opens once a slot, at a change of the ship's day to
+// one of these blocks (the caller checks the lights, the couches and any open scene), while the slot is free and not yet offered (t.lifeOffered).
+const DOWNTIME_BLOCKS = ['breakfast', 'shift', 'meal', 'supper'];
+const downtimeDue = (t, block, prevBlock) => block !== prevBlock && DOWNTIME_BLOCKS.includes(block) && lifeFree(t) && !(t.lifeOffered || {})[lifeSlotOf(t)];
+// Who Sit with someone names: of the candidates ([{ id, low, hurt }], in the picker's order) one having a hard time or hurt first, else by the day.
+const sitPerson = (cands, day) => cands.find(c => c.low || c.hurt) || cands[day % cands.length] || null;
+// Where each of the scene's choices is tagged: an activity's `where` is a room id (a tag on the room) or a function of the people aboard
+// returning a person's id (a tag over them). With no where, or no one, no tag.
+function onDeck(acts, people) {
+  const out = [];
+  for (const a of acts) {
+    const label = activityLabel(a);
+    if (typeof a.where === 'string') out.push({ label, room: a.where });
+    else if (typeof a.where === 'function') { const id = a.where(people); if (id) out.push({ label, id }); }
+  }
+  return out;
+}
+
 const activityLabel = a => (typeof a.label === 'function' ? a.label() : a.label);
 
 // Downtime is a menu: one activity a slot of the burn. There are many to choose from, so it shows five at a
