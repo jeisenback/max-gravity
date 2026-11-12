@@ -87,6 +87,17 @@ test('who lies where: a station\'s own on its couch, the rest on the rack in ord
     assert.ok(p.filter(q => q.at === 'bunk').length === Math.max(0, roles.length - 7), `${roles}: a bunk only past the seven couches`);
   }
 });
+test('past the couches, each straps into their own bunk, or one whose owner is on a couch, and no two into one, on a ship of any size (#990)', () => {
+  const roles = n => ['you', 'captain', 'pilot', 'engineer', 'slicer', 'xo', 'icehand', 'passenger', 'passenger', 'passenger', 'passenger', 'cook', 'medic', 'engineer'].slice(0, n);
+  for (const nb of [4, 5, 6, 10, 12]) for (let n = 1; n <= nb + 2; n++) {
+    const plan = couchPlan(roles(n), 'gunner', nb), bunks = plan.filter(q => q.at === 'bunk').map(q => q.b), at = `${n} aboard, ${nb} berths`;
+    assert.equal(new Set(bunks).size, bunks.length, `${at}: no two in one bunk (${bunks})`);
+    plan.forEach((q, k) => { if (q.at === 'bunk') assert.ok(q.b >= 0 && q.b < nb && (q.b === k || k >= nb || plan[q.b].at !== 'bunk'), `${at}: the ${k}th in bunk ${q.b}, their own or a free one`); });
+    plan.forEach((q, k) => { if (q.at === 'bunk' && k < nb) assert.equal(q.b, k, `${at}: the ${k}th in their own bunk`); });
+    plan.forEach((q, k) => { if (q.at === 'bunk') { const c = couchPlace(q, k, nb); assert.equal(c.bunk, q.b, `${at}: walked to the bunk they strap into`); } });
+  }
+  assert.equal(couchPlan(roles(8), 'gunner', 6).filter(q => q.at === 'bunk').map(q => q.b).join(), '0', 'the gunship (6 berths) with eight aboard: the eighth in the hand\'s bunk, the first free');
+});
 test('each place is in its room: a station couch at its seat, a rack couch on its tier, a bunk in the berths (#990)', () => {
   const lay = LAYOUTS.freighter, W = lay.width, racks = couchPlaces();
   assert.equal(racks.length, 3, 'three rack couches, all in the berths'); assert.ok(racks.every(c => c.room === 'berths'));
@@ -97,7 +108,7 @@ test('each place is in its room: a station couch at its seat, a rack couch on it
     if (q.at === 'station') {
       const r = roomAt(q.room), sx = (r.x0 + r.w * SEATS[q.room][q.seat]) * W;
       assert.equal([c.room, c.dk, c.station, c.lift].join(), ['bridge', r.deck, q.seat, 23].join(), at);
-      assert.ok(Math.abs(c.x * W - (sx - 12)) < 1e-6, `${at}: the hip a little behind the seat, toward the headrest (${c.x * W}, the seat ${sx})`);
+      assert.ok(Math.abs(c.x * W - (sx - 20)) < 1e-6, `${at}: the hip behind the seat, toward the headrest (${c.x * W}, the seat ${sx})`);
     } else if (q.at === 'rack') assert.equal([c.room, c.couchAt, c.lift, c.station, Math.round(c.x * W * 100)].join(), ['berths', q.k, racks[q.k].lift, null, Math.round(racks[q.k].x * 100)].join(), at);
     else assert.ok(c.room === 'berths' && c.couchAt === null && c.station === null && c.lift === 0 && c.bunk >= 0, at);
   });
@@ -110,10 +121,11 @@ test('a person on a couch lies on its pad, the head on its headrest: in a rack, 
     assert.ok(at.head.x > c.x - 41 && at.head.x < c.x - 26, `couch at ${c.x}: the head (${at.head.x}) over the headrest`);
     assert.ok(Math.abs(at.head.y - (F - c.lift - 8)) < 3, `couch at ${c.x}: lying on the pad (${at.head.y})`);
   }
-  // a bridge station's couch at 400 reclined flat: the headrest's middle 44 behind the seat, the end of the leg rest 24 in front
-  const at = drawPerson(fakeCtx(), { name: 'couch', face: 1, frame: 0 }, 400 - 12, 100 - 23, { color: '#ffb347' });
-  assert.ok(Math.abs(at.head.x - (400 - 44)) < 4, `the head (${at.head.x}) on the headrest`);
-  assert.ok(at.foot.x < 400 + 24, `the feet (${at.foot.x}) on the leg rest`);
+  // a bridge station's couch at 400 reclined flat: the headrest's middle 50 behind the seat; the boots short of the console's top, which
+  // overhangs from 17 in front of the seat (rooms.js roomBridge), and of its grab handle, from 21
+  const at = drawPerson(fakeCtx(), { name: 'couch', face: 1, frame: 0 }, 400 - 20, 100 - 23, { color: '#ffb347' });
+  assert.ok(Math.abs(at.head.x - (400 - 50)) < 4, `the head (${at.head.x}) on the headrest`);
+  assert.ok(at.foot.x + 4 < 400 + 17, `the boots (${at.foot.x} and their toe) short of the console's overhang`);
 });
 test('someone on their way to the well walks; only on the ladder do they climb (#972)', () => {
   const p = o => ({ role: 'gunner', room: 'galley', x: 0.2, dk: 1, tdk: 3, tx: 0.3, seat: 0.3, couch: 0, ...o });
@@ -2924,13 +2936,18 @@ test('the bridge\'s station chairs are crash couches: upright at work, flat in t
     for (const col of ['#284664', '#2e4a68', '#2b4766', '#1c3249']) assert.ok(parts.some(p => p.col === col), `${at}: ${col}`);
     for (const p of parts.filter(q => rgbOf(q.col))) { const v = rgbOf(p.col); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60, `${at}: ${p.col} a step below the people`); }
   }
-  // reclined flat it runs from its headrest, 48 behind the seat, to its leg rest's end, 23 in front: clear of every other console (each 17 to 70 in
-  // front of its seat), short of its own console's front (24 in front), in the room and clear of the well's shaft
+  // reclined flat, where its parts land (the turns applied): it runs from its headrest, 54 behind the seat, to its leg rest's end; clear of
+  // every other console (each 17 to 70 in front of its seat), of its own console's top (from 17 in front, F - 42 to F - 33) and of its grab
+  // handle (21 to 23 in front, F - 30 to F - 17), in the room and clear of the well's shaft
   for (const [i, x] of xs.entries()) {
-    const span = [x - 48, x + 23];
-    for (const [j, y] of xs.entries()) if (j !== i) assert.ok(span[1] <= y + 17 - 0 || span[0] >= y + 70, `seat ${i}: flat (${span}) clear of the console at ${y + 17} to ${y + 70}`);
-    assert.ok(span[1] < x + 24, `seat ${i}: its leg rest short of its own console`);
-    assert.ok(span[0] > r.x0 + 4 && (span[1] < FW.x0 || span[0] > FW.x1), `seat ${i}: in the room, clear of the well`);
+    const { ctx, calls } = recorder(); box.roomIn(bays, () => couchSeat.roomBridgeSeat(ctx, x, F, 1));
+    const pts = turnedPoints(calls), x0 = Math.min(...pts.map(q => q[0])), x1 = Math.max(...pts.map(q => q[0]));
+    for (const [j, y] of xs.entries()) if (j !== i) assert.ok(x1 <= y + 17 || x0 >= y + 70, `seat ${i}: flat (${x0} to ${x1}) clear of the console at ${y + 17} to ${y + 70}`);
+    for (const [bx0, bx1, by0, by1, what] of [[x + 17, x + 70, F - 42, F - 33, 'the console\'s top'], [x + 21, x + 23, F - 30, F - 17, 'its grab handle']]) {
+      assert.ok(!pts.some(([px, py]) => px > bx0 && px < bx1 && py > by0 && py < by1), `seat ${i}: clear of ${what}`);
+    }
+    assert.ok(x1 < x + 21, `seat ${i}: its leg rest (to ${x1}) short of the grab handle`);
+    assert.ok(x0 > r.x0 + 4 && (x1 < FW.x0 || x0 > FW.x1), `seat ${i}: in the room, clear of the well`);
   }
   assert.ok(p6Still((c, t) => drawRoom(c, 'bridge', r, RS({ still: true, time: t, well: FW, recline: [1, 1, 0, 0.5], damage: { marks: new Set(), severe: false } }))), 'the same frame at any time under reduced motion');
 });
@@ -2944,4 +2961,15 @@ test('the gunnery\'s chairs are crash seats, upright: a headrest and a stowed le
     assert.equal(calls.filter(k => k[0] === 'rotate').length, 0, `back ${back}: upright`);
   }
 });
+// Every point of every path drawn, where it lands on the screen (translations and turns applied).
+const turnedPoints = calls => {
+  const out = [], stack = []; let m = [1, 0, 0, 1, 0, 0];
+  const at = (x, y) => [m[0] * x + m[2] * y + m[4], m[1] * x + m[3] * y + m[5]], mul = (a, b) => [a[0] * b[0] + a[2] * b[1], a[1] * b[0] + a[3] * b[1], a[0] * b[2] + a[2] * b[3], a[1] * b[2] + a[3] * b[3], a[0] * b[4] + a[2] * b[5] + a[4], a[1] * b[4] + a[3] * b[5] + a[5]];
+  for (const [k, ...a] of calls) {
+    if (k === 'save') stack.push(m); else if (k === 'restore') m = stack.pop(); else if (k === 'translate') m = mul(m, [1, 0, 0, 1, a[0], a[1]]);
+    else if (k === 'rotate') m = mul(m, [Math.cos(a[0]), Math.sin(a[0]), -Math.sin(a[0]), Math.cos(a[0]), 0, 0]);
+    else if (k === 'moveTo' || k === 'lineTo') out.push(at(a[0], a[1])); else if (k === 'quadraticCurveTo') out.push(at(a[2], a[3]));
+  }
+  return out;
+};
 const couchSeat = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomBridgeSeat', 'roomStool']);

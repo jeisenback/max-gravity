@@ -1398,6 +1398,33 @@ test('the crash couches are fixed in the rooms, the bridge\'s station chairs amo
   await done();
 });
 
+test('on a small ship past the couches each straps into the bunk they walked to, and every name on the rack shows (#990)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn('gunship'); const t = G.transit, lay = LAYOUTS.freighter;
+    for (const k of [1, 2]) G.state.missions.push({ id: 900 + k, type: 'passenger', who: `Pax Nine${k}`, pax: 1, bonus: 0, destSystem: G.state.systemId, destPlanet: 'x', title: 'x', pay: 1, deadline: G.state.day + 60, eventDone: true });
+    t.aboard = null; const people = shipPeople().filter(p => p.role !== 'cat'); t.left = t.total * 0.99;
+    for (let k = 0; k < 2 * 20; k++) lifeTick(0.05);
+    const drawn = [], texts = [], real = window.drawPerson, realText = window.worldText;
+    window.drawPerson = (c, pose, x, y, o) => { drawn.push({ name: pose.name, x }); return real(c, pose, x, y, o); };
+    window.worldText = (c, zoom, text, x, y, px, col, align) => { texts.push({ text, x, y, w: c.measureText(text).width / zoom }); return realText(c, zoom, text, x, y, px, col, align); };
+    G.cam = { y: layoutBox(lay, 'berths').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); window.drawPerson = real; window.worldText = realText;
+    const bunked = people.filter(p => p.couchAt === null && p.station === null), rack = people.filter(p => p.couchAt !== null);
+    return { berths: ship().berths, n: people.length, bunked: bunked.map(p => ({ seat: p.seat * lay.width, bunk: p.bunk, couch: p.couch })), bunks: drawn.filter(q => q.name === 'bunk').map(q => q.x),
+      names: rack.map(p => p.name), labels: texts.filter(q => rack.some(p => p.name === q.text)) };
+  });
+  await done();
+  assert.equal(r.berths, 6, 'the gunship'); assert.equal(r.bunked.length, 2, `two past the couches ${JSON.stringify(r)}`);
+  assert.equal(new Set(r.bunked.map(q => q.bunk)).size, 2, 'in two bunks');
+  for (const q of r.bunked) assert.ok(q.couch >= 0.6 && r.bunks.some(x => Math.abs(x - q.seat) < 0.01), `drawn in the bunk they walked to (${q.seat}; drawn at ${r.bunks})`);
+  assert.equal(r.labels.length, r.names.length, `every name on the rack shows (${r.labels.map(q => q.text)} of ${r.names})`);
+  for (let i = 0; i < r.labels.length; i++) for (let j = i + 1; j < r.labels.length; j++) {
+    const a = r.labels[i], b = r.labels[j];
+    assert.ok(Math.abs(a.x - b.x) >= (a.w + b.w) / 2 || Math.abs(a.y - b.y) >= 10, `${a.text} and ${b.text} apart`);
+  }
+});
+
 // #927: at the flip someone asleep stays in their bunk, strapped, and everyone strapped in sits in a jump seat that folds down from the wall.
 test('at the flip a sleeper stays in the bunk, and every strapped person has a jump seat under them (#927)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });

@@ -1155,11 +1155,12 @@ const bridgeGlass = (r, well) => {
 };
 // A pilot's seat at a post of the bridge (#933), facing forward (SEAT_FACE): its pan at the seated hip (23) on a pedestal bolted to the deck, the
 // back behind it with a headrest at the seated head, and the harness, slack on the back when no one is strapped in. Old and patched (point 6):
-// the foot plate scuffed by boots, the paint worn off the headrest's edge where hands pull on it in zero g. A crash couch (#990): a leg rest
-// hangs from the pan's front, and by r (0 upright, 1 flat: the hard burn) the back and the headrest recline about the pan's back edge and the
-// leg rest swings up about its front, so whoever lies on it lies flat at the pan's height, the head on the headrest 44 behind the seat
-// (STATION_LIE: the hip 12 behind it). Turned, not redrawn: a path given to roomPart is fixed per layout.
-const STATION_LIE = 12, STATION_PAD = 23;
+// the foot plate scuffed by boots, the paint worn off the headrest's edge where hands pull on it in zero g. A crash couch (#990): a short leg
+// rest hangs from the pan's front, and by r (0 upright, 1 flat: the hard burn) the back reclines about the pan's back edge, the headrest rises
+// on its stem as it goes (6 at flat), and the leg rest swings up about the pan's front, so whoever lies on it lies flat at the pan's height,
+// the head on the headrest 50 behind the seat (STATION_LIE: the hip 20 behind it), the boots short of the console's top (17 in front) and the
+// leg rest short of its grab handle (21 in front). Turned, not redrawn: a path given to roomPart is fixed per layout.
+const STATION_LIE = 20, STATION_PAD = 23;
 const roomTurned = (ctx, px, py, a, fn) => { if (!a) { fn(); return; } ctx.save(); ctx.translate(px, py); ctx.rotate(a); ctx.translate(-px, -py); fn(); ctx.restore(); };
 function roomBridgeSeat(ctx, x, F, r = 0) {  // its pad and its foot plate solid in the box (#1024), the plate's shadow on the strip
   const a = -r * Math.PI / 2;
@@ -1167,12 +1168,14 @@ function roomBridgeSeat(ctx, x, F, r = 0) {  // its pad and its foot plate solid
   roomDot(ctx, x - 6.5, F - 1.2, 0.6, '#56708c'); roomDot(ctx, x + 6.5, F - 1.2, 0.6, '#56708c');  // its bolts
   for (const sx of [x - 4.5, x + 2]) roomFlat(ctx, sx, F - 2.2, 2.6, 0.7, '#5a6670');  // scuffs, where boots go
   roomPart(ctx, `M ${x - 2} ${F - 19} L ${x + 2} ${F - 19} L ${x + 2.5} ${F - 2.5} L ${x - 2.5} ${F - 2.5} Z`, '#1c3249', { top: 0, side: 1.2 });
-  roomTurned(ctx, x + 10, F - 21, a, () => roomPart(ctx, roomRound(x + 8, F - 21, 4.5, 13, 1.5), '#2b4766', { top: 0.6, side: 1 }));  // the leg rest
+  roomTurned(ctx, x + 10, F - 21, a, () => roomPart(ctx, roomRound(x + 8, F - 21, 4.5, 7, 1.5), '#2b4766', { top: 0.6, side: 1 }));  // the leg rest
   roomTurned(ctx, x - 10, F - 21, a, () => {
-    roomPart(ctx, roomRound(x - 11, F - 52, 2.5, 4, 0.8), '#1c3249', { top: 0 });  // the headrest's stem
+    roomPart(ctx, roomRound(x - 11, F - 58, 2.5, 10, 0.8), '#1c3249', { top: 0 });  // the headrest's stem, drawn out as it rises
     roomPart(ctx, `M ${x - 13} ${F - 20} L ${x - 8} ${F - 20} L ${x - 6.5} ${F - 49} L ${x - 11.5} ${F - 49} Z`, '#284664', { top: 1, side: -1.5 });
+    ctx.save(); ctx.translate(0, -6 * r);
     roomPart(ctx, roomRound(x - 14, F - 59, 8, 8, 2.5), '#284664', { top: 1, side: -1.5 });
     roomFlat(ctx, x - 13.4, F - 57, 0.9, 3.5, '#6a747c');  // worn where hands pull on it
+    ctx.restore();
     ctx.strokeStyle = '#5a4e3a'; ctx.lineWidth = 1.3;  // the harness: a shoulder strap down the back to its buckle, and the lap belt
     ctx.beginPath(); ctx.moveTo(x - 7.5, F - 47); ctx.quadraticCurveTo(x - 10.5, F - 36, x - 9, F - 24); ctx.moveTo(x - 9, F - 22); ctx.lineTo(x - 3, F - 21); ctx.stroke();
     roomFlat(ctx, x - 10.5, F - 35, 2.5, 2, '#7a8794');

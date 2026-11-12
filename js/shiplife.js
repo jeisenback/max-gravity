@@ -493,10 +493,10 @@ function shipPeople() {
   // A hand's captain is aboard too: placed without a draw of the game's dice (their walks about the ship draw, as everyone's do).
   const cap = hiredCaptain(), all = cap ? [...people, { name: cap.first, role: 'captain', id: cap.id }] : people;
   // Everyone starts strapped in for the burn out, on their couch (couchPlan).
-  const owners = bunkOwners(all, all.length).filter(Boolean), nb = Math.min(12, ship().berths), job = hired(), plan = couchPlan(owners.map(p => p.role), job ? POSTS[job.post].role : null);
+  const owners = bunkOwners(all, all.length).filter(Boolean), nb = Math.min(12, ship().berths), job = hired(), plan = couchPlan(owners.map(p => p.role), job ? POSTS[job.post].role : null, nb);
   for (const p of all) {
     const k = owners.indexOf(p), c = k < 0 ? { room: 'berths', x: CAT_SPOT / LAYOUTS.freighter.width, dk: roomAt('berths').deck, lift: 0, couchAt: null, station: null } : couchPlace(plan[k], k, nb);
-    Object.assign(p, { room: c.room, x: c.x, dk: c.dk, tdk: c.dk, seatDk: c.dk, tx: null, wait: p.role === 'captain' ? 3 : lifeRand(1, 4), seat: c.x, couch: 1, lift: c.lift, couchAt: c.couchAt, station: c.station });
+    Object.assign(p, { room: c.room, x: c.x, dk: c.dk, tdk: c.dk, seatDk: c.dk, tx: null, wait: p.role === 'captain' ? 3 : lifeRand(1, 4), seat: c.x, couch: 1, lift: c.lift, couchAt: c.couchAt, station: c.station, bunk: c.bunk === undefined ? null : c.bunk });
   }
   return (t.aboard = all);
 }
@@ -523,8 +523,10 @@ function clearOf(p, x, people = []) {
 // hand at theirs), and the hand with no station there at a free one; then everyone else on the berths' rack in order (rooms.js couchPlaces);
 // then a bridge station left free; then a bunk, strapped in as a sleeper is at the flip (#927). The gunnery's posts are crash seats that stay
 // upright (no room to lie one back between its consoles and the torpedo rack), so a gunner is not at the guns. Each place: { at: 'station',
-// room, seat } (SEATS' index), { at: 'rack', k }, or { at: 'bunk' }.
-function couchPlan(roles, handRole) {
+// room, seat } (SEATS' index), { at: 'rack', k }, or { at: 'bunk', b }: bunk b of the nb, their own (the k-th of the company has bunk k,
+// bunkOwners), or past the bunks a free one, spare or its owner on a couch, the first first. This is where they walk to (couchPlace) and where
+// the cutaway lays them (drawCutaway).
+function couchPlan(roles, handRole, nb = 12) {
   const n = SEATS.bridge.length, racks = couchPlaces().length, taken = new Set(), plan = roles.map(() => null), own = { ...POST_SEAT.bridge, captain: 2 };  // the captain's post, the third (#972)
   const seat = (i, k) => { taken.add(k); plan[i] = { at: 'station', room: 'bridge', seat: k }; }, free = () => [...Array(n).keys()].find(k => !taken.has(k));
   roles.forEach((r, i) => { const k = own[r === 'you' ? handRole : r]; if (k !== undefined && !taken.has(k)) seat(i, k); });
@@ -532,21 +534,24 @@ function couchPlan(roles, handRole) {
   if (hand >= 0 && !plan[hand] && free() !== undefined) seat(hand, free());
   let k = 0;
   roles.forEach((r, i) => { if (!plan[i]) { if (k < racks) plan[i] = { at: 'rack', k: k++ }; else if (free() !== undefined) seat(i, free()); else plan[i] = { at: 'bunk' }; } });
+  const open = [...Array(nb).keys()].filter(b => b >= roles.length).concat([...Array(nb).keys()].filter(b => b < roles.length && plan[b].at !== 'bunk'));  // spare bunks, then those whose owner is on a couch
+  plan.forEach((q, i) => { if (q.at === 'bunk') q.b = i < nb ? i : open.length ? open.shift() : i % Math.max(1, nb); });
   return plan;
 }
 // Where the place q (couchPlan) of the k-th of the company is: room, dk, and x (a share of the width) where they go; lift, how high over the
-// deck they lie; station, the bridge seat's index, or couchAt, the rack couch's number; in a bunk, bunk k of the nb, or past the bunks the
-// bunk of one who is on a couch (bunkSlots gives it them).
+// deck they lie; station, the bridge seat's index, or couchAt, the rack couch's number; in a bunk, its number, bunk (q.b, of the nb).
 function couchPlace(q, k, nb) {
   const lay = LAYOUTS.freighter, W = lay.width, none = { station: null, couchAt: null };
   if (q.at === 'station') { const r = roomAt(q.room); return { ...none, room: q.room, x: r.x0 + r.w * SEATS[q.room][q.seat] - STATION_LIE / W, dk: r.deck, lift: STATION_PAD, station: q.seat }; }
   if (q.at === 'rack') { const c = couchPlaces()[q.k]; return { ...none, room: c.room, x: c.x / W, dk: roomAt(c.room).deck, lift: c.lift, couchAt: q.k }; }
-  const n = Math.max(1, nb), well = { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, b = (k < n ? k : k - n) % n;
+  const n = Math.max(1, nb), well = { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, b = q.b !== undefined ? q.b : (k < n ? k : k - n) % n;
   return { ...none, room: 'berths', x: berthSleeper(berthBunk(layoutBox(lay, 'berths'), n, b, well)).x / W, dk: roomAt('berths').deck, lift: 0, bunk: b };
 }
 // How far each bridge station's couch is reclined (#990), by its seat: as far as its person has strapped in on it (p.couch, eased in the hard
-// burn, at once under reduced motion); one with no one on it lies flat through the hard burn and stands up after.
-const stationRecline = (people, ph) => SEATS.bridge.map((f, i) => { const p = people.find(q => q.station === i); return p ? p.couch || 0 : +(ph === 'couch'); });
+// burn, at once under reduced motion); one with no one on it as far as `idle` has it (reclineStep: eased the same way, flat through the hard
+// burn and up after).
+const stationRecline = (people, idle = []) => SEATS.bridge.map((f, i) => { const p = people.find(q => q.station === i); return p ? p.couch || 0 : idle[i] || 0; });
+const reclineStep = (v, on, dt, still) => (still ? +on : Math.max(0, Math.min(1, v + (on ? 1 : -1) * dt * 1.5)));  // the couches' ramp (lifeTick's p.couch)
 const CAT_SPOT = 60;  // where the cat curls up on the berths' deck in the hard burn, under the lockers and clear of the couches
 
 // Sent somewhere by a downtime activity you chose: the timetable takes them back when they have been there a while (lifeTick).
@@ -750,9 +755,10 @@ function lifeTick(dt) {
       if (spot.rounds ? p.at !== undefined : spot.at !== p.at || spot.room !== p.room) p.block = undefined;
     }
   }
+  t.recline = SEATS.bridge.map((f, i) => reclineStep((t.recline || [])[i] || 0, ph === 'couch', dt, Settings.reduceMotion));  // the bridge's couches nobody lies on, eased flat in the hard burn and up after (#990)
   for (const p of people) {
     const atCouch = ph === 'couch' && Math.abs(p.x - p.seat) < 0.004 * CUT_K && Math.abs(p.dk - p.seatDk) < 0.05;  // at their couch in the hard burn, they strap in on it, and out after (#925, #990)
-    p.couch = Settings.reduceMotion ? +atCouch : Math.max(0, Math.min(1, (p.couch || 0) + (atCouch ? 1 : -1) * dt * 1.5));
+    p.couch = reclineStep(p.couch || 0, atCouch, dt, Settings.reduceMotion);
     if (ph === 'secure' || ph === 'float') {  // strap in where they are; someone on the ladder finishes onto a deck
       p.tx = null; p.tdk = Math.round(p.dk); p.block = undefined; p.relief = undefined;  // strapped in: under way again, the timetable sends them on
       p.dk = Math.abs(p.tdk - p.dk) < 0.01 ? p.tdk : climbStep(p.dk, p.tdk, dt);
@@ -987,9 +993,10 @@ function drawCutaway(box, clear = box) {
   // The rooms, the tank, the ladder well and its ladder full height (the tube through the tank), and the bulkheads beside the well.
   const cap = ship().cargo, nb = Math.min(12, ship().berths), owners = bunkOwners(people, nb), slots = new Map(), job = hired();
   const bunked = p => p.role !== 'cat' && p.couchAt === null && p.station === null && ph === 'couch' && (p.couch || 0) >= 0.6;  // past the couches, strapped into a bunk in the hard burn (couchPlan, #990)
-  bunkSlots(people, owners, p => isAsleep(p) || bunked(p)).forEach((k, p) => slots.set(p, k));  // whoever is turned in lies in their own bunk (#934), or a free one
-  const bunks = owners.map(p => p && { slept: slots.has(p), ...bunkKit(p.role === 'you' ? { id: 'you', role: job ? POSTS[job.post].role : 'rating', culture: st.background } : { ...((p.id && st.people[p.id]) || p), role: p.role, id: p.id || p.name }) });
-  const s = { bunks, w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, ph),
+  bunkSlots(people, owners, isAsleep).forEach((k, p) => slots.set(p, k));  // whoever is turned in lies in their own bunk (#934), or a free one
+  for (const p of people) if (bunked(p) && p.bunk !== null && p.bunk < nb) slots.set(p, p.bunk);  // the bunk they walked to (couchPlan; nobody sleeps in the hard burn)
+  const lain = new Set(slots.values()), bunks = owners.map((p, k) => p && { slept: lain.has(k), ...bunkKit(p.role === 'you' ? { id: 'you', role: job ? POSTS[job.post].role : 'rating', culture: st.background } : { ...((p.id && st.people[p.id]) || p), role: p.role, id: p.id || p.name }) });
+  const s = { bunks, w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, t.recline),
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);
@@ -1023,7 +1030,7 @@ function drawCutaway(box, clear = box) {
 
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
   ctx.font = `600 12px ${roomFont}`;
-  const berths = layoutBox(lay, 'berths'), labels = [], dots = [], hits = [];
+  const berths = layoutBox(lay, 'berths'), labels = [], racked = [], dots = [], hits = [];
   const fl = burnStages(t.days).float, floatW = burnRamp(pr, 0.5 - fl, 0.5 - fl / 3) - burnRamp(pr, 0.5 + fl / 3, 0.5 + fl);  // how far the float has built at the flip, 0 to 1 and back (#927), in ship time (#992)
   const youHurt = handHurt();
   for (const p0 of people) {
@@ -1051,6 +1058,7 @@ function drawCutaway(box, clear = box) {
     if (p.id) hits.push({ ...toScreen(tap.x, tap.y), id: p.id, head: toScreen(tap.head.x, tap.head.y), foot: toScreen(tap.foot.x, tap.foot.y) });  // the body, head to foot, for a tap (game.js)
     if (p.role !== 'passenger' || p.pid) {
       const nw = ctx.measureText(p.name).width / zoom;
+      if (pose.name === 'couch' && typeof p.couchAt === 'number') { racked.push({ name: p.name, x, w: nw, dk, y: y + lift, k: p.couchAt }); continue; }  // on a rack: named in a row under it, after (#990)
       if (!labels.some(b => b.dk === dk && Math.abs(b.x - x) < (b.w + nw) / 2 + 4 / zoom)) {
         labels.push({ x, w: nw, dk });
         worldText(ctx, zoom, p.name, x, (bunk ? berths.floor : y + lift) + 10, 12 / zoom, '#9fb4c9', 'center');
@@ -1058,6 +1066,12 @@ function drawCutaway(box, clear = box) {
     }
   }
   ctx.globalAlpha = 1;
+  // those on a rack share its x (#990): their names in a row on the deck plate under it, the lowest couch's first, centred on the rack
+  for (const x0 of [...new Set(racked.map(q => q.x))]) {
+    const row = racked.filter(q => q.x === x0).sort((a, b) => a.k - b.k), gap = 8 / zoom;
+    let at = x0 - (row.reduce((t, q) => t + q.w, 0) + gap * (row.length - 1)) / 2;
+    for (const q of row) { labels.push({ x: at + q.w / 2, w: q.w, dk: q.dk }); worldText(ctx, zoom, q.name, at + q.w / 2, q.y + 10, 12 / zoom, '#9fb4c9', 'center'); at += q.w + gap; }
+  }
   if (seen(galley.top, galley.floor)) roomMessTable(ctx, galley, s);  // the mess table in front of those sitting at it (#978)
   hullSeams(o);  // plating, rivets and scars (hulldetail.js)
   ctx.restore();
