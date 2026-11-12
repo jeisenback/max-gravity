@@ -1524,13 +1524,13 @@ test('the burn bar shows the real time left at the chosen speed, and the speed o
     const bar = () => { const texts = [], real = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (s, ...a) { texts.push(String(s)); return real.call(this, s, ...a); }; try { render(); } finally { CanvasRenderingContext2D.prototype.fillText = real; } return texts.find(s => s.includes('remaining')); };
     const mss = s => { s = Math.ceil(s); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
     const out = {};
-    for (const s of [1, 4, 0]) { G.speed = s; out[s] = { bar: bar(), want: mss(realLeft(t, s, burnSpeed())) }; }
+    for (const s of [1, 2, 0]) { G.speed = s; out[s] = { bar: bar(), want: mss(realLeft(t, s, burnSpeed())) }; }
     G.speed = 16; t.left = t.total * 0.5; out.flip = bar();
     return out;
   });
   await done();
   assert.ok(r[1].bar.startsWith(`${r[1].want} remaining -`), r[1].bar);
-  assert.ok(r[4].bar.startsWith(`${r[4].want} remaining 4x`), r[4].bar);
+  assert.ok(r[2].bar.startsWith(`${r[2].want} remaining 2x`), r[2].bar);
   assert.ok(r[0].bar.startsWith(`${r[0].want} remaining paused`), r[0].bar);
   assert.match(r.flip, /remaining flip/);
 });
@@ -1564,16 +1564,16 @@ test('in a burn Space pauses and resumes, and 1, 2 and 3 pick the speed; the but
   await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; });
   const speed = () => ev(() => G.speed), seen = [];
   for (const k of ['Space', 'Space', 'Digit2', 'Digit3', 'Digit1']) { await page.keyboard.press(k); seen.push(await speed()); }
-  assert.deepEqual(seen, [0, 1, 4, 16, 1]);
+  assert.deepEqual(seen, [0, 1, 2, 16, 1]);
   await page.waitForSelector('#bspeed:not([hidden])');
   await page.click('#bspeed [data-speed="16"]');
   const r = await ev(() => ({ speed: G.speed, lit: [...document.querySelectorAll('#bspeed button.active')].map(b => b.dataset.speed), labels: [...document.querySelectorAll('#bspeed button')].map(b => b.textContent) }));
-  assert.deepEqual(r, { speed: 16, lit: ['16'], labels: ['Pause', '1x', '4x', '16x'] });
+  assert.deepEqual(r, { speed: 16, lit: ['16'], labels: ['Pause', '1x', '2x', '16x'] });
   await page.click('#bspeed [data-speed="0"]');
   assert.equal(await speed(), 0);
-  await ev(() => { G.speed = 4; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', keep: true, run: () => ({ title: 'T', text: 'pressed', choices: [] }) }] }); });
+  await ev(() => { G.speed = 2; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', keep: true, run: () => ({ title: 'T', text: 'pressed', choices: [] }) }] }); });
   await page.keyboard.press('Space'); await page.keyboard.press('Digit3');
-  assert.equal(await ev(() => G.speed), 4, 'under a scene the speed is left alone');
+  assert.equal(await ev(() => G.speed), 2, 'under a scene the speed is left alone');
   await done();
 });
 
@@ -1596,7 +1596,7 @@ test('paused, a screen opens and works, and nothing in it runs on; landed, the k
 test('the controls page lists the burn\'s keys (#992)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const text = await ev(() => { Menu.view = 'controls'; Menu.render(); return document.getElementById('panel').textContent; });
-  assert.match(text, /Space: pause or resume the burn/); assert.match(text, /1 \/ 2 \/ 3: normal, 4x, 16x/);
+  assert.match(text, /Space: pause or resume the burn/); assert.match(text, /1 \/ 2 \/ 3: normal, 2x, 16x/);
   await done();
 });
 
@@ -1737,4 +1737,30 @@ test('under reduced motion each room\'s light holds still: the flip drawn at two
   const moving = await ev(() => { const a = lightDraw('galley', { pr: 0.5, time: 1 }).d, b = lightDraw('galley', { pr: 0.5, time: 1.3 }).d; return a.some((v, i) => v !== b[i]); });
   assert.ok(moving, 'and without it the flip pulses');
   await done();
+});
+
+test('in time-lapse at 16x a walk is not drawn: the walker fades out of the old place, out of sight between, and fades into the new; at 1x and 2x as they are', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {}; burn(); const t = G.transit;
+    t.left = t.total * 0.3;  // under way, clear of the couches and the flip
+    setBurnSpeed(16); out.on16 = lapseOn(); setBurnSpeed(2); out.on2 = lapseOn(); setBurnSpeed(1); out.on1 = lapseOn();
+    setBurnSpeed(16); scene(); out.scene = lapseOn(); G.dialog = null;
+    const p = { x: 0.1 * CUT_K, dk: 1, tdk: 1, tx: null, at: 'post', room: 'bridge' }, frame = (n = 1) => { for (let i = 0; i < n; i++) lapseTick([p], true, 0.05); return { ...p.lapse }; };
+    out.rest = frame();
+    p.x += 0.005 * CUT_K; out.nudge = frame();  // a small move is followed
+    p.tx = 0.8 * CUT_K; p.x = 0.5 * CUT_K; out.leaving = frame(); out.gone = frame(10);  // walking: fading out where they were, then out of sight
+    p.x = 0.8 * CUT_K; p.tx = null; p.at = 'galley'; out.arrived = frame(); out.back = frame(10);
+    lapseTick([p], false, 0.05); out.off = p.lapse;
+    return out;
+  });
+  await done();
+  assert.deepEqual([r.on16, r.on2, r.on1, r.scene], [true, false, false, false], 'at 16x, and not under a scene');
+  assert.equal(r.rest.a, 1);
+  assert.ok(Math.abs(r.nudge.x - r.rest.x) > 0 && r.nudge.a === 1, 'followed, not faded');
+  assert.equal(r.leaving.x, r.nudge.x, 'drawn where they were'); assert.ok(r.leaving.a < 1 && r.leaving.a > 0, 'fading out');
+  assert.equal(r.gone.a, 0);
+  assert.ok(Math.abs(r.arrived.x - 0.8 * r.rest.x / 0.1) < 1e-6 && r.arrived.at === 'galley', 'there once they rest'); assert.equal(r.back.a, 1, 'and faded in');
+  assert.equal(r.off, null, 'at 1x drawn as they are');
 });
