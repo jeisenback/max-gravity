@@ -32,7 +32,7 @@ function repairScene(planet) {
     if (plan.held) { st.cargo.metal -= plan.tons; if (st.cargo.metal <= 0) { delete st.cargo.metal; delete st.paid.metal; } }
     else if (plan.stocked) recordTrade(planet, 'metal', plan.tons, 1);
     h.fund = Math.max(0, h.fund - total); h.bill = (h.bill || 0) + total;
-    st.armor = ship().armor;
+    st.armor = ship().armor; mendHull(st, [], [], true);  // the yard's plating takes the patches with it (#935)
     beginStay(h, days, 'yard');  // the days pass as nights on the pad (stay.js)
     const pay = Math.round(h.wage * STANDBY_PAY * days); st.credits += pay;
     return say('done', { text, days: say(days === 1 ? 'days.one' : 'days.many', { n: days }), total: fmt(total), last: cap.last, pay: fmt(pay) });

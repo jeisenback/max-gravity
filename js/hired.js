@@ -797,7 +797,7 @@ Mods.register({
     M.on('landed', planet => {
       if (!hired() || chapterOf(G.state) > 1 || !planet.services.includes('refuel')) return;  // the captain's; the co-op buys its own (#891)
       G.state.fuel = ship().fuel;
-      if (G.state.armor >= ship().armor * (1 - REPAIR_AT)) G.state.armor = ship().armor;  // a scrape is patched on the way in; real damage is the yard's (repairs.js)
+      if (G.state.armor >= ship().armor * (1 - REPAIR_AT)) { G.state.armor = ship().armor; mendHull(G.state, G.state.hullMarks || [], []); }  // a scrape is patched on the way in, its mark a patch on the wall (#935); real damage is the yard's (repairs.js)
     });
     M.on('landed', planet => {
       const text = hired() && chapterOf(G.state) === 1 && settleRun(planet);  // the captain's run and the hand's wage; the co-op's contracts settle on its board (ownerboard.js)
