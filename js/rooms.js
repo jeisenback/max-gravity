@@ -869,15 +869,15 @@ function roomMessTableIn(ctx, r, s) {
 // and the bench's foot bar are theirs: roomMessTableIn, roomBench).
 // The galley's screen (#1035): on through supper and the handover, when the feeds are watched (s.screen, from the ship's day: shiplife.js).
 const galleyScreenOn = block => block === 'supper' || block === 'handover';
-// The screen on its arm (docs/bible/look.md 4, 5, 10), centred at (x, y) on the wall: a plate under the cupboard straight over it, its bolts newer than
-// the paint, a short drop to a hinge, and the screen hung square from the hinge, tipped down toward the mess table (a dark lip along its bottom).
-// On: lit glass with a faint flicker, and its cool light on the table under it.
+// The screen on its arm (docs/bible/look.md 4, 5, 10), centred at (x, y): a plate on the bulkhead beside it, under the cupboard's rail and clear of
+// it, its bolts newer than the paint; a jointed arm out from the plate to the screen's back; the screen square, tipped down toward the mess table
+// (a dark lip along its bottom). On: lit glass with a faint flicker, and its cool light on the table under it.
 function roomGalleyScreen(ctx, x, y, on, s) {
-  const hw = 12, hh = 7.5, top = y - hh, py = y - 17;  // the screen's half width and height; the plate under the cupboard's rail, a clear drop above the screen
-  roomPart(ctx, roomRound(x - 4, py - 1.5, 8, 2, 0.6), '#5a7690', { top: 0.6 });
-  roomDot(ctx, x - 2.5, py - 0.5, 0.5, '#b8c4d0'); roomDot(ctx, x + 2.5, py - 0.5, 0.5, '#b8c4d0');
-  roomPart(ctx, roomRound(x - 1, py + 0.5, 2, top - py - 2, 0.5), '#4a6078', { top: 0, side: 0.6 });  // the drop
-  roomDot(ctx, x, top - 1.6, 1.6, '#6a7f95'); ctx.lineWidth = 0.7; ctx.strokeStyle = FIG_LINE; ctx.stroke();  // the hinge
+  const hw = 12, hh = 7.5, top = y - hh, px = x - hw - 7;  // the screen's half width and height; the wall plate's centre, left of the screen
+  roomPart(ctx, roomRound(px - 1.5, y - 4.5, 3, 9, 0.6), '#5a7690', { top: 0.6, side: 0.8 });
+  roomDot(ctx, px, y - 3, 0.5, '#b8c4d0'); roomDot(ctx, px, y + 3, 0.5, '#b8c4d0');
+  ctx.strokeStyle = roomTint('#4a6078'); ctx.lineWidth = 1.8; roomSeg(ctx, [[px + 1.5, y], [px + 4, y - 1.5], [x - hw + 3, y - 0.5]]);  // the arm, out to the screen's back
+  roomDot(ctx, px + 4, y - 1.5, 1.1, '#6a7f95'); ctx.lineWidth = 0.7; ctx.strokeStyle = FIG_LINE; ctx.stroke();  // its elbow
   roomPart(ctx, roomRound(x - hw, top, hw * 2, hh * 2, 1.2), '#1a2430', { top: 0.8, under: 1.6 });  // the bezel, its lower lip the tip toward the table
   const glass = roomRound(x - hw + 1.6, top + 1.6, hw * 2 - 3.2, hh * 2 - 4, 0.6);
   if (on) {
