@@ -1238,7 +1238,10 @@ function downtimeScene(all) {
   const t = G.transit, people = shipPeople(), block = shipDay(t.elapsed).block, cap = hired() && hired().captain, named = new Set();
   // A choice that would name a shipmate an earlier choice names is left out, so nobody is offered twice (the captain may be: advice and the figures).
   const once = a => { const g = onDeck([a], people)[0]; if (!g || !g.id || g.id === cap) return true; if (named.has(g.id)) return false; named.add(g.id); return true; };
-  const every = [...baseActivities(), ...handDowntime(), ...onNow()], drawn = all ? every : downtimeFive(), five = drawn.filter(a => (a.can && !a.can()) || once(a));
+  const every = [...baseActivities(), ...handDowntime(), ...onNow()], drawn = all ? every : downtimeFive();
+  const due = drawn.find(a => a === ACTIVITIES.teach && a.can());  // a move the crew would show you keeps its place (#850): its teacher is named first
+  if (due) once(due);
+  const five = drawn.filter(a => a === due || (a.can && !a.can()) || once(a));
   for (let left = drawn.length - five.length, i = 0; !all && left > 0 && i < every.length; i++) {  // each repeat left out: the next that names nobody twice
     const a = every[i];
     if (!drawn.includes(a) && (!a.can || a.can()) && once(a)) { five.push(a); left--; }
