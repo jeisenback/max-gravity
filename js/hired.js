@@ -244,7 +244,7 @@ function hiredCall(ev) {
 
 // ---------- downtime ----------
 const practiceSay = (key, vars) => sceneSay('scene:screens', key, vars);  // the words are the lines of scene:screens (hiredscenes.js)
-ACTIVITIES.practise = { hiredOnly: true, get label() { return practiceSay('practise.label'); }, can: () => !!hired(), run() { if (!hired()) return practiceSay('practise.none'); const n = 3; gainSkill(hired().post, n); return `${practiceSay(`practise.${hired().post}`)} ${practiceSay('practise.learn', { n, post: POSTS[hired().post].name.toLowerCase() })}`; } };
+ACTIVITIES.practise = { hiredOnly: true, get label() { return practiceSay('practise.label'); }, can: () => !!hired(), on: () => practiceSay('practise.on', { post: POSTS[hired().post].name.toLowerCase() }), get where() { return hired() ? postOf(POSTS[hired().post].role) : undefined; }, run() { if (!hired()) return practiceSay('practise.none'); const n = 3; gainSkill(hired().post, n); return `${practiceSay(`practise.${hired().post}`)} ${practiceSay('practise.learn', { n, post: POSTS[hired().post].name.toLowerCase() })}`; } };
 
 // The captain's figures (#1059, docs/bible/chapter-1.md, Hester's regard): a captain who keeps a notebook (her entry's `notebook`) lets the hand go over it against
 // the house's accounts, every FIGURES_GAP days at most. A word on wit: landed, she thinks better of the hand; a good landing finds the house's software wrong, and the
@@ -252,7 +252,7 @@ ACTIVITIES.practise = { hiredOnly: true, get label() { return practiceSay('pract
 const FIGURES_GAP = 15, FIGURES_FIND = 300, FIGURES_FOUND = 0.3;  // the days between, what an error found is worth to the fund, and the share of landings that find one
 const figuresDue = (st, h) => { const d = captainEntry(); return !!(h && d && d.notebook && (h.figuresAt === undefined || st.day - h.figuresAt >= FIGURES_GAP)); };
 ACTIVITIES.figures = {
-  hiredOnly: true, get label() { return practiceSay('figures.label'); }, can: () => figuresDue(G.state, hired()),
+  hiredOnly: true, get label() { return practiceSay('figures.label'); }, can: () => figuresDue(G.state, hired()), on: () => practiceSay('figures.on', { last: hiredCaptain().last }), where: () => hired().captain,
   run() {
     const st = G.state, h = hired(), last = hiredCaptain().last;
     if (!figuresDue(st, h)) return '';

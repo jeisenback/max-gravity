@@ -1018,7 +1018,7 @@ function drawCutaway(box, clear = box) {
 const lifeSay = (key, vars) => sceneSay('scene:shiplife', key, vars);  // the words of these are the lines of scene:shiplife (hiredscenes.js)
 const ACTIVITIES = {
   meal: {
-    get label() { return lifeSay('meal.label'); }, can: () => true,
+    get label() { return lifeSay('meal.label'); }, can: () => true, on: () => lifeSay('meal.on'), where: 'galley',
     run() {
       for (const p of shipPeople()) if (p.role !== 'you') toActivity(p, 'galley');
       toActivity(shipPeople()[0], 'galley');
@@ -1028,7 +1028,7 @@ const ACTIVITIES = {
     },
   },
   drills: {
-    get label() { return lifeSay('drills.label'); }, can: () => !G.transit.drilled,
+    get label() { return lifeSay('drills.label'); }, can: () => !G.transit.drilled, on: () => lifeSay('drills.on'), where: 'bridge',
     run() {
       G.transit.drilled = true;
       for (const p of shipPeople()) toActivity(p, p.role === 'you' ? 'bridge' : p.role === 'captain' ? 'bridge' : lifePick(['hold', 'bridge', 'engine']));
@@ -1036,7 +1036,7 @@ const ACTIVITIES = {
     },
   },
   repair: {
-    get label() { return lifeSay('repair.label'); }, can: () => G.state.armor < ship().armor,
+    get label() { return lifeSay('repair.label'); }, can: () => G.state.armor < ship().armor, on: () => lifeSay('repair.on'), where: 'engine',
     run() {
       const max = ship().armor, amount = Math.round(max * (roleSkill('engineer') ? 0.4 : 0.2)), before = G.state.armor;
       G.state.armor = Math.min(max, before + amount);
@@ -1046,7 +1046,7 @@ const ACTIVITIES = {
     },
   },
   visit: {
-    get label() { return lifeSay('visit.label'); }, can: () => paxAboard().length > 0,
+    get label() { return lifeSay('visit.label'); }, can: () => paxAboard().length > 0, on: () => lifeSay('visit.on'), where: () => (paxAboard().find(m => m.pid) || {}).pid,
     run() {
       toActivity(shipPeople()[0], 'berths');
       for (const m of paxAboard()) if (m.pid) like(G.state.people[m.pid], 1, lifeSay('visit.memory'));

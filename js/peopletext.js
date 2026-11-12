@@ -1016,6 +1016,7 @@ const PEOPLE_LINES = {
     'league.start': 'The season has just started.',
   },
   'social:card-night': {
+    on: 'The cards are out on the galley table.',
     label: 'Card night',
     win: 'You clean everyone out for {won} cr, over three hours and a deck with a missing nine that everyone has agreed not to mention. {who} swears the deck is marked and goes through it card by card in front of the table. It isn\'t.',
     lose: '{who} takes the pot, and {lost} cr of yours with it, on a pair of fours you should have called. Over the last hand, with the cards going round and nobody watching them, you hear the ship\'s gossip{tail}',
@@ -1023,6 +1024,7 @@ const PEOPLE_LINES = {
     'lose.nogossip': ', which is mostly about you. Nobody lowers their voice.',
   },
   'social:watch-show': {
+    on: 'The galley screen has "{title}" on tonight, {when}.',
     nofans: 'Nobody aboard is a fan. The episode runs its length anyway, and the only question at the end is who the brother was.',
     bored: '{who} falls asleep before the first act break, with a tray on both knees, and isn\'t woken for the second.',
     feud: '{A} and {B} argue about the ending for an hour, over the dishes, and neither will give up the dishes.',
@@ -1035,6 +1037,7 @@ const PEOPLE_LINES = {
     fan: '{names} knows every line, and says them half a second before the actors do.',
   },
   'social:read-book': {
+    on: 'The ship\'s copy of "{title}" is going round the berths.',
     label: 'Pass around "{title}"',
     intro: 'The ship\'s one printed copy of "{title}" by {author} does the rounds, held together with a rubber band and a strip of tape from the cargo bay, and each reader finds the last reader\'s place by the crease.',
     bored: '{who} leaves pointed notes in the margins, in pencil, so they can be rubbed out, and doesn\'t rub them out.',
@@ -1043,6 +1046,7 @@ const PEOPLE_LINES = {
     fan: '{names} reads it twice, the second time with a pencil.',
   },
   'social:watch-broadcast': {
+    on: '"{title}" is on the galley screen tonight only.',
     label: 'Watch "{title}", tonight only',
     intro: 'Everyone crowds into the galley for "{title}", the late-watch crew standing with their trays against the bulkhead because the galley seats five. {blurb}',
     nofans: 'Nobody aboard is a fan, but nobody leaves, either. It\'s on every feed in the system tonight, and the galley has the only screen on the ship.',
@@ -1051,6 +1055,7 @@ const PEOPLE_LINES = {
     fan: '{names} wasn\'t going to miss it for anything, and has been saving the good chair since the second watch.',
   },
   'social:stream-match': {
+    on: 'The {league} {kind} is coming in on the lagged stream.',
     intro: 'The lagged stream from {place} comes in: {ma} against {mb}, {sport}. The picture stutters on every goal, which is the stream catching up with a crowd that has already finished celebrating. Final score {sa} to {sb}.',
     nobody: 'Nobody aboard cares who wins, so everyone picks a side by coin toss and defends it with the full weight of a conviction they\'ve held for forty minutes.',
     label: 'Stream the {league} {kind}',
@@ -4301,6 +4306,7 @@ const PEOPLE_LINES = {
   },
   'family:picker': {
     title: 'Sit With Someone',
+    on: '{first} is off watch and on their own.',
     'text.0': 'You make two mugs of coffee. Who could use the company?',
     'text.1': 'The galley is empty, and the kettle has just clicked off. Somebody aboard might like a cup.',
     'text.2': 'Between watches, you find yourself with an hour and two mugs. Who gets the second one?',

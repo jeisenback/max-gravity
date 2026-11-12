@@ -8299,102 +8299,44 @@
    {
     "i": 1,
     "roll": 0.1,
-    "text": "Mate0 has the engineer post on a quiet watch and a meal tray on one knee, and gives you the seat. \"You do it. I eat.\" Nothing comes up on the board for an hour, and Mate0 has you run the checks anyway, out loud between mouthfuls, and asks for the third reading again at the end. When the tray is empty Mate0 takes the seat back and hands you the tray to carry to the galley. (+3 experience at the engineer post.)",
+    "text": "Mate1 has the pilot post on a quiet watch and a meal tray on one knee, and gives you the seat. \"You do it. I eat.\" Nothing comes up on the board for an hour, and Mate1 has you run the checks anyway, out loud between mouthfuls, and asks for the third reading again at the end. When the tray is empty Mate1 takes the seat back and hands you the tray to carry to the galley. (+3 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You spent a watch at my post to learn it."
     ],
     "fx": {
-     "p6": 1
+     "p7": 1
     },
     "x": {
      "gunner": 12,
-     "engineer": 3
+     "pilot": 3
     },
     "next": null
    },
    {
     "i": 1,
     "roll": 0.9,
-    "text": "Mate3 has the comms post on a quiet watch and a meal tray on one knee, and gives you the seat. \"You do it. I eat.\" Nothing comes up on the board for an hour, and Mate3 has you run the checks anyway, out loud between mouthfuls, and asks for the third reading again at the end. When the tray is empty Mate3 takes the seat back and hands you the tray to carry to the galley. (+3 experience at the comms post.)",
+    "text": "Mate1 has the pilot post on a quiet watch and a meal tray on one knee, and gives you the seat. \"You do it. I eat.\" Nothing comes up on the board for an hour, and Mate1 has you run the checks anyway, out loud between mouthfuls, and asks for the third reading again at the end. When the tray is empty Mate1 takes the seat back and hands you the tray to carry to the galley. (+3 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You spent a watch at my post to learn it."
     ],
     "fx": {
-     "p9": 1
+     "p7": 1
     },
     "x": {
      "gunner": 12,
-     "comms": 3
+     "pilot": 3
     },
     "next": null
    },
    {
     "i": 2,
     "roll": 0.1,
-    "text": "Mate0 puts a boot on the galley table with its magnetic sole hanging by one corner. \"It let go on the hull. I was holding on with the other one.\" You clean the sole back to bare metal and glue it, and clamp it under the table leg, because it needs the night. Mate0 pays you 500 cr up front, before the glue has set. \"If it lets go again, you'll be the first to know.\" In the morning the boot is gone.",
-    "mem": [
-     "9 Jul 2214: You mended my gear."
-    ],
-    "fx": {
-     "credits": 500,
-     "p6": 1
-    },
-    "next": null
-   },
-   {
-    "i": 2,
-    "roll": 0.9,
-    "text": "Mate3 puts a boot on the galley table with its magnetic sole hanging by one corner. \"It let go on the hull. I was holding on with the other one.\" You clean the sole back to bare metal and glue it, and clamp it under the table leg, because it needs the night. Mate3 pays you 500 cr up front, before the glue has set. \"If it lets go again, you'll be the first to know.\" In the morning the boot is gone.",
-    "mem": [
-     "9 Jul 2214: You mended my gear."
-    ],
-    "fx": {
-     "credits": 500,
-     "p9": 1
-    },
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0.1,
-    "text": "The captain's watch is yours, and nothing happens in it. The board is quiet from midnight to four. At the change of watch the captain comes up with a blanket over one shoulder, moves the chair back the few centimeters you moved it, and sits. \"Go to bed.\" 400 cr comes through at the next ledger sync. (+1 experience at the gunner post.)",
-    "mem": [
-     "9 Jul 2214: You stood a spare watch for me."
-    ],
-    "fx": {
-     "credits": 400,
-     "p1": 1
-    },
-    "x": {
-     "gunner": 13
-    },
-    "next": null
-   },
-   {
-    "i": 3,
-    "roll": 0.9,
-    "text": "The captain's watch is yours, and nothing happens in it. The board is quiet from midnight to four. At the change of watch the captain comes up with a blanket over one shoulder, moves the chair back the few centimeters you moved it, and sits. \"Go to bed.\" 400 cr comes through at the next ledger sync. (+1 experience at the gunner post.)",
-    "mem": [
-     "9 Jul 2214: You stood a spare watch for me."
-    ],
-    "fx": {
-     "credits": 400,
-     "p1": 1
-    },
-    "x": {
-     "gunner": 13
-    },
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0.1,
-    "text": "You put Mate0 at the gunner post itself, on a quiet watch, and teach one control and nothing else: the reach and the let-go. Mate0 does it forty times. By the thirtieth Mate0 has stopped looking at it and is telling you about a cousin on Vesta who keeps bees, and the hand on the control is doing it right. \"Is that it?\" Mate0 asks at forty. You take the next control. (+1 experience at the gunner post.)",
+    "text": "You put Mate3 at the gunner post itself, on a quiet watch, and teach one control and nothing else: the reach and the let-go. Mate3 does it forty times. By the thirtieth Mate3 has stopped looking at it and is telling you about a cousin on Vesta who keeps bees, and the hand on the control is doing it right. \"Is that it?\" Mate3 asks at forty. You take the next control. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You spent a watch teaching me your post."
     ],
     "fx": {
-     "p6": 2
+     "p9": 2
     },
     "x": {
      "gunner": 13
@@ -8402,7 +8344,7 @@
     "next": null
    },
    {
-    "i": 4,
+    "i": 2,
     "roll": 0.9,
     "text": "You put Mate3 at the gunner post itself, on a quiet watch, and teach one control and nothing else: the reach and the let-go. Mate3 does it forty times. By the thirtieth Mate3 has stopped looking at it and is telling you about a cousin on Vesta who keeps bees, and the hand on the control is doing it right. \"Is that it?\" Mate3 asks at forty. You take the next control. (+1 experience at the gunner post.)",
     "mem": [
@@ -8417,7 +8359,7 @@
     "next": null
    },
    {
-    "i": 5,
+    "i": 3,
     "roll": 0.1,
     "text": "It starts over the last of the soup with the usual ones and goes round the table. Then somebody tells one about a ship called the Long Wait, which didn't come in, and stops halfway, and nobody asks for the rest. Somebody gets up to refill the bulbs. The next one is about a tanker cook who served the same stew every day of a run and gave it a new name every morning, and somebody wants the names. \"Day nine was Thursday Surprise,\" the teller says, \"and day ten was Thursday Again,\" and it goes on from there to day thirty-one, which the teller says was the day the cook was put off at Hygiea.",
     "mem": [
@@ -8435,7 +8377,7 @@
     "next": null
    },
    {
-    "i": 5,
+    "i": 3,
     "roll": 0.9,
     "text": "It starts over the last of the soup with the usual ones and goes round the table. Then somebody tells one about a ship called the Long Wait, which didn't come in, and stops halfway, and nobody asks for the rest. Somebody gets up to refill the bulbs. The next one is about a tanker cook who served the same stew every day of a run and gave it a new name every morning, and somebody wants the names. \"Day nine was Thursday Surprise,\" the teller says, \"and day ten was Thursday Again,\" and it goes on from there to day thirty-one, which the teller says was the day the cook was put off at Hygiea.",
     "mem": [
@@ -8453,7 +8395,7 @@
     "next": null
    },
    {
-    "i": 6,
+    "i": 4,
     "roll": 0.1,
     "text": "The sim is already running a night approach when Ines waves you into the seat, and she says nothing. The board loses the altimeter at four thousand meters and the left thruster at five hundred, and she sits with her hands in her lap and watches. You put it down long and hard, a hundred meters past the marker. Ines opens her logbook to a page near the front and puts it in your hand: the same approach, two sim passes, and the second marked SHORT, CRASH, in her writing. She takes it back. \"Again, with forty-one aboard. The sim won't count them unless I load them, so I've loaded them.\" (+3 experience at the pilot post.)",
     "mem": [
@@ -8469,7 +8411,7 @@
     "next": null
    },
    {
-    "i": 6,
+    "i": 4,
     "roll": 0.9,
     "text": "The sim is already running a night approach when Ines waves you into the seat, and she says nothing. The board loses the altimeter at four thousand meters and the left thruster at five hundred, and she sits with her hands in her lap and watches. You put it down long and hard, a hundred meters past the marker. Ines opens her logbook to a page near the front and puts it in your hand: the same approach, two sim passes, and the second marked SHORT, CRASH, in her writing. She takes it back. \"Again, with forty-one aboard. The sim won't count them unless I load them, so I've loaded them.\" (+3 experience at the pilot post.)",
     "mem": [
@@ -8485,7 +8427,7 @@
     "next": null
    },
    {
-    "i": 7,
+    "i": 5,
     "roll": 0.1,
     "text": "Tomas finds you at the end of your watch and holds up a cloth with a wet patch on it the size of a thumbnail. \"She's weeping somewhere.\" He doesn't go looking. He spreads the loop diagram on the bench and has you smell the cloth. \"Green, and sweet. Coolant, past a gasket. Where?\" You put your finger on the seventh joint, the one with the scorched paint. \"Go and see.\" It's the seventh. When you come back he has the gasket out of the drawer and the flashlight in his hand. \"You change it. I'll hold the light.\" (+3 experience at the engineer post.)",
     "mem": [
@@ -8501,7 +8443,7 @@
     "next": null
    },
    {
-    "i": 7,
+    "i": 5,
     "roll": 0.9,
     "text": "Tomas finds you at the end of your watch and holds up a cloth with a wet patch on it the size of a thumbnail. \"She's weeping somewhere.\" He doesn't go looking. He spreads the loop diagram on the bench and has you smell the cloth. \"Green, and sweet. Coolant, past a gasket. Where?\" You put your finger on the seventh joint, the one with the scorched paint. \"Go and see.\" It's the seventh. When you come back he has the gasket out of the drawer and the flashlight in his hand. \"You change it. I'll hold the light.\" (+3 experience at the engineer post.)",
     "mem": [
@@ -8517,7 +8459,7 @@
     "next": null
    },
    {
-    "i": 8,
+    "i": 6,
     "roll": 0.1,
     "text": "Yelena takes the other console on the range sim for a sparring round, first to ten, standing up, with a cup of coffee in her left hand. At four to four she drinks. At seven to five, hers, she sets the cup on the lip of your console, full, where your elbow goes. You play the rest around it. She wins ten to six and picks the cup up, and the coffee has gone cold. She drinks it anyway and resets the board to nothing-nothing. (+3 experience at the gunner post.)",
     "mem": [
@@ -8532,7 +8474,7 @@
     "next": null
    },
    {
-    "i": 8,
+    "i": 6,
     "roll": 0.9,
     "text": "Yelena takes the other console on the range sim for a sparring round, first to ten, standing up, with a cup of coffee in her left hand. At four to four she drinks. At seven to five, hers, she sets the cup on the lip of your console, full, where your elbow goes. You play the rest around it. She wins ten to six and picks the cup up, and the coffee has gone cold. She drinks it anyway and resets the board to nothing-nothing. (+3 experience at the gunner post.)",
     "mem": [
@@ -8547,7 +8489,7 @@
     "next": null
    },
    {
-    "i": 9,
+    "i": 7,
     "roll": 0.1,
     "text": "Ruben has a dome bulletin from Mars on low while you sort, eight days old by the relay stamp and going around on a loop. Halfway down the stack he holds up a hand and turns it up. \"Valles. The water warden.\" He listens with his pencil stopped. \"She's reading it slower than last month. When she reads slow, it's rationing. Last time she read like that the ice train was three weeks late, and we were sharing showers by corridor, my whole corridor, and the Okafors at the end wouldn't share with anybody, because they had the good heater, and my mother sent me down there with a towel every night to ask anyway.\" He turns the bulletin down again, and he sorts the next three without reading them past the first line. (+3 experience at the comms post.)",
     "mem": [
@@ -8563,7 +8505,7 @@
     "next": null
    },
    {
-    "i": 9,
+    "i": 7,
     "roll": 0.9,
     "text": "Ruben has a dome bulletin from Mars on low while you sort, eight days old by the relay stamp and going around on a loop. Halfway down the stack he holds up a hand and turns it up. \"Valles. The water warden.\" He listens with his pencil stopped. \"She's reading it slower than last month. When she reads slow, it's rationing. Last time she read like that the ice train was three weeks late, and we were sharing showers by corridor, my whole corridor, and the Okafors at the end wouldn't share with anybody, because they had the good heater, and my mother sent me down there with a towel every night to ask anyway.\" He turns the bulletin down again, and he sorts the next three without reading them past the first line. (+3 experience at the comms post.)",
     "mem": [
@@ -8579,7 +8521,7 @@
     "next": null
    },
    {
-    "i": 10,
+    "i": 8,
     "roll": 0.1,
     "text": "Bexa turns the hold lights off. \"Rig it,\" she says, from somewhere by the hatch. You rig the tether winch by feel, hook and cleat, with the flashlight in your pocket where she told you to leave it. It takes six minutes, and the line comes out twisted. She brings the lights up and untwists it with one hand. \"Six. Do it in two and you can argue with me.\" She turns the lights off again. The second try takes four, and when the lights come up she has already run the line through her fingers end to end. \"Four,\" she says. She turns the lights off once more and rigs it herself. You hear the hook go on, and then the drum taking up. \"Fifty-one,\" she says as the lights come up, and turns them off again. (+3 experience at the pilot post.)",
     "mem": [
@@ -8595,7 +8537,7 @@
     "next": null
    },
    {
-    "i": 10,
+    "i": 8,
     "roll": 0.9,
     "text": "Bexa turns the hold lights off. \"Rig it,\" she says, from somewhere by the hatch. You rig the tether winch by feel, hook and cleat, with the flashlight in your pocket where she told you to leave it. It takes six minutes, and the line comes out twisted. She brings the lights up and untwists it with one hand. \"Six. Do it in two and you can argue with me.\" She turns the lights off again. The second try takes four, and when the lights come up she has already run the line through her fingers end to end. \"Four,\" she says. She turns the lights off once more and rigs it herself. You hear the hook go on, and then the drum taking up. \"Fifty-one,\" she says as the lights come up, and turns them off again. (+3 experience at the pilot post.)",
     "mem": [
@@ -8611,7 +8553,7 @@
     "next": null
    },
    {
-    "i": 11,
+    "i": 9,
     "roll": 0.1,
     "text": "Before the sim starts Pax unplugs the trigger cable and plugs it back in, though the sim doesn't need it, and then does it again. \"That's twice. I know that's twice.\" You call the first set from the doorway, and the numbers come back on the half second, every one. \"Stay there,\" Pax says, before you've moved. \"That's a good distance.\" You call the second set from the doorway too. At the end Pax puts a strip of tape on the floor one step inside the doorway. (+3 experience at the gunner post.)",
     "mem": [
@@ -8626,7 +8568,7 @@
     "next": null
    },
    {
-    "i": 11,
+    "i": 9,
     "roll": 0.9,
     "text": "Before the sim starts Pax unplugs the trigger cable and plugs it back in, though the sim doesn't need it, and then does it again. \"That's twice. I know that's twice.\" You call the first set from the doorway, and the numbers come back on the half second, every one. \"Stay there,\" Pax says, before you've moved. \"That's a good distance.\" You call the second set from the doorway too. At the end Pax puts a strip of tape on the floor one step inside the doorway. (+3 experience at the gunner post.)",
     "mem": [
@@ -8646,8 +8588,6 @@
   "labels": [
    "Ask the captain for advice",
    "Shadow a shipmate at their post",
-   "Mend a shipmate's gear for pay",
-   "Stand a spare watch for the captain",
    "Teach a shipmate what you know",
    "Swap stories in the galley",
    "Fly a sim with Ines",
@@ -9382,7 +9322,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Buy a round for the house (2,000 cr) | You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: \"A corporate buying spree on Europa has cleared the shelves of Machine Parts.\" | You bought a round",
+    "text": "Buy a round for the house (2,000 cr) | You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: \"Dockworkers on Mars have gone on strike. Refined Metals is suddenly scarce there.\" | You bought a round",
     "mem": [
      "9 Jul 2214: The captain bought a round at The Warren.",
      "9 Jul 2214: The captain bought a round at The Warren."
@@ -10519,7 +10459,7 @@
    {
     "i": 0,
     "roll": 0.99,
-    "text": "She lets you finish. Her first volley comes in while you are still on the band.",
+    "text": "She lets you finish. Her first volley comes in while you are still on the band. Her crew have done this before.",
     "next": {
      "title": "The Guns Hatch",
      "text": "Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. \"Look at the top of the board,\" he says. \"That's what she means to do next, and under it what the captain will do with the helm. You don't guess either.\"</p><p>He points at the guns. \"Each one goes where you send it: her guns, her drive, her lock, her hull. Then Fire, and you see what came of it. Take her lock and she can't board us. If she hits us hard, someone gets hurt, maybe you, and your work counts a level lower for some days. I had it in the hold. I wore a glove for eleven days.\"</p><p>He taps the gauge over the breech. \"Every shot puts heat in the guns, and past that mark one locks for a turn. An overcharged shot hits harder and runs hotter. The turret up top fires with the guns, or you hold it back and it takes the edge off what she throws at us, torpedoes most of all. Holding it costs you a gun. When she opens her bay doors, you have one turn to choose. We carry a few torpedoes of our own. They hit hard, and when they're gone they're gone.\"",
@@ -11524,7 +11464,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A trade fair on Boneyard has brought in a great many merchants, and Medical Supplies is going for a song. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
+    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: Three haulers just unloaded Luxury Goods on Eros Old Town. Prices there are collapsing. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
     "mem": [
      "25 Dec 2214: You bought a round, and the bartender talked."
     ],
@@ -22669,7 +22609,7 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Play Diego at cards (2000 cr) [50%]",
+      "Ask Diego about their work",
       "Ask what they've heard",
       "Leave them to their drink"
      ]
@@ -22686,15 +22626,15 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
       "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
       ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "You ask, and Diego puts down the glass."
+      "text": "Diego has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Diego thinks about it, then says: \"A big contract on Ganymede has swallowed the whole local supply of Luxury Goods, and the bidding has gone wild.\" Diego adds, before you can answer: \"A ceremonial feast on Pallas Refinery has drained every last ounce of Refined Metals, and the cooks are frantic.\""
      },
      {
       "j": 3,
@@ -22743,8 +22683,8 @@
      "text": "Kwame Achebe nods at you. Since you were last here, Kwame is asking every captain who comes in whether they have a berth, and keeps a bag packed under the stool.",
      "labels": [
       "Ask Kwame about their work",
-      "Ask what they've heard",
       "Sit with Kwame and say nothing",
+      "Play Kwame at cards (2000 cr) [50%]",
       "Leave them to their drink"
      ]
     },
@@ -22760,23 +22700,20 @@
      {
       "j": 1,
       "roll": 0.5,
+      "text": "You ask, and Kwame puts down the glass."
+     },
+     {
+      "j": 2,
+      "roll": 0.5,
       "text": "Kwame draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Kwame says. \"That is where I will be, one day.\"",
       "mem": [
        "9 Jul 2214: The captain let me talk about Hermes Foundry."
       ]
      },
      {
-      "j": 2,
-      "roll": 0.5,
-      "text": "Kwame takes out a creased photograph of Hermes Foundry and lays it between you under the bar light, the way they would lay out a chart, and neither of you mentions it. You look at it for a while. Kwame goes quiet, and then smiles, the first since the last burn.",
-      "mem": [
-       "9 Jul 2214: The captain sat with me and didn't make me talk."
-      ]
-     },
-     {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Next time, bring a bigger hold,\" Kwame says, \"and a bigger purse.\""
+      "text": "Kwame looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
      }
     ]
    },
@@ -22821,7 +22758,7 @@
      "labels": [
       "Ask Diego about this place",
       "Ask about Hermes Foundry",
-      "Ask about the posting",
+      "Ask Diego about their work",
       "Leave them to their drink"
      ]
     },
@@ -22837,18 +22774,12 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
-      "mem": [
-       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
-      ]
+      "text": "Diego has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Diego thinks about it, then says: \"A corporate buying spree on Triton Outpost has cleared the shelves of Food.\" Diego adds, before you can answer: \"A fire in a warehouse on Europa took most of the local stock of Machine Parts, and nobody's saying how it started.\""
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
-      "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
-      ]
+      "text": "Diego lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Diego talks over the answer and goes back to the story about the tug."
      },
      {
       "j": 3,
@@ -22898,7 +22829,7 @@
      "labels": [
       "Ask Ravi about their work",
       "Play Ravi at cards (2000 cr) [50%]",
-      "Ask what they've heard",
+      "Ask Ravi about this place",
       "Leave them to their drink"
      ]
     },
@@ -22914,12 +22845,15 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Ravi plays carefully and with tiny, exact movements, and wins, and looks at the pressure door before they pick up the 2,000 cr. You finish the glass."
+      "text": "Ravi says they are traveling for reasons, and leaves it there, and orders another. Ravi thinks about it, then says: \"A ship carrying Medical Supplies to Juno Commons was hijacked two weeks ago, and the shelves are getting bare.\" Ravi adds, before you can answer: \"A new tax on Food at Mars has, for reasons no one can explain, made it more valuable, not less.\""
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Ravi says they are traveling for reasons, and leaves it there, and orders another. Ravi thinks about it, then says: \"A big contract on Eros Old Town has swallowed the whole local supply of Refined Metals, and the bidding has gone wild.\" Ravi adds, before you can answer: \"Three haulers just unloaded Luxury Goods on Eros Old Town. Prices there are collapsing.\""
+      "text": "Ravi sits with their hands flat on the table, listening to the dock pumps through the floor. After ten minutes they stop moving. Ravi lets out a breath, and for the first time since the lock sits back.",
+      "mem": [
+       "9 Jul 2214: The captain sat with me and didn't make me talk."
+      ]
      },
      {
       "j": 3,
@@ -22968,8 +22902,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Ask about Hermes Foundry",
-      "Buy Diego a drink (200 cr)",
+      "Sit with Diego and say nothing",
+      "Ask what they've heard",
       "Leave them to their drink"
      ]
     },
@@ -22985,20 +22919,17 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
-      "mem": [
-       "12 Jul 2214: The captain bought me a drink at The Heat Sink."
-      ]
+      "text": "You ask, and Diego puts down the glass."
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Diego takes out a creased photograph of Hermes Foundry and lays it between you under the bar light, the way they would lay out a chart, and neither of you mentions it. You look at it for a while. Diego talks over the answer and goes back to the story about the tug."
+      "text": "Diego talks about the pilotage fee on Hermes Foundry, you talk back, and somewhere in it 2,000 cr leaves your pocket. You finish the glass."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
      }
     ]
    },
@@ -23071,8 +23002,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
+      "Ask about the posting",
       "Ask about Hermes Foundry",
-      "Ask what they've heard",
       "Leave them to their drink"
      ]
     },
@@ -23088,20 +23019,20 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
       "mem": [
-       "9 Jul 2214: The captain asked about my work and listened."
+       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
       ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Diego has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Diego thinks about it, then says: \"A cold snap on Triton Outpost has made Refined Metals the only thing anyone wants to talk about.\" Diego adds, before you can answer: \"A fire in a warehouse on Juno Commons took most of the local stock of Luxury Goods, and nobody's saying how it started.\""
+      "text": "You ask, and Diego puts down the glass."
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
      }
     ]
    },
@@ -23174,8 +23105,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Ask what they've heard",
-      "Ask about the posting",
+      "Sit with Diego and say nothing",
+      "Play Diego at cards (2000 cr) [50%]",
       "Leave them to their drink"
      ]
     },
@@ -23191,18 +23122,12 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
-      "mem": [
-       "20 Jul 2214: The captain asked about my work and listened."
-      ]
+      "text": "Diego takes out a creased photograph of Hermes Foundry and lays it between you under the bar light, the way they would lay out a chart, and neither of you mentions it. You look at it for a while. Diego talks over the answer and goes back to the story about the tug."
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
-      "mem": [
-       "20 Jul 2214: The captain asked about my work and listened."
-      ]
+      "text": "You ask, and Diego puts down the glass."
      },
      {
       "j": 3,
@@ -23258,8 +23183,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Ask what they've heard",
-      "Ask about Hermes Foundry",
+      "Sit with Diego and say nothing",
+      "Ask about the posting",
       "Leave them to their drink"
      ]
     },
@@ -23275,20 +23200,20 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Diego has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Diego thinks about it, then says: \"A strike ended on Pallas Refinery, and every dock in town is suddenly flooded with Refined Metals.\" Diego adds, before you can answer: \"A fire in a warehouse on Hermes Foundry took most of the local stock of Food, and nobody's saying how it started.\""
+      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
+      "mem": [
+       "9 Jul 2214: The captain asked about my work and listened."
+      ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
-      "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
-      ]
+      "text": "Diego has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Diego thinks about it, then says: \"Dockworkers on Enceladus have gone on strike. Refined Metals is suddenly scarce there.\" Diego adds, before you can answer: \"Warehouses on Enceladus are overflowing with Food. Sellers are dumping it cheap.\""
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
      }
     ]
    },
@@ -23332,8 +23257,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Buy Diego a drink (200 cr)",
-      "Ask Diego about their work",
+      "Sit with Diego and say nothing",
+      "Ask about the posting",
       "Leave them to their drink"
      ]
     },
@@ -23349,12 +23274,18 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "You ask, and Diego puts down the glass."
+      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "mem": [
+       "6 Jan 2215: The captain bought me a drink at The Heat Sink."
+      ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Diego fans the last cards with a flourish you have seen before, in another port. 2,000 cr. You finish the glass."
+      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "mem": [
+       "6 Jan 2215: The captain bought me a drink at The Heat Sink."
+      ]
      },
      {
       "j": 3,
@@ -23403,8 +23334,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Ask about Hermes Foundry",
-      "Sit with Diego and say nothing",
+      "Play Diego at cards (2000 cr) [50%]",
+      "Buy Diego a drink (200 cr)",
       "Leave them to their drink"
      ]
     },
@@ -23428,12 +23359,12 @@
      {
       "j": 2,
       "roll": 0.5,
-      "text": "You ask, and Diego puts down the glass."
+      "text": "Diego has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Diego thinks about it, then says: \"Word is that the governor of Pallas Refinery is stockpiling Electronics for a party, and will pay well over the odds.\" Diego adds, before you can answer: \"A cold snap on Juno Commons has made Food the only thing anyone wants to talk about.\""
      },
      {
       "j": 3,
       "roll": 0.5,
-      "text": "\"Wait, one more thing,\" Diego says, and then three more things about the lock timings, and you are at the door before the last of them."
+      "text": "Diego looks at the lock, and then at you, and says, \"Say hello to somewhere nice for me.\""
      }
     ]
    },
@@ -23477,8 +23408,8 @@
      "text": "Diego Haddad nods at you.",
      "labels": [
       "Ask Diego about this place",
-      "Ask about Hermes Foundry",
-      "Ask what they've heard",
+      "Sit with Diego and say nothing",
+      "Ask about the posting",
       "Leave them to their drink"
      ]
     },
@@ -23494,17 +23425,17 @@
      {
       "j": 1,
       "roll": 0.5,
-      "text": "Diego leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\"",
+      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
       "mem": [
-       "9 Jul 2214: The captain bought me a drink at The Heat Sink."
+       "9 Jul 2214: The captain asked about my work and listened."
       ]
      },
      {
       "j": 2,
       "roll": 0.5,
-      "text": "Diego draws Hermes Foundry on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Diego says. \"That is where I will be, one day.\"",
+      "text": "\"It is not what I thought I would do,\" Diego says. \"But I am better at it than I thought I would be.\" Diego is off again, and tells it to the next table too, tug pilots and all, and you're in it.",
       "mem": [
-       "9 Jul 2214: The captain let me talk about Hermes Foundry."
+       "9 Jul 2214: The captain asked about my work and listened."
       ]
      },
      {
@@ -23577,65 +23508,36 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "An hour into your watch beside Mate1, a warning comes up amber on the pilot board. Mate1 reads it and goes to stand by the hatch. \"I'm not here.\" You find the fault in the post's manual on the side screen and work it down, and the amber goes out at the ninth step, eleven minutes in. Mate1 comes back, reads the board's record through all nine steps standing up, and copies the eleven minutes into the post's log with your name beside them. (+3 experience at the pilot post.)",
+    "text": "An hour into your watch beside Mate3, a warning comes up amber on the comms board. Mate3 reads it and goes to stand by the hatch. \"I'm not here.\" You find the fault in the post's manual on the side screen and work it down, and the amber goes out at the ninth step, eleven minutes in. Mate3 comes back, reads the board's record through all nine steps standing up, and copies the eleven minutes into the post's log with your name beside them. (+3 experience at the comms post.)",
     "mem": [
      "10 Jul 2214: You spent a watch at my post to learn it."
     ],
     "fx": {
-     "p7": 1
+     "p9": 1
     },
     "x": {
      "gunner": 12,
-     "pilot": 3
+     "comms": 3
     },
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "Mate2 hands you a helmet lamp that cuts out whenever it's tilted, and tilts it to show you. \"Every time I look down at a bolt.\" You take it apart on the lid of a ration tin and find a hair across the contact. You put the lens back on. Mate2 tilts the lamp at the deck ten times and it stays lit. 300 cr comes across, and Mate2 takes the hair away on a strip of tape, to show someone.",
+    "text": "Halfway down the gunner checklist, Mate0 stops you. \"We did that one backward on my last ship. Faster.\" You have Mate0 show it. It's faster, and it skips a check, and the two of you argue it over the board until the coffee's gone and keep half of each. You write the new step into the post's checklist in your own hand, and Mate0 reads it over your shoulder and corrects the spelling. (+1 experience at the gunner post.)",
     "mem": [
-     "10 Jul 2214: You mended my gear."
+     "10 Jul 2214: You spent a watch teaching me your post."
     ],
     "fx": {
-     "credits": 300,
-     "p8": 1
+     "p6": 2
+    },
+    "x": {
+     "gunner": 13
     },
     "next": null
    },
    {
     "i": 3,
-    "roll": 0.5,
-    "text": "Two hours into the captain's watch a freighter hails and asks for the captain by name. You answer as the watch. \"Then wake your captain,\" the freighter's mate says. \"Nine thousand four hundred a ton to your next port, and it's good while I'm on this channel.\" The mate is off the channel before you've answered. At four the same freighter hails again, at eight thousand five hundred a ton, and asks for the captain by name again. 400 cr lands in your account at the next ledger sync. (+1 experience at the gunner post.)",
-    "mem": [
-     "10 Jul 2214: You stood a spare watch for me."
-    ],
-    "fx": {
-     "credits": 400,
-     "p1": 1
-    },
-    "x": {
-     "gunner": 13
-    },
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0.5,
-    "text": "Halfway down the gunner checklist, Mate2 stops you. \"We did that one backward on my last ship. Faster.\" You have Mate2 show it. It's faster, and it skips a check, and the two of you argue it over the board until the coffee's gone and keep half of each. You write the new step into the post's checklist in your own hand, and Mate2 reads it over your shoulder and corrects the spelling. (+1 experience at the gunner post.)",
-    "mem": [
-     "10 Jul 2214: You spent a watch teaching me your post."
-    ],
-    "fx": {
-     "p8": 2
-    },
-    "x": {
-     "gunner": 13
-    },
-    "next": null
-   },
-   {
-    "i": 5,
     "roll": 0.5,
     "text": "Somebody puts a tin of real peaches, saved since the last port, in the middle of the galley table and calls it a prize, for the worst berth anyone ever slept in. A cargo net on a hauler. A bunk over a reactor housing that ticked all night. Two weeks in an escape pod. \"That doesn't count.\" \"It counts double.\" A closet at Tycho with a mop in it, which loses because the mop was clean. The crew vote by knocking on the table, two knocks a vote. The bunk over the reactor wins, and the winner eats the peaches out of the tin with a spoon, all of them, while the table watches.",
     "mem": [
@@ -23658,8 +23560,6 @@
   "labels": [
    "Ask the captain for advice",
    "Shadow a shipmate at their post",
-   "Mend a shipmate's gear for pay",
-   "Stand a spare watch for the captain",
    "Teach a shipmate what you know",
    "Swap stories in the galley"
   ]
@@ -23685,65 +23585,36 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "The rule at the pilot post is that you touch nothing, and for the first hour of the watch you touch nothing while Mate1 works. Twice an arm comes across you without asking, and the second time Mate1 says, \"Elbow.\" In the second hour the stool gets pulled closer and one control is put under your hand. \"That one. Not the one beside it.\" You get the one beside it, and Mate1 sets it back. (+3 experience at the pilot post.)",
+    "text": "The rule at the engineer post is that you touch nothing, and for the first hour of the watch you touch nothing while Mate0 works. Twice an arm comes across you without asking, and the second time Mate0 says, \"Elbow.\" In the second hour the stool gets pulled closer and one control is put under your hand. \"That one. Not the one beside it.\" You get the one beside it, and Mate0 sets it back. (+3 experience at the engineer post.)",
     "mem": [
      "11 Jul 2214: You spent a watch at my post to learn it."
     ],
     "fx": {
-     "p7": 1
+     "p6": 1
     },
     "x": {
      "gunner": 12,
-     "pilot": 3
+     "engineer": 3
     },
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "Mate2 brings a suit glove to the galley table with its two seal rings out, and stays to watch. \"Left ring. It's been hissing at me for a week.\" You lay the rings out on a towel, so the air handler can't take them, seat them back in the glove and press it to the gauge. Mate2 checks the seals, once with a finger and once with the gauge, and sends you 500 cr from a hand terminal, about what a dock shop charges. \"Don't tell the others what I paid.\" On the way out the glove goes on and comes off twice, and gets flexed at the ceiling.",
+    "text": "You draw the gunner post on the back of a ration sheet at the galley table, control by control, and Mate1 wants the why of each one, gets it, and says \"Why, though,\" to the third, and to the fourth. By the end of the watch the sheet is covered on both sides, and two of the whys are still open. \"I'll be back for those.\" (+1 experience at the gunner post.)",
     "mem": [
-     "11 Jul 2214: You mended my gear."
+     "11 Jul 2214: You spent a watch teaching me your post."
     ],
     "fx": {
-     "credits": 500,
-     "p8": 1
+     "p7": 2
+    },
+    "x": {
+     "gunner": 13
     },
     "next": null
    },
    {
     "i": 3,
-    "roll": 0.5,
-    "text": "The captain's watch is yours tonight. You stand it at the board under the lights at a third, and log it the way the captain does: times, headings, nothing else. At oh-three-ten a nav buoy comes up on the board nine seconds late on its schedule, and that goes in the log too. In the morning the captain reads the page standing up, with a coffee, and stops at the buoy. \"Our clock or its?\" The captain sets the ship's clock against the next buoy while the coffee goes cold, and it's the buoy. 400 cr comes into your account at the next ledger sync. (+1 experience at the gunner post.)",
-    "mem": [
-     "11 Jul 2214: You stood a spare watch for me."
-    ],
-    "fx": {
-     "credits": 400,
-     "p1": 1
-    },
-    "x": {
-     "gunner": 13
-    },
-    "next": null
-   },
-   {
-    "i": 4,
-    "roll": 0.5,
-    "text": "You draw the gunner post on the back of a ration sheet at the galley table, control by control, and Mate2 wants the why of each one, gets it, and says \"Why, though,\" to the third, and to the fourth. By the end of the watch the sheet is covered on both sides, and two of the whys are still open. \"I'll be back for those.\" (+1 experience at the gunner post.)",
-    "mem": [
-     "11 Jul 2214: You spent a watch teaching me your post."
-    ],
-    "fx": {
-     "p8": 2
-    },
-    "x": {
-     "gunner": 13
-    },
-    "next": null
-   },
-   {
-    "i": 5,
     "roll": 0.5,
     "text": "Somebody starts it at the change of watch, and nobody goes to bed. The inspector at Ceres comes up first, told by three people at once. \"He had gloves on.\" \"Two pairs.\" \"He took the top pair off to touch our manifest and put them back on to touch his own.\" Then the docking at Pallas, and the time the forward lock froze shut with the cook on the wrong side of it. Somebody tells the one about your first week aboard and gets the day wrong. When the watch comes back on, the hot water ration is gone and the coffee is down to the jar with the cracked lid.",
     "mem": [
@@ -23766,8 +23637,6 @@
   "labels": [
    "Ask the captain for advice",
    "Shadow a shipmate at their post",
-   "Mend a shipmate's gear for pay",
-   "Stand a spare watch for the captain",
    "Teach a shipmate what you know",
    "Swap stories in the galley"
   ]
@@ -23891,7 +23760,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Mateo is on the corridor deck that night with a bucket, at the plate where the fight was. The new deckhand, Chen, comes aboard with the hiring slip still in hand and has to step over the bucket.",
+    "text": "Hana signs off at the dock office with one bag and leaves the rest to go on in the hold, tagged for the next port. Mateo is on the corridor deck that night with a bucket, at the plate where the fight was. The new deckhand, Oliver, comes aboard with the hiring slip still in hand and has to step over the bucket.",
     "mem": [
      "10 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "10 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
@@ -23938,7 +23807,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Mateo is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Hana is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new slicer, Samuel, has signed on for the berth.",
+    "text": "Mateo is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Hana is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new slicer, Sofia, has signed on for the berth.",
     "mem": [
      "11 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
      "11 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
@@ -23959,7 +23828,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Hana is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Mateo is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new deckhand, Priya, has signed on for the berth.",
+    "text": "Hana is down the ramp again in ten minutes with everything rolled in a blanket and walks off along the dock toward the tug office. Mateo is already back up the ramp, asking the dock hand what time the fuel comes. By the next watch bell a new deckhand, Nadia, has signed on for the berth.",
     "mem": [
      "11 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
      "11 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
@@ -25929,14 +25798,14 @@
     ]
    },
    {
-    "log": "Turn 1: your word is not taken, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.",
+    "log": "Turn 1: your word is not taken, you hit her drive for 3, you hit her hull for 7, she hits your hull for 10.",
     "next": null,
     "mem": []
    },
    {
     "title": "Battle Stations",
     "read": "The Pirate \"Bitter Grin\": closing, and firing at your hull as she comes, 6 to 14 damage. Holding the turret back takes 40 percent off her volley, for one gun's shot. Captain Vance: holding the range.",
-    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is not taken, you hit her drive for 2, you hit her hull for 9, she hits your hull for 10.",
+    "text": "A raider's plume, short and white, closing on your quarter the way they come when they mean to board.</p><p>Turn 1: your word is not taken, you hit her drive for 3, you hit her hull for 7, she hits your hull for 10.",
     "labels": [
      "Gun 1: a hit does 2 to 3: Hull",
      "Weapons",
@@ -27022,13 +26891,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Pirate \"Bitter Hook\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Hungry Widow\" made the intercept.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Silent Knife\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Bitter Tooth\" made the intercept.",
     "next": null
    },
    {
@@ -27040,7 +26909,7 @@
    {
     "i": 1,
     "roll": 0.99,
-    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "text": "Mate1 runs, but the Pirate \"Bitter Knife\" gets a burst in first. Battle stations.",
     "next": null
    },
    {
@@ -27102,13 +26971,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Pirate \"Crimson Knife\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "text": "Battle stations. The Pirate \"Hungry Tooth\" made the intercept.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Hungry Vulture\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Hungry Hook\" made the intercept.",
     "next": null
    },
    {
@@ -27120,7 +26989,7 @@
    {
     "i": 1,
     "roll": 0.99,
-    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
+    "text": "Mate1 runs, but the Pirate \"Hungry Knife\" gets a burst in first. Battle stations.",
     "next": null
    },
    {
@@ -27150,7 +27019,7 @@
    {
     "i": 3,
     "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Rusted Tooth\" made the intercept.",
+    "text": "They see through it. Battle stations. The Pirate \"Rusted Tooth\" made the intercept. Her crew have done this before.",
     "next": null
    },
    {
@@ -27188,7 +27057,7 @@
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Bitter Vulture\" made the intercept. Her crew have done this before.",
+    "text": "Battle stations. The Pirate \"Black Grin\" made the intercept.",
     "next": null
    },
    {
@@ -27230,7 +27099,7 @@
    {
     "i": 3,
     "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Rusted Widow\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "text": "They see through it. Battle stations. The Pirate \"Hungry Widow\" made the intercept.",
     "next": null
    },
    {
@@ -27262,25 +27131,25 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Pirate \"Silent Tooth\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Rusted Hook\" made the intercept.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Pirate \"Hungry Debt\" made the intercept.",
+    "text": "Battle stations. The Pirate \"Black Hook\" made the intercept.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "Mate1 runs, but the Pirate \"Rusted Knife\" gets a burst in first. Battle stations.",
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.99,
-    "text": "Mate1 runs, but the Pirate \"Hungry Vulture\" gets a burst in first. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
+    "text": "Mate1 winds the drive past the redline and opens the range. Their plume fades.",
     "next": null
    },
    {
@@ -27310,7 +27179,7 @@
    {
     "i": 3,
     "roll": 0.99,
-    "text": "They see through it. Battle stations. The Pirate \"Silent Knife\" made the intercept.",
+    "text": "They see through it. Battle stations. The Pirate \"Crimson Widow\" made the intercept.",
     "next": null
    }
   ],
@@ -27329,7 +27198,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Battle stations. The Arcology Pact cutter \"Lucky Anvil\" made the intercept.",
+    "text": "Battle stations. The Arcology Pact cutter \"Brave Lantern\" made the intercept.",
     "mem": [
      "9 Jul 2214: You set yourself against the Arcology Pact.",
      "9 Jul 2214: You set yourself against the Arcology Pact.",
@@ -27345,7 +27214,7 @@
    {
     "i": 0,
     "roll": 0.99,
-    "text": "Battle stations. The Arcology Pact cutter \"Stubborn Comet\" made the intercept.",
+    "text": "Battle stations. The Arcology Pact cutter \"Brave Ember\" made the intercept.",
     "mem": [
      "9 Jul 2214: You set yourself against the Arcology Pact.",
      "9 Jul 2214: You set yourself against the Arcology Pact.",
@@ -27361,13 +27230,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Ines runs, but the Arcology Pact cutter \"Lucky Bargain\" gets a burst in first. Battle stations.",
+    "text": "Ines runs, but the Arcology Pact cutter \"Distant Ember\" gets a burst in first. Battle stations.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.99,
-    "text": "Ines runs, but the Arcology Pact cutter \"Brave Comet\" gets a burst in first. Battle stations.",
+    "text": "Ines winds the drive past the redline and opens the range. Their plume fades.",
     "next": null
    }
   ],
@@ -27404,25 +27273,25 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Crimson Widow\" made the intercept. Her crew have done this before.",
+    "text": "Battle stations. The Pirate \"Bitter Knife\" made the intercept. Her crew have done this before.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Silent Grin\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
+    "text": "Battle stations. The Pirate \"Silent Hook\" made the intercept. She is flown by a hard crew, with a captain who has done it for years.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Bitter Knife\" made the intercept. There are two of them, running in company.",
+    "text": "Battle stations. The Pirate \"Black Vulture\" made the intercept. There are two of them, running in company.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.5,
-    "text": "Battle stations. The Pirate \"Silent Knife\" made the intercept. She is flown by a hard crew, with a captain who has done it for years. There are two of them, running in company.",
+    "text": "Battle stations. The Pirate \"Bitter Debt\" made the intercept. She is flown by a hard crew, with a captain who has done it for years. There are two of them, running in company.",
     "next": null
    }
   ],
@@ -27800,9 +27669,9 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You go aboard in suits, through a tangle of cold, dark passages, past frozen coffee bulbs and a child's drawing pinned to a bulkhead, and cut out the nav core and a crate of spare parts, worth 29,000 cr to the right buyer. On the way out, you don't look at the drawing. You almost make it.",
+    "text": "You go aboard in suits, through a tangle of cold, dark passages, past frozen coffee bulbs and a child's drawing pinned to a bulkhead, and cut out the nav core and a crate of spare parts, worth 22,000 cr to the right buyer. On the way out, you don't look at the drawing. You almost make it.",
     "fx": {
-     "credits": 29000
+     "credits": 22000
     },
     "next": {
      "title": "The Drawing",

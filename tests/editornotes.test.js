@@ -58,7 +58,7 @@ test('the scenes of faction ties have their lines in the form and play in the pr
 test('the downtime a hired hand can add has its lines in the form and plays in the preview (#508)', async () => {
   await reload(); await select('scene:downtime');
   const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
-  for (const k of ['part.learn', 'part.cast.memory', 'part.advice.label', 'part.mend.result', 'part.stories.memory', 'part.pax.result']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  for (const k of ['part.learn', 'part.cast.memory', 'part.advice.label', 'part.shadow.result', 'part.stories.memory', 'part.pax.result']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
   await page.fill('textarea[data-path="part.advice.label"]', 'Ask for advice');
   const f = await play();
   const seen = await f.evaluate(() => JSON.stringify(G.dialog.choices.map(c => c.label)));

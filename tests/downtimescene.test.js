@@ -6,7 +6,7 @@
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
-const { closeBrowser } = require('./helpers');
+const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
@@ -46,4 +46,64 @@ test('onDeck: a room for a place, an id for a person, nothing without a where', 
   const people = [{ id: 'c:ines', role: 'pilot' }];
   assert.deepEqual(plain(onDeck([{ label: 'Cards', where: 'galley' }, { label: 'Ask', where: ps => ps[0].id }, { label: 'X' }, { label: 'Y', where: () => null }], people)),
     [{ label: 'Cards', room: 'galley' }, { label: 'Ask', id: 'c:ines' }]);
+});
+
+// ---------- what's on, and where (task 2) ----------
+
+// A hired hand on a burn, in the move phase, with the cutaway's people built; a passenger aboard when `pax`.
+const burnHelpers = () => {
+  window.onBurn = () => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    G.state.story.next = 1e9; G.state.tutorial = null;
+    uatBurn('Earth', 'mars'); const t = G.transit; t.left = t.total * 0.7; t.times = []; t.chatter = 1e9; t.aboard = null; shipPeople();
+    return t;
+  };
+};
+
+test('every activity a burn can offer says what is on, and where it is', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    onBurn(); G.state.armor = Math.max(1, ship().armor - 50);  // the repair is on
+    const people = shipPeople(), ids = new Set([...people.map(p => p.id).filter(Boolean), ...G.state.crew, hired().captain]), rooms = new Set(ROOMS.map(x => x.id)), bad = [];
+    const all = [...Object.values(ACTIVITIES), ...handDowntime(), ...HAND_DOWNTIME.filter(d => d.cast), ...onNow()];
+    for (const a of all) {
+      const label = activityLabel(a);
+      if (typeof a.on !== 'function') { bad.push(`${label}: no on()`); continue; }
+      if (a.can && !a.can()) continue;
+      const on = a.on();
+      if (!on || /[{}]/.test(on)) bad.push(`${label}: on() ${on}`);
+      const w = typeof a.where === 'function' ? a.where(people) : a.where;
+      if (a.where !== undefined && !(rooms.has(w) || ids.has(w) || (w && G.state.people[w]))) bad.push(`${label}: where ${w}`);
+    }
+    return bad;
+  });
+  await done();
+  assert.deepEqual(r, []);
+});
+
+test('the paid odd jobs are gone', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => ({ labels: HAND_DOWNTIME.map(d => activityLabel(d)), keys: Object.keys(SCENE_LINES['scene:downtime']) }));
+  await done();
+  assert.ok(!r.labels.some(l => /Mend|spare watch/i.test(l)), r.labels.join(' / '));
+  assert.ok(!r.keys.some(k => /^(mend|spare)\./.test(k)), r.keys.filter(k => /^(mend|spare)/.test(k)).join(' '));
+});
+
+test('a shadowed or taught mate is the same in the line, the tag and the run', async () => {
+  const { ev, done } = await open();
+  await ev(burnHelpers);
+  const r = await ev(() => {
+    onBurn(); const people = shipPeople(), out = {};
+    for (const key of ['shadow', 'teach']) {
+      const a = HAND_DOWNTIME.find(d => activityLabel(d) === sceneSay('scene:downtime', `${key}.label`));
+      if (!a.can()) { out[key] = 'cannot'; continue; }
+      const id = a.where(people), p = person(id), before = JSON.stringify([p.opinion, p.memories, p.arc]), on = a.on();
+      const text = a.run();
+      out[key] = { named: on.includes(p.first), told: text.includes(p.first), liked: JSON.stringify([p.opinion, p.memories, p.arc]) !== before };
+    }
+    return out;
+  });
+  await done();
+  for (const k of ['shadow', 'teach']) assert.deepEqual(r[k], { named: true, told: true, liked: true }, k);
 });

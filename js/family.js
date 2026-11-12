@@ -303,8 +303,12 @@ function becomeLoyal(p, memory) {
   homeLog(fillLine(familyLines('ship').loyal, { first: p.first, last: p.last, ship: shipTitle() }));
 }
 
+// Who the hand could sit with: the crew (procedural) and the passengers with a person, in the picker's order.
+const sitAboard = () => [...procedural(), ...paxAboard().filter(m => m.pid && G.state.people[m.pid]).map(m => ({ id: m.pid, p: G.state.people[m.pid], pax: true }))];
+// The one Sit with someone offers in the downtime scene (shiplife.js sitPerson): someone having a hard time or hurt first, else by the day.
+const sitWith = () => sitPerson(sitAboard().map(f => ({ ...f, low: moodLow(f.p), hurt: !!(G.state.injured || {})[f.id] })), G.state.day);
 function sitPicker() {
-  const say = familySay('picker'), aboard = [...procedural(), ...paxAboard().filter(m => m.pid && G.state.people[m.pid]).map(m => ({ id: m.pid, p: G.state.people[m.pid], pax: true }))];
+  const say = familySay('picker'), aboard = sitAboard();
   return {
     title: say('title'), text: say(`text.${pick([0, 1, 2, 3, 4])}`),
     choices: aboard.map(f => ({
@@ -603,6 +607,7 @@ Mods.register({
   init(M) {
     ACTIVITIES.sit = {
       label: 'Sit with someone', can: () => procedural().length > 0 || paxAboard().some(m => m.pid),
+      on: () => familySay('picker')('on', { first: (sitWith() || { p: { first: '' } }).p.first }), where: () => (sitWith() || {}).id,
       run() { G.nextEvent = sitPicker(); return null; },  // the picker opens at once
     };
     M.on('newDay', day => {  // a high opinion fades when you do nothing for them (people.js)
