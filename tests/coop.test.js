@@ -260,7 +260,8 @@ test('the share\'s offer is on one page at the co-op\'s office, the Port page, a
     handWithDeal(); at('ceres', 'Ceres Station'); UI.planet = currentPlanet();
     const ceres = { port: /data-action="buyInAsk"/.test(UI.views.port.call(UI)), yard: /data-action="buyInAsk"/.test(UI.views.shipyard.call(UI)) };
     at('mars', 'Mars'); UI.planet = currentPlanet();
-    return { ceres, mars: { port: /coop|co-op/i.test(UI.views.port.call(UI).replace(/<[^>]+>/g, '')) && /buyInAsk/.test(UI.views.port.call(UI)), yard: /co-op|Ceres/i.test(UI.views.shipyard.call(UI).replace(/<[^>]+>/g, ' ')) } };
+    const text = html => { const d = document.createElement('div'); d.innerHTML = html; return d.textContent; };  // the page's words, read by the DOM
+    return { ceres, mars: { port: /buyInAsk/.test(UI.views.port.call(UI)), yard: /co-op|Ceres/i.test(text(UI.views.shipyard.call(UI))) } };
   });
   await done();
   assert.deepEqual(r.ceres, { port: true, yard: false });
