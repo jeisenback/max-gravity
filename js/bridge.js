@@ -251,7 +251,7 @@ UI.views.port = function () { return (hired() && chapterOf(G.state) === 1 ? (for
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;
-UI.views.shipyard = function () { return engineerPanel() + (hired() && chapterOf(G.state) === 1 ? buyInHtml() : shipyardView.call(this)); };  // the share's offer is chapter one's; the co-op refuels, repairs and fits out (#891)
+UI.views.shipyard = function () { return engineerPanel() + (hired() && chapterOf(G.state) === 1 ? (forShare() ? '' : buyInHtml()) : shipyardView.call(this)); };  // the share's offer is chapter one's, and at the co-op's office it is on the Port page, not here too (#1098); the co-op refuels, repairs and fits out (#891)
 
 // ---------- the viewscreen at port ----------
 

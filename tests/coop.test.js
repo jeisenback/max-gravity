@@ -252,3 +252,18 @@ test('the co-op holds the berth until you sign: long after the offer, it stands 
   await done();
   assert.equal(r.open, true); assert.equal(r.lapse, null); assert.match(r.page, /member's share/); assert.doesNotMatch(r.page, /until about day/); assert.equal(r.wants, true);
 });
+
+test('the share\'s offer is on one page at the co-op\'s office, the Port page, and the yard keeps it elsewhere (#1098)', async () => {
+  const { ev, done } = await open();
+  await ev(withDeal);
+  const r = await ev(() => {
+    handWithDeal(); at('ceres', 'Ceres Station'); UI.planet = currentPlanet();
+    const ceres = { port: /data-action="buyInAsk"/.test(UI.views.port.call(UI)), yard: /data-action="buyInAsk"/.test(UI.views.shipyard.call(UI)) };
+    at('mars', 'Mars'); UI.planet = currentPlanet();
+    const text = html => { const d = document.createElement('div'); d.innerHTML = html; return d.textContent; };  // the page's words, read by the DOM
+    return { ceres, mars: { port: /buyInAsk/.test(UI.views.port.call(UI)), yard: /co-op|Ceres/i.test(text(UI.views.shipyard.call(UI))) } };
+  });
+  await done();
+  assert.deepEqual(r.ceres, { port: true, yard: false });
+  assert.equal(r.mars.port, false); assert.equal(r.mars.yard, true, 'at another yard its notice is on the Engine page');
+});
