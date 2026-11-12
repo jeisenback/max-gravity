@@ -336,9 +336,9 @@ test('the sleepers on the bunks leave the berths\' name clear, wide and small (#
   }
 });
 
-// The bunks stack three high (#1023): each sleeper is drawn lying on the mattress of the bunk they are assigned (the slot the cutaway gives them,
-// in the order aboard), one to a bunk, and the five asleep fill all three tiers.
-test('each sleeper lies in the bunk they are assigned, in every tier (#1023)', async () => {
+// The bunks stack three high (#1023): each sleeper is drawn lying on the mattress of their own bunk (#934: bunkOwners, the k-th of the ship's
+// company on bunk k), one to a bunk, and the five asleep fill all three tiers.
+test('each sleeper lies in their own bunk, in every tier (#1023, #934)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
   await ev(helpers);
   const r = await ev(() => {
@@ -349,8 +349,9 @@ test('each sleeper lies in the bunk they are assigned, in every tier (#1023)', a
     window.drawPerson = (c, pose, x, y, look) => { drawn.push({ v: look.v, pose: pose.name, x, y }); return real(c, pose, x, y, look); };
     try { G.cam = { y: layoutBox(lay, 'berths').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); } finally { window.drawPerson = real; }
     const box = layoutBox(lay, 'berths'), W = lay.width, well = { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, nb = Math.min(12, ship().berths);
-    return shipPeople().filter(isAsleep).map((p, k) => {
-      const bunk = berthBunk(box, nb, k, well), d = drawn.find(q => q.v === portraitLook({ id: p.id, name: p.name }).v);
+    const owners = bunkOwners(shipPeople(), nb);
+    return shipPeople().filter(isAsleep).map(p => {
+      const k = owners.indexOf(p), bunk = berthBunk(box, nb, k, well), d = drawn.find(q => q.v === portraitLook({ id: p.id, name: p.name }).v);
       return { name: p.name, k, bunk, d };
     });
   });
@@ -362,6 +363,42 @@ test('each sleeper lies in the bunk they are assigned, in every tier (#1023)', a
   }
   assert.equal(new Set(r.map(q => `${q.bunk.x},${q.bunk.y}`)).size, r.length, 'one sleeper to a bunk');
   assert.equal(new Set(r.map(q => q.bunk.y)).size, 3, 'sleepers in all three tiers');
+  assert.ok(r.every(q => q.k >= 0), 'each in a bunk of their own');
+});
+
+// #934: the cutaway gives the berths each bunk's owner, asleep or not, with their own things: the hand's first, the captain's next, then the
+// crew's as they signed on; the bunks past them spare. When one of the crew leaves and another signs on, the leaver's things go with them.
+test('the cutaway puts each one\'s own things in their bunk, and a crew change changes them (#934)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const t = G.transit, lay = LAYOUTS.freighter, st = G.state;
+    t.left = t.total * 0.7; t.elapsed = 50; t.dark = true;
+    const drawnBunks = () => {
+      let got = null; const real = window.drawRoom;
+      window.drawRoom = (c, id, q, s) => { if (id === 'berths') got = s.bunks; return real(c, id, q, s); };
+      try { G.cam = { y: layoutBox(lay, 'berths').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); } finally { window.drawRoom = real; }
+      const owners = bunkOwners(shipPeople(), Math.min(12, ship().berths));
+      return got.map((b, k) => b && { who: owners[k].id, role: owners[k].role, slept: b.slept, asleep: isAsleep(owners[k]), things: [...b.shelf, ...b.photos, b.screen, b.keep].filter(Boolean) });
+    };
+    const crew = [...st.crew], company = shipPeople().filter(p => p.role !== 'cat').length, before = drawnBunks(), cast = st.crew.find(id => person(id).cast), keyOf = id => person(id).cast;
+    const left = keyOf(cast);
+    st.crew = st.crew.filter(id => id !== cast); shipPeople();  // they leave at a port
+    const other = Object.keys(CAST).find(k => !CAST[k].xo && !st.crew.some(id => person(id).cast === k) && k !== left), p = castPerson(other);
+    st.crew.push(p.id); t.aboard = null; shipPeople();  // and another signs on for the next burn
+    return { before, after: drawnBunks(), left, leftId: cast, joined: other, joinedId: p.id, kits: { left: bunkKit(person(cast)), joined: bunkKit(person(p.id)) }, crew, company, cap: hired().captain };
+  });
+  await done();
+  const things = k => [...k.shelf, ...k.photos, k.screen, k.keep].filter(Boolean);
+  assert.equal(r.before[0].who, 'you', 'the hand\'s bunk is the first');
+  assert.equal(r.before[1].who, r.cap, 'the captain\'s the next');
+  assert.deepEqual(r.before.slice(2, 2 + r.crew.length).map(b => b.who), r.crew, 'then the crew, in the order they signed on');
+  for (const b of r.before.filter(Boolean)) assert.equal(b.slept, b.asleep, `${b.who}: slept in when asleep`);
+  assert.ok(r.before.length > r.company && r.before.every((b, k) => (k < r.company) === !!b), `the ${r.before.length - r.company} bunks past the company spare`);
+  const was = r.before.find(b => b && b.who === r.leftId), now = r.after.find(b => b && b.who === r.joinedId);
+  assert.deepEqual(was.things, things(r.kits.left), `${r.left}'s own things in their bunk before`);
+  assert.ok(!r.after.some(b => b && b.who === r.leftId), `${r.left} has no bunk after leaving`);
+  assert.ok(now && now.things.join() === things(r.kits.joined).join(), `${r.joined}'s own things in their bunk after signing on`);
 });
 
 // A tap on a room opens its console as a sheet (#323, step 5 task 3).

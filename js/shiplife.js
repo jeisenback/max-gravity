@@ -976,9 +976,10 @@ function drawCutaway(box, clear = box) {
   ctx.strokeStyle = 'rgba(61,95,130,0.55)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(W, 0); ctx.stroke();  // the seam where the cap meets the flight deck
 
   // The rooms, the tank, the ladder well and its ladder full height (the tube through the tank), and the bulkheads beside the well.
-  const cap = ship().cargo, nb = Math.min(12, ship().berths), slots = new Map();
-  for (const p of people) if (slots.size < nb && isAsleep(p)) slots.set(p, slots.size);  // whoever is turned in lies on a bunk
-  const s = { w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
+  const cap = ship().cargo, nb = Math.min(12, ship().berths), owners = bunkOwners(people, nb), slots = new Map(), job = hired();
+  bunkSlots(people, owners, isAsleep).forEach((k, p) => slots.set(p, k));  // whoever is turned in lies in their own bunk (#934), or a free one
+  const bunks = owners.map(p => p && { slept: slots.has(p), ...bunkKit(p.role === 'you' ? { id: 'you', role: job ? POSTS[job.post].role : 'rating', culture: st.background } : { ...((p.id && st.people[p.id]) || p), role: p.role, id: p.id || p.name }) });
+  const s = { bunks, w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size,
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3 }, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState)
   for (const r of ROOMS) {
     const q = layoutBox(lay, r.id);
@@ -1073,6 +1074,26 @@ function drawCutaway(box, clear = box) {
   G.cutOutline = { ...ol, ids: people.filter(p => p.id).map(p => p.id), view: seenPart };
   drawOutline(ctx, G.cutOutline, dots, seenPart.y, seenPart.span, lay);
   return tagged;
+}
+
+// Who has which bunk (#934): the ship's company in its standing order, the hand first, then the captain, the crew in the order they signed on
+// (st.crew, as shipPeople keeps them) and the passengers, but not the cat. The k-th of them has bunk k of the n (berthBunk), and the bunks past
+// them are spare. When someone leaves, those after them move up a bunk, and the next to sign on comes in after the crew. people: shipPeople's.
+const BUNK_RANK = { you: 0, captain: 1, passenger: 3 };  // the crew 2
+function bunkOwners(people, n) {
+  const rank = p => (p.role in BUNK_RANK ? BUNK_RANK[p.role] : 2), company = people.filter(p => p.role !== 'cat').map((p, i) => [p, i]).sort((a, b) => rank(a[0]) - rank(b[0]) || a[1] - b[1]);
+  return Array.from({ length: n }, (_, k) => (company[k] ? company[k][0] : null));
+}
+
+// Who lies in which bunk tonight (#934): a Map of each sleeper to a bunk. Each owner (bunkOwners) in their own; anyone asleep with no bunk of
+// their own (a company larger than the bunks) in a free one, a spare bunk first and then one whose owner is up, so no one sleeps standing.
+// asleep: whether a person is turned in (isAsleep).
+function bunkSlots(people, owners, asleep) {
+  const slots = new Map();
+  owners.forEach((p, k) => { if (p && asleep(p)) slots.set(p, k); });
+  const free = [...owners.keys()].filter(k => !owners[k]).concat([...owners.keys()].filter(k => owners[k] && !slots.has(owners[k])));
+  for (const p of people) if (p.role !== 'cat' && !slots.has(p) && free.length && asleep(p)) slots.set(p, free.shift());
+  return slots;
 }
 
 // ---------- downtime activities ----------
