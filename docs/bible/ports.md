@@ -53,6 +53,43 @@ From the ship's berth down to the rim, in the order a hand walks it:
 
 The Ring keeps Lagos time. The lights on the rim go down at Lagos's night, and the yard works three shifts through it.
 
+## The screen in port
+
+How the port view and the port's pages share the screen (for #1101). Draft for the owner, 2026-11-12.
+
+- **The view is the main area,** as the burn view is in flight. The painted backdrop strip goes at a port that has a view.
+- **The pages open docked over it.** Choosing a page on the rail (Port, Missions, Bar, Crew and the rest) opens it in a panel docked to one side of the view, as a scene opens in the burn view's dock (`dockEventPanel`, `js/transit.js`), and the view stays live in the part it leaves clear. Closing the page gives the whole view back. The rail stays where it is.
+- **A scene opens in the same dock,** with its people walked to where it happens on the view.
+- **What stays on screen with nothing open:** the frame's bar (the section, the local time, the berth), the notes as a ticker under the view (as the burn view's comms ticker), and the dock's main button (Sail with the captain, Pass the night).
+- **A click on the view** finds what is there, as a click in the burn view does: a person opens what is theirs (a regular's talk, a leaseholder's word), a room opens its page (the Gravity Well the Bar, the yard office Missions, the market the Port page).
+- **The camera** pans along the rim and between its levels, after the hand, as the burn view's pans the decks; reduced motion cuts instead.
+
+## How a port runs
+
+The rules the port's people and scenes keep (for #1102 and #1103). Draft for the owner, 2026-11-12. Most of it is ship life's (`js/shiplife.js`) carried ashore; this says what a port changes.
+
+### The port's clock
+
+The game's day turns only as it does now: by passing a night in port or by sailing. Inside that day the port has its own hours. A landing comes in at the hour the burn ended, by the port's local time (Lagos time on the Ring), and the view runs on from there at the burn view's pace: a day of the port's hours in 80 seconds (`SHIP_DAY`, `js/shiplife.js`). It runs through the evening and stops at the night: the rim's lights down, the bays shut, the bar the last thing open. It waits there until the player passes the night (the next morning) or sails. A scene stops the clock while it is open, as it stops the burn.
+
+### Who is there
+
+- **Fixed people,** the same on every visit, with records like the crew's so they can be talked to and remember: the port's leaseholders (Ngozi at her food bay, the repairer, the Gravity Well's keeper), the yard clerk, the clinic's nurse. A main character who lives here (Ngozi) is one of them.
+- **People drawn for the visit:** the yard workers on and off shift, and the bar's regulars, who are the bar's patrons already drawn at landing (`fillBar`, `js/bar.js`), not a second set. A night in port draws them again, as the bar is filled again now.
+- **The ship's crew,** ashore from the landing to the sailing: at the bar, at a bay, walking the rim, back aboard to sleep.
+- The draw for the visit uses the port's own dice, seeded from the port and the day, so a landing moves no other system's rolls (as ship life's dice).
+
+### Their hours
+
+Each fixed person has a routine by the port's hours, as the crew have the ship's: open the bay, work it, eat, shut it, go home. The yard works three shifts; a shift change fills the lift lobby and then the bar. The routine blocks are the port's, written per place in its layout, so the next port is new data.
+
+### Scenes from people
+
+- A landing's scenes are queued and ranked as #1096 sets out; the port view does not change which play.
+- A scene names its people (the event's `people`). Those who are on the view walk to where it happens, as a burn scene stages the crew (`stageScene`), and it opens docked when they are there. Someone in the scene who is not at this port (a contact by message, a captain at another berth) is not drawn; the scene opens as it does now.
+- A scene that belongs to a place (the bar's talk, a job at the yard office, the day ashore's entries) starts there: the hand walks to it first.
+- A click on a fixed person outside a scene opens their word for the day: a line, or what they offer (a meal at Ngozi's, a contract at the clerk's desk).
+
 ## What this changes in the game
 
 Each is its own piece of work, once the owner has corrected this page:
