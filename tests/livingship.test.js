@@ -1416,7 +1416,7 @@ test('the medbay reads old and cared for: a newer scanner bolted on, wear at fix
 // handle at the waist; the lamp swinging on its cable; the hold log floating at the flip. Drawn at the burn view's zoom in a window 1000, 1280
 // and 1600 wide, empty, half full and full.
 const { holdCrate, holdLabel, FIG_TALL } = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['holdCrate', 'holdLabel', 'FIG_TALL']);
-const HOLD_PROPS = [['#8a7a3a', 'the pallet jack\'s body'], ['#7a6a34', 'its forks'], ['#5e646a', 'its handle'], ['#1a2430', 'its wheels'], ['#5a6470', 'the lamp\'s shade'], ['#a89a78', 'the lamp\'s glass']];
+const HOLD_PROPS = [['#78705a', 'the pallet jack\'s body'], ['#6a6450', 'its forks'], ['#5e646a', 'its handle'], ['#1a2430', 'its wheels'], ['#5a6470', 'the lamp\'s shade'], ['#a89a78', 'the lamp\'s glass']];
 const HOLD_CRATE_PROPS = [['#3e3426', 'the pallets'], ['#4a4436', 'the straps'], ['#6a583c', 'the crates\' battens']];
 const HOLD_INK = ['#7a6c50', '#6a7a7a'], HOLD_NET = '#8a7e62', HOLD_RING = '#4a6680', HOLD_WOOD = ['#5a4a34', '#54462f', '#4a5a5e', '#5e4e36', '#4e4230'];
 const holdCase = (pr, zoom, cargo) => ({ r: layoutBox(LAYOUTS.freighter, 'hold'), s: RS({ w: phaseWeights(pr), zoom, cargo, damage: { marks: new Set(), severe: false } }) });
@@ -1449,7 +1449,7 @@ test('the hold is drawn to the figures\' standard in every phase: its props outl
     // in the box (#1024): the crates, the pallets and the jack's forks and pump solid, their tops showing; the scuffs where the jack parks on the wall
     const n = Math.round(12 * cargo), kinds = [...new Set(Array.from({ length: n }, (_, k) => HOLD_WOOD[(k * 7 + Math.floor(k / 3)) % HOLD_WOOD.length]))];
     for (const col of kinds) assert.ok(fills(solidTop(col)) >= 1, `${at}: the ${col} crates solid, their tops showing`);
-    for (const [col, what] of [...(n ? [['#3e3426', 'the pallets']] : []), ['#7a6a34', 'the jack\'s forks'], ['#8a7a3a', 'its pump']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
+    for (const [col, what] of [...(n ? [['#3e3426', 'the pallets']] : []), ['#6a6450', 'the jack\'s forks'], ['#78705a', 'its pump']]) assert.ok(fills(solidTop(col)) >= 1, `${at}: ${what} solid, a top showing`);
     assert.equal(fills('#3e4c5a'), 0, `${at}: the scuffs on the wall, not in their own colour`); assert.ok(fills(wallTone('#3e4c5a')) >= 2, `${at}: the scuffs on the wall`);
     // the room's name (shiplife.js: 13px on a plate at its top left) on clear wall, where each thing is drawn
     const name = { x0: r.x0, x1: r.x0 + 12 + 60 / zoom, y0: r.top + 8 - 1 / zoom, y1: r.top + 8 + 17 / zoom }, hit = (b, x, y) => x > b.x0 && x < b.x1 && y > b.y0 && y < b.y1;
@@ -1592,6 +1592,11 @@ test('the windows\' discs keep inside the brightness limits, leave every save re
   const g = bridgeGlass(r, FW), lastDisc = calls.reduce((m, q, i) => q[0] === 'arc' && q[1] > g.x && q[1] < g.x + g.w && q[2] > g.y && q[2] < g.y + g.h ? i : m, -1);
   assert.ok(lastDisc > 0 && calls.slice(lastDisc).some(q => q[0] === 'strokeRect'), 'the gasket and the frame drawn over the disc');
 });
+test('the pallet jack reads as a worn, painted tool a step below the people: its paint greyed, no channel spread over 0x24 (#1040)', () => {
+  for (const col of ['#6a6450', '#78705a']) { const v = [1, 3, 5].map(i => parseInt(col.slice(i, i + 2), 16)); assert.ok(Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x24, `${col}: muted`); }
+  const src = require('fs').readFileSync(require('path').join(__dirname, '..', 'js', 'rooms.js'), 'utf8'), body = src.slice(src.indexOf('function roomHoldJack'), src.indexOf('function roomHold(ctx'));
+  assert.ok(!/#7a6a34|#8a7a3a/i.test(body), 'the old yellows are gone from the jack');
+});
 test('the hold\'s props are sized to a person: a crate two can lift, stacks under the head, the jack\'s handle at the waist (#933)', () => {
   const { r } = holdCase(0.3, 1.45, 1), F = r.floor;
   for (const pr of [0.02, 0.3, 0.5]) {
@@ -1600,7 +1605,7 @@ test('the hold\'s props are sized to a person: a crate two can lift, stacks unde
     assert.ok(F - holdCrate(r, 2).y <= FIG_TALL - 8, `${at}: a stack of three (${F - holdCrate(r, 2).y}) under a person's head (${FIG_TALL})`);
     const pallets = parts.filter(q => q.col === '#3e3426');
     assert.equal(pallets.length, 4, `${at}: a pallet under each stack`); for (const p of pallets) assert.ok(p.y1 >= F - 0.01 && p.y1 - p.y0 <= 5, `${at}: a pallet on the deck`);
-    const forks = parts.find(q => q.col === '#7a6a34'), body = parts.find(q => q.col === '#8a7a3a'), handle = parts.filter(q => q.col === '#5e646a'), grip = parts.find(q => q.col === '#8a6a48');
+    const forks = parts.find(q => q.col === '#6a6450'), body = parts.find(q => q.col === '#78705a'), handle = parts.filter(q => q.col === '#5e646a'), grip = parts.find(q => q.col === '#8a6a48');
     assert.ok(forks && forks.x1 - forks.x0 >= 44 && forks.x1 - forks.x0 <= 60 && forks.y1 - forks.y0 <= 4 && forks.y1 >= F - 3, `${at}: the forks, low and a pallet long (${forks && forks.x1 - forks.x0})`);
     assert.ok(body && F - body.y0 <= 18 && body.x0 >= forks.x1 - 6, `${at}: the pump at the forks' heel, under the knee`);
     assert.ok(handle.length && grip && F - grip.y0 >= 38 && F - grip.y0 <= 50, `${at}: the handle's grip at the waist (${grip && F - grip.y0})`);
@@ -1651,7 +1656,7 @@ test('the hold reads old and cared for: crates of different ages, a replacement 
     assert.ok(grip && handle.some(h => h.y0 <= grip.y1 && h.x1 >= grip.x0), `${at}: a printed grip on the jack's handle`);
     assert.ok(tag && tag.y0 >= grip.y1 - 1 && tag.x1 - tag.x0 <= 6 && tag.y1 - tag.y0 <= 6, `${at}: its temporary tag hung from it (${JSON.stringify(tag)})`);
     // scuffs low on the back wall behind where the jack is parked (#1024: on the wall, where it is drawn)
-    const jack = parts.find(p => p.col === '#7a6a34'), wall = backWall(r), behind = x => box.roomInto(wall.e, x, F)[0];
+    const jack = parts.find(p => p.col === '#6a6450'), wall = backWall(r), behind = x => box.roomInto(wall.e, x, F)[0];
     const scuffs = placedRects(calls).filter(c => c.col === wallTone('#3e4c5a') && c.y >= wall.y0 && c.y + c.h <= wall.y1 && c.y > wall.y1 - 14 && c.x >= behind(jack.x0) - 2 && c.x <= behind(jack.x1) + 10);
     assert.ok(scuffs.length >= 2, `${at}: scuffs low on the wall where the jack is parked (${scuffs.length})`);
   }
@@ -1675,7 +1680,7 @@ test('in the box the hold\'s stacks stand solid on their pallets, drawn from the
     const off = c => Math.abs(holdCrate(r, 3 * c).x + 20 - e.vx), order = Array.from({ length: stacks }, (_, c) => c).sort((a, b) => body(3 * a) - body(3 * b));
     for (let i = 1; i < order.length; i++) assert.ok(off(order[i]) <= off(order[i - 1]), `${at}: the stacks drawn from the walls in (${order})`);
     assert.equal(parts.filter(p => p.col === SHADOW).length, stacks + 1, `${at}: a shadow under each pallet and the jack's forks, none under a crate resting on another`);
-    const lastCrate = Math.max(...Array.from({ length: n }, (_, k) => body(k))), forks = first('#7a6a34');
+    const lastCrate = Math.max(...Array.from({ length: n }, (_, k) => body(k))), forks = first('#6a6450');
     assert.ok(forks < Math.min(...Array.from({ length: n }, (_, k) => body(k))), `${at}: the jack, farther from the eye, drawn before the stacks`);
     assert.ok(parts.findIndex(p => p.col === '#4a4436' && p.pts.length >= 9) > lastCrate, `${at}: the straps over the stacks, at the front`);
     const ringAt = calls.findIndex(k => k[0] === 'strokeStyle' && k[1] === HOLD_RING), crateAt = calls.findIndex(k => k[0] === 'fillStyle' && HOLD_WOOD.includes(k[1]));
@@ -1736,7 +1741,7 @@ test('the medbay\'s and the hold\'s ceiling lamps are fittings too, the medbay\'
 });
 test('a solid\'s top is a step lighter, but never brighter or more saturated than the people (#1024, #959)', () => {
   const bay = { x0: 0, x1: 400, top: 0, floor: 100 };
-  for (const col of ['#1f3852', '#6e7e8e', '#8a7a3a', '#7a6a34']) {
+  for (const col of ['#1f3852', '#6e7e8e', '#78705a', '#6a6450']) {
     const { ctx, calls } = recorder(); box.roomIn([bay], () => box.roomPart(ctx, box.roomRound(20, 60, 60, 40, 1), col, { solid: 0.45 }));
     const top = filledParts(calls).find(p => p.pts.some(q => near(q[1], 60)) && p.pts.length === 4 && p.col !== col && !p.col.startsWith('rgba') && p.col !== solidSide(col));
     const v = rgbOf(top.col), f = rgbOf(col);

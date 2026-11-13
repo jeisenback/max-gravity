@@ -1576,7 +1576,8 @@ function roomHoldNet(ctx, r, n, s) {
   ctx.strokeStyle = '#5e6a50'; ctx.lineWidth = 1.2; roomSeg(ctx, [[m0, at(top, m0)], [m1, at(top, m1)]]);
   for (const kx of [m0, m1]) roomDot(ctx, kx, at(top, kx), 1, '#5e6a50');
 }
-// The pallet jack parked with its forks at jx, toned down from a bright yellow: the forks a pallet long, the load roller, the pump over the steer
+// The pallet jack parked with its forks at jx, its yellow paint faded to a worn, greyed ochre a step below the people (#1040), worn to bare steel
+// at the forks' tips and the pump's edge: the forks a pallet long, the load roller, the pump over the steer
 // wheel, and the handle (a replacement in bare steel) up to its grip at the waist, the grip printed on the ship's fabricator and tagged as
 // temporary (docs/bible/technology.md). Scuffs on the wall behind it, where it is parked. In the box (#1024) the scuffs are on the back wall, low,
 // and the forks (two tines, the far one a pallet back, their shadow on the strip under both) and the pump are solid.
@@ -1589,11 +1590,12 @@ function roomHoldJack(ctx, jx, F) {
   ctx.strokeStyle = '#7a7462'; ctx.lineWidth = 0.5; roomSeg(ctx, [[x + 66, F - 42.8], [x + 67.5, F - 40]]);  // the tag on its thread
   roomPart(ctx, roomRound(x + 65.5, F - 40, 4.5, 5, 0.8), '#9a9050', { top: 0.5 }); roomDot(ctx, x + 67.75, F - 39, 0.5, '#4a4436');
   // the forks, two tines a pallet apart in depth (the far one moved back to its place), their shadow under both
-  const fork = () => roomPart(ctx, roomRound(x, F - 5, 50, 3, 0.8), '#7a6a34', { top: 0.6, under: 0.6, solid: 0.12, shadow: false });
+  const fork = () => roomPart(ctx, roomRound(x, F - 5, 50, 3, 0.8), '#6a6450', { top: 0.6, under: 0.6, solid: 0.12, shadow: false });
   roomShadow(ctx, x, x + 50, HOLD_DEPTH); roomAtDepth(ctx, x + 25, F - 3.5, 0.38, fork); fork();
   roomDot(ctx, x + 4, F - 1.4, 1.4, '#1a2430'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();  // the load roller
-  roomPart(ctx, `M ${n(x + 47)} ${F - 6} L ${n(x + 47)} ${F - 12} Q ${n(x + 47)} ${F - 15} ${n(x + 50)} ${F - 15} L ${n(x + 58)} ${F - 15} L ${n(x + 59)} ${F - 6} Z`, '#8a7a3a', { top: 1, side: 1.5, solid: 0.3 });
+  roomPart(ctx, `M ${n(x + 47)} ${F - 6} L ${n(x + 47)} ${F - 12} Q ${n(x + 47)} ${F - 15} ${n(x + 50)} ${F - 15} L ${n(x + 58)} ${F - 15} L ${n(x + 59)} ${F - 6} Z`, '#78705a', { top: 1, side: 1.5, solid: 0.3 });
   roomFlat(ctx, x + 49, F - 11, 5, 1.2, '#4a4436');  // its stencil
+  for (const [wx, wy, ww] of [[x + 1, F - 4.6, 3], [x + 56, F - 13.6, 2]]) roomFlat(ctx, wx, wy, ww, 0.8, '#7e8a94');  // the paint worn to bare steel at the forks' tips and the pump's edge
   roomDot(ctx, x + 54, F - 3, 3, '#1a2430'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); roomDot(ctx, x + 54, F - 3, 1, '#56708c');  // the steer wheel
 }
 // The hold (#933): the rings in the deck, the crates by the cargo (s.cargo, 0 to 1, up to twelve; each marked with its good from s.goods,
