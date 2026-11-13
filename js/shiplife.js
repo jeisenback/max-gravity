@@ -900,6 +900,7 @@ function cutShaft(ctx, x0, x1, top, F) {
 // Each bay's shell (rooms.js roomShell) drawn once into an offscreen canvas at the zoom and the device's pixel ratio, then as one image every
 // frame after (#1024): the burn view redraws every frame. A new zoom or pixel ratio starts the cache again; a new layout gives new bays.
 const SHELLS = { scale: 0, bays: new Map() };
+const ROOM_SPRITE_CACHE = new Map();  // the rooms' part sprites (rooms.js roomSprite, #1117), kept across frames
 function cachedShell(zoom) {
   const px = zoom * (window.devicePixelRatio || 1);
   if (SHELLS.scale !== px) { SHELLS.scale = px; SHELLS.bays.clear(); }
@@ -1039,10 +1040,13 @@ function drawCutaway(box, clear = box) {
   const lain = new Set(slots.values()), bunks = owners.map((p, k) => p && { slept: lain.has(k), ...bunkKit(p.role === 'you' ? { id: 'you', role: job ? POSTS[job.post].role : 'rating', culture: st.background } : { ...((p.id && st.people[p.id]) || p), role: p.role, id: p.id || p.name }) });
   const s = { bunks, w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, goods: holdGoods(st.cargo, st.missions), pr, places: { to: placeColour(placeOf(t.to), st.route && st.route.dock), from: placeColour(placeOf(st.systemId), st.planet) }, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), screen: galleyScreenOn(shipDay(t.elapsed).block), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, t.recline),
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3, patches: new Set(G.state.patches || []) }, age: tripAge(G.transit), patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState)
-  for (const r of ROOMS) {
-    const q = layoutBox(lay, r.id);
-    if (seen(q.top, q.floor + HULL.plate)) drawRoom(ctx, r.id, q, s);  // with its cut, as the shaft is (#1024)
-  }
+  roomSprites = ROOM_SPRITE_CACHE;  // each prop part drawn once, then copied (#1117)
+  try {
+    for (const r of ROOMS) {
+      const q = layoutBox(lay, r.id);
+      if (seen(q.top, q.floor + HULL.plate)) drawRoom(ctx, r.id, q, s);  // with its cut, as the shaft is (#1024)
+    }
+  } finally { roomSprites = null; }
   towerTank(ctx, lay, o.tank, s.fuel, s);
   const lx = X(LADDER), ww = lay.well.w * W / 2, last = lay.decks.length - 1;
   for (let i = 0; i <= last; i++) {
