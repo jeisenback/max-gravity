@@ -32,11 +32,11 @@ const PORT_LAYOUTS = {
     // The port's own people (ports.md, Who is there): where each works and the hours they keep (an hour past 24 is after midnight). Ngozi is Tomas's
     // sister (lagos.md), with her food bay; the rest are made from the port's culture the first time, the same face on every visit.
     folk: [
-      { key: 'ngozi', first: 'Ngozi', last: 'Achebe', job: 'food bay', room: 'market', x: 215, name: 'work', view: 'back', hours: [6, 21] },
+      { key: 'ngozi', first: 'Ngozi', last: 'Achebe', job: 'food bay', room: 'market', x: 215, name: 'work', view: 'back', hours: [6, 21], offer: 'plate' },  // `offer`: what they sell the hand (PORT_OFFERS)
       { key: 'repairer', job: 'repair bay', room: 'market', x: 490, name: 'work', view: 'back', hours: [8, 18] },
       { key: 'keeper', job: 'keeper of the Gravity Well', room: 'bar', x: 700, name: 'stand', view: 'front', hours: [11, 26] },
       { key: 'clerk', job: 'yard clerk', room: 'yard', x: 420, name: 'work-sit', view: 'side', face: -1, hours: [7, 19] },
-      { key: 'nurse', job: 'clinic nurse', room: 'clinic', x: 540, name: 'stand', view: 'front', hours: [8, 20] },
+      { key: 'nurse', job: 'clinic nurse', room: 'clinic', x: 540, name: 'stand', view: 'front', hours: [8, 20], offer: 'care' },
     ],
     // The place's hours: the yard's shift changes fill the lift lobby, the hiring boards draw contract workers by day, the Gravity Well's stools and the
     // spaces along its wall seat the bar's patrons while it is open, and the ship's crew ashore are in the market by day and at the bar after it.
@@ -173,10 +173,48 @@ const PORT_WORDS = {
     '"Ear infections this week, mostly from the top bunkrooms," {first} says. "It\'s the filters up there. Maintenance has the ticket." {first} goes back to the screen.',
   ],
 };
-// The scene a click on one of them opens: their word for the day, where they work, with them in it (portStage gathers them there).
-function portWordEvent(f, p, day) {
-  const words = linedText('lines:port-folk', PORT_WORDS)[f.key];
-  return { title: `${p.first} ${p.last}`, text: words[day % words.length].replace(/\{first\}/g, p.first), people: [p.id], place: f.room, personal: true, choices: [{ label: 'Leave them to it', keep: true, run: () => null }] };
+// What they sell the hand, from the hand's own savings (the owner, 2026-11-13): a plate at Ngozi's, once a day, which Tomas likes once a visit; and, while the
+// hand is hurt, the nurse's care, which takes days off it as a medic aboard does (MEDIC_DAYS), more of them. The results are taken in turn by the day.
+const PORT_PLATE = 120, PORT_CARE = 800, PORT_CARE_DAYS = 4;
+const PORT_OFFERS = {
+  plate: {
+    label: 'Buy a plate ({cost} cr)', eaten: 'You\'ve eaten here today.', memory: 'You ate at Ngozi\'s stall on the ring.',
+    result: [
+      'Ngozi gives you more rice than the last person got, and takes your money without counting it. "Eat it here," she says. "The plates don\'t come back otherwise."',
+      'Ngozi spoons stew over the rice and puts two puff-puff on the side of the plate. "Those are from this morning," she says. "Don\'t tell anyone they were free."',
+      'Ngozi hands you the plate and goes back to the hob. The screen at the end of the counter has the Orbitals on with the sound off. You eat standing up while the shift comes in.',
+    ],
+  },
+  care: {
+    label: 'Have it seen to ({cost} cr)',
+    result: [
+      '{first} takes off the dressing from the ship, cleans the wound and puts a better one on. "Keep it dry. Come back if it goes hot."',
+      '{first} looks at it under the lamp for a while. "It\'s healing. Slowly." {first} glues the worst of it and writes something down. "Leave it alone and it\'ll be quicker than it was going to be."',
+      '{first} gives you a strip of tablets and a printed sheet that says what the label says. "One with food. You\'ll have been told that before."',
+    ],
+  },
+};
+// One of the offers' lines, through the editor's words (lines:port-offers): `key` is a line of it, or 'result' for the day's one; {first} is the seller's name, {cost} the price.
+function portOfferSay(kind, key, p, day) {
+  const o = linedText('lines:port-offers', PORT_OFFERS)[kind], line = key === 'result' ? o.result[day % o.result.length] : o[key];
+  return line.replace(/\{first\}/g, p.first).replace(/\{cost\}/g, fmt(kind === 'plate' ? PORT_PLATE : PORT_CARE));
+}
+// The scene a click on one of them opens: their word for the day, where they work, with them in it (portStage gathers them there), what they sell if
+// they sell anything now, and leaving them to it. `st` is the save: the day, the hand's savings, and when they last ate here and arrived.
+function portWordEvent(f, p, st) {
+  const words = linedText('lines:port-folk', PORT_WORDS)[f.key], day = st.day, choices = [];
+  if (f.offer === 'plate') choices.push({ label: portOfferSay('plate', 'label', p, day), ...gated(needCr(PORT_PLATE), notYet(() => st.portAte === day, portOfferSay('plate', 'eaten', p, day))), run() {
+    st.credits -= PORT_PLATE; st.portAte = day;
+    const t = tomasAboard();
+    if (t && st.portTomas !== st.portArrived) { st.portTomas = st.portArrived; like(t, 1, portOfferSay('plate', 'memory', p, day)); }  // once a visit
+    return portOfferSay('plate', 'result', p, day);
+  } });
+  if (f.offer === 'care' && handHurt()) choices.push({ label: portOfferSay('care', 'label', p, day), ...gated(needCr(PORT_CARE)), run() {
+    st.credits -= PORT_CARE; career().hurtUntil -= PORT_CARE_DAYS;
+    return portOfferSay('care', 'result', p, day);
+  } });
+  choices.push({ label: 'Leave them to it', keep: true, run: () => null });
+  return { title: `${p.first} ${p.last}`, text: words[day % words.length].replace(/\{first\}/g, p.first), people: [p.id], place: f.room, personal: true, choices };
 }
 
 // The port's own people as records, made the first time from the port's culture by a dice stream of the port's own (official.js seededRandom), kept by
@@ -430,13 +468,13 @@ function portViewNow(planet, layout) {
 Mods.register({
   id: 'portview', name: 'The port view', builtin: true,
   init(M) {
-    M.on('landed', planet => { G.portHour = portLayout(planet) ? arrivalHour(planet, G.state.day) : null; G.portWalkers = null; });  // everyone in place as the view opens
+    M.on('landed', planet => { G.portHour = portLayout(planet) ? arrivalHour(planet, G.state.day) : null; G.portWalkers = null; G.state.portArrived = G.state.day; });  // everyone in place as the view opens; the day of the visit, for what is once a visit
     M.on('newDay', () => { if (G.portHour !== null) G.portHour = PORT_MORNING; G.portWalkers = null; });  // a night passed in port
     // A click on a room with a page opens it, as its entry on the rail does, and only when the rail would (a shut entry stays shut); the pointer shows where.
     // A click on one of the port's own people opens their word for the day (#1103), before the room they stand in.
     const point = (e, find) => { const c = e.target; if (!c || c.id !== 'vs' || !c.classList.contains('view') || G.mode !== 'landed' || G.dialog) return null; const r = c.getBoundingClientRect(); return find(G.portRooms, e.clientX - r.left, e.clientY - r.top); };
     const open = room => { const e = room && RAIL.find(x => x.tab === room.page); return e && (!e.shown || e.shown(UI.planet)) && e.ready(UI.planet) === true ? e : null; };
-    const word = b => { if (!b) return null; const planet = currentPlanet(), layout = portLayout(planet), f = layout && layout.folk.find(x => x.key === b.who); return f ? portWordEvent(f, portFolkPerson(planet, f), G.state.day) : null; };  // nothing hit, nothing read (the title screen has no game)
+    const word = b => { if (!b) return null; const planet = currentPlanet(), layout = portLayout(planet), f = layout && layout.folk.find(x => x.key === b.who); return f ? portWordEvent(f, portFolkPerson(planet, f), G.state) : null; };  // nothing hit, nothing read (the title screen has no game)
     document.addEventListener('click', e => { const ev = word(point(e, portFolkAtPoint)); if (ev) return openEvent(ev); const entry = open(point(e, portRoomAtPoint)); if (entry) UI.act('tab', entry.tab); });
     document.addEventListener('mousemove', e => { if (e.target && e.target.id === 'vs') e.target.style.cursor = point(e, portFolkAtPoint) || open(point(e, portRoomAtPoint)) ? 'pointer' : ''; });
     M.on('frame', dt => {  // the clock, and anyone it moves walking there; under a scene the clock holds, and the scene's people walk to it (#1103)
