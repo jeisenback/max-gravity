@@ -146,3 +146,22 @@ test('the Ring\'s people walk to where the hour puts them: between levels by the
   assert.deepEqual(JSON.parse(JSON.stringify(snap.map(p => [p.who, p.lv, p.x]).sort())), to.map(p => [p.who, p.lv, p.x]).sort(), 'reduced motion puts everyone in place');
   assert.equal(portRoomAt(lay, at('x', '', 1, 300)), 'yard'); assert.equal(portRoomAt(lay, at('x', '', 2, 60)), 'well'); assert.equal(portRoomAt(lay, at('x', '', 0, 860)), 'bar');
 });
+
+test('a click on a room in the Ring opens its page as the rail does: the Gravity Well the Bar, the yard offices Missions, the market the Port page; a room with no page does nothing (#1132)', async () => {
+  const { page, ev, errors, done } = await open({ viewport: { width: 1440, height: 900 } });
+  await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); UI.act('closePage'); });
+  await frames(page, 3);
+  const click = async id => {
+    const pt = await ev(rid => { const c = document.getElementById('vs').getBoundingClientRect(), b = G.portRooms.find(x => x.id === rid); return { x: c.left + b.x + b.w / 2, y: c.top + b.y + b.h * 0.6 }; }, id);
+    await page.mouse.move(pt.x, pt.y); const cursor = await ev(() => document.getElementById('vs').style.cursor);
+    await page.mouse.click(pt.x, pt.y); await frames(page, 2);
+    return ev(c => ({ tab: UI.tab, open: UI.pageOpen, cursor: c }), cursor);
+  };
+  const clinic = await click('clinic');
+  assert.deepEqual(clinic, { tab: 'port', open: false, cursor: '' }, 'the clinic has no page: nothing opens, and no pointer');
+  assert.deepEqual(await click('bar'), { tab: 'bar', open: true, cursor: 'pointer' });
+  assert.deepEqual(await click('yard'), { tab: 'missions', open: true, cursor: 'pointer' }, 'a click on the view with a page open opens the room\'s page in its place');
+  assert.deepEqual(await click('market'), { tab: 'port', open: true, cursor: 'pointer' });
+  await done();
+  assert.deepEqual(errors, []);
+});
