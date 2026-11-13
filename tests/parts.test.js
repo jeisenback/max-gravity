@@ -130,3 +130,32 @@ test('an overhaul offers no source that would leave the system worse than it is:
   assert.deepEqual(sources(87), ['yard', 'used'], 'at 87 a printed part (85) would take it down');
   assert.deepEqual(sources(95), ['yard'], 'at 95 only a new part puts it right');
 });
+
+// ---------- spares cut off wrecks (#965) ----------
+
+test('a spare off a wreck is fitted free as a used part with its quirk, and sold at an outfitter for the used price', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    hired().chapter = 2; G.mode = 'landed';
+    const st = G.state, q = PART_QUIRKS.find(x => x.system === 'drive'), from = 'off the wreck of the Dorran Sky', out = {};
+    st.spares = [{ system: 'drive', quirk: { ...q, from }, from }, { system: 'drive', quirk: { ...q, from }, from }];
+    condition().drive = 50;
+    const html = wearHtml(); out.fitButtons = (html.match(/data-action="spareFit"/g) || []).length; out.words = html.includes(usedWords(q)); out.from = html.includes(from);
+    out.sell = (html.match(/data-action="spareSell"/g) || []).length; out.outfitter = currentPlanet().services.includes('outfitter');
+    const c0 = st.credits; Mods.act('spareFit', '0');
+    out.fit = { paid: c0 - st.credits, drive: condition().drive, part: fittedPart(st, 'drive'), left: st.spares.length };
+    const c1 = st.credits; Mods.act('spareSell', '0');
+    out.sold = { got: st.credits - c1, left: st.spares.length, price: partPrice(0, 'used') };
+    st.spares = [{ system: 'drive', quirk: { ...q, from }, from }];
+    currentPlanet().services = currentPlanet().services.filter(s => s !== 'outfitter');
+    out.noOutfitter = (wearHtml().match(/data-action="spareSell"/g) || []).length;
+    return out;
+  });
+  await done();
+  assert.equal(r.fitButtons, 2); assert.ok(r.words); assert.ok(r.from);
+  assert.ok(r.outfitter, 'the test port has an outfitter'); assert.equal(r.sell, 2);
+  assert.equal(r.fit.paid, 0); assert.equal(r.fit.drive, 90); assert.equal(r.fit.part.source, 'used'); assert.equal(r.fit.part.quirk.from, 'off the wreck of the Dorran Sky'); assert.equal(r.fit.left, 1);
+  assert.equal(r.sold.got, r.sold.price); assert.equal(r.sold.left, 0);
+  assert.equal(r.noOutfitter, 0);
+});

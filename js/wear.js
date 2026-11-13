@@ -54,7 +54,7 @@ function wearHtml() {
   return `${wearRate() ? '' : '<p class="hint">Wear is off.</p>'}<div class="con-parts">
     ${Object.entries(SHIP_PARTS).map(([k, p]) => `<div class="con-part"><span>${p.name}</span>${conBar(c[k], condColor(c[k]))}<b>${Math.round(c[k])}</b></div>
       ${offers(k).map(o => button(k, o)).join('')}`).join('')}
-  </div>`;
+  </div>${role().mayAct('overhaul') ? sparesHtml(G.state, currentPlanet(), G.mode === 'landed') : ''}`;  // the parts cut off wrecks (parts.js, #965)
 }
 
 // A scene for a system that has gone bad, played through the happenings picker. Its words are the lines of 'scene:trouble' (hiredscenes.js): {part} is the system,
