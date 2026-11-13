@@ -116,6 +116,8 @@ function takeJob(i) {
 const salvageSay = (key, vars) => sceneSay('scene:salvage', key, vars);
 const castOnHand = (st, key) => st.crew.map(person).find(p => p && p.cast === key && !p.dead && !(st.injured || {})[p.id]);
 const wreckReader = st => castOnHand(st, 'bexa') || roleHolder('engineer') || roleHolder('bosun') || null;
+// The skill a read is made with: Bexa's twenty years (3 at the least), else the reader's own, else the player's (roleSkill: the hand's post worked by hand).
+const wreckReadSkill = (st, reader) => (!reader ? roleSkill('engineer') : reader.cast === 'bexa' ? Math.max(3, reader.skill) : reader.skill);
 const wreckDone = w => w.cut >= 3 || !!w.left;
 // The history of a wreck, in four pieces by its type (0 is what it was, 1 to 3 the sections), each in one of two versions fixed by the wreck.
 const wreckStory = (w, n) => salvageSay(`story.${w.type}.${n}.${salvageRoll(`${n}|story|${w.seed}`) % 2}`, { name: w.name });
@@ -137,7 +139,7 @@ function approachScene(st, site) {
 // The shift (the dock's button): the next section's scene. The day turns when the crew cuts, not when the scene opens.
 function cutScene(st, site) {
   const w = site.wreck, depth = w.cut + 1, reader = wreckReader(st), bexa = reader && reader.cast === 'bexa';
-  const risk = sectionRisk(depth, false), read = readWord(risk, bexa ? Math.max(3, reader.skill) : roleSkill('engineer'));
+  const risk = sectionRisk(depth, false), read = readWord(risk, wreckReadSkill(st, reader));
   const pax = read !== 'clean' && castOnHand(st, 'pax');
   const readLine = salvageSay(`read.${bexa ? 'bexa' : reader ? 'other' : 'you'}.${read}`, { reader: reader ? reader.first : '' });  // with nobody to read it, the player does
   const choices = [{ label: salvageSay('cut.label'), run: () => cutSection(st, site, false, { read, pax }) }];
@@ -153,6 +155,7 @@ const heeded = (st, read) => { const b = castOnHand(st, 'bexa'); if (b && read =
 function haulHome(st, site, read) {
   site.wreck.left = true;
   heeded(st, read);
+  save();
   const reader = wreckReader(st);
   return salvageSay('home.result', { reader: reader ? reader.first : salvageSay('nobody') });
 }
@@ -161,9 +164,10 @@ function haulHome(st, site, read) {
 // (under the odds, the trouble is by where under: someone hurt, a system hit or the section lost), the client's find and a lead come off
 // their sections, and the cut is counted.
 function cutSection(st, site, careful, { read, pax }) {
-  const w = site.wreck, depth = w.cut + 1, job = career().job, t = WRECK_TYPES[w.type], risk = sectionRisk(depth, careful);
+  const w = site.wreck, depth = w.cut + 1, t = WRECK_TYPES[w.type], risk = sectionRisk(depth, careful);
   const roll = Math.random(), trouble = roll < risk ? riskOutcome(roll / risk) : null, out = [wreckStory(w, depth)];  // rolled before the day turns, whose events draw dice too
   st.day++; Mods.emit('newDay', st.day);
+  const job = career().job;  // read after the day turns, which can end it at its deadline (#1146)
   if (careful) heeded(st, read);
   if (depth === 1) recordHand('wrecksCut');
   w.cut = depth;
@@ -200,6 +204,7 @@ function cutSection(st, site, careful, { read, pax }) {
     out.push(salvageSay('system', { system: SHIP_PARTS[sys].name.toLowerCase() }));
   }
   if (depth === 3) out.push(salvageSay('done'));
+  save();  // the cut as it fell, so a reload does not roll it again (#1146)
   return out.join(' ');
 }
 
@@ -237,9 +242,12 @@ function sailFromSite(st, sid) {
   UI.hide();
   enterTransit();
   if (short) { st.fuel = Math.max(0, st.fuel); msg('The tanks run dry on the way, and she coasts the last of it on the thrusters.'); }  // never below empty
-  if (siteUsed(site)) replaceSite(st, leaving);
+  if (siteUsed(site)) site.spent = true;  // replaced when the ship gets where it is bound, so the burn's origin is still this one (#1146)
   return true;
 }
+
+// The sites left used up: each takes a new one in its slot once the ship is somewhere else.
+const replaceSpent = st => { for (const s of Object.values(sites(st))) if (s.spent && s.id !== st.systemId) replaceSite(st, s.id); };
 
 // Landing at the client's port with the find or the report: the client pays into the fund, in full by the deadline and half after it; a survey by
 // its report. Returns the note, or '' when there is nothing to deliver here.
@@ -282,6 +290,7 @@ function surveyScene(st, site) {
       site.seen = true;
       if (job && job.site === site.id) { job.quality = q; job.got = true; }
       recordHand('rocksSurveyed');
+      save();
       return surveySay(`result.${q}`, { pilot: who, client: job ? job.client : '' });
     } }] };
 }
@@ -292,7 +301,7 @@ Mods.register({
     M.action('takeSalvageJob', i => { const text = takeJob(Number(i)); if (text) UI.notes.push(text); });
     M.action('cutWreck', () => cutWreck());
     M.action('burnFromSite', () => sailFromSite(G.state, G.state.dest));
-    M.on('landed', planet => { const text = settleJob(G.state, planet); if (text) M.note(text); });
+    M.on('landed', planet => { replaceSpent(G.state); const text = settleJob(G.state, planet); if (text) M.note(text); });
     M.on('newDay', () => { const text = expireJob(G.state); if (text) UI.notes.push(text); });
   },
 });

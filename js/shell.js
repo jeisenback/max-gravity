@@ -20,7 +20,7 @@ const RAIL = [
   { id: 'missions', label: 'Missions', group: 'ashore', tab: 'missions', shown: () => !atSite(G.state), ready: p => tabReady(p, 'missions') || 'No work board here' },
   { id: 'bar', label: 'Bar', group: 'ashore', tab: 'bar', shown: () => !atSite(G.state), ready: p => tabReady(p, 'bar') || 'No bar here' },
   { id: 'exchange', label: 'Exchange', group: 'ashore', tab: 'trade', shown: () => !atSite(G.state) && role().mayTab('trade'), ready: p => tabReady(p, 'trade') || 'No exchange at this port' },
-  { id: 'site', label: 'The Rock', group: 'ashore', tab: 'site', shown: () => atSite(G.state), ready: () => true },  // on station at a site, the one Ashore page (sites.js, #948)
+  { id: 'site', get label() { const s = G.state && siteOf(G.state, G.state.systemId); return s && s.kind === 'wreck' ? 'The Wreck' : 'The Rock'; }, group: 'ashore', tab: 'site', shown: () => atSite(G.state), ready: () => true },  // on station at a site, the one Ashore page (sites.js, #948)
   { id: 'company', label: 'Company', group: 'ashore', tab: 'company', shown: () => !atSite(G.state) && role().mayTab('company') && !scopeOff('owner'), ready: p => tabReady(p, 'company') || 'Not available here' },
 ];
 const railEntries = p => RAIL.filter(e => !e.shown || e.shown(p));
