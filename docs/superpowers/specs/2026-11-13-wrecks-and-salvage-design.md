@@ -1,6 +1,6 @@
 # Wrecks and Salvage: the Co-op's Jobs at a Site
 
-Status: proposed to the owner on 2026-11-13 (#965). The second step of exploration and salvage (`ROADMAP.md`, section 7), after the site machinery (#948) and parts (#1135); before the scan (#966) and the prospecting line (#1003), which rises with this work.
+Status: proposed to the owner on 2026-11-13 (#965); amended the same day after a builder's read (who cuts, a steady supply of wrecks, the crew's regard, the co-op only, the soak's co-op mode, the survey's skill). The second step of exploration and salvage (`ROADMAP.md`, section 7), after the site machinery (#948) and parts (#1135); before the scan (#966) and the prospecting line (#1003), which rises with this work.
 
 ## Why
 
@@ -54,10 +54,11 @@ The owner picked A.
 - A wreck site carries `wreck`: its type (`orehauler`, `courier`, `raider`, `yacht`), its name (the ship's, from a list by type), the client's find's section (1 to 3), and whether a section holds an onward lead (the id of another wreck).
 - **Seeding.** A run's sites gain six wrecks and three rocks, seeded from the same key and the file's own dice as the ice rocks (no draw of the game's), at 2.2 to 3.6 AU. A save whose `st.sites` was made before has them added the first time a wreck is asked for (`sites(st)` adds missing kinds), so no ice rock moves.
 - The wrecks and rocks are unfound (`found: null`) until a job or a lead finds them, as now.
+- **A steady supply** (the owner, 2026-11-13: salvage is steady work, not a limited extra). A wreck cut out (its job done, or all three sections cut) is replaced: the site takes a new wreck, seeded by the key and the site's generation (`site.gen`), elsewhere in the band, unfound. A rock surveyed is replaced the same way. So there are always six wrecks and three rocks to find.
 
 ### Jobs on the board (`js/salvage.js`, `js/ownerboard.js`)
 
-- On a port's board in chapter 2 (`ownerHasBoard`), beside the contracts, up to one salvage job and one survey job a day, by the port and the day (`hash`, no dice of the game's), when there is an unfound wreck or rock in reach.
+- On a port's board in chapter 2, beside the contracts, for the co-op only (`role().id === 'coop'`: the owner game, which also has a board, is parked and gets none), up to one salvage job and one survey job a day, by the port and the day (`hash`, no dice of the game's), when there is an unfound wreck or rock in reach.
 - **A salvage job:** a client (an insurer, an owner, a family; a list by wreck type), the wreck, the find wanted (by type: the recorder, the cargo, the proof), the port it is delivered to, a deadline, and the pay on delivery. Taking it finds the wreck (on the map) and sets the course there; it is kept as `career().job` (one at a time, alongside no contract run: a job and a contract are each a run, as `career().run` is now).
 - **A survey job:** a client (a claim office, a buyer), the rock, the port, a deadline, the pay by quality.
 - The row reads like a contract's: "Hask Mutual: the flight recorder off the Dorran Sky, a courier, 3.1 AU. Deliver to Ceres by day 212. Pays 9,000 cr on delivery."
@@ -71,14 +72,16 @@ The owner picked A.
   - Choices: **cut it** (the take of this section, and the risk rolled), or **haul home with what is aboard** (leave now). A third, **cut carefully** (half the take, half the risk), from the second section on.
   - The story: the section's piece of the wreck's history (by type, a pool of lines), played in the result.
   - **The take** of a section: goods into the hold (Refined Metals, Machine Parts or Electronics, by type, a few tons, as far as the hold has room), and on some sections an intact part: a used part with a quirk from `PART_QUIRKS` and its `from` the wreck's ("off the wreck of the Dorran Sky"), kept as a spare.
-  - **The risk** of a section rises with depth (about one in ten, then one in four, then two in five, to tune): one of an injury to whoever cut (`st.injured`, as a fight's), a hit to one of the ship's systems (condition down, so a part is needed), or the section giving way (that shift's take lost).
+  - **Who cuts** (the owner, 2026-11-13): the crew, led by Bexa (with Bexa not aboard, the engineer, else the bosun), never the hand.
+  - **The risk** of a section rises with depth (about one in ten, then one in four, then two in five, to tune): one of an injury to a crew member on the cutting team (`st.injured`, as a fight's, with no death roll: nobody dies cutting), a hit to one of the ship's systems (condition down, so a part is needed), or the section giving way (that shift's take lost).
+  - **Regard** (the owner, 2026-11-13: a little): heeding Bexa's "bad" read (hauling home or cutting carefully) pleases her (`like` +1, a memory); cutting on over Pax's caution when someone is then hurt costs the player with Pax (`like` -1, a memory). Nothing else in the cutting moves regard.
   - **The client's find** comes off its section if that section is cut and not lost; it goes in the hold as a find (no tonnage) until delivered.
   - **An onward lead** in a section, when cut: the other wreck is found (on the map) and the log line says where.
 - After the third section, or when the player hauls home, the dock's button reads "Burn for ..." and the player plots the course (from a site, straight into the burn, as `sailHome` does for the ice run, to the port the player picks on the map).
 
 ### On station at a rock
 
-- **The survey** (one scene): the rock, and the crew's read: the co-op's best at sensors makes a check (the hand's check rule, or the crew member's skill); the quality is the margin (poor, fair, good). One shift. Then home.
+- **The survey** (one scene): the rock, and the crew's read: the pilot works the scopes, so the read is the crew's best pilot skill (`roleSkill('pilot')`, the hand's if the hand flies); the quality is the margin of a check on it (poor, fair, good). One shift. Then home.
 
 ### Delivery and pay
 
@@ -111,7 +114,7 @@ The owner picked A.
   - a survey's quality sets the pay.
 - Spares: fit and sell at the Engineering station.
 - `tests/scenelines.test.js` and the scene pins: the new scenes' words read and pinned (additions only).
-- `tools/chaptertwo-soak.js`: a co-op that takes a salvage job when one is on the board and cuts by a fixed rule earns about what freight earns over 240 days, with a wider spread.
+- `tools/chaptertwo-soak.js` gains a co-op mode (it plays the parked owner's buy today, `buyIn`): the co-op's start (`signOn`, the chapter two start, Bexa and Pax aboard). In it, a co-op that takes a salvage job when one is on the board and cuts by a fixed rule earns about what a freight-only co-op earns over 240 days, with a wider spread. The owner mode and its baseline stay as they are.
 - `npm test`, `npm run test:editor`; `js/salvage.js` on the coverage floor once tested.
 
 ## What is left to the builder
@@ -119,6 +122,11 @@ The owner picked A.
 - The histories, the reads, the clients' and wrecks' names, in the voice.
 - The numbers: the pay, the take by section, the risks by depth, within the goals above, set by the chapter 2 soak.
 - Where the job rows sit on the board, on the view helpers.
+
+## The builder's read, settled (2026-11-13)
+
+- The owner: the crew cuts and nobody dies cutting; wrecks and rocks are a steady supply; the shift choices move Bexa's and Pax's regard a little.
+- Settled by the author: salvage is the co-op's only (the parked owner game gets none); the chapter 2 soak gains a co-op mode; the survey reads the pilot's skill (there is no sensors skill).
 
 ## Assumptions to confirm
 
