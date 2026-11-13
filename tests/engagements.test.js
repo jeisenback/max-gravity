@@ -322,7 +322,7 @@ test('a turn that takes a heavy share of the armor can hurt you: a clinic bill w
     rolls([0.5, 0.5, 0.5, 0.01, 0.01]); fireOrders(); out.light = handHurt(); out.lightLine = fightNow().state.log.slice(-1)[0];
     return out;
   });
-  assert.ok(r.hurt, 'hurt on a heavy hit'); assert.match(r.line, /she hits your hull for 60\. You are hurt\. Your work counts a level lower until the clinic clears you\. The clinic is 1,500 cr of your own, with no medic aboard\.$/, r.line);
+  assert.ok(r.hurt, 'hurt on a heavy hit'); assert.match(r.line, /she hits your hull for 60\. You are hurt\. Your work counts a level lower until the clinic clears you, and another hit before then could kill you\. The clinic is 1,500 cr of your own, with no medic aboard\.$/, r.line);
   assert.equal(r.paid, 1500); assert.equal(r.armor, 260 - Math.round(60 / 0.45), 'the hit stays on the ship, at the ship\'s scale: 60 of the fight\'s armor is 133 of the real');
   assert.equal(r.light, false); assert.match(r.lightLine, /she hits your hull for 20\.$/);
   await done();

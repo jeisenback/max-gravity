@@ -248,8 +248,8 @@ test('a hurt that kills the hand says no moment, the search\'s fine is on the re
     out.planned = { option: !!o, rocks: h.record.rocksFound || 0 };
     h.run = { ice: { edge: 0 }, tons: 20, site: o && o.site }; h.stay = null; G.mode = 'landed'; G.dialog = null; siteArrival(st); out.arrived = h.record.rocksFound || 0; G.dialog = null;
     h.record = { ...h.record, hurts: 1 }; h.traitsTold = [];
-    const f = { hurt: new Set(), dead: [], marked: [], ashore: false, d: { foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0 }, state: { kind: 'ship' }, spec: { kind: 'pirate' } };  // made before the stub: the foe's maker draws
-    const rnd = Math.random; let first = true; Math.random = () => { if (first) { first = false; return 0; } return rnd(); };  // the death roll lands; a constant random would hang the ending's generators
+    const f = { youHurt: true, hurt: new Set(), dead: [], marked: [], ashore: false, d: { foe: window.realMakeEnemy({ kind: 'pirate', shipId: 'raider' }), foeHp: 0 }, state: { kind: 'ship' }, spec: { kind: 'pirate' } };  // made before the stub: the foe's maker draws
+    const rnd = Math.random; let first = true; Math.random = () => { if (first) { first = false; return 0; } return rnd(); };  // hurt already this fight, so the death roll is made (a first hurt never kills, #1157), and it lands; a constant random would hang the ending's generators
     hurtHand(f); Math.random = rnd; out.death = { told: [...h.traitsTold], died: !!h.died };
     return out;
   });
