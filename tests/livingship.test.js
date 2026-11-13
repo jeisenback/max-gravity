@@ -329,6 +329,13 @@ test('the hold\'s lamp floats at the flip on its slack cable but stays under its
   const [, yc] = holdLampEnd(ax, ay, { burn: 0, cruise: 1, flip: 0 }, 3, false), [, yh] = hangEnd(ax, ay, HOLD_LAMP_CABLE, 0.7, { burn: 0, cruise: 1, flip: 0 }, 3, false);
   assert.equal(yc, yh, 'in cruise it swings as before');
 });
+test('drawn in the hold at the flip, the lamp hangs under the ceiling\'s sliver at every moment (#1042)', () => {
+  const sliver = 4, lamps = time => { const c = fakeCtx(); drawRoom(c, 'hold', RR, RS({ w: phaseWeights(0.5), time })); return c.args.filter(a => a.startsWith('translate')).map(a => a.slice(9).split(',').map(Number)).filter(([x]) => x > 640 && x < 690); };
+  for (let t = 0; t < 30; t += 0.25) {
+    const l = lamps(t); assert.equal(l.length, 1, `one lamp at t=${t}`);
+    assert.ok(l[0][1] - 0.5 >= RR.top + sliver, `its cap under the sliver at t=${t}: ${l[0][1]}`);
+  }
+});
 test('the phase light and the thrust sign', () => {
   for (const pr of [0.02, 0.3, 0.5]) for (const night of [0, 1]) { const c = fakeCtx(); drawPhaseLight(c, RR, phaseWeights(pr), 3, night, false); assert.equal(c.depth, 0); assert.ok(c.calls.length > 0); }
   const say = (pr, time, zoom = 1.5) => { const c = fakeCtx(), t = []; c.fillText = s => t.push(s); drawThrustSign(c, 0, 0, 2.7, phaseWeights(pr), time, zoom); return t.join(' '); };
