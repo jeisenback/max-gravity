@@ -11,7 +11,7 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const parts = () => load(['js/util.js', 'js/parts.js'], {}, ['PART_SOURCES', 'partPrice', 'fittedPart', 'fitPart', 'partWear']);
+const parts = () => load(['js/util.js', 'js/parts.js'], { Mods: { register() {} } }, ['PART_SOURCES', 'partPrice', 'fittedPart', 'fitPart', 'partWear']);
 
 test('a part costs its source\'s share of the yard\'s price, which is today\'s overhaul', () => {
   const { partPrice } = parts();
@@ -53,7 +53,7 @@ test('in the game a printed drive wears 1.75 times a yard one, nothing wears wit
 
 // ---------- used parts and their quirks (Task 2) ----------
 
-const quirks = () => load(['js/util.js', 'js/parts.js'], {}, ['PART_QUIRKS', 'PART_SOURCES', 'usedPartAt', 'fitPart', 'partWear', 'partEffect', 'partFight', 'partEdge']);
+const quirks = () => load(['js/util.js', 'js/parts.js'], { Mods: { register() {} } }, ['PART_QUIRKS', 'PART_SOURCES', 'usedPartAt', 'fitPart', 'partWear', 'partEffect', 'partFight', 'partEdge']);
 const SYSTEMS5 = ['drive', 'fire', 'shields', 'life', 'sensors'];
 const port = (name, services = ['trade', 'outfitter', 'refuel']) => ({ name, services });
 

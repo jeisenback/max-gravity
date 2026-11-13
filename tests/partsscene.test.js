@@ -13,7 +13,7 @@ const { open, closeBrowser } = require('./helpers');
 after(closeBrowser);
 
 test('the captain\'s pick is a fixed score: a careful, thrifty captain with a full fund takes the yard part; with a thin fund the printed one', () => {
-  const { captainPartPick } = load(['js/util.js', 'js/parts.js'], {}, ['captainPartPick']);
+  const { captainPartPick } = load(['js/util.js', 'js/parts.js'], { Mods: { register() {} } }, ['captainPartPick']);
   const offers = [{ source: 'yard', price: 2400 }, { source: 'used', price: 1080 }, { source: 'printed', price: 480 }];
   const hester = { trade: 4, nerve: 1, thrift: 5 };
   assert.equal(captainPartPick(hester, offers, 120000), 0, 'a full fund: the yard part');
