@@ -26,7 +26,7 @@ const condition = () => {
 const wearRate = () => WEAR_RATE[Settings.wear] === undefined ? 1 : WEAR_RATE[Settings.wear];
 function wear(part, amount) {
   const c = condition(), before = c[part];
-  c[part] = Math.max(0, before - amount * wearRate());
+  c[part] = Math.max(0, before - amount * wearRate() * partWear(G.state, part));  // a printed part wears faster (parts.js)
   if (before >= BREAKDOWN_BELOW && c[part] < BREAKDOWN_BELOW && handPerk('hear-it-coming')) homeLog(`The ${SHIP_PARTS[part].name.toLowerCase()} is worn under the breakdown line.`);  // hear-it-coming (picks.js): named the day it crosses
 }
 // Full marks down to 60%, then sliding to half at nothing.

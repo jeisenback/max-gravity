@@ -539,7 +539,7 @@ function buyIn(id) {
   st.crew = friends.map(c => c.id);
   for (const f of friends) like(f, 2, sceneSay('scene:screens', 'buyin.friend.memory', { ship: oldName }));
   // A fresh ship: nothing of the old one's wear, refits or jobs comes with you.
-  for (const k of ['condition', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
+  for (const k of ['condition', 'parts', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
   st.outfits = {}; st.torpedoes = 0;  // the turret and the launcher stay on the captain's Ice Hauler
   if (id === USED_ID) st.condition = { ...USED_CONDITION };  // but the used Ore Runner comes as she is
   home().name = shipName(false);
@@ -595,7 +595,7 @@ function goOn(st) {
 function chapterTwoShip(st) {
   st.shipId = 'lightfreighter'; st.fuel = SHIPS.lightfreighter.fuel; st.armor = SHIPS.lightfreighter.armor; dropPatches(st);  // (#935)
   st.condition = { ...USED_CONDITION }; st.outfits = {}; st.torpedoes = 0; st.cargo = {}; st.paid = {};
-  for (const k of ['refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
+  for (const k of ['parts', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];  // her parts are as they came (parts.js)
   home().name = 'Ore Runner';
 }
 
