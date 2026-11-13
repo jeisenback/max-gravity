@@ -416,7 +416,21 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 /* Viewscreen strip at the top of a landed screen, then the station keys. */
 .vs { display: block; width: 100%; height: 92px; flex-shrink: 0; background: #03070a; border-bottom: 1px solid var(--line); }
 @media (min-width: 700px) { .vs { height: 150px; } }  /* room for the port's limb and sky */
-.vs.view { height: min(50vh, 420px); }  /* a port drawn as a place (portview.js, #1101): three levels at a size a person reads */
+/* A port drawn as a place (portview.js, #1101; ports.md The screen in port, #1132): the panel takes the area beside the HUD, and below the
+   header the view is the stage, between the rail and the page docked beside it; closed, the page gives the view the whole stage. */
+#panel:has(> .shell.stage) { width: calc(100vw - var(--hud-w, 0px) - 24px); height: calc(100vh - 24px); }
+/* As the burn view's scene dock (transit.js burnLayout): the page beside the view on a wide window, under it on a narrower one. */
+.shell.stage { display: grid; grid-template-columns: 132px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); }
+.shell.stage .rail { grid-row: 1 / -1; width: auto; }
+.shell.stage .vs.view { grid-column: 2; grid-row: 1; width: 100%; height: 100%; min-height: 0; border-bottom: 0; }
+.shell.stage.closed .vs.view { grid-row: 1 / -1; }
+.shell.stage .page { grid-column: 2; grid-row: 2; display: flex; flex-direction: column; min-height: 0; border-top: 1px solid var(--line); background: var(--panel); }
+@media (min-width: 1240px) {
+  .shell.stage { grid-template-columns: 132px minmax(0, 1fr) clamp(440px, 40%, 600px); grid-template-rows: minmax(0, 1fr); }
+  .shell.stage.closed .vs.view { grid-column: 2 / -1; }
+  .shell.stage .page { grid-column: 3; grid-row: 1; border-top: 0; border-left: 1px solid var(--line); }
+}
+.page-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 6px 12px 6px 16px; border-bottom: 1px solid var(--line); font-family: var(--font-label); font-size: 12px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 /* In a burn: station keys along the bottom, and a status sheet above them. */
 #bkeys {
   position: fixed;
