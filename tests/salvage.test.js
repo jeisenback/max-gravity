@@ -295,8 +295,10 @@ test('cut out and hauled home: the map\'s pick burns straight from the wreck, an
     st.dest = 'ceres'; UI.render();
     const dock = document.querySelector('.dock').textContent;
     Mods.act('burnFromSite');
+    const mode = G.mode, to = G.transit && G.transit.to, route = st.route;
+    arrive(); if (G.mode !== 'landed') land(system().planets.find(p => p.name === 'Ceres Station') || system().planets[0]);  // replaced once she is elsewhere (#1146)
     const s = st.sites['site:wreck-1'];
-    return { before, dock, mode: G.mode, to: G.transit && G.transit.to, route: st.route, gen: s.gen, found: s.found, renamed: s.name !== name || s.gen === 1 };
+    return { before, dock, mode, to, route, gen: s.gen, found: s.found, renamed: s.name !== name || s.gen === 1 };
   });
   await done();
   assert.doesNotMatch(r.before, /Cut into/); assert.match(r.dock, /Burn for Ceres/);
@@ -433,4 +435,72 @@ test('with nobody to read the section, the player reads it', async () => {
   });
   await done();
   assert.match(r, /You /); assert.match(r, /Pax/);
+});
+
+// ---------- #1146: the final review's small findings ----------
+
+test('a cut whose day passes the deadline does not report the find on the job just called off (#1146)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const { st } = atWreck({ find: 1 }); const job = career().job; job.deadline = st.day;  // the cut's day is past it
+    const s = shift(/^Cut it/);
+    return { text: s.result, job: career().job, got: job.got };
+  });
+  await done();
+  assert.equal(r.job, null, 'the job is off'); assert.equal(r.got, false); assert.doesNotMatch(r.text, /sealed bag/);
+});
+
+test('a cut, a haul home and a survey are saved as they are made, so a reload does not roll them again (#1146)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const saved = () => Saves.read(Saves.current);
+    const { site } = atWreck(); shift(/^Cut it/);
+    const cut = saved().sites[site.id].wreck.cut;
+    shift(/Haul home/); const left = saved().sites[site.id].wreck.left;
+    return { cut, left };
+  });
+  await done();
+  assert.equal(r.cut, 1); assert.equal(r.left, true);
+});
+
+test('the site left keeps its name until the ship arrives where it is bound, then takes a new one (#1146)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const { st, site } = atWreck(); const name = site.name, id = site.id;
+    shift(/Haul home/); st.dest = 'ceres'; Mods.act('burnFromSite');
+    const during = { name: st.sites[id].name, gen: st.sites[id].gen };
+    arrive(); if (G.mode !== 'landed') land(system().planets.find(p => p.name === 'Ceres Station') || system().planets[0]);
+    return { name, during, after: { gen: st.sites[id].gen, found: st.sites[id].found } };
+  });
+  await done();
+  assert.equal(r.during.name, r.name); assert.equal(r.during.gen, 0);
+  assert.equal(r.after.gen, 1); assert.equal(r.after.found, null);
+});
+
+test('the read is the reader\'s own skill: a bosun reads with the bosun\'s (#1146)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const { st } = atWreck();
+    st.crew = st.crew.filter(id => { const p = person(id); return p && p.cast !== 'bexa' && p.role !== 'engineer'; });
+    const b = person(st.crew[0]); b.role = 'bosun'; b.skill = 4; b.skills = { ...(b.skills || {}), bosun: 4 };
+    return { skill: wreckReadSkill(st, wreckReader(st)), reader: (wreckReader(st) || {}).id, bosun: b.id };
+  });
+  await done();
+  assert.equal(r.reader, r.bosun); assert.equal(r.skill, 4);
+});
+
+test('the Ashore tab reads The Wreck at a wreck and The Rock at a rock (#1146)', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    atWreck(); const wreck = RAIL.find(e => e.tab === 'site').label;
+    G.state.systemId = 'site:rock-1'; const rock = RAIL.find(e => e.tab === 'site').label;
+    return { wreck, rock };
+  });
+  await done();
+  assert.equal(r.wreck, 'The Wreck'); assert.equal(r.rock, 'The Rock');
 });

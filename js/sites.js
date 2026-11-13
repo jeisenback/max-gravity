@@ -88,6 +88,7 @@ function landAtSite(site, notes = []) {
   G.transit = null; G.mode = 'landed'; G.shots = []; G.flash = 0;
   UI.openLanded(site, notes, 'site');
   Mods.emit('onStation', site);
+  replaceSpent(st);  // a site left used up takes a new one now the ship is elsewhere (salvage.js)
   if (site.kind === 'wreck') salvageArrival(st, site);  // the wreck's approach (salvage.js)
   else if (site.kind === 'rock') surveyArrival(st, site);  // the survey (salvage.js)
   else siteArrival(st);  // the ice run's stay and its approach scene (icerun.js)
