@@ -4164,6 +4164,46 @@
   "text": "\"Ear infections this week, mostly from the top bunkrooms,\" Sam says. \"It's the filters up there. Maintenance has the ticket.\" Sam goes back to the screen."
  },
  {
+  "key": "port-offers:plate.label",
+  "text": "Buy a plate (120 cr)"
+ },
+ {
+  "key": "port-offers:plate.eaten",
+  "text": "You've eaten here today."
+ },
+ {
+  "key": "port-offers:plate.memory",
+  "text": "You ate at Ngozi's stall on the ring."
+ },
+ {
+  "key": "port-offers:plate.result.0",
+  "text": "Ngozi gives you more rice than the last person got, and takes your money without counting it. \"Eat it here,\" she says. \"The plates don't come back otherwise.\""
+ },
+ {
+  "key": "port-offers:plate.result.1",
+  "text": "Ngozi spoons stew over the rice and puts two puff-puff on the side of the plate. \"Those are from this morning,\" she says. \"Don't tell anyone they were free.\""
+ },
+ {
+  "key": "port-offers:plate.result.2",
+  "text": "Ngozi hands you the plate and goes back to the hob. The screen at the end of the counter has the Orbitals on with the sound off. You eat standing up while the shift comes in."
+ },
+ {
+  "key": "port-offers:care.label",
+  "text": "Have it seen to (800 cr)"
+ },
+ {
+  "key": "port-offers:care.result.0",
+  "text": "Sam takes off the dressing from the ship, cleans the wound and puts a better one on. \"Keep it dry. Come back if it goes hot.\""
+ },
+ {
+  "key": "port-offers:care.result.1",
+  "text": "Sam looks at it under the lamp for a while. \"It's healing. Slowly.\" Sam glues the worst of it and writes something down. \"Leave it alone and it'll be quicker than it was going to be.\""
+ },
+ {
+  "key": "port-offers:care.result.2",
+  "text": "Sam gives you a strip of tablets and a printed sheet that says what the label says. \"One with food. You'll have been told that before.\""
+ },
+ {
   "key": "regular-arc:berth",
   "text": "is asking every captain who comes in whether they have a berth, and keeps a bag packed under the stool. | has a berth promised on a hauler that keeps not arriving, and reads the arrivals board between drinks. | has the hauler's name on a slip of paper and a date under it, and buys the round. \"Tuesday,\" they say. \"Ask anyone.\""
  },

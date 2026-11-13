@@ -81,7 +81,7 @@ test('the line tables of the generated people are rows with a field for every li
       plan: SceneIndex.planImport({ overrides: { 'lines:bar-leave': { title: 'No', parts: { 1: 'Ok.', 7: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
   });
-  assert.equal(r.tables.length, 40);  // the 18 of the bar and the chatter, the two of the ship's rooms and lights, the four of the world's news, rumors and errands, the causes and the critics of js/social.js, the 8 of js/familytext.js, the regulars' lives, the port's return line, the crew ashore and the Ring's own people's word for the day (#1103)
+  assert.equal(r.tables.length, 41);  // the 18 of the bar and the chatter, the two of the ship's rooms and lights, the four of the world's news, rumors and errands, the causes and the critics of js/social.js, the 8 of js/familytext.js, the regulars' lives, the port's return line, the crew ashore, and the Ring's own people's word for the day and what they sell (#1103)
   assert.ok(r.tables.every(([, kind, noTitle]) => kind === 'data' && noTitle), 'each is lines and no title');
   assert.deepEqual(r.tables.find(t => t[0] === 'lines:trait-chatter'), ['lines:trait-chatter', 'data', true, 'transit', 'js/peopletext.js']);
   assert.deepEqual(r.out, { parts: { 1: 'A new goodbye, {n}.' } }, 'only what differs');
