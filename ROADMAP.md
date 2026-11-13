@@ -27,8 +27,10 @@ Parked until this plays well: anything that needs the other posts or captains, t
 - **Faction states** (done): economies boom and slump; incidents build tension until two factions go to war, with navies fighting in each other's space and wartime demand in their markets.
 - **Markets with real stockpiles** (done): a station runs short because nobody hauled the goods, and NPC traders actually carry cargo.
 - The Cold Water story becomes one case of this general system.
+- Comes back in chapter 6, where the faction states become the blocs' states (`docs/bible/later-chapters.md`).
 
 ## 2. Your own shipping company
+- Comes back in chapter 4, more hulls, as the co-op's or a charter's fleet; owning one outright stays rare (`docs/bible/later-chapters.md`).
 - **Escorts that fly with you in combat** (done).
 - **Extra ships crewed by hired captains that run trade routes on their own** (done).
 - **Stakes in stations that pay out based on the region's economy** (done).
@@ -49,10 +51,12 @@ The captain decides and the crew flies: piloting and real-time fighting are the 
 ## 5. Frontier and legacy
 - **Found and grow an outpost** (done: Callisto or Nereid, supplied from your hold, with buildings and settler moments).
 - **Legacy** (done): when a captain retires or dies, the next inherits part of the company, contacts, and standing.
+- Comes back in two parts: the outpost in chapter 5, a place, and legacy as succession from chapter 4; the thin trace between runs (`docs/bible/shape.md`) waits for the starts to open (`docs/bible/later-chapters.md`).
 
 ## 6. Community platform (alongside the others)
 - **An in-game mod browser that loads mods by link, and shareable scenarios** (done: the Port tab's Mods and Scenarios sections).
 - **Shared news** (done, on claude.ai): other players' deeds show up as news and chatter in your game, for captains who opt in.
+- Each keeps a narrow job: mods add content, scenarios add starts, shared deeds add rumours and traces, and none of them changes the state of another player's game (`docs/superpowers/specs/2026-11-13-genre-and-late-game-design.md`).
 
 ## 7. The crew and the ship as a place
 The game leans toward role-playing: people, what they think of you, and a ship you live in. Built so far: the cutaway of the ship as a tower of decks stacked across the thrust (the water tank between the habitat and the drive, the stars swinging past at the flip) and the Interior deck plan drawn from it, a page for each crew member (what they have told you, their bonds, their mood), portrait cards, your own page, and faces in scenes. Next, in rough order:
