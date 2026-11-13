@@ -22,9 +22,9 @@ const PORT_LAYOUTS = {
     well: { car: 36, stair: [118, 72] },
     rooms: [
       { id: 'well', label: 'Lift', level: 0, to: 2, x0: 0, x1: 120, kind: 'well' },
-      { id: 'market', label: 'Market', level: 0, x0: 120, x1: 520, kind: 'market' },
-      { id: 'bar', label: 'The Gravity Well', level: 0, x0: 520, x1: 860, kind: 'bar' },
-      { id: 'yard', label: 'Yard offices', level: 1, x0: 120, x1: 470, kind: 'yard' },
+      { id: 'market', label: 'Market', level: 0, x0: 120, x1: 520, kind: 'market', page: 'port' },  // `page`: the page a click on the room opens (#1132)
+      { id: 'bar', label: 'The Gravity Well', level: 0, x0: 520, x1: 860, kind: 'bar', page: 'bar' },
+      { id: 'yard', label: 'Yard offices', level: 1, x0: 120, x1: 470, kind: 'yard', page: 'missions' },
       { id: 'clinic', label: 'Clinic', level: 1, x0: 470, x1: 860, kind: 'clinic' },
       { id: 'bunks', label: 'Bunkrooms', level: 2, x0: 120, x1: 860, kind: 'bunks' },
     ],
@@ -271,7 +271,8 @@ const PORT_ROOMS = {
 };
 
 // The view at `planet` into a canvas context g of w by h px: the frame's bar along the top (the section, the berth), the spoke rising to the hub, the
-// rooms on the rim's curve, its outer hull, and Earth going by under it. `time` is ms (performance.now). Text is 12 px or more (#265).
+// rooms on the rim's curve, its outer hull, and Earth going by under it. `time` is ms (performance.now). Text is 12 px or more (#265). Returns where each
+// room was drawn, { id, page, x, y, w, h } in the canvas's px, for a click (#1132).
 const PORT_BAR = 30;
 function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => ({})) {
   const top = Math.min(...layout.levels) - 100, bottom = Math.max(...layout.levels) + HULL.plate, R = layout.radius, cx0 = layout.width / 2;
@@ -315,6 +316,11 @@ function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => 
     g.restore();
   }
   g.restore();
+  // where each room was drawn, its box on the curve near enough for a click
+  const boxes = layout.rooms.map(rm => {
+    const lift = sag((rm.x0 + rm.x1) / 2), top = oy + (layout.levels[rm.to !== undefined ? rm.to : rm.level] - 100 - lift) * zoom, floor = oy + (layout.levels[rm.level] - lift) * zoom;
+    return { id: rm.id, page: rm.page || null, x: X(rm.x0), y: top, w: (rm.x1 - rm.x0) * zoom, h: floor - top };
+  });
   // the room names on their plates, and the frame's bar, at screen size
   g.font = `600 12px ${roomFont}`; g.textBaseline = 'alphabetic';
   for (const rm of layout.rooms) {
@@ -330,7 +336,10 @@ function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => 
   const [left, right] = fits(full, berth) ? [full, berth] : fits(place, berth) ? [place, berth] : fits(place, '') ? [place, ''] : ['', ''];
   g.fillText(left, 16, 20); if (right) g.fillText(right, w - 16 - g.measureText(right).width, 20);
   g.fillText(clock, (w - g.measureText(clock).width) / 2, 20);
+  return boxes;
 }
+// The room with a page at a point in the view's px (the boxes drawPortView returned), or null: a click there opens the page (#1132, ports.md The screen in port).
+const portRoomAtPoint = (boxes, x, y) => (boxes || []).find(b => b.page && x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) || null;
 
 // The view's people and clock, from the game (the one place that reads G): the port's own records, the bar's patrons and the ship's crew ashore, and the hour.
 // The hour runs while the port is on screen with nothing open, at the burn view's pace (a day in SHIP_DAY seconds), and stops at night (ports.md).
@@ -357,6 +366,11 @@ Mods.register({
   init(M) {
     M.on('landed', planet => { G.portHour = portLayout(planet) ? arrivalHour(planet, G.state.day) : null; G.portWalkers = null; });  // everyone in place as the view opens
     M.on('newDay', () => { if (G.portHour !== null) G.portHour = PORT_MORNING; G.portWalkers = null; });  // a night passed in port
+    // A click on a room with a page opens it, as its entry on the rail does, and only when the rail would (a shut entry stays shut); the pointer shows where.
+    const at = e => { const c = e.target; if (!c || c.id !== 'vs' || !c.classList.contains('view') || G.mode !== 'landed' || G.dialog) return null; const r = c.getBoundingClientRect(); return portRoomAtPoint(G.portRooms, e.clientX - r.left, e.clientY - r.top); };
+    const open = room => { const e = room && RAIL.find(x => x.tab === room.page); return e && (!e.shown || e.shown(UI.planet)) && e.ready(UI.planet) === true ? e : null; };
+    document.addEventListener('click', e => { const entry = open(at(e)); if (entry) UI.act('tab', entry.tab); });
+    document.addEventListener('mousemove', e => { if (e.target && e.target.id === 'vs') e.target.style.cursor = open(at(e)) ? 'pointer' : ''; });
     M.on('frame', dt => {  // the clock, and anyone it moves walking there; both held under a scene
       if (G.mode !== 'landed' || G.dialog || G.portHour === null) return;
       const st = G.state, layout = portLayout(currentPlanet()), { patrons, crew } = portAshore(st, G.patrons);

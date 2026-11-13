@@ -282,7 +282,7 @@ function drawViewscreen(time) {
   g.fillStyle = '#03070a'; g.fillRect(0, 0, w, h);
   if (!p) return;  // a save whose port is unknown: the sky alone
   const view = c.classList.contains('view') && portLayout(p);
-  if (view) { const now = portViewNow(p, view); return drawPortView(g, w, h, view, time, now.hour, now.cast, now.look); }  // a port drawn as a place, on its Port page, with its people (portview.js, #1101, #1102)
+  if (view) { const now = portViewNow(p, view); G.portRooms = drawPortView(g, w, h, view, time, now.hour, now.cast, now.look); return; }  // a port drawn as a place, on its Port page, with its people (portview.js, #1101, #1102)
   if (p.site) { const r = sunLight(); return drawSiteVista(g, w, h, p, { angle: Math.sin(r.angle) > 0 ? -r.angle : r.angle, strength: r.strength }); }  // on station: the rock (sites.js)
   const img = vistaImage(p.name);
   if (img) {  // cover the strip, centred
