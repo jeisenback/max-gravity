@@ -323,9 +323,12 @@ function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => 
   }
   g.fillStyle = 'rgba(8,14,22,0.92)'; g.fillRect(0, 0, w, PORT_BAR);
   g.font = `600 13px ${roomFont}`; g.fillStyle = '#7f95ab';
-  g.fillText(`${layout.place.toUpperCase()}  -  ${layout.section.toUpperCase()}`, 16, 20);
-  const berth = layout.berth.toUpperCase(); g.fillText(berth, w - 16 - g.measureText(berth).width, 20);
+  // the place, the clock and the berth; in a narrow view (a page docked beside it, #1132) the section goes, then the berth, then the place, so none run together
   const hh = Math.floor(hour) % 24, mm = Math.floor((hour % 1) * 6) * 10, clock = `LAGOS TIME ${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+  const fits = (l, r) => g.measureText(l).width + g.measureText(clock).width / 2 + 24 < w / 2 && g.measureText(r).width + g.measureText(clock).width / 2 + 24 < w / 2;
+  const full = `${layout.place.toUpperCase()}  -  ${layout.section.toUpperCase()}`, berth = layout.berth.toUpperCase(), place = layout.place.toUpperCase();
+  const [left, right] = fits(full, berth) ? [full, berth] : fits(place, berth) ? [place, berth] : fits(place, '') ? [place, ''] : ['', ''];
+  g.fillText(left, 16, 20); if (right) g.fillText(right, w - 16 - g.measureText(right).width, 20);
   g.fillText(clock, (w - g.measureText(clock).width) / 2, 20);
 }
 

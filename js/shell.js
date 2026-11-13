@@ -54,11 +54,17 @@ function railHtml(p, tab) {
   }).join('')}</nav>`;
 }
 
-// The whole landed screen: the header, the rail beside the page, and the dock.
+// The whole landed screen: the header, the rail beside the page, and the dock. At a port drawn as a place (portview.js) the view is the stage,
+// as the burn view is in flight, and the page opens docked beside it (under it on a narrower window: style.css), with a Close that gives the view the whole stage (#1132, ports.md The screen in port).
 function shellHtml(ui, p) {
   ui.tab = shellTab(ui.tab);
+  if (portLayout(p)) {
+    const open = ui.pageOpen !== false;
+    return `${ui.headerHtml(p)}${stripHtml()}${Mods.filter('portBanner', '')}
+    <div class="shell stage${open ? '' : ' closed'}">${railHtml(p, open ? ui.tab : null)}<canvas id="vs" class="vs view" aria-hidden="true"></canvas>${open ? `<div class="page"><div class="page-bar"><span>${esc(shellRoom(ui.tab))}</span><button data-action="closePage">Close</button></div><div class="body" tabindex="-1" role="region" aria-label="${esc(shellRoom(ui.tab))}">${ui.views[ui.tab].call(ui)}</div></div>` : ''}</div>${ui.dockHtml()}`;
+  }
   return `${ui.headerHtml(p)}${stripHtml()}
-    <canvas id="vs" class="vs${ui.tab === 'port' || ui.tab === 'site' ? ' port' : ''}${ui.tab === 'port' && portLayout(p) ? ' view' : ''}" aria-hidden="true"></canvas>
+    <canvas id="vs" class="vs${ui.tab === 'port' || ui.tab === 'site' ? ' port' : ''}" aria-hidden="true"></canvas>
     ${Mods.filter('portBanner', '')}
     <div class="shell">${railHtml(p, ui.tab)}<div class="body" tabindex="-1" role="region" aria-label="${esc(shellRoom(ui.tab))}">${ui.views[ui.tab].call(ui)}</div></div>${ui.dockHtml()}`;
 }
