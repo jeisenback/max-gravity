@@ -107,7 +107,7 @@ const playLines = () => {
   for (const t of Object.keys(ASHORE_LINES)) note(`ashore:${t}`, ashoreLines()[t].join(' | '));
   // the Ring's own people, a click on each, over three days: their word for the day
   for (const f of PORT_LAYOUTS.Earth.folk) for (const day of [0, 1, 2]) note(`port-folk:${f.key}.${day}`, portWordEvent(f, { id: f.key, first: f.first || 'Sam', last: f.last || 'Rowe' }, { day }).text);
-  for (const kind of Object.keys(PORT_OFFERS)) for (const key of ['label', 'eaten', 'memory', 'result.0', 'result.1', 'result.2']) if (key.startsWith('result') || PORT_OFFERS[kind][key]) note(`port-offers:${kind}.${key}`, portOfferSay(kind, key.split('.')[0], { first: 'Sam' }, Number(key.split('.')[1] || 0)));
+  for (const kind of Object.keys(PORT_OFFERS)) for (const key of ['label', 'eaten', 'memory', 'result.0', 'result.1', 'result.2']) if (PORT_OFFERS[kind][key.split('.')[0]]) note(`port-offers:${kind}.${key}`, portOfferSay(kind, key.split('.')[0], { first: 'Sam' }, Number(key.split('.')[1] || 0)));
   // the regulars' lives: every beat of every arc, as a regular's news reads it
   for (const key of Object.keys(ARCS)) note(`regular-arc:${key}`, regularArc(key).join(' | '));
   // returning to a port: each fact the line can state, from two snapshots, and the framing with facts and without

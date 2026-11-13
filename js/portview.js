@@ -35,7 +35,7 @@ const PORT_LAYOUTS = {
       { key: 'ngozi', first: 'Ngozi', last: 'Achebe', job: 'food bay', room: 'market', x: 215, name: 'work', view: 'back', hours: [6, 21], offer: 'plate' },  // `offer`: what they sell the hand (PORT_OFFERS)
       { key: 'repairer', job: 'repair bay', room: 'market', x: 490, name: 'work', view: 'back', hours: [8, 18] },
       { key: 'keeper', job: 'keeper of the Gravity Well', room: 'bar', x: 700, name: 'stand', view: 'front', hours: [11, 26] },
-      { key: 'clerk', job: 'yard clerk', room: 'yard', x: 420, name: 'work-sit', view: 'side', face: -1, hours: [7, 19] },
+      { key: 'clerk', job: 'yard clerk', room: 'yard', x: 420, name: 'work-sit', view: 'side', face: -1, hours: [7, 19], offer: 'work' },
       { key: 'nurse', job: 'clinic nurse', room: 'clinic', x: 540, name: 'stand', view: 'front', hours: [8, 20], offer: 'care' },
     ],
     // The place's hours: the yard's shift changes fill the lift lobby, the hiring boards draw contract workers by day, the Gravity Well's stools and the
@@ -173,8 +173,9 @@ const PORT_WORDS = {
     '"Ear infections this week, mostly from the top bunkrooms," {first} says. "It\'s the filters up there. Maintenance has the ticket." {first} goes back to the screen.',
   ],
 };
-// What they sell the hand, from the hand's own savings (the owner, 2026-11-13): a plate at Ngozi's, once a day, which Tomas likes once a visit; and, while the
-// hand is hurt, the nurse's care, which takes days off it as a medic aboard does (MEDIC_DAYS), more of them. The results are taken in turn by the day.
+// What they offer the hand (the owner, 2026-11-13), the first two from the hand's own savings: a plate at Ngozi's, once a day, which Tomas likes once a visit;
+// while the hand is hurt, the nurse's care, which takes days off it as a medic aboard does (MEDIC_DAYS), more of them; and the clerk's word on work, which
+// is the Missions page, where the station's jobs are (jobs.js). The results are taken in turn by the day.
 const PORT_PLATE = 120, PORT_CARE = 800, PORT_CARE_DAYS = 4;
 const PORT_OFFERS = {
   plate: {
@@ -185,6 +186,7 @@ const PORT_OFFERS = {
       'Ngozi hands you the plate and goes back to the hob. The screen at the end of the counter has the Orbitals on with the sound off. You eat standing up while the shift comes in.',
     ],
   },
+  work: { label: 'Ask about work' },
   care: {
     label: 'Have it seen to ({cost} cr)',
     result: [
@@ -213,6 +215,8 @@ function portWordEvent(f, p, st) {
     st.credits -= PORT_CARE; career().hurtUntil -= PORT_CARE_DAYS;
     return portOfferSay('care', 'result', p, day);
   } });
+  const board = RAIL.find(e => e.tab === 'missions');  // the clerk's word on work: the Missions page, when its entry on the rail is open here
+  if (f.offer === 'work' && board.ready(currentPlanet()) === true) choices.push({ label: portOfferSay('work', 'label', p, day), keep: true, run() { UI.tab = 'missions'; UI.pageOpen = true; return null; } });  // the scene closes onto it
   choices.push({ label: 'Leave them to it', keep: true, run: () => null });
   return { title: `${p.first} ${p.last}`, text: words[day % words.length].replace(/\{first\}/g, p.first), people: [p.id], place: f.room, personal: true, choices };
 }
