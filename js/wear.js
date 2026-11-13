@@ -30,7 +30,7 @@ function wear(part, amount) {
   if (before >= BREAKDOWN_BELOW && c[part] < BREAKDOWN_BELOW && handPerk('hear-it-coming')) homeLog(`The ${SHIP_PARTS[part].name.toLowerCase()} is worn under the breakdown line.`);  // hear-it-coming (picks.js): named the day it crosses
 }
 // Full marks down to 60%, then sliding to half at nothing.
-const perf = part => { const c = condition()[part]; return c >= 60 ? 1 : 0.5 + c / 120; };
+const perf = part => { const c = condition()[part]; return Math.min(PERF_CAP, (c >= 60 ? 1 : 0.5 + c / 120) * partEffect(G.state, part, 'perf')); };  // and its part's quirk (parts.js)
 const worstPart = () => { const c = condition(); return Object.keys(SHIP_PARTS).sort((a, b) => c[a] - c[b])[0]; };
 const overhaulCost = part => Math.round((100 - condition()[part]) * 80);
 

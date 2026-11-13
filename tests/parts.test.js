@@ -50,3 +50,51 @@ test('in the game a printed drive wears 1.75 times a yard one, nothing wears wit
   assert.equal(r.yard, 1); assert.equal(r.printed, 1.75); assert.equal(r.off, 0);
   assert.ok(!r.after || Object.keys(r.after).length === 0, 'the co-op\'s ship has no parts fitted');
 });
+
+// ---------- used parts and their quirks (Task 2) ----------
+
+const quirks = () => load(['js/util.js', 'js/parts.js'], {}, ['PART_QUIRKS', 'PART_SOURCES', 'usedPartAt', 'fitPart', 'partWear', 'partEffect', 'partFight', 'partEdge']);
+const SYSTEMS5 = ['drive', 'fire', 'shields', 'life', 'sensors'];
+const port = (name, services = ['trade', 'outfitter', 'refuel']) => ({ name, services });
+
+test('three used parts a system, each with where it came from, a plus and a minus', () => {
+  const { PART_QUIRKS } = quirks();
+  for (const sys of SYSTEMS5) assert.equal(PART_QUIRKS.filter(q => q.system === sys).length, 3, sys);
+  for (const q of PART_QUIRKS) { assert.ok(q.id && q.from && q.from.length > 10, q.id); assert.ok(q.plus && q.minus, q.id); }
+  assert.equal(new Set(PART_QUIRKS.map(q => q.id)).size, PART_QUIRKS.length, 'unique ids');
+});
+
+test('a port with an outfitter has a used part on about half the days, the same for a port and a day; the Boneyard and Phobos Yards always; none with no outfitter', () => {
+  const { usedPartAt } = quirks();
+  const mars = port('Mars'), days = Array.from({ length: 60 }, (_, d) => d), on = days.filter(d => usedPartAt(mars, d, 'drive'));
+  assert.ok(on.length > 15 && on.length < 45, `about half the days (${on.length} of 60)`);
+  assert.deepEqual(usedPartAt(mars, 7, 'drive'), usedPartAt(mars, 7, 'drive'), 'the same for a port and a day');
+  assert.ok(days.some(d => JSON.stringify(usedPartAt(mars, d, 'drive')) !== JSON.stringify(usedPartAt(port('Titan'), d, 'drive'))), 'ports differ');
+  for (const d of days) { assert.ok(usedPartAt(port('Boneyard'), d, 'fire'), 'the Boneyard always'); assert.ok(usedPartAt(port('Phobos Yards', ['shipyard', 'outfitter']), d, 'fire'), 'Phobos Yards always'); }
+  assert.equal(usedPartAt(port('Luna', ['missions', 'refuel']), 3, 'drive'), null, 'no outfitter, no part');
+  const q = usedPartAt(port('Boneyard'), 3, 'sensors'); assert.equal(q.system, 'sensors', 'a quirk for the system asked');
+});
+
+test('a fitted quirk\'s wear and perf factors are its system\'s; its fight numbers and edge count for the ship', () => {
+  const { fitPart, partWear, partEffect, partFight, partEdge } = quirks();
+  const st = { condition: {} };
+  fitPart(st, 'drive', 'used', { id: 't1', system: 'drive', from: 'test', plus: { wear: 0.8 }, minus: { perf: 0.95 } }, 1);
+  assert.equal(partWear(st, 'drive'), 0.8); assert.equal(partEffect(st, 'drive', 'perf'), 0.95); assert.equal(partEffect(st, 'life', 'wear'), 1);
+  fitPart(st, 'fire', 'printed', { id: 't2', system: 'fire', from: 'test', plus: { fight: { dmgMult: 1.1 } }, minus: { edge: { post: -0.05 } } }, 1);
+  assert.ok(Math.abs(partWear(st, 'fire') - 1.75) < 1e-9, 'a printed part with no wear quirk');
+  assert.deepEqual(JSON.parse(JSON.stringify(partFight(st))), { dmgMult: 1.1, shields: 1 });
+  assert.equal(partEdge(st, 'post'), -0.05); assert.equal(partEdge(st, 'word'), 0);
+});
+
+test('a fitted quirk\'s edge reaches the hand\'s check, and its perf the system\'s, capped at 1.05', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, before = handCheck('eye', 1, 'post');
+    fitPart(st, 'fire', 'used', { id: 't', system: 'fire', from: 'test', plus: { edge: { post: 0.05 } }, minus: { perf: 1.2 } }, st.day);
+    return { lift: handCheck('eye', 1, 'post') - before, perf: perf('fire') };
+  });
+  await done();
+  assert.ok(Math.abs(r.lift - 0.05) < 1e-9, `the check +0.05 (${r.lift})`);
+  assert.equal(r.perf, 1.05, 'perf capped at 1.05');
+});
