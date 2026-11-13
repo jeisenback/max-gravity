@@ -95,7 +95,7 @@ function salvageJobsHtml(st) {
   const list = jobsAt(st, currentPlanet(), st.day);
   if (!list.length) return '';
   return String(h`<h3>Salvage and survey</h3>${listHtml(list, (j, i) => h`<div class="row"><span>${jobWords(st, j)}</span>
-      <button data-action="takeJob" data-arg="${i}" ${career().run ? raw('disabled title="A contract is under way"') : ''}>Take it</button></div>`)}`);
+      <button data-action="takeSalvageJob" data-arg="${i}" ${career().run ? raw('disabled title="A contract is under way"') : ''}>Take it</button></div>`)}`);
 }
 
 // Takes the i-th job: one at a time, never alongside a contract run. The site goes on the map and the course is set for it.
@@ -284,7 +284,7 @@ function surveyScene(st, site) {
 Mods.register({
   id: 'salvage', name: 'Wrecks and salvage', builtin: true,
   init(M) {
-    M.action('takeJob', i => { const text = takeJob(Number(i)); if (text) UI.notes.push(text); });
+    M.action('takeSalvageJob', i => { const text = takeJob(Number(i)); if (text) UI.notes.push(text); });
     M.action('cutWreck', () => cutWreck());
     M.action('burnFromSite', () => sailFromSite(G.state, G.state.dest));
     M.on('landed', planet => { const text = settleJob(G.state, planet); if (text) M.note(text); });

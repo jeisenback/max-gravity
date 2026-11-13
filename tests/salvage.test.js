@@ -71,7 +71,7 @@ test('the co-op\'s board offers at most one salvage and one survey job, the same
     const again = JSON.stringify(jobsAt(st, currentPlanet(), st.day)) === JSON.stringify(jobsAt(st, currentPlanet(), st.day));
     let day = st.day; while (!jobsAt(st, currentPlanet(), day).length && day < st.day + 60) day++;
     st.day = day; UI.tab = 'port'; UI.render();
-    const jobs = jobsAt(st, currentPlanet(), st.day), rows = [...document.querySelectorAll('button[data-action="takeJob"]')].map(b => b.parentElement.textContent);
+    const jobs = jobsAt(st, currentPlanet(), st.day), rows = [...document.querySelectorAll('button[data-action="takeSalvageJob"]')].map(b => b.parentElement.textContent);
     return { days, again, jobs, rows, role: role().id };
   });
   await done();

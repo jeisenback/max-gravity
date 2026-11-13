@@ -147,8 +147,7 @@ test('at the landing itself the inspection opens (the landed hook) (#1015)', asy
 
 test('in chapter two the co-op\'s purse pays, and the hand argues at the hatch on their own bridge, with no captain to sign or to think less of them (#1015, #1045)', async () => {
   const { ev, done } = await open();
-  const src = require('fs').readFileSync(require('path').join(__dirname, 'chaptertwostart.test.js'), 'utf8'), start = src.indexOf('const helpers = () => {');
-  await ev(new Function(src.slice(start + 'const helpers = () => {'.length, src.indexOf('\n};\n', start))));
+  await ev(require('./coop').helpers);  // the co-op's start (tests/coop.js)
   await ev(helpers);
   const r = await ev(() => {
     toShare(); goOnToBridge(); while (G.dialog) finishEvent();
