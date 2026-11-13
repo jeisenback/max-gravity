@@ -165,3 +165,26 @@ test('a click on a room in the Ring opens its page as the rail does: the Gravity
   await done();
   assert.deepEqual(errors, []);
 });
+
+test('a scene at the Ring opens docked by the view, beside it on a wide window and under it on a narrower one, the view still drawn; at Mars it is the panel, and the landed screen comes back after (#1103)', async () => {
+  for (const [W, H, side] of [[1440, 900, true], [1000, 760, false]]) {
+    const { page, ev, errors, done } = await open({ viewport: { width: W, height: H } });
+    await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.portRooms = null; });
+    await ev(() => openEvent({ title: 'A word at the counter', text: 'x', choices: [{ label: 'Go on', run: () => 'done' }] }));
+    await frames(page, 3);
+    const r = await ev(() => {
+      const box = sel => { const b = document.querySelector(sel).getBoundingClientRect(); return { l: b.left, r: b.right, t: b.top, b: b.bottom }; };
+      return { cls: [...UI.el.classList].sort(), view: !!document.querySelector('#panel .scene-stage #vs.view'), drawn: !!G.portRooms, canvas: box('#vs'), body: box('#panel .event-body'), scroller: UI.scroller().className };
+    });
+    assert.deepEqual(JSON.parse(JSON.stringify(r.cls)), ['event', 'staged']);
+    assert.ok(r.view && r.drawn, `${W}: the view is live under the scene`);
+    if (side) assert.ok(r.body.l >= r.canvas.r - 1, `${W}: the scene beside the view`); else assert.ok(r.body.t >= r.canvas.b - 1, `${W}: the scene under the view`);
+    assert.equal(r.scroller, 'event-body', 'the scene\'s body scrolls');
+    const after = await ev(() => { UI.act('choose', 0); finishEvent(); return { cls: [...UI.el.classList], stage: !!document.querySelector('.shell.stage') }; });
+    assert.deepEqual(JSON.parse(JSON.stringify(after)), { cls: [], stage: true }, 'the landed screen comes back');
+    const mars = await ev(() => { const st = G.state; st.systemId = 'mars'; st.planet = 'Mars'; UI.planet = currentPlanet(); UI.render(); openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); return [...UI.el.classList].sort(); });
+    assert.deepEqual(JSON.parse(JSON.stringify(mars)), ['event'], 'a port with no view keeps the dialog');
+    await done();
+    assert.deepEqual(errors, []);
+  }
+});

@@ -47,7 +47,7 @@ const UI = {
 
   show() {
     this.render();
-    this.el.classList.remove('hidden', 'event');
+    this.el.classList.remove('hidden', 'event', 'staged');
     releaseDialog();
   },
 
@@ -63,12 +63,22 @@ const UI = {
 
   // A choice's button; shut, it says why as text (js/gates.js). Built on the view helpers (js/views.js): the label and the reason are text.
 
+  // At a port drawn as a place (portview.js) a scene opens docked beside the view, or under it on a narrower window, and the view stays live
+  // (#1103, ports.md The screen in port); elsewhere it is the panel. Its body is what scrolls when it is docked.
+  stagedScene() { return !!(G.state && G.mode === 'landed' && portLayout(currentPlanet())); },
+  sceneHtml(body) {
+    const staged = this.stagedScene();
+    this.el.classList.toggle('staged', staged);
+    this.el.innerHTML = staged ? `<div class="scene-stage"><canvas id="vs" class="vs view" aria-hidden="true"></canvas>${body}</div>` : body;
+  },
+  scroller() { return (this.el.classList.contains('staged') && this.el.querySelector('.event-body')) || this.el; },
+
   showEvent(ev, choices) {
     const opener = document.activeElement;  // read before the panel is rebuilt
     const where = G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet;
     this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
     this.setLight(G.state ? sunLight().angle : TITLE_SUN.angle);
-    this.el.innerHTML = String(h`
+    this.sceneHtml(String(h`
       <div class="event-body" role="dialog" aria-modal="true" aria-label="${ev.title}">
         <div class="eyebrow">${ev.via ? raw(`${VIA_LABELS[ev.via]} &middot; `) : ''}${where}</div>
         ${raw(sceneFacesHtml(ev))}
@@ -78,11 +88,12 @@ const UI = {
         ${ev.legend ? h`<p class="hint">${ev.legend}</p>` : ''}
         <p>${raw(ev.text)}</p>
         ${choices.some(c => c.pin) ? h`${choiceBlockHtml(choices, c => !c.pin, 'choices flow')}${choiceBlockHtml(choices, c => c.pin)}` : choiceBlockHtml(choices)}
-      </div>`);  // a pinned choice (a fight's Fire, #846): the others flow with the scene, so the board and bars above them stay in view
+      </div>`));  // a pinned choice (a fight's Fire, #846): the others flow with the scene, so the board and bars above them stay in view
     this.el.classList.remove('hidden');
     this.el.classList.add('event');
-    this.el.scrollTop = 0;
-    this.el.onscroll = () => this.moreCue();
+    this.el.onscroll = null;
+    this.scroller().scrollTop = 0;
+    this.scroller().onscroll = () => this.moreCue();
     const pinned = this.el.querySelector('.choices:not(.flow)');
     if (pinned) pinned.onscroll = () => this.moreCue();
     this.moreCue();
@@ -92,24 +103,24 @@ const UI = {
   // A keep choice's event drawn in place: the same scene (a fight's next plan or turn) stays where it was scrolled, rather than jump to the top or to its first choice (#970).
   redraw(ev) {
     const was = G.dialog.event, same = ev.fight ? ev.fight === was.fight : ev.title === was.title, pinned = () => this.el.querySelector('.choices:not(.flow)');
-    const at = this.el.scrollTop, list = pinned() ? pinned().scrollTop : 0;
+    const at = this.scroller().scrollTop, list = pinned() ? pinned().scrollTop : 0;
     openEvent(ev);
     if (!same) return;
-    this.el.scrollTop = at;
+    this.scroller().scrollTop = at;
     if (pinned()) pinned().scrollTop = list;
     this.moreCue();
   },
 
   // Whether text of the scene remains below the dialog's fold (style.css shows the cue).
   moreCue() {
-    const el = this.el;
-    el.classList.toggle('more', el.classList.contains('event') && el.scrollHeight - el.clientHeight - el.scrollTop > 40);
+    const el = this.el, sc = this.scroller();
+    el.classList.toggle('more', el.classList.contains('event') && sc.scrollHeight - sc.clientHeight - sc.scrollTop > 40);
     const pinned = el.querySelector('.choices:not(.flow)');  // and more choices than the pinned block shows, until the last is in view (#737)
     if (pinned) pinned.classList.toggle('rest', el.classList.contains('event') && pinned.scrollHeight - pinned.clientHeight - pinned.scrollTop > 8);
   },
 
   showEventResult(title, text, shifts) {
-    this.el.innerHTML = String(h`
+    this.sceneHtml(String(h`
       <div class="event-body">
         <div class="eyebrow">${G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet}</div>
         ${raw(sceneFacesHtml(G.dialog && G.dialog.event))}
@@ -117,8 +128,9 @@ const UI = {
         <p id="event-result">${raw(text)}</p>
         ${raw(shiftLines(shifts || []))}
         <div class="choices"><button data-action="continue" class="primary" aria-describedby="event-result">Continue</button></div>
-      </div>`);
-    this.el.scrollTop = 0;
+      </div>`));
+    this.scroller().scrollTop = 0;
+    this.scroller().onscroll = () => this.moreCue();
     this.moreCue();  // the scene before it may have been long, and its cue must not stay on a short result
     this.el.querySelector('[data-action="continue"]').focus();
   },
@@ -139,7 +151,7 @@ const UI = {
         <button data-action="load">Load last save</button>
         <button data-action="newgame" data-arg="force">New game</button>
       </div>`;
-    this.el.classList.remove('hidden', 'event');
+    this.el.classList.remove('hidden', 'event', 'staged');
   },
 
   // The port's name, government, date, ship and stores: the top of a landed screen, and of the shell's (js/shell.js).
