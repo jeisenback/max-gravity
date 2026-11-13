@@ -28,7 +28,9 @@ The rim holds the housing, the market, the clinic and the yard offices; the hub 
 
 Yard work is by contract: a refit job hires welders, fitters and riggers for its length, through agencies, mostly from the mainland. A yard worker's berth on the ring comes with the contract. When the contract ends, so does the berth, and they go down on the next spaceplane unless they have another contract or a lease of their own.
 
-Leases on the ring are few and dear. People who hold one mostly run something the workers need: a food stall, a repair shop, a clinic contract. Stalls in the ring market need a permit from the market's operator, renewed every year.
+Leases on the ring are few and dear. People who hold one mostly run something the workers need: a food stall, a repair shop, a clinic contract. Stalls in the ring market need a permit from the market's operator, renewed every year. The clinic's contract goes out to tender when it ends, and has gone to a firm on the mainland before now (#1103).
+
+The ring channel carries the Lagos Orbitals, the ring's football side, and the yard's shifts watch them lose in the Gravity Well.
 
 The yard's work comes and goes with the refit contracts, and the contracts come and go with the owners' rivalry: a fleet owner who falls out with the holding company takes its refits to Luna, and the yard lays people off.
 

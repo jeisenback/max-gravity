@@ -152,7 +152,11 @@ test('a click on a room in the Ring opens its page as the rail does: the Gravity
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); UI.act('closePage'); });
   await frames(page, 3);
   const click = async id => {
-    const pt = await ev(rid => { const c = document.getElementById('vs').getBoundingClientRect(), b = G.portRooms.find(x => x.id === rid); return { x: c.left + b.x + b.w / 2, y: c.top + b.y + b.h * 0.6 }; }, id);
+    const pt = await ev(rid => {  // a point in the room clear of the port's own people, whose click comes first (#1103)
+      const c = document.getElementById('vs').getBoundingClientRect(), b = G.portRooms.find(x => x.id === rid), y = b.y + b.h * 0.6;
+      const x = [0.15, 0.3, 0.5, 0.7, 0.85].map(f => b.x + b.w * f).find(px => !portFolkAtPoint(G.portRooms, px, y));
+      return { x: c.left + x, y: c.top + y };
+    }, id);
     await page.mouse.move(pt.x, pt.y); const cursor = await ev(() => document.getElementById('vs').style.cursor);
     await page.mouse.click(pt.x, pt.y); await frames(page, 2);
     return ev(c => ({ tab: UI.tab, open: UI.pageOpen, cursor: c }), cursor);
@@ -256,4 +260,24 @@ test('the port\'s scenes say where they happen: the bar\'s talk at the counter, 
   });
   await done();
   assert.deepEqual(r, { signOn: 'yard', talk: 'bar', ashore: 'market' });
+});
+
+test('a click on one of the Ring\'s own people opens their word for the day, docked by the view, the line taken by the day; leaving them to it closes it (#1103)', async () => {
+  const { page, ev, errors, done } = await open({ viewport: { width: 1440, height: 900 } });
+  await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.portHour = 10; G.portWalkers = null; UI.act('closePage'); });
+  await frames(page, 3);
+  const pt = await ev(() => { const c = document.getElementById('vs').getBoundingClientRect(), b = G.portRooms.find(x => x.who === 'ngozi'); return { x: c.left + b.x + b.w / 2, y: c.top + b.y + b.h / 2 }; });
+  await page.mouse.move(pt.x, pt.y);
+  const cursor = await ev(() => document.getElementById('vs').style.cursor);
+  await page.mouse.click(pt.x, pt.y); await frames(page, 2);
+  const r = await ev(() => { const e = G.dialog && G.dialog.event; return e && { title: e.title, text: e.text, place: e.place, staged: UI.el.classList.contains('staged'), day: G.state.day, choices: G.dialog.choices.map(c => c.label) }; });
+  assert.equal(cursor, 'pointer');
+  assert.ok(r, 'a scene opened');
+  assert.equal(r.title, 'Ngozi Achebe'); assert.equal(r.place, 'market'); assert.equal(r.staged, true);
+  const want = await ev(day => PORT_WORDS.ngozi[day % 3], r.day);
+  assert.equal(r.text, want, 'the line of the day');
+  const after = await ev(() => { UI.act('choose', 0); return { open: !!G.dialog, stage: !!document.querySelector('.shell.stage') }; });
+  assert.deepEqual(after, { open: false, stage: true }, 'leaving them to it closes it, with nothing more to read');
+  await done();
+  assert.deepEqual(errors, []);
 });

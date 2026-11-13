@@ -144,6 +144,41 @@ function portRoomAt(layout, c) {
   return (on.find(r => c.x >= r.x0 && c.x < r.x1) || on[on.length - 1]).id;
 }
 
+// The Ring's own people's word for the day (#1103, ports.md Scenes from people; docs/bible/voice.md, lagos.md, people/tomas.md for Ngozi): three each, by
+// the layout's folk key, taken in turn by the day and not by a draw. {first} is their own first name. Read through the editor's words (lines:port-folk).
+const PORT_WORDS = {
+  ngozi: [
+    '"You\'re off Tomas\'s ship." Ngozi puts a plate of rice and stew on the counter before you\'ve asked for one. "He sends money and he doesn\'t send messages. Tell him Chidi made the football team at school. He\'ll pretend he isn\'t pleased."',
+    'Ngozi is frying puff-puff for the two o\'clock shift, a tray at a time. "There used to be three trays by now," she says. "Sit down. You can have the ones that came out flat."',
+    '"Is he eating, on that ship?" Ngozi wipes the counter. "He says the food is fine. Tomas always says the food is fine."',
+  ],
+  repairer: [
+    '{first} has a suit glove open under the lamp and is fitting new seals to the fingers. "The agencies issue these for the contract and don\'t take them back," {first} says. "People sell them to me when they go down, and I sell them to the next lot coming up."',
+    '{first} is soldering something small under a magnifier. "The Orbitals lost again," {first} says, without looking up. "Three nil. To a Luna side."',
+    '{first} counts a handful of seals into a bag. "The permit\'s up in March, and they want it in scrip this year, not trade notes." {first} ties the bag. "Thirty for the lot."',
+  ],
+  keeper: [
+    '{first} puts a glass in front of you. "Scrip or trade notes? Scrip\'s cheaper this week." {first} wipes the copper where the glass was.',
+    '"Shift\'s off at two and they all come in at once," {first} says, filling a jug. "Have a stool now, or stand later."',
+    'The ring channel is on over the bar, with the Orbitals two down at half time. "Every week," {first} says. "Scrip or trade notes?"',
+  ],
+  clerk: [
+    '{first} looks up from a contract. "If you\'re after work, the boards are behind you. Welding\'s a three-week wait. Rigging\'s four, unless you\'ve got your own harness."',
+    '"Tycho took another refit off us," {first} says. "That\'s a shift\'s worth of berths free from Thursday, if you know anyone who wants to come up."',
+    '{first} is on a call to an agency, reading a roster out a name at a time. "No, Okafor\'s gone down. No, him too." {first} puts a hand over the mic. "Sorry. With you in a minute."',
+  ],
+  nurse: [
+    '"Cuts, burns and eyes," {first} says. "Mostly eyes this week. Somebody\'s not wearing the visor. Sit if you\'re waiting, the bench is free."',
+    '{first} is counting dressing packs into a drawer. "We\'ve got the clinic contract till the end of the year," {first} says. "After that it goes out to tender again. Last time it went to a firm on the mainland, and nobody came up for a month."',
+    '"Ear infections this week, mostly from the top bunkrooms," {first} says. "It\'s the filters up there. Maintenance has the ticket." {first} goes back to the screen.',
+  ],
+};
+// The scene a click on one of them opens: their word for the day, where they work, with them in it (portStage gathers them there).
+function portWordEvent(f, p, day) {
+  const words = linedText('lines:port-folk', PORT_WORDS)[f.key];
+  return { title: `${p.first} ${p.last}`, text: words[day % words.length].replace(/\{first\}/g, p.first), people: [p.id], place: f.room, personal: true, choices: [{ label: 'Leave them to it', keep: true, run: () => null }] };
+}
+
 // The port's own people as records, made the first time from the port's culture by a dice stream of the port's own (official.js seededRandom), kept by
 // port and key in st.portFolk, so they remember and are the same on every visit; marked `portFolk` so the bar keeps them off its stools (bar.js).
 function portFolkPerson(planet, f) {
@@ -295,7 +330,7 @@ const PORT_ROOMS = {
 
 // The view at `planet` into a canvas context g of w by h px: the frame's bar along the top (the section, the berth), the spoke rising to the hub, the
 // rooms on the rim's curve, its outer hull, and Earth going by under it. `time` is ms (performance.now). Text is 12 px or more (#265). Returns where each
-// room was drawn, { id, page, x, y, w, h } in the canvas's px, for a click (#1132).
+// room was drawn, { id, page, x, y, w, h } in the canvas's px, and each of the port's own people, { who, x, y, w, h }, for a click (#1132, #1103).
 const PORT_BAR = 30;
 function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => ({})) {
   const top = Math.min(...layout.levels) - 100, bottom = Math.max(...layout.levels) + HULL.plate, R = layout.radius, cx0 = layout.width / 2;
@@ -344,6 +379,7 @@ function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => 
     const lift = sag((rm.x0 + rm.x1) / 2), top = oy + (layout.levels[rm.to !== undefined ? rm.to : rm.level] - 100 - lift) * zoom, floor = oy + (layout.levels[rm.level] - lift) * zoom;
     return { id: rm.id, page: rm.page || null, x: X(rm.x0), y: top, w: (rm.x1 - rm.x0) * zoom, h: floor - top };
   });
+  for (const c of cast) if (c.kind === 'folk') boxes.push({ who: c.who, x: X(c.x) - 14 * zoom, y: oy + (portFloor(layout, c.lv) - 88 - sag(c.x)) * zoom, w: 28 * zoom, h: 88 * zoom });  // and the port's own people, for a click on one
   // the room names on their plates, and the frame's bar, at screen size
   g.font = `600 12px ${roomFont}`; g.textBaseline = 'alphabetic';
   for (const rm of layout.rooms) {
@@ -363,6 +399,8 @@ function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => 
 }
 // The room with a page at a point in the view's px (the boxes drawPortView returned), or null: a click there opens the page (#1132, ports.md The screen in port).
 const portRoomAtPoint = (boxes, x, y) => (boxes || []).find(b => b.page && x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) || null;
+// One of the port's own people at a point, before any room: a click on them opens their word for the day (#1103).
+const portFolkAtPoint = (boxes, x, y) => (boxes || []).find(b => b.who && x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h) || null;
 
 // The view's people and clock, from the game (the one place that reads G): the port's own records, the bar's patrons and the ship's crew ashore, and the hour.
 // The hour runs while the port is on screen with nothing open, at the burn view's pace (a day in SHIP_DAY seconds), and stops at night (ports.md).
@@ -395,10 +433,12 @@ Mods.register({
     M.on('landed', planet => { G.portHour = portLayout(planet) ? arrivalHour(planet, G.state.day) : null; G.portWalkers = null; });  // everyone in place as the view opens
     M.on('newDay', () => { if (G.portHour !== null) G.portHour = PORT_MORNING; G.portWalkers = null; });  // a night passed in port
     // A click on a room with a page opens it, as its entry on the rail does, and only when the rail would (a shut entry stays shut); the pointer shows where.
-    const at = e => { const c = e.target; if (!c || c.id !== 'vs' || !c.classList.contains('view') || G.mode !== 'landed' || G.dialog) return null; const r = c.getBoundingClientRect(); return portRoomAtPoint(G.portRooms, e.clientX - r.left, e.clientY - r.top); };
+    // A click on one of the port's own people opens their word for the day (#1103), before the room they stand in.
+    const point = (e, find) => { const c = e.target; if (!c || c.id !== 'vs' || !c.classList.contains('view') || G.mode !== 'landed' || G.dialog) return null; const r = c.getBoundingClientRect(); return find(G.portRooms, e.clientX - r.left, e.clientY - r.top); };
     const open = room => { const e = room && RAIL.find(x => x.tab === room.page); return e && (!e.shown || e.shown(UI.planet)) && e.ready(UI.planet) === true ? e : null; };
-    document.addEventListener('click', e => { const entry = open(at(e)); if (entry) UI.act('tab', entry.tab); });
-    document.addEventListener('mousemove', e => { if (e.target && e.target.id === 'vs') e.target.style.cursor = open(at(e)) ? 'pointer' : ''; });
+    const word = b => { if (!b) return null; const planet = currentPlanet(), layout = portLayout(planet), f = layout && layout.folk.find(x => x.key === b.who); return f ? portWordEvent(f, portFolkPerson(planet, f), G.state.day) : null; };  // nothing hit, nothing read (the title screen has no game)
+    document.addEventListener('click', e => { const ev = word(point(e, portFolkAtPoint)); if (ev) return openEvent(ev); const entry = open(point(e, portRoomAtPoint)); if (entry) UI.act('tab', entry.tab); });
+    document.addEventListener('mousemove', e => { if (e.target && e.target.id === 'vs') e.target.style.cursor = point(e, portFolkAtPoint) || open(point(e, portRoomAtPoint)) ? 'pointer' : ''; });
     M.on('frame', dt => {  // the clock, and anyone it moves walking there; under a scene the clock holds, and the scene's people walk to it (#1103)
       if (G.mode !== 'landed' || G.portHour === null) return;
       const st = G.state, planet = currentPlanet(), layout = portLayout(planet), { patrons, crew } = portAshore(st, G.patrons), ev = G.dialog && G.dialog.event;
