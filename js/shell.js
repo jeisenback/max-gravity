@@ -54,14 +54,20 @@ function railHtml(p, tab) {
   }).join('')}</nav>`;
 }
 
+// With nothing open at a port drawn as a place, the landing's notes as a ticker under the view, as the burn view's comms lines are over the ship:
+// the newest three, the newest brightest; none, no ticker (#1132, part 2). The Port page keeps them all.
+const TICKER_MAX = 3;
+const portTicker = notes => (notes && notes.length ? String(h`<ul class="ticker" role="log" aria-label="Notes">${listHtml(notes.slice(-TICKER_MAX), n => h`<li>${n}</li>`)}</ul>`) : '');
+
 // The whole landed screen: the header, the rail beside the page, and the dock. At a port drawn as a place (portview.js) the view is the stage,
-// as the burn view is in flight, and the page opens docked beside it (under it on a narrower window: style.css), with a Close that gives the view the whole stage (#1132, ports.md The screen in port).
+// as the burn view is in flight, and the page opens docked beside it (under it on a narrower window: style.css), with a Close that gives the view the whole stage,
+// and the notes under it (#1132, ports.md The screen in port).
 function shellHtml(ui, p) {
   ui.tab = shellTab(ui.tab);
   if (portLayout(p)) {
     const open = ui.pageOpen !== false;
     return `${ui.headerHtml(p)}${stripHtml()}${Mods.filter('portBanner', '')}
-    <div class="shell stage${open ? '' : ' closed'}">${railHtml(p, open ? ui.tab : null)}<canvas id="vs" class="vs view" aria-hidden="true"></canvas>${open ? `<div class="page"><div class="page-bar"><span>${esc(shellRoom(ui.tab))}</span><button data-action="closePage">Close</button></div><div class="body" tabindex="-1" role="region" aria-label="${esc(shellRoom(ui.tab))}">${ui.views[ui.tab].call(ui)}</div></div>` : ''}</div>${ui.dockHtml()}`;
+    <div class="shell stage${open ? '' : ' closed'}">${railHtml(p, open ? ui.tab : null)}<canvas id="vs" class="vs view" aria-hidden="true"></canvas>${open ? `<div class="page"><div class="page-bar"><span>${esc(shellRoom(ui.tab))}</span><button data-action="closePage">Close</button></div><div class="body" tabindex="-1" role="region" aria-label="${esc(shellRoom(ui.tab))}">${ui.views[ui.tab].call(ui)}</div></div>` : portTicker(ui.notes)}</div>${ui.dockHtml()}`;
   }
   return `${ui.headerHtml(p)}${stripHtml()}
     <canvas id="vs" class="vs${ui.tab === 'port' || ui.tab === 'site' ? ' port' : ''}" aria-hidden="true"></canvas>

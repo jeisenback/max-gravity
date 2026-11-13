@@ -30,7 +30,7 @@ test('a port\'s layout is whole: every room has a drawer, sits on one of its lev
   assert.deepEqual(Object.keys(PORT_LAYOUTS), ['Earth'], 'Earth\'s port, Lagos Ring, first');
 });
 
-test('at Earth the Ring is the stage on every page, drawn at 12 px or more, and the page docks beside it on a wide window and under it on a narrower one; Close gives the view the stage and the rail opens it again; Mars keeps its strip (#1101, #1132)', async () => {
+test('at Earth the Ring is the stage on every page, with the notes in a ticker under it when nothing is open, drawn at 12 px or more, and the page docks beside it on a wide window and under it on a narrower one; Close gives the view the stage and the rail opens it again; Mars keeps its strip (#1101, #1132)', async () => {
   for (const [W, H, side] of [[1440, 900, true], [1000, 760, false]]) {
     const { page, ev, errors, done } = await open({ viewport: { width: W, height: H } });
     await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); UI.tab = 'port'; UI.render(); });
@@ -46,8 +46,12 @@ test('at Earth the Ring is the stage on every page, drawn at 12 px or more, and 
         const body = document.querySelector('.page .body');
         out.pages[b.textContent] = { view: !!document.querySelector('.shell.stage #vs.view'), body: !!body, over: body ? body.scrollWidth - body.clientWidth : -1, canvas: box('#vs'), page: box('.page') };
       }
+      out.tickerOpen = !!document.querySelector('.ticker');
+      UI.notes = ['one', 'two', 'three', 'four <b>'];
       document.querySelector('.page-bar button[data-action="closePage"]').click();
       out.closed = { page: !!document.querySelector('.page'), canvas: box('#vs'), lit: document.querySelectorAll('.rail button.active').length };
+      out.ticker = { lines: [...document.querySelectorAll('.ticker li')].map(l => l.textContent), box: box('.ticker') };
+      UI.notes = []; UI.render(); out.tickerNone = !!document.querySelector('.ticker');
       [...document.querySelectorAll('.rail button')].find(b => b.textContent === 'Bar').click();
       out.reopened = { page: !!document.querySelector('.page .body'), tab: UI.tab };
       const st = G.state; st.systemId = 'mars'; st.planet = 'Mars'; UI.planet = currentPlanet(); UI.tab = 'port'; UI.render();
@@ -68,6 +72,9 @@ test('at Earth the Ring is the stage on every page, drawn at 12 px or more, and 
     assert.equal(r.closed.page, false); assert.equal(r.closed.lit, 0, 'nothing open, nothing lit');
     assert.ok(r.closed.canvas.w * r.closed.canvas.h > one.canvas.w * one.canvas.h * 1.5, `${W}: closed, the view has the stage`);
     assert.deepEqual(r.reopened, { page: true, tab: 'bar' });
+    assert.equal(r.tickerOpen, false, 'with a page open, the notes are on the Port page'); assert.equal(r.tickerNone, false, 'no notes, no ticker');
+    assert.deepEqual(JSON.parse(JSON.stringify(r.ticker.lines)), ['two', 'three', 'four <b>'], 'nothing open: the newest three notes, as text, under the view (#1132)');
+    assert.ok(r.ticker.box.t >= r.closed.canvas.b - 1 && r.ticker.box.l >= r.closed.canvas.l - 1, `${W}: the ticker under the view`);
     assert.deepEqual(r.mars, { stage: false, view: false }, 'a port with no layout keeps its strip');
     assert.deepEqual(errors, []);
   }
