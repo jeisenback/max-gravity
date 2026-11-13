@@ -14,10 +14,10 @@ const { HAND_TRAITS, RECORD_KEYS, recordAdd, handTraits, hasTrait, recordWords }
 const IDS = ['cool-head', 'salvager', 'marked', 'reliable', 'scarred', 'hard-case', 'runner', 'jonah'];
 const hand = record => ({ record });
 
-test('the table has the eight traits in order, each with a name, a speaker and a rule; the record has nineteen keys', () => {
+test('the table has the eight traits in order, each with a name, a speaker and a rule; the record has twenty-two keys (the last three for salvage, #965)', () => {
   assert.deepEqual([...HAND_TRAITS.map(t => t.id)], IDS);
   for (const t of HAND_TRAITS) { assert.ok(t.name, t.id); assert.ok(['captain', 'engineer', 'shipper', null].includes(t.by), `${t.id}: ${t.by}`); assert.equal(typeof t.earned, 'function'); }
-  assert.equal(RECORD_KEYS.length, 19);
+  assert.equal(RECORD_KEYS.length, 22);
 });
 
 test('recordAdd counts, makes the record where there is none, and returns the traits earned by that add and not before', () => {

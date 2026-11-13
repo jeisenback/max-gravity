@@ -200,6 +200,34 @@ function stationHtml(st, hand, planet) {
       ${used && p.used ? h`<button data-action="stationBuy" data-arg="${p.id}:used" ${st.credits >= stationPrice(p, 'used') ? '' : 'disabled'}>Used, ${fmt(stationPrice(p, 'used'))} cr</button><div class="hint">Used: ${used.from}. ${usedWords(used).replace(/^./, ch => ch.toUpperCase())}.</div>` : ''}</div>`)}` }));
 }
 
+// ---------- spares cut off wrecks (salvage.js, #965) ----------
+// st.spares: the parts cut off wrecks, kept aboard, { system, quirk, from }. A spare is fitted by the crew at no cost, as a used part with its
+// quirk (the system to the used mark if it is lower); or sold, at a port with an outfitter, for the used price.
+const spareSellPrice = () => partPrice(0, 'used');
+function spareFit(st, i) {
+  const s = (st.spares || [])[i];
+  if (!s) return '';
+  fitPart(st, s.system, 'used', s.quirk, st.day);
+  st.spares.splice(i, 1);
+  return `The crew fits the ${SHIP_PARTS[s.system].name.toLowerCase()} part ${s.from}. ${SHIP_PARTS[s.system].name} is at ${Math.round(st.condition[s.system])}.`;
+}
+function spareSell(st, planet, i) {
+  const s = (st.spares || [])[i];
+  if (!s || !planet || !(planet.services || []).includes('outfitter')) return '';
+  const price = spareSellPrice();
+  st.credits += price;
+  st.spares.splice(i, 1);
+  return `The outfitter takes the ${SHIP_PARTS[s.system].name.toLowerCase()} part ${s.from} for ${fmt(price)} cr.`;
+}
+// The spares on the Engineering station (wear.js wearHtml), each with Fit, and Sell when docked at an outfitter.
+function sparesHtml(st, planet, landed) {
+  const list = st.spares || [];
+  if (!list.length) return '';
+  const sell = landed && planet && (planet.services || []).includes('outfitter');
+  return String(h`<div class="con-spares"><div class="eyebrow">Spares</div>${list.map((s, i) => h`<div class="con-yard"><span class="hint">${SHIP_PARTS[s.system].name}, ${s.from} (${usedWords(s.quirk)})</span>
+    <button data-action="spareFit" data-arg="${i}">Fit</button>${sell ? h`<button data-action="spareSell" data-arg="${i}">Sell, ${fmt(spareSellPrice())} cr</button>` : ''}</div>`)}</div>`);
+}
+
 Mods.register({
   id: 'parts', name: 'Parts', builtin: true,
   init(M) {
@@ -210,6 +238,8 @@ Mods.register({
       if (!hired() || G.mode !== 'landed' || (source === 'used' && (!quirk || !(stationPart(hired().post, id) || {}).used))) return;
       const line = buyStation(G.state, hired(), id, source, quirk); if (line) msg(line);
     });
+    M.action('spareFit', i => { if (!role().mayAct('overhaul') || G.dialog) return; const line = spareFit(G.state, Number(i)); if (line) msg(line); });
+    M.action('spareSell', i => { if (!role().mayAct('overhaul') || G.mode !== 'landed' || G.dialog) return; const line = spareSell(G.state, currentPlanet(), Number(i)); if (line) msg(line); });
     M.action('stationFit', i => { if (!hired()) return; const line = fitStation(hired(), Number(i)); msg(line || `${(hiredCaptain() || {}).first || 'The captain'} says not yet.`); });
   },
 });

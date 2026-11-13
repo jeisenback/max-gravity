@@ -590,7 +590,7 @@ function cycleTarget() {
 function tryBurn() {
   const st = G.state;
   if (!st.dest) return msg(flySay('burn.nodest'));
-  const need = burnFuel(st.systemId, st.dest);
+  const need = burnFuel(st.systemId, st.dest) + (isSite(st.dest) ? burnFuel(st.dest, st.systemId) : 0);  // there is no refuel at a site: the mass to come back too
   if (st.fuel < need) return msg(flySay('burn.fuel', { need }));
   if (Math.hypot(G.player.x, G.player.y) < BURN_DIST) return msg(flySay('burn.near'));
   const from = orbitPos(st.systemId), to = orbitPos(st.dest);
@@ -1306,7 +1306,7 @@ window.addEventListener('keydown', e => {
     else if (e.code === 'Equal' || e.code === 'NumpadAdd') zoomMap(-1);
     else if (e.code === 'Minus' || e.code === 'NumpadSubtract') zoomMap(1);
   } else if (G.mode === 'landed') {
-    if (e.code === 'KeyT' && !G.dialog) { if (role().mayAct('takeoff')) takeOff(); else if (stayOf(hired())) passNight(); else Mods.act('sail'); }
+    if (e.code === 'KeyT' && !G.dialog) { if (atSite(G.state) && chapterOf(G.state) === 2) siteDockKey(); else if (role().mayAct('takeoff')) takeOff(); else if (stayOf(hired())) passNight(); else Mods.act('sail'); }
   }
 });
 window.addEventListener('keyup', e => { if (KEYMAP[e.code]) G.keys[KEYMAP[e.code]] = false; });
@@ -1348,7 +1348,7 @@ canvas.addEventListener('click', e => {
     return;
   }
   if (G.mode !== 'map' || !G.mapPos) return;
-  for (const id of Object.keys(SYSTEMS)) {
+  for (const id of [...Object.keys(SYSTEMS), ...foundSites(G.state)]) {  // a found site is a place to burn for too (sites.js, #965)
     const [x, y] = G.mapPos(id);
     if (Math.hypot(e.clientX - x, e.clientY - y) < 16) {
       if (!role().mayAct('plot')) { msg(flySay('picks')); return; }  // the map is for looking, to a hired hand

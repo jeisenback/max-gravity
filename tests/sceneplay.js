@@ -655,6 +655,30 @@ const playScenes = () => {
   // a worn system's part in port (parts.js, #1135): the scene with each used part on offer, and the part the hand argued for at the last repair, held and broken
   for (const q of PART_QUIRKS) run(`scene:parts:${q.id}`, {}, () => { const real = usedPartAt; usedPartAt = () => q; try { return partsEvent(currentPlanet(), q.system); } finally { usedPartAt = real; } }, { rolls: [0, 0.99], prep() { condition()[q.system] = 70; } });
   for (const broke of [false, true]) run(`scene:parts:argued:${broke}`, {}, () => partsEvent(currentPlanet(), 'fire'), { rolls: [0, 0.99], prep() { condition().fire = 70; hired().partsArgued = { sys: 'fire', day: 0, broke }; } });
+  // a wreck in chapter two (salvage.js, #965), played from a hired game with the wreck set up by hand: each type's history in each version, the reads
+  // by depth with Bexa, with the engineer and with nobody, and the third section with everything in it (the find, a lead, a part) and each trouble
+  const wreckAt = (o = {}) => {
+    const st = G.state, site = sites(st)['site:wreck-1'], w = site.wreck;
+    Object.assign(w, { find: 0, lead: null, leadAt: null, cut: 0, lost: [] }, o.wreck || {});
+    if (o.v !== undefined) { let seed = 0; while ([0, 1, 2, 3].some(n => salvageRoll(`${n}|story|${seed}`) % 2 !== o.v)) seed++; w.seed = seed; }
+    if (o.part) { let seed = w.seed; while (!sectionPart({ ...w, seed }, 3)) seed++; w.seed = seed; }
+    for (const key of o.cast || []) { const p = castPerson(key); if (!st.crew.includes(p.id)) st.crew.push(p.id); }
+    if (o.alone) st.crew = [];
+    hired().job = { kind: 'salvage', site: site.id, client: 'Hask Mutual', find: 'recorder', sid: 'ceres', planet: 'Ceres Station', deadline: st.day + 60, pay: 9000, got: false };
+    return site;  // the scene does not need the ship there, and a hired game of chapter one has no run home from a wreck
+  };
+  for (const type of WRECK_TYPE_IDS) for (const v of [0, 1]) {
+    run(`scene:salvage:approach:${type}:${v}`, {}, () => approachScene(G.state, wreckAt({ v, wreck: { type }, cast: ['bexa'] })));
+    for (const cut of [0, 1, 2]) run(`scene:salvage:${type}:${v}:${cut + 1}`, {}, () => cutScene(G.state, wreckAt({ v, wreck: { type, cut }, cast: ['bexa'] })), { rolls: [0.99] });
+  }
+  for (const cut of [0, 1, 2]) run(`scene:salvage:engineer:${cut + 1}`, {}, () => cutScene(G.state, wreckAt({ wreck: { cut } })), { rolls: [0.99] });
+  run('scene:salvage:nobody', {}, () => approachScene(G.state, wreckAt({ alone: true })));
+  for (const cut of [0, 1, 2]) run(`scene:salvage:nobody:cut:${cut + 1}`, {}, () => cutScene(G.state, wreckAt({ alone: true, wreck: { cut } })), { rolls: [0.99] });  // the player reads it
+  run('scene:salvage:full', {}, () => { const st = G.state; st.cargo.metal = (st.cargo.metal || 0) + cargoFree(); return cutScene(st, wreckAt({ cast: ['bexa'] })); }, { rolls: [0.99] });
+  run('scene:salvage:deep', {}, () => cutScene(G.state, wreckAt({ part: true, wreck: { cut: 2, find: 3, lead: 'site:wreck-2', leadAt: 3 }, cast: ['bexa', 'pax'] })), { rolls: [0.99, 0.01, 0.2, 0.35] });
+  // the survey (salvage.js): with no pilot aboard the check is on no skill (an even chance), so the rolls give a good, a fair and a poor report
+  run('scene:survey', {}, () => { const st = G.state, site = sites(st)['site:rock-1']; st.crew = []; hired().job = { kind: 'survey', site: site.id, client: 'Brannock Minerals', got: false }; return surveyScene(st, site); }, { rolls: [0, 0.45, 0.99] });
+  run('scene:survey:pilot', {}, () => surveyScene(G.state, sites(G.state)['site:rock-1']), { rolls: [0.5] });
   return out;
 };
 
