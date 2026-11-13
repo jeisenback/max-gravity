@@ -10,7 +10,7 @@ const { open, closeBrowser, frames } = require('./helpers');
 
 after(closeBrowser);
 
-const { PORT_LAYOUTS, PORT_ROOMS, portCast, portOpen, portWalk, portRoomAt } = load(['js/util.js', 'js/portview.js'], { Mods: { register() {} } }, ['PORT_LAYOUTS', 'PORT_ROOMS', 'portCast', 'portOpen', 'portWalk', 'portRoomAt']);
+const { PORT_LAYOUTS, PORT_ROOMS, portCast, portOpen, portWalk, portRoomAt, portStage } = load(['js/util.js', 'js/portview.js'], { Mods: { register() {} } }, ['PORT_LAYOUTS', 'PORT_ROOMS', 'portCast', 'portOpen', 'portWalk', 'portRoomAt', 'portStage']);
 
 test('a port\'s layout is whole: every room has a drawer, sits on one of its levels inside its width, and the rooms of a level meet without overlapping, each level\'s run from the well (#1124)', () => {
   for (const [port, lay] of Object.entries(PORT_LAYOUTS)) {
@@ -187,4 +187,42 @@ test('a scene at the Ring opens docked by the view, beside it on a wide window a
     await done();
     assert.deepEqual(errors, []);
   }
+});
+
+test('a scene\'s people on the view gather where the first of them is, the rest beside them and facing them, and anyone standing there steps aside; nobody on the view, nothing moves (#1103)', () => {
+  const lay = PORT_LAYOUTS.Earth, plain = x => JSON.parse(JSON.stringify(x));
+  const cast = [
+    { who: 'ngozi', room: 'market', lv: 0, x: 215, name: 'work', view: 'back', face: 1, kind: 'folk' },
+    { who: 'c1', room: 'bar', lv: 0, x: 700, name: 'sit', view: 'side', face: 1, kind: 'crew' },
+    { who: 'patron:p1', room: 'market', lv: 0, x: 240, name: 'sit', view: 'side', face: -1, kind: 'patron' },
+    { who: 'clerk', room: 'yard', lv: 1, x: 420, name: 'work-sit', view: 'side', face: -1, kind: 'folk' },
+  ];
+  const out = plain(portStage(cast, ['ngozi', 'c1', 'nobody'], lay)), by = Object.fromEntries(out.map(c => [c.who, c]));
+  assert.deepEqual([by.ngozi.x, by.ngozi.name, by.ngozi.staged], [215, 'work', true], 'the first stays as they are');
+  assert.deepEqual([by.c1.room, by.c1.lv, by.c1.x, by.c1.name, by.c1.face, by.c1.staged], ['market', 0, 275, 'stand', -1, true], 'the next stands beside them, facing them');
+  assert.ok(by['patron:p1'].x < 185 || by['patron:p1'].x > 305, `the patron in the way steps aside: ${by['patron:p1'].x}`);
+  assert.deepEqual(by.clerk, plain(cast[3]), 'someone on another level is left as they are');
+  assert.deepEqual(plain(portStage(cast, ['nobody'], lay)), plain(cast), 'nobody of the scene on the view: nothing moves');
+});
+
+test('at the Ring a scene\'s people walk to it while it is open, the clock held, and back to their places after (#1103)', async () => {
+  const { page, ev, errors, done } = await open({ viewport: { width: 1440, height: 900 } });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    G.portHour = 10; G.portWalkers = null; Mods.emit('frame', 0.016);
+    const planet = currentPlanet(), ngozi = portFolkPerson(planet, portLayout(planet).folk[0]), mate = G.portWalkers.find(w => w.kind === 'crew'), where = w => { const x = G.portWalkers.find(q => q.who === w); return x && [x.lv, Math.round(x.x)]; };
+    const before = where(mate.who), opened = G.portHour;
+    openEvent({ title: 'At the bay', text: 'x', people: [ngozi.id, mate.who], choices: [{ label: 'Go on', run: () => 'done' }] });
+    for (let i = 0; i < 900; i++) Mods.emit('frame', 1 / 60);
+    const staged = { mate: where(mate.who), ngozi: where('ngozi'), held: G.portHour === opened };
+    UI.act('choose', 0); finishEvent();
+    for (let i = 0; i < 900; i++) Mods.emit('frame', 1 / 60);
+    return { before, staged, after: where(mate.who) };
+  });
+  await done();
+  assert.deepEqual(r.staged.ngozi, [0, 215]);
+  assert.equal(r.staged.mate[0], 0); assert.ok(Math.abs(r.staged.mate[1] - 215) <= 60, `the mate beside Ngozi: ${r.staged.mate}`);
+  assert.equal(r.staged.held, true, 'the clock held under the scene');
+  assert.notDeepEqual(r.before, r.staged.mate, 'the mate walked over'); assert.ok(Math.abs(r.after[1] - 215) > 30 || r.after[0] !== 0, `and went back after: ${r.after}`);
+  assert.deepEqual(errors, []);
 });
