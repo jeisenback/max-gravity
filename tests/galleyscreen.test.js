@@ -23,13 +23,14 @@ test('the galley draws its screen, on at supper and off on a shift, under the le
     G.state.story.next = 1e9; G.state.tutorial = null; uatBurn('Earth', 'mars'); const t = G.transit; t.left = t.total * 0.7;
     t.lifeOffered = { before: true, m1: true, m2: true, m3: true, after: true }; setBurnSpeed(0);
     const you = shipPeople().find(q => q.role === 'you'), g = roomAt('galley'); Object.assign(you, { room: 'galley', dk: g.deck, tdk: g.deck, x: g.mid, tx: null });
-    const calls = [], real = window.roomGalleyScreen;
+    const calls = [], real = window.roomGalleyScreen, kept = window.roomCached;
     window.roomGalleyScreen = (ctx, x, y, on, ...a) => { const m = ctx.getTransform(), p = m.transformPoint(new DOMPoint(x, y)); calls.push({ on, sx: p.x, sy: p.y }); return real(ctx, x, y, on, ...a); };
+    window.roomCached = (c, id, r, s, draw) => draw(c, s);  // the galley drawn directly, not from its images (#1123), so the screen is drawn on the game's canvas each frame
     try {
       const at = block => { let d = 0; t.elapsed = 0; while (shipDay(t.elapsed).block !== block && d++ < 400) t.elapsed += 0.5; calls.length = 0; render(); return calls.slice(); };
       const supper = at('supper'), shift = at('shift'), box = G.cutRooms.find(x => x.id === 'galley');
       return { supper, shift, box };
-    } finally { window.roomGalleyScreen = real; }
+    } finally { window.roomGalleyScreen = real; window.roomCached = kept; }
   });
   await done();
   assert.equal(r.supper.length, 1, 'drawn once'); assert.equal(r.supper[0].on, true, 'on at supper');
