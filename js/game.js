@@ -21,6 +21,7 @@ const G = {
   npcs: [], shots: [], particles: [], messages: [],
   offers: [],         // mission offers at the current planet
   bar: [],            // procedural crew looking for work at the current planet
+  portHour: null,     // the port view's clock (portview.js, #1102): the local hour at a port drawn as a place, null elsewhere
   revenge: null,      // someone who hates you has hired a gun, see people.js
   mode: 'landed',     // title | landed | flight | departing | transit | hail | map | dead
   dialog: null,       // open choice dialog (transit event or hail), see transit.js
