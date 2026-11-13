@@ -68,3 +68,16 @@ function partFight(st) {
   return out;
 }
 const partEdge = (st, kind) => fittedQuirks(st).reduce((n, q) => n + [q.plus, q.minus].reduce((m, e) => m + ((e.edge && e.edge[kind]) || 0), 0), 0);
+
+// ---------- the hand's own station (Task 6 fills the table) ----------
+// Parts a hand fits to their post's station from their own savings, by post: { id, name, desc, price, effect } with effect of the quirks' kinds
+// (fight, edge, wear by system). Kept on the hand's record as h.station, a list of { id, source, quirk }, and carried into chapter two (sheet.js careerOf).
+const STATION_PARTS = {};
+const stationPart = (post, id) => (STATION_PARTS[post] || []).find(p => p.id === id) || null;
+// The effects of the hand's fitted station parts and their quirks, for a post: each part's own effect and, if it was used, its quirk's plus and minus.
+const stationEffects = h => (h && h.station || []).flatMap(f => { const p = stationPart(h.post, f.id); return [...(p ? [p.effect] : []), ...(f.quirk ? [f.quirk.plus, f.quirk.minus] : [])]; });
+function stationFight(h) {
+  const out = { dmgMult: 1, shields: 1 };
+  for (const e of stationEffects(h)) if (e.fight) for (const k of Object.keys(out)) if (e.fight[k]) out[k] *= e.fight[k];
+  return out;
+}
