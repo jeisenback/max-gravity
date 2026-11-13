@@ -1,10 +1,10 @@
 # Parts: Repairs and the Hand's Own Station
 
-Status: proposed to the owner on 2026-11-13. The first step before wrecks and salvage (#965), which will hand out parts, and the prospecting line (#1003), which rises with that work. The order agreed: parts, then #965, then #966 (the scan), then #1003.
+Status: proposed to the owner on 2026-11-13; amended the same day after a builder's read (the fights wear the guns and shields, the repair line, the scene's offer, the captain's pick, where used parts are sold, the soak). The first step before wrecks and salvage (#965), which will hand out parts, and the prospecting line (#1003), which rises with that work. The order agreed: parts, then #965, then #966 (the scan), then #1003.
 
 ## Why
 
-A ship in this game wears: the drive, fire control, shields, life support and sensors each have a condition that falls with use and can break down on a burn (`js/wear.js`). But nothing is ever fitted. In chapter 1 Hester's ship is kept up only by the engineer's service order in flight, the breakdown scene and the bench; an owner or the co-op pays a flat yard price to put a system back to 100. And the hand has nothing of their own on the ship to spend their savings on but the share.
+A ship in this game wears: the drive, fire control, shields, life support and sensors each have a condition that falls with use and can break down on a burn (`js/wear.js`). But nothing is ever fitted, and in chapter 1 not much wears: measured on two burns at the default Slow wear, the drive loses about 0.45 a day of burn and life support and sensors 0.15, and fire control and shields nothing, since only the owner's fight (`js/duel.js`) wears and reads them and the hand's fight (`js/fight.js`) does neither. Over a chapter the drive ends near 70 and the rest above 90. In chapter 1 Hester's ship is kept up only by the engineer's service order in flight, the breakdown scene and the bench; an owner or the co-op pays a flat yard price to put a system back to 100. And the hand has nothing of their own on the ship to spend their savings on but the share.
 
 The technology bible already says how ships are kept running: "Parts are made new at the big yards, printed from licensed files on the ship's fabricator, or taken off ships being broken up. A printed part that isn't rated for its job is logged as temporary." Wrecks (#965) are meant to hand out parts marked by where they have been. So parts come first, and start in chapter 1, where the hand learns what a part is worth before they ever cut one off a dead ship.
 
@@ -67,13 +67,21 @@ The owner picked A.
 - About three quirks a system to start, fifteen in all, written to `docs/bible/voice.md`; the builder writes them and the owner reads them with the PR. A used part offered at a port draws its quirk from that system's list by the day and the port, with no draw of the game's dice (`hash`, as the sites are seeded), so a port offers the same used part for the length of a stay.
 - A quirk's minus is never a breakdown by itself; it is a cost the player can see in the offer's words.
 
+### The hand's fight wears and reads the guns and shields (`js/fight.js`)
+
+- The hand's ship fight wears **fire control** a little for each salvo the ship fires and **shields** for each hit they take, at the owner's fight's rates (`js/duel.js`: `wear('fire', 0.05)` a shot, `wear('shields', 0.3)` a shield hit), scaled to a turn of the hand's fight so a fight costs about what one costs the owner.
+- It reads them as the owner's does: the guns' damage by `perf('fire')`, the shields' strength or recharge by `perf('shields')`.
+- So the gunner's own system wears and matters, the repair of fire control and shields comes up, and a quirk or a station part that moves a fight number has a number to move.
+- This moves the fights' numbers: `tests/distribution/fights.test.js` is run (`npm run soak`) and its targets kept, or the owner asked.
+
 ### The repair in port (chapter 1: Hester's call)
 
-- **When.** On landing at a port with an outfitter (the yards, the Boneyard, the bigger ports), the worst system under the repair line (`REPAIR_BELOW`, 60, the band where `perf` starts to fall) is put up for repair, once a stay, as a scene through the happenings picker as the breakdown scene is (`partsEvent(part)`), when the fund can pay for at least the printed part. At a port with no outfitter, nothing.
-- **The scene.** The engineer (or Cato when there is none, as the bosun covers, #1093) lays out the three: the yard part and its price, the used part with its history and quirk in a line, the printed part and that it is temporary. The text says what the fund holds. Hester decides by her captain's card (`thrift` weighs the price, `nerve` the risk), as the captain's calls are made today (`hiredCall`); the hand's choices are the post's words:
+- **When.** On landing at a port with an outfitter (the yards, the Boneyard, the bigger ports), the worst system under the repair line (`REPAIR_BELOW`, 75) is put up for repair, once a stay, when the fund can pay for at least the printed part. 75 is a start: the soak sets it so a repair comes up about one stay in three or four. At a port with no outfitter, nothing.
+- **Offered directly**, not through the happenings picker (which draws one scene a landing against the story's and skips once a landing has two, #1096): `offerScene('business', partsEvent(part))`, as the hull repair is offered (`js/repairs.js`). One yard scene a landing: when the hull repair is offered, the parts scene waits for the next landing with an outfitter (builder's read, settled by the author: their call).
+- **The scene.** The engineer (or Cato when there is none, as the bosun covers, #1093) lays out the three: the yard part and its price, the used part with its history and quirk in a line, the printed part and that it is temporary. The text says what the fund holds. Hester's pick is a fixed score from her captain's card, with no dice, so the seeded pins do not move: `thrift` weighs the price against what the fund holds, `nerve` how much risk she takes on a used or printed part. (Not `hiredCall`, which only acts on a burn, nor `captainPick`'s weighted draw.) The scene's text says which she means to take. The hand's choices are the post's words:
   - **say nothing**: the captain's pick stands;
   - **argue for one** (each of the three that differs from hers): a `word` check (`check`, `DIFFICULTY.word`, the hand's sheet and skill); on a pass the captain takes it, on a fail her pick stands, and either way she remembers the hand's say (`like`, a memory of the part).
-  - **Regard**: when the part the hand argued for turns out well (no breakdown of that system before its next repair, or the quirk's plus used in a fight) the captain's regard rises a little at the next repair; when it fails early, it falls a little. Kept small (one point), so it colours the captain without moving chapter 1's ending.
+  - **Regard**: when the part the hand argued for lasts to that system's next repair with no breakdown, the captain's regard rises a little at that repair; when the system breaks down first, it falls a little. Kept small (one point), so it colours the captain without moving chapter 1's ending.
 - **Paying.** The fund pays (`h.fund`, `h.bill`, as the torpedoes are bought: `js/hired.js`). The log says what was fitted and what it cost.
 - **The hand helps fit it.** If the hand's post works the system (the guns and fire control for the gunner), the fitting is a `post` check; on a pass the part goes in at two points more condition, on a fail nothing worse. Otherwise no roll.
 
@@ -96,7 +104,7 @@ The owner picked A.
 
 ### Where parts are sold
 
-- Ports with `outfitter` in their services sell yard and printed parts; the Boneyard (Hygiea) and Phobos Yards sell used ones too, the Boneyard the cheapest. The repair scene offers a used part only where one is sold; elsewhere it offers yard and printed.
+- Ports with `outfitter` in their services sell yard and printed parts, and on about half the days a used one (by the port and the day, `hash`, no dice of the game's), so a hand on the usual lanes sees used parts. The Boneyard (Hygiea) and Phobos Yards always have used parts, the Boneyard the cheapest. The repair scene offers a used part only when the port has one that day; otherwise yard and printed. The same rule decides where used station parts are sold.
 
 ## Testing
 
@@ -106,8 +114,20 @@ The owner picked A.
 - `STATION_PARTS`: buying spends the hand's savings, two slots, a third replaces; the part adds what it says to a check and a fight number; it carries into chapter 2 (`careerOf`).
 - Golden copies (`tests/fixtures`) for the Port page's parts counter and the Engineering station's overhaul.
 - `tests/gfields.test.js`, `tests/globals.test.js`: the new file linked; nothing new on `G`.
-- `npm run soak`: the chapter's days to the share and the captain's pay, since the fund now spends on parts and the hand on station parts; and the fights' targets (`tests/distribution/fights.test.js`), since station parts and quirks move fight numbers.
+- `npm run soak`, three things:
+  - **the repair line**: how often the repair comes up (the aim, about one stay in three or four), and `REPAIR_BELOW` set from it;
+  - **the fund**: repairs come out of `h.bill` before the share, and a rating's share is 0 (`HIRED_SHARE`), so the hand's pay does not move; what can is the fund falling to the captain's thrift floor or `SHORT_FUND`, which brings the short-month scene. The limit: that scene comes no more often than today;
+  - **the days to the share**: the soak's hand buys no station parts (the base, as now), and a variant buys both slots at the first port that sells them; both stay in the band (ROADMAP: about 160 days);
+  - and the fights' targets (`tests/distribution/fights.test.js`), since the fight now wears and reads fire control and shields, and station parts and quirks move fight numbers.
 - `npm run coverage -- --check`: `js/parts.js` added to the floor once tested.
+
+## The builder's calls, settled by the author (2026-11-13)
+
+- The scene is offered directly (`offerScene`), one yard scene a landing, after the hull repair.
+- The captain's pick is a fixed score from her card, no dice.
+- Used parts at any outfitter port on about half the days, always at the Boneyard and Phobos Yards.
+- The soak's measures, above.
+- Regard turns on whether the argued part lasts to the next repair.
 
 ## What is left to the builder
 
@@ -117,7 +137,7 @@ The owner picked A.
 
 ## Assumptions to confirm
 
-- Sixty is the repair line and once a stay is the pace; a port with an outfitter is where repairs happen.
+- 75 is the repair line to start, set by the soak; once a stay is the most; a port with an outfitter is where repairs happen.
 - The fund pays repairs in chapter 1, as it pays torpedoes; the soak will say whether the fund holds.
 - Two station slots, four gunner parts to start, priced 2,000 to 6,000.
 - A used part restores to 90, a printed one to 85 and wears at 1.75 times.
