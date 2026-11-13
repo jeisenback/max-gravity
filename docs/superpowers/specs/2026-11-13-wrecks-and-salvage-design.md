@@ -1,6 +1,6 @@
 # Wrecks and Salvage: the Co-op's Jobs at a Site
 
-Status: proposed to the owner on 2026-11-13 (#965); amended the same day after a builder's read (who cuts, a steady supply of wrecks, the crew's regard, the co-op only, the soak's co-op mode, the survey's skill). The second step of exploration and salvage (`ROADMAP.md`, section 7), after the site machinery (#948) and parts (#1135); before the scan (#966) and the prospecting line (#1003), which rises with this work.
+Status: approved by the owner on 2026-11-13 (#965); amended the same day after a builder's read (who cuts, a steady supply of wrecks, the crew's regard, the co-op only, the soak's co-op mode, the survey's skill). The second step of exploration and salvage (`ROADMAP.md`, section 7), after the site machinery (#948) and parts (#1135); before the scan (#966) and the prospecting line (#1003), which rises with this work.
 
 ## Why
 
