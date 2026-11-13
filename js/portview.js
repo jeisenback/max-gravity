@@ -21,12 +21,13 @@ const PORT_LAYOUTS = {
     // winds up beside it, a flight a storey from `stair[0]` on the outermost level to `stair[1]` on the next, and back the other way to the one above.
     well: { car: 36, stair: [118, 72] },
     rooms: [
-      { id: 'well', label: 'Lift', level: 0, to: 2, x0: 0, x1: 120, kind: 'well' },
-      { id: 'market', label: 'Market', level: 0, x0: 120, x1: 520, kind: 'market', page: 'port' },  // `page`: the page a click on the room opens (#1132)
-      { id: 'bar', label: 'The Gravity Well', level: 0, x0: 520, x1: 860, kind: 'bar', page: 'bar' },
-      { id: 'yard', label: 'Yard offices', level: 1, x0: 120, x1: 470, kind: 'yard', page: 'missions' },
-      { id: 'clinic', label: 'Clinic', level: 1, x0: 470, x1: 860, kind: 'clinic' },
-      { id: 'bunks', label: 'Bunkrooms', level: 2, x0: 120, x1: 860, kind: 'bunks' },
+      // `page`: the page a click on the room opens (#1132); `stage`: where a scene that happens there gathers, by Ngozi's bay, at the hiring boards, in front of the counter (#1103)
+      { id: 'well', label: 'Lift', level: 0, to: 2, x0: 0, x1: 120, kind: 'well', stage: 60 },
+      { id: 'market', label: 'Market', level: 0, x0: 120, x1: 520, kind: 'market', page: 'port', stage: 270 },
+      { id: 'bar', label: 'The Gravity Well', level: 0, x0: 520, x1: 860, kind: 'bar', page: 'bar', stage: 700 },
+      { id: 'yard', label: 'Yard offices', level: 1, x0: 120, x1: 470, kind: 'yard', page: 'missions', stage: 230 },
+      { id: 'clinic', label: 'Clinic', level: 1, x0: 470, x1: 860, kind: 'clinic', stage: 600 },
+      { id: 'bunks', label: 'Bunkrooms', level: 2, x0: 120, x1: 860, kind: 'bunks', stage: 470 },
     ],
     // The port's own people (ports.md, Who is there): where each works and the hours they keep (an hour past 24 is after midnight). Ngozi is Tomas's
     // sister (lagos.md), with her food bay; the rest are made from the port's culture the first time, the same face on every visit.
@@ -114,19 +115,22 @@ function portWalk(walkers, cast, layout, dt, snap) {
   return out;
 }
 // A scene's people where it happens (#1103, ports.md Scenes from people), as a burn scene stages its people in the cutaway (stageScene, shiplife.js).
-// Pure: the cast, the scene's people as cast `who`s in the order the scene names them, the layout. Those of them on the view gather where the first
-// is: the first stays as they are, the rest stand beside them, facing them; anyone else standing there steps aside. A scene with nobody on the view
-// changes nothing. Marked `staged`.
+// Pure: the cast, the scene's people as cast `who`s in the order the scene names them, the layout, and the room the scene happens in (its `place`),
+// if it has one. Those of them on the view gather where the first is when the first is there already (or the scene has no place), and else at the
+// room's `stage`: the first stays as they are, the rest stand beside them, facing them; anyone else standing there steps aside. A scene with nobody on
+// the view changes nothing. Marked `staged`.
 const PORT_STAGE_GAP = 60;  // between two in a scene: a little over a body's width
-function portStage(cast, who, layout) {
+function portStage(cast, who, layout, place) {
   const named = [...new Set(who)].map(w => cast.find(c => c.who === w)).filter(Boolean);
   if (!named.length) return cast;
-  const a = named[0], room = layout.rooms.find(r => r.id === portRoomAt(layout, a)), well = layout.rooms.find(r => r.kind === 'well');
+  const at0 = layout.rooms.find(r => r.id === portRoomAt(layout, named[0])), there = layout.rooms.find(r => r.id === place && r.stage !== undefined);
+  const room = there && there !== at0 ? there : at0, keep = room === at0, well = layout.rooms.find(r => r.kind === 'well');
+  const a = keep ? named[0] : { x: room.stage, lv: room.level };  // the first where they are, or the place's spot
   const inRoom = x => Math.max(room.x0 + 20, Math.min(room.x1 - 20, x)), onLevel = x => Math.max(well.x1 + 20, Math.min(layout.width - 20, x));
-  const spots = named.map((c, i) => (i ? inRoom(a.x + (i % 2 ? 1 : -1) * Math.ceil(i / 2) * PORT_STAGE_GAP) : a.x));
+  const spots = named.map((c, i) => (i || !keep ? inRoom(a.x + (i % 2 ? 1 : -1) * Math.ceil(i / 2) * PORT_STAGE_GAP) : a.x));
   const lo = Math.min(...spots) - PORT_STAGE_GAP / 2, hi = Math.max(...spots) + PORT_STAGE_GAP / 2, at = new Map(named.map((c, i) => [c.who, i]));
   return cast.map(c => {
-    if (at.has(c.who)) { const i = at.get(c.who); return i ? { ...c, room: room.id, lv: a.lv, x: spots[i], name: 'stand', view: 'side', face: Math.sign(a.x - spots[i]) || 1, staged: true } : { ...c, staged: true }; }
+    if (at.has(c.who)) { const i = at.get(c.who); return i || !keep ? { ...c, room: room.id, lv: a.lv, x: spots[i], name: 'stand', view: 'side', face: Math.sign(a.x - spots[i]) || (i % 2 ? -1 : 1), staged: true } : { ...c, staged: true }; }
     if (c.lv !== a.lv || c.x <= lo || c.x >= hi) return c;
     return { ...c, x: onLevel(c.x - lo < hi - c.x ? lo - PORT_STAGE_GAP / 2 : hi + PORT_STAGE_GAP / 2), name: 'stand', view: 'front', face: 1 };  // out of the way
   });
@@ -401,7 +405,7 @@ Mods.register({
       if (!G.dialog) G.portHour = Math.min(PORT_NIGHT, G.portHour + (dt || 0) * 24 / SHIP_DAY);
       if (!layout) return;
       const cast = portCast(layout, G.portHour, patrons, crew, st.day);
-      G.portWalkers = portWalk(G.portWalkers, ev ? portStage(cast, portSceneWho(planet, scenePeople(ev)), layout) : cast, layout, dt || 0, Settings.reduceMotion);
+      G.portWalkers = portWalk(G.portWalkers, ev ? portStage(cast, portSceneWho(planet, scenePeople(ev)), layout, ev.place) : cast, layout, dt || 0, Settings.reduceMotion);
     });
   },
 });

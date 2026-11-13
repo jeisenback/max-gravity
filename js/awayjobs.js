@@ -134,7 +134,7 @@ function pitchScene(a) {
   });
   choices.push({ label: say('never.label'), run: () => say('never.result') });
   const plan = currentPlan(), instead = !plan ? '' : plan.ballast ? say('instead.light', { planet: plan.planet }) : say('instead', { run: runWord(plan), days: plan.days });  // what the pitch would replace (#848)
-  return { title: say('title'), personal: true, text: `${say('text', { blurb: fill2(jobBlurb(job, true), a.ctx), dest: a.ctx.dest, system: a.ctx.system, days: a.days, instead }).replace(/\s{2,}/g, ' ')}`, choices };
+  return { title: say('title'), personal: true, place: 'yard', text: `${say('text', { blurb: fill2(jobBlurb(job, true), a.ctx), dest: a.ctx.dest, system: a.ctx.system, days: a.days, instead }).replace(/\s{2,}/g, ' ')}`, choices };  // place: at the yard office, on a port's view (portview.js, #1103)
 }
 const fill2 = (t, ctx) => t.replace(/\{(\w+)\}/g, (m, k) => (ctx[k] !== undefined ? ctx[k] : m));
 const pitchedNow = a => a.pitched === `${G.state.day}@${G.state.planet}`;

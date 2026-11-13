@@ -29,7 +29,7 @@ function signOnEvent() {
   // Tomas's to find, hired.js), and the papers you carry.
   const terms = [...(h.debt > 0 ? [say('bond', { debt: fmt(h.debt), cut: Math.round(DEBT_SHARE * 100) })] : []), say('goal', { price: fmt(BUY_IN.mid) }), say('papers', { gov: youTies().aff })].join(' ');
   const event = {
-    title: say('title'),
+    title: say('title'), place: 'yard',  // at the hiring boards, on a port's view (portview.js, #1103)
     text: [say(`text.${bg}`, ctx), ...(st.carried ? [st.carried] : []), `${say(`post.${h.post}`, ctx)}${beside}`, `${week} ${terms} ${say('why')}`].join('</p><p>'),
     choices: [
       { label: say('c0.label'), run() { h.wage += SIGN_WAGE_UP; h.reason = 'money'; return say(`money.${bg}`, { wage: h.wage, up: SIGN_WAGE_UP }); } },
