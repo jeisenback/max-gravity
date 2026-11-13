@@ -98,3 +98,27 @@ test('a fitted quirk\'s edge reaches the hand\'s check, and its perf the system\
   assert.ok(Math.abs(r.lift - 0.05) < 1e-9, `the check +0.05 (${r.lift})`);
   assert.equal(r.perf, 1.05, 'perf capped at 1.05');
 });
+
+// ---------- the owner's and the co-op's overhaul (Task 5) ----------
+
+test('the co-op\'s overhaul offers a yard part at today\'s price, a used one with its history when the port has one, and a printed one; a hand in chapter one is offered none', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const out = {}, c = condition();
+    c.drive = 50; out.hand = (wearHtml().match(/data-action="overhaul"/g) || []).length;
+    hired().chapter = 2; G.mode = 'landed'; G.state.credits = 100000;
+    const planet = currentPlanet(); let day = G.state.day; while (!usedPartAt(planet, day, 'drive')) day++; G.state.day = day;
+    const html = wearHtml(); out.args = [...html.matchAll(/data-action="overhaul" data-arg="([^"]+)"/g)].map(m => m[1]).filter(a => a.startsWith('drive:'));
+    out.yardPrice = overhaulCost('drive'); out.hasYardPrice = html.includes(fmt(overhaulCost('drive')));
+    out.from = usedPartAt(planet, day, 'drive').from; out.hasFrom = html.includes(out.from.split(',')[0]);
+    const before = G.state.credits; Mods.act('overhaul', 'drive:used');
+    out.paid = before - G.state.credits; out.price = partPrice(50, 'used'); out.after = condition().drive; out.fitted = fittedPart(G.state, 'drive').source;
+    return out;
+  });
+  await done();
+  assert.equal(r.hand, 0, 'a hand in chapter one does not overhaul');
+  assert.deepEqual(r.args, ['drive:yard', 'drive:used', 'drive:printed']);
+  assert.ok(r.hasYardPrice, 'the yard part at today\'s price'); assert.ok(r.hasFrom, 'the used part says where it came from');
+  assert.equal(r.paid, r.price); assert.equal(r.after, 90); assert.equal(r.fitted, 'used');
+});

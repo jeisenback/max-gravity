@@ -49,9 +49,11 @@ const overhaulCost = part => Math.round((100 - condition()[part]) * 80);
 // The Engineering station's list of systems, and (docked) the yard's price to overhaul each.
 function wearHtml() {
   const c = condition(), docked = G.mode === 'landed' && role().mayAct('overhaul');  // whoever pays for the ship pays for a yard overhaul: the owner, the co-op (#906)
+  const offers = k => (docked && c[k] < 99 ? partsOffers(G.state, currentPlanet(), k, G.state.day) : []);  // a new part, a used one when the port has one, a printed one (parts.js, #1135)
+  const button = (k, o) => `<div class="con-yard"><span class="hint">${o.source === 'yard' ? 'Yard overhaul' : o.source === 'used' ? `Used: ${o.quirk.from}` : 'Printed, temporary'}</span><button data-action="overhaul" data-arg="${k}:${o.source}" ${G.state.credits >= o.price ? '' : 'disabled'}>${fmt(o.price)} cr</button></div>`;
   return `${wearRate() ? '' : '<p class="hint">Wear is off.</p>'}<div class="con-parts">
     ${Object.entries(SHIP_PARTS).map(([k, p]) => `<div class="con-part"><span>${p.name}</span>${conBar(c[k], condColor(c[k]))}<b>${Math.round(c[k])}</b></div>
-      ${docked && c[k] < 99 ? `<div class="con-yard"><span class="hint">Yard overhaul</span><button data-action="overhaul" data-arg="${k}" ${G.state.credits >= overhaulCost(k) ? '' : 'disabled'}>${fmt(overhaulCost(k))} cr</button></div>` : ''}`).join('')}
+      ${offers(k).map(o => button(k, o)).join('')}`).join('')}
   </div>`;
 }
 
@@ -99,11 +101,11 @@ Mods.register({
     M.on('frame', wearTick);
     M.on('fire', o => { if (o === G.player) wear('fire', 0.05); });
     M.on('damage', (o, shieldHit) => { if (o === G.player && shieldHit) wear('shields', 0.3); });
-    M.action('overhaul', part => {
-      const cost = overhaulCost(part);
-      if (G.mode !== 'landed' || !role().mayAct('overhaul') || G.state.credits < cost) return;
-      G.state.credits -= cost;
-      condition()[part] = 100;
+    M.action('overhaul', arg => {  // `${system}:${source}` (parts.js); a bare system is a yard part, as before
+      const [part, source = 'yard'] = String(arg).split(':'), o = G.mode === 'landed' && partsOffers(G.state, currentPlanet(), part, G.state.day).find(x => x.source === source);
+      if (!o || !role().mayAct('overhaul') || G.state.credits < o.price) return;
+      G.state.credits -= o.price;
+      fitPart(G.state, part, o.source, o.quirk, G.state.day);
     });
   },
 });
