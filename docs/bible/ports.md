@@ -35,7 +35,7 @@ The Ring is about four hundred metres across and turns one and a half times a mi
 From the ship's berth down to the rim, in the order a hand walks it:
 
 1. **The berth, at the hub.** The dock is on the axis, where the Ring barely turns, and is weightless. The ship's lock meets the berth's collar. Handrails, a cargo net and a freight sled on its track; a tug's crew drinking from bulbs by the collar between jobs. The berth's meter on the wall counts the hours at the berth rate. The customs office is here, at the head of the berths, with the arcology's mark on its hatch.
-2. **The spoke lift.** A car on a rail down one of the spokes, two hundred metres from the hub to the rim. Weight comes back on the way down; people sit for it and strap a bag between their feet. The car takes twelve, and at a shift change it runs full both ways.
+2. **The spoke lift.** A car on a rail down one of the spokes, two hundred metres from the hub to the rim. Weight comes back on the way down; people sit for it and strap a bag between their feet. The car takes twelve, and at a shift change it runs full both ways. At the rim it comes down a well through all three levels, with its doors on each, and a stair winds up beside it for anyone who will not wait for the car, as the Ore Runner's ladder well does aboard (`look.md`). The well is how every room on the rim is reached: the lobby at its foot, the yard offices and the clinic off its middle landing, the bunkrooms off its top one (#1124).
 3. **The rim.** A slice of it, about forty metres long, three levels deep. The floor of each level rises gently at both ends of the view, because the rim curves; over forty metres it rises about a metre. The outermost level is at half a g, the ones above it a little less.
    - **The market,** on the outermost level: bays rented in the wall, each a steel frame with a roll-down shutter, its lease plate on the frame and its permit card for the year in the corner, and a counter in front. What is inside is the tenant's: a hob and pans and a menu screen, parts bins and a lamp on an arm. A bay between tenants has its shutter down. No awnings: nothing on the Ring is built as if it were outside (the owner, 2026-11-12). Ngozi Achebe's food stall is here, feeding the yard shifts (`lagos.md`). A port in the floor at the market's middle shows the stars, and Earth going by every forty seconds.
    - **The bar,** the Gravity Well (`js/bar.js`), off the market: a long copper counter, travel posters from a dozen ports curling on the walls, and the drinks priced in scrip and in trade notes.
@@ -82,6 +82,8 @@ The game's day turns only as it does now: by passing a night in port or by saili
 ### Their hours
 
 Each fixed person has a routine by the port's hours, as the crew have the ship's: open the bay, work it, eat, shut it, go home. The yard works three shifts; a shift change fills the lift lobby and then the bar. The routine blocks are the port's, written per place in its layout, so the next port is new data.
+
+When the hour moves someone, they walk there, at the crew's pace aboard: along a level, and up or down the well, one storey by the stair and more by the car (#1124). Someone the hour brings comes down the spoke in the car; someone it takes goes up it. Reduced motion puts everyone in their place.
 
 ### Scenes from people
 

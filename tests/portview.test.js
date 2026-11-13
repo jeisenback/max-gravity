@@ -10,9 +10,9 @@ const { open, closeBrowser, frames } = require('./helpers');
 
 after(closeBrowser);
 
-const { PORT_LAYOUTS, PORT_ROOMS, portCast, portOpen } = load(['js/util.js', 'js/portview.js'], { Mods: { register() {} } }, ['PORT_LAYOUTS', 'PORT_ROOMS', 'portCast', 'portOpen']);
+const { PORT_LAYOUTS, PORT_ROOMS, portCast, portOpen, portWalk, portRoomAt } = load(['js/util.js', 'js/portview.js'], { Mods: { register() {} } }, ['PORT_LAYOUTS', 'PORT_ROOMS', 'portCast', 'portOpen', 'portWalk', 'portRoomAt']);
 
-test('a port\'s layout is whole: every room has a drawer, sits on one of its levels inside its width, and the rooms of a level meet without overlapping', () => {
+test('a port\'s layout is whole: every room has a drawer, sits on one of its levels inside its width, and the rooms of a level meet without overlapping, each level\'s run from the well (#1124)', () => {
   for (const [port, lay] of Object.entries(PORT_LAYOUTS)) {
     assert.ok(lay.place && lay.section && lay.berth, port);
     for (const rm of lay.rooms) {
@@ -21,9 +21,9 @@ test('a port\'s layout is whole: every room has a drawer, sits on one of its lev
       assert.ok(rm.x0 >= 0 && rm.x1 <= lay.width && rm.x0 < rm.x1, `${port} ${rm.id}: inside`);
     }
     lay.levels.forEach((_, L) => {
-      const rooms = lay.rooms.filter(r => r.level === L).sort((a, b) => a.x0 - b.x0);
-      assert.ok(rooms.length, `${port} level ${L} has rooms`);
-      assert.equal(rooms[0].x0, 0); assert.equal(rooms[rooms.length - 1].x1, lay.width);
+      const rooms = lay.rooms.filter(r => r.level === L || (r.level < L && r.to >= L)).sort((a, b) => a.x0 - b.x0);
+      assert.ok(rooms.length > 1, `${port} level ${L} has rooms`);
+      assert.equal(rooms[0].x0, 0); assert.equal(rooms[0].kind, 'well', `${port} level ${L}: every room on it is reached from the well`); assert.equal(rooms[rooms.length - 1].x1, lay.width);
       for (let i = 1; i < rooms.length; i++) assert.equal(rooms[i].x0, rooms[i - 1].x1, `${port} level ${L}: ${rooms[i - 1].id} meets ${rooms[i].id}`);
     });
   }
@@ -63,9 +63,9 @@ test('the Ring\'s people keep its hours: the port\'s own at work in their hours,
   const evening = at(20), morning = at(10), night = at(3);
   assert.ok(evening.filter(c => c.kind === 'patron').length >= 4, 'the stools fill after five'); assert.equal(morning.filter(c => c.kind === 'patron').length, 0, 'the bar is shut in the morning');
   assert.equal(night.length, 0, 'at three in the morning nobody is about');
-  assert.ok(morning.some(c => c.kind === 'worker' && c.room === 'yard'), 'workers at the hiring boards by day'); assert.ok(at(14).some(c => c.room === 'lift'), 'the lobby at a shift change');
+  assert.ok(morning.some(c => c.kind === 'worker' && c.room === 'yard'), 'workers at the hiring boards by day'); assert.ok(at(14).some(c => c.room === 'well' && c.lv === 0), 'the lobby at a shift change');
   assert.ok(morning.some(c => c.kind === 'crew' && c.room === 'market') && evening.some(c => c.kind === 'crew' && c.room === 'bar'), 'the crew ashore: the market by day, the bar after it');
-  for (const h of [6, 10, 14, 19.5, 23]) { const c = at(h), spots = c.map(x => `${x.room}:${x.x}`); assert.equal(new Set(spots).size, spots.length, `${h}: nobody stands on anybody`); assert.equal(new Set(c.map(x => x.who)).size, c.length, `${h}: nobody twice`); }
+  for (const h of [6, 10, 14, 19.5, 23]) { const c = at(h), spots = c.map(x => `${x.lv}:${x.x}`); assert.equal(new Set(spots).size, spots.length, `${h}: nobody stands on anybody`); assert.equal(new Set(c.map(x => x.who)).size, c.length, `${h}: nobody twice`); }
   assert.deepEqual(at(10), at(10), 'the same hour and day, the same people');
 });
 
@@ -88,4 +88,33 @@ test('the Ring\'s clock: a landing comes in at an hour of its own, runs while th
   assert.ok(r.arrived >= 8 && r.arrived < 20, `a landing at ${r.arrived}`);
   assert.equal(r.ran, 2.4, 'eight seconds at the burn view\'s pace is 2.4 hours'); assert.equal(r.night, 22, 'it stops at night'); assert.equal(r.held, 12, 'and under a scene');
   assert.equal(r.morning, 7); assert.deepEqual(r.ngozi, ['Ngozi', 'Achebe', true, 'Earth']); assert.equal(r.onStools, false); assert.equal(r.mars, null, 'a port with no view has no clock');
+});
+
+// Walk the cast from `from` to `to` (each a list of cast entries) a frame at a time until nobody moves, keeping every position on the way.
+function walkOut(lay, from, to, frames = 4000) {
+  let w = portWalk(null, from, lay, 0, true);
+  const seen = [];
+  for (let i = 0; i < frames; i++) { const n = portWalk(w, to, lay, 1 / 60, false); seen.push(...n.map(p => ({ ...p }))); if (JSON.stringify(n) === JSON.stringify(w)) break; w = n; }
+  return { w, seen };
+}
+
+test('the Ring\'s people walk to where the hour puts them: between levels by the well, the stair for a storey and the car for more, arrivals down the spoke and leavers up it; the walk ends in the hour\'s place (#1124)', () => {
+  const lay = PORT_LAYOUTS.Earth, well = lay.rooms.find(r => r.kind === 'well'), spoke = lay.levels.length;
+  const at = (who, room, lv, x, name = 'stand') => ({ who, room, lv, x, name, view: 'front', face: 1, kind: 'folk' });
+  const from = [at('a', 'market', 0, 300), at('b', 'bunks', 2, 600), at('c', 'bar', 0, 700), at('gone', 'yard', 1, 300)];
+  const to = [at('a', 'yard', 1, 250, 'work-sit'), at('b', 'bar', 0, 800, 'sit'), at('c', 'bar', 0, 760), at('new', 'clinic', 1, 600)];
+  const { w, seen } = walkOut(lay, from, to);
+  assert.deepEqual(JSON.parse(JSON.stringify(w.map(p => [p.who, p.lv, p.x, p.name]).sort())), to.map(p => [p.who, p.lv, p.x, p.name]).sort(), 'everyone ends in the hour\'s place, in its posture; the one it took is gone');
+  const between = seen.filter(p => !Number.isInteger(p.lv));
+  assert.ok(between.length, 'someone went between levels');
+  for (const p of between) { assert.ok(p.x >= well.x0 && p.x <= well.x1, `${p.who} between levels at ${p.x}: in the well`); assert.equal(portRoomAt(lay, p), well.id); }
+  assert.ok(seen.some(p => p.who === 'a' && p.via === 'stair') && !seen.some(p => p.who === 'a' && p.via === 'car'), 'one storey by the stair');
+  assert.ok(seen.some(p => p.who === 'b' && p.via === 'car') && !seen.some(p => p.who === 'b' && p.via === 'stair'), 'two by the car');
+  assert.ok(seen.some(p => p.who === 'new' && p.lv > lay.levels.length - 1 && p.via === 'car'), 'an arrival comes down the spoke');
+  assert.ok(seen.some(p => p.who === 'gone' && p.lv > lay.levels.length - 1 && p.via === 'car'), 'a leaver goes up it');
+  assert.ok(seen.filter(p => p.who === 'c').every(p => p.lv === 0), 'along a level, no well');
+  assert.ok(seen.every(p => p.lv >= 0 && p.lv < spoke), 'nobody below the outermost level, and gone at the spoke');
+  const snap = portWalk(portWalk(null, from, lay, 0, true), to, lay, 1 / 60, true);
+  assert.deepEqual(JSON.parse(JSON.stringify(snap.map(p => [p.who, p.lv, p.x]).sort())), to.map(p => [p.who, p.lv, p.x]).sort(), 'reduced motion puts everyone in place');
+  assert.equal(portRoomAt(lay, at('x', '', 1, 300)), 'yard'); assert.equal(portRoomAt(lay, at('x', '', 2, 60)), 'well'); assert.equal(portRoomAt(lay, at('x', '', 0, 860)), 'bar');
 });
