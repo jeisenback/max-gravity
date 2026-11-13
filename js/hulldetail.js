@@ -66,22 +66,47 @@ function hullFittings(o, deck) {
 
 // Her name (#936): what is painted on the nose's cap for the game state st and her name: the name, her registry (SHIP_REGISTRY, data.js, by
 // her hull) and whether she is the co-op's (chapter two's Ore Runner: the hand's record marked chapter two, as chapterOf reads it, on her hull).
-// Pure.
-const hullPlate = (st, name) => ({ name: String(name || '').toUpperCase(), reg: SHIP_REGISTRY[st.shipId] || null, coop: !!(st.hired && st.hired.chapter === 2) && st.shipId === 'lightfreighter' });
-// The paint on the cap (#936, look.md "a clean frame"): her name and under it her registry, centred on the cap right of the mast, in the
-// frame's cold blue and sized on the screen like the room names (the name 16px, the registry 12px, at any zoom); the co-op's mark beside the
-// name when she is theirs: a ring round three members' dots joined. o: the tower's outline (towerOutline).
-const HULL_NAME = { at: 0.56, col: '#7f97b0' };
+// The co-op's hull is named at the members' first meeting (hired.js chapterTwoShip): until then she carries her class's name as a stand-in,
+// and none is painted, only her registry and the co-op's mark. Pure.
+function hullPlate(st, name) {
+  const coop = !!(st.hired && st.hired.chapter === 2) && st.shipId === 'lightfreighter', N = String(name || '').toUpperCase();
+  return { name: coop && N === SHIPS.lightfreighter.name.toUpperCase() ? '' : N, reg: SHIP_REGISTRY[st.shipId] || null, coop };
+}
+// Where the paint goes on the cap (#936, look.md "a clean frame"): her name and her registry, with the co-op's mark before the name when she is
+// theirs, sized on the screen like the room names (the name 16px, the registry 12px) and shrunk to fit, never under 12px, centred in the span
+// x0 to x1 of world x: right of where the cap curves into the skin at the camera's top, and left of where the speed buttons (burnspeed.js, under
+// the burn bar) begin in the smallest window (1000 wide: world x 513). On one line, its baseline `base` over the skin's top; a name too long for
+// that at 12px puts the registry on a line of its own under it, `low` over the skin. Every glyph under the top of the camera's run (CAM_RUN.above,
+// camera.js) and over the flight deck. measure(text, px): its width in px at that size. Returns the sizes, the baselines (name, reg), each
+// piece's left end (world: nameX, regX), the ring ({ x, y, r }) or none, and the paint's extent { x0, x1, top }.
+const HULL_NAME = { col: '#7f97b0', x0: 4, x1: 504, base: 8, low: 2, px: 16, reg: 12, min: 12, gap: 8, cap: 0.8 };
+function hullNameLayout(o, zoom, plate, measure) {
+  const span = (HULL_NAME.x1 - HULL_NAME.x0) * zoom, mid = (HULL_NAME.x0 + HULL_NAME.x1) / 2, g = HULL_NAME.gap;
+  const row = ws => ws.filter(v => v > 0).reduce((t, v, i) => t + v + (i ? g : 0), 0);
+  const size = (px, split) => {
+    const rp = Math.max(HULL_NAME.min, px * HULL_NAME.reg / HULL_NAME.px), name = plate.name ? measure(plate.name, px) : 0, reg = plate.reg ? measure(plate.reg, rp) : 0, ring = plate.coop ? px : 0;
+    return { px, rp, ring, name, reg, split, w: split ? Math.max(row([ring, name]), reg) : row([ring, name, reg]) };
+  };
+  const fit = split => { let f = size(HULL_NAME.px, split); for (let px = HULL_NAME.px - 0.5; f.w > span && px >= HULL_NAME.min; px -= 0.5) f = size(px, split); return f; };
+  let f = fit(false);
+  if (f.w > span && f.name && f.reg) f = fit(true);
+  const regBase = o.top - (f.split ? HULL_NAME.low : HULL_NAME.base), base = f.split ? regBase - (f.rp + 2) / zoom : regBase;
+  const lineW = f.split ? row([f.ring, f.name]) : f.w;
+  let x = mid - lineW / zoom / 2; const at = w => { const here = x; if (w) x += (w + g) / zoom; return here; };
+  const ring = f.ring ? { x: at(f.ring) + f.ring / zoom / 2, y: base - 0.36 * f.px / zoom, r: f.ring / zoom / 2 } : null, nameX = at(f.name);
+  const regX = f.split ? mid - f.reg / zoom / 2 : at(f.reg);
+  return { px: f.px, regPx: f.rp, base, regBase, ring, nameX, regX, x0: mid - f.w / zoom / 2, x1: mid + f.w / zoom / 2, top: Math.min(base - HULL_NAME.cap * f.px / zoom, ring ? ring.y - ring.r : Infinity) };
+}
+// The paint (hullNameLayout) in the frame's cold blue: the name, the registry, and the co-op's mark, a ring round three members' dots joined.
 function hullName(ctx, o, zoom, plate) {
-  if (!plate || !plate.name) return;
-  const x = o.x0 + (o.x1 - o.x0) * HULL_NAME.at, cap = o.top - o.noseTop, y = o.noseTop + cap * 0.5 + 4 / zoom;
-  ctx.font = `600 ${16}px ${roomFont}`;
-  worldText(ctx, zoom, plate.name, x, y, 16 / zoom, HULL_NAME.col, 'center');
-  if (plate.reg) worldText(ctx, zoom, plate.reg, x, y + 15 / zoom, 12 / zoom, HULL_NAME.col, 'center');
-  if (plate.coop) {  // the co-op's mark, left of the name
-    const half = ctx.measureText(plate.name).width / zoom / 2, cx = x - half - 16 / zoom, cy = y - 6 / zoom, r = 8 / zoom;
+  if (!plate || !(plate.name || plate.reg || plate.coop)) return;
+  const L = hullNameLayout(o, zoom, plate, (t, px) => { ctx.font = `600 ${px}px ${roomFont}`; return ctx.measureText(t).width; });
+  if (plate.name) worldText(ctx, zoom, plate.name, L.nameX, L.base, L.px / zoom, HULL_NAME.col, 'left');
+  if (plate.reg) worldText(ctx, zoom, plate.reg, L.regX, L.regBase, L.regPx / zoom, HULL_NAME.col, 'left');
+  if (L.ring) {
+    const { x: cx, y: cy, r } = L.ring;
     ctx.save(); ctx.strokeStyle = HULL_NAME.col; ctx.fillStyle = HULL_NAME.col; ctx.lineWidth = 1.5 / zoom;
-    ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, r - 0.75 / zoom, 0, Math.PI * 2); ctx.stroke();
     const pts = [0, 1, 2].map(k => [cx + Math.cos(-Math.PI / 2 + k * 2 * Math.PI / 3) * r * 0.5, cy + Math.sin(-Math.PI / 2 + k * 2 * Math.PI / 3) * r * 0.5]);
     ctx.beginPath(); ctx.moveTo(...pts[0]); ctx.lineTo(...pts[1]); ctx.lineTo(...pts[2]); ctx.closePath(); ctx.stroke();
     for (const [px, py] of pts) { ctx.beginPath(); ctx.arc(px, py, 1.8 / zoom, 0, Math.PI * 2); ctx.fill(); }

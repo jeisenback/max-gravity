@@ -311,9 +311,13 @@ function billSheet(roster, bill, watch, night, asked) {
   const b = billWithWatch(bill || {}, watch, night), roleOf = id => (roster.find(r => r.id === id) || {}).role;
   return { rows: Object.keys(WATCH_ORDER).map(post => ({ post, col: b[post] ? ROLE_COLORS[roleOf(b[post])] || null : null })), middle: asked ? ROLE_COLORS.you : null };
 }
-// Whether the hand asked Cato for the middle watch (#914): the game keeps it as the memory his choice leaves on him (cast.js like), `ask` its
-// words (captains/cato.js). From the game state. Pure.
-const askedMiddle = (st, ask) => { const rec = (st.cast || {}).cato, p = rec && (st.people || {})[rec.pid]; return !!(ask && p && (p.memories || []).some(m => m.endsWith(ask))); };
+// Whether the hand asked Cato for the middle watch (#914), while he is aboard: the game keeps the ask only as the memory his choice leaves on him
+// (cast.js like), so `asks` are its words, as written and as the scene editor's file has them (CAST.cato.middleAsk), any of which a memory may
+// hold. From the game state. Pure.
+const askedMiddle = (st, asks) => {
+  const rec = (st.cast || {}).cato, p = rec && (st.people || {})[rec.pid], words = (asks || []).filter(Boolean);
+  return !!(p && (st.crew || []).includes(rec.pid) && words.length && (p.memories || []).some(m => words.some(a => m.endsWith(a))));
+};
 // Where the hand keeps a watch tonight, by the bill or a scene's record (#951), with the lights down (`dark`): a room, or null.
 function handWatchPostOf(t, s, dark) {
   if (!t || !s || !dark) return null;
@@ -1054,7 +1058,7 @@ function drawCutaway(box, clear = box) {
   bunkSlots(people, owners, isAsleep).forEach((k, p) => slots.set(p, k));  // whoever is turned in lies in their own bunk (#934), or a free one
   for (const p of people) if (bunked(p) && p.bunk !== null && p.bunk < nb) slots.set(p, p.bunk);  // the bunk they walked to (couchPlan; nobody sleeps in the hard burn)
   const lain = new Set(slots.values()), bunks = owners.map((p, k) => p && { slept: lain.has(k), ...bunkKit(p.role === 'you' ? { id: 'you', role: job ? POSTS[job.post].role : 'rating', culture: st.background } : { ...((p.id && st.people[p.id]) || p), role: p.role, id: p.id || p.name }) });
-  const mood = crewSpirits(st, st.crew), night = nightStateOf(st, t, handHurt()), ask = typeof CAST === 'object' && CAST.cato ? CAST.cato.scenes.intro.choices[0].effects.castLike.memory : null;
+  const mood = crewSpirits(st, st.crew), night = nightStateOf(st, t, handHurt()), ask = typeof CAST === 'object' && CAST.cato ? CAST.cato.middleAsk() : [];
   bunks.forEach((b, k) => { if (b && owners[k].id && mood.low.includes(owners[k].id)) b.low = true; });  // a low person's own curtain drawn (#936)
   const s = { bunks, w, spirits: mood.good, registry: SHIP_REGISTRY[st.shipId] || null, bill: billSheet(crewRoster(st), night.bill, night.watch, shipDay(t.elapsed).day, askedMiddle(st, ask)), time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, goods: holdGoods(st.cargo, st.missions), pr, places: { to: placeColour(placeOf(t.to), st.route && st.route.dock), from: placeColour(placeOf(st.systemId), st.planet) }, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), screen: galleyScreenOn(shipDay(t.elapsed).block), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, t.recline),
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3, patches: new Set(G.state.patches || []) }, age: tripAge(G.transit), patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState)

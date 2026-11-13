@@ -1005,8 +1005,9 @@ function roomRadio(ctx, x, y, on) {
   if (!on) return;
   const g = ctx.createRadialGradient(x + 12, y - 5.3, 0, x + 12, y - 5.3, 9);  // the dial's warm glow on the worktop's end
   g.addColorStop(0, 'rgba(255,190,110,0.22)'); g.addColorStop(1, 'rgba(255,190,110,0)'); ctx.fillStyle = g; ctx.fillRect(x + 3, y - 14.3, 18, 18);
-  ctx.strokeStyle = 'rgba(200,170,110,0.6)'; ctx.lineWidth = 0.6;
-  for (const rr of [1.8, 3.4]) { ctx.beginPath(); ctx.arc(x + 17, y - 5, rr, -0.7, 0.7); ctx.stroke(); }  // the sound marks
+  ctx.save(); ctx.globalAlpha = 0.7; ctx.strokeStyle = roomTint('#a89060'); ctx.lineWidth = 0.6;  // the sound marks, in the dial's colour as the room tints it
+  for (const rr of [1.8, 3.4]) { ctx.beginPath(); ctx.arc(x + 17, y - 5, rr, -0.7, 0.7); ctx.stroke(); }
+  ctx.restore();
 }
 function roomGalley(ctx, r, s, X, W) {
   const { w, time } = s, F = r.floor, latch = (x, y) => { roomFlat(ctx, x, y, 2, 4, '#8796a5'); roomDot(ctx, x + 1, y - 1.2, 0.5, '#56708c'); roomFlat(ctx, x - 1.4, y + 0.6, 1.2, 2.6, '#6a747c'); };  // the paint worn beside it
