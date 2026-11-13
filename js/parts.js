@@ -197,7 +197,7 @@ function stationHtml(st, hand, planet) {
     ${bag.length ? h`<p class="hint">In your bag:</p><ul>${bag.map((f, i) => h`<li>${name(f.id)} <button data-action="stationFit" data-arg="${i}">Ask to fit it</button></li>`)}</ul>` : ''}
     ${listHtml(parts, p => h`<div class="mission"><b>${p.name}</b> <span class="hint">${p.desc}</span>
       <button data-action="stationBuy" data-arg="${p.id}:yard" ${st.credits >= p.price ? '' : 'disabled'}>New, ${fmt(p.price)} cr</button>
-      ${used && p.used ? h`<button data-action="stationBuy" data-arg="${p.id}:used" ${st.credits >= stationPrice(p, 'used') ? '' : 'disabled'}>Used, ${fmt(stationPrice(p, 'used'))} cr (${used.from}: ${usedWords(used)})</button>` : ''}</div>`)}` }));
+      ${used && p.used ? h`<button data-action="stationBuy" data-arg="${p.id}:used" ${st.credits >= stationPrice(p, 'used') ? '' : 'disabled'}>Used, ${fmt(stationPrice(p, 'used'))} cr</button><div class="hint">Used: ${used.from}. ${usedWords(used).replace(/^./, ch => ch.toUpperCase())}.</div>` : ''}</div>`)}` }));
 }
 
 Mods.register({
