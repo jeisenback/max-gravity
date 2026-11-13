@@ -35,7 +35,7 @@ function roomReturn(p) {
   const band = roomBand(st.day - room.last), left = roomThings(room.visits).pop();
   const text = [say(`text.${band}`, v), roomLetter(room, st.day) ? say(`letter.${band}`, v) : '', left ? say(`thing.${left}.there`, v) : '', say(room.visits ? (room.visits > 1 ? 'been.many' : 'been.one') : 'first', v)].filter(Boolean).join(' ');
   const away = () => { room.last = st.day; };
-  return { title: say('title', v), text, choices: [
+  return { title: say('title', v), text, place: 'bunks', choices: [  // a room of your own: on a port's view, the bunkrooms (portview.js, #1103)
     { label: say('c0.label', v), run() { const next = ROOM_THINGS[room.visits]; away(); room.visits++; like(p, 1, say('c0.memory', v)); return `${say('c0.result', v)}${next ? ` ${say(`thing.${next}.left`, v)}` : ''}`; } },
     { label: say('c1.label', v), run() { away(); return say('c1.result', v); } },
   ] };

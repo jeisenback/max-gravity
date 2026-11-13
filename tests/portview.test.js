@@ -226,3 +226,34 @@ test('at the Ring a scene\'s people walk to it while it is open, the clock held,
   assert.notDeepEqual(r.before, r.staged.mate, 'the mate walked over'); assert.ok(Math.abs(r.after[1] - 215) > 30 || r.after[0] !== 0, `and went back after: ${r.after}`);
   assert.deepEqual(errors, []);
 });
+
+test('a scene with a place gathers its people there: at the room\'s spot when the first of them is elsewhere, around the first when they are there already (#1103)', () => {
+  const lay = PORT_LAYOUTS.Earth, plain = x => JSON.parse(JSON.stringify(x)), stage = id => lay.rooms.find(r => r.id === id).stage;
+  const cast = [
+    { who: 'c1', room: 'market', lv: 0, x: 300, name: 'stand', view: 'front', face: 1, kind: 'crew' },
+    { who: 'c2', room: 'yard', lv: 1, x: 200, name: 'stand', view: 'back', face: 1, kind: 'crew' },
+    { who: 'patron:p1', room: 'bar', lv: 0, x: 740, name: 'sit', view: 'side', face: -1, kind: 'patron' },
+  ];
+  const by = out => Object.fromEntries(plain(out).map(c => [c.who, c]));
+  const toBar = by(portStage(cast, ['c1', 'c2'], lay, 'bar'));
+  assert.deepEqual([toBar.c1.room, toBar.c1.lv, toBar.c1.x], ['bar', 0, stage('bar')], 'the first goes to the Gravity Well\'s spot');
+  assert.deepEqual([toBar.c2.room, toBar.c2.lv], ['bar', 0], 'and the next with them, from another level'); assert.equal(Math.abs(toBar.c2.x - stage('bar')), 60);
+  assert.ok(toBar['patron:p1'].x < 670 || toBar['patron:p1'].x > 790, `the patron on the stool there steps aside: ${toBar['patron:p1'].x}`);
+  const atBar = by(portStage(cast, ['patron:p1', 'c1'], lay, 'bar'));
+  assert.deepEqual([atBar['patron:p1'].x, atBar['patron:p1'].name], [740, 'sit'], 'the first is at the bar already: they stay on their stool');
+  assert.equal(atBar.c1.room, 'bar'); assert.equal(Math.abs(atBar.c1.x - 740), 60);
+  assert.deepEqual(by(portStage(cast, ['c1'], lay, 'nowhere')).c1.x, 300, 'a place the view has not: where the first is');
+  for (const r of lay.rooms) assert.ok(r.stage > r.x0 && r.stage < r.x1, `${r.id}: its spot is inside it`);
+});
+
+test('the port\'s scenes say where they happen: the bar\'s talk at the counter, the day ashore in the market, the sign-on at the hiring boards (#1103)', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
+    const signOn = G.dialog.event.place; while (G.dialog) finishEvent();
+    fillBar(currentPlanet());
+    return { signOn, talk: G.patrons.length ? talkEvent(G.patrons[0]).place : 'bar', ashore: dayAshoreEvent().place };
+  });
+  await done();
+  assert.deepEqual(r, { signOn: 'yard', talk: 'bar', ashore: 'market' });
+});

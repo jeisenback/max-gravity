@@ -399,7 +399,7 @@ function talkEvent(pat) {
     ][byName(p, 'intro', 3)];
   const choices = barMenu(pat, p, { st, bar });  // a rotating few from the pool in bartopics.js
   choices.push({ label: 'Leave them to their drink', run: () => barSays(barTrait('leave', p, barLines('leave')), p) + barTone(pat, p) });
-  return { title: `${bar}: ${p.first} ${p.last}`, text, choices };
+  return { title: `${bar}: ${p.first} ${p.last}`, text, choices, place: 'bar' };  // at the counter, at a port drawn as a place (portview.js, #1103)
 }
 
 function barHtml() {
