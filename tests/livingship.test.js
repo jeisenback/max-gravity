@@ -3120,6 +3120,17 @@ test('her name and registry are painted on the nose\'s cap at 12px or more, ever
   const { ctx, calls } = recorder(); restApi.hullName(ctx, o, 1, { name: '', reg: 'CR 2208', coop: true });
   assert.deepEqual(calls.filter(k => k[0] === 'fillText').map(k => k[1]), ['CR 2208'], 'not yet named: the registry and the mark only'); assert.ok(calls.some(k => k[0] === 'arc'));
 });
+test('a name that will not fit even at 12px is shortened with an ellipsis, so the paint never passes the cap\'s span, whatever the font (#936)', () => {
+  const o = restApi.towerOutline(restApi.LAYOUTS.freighter), wide = (t, px) => t.length * px * 1.1;  // wider than any font's capitals
+  for (const zoom of [0.82, 1.17, 1.45]) {
+    const name = 'W'.repeat(60), L = restApi.hullNameLayout(o, zoom, { name, reg: 'BR 4471', coop: false }, wide);
+    assert.ok(L.px >= 12, `${zoom}: never under 12px`);
+    assert.ok(L.name.endsWith('\u2026') && L.name.length < name.length, `${zoom}: shortened (${L.name})`);
+    assert.ok(L.x1 <= 504 + 1e-9, `${zoom}: within the cap's span (${L.x1})`);
+  }
+  const fits = restApi.hullNameLayout(o, 1, { name: 'IRON ANVIL', reg: 'BR 4471', coop: false }, (t, px) => t.length * px * 0.66);
+  assert.equal(fits.name, 'IRON ANVIL', 'a name that fits is painted whole');
+});
 test('her registry is fixed per hull, and the co-op\'s mark is on chapter two\'s Ore Runner only (#936)', () => {
   const P = (st, name = 'Iron Anvil') => JSON.parse(JSON.stringify(restApi.hullPlate(st, name)));
   assert.deepEqual(P({ shipId: 'freighter' }), { name: 'IRON ANVIL', reg: 'BR 4471', coop: false });

@@ -78,7 +78,7 @@ function hullPlate(st, name) {
 // the burn bar) begin in the smallest window (1000 wide: world x 513). On one line, its baseline `base` over the skin's top; a name too long for
 // that at 12px puts the registry on a line of its own under it, `low` over the skin. Every glyph under the top of the camera's run (CAM_RUN.above,
 // camera.js) and over the flight deck. measure(text, px): its width in px at that size. Returns the sizes, the baselines (name, reg), each
-// piece's left end (world: nameX, regX), the ring ({ x, y, r }) or none, and the paint's extent { x0, x1, top }.
+// piece's left end (world: nameX, regX), the name as painted (name: ellipsised when even the smallest size will not fit), the ring ({ x, y, r }) or none, and the paint's extent { x0, x1, top }.
 const HULL_NAME = { col: '#7f97b0', x0: 4, x1: 504, base: 8, low: 2, px: 16, reg: 12, min: 12, gap: 8, cap: 0.8 };
 function hullNameLayout(o, zoom, plate, measure) {
   const span = (HULL_NAME.x1 - HULL_NAME.x0) * zoom, mid = (HULL_NAME.x0 + HULL_NAME.x1) / 2, g = HULL_NAME.gap;
@@ -90,18 +90,22 @@ function hullNameLayout(o, zoom, plate, measure) {
   const fit = split => { let f = size(HULL_NAME.px, split); for (let px = HULL_NAME.px - 0.5; f.w > span && px >= HULL_NAME.min; px -= 0.5) f = size(px, split); return f; };
   let f = fit(false);
   if (f.w > span && f.name && f.reg) f = fit(true);
+  if (f.w > span && f.name) {  // still too wide at the smallest size (a long name, a wide font): the name shortened with an ellipsis until it fits
+    let n = plate.name;
+    while (n.length > 1 && f.w > span) { n = n.slice(0, -1); plate = { ...plate, name: n.trimEnd() + '\u2026' }; f = size(f.px, f.split); }
+  }
   const regBase = o.top - (f.split ? HULL_NAME.low : HULL_NAME.base), base = f.split ? regBase - (f.rp + 2) / zoom : regBase;
   const lineW = f.split ? row([f.ring, f.name]) : f.w;
   let x = mid - lineW / zoom / 2; const at = w => { const here = x; if (w) x += (w + g) / zoom; return here; };
   const ring = f.ring ? { x: at(f.ring) + f.ring / zoom / 2, y: base - 0.36 * f.px / zoom, r: f.ring / zoom / 2 } : null, nameX = at(f.name);
   const regX = f.split ? mid - f.reg / zoom / 2 : at(f.reg);
-  return { px: f.px, regPx: f.rp, base, regBase, ring, nameX, regX, x0: mid - f.w / zoom / 2, x1: mid + f.w / zoom / 2, top: Math.min(base - HULL_NAME.cap * f.px / zoom, ring ? ring.y - ring.r : Infinity) };
+  return { name: plate.name, px: f.px, regPx: f.rp, base, regBase, ring, nameX, regX, x0: mid - f.w / zoom / 2, x1: mid + f.w / zoom / 2, top: Math.min(base - HULL_NAME.cap * f.px / zoom, ring ? ring.y - ring.r : Infinity) };
 }
 // The paint (hullNameLayout) in the frame's cold blue: the name, the registry, and the co-op's mark, a ring round three members' dots joined.
 function hullName(ctx, o, zoom, plate) {
   if (!plate || !(plate.name || plate.reg || plate.coop)) return;
   const L = hullNameLayout(o, zoom, plate, (t, px) => { ctx.font = `600 ${px}px ${roomFont}`; return ctx.measureText(t).width; });
-  if (plate.name) worldText(ctx, zoom, plate.name, L.nameX, L.base, L.px / zoom, HULL_NAME.col, 'left');
+  if (L.name) worldText(ctx, zoom, L.name, L.nameX, L.base, L.px / zoom, HULL_NAME.col, 'left');
   if (plate.reg) worldText(ctx, zoom, plate.reg, L.regX, L.regBase, L.regPx / zoom, HULL_NAME.col, 'left');
   if (L.ring) {
     const { x: cx, y: cy, r } = L.ring;
