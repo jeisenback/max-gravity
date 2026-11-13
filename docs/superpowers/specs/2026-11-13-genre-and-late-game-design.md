@@ -31,6 +31,15 @@ Many, and open, as `shape.md` has them: plot endings and goal endings, reachable
 
 Beside them stay the smaller and stranger ones: dead young, ruined by a debt, walked away, a crew member's story seen through, a master's licence, a life on the edge, rich and ignoring every thread. Any of them can be where a run stops.
 
+## Mods and the shared world
+
+The older ideas stay, each with a narrow job: **mods add content, scenarios add starts, shared deeds add rumours and traces, and none of them changes the state of another player's game.**
+
+- **Mods** add storylets to the pool the later chapters draw from (`M.addStorylet`). They are opt-in: the shipped game never leans on them, the voice's bar is not theirs, and the pins and the soak guard the shipped game only.
+- **Scenarios** are starts written as data, and one way the starts open up.
+- **Shared deeds** (`README.md`, Shared news) are words only: news at a port, chatter on a burn, a name on a memorial wall, a ship seen on an apron. They are the between-runs trace of `shape.md`, drawn from other players' runs as well as the player's own. A deed never moves a price, a war or a roll, so a deed from a modded game, or a forged one, can only be a rumour.
+- Whether the mod API, built for the owner game's places, ships and goods, follows the hand's game into people and holdings is left for later.
+
 ## Open questions
 
 - **Replaying chapter 1.** Its spine is fixed (Hester, the two main characters, the gunner's post), so a second run repeats it. The starts and posts will open up (`js/build.js`, `SCOPE_OFF`); until they do, the game does not claim easy replay.
