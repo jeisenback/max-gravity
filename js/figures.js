@@ -348,7 +348,29 @@ function figView(ctx, pose, look, frames) {
   return { tap: { x: 0, y: -hipH - FIG_LEN.torso / 2 }, head: { x: 0, y: headY }, foot: { x: 0, y: 0 } };
 }
 
+// The burn view's figures kept as images (#1130): while drawCutaway draws its people (figSprites a Map), a figure in a pose and a look seen before is
+// drawn once into an image at the screen's scale (rooms.js keptImage) and copied in after; one seen for the first time is drawn as it is and
+// noted, so a pose that does not come again (a float at the flip) is not kept. Under a rotation, a stretch, a fade or a blend it is drawn as it is.
+let figSprites = null;
+const FIG_SEEN = new Set(), FIG_KEPT_MAX = 600, FIG_BOX = [-90, -140, 90, 40];  // the box round a figure's feet that its image is cropped from
+function figKept(ctx, pose, x, y, look) {
+  const m = ctx.getTransform(), a = m.a;
+  if (m.b || m.c || Math.abs(a - m.d) > 1e-9 || a <= 0 || ctx.globalAlpha !== 1 || ctx.globalCompositeOperation !== 'source-over') return null;
+  const { x: at, deck, ...p } = pose, key = JSON.stringify([p, look, a]);  // where they stand is not how they look
+  let e = figSprites.get(key);
+  if (!e) {
+    if (!FIG_SEEN.has(key)) { if (FIG_SEEN.size > 4000) FIG_SEEN.clear(); FIG_SEEN.add(key); return null; }
+    if (figSprites.size > FIG_KEPT_MAX) figSprites.clear();
+    const kept = figSprites; figSprites = null;
+    try { e = keptImage(a, FIG_BOX, g => drawPerson(g, pose, 0, 0, look)); } finally { figSprites = kept; }
+    figSprites.set(key, e);
+  }
+  if (e.c) { ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.drawImage(e.c, Math.round(a * (x + e.x0) + m.e), Math.round(a * (y + e.y0) + m.f)); ctx.setTransform(m); }  // on whole pixels, one to one: small details stay sharp
+  const r = e.ret, to = q => ({ x: x + q.x, y: y + q.y });
+  return { ...to(r), head: to(r.head), foot: to(r.foot) };
+}
 function drawPerson(ctx, pose, x, y, look) {
+  if (figSprites) { const kept = figKept(ctx, pose, x, y, look); if (kept) return kept; }
   const frames = POSTURES[pose.name].frames, face = pose.face < 0 && pose.name !== 'bunk' && pose.name !== 'couch' ? -1 : 1;  // a sleeper lies head to the left; so does someone on a crash couch, its head end on the left (#949, #972)
   ctx.save(); ctx.translate(x, y); ctx.scale(face, 1);
   let tap, head, foot;
