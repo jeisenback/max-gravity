@@ -113,6 +113,25 @@ function portWalk(walkers, cast, layout, dt, snap) {
   for (const w of by.values()) { const n = portStep(w, { lv: spoke, x: layout.well.car }, layout, dt); if (n.lv < spoke) out.push(n); }
   return out;
 }
+// A scene's people where it happens (#1103, ports.md Scenes from people), as a burn scene stages its people in the cutaway (stageScene, shiplife.js).
+// Pure: the cast, the scene's people as cast `who`s in the order the scene names them, the layout. Those of them on the view gather where the first
+// is: the first stays as they are, the rest stand beside them, facing them; anyone else standing there steps aside. A scene with nobody on the view
+// changes nothing. Marked `staged`.
+const PORT_STAGE_GAP = 60;  // between two in a scene: a little over a body's width
+function portStage(cast, who, layout) {
+  const named = [...new Set(who)].map(w => cast.find(c => c.who === w)).filter(Boolean);
+  if (!named.length) return cast;
+  const a = named[0], room = layout.rooms.find(r => r.id === portRoomAt(layout, a)), well = layout.rooms.find(r => r.kind === 'well');
+  const inRoom = x => Math.max(room.x0 + 20, Math.min(room.x1 - 20, x)), onLevel = x => Math.max(well.x1 + 20, Math.min(layout.width - 20, x));
+  const spots = named.map((c, i) => (i ? inRoom(a.x + (i % 2 ? 1 : -1) * Math.ceil(i / 2) * PORT_STAGE_GAP) : a.x));
+  const lo = Math.min(...spots) - PORT_STAGE_GAP / 2, hi = Math.max(...spots) + PORT_STAGE_GAP / 2, at = new Map(named.map((c, i) => [c.who, i]));
+  return cast.map(c => {
+    if (at.has(c.who)) { const i = at.get(c.who); return i ? { ...c, room: room.id, lv: a.lv, x: spots[i], name: 'stand', view: 'side', face: Math.sign(a.x - spots[i]) || 1, staged: true } : { ...c, staged: true }; }
+    if (c.lv !== a.lv || c.x <= lo || c.x >= hi) return c;
+    return { ...c, x: onLevel(c.x - lo < hi - c.x ? lo - PORT_STAGE_GAP / 2 : hi + PORT_STAGE_GAP / 2), name: 'stand', view: 'front', face: 1 };  // out of the way
+  });
+}
+
 // The room a walker is drawn in: the well, while between levels or at its landings; else the room on their level they are in.
 function portRoomAt(layout, c) {
   const well = layout.rooms.find(r => r.kind === 'well');
@@ -348,6 +367,11 @@ const CIVIL = ['#8a6a4a', '#5a6a5a', '#7a5a6a', '#6a7a8a', '#9a8a6a', '#5a5a6a',
 function portAshore(st, patrons) {
   return { patrons: (patrons || []).filter(x => !x.cast).map(x => ({ id: `patron:${x.p.id || x.p.first}`, p: x.p })), crew: st.crew.map(person).filter(c => c && c.id && !c.dead).map(c => ({ id: c.id, role: c.role, p: c })) };
 }
+// The scene's people as the view knows them: one of the port's own by their key, a patron of the bar, or one of the crew by id.
+function portSceneWho(planet, people) {
+  const folk = Object.fromEntries(Object.entries(((G.state.portFolk || {})[planet.name]) || {}).map(([k, id]) => [id, k]));
+  return people.flatMap(p => [folk[p.id], p.id, `patron:${p.id || p.first}`]).filter(Boolean);
+}
 function portViewNow(planet, layout) {
   const st = G.state, hour = G.portHour === null ? arrivalHour(planet, st.day) : G.portHour;
   const folk = Object.fromEntries(layout.folk.map(f => [f.key, portFolkPerson(planet, f)]));
@@ -371,11 +395,13 @@ Mods.register({
     const open = room => { const e = room && RAIL.find(x => x.tab === room.page); return e && (!e.shown || e.shown(UI.planet)) && e.ready(UI.planet) === true ? e : null; };
     document.addEventListener('click', e => { const entry = open(at(e)); if (entry) UI.act('tab', entry.tab); });
     document.addEventListener('mousemove', e => { if (e.target && e.target.id === 'vs') e.target.style.cursor = open(at(e)) ? 'pointer' : ''; });
-    M.on('frame', dt => {  // the clock, and anyone it moves walking there; both held under a scene
-      if (G.mode !== 'landed' || G.dialog || G.portHour === null) return;
-      const st = G.state, layout = portLayout(currentPlanet()), { patrons, crew } = portAshore(st, G.patrons);
-      G.portHour = Math.min(PORT_NIGHT, G.portHour + (dt || 0) * 24 / SHIP_DAY);
-      if (layout) G.portWalkers = portWalk(G.portWalkers, portCast(layout, G.portHour, patrons, crew, st.day), layout, dt || 0, Settings.reduceMotion);
+    M.on('frame', dt => {  // the clock, and anyone it moves walking there; under a scene the clock holds, and the scene's people walk to it (#1103)
+      if (G.mode !== 'landed' || G.portHour === null) return;
+      const st = G.state, planet = currentPlanet(), layout = portLayout(planet), { patrons, crew } = portAshore(st, G.patrons), ev = G.dialog && G.dialog.event;
+      if (!G.dialog) G.portHour = Math.min(PORT_NIGHT, G.portHour + (dt || 0) * 24 / SHIP_DAY);
+      if (!layout) return;
+      const cast = portCast(layout, G.portHour, patrons, crew, st.day);
+      G.portWalkers = portWalk(G.portWalkers, ev ? portStage(cast, portSceneWho(planet, scenePeople(ev)), layout) : cast, layout, dt || 0, Settings.reduceMotion);
     });
   },
 });
