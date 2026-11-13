@@ -34,27 +34,33 @@ const roomPartBounds = d => roomBounds[d] || (roomBounds[d] = (figTokens[d] || (
 // at the screen's scale and its quarter-pixel offset, and copied in whole each frame after, as it looks the same every frame. Under a rotation,
 // a stretch, an alpha or a blend it is drawn as it is; outside the burn view (the Node tests' mock canvas) roomSprites is null.
 let roomSprites = null;
-const ROOM_SPRITES_MAX = 6000, ROOM_SPRITE_SS = 1;  // SS: the sprite drawn at that many pixels to the screen's one
-function roomSprite(ctx, d, col, o) {
+const ROOM_SPRITES_MAX = 6000;
+// Something drawn in world units within bounds b ([x0, y0, x1, y1]) kept as an image (#1117, #1122): draw(g) is called once, onto a canvas at
+// the screen's scale, and the image is copied in at b after. key names what it shows; the scale is added to it. False, and nothing drawn, under a
+// rotation, a stretch, an alpha or a blend, where the copy would not match: the caller draws it as it is.
+function worldSprite(ctx, cache, key, b, draw) {
   const m = ctx.getTransform(), a = m.a;
   if (m.b || m.c || Math.abs(a - m.d) > 1e-9 || a <= 0 || ctx.globalAlpha !== 1 || ctx.globalCompositeOperation !== 'source-over') return false;
+  const [x0, y0, x1, y1] = b, k = `${key}|${a}`;
+  let c = cache.get(k);
+  if (!c) {
+    if (cache.size > ROOM_SPRITES_MAX) cache.clear();
+    c = document.createElement('canvas'); c.width = Math.max(1, Math.ceil((x1 - x0) * a)); c.height = Math.max(1, Math.ceil((y1 - y0) * a));
+    const g = c.getContext('2d'), was = roomSprites; g.setTransform(a, 0, 0, a, -x0 * a, -y0 * a);
+    roomSprites = null; try { draw(g); } finally { roomSprites = was; }
+    cache.set(k, c);
+  }
+  ctx.drawImage(c, x0, y0, c.width / a, c.height / a);
+  return true;
+}
+function roomSprite(ctx, d, col, o) {
   const b = roomPartBounds(d);
   let [x0, y0, x1, y1] = b; const e = o.solid && roomView ? roomEyeAt((b[0] + b[2]) / 2) : null;
   if (e) for (const [x, y] of [[b[0] - 5, b[1]], [b[2] + 5, b[1]], [b[0] - 5, Math.max(b[3], e.floor)], [b[2] + 5, Math.max(b[3], e.floor)], ...(o.slope ? [[b[0], o.slope[0]], [b[2], o.slope[1]]] : [])]) {  // its depth, its sloped top, and its shadow on the strip
     const [px, py] = roomInto(e, x, y, o.solid); x0 = Math.min(x0, x, px); y0 = Math.min(y0, y, py); x1 = Math.max(x1, x, px); y1 = Math.max(y1, y, py);
   }
-  x0 -= 2; y0 -= 2; x1 += 2; y1 += 2;  // the outline
-  const px = a * ROOM_SPRITE_SS, key = `${d}|${col}|${o.top}|${o.side}|${o.under}|${o.solid}|${o.slope}|${o.shadow}|${roomTone}|${e ? `${e.vx},${e.vy},${e.floor}` : ''}|${px}`;
-  let c = roomSprites.get(key);
-  if (!c) {
-    if (roomSprites.size > ROOM_SPRITES_MAX) roomSprites.clear();
-    c = document.createElement('canvas'); c.width = Math.ceil((x1 - x0) * px); c.height = Math.ceil((y1 - y0) * px);
-    const g = c.getContext('2d'), was = roomSprites; g.setTransform(px, 0, 0, px, -x0 * px, -y0 * px);
-    roomSprites = null; try { roomPart(g, d, col, o); } finally { roomSprites = was; }
-    c.x0 = x0; c.y0 = y0; roomSprites.set(key, c);
-  }
-  ctx.drawImage(c, c.x0, c.y0, c.width / px, c.height / px);
-  return true;
+  const key = `${d}|${col}|${o.top}|${o.side}|${o.under}|${o.solid}|${o.slope}|${o.shadow}|${roomTone}|${e ? `${e.vx},${e.vy},${e.floor}` : ''}`;
+  return worldSprite(ctx, roomSprites, key, [x0 - 2, y0 - 2, x1 + 2, y1 + 2], g => roomPart(g, d, col, o));  // with the outline round it
 }
 function roomPart(ctx, d, col, o = {}) {
   if (roomSprites && roomSprite(ctx, d, col, o)) return;

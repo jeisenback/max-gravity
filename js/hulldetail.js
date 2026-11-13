@@ -6,17 +6,27 @@
 // towerOutline) in world units, and deck(i) a deck's { top, floor } (#972). Loaded after shiplife.js; only called into at runtime.
 
 // Inside the hull's clip: seams across the skin down both sides, a lighter inner edge, and the scars of damage.
-function hullSeams(o) {
+// The seams, the inner edge and the rivets are the same every frame: kept as images in bands HULL_BAND high down each side (#1122), those in
+// view (seen(y0, y1)) copied in; drawn as they are where an image would not match (rooms.js worldSprite).
+const HULL_BAND = 264;
+function hullSeamLines(c, o) {
   const sk = HULL.skin, sides = [o.x0, o.x1 - sk];
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = 'rgba(61,95,130,0.55)';
-  ctx.beginPath();
-  for (let y = o.top + 40; y < o.bottom; y += 66) for (const x of sides) { ctx.moveTo(x, y); ctx.lineTo(x + sk, y); }
-  ctx.stroke();
-  ctx.strokeStyle = 'rgba(130,170,210,0.22)';
-  ctx.beginPath(); for (const x of [o.x0 + 3, o.x1 - 3]) { ctx.moveTo(x, o.top + 4); ctx.lineTo(x, o.bottom - 4); } ctx.stroke();
-  ctx.fillStyle = 'rgba(150,190,230,0.35)';
-  for (let y = o.top + 40; y < o.bottom; y += 66) for (const dy of [14, 28, 42]) for (const x of sides) ctx.fillRect(x + sk / 2 - 0.5, y + dy, 1, 1);
+  c.lineWidth = 1;
+  c.strokeStyle = 'rgba(61,95,130,0.55)';
+  c.beginPath();
+  for (let y = o.top + 40; y < o.bottom; y += 66) for (const x of sides) { c.moveTo(x, y); c.lineTo(x + sk, y); }
+  c.stroke();
+  c.strokeStyle = 'rgba(130,170,210,0.22)';
+  c.beginPath(); for (const x of [o.x0 + 3, o.x1 - 3]) { c.moveTo(x, o.top + 4); c.lineTo(x, o.bottom - 4); } c.stroke();
+  c.fillStyle = 'rgba(150,190,230,0.35)';
+  for (let y = o.top + 40; y < o.bottom; y += 66) for (const dy of [14, 28, 42]) for (const x of sides) c.fillRect(x + sk / 2 - 0.5, y + dy, 1, 1);
+}
+function hullSeams(o, seen = () => true) {
+  const sk = HULL.skin, at = `${o.x0},${o.x1},${o.top},${o.bottom}`;
+  bands: for (let y0 = o.top; y0 < o.bottom; y0 += HULL_BAND) {
+    if (!seen(y0, y0 + HULL_BAND)) continue;
+    for (const x of [o.x0, o.x1 - sk]) if (!worldSprite(ctx, DECK_SPRITES, `seams|${at}|${x}|${y0}`, [x - 1, y0, x + sk + 1, Math.min(o.bottom, y0 + HULL_BAND)], g => hullSeamLines(g, o))) { hullSeamLines(ctx, o); break bands; }
+  }
   // Scars: a scorch for each eighth of the armor lost, in the same places every frame, on either side.
   const lost = Math.max(0, 1 - G.state.armor / ship().armor), n = Math.floor(lost * 8);
   for (let i = 0; i < n; i++) {
