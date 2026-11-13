@@ -14,10 +14,14 @@
 
 const DOCK_KHAKI = '#a39a74', DOCK_CAP = '#4e4a36';  // the port's uniform, and the inspector's cap
 const DOCK_PACE = { walk: 80, climb: 1.5 * (HULL.deck + HULL.plate) };  // world units a second: a walk, and a climb as the ladder's (climbRate)
-const DOCK_OUT = 220;  // how far left of the tower the camera may pan at the dock (shiplife.js drawCutaway), over the gangway
+const DOCK_OUT = 360;  // how far left of the tower the camera may pan at the dock (shiplife.js drawCutaway), over the gangway
 const DOCK_GANGWAY = { len: 560, drop: 70, rail: 40, post: 46 };  // the gangway from the outer door's sill down to the tower: its run, its fall, the rail's height and the posts' spacing
-// Where the two and the hand stand, in world x: off the gangway's far end, in the lock's chamber, on the bridge by the captain's post, and in the hold.
-const DOCK_AT = { off: -330, gangway: -90, lock: { insp: 64, junior: 28 }, bridge: { insp: 452, hand: 416, look: 466 }, hold: { junior: 600 } };
+// Where the two and the hand stand, in world x: off the gangway's far end, in the lock's chamber, on the bridge (the inspector this side of the
+// well, close enough to the comms post and to the captain's that the camera keeps both with them beside a narrow page; the hand from the comms post
+// on the inspector's near side, from the ladder on the far one; `look`, the inspector and the captain's post between), and in the hold.
+const DOCK_AT = { off: -330, gangway: -90, lock: { insp: 64, junior: 28 }, bridge: { insp: 300, comms: 266, ladder: 334, look: 402 }, hold: { junior: 600 } };
+// The hold's posts at the dock, as shares of the hold: past the junior's place, so nobody stands where the junior walks from the ladder.
+const DOCK_HOLD_POSTS = [0.75, 0.95];
 const DOCK_HOLD = { lag: 1.2, a: 1, bridge: 2.5, hold: 3, c: 2, seal: 3.5, sealAt: 1.5, clamps: 0.6, swing: 1.5 };  // seconds: the junior a step behind; the pauses after each beat; the seal put on; the clamps after the two are down, and their swing
 const DOCK_REST = {
   lock: { name: 'stand', view: 'side', face: 1 },  // in the chamber, facing in
@@ -73,7 +77,12 @@ const dockRoomOf = role => (role === 'cat' ? 'engine' : role === 'passenger' ? '
 function dockPlace(room, roles, k) {
   const r = roomAt(room), seats = SEATS[room] || [], W = LAYOUTS.freighter.width;
   if (seats.length) return routineTarget({}, { at: 'post' }, r, postSeat(room, roles, k), roles.length, () => 0.5) * W;
-  return (r.x0 + r.w * (0.15 + 0.7 * (roles.length > 1 ? k / (roles.length - 1) : 0.5))) * W;
+  return dockSpread(room, r, k, roles.length) * W;
+}
+// The k-th of n places along a room with no seats, as a share of the width: spread along it, and in the hold past where the junior walks and counts.
+function dockSpread(room, r, k, n) {
+  const [a, b] = room === 'hold' ? DOCK_HOLD_POSTS : [0.15, 0.85];
+  return r.x0 + r.w * (a + (b - a) * (n > 1 ? k / (n - 1) : 0.5));
 }
 // The hand's place at their post (handRole: the post's role; with none, the bridge): { room, x, dk }.
 function dockPostSpot(handRole) {
@@ -82,7 +91,7 @@ function dockPostSpot(handRole) {
 }
 // The hand's way to the inspector on the bridge from their post.
 function dockHandPath(handRole) {
-  const s = dockPostSpot(handRole), to = { x: DOCK_AT.bridge.hand, dk: 0 };
+  const s = dockPostSpot(handRole), to = { x: s.dk === 0 && s.x < DOCK_AT.bridge.insp ? DOCK_AT.bridge.comms : DOCK_AT.bridge.ladder, dk: 0 };
   return s.dk === 0 ? [s, to] : [s, { x: dockWell(), dk: s.dk }, { x: dockWell(), dk: 0 }, to];
 }
 
@@ -110,21 +119,24 @@ function dockBeats(page, t, choice, post, still) {
   const moved = choice === 'move', bridge = { x: A.bridge.look, dk: 0 }, hold = { x: A.hold.junior, dk: p.HD }, lock = { x: A.gangway, dk: p.L };
   if (page !== 'result') {
     if (t < p.aEnd) {
-      Object.assign(out, { beat: 'a', insp: along(p.aI, 0, R.lock, R.lock), junior: along(p.aJ, H.lag, R.lock, R.lock), focus: lock });
+      Object.assign(out, { beat: 'a', insp: along(p.aI, 0, R.lock, R.lock), junior: along(p.aJ, H.lag, R.lock, R.lock) });
+      out.focus = { x: (out.insp.x + out.junior.x) / 2, dk: p.L };  // up the gangway with them
     } else {
       out.beat = 'b'; out.insp = along(p.bI, p.aEnd, R.front); out.junior = along(p.bJ, p.aEnd, R.count);
       out.focus = t < p.bBridge ? follow(out.insp, bridge) : hold;
     }
   } else {
-    const hand = moved ? along(p.hand, 0, R.hand) : null, inspAt = atRest(A.bridge.insp, 0, moved ? R.turned : R.front);
+    const side = moved ? Math.sign(p.hand[p.hand.length - 1].x - A.bridge.insp) : 0;  // which side of the inspector the hand comes to
+    const hand = moved ? along(p.hand, 0, { ...R.hand, face: -side }) : null, inspAt = atRest(A.bridge.insp, 0, moved ? { ...R.turned, face: side } : R.front);
     out.hand = hand; out.sealed = t >= p.cEnd + H.sealAt;
-    if (moved && t < p.cEnd) Object.assign(out, { beat: 'c', insp: inspAt, junior: atRest(A.hold.junior, p.HD, R.count), focus: follow(hand, bridge) });
+    // (c): the camera between the hand and the inspector while both are on the bridge, so both stay clear of the page; on the ladder, with the hand
+    if (moved && t < p.cEnd) Object.assign(out, { beat: 'c', insp: inspAt, junior: atRest(A.hold.junior, p.HD, R.count), focus: hand.dk === 0 ? { x: (hand.x + A.bridge.insp) / 2, dk: 0 } : { x: hand.x, dk: hand.dk } });
     else if (t < p.dEnd) Object.assign(out, { beat: 'd', insp: inspAt, junior: atRest(A.hold.junior, p.HD, R.count), focus: hold });
     else {
       out.insp = along(p.eI, p.dEnd, null); out.junior = along(p.eJ, p.dEnd, null);
       out.beat = out.insp || out.junior ? 'e' : 'done';
       const onLock = [out.insp, out.junior].filter(q => q && Math.abs(q.dk - p.L) < 0.01), mid = onLock.reduce((a, q) => a + q.x, 0) / (onLock.length || 1);
-      out.focus = onLock.length ? { x: Math.max(lock.x, mid), dk: p.L } : out.insp ? follow(out.insp, lock) : lock;  // after them down to the lock deck, along it and out
+      out.focus = onLock.length ? { x: mid, dk: p.L } : out.insp ? follow(out.insp, lock) : lock;  // after them down to the lock deck, along it and out
       out.swing = still ? +(t >= p.down) : Math.max(0, Math.min(1, (t - p.down - H.clamps) / H.swing));
     }
   }
@@ -150,15 +162,21 @@ const dockChose = (d, kind) => ({ ...d, page: 'result', t: 0, choice: kind || nu
 // hand moved when the move takes them, the inspector (`official`: { id, name }) and the junior as visitors in the port's uniform. Each as drawCutaway
 // draws people: x a share of the tower's width, dk a deck; a moving or posed one with its pose, a visitor with what it wears and carries (look,
 // `trim` the port owner's colour).
-function dockCast(company, handRole, v, official, trim) {
+function dockCast(company, handRole, v, official, trim, hurt = []) {  // hurt: the ids of those hurt (the hand 'you'), who lie in the medbay as on a burn
   const lay = LAYOUTS.freighter, W = lay.width, spot = dockPostSpot(handRole), rooms = new Map(), placed = [];
-  const roomOf = p => (p.role === 'you' ? spot.room : dockRoomOf(p.role)), rank = p => (p.role === 'you' ? 0 : p.role === 'captain' ? 1 : 2);
+  const roomOf = p => (hurt.includes(p.id) ? 'medbay' : p.role === 'you' ? spot.room : dockRoomOf(p.role)), rank = p => (p.role === 'you' ? 0 : p.role === 'captain' ? 1 : 2);
   for (const p of company) { const room = roomOf(p); if (!rooms.has(room)) rooms.set(room, []); rooms.get(room).push(p); }
   for (const [room, list] of rooms) {
+    if (room === 'medbay') {  // the hurt on the medbay's cot, as routineTarget lays them; the medic at the post
+      const bed = list.filter(p => hurt.includes(p.id)), up = list.filter(p => !hurt.includes(p.id)), r = roomAt(room);
+      bed.forEach((p, k) => { placed[company.indexOf(p)] = { ...p, room, x: routineTarget({}, { at: 'bed' }, r, k, bed.length, () => 0.5), dk: r.deck, tdk: r.deck, tx: null, block: 'shift', at: 'bed', face: 1, couch: 0, couchAt: null, station: null }; });
+      if (!up.length) continue;
+      list.splice(0, list.length, ...up);
+    }
     const r = roomAt(room), them = [...list].sort((a, b) => rank(a) - rank(b)), roles = them.map(p => (p.role === 'you' ? handRole || 'captain' : p.role));
     const others = them.filter(p => p.role !== 'you'), slots = Array.from({ length: them.length }, (_, k) => dockPlace(room, roles, k));
     if (!(SEATS[room] || []).length && others.length < them.length) {  // a room with no seats: the hand at its middle, as dockPostSpot puts them, the rest spread either side
-      const free = Array.from({ length: them.length }, (_, k) => (r.x0 + r.w * (0.15 + 0.7 * (them.length > 1 ? k / (them.length - 1) : 0.5))) * W);
+      const free = Array.from({ length: them.length }, (_, k) => dockSpread(room, r, k, them.length) * W);
       free.splice(free.reduce((b, x, i) => (Math.abs(x - spot.x) < Math.abs(free[b] - spot.x) ? i : b), 0), 1);
       others.forEach((p, k) => { slots[them.indexOf(p)] = free[k]; });
       slots[them.findIndex(p => p.role === 'you')] = spot.x;
@@ -251,7 +269,7 @@ function dockBar(b, port, gov, clamps, aboard) {  // aboard: the customs still o
 
 // Whether the dock is drawn now: a scene staged at the dock is open at a port, and G.dock holds its state.
 const dockShown = () => !!(G.dock && G.mode === 'landed' && G.dialog && G.dialog.event && G.dialog.event.stage === 'dock');
-const dockPost = () => { const c = career(); return (c && c.post) || null; };
+const dockPost = () => { const c = career(); return (role().hatch && c && c.post) || null; };  // as the inspector's scene reads it (inspection.js): an owner who kept a post only pays
 
 // The view at the dock in place of the port screen while the inspection is open: the burn view's layout (burnlayout.js) with the scene's page in
 // its dock, the stars still, the cutaway at the dock (drawCutaway's dock), and the bar. Leaves G.burnBoxes, as the burn view does.
@@ -267,7 +285,8 @@ function drawDockView(W, H) {
   const cap = hiredCaptain();
   if (cap) company.push({ id: cap.id, role: 'captain', name: cap.first });
   if (st.home && st.home.cat) company.push({ name: st.home.cat, role: 'cat' });
-  const people = dockCast(company, post ? POSTS[post].role : null, v, { id: off.id, name: off.last }, trim);
+  const hurt = [...crewHurt(st), ...(handHurt() ? ['you'] : [])];
+  const people = dockCast(company, post ? POSTS[post].role : null, v, { id: off.id, name: off.last }, trim, hurt);
   drawCutaway(L.ship, L.clear, {
     t: { to: st.systemId, days: 1, left: 0, total: 1, angle: -Math.PI / 2, flipped: false, event: G.dialog.event, elapsed: 0, marks: st.hullMarks || [] },
     people, focus: v.focus, clock: d.clock, sign: v.swing === 0 ? 'CLAMPS ON' : 'CLAMPS OFF', lock: v.lock, seal: v.sealed ? dockSealTone(trim) : null, swing: v.swing,
@@ -279,7 +298,8 @@ function drawDockView(W, H) {
 Mods.register({
   id: 'dock', name: 'The inspection at the dock', builtin: true,
   init(M) {
-    M.on('eventOpened', ev => { if (ev.stage === 'dock' && G.mode === 'landed') { G.dock = dockOpened(); G.cam = null; } });  // the camera snaps to the dock
-    M.on('frame', dt => { if (G.dock) G.dock = dockStep(G.dock, dt, dockPost(), Settings.reduceMotion); });
+    M.on('eventOpened', ev => { if (ev.stage === 'dock' && G.mode === 'landed') { G.dock = dockOpened(); G.cam = null; } else G.dock = null; });  // the camera snaps to the dock; any other scene ends one left over
+    M.on('stateReady', () => { G.dock = null; });  // a new game or a load (startGame, loadGame) drops a scene without closing it
+    M.on('frame', dt => { if (dockShown()) G.dock = dockStep(G.dock, dt, dockPost(), Settings.reduceMotion); });
   },
 });

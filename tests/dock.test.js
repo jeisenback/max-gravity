@@ -15,7 +15,7 @@ const POSTS = { pilot: { role: 'pilot' }, gunner: { role: 'gunner' }, engineer: 
 const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/hulldetail.js', 'js/dock.js'],
   { G: {}, POSTS, Mods: { filter: (n, v) => v, emit() {}, register() {} }, portraitLook: () => ({ skin: '#c08a68', hair: '#2a1d18', cut: 0, v: 7 }) },
   ['dockBeats', 'dockPlan', 'dockOpened', 'dockStep', 'dockChose', 'dockCast', 'dockPostSpot', 'dockSealTone', 'drawDockOutside', 'DOCK_AT', 'DOCK_HOLD', 'DOCK_KHAKI', 'DOCK_CAP',
-    'drawPerson', 'drawRoom', 'layoutBox', 'LAYOUTS', 'towerOutline', 'deckFloor', 'HULL', 'SEATS', 'roomAt', 'WALL_TONE', 'figShade', 'POSTURES']);
+    'drawPerson', 'posture', 'drawRoom', 'layoutBox', 'LAYOUTS', 'towerOutline', 'deckFloor', 'HULL', 'SEATS', 'roomAt', 'WALL_TONE', 'figShade', 'POSTURES']);
 const lay = api.LAYOUTS.freighter, W = lay.width, LOCK = 4, HOLD = 6, WELL = lay.well.x * W;
 const plan = (choice, post) => api.dockPlan(choice, post ? POSTS[post].role : null);
 const beat = (page, t, choice = null, post = 'comms', still = false) => JSON.parse(JSON.stringify(api.dockBeats(page, t, choice, post, still)));
@@ -73,7 +73,7 @@ test('the result page: (c) from the comms post the hand brings the papers along 
   assert.deepEqual([c0.hand.dk, near(c0.hand.x, seat0.x, 2), c0.hand.carry], [0, true, 'papers'], 'from the comms seat, the papers in hand');
   for (let t = 0; t < comms.cEnd; t += 0.25) { const b = beat('result', t, 'move', 'comms'); assert.equal(b.hand.dk, 0, `${t}: along the bridge, no climb`); assert.equal(b.focus.dk, 0, `${t}: the camera on the bridge`); }
   const cEnd = beat('result', comms.cEnd - 0.1, 'move', 'comms');
-  assert.deepEqual([cEnd.hand.x, cEnd.hand.pose.name, cEnd.hand.pose.face], [api.DOCK_AT.bridge.hand, 'stand', 1], 'by the inspector, facing them');
+  assert.deepEqual([cEnd.hand.x, cEnd.hand.pose.name, cEnd.hand.pose.face], [api.DOCK_AT.bridge.comms, 'stand', 1], 'by the inspector, on the comms post\'s side, facing them');
   assert.equal(cEnd.insp.pose.face, -1, 'the inspector turned to the hand');
   for (const post of ['gunner', 'engineer']) {
     const p = plan('move', post), from = api.dockPostSpot(POSTS[post].role), poses = new Set();
@@ -81,7 +81,8 @@ test('the result page: (c) from the comms post the hand brings the papers along 
     const b0 = beat('result', 0, 'move', post), b1 = beat('result', p.cEnd - 0.1, 'move', post);
     assert.ok(from.dk > 0 && b0.hand.dk === from.dk && near(b0.hand.x, from.x, 2), `${post}: from their post on deck ${from.dk}`);
     assert.ok(poses.has('climb') && poses.has('walk'), `${post}: walks to the ladder and climbs (${[...poses]})`);
-    assert.deepEqual([b1.hand.dk, b1.hand.x, b1.hand.carry], [0, api.DOCK_AT.bridge.hand, null], `${post}: up on the bridge to speak up, nothing in hand`);
+    assert.deepEqual([b1.hand.dk, b1.hand.x, b1.hand.pose.face, b1.hand.carry], [0, api.DOCK_AT.bridge.ladder, -1, null], `${post}: up on the bridge to speak up from the ladder's side, nothing in hand`);
+    assert.equal(b1.insp.pose.face, 1, `${post}: the inspector turned to them`);
   }
 });
 
@@ -138,7 +139,7 @@ test('under reduced motion each beat jumps to where it ends: no walking or climb
     for (let t = 0; t < pR.eEnd + 2; t += 0.3) {
       const b = beat('result', t, choice, post, true);
       for (const q of [b.insp, b.junior, b.hand]) assert.ok(!q || !['walk', 'climb'].includes(q.pose.name), `result ${t}: ${q && q.pose.name}`);
-      if (b.beat === 'c') assert.equal(b.hand.x, api.DOCK_AT.bridge.hand, `result ${t}: (c) the hand at once by the inspector`);
+      if (b.beat === 'c') assert.equal(b.hand.x, post === 'comms' ? api.DOCK_AT.bridge.comms : api.DOCK_AT.bridge.ladder, `result ${t}: (c) the hand at once by the inspector`);
       if (b.beat === 'e' || b.beat === 'done') { assert.equal(b.insp, null, `result ${t}: (e) gone at once`); assert.equal(b.swing, t >= pR.down ? 1 : 0); }
     }
   }
@@ -191,6 +192,26 @@ test('the crew keep their posts and the captain the bridge; the hand is moved on
   }
   const moved = api.dockCast(company, 'slicer', api.dockBeats('result', 1, 'move', 'comms', false), { id: 'off', name: 'V' }, '#ff8a4a').find(p => p.id === 'you');
   assert.ok(moved.pose && moved.pose.name === 'walk' && moved.look.carry === 'papers', 'the hand walking with the papers in (c)');
+});
+
+test('the hurt lie in the medbay, the hand too; and nobody keeps a post where the two walk: the lock deck left of the well, the hold deck from the well to the junior\'s place', () => {
+  const company = [{ id: 'you', role: 'you', name: 'You' }, { id: 'a', role: 'pilot', name: 'Ines' }, { id: 'q', role: 'quartermaster', name: 'Hana' }, { id: 'i', role: 'icehand', name: 'Bo' },
+    { id: 'i2', role: 'icehand', name: 'Ty' }, { id: 'm', role: 'medic', name: 'Ana' }, { id: 'e', role: 'engineer', name: 'Rosa' }, { id: 'cap', role: 'captain', name: 'Hester' }];
+  const med = api.roomAt('medbay');
+  for (const hurt of [[], ['a'], ['a', 'you']]) for (const post of ['comms', 'gunner']) {
+    const people = api.dockCast(company, POSTS[post].role, api.dockBeats('open', 3, null, post, false), { id: 'off', name: 'V' }, '#ff8a4a', hurt), at = `${post}, hurt ${hurt}`;
+    for (const id of hurt) {
+      const p = people.find(q => q.id === id);
+      assert.deepEqual([p.room, p.at, p.dk], ['medbay', 'bed', med.deck], `${at}: ${id} in the medbay`);
+      assert.ok(p.x >= med.x0 && p.x <= med.x1, `${at}: ${id} inside it`);
+      assert.equal(api.posture(p, 'move', 0, false).name, 'bunk', `${at}: ${id} lying on the cot`);
+    }
+    for (const p of people.filter(q => !q.visitor && !hurt.includes(q.id))) {
+      const x = p.x * W;
+      assert.ok(!(p.dk === LOCK && x < WELL + 12), `${at}: ${p.id} at ${x} on the lock deck, where the two come and go`);
+      assert.ok(!(p.dk === HOLD && x > WELL - 12 && x < api.DOCK_AT.hold.junior + 20), `${at}: ${p.id} at ${x} on the hold deck, where the junior walks and counts`);
+    }
+  }
 });
 
 // ---------- the figures and the rooms ----------
@@ -329,29 +350,83 @@ test('a scene with no stage at the dock (the customs crewmate, any other) opens 
   await done();
 });
 
+test('a load or a new game drops the dock with the scene: nothing is stepped after it, and a later scene leaves the burn\'s camera alone', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    landInspected('comms');
+    const before = !!G.dock;
+    loadSlot(1);
+    const loaded = G.dock;
+    while (G.dialog) finishEvent();
+    sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    G.cam = { x: 123, y: 456, t: G.time };
+    openEvent({ title: 'Other', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); chooseEvent(0); finishEvent();
+    const cam = G.cam && G.cam.x === 123 && G.cam.y === 456;
+    landInspected('gunner'); startGame({ slot: 2, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' });
+    return { before, loaded, cam, dock: G.dock, started: G.dock };
+  });
+  assert.deepEqual(r, { before: true, loaded: null, cam: true, dock: null, started: null });
+  await done();
+});
+
+test('the hand\'s post is read as the scene reads it: an owner who kept a post only pays, and the dock leaves them on the bridge', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+    const st = G.state; st.story.next = 1e9; st.tutorial = null; st.career = { post: 'gunner', skill: {}, kit: [], picks: [] };
+    st.cargo = { water: 50 }; st.rep['Dome Pact'] = 0; st.credits = 20000;
+    const at = planetNamed('Mars'); st.systemId = at.sid; st.planet = at.pl.name; resetWorld(); G.mode = 'landed'; G.dialog = null; inspectAtLanding(at.pl);
+    const labels = G.dialog.event.choices.map(c => c.label), post = dockPost(), shown = dockShown();
+    let hand = null; const real = window.drawCutaway; window.drawCutaway = (box, clear, dock) => { if (dock) hand = dock.people.find(p => p.role === 'you'); return real(box, clear, dock); };
+    try { chooseEvent(0); G.dock.t = 5; drawDockView(innerWidth, innerHeight); } finally { window.drawCutaway = real; }
+    return { labels: labels.length, post, shown, choice: G.dock.choice, hand: hand && { dk: hand.dk, room: hand.room, pose: hand.pose || null } };
+  });
+  assert.equal(r.labels, 1, 'the scene: only pay'); assert.ok(r.shown);
+  assert.equal(r.post, null, 'no post to move from');
+  assert.equal(r.choice, 'pay');
+  assert.deepEqual(r.hand, { dk: 0, room: 'bridge', pose: null }, 'the hand on the bridge, not walked from the guns');
+  await done();
+});
+
 const WIDTHS = [[1000, 700], [1280, 800], [1600, 900]];
-test('the camera keeps each beat\'s room in the part the scene\'s page leaves clear, from 1000 to 1600 wide, for the comms post and another', async () => {
+// Who each beat must keep in the part the page leaves clear at an instant (from the beats themselves): (a) both on the way up; (b) the inspector on the
+// way and then with the captain, and once the camera goes down, the junior; (c) the hand, and the inspector too whenever the hand is on the bridge;
+// (d) the junior; (e) whoever is on the lock deck, or the inspector on the way down to it.
+const DUE = () => {
+  window.dueAt = (page, t, choice, post) => {
+    const b = dockBeats(page, t, choice, post, Settings.reduceMotion), p = dockPlan(choice, post ? POSTS[post].role : null), L = 4;
+    if (b.beat === 'a') return ['insp', 'junior'];
+    if (b.beat === 'b') return t < p.bBridge ? (b.insp.moving ? ['insp'] : ['insp', 'captain']) : ['junior'];
+    if (b.beat === 'c') return b.hand.dk === 0 ? ['you', 'insp'] : ['you'];
+    if (b.beat === 'd') return ['junior'];
+    if (b.beat === 'e') { const on = ['insp', 'junior'].filter(k => b[k] && Math.abs(b[k].dk - L) < 0.01); return on.length ? on : b.insp ? ['insp'] : []; }
+    return [];
+  };
+};
+test('the camera keeps each beat\'s people in the part the scene\'s page leaves clear at every instant, from 1000 to 1600 wide, for three posts', async () => {
   for (const [width, height] of WIDTHS) {
     const { ev, done } = await open({ viewport: { width, height } });
-    await ev(helpers);
-    for (const post of ['comms', 'gunner']) {
+    await ev(helpers); await ev(DUE);
+    for (const post of ['comms', 'gunner', 'engineer']) {
       const r = await ev(post => {
-        const st = landInspected(post), off = dockOfficial(currentPlanet()).id, cap = hiredCaptain().id;
+        landInspected(post); const off = dockOfficial(currentPlanet()).id, cap = hiredCaptain().id, idOf = { insp: off, junior: 'dock:junior', captain: cap, you: 'you' };
         const p = dockPlan('move', POSTS[post].role), out = [];
-        const shots = [['a', 'open', p.aEnd - 0.4, null, ['insp', 'junior']], ['b-bridge', 'open', p.bBridge - 0.5, null, ['insp', 'captain']], ['b-hold', 'open', p.bEnd + 2, null, ['junior']],
-          ['c', 'result', p.cEnd - 0.5, 'move', ['you', 'insp']], ['d', 'result', p.cEnd + 2, 'move', ['junior']], ['e', 'result', p.dEnd + Math.max(...[p.eI, p.eJ].map(path => dockTime(path.slice(0, 3)))) + 1, 'move', ['insp', 'junior']]];
-        for (const [name, page, t, choice, who] of shots) {
-          const d = dockAt(page, t, choice), ids = who.map(w => (w === 'insp' ? off : w === 'junior' ? 'dock:junior' : w === 'captain' ? cap : 'you'));
-          for (const [w, id] of who.map((w, i) => [w, ids[i]])) {
-            const h = d.hits.find(q => q.id === id);
-            if (!h) { out.push(`${name}: ${w} not drawn in the clear part`); continue; }
-            for (const q of [h, h.head, h.foot]) if (q.x < d.x0 - 0.5 || q.x > d.x1 + 0.5 || q.y < d.y0 - 0.5 || q.y > d.y1 + 0.5) out.push(`${name}: ${w} at ${Math.round(q.x)},${Math.round(q.y)} outside ${Math.round(d.x0)}..${Math.round(d.x1)}, ${Math.round(d.y0)}..${Math.round(d.y1)}`);
+        let n = 0;
+        for (const [page, end] of [['open', p.bEnd + 2], ['result', p.eEnd + 1]]) for (let t = 0; t <= end; t += 0.5) {
+          const choice = page === 'open' ? null : 'move', d = dockAt(page, t, choice);
+          if (!d.dock || d.x1 > d.dock.x) out.push(`${page} ${t}: the clear part runs under the page`);
+          for (const w of dueAt(page, t, choice, post)) {
+            n++;
+            const h = d.hits.find(q => q.id === idOf[w]);
+            if (!h) { out.push(`${page} ${t} (${d.beat}): ${w} not drawn in the clear part`); continue; }
+            for (const q of [h, h.head, h.foot]) if (q.x < d.x0 - 0.5 || q.x > d.x1 + 0.5 || q.y < d.y0 - 0.5 || q.y > d.y1 + 0.5) { out.push(`${page} ${t} (${d.beat}): ${w} at ${Math.round(q.x)},${Math.round(q.y)} outside ${Math.round(d.x0)}..${Math.round(d.x1)}, ${Math.round(d.y0)}..${Math.round(d.y1)}`); break; }
           }
-          if (!d.dock || d.x1 > d.dock.x) out.push(`${name}: the clear part runs under the page`);
         }
-        return out;
+        return { out: out.slice(0, 12), n };
       }, post);
-      assert.deepEqual(r, [], `${width}x${height}, ${post}`);
+      assert.ok(r.n > 80, `${width}x${height}, ${post}: ${r.n} checks`);
+      assert.deepEqual(r.out, [], `${width}x${height}, ${post}`);
     }
     await done();
   }
