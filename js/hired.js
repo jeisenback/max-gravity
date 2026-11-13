@@ -96,7 +96,7 @@ function traitNote(id) {
 const handStat = stat => { const c = career(); return c && c.sheet ? c.sheet[stat] : STAT_BASE; };
 // Doing a job yourself: the odds are worse than a crew member's, and get better as you learn the post.
 // A roll of the hand's: the sheet's rule (sheet.js) with the stat named, the level, the kind of roll (DIFFICULTY's keys) and an edge, and what the kit adds to that kind.
-const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, DIFFICULTY[kind], edge + kitEdge(career() && career().kit, kind) + pickEdge(takenPicks(career()), kind));  // the kit's edge and the picks' (picks.js)
+const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, DIFFICULTY[kind], edge + kitEdge(career() && career().kit, kind) + pickEdge(takenPicks(career()), kind) + partEdge(G.state, kind) + stationEdge(hired(), kind));  // the kit's edge and the picks' (picks.js)
 // Whether the hand has taken a perk pick (picks.js): the one reader every perk's hook calls; false with no hand.
 const handPerk = id => { const c = career(); return !!c && !!PICKS[id] && PICKS[id].post === c.post && hasPerk(takenPicks(c), id); };  // a perk counts at the post of its pick: a burn you fly, your gunnery; a hand who swapped posts leaves it in the chair
 // Who would show the hand a taught move pick (picks.js): the post's holder, or the first officer, with the injured left out (stations.js, crew.js).
@@ -539,7 +539,7 @@ function buyIn(id) {
   st.crew = friends.map(c => c.id);
   for (const f of friends) like(f, 2, sceneSay('scene:screens', 'buyin.friend.memory', { ship: oldName }));
   // A fresh ship: nothing of the old one's wear, refits or jobs comes with you.
-  for (const k of ['condition', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
+  for (const k of ['condition', 'parts', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
   st.outfits = {}; st.torpedoes = 0;  // the turret and the launcher stay on the captain's Ice Hauler
   if (id === USED_ID) st.condition = { ...USED_CONDITION };  // but the used Ore Runner comes as she is
   home().name = shipName(false);
@@ -595,7 +595,7 @@ function goOn(st) {
 function chapterTwoShip(st) {
   st.shipId = 'lightfreighter'; st.fuel = SHIPS.lightfreighter.fuel; st.armor = SHIPS.lightfreighter.armor; dropPatches(st);  // (#935)
   st.condition = { ...USED_CONDITION }; st.outfits = {}; st.torpedoes = 0; st.cargo = {}; st.paid = {};
-  for (const k of ['refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
+  for (const k of ['parts', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];  // her parts are as they came (parts.js)
   home().name = 'Ore Runner';
 }
 

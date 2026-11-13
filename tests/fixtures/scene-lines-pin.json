@@ -28762,5 +28762,1305 @@
    "Jury-rig it yourself",
    "Nurse it along"
   ]
+ },
+ {
+  "id": "scene:parts:ore-tug-coil",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The drive is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the drive."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the drive, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The drive is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the drive."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the drive, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Drive Repair",
+  "text": "Tomas has the drive open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a drive coil off a Ganymede ore tug, rewound twice, for 1,080 cr: it should last longer than most, but it never quite runs at full. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:hot-injector",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The drive is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the drive."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the drive, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The drive is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the drive."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the drive, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Drive Repair",
+  "text": "Tomas has the drive open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, an injector rail from a scrapped courier, tuned to run hot, for 1,080 cr: it runs a little better than new, but it will wear out sooner. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:hauler-manifold",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The drive is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the drive."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the drive, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The drive is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the drive."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the drive, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Drive Repair",
+  "text": "Tomas has the drive open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a coolant manifold off a Ceres water hauler, its seals already replaced once, for 1,080 cr: it should last longer than most, but it never quite runs at full. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:cutter-feed",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The fire control is back at 90. The fund pays 1,080 cr for the used one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the fire control."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the fire control, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 85. The fund pays 480 cr for the printed one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the fire control."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the fire control, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Fire Control Repair",
+  "text": "Tomas has the fire control open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a feed off a Compact patrol cutter, faster than it needs to be, for 1,080 cr: the guns hit a little harder with it, but it will wear out sooner. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:raider-board",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The fire control is back at 92. The fund pays 1,080 cr for the used one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the fire control."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the fire control, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 87. The fund pays 480 cr for the printed one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the fire control."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the fire control, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Fire Control Repair",
+  "text": "Tomas has the fire control open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a fire-control board from a Rook raider, the old tallies still scratched on the case, for 1,080 cr: it is easier to work with, but it never quite runs at full. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:escort-mount",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The fire control is back at 92. The fund pays 1,080 cr for the used one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the fire control."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the fire control, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 87. The fund pays 480 cr for the printed one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the fire control."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the fire control, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Fire Control Repair",
+  "text": "Tomas has the fire control open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a gun mount out of a decommissioned escort, stiff in the cold, for 1,080 cr: it should last longer than most, but the guns hit a little softer with it. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:picket-bank",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The shields is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the shields."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the shields, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The shields is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the shields."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the shields, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Shields Repair",
+  "text": "Tomas has the shields open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a capacitor bank off a Fleet picket, rated for a hull twice this size, for 1,080 cr: the shields hold a little more, but it will wear out sooner. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:taped-emitter",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The shields is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the shields."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the shields, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The shields is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the shields."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the shields, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Shields Repair",
+  "text": "Tomas has the shields open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a field emitter out of the Boneyard, wrapped in somebody else's tape, for 1,080 cr: it should last longer than most, but the shields hold a little less. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:yacht-regulator",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The shields is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the shields."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the shields, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The shields is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the shields."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the shields, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Shields Repair",
+  "text": "Tomas has the shields open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a regulator from a yacht that never saw a fight, for 1,080 cr: it runs a little better than new, but the shields hold a little less. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:hospital-stack",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The life support is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the life support."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the life support, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The life support is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the life support."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the life support, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Life Support Repair",
+  "text": "Tomas has the life support open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a scrubber stack out of a hospital ship, quieter than the old one, for 1,080 cr: it should last longer than most, but it never quite runs at full. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:grower-plant",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The life support is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the life support."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the life support, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The life support is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the life support."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the life support, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Life Support Repair",
+  "text": "Tomas has the life support open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, an air plant from a Juno grower's barge, still smelling faintly of soil, for 1,080 cr: it runs a little better than new, but it will wear out sooner. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:camp-reclaimer",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The life support is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the life support."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the life support, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The life support is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the life support."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the life support, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Life Support Repair",
+  "text": "Tomas has the life support open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a water reclaimer off a mining camp, its filters labelled in a Hollows hand, for 1,080 cr: it should last longer than most, but it never quite runs at full. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:survey-array",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The sensors is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the sensors."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the sensors, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The sensors is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the sensors."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the sensors, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Sensors Repair",
+  "text": "Tomas has the sensors open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a scope array off a survey ship, still calibrated for rocks, for 1,080 cr: it is easier to work with, but it will wear out sooner. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:pirate-head",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The sensors is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the sensors."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the sensors, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The sensors is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the sensors."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the sensors, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Sensors Repair",
+  "text": "Tomas has the sensors open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a sensor head from a pirate's boat, half its labels scraped off, for 1,080 cr: it runs a little better than new, but it will wear out sooner. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:trainer-ranger",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the used one, and Hester hears you out and takes it. The sensors is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the sensors."
+    ],
+    "fx": {
+     "fund": -1080
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the sensors, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The sensors is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the sensors."
+    ],
+    "fx": {
+     "fund": -480
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the sensors, and I said no."
+    ],
+    "fx": {
+     "fund": -2400
+    },
+    "next": null
+   }
+  ],
+  "title": "Sensors Repair",
+  "text": "Tomas has the sensors open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A used one, a ranging unit out of a Fleet trainer, slow to warm up, for 1,080 cr: it should last longer than most, but it never quite runs at full. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the used one",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:argued:false",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You argued for the fire control part, and it held."
+    ],
+    "fx": {
+     "fund": -2400,
+     "p1": 1
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You argued for the fire control part, and it held."
+    ],
+    "fx": {
+     "fund": -2400,
+     "p1": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 87. The fund pays 480 cr for the printed one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the fire control.",
+     "9 Jul 2214: You argued for the fire control part, and it held."
+    ],
+    "fx": {
+     "fund": -480,
+     "p1": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the fire control, and I said no.",
+     "9 Jul 2214: You argued for the fire control part, and it held."
+    ],
+    "fx": {
+     "fund": -2400,
+     "p1": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Fire Control Repair",
+  "text": "Tomas has the fire control open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the printed one"
+  ]
+ },
+ {
+  "id": "scene:parts:argued:true",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Hester takes the new one. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You argued for the fire control part, and it broke down."
+    ],
+    "fx": {
+     "fund": -2400,
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Hester takes the new one. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You argued for the fire control part, and it broke down."
+    ],
+    "fx": {
+     "fund": -2400,
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 85. The fund pays 480 cr for the printed one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the fire control.",
+     "9 Jul 2214: You argued for the fire control part, and it broke down."
+    ],
+    "fx": {
+     "fund": -480,
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the fire control, and I said no.",
+     "9 Jul 2214: You argued for the fire control part, and it broke down."
+    ],
+    "fx": {
+     "fund": -2400,
+     "p1": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "Fire Control Repair",
+  "text": "Tomas has the fire control open on the pad. It is at 70 and wearing faster than it should. The yard can put it right three ways. A new part, rated, for 2,400 cr. A printed one, logged as temporary, for 480 cr. The fund holds 120,000 cr, and Hester means to take the new one.",
+  "labels": [
+   "Let the captain decide",
+   "Argue for the printed one"
+  ]
  }
 ]

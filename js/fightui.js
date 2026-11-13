@@ -36,7 +36,8 @@ function startShipFight(spec, flee, o = {}) {
   rateFoe(s);
   const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
   const me = ship(), entry = captainEntry(), side = () => shipSide({ dmgMult: 1, ...SHIPS[foe.shipId], armor: foe.maxArmor }, { grade: s.grade, ...FOE_TYPES[foe.shipId], torps: (FOE_TYPES[foe.shipId] || {}).torps || 0, breakAt: hasTrait(hired(), 'hard-case') ? FIGHT.BREAK + 0.1 : undefined });  // Hard Case (traits.js): she breaks off a tenth sooner
-  const mine = shipSide(me, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0) + (handPerk('marksman') ? 1 : 0), launcher: me.launcher, torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
+  const fit = partFight(st), own = stationFight(hired());  // the fitted parts' and the hand's station's fight numbers (parts.js, #1135)
+  const mine = shipSide({ ...me, dmgMult: me.dmgMult * perf('fire') * fit.dmgMult * own.dmgMult, shields: me.shields * perf('shields') * fit.shields * own.shields }, { skill: (postMode('gunner') === 'crewed' ? roleSkill('gunner') : skillLevel('gunner')) + (boresighted() ? 1 : 0) + (handPerk('marksman') ? 1 : 0), launcher: me.launcher, torps: me.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0 });
   mine.pdcHold = heldCut();
   mine.armor = Math.min(mine.maxArmor, Math.max(1, Math.round(st.armor * FIGHT.POOL)));  // at least 1: a ship at its last armor still fights
   s.armor0 = { real: st.armor, fight: mine.armor };  // what fightTook measures the real loss from
@@ -84,8 +85,13 @@ const fightHits = events => (events.length ? events.map(fightHit).join(', ') : f
 
 // What the turn cost: the ship keeps its armor (the fight's armor lost since the start, divided by FIGHT.POOL, off the real armor it started with; never up, never under 1) and its torpedoes, and a heavy hit (the hull lost more than FIGHT.HEAVY_HIT of your real maximum armor, shields and armor, R23)
 // can cost a casualty (CASUALTY_ODDS, more against a veteran crew or a pair, as the raid's lost beats did) and hurt the hand (FIGHT.HAND_HURT), said on the log's last line.
+const FIGHT_WEAR = { salvo: 0.4, hit: 0.9 };  // what a salvo takes off fire control and a hit off the shields, in the hand's fight
 function fightTook(s, events) {
   const st = G.state, me = s.state.me, dealt = events.filter(e => e.who === 'foe' && e.part === 'hull').reduce((n, e) => n + e.dmg, 0), out = [];
+  // Each salvo wears fire control and each hit the shields, scaled so a fight costs about what one costs the owner (duel.js: 0.05 a shot over about
+  // a hundred shots, 0.3 a hit over about fifteen), from a hand's fight of about six turns of two salvos and five hits (#1135).
+  wear('fire', FIGHT_WEAR.salvo * events.filter(e => e.who === 'me').length);
+  wear('shields', FIGHT_WEAR.hit * events.filter(e => e.who === 'foe' && e.part === 'hull').length);
   st.armor = Math.max(1, s.armor0.real - Math.max(0, Math.round((s.armor0.fight - me.armor) / FIGHT.POOL)));
   if (me.launcher) st.torpedoes = me.torps;
   if (dealt > FIGHT.HEAVY_HIT * me.maxArmor / FIGHT.POOL) {  // judged at the real scale: the foe's damage is not pooled, so a heavy turn takes what it did before #814
