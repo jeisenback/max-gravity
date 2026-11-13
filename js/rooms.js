@@ -433,9 +433,9 @@ function roomPipe(ctx, [ax, ay], [bx, by], step, th = 5) {
 // it; the pump's line into the housing; the coolant up from the housing into the ceiling and along it, clear of the lamp; the drive's lines
 // down through the deck. No words: the stencils are marks. Nothing under the room's name. Its lamp is a fitting (LAMP_FITTED).
 function roomEngine(ctx, r, s, X) {
-  const { w, time } = s, F = r.floor, T = r.top, n = v => Math.round(v * 100) / 100, a = r.x0, vx = n(X(0.5)), e = roomEye(r);
+  const { w } = s, F = r.floor, T = r.top, n = v => Math.round(v * 100) / 100, a = r.x0, vx = n(X(0.5)), e = roomEye(r);
   const wall = (px, py, fn) => { const ax = n(e.vx + (px - e.vx) / e.k), ay = n(e.vy + (py - e.vy) / e.k); roomOnWall(ctx, ax, ay, () => fn(ax, ay)); };  // fn draws round (ax, ay), which lands at (px, py)
-  const hot = (s.burning ? 0.55 : 0.25) + 0.45 * w.burn + 0.1 * Math.sin(time * 4) * w.burn;
+  const hot = s => (s.burning ? 0.55 : 0.25) + 0.45 * w.burn + 0.1 * Math.sin(s.time * 4) * w.burn;  // the drive's heat, pulsing in the burn: read live (#1123)
   const core = w.burn > 0.5 ? '255,140,60' : w.flip > 0.5 ? '255,176,48' : '90,150,220';
   // On the wall: the pipe along its top and down its right side, its valve.
   wall(199, F - 92, (x, y) => {
@@ -457,7 +457,7 @@ function roomEngine(ctx, r, s, X) {
   });
   wall(236, F - 77, (x, y) => {  // the gauge panel at eye height: the coolant's pressure and temperature, and the drive
     roomPart(ctx, roomRound(x - 18, y - 8, 36, 16, 1.2), '#22384e', { top: 0.8, under: 1 });
-    [-11, 0, 11].forEach((dx, k) => roomGauge(ctx, x + dx, y, 5, gaugeNeedle(w, time, k)));
+    roomLive(ctx, s, (ctx, s) => [-11, 0, 11].forEach((dx, k) => roomGauge(ctx, x + dx, y, 5, gaugeNeedle(w, s.time, k))));
     for (const [sx, sy] of [[x - 16.5, y - 6.5], [x + 16.5, y - 6.5], [x - 16.5, y + 6.5], [x + 16.5, y + 6.5]]) roomDot(ctx, sx, sy, 0.5, '#56708c');
   });
   wall(279, F - 70, (x, y) => {  // the tool board, each tool in its painted outline, the pliers out
@@ -509,7 +509,7 @@ function roomEngine(ctx, r, s, X) {
   roomAtDepth(ctx, a + 250, F - 40, 0.3, () => {  // the terminal, the engineer's console: its foot, its arm and its screen
     roomPart(ctx, roomRound(a + 243, F - 43, 14, 3, 0.8), '#2a3c50', { top: 0.5 });
     roomPart(ctx, roomRound(a + 248.5, F - 49, 3, 6, 0.6), '#2a3c50', { top: 0, side: 0.8 });
-    roomScreen(ctx, a + 239, F - 63, 22, 13, w.flip > 0.5 ? 'status' : 'bars', time, w.burn > 0.5);
+    roomLive(ctx, s, (ctx, s) => roomScreen(ctx, a + 239, F - 63, 22, 13, w.flip > 0.5 ? 'status' : 'bars', s.time, w.burn > 0.5));
   });
   roomAtDepth(ctx, a + 300, F - 40, 0.35, () => {  // the manuals, stacked, and a mug of tea gone cold, its handle
     roomPart(ctx, roomRound(a + 292, F - 43, 18, 3, 0.6), '#4a3a30', { top: 0.6 }); roomPart(ctx, roomRound(a + 294, F - 46, 15, 3, 0.6), '#34485a', { top: 0.6 });
@@ -529,9 +529,9 @@ function roomEngine(ctx, r, s, X) {
   for (let k = 0; k < 4; k++) roomFlat(ctx, hx0 + 7.5 + k * 3, F - 57, 1.5, 2.4, '#8a7a40');  // a hazard band under it
   roomPart(ctx, roomRound(n(vx - 16), F - 82, 32, 10, 1.5), '#33495f', { top: 0.8, under: 0.8 });  // the injector cover, its bolts, the telltales on it
   for (const px of [vx - 14, vx + 14]) for (const py of [F - 80, F - 74]) roomDot(ctx, px, py, 0.6, '#56708c');
-  for (let k = 0; k < 4; k++) roomDot(ctx, vx - 6 + 4 * k, F - 77, 1, (Math.floor(time * 2 + k) % 3) ? '#2f5577' : '#c8703a');
+  roomLive(ctx, s, (ctx, s) => { for (let k = 0; k < 4; k++) roomDot(ctx, vx - 6 + 4 * k, F - 77, 1, (Math.floor(s.time * 2 + k) % 3) ? '#2f5577' : '#c8703a'); });
   roomPart(ctx, roomRound(n(vx - 8), F - 69, 16, 10, 2), '#1a2c40', { top: 0.6 });  // the core's sight port, lit by the drive
-  roomFlat(ctx, vx - 6, F - 67, 12, 6, `rgba(${core},${n(0.35 + 0.5 * hot)})`);
+  roomLive(ctx, s, (ctx, s) => roomFlat(ctx, vx - 6, F - 67, 12, 6, `rgba(${core},${n(0.35 + 0.5 * hot(s))})`));
   roomPart(ctx, roomRound(n(vx - 16), F - 58, 32, 32, 16), '#26394d', { top: 0.6 });  // the maintenance hatch: its ring, its door, its dogs, its wheel
   roomPart(ctx, roomRound(n(vx - 14), F - 56, 28, 28, 14), '#30485f', { top: 1, under: 1 });
   for (const [dx, dy, dw, dh] of [[-1, -15.5, 2, 3], [-1, 12.5, 2, 3], [-15.5, -1, 3, 2], [12.5, -1, 3, 2]]) roomFlat(ctx, vx + dx, F - 42 + dy, dw, dh, '#8796a5');
@@ -559,10 +559,10 @@ function roomEngine(ctx, r, s, X) {
     roomPart(ctx, roomRound(px, F - 4, 8, 16, 1), '#34485c', { top: 0, side: 1.5 });
     roomPart(ctx, roomRound(n(px - 2), F - 1.5, 12, 3, 0.8), '#4a6078', { top: 0.6 });
   }
-  if (w.flip < 1) {  // the drive's heat, a glow on the housing while it runs
-    const gy = F - 50, g = ctx.createRadialGradient(vx, gy, 4, vx, gy, 70); g.addColorStop(0, `rgba(${core},${n(0.18 * hot * (1 - w.flip))})`); g.addColorStop(1, `rgba(${core},0)`);
+  if (w.flip < 1) roomLive(ctx, s, (ctx, s) => {  // the drive's heat, a glow on the housing while it runs
+    const gy = F - 50, g = ctx.createRadialGradient(vx, gy, 4, vx, gy, 70); g.addColorStop(0, `rgba(${core},${n(0.18 * hot(s) * (1 - w.flip))})`); g.addColorStop(1, `rgba(${core},0)`);
     ctx.fillStyle = g; ctx.fillRect(vx - 70, F - 92, 140, 92);
-  }
+  });
 }
 
 // Bunk k of n in the berths room r, three tiers high (look.md, rule 1, #1023), a person long (BUNK, #972): its left end x, its length w, and y
@@ -763,7 +763,7 @@ const BUNK_DRAW = {
 // place (berthKeep) is touched. s.bunks (#934): each bunk's owner, { slept, and their kit (bunkKit) }, or null for a spare one; without it the
 // first s.asleep are slept in and every bunk is bare.
 function roomBerths(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, n = Math.min(12, s.berths), well = s.well || { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }, { w: cw } = berthBunk(r, n, 0, well);
+  const { w } = s, F = r.floor, n = Math.min(12, s.berths), well = s.well || { x0: (r.x0 + r.x1) / 2, x1: (r.x0 + r.x1) / 2 }, { w: cw } = berthBunk(r, n, 0, well);
   const shut = W >= 220 && n >= 3 ? 2 : -1, r2 = v => Math.round(v * 100) / 100;
   if (W >= 300) roomOnWall(ctx, r.x0 + 36, F - 45, () => {  // the lockers: two doors, their vents, number plates, handles and the paint worn by them
     const lx = r.x0 + 16;  // on the wall left of the couch rack (#990)
@@ -779,14 +779,15 @@ function roomBerths(ctx, r, s, X, W) {
   });
   for (const [sx, sw] of [[well.x0 - 40, 5], [well.x0 - 24, 4], [berthCorner(r, n, well).x1 - 26, 5], [berthCorner(r, n, well).x1 - 12, 4]]) roomFlat(ctx, sx, F - 3, sw, 0.8, '#3e4c5a');  // scuffs on the deck by the bunks
   const c = berthCorner(r, n, well), open = c.x1 - c.x0;  // the crew's corner beside the well, each thing on the back wall, anchored at its middle
-  if (W >= 300 && open >= 70) roomOnWall(ctx, c.x0 + 33, F - 73, () => { roomWallUnit(ctx, c.x0 + 2, F, w, time, s.still); roomLaundry(ctx, c.x0 + 32, F, s.age || 0); });
+  if (W >= 300 && open >= 70) roomOnWall(ctx, c.x0 + 33, F - 73, () => { roomWallUnit(ctx, c.x0 + 2, F, w, s); roomLaundry(ctx, c.x0 + 32, F, s.age || 0); });
   const pw = Math.min(84, open - 126); if (W >= 300 && pw >= 60) roomOnWall(ctx, c.x0 + 126 + pw / 2, F - 65, () => roomPinboard(ctx, c.x0 + 126, F, pw));
   if (W >= 260 && open >= 82) {  // the towel on its hook, moved with the wall unit it hangs beside: it swings, moved, not redrawn (a path given to roomPart is fixed per layout)
-    const hx = c.x0 + 74, [ex, ey] = hangEnd(hx, F - 60, 10, 1.3, w, time, s.still);
-    roomOnWall(ctx, c.x0 + 33, F - 73, () => {
+    const hx = c.x0 + 74;
+    roomOnWall(ctx, c.x0 + 33, F - 73, () => roomLive(ctx, s, (ctx, s) => {  // it swings (#1123)
+      const [ex, ey] = hangEnd(hx, F - 60, 10, 1.3, w, s.time, s.still);
       roomFlat(ctx, hx - 1.5, F - 62, 3, 3, '#3a4a5a'); ctx.strokeStyle = roomTint('#7a8a9a'); ctx.lineWidth = 1; roomSeg(ctx, [[hx, F - 60], [ex, ey]]);
       ctx.save(); ctx.translate(ex, ey); roomPart(ctx, roomRound(-3.5, 0, 7, 11, 1.2), '#8a4a40', { top: 0.6, side: 1.5 }); roomFlat(ctx, -3, 7.5, 6, 1.2, '#6a3a32'); ctx.restore();
-    });
+    }));
   }
   if (W >= 240 && open >= 118) roomOnWall(ctx, c.x0 + 104, F - 56, () => roomGuitar(ctx, c.x0 + 104, F));
   const posts = new Map(), cols = new Map();  // each column's bunks (and their numbers) by its left end; each post's x and how high it stands
@@ -819,7 +820,7 @@ function roomBerths(ctx, r, s, X, W) {
     roomFlat(ctx, px - 3.5, F - 2, 7, 2, '#20384f'); for (const sy of [top + 2, F - 40]) if (sy > top && sy < F - 4) roomDot(ctx, px, sy, 0.6, '#56708c');  // only on the post
   }
   if (posts.size) { const px = Math.min(...posts.keys()); roomPart(ctx, roomRound(r2(px - 2.8), F - 22, 5.6, 3.2, 0.6), '#7a7462', { top: 0 }); }  // a wrap of tape round the first post
-  if (shut >= 0 && s.asleep > 0 && w.cruise > 0.5) { const b = berthBunk(r, n, shut, well); worldText(ctx, s.zoom, Math.floor(time) % 2 ? 'z z' : 'z', b.x + cw - 24, b.y - 12, 12, '#9fb4c9'); }
+  if (shut >= 0 && s.asleep > 0 && w.cruise > 0.5) { const b = berthBunk(r, n, shut, well); roomLive(ctx, s, (ctx, s) => worldText(ctx, s.zoom, Math.floor(s.time) % 2 ? 'z z' : 'z', b.x + cw - 24, b.y - 12, 12, '#9fb4c9')); }
 }
 
 // The crew's corner of the berths (#933): the open wall between the well and the first bunk right of it, in world x, a step clear of each.
@@ -831,7 +832,7 @@ function berthCorner(r, n, well) {
 // The wall unit at x (62 wide) on the deck F: two shelves with a lip for zero g; on the lower one books of many heights strapped in and a mug
 // in its holder, on the upper one a framed photo, a plant with its pot clipped down and the reading lamp (its glow in cruise), a newer one on an
 // adapter plate on the old lamp's base, with fresh bolts (point 6).
-function roomWallUnit(ctx, x, F, w, time, still) {
+function roomWallUnit(ctx, x, F, w, s) {
   const n = v => Math.round(v * 100) / 100;
   for (const ux of [x, x + 59]) roomPart(ctx, roomRound(ux, F - 90, 3, 36, 0.8), '#22405c', { top: 0, side: 1.2 });
   let bx = x + 4;  // the books, their spines in many colours, the last one leaning
@@ -846,7 +847,7 @@ function roomWallUnit(ctx, x, F, w, time, still) {
   roomPart(ctx, roomRound(x + 6, F - 93, 12, 13, 1), '#3a2c20', { top: 0.8, side: 1.2 });  // the photo in its frame: two people against a sky
   roomFlat(ctx, x + 7.5, F - 91.5, 9, 10, '#3e5a6a'); roomFlat(ctx, x + 7.5, F - 85, 9, 3.5, '#2e4450');
   for (const [px, col] of [[x + 10, '#8a7a6a'], [x + 14, '#6a5a4a']]) { roomDot(ctx, px, F - 88, 1.4, col); roomFlat(ctx, px - 1.8, F - 86.5, 3.6, 3, col); }
-  roomPlant(ctx, x + 30, F - 86, w, time, still, 0.6); roomFlat(ctx, x + 26, F - 84, 8, 1.2, '#8796a5');  // the plant, its pot clipped to the shelf
+  roomLive(ctx, s, (ctx, s) => roomPlant(ctx, x + 30, F - 86, w, s.time, s.still, 0.6)); roomFlat(ctx, x + 26, F - 84, 8, 1.2, '#8796a5');  // the plant, its pot clipped to the shelf
   const lx = x + 50;  // the reading lamp
   roomPart(ctx, roomRound(lx - 6, F - 82, 12, 2, 0.8), '#2e4458', { top: 0.5 });  // the old lamp's base, and the newer lamp on an adapter plate on it, fresh bolts
   roomPart(ctx, roomRound(lx - 4, F - 83.4, 8, 1.4, 0.5), '#4a5058', { top: 0.4 }); for (const bx of [lx - 5.4, lx + 4.4]) roomFlat(ctx, bx, F - 81.6, 1, 1, '#8a929a');
@@ -982,14 +983,15 @@ function roomGalleyScreen(ctx, x, y, on, s) {
   roomDot(ctx, px + 4, y - 1.5, 1.1, '#6a7f95'); ctx.lineWidth = 0.7; ctx.strokeStyle = FIG_LINE; ctx.stroke();  // its elbow
   roomPart(ctx, roomRound(x - hw, top, hw * 2, hh * 2, 1.2), '#1a2430', { top: 0.8, under: 1.6 });  // the bezel, its lower lip the tip toward the table
   const glass = roomRound(x - hw + 1.6, top + 1.6, hw * 2 - 3.2, hh * 2 - 4, 0.6);
-  if (on) {
+  if (on) roomLive(ctx, s, (ctx, s) => {  // its picture flickers (#1123)
     const flick = s.still ? 1 : 0.93 + 0.07 * Math.sin((s.time || 0) * 11), lit = ctx.createLinearGradient(x, top, x, y + hh);
     lit.addColorStop(0, '#c4e2fa'); lit.addColorStop(1, '#7fb4e2');  // a picture, not a tile
     ctx.save(); ctx.globalAlpha = flick; ctx.fillStyle = lit; figPath(ctx, glass); ctx.fill(); ctx.restore();
     const g = ctx.createRadialGradient(x, y + 22, 2, x, y + 22, 46);  // its cool light on the table and whoever sits there
     g.addColorStop(0, `rgba(150,200,255,${0.24 * flick})`); g.addColorStop(1, 'rgba(150,200,255,0)');
     ctx.fillStyle = g; ctx.fillRect(x - 46, y - 24, 92, 92);
-  } else {
+  });
+  else {
     ctx.fillStyle = roomTint('#0e1820'); figPath(ctx, glass); ctx.fill();
     ctx.strokeStyle = 'rgba(160,190,220,0.18)'; ctx.lineWidth = 0.8; roomSeg(ctx, [[x - 7, y + 3], [x + 1, y - 4]]);  // a reflection
   }
@@ -1044,7 +1046,7 @@ function roomRadio(ctx, x, y, on) {
   ctx.restore();
 }
 function roomGalley(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, latch = (x, y) => { roomFlat(ctx, x, y, 2, 4, '#8796a5'); roomDot(ctx, x + 1, y - 1.2, 0.5, '#56708c'); roomFlat(ctx, x - 1.4, y + 0.6, 1.2, 2.6, '#6a747c'); };  // the paint worn beside it
+  const { w } = s, F = r.floor, latch = (x, y) => { roomFlat(ctx, x, y, 2, 4, '#8796a5'); roomDot(ctx, x + 1, y - 1.2, 0.5, '#56708c'); roomFlat(ctx, x - 1.4, y + 0.6, 1.2, 2.6, '#6a747c'); };  // the paint worn beside it
   const cupboards = (x0, x1, top, bottom) => {  // a wall cupboard of two doors, each with its latch where they meet
     roomPart(ctx, roomRound(x0, top, x1 - x0, bottom - top, 1.5), '#22405c', { top: 1.2, side: 2.5, under: 1.5 });
     const dw = (x1 - x0 - 6) / 2;
@@ -1073,8 +1075,10 @@ function roomGalley(ctx, r, s, X, W) {
     roomPart(ctx, roomRound(X(0.25), F - 71.5, X(0.39) - X(0.25), 2, 1), '#3a5470', { top: 0.6 });  // a grab rail for zero g
   });
   if (W >= 300) roomOnWall(ctx, X(0.335), F - 52, () => roomGalleyScreen(ctx, X(0.335), F - 52, !!s.screen, s));  // the screen on its arm, over the table's end (#1035)
-  const pv = windowView(s.pr, s.spin, 'porthole'), pc = s.places && s.places[pv.place];  // the place she left falling behind, or after the flip the destination (#936)
-  roomOnWall(ctx, X(0.47), F - 68, () => roomPorthole(ctx, X(0.47), F - 68, 13, s.spin, pc && { col: pc, r: Math.max(1, pv.k * 13 * 0.95), a: pv.a }));
+  roomOnWall(ctx, X(0.47), F - 68, () => roomLive(ctx, s, (ctx, s) => {  // live: it turns with the ship and the place in it grows (#1123)
+    const pv = windowView(s.pr, s.spin, 'porthole'), pc = s.places && s.places[pv.place];  // the place she left falling behind, or after the flip the destination (#936)
+    roomPorthole(ctx, X(0.47), F - 68, 13, s.spin, pc && { col: pc, r: Math.max(1, pv.k * 13 * 0.95), a: pv.a });
+  }));
   if (W >= 340) roomOnWall(ctx, (X(0.55) + X(0.63)) / 2, F - 85, () => cupboards(X(0.55), X(0.63), F - 96, F - 74));
   if (W >= 240) {
     // The hood on the wall centred over the burners as they lie on the hob's top (#1024), and the pans on their rail in the gap between it and the
@@ -1090,11 +1094,11 @@ function roomGalley(ctx, r, s, X, W) {
       const from = W >= 340 ? onWallX(X(0.63), (X(0.55) + X(0.63)) / 2, F - 85) : onWallX(X(0.47) + 19, X(0.47), F - 68);
       wallAt((p0 + p1) / 2, F - 63, (from + hood - sw / 2 - 2) / 2, () => {
         roomPart(ctx, roomRound(p0, F - 64, p1 - p0, 2.5, 1), '#3d5a7a', { top: 0.8 });
-        [[0.3, 6, 6], [0.75, 9, 7]].forEach(([f, l, rad], k) => {
-          const ax = p0 + (p1 - p0) * f, [ex, ey] = hangEnd(ax, F - 61.5, l, k * 1.7, w, time, s.still);
+        roomLive(ctx, s, (ctx, s) => [[0.3, 6, 6], [0.75, 9, 7]].forEach(([f, l, rad], k) => {  // the pans swing (#1123)
+          const ax = p0 + (p1 - p0) * f, [ex, ey] = hangEnd(ax, F - 61.5, l, k * 1.7, w, s.time, s.still);
           ctx.strokeStyle = roomTint('#7a8a9a'); ctx.lineWidth = 1.2; roomSeg(ctx, [[ax, F - 61.5], [ex, ey]]); roomDot(ctx, ex, ey + rad * 0.6, rad, '#4a5662');
           ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); roomDot(ctx, ex, ey + rad * 0.6, rad - 2, '#2e3842');
-        });
+        }));
       });
     }
   }
@@ -1106,7 +1110,7 @@ function roomGalley(ctx, r, s, X, W) {
     for (const k of [0, 1]) { const dx = c0 + 3 + k * (dw + 3); roomPart(ctx, roomRound(dx, F - 34, dw, 27, 1.2), k ? '#2e4658' : '#24405e', { top: 0.8, side: 1.4 }); latch(k ? dx + 2 : dx + dw - 4, F - 27); }  // the second door a replacement
     for (const [sx, sw] of [[c0 + 6, 5], [c1 - 14, 4]]) roomFlat(ctx, sx, F - 6, sw, 0.8, '#5a6670');  // scuffs, where boots go
     roomPart(ctx, roomRound(c0 - 1.5, F - 41, c1 - c0 + 3, 4, 1.2), '#2c4c6e', { top: 1, under: 0.8, solid: 0.5 });  // the worktop, at the waist
-    roomAtDepth(ctx, X(0.04), F - 41, 0.25, () => roomPlant(ctx, X(0.04), F - 47, w, time, s.still, 0.6, s.age || 0));  // small, under the room's name; drooping as the trip goes on (#935)
+    roomAtDepth(ctx, X(0.04), F - 41, 0.25, () => roomLive(ctx, s, (ctx, s) => roomPlant(ctx, X(0.04), F - 47, w, s.time, s.still, 0.6, s.age || 0)));  // small, under the room's name; drooping as the trip goes on (#935)
     // The water dispenser, standing on the worktop between the plant and the knife strip (look.md rule 5), low enough to stay clear of the room's
     // name: its foot on the top, the drip tray on it, the tap, the head and the bottle on the head.
     const d0 = X(0.08), d1 = X(0.115), dm = (d0 + d1) / 2;
@@ -1215,7 +1219,7 @@ function gunRack(ctx, r, n) {
   for (let k = 0; k < Math.min(n, GUN_CRADLES); k++) roomFlat(ctx, rx + 9 + k * 2.4 + (k >= 5 ? 1.6 : 0), F - 82.6, 0.7, 3.4, '#a09c8e');  // the count, chalked
 }
 function roomGunnery(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, T = r.top, n = v => Math.round(v * 100) / 100, hot = w.burn > 0.5, [s0, s1] = SEATS.gunnery.map(f => n(X(f)));
+  const { w } = s, F = r.floor, T = r.top, n = v => Math.round(v * 100) / 100, hot = w.burn > 0.5, [s0, s1] = SEATS.gunnery.map(f => n(X(f)));
   if (W >= 300) {  // on the wall: the recoil plate, the range tables over the second console, the conduit
     roomOnWall(ctx, 92, F - 78, () => {
       roomPart(ctx, roomRound(81, F - 87, 22, 18, 1.2), '#7a7058', { top: 1, side: 1.2, under: 1 });
@@ -1244,7 +1248,7 @@ function roomGunnery(ctx, r, s, X, W) {
   }
   // On the floor, from the left wall in: the gun station, then the second console.
   const at0 = gunConsole(ctx, s0, F);
-  roomScreen(ctx, s0 - 64, F - 57, 26, 12, 'scope', time, hot);
+  roomLive(ctx, s, (ctx, s) => roomScreen(ctx, s0 - 64, F - 57, 26, 12, 'scope', s.time, hot));
   roomPart(ctx, roomRound(n(s0 - 40), F - 41.5, 5, 3.5, 1), '#263a50', { top: 0.5 });  // the ready lamp, out at the flip
   roomDot(ctx, s0 - 37.5, F - 39.8, 1.1, w.flip > 0.5 ? '#24384c' : '#5fae6a');
   [[s0 - 31, '#3a4450'], [s0 - 23, '#4a4640']].forEach(([c, col]) => {  // the grips, the second a replacement in another finish, a trigger on each
@@ -1254,11 +1258,11 @@ function roomGunnery(ctx, r, s, X, W) {
   });
   for (const [x, cw] of [[s0 - 34, 2.4], [s0 - 26.5, 1.6], [s0 - 21, 2]]) roomFlat(ctx, x, F - 34.2, cw, 0.9, '#7e8a94');  // paint worn off where the hands rest
   gunConsole(ctx, s1, F);
-  roomScreen(ctx, s1 - 44, F - 57, 26, 12, w.flip > 0.5 ? 'status' : 'bars', time, hot);
-  if (w.flip > 0.5) {  // the heading arrow at the flip, turning
+  roomLive(ctx, s, (ctx, s) => roomScreen(ctx, s1 - 44, F - 57, 26, 12, w.flip > 0.5 ? 'status' : 'bars', s.time, hot));
+  if (w.flip > 0.5) roomLive(ctx, s, (ctx, s) => {  // the heading arrow at the flip, turning
     ctx.save(); ctx.translate(s1 - 31, F - 51); ctx.rotate(s.spin * 0.5); ctx.beginPath(); ctx.moveTo(0, -5); ctx.lineTo(3, 4); ctx.lineTo(-3, 4); ctx.closePath();
     ctx.fillStyle = '#c8903a'; ctx.fill(); ctx.restore();
-  }
+  });
   roomPart(ctx, roomRound(n(s1 - 64), F - 46, 6, 4.5, 0.8), '#8a6a48', { top: 0.6, side: 0.8 });  // the range finder's printed mount, its layers and its tag
   for (const ly of [F - 44.8, F - 43.4]) roomFlat(ctx, s1 - 63.5, ly, 5, 0.4, '#6a5038');
   ctx.strokeStyle = '#7a7462'; ctx.lineWidth = 0.5; roomSeg(ctx, [[s1 - 58.5, F - 44.5], [s1 - 57, F - 43.8]]);
@@ -1307,7 +1311,7 @@ function roomCommsRack(ctx, r, s) {
     const y = b.y + 2.5 + row * 6.5;
     roomPart(ctx, roomRound(b.x + 2.5, y, b.w - 5, 5, 0.6), '#0c1826', { top: 0 });
     roomDot(ctx, b.x + 6.5, y + 2.5, 1.5, '#3a5470');
-    for (let col = 0; col < 3; col++) { const on = Math.sin(s.time * (1.3 + row * 0.7) + col * 2.1 + row) > -0.2; roomDot(ctx, b.x + 14 + col * 5, y + 2.5, 1.1, on ? (row === 0 ? '#c8903a' : '#4f9a5f') : '#24384c'); }
+    roomLive(ctx, s, (ctx, s) => { for (let col = 0; col < 3; col++) { const on = Math.sin(s.time * (1.3 + row * 0.7) + col * 2.1 + row) > -0.2; roomDot(ctx, b.x + 14 + col * 5, y + 2.5, 1.1, on ? (row === 0 ? '#c8903a' : '#4f9a5f') : '#24384c'); } });  // blinking (#1123)
     roomDot(ctx, b.x + b.w - 4, y + 2.5, 0.6, '#56708c');  // a screw
   }
   // its cables (point 6): a loom from under the rack down its side to the console, held by cable ties, a wrap of tape where it is mended
@@ -1380,17 +1384,20 @@ function roomBridgeSeat(ctx, x, F, r = 0) {  // its pad and its foot plate solid
 // in another shade on fresh screws; the last post's screen a newer one on the old stand, on an adapter plate with fresh bolts; a printed guard over
 // a switch on the pilot's console, tagged temporary; the comms rack's cables tied and taped (roomCommsRack); the seats worn (roomBridgeSeat).
 function roomBridge(ctx, r, s, X, W) {
-  const { w, time, spin } = s, F = r.floor, g = bridgeGlass(r, s.well), n = v => Math.round(v * 100) / 100;
+  const { w } = s, F = r.floor, g = bridgeGlass(r, s.well), n = v => Math.round(v * 100) / 100;
   // bridgeGlass names the window where it is on the back wall, so its frame is drawn there as it is: anchored at the eye, which the move onto
   // the wall leaves where it is, for the wall tone. The glass is the view out, in its own colours.
   const eye = roomEye(roomBays(r, s.well).pop()), onWall = fn => roomOnWall(ctx, eye.vx, eye.vy, fn);
   onWall(() => roomPart(ctx, roomRound(g.x - 4, g.y - 4, g.w + 8, g.h + 7, 2.5), '#2a4560', { top: 1, under: 1.5 }));  // the window's frame
+  roomLive(ctx, s, (ctx, s) => {  // the view out, live: the stars turn with the ship and the place ahead grows (#1123)
+  const spin = s.spin;
   ctx.save(); ctx.beginPath(); ctx.rect(g.x, g.y, g.w, g.h); ctx.clip(); roomFlat(ctx, g.x, g.y, g.w, g.h, '#01040a');
   const cs = Math.cos(spin), sn = Math.sin(spin), mx = g.x + g.w / 2, my = g.y + g.h / 2;
   for (const [a, b, sz] of roomStars) { const sx = (a - 0.5) * g.w * 1.4, sy = (b - 0.5) * g.h * 1.6; roomDot(ctx, mx + sx * cs - sy * sn, my + sx * sn + sy * cs, sz, '#cfe3ff'); }
   const v = windowView(s.pr, spin, 'bridge'), vc = s.places && s.places[v.place];  // the destination growing ahead, or after the flip the place she left (#936)
   if (vc) roomViewDisc(ctx, g.x + g.w * 0.62, g.y + g.h * 0.55, Math.max(1.5, v.k * g.h * 0.85), vc, v.a);
   roomFlat(ctx, g.x, g.y, g.w * 0.3, g.h, 'rgba(160,200,255,0.05)'); ctx.restore();
+  });
   onWall(() => {
     ctx.strokeStyle = roomTint('#132538'); ctx.lineWidth = 1; ctx.strokeRect(g.x - 0.5, g.y - 0.5, g.w + 1, g.h + 1);  // the gasket
     for (let k = 1; k < 4; k++) {  // the struts
@@ -1409,8 +1416,8 @@ function roomBridge(ctx, r, s, X, W) {
   const o0 = n(X(0.23)), o1 = n(X(0.45)), T = r.top;
   roomPart(ctx, roomRound(o0, T + 3, o1 - o0, 10, 2), '#1d3550', { top: 0, under: 1.5 });
   for (let x = o0 + 8; x < o1 - 40; x += 9) { roomFlat(ctx, x, T + 7, 1.2, 3.5, '#8796a5'); roomDot(ctx, x + 0.6, T + 7, 0.8, '#56708c'); }
-  [w.burn + w.cruise > 0.5 ? '#4f9a5f' : '#2f3f50', w.burn > 0.5 ? '#c8604a' : '#2f3f50', w.flip > 0.5 ? '#c8903a' : '#2f3f50', Math.floor(time * 1.5) % 2 ? '#4f8ab0' : '#2f3f50']
-    .forEach((col, k) => roomDot(ctx, o1 - 32 + k * 7, T + 8, 1.6, col));
+  roomLive(ctx, s, (ctx, s) => [w.burn + w.cruise > 0.5 ? '#4f9a5f' : '#2f3f50', w.burn > 0.5 ? '#c8604a' : '#2f3f50', w.flip > 0.5 ? '#c8903a' : '#2f3f50', Math.floor(s.time * 1.5) % 2 ? '#4f8ab0' : '#2f3f50']
+    .forEach((col, k) => roomDot(ctx, o1 - 32 + k * 7, T + 8, 1.6, col)));  // the last one blinks (#1123)
   for (const x of [o0 + 3, o1 - 3]) roomDot(ctx, x, T + 8, 0.7, '#56708c');
   for (let k = 0; k < 4; k++) roomFlat(ctx, o0 + 14 + k * (o1 - o0 - 30) / 3, T + 13, 1.5, 4, '#2a3e54');
   roomPart(ctx, roomRound(o0 + 10, T + 16.5, o1 - o0 - 20, 2, 1), '#3a5470', { top: 0.6 });
@@ -1431,22 +1438,22 @@ function roomBridge(ctx, r, s, X, W) {
     roomFlat(ctx, x + 21.5, F - 25, 1, 3, '#6a747c');
     roomPart(ctx, `M ${x + 17} ${F - 33} L ${x + 17} ${F - 36} L ${x1} ${F - 42} L ${x1} ${F - 33} Z`, '#2c4c6e', { top: 0, under: 1, solid: 0.5, slope: [F - 36, F - 42] });
     ctx.strokeStyle = figShade('#2c4c6e', 1.5); ctx.lineWidth = 1; roomSeg(ctx, [[x + 17.5, F - 35.5], [x1 - 0.5, F - 41.5]]);  // its lit edge
-    for (let k = 0; k < 5; k++) { const kx = x + 34 + k * 6; roomFlat(ctx, kx, slope(kx) + 1.6, 3, 1.2, (Math.floor(time * 2 + k * 2.3 + i) % 4) ? '#2f5577' : '#c8903a'); }  // the keys
+    roomLive(ctx, s, (ctx, s) => { for (let k = 0; k < 5; k++) { const kx = x + 34 + k * 6; roomFlat(ctx, kx, slope(kx) + 1.6, 3, 1.2, (Math.floor(s.time * 2 + k * 2.3 + i) % 4) ? '#2f5577' : '#c8903a'); } });  // the keys, lit in turn (#1123)
     for (const kx of [x + 20, x + 26]) roomFlat(ctx, kx, n(slope(kx) + 0.4), 3, 0.9, '#7e8a94');  // paint worn off its edge where the hands rest
     if (i === 3) {  // a newer screen on the old stand: its stem, the adapter plate in another finish under the screen, fresh bolts in it
       roomPart(ctx, roomRound(x + 47.5, F - 40.6, 3, n(slope(x + 49) - F + 41.1), 0.6), '#2a3c50', { top: 0, side: 0.8 });
       roomPart(ctx, roomRound(x + 40, F - 42.4, 18, 2, 0.6), '#4a5058', { top: 0.5 }); for (const bx of [x + 41.5, x + 55.5]) roomFlat(ctx, bx, F - 41.9, 1, 1, '#8a929a');
     }
-    roomScreen(ctx, x + 36, F - 56, 26, 11, i % 2 ? 'status' : 'plot', time);
+    roomLive(ctx, s, (ctx, s) => roomScreen(ctx, x + 36, F - 56, 26, 11, i % 2 ? 'status' : 'plot', s.time));
     if (i === 0) roomCommsRack(ctx, r, s);
     if (i === 1) {
       const tx = x + 27, ty = n(slope(tx)), lean = -0.35 + 0.5 * w.burn;  // the throttle, forward in the burn
       roomPart(ctx, roomRound(tx - 3.5, ty - 2, 7, 2.5, 1), '#3a4a5a', { top: 0.6 });
       ctx.strokeStyle = '#7d8a98'; ctx.lineWidth = 1.8; roomSeg(ctx, [[tx, ty - 1], [tx + Math.sin(lean) * 11, ty - 1 - Math.cos(lean) * 11]]);
       roomDot(ctx, tx + Math.sin(lean) * 11, ty - 1 - Math.cos(lean) * 11, 2.2, '#a8584a'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
-      const bx = x + 56, bob = Math.sin(time * 6) * (2 * w.cruise + 4 * w.flip) - 1.5 * w.burn;  // the bobblehead on the pilot's screen, nodding
+      const bx = x + 56;  // the bobblehead on the pilot's screen, nodding
       roomPart(ctx, roomRound(bx - 2.5, F - 63, 5, 4, 1), '#6a5a44', { top: 0.6 });
-      ctx.save(); ctx.translate(0, bob); roomDot(ctx, bx, F - 66, 3, '#8a7660'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); ctx.restore();
+      roomLive(ctx, s, (ctx, s) => { const bob = Math.sin(s.time * 6) * (2 * w.cruise + 4 * w.flip) - 1.5 * w.burn; ctx.save(); ctx.translate(0, bob); roomDot(ctx, bx, F - 66, 3, '#8a7660'); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke(); ctx.restore(); });
     }
   });
 }
@@ -1556,7 +1563,7 @@ function roomHoldStraps(ctx, x, y, F) {
 // The cargo net over the stacks' tops (n crates), clear of their labels, its ends tied down to rings in the deck; it lifts off the stacks at the
 // flip, most in the middle of the run. Mended once over the first stack, in another cord. Cords, not parts, so drawn from s.time as it moves.
 function roomHoldNet(ctx, r, n, s) {
-  const F = r.floor, stacks = Math.ceil(n / 3), bulge = s.w.flip * (s.still ? 3 : 3 + Math.sin(s.time) * 2), top = [];
+  const F = r.floor, stacks = Math.ceil(n / 3), bulge = s.w.flip ? s.w.flip * (s.still ? 3 : 3 + Math.sin(s.time) * 2) : 0, top = [];
   for (let c = 0; c < stacks; c++) {
     const { x } = holdCrate(r, 3 * c), y = holdCrate(r, Math.min(n - 1, 3 * c + 2)).y, lift = bulge * (1 + Math.sin(Math.PI * (c + 0.5) / stacks));
     top.push([x - 1, y - 2 - lift], [x + HOLD_W + 1, y - 2 - lift]);
@@ -1603,7 +1610,7 @@ function roomHoldJack(ctx, jx, F) {
 // In the box (#1024): the jack first, past the stacks toward the right wall; then the stacks, each on its pallet from the bottom up, from the
 // walls in toward the eye, so a stack nearer it covers its neighbour's side; then at the front the rings in the deck, the straps and the net.
 function roomHold(ctx, r, s, X, W) {
-  const { w, time } = s, F = r.floor, n = Math.min(12, Math.round(12 * s.cargo)), stacks = Math.ceil(n / 3), sx = c => Math.round(holdCrate(r, 3 * c).x * 100) / 100;
+  const { w } = s, F = r.floor, n = Math.min(12, Math.round(12 * s.cargo)), stacks = Math.ceil(n / 3), sx = c => Math.round(holdCrate(r, 3 * c).x * 100) / 100;
   const goods = holdCrateGoods(s.goods || [], n);  // what each crate holds (#936)
   if (W >= 300) roomHoldJack(ctx, r.x0 + HOLD_FROM + 4 * (HOLD_W + HOLD_GAP) - HOLD_GAP + 2, F);  // at the foot of the last stack
   const off = c => { const e = roomEyeAt(sx(c) + HOLD_W / 2); return e ? Math.abs(sx(c) + HOLD_W / 2 - e.vx) : 0; };
@@ -1613,9 +1620,11 @@ function roomHold(ctx, r, s, X, W) {
   }
   for (let c = 0; c < 4; c++) for (const ex of [sx(c) + 0.75, sx(c) + HOLD_W - 0.75]) holdRing(ctx, ex, F);
   for (let c = 0; c < stacks; c++) roomHoldStraps(ctx, sx(c), holdCrate(r, Math.min(n - 1, 3 * c + 2)).y, F);
-  if (n > 0) roomHoldNet(ctx, r, n, s);
+  if (n > 0) { if (w.flip) roomLive(ctx, s, (ctx, s) => roomHoldNet(ctx, r, n, s)); else roomHoldNet(ctx, r, n, s); }  // it bulges at the flip (#1123)
   if (W >= 300) {
-    const lx = X(0.9), [ex, ey] = hangEnd(lx, r.top + 6, 16, 0.7, w, time, s.still);
+    const lx = X(0.9);
+    roomLive(ctx, s, (ctx, s) => {  // it swings (#1123)
+    const [ex, ey] = hangEnd(lx, r.top + 6, 16, 0.7, w, s.time, s.still);
     ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1; roomSeg(ctx, [[lx, r.top + 6], [ex, ey]]);
     ctx.save(); ctx.translate(ex, ey);
     roomFlat(ctx, -1.5, -0.5, 3, 2.5, '#3a4a5a');  // its cap
@@ -1623,13 +1632,15 @@ function roomHold(ctx, r, s, X, W) {
     roomPart(ctx, roomRound(-4, 7, 8, 3, 1.4), '#a89a78', { top: 0 });  // the glass
     ctx.strokeStyle = '#3a4a5a'; ctx.lineWidth = 0.6; roomSeg(ctx, [[-2, 7], [-2, 10]]); roomSeg(ctx, [[2, 7], [2, 10]]);  // its cage
     ctx.restore();
+    });
   }
-  if (w.flip > 0.05 && !s.still) {
+  if (w.flip > 0.05 && !s.still) roomLive(ctx, s, (ctx, s) => {  // something left out, floating (#1123)
+    const time = s.time;
     ctx.save(); ctx.globalAlpha = w.flip; ctx.translate(X(0.6) + Math.sin(time * 0.4) * 24, F - 84 + Math.cos(time * 0.5) * 4); ctx.rotate(time * 0.6);
     roomPart(ctx, roomRound(-5, -6.5, 10, 13, 1), '#5e4e36', { top: 0.6, side: 1 }); roomFlat(ctx, -3.5, -4.5, 7, 9, '#8a8678');
     for (let k = 0; k < 3; k++) roomFlat(ctx, -2.5, -2.5 + 2.2 * k, 5, 0.5, '#4a4436');
     roomFlat(ctx, -2, -7.5, 4, 2.5, '#6a7480'); ctx.restore();
-  }
+  });
 }
 
 // The medbay (#933). The cot's mattress top over the deck (about 30, between a person's knee and hip), where the cutaway lays a patient (shiplife.js).
@@ -1754,7 +1765,7 @@ function roomMedCabinet(ctx, X, F) {
 // move onto the wall keeps it under the room's name); then the cot with the pole behind it, from the left wall in, and the cabinet from the right;
 // the scanner arm stays on the ceiling at the cut, and the bag and its line hang in front.
 function roomMedbay(ctx, r, s, X, W) {
-  const { time } = s, F = r.floor, n = v => Math.round(v * 100) / 100;
+  const F = r.floor, n = v => Math.round(v * 100) / 100;
   if (W >= 300) {
     const bx = n(X(0.03));
     roomOnWall(ctx, bx + 15, F - 40, () => {
@@ -1770,9 +1781,11 @@ function roomMedbay(ctx, r, s, X, W) {
       roomPart(ctx, roomRound(mx, my, mw, mh, 2), '#1f3a56', { top: 1, under: 1 }); roomFlat(ctx, mx + 2.5, my + 2.5, mw - 5, mh - 5, '#04101a');
       for (const [sx, sy] of [[mx + 1.5, my + 1.5], [mx + mw - 1.5, my + 1.5]]) roomDot(ctx, sx, sy, 0.5, '#56708c');
       roomPart(ctx, `M ${n(mx + mw - 6)} ${n(my - 1)} L ${n(mx + mw - 2)} ${n(my - 1)} L ${n(mx + mw + 1)} ${n(my + 2)} L ${n(mx + mw + 1)} ${n(my + 6)} Z`, '#7a7462', { top: 0 });  // tape over a cracked corner of the bezel
+      roomLive(ctx, s, (ctx, s) => {  // the trace runs (#1123)
       ctx.strokeStyle = s.patient ? '#ffb030' : '#7fd8a0'; ctx.lineWidth = 1; ctx.beginPath();  // the trace in its own light, amber and quicker with a patient
-      for (let x = 0; x < mw - 7; x++) { const u = (x + time * (s.patient ? 40 : 20)) % 20, y = u > 8 && u < 10 ? (u < 9 ? -4.5 : 2.5) : 0; if (x) ctx.lineTo(mx + 3.5 + x, my + 9.5 + y); else ctx.moveTo(mx + 3.5, my + 9.5 + y); }
+      for (let x = 0; x < mw - 7; x++) { const u = (x + s.time * (s.patient ? 40 : 20)) % 20, y = u > 8 && u < 10 ? (u < 9 ? -4.5 : 2.5) : 0; if (x) ctx.lineTo(mx + 3.5 + x, my + 9.5 + y); else ctx.moveTo(mx + 3.5, my + 9.5 + y); }
       ctx.stroke();
+      });
     });
     const g0 = n(X(0.8)), g1 = n(X(0.94));  // a grab rail on the wall over the cabinet, for zero g
     roomOnWall(ctx, (g0 + g1) / 2, F - 64, () => {
@@ -1784,7 +1797,7 @@ function roomMedbay(ctx, r, s, X, W) {
   roomMedCot(ctx, X, F, () => { if (W >= 200) px = roomMedPole(ctx, X, F); });
   if (W >= 240) roomMedCabinet(ctx, X, F);
   roomMedScanner(ctx, r, s, X);
-  if (px !== null) roomMedBag(ctx, px, X, F, s);
+  if (px !== null) roomLive(ctx, s, (ctx, s) => roomMedBag(ctx, px, X, F, s));  // the drip bag sways (#1123)
 }
 
 // The head and shower on the mess deck (#933), across the well from the galley. The head's door is shut in a partition on the galley side,
@@ -2279,8 +2292,10 @@ function roomLifeSupport(ctx, r, s) {
     roomPart(ctx, roomRound(x, F - 44, 70, 38, 1.5), col, { top: 1, side: 1.2, solid: 0.45, shadow: false });
     const cx = x + 26, cy = F - 25;
     roomDot(ctx, cx, cy, 12, '#141c22');
-    ctx.strokeStyle = roomTint('#4a5662'); ctx.lineWidth = 3;
-    for (let b = 0; b < 3; b++) { const a = s.time * (7 + k) + k + b * 2.094; roomSeg(ctx, [[cx, cy], [cx + Math.cos(a) * 9.5, cy + Math.sin(a) * 9.5]]); }
+    roomLive(ctx, s, (ctx, s) => {  // the blades turn (#1123)
+      ctx.strokeStyle = roomTint('#4a5662'); ctx.lineWidth = 3;
+      for (let b = 0; b < 3; b++) { const a = s.time * (7 + k) + k + b * 2.094; roomSeg(ctx, [[cx, cy], [cx + Math.cos(a) * 9.5, cy + Math.sin(a) * 9.5]]); }
+    });
     ctx.strokeStyle = roomTint('#56626e'); ctx.lineWidth = 0.6; ctx.beginPath();
     for (const g of [-8, -4, 0, 4, 8]) { const h = Math.sqrt(144 - g * g); ctx.moveTo(cx + g, cy - h); ctx.lineTo(cx + g, cy + h); }
     ctx.stroke();
@@ -2513,6 +2528,84 @@ const ROOM_NAME_TOP = 8;
 const roomNameAt = (r, zoom) => ({ x: r.x0 + 12, y: r.top + ROOM_NAME_TOP + 13 / zoom });
 const ROOM_DRAW = { engine: roomEngine, berths: roomBerths, galley: roomGalley, gunnery: roomGunnery, bridge: roomBridge, hold: roomHold, medbay: roomMedbay,
   head: roomHead, workshop: roomWorkshop, airlock: roomAirlock, lifesupport: roomLifeSupport };
+// The rooms' interiors kept as images (#1123). In the burn view (roomSprites set, drawCutaway) a room's props, couches and seats are drawn once
+// into images at the screen's scale and copied in after, while what it reads of the state s holds. What moves with the clock is drawn by
+// roomLive(ctx, s, fn): fn(c, s) draws it on c for the state s, live every frame, between the images of what is drawn before it and after it, so
+// the order is the one drawn directly. A room that reads s.time outside roomLive is drawn directly (roomRec.timed), as is one whose state has just
+// changed (built the frame after, when it holds). fn reads the clock and anything else that changes from its own s, not from the room's.
+let roomRec = null;  // a room being drawn into its images: { g: its canvas's context (a proxy that notes drawing), base: its transform, segs, dirty }
+const ROOM_CACHE = new Map();  // by room: { key, reads, timed, x0, y0, a, segs: [{ c: the image or null, live }] }
+const ROOM_DRAWS = new Set(['fill', 'stroke', 'fillRect', 'strokeRect', 'fillText', 'strokeText', 'drawImage', 'putImageData']);
+// The points a call draws within, in its own units, so each image is cropped to what was drawn into it.
+const roomCorners = (x, y, w, h) => [[x, y], [x + w, y], [x, y + h], [x + w, y + h]];
+const ROOM_TRACK = {
+  moveTo: a => [a], lineTo: a => [a], quadraticCurveTo: a => [[a[0], a[1]], [a[2], a[3]]], bezierCurveTo: a => [[a[0], a[1]], [a[2], a[3]], [a[4], a[5]]],
+  arc: a => roomCorners(a[0] - a[2], a[1] - a[2], a[2] * 2, a[2] * 2), ellipse: a => { const m = Math.max(a[2], a[3]); return roomCorners(a[0] - m, a[1] - m, m * 2, m * 2); },
+  rect: a => roomCorners(...a), fillRect: a => roomCorners(...a), strokeRect: a => roomCorners(...a),
+  fillText: (a, t) => { const w = t.measureText(a[0]).width; return roomCorners(a[1] - w, a[2] - w, w * 2, w * 2); },
+  drawImage: a => (a.length >= 9 ? roomCorners(a[5], a[6], a[7], a[8]) : roomCorners(a[1], a[2], a.length >= 5 ? a[3] : a[0].width, a.length >= 5 ? a[4] : a[0].height)),
+};
+function roomTrack(rec, t, pts) {
+  const m = t.getTransform(), b = rec.box;
+  for (const [x, y] of pts) {
+    const px = m.a * x + m.c * y + m.e, py = m.b * x + m.d * y + m.f;
+    if (px < b[0]) b[0] = px; if (py < b[1]) b[1] = py; if (px > b[2]) b[2] = px; if (py > b[3]) b[3] = py;
+  }
+}
+const ROOM_PAD = 40;  // world units round the room's box that its images cover: what it draws past its walls
+function roomLive(ctx, s, fn) {
+  const rec = roomRec;
+  if (!rec || ctx !== rec.g) { fn(ctx, s); return; }
+  roomSnap(rec, { fn, t: rec.base.inverse().multiply(ctx.getTransform()), tone: roomTone, view: roomView, alpha: ctx.globalAlpha });
+}
+function roomSnap(rec, live) {  // the drawing so far as an image cropped to it (none if nothing was drawn), then the live part after it
+  let c = null;
+  const b = rec.box, x0 = Math.max(0, Math.floor(b[0]) - 3), y0 = Math.max(0, Math.floor(b[1]) - 3), x1 = Math.min(rec.W, Math.ceil(b[2]) + 3), y1 = Math.min(rec.H, Math.ceil(b[3]) + 3);
+  if (rec.dirty && x1 > x0 && y1 > y0) {
+    c = document.createElement('canvas'); c.width = x1 - x0; c.height = y1 - y0; c.getContext('2d').drawImage(rec.canvas, -x0, -y0); c.px = x0; c.py = y0;
+  }
+  if (rec.dirty) { const g = rec.raw; g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, rec.W, rec.H); g.restore(); }
+  rec.dirty = false; rec.box = [Infinity, Infinity, -Infinity, -Infinity];
+  if (c || live) rec.segs.push({ c, live });
+}
+const roomKey = (s, reads) => JSON.stringify([...reads].map(k => s[k]), (k, v) => (v instanceof Set ? [...v].sort() : typeof v === 'function' ? undefined : v));
+function roomCached(ctx, id, r, s, draw) {
+  const m = roomSprites && ctx.getTransform(), a = m && m.a;
+  if (!m || m.b || m.c || Math.abs(a - m.d) > 1e-9 || a <= 0 || ctx.globalAlpha !== 1) { draw(ctx, s); return; }
+  let e = ROOM_CACHE.get(id);
+  const at = `${a}|${r.x0}|${r.x1}|${r.top}|${r.floor}`, key = e ? `${at}|${roomKey(s, e.reads)}` : null;
+  if (e && e.key === key && e.segs) { roomReplay(ctx, e, s); return; }
+  if (e && (e.key !== key || e.timed)) { e.key = key; e.segs = null; draw(ctx, s); return; }  // changed, or read the clock: drawn directly, built when it holds
+  const x0 = r.x0 - ROOM_PAD, y0 = r.top - ROOM_PAD, W = Math.ceil((r.x1 - r.x0 + ROOM_PAD * 2) * a), H = Math.ceil((r.floor + HULL.plate - r.top + ROOM_PAD * 2) * a);
+  const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
+  const raw = canvas.getContext('2d'); raw.setTransform(a, 0, 0, a, -x0 * a, -y0 * a);
+  const rec = { raw, canvas, W, H, segs: [], dirty: false, box: [Infinity, Infinity, -Infinity, -Infinity], base: raw.getTransform() }, reads = new Set();
+  rec.g = new Proxy(raw, {
+    get(t, k) {
+      const v = t[k]; if (typeof v !== 'function') return v;
+      return (...args) => { if (ROOM_DRAWS.has(k)) rec.dirty = true; if (ROOM_TRACK[k]) roomTrack(rec, t, ROOM_TRACK[k](args, t)); return v.apply(t, args); };
+    },
+    set(t, k, v) { t[k] = v; return true; },
+  });
+  let timed = false;
+  const ps = new Proxy(s, { get(o, k) { if (typeof k === 'string') { reads.add(k); if (k === 'time' && !o.still && !timed) timed = new Error().stack.split('\n').slice(2, 6).map(l => l.trim()).join(' < '); } return o[k]; } });
+  const was = roomSprites; roomSprites = null; roomRec = rec;
+  try { draw(rec.g, ps); roomSnap(rec, null); } finally { roomRec = null; roomSprites = was; }
+  reads.delete('time');
+  e = { reads, timed, x0, y0, a, segs: timed ? null : rec.segs };
+  e.key = `${at}|${roomKey(s, reads)}`;
+  ROOM_CACHE.set(id, e);
+  if (timed) draw(ctx, s); else roomReplay(ctx, e, s);
+}
+function roomReplay(ctx, e, s) {
+  for (const { c, live } of e.segs) {
+    if (c) ctx.drawImage(c, e.x0 + c.px / e.a, e.y0 + c.py / e.a, c.width / e.a, c.height / e.a);
+    if (!live) continue;
+    const tone = roomTone, view = roomView, t = live.t;
+    ctx.save(); ctx.transform(t.a, t.b, t.c, t.d, t.e, t.f); ctx.globalAlpha = live.alpha; roomTone = live.tone; roomView = live.view;
+    try { live.fn(ctx, s); } finally { roomTone = tone; roomView = view; ctx.restore(); }
+  }
+}
 // A room, r = { x0, x1, top, floor } in world units, drawn for the state s (w, time, zoom, spin, still, berths, cargo, torpedoes, fuel, burning, night,
 // asleep, well, damage (its marks and patches), age (the trip's, 0 to 1), and shell: how a bay's shell is drawn, the burn view's cache): walls, props, then its lamp.
 // Which way someone on a room's chair faces (#985): the bridge's and the guns' toward their consoles, the chair's back behind them (#933), the
@@ -2524,15 +2617,15 @@ function drawRoom(ctx, id, r, s) {
   const W = r.x1 - r.x0;
   roomWalls(ctx, r, s.w, s.time, s.still, s.well, s.shell);
   const marked = !!(s.damage && s.damage.marks.has(id));
-  roomIn(roomBays(r, s.well), () => {  // its props and seats see their bay's eye (#1024)
-    if (!marked && s.damage && s.damage.patches && s.damage.patches.has(id)) roomPatch(ctx, id, r);  // a mended mark's patch on bare back wall, behind the props; a mark in the room hides it (#935)
+  roomCached(ctx, id, r, s, (ctx, s) => roomIn(roomBays(r, s.well), () => {  // its props and seats see their bay's eye (#1024), kept as images (#1123)
+    if (!(s.damage && s.damage.marks.has(id)) && s.damage && s.damage.patches && s.damage.patches.has(id)) roomPatch(ctx, id, r);  // a mended mark's patch on bare back wall, behind the props; a mark in the room hides it (#935)
     ROOM_DRAW[id](ctx, r, s, sh => r.x0 + W * sh, W);
     let k = 0; for (const c of COUCH_RACKS) { if (c.room === id) roomCouchRack(ctx, c.x, r.floor, c.tiers, k, s.couched); k += c.tiers; }  // its crash couches, in every phase (#990)
     const seats = SEATS[id] || [];  // its seats (shiplife.js), where people sit (#925): the galley's on one bench along the mess table, a pilot's seat at each post of the bridge, a stool anywhere else
     if (id === 'galley' && seats.length) roomBench(ctx, r.x0 + W * seats[0] - 14, r.x0 + W * seats[seats.length - 1] + 14, r.floor, true);
     else if (id === 'bridge') seats.forEach((f, i) => roomBridgeSeat(ctx, Math.round((r.x0 + W * f) * 100) / 100, r.floor, (s.recline || [])[i] || 0));  // a pilot's seat at each post (#933), reclined as a crash couch in the hard burn (#990)
     else for (const f of seats) roomStool(ctx, r.x0 + W * f, r.floor, id === 'medbay' ? 0 : SEAT_FACE[id] || 0);  // a station's chair faces its console (#933); the medbay's is a stool
-  });
+  }));
   if (marked) drawDamage(ctx, r, s);
   drawPhaseLight(ctx, r, s.w, s.time, s.night, id === 'bridge' || id === 'engine', LAMP_FITTED.includes(id) ? roomBays(r, s.well) : null, roomLamps(id, r),
     { glow: id === 'galley' && s.spirits ? GALLEY_SPIRITS : ROOM_GLOW[id], small: id === 'berths' ? berthReading(r, s) : [], off: marked && s.damage.severe && Math.floor(s.time * 11) % 4 === 0 });  // severe damage: the lamp flickers

@@ -19,9 +19,13 @@ test('a burn frame copies its rooms\' parts as sprites: far fewer canvas calls, 
     const frame = () => { G.time = T; G.cam = null; render(); };
     const counted = () => { const real = {}; let n = 0; for (const k of names) { real[k] = P[k]; P[k] = function (...a) { if (this.canvas === c) n++; return real[k].apply(this, a); }; } try { frame(); } finally { Object.assign(P, real); } return n; };
     const pixels = () => { frame(); return c.getContext('2d').getImageData(0, 0, c.width, c.height).data; };
-    frame(); const sprites = counted(), A = pixels(), real = roomSprite;
-    window.roomSprite = () => false;
-    let direct, B; try { direct = counted(); B = pixels(); } finally { window.roomSprite = real; }
+    const kept = roomCached; window.roomCached = (c, id, r, s, draw) => draw(c, s);  // the rooms drawn directly, as on a frame their state changes (#1123): the parts' sprites at work
+    let sprites, A, direct, B, real = roomSprite;
+    try {
+      frame(); sprites = counted(); A = pixels();
+      window.roomSprite = () => false;
+      try { direct = counted(); B = pixels(); } finally { window.roomSprite = real; }
+    } finally { window.roomCached = kept; }
     let off = 0; for (let i = 0; i < A.length; i += 4) if (Math.max(Math.abs(A[i] - B[i]), Math.abs(A[i + 1] - B[i + 1]), Math.abs(A[i + 2] - B[i + 2])) > 24) off++;
     return { sprites, direct, off: off / (A.length / 4), cached: ROOM_SPRITE_CACHE.size };
   });

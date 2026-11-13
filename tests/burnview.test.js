@@ -1346,16 +1346,18 @@ test('the crash couches are fixed in the rooms, the bridge\'s station chairs amo
     burn(); const t = G.transit, people = shipPeople().filter(p => p.role !== 'cat'), lay = LAYOUTS.freighter;
     // the racks drawn (rooms.js roomCouchRack: x, the deck's floor, its tiers, its first couch, the couches taken), the camera on the bridge and on the berths
     const racks = () => { const seen = []; const real = window.roomCouchRack; window.roomCouchRack = (c, x, F, n, first, on) => { seen.push({ x, F, n, first, on: [...(on || [])] }); return real(c, x, F, n, first, on); };
+      const kept = window.roomCached; window.roomCached = (c, id, r, s, draw) => draw(c, s);  // drawn directly, not from the rooms' images (#1123), so every rack is drawn
       for (const id of ['bridge', 'berths']) { G.cam = { y: layoutBox(lay, id).floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); }
-      window.roomCouchRack = real; return seen; };
+      window.roomCached = kept; window.roomCouchRack = real; return seen; };
     const run = s => { for (let k = 0; k < s * 20; k++) lifeTick(0.05); };
     const lying = () => people.filter(p => posture(p, phase(), 0, false).name === 'couch');
     const out = {};
     t.left = t.total * 0.99; run(2);  // the burn out: everyone on their couch
     const start = racks(), order = bunkOwners(people, people.length), plan = couchPlan(order.map(p => p.role), POSTS[hired().post].role);
     // the bridge's station couches as drawn (rooms.js roomBridgeSeat: x, the deck's floor, how far reclined)
-    const seats = () => { const seen = []; const real = window.roomBridgeSeat; window.roomBridgeSeat = (c, x, F, rec) => { seen.push(rec); return real(c, x, F, rec); };
-      G.cam = { y: layoutBox(lay, 'bridge').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); window.roomBridgeSeat = real; return seen.join(); };
+    const seats = () => { const seen = []; const real = window.roomBridgeSeat, kept = window.roomCached; window.roomBridgeSeat = (c, x, F, rec) => { seen.push(rec); return real(c, x, F, rec); };
+      window.roomCached = (c, id, r, s, draw) => draw(c, s);  // drawn directly (#1123)
+      G.cam = { y: layoutBox(lay, 'bridge').floor - HULL.deck / 2, t: G.time }; drawTransit(innerWidth, innerHeight); window.roomCached = kept; window.roomBridgeSeat = real; return seen.join(); };
     out.start = { lying: lying().length, n: people.length, own: people.map(p => { const q = plan[order.indexOf(p)]; return q.at === 'station' ? p.station === q.seat : p.couchAt === q.k; }), racks: [...new Set(start.map(k => `${k.first}:${k.n}`))].join(' '),
       on: [...new Set(start.flatMap(k => k.on))].sort((a, b) => a - b).join(), want: people.filter(p => p.couchAt !== null).map(p => p.couchAt).sort((a, b) => a - b).join(),
       lifted: people.every(p => p.lift === (p.station !== null ? 23 : couchPlaces()[p.couchAt].lift)), bridge: people.filter(p => p.room === 'bridge').map(p => p.role).sort().join(), seats: seats() };

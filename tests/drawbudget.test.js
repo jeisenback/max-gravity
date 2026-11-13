@@ -11,7 +11,7 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const CEILING = { move: 7950, flip: 8900, couch: 8700, night: 8200 };  // about 3% over the count when it was set (#1120)
+const CEILING = { move: 3700, flip: 4650, couch: 4500, night: 3950 };  // about 3% over the count when it was set (#1120)
 
 test('a burn frame stays within its budget of canvas calls, in the burn, at the flip, on the couches and at night', async () => {
   const { ev, done } = await open();
