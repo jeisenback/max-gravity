@@ -647,9 +647,10 @@ function drawTransit(W, H) {
   const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6, still = Settings.reduceMotion, hush = still ? 1 : streakHush(t.days, progress);  // quieter at the flip (burnspeed.js, #962); reduced motion as it was
   const a = t.angle + Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a), ox = shipBox.x + shipBox.w / 2, oy = shipBox.y + shipBox.h / 2, wrap = (v, m) => ((v % m) + m) % m;
   const behind = (x, y) => x > shipBox.x && x < shipBox.x + shipBox.w && y > shipBox.y && y < shipBox.y + shipBox.h;
+  const m = ctx.getTransform(), ra = m.a * ca + m.c * sa, rb = m.b * ca + m.d * sa, rc = m.c * ca - m.a * sa, rd = m.d * ca - m.b * sa;  // the turn, once for every streak (#1117)
   const streak = (x, y, draw) => {  // draw(dim): dim is how bright a streak is where it passes behind the ship
     const dx = x - ox, dy = y - oy, px = wrap(ox + dx * ca - dy * sa, viewW), py = wrap(oy + dx * sa + dy * ca, H);
-    ctx.save(); ctx.translate(px, py); ctx.rotate(a); draw(still || !behind(px, py) ? 1 : 0.4); ctx.restore();
+    ctx.setTransform(ra, rb, rc, rd, m.a * px + m.c * py + m.e, m.b * px + m.d * py + m.f); draw(still || !behind(px, py) ? 1 : 0.4);
   };
   for (const s of G.transitStars) {
     const len = Math.max(s.z * 2, speed * s.z * s.z * (still ? 8 : 110) * hush), w = s.z > 0.7 ? 2 : 1, hot = Math.min(1, speed * 1.4);
@@ -666,6 +667,7 @@ function drawTransit(W, H) {
       streak(viewW * (1 - phase), shipBox.y + lane * shipBox.h, dim => { ctx.fillStyle = `rgba(150,195,255,${Math.min(0.3, (speed - 0.2) * 0.5) * hush * dim})`; ctx.fillRect(0, 0, len, 1); });  // across the ship's band, clear of the bar and the keys
     }
   }
+  ctx.setTransform(m);
 
   // The destination ahead, growing with progress: one 40px sprite drawn scaled, lit from the sun behind us. In the ship box's top right,
   // behind the nose, drawn first so the hull covers it. Not on a narrow screen, where the ship takes the box's width.

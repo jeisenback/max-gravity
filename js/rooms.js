@@ -27,13 +27,41 @@ const roomBox = (ctx, x, y, w, h, col) => {
 // o.shadow false: it rests on another part (a mattress on its frame) and casts no shadow of its own. Drawn inside roomOnWall, every colour is
 // a step darker (the wall tone).
 const roomBounds = {};
+const roomPartBounds = d => roomBounds[d] || (roomBounds[d] = (figTokens[d] || (figTokens[d] = d.match(/[MLCQZ]|-?\d*\.?\d+/g))).filter(t => !/[A-Z]/.test(t)).reduce((b, t, i) => {
+  const v = Number(t), k = i % 2; b[k] = Math.min(b[k], v); b[k + 2] = Math.max(b[k + 2], v); return b;
+}, [Infinity, Infinity, -Infinity, -Infinity]));
+// The burn view's part sprites (#1117): while it draws its rooms (drawCutaway sets roomSprites to a Map), each part is drawn once onto a canvas
+// at the screen's scale and its quarter-pixel offset, and copied in whole each frame after, as it looks the same every frame. Under a rotation,
+// a stretch, an alpha or a blend it is drawn as it is; outside the burn view (the Node tests' mock canvas) roomSprites is null.
+let roomSprites = null;
+const ROOM_SPRITES_MAX = 6000, ROOM_SPRITE_SS = 1;  // SS: the sprite drawn at that many pixels to the screen's one
+function roomSprite(ctx, d, col, o) {
+  const m = ctx.getTransform(), a = m.a;
+  if (m.b || m.c || Math.abs(a - m.d) > 1e-9 || a <= 0 || ctx.globalAlpha !== 1 || ctx.globalCompositeOperation !== 'source-over') return false;
+  const b = roomPartBounds(d);
+  let [x0, y0, x1, y1] = b; const e = o.solid && roomView ? roomEyeAt((b[0] + b[2]) / 2) : null;
+  if (e) for (const [x, y] of [[b[0] - 5, b[1]], [b[2] + 5, b[1]], [b[0] - 5, Math.max(b[3], e.floor)], [b[2] + 5, Math.max(b[3], e.floor)], ...(o.slope ? [[b[0], o.slope[0]], [b[2], o.slope[1]]] : [])]) {  // its depth, its sloped top, and its shadow on the strip
+    const [px, py] = roomInto(e, x, y, o.solid); x0 = Math.min(x0, x, px); y0 = Math.min(y0, y, py); x1 = Math.max(x1, x, px); y1 = Math.max(y1, y, py);
+  }
+  x0 -= 2; y0 -= 2; x1 += 2; y1 += 2;  // the outline
+  const px = a * ROOM_SPRITE_SS, key = `${d}|${col}|${o.top}|${o.side}|${o.under}|${o.solid}|${o.slope}|${o.shadow}|${roomTone}|${e ? `${e.vx},${e.vy},${e.floor}` : ''}|${px}`;
+  let c = roomSprites.get(key);
+  if (!c) {
+    if (roomSprites.size > ROOM_SPRITES_MAX) roomSprites.clear();
+    c = document.createElement('canvas'); c.width = Math.ceil((x1 - x0) * px); c.height = Math.ceil((y1 - y0) * px);
+    const g = c.getContext('2d'), was = roomSprites; g.setTransform(px, 0, 0, px, -x0 * px, -y0 * px);
+    roomSprites = null; try { roomPart(g, d, col, o); } finally { roomSprites = was; }
+    c.x0 = x0; c.y0 = y0; roomSprites.set(key, c);
+  }
+  ctx.drawImage(c, c.x0, c.y0, c.width / px, c.height / px);
+  return true;
+}
 function roomPart(ctx, d, col, o = {}) {
+  if (roomSprites && roomSprite(ctx, d, col, o)) return;
   const { top = 1.5, side = 0, under = 0, solid = 0, slope = null, shadow = true } = o, t = roomTone;
   figPath(ctx, d);
   if (/^#[0-9a-f]{6}$/i.test(col) && (top || side || under || solid)) {
-    const b = roomBounds[d] || (roomBounds[d] = figTokens[d].filter(t => !/[A-Z]/.test(t)).reduce((b, t, i) => {
-      const v = Number(t), k = i % 2; b[k] = Math.min(b[k], v); b[k + 2] = Math.max(b[k + 2], v); return b;
-    }, [Infinity, Infinity, -Infinity, -Infinity])), [x0, y0, x1, y1] = b;
+    const b = roomPartBounds(d), [x0, y0, x1, y1] = b;
     if (solid && roomView) { roomSolid(ctx, b, col, solid, slope, shadow); figPath(ctx, d); }
     ctx.fillStyle = roomTint(col); ctx.fill();
     ctx.save(); ctx.clip();
