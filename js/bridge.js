@@ -281,6 +281,8 @@ function drawViewscreen(time) {
   g.setTransform(d, 0, 0, d, 0, 0);
   g.fillStyle = '#03070a'; g.fillRect(0, 0, w, h);
   if (!p) return;  // a save whose port is unknown: the sky alone
+  const view = c.classList.contains('view') && portLayout(p);
+  if (view) return drawPortView(g, w, h, view, time);  // a port drawn as a place, on its Port page (portview.js, #1101)
   if (p.site) { const r = sunLight(); return drawSiteVista(g, w, h, p, { angle: Math.sin(r.angle) > 0 ? -r.angle : r.angle, strength: r.strength }); }  // on station: the rock (sites.js)
   const img = vistaImage(p.name);
   if (img) {  // cover the strip, centred

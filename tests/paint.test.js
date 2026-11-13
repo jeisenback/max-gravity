@@ -37,6 +37,7 @@ const RED = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJA
 test('the vista paints every port in the full build: sky above, the body below', async () => {
   const { ev, done } = await open({ scope: 'full' });
   const bad = await ev(() => {
+    UI.tab = 'bar'; UI.render(); // the painted strip: Earth's Port page draws the Ring (portview.js, #1101)
     const out = [], c = document.getElementById('vs'), g = c.getContext('2d');
     for (const [sid, sys] of Object.entries(SYSTEMS)) for (const pl of sys.planets) {
       G.state.systemId = sid; G.state.planet = pl.name; drawViewscreen(0);
@@ -57,7 +58,7 @@ test('the vista paints every port in the full build: sky above, the body below',
 test('the vista paints at device pixel ratio 3, and holds still with reduce motion', async () => {
   const { ev, done } = await open({ scope: 'earth-hired', init: () => Object.defineProperty(window, 'devicePixelRatio', { get: () => 3 }) });
   const r = await ev(() => {
-    Settings.reduceMotion = true; drawViewscreen(0); const c = document.getElementById('vs');
+    UI.tab = 'bar'; UI.render(); Settings.reduceMotion = true; drawViewscreen(0); const c = document.getElementById('vs');  // the painted strip (#1101)
     const a = c.toDataURL(); drawViewscreen(5000); return { same: a === c.toDataURL(), ratio: c.height / c.clientHeight };
   });
   assert.ok(r.same); assert.equal(r.ratio, 2, 'the canvas is capped at ratio 2');
@@ -66,7 +67,7 @@ test('the vista paints at device pixel ratio 3, and holds still with reduce moti
 
 test('a port with an image shows it; an image that fails to load falls back to the painted scene', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
-  await ev(([red]) => { VISTA_IMAGES.Earth = red; drawViewscreen(0); }, [RED]);
+  await ev(([red]) => { UI.tab = 'bar'; UI.render(); VISTA_IMAGES.Earth = red; drawViewscreen(0); }, [RED]);  // the painted strip (#1101)
   await page.waitForFunction(() => VISTA_IMAGE_CACHE.Earth && VISTA_IMAGE_CACHE.Earth.complete);
   const mid = await ev(() => { drawViewscreen(0); const c = document.getElementById('vs'); return [...c.getContext('2d').getImageData(c.width >> 1, c.height >> 1, 1, 1).data]; });
   assert.deepEqual(mid.slice(0, 3), [255, 0, 0]);
@@ -153,6 +154,7 @@ test('a scene is glass lit from the sun\'s side, and its markup is unchanged', a
 
 test('resizing the window does not grow the sprite cache: the vista and the title each keep one large Earth', async () => {
   const landed = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await landed.ev(() => { UI.tab = 'bar'; UI.render(); });  // the painted strip: Earth's Port page draws the Ring (#1101)
   for (const width of [900, 700, 600, 500]) { await landed.page.setViewportSize({ width, height: 800 }); await frames(landed.page); }
   const vista = await landed.ev(() => { drawViewscreen(0); return Object.keys(BODY_CACHE).filter(k => /^Earth@\d+~$/.test(k)); });
   assert.deepEqual(vista, ['Earth@360~'], 'one vista sprite at the cap radius, drawn scaled');
