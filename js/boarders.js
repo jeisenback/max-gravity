@@ -115,12 +115,12 @@ const pickWeighted = table => { let r = Math.random() * Object.values(table).red
 // The hand is hurt: laid up for a while (a level worse, light duty), longer if already hurt, and with no medic aboard the clinic is on
 // their own savings. Used when a hit falls on the hand (repelCasualty, below), on a heavy turn of the ship fight (fightui.js fightTook), and on a job ashore (jobs.js).
 const HAND_CLINIC = 1500;
-// The hand can die (#357): hurt a second time while still hurt, or with the bridge taken while laid up, is a roll of one in four, and a first hurt
-// is a roll of one in twelve; each is halved with a medic aboard (the factor crew deaths use, losses.js). The hand is hurt about 0.4 times a chapter
-// and rarely twice inside the 12 days it takes to mend, so the first-hurt roll is what puts a death near 3 in 100 chapters (as the captain's loss is).
+// The hand can die (#357): hurt a second time while still hurt, or with the bridge taken while laid up, is a roll of one in four, halved with a medic
+// aboard (the factor crew deaths use, losses.js). A first hurt never kills: it says that another one could (#1157), so a death is always seen coming.
+// The hand is hurt about 0.4 times a chapter and rarely twice inside the 12 days it takes to mend, so a death is near 3 in 1,000 chapters.
 // The next scene is the ending (stakes.js), so a caller that queues a scene after this one checks `s.handDied` first.
-const HAND_DEATH = 0.25, HAND_DEATH_FIRST = 1 / 12;
-const handDeathOdds = (again = true) => (again ? HAND_DEATH : HAND_DEATH_FIRST) * (roleHolder('medic') ? LOSS_MEDIC : 1);
+const HAND_DEATH = 0.25;
+const handDeathOdds = () => HAND_DEATH * (roleHolder('medic') ? LOSS_MEDIC : 1);
 // The captain can be lost (#357): a pirate bridge taken is a roll of one in six (one in three when the lock fight was rarely lost; now a repel can be, and a lost
 // one still costs the fund, the cargo, the crew who fell and the captain's regard). The next scene is the captain's loss (stakes.js).
 const CAPTAIN_LOST = 1 / 6;
@@ -135,7 +135,7 @@ function hurtHand(s) {
   c.hurtUntil = st.day + (again ? 18 : 12);
   s.youHurt = true; s.hits = (s.hits || 0) + 1;  // hits: how many times this fight (fightui.js fightTook)
   captainFlag('hurt');  // kept for the goodbye (captains.js)
-  if (!s.ashore && role().canDie && Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return hurtSay(again ? 'hurt.you.down' : 'hurt.you.hit'); }
+  if (again && !s.ashore && role().canDie && Math.random() < handDeathOdds()) { handDies(s, 'hurt'); return hurtSay('hurt.you.down'); }
   recordHand('hurts');  // the record (traits.js), after the death roll: a dead hand gets no moment
   const bill = roleHolder('medic') ? 0 : handPays(HAND_CLINIC);  // the hand's own savings, also in a fight that a burn event started (hired.js hiredFunds)
   const pay = bill ? ` ${hurtSay('hurt.clinic', { cr: fmt(bill) })}` : '';

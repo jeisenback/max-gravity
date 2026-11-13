@@ -290,7 +290,7 @@ test('an owner boarding a disabled ship still rolls for it, with the odds in the
 
 // ---------- the hand can die (#357) ----------
 
-test('the hand dies on a second hurt or a lost bridge while laid up, one in four, halved by a medic; a first hurt rolls one in twelve', async () => {
+test('the hand dies on a second hurt or a lost bridge while laid up, one in four, halved by a medic; a first hurt never kills (#1157)', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -298,9 +298,7 @@ test('the hand dies on a second hurt or a lost bridge while laid up, one in four
     const medic = makePerson('earth'); medic.role = 'medic'; medic.skill = 1; registerPerson(medic);  // made before the rolls: a constant random hangs makePerson
     const reset = () => { G.nextEvent = null; delete h.died; delete h.hurtUntil; };
     st.crew = st.crew.filter(id => person(id).role !== 'medic' && !(CAST[person(id).cast] || {}).firstAid)  // no medic, and no first aid (the bosun's, #879);  // the chapter's crew carries one: start without
-    reset(); rolls([0.5]); const first = {}; hurtHand(first); out.first = { died: !!first.handDied, next: G.nextEvent };   // 0.5 is over one in twelve
-    reset(); rolls([0.05]); const firstDies = {}; const said = hurtHand(firstDies); out.firstDies = { died: !!firstDies.handDied, title: G.nextEvent && G.nextEvent.title, how: h.died && h.died.how, said };
-    reset(); st.crew.push(medic.id); rolls([0.05]); const firstMedic = {}; hurtHand(firstMedic); out.firstMedic = !firstMedic.handDied;   // 0.05 is under one in twelve, over one in twenty-four
+    reset(); rolls([0.001]); const first = {}; const said = hurtHand(first); out.first = { died: !!first.handDied, next: G.nextEvent, said };   // a first hurt never kills, on any roll (#1157)
     st.crew = st.crew.filter(id => id !== medic.id); reset(); rolls([0.5]); hurtHand({});  // hurt once, so the next is a second
     rolls([0.2]); const again = {}; hurtHand(again); out.again = { died: !!again.handDied, title: G.nextEvent && G.nextEvent.title, how: h.died && h.died.how };
     reset(); hurtHand({}); rolls([0.3]); const miss = {}; hurtHand(miss); out.miss = { died: !!miss.handDied, next: G.nextEvent };   // 0.3 is over one in four
@@ -313,8 +311,8 @@ test('the hand dies on a second hurt or a lost bridge while laid up, one in four
     reset(); rolls([0.99]); const s2 = repelStart(d, 'full'); s2.won = false; repelSettle(s2); out.well = { next: G.nextEvent, died: !!h.died };
     return out;
   });
-  assert.deepEqual([r.first.died, r.first.next], [false, null], 'a first hurt is over one in twelve');
-  assert.deepEqual(r.firstDies, { died: true, title: 'The Last Run', how: 'first', said: "You're hit." }); assert.ok(r.firstMedic, 'a medic halves it');
+  assert.deepEqual([r.first.died, r.first.next], [false, null], 'a first hurt never kills');
+  assert.match(r.first.said, /another hit before then could kill you/, 'and says that the next one could');
   assert.deepEqual(r.again, { died: true, title: 'The Last Run', how: 'hurt' });
   assert.deepEqual([r.miss.died, r.miss.next], [false, null]);
   assert.ok(r.medicSaves, 'a medic halves it'); assert.ok(r.medicStillRolls);

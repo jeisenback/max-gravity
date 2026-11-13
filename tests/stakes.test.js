@@ -175,7 +175,7 @@ test('in the narrow build, a hand who dies starts again on Hester\'s ship', asyn
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    start(); openEvent(handDeathScene('first')); chooseEvent(0);
+    start(); openEvent(handDeathScene('hurt')); chooseEvent(0);
     return { captain: hired().captainKey, carried: G.state.carried };
   });
   assert.equal(r.captain, 'hester');

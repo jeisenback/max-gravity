@@ -36,7 +36,7 @@ Seven, on Hester's Ice Hauler (`ship.md`):
 
 ## What it can cost
 
-A fight can hurt the hand, kill a shipmate, or end the hand's story (the floor is 0 in the shipped build, `docs/superpowers/specs/2026-10-07-death-and-departure.md`). The captain can put the hand ashore. In the shipped build, where Hester is the only captain until it is tuned, being put ashore or losing her on the bridge ends the run as a death does: the look back, then a fresh hand on her ship with a line on the dock (`js/stakes.js`). A shipmate who comes to dislike the hand walks off. The memorial keeps the dead.
+A fight can hurt the hand, kill a shipmate, or end the hand's story (the floor is 0 in the shipped build, `docs/superpowers/specs/2026-10-07-death-and-departure.md`). The hand dies only on a second hurt while still laid up from the first, or with the bridge taken while laid up: a first hurt never kills, and says that the next one could (#1157). The captain can put the hand ashore. In the shipped build, where Hester is the only captain until it is tuned, being put ashore or losing her on the bridge ends the run as a death does: the look back, then a fresh hand on her ship with a line on the dock (`js/stakes.js`). A shipmate who comes to dislike the hand walks off. The memorial keeps the dead.
 
 ## Hester's regard
 
