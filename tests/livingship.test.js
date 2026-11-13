@@ -3092,3 +3092,163 @@ const turnedPoints = calls => {
   return out;
 };
 const couchSeat = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } }, ['roomBridgeSeat', 'roomStool']);
+
+// #936, the rest: her name and registry painted on the nose's cap (hullName, hullPlate) and her registry as marks on the bridge's certificate
+// (registryMarks); the watch bill on the galley's wall (billSheet, roomWatchBill), the hand's tab on the middle watch when they asked Cato
+// (askedMiddle); the mood (crewSpirits): the galley warmer with the radio on in good spirits, a low person's own bunk's curtain drawn.
+const restApi = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/hulldetail.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } },
+  ['hullName', 'hullPlate', 'SHIP_REGISTRY', 'registryMarks', 'billSheet', 'askedMiddle', 'crewSpirits', 'billTone', 'ROLE_COLORS', 'WATCH_ORDER', 'onWatchTonight', 'roomLight', 'ROOM_GLOW', 'GALLEY_SPIRITS', 'bunkShut', 'towerOutline', 'LAYOUTS', 'drawRoom', 'layoutBox', 'BILL_AT', 'roomEye', 'figShade', 'WALL_TONE', 'hullNameLayout', 'CAM_RUN', 'nightStateOf', 'crewRoster', 'shipDay', 'SHIP_DAY']);
+const inLimits = col => { const v = rgbOf(col); return v && Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60; };
+test('her name and registry are painted on the nose\'s cap at 12px or more, every glyph and the co-op\'s ring inside the camera\'s run (#936)', () => {
+  const o = restApi.towerOutline(restApi.LAYOUTS.freighter), runTop = -restApi.CAM_RUN.above, measure = (t, px) => t.length * px * 0.66;  // wider than the font's capitals
+  for (const zoom of [0.82, 1.17, 1.45]) for (const coop of [false, true]) for (const name of ['IRON ANVIL', 'WANDERING TORTOISE', 'W'.repeat(30)]) {
+    const plate = { name, reg: 'BR 4471', coop }, at = `${zoom} ${coop} ${name.length}`;
+    const c = fakeCtx(); restApi.hullName(c, o, zoom, plate); assert.equal(c.depth, 0, `${at}: saves restored`);
+    assert.equal(c.calls.filter(k => k === 'fillText').length, 2, `${at}: the name and the registry`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${at}: ${f}`);
+    const L = restApi.hullNameLayout(o, zoom, plate, measure);
+    assert.ok(L.px >= 12 && L.regPx >= 12, `${at}: never under 12px`);
+    assert.ok(L.base - 0.8 * L.px / zoom >= runTop && L.regBase - 0.8 * L.regPx / zoom >= runTop && L.top >= runTop, `${at}: the glyphs' tops (${L.top}) under the camera's run's top (${runTop})`);
+    if (L.ring) assert.ok(L.ring.y - L.ring.r >= runTop && L.ring.y + L.ring.r < o.top, `${at}: the ring inside the run, over the skin`);
+    assert.ok(L.base < o.top && L.regBase < o.top, `${at}: over the flight deck`);
+    assert.ok(L.x0 >= 0 && L.x1 <= 470 + 1e-9, `${at}: in the cap's span, left of the speed buttons (${L.x0}, ${L.x1})`);
+    const { ctx, calls } = recorder(); restApi.hullName(ctx, o, zoom, plate);
+    assert.deepEqual(calls.filter(k => k[0] === 'fillText').map(k => k[1]), [name, 'BR 4471']);
+    assert.equal(calls.some(k => k[0] === 'arc'), coop, `${at}: the co-op's mark only on hers`);
+  }
+  const c = fakeCtx(); restApi.hullName(c, o, 1, { name: '', reg: null, coop: false }); assert.equal(c.calls.length, 0, 'nothing to paint, nothing painted');
+  const { ctx, calls } = recorder(); restApi.hullName(ctx, o, 1, { name: '', reg: 'CR 2208', coop: true });
+  assert.deepEqual(calls.filter(k => k[0] === 'fillText').map(k => k[1]), ['CR 2208'], 'not yet named: the registry and the mark only'); assert.ok(calls.some(k => k[0] === 'arc'));
+});
+test('a name that will not fit even at 12px is shortened with an ellipsis, so the paint never passes the cap\'s span, whatever the font (#936)', () => {
+  const o = restApi.towerOutline(restApi.LAYOUTS.freighter), wide = (t, px) => t.length * px * 1.1;  // wider than any font's capitals
+  for (const zoom of [0.82, 1.17, 1.45]) {
+    const name = 'W'.repeat(60), L = restApi.hullNameLayout(o, zoom, { name, reg: 'BR 4471', coop: false }, wide);
+    assert.ok(L.px >= 12, `${zoom}: never under 12px`);
+    assert.ok(L.name.endsWith('\u2026') && L.name.length < name.length, `${zoom}: shortened (${L.name})`);
+    assert.ok(L.x1 <= 470 + 1e-9, `${zoom}: within the cap's span (${L.x1})`);
+  }
+  const fits = restApi.hullNameLayout(o, 1, { name: 'IRON ANVIL', reg: 'BR 4471', coop: false }, (t, px) => t.length * px * 0.66);
+  assert.equal(fits.name, 'IRON ANVIL', 'a name that fits is painted whole');
+});
+test('her registry is fixed per hull, and the co-op\'s mark is on chapter two\'s Ore Runner only (#936)', () => {
+  const P = (st, name = 'Iron Anvil') => JSON.parse(JSON.stringify(restApi.hullPlate(st, name)));
+  assert.deepEqual(P({ shipId: 'freighter' }), { name: 'IRON ANVIL', reg: 'BR 4471', coop: false });
+  assert.equal(P({ shipId: 'freighter' }, 'Second Chance').reg, P({ shipId: 'freighter' }).reg, 'the hull\'s, whatever her name');
+  assert.equal(new Set(Object.values(restApi.SHIP_REGISTRY)).size, Object.keys(restApi.SHIP_REGISTRY).length, 'no two hulls share one');
+  for (const id of ['shuttle', 'lightfreighter', 'courier', 'freighter', 'gunship']) assert.match(restApi.SHIP_REGISTRY[id], /^[A-Z]{2} \d{4}$/, id);
+  assert.equal(P({ shipId: 'lightfreighter', hired: { chapter: 2 } }, 'Ore Runner').coop, true, 'the co-op\'s hull');
+  assert.equal(P({ shipId: 'lightfreighter', hired: { chapter: 2 } }, 'Ore Runner').name, '', 'not named till the members meet: her class\'s name, the stand-in, is not painted');
+  assert.equal(P({ shipId: 'lightfreighter', hired: { chapter: 2 } }, 'Kestrel').name, 'KESTREL', 'once named, her name');
+  assert.equal(P({ shipId: 'lightfreighter', hired: null }, 'Ore Runner').name, 'ORE RUNNER', 'an owner\'s ship is named what the owner named her');
+  assert.equal(P({ shipId: 'lightfreighter', hired: null }).coop, false, 'an owner\'s Ore Runner is not the co-op\'s');
+  assert.equal(P({ shipId: 'lightfreighter', hired: { chapter: 1 } }).coop, false); assert.equal(P({ shipId: 'freighter', hired: { chapter: 2 } }).coop, false);
+  assert.deepEqual(JSON.parse(JSON.stringify(restApi.registryMarks('BR 4471'))), JSON.parse(JSON.stringify(restApi.registryMarks('BR 4471'))), 'the same marks every time');
+  assert.equal(restApi.registryMarks('BR 4471').length, 6); assert.notDeepEqual(restApi.registryMarks('BR 4471'), restApi.registryMarks('CR 2208'));
+  // on the certificate: the marks beside the seal, inside the paper, no text; none given, as before
+  const r = layoutBox(LAYOUTS.freighter, 'bridge'), F = r.floor, lx = Math.round((r.x0 + (r.x1 - r.x0) * 0.222) * 100) / 100;
+  const draw = registry => { const { ctx, calls } = recorder(); drawRoom(ctx, 'bridge', r, RS({ well: FW, registry, damage: { marks: new Set(), severe: false } })); return calls; };
+  const ink = calls => placedRects(calls).filter(q => q.col === wallTone('#5a5246'));
+  assert.equal(ink(draw(null)).length, 0); assert.equal(JSON.stringify(draw(undefined)), JSON.stringify(draw(null)));
+  const marks = ink(draw('BR 4471')); assert.equal(marks.length, 6, 'a mark for each of its letters and digits');
+  const xs = marks.map(m => m.x), ys = marks.flatMap(m => [m.y, m.y + m.h]), lines = placedRects(draw('BR 4471')).filter(q => q.col === wallTone('#6e6656'));  // its printed lines
+  assert.ok(Math.max(...xs) - Math.min(...xs) < 10 && Math.max(...ys) - Math.min(...ys) <= 2.5, 'a short row of marks');
+  assert.ok(Math.min(...xs) >= Math.min(...lines.map(q => q.x)) - 1 && Math.min(...ys) > Math.max(...lines.map(q => q.y + q.h)), 'on the paper, under its lines');
+  assert.ok(lx > 0 && !draw('BR 4471').some(k => k[0] === 'fillText' && /BR|4471/.test(k[1])), 'no words on it');
+});
+test('the galley\'s watch bill shows tonight\'s bill and a scene\'s record, with your tab on the middle watch when you asked Cato (#936)', () => {
+  const roster = [{ id: 'you', role: 'you' }, { id: 'a', role: 'pilot' }, { id: 'b', role: 'engineer' }, { id: 'c', role: 'icehand' }, { id: 'd', role: 'slicer' }], C = restApi.ROLE_COLORS;
+  const S = (bill, watch, night, asked) => JSON.parse(JSON.stringify(restApi.billSheet(roster, bill, watch, night, asked)));
+  assert.deepEqual(Object.keys(restApi.WATCH_ORDER), ['bridge', 'engine']);
+  assert.deepEqual(S({ bridge: 'a', engine: 'b' }, null, 3, false), { rows: [{ post: 'bridge', col: C.pilot }, { post: 'engine', col: C.engineer }], middle: null });
+  assert.deepEqual(S({ bridge: 'a', engine: null }, null, 3, false).rows[1].col, null, 'nobody on it: the line blank');
+  assert.equal(S({ bridge: 'a', engine: 'b' }, { night: 3, post: 'bridge', stands: 'you' }, 3, false).rows[0].col, C.you, 'a scene\'s record on its post');
+  assert.equal(S({ bridge: 'a', engine: 'b' }, { night: 3, post: 'engine', stands: 'c' }, 3, false).rows[1].col, C.icehand);
+  assert.equal(S({ bridge: 'a', engine: 'b' }, { night: 2, post: 'bridge', stands: 'you' }, 3, false).rows[0].col, C.pilot, 'another night\'s record: the bill');
+  assert.deepEqual(S({ bridge: 'a', engine: 'b' }, { night: 3, post: 'gunnery', stands: 'd' }, 3, false).rows.map(q => q.col), [C.pilot, C.engineer], 'a record on another room leaves the bill');
+  for (const [id, post] of [['a', 'bridge'], ['b', 'engine']]) assert.equal(restApi.onWatchTonight({ id }, { bill: { bridge: 'a', engine: 'b' } }), post, 'as onWatchTonight reads it');
+  assert.equal(S({ bridge: 'a', engine: 'b' }, null, 3, true).middle, C.you, 'your tab on the middle watch');
+  // how the game records the ask (#914): the memory Cato's choice leaves on him
+  const ask = 'You told me what you needed, and I put it on the bill.', edited = 'You asked for the middle watch, and it is yours.';
+  const st = (mem, crew = ['c:cato']) => ({ crew, cast: { cato: { pid: 'c:cato' } }, people: { 'c:cato': { memories: mem } } });
+  assert.equal(restApi.askedMiddle(st([`9 Jun 2214: ${ask}`]), [ask]), true); assert.equal(restApi.askedMiddle(st(['9 Jun 2214: You kept the cold watch, so I didn\'t have to move anyone.']), [ask]), false);
+  assert.equal(restApi.askedMiddle(st([`9 Jun 2214: ${ask}`], ['c:ines']), [ask]), false, 'Cato gone from the crew: no tab');
+  assert.equal(restApi.askedMiddle({ people: {} }, [ask]), false, 'no Cato'); assert.equal(restApi.askedMiddle(st([ask]), []), false);
+  assert.equal(restApi.askedMiddle(st([`9 Jun 2214: ${edited}`]), [ask, edited]), true, 'an override\'s words, as the memory holds them');
+  // drawn: a tab in each stander's colour (toned to the props), the middle tab only when asked, on the wall clear of the room's name and the patch
+  const r = layoutBox(LAYOUTS.freighter, 'galley'), wt = col => restApi.figShade(restApi.billTone(col), restApi.WALL_TONE);
+  const draw = bill => { const { ctx, calls } = recorder(); drawRoom(ctx, 'galley', r, RS({ well: FW, bill, damage: { marks: new Set(), severe: false } })); return calls; };
+  const tabs = (calls, col) => filledParts(calls).filter(p => p.col === wt(col) && p.outlined).length;
+  const plainBill = S({ bridge: 'a', engine: 'b' }, null, 3, false), asked = S({ bridge: 'a', engine: 'b' }, null, 3, true);
+  assert.equal(tabs(draw(plainBill), C.pilot), 1); assert.equal(tabs(draw(plainBill), C.engineer), 1); assert.equal(tabs(draw(plainBill), C.you), 0);
+  assert.equal(tabs(draw(asked), C.you), 1, 'asked: your tab on the middle watch');
+  const sheet = filledParts(draw(asked)).filter(p => p.col === wallTone('#3a2c20')).map(partBox)[0];
+  for (const zoom of [0.82, 1.17, 1.45]) assert.ok(sheet.x0 >= p6Name(r, zoom).x1 || sheet.y0 >= p6Name(r, zoom).y1, `${zoom}: clear of the name (${JSON.stringify(sheet)})`);
+  const pb = { x0: r.x0 + 92 - 11.5, x1: r.x0 + 92 + 11.5, y0: r.floor - 58 - 7.5, y1: r.floor - 58 + 7.5 };
+  assert.ok(!p6Meet(sheet, pb), 'clear of the patch\'s spot');
+  // and of everything else the galley draws, with all its clutter out (the trip's end): the cupboard, the screen, the knife strip, the worktop's things
+  const placed = calls => { const out = [], stack = []; let dx = 0, dy = 0, fill = null, pts = [];
+    for (const [k, ...a] of calls) {
+      if (k === 'save') stack.push([dx, dy]); else if (k === 'restore') [dx, dy] = stack.pop(); else if (k === 'translate') { dx += a[0]; dy += a[1]; }
+      else if (k === 'fillStyle') fill = String(a[0]).toLowerCase(); else if (k === 'beginPath') pts = []; else if (k === 'moveTo' || k === 'lineTo') pts.push([a[0] + dx, a[1] + dy]); else if (k === 'quadraticCurveTo') pts.push([a[2] + dx, a[3] + dy]);
+      else if (k === 'fill' && pts.length) out.push({ col: fill, x0: Math.min(...pts.map(q => q[0])), x1: Math.max(...pts.map(q => q[0])), y0: Math.min(...pts.map(q => q[1])), y1: Math.max(...pts.map(q => q[1])) });
+      else if (k === 'fillRect') out.push({ col: fill, x0: a[0] + dx, x1: a[0] + dx + a[2], y0: a[1] + dy, y1: a[1] + dy + a[3] });
+    }
+    return out; };
+  const { ctx: gc, calls: gcalls } = recorder(); drawRoom(gc, 'galley', r, RS({ well: FW, bill: asked, age: 1, spirits: true, damage: { marks: new Set(), severe: false } }));
+  const all = placed(gcalls), board = all.find(q => q.col === wallTone('#3a2c20')), mine = all.slice(all.indexOf(board) - 1, all.indexOf(board) + 40).filter(q => q.x0 >= board.x0 - 0.5 && q.x1 <= board.x1 + 0.5 && q.y0 >= board.y0 - 3 && q.y1 <= board.y1 + 0.5);
+  assert.ok(board && Math.abs(board.x0 - sheet.x0) < 0.01, 'the sheet where it lands on the wall');
+  const solid = q => /^#|^rgb\(/.test(q.col) && q.x1 - q.x0 < 200 && q.y1 - q.y0 < 90;  // a prop, not the room's shell or its light
+  const hits = all.filter(q => solid(q) && !mine.includes(q) && p6Meet(q, { x0: board.x0, x1: board.x1, y0: board.y0 - 3, y1: board.y1 }));
+  assert.deepEqual(hits, [], 'nothing else on the sheet or its clip');
+  assert.equal(JSON.stringify(draw(undefined)).includes(String(wt(C.pilot))), false, 'no bill given, none drawn');
+});
+test('the bill on the galley\'s wall is who onWatchTonight puts on watch, with a scene\'s record and with someone hurt (#936)', () => {
+  const people = { a: { id: 'a', role: 'pilot' }, b: { id: 'b', role: 'engineer' }, c: { id: 'c', role: 'icehand' }, d: { id: 'd', role: 'slicer' }, e: { id: 'e', role: 'xo' } };
+  for (const [injured, watch, day] of [[{}, null, 0], [{ a: true }, null, 0], [{}, { night: 0, stands: 'c', post: 'engine' }, 0], [{ b: true }, { night: 0, stands: 'you', post: 'bridge' }, 0], [{ d: true }, { night: 0, stands: 'e', post: 'bridge' }, 3], [{}, { night: 0, stands: 'd', post: 'gunnery' }, 1]]) {
+    const st = { day, crew: Object.keys(people), people, injured }, t = { elapsed: restApi.SHIP_DAY * 0.7 - 6, watch: watch && { ...watch } };
+    const ns = restApi.nightStateOf(st, t, false), roster = restApi.crewRoster(st), sheet = restApi.billSheet(roster, ns.bill, ns.watch, restApi.shipDay(t.elapsed).day, false), at = JSON.stringify({ injured, watch, day });
+    for (const row of sheet.rows) {
+      const on = roster.filter(p => restApi.onWatchTonight(p, ns) === row.post);
+      assert.ok(on.length <= 1, `${at}: one on ${row.post}`);
+      assert.equal(row.col, on.length ? restApi.ROLE_COLORS[on[0].role] : null, `${at}: the ${row.post} row is ${on.length ? on[0].id : 'nobody'}`);
+    }
+    for (const id of Object.keys(injured)) assert.ok(!sheet.rows.some(q => q.col === restApi.ROLE_COLORS[people[id].role]), `${at}: ${id}, hurt, is off the bill`);
+  }
+});
+test('the crew in good spirits: the galley warmer and stronger with the radio on; otherwise the radio off (#936)', () => {
+  const st = moods => ({ day: 10, injured: { h: true }, people: Object.fromEntries(Object.entries(moods).map(([id, k]) => [id, k ? { mood: { kind: k, until: 20 } } : {}])) });
+  const sp = (moods, ids = Object.keys(moods)) => JSON.parse(JSON.stringify(restApi.crewSpirits(st(moods), ids)));
+  assert.deepEqual(sp({ a: 'high', b: 'high', c: null }), { good: true, low: [] });
+  assert.deepEqual(sp({ a: 'high', b: null }), { good: false, low: [] }, 'one cheerful is not the crew');
+  assert.deepEqual(sp({ a: 'high', b: 'high', c: 'low', d: 'low' }), { good: false, low: ['c', 'd'] }, 'as many low');
+  assert.deepEqual(sp({ a: 'high', b: 'high', c: 'low' }), { good: true, low: ['c'] });
+  assert.equal(sp({ a: 'high', b: 'high', h: 'high', x: 'low' }).good, false, 'the hurt are not in good spirits');
+  assert.deepEqual(sp({ a: 'low' }, []), { good: false, low: [] });
+  for (const f of [restApi.crewSpirits, restApi.billSheet, restApi.askedMiddle, restApi.hullPlate, restApi.registryMarks, restApi.bunkShut]) assert.ok(!/random|rand\(|pick\(/.test(String(f)), 'no dice');
+  const [base, good] = [restApi.ROOM_GLOW.galley, restApi.GALLEY_SPIRITS].map(g => restApi.roomLight({ x0: 0, x1: 340, top: 0, floor: 100 }, phaseWeights(0.3), 0, false, [170], g));
+  assert.ok(good.k > base.k && good.k <= 1.5, 'a little stronger'); assert.ok(good.pool[2] < base.pool[2] && good.pool[0] >= base.pool[0], 'a little warmer');
+  const r = layoutBox(LAYOUTS.freighter, 'galley'), draw = spirits => { const { ctx, calls } = recorder(); drawRoom(ctx, 'galley', r, RS({ well: FW, spirits, damage: { marks: new Set(), severe: false } })); return calls; };
+  const dial = (calls, col) => placedRects(calls).filter(q => q.col === col).length;
+  assert.equal(dial(draw(true), '#a89060'), 1, 'on: its dial lit'); assert.equal(dial(draw(false), '#a89060'), 0); assert.equal(dial(draw(false), '#2e2c24'), 1, 'off: dark');
+  assert.ok(draw(true).filter(k => k[0] === 'arc').length > draw(false).filter(k => k[0] === 'arc').length, 'on: its sound marks');
+  assert.ok(!draw(true).some(k => k[0] === 'strokeStyle' && /^rgba\(200,170,110/.test(k[1])), 'the sound marks tinted as the room is, not a raw colour');
+  for (const col of ['#a89060', '#2e2c24', '#4a4e44', '#262a24', '#6a6a5a', '#9a9480', '#3a2c20', '#4a4436', ...Object.values(restApi.ROLE_COLORS).map(restApi.billTone)]) assert.ok(inLimits(col), `${col} inside the props' brightness`);
+});
+test('someone low has their own bunk\'s curtain drawn, even by day; the bunk always shut stays shut (#936)', () => {
+  const { r, s } = berthCase(10, 0.3, 1.17), owner = { slept: false, shelf: [], photos: [], screen: null, keep: null, towel: '#5a7a8a' };
+  const bunks = low => Array.from({ length: 10 }, (_, k) => (k < 7 ? { ...owner, low: low.includes(k) } : null));
+  const shut = b => { const { ctx, calls } = recorder(); drawRoom(ctx, 'berths', r, { ...s, night: 0, bunks: b }); return filledParts(calls).filter(p => p.col === '#4a3a5a' && partBox(p).x1 - partBox(p).x0 > 40).length; };
+  assert.equal(shut(bunks([])), 1, 'the one kept shut'); assert.equal(shut(bunks([4])), 2, 'and the low one\'s'); assert.equal(shut(bunks([2])), 1, 'low in the shut one: the same');
+  assert.equal(shut(bunks([0, 4])), 3, 'the first bunk\'s too');
+  assert.equal(restApi.bunkShut({ bunks: bunks([4]) }, 4, 2), true); assert.equal(restApi.bunkShut({}, 2, 2), true); assert.equal(restApi.bunkShut({}, 3, 2), false);
+});
+test('the bill, the radio, the low curtains and her name leave every save restored, write nothing under 12px and hold still under reduced motion (#936)', () => {
+  const sheet = { rows: [{ post: 'bridge', col: '#6fb0ff' }, { post: 'engine', col: null }], middle: '#d9d4cc' };
+  for (const [id, extra] of [['galley', { bill: sheet, spirits: true }], ['galley', { bill: sheet, spirits: false }], ['bridge', { registry: 'CR 2208' }], ['berths', { bunks: [null, null, null, { slept: false, shelf: [], photos: [], screen: null, keep: null, towel: '#5a7a8a', low: true }] }]]) for (const zoom of [0.82, 1.17, 1.45]) {
+    const r = layoutBox(LAYOUTS.freighter, id), s = RS({ zoom, well: FW, berths: 10, ...extra, damage: { marks: new Set(), severe: false } });
+    const c = fakeCtx(); drawRoom(c, id, r, s); assert.equal(c.depth, 0, `${id} ${zoom}: saves restored`);
+    for (const f of c.fonts) assert.ok(Number(/(\d+(?:\.\d+)?)px/.exec(f)[1]) >= 12, `${id}: ${f}`);
+    assert.ok(p6Still((q, t) => drawRoom(q, id, r, { ...s, still: true, time: t })), `${id} ${zoom}: the same frame under reduced motion`);
+  }
+});

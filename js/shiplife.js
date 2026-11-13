@@ -177,6 +177,12 @@ function figureMood(st, id, youHurt) {
   const m = ((st.people || {})[id] || {}).mood;
   return m && m.until > st.day ? { low: 'low', high: 'good' }[m.kind] : undefined;
 }
+// The crew's spirits (#936), from the game state st and the crew's ids, by their faces (figureMood): good when at least two are in good spirits
+// and more are than are low or hurt; low: who is low, whose bunk's curtain is drawn. Pure: no dice.
+function crewSpirits(st, crew) {
+  const moods = (crew || []).map(id => [id, figureMood(st, id)]), n = m => moods.filter(([, k]) => k === m).length;
+  return { good: n('good') >= 2 && n('good') > n('low') + n('hurt'), low: moods.filter(([, k]) => k === 'low').map(([id]) => id) };
+}
 // The watch a scene hands out (#951): a record for one night of the burn, t.watch = { night, stands, post, relieved, relievedAt }, written by
 // standWatch (the scenes' effect, storylets.js). `day` is the ship's day now (shipDay(t.elapsed).day); its night is its handover and night, so a
 // record made in the wake, when that night is over, is for the next one.
@@ -297,6 +303,21 @@ function billOnOf(st, t, s, ahead = 0) {
   const night = st.day + shipDay(t.elapsed).day + ahead;
   return billWithWatch(billFor(st, ahead ? { ...s, watch: null } : s, night), ableWatch(t.watch, s), shipDay(t.elapsed).day + ahead);
 }
+// The galley's sheet of tonight's bill (#936, rooms.js roomWatchBill): a row for each post (WATCH_ORDER) with the suit's colour (ROLE_COLORS)
+// of whoever stands it, by the bill or a scene's record on that post for this night (billWithWatch, as onWatchTonight reads it), null for
+// nobody; and the middle watch, the hand's colour when they asked Cato for it (asked). From the roster ([{ id, role }]), the bill, the scene's
+// record, the night (the ship's day it is for) and asked. Pure.
+function billSheet(roster, bill, watch, night, asked) {
+  const b = billWithWatch(bill || {}, watch, night), roleOf = id => (roster.find(r => r.id === id) || {}).role;
+  return { rows: Object.keys(WATCH_ORDER).map(post => ({ post, col: b[post] ? ROLE_COLORS[roleOf(b[post])] || null : null })), middle: asked ? ROLE_COLORS.you : null };
+}
+// Whether the hand asked Cato for the middle watch (#914), while he is aboard: the game keeps the ask only as the memory his choice leaves on him
+// (cast.js like), so `asks` are its words, as written and as the scene editor's file has them (CAST.cato.middleAsk), any of which a memory may
+// hold. From the game state. Pure.
+const askedMiddle = (st, asks) => {
+  const rec = (st.cast || {}).cato, p = rec && (st.people || {})[rec.pid], words = (asks || []).filter(Boolean);
+  return !!(p && (st.crew || []).includes(rec.pid) && words.length && (p.memories || []).some(m => words.some(a => m.endsWith(a))));
+};
 // Where the hand keeps a watch tonight, by the bill or a scene's record (#951), with the lights down (`dark`): a room, or null.
 function handWatchPostOf(t, s, dark) {
   if (!t || !s || !dark) return null;
@@ -1038,7 +1059,9 @@ function drawCutaway(box, clear = box) {
   bunkSlots(people, owners, isAsleep).forEach((k, p) => slots.set(p, k));  // whoever is turned in lies in their own bunk (#934), or a free one
   for (const p of people) if (bunked(p) && p.bunk !== null && p.bunk < nb) slots.set(p, p.bunk);  // the bunk they walked to (couchPlan; nobody sleeps in the hard burn)
   const lain = new Set(slots.values()), bunks = owners.map((p, k) => p && { slept: lain.has(k), ...bunkKit(p.role === 'you' ? { id: 'you', role: job ? POSTS[job.post].role : 'rating', culture: st.background } : { ...((p.id && st.people[p.id]) || p), role: p.role, id: p.id || p.name }) });
-  const s = { bunks, w, time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, goods: holdGoods(st.cargo, st.missions), pr, places: { to: placeColour(placeOf(t.to), st.route && st.route.dock), from: placeColour(placeOf(st.systemId), st.planet) }, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), screen: galleyScreenOn(shipDay(t.elapsed).block), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, t.recline),
+  const mood = crewSpirits(st, st.crew), night = nightStateOf(st, t, handHurt()), ask = typeof CAST === 'object' && CAST.cato ? CAST.cato.middleAsk() : [];
+  bunks.forEach((b, k) => { if (b && owners[k].id && mood.low.includes(owners[k].id)) b.low = true; });  // a low person's own curtain drawn (#936)
+  const s = { bunks, w, spirits: mood.good, registry: SHIP_REGISTRY[st.shipId] || null, bill: billSheet(crewRoster(st), night.bill, night.watch, shipDay(t.elapsed).day, askedMiddle(st, ask)), time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, goods: holdGoods(st.cargo, st.missions), pr, places: { to: placeColour(placeOf(t.to), st.route && st.route.dock), from: placeColour(placeOf(st.systemId), st.planet) }, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), screen: galleyScreenOn(shipDay(t.elapsed).block), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, t.recline),
     damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3, patches: new Set(G.state.patches || []) }, age: tripAge(G.transit), patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState)
   roomSprites = ROOM_SPRITE_CACHE;  // each prop part drawn once, then copied (#1117)
   try {
@@ -1119,6 +1142,7 @@ function drawCutaway(box, clear = box) {
   }
   if (seen(galley.top, galley.floor)) roomMessTable(ctx, galley, s);  // the mess table in front of those sitting at it (#978)
   hullSeams(o);  // plating, rivets and scars (hulldetail.js)
+  hullName(ctx, o, zoom, hullPlate(st, cleanName(home().name)));  // her name and registry on the nose's cap (#936)
   ctx.restore();
   hullFittings(o, deck);  // mast, fins, turrets and the airlock's door
   if (time % 1.6 < 0.2) {  // running lights, blinking

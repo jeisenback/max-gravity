@@ -1817,3 +1817,49 @@ test('in time-lapse at 16x a walk is not drawn: the walker fades out of the old 
   assert.ok(Math.abs(r.arrived.x - 0.8 * r.rest.x / 0.1) < 1e-6 && r.arrived.at === 'galley', 'there once they rest'); assert.equal(r.back.a, 1, 'and faded in');
   assert.equal(r.off, null, 'at 1x drawn as they are');
 });
+// #936: her name on the nose stays clear of the speed buttons and inside the camera's run, at every desktop width, for the longest name a
+// ship can have (cleanName keeps 30 characters; the rename's field takes 30).
+test('her name on the nose keeps clear of the speed buttons and inside the camera\'s view, for a name of 30 characters (#936)', async () => {
+  for (const width of [1000, 1280, 1600]) {
+    const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width, height: 800 } });
+    await ev(helpers);
+    await ev(() => { burn(); home().name = 'W'.repeat(30); shipPeople(); });
+    await frames(page, 2);
+    const r = await ev(() => {
+      window.requestAnimationFrame = () => 0; G.cam = null; G.transit.aboard[0].dk = 0; drawTransit(innerWidth, innerHeight);
+      const b = document.getElementById('bspeed').getBoundingClientRect(), q = layoutBox(LAYOUTS.freighter, 'bridge'), room = G.cutRooms.find(x => x.id === 'bridge'), k = room.w / (q.x1 - q.x0);
+      const o = towerOutline(LAYOUTS.freighter), c = document.createElement('canvas').getContext('2d');
+      const L = hullNameLayout(o, k, hullPlate(G.state, cleanName(home().name)), (t, px) => { c.font = `600 ${px}px ${roomFont}`; return c.measureText(t).width; });
+      const sx = x => room.x + (x - q.x0) * k, sy = y => room.y + (y - q.top) * k;
+      return { hidden: document.getElementById('bspeed').hidden, btn: { x0: b.left, y0: b.top, y1: b.bottom }, x0: sx(L.x0), x1: sx(L.x1), top: sy(L.top), base: sy(L.base), px: L.px, viewTop: sy(-CAM_RUN.above), ceiling: sy(o.top) };
+    });
+    assert.ok(!r.hidden, `${width}: the speed buttons shown`);
+    assert.ok(r.x1 < r.btn.x0 - 4, `${width}: the name (to ${r.x1.toFixed(1)}) ends left of the speed buttons (${r.btn.x0})`);
+    assert.ok(r.px >= 12, `${width}: never under 12px (${r.px})`);
+    assert.ok(r.top >= r.viewTop && r.base < r.ceiling, `${width}: inside the camera's run (${r.top.toFixed(1)} under ${r.viewTop.toFixed(1)}) and over the flight deck`);
+    await done();
+  }
+});
+// #936, #914: the hand's tab on the bill's middle watch reads the memory Cato's choice leaves, as played (an override of its words included),
+// and only while he is aboard.
+test('your tab on the middle watch: after you asked Cato, by the words the scene played, while he is aboard (#936)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    burn(); const st = G.state, out = {};
+    out.before = askedMiddle(st, CAST.cato.middleAsk());
+    useOverrides({ 'cast:cato:intro': { choices: { 0: { effects: { castLike: { who: 'cato', n: 2, memory: 'You asked for the middle watch, and it is yours.' } } } } } });
+    const c = castScene('cato', CAST.cato.scenes.intro).choices[0]; c.run.call(c);
+    out.memory = castPerson('cato').memories.slice(-1)[0]; out.asks = CAST.cato.middleAsk(); out.asked = askedMiddle(st, out.asks);
+    out.bill = billSheet(crewRoster(st), {}, null, 0, out.asked).middle === ROLE_COLORS.you;
+    const pid = castRec('cato').pid; st.crew = st.crew.filter(id => id !== pid); out.gone = askedMiddle(st, CAST.cato.middleAsk());
+    useOverrides({});
+    return out;
+  });
+  await done();
+  assert.equal(r.before, false, 'not asked yet');
+  assert.ok(r.memory.endsWith('You asked for the middle watch, and it is yours.'), r.memory);
+  assert.ok(r.asks.includes('You asked for the middle watch, and it is yours.') && r.asks.includes('You told me what you needed, and I put it on the bill.'), 'the words as written and as played');
+  assert.ok(r.asked && r.bill, 'asked under the override: your tab on the middle watch');
+  assert.equal(r.gone, false, 'Cato gone from the crew: no tab');
+});

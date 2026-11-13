@@ -196,6 +196,13 @@ castTalkScenes('cato');  // his own sittings and talk (family:cato-*), with the 
 // The walk-through on the first burn (captains.js plays it once, before anything else): Cato takes the new hand round the ship. The
 // names are the crew's own; a role nobody holds reads as the job. Only the Gunner's post gets a line of its own. The words are the lines of
 // 'scene:cato-round' (hiredscenes.js).
+// The words of the memory his "Ask for the middle watch" leaves (#914), as written and as the scene editor's file has them (sceneWords): the
+// galley's watch bill reads the hand's ask from it (shiplife.js askedMiddle).
+CAST.cato.middleAsk = () => {
+  const sc = CAST.cato.scenes.intro, mem = c => ((c && c.effects && c.effects.castLike) || {}).memory;
+  const shown = sceneWords(castSceneId('cato', sc, sc), { title: sc.title, text: sc.text, personal: true, choices: sc.choices }).choices[0];
+  return [...new Set([mem(sc.choices[0]), mem(shown)].filter(Boolean))];
+};
 CAST.cato.round = () => {
   const say = (key, vars) => sceneSay('scene:cato-round', key, vars);
   const ice = G.state.crew.map(person).filter(c => c && c.role === 'icehand').map(c => c.first);
