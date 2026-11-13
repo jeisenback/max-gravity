@@ -423,12 +423,14 @@ function landingScenesOpen() { if (!G.dialog) sceneQueue = []; landingScenes = [
 function landingScenesPlay() { const list = (landingScenes || []).sort((a, b) => a.rank - b.rank); landingScenes = null; for (const x of list) queueScene(x.ev); }
 
 function chooseEvent(i) {
+  if (G.dock) G.dock = dockChose(G.dock, G.dialog.choices[i].dock);  // the dock's result page (dock.js, #940)
   const c = G.dialog.choices[i], result = G.dialog.event.personal ? c.run() : hiredFunds(() => c.run());  // a hired hand's burn events spend the ship's money, not theirs; their own affairs, their own
   return c.role && !c.keep ? result.replace(/\{crew\}/g, roleName(c.role)) : result;
 }
 
 function finishEvent() {
   G.dialog = null;
+  if (G.dock) { G.dock = null; G.cam = null; }  // the scene at the dock is over: the port screen (dock.js, #940)
   if (G.nextEvent) {  // a scene that leads straight into another
     const ev = G.nextEvent;
     G.nextEvent = null;
