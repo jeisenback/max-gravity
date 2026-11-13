@@ -901,6 +901,7 @@ function cutShaft(ctx, x0, x1, top, F) {
 // frame after (#1024): the burn view redraws every frame. A new zoom or pixel ratio starts the cache again; a new layout gives new bays.
 const SHELLS = { scale: 0, bays: new Map() };
 const ROOM_SPRITE_CACHE = new Map();  // the rooms' part sprites (rooms.js roomSprite, #1117), kept across frames
+const DECK_SPRITES = new Map();  // the ladder shaft on each deck and the hull's seams as images (#1122)
 function cachedShell(zoom) {
   const px = zoom * (window.devicePixelRatio || 1);
   if (SHELLS.scale !== px) { SHELLS.scale = px; SHELLS.bays.clear(); }
@@ -1052,8 +1053,11 @@ function drawCutaway(box, clear = box) {
   for (let i = 0; i <= last; i++) {
     const d = deck(i);
     if (seen(d.top, d.floor + HULL.plate)) {
-      cutShaft(ctx, lx - ww, lx + ww, d.top, d.floor);  // the shaft on every deck, between its rooms or its bays, and a hatch through each wall into it (#1024)
-      if (i === roomAt('bridge').deck) roomHatchBars(ctx, lx - ww, lx + ww, d.floor);  // the bridge's grab bars on its bulkheads, beside the ladder's opening
+      const bars = i === roomAt('bridge').deck, shaft = c => {
+        cutShaft(c, lx - ww, lx + ww, d.top, d.floor);  // the shaft on every deck, between its rooms or its bays, and a hatch through each wall into it (#1024)
+        if (bars) roomHatchBars(c, lx - ww, lx + ww, d.floor);  // the bridge's grab bars on its bulkheads, beside the ladder's opening
+      };
+      if (!worldSprite(ctx, DECK_SPRITES, `shaft|${lx}|${ww}|${d.top}|${d.floor}|${bars}`, [lx - ww - 10, d.top, lx + ww + 10, d.floor + HULL.plate], shaft)) shaft(ctx);  // kept as an image (#1122)
     }
     if (i < last) { ctx.fillStyle = '#060d16'; ctx.fillRect(lx - 14, d.floor, 28, HULL.plate); }  // the opening in the floor plate
   }
@@ -1118,7 +1122,7 @@ function drawCutaway(box, clear = box) {
     for (const q of row) { labels.push({ x: at + q.w / 2, w: q.w, dk: q.dk }); worldText(ctx, zoom, q.name, at + q.w / 2, q.y + 10, 12 / zoom, '#9fb4c9', 'center'); at += q.w + gap; }
   }
   if (seen(galley.top, galley.floor)) roomMessTable(ctx, galley, s);  // the mess table in front of those sitting at it (#978)
-  hullSeams(o);  // plating, rivets and scars (hulldetail.js)
+  hullSeams(o, seen);  // plating, rivets and scars (hulldetail.js)
   ctx.restore();
   hullFittings(o, deck);  // mast, fins, turrets and the airlock's door
   if (time % 1.6 < 0.2) {  // running lights, blinking
