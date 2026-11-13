@@ -47,3 +47,65 @@ const riskOutcome = roll => (roll < 1 / 3 ? 'hurt' : roll < 2 / 3 ? 'system' : '
 // The read of a section's risk. A reader with the skill (3 and up) reads the true band; anyone less reads coarser bands, so a middling risk
 // can read clean or bad, but never two bands off.
 const readWord = (risk, skill) => (skill >= 3 ? (risk < 0.15 ? 'clean' : risk < 0.33 ? 'some' : 'bad') : (risk < 0.2 ? 'clean' : risk < 0.35 ? 'some' : 'bad'));
+
+// ---------- the jobs on the co-op's board ----------
+// At most one salvage job and one survey job a day on a port's board, by the port and the day (hash: no dice of the game's), for an unfound wreck
+// or rock the tank reaches and comes back from. The client is paid on delivery at this port. The co-op's only (role.js): the parked owner game,
+// which has a board too, gets none.
+const SURVEY_CLIENTS = ['Brannock Minerals', 'the Ceres claims office', 'a buyer for the Juno growers', 'Tessaly Assay'];
+const JOB_SLACK = 10;  // days past the trip there, the work and the trip back that a client gives
+function jobsAt(st, planet, day) {
+  if (role().id !== 'coop') return [];
+  const sid = st.systemId, all = sites(st), out = [];
+  const reach = kind => Object.keys(all).filter(id => all[id].kind === kind && all[id].found === null && burnFuel(sid, id) + burnFuel(id, sid) <= st.fuel);
+  for (const [kind, siteKind, every] of [['salvage', 'wreck', 2], ['survey', 'rock', 3]]) {
+    const roll = hash(`${planet.name}|${day}|${kind}`) >>> 0, list = reach(siteKind);
+    if (roll % every || !list.length) continue;
+    const site = all[list[(roll >>> 4) % list.length]], out1 = travelDays(sid, site.id, day), work = kind === 'salvage' ? 3 : 1;
+    const deadline = day + out1 + work + travelDays(site.id, sid, day + out1 + work) + JOB_SLACK;
+    if (kind === 'salvage') {
+      const t = WRECK_TYPES[site.wreck.type];
+      out.push({ kind, site: site.id, client: t.clients[(roll >>> 8) % t.clients.length], find: t.find, sid, planet: planet.name, deadline, pay: 6000 + 500 * ((roll >>> 12) % 17) });
+    } else {
+      out.push({ kind, site: site.id, client: SURVEY_CLIENTS[(roll >>> 8) % SURVEY_CLIENTS.length], find: 'survey', sid, planet: planet.name, deadline, pay: 3000 + 250 * ((roll >>> 12) % 13) });
+    }
+  }
+  return out;
+}
+
+// A job's row on the board, and the job under way.
+const jobWords = (st, j) => {
+  const s = sites(st)[j.site];
+  if (j.kind === 'survey') return `${j.client}: a survey of ${s.name}, a rock at ${s.au.toFixed(1)} AU. Deliver to ${j.planet} by day ${j.deadline}. Pays up to ${fmt(Math.round(j.pay * SURVEY_PAY.good))} cr by the report.`;
+  const t = WRECK_TYPES[s.wreck.type];
+  return `${j.client}: ${t.findWord} off the ${s.name}, ${t.word}, ${s.au.toFixed(1)} AU. Deliver to ${j.planet} by day ${j.deadline}. Pays ${fmt(j.pay)} cr on delivery.`;
+};
+const SURVEY_PAY = { poor: 0.5, fair: 1, good: 1.4 };  // a survey's pay by the report's quality
+
+function salvageJobsHtml(st) {
+  const job = career().job;
+  if (job) return String(h`<h3>Salvage and survey</h3><p class="desc">Under way: ${jobWords(st, job)}${job.got ? ' Aboard.' : ''}</p>`);
+  const list = jobsAt(st, currentPlanet(), st.day);
+  if (!list.length) return '';
+  return String(h`<h3>Salvage and survey</h3>${listHtml(list, (j, i) => h`<div class="row"><span>${jobWords(st, j)}</span>
+      <button data-action="takeJob" data-arg="${i}" ${career().run ? raw('disabled title="A contract is under way"') : ''}>Take it</button></div>`)}`);
+}
+
+// Takes the i-th job: one at a time, never alongside a contract run. The site goes on the map and the course is set for it.
+function takeJob(i) {
+  const st = G.state, c = career();
+  if (role().id !== 'coop' || !c || c.run || c.job || G.mode !== 'landed' || G.dialog) return '';
+  const j = jobsAt(st, currentPlanet(), st.day)[i];
+  if (!j) return '';
+  c.job = { ...j, taken: st.day, got: false, quality: null };
+  const s = findSite(st, j.site, st.day);
+  st.dest = s.id; st.route = null;
+  return `${j.client}'s job is taken. ${s.name} is on the map now, ${s.au.toFixed(1)} AU out, and the course is set. Take off when you are ready.`;
+}
+
+Mods.register({
+  id: 'salvage', name: 'Wrecks and salvage', builtin: true,
+  init(M) {
+    M.action('takeJob', i => { const text = takeJob(Number(i)); if (text) UI.notes.push(text); });
+  },
+});
