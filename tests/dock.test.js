@@ -95,15 +95,15 @@ test('no (c) for keeping out of it, the nod or the owner\'s payment: the result 
   }
 });
 
-test('each page\'s beats run about 8 to 10 s in all, in their order: (a) then (b); (c) when the hand moves, (d), then (e)', () => {
+test('each page\'s beats run about 15 s in all at the crew\'s pace, longer for a hand who climbs from a lower post, in their order: (a) then (b); (c) when the hand moves, (d), then (e)', () => {
   const ends = [];
   for (const [choice, post] of [[null, 'comms'], ['move', 'comms'], ['move', 'gunner'], ['move', 'engineer'], ['move', 'pilot'], ['keep', 'gunner'], ['nod', 'engineer'], ['pay', null]]) {
     const p = plan(choice, post);
     assert.ok(p.aEnd > 0 && p.aEnd < p.bBridge && p.bBridge <= p.bEnd, `${choice} ${post}: (a) then (b)`);
-    assert.ok(p.bEnd >= 8 && p.bEnd <= 10, `${choice} ${post}: the opening page's beats in ${p.bEnd.toFixed(2)} s`);
+    assert.ok(p.bEnd >= 15 && p.bEnd <= 17, `${choice} ${post}: the opening page's beats in ${p.bEnd.toFixed(2)} s`);
     assert.ok(p.cEnd < p.dEnd && p.dEnd < p.down && p.down < p.eEnd, `${choice} ${post}: (c), (d), then (e)`);
-    assert.ok(p.eEnd >= 7 && p.eEnd <= 11, `${choice} ${post}: the result page's beats in ${p.eEnd.toFixed(2)} s`);
-    if (choice === 'move' && post === 'comms') assert.ok(p.eEnd >= 8 && p.eEnd <= 10, `the comms post's move in ${p.eEnd.toFixed(2)} s`);
+    assert.ok(p.eEnd >= 16 && p.eEnd <= 26, `${choice} ${post}: the result page's beats in ${p.eEnd.toFixed(2)} s`);
+    if (choice !== 'move') assert.ok(p.eEnd <= 17.5, `${choice} ${post}: no move, the result page's beats in ${p.eEnd.toFixed(2)} s`);
     ends.push(p.eEnd);
   }
   const order = beats => beats.filter((b, i) => b !== beats[i - 1]);
@@ -480,7 +480,7 @@ test('the camera keeps each beat\'s people in the part the scene\'s page leaves 
         }
         return { out: out.slice(0, 12), n };
       }, post);
-      assert.ok(r.n > 40, `${width}x${height}, ${post}: ${r.n} checks`);
+      assert.ok(r.n > 80, `${width}x${height}, ${post}: ${r.n} checks`);
       assert.deepEqual(r.out, [], `${width}x${height}, ${post}`);
     }
     await done();
