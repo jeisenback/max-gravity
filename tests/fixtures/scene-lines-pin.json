@@ -31233,5 +31233,49 @@
    "Cut it carefully (half the take, half the risk)",
    "Haul home with what is aboard"
   ]
+ },
+ {
+  "id": "scene:survey",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You works it for nine hours and gets everything on the list, with the core samples to back it. Brannock Minerals will have a report they can sell on.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.45,
+    "text": "You gets most of the list. The density figures are an estimate, and the report says so.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The spin is worse than it looked, and the scopes never settle. You gets what they can. The report is thin, and Brannock Minerals will pay for a thin one.",
+    "next": null
+   }
+  ],
+  "title": "Surveying YQ-807",
+  "text": "YQ-807 turns slowly under the ship, grey and pitted, about the size of a small town. You has the scopes on it and the client's list of what to look for: the spin, the density, where the metal is and where the ice is, if there is any.",
+  "labels": [
+   "Run the survey"
+  ]
+ },
+ {
+  "id": "scene:survey:pilot",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Ines works it for nine hours and gets everything on the list, with the core samples to back it.  will have a report they can sell on.",
+    "next": null
+   }
+  ],
+  "title": "Surveying YQ-807",
+  "text": "YQ-807 turns slowly under the ship, grey and pitted, about the size of a small town. Ines has the scopes on it and the client's list of what to look for: the spin, the density, where the metal is and where the ice is, if there is any.",
+  "labels": [
+   "Run the survey"
+  ]
  }
 ]

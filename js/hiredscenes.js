@@ -56,6 +56,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:mourn', fn: 'mournScene', file: 'js/losses.js', title: 'After the Loss', where: 'port', when: 'At the first port after a crew member is killed: how you mark it (a service and a meal, a letter home with money, a few words aboard, or nothing), and how the crew take it.' },
   { id: 'scene:parts', fn: 'partsEvent', file: 'js/parts.js', title: 'Part Repair', where: 'port', when: 'At a port with an outfitter, once a stay, when a system has worn under 75 and the hull needs no yard: the engineer lays out a new part, a used one with its history and a printed one, the captain picks, and you may argue for another. Titled by the system, as Drive Repair.' },
   { id: 'scene:salvage', fn: 'cutScene', file: 'js/salvage.js', title: 'The Wreck', where: 'site', when: 'Chapter two, the co-op on station at a wreck (#965): the approach once on arrival, then a section a shift, up to three. Before each cut the team\'s lead reads the risk (Bexa, else the engineer, else the bosun) and Pax asks for caution on a read that is not clean; the player cuts, cuts carefully (from the second section) or hauls home. Each cut tells a piece of the wreck\'s history and brings out goods, now and then an intact part, the client\'s find or a lead to another wreck, or goes wrong: someone hurt, a system hit or the section lost.' },
+  { id: 'scene:survey', fn: 'surveyScene', file: 'js/salvage.js', title: 'Surveying a Rock', where: 'site', when: 'Chapter two, the co-op landed at a rock it has a survey job for (#965), once: the pilot works the scopes, and the report is good, fair or poor by a check on the crew\'s best pilot skill. The client pays by the report.' },
   { id: 'scene:repair', fn: 'repairScene', file: 'js/repairs.js', title: 'Hull Damage', where: 'port', when: 'At a port, when the ship comes in with a tenth of her hull or more gone: the yard\'s estimate, and how you spend the days while she is mended.' },
   { id: 'scene:settling-up', fn: 'arrivalScene', file: 'js/captains.js', title: 'Settling Up', where: 'port', when: 'Once, at the port the first run ends at: the first officer shows you the captain\'s page of the run (the cargo, your wage and share, the hall bond) and you go ashore. The first officer\'s own words are theirs (Cato\'s in this game).' },
   { id: 'scene:arc-offers', plain: true, fn: 'arcOffer', file: 'js/arcs.js', title: 'Mission Arc Offers', where: 'port', when: 'On the Missions page, when a freight office that knows the ship has work that is not freight (a sealed crate, a passenger, a notice): the offer\'s title and what it says.' },
@@ -984,6 +985,15 @@ const SCENE_LINES = {
     'home.result': 'You call the team in. {reader} counts the cutters back aboard.',
     'memory.bexa': 'You listened when I said the frame was gone.',
     'memory.pax': 'I said we had enough. You cut anyway, and {name} got hurt.',
+  },
+  'scene:survey': {  // a rock (salvage.js surveyScene, #965): {name} the rock, {pilot} who works the scopes, {client} who wants the report
+    title: 'Surveying {name}',
+    text: '{name} turns slowly under the ship, grey and pitted, about the size of a small town. {pilot} has the scopes on it and the client\'s list of what to look for: the spin, the density, where the metal is and where the ice is, if there is any.',
+    label: 'Run the survey',
+    you: 'You',
+    'result.good': '{pilot} works it for nine hours and gets everything on the list, with the core samples to back it. {client} will have a report they can sell on.',
+    'result.fair': '{pilot} gets most of the list. The density figures are an estimate, and the report says so.',
+    'result.poor': 'The spin is worse than it looked, and the scopes never settle. {pilot} gets what they can. The report is thin, and {client} will pay for a thin one.',
   },
   'scene:repair': {  // the yard (repairs.js repairScene): {planet} the port, {tons} the plate, {parts} and {labor} the sums, {wait} the days a shipment takes, {days} the estimate or the days in the yard (days.one or days.many); done closes every choice
     title: 'Hull Damage',

@@ -211,6 +211,29 @@ const salvageDockHtml = st => {
   return w && !wreckDone(w) ? `<button data-action="cutWreck" class="primary">Cut into the wreck (section ${w.cut + 1}) (T)</button>` : '';
 };
 
+// ---------- the survey at a rock ----------
+// One scene: the pilot works the scopes (the crew's best pilot, or the player if the player flies), and the report's quality is the margin
+// of a check on it: well under it good, over it poor. The words are the lines of 'scene:survey' (hiredscenes.js).
+const SURVEY_GOOD = 0.25;  // the margin under the check that makes a good report
+const surveyQuality = (skill, roll) => { const p = check(STAT_BASE, skill, 0); return roll >= p ? 'poor' : p - roll >= SURVEY_GOOD ? 'good' : 'fair'; };
+const surveySay = (key, vars) => sceneSay('scene:survey', key, vars);
+function surveyArrival(st, site) {
+  const job = career() && career().job;
+  if (site.seen || !job || job.kind !== 'survey' || job.site !== site.id) return;
+  site.seen = true;
+  openEvent(surveyScene(st, site));
+}
+function surveyScene(st, site) {
+  const pilot = roleHolder('pilot'), who = pilot ? pilot.first : surveySay('you');
+  return { title: surveySay('title', { name: site.name }), personal: true, owner: 'you', text: surveySay('text', { name: site.name, pilot: who }),
+    choices: [{ label: surveySay('label'), run: () => {
+      const job = career().job, q = surveyQuality(roleSkill('pilot'), Math.random());
+      if (job && job.site === site.id) { job.quality = q; job.got = true; }
+      recordHand('rocksSurveyed');
+      return surveySay(`result.${q}`, { pilot: who, client: job ? job.client : '' });
+    } }] };
+}
+
 Mods.register({
   id: 'salvage', name: 'Wrecks and salvage', builtin: true,
   init(M) {

@@ -9,8 +9,8 @@ const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
 
-const NAMES = ['WRECK_TYPES', 'SECTION_RISK', 'CAREFUL', 'sectionRisk', 'sectionTake', 'sectionPart', 'riskOutcome', 'readWord', 'seedSite'];
-const pure = () => load(['js/data.js', 'js/util.js', 'js/orbits.js', 'js/sites.js', 'js/salvage.js'], { G: { state: {} }, Mods: { register() {}, on() {} } }, NAMES);
+const NAMES = ['WRECK_TYPES', 'SECTION_RISK', 'CAREFUL', 'sectionRisk', 'sectionTake', 'sectionPart', 'riskOutcome', 'readWord', 'seedSite', 'surveyQuality', 'check', 'STAT_BASE'];
+const pure = () => load(['js/data.js', 'js/util.js', 'js/sheet.js', 'js/orbits.js', 'js/sites.js', 'js/salvage.js'], { G: { state: {} }, Mods: { register() {}, on() {} } }, NAMES);
 
 test('the risk of a section rises with depth and halves when cut carefully', () => {
   const { sectionRisk, SECTION_RISK, CAREFUL } = pure();
@@ -48,6 +48,13 @@ test('the read of a section is clean, some or bad, never more than a band off, a
   assert.equal(readWord(0.1, 0), 'clean'); assert.equal(readWord(0.1, 3), 'clean');
   assert.equal(readWord(0.4, 3), 'bad'); assert.equal(readWord(0.25, 3), 'some');
   for (const r of [0.05, 0.1, 0.125, 0.2, 0.25, 0.4]) assert.ok(Math.abs(words.indexOf(readWord(r, 0)) - band(r)) <= 1, `${r}`);
+});
+
+test('a survey is good well under the check, poor over it, and fair between', () => {
+  const { surveyQuality, check, STAT_BASE } = pure();
+  const p = check(STAT_BASE, 2, 0);
+  assert.equal(surveyQuality(2, 0), 'good'); assert.equal(surveyQuality(2, p - 0.3), 'good');
+  assert.equal(surveyQuality(2, p - 0.1), 'fair'); assert.equal(surveyQuality(2, p + 0.01), 'poor'); assert.equal(surveyQuality(2, 0.99), 'poor');
 });
 
 // ---------- the board (browser) ----------
@@ -256,4 +263,22 @@ test('heeding Bexa\'s bad read pleases her; cutting on over Pax and someone hurt
   });
   await done();
   assert.equal(r.bexa, 1); assert.ok(r.mem); assert.equal(r.pax, -1); assert.equal(r.paxSafe, 0);
+});
+
+test('landing at the job\'s rock plays the survey once, and its quality is the job\'s', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt(), id = 'site:rock-1', site = sites(st)[id];
+    findSite(st, id, st.day);
+    career().job = { kind: 'survey', site: id, client: 'Brannock Minerals', find: 'survey', sid: 'ceres', planet: 'Ceres Station', deadline: st.day + 60, pay: 4000, taken: st.day, got: false, quality: null };
+    G.player = null; landAtSite(site);
+    const title = G.dialog && G.dialog.event.title;
+    const real = Math.random; Math.random = () => 0; const text = chooseEvent(0); Math.random = real; finishEvent();
+    landAtSite(site); const again = !!G.dialog;
+    return { title, name: site.name, text, again, job: career().job, record: hired().record.rocksSurveyed };
+  });
+  await done();
+  assert.match(r.title, new RegExp(r.name)); assert.equal(r.again, false);
+  assert.equal(r.job.quality, 'good'); assert.equal(r.job.got, true); assert.equal(r.record, 1); assert.ok(r.text);
 });

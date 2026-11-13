@@ -41,7 +41,7 @@ test('the registry holds every scene the game\'s own registries hold', async () 
   await g.done();
   assert.deepEqual(r.missing, []);
   assert.deepEqual(r.gone, []);
-  assert.equal(r.functions, 60);  // with the watch bill (#1034), the end of chapter one (#882), chapter two's start (#891), the traits' moments (#964), the port inspector (#993), a worn system's part (#1135) and the wreck (#965)
+  assert.equal(r.functions, 61);  // with the watch bill (#1034), the end of chapter one (#882), chapter two's start (#891), the traits' moments (#964), the port inspector (#993), a worn system's part (#1135), the wreck and the survey (#965)
   assert.ok(r.n >= 124, `${r.n} scenes`);
 });
 

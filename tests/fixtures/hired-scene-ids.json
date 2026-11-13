@@ -203,6 +203,7 @@
  "scene:mourn",
  "scene:parts",
  "scene:salvage",
+ "scene:survey",
  "scene:repair",
  "scene:settling-up",
  "scene:arc-offers",

@@ -89,6 +89,7 @@ function landAtSite(site, notes = []) {
   UI.openLanded(site, notes, 'site');
   Mods.emit('onStation', site);
   if (site.kind === 'wreck') salvageArrival(st, site);  // the wreck's approach (salvage.js)
+  else if (site.kind === 'rock') surveyArrival(st, site);  // the survey (salvage.js)
   else siteArrival(st);  // the ice run's stay and its approach scene (icerun.js)
   save();  // after the stay has begun and the approach is marked, so a reload keeps the shifts and plays no second approach (#979)
 }

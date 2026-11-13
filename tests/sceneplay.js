@@ -676,6 +676,9 @@ const playScenes = () => {
   run('scene:salvage:nobody:cut', {}, () => cutScene(G.state, wreckAt({ alone: true })), { rolls: [0.99] });
   run('scene:salvage:full', {}, () => { const st = G.state; st.cargo.metal = (st.cargo.metal || 0) + cargoFree(); return cutScene(st, wreckAt({ cast: ['bexa'] })); }, { rolls: [0.99] });
   run('scene:salvage:deep', {}, () => cutScene(G.state, wreckAt({ part: true, wreck: { cut: 2, find: 3, lead: 'site:wreck-2', leadAt: 3 }, cast: ['bexa', 'pax'] })), { rolls: [0.99, 0.01, 0.2, 0.35] });
+  // the survey (salvage.js): with no pilot aboard the check is on no skill (an even chance), so the rolls give a good, a fair and a poor report
+  run('scene:survey', {}, () => { const st = G.state, site = sites(st)['site:rock-1']; st.crew = []; hired().job = { kind: 'survey', site: site.id, client: 'Brannock Minerals', got: false }; return surveyScene(st, site); }, { rolls: [0, 0.45, 0.99] });
+  run('scene:survey:pilot', {}, () => surveyScene(G.state, sites(G.state)['site:rock-1']), { rolls: [0.5] });
   return out;
 };
 
