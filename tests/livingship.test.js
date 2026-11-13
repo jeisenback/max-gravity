@@ -3102,7 +3102,7 @@ const couchSeat = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts
 // (registryMarks); the watch bill on the galley's wall (billSheet, roomWatchBill), the hand's tab on the middle watch when they asked Cato
 // (askedMiddle); the mood (crewSpirits): the galley warmer with the radio on in good spirits, a low person's own bunk's curtain drawn.
 const restApi = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/hulldetail.js'], { G: {}, Mods: { filter: (n, v) => v, emit() {}, register() {} } },
-  ['hullName', 'hullPlate', 'SHIP_REGISTRY', 'registryMarks', 'billSheet', 'askedMiddle', 'crewSpirits', 'billTone', 'ROLE_COLORS', 'WATCH_ORDER', 'onWatchTonight', 'roomLight', 'ROOM_GLOW', 'GALLEY_SPIRITS', 'bunkShut', 'towerOutline', 'LAYOUTS', 'drawRoom', 'layoutBox', 'BILL_AT', 'roomEye', 'figShade', 'WALL_TONE', 'hullNameLayout', 'CAM_RUN', 'nightStateOf', 'crewRoster', 'shipDay', 'SHIP_DAY']);
+  ['hullName', 'hullPlate', 'SHIP_REGISTRY', 'registryMarks', 'billSheet', 'askedMiddle', 'crewSpirits', 'billTone', 'ROLE_COLORS', 'WATCH_ORDER', 'onWatchTonight', 'roomLight', 'ROOM_GLOW', 'GALLEY_SPIRITS', 'bunkShut', 'towerOutline', 'LAYOUTS', 'drawRoom', 'layoutBox', 'BILL_AT', 'roomEye', 'figShade', 'WALL_TONE', 'hullNameLayout', 'HULL_NAME', 'CAM_RUN', 'nightStateOf', 'crewRoster', 'shipDay', 'SHIP_DAY']);
 const inLimits = col => { const v = rgbOf(col); return v && Math.max(...v) <= 0xb0 && Math.max(...v) - Math.min(...v) <= 0x60; };
 test('her name and registry are painted on the nose\'s cap at 12px or more, every glyph and the co-op\'s ring inside the camera\'s run (#936)', () => {
   const o = restApi.towerOutline(restApi.LAYOUTS.freighter), runTop = -restApi.CAM_RUN.above, measure = (t, px) => t.length * px * 0.66;  // wider than the font's capitals
@@ -3116,7 +3116,7 @@ test('her name and registry are painted on the nose\'s cap at 12px or more, ever
     assert.ok(L.base - 0.8 * L.px / zoom >= runTop && L.regBase - 0.8 * L.regPx / zoom >= runTop && L.top >= runTop, `${at}: the glyphs' tops (${L.top}) under the camera's run's top (${runTop})`);
     if (L.ring) assert.ok(L.ring.y - L.ring.r >= runTop && L.ring.y + L.ring.r < o.top, `${at}: the ring inside the run, over the skin`);
     assert.ok(L.base < o.top && L.regBase < o.top, `${at}: over the flight deck`);
-    assert.ok(L.x0 >= 0 && L.x1 <= 470 + 1e-9, `${at}: in the cap's span, left of the speed buttons (${L.x0}, ${L.x1})`);
+    assert.ok(L.x0 >= restApi.HULL_NAME.x0 - 1e-9 && L.x1 <= 470 + 1e-9, `${at}: in the cap's span, right of the corner's outline at the dock and left of the speed buttons (${L.x0}, ${L.x1})`);
     const { ctx, calls } = recorder(); restApi.hullName(ctx, o, zoom, plate);
     assert.deepEqual(calls.filter(k => k[0] === 'fillText').map(k => k[1]), [name, 'BR 4471']);
     assert.equal(calls.some(k => k[0] === 'arc'), coop, `${at}: the co-op's mark only on hers`);

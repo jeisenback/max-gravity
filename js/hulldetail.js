@@ -84,13 +84,15 @@ function hullPlate(st, name) {
 }
 // Where the paint goes on the cap (#936, look.md "a clean frame"): her name and her registry, with the co-op's mark before the name when she is
 // theirs, sized on the screen like the room names (the name 16px, the registry 12px) and shrunk to fit, never under 12px, centred in the span
-// x0 to x1 of world x: right of where the cap curves into the skin at the camera's top, and left of where the speed buttons (burnspeed.js, under
+// x0 to x1 of world x: right of the outline in the view's top left corner (camera.js outlineLayout) wherever the camera stands on the bridge at the
+// dock (dock.js; its right edge reaches world x 214 in a window 1000 wide, less in a wider one), and left of where the speed buttons (burnspeed.js, under
 // the burn bar) begin in the smallest window (1000 wide: about world x 505, less where the font sets the buttons wider; the span ends 35 short of
 // that, #936: CI's font set them half a pixel from a full-width name). On one line, its baseline `base` over the skin's top; a name too long for
-// that at 12px puts the registry on a line of its own under it, `low` over the skin. Every glyph under the top of the camera's run (CAM_RUN.above,
+// that at 12px puts the registry on a line of its own under it, `low` over the skin, where the two lines fit under the camera's run (else it is
+// ellipsised on one). Every glyph under the top of the camera's run (CAM_RUN.above,
 // camera.js) and over the flight deck. measure(text, px): its width in px at that size. Returns the sizes, the baselines (name, reg), each
 // piece's left end (world: nameX, regX), the name as painted (name: ellipsised when even the smallest size will not fit), the ring ({ x, y, r }) or none, and the paint's extent { x0, x1, top }.
-const HULL_NAME = { col: '#7f97b0', x0: 4, x1: 470, base: 8, low: 2, px: 16, reg: 12, min: 12, gap: 8, cap: 0.8 };
+const HULL_NAME = { col: '#7f97b0', x0: 236, x1: 470, base: 8, low: 2, px: 16, reg: 12, min: 12, gap: 8, cap: 0.8 };
 function hullNameLayout(o, zoom, plate, measure) {
   const span = (HULL_NAME.x1 - HULL_NAME.x0) * zoom, mid = (HULL_NAME.x0 + HULL_NAME.x1) / 2, g = HULL_NAME.gap;
   const row = ws => ws.filter(v => v > 0).reduce((t, v, i) => t + v + (i ? g : 0), 0);
@@ -99,8 +101,9 @@ function hullNameLayout(o, zoom, plate, measure) {
     return { px, rp, ring, name, reg, split, w: split ? Math.max(row([ring, name]), reg) : row([ring, name, reg]) };
   };
   const fit = split => { let f = size(HULL_NAME.px, split); for (let px = HULL_NAME.px - 0.5; f.w > span && px >= HULL_NAME.min; px -= 0.5) f = size(px, split); return f; };
+  const topOf = q => o.top - (q.split ? HULL_NAME.low + (q.rp + 2) / zoom : HULL_NAME.base) - Math.max(HULL_NAME.cap, q.ring ? 0.86 : 0) * q.px / zoom;
   let f = fit(false);
-  if (f.w > span && f.name && f.reg) f = fit(true);
+  if (f.w > span && f.name && f.reg) { const two = fit(true); if (topOf(two) >= -CAM_RUN.above) f = two; }  // two lines only where both stay under the camera's run
   if (f.w > span && f.name) {  // still too wide at the smallest size (a long name, a wide font): the name shortened with an ellipsis until it fits
     let n = plate.name;
     while (n.length > 1 && f.w > span) { n = n.slice(0, -1); plate = { ...plate, name: n.trimEnd() + '\u2026' }; f = size(f.px, f.split); }

@@ -15,7 +15,7 @@ const POSTS = { pilot: { role: 'pilot' }, gunner: { role: 'gunner' }, engineer: 
 const api = load(['js/data.js', 'js/util.js', 'js/figures.js', 'js/layouts.js', 'js/camera.js', 'js/rooms.js', 'js/shiplife.js', 'js/hulldetail.js', 'js/dock.js'],
   { G: {}, POSTS, Mods: { filter: (n, v) => v, emit() {}, register() {} }, portraitLook: () => ({ skin: '#c08a68', hair: '#2a1d18', cut: 0, v: 7 }) },
   ['dockBeats', 'dockPlan', 'dockOpened', 'dockStep', 'dockChose', 'dockCast', 'dockPostSpot', 'dockSealTone', 'drawDockOutside', 'DOCK_AT', 'DOCK_HOLD', 'DOCK_KHAKI', 'DOCK_CAP',
-    'drawPerson', 'posture', 'drawRoom', 'layoutBox', 'LAYOUTS', 'towerOutline', 'deckFloor', 'HULL', 'SEATS', 'roomAt', 'WALL_TONE', 'figShade', 'POSTURES']);
+    'drawPerson', 'posture', 'drawRoom', 'layoutBox', 'HOLD_SEAL', 'HOLD_H', 'LAYOUTS', 'towerOutline', 'deckFloor', 'HULL', 'SEATS', 'roomAt', 'WALL_TONE', 'figShade', 'POSTURES']);
 const lay = api.LAYOUTS.freighter, W = lay.width, LOCK = 4, HOLD = 6, WELL = lay.well.x * W;
 const plan = (choice, post) => api.dockPlan(choice, post ? POSTS[post].role : null);
 const beat = (page, t, choice = null, post = 'comms', still = false) => JSON.parse(JSON.stringify(api.dockBeats(page, t, choice, post, still)));
@@ -53,7 +53,7 @@ test('the opening page: (a) the two come up the gangway and through the lock, th
   assert.equal(inside.insp.carry, 'slate'); assert.equal(inside.junior.carry, 'seal');
   // (b): to the ladder, the inspector up, the junior down
   const climbs = [];
-  for (let t = p.aEnd; t < p.bEnd; t += 0.25) { const b = beat('open', t); assert.equal(b.beat, 'b'); if (b.insp.pose.name === 'climb') climbs.push(b.insp); }
+  for (let t = p.aEnd; t < p.bEnd; t += 0.1) { const b = beat('open', t); assert.equal(b.beat, 'b'); if (b.insp.pose.name === 'climb') climbs.push(b.insp); }
   assert.ok(climbs.length > 4 && climbs.every(q => q.x === WELL), 'the inspector climbs on the ladder, in the well');
   const bridge = beat('open', p.bBridge - 0.5);
   assert.deepEqual([bridge.insp.dk, bridge.insp.x, bridge.insp.pose.name, bridge.insp.pose.view, bridge.insp.carry], [0, api.DOCK_AT.bridge.insp, 'stand', 'front', 'slate'], 'the inspector on the bridge, the slate in hand');
@@ -92,6 +92,40 @@ test('no (c) for keeping out of it, the nod or the owner\'s payment: the result 
     assert.equal(p.cEnd, 0, `${choice}, ${post}: no time for a move`);
     for (let t = 0; t < p.eEnd + 2; t += 0.5) { const b = beat('result', t, choice, post); assert.notEqual(b.beat, 'c', `${choice}, ${post} at ${t}`); assert.equal(b.hand, null, `${choice}, ${post} at ${t}: the hand not moved`); }
     assert.equal(beat('result', 0, choice, post).insp.pose.view, 'front', `${choice}: the inspector not turned to anyone`);
+  }
+});
+
+test('each page\'s beats run about 15 s in all at the crew\'s pace, longer for a hand who climbs from a lower post, in their order: (a) then (b); (c) when the hand moves, (d), then (e)', () => {
+  const ends = [];
+  for (const [choice, post] of [[null, 'comms'], ['move', 'comms'], ['move', 'gunner'], ['move', 'engineer'], ['move', 'pilot'], ['keep', 'gunner'], ['nod', 'engineer'], ['pay', null]]) {
+    const p = plan(choice, post);
+    assert.ok(p.aEnd > 0 && p.aEnd < p.bBridge && p.bBridge <= p.bEnd, `${choice} ${post}: (a) then (b)`);
+    assert.ok(p.bEnd >= 15 && p.bEnd <= 17, `${choice} ${post}: the opening page's beats in ${p.bEnd.toFixed(2)} s`);
+    assert.ok(p.cEnd < p.dEnd && p.dEnd < p.down && p.down < p.eEnd, `${choice} ${post}: (c), (d), then (e)`);
+    assert.ok(p.eEnd >= 16 && p.eEnd <= 26, `${choice} ${post}: the result page's beats in ${p.eEnd.toFixed(2)} s`);
+    if (choice !== 'move') assert.ok(p.eEnd <= 17.5, `${choice} ${post}: no move, the result page's beats in ${p.eEnd.toFixed(2)} s`);
+    ends.push(p.eEnd);
+  }
+  const order = beats => beats.filter((b, i) => b !== beats[i - 1]);
+  const seen = (page, choice, post, end) => order(Array.from({ length: Math.ceil((end + 1) / 0.05) }, (_, i) => beat(page, i * 0.05, choice, post).beat));
+  assert.deepEqual(seen('open', null, 'gunner', plan(null, 'gunner').bEnd), ['a', 'b']);
+  assert.deepEqual(seen('result', 'move', 'gunner', plan('move', 'gunner').eEnd), ['c', 'd', 'e', 'done']);
+  assert.deepEqual(seen('result', 'keep', 'gunner', plan('keep', 'gunner').eEnd), ['d', 'e', 'done']);
+});
+
+test('a choice on the opening page, however early, starts the result page from where (b) ends: nobody goes back, the hold not sealed, the clamps on', () => {
+  const pick = q => q && { x: q.x, dk: q.dk };
+  for (const [choice, post] of [['move', 'comms'], ['move', 'gunner'], ['keep', 'gunner'], ['nod', 'engineer'], ['pay', null]]) for (const still of [false, true]) {
+    const end = beat('open', plan(null, post).bEnd + 0.01, null, post, still), first = beat('result', 0, choice, post, still), at = `${choice} ${post} ${still}`;
+    assert.equal(end.beat, 'b', `${at}: (b) ended`);
+    assert.deepEqual([pick(first.insp), pick(first.junior)], [pick(end.insp), pick(end.junior)], `${at}: the inspector on the bridge and the junior in the hold, where (b) left them`);
+    assert.deepEqual([first.insp.carry, first.junior.dk, first.sealed, first.swing, first.lock.lit], ['slate', HOLD, false, 0, false], `${at}: nothing done yet`);
+    if (choice !== 'move') assert.deepEqual(first.focus, end.focus, `${at}: the camera stays in the hold`);
+    // a choice at any instant of the opening page: the dock's state goes to the result page's start, the same whenever it came
+    for (const t of [0, 1, 3, 6, 9]) {
+      const d = api.dockStep(api.dockChose(api.dockStep(api.dockOpened(), t, post, still), choice), 0, post, still);
+      assert.deepEqual([d.page, d.t, d.beat, d.sealed, d.clamps], ['result', 0, choice === 'move' ? 'c' : 'd', false, true], `${at}, chosen at ${t}`);
+    }
   }
 });
 
@@ -167,7 +201,7 @@ test('the dock\'s state: opened on the first page, stepped on by the frame with 
   assert.deepEqual([d.t, d.clock, d.beat], [20, 20, 'b']);
   d = api.dockChose(d, 'move');
   assert.deepEqual([d.page, d.t, d.clock, d.choice], ['result', 0, 20, 'move'], 'the page and its clock start again; the camera\'s clock runs on');
-  d = api.dockStep(d, p.cEnd + 2, 'comms', false); assert.deepEqual([d.beat, d.sealed, d.clamps], ['d', true, true]);
+  d = api.dockStep(d, p.cEnd + api.DOCK_HOLD.sealAt + 0.1, 'comms', false); assert.deepEqual([d.beat, d.sealed, d.clamps], ['d', true, true]);
   d = api.dockStep(d, p.eEnd, 'comms', false); assert.deepEqual([d.beat, d.sealed, d.clamps], ['done', true, false]);
   assert.equal(api.dockChose(api.dockOpened(), undefined).choice, null, 'a choice with no tag plays no move');
 });
@@ -190,7 +224,7 @@ test('the crew keep their posts and the captain the bridge; the hand is moved on
     assert.deepEqual([insp.name, insp.look.cap.band, insp.look.cap.col, insp.look.carry], ['Valenti', '#ff8a4a', api.DOCK_CAP, 'slate'], 'the inspector named, the cap\'s band in the owner\'s colour, the slate');
     assert.deepEqual([jun.name, jun.look.cap, jun.look.carry, jun.look.trim], ['', undefined, 'seal', '#ff8a4a'], 'the junior: no name, no cap, the seal gun, its seal in the owner\'s colour');
   }
-  const moved = api.dockCast(company, 'slicer', api.dockBeats('result', 1, 'move', 'comms', false), { id: 'off', name: 'V' }, '#ff8a4a').find(p => p.id === 'you');
+  const moved = api.dockCast(company, 'slicer', api.dockBeats('result', 0.4, 'move', 'comms', false), { id: 'off', name: 'V' }, '#ff8a4a').find(p => p.id === 'you');
   assert.ok(moved.pose && moved.pose.name === 'walk' && moved.look.carry === 'papers', 'the hand walking with the papers in (c)');
 });
 
@@ -251,6 +285,27 @@ test('the airlock\'s open door and lit lamp and the hold\'s seals keep inside th
   }
   const shut = drawn('airlock', RS({})), open = drawn('airlock', RS({ lock: { open: true } }));
   assert.ok(shut.strokes.includes('#6a6e70') && !open.strokes.includes('#6a6e70'), 'open: the door\'s wheel is not in its ring');
+});
+
+test('the hold\'s seals read at 1280: a plate on each stack\'s strap, cut like a tag, in the owner\'s colour with a dark stamp, over the ratchet and under the second crate\'s label', () => {
+  const RS = o => ({ w: { burn: 0, cruise: 1, flip: 0 }, time: 3, zoom: 1.17, spin: 0, still: false, berths: 10, asleep: 0, cargo: 1, fuel: 0.5, burning: false, night: 0, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, patient: false, headIn: false, damage: { marks: new Set(), severe: false, patches: new Set() }, ...o });
+  const S = api.HOLD_SEAL, F = api.layoutBox(lay, 'hold').floor;
+  assert.ok(S.w >= 10 && S.h >= 12, `a plate ${S.w} by ${S.h} world units, about ${Math.round(S.w * 1.17)} by ${Math.round(S.h * 1.17)} px at 1280`);
+  for (const trim of ['#ff8a4a', '#5fa8ff', '#e8d17a']) {
+    const col = api.dockSealTone(trim), c = fakeCtx(); api.drawRoom(c, 'hold', api.layoutBox(lay, 'hold'), RS({ seal: col }));
+    const plates = []; let pts = [], fill = null;
+    for (const [k, ...a] of c.calls) {
+      if (k === 'beginPath') pts = []; else if (k === 'moveTo' || k === 'lineTo') pts.push(a); else if (k === 'fillStyle') fill = String(a[0]).toLowerCase();
+      else if (k === 'fill' && fill === col && pts.length >= 6) { const xs = pts.map(q => q[0]), ys = pts.map(q => q[1]); plates.push({ w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys), top: Math.min(...ys), bottom: Math.max(...ys), n: pts.length }); }
+    }
+    assert.equal(plates.length, 4, `${trim}: a plate on each of the four stacks (${JSON.stringify(plates)})`);
+    for (const q of plates) {
+      assert.ok(Math.abs(q.w - S.w) < 0.02 && Math.abs(q.h - S.h) < 0.02 && q.n === 6, `${trim}: the plate's size and its cut corners (${JSON.stringify(q)})`);
+      assert.ok(q.top >= F - 4 - 2 * api.HOLD_H + 7 + 10 && q.bottom <= F - 18, `${trim}: under the second crate's label and over the ratchet (${q.top}..${q.bottom})`);
+    }
+    assert.ok(c.strokes.includes('#2a2218') && c.fills.includes('#2a2218'), `${trim}: its stamp, dark on the plate`);
+    assert.ok(inLimits(col), `${trim}: ${col} a step below the people`);
+  }
 });
 
 test('outside the hull at the dock: the pad, the clamps and the gangway keep the props\' brightness but for the clamps\' lamps, no text under 12 px, and whoever is on the gangway is drawn on it', () => {
@@ -428,6 +483,38 @@ test('the camera keeps each beat\'s people in the part the scene\'s page leaves 
       assert.ok(r.n > 80, `${width}x${height}, ${post}: ${r.n} checks`);
       assert.deepEqual(r.out, [], `${width}x${height}, ${post}`);
     }
+    await done();
+  }
+});
+
+// The ship's name on the nose (hulldetail.js hullNameLayout) starts right of the outline in the view's top left corner whenever the camera is on the
+// bridge at the dock, for her name and for the longest a ship can have (30 characters, ellipsised to fit).
+test('the ship\'s name on the nose starts clear of the outline in the corner while the camera is on the bridge, at 1000, 1280 and 1600 wide', async () => {
+  for (const [width, height] of WIDTHS) {
+    const { ev, done } = await open({ viewport: { width, height } });
+    await ev(helpers);
+    const r = await ev(() => {
+      const out = [], at = []; let n = 0;
+      for (const [post, name] of [['comms', null], ['gunner', 'W'.repeat(30)]]) {
+        landInspected(post); if (name) home().name = name;
+        let tf = null, zoom = 0; const real = window.hullName; window.hullName = (c, o, z, plate) => { tf = c.getTransform(); zoom = z; return real(c, o, z, plate); };
+        try {
+          const p = dockPlan('move', POSTS[post].role), m = document.createElement('canvas').getContext('2d');
+          for (const [page, end, choice] of [['open', p.bEnd + 1, null], ['result', p.eEnd + 1, 'move']]) for (let t = 0; t <= end; t += 0.5) {
+            if (dockBeats(page, t, choice, post, false).focus.dk !== 0) continue;
+            tf = null; dockAt(page, t, choice);
+            const ol = outlineLayout(G.burnBoxes.ship, LAYOUTS.freighter), dpr = window.devicePixelRatio || 1;
+            const L = hullNameLayout(towerOutline(LAYOUTS.freighter), zoom, hullPlate(G.state, cleanName(home().name)), (s, px) => { m.font = `600 ${px}px ${roomFont}`; return m.measureText(s).width; });
+            const left = (tf.a * L.x0 + tf.e) / dpr, top = (tf.d * L.top + tf.f) / dpr; n++;
+            at.push(Math.round(left - (ol.x + ol.w)));
+            if (left <= ol.x + ol.w) out.push(`${post} ${page} ${t}: the name from ${left.toFixed(1)}, the outline to ${(ol.x + ol.w).toFixed(1)} (top ${top.toFixed(1)}, the outline ${ol.y.toFixed(1)}..${(ol.y + ol.h).toFixed(1)})`);
+          }
+        } finally { window.hullName = real; }
+      }
+      return { out: out.slice(0, 8), n, least: Math.min(...at) };
+    });
+    assert.ok(r.n > 10, `${width}: ${r.n} frames on the bridge`);
+    assert.deepEqual(r.out, [], `${width}x${height}: clear of the outline (by ${r.least} px at the least)`);
     await done();
   }
 });

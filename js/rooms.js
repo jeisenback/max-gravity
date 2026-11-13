@@ -1560,15 +1560,20 @@ function roomHoldStraps(ctx, x, y, F) {
   roomPart(ctx, roomRound(n(x - 0.5), n(y - 1.5), HOLD_W + 1, 2, 0.8), '#4a4436', { top: 0.5 });
   roomFlat(ctx, x + HOLD_W - 3, F - 18, 4.5, 5, '#6a7480'); roomFlat(ctx, x + HOLD_W - 2.5, F - 17, 3.5, 1, '#3a4a5a');  // its ratchet
 }
-// The port's seal on a stack's strap where it meets its ring at x (#940, dock.js): a crimped tag in the port owner's colour, toned a step below
-// the people (col), its stamp, and the paper tag on its wire.
-function roomHoldSeal(ctx, x, F, col) {
-  const y = F - 16;
-  roomPart(ctx, roomRound(x - 3.5, y - 3.5, 7, 7, 1.5), col, { top: 0.6, side: 0.8 });
-  roomFlat(ctx, x - 1.2, y - 1.2, 2.4, 2.4, '#2a2218');
-  ctx.strokeStyle = '#6a6458'; ctx.lineWidth = 0.5; roomSeg(ctx, [[x, y + 3.5], [x + 1, y + 7]]);
-  roomPart(ctx, roomRound(x - 1.5, y + 7, 5, 6.5, 0.6), '#8a8270', { top: 0.4 });
-  for (const ly of [y + 9, y + 11]) roomFlat(ctx, x - 0.5, ly, 3, 0.5, '#4a4436');
+// The port's seal on a stack's right strap at x, the stack's top at y (#940, dock.js): crimped on the strap above its ratchet, and on its wire a
+// plate in the port owner's colour toned a step below the people (col, dockSealTone), big enough to read at 1280 (HOLD_SEAL: its width and height,
+// and how far over the deck its top hangs, between the second crate's label and the ratchet; lower on a stack of one): cut at its top corners
+// like a tag, outlined, with a dark eyelet, the port's stamp (a ring round a dot) and a bar under it.
+const HOLD_SEAL = { w: 12, h: 15, at: 34 };
+function roomHoldSeal(ctx, x, y, F, col) {
+  const n = v => Math.round(v * 100) / 100, S = HOLD_SEAL, y0 = Math.max(F - S.at, y + 6), y1 = y0 + S.h, a = n(x - S.w / 2), b = n(x + S.w / 2), cut = 3;
+  roomPart(ctx, roomRound(x - 2.25, y0 - 5.5, 4.5, 3, 0.6), '#5a5e62', { top: 0.6 });  // the crimp on the strap
+  ctx.strokeStyle = '#6a6458'; ctx.lineWidth = 0.6; roomSeg(ctx, [[x, y0 - 2.5], [x, y0 + 2]]);
+  roomPart(ctx, `M ${a} ${n(y0 + cut)} L ${n(a + cut)} ${n(y0)} L ${n(b - cut)} ${n(y0)} L ${b} ${n(y0 + cut)} L ${b} ${n(y1)} L ${a} ${n(y1)} Z`, col, { top: 1, side: 1.2, under: 1 });
+  roomDot(ctx, x, y0 + 2.2, 1, '#2a2218');  // the eyelet
+  ctx.strokeStyle = '#2a2218'; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(x, y0 + 8, 3, 0, Math.PI * 2); ctx.stroke();  // the stamp
+  roomDot(ctx, x, y0 + 8, 1, '#2a2218');
+  roomFlat(ctx, a + 2.5, y1 - 3, S.w - 5, 1, '#2a2218');
 }
 // The cargo net over the stacks' tops (n crates), clear of their labels, its ends tied down to rings in the deck; it lifts off the stacks at the
 // flip, most in the middle of the run. Mended once over the first stack, in another cord. Cords, not parts, so drawn from s.time as it moves.
@@ -1632,7 +1637,7 @@ function roomHold(ctx, r, s, X, W) {
   }
   for (let c = 0; c < 4; c++) for (const ex of [sx(c) + 0.75, sx(c) + HOLD_W - 0.75]) holdRing(ctx, ex, F);
   for (let c = 0; c < stacks; c++) roomHoldStraps(ctx, sx(c), holdCrate(r, Math.min(n - 1, 3 * c + 2)).y, F);
-  if (s.seal) for (let c = 0; c < stacks; c++) roomHoldSeal(ctx, sx(c) + HOLD_W - 0.75, F, s.seal);  // the port's seal on each stack's strap (#940)
+  if (s.seal) for (let c = 0; c < stacks; c++) roomHoldSeal(ctx, sx(c) + HOLD_W - 0.75, holdCrate(r, Math.min(n - 1, 3 * c + 2)).y, F, s.seal);  // the port's seal on each stack's strap (#940)
   if (n > 0) { if (w.flip) roomLive(ctx, s, (ctx, s) => roomHoldNet(ctx, r, n, s)); else roomHoldNet(ctx, r, n, s); }  // it bulges at the flip (#1123)
   if (W >= 300) {
     const lx = X(0.9);

@@ -22,7 +22,7 @@ const DOCK_GANGWAY = { len: 560, drop: 70, rail: 40, post: 46 };  // the gangway
 const DOCK_AT = { off: -330, gangway: -90, lock: { insp: 64, junior: 28 }, bridge: { insp: 300, comms: 266, ladder: 334, look: 402 }, hold: { junior: 600 } };
 // The hold's posts at the dock, as shares of the hold: past the junior's place, so nobody stands where the junior walks from the ladder.
 const DOCK_HOLD_POSTS = [0.75, 0.95];
-const DOCK_HOLD = { lag: 1.2, a: 1, bridge: 2.5, hold: 3, c: 2, seal: 3.5, sealAt: 1.5, clamps: 0.6, swing: 1.5 };  // seconds: the junior a step behind; the pauses after each beat; the seal put on; the clamps after the two are down, and their swing
+const DOCK_HOLD = { lag: 0.3, a: 0.2, bridge: 2, hold: 1, c: 0.6, seal: 1.2, sealAt: 0.6, clamps: 0.3, swing: 0.8 };  // seconds: the junior a step behind; the pauses after each beat; the seal put on; the clamps after the two are down, and their swing
 const DOCK_REST = {
   lock: { name: 'stand', view: 'side', face: 1 },  // in the chamber, facing in
   front: { name: 'stand', view: 'front' },  // the inspector on the bridge with the slate
