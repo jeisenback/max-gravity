@@ -22,7 +22,7 @@ function fitPart(st, sys, source, quirk, day) {
   c[sys] = Math.max(c[sys] === undefined ? 100 : c[sys], PART_SOURCES[source].restore);
 }
 // How fast a system wears with its fitted part: the source's rate, times its quirk's (partEffect, below).
-const partWear = (st, sys) => PART_SOURCES[fittedPart(st, sys).source].wear * partEffect(st, sys, 'wear');
+const partWear = (st, sys) => PART_SOURCES[fittedPart(st, sys).source].wear * partEffect(st, sys, 'wear') * (st.hired ? stationWear(st.hired, sys) : 1);  // and the hand's station parts (below)
 
 // ---------- used parts: where each came from, and its quirk (Task 2) ----------
 // A used part's history: the system it fits, where it came from (a line in the voice), and one quirk, a plus and a minus, each one effect of a kind
@@ -72,7 +72,15 @@ const partEdge = (st, kind) => fittedQuirks(st).reduce((n, q) => n + [q.plus, q.
 // ---------- the hand's own station (Task 6 fills the table) ----------
 // Parts a hand fits to their post's station from their own savings, by post: { id, name, desc, price, effect } with effect of the quirks' kinds
 // (fight, edge, wear by system). Kept on the hand's record as h.station, a list of { id, source, quirk }, and carried into chapter two (sheet.js careerOf).
-const STATION_PARTS = {};
+const STATION_PARTS = {
+  gunner: [
+    { id: 'gunsight', name: 'A gunsight off a patrol boat', desc: 'Your own move in a fight lands more often.', price: 4000, effect: { edge: { post: 0.05 } } },
+    { id: 'feed', name: 'A rebuilt feed', desc: 'The guns hit harder; fire control wears faster.', price: 5000, effect: { fight: { dmgMult: 1.08 }, wear: { fire: 1.2 } } },
+    { id: 'liner', name: 'A cooled barrel liner', desc: 'The guns hit a little harder, and fire control wears slower.', price: 6000, effect: { fight: { dmgMult: 1.05 }, wear: { fire: 0.9 } } },
+    { id: 'harness', name: 'A harness and grips', desc: 'A bold call of your own lands more often.', price: 2000, effect: { edge: { solo: 0.05 } } },
+  ],
+};
+const STATION_SLOTS = 2, STATION_REFUND = 1 / 3, STATION_USED = 0.5;  // the parts a station takes; what a replaced one sells back for; a used one's share of the price
 const stationPart = (post, id) => (STATION_PARTS[post] || []).find(p => p.id === id) || null;
 // The effects of the hand's fitted station parts and their quirks, for a post: each part's own effect and, if it was used, its quirk's plus and minus.
 const stationEffects = h => (h && h.station || []).flatMap(f => { const p = stationPart(h.post, f.id); return [...(p ? [p.effect] : []), ...(f.quirk ? [f.quirk.plus, f.quirk.minus] : [])]; });
@@ -131,3 +139,69 @@ function partsEvent(planet, sys) {
   return { title: say('title', { part: name.replace(/\b\w/g, ch => ch.toUpperCase()) }), parts: sys, personal: true,
     text: say('text', { crew, name: name.toLowerCase(), pct: Math.round(st.condition[sys]), offers: offers.map(offerLine).join(' '), fund: fmt(purse()), captain: cap.first, pick: say(`pick.${offers[pick].source}`) }), choices };
 }
+
+// What the hand's station adds to a check's edge, and to how fast a system wears (a station part's wear is by system).
+const stationEdge = (h, kind) => stationEffects(h).reduce((n, e) => n + ((e.edge && e.edge[kind]) || 0), 0);
+const stationWear = (h, sys) => stationEffects(h).reduce((k, e) => k * ((e.wear && typeof e.wear === 'object' && e.wear[sys]) || 1), 1);
+const stationPrice = (part, source) => Math.round(part.price * (source === 'used' ? STATION_USED : 1));
+// The captain's leave to fit a part to the hand's station: asked the first time; she gives it to a hand she thinks well of or if she is bold, and once given
+// it stands (h.stationLeave). With no captain person (the hand's own bridge, chapter two) there is nobody to ask.
+const stationLeave = (h, cap) => !cap || !!h.stationLeave || (cap.opinion || 0) >= 1 || (cap.captain || {}).nerve >= 3;
+// A part to a slot: with both slots taken the first comes out and sells back for a third of what was paid. Returns the line.
+function stationSlot(st, h, entry) {
+  h.station = h.station || [];
+  let back = 0;
+  if (h.station.length >= STATION_SLOTS) { const out = h.station.shift(), p = stationPart(h.post, out.id); back = Math.round((out.paid || (p ? stationPrice(p, out.source) : 0)) * STATION_REFUND); st.credits += back; }
+  h.station.push(entry);
+  return back;
+}
+// Buying a part from the hand's own savings (st.credits, role.js purse), at a port with an outfitter: fitted with the captain's leave, else into the hand's bag. Null when it cannot be paid.
+function buyStation(st, h, id, source, quirk, cap = hiredCaptain()) {
+  const part = stationPart(h.post, id);
+  if (!part) return null;
+  const price = stationPrice(part, source);
+  if (st.credits < price) return null;
+  st.credits -= price;
+  const entry = { id, source, quirk: quirk || null, paid: price };
+  if (!stationLeave(h, cap)) { (h.stationBag = h.stationBag || []).push(entry); return `You buy ${part.name.toLowerCase()} for ${fmt(price)} cr. ${cap.first} will not have it on her guns yet; it waits in your bag.`; }
+  if (cap) h.stationLeave = true;
+  const back = stationSlot(st, h, entry);
+  return `You buy ${part.name.toLowerCase()} for ${fmt(price)} cr and fit it to your station.${back ? ` The part it replaces sells back for ${fmt(back)} cr.` : ''}`;
+}
+// A part from the bag to the station, if the captain gives leave now.
+function fitStation(h, i, cap = hiredCaptain()) {
+  const bag = h.stationBag || [];
+  if (!bag[i] || !stationLeave(h, cap)) return null;
+  if (cap) h.stationLeave = true;
+  const back = stationSlot(G.state, h, bag.splice(i, 1)[0]);
+  return `You fit it to your station.${back ? ` The part it replaces sells back for ${fmt(back)} cr.` : ''}`;
+}
+// The counter on the Port page (views.js helpers): at a port with an outfitter, the parts for the hand's post, new and (when the port has one) used,
+// what is fitted and what waits in the bag. Empty where there is no outfitter or the post has no parts.
+function stationHtml(st, hand, planet) {
+  const parts = STATION_PARTS[hand && hand.post] || [];
+  if (!parts.length || !planet || !(planet.services || []).includes('outfitter')) return '';
+  const used = usedPartAt(planet, st.day, 'fire'), name = id => (stationPart(hand.post, id) || { name: id }).name;
+  const fitted = (hand.station || []).map(f => h`<li>${name(f.id)}${f.quirk ? h` (used: ${f.quirk.from})` : ''}</li>`), bag = hand.stationBag || [];
+  return String(panelHtml({ eyebrow: 'Your station', title: 'Parts for the guns', body: h`
+    <p class="hint">Bought from your own savings, fitted with the captain's leave. Two slots; a third part replaces the first.</p>
+    <ul>${fitted.length ? fitted : h`<li>Nothing fitted yet.</li>`}</ul>
+    ${bag.length ? h`<p class="hint">In your bag:</p><ul>${bag.map((f, i) => h`<li>${name(f.id)} <button data-action="stationFit" data-arg="${i}">Ask to fit it</button></li>`)}</ul>` : ''}
+    ${listHtml(parts, p => h`<div class="mission"><b>${p.name}</b> <span class="hint">${p.desc}</span>
+      <button data-action="stationBuy" data-arg="${p.id}:yard" ${st.credits >= p.price ? '' : 'disabled'}>New, ${fmt(p.price)} cr</button>
+      ${used ? h`<button data-action="stationBuy" data-arg="${p.id}:used" ${st.credits >= stationPrice(p, 'used') ? '' : 'disabled'}>Used, ${fmt(stationPrice(p, 'used'))} cr (${used.from})</button>` : ''}</div>`)}` }));
+}
+
+Mods.register({
+  id: 'parts', name: 'Parts', builtin: true,
+  init(M) {
+    const port = UI.views.port;
+    UI.views.port = function () { return port.call(this) + (hired() && G.mode === 'landed' ? stationHtml(G.state, hired(), currentPlanet()) : ''); };  // the hand's own station, under the port's own page
+    M.action('stationBuy', arg => {
+      const [id, source] = String(arg).split(':'), planet = currentPlanet(), quirk = source === 'used' ? usedPartAt(planet, G.state.day, 'fire') : null;
+      if (!hired() || G.mode !== 'landed' || (source === 'used' && !quirk)) return;
+      const line = buyStation(G.state, hired(), id, source, quirk); if (line) msg(line);
+    });
+    M.action('stationFit', i => { if (!hired()) return; const line = fitStation(hired(), Number(i)); msg(line || `${(hiredCaptain() || {}).first || 'The captain'} says not yet.`); });
+  },
+});
