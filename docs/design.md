@@ -6,15 +6,15 @@ This page is the one place that says what the game is, what is built, which docu
 
 ## 1. What the game is
 
-A run is one life (`docs/bible/shape.md`). A hand signs on as a rating on someone else's ship in our own solar system, a century on, where only owners own and everyone else rents (`docs/bible/README.md`, the owner's decisions). The world opens chapter by chapter until it is a sandbox: the first chapter is mostly spine, and by the third or fourth the world is the game. A run ends when the life does or when it gets somewhere, and leaves a thin trace on the next run.
+A run is one long life (`docs/bible/shape.md`), and from chapter 4 the line after it. A hand signs on as a rating on someone else's ship in our own solar system, a century on, where only owners own and everyone else rents (`docs/bible/README.md`, the owner's decisions). The world opens chapter by chapter until it is a sandbox: the first chapter is mostly spine, and by the third or fourth the world is the game. A run ends when the life does or when it gets somewhere, and leaves a thin trace on the next run.
 
 The game is role-playing first. "The captain decides and the crew flies" (`COMBAT.md`): people, what they think of you, and a ship you live in matter more than piloting or reflexes. Fights are turn-based puzzles with real risk. The writing is plain, and it states the economics flatly without comment (`docs/bible/voice.md`). The burn view shows a clean frame around a worn, cramped ship (`docs/bible/look.md`).
 
-It is an homage to *Escape Velocity*: a static site in vanilla JS and canvas, with no build step, played with a mouse and keyboard on a desktop at least 1000px wide (#937).
+It is a narrative saga about work in space, with tactical ship fights: one long run, replayed now and then. Its neighbours are *Citizen Sleeper* (precarious work, debt, odds on every check), *Sunless Sea* (storylets in port, a life that leaves a legacy), *FTL* (the fights) and *King of Dragon Pass* (how the later chapters play). It grew from an homage to *Escape Velocity*, whose map of ports, contracts and pirates it keeps. It is a static site in vanilla JS and canvas, with no build step, played with a mouse and keyboard on a desktop at least 1000px wide (#937).
 
 ### Pillars
 
-1. **One life, many endings.** Plot endings (an arc seen through) and goal endings (somewhere the player chose to get). Each reads the run's record.
+1. **One life, and from chapter 4 the line after it; many endings.** Plot endings (an arc seen through) and goal endings (somewhere the player chose to get), reachable in any chapter. Each reads the run's record.
 2. **The world runs without you.** Owners' rivalries, shortages, a war. The player can take part, steer between them, or go outside.
 3. **People with stakes.** Named people with families, debts and wants, who remember. Casualties are real.
 4. **One rule for every check** (`js/sheet.js`). Everything on the sheet adds a stat, a level, an edge or a move to that one rule.
@@ -46,6 +46,8 @@ The tool documents (`docs/editor.md`, `docs/pins.md`) govern their tools only.
 | 3 | organiser, master or outside, set by chapter 2's last vote | `shape.md`, `the-fuel-war.md` | Paths sketched. No chapter page. |
 | 4 to 7 | more hulls, a place, alliances, a threat | `later-chapters.md` (draft) | Draft. The chapter 7 threat is not chosen. |
 
+The later chapters play as *King of Dragon Pass* does, inside the chapters as drawn: a ring of people who argue each decision and grows with the chapters, one pool of events drawn by what the player holds, and holdings (hulls, outposts) that stay in the chapters after the one that brought them, as far as the path keeps them. Time passes in a coarser step than a day, with a drop into a day when a scene wants it (an assumption to test). From chapter 4 a death or a retirement passes the run to someone from the ring, at a cost. A fleet or a place hands the player the levers the owners and agencies held in chapter 1, and the endings read what they did with them (`later-chapters.md`, How the later chapters play; spec `genre-and-late-game`).
+
 ## 4. Systems
 
 Status key: **built** means in the narrow build, **full** means full build only, **parked** means kept in code but off, **designed** means a spec exists but the work is not built, **note** means a roadmap line with no design.
@@ -76,7 +78,7 @@ Status key: **built** means in the narrow build, **full** means full build only,
 | Mission arcs (League water, Concord audit, Compact licence) | built | `arcs.js`, `stories/arc-*` | spec `next-chapters` |
 | Factions and ties | built, to be replaced (conflict 9) | `factions.js`, `ties.js` | `jurisdictions.md` (replacement undesigned) |
 | Storylines (Cold Water and four more) | full | `story.js`, `storylets.js` | README |
-| Shipping company, stakes, outposts, heirs | full | `company.js`, `outpost.js`, `legacy.js` | README; `later-chapters.md` maps them to chapters 4-5 |
+| Shipping company, stakes, outposts, heirs | full | `company.js`, `outpost.js`, `legacy.js` | README; `later-chapters.md` maps them to chapters 4-5; heirs become succession from chapter 4 |
 | Ship customization | note | | ROADMAP 7 |
 | Player industry, fleet combat | note ("no design yet") | | ROADMAP 7; `later-chapters.md` |
 | Scene editor and override layer | built | `editor.js`, `overrides.js` | `docs/editor.md` |

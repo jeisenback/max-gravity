@@ -1,6 +1,6 @@
 # Max Gravity
 
-An Escape Velocity homage in vanilla JS and canvas. Static site, no build step. Design notes are in `README.md`, `COMBAT.md` and `ROADMAP.md`. The world and the voice of the game's writing are in `docs/bible/` (`voice.md` for how it reads, `look.md` for how the burn view looks).
+A narrative saga about work in space, grown from an Escape Velocity homage, in vanilla JS and canvas. Static site, no build step. Design notes are in `README.md`, `COMBAT.md` and `ROADMAP.md`. The world and the voice of the game's writing are in `docs/bible/` (`voice.md` for how it reads, `look.md` for how the burn view looks).
 
 ## Before changing code
 

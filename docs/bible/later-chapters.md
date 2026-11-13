@@ -8,6 +8,17 @@ Status: draft for the owner's review, 2026-11-08. Built on `shape.md`, `chapter-
 
 Each later chapter keeps the funnel of `shape.md`: a short written start that says where the player now stands, a long stretch the world carries, and a decision that sets where the next chapter starts. The spine thins with each one. By chapter 6 the written start is a page and the decision is the player's own.
 
+## How the later chapters play
+
+Each chapter stays its own slice, a little wider than the one before. What *King of Dragon Pass* lends is how a wider slice plays, not a new structure:
+
+- **The ring.** Decisions are argued by the people around the player, and the ring grows with the chapters: the crew, the co-op's members, a fleet's masters, a bloc's delegates. Their sheets and opinions are the ones the game already keeps.
+- **The calendar and the pool.** Time passes in the same days and burns; events come from one pool, drawn by what the player holds and the state of the world.
+- **Holdings.** What *King of Dragon Pass* does not have: hulls to crew and refit, outposts to supply. Each chapter adds one kind, and what a path keeps stays in the later chapters, so on the organiser's path a run may hold two hulls and a rock by chapter 6. A path that sells or scatters keeps less: chapter 2's sell vote leaves no co-op hull.
+- **A coarser step.** A day at a time does not carry two hulls and an outpost. The later chapters pass time in larger steps (a burn, a month, a season), and the player can still drop into a day aboard or ashore when a scene wants it. This is an assumption to test before chapter 4 is built.
+- **Succession.** From chapter 4, when the hand dies or retires, the run goes on with someone from the ring, at a cost: the holdings kept, the money and a lost ship gone, standing and regard cut. Before chapter 4 a death ends the run. `js/legacy.js` does most of this for the parked owner game (the company kept, money halved, the lost ship and its crew gone, standing and regard halved), with an heir by a new name; drawing the heir from the ring is new.
+- **The levers.** A fleet or a place puts the player where the owners and agencies stood in chapter 1: hiring ratings, setting deductions, signing charters. The endings read what the player did with them.
+
 ## The chapters
 
 | Chapter | Where the player stands | What is theirs |
@@ -83,3 +94,6 @@ So that these chapters can be built without reopening chapter 2:
 - The blocs of chapter 6 are the league of co-ops, the freeholds' assembly, an owner's charter and the havens' families; standing is what is spent in them.
 - Chapter 7 is a threat from outside the Belt's politics and inside the system; which one is open, with the arcologies acting together as the written case.
 - The parked milestones come back under this map and are not rebuilt from nothing.
+- The later chapters play as *King of Dragon Pass* does: a growing ring, one pool, holdings a path keeps.
+- Time passes in a coarser step than a day from chapter 4, with a drop into a day; to be tested.
+- From chapter 4 a death or a retirement passes the run to someone from the ring, at a cost.
