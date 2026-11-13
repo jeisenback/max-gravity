@@ -1,6 +1,6 @@
 # Parts: Repairs and the Hand's Own Station
 
-Status: proposed to the owner on 2026-11-13; amended the same day after a builder's read (the fights wear the guns and shields, the repair line, the scene's offer, the captain's pick, where used parts are sold, the soak). The first step before wrecks and salvage (#965), which will hand out parts, and the prospecting line (#1003), which rises with that work. The order agreed: parts, then #965, then #966 (the scan), then #1003.
+Status: approved by the owner on 2026-11-13 (#1135); amended the same day after a builder's read (the fights wear the guns and shields, the repair line, the scene's offer, the captain's pick, where used parts are sold, the soak). The first step before wrecks and salvage (#965), which will hand out parts, and the prospecting line (#1003), which rises with that work. The order agreed: parts, then #965, then #966 (the scan), then #1003.
 
 ## Why
 
