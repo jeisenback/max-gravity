@@ -922,7 +922,7 @@ function cutShaft(ctx, x0, x1, top, F) {
 // frame after (#1024): the burn view redraws every frame. A new zoom or pixel ratio starts the cache again; a new layout gives new bays.
 const SHELLS = { scale: 0, bays: new Map() };
 const ROOM_SPRITE_CACHE = new Map();  // the rooms' part sprites (rooms.js roomSprite, #1117), kept across frames
-const DECK_SPRITES = new Map();  // the ladder shaft on each deck and the hull's seams as images (#1122)
+const DECK_SPRITES = new Map(), FIG_SPRITE_CACHE = new Map();  // the ladder shaft on each deck and the hull's seams as images (#1122); the people's figures (figures.js figKept)
 function cachedShell(zoom) {
   const px = zoom * (window.devicePixelRatio || 1);
   if (SHELLS.scale !== px) { SHELLS.scale = px; SHELLS.bays.clear(); }
@@ -1105,38 +1105,41 @@ function drawCutaway(box, clear = box) {
   const berths = layoutBox(lay, 'berths'), labels = [], racked = [], dots = [], hits = [];
   const fl = burnStages(t.days).float, floatW = burnRamp(pr, 0.5 - fl, 0.5 - fl / 3) - burnRamp(pr, 0.5 + fl / 3, 0.5 + fl);  // how far the float has built at the flip, 0 to 1 and back (#927), in ship time (#992)
   const youHurt = handHurt();
-  for (const p0 of people) {
-    const asleep = slots.has(p0), lap = p0.lapse;
-    if (lap && lap.a <= 0) continue;  // in time-lapse, between places
-    const p = lap ? { ...p0, ...lap, tx: null, tdk: lap.dk } : p0;  // in time-lapse, as they were where they last rested
-    ctx.globalAlpha = lap ? lap.a : 1;  // fading out of a place or into one (set back after the people)
-    const pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p0), s.well);
-    const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
-    const lift = pose.name === 'couch' ? p.lift || 0 : 0;  // on a couch, as high as its pad (#990)
-    const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? MED_COT : 0) - lift, dk = Math.round(p.dk);
-    dots.push({ x: X(p.x), dk: p.dk, color: ROLE_COLORS[p.role] });
-    if (!seen(y - 160, y + 60)) continue;  // out of view (a little margin, so no one pops in at the edge)
-    const inView = seen(y - 60, y);
-    if (pose.name === 'strap') roomJumpSeat(ctx, x, y, pose.face, w.flip);  // a jump seat folded down from the wall behind them (#927)
-    const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float' ? floatW : 0, ...(p.role === 'cat' ? {} : { ...portraitLook({ id: p.id, name: p.name }), mood: figureMood(st, p.id, youHurt) }) });
-    if ((p.room === 'bridge' || p.room === 'gunnery') && p.role !== 'cat' && pose.view === 'side' && /sit/.test(pose.name)) roomScreenGlow(ctx, tap.head, pose.face);  // seated at a post, the console's screen on the face (#932)
-    if (pose.name === 'tether') {  // a line to a ring on the nearest room wall on their deck
-      const walls = ROOMS.filter(r => r.deck === dk).flatMap(r => [X(r.x0), X(r.x1)]), bx = walls.reduce((a, b) => (Math.abs(b - x) < Math.abs(a - x) ? b : a)), rx = bx + Math.sign(x - bx) * 6, ry = deckFloor(lay, dk) - 60;
-      ctx.strokeStyle = 'rgba(201,162,39,0.9)'; ctx.lineWidth = 1.4;
-      ctx.beginPath(); ctx.moveTo(tap.x, tap.y); ctx.quadraticCurveTo((tap.x + rx) / 2, Math.max(tap.y, ry) + 12 + Math.sin(time) * 6, rx, ry); ctx.stroke();
-      ctx.beginPath(); ctx.arc(rx, ry, 3, 0, Math.PI * 2); ctx.stroke();
-    }
-    if (!inView) continue;
-    if (p.id) hits.push({ ...toScreen(tap.x, tap.y), id: p.id, head: toScreen(tap.head.x, tap.head.y), foot: toScreen(tap.foot.x, tap.foot.y) });  // the body, head to foot, for a tap (game.js)
-    if (p.role !== 'passenger' || p.pid) {
-      const nw = ctx.measureText(p.name).width / zoom;
-      if (pose.name === 'couch' && typeof p.couchAt === 'number') { racked.push({ name: p.name, x, w: nw, dk, y: y + lift, k: p.couchAt }); continue; }  // on a rack: named in a row under it, after (#990)
-      if (!labels.some(b => b.dk === dk && Math.abs(b.x - x) < (b.w + nw) / 2 + 4 / zoom)) {
-        labels.push({ x, w: nw, dk });
-        worldText(ctx, zoom, p.name, x, (bunk ? berths.floor : y + lift) + 10, 12 / zoom, '#9fb4c9', 'center');
+  figSprites = FIG_SPRITE_CACHE;  // each figure in a pose seen before copied from an image (figures.js figKept)
+  try {
+    for (const p0 of people) {
+      const asleep = slots.has(p0), lap = p0.lapse;
+      if (lap && lap.a <= 0) continue;  // in time-lapse, between places
+      const p = lap ? { ...p0, ...lap, tx: null, tdk: lap.dk } : p0;  // in time-lapse, as they were where they last rested
+      ctx.globalAlpha = lap ? lap.a : 1;  // fading out of a place or into one (set back after the people)
+      const pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p0), s.well);
+      const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
+      const lift = pose.name === 'couch' ? p.lift || 0 : 0;  // on a couch, as high as its pad (#990)
+      const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? MED_COT : 0) - lift, dk = Math.round(p.dk);
+      dots.push({ x: X(p.x), dk: p.dk, color: ROLE_COLORS[p.role] });
+      if (!seen(y - 160, y + 60)) continue;  // out of view (a little margin, so no one pops in at the edge)
+      const inView = seen(y - 60, y);
+      if (pose.name === 'strap') roomJumpSeat(ctx, x, y, pose.face, w.flip);  // a jump seat folded down from the wall behind them (#927)
+      const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float' ? floatW : 0, ...(p.role === 'cat' ? {} : { ...portraitLook({ id: p.id, name: p.name }), mood: figureMood(st, p.id, youHurt) }) });
+      if ((p.room === 'bridge' || p.room === 'gunnery') && p.role !== 'cat' && pose.view === 'side' && /sit/.test(pose.name)) roomScreenGlow(ctx, tap.head, pose.face);  // seated at a post, the console's screen on the face (#932)
+      if (pose.name === 'tether') {  // a line to a ring on the nearest room wall on their deck
+        const walls = ROOMS.filter(r => r.deck === dk).flatMap(r => [X(r.x0), X(r.x1)]), bx = walls.reduce((a, b) => (Math.abs(b - x) < Math.abs(a - x) ? b : a)), rx = bx + Math.sign(x - bx) * 6, ry = deckFloor(lay, dk) - 60;
+        ctx.strokeStyle = 'rgba(201,162,39,0.9)'; ctx.lineWidth = 1.4;
+        ctx.beginPath(); ctx.moveTo(tap.x, tap.y); ctx.quadraticCurveTo((tap.x + rx) / 2, Math.max(tap.y, ry) + 12 + Math.sin(time) * 6, rx, ry); ctx.stroke();
+        ctx.beginPath(); ctx.arc(rx, ry, 3, 0, Math.PI * 2); ctx.stroke();
+      }
+      if (!inView) continue;
+      if (p.id) hits.push({ ...toScreen(tap.x, tap.y), id: p.id, head: toScreen(tap.head.x, tap.head.y), foot: toScreen(tap.foot.x, tap.foot.y) });  // the body, head to foot, for a tap (game.js)
+      if (p.role !== 'passenger' || p.pid) {
+        const nw = ctx.measureText(p.name).width / zoom;
+        if (pose.name === 'couch' && typeof p.couchAt === 'number') { racked.push({ name: p.name, x, w: nw, dk, y: y + lift, k: p.couchAt }); continue; }  // on a rack: named in a row under it, after (#990)
+        if (!labels.some(b => b.dk === dk && Math.abs(b.x - x) < (b.w + nw) / 2 + 4 / zoom)) {
+          labels.push({ x, w: nw, dk });
+          worldText(ctx, zoom, p.name, x, (bunk ? berths.floor : y + lift) + 10, 12 / zoom, '#9fb4c9', 'center');
+        }
       }
     }
-  }
+  } finally { figSprites = null; }
   ctx.globalAlpha = 1;
   // those on a rack share its x (#990): their names in a row on the deck plate under it, the lowest couch's first, centred on the rack
   for (const x0 of [...new Set(racked.map(q => q.x))]) {

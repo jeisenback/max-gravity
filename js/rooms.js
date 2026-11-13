@@ -2543,7 +2543,7 @@ const roomCorners = (x, y, w, h) => [[x, y], [x + w, y], [x, y + h], [x + w, y +
 const ROOM_TRACK = {
   moveTo: a => [a], lineTo: a => [a], quadraticCurveTo: a => [[a[0], a[1]], [a[2], a[3]]], bezierCurveTo: a => [[a[0], a[1]], [a[2], a[3]], [a[4], a[5]]],
   arc: a => roomCorners(a[0] - a[2], a[1] - a[2], a[2] * 2, a[2] * 2), ellipse: a => { const m = Math.max(a[2], a[3]); return roomCorners(a[0] - m, a[1] - m, m * 2, m * 2); },
-  rect: a => roomCorners(...a), fillRect: a => roomCorners(...a), strokeRect: a => roomCorners(...a),
+  rect: a => roomCorners(...a), roundRect: a => roomCorners(a[0], a[1], a[2], a[3]), fillRect: a => roomCorners(...a), strokeRect: a => roomCorners(...a),
   fillText: (a, t) => { const w = t.measureText(a[0]).width; return roomCorners(a[1] - w, a[2] - w, w * 2, w * 2); },
   drawImage: a => (a.length >= 9 ? roomCorners(a[5], a[6], a[7], a[8]) : roomCorners(a[1], a[2], a.length >= 5 ? a[3] : a[0].width, a.length >= 5 ? a[4] : a[0].height)),
 };
@@ -2559,6 +2559,25 @@ function roomLive(ctx, s, fn) {
   const rec = roomRec;
   if (!rec || ctx !== rec.g) { fn(ctx, s); return; }
   roomSnap(rec, { fn, t: rec.base.inverse().multiply(ctx.getTransform()), tone: roomTone, view: roomView, alpha: ctx.globalAlpha });
+}
+// A canvas's context that notes, in rec, whether anything was drawn (rec.dirty) and the box it was drawn within in the canvas's pixels (rec.box).
+const roomTracker = (raw, rec) => new Proxy(raw, {
+  get(t, k) {
+    const v = t[k]; if (typeof v !== 'function') return v;
+    return (...args) => { if (ROOM_DRAWS.has(k)) rec.dirty = true; if (ROOM_TRACK[k]) roomTrack(rec, t, ROOM_TRACK[k](args, t)); return v.apply(t, args); };
+  },
+  set(t, k, v) { t[k] = v; return true; },
+});
+// draw(g) drawn once into an image at the scale a, within the bounds b in world units, and cropped to what it drew (#1123): { c (null if it drew
+// nothing), x0, y0, w, h: where the image goes in world units, ret: what draw returned }.
+function keptImage(a, b, draw) {
+  const W = Math.ceil((b[2] - b[0]) * a), H = Math.ceil((b[3] - b[1]) * a), canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
+  const raw = canvas.getContext('2d'); raw.setTransform(a, 0, 0, a, -b[0] * a, -b[1] * a);
+  const rec = { dirty: false, box: [Infinity, Infinity, -Infinity, -Infinity] }, ret = draw(roomTracker(raw, rec)), q = rec.box;
+  const x0 = Math.max(0, Math.floor(q[0]) - 3), y0 = Math.max(0, Math.floor(q[1]) - 3), x1 = Math.min(W, Math.ceil(q[2]) + 3), y1 = Math.min(H, Math.ceil(q[3]) + 3);
+  if (!rec.dirty || x1 <= x0 || y1 <= y0) return { c: null, ret };
+  const c = document.createElement('canvas'); c.width = x1 - x0; c.height = y1 - y0; c.getContext('2d').drawImage(canvas, -x0, -y0);
+  return { c, x0: b[0] + x0 / a, y0: b[1] + y0 / a, w: c.width / a, h: c.height / a, ret };
 }
 function roomSnap(rec, live) {  // the drawing so far as an image cropped to it (none if nothing was drawn), then the live part after it
   let c = null;
@@ -2582,13 +2601,7 @@ function roomCached(ctx, id, r, s, draw) {
   const canvas = document.createElement('canvas'); canvas.width = W; canvas.height = H;
   const raw = canvas.getContext('2d'); raw.setTransform(a, 0, 0, a, -x0 * a, -y0 * a);
   const rec = { raw, canvas, W, H, segs: [], dirty: false, box: [Infinity, Infinity, -Infinity, -Infinity], base: raw.getTransform() }, reads = new Set();
-  rec.g = new Proxy(raw, {
-    get(t, k) {
-      const v = t[k]; if (typeof v !== 'function') return v;
-      return (...args) => { if (ROOM_DRAWS.has(k)) rec.dirty = true; if (ROOM_TRACK[k]) roomTrack(rec, t, ROOM_TRACK[k](args, t)); return v.apply(t, args); };
-    },
-    set(t, k, v) { t[k] = v; return true; },
-  });
+  rec.g = roomTracker(raw, rec);
   let timed = false;
   const ps = new Proxy(s, { get(o, k) { if (typeof k === 'string') { reads.add(k); if (k === 'time' && !o.still && !timed) timed = new Error().stack.split('\n').slice(2, 6).map(l => l.trim()).join(' < '); } return o[k]; } });
   const was = roomSprites; roomSprites = null; roomRec = rec;
