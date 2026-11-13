@@ -26,3 +26,8 @@ A narrative saga about work in space, grown from an Escape Velocity homage, in v
 
 - Work on the branch named in the task. Open a PR only when asked.
 - Commits and PR bodies follow the attribution lines the session gives.
+
+## Issues
+
+- When work turns up a minor follow-up (a polish point, a small bug outside the issue's scope, a loose end from a review), file it as an issue without asking: say where it was found, link the parent issue, and give a short done-when list. Do not fix it in the current PR. Name the new issues in the report.
+- A follow-up that needs the owner's choice is filed with the question left open, not decided. Anything bigger (a new feature, a design change) is raised with the owner first, not filed.
