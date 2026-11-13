@@ -4,11 +4,11 @@ Status: draft for the owner's review, 2026-11-13. A docs change only; no code.
 
 ## Intent
 
-The project's documents still introduce Max Gravity as an *Escape Velocity* homage about trading up to a better ship. That is the parked owner game. The game being built plays as a narrative life-sim: a hired hand on someone else's ship, storylet scenes with odds shown, turn-based fights against a ship's parts, a run that is one life with many endings. The documents should say so, and the later chapters should say how they play as they widen, and that a run can end in many places, a fleet, a place to run and the war tipped among them.
+The project's documents still introduce Max Gravity as an *Escape Velocity* homage about trading up to a better ship. That is the parked owner game. The game being built plays as a narrative saga: a hired hand on someone else's ship, storylet scenes with odds shown, turn-based fights against a ship's parts, a run that is one long life with many endings. The documents should say so, and the later chapters should say how they play as they widen, and that a run can end in many places, a fleet, a place to run and the war tipped among them.
 
 ## Where it sits
 
-Narrative roguelite life-sim about work in space, with tactical ship fights. Neighbours: *Citizen Sleeper* (precarious work, debt, odds on every check), *Sunless Sea* (storylets in port, a life that ends and leaves a legacy), *FTL* (the fights), *King of Dragon Pass* (the late game, below). *Escape Velocity* is where it came from: the map of ports, contracts, pirates, a better ship as the long goal.
+A narrative saga about work in space, with tactical ship fights: one long run, replayed now and then, not many short ones. Neighbours: *Citizen Sleeper* (precarious work, debt, odds on every check), *Sunless Sea* (storylets in port, a life that ends and leaves a legacy), *FTL* (the fights), *King of Dragon Pass* (the late game, below). *Escape Velocity* is where it came from: the map of ports, contracts, pirates, a better ship as the long goal.
 
 ## The late game (chapters 4 to 7)
 
@@ -16,7 +16,10 @@ The chapters stay as they are drawn: each one its own slice of the game, a littl
 
 - **The ring.** Decisions are argued by the people around the player, and the ring grows with the chapters: the crew, the co-op's members, a fleet's masters, a bloc's delegates. Their sheets and opinions are the ones the game already keeps.
 - **The calendar and the pool.** Time passes in the same days and burns; events come from one pool, drawn by what the player holds and the state of the world.
-- **Holdings.** What *King of Dragon Pass* does not have: hulls to crew and refit, outposts to supply. Each chapter adds one kind, and what a chapter added stays in the later ones, so by chapter 6 a run may hold two hulls and a rock.
+- **Holdings.** What *King of Dragon Pass* does not have: hulls to crew and refit, outposts to supply. Each chapter adds one kind, and what a path keeps stays in the later chapters, so on the organiser's path a run may hold two hulls and a rock by chapter 6. A path that sells or scatters keeps less (chapter 2's sell vote leaves no co-op hull).
+- **A coarser step.** A day at a time does not carry two hulls and an outpost. The later chapters pass time in larger steps (a burn, a month, a season), and the player can still drop into a day aboard or ashore when a scene wants it. This is an assumption to test, not settled.
+- **Succession.** From chapter 4, when the hand dies or retires, the run goes on with someone from the ring, at a cost: holdings kept, standing and regard cut, as `js/legacy.js` already does for the parked owner game. Before chapter 4 there is nothing to inherit, and a death ends the run. This replaces the earlier idea of several main characters.
+- **The levers.** A fleet or a place puts the player where the owners and agencies stood in chapter 1: hiring ratings, setting deductions, signing charters. The later chapters hand over those levers, and the endings read what the player did with them. Nobody in the voice is a villain, so the system does the extracting, and the player decides how much of it they run.
 
 ## Endings
 
@@ -28,11 +31,18 @@ Many, and open, as `shape.md` has them: plot endings and goal endings, reachable
 
 Beside them stay the smaller and stranger ones: dead young, ruined by a debt, walked away, a crew member's story seen through, a master's licence, a life on the edge, rich and ignoring every thread. Any of them can be where a run stops.
 
+## Open questions
+
+- **Replaying chapter 1.** Its spine is fixed (Hester, the two main characters, the gunner's post), so a second run repeats it. The starts and posts will open up (`js/build.js`, `SCOPE_OFF`); until they do, the game does not claim easy replay.
+- **The later step.** Whether the coarser step and the drop into a day play well together, tested before chapter 4 is built.
+- **The hand's place in a fight.** In chapter 1 the hand works a post and the captain decides; by chapter 4 the player decides. How a fight with several hulls is shown on the sensor board is left to chapter 4's design.
+- **The between-runs trace.** `shape.md`'s thin legacy (a start that opens, a name on a wall) waits for the starts to open; it has little to unlock before then.
+
 ## What changes
 
 - `README.md`, `CLAUDE.md`, `docs/design.md` section 1: the opening says what the game is and where it sits, with *Escape Velocity* as its origin.
-- `docs/bible/shape.md`: Endings adds the fleet, the place and the war to the list, as some among many.
-- `docs/bible/later-chapters.md`: a section on how the chapters play (the ring, the pool, holdings that stay); the chapters themselves kept; chapter 7 still unsettled.
+- `docs/bible/shape.md`: "a run is one life" becomes one life, and from chapter 4 the line after it (succession); Endings adds the fleet, the place and the war to the list, as some among many; the legacy note separates succession within a run from the trace between runs.
+- `docs/bible/later-chapters.md`: a section on how the chapters play (the ring, the pool, holdings a path keeps, the coarser step, succession, the levers); the chapters themselves kept; chapter 7 still unsettled.
 - `ROADMAP.md`: the parked milestones (shipping company, frontier, faction states) pointed at the chapters that bring them back.
 
 ## Not changed
