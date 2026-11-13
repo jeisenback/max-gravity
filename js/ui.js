@@ -32,6 +32,7 @@ const stripTags = v => (typeof v === 'string' ? v.replace(/[<>]/g, '')
 const UI = {
   el: document.getElementById('panel'),
   tab: 'port',
+  pageOpen: true,  // at a port drawn as a place, whether a page is docked beside the view or the view has the stage (shell.js, #1132)
   planet: null,
   notes: [],
 
@@ -39,6 +40,7 @@ const UI = {
     this.planet = planet;
     this.notes = notes || [];
     this.tab = tab;
+    this.pageOpen = true;
     this.tradeNote = null;
     this.show();
   },
@@ -361,7 +363,8 @@ const UI = {
     if (!role().mayAct(action)) return;  // not yours to do on the captain's ship
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
-      case 'tab': this.tab = arg; this.tradeNote = null; break;
+      case 'tab': this.tab = arg; this.pageOpen = true; this.tradeNote = null; break;
+      case 'closePage': this.pageOpen = false; break;  // the view has the stage (shell.js, #1132)
       case 'choose': { const title = G.dialog.event.title, before = G.state, kept = G.dialog.choices[Number(arg)].keep; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts;
         G.shifts = null; if (G.state !== before || G.mode === 'title') return;  /* a new game began (stakes.js): its first scene is up; or the choice went to the title (hired.js chapterOverScene) */
         if (kept) { if (text) this.redraw(text); else finishEvent(); return; }  // keep: the choice returned the event to show next, drawn in place of this one

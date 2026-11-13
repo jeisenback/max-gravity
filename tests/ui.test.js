@@ -332,7 +332,7 @@ test('the landed panel uses a tall window, and keeps its old size in a short one
   const sizes = {};
   for (const [name, viewport] of [['tall', { width: 1280, height: 900 }], ['short', { width: 1280, height: 600 }]]) {
     const { ev, page, done } = await open({ viewport });
-    await ev(() => { while (G.dialog) finishEvent(); UI.tab = 'trade'; UI.render(); });
+    await ev(() => { while (G.dialog) finishEvent(); const st = G.state; st.systemId = 'mars'; st.planet = 'Mars'; UI.planet = currentPlanet(); UI.tab = 'trade'; UI.render(); });  // a port with no view: Earth's panel is the Ring's stage (#1132)
     sizes[name] = await page.evaluate(() => ({ panel: document.querySelector('#panel').getBoundingClientRect().height, body: document.querySelector('#panel .body').getBoundingClientRect().height, win: innerHeight }));
     await done();
   }
@@ -378,11 +378,11 @@ test('the cue that a scene continues shows on a long scene and a long result, an
   await done();
 });
 
-test('the painted scene banner is 150px, and still draws (Earth\'s Port page draws the Ring instead, #1101)', async () => {
+test('the painted scene banner is 150px, and still draws (Earth draws the Ring instead, #1101, #1132)', async () => {
   const out = {};
   for (const [name, viewport] of [['desktop', { width: 1280, height: 800 }]]) {
     const { ev, page, done } = await open({ viewport });
-    await ev(() => { while (G.dialog) finishEvent(); UI.tab = 'bar'; UI.render(); });
+    await ev(() => { while (G.dialog) finishEvent(); const st = G.state; st.systemId = 'mars'; st.planet = 'Mars'; UI.planet = currentPlanet(); UI.tab = 'bar'; UI.render(); });  // a port with no view (#1132)
     await frames(page);
     out[name] = await page.evaluate(() => { const c = document.getElementById('vs'), g = c.getContext('2d'), d = g.getImageData(0, 0, c.width, c.height).data; let lit = 0; for (let i = 0; i < d.length; i += 4) if (d[i] + d[i + 1] + d[i + 2] > 60) lit++; return { h: c.getBoundingClientRect().height, lit }; });
     await done();
@@ -555,7 +555,7 @@ test('markup and quotes in the names a game keeps reach neither the memorial nor
 
 test('clicking a save code selects it, with no inline handler (data-select)', async () => {
   const { page, ev, done } = await open();
-  await ev(() => { const t = document.createElement('textarea'); t.id = 'sel'; t.readOnly = true; t.value = 'abc def'; t.setAttribute('data-select', ''); document.body.appendChild(t); });
+  await ev(() => { const t = document.createElement('textarea'); t.id = 'sel'; t.readOnly = true; t.value = 'abc def'; t.setAttribute('data-select', ''); t.style.cssText = 'position: fixed; top: 0; left: 0; z-index: 99'; document.body.appendChild(t); });  // placed above the landed panel
   await page.click('#sel');
   const picked = await ev(() => { const t = document.getElementById('sel'); return t.value.slice(t.selectionStart, t.selectionEnd); });
   assert.equal(picked, 'abc def');
