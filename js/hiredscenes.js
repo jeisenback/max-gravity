@@ -908,6 +908,8 @@ const SCENE_LINES = {
     fitted: 'The {name} is back at {pct}. The fund pays {price} cr for {pick}.',
     'help.win': 'You work it in beside {crew}, and it seats clean.',
     'help.lose': 'You help {crew} fit it, and it goes in as it is.',
+    'memory.argued.won': 'You talked me into {pick} for the {part}.',
+    'memory.argued.lost': 'You asked me for {pick} for the {part}, and I said no.',
     'memory.held': 'You argued for the {part} part, and it held.',
     'memory.broke': 'You argued for the {part} part, and it broke down.',
   },

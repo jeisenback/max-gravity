@@ -30,7 +30,7 @@ function wear(part, amount) {
   if (before >= BREAKDOWN_BELOW && c[part] < BREAKDOWN_BELOW && handPerk('hear-it-coming')) homeLog(`The ${SHIP_PARTS[part].name.toLowerCase()} is worn under the breakdown line.`);  // hear-it-coming (picks.js): named the day it crosses
 }
 // Full marks down to 60%, then sliding to half at nothing.
-const perf = part => { const c = condition()[part]; return Math.min(PERF_CAP, (c >= 60 ? 1 : 0.5 + c / 120) * partEffect(G.state, part, 'perf')); };  // and its part's quirk (parts.js)
+const perf = part => { const c = condition()[part]; return Math.min(PERF_CAP, (c >= 60 ? 1 : 0.5 + c / 120) * partEffect(G.state, part, 'perf') * stationPerf(G.state.hired, part)); };  // and its part's quirk (parts.js)
 const worstPart = () => { const c = condition(); return Object.keys(SHIP_PARTS).sort((a, b) => c[a] - c[b])[0]; };
 const overhaulCost = part => Math.round((100 - condition()[part]) * 80);
 
@@ -50,7 +50,7 @@ const overhaulCost = part => Math.round((100 - condition()[part]) * 80);
 function wearHtml() {
   const c = condition(), docked = G.mode === 'landed' && role().mayAct('overhaul');  // whoever pays for the ship pays for a yard overhaul: the owner, the co-op (#906)
   const offers = k => (docked && c[k] < 99 ? partsOffers(G.state, currentPlanet(), k, G.state.day) : []);  // a new part, a used one when the port has one, a printed one (parts.js, #1135)
-  const button = (k, o) => `<div class="con-yard"><span class="hint">${o.source === 'yard' ? 'Yard overhaul' : o.source === 'used' ? `Used: ${o.quirk.from}` : 'Printed, temporary'}</span><button data-action="overhaul" data-arg="${o.source === 'yard' ? k : `${k}:${o.source}`}" ${G.state.credits >= o.price ? '' : 'disabled'}>${fmt(o.price)} cr</button></div>`;
+  const button = (k, o) => `<div class="con-yard"><span class="hint">${o.source === 'yard' ? 'Yard overhaul' : o.source === 'used' ? `Used: ${o.quirk.from} (${usedWords(o.quirk)})` : 'Printed, temporary'}</span><button data-action="overhaul" data-arg="${o.source === 'yard' ? k : `${k}:${o.source}`}" ${G.state.credits >= o.price ? '' : 'disabled'}>${fmt(o.price)} cr</button></div>`;
   return `${wearRate() ? '' : '<p class="hint">Wear is off.</p>'}<div class="con-parts">
     ${Object.entries(SHIP_PARTS).map(([k, p]) => `<div class="con-part"><span>${p.name}</span>${conBar(c[k], condColor(c[k]))}<b>${Math.round(c[k])}</b></div>
       ${offers(k).map(o => button(k, o)).join('')}`).join('')}

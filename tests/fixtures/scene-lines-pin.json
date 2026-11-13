@@ -28788,6 +28788,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The drive is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the drive."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -28797,6 +28800,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the drive, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -28806,6 +28812,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The drive is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the drive."
+    ],
     "fx": {
      "fund": -480
     },
@@ -28815,6 +28824,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the drive, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -28854,6 +28866,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The drive is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the drive."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -28863,6 +28878,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the drive, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -28872,6 +28890,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The drive is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the drive."
+    ],
     "fx": {
      "fund": -480
     },
@@ -28881,6 +28902,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the drive, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -28920,6 +28944,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The drive is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the drive."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -28929,6 +28956,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the drive, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -28938,6 +28968,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The drive is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the drive."
+    ],
     "fx": {
      "fund": -480
     },
@@ -28947,6 +28980,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The drive is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the drive, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -28986,6 +29022,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The fire control is back at 90. The fund pays 1,080 cr for the used one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the fire control."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -28995,6 +29034,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the fire control, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29004,6 +29046,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 85. The fund pays 480 cr for the printed one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the fire control."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29013,6 +29058,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the fire control, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29052,6 +29100,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The fire control is back at 92. The fund pays 1,080 cr for the used one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the fire control."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29061,6 +29112,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You help Tomas fit it, and it goes in as it is.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the fire control, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29070,6 +29124,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 87. The fund pays 480 cr for the printed one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the fire control."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29079,6 +29136,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the fire control, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29118,6 +29178,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The fire control is back at 92. The fund pays 1,080 cr for the used one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the fire control."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29127,6 +29190,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the fire control, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29136,6 +29202,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 87. The fund pays 480 cr for the printed one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the fire control."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29145,6 +29214,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the fire control, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29184,6 +29256,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The shields is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the shields."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29193,6 +29268,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the shields, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29202,6 +29280,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The shields is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the shields."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29211,6 +29292,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the shields, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29250,6 +29334,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The shields is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the shields."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29259,6 +29346,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the shields, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29268,6 +29358,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The shields is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the shields."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29277,6 +29370,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the shields, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29316,6 +29412,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The shields is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the shields."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29325,6 +29424,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the shields, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29334,6 +29436,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The shields is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the shields."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29343,6 +29448,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The shields is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the shields, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29382,6 +29490,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The life support is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the life support."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29391,6 +29502,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the life support, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29400,6 +29514,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The life support is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the life support."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29409,6 +29526,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the life support, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29448,6 +29568,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The life support is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the life support."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29457,6 +29580,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the life support, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29466,6 +29592,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The life support is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the life support."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29475,6 +29604,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the life support, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29514,6 +29646,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The life support is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the life support."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29523,6 +29658,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the life support, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29532,6 +29670,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The life support is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the life support."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29541,6 +29682,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The life support is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the life support, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29580,6 +29724,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The sensors is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the sensors."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29589,6 +29736,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the sensors, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29598,6 +29748,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The sensors is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the sensors."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29607,6 +29760,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the sensors, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29646,6 +29802,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The sensors is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the sensors."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29655,6 +29814,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the sensors, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29664,6 +29826,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The sensors is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the sensors."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29673,6 +29838,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the sensors, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29712,6 +29880,9 @@
     "i": 1,
     "roll": 0,
     "text": "You make the case for the used one, and Hester hears you out and takes it. The sensors is back at 90. The fund pays 1,080 cr for the used one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the used one for the sensors."
+    ],
     "fx": {
      "fund": -1080
     },
@@ -29721,6 +29892,9 @@
     "i": 1,
     "roll": 0.99,
     "text": "You make the case for the used one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the used one for the sensors, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29730,6 +29904,9 @@
     "i": 2,
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The sensors is back at 85. The fund pays 480 cr for the printed one.",
+    "mem": [
+     "9 Jul 2214: You talked me into the printed one for the sensors."
+    ],
     "fx": {
      "fund": -480
     },
@@ -29739,6 +29916,9 @@
     "i": 2,
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The sensors is back at 100. The fund pays 2,400 cr for the new one.",
+    "mem": [
+     "9 Jul 2214: You asked me for the printed one for the sensors, and I said no."
+    ],
     "fx": {
      "fund": -2400
     },
@@ -29787,6 +29967,7 @@
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 87. The fund pays 480 cr for the printed one. You work it in beside Tomas, and it seats clean.",
     "mem": [
+     "9 Jul 2214: You talked me into the printed one for the fire control.",
      "9 Jul 2214: You argued for the fire control part, and it held."
     ],
     "fx": {
@@ -29800,6 +29981,7 @@
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
     "mem": [
+     "9 Jul 2214: You asked me for the printed one for the fire control, and I said no.",
      "9 Jul 2214: You argued for the fire control part, and it held."
     ],
     "fx": {
@@ -29850,6 +30032,7 @@
     "roll": 0,
     "text": "You make the case for the printed one, and Hester hears you out and takes it. The fire control is back at 85. The fund pays 480 cr for the printed one. You help Tomas fit it, and it goes in as it is.",
     "mem": [
+     "9 Jul 2214: You talked me into the printed one for the fire control.",
      "9 Jul 2214: You argued for the fire control part, and it broke down."
     ],
     "fx": {
@@ -29863,6 +30046,7 @@
     "roll": 0.99,
     "text": "You make the case for the printed one. Hester hears you out and takes the new one anyway. The fire control is back at 100. The fund pays 2,400 cr for the new one. You work it in beside Tomas, and it seats clean.",
     "mem": [
+     "9 Jul 2214: You asked me for the printed one for the fire control, and I said no.",
      "9 Jul 2214: You argued for the fire control part, and it broke down."
     ],
     "fx": {

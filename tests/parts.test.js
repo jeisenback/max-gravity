@@ -122,3 +122,11 @@ test('the co-op\'s overhaul offers a yard part at today\'s price, a used one wit
   assert.ok(r.hasYardPrice, 'the yard part at today\'s price'); assert.ok(r.hasFrom, 'the used part says where it came from');
   assert.equal(r.paid, r.price); assert.equal(r.after, 90); assert.equal(r.fitted, 'used');
 });
+
+test('an overhaul offers no source that would leave the system worse than it is: none above a printed part\'s 85 or a used part\'s 90', () => {
+  const { partsOffers } = load(['js/util.js', 'js/parts.js'], { Mods: { register() {} } }, ['partsOffers']);
+  const boneyard = { name: 'Boneyard', services: ['trade', 'outfitter'] }, sources = cond => [...partsOffers({ condition: { drive: cond } }, boneyard, 'drive', 1).map(o => o.source)];
+  assert.deepEqual(sources(50), ['yard', 'used', 'printed']);
+  assert.deepEqual(sources(87), ['yard', 'used'], 'at 87 a printed part (85) would take it down');
+  assert.deepEqual(sources(95), ['yard'], 'at 95 only a new part puts it right');
+});

@@ -87,3 +87,21 @@ test('no repair scene in chapter two', async () => {
   await done();
   assert.equal(r, 0);
 });
+
+test('the captain remembers the hand\'s say either way: a won argument and a lost one each leave her a memory of the part', async () => {
+  const { ev, done } = await open();
+  await ev(setup);
+  const r = await ev(() => {
+    const out = {};
+    for (const [k, roll] of [['won', 0], ['lost', 0.999]]) {
+      landed({ condition: { fire: 70 } }); const cap = hiredCaptain(), n = cap.memories.length, e = offered('Earth')[0];
+      const c = e.choices.find(x => x.label.startsWith('Argue for the printed'));
+      const real = Math.random; Math.random = () => roll; try { c.run(); } finally { Math.random = real; }
+      out[k] = cap.memories.slice(n);
+    }
+    return out;
+  });
+  await done();
+  assert.equal(r.won.length, 1, r.won.join(' | ')); assert.match(r.won[0], /fire control/i);
+  assert.equal(r.lost.length, 1, r.lost.join(' | ')); assert.match(r.lost[0], /fire control/i);
+});

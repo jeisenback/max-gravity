@@ -97,3 +97,22 @@ test('the counter: shown at a port with an outfitter, not at one with none; its 
   if (process.env.PIN_WRITE) fs.writeFileSync(file, r.at + '\n');
   assert.equal(r.at + '\n', fs.readFileSync(file, 'utf8'), 'the counter as pinned (PIN_WRITE=1 to write it again, and read the diff)');
 });
+
+test('a used station part has its catch: its quirk\'s minus counts (a faster-wearing fire control, a weaker one), and its offer says so', async () => {
+  const { ev, done } = await open();
+  await ev(start);
+  const r = await ev(() => {
+    const h = handAt({ leave: true, credits: 20000 }), out = {};
+    const feedQ = PART_QUIRKS.find(q => q.id === 'cutter-feed'), boardQ = PART_QUIRKS.find(q => q.id === 'raider-board');
+    buyStation(G.state, h, 'gunsight', 'used', feedQ); out.wear = partWear(G.state, 'fire');
+    h.station = []; buyStation(G.state, h, 'gunsight', 'used', boardQ); out.perf = perf('fire');
+    out.harnessUsed = !!stationPart('gunner', 'harness').used;
+    const boneyard = SYSTEMS.hygiea.planets.find(p => p.name === 'Boneyard'); out.html = stationHtml(G.state, h, boneyard);
+    return out;
+  });
+  await done();
+  assert.ok(Math.abs(r.wear - 1.25) < 1e-9, `the feed's minus: fire control wears 1.25 (${r.wear})`);
+  assert.ok(Math.abs(r.perf - 0.95) < 1e-9, `the board's minus: fire control at 0.95 (${r.perf})`);
+  assert.equal(r.harnessUsed, false, 'a harness is no fire-control part: sold new only');
+  assert.match(r.html, /but /, 'a used offer says its catch');
+});

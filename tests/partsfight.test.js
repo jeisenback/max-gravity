@@ -60,7 +60,7 @@ test('a turn\'s salvos wear fire control and the hits she takes wear the shields
     return out;
   });
   await done();
-  assert.ok(Math.abs(r.fire - 0.15) < 1e-9, `three shots wear fire control 0.15 (${r.fire})`);
-  assert.ok(Math.abs(r.shields - 0.6) < 1e-9, `two hits wear the shields 0.6 (${r.shields})`);
+  assert.ok(Math.abs(r.fire - 1.2) < 1e-9, `three salvos wear fire control 1.2, a turn's share of the owner's fight (${r.fire})`);
+  assert.ok(Math.abs(r.shields - 1.8) < 1e-9, `two hits wear the shields 1.8 (${r.shields})`);
   assert.equal(r.offFire, 0); assert.equal(r.offShields, 0);
 });
