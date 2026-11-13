@@ -31051,7 +31051,7 @@
   ]
  },
  {
-  "id": "scene:salvage:nobody:cut",
+  "id": "scene:salvage:nobody:cut:1",
   "plays": [
    {
     "i": 0,
@@ -31067,9 +31067,69 @@
    }
   ],
   "title": "The Seven Hours: Section 1",
-  "text": "The team is at the first bulkhead with the torch lit. The hold has room for 114t.",
+  "text": "The team is at the first bulkhead with the torch lit. You read the strain gauges yourself. They look fine. The hold has room for 114t.",
   "labels": [
    "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:nobody:cut:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The mail bay is half empty. Whatever went, went neatly, with the rack bolts undone and put in a bag. 5t of machine parts comes out of it. There is a shields part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The mail bay is half empty. Whatever went, went neatly, with the rack bolts undone and put in a bag. They take it slowly, shoring every frame, and 2t of machine parts comes out. There is a shields part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. The crew counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 2",
+  "text": "The second section is deeper in, past the bulkhead they cut. You read the strain gauges yourself. There is some give in it. The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:nobody:cut:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. 8t of electronics comes out of it. There is a drive part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. They take it slowly, shoring every frame, and 4t of electronics comes out. There is a drive part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. The crew counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. You read the strain gauges yourself, twice. You don't like it. The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
    "Haul home with what is aboard"
   ]
  },

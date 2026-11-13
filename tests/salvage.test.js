@@ -331,11 +331,13 @@ test('past the deadline with no find the job ends unpaid, and the board offers j
     const st = coopAt();
     career().job = { kind: 'salvage', site: 'site:wreck-1', client: 'Hask Mutual', find: 'recorder', sid: 'ceres', planet: 'Ceres Station', name: 'Dorran Sky', au: 3.1, type: 'courier', deadline: st.day + 1, pay: 9000, taken: st.day, got: false, quality: null };
     st.day += 1; Mods.emit('newDay', st.day); const still = !!career().job;
+    findSite(st, 'site:wreck-1', st.day); const gen = st.sites['site:wreck-1'].gen;
     st.day += 1; Mods.emit('newDay', st.day);
-    return { still, job: career().job, notes: UI.notes.join(' | ') };
+    return { still, job: career().job, notes: UI.notes.join(' | '), gen: st.sites['site:wreck-1'].gen - gen, found: st.sites['site:wreck-1'].found };
   });
   await done();
   assert.equal(r.still, true, 'on the deadline it still stands'); assert.equal(r.job, null); assert.match(r.notes, /Hask Mutual/);
+  assert.equal(r.gen, 1, 'the job\'s site, found and never worked, takes a new one'); assert.equal(r.found, null);
 });
 
 // Found by the co-op soak: the stay's landing hook asked the hired hand's planner for a run, which in chapter two names a captain who is not there.
@@ -351,4 +353,84 @@ test('landing back at a port where an old plan was made raises no error in chapt
   });
   await done();
   assert.equal(r.mode, 'landed');
+});
+
+// ---------- the final review's findings (#965) ----------
+
+test('a found site can be picked on the map, and from a site the burn can be for another site', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const { st } = atWreck(); shift(/Haul home/);
+    const other = 'site:wreck-3'; findSite(st, other, st.day);
+    G.mode = 'map'; drawMap(G.W, G.H); const [x, y] = G.mapPos(other);
+    canvas.dispatchEvent(new MouseEvent('click', { clientX: x, clientY: y, bubbles: true }));
+    const dest = st.dest; G.mode = 'landed'; UI.render();
+    const dock = document.querySelector('.dock').textContent, name = st.sites[other].name;
+    Mods.act('burnFromSite');
+    return { dest, dock, name, to: G.transit && G.transit.to };
+  });
+  await done();
+  assert.equal(r.dest, 'site:wreck-3'); assert.match(r.dock, new RegExp(`Burn for ${r.name}`)); assert.equal(r.to, 'site:wreck-3');
+});
+
+test('a reload before the survey is run plays it again', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt(), id = 'site:rock-1', site = sites(st)[id];
+    findSite(st, id, st.day);
+    career().job = { kind: 'survey', site: id, client: 'Brannock Minerals', find: 'survey', sid: 'ceres', planet: 'Ceres Station', name: site.name, au: site.au, deadline: st.day + 60, pay: 4000, taken: st.day, got: false, quality: null };
+    G.player = null; landAtSite(site); G.dialog = null;  // the page closed with the scene open
+    landAtSite(site);
+    return { again: !!G.dialog };
+  });
+  await done();
+  assert.equal(r.again, true);
+});
+
+test('at a site the pilot\'s depart order is not offered', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => { const { st } = atWreck(); shift(/Haul home/); person(st.crew[0]).role = 'pilot'; st.dest = 'ceres'; return ORDERS.pilot.find(o => o.id === 'depart').can(); });
+  await done();
+  assert.equal(r, false);
+});
+
+test('a job ends unpaid as soon as its find is lost, or the ship leaves the wreck without it', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    atWreck({ find: 1 }); shift(/^Cut it/, [0.09]); const lost = career().job;
+    const { st } = atWreck({ find: 3 }); shift(/Haul home/); st.dest = 'ceres'; Mods.act('burnFromSite');
+    return { lost, left: career().job, notes: UI.notes.join(' | ') };
+  });
+  await done();
+  assert.equal(r.lost, null); assert.equal(r.left, null); assert.match(r.notes, /Hask Mutual/);
+});
+
+test('a burn to a site needs the mass to come back, and a burn home from a site never leaves the tank below empty', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const st = coopAt(), id = 'site:wreck-1'; findSite(st, id, st.day);
+    takeOff(); G.player.x = BURN_DIST + 40; G.player.y = 0;
+    st.dest = id; st.fuel = burnFuel(st.systemId, id) + 1; tryBurn(); const short = G.mode;
+    const w = atWreck(); shift(/Haul home/); w.st.fuel = 1; w.st.dest = 'ceres'; Mods.act('burnFromSite');
+    return { short, fuel: w.st.fuel, mode: G.mode };
+  });
+  await done();
+  assert.notEqual(r.short, 'departing'); assert.ok(r.fuel >= 0, `${r.fuel}`); assert.equal(r.mode, 'transit');
+});
+
+test('with nobody to read the section, the player reads it', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const { st, site } = atWreck(); site.wreck.cut = 2;
+    st.crew = st.crew.filter(id => { const p = person(id); return p && p.cast === 'pax'; });
+    Mods.act('cutWreck'); const text = G.dialog.event.text; G.dialog = null; return text;
+  });
+  await done();
+  assert.match(r, /You /); assert.match(r, /Pax/);
 });

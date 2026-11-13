@@ -673,7 +673,7 @@ const playScenes = () => {
   }
   for (const cut of [0, 1, 2]) run(`scene:salvage:engineer:${cut + 1}`, {}, () => cutScene(G.state, wreckAt({ wreck: { cut } })), { rolls: [0.99] });
   run('scene:salvage:nobody', {}, () => approachScene(G.state, wreckAt({ alone: true })));
-  run('scene:salvage:nobody:cut', {}, () => cutScene(G.state, wreckAt({ alone: true })), { rolls: [0.99] });
+  for (const cut of [0, 1, 2]) run(`scene:salvage:nobody:cut:${cut + 1}`, {}, () => cutScene(G.state, wreckAt({ alone: true, wreck: { cut } })), { rolls: [0.99] });  // the player reads it
   run('scene:salvage:full', {}, () => { const st = G.state; st.cargo.metal = (st.cargo.metal || 0) + cargoFree(); return cutScene(st, wreckAt({ cast: ['bexa'] })); }, { rolls: [0.99] });
   run('scene:salvage:deep', {}, () => cutScene(G.state, wreckAt({ part: true, wreck: { cut: 2, find: 3, lead: 'site:wreck-2', leadAt: 3 }, cast: ['bexa', 'pax'] })), { rolls: [0.99, 0.01, 0.2, 0.35] });
   // the survey (salvage.js): with no pilot aboard the check is on no skill (an even chance), so the rolls give a good, a fair and a poor report

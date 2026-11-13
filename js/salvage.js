@@ -139,7 +139,7 @@ function cutScene(st, site) {
   const w = site.wreck, depth = w.cut + 1, reader = wreckReader(st), bexa = reader && reader.cast === 'bexa';
   const risk = sectionRisk(depth, false), read = readWord(risk, bexa ? Math.max(3, reader.skill) : roleSkill('engineer'));
   const pax = read !== 'clean' && castOnHand(st, 'pax');
-  const readLine = reader ? salvageSay(`read.${bexa ? 'bexa' : 'other'}.${read}`, { reader: reader.first }) : '';
+  const readLine = salvageSay(`read.${bexa ? 'bexa' : reader ? 'other' : 'you'}.${read}`, { reader: reader ? reader.first : '' });  // with nobody to read it, the player does
   const choices = [{ label: salvageSay('cut.label'), run: () => cutSection(st, site, false, { read, pax }) }];
   if (depth > 1) choices.push({ label: salvageSay('careful.label'), run: () => cutSection(st, site, true, { read, pax }) });
   choices.push({ label: salvageSay('home.label'), run: () => haulHome(st, site, read) });
@@ -170,7 +170,7 @@ function cutSection(st, site, careful, { read, pax }) {
   if (trouble === 'lost') {
     w.lost.push(depth);
     out.push(salvageSay('lost'));
-    if (depth === w.find && job && job.site === site.id) out.push(salvageSay('lost.find', { find: t.findWord }));
+    if (depth === w.find && job && job.site === site.id) { out.push(salvageSay('lost.find', { find: t.findWord })); career().job = null; }  // the job is off: nothing left to deliver
   } else {
     const take = sectionTake(w.type, depth, careful, cargoFree());
     if (take.tons) { st.cargo[take.good] = (st.cargo[take.good] || 0) + take.tons; st.paid[take.good] = st.paid[take.good] || 0; }
@@ -214,7 +214,8 @@ function cutWreck() {
 const salvageDockHtml = st => {
   const site = siteOf(st, st.systemId), w = site && site.wreck;
   if (w && !wreckDone(w)) return `<button data-action="cutWreck" class="primary">Cut into the wreck (section ${w.cut + 1}) (T)</button>`;
-  return st.dest && SYSTEMS[st.dest] ? `<button data-action="burnFromSite" class="primary">Burn for ${esc(SYSTEMS[st.dest].name)} (T)</button>` : '<button disabled title="Pick a system on the map">Plot a course on the map</button>';
+  const to = st.dest && st.dest !== st.systemId && placeOf(st.dest, st);
+  return to ? `<button data-action="burnFromSite" class="primary">Burn for ${esc(to.name)} (T)</button>` : '<button disabled title="Pick a place on the map">Plot a course on the map</button>';
 };
 const siteDockKey = () => (Mods.act(siteOf(G.state, G.state.systemId).wreck && !wreckDone(siteOf(G.state, G.state.systemId).wreck) ? 'cutWreck' : 'burnFromSite'));
 
@@ -224,16 +225,18 @@ const siteUsed = site => (site.wreck ? wreckDone(site.wreck) : !!site.seen);
 // From a site, straight into the burn (as the ice run's sailHome): no takeoff and no local space. The port is the job's if it is in that system,
 // else the system's first that trades.
 function sailFromSite(st, sid) {
-  const site = siteOf(st, st.systemId), job = career() && career().job;
-  if (!site || !SYSTEMS[sid] || G.mode !== 'landed' || G.dialog || (site.wreck && !wreckDone(site.wreck))) return false;
-  const port = job && job.sid === sid ? job.planet : (SYSTEMS[sid].planets.find(p => p.services.includes('trade')) || SYSTEMS[sid].planets[0]).name;
+  const site = siteOf(st, st.systemId), c = career(), job = c && c.job, other = siteOf(st, sid);
+  if (!site || sid === site.id || !(SYSTEMS[sid] || (other && other.found !== null)) || G.mode !== 'landed' || G.dialog || (site.wreck && !wreckDone(site.wreck))) return false;
   if (!G.player) { G.player = makeShip(st.shipId, 0, 0, 0); const s = ship(); Object.assign(G.player, { armor: st.armor, maxArmor: s.armor, shields: s.shields }); }  // on station there is no ship in local space
-  st.dest = sid; st.route = { dock: port, go: true };
+  st.dest = sid;
+  st.route = other ? null : { dock: job && job.sid === sid ? job.planet : (SYSTEMS[sid].planets.find(p => p.services.includes('trade')) || SYSTEMS[sid].planets[0]).name, go: true };
   const from = orbitPos(st.systemId), to = orbitPos(sid);
   G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
-  const leaving = site.id;
+  const leaving = site.id, short = st.fuel < burnFuel(leaving, sid);
+  if (job && job.site === leaving && !job.got) { c.job = null; UI.notes.push(`${job.client} wanted ${site.wreck ? WRECK_TYPES[site.wreck.type].findWord : 'the survey'}, and it isn't aboard. The job is off.`); }  // leaving without the find ends the job, so it blocks no contract
   UI.hide();
   enterTransit();
+  if (short) { st.fuel = Math.max(0, st.fuel); msg('The tanks run dry on the way, and she coasts the last of it on the thrusters.'); }  // never below empty
   if (siteUsed(site)) replaceSite(st, leaving);
   return true;
 }
@@ -255,6 +258,8 @@ function expireJob(st) {
   const c = career(), job = c && c.job;
   if (!job || job.got || st.day <= job.deadline) return '';
   c.job = null;
+  const site = siteOf(st, job.site);
+  if (site && site.found !== null && st.systemId !== site.id && !(site.wreck && site.wreck.cut)) replaceSite(st, site.id);  // found for the job and never worked: a new one in its slot, so it does not sit on the map dead
   return `The deadline for ${job.client}'s job has passed, and the job is off.`;
 }
 
@@ -266,15 +271,15 @@ const surveyQuality = (skill, roll) => { const p = check(STAT_BASE, skill, 0); r
 const surveySay = (key, vars) => sceneSay('scene:survey', key, vars);
 function surveyArrival(st, site) {
   const job = career() && career().job;
-  if (site.seen || !job || job.kind !== 'survey' || job.site !== site.id) return;
-  site.seen = true;
-  openEvent(surveyScene(st, site));
+  if (site.seen || !job || job.kind !== 'survey' || job.site !== site.id || job.got) return;
+  openEvent(surveyScene(st, site));  // seen when the survey is run, so a reload with the scene open plays it again
 }
 function surveyScene(st, site) {
   const pilot = roleHolder('pilot'), who = pilot ? pilot.first : surveySay('you');
   return { title: surveySay('title', { name: site.name }), personal: true, owner: 'you', text: surveySay('text', { name: site.name, pilot: who }),
     choices: [{ label: surveySay('label'), run: () => {
       const job = career().job, q = surveyQuality(roleSkill('pilot'), Math.random());
+      site.seen = true;
       if (job && job.site === site.id) { job.quality = q; job.got = true; }
       recordHand('rocksSurveyed');
       return surveySay(`result.${q}`, { pilot: who, client: job ? job.client : '' });

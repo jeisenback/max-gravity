@@ -72,7 +72,7 @@ function captainCallsBurn() {
 
 const canDepart = () => {
   const st = G.state;
-  return (!hired() || chapterOf(st) > 1) && G.mode === 'landed' && !G.dialog && !!pilotFlier(st) && !!st.dest && st.dest !== st.systemId && st.fuel >= burnFuel(st.systemId, st.dest);
+  return (!hired() || chapterOf(st) > 1) && G.mode === 'landed' && !atSite(st) && !G.dialog && !!pilotFlier(st) && !!st.dest && st.dest !== st.systemId && st.fuel >= burnFuel(st.systemId, st.dest);
 };
 
 ORDERS.pilot = [{
