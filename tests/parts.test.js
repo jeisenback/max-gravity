@@ -109,7 +109,7 @@ test('the co-op\'s overhaul offers a yard part at today\'s price, a used one wit
     c.drive = 50; out.hand = (wearHtml().match(/data-action="overhaul"/g) || []).length;
     hired().chapter = 2; G.mode = 'landed'; G.state.credits = 100000;
     const planet = currentPlanet(); let day = G.state.day; while (!usedPartAt(planet, day, 'drive')) day++; G.state.day = day;
-    const html = wearHtml(); out.args = [...html.matchAll(/data-action="overhaul" data-arg="([^"]+)"/g)].map(m => m[1]).filter(a => a.startsWith('drive:'));
+    const html = wearHtml(); out.args = [...html.matchAll(/data-action="overhaul" data-arg="([^"]+)"/g)].map(m => m[1]).filter(a => a.startsWith('drive'));
     out.yardPrice = overhaulCost('drive'); out.hasYardPrice = html.includes(fmt(overhaulCost('drive')));
     out.from = usedPartAt(planet, day, 'drive').from; out.hasFrom = html.includes(out.from.split(',')[0]);
     const before = G.state.credits; Mods.act('overhaul', 'drive:used');
@@ -118,7 +118,7 @@ test('the co-op\'s overhaul offers a yard part at today\'s price, a used one wit
   });
   await done();
   assert.equal(r.hand, 0, 'a hand in chapter one does not overhaul');
-  assert.deepEqual(r.args, ['drive:yard', 'drive:used', 'drive:printed']);
+  assert.deepEqual(r.args, ['drive', 'drive:used', 'drive:printed'], 'the yard part keeps the bare system, as before');
   assert.ok(r.hasYardPrice, 'the yard part at today\'s price'); assert.ok(r.hasFrom, 'the used part says where it came from');
   assert.equal(r.paid, r.price); assert.equal(r.after, 90); assert.equal(r.fitted, 'used');
 });

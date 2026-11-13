@@ -89,10 +89,10 @@ function stationFight(h) {
 // The words are the lines of 'scene:parts' (hiredscenes.js).
 const REPAIR_BELOW = 75, PART_RISK = { yard: 0, used: 1, printed: 2 }, PART_POST = { fire: 'gunner' };  // the post that works a system: the gunner the guns' fire control, the engineer the rest
 const partPost = sys => PART_POST[sys] || 'engineer';
-function partsRepairDue(st, h, planet) {
+function partsRepairDue(st, h, planet, fund) {  // fund: what the ship's money holds (boarders.js purse)
   if (!h || (h.chapter || 1) > 1 || h.partsAt === st.day || !(planet.services || []).includes('outfitter')) return null;
   const c = st.condition || {}, worst = Object.keys(c).filter(k => c[k] < REPAIR_BELOW).sort((a, b) => c[a] - c[b])[0];
-  return worst && (h.fund || 0) >= partPrice(c[worst], 'printed') ? worst : null;
+  return worst && fund >= partPrice(c[worst], 'printed') ? worst : null;
 }
 // What the yard has for a system: a yard part, the used one if the port has one that day (usedPartAt), and a printed one.
 function partsOffers(st, planet, sys, day) {
@@ -111,14 +111,14 @@ function quirkWords(say, q) {
 }
 function partsEvent(planet, sys) {
   const st = G.state, h = hired(), cap = hiredCaptain(), say = (key, vars) => sceneSay('scene:parts', key, vars), name = SHIP_PARTS[sys].name;
-  const offers = partsOffers(st, planet, sys, st.day), pick = captainPartPick(cap.captain, offers, h.fund), crew = (roleHolder('engineer') || roleHolder('xo') || cap).first;
+  const offers = partsOffers(st, planet, sys, st.day), pick = captainPartPick(cap.captain, offers, purse()), crew = (roleHolder('engineer') || roleHolder('xo') || cap).first;
   const offerLine = o => say(`offer.${o.source}`, { price: fmt(o.price), from: o.quirk ? o.quirk.from : '', quirk: o.quirk ? quirkWords(say, o.quirk) : '' });
   const fit = (i, argued) => {
     const o = offers[i], before = h.partsArgued;
     if (before && before.sys === sys) { like(cap, before.broke ? -1 : 1, say(before.broke ? 'memory.broke' : 'memory.held', { part: name.toLowerCase() })); delete h.partsArgued; }
     if (argued) h.partsArgued = { sys, day: st.day };
     fitPart(st, sys, o.source, o.quirk, st.day);
-    h.fund = Math.max(0, h.fund - o.price); h.bill = (h.bill || 0) + o.price;
+    moveMoney(-Math.min(purse(), o.price)); h.bill = (h.bill || 0) + o.price;  // the ship's money (boarders.js, #905)
     let help = '';
     if (h.post === partPost(sys)) { const ok = Math.random() < handCheck('hands', skillLevel(h.post), 'post'); if (ok) st.condition[sys] = Math.min(100, st.condition[sys] + 2); help = ' ' + say(ok ? 'help.win' : 'help.lose', { crew }); }
     return say('fitted', { name: name.toLowerCase(), pct: Math.round(st.condition[sys]), price: fmt(o.price), pick: say(`pick.${o.source}`) }) + help;
@@ -129,5 +129,5 @@ function partsEvent(planet, sys) {
     return `${say(won ? 'argue.win' : 'argue.lose', { captain: cap.first, pick: say(`pick.${o.source}`), hers: say(`pick.${offers[pick].source}`) })} ${fit(won ? i : pick, won)}`;
   } }); });
   return { title: say('title', { part: name.replace(/\b\w/g, ch => ch.toUpperCase()) }), parts: sys, personal: true,
-    text: say('text', { crew, name: name.toLowerCase(), pct: Math.round(st.condition[sys]), offers: offers.map(offerLine).join(' '), fund: fmt(h.fund), captain: cap.first, pick: say(`pick.${offers[pick].source}`) }), choices };
+    text: say('text', { crew, name: name.toLowerCase(), pct: Math.round(st.condition[sys]), offers: offers.map(offerLine).join(' '), fund: fmt(purse()), captain: cap.first, pick: say(`pick.${offers[pick].source}`) }), choices };
 }
