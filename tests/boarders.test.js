@@ -323,8 +323,8 @@ test('the hand dies on a second hurt or a lost bridge while laid up, one in four
   await done();
 });
 
-test('a pirate bridge taken can cost the captain, one in six, and the hand goes ashore keeping savings, skill and debt', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
+test('a pirate bridge taken can cost the captain, one in six, and the hand goes ashore keeping savings, skill and debt (the full build; the narrow one starts afresh, stakes.test.js)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     const st = fight(), h = hired(), d = G.duel, cap = person(h.captain), out = { last: cap.last };

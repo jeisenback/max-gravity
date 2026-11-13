@@ -13,8 +13,8 @@ const helpers = () => {
   window.offered = make => Mods.filter('happenings', [], 'port', currentPlanet()).some(c => c.make === make);
 };
 
-test('a captain who has had enough warns you once, then puts you ashore, and you start again with your savings', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
+test('a captain who has had enough warns you once, then puts you ashore, and you start again with your savings (the full build)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     const st = start(), h = hired(), cap = person(h.captainKey ? h.captain : h.captain), out = {};
@@ -116,8 +116,8 @@ test('the one who can leave speaks first, so a main character never gives the sp
   await done();
 });
 
-test('the put-ashore scene reads up to two shared facts, and the dock carries one line into the next Signing On', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
+test('the put-ashore scene reads up to two shared facts, and the dock carries one line into the next Signing On (the full build)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     const text = () => { const d = document.createElement('div'); d.innerHTML = putAshoreScene().text; return d.textContent; };
@@ -142,5 +142,43 @@ test('the put-ashore scene reads up to two shared facts, and the dock carries on
   assert.match(r.carriedBad, /still talking about the ice run/); assert.match(r.carriedRaid, /fought off a raid/); assert.match(r.carriedNone, /whose ship you were put off/);
   assert.equal(r.title, 'Signing On'); assert.match(r.shown, /On the dock/); assert.equal(r.opening, r.shown, 'its own paragraph after the first');
   assert.equal(r.cleared, null); assert.equal(r.fresh, null);
+  await done();
+});
+
+test('in the narrow build, put ashore or without a captain, the run ends with the look back and a fresh hand signs on to Hester\'s ship', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const plain = html => { const d = document.createElement('div'); d.innerHTML = html; return d.textContent; };
+    const end = make => {
+      const st = start(), h = hired(); st.credits = 777; h.skill.gunner = 35; h.debt = 1234;
+      const e = make(), text = plain(e.text), recap = plain(chapterRecap().text);
+      openEvent(e); chooseEvent(0);
+      const st2 = G.state, h2 = hired();
+      return { lookBack: recap.length > 0 && text.endsWith(recap), fresh: st2 !== st, captain: h2.captainKey, credits: st2.credits, skill: h2.skill.gunner,
+        debt: h2.debt, putOff: st2.putOff || 0, carried: st2.carried, scene: G.dialog && G.dialog.event.title, notes: UI.notes.join(' ') };
+    };
+    return { ashore: end(putAshoreScene), lost: end(captainLostScene) };
+  });
+  for (const [k, x] of Object.entries({ ashore: r.ashore, lost: r.lost })) {
+    assert.ok(x.lookBack, `${k}: the scene ends on the look back`);
+    assert.ok(x.fresh, `${k}: a new game`); assert.equal(x.captain, 'hester', `${k}: on Hester's ship again`);
+    assert.notEqual(x.credits, 777, `${k}: no savings carried`); assert.notEqual(x.skill, 35, `${k}: no skill carried`); assert.notEqual(x.debt, 1234, `${k}: no debt carried`);
+    assert.equal(x.putOff, 0); assert.equal(x.scene, 'Signing On'); assert.doesNotMatch(x.notes, /put you ashore|didn't come back from the bridge/, `${k}: the port screen says nothing of a last ship`);
+  }
+  assert.match(r.ashore.carried, /^On the dock they say Captain \w+ put the last hand ashore\.$/);
+  assert.equal(r.lost.carried, 'On the dock they talk about a ship that came in without her captain.');
+  await done();
+});
+
+test('in the narrow build, a hand who dies starts again on Hester\'s ship', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); openEvent(handDeathScene('first')); chooseEvent(0);
+    return { captain: hired().captainKey, carried: G.state.carried };
+  });
+  assert.equal(r.captain, 'hester');
+  assert.match(r.carried, /didn't come back/);
   await done();
 });
