@@ -187,7 +187,7 @@ const Menu = {
     const V = this.views[this.view].call(this);
     if (G.mode === 'title') UI.setLight(TITLE_SUN.angle);
     UI.el.innerHTML = `<div class="menu${G.mode === 'title' ? ' at-title' : ''}">${V}${this.note ? `<p class="hint">${this.note}</p>` : ''}</div>`;
-    UI.el.classList.remove('hidden', 'event');
+    UI.el.classList.remove('hidden', 'event', 'staged');
     this.note = '';
   },
 

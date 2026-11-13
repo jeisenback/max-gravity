@@ -194,7 +194,7 @@ test('a long scene says it continues, the Port heading keeps one case, and a shu
   const cue = () => page.evaluate(() => ({ more: document.querySelector('#panel').classList.contains('more'), text: getComputedStyle(document.querySelector('#panel .choices'), '::before').content }));
   const first = await cue();
   assert.ok(first.more, 'the cue shows while text remains'); assert.match(first.text, /The scene continues/);
-  await page.evaluate(() => { const p = document.querySelector('#panel'); p.scrollTop = p.scrollHeight; });
+  await page.evaluate(() => { const p = UI.scroller(); p.scrollTop = p.scrollHeight; });  // the scene's body, docked by the Ring at Earth (#1103), or the panel
   await page.waitForFunction(() => !document.querySelector('#panel').classList.contains('more'), null, { timeout: 5000 }).catch(() => {});  // the cue is set on the next frame, so wait for it rather than for a fixed time
   assert.equal((await cue()).more, false, 'and goes at the end of the text');
   // The Port heading: the captain's name inherits the heading's case.
