@@ -40,7 +40,9 @@ Beside them stay the smaller and stranger ones: dead young, ruined by a debt, wa
 
 ## What changes
 
-- `README.md`, `CLAUDE.md`, `docs/design.md` section 1: the opening says what the game is and where it sits, with *Escape Velocity* as its origin.
+- `README.md`, `CLAUDE.md`, `docs/design.md` section 1: the opening says what the game is and where it sits, with *Escape Velocity* as its origin. In `docs/design.md` also the first pillar (one life, and the line after it), section 3 (how the later chapters play), and the systems row for heirs (succession from chapter 4).
+- `docs/bible/README.md`: the index line for `shape.md`.
+- `docs/endings-parked.md`: its four endings wait for the game's endings, which can come in any chapter, not only at the close of the last.
 - `docs/bible/shape.md`: "a run is one life" becomes one life, and from chapter 4 the line after it (succession); Endings adds the fleet, the place and the war to the list, as some among many; the legacy note separates succession within a run from the trace between runs.
 - `docs/bible/later-chapters.md`: a section on how the chapters play (the ring, the pool, holdings a path keeps, the coarser step, succession, the levers); the chapters themselves kept; chapter 7 still unsettled.
 - `ROADMAP.md`: the parked milestones (shipping company, frontier, faction states) pointed at the chapters that bring them back.
