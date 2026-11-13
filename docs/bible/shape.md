@@ -1,18 +1,18 @@
 # The shape of the game
 
-Status: approved by the owner on 2026-11-07 (#891).
+Status: approved by the owner on 2026-11-07 (#891); changed 2026-11-13 for the owner's review (genre and late game: succession, the endings, the legacy note; `docs/superpowers/specs/2026-11-13-genre-and-late-game-design.md`).
 
 ## What it is
 
-A run is one life. A hand signs on to someone else's ship, and the world opens around them chapter by chapter until it is a sandbox: places, people, work, owners and their rivalries, most of it generated from written parts and left to combine. The chapters tell the player where they stand. The world decides what happens next, and the player decides what to do about it.
+A run is one life, and from chapter 4 the line after it. A hand signs on to someone else's ship, and the world opens around them chapter by chapter until it is a sandbox: places, people, work, owners and their rivalries, most of it generated from written parts and left to combine. The chapters tell the player where they stand. The world decides what happens next, and the player decides what to do about it.
 
 There are many endings. A run ends when the life does, or when it gets somewhere: an arc seen through, or a goal reached. Then another run starts, with a different hand in a different world, and something of the last one left behind.
 
 ## A run
 
-- **One life.** A run follows one hand from the day they sign on to an ending. The ending can come early (dead in a boarding, ruined by a debt, walked away) or late.
+- **One life, then the line.** A run follows one hand from the day they sign on to an ending. The ending can come early (dead in a boarding, ruined by a debt, walked away) or late. Before chapter 4 a death ends the run: there is nothing to inherit. From chapter 4, when the hand dies or retires, someone from the ring goes on, at a cost: the holdings kept, standing and regard cut (`later-chapters.md`, How the later chapters play).
 - **A different world each run.** The background, the ship's crew, the people met, the jobs on the boards and where the owners' rivalries break out are drawn fresh. Two runs from the same start do not play alike.
-- **A thin legacy.** An ending leaves a trace in the next run, earned and small: a new start that opens up, a person who remembers the last hand, a name on a memorial wall, a ship the next hand might see on an apron. It never makes the next run easier to win, only different. The game keeps the seed of this already (`js/legacy.js`).
+- **A thin legacy.** An ending leaves a trace in the next run, earned and small: a new start that opens up, a person who remembers the last hand, a name on a memorial wall, a ship the next hand might see on an apron. It never makes the next run easier to win, only different. It is the trace between runs, and waits for the starts to open up, since before then it has little to unlock. Other players' runs can leave it too, as words only (shared deeds, `README.md`). Succession within a run is another thing: `js/legacy.js` does it for the parked owner game, and the later chapters take it up.
 
 ## The chapters widen
 
@@ -56,7 +56,7 @@ There is no interstellar war and no great power. The torch drive is the one leap
 There are many, of two kinds, and a run can reach more than one kind on the way to its last:
 
 - **Plot endings:** an arc seen through. The co-op's last vote, the owners' war, a crew member's story, a pirate's career.
-- **Goal endings:** somewhere the player chose to get. Your share paid off; a master's licence; a fleet organised; retired rich and ignoring every thread; a life made on the edge; or dead young.
+- **Goal endings:** somewhere the player chose to get. Your share paid off; a master's licence; a fleet that moves the system's freight (most often a co-op's or a charter's; owning it outright is the hardest end of it); a place run, an outpost or a freehold or in the end a jurisdiction; the fuel war tipped by a bloc's standing; retired rich and ignoring every thread; a life made on the edge; or dead young. The later chapters add to the list; none of them is the only way a run ends.
 
 An ending reads the run's record: who lived and who died, what was promised and kept, whose side the hand took, what they owned and owed. The ending framework in #132 is a start on this list, not all of it. Getting rich and ignoring every thread stays a way to play, and it has its own ending.
 
@@ -70,7 +70,7 @@ Every run is seeded fresh, so the game's randomness is the player's. The tests h
 
 ## Assumptions to confirm
 
-- A run is one life, from signing on to an ending, and runs are meant to be replayed.
+- A run is one life, from signing on to an ending, and from chapter 4 the line after it; runs are long, and replayed now and then.
 - The legacy carried between runs is small and earned, and never makes winning easier.
 - Each chapter widens the player's freedom; the spine thins and the world takes over.
 - Chapter 2's last vote sets chapter 3 as the organiser's, the master's or outside; owning a hull is a goal some runs may reach, not the default.
