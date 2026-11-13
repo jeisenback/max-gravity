@@ -620,6 +620,23 @@ const burnShipLog = () => (G.transit ? shipLogLines(G.state, G.transit, hired() 
 
 // The burn view, laid out by burnLayout (burnlayout.js): the bar of the route and the burn on top, the ship cutaway as the stage, and over the
 // ship's bottom left the comms lines, fading, and the tutorial's prompt. The Menu and map buttons and the bridge keys are DOM below.
+
+// A star streak's fill along its length (#1121), from 0 to 1: the head, body and tail as hard bands, each fainter, warmer as the ship goes
+// faster (hot, 0 to 1, in sixteenths). Drawn with the star's own brightness as the alpha. Kept, one for each sixteenth.
+const STREAK_FILLS = new Map();
+function streakFill(ctx, hot) {
+  const q = Math.round(hot * 16) / 16;
+  let g = STREAK_FILLS.get(q);
+  if (!g) {
+    g = ctx.createLinearGradient(0, 0, 1, 0);
+    for (let i = 0; i < 3; i++) {
+      const c = `rgba(${200 + 40 * q * (1 - i / 3)},${215 + 30 * q * (1 - i / 3)},255,${0.85 - i * 0.28})`;
+      g.addColorStop(i / 3, c); g.addColorStop((i + 1) / 3, c);
+    }
+    STREAK_FILLS.set(q, g);
+  }
+  return g;
+}
 function drawTransit(W, H) {
   const viewW = W - G.hudW, cy = H / 2, t = G.transit;
   const narrow = !G.hudW;  // the HUD strip on top
@@ -648,19 +665,17 @@ function drawTransit(W, H) {
   const a = t.angle + Math.PI / 2, ca = Math.cos(a), sa = Math.sin(a), ox = shipBox.x + shipBox.w / 2, oy = shipBox.y + shipBox.h / 2, wrap = (v, m) => ((v % m) + m) % m;
   const behind = (x, y) => x > shipBox.x && x < shipBox.x + shipBox.w && y > shipBox.y && y < shipBox.y + shipBox.h;
   const m = ctx.getTransform(), ra = m.a * ca + m.c * sa, rb = m.b * ca + m.d * sa, rc = m.c * ca - m.a * sa, rd = m.d * ca - m.b * sa;  // the turn, once for every streak (#1117)
-  const streak = (x, y, draw) => {  // draw(dim): dim is how bright a streak is where it passes behind the ship
+  const streak = (x, y, draw, k = 1) => {  // draw(dim): dim is how bright a streak is where it passes behind the ship; k: its length's scale along it
     const dx = x - ox, dy = y - oy, px = wrap(ox + dx * ca - dy * sa, viewW), py = wrap(oy + dx * sa + dy * ca, H);
-    ctx.setTransform(ra, rb, rc, rd, m.a * px + m.c * py + m.e, m.b * px + m.d * py + m.f); draw(still || !behind(px, py) ? 1 : 0.4);
+    ctx.setTransform(ra * k, rb * k, rc, rd, m.a * px + m.c * py + m.e, m.b * px + m.d * py + m.f); draw(still || !behind(px, py) ? 1 : 0.4);
   };
-  for (const s of G.transitStars) {
-    const len = Math.max(s.z * 2, speed * s.z * s.z * (still ? 8 : 110) * hush), w = s.z > 0.7 ? 2 : 1, hot = Math.min(1, speed * 1.4);
-    streak(s.x * viewW, s.y * H, dim => {
-      for (let i = 0; i < 3; i++) {  // head, body and a fainter tail
-        ctx.fillStyle = `rgba(${200 + 40 * hot * (1 - i / 3)},${215 + 30 * hot * (1 - i / 3)},255,${s.z * (0.85 - i * 0.28) * hush * dim})`;
-        ctx.fillRect((len * i) / 3, 0, len / 3 + 1, w);
-      }
-    });
+  const hot = Math.min(1, speed * 1.4), fill = streakFill(ctx, hot), alpha = ctx.globalAlpha;
+  ctx.fillStyle = fill;
+  for (const s of G.transitStars) {  // one rectangle each, its length the unit: the head, body and fainter tail are the fill's bands (#1121)
+    const len = Math.max(s.z * 2, speed * s.z * s.z * (still ? 8 : 110) * hush), w = s.z > 0.7 ? 2 : 1;
+    streak(s.x * viewW, s.y * H, dim => { ctx.globalAlpha = alpha * s.z * hush * dim; ctx.fillRect(0, 0, 1 + 1 / len, w); }, len);
   }
+  ctx.globalAlpha = alpha;
   if (!still && speed > 0.2) {
     for (let i = 0; i < 26; i++) {
       const lane = (i * 0.618033) % 1, rate = 0.5 + (i % 5) * 0.22, phase = (i * 0.37 + G.time * speed * 0.35 * rate) % 1, len = speed * (120 + (i % 4) * 70) * hush;
