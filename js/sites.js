@@ -45,7 +45,7 @@ function seedSite(key, kind, i, gen) {
   let lead = null, leadAt = null;
   if (next() < 1 / 3) { const n = 1 + Math.floor(next() * (WRECKS - 1)); lead = `site:wreck-${((i - 1 + n) % WRECKS) + 1}`; leadAt = 1 + Math.floor(next() * 3); }
   out.name = pick(WRECK_TYPES[type].names);
-  out.wreck = { type, name: out.name, find, lead, leadAt, cut: 0, lost: [] };
+  out.wreck = { type, name: out.name, find, lead, leadAt, cut: 0, lost: [], seed: Math.floor(next() * 1e9) };  // seed: the wreck's own, for what its sections hold (salvage.js)
   return out;
 }
 const seedWrecks = key => {

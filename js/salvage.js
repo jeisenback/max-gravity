@@ -30,3 +30,20 @@ const WRECK_TYPES = {
   },
 };
 const WRECK_TYPE_IDS = Object.keys(WRECK_TYPES);
+
+// ---------- the cutting's numbers ----------
+// The odds a section goes wrong, by depth (1 to 3), and what cutting carefully does to them and to the take (the soak tunes them).
+const SECTION_RISK = [0.1, 0.25, 0.4], CAREFUL = 0.5, SECTION_TONS = [3, 5, 8];
+const sectionRisk = (depth, careful) => SECTION_RISK[depth - 1] * (careful ? CAREFUL : 1);
+// A section's goods for the hold: a few tons of one of the type's goods, halved carefully, no more than the hold has room for.
+const sectionTake = (type, depth, careful, room) => {
+  const goods = WRECK_TYPES[type].goods, tons = Math.floor(SECTION_TONS[depth - 1] * (careful ? CAREFUL : 1));
+  return { good: goods[(depth - 1) % goods.length], tons: Math.max(0, Math.min(tons, room)) };
+};
+// An intact part, worth taking off whole: on section 2 of a third of wrecks and section 3 of half, fixed by the wreck's own seed.
+const sectionPart = (wreck, depth) => depth > 1 && hash(`${wreck.seed}|${wreck.name}|part|${depth}`) % (depth === 2 ? 3 : 2) === 0;
+// What goes wrong when a cut fails, by the roll's third: someone on the cutting team hurt, one of the ship's systems hit, or the section lost.
+const riskOutcome = roll => (roll < 1 / 3 ? 'hurt' : roll < 2 / 3 ? 'system' : 'lost');
+// The read of a section's risk. A reader with the skill (3 and up) reads the true band; anyone less reads coarser bands, so a middling risk
+// can read clean or bad, but never two bands off.
+const readWord = (risk, skill) => (skill >= 3 ? (risk < 0.15 ? 'clean' : risk < 0.33 ? 'some' : 'bad') : (risk < 0.2 ? 'clean' : risk < 0.35 ? 'some' : 'bad'));
