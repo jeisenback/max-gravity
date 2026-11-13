@@ -7,7 +7,7 @@
 // burn, the map and the window math read one as they read a system; a site carries gov and services for the readers that ask, and no
 // planets. Every function takes the state it reads. Loaded after orbits.js and before game.js; runs under tests/nodecontext.js.
 
-const SITE_KINDS = { ice: { word: 'an ice rock', color: '#8a8478' } };
+const SITE_KINDS = { ice: { word: 'an ice rock', color: '#8a8478' }, wreck: { word: 'a wreck', color: '#7a8590' }, rock: { word: 'a rock', color: '#8c7a66' } };
 const ICE_SITES = 3, ICE_AU = [3.0, 3.8];  // ice rocks a run has, and how far out: the outer Belt (nearer than the first 3.4 to 4.2, which made a run from the inner system too long for its pay: the soak, 2026-11-08)
 
 const isSite = id => typeof id === 'string' && id.startsWith('site:');
@@ -30,7 +30,42 @@ function seedSites(key) {
   return out;
 }
 
-const sites = st => (st.sites = st.sites || seedSites(siteKey(st)));
+// The co-op's salvage and survey sites (#965): six wrecks and three rocks in the middle Belt. Each is seeded on its own, from the key, its kind,
+// its number and its generation (gen: how many times the slot has been replaced), so a slot can be re-seeded alone and no other site moves.
+// A wreck's type and name come from salvage.js's tables, read when a site is seeded (after every script has loaded).
+const WRECKS = 6, ROCKS = 3, WRECK_AU = [2.2, 3.6];
+function seedSite(key, kind, i, gen) {
+  let x = hash(`${key}|${kind}|${i}|${gen}`) >>> 0;
+  const next = () => { x = (Math.imul(x, 1664525) + 1013904223) >>> 0; return x / 4294967296; };
+  const pick = list => list[Math.floor(next() * list.length)];
+  const id = `site:${kind}-${i}`, au = Math.round((WRECK_AU[0] + next() * (WRECK_AU[1] - WRECK_AU[0])) * 100) / 100, angle = Math.floor(next() * 360);
+  const out = { id, kind, name: '', au, angle, found: null, gen, gov: 'Independent', services: [], color: SITE_KINDS[kind].color, site: true };
+  if (kind === 'rock') { out.name = `${String.fromCharCode(65 + Math.floor(next() * 26))}${String.fromCharCode(65 + Math.floor(next() * 26))}-${100 + Math.floor(next() * 900)}`; return out; }
+  const type = pick(WRECK_TYPE_IDS), find = 1 + Math.floor(next() * 3);
+  let lead = null, leadAt = null;
+  if (next() < 1 / 3) { const n = 1 + Math.floor(next() * (WRECKS - 1)); lead = `site:wreck-${((i - 1 + n) % WRECKS) + 1}`; leadAt = 1 + Math.floor(next() * 3); }
+  out.name = pick(WRECK_TYPES[type].names);
+  out.wreck = { type, name: out.name, find, lead, leadAt, cut: 0, lost: [] };
+  return out;
+}
+const seedWrecks = key => {
+  const out = {};
+  for (let i = 1; i <= WRECKS; i++) out[`site:wreck-${i}`] = seedSite(key, 'wreck', i, 0);
+  for (let i = 1; i <= ROCKS; i++) out[`site:rock-${i}`] = seedSite(key, 'rock', i, 0);
+  return out;
+};
+// A wreck cut out or a rock surveyed takes a new one in its slot: re-seeded by the next generation, unfound.
+function replaceSite(st, id) {
+  const old = sites(st)[id], [kind, i] = id.slice(5).split('-');
+  return (st.sites[id] = seedSite(siteKey(st), kind, Number(i), (old.gen || 0) + 1));
+}
+
+// A save made before the wrecks gets them the first time its sites are asked for, and its ice rocks stay where they were.
+function sites(st) {
+  if (!st.sites) st.sites = seedSites(siteKey(st));
+  if (!st.sites['site:wreck-1']) Object.assign(st.sites, seedWrecks(siteKey(st)));
+  return st.sites;
+}
 const siteOf = (st, id) => (isSite(id) ? sites(st)[id] || null : null);
 const atSite = st => isSite(st.systemId);
 function findSite(st, id, day) {
