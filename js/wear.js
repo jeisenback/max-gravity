@@ -58,6 +58,7 @@ function wearHtml() {
 // A scene for a system that has gone bad, played through the happenings picker. Its words are the lines of 'scene:trouble' (hiredscenes.js): {part} is the system,
 // {name} the same in lower case, {pct} its condition after the choice; {crew} is the engineer, filled when it is shown.
 function breakdownEvent(part) {
+  const argued = G.state.hired && G.state.hired.partsArgued; if (argued && argued.sys === part) argued.broke = true;  // the part the hand argued for did not hold (parts.js)
   const name = SHIP_PARTS[part].name.toLowerCase(), c = condition, say = (key, vars) => sceneSay('scene:trouble', key, { part: SHIP_PARTS[part].name, name, pct: Math.round(c()[part]), ...vars });
   return {
     title: say('title'),

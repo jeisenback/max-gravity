@@ -652,6 +652,9 @@ const playScenes = () => {
   }
   // a system gone bad, for each system, fixed, jury-rigged (won and lost) and nursed along
   for (const part of Object.keys(SHIP_PARTS)) run(`scene:trouble:${part}`, {}, () => breakdownEvent(part), { rolls: [0, 0.99], prep() { onBurn(); condition()[part] = 30; } });
+  // a worn system's part in port (parts.js, #1135): the scene with each used part on offer, and the part the hand argued for at the last repair, held and broken
+  for (const q of PART_QUIRKS) run(`scene:parts:${q.id}`, {}, () => { const real = usedPartAt; usedPartAt = () => q; try { return partsEvent(currentPlanet(), q.system); } finally { usedPartAt = real; } }, { rolls: [0, 0.99], prep() { condition()[q.system] = 70; } });
+  for (const broke of [false, true]) run(`scene:parts:argued:${broke}`, {}, () => partsEvent(currentPlanet(), 'fire'), { rolls: [0, 0.99], prep() { condition().fire = 70; hired().partsArgued = { sys: 'fire', day: 0, broke }; } });
   return out;
 };
 

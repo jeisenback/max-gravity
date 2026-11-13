@@ -61,8 +61,10 @@ Mods.register({
   init(M) {
     M.on('landed', planet => {
       const h = hired();
-      if (!h || chapterOf(G.state) > 1 || !planet.services.includes('refuel') || G.state.armor >= ship().armor * (1 - REPAIR_AT) || G.state.armor >= ship().armor) return;
-      offerScene('business', repairScene(planet));
+      if (!h || chapterOf(G.state) > 1) return;
+      if (planet.services.includes('refuel') && G.state.armor < ship().armor * (1 - REPAIR_AT)) { offerScene('business', repairScene(planet)); return; }
+      const sys = partsRepairDue(G.state, h, planet);  // else a worn system's part, one yard scene a landing (parts.js, #1135)
+      if (sys) { h.partsAt = G.state.day; offerScene('business', partsEvent(planet, sys)); }
     });
   },
 });
