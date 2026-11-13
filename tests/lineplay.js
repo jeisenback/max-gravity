@@ -105,6 +105,8 @@ const playLines = () => {
     note('comms-chatter', lines.join(' | ')); }
   // the crew ashore: each trait's lines, as the burn's first comms line reads them
   for (const t of Object.keys(ASHORE_LINES)) note(`ashore:${t}`, ashoreLines()[t].join(' | '));
+  // the Ring's own people, a click on each, over three days: their word for the day
+  for (const f of PORT_LAYOUTS.Earth.folk) for (const day of [0, 1, 2]) note(`port-folk:${f.key}.${day}`, portWordEvent(f, { id: f.key, first: f.first || 'Sam', last: f.last || 'Rowe' }, day).text);
   // the regulars' lives: every beat of every arc, as a regular's news reads it
   for (const key of Object.keys(ARCS)) note(`regular-arc:${key}`, regularArc(key).join(' | '));
   // returning to a port: each fact the line can state, from two snapshots, and the framing with facts and without
