@@ -57,20 +57,25 @@ const readWord = (risk, skill) => (skill >= 3 ? (risk < 0.15 ? 'clean' : risk < 
 // which has a board too, gets none.
 const SURVEY_CLIENTS = ['Brannock Minerals', 'the Ceres claims office', 'a buyer for the Juno growers', 'Tessaly Assay'];
 const JOB_SLACK = 10;  // days past the trip there, the work and the trip back that a client gives
+// What a job pays, by the days of the trip (there, the work, and back), so it is worth about what freight is for the same days (the co-op's
+// contracts pay some 15,000 cr a day): a salvage job a little less, since the goods and the spares are the co-op's too, and a survey less again
+// (no risk, and a good report pays more). A job's own pay is 0.7 to 1.3 of that, by the job's draw. Set by the chapter 2 soak (tools/chaptertwo-soak.js --coop --salvage).
+const JOB_DAY_PAY = { salvage: 10000, survey: 7500 };
 function jobsAt(st, planet, day) {
   if (role().id !== 'coop') return [];
   const sid = st.systemId, all = sites(st), out = [];
-  const reach = kind => Object.keys(all).filter(id => all[id].kind === kind && all[id].found === null && burnFuel(sid, id) + burnFuel(id, sid) <= st.fuel);
+  const tank = ship().fuel, reach = kind => Object.keys(all).filter(id => all[id].kind === kind && all[id].found === null && burnFuel(sid, id) + burnFuel(id, sid) <= tank);  // on a full tank: there is no refuel at a site
   for (const [kind, siteKind, every] of [['salvage', 'wreck', 2], ['survey', 'rock', 3]]) {
     const roll = salvageRoll(`${planet.name}|${day}|${kind}`), list = reach(siteKind);
     if (roll % every || !list.length) continue;
     const site = all[list[(roll >>> 4) % list.length]], out1 = travelDays(sid, site.id, day), work = kind === 'salvage' ? 3 : 1;
-    const deadline = day + out1 + work + travelDays(site.id, sid, day + out1 + work) + JOB_SLACK;
+    const trip = out1 + work + travelDays(site.id, sid, day + out1 + work), deadline = day + trip + JOB_SLACK;
+    const pay = Math.round(trip * JOB_DAY_PAY[kind] * (0.7 + 0.6 * ((roll >>> 12) % 1000) / 1000) / 500) * 500;
     if (kind === 'salvage') {
       const t = WRECK_TYPES[site.wreck.type];
-      out.push({ kind, site: site.id, name: site.name, au: site.au, type: site.wreck.type, client: t.clients[(roll >>> 8) % t.clients.length], find: t.find, sid, planet: planet.name, deadline, pay: 6000 + 500 * ((roll >>> 12) % 17) });
+      out.push({ kind, site: site.id, name: site.name, au: site.au, type: site.wreck.type, client: t.clients[(roll >>> 8) % t.clients.length], find: t.find, sid, planet: planet.name, deadline, pay });
     } else {
-      out.push({ kind, site: site.id, name: site.name, au: site.au, client: SURVEY_CLIENTS[(roll >>> 8) % SURVEY_CLIENTS.length], find: 'survey', sid, planet: planet.name, deadline, pay: 3000 + 250 * ((roll >>> 12) % 13) });
+      out.push({ kind, site: site.id, name: site.name, au: site.au, client: SURVEY_CLIENTS[(roll >>> 8) % SURVEY_CLIENTS.length], find: 'survey', sid, planet: planet.name, deadline, pay });
     }
   }
   return out;

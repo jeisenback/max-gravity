@@ -337,3 +337,18 @@ test('past the deadline with no find the job ends unpaid, and the board offers j
   await done();
   assert.equal(r.still, true, 'on the deadline it still stands'); assert.equal(r.job, null); assert.match(r.notes, /Hask Mutual/);
 });
+
+// Found by the co-op soak: the stay's landing hook asked the hired hand's planner for a run, which in chapter two names a captain who is not there.
+test('landing back at a port where an old plan was made raises no error in chapter two', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt();
+    hired().plan = { day: st.day - 1, at: 'Ceres Station', cargo: '{}', run: { sid: 'mars', planet: 'Mars', good: 'water', tons: 5 }, alts: [] };
+    st.cargo.metal = 3;
+    landAtPort('ceres', 'Ceres Station');
+    return { mode: G.mode };
+  });
+  await done();
+  assert.equal(r.mode, 'landed');
+});
