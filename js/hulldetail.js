@@ -75,11 +75,12 @@ function hullPlate(st, name) {
 // Where the paint goes on the cap (#936, look.md "a clean frame"): her name and her registry, with the co-op's mark before the name when she is
 // theirs, sized on the screen like the room names (the name 16px, the registry 12px) and shrunk to fit, never under 12px, centred in the span
 // x0 to x1 of world x: right of where the cap curves into the skin at the camera's top, and left of where the speed buttons (burnspeed.js, under
-// the burn bar) begin in the smallest window (1000 wide: world x 513). On one line, its baseline `base` over the skin's top; a name too long for
+// the burn bar) begin in the smallest window (1000 wide: about world x 505, less where the font sets the buttons wider; the span ends 35 short of
+// that, #936: CI's font set them half a pixel from a full-width name). On one line, its baseline `base` over the skin's top; a name too long for
 // that at 12px puts the registry on a line of its own under it, `low` over the skin. Every glyph under the top of the camera's run (CAM_RUN.above,
 // camera.js) and over the flight deck. measure(text, px): its width in px at that size. Returns the sizes, the baselines (name, reg), each
 // piece's left end (world: nameX, regX), the name as painted (name: ellipsised when even the smallest size will not fit), the ring ({ x, y, r }) or none, and the paint's extent { x0, x1, top }.
-const HULL_NAME = { col: '#7f97b0', x0: 4, x1: 504, base: 8, low: 2, px: 16, reg: 12, min: 12, gap: 8, cap: 0.8 };
+const HULL_NAME = { col: '#7f97b0', x0: 4, x1: 470, base: 8, low: 2, px: 16, reg: 12, min: 12, gap: 8, cap: 0.8 };
 function hullNameLayout(o, zoom, plate, measure) {
   const span = (HULL_NAME.x1 - HULL_NAME.x0) * zoom, mid = (HULL_NAME.x0 + HULL_NAME.x1) / 2, g = HULL_NAME.gap;
   const row = ws => ws.filter(v => v > 0).reduce((t, v, i) => t + v + (i ? g : 0), 0);

@@ -3111,7 +3111,7 @@ test('her name and registry are painted on the nose\'s cap at 12px or more, ever
     assert.ok(L.base - 0.8 * L.px / zoom >= runTop && L.regBase - 0.8 * L.regPx / zoom >= runTop && L.top >= runTop, `${at}: the glyphs' tops (${L.top}) under the camera's run's top (${runTop})`);
     if (L.ring) assert.ok(L.ring.y - L.ring.r >= runTop && L.ring.y + L.ring.r < o.top, `${at}: the ring inside the run, over the skin`);
     assert.ok(L.base < o.top && L.regBase < o.top, `${at}: over the flight deck`);
-    assert.ok(L.x0 >= 0 && L.x1 <= 508, `${at}: in the cap's span, left of the speed buttons (${L.x0}, ${L.x1})`);
+    assert.ok(L.x0 >= 0 && L.x1 <= 470 + 1e-9, `${at}: in the cap's span, left of the speed buttons (${L.x0}, ${L.x1})`);
     const { ctx, calls } = recorder(); restApi.hullName(ctx, o, zoom, plate);
     assert.deepEqual(calls.filter(k => k[0] === 'fillText').map(k => k[1]), [name, 'BR 4471']);
     assert.equal(calls.some(k => k[0] === 'arc'), coop, `${at}: the co-op's mark only on hers`);
@@ -3126,7 +3126,7 @@ test('a name that will not fit even at 12px is shortened with an ellipsis, so th
     const name = 'W'.repeat(60), L = restApi.hullNameLayout(o, zoom, { name, reg: 'BR 4471', coop: false }, wide);
     assert.ok(L.px >= 12, `${zoom}: never under 12px`);
     assert.ok(L.name.endsWith('\u2026') && L.name.length < name.length, `${zoom}: shortened (${L.name})`);
-    assert.ok(L.x1 <= 504 + 1e-9, `${zoom}: within the cap's span (${L.x1})`);
+    assert.ok(L.x1 <= 470 + 1e-9, `${zoom}: within the cap's span (${L.x1})`);
   }
   const fits = restApi.hullNameLayout(o, 1, { name: 'IRON ANVIL', reg: 'BR 4471', coop: false }, (t, px) => t.length * px * 0.66);
   assert.equal(fits.name, 'IRON ANVIL', 'a name that fits is painted whole');
