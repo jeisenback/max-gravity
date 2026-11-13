@@ -109,6 +109,13 @@ const roomDot = (ctx, x, y, r, col) => { ctx.fillStyle = roomTint(col); ctx.begi
 const roomSeg = (ctx, pts) => { ctx.beginPath(); ctx.moveTo(...pts[0]); for (const p of pts.slice(1)) ctx.lineTo(...p); ctx.stroke(); };
 const roomMix = (cols, w) => { const out = [0, 0, 0]; cols.forEach((c, i) => c.forEach((v, j) => { out[j] += v * w[i]; })); return out.map(Math.round); };
 
+// The hold's lamp at the end of its cable (#1042): it hangs from the ceiling, so at the flip it floats on the slack cable no higher than its anchor
+// (hangEnd drifts a thing up past it, which carried this lamp through the ceiling into the cut), and never further out than the cable is long.
+const HOLD_LAMP_CABLE = 16;
+function holdLampEnd(ax, ay, w, time, still) {
+  const [hx, hy] = hangEnd(ax, ay, HOLD_LAMP_CABLE, 0.7, w, time, still), y = Math.max(hy, ay + 3), dx = hx - ax, reach = Math.sqrt(Math.max(0, HOLD_LAMP_CABLE ** 2 - (y - ay) ** 2));
+  return [ax + Math.max(-reach, Math.min(reach, dx)), y];
+}
 // The end of something hung on a line from an anchor: sways in cruise, hangs straight under thrust, drifts up at the flip. Still: straight down.
 function hangEnd(ax, ay, len, seed, w, time, still) {
   if (still) return [ax, ay + len];
@@ -1642,7 +1649,7 @@ function roomHold(ctx, r, s, X, W) {
   if (W >= 300) {
     const lx = X(0.9);
     roomLive(ctx, s, (ctx, s) => {  // it swings (#1123)
-    const [ex, ey] = hangEnd(lx, r.top + 6, 16, 0.7, w, s.time, s.still);
+    const [ex, ey] = holdLampEnd(lx, r.top + 6, w, s.time, s.still);
     ctx.strokeStyle = '#7a8a9a'; ctx.lineWidth = 1; roomSeg(ctx, [[lx, r.top + 6], [ex, ey]]);
     ctx.save(); ctx.translate(ex, ey);
     roomFlat(ctx, -1.5, -0.5, 3, 2.5, '#3a4a5a');  // its cap
