@@ -1306,7 +1306,7 @@ window.addEventListener('keydown', e => {
     else if (e.code === 'Equal' || e.code === 'NumpadAdd') zoomMap(-1);
     else if (e.code === 'Minus' || e.code === 'NumpadSubtract') zoomMap(1);
   } else if (G.mode === 'landed') {
-    if (e.code === 'KeyT' && !G.dialog) { if (atSite(G.state) && chapterOf(G.state) === 2) Mods.act('cutWreck'); else if (role().mayAct('takeoff')) takeOff(); else if (stayOf(hired())) passNight(); else Mods.act('sail'); }
+    if (e.code === 'KeyT' && !G.dialog) { if (atSite(G.state) && chapterOf(G.state) === 2) siteDockKey(); else if (role().mayAct('takeoff')) takeOff(); else if (stayOf(hired())) passNight(); else Mods.act('sail'); }
   }
 });
 window.addEventListener('keyup', e => { if (KEYMAP[e.code]) G.keys[KEYMAP[e.code]] = false; });

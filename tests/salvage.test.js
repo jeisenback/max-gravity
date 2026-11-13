@@ -282,3 +282,58 @@ test('landing at the job\'s rock plays the survey once, and its quality is the j
   assert.match(r.title, new RegExp(r.name)); assert.equal(r.again, false);
   assert.equal(r.job.quality, 'good'); assert.equal(r.job.got, true); assert.equal(r.record, 1); assert.ok(r.text);
 });
+
+// ---------- leaving, delivery and the supply (browser) ----------
+
+test('cut out and hauled home: the map\'s pick burns straight from the wreck, and the used-up wreck is replaced', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const { st, site } = atWreck(); const name = site.name;
+    shift(/Haul home/);
+    const before = document.querySelector('.dock').textContent;
+    st.dest = 'ceres'; UI.render();
+    const dock = document.querySelector('.dock').textContent;
+    Mods.act('burnFromSite');
+    const s = st.sites['site:wreck-1'];
+    return { before, dock, mode: G.mode, to: G.transit && G.transit.to, route: st.route, gen: s.gen, found: s.found, renamed: s.name !== name || s.gen === 1 };
+  });
+  await done();
+  assert.doesNotMatch(r.before, /Cut into/); assert.match(r.dock, /Burn for Ceres/);
+  assert.equal(r.mode, 'transit'); assert.equal(r.to, 'ceres'); assert.equal(r.route.dock, 'Ceres Station');
+  assert.equal(r.gen, 1); assert.equal(r.found, null);
+});
+
+test('delivered with the find, the client pays in full by the deadline and half after it; a survey pays by its report', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const pay = (o, late) => {
+      const st = coopAt();
+      career().job = { kind: 'salvage', site: 'site:wreck-1', client: 'Hask Mutual', find: 'recorder', sid: 'ceres', planet: 'Ceres Station', name: 'Dorran Sky', au: 3.1, type: 'courier', deadline: st.day + 10, pay: 9000, taken: st.day, got: true, quality: null, ...o };
+      if (late) st.day += 12;
+      const c0 = st.credits; landAtPort('ceres', 'Ceres Station');
+      return { paid: st.credits - c0, job: career().job, notes: UI.notes.join(' | '), record: hired().record };
+    };
+    return { full: pay({}), late: pay({}, true), good: pay({ kind: 'survey', quality: 'good', pay: 4000 }), poor: pay({ kind: 'survey', quality: 'poor', pay: 4000 }), none: pay({ got: false }) };
+  });
+  await done();
+  assert.equal(r.full.paid, 9000); assert.equal(r.full.job, null); assert.match(r.full.notes, /Hask Mutual/); assert.equal(r.full.record.salvageDone, 1);
+  assert.equal(r.late.paid, 4500);
+  assert.equal(r.good.paid, 5600); assert.equal(r.poor.paid, 2000);
+  assert.equal(r.none.paid, 0); assert.ok(r.none.job, 'no find, no pay, and the job goes on');
+});
+
+test('past the deadline with no find the job ends unpaid, and the board offers jobs again', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started);
+  const r = await ev(() => {
+    const st = coopAt();
+    career().job = { kind: 'salvage', site: 'site:wreck-1', client: 'Hask Mutual', find: 'recorder', sid: 'ceres', planet: 'Ceres Station', name: 'Dorran Sky', au: 3.1, type: 'courier', deadline: st.day + 1, pay: 9000, taken: st.day, got: false, quality: null };
+    st.day += 1; Mods.emit('newDay', st.day); const still = !!career().job;
+    st.day += 1; Mods.emit('newDay', st.day);
+    return { still, job: career().job, notes: UI.notes.join(' | ') };
+  });
+  await done();
+  assert.equal(r.still, true, 'on the deadline it still stands'); assert.equal(r.job, null); assert.match(r.notes, /Hask Mutual/);
+});

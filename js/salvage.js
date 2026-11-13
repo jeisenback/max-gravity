@@ -68,20 +68,19 @@ function jobsAt(st, planet, day) {
     const deadline = day + out1 + work + travelDays(site.id, sid, day + out1 + work) + JOB_SLACK;
     if (kind === 'salvage') {
       const t = WRECK_TYPES[site.wreck.type];
-      out.push({ kind, site: site.id, client: t.clients[(roll >>> 8) % t.clients.length], find: t.find, sid, planet: planet.name, deadline, pay: 6000 + 500 * ((roll >>> 12) % 17) });
+      out.push({ kind, site: site.id, name: site.name, au: site.au, type: site.wreck.type, client: t.clients[(roll >>> 8) % t.clients.length], find: t.find, sid, planet: planet.name, deadline, pay: 6000 + 500 * ((roll >>> 12) % 17) });
     } else {
-      out.push({ kind, site: site.id, client: SURVEY_CLIENTS[(roll >>> 8) % SURVEY_CLIENTS.length], find: 'survey', sid, planet: planet.name, deadline, pay: 3000 + 250 * ((roll >>> 12) % 13) });
+      out.push({ kind, site: site.id, name: site.name, au: site.au, client: SURVEY_CLIENTS[(roll >>> 8) % SURVEY_CLIENTS.length], find: 'survey', sid, planet: planet.name, deadline, pay: 3000 + 250 * ((roll >>> 12) % 13) });
     }
   }
   return out;
 }
 
-// A job's row on the board, and the job under way.
+// A job's row on the board, and the job under way: what it names is the job's own, since the site's slot takes a new one once it is used up.
 const jobWords = (st, j) => {
-  const s = sites(st)[j.site];
-  if (j.kind === 'survey') return `${j.client}: a survey of ${s.name}, a rock at ${s.au.toFixed(1)} AU. Deliver to ${j.planet} by day ${j.deadline}. Pays up to ${fmt(Math.round(j.pay * SURVEY_PAY.good))} cr by the report.`;
-  const t = WRECK_TYPES[s.wreck.type];
-  return `${j.client}: ${t.findWord} off the ${s.name}, ${t.word}, ${s.au.toFixed(1)} AU. Deliver to ${j.planet} by day ${j.deadline}. Pays ${fmt(j.pay)} cr on delivery.`;
+  if (j.kind === 'survey') return `${j.client}: a survey of ${j.name}, a rock at ${j.au.toFixed(1)} AU. Deliver to ${j.planet} by day ${j.deadline}. Pays up to ${fmt(Math.round(j.pay * SURVEY_PAY.good))} cr by the report.`;
+  const t = WRECK_TYPES[j.type];
+  return `${j.client}: ${t.findWord} off the ${j.name}, ${t.word}, ${j.au.toFixed(1)} AU. Deliver to ${j.planet} by day ${j.deadline}. Pays ${fmt(j.pay)} cr on delivery.`;
 };
 const SURVEY_PAY = { poor: 0.5, fair: 1, good: 1.4 };  // a survey's pay by the report's quality
 
@@ -206,10 +205,53 @@ function cutWreck() {
   openEvent(cutScene(st, site));
   return true;
 }
+// The dock's button at a site in chapter two: the next cut while there is one, then the burn for the system picked on the map.
 const salvageDockHtml = st => {
   const site = siteOf(st, st.systemId), w = site && site.wreck;
-  return w && !wreckDone(w) ? `<button data-action="cutWreck" class="primary">Cut into the wreck (section ${w.cut + 1}) (T)</button>` : '';
+  if (w && !wreckDone(w)) return `<button data-action="cutWreck" class="primary">Cut into the wreck (section ${w.cut + 1}) (T)</button>`;
+  return st.dest && SYSTEMS[st.dest] ? `<button data-action="burnFromSite" class="primary">Burn for ${esc(SYSTEMS[st.dest].name)} (T)</button>` : '<button disabled title="Pick a system on the map">Plot a course on the map</button>';
 };
+const siteDockKey = () => (Mods.act(siteOf(G.state, G.state.systemId).wreck && !wreckDone(siteOf(G.state, G.state.systemId).wreck) ? 'cutWreck' : 'burnFromSite'));
+
+// ---------- leaving a site, delivery and the deadline ----------
+// A site used up (a wreck cut out or left, a rock surveyed) takes a new one in its slot as the ship leaves, so there are always wrecks and rocks to find.
+const siteUsed = site => (site.wreck ? wreckDone(site.wreck) : !!site.seen);
+// From a site, straight into the burn (as the ice run's sailHome): no takeoff and no local space. The port is the job's if it is in that system,
+// else the system's first that trades.
+function sailFromSite(st, sid) {
+  const site = siteOf(st, st.systemId), job = career() && career().job;
+  if (!site || !SYSTEMS[sid] || G.mode !== 'landed' || G.dialog || (site.wreck && !wreckDone(site.wreck))) return false;
+  const port = job && job.sid === sid ? job.planet : (SYSTEMS[sid].planets.find(p => p.services.includes('trade')) || SYSTEMS[sid].planets[0]).name;
+  if (!G.player) { G.player = makeShip(st.shipId, 0, 0, 0); const s = ship(); Object.assign(G.player, { armor: st.armor, maxArmor: s.armor, shields: s.shields }); }  // on station there is no ship in local space
+  st.dest = sid; st.route = { dock: port, go: true };
+  const from = orbitPos(st.systemId), to = orbitPos(sid);
+  G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
+  const leaving = site.id;
+  UI.hide();
+  enterTransit();
+  if (siteUsed(site)) replaceSite(st, leaving);
+  return true;
+}
+
+// Landing at the client's port with the find or the report: the client pays into the fund, in full by the deadline and half after it; a survey by
+// its report. Returns the note, or '' when there is nothing to deliver here.
+function settleJob(st, planet) {
+  const c = career(), job = c && c.job;
+  if (!job || !job.got || planet.name !== job.planet || st.systemId !== job.sid) return '';
+  const base = job.kind === 'survey' ? Math.round(job.pay * SURVEY_PAY[job.quality]) : job.pay, late = st.day > job.deadline, pay = late ? Math.round(base / 2) : base;
+  st.credits += pay;
+  if (job.kind === 'salvage') recordHand('salvageDone');
+  c.job = null;
+  const what = job.kind === 'survey' ? `the survey of ${job.name}` : `${WRECK_TYPES[job.type].findWord} off the ${job.name}`;
+  return `${job.client} takes ${what}${late ? `, ${dayWord(st.day - job.deadline)} late,` : ''} and pays ${fmt(pay)} cr.`;
+}
+// A job not done by its deadline ends unpaid; one with the find aboard waits for the delivery, at half pay.
+function expireJob(st) {
+  const c = career(), job = c && c.job;
+  if (!job || job.got || st.day <= job.deadline) return '';
+  c.job = null;
+  return `The deadline for ${job.client}'s job has passed, and the job is off.`;
+}
 
 // ---------- the survey at a rock ----------
 // One scene: the pilot works the scopes (the crew's best pilot, or the player if the player flies), and the report's quality is the margin
@@ -239,5 +281,8 @@ Mods.register({
   init(M) {
     M.action('takeJob', i => { const text = takeJob(Number(i)); if (text) UI.notes.push(text); });
     M.action('cutWreck', () => cutWreck());
+    M.action('burnFromSite', () => sailFromSite(G.state, G.state.dest));
+    M.on('landed', planet => { const text = settleJob(G.state, planet); if (text) M.note(text); });
+    M.on('newDay', () => { const text = expireJob(G.state); if (text) UI.notes.push(text); });
   },
 });
