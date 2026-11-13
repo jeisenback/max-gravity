@@ -28,7 +28,7 @@ function inspectionCause(cargo, gov, rep, marked) {
 }
 
 // The inspector's scene for `cause` at `planet`: the cause named, the sum, and the hand's one move by post (Comms takes the papers, any other post speaks up),
-// or keeping out of it. The sum leaves the ship's purse (never the hand's savings); a landed move halves it and wins a point of the captain's regard, and a failed move
+// or keeping out of it (each choice's `dock` tag is what the cutaway at the dock plays for it, dock.js). The sum leaves the ship's purse (never the hand's savings); a landed move halves it and wins a point of the captain's regard, and a failed move
 // pays it all and costs one.
 // With no post to work (the parked owner game) the only choice is to pay.
 // The inspector is the port's own official (official.js), the same face every landing (#1097). One who thinks well of the ship (NOD_REGARD) takes a nod for half
@@ -41,17 +41,17 @@ function inspectionScene(cause, planet) {
   const causes = [cause.good ? say('cause.good', { good: goodName(cause.good).toLowerCase(), tons: cause.tons, duty: fmt(cause.duty) }) : '', cause.fine ? say('cause.standing', { fine: fmt(cause.fine) }) : ''].filter(Boolean).join(' ');
   const pay = n => { const paid = Math.min(purse(), n); moveMoney(-paid); if (paid) recordHand('fines'); return fmt(paid); };  // an empty purse pays nothing, and nothing goes on the record
   const choices = [];
-  if (off.opinion >= NOD_REGARD) choices.push({ label: say('nod.label', { half: fmt(to100(cause.sum / 2)) }), run() { like(off, 1, say('nod.memory')); return say('nod.result', { paid: pay(to100(cause.sum / 2)) }); } });
+  if (off.opinion >= NOD_REGARD) choices.push({ label: say('nod.label', { half: fmt(to100(cause.sum / 2)) }), dock: 'nod', run() { like(off, 1, say('nod.memory')); return say('nod.result', { paid: pay(to100(cause.sum / 2)) }); } });
   if (post) {
     const papers = post === 'comms', odds = papers ? soloOdds('comms') : handCheck(POST_STAT[post], skillLevel(post), 'word');
-    choices.push({ label: `${say(papers ? 'papers.label' : 'speak.label')} [${oddsWord(odds)}; ${say(cap ? 'move.stakes' : 'move.stakes.own')}]`, run() {
+    choices.push({ label: `${say(papers ? 'papers.label' : 'speak.label')} [${oddsWord(odds)}; ${say(cap ? 'move.stakes' : 'move.stakes.own')}]`, dock: 'move', run() {
       if (Math.random() < odds) { if (cap) like(cap, 1, say('win.memory')); return say('win', { paid: pay(to100(cause.sum / 2)) }); }  // she pays the fines: half of one is worth her noticing (#1059)
       if (cap) like(cap, -1, say('lose.memory'));  // on the hand's own bridge there is nobody to think less of them
       return say(cap ? 'lose' : 'lose.own', { paid: pay(cause.sum) });
     } });
   }
-  choices.push({ label: say(post ? 'keep.label' : 'pay.label'), run: () => say(post ? 'keep.result' : 'pay.result', { paid: pay(cause.sum) }) });
-  return { title: say('title'), via: 'crew', owner: 'you',  // the inspector comes aboard, as customs does (ties.js)
+  choices.push({ label: say(post ? 'keep.label' : 'pay.label'), dock: post ? 'keep' : 'pay', run: () => say(post ? 'keep.result' : 'pay.result', { paid: pay(cause.sum) }) });
+  return { title: say('title'), via: 'crew', owner: 'you', stage: 'dock',  // the inspector comes aboard, as customs does (ties.js), played out in the cutaway at the dock (dock.js, #940)
     text: [say('text', { causes }), cap ? say('captain') : ''].filter(Boolean).join(' '), choices };
 }
 

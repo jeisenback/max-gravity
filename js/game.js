@@ -59,6 +59,7 @@ const G = {
   cam: null, cutOutline: null,  // the burn view's camera ({ x, y, t }: the world x it centres across the clear part, the world y it centres down the tower, and the G.time of its last step; null snaps) and the outline of the tower for a tap ({ ...outlineLayout: its strip, scale and rooms; ids: who it shows; view: the world y and height its frame shows }), see camera.js
   burnBoxes: null,    // where each block of the burn view was drawn (bar, ship, tutorial, comms lines, a downtime scene's tags, dest, and a scene's dock with the part of the ship it leaves clear), for a tap, the dock and the tests, see transit.js
   hudStrip: null,     // where the HUD drew the hand's readouts (the strip, readouts.js), for the tests
+  dock: null,         // the port inspection played out in the cutaway at the dock while its scene is open ({ page: 'open' | 'result', t: seconds on the page, clock: seconds since it opened, choice, beat, clamps, sealed }), null otherwise, see dock.js
 };
 
 // ---------- helpers ----------
@@ -1021,10 +1022,11 @@ function drawHud(W, H) {
   let y = calm ? 40 : 228;
   ctx.fillStyle = inTransit ? '#7fb4ff' : GOV_COLORS[sys.gov];
   ctx.font = `600 17px ${LABEL_FONT}`;
-  ctx.fillText(inTransit ? 'In transit' : sys.name, x, y);
+  const atDock = dockShown();  // the inspection at the dock: the port and the clamps (dock.js, #940)
+  ctx.fillText(inTransit ? 'In transit' : atDock ? st.planet : sys.name, x, y);
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(inTransit ? `To ${placeOf(G.transit.to).name}` : `${sys.gov}`, x, y += 16);
+  ctx.fillText(inTransit ? `To ${placeOf(G.transit.to).name}` : atDock ? `At the dock, clamps ${G.dock.clamps ? 'on' : 'off'}` : `${sys.gov}`, x, y += 16);
   ctx.fillText(dateOf(inTransit ? transitNow(G.transit) : st.day), x, y += 16);  // the burn's today, not the departure (#946)
   if (hired() && hiredCaptain()) ctx.fillText(`Capt. ${hiredCaptain().first} ${hiredCaptain().last}`, x, y += 16);
 
@@ -1267,6 +1269,7 @@ function render() {
   if (G.mode === 'map') drawMap(W, H);
   else {
     if (G.mode === 'transit') drawTransit(W, H);
+    else if (dockShown()) drawDockView(W, H);  // the inspection at the dock (dock.js, #940)
     else drawWorld(W, H);
     drawHud(W, H);
   }
@@ -1371,7 +1374,7 @@ function frame(now) {
   last = now;
   if (!G.paused && ['flight', 'departing', 'transit', 'dead'].includes(G.mode)) update(dt);
   render();
-  const docked = G.mode === 'transit' && G.transit && G.transit.event && G.burnBoxes ? G.burnBoxes.dock : null;  // a scene's dialog in the burn view's dock, out of it otherwise
+  const docked = ((G.mode === 'transit' && G.transit && G.transit.event) || dockShown()) && G.burnBoxes ? G.burnBoxes.dock : null;  // a scene's dialog in the burn view's dock (or the dock's, dock.js), out of it otherwise
   if (dockEventPanel(UI.el, docked)) UI.moreCue();
   MapButtons.sync();
   if (G.mode !== 'title') Mods.emit('frame', G.paused ? 0 : dt);  // paused: time stands still

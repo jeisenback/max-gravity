@@ -21,8 +21,8 @@ const POSTURES = {
 
 // A person drawn from parts (#958): drawPerson(ctx, pose, x, y, look) draws one person or the cat from a posture (shiplife.js posture()
 // gives pose = { name, face, frame }). x, y are the place on the deck and the floor under them (the bunk's mattress for bunk). A standing
-// person is 72 units tall. look = { color, floating, skin, hair, cut, v, mood }: skin, hair, its cut and v as character.js portraitLook gives
-// them, mood as figureMood (shiplife.js) reads it. Limb angles are absolute radians from straight down. Returns the point a tap should aim
+// person is 72 units tall. look = { color, floating, skin, hair, cut, v, mood, cap, carry, trim }: skin, hair, its cut and v as character.js portraitLook gives
+// them, mood as figureMood (shiplife.js) reads it, cap, carry and trim a port's people's (figCarry, #940). Limb angles are absolute radians from straight down. Returns the point a tap should aim
 // at (the torso's middle), with the head and the front foot, so a tap can be tested against the whole body.
 //
 // Each part is an outline in SVG path syntax (M, L, C, Q, Z; absolute) in its own frame: the joint at the origin, the limb running down +y,
@@ -155,6 +155,7 @@ function figHead(ctx, j, look, st, ph) {
     else if (mood === 'hurt') { ctx.fillStyle = '#3a1f1a'; figPath(ctx, `M ${mx - 0.2} ${my - 0.4} L ${r} ${my - 0.6} L ${r - 0.2} ${my + 0.9} L ${mx} ${my + 0.7} Z`); ctx.fill(); ctx.fillStyle = '#e9e4da'; ctx.fillRect(mx + 0.4, my - 0.3, r - mx - 0.9, 0.6); }
     else { ctx.moveTo(mx, my); ctx.lineTo(r * 0.95, my - 0.1); ctx.stroke(); }
   }
+  if (look.cap) figCapSide(ctx, r, look.cap);
   ctx.restore();
 }
 const FIG_GROUNDED = ['stand', 'walk', 'sit', 'strap', 'work', 'work-sit'];  // the postures with their feet (or seat) on the deck, which cast a shadow
@@ -234,6 +235,52 @@ const FIG_VIEW_ARMS = {  // each arm: [side, the upper arm's angle out from stra
   sit: [[-1, 0.22, -1.25, 0.9], [1, 0.22, -1.25, 0.9]],  // the forearms in, on the table
   work: [[-1, 0.45, -2.3, 0.85], [1, 0.45, -2.3, 0.85]],  // from behind: the hands on the panel at chest height
 };
+// What a port's people wear and carry (#940): look.cap = { col, band } is a peaked cap, its crown in col and its band in the port owner's colour;
+// look.carry is what is held in the front hand ('slate', 'seal' for the seal gun, 'papers'), look.trim the owner's colour on the seal gun's roll.
+// Drawn as the parts are: filled, the top lit and the side in shade, outlined. In the figure's own units, at the hand (x, y).
+function figCarry(ctx, kind, x, y, trim) {
+  ctx.save(); ctx.translate(x, y); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE;
+  const part = (d, col) => { figPath(ctx, d); ctx.fillStyle = col; ctx.fill(); ctx.stroke(); };
+  if (kind === 'slate') {  // a tablet in a rubber case, its screen lit, held upright by its edge
+    part('M -3.6 -7 L 3.6 -7 L 4.2 -6.4 L 4.2 4.4 L 3.6 5 L -3.6 5 L -4.2 4.4 L -4.2 -6.4 Z', '#2e3640');
+    ctx.fillStyle = figShade('#2e3640', 1.3); ctx.fillRect(-3.6, -6.6, 7.2, 0.8);  // its top edge catches the light
+    ctx.fillStyle = '#7fb0c4'; ctx.fillRect(-2.8, -5.4, 5.6, 8.4);  // the screen
+    ctx.fillStyle = '#4a7a90'; for (const ly of [-3.8, -2.2, -0.6, 1]) ctx.fillRect(-2.2, ly, 4.4, 0.5);  // the manifest's lines
+  } else if (kind === 'papers') {  // the ship's papers in a folder, a sheet showing over its edge
+    part('M -4 -6 L 3.4 -6 L 4 -5.4 L 4 4.4 L -4 4.4 Z', '#8a7a58');
+    part('M -3 -7.2 L 3 -7.2 L 3 -5 L -3 -5 Z', '#d6cdb2');
+    ctx.fillStyle = figShade('#8a7a58', 1.2); ctx.fillRect(-3.8, -5.6, 7.6, 0.8);
+  } else if (kind === 'seal') {  // the seal gun: the body forward of the grip, its nozzle, and the roll of seals on top in the owner's colour
+    part('M -3 -3.4 L 7.6 -3.4 C 8.6 -3.4 9 -2.6 9 -1.6 L 9 0.6 L -3 0.6 Z', '#565c64');
+    ctx.fillStyle = figShade('#565c64', 1.25); ctx.fillRect(-2.6, -3, 11, 0.8);
+    part('M -1.8 0.6 L 1.4 0.6 L 2 6 L -1.2 6 Z', '#33373d');  // the grip in the hand
+    part('M 9 -2.6 L 11.4 -2.4 L 11.4 -0.2 L 9 0 Z', '#26292e');  // the nozzle
+    part('M 0.6 -6 L 6 -6 L 6 -3.4 L 0.6 -3.4 Z', trim || '#ff8a4a');
+    ctx.fillStyle = 'rgba(0,0,0,0.25)'; ctx.fillRect(4.6, -5.8, 1.2, 2.2);  // the roll's shaded end
+  }
+  ctx.restore();
+}
+// The peaked cap in profile, in the head's frame (its middle at the origin, the face +x): the crown over the hair, the band, the peak over the eyes.
+function figCapSide(ctx, r, cap) {
+  const band = -r * 0.42, top = -r - 3.4;
+  ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE;
+  figPath(ctx, `M ${-r - 1} ${band + 0.6} L ${-r - 2} ${top + 1.6} Q 0 ${top - 1.6} ${r + 1.8} ${top + 1.2} L ${r + 0.6} ${band} Z`); ctx.fillStyle = cap.col; ctx.fill(); ctx.stroke();
+  ctx.fillStyle = figShade(cap.col, 1.25); ctx.fillRect(-r - 0.8, top + 0.6, r * 2, 1);  // the crown's top lit
+  figPath(ctx, `M ${-r - 1} ${band - 2.2} L ${r + 0.8} ${band - 2.4} L ${r + 0.6} ${band - 0.2} L ${-r - 1} ${band + 0.2} Z`); ctx.fillStyle = cap.band; ctx.fill(); ctx.stroke();
+  figPath(ctx, `M ${r - 1} ${band - 0.2} L ${r + 5.4} ${band + 1.6} L ${r - 1} ${band + 1.9} Z`); ctx.fillStyle = '#1a1c20'; ctx.fill(); ctx.stroke();  // the peak
+}
+// The cap from the front or from behind, in the head's frame (rx, ry its half-width and height): the crown flaring a little over the band, the band,
+// and from the front the peak and the badge.
+function figCapView(ctx, rx, ry, cap, back) {
+  const top = -ry - 3.4, band = -ry * 0.42;
+  ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE;
+  figPath(ctx, `M ${-rx - 1.2} ${band} L ${-rx - 2.4} ${top + 1.4} Q 0 ${top - 1.8} ${rx + 2.4} ${top + 1.4} L ${rx + 1.2} ${band} Z`); ctx.fillStyle = cap.col; ctx.fill(); ctx.stroke();
+  ctx.fillStyle = figShade(cap.col, 1.25); ctx.fillRect(-rx - 1.2, top + 0.8, rx * 2 + 2.4, 1);
+  figPath(ctx, `M ${-rx - 1.2} ${band - 2.2} L ${rx + 1.2} ${band - 2.2} L ${rx + 1.2} ${band} L ${-rx - 1.2} ${band} Z`); ctx.fillStyle = cap.band; ctx.fill(); ctx.stroke();
+  if (back) return;
+  figPath(ctx, `M ${-rx - 0.6} ${band} Q 0 ${band + 3.4} ${rx + 0.6} ${band} Z`); ctx.fillStyle = '#1a1c20'; ctx.fill(); ctx.stroke();  // the peak
+  ctx.fillStyle = '#a89660'; ctx.fillRect(-1, top + 2.4, 2, 2);  // the badge
+}
 function figViewLimb(ctx, pts, ws, col) {
   for (const [c, add] of [[FIG_LINE, 1.8], [col, 0]]) for (let i = 1; i < pts.length; i++) { ctx.strokeStyle = c; ctx.lineWidth = ws[i - 1] + add; figSeg(ctx, [pts[i - 1], pts[i]]); }
 }
@@ -279,6 +326,7 @@ function figFrontHead(ctx, cx, cy, look, st) {
     else if (mood === 'hurt') { ctx.fillStyle = '#3a1f1a'; ctx.beginPath(); ctx.roundRect(-2.2, my - 0.8, 4.4, 1.8, 0.6); ctx.fill(); ctx.fillStyle = '#e9e4da'; ctx.fillRect(-1.8, my - 0.3, 3.6, 0.6); }
     else { ctx.moveTo(-1.6, my); ctx.lineTo(1.6, my); ctx.stroke(); }
   }
+  if (look.cap) figCapView(ctx, rx, ry, look.cap, false);
   ctx.restore();
 }
 // From behind the hair covers the head: curls, a bun, a tail tied with a band, loose hair to the shoulders; the ears either side.
@@ -296,6 +344,7 @@ function figBackHead(ctx, cx, cy, look, st) {
   if (st.style === 'bun') { ctx.beginPath(); ctx.arc(0, -ry + 0.5, 3.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke(); }
   if (st.style === 'tail') { ctx.beginPath(); ctx.moveTo(-1.6, 1); ctx.quadraticCurveTo(-2.4, 8, 0, 12); ctx.quadraticCurveTo(2.4, 8, 1.6, 1); ctx.closePath(); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#c84a3a'; ctx.fillRect(-1.5, 1.5, 3, 1.1); }
   if (st.style === 'loose') { ctx.beginPath(); ctx.roundRect(-rx - 1, -1, rx * 2 + 2, ry * 1.6, 2.5); ctx.fill(); ctx.stroke(); }
+  if (look.cap) figCapView(ctx, rx, ry, look.cap, true);
   ctx.restore();
 }
 // The torso face-on, the hip's middle at (0, -hipH): from the front the zip, buckle, pocket and the collar's V; from the back the collar and
@@ -323,20 +372,23 @@ function figViewLegs(ctx, hipH, col, boot, build, seated, low) {  // low: on a l
     figPath(ctx, `M ${fx - 2.8} -4.4 L ${fx + 2.8} -4.4 L ${fx + 3.6} 0 L ${fx - 3.6} 0 Z`); ctx.fillStyle = boot; ctx.fill(); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
   }
 }
-function figViewArms(ctx, hipH, col, glove, build, arms, back, wave) {
-  const y = -hipH - FIG_LEN.torso + 3, at = (p, a, l) => [p[0] + Math.sin(a) * l, p[1] + Math.cos(a) * l];
+function figViewArms(ctx, hipH, col, glove, build, arms, back, wave) {  // returns where each hand is
+  const y = -hipH - FIG_LEN.torso + 3, at = (p, a, l) => [p[0] + Math.sin(a) * l, p[1] + Math.cos(a) * l], hands = [];
   for (const [sx, a1, a2, k = 1] of arms) {
     const sh = [sx * (FIG_VIEW.shoulder * build - 1.6), y], el = at(sh, sx * a1, FIG_LEN.upperArm * k), wr = at(el, sx * (a2 + wave * sx * 0.12), FIG_LEN.foreArm * k);
     figViewLimb(ctx, [sh, el, wr], [5.4 * build, 4.4 * build], (back ? sx > 0 : sx < 0) ? figShade(col, 0.88) : col);
     ctx.fillStyle = glove; ctx.beginPath(); ctx.ellipse(wr[0], wr[1] + 1, 2.2, 2.6, 0, 0, Math.PI * 2); ctx.fill(); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
+    hands.push(wr);
   }
+  return hands;
 }
+const FIG_CARRY_ARM = [1, 0.3, -1.3, 0.95];  // facing you, the arm that carries something bent to hold it at the chest
 // A person facing you ('front') or the wall ('back'), standing, seated, or at work (the hands at the panel, seated or not). Returns the tap
 // point, the head and the foot in the person's own frame.
 function figView(ctx, pose, look, frames) {
   const st = figStyle(look), b = st.build, col = look.color, seated = pose.name === 'sit' || pose.name === 'work-sit', back = pose.view === 'back';
   const low = figLowHip(pose), hipH = low !== null ? low : seated ? FIG_VIEW.seatHip : FIG_LEN.thigh + FIG_LEN.shin + FIG_LEN.ankle, neck = -hipH - FIG_LEN.torso, headY = neck - FIG_LEN.neck - FIG_LEN.head;
-  const arms = FIG_VIEW_ARMS[pose.name.startsWith('work') ? 'work' : pose.name === 'sit' ? 'sit' : 'stand'], wave = pose.name.startsWith('work') ? Math.sin(Math.PI * 2 * pose.frame / frames) : 0;
+  const arms0 = FIG_VIEW_ARMS[pose.name.startsWith('work') ? 'work' : pose.name === 'sit' ? 'sit' : 'stand'], arms = look.carry && pose.name === 'stand' && !back ? [arms0[0], FIG_CARRY_ARM] : arms0, wave = pose.name.startsWith('work') ? Math.sin(Math.PI * 2 * pose.frame / frames) : 0;
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
   ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0, 0, 12, 2.4, 0, 0, Math.PI * 2); ctx.fill();  // a shadow on the deck
   figViewLegs(ctx, hipH, figShade(col, 0.92), '#262b33', b, seated, low !== null);
@@ -344,7 +396,11 @@ function figView(ctx, pose, look, frames) {
   figViewTorso(ctx, hipH, col, b, back);
   ctx.fillStyle = figShade(look.skin || '#c9a98a', 0.82); ctx.fillRect(-2.2, neck - FIG_LEN.neck - 1, 4.4, FIG_LEN.neck + 2);
   if (back) figBackHead(ctx, 0, headY, look, st);
-  else { figViewArms(ctx, hipH, col, '#2c3139', b, arms, false, wave); figFrontHead(ctx, 0, headY, look, st); }
+  else {
+    const hands = figViewArms(ctx, hipH, col, '#2c3139', b, arms, false, wave);
+    figFrontHead(ctx, 0, headY, look, st);
+    if (look.carry) figCarry(ctx, look.carry, hands[1][0], hands[1][1] + 1, look.trim);  // in the right hand, in front
+  }
   return { tap: { x: 0, y: -hipH - FIG_LEN.torso / 2 }, head: { x: 0, y: headY }, foot: { x: 0, y: 0 } };
 }
 
@@ -395,6 +451,7 @@ function drawPerson(ctx, pose, x, y, look) {
     }
     figHead(ctx, j, look, st, Math.PI * 2 * pose.frame / frames);
     figArm(ctx, j.armF, col, glove, b);
+    if (look.carry && pose.name !== 'climb') figCarry(ctx, look.carry, j.armF[2][0] + 1, j.armF[2][1] + 2, look.trim);  // in the front hand (on the ladder, both hands are on the rungs)
     tap = { x: j.mid[0] * k, y: j.mid[1] * k }; head = { x: j.head[0] * k, y: j.head[1] * k }; foot = { x: j.legF[2][0] * k, y: j.legF[2][1] * k };
   }
   ctx.restore();

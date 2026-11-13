@@ -993,10 +993,13 @@ function drawDowntimeTags(tags, rooms, hits, clear) {  // clear: the part of the
   return out;
 }
 
-function drawCutaway(box, clear = box) {
-  const t = G.transit, st = G.state, people = shipPeople(), ph = phase(), still = Settings.reduceMotion, time = still ? 0 : G.time;
+// dock: the ship at the dock in place of a burn (dock.js drawDockView, #940): { t, people, focus, clock, sign, lock, seal, ... }: a stand-in for the
+// burn's t, its people placed and posed, where the camera looks ({ x, dk }), its clock, the thrust sign's words and what the rooms show. No
+// thrust: no plume, shake or thrusters, the cruise's light, and the camera on the beat's place instead of the hand.
+function drawCutaway(box, clear = box, dock = null) {
+  const t = dock ? dock.t : G.transit, st = G.state, people = dock ? dock.people : shipPeople(), ph = dock ? 'move' : phase(), still = Settings.reduceMotion, now = dock ? dock.clock : G.time, time = still ? 0 : now;
   const lay = LAYOUTS.freighter, W = lay.width, o = towerOutline(lay), ol = outlineLayout(box, lay), left = outlineLeft(box, ol), view = viewOf(box, lay, left), zoom = view.zoom, half = view.span / 2;
-  const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = phaseWeights(pr, burnStages(t.days));  // the stages in ship time (#992)
+  const pr = Math.min(1, Math.max(0, 1 - t.left / t.total)), w = dock ? { burn: 0, cruise: 1, flip: 0 } : phaseWeights(pr, burnStages(t.days));  // the stages in ship time (#992)
   // The tower stands across the middle of the part of the box a docked dialog leaves clear (all of it with none) right of the outline's
   // strip, and the camera pans up and down it after the hand's deck (camTarget): it steps in that part's own terms, its centre and its
   // height, down the run from the top of the nose's cap to the first of the plume (camRun), offset from the box's centre by offX and offY.
@@ -1004,12 +1007,14 @@ function drawCutaway(box, clear = box) {
   // too, as camStep does down, to keep the hand and the scene's people in the part (#972); with none open it stays on the tower's middle.
   // Reduced motion snaps, and holds on a deck: one cut as the hand reaches the next, still on the ladder between. In time-lapse it follows the hand as drawn.
   const rx0 = Math.max(clear.x, box.x + left), offX = (box.x + box.w / 2 - (rx0 + clear.x + clear.w) / 2) / zoom, offY = (box.y + box.h / 2 - (clear.y + clear.h / 2)) / zoom, run = camRun(lay);
-  const held = G.cam && !still ? G.cam.y - offY - run.top : null, hand = people[0].lapse || people[0], target = camTarget(lay, still ? Math.round(hand.dk) : hand.dk), dt = G.cam ? Math.max(0, G.time - G.cam.t) : 0;
+  const held = G.cam && !still ? G.cam.y - offY - run.top : null, hand = people[0].lapse || people[0], dt = G.cam ? Math.max(0, now - G.cam.t) : 0;
+  const target = camTarget(lay, dock ? dock.focus.dk : still ? Math.round(hand.dk) : hand.dk);  // at the dock the beat's place (#940)
   const camY = camStep(held, target, dt, clear.h / zoom, run.len) + run.top + offY;
-  const seenX = people.filter((p, i) => i === 0 || p.staged).map(p => (p.lapse || p).x * W), focusX = (Math.min(...seenX) + Math.max(...seenX)) / 2;
-  const partX = camStep(G.cam && G.cam.x !== undefined && !still ? G.cam.x + 40 : null, focusX + 40, dt, (clear.x + clear.w - rx0) / zoom, W + 80) - 40, camX = partX + offX;
-  G.cam = { x: partX, y: camY, t: G.time };
-  const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
+  const seenX = dock ? [dock.focus.x] : people.filter((p, i) => i === 0 || p.staged).map(p => (p.lapse || p).x * W), focusX = (Math.min(...seenX) + Math.max(...seenX)) / 2;
+  const xLo = dock ? -DOCK_OUT : -40;  // how far left of the tower the camera may pan: at the dock, over the gangway
+  const partX = camStep(G.cam && G.cam.x !== undefined && !still ? G.cam.x - xLo : null, focusX - xLo, dt, (clear.x + clear.w - rx0) / zoom, W + 40 - xLo) + xLo, camX = partX + offX;
+  G.cam = { x: partX, y: camY, t: now };
+  const burning = !dock && !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
   const spin = t.angle + Math.PI / 2;  // the ship's turn, 0 to pi
   const X = f => f * W, H = towerHeight(lay), deck = i => { const floor = deckFloor(lay, i); return { top: floor - HULL.deck, floor }; };
   const bcx = box.x + box.w / 2, bcy = box.y + box.h / 2, toScreen = (x, y) => ({ x: bcx + (x - camX) * zoom, y: bcy + (y - camY) * zoom });
@@ -1033,7 +1038,7 @@ function drawCutaway(box, clear = box) {
     g.addColorStop(0, 'rgba(255,255,255,0.95)'); g.addColorStop(Math.min(0.5, 40 / pl), 'rgba(140,190,255,0.75)'); g.addColorStop(1, 'rgba(60,90,255,0)');
     ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(mid - c, mouth); ctx.quadraticCurveTo(mid - c * 0.4, mouth + pl * 0.25, mid, mouth + pl); ctx.quadraticCurveTo(mid + c * 0.4, mouth + pl * 0.25, mid + c, mouth); ctx.fill();
     ctx.restore();
-  } else if (!burning && !t.event) {
+  } else if (!burning && !t.event && !dock) {
     const on = Math.sin(time * 3) > 0, a = 0.5 + 0.5 * Math.abs(Math.sin(time * 9)), ny = o.top + 20, dy = o.bottom - 40;
     ctx.fillStyle = `rgba(230,240,255,${a})`;
     for (const [x, y] of on ? [[o.x1 + 14, ny], [o.x0 - 14, dy]] : [[o.x0 - 14, ny], [o.x1 + 14, dy]]) { ctx.beginPath(); ctx.ellipse(x, y, 14, 6, 0, 0, Math.PI * 2); ctx.fill(); }
@@ -1055,15 +1060,16 @@ function drawCutaway(box, clear = box) {
   ctx.strokeStyle = 'rgba(61,95,130,0.55)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(W, 0); ctx.stroke();  // the seam where the cap meets the flight deck
 
   // The rooms, the tank, the ladder well and its ladder full height (the tube through the tank), and the bulkheads beside the well.
-  const cap = ship().cargo, nb = Math.min(12, ship().berths), owners = bunkOwners(people, nb), slots = new Map(), job = hired();
+  const cap = ship().cargo, nb = Math.min(12, ship().berths), owners = bunkOwners(people.filter(p => !p.visitor), nb), slots = new Map(), job = hired();  // a visitor has no bunk (dock.js)
   const bunked = p => p.role !== 'cat' && p.couchAt === null && p.station === null && ph === 'couch' && (p.couch || 0) >= 0.6;  // past the couches, strapped into a bunk in the hard burn (couchPlan, #990)
-  bunkSlots(people, owners, isAsleep).forEach((k, p) => slots.set(p, k));  // whoever is turned in lies in their own bunk (#934), or a free one
+  bunkSlots(people, owners, dock ? () => false : isAsleep).forEach((k, p) => slots.set(p, k));  // nobody turns in at the dock  // whoever is turned in lies in their own bunk (#934), or a free one
   for (const p of people) if (bunked(p) && p.bunk !== null && p.bunk < nb) slots.set(p, p.bunk);  // the bunk they walked to (couchPlan; nobody sleeps in the hard burn)
   const lain = new Set(slots.values()), bunks = owners.map((p, k) => p && { slept: lain.has(k), ...bunkKit(p.role === 'you' ? { id: 'you', role: job ? POSTS[job.post].role : 'rating', culture: st.background } : { ...((p.id && st.people[p.id]) || p), role: p.role, id: p.id || p.name }) });
   const mood = crewSpirits(st, st.crew), night = nightStateOf(st, t, handHurt()), ask = typeof CAST === 'object' && CAST.cato ? CAST.cato.middleAsk() : [];
   bunks.forEach((b, k) => { if (b && owners[k].id && mood.low.includes(owners[k].id)) b.low = true; });  // a low person's own curtain drawn (#936)
-  const s = { bunks, w, spirits: mood.good, registry: SHIP_REGISTRY[st.shipId] || null, bill: billSheet(crewRoster(st), night.bill, night.watch, shipDay(t.elapsed).day, askedMiddle(st, ask)), time: G.time, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, goods: holdGoods(st.cargo, st.missions), pr, places: { to: placeColour(placeOf(t.to), st.route && st.route.dock), from: placeColour(placeOf(st.systemId), st.planet) }, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), screen: galleyScreenOn(shipDay(t.elapsed).block), fuel: G.state.fuel / ship().fuel || 0, burning, night: nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, t.recline),
-    damage: { marks: new Set(G.transit.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3, patches: new Set(G.state.patches || []) }, age: Math.round(tripAge(G.transit) * 64) / 64, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people) };  // the marks lifeTick keeps (shipState); the trip's age in 64ths, so a room kept as an image is drawn again only when it shows (#1123)
+  const s = { bunks, w, spirits: mood.good, registry: SHIP_REGISTRY[st.shipId] || null, bill: billSheet(crewRoster(st), night.bill, night.watch, shipDay(t.elapsed).day, askedMiddle(st, ask)), time: now, zoom, spin, still, berths: ship().berths, well: { x0: (lay.well.x - lay.well.w / 2) * W, x1: (lay.well.x + lay.well.w / 2) * W }, shell: cachedShell(zoom), cargo: cap ? Math.min(cap, cargoUsed()) / cap : 0, goods: holdGoods(st.cargo, st.missions), pr, places: { to: placeColour(placeOf(t.to), st.route && st.route.dock), from: placeColour(placeOf(st.systemId), st.planet) }, torpedoes: Math.max(0, Math.min(TORP_MAX, G.state.torpedoes || 0)), screen: galleyScreenOn(shipDay(t.elapsed).block), fuel: G.state.fuel / ship().fuel || 0, burning, night: dock ? 0 : nightLevel(), asleep: slots.size, couched: people.filter(p => ph === 'couch' && typeof p.couchAt === 'number' && (p.couch || 0) >= 0.6).map(p => p.couchAt), recline: stationRecline(people, t.recline),
+    damage: { marks: new Set(t.marks || []), severe: 1 - G.state.armor / ship().armor > 2 / 3, patches: new Set(G.state.patches || []) }, age: Math.round(tripAge(t) * 64) / 64, patient: G.state.crew.some(id => (G.state.injured || {})[id]) || handHurt(), headIn: headTaken(people),
+    ...(dock ? { lock: dock.lock, seal: dock.seal } : {}) };  // the marks lifeTick keeps (shipState); the trip's age in 64ths, so a room kept as an image is drawn again only when it shows (#1123)
   roomSprites = ROOM_SPRITE_CACHE;  // each prop part drawn once, then copied (#1117)
   try {
     for (const r of ROOMS) {
@@ -1098,7 +1104,7 @@ function drawCutaway(box, clear = box) {
   // The thrust sign over the galley's right end on the mess deck, scaled up where the camera is far enough out that its text would be under
   // 12px; kept whole inside the clear part's edges when a docked dialog covers the galley's end.
   const galley = layoutBox(lay, 'galley'), sk = Math.max(1, 1.05 / zoom), signHalf = 56 * sk + 4, toWorldX = sx => camX + (sx - bcx) / zoom, signX = Math.min(toWorldX(clear.x + clear.w) - signHalf, Math.max(toWorldX(rx0) + signHalf, galley.x1 - 6 - 56 * sk));
-  ctx.save(); ctx.translate(signX, galley.top + 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, burnState().g, w, time, zoom * sk); ctx.restore();
+  ctx.save(); ctx.translate(signX, galley.top + 8); ctx.scale(sk, sk); drawThrustSign(ctx, 0, 0, dock ? 0 : burnState().g, w, time, zoom * sk, dock ? dock.sign : null); ctx.restore();
 
   // The people: each in their posture, sleepers on the bunks the berths drew; names on the deck plate under them where they fit.
   ctx.font = `600 12px ${roomFont}`;
@@ -1112,15 +1118,16 @@ function drawCutaway(box, clear = box) {
       if (lap && lap.a <= 0) continue;  // in time-lapse, between places
       const p = lap ? { ...p0, ...lap, tx: null, tdk: lap.dk } : p0;  // in time-lapse, as they were where they last rested
       ctx.globalAlpha = lap ? lap.a : 1;  // fading out of a place or into one (set back after the people)
-      const pose = posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p0), s.well);
+      if (p.outside) continue;  // on the gangway, outside the hull (dock.js drawDockOutside)
+      const pose = p.pose ? { x: p.x, deck: p.dk, ...p.pose } : posture(p, ph, time, asleep), bunk = asleep && berthBunk(berths, nb, slots.get(p0), s.well);
       const med = roomAt('medbay'), cot = pose.name === 'bunk' && !bunk && Math.round(p.dk) === med.deck && p.x >= med.x0 && p.x <= med.x1;  // a patient on the medbay's cot (rooms.js roomMedbay), not the floor
       const lift = pose.name === 'couch' ? p.lift || 0 : 0;  // on a couch, as high as its pad (#990)
       const x = bunk ? berthSleeper(bunk).x : X(p.x), y = bunk ? berthSleeper(bunk).y : towerDeckY(lay, p.dk) - (cot ? MED_COT : 0) - lift, dk = Math.round(p.dk);
-      dots.push({ x: X(p.x), dk: p.dk, color: ROLE_COLORS[p.role] });
+      dots.push({ x: X(p.x), dk: p.dk, color: p.color || ROLE_COLORS[p.role] });
       if (!seen(y - 160, y + 60)) continue;  // out of view (a little margin, so no one pops in at the edge)
       const inView = seen(y - 60, y);
       if (pose.name === 'strap') roomJumpSeat(ctx, x, y, pose.face, w.flip);  // a jump seat folded down from the wall behind them (#927)
-      const tap = drawPerson(ctx, pose, x, y, { color: ROLE_COLORS[p.role], floating: ph === 'float' ? floatW : 0, ...(p.role === 'cat' ? {} : { ...portraitLook({ id: p.id, name: p.name }), mood: figureMood(st, p.id, youHurt) }) });
+      const tap = drawPerson(ctx, pose, x, y, { color: p.color || ROLE_COLORS[p.role], floating: ph === 'float' ? floatW : 0, ...(p.role === 'cat' ? {} : { ...portraitLook({ id: p.id, name: p.name }), mood: figureMood(st, p.id, youHurt) }), ...(p.look || {}) });  // look: what a visitor wears and carries (dock.js)
       if ((p.room === 'bridge' || p.room === 'gunnery') && p.role !== 'cat' && pose.view === 'side' && /sit/.test(pose.name)) roomScreenGlow(ctx, tap.head, pose.face);  // seated at a post, the console's screen on the face (#932)
       if (pose.name === 'tether') {  // a line to a ring on the nearest room wall on their deck
         const walls = ROOMS.filter(r => r.deck === dk).flatMap(r => [X(r.x0), X(r.x1)]), bx = walls.reduce((a, b) => (Math.abs(b - x) < Math.abs(a - x) ? b : a)), rx = bx + Math.sign(x - bx) * 6, ry = deckFloor(lay, dk) - 60;
@@ -1130,7 +1137,7 @@ function drawCutaway(box, clear = box) {
       }
       if (!inView) continue;
       if (p.id) hits.push({ ...toScreen(tap.x, tap.y), id: p.id, head: toScreen(tap.head.x, tap.head.y), foot: toScreen(tap.foot.x, tap.foot.y) });  // the body, head to foot, for a tap (game.js)
-      if (p.role !== 'passenger' || p.pid) {
+      if ((p.role !== 'passenger' || p.pid) && p.name) {
         const nw = ctx.measureText(p.name).width / zoom;
         if (pose.name === 'couch' && typeof p.couchAt === 'number') { racked.push({ name: p.name, x, w: nw, dk, y: y + lift, k: p.couchAt }); continue; }  // on a rack: named in a row under it, after (#990)
         if (!labels.some(b => b.dk === dk && Math.abs(b.x - x) < (b.w + nw) / 2 + 4 / zoom)) {
@@ -1152,6 +1159,7 @@ function drawCutaway(box, clear = box) {
   hullName(ctx, o, zoom, hullPlate(st, cleanName(home().name)));  // her name and registry on the nose's cap (#936)
   ctx.restore();
   hullFittings(o, deck);  // mast, fins, turrets and the airlock's door
+  if (dock) for (const q of drawDockOutside(ctx, o, lay, deck, dock, zoom)) if (seen(q.foot.y - 90, q.foot.y)) hits.push({ ...toScreen(q.x, q.y), id: q.id, head: toScreen(q.head.x, q.head.y), foot: toScreen(q.foot.x, q.foot.y) });  // the pad, the clamps and the gangway, and who is on it (#940)
   if (time % 1.6 < 0.2) {  // running lights, blinking
     ctx.fillStyle = '#ff5a5a'; ctx.fillRect(o.x0 - 4, o.top + 2, 4, 4);
     ctx.fillStyle = '#5aff8a'; ctx.fillRect(o.x1, o.top + 2, 4, 4);

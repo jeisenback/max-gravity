@@ -1560,6 +1560,16 @@ function roomHoldStraps(ctx, x, y, F) {
   roomPart(ctx, roomRound(n(x - 0.5), n(y - 1.5), HOLD_W + 1, 2, 0.8), '#4a4436', { top: 0.5 });
   roomFlat(ctx, x + HOLD_W - 3, F - 18, 4.5, 5, '#6a7480'); roomFlat(ctx, x + HOLD_W - 2.5, F - 17, 3.5, 1, '#3a4a5a');  // its ratchet
 }
+// The port's seal on a stack's strap where it meets its ring at x (#940, dock.js): a crimped tag in the port owner's colour, toned a step below
+// the people (col), its stamp, and the paper tag on its wire.
+function roomHoldSeal(ctx, x, F, col) {
+  const y = F - 16;
+  roomPart(ctx, roomRound(x - 3.5, y - 3.5, 7, 7, 1.5), col, { top: 0.6, side: 0.8 });
+  roomFlat(ctx, x - 1.2, y - 1.2, 2.4, 2.4, '#2a2218');
+  ctx.strokeStyle = '#6a6458'; ctx.lineWidth = 0.5; roomSeg(ctx, [[x, y + 3.5], [x + 1, y + 7]]);
+  roomPart(ctx, roomRound(x - 1.5, y + 7, 5, 6.5, 0.6), '#8a8270', { top: 0.4 });
+  for (const ly of [y + 9, y + 11]) roomFlat(ctx, x - 0.5, ly, 3, 0.5, '#4a4436');
+}
 // The cargo net over the stacks' tops (n crates), clear of their labels, its ends tied down to rings in the deck; it lifts off the stacks at the
 // flip, most in the middle of the run. Mended once over the first stack, in another cord. Cords, not parts, so drawn from s.time as it moves.
 function roomHoldNet(ctx, r, n, s) {
@@ -1622,6 +1632,7 @@ function roomHold(ctx, r, s, X, W) {
   }
   for (let c = 0; c < 4; c++) for (const ex of [sx(c) + 0.75, sx(c) + HOLD_W - 0.75]) holdRing(ctx, ex, F);
   for (let c = 0; c < stacks; c++) roomHoldStraps(ctx, sx(c), holdCrate(r, Math.min(n - 1, 3 * c + 2)).y, F);
+  if (s.seal) for (let c = 0; c < stacks; c++) roomHoldSeal(ctx, sx(c) + HOLD_W - 0.75, F, s.seal);  // the port's seal on each stack's strap (#940)
   if (n > 0) { if (w.flip) roomLive(ctx, s, (ctx, s) => roomHoldNet(ctx, r, n, s)); else roomHoldNet(ctx, r, n, s); }  // it bulges at the flip (#1123)
   if (W >= 300) {
     const lx = X(0.9);
@@ -2070,8 +2081,10 @@ function roomWorkshop(ctx, r, s) {
 // in its pad, the lamp over it; the suits on their rack, a person's size, one older and patched, a tag on each, their boots under them on the tray,
 // the helmets on the shelf over them and a tether coiled on the post; at the well's wall the lockers for suit spares, one newer in another finish.
 // Tie-down rings in the deck. No words: the marks, the tags and the plates are marks. Nothing under the room's name.
-const LOCK_OUTER = 66, LOCK_LAMP = '#3e2a26';  // the outer door's ring, its top over the floor; the cycle lamp's lens, dark
-function roomAirlock(ctx, r) {
+// At the dock (#940, dock.js) s.lock = { open, lit }: the outer door stands open on the gangway, the dock's light in it, and the cycle lamp is lit
+// while the boarders pass through.
+const LOCK_OUTER = 66, LOCK_LAMP = '#3e2a26', LOCK_LIT = '#5a9a6a', LOCK_DOCK = '#3e4038';  // the outer door's ring, its top over the floor; the cycle lamp's lens, dark and lit; the dock's light in the open door
+function roomAirlock(ctx, r, s = {}) {
   const F = r.floor, T = r.top, n = v => Math.round(v * 100) / 100, u = v => n(r.x0 + v), e = roomEye(r), I = (x, y, d) => roomInto(e, x, y, d).map(n);
   const wall = (px, py, fn) => { const ax = n(e.vx + (px - e.vx) / e.k), ay = n(e.vy + (py - e.vy) / e.k); roomOnWall(ctx, ax, ay, () => fn(ax, ay)); };  // fn draws round (ax, ay), which lands at (px, py)
   const on = (x, list) => `M ${list.map(([d, h]) => I(x, F - h, d).join(' ')).join(' L ')} Z`;  // a shape on a wall running back from the cut at x, its corners at [depth, height]
@@ -2094,7 +2107,7 @@ function roomAirlock(ctx, r) {
     for (const [bx, by] of [[x - 8.6, y - 11.6], [x + 7.4, y - 11.6], [x - 8.6, y - 1.2], [x + 7.4, y - 1.2]]) roomFlat(ctx, bx, by, 1.2, 1.2, '#8a929a');
     for (const gx of [x - 4.3, x + 4.3]) roomGauge(ctx, gx, y - 6, 2.8, 0.62);
     roomPart(ctx, roomRound(x - 3.5, y - 23, 7, 7, 2), '#263a50', { top: 0.5, under: 0.8 });  // the cycle lamp, its lens dark while the lock is idle
-    roomDot(ctx, x, y - 19.5, 2, LOCK_LAMP);
+    roomDot(ctx, x, y - 19.5, 2, s.lock && s.lock.lit ? LOCK_LIT : LOCK_LAMP);
     ctx.strokeStyle = roomTint('#56626e'); ctx.lineWidth = 0.5; roomSeg(ctx, [[x - 2, y - 19.5], [x + 2, y - 19.5]]);
     roomFlat(ctx, x - 1, y + 3, 2, 10, '#141c24');  // the lever's slot, the lever, its printed guard with its layers and its tag
     roomPart(ctx, roomRound(x - 3, y + 3, 6, 3.5, 1), '#5e666e', { top: 0.5 });
@@ -2121,13 +2134,18 @@ function roomAirlock(ctx, r) {
   ctx.restore();
   roomPart(ctx, on(r.x0, cham(0.08, 0.92, 1, LOCK_OUTER, 7)), '#3a4450', { top: 0.6 });
   roomPart(ctx, on(r.x0, cham(0.12, 0.88, 4, LOCK_OUTER - 4, 6)), '#1a1e22', { top: 0 });
-  roomPart(ctx, on(r.x0, cham(0.15, 0.85, 6, LOCK_OUTER - 6, 5)), '#4a5462', { top: 0.8 });
-  const [wx, wy] = I(r.x0, F - 33, 0.5);
-  ctx.strokeStyle = '#6a6e70'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.ellipse(wx, wy, 5.5, 10, 0, 0, Math.PI * 2); ctx.stroke();
-  ctx.lineWidth = 0.9; ctx.beginPath(); ctx.moveTo(wx - 5.5, wy); ctx.lineTo(wx + 5.5, wy); ctx.moveTo(wx, wy - 10); ctx.lineTo(wx, wy + 10); ctx.stroke();
-  roomDot(ctx, wx, wy, 1.4, '#3a3e42');
-  for (const [d, h] of [[0.18, 12], [0.18, 54], [0.82, 12], [0.82, 54]]) { const [dx, dy] = I(r.x0, F - h, d); roomFlat(ctx, dx - 1, dy - 1.5, 2, 3, '#7a7e82'); }
-  for (const h of [18, 46]) { const [hx, hy] = I(r.x0, F - h, 0.87); roomFlat(ctx, hx - 0.6, hy - 2.5, 1.2, 5, '#56708c'); }
+  if (s.lock && s.lock.open) {  // open at the dock: the door swung out of its ring, the dock's light through the gap, its sill worn
+    roomPart(ctx, on(r.x0, cham(0.12, 0.88, 4, LOCK_OUTER - 4, 6)), LOCK_DOCK, { top: 0 });
+    roomPart(ctx, on(r.x0, cham(0.14, 0.86, 4, 9, 1)), '#4a4a3e', { top: 0.6 });
+  } else {
+    roomPart(ctx, on(r.x0, cham(0.15, 0.85, 6, LOCK_OUTER - 6, 5)), '#4a5462', { top: 0.8 });
+    const [wx, wy] = I(r.x0, F - 33, 0.5);
+    ctx.strokeStyle = '#6a6e70'; ctx.lineWidth = 1.4; ctx.beginPath(); ctx.ellipse(wx, wy, 5.5, 10, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.lineWidth = 0.9; ctx.beginPath(); ctx.moveTo(wx - 5.5, wy); ctx.lineTo(wx + 5.5, wy); ctx.moveTo(wx, wy - 10); ctx.lineTo(wx, wy + 10); ctx.stroke();
+    roomDot(ctx, wx, wy, 1.4, '#3a3e42');
+    for (const [d, h] of [[0.18, 12], [0.18, 54], [0.82, 12], [0.82, 54]]) { const [dx, dy] = I(r.x0, F - h, d); roomFlat(ctx, dx - 1, dy - 1.5, 2, 3, '#7a7e82'); }
+    for (const h of [18, 46]) { const [hx, hy] = I(r.x0, F - h, 0.87); roomFlat(ctx, hx - 0.6, hy - 2.5, 1.2, 5, '#56708c'); }
+  }
   // The partition from the cut back to the back wall, its face toward the room; the inner door's frame and seal, the door shut in it, its window,
   // its handle with the paint worn round it, its hinges; the frame's edge at the cut.
   roomFace(ctx, [[P, T], [P, F], I(P, F, 1), I(P, T, 1)], '#0e1b28', true);
@@ -2468,9 +2486,9 @@ function roomScreenGlow(ctx, head, face) {  // on the head's half toward the scr
 
 // The thrust sign: the phase and the g reading, centred on x with its top at y (FLIP SECURE alternates with FLIP every two seconds), on a
 // plate screwed to the wall (#933): a bevelled frame, lit along its top, the dark face the reading is lit on, and a screw at each corner.
-function drawThrustSign(ctx, x, y, g, w, time, zoom) {
+function drawThrustSign(ctx, x, y, g, w, time, zoom, label = null) {  // label: what it reads in place of the thrust (at the dock, #940)
   const ph = w.flip > 0.5 ? 'flip' : w.burn > 0.5 ? 'burn' : 'cruise';
-  const txt = ph === 'flip' && Math.floor(time) % 4 < 2 ? 'FLIP SECURE' : (ph === 'burn' ? 'THRUST ' : ph === 'cruise' ? 'CRUISE ' : 'FLIP ') + g.toFixed(2) + ' G';
+  const txt = label || (ph === 'flip' && Math.floor(time) % 4 < 2 ? 'FLIP SECURE' : (ph === 'burn' ? 'THRUST ' : ph === 'cruise' ? 'CRUISE ' : 'FLIP ') + g.toFixed(2) + ' G');
   const bw = 112, l = x - bw / 2, rr = x + bw / 2;
   roomPart(ctx, `M ${l + 3} ${y} L ${rr - 3} ${y} L ${rr} ${y + 3} L ${rr} ${y + 15} L ${rr - 3} ${y + 18} L ${l + 3} ${y + 18} L ${l} ${y + 15} L ${l} ${y + 3} Z`, '#1f3449', { top: 1, under: 1 });
   roomPart(ctx, roomRound(l + 6, y + 2.5, bw - 12, 13, 1), '#081019', { top: 0 });
