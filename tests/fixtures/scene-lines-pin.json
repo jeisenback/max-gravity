@@ -30062,5 +30062,1176 @@
    "Let the captain decide",
    "Argue for the printed one"
   ]
+ },
+ {
+  "id": "scene:salvage:approach:orehauler:0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Bexa checks the cutters, the lines and the air, twice, and the team goes over to the first bulkhead.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours",
+  "text": "The Seven Hours hangs nose-down in the dark, an ore hauler with her hold doors open and nothing behind them. Her running lights are out, and her transponder. The registry has her out of Ostrava, owner-operated, logged out on a run to Ceres eighteen months ago and never logged in.",
+  "labels": [
+   "Get the team suited up"
+  ]
+ },
+ {
+  "id": "scene:salvage:orehauler:0:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The first section is the crew deck. The bunks are made. There is a list taped to the galley wall of what they owed and to who, with a line through most of it. 3t of refined metals comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. Bexa looks at it a long time. \"That's fine. That's clean steel.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:orehauler:0:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Deeper in is the drive room. The coupling on the main feed has been patched with printed stock, more than once, and the last patch has split down its length. 5t of machine parts comes out of it. There is a fire control part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Deeper in is the drive room. The coupling on the main feed has been patched with printed stock, more than once, and the last patch has split down its length. They take it slowly, shoring every frame, and 2t of machine parts comes out. There is a fire control part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 2",
+  "text": "The second section is deeper in, past the bulkhead they cut. Bexa runs a glove along the seam. \"She's holding, mostly. I wouldn't lean on her.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:orehauler:0:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The bridge is the last section. The chair is empty and strapped down. The last entry in the log is a burn correction, and then nothing. 8t of refined metals comes out of it. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The bridge is the last section. The chair is empty and strapped down. The last entry in the log is a burn correction, and then nothing. They take it slowly, shoring every frame, and 4t of refined metals comes out. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. Bexa doesn't touch it. \"The frame's gone on this side. I've seen one like this fold up with a team inside.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:approach:orehauler:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Bexa checks the cutters, the lines and the air, twice, and the team goes over to the first bulkhead.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours",
+  "text": "The Seven Hours hangs nose-down in the dark, an ore hauler with her hold doors open and nothing behind them. Her running lights are out, and her transponder. The registry has her as owner-operated, four crew, on the Ceres run. The last fee she paid was a berth at Pallas, two years back.",
+  "labels": [
+   "Get the team suited up"
+  ]
+ },
+ {
+  "id": "scene:salvage:orehauler:1:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The crew deck is cold and tidy. One of the four lockers is empty, cleared out properly, the way you clear one when you are getting off. 3t of refined metals comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. Bexa looks at it a long time. \"That's fine. That's clean steel.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:orehauler:1:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The drive room has the rest of it. The coolant pump was running on a bypass, and the bypass froze. The log says they knew, and were going to see to it at Ceres. 5t of machine parts comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The drive room has the rest of it. The coolant pump was running on a bypass, and the bypass froze. The log says they knew, and were going to see to it at Ceres. They take it slowly, shoring every frame, and 2t of machine parts comes out.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 2",
+  "text": "The second section is deeper in, past the bulkhead they cut. Bexa runs a glove along the seam. \"She's holding, mostly. I wouldn't lean on her.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:orehauler:1:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The bridge is last. The captain's mug is still in its clip. The log has the whole last day, and most of it is the four of them talking about money. 8t of refined metals comes out of it. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The bridge is last. The captain's mug is still in its clip. The log has the whole last day, and most of it is the four of them talking about money. They take it slowly, shoring every frame, and 4t of refined metals comes out. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. Bexa doesn't touch it. \"The frame's gone on this side. I've seen one like this fold up with a team inside.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:approach:courier:0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Bexa checks the cutters, the lines and the air, twice, and the team goes over to the first bulkhead.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours",
+  "text": "The Seven Hours is a courier, small and fast once, turning slowly end over end. There are cut marks round her forward lock, and they stop halfway. Her registry says Ceres Post, under contract, a crew of two. She was fast enough to outrun most things, and paid for it in hull.",
+  "labels": [
+   "Get the team suited up"
+  ]
+ },
+ {
+  "id": "scene:salvage:courier:0:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The first section is the cockpit, two seats and a lot of screens. There is a photo clipped above one of them, of a kid on a dome's sports field, squinting. 3t of electronics comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. Bexa looks at it a long time. \"That's fine. That's clean steel.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:courier:0:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Behind the cockpit is the mail bay. The cases are racked and sealed, and one rack has torn loose and gone through the wall. 5t of machine parts comes out of it. There is a fire control part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Behind the cockpit is the mail bay. The cases are racked and sealed, and one rack has torn loose and gone through the wall. They take it slowly, shoring every frame, and 2t of machine parts comes out. There is a fire control part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 2",
+  "text": "The second section is deeper in, past the bulkhead they cut. Bexa runs a glove along the seam. \"She's holding, mostly. I wouldn't lean on her.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:courier:0:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. 8t of electronics comes out of it. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. They take it slowly, shoring every frame, and 4t of electronics comes out. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. Bexa doesn't touch it. \"The frame's gone on this side. I've seen one like this fold up with a team inside.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:approach:courier:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Bexa checks the cutters, the lines and the air, twice, and the team goes over to the first bulkhead.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours",
+  "text": "The Seven Hours is a courier, small and fast once, turning slowly end over end. There are cut marks round her forward lock, and they stop halfway. The registry has her on a mail contract out of Pallas, a crew of two, inspected last spring. The inspection came with a list of things to fix.",
+  "labels": [
+   "Get the team suited up"
+  ]
+ },
+ {
+  "id": "scene:salvage:courier:1:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The cockpit is the first section. One seat is gone, unbolted and taken, and the other one has its straps cut. 3t of electronics comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. Bexa looks at it a long time. \"That's fine. That's clean steel.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:courier:1:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The mail bay is half empty. Whatever went, went neatly, with the rack bolts undone and put in a bag. 5t of machine parts comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The mail bay is half empty. Whatever went, went neatly, with the rack bolts undone and put in a bag. They take it slowly, shoring every frame, and 2t of machine parts comes out.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 2",
+  "text": "The second section is deeper in, past the bulkhead they cut. Bexa runs a glove along the seam. \"She's holding, mostly. I wouldn't lean on her.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:courier:1:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The drive section is last. The fuel line has a valve in it that is not on the plans, and it is shut. 8t of electronics comes out of it. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The drive section is last. The fuel line has a valve in it that is not on the plans, and it is shut. They take it slowly, shoring every frame, and 4t of electronics comes out. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. Bexa doesn't touch it. \"The frame's gone on this side. I've seen one like this fold up with a team inside.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:approach:raider:0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Bexa checks the cutters, the lines and the air, twice, and the team goes over to the first bulkhead.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours",
+  "text": "The Seven Hours has no name painted on her, only the one in the old registry. Two gun mounts are welded on where her cranes were. One of them is still pointed this way. The registry has her as a hauler, sold three times in a year, the last time for cash. Nobody hauls with guns like those.",
+  "labels": [
+   "Get the team suited up"
+  ]
+ },
+ {
+  "id": "scene:salvage:raider:0:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The first section is the gun deck. The racks are empty and the magazine is open. She fired everything she had before the end. 3t of refined metals comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. Bexa looks at it a long time. \"That's fine. That's clean steel.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:raider:0:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Deeper in is the crew deck. Six bunks, and a seventh rigged in the passage. The shares are chalked up on a board, and the numbers don't add up. 5t of electronics comes out of it. There is a fire control part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Deeper in is the crew deck. Six bunks, and a seventh rigged in the passage. The shares are chalked up on a board, and the numbers don't add up. They take it slowly, shoring every frame, and 2t of electronics comes out. There is a fire control part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 2",
+  "text": "The second section is deeper in, past the bulkhead they cut. Bexa runs a glove along the seam. \"She's holding, mostly. I wouldn't lean on her.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:raider:0:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The hold is the last section. It is full of someone else's cargo, with the seals cut and the marks ground off. 8t of refined metals comes out of it. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The hold is the last section. It is full of someone else's cargo, with the seals cut and the marks ground off. They take it slowly, shoring every frame, and 4t of refined metals comes out. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. Bexa doesn't touch it. \"The frame's gone on this side. I've seen one like this fold up with a team inside.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:approach:raider:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Bexa checks the cutters, the lines and the air, twice, and the team goes over to the first bulkhead.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours",
+  "text": "The Seven Hours has no name painted on her, only the one in the old registry. Two gun mounts are welded on where her cranes were. One of them is still pointed this way. She is on the Pact's list and on Hask Mutual's, under two names. The notice says she was last seen burning hard for the deep Belt.",
+  "labels": [
+   "Get the team suited up"
+  ]
+ },
+ {
+  "id": "scene:salvage:raider:1:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The gun deck has scorch marks across the ceiling, and a hole in the hull the size of a hatch, punched in from outside. 3t of refined metals comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. Bexa looks at it a long time. \"That's fine. That's clean steel.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:raider:1:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The crew deck has been stripped, by the crew by the look of it. What was worth anything went with whoever left in the boat. 5t of electronics comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The crew deck has been stripped, by the crew by the look of it. What was worth anything went with whoever left in the boat. They take it slowly, shoring every frame, and 2t of electronics comes out.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 2",
+  "text": "The second section is deeper in, past the bulkhead they cut. Bexa runs a glove along the seam. \"She's holding, mostly. I wouldn't lean on her.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:raider:1:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The hold is last. There are three crates in it with a Juno co-op's stencil on them, and a lot of empty space. 8t of refined metals comes out of it. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The hold is last. There are three crates in it with a Juno co-op's stencil on them, and a lot of empty space. They take it slowly, shoring every frame, and 4t of refined metals comes out. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. Bexa doesn't touch it. \"The frame's gone on this side. I've seen one like this fold up with a team inside.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:approach:yacht:0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Bexa checks the cutters, the lines and the air, twice, and the team goes over to the first bulkhead.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours",
+  "text": "The Seven Hours is a yacht, white once, with a long window down her side that is mostly gone. There is a deck chair floating in the lounge. The registry has her as a private yacht out of Vesta, owned by a holding company that owns a lot of things. The insurer reported her missing, not the family.",
+  "labels": [
+   "Get the team suited up"
+  ]
+ },
+ {
+  "id": "scene:salvage:yacht:0:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The first section is the lounge. The bar is still stocked, behind a lock. There is a good wool coat over a chair, with a mooring pass in the pocket. 3t of electronics comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. Bexa looks at it a long time. \"That's fine. That's clean steel.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:yacht:0:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "Deeper in are the cabins. The big one has been lived in for a while: clothes, a lot of food wrappers, a calendar with the days crossed off. 5t of machine parts comes out of it. There is a fire control part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "Deeper in are the cabins. The big one has been lived in for a while: clothes, a lot of food wrappers, a calendar with the days crossed off. They take it slowly, shoring every frame, and 2t of machine parts comes out. There is a fire control part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 2",
+  "text": "The second section is deeper in, past the bulkhead they cut. Bexa runs a glove along the seam. \"She's holding, mostly. I wouldn't lean on her.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:yacht:0:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The engine room is last, and it is small for a ship this size. The drive was a good one, and somebody switched it off by hand. 8t of electronics comes out of it. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The engine room is last, and it is small for a ship this size. The drive was a good one, and somebody switched it off by hand. They take it slowly, shoring every frame, and 4t of electronics comes out. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. Bexa doesn't touch it. \"The frame's gone on this side. I've seen one like this fold up with a team inside.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:approach:yacht:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Bexa checks the cutters, the lines and the air, twice, and the team goes over to the first bulkhead.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours",
+  "text": "The Seven Hours is a yacht, white once, with a long window down her side that is mostly gone. There is a deck chair floating in the lounge. She is registered to a family on Vesta, with a pilot hired from an agency. The agency still has the pilot down as on leave.",
+  "labels": [
+   "Get the team suited up"
+  ]
+ },
+ {
+  "id": "scene:salvage:yacht:1:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The lounge has a piano in it, bolted down. Someone has written a comm code on the lid in pen. 3t of electronics comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. Bexa looks at it a long time. \"That's fine. That's clean steel.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:yacht:1:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The cabins are locked, and the locks are good ones. Behind the third is a small office, and a safe someone has already opened. 5t of machine parts comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The cabins are locked, and the locks are good ones. Behind the third is a small office, and a safe someone has already opened. They take it slowly, shoring every frame, and 2t of machine parts comes out.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 2",
+  "text": "The second section is deeper in, past the bulkhead they cut. Bexa runs a glove along the seam. \"She's holding, mostly. I wouldn't lean on her.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:yacht:1:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The engine room is last. The pilot's kit bag is by the hatch to the boat bay, packed. The boat is gone. 8t of electronics comes out of it. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The engine room is last. The pilot's kit bag is by the hatch to the boat bay, packed. The boat is gone. They take it slowly, shoring every frame, and 4t of electronics comes out. There is a shields part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. Bexa doesn't touch it. \"The frame's gone on this side. I've seen one like this fold up with a team inside.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:engineer:1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The cockpit is the first section. One seat is gone, unbolted and taken, and the other one has its straps cut. 3t of electronics comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. Tomas counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. Tomas reads the strain gauges. \"Looks fine.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:engineer:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The mail bay is half empty. Whatever went, went neatly, with the rack bolts undone and put in a bag. 5t of machine parts comes out of it. There is a shields part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The mail bay is half empty. Whatever went, went neatly, with the rack bolts undone and put in a bag. They take it slowly, shoring every frame, and 2t of machine parts comes out. There is a shields part in there, whole, and they take it off in one piece.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Tomas counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 2",
+  "text": "The second section is deeper in, past the bulkhead they cut. Tomas reads the strain gauges. \"Some give in it.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:engineer:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. 8t of electronics comes out of it. There is a drive part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. They take it slowly, shoring every frame, and 4t of electronics comes out. There is a drive part in there, whole, and they take it off in one piece. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Tomas counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. Tomas reads the strain gauges twice. \"I don't like that.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:nobody",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The crew checks the cutters, the lines and the air, twice, and the team goes over to the first bulkhead.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours",
+  "text": "The Seven Hours is a courier, small and fast once, turning slowly end over end. There are cut marks round her forward lock, and they stop halfway. Her registry says Ceres Post, under contract, a crew of two. She was fast enough to outrun most things, and paid for it in hull.",
+  "labels": [
+   "Get the team suited up"
+  ]
+ },
+ {
+  "id": "scene:salvage:nobody:cut",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The cockpit is the first section. One seat is gone, unbolted and taken, and the other one has its straps cut. 3t of electronics comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. The crew counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:full",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The cockpit is the first section. One seat is gone, unbolted and taken, and the other one has its straps cut. Nothing the hold has room for comes out of it.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 1",
+  "text": "The team is at the first bulkhead with the torch lit. Bexa looks at it a long time. \"That's fine. That's clean steel.\" The hold has room for 0t.",
+  "labels": [
+   "Cut it",
+   "Haul home with what is aboard"
+  ]
+ },
+ {
+  "id": "scene:salvage:deep",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.99,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. 8t of electronics comes out of it. There is a drive part in there, whole, and they take it off in one piece. The mail cases comes out too, and goes in a sealed bag in the hold. The log has a position in it for another ship, the Small Hours, at 2.2 AU. It is on the map now. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.01,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. 8t of electronics comes out of it. There is a drive part in there, whole, and they take it off in one piece. The mail cases comes out too, and goes in a sealed bag in the hold. The log has a position in it for another ship, the Small Hours, at 2.2 AU. It is on the map now. A frame lets go while they are under it. Ines is pinned for a minute, and comes back aboard hurt. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: I said we had enough. You cut anyway, and Ines got hurt."
+    ],
+    "fx": {
+     "c:pax": -1
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.2,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. 8t of electronics comes out of it. There is a drive part in there, whole, and they take it off in one piece. The mail cases comes out too, and goes in a sealed bag in the hold. The log has a position in it for another ship, the Small Hours, at 2.2 AU. It is on the map now. The section swings as it comes free and hits the ship's side. The shields takes the knock. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.35,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. The section gives way as the last cut goes through, and everything in it tumbles out into the dark. The client's find goes with it. That is the last of her worth cutting.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.99,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. They take it slowly, shoring every frame, and 4t of electronics comes out. There is a drive part in there, whole, and they take it off in one piece. The mail cases comes out too, and goes in a sealed bag in the hold. The log has a position in it for another ship, the Small Hours, at 2.2 AU. It is on the map now. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.01,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. They take it slowly, shoring every frame, and 4t of electronics comes out. There is a drive part in there, whole, and they take it off in one piece. The mail cases comes out too, and goes in a sealed bag in the hold. The log has a position in it for another ship, the Small Hours, at 2.2 AU. It is on the map now. A frame lets go while they are under it. Ines is pinned for a minute, and comes back aboard hurt. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.2,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. They take it slowly, shoring every frame, and 4t of electronics comes out. There is a drive part in there, whole, and they take it off in one piece. The mail cases comes out too, and goes in a sealed bag in the hold. The log has a position in it for another ship, the Small Hours, at 2.2 AU. It is on the map now. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.35,
+    "text": "The drive is at the back. Someone has been at it with a cutter already, and stopped halfway, and left the cutter. They take it slowly, shoring every frame, and 4t of electronics comes out. There is a drive part in there, whole, and they take it off in one piece. The mail cases comes out too, and goes in a sealed bag in the hold. The log has a position in it for another ship, the Small Hours, at 2.2 AU. It is on the map now. That is the last of her worth cutting.",
+    "mem": [
+     "10 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.99,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.01,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.2,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.35,
+    "text": "You call the team in. Bexa counts the cutters back aboard.",
+    "mem": [
+     "9 Jul 2214: You listened when I said the frame was gone."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "The Seven Hours: Section 3",
+  "text": "The last section is at the heart of her, where the frame takes the load. Bexa doesn't touch it. \"The frame's gone on this side. I've seen one like this fold up with a team inside.\" Pax is on the radio from the ship. \"We don't have to do this one. We've got enough aboard.\" The hold has room for 114t.",
+  "labels": [
+   "Cut it",
+   "Cut it carefully (half the take, half the risk)",
+   "Haul home with what is aboard"
+  ]
  }
 ]

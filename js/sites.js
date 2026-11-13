@@ -88,7 +88,8 @@ function landAtSite(site, notes = []) {
   G.transit = null; G.mode = 'landed'; G.shots = []; G.flash = 0;
   UI.openLanded(site, notes, 'site');
   Mods.emit('onStation', site);
-  siteArrival(st);  // the ice run's stay and its approach scene (icerun.js)
+  if (site.kind === 'wreck') salvageArrival(st, site);  // the wreck's approach (salvage.js)
+  else siteArrival(st);  // the ice run's stay and its approach scene (icerun.js)
   save();  // after the stay has begun and the approach is marked, so a reload keeps the shifts and plays no second approach (#979)
 }
 

@@ -167,7 +167,7 @@ const UI = {
       <div class="dock">
         ${Mods.filter('dockButtons', '')}
         <button data-action="map">System map</button>
-        ${hired() && chapterOf(G.state) === 1 ? (stayOf(hired()) ? `<button data-action="night" class="primary">${nightLabel(stayOf(hired()))} (T)</button>` : `<button data-action="sail" class="primary">${atSite(G.state) && hired().run ? `Burn for ${hired().run.planet}` : 'Sail with the captain'} (T)</button>`) : `<button data-action="takeoff" class="primary">Take off (T)</button>`}
+        ${atSite(G.state) && chapterOf(G.state) === 2 ? salvageDockHtml(G.state) : hired() && chapterOf(G.state) === 1 ? (stayOf(hired()) ? `<button data-action="night" class="primary">${nightLabel(stayOf(hired()))} (T)</button>` : `<button data-action="sail" class="primary">${atSite(G.state) && hired().run ? `Burn for ${hired().run.planet}` : 'Sail with the captain'} (T)</button>`) : `<button data-action="takeoff" class="primary">Take off (T)</button>`}
       </div>`;
   },
 

@@ -107,3 +107,153 @@ test('taking a salvage job finds the wreck and sets the course; with a contract 
   assert.equal(r.refused, ''); assert.ok(r.took); assert.equal(r.kind, 'salvage');
   assert.notEqual(r.found, null); assert.equal(r.dest, r.site); assert.equal(r.again, '', 'one job at a time');
 });
+
+// ---------- on station at a wreck (browser) ----------
+
+// A co-op on station at a wreck it has a job for, the approach played; `o` sets the wreck's fields.
+const wreckHelpers = () => {
+  window.atWreck = (o = {}) => {
+    const st = coopAt(), id = 'site:wreck-1', site = sites(st)[id];
+    Object.assign(site.wreck, { find: 3, lead: null, leadAt: null }, o);
+    findSite(st, id, st.day);
+    career().job = { kind: 'salvage', site: id, client: 'Hask Mutual', find: WRECK_TYPES[site.wreck.type].find, sid: 'ceres', planet: 'Ceres Station', deadline: st.day + 60, pay: 9000, taken: st.day, got: false, quality: null };
+    G.player = null; landAtSite(site);
+    const approach = G.dialog && G.dialog.event.title;
+    while (G.dialog) { chooseEvent(0); finishEvent(); }
+    UI.notes.length = 0;
+    return { st, site, approach };
+  };
+  // One shift: the scene for the next section, and the i-th choice played with the rolls given (then the page's own random).
+  window.shift = (pickLabel, rolls = [0.99]) => {
+    const real = Math.random, l = [...rolls]; Math.random = () => (l.length ? l.shift() : real());
+    try {
+      Mods.act('cutWreck');
+      const ev = G.dialog && G.dialog.event; if (!ev) return null;
+      const i = ev.choices.findIndex(c => pickLabel.test(c.label));
+      const out = { title: ev.title, text: ev.text, labels: ev.choices.map(c => c.label), i };
+      if (i >= 0) { out.result = chooseEvent(i); finishEvent(); }
+      return out;
+    } finally { Math.random = real; }
+  };
+  window.cast = key => G.state.crew.map(person).find(p => p && p.cast === key);
+};
+
+test('arriving at the wreck plays the approach once, and a reload on station does not play it again', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const { st, site, approach } = atWreck();
+    landAtSite(site);  // as a save loaded on station does (game.js)
+    return { approach, name: site.name, again: !!G.dialog, seen: site.wreck.seen, mode: G.mode, at: st.systemId };
+  });
+  await done();
+  assert.match(r.approach, new RegExp(r.name)); assert.equal(r.again, false); assert.equal(r.seen, true);
+  assert.equal(r.mode, 'landed'); assert.equal(r.at, 'site:wreck-1');
+});
+
+test('each shift cuts the next section: the take goes in the hold within its room, a day passes, and careful is offered from the second', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const { st, site } = atWreck(); const w = site.wreck, day0 = st.day, used0 = cargoUsed();
+    const dock = document.querySelector('.dock').textContent;
+    const one = shift(/^Cut it/);
+    const after1 = { cut: w.cut, used: cargoUsed() - used0, day: st.day - day0 };
+    st.cargo.metal = (st.cargo.metal || 0) + cargoFree();  // the hold full
+    const full0 = cargoUsed(), two = shift(/^Cut it/);
+    return { dock, one, after1, two, full: cargoUsed() - full0, cut: w.cut, record: hired().record.wrecksCut };
+  });
+  await done();
+  assert.match(r.dock, /Cut into the wreck \(section 1\)/);
+  assert.ok(!r.one.labels.some(l => /carefully/.test(l)), 'no careful cut on the first section');
+  assert.ok(r.two.labels.some(l => /carefully/.test(l)), 'careful from the second');
+  assert.ok(r.one.labels.some(l => /Haul home/.test(l)));
+  assert.equal(r.after1.cut, 1); assert.equal(r.after1.used, 3); assert.equal(r.after1.day, 1);
+  assert.equal(r.full, 0, 'a full hold takes nothing'); assert.equal(r.cut, 2); assert.equal(r.record, 1, 'one wreck cut');
+});
+
+test('a part section gives a spare with the wreck\'s history even with the hold full', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    let seed = 0; const probe = { name: '', seed: 0 };
+    const { st, site } = atWreck(); probe.name = site.wreck.name;
+    while (!sectionPart({ ...probe, seed }, 2)) seed++;
+    site.wreck.seed = seed; st.spares = [];
+    shift(/^Cut it/); st.cargo.metal = (st.cargo.metal || 0) + cargoFree();
+    const used = cargoUsed(); shift(/^Cut it/);
+    return { spares: st.spares, name: site.wreck.name, grew: cargoUsed() - used };
+  });
+  await done();
+  assert.equal(r.spares.length, 1); assert.equal(r.grew, 0);
+  assert.equal(r.spares[0].from, `off the wreck of the ${r.name}`); assert.ok(r.spares[0].system); assert.equal(r.spares[0].quirk.from, r.spares[0].from);
+});
+
+test('a failed cut hurts a crew member and never the player, hits a system, or loses the section, by the roll', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const [k, roll] of [['hurt', 0.01], ['system', 0.05], ['lost', 0.09]]) {
+      const { st } = atWreck(); const cond = { ...st.condition }, used = cargoUsed(), hurt0 = Object.keys(st.injured || {}).length;
+      const s = shift(/^Cut it/, [roll]);
+      out[k] = { text: s.result, hurt: Object.keys(st.injured || {}).length - hurt0, you: !!(st.injured || {}).you, sys: Object.keys(cond).filter(x => st.condition[x] < cond[x]).map(x => cond[x] - st.condition[x]), took: cargoUsed() - used };
+    }
+    return out;
+  });
+  await done();
+  assert.equal(r.hurt.hurt, 1); assert.equal(r.hurt.you, false); assert.deepEqual(r.hurt.sys, []);
+  assert.equal(r.system.hurt, 0); assert.deepEqual(r.system.sys, [15]);
+  assert.equal(r.lost.took, 0); assert.equal(r.lost.hurt, 0);
+});
+
+test('the find\'s section sets the job\'s find aboard, and a lead\'s section finds the other wreck', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const { st } = atWreck({ find: 1, lead: 'site:wreck-4', leadAt: 1 });
+    const before = st.sites['site:wreck-4'].found;
+    const s = shift(/^Cut it/);
+    return { got: career().job.got, before, after: st.sites['site:wreck-4'].found, text: s.result, other: st.sites['site:wreck-4'].name };
+  });
+  await done();
+  assert.equal(r.got, true); assert.equal(r.before, null); assert.notEqual(r.after, null); assert.match(r.text, new RegExp(r.other));
+});
+
+test('Bexa reads the risk; with her not aboard the engineer does; Pax speaks up only on a read that is not clean', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    const out = {};
+    atWreck(); out.first = Math.random() < 2 && (() => { Mods.act('cutWreck'); const t = G.dialog.event.text; G.dialog = null; return t; })();
+    const { st, site } = atWreck(); site.wreck.cut = 2;  // the third section reads bad
+    Mods.act('cutWreck'); out.third = G.dialog.event.text; G.dialog = null;
+    const bexa = cast('bexa'); st.crew = st.crew.filter(id => id !== bexa.id);
+    Mods.act('cutWreck'); out.noBexa = G.dialog.event.text; G.dialog = null;
+    out.engineer = (roleHolder('engineer') || roleHolder('bosun') || {}).first;
+    const pax = cast('pax'); st.crew = st.crew.filter(id => id !== pax.id);
+    Mods.act('cutWreck'); out.noPax = G.dialog.event.text; G.dialog = null;
+    return out;
+  });
+  await done();
+  assert.match(r.first, /Bexa/); assert.doesNotMatch(r.first, /Pax/, 'a clean read: Pax says nothing');
+  assert.match(r.third, /Bexa/); assert.match(r.third, /Pax/);
+  assert.doesNotMatch(r.noBexa, /Bexa/); if (r.engineer) assert.match(r.noBexa, new RegExp(r.engineer));
+  assert.doesNotMatch(r.noPax, /Pax/);
+});
+
+test('heeding Bexa\'s bad read pleases her; cutting on over Pax and someone hurt costs you with Pax', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(started); await ev(wreckHelpers);
+  const r = await ev(() => {
+    let { site } = atWreck(); site.wreck.cut = 2;
+    const b0 = cast('bexa').opinion; shift(/Haul home/); const b1 = cast('bexa').opinion, mem = cast('bexa').memories.slice(-1)[0];
+    ({ site } = atWreck()); site.wreck.cut = 2;
+    const p0 = cast('pax').opinion; shift(/^Cut it/, [0.01]); const p1 = cast('pax').opinion;
+    ({ site } = atWreck()); site.wreck.cut = 2;
+    const q0 = cast('pax').opinion; shift(/^Cut it/, [0.99]); const q1 = cast('pax').opinion;
+    return { bexa: b1 - b0, mem, pax: p1 - p0, paxSafe: q1 - q0 };
+  });
+  await done();
+  assert.equal(r.bexa, 1); assert.ok(r.mem); assert.equal(r.pax, -1); assert.equal(r.paxSafe, 0);
+});
