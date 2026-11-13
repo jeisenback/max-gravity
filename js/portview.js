@@ -2,7 +2,8 @@
 
 // The port view (#1101, docs/bible/ports.md, the reference frame docs/bible/ports-target.png): a cutaway of the part of a port a crew uses, drawn the way
 // the burn view draws the ship (js/rooms.js: rooms as boxes in depth, warm light in a cold structure, wear where people go). A port that has one gets a
-// tall view strip in place of the painted backdrop (bridge.js drawViewscreen); the rest keep theirs. Its people come with #1102.
+// tall view strip in place of the painted backdrop (bridge.js drawViewscreen); the rest keep theirs. Its people keep the port's hours (#1102, ports.md, How a
+// port runs): who is where at an hour is portCast, from the layout's `folk` (the port's own people, the same on every visit) and its `hours`.
 // A port is data, as the ship's layout is (LAYOUTS, layouts.js): its levels (the floor of each, in world units, outermost first) and its rooms, each a
 // kind drawn by PORT_ROOMS with its own extent and words; the next port is new data and, where it has new kinds of room, new drawers. Pure drawing:
 // no state read but the clock, no randomness.
@@ -23,8 +24,64 @@ const PORT_LAYOUTS = {
       { id: 'clinic', label: 'Clinic', level: 1, x0: 420, x1: 860, kind: 'clinic' },
       { id: 'bunks', label: 'Bunkrooms', level: 2, x0: 0, x1: 860, kind: 'bunks' },
     ],
+    // The port's own people (ports.md, Who is there): where each works and the hours they keep (an hour past 24 is after midnight). Ngozi is Tomas's
+    // sister (lagos.md), with her food bay; the rest are made from the port's culture the first time, the same face on every visit.
+    folk: [
+      { key: 'ngozi', first: 'Ngozi', last: 'Achebe', job: 'food bay', room: 'market', x: 215, name: 'work', view: 'back', hours: [6, 21] },
+      { key: 'repairer', job: 'repair bay', room: 'market', x: 490, name: 'work', view: 'back', hours: [8, 18] },
+      { key: 'keeper', job: 'keeper of the Gravity Well', room: 'bar', x: 700, name: 'stand', view: 'front', hours: [11, 26] },
+      { key: 'clerk', job: 'yard clerk', room: 'yard', x: 345, name: 'work-sit', view: 'side', face: -1, hours: [7, 19] },
+      { key: 'nurse', job: 'clinic nurse', room: 'clinic', x: 540, name: 'stand', view: 'front', hours: [8, 20] },
+    ],
+    // The place's hours: the yard's shift changes fill the lift lobby, the hiring boards draw contract workers by day, the Gravity Well's stools and the
+    // spaces along its wall seat the bar's patrons while it is open, and the ship's crew ashore are in the market by day and at the bar after it.
+    shifts: [6, 14, 22],
+    spots: {
+      lobby: [{ room: 'lift', x: 18 }, { room: 'lift', x: 104 }, { room: 'lift', x: 8 }],
+      boards: [{ room: 'yard', x: 90, view: 'back' }, { room: 'yard', x: 200, view: 'back' }, { room: 'yard', x: 255 }],
+      stools: [{ room: 'bar', x: 660, name: 'sit', view: 'side', face: 1 }, { room: 'bar', x: 740, name: 'sit', view: 'side', face: -1 }, { room: 'bar', x: 620, name: 'sit', view: 'side', face: 1 }, { room: 'bar', x: 790, name: 'sit', view: 'side', face: -1 }, { room: 'bar', x: 560 }, { room: 'bar', x: 835 }],
+      market: [{ room: 'market', x: 300 }, { room: 'market', x: 352 }, { room: 'market', x: 240, name: 'sit', view: 'side', face: -1 }],
+      clinic: [{ room: 'clinic', x: 690, name: 'sit' }, { room: 'clinic', x: 760, name: 'sit' }],
+    },
   },
 };
+const PORT_NIGHT = 22, PORT_MORNING = 7;  // the view's clock stops at night (ports.md, The port's clock), and a night passed in port wakes at seven
+const portOpen = (hours, hour) => { const [a, b] = hours, h = b > 24 && hour < a ? hour + 24 : hour; return h >= a && h < b; };
+const portDark = hour => hour >= 21 || hour < 6;  // the rim's lights down: Lagos's night
+// The hour at a landing (ports.md): the port's own dice, from the port and the day, so it moves no other system's rolls; a morning, a day or an evening.
+const arrivalHour = (planet, day) => 8 + (Math.abs(hash(`${planet.name}|${day}|arrive`)) % 120) / 10;
+
+// Who is on the view at `hour` (pure: the layout, the hour, the bar's patrons and the ship's crew ashore, each { id, first, role }, and the day for the port's dice):
+// a list of { who, room, x, name, view, face, kind } where kind is 'folk' (the port's own), 'patron', 'worker' or 'crew'. Nobody is drawn twice.
+function portCast(layout, hour, patrons, crew, day) {
+  const out = [], seed = k => Math.abs(hash(`${layout.place}|${day}|${Math.floor(hour)}|${k}`)), take = (list, n) => list.slice(0, Math.max(0, Math.min(n, list.length)));
+  for (const f of layout.folk) if (portOpen(f.hours, hour)) out.push({ who: f.key, room: f.room, x: f.x, name: f.name, view: f.view, face: f.face || 1, kind: 'folk' });
+  const keeper = layout.folk.find(f => f.room === 'bar'), barOpen = !keeper || portOpen(keeper.hours, hour);
+  const s = layout.spots;
+  if (barOpen) take(patrons, hour >= 17 || hour < 2 ? s.stools.length : 2).forEach((p, i) => out.push({ who: p.id, room: s.stools[i].room, x: s.stools[i].x, name: s.stools[i].name || 'stand', view: s.stools[i].view || 'front', face: s.stools[i].face || 1, kind: 'patron' }));
+  const nearShift = layout.shifts.some(h => Math.abs(hour - h) < 1 || Math.abs(hour - h + 24) < 1);
+  if (nearShift) take(s.lobby, 1 + (seed('lobby') % s.lobby.length)).forEach((sp, i) => out.push({ who: `worker:lobby:${i}`, room: sp.room, x: sp.x, name: 'stand', view: 'front', face: 1, kind: 'worker' }));
+  if (hour >= 8 && hour < 18) take(s.boards, 1 + (seed('boards') % s.boards.length)).forEach((sp, i) => out.push({ who: `worker:boards:${i}`, room: sp.room, x: sp.x, name: 'stand', view: sp.view || 'front', face: 1, kind: 'worker' }));
+  if (hour >= 9 && hour < 19 && seed('clinic') % 2) take(s.clinic, 1).forEach((sp, i) => out.push({ who: `worker:clinic:${i}`, room: sp.room, x: sp.x, name: sp.name, view: 'front', face: 1, kind: 'worker' }));
+  const ashore = hour >= 18 && barOpen ? s.stools.slice(Math.min(patrons.length, s.stools.length)) : hour >= 9 && hour < 18 ? s.market : [];
+  take(crew, Math.min(ashore.length, 1 + (seed('crew') % 2))).forEach((c, i) => out.push({ who: c.id, room: ashore[i].room, x: ashore[i].x, name: ashore[i].name || 'stand', view: ashore[i].view || 'front', face: ashore[i].face || 1, kind: 'crew', role: c.role }));
+  return out;
+}
+
+// The port's own people as records, made the first time from the port's culture by a dice stream of the port's own (official.js seededRandom), kept by
+// port and key in st.portFolk, so they remember and are the same on every visit; marked `portFolk` so the bar keeps them off its stools (bar.js).
+function portFolkPerson(planet, f) {
+  const st = G.state, ids = (st.portFolk = st.portFolk || {})[planet.name] = (st.portFolk[planet.name] || {});
+  let p = ids[f.key] && st.people[ids[f.key]];
+  if (p) return p;
+  const real = Math.random;
+  Math.random = seededRandom(Math.abs(hash(`${planet.name} ${f.key}`)));
+  try { p = makePerson(cultureOf(st.systemId)); } finally { Math.random = real; }
+  Object.assign(p, { job: f.job, location: planet.name, portFolk: planet.name }, f.first ? { first: f.first, last: f.last } : {});
+  registerPerson(p);
+  ids[f.key] = p.id;
+  return p;
+}
 const portLayout = planet => (planet && PORT_LAYOUTS[planet.name]) || null;
 
 // ---------- the parts the rooms are made of ----------
@@ -79,14 +136,16 @@ const PORT_ROOMS = {
     portPlate(ctx, 34, F - 98, 48, '#8a7a5a');
     portScuff(ctx, 58, F, 30); portPatch(ctx, 4, F - 70, 18, 22);
   },
-  market(ctx, r, F, time) {  // bays rented in the wall: Ngozi's food bay, a bay between tenants, a repair bay; the port in the floor
+  market(ctx, r, F, time, open = {}) {  // bays rented in the wall: Ngozi's food bay, a bay between tenants, a repair bay; the port in the floor. A bay is shut outside its keeper's hours
     portLamp(ctx, 200, F - 98, 70); portLamp(ctx, 330, F - 98, 60, 0.3); portLamp(ctx, 450, F - 98, 70);
     portScuff(ctx, 200, F, 50); portScuff(ctx, 330, F, 40); portScuff(ctx, 430, F, 30); portStain(ctx, 150, F - 84, 40, 30);
-    portBay(ctx, 140, 110, false);
-    roomScreen(ctx, 150, F - 76, 34, 18, 'nav', time);
-    roomPart(ctx, roomRound(196, F - 54, 40, 4, 1), '#4a4e52', { top: 0.8 });
-    roomPart(ctx, roomRound(200, F - 62, 16, 8, 2), '#5a5a5e', { top: 1 }); roomPart(ctx, roomRound(220, F - 63, 14, 9, 2), '#6a5040', { top: 1 });
-    portLamp(ctx, 195, F - 84, 40, 0.3);
+    portBay(ctx, 140, 110, open.ngozi === false);
+    if (open.ngozi !== false) roomScreen(ctx, 150, F - 76, 34, 18, 'nav', time);
+    if (open.ngozi !== false) {
+      roomPart(ctx, roomRound(196, F - 54, 40, 4, 1), '#4a4e52', { top: 0.8 });
+      roomPart(ctx, roomRound(200, F - 62, 16, 8, 2), '#5a5a5e', { top: 1 }); roomPart(ctx, roomRound(220, F - 63, 14, 9, 2), '#6a5040', { top: 1 });
+      portLamp(ctx, 195, F - 84, 40, 0.3);
+    }
     for (const sx of [160, 240]) roomStool(ctx, sx, F, 0);
     // the port in the floor, with the stars and Earth going by
     ctx.save(); ctx.beginPath(); ctx.ellipse(320, F - 4, 34, 4.5, 0, 0, Math.PI * 2); ctx.clip();
@@ -97,10 +156,9 @@ const PORT_ROOMS = {
     ctx.restore();
     ctx.strokeStyle = '#5a6a7a'; ctx.lineWidth = 1.2; ctx.beginPath(); ctx.ellipse(320, F - 4, 34, 4.5, 0, 0, Math.PI * 2); ctx.stroke();
     portBay(ctx, 380, 56, true);
-    portBay(ctx, 450, 60, false);
-    for (let k = 0; k < 8; k++) roomPart(ctx, roomRound(454 + (k % 4) * 13, F - 80 + Math.floor(k / 4) * 12, 11, 9, 0.5), ['#3a5a6a', '#5a4a3a'][k % 2], { top: 0.5 });
-    roomFlat(ctx, 470, F - 54, 1.5, 16, '#6a747c'); roomPart(ctx, roomRound(466, F - 40, 10, 5, 1), '#c8b070', { top: 0.6 });
-    portLamp(ctx, 471, F - 42, 22, 0.35);
+    portBay(ctx, 450, 60, open.repairer === false);
+    if (open.repairer !== false) for (let k = 0; k < 8; k++) roomPart(ctx, roomRound(454 + (k % 4) * 13, F - 80 + Math.floor(k / 4) * 12, 11, 9, 0.5), ['#3a5a6a', '#5a4a3a'][k % 2], { top: 0.5 });
+    if (open.repairer !== false) { roomFlat(ctx, 470, F - 54, 1.5, 16, '#6a747c'); roomPart(ctx, roomRound(466, F - 40, 10, 5, 1), '#c8b070', { top: 0.6 }); portLamp(ctx, 471, F - 42, 22, 0.35); }
   },
   bar(ctx, r, F) {  // the Gravity Well: the copper counter, its stools, the posters and the shelf of bottles
     portLamp(ctx, 600, F - 98, 60, 0.3); portLamp(ctx, 700, F - 98, 60, 0.3); portLamp(ctx, 800, F - 98, 50, 0.2);
@@ -145,7 +203,7 @@ const PORT_ROOMS = {
 // The view at `planet` into a canvas context g of w by h px: the frame's bar along the top (the section, the berth), the spoke rising to the hub, the
 // rooms on the rim's curve, its outer hull, and Earth going by under it. `time` is ms (performance.now). Text is 12 px or more (#265).
 const PORT_BAR = 30;
-function drawPortView(g, w, h, layout, time) {
+function drawPortView(g, w, h, layout, time, hour = 12, cast = [], look = () => ({})) {
   const top = Math.min(...layout.levels) - 100, bottom = Math.max(...layout.levels) + HULL.plate, R = layout.radius, cx0 = layout.width / 2;
   const zoom = Math.min(w / layout.width, (h - PORT_BAR - 40) / (bottom - top + 40)), ox = (w - layout.width * zoom) / 2, oy = PORT_BAR + 30 * zoom - top * zoom;
   const sag = x => layout.curve * (x - cx0) * (x - cx0) / (2 * R), X = x => ox + x * zoom, turn = Settings.reduceMotion ? 0.5 : (time / 40000) % 1;
@@ -171,7 +229,15 @@ function drawPortView(g, w, h, layout, time) {
     const F = layout.levels[rm.level], mid = (rm.x0 + rm.x1) / 2, a = layout.curve * (mid - cx0) / R, r = { x0: rm.x0, x1: rm.x1, top: F - 100, floor: F };
     g.save(); g.translate(mid, F - sag(mid)); g.rotate(-a); g.translate(-mid, -F);
     g.beginPath(); g.rect(r.x0, r.top, r.x1 - r.x0, 100 + HULL.plate); g.clip();  // a room's things stay in its box
-    roomIn([r], () => { roomShell(g, r); PORT_ROOMS[rm.kind](g, r, F, time / 1000); });  // the rooms' own clock is seconds, as the burn view's
+    const open = Object.fromEntries(layout.folk.map(f => [f.key, portOpen(f.hours, hour)]));
+    roomIn([r], () => {
+      roomShell(g, r); PORT_ROOMS[rm.kind](g, r, F, time / 1000, open);  // the rooms' own clock is seconds, as the burn view's
+      for (const c of cast.filter(c => c.room === rm.id)) {  // the people in this room, in their postures (figures.js), each as look gives them
+        const frames = POSTURES[c.name].frames, fps = POSTURES[c.name].fps, frame = fps ? Math.floor(time / 1000 * fps + c.x) % frames : 0;
+        drawPerson(g, { name: c.name, view: c.view, face: c.face, frame }, c.x, F - (c.name === 'work' || c.name === 'work-sit' ? 2 : 0), look(c));
+      }
+      if (portDark(hour) && rm.id !== 'bar') { g.fillStyle = 'rgba(2,5,10,0.5)'; g.fillRect(r.x0, r.top, r.x1 - r.x0, 100); }  // the rim's lights down; the bar's stay up
+    });
     g.restore();
   }
   g.restore();
@@ -185,4 +251,32 @@ function drawPortView(g, w, h, layout, time) {
   g.font = `600 13px ${roomFont}`; g.fillStyle = '#7f95ab';
   g.fillText(`${layout.place.toUpperCase()}  -  ${layout.section.toUpperCase()}`, 16, 20);
   const berth = layout.berth.toUpperCase(); g.fillText(berth, w - 16 - g.measureText(berth).width, 20);
+  const hh = Math.floor(hour) % 24, mm = Math.floor((hour % 1) * 6) * 10, clock = `LAGOS TIME ${String(hh).padStart(2, '0')}:${String(mm).padStart(2, '0')}`;
+  g.fillText(clock, (w - g.measureText(clock).width) / 2, 20);
 }
+
+// The view's people and clock, from the game (the one place that reads G): the port's own records, the bar's patrons and the ship's crew ashore, and the hour.
+// The hour runs while the port is on screen with nothing open, at the burn view's pace (a day in SHIP_DAY seconds), and stops at night (ports.md).
+const CIVIL = ['#8a6a4a', '#5a6a5a', '#7a5a6a', '#6a7a8a', '#9a8a6a', '#5a5a6a', '#8a4a3a', '#4a6a7a'];  // the port's own wear their own colours, not a ship's
+function portViewNow(planet, layout) {
+  const st = G.state, hour = G.portHour === null ? arrivalHour(planet, st.day) : G.portHour;
+  const folk = Object.fromEntries(layout.folk.map(f => [f.key, portFolkPerson(planet, f)]));
+  const patrons = (G.patrons || []).filter(x => !x.cast).map(x => ({ id: `patron:${x.p.id || x.p.first}`, p: x.p }));
+  const crew = st.crew.map(person).filter(c => c && c.id && !c.dead).map(c => ({ id: c.id, role: c.role, p: c }));
+  const byId = Object.fromEntries([...patrons, ...crew].map(x => [x.id, x.p]));
+  const cast = portCast(layout, hour, patrons, crew, st.day);
+  const look = c => {
+    const p = c.kind === 'folk' ? folk[c.who] : byId[c.who], id = p ? p.id || `${p.first}${p.last}` : c.who;
+    return { color: c.kind === 'crew' ? ROLE_COLORS[c.role] || '#9aa7b5' : CIVIL[Math.abs(hash(String(id))) % CIVIL.length], ...portraitLook({ id }) };
+  };
+  return { hour, cast, look };
+}
+
+Mods.register({
+  id: 'portview', name: 'The port view', builtin: true,
+  init(M) {
+    M.on('landed', planet => { G.portHour = portLayout(planet) ? arrivalHour(planet, G.state.day) : null; });
+    M.on('newDay', () => { if (G.portHour !== null) G.portHour = PORT_MORNING; });  // a night passed in port
+    M.on('frame', dt => { if (G.mode === 'landed' && !G.dialog && G.portHour !== null && G.portHour < PORT_NIGHT) G.portHour = Math.min(PORT_NIGHT, G.portHour + (dt || 0) * 24 / SHIP_DAY); });
+  },
+});
