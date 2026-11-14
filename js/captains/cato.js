@@ -94,7 +94,7 @@ CAST.cato = {
       ],
     },
     mid1: {
-      days: 25, title: 'A Share of a Ship',
+      days: 25, title: 'A Share of a Ship', room: 'hold',  // on a cargo lashing; "a berth" put it in the berths (#1170)
       text: ('Cato is sitting on a cargo lashing with a pocket notebook. It isn\'t the captain\'s; it has no columns. "There\'s a co-op at Ceres that ' +
           'takes members," he says. "A share is a part of the hull, and a vote, and a berth for as long as you want it." He turns the notebook so you can ' +
           'see: the co-op\'s ships, one crossed out, one with a question mark, and what a share has cost each year since he started writing it down. ' +
