@@ -21,6 +21,11 @@ function pickHappening(where, planet) {
     let r = Math.random() * level.reduce((n, c) => n + c.weight, 0), c = level[0];
     for (const x of level) { if ((r -= x.weight) < 0) { c = x; break; } }
     if (c.quiet) return null;
+    if (c.offer && where === 'transit' && G.transit) {  // one of the people's scenes: an offer on the ship, its scene made only if it is taken (shiplife.js, #1184)
+      const o = c.offer;
+      if (offerOnShip(G.transit, { key: o.key, who: o.who, label: lifeSay(`offer.${o.kind}`, o.vars), make: c.make })) { G.handled = true; return null; }
+      pool = pool.filter(x => x !== c); continue;  // the same one is already up: draw another
+    }
     const ev = c.make();
     if (ev && ev.auto && where === 'transit' && postMode('comms') === 'crewed') {  // a routine hail the comms officer takes
       const text = ev.auto();
@@ -60,7 +65,8 @@ Mods.register({
         if (condition()[weak] < BREAKDOWN_BELOW) out.push({ tier: 1, weight: BURN_WEIGHTS.breakdown, via: 'crew', make: () => Math.random() < 0.5 ? breakdownEvent(weak) : null });
         if ((Mods.hooks.transitEvent || []).length) out.push({ tier: 1, weight: BURN_WEIGHTS.transitHook, via: 'ship', make: () => Mods.filter('transitEvent', null) });
         const pax = paxAboard().find(m => !m.story && !m.eventDone && (m.pid || PASSENGERS[m.passenger]));
-        if (pax) out.push({ tier: 2, weight: BURN_WEIGHTS.passenger, via: 'crew', make() { pax.eventDone = true; return pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax); } });
+        if (pax) out.push({ tier: 2, weight: BURN_WEIGHTS.passenger, via: 'crew', make() { pax.eventDone = true; return pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax); },
+          ...(pax.pid && G.state.people[pax.pid] ? { offer: { kind: 'passenger', key: `pax:${pax.pid}`, who: pax.pid, vars: { first: G.state.people[pax.pid].first } } } : {}) });  // an offer, #1184
         const arcs = st.crew.filter(id => CREW[id] && CREW[id].events[flags[`${id}Arc`] || 0]);
         if (arcs.length) out.push({ tier: 2, weight: BURN_WEIGHTS.crewArc, via: 'crew', make() { const id = pick(arcs), step = flags[`${id}Arc`] || 0; flags[`${id}Arc`] = step + 1; return CREW[id].events[step]; } });
         out.push({ tier: 2, weight: BURN_WEIGHTS.trait, via: 'crew', make: crewTraitEvent });

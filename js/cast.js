@@ -1224,7 +1224,8 @@ Mods.register({
           // one plays within the chapter; the introduction is tier 1, the later ones tier 2.
           const rec = castRec(p.cast), intro = n.name === 'intro', missed = rec.wait || 0;
           rec.wait = missed + 1;  // a miss unless make() runs and clears it
-          out.push({ tier: intro ? 1 : 2, weight: (intro ? BEAT_WEIGHT : 2) + BEAT_RAMP * missed, via: 'crew', make() { rec.arc++; rec.wait = 0; return castScene(p.cast, n.sc); } });
+          out.push({ tier: intro ? 1 : 2, weight: (intro ? BEAT_WEIGHT : 2) + BEAT_RAMP * missed, via: 'crew', make() { rec.arc++; rec.wait = 0; return castScene(p.cast, n.sc); },
+            ...(n.name === 'pivot' ? {} : { offer: { kind: 'cast', key: `cast:${p.cast}`, who: p.id, vars: { first: p.first } } }) });  // an offer on the ship, but a fate scene opens at once (#1184)
         }
       } else if (castDue()) {
         const key = castDue();

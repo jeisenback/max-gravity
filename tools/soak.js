@@ -168,7 +168,9 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
         }
         for (const o of G.transit.occasions) { openEvent(occasionEvent(o)); await answer(); }
         const due = captainBeat(); if (due) dueBurns[due] = (dueBurns[due] || 0) + 1;  // a burn sailed with the scene due
-        if (!live) for (let h = 0; h < draws; h++) { G.transit.elapsed = drawAt[h] / burnSpeed(); startHappening(); await answer(); }  // each draw at the second of the burn it would fall on, so the ship's night (shiplife.js) can come into it
+        // An offer on the ship (#1184) is taken at once, as a player at 1x would: its scene opens and is answered.
+        const takeOffers = async () => { const tr = G.transit; while (tr && !G.dialog && (tr.offers || []).length) { offerClick({ offer: tr.offers[0] }); await answer(); } };
+        if (!live) for (let h = 0; h < draws; h++) { G.transit.elapsed = drawAt[h] / burnSpeed(); startHappening(); await answer(); await takeOffers(); }  // each draw at the second of the burn it would fall on, so the ship's night (shiplife.js) can come into it
         for (const c of castAboard()) if ((castRec(c.cast).arc || 0) >= 1 && !(c.cast in introRun)) introRun[c.cast] = runs + 1;
         while (beatDays.length < (hired().beats || 0)) {  // read on the day she left, before the burn's days pass
           const name = CAPTAIN_BEATS[beatDays.length];
@@ -185,6 +187,7 @@ async function chapter([maxLegs, key, real, postKey, play, order, takeJobs, hook
           for (let k = 0; G.transit === t && k < 100000 && !ending.v; k++) {
             engineeringTick(dt); updateTransit(dt);
             if (live && G.transit === t) contact();
+            if (!G.dialog) await takeOffers();
             if (H) { if (G.dialog) await answer(); await H.tick('burn', t); }
           }
           fr.fuel += fuel0 - st.fuel;
