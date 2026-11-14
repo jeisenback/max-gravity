@@ -365,13 +365,18 @@ function figViewTorso(ctx, hipH, col, build, back) {
   ctx.restore();
   figPath(ctx, d); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
 }
-function figViewLegs(ctx, hipH, col, boot, build, seated, low) {  // low: on a low seat, the knees up over the hip (figLowHip)
+function figViewLegs(ctx, hipH, col, boot, build, seated, low, lift = null) {  // low: on a low seat, the knees up over the hip (figLowHip); lift: on a ladder, how far each foot is up a rung (0 to 1, left and right)
   for (const sx of [-1, 1]) {
-    const hx = sx * FIG_VIEW.legGap * build, fx = hx * (seated ? 1.15 : 1.08), knee = low ? [hx * 1.4, -hipH - 10] : seated ? [fx, -hipH + 4] : [hx * 1.05, -hipH + FIG_LEN.thigh];
-    figViewLimb(ctx, [[hx, -hipH], knee, [fx, -3.8]], [(seated ? 8.2 : 7.6) * build, 5.4 * build], col);  // seated, the thigh comes toward you, short
-    figPath(ctx, `M ${fx - 2.8} -4.4 L ${fx + 2.8} -4.4 L ${fx + 3.6} 0 L ${fx - 3.6} 0 Z`); ctx.fillStyle = boot; ctx.fill(); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
+    const up = lift ? lift[sx < 0 ? 0 : 1] : 0, hx = sx * FIG_VIEW.legGap * build, fx = hx * (seated ? 1.15 : 1.08), knee = low ? [hx * 1.4, -hipH - 10] : seated ? [fx, -hipH + 4] : [hx * 1.05, -hipH + FIG_LEN.thigh - up * FIG_CLIMB.knee], fy = -up * FIG_CLIMB.foot;
+    figViewLimb(ctx, [[hx, -hipH], knee, [fx, fy - 3.8]], [(seated ? 8.2 : 7.6) * build, 5.4 * build], col);  // seated, the thigh comes toward you, short
+    figPath(ctx, `M ${fx - 2.8} ${fy - 4.4} L ${fx + 2.8} ${fy - 4.4} L ${fx + 3.6} ${fy} L ${fx - 3.6} ${fy} Z`); ctx.fillStyle = boot; ctx.fill(); ctx.lineWidth = 0.9; ctx.strokeStyle = FIG_LINE; ctx.stroke();
   }
 }
+// Climbing, seen from behind, facing the ladder: each hand in turn reaches up a rung while the other pulls, and the opposite foot steps up
+// (figView). `s` is where the cycle is, -1 to 1. The arms as FIG_VIEW_ARMS has them: [side, upper arm, forearm, length], up being PI.
+const FIG_CLIMB = { knee: 11, foot: 13, reach: [Math.PI - 0.25, Math.PI - 0.05], pull: [Math.PI - 1.45, Math.PI + 0.75] };
+const figClimbArms = s => [-1, 1].map(sx => { const t = (1 + sx * s) / 2, [r1, r2] = FIG_CLIMB.reach, [p1, p2] = FIG_CLIMB.pull; return [sx, p1 + (r1 - p1) * t, p2 + (r2 - p2) * t, 1]; });
+const figClimbLift = s => [-1, 1].map(sx => Math.max(0, -sx * s));  // the foot opposite the reaching hand
 function figViewArms(ctx, hipH, col, glove, build, arms, back, wave) {  // returns where each hand is
   const y = -hipH - FIG_LEN.torso + 3, at = (p, a, l) => [p[0] + Math.sin(a) * l, p[1] + Math.cos(a) * l], hands = [];
   for (const [sx, a1, a2, k = 1] of arms) {
@@ -383,16 +388,17 @@ function figViewArms(ctx, hipH, col, glove, build, arms, back, wave) {  // retur
   return hands;
 }
 const FIG_CARRY_ARM = [1, 0.3, -1.3, 0.95];  // facing you, the arm that carries something bent to hold it at the chest
-// A person facing you ('front') or the wall ('back'), standing, seated, or at work (the hands at the panel, seated or not). Returns the tap
+// A person facing you ('front') or the wall ('back'), standing, seated, or at work (the hands at the panel, seated or not); from behind, also on a
+// ladder (climb). Returns the tap
 // point, the head and the foot in the person's own frame.
 function figView(ctx, pose, look, frames) {
-  const st = figStyle(look), b = st.build, col = look.color, seated = pose.name === 'sit' || pose.name === 'work-sit', back = pose.view === 'back';
+  const st = figStyle(look), b = st.build, col = look.color, seated = pose.name === 'sit' || pose.name === 'work-sit', back = pose.view === 'back', climb = pose.name === 'climb', s = climb ? Math.sin(Math.PI * 2 * pose.frame / frames) : 0;
   const low = figLowHip(pose), hipH = low !== null ? low : seated ? FIG_VIEW.seatHip : FIG_LEN.thigh + FIG_LEN.shin + FIG_LEN.ankle, neck = -hipH - FIG_LEN.torso, headY = neck - FIG_LEN.neck - FIG_LEN.head;
-  const arms0 = FIG_VIEW_ARMS[pose.name.startsWith('work') ? 'work' : pose.name === 'sit' ? 'sit' : 'stand'], arms = look.carry && pose.name === 'stand' && !back ? [arms0[0], FIG_CARRY_ARM] : arms0, wave = pose.name.startsWith('work') ? Math.sin(Math.PI * 2 * pose.frame / frames) : 0;
+  const arms0 = climb ? figClimbArms(s) : FIG_VIEW_ARMS[pose.name.startsWith('work') ? 'work' : pose.name === 'sit' ? 'sit' : 'stand'], arms = look.carry && pose.name === 'stand' && !back ? [arms0[0], FIG_CARRY_ARM] : arms0, wave = pose.name.startsWith('work') ? Math.sin(Math.PI * 2 * pose.frame / frames) : 0;
   ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-  ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0, 0, 12, 2.4, 0, 0, Math.PI * 2); ctx.fill();  // a shadow on the deck
-  figViewLegs(ctx, hipH, figShade(col, 0.92), '#262b33', b, seated, low !== null);
-  if (back) figViewArms(ctx, hipH, col, '#2c3139', b, arms, true, wave);  // from behind, the hands at the panel are on the far side of the body
+  if (!climb) { ctx.fillStyle = 'rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0, 0, 12, 2.4, 0, 0, Math.PI * 2); ctx.fill(); }  // a shadow on the deck (none on the ladder)
+  figViewLegs(ctx, hipH, figShade(col, 0.92), '#262b33', b, seated, low !== null, climb ? figClimbLift(s) : null);
+  if (back) figViewArms(ctx, hipH, col, '#2c3139', b, arms, true, wave);  // from behind, the hands at the panel, or on the rungs, are on the far side of the body
   figViewTorso(ctx, hipH, col, b, back);
   ctx.fillStyle = figShade(look.skin || '#c9a98a', 0.82); ctx.fillRect(-2.2, neck - FIG_LEN.neck - 1, 4.4, FIG_LEN.neck + 2);
   if (back) figBackHead(ctx, 0, headY, look, st);
@@ -431,7 +437,7 @@ function drawPerson(ctx, pose, x, y, look) {
   ctx.save(); ctx.translate(x, y); ctx.scale(face, 1);
   let tap, head, foot;
   if (pose.name.startsWith('cat')) head = foot = tap = figCat(ctx, pose.name, pose.frame, frames);
-  else if ((pose.view === 'front' || pose.view === 'back') && FIG_FACING.includes(pose.name)) {  // facing you or the wall (#978)
+  else if (((pose.view === 'front' || pose.view === 'back') && FIG_FACING.includes(pose.name)) || (pose.name === 'climb' && pose.view === 'back')) {  // facing you or the wall (#978), or the ladder
     const k = FIG_SCALE; ctx.scale(k, k); ({ tap, head, foot } = figView(ctx, pose, look, frames));
     for (const p of [tap, head, foot]) { p.x *= k; p.y *= k; }
   } else {

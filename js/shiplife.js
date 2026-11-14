@@ -720,6 +720,15 @@ function phase() {
 // their bunks (#976); someone still on the way to it, or stopped short of the medbay by the straps, is not lying down.
 const inBed = p => { const m = roomAt('medbay'); return p.at === 'bed' && p.room === 'medbay' && p.tx === null && p.dk === p.tdk && !p.staged && p.dk === m.deck && p.x >= m.x0 && p.x <= m.x1; };
 // What a person is doing, by name from POSTURES (js/figures.js), for the sprite to be drawn: where, which way, and which frame.
+// A pose's frame: a walk's by the ground covered and a climb's by the rungs, so the feet do not slide; the rest by the clock. Each starts at a
+// point of their own in the cycle (personShare), so two people in the same pose do not move as one.
+const CLIMB_RUNG = (HULL.deck + HULL.plate) / 4;  // world units a climb's frame: four a deck's height, six a second at the climbing pace (climbRate)
+function poseFrame(p, name, time) {
+  const { frames, fps } = POSTURES[name], own = Math.floor(personShare(p, 7) * frames);
+  if (name === 'walk' && p.walked !== undefined) return Math.floor(p.walked * 160 / CUT_K) % frames;
+  if (name === 'climb') return (Math.floor((p.climbed || 0) / CLIMB_RUNG) + own) % frames;
+  return fps ? (Math.floor(time * fps) + own) % frames : 0;
+}
 function posture(p, ph, time, asleep) {
   let name;
   if (p.role === 'cat') name = ph === 'float' ? 'cat-float' : ph !== 'move' ? 'cat-sleep' : p.tx !== null ? 'cat-walk' : 'cat-sit';
@@ -732,12 +741,10 @@ function posture(p, ph, time, asleep) {
   else if (p.staged) name = p.staged === 'berths' || ((p.staged === 'galley' || (p.role === 'captain' && SEATED_STATIONS.includes(p.staged))) && onSeat(p)) ? 'sit' : 'stand';  // on a seat at the table, a bunk's edge; the captain at the station
   else if (!p.staged && !p.errand && ((p.block === 'shift' && ['post', 'aid', 'repair'].includes(p.at)) || p.at === 'stove')) name = p.at === 'post' && (p.room === 'bridge' || p.room === 'gunnery') && onSeat(p) ? 'work-sit' : 'work';  // at work: seated at the bridge and the guns, where there is a seat
   else name = p.at === 'alone' || (p.at !== 'stove' && onSeat(p)) ? 'sit' : 'stand';  // on a seat; someone alone sits on a bunk's edge; anyone else stands (#925)
-  const { frames, fps } = POSTURES[name];
-  // a walking stride by the ground covered, so the feet do not slide (#924)
   const chair = (name === 'sit' || name === 'work-sit') && p.room !== 'galley' && onSeat(p) ? SEAT_FACE[p.room] : 0;  // on a chair: side-on, the way the chair faces (rooms.js, #985)
-  const view = chair ? 'side' : ph === 'move' && FIG_FACING.includes(name) ? (name.startsWith('work') ? 'back' : 'front') : 'side';  // facing you to stand and sit, the wall at work; side-on on the move and in the burn (#978)
+  const view = name === 'climb' ? 'back' : chair ? 'side' : ph === 'move' && FIG_FACING.includes(name) ? (name.startsWith('work') ? 'back' : 'front') : 'side';  // on the ladder facing it; facing you to stand and sit, the wall at work; side-on on the move and in the burn (#978)
   const seat = name === 'sit' && p.at === 'alone' && p.room === 'berths' && !p.staged ? { seat: BERTH_FRAME + 5 } : {};  // on the bottom bunk's edge, its mattress (rooms.js berthBunk) under the bench's height (figures.js figLowHip, #1023)
-  return { name, view, x: p.x, deck: p.dk, face: chair || p.face || 1, ...seat, frame: name === 'walk' && p.walked !== undefined ? Math.floor(p.walked * 160 / CUT_K) % frames : fps ? Math.floor(time * fps) % frames : 0, ...(name === 'bunk' && (ph === 'secure' || ph === 'float' || (ph === 'couch' && asleep)) ? { strapped: true } : {}) };  // strapped into a bunk in the hard burn too, past the couches (#990)
+  return { name, view, x: p.x, deck: p.dk, face: chair || p.face || 1, ...seat, frame: poseFrame(p, name, time), ...(name === 'bunk' && (ph === 'secure' || ph === 'float' || (ph === 'couch' && asleep)) ? { strapped: true } : {}) };  // strapped into a bunk in the hard burn too, past the couches (#990)
 }
 
 // The scene open in a burn, acted out: when it opens (or the next one in a chain opens) those it stages walk to spots in its room, a little
@@ -776,6 +783,12 @@ function climbRate(lay, dk, dir) {
 }
 // A frame's climb from dk toward the deck tdk.
 const climbStep = (dk, tdk, dt) => { const v = dt * climbRate(LAYOUTS.freighter, dk, Math.sign(tdk - dk)); return dk + Math.max(-v, Math.min(v, tdk - dk)); };
+// Someone's climb this frame, from dk to their deck tdk, with how far they have gone on the ladder kept (p.climbed, world units), so the hands
+// and feet keep time with the rungs, as a walk's stride does with the deck (posture).
+function climbOn(p, dt) {
+  const was = p.dk; p.dk = climbStep(p.dk, p.tdk, dt);
+  p.climbed = (p.climbed || 0) + Math.abs(towerDeckY(LAYOUTS.freighter, p.dk) - towerDeckY(LAYOUTS.freighter, was));
+}
 
 function lifeTick(dt) {
   if (G.mode !== 'transit' || !G.transit) return;
@@ -823,7 +836,7 @@ function lifeTick(dt) {
     p.couch = reclineStep(p.couch || 0, atCouch, dt, Settings.reduceMotion);
     if (ph === 'secure' || ph === 'float') {  // strap in where they are; someone on the ladder finishes onto a deck
       p.tx = null; p.tdk = Math.round(p.dk); p.block = undefined; p.relief = undefined;  // strapped in: under way again, the timetable sends them on
-      p.dk = Math.abs(p.tdk - p.dk) < 0.01 ? p.tdk : climbStep(p.dk, p.tdk, dt);
+      if (Math.abs(p.tdk - p.dk) < 0.01) p.dk = p.tdk; else climbOn(p, dt);
       continue;
     }
     if (ph !== 'move' && inBed(p)) continue;  // a patient stays on the cot through the hard burn (#976)
@@ -848,7 +861,7 @@ function lifeTick(dt) {
     const room = ahead.length ? Math.max(0, Math.min(...ahead.map(q => Math.abs(q.x - p.x))) - 0.015 * CUT_K) : Infinity;
     if (p.dk !== p.tdk) {  // to the ladder, then up or down it
       if (Math.abs(LADDER - p.x) > 0.003 * CUT_K) { p.face = dir; const s2 = Math.min(step, room); p.x += Math.max(-s2, Math.min(s2, LADDER - p.x)); }
-      else p.dk = climbStep(p.dk, p.tdk, dt);
+      else climbOn(p, dt);
     } else if (p.tx !== null) {
       p.face = dir;
       const ease = Math.min(1, 0.35 + Math.abs(p.tx - p.x) / (0.01 * CUT_K));  // and ease out of the stride at the end
