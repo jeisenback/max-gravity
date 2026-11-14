@@ -431,6 +431,9 @@ const playScenes = () => {
     }, { rolls: [0, 0.99], extra: () => ({ board: hired().freight.list.length, crew: G.state.crew.length, standing: hired().standing, fund: hired().fund }) });
     window.tiesOf = realTies;
   }
+  // ---------- a day down in Lagos (#1162): the menu on each of the three days its lines turn on, and the Port page's button and its shut line ----------
+  for (const d of [0, 1, 2]) run(`scene:day-down:${d}`, {}, () => { const st = G.state; st.day = Math.floor(st.day / 3) * 3 + d; G.mode = 'landed'; return dayDownEvent(); });
+  run('scene:day-down:button', {}, () => ({ title: lagosSay('button', { fare: fmt(DOWN_FARE) }), text: lagosSay('shut'), choices: [] }));
   // ---------- a day ashore: the menu with every entry, at a port of each kind and on the days that have a broadcast, a show and a match ----------
   { const ashore = (name, setup) => run(`dayashore:${name}`, {}, () => { G.mode = 'landed'; setup(G.state); return dayAshoreEvent(true); });
     const portLike = (st, pick) => { const sys = Object.entries(SYSTEMS).find(([, s]) => s.planets.some(pick)); st.systemId = sys[0]; st.planet = sys[1].planets.find(pick).name; fillBar(currentPlanet()); };
